@@ -7,4 +7,9 @@
   <ItemGroup>
     <ProjectReference Include="../Fairbill.Contracts/Fairbill.Contracts.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="../../models/seed-rules/0.2.0.json">
+      <LogicalName>Fairbill.Estimation.Models.SeedRules.0.2.0.json</LogicalName>
+    </EmbeddedResource>
+  </ItemGroup>
 </Project>

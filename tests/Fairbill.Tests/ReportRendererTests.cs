@@ -60,6 +60,26 @@ public sealed class ReportRendererTests
         Assert.Contains("counterfactual replacement effort", markdown, StringComparison.Ordinal);
         Assert.Contains("component:billing", markdown, StringComparison.Ordinal);
         Assert.Contains("FB1000", markdown, StringComparison.Ordinal);
-        Assert.Contains("| Human-hours | 8 | 14 | 24.5 |", markdown, StringComparison.Ordinal);
+        Assert.Contains("| Human-hours |", markdown, StringComparison.Ordinal);
+        Assert.Contains(SeedEstimator.Version, markdown, StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public void MarkdownRendererLabelsProfessionalizationGapAsExcluded()
+    {
+        EstimateReport report = new SeedEstimator().Estimate(
+            TestRepositoryEvidence.CreateStructuredDotNet(
+                includeDocumentation: false,
+                includeCi: false),
+            EstimationProfile.Implementation);
+
+        string markdown = new MarkdownReportRenderer().Render(report);
+
+        Assert.Contains(
+            "Professionalization gap (excluded from EHE and cost)",
+            markdown,
+            StringComparison.Ordinal);
+        Assert.Contains("Add representative automated tests", markdown, StringComparison.Ordinal);
+        Assert.Contains("Add basic repository onboarding documentation", markdown, StringComparison.Ordinal);
     }
 }

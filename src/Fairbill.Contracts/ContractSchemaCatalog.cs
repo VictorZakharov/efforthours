@@ -15,6 +15,7 @@ public static class ContractSchemaCatalog
         SchemaNames.RateCard,
         SchemaNames.RepositoryEvidence,
         SchemaNames.RepositoryScanCache,
+        SchemaNames.SeedRuleModel,
         SchemaNames.WorkItem,
     ];
 

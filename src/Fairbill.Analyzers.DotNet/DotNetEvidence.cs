@@ -5,7 +5,7 @@ namespace Fairbill.Analyzers.DotNet;
 internal static class DotNetEvidence
 {
     public const string AnalyzerName = "fairbill.dotnet-analyzer";
-    public const string AnalyzerVersion = "0.3.0";
+    public const string AnalyzerVersion = "0.3.1";
 
     public static EvidenceFact Fact(
         string id,

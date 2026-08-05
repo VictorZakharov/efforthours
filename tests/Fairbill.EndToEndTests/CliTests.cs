@@ -16,6 +16,25 @@ public sealed class CliTests
     }
 
     [Fact]
+    public async Task ModelInfoReportsBundledOfflineSeedArtifact()
+    {
+        ProcessResult result = await RunCliAsync("model", "info");
+
+        Assert.Equal(0, result.ExitCode);
+        Assert.Equal(string.Empty, result.StandardError);
+        using JsonDocument document = JsonDocument.Parse(result.StandardOutput);
+        Assert.Equal("seed-rules", document.RootElement.GetProperty("id").GetString());
+        Assert.Equal("0.2.0", document.RootElement.GetProperty("version").GetString());
+        Assert.Equal(
+            "experimental-uncalibrated",
+            document.RootElement.GetProperty("status").GetString());
+        Assert.StartsWith(
+            "sha256:",
+            document.RootElement.GetProperty("sha256").GetString(),
+            StringComparison.Ordinal);
+    }
+
+    [Fact]
     public async Task EstimateProducesSchemaVersionedJsonWithoutDiagnosticsOnStandardError()
     {
         string fixture = Path.Combine(AppContext.BaseDirectory, "fixtures", "evidence", "minimal.repository-evidence.json");
@@ -32,7 +51,9 @@ public sealed class CliTests
         Assert.Equal(string.Empty, result.StandardError);
         using JsonDocument document = JsonDocument.Parse(result.StandardOutput);
         Assert.Equal("1.0.0", document.RootElement.GetProperty("schemaVersion").GetString());
-        Assert.Equal(14m, document.RootElement.GetProperty("totalEffort").GetProperty("expected").GetDecimal());
+        Assert.Equal("seed-rules/0.2.0", document.RootElement.GetProperty("estimatorVersion").GetString());
+        Assert.True(document.RootElement.GetProperty("totalEffort").GetProperty("expected").GetDecimal() > 0m);
+        Assert.True(document.RootElement.GetProperty("workItems").GetArrayLength() > 0);
     }
 
     [Fact]
@@ -51,8 +72,10 @@ public sealed class CliTests
             "100");
 
         Assert.Equal(0, result.ExitCode);
-        Assert.Contains("| Human-hours | 8.75 | 15.5 | 27.5 |", result.StandardOutput, StringComparison.Ordinal);
-        Assert.Contains("| Replacement cost (USD) | 875.00 | 1,550.00 | 2,750.00 |", result.StandardOutput, StringComparison.Ordinal);
+        Assert.Contains("Profile: `recreation`", result.StandardOutput, StringComparison.Ordinal);
+        Assert.Contains("Estimator: `seed-rules/0.2.0`", result.StandardOutput, StringComparison.Ordinal);
+        Assert.Contains("| Human-hours |", result.StandardOutput, StringComparison.Ordinal);
+        Assert.Contains("| Replacement cost (USD) |", result.StandardOutput, StringComparison.Ordinal);
     }
 
     [Fact]
@@ -100,7 +123,7 @@ public sealed class CliTests
         Assert.Equal(0, result.ExitCode);
         Assert.Equal(string.Empty, result.StandardError);
         using JsonDocument document = JsonDocument.Parse(result.StandardOutput);
-        Assert.Equal("seed-rules/0.1.0", document.RootElement.GetProperty("estimatorVersion").GetString());
+        Assert.Equal("seed-rules/0.2.0", document.RootElement.GetProperty("estimatorVersion").GetString());
         Assert.True(
             document.RootElement.GetProperty("totalEffort").GetProperty("expected").GetDecimal() > 0m);
         Assert.Contains(

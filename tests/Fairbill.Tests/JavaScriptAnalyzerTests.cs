@@ -238,7 +238,7 @@ public sealed class JavaScriptAnalyzerTests
     private static decimal Measurement(EvidenceFact fact, string name) =>
         Assert.Single(fact.Measurements, measurement => measurement.Name == name).Value;
 
-    private sealed class JavaScriptFixtureRepository : InMemoryRepository
+    internal sealed class JavaScriptFixtureRepository : InMemoryRepository
     {
         public static JavaScriptFixtureRepository Create()
         {

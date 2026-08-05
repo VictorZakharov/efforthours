@@ -7,7 +7,7 @@
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>fairbill</ToolCommandName>
     <PackageId>Fairbill.Tool</PackageId>
-    <Version>0.4.0-alpha.1</Version>
+    <Version>0.5.0-alpha.1</Version>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageTags>estimation;developer-tools;cli;repository-analysis</PackageTags>
   </PropertyGroup>
@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="../../LICENSE" Pack="true" PackagePath="/" />
+    <None Include="../../models/seed-rules/0.2.0.json" Pack="true" PackagePath="models/seed-rules/" />
     <None Include="../../README.md" Pack="true" PackagePath="/" />
     <None Include="../../THIRD-PARTY-NOTICES.md" Pack="true" PackagePath="/" />
   </ItemGroup>

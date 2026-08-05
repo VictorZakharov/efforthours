@@ -215,13 +215,28 @@ snippets should not be emitted by default.
 
 ## 9. Estimation layers
 
-The planned estimator is hybrid.
+The estimator is hybrid.
 
 ### 9.1 Deterministic rules
 
 Rules convert well-understood repository facts into work units, enforce exclusions,
 apply transparent productivity priors, and provide guardrails against impossible
 or perverse results.
+
+The initial implementation is `seed-rules/0.2.0`. Its checked-in JSON artifact is
+validated against the published seed-model schema and embedded for deterministic
+offline loading. Before applying priors, the estimator resolves project/package
+scope and role, separates production and test structure, gives fine semantic facts
+precedence over broad aggregates, and normalizes byte-identical maintained bodies.
+
+The seed model combines a lower-rate general implementation backbone with explicit
+specialized work for API, UI, data, integration, security, validation, background,
+test, documentation, delivery, manual-validation, and review boundaries. Marginal
+tiers reduce the value of repetition while retaining first-time setup work.
+Capabilities are partitioned around four expected hours and must remain within the
+normal 0.5-to-8-hour expected range. Profile differences are explicit work items;
+professionalization gaps are separate. These mechanics are implemented and tested,
+but their numerical priors remain uncalibrated.
 
 ### 9.2 Local ML
 

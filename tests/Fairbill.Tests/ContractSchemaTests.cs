@@ -1,5 +1,6 @@
 using System.Text.Json;
 using Fairbill.Contracts;
+using Fairbill.Contracts.V1;
 
 namespace Fairbill.Tests;
 
@@ -8,7 +9,8 @@ public sealed class ContractSchemaTests
     [Fact]
     public void CatalogContainsAllV1SchemasWithUniqueIds()
     {
-        Assert.Equal(6, ContractSchemaCatalog.Names.Count);
+        Assert.Equal(7, ContractSchemaCatalog.Names.Count);
+        Assert.Contains(SchemaNames.SeedRuleModel, ContractSchemaCatalog.Names);
         HashSet<string> ids = new(StringComparer.Ordinal);
 
         foreach (string name in ContractSchemaCatalog.Names)

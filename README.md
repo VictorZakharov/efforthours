@@ -16,7 +16,7 @@ than reading an entire large repository.
 
 ## Status
 
-Milestones 1 through 4 are complete. The repository now contains:
+Milestones 1 through 5 are complete. The repository now contains:
 
 - versioned JSON contracts and published schemas for evidence, work items,
   estimates, diagnostics, and rate cards;
@@ -45,15 +45,23 @@ Milestones 1 through 4 are complete. The repository now contains:
 - an injectable repository-storage boundary with memory-only unit fixtures;
 - an installable .NET global tool named `fairbill`;
 - JSON and Markdown reports with evidence lineage, ranges, and optional pricing;
-- synthetic fixtures, contract tests, and process-level CLI tests; and
-- an intentionally uncalibrated seed estimator that exercises the complete
-  evidence-to-report pipeline.
+- synthetic fixtures, contract tests, and process-level CLI tests;
+- evidence normalization that separates production/test structure, gives fine
+  semantic facts precedence over broad inventory, and collapses exact duplicate
+  maintained bodies;
+- category-specific capability builders for implementation, UI, data, integrations,
+  security, tests, documentation, delivery, validation, and review;
+- explicit `implementation` and `recreation` profile work, deterministic confidence
+  drivers, and a professionalization-gap ledger excluded from represented EHE; and
+- a schema-validated, checked-in, embedded `seed-rules/0.2.0` model that partitions
+  large capabilities around a four-hour target.
 
 `fairbill scan <folder>` now produces common, static .NET, and static
 JavaScript/TypeScript evidence, including mixed-repository output.
-`fairbill estimate <folder>` connects that evidence directly to the seed pipeline.
-Seed-rule output remains scaffolding and must not be presented as a production
-estimate.
+`fairbill estimate <folder>` connects that evidence directly to the granular seed
+pipeline. Every represented hour belongs to an evidence-backed work item, but the
+priors remain experimental and uncalibrated. Seed-rule output must not be presented
+as a production-ready or empirically validated estimate.
 
 Fairbill is intended to be released as open-source software. Development should be
 public-repository-ready from the beginning, even before the repository is published.
@@ -110,6 +118,8 @@ fairbill version
 fairbill scan <repository> [--output <path>] [--cache <external-path>] [--no-gitignore] [--no-fairbillignore]
 fairbill schema list
 fairbill schema show <name>
+fairbill model info
+fairbill model show
 fairbill estimate <repository-or-evidence.json> --profile <implementation|recreation> --format <json|markdown> [--hourly-rate <amount>] [--currency <code>]
 ```
 
@@ -154,9 +164,14 @@ without misrepresenting counterfactual hours as historical labor.
 - [ESTIMATION_MODEL.md](ESTIMATION_MODEL.md) specifies how evidence becomes effort
   and cost.
 - [PLAN.md](PLAN.md) describes the proposed architecture and delivery roadmap.
+- [MILESTONE_5.md](MILESTONE_5.md) records the granular seed-estimator design and
+  its current limitations.
 - [AGENTS.md](AGENTS.md) contains repository-wide instructions for coding agents.
 - [CONTRIBUTING.md](CONTRIBUTING.md) contains the verified development workflow.
 - [SECURITY.md](SECURITY.md) explains private vulnerability reporting expectations.
 - [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md) records dependency provenance.
 - [BENCHMARKS.md](BENCHMARKS.md) records reproducible performance checkpoints.
-- [`schemas/v1`](schemas/v1) contains the published v1 JSON schemas.
+- [`schemas/v1`](schemas/v1) contains the published v1 JSON schemas, including the
+  seed-rule model schema.
+- [`models/seed-rules`](models/seed-rules) contains the transparent bundled seed
+  priors.

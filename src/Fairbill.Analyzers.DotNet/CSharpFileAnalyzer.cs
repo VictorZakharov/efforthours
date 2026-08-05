@@ -532,7 +532,13 @@ internal sealed class CSharpFileAnalyzer(
             return;
         }
 
-        string testType = identifiers.Any(identifier => identifier is
+        bool pathIndicatesEndToEnd = path.Contains(
+            "endtoend",
+            StringComparison.OrdinalIgnoreCase) ||
+            path.Split('/').Any(segment => segment.Equals(
+                "e2e",
+                StringComparison.OrdinalIgnoreCase));
+        string testType = pathIndicatesEndToEnd || identifiers.Any(identifier => identifier is
             "IPage" or "IPlaywright" or "IWebDriver" or "PageTest" or "Playwright")
             ? "end-to-end"
             : identifiers.Any(identifier => identifier is

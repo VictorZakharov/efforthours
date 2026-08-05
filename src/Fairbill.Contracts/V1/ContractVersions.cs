@@ -12,6 +12,7 @@ public static class SchemaNames
     public const string RateCard = "rate-card.schema.json";
     public const string RepositoryEvidence = "repository-evidence.schema.json";
     public const string RepositoryScanCache = "repository-scan-cache.schema.json";
+    public const string SeedRuleModel = "seed-rule-model.schema.json";
     public const string WorkItem = "work-item.schema.json";
 }
 
@@ -22,6 +23,7 @@ public static class SchemaIds
     public const string RateCard = "urn:fairbill:schema:v1:rate-card";
     public const string RepositoryEvidence = "urn:fairbill:schema:v1:repository-evidence";
     public const string RepositoryScanCache = "urn:fairbill:schema:v1:repository-scan-cache";
+    public const string SeedRuleModel = "urn:fairbill:schema:v1:seed-rule-model";
     public const string WorkItem = "urn:fairbill:schema:v1:work-item";
 }
 

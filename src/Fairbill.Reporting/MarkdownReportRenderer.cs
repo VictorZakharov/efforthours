@@ -86,11 +86,20 @@ public sealed class MarkdownReportRenderer : IReportRenderer
 
         if (report.ProfessionalizationGap.Count > 0)
         {
-            AppendList(
-                markdown,
-                "Professionalization gap",
-                report.ProfessionalizationGap.Select(item =>
-                    $"{item.Title}: {Hours(item.Hours.Expected)} expected hours"));
+            markdown.AppendLine();
+            markdown.AppendLine("## Professionalization gap (excluded from EHE and cost)");
+            markdown.AppendLine();
+            markdown.AppendLine("| Gap item | Category | Low | Expected | High | Evidence |");
+            markdown.AppendLine("| --- | --- | ---: | ---: | ---: | --- |");
+            foreach (WorkItem item in report.ProfessionalizationGap)
+            {
+                markdown.Append("| ").Append(Escape(item.Title)).Append(" | ")
+                    .Append(Display(item.Category)).Append(" | ")
+                    .Append(Hours(item.Hours.Low)).Append(" | ")
+                    .Append(Hours(item.Hours.Expected)).Append(" | ")
+                    .Append(Hours(item.Hours.High)).Append(" | ")
+                    .Append(Escape(string.Join(", ", item.EvidenceIds))).AppendLine(" |");
+            }
         }
 
         if (!string.IsNullOrWhiteSpace(report.Verification.Note))

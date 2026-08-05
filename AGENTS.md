@@ -21,6 +21,7 @@ Read these root documents completely:
 2. `ESTIMATION_MODEL.md`
 3. `PLAN.md`
 4. `README.md`
+5. `MILESTONE_5.md` when changing evidence-to-effort behavior
 
 If an implementation request conflicts with those documents, surface the conflict
 and update the relevant decision explicitly. Do not silently change estimation
@@ -140,14 +141,17 @@ semantics.
 
 ## Current project stage
 
-Milestones 1 through 4 are complete. The repository has a working common scanner,
+Milestones 1 through 5 are complete. The repository has a working common scanner,
 static .NET project/Roslyn analyzer, static JavaScript/TypeScript package and source
 analyzer, mixed-repository evidence pipeline, published v1 schemas, optional
 external scan cache, installable global-tool package, memory-only unit fixtures,
-automated process-level CLI tests, and reproducible million-line benchmarks. The
-JavaScript path uses Acornima ASTs; TypeScript is explicitly token-backed. Milestone
-5 estimation work is next. The current seed estimator is explicitly uncalibrated
-and must not be described as production-ready.
+automated process-level CLI tests, reproducible million-line benchmarks, and a
+granular evidence-to-work-item estimator. The JavaScript path uses Acornima ASTs;
+TypeScript is explicitly token-backed. The bundled `seed-rules/0.2.0` model uses
+transparent marginal priors, exact-content normalization, two explicit profiles,
+approximately four-hour work-item partitions, confidence drivers, and a separate
+professionalization-gap ledger. It remains explicitly uncalibrated and must not be
+described as production-ready. Milestone 6 reporting and agent usability are next.
 
 The following commands have been run successfully from the repository root:
 

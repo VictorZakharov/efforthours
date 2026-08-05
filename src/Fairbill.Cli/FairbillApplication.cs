@@ -65,6 +65,10 @@ public sealed class FairbillApplication
                     [.. arguments.Skip(1)],
                     standardOutput,
                     standardError).ConfigureAwait(false),
+                "model" => await ModelAsync(
+                    [.. arguments.Skip(1)],
+                    standardOutput,
+                    standardError).ConfigureAwait(false),
                 "version" or "--version" or "-v" => await VersionAsync(standardOutput).ConfigureAwait(false),
                 _ => await UsageErrorAsync(
                     standardError,
@@ -441,6 +445,35 @@ public sealed class FairbillApplication
         }
     }
 
+    private static async Task<int> ModelAsync(
+        string[] arguments,
+        TextWriter standardOutput,
+        TextWriter standardError)
+    {
+        if (arguments.Length == 0 || IsHelp(arguments[0]))
+        {
+            await standardOutput.WriteLineAsync(ModelHelpText).ConfigureAwait(false);
+            return arguments.Length == 0 ? CliExitCodes.UsageError : CliExitCodes.Success;
+        }
+
+        if (arguments is ["info"])
+        {
+            await standardOutput.WriteLineAsync(
+                ContractJson.Serialize(SeedRuleCatalog.Info)).ConfigureAwait(false);
+            return CliExitCodes.Success;
+        }
+
+        if (arguments is ["show"])
+        {
+            await standardOutput.WriteLineAsync(
+                SeedRuleCatalog.ReadJson().TrimEnd()).ConfigureAwait(false);
+            return CliExitCodes.Success;
+        }
+
+        return await UsageErrorAsync(standardError, "Expected 'model info' or 'model show'.")
+            .ConfigureAwait(false);
+    }
+
     private static async Task<int> VersionAsync(TextWriter standardOutput)
     {
         string version = Assembly.GetExecutingAssembly()
@@ -483,6 +516,8 @@ public sealed class FairbillApplication
           fairbill estimate <repository-or-evidence.json> [options]
           fairbill schema list
           fairbill schema show <name>
+          fairbill model info
+          fairbill model show
           fairbill version
 
         Static analysis is deterministic, local, and read-only by default. The .NET
@@ -522,5 +557,11 @@ public sealed class FairbillApplication
         Usage:
           fairbill schema list
           fairbill schema show <name>
+        """;
+
+    private const string ModelHelpText = """
+        Usage:
+          fairbill model info
+          fairbill model show
         """;
 }

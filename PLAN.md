@@ -120,9 +120,13 @@ Status as of August 5, 2026:
 - Milestone 4 is complete: static package/workspace/configuration discovery,
   Acornima JavaScript/JSX AST evidence, bounded TypeScript/TSX token evidence,
   framework behavior classification, mixed-repository support, memory-only unit
-  fixtures, CLI tests, and a million-line benchmark are implemented. Milestone 5
-  is next. The seed estimator remains explicitly uncalibrated and is not a
-  production estimate.
+  fixtures, CLI tests, and a million-line benchmark are implemented.
+- Milestone 5 is complete: evidence normalization, exact-content deduplication,
+  category capability builders, a versioned embedded seed-rule catalog, explicit
+  profile work, approximately four-hour work-item partitioning, deterministic
+  uncertainty drivers, manual validation, self-review, and a separate conservative
+  professionalization gap are implemented. Milestone 6 is next. The seed estimator
+  remains explicitly uncalibrated and is not a production estimate.
 
 ### Milestone 0: Product and contract decisions
 
@@ -202,6 +206,15 @@ if calibration shows the token evidence is insufficient.
 
 Exit condition: every hour in an estimate traces to named work items and evidence;
 there is no unexplained repository-level total multiplier.
+
+Implementation note: `MILESTONE_5.md` records the detailed design. The checked-in
+`models/seed-rules/0.2.0.json` artifact is schema-validated and embedded into the
+estimation assembly for deterministic offline loading. Broad inventory facts yield
+to fine semantic facts, exact byte-identical maintained bodies are normalized,
+general source structure supplies residual implementation work, and specialized
+builders value behavior-specific boundaries. Large capabilities are deterministically
+partitioned around a four-hour target while remaining within the 0.5-to-8-hour
+expected range. The model is transparent but not calibrated.
 
 ### Milestone 6: Reporting and agent usability
 
@@ -305,11 +318,11 @@ benchmark corpus exists.
 
 ## 8. Immediate next steps
 
-1. Replace project-level seed placeholders with granular, traceable ecosystem work
-   units in Milestone 5 while keeping the estimator explicitly experimental.
+1. Build Milestone 6 compact repository, category, scope, and explain views without
+   losing work-item calculation lineage.
 2. Define reviewed repository-level calibration labels and isolate train/test
    splits by repository.
-3. Measure evidence-to-estimate accuracy by category and add deterministic
+3. Measure evidence-to-estimate accuracy by category and validate deterministic
    uncertainty drivers before considering local ML.
 4. Extend performance and safety measurements to curated, redistributable mixed
    repository shapes and peak-memory measurements.

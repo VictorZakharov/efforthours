@@ -204,6 +204,9 @@ public sealed class DotNetAnalyzerTests
         repository.WriteText(
             "tests/Shapes.Tests/BrowserTests.cs",
             "public sealed class BrowserTests { private IPage page; [Fact] public void Runs() { } }\n");
+        repository.WriteText(
+            "tests/Shapes.Tests/EndToEnd/SmokeTests.cs",
+            "public sealed class SmokeTests { [Fact] public void Runs() { } }\n");
 
         RepositoryEvidence evidence = await new RepositoryAnalysisPipeline(repository)
             .ScanAsync(repository.RootPath);
@@ -212,6 +215,7 @@ public sealed class DotNetAnalyzerTests
         AssertTestType(evidence, "tests/Shapes.Tests/ComponentTests.cs", "component");
         AssertTestType(evidence, "tests/Shapes.Tests/IntegrationTests.cs", "integration");
         AssertTestType(evidence, "tests/Shapes.Tests/BrowserTests.cs", "end-to-end");
+        AssertTestType(evidence, "tests/Shapes.Tests/EndToEnd/SmokeTests.cs", "end-to-end");
     }
 
     [Fact]
@@ -298,7 +302,7 @@ public sealed class DotNetAnalyzerTests
             $"test-type:{expectedType}",
             Fact(evidence, $"dotnet:test:{path}").Tags);
 
-    private sealed class DotNetFixtureRepository : InMemoryRepository
+    internal sealed class DotNetFixtureRepository : InMemoryRepository
     {
         public static DotNetFixtureRepository Create()
         {
