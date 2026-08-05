@@ -117,8 +117,12 @@ Status as of August 5, 2026:
 - Milestone 3 is complete: safe project/solution graph parsing and Roslyn syntax
   evidence cover representative web, worker, library, CLI, UI, data, integration,
   security, validation, and test shapes without MSBuild evaluation or execution.
-- Milestone 4 is next. The seed estimator remains explicitly uncalibrated and is
-  not a production estimate.
+- Milestone 4 is complete: static package/workspace/configuration discovery,
+  Acornima JavaScript/JSX AST evidence, bounded TypeScript/TSX token evidence,
+  framework behavior classification, mixed-repository support, memory-only unit
+  fixtures, CLI tests, and a million-line benchmark are implemented. Milestone 5
+  is next. The seed estimator remains explicitly uncalibrated and is not a
+  production estimate.
 
 ### Milestone 0: Product and contract decisions
 
@@ -178,6 +182,13 @@ produce reviewed evidence with stable IDs.
 
 Exit condition: representative Node, React-family, frontend, backend, library, and
   test fixtures produce reviewed evidence equivalent in quality to .NET analysis.
+
+Implementation note: Acornima 1.6.2 supplies standards-oriented JavaScript and JSX
+ASTs. It does not parse TypeScript grammar, so the initial TS/TSX path uses a
+bounded deterministic token analyzer and labels that provenance explicitly. No
+Node process, package manager, transpiler, target dependency, or executable config
+is loaded. A compiler-grade TypeScript adapter remains a future precision option
+if calibration shows the token evidence is insufficient.
 
 ### Milestone 5: Seed estimation model
 
@@ -294,13 +305,13 @@ benchmark corpus exists.
 
 ## 8. Immediate next steps
 
-1. Implement JavaScript and TypeScript workspace, package, dependency, framework,
-   script, and project-role discovery.
-2. Add parser-backed evidence for server routes, UI surfaces, data access,
-   integrations, and unit/component/integration/end-to-end tests.
-3. Create representative Node, frontend, backend, library, and mixed .NET/JS
-   memory fixtures with reviewed evidence.
-4. Extend performance and safety measurements to representative mixed repository
-   shapes and explicitly invoked physical-filesystem benchmarks.
-5. Replace project-level seed placeholders with granular, traceable ecosystem work
+1. Replace project-level seed placeholders with granular, traceable ecosystem work
    units in Milestone 5 while keeping the estimator explicitly experimental.
+2. Define reviewed repository-level calibration labels and isolate train/test
+   splits by repository.
+3. Measure evidence-to-estimate accuracy by category and add deterministic
+   uncertainty drivers before considering local ML.
+4. Extend performance and safety measurements to curated, redistributable mixed
+   repository shapes and peak-memory measurements.
+5. Evaluate a compiler-grade TypeScript adapter only if reviewed calibration shows
+   material error from the bounded token evidence.

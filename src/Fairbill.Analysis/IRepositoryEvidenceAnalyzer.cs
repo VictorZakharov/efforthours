@@ -6,6 +6,8 @@ public interface IRepositoryEvidenceAnalyzer
 {
     public string Ecosystem { get; }
 
+    public IReadOnlyList<string> Ecosystems => [Ecosystem];
+
     public Task<RepositoryAnalysisContribution> AnalyzeAsync(
         string repositoryPath,
         RepositoryEvidence evidence,

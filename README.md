@@ -16,7 +16,7 @@ than reading an entire large repository.
 
 ## Status
 
-Milestones 1 through 3 are complete. The repository now contains:
+Milestones 1 through 4 are complete. The repository now contains:
 
 - versioned JSON contracts and published schemas for evidence, work items,
   estimates, diagnostics, and rate cards;
@@ -34,6 +34,14 @@ Milestones 1 through 3 are complete. The repository now contains:
 - Roslyn syntax evidence for .NET entry points, APIs, data access, migrations,
   background work, integrations, security, validation, UI/Razor surfaces, source
   structure, and unit/component/integration/end-to-end tests;
+- static npm-compatible package, npm/pnpm/Yarn/Bun convention, workspace,
+  dependency graph, script-name, framework, and TypeScript JSONC configuration
+  discovery;
+- Acornima AST evidence for JavaScript/JSX plus deterministic bounded token-stream
+  evidence for TypeScript/TSX and Vue/Svelte script blocks;
+- JavaScript/TypeScript evidence for server routes, UI pages/components/state,
+  maintained web assets, data access, integrations, security, validation,
+  background work, and unit/component/integration/end-to-end tests;
 - an injectable repository-storage boundary with memory-only unit fixtures;
 - an installable .NET global tool named `fairbill`;
 - JSON and Markdown reports with evidence lineage, ranges, and optional pricing;
@@ -41,22 +49,29 @@ Milestones 1 through 3 are complete. The repository now contains:
 - an intentionally uncalibrated seed estimator that exercises the complete
   evidence-to-report pipeline.
 
-`fairbill scan <folder>` now produces common and static .NET evidence, and
+`fairbill scan <folder>` now produces common, static .NET, and static
+JavaScript/TypeScript evidence, including mixed-repository output.
 `fairbill estimate <folder>` connects that evidence directly to the seed pipeline.
-JavaScript/TypeScript analysis is the next milestone. Seed-rule output remains
-scaffolding and must not be presented as a production estimate.
+Seed-rule output remains scaffolding and must not be presented as a production
+estimate.
 
 Fairbill is intended to be released as open-source software. Development should be
 public-repository-ready from the beginning, even before the repository is published.
 It is licensed under the [MIT License](LICENSE).
 
-Initial language support will target:
+Current language-specific analysis covers:
 
 - .NET and C# repositories
 - JavaScript and TypeScript repositories
 - Mixed repositories containing both ecosystems
 
 The architecture should allow additional language analyzers later.
+
+JavaScript and JSX structure counts are parser-backed. TypeScript and TSX use a
+purpose-built, non-executing token analyzer in this release; evidence tags disclose
+which path was used. Fairbill never imports JavaScript modules or runs package
+scripts, package managers, transpilers, or executable configuration during the
+default scan.
 
 ## Build and try the CLI
 
@@ -111,7 +126,8 @@ produced the same digest. This is a repeatable engineering checkpoint, not a cla
 about every repository shape. The v0.3 static .NET path processed the same fixture,
 including Roslyn syntax analysis, in 6.608 seconds plus 0.107 seconds for
 serialization. See [BENCHMARKS.md](BENCHMARKS.md) for the methods, environment, and
-limitations.
+limitations. The v0.4 static JavaScript/TypeScript path processed a mixed 10,000-file,
+one-million-line fixture in 13.303 seconds plus 0.118 seconds for serialization.
 
 ## Important distinction
 

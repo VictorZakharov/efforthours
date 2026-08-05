@@ -8,7 +8,7 @@ namespace Fairbill.Analysis;
 public sealed class RepositoryScanner : IRepositoryScanner
 {
     public const string AnalyzerName = "fairbill.common-scanner";
-    public const string AnalyzerVersion = "0.2.0";
+    public const string AnalyzerVersion = "0.2.1";
 
     private const int AggregateLocationLimit = 50;
 

@@ -22,7 +22,7 @@ public static class Program
         {
             Console.Error.WriteLine(exception.Message);
             Console.Error.WriteLine(
-                "Usage: scanner-benchmark [--files <count>] [--lines-per-file <count>] [--dotnet] [--warm-cache] [--keep]");
+                "Usage: scanner-benchmark [--files <count>] [--lines-per-file <count>] [--dotnet|--javascript] [--warm-cache] [--keep]");
             return 2;
         }
 
@@ -41,7 +41,7 @@ public static class Program
 
             long allocationsBefore = GC.GetTotalAllocatedBytes(precise: true);
             Stopwatch scanTimer = Stopwatch.StartNew();
-            IRepositoryScanner scanner = options.AnalyzeDotNet
+            IRepositoryScanner scanner = options.AnalyzeDotNet || options.AnalyzeJavaScript
                 ? new RepositoryAnalysisPipeline()
                 : new RepositoryScanner();
             RepositoryEvidence evidence = await scanner.ScanAsync(rootPath);
@@ -54,7 +54,7 @@ public static class Program
 
             decimal requestedLines = (decimal)options.Files * options.LinesPerFile;
             Console.WriteLine($"scanner={RepositoryScanner.AnalyzerVersion}");
-            Console.WriteLine($"mode={(options.AnalyzeDotNet ? "dotnet-static" : "common")}");
+            Console.WriteLine($"mode={GetMode(options)}");
             Console.WriteLine($"runtime={RuntimeInformation.FrameworkDescription}");
             Console.WriteLine($"os={RuntimeInformation.OSDescription}");
             Console.WriteLine($"architecture={RuntimeInformation.OSArchitecture}");
@@ -122,6 +122,12 @@ public static class Program
 
     private static void GenerateRepository(string rootPath, BenchmarkOptions options)
     {
+        if (options.AnalyzeJavaScript)
+        {
+            GenerateJavaScriptRepository(rootPath, options);
+            return;
+        }
+
         File.WriteAllText(
             Path.Combine(rootPath, "Benchmark.csproj"),
             "<Project Sdk=\"Microsoft.NET.Sdk\" />\n");
@@ -139,12 +145,41 @@ public static class Program
         });
     }
 
+    private static void GenerateJavaScriptRepository(string rootPath, BenchmarkOptions options)
+    {
+        File.WriteAllText(
+            Path.Combine(rootPath, "package.json"),
+            "{\"name\":\"fairbill-benchmark\",\"private\":true,\"devDependencies\":{\"typescript\":\"5.9.0\"}}\n");
+        string sharedLines = string.Concat(
+            Enumerable.Range(1, Math.Max(0, options.LinesPerFile - 1))
+                .Select(line =>
+                    $"export const value{line:D4} = (input) => input ?? {line.ToString(CultureInfo.InvariantCulture)};\n"));
+
+        Parallel.For(0, options.Files, index =>
+        {
+            string directory = Path.Combine(rootPath, "src", $"group-{index / 100:D5}");
+            Directory.CreateDirectory(directory);
+            string content = sharedLines +
+                $"export async function file{index:D7}(input) {{ return input ? {index.ToString(CultureInfo.InvariantCulture)} : 0; }}\n";
+            string extension = index % 2 == 0 ? ".js" : ".ts";
+            File.WriteAllText(Path.Combine(directory, $"file{index:D7}{extension}"), content);
+        });
+    }
+
+    private static string GetMode(BenchmarkOptions options) => options switch
+    {
+        { AnalyzeDotNet: true } => "dotnet-static",
+        { AnalyzeJavaScript: true } => "javascript-typescript-static",
+        _ => "common",
+    };
+
     private sealed record BenchmarkOptions(
         int Files,
         int LinesPerFile,
         bool KeepRepository,
         bool MeasureWarmCache,
-        bool AnalyzeDotNet)
+        bool AnalyzeDotNet,
+        bool AnalyzeJavaScript)
     {
         public static BenchmarkOptions Parse(string[] arguments)
         {
@@ -153,6 +188,7 @@ public static class Program
             bool keep = false;
             bool measureWarmCache = false;
             bool analyzeDotNet = false;
+            bool analyzeJavaScript = false;
 
             for (int index = 0; index < arguments.Length; index++)
             {
@@ -173,9 +209,17 @@ public static class Program
                     case "--dotnet":
                         analyzeDotNet = true;
                         break;
+                    case "--javascript":
+                        analyzeJavaScript = true;
+                        break;
                     default:
                         throw new ArgumentException($"Unknown option '{arguments[index]}'.");
                 }
+            }
+
+            if (analyzeDotNet && analyzeJavaScript)
+            {
+                throw new ArgumentException("Options '--dotnet' and '--javascript' are mutually exclusive.");
             }
 
             return new BenchmarkOptions(
@@ -183,7 +227,8 @@ public static class Program
                 linesPerFile,
                 keep,
                 measureWarmCache,
-                analyzeDotNet);
+                analyzeDotNet,
+                analyzeJavaScript);
         }
 
         private static int ReadPositiveInteger(

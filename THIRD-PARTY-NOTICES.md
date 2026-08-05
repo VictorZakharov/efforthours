@@ -12,6 +12,8 @@ alongside Fairbill's `LICENSE` file.
 
 | Package | Version | License | Project |
 | --- | --- | --- | --- |
+| Acornima | 1.6.2 | BSD-3-Clause | <https://github.com/adams85/acornima> |
+| Acornima.Extras | 1.6.2 | BSD-3-Clause | <https://github.com/adams85/acornima> |
 | JsonSchema.Net | 7.4.0 | MIT | <https://github.com/gregsdennis/json-everything> |
 | JsonPointer.Net | 5.3.1 | MIT | <https://github.com/gregsdennis/json-everything> |
 | Json.More.Net | 2.1.1 | MIT | <https://github.com/gregsdennis/json-everything> |
@@ -22,6 +24,38 @@ alongside Fairbill's `LICENSE` file.
 JsonSchema.Net is intentionally pinned to a release whose NuGet package declares
 the standard MIT license. Any upgrade requires a fresh review of the binary package
 terms as well as API compatibility.
+
+### Acornima and Acornima.Extras license
+
+The following license applies to Acornima and Acornima.Extras 1.6.2. Both NuGet
+packages identify source commit `93b19e4e2ce0bd2c0fdca9deb92b39d1f5d9f53b`.
+
+Copyright (c) Adam Simon. All rights reserved.
+
+BSD 3-Clause License
+
+Redistribution and use in source and binary forms, with or without modification,
+are permitted provided that the following conditions are met:
+
+1. Redistributions of source code must retain the above copyright notice, this
+   list of conditions and the following disclaimer.
+2. Redistributions in binary form must reproduce the above copyright notice,
+   this list of conditions and the following disclaimer in the documentation
+   and/or other materials provided with the distribution.
+3. Neither the name of Acornima nor the names of its contributors may be used to
+   endorse or promote products derived from this software without specific prior
+   written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
+ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 ## Test and development dependencies
 

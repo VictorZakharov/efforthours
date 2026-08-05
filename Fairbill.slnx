@@ -2,6 +2,7 @@
   <Project Path="benchmarks/Fairbill.ScannerBenchmarks/Fairbill.ScannerBenchmarks.csproj" />
   <Project Path="src/Fairbill.Analysis/Fairbill.Analysis.csproj" />
   <Project Path="src/Fairbill.Analyzers.DotNet/Fairbill.Analyzers.DotNet.csproj" />
+  <Project Path="src/Fairbill.Analyzers.JavaScript/Fairbill.Analyzers.JavaScript.csproj" />
   <Project Path="src/Fairbill.Cli/Fairbill.Cli.csproj" />
   <Project Path="src/Fairbill.Contracts/Fairbill.Contracts.csproj" />
   <Project Path="src/Fairbill.Core/Fairbill.Core.csproj" />

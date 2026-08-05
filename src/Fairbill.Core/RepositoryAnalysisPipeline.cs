@@ -1,5 +1,6 @@
 using Fairbill.Analysis;
 using Fairbill.Analyzers.DotNet;
+using Fairbill.Analyzers.JavaScript;
 using Fairbill.Contracts.V1;
 
 namespace Fairbill.Core;
@@ -10,7 +11,9 @@ public sealed class RepositoryAnalysisPipeline : IRepositoryScanner
     private readonly IRepositoryScanner _commonScanner;
 
     public RepositoryAnalysisPipeline()
-        : this(new RepositoryScanner(), [new DotNetRepositoryAnalyzer()])
+        : this(
+            new RepositoryScanner(),
+            [new DotNetRepositoryAnalyzer(), new JavaScriptRepositoryAnalyzer()])
     {
     }
 
@@ -19,7 +22,7 @@ public sealed class RepositoryAnalysisPipeline : IRepositoryScanner
         IRepositoryScanCacheStore? cacheStore = null)
         : this(
             new RepositoryScanner(fileSystem, cacheStore),
-            [new DotNetRepositoryAnalyzer(fileSystem)])
+            [new DotNetRepositoryAnalyzer(fileSystem), new JavaScriptRepositoryAnalyzer(fileSystem)])
     {
     }
 
@@ -46,7 +49,8 @@ public sealed class RepositoryAnalysisPipeline : IRepositoryScanner
         foreach (IRepositoryEvidenceAnalyzer analyzer in _analyzers)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            if (!evidence.Repository.Ecosystems.Contains(analyzer.Ecosystem, StringComparer.Ordinal))
+            if (!analyzer.Ecosystems.Any(ecosystem =>
+                evidence.Repository.Ecosystems.Contains(ecosystem, StringComparer.Ordinal)))
             {
                 continue;
             }

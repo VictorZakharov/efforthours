@@ -486,10 +486,12 @@ public sealed class FairbillApplication
           fairbill version
 
         Static analysis is deterministic, local, and read-only by default. The .NET
-        analyzer parses projects and C# syntax without evaluating MSBuild. Fairbill
-        does not execute target code, access Git history, install dependencies, or
-        emit source excerpts. The current seed estimator is explicitly uncalibrated
-        and must not be treated as a production estimate.
+        analyzer parses projects and C# syntax without evaluating MSBuild. The
+        JavaScript/TypeScript analyzer parses manifests, configuration, JS/JSX ASTs,
+        and TS/TSX token streams without running package managers or executable
+        configuration. Fairbill does not execute target code, access Git history,
+        install dependencies, or emit source excerpts. The current seed estimator is
+        explicitly uncalibrated and must not be treated as a production estimate.
         """;
 
     private const string ScanHelpText = """

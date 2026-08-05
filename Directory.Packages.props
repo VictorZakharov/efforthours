@@ -4,6 +4,9 @@
     <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
   </PropertyGroup>
   <ItemGroup>
+    <!-- Acornima and Acornima.Extras 1.6.2 are BSD-3-Clause licensed. -->
+    <PackageVersion Include="Acornima" Version="1.6.2" />
+    <PackageVersion Include="Acornima.Extras" Version="1.6.2" />
     <!-- This release declares the standard MIT license. Review package-license changes before upgrading. -->
     <PackageVersion Include="JsonSchema.Net" Version="7.4.0" />
     <PackageVersion Include="Microsoft.CodeAnalysis.CSharp" Version="5.6.0" />

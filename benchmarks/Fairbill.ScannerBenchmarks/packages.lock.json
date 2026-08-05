@@ -48,6 +48,15 @@
           "Microsoft.CodeAnalysis.CSharp": "[5.6.0, )"
         }
       },
+      "fairbill.analyzers.javascript": {
+        "type": "Project",
+        "dependencies": {
+          "Acornima": "[1.6.2, )",
+          "Acornima.Extras": "[1.6.2, )",
+          "Fairbill.Analysis": "[1.0.0, )",
+          "Fairbill.Contracts": "[1.0.0, )"
+        }
+      },
       "fairbill.contracts": {
         "type": "Project",
         "dependencies": {
@@ -59,7 +68,23 @@
         "dependencies": {
           "Fairbill.Analysis": "[1.0.0, )",
           "Fairbill.Analyzers.DotNet": "[1.0.0, )",
+          "Fairbill.Analyzers.JavaScript": "[1.0.0, )",
           "Fairbill.Contracts": "[1.0.0, )"
+        }
+      },
+      "Acornima": {
+        "type": "CentralTransitive",
+        "requested": "[1.6.2, )",
+        "resolved": "1.6.2",
+        "contentHash": "laakpDHzMwHr5C8+q5RlRf0XJJshUvghNeo4xDerICrYR3iEuGvwfpauCmXuU3RE437XDaQO5ZxieWDpADuD+w=="
+      },
+      "Acornima.Extras": {
+        "type": "CentralTransitive",
+        "requested": "[1.6.2, )",
+        "resolved": "1.6.2",
+        "contentHash": "0YTKs/OnfrrRkL47OmShrmy/vEY6ZPT0zJ6txgc/RoOsCNKOoRNlRCf6bxaicMrTCqBaWpQQZu+XdVKbiZJdmg==",
+        "dependencies": {
+          "Acornima": "1.6.2"
         }
       },
       "JsonSchema.Net": {

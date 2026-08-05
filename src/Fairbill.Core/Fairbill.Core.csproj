@@ -6,6 +6,7 @@
   <ItemGroup>
     <ProjectReference Include="../Fairbill.Analysis/Fairbill.Analysis.csproj" />
     <ProjectReference Include="../Fairbill.Analyzers.DotNet/Fairbill.Analyzers.DotNet.csproj" />
+    <ProjectReference Include="../Fairbill.Analyzers.JavaScript/Fairbill.Analyzers.JavaScript.csproj" />
     <ProjectReference Include="../Fairbill.Contracts/Fairbill.Contracts.csproj" />
   </ItemGroup>
 </Project>

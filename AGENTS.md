@@ -140,12 +140,14 @@ semantics.
 
 ## Current project stage
 
-Milestones 1 through 3 are complete. The repository has a working common scanner,
-static .NET project/Roslyn analyzer, evidence-to-estimate pipeline, published v1
-schemas, optional external scan cache, installable global-tool package, memory-only
-unit fixtures, automated process-level CLI tests, and a reproducible scanner
-benchmark. JavaScript/TypeScript analysis is the next milestone. The current seed
-estimator is explicitly uncalibrated and must not be described as production-ready.
+Milestones 1 through 4 are complete. The repository has a working common scanner,
+static .NET project/Roslyn analyzer, static JavaScript/TypeScript package and source
+analyzer, mixed-repository evidence pipeline, published v1 schemas, optional
+external scan cache, installable global-tool package, memory-only unit fixtures,
+automated process-level CLI tests, and reproducible million-line benchmarks. The
+JavaScript path uses Acornima ASTs; TypeScript is explicitly token-backed. Milestone
+5 estimation work is next. The current seed estimator is explicitly uncalibrated
+and must not be described as production-ready.
 
 The following commands have been run successfully from the repository root:
 
@@ -158,6 +160,7 @@ dotnet test tests/Fairbill.EndToEndTests/Fairbill.EndToEndTests.csproj --no-buil
 dotnet pack src/Fairbill.Cli/Fairbill.Cli.csproj --configuration Release --no-build --no-restore --output artifacts/packages
 dotnet benchmarks/Fairbill.ScannerBenchmarks/bin/Release/net10.0/Fairbill.ScannerBenchmarks.dll --files 10000 --lines-per-file 100 --warm-cache
 dotnet benchmarks/Fairbill.ScannerBenchmarks/bin/Release/net10.0/Fairbill.ScannerBenchmarks.dll --files 10000 --lines-per-file 100 --dotnet
+dotnet benchmarks/Fairbill.ScannerBenchmarks/bin/Release/net10.0/Fairbill.ScannerBenchmarks.dll --files 10000 --lines-per-file 100 --javascript
 ```
 
 The primary distribution is the `Fairbill.Tool` .NET global-tool package with the

@@ -90,3 +90,41 @@ and cache fixtures are memory-backed to avoid repeated test-tree I/O.
 The generated source is deliberately syntax-simple, so this checkpoint establishes
 scalability for many files rather than a universal semantic-complexity threshold.
 Future runs should add mixed syntax shapes and peak working-set measurement.
+
+## Static JavaScript/TypeScript analyzer v0.4 checkpoint
+
+Measured on August 5, 2026 with the same runtime, operating system, and hardware as
+the earlier checkpoints. The generated repository contains one root package and
+10,000 source files with 100 physical lines each. Files alternate between
+JavaScript, which takes the Acornima AST path, and TypeScript, which takes the
+bounded token path. The benchmark does not run Node, a package manager, a
+transpiler, executable configuration, or target code.
+
+Command:
+
+```text
+dotnet benchmarks/Fairbill.ScannerBenchmarks/bin/Release/net10.0/Fairbill.ScannerBenchmarks.dll --files 10000 --lines-per-file 100 --javascript
+```
+
+Observed result:
+
+| Measure | Result |
+| --- | ---: |
+| Requested source lines | 1,000,000 |
+| Source files | 10,000 |
+| Fixture generation | 2.291 s |
+| Common scan plus static JS/TS analysis | 13.303 s |
+| Evidence serialization | 0.118 s |
+| Analysis throughput | 75,169 lines/s |
+| Cumulative managed bytes allocated during analysis | 1,715.82 MiB |
+| Evidence JSON size | 10.00 MiB |
+| Evidence facts | 10,010 |
+
+Fixture generation is excluded from analysis time. This explicitly invoked,
+disk-backed benchmark is not part of ordinary unit-test runs. The ordinary unit
+suite uses only memory-backed repository and cache fixtures.
+
+The allocation figure is cumulative allocation, not peak live memory. Half of the
+files deliberately contain many exported JavaScript declarations, so this run
+exercises substantial AST allocation. Curated real-world mixed repositories and
+peak working-set measurements remain future benchmark work.

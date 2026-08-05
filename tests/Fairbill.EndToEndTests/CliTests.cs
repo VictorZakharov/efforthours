@@ -108,6 +108,32 @@ public sealed class CliTests
             diagnostic => diagnostic.GetProperty("code").GetString() == "FB1000");
     }
 
+    [Fact]
+    public async Task ScanProducesStaticJavaScriptAndTypeScriptEvidenceWithoutSourceText()
+    {
+        using TemporaryRepository repository = new();
+        repository.WriteText(
+            "package.json",
+            "{\"name\":\"sample\",\"dependencies\":{\"express\":\"5.0.0\"}}\n");
+        repository.WriteText(
+            "src/server.ts",
+            "import express from 'express'; const app = express(); app.get('/private-route', () => 'private-marker');\n");
+
+        ProcessResult result = await RunCliAsync("scan", repository.RootPath);
+
+        Assert.Equal(0, result.ExitCode);
+        Assert.Equal(string.Empty, result.StandardError);
+        Assert.DoesNotContain("/private-route", result.StandardOutput, StringComparison.Ordinal);
+        Assert.DoesNotContain("private-marker", result.StandardOutput, StringComparison.Ordinal);
+        using JsonDocument document = JsonDocument.Parse(result.StandardOutput);
+        Assert.Contains(
+            document.RootElement.GetProperty("facts").EnumerateArray(),
+            fact => fact.GetProperty("id").GetString() == "javascript:api:src/server.ts");
+        Assert.Contains(
+            document.RootElement.GetProperty("diagnostics").EnumerateArray(),
+            diagnostic => diagnostic.GetProperty("code").GetString() == "FB4000");
+    }
+
     private static async Task<ProcessResult> RunCliAsync(params string[] arguments)
     {
         string repositoryRoot = FindRepositoryRoot();

@@ -213,7 +213,7 @@ internal static class FileClassifier
             ecosystems.Add("dotnet");
         }
 
-        if (language == "javascript" || lowerName == "package.json")
+        if (language is "javascript" or "vue" or "svelte" || lowerName == "package.json")
         {
             ecosystems.Add("javascript");
         }
@@ -331,8 +331,17 @@ internal static class FileClassifier
         lowerName.StartsWith("webpack.config.", StringComparison.Ordinal) ||
         lowerName.StartsWith("vite.config.", StringComparison.Ordinal) ||
         lowerName.StartsWith("rollup.config.", StringComparison.Ordinal) ||
+        lowerName.StartsWith("next.config.", StringComparison.Ordinal) ||
+        lowerName.StartsWith("nuxt.config.", StringComparison.Ordinal) ||
+        lowerName.StartsWith("svelte.config.", StringComparison.Ordinal) ||
+        lowerName.StartsWith("jest.config.", StringComparison.Ordinal) ||
+        lowerName.StartsWith("vitest.config.", StringComparison.Ordinal) ||
+        lowerName.StartsWith("playwright.config.", StringComparison.Ordinal) ||
+        lowerName.StartsWith("cypress.config.", StringComparison.Ordinal) ||
         lowerName.StartsWith("eslint.config.", StringComparison.Ordinal) ||
         lowerName.StartsWith("prettier.config.", StringComparison.Ordinal) ||
+        lowerName is "angular.json" or "nx.json" or "turbo.json" or "lerna.json" or
+            "pnpm-workspace.yaml" or "pnpm-workspace.yml" ||
         extension is ".props" or ".targets";
 
     private static bool IsConfiguration(string extension, string lowerName) =>

@@ -44,6 +44,10 @@ public static class EvidenceKinds
     public const string File = "file";
     public const string Infrastructure = "infrastructure";
     public const string Integration = "integration";
+    public const string JavaScriptPackage = "javascript-package";
+    public const string JavaScriptConfiguration = "javascript-configuration";
+    public const string JavaScriptTest = "javascript-test";
+    public const string JavaScriptWorkspace = "javascript-workspace";
     public const string Language = "language";
     public const string PackageReference = "package-reference";
     public const string ProjectReference = "project-reference";
