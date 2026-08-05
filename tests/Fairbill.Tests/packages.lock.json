@@ -112,6 +112,12 @@
           "xunit.extensibility.core": "[2.9.3]"
         }
       },
+      "fairbill.analysis": {
+        "type": "Project",
+        "dependencies": {
+          "Fairbill.Contracts": "[1.0.0, )"
+        }
+      },
       "fairbill.contracts": {
         "type": "Project",
         "dependencies": {

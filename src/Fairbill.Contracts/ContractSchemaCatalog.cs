@@ -14,6 +14,7 @@ public static class ContractSchemaCatalog
         SchemaNames.EstimateReport,
         SchemaNames.RateCard,
         SchemaNames.RepositoryEvidence,
+        SchemaNames.RepositoryScanCache,
         SchemaNames.WorkItem,
     ];
 

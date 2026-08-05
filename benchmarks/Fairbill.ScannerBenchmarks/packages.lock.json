@@ -33,18 +33,6 @@
           "JsonSchema.Net": "[7.4.0, )"
         }
       },
-      "fairbill.estimation": {
-        "type": "Project",
-        "dependencies": {
-          "Fairbill.Contracts": "[1.0.0, )"
-        }
-      },
-      "fairbill.reporting": {
-        "type": "Project",
-        "dependencies": {
-          "Fairbill.Contracts": "[1.0.0, )"
-        }
-      },
       "JsonSchema.Net": {
         "type": "CentralTransitive",
         "requested": "[7.4.0, )",

@@ -16,6 +16,7 @@
     <Using Include="Xunit" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="../../src/Fairbill.Analysis/Fairbill.Analysis.csproj" />
     <ProjectReference Include="../../src/Fairbill.Contracts/Fairbill.Contracts.csproj" />
     <ProjectReference Include="../../src/Fairbill.Estimation/Fairbill.Estimation.csproj" />
     <ProjectReference Include="../../src/Fairbill.Reporting/Fairbill.Reporting.csproj" />

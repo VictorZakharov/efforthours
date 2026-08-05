@@ -136,9 +136,10 @@ semantics.
 
 ## Current project stage
 
-Milestone 1 is complete. The repository has a working evidence-to-estimate pipeline,
-published v1 schemas, an installable global-tool package, and automated contract and
-process-level CLI tests. The common repository scanner is the next milestone. The
+Milestones 1 and 2 are complete. The repository has a working common scanner,
+evidence-to-estimate pipeline, published v1 schemas, optional external scan cache,
+installable global-tool package, automated contract/process-level CLI tests, and a
+reproducible scanner benchmark. Semantic .NET analysis is the next milestone. The
 current seed estimator is explicitly uncalibrated and must not be described as
 production-ready.
 
@@ -150,6 +151,7 @@ dotnet format Fairbill.slnx --no-restore --verify-no-changes --severity info
 dotnet build Fairbill.slnx --no-restore --configuration Release
 dotnet test Fairbill.slnx --no-build --no-restore --configuration Release
 dotnet pack src/Fairbill.Cli/Fairbill.Cli.csproj --configuration Release --no-build --no-restore --output artifacts/packages
+dotnet benchmarks/Fairbill.ScannerBenchmarks/bin/Release/net10.0/Fairbill.ScannerBenchmarks.dll --files 10000 --lines-per-file 100 --warm-cache
 ```
 
 The primary distribution is the `Fairbill.Tool` .NET global-tool package with the

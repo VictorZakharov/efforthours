@@ -100,6 +100,35 @@ public static class ContractValidation
         return errors;
     }
 
+    public static IReadOnlyList<string> Validate(RepositoryScanCache cache)
+    {
+        ArgumentNullException.ThrowIfNull(cache);
+
+        List<string> errors = [];
+        RequireVersion(cache.SchemaVersion, "repository scan cache", errors);
+        RequireText(cache.AnalyzerVersion, "repositoryScanCache.analyzerVersion", errors);
+        RequireText(cache.RepositoryKey, "repositoryScanCache.repositoryKey", errors);
+
+        HashSet<string> paths = new(StringComparer.Ordinal);
+        foreach (RepositoryScanCacheEntry entry in cache.Files)
+        {
+            RequireText(entry.Path, "repositoryScanCache.file.path", errors);
+            RequireText(entry.Sha256, $"repositoryScanCache.file[{entry.Path}].sha256", errors);
+            RequireText(entry.Role, $"repositoryScanCache.file[{entry.Path}].role", errors);
+            if (entry.Length < 0 || entry.Bytes < 0 || entry.Lines < 0)
+            {
+                errors.Add($"Repository scan cache entry '{entry.Path}' has a negative measurement.");
+            }
+
+            if (!paths.Add(entry.Path))
+            {
+                errors.Add($"Repository scan cache path '{entry.Path}' is duplicated.");
+            }
+        }
+
+        return errors;
+    }
+
     public static EffortRange Sum(IEnumerable<EffortRange> ranges)
     {
         ArgumentNullException.ThrowIfNull(ranges);

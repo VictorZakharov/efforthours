@@ -55,6 +55,59 @@ public sealed class CliTests
         Assert.Contains("| Replacement cost (USD) | 875.00 | 1,550.00 | 2,750.00 |", result.StandardOutput, StringComparison.Ordinal);
     }
 
+    [Fact]
+    public async Task ScanProducesRepositoryEvidenceFromDirectory()
+    {
+        using TemporaryRepository repository = new();
+        repository.WriteText("Sample.csproj", "<Project Sdk=\"Microsoft.NET.Sdk\" />\n");
+        repository.WriteText(
+            "Program.cs",
+            "public static class Program { private const string Marker = \"not-in-evidence\"; }\n");
+        repository.WriteText("README.md", "# Sample\n");
+
+        ProcessResult result = await RunCliAsync("scan", repository.RootPath);
+
+        Assert.Equal(0, result.ExitCode);
+        Assert.Equal(string.Empty, result.StandardError);
+        Assert.DoesNotContain("not-in-evidence", result.StandardOutput, StringComparison.Ordinal);
+        Assert.DoesNotContain(repository.RootPath, result.StandardOutput, StringComparison.OrdinalIgnoreCase);
+        using JsonDocument document = JsonDocument.Parse(result.StandardOutput);
+        Assert.Equal("1.0.0", document.RootElement.GetProperty("schemaVersion").GetString());
+        Assert.Contains(
+            document.RootElement.GetProperty("repository").GetProperty("ecosystems").EnumerateArray(),
+            ecosystem => ecosystem.GetString() == "dotnet");
+        Assert.Contains(
+            document.RootElement.GetProperty("facts").EnumerateArray(),
+            fact => fact.GetProperty("id").GetString() == "inventory:repository");
+    }
+
+    [Fact]
+    public async Task EstimateAcceptsRepositoryDirectory()
+    {
+        using TemporaryRepository repository = new();
+        repository.WriteText("package.json", "{\"name\":\"sample\"}\n");
+        repository.WriteText("src/index.ts", "export const value = 1;\n");
+        repository.WriteText("tests/index.test.ts", "export const covered = true;\n");
+
+        ProcessResult result = await RunCliAsync(
+            "estimate",
+            repository.RootPath,
+            "--profile",
+            "implementation",
+            "--format",
+            "json");
+
+        Assert.Equal(0, result.ExitCode);
+        Assert.Equal(string.Empty, result.StandardError);
+        using JsonDocument document = JsonDocument.Parse(result.StandardOutput);
+        Assert.Equal("seed-rules/0.1.0", document.RootElement.GetProperty("estimatorVersion").GetString());
+        Assert.True(
+            document.RootElement.GetProperty("totalEffort").GetProperty("expected").GetDecimal() > 0m);
+        Assert.Contains(
+            document.RootElement.GetProperty("diagnostics").EnumerateArray(),
+            diagnostic => diagnostic.GetProperty("code").GetString() == "FB1000");
+    }
+
     private static async Task<ProcessResult> RunCliAsync(params string[] arguments)
     {
         string repositoryRoot = FindRepositoryRoot();
@@ -116,4 +169,32 @@ public sealed class CliTests
     }
 
     private sealed record ProcessResult(int ExitCode, string StandardOutput, string StandardError);
+
+    private sealed class TemporaryRepository : IDisposable
+    {
+        public TemporaryRepository()
+        {
+            RootPath = Path.Combine(
+                Path.GetTempPath(),
+                "fairbill-e2e-tests",
+                Guid.NewGuid().ToString("N"));
+            Directory.CreateDirectory(RootPath);
+        }
+
+        public string RootPath { get; }
+
+        public void WriteText(string relativePath, string content)
+        {
+            string path = Path.Combine(
+                RootPath,
+                relativePath.Replace('/', Path.DirectorySeparatorChar));
+            Directory.CreateDirectory(Path.GetDirectoryName(path)!);
+            File.WriteAllText(path, content);
+        }
+
+        public void Dispose()
+        {
+            Directory.Delete(RootPath, recursive: true);
+        }
+    }
 }

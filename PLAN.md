@@ -111,7 +111,10 @@ Status as of August 5, 2026:
   identity, and repository conventions are recorded.
 - Milestone 1 is complete: the contracts, schemas, seed pipeline, reports, global
   tool package, and test harness are implemented and verified.
-- Milestone 2 is next. The seed estimator remains explicitly uncalibrated and is
+- Milestone 2 is complete: safe traversal, ignore handling, metadata-only file
+  evidence, hashing, artifact/exclusion classification, optional external caching,
+  CLI folder input, tests, and a one-million-line benchmark are implemented.
+- Milestone 3 is next. The seed estimator remains explicitly uncalibrated and is
   not a production estimate.
 
 ### Milestone 0: Product and contract decisions
@@ -274,22 +277,26 @@ The first useful release should:
 - use only dependencies, fixtures, model artifacts, and distributed data that can
   legally accompany the chosen open-source distribution, with recorded provenance.
 
-The performance objective is to analyze approximately one million source lines in
-a few minutes on documented commodity hardware. Exact time and memory thresholds
-will be established with the benchmark corpus.
+The initial common-scanner checkpoint analyzes one million synthetic C# source
+lines across 10,000 files in 4.275 seconds and serializes the evidence in another
+0.116 seconds on the environment recorded in `BENCHMARKS.md`; an unchanged
+warm-cache scan takes 1.646 seconds with the same evidence digest. Representative
+mixed and real-world corpora are still required before establishing release
+thresholds.
 
 Numerical accuracy and performance thresholds will be added after a representative
 benchmark corpus exists.
 
 ## 8. Immediate next steps
 
-1. Implement the read-only common scanner: safe traversal, scope rules, stable file
-   facts, hashing, typing, and exclusion classification.
-2. Add synthetic scanner fixtures for links, ignored paths, generated/vendor
-   content, binary files, minified files, and mixed ecosystems.
-3. Connect `fairbill scan <path>` to the v1 repository-evidence contract without
-   executing target code or accessing the network.
-4. Add deterministic, safety, memory, and throughput checks before ecosystem-aware
-   analyzers begin.
-5. Measure the evidence size and scan time on increasingly large generated fixture
-   trees toward the one-million-line objective.
+1. Implement the .NET analyzer for solutions, projects, target frameworks, package
+   references, project graphs, and application/test project roles.
+2. Add static C# and Razor evidence for entry points, APIs, data access, migrations,
+   background work, integrations, authorization, and tests without requiring a
+   successful build.
+3. Create representative ASP.NET, worker, library, CLI, and test fixtures with
+   reviewed evidence.
+4. Replace project-level seed placeholders with granular, traceable .NET work-unit
+   inputs while keeping the estimator explicitly experimental.
+5. Extend performance and safety measurements to representative mixed repository
+   shapes and cold filesystem runs.

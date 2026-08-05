@@ -25,6 +25,12 @@ dotnet test Fairbill.slnx --no-build --no-restore --configuration Release
 dotnet pack src/Fairbill.Cli/Fairbill.Cli.csproj --configuration Release --no-build --no-restore --output artifacts/packages
 ```
 
+Run the synthetic one-million-line scanner checkpoint with:
+
+```text
+dotnet benchmarks/Fairbill.ScannerBenchmarks/bin/Release/net10.0/Fairbill.ScannerBenchmarks.dll --files 10000 --lines-per-file 100 --warm-cache
+```
+
 All behavioral changes require tests, and schema changes require contract and
 compatibility tests. Keep generated build output under the ignored `artifacts`
 directory.

@@ -1,4 +1,6 @@
 <Solution>
+  <Project Path="benchmarks/Fairbill.ScannerBenchmarks/Fairbill.ScannerBenchmarks.csproj" />
+  <Project Path="src/Fairbill.Analysis/Fairbill.Analysis.csproj" />
   <Project Path="src/Fairbill.Cli/Fairbill.Cli.csproj" />
   <Project Path="src/Fairbill.Contracts/Fairbill.Contracts.csproj" />
   <Project Path="src/Fairbill.Estimation/Fairbill.Estimation.csproj" />

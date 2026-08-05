@@ -1,5 +1,7 @@
 using System.Globalization;
 using System.Reflection;
+using System.Text;
+using Fairbill.Analysis;
 using Fairbill.Contracts;
 using Fairbill.Contracts.V1;
 using Fairbill.Estimation;
@@ -10,15 +12,22 @@ namespace Fairbill.Cli;
 public sealed class FairbillApplication
 {
     private readonly IEstimator _estimator;
+    private readonly IRepositoryScanner _scanner;
 
     public FairbillApplication()
-        : this(new SeedEstimator())
+        : this(new SeedEstimator(), new RepositoryScanner())
     {
     }
 
     public FairbillApplication(IEstimator estimator)
+        : this(estimator, new RepositoryScanner())
+    {
+    }
+
+    public FairbillApplication(IEstimator estimator, IRepositoryScanner scanner)
     {
         _estimator = estimator ?? throw new ArgumentNullException(nameof(estimator));
+        _scanner = scanner ?? throw new ArgumentNullException(nameof(scanner));
     }
 
     public async Task<int> RunAsync(
@@ -41,6 +50,11 @@ public sealed class FairbillApplication
         {
             return arguments[0].ToLowerInvariant() switch
             {
+                "scan" => await ScanAsync(
+                    [.. arguments.Skip(1)],
+                    standardOutput,
+                    standardError,
+                    cancellationToken).ConfigureAwait(false),
                 "estimate" => await EstimateAsync(
                     [.. arguments.Skip(1)],
                     standardOutput,
@@ -75,6 +89,143 @@ public sealed class FairbillApplication
         }
     }
 
+    private async Task<int> ScanAsync(
+        string[] arguments,
+        TextWriter standardOutput,
+        TextWriter standardError,
+        CancellationToken cancellationToken)
+    {
+        if (arguments.Length == 0 || IsHelp(arguments[0]))
+        {
+            await standardOutput.WriteLineAsync(ScanHelpText).ConfigureAwait(false);
+            return arguments.Length == 0 ? CliExitCodes.UsageError : CliExitCodes.Success;
+        }
+
+        string repositoryPath = arguments[0];
+        string? outputPath = null;
+        RepositoryScanOptions options = new();
+        for (int index = 1; index < arguments.Length; index++)
+        {
+            string option = arguments[index];
+            switch (option)
+            {
+                case "--output":
+                    if (index + 1 >= arguments.Length)
+                    {
+                        return await UsageErrorAsync(
+                            standardError,
+                            "Option '--output' requires a value.").ConfigureAwait(false);
+                    }
+
+                    outputPath = arguments[++index];
+                    break;
+
+                case "--cache":
+                    if (index + 1 >= arguments.Length)
+                    {
+                        return await UsageErrorAsync(
+                            standardError,
+                            "Option '--cache' requires a value.").ConfigureAwait(false);
+                    }
+
+                    options = options with { CachePath = arguments[++index] };
+                    break;
+
+                case "--no-gitignore":
+                    options = options with { RespectGitIgnore = false };
+                    break;
+
+                case "--no-fairbillignore":
+                    options = options with { RespectFairbillIgnore = false };
+                    break;
+
+                case "help" or "--help" or "-h":
+                    await standardOutput.WriteLineAsync(ScanHelpText).ConfigureAwait(false);
+                    return CliExitCodes.Success;
+
+                default:
+                    return await UsageErrorAsync(
+                        standardError,
+                        $"Unknown scan option '{option}'.").ConfigureAwait(false);
+            }
+        }
+
+        if (!Directory.Exists(repositoryPath))
+        {
+            await standardError.WriteLineAsync($"Repository directory was not found: {repositoryPath}")
+                .ConfigureAwait(false);
+            return CliExitCodes.InvalidInput;
+        }
+
+        RepositoryEvidence evidence;
+        try
+        {
+            evidence = await _scanner.ScanAsync(
+                repositoryPath,
+                options,
+                cancellationToken).ConfigureAwait(false);
+        }
+        catch (ArgumentException exception)
+        {
+            await standardError.WriteLineAsync($"Could not scan repository: {exception.Message}")
+                .ConfigureAwait(false);
+            return CliExitCodes.InvalidInput;
+        }
+        IReadOnlyList<string> semanticErrors = ContractValidation.Validate(evidence);
+        string json = ContractJson.Serialize(evidence);
+        SchemaValidationResult schemaResult = ContractSchemaValidator.Validate(
+            SchemaNames.RepositoryEvidence,
+            json);
+        if (semanticErrors.Count > 0 || !schemaResult.IsValid)
+        {
+            await standardError.WriteLineAsync("The scanner produced invalid repository evidence.")
+                .ConfigureAwait(false);
+            foreach (string error in semanticErrors.Concat(schemaResult.Errors))
+            {
+                await standardError.WriteLineAsync($"- {error}").ConfigureAwait(false);
+            }
+
+            return CliExitCodes.InternalError;
+        }
+
+        if (outputPath is null)
+        {
+            await standardOutput.WriteLineAsync(json).ConfigureAwait(false);
+            return CliExitCodes.Success;
+        }
+
+        if (Directory.Exists(outputPath))
+        {
+            await standardError.WriteLineAsync($"Output path is a directory: {outputPath}")
+                .ConfigureAwait(false);
+            return CliExitCodes.InvalidInput;
+        }
+
+        try
+        {
+            string fullOutputPath = Path.GetFullPath(outputPath);
+            string? outputDirectory = Path.GetDirectoryName(fullOutputPath);
+            if (!string.IsNullOrEmpty(outputDirectory))
+            {
+                Directory.CreateDirectory(outputDirectory);
+            }
+
+            await File.WriteAllTextAsync(
+                fullOutputPath,
+                json + Environment.NewLine,
+                new UTF8Encoding(encoderShouldEmitUTF8Identifier: false),
+                cancellationToken).ConfigureAwait(false);
+        }
+        catch (Exception exception) when (exception is IOException or UnauthorizedAccessException)
+        {
+            await standardError.WriteLineAsync($"Could not write evidence: {exception.Message}")
+                .ConfigureAwait(false);
+            return CliExitCodes.InvalidInput;
+        }
+
+        return CliExitCodes.Success;
+    }
+
     private async Task<int> EstimateAsync(
         string[] arguments,
         TextWriter standardOutput,
@@ -87,7 +238,7 @@ public sealed class FairbillApplication
             return arguments.Length == 0 ? CliExitCodes.UsageError : CliExitCodes.Success;
         }
 
-        string evidencePath = arguments[0];
+        string inputPath = arguments[0];
         EstimationProfile profile = EstimationProfile.Implementation;
         string format = "json";
         decimal? hourlyRate = null;
@@ -163,46 +314,56 @@ public sealed class FairbillApplication
             }
         }
 
-        if (!File.Exists(evidencePath))
+        RepositoryEvidence evidence;
+        if (Directory.Exists(inputPath))
         {
-            await standardError.WriteLineAsync($"Evidence file was not found: {evidencePath}").ConfigureAwait(false);
-            return CliExitCodes.InvalidInput;
+            evidence = await _scanner.ScanAsync(
+                inputPath,
+                cancellationToken: cancellationToken).ConfigureAwait(false);
         }
-
-        string json;
-        try
+        else if (File.Exists(inputPath))
         {
-            json = await File.ReadAllTextAsync(evidencePath, cancellationToken).ConfigureAwait(false);
-        }
-        catch (Exception exception) when (exception is IOException or UnauthorizedAccessException)
-        {
-            await standardError.WriteLineAsync($"Could not read evidence: {exception.Message}").ConfigureAwait(false);
-            return CliExitCodes.InvalidInput;
-        }
-
-        SchemaValidationResult schemaResult = ContractSchemaValidator.Validate(
-            SchemaNames.RepositoryEvidence,
-            json);
-        if (!schemaResult.IsValid)
-        {
-            await standardError.WriteLineAsync("Evidence does not satisfy the repository evidence schema:")
-                .ConfigureAwait(false);
-            foreach (string error in schemaResult.Errors)
+            string json;
+            try
             {
-                await standardError.WriteLineAsync($"- {error}").ConfigureAwait(false);
+                json = await File.ReadAllTextAsync(inputPath, cancellationToken).ConfigureAwait(false);
+            }
+            catch (Exception exception) when (exception is IOException or UnauthorizedAccessException)
+            {
+                await standardError.WriteLineAsync($"Could not read evidence: {exception.Message}")
+                    .ConfigureAwait(false);
+                return CliExitCodes.InvalidInput;
             }
 
-            return CliExitCodes.InvalidInput;
-        }
+            SchemaValidationResult schemaResult = ContractSchemaValidator.Validate(
+                SchemaNames.RepositoryEvidence,
+                json);
+            if (!schemaResult.IsValid)
+            {
+                await standardError.WriteLineAsync("Evidence does not satisfy the repository evidence schema:")
+                    .ConfigureAwait(false);
+                foreach (string error in schemaResult.Errors)
+                {
+                    await standardError.WriteLineAsync($"- {error}").ConfigureAwait(false);
+                }
 
-        RepositoryEvidence evidence;
-        try
-        {
-            evidence = ContractJson.Deserialize<RepositoryEvidence>(json);
+                return CliExitCodes.InvalidInput;
+            }
+
+            try
+            {
+                evidence = ContractJson.Deserialize<RepositoryEvidence>(json);
+            }
+            catch (System.Text.Json.JsonException exception)
+            {
+                await standardError.WriteLineAsync($"Could not deserialize evidence: {exception.Message}")
+                    .ConfigureAwait(false);
+                return CliExitCodes.InvalidInput;
+            }
         }
-        catch (System.Text.Json.JsonException exception)
+        else
         {
-            await standardError.WriteLineAsync($"Could not deserialize evidence: {exception.Message}")
+            await standardError.WriteLineAsync($"Repository or evidence path was not found: {inputPath}")
                 .ConfigureAwait(false);
             return CliExitCodes.InvalidInput;
         }
@@ -317,19 +478,33 @@ public sealed class FairbillApplication
         Fairbill - estimate equivalent non-AI human effort represented by software.
 
         Usage:
-          fairbill estimate <evidence.json> [options]
+          fairbill scan <repository> [options]
+          fairbill estimate <repository-or-evidence.json> [options]
           fairbill schema list
           fairbill schema show <name>
           fairbill version
 
-        Milestone 1 accepts a versioned repository-evidence document. Repository
-        scanning will be added in Milestone 2. The current seed estimator is
-        explicitly uncalibrated and must not be treated as a production estimate.
+        The common scanner is deterministic, local, and read-only by default. It
+        does not execute target code, access Git history, install dependencies, or
+        emit source excerpts. The current seed estimator is explicitly uncalibrated
+        and must not be treated as a production estimate.
+        """;
+
+    private const string ScanHelpText = """
+        Usage:
+          fairbill scan <repository> [options]
+
+        Options:
+          --output <path>       Write evidence JSON to an explicit path
+          --cache <path>        Use an explicit cache outside the repository
+          --no-gitignore        Do not apply nested .gitignore files
+          --no-fairbillignore   Do not apply nested .fairbillignore files
+          -h, --help            Show this help
         """;
 
     private const string EstimateHelpText = """
         Usage:
-          fairbill estimate <evidence.json> [options]
+          fairbill estimate <repository-or-evidence.json> [options]
 
         Options:
           --profile <implementation|recreation>  Estimation profile (default: implementation)

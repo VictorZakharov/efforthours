@@ -1,0 +1,114 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:fairbill:schema:v1:repository-scan-cache",
+  "title": "Fairbill repository scan cache v1",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "analyzerVersion",
+    "repositoryKey",
+    "files"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "1.0.0"
+    },
+    "analyzerVersion": {
+      "type": "string",
+      "minLength": 1
+    },
+    "repositoryKey": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "files": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/file"
+      }
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "file": {
+      "type": "object",
+      "required": [
+        "path",
+        "length",
+        "lastWriteTimeUtcTicks",
+        "sha256",
+        "bytes",
+        "lines",
+        "isBinary",
+        "role",
+        "ecosystems",
+        "isTest",
+        "isGenerated",
+        "isMinified",
+        "isVendored",
+        "isComponentManifest"
+      ],
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "length": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "lastWriteTimeUtcTicks": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "bytes": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "lines": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "isBinary": {
+          "type": "boolean"
+        },
+        "role": {
+          "type": "string",
+          "minLength": 1
+        },
+        "language": {
+          "type": "string",
+          "minLength": 1
+        },
+        "ecosystems": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "isTest": {
+          "type": "boolean"
+        },
+        "isGenerated": {
+          "type": "boolean"
+        },
+        "isMinified": {
+          "type": "boolean"
+        },
+        "isVendored": {
+          "type": "boolean"
+        },
+        "isComponentManifest": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

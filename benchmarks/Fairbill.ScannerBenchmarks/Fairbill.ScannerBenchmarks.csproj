@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <IsPackable>false</IsPackable>
+    <RootNamespace>Fairbill.ScannerBenchmarks</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../../src/Fairbill.Analysis/Fairbill.Analysis.csproj" />
+    <ProjectReference Include="../../src/Fairbill.Contracts/Fairbill.Contracts.csproj" />
+  </ItemGroup>
+</Project>
