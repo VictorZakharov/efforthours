@@ -7,5 +7,6 @@
   <ItemGroup>
     <ProjectReference Include="../../src/Fairbill.Analysis/Fairbill.Analysis.csproj" />
     <ProjectReference Include="../../src/Fairbill.Contracts/Fairbill.Contracts.csproj" />
+    <ProjectReference Include="../../src/Fairbill.Core/Fairbill.Core.csproj" />
   </ItemGroup>
 </Project>

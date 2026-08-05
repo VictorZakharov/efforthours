@@ -5,9 +5,28 @@ using Fairbill.Contracts.V1;
 
 namespace Fairbill.Analysis;
 
-internal static class RepositoryScanCacheStore
+public interface IRepositoryScanCacheStore
 {
-    public static async Task<RepositoryScanCache?> LoadAsync(
+    public Task<RepositoryScanCache?> LoadAsync(
+        string path,
+        string repositoryKey,
+        CancellationToken cancellationToken);
+
+    public Task SaveAsync(
+        string path,
+        RepositoryScanCache cache,
+        CancellationToken cancellationToken);
+}
+
+public sealed class PhysicalRepositoryScanCacheStore : IRepositoryScanCacheStore
+{
+    public static PhysicalRepositoryScanCacheStore Instance { get; } = new();
+
+    private PhysicalRepositoryScanCacheStore()
+    {
+    }
+
+    public async Task<RepositoryScanCache?> LoadAsync(
         string path,
         string repositoryKey,
         CancellationToken cancellationToken)
@@ -34,7 +53,7 @@ internal static class RepositoryScanCacheStore
         }
     }
 
-    public static async Task SaveAsync(
+    public async Task SaveAsync(
         string path,
         RepositoryScanCache cache,
         CancellationToken cancellationToken)

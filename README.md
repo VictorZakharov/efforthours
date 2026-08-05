@@ -16,7 +16,7 @@ than reading an entire large repository.
 
 ## Status
 
-Milestones 1 and 2 are complete. The repository now contains:
+Milestones 1 through 3 are complete. The repository now contains:
 
 - versioned JSON contracts and published schemas for evidence, work items,
   estimates, diagnostics, and rate cards;
@@ -29,17 +29,22 @@ Milestones 1 and 2 are complete. The repository now contains:
 - generated, vendored, minified, binary, build-output, link, and Git-metadata
   classification;
 - an optional versioned incremental cache that must live outside the target tree;
+- static `.sln`, `.slnx`, SDK-project, central-package, package-reference, and
+  project-graph analysis without evaluating MSBuild;
+- Roslyn syntax evidence for .NET entry points, APIs, data access, migrations,
+  background work, integrations, security, validation, UI/Razor surfaces, source
+  structure, and unit/component/integration/end-to-end tests;
+- an injectable repository-storage boundary with memory-only unit fixtures;
 - an installable .NET global tool named `fairbill`;
 - JSON and Markdown reports with evidence lineage, ranges, and optional pricing;
 - synthetic fixtures, contract tests, and process-level CLI tests; and
 - an intentionally uncalibrated seed estimator that exercises the complete
   evidence-to-report pipeline.
 
-`fairbill scan <folder>` now produces repository evidence, and `fairbill estimate
-<folder>` connects that evidence directly to the seed pipeline. The next milestone
-is semantic .NET analysis. JavaScript/TypeScript semantic analysis follows it.
-Seed-rule output remains scaffolding and must not be presented as a production
-estimate.
+`fairbill scan <folder>` now produces common and static .NET evidence, and
+`fairbill estimate <folder>` connects that evidence directly to the seed pipeline.
+JavaScript/TypeScript analysis is the next milestone. Seed-rule output remains
+scaffolding and must not be presented as a production estimate.
 
 Fairbill is intended to be released as open-source software. Development should be
 public-repository-ready from the beginning, even before the repository is published.
@@ -60,7 +65,14 @@ The .NET 10 SDK selected by `global.json` is required.
 ```text
 dotnet restore Fairbill.slnx --configfile NuGet.Config --force-evaluate
 dotnet build Fairbill.slnx --no-restore --configuration Release
-dotnet test Fairbill.slnx --no-build --no-restore --configuration Release
+dotnet test tests/Fairbill.Tests/Fairbill.Tests.csproj --no-build --no-restore --configuration Release
+```
+
+The normal unit suite uses only in-memory repository and cache fixtures. Run the
+separate, disk-backed process tests when validating the CLI boundary or a release:
+
+```text
+dotnet test tests/Fairbill.EndToEndTests/Fairbill.EndToEndTests.csproj --no-build --no-restore --configuration Release
 ```
 
 Scan a repository without executing it or reading its Git history:
@@ -96,8 +108,10 @@ The v0.2 scanner processed a synthetic one-million-line repository containing
 10,000 C# files in 4.275 seconds, plus 0.116 seconds for JSON serialization, on the
 documented development machine. An unchanged warm-cache scan took 1.646 seconds and
 produced the same digest. This is a repeatable engineering checkpoint, not a claim
-about every repository shape. See [BENCHMARKS.md](BENCHMARKS.md) for the method,
-environment, and limitations.
+about every repository shape. The v0.3 static .NET path processed the same fixture,
+including Roslyn syntax analysis, in 6.608 seconds plus 0.107 seconds for
+serialization. See [BENCHMARKS.md](BENCHMARKS.md) for the methods, environment, and
+limitations.
 
 ## Important distinction
 

@@ -12,6 +12,9 @@ public sealed class RepositoryScanner : IRepositoryScanner
 
     private const int AggregateLocationLimit = 50;
 
+    private readonly IRepositoryFileSystem _fileSystem;
+    private readonly IRepositoryScanCacheStore _cacheStore;
+
     private static readonly FrozenDictionary<string, string> DefaultExcludedDirectories =
         new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
         {
@@ -35,6 +38,21 @@ public sealed class RepositoryScanner : IRepositoryScanner
             [".vs"] = "tool-state",
         }.ToFrozenDictionary(StringComparer.OrdinalIgnoreCase);
 
+    public RepositoryScanner()
+        : this(
+            PhysicalRepositoryFileSystem.Instance,
+            PhysicalRepositoryScanCacheStore.Instance)
+    {
+    }
+
+    public RepositoryScanner(
+        IRepositoryFileSystem fileSystem,
+        IRepositoryScanCacheStore? cacheStore = null)
+    {
+        _fileSystem = fileSystem ?? throw new ArgumentNullException(nameof(fileSystem));
+        _cacheStore = cacheStore ?? PhysicalRepositoryScanCacheStore.Instance;
+    }
+
     public async Task<RepositoryEvidence> ScanAsync(
         string repositoryPath,
         RepositoryScanOptions? options = null,
@@ -56,14 +74,13 @@ public sealed class RepositoryScanner : IRepositoryScanner
                 "The text sample must be at least 256 bytes.");
         }
 
-        string rootPath = Path.GetFullPath(repositoryPath);
-        if (!Directory.Exists(rootPath))
+        string rootPath = _fileSystem.GetFullPath(repositoryPath);
+        if (!_fileSystem.DirectoryExists(rootPath))
         {
             throw new DirectoryNotFoundException($"Repository directory was not found: {repositoryPath}");
         }
 
-        DirectoryInfo root = new(rootPath);
-        if ((root.Attributes & FileAttributes.ReparsePoint) != 0)
+        if ((_fileSystem.GetAttributes(rootPath) & FileAttributes.ReparsePoint) != 0)
         {
             throw new InvalidOperationException(
                 "The repository root cannot be a symbolic link or filesystem reparse point.");
@@ -73,21 +90,21 @@ public sealed class RepositoryScanner : IRepositoryScanner
         string? cachePath = ResolveCachePath(rootPath, options.CachePath);
         RepositoryScanCache? cache = cachePath is null
             ? null
-            : await RepositoryScanCacheStore.LoadAsync(
+            : await _cacheStore.LoadAsync(
                 cachePath,
                 repositoryKey,
                 cancellationToken).ConfigureAwait(false);
-        ScanState state = new(rootPath, options, cache);
+        ScanState state = new(rootPath, options, cache, _fileSystem);
         await TraverseAsync(state, cancellationToken).ConfigureAwait(false);
         if (cachePath is not null)
         {
-            await RepositoryScanCacheStore.SaveAsync(
+            await _cacheStore.SaveAsync(
                 cachePath,
                 CreateCache(repositoryKey, state.Files),
                 cancellationToken).ConfigureAwait(false);
         }
 
-        return BuildEvidence(root, state);
+        return BuildEvidence(rootPath, state);
     }
 
     private static async Task TraverseAsync(ScanState state, CancellationToken cancellationToken)
@@ -103,7 +120,7 @@ public sealed class RepositoryScanner : IRepositoryScanner
             {
                 try
                 {
-                    FileAttributes currentAttributes = File.GetAttributes(frame.FullPath);
+                    FileAttributes currentAttributes = state.FileSystem.GetAttributes(frame.FullPath);
                     if ((currentAttributes & FileAttributes.ReparsePoint) != 0)
                     {
                         state.Exclusions.Add(new ExcludedEntry(
@@ -129,7 +146,7 @@ public sealed class RepositoryScanner : IRepositoryScanner
             string[] entries;
             try
             {
-                entries = Directory.GetFileSystemEntries(frame.FullPath);
+                entries = state.FileSystem.GetFileSystemEntries(frame.FullPath);
                 Array.Sort(entries, CompareEntries);
             }
             catch (Exception exception) when (exception is IOException or UnauthorizedAccessException)
@@ -146,7 +163,7 @@ public sealed class RepositoryScanner : IRepositoryScanner
                 FileAttributes attributes;
                 try
                 {
-                    attributes = File.GetAttributes(entry);
+                    attributes = state.FileSystem.GetAttributes(entry);
                 }
                 catch (Exception exception) when (exception is IOException or UnauthorizedAccessException)
                 {
@@ -189,9 +206,9 @@ public sealed class RepositoryScanner : IRepositoryScanner
 
                 try
                 {
-                    FileInfo fileInfo = new(entry);
-                    long metadataLength = fileInfo.Length;
-                    long lastWriteTimeUtcTicks = fileInfo.LastWriteTimeUtc.Ticks;
+                    RepositoryFileMetadata metadata = state.FileSystem.GetFileMetadata(entry);
+                    long metadataLength = metadata.Length;
+                    long lastWriteTimeUtcTicks = metadata.LastWriteTimeUtcTicks;
                     if (state.TryGetCachedFile(
                         relativePath,
                         metadataLength,
@@ -203,16 +220,19 @@ public sealed class RepositoryScanner : IRepositoryScanner
                     }
 
                     FileInspection inspection = await FileInspection.CreateAsync(
+                        state.FileSystem,
                         entry,
                         state.Options,
                         cancellationToken).ConfigureAwait(false);
-                    fileInfo.Refresh();
+                    RepositoryFileMetadata refreshedMetadata = state.FileSystem.GetFileMetadata(entry);
                     state.Files.Add(new ScannedFile(
                         relativePath,
                         inspection,
                         FileClassifier.Classify(relativePath, inspection),
                         inspection.Bytes,
-                        fileInfo.Exists ? fileInfo.LastWriteTimeUtc.Ticks : lastWriteTimeUtcTicks));
+                        refreshedMetadata.Exists
+                            ? refreshedMetadata.LastWriteTimeUtcTicks
+                            : lastWriteTimeUtcTicks));
                 }
                 catch (Exception exception) when (exception is IOException or UnauthorizedAccessException)
                 {
@@ -265,14 +285,16 @@ public sealed class RepositoryScanner : IRepositoryScanner
         CancellationToken cancellationToken)
     {
         string ignorePath = Path.Combine(frame.FullPath, fileName);
-        if (!File.Exists(ignorePath))
+        if (!state.FileSystem.FileExists(ignorePath))
         {
             return rules;
         }
 
         try
         {
-            string[] lines = await File.ReadAllLinesAsync(ignorePath, cancellationToken).ConfigureAwait(false);
+            string[] lines = await state.FileSystem.ReadAllLinesAsync(
+                ignorePath,
+                cancellationToken).ConfigureAwait(false);
             foreach (string line in lines)
             {
                 if (!IgnoreRule.TryCreate(line, frame.RelativePath, out IgnoreRule? rule))
@@ -293,7 +315,7 @@ public sealed class RepositoryScanner : IRepositoryScanner
         return rules;
     }
 
-    private static RepositoryEvidence BuildEvidence(DirectoryInfo root, ScanState state)
+    private static RepositoryEvidence BuildEvidence(string rootPath, ScanState state)
     {
         List<ScannedFile> files = [.. state.Files.OrderBy(file => file.RelativePath, StringComparer.Ordinal)];
         List<ExcludedEntry> exclusions =
@@ -335,9 +357,14 @@ public sealed class RepositoryScanner : IRepositoryScanner
             });
         }
 
-        string repositoryName = string.IsNullOrWhiteSpace(root.Name)
-            ? root.FullName.TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar)
-            : root.Name;
+        string trimmedRootPath = rootPath.TrimEnd(
+            Path.DirectorySeparatorChar,
+            Path.AltDirectorySeparatorChar);
+        string repositoryName = Path.GetFileName(trimmedRootPath);
+        if (string.IsNullOrWhiteSpace(repositoryName))
+        {
+            repositoryName = trimmedRootPath;
+        }
         return new RepositoryEvidence
         {
             Repository = new RepositoryDescriptor
@@ -811,7 +838,8 @@ public sealed class RepositoryScanner : IRepositoryScanner
     private sealed class ScanState(
         string rootPath,
         RepositoryScanOptions options,
-        RepositoryScanCache? cache)
+        RepositoryScanCache? cache,
+        IRepositoryFileSystem fileSystem)
     {
         private readonly Dictionary<string, RepositoryScanCacheEntry> _cachedFiles =
             cache?.Files.ToDictionary(entry => entry.Path, StringComparer.Ordinal) ??
@@ -820,6 +848,8 @@ public sealed class RepositoryScanner : IRepositoryScanner
         public string RootPath { get; } = rootPath;
 
         public RepositoryScanOptions Options { get; } = options;
+
+        public IRepositoryFileSystem FileSystem { get; } = fileSystem;
 
         public List<ScannedFile> Files { get; } = [];
 
@@ -870,10 +900,17 @@ public sealed class RepositoryScanner : IRepositoryScanner
             {
                 Code = "FB2001",
                 Severity = DiagnosticSeverity.Warning,
-                Message = $"Could not inspect '{displayPath}': {exception.Message}",
+                Message = $"Could not inspect '{displayPath}': {DescribeReadFailure(exception)}",
                 Locations = [new EvidenceLocation { Path = displayPath }],
             });
         }
+
+        private static string DescribeReadFailure(Exception exception) => exception switch
+        {
+            UnauthorizedAccessException => "access was denied.",
+            IOException => "the filesystem entry could not be read.",
+            _ => "the entry could not be inspected.",
+        };
     }
 
     private sealed record DirectoryFrame(

@@ -1,0 +1,20 @@
+using Fairbill.Contracts.V1;
+
+namespace Fairbill.Analysis;
+
+public interface IRepositoryEvidenceAnalyzer
+{
+    public string Ecosystem { get; }
+
+    public Task<RepositoryAnalysisContribution> AnalyzeAsync(
+        string repositoryPath,
+        RepositoryEvidence evidence,
+        CancellationToken cancellationToken = default);
+}
+
+public sealed record RepositoryAnalysisContribution
+{
+    public IReadOnlyList<EvidenceFact> Facts { get; init; } = [];
+
+    public IReadOnlyList<Diagnostic> Diagnostics { get; init; } = [];
+}

@@ -21,14 +21,20 @@ Run these commands from the repository root:
 dotnet restore Fairbill.slnx --configfile NuGet.Config --force-evaluate
 dotnet format Fairbill.slnx --no-restore --verify-no-changes --severity info
 dotnet build Fairbill.slnx --no-restore --configuration Release
-dotnet test Fairbill.slnx --no-build --no-restore --configuration Release
+dotnet test tests/Fairbill.Tests/Fairbill.Tests.csproj --no-build --no-restore --configuration Release
+dotnet test tests/Fairbill.EndToEndTests/Fairbill.EndToEndTests.csproj --no-build --no-restore --configuration Release
 dotnet pack src/Fairbill.Cli/Fairbill.Cli.csproj --configuration Release --no-build --no-restore --output artifacts/packages
 ```
+
+The first test command is the frequent, storage-independent loop: all repository
+and cache fixtures are in memory. The end-to-end project intentionally exercises
+the physical CLI/process boundary and is primarily a release check.
 
 Run the synthetic one-million-line scanner checkpoint with:
 
 ```text
 dotnet benchmarks/Fairbill.ScannerBenchmarks/bin/Release/net10.0/Fairbill.ScannerBenchmarks.dll --files 10000 --lines-per-file 100 --warm-cache
+dotnet benchmarks/Fairbill.ScannerBenchmarks/bin/Release/net10.0/Fairbill.ScannerBenchmarks.dll --files 10000 --lines-per-file 100 --dotnet
 ```
 
 All behavioral changes require tests, and schema changes require contract and

@@ -48,6 +48,19 @@
           "Json.More.Net": "2.1.1"
         }
       },
+      "Microsoft.CodeAnalysis.Analyzers": {
+        "type": "Transitive",
+        "resolved": "5.3.0",
+        "contentHash": "KuLhbZwB0L8JikL86AE5VWEp3RLNjIcp+j8yz9EJ/UBgRz4+qDEjHg/tluRFbpYpD/e37BqaaNFbQ0vqawBwWQ=="
+      },
+      "Microsoft.CodeAnalysis.Common": {
+        "type": "Transitive",
+        "resolved": "5.6.0",
+        "contentHash": "eWYNB5e92PSdkQ0xcmy2aLtrvBXNydnVi0Hj/VjaAely6XBqA3By+ClGAJaj4d16pzQmrXPLLK9RDVuS1Ec9xQ==",
+        "dependencies": {
+          "Microsoft.CodeAnalysis.Analyzers": "5.3.0"
+        }
+      },
       "Microsoft.CodeCoverage": {
         "type": "Transitive",
         "resolved": "17.14.1",
@@ -118,10 +131,26 @@
           "Fairbill.Contracts": "[1.0.0, )"
         }
       },
+      "fairbill.analyzers.dotnet": {
+        "type": "Project",
+        "dependencies": {
+          "Fairbill.Analysis": "[1.0.0, )",
+          "Fairbill.Contracts": "[1.0.0, )",
+          "Microsoft.CodeAnalysis.CSharp": "[5.6.0, )"
+        }
+      },
       "fairbill.contracts": {
         "type": "Project",
         "dependencies": {
           "JsonSchema.Net": "[7.4.0, )"
+        }
+      },
+      "fairbill.core": {
+        "type": "Project",
+        "dependencies": {
+          "Fairbill.Analysis": "[1.0.0, )",
+          "Fairbill.Analyzers.DotNet": "[1.0.0, )",
+          "Fairbill.Contracts": "[1.0.0, )"
         }
       },
       "fairbill.estimation": {
@@ -143,6 +172,16 @@
         "contentHash": "5T3DWENwuCzLwFWz0qjXXVWA8+5+gC95OLkhqUBWpVpWBMr9gwfhWNeX8rWyr+fLQ7pIQ+lWuHIrmXRudxOOSw==",
         "dependencies": {
           "JsonPointer.Net": "5.3.1"
+        }
+      },
+      "Microsoft.CodeAnalysis.CSharp": {
+        "type": "CentralTransitive",
+        "requested": "[5.6.0, )",
+        "resolved": "5.6.0",
+        "contentHash": "r1DrKQ/L0xTw03wJrLr36AMQNslyaeEKBFyFmQcOKa8HX3YvmhY//JEUafb6IR/m0gmaUVCfBTWitKJRNb7YAA==",
+        "dependencies": {
+          "Microsoft.CodeAnalysis.Analyzers": "5.3.0",
+          "Microsoft.CodeAnalysis.Common": "[5.6.0]"
         }
       }
     }

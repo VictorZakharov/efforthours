@@ -2,6 +2,16 @@
   "version": 2,
   "dependencies": {
     "net10.0": {
+      "Microsoft.CodeAnalysis.CSharp": {
+        "type": "Direct",
+        "requested": "[5.6.0, )",
+        "resolved": "5.6.0",
+        "contentHash": "r1DrKQ/L0xTw03wJrLr36AMQNslyaeEKBFyFmQcOKa8HX3YvmhY//JEUafb6IR/m0gmaUVCfBTWitKJRNb7YAA==",
+        "dependencies": {
+          "Microsoft.CodeAnalysis.Analyzers": "5.3.0",
+          "Microsoft.CodeAnalysis.Common": "[5.6.0]"
+        }
+      },
       "Humanizer.Core": {
         "type": "Transitive",
         "resolved": "2.14.1",
@@ -40,26 +50,10 @@
           "Fairbill.Contracts": "[1.0.0, )"
         }
       },
-      "fairbill.analyzers.dotnet": {
-        "type": "Project",
-        "dependencies": {
-          "Fairbill.Analysis": "[1.0.0, )",
-          "Fairbill.Contracts": "[1.0.0, )",
-          "Microsoft.CodeAnalysis.CSharp": "[5.6.0, )"
-        }
-      },
       "fairbill.contracts": {
         "type": "Project",
         "dependencies": {
           "JsonSchema.Net": "[7.4.0, )"
-        }
-      },
-      "fairbill.core": {
-        "type": "Project",
-        "dependencies": {
-          "Fairbill.Analysis": "[1.0.0, )",
-          "Fairbill.Analyzers.DotNet": "[1.0.0, )",
-          "Fairbill.Contracts": "[1.0.0, )"
         }
       },
       "JsonSchema.Net": {
@@ -69,16 +63,6 @@
         "contentHash": "5T3DWENwuCzLwFWz0qjXXVWA8+5+gC95OLkhqUBWpVpWBMr9gwfhWNeX8rWyr+fLQ7pIQ+lWuHIrmXRudxOOSw==",
         "dependencies": {
           "JsonPointer.Net": "5.3.1"
-        }
-      },
-      "Microsoft.CodeAnalysis.CSharp": {
-        "type": "CentralTransitive",
-        "requested": "[5.6.0, )",
-        "resolved": "5.6.0",
-        "contentHash": "r1DrKQ/L0xTw03wJrLr36AMQNslyaeEKBFyFmQcOKa8HX3YvmhY//JEUafb6IR/m0gmaUVCfBTWitKJRNb7YAA==",
-        "dependencies": {
-          "Microsoft.CodeAnalysis.Analyzers": "5.3.0",
-          "Microsoft.CodeAnalysis.Common": "[5.6.0]"
         }
       }
     }

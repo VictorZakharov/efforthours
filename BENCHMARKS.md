@@ -55,3 +55,38 @@ managed allocations rather than peak resident memory, and the generated files ar
 uniform. Future benchmark work should add repeated cold/warm runs, peak working-set
 measurement, mixed .NET/JavaScript fixtures, and curated redistributable real-world
 repositories.
+
+## Static .NET analyzer v0.3 checkpoint
+
+Measured on August 5, 2026 with the same environment and generated repository as
+the common-scanner checkpoint. This mode runs the common inventory followed by
+static project parsing and a Roslyn syntax pass over every maintained C# file. It
+does not evaluate MSBuild, restore or compile the fixture, or execute target code.
+
+Command:
+
+```text
+dotnet benchmarks/Fairbill.ScannerBenchmarks/bin/Release/net10.0/Fairbill.ScannerBenchmarks.dll --files 10000 --lines-per-file 100 --dotnet
+```
+
+Observed result:
+
+| Measure | Result |
+| --- | ---: |
+| Requested source lines | 1,000,000 |
+| Source files | 10,000 |
+| Fixture generation | 1.461 s |
+| Common scan plus static .NET analysis | 6.608 s |
+| Evidence serialization | 0.107 s |
+| Analysis throughput | 151,327 lines/s |
+| Managed bytes allocated during analysis | 616.47 MiB |
+| Evidence JSON size | 9.91 MiB |
+| Evidence facts | 10,008 |
+
+Fixture generation is excluded from analysis time. The benchmark is explicitly
+invoked and disk-backed; it is not part of ordinary unit-test runs. Unit repository
+and cache fixtures are memory-backed to avoid repeated test-tree I/O.
+
+The generated source is deliberately syntax-simple, so this checkpoint establishes
+scalability for many files rather than a universal semantic-complexity threshold.
+Future runs should add mixed syntax shapes and peak working-set measurement.

@@ -5,6 +5,7 @@ using System.Text;
 using Fairbill.Analysis;
 using Fairbill.Contracts;
 using Fairbill.Contracts.V1;
+using Fairbill.Core;
 
 namespace Fairbill.ScannerBenchmarks;
 
@@ -21,7 +22,7 @@ public static class Program
         {
             Console.Error.WriteLine(exception.Message);
             Console.Error.WriteLine(
-                "Usage: scanner-benchmark [--files <count>] [--lines-per-file <count>] [--warm-cache] [--keep]");
+                "Usage: scanner-benchmark [--files <count>] [--lines-per-file <count>] [--dotnet] [--warm-cache] [--keep]");
             return 2;
         }
 
@@ -40,7 +41,9 @@ public static class Program
 
             long allocationsBefore = GC.GetTotalAllocatedBytes(precise: true);
             Stopwatch scanTimer = Stopwatch.StartNew();
-            RepositoryScanner scanner = new();
+            IRepositoryScanner scanner = options.AnalyzeDotNet
+                ? new RepositoryAnalysisPipeline()
+                : new RepositoryScanner();
             RepositoryEvidence evidence = await scanner.ScanAsync(rootPath);
             scanTimer.Stop();
             long scanAllocations = GC.GetTotalAllocatedBytes(precise: true) - allocationsBefore;
@@ -51,6 +54,7 @@ public static class Program
 
             decimal requestedLines = (decimal)options.Files * options.LinesPerFile;
             Console.WriteLine($"scanner={RepositoryScanner.AnalyzerVersion}");
+            Console.WriteLine($"mode={(options.AnalyzeDotNet ? "dotnet-static" : "common")}");
             Console.WriteLine($"runtime={RuntimeInformation.FrameworkDescription}");
             Console.WriteLine($"os={RuntimeInformation.OSDescription}");
             Console.WriteLine($"architecture={RuntimeInformation.OSArchitecture}");
@@ -86,6 +90,11 @@ public static class Program
 
             return 0;
         }
+        catch (Exception exception)
+        {
+            Console.Error.WriteLine($"Benchmark failed: {exception}");
+            return 1;
+        }
         finally
         {
             if (options.KeepRepository)
@@ -98,8 +107,15 @@ public static class Program
             }
             else
             {
-                Directory.Delete(rootPath, recursive: true);
-                File.Delete(cachePath);
+                try
+                {
+                    Directory.Delete(rootPath, recursive: true);
+                    File.Delete(cachePath);
+                }
+                catch (Exception exception) when (exception is IOException or UnauthorizedAccessException)
+                {
+                    Console.Error.WriteLine($"Benchmark cleanup failed: {exception.Message}");
+                }
             }
         }
     }
@@ -127,7 +143,8 @@ public static class Program
         int Files,
         int LinesPerFile,
         bool KeepRepository,
-        bool MeasureWarmCache)
+        bool MeasureWarmCache,
+        bool AnalyzeDotNet)
     {
         public static BenchmarkOptions Parse(string[] arguments)
         {
@@ -135,6 +152,7 @@ public static class Program
             int linesPerFile = 100;
             bool keep = false;
             bool measureWarmCache = false;
+            bool analyzeDotNet = false;
 
             for (int index = 0; index < arguments.Length; index++)
             {
@@ -152,12 +170,20 @@ public static class Program
                     case "--warm-cache":
                         measureWarmCache = true;
                         break;
+                    case "--dotnet":
+                        analyzeDotNet = true;
+                        break;
                     default:
                         throw new ArgumentException($"Unknown option '{arguments[index]}'.");
                 }
             }
 
-            return new BenchmarkOptions(files, linesPerFile, keep, measureWarmCache);
+            return new BenchmarkOptions(
+                files,
+                linesPerFile,
+                keep,
+                measureWarmCache,
+                analyzeDotNet);
         }
 
         private static int ReadPositiveInteger(

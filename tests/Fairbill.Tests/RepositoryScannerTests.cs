@@ -9,7 +9,7 @@ public sealed class RepositoryScannerTests
     [Fact]
     public async Task ScanProducesValidDeterministicEvidenceForMixedRepository()
     {
-        using TemporaryRepository repository = new();
+        InMemoryRepository repository = new();
         repository.WriteText("Demo.slnx", "<Solution />\n");
         repository.WriteText("src/server/Server.csproj", "<Project Sdk=\"Microsoft.NET.Sdk\" />\n");
         repository.WriteText(
@@ -43,7 +43,7 @@ public sealed class RepositoryScannerTests
         repository.WriteText("src/web/.gitignore", "private/\n");
         repository.WriteText("src/web/private/settings.ts", "ignored nested source\n");
 
-        RepositoryScanner scanner = new();
+        RepositoryScanner scanner = new(repository);
         RepositoryEvidence first = await scanner.ScanAsync(repository.RootPath);
         RepositoryEvidence second = await scanner.ScanAsync(repository.RootPath);
         string firstJson = ContractJson.Serialize(first);
@@ -89,11 +89,11 @@ public sealed class RepositoryScannerTests
     [Fact]
     public async Task SourceDigestExcludesIgnoredContentAndTracksIncludedContent()
     {
-        using TemporaryRepository repository = new();
+        InMemoryRepository repository = new();
         repository.WriteText(".gitignore", "ignored/\n");
         repository.WriteText("src/app.ts", "export const value = 1;\n");
         repository.WriteText("ignored/cache.txt", "first ignored value\n");
-        RepositoryScanner scanner = new();
+        RepositoryScanner scanner = new(repository);
 
         string? originalDigest = (await scanner.ScanAsync(repository.RootPath)).Repository.SourceDigest;
         repository.WriteText("ignored/cache.txt", "second ignored value\n");
@@ -108,10 +108,10 @@ public sealed class RepositoryScannerTests
     [Fact]
     public async Task ScanCanDisableGitIgnoreHandling()
     {
-        using TemporaryRepository repository = new();
+        InMemoryRepository repository = new();
         repository.WriteText(".gitignore", "hidden.ts\n");
         repository.WriteText("hidden.ts", "export const visibleWhenRequested = true;\n");
-        RepositoryScanner scanner = new();
+        RepositoryScanner scanner = new(repository);
 
         RepositoryEvidence defaultEvidence = await scanner.ScanAsync(repository.RootPath);
         RepositoryEvidence inclusiveEvidence = await scanner.ScanAsync(
@@ -125,11 +125,11 @@ public sealed class RepositoryScannerTests
     [Fact]
     public async Task ScanDoesNotWriteToTheTargetRepository()
     {
-        using TemporaryRepository repository = new();
+        InMemoryRepository repository = new();
         repository.WriteText("src/index.js", "export const ready = true;\n");
         string[] before = repository.EnumerateRelativeFiles();
 
-        _ = await new RepositoryScanner().ScanAsync(repository.RootPath);
+        _ = await new RepositoryScanner(repository).ScanAsync(repository.RootPath);
 
         Assert.Equal(before, repository.EnumerateRelativeFiles());
     }
@@ -137,19 +137,22 @@ public sealed class RepositoryScannerTests
     [Fact]
     public async Task ExplicitExternalCacheIsVersionedAndDoesNotChangeEvidence()
     {
-        using TemporaryRepository repository = new();
-        using TemporaryRepository cacheDirectory = new();
+        InMemoryRepository repository = new();
+        InMemoryScanCacheStore cacheStore = new();
         repository.WriteText("src/index.ts", "export const cachedMarker = 1;\n");
-        string cachePath = Path.Combine(cacheDirectory.RootPath, "scan-cache.json");
+        string cachePath = Path.GetFullPath(Path.Combine(
+            repository.RootPath,
+            "..",
+            "scan-cache.json"));
         RepositoryScanOptions options = new() { CachePath = cachePath };
-        RepositoryScanner scanner = new();
+        RepositoryScanner scanner = new(repository, cacheStore);
 
         RepositoryEvidence first = await scanner.ScanAsync(repository.RootPath, options);
         RepositoryEvidence second = await scanner.ScanAsync(repository.RootPath, options);
 
         Assert.Equal(ContractJson.Serialize(first), ContractJson.Serialize(second));
-        Assert.True(File.Exists(cachePath));
-        string cacheJson = await File.ReadAllTextAsync(cachePath);
+        Assert.True(cacheStore.Exists(cachePath));
+        string cacheJson = cacheStore.ReadAllText(cachePath);
         RepositoryScanCache cache = ContractJson.Deserialize<RepositoryScanCache>(cacheJson);
         Assert.Empty(ContractValidation.Validate(cache));
         SchemaValidationResult cacheSchema = ContractSchemaValidator.Validate(
@@ -167,7 +170,7 @@ public sealed class RepositoryScannerTests
     [Fact]
     public async Task CacheCannotWriteInsideTargetRepository()
     {
-        using TemporaryRepository repository = new();
+        InMemoryRepository repository = new();
         repository.WriteText("src/index.js", "export const ready = true;\n");
         RepositoryScanOptions options = new()
         {
@@ -175,7 +178,7 @@ public sealed class RepositoryScannerTests
         };
 
         ArgumentException exception = await Assert.ThrowsAsync<ArgumentException>(
-            () => new RepositoryScanner().ScanAsync(repository.RootPath, options));
+            () => new RepositoryScanner(repository).ScanAsync(repository.RootPath, options));
 
         Assert.Contains("outside", exception.Message, StringComparison.OrdinalIgnoreCase);
     }
@@ -183,13 +186,11 @@ public sealed class RepositoryScannerTests
     [Fact]
     public async Task ScanRejectsMissingRepository()
     {
-        string missingPath = Path.Combine(
-            Path.GetTempPath(),
-            "fairbill-tests",
-            Guid.NewGuid().ToString("N"));
+        InMemoryRepository repository = new();
+        string missingPath = Path.Combine(repository.RootPath, "missing");
 
         await Assert.ThrowsAsync<DirectoryNotFoundException>(
-            () => new RepositoryScanner().ScanAsync(missingPath));
+            () => new RepositoryScanner(repository).ScanAsync(missingPath));
     }
 
     private static void AssertFileHasTag(
@@ -210,44 +211,4 @@ public sealed class RepositoryScannerTests
         Assert.Contains(expectedReason, fact.Tags);
     }
 
-    private sealed class TemporaryRepository : IDisposable
-    {
-        public TemporaryRepository()
-        {
-            RootPath = Path.Combine(
-                Path.GetTempPath(),
-                "fairbill-tests",
-                Guid.NewGuid().ToString("N"));
-            Directory.CreateDirectory(RootPath);
-        }
-
-        public string RootPath { get; }
-
-        public void WriteText(string relativePath, string content)
-        {
-            string path = GetPath(relativePath);
-            Directory.CreateDirectory(Path.GetDirectoryName(path)!);
-            File.WriteAllText(path, content);
-        }
-
-        public void WriteBytes(string relativePath, byte[] content)
-        {
-            string path = GetPath(relativePath);
-            Directory.CreateDirectory(Path.GetDirectoryName(path)!);
-            File.WriteAllBytes(path, content);
-        }
-
-        public string[] EnumerateRelativeFiles() =>
-            [.. Directory.EnumerateFiles(RootPath, "*", SearchOption.AllDirectories)
-                .Select(path => Path.GetRelativePath(RootPath, path).Replace('\\', '/'))
-                .OrderBy(path => path, StringComparer.Ordinal)];
-
-        public void Dispose()
-        {
-            Directory.Delete(RootPath, recursive: true);
-        }
-
-        private string GetPath(string relativePath) =>
-            Path.Combine(RootPath, relativePath.Replace('/', Path.DirectorySeparatorChar));
-    }
 }

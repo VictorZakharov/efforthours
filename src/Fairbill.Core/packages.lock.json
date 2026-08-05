@@ -54,14 +54,6 @@
           "JsonSchema.Net": "[7.4.0, )"
         }
       },
-      "fairbill.core": {
-        "type": "Project",
-        "dependencies": {
-          "Fairbill.Analysis": "[1.0.0, )",
-          "Fairbill.Analyzers.DotNet": "[1.0.0, )",
-          "Fairbill.Contracts": "[1.0.0, )"
-        }
-      },
       "JsonSchema.Net": {
         "type": "CentralTransitive",
         "requested": "[7.4.0, )",

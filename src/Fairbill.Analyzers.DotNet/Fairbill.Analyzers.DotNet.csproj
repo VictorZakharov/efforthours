@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RootNamespace>Fairbill.Analyzers.DotNet</RootNamespace>
+    <Description>Static .NET project and C# evidence analyzer for Fairbill.</Description>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="../Fairbill.Analysis/Fairbill.Analysis.csproj" />
+    <ProjectReference Include="../Fairbill.Contracts/Fairbill.Contracts.csproj" />
+  </ItemGroup>
+</Project>

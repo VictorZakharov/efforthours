@@ -114,7 +114,10 @@ Status as of August 5, 2026:
 - Milestone 2 is complete: safe traversal, ignore handling, metadata-only file
   evidence, hashing, artifact/exclusion classification, optional external caching,
   CLI folder input, tests, and a one-million-line benchmark are implemented.
-- Milestone 3 is next. The seed estimator remains explicitly uncalibrated and is
+- Milestone 3 is complete: safe project/solution graph parsing and Roslyn syntax
+  evidence cover representative web, worker, library, CLI, UI, data, integration,
+  security, validation, and test shapes without MSBuild evaluation or execution.
+- Milestone 4 is next. The seed estimator remains explicitly uncalibrated and is
   not a production estimate.
 
 ### Milestone 0: Product and contract decisions
@@ -241,6 +244,8 @@ features.
 
 - Unit tests cover scope, exclusions, classification, work-item rules, aggregation,
   and pricing.
+- Unit repository fixtures and scan caches are memory-backed; ordinary unit-test
+  runs do not create, modify, enumerate, or delete physical fixture trees.
 - Contract tests validate every serialized schema and backward-compatibility rule.
 - Golden fixture tests compare reviewed evidence and reports for small repositories.
 - Mutation-style fixture variants verify that meaningful changes alter estimates
@@ -289,14 +294,13 @@ benchmark corpus exists.
 
 ## 8. Immediate next steps
 
-1. Implement the .NET analyzer for solutions, projects, target frameworks, package
-   references, project graphs, and application/test project roles.
-2. Add static C# and Razor evidence for entry points, APIs, data access, migrations,
-   background work, integrations, authorization, and tests without requiring a
-   successful build.
-3. Create representative ASP.NET, worker, library, CLI, and test fixtures with
-   reviewed evidence.
-4. Replace project-level seed placeholders with granular, traceable .NET work-unit
-   inputs while keeping the estimator explicitly experimental.
-5. Extend performance and safety measurements to representative mixed repository
-   shapes and cold filesystem runs.
+1. Implement JavaScript and TypeScript workspace, package, dependency, framework,
+   script, and project-role discovery.
+2. Add parser-backed evidence for server routes, UI surfaces, data access,
+   integrations, and unit/component/integration/end-to-end tests.
+3. Create representative Node, frontend, backend, library, and mixed .NET/JS
+   memory fixtures with reviewed evidence.
+4. Extend performance and safety measurements to representative mixed repository
+   shapes and explicitly invoked physical-filesystem benchmarks.
+5. Replace project-level seed placeholders with granular, traceable ecosystem work
+   units in Milestone 5 while keeping the estimator explicitly experimental.

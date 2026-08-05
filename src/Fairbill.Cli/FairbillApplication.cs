@@ -4,6 +4,7 @@ using System.Text;
 using Fairbill.Analysis;
 using Fairbill.Contracts;
 using Fairbill.Contracts.V1;
+using Fairbill.Core;
 using Fairbill.Estimation;
 using Fairbill.Reporting;
 
@@ -15,12 +16,12 @@ public sealed class FairbillApplication
     private readonly IRepositoryScanner _scanner;
 
     public FairbillApplication()
-        : this(new SeedEstimator(), new RepositoryScanner())
+        : this(new SeedEstimator(), new RepositoryAnalysisPipeline())
     {
     }
 
     public FairbillApplication(IEstimator estimator)
-        : this(estimator, new RepositoryScanner())
+        : this(estimator, new RepositoryAnalysisPipeline())
     {
     }
 
@@ -484,7 +485,8 @@ public sealed class FairbillApplication
           fairbill schema show <name>
           fairbill version
 
-        The common scanner is deterministic, local, and read-only by default. It
+        Static analysis is deterministic, local, and read-only by default. The .NET
+        analyzer parses projects and C# syntax without evaluating MSBuild. Fairbill
         does not execute target code, access Git history, install dependencies, or
         emit source excerpts. The current seed estimator is explicitly uncalibrated
         and must not be treated as a production estimate.

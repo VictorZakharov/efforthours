@@ -5,7 +5,8 @@ files as of 2026-08-05. Package versions are centrally pinned in
 `Directory.Packages.props`.
 
 Fairbill is licensed under the MIT License. Third-party components remain under
-their respective licenses.
+their respective licenses. This notice is included in the global-tool package
+alongside Fairbill's `LICENSE` file.
 
 ## Runtime dependencies
 
@@ -15,6 +16,8 @@ their respective licenses.
 | JsonPointer.Net | 5.3.1 | MIT | <https://github.com/gregsdennis/json-everything> |
 | Json.More.Net | 2.1.1 | MIT | <https://github.com/gregsdennis/json-everything> |
 | Humanizer.Core | 2.14.1 | MIT | <https://github.com/Humanizr/Humanizer> |
+| Microsoft.CodeAnalysis.CSharp | 5.6.0 | MIT | <https://github.com/dotnet/roslyn> |
+| Microsoft.CodeAnalysis.Common | 5.6.0 | MIT | <https://github.com/dotnet/roslyn> |
 
 JsonSchema.Net is intentionally pinned to a release whose NuGet package declares
 the standard MIT license. Any upgrade requires a fresh review of the binary package
@@ -26,6 +29,7 @@ terms as well as API compatibility.
 | --- | --- | --- |
 | Microsoft.NET.Test.Sdk | 17.14.1 | MIT |
 | Microsoft.CodeCoverage | 17.14.1 | MIT |
+| Microsoft.CodeAnalysis.Analyzers | 5.3.0 | MIT |
 | Microsoft.TestPlatform.ObjectModel | 17.14.1 | MIT |
 | Microsoft.TestPlatform.TestHost | 17.14.1 | MIT |
 | Newtonsoft.Json | 13.0.3 | MIT |

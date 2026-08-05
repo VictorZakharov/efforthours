@@ -111,6 +111,10 @@ semantics.
 ## Testing expectations
 
 - Add tests with every behavioral change.
+- Keep ordinary unit tests storage-independent. `tests/Fairbill.Tests` must use
+  in-memory repository/cache abstractions rather than temporary physical files;
+  reserve physical filesystem and subprocess checks for the separate end-to-end
+  suite and explicitly invoked benchmarks.
 - Use small synthetic fixtures for precise analyzer behavior and curated fixtures
   for realistic integration behavior.
 - Validate JSON output against checked-in versioned schemas.
@@ -136,12 +140,12 @@ semantics.
 
 ## Current project stage
 
-Milestones 1 and 2 are complete. The repository has a working common scanner,
-evidence-to-estimate pipeline, published v1 schemas, optional external scan cache,
-installable global-tool package, automated contract/process-level CLI tests, and a
-reproducible scanner benchmark. Semantic .NET analysis is the next milestone. The
-current seed estimator is explicitly uncalibrated and must not be described as
-production-ready.
+Milestones 1 through 3 are complete. The repository has a working common scanner,
+static .NET project/Roslyn analyzer, evidence-to-estimate pipeline, published v1
+schemas, optional external scan cache, installable global-tool package, memory-only
+unit fixtures, automated process-level CLI tests, and a reproducible scanner
+benchmark. JavaScript/TypeScript analysis is the next milestone. The current seed
+estimator is explicitly uncalibrated and must not be described as production-ready.
 
 The following commands have been run successfully from the repository root:
 
@@ -149,9 +153,11 @@ The following commands have been run successfully from the repository root:
 dotnet restore Fairbill.slnx --configfile NuGet.Config --force-evaluate
 dotnet format Fairbill.slnx --no-restore --verify-no-changes --severity info
 dotnet build Fairbill.slnx --no-restore --configuration Release
-dotnet test Fairbill.slnx --no-build --no-restore --configuration Release
+dotnet test tests/Fairbill.Tests/Fairbill.Tests.csproj --no-build --no-restore --configuration Release
+dotnet test tests/Fairbill.EndToEndTests/Fairbill.EndToEndTests.csproj --no-build --no-restore --configuration Release
 dotnet pack src/Fairbill.Cli/Fairbill.Cli.csproj --configuration Release --no-build --no-restore --output artifacts/packages
 dotnet benchmarks/Fairbill.ScannerBenchmarks/bin/Release/net10.0/Fairbill.ScannerBenchmarks.dll --files 10000 --lines-per-file 100 --warm-cache
+dotnet benchmarks/Fairbill.ScannerBenchmarks/bin/Release/net10.0/Fairbill.ScannerBenchmarks.dll --files 10000 --lines-per-file 100 --dotnet
 ```
 
 The primary distribution is the `Fairbill.Tool` .NET global-tool package with the

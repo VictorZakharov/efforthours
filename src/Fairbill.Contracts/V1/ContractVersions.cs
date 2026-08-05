@@ -27,17 +27,30 @@ public static class SchemaIds
 
 public static class EvidenceKinds
 {
+    public const string ApiSurface = "api-surface";
+    public const string BackgroundWork = "background-work";
     public const string BuildConfiguration = "build-configuration";
     public const string CiConfiguration = "ci-configuration";
     public const string Component = "component";
     public const string ContainerConfiguration = "container-configuration";
     public const string Coverage = "coverage";
+    public const string DataAccess = "data-access";
     public const string Documentation = "documentation";
+    public const string DotNetProject = "dotnet-project";
+    public const string DotNetSolution = "dotnet-solution";
+    public const string DotNetTest = "dotnet-test";
+    public const string EntryPoint = "entry-point";
     public const string ExcludedContent = "excluded-content";
     public const string File = "file";
     public const string Infrastructure = "infrastructure";
     public const string Integration = "integration";
     public const string Language = "language";
+    public const string PackageReference = "package-reference";
+    public const string ProjectReference = "project-reference";
     public const string RepositoryInventory = "repository-inventory";
+    public const string SecurityConfiguration = "security-configuration";
+    public const string SourceStructure = "source-structure";
     public const string TestSuite = "test-suite";
+    public const string UserInterface = "user-interface";
+    public const string Validation = "validation";
 }

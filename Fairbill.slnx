@@ -1,8 +1,10 @@
 <Solution>
   <Project Path="benchmarks/Fairbill.ScannerBenchmarks/Fairbill.ScannerBenchmarks.csproj" />
   <Project Path="src/Fairbill.Analysis/Fairbill.Analysis.csproj" />
+  <Project Path="src/Fairbill.Analyzers.DotNet/Fairbill.Analyzers.DotNet.csproj" />
   <Project Path="src/Fairbill.Cli/Fairbill.Cli.csproj" />
   <Project Path="src/Fairbill.Contracts/Fairbill.Contracts.csproj" />
+  <Project Path="src/Fairbill.Core/Fairbill.Core.csproj" />
   <Project Path="src/Fairbill.Estimation/Fairbill.Estimation.csproj" />
   <Project Path="src/Fairbill.Reporting/Fairbill.Reporting.csproj" />
   <Project Path="tests/Fairbill.EndToEndTests/Fairbill.EndToEndTests.csproj" />

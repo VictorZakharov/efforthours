@@ -12,10 +12,12 @@ internal sealed record FileInspection(
     string SampleText)
 {
     public static async Task<FileInspection> CreateAsync(
+        IRepositoryFileSystem fileSystem,
         string path,
         RepositoryScanOptions options,
         CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(fileSystem);
         ArgumentException.ThrowIfNullOrWhiteSpace(path);
         ArgumentNullException.ThrowIfNull(options);
 
@@ -44,13 +46,7 @@ internal sealed record FileInspection(
         try
         {
             using IncrementalHash hash = IncrementalHash.CreateHash(HashAlgorithmName.SHA256);
-            await using FileStream stream = new(
-                path,
-                FileMode.Open,
-                FileAccess.Read,
-                FileShare.ReadWrite | FileShare.Delete,
-                options.FileReadBufferSize,
-                FileOptions.Asynchronous | FileOptions.SequentialScan);
+            await using Stream stream = fileSystem.OpenRead(path, options.FileReadBufferSize);
 
             while (true)
             {
