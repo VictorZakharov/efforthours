@@ -1,0 +1,31 @@
+# .NET build output
+**/bin/
+**/obj/
+artifacts/
+TestResults/
+*.trx
+*.coverage
+*.coveragexml
+coverage.*
+
+# Local package and tool caches
+.packages/
+.store/
+.dotnet/
+
+# IDE and user state
+.vs/
+.idea/
+.vscode/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Fairbill output and local calibration data
+.fairbill/
+*.fairbill-cache
+
+# Operating-system files
+.DS_Store
+Thumbs.db

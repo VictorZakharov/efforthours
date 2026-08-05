@@ -1,0 +1,286 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:fairbill:schema:v1:estimate-report",
+  "title": "Fairbill estimate report v1",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "evidenceSchemaVersion",
+    "estimatorVersion",
+    "repository",
+    "profile",
+    "baseline",
+    "totalEffort",
+    "categories",
+    "workItems",
+    "professionalizationGap",
+    "diagnostics",
+    "assumptions",
+    "verification"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "1.0.0"
+    },
+    "evidenceSchemaVersion": {
+      "const": "1.0.0"
+    },
+    "estimatorVersion": {
+      "type": "string",
+      "minLength": 1
+    },
+    "repository": {
+      "$ref": "#/$defs/repository"
+    },
+    "profile": {
+      "enum": [
+        "implementation",
+        "recreation"
+      ]
+    },
+    "baseline": {
+      "$ref": "#/$defs/baseline"
+    },
+    "totalEffort": {
+      "$ref": "#/$defs/effortRange"
+    },
+    "rateCard": {
+      "$ref": "urn:fairbill:schema:v1:rate-card"
+    },
+    "totalCost": {
+      "$ref": "#/$defs/costRange"
+    },
+    "categories": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/categoryEstimate"
+      }
+    },
+    "workItems": {
+      "type": "array",
+      "items": {
+        "$ref": "urn:fairbill:schema:v1:work-item"
+      }
+    },
+    "professionalizationGap": {
+      "type": "array",
+      "items": {
+        "$ref": "urn:fairbill:schema:v1:work-item"
+      }
+    },
+    "diagnostics": {
+      "type": "array",
+      "items": {
+        "$ref": "urn:fairbill:schema:v1:diagnostic"
+      }
+    },
+    "assumptions": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "verification": {
+      "$ref": "#/$defs/verification"
+    }
+  },
+  "dependentRequired": {
+    "rateCard": [
+      "totalCost"
+    ],
+    "totalCost": [
+      "rateCard"
+    ]
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "repository": {
+      "type": "object",
+      "required": [
+        "name",
+        "scope",
+        "ecosystems"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "scope": {
+          "type": "string",
+          "minLength": 1
+        },
+        "ecosystems": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "sourceDigest": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "baseline": {
+      "type": "object",
+      "required": [
+        "id",
+        "workerProfile",
+        "technologyBaselineYear",
+        "businessDomainFamiliar",
+        "usesAi",
+        "description"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "workerProfile": {
+          "type": "string",
+          "minLength": 1
+        },
+        "technologyBaselineYear": {
+          "type": "integer",
+          "minimum": 2026
+        },
+        "businessDomainFamiliar": {
+          "type": "boolean"
+        },
+        "usesAi": {
+          "type": "boolean"
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "effortRange": {
+      "type": "object",
+      "required": [
+        "low",
+        "expected",
+        "high"
+      ],
+      "properties": {
+        "low": {
+          "type": "number",
+          "minimum": 0
+        },
+        "expected": {
+          "type": "number",
+          "minimum": 0
+        },
+        "high": {
+          "type": "number",
+          "minimum": 0
+        }
+      },
+      "additionalProperties": false
+    },
+    "costRange": {
+      "type": "object",
+      "required": [
+        "low",
+        "expected",
+        "high",
+        "currency"
+      ],
+      "properties": {
+        "low": {
+          "type": "number",
+          "minimum": 0
+        },
+        "expected": {
+          "type": "number",
+          "minimum": 0
+        },
+        "high": {
+          "type": "number",
+          "minimum": 0
+        },
+        "currency": {
+          "type": "string",
+          "pattern": "^[A-Z]{3}$"
+        }
+      },
+      "additionalProperties": false
+    },
+    "category": {
+      "enum": [
+        "specification-comprehension-and-domain-learning",
+        "repository-and-solution-setup",
+        "architecture-and-technical-design",
+        "production-implementation",
+        "ui-implementation-and-represented-ux-decisions",
+        "data-modeling-persistence-and-migrations",
+        "external-integrations-and-protocols",
+        "unit-testing",
+        "integration-contract-and-component-testing",
+        "end-to-end-and-ui-testing",
+        "manual-validation-debugging-and-hardening",
+        "documentation",
+        "build-configuration-and-developer-tooling",
+        "ci-cd-and-infrastructure-as-code",
+        "security-and-accessibility",
+        "packaging-deployment-and-release-artifacts",
+        "self-review-and-system-integration"
+      ]
+    },
+    "categoryEstimate": {
+      "type": "object",
+      "required": [
+        "category",
+        "hours"
+      ],
+      "properties": {
+        "category": {
+          "$ref": "#/$defs/category"
+        },
+        "hours": {
+          "$ref": "#/$defs/effortRange"
+        }
+      },
+      "additionalProperties": false
+    },
+    "verification": {
+      "type": "object",
+      "required": [
+        "mode",
+        "workingState",
+        "testsAssumedPassing"
+      ],
+      "properties": {
+        "mode": {
+          "enum": [
+            "static-assumed",
+            "executed"
+          ]
+        },
+        "workingState": {
+          "enum": [
+            "assumed-working",
+            "verified-working",
+            "known-issues"
+          ]
+        },
+        "testsAssumedPassing": {
+          "type": "boolean"
+        },
+        "note": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>Fairbill.Cli</RootNamespace>
+    <AssemblyName>fairbill</AssemblyName>
+    <Description>Estimate equivalent non-AI human effort represented by a software repository.</Description>
+    <PackAsTool>true</PackAsTool>
+    <ToolCommandName>fairbill</ToolCommandName>
+    <PackageId>Fairbill.Tool</PackageId>
+    <Version>0.1.0-alpha.1</Version>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageTags>estimation;developer-tools;cli;repository-analysis</PackageTags>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../Fairbill.Contracts/Fairbill.Contracts.csproj" />
+    <ProjectReference Include="../Fairbill.Estimation/Fairbill.Estimation.csproj" />
+    <ProjectReference Include="../Fairbill.Reporting/Fairbill.Reporting.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="../../README.md" Pack="true" PackagePath="/" />
+  </ItemGroup>
+</Project>

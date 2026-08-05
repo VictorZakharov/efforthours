@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:fairbill:schema:v1:rate-card",
+  "title": "Fairbill rate card v1",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "id",
+    "name",
+    "currency",
+    "hourlyRate",
+    "methodology"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "1.0.0"
+    },
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "currency": {
+      "type": "string",
+      "pattern": "^[A-Z]{3}$"
+    },
+    "hourlyRate": {
+      "type": "number",
+      "minimum": 0
+    },
+    "marketRange": {
+      "$ref": "#/$defs/rateRange"
+    },
+    "effectiveDate": {
+      "type": "string",
+      "format": "date"
+    },
+    "methodology": {
+      "type": "string",
+      "minLength": 1
+    },
+    "sourceUri": {
+      "type": "string",
+      "format": "uri"
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "rateRange": {
+      "type": "object",
+      "required": [
+        "low",
+        "expected",
+        "high"
+      ],
+      "properties": {
+        "low": {
+          "type": "number",
+          "minimum": 0
+        },
+        "expected": {
+          "type": "number",
+          "minimum": 0
+        },
+        "high": {
+          "type": "number",
+          "minimum": 0
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

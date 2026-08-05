@@ -1,0 +1,72 @@
+namespace Fairbill.Contracts.V1;
+
+public enum EvidenceSourceKind
+{
+    Observed,
+    Measured,
+    DeclaredAssumed,
+    Inferred,
+}
+
+public enum DiagnosticSeverity
+{
+    Information,
+    Warning,
+    Error,
+}
+
+public enum EstimationProfile
+{
+    Implementation,
+    Recreation,
+}
+
+public enum ComplexityLevel
+{
+    Routine,
+    Moderate,
+    High,
+    Exceptional,
+}
+
+public enum EstimatorKind
+{
+    Rule,
+    LocalMl,
+    HostAi,
+    Human,
+}
+
+public enum VerificationMode
+{
+    StaticAssumed,
+    Executed,
+}
+
+public enum WorkingState
+{
+    AssumedWorking,
+    VerifiedWorking,
+    KnownIssues,
+}
+
+public enum EffortCategory
+{
+    SpecificationComprehensionAndDomainLearning,
+    RepositoryAndSolutionSetup,
+    ArchitectureAndTechnicalDesign,
+    ProductionImplementation,
+    UiImplementationAndRepresentedUxDecisions,
+    DataModelingPersistenceAndMigrations,
+    ExternalIntegrationsAndProtocols,
+    UnitTesting,
+    IntegrationContractAndComponentTesting,
+    EndToEndAndUiTesting,
+    ManualValidationDebuggingAndHardening,
+    Documentation,
+    BuildConfigurationAndDeveloperTooling,
+    CiCdAndInfrastructureAsCode,
+    SecurityAndAccessibility,
+    PackagingDeploymentAndReleaseArtifacts,
+    SelfReviewAndSystemIntegration,
+}

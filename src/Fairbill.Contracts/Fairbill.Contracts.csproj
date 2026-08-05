@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <Description>Versioned public contracts and JSON Schemas for Fairbill evidence and estimates.</Description>
+    <RootNamespace>Fairbill.Contracts</RootNamespace>
+    <AssemblyName>Fairbill.Contracts</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="JsonSchema.Net" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="../../schemas/v1/*.schema.json">
+      <LogicalName>Fairbill.Schemas.V1.%(Filename)%(Extension)</LogicalName>
+    </EmbeddedResource>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <Description>Transparent estimation engines for Fairbill.</Description>
+    <RootNamespace>Fairbill.Estimation</RootNamespace>
+    <AssemblyName>Fairbill.Estimation</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../Fairbill.Contracts/Fairbill.Contracts.csproj" />
+  </ItemGroup>
+</Project>

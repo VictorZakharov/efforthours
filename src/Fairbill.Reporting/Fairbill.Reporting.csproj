@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <Description>JSON and Markdown report rendering for Fairbill.</Description>
+    <RootNamespace>Fairbill.Reporting</RootNamespace>
+    <AssemblyName>Fairbill.Reporting</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../Fairbill.Contracts/Fairbill.Contracts.csproj" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,129 @@
+{
+  "schemaVersion": "1.0.0",
+  "repository": {
+    "name": "Fairbill sample",
+    "scope": ".",
+    "ecosystems": [
+      "dotnet",
+      "typescript"
+    ],
+    "sourceDigest": "sha256:synthetic-fixture"
+  },
+  "facts": [
+    {
+      "id": "component:billing-service",
+      "kind": "component",
+      "scope": "src/Billing",
+      "summary": "billing service",
+      "provenance": {
+        "sourceKind": "observed",
+        "analyzer": "synthetic-fixture",
+        "analyzerVersion": "1.0.0",
+        "method": "curated test fixture"
+      },
+      "locations": [
+        {
+          "path": "src/Billing/BillingService.cs",
+          "line": 1,
+          "symbol": "BillingService"
+        }
+      ],
+      "measurements": [],
+      "tags": [
+        "complexity:moderate"
+      ]
+    },
+    {
+      "id": "integration:payment-provider",
+      "kind": "integration",
+      "scope": "src/Billing",
+      "summary": "payment provider",
+      "provenance": {
+        "sourceKind": "observed",
+        "analyzer": "synthetic-fixture",
+        "analyzerVersion": "1.0.0",
+        "method": "curated test fixture"
+      },
+      "locations": [
+        {
+          "path": "src/Billing/PaymentClient.cs"
+        }
+      ],
+      "measurements": [],
+      "tags": [
+        "complexity:moderate"
+      ]
+    },
+    {
+      "id": "tests:billing-unit",
+      "kind": "test-suite",
+      "scope": "tests/Billing.Tests",
+      "summary": "billing unit tests",
+      "provenance": {
+        "sourceKind": "observed",
+        "analyzer": "synthetic-fixture",
+        "analyzerVersion": "1.0.0",
+        "method": "curated test fixture"
+      },
+      "locations": [
+        {
+          "path": "tests/Billing.Tests/BillingServiceTests.cs"
+        }
+      ],
+      "measurements": [
+        {
+          "name": "test-cases",
+          "value": 12,
+          "unit": "cases"
+        }
+      ],
+      "tags": [
+        "unit",
+        "complexity:moderate"
+      ]
+    },
+    {
+      "id": "documentation:readme",
+      "kind": "documentation",
+      "scope": ".",
+      "summary": "repository onboarding",
+      "provenance": {
+        "sourceKind": "observed",
+        "analyzer": "synthetic-fixture",
+        "analyzerVersion": "1.0.0",
+        "method": "curated test fixture"
+      },
+      "locations": [
+        {
+          "path": "README.md"
+        }
+      ],
+      "measurements": [],
+      "tags": [
+        "complexity:moderate"
+      ]
+    },
+    {
+      "id": "build:solution",
+      "kind": "build-configuration",
+      "scope": ".",
+      "summary": "solution build",
+      "provenance": {
+        "sourceKind": "observed",
+        "analyzer": "synthetic-fixture",
+        "analyzerVersion": "1.0.0",
+        "method": "curated test fixture"
+      },
+      "locations": [
+        {
+          "path": "Fairbill.slnx"
+        }
+      ],
+      "measurements": [],
+      "tags": [
+        "complexity:moderate"
+      ]
+    }
+  ],
+  "diagnostics": []
+}
