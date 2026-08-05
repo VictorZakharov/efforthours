@@ -166,6 +166,8 @@ without misrepresenting counterfactual hours as historical labor.
 - [PLAN.md](PLAN.md) describes the proposed architecture and delivery roadmap.
 - [MILESTONE_5.md](MILESTONE_5.md) records the granular seed-estimator design and
   its current limitations.
+- [MODEL_REVIEWS.md](MODEL_REVIEWS.md) records provisional realism checks with
+  source and model provenance; they are not calibration claims.
 - [AGENTS.md](AGENTS.md) contains repository-wide instructions for coding agents.
 - [CONTRIBUTING.md](CONTRIBUTING.md) contains the verified development workflow.
 - [SECURITY.md](SECURITY.md) explains private vulnerability reporting expectations.

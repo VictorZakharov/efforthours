@@ -22,6 +22,7 @@ Read these root documents completely:
 3. `PLAN.md`
 4. `README.md`
 5. `MILESTONE_5.md` when changing evidence-to-effort behavior
+6. `MODEL_REVIEWS.md` when changing priors, calibration labels, or review policy
 
 If an implementation request conflicts with those documents, surface the conflict
 and update the relevant decision explicitly. Do not silently change estimation

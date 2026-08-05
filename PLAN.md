@@ -214,7 +214,8 @@ to fine semantic facts, exact byte-identical maintained bodies are normalized,
 general source structure supplies residual implementation work, and specialized
 builders value behavior-specific boundaries. Large capabilities are deterministically
 partitioned around a four-hour target while remaining within the 0.5-to-8-hour
-expected range. The model is transparent but not calibrated.
+expected range. `MODEL_REVIEWS.md` records the first provenance-bound, provisional
+self-review anchor. The model is transparent but not calibrated.
 
 ### Milestone 6: Reporting and agent usability
 
