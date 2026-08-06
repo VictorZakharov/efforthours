@@ -1,0 +1,137 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:fairbill:schema:v1:change-evidence",
+  "title": "Fairbill change evidence v1",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "selection",
+    "repository",
+    "baseEvidenceDigest",
+    "headEvidenceDigest",
+    "unchangedContextPathCount",
+    "paths",
+    "diagnostics"
+  ],
+  "properties": {
+    "schemaVersion": { "const": "1.0.0" },
+    "selection": { "$ref": "#/$defs/selection" },
+    "repository": { "$ref": "#/$defs/repository" },
+    "baseEvidenceDigest": { "type": "string", "minLength": 1 },
+    "headEvidenceDigest": { "type": "string", "minLength": 1 },
+    "unchangedContextPathCount": { "type": "integer", "minimum": 0 },
+    "paths": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/pathEvidence" }
+    },
+    "diagnostics": {
+      "type": "array",
+      "items": { "$ref": "urn:fairbill:schema:v1:diagnostic" }
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "selection": {
+      "type": "object",
+      "required": ["schemaVersion", "kind", "base", "head"],
+      "properties": {
+        "schemaVersion": { "const": "1.0.0" },
+        "kind": {
+          "enum": ["base-head", "commit", "range", "pull-request"]
+        },
+        "base": { "$ref": "#/$defs/snapshot" },
+        "head": { "$ref": "#/$defs/snapshot" },
+        "commit": { "type": "string", "minLength": 1 },
+        "parent": { "type": "string", "minLength": 1 },
+        "range": { "type": "string", "minLength": 1 },
+        "pullRequest": { "$ref": "#/$defs/pullRequest" }
+      },
+      "additionalProperties": false
+    },
+    "snapshot": {
+      "type": "object",
+      "required": ["selector", "objectId", "kind"],
+      "properties": {
+        "selector": { "type": "string", "minLength": 1 },
+        "objectId": { "type": "string", "minLength": 1 },
+        "kind": {
+          "enum": ["git-commit", "git-tree", "empty-tree", "directory", "evidence"]
+        }
+      },
+      "additionalProperties": false
+    },
+    "pullRequest": {
+      "type": "object",
+      "required": ["input", "number"],
+      "properties": {
+        "input": { "type": "string", "minLength": 1 },
+        "number": { "type": "integer", "minimum": 1 },
+        "repository": { "type": "string", "minLength": 1 },
+        "url": { "type": "string", "minLength": 1 }
+      },
+      "additionalProperties": false
+    },
+    "repository": {
+      "type": "object",
+      "required": ["name", "scope", "ecosystems"],
+      "properties": {
+        "name": { "type": "string", "minLength": 1 },
+        "scope": { "type": "string", "minLength": 1 },
+        "ecosystems": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        },
+        "sourceDigest": { "type": "string", "minLength": 1 }
+      },
+      "additionalProperties": false
+    },
+    "pathEvidence": {
+      "type": "object",
+      "required": [
+        "id",
+        "status",
+        "path",
+        "editRegions",
+        "classification",
+        "represented",
+        "reason",
+        "tags"
+      ],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "status": { "enum": ["added", "modified", "removed", "moved"] },
+        "path": { "type": "string", "minLength": 1 },
+        "previousPath": { "type": "string", "minLength": 1 },
+        "baseObjectId": { "type": "string", "minLength": 1 },
+        "headObjectId": { "type": "string", "minLength": 1 },
+        "baseBytes": { "type": "integer", "minimum": 0 },
+        "headBytes": { "type": "integer", "minimum": 0 },
+        "editRegions": { "type": "integer", "minimum": 0 },
+        "classification": {
+          "enum": [
+            "represented",
+            "formatting-only",
+            "exact-move",
+            "generated",
+            "vendored",
+            "minified",
+            "binary",
+            "lockfile",
+            "build-output",
+            "exact-duplicate",
+            "unsupported"
+          ]
+        },
+        "represented": { "type": "boolean" },
+        "reason": { "type": "string", "minLength": 1 },
+        "tags": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

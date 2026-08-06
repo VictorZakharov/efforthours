@@ -19,7 +19,9 @@ than reading an entire large repository.
 Milestones 1 through 6 and the Milestone 7A calibration foundation are complete.
 Milestone 7B1 through 7B5 public-corpus, review, and mutation checkpoints are
 implemented; actual independent correction and broader multi-observation corpus
-coverage remain. The repository now contains:
+coverage remain. The first experimental Change Estimation MVP is also implemented
+for immutable base/head revisions, one commit, one range, and one GitHub pull
+request. The repository now contains:
 
 - versioned JSON contracts and published schemas for evidence, work items,
   estimates, diagnostics, and rate cards;
@@ -47,6 +49,9 @@ coverage remain. The repository now contains:
   background work, and unit/component/integration/end-to-end tests;
 - an injectable repository-storage boundary with memory-only unit fixtures;
 - an installable .NET global tool named `fairbill`;
+- schema-versioned Change EHE evidence, reports, explanations, immutable Git-tree
+  analysis, additive range reconciliation, and an optional identity-only `gh` PR
+  adapter;
 - JSON and Markdown reports with evidence lineage, ranges, and optional pricing;
 - synthetic fixtures, contract tests, and process-level CLI tests;
 - evidence normalization that separates production/test structure, gives fine
@@ -88,6 +93,8 @@ coverage remain. The repository now contains:
   compiler-disabled C# syntax, API/UI/data/security behavior, tests, declared
   coverage levels, documentation, integrations, workspace boundaries, CI,
   containers, all three range points, and category isolation.
+- enforced source-file budgets with a 500-line default, a 400-line CLI ceiling,
+  explicit legacy ratchets, and a thin command dispatcher.
 
 `fairbill scan <folder>` now produces common, static .NET, and static
 JavaScript/TypeScript evidence, including mixed-repository output.
@@ -100,6 +107,14 @@ as a production-ready or empirically validated estimate.
 `--no-rate` for effort-only output or `--hourly-rate` for an explicit replacement.
 Pricing never changes EHE. Use `--view review` for a bounded AI-review packet and
 pass any reported capability ID to `fairbill explain` for its evidence lineage.
+
+`fairbill change` estimates the final functional and quality delta for explicit
+base/head revisions, a commit, a range, or one PR. It reads immutable local Git
+objects without checking out, fetching, executing, or modifying the target. Range
+reports reconcile isolated commits with the authoritative normalized final delta;
+commit count and intermediate churn never multiply effort. PR mode uses optional
+`gh` only to resolve immutable identities and requires those objects locally. The
+`change-seed/0.1.0` model is uncalibrated and experimental.
 
 `fairbill calibration scaffold` creates an explicitly unreviewed packet from a
 saved canonical estimate; `--blind` hides numeric seed guidance. `fairbill
@@ -141,7 +156,8 @@ default scan.
 
 ## Build and try the CLI
 
-The .NET 10 SDK selected by `global.json` is required.
+The .NET 10 SDK selected by `global.json` is required. Change commands also require
+Git; `--pr` additionally requires an installed and authenticated `gh` CLI.
 
 ```text
 dotnet restore Fairbill.slnx --configfile NuGet.Config --force-evaluate
@@ -183,6 +199,11 @@ fairbill rate show
 fairbill estimate <repository-or-evidence.json> [--profile <implementation|recreation>] [--view <full|repository|category|scope|work-item|review>] [--format <json|markdown>] [--compact] [--output <path>] [--no-rate | --hourly-rate <amount> [--currency <code>]]
 fairbill report <estimate.json> [--view <full|repository|category|scope|work-item|review>] [--format <json|markdown>] [--compact]
 fairbill explain <repository-or-evidence.json> --item <work-item-or-capability-id> [--profile <implementation|recreation>] [--format <json|markdown>] [--compact]
+fairbill change <repository> --base <revision> --head <revision> [--profile <implementation|recreation>] [--format <json|markdown>] [--compact] [--output <path>] [--no-rate | --hourly-rate <amount> [--currency <code>]]
+fairbill change <repository> --commit <revision> [--parent <revision>] [options]
+fairbill change <repository> --range <base>..<head> [options]
+fairbill change <repository> --pr <number-or-url> [--repo <owner/name>] [options]
+fairbill change explain <change-estimate.json> --item <work-item-id> [--format <json|markdown>] [--compact]
 fairbill calibration scaffold <estimate.json> [--blind] [--compact] [--output <path>]
 fairbill calibration compile <review-plan.json> <estimate.json>... [--compact] [--output <path>]
 fairbill calibration review-scaffold <corpus.json> [--blind] [--compact] [--output <path>]
@@ -250,8 +271,12 @@ without misrepresenting counterfactual hours as historical labor.
   measurements.
 - [MODEL_REVIEWS.md](MODEL_REVIEWS.md) records provisional realism checks with
   source and model provenance; they are not calibration claims.
-- [CHANGE_ESTIMATION.md](CHANGE_ESTIMATION.md) records the deferred PR, commit,
-  range, and contribution-portfolio semantics and safeguards.
+- [CHANGE_ESTIMATION.md](CHANGE_ESTIMATION.md) records implemented PR, commit, and
+  range semantics plus deferred contribution-portfolio safeguards.
+- [MILESTONE_CHANGE_1.md](MILESTONE_CHANGE_1.md) records the first Change EHE
+  implementation, verification, and limitations.
+- [CODE_BUDGETS.md](CODE_BUDGETS.md) defines enforced early-refactoring thresholds
+  and legacy ratchets.
 - [AGENTS.md](AGENTS.md) contains repository-wide instructions for coding agents.
 - [CONTRIBUTING.md](CONTRIBUTING.md) contains the verified development workflow.
 - [SECURITY.md](SECURITY.md) explains private vulnerability reporting expectations.

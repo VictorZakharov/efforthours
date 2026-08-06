@@ -38,11 +38,17 @@ defaults.
 
 ## 4. Current-state valuation rules
 
-### 4.1 No history
+### 4.1 No history in repository estimates
 
-Git commits, churn, author count, timestamps, branches, and abandoned versions are
-not estimation inputs. An analyzer may honor ignore files, but it must not derive
-effort from repository history.
+Ordinary repository `scan` and `estimate` operations do not inspect Git commits,
+churn, author count, timestamps, branches, or abandoned versions. An analyzer may
+honor ignore files, but it must not derive repository EHE from development history.
+
+Explicit Change EHE may resolve requested revisions, read immutable base/head
+trees, and estimate selected commits independently for reconciliation. That access
+selects final artifacts; commit count, identity, timing, messages, branch activity,
+and intermediate churn never multiply effort. The normalized final base-to-head
+delta remains authoritative. See `CHANGE_ESTIMATION.md`.
 
 ### 4.2 Clean competent recreation
 

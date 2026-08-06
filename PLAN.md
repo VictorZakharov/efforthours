@@ -30,6 +30,7 @@ src/
   Fairbill.Analysis/             language-neutral repository analysis
   Fairbill.Analyzers.DotNet/     .NET/MSBuild/Roslyn evidence
   Fairbill.Analyzers.JavaScript/ JavaScript/TypeScript evidence
+  Fairbill.Change/               final-delta evidence, Git/PR selectors, reconciliation
   Fairbill.Estimation/           rules, work items, aggregation
   Fairbill.Calibration/          reviewed labels and offline evaluation
   Fairbill.Pricing/              versioned offline rate artifacts and mapping
@@ -90,6 +91,7 @@ fairbill estimate <path-or-evidence> [--profile <implementation|recreation>]
 fairbill report <estimate> [--view <full|repository|category|scope|work-item|review>]
   [--format <json|markdown>] [--compact]
 fairbill explain <path-or-evidence> --item <id> [--format <json|markdown>]
+fairbill change <repository> (--base <revision> --head <revision> | --commit <revision> | --range <base>..<head> | --pr <number-or-url>)
 fairbill verify <path> [--build] [--test] [--coverage]
 fairbill model info
 fairbill rate info
@@ -170,6 +172,15 @@ Status as of August 6, 2026:
   `0/0/0` labels; frozen `seed-rules/0.2.1` baselines and a combined blind-review
   handoff are checked in. The model remains unchanged and uncalibrated, and
   no independent review is claimed.
+- The first Milestone 9 Change Estimation subset is complete: immutable base/head,
+  commit, range, and single-PR selectors; v1 Change EHE schemas; final-delta
+  normalization; additive component reconciliation; JSON/Markdown/explanation
+  output; memory-only unit fixtures; and process-level Git tests are implemented.
+  `change-seed/0.1.0` remains experimental and uncalibrated. Multiple PRs,
+  directory/evidence selectors, and author-period portfolios remain deferred.
+- Source-file budgets are enforced as an end-to-end architecture ratchet: 500
+  lines by default, 400 for CLI files, and explicit non-precedent overrides for
+  legacy debt. The former large CLI application class is split by responsibility.
 
 ### Milestone 0: Product and contract decisions
 
@@ -321,19 +332,19 @@ review.
 ### Milestone 9: Expansion
 
 - Add feature-oriented reporting.
-- Add provider-neutral incremental-change estimation from base and head snapshots,
-  valuing the final behavior, tests, documentation, migration, and integration
-  delta without using commit history or churn as effort signals.
-- Support one commit, a revision range, and explicitly selected author-and-period
-  portfolios. Treat author and time as selectors only, normalize overlaps and
-  reversals, disclose shared-credit limitations, and label portfolio results as
-  repository-attributed change EHE rather than individual productivity.
-- Add optional GitHub pull-request input through the `gh` CLI when it is installed
-  and authenticated. Keep GitHub access outside the offline core, make network and
-  privacy implications explicit, and use PR metadata only as bounded specification
-  context rather than labor evidence.
-- Follow the deferred semantics and safeguards in `CHANGE_ESTIMATION.md` before
-  implementing any history-backed command.
+- Extend the implemented provider-neutral snapshot engine with directory/evidence
+  selectors when they add practical value.
+- Extend the implemented one-commit and range forms to multiple-PR and explicitly
+  selected author-and-period portfolios. Treat author and time as selectors only,
+  normalize overlaps and reversals, disclose shared-credit limitations, and label
+  portfolio results as repository-attributed change EHE rather than individual
+  productivity.
+- Extend the implemented optional identity-only `gh` adapter only when network,
+  privacy, immutable-object, and cross-PR normalization safeguards are explicit.
+- Calibrate `change-seed/0.1.0` on reviewed, redistributable final-change examples
+  before consequential use or any production-readiness claim.
+- Follow the remaining deferred semantics and safeguards in
+  `CHANGE_ESTIMATION.md` before expanding any history-backed command.
 - Publish analyzer extension contracts.
 - Add languages and ecosystems based on demand.
 - Add regional rate cards without coupling geography to effort.
@@ -349,6 +360,8 @@ features.
 - Unit repository fixtures and scan caches are memory-backed; ordinary unit-test
   runs do not create, modify, enumerate, or delete physical fixture trees.
 - Contract tests validate every serialized schema and backward-compatibility rule.
+- The disk-backed end-to-end suite enforces `eng/file-budgets.json`; refactor near
+  80% of a ceiling so responsibility splits happen before the gate fails.
 - Golden fixture tests compare reviewed evidence and reports for small repositories.
 - Mutation-style fixture variants verify that meaningful changes alter estimates
   while formatting, generated output, duplication, and history do not.
@@ -408,5 +421,6 @@ benchmark corpus exists.
    repository shapes and peak-memory measurements.
 5. Evaluate a compiler-grade TypeScript adapter only if reviewed calibration shows
    material error from the bounded token evidence.
-6. Prototype the provider-neutral change-evidence contract in
-   `CHANGE_ESTIMATION.md` only after repository-level calibration work is underway.
+6. Build reviewed, redistributable Change EHE examples and record large-range
+   performance before tuning `change-seed/0.1.0` or expanding to multiple PRs and
+   author-period portfolios.

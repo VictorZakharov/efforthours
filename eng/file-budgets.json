@@ -1,0 +1,19 @@
+{
+  "schemaVersion": "1.0.0",
+  "defaultMaxLines": 500,
+  "directoryBudgets": {
+    "src/Fairbill.Cli": 400
+  },
+  "fileBudgets": {
+    "src/Fairbill.Analysis/RepositoryScanner.cs": 1000,
+    "src/Fairbill.Analyzers.DotNet/CSharpFileAnalyzer.cs": 750,
+    "src/Fairbill.Analyzers.JavaScript/JavaScriptRepositoryAnalyzer.cs": 825,
+    "src/Fairbill.Analyzers.JavaScript/JavaScriptSyntaxAnalyzer.cs": 850,
+    "src/Fairbill.Contracts/ContractValidation.cs": 1850,
+    "src/Fairbill.Contracts/V1/CalibrationContracts.cs": 750,
+    "src/Fairbill.Estimation/SeedCapabilityBuilder.cs": 1350,
+    "src/Fairbill.Estimation/SeedEvidenceIndex.cs": 550,
+    "tests/Fairbill.EndToEndTests/CliTests.cs": 1100,
+    "tests/Fairbill.Tests/CalibrationTests.cs": 1250
+  }
+}

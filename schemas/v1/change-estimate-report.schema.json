@@ -1,0 +1,234 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:fairbill:schema:v1:change-estimate-report",
+  "title": "Fairbill change estimate report v1",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "changeEvidenceSchemaVersion",
+    "estimatorVersion",
+    "sourceEstimatorVersion",
+    "repository",
+    "selection",
+    "evidence",
+    "profile",
+    "baseline",
+    "totalEffort",
+    "categories",
+    "workItems",
+    "professionalizationGap",
+    "reconciliation",
+    "diagnostics",
+    "assumptions",
+    "verification"
+  ],
+  "properties": {
+    "schemaVersion": { "const": "1.0.0" },
+    "changeEvidenceSchemaVersion": { "const": "1.0.0" },
+    "estimatorVersion": { "type": "string", "minLength": 1 },
+    "sourceEstimatorVersion": { "type": "string", "minLength": 1 },
+    "repository": { "$ref": "urn:fairbill:schema:v1:change-evidence#/$defs/repository" },
+    "selection": { "$ref": "urn:fairbill:schema:v1:change-evidence#/$defs/selection" },
+    "evidence": { "$ref": "urn:fairbill:schema:v1:change-evidence" },
+    "profile": { "enum": ["implementation", "recreation"] },
+    "baseline": { "$ref": "#/$defs/baseline" },
+    "totalEffort": { "$ref": "#/$defs/effortRange" },
+    "rateCard": { "$ref": "urn:fairbill:schema:v1:rate-card" },
+    "totalCost": { "$ref": "#/$defs/costRange" },
+    "categories": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/categoryEstimate" }
+    },
+    "workItems": {
+      "type": "array",
+      "items": { "$ref": "urn:fairbill:schema:v1:work-item" }
+    },
+    "professionalizationGap": {
+      "type": "array",
+      "items": { "$ref": "urn:fairbill:schema:v1:work-item" }
+    },
+    "reconciliation": { "$ref": "#/$defs/reconciliation" },
+    "diagnostics": {
+      "type": "array",
+      "items": { "$ref": "urn:fairbill:schema:v1:diagnostic" }
+    },
+    "assumptions": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "uniqueItems": true
+    },
+    "verification": { "$ref": "#/$defs/verification" }
+  },
+  "dependentRequired": {
+    "rateCard": ["totalCost"],
+    "totalCost": ["rateCard"]
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "effortRange": {
+      "type": "object",
+      "required": ["low", "expected", "high"],
+      "properties": {
+        "low": { "type": "number", "minimum": 0 },
+        "expected": { "type": "number", "minimum": 0 },
+        "high": { "type": "number", "minimum": 0 }
+      },
+      "additionalProperties": false
+    },
+    "signedEffortRange": {
+      "type": "object",
+      "required": ["low", "expected", "high"],
+      "properties": {
+        "low": { "type": "number" },
+        "expected": { "type": "number" },
+        "high": { "type": "number" }
+      },
+      "additionalProperties": false
+    },
+    "costRange": {
+      "type": "object",
+      "required": ["low", "expected", "high", "currency"],
+      "properties": {
+        "low": { "type": "number", "minimum": 0 },
+        "expected": { "type": "number", "minimum": 0 },
+        "high": { "type": "number", "minimum": 0 },
+        "currency": { "type": "string", "pattern": "^[A-Z]{3}$" }
+      },
+      "additionalProperties": false
+    },
+    "baseline": {
+      "type": "object",
+      "required": [
+        "id",
+        "workerProfile",
+        "technologyBaselineYear",
+        "businessDomainFamiliar",
+        "usesAi",
+        "description"
+      ],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "workerProfile": { "type": "string", "minLength": 1 },
+        "technologyBaselineYear": { "type": "integer", "minimum": 2026 },
+        "businessDomainFamiliar": { "type": "boolean" },
+        "usesAi": { "type": "boolean" },
+        "description": { "type": "string", "minLength": 1 }
+      },
+      "additionalProperties": false
+    },
+    "category": {
+      "enum": [
+        "specification-comprehension-and-domain-learning",
+        "repository-and-solution-setup",
+        "architecture-and-technical-design",
+        "production-implementation",
+        "ui-implementation-and-represented-ux-decisions",
+        "data-modeling-persistence-and-migrations",
+        "external-integrations-and-protocols",
+        "unit-testing",
+        "integration-contract-and-component-testing",
+        "end-to-end-and-ui-testing",
+        "manual-validation-debugging-and-hardening",
+        "documentation",
+        "build-configuration-and-developer-tooling",
+        "ci-cd-and-infrastructure-as-code",
+        "security-and-accessibility",
+        "packaging-deployment-and-release-artifacts",
+        "self-review-and-system-integration"
+      ]
+    },
+    "categoryEstimate": {
+      "type": "object",
+      "required": ["category", "hours"],
+      "properties": {
+        "category": { "$ref": "#/$defs/category" },
+        "hours": { "$ref": "#/$defs/effortRange" }
+      },
+      "additionalProperties": false
+    },
+    "component": {
+      "type": "object",
+      "required": [
+        "id",
+        "kind",
+        "selector",
+        "baseObjectId",
+        "headObjectId",
+        "isolatedEffort",
+        "allocatedExpectedHours",
+        "evidenceIds"
+      ],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "kind": { "enum": ["final-delta", "commit"] },
+        "selector": { "type": "string", "minLength": 1 },
+        "baseObjectId": { "type": "string", "minLength": 1 },
+        "headObjectId": { "type": "string", "minLength": 1 },
+        "isolatedEffort": { "$ref": "#/$defs/effortRange" },
+        "allocatedExpectedHours": { "type": "number", "minimum": 0 },
+        "evidenceIds": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "adjustment": {
+      "type": "object",
+      "required": ["id", "kind", "effortDelta", "reason", "componentIds", "evidenceIds"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "kind": { "enum": ["shared-setup", "overlap", "revert", "interaction"] },
+        "effortDelta": { "$ref": "#/$defs/signedEffortRange" },
+        "reason": { "type": "string", "minLength": 1 },
+        "componentIds": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        },
+        "evidenceIds": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "reconciliation": {
+      "type": "object",
+      "required": [
+        "isolatedComponentSum",
+        "normalizedEffort",
+        "additivityToleranceHours",
+        "expectedDifferenceHours",
+        "assessment",
+        "allocationMethod",
+        "components",
+        "adjustments"
+      ],
+      "properties": {
+        "isolatedComponentSum": { "$ref": "#/$defs/effortRange" },
+        "normalizedEffort": { "$ref": "#/$defs/effortRange" },
+        "additivityToleranceHours": { "type": "number", "minimum": 0 },
+        "expectedDifferenceHours": { "type": "number" },
+        "assessment": { "type": "string", "minLength": 1 },
+        "allocationMethod": { "type": "string", "minLength": 1 },
+        "components": { "type": "array", "items": { "$ref": "#/$defs/component" } },
+        "adjustments": { "type": "array", "items": { "$ref": "#/$defs/adjustment" } }
+      },
+      "additionalProperties": false
+    },
+    "verification": {
+      "type": "object",
+      "required": ["mode", "workingState", "testsAssumedPassing"],
+      "properties": {
+        "mode": { "enum": ["static-assumed", "executed"] },
+        "workingState": { "enum": ["assumed-working", "verified-working", "known-issues"] },
+        "testsAssumedPassing": { "type": "boolean" },
+        "note": { "type": "string", "minLength": 1 }
+      },
+      "additionalProperties": false
+    }
+  }
+}

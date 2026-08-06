@@ -1,0 +1,166 @@
+using System.Globalization;
+using System.Reflection;
+using System.Text;
+using Fairbill.Analysis;
+using Fairbill.Calibration;
+using Fairbill.Contracts;
+using Fairbill.Contracts.V1;
+using Fairbill.Core;
+using Fairbill.Estimation;
+using Fairbill.Pricing;
+using Fairbill.Reporting;
+
+namespace Fairbill.Cli;
+
+public sealed partial class FairbillApplication
+{
+    private async Task<int> ScanAsync(
+        string[] arguments,
+        TextWriter standardOutput,
+        TextWriter standardError,
+        CancellationToken cancellationToken)
+    {
+        if (arguments.Length == 0 || IsHelp(arguments[0]))
+        {
+            await standardOutput.WriteLineAsync(ScanHelpText).ConfigureAwait(false);
+            return arguments.Length == 0 ? CliExitCodes.UsageError : CliExitCodes.Success;
+        }
+
+        string repositoryPath = arguments[0];
+        string? outputPath = null;
+        RepositoryScanOptions options = new();
+        for (int index = 1; index < arguments.Length; index++)
+        {
+            string option = arguments[index];
+            switch (option)
+            {
+                case "--output":
+                    if (index + 1 >= arguments.Length)
+                    {
+                        return await UsageErrorAsync(
+                            standardError,
+                            "Option '--output' requires a value.").ConfigureAwait(false);
+                    }
+
+                    outputPath = arguments[++index];
+                    break;
+
+                case "--cache":
+                    if (index + 1 >= arguments.Length)
+                    {
+                        return await UsageErrorAsync(
+                            standardError,
+                            "Option '--cache' requires a value.").ConfigureAwait(false);
+                    }
+
+                    options = options with { CachePath = arguments[++index] };
+                    break;
+
+                case "--no-gitignore":
+                    options = options with { RespectGitIgnore = false };
+                    break;
+
+                case "--no-fairbillignore":
+                    options = options with { RespectFairbillIgnore = false };
+                    break;
+
+                case "help" or "--help" or "-h":
+                    await standardOutput.WriteLineAsync(ScanHelpText).ConfigureAwait(false);
+                    return CliExitCodes.Success;
+
+                default:
+                    return await UsageErrorAsync(
+                        standardError,
+                        $"Unknown scan option '{option}'.").ConfigureAwait(false);
+            }
+        }
+
+        if (!Directory.Exists(repositoryPath))
+        {
+            await standardError.WriteLineAsync($"Repository directory was not found: {repositoryPath}")
+                .ConfigureAwait(false);
+            return CliExitCodes.InvalidInput;
+        }
+
+        RepositoryEvidence evidence;
+        try
+        {
+            evidence = await _scanner.ScanAsync(
+                repositoryPath,
+                options,
+                cancellationToken).ConfigureAwait(false);
+        }
+        catch (ArgumentException exception)
+        {
+            await standardError.WriteLineAsync($"Could not scan repository: {exception.Message}")
+                .ConfigureAwait(false);
+            return CliExitCodes.InvalidInput;
+        }
+        IReadOnlyList<string> semanticErrors = ContractValidation.Validate(evidence);
+        string json = ContractJson.Serialize(evidence);
+        SchemaValidationResult schemaResult = ContractSchemaValidator.Validate(
+            SchemaNames.RepositoryEvidence,
+            json);
+        if (semanticErrors.Count > 0 || !schemaResult.IsValid)
+        {
+            await standardError.WriteLineAsync("The scanner produced invalid repository evidence.")
+                .ConfigureAwait(false);
+            foreach (string error in semanticErrors.Concat(schemaResult.Errors))
+            {
+                await standardError.WriteLineAsync($"- {error}").ConfigureAwait(false);
+            }
+
+            return CliExitCodes.InternalError;
+        }
+
+        if (outputPath is null)
+        {
+            await standardOutput.WriteLineAsync(json).ConfigureAwait(false);
+            return CliExitCodes.Success;
+        }
+
+        if (Directory.Exists(outputPath))
+        {
+            await standardError.WriteLineAsync($"Output path is a directory: {outputPath}")
+                .ConfigureAwait(false);
+            return CliExitCodes.InvalidInput;
+        }
+
+        try
+        {
+            string fullOutputPath = Path.GetFullPath(outputPath);
+            string? outputDirectory = Path.GetDirectoryName(fullOutputPath);
+            if (!string.IsNullOrEmpty(outputDirectory))
+            {
+                Directory.CreateDirectory(outputDirectory);
+            }
+
+            await File.WriteAllTextAsync(
+                fullOutputPath,
+                json + Environment.NewLine,
+                new UTF8Encoding(encoderShouldEmitUTF8Identifier: false),
+                cancellationToken).ConfigureAwait(false);
+        }
+        catch (Exception exception) when (exception is IOException or UnauthorizedAccessException)
+        {
+            await standardError.WriteLineAsync($"Could not write evidence: {exception.Message}")
+                .ConfigureAwait(false);
+            return CliExitCodes.InvalidInput;
+        }
+
+        return CliExitCodes.Success;
+    }
+
+    private const string ScanHelpText = """
+        Usage:
+          fairbill scan <repository> [options]
+
+        Options:
+          --output <path>       Write evidence JSON to an explicit path
+          --cache <path>        Use an explicit cache outside the repository
+          --no-gitignore        Do not apply nested .gitignore files
+          --no-fairbillignore   Do not apply nested .fairbillignore files
+          -h, --help            Show this help
+        """;
+
+}

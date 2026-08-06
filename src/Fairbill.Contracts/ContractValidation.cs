@@ -2,7 +2,7 @@ using Fairbill.Contracts.V1;
 
 namespace Fairbill.Contracts;
 
-public static class ContractValidation
+public static partial class ContractValidation
 {
     public static IReadOnlyList<string> Validate(RateCard rateCard)
     {

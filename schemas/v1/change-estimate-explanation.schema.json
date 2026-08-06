@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:fairbill:schema:v1:change-estimate-explanation",
+  "title": "Fairbill change estimate explanation v1",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "sourceChangeEstimateSchemaVersion",
+    "estimatorVersion",
+    "selection",
+    "requestedId",
+    "workItems",
+    "evidence",
+    "unresolvedEvidenceIds"
+  ],
+  "properties": {
+    "schemaVersion": { "const": "1.0.0" },
+    "sourceChangeEstimateSchemaVersion": { "const": "1.0.0" },
+    "estimatorVersion": { "type": "string", "minLength": 1 },
+    "selection": { "$ref": "urn:fairbill:schema:v1:change-evidence#/$defs/selection" },
+    "requestedId": { "type": "string", "minLength": 1 },
+    "workItems": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "urn:fairbill:schema:v1:work-item" }
+    },
+    "evidence": {
+      "type": "array",
+      "items": { "$ref": "urn:fairbill:schema:v1:change-evidence#/$defs/pathEvidence" }
+    },
+    "unresolvedEvidenceIds": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "uniqueItems": true
+    }
+  },
+  "additionalProperties": false
+}

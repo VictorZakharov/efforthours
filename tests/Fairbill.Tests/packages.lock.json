@@ -154,6 +154,15 @@
           "Fairbill.Contracts": "[1.0.0, )"
         }
       },
+      "fairbill.change": {
+        "type": "Project",
+        "dependencies": {
+          "Fairbill.Analysis": "[1.0.0, )",
+          "Fairbill.Contracts": "[1.0.0, )",
+          "Fairbill.Core": "[1.0.0, )",
+          "Fairbill.Estimation": "[1.0.0, )"
+        }
+      },
       "fairbill.contracts": {
         "type": "Project",
         "dependencies": {

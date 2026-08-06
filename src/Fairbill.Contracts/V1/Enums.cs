@@ -21,6 +21,60 @@ public enum EstimationProfile
     Recreation,
 }
 
+public enum ChangeSelectionKind
+{
+    BaseHead,
+    Commit,
+    Range,
+    PullRequest,
+}
+
+public enum ChangeSnapshotKind
+{
+    GitCommit,
+    GitTree,
+    EmptyTree,
+    Directory,
+    Evidence,
+}
+
+public enum ChangePathStatus
+{
+    Added,
+    Modified,
+    Removed,
+    Moved,
+}
+
+public enum ChangePathClassification
+{
+    Represented,
+    FormattingOnly,
+    ExactMove,
+    Generated,
+    Vendored,
+    Minified,
+    Binary,
+    Lockfile,
+    BuildOutput,
+    ExactDuplicate,
+    Unsupported,
+}
+
+public enum ChangeComponentKind
+{
+    FinalDelta,
+    Commit,
+}
+
+public enum ChangeAdjustmentKind
+{
+    SharedSetup,
+    Overlap,
+    Revert,
+    Interaction,
+}
+
 public enum EstimateViewKind
 {
     Repository,

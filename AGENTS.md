@@ -24,8 +24,9 @@ Read these root documents completely:
 5. `MILESTONE_5.md` when changing evidence-to-effort behavior
 6. `MILESTONE_6.md` when changing reporting, explanation, or default pricing
 7. `MODEL_REVIEWS.md` when changing priors, calibration labels, or review policy
-8. `CHANGE_ESTIMATION.md` when changing future diff, PR, commit, or contribution
+8. `CHANGE_ESTIMATION.md` when changing diff, PR, commit, range, or contribution
    semantics
+9. `MILESTONE_CHANGE_1.md` when changing the implemented Change EHE boundary
 
 If an implementation request conflicts with those documents, surface the conflict
 and update the relevant decision explicitly. Do not silently change estimation
@@ -37,9 +38,10 @@ semantics.
 - Implement .NET and JavaScript/TypeScript analysis first.
 - Implement the tool and reusable libraries on .NET 10.
 - Ignore Git history, churn, contributors, and timestamps as effort signals.
-- A future explicit change-estimation command may use revisions, author identity,
-  and time only to select final changes. Ordinary repository estimates remain
-  history-free, and selection metadata must never become an effort multiplier.
+- The explicit change-estimation command may use revisions, and future portfolio
+  selectors may use author identity and time, only to select final changes.
+  Ordinary repository estimates remain history-free, and selection metadata must
+  never become an effort multiplier.
 - Estimate the current artifact, not historical rework or abandoned approaches.
 - Prefer functional and quality equivalence over line-for-line reproduction.
 - Recreate with sensible modern 2026-equivalent technology while preserving
@@ -94,6 +96,9 @@ semantics.
 - Do not inspect Git history. Reading ignore configuration solely for scope handling
   is acceptable.
 - Preserve cross-platform behavior across Windows, Linux, and macOS.
+- Follow the enforced C# file budgets in `eng/file-budgets.json`. Start splitting
+  responsibilities near 80% of a hard ceiling. Do not add or increase a ratchet
+  override without recording an explicit architectural rationale.
 
 ## Open-source requirements
 
@@ -145,6 +150,8 @@ semantics.
 - Record the provenance and effective date of default rate cards and model files.
 - Do not describe EHE as actual labor, a timesheet, or hours historically worked.
 - Prefer explicit uncertainty over unsupported precision.
+- Keep `CODE_BUDGETS.md` and the enforced manifest aligned when responsibilities
+  move between files.
 
 ## Current project stage
 
@@ -190,6 +197,15 @@ both public corpora there are six repository families and 232 blind targets, sti
 with one host-AI teacher and no independent correction. General semantic-clone and
 reachability analysis, multiple observations per ecosystem/partition cell, and
 actual independent review are next; local ML has not been selected or added.
+
+The first Change Estimation MVP adds provider-neutral immutable snapshot analysis,
+local Git base/head, commit, and range selectors, one optional identity-only `gh`
+PR selector, v1 change schemas, `change-seed/0.1.0` work items, final-delta
+normalization, component reconciliation, saved-report explanation, and
+process-level Git tests. It remains experimental and uncalibrated. Multiple PRs,
+directory/evidence selectors, and author-period portfolios remain deferred. The
+former large CLI application class is split into focused partial modules, and
+`eng/file-budgets.json` enforces early refactoring through the end-to-end suite.
 
 The following commands have been run successfully from the repository root:
 

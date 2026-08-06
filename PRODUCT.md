@@ -88,9 +88,9 @@ reports lower confidence where appropriate.
 - Scale from small repositories to large mixed-language repositories.
 - Support .NET and JavaScript/TypeScript first, then become polyglot through
   analyzer extensions.
-- Eventually estimate the Equivalent Human Effort represented by a completed
-  base-to-head change, including an optional GitHub pull-request adapter, without
-  treating commit activity or elapsed history as effort evidence.
+- Estimate the Equivalent Human Effort represented by a completed base-to-head
+  change, one commit, a revision range, or one GitHub pull request without treating
+  commit activity or elapsed history as effort evidence.
 - Be suitable for public open-source development and redistribution.
 
 ## Non-goals
@@ -127,14 +127,14 @@ A completed estimate should contain:
 Feature-oriented reporting is intentionally deferred until repository-level
 analysis is trustworthy.
 
-An eventual incremental-change mode will estimate the functional and quality delta
-for final snapshots, a pull request, one commit, a revision range, or an explicitly
-selected author-and-period portfolio. A GitHub pull request may supply snapshots,
-its final diff, and bounded specification context through an optional `gh` CLI
-adapter. Author and time may select changes in this explicit mode, but commit count,
-activity, timestamps, review duration, and discarded intermediate revisions remain
-excluded as effort signals. The result will still be EHE, not actual hours worked
-or a standalone measure of an employee's performance. See `CHANGE_ESTIMATION.md`.
+The experimental incremental-change mode estimates the functional and quality
+delta for immutable base/head snapshots, one commit, a revision range, or one
+GitHub pull request. The optional `gh` adapter resolves only the PR number or URL
+and immutable base/head object IDs; analysis then remains local. Multiple-PR and
+author-and-period portfolios are deferred. Commit count, activity, timestamps,
+review duration, and discarded intermediate revisions remain excluded as effort
+signals. The result is still EHE, not actual hours worked or a standalone measure
+of an employee's performance. See `CHANGE_ESTIMATION.md`.
 
 ## Product principles
 
