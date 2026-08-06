@@ -24,6 +24,8 @@ coverage.*
 
 # Fairbill output and local calibration data
 .fairbill/
+.fairbill-private/
+calibration/private/
 *.fairbill-cache
 
 # Operating-system files

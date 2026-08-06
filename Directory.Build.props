@@ -14,5 +14,8 @@
     <Copyright>Copyright © 2026 Fairbill contributors</Copyright>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageProjectUrl>https://github.com/VictorZakharov/fairbill</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/VictorZakharov/fairbill.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
   </PropertyGroup>
 </Project>

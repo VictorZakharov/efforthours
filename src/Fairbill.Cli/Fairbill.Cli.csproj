@@ -8,8 +8,10 @@
     <ToolCommandName>fairbill</ToolCommandName>
     <PackageId>Fairbill.Tool</PackageId>
     <Version>0.8.0-alpha.2</Version>
-    <PackageReadmeFile>README.md</PackageReadmeFile>
-    <PackageTags>estimation;developer-tools;cli;repository-analysis</PackageTags>
+    <Title>Fairbill CLI</Title>
+    <PackageReadmeFile>PACKAGE_README.md</PackageReadmeFile>
+    <PackageTags>estimation;effort-estimation;developer-tools;cli;repository-analysis;static-analysis;dotnet-tool</PackageTags>
+    <PackageReleaseNotes>Experimental public alpha. Equivalent Human Effort is counterfactual replacement effort; bundled seed estimators remain uncalibrated.</PackageReleaseNotes>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="../Fairbill.Analysis/Fairbill.Analysis.csproj" />
@@ -25,7 +27,7 @@
     <None Include="../../LICENSE" Pack="true" PackagePath="/" />
     <None Include="../../models/seed-rules/0.2.1.json" Pack="true" PackagePath="models/seed-rules/" />
     <None Include="../../rates/us-senior-contractor/2026.1.json" Pack="true" PackagePath="rates/us-senior-contractor/" />
-    <None Include="../../README.md" Pack="true" PackagePath="/" />
+    <None Include="../../PACKAGE_README.md" Pack="true" PackagePath="/" />
     <None Include="../../THIRD-PARTY-NOTICES.md" Pack="true" PackagePath="/" />
   </ItemGroup>
 </Project>

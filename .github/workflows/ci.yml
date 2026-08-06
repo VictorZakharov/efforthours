@@ -1,0 +1,87 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  DOTNET_NOLOGO: "1"
+  DOTNET_CLI_TELEMETRY_OPTOUT: "1"
+  NUGET_XMLDOC_MODE: skip
+
+jobs:
+  quality:
+    name: Quality (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-latest
+          - windows-latest
+          - macos-latest
+
+    steps:
+      - name: Check out source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+        with:
+          global-json-file: global.json
+
+      - name: Restore
+        run: dotnet restore Fairbill.slnx --configfile NuGet.Config --force-evaluate
+
+      - name: Verify formatting
+        run: dotnet format Fairbill.slnx --no-restore --verify-no-changes --severity info
+
+      - name: Build
+        run: dotnet build Fairbill.slnx --no-restore --configuration Release
+
+      - name: Run storage-independent unit tests
+        run: dotnet test tests/Fairbill.Tests/Fairbill.Tests.csproj --no-build --no-restore --configuration Release
+
+      - name: Run process-level end-to-end tests
+        run: dotnet test tests/Fairbill.EndToEndTests/Fairbill.EndToEndTests.csproj --no-build --no-restore --configuration Release
+
+  package:
+    name: Pack preview artifact
+    needs: quality
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+        with:
+          global-json-file: global.json
+
+      - name: Restore
+        run: dotnet restore Fairbill.slnx --configfile NuGet.Config --force-evaluate
+
+      - name: Build
+        run: dotnet build Fairbill.slnx --no-restore --configuration Release
+
+      - name: Pack
+        run: dotnet pack src/Fairbill.Cli/Fairbill.Cli.csproj --configuration Release --no-build --no-restore --output artifacts/packages
+
+      - name: Upload package artifact
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: fairbill-tool-${{ github.sha }}
+          path: artifacts/packages/Fairbill.Tool.*.nupkg
+          if-no-files-found: error
+          retention-days: 14

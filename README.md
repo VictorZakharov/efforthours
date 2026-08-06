@@ -14,9 +14,15 @@ local models should compress and handle most of the repository. The host AI shou
 need to reason about only compact evidence and unresolved semantic questions rather
 than reading an entire large repository.
 
+> **Experimental public-alpha candidate:** Fairbill is a working reference
+> implementation, but its bundled seed estimators have not completed independent
+> calibration. Outputs are counterfactual replacement-effort estimates, not actual
+> labor records, invoices, or production-validated billing determinations.
+
 ## Status
 
-Milestones 1 through 6 and the Milestone 7A calibration foundation are complete.
+Fairbill is being prepared for a quiet public source and NuGet preview. Milestones
+1 through 6 and the Milestone 7A calibration foundation are complete.
 Milestone 7B1 through 7B5 public-corpus, review, and mutation checkpoints are
 implemented; actual independent correction and broader multi-observation corpus
 coverage remain. The first experimental Change Estimation MVP is also implemented
@@ -151,9 +157,11 @@ See [`calibration/changes`](calibration/changes); its source reports and blind
 packets are reproducible, and its teacher labels are preliminary until a genuinely
 distinct reviewer completes the frozen handoff.
 
-Fairbill is intended to be released as open-source software. Development should be
-public-repository-ready from the beginning, even before the repository is published.
-It is licensed under the [MIT License](LICENSE).
+Fairbill is licensed under the [MIT License](LICENSE). The public alpha is intended
+to make the estimation model, evidence contracts, limitations, and working
+reference implementation available for critique, reuse, forks, and independent
+alternatives. Open-source availability does not turn preliminary teacher labels
+into validated ground truth.
 
 Current language-specific analysis covers:
 
@@ -169,7 +177,24 @@ which path was used. Fairbill never imports JavaScript modules or runs package
 scripts, package managers, transpilers, or executable configuration during the
 default scan.
 
-## Build and try the CLI
+## Install the preview
+
+The NuGet package identity is `Fairbill.Tool`, and the installed command is
+`fairbill`. Once the public preview is listed on NuGet.org, install the pinned
+prerelease with:
+
+```text
+dotnet tool install --global Fairbill.Tool --version 0.8.0-alpha.2
+fairbill version
+fairbill --help
+```
+
+Preview versions are intentionally opt-in. To replace an older preview, use
+`dotnet tool update --global Fairbill.Tool --version <version>`. See
+[RELEASING.md](RELEASING.md) for package verification, trusted-publishing, and
+release procedures.
+
+## Build from source
 
 The .NET 10 SDK selected by `global.json` is required. Change commands also require
 Git; `--pr` additionally requires an installed and authenticated `gh` CLI.
@@ -303,6 +328,13 @@ without misrepresenting counterfactual hours as historical labor.
   and legacy ratchets.
 - [AGENTS.md](AGENTS.md) contains repository-wide instructions for coding agents.
 - [CONTRIBUTING.md](CONTRIBUTING.md) contains the verified development workflow.
+- [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) defines participation and enforcement
+  expectations.
+- [GOVERNANCE.md](GOVERNANCE.md) records decision authority, contribution policy,
+  calibration independence, and succession.
+- [RELEASING.md](RELEASING.md) defines the public-source and NuGet preview checklist.
+- [CHANGELOG.md](CHANGELOG.md) records user-visible release changes and known
+  limitations.
 - [SECURITY.md](SECURITY.md) explains private vulnerability reporting expectations.
 - [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md) records dependency provenance.
 - [BENCHMARKS.md](BENCHMARKS.md) records reproducible performance checkpoints.

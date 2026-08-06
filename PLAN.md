@@ -193,6 +193,11 @@ Status as of August 6, 2026:
 - Source-file budgets are enforced as an end-to-end architecture ratchet: 500
   lines by default, 400 for CLI files, and explicit non-precedent overrides for
   legacy debt. The former large CLI application class is split by responsibility.
+- Public-alpha release engineering is implemented: public governance and conduct
+  policies, issue/PR templates, pinned cross-platform CI, dependency automation,
+  NuGet-specific package metadata and README, an OIDC-only manual preview
+  workflow, and an exact release checklist are checked in. Repository visibility,
+  tagging, and NuGet publication remain separately authorized external actions.
 
 ### Milestone 0: Product and contract decisions
 
@@ -421,19 +426,22 @@ benchmark corpus exists.
 
 ## 8. Immediate next steps
 
-1. Hand one or more frozen blind public-corpus packets to genuinely distinct
+1. Complete the public-history identity decision and final issue #28 audit, require
+   green cross-platform CI, then prepare the quiet public repository and
+   `Fairbill.Tool` NuGet preview without claiming calibrated accuracy.
+2. Hand one or more frozen blind public-corpus packets to genuinely distinct
    reviewers and compile corrections without exposing test partitions to tuning.
-2. Add enough redistributable repository families to place multiple independent
+3. Add enough redistributable repository families to place multiple independent
    observations in every ecosystem/partition cell, then freeze numerical
    model-admission thresholds before fitting.
-3. Expand mutation guardrails from bounded renamed near-copies and
+4. Expand mutation guardrails from bounded renamed near-copies and
    compiler-disabled C# to semantic clone detection, general reachability,
    accessibility, measured coverage, and realistic multi-package boundaries.
-4. Extend performance and safety measurements to curated, redistributable mixed
+5. Extend performance and safety measurements to curated, redistributable mixed
    repository shapes and peak-memory measurements.
-5. Evaluate a compiler-grade TypeScript adapter only if reviewed calibration shows
+6. Evaluate a compiler-grade TypeScript adapter only if reviewed calibration shows
    material error from the bounded token evidence.
-6. Obtain genuinely independent correction for the frozen 24-case Change teacher
+7. Obtain genuinely independent correction for the frozen 24-case Change teacher
    corpus, add redistributable real final-change families, and record large-range
    performance before tuning
    `change-seed/0.1.0` or expanding to multiple PRs and author-period portfolios.

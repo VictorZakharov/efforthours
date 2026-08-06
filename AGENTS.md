@@ -30,6 +30,8 @@ Read these root documents completely:
 10. `MILESTONE_CHANGE_2.md`, `MILESTONE_CHANGE_3.md`, and
     `CHANGE_MODEL_ADMISSION.md` when changing Change
     calibration identity, labels, metrics, review maturity, or admission policy
+11. `RELEASING.md` when changing package metadata, public-release automation,
+    repository visibility procedure, or NuGet publication
 
 If an implementation request conflicts with those documents, surface the conflict
 and update the relevant decision explicitly. Do not silently change estimation
@@ -223,6 +225,15 @@ host-AI teacher. Development and validation diagnostics are recorded; test
 comparison remains withheld. No independent Change review is complete. The corpus
 changes no estimator prior and adds no ML dependency;
 `change-seed/0.1.0` remains experimental and uncalibrated.
+
+The public-alpha candidate includes project-authored governance and conduct
+policies, issue and pull-request templates, full-SHA-pinned Windows/Linux/macOS CI,
+weekly dependency update configuration, a dedicated NuGet README, and a manually
+dispatched `Fairbill.Tool` preview workflow. Package publication uses a protected
+`nuget.org` GitHub environment and short-lived NuGet trusted-publishing/OIDC
+credentials; long-lived publishing keys must not be committed or stored. The
+repository remains private and no package is public until the user separately
+authorizes those external actions. Follow `RELEASING.md` for the exact boundary.
 
 The following commands have been run successfully from the repository root:
 

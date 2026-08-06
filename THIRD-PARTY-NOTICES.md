@@ -1,7 +1,7 @@
 # Third-party notices
 
 This file records the third-party packages resolved by the checked-in NuGet lock
-files as of 2026-08-05. Package versions are centrally pinned in
+files and the actions pinned by release workflows as of 2026-08-06. Package versions are centrally pinned in
 `Directory.Packages.props`.
 
 Fairbill is licensed under the MIT License. Third-party components remain under
@@ -122,3 +122,16 @@ explicitly changes that fact.
 The authoritative license text and notices for each dependency are available in
 its source repository and NuGet package metadata. The NuGet lock files are the
 authoritative record of the versions resolved for this repository.
+
+## Continuous-integration actions
+
+Workflow actions are pinned to immutable commits. They run in GitHub Actions and
+are not redistributed inside `Fairbill.Tool`.
+
+| Action | Release | Commit | License |
+| --- | --- | --- | --- |
+| [`actions/checkout`](https://github.com/actions/checkout) | `7.0.1` | `3d3c42e5aac5ba805825da76410c181273ba90b1` | MIT |
+| [`actions/setup-dotnet`](https://github.com/actions/setup-dotnet) | `6.0.0` | `a98b56852c35b8e3190ac28c8c2271da59106c68` | MIT |
+| [`actions/upload-artifact`](https://github.com/actions/upload-artifact) | `7.0.1` | `043fb46d1a93c77aae656e7c1c64a875d1fc6a0a` | MIT |
+| [`actions/download-artifact`](https://github.com/actions/download-artifact) | `8.0.1` | `3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c` | MIT |
+| [`NuGet/login`](https://github.com/NuGet/login) | `1.2.0` | `8d196754b4036150537f80ac539e15c2f1028841` | Apache-2.0 |

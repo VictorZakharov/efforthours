@@ -1,0 +1,38 @@
+name: Feature request
+description: Propose a product, analyzer, reporting, or workflow improvement
+title: "[Feature]: "
+labels:
+  - type:feature
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Fairbill estimates counterfactual replacement effort, not historical labor.
+        Proposals that change that semantic boundary should explain the new evidence
+        and safeguards explicitly.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What user decision or workflow is currently expensive or unsupported?
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed outcome
+    validations:
+      required: true
+
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence and estimation impact
+      description: Describe new evidence, effort categories, privacy implications, and expected tests.
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
