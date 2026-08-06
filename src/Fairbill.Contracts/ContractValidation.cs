@@ -326,6 +326,251 @@ public static class ContractValidation
         return errors;
     }
 
+    public static IReadOnlyList<string> Validate(CalibrationCorpus corpus)
+    {
+        ArgumentNullException.ThrowIfNull(corpus);
+
+        List<string> errors = [];
+        RequireVersion(corpus.SchemaVersion, "calibration corpus", errors);
+        RequireText(corpus.Id, "corpus.id", errors);
+        RequireText(corpus.Version, "corpus.version", errors);
+        RequireText(corpus.Description, "corpus.description", errors);
+        RequireText(corpus.Rubric.Id, "corpus.rubric.id", errors);
+        RequireText(corpus.Rubric.Version, "corpus.rubric.version", errors);
+
+        if (corpus.Records.Count == 0)
+        {
+            errors.Add("The calibration corpus must contain at least one record.");
+        }
+
+        HashSet<string> recordIds = new(StringComparer.Ordinal);
+        Dictionary<string, CalibrationPartition> repositoryPartitions = new(StringComparer.Ordinal);
+        Dictionary<string, (string RepositoryId, CalibrationPartition Partition)> digestOwners =
+            new(StringComparer.Ordinal);
+        HashSet<(string SourceDigest, EstimationProfile Profile, string BaselineId)> matchKeys = [];
+
+        foreach (CalibrationRecord record in corpus.Records)
+        {
+            string path = $"record[{record.Id}]";
+            RequireText(record.Id, "record.id", errors);
+            if (!recordIds.Add(record.Id))
+            {
+                errors.Add($"Calibration record ID '{record.Id}' is duplicated.");
+            }
+
+            RequireText(record.Repository.Id, $"{path}.repository.id", errors);
+            RequireText(record.Repository.Name, $"{path}.repository.name", errors);
+            RequireDigest(record.Repository.SourceDigest, $"{path}.repository.sourceDigest", errors);
+            RequireText(record.BaselineId, $"{path}.baselineId", errors);
+            RequireText(record.SourceEstimatorVersion, $"{path}.sourceEstimatorVersion", errors);
+            RequireDigest(record.SourceEstimateDigest, $"{path}.sourceEstimateDigest", errors);
+
+            if (repositoryPartitions.TryGetValue(
+                    record.Repository.Id,
+                    out CalibrationPartition existingPartition) &&
+                existingPartition != record.Partition)
+            {
+                errors.Add(
+                    $"Repository '{record.Repository.Id}' occurs in both " +
+                    $"'{existingPartition}' and '{record.Partition}' partitions.");
+            }
+            else
+            {
+                repositoryPartitions[record.Repository.Id] = record.Partition;
+            }
+
+            if (digestOwners.TryGetValue(
+                    record.Repository.SourceDigest,
+                    out (string RepositoryId, CalibrationPartition Partition) owner) &&
+                (!string.Equals(owner.RepositoryId, record.Repository.Id, StringComparison.Ordinal) ||
+                 owner.Partition != record.Partition))
+            {
+                errors.Add(
+                    $"Source digest '{record.Repository.SourceDigest}' is assigned to conflicting " +
+                    "repository identities or partitions.");
+            }
+            else
+            {
+                digestOwners[record.Repository.SourceDigest] =
+                    (record.Repository.Id, record.Partition);
+            }
+
+            if (!matchKeys.Add((record.Repository.SourceDigest, record.Profile, record.BaselineId)))
+            {
+                errors.Add(
+                    $"More than one calibration record matches source digest " +
+                    $"'{record.Repository.SourceDigest}', profile '{record.Profile}', and " +
+                    $"baseline '{record.BaselineId}'.");
+            }
+
+            ValidateCalibrationSource(record.Source, path, errors);
+            ValidateCalibrationReview(record.Review, path, errors);
+            ValidateCalibrationTargets(record, path, errors);
+        }
+
+        return errors;
+    }
+
+    public static IReadOnlyList<string> Validate(CalibrationValidationSummary summary)
+    {
+        ArgumentNullException.ThrowIfNull(summary);
+
+        List<string> errors = [];
+        RequireVersion(summary.SchemaVersion, "calibration validation summary", errors);
+        RequireText(summary.CorpusId, "corpusId", errors);
+        RequireText(summary.CorpusVersion, "corpusVersion", errors);
+        if (!summary.Valid)
+        {
+            errors.Add("A successful calibration validation summary must be valid.");
+        }
+
+        if (summary.RecordCount <= 0 || summary.RepositoryCount <= 0)
+        {
+            errors.Add("Calibration validation counts must be positive.");
+        }
+
+        HashSet<CalibrationPartition> partitions = [];
+        foreach (CalibrationPartitionSummary partition in summary.Partitions)
+        {
+            if (!partitions.Add(partition.Partition))
+            {
+                errors.Add($"Partition summary '{partition.Partition}' is duplicated.");
+            }
+
+            if (partition.RecordCount <= 0 || partition.RepositoryCount <= 0)
+            {
+                errors.Add($"Partition '{partition.Partition}' counts must be positive.");
+            }
+        }
+
+        if (summary.Partitions.Sum(partition => partition.RecordCount) != summary.RecordCount)
+        {
+            errors.Add("Partition record counts do not equal the validation record count.");
+        }
+
+        return errors;
+    }
+
+    public static IReadOnlyList<string> Validate(CalibrationEvaluationReport report)
+    {
+        ArgumentNullException.ThrowIfNull(report);
+
+        List<string> errors = [];
+        RequireVersion(report.SchemaVersion, "calibration evaluation report", errors);
+        RequireText(report.EvaluatorVersion, "evaluatorVersion", errors);
+        RequireText(report.MetricVersion, "metricVersion", errors);
+        RequireText(report.CorpusId, "corpusId", errors);
+        RequireText(report.CorpusVersion, "corpusVersion", errors);
+        if (report.RecordCount <= 0 || report.RepositoryCount <= 0)
+        {
+            errors.Add("Calibration evaluation record and repository counts must be positive.");
+        }
+
+        if (report.IgnoredCandidateCount < 0)
+        {
+            errors.Add("ignoredCandidateCount cannot be negative.");
+        }
+
+        RequireUniqueText(report.CandidateEstimatorVersions, "candidateEstimatorVersions", errors);
+        if (report.CandidateEstimatorVersions.Count == 0)
+        {
+            errors.Add("At least one candidate estimator version is required.");
+        }
+
+        ValidateCalibrationMetrics(report.RepositoryTotals, "repositoryTotals", errors);
+        ValidateCalibrationMetrics(report.WorkItems, "workItems", errors);
+
+        HashSet<EffortCategory> categories = [];
+        foreach (CalibrationCategoryMetrics category in report.Categories)
+        {
+            if (!categories.Add(category.Category))
+            {
+                errors.Add($"Calibration category '{category.Category}' is duplicated.");
+            }
+
+            ValidateCalibrationMetrics(category.Metrics, $"category[{category.Category}]", errors);
+        }
+
+        if (report.Repositories.Count != report.RecordCount)
+        {
+            errors.Add("Repository evaluation count does not equal recordCount.");
+        }
+
+        HashSet<string> recordIds = new(StringComparer.Ordinal);
+        foreach (CalibrationRepositoryEvaluation repository in report.Repositories)
+        {
+            RequireText(repository.RecordId, "repository.recordId", errors);
+            RequireText(repository.RepositoryId, $"repository[{repository.RecordId}].repositoryId", errors);
+            RequireDigest(repository.SourceDigest, $"repository[{repository.RecordId}].sourceDigest", errors);
+            RequireText(repository.BaselineId, $"repository[{repository.RecordId}].baselineId", errors);
+            RequireText(
+                repository.CandidateEstimatorVersion,
+                $"repository[{repository.RecordId}].candidateEstimatorVersion",
+                errors);
+            RequireDigest(
+                repository.CandidateEstimateDigest,
+                $"repository[{repository.RecordId}].candidateEstimateDigest",
+                errors);
+            ValidateRange(repository.ReviewedTotal, $"repository[{repository.RecordId}].reviewedTotal", errors);
+            ValidateRange(repository.CandidateTotal, $"repository[{repository.RecordId}].candidateTotal", errors);
+
+            if (!recordIds.Add(repository.RecordId))
+            {
+                errors.Add($"Repository evaluation record ID '{repository.RecordId}' is duplicated.");
+            }
+
+            if (repository.ExpectedAbsoluteErrorHours < 0m)
+            {
+                errors.Add($"Repository '{repository.RecordId}' absolute error cannot be negative.");
+            }
+
+            if (repository.TargetCount < 0 ||
+                repository.MatchedTargetCount < 0 ||
+                repository.MatchedTargetCount > repository.TargetCount ||
+                repository.CandidateWorkItemCount < 0 ||
+                repository.MatchedCandidateWorkItemCount < 0 ||
+                repository.MatchedCandidateWorkItemCount > repository.CandidateWorkItemCount)
+            {
+                errors.Add($"Repository '{repository.RecordId}' contains invalid match counts.");
+            }
+
+            RequireUniqueText(repository.UnmatchedTargetIds, $"repository[{repository.RecordId}].unmatchedTargetIds", errors);
+            RequireUniqueText(
+                repository.UnmatchedCandidateWorkItemIds,
+                $"repository[{repository.RecordId}].unmatchedCandidateWorkItemIds",
+                errors);
+            RequireUniqueText(
+                repository.CategoryMismatchTargetIds,
+                $"repository[{repository.RecordId}].categoryMismatchTargetIds",
+                errors);
+        }
+
+        if (report.Repositories.Select(repository => repository.RepositoryId)
+                .Distinct(StringComparer.Ordinal)
+                .Count() != report.RepositoryCount)
+        {
+            errors.Add("Distinct repository evaluation count does not equal repositoryCount.");
+        }
+
+        ValidateMatchSummary(report.Match, errors);
+        if (report.Match.TargetCount != report.Repositories.Sum(repository => repository.TargetCount) ||
+            report.Match.MatchedTargetCount != report.Repositories.Sum(repository => repository.MatchedTargetCount) ||
+            report.Match.CandidateWorkItemCount != report.Repositories.Sum(repository => repository.CandidateWorkItemCount) ||
+            report.Match.MatchedCandidateWorkItemCount !=
+                report.Repositories.Sum(repository => repository.MatchedCandidateWorkItemCount))
+        {
+            errors.Add("Aggregate match counts do not equal repository match counts.");
+        }
+
+        if (report.RepositoryTotals.Expected.SampleCount != report.RecordCount ||
+            report.WorkItems.Expected.SampleCount != report.Match.MatchedTargetCount)
+        {
+            errors.Add("Metric sample counts do not match their evaluation populations.");
+        }
+
+        return errors;
+    }
+
     public static EffortRange Sum(IEnumerable<EffortRange> ranges)
     {
         ArgumentNullException.ThrowIfNull(ranges);
@@ -537,6 +782,248 @@ public static class ContractValidation
         if (range.Low < 0m || range.Low > range.Expected || range.Expected > range.High)
         {
             errors.Add($"{path} must satisfy 0 <= low <= expected <= high.");
+        }
+    }
+
+    private static void ValidateCalibrationSource(
+        CalibrationSourceProvenance source,
+        string recordPath,
+        List<string> errors)
+    {
+        RequireText(source.SourceReference, $"{recordPath}.source.sourceReference", errors);
+        RequireText(source.Revision, $"{recordPath}.source.revision", errors);
+        RequireText(source.LicenseExpression, $"{recordPath}.source.licenseExpression", errors);
+
+        if (source.DataClassification == CalibrationDataClassification.Private &&
+            source.RedistributionAllowed)
+        {
+            errors.Add($"{recordPath} is classified private but permits redistribution.");
+        }
+
+        if (source.DataClassification != CalibrationDataClassification.Private &&
+            !source.RedistributionAllowed)
+        {
+            errors.Add($"{recordPath} is public or synthetic but does not permit redistribution.");
+        }
+    }
+
+    private static void ValidateCalibrationReview(
+        CalibrationReviewProvenance review,
+        string recordPath,
+        List<string> errors)
+    {
+        if (review.CompletedOn == default)
+        {
+            errors.Add($"{recordPath}.review.completedOn is required.");
+        }
+
+        if (review.Reviewers.Count == 0)
+        {
+            errors.Add($"{recordPath}.review.reviewers must contain at least one reviewer.");
+        }
+
+        HashSet<(string Id, CalibrationReviewerRole Role)> reviewers = [];
+        foreach (CalibrationReviewer reviewer in review.Reviewers)
+        {
+            RequireText(reviewer.Id, $"{recordPath}.review.reviewer.id", errors);
+            if (!reviewers.Add((reviewer.Id, reviewer.Role)))
+            {
+                errors.Add(
+                    $"Reviewer '{reviewer.Id}' has duplicate role '{reviewer.Role}' in {recordPath}.");
+            }
+
+            if (reviewer.Kind == CalibrationReviewerKind.HostAi)
+            {
+                RequireText(reviewer.ModelId, $"{recordPath}.review.reviewer[{reviewer.Id}].modelId", errors);
+                RequireText(
+                    reviewer.ModelVersion,
+                    $"{recordPath}.review.reviewer[{reviewer.Id}].modelVersion",
+                    errors);
+            }
+        }
+
+        if (!review.Reviewers.Any(reviewer => reviewer.Role == CalibrationReviewerRole.Teacher))
+        {
+            errors.Add($"{recordPath}.review requires a '{CalibrationReviewerRole.Teacher}' role.");
+        }
+
+        if (review.Status is CalibrationReviewStatus.Reviewed or CalibrationReviewStatus.Adjudicated &&
+            !review.Reviewers.Any(reviewer => reviewer.Role == CalibrationReviewerRole.Reviewer))
+        {
+            errors.Add(
+                $"{recordPath}.review status '{review.Status}' requires a " +
+                $"'{CalibrationReviewerRole.Reviewer}' role.");
+        }
+
+        if (review.Status == CalibrationReviewStatus.Adjudicated &&
+            !review.Reviewers.Any(reviewer => reviewer.Role == CalibrationReviewerRole.Adjudicator))
+        {
+            errors.Add(
+                $"{recordPath}.review status '{review.Status}' requires an " +
+                $"'{CalibrationReviewerRole.Adjudicator}' role.");
+        }
+    }
+
+    private static void ValidateCalibrationTargets(
+        CalibrationRecord record,
+        string recordPath,
+        List<string> errors)
+    {
+        if (record.Targets.Count == 0)
+        {
+            errors.Add($"{recordPath}.targets must contain at least one target.");
+        }
+
+        HashSet<string> targetIds = new(StringComparer.Ordinal);
+        HashSet<string> sourceWorkItemIds = new(StringComparer.Ordinal);
+        foreach (CalibrationTarget target in record.Targets)
+        {
+            string path = $"{recordPath}.target[{target.Id}]";
+            RequireText(target.Id, $"{recordPath}.target.id", errors);
+            RequireText(target.Title, $"{path}.title", errors);
+            RequireText(target.Scope, $"{path}.scope", errors);
+            RequireText(target.Rationale, $"{path}.rationale", errors);
+            ValidateRange(target.Hours, $"{path}.hours", errors);
+            if (target.Hours.Expected <= 0m)
+            {
+                errors.Add($"{path}.hours.expected must be positive.");
+            }
+
+            if (target.Hours.Expected is < 0.5m or > 8m &&
+                string.IsNullOrWhiteSpace(target.SizeException))
+            {
+                errors.Add($"{path} falls outside 0.5-to-8 expected hours and requires sizeException.");
+            }
+
+            if (!targetIds.Add(target.Id))
+            {
+                errors.Add($"Calibration target ID '{target.Id}' is duplicated in record '{record.Id}'.");
+            }
+
+            if (target.SourceWorkItemIds.Count == 0)
+            {
+                errors.Add($"{path}.sourceWorkItemIds must contain at least one ID.");
+            }
+
+            RequireUniqueText(target.SourceWorkItemIds, $"{path}.sourceWorkItemIds", errors);
+            foreach (string sourceWorkItemId in target.SourceWorkItemIds)
+            {
+                if (!sourceWorkItemIds.Add(sourceWorkItemId))
+                {
+                    errors.Add(
+                        $"Source work-item ID '{sourceWorkItemId}' is mapped to more than one target " +
+                        $"in record '{record.Id}'.");
+                }
+            }
+
+            if (target.EvidenceIds.Count == 0)
+            {
+                errors.Add($"{path}.evidenceIds must contain at least one ID.");
+            }
+
+            RequireUniqueText(target.EvidenceIds, $"{path}.evidenceIds", errors);
+            RequireUniqueText(target.UncertaintyReasons, $"{path}.uncertaintyReasons", errors);
+        }
+    }
+
+    private static void ValidateCalibrationMetrics(
+        CalibrationRangeMetrics metrics,
+        string path,
+        List<string> errors)
+    {
+        ValidatePointMetrics(metrics.Low, $"{path}.low", errors);
+        ValidatePointMetrics(metrics.Expected, $"{path}.expected", errors);
+        ValidatePointMetrics(metrics.High, $"{path}.high", errors);
+
+        CalibrationIntervalMetrics interval = metrics.Interval;
+        if (interval.SampleCount < 0 ||
+            interval.ReviewedExpectedCoveredCount < 0 ||
+            interval.ReviewedExpectedCoveredCount > interval.SampleCount ||
+            interval.ReviewedRangeFullyCoveredCount < 0 ||
+            interval.ReviewedRangeFullyCoveredCount > interval.SampleCount ||
+            interval.MeanCandidateWidthHours < 0m ||
+            interval.MeanReviewedWidthHours < 0m)
+        {
+            errors.Add($"{path}.interval contains invalid counts or widths.");
+        }
+
+        ValidateUnitRatio(interval.ReviewedExpectedCoverage, $"{path}.interval.reviewedExpectedCoverage", errors);
+        ValidateUnitRatio(
+            interval.ReviewedRangeFullyCoveredRate,
+            $"{path}.interval.reviewedRangeFullyCoveredRate",
+            errors);
+    }
+
+    private static void ValidatePointMetrics(
+        CalibrationPointMetrics metrics,
+        string path,
+        List<string> errors)
+    {
+        if (metrics.SampleCount < 0 ||
+            metrics.ReviewedHours < 0m ||
+            metrics.CandidateHours < 0m ||
+            metrics.MeanAbsoluteErrorHours < 0m ||
+            metrics.MedianAbsoluteErrorHours < 0m ||
+            metrics.RootMeanSquaredErrorHours < 0m ||
+            metrics.WeightedAbsolutePercentageError < 0m)
+        {
+            errors.Add($"{path} contains invalid counts, hours, or nonnegative error metrics.");
+        }
+    }
+
+    private static void ValidateMatchSummary(CalibrationMatchSummary match, List<string> errors)
+    {
+        if (match.TargetCount < 0 ||
+            match.MatchedTargetCount < 0 ||
+            match.MatchedTargetCount > match.TargetCount ||
+            match.SourceWorkItemReferenceCount < 0 ||
+            match.MatchedSourceWorkItemReferenceCount < 0 ||
+            match.MatchedSourceWorkItemReferenceCount > match.SourceWorkItemReferenceCount ||
+            match.CandidateWorkItemCount < 0 ||
+            match.MatchedCandidateWorkItemCount < 0 ||
+            match.MatchedCandidateWorkItemCount > match.CandidateWorkItemCount)
+        {
+            errors.Add("Calibration aggregate match counts are invalid.");
+        }
+
+        ValidateUnitRatio(match.TargetMatchRate, "match.targetMatchRate", errors);
+        ValidateUnitRatio(
+            match.SourceWorkItemReferenceMatchRate,
+            "match.sourceWorkItemReferenceMatchRate",
+            errors);
+        ValidateUnitRatio(match.CandidateWorkItemMatchRate, "match.candidateWorkItemMatchRate", errors);
+    }
+
+    private static void RequireDigest(string? value, string path, List<string> errors)
+    {
+        RequireText(value, path, errors);
+        if (value is not null && !value.StartsWith("sha256:", StringComparison.Ordinal))
+        {
+            errors.Add($"{path} must start with 'sha256:'.");
+        }
+    }
+
+    private static void RequireUniqueText(
+        IReadOnlyList<string> values,
+        string path,
+        List<string> errors)
+    {
+        HashSet<string> unique = new(StringComparer.Ordinal);
+        foreach (string value in values)
+        {
+            RequireText(value, path, errors);
+            if (!unique.Add(value))
+            {
+                errors.Add($"{path} contains duplicate value '{value}'.");
+            }
+        }
+    }
+
+    private static void ValidateUnitRatio(decimal? value, string path, List<string> errors)
+    {
+        if (value is < 0m or > 1m)
+        {
+            errors.Add($"{path} must be between 0 and 1 when present.");
         }
     }
 

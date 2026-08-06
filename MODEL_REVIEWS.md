@@ -7,8 +7,16 @@ the model until one repository looks desirable.
 
 Each record must identify the analyzed source revision, evidence digest, estimator
 artifact, profiles, review method, and unresolved concerns. Repository-level
-train/test separation will be defined before these records are used to train or
-select a model.
+partition isolation is now defined by `MILESTONE_7.md` and enforced by the v1
+calibration-corpus contract. Existing prose anchors do not become calibration
+records automatically: they must be transcribed at work-item granularity, reviewed
+under a versioned rubric, assigned to a repository-owned partition, and supplied
+with the required source/license/distribution provenance. Revisions are retained
+only for reproducibility and never become effort signals.
+
+Because Fairbill's own anchor informed the seed-model and calibration design, it is
+a development diagnostic rather than an eligible held-out test record unless a
+future independent snapshot and review policy explicitly establishes otherwise.
 
 ## 2026-08-05: Fairbill at `f84a58a`
 

@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using System.Text.Json;
+using System.Text.Json.Nodes;
 
 namespace Fairbill.EndToEndTests;
 
@@ -192,6 +193,69 @@ public sealed class CliTests
     }
 
     [Fact]
+    public async Task CalibrationValidatesAndEvaluatesARepositoryHeldOutPartition()
+    {
+        string fixture = Path.Combine(AppContext.BaseDirectory, "fixtures", "evidence", "minimal.repository-evidence.json");
+        ProcessResult estimate = await RunCliAsync("estimate", fixture, "--no-rate", "--compact");
+        Assert.Equal(0, estimate.ExitCode);
+
+        using TemporaryRepository repository = new();
+        repository.WriteText("estimate.json", estimate.StandardOutput);
+        repository.WriteText("corpus.json", CreateCalibrationCorpus(estimate.StandardOutput));
+        string corpusPath = Path.Combine(repository.RootPath, "corpus.json");
+        string estimatePath = Path.Combine(repository.RootPath, "estimate.json");
+
+        ProcessResult validation = await RunCliAsync(
+            "calibration",
+            "validate",
+            corpusPath,
+            "--compact");
+        ProcessResult evaluation = await RunCliAsync(
+            "calibration",
+            "evaluate",
+            corpusPath,
+            estimatePath,
+            "--partition",
+            "test",
+            "--compact");
+        ProcessResult wrongPartition = await RunCliAsync(
+            "calibration",
+            "evaluate",
+            corpusPath,
+            estimatePath,
+            "--partition",
+            "development",
+            "--compact");
+
+        Assert.Equal(0, validation.ExitCode);
+        Assert.Equal(string.Empty, validation.StandardError);
+        using JsonDocument validationDocument = JsonDocument.Parse(validation.StandardOutput);
+        Assert.True(validationDocument.RootElement.GetProperty("valid").GetBoolean());
+        Assert.Equal(1, validationDocument.RootElement.GetProperty("repositoryCount").GetInt32());
+
+        Assert.Equal(0, evaluation.ExitCode);
+        Assert.Equal(string.Empty, evaluation.StandardError);
+        using JsonDocument evaluationDocument = JsonDocument.Parse(evaluation.StandardOutput);
+        Assert.Equal(
+            "calibration-metrics/1.0.0",
+            evaluationDocument.RootElement.GetProperty("metricVersion").GetString());
+        Assert.Equal(
+            0m,
+            evaluationDocument.RootElement
+                .GetProperty("repositoryTotals")
+                .GetProperty("expected")
+                .GetProperty("weightedAbsolutePercentageError")
+                .GetDecimal());
+        Assert.Equal(
+            1m,
+            evaluationDocument.RootElement.GetProperty("match").GetProperty("targetMatchRate").GetDecimal());
+
+        Assert.Equal(3, wrongPartition.ExitCode);
+        Assert.Equal(string.Empty, wrongPartition.StandardOutput);
+        Assert.Contains("no 'Development' records", wrongPartition.StandardError, StringComparison.Ordinal);
+    }
+
+    [Fact]
     public async Task EstimateCanRenderRecreationMarkdownWithCallerRate()
     {
         string fixture = Path.Combine(AppContext.BaseDirectory, "fixtures", "evidence", "minimal.repository-evidence.json");
@@ -334,6 +398,86 @@ public sealed class CliTests
             process.ExitCode,
             (await stdout).Replace("\r\n", "\n", StringComparison.Ordinal).TrimEnd(),
             (await stderr).Replace("\r\n", "\n", StringComparison.Ordinal).TrimEnd());
+    }
+
+    private static string CreateCalibrationCorpus(string estimateJson)
+    {
+        JsonObject estimate = JsonNode.Parse(estimateJson)!.AsObject();
+        JsonArray targets = [];
+        foreach (JsonNode? node in estimate["workItems"]!.AsArray())
+        {
+            JsonObject item = node!.AsObject();
+            targets.Add(new JsonObject
+            {
+                ["id"] = $"target:{item["id"]!.GetValue<string>()}",
+                ["category"] = item["category"]!.DeepClone(),
+                ["title"] = item["title"]!.DeepClone(),
+                ["scope"] = item["scope"]!.DeepClone(),
+                ["sourceWorkItemIds"] = new JsonArray(item["id"]!.DeepClone()),
+                ["evidenceIds"] = item["evidenceIds"]!.DeepClone(),
+                ["hours"] = item["hours"]!.DeepClone(),
+                ["rationale"] = "Synthetic CLI calibration target.",
+                ["uncertaintyReasons"] = item["uncertaintyReasons"]!.DeepClone(),
+            });
+        }
+
+        JsonObject corpus = new()
+        {
+            ["schemaVersion"] = "1.0.0",
+            ["id"] = "synthetic-cli-corpus",
+            ["version"] = "1.0.0",
+            ["description"] = "Process-level synthetic calibration fixture.",
+            ["rubric"] = new JsonObject
+            {
+                ["id"] = "ehe-work-item",
+                ["version"] = "1.0.0",
+            },
+            ["records"] = new JsonArray
+            {
+                new JsonObject
+                {
+                    ["id"] = "record:minimal:implementation",
+                    ["repository"] = new JsonObject
+                    {
+                        ["id"] = "repository:minimal",
+                        ["name"] = estimate["repository"]!["name"]!.DeepClone(),
+                        ["sourceDigest"] = estimate["repository"]!["sourceDigest"]!.DeepClone(),
+                    },
+                    ["profile"] = estimate["profile"]!.DeepClone(),
+                    ["baselineId"] = estimate["baseline"]!["id"]!.DeepClone(),
+                    ["partition"] = "test",
+                    ["sourceEstimatorVersion"] = estimate["estimatorVersion"]!.DeepClone(),
+                    ["sourceEstimateDigest"] = "sha256:synthetic-cli-source-estimate",
+                    ["source"] = new JsonObject
+                    {
+                        ["dataClassification"] = "synthetic",
+                        ["sourceReference"] = "synthetic:end-to-end-fixture",
+                        ["revision"] = "1",
+                        ["licenseExpression"] = "MIT",
+                        ["redistributionAllowed"] = true,
+                    },
+                    ["review"] = new JsonObject
+                    {
+                        ["status"] = "teacher-estimate",
+                        ["completedOn"] = "2026-08-06",
+                        ["reviewers"] = new JsonArray
+                        {
+                            new JsonObject
+                            {
+                                ["id"] = "teacher:e2e",
+                                ["kind"] = "host-ai",
+                                ["role"] = "teacher",
+                                ["modelId"] = "synthetic",
+                                ["modelVersion"] = "1",
+                            },
+                        },
+                    },
+                    ["targets"] = targets,
+                },
+            },
+        };
+
+        return corpus.ToJsonString();
     }
 
     private static string FindRepositoryRoot()

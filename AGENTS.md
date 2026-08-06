@@ -148,7 +148,7 @@ semantics.
 
 ## Current project stage
 
-Milestones 1 through 6 are complete. The repository has a working common scanner,
+Milestones 1 through 6 and Milestone 7A are complete. The repository has a working common scanner,
 static .NET project/Roslyn analyzer, static JavaScript/TypeScript package and source
 analyzer, mixed-repository evidence pipeline, published v1 schemas, optional
 external scan cache, installable global-tool package, memory-only unit fixtures,
@@ -162,7 +162,11 @@ described as production-ready. Milestone 6 adds schema-versioned compact
 projections, capability and evidence explanation, saved-report reprojection, and
 the auditable `us-senior-software-contractor/2026.1` default rate. Its Fairbill
 review projection is 7.4% of compact full JSON in the recorded checkpoint.
-Milestone 7 calibration and local ML are next.
+Milestone 7A adds versioned reviewed-label and evaluation contracts, an
+`ehe-work-item/1.0.0` rubric, repository-isolated partitions, deterministic offline
+item/category/total/bias/interval metrics, and `calibration validate/evaluate` CLI
+commands. The seed model is still uncalibrated. A diverse licensed corpus and
+baseline measurements are next; local ML has not been selected or added.
 
 The following commands have been run successfully from the repository root:
 

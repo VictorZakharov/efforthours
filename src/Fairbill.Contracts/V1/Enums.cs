@@ -52,6 +52,40 @@ public enum EstimatorKind
     Human,
 }
 
+public enum CalibrationPartition
+{
+    Development,
+    Validation,
+    Test,
+}
+
+public enum CalibrationReviewStatus
+{
+    TeacherEstimate,
+    Reviewed,
+    Adjudicated,
+}
+
+public enum CalibrationReviewerKind
+{
+    Human,
+    HostAi,
+}
+
+public enum CalibrationReviewerRole
+{
+    Teacher,
+    Reviewer,
+    Adjudicator,
+}
+
+public enum CalibrationDataClassification
+{
+    PublicRedistributable,
+    Private,
+    Synthetic,
+}
+
 public enum VerificationMode
 {
     StaticAssumed,

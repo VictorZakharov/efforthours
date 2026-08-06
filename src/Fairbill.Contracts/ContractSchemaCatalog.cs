@@ -10,6 +10,9 @@ public static class ContractSchemaCatalog
 
     public static IReadOnlyList<string> Names { get; } =
     [
+        SchemaNames.CalibrationCorpus,
+        SchemaNames.CalibrationEvaluation,
+        SchemaNames.CalibrationValidation,
         SchemaNames.Diagnostic,
         SchemaNames.EstimateExplanation,
         SchemaNames.EstimateReport,

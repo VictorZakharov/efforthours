@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <Description>Offline calibration validation and evaluation for Fairbill estimates.</Description>
+    <RootNamespace>Fairbill.Calibration</RootNamespace>
+    <AssemblyName>Fairbill.Calibration</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../Fairbill.Contracts/Fairbill.Contracts.csproj" />
+  </ItemGroup>
+</Project>

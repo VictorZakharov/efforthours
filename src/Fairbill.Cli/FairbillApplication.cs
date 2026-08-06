@@ -2,6 +2,7 @@ using System.Globalization;
 using System.Reflection;
 using System.Text;
 using Fairbill.Analysis;
+using Fairbill.Calibration;
 using Fairbill.Contracts;
 using Fairbill.Contracts.V1;
 using Fairbill.Core;
@@ -68,6 +69,11 @@ public sealed class FairbillApplication
                     standardError,
                     cancellationToken).ConfigureAwait(false),
                 "explain" => await ExplainAsync(
+                    [.. arguments.Skip(1)],
+                    standardOutput,
+                    standardError,
+                    cancellationToken).ConfigureAwait(false),
+                "calibration" => await CalibrationAsync(
                     [.. arguments.Skip(1)],
                     standardOutput,
                     standardError,
@@ -802,6 +808,326 @@ public sealed class FairbillApplication
             : new EstimateViewJsonRenderer(compact).Render(projection);
     }
 
+    private static async Task<int> CalibrationAsync(
+        string[] arguments,
+        TextWriter standardOutput,
+        TextWriter standardError,
+        CancellationToken cancellationToken)
+    {
+        if (arguments.Length == 0 || IsHelp(arguments[0]))
+        {
+            await standardOutput.WriteLineAsync(CalibrationHelpText).ConfigureAwait(false);
+            return arguments.Length == 0 ? CliExitCodes.UsageError : CliExitCodes.Success;
+        }
+
+        return arguments[0] switch
+        {
+            "validate" => await ValidateCalibrationAsync(
+                [.. arguments.Skip(1)],
+                standardOutput,
+                standardError,
+                cancellationToken).ConfigureAwait(false),
+            "evaluate" => await EvaluateCalibrationAsync(
+                [.. arguments.Skip(1)],
+                standardOutput,
+                standardError,
+                cancellationToken).ConfigureAwait(false),
+            _ => await UsageErrorAsync(
+                standardError,
+                "Expected 'calibration validate' or 'calibration evaluate'.").ConfigureAwait(false),
+        };
+    }
+
+    private static async Task<int> ValidateCalibrationAsync(
+        string[] arguments,
+        TextWriter standardOutput,
+        TextWriter standardError,
+        CancellationToken cancellationToken)
+    {
+        if (arguments.Length == 0 || IsHelp(arguments[0]))
+        {
+            await standardOutput.WriteLineAsync(CalibrationValidateHelpText).ConfigureAwait(false);
+            return arguments.Length == 0 ? CliExitCodes.UsageError : CliExitCodes.Success;
+        }
+
+        string corpusPath = arguments[0];
+        bool compact = false;
+        foreach (string option in arguments.Skip(1))
+        {
+            if (option == "--compact")
+            {
+                compact = true;
+                continue;
+            }
+
+            if (IsHelp(option))
+            {
+                await standardOutput.WriteLineAsync(CalibrationValidateHelpText).ConfigureAwait(false);
+                return CliExitCodes.Success;
+            }
+
+            return await UsageErrorAsync(
+                standardError,
+                $"Unknown calibration validate option '{option}'.").ConfigureAwait(false);
+        }
+
+        CalibrationCorpus? corpus = await LoadCalibrationCorpusAsync(
+            corpusPath,
+            standardError,
+            cancellationToken).ConfigureAwait(false);
+        if (corpus is null)
+        {
+            return CliExitCodes.InvalidInput;
+        }
+
+        CalibrationValidationSummary summary;
+        try
+        {
+            summary = CalibrationEvaluator.Summarize(corpus);
+        }
+        catch (CalibrationEvaluationException exception)
+        {
+            await WriteCalibrationErrorsAsync(standardError, exception.Errors).ConfigureAwait(false);
+            return CliExitCodes.InvalidInput;
+        }
+
+        string json = compact
+            ? ContractJson.SerializeCompact(summary)
+            : ContractJson.Serialize(summary);
+        SchemaValidationResult schema = ContractSchemaValidator.Validate(
+            SchemaNames.CalibrationValidation,
+            json);
+        if (!schema.IsValid)
+        {
+            await standardError.WriteLineAsync(
+                "The calibration validator produced an invalid summary.").ConfigureAwait(false);
+            foreach (string error in schema.Errors)
+            {
+                await standardError.WriteLineAsync($"- {error}").ConfigureAwait(false);
+            }
+
+            return CliExitCodes.InternalError;
+        }
+
+        await standardOutput.WriteLineAsync(json).ConfigureAwait(false);
+        return CliExitCodes.Success;
+    }
+
+    private static async Task<int> EvaluateCalibrationAsync(
+        string[] arguments,
+        TextWriter standardOutput,
+        TextWriter standardError,
+        CancellationToken cancellationToken)
+    {
+        if (arguments.Length == 0 || IsHelp(arguments[0]))
+        {
+            await standardOutput.WriteLineAsync(CalibrationEvaluateHelpText).ConfigureAwait(false);
+            return arguments.Length == 0 ? CliExitCodes.UsageError : CliExitCodes.Success;
+        }
+
+        string corpusPath = arguments[0];
+        List<string> candidatePaths = [];
+        CalibrationPartition? partition = null;
+        bool compact = false;
+        for (int index = 1; index < arguments.Length; index++)
+        {
+            string option = arguments[index];
+            if (option == "--compact")
+            {
+                compact = true;
+                continue;
+            }
+
+            if (option == "--partition")
+            {
+                if (index + 1 >= arguments.Length)
+                {
+                    return await UsageErrorAsync(
+                        standardError,
+                        "Option '--partition' requires a value.").ConfigureAwait(false);
+                }
+
+                string value = arguments[++index];
+                if (!TryParseCalibrationPartition(value, out CalibrationPartition parsed))
+                {
+                    return await UsageErrorAsync(
+                        standardError,
+                        $"Unknown calibration partition '{value}'.").ConfigureAwait(false);
+                }
+
+                if (partition is not null)
+                {
+                    return await UsageErrorAsync(
+                        standardError,
+                        "Option '--partition' can be supplied only once.").ConfigureAwait(false);
+                }
+
+                partition = parsed;
+                continue;
+            }
+
+            if (IsHelp(option))
+            {
+                await standardOutput.WriteLineAsync(CalibrationEvaluateHelpText).ConfigureAwait(false);
+                return CliExitCodes.Success;
+            }
+
+            if (option.StartsWith("--", StringComparison.Ordinal))
+            {
+                return await UsageErrorAsync(
+                    standardError,
+                    $"Unknown calibration evaluate option '{option}'.").ConfigureAwait(false);
+            }
+
+            candidatePaths.Add(option);
+        }
+
+        if (partition is null)
+        {
+            return await UsageErrorAsync(
+                standardError,
+                "Calibration evaluation requires '--partition <development|validation|test>'.")
+                .ConfigureAwait(false);
+        }
+
+        if (candidatePaths.Count == 0)
+        {
+            return await UsageErrorAsync(
+                standardError,
+                "Calibration evaluation requires at least one estimate path.").ConfigureAwait(false);
+        }
+
+        CalibrationCorpus? corpus = await LoadCalibrationCorpusAsync(
+            corpusPath,
+            standardError,
+            cancellationToken).ConfigureAwait(false);
+        if (corpus is null)
+        {
+            return CliExitCodes.InvalidInput;
+        }
+
+        List<EstimateReport> candidates = [];
+        foreach (string candidatePath in candidatePaths)
+        {
+            EstimateReport? candidate = await LoadEstimateAsync(
+                candidatePath,
+                standardError,
+                cancellationToken).ConfigureAwait(false);
+            if (candidate is null)
+            {
+                return CliExitCodes.InvalidInput;
+            }
+
+            candidates.Add(candidate);
+        }
+
+        CalibrationEvaluationReport report;
+        try
+        {
+            report = CalibrationEvaluator.Evaluate(corpus, candidates, partition.Value);
+        }
+        catch (CalibrationEvaluationException exception)
+        {
+            await WriteCalibrationErrorsAsync(standardError, exception.Errors).ConfigureAwait(false);
+            return CliExitCodes.InvalidInput;
+        }
+
+        string json = compact
+            ? ContractJson.SerializeCompact(report)
+            : ContractJson.Serialize(report);
+        SchemaValidationResult schema = ContractSchemaValidator.Validate(
+            SchemaNames.CalibrationEvaluation,
+            json);
+        if (!schema.IsValid)
+        {
+            await standardError.WriteLineAsync(
+                "The calibration evaluator produced an invalid report.").ConfigureAwait(false);
+            foreach (string error in schema.Errors)
+            {
+                await standardError.WriteLineAsync($"- {error}").ConfigureAwait(false);
+            }
+
+            return CliExitCodes.InternalError;
+        }
+
+        await standardOutput.WriteLineAsync(json).ConfigureAwait(false);
+        return CliExitCodes.Success;
+    }
+
+    private static async Task<CalibrationCorpus?> LoadCalibrationCorpusAsync(
+        string inputPath,
+        TextWriter standardError,
+        CancellationToken cancellationToken)
+    {
+        if (!File.Exists(inputPath))
+        {
+            await standardError.WriteLineAsync($"Calibration corpus path was not found: {inputPath}")
+                .ConfigureAwait(false);
+            return null;
+        }
+
+        string json;
+        try
+        {
+            json = await File.ReadAllTextAsync(inputPath, cancellationToken).ConfigureAwait(false);
+        }
+        catch (Exception exception) when (exception is IOException or UnauthorizedAccessException)
+        {
+            await standardError.WriteLineAsync($"Could not read calibration corpus: {exception.Message}")
+                .ConfigureAwait(false);
+            return null;
+        }
+
+        SchemaValidationResult schema = ContractSchemaValidator.Validate(
+            SchemaNames.CalibrationCorpus,
+            json);
+        if (!schema.IsValid)
+        {
+            await standardError.WriteLineAsync(
+                "Calibration corpus does not satisfy the calibration-corpus schema:")
+                .ConfigureAwait(false);
+            foreach (string error in schema.Errors)
+            {
+                await standardError.WriteLineAsync($"- {error}").ConfigureAwait(false);
+            }
+
+            return null;
+        }
+
+        CalibrationCorpus corpus;
+        try
+        {
+            corpus = ContractJson.Deserialize<CalibrationCorpus>(json);
+        }
+        catch (System.Text.Json.JsonException exception)
+        {
+            await standardError.WriteLineAsync(
+                $"Could not deserialize calibration corpus: {exception.Message}").ConfigureAwait(false);
+            return null;
+        }
+
+        IReadOnlyList<string> errors = ContractValidation.Validate(corpus);
+        if (errors.Count == 0)
+        {
+            return corpus;
+        }
+
+        await WriteCalibrationErrorsAsync(standardError, errors).ConfigureAwait(false);
+        return null;
+    }
+
+    private static async Task WriteCalibrationErrorsAsync(
+        TextWriter standardError,
+        IReadOnlyList<string> errors)
+    {
+        await standardError.WriteLineAsync("Calibration input is semantically invalid:")
+            .ConfigureAwait(false);
+        foreach (string error in errors)
+        {
+            await standardError.WriteLineAsync($"- {error}").ConfigureAwait(false);
+        }
+    }
+
     private static async Task<int> SchemaAsync(
         string[] arguments,
         TextWriter standardOutput,
@@ -959,6 +1285,27 @@ public sealed class FairbillApplication
         }
     }
 
+    private static bool TryParseCalibrationPartition(
+        string value,
+        out CalibrationPartition partition)
+    {
+        switch (value.ToLowerInvariant())
+        {
+            case "development":
+                partition = CalibrationPartition.Development;
+                return true;
+            case "validation":
+                partition = CalibrationPartition.Validation;
+                return true;
+            case "test":
+                partition = CalibrationPartition.Test;
+                return true;
+            default:
+                partition = default;
+                return false;
+        }
+    }
+
     private const string HelpText = """
         Fairbill - estimate equivalent non-AI human effort represented by software.
 
@@ -967,6 +1314,8 @@ public sealed class FairbillApplication
           fairbill estimate <repository-or-evidence.json> [options]
           fairbill report <estimate.json> [options]
           fairbill explain <repository-or-evidence.json> --item <id> [options]
+          fairbill calibration validate <corpus.json> [--compact]
+          fairbill calibration evaluate <corpus.json> <estimate.json>... --partition <name> [--compact]
           fairbill schema list
           fairbill schema show <name>
           fairbill model info
@@ -982,6 +1331,30 @@ public sealed class FairbillApplication
         configuration. Fairbill does not execute target code, access Git history,
         install dependencies, or emit source excerpts. The current seed estimator is
         explicitly uncalibrated and must not be treated as a production estimate.
+        """;
+
+    private const string CalibrationHelpText = """
+        Usage:
+          fairbill calibration validate <corpus.json> [--compact]
+          fairbill calibration evaluate <corpus.json> <estimate.json>... --partition <name> [--compact]
+
+        Calibration is offline and effort-only. Reviewed labels are weak supervision,
+        not historical labor or literal ground truth.
+        """;
+
+    private const string CalibrationValidateHelpText = """
+        Usage:
+          fairbill calibration validate <corpus.json> [--compact]
+        """;
+
+    private const string CalibrationEvaluateHelpText = """
+        Usage:
+          fairbill calibration evaluate <corpus.json> <estimate.json>... [options]
+
+        Options:
+          --partition <development|validation|test>  Required repository-held-out partition
+          --compact                                  Emit compact JSON
+          -h, --help                                 Show this help
         """;
 
     private const string ScanHelpText = """

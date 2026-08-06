@@ -31,8 +31,9 @@ src/
   Fairbill.Analyzers.DotNet/     .NET/MSBuild/Roslyn evidence
   Fairbill.Analyzers.JavaScript/ JavaScript/TypeScript evidence
   Fairbill.Estimation/           rules, work items, aggregation
+  Fairbill.Calibration/          reviewed labels and offline evaluation
   Fairbill.Pricing/              versioned offline rate artifacts and mapping
-  Fairbill.ML/                   optional local inference and calibration contracts
+  Fairbill.ML/                   future optional local training and inference
   Fairbill.Reporting/            JSON and Markdown output
 tests/
   unit and contract tests by production project
@@ -135,7 +136,12 @@ Status as of August 5, 2026:
   reprojection; a reproducible 2026 US contractor-rate artifact; default pricing
   with override and opt-out; and measured output-size reductions are implemented.
   The seed estimator remains explicitly uncalibrated and is not a production
-  estimate. Milestone 7 is next.
+  estimate.
+- Milestone 7A is complete: versioned reviewed-label, validation-summary, and
+  evaluation contracts; a teacher/reviewer rubric; repository-isolated partitions;
+  deterministic item/category/total/bias/interval metrics; and offline calibration
+  validation/evaluation commands are implemented. Corpus construction and baseline
+  measurement are next; no learned model has been admitted.
 
 ### Milestone 0: Product and contract decisions
 
@@ -255,6 +261,13 @@ full view, and every compact capability retains a stable `explain` path.
 Exit condition: the local model improves held-out agreement and calibration over
 the seed rules without making reports opaque.
 
+Implementation note: `MILESTONE_7.md` records the staged design. Milestone 7A is
+implemented without an ML dependency: reviewed labels remain separate from
+canonical candidate estimates, every repository and its revisions/profiles stay in
+one partition, and `calibration-metrics/1.0.0` reports deterministic low/expected/
+high error, bias, interval coverage, and work-item mapping coverage. The seed model
+remains uncalibrated until a diverse licensed corpus is reviewed and measured.
+
 ### Milestone 8: Host AI integration and measurement
 
 - Define compact uncertainty packets and follow-up query commands for an AI agent.
@@ -347,10 +360,10 @@ benchmark corpus exists.
 
 ## 8. Immediate next steps
 
-1. Define reviewed repository-level calibration labels and isolate train/test
-   splits by repository.
-2. Measure evidence-to-estimate accuracy by category and validate deterministic
-   uncertainty drivers before considering local ML.
+1. Build the first diverse, redistributable reviewed corpus using the
+   `ehe-work-item/1.0.0` rubric and freeze repository-level partitions.
+2. Run the implemented evaluator against `seed-rules/0.2.0`, publish category and
+   total baselines, and review interval and mapping-coverage failures.
 3. Extend performance and safety measurements to curated, redistributable mixed
    repository shapes and peak-memory measurements.
 4. Evaluate a compiler-grade TypeScript adapter only if reviewed calibration shows

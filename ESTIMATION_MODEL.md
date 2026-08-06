@@ -286,6 +286,23 @@ must not be added to the public corpus by default.
 The guiding premise is that a four-hour work item can be judged and calibrated more
 accurately than a single four-hundred-hour total.
 
+Milestone 7A implements the first calibration boundary. A versioned corpus stores
+reviewed target work units separately from candidate `EstimateReport` documents.
+All revisions and both profiles of a stable repository identity must stay in one
+development, validation, or test partition. The offline evaluator requires an
+explicit partition and measures low/expected/high error, weighted absolute
+percentage error, signed bias, reviewed-point and reviewed-range coverage, and
+work-item mapping coverage at item, category, and repository-total levels. Pricing
+is not a calibration label or metric.
+
+Metric semantics are versioned as `calibration-metrics/1.0.0`. WAPE is defined as
+`sum(abs(candidate - reviewed)) / sum(reviewed)` and is used instead of ordinary
+MAPE because category observations may legitimately be zero. Interval results are
+agreement diagnostics against weak reviewed labels; they do not yet make low/high
+ranges formal probability intervals. `MILESTONE_7.md` and the
+`ehe-work-item/1.0.0` rubric define the complete implemented policy and the gates
+for admitting a learned model.
+
 ## 11. Uncertainty
 
 The CLI should resolve structural facts and routine cases. Semantic ambiguity and

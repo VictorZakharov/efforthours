@@ -7,12 +7,13 @@
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>fairbill</ToolCommandName>
     <PackageId>Fairbill.Tool</PackageId>
-    <Version>0.6.0-alpha.1</Version>
+    <Version>0.7.0-alpha.1</Version>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageTags>estimation;developer-tools;cli;repository-analysis</PackageTags>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="../Fairbill.Analysis/Fairbill.Analysis.csproj" />
+    <ProjectReference Include="../Fairbill.Calibration/Fairbill.Calibration.csproj" />
     <ProjectReference Include="../Fairbill.Contracts/Fairbill.Contracts.csproj" />
     <ProjectReference Include="../Fairbill.Core/Fairbill.Core.csproj" />
     <ProjectReference Include="../Fairbill.Estimation/Fairbill.Estimation.csproj" />

@@ -16,7 +16,8 @@ than reading an entire large repository.
 
 ## Status
 
-Milestones 1 through 6 are complete. The repository now contains:
+Milestones 1 through 6 and the Milestone 7A calibration foundation are complete.
+The repository now contains:
 
 - versioned JSON contracts and published schemas for evidence, work items,
   estimates, diagnostics, and rate cards;
@@ -61,7 +62,10 @@ Milestones 1 through 6 are complete. The repository now contains:
   calculation lineage; and
 - a schema-validated, checked-in 2026 US senior-contractor rate model with a
   $160/hour default, $125-$200 market reference, source provenance, formula, and
-  caller override or opt-out.
+  caller override or opt-out; and
+- a versioned reviewed-label corpus, work-item rubric, repository-isolated
+  development/validation/test partitions, and deterministic offline evaluator for
+  item, category, total, bias, interval, and mapping-coverage metrics.
 
 `fairbill scan <folder>` now produces common, static .NET, and static
 JavaScript/TypeScript evidence, including mixed-repository output.
@@ -74,6 +78,11 @@ as a production-ready or empirically validated estimate.
 `--no-rate` for effort-only output or `--hourly-rate` for an explicit replacement.
 Pricing never changes EHE. Use `--view review` for a bounded AI-review packet and
 pass any reported capability ID to `fairbill explain` for its evidence lineage.
+
+`fairbill calibration validate` checks a reviewed corpus and its provenance.
+`fairbill calibration evaluate` compares canonical estimates with one explicit
+repository-held-out partition. It evaluates effort only, never calls an AI or the
+network, and does not make the still-uncalibrated seed priors production-ready.
 
 Fairbill is intended to be released as open-source software. Development should be
 public-repository-ready from the beginning, even before the repository is published.
@@ -137,6 +146,8 @@ fairbill rate show
 fairbill estimate <repository-or-evidence.json> [--profile <implementation|recreation>] [--view <full|repository|category|scope|work-item|review>] [--format <json|markdown>] [--compact] [--no-rate | --hourly-rate <amount> [--currency <code>]]
 fairbill report <estimate.json> [--view <full|repository|category|scope|work-item|review>] [--format <json|markdown>] [--compact]
 fairbill explain <repository-or-evidence.json> --item <work-item-or-capability-id> [--profile <implementation|recreation>] [--format <json|markdown>] [--compact]
+fairbill calibration validate <corpus.json> [--compact]
+fairbill calibration evaluate <corpus.json> <estimate.json>... --partition <development|validation|test> [--compact]
 ```
 
 The optional scan cache trusts file path, size, and last-write metadata for
@@ -191,6 +202,8 @@ without misrepresenting counterfactual hours as historical labor.
   its current limitations.
 - [MILESTONE_6.md](MILESTONE_6.md) records reporting, explanation, and default-rate
   decisions.
+- [MILESTONE_7.md](MILESTONE_7.md) defines reviewed labels, repository-held-out
+  evaluation, metrics, and the admission gates for later local models.
 - [REPORT_BENCHMARKS.md](REPORT_BENCHMARKS.md) records reporting size and usefulness
   measurements.
 - [MODEL_REVIEWS.md](MODEL_REVIEWS.md) records provisional realism checks with
@@ -208,3 +221,5 @@ without misrepresenting counterfactual hours as historical labor.
   priors.
 - [`rates/us-senior-contractor`](rates/us-senior-contractor) contains the auditable
   bundled contractor-rate derivation.
+- [`calibration`](calibration) contains the public review rubric and corpus
+  publication guidance; no private calibration data belongs there.

@@ -148,6 +148,12 @@
           "Fairbill.Contracts": "[1.0.0, )"
         }
       },
+      "fairbill.calibration": {
+        "type": "Project",
+        "dependencies": {
+          "Fairbill.Contracts": "[1.0.0, )"
+        }
+      },
       "fairbill.contracts": {
         "type": "Project",
         "dependencies": {
