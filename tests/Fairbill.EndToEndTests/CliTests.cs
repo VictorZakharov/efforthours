@@ -296,6 +296,14 @@ public sealed class CliTests
             compiledDocument.RootElement.GetProperty("id").GetString());
         Assert.NotEmpty(
             compiledDocument.RootElement.GetProperty("records")[0].GetProperty("targets").EnumerateArray());
+        JsonElement excluded = compiledDocument.RootElement
+            .GetProperty("records")[0]
+            .GetProperty("targets")[0];
+        Assert.Equal(0m, excluded.GetProperty("hours").GetProperty("expected").GetDecimal());
+        Assert.Contains(
+            "Explicit reviewed exclusion",
+            excluded.GetProperty("sizeException").GetString()!,
+            StringComparison.Ordinal);
     }
 
     [Fact]
@@ -735,15 +743,32 @@ public sealed class CliTests
         JsonArray capabilities = [];
         foreach (IGrouping<string, JsonNode?> group in capabilityGroups)
         {
+            bool explicitExclusion = capabilities.Count == 0;
             JsonArray targets = [];
             foreach (JsonNode? node in group)
             {
                 JsonObject item = node!.AsObject();
-                targets.Add(new JsonObject
+                JsonObject target = new()
                 {
-                    ["hours"] = item["candidate"]!["hours"]!.DeepClone(),
-                    ["uncertaintyReasons"] = item["uncertaintyReasons"]!.DeepClone(),
-                });
+                    ["hours"] = explicitExclusion
+                        ? new JsonObject
+                        {
+                            ["low"] = 0m,
+                            ["expected"] = 0m,
+                            ["high"] = 0m,
+                        }
+                        : item["candidate"]!["hours"]!.DeepClone(),
+                    ["uncertaintyReasons"] = explicitExclusion
+                        ? new JsonArray()
+                        : item["uncertaintyReasons"]!.DeepClone(),
+                };
+                if (explicitExclusion)
+                {
+                    target["sizeException"] =
+                        "Explicit reviewed exclusion for the process-level fixture.";
+                }
+
+                targets.Add(target);
             }
 
             capabilities.Add(new JsonObject
@@ -757,14 +782,14 @@ public sealed class CliTests
         JsonObject plan = new()
         {
             ["schemaVersion"] = "1.0.0",
-            ["compilerVersion"] = "calibration-review-compiler/0.1.0",
+            ["compilerVersion"] = "calibration-review-compiler/0.2.0",
             ["id"] = "synthetic-cli-review-plan",
             ["version"] = "1.0.0",
             ["description"] = "Process-level synthetic completed review plan.",
             ["rubric"] = new JsonObject
             {
                 ["id"] = "ehe-work-item",
-                ["version"] = "1.0.0",
+                ["version"] = "1.1.0",
             },
             ["records"] = new JsonArray
             {

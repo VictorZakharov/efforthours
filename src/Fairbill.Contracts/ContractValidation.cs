@@ -458,17 +458,13 @@ public static class ContractValidation
                 continue;
             }
 
-            ValidateRange(target.Review.Hours, $"{path}.review.hours", errors);
-            if (target.Review.Hours.Expected <= 0m)
-            {
-                errors.Add($"{path}.review.hours.expected must be positive.");
-            }
-
             RequireText(target.Review.Rationale, $"{path}.review.rationale", errors);
-            if (target.Review.Hours.Expected is < 0.5m or > 8m)
-            {
-                RequireText(target.Review.SizeException, $"{path}.review.sizeException", errors);
-            }
+            ValidateReviewedRange(
+                target.Review.Hours,
+                $"{path}.review.hours",
+                target.Review.SizeException,
+                $"{path}.review.sizeException",
+                errors);
         }
 
         RequireUniqueText(
@@ -573,18 +569,12 @@ public static class ContractValidation
                 {
                     CalibrationReviewTargetDecision target = capability.Targets[index];
                     string targetPath = $"{capabilityPath}.target[{index}]";
-                    ValidateRange(target.Hours, $"{targetPath}.hours", errors);
-                    if (target.Hours.Expected <= 0m)
-                    {
-                        errors.Add($"{targetPath}.hours.expected must be positive.");
-                    }
-
-                    if (target.Hours.Expected is < 0.5m or > 8m &&
-                        string.IsNullOrWhiteSpace(target.SizeException))
-                    {
-                        errors.Add(
-                            $"{targetPath} falls outside 0.5-to-8 expected hours and requires sizeException.");
-                    }
+                    ValidateReviewedRange(
+                        target.Hours,
+                        $"{targetPath}.hours",
+                        target.SizeException,
+                        $"{targetPath}.sizeException",
+                        errors);
 
                     RequireUniqueText(
                         target.UncertaintyReasons,
@@ -840,17 +830,13 @@ public static class ContractValidation
                     continue;
                 }
 
-                ValidateRange(target.Hours, $"{targetPath}.hours", errors);
-                if (target.Hours.Expected <= 0m)
-                {
-                    errors.Add($"{targetPath}.hours.expected must be positive.");
-                }
-
                 RequireText(target.Rationale, $"{targetPath}.rationale", errors);
-                if (target.Hours.Expected is < 0.5m or > 8m)
-                {
-                    RequireText(target.SizeException, $"{targetPath}.sizeException", errors);
-                }
+                ValidateReviewedRange(
+                    target.Hours,
+                    $"{targetPath}.hours",
+                    target.SizeException,
+                    $"{targetPath}.sizeException",
+                    errors);
             }
         }
 
@@ -1508,6 +1494,32 @@ public static class ContractValidation
         }
     }
 
+    private static void ValidateReviewedRange(
+        EffortRange range,
+        string path,
+        string? sizeException,
+        string sizeExceptionPath,
+        List<string> errors)
+    {
+        ValidateRange(range, path, errors);
+
+        if (range.Expected == 0m)
+        {
+            if (range.Low != 0m || range.High != 0m)
+            {
+                errors.Add($"{path} uses zero reviewed EHE and must be exactly 0/0/0.");
+            }
+
+            RequireText(sizeException, sizeExceptionPath, errors);
+            return;
+        }
+
+        if (range.Expected is < 0.5m or > 8m)
+        {
+            RequireText(sizeException, sizeExceptionPath, errors);
+        }
+    }
+
     private static void ValidateCalibrationSource(
         CalibrationSourceProvenance source,
         string recordPath,
@@ -1606,17 +1618,12 @@ public static class ContractValidation
             RequireText(target.Title, $"{path}.title", errors);
             RequireText(target.Scope, $"{path}.scope", errors);
             RequireText(target.Rationale, $"{path}.rationale", errors);
-            ValidateRange(target.Hours, $"{path}.hours", errors);
-            if (target.Hours.Expected <= 0m)
-            {
-                errors.Add($"{path}.hours.expected must be positive.");
-            }
-
-            if (target.Hours.Expected is < 0.5m or > 8m &&
-                string.IsNullOrWhiteSpace(target.SizeException))
-            {
-                errors.Add($"{path} falls outside 0.5-to-8 expected hours and requires sizeException.");
-            }
+            ValidateReviewedRange(
+                target.Hours,
+                $"{path}.hours",
+                target.SizeException,
+                $"{path}.sizeException",
+                errors);
 
             if (!targetIds.Add(target.Id))
             {

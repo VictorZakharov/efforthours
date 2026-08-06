@@ -324,6 +324,16 @@ provenance, preserves all structural lineage, and prevents maturity downgrades.
 This tooling does not itself constitute independent correction: maturity advances
 only when a genuinely distinct reviewer or adjudicator completes a plan.
 
+Milestone 7B5 adds an explicit reviewed-exclusion representation. A source target
+that is a false positive or wholly excluded by the rubric may use exactly
+`0/0/0` low, expected, and high hours only when both its rationale and
+`sizeException` explain the exclusion. A partially positive zero range is invalid,
+and zero must not represent ordinary uncertainty, reuse, or a discount. Review
+compiler versions `0.2.0` implement this rule while retaining deterministic
+compatibility for positive `0.1.0` plans. The versioned
+`ehe-work-item/1.1.0` rubric documents the policy without changing the earlier
+positive-label semantics.
+
 The same slice adds versioned mutation guardrails. A mutation suite compares a
 subject and reference canonical estimate at one repository/category low, expected,
 or high point and asserts inclusive bounds on `subject - reference`. These
@@ -340,13 +350,14 @@ semantic clone detection, general dead-code reachability, accessibility-specific
 depth, or measured-coverage parsing; those and more realistic repository shapes
 remain required before learned-model admission.
 
-The initial public pilot freezes three MIT-licensed repository families across
-development, validation, and test partitions and measures `seed-rules/0.2.0`.
-Those labels have one host-AI teacher and no independent correction. They are
-preliminary weak supervision and do not make the seed model calibrated or
-production-ready. `MILESTONE_7.md` and the
-`ehe-work-item/1.0.0` rubric define the complete implemented policy and the gates
-for admitting a learned model.
+The public pilot and public expansion freeze six MIT-licensed repository families
+across development, validation, and test partitions and measure
+`seed-rules/0.2.0` or `seed-rules/0.2.1` against the source estimate each teacher
+reviewed. Those labels share one host-AI teacher and have no independent
+correction. They are preliminary weak supervision and do not make the seed model
+calibrated or production-ready. `MILESTONE_7.md`, the versioned rubrics, and the
+blind packets under `calibration/corpora` define the implemented policy and the
+next independent-review gate.
 
 ## 11. Uncertainty
 

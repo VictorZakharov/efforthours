@@ -164,6 +164,12 @@ Status as of August 6, 2026:
   compiler-disabled C# boundaries, data, migrations, security, declared coverage,
   workspace reuse, CI, and container delivery. General semantic-clone and
   reachability analysis remain explicit limitations.
+- Milestone 7B5 is complete: a second three-repository MIT-licensed corpus expands
+  public coverage to six repository families; the `ehe-work-item/1.1.0` rubric and
+  review compilers `0.2.0` represent explicit false-positive exclusions as audited
+  `0/0/0` labels; frozen `seed-rules/0.2.1` baselines and a combined blind-review
+  handoff are checked in. The model remains unchanged and uncalibrated, and
+  no independent review is claimed.
 
 ### Milestone 0: Product and contract decisions
 
@@ -284,7 +290,7 @@ Exit condition: the local model improves held-out agreement and calibration over
 the seed rules without making reports opaque.
 
 Implementation note: `MILESTONE_7.md` records the staged design. Milestones 7A and
-7B1 through 7B4 are implemented without an ML dependency: reviewed labels remain
+7B1 through 7B5 are implemented without an ML dependency: reviewed labels remain
 separate from canonical candidate estimates, every repository and its
 revisions/profiles stay in one partition, completed capability and subsequent
 review decisions compile back to full evidence lineage, and
@@ -293,7 +299,9 @@ interval coverage, and work-item mapping coverage. Versioned mutation relations
 now guard invariance, bounded near-copy marginality, compiler-disabled code,
 directionality, range behavior, generated customization, data, security, declared
 coverage, delivery, workspace boundaries, and category isolation across the
-initial ecosystems. The seed model remains
+initial ecosystems. Six public repository families provide preliminary
+teacher-estimate labels, including explicit reviewed false-positive exclusions;
+the seed model remains
 uncalibrated until the licensed corpus is diverse and independently reviewed.
 
 ### Milestone 8: Host AI integration and measurement
@@ -388,10 +396,11 @@ benchmark corpus exists.
 
 ## 8. Immediate next steps
 
-1. Hand the frozen blind public-pilot packet to a genuinely distinct reviewer and
-   compile corrections without exposing the test partition to tuning.
-2. Add redistributable repository families per ecosystem and partition, then
-   extend the published seed category/total baselines.
+1. Hand one or both frozen blind public-corpus packets to genuinely distinct
+   reviewers and compile corrections without exposing test partitions to tuning.
+2. Add enough redistributable repository families to place multiple independent
+   observations in every ecosystem/partition cell, then freeze numerical
+   model-admission thresholds before fitting.
 3. Expand mutation guardrails from bounded renamed near-copies and
    compiler-disabled C# to semantic clone detection, general reachability,
    accessibility, measured coverage, and realistic multi-package boundaries.

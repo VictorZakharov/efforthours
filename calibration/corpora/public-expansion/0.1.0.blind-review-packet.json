@@ -1,0 +1,4018 @@
+{
+  "schemaVersion": "1.0.0",
+  "authoringVersion": "calibration-corpus-review-authoring/0.1.0",
+  "status": "unreviewed",
+  "warning": "UNREVIEWED SECOND-PASS PACKET: prior labels are weak supervision, not ground truth. An independent reviewer must decide every target before review maturity can advance.",
+  "sourceCorpus": {
+    "id": "fairbill-public-expansion",
+    "version": "0.1.0",
+    "digest": "sha256:93ec8d7d1872318dbe20429ce294d164947a2c107efcca12013acc5b313b2705"
+  },
+  "rubric": {
+    "id": "ehe-work-item",
+    "version": "1.1.0"
+  },
+  "candidateVisibility": "blind",
+  "records": [
+    {
+      "sourceRecordId": "record:developit-mitt:implementation",
+      "repository": {
+        "id": "repository:github.com/developit/mitt",
+        "name": "developit/mitt",
+        "sourceDigest": "sha256:135d31133a5cff5924e53febea07eee67c7fb059156ba225cccb262b1abd5d7d"
+      },
+      "profile": "implementation",
+      "baselineId": "senior-contractor-2026-no-ai",
+      "partition": "development",
+      "sourceReviewStatus": "teacher-estimate",
+      "candidateTotalHours": null,
+      "targets": [
+        {
+          "sourceTargetId": "target:work:architecture-design:1301c834bf26665d0695:review-0001",
+          "category": "architecture-and-technical-design",
+          "title": "Design the technical structure of \u0027.\u0027 (library)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:architecture-design:1301c834bf26665d0695:part-0001"
+          ],
+          "evidenceIds": [
+            "javascript:package:package.json"
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:build-tooling:c2c91d07e063088d401a:review-0001",
+          "category": "build-configuration-and-developer-tooling",
+          "title": "Configure build behavior and developer tooling",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:build-tooling:c2c91d07e063088d401a:part-0001"
+          ],
+          "evidenceIds": [
+            "file:.editorconfig",
+            "file:.gitignore",
+            "file:tsconfig.json",
+            "javascript:configuration:tsconfig.json",
+            "javascript:package:package.json",
+            "javascript:repository"
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:ci-infrastructure:bee22f5b9a094661eb75:review-0001",
+          "category": "ci-cd-and-infrastructure-as-code",
+          "title": "Implement represented CI/CD and infrastructure configuration",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:ci-infrastructure:bee22f5b9a094661eb75:part-0001"
+          ],
+          "evidenceIds": [
+            "ci:repository",
+            "file:.github/workflows/compressed-size.yml",
+            "file:.github/workflows/main.yml"
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:documentation:bebbc838ff439c1b4e49:review-0001",
+          "category": "documentation",
+          "title": "Author and verify maintained repository documentation",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:documentation:bebbc838ff439c1b4e49:part-0001"
+          ],
+          "evidenceIds": [
+            "documentation:repository",
+            "file:LICENSE"
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:javascript-source-backbone:2f5795bda39a0bae4a33:review-0001",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027.\u0027 (library) (review target 1 of 2)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0001"
+          ],
+          "evidenceIds": [
+            "javascript:source-structure:."
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:javascript-source-backbone:2f5795bda39a0bae4a33:review-0002",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027.\u0027 (library) (review target 2 of 2)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0002"
+          ],
+          "evidenceIds": [
+            "javascript:source-structure:."
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:manual-validation:a0df1126ba2f8dbcb19b:review-0001",
+          "category": "manual-validation-debugging-and-hardening",
+          "title": "Manually validate, debug, and harden \u0027.\u0027 (library)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:manual-validation:a0df1126ba2f8dbcb19b:part-0001"
+          ],
+          "evidenceIds": [
+            "javascript:package:package.json"
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:packaging-release:58eb8ae7efef939a19b5:review-0001",
+          "category": "packaging-deployment-and-release-artifacts",
+          "title": "Prepare represented packages and release surfaces",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:packaging-release:58eb8ae7efef939a19b5:part-0001"
+          ],
+          "evidenceIds": [
+            "javascript:package:package.json"
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:project-setup:e56be8fd4646c76f7cdd:review-0001",
+          "category": "repository-and-solution-setup",
+          "title": "Set up \u0027.\u0027 (library)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:project-setup:e56be8fd4646c76f7cdd:part-0001"
+          ],
+          "evidenceIds": [
+            "javascript:configuration:tsconfig.json",
+            "javascript:package-reference:package.json:@typescript-eslint~eslint-plugin:development",
+            "javascript:package-reference:package.json:@typescript-eslint~parser:development",
+            "javascript:package-reference:package.json:@types~chai:development",
+            "javascript:package-reference:package.json:@types~mocha:development",
+            "javascript:package-reference:package.json:@types~sinon-chai:development",
+            "javascript:package-reference:package.json:@types~sinon:development",
+            "javascript:package-reference:package.json:chai:development",
+            "javascript:package-reference:package.json:documentation:development",
+            "javascript:package-reference:package.json:eslint-config-developit:development",
+            "javascript:package-reference:package.json:eslint-plugin-compat:development",
+            "javascript:package-reference:package.json:eslint:development",
+            "javascript:package-reference:package.json:esm:development",
+            "javascript:package-reference:package.json:microbundle:development",
+            "javascript:package-reference:package.json:mocha:development",
+            "javascript:package-reference:package.json:npm-run-all:development",
+            "javascript:package-reference:package.json:prettier:development",
+            "javascript:package-reference:package.json:rimraf:development",
+            "javascript:package-reference:package.json:sinon-chai:development",
+            "javascript:package-reference:package.json:sinon:development",
+            "javascript:package-reference:package.json:ts-node:development",
+            "javascript:package-reference:package.json:typescript:development",
+            "javascript:package:package.json"
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:self-review:e943a6db2e8c464b145a:review-0001",
+          "category": "self-review-and-system-integration",
+          "title": "Self-review and integrate the completed system",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:self-review:e943a6db2e8c464b145a:part-0001"
+          ],
+          "evidenceIds": [
+            "inventory:repository",
+            "javascript:package:package.json"
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:specification-comprehension:49aec33b6a46fb626dad:review-0001",
+          "category": "specification-comprehension-and-domain-learning",
+          "title": "Comprehend the supplied specification and bounded business domain",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:specification-comprehension:49aec33b6a46fb626dad:part-0001"
+          ],
+          "evidenceIds": [
+            "inventory:repository",
+            "javascript:package:package.json"
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:unit-tests:875ec9f8d2f4b23af140:review-0001",
+          "category": "unit-testing",
+          "title": "Create represented unit tests for \u0027.\u0027 (library) (review target 1 of 3)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:unit-tests:875ec9f8d2f4b23af140:part-0001"
+          ],
+          "evidenceIds": [
+            "javascript:test:test/index_test.ts",
+            "javascript:test:test/test-types-compilation.ts"
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:unit-tests:875ec9f8d2f4b23af140:review-0002",
+          "category": "unit-testing",
+          "title": "Create represented unit tests for \u0027.\u0027 (library) (review target 2 of 3)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:unit-tests:875ec9f8d2f4b23af140:part-0002"
+          ],
+          "evidenceIds": [
+            "javascript:test:test/index_test.ts",
+            "javascript:test:test/test-types-compilation.ts"
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:unit-tests:875ec9f8d2f4b23af140:review-0003",
+          "category": "unit-testing",
+          "title": "Create represented unit tests for \u0027.\u0027 (library) (review target 3 of 3)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:unit-tests:875ec9f8d2f4b23af140:part-0003"
+          ],
+          "evidenceIds": [
+            "javascript:test:test/index_test.ts",
+            "javascript:test:test/test-types-compilation.ts"
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        }
+      ]
+    },
+    {
+      "sourceRecordId": "record:nanostores-nanostores:implementation",
+      "repository": {
+        "id": "repository:github.com/nanostores/nanostores",
+        "name": "nanostores/nanostores",
+        "sourceDigest": "sha256:8dddc951643957bc7ce762f6e9db4982e95138c8b983071a95674b961ad83432"
+      },
+      "profile": "implementation",
+      "baselineId": "senior-contractor-2026-no-ai",
+      "partition": "test",
+      "sourceReviewStatus": "teacher-estimate",
+      "candidateTotalHours": null,
+      "targets": [
+        {
+          "sourceTargetId": "target:work:application-entry-point:9b21971dcc7b3a4ca5f0:review-0001",
+          "category": "production-implementation",
+          "title": "Implement application entry points for \u0027.\u0027 (library)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:application-entry-point:9b21971dcc7b3a4ca5f0:part-0001"
+          ],
+          "evidenceIds": [
+            "javascript:entry-point:test/benchmark.js"
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:architecture-design:1301c834bf26665d0695:review-0001",
+          "category": "architecture-and-technical-design",
+          "title": "Design the technical structure of \u0027.\u0027 (library)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:architecture-design:1301c834bf26665d0695:part-0001"
+          ],
+          "evidenceIds": [
+            "javascript:package:package.json",
+            "javascript:ui:atom/index.test.ts",
+            "javascript:ui:clean-stores/index.test.ts",
+            "javascript:ui:computed/index.js",
+            "javascript:ui:computed/index.test.ts",
+            "javascript:ui:deep-map/index.test.ts",
+            "javascript:ui:deep-map/production.test.js",
+            "javascript:ui:keep-mount/index.test.ts",
+            "javascript:ui:lifecycle/index.test.ts",
+            "javascript:ui:map-creator/index.js",
+            "javascript:ui:map/index.test.ts",
+            "javascript:ui:map/production.test.js",
+            "javascript:ui:test/benchmark.js"
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:build-tooling:c2c91d07e063088d401a:review-0001",
+          "category": "build-configuration-and-developer-tooling",
+          "title": "Configure build behavior and developer tooling",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:build-tooling:c2c91d07e063088d401a:part-0001"
+          ],
+          "evidenceIds": [
+            "file:.editorconfig",
+            "file:.gitignore",
+            "file:pnpm-lock.yaml",
+            "file:pnpm-workspace.yaml",
+            "file:tsconfig.json",
+            "javascript:configuration:tsconfig.json",
+            "javascript:package:package.json",
+            "javascript:repository"
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:ci-infrastructure:bee22f5b9a094661eb75:review-0001",
+          "category": "ci-cd-and-infrastructure-as-code",
+          "title": "Implement represented CI/CD and infrastructure configuration",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:ci-infrastructure:bee22f5b9a094661eb75:part-0001"
+          ],
+          "evidenceIds": [
+            "ci:repository",
+            "file:.github/workflows/release.yml",
+            "file:.github/workflows/test.yml"
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:documentation:bebbc838ff439c1b4e49:review-0001",
+          "category": "documentation",
+          "title": "Author and verify maintained repository documentation (review target 1 of 2)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:documentation:bebbc838ff439c1b4e49:part-0001"
+          ],
+          "evidenceIds": [
+            "documentation:repository",
+            "file:CHANGELOG.md",
+            "file:LICENSE",
+            "file:README.md"
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:documentation:bebbc838ff439c1b4e49:review-0002",
+          "category": "documentation",
+          "title": "Author and verify maintained repository documentation (review target 2 of 2)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:documentation:bebbc838ff439c1b4e49:part-0002"
+          ],
+          "evidenceIds": [
+            "documentation:repository",
+            "file:CHANGELOG.md",
+            "file:LICENSE",
+            "file:README.md"
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:javascript-source-backbone:2f5795bda39a0bae4a33:review-0001",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027.\u0027 (library) (review target 1 of 27)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0001"
+          ],
+          "evidenceIds": [
+            "javascript:source-structure:."
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:javascript-source-backbone:2f5795bda39a0bae4a33:review-0002",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027.\u0027 (library) (review target 2 of 27)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0002"
+          ],
+          "evidenceIds": [
+            "javascript:source-structure:."
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:javascript-source-backbone:2f5795bda39a0bae4a33:review-0003",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027.\u0027 (library) (review target 3 of 27)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0003"
+          ],
+          "evidenceIds": [
+            "javascript:source-structure:."
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:javascript-source-backbone:2f5795bda39a0bae4a33:review-0004",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027.\u0027 (library) (review target 4 of 27)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0004"
+          ],
+          "evidenceIds": [
+            "javascript:source-structure:."
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:javascript-source-backbone:2f5795bda39a0bae4a33:review-0005",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027.\u0027 (library) (review target 5 of 27)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0005"
+          ],
+          "evidenceIds": [
+            "javascript:source-structure:."
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:javascript-source-backbone:2f5795bda39a0bae4a33:review-0006",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027.\u0027 (library) (review target 6 of 27)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0006"
+          ],
+          "evidenceIds": [
+            "javascript:source-structure:."
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:javascript-source-backbone:2f5795bda39a0bae4a33:review-0007",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027.\u0027 (library) (review target 7 of 27)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0007"
+          ],
+          "evidenceIds": [
+            "javascript:source-structure:."
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:javascript-source-backbone:2f5795bda39a0bae4a33:review-0008",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027.\u0027 (library) (review target 8 of 27)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0008"
+          ],
+          "evidenceIds": [
+            "javascript:source-structure:."
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:javascript-source-backbone:2f5795bda39a0bae4a33:review-0009",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027.\u0027 (library) (review target 9 of 27)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0009"
+          ],
+          "evidenceIds": [
+            "javascript:source-structure:."
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:javascript-source-backbone:2f5795bda39a0bae4a33:review-0010",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027.\u0027 (library) (review target 10 of 27)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0010"
+          ],
+          "evidenceIds": [
+            "javascript:source-structure:."
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:javascript-source-backbone:2f5795bda39a0bae4a33:review-0011",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027.\u0027 (library) (review target 11 of 27)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0011"
+          ],
+          "evidenceIds": [
+            "javascript:source-structure:."
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:javascript-source-backbone:2f5795bda39a0bae4a33:review-0012",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027.\u0027 (library) (review target 12 of 27)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0012"
+          ],
+          "evidenceIds": [
+            "javascript:source-structure:."
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:javascript-source-backbone:2f5795bda39a0bae4a33:review-0013",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027.\u0027 (library) (review target 13 of 27)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0013"
+          ],
+          "evidenceIds": [
+            "javascript:source-structure:."
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:javascript-source-backbone:2f5795bda39a0bae4a33:review-0014",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027.\u0027 (library) (review target 14 of 27)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0014"
+          ],
+          "evidenceIds": [
+            "javascript:source-structure:."
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:javascript-source-backbone:2f5795bda39a0bae4a33:review-0015",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027.\u0027 (library) (review target 15 of 27)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0015"
+          ],
+          "evidenceIds": [
+            "javascript:source-structure:."
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:javascript-source-backbone:2f5795bda39a0bae4a33:review-0016",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027.\u0027 (library) (review target 16 of 27)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0016"
+          ],
+          "evidenceIds": [
+            "javascript:source-structure:."
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:javascript-source-backbone:2f5795bda39a0bae4a33:review-0017",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027.\u0027 (library) (review target 17 of 27)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0017"
+          ],
+          "evidenceIds": [
+            "javascript:source-structure:."
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:javascript-source-backbone:2f5795bda39a0bae4a33:review-0018",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027.\u0027 (library) (review target 18 of 27)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0018"
+          ],
+          "evidenceIds": [
+            "javascript:source-structure:."
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:javascript-source-backbone:2f5795bda39a0bae4a33:review-0019",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027.\u0027 (library) (review target 19 of 27)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0019"
+          ],
+          "evidenceIds": [
+            "javascript:source-structure:."
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:javascript-source-backbone:2f5795bda39a0bae4a33:review-0020",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027.\u0027 (library) (review target 20 of 27)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0020"
+          ],
+          "evidenceIds": [
+            "javascript:source-structure:."
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:javascript-source-backbone:2f5795bda39a0bae4a33:review-0021",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027.\u0027 (library) (review target 21 of 27)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0021"
+          ],
+          "evidenceIds": [
+            "javascript:source-structure:."
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:javascript-source-backbone:2f5795bda39a0bae4a33:review-0022",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027.\u0027 (library) (review target 22 of 27)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0022"
+          ],
+          "evidenceIds": [
+            "javascript:source-structure:."
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:javascript-source-backbone:2f5795bda39a0bae4a33:review-0023",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027.\u0027 (library) (review target 23 of 27)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0023"
+          ],
+          "evidenceIds": [
+            "javascript:source-structure:."
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:javascript-source-backbone:2f5795bda39a0bae4a33:review-0024",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027.\u0027 (library) (review target 24 of 27)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0024"
+          ],
+          "evidenceIds": [
+            "javascript:source-structure:."
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:javascript-source-backbone:2f5795bda39a0bae4a33:review-0025",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027.\u0027 (library) (review target 25 of 27)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0025"
+          ],
+          "evidenceIds": [
+            "javascript:source-structure:."
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:javascript-source-backbone:2f5795bda39a0bae4a33:review-0026",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027.\u0027 (library) (review target 26 of 27)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0026"
+          ],
+          "evidenceIds": [
+            "javascript:source-structure:."
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:javascript-source-backbone:2f5795bda39a0bae4a33:review-0027",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027.\u0027 (library) (review target 27 of 27)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0027"
+          ],
+          "evidenceIds": [
+            "javascript:source-structure:."
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:manual-validation:a0df1126ba2f8dbcb19b:review-0001",
+          "category": "manual-validation-debugging-and-hardening",
+          "title": "Manually validate, debug, and harden \u0027.\u0027 (library) (review target 1 of 2)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:manual-validation:a0df1126ba2f8dbcb19b:part-0001"
+          ],
+          "evidenceIds": [
+            "javascript:entry-point:test/benchmark.js",
+            "javascript:package:package.json",
+            "javascript:ui:atom/index.test.ts",
+            "javascript:ui:clean-stores/index.test.ts",
+            "javascript:ui:computed/index.js",
+            "javascript:ui:computed/index.test.ts",
+            "javascript:ui:deep-map/index.test.ts",
+            "javascript:ui:deep-map/production.test.js",
+            "javascript:ui:keep-mount/index.test.ts",
+            "javascript:ui:lifecycle/index.test.ts",
+            "javascript:ui:map-creator/index.js",
+            "javascript:ui:map/index.test.ts",
+            "javascript:ui:map/production.test.js",
+            "javascript:ui:test/benchmark.js"
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:manual-validation:a0df1126ba2f8dbcb19b:review-0002",
+          "category": "manual-validation-debugging-and-hardening",
+          "title": "Manually validate, debug, and harden \u0027.\u0027 (library) (review target 2 of 2)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:manual-validation:a0df1126ba2f8dbcb19b:part-0002"
+          ],
+          "evidenceIds": [
+            "javascript:entry-point:test/benchmark.js",
+            "javascript:package:package.json",
+            "javascript:ui:atom/index.test.ts",
+            "javascript:ui:clean-stores/index.test.ts",
+            "javascript:ui:computed/index.js",
+            "javascript:ui:computed/index.test.ts",
+            "javascript:ui:deep-map/index.test.ts",
+            "javascript:ui:deep-map/production.test.js",
+            "javascript:ui:keep-mount/index.test.ts",
+            "javascript:ui:lifecycle/index.test.ts",
+            "javascript:ui:map-creator/index.js",
+            "javascript:ui:map/index.test.ts",
+            "javascript:ui:map/production.test.js",
+            "javascript:ui:test/benchmark.js"
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:packaging-release:58eb8ae7efef939a19b5:review-0001",
+          "category": "packaging-deployment-and-release-artifacts",
+          "title": "Prepare represented packages and release surfaces",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:packaging-release:58eb8ae7efef939a19b5:part-0001"
+          ],
+          "evidenceIds": [
+            "javascript:package:package.json"
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:project-setup:e56be8fd4646c76f7cdd:review-0001",
+          "category": "repository-and-solution-setup",
+          "title": "Set up \u0027.\u0027 (library)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:project-setup:e56be8fd4646c76f7cdd:part-0001"
+          ],
+          "evidenceIds": [
+            "javascript:configuration:tsconfig.json",
+            "javascript:package-reference:package.json:@logux~oxc-configs:development",
+            "javascript:package-reference:package.json:@sinonjs~fake-timers:development",
+            "javascript:package-reference:package.json:@size-limit~preset-small-lib:development",
+            "javascript:package-reference:package.json:@types~node:development",
+            "javascript:package-reference:package.json:@types~sinonjs__fake-timers:development",
+            "javascript:package-reference:package.json:@types~ws:development",
+            "javascript:package-reference:package.json:actions-up:development",
+            "javascript:package-reference:package.json:benchmark:development",
+            "javascript:package-reference:package.json:better-node-test:development",
+            "javascript:package-reference:package.json:check-dts:development",
+            "javascript:package-reference:package.json:eslint-plugin-prefer-let:development",
+            "javascript:package-reference:package.json:multiocular:development",
+            "javascript:package-reference:package.json:oxlint-tsgolint:development",
+            "javascript:package-reference:package.json:oxlint:development",
+            "javascript:package-reference:package.json:size-limit:development",
+            "javascript:package-reference:package.json:tsx:development",
+            "javascript:package-reference:package.json:typescript:development",
+            "javascript:package:package.json"
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:self-review:e943a6db2e8c464b145a:review-0001",
+          "category": "self-review-and-system-integration",
+          "title": "Self-review and integrate the completed system",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:self-review:e943a6db2e8c464b145a:part-0001"
+          ],
+          "evidenceIds": [
+            "inventory:repository",
+            "javascript:package:package.json",
+            "javascript:ui:atom/index.test.ts",
+            "javascript:ui:clean-stores/index.test.ts",
+            "javascript:ui:computed/index.js",
+            "javascript:ui:computed/index.test.ts",
+            "javascript:ui:deep-map/index.test.ts",
+            "javascript:ui:deep-map/production.test.js",
+            "javascript:ui:keep-mount/index.test.ts",
+            "javascript:ui:lifecycle/index.test.ts",
+            "javascript:ui:map-creator/index.js",
+            "javascript:ui:map/index.test.ts",
+            "javascript:ui:map/production.test.js",
+            "javascript:ui:test/benchmark.js"
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:specification-comprehension:49aec33b6a46fb626dad:review-0001",
+          "category": "specification-comprehension-and-domain-learning",
+          "title": "Comprehend the supplied specification and bounded business domain",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:specification-comprehension:49aec33b6a46fb626dad:part-0001"
+          ],
+          "evidenceIds": [
+            "inventory:repository",
+            "javascript:package:package.json",
+            "javascript:ui:atom/index.test.ts",
+            "javascript:ui:clean-stores/index.test.ts",
+            "javascript:ui:computed/index.js",
+            "javascript:ui:computed/index.test.ts",
+            "javascript:ui:deep-map/index.test.ts",
+            "javascript:ui:deep-map/production.test.js",
+            "javascript:ui:keep-mount/index.test.ts",
+            "javascript:ui:lifecycle/index.test.ts",
+            "javascript:ui:map-creator/index.js",
+            "javascript:ui:map/index.test.ts",
+            "javascript:ui:map/production.test.js",
+            "javascript:ui:test/benchmark.js"
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:ui-surface:918438cc13339fb696f4:review-0001",
+          "category": "ui-implementation-and-represented-ux-decisions",
+          "title": "Implement represented UI and UX behavior for \u0027.\u0027 (library) (review target 1 of 2)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:ui-surface:918438cc13339fb696f4:part-0001"
+          ],
+          "evidenceIds": [
+            "javascript:ui:atom/index.test.ts",
+            "javascript:ui:clean-stores/index.test.ts",
+            "javascript:ui:computed/index.js",
+            "javascript:ui:computed/index.test.ts",
+            "javascript:ui:deep-map/index.test.ts",
+            "javascript:ui:deep-map/production.test.js",
+            "javascript:ui:keep-mount/index.test.ts",
+            "javascript:ui:lifecycle/index.test.ts",
+            "javascript:ui:map-creator/index.js",
+            "javascript:ui:map/index.test.ts",
+            "javascript:ui:map/production.test.js",
+            "javascript:ui:test/benchmark.js"
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:ui-surface:918438cc13339fb696f4:review-0002",
+          "category": "ui-implementation-and-represented-ux-decisions",
+          "title": "Implement represented UI and UX behavior for \u0027.\u0027 (library) (review target 2 of 2)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:ui-surface:918438cc13339fb696f4:part-0002"
+          ],
+          "evidenceIds": [
+            "javascript:ui:atom/index.test.ts",
+            "javascript:ui:clean-stores/index.test.ts",
+            "javascript:ui:computed/index.js",
+            "javascript:ui:computed/index.test.ts",
+            "javascript:ui:deep-map/index.test.ts",
+            "javascript:ui:deep-map/production.test.js",
+            "javascript:ui:keep-mount/index.test.ts",
+            "javascript:ui:lifecycle/index.test.ts",
+            "javascript:ui:map-creator/index.js",
+            "javascript:ui:map/index.test.ts",
+            "javascript:ui:map/production.test.js",
+            "javascript:ui:test/benchmark.js"
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:unit-tests:875ec9f8d2f4b23af140:review-0001",
+          "category": "unit-testing",
+          "title": "Create represented unit tests for \u0027.\u0027 (library) (review target 1 of 11)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:unit-tests:875ec9f8d2f4b23af140:part-0001"
+          ],
+          "evidenceIds": [
+            "javascript:test:atom/index.test.ts",
+            "javascript:test:clean-stores/index.test.ts",
+            "javascript:test:computed/index.test.ts",
+            "javascript:test:deep-map/index.test.ts",
+            "javascript:test:deep-map/path.js",
+            "javascript:test:deep-map/path.test.ts",
+            "javascript:test:deep-map/production.test.js",
+            "javascript:test:effect/index.test.ts",
+            "javascript:test:keep-mount/index.test.ts",
+            "javascript:test:lifecycle/index.test.ts",
+            "javascript:test:listen-keys/index.test.ts",
+            "javascript:test:map-creator/index.test.ts",
+            "javascript:test:map/index.test.ts",
+            "javascript:test:map/production.test.js",
+            "javascript:test:task/index.test.ts",
+            "javascript:test:test/benchmark.js",
+            "javascript:test:test/set-production.js"
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:unit-tests:875ec9f8d2f4b23af140:review-0002",
+          "category": "unit-testing",
+          "title": "Create represented unit tests for \u0027.\u0027 (library) (review target 2 of 11)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:unit-tests:875ec9f8d2f4b23af140:part-0002"
+          ],
+          "evidenceIds": [
+            "javascript:test:atom/index.test.ts",
+            "javascript:test:clean-stores/index.test.ts",
+            "javascript:test:computed/index.test.ts",
+            "javascript:test:deep-map/index.test.ts",
+            "javascript:test:deep-map/path.js",
+            "javascript:test:deep-map/path.test.ts",
+            "javascript:test:deep-map/production.test.js",
+            "javascript:test:effect/index.test.ts",
+            "javascript:test:keep-mount/index.test.ts",
+            "javascript:test:lifecycle/index.test.ts",
+            "javascript:test:listen-keys/index.test.ts",
+            "javascript:test:map-creator/index.test.ts",
+            "javascript:test:map/index.test.ts",
+            "javascript:test:map/production.test.js",
+            "javascript:test:task/index.test.ts",
+            "javascript:test:test/benchmark.js",
+            "javascript:test:test/set-production.js"
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:unit-tests:875ec9f8d2f4b23af140:review-0003",
+          "category": "unit-testing",
+          "title": "Create represented unit tests for \u0027.\u0027 (library) (review target 3 of 11)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:unit-tests:875ec9f8d2f4b23af140:part-0003"
+          ],
+          "evidenceIds": [
+            "javascript:test:atom/index.test.ts",
+            "javascript:test:clean-stores/index.test.ts",
+            "javascript:test:computed/index.test.ts",
+            "javascript:test:deep-map/index.test.ts",
+            "javascript:test:deep-map/path.js",
+            "javascript:test:deep-map/path.test.ts",
+            "javascript:test:deep-map/production.test.js",
+            "javascript:test:effect/index.test.ts",
+            "javascript:test:keep-mount/index.test.ts",
+            "javascript:test:lifecycle/index.test.ts",
+            "javascript:test:listen-keys/index.test.ts",
+            "javascript:test:map-creator/index.test.ts",
+            "javascript:test:map/index.test.ts",
+            "javascript:test:map/production.test.js",
+            "javascript:test:task/index.test.ts",
+            "javascript:test:test/benchmark.js",
+            "javascript:test:test/set-production.js"
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:unit-tests:875ec9f8d2f4b23af140:review-0004",
+          "category": "unit-testing",
+          "title": "Create represented unit tests for \u0027.\u0027 (library) (review target 4 of 11)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:unit-tests:875ec9f8d2f4b23af140:part-0004"
+          ],
+          "evidenceIds": [
+            "javascript:test:atom/index.test.ts",
+            "javascript:test:clean-stores/index.test.ts",
+            "javascript:test:computed/index.test.ts",
+            "javascript:test:deep-map/index.test.ts",
+            "javascript:test:deep-map/path.js",
+            "javascript:test:deep-map/path.test.ts",
+            "javascript:test:deep-map/production.test.js",
+            "javascript:test:effect/index.test.ts",
+            "javascript:test:keep-mount/index.test.ts",
+            "javascript:test:lifecycle/index.test.ts",
+            "javascript:test:listen-keys/index.test.ts",
+            "javascript:test:map-creator/index.test.ts",
+            "javascript:test:map/index.test.ts",
+            "javascript:test:map/production.test.js",
+            "javascript:test:task/index.test.ts",
+            "javascript:test:test/benchmark.js",
+            "javascript:test:test/set-production.js"
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:unit-tests:875ec9f8d2f4b23af140:review-0005",
+          "category": "unit-testing",
+          "title": "Create represented unit tests for \u0027.\u0027 (library) (review target 5 of 11)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:unit-tests:875ec9f8d2f4b23af140:part-0005"
+          ],
+          "evidenceIds": [
+            "javascript:test:atom/index.test.ts",
+            "javascript:test:clean-stores/index.test.ts",
+            "javascript:test:computed/index.test.ts",
+            "javascript:test:deep-map/index.test.ts",
+            "javascript:test:deep-map/path.js",
+            "javascript:test:deep-map/path.test.ts",
+            "javascript:test:deep-map/production.test.js",
+            "javascript:test:effect/index.test.ts",
+            "javascript:test:keep-mount/index.test.ts",
+            "javascript:test:lifecycle/index.test.ts",
+            "javascript:test:listen-keys/index.test.ts",
+            "javascript:test:map-creator/index.test.ts",
+            "javascript:test:map/index.test.ts",
+            "javascript:test:map/production.test.js",
+            "javascript:test:task/index.test.ts",
+            "javascript:test:test/benchmark.js",
+            "javascript:test:test/set-production.js"
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:unit-tests:875ec9f8d2f4b23af140:review-0006",
+          "category": "unit-testing",
+          "title": "Create represented unit tests for \u0027.\u0027 (library) (review target 6 of 11)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:unit-tests:875ec9f8d2f4b23af140:part-0006"
+          ],
+          "evidenceIds": [
+            "javascript:test:atom/index.test.ts",
+            "javascript:test:clean-stores/index.test.ts",
+            "javascript:test:computed/index.test.ts",
+            "javascript:test:deep-map/index.test.ts",
+            "javascript:test:deep-map/path.js",
+            "javascript:test:deep-map/path.test.ts",
+            "javascript:test:deep-map/production.test.js",
+            "javascript:test:effect/index.test.ts",
+            "javascript:test:keep-mount/index.test.ts",
+            "javascript:test:lifecycle/index.test.ts",
+            "javascript:test:listen-keys/index.test.ts",
+            "javascript:test:map-creator/index.test.ts",
+            "javascript:test:map/index.test.ts",
+            "javascript:test:map/production.test.js",
+            "javascript:test:task/index.test.ts",
+            "javascript:test:test/benchmark.js",
+            "javascript:test:test/set-production.js"
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:unit-tests:875ec9f8d2f4b23af140:review-0007",
+          "category": "unit-testing",
+          "title": "Create represented unit tests for \u0027.\u0027 (library) (review target 7 of 11)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:unit-tests:875ec9f8d2f4b23af140:part-0007"
+          ],
+          "evidenceIds": [
+            "javascript:test:atom/index.test.ts",
+            "javascript:test:clean-stores/index.test.ts",
+            "javascript:test:computed/index.test.ts",
+            "javascript:test:deep-map/index.test.ts",
+            "javascript:test:deep-map/path.js",
+            "javascript:test:deep-map/path.test.ts",
+            "javascript:test:deep-map/production.test.js",
+            "javascript:test:effect/index.test.ts",
+            "javascript:test:keep-mount/index.test.ts",
+            "javascript:test:lifecycle/index.test.ts",
+            "javascript:test:listen-keys/index.test.ts",
+            "javascript:test:map-creator/index.test.ts",
+            "javascript:test:map/index.test.ts",
+            "javascript:test:map/production.test.js",
+            "javascript:test:task/index.test.ts",
+            "javascript:test:test/benchmark.js",
+            "javascript:test:test/set-production.js"
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:unit-tests:875ec9f8d2f4b23af140:review-0008",
+          "category": "unit-testing",
+          "title": "Create represented unit tests for \u0027.\u0027 (library) (review target 8 of 11)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:unit-tests:875ec9f8d2f4b23af140:part-0008"
+          ],
+          "evidenceIds": [
+            "javascript:test:atom/index.test.ts",
+            "javascript:test:clean-stores/index.test.ts",
+            "javascript:test:computed/index.test.ts",
+            "javascript:test:deep-map/index.test.ts",
+            "javascript:test:deep-map/path.js",
+            "javascript:test:deep-map/path.test.ts",
+            "javascript:test:deep-map/production.test.js",
+            "javascript:test:effect/index.test.ts",
+            "javascript:test:keep-mount/index.test.ts",
+            "javascript:test:lifecycle/index.test.ts",
+            "javascript:test:listen-keys/index.test.ts",
+            "javascript:test:map-creator/index.test.ts",
+            "javascript:test:map/index.test.ts",
+            "javascript:test:map/production.test.js",
+            "javascript:test:task/index.test.ts",
+            "javascript:test:test/benchmark.js",
+            "javascript:test:test/set-production.js"
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:unit-tests:875ec9f8d2f4b23af140:review-0009",
+          "category": "unit-testing",
+          "title": "Create represented unit tests for \u0027.\u0027 (library) (review target 9 of 11)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:unit-tests:875ec9f8d2f4b23af140:part-0009"
+          ],
+          "evidenceIds": [
+            "javascript:test:atom/index.test.ts",
+            "javascript:test:clean-stores/index.test.ts",
+            "javascript:test:computed/index.test.ts",
+            "javascript:test:deep-map/index.test.ts",
+            "javascript:test:deep-map/path.js",
+            "javascript:test:deep-map/path.test.ts",
+            "javascript:test:deep-map/production.test.js",
+            "javascript:test:effect/index.test.ts",
+            "javascript:test:keep-mount/index.test.ts",
+            "javascript:test:lifecycle/index.test.ts",
+            "javascript:test:listen-keys/index.test.ts",
+            "javascript:test:map-creator/index.test.ts",
+            "javascript:test:map/index.test.ts",
+            "javascript:test:map/production.test.js",
+            "javascript:test:task/index.test.ts",
+            "javascript:test:test/benchmark.js",
+            "javascript:test:test/set-production.js"
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:unit-tests:875ec9f8d2f4b23af140:review-0010",
+          "category": "unit-testing",
+          "title": "Create represented unit tests for \u0027.\u0027 (library) (review target 10 of 11)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:unit-tests:875ec9f8d2f4b23af140:part-0010"
+          ],
+          "evidenceIds": [
+            "javascript:test:atom/index.test.ts",
+            "javascript:test:clean-stores/index.test.ts",
+            "javascript:test:computed/index.test.ts",
+            "javascript:test:deep-map/index.test.ts",
+            "javascript:test:deep-map/path.js",
+            "javascript:test:deep-map/path.test.ts",
+            "javascript:test:deep-map/production.test.js",
+            "javascript:test:effect/index.test.ts",
+            "javascript:test:keep-mount/index.test.ts",
+            "javascript:test:lifecycle/index.test.ts",
+            "javascript:test:listen-keys/index.test.ts",
+            "javascript:test:map-creator/index.test.ts",
+            "javascript:test:map/index.test.ts",
+            "javascript:test:map/production.test.js",
+            "javascript:test:task/index.test.ts",
+            "javascript:test:test/benchmark.js",
+            "javascript:test:test/set-production.js"
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:unit-tests:875ec9f8d2f4b23af140:review-0011",
+          "category": "unit-testing",
+          "title": "Create represented unit tests for \u0027.\u0027 (library) (review target 11 of 11)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:unit-tests:875ec9f8d2f4b23af140:part-0011"
+          ],
+          "evidenceIds": [
+            "javascript:test:atom/index.test.ts",
+            "javascript:test:clean-stores/index.test.ts",
+            "javascript:test:computed/index.test.ts",
+            "javascript:test:deep-map/index.test.ts",
+            "javascript:test:deep-map/path.js",
+            "javascript:test:deep-map/path.test.ts",
+            "javascript:test:deep-map/production.test.js",
+            "javascript:test:effect/index.test.ts",
+            "javascript:test:keep-mount/index.test.ts",
+            "javascript:test:lifecycle/index.test.ts",
+            "javascript:test:listen-keys/index.test.ts",
+            "javascript:test:map-creator/index.test.ts",
+            "javascript:test:map/index.test.ts",
+            "javascript:test:map/production.test.js",
+            "javascript:test:task/index.test.ts",
+            "javascript:test:test/benchmark.js",
+            "javascript:test:test/set-production.js"
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        }
+      ]
+    },
+    {
+      "sourceRecordId": "record:tyrrrz-cliwrap:implementation",
+      "repository": {
+        "id": "repository:github.com/tyrrrz/cliwrap",
+        "name": "Tyrrrz/CliWrap",
+        "sourceDigest": "sha256:de315d5bf4c4bfef5fc3c9ed498358a7041aff9456490c83b80e0bb48a885c9a"
+      },
+      "profile": "implementation",
+      "baselineId": "senior-contractor-2026-no-ai",
+      "partition": "validation",
+      "sourceReviewStatus": "teacher-estimate",
+      "candidateTotalHours": null,
+      "targets": [
+        {
+          "sourceTargetId": "target:work:application-entry-point:5a370a6fd96ea8dde2e5:review-0001",
+          "category": "production-implementation",
+          "title": "Implement application entry points for \u0027CliWrap.Signaler/CliWrap.Signaler.csproj\u0027 (executable)",
+          "scope": "CliWrap.Signaler/CliWrap.Signaler.csproj",
+          "sourceWorkItemIds": [
+            "work:application-entry-point:5a370a6fd96ea8dde2e5:part-0001"
+          ],
+          "evidenceIds": [
+            "dotnet:entry-point:CliWrap.Signaler/Program.cs"
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:application-entry-point:e921fe2e9e8197b73df3:review-0001",
+          "category": "production-implementation",
+          "title": "Implement application entry points for \u0027CliWrap.Tests.Dummy/CliWrap.Tests.Dummy.csproj\u0027 (executable)",
+          "scope": "CliWrap.Tests.Dummy/CliWrap.Tests.Dummy.csproj",
+          "sourceWorkItemIds": [
+            "work:application-entry-point:e921fe2e9e8197b73df3:part-0001"
+          ],
+          "evidenceIds": [
+            "dotnet:entry-point:CliWrap.Tests.Dummy/Program.cs"
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:application-entry-point:fbbd9ecfc18b96282600:review-0001",
+          "category": "production-implementation",
+          "title": "Implement application entry points for \u0027CliWrap.Benchmarks/CliWrap.Benchmarks.csproj\u0027 (executable)",
+          "scope": "CliWrap.Benchmarks/CliWrap.Benchmarks.csproj",
+          "sourceWorkItemIds": [
+            "work:application-entry-point:fbbd9ecfc18b96282600:part-0001"
+          ],
+          "evidenceIds": [
+            "dotnet:entry-point:CliWrap.Benchmarks/Program.cs"
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:architecture-design:2baf06b5c25cb9711fe5:review-0001",
+          "category": "architecture-and-technical-design",
+          "title": "Design the technical structure of \u0027CliWrap.Signaler/CliWrap.Signaler.csproj\u0027 (executable)",
+          "scope": "CliWrap.Signaler/CliWrap.Signaler.csproj",
+          "sourceWorkItemIds": [
+            "work:architecture-design:2baf06b5c25cb9711fe5:part-0001"
+          ],
+          "evidenceIds": [
+            "dotnet:project:CliWrap.Signaler/CliWrap.Signaler.csproj"
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:architecture-design:81a0f37c2e02df7c293e:review-0001",
+          "category": "architecture-and-technical-design",
+          "title": "Design the technical structure of \u0027CliWrap.Tests.Dummy/CliWrap.Tests.Dummy.csproj\u0027 (executable)",
+          "scope": "CliWrap.Tests.Dummy/CliWrap.Tests.Dummy.csproj",
+          "sourceWorkItemIds": [
+            "work:architecture-design:81a0f37c2e02df7c293e:part-0001"
+          ],
+          "evidenceIds": [
+            "dotnet:project:CliWrap.Tests.Dummy/CliWrap.Tests.Dummy.csproj"
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:architecture-design:b31b12dcd3fbb129db77:review-0001",
+          "category": "architecture-and-technical-design",
+          "title": "Design the technical structure of \u0027CliWrap/CliWrap.csproj\u0027 (library)",
+          "scope": "CliWrap/CliWrap.csproj",
+          "sourceWorkItemIds": [
+            "work:architecture-design:b31b12dcd3fbb129db77:part-0001"
+          ],
+          "evidenceIds": [
+            "dotnet:data:CliWrap/Buffered/BufferedCommandExtensions.cs",
+            "dotnet:data:CliWrap/Command.Execution.cs",
+            "dotnet:data:CliWrap/EventStream/PullEventStreamCommandExtensions.cs",
+            "dotnet:data:CliWrap/EventStream/PushEventStreamCommandExtensions.cs",
+            "dotnet:data:CliWrap/PipeSource.cs",
+            "dotnet:project-reference:CliWrap/CliWrap.csproj:CliWrap.Signaler/CliWrap.Signaler.csproj",
+            "dotnet:project:CliWrap/CliWrap.csproj"
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:architecture-design:b339ecc4d882b57fe65c:review-0001",
+          "category": "architecture-and-technical-design",
+          "title": "Design the technical structure of \u0027CliWrap.Benchmarks/CliWrap.Benchmarks.csproj\u0027 (executable)",
+          "scope": "CliWrap.Benchmarks/CliWrap.Benchmarks.csproj",
+          "sourceWorkItemIds": [
+            "work:architecture-design:b339ecc4d882b57fe65c:part-0001"
+          ],
+          "evidenceIds": [
+            "dotnet:data:CliWrap.Benchmarks/BasicBenchmarks.cs",
+            "dotnet:data:CliWrap.Benchmarks/PipeFromStreamBenchmarks.cs",
+            "dotnet:data:CliWrap.Benchmarks/PipeToMultipleStreamsBenchmark.cs",
+            "dotnet:data:CliWrap.Benchmarks/PipeToStreamBenchmarks.cs",
+            "dotnet:project-reference:CliWrap.Benchmarks/CliWrap.Benchmarks.csproj:CliWrap.Tests.Dummy/CliWrap.Tests.Dummy.csproj",
+            "dotnet:project-reference:CliWrap.Benchmarks/CliWrap.Benchmarks.csproj:CliWrap/CliWrap.csproj",
+            "dotnet:project:CliWrap.Benchmarks/CliWrap.Benchmarks.csproj"
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:build-tooling:c2c91d07e063088d401a:review-0001",
+          "category": "build-configuration-and-developer-tooling",
+          "title": "Configure build behavior and developer tooling",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:build-tooling:c2c91d07e063088d401a:part-0001"
+          ],
+          "evidenceIds": [
+            "file:.gitignore",
+            "file:Directory.Build.props",
+            "file:Directory.Packages.props",
+            "file:NuGet.config",
+            "file:global.json"
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:ci-infrastructure:bee22f5b9a094661eb75:review-0001",
+          "category": "ci-cd-and-infrastructure-as-code",
+          "title": "Implement represented CI/CD and infrastructure configuration",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:ci-infrastructure:bee22f5b9a094661eb75:part-0001"
+          ],
+          "evidenceIds": [
+            "ci:repository",
+            "file:.github/workflows/main.yml"
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:data-persistence:0acbf5cf192dee295cdc:review-0001",
+          "category": "data-modeling-persistence-and-migrations",
+          "title": "Implement data modeling and persistence for \u0027CliWrap/CliWrap.csproj\u0027 (library)",
+          "scope": "CliWrap/CliWrap.csproj",
+          "sourceWorkItemIds": [
+            "work:data-persistence:0acbf5cf192dee295cdc:part-0001"
+          ],
+          "evidenceIds": [
+            "dotnet:data:CliWrap/Buffered/BufferedCommandExtensions.cs",
+            "dotnet:data:CliWrap/Command.Execution.cs",
+            "dotnet:data:CliWrap/EventStream/PullEventStreamCommandExtensions.cs",
+            "dotnet:data:CliWrap/EventStream/PushEventStreamCommandExtensions.cs",
+            "dotnet:data:CliWrap/PipeSource.cs"
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:data-persistence:be2185e707c22a7688f2:review-0001",
+          "category": "data-modeling-persistence-and-migrations",
+          "title": "Implement data modeling and persistence for \u0027CliWrap.Tests/CliWrap.Tests.csproj\u0027 (test) (review target 1 of 2)",
+          "scope": "CliWrap.Tests/CliWrap.Tests.csproj",
+          "sourceWorkItemIds": [
+            "work:data-persistence:be2185e707c22a7688f2:part-0001"
+          ],
+          "evidenceIds": [
+            "dotnet:data:CliWrap.Tests/CredentialsSpecs.cs",
+            "dotnet:data:CliWrap.Tests/ExecutionSpecs.cs",
+            "dotnet:data:CliWrap.Tests/LineBreakSpecs.cs",
+            "dotnet:data:CliWrap.Tests/PipingSpecs.cs",
+            "dotnet:data:CliWrap.Tests/ResourcePolicySpecs.cs",
+            "dotnet:data:CliWrap.Tests/ValidationSpecs.cs"
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:data-persistence:be2185e707c22a7688f2:review-0002",
+          "category": "data-modeling-persistence-and-migrations",
+          "title": "Implement data modeling and persistence for \u0027CliWrap.Tests/CliWrap.Tests.csproj\u0027 (test) (review target 2 of 2)",
+          "scope": "CliWrap.Tests/CliWrap.Tests.csproj",
+          "sourceWorkItemIds": [
+            "work:data-persistence:be2185e707c22a7688f2:part-0002"
+          ],
+          "evidenceIds": [
+            "dotnet:data:CliWrap.Tests/CredentialsSpecs.cs",
+            "dotnet:data:CliWrap.Tests/ExecutionSpecs.cs",
+            "dotnet:data:CliWrap.Tests/LineBreakSpecs.cs",
+            "dotnet:data:CliWrap.Tests/PipingSpecs.cs",
+            "dotnet:data:CliWrap.Tests/ResourcePolicySpecs.cs",
+            "dotnet:data:CliWrap.Tests/ValidationSpecs.cs"
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:data-persistence:c86f83565d4252e1165e:review-0001",
+          "category": "data-modeling-persistence-and-migrations",
+          "title": "Implement data modeling and persistence for \u0027CliWrap.Benchmarks/CliWrap.Benchmarks.csproj\u0027 (executable)",
+          "scope": "CliWrap.Benchmarks/CliWrap.Benchmarks.csproj",
+          "sourceWorkItemIds": [
+            "work:data-persistence:c86f83565d4252e1165e:part-0001"
+          ],
+          "evidenceIds": [
+            "dotnet:data:CliWrap.Benchmarks/BasicBenchmarks.cs",
+            "dotnet:data:CliWrap.Benchmarks/PipeFromStreamBenchmarks.cs",
+            "dotnet:data:CliWrap.Benchmarks/PipeToMultipleStreamsBenchmark.cs",
+            "dotnet:data:CliWrap.Benchmarks/PipeToStreamBenchmarks.cs"
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:documentation:bebbc838ff439c1b4e49:review-0001",
+          "category": "documentation",
+          "title": "Author and verify maintained repository documentation (review target 1 of 2)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:documentation:bebbc838ff439c1b4e49:part-0001"
+          ],
+          "evidenceIds": [
+            "documentation:repository",
+            "file:CliWrap.Benchmarks/Readme.md",
+            "file:License.txt",
+            "file:Readme.md"
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:documentation:bebbc838ff439c1b4e49:review-0002",
+          "category": "documentation",
+          "title": "Author and verify maintained repository documentation (review target 2 of 2)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:documentation:bebbc838ff439c1b4e49:part-0002"
+          ],
+          "evidenceIds": [
+            "documentation:repository",
+            "file:CliWrap.Benchmarks/Readme.md",
+            "file:License.txt",
+            "file:Readme.md"
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:dotnet-source-backbone:0e62be7c6d2d8617652b:review-0001",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027CliWrap/CliWrap.csproj\u0027 (library) (review target 1 of 18)",
+          "scope": "CliWrap/CliWrap.csproj",
+          "sourceWorkItemIds": [
+            "work:dotnet-source-backbone:0e62be7c6d2d8617652b:part-0001"
+          ],
+          "evidenceIds": [
+            "dotnet:source-structure:CliWrap/CliWrap.csproj"
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:dotnet-source-backbone:0e62be7c6d2d8617652b:review-0002",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027CliWrap/CliWrap.csproj\u0027 (library) (review target 2 of 18)",
+          "scope": "CliWrap/CliWrap.csproj",
+          "sourceWorkItemIds": [
+            "work:dotnet-source-backbone:0e62be7c6d2d8617652b:part-0002"
+          ],
+          "evidenceIds": [
+            "dotnet:source-structure:CliWrap/CliWrap.csproj"
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:dotnet-source-backbone:0e62be7c6d2d8617652b:review-0003",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027CliWrap/CliWrap.csproj\u0027 (library) (review target 3 of 18)",
+          "scope": "CliWrap/CliWrap.csproj",
+          "sourceWorkItemIds": [
+            "work:dotnet-source-backbone:0e62be7c6d2d8617652b:part-0003"
+          ],
+          "evidenceIds": [
+            "dotnet:source-structure:CliWrap/CliWrap.csproj"
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:dotnet-source-backbone:0e62be7c6d2d8617652b:review-0004",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027CliWrap/CliWrap.csproj\u0027 (library) (review target 4 of 18)",
+          "scope": "CliWrap/CliWrap.csproj",
+          "sourceWorkItemIds": [
+            "work:dotnet-source-backbone:0e62be7c6d2d8617652b:part-0004"
+          ],
+          "evidenceIds": [
+            "dotnet:source-structure:CliWrap/CliWrap.csproj"
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:dotnet-source-backbone:0e62be7c6d2d8617652b:review-0005",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027CliWrap/CliWrap.csproj\u0027 (library) (review target 5 of 18)",
+          "scope": "CliWrap/CliWrap.csproj",
+          "sourceWorkItemIds": [
+            "work:dotnet-source-backbone:0e62be7c6d2d8617652b:part-0005"
+          ],
+          "evidenceIds": [
+            "dotnet:source-structure:CliWrap/CliWrap.csproj"
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:dotnet-source-backbone:0e62be7c6d2d8617652b:review-0006",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027CliWrap/CliWrap.csproj\u0027 (library) (review target 6 of 18)",
+          "scope": "CliWrap/CliWrap.csproj",
+          "sourceWorkItemIds": [
+            "work:dotnet-source-backbone:0e62be7c6d2d8617652b:part-0006"
+          ],
+          "evidenceIds": [
+            "dotnet:source-structure:CliWrap/CliWrap.csproj"
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:dotnet-source-backbone:0e62be7c6d2d8617652b:review-0007",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027CliWrap/CliWrap.csproj\u0027 (library) (review target 7 of 18)",
+          "scope": "CliWrap/CliWrap.csproj",
+          "sourceWorkItemIds": [
+            "work:dotnet-source-backbone:0e62be7c6d2d8617652b:part-0007"
+          ],
+          "evidenceIds": [
+            "dotnet:source-structure:CliWrap/CliWrap.csproj"
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:dotnet-source-backbone:0e62be7c6d2d8617652b:review-0008",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027CliWrap/CliWrap.csproj\u0027 (library) (review target 8 of 18)",
+          "scope": "CliWrap/CliWrap.csproj",
+          "sourceWorkItemIds": [
+            "work:dotnet-source-backbone:0e62be7c6d2d8617652b:part-0008"
+          ],
+          "evidenceIds": [
+            "dotnet:source-structure:CliWrap/CliWrap.csproj"
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:dotnet-source-backbone:0e62be7c6d2d8617652b:review-0009",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027CliWrap/CliWrap.csproj\u0027 (library) (review target 9 of 18)",
+          "scope": "CliWrap/CliWrap.csproj",
+          "sourceWorkItemIds": [
+            "work:dotnet-source-backbone:0e62be7c6d2d8617652b:part-0009"
+          ],
+          "evidenceIds": [
+            "dotnet:source-structure:CliWrap/CliWrap.csproj"
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:dotnet-source-backbone:0e62be7c6d2d8617652b:review-0010",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027CliWrap/CliWrap.csproj\u0027 (library) (review target 10 of 18)",
+          "scope": "CliWrap/CliWrap.csproj",
+          "sourceWorkItemIds": [
+            "work:dotnet-source-backbone:0e62be7c6d2d8617652b:part-0010"
+          ],
+          "evidenceIds": [
+            "dotnet:source-structure:CliWrap/CliWrap.csproj"
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:dotnet-source-backbone:0e62be7c6d2d8617652b:review-0011",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027CliWrap/CliWrap.csproj\u0027 (library) (review target 11 of 18)",
+          "scope": "CliWrap/CliWrap.csproj",
+          "sourceWorkItemIds": [
+            "work:dotnet-source-backbone:0e62be7c6d2d8617652b:part-0011"
+          ],
+          "evidenceIds": [
+            "dotnet:source-structure:CliWrap/CliWrap.csproj"
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:dotnet-source-backbone:0e62be7c6d2d8617652b:review-0012",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027CliWrap/CliWrap.csproj\u0027 (library) (review target 12 of 18)",
+          "scope": "CliWrap/CliWrap.csproj",
+          "sourceWorkItemIds": [
+            "work:dotnet-source-backbone:0e62be7c6d2d8617652b:part-0012"
+          ],
+          "evidenceIds": [
+            "dotnet:source-structure:CliWrap/CliWrap.csproj"
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:dotnet-source-backbone:0e62be7c6d2d8617652b:review-0013",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027CliWrap/CliWrap.csproj\u0027 (library) (review target 13 of 18)",
+          "scope": "CliWrap/CliWrap.csproj",
+          "sourceWorkItemIds": [
+            "work:dotnet-source-backbone:0e62be7c6d2d8617652b:part-0013"
+          ],
+          "evidenceIds": [
+            "dotnet:source-structure:CliWrap/CliWrap.csproj"
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:dotnet-source-backbone:0e62be7c6d2d8617652b:review-0014",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027CliWrap/CliWrap.csproj\u0027 (library) (review target 14 of 18)",
+          "scope": "CliWrap/CliWrap.csproj",
+          "sourceWorkItemIds": [
+            "work:dotnet-source-backbone:0e62be7c6d2d8617652b:part-0014"
+          ],
+          "evidenceIds": [
+            "dotnet:source-structure:CliWrap/CliWrap.csproj"
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:dotnet-source-backbone:0e62be7c6d2d8617652b:review-0015",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027CliWrap/CliWrap.csproj\u0027 (library) (review target 15 of 18)",
+          "scope": "CliWrap/CliWrap.csproj",
+          "sourceWorkItemIds": [
+            "work:dotnet-source-backbone:0e62be7c6d2d8617652b:part-0015"
+          ],
+          "evidenceIds": [
+            "dotnet:source-structure:CliWrap/CliWrap.csproj"
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:dotnet-source-backbone:0e62be7c6d2d8617652b:review-0016",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027CliWrap/CliWrap.csproj\u0027 (library) (review target 16 of 18)",
+          "scope": "CliWrap/CliWrap.csproj",
+          "sourceWorkItemIds": [
+            "work:dotnet-source-backbone:0e62be7c6d2d8617652b:part-0016"
+          ],
+          "evidenceIds": [
+            "dotnet:source-structure:CliWrap/CliWrap.csproj"
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:dotnet-source-backbone:0e62be7c6d2d8617652b:review-0017",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027CliWrap/CliWrap.csproj\u0027 (library) (review target 17 of 18)",
+          "scope": "CliWrap/CliWrap.csproj",
+          "sourceWorkItemIds": [
+            "work:dotnet-source-backbone:0e62be7c6d2d8617652b:part-0017"
+          ],
+          "evidenceIds": [
+            "dotnet:source-structure:CliWrap/CliWrap.csproj"
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:dotnet-source-backbone:0e62be7c6d2d8617652b:review-0018",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027CliWrap/CliWrap.csproj\u0027 (library) (review target 18 of 18)",
+          "scope": "CliWrap/CliWrap.csproj",
+          "sourceWorkItemIds": [
+            "work:dotnet-source-backbone:0e62be7c6d2d8617652b:part-0018"
+          ],
+          "evidenceIds": [
+            "dotnet:source-structure:CliWrap/CliWrap.csproj"
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:dotnet-source-backbone:82c6f462b95679cc72e3:review-0001",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027CliWrap.Tests.Dummy/CliWrap.Tests.Dummy.csproj\u0027 (executable) (review target 1 of 5)",
+          "scope": "CliWrap.Tests.Dummy/CliWrap.Tests.Dummy.csproj",
+          "sourceWorkItemIds": [
+            "work:dotnet-source-backbone:82c6f462b95679cc72e3:part-0001"
+          ],
+          "evidenceIds": [
+            "dotnet:source-structure:CliWrap.Tests.Dummy/CliWrap.Tests.Dummy.csproj"
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:dotnet-source-backbone:82c6f462b95679cc72e3:review-0002",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027CliWrap.Tests.Dummy/CliWrap.Tests.Dummy.csproj\u0027 (executable) (review target 2 of 5)",
+          "scope": "CliWrap.Tests.Dummy/CliWrap.Tests.Dummy.csproj",
+          "sourceWorkItemIds": [
+            "work:dotnet-source-backbone:82c6f462b95679cc72e3:part-0002"
+          ],
+          "evidenceIds": [
+            "dotnet:source-structure:CliWrap.Tests.Dummy/CliWrap.Tests.Dummy.csproj"
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:dotnet-source-backbone:82c6f462b95679cc72e3:review-0003",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027CliWrap.Tests.Dummy/CliWrap.Tests.Dummy.csproj\u0027 (executable) (review target 3 of 5)",
+          "scope": "CliWrap.Tests.Dummy/CliWrap.Tests.Dummy.csproj",
+          "sourceWorkItemIds": [
+            "work:dotnet-source-backbone:82c6f462b95679cc72e3:part-0003"
+          ],
+          "evidenceIds": [
+            "dotnet:source-structure:CliWrap.Tests.Dummy/CliWrap.Tests.Dummy.csproj"
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:dotnet-source-backbone:82c6f462b95679cc72e3:review-0004",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027CliWrap.Tests.Dummy/CliWrap.Tests.Dummy.csproj\u0027 (executable) (review target 4 of 5)",
+          "scope": "CliWrap.Tests.Dummy/CliWrap.Tests.Dummy.csproj",
+          "sourceWorkItemIds": [
+            "work:dotnet-source-backbone:82c6f462b95679cc72e3:part-0004"
+          ],
+          "evidenceIds": [
+            "dotnet:source-structure:CliWrap.Tests.Dummy/CliWrap.Tests.Dummy.csproj"
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:dotnet-source-backbone:82c6f462b95679cc72e3:review-0005",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027CliWrap.Tests.Dummy/CliWrap.Tests.Dummy.csproj\u0027 (executable) (review target 5 of 5)",
+          "scope": "CliWrap.Tests.Dummy/CliWrap.Tests.Dummy.csproj",
+          "sourceWorkItemIds": [
+            "work:dotnet-source-backbone:82c6f462b95679cc72e3:part-0005"
+          ],
+          "evidenceIds": [
+            "dotnet:source-structure:CliWrap.Tests.Dummy/CliWrap.Tests.Dummy.csproj"
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:dotnet-source-backbone:888867a9d8b811b0531d:review-0001",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027CliWrap.Signaler/CliWrap.Signaler.csproj\u0027 (executable)",
+          "scope": "CliWrap.Signaler/CliWrap.Signaler.csproj",
+          "sourceWorkItemIds": [
+            "work:dotnet-source-backbone:888867a9d8b811b0531d:part-0001"
+          ],
+          "evidenceIds": [
+            "dotnet:source-structure:CliWrap.Signaler/CliWrap.Signaler.csproj"
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:dotnet-source-backbone:bff334a3ff0bfc0ff2f6:review-0001",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027CliWrap.Benchmarks/CliWrap.Benchmarks.csproj\u0027 (executable) (review target 1 of 4)",
+          "scope": "CliWrap.Benchmarks/CliWrap.Benchmarks.csproj",
+          "sourceWorkItemIds": [
+            "work:dotnet-source-backbone:bff334a3ff0bfc0ff2f6:part-0001"
+          ],
+          "evidenceIds": [
+            "dotnet:source-structure:CliWrap.Benchmarks/CliWrap.Benchmarks.csproj"
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:dotnet-source-backbone:bff334a3ff0bfc0ff2f6:review-0002",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027CliWrap.Benchmarks/CliWrap.Benchmarks.csproj\u0027 (executable) (review target 2 of 4)",
+          "scope": "CliWrap.Benchmarks/CliWrap.Benchmarks.csproj",
+          "sourceWorkItemIds": [
+            "work:dotnet-source-backbone:bff334a3ff0bfc0ff2f6:part-0002"
+          ],
+          "evidenceIds": [
+            "dotnet:source-structure:CliWrap.Benchmarks/CliWrap.Benchmarks.csproj"
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:dotnet-source-backbone:bff334a3ff0bfc0ff2f6:review-0003",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027CliWrap.Benchmarks/CliWrap.Benchmarks.csproj\u0027 (executable) (review target 3 of 4)",
+          "scope": "CliWrap.Benchmarks/CliWrap.Benchmarks.csproj",
+          "sourceWorkItemIds": [
+            "work:dotnet-source-backbone:bff334a3ff0bfc0ff2f6:part-0003"
+          ],
+          "evidenceIds": [
+            "dotnet:source-structure:CliWrap.Benchmarks/CliWrap.Benchmarks.csproj"
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:dotnet-source-backbone:bff334a3ff0bfc0ff2f6:review-0004",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027CliWrap.Benchmarks/CliWrap.Benchmarks.csproj\u0027 (executable) (review target 4 of 4)",
+          "scope": "CliWrap.Benchmarks/CliWrap.Benchmarks.csproj",
+          "sourceWorkItemIds": [
+            "work:dotnet-source-backbone:bff334a3ff0bfc0ff2f6:part-0004"
+          ],
+          "evidenceIds": [
+            "dotnet:source-structure:CliWrap.Benchmarks/CliWrap.Benchmarks.csproj"
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:manual-validation:13a1d5c2bbf0fa759582:review-0001",
+          "category": "manual-validation-debugging-and-hardening",
+          "title": "Manually validate, debug, and harden \u0027CliWrap/CliWrap.csproj\u0027 (library)",
+          "scope": "CliWrap/CliWrap.csproj",
+          "sourceWorkItemIds": [
+            "work:manual-validation:13a1d5c2bbf0fa759582:part-0001"
+          ],
+          "evidenceIds": [
+            "dotnet:data:CliWrap/Buffered/BufferedCommandExtensions.cs",
+            "dotnet:data:CliWrap/Command.Execution.cs",
+            "dotnet:data:CliWrap/EventStream/PullEventStreamCommandExtensions.cs",
+            "dotnet:data:CliWrap/EventStream/PushEventStreamCommandExtensions.cs",
+            "dotnet:data:CliWrap/PipeSource.cs",
+            "dotnet:project-reference:CliWrap/CliWrap.csproj:CliWrap.Signaler/CliWrap.Signaler.csproj",
+            "dotnet:project:CliWrap/CliWrap.csproj"
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:manual-validation:2f30231effeda20fa0c4:review-0001",
+          "category": "manual-validation-debugging-and-hardening",
+          "title": "Manually validate, debug, and harden \u0027CliWrap.Benchmarks/CliWrap.Benchmarks.csproj\u0027 (executable)",
+          "scope": "CliWrap.Benchmarks/CliWrap.Benchmarks.csproj",
+          "sourceWorkItemIds": [
+            "work:manual-validation:2f30231effeda20fa0c4:part-0001"
+          ],
+          "evidenceIds": [
+            "dotnet:data:CliWrap.Benchmarks/BasicBenchmarks.cs",
+            "dotnet:data:CliWrap.Benchmarks/PipeFromStreamBenchmarks.cs",
+            "dotnet:data:CliWrap.Benchmarks/PipeToMultipleStreamsBenchmark.cs",
+            "dotnet:data:CliWrap.Benchmarks/PipeToStreamBenchmarks.cs",
+            "dotnet:entry-point:CliWrap.Benchmarks/Program.cs",
+            "dotnet:project-reference:CliWrap.Benchmarks/CliWrap.Benchmarks.csproj:CliWrap.Tests.Dummy/CliWrap.Tests.Dummy.csproj",
+            "dotnet:project-reference:CliWrap.Benchmarks/CliWrap.Benchmarks.csproj:CliWrap/CliWrap.csproj",
+            "dotnet:project:CliWrap.Benchmarks/CliWrap.Benchmarks.csproj"
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:manual-validation:760419422c64b12f8328:review-0001",
+          "category": "manual-validation-debugging-and-hardening",
+          "title": "Manually validate, debug, and harden \u0027CliWrap.Tests.Dummy/CliWrap.Tests.Dummy.csproj\u0027 (executable)",
+          "scope": "CliWrap.Tests.Dummy/CliWrap.Tests.Dummy.csproj",
+          "sourceWorkItemIds": [
+            "work:manual-validation:760419422c64b12f8328:part-0001"
+          ],
+          "evidenceIds": [
+            "dotnet:entry-point:CliWrap.Tests.Dummy/Program.cs",
+            "dotnet:project:CliWrap.Tests.Dummy/CliWrap.Tests.Dummy.csproj"
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:manual-validation:8080ab37fe1b4f3b2481:review-0001",
+          "category": "manual-validation-debugging-and-hardening",
+          "title": "Manually validate, debug, and harden \u0027CliWrap.Signaler/CliWrap.Signaler.csproj\u0027 (executable)",
+          "scope": "CliWrap.Signaler/CliWrap.Signaler.csproj",
+          "sourceWorkItemIds": [
+            "work:manual-validation:8080ab37fe1b4f3b2481:part-0001"
+          ],
+          "evidenceIds": [
+            "dotnet:entry-point:CliWrap.Signaler/Program.cs",
+            "dotnet:project:CliWrap.Signaler/CliWrap.Signaler.csproj"
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:packaging-release:58eb8ae7efef939a19b5:review-0001",
+          "category": "packaging-deployment-and-release-artifacts",
+          "title": "Prepare represented packages and release surfaces",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:packaging-release:58eb8ae7efef939a19b5:part-0001"
+          ],
+          "evidenceIds": [
+            "dotnet:project:CliWrap/CliWrap.csproj"
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:project-setup:19974c0b73f256f2f9d8:review-0001",
+          "category": "repository-and-solution-setup",
+          "title": "Set up \u0027CliWrap/CliWrap.csproj\u0027 (library)",
+          "scope": "CliWrap/CliWrap.csproj",
+          "sourceWorkItemIds": [
+            "work:project-setup:19974c0b73f256f2f9d8:part-0001"
+          ],
+          "evidenceIds": [
+            "dotnet:package:CliWrap/CliWrap.csproj:binternal",
+            "dotnet:package:CliWrap/CliWrap.csproj:csharpier.msbuild",
+            "dotnet:package:CliWrap/CliWrap.csproj:microsoft.bcl.asyncinterfaces",
+            "dotnet:package:CliWrap/CliWrap.csproj:polyshim",
+            "dotnet:package:CliWrap/CliWrap.csproj:powerkit",
+            "dotnet:package:CliWrap/CliWrap.csproj:snek",
+            "dotnet:package:CliWrap/CliWrap.csproj:system.management",
+            "dotnet:package:CliWrap/CliWrap.csproj:system.memory",
+            "dotnet:package:CliWrap/CliWrap.csproj:system.threading.tasks.extensions",
+            "dotnet:project:CliWrap/CliWrap.csproj"
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:project-setup:41e1e99994ca2cde51af:review-0001",
+          "category": "repository-and-solution-setup",
+          "title": "Set up \u0027CliWrap.Tests.Dummy/CliWrap.Tests.Dummy.csproj\u0027 (executable)",
+          "scope": "CliWrap.Tests.Dummy/CliWrap.Tests.Dummy.csproj",
+          "sourceWorkItemIds": [
+            "work:project-setup:41e1e99994ca2cde51af:part-0001"
+          ],
+          "evidenceIds": [
+            "dotnet:package:CliWrap.Tests.Dummy/CliWrap.Tests.Dummy.csproj:clifx",
+            "dotnet:package:CliWrap.Tests.Dummy/CliWrap.Tests.Dummy.csproj:csharpier.msbuild",
+            "dotnet:project:CliWrap.Tests.Dummy/CliWrap.Tests.Dummy.csproj"
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:project-setup:52495b7bafdb0ae18d68:review-0001",
+          "category": "repository-and-solution-setup",
+          "title": "Set up \u0027CliWrap.Benchmarks/CliWrap.Benchmarks.csproj\u0027 (executable)",
+          "scope": "CliWrap.Benchmarks/CliWrap.Benchmarks.csproj",
+          "sourceWorkItemIds": [
+            "work:project-setup:52495b7bafdb0ae18d68:part-0001"
+          ],
+          "evidenceIds": [
+            "dotnet:package:CliWrap.Benchmarks/CliWrap.Benchmarks.csproj:benchmarkdotnet",
+            "dotnet:package:CliWrap.Benchmarks/CliWrap.Benchmarks.csproj:csharpier.msbuild",
+            "dotnet:package:CliWrap.Benchmarks/CliWrap.Benchmarks.csproj:medallionshell",
+            "dotnet:package:CliWrap.Benchmarks/CliWrap.Benchmarks.csproj:processx",
+            "dotnet:package:CliWrap.Benchmarks/CliWrap.Benchmarks.csproj:runprocessastask",
+            "dotnet:package:CliWrap.Benchmarks/CliWrap.Benchmarks.csproj:system.reactive",
+            "dotnet:project:CliWrap.Benchmarks/CliWrap.Benchmarks.csproj"
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:project-setup:63d54b6b24ae883da0b6:review-0001",
+          "category": "repository-and-solution-setup",
+          "title": "Set up \u0027CliWrap.Signaler/CliWrap.Signaler.csproj\u0027 (executable)",
+          "scope": "CliWrap.Signaler/CliWrap.Signaler.csproj",
+          "sourceWorkItemIds": [
+            "work:project-setup:63d54b6b24ae883da0b6:part-0001"
+          ],
+          "evidenceIds": [
+            "dotnet:package:CliWrap.Signaler/CliWrap.Signaler.csproj:csharpier.msbuild",
+            "dotnet:package:CliWrap.Signaler/CliWrap.Signaler.csproj:polyshim",
+            "dotnet:project:CliWrap.Signaler/CliWrap.Signaler.csproj"
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:project-setup:655f61bec43e3dbccb1a:review-0001",
+          "category": "repository-and-solution-setup",
+          "title": "Set up \u0027CliWrap.Tests/CliWrap.Tests.csproj\u0027 (test)",
+          "scope": "CliWrap.Tests/CliWrap.Tests.csproj",
+          "sourceWorkItemIds": [
+            "work:project-setup:655f61bec43e3dbccb1a:part-0001"
+          ],
+          "evidenceIds": [
+            "dotnet:package:CliWrap.Tests/CliWrap.Tests.csproj:coverlet.collector",
+            "dotnet:package:CliWrap.Tests/CliWrap.Tests.csproj:csharpier.msbuild",
+            "dotnet:package:CliWrap.Tests/CliWrap.Tests.csproj:fluentassertions",
+            "dotnet:package:CliWrap.Tests/CliWrap.Tests.csproj:githubactionstestlogger",
+            "dotnet:package:CliWrap.Tests/CliWrap.Tests.csproj:microsoft.net.test.sdk",
+            "dotnet:package:CliWrap.Tests/CliWrap.Tests.csproj:powerkit",
+            "dotnet:package:CliWrap.Tests/CliWrap.Tests.csproj:system.reactive",
+            "dotnet:package:CliWrap.Tests/CliWrap.Tests.csproj:xunit",
+            "dotnet:package:CliWrap.Tests/CliWrap.Tests.csproj:xunit.runner.visualstudio",
+            "dotnet:package:CliWrap.Tests/CliWrap.Tests.csproj:xunit.skippablefact",
+            "dotnet:project:CliWrap.Tests/CliWrap.Tests.csproj"
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:self-review:e943a6db2e8c464b145a:review-0001",
+          "category": "self-review-and-system-integration",
+          "title": "Self-review and integrate the completed system (review target 1 of 2)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:self-review:e943a6db2e8c464b145a:part-0001"
+          ],
+          "evidenceIds": [
+            "dotnet:data:CliWrap.Benchmarks/BasicBenchmarks.cs",
+            "dotnet:data:CliWrap.Benchmarks/PipeFromStreamBenchmarks.cs",
+            "dotnet:data:CliWrap.Benchmarks/PipeToMultipleStreamsBenchmark.cs",
+            "dotnet:data:CliWrap.Benchmarks/PipeToStreamBenchmarks.cs",
+            "dotnet:data:CliWrap.Tests/CredentialsSpecs.cs",
+            "dotnet:data:CliWrap.Tests/ExecutionSpecs.cs",
+            "dotnet:data:CliWrap.Tests/LineBreakSpecs.cs",
+            "dotnet:data:CliWrap.Tests/PipingSpecs.cs",
+            "dotnet:data:CliWrap.Tests/ResourcePolicySpecs.cs",
+            "dotnet:data:CliWrap.Tests/ValidationSpecs.cs",
+            "dotnet:data:CliWrap/Buffered/BufferedCommandExtensions.cs",
+            "dotnet:data:CliWrap/Command.Execution.cs",
+            "dotnet:data:CliWrap/EventStream/PullEventStreamCommandExtensions.cs",
+            "dotnet:data:CliWrap/EventStream/PushEventStreamCommandExtensions.cs",
+            "dotnet:data:CliWrap/PipeSource.cs",
+            "dotnet:project-reference:CliWrap.Benchmarks/CliWrap.Benchmarks.csproj:CliWrap.Tests.Dummy/CliWrap.Tests.Dummy.csproj",
+            "dotnet:project-reference:CliWrap.Benchmarks/CliWrap.Benchmarks.csproj:CliWrap/CliWrap.csproj",
+            "dotnet:project-reference:CliWrap.Tests/CliWrap.Tests.csproj:CliWrap.Tests.Dummy/CliWrap.Tests.Dummy.csproj",
+            "dotnet:project-reference:CliWrap.Tests/CliWrap.Tests.csproj:CliWrap/CliWrap.csproj",
+            "dotnet:project-reference:CliWrap/CliWrap.csproj:CliWrap.Signaler/CliWrap.Signaler.csproj",
+            "dotnet:project:CliWrap.Benchmarks/CliWrap.Benchmarks.csproj",
+            "dotnet:project:CliWrap.Signaler/CliWrap.Signaler.csproj",
+            "dotnet:project:CliWrap.Tests.Dummy/CliWrap.Tests.Dummy.csproj",
+            "dotnet:project:CliWrap.Tests/CliWrap.Tests.csproj",
+            "dotnet:project:CliWrap/CliWrap.csproj",
+            "dotnet:repository",
+            "inventory:repository"
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:self-review:e943a6db2e8c464b145a:review-0002",
+          "category": "self-review-and-system-integration",
+          "title": "Self-review and integrate the completed system (review target 2 of 2)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:self-review:e943a6db2e8c464b145a:part-0002"
+          ],
+          "evidenceIds": [
+            "dotnet:data:CliWrap.Benchmarks/BasicBenchmarks.cs",
+            "dotnet:data:CliWrap.Benchmarks/PipeFromStreamBenchmarks.cs",
+            "dotnet:data:CliWrap.Benchmarks/PipeToMultipleStreamsBenchmark.cs",
+            "dotnet:data:CliWrap.Benchmarks/PipeToStreamBenchmarks.cs",
+            "dotnet:data:CliWrap.Tests/CredentialsSpecs.cs",
+            "dotnet:data:CliWrap.Tests/ExecutionSpecs.cs",
+            "dotnet:data:CliWrap.Tests/LineBreakSpecs.cs",
+            "dotnet:data:CliWrap.Tests/PipingSpecs.cs",
+            "dotnet:data:CliWrap.Tests/ResourcePolicySpecs.cs",
+            "dotnet:data:CliWrap.Tests/ValidationSpecs.cs",
+            "dotnet:data:CliWrap/Buffered/BufferedCommandExtensions.cs",
+            "dotnet:data:CliWrap/Command.Execution.cs",
+            "dotnet:data:CliWrap/EventStream/PullEventStreamCommandExtensions.cs",
+            "dotnet:data:CliWrap/EventStream/PushEventStreamCommandExtensions.cs",
+            "dotnet:data:CliWrap/PipeSource.cs",
+            "dotnet:project-reference:CliWrap.Benchmarks/CliWrap.Benchmarks.csproj:CliWrap.Tests.Dummy/CliWrap.Tests.Dummy.csproj",
+            "dotnet:project-reference:CliWrap.Benchmarks/CliWrap.Benchmarks.csproj:CliWrap/CliWrap.csproj",
+            "dotnet:project-reference:CliWrap.Tests/CliWrap.Tests.csproj:CliWrap.Tests.Dummy/CliWrap.Tests.Dummy.csproj",
+            "dotnet:project-reference:CliWrap.Tests/CliWrap.Tests.csproj:CliWrap/CliWrap.csproj",
+            "dotnet:project-reference:CliWrap/CliWrap.csproj:CliWrap.Signaler/CliWrap.Signaler.csproj",
+            "dotnet:project:CliWrap.Benchmarks/CliWrap.Benchmarks.csproj",
+            "dotnet:project:CliWrap.Signaler/CliWrap.Signaler.csproj",
+            "dotnet:project:CliWrap.Tests.Dummy/CliWrap.Tests.Dummy.csproj",
+            "dotnet:project:CliWrap.Tests/CliWrap.Tests.csproj",
+            "dotnet:project:CliWrap/CliWrap.csproj",
+            "dotnet:repository",
+            "inventory:repository"
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:solution-coordination:c6246e076bb47f8310ce:review-0001",
+          "category": "repository-and-solution-setup",
+          "title": "Coordinate solution, workspace, and local dependency boundaries",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:solution-coordination:c6246e076bb47f8310ce:part-0001"
+          ],
+          "evidenceIds": [
+            "dotnet:project-reference:CliWrap.Benchmarks/CliWrap.Benchmarks.csproj:CliWrap.Tests.Dummy/CliWrap.Tests.Dummy.csproj",
+            "dotnet:project-reference:CliWrap.Benchmarks/CliWrap.Benchmarks.csproj:CliWrap/CliWrap.csproj",
+            "dotnet:project-reference:CliWrap.Tests/CliWrap.Tests.csproj:CliWrap.Tests.Dummy/CliWrap.Tests.Dummy.csproj",
+            "dotnet:project-reference:CliWrap.Tests/CliWrap.Tests.csproj:CliWrap/CliWrap.csproj",
+            "dotnet:project-reference:CliWrap/CliWrap.csproj:CliWrap.Signaler/CliWrap.Signaler.csproj",
+            "dotnet:solution:CliWrap.slnx"
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:specification-comprehension:49aec33b6a46fb626dad:review-0001",
+          "category": "specification-comprehension-and-domain-learning",
+          "title": "Comprehend the supplied specification and bounded business domain",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:specification-comprehension:49aec33b6a46fb626dad:part-0001"
+          ],
+          "evidenceIds": [
+            "dotnet:data:CliWrap.Benchmarks/BasicBenchmarks.cs",
+            "dotnet:data:CliWrap.Benchmarks/PipeFromStreamBenchmarks.cs",
+            "dotnet:data:CliWrap.Benchmarks/PipeToMultipleStreamsBenchmark.cs",
+            "dotnet:data:CliWrap.Benchmarks/PipeToStreamBenchmarks.cs",
+            "dotnet:data:CliWrap.Tests/CredentialsSpecs.cs",
+            "dotnet:data:CliWrap.Tests/ExecutionSpecs.cs",
+            "dotnet:data:CliWrap.Tests/LineBreakSpecs.cs",
+            "dotnet:data:CliWrap.Tests/PipingSpecs.cs",
+            "dotnet:data:CliWrap.Tests/ResourcePolicySpecs.cs",
+            "dotnet:data:CliWrap.Tests/ValidationSpecs.cs",
+            "dotnet:data:CliWrap/Buffered/BufferedCommandExtensions.cs",
+            "dotnet:data:CliWrap/Command.Execution.cs",
+            "dotnet:data:CliWrap/EventStream/PullEventStreamCommandExtensions.cs",
+            "dotnet:data:CliWrap/EventStream/PushEventStreamCommandExtensions.cs",
+            "dotnet:data:CliWrap/PipeSource.cs",
+            "dotnet:project:CliWrap.Benchmarks/CliWrap.Benchmarks.csproj",
+            "dotnet:project:CliWrap.Signaler/CliWrap.Signaler.csproj",
+            "dotnet:project:CliWrap.Tests.Dummy/CliWrap.Tests.Dummy.csproj",
+            "dotnet:project:CliWrap.Tests/CliWrap.Tests.csproj",
+            "dotnet:project:CliWrap/CliWrap.csproj",
+            "dotnet:repository",
+            "inventory:repository"
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:unit-tests:a6ad88961efa60e9f48e:review-0001",
+          "category": "unit-testing",
+          "title": "Create represented unit tests for \u0027CliWrap.Tests/CliWrap.Tests.csproj\u0027 (test) (review target 1 of 10)",
+          "scope": "CliWrap.Tests/CliWrap.Tests.csproj",
+          "sourceWorkItemIds": [
+            "work:unit-tests:a6ad88961efa60e9f48e:part-0001"
+          ],
+          "evidenceIds": [
+            "dotnet:test:CliWrap.Tests/BufferingSpecs.cs",
+            "dotnet:test:CliWrap.Tests/ConfigurationSpecs.cs",
+            "dotnet:test:CliWrap.Tests/CredentialsSpecs.cs",
+            "dotnet:test:CliWrap.Tests/EnvironmentSpecs.cs",
+            "dotnet:test:CliWrap.Tests/ExecutionSpecs.cs",
+            "dotnet:test:CliWrap.Tests/LineBreakSpecs.cs",
+            "dotnet:test:CliWrap.Tests/PathResolutionSpecs.cs",
+            "dotnet:test:CliWrap.Tests/PipingSpecs.cs",
+            "dotnet:test:CliWrap.Tests/PullEventStreamSpecs.cs",
+            "dotnet:test:CliWrap.Tests/PushEventStreamSpecs.cs",
+            "dotnet:test:CliWrap.Tests/ResourcePolicySpecs.cs",
+            "dotnet:test:CliWrap.Tests/Utils/Extensions/AssertionExtensions.cs",
+            "dotnet:test:CliWrap.Tests/Utils/Extensions/EnvironmentExtensions.cs",
+            "dotnet:test:CliWrap.Tests/ValidationSpecs.cs"
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:unit-tests:a6ad88961efa60e9f48e:review-0002",
+          "category": "unit-testing",
+          "title": "Create represented unit tests for \u0027CliWrap.Tests/CliWrap.Tests.csproj\u0027 (test) (review target 2 of 10)",
+          "scope": "CliWrap.Tests/CliWrap.Tests.csproj",
+          "sourceWorkItemIds": [
+            "work:unit-tests:a6ad88961efa60e9f48e:part-0002"
+          ],
+          "evidenceIds": [
+            "dotnet:test:CliWrap.Tests/BufferingSpecs.cs",
+            "dotnet:test:CliWrap.Tests/ConfigurationSpecs.cs",
+            "dotnet:test:CliWrap.Tests/CredentialsSpecs.cs",
+            "dotnet:test:CliWrap.Tests/EnvironmentSpecs.cs",
+            "dotnet:test:CliWrap.Tests/ExecutionSpecs.cs",
+            "dotnet:test:CliWrap.Tests/LineBreakSpecs.cs",
+            "dotnet:test:CliWrap.Tests/PathResolutionSpecs.cs",
+            "dotnet:test:CliWrap.Tests/PipingSpecs.cs",
+            "dotnet:test:CliWrap.Tests/PullEventStreamSpecs.cs",
+            "dotnet:test:CliWrap.Tests/PushEventStreamSpecs.cs",
+            "dotnet:test:CliWrap.Tests/ResourcePolicySpecs.cs",
+            "dotnet:test:CliWrap.Tests/Utils/Extensions/AssertionExtensions.cs",
+            "dotnet:test:CliWrap.Tests/Utils/Extensions/EnvironmentExtensions.cs",
+            "dotnet:test:CliWrap.Tests/ValidationSpecs.cs"
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:unit-tests:a6ad88961efa60e9f48e:review-0003",
+          "category": "unit-testing",
+          "title": "Create represented unit tests for \u0027CliWrap.Tests/CliWrap.Tests.csproj\u0027 (test) (review target 3 of 10)",
+          "scope": "CliWrap.Tests/CliWrap.Tests.csproj",
+          "sourceWorkItemIds": [
+            "work:unit-tests:a6ad88961efa60e9f48e:part-0003"
+          ],
+          "evidenceIds": [
+            "dotnet:test:CliWrap.Tests/BufferingSpecs.cs",
+            "dotnet:test:CliWrap.Tests/ConfigurationSpecs.cs",
+            "dotnet:test:CliWrap.Tests/CredentialsSpecs.cs",
+            "dotnet:test:CliWrap.Tests/EnvironmentSpecs.cs",
+            "dotnet:test:CliWrap.Tests/ExecutionSpecs.cs",
+            "dotnet:test:CliWrap.Tests/LineBreakSpecs.cs",
+            "dotnet:test:CliWrap.Tests/PathResolutionSpecs.cs",
+            "dotnet:test:CliWrap.Tests/PipingSpecs.cs",
+            "dotnet:test:CliWrap.Tests/PullEventStreamSpecs.cs",
+            "dotnet:test:CliWrap.Tests/PushEventStreamSpecs.cs",
+            "dotnet:test:CliWrap.Tests/ResourcePolicySpecs.cs",
+            "dotnet:test:CliWrap.Tests/Utils/Extensions/AssertionExtensions.cs",
+            "dotnet:test:CliWrap.Tests/Utils/Extensions/EnvironmentExtensions.cs",
+            "dotnet:test:CliWrap.Tests/ValidationSpecs.cs"
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:unit-tests:a6ad88961efa60e9f48e:review-0004",
+          "category": "unit-testing",
+          "title": "Create represented unit tests for \u0027CliWrap.Tests/CliWrap.Tests.csproj\u0027 (test) (review target 4 of 10)",
+          "scope": "CliWrap.Tests/CliWrap.Tests.csproj",
+          "sourceWorkItemIds": [
+            "work:unit-tests:a6ad88961efa60e9f48e:part-0004"
+          ],
+          "evidenceIds": [
+            "dotnet:test:CliWrap.Tests/BufferingSpecs.cs",
+            "dotnet:test:CliWrap.Tests/ConfigurationSpecs.cs",
+            "dotnet:test:CliWrap.Tests/CredentialsSpecs.cs",
+            "dotnet:test:CliWrap.Tests/EnvironmentSpecs.cs",
+            "dotnet:test:CliWrap.Tests/ExecutionSpecs.cs",
+            "dotnet:test:CliWrap.Tests/LineBreakSpecs.cs",
+            "dotnet:test:CliWrap.Tests/PathResolutionSpecs.cs",
+            "dotnet:test:CliWrap.Tests/PipingSpecs.cs",
+            "dotnet:test:CliWrap.Tests/PullEventStreamSpecs.cs",
+            "dotnet:test:CliWrap.Tests/PushEventStreamSpecs.cs",
+            "dotnet:test:CliWrap.Tests/ResourcePolicySpecs.cs",
+            "dotnet:test:CliWrap.Tests/Utils/Extensions/AssertionExtensions.cs",
+            "dotnet:test:CliWrap.Tests/Utils/Extensions/EnvironmentExtensions.cs",
+            "dotnet:test:CliWrap.Tests/ValidationSpecs.cs"
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:unit-tests:a6ad88961efa60e9f48e:review-0005",
+          "category": "unit-testing",
+          "title": "Create represented unit tests for \u0027CliWrap.Tests/CliWrap.Tests.csproj\u0027 (test) (review target 5 of 10)",
+          "scope": "CliWrap.Tests/CliWrap.Tests.csproj",
+          "sourceWorkItemIds": [
+            "work:unit-tests:a6ad88961efa60e9f48e:part-0005"
+          ],
+          "evidenceIds": [
+            "dotnet:test:CliWrap.Tests/BufferingSpecs.cs",
+            "dotnet:test:CliWrap.Tests/ConfigurationSpecs.cs",
+            "dotnet:test:CliWrap.Tests/CredentialsSpecs.cs",
+            "dotnet:test:CliWrap.Tests/EnvironmentSpecs.cs",
+            "dotnet:test:CliWrap.Tests/ExecutionSpecs.cs",
+            "dotnet:test:CliWrap.Tests/LineBreakSpecs.cs",
+            "dotnet:test:CliWrap.Tests/PathResolutionSpecs.cs",
+            "dotnet:test:CliWrap.Tests/PipingSpecs.cs",
+            "dotnet:test:CliWrap.Tests/PullEventStreamSpecs.cs",
+            "dotnet:test:CliWrap.Tests/PushEventStreamSpecs.cs",
+            "dotnet:test:CliWrap.Tests/ResourcePolicySpecs.cs",
+            "dotnet:test:CliWrap.Tests/Utils/Extensions/AssertionExtensions.cs",
+            "dotnet:test:CliWrap.Tests/Utils/Extensions/EnvironmentExtensions.cs",
+            "dotnet:test:CliWrap.Tests/ValidationSpecs.cs"
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:unit-tests:a6ad88961efa60e9f48e:review-0006",
+          "category": "unit-testing",
+          "title": "Create represented unit tests for \u0027CliWrap.Tests/CliWrap.Tests.csproj\u0027 (test) (review target 6 of 10)",
+          "scope": "CliWrap.Tests/CliWrap.Tests.csproj",
+          "sourceWorkItemIds": [
+            "work:unit-tests:a6ad88961efa60e9f48e:part-0006"
+          ],
+          "evidenceIds": [
+            "dotnet:test:CliWrap.Tests/BufferingSpecs.cs",
+            "dotnet:test:CliWrap.Tests/ConfigurationSpecs.cs",
+            "dotnet:test:CliWrap.Tests/CredentialsSpecs.cs",
+            "dotnet:test:CliWrap.Tests/EnvironmentSpecs.cs",
+            "dotnet:test:CliWrap.Tests/ExecutionSpecs.cs",
+            "dotnet:test:CliWrap.Tests/LineBreakSpecs.cs",
+            "dotnet:test:CliWrap.Tests/PathResolutionSpecs.cs",
+            "dotnet:test:CliWrap.Tests/PipingSpecs.cs",
+            "dotnet:test:CliWrap.Tests/PullEventStreamSpecs.cs",
+            "dotnet:test:CliWrap.Tests/PushEventStreamSpecs.cs",
+            "dotnet:test:CliWrap.Tests/ResourcePolicySpecs.cs",
+            "dotnet:test:CliWrap.Tests/Utils/Extensions/AssertionExtensions.cs",
+            "dotnet:test:CliWrap.Tests/Utils/Extensions/EnvironmentExtensions.cs",
+            "dotnet:test:CliWrap.Tests/ValidationSpecs.cs"
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:unit-tests:a6ad88961efa60e9f48e:review-0007",
+          "category": "unit-testing",
+          "title": "Create represented unit tests for \u0027CliWrap.Tests/CliWrap.Tests.csproj\u0027 (test) (review target 7 of 10)",
+          "scope": "CliWrap.Tests/CliWrap.Tests.csproj",
+          "sourceWorkItemIds": [
+            "work:unit-tests:a6ad88961efa60e9f48e:part-0007"
+          ],
+          "evidenceIds": [
+            "dotnet:test:CliWrap.Tests/BufferingSpecs.cs",
+            "dotnet:test:CliWrap.Tests/ConfigurationSpecs.cs",
+            "dotnet:test:CliWrap.Tests/CredentialsSpecs.cs",
+            "dotnet:test:CliWrap.Tests/EnvironmentSpecs.cs",
+            "dotnet:test:CliWrap.Tests/ExecutionSpecs.cs",
+            "dotnet:test:CliWrap.Tests/LineBreakSpecs.cs",
+            "dotnet:test:CliWrap.Tests/PathResolutionSpecs.cs",
+            "dotnet:test:CliWrap.Tests/PipingSpecs.cs",
+            "dotnet:test:CliWrap.Tests/PullEventStreamSpecs.cs",
+            "dotnet:test:CliWrap.Tests/PushEventStreamSpecs.cs",
+            "dotnet:test:CliWrap.Tests/ResourcePolicySpecs.cs",
+            "dotnet:test:CliWrap.Tests/Utils/Extensions/AssertionExtensions.cs",
+            "dotnet:test:CliWrap.Tests/Utils/Extensions/EnvironmentExtensions.cs",
+            "dotnet:test:CliWrap.Tests/ValidationSpecs.cs"
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:unit-tests:a6ad88961efa60e9f48e:review-0008",
+          "category": "unit-testing",
+          "title": "Create represented unit tests for \u0027CliWrap.Tests/CliWrap.Tests.csproj\u0027 (test) (review target 8 of 10)",
+          "scope": "CliWrap.Tests/CliWrap.Tests.csproj",
+          "sourceWorkItemIds": [
+            "work:unit-tests:a6ad88961efa60e9f48e:part-0008"
+          ],
+          "evidenceIds": [
+            "dotnet:test:CliWrap.Tests/BufferingSpecs.cs",
+            "dotnet:test:CliWrap.Tests/ConfigurationSpecs.cs",
+            "dotnet:test:CliWrap.Tests/CredentialsSpecs.cs",
+            "dotnet:test:CliWrap.Tests/EnvironmentSpecs.cs",
+            "dotnet:test:CliWrap.Tests/ExecutionSpecs.cs",
+            "dotnet:test:CliWrap.Tests/LineBreakSpecs.cs",
+            "dotnet:test:CliWrap.Tests/PathResolutionSpecs.cs",
+            "dotnet:test:CliWrap.Tests/PipingSpecs.cs",
+            "dotnet:test:CliWrap.Tests/PullEventStreamSpecs.cs",
+            "dotnet:test:CliWrap.Tests/PushEventStreamSpecs.cs",
+            "dotnet:test:CliWrap.Tests/ResourcePolicySpecs.cs",
+            "dotnet:test:CliWrap.Tests/Utils/Extensions/AssertionExtensions.cs",
+            "dotnet:test:CliWrap.Tests/Utils/Extensions/EnvironmentExtensions.cs",
+            "dotnet:test:CliWrap.Tests/ValidationSpecs.cs"
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:unit-tests:a6ad88961efa60e9f48e:review-0009",
+          "category": "unit-testing",
+          "title": "Create represented unit tests for \u0027CliWrap.Tests/CliWrap.Tests.csproj\u0027 (test) (review target 9 of 10)",
+          "scope": "CliWrap.Tests/CliWrap.Tests.csproj",
+          "sourceWorkItemIds": [
+            "work:unit-tests:a6ad88961efa60e9f48e:part-0009"
+          ],
+          "evidenceIds": [
+            "dotnet:test:CliWrap.Tests/BufferingSpecs.cs",
+            "dotnet:test:CliWrap.Tests/ConfigurationSpecs.cs",
+            "dotnet:test:CliWrap.Tests/CredentialsSpecs.cs",
+            "dotnet:test:CliWrap.Tests/EnvironmentSpecs.cs",
+            "dotnet:test:CliWrap.Tests/ExecutionSpecs.cs",
+            "dotnet:test:CliWrap.Tests/LineBreakSpecs.cs",
+            "dotnet:test:CliWrap.Tests/PathResolutionSpecs.cs",
+            "dotnet:test:CliWrap.Tests/PipingSpecs.cs",
+            "dotnet:test:CliWrap.Tests/PullEventStreamSpecs.cs",
+            "dotnet:test:CliWrap.Tests/PushEventStreamSpecs.cs",
+            "dotnet:test:CliWrap.Tests/ResourcePolicySpecs.cs",
+            "dotnet:test:CliWrap.Tests/Utils/Extensions/AssertionExtensions.cs",
+            "dotnet:test:CliWrap.Tests/Utils/Extensions/EnvironmentExtensions.cs",
+            "dotnet:test:CliWrap.Tests/ValidationSpecs.cs"
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:work:unit-tests:a6ad88961efa60e9f48e:review-0010",
+          "category": "unit-testing",
+          "title": "Create represented unit tests for \u0027CliWrap.Tests/CliWrap.Tests.csproj\u0027 (test) (review target 10 of 10)",
+          "scope": "CliWrap.Tests/CliWrap.Tests.csproj",
+          "sourceWorkItemIds": [
+            "work:unit-tests:a6ad88961efa60e9f48e:part-0010"
+          ],
+          "evidenceIds": [
+            "dotnet:test:CliWrap.Tests/BufferingSpecs.cs",
+            "dotnet:test:CliWrap.Tests/ConfigurationSpecs.cs",
+            "dotnet:test:CliWrap.Tests/CredentialsSpecs.cs",
+            "dotnet:test:CliWrap.Tests/EnvironmentSpecs.cs",
+            "dotnet:test:CliWrap.Tests/ExecutionSpecs.cs",
+            "dotnet:test:CliWrap.Tests/LineBreakSpecs.cs",
+            "dotnet:test:CliWrap.Tests/PathResolutionSpecs.cs",
+            "dotnet:test:CliWrap.Tests/PipingSpecs.cs",
+            "dotnet:test:CliWrap.Tests/PullEventStreamSpecs.cs",
+            "dotnet:test:CliWrap.Tests/PushEventStreamSpecs.cs",
+            "dotnet:test:CliWrap.Tests/ResourcePolicySpecs.cs",
+            "dotnet:test:CliWrap.Tests/Utils/Extensions/AssertionExtensions.cs",
+            "dotnet:test:CliWrap.Tests/Utils/Extensions/EnvironmentExtensions.cs",
+            "dotnet:test:CliWrap.Tests/ValidationSpecs.cs"
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        }
+      ]
+    }
+  ],
+  "instructions": [
+    "Use a reviewer identity distinct from every teacher or reviewer already recorded on the source record.",
+    "Check each target against its evidence and the referenced rubric; do not use repository history, price, or a preferred total.",
+    "Choose accept only after independently checking the prior target; choose replace with a complete range and rationale when correcting it.",
+    "Decide every source target exactly once and retain its structural lineage.",
+    "Use reviewed only for a genuine second review; use adjudicated only after disagreements are explicitly resolved by a distinct adjudicator.",
+    "Compile the completed corpus-review plan only against the exact source-corpus digest in this packet."
+  ]
+}

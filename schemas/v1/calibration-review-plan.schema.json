@@ -151,7 +151,7 @@
       "required": ["low", "expected", "high"],
       "properties": {
         "low": { "type": "number", "minimum": 0 },
-        "expected": { "type": "number", "exclusiveMinimum": 0 },
+        "expected": { "type": "number", "minimum": 0 },
         "high": { "type": "number", "minimum": 0 }
       },
       "additionalProperties": false

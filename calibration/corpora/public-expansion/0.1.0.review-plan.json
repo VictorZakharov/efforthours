@@ -1,0 +1,1791 @@
+{
+    "schemaVersion":  "1.0.0",
+    "compilerVersion":  "calibration-review-compiler/0.2.0",
+    "id":  "fairbill-public-expansion",
+    "version":  "0.1.0",
+    "description":  "Second public teacher-estimate corpus adding three immutable MIT-licensed release snapshots and explicit reviewed false-positive exclusions. These weak labels are not independently reviewed and are not production accuracy evidence.",
+    "rubric":  {
+                   "id":  "ehe-work-item",
+                   "version":  "1.1.0"
+               },
+    "records":  [
+                    {
+                        "id":  "record:developit-mitt:implementation",
+                        "repository":  {
+                                           "id":  "repository:github.com/developit/mitt",
+                                           "name":  "developit/mitt",
+                                           "sourceDigest":  "sha256:135d31133a5cff5924e53febea07eee67c7fb059156ba225cccb262b1abd5d7d"
+                                       },
+                        "profile":  "implementation",
+                        "baselineId":  "senior-contractor-2026-no-ai",
+                        "sourceEstimatorVersion":  "seed-rules/0.2.1",
+                        "partition":  "development",
+                        "sourceEstimateDigest":  "sha256:010f99ea10c6df0bc325e283bb4b2a6d34272a75741cf49747f016c5d32f9bf3",
+                        "source":  {
+                                       "dataClassification":  "public-redistributable",
+                                       "sourceReference":  "https://github.com/developit/mitt",
+                                       "revision":  "release:3.0.1",
+                                       "licenseExpression":  "MIT",
+                                       "redistributionAllowed":  true,
+                                       "notes":  "Reviewed from the immutable 3.0.1 release snapshot. Downloaded source archive SHA256 A362926811CB6D28E52FA7F1276C9189595081FFA18FD3CEB87A022D26BA3A2D; in-archive LICENSE SHA256 1CAB22F196264195A4CAEC8CA5630170FDDE76EE8F43346E47021D087332D3B0."
+                                   },
+                        "review":  {
+                                       "status":  "teacher-estimate",
+                                       "completedOn":  "2026-08-06",
+                                       "reviewers":  [
+                                                         {
+                                                             "id":  "teacher:openai-codex-gpt-5-2026-08",
+                                                             "kind":  "host-ai",
+                                                             "role":  "teacher",
+                                                             "modelId":  "openai-codex",
+                                                             "modelVersion":  "gpt-5"
+                                                         }
+                                                     ],
+                                       "notes":  "Single host-AI teacher review; no independent correction or adjudication. Target-level candidate hours were hidden during label authoring; repository totals were observed during pipeline verification only. Capability totals were estimated after source and evidence inspection, then apportioned across deterministic source partitions. Low/high bounds use the documented risk-tier policy."
+                                   },
+                        "capabilities":  [
+                                             {
+                                                 "sourceCapabilityId":  "work:architecture-design:1301c834bf26665d0695",
+                                                 "rationale":  "A very small event emitter still needs a coherent generic handler model, wildcard semantics, and mutation-safe dispatch structure.",
+                                                 "targets":  [
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  0.75,
+                                                                                   "expected":  1.25,
+                                                                                   "high":  2
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+
+                                                                                            ]
+                                                                 }
+                                                             ]
+                                             },
+                                             {
+                                                 "sourceCapabilityId":  "work:build-tooling:c2c91d07e063088d401a",
+                                                 "rationale":  "TypeScript, linting, formatting, declaration generation, bundle construction, size checks, and development scripts form a compact but real toolchain.",
+                                                 "targets":  [
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  1.5,
+                                                                                   "expected":  2.5,
+                                                                                   "high":  4
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+
+                                                                                            ]
+                                                                 }
+                                                             ]
+                                             },
+                                             {
+                                                 "sourceCapabilityId":  "work:ci-infrastructure:bee22f5b9a094661eb75",
+                                                 "rationale":  "Two focused workflows verify tests and compressed package size with conventional hosted automation.",
+                                                 "targets":  [
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  1.25,
+                                                                                   "expected":  2,
+                                                                                   "high":  3.5
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+
+                                                                                            ]
+                                                                 }
+                                                             ]
+                                             },
+                                             {
+                                                 "sourceCapabilityId":  "work:documentation:bebbc838ff439c1b4e49",
+                                                 "rationale":  "The maintained README explains the typed API, wildcard handling, examples, browser support, and an API section without extensive operational material.",
+                                                 "targets":  [
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  1.25,
+                                                                                   "expected":  2,
+                                                                                   "high":  3.5
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+
+                                                                                            ]
+                                                                 }
+                                                             ]
+                                             },
+                                             {
+                                                 "sourceCapabilityId":  "work:javascript-source-backbone:2f5795bda39a0bae4a33",
+                                                 "rationale":  "The implementation is short but deliberately type-safe, including overloads and the observable ordering and removal semantics of direct and wildcard handlers.",
+                                                 "targets":  [
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  1.5,
+                                                                                   "expected":  2.5,
+                                                                                   "high":  4
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+                                                                                                "Some TypeScript structure is token-backed rather than parser-backed."
+                                                                                            ]
+                                                                 },
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  1.25,
+                                                                                   "expected":  2,
+                                                                                   "high":  3.5
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+                                                                                                "Some TypeScript structure is token-backed rather than parser-backed."
+                                                                                            ]
+                                                                 }
+                                                             ]
+                                             },
+                                             {
+                                                 "sourceCapabilityId":  "work:manual-validation:a0df1126ba2f8dbcb19b",
+                                                 "rationale":  "A bounded smoke pass covers registration, duplicate handlers, wildcard ordering, removal, and emitted payloads beyond test authoring.",
+                                                 "targets":  [
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  0.5,
+                                                                                   "expected":  0.75,
+                                                                                   "high":  1.25
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+
+                                                                                            ]
+                                                                 }
+                                                             ]
+                                             },
+                                             {
+                                                 "sourceCapabilityId":  "work:packaging-release:58eb8ae7efef939a19b5",
+                                                 "rationale":  "Multi-format ESM, CommonJS, UMD, declarations, exports, files selection, and package-size expectations require release checking.",
+                                                 "targets":  [
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  1.25,
+                                                                                   "expected":  2,
+                                                                                   "high":  3.5
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+
+                                                                                            ]
+                                                                 }
+                                                             ]
+                                             },
+                                             {
+                                                 "sourceCapabilityId":  "work:project-setup:e56be8fd4646c76f7cdd",
+                                                 "rationale":  "A single typed package has conventional setup despite a broad development-tool dependency surface.",
+                                                 "targets":  [
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  1,
+                                                                                   "expected":  1.5,
+                                                                                   "high":  2.5
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+
+                                                                                            ]
+                                                                 }
+                                                             ]
+                                             },
+                                             {
+                                                 "sourceCapabilityId":  "work:self-review:e943a6db2e8c464b145a",
+                                                 "rationale":  "The small public API needs a final consistency pass across runtime behavior, types, tests, documentation, and bundle formats.",
+                                                 "targets":  [
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  0.5,
+                                                                                   "expected":  1,
+                                                                                   "high":  1.75
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+
+                                                                                            ]
+                                                                 }
+                                                             ]
+                                             },
+                                             {
+                                                 "sourceCapabilityId":  "work:specification-comprehension:49aec33b6a46fb626dad",
+                                                 "rationale":  "The domain is familiar, but exact direct-handler, wildcard, type-overload, and removal behavior must be understood before implementation.",
+                                                 "targets":  [
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  0.75,
+                                                                                   "expected":  1.25,
+                                                                                   "high":  2
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+
+                                                                                            ]
+                                                                 }
+                                                             ]
+                                             },
+                                             {
+                                                 "sourceCapabilityId":  "work:unit-tests:875ec9f8d2f4b23af140",
+                                                 "rationale":  "Nineteen runtime cases plus positive and negative type-compilation checks cover the compact API thoroughly while reusing simple fixtures.",
+                                                 "targets":  [
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  1.25,
+                                                                                   "expected":  2,
+                                                                                   "high":  3.5
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+                                                                                                "The static review did not execute the suite; passing behavior is assumed under the default policy."
+                                                                                            ]
+                                                                 },
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  1.25,
+                                                                                   "expected":  2,
+                                                                                   "high":  3.5
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+                                                                                                "The static review did not execute the suite; passing behavior is assumed under the default policy."
+                                                                                            ]
+                                                                 },
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  1.25,
+                                                                                   "expected":  2,
+                                                                                   "high":  3.5
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+                                                                                                "The static review did not execute the suite; passing behavior is assumed under the default policy."
+                                                                                            ]
+                                                                 }
+                                                             ]
+                                             }
+                                         ]
+                    },
+                    {
+                        "id":  "record:tyrrrz-cliwrap:implementation",
+                        "repository":  {
+                                           "id":  "repository:github.com/tyrrrz/cliwrap",
+                                           "name":  "Tyrrrz/CliWrap",
+                                           "sourceDigest":  "sha256:de315d5bf4c4bfef5fc3c9ed498358a7041aff9456490c83b80e0bb48a885c9a"
+                                       },
+                        "profile":  "implementation",
+                        "baselineId":  "senior-contractor-2026-no-ai",
+                        "sourceEstimatorVersion":  "seed-rules/0.2.1",
+                        "partition":  "validation",
+                        "sourceEstimateDigest":  "sha256:be3ea95f92f4f0907aa294808ef3ae33e5e09fc907819c1d29a03ea94688a36e",
+                        "source":  {
+                                       "dataClassification":  "public-redistributable",
+                                       "sourceReference":  "https://github.com/Tyrrrz/CliWrap",
+                                       "revision":  "release:3.10.4",
+                                       "licenseExpression":  "MIT",
+                                       "redistributionAllowed":  true,
+                                       "notes":  "Reviewed from the immutable 3.10.4 release snapshot. Downloaded source archive SHA256 C4ADC4F3E8526058D941DFB9DE2E79285A2C2AAFE91298BF14AEE57C98DB9A39; in-archive License.txt SHA256 974FBF83EF71EF9B9C24BF59453B0E05323338193192EC7D49E14A37F11BA57E."
+                                   },
+                        "review":  {
+                                       "status":  "teacher-estimate",
+                                       "completedOn":  "2026-08-06",
+                                       "reviewers":  [
+                                                         {
+                                                             "id":  "teacher:openai-codex-gpt-5-2026-08",
+                                                             "kind":  "host-ai",
+                                                             "role":  "teacher",
+                                                             "modelId":  "openai-codex",
+                                                             "modelVersion":  "gpt-5"
+                                                         }
+                                                     ],
+                                       "notes":  "Single host-AI teacher review; no independent correction or adjudication. Target-level candidate hours were hidden during label authoring; repository totals were observed during pipeline verification only. Capability totals were estimated after source and evidence inspection, then apportioned across deterministic source partitions. Low/high bounds use the documented risk-tier policy."
+                                   },
+                        "capabilities":  [
+                                             {
+                                                 "sourceCapabilityId":  "work:application-entry-point:5a370a6fd96ea8dde2e5",
+                                                 "rationale":  "The Windows signaler has a small native-helper entry point with argument validation and process signaling.",
+                                                 "targets":  [
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  0.5,
+                                                                                   "expected":  1,
+                                                                                   "high":  1.75
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+                                                                                                "The static review did not execute the represented cross-platform process behavior."
+                                                                                            ]
+                                                                 }
+                                                             ]
+                                             },
+                                             {
+                                                 "sourceCapabilityId":  "work:application-entry-point:e921fe2e9e8197b73df3",
+                                                 "rationale":  "The dummy command application exposes deterministic process behaviors used by the integration-style suite.",
+                                                 "targets":  [
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  0.5,
+                                                                                   "expected":  1,
+                                                                                   "high":  1.75
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+                                                                                                "The static review did not execute the represented cross-platform process behavior."
+                                                                                            ]
+                                                                 }
+                                                             ]
+                                             },
+                                             {
+                                                 "sourceCapabilityId":  "work:application-entry-point:fbbd9ecfc18b96282600",
+                                                 "rationale":  "The benchmark entry point is a thin BenchmarkDotNet host for maintained performance scenarios.",
+                                                 "targets":  [
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  0.25,
+                                                                                   "expected":  0.5,
+                                                                                   "high":  1
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+
+                                                                                            ]
+                                                                 }
+                                                             ]
+                                             },
+                                             {
+                                                 "sourceCapabilityId":  "work:architecture-design:2baf06b5c25cb9711fe5",
+                                                 "rationale":  "The native signal helper needs a narrow process-boundary design and embedded-artifact lifecycle.",
+                                                 "targets":  [
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  1,
+                                                                                   "expected":  1.5,
+                                                                                   "high":  2.5
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+                                                                                                "The static review did not execute the represented cross-platform process behavior."
+                                                                                            ]
+                                                                 }
+                                                             ]
+                                             },
+                                             {
+                                                 "sourceCapabilityId":  "work:architecture-design:81a0f37c2e02df7c293e",
+                                                 "rationale":  "The dummy command application needs a small scenario-oriented command structure for deterministic subprocess tests.",
+                                                 "targets":  [
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  0.5,
+                                                                                   "expected":  1,
+                                                                                   "high":  1.75
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+
+                                                                                            ]
+                                                                 }
+                                                             ]
+                                             },
+                                             {
+                                                 "sourceCapabilityId":  "work:architecture-design:b31b12dcd3fbb129db77",
+                                                 "rationale":  "The public library coordinates immutable commands, execution models, stream pipes, cancellation, events, platform policy, and extensibility across clean boundaries.",
+                                                 "targets":  [
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  2.5,
+                                                                                   "expected":  4,
+                                                                                   "high":  6.5
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+                                                                                                "The static review did not execute the represented cross-platform process behavior."
+                                                                                            ]
+                                                                 }
+                                                             ]
+                                             },
+                                             {
+                                                 "sourceCapabilityId":  "work:architecture-design:b339ecc4d882b57fe65c",
+                                                 "rationale":  "Benchmarks need a compact fixture and scenario design around representative process execution paths.",
+                                                 "targets":  [
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  0.5,
+                                                                                   "expected":  1,
+                                                                                   "high":  1.75
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+
+                                                                                            ]
+                                                                 }
+                                                             ]
+                                             },
+                                             {
+                                                 "sourceCapabilityId":  "work:build-tooling:c2c91d07e063088d401a",
+                                                 "rationale":  "Central build properties, multi-targeting, nullable and analyzer policy, trimming, AOT, formatting, benchmarks, tests, and helper projects require coordinated setup.",
+                                                 "targets":  [
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  3,
+                                                                                   "expected":  5,
+                                                                                   "high":  8
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+                                                                                                "The static review did not execute the represented cross-platform process behavior."
+                                                                                            ]
+                                                                 }
+                                                             ]
+                                             },
+                                             {
+                                                 "sourceCapabilityId":  "work:ci-infrastructure:bee22f5b9a094661eb75",
+                                                 "rationale":  "The focused CI and release automation builds, tests, packages, and publishes a cross-platform library.",
+                                                 "targets":  [
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  1.25,
+                                                                                   "expected":  2,
+                                                                                   "high":  3.5
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+
+                                                                                            ]
+                                                                 }
+                                                             ]
+                                             },
+                                             {
+                                                 "sourceCapabilityId":  "work:data-persistence:0acbf5cf192dee295cdc",
+                                                 "rationale":  "The detected stream operations transfer process data and do not represent durable storage behavior.",
+                                                 "targets":  [
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  0,
+                                                                                   "expected":  0,
+                                                                                   "high":  0
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+
+                                                                                            ],
+                                                                     "sizeException":  "Explicit reviewed exclusion: stream read/write calls are process-pipe behavior, not data persistence."
+                                                                 }
+                                                             ]
+                                             },
+                                             {
+                                                 "sourceCapabilityId":  "work:data-persistence:be2185e707c22a7688f2",
+                                                 "rationale":  "The detected stream operations transfer process data and do not represent durable storage behavior.",
+                                                 "targets":  [
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  0,
+                                                                                   "expected":  0,
+                                                                                   "high":  0
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+
+                                                                                            ],
+                                                                     "sizeException":  "Explicit reviewed exclusion: stream read/write calls are process-pipe behavior, not data persistence."
+                                                                 },
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  0,
+                                                                                   "expected":  0,
+                                                                                   "high":  0
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+
+                                                                                            ],
+                                                                     "sizeException":  "Explicit reviewed exclusion: stream read/write calls are process-pipe behavior, not data persistence."
+                                                                 }
+                                                             ]
+                                             },
+                                             {
+                                                 "sourceCapabilityId":  "work:data-persistence:c86f83565d4252e1165e",
+                                                 "rationale":  "The detected stream operations transfer process data and do not represent durable storage behavior.",
+                                                 "targets":  [
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  0,
+                                                                                   "expected":  0,
+                                                                                   "high":  0
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+
+                                                                                            ],
+                                                                     "sizeException":  "Explicit reviewed exclusion: stream read/write calls are process-pipe behavior, not data persistence."
+                                                                 }
+                                                             ]
+                                             },
+                                             {
+                                                 "sourceCapabilityId":  "work:documentation:bebbc838ff439c1b4e49",
+                                                 "rationale":  "The extensive maintained guide covers command construction, buffered and streaming execution, piping, cancellation, credentials, resource policy, events, recipes, compatibility, and release usage.",
+                                                 "targets":  [
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  3.5,
+                                                                                   "expected":  6,
+                                                                                   "high":  10
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+                                                                                                "The static review did not execute the represented cross-platform process behavior."
+                                                                                            ]
+                                                                 },
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  2.5,
+                                                                                   "expected":  4,
+                                                                                   "high":  6.5
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+                                                                                                "The static review did not execute the represented cross-platform process behavior."
+                                                                                            ]
+                                                                 }
+                                                             ]
+                                             },
+                                             {
+                                                 "sourceCapabilityId":  "work:dotnet-source-backbone:0e62be7c6d2d8617652b",
+                                                 "rationale":  "The main library implements a mature cross-platform process abstraction: immutable builders, path resolution, environment and credentials, buffered/pull/push execution, pipe composition, cancellation, event streams, resource policy, native signaling, and public extension seams.",
+                                                 "targets":  [
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  2.5,
+                                                                                   "expected":  4,
+                                                                                   "high":  6.5
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+                                                                                                "The static review did not execute the represented cross-platform process behavior."
+                                                                                            ]
+                                                                 },
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  2.5,
+                                                                                   "expected":  4,
+                                                                                   "high":  6.5
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+                                                                                                "The static review did not execute the represented cross-platform process behavior."
+                                                                                            ]
+                                                                 },
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  2.5,
+                                                                                   "expected":  4,
+                                                                                   "high":  6.5
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+                                                                                                "The static review did not execute the represented cross-platform process behavior."
+                                                                                            ]
+                                                                 },
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  2.5,
+                                                                                   "expected":  4,
+                                                                                   "high":  6.5
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+                                                                                                "The static review did not execute the represented cross-platform process behavior."
+                                                                                            ]
+                                                                 },
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  2.5,
+                                                                                   "expected":  4,
+                                                                                   "high":  6.5
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+                                                                                                "The static review did not execute the represented cross-platform process behavior."
+                                                                                            ]
+                                                                 },
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  2.5,
+                                                                                   "expected":  4,
+                                                                                   "high":  6.5
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+                                                                                                "The static review did not execute the represented cross-platform process behavior."
+                                                                                            ]
+                                                                 },
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  2.5,
+                                                                                   "expected":  4,
+                                                                                   "high":  6.5
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+                                                                                                "The static review did not execute the represented cross-platform process behavior."
+                                                                                            ]
+                                                                 },
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  2.5,
+                                                                                   "expected":  4,
+                                                                                   "high":  6.5
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+                                                                                                "The static review did not execute the represented cross-platform process behavior."
+                                                                                            ]
+                                                                 },
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  2.5,
+                                                                                   "expected":  4,
+                                                                                   "high":  6.5
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+                                                                                                "The static review did not execute the represented cross-platform process behavior."
+                                                                                            ]
+                                                                 },
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  2.5,
+                                                                                   "expected":  4,
+                                                                                   "high":  6.5
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+                                                                                                "The static review did not execute the represented cross-platform process behavior."
+                                                                                            ]
+                                                                 },
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  2.5,
+                                                                                   "expected":  4,
+                                                                                   "high":  6.5
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+                                                                                                "The static review did not execute the represented cross-platform process behavior."
+                                                                                            ]
+                                                                 },
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  2.5,
+                                                                                   "expected":  4,
+                                                                                   "high":  6.5
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+                                                                                                "The static review did not execute the represented cross-platform process behavior."
+                                                                                            ]
+                                                                 },
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  2.5,
+                                                                                   "expected":  4,
+                                                                                   "high":  6.5
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+                                                                                                "The static review did not execute the represented cross-platform process behavior."
+                                                                                            ]
+                                                                 },
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  2.5,
+                                                                                   "expected":  4,
+                                                                                   "high":  6.5
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+                                                                                                "The static review did not execute the represented cross-platform process behavior."
+                                                                                            ]
+                                                                 },
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  2.5,
+                                                                                   "expected":  4,
+                                                                                   "high":  6.5
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+                                                                                                "The static review did not execute the represented cross-platform process behavior."
+                                                                                            ]
+                                                                 },
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  2.5,
+                                                                                   "expected":  4,
+                                                                                   "high":  6.5
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+                                                                                                "The static review did not execute the represented cross-platform process behavior."
+                                                                                            ]
+                                                                 },
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  2.5,
+                                                                                   "expected":  4,
+                                                                                   "high":  6.5
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+                                                                                                "The static review did not execute the represented cross-platform process behavior."
+                                                                                            ]
+                                                                 },
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  1.25,
+                                                                                   "expected":  2,
+                                                                                   "high":  3.5
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+                                                                                                "The static review did not execute the represented cross-platform process behavior."
+                                                                                            ]
+                                                                 }
+                                                             ]
+                                             },
+                                             {
+                                                 "sourceCapabilityId":  "work:dotnet-source-backbone:82c6f462b95679cc72e3",
+                                                 "rationale":  "The dummy command application implements varied deterministic child-process scenarios used to validate I/O, timing, cancellation, signals, environment, and exit behavior.",
+                                                 "targets":  [
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  1.25,
+                                                                                   "expected":  2,
+                                                                                   "high":  3.5
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+                                                                                                "The static review did not execute the represented cross-platform process behavior."
+                                                                                            ]
+                                                                 },
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  1,
+                                                                                   "expected":  1.5,
+                                                                                   "high":  2.5
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+                                                                                                "The static review did not execute the represented cross-platform process behavior."
+                                                                                            ]
+                                                                 },
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  1,
+                                                                                   "expected":  1.5,
+                                                                                   "high":  2.5
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+                                                                                                "The static review did not execute the represented cross-platform process behavior."
+                                                                                            ]
+                                                                 },
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  1,
+                                                                                   "expected":  1.5,
+                                                                                   "high":  2.5
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+                                                                                                "The static review did not execute the represented cross-platform process behavior."
+                                                                                            ]
+                                                                 },
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  1,
+                                                                                   "expected":  1.5,
+                                                                                   "high":  2.5
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+                                                                                                "The static review did not execute the represented cross-platform process behavior."
+                                                                                            ]
+                                                                 }
+                                                             ]
+                                             },
+                                             {
+                                                 "sourceCapabilityId":  "work:dotnet-source-backbone:888867a9d8b811b0531d",
+                                                 "rationale":  "The embedded Windows signaler bridges managed execution to the relevant native console-control behavior.",
+                                                 "targets":  [
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  2.5,
+                                                                                   "expected":  4,
+                                                                                   "high":  6.5
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+                                                                                                "The static review did not execute the represented cross-platform process behavior."
+                                                                                            ]
+                                                                 }
+                                                             ]
+                                             },
+                                             {
+                                                 "sourceCapabilityId":  "work:dotnet-source-backbone:bff334a3ff0bfc0ff2f6",
+                                                 "rationale":  "Maintained benchmark fixtures exercise representative command and pipe execution paths without being product functionality.",
+                                                 "targets":  [
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  1,
+                                                                                   "expected":  1.5,
+                                                                                   "high":  2.5
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+
+                                                                                            ]
+                                                                 },
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  1,
+                                                                                   "expected":  1.5,
+                                                                                   "high":  2.5
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+
+                                                                                            ]
+                                                                 },
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  1,
+                                                                                   "expected":  1.5,
+                                                                                   "high":  2.5
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+
+                                                                                            ]
+                                                                 },
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  1,
+                                                                                   "expected":  1.5,
+                                                                                   "high":  2.5
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+
+                                                                                            ]
+                                                                 }
+                                                             ]
+                                             },
+                                             {
+                                                 "sourceCapabilityId":  "work:manual-validation:13a1d5c2bbf0fa759582",
+                                                 "rationale":  "The main library needs focused manual checks across operating systems, quoting, path lookup, encoding, stream flow, cancellation, signals, and resource policy.",
+                                                 "targets":  [
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  2.5,
+                                                                                   "expected":  4,
+                                                                                   "high":  6.5
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+                                                                                                "The static review did not execute the represented cross-platform process behavior."
+                                                                                            ]
+                                                                 }
+                                                             ]
+                                             },
+                                             {
+                                                 "sourceCapabilityId":  "work:manual-validation:2f30231effeda20fa0c4",
+                                                 "rationale":  "A bounded benchmark smoke pass verifies that scenarios launch and measure the intended paths.",
+                                                 "targets":  [
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  0.5,
+                                                                                   "expected":  1,
+                                                                                   "high":  1.75
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+
+                                                                                            ]
+                                                                 }
+                                                             ]
+                                             },
+                                             {
+                                                 "sourceCapabilityId":  "work:manual-validation:760419422c64b12f8328",
+                                                 "rationale":  "The dummy command scenarios need a small direct validation pass before serving as subprocess fixtures.",
+                                                 "targets":  [
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  0.5,
+                                                                                   "expected":  1,
+                                                                                   "high":  1.75
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+
+                                                                                            ]
+                                                                 }
+                                                             ]
+                                             },
+                                             {
+                                                 "sourceCapabilityId":  "work:manual-validation:8080ab37fe1b4f3b2481",
+                                                 "rationale":  "Native signal behavior and embedded-helper extraction warrant targeted Windows validation.",
+                                                 "targets":  [
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  1.25,
+                                                                                   "expected":  2,
+                                                                                   "high":  3.5
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+                                                                                                "The static review did not execute the represented cross-platform process behavior."
+                                                                                            ]
+                                                                 }
+                                                             ]
+                                             },
+                                             {
+                                                 "sourceCapabilityId":  "work:packaging-release:58eb8ae7efef939a19b5",
+                                                 "rationale":  "Multi-target NuGet packaging, embedded native helper handling, trimming and AOT compatibility, symbols, and release metadata need explicit verification.",
+                                                 "targets":  [
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  2,
+                                                                                   "expected":  3,
+                                                                                   "high":  4.5
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+                                                                                                "The static review did not execute the represented cross-platform process behavior."
+                                                                                            ]
+                                                                 }
+                                                             ]
+                                             },
+                                             {
+                                                 "sourceCapabilityId":  "work:project-setup:19974c0b73f256f2f9d8",
+                                                 "rationale":  "The main multi-target library project includes package metadata, analyzers, embedded resources, and compatibility settings.",
+                                                 "targets":  [
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  2,
+                                                                                   "expected":  3,
+                                                                                   "high":  4.5
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+
+                                                                                            ]
+                                                                 }
+                                                             ]
+                                             },
+                                             {
+                                                 "sourceCapabilityId":  "work:project-setup:41e1e99994ca2cde51af",
+                                                 "rationale":  "The dummy command fixture project has compact but purpose-specific process-test setup.",
+                                                 "targets":  [
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  1,
+                                                                                   "expected":  1.5,
+                                                                                   "high":  2.5
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+
+                                                                                            ]
+                                                                 }
+                                                             ]
+                                             },
+                                             {
+                                                 "sourceCapabilityId":  "work:project-setup:52495b7bafdb0ae18d68",
+                                                 "rationale":  "The benchmark project needs conventional BenchmarkDotNet references and scenario configuration.",
+                                                 "targets":  [
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  1,
+                                                                                   "expected":  1.5,
+                                                                                   "high":  2.5
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+
+                                                                                            ]
+                                                                 }
+                                                             ]
+                                             },
+                                             {
+                                                 "sourceCapabilityId":  "work:project-setup:63d54b6b24ae883da0b6",
+                                                 "rationale":  "The Windows signaler project has a small native-interoperability and publication role.",
+                                                 "targets":  [
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  0.5,
+                                                                                   "expected":  1,
+                                                                                   "high":  1.75
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+
+                                                                                            ]
+                                                                 }
+                                                             ]
+                                             },
+                                             {
+                                                 "sourceCapabilityId":  "work:project-setup:655f61bec43e3dbccb1a",
+                                                 "rationale":  "The test project coordinates xUnit, coverage, the dummy executable, and cross-platform process fixtures.",
+                                                 "targets":  [
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  1.25,
+                                                                                   "expected":  2,
+                                                                                   "high":  3.5
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+
+                                                                                            ]
+                                                                 }
+                                                             ]
+                                             },
+                                             {
+                                                 "sourceCapabilityId":  "work:self-review:e943a6db2e8c464b145a",
+                                                 "rationale":  "A mature public process library needs final API, cross-platform, stream, cancellation, package, documentation, and test coherence passes.",
+                                                 "targets":  [
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  2.5,
+                                                                                   "expected":  4,
+                                                                                   "high":  6.5
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+                                                                                                "The static review did not execute the represented cross-platform process behavior."
+                                                                                            ]
+                                                                 },
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  2,
+                                                                                   "expected":  3,
+                                                                                   "high":  4.5
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+                                                                                                "The static review did not execute the represented cross-platform process behavior."
+                                                                                            ]
+                                                                 }
+                                                             ]
+                                             },
+                                             {
+                                                 "sourceCapabilityId":  "work:solution-coordination:c6246e076bb47f8310ce",
+                                                 "rationale":  "Five related projects need straightforward references, shared settings, embedded-artifact flow, and build ordering.",
+                                                 "targets":  [
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  1,
+                                                                                   "expected":  1.5,
+                                                                                   "high":  2.5
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+
+                                                                                            ]
+                                                                 }
+                                                             ]
+                                             },
+                                             {
+                                                 "sourceCapabilityId":  "work:specification-comprehension:49aec33b6a46fb626dad",
+                                                 "rationale":  "Cross-platform process creation, pipe semantics, cancellation modes, signals, credentials, resource policies, and compatibility constraints form a substantial but bounded domain.",
+                                                 "targets":  [
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  2.5,
+                                                                                   "expected":  4,
+                                                                                   "high":  6.5
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+                                                                                                "The static review did not execute the represented cross-platform process behavior."
+                                                                                            ]
+                                                                 }
+                                                             ]
+                                             },
+                                             {
+                                                 "sourceCapabilityId":  "work:unit-tests:a6ad88961efa60e9f48e",
+                                                 "rationale":  "More than one hundred process-focused cases cover command construction, execution models, stream pipes, cancellation, events, environment, quoting, signals, and platform-specific behavior using a purpose-built child process.",
+                                                 "targets":  [
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  3,
+                                                                                   "expected":  5,
+                                                                                   "high":  8
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+                                                                                                "The static review did not execute the suite; passing behavior is assumed under the default policy."
+                                                                                            ]
+                                                                 },
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  2.5,
+                                                                                   "expected":  4,
+                                                                                   "high":  6.5
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+                                                                                                "The static review did not execute the suite; passing behavior is assumed under the default policy."
+                                                                                            ]
+                                                                 },
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  2.5,
+                                                                                   "expected":  4,
+                                                                                   "high":  6.5
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+                                                                                                "The static review did not execute the suite; passing behavior is assumed under the default policy."
+                                                                                            ]
+                                                                 },
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  2.5,
+                                                                                   "expected":  4,
+                                                                                   "high":  6.5
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+                                                                                                "The static review did not execute the suite; passing behavior is assumed under the default policy."
+                                                                                            ]
+                                                                 },
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  3.5,
+                                                                                   "expected":  6,
+                                                                                   "high":  10
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+                                                                                                "The static review did not execute the suite; passing behavior is assumed under the default policy."
+                                                                                            ]
+                                                                 },
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  3,
+                                                                                   "expected":  5,
+                                                                                   "high":  8
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+                                                                                                "The static review did not execute the suite; passing behavior is assumed under the default policy."
+                                                                                            ]
+                                                                 },
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  2.5,
+                                                                                   "expected":  4,
+                                                                                   "high":  6.5
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+                                                                                                "The static review did not execute the suite; passing behavior is assumed under the default policy."
+                                                                                            ]
+                                                                 },
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  2.5,
+                                                                                   "expected":  4,
+                                                                                   "high":  6.5
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+                                                                                                "The static review did not execute the suite; passing behavior is assumed under the default policy."
+                                                                                            ]
+                                                                 },
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  2.5,
+                                                                                   "expected":  4,
+                                                                                   "high":  6.5
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+                                                                                                "The static review did not execute the suite; passing behavior is assumed under the default policy."
+                                                                                            ]
+                                                                 },
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  2.5,
+                                                                                   "expected":  4,
+                                                                                   "high":  6.5
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+                                                                                                "The static review did not execute the suite; passing behavior is assumed under the default policy."
+                                                                                            ]
+                                                                 }
+                                                             ]
+                                             }
+                                         ]
+                    },
+                    {
+                        "id":  "record:nanostores-nanostores:implementation",
+                        "repository":  {
+                                           "id":  "repository:github.com/nanostores/nanostores",
+                                           "name":  "nanostores/nanostores",
+                                           "sourceDigest":  "sha256:8dddc951643957bc7ce762f6e9db4982e95138c8b983071a95674b961ad83432"
+                                       },
+                        "profile":  "implementation",
+                        "baselineId":  "senior-contractor-2026-no-ai",
+                        "sourceEstimatorVersion":  "seed-rules/0.2.1",
+                        "partition":  "test",
+                        "sourceEstimateDigest":  "sha256:8dc985148ead5046bc2a01de1e908de8ba87fb55bc91bba82ab9d6540bf9d443",
+                        "source":  {
+                                       "dataClassification":  "public-redistributable",
+                                       "sourceReference":  "https://github.com/nanostores/nanostores",
+                                       "revision":  "release:1.4.2",
+                                       "licenseExpression":  "MIT",
+                                       "redistributionAllowed":  true,
+                                       "notes":  "Reviewed from the immutable 1.4.2 release snapshot. Downloaded source archive SHA256 4420B10AB3F508F902E98F08F12E76CF3C78319440A967495A4CC47CF3BEAFEF; in-archive LICENSE SHA256 181BC2685F0CEA9D1BEB28352420E3A7FB382B38895D2B430ED1B3BC39572AF6."
+                                   },
+                        "review":  {
+                                       "status":  "teacher-estimate",
+                                       "completedOn":  "2026-08-06",
+                                       "reviewers":  [
+                                                         {
+                                                             "id":  "teacher:openai-codex-gpt-5-2026-08",
+                                                             "kind":  "host-ai",
+                                                             "role":  "teacher",
+                                                             "modelId":  "openai-codex",
+                                                             "modelVersion":  "gpt-5"
+                                                         }
+                                                     ],
+                                       "notes":  "Single host-AI teacher review; no independent correction or adjudication. Target-level candidate hours were hidden during label authoring; repository totals were observed during pipeline verification only. Capability totals were estimated after source and evidence inspection, then apportioned across deterministic source partitions. Low/high bounds use the documented risk-tier policy."
+                                   },
+                        "capabilities":  [
+                                             {
+                                                 "sourceCapabilityId":  "work:application-entry-point:9b21971dcc7b3a4ca5f0",
+                                                 "rationale":  "The detected script is a development benchmark rather than a product entry point.",
+                                                 "targets":  [
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  0,
+                                                                                   "expected":  0,
+                                                                                   "high":  0
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+
+                                                                                            ],
+                                                                     "sizeException":  "Explicit reviewed exclusion: the detected benchmark script is a development benchmark, not a product entry point."
+                                                                 }
+                                                             ]
+                                             },
+                                             {
+                                                 "sourceCapabilityId":  "work:architecture-design:1301c834bf26665d0695",
+                                                 "rationale":  "A small framework-neutral reactive core still needs coherent dependency tracking, lazy lifecycle, batching, tasks, effects, deep paths, cleanup, and type boundaries.",
+                                                 "targets":  [
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  2.5,
+                                                                                   "expected":  4,
+                                                                                   "high":  6.5
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+                                                                                                "TypeScript evidence is token-backed, and the represented tests were not executed."
+                                                                                            ]
+                                                                 }
+                                                             ]
+                                             },
+                                             {
+                                                 "sourceCapabilityId":  "work:build-tooling:c2c91d07e063088d401a",
+                                                 "rationale":  "Dual development and production builds, declarations, tree-shakable modules, linting, coverage, benchmarks, size checks, and release scripts require coordinated tooling.",
+                                                 "targets":  [
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  2.5,
+                                                                                   "expected":  4,
+                                                                                   "high":  6.5
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+
+                                                                                            ]
+                                                                 }
+                                                             ]
+                                             },
+                                             {
+                                                 "sourceCapabilityId":  "work:ci-infrastructure:bee22f5b9a094661eb75",
+                                                 "rationale":  "CI spans supported Node versions, tests, linting, coverage, package-size and benchmark checks, plus release automation.",
+                                                 "targets":  [
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  3.5,
+                                                                                   "expected":  6,
+                                                                                   "high":  10
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+                                                                                                "Hosted release and benchmark environments were not executed during static review."
+                                                                                            ]
+                                                                 }
+                                                             ]
+                                             },
+                                             {
+                                                 "sourceCapabilityId":  "work:documentation:bebbc838ff439c1b4e49",
+                                                 "rationale":  "The long maintained guide explains core stores, computed and batched state, lifecycle, deep maps, tasks, effects, testing, performance, and integration guidance for multiple UI frameworks.",
+                                                 "targets":  [
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  4.5,
+                                                                                   "expected":  8,
+                                                                                   "high":  14
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+                                                                                                "TypeScript evidence is token-backed, and the represented tests were not executed."
+                                                                                            ]
+                                                                 },
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  3.5,
+                                                                                   "expected":  6,
+                                                                                   "high":  10
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+                                                                                                "TypeScript evidence is token-backed, and the represented tests were not executed."
+                                                                                            ]
+                                                                 }
+                                                             ]
+                                             },
+                                             {
+                                                 "sourceCapabilityId":  "work:javascript-source-backbone:2f5795bda39a0bae4a33",
+                                                 "rationale":  "The framework-neutral implementation and extensive declarations cover atoms, maps, computed and batched derivation, lifecycle hooks, deep path updates, async tasks, effects, cleanup, dev/production behavior, and tree-shakable module contracts.",
+                                                 "targets":  [
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  1.75,
+                                                                                   "expected":  2.75,
+                                                                                   "high":  4.5
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+                                                                                                "TypeScript evidence is token-backed, and the represented tests were not executed."
+                                                                                            ]
+                                                                 },
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  1.75,
+                                                                                   "expected":  2.75,
+                                                                                   "high":  4.5
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+                                                                                                "TypeScript evidence is token-backed, and the represented tests were not executed."
+                                                                                            ]
+                                                                 },
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  1.75,
+                                                                                   "expected":  2.75,
+                                                                                   "high":  4.5
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+                                                                                                "TypeScript evidence is token-backed, and the represented tests were not executed."
+                                                                                            ]
+                                                                 },
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  1.75,
+                                                                                   "expected":  2.75,
+                                                                                   "high":  4.5
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+                                                                                                "TypeScript evidence is token-backed, and the represented tests were not executed."
+                                                                                            ]
+                                                                 },
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  1.75,
+                                                                                   "expected":  2.75,
+                                                                                   "high":  4.5
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+                                                                                                "TypeScript evidence is token-backed, and the represented tests were not executed."
+                                                                                            ]
+                                                                 },
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  1.75,
+                                                                                   "expected":  2.75,
+                                                                                   "high":  4.5
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+                                                                                                "TypeScript evidence is token-backed, and the represented tests were not executed."
+                                                                                            ]
+                                                                 },
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  1.75,
+                                                                                   "expected":  2.75,
+                                                                                   "high":  4.5
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+                                                                                                "TypeScript evidence is token-backed, and the represented tests were not executed."
+                                                                                            ]
+                                                                 },
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  1.75,
+                                                                                   "expected":  2.75,
+                                                                                   "high":  4.5
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+                                                                                                "TypeScript evidence is token-backed, and the represented tests were not executed."
+                                                                                            ]
+                                                                 },
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  1.75,
+                                                                                   "expected":  2.75,
+                                                                                   "high":  4.5
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+                                                                                                "TypeScript evidence is token-backed, and the represented tests were not executed."
+                                                                                            ]
+                                                                 },
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  1.75,
+                                                                                   "expected":  2.75,
+                                                                                   "high":  4.5
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+                                                                                                "TypeScript evidence is token-backed, and the represented tests were not executed."
+                                                                                            ]
+                                                                 },
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  1.75,
+                                                                                   "expected":  2.75,
+                                                                                   "high":  4.5
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+                                                                                                "TypeScript evidence is token-backed, and the represented tests were not executed."
+                                                                                            ]
+                                                                 },
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  1.75,
+                                                                                   "expected":  2.75,
+                                                                                   "high":  4.5
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+                                                                                                "TypeScript evidence is token-backed, and the represented tests were not executed."
+                                                                                            ]
+                                                                 },
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  1.75,
+                                                                                   "expected":  2.75,
+                                                                                   "high":  4.5
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+                                                                                                "TypeScript evidence is token-backed, and the represented tests were not executed."
+                                                                                            ]
+                                                                 },
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  1.75,
+                                                                                   "expected":  2.75,
+                                                                                   "high":  4.5
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+                                                                                                "TypeScript evidence is token-backed, and the represented tests were not executed."
+                                                                                            ]
+                                                                 },
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  1.75,
+                                                                                   "expected":  2.75,
+                                                                                   "high":  4.5
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+                                                                                                "TypeScript evidence is token-backed, and the represented tests were not executed."
+                                                                                            ]
+                                                                 },
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  1.75,
+                                                                                   "expected":  2.75,
+                                                                                   "high":  4.5
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+                                                                                                "TypeScript evidence is token-backed, and the represented tests were not executed."
+                                                                                            ]
+                                                                 },
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  1.75,
+                                                                                   "expected":  2.75,
+                                                                                   "high":  4.5
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+                                                                                                "TypeScript evidence is token-backed, and the represented tests were not executed."
+                                                                                            ]
+                                                                 },
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  1.75,
+                                                                                   "expected":  2.75,
+                                                                                   "high":  4.5
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+                                                                                                "TypeScript evidence is token-backed, and the represented tests were not executed."
+                                                                                            ]
+                                                                 },
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  1.75,
+                                                                                   "expected":  2.75,
+                                                                                   "high":  4.5
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+                                                                                                "TypeScript evidence is token-backed, and the represented tests were not executed."
+                                                                                            ]
+                                                                 },
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  1.75,
+                                                                                   "expected":  2.75,
+                                                                                   "high":  4.5
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+                                                                                                "TypeScript evidence is token-backed, and the represented tests were not executed."
+                                                                                            ]
+                                                                 },
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  1.75,
+                                                                                   "expected":  2.75,
+                                                                                   "high":  4.5
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+                                                                                                "TypeScript evidence is token-backed, and the represented tests were not executed."
+                                                                                            ]
+                                                                 },
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  1.75,
+                                                                                   "expected":  2.75,
+                                                                                   "high":  4.5
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+                                                                                                "TypeScript evidence is token-backed, and the represented tests were not executed."
+                                                                                            ]
+                                                                 },
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  1.75,
+                                                                                   "expected":  2.75,
+                                                                                   "high":  4.5
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+                                                                                                "TypeScript evidence is token-backed, and the represented tests were not executed."
+                                                                                            ]
+                                                                 },
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  1.75,
+                                                                                   "expected":  2.75,
+                                                                                   "high":  4.5
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+                                                                                                "TypeScript evidence is token-backed, and the represented tests were not executed."
+                                                                                            ]
+                                                                 },
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  1.75,
+                                                                                   "expected":  2.75,
+                                                                                   "high":  4.5
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+                                                                                                "TypeScript evidence is token-backed, and the represented tests were not executed."
+                                                                                            ]
+                                                                 },
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  1.75,
+                                                                                   "expected":  2.75,
+                                                                                   "high":  4.5
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+                                                                                                "TypeScript evidence is token-backed, and the represented tests were not executed."
+                                                                                            ]
+                                                                 },
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  0.25,
+                                                                                   "expected":  0.5,
+                                                                                   "high":  1
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+                                                                                                "TypeScript evidence is token-backed, and the represented tests were not executed."
+                                                                                            ]
+                                                                 }
+                                                             ]
+                                             },
+                                             {
+                                                 "sourceCapabilityId":  "work:manual-validation:a0df1126ba2f8dbcb19b",
+                                                 "rationale":  "Manual validation covers dependency invalidation, batching order, cleanup, async task completion, deep paths, development diagnostics, package exports, and framework-neutral use.",
+                                                 "targets":  [
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  2.5,
+                                                                                   "expected":  4,
+                                                                                   "high":  6.5
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+                                                                                                "TypeScript evidence is token-backed, and the represented tests were not executed."
+                                                                                            ]
+                                                                 },
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  2,
+                                                                                   "expected":  3,
+                                                                                   "high":  4.5
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+                                                                                                "TypeScript evidence is token-backed, and the represented tests were not executed."
+                                                                                            ]
+                                                                 }
+                                                             ]
+                                             },
+                                             {
+                                                 "sourceCapabilityId":  "work:packaging-release:58eb8ae7efef939a19b5",
+                                                 "rationale":  "Tree-shakable module exports, declarations, development and production builds, files selection, compatibility metadata, and size budgets need release verification.",
+                                                 "targets":  [
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  2,
+                                                                                   "expected":  3,
+                                                                                   "high":  4.5
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+
+                                                                                            ]
+                                                                 }
+                                                             ]
+                                             },
+                                             {
+                                                 "sourceCapabilityId":  "work:project-setup:e56be8fd4646c76f7cdd",
+                                                 "rationale":  "A single ESM package has conventional project structure despite a broad test, type, benchmark, and release toolchain.",
+                                                 "targets":  [
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  1.5,
+                                                                                   "expected":  2.5,
+                                                                                   "high":  4
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+
+                                                                                            ]
+                                                                 }
+                                                             ]
+                                             },
+                                             {
+                                                 "sourceCapabilityId":  "work:self-review:e943a6db2e8c464b145a",
+                                                 "rationale":  "Reactive ordering and cleanup semantics require a final coherence pass across runtime modules, declarations, tests, documentation, builds, and exports.",
+                                                 "targets":  [
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  2,
+                                                                                   "expected":  3,
+                                                                                   "high":  4.5
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+                                                                                                "TypeScript evidence is token-backed, and the represented tests were not executed."
+                                                                                            ]
+                                                                 }
+                                                             ]
+                                             },
+                                             {
+                                                 "sourceCapabilityId":  "work:specification-comprehension:49aec33b6a46fb626dad",
+                                                 "rationale":  "The bounded domain includes reactive dependency graphs, lifecycle, batching, deep paths, async tasks, effects, cleanup, and integration constraints.",
+                                                 "targets":  [
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  2,
+                                                                                   "expected":  3,
+                                                                                   "high":  4.5
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+
+                                                                                            ]
+                                                                 }
+                                                             ]
+                                             },
+                                             {
+                                                 "sourceCapabilityId":  "work:ui-surface:918438cc13339fb696f4",
+                                                 "rationale":  "Generic effect and store calls expose reactive state behavior but no represented UI implementation.",
+                                                 "targets":  [
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  0,
+                                                                                   "expected":  0,
+                                                                                   "high":  0
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+
+                                                                                            ],
+                                                                     "sizeException":  "Explicit reviewed exclusion: generic effect/store calls expose state-library behavior but no represented UI or UX implementation."
+                                                                 },
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  0,
+                                                                                   "expected":  0,
+                                                                                   "high":  0
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+
+                                                                                            ],
+                                                                     "sizeException":  "Explicit reviewed exclusion: generic effect/store calls expose state-library behavior but no represented UI or UX implementation."
+                                                                 }
+                                                             ]
+                                             },
+                                             {
+                                                 "sourceCapabilityId":  "work:unit-tests:875ec9f8d2f4b23af140",
+                                                 "rationale":  "Roughly 166 cases exercise all reactive primitives, edge ordering, cleanup, errors, asynchronous tasks, deep paths, declarations, development behavior, and the declared 100 percent coverage threshold with reusable fixtures.",
+                                                 "targets":  [
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  3,
+                                                                                   "expected":  5,
+                                                                                   "high":  8
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+                                                                                                "The suite was not executed; the configured 100 percent coverage threshold is declared-and-assumed, not measured."
+                                                                                            ]
+                                                                 },
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  3,
+                                                                                   "expected":  5,
+                                                                                   "high":  8
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+                                                                                                "The suite was not executed; the configured 100 percent coverage threshold is declared-and-assumed, not measured."
+                                                                                            ]
+                                                                 },
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  3,
+                                                                                   "expected":  5,
+                                                                                   "high":  8
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+                                                                                                "The suite was not executed; the configured 100 percent coverage threshold is declared-and-assumed, not measured."
+                                                                                            ]
+                                                                 },
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  3,
+                                                                                   "expected":  5,
+                                                                                   "high":  8
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+                                                                                                "The suite was not executed; the configured 100 percent coverage threshold is declared-and-assumed, not measured."
+                                                                                            ]
+                                                                 },
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  3,
+                                                                                   "expected":  5,
+                                                                                   "high":  8
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+                                                                                                "The suite was not executed; the configured 100 percent coverage threshold is declared-and-assumed, not measured."
+                                                                                            ]
+                                                                 },
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  3,
+                                                                                   "expected":  5,
+                                                                                   "high":  8
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+                                                                                                "The suite was not executed; the configured 100 percent coverage threshold is declared-and-assumed, not measured."
+                                                                                            ]
+                                                                 },
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  3,
+                                                                                   "expected":  5,
+                                                                                   "high":  8
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+                                                                                                "The suite was not executed; the configured 100 percent coverage threshold is declared-and-assumed, not measured."
+                                                                                            ]
+                                                                 },
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  3,
+                                                                                   "expected":  5,
+                                                                                   "high":  8
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+                                                                                                "The suite was not executed; the configured 100 percent coverage threshold is declared-and-assumed, not measured."
+                                                                                            ]
+                                                                 },
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  3,
+                                                                                   "expected":  5,
+                                                                                   "high":  8
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+                                                                                                "The suite was not executed; the configured 100 percent coverage threshold is declared-and-assumed, not measured."
+                                                                                            ]
+                                                                 },
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  3,
+                                                                                   "expected":  5,
+                                                                                   "high":  8
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+                                                                                                "The suite was not executed; the configured 100 percent coverage threshold is declared-and-assumed, not measured."
+                                                                                            ]
+                                                                 },
+                                                                 {
+                                                                     "hours":  {
+                                                                                   "low":  1.25,
+                                                                                   "expected":  2,
+                                                                                   "high":  3.5
+                                                                               },
+                                                                     "uncertaintyReasons":  [
+                                                                                                "The suite was not executed; the configured 100 percent coverage threshold is declared-and-assumed, not measured."
+                                                                                            ]
+                                                                 }
+                                                             ]
+                                             }
+                                         ]
+                    }
+                ]
+}

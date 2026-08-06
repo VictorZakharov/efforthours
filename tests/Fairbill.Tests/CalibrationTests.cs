@@ -70,11 +70,15 @@ public sealed class CalibrationTests
             planJson);
         CalibrationCorpus first = CalibrationReviewCompiler.Compile(plan, [estimate]);
         CalibrationCorpus second = CalibrationReviewCompiler.Compile(plan, [estimate]);
+        CalibrationCorpus legacy = CalibrationReviewCompiler.Compile(
+            plan with { CompilerVersion = "calibration-review-compiler/0.1.0" },
+            [estimate]);
 
         Assert.True(planSchema.IsValid, string.Join(Environment.NewLine, planSchema.Errors));
         Assert.Empty(ContractValidation.Validate(plan));
         Assert.Empty(ContractValidation.Validate(first));
         Assert.Equal(ContractJson.Serialize(first), ContractJson.Serialize(second));
+        Assert.Equal(ContractJson.Serialize(first), ContractJson.Serialize(legacy));
 
         CalibrationRecord record = Assert.Single(first.Records);
         Assert.Equal(2, record.Targets.Count);
@@ -83,6 +87,86 @@ public sealed class CalibrationTests
             record.Targets.SelectMany(target => target.SourceWorkItemIds)
                 .OrderBy(id => id, StringComparer.Ordinal));
         Assert.All(record.Targets, target => Assert.NotEmpty(target.EvidenceIds));
+    }
+
+    [Fact]
+    public void ReviewPlanCompilesExplicitZeroExclusionAndMeasuresCandidateOverestimateInMemory()
+    {
+        EstimateReport estimate = CreateCandidate();
+        CalibrationReviewPlan source = CreateReviewPlan(estimate);
+        CalibrationReviewPlanRecord sourceRecord = Assert.Single(source.Records);
+        string implementationCapabilityId = CalibrationAuthoring.GetSourceCapabilityId(
+            estimate.WorkItems.Single(item =>
+                item.Category == EffortCategory.ProductionImplementation).Id);
+        CalibrationCapabilityReviewDecision implementation = sourceRecord.Capabilities.Single(
+            capability => capability.SourceCapabilityId == implementationCapabilityId);
+        CalibrationReviewPlan plan = source with
+        {
+            Records =
+            [
+                sourceRecord with
+                {
+                    Capabilities = [.. sourceRecord.Capabilities.Select(capability =>
+                        capability.SourceCapabilityId == implementationCapabilityId
+                            ? implementation with
+                            {
+                                Rationale =
+                                    "The evidence is an explicit false positive already represented elsewhere.",
+                                Targets =
+                                [
+                                    new CalibrationReviewTargetDecision
+                                    {
+                                        Hours = Hours(0m, 0m, 0m),
+                                        SizeException =
+                                            "Explicit reviewed exclusion; no represented EHE remains.",
+                                    },
+                                ],
+                            }
+                            : capability)],
+                },
+            ],
+        };
+
+        string planJson = ContractJson.Serialize(plan);
+        SchemaValidationResult planSchema = ContractSchemaValidator.Validate(
+            SchemaNames.CalibrationReviewPlan,
+            planJson);
+        CalibrationCorpus corpus = CalibrationReviewCompiler.Compile(plan, [estimate]);
+        CalibrationEvaluationException legacy = Assert.Throws<CalibrationEvaluationException>(() =>
+            CalibrationReviewCompiler.Compile(
+                plan with { CompilerVersion = "calibration-review-compiler/0.1.0" },
+                [estimate]));
+        string corpusJson = ContractJson.Serialize(corpus);
+        SchemaValidationResult corpusSchema = ContractSchemaValidator.Validate(
+            SchemaNames.CalibrationCorpus,
+            corpusJson);
+        CalibrationCorpusReviewPacket handoff = CalibrationCorpusReviewAuthoring.Scaffold(corpus);
+        SchemaValidationResult handoffSchema = ContractSchemaValidator.Validate(
+            SchemaNames.CalibrationCorpusReviewPacket,
+            ContractJson.Serialize(handoff));
+        CalibrationEvaluationReport evaluation = CalibrationEvaluator.Evaluate(
+            corpus,
+            [estimate],
+            CalibrationPartition.Test);
+        CalibrationTarget excluded = Assert.Single(
+            Assert.Single(corpus.Records).Targets,
+            target => target.Category == EffortCategory.ProductionImplementation);
+        CalibrationCategoryMetrics production = Assert.Single(
+            evaluation.Categories,
+            category => category.Category == EffortCategory.ProductionImplementation);
+
+        Assert.True(planSchema.IsValid, string.Join(Environment.NewLine, planSchema.Errors));
+        Assert.True(corpusSchema.IsValid, string.Join(Environment.NewLine, corpusSchema.Errors));
+        Assert.True(handoffSchema.IsValid, string.Join(Environment.NewLine, handoffSchema.Errors));
+        Assert.Empty(ContractValidation.Validate(plan));
+        Assert.Empty(ContractValidation.Validate(corpus));
+        Assert.Equal(Hours(0m, 0m, 0m), excluded.Hours);
+        Assert.False(string.IsNullOrWhiteSpace(excluded.SizeException));
+        Assert.Equal(0m, production.Metrics.Expected.ReviewedHours);
+        Assert.Equal(4m, production.Metrics.Expected.CandidateHours);
+        Assert.Contains(
+            legacy.Errors,
+            error => error.Contains("zero-hour exclusions", StringComparison.Ordinal));
     }
 
     [Fact]
@@ -172,6 +256,9 @@ public sealed class CalibrationTests
 
         CalibrationCorpus first = CalibrationCorpusReviewCompiler.Compile(plan, source);
         CalibrationCorpus second = CalibrationCorpusReviewCompiler.Compile(plan, source);
+        CalibrationCorpus legacy = CalibrationCorpusReviewCompiler.Compile(
+            plan with { CompilerVersion = "calibration-corpus-review-compiler/0.1.0" },
+            source);
         CalibrationRecord sourceRecord = Assert.Single(source.Records);
         CalibrationRecord revised = Assert.Single(first.Records);
 
@@ -179,6 +266,7 @@ public sealed class CalibrationTests
         Assert.Empty(ContractValidation.Validate(plan));
         Assert.Empty(ContractValidation.Validate(first));
         Assert.Equal(ContractJson.Serialize(first), ContractJson.Serialize(second));
+        Assert.Equal(ContractJson.Serialize(first), ContractJson.Serialize(legacy));
         Assert.Equal(CalibrationReviewStatus.Reviewed, revised.Review.Status);
         Assert.Equal(2, revised.Review.Reviewers.Count);
         Assert.Contains(revised.Review.Reviewers, reviewer =>
@@ -204,6 +292,54 @@ public sealed class CalibrationTests
         Assert.Equal(sourceRecord.Targets[0].Hours, revised.Targets[0].Hours);
         Assert.Equal(Hours(2m, 4m, 6m), revised.Targets[1].Hours);
         Assert.Equal("Independent correction of test depth.", revised.Targets[1].Rationale);
+    }
+
+    [Fact]
+    public void CorpusReviewCanReplacePriorTargetWithExplicitZeroExclusionInMemory()
+    {
+        CalibrationCorpus source = CreateCorpus();
+        CalibrationCorpusReviewPlan original = CreateCorpusReviewPlan(source);
+        CalibrationCorpusReviewPlanRecord originalRecord = Assert.Single(original.Records);
+        CalibrationRecord sourceRecord = Assert.Single(source.Records);
+        CalibrationCorpusReviewTargetDecision zero = new()
+        {
+            SourceTargetId = sourceRecord.Targets[0].Id,
+            Action = CalibrationCorpusReviewAction.Replace,
+            Hours = Hours(0m, 0m, 0m),
+            Rationale = "Independent review identified a false-positive represented capability.",
+            SizeException = "Explicit reviewed exclusion; no represented EHE remains.",
+        };
+        CalibrationCorpusReviewPlan plan = original with
+        {
+            Records =
+            [
+                originalRecord with
+                {
+                    Targets = [zero, originalRecord.Targets[1]],
+                },
+            ],
+        };
+
+        string planJson = ContractJson.Serialize(plan);
+        SchemaValidationResult planSchema = ContractSchemaValidator.Validate(
+            SchemaNames.CalibrationCorpusReviewPlan,
+            planJson);
+        CalibrationCorpus revised = CalibrationCorpusReviewCompiler.Compile(plan, source);
+        CalibrationEvaluationException legacy = Assert.Throws<CalibrationEvaluationException>(() =>
+            CalibrationCorpusReviewCompiler.Compile(
+                plan with { CompilerVersion = "calibration-corpus-review-compiler/0.1.0" },
+                source));
+        CalibrationTarget excluded = Assert.Single(revised.Records).Targets[0];
+
+        Assert.True(planSchema.IsValid, string.Join(Environment.NewLine, planSchema.Errors));
+        Assert.Empty(ContractValidation.Validate(plan));
+        Assert.Empty(ContractValidation.Validate(revised));
+        Assert.Equal(Hours(0m, 0m, 0m), excluded.Hours);
+        Assert.Equal(zero.Rationale, excluded.Rationale);
+        Assert.Equal(zero.SizeException, excluded.SizeException);
+        Assert.Contains(
+            legacy.Errors,
+            error => error.Contains("zero-hour exclusions", StringComparison.Ordinal));
     }
 
     [Fact]
@@ -532,6 +668,40 @@ public sealed class CalibrationTests
 
         Assert.Contains(errors, error => error.Contains("sizeException", StringComparison.Ordinal));
         Assert.Contains(errors, error => error.Contains("classified private", StringComparison.Ordinal));
+    }
+
+    [Fact]
+    public void CorpusValidationRejectsAmbiguousOrUnexplainedZeroHourTargets()
+    {
+        CalibrationCorpus original = CreateCorpus();
+        CalibrationRecord record = Assert.Single(original.Records);
+        CalibrationTarget target = record.Targets[0];
+        CalibrationTarget ambiguous = target with
+        {
+            Hours = Hours(0m, 0m, 1m),
+            SizeException = "Attempted exclusion.",
+        };
+        CalibrationTarget unexplained = target with
+        {
+            Hours = Hours(0m, 0m, 0m),
+            SizeException = null,
+        };
+
+        IReadOnlyList<string> ambiguousErrors = ContractValidation.Validate(original with
+        {
+            Records = [record with { Targets = [ambiguous, record.Targets[1]] }],
+        });
+        IReadOnlyList<string> unexplainedErrors = ContractValidation.Validate(original with
+        {
+            Records = [record with { Targets = [unexplained, record.Targets[1]] }],
+        });
+
+        Assert.Contains(
+            ambiguousErrors,
+            error => error.Contains("exactly 0/0/0", StringComparison.Ordinal));
+        Assert.Contains(
+            unexplainedErrors,
+            error => error.Contains("sizeException", StringComparison.Ordinal));
     }
 
     [Fact]

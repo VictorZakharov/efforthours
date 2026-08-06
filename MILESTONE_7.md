@@ -2,16 +2,16 @@
 
 ## Status
 
-Milestone 7A and the Milestone 7B1 through 7B4 public-pilot, review, and mutation
+Milestone 7A and the Milestone 7B1 through 7B5 public-corpus, review, and mutation
 checkpoints were implemented on August 6, 2026. They establish the versioned review
 corpus, low-cost authoring and compilation boundaries, deterministic offline
-evaluation, initial licensed labels, exact-digest subsequent review, and
+evaluation, expanded licensed labels, exact-digest subsequent review, and
 cross-ecosystem relational model guardrails needed before Fairbill adopts any
 learned model. The seed estimator remains `experimental-uncalibrated`; this
 milestone does not make its current hours production-ready.
 
-The pilot still has one host-AI teacher and no independent correction. Milestone
-7B is therefore in progress: broader licensed repository coverage, richer
+Both public corpora still have one host-AI teacher and no independent correction.
+Milestone 7B is therefore in progress: broader licensed repository coverage, richer
 reachability/accessibility/measured-coverage guardrails, and an actual independent
 review are required before numerical admission thresholds or model training. The
 presence of second-review tooling must not be confused with completion of that
@@ -179,6 +179,45 @@ behavior; the estimator still has no semantic clone detector. The dead-code clai
 is limited to syntax excluded by the C# preprocessor and does not imply general
 reachability or liveness analysis.
 
+## Implemented Milestone 7B5 scope
+
+The corpus-expansion and review-contract slice adds no ML dependency, remote
+provider, estimator rule change, or numerical-prior change. It adds:
+
+1. three additional MIT-licensed repository families selected and partitioned
+   before numerical review from immutable release archives, without Git-history
+   inspection;
+2. `fairbill-public-expansion/0.1.0`, containing 133 teacher-estimate targets for
+   developit/mitt, Tyrrrz/CliWrap, and nanostores/nanostores across fixed
+   development, validation, and test partitions;
+3. `ehe-work-item/1.1.0`, which preserves positive-label semantics and adds exact
+   `0/0/0` reviewed exclusions with mandatory rationale and `sizeException`;
+4. schema and semantic validation for exact-zero reviewed ranges, including
+   rejection of ambiguous partially positive zero ranges;
+5. `calibration-review-compiler/0.2.0` and
+   `calibration-corpus-review-compiler/0.2.0`, with deterministic support for
+   positive legacy `0.1.0` plans and deliberate rejection of legacy zero labels;
+6. frozen development, validation, and test evaluations against the unchanged
+   `seed-rules/0.2.1` candidate;
+7. a blind 133-target subsequent-review packet and one combined handoff index for
+   both public corpora; and
+8. memory-only contract/compiler/evaluator tests plus a process-level CLI
+   compilation check for explicit exclusions.
+
+The expansion contains seven exact-zero targets. Four reject CliWrap process-pipe
+I/O as data persistence; two reject framework-neutral nanostores effects as UI;
+one rejects a nanostores development benchmark as a product entry point. These
+labels measure classification disagreements without silently deleting lineage or
+changing an analyzer from validation/test observations.
+
+Reviewed expected effort is 24.75 hours for mitt, 191.50 hours for CliWrap, and
+170.50 hours for nanostores, compared with 31.50, 204.00, and 185.00 seed hours.
+Across the three repository observations, reviewed effort is 386.75 hours and seed
+effort is 420.50 hours; WAPE and aggregate bias are both 0.0873. This favorable
+small-sample result is descriptive weak supervision, not an accuracy claim. The
+model remains unchanged, the validation and test records remain unavailable for
+tuning, and no independent review is claimed.
+
 ## Contract boundaries
 
 ### Reviewed corpus
@@ -209,6 +248,11 @@ Each reviewed target names one or more source work-item IDs from the estimate th
 was reviewed and retains evidence IDs, category, scope, rationale, and uncertainty.
 A target normally has 0.5 to 8 expected hours. A target outside that range requires
 an explicit size-exception reason.
+
+Under rubric 1.1.0, a reviewed false positive or wholly excluded source target may
+instead use exactly zero low, expected, and high hours. The exclusion must carry a
+concrete rationale and `sizeException`. Zero cannot stand for ordinary uncertainty,
+reuse, lower value, or discounting, and a partially positive zero range is invalid.
 
 Source work items may be regrouped during review, but one source work-item ID may
 belong to only one target in a record. This preserves a diagnosable mapping from
@@ -500,3 +544,20 @@ workspace package, CI, and container delivery. The checked baseline uses the sam
 `seed-rules/0.2.1` artifact and changes no numerical prior. A new in-memory pipeline
 test independently proves the compiler-disabled exclusion without reading or
 writing a physical fixture tree.
+
+## Milestone 7B5 completion evidence
+
+The corpus-expansion checkpoint passes a zero-warning Release build, 87
+memory-only unit tests, and 19 disk-backed CLI end-to-end tests before the final
+release gate. The `Fairbill.Tool` version advances to `0.7.0-alpha.6`; the schema
+count remains 19, with four backward-compatible v1 effort-range schemas broadened
+to serialize exact-zero reviewed exclusions.
+
+The `fairbill-public-expansion/0.1.0` corpus has three immutable MIT-licensed
+release snapshots, 133 lineage-complete teacher targets, frozen partitions, and
+three checked-in `seed-rules/0.2.1` evaluation reports. Its blind packet pins
+canonical source-corpus digest
+`sha256:93ec8d7d1872318dbe20429ce294d164947a2c107efcca12013acc5b313b2705`.
+Together with the earlier pilot, Fairbill now publishes six repository families
+and 232 blind review targets. No completed second-review plan is checked in, so all
+public labels correctly remain `teacher-estimate`.

@@ -3,11 +3,16 @@
 This directory is the public home for Fairbill calibration policy,
 redistributable corpus manifests, and reviewed labels.
 
-The current checkpoint contains the versioned
+The current checkpoint contains the original
 [`ehe-work-item/1.0.0`](rubrics/ehe-work-item/1.0.0.md) review rubric and the
-[`fairbill-public-pilot/0.1.0`](corpora/public-pilot/BASELINE.md) teacher-estimate
-corpus. The pilot is intentionally small, has not received independent correction,
-and does not justify a production accuracy claim or distributable learned model.
+[`ehe-work-item/1.1.0`](rubrics/ehe-work-item/1.1.0.md) revision for explicit
+reviewed exclusions. The
+[`fairbill-public-pilot/0.1.0`](corpora/public-pilot/BASELINE.md) and
+[`fairbill-public-expansion/0.1.0`](corpora/public-expansion/BASELINE.md)
+teacher-estimate corpora provide six public repository families. They remain
+small, share one host-AI teacher, have not received independent correction, and do
+not justify a production accuracy claim or distributable learned model. See the
+[`independent-review handoff`](INDEPENDENT_REVIEW.md) for both blind packets.
 The [`public-synthetic/0.3.0`](mutations/public-synthetic/BASELINE.md) mutation
 suite adds cross-ecosystem relational guardrails for exclusions, behavior,
 quality, delivery, and category isolation but is not effort-label data.
@@ -40,6 +45,11 @@ requires an explicit accept/replace decision for every target, verifies the exac
 source-corpus digest, rejects reviewer identities already present in the record,
 and preserves structural lineage while advancing review maturity. Generating a
 packet does not itself make labels independently reviewed.
+
+Compiler version `0.2.0` permits an explicit reviewed exclusion only as an exact
+`0/0/0` range with rationale and `sizeException`. Ambiguous partially positive
+zero ranges are invalid. Legacy `0.1.0` plans remain reproducible for positive
+labels and intentionally cannot introduce zero exclusions.
 
 `mutations` evaluates explicit lower/upper bounds on the difference between two
 candidate estimates at a repository-total or category point. Mutation suites are

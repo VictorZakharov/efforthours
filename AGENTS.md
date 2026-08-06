@@ -148,7 +148,7 @@ semantics.
 
 ## Current project stage
 
-Milestones 1 through 6, Milestone 7A, and the Milestone 7B1 through 7B4 checkpoints
+Milestones 1 through 6, Milestone 7A, and the Milestone 7B1 through 7B5 checkpoints
 are complete. The repository has a working common scanner, static .NET
 project/Roslyn analyzer, static JavaScript/TypeScript package and source analyzer,
 mixed-repository evidence pipeline, published v1 schemas, optional external scan
@@ -182,9 +182,14 @@ including all three range points, generated customization, and category isolatio
 Milestone 7B4 expands that unchanged seed baseline to 48 cases and 156 passing
 assertions with bounded renamed near-copies, compiler-disabled C# syntax, data,
 migrations, security, declared coverage levels, workspace reuse, CI, and container
-delivery. General semantic-clone/reachability analysis, broader licensed corpus
-coverage, and actual independent review are next; local ML has not been selected
-or added.
+delivery. Milestone 7B5 adds `fairbill-public-expansion/0.1.0`: three immutable
+MIT-licensed releases, 133 lineage-complete teacher targets, frozen
+`seed-rules/0.2.1` baselines, the `ehe-work-item/1.1.0` explicit-exclusion policy,
+review compilers `0.2.0`, and a combined blind independent-review handoff. Across
+both public corpora there are six repository families and 232 blind targets, still
+with one host-AI teacher and no independent correction. General semantic-clone and
+reachability analysis, multiple observations per ecosystem/partition cell, and
+actual independent review are next; local ML has not been selected or added.
 
 The following commands have been run successfully from the repository root:
 

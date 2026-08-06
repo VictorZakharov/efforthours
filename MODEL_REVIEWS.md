@@ -15,16 +15,54 @@ with the required source/license/distribution provenance. Revisions are retained
 only for reproducibility and never become effort signals.
 
 The first records that satisfy that boundary live in
-`calibration/corpora/public-pilot/0.1.0.corpus.json`; their source manifest and
-frozen seed measurements are documented beside the corpus. They have
+`calibration/corpora/public-pilot/0.1.0.corpus.json` and
+`calibration/corpora/public-expansion/0.1.0.corpus.json`; their source manifests and
+frozen seed measurements are documented beside each corpus. They have
 `teacher-estimate` maturity only and must not be conflated with the provisional
-anchors below or described as independently validated. Milestone 7B2 adds a blind
-second-review handoff and exact-digest compiler, but no completed independent plan;
-the record maturity therefore remains unchanged.
+anchors below or described as independently validated. Blind second-review
+handoffs and exact-digest compilers exist, but no completed independent plan; the
+record maturity therefore remains unchanged.
 
 Because Fairbill's own anchor informed the seed-model and calibration design, it is
 a development diagnostic rather than an eligible held-out test record unless a
 future independent snapshot and review policy explicitly establishes otherwise.
+
+## 2026-08-06: `fairbill-public-expansion/0.1.0`
+
+Status: **preliminary host-AI teacher labels; not independently reviewed**
+
+Three additional public repository families were frozen before numerical review
+from immutable MIT-licensed release archives. No commit history, contributor data,
+churn, timestamps, or actual labor records were inspected. A single host-AI teacher
+reviewed blind target-level packets under `ehe-work-item/1.1.0`; repository totals
+were visible during pipeline verification. The source shapes, archive hashes,
+license hashes, source digests, and fixed partitions are recorded in
+`calibration/corpora/public-expansion/SOURCES.md`.
+
+| Partition | Repository release | Source estimate | Reviewed expected | Seed expected | WAPE / bias |
+|---|---|---|---:|---:|---:|
+| development | developit/mitt `3.0.1` | `seed-rules/0.2.1` | 24.75 h | 31.50 h | 0.2727 |
+| validation | Tyrrrz/CliWrap `3.10.4` | `seed-rules/0.2.1` | 191.50 h | 204.00 h | 0.0653 |
+| test | nanostores/nanostores `1.4.2` | `seed-rules/0.2.1` | 170.50 h | 185.00 h | 0.0850 |
+
+The 133 reviewed targets total 386.75 expected hours against 420.50 seed hours.
+Aggregate repository-observation WAPE and signed bias are both 0.0873 because all
+three seed totals are higher. This is a three-observation diagnostic, not evidence
+that the estimator has eight-percent generalization error.
+
+Seven target labels are explicit `0/0/0` exclusions with retained source lineage:
+CliWrap stream operations are process-pipe behavior rather than persistence,
+nanostores effects represent framework-neutral state behavior rather than UI, and
+a nanostores benchmark is not a product entry point. Review/compiler version 0.2.0
+was introduced to represent these decisions honestly; it requires rationale and a
+size exception and rejects partially positive zero ranges. The analyzers and
+`seed-rules/0.2.1` priors were not changed from these development, validation, or
+test observations.
+
+The result broadens ecosystem and repository-shape coverage, but each partition
+still has only one new observation and all six public families share one teacher.
+No numerical fitting or admission threshold should use this expansion until a
+genuinely distinct review is compiled and repository-held-out policies are frozen.
 
 ## 2026-08-06: `seed-rules/0.2.1` normalization revision
 
@@ -46,8 +84,10 @@ suite 0.3.0: 156 assertions across 48 states, including bounded renamed
 near-copies, compiler-disabled syntax, data, security, declared coverage,
 workspace boundaries, CI, and containers. No prior or estimator code changed for
 that expansion. The frozen public-pilot corpus and its 0.2.0 source-estimate
-provenance remain unchanged; 0.2.1 has not yet received a new repository-level
-logical-review anchor.
+provenance remain unchanged. `fairbill-public-expansion/0.1.0` subsequently
+evaluates the same 0.2.1 artifact against three additional teacher-reviewed
+release snapshots; those labels did not change the model and still lack
+independent correction.
 
 ## 2026-08-05: Fairbill at `f84a58a`
 

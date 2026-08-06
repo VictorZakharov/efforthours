@@ -1,0 +1,3473 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "fairbill-public-expansion",
+  "version": "0.1.0",
+  "description": "Second public teacher-estimate corpus adding three immutable MIT-licensed release snapshots and explicit reviewed false-positive exclusions. These weak labels are not independently reviewed and are not production accuracy evidence.",
+  "rubric": {
+    "id": "ehe-work-item",
+    "version": "1.1.0"
+  },
+  "records": [
+    {
+      "id": "record:developit-mitt:implementation",
+      "repository": {
+        "id": "repository:github.com/developit/mitt",
+        "name": "developit/mitt",
+        "sourceDigest": "sha256:135d31133a5cff5924e53febea07eee67c7fb059156ba225cccb262b1abd5d7d"
+      },
+      "profile": "implementation",
+      "baselineId": "senior-contractor-2026-no-ai",
+      "partition": "development",
+      "sourceEstimatorVersion": "seed-rules/0.2.1",
+      "sourceEstimateDigest": "sha256:010f99ea10c6df0bc325e283bb4b2a6d34272a75741cf49747f016c5d32f9bf3",
+      "source": {
+        "dataClassification": "public-redistributable",
+        "sourceReference": "https://github.com/developit/mitt",
+        "revision": "release:3.0.1",
+        "licenseExpression": "MIT",
+        "redistributionAllowed": true,
+        "notes": "Reviewed from the immutable 3.0.1 release snapshot. Downloaded source archive SHA256 A362926811CB6D28E52FA7F1276C9189595081FFA18FD3CEB87A022D26BA3A2D; in-archive LICENSE SHA256 1CAB22F196264195A4CAEC8CA5630170FDDE76EE8F43346E47021D087332D3B0."
+      },
+      "review": {
+        "status": "teacher-estimate",
+        "completedOn": "2026-08-06",
+        "reviewers": [
+          {
+            "id": "teacher:openai-codex-gpt-5-2026-08",
+            "kind": "host-ai",
+            "role": "teacher",
+            "modelId": "openai-codex",
+            "modelVersion": "gpt-5"
+          }
+        ],
+        "notes": "Single host-AI teacher review; no independent correction or adjudication. Target-level candidate hours were hidden during label authoring; repository totals were observed during pipeline verification only. Capability totals were estimated after source and evidence inspection, then apportioned across deterministic source partitions. Low/high bounds use the documented risk-tier policy."
+      },
+      "targets": [
+        {
+          "id": "target:work:architecture-design:1301c834bf26665d0695:review-0001",
+          "category": "architecture-and-technical-design",
+          "title": "Design the technical structure of \u0027.\u0027 (library)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:architecture-design:1301c834bf26665d0695:part-0001"
+          ],
+          "evidenceIds": [
+            "javascript:package:package.json"
+          ],
+          "hours": {
+            "low": 0.75,
+            "expected": 1.25,
+            "high": 2
+          },
+          "rationale": "A very small event emitter still needs a coherent generic handler model, wildcard semantics, and mutation-safe dispatch structure.",
+          "uncertaintyReasons": []
+        },
+        {
+          "id": "target:work:build-tooling:c2c91d07e063088d401a:review-0001",
+          "category": "build-configuration-and-developer-tooling",
+          "title": "Configure build behavior and developer tooling",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:build-tooling:c2c91d07e063088d401a:part-0001"
+          ],
+          "evidenceIds": [
+            "file:.editorconfig",
+            "file:.gitignore",
+            "file:tsconfig.json",
+            "javascript:configuration:tsconfig.json",
+            "javascript:package:package.json",
+            "javascript:repository"
+          ],
+          "hours": {
+            "low": 1.5,
+            "expected": 2.5,
+            "high": 4
+          },
+          "rationale": "TypeScript, linting, formatting, declaration generation, bundle construction, size checks, and development scripts form a compact but real toolchain.",
+          "uncertaintyReasons": []
+        },
+        {
+          "id": "target:work:ci-infrastructure:bee22f5b9a094661eb75:review-0001",
+          "category": "ci-cd-and-infrastructure-as-code",
+          "title": "Implement represented CI/CD and infrastructure configuration",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:ci-infrastructure:bee22f5b9a094661eb75:part-0001"
+          ],
+          "evidenceIds": [
+            "ci:repository",
+            "file:.github/workflows/compressed-size.yml",
+            "file:.github/workflows/main.yml"
+          ],
+          "hours": {
+            "low": 1.25,
+            "expected": 2,
+            "high": 3.5
+          },
+          "rationale": "Two focused workflows verify tests and compressed package size with conventional hosted automation.",
+          "uncertaintyReasons": []
+        },
+        {
+          "id": "target:work:documentation:bebbc838ff439c1b4e49:review-0001",
+          "category": "documentation",
+          "title": "Author and verify maintained repository documentation",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:documentation:bebbc838ff439c1b4e49:part-0001"
+          ],
+          "evidenceIds": [
+            "documentation:repository",
+            "file:LICENSE"
+          ],
+          "hours": {
+            "low": 1.25,
+            "expected": 2,
+            "high": 3.5
+          },
+          "rationale": "The maintained README explains the typed API, wildcard handling, examples, browser support, and an API section without extensive operational material.",
+          "uncertaintyReasons": []
+        },
+        {
+          "id": "target:work:javascript-source-backbone:2f5795bda39a0bae4a33:review-0001",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027.\u0027 (library) (review target 1 of 2)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0001"
+          ],
+          "evidenceIds": [
+            "javascript:source-structure:."
+          ],
+          "hours": {
+            "low": 1.5,
+            "expected": 2.5,
+            "high": 4
+          },
+          "rationale": "The implementation is short but deliberately type-safe, including overloads and the observable ordering and removal semantics of direct and wildcard handlers.",
+          "uncertaintyReasons": [
+            "Some TypeScript structure is token-backed rather than parser-backed."
+          ]
+        },
+        {
+          "id": "target:work:javascript-source-backbone:2f5795bda39a0bae4a33:review-0002",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027.\u0027 (library) (review target 2 of 2)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0002"
+          ],
+          "evidenceIds": [
+            "javascript:source-structure:."
+          ],
+          "hours": {
+            "low": 1.25,
+            "expected": 2,
+            "high": 3.5
+          },
+          "rationale": "The implementation is short but deliberately type-safe, including overloads and the observable ordering and removal semantics of direct and wildcard handlers.",
+          "uncertaintyReasons": [
+            "Some TypeScript structure is token-backed rather than parser-backed."
+          ]
+        },
+        {
+          "id": "target:work:manual-validation:a0df1126ba2f8dbcb19b:review-0001",
+          "category": "manual-validation-debugging-and-hardening",
+          "title": "Manually validate, debug, and harden \u0027.\u0027 (library)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:manual-validation:a0df1126ba2f8dbcb19b:part-0001"
+          ],
+          "evidenceIds": [
+            "javascript:package:package.json"
+          ],
+          "hours": {
+            "low": 0.5,
+            "expected": 0.75,
+            "high": 1.25
+          },
+          "rationale": "A bounded smoke pass covers registration, duplicate handlers, wildcard ordering, removal, and emitted payloads beyond test authoring.",
+          "uncertaintyReasons": []
+        },
+        {
+          "id": "target:work:packaging-release:58eb8ae7efef939a19b5:review-0001",
+          "category": "packaging-deployment-and-release-artifacts",
+          "title": "Prepare represented packages and release surfaces",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:packaging-release:58eb8ae7efef939a19b5:part-0001"
+          ],
+          "evidenceIds": [
+            "javascript:package:package.json"
+          ],
+          "hours": {
+            "low": 1.25,
+            "expected": 2,
+            "high": 3.5
+          },
+          "rationale": "Multi-format ESM, CommonJS, UMD, declarations, exports, files selection, and package-size expectations require release checking.",
+          "uncertaintyReasons": []
+        },
+        {
+          "id": "target:work:project-setup:e56be8fd4646c76f7cdd:review-0001",
+          "category": "repository-and-solution-setup",
+          "title": "Set up \u0027.\u0027 (library)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:project-setup:e56be8fd4646c76f7cdd:part-0001"
+          ],
+          "evidenceIds": [
+            "javascript:configuration:tsconfig.json",
+            "javascript:package-reference:package.json:@typescript-eslint~eslint-plugin:development",
+            "javascript:package-reference:package.json:@typescript-eslint~parser:development",
+            "javascript:package-reference:package.json:@types~chai:development",
+            "javascript:package-reference:package.json:@types~mocha:development",
+            "javascript:package-reference:package.json:@types~sinon-chai:development",
+            "javascript:package-reference:package.json:@types~sinon:development",
+            "javascript:package-reference:package.json:chai:development",
+            "javascript:package-reference:package.json:documentation:development",
+            "javascript:package-reference:package.json:eslint-config-developit:development",
+            "javascript:package-reference:package.json:eslint-plugin-compat:development",
+            "javascript:package-reference:package.json:eslint:development",
+            "javascript:package-reference:package.json:esm:development",
+            "javascript:package-reference:package.json:microbundle:development",
+            "javascript:package-reference:package.json:mocha:development",
+            "javascript:package-reference:package.json:npm-run-all:development",
+            "javascript:package-reference:package.json:prettier:development",
+            "javascript:package-reference:package.json:rimraf:development",
+            "javascript:package-reference:package.json:sinon-chai:development",
+            "javascript:package-reference:package.json:sinon:development",
+            "javascript:package-reference:package.json:ts-node:development",
+            "javascript:package-reference:package.json:typescript:development",
+            "javascript:package:package.json"
+          ],
+          "hours": {
+            "low": 1,
+            "expected": 1.5,
+            "high": 2.5
+          },
+          "rationale": "A single typed package has conventional setup despite a broad development-tool dependency surface.",
+          "uncertaintyReasons": []
+        },
+        {
+          "id": "target:work:self-review:e943a6db2e8c464b145a:review-0001",
+          "category": "self-review-and-system-integration",
+          "title": "Self-review and integrate the completed system",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:self-review:e943a6db2e8c464b145a:part-0001"
+          ],
+          "evidenceIds": [
+            "inventory:repository",
+            "javascript:package:package.json"
+          ],
+          "hours": {
+            "low": 0.5,
+            "expected": 1,
+            "high": 1.75
+          },
+          "rationale": "The small public API needs a final consistency pass across runtime behavior, types, tests, documentation, and bundle formats.",
+          "uncertaintyReasons": []
+        },
+        {
+          "id": "target:work:specification-comprehension:49aec33b6a46fb626dad:review-0001",
+          "category": "specification-comprehension-and-domain-learning",
+          "title": "Comprehend the supplied specification and bounded business domain",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:specification-comprehension:49aec33b6a46fb626dad:part-0001"
+          ],
+          "evidenceIds": [
+            "inventory:repository",
+            "javascript:package:package.json"
+          ],
+          "hours": {
+            "low": 0.75,
+            "expected": 1.25,
+            "high": 2
+          },
+          "rationale": "The domain is familiar, but exact direct-handler, wildcard, type-overload, and removal behavior must be understood before implementation.",
+          "uncertaintyReasons": []
+        },
+        {
+          "id": "target:work:unit-tests:875ec9f8d2f4b23af140:review-0001",
+          "category": "unit-testing",
+          "title": "Create represented unit tests for \u0027.\u0027 (library) (review target 1 of 3)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:unit-tests:875ec9f8d2f4b23af140:part-0001"
+          ],
+          "evidenceIds": [
+            "javascript:test:test/index_test.ts",
+            "javascript:test:test/test-types-compilation.ts"
+          ],
+          "hours": {
+            "low": 1.25,
+            "expected": 2,
+            "high": 3.5
+          },
+          "rationale": "Nineteen runtime cases plus positive and negative type-compilation checks cover the compact API thoroughly while reusing simple fixtures.",
+          "uncertaintyReasons": [
+            "The static review did not execute the suite; passing behavior is assumed under the default policy."
+          ]
+        },
+        {
+          "id": "target:work:unit-tests:875ec9f8d2f4b23af140:review-0002",
+          "category": "unit-testing",
+          "title": "Create represented unit tests for \u0027.\u0027 (library) (review target 2 of 3)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:unit-tests:875ec9f8d2f4b23af140:part-0002"
+          ],
+          "evidenceIds": [
+            "javascript:test:test/index_test.ts",
+            "javascript:test:test/test-types-compilation.ts"
+          ],
+          "hours": {
+            "low": 1.25,
+            "expected": 2,
+            "high": 3.5
+          },
+          "rationale": "Nineteen runtime cases plus positive and negative type-compilation checks cover the compact API thoroughly while reusing simple fixtures.",
+          "uncertaintyReasons": [
+            "The static review did not execute the suite; passing behavior is assumed under the default policy."
+          ]
+        },
+        {
+          "id": "target:work:unit-tests:875ec9f8d2f4b23af140:review-0003",
+          "category": "unit-testing",
+          "title": "Create represented unit tests for \u0027.\u0027 (library) (review target 3 of 3)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:unit-tests:875ec9f8d2f4b23af140:part-0003"
+          ],
+          "evidenceIds": [
+            "javascript:test:test/index_test.ts",
+            "javascript:test:test/test-types-compilation.ts"
+          ],
+          "hours": {
+            "low": 1.25,
+            "expected": 2,
+            "high": 3.5
+          },
+          "rationale": "Nineteen runtime cases plus positive and negative type-compilation checks cover the compact API thoroughly while reusing simple fixtures.",
+          "uncertaintyReasons": [
+            "The static review did not execute the suite; passing behavior is assumed under the default policy."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "record:nanostores-nanostores:implementation",
+      "repository": {
+        "id": "repository:github.com/nanostores/nanostores",
+        "name": "nanostores/nanostores",
+        "sourceDigest": "sha256:8dddc951643957bc7ce762f6e9db4982e95138c8b983071a95674b961ad83432"
+      },
+      "profile": "implementation",
+      "baselineId": "senior-contractor-2026-no-ai",
+      "partition": "test",
+      "sourceEstimatorVersion": "seed-rules/0.2.1",
+      "sourceEstimateDigest": "sha256:8dc985148ead5046bc2a01de1e908de8ba87fb55bc91bba82ab9d6540bf9d443",
+      "source": {
+        "dataClassification": "public-redistributable",
+        "sourceReference": "https://github.com/nanostores/nanostores",
+        "revision": "release:1.4.2",
+        "licenseExpression": "MIT",
+        "redistributionAllowed": true,
+        "notes": "Reviewed from the immutable 1.4.2 release snapshot. Downloaded source archive SHA256 4420B10AB3F508F902E98F08F12E76CF3C78319440A967495A4CC47CF3BEAFEF; in-archive LICENSE SHA256 181BC2685F0CEA9D1BEB28352420E3A7FB382B38895D2B430ED1B3BC39572AF6."
+      },
+      "review": {
+        "status": "teacher-estimate",
+        "completedOn": "2026-08-06",
+        "reviewers": [
+          {
+            "id": "teacher:openai-codex-gpt-5-2026-08",
+            "kind": "host-ai",
+            "role": "teacher",
+            "modelId": "openai-codex",
+            "modelVersion": "gpt-5"
+          }
+        ],
+        "notes": "Single host-AI teacher review; no independent correction or adjudication. Target-level candidate hours were hidden during label authoring; repository totals were observed during pipeline verification only. Capability totals were estimated after source and evidence inspection, then apportioned across deterministic source partitions. Low/high bounds use the documented risk-tier policy."
+      },
+      "targets": [
+        {
+          "id": "target:work:application-entry-point:9b21971dcc7b3a4ca5f0:review-0001",
+          "category": "production-implementation",
+          "title": "Implement application entry points for \u0027.\u0027 (library)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:application-entry-point:9b21971dcc7b3a4ca5f0:part-0001"
+          ],
+          "evidenceIds": [
+            "javascript:entry-point:test/benchmark.js"
+          ],
+          "hours": {
+            "low": 0,
+            "expected": 0,
+            "high": 0
+          },
+          "rationale": "The detected script is a development benchmark rather than a product entry point.",
+          "uncertaintyReasons": [],
+          "sizeException": "Explicit reviewed exclusion: the detected benchmark script is a development benchmark, not a product entry point."
+        },
+        {
+          "id": "target:work:architecture-design:1301c834bf26665d0695:review-0001",
+          "category": "architecture-and-technical-design",
+          "title": "Design the technical structure of \u0027.\u0027 (library)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:architecture-design:1301c834bf26665d0695:part-0001"
+          ],
+          "evidenceIds": [
+            "javascript:package:package.json",
+            "javascript:ui:atom/index.test.ts",
+            "javascript:ui:clean-stores/index.test.ts",
+            "javascript:ui:computed/index.js",
+            "javascript:ui:computed/index.test.ts",
+            "javascript:ui:deep-map/index.test.ts",
+            "javascript:ui:deep-map/production.test.js",
+            "javascript:ui:keep-mount/index.test.ts",
+            "javascript:ui:lifecycle/index.test.ts",
+            "javascript:ui:map-creator/index.js",
+            "javascript:ui:map/index.test.ts",
+            "javascript:ui:map/production.test.js",
+            "javascript:ui:test/benchmark.js"
+          ],
+          "hours": {
+            "low": 2.5,
+            "expected": 4,
+            "high": 6.5
+          },
+          "rationale": "A small framework-neutral reactive core still needs coherent dependency tracking, lazy lifecycle, batching, tasks, effects, deep paths, cleanup, and type boundaries.",
+          "uncertaintyReasons": [
+            "TypeScript evidence is token-backed, and the represented tests were not executed."
+          ]
+        },
+        {
+          "id": "target:work:build-tooling:c2c91d07e063088d401a:review-0001",
+          "category": "build-configuration-and-developer-tooling",
+          "title": "Configure build behavior and developer tooling",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:build-tooling:c2c91d07e063088d401a:part-0001"
+          ],
+          "evidenceIds": [
+            "file:.editorconfig",
+            "file:.gitignore",
+            "file:pnpm-lock.yaml",
+            "file:pnpm-workspace.yaml",
+            "file:tsconfig.json",
+            "javascript:configuration:tsconfig.json",
+            "javascript:package:package.json",
+            "javascript:repository"
+          ],
+          "hours": {
+            "low": 2.5,
+            "expected": 4,
+            "high": 6.5
+          },
+          "rationale": "Dual development and production builds, declarations, tree-shakable modules, linting, coverage, benchmarks, size checks, and release scripts require coordinated tooling.",
+          "uncertaintyReasons": []
+        },
+        {
+          "id": "target:work:ci-infrastructure:bee22f5b9a094661eb75:review-0001",
+          "category": "ci-cd-and-infrastructure-as-code",
+          "title": "Implement represented CI/CD and infrastructure configuration",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:ci-infrastructure:bee22f5b9a094661eb75:part-0001"
+          ],
+          "evidenceIds": [
+            "ci:repository",
+            "file:.github/workflows/release.yml",
+            "file:.github/workflows/test.yml"
+          ],
+          "hours": {
+            "low": 3.5,
+            "expected": 6,
+            "high": 10
+          },
+          "rationale": "CI spans supported Node versions, tests, linting, coverage, package-size and benchmark checks, plus release automation.",
+          "uncertaintyReasons": [
+            "Hosted release and benchmark environments were not executed during static review."
+          ]
+        },
+        {
+          "id": "target:work:documentation:bebbc838ff439c1b4e49:review-0001",
+          "category": "documentation",
+          "title": "Author and verify maintained repository documentation (review target 1 of 2)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:documentation:bebbc838ff439c1b4e49:part-0001"
+          ],
+          "evidenceIds": [
+            "documentation:repository",
+            "file:CHANGELOG.md",
+            "file:LICENSE",
+            "file:README.md"
+          ],
+          "hours": {
+            "low": 4.5,
+            "expected": 8,
+            "high": 14
+          },
+          "rationale": "The long maintained guide explains core stores, computed and batched state, lifecycle, deep maps, tasks, effects, testing, performance, and integration guidance for multiple UI frameworks.",
+          "uncertaintyReasons": [
+            "TypeScript evidence is token-backed, and the represented tests were not executed."
+          ]
+        },
+        {
+          "id": "target:work:documentation:bebbc838ff439c1b4e49:review-0002",
+          "category": "documentation",
+          "title": "Author and verify maintained repository documentation (review target 2 of 2)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:documentation:bebbc838ff439c1b4e49:part-0002"
+          ],
+          "evidenceIds": [
+            "documentation:repository",
+            "file:CHANGELOG.md",
+            "file:LICENSE",
+            "file:README.md"
+          ],
+          "hours": {
+            "low": 3.5,
+            "expected": 6,
+            "high": 10
+          },
+          "rationale": "The long maintained guide explains core stores, computed and batched state, lifecycle, deep maps, tasks, effects, testing, performance, and integration guidance for multiple UI frameworks.",
+          "uncertaintyReasons": [
+            "TypeScript evidence is token-backed, and the represented tests were not executed."
+          ]
+        },
+        {
+          "id": "target:work:javascript-source-backbone:2f5795bda39a0bae4a33:review-0001",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027.\u0027 (library) (review target 1 of 27)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0001"
+          ],
+          "evidenceIds": [
+            "javascript:source-structure:."
+          ],
+          "hours": {
+            "low": 1.75,
+            "expected": 2.75,
+            "high": 4.5
+          },
+          "rationale": "The framework-neutral implementation and extensive declarations cover atoms, maps, computed and batched derivation, lifecycle hooks, deep path updates, async tasks, effects, cleanup, dev/production behavior, and tree-shakable module contracts.",
+          "uncertaintyReasons": [
+            "TypeScript evidence is token-backed, and the represented tests were not executed."
+          ]
+        },
+        {
+          "id": "target:work:javascript-source-backbone:2f5795bda39a0bae4a33:review-0002",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027.\u0027 (library) (review target 2 of 27)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0002"
+          ],
+          "evidenceIds": [
+            "javascript:source-structure:."
+          ],
+          "hours": {
+            "low": 1.75,
+            "expected": 2.75,
+            "high": 4.5
+          },
+          "rationale": "The framework-neutral implementation and extensive declarations cover atoms, maps, computed and batched derivation, lifecycle hooks, deep path updates, async tasks, effects, cleanup, dev/production behavior, and tree-shakable module contracts.",
+          "uncertaintyReasons": [
+            "TypeScript evidence is token-backed, and the represented tests were not executed."
+          ]
+        },
+        {
+          "id": "target:work:javascript-source-backbone:2f5795bda39a0bae4a33:review-0003",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027.\u0027 (library) (review target 3 of 27)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0003"
+          ],
+          "evidenceIds": [
+            "javascript:source-structure:."
+          ],
+          "hours": {
+            "low": 1.75,
+            "expected": 2.75,
+            "high": 4.5
+          },
+          "rationale": "The framework-neutral implementation and extensive declarations cover atoms, maps, computed and batched derivation, lifecycle hooks, deep path updates, async tasks, effects, cleanup, dev/production behavior, and tree-shakable module contracts.",
+          "uncertaintyReasons": [
+            "TypeScript evidence is token-backed, and the represented tests were not executed."
+          ]
+        },
+        {
+          "id": "target:work:javascript-source-backbone:2f5795bda39a0bae4a33:review-0004",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027.\u0027 (library) (review target 4 of 27)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0004"
+          ],
+          "evidenceIds": [
+            "javascript:source-structure:."
+          ],
+          "hours": {
+            "low": 1.75,
+            "expected": 2.75,
+            "high": 4.5
+          },
+          "rationale": "The framework-neutral implementation and extensive declarations cover atoms, maps, computed and batched derivation, lifecycle hooks, deep path updates, async tasks, effects, cleanup, dev/production behavior, and tree-shakable module contracts.",
+          "uncertaintyReasons": [
+            "TypeScript evidence is token-backed, and the represented tests were not executed."
+          ]
+        },
+        {
+          "id": "target:work:javascript-source-backbone:2f5795bda39a0bae4a33:review-0005",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027.\u0027 (library) (review target 5 of 27)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0005"
+          ],
+          "evidenceIds": [
+            "javascript:source-structure:."
+          ],
+          "hours": {
+            "low": 1.75,
+            "expected": 2.75,
+            "high": 4.5
+          },
+          "rationale": "The framework-neutral implementation and extensive declarations cover atoms, maps, computed and batched derivation, lifecycle hooks, deep path updates, async tasks, effects, cleanup, dev/production behavior, and tree-shakable module contracts.",
+          "uncertaintyReasons": [
+            "TypeScript evidence is token-backed, and the represented tests were not executed."
+          ]
+        },
+        {
+          "id": "target:work:javascript-source-backbone:2f5795bda39a0bae4a33:review-0006",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027.\u0027 (library) (review target 6 of 27)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0006"
+          ],
+          "evidenceIds": [
+            "javascript:source-structure:."
+          ],
+          "hours": {
+            "low": 1.75,
+            "expected": 2.75,
+            "high": 4.5
+          },
+          "rationale": "The framework-neutral implementation and extensive declarations cover atoms, maps, computed and batched derivation, lifecycle hooks, deep path updates, async tasks, effects, cleanup, dev/production behavior, and tree-shakable module contracts.",
+          "uncertaintyReasons": [
+            "TypeScript evidence is token-backed, and the represented tests were not executed."
+          ]
+        },
+        {
+          "id": "target:work:javascript-source-backbone:2f5795bda39a0bae4a33:review-0007",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027.\u0027 (library) (review target 7 of 27)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0007"
+          ],
+          "evidenceIds": [
+            "javascript:source-structure:."
+          ],
+          "hours": {
+            "low": 1.75,
+            "expected": 2.75,
+            "high": 4.5
+          },
+          "rationale": "The framework-neutral implementation and extensive declarations cover atoms, maps, computed and batched derivation, lifecycle hooks, deep path updates, async tasks, effects, cleanup, dev/production behavior, and tree-shakable module contracts.",
+          "uncertaintyReasons": [
+            "TypeScript evidence is token-backed, and the represented tests were not executed."
+          ]
+        },
+        {
+          "id": "target:work:javascript-source-backbone:2f5795bda39a0bae4a33:review-0008",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027.\u0027 (library) (review target 8 of 27)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0008"
+          ],
+          "evidenceIds": [
+            "javascript:source-structure:."
+          ],
+          "hours": {
+            "low": 1.75,
+            "expected": 2.75,
+            "high": 4.5
+          },
+          "rationale": "The framework-neutral implementation and extensive declarations cover atoms, maps, computed and batched derivation, lifecycle hooks, deep path updates, async tasks, effects, cleanup, dev/production behavior, and tree-shakable module contracts.",
+          "uncertaintyReasons": [
+            "TypeScript evidence is token-backed, and the represented tests were not executed."
+          ]
+        },
+        {
+          "id": "target:work:javascript-source-backbone:2f5795bda39a0bae4a33:review-0009",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027.\u0027 (library) (review target 9 of 27)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0009"
+          ],
+          "evidenceIds": [
+            "javascript:source-structure:."
+          ],
+          "hours": {
+            "low": 1.75,
+            "expected": 2.75,
+            "high": 4.5
+          },
+          "rationale": "The framework-neutral implementation and extensive declarations cover atoms, maps, computed and batched derivation, lifecycle hooks, deep path updates, async tasks, effects, cleanup, dev/production behavior, and tree-shakable module contracts.",
+          "uncertaintyReasons": [
+            "TypeScript evidence is token-backed, and the represented tests were not executed."
+          ]
+        },
+        {
+          "id": "target:work:javascript-source-backbone:2f5795bda39a0bae4a33:review-0010",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027.\u0027 (library) (review target 10 of 27)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0010"
+          ],
+          "evidenceIds": [
+            "javascript:source-structure:."
+          ],
+          "hours": {
+            "low": 1.75,
+            "expected": 2.75,
+            "high": 4.5
+          },
+          "rationale": "The framework-neutral implementation and extensive declarations cover atoms, maps, computed and batched derivation, lifecycle hooks, deep path updates, async tasks, effects, cleanup, dev/production behavior, and tree-shakable module contracts.",
+          "uncertaintyReasons": [
+            "TypeScript evidence is token-backed, and the represented tests were not executed."
+          ]
+        },
+        {
+          "id": "target:work:javascript-source-backbone:2f5795bda39a0bae4a33:review-0011",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027.\u0027 (library) (review target 11 of 27)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0011"
+          ],
+          "evidenceIds": [
+            "javascript:source-structure:."
+          ],
+          "hours": {
+            "low": 1.75,
+            "expected": 2.75,
+            "high": 4.5
+          },
+          "rationale": "The framework-neutral implementation and extensive declarations cover atoms, maps, computed and batched derivation, lifecycle hooks, deep path updates, async tasks, effects, cleanup, dev/production behavior, and tree-shakable module contracts.",
+          "uncertaintyReasons": [
+            "TypeScript evidence is token-backed, and the represented tests were not executed."
+          ]
+        },
+        {
+          "id": "target:work:javascript-source-backbone:2f5795bda39a0bae4a33:review-0012",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027.\u0027 (library) (review target 12 of 27)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0012"
+          ],
+          "evidenceIds": [
+            "javascript:source-structure:."
+          ],
+          "hours": {
+            "low": 1.75,
+            "expected": 2.75,
+            "high": 4.5
+          },
+          "rationale": "The framework-neutral implementation and extensive declarations cover atoms, maps, computed and batched derivation, lifecycle hooks, deep path updates, async tasks, effects, cleanup, dev/production behavior, and tree-shakable module contracts.",
+          "uncertaintyReasons": [
+            "TypeScript evidence is token-backed, and the represented tests were not executed."
+          ]
+        },
+        {
+          "id": "target:work:javascript-source-backbone:2f5795bda39a0bae4a33:review-0013",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027.\u0027 (library) (review target 13 of 27)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0013"
+          ],
+          "evidenceIds": [
+            "javascript:source-structure:."
+          ],
+          "hours": {
+            "low": 1.75,
+            "expected": 2.75,
+            "high": 4.5
+          },
+          "rationale": "The framework-neutral implementation and extensive declarations cover atoms, maps, computed and batched derivation, lifecycle hooks, deep path updates, async tasks, effects, cleanup, dev/production behavior, and tree-shakable module contracts.",
+          "uncertaintyReasons": [
+            "TypeScript evidence is token-backed, and the represented tests were not executed."
+          ]
+        },
+        {
+          "id": "target:work:javascript-source-backbone:2f5795bda39a0bae4a33:review-0014",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027.\u0027 (library) (review target 14 of 27)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0014"
+          ],
+          "evidenceIds": [
+            "javascript:source-structure:."
+          ],
+          "hours": {
+            "low": 1.75,
+            "expected": 2.75,
+            "high": 4.5
+          },
+          "rationale": "The framework-neutral implementation and extensive declarations cover atoms, maps, computed and batched derivation, lifecycle hooks, deep path updates, async tasks, effects, cleanup, dev/production behavior, and tree-shakable module contracts.",
+          "uncertaintyReasons": [
+            "TypeScript evidence is token-backed, and the represented tests were not executed."
+          ]
+        },
+        {
+          "id": "target:work:javascript-source-backbone:2f5795bda39a0bae4a33:review-0015",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027.\u0027 (library) (review target 15 of 27)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0015"
+          ],
+          "evidenceIds": [
+            "javascript:source-structure:."
+          ],
+          "hours": {
+            "low": 1.75,
+            "expected": 2.75,
+            "high": 4.5
+          },
+          "rationale": "The framework-neutral implementation and extensive declarations cover atoms, maps, computed and batched derivation, lifecycle hooks, deep path updates, async tasks, effects, cleanup, dev/production behavior, and tree-shakable module contracts.",
+          "uncertaintyReasons": [
+            "TypeScript evidence is token-backed, and the represented tests were not executed."
+          ]
+        },
+        {
+          "id": "target:work:javascript-source-backbone:2f5795bda39a0bae4a33:review-0016",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027.\u0027 (library) (review target 16 of 27)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0016"
+          ],
+          "evidenceIds": [
+            "javascript:source-structure:."
+          ],
+          "hours": {
+            "low": 1.75,
+            "expected": 2.75,
+            "high": 4.5
+          },
+          "rationale": "The framework-neutral implementation and extensive declarations cover atoms, maps, computed and batched derivation, lifecycle hooks, deep path updates, async tasks, effects, cleanup, dev/production behavior, and tree-shakable module contracts.",
+          "uncertaintyReasons": [
+            "TypeScript evidence is token-backed, and the represented tests were not executed."
+          ]
+        },
+        {
+          "id": "target:work:javascript-source-backbone:2f5795bda39a0bae4a33:review-0017",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027.\u0027 (library) (review target 17 of 27)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0017"
+          ],
+          "evidenceIds": [
+            "javascript:source-structure:."
+          ],
+          "hours": {
+            "low": 1.75,
+            "expected": 2.75,
+            "high": 4.5
+          },
+          "rationale": "The framework-neutral implementation and extensive declarations cover atoms, maps, computed and batched derivation, lifecycle hooks, deep path updates, async tasks, effects, cleanup, dev/production behavior, and tree-shakable module contracts.",
+          "uncertaintyReasons": [
+            "TypeScript evidence is token-backed, and the represented tests were not executed."
+          ]
+        },
+        {
+          "id": "target:work:javascript-source-backbone:2f5795bda39a0bae4a33:review-0018",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027.\u0027 (library) (review target 18 of 27)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0018"
+          ],
+          "evidenceIds": [
+            "javascript:source-structure:."
+          ],
+          "hours": {
+            "low": 1.75,
+            "expected": 2.75,
+            "high": 4.5
+          },
+          "rationale": "The framework-neutral implementation and extensive declarations cover atoms, maps, computed and batched derivation, lifecycle hooks, deep path updates, async tasks, effects, cleanup, dev/production behavior, and tree-shakable module contracts.",
+          "uncertaintyReasons": [
+            "TypeScript evidence is token-backed, and the represented tests were not executed."
+          ]
+        },
+        {
+          "id": "target:work:javascript-source-backbone:2f5795bda39a0bae4a33:review-0019",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027.\u0027 (library) (review target 19 of 27)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0019"
+          ],
+          "evidenceIds": [
+            "javascript:source-structure:."
+          ],
+          "hours": {
+            "low": 1.75,
+            "expected": 2.75,
+            "high": 4.5
+          },
+          "rationale": "The framework-neutral implementation and extensive declarations cover atoms, maps, computed and batched derivation, lifecycle hooks, deep path updates, async tasks, effects, cleanup, dev/production behavior, and tree-shakable module contracts.",
+          "uncertaintyReasons": [
+            "TypeScript evidence is token-backed, and the represented tests were not executed."
+          ]
+        },
+        {
+          "id": "target:work:javascript-source-backbone:2f5795bda39a0bae4a33:review-0020",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027.\u0027 (library) (review target 20 of 27)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0020"
+          ],
+          "evidenceIds": [
+            "javascript:source-structure:."
+          ],
+          "hours": {
+            "low": 1.75,
+            "expected": 2.75,
+            "high": 4.5
+          },
+          "rationale": "The framework-neutral implementation and extensive declarations cover atoms, maps, computed and batched derivation, lifecycle hooks, deep path updates, async tasks, effects, cleanup, dev/production behavior, and tree-shakable module contracts.",
+          "uncertaintyReasons": [
+            "TypeScript evidence is token-backed, and the represented tests were not executed."
+          ]
+        },
+        {
+          "id": "target:work:javascript-source-backbone:2f5795bda39a0bae4a33:review-0021",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027.\u0027 (library) (review target 21 of 27)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0021"
+          ],
+          "evidenceIds": [
+            "javascript:source-structure:."
+          ],
+          "hours": {
+            "low": 1.75,
+            "expected": 2.75,
+            "high": 4.5
+          },
+          "rationale": "The framework-neutral implementation and extensive declarations cover atoms, maps, computed and batched derivation, lifecycle hooks, deep path updates, async tasks, effects, cleanup, dev/production behavior, and tree-shakable module contracts.",
+          "uncertaintyReasons": [
+            "TypeScript evidence is token-backed, and the represented tests were not executed."
+          ]
+        },
+        {
+          "id": "target:work:javascript-source-backbone:2f5795bda39a0bae4a33:review-0022",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027.\u0027 (library) (review target 22 of 27)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0022"
+          ],
+          "evidenceIds": [
+            "javascript:source-structure:."
+          ],
+          "hours": {
+            "low": 1.75,
+            "expected": 2.75,
+            "high": 4.5
+          },
+          "rationale": "The framework-neutral implementation and extensive declarations cover atoms, maps, computed and batched derivation, lifecycle hooks, deep path updates, async tasks, effects, cleanup, dev/production behavior, and tree-shakable module contracts.",
+          "uncertaintyReasons": [
+            "TypeScript evidence is token-backed, and the represented tests were not executed."
+          ]
+        },
+        {
+          "id": "target:work:javascript-source-backbone:2f5795bda39a0bae4a33:review-0023",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027.\u0027 (library) (review target 23 of 27)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0023"
+          ],
+          "evidenceIds": [
+            "javascript:source-structure:."
+          ],
+          "hours": {
+            "low": 1.75,
+            "expected": 2.75,
+            "high": 4.5
+          },
+          "rationale": "The framework-neutral implementation and extensive declarations cover atoms, maps, computed and batched derivation, lifecycle hooks, deep path updates, async tasks, effects, cleanup, dev/production behavior, and tree-shakable module contracts.",
+          "uncertaintyReasons": [
+            "TypeScript evidence is token-backed, and the represented tests were not executed."
+          ]
+        },
+        {
+          "id": "target:work:javascript-source-backbone:2f5795bda39a0bae4a33:review-0024",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027.\u0027 (library) (review target 24 of 27)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0024"
+          ],
+          "evidenceIds": [
+            "javascript:source-structure:."
+          ],
+          "hours": {
+            "low": 1.75,
+            "expected": 2.75,
+            "high": 4.5
+          },
+          "rationale": "The framework-neutral implementation and extensive declarations cover atoms, maps, computed and batched derivation, lifecycle hooks, deep path updates, async tasks, effects, cleanup, dev/production behavior, and tree-shakable module contracts.",
+          "uncertaintyReasons": [
+            "TypeScript evidence is token-backed, and the represented tests were not executed."
+          ]
+        },
+        {
+          "id": "target:work:javascript-source-backbone:2f5795bda39a0bae4a33:review-0025",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027.\u0027 (library) (review target 25 of 27)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0025"
+          ],
+          "evidenceIds": [
+            "javascript:source-structure:."
+          ],
+          "hours": {
+            "low": 1.75,
+            "expected": 2.75,
+            "high": 4.5
+          },
+          "rationale": "The framework-neutral implementation and extensive declarations cover atoms, maps, computed and batched derivation, lifecycle hooks, deep path updates, async tasks, effects, cleanup, dev/production behavior, and tree-shakable module contracts.",
+          "uncertaintyReasons": [
+            "TypeScript evidence is token-backed, and the represented tests were not executed."
+          ]
+        },
+        {
+          "id": "target:work:javascript-source-backbone:2f5795bda39a0bae4a33:review-0026",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027.\u0027 (library) (review target 26 of 27)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0026"
+          ],
+          "evidenceIds": [
+            "javascript:source-structure:."
+          ],
+          "hours": {
+            "low": 1.75,
+            "expected": 2.75,
+            "high": 4.5
+          },
+          "rationale": "The framework-neutral implementation and extensive declarations cover atoms, maps, computed and batched derivation, lifecycle hooks, deep path updates, async tasks, effects, cleanup, dev/production behavior, and tree-shakable module contracts.",
+          "uncertaintyReasons": [
+            "TypeScript evidence is token-backed, and the represented tests were not executed."
+          ]
+        },
+        {
+          "id": "target:work:javascript-source-backbone:2f5795bda39a0bae4a33:review-0027",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027.\u0027 (library) (review target 27 of 27)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0027"
+          ],
+          "evidenceIds": [
+            "javascript:source-structure:."
+          ],
+          "hours": {
+            "low": 0.25,
+            "expected": 0.5,
+            "high": 1
+          },
+          "rationale": "The framework-neutral implementation and extensive declarations cover atoms, maps, computed and batched derivation, lifecycle hooks, deep path updates, async tasks, effects, cleanup, dev/production behavior, and tree-shakable module contracts.",
+          "uncertaintyReasons": [
+            "TypeScript evidence is token-backed, and the represented tests were not executed."
+          ]
+        },
+        {
+          "id": "target:work:manual-validation:a0df1126ba2f8dbcb19b:review-0001",
+          "category": "manual-validation-debugging-and-hardening",
+          "title": "Manually validate, debug, and harden \u0027.\u0027 (library) (review target 1 of 2)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:manual-validation:a0df1126ba2f8dbcb19b:part-0001"
+          ],
+          "evidenceIds": [
+            "javascript:entry-point:test/benchmark.js",
+            "javascript:package:package.json",
+            "javascript:ui:atom/index.test.ts",
+            "javascript:ui:clean-stores/index.test.ts",
+            "javascript:ui:computed/index.js",
+            "javascript:ui:computed/index.test.ts",
+            "javascript:ui:deep-map/index.test.ts",
+            "javascript:ui:deep-map/production.test.js",
+            "javascript:ui:keep-mount/index.test.ts",
+            "javascript:ui:lifecycle/index.test.ts",
+            "javascript:ui:map-creator/index.js",
+            "javascript:ui:map/index.test.ts",
+            "javascript:ui:map/production.test.js",
+            "javascript:ui:test/benchmark.js"
+          ],
+          "hours": {
+            "low": 2.5,
+            "expected": 4,
+            "high": 6.5
+          },
+          "rationale": "Manual validation covers dependency invalidation, batching order, cleanup, async task completion, deep paths, development diagnostics, package exports, and framework-neutral use.",
+          "uncertaintyReasons": [
+            "TypeScript evidence is token-backed, and the represented tests were not executed."
+          ]
+        },
+        {
+          "id": "target:work:manual-validation:a0df1126ba2f8dbcb19b:review-0002",
+          "category": "manual-validation-debugging-and-hardening",
+          "title": "Manually validate, debug, and harden \u0027.\u0027 (library) (review target 2 of 2)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:manual-validation:a0df1126ba2f8dbcb19b:part-0002"
+          ],
+          "evidenceIds": [
+            "javascript:entry-point:test/benchmark.js",
+            "javascript:package:package.json",
+            "javascript:ui:atom/index.test.ts",
+            "javascript:ui:clean-stores/index.test.ts",
+            "javascript:ui:computed/index.js",
+            "javascript:ui:computed/index.test.ts",
+            "javascript:ui:deep-map/index.test.ts",
+            "javascript:ui:deep-map/production.test.js",
+            "javascript:ui:keep-mount/index.test.ts",
+            "javascript:ui:lifecycle/index.test.ts",
+            "javascript:ui:map-creator/index.js",
+            "javascript:ui:map/index.test.ts",
+            "javascript:ui:map/production.test.js",
+            "javascript:ui:test/benchmark.js"
+          ],
+          "hours": {
+            "low": 2,
+            "expected": 3,
+            "high": 4.5
+          },
+          "rationale": "Manual validation covers dependency invalidation, batching order, cleanup, async task completion, deep paths, development diagnostics, package exports, and framework-neutral use.",
+          "uncertaintyReasons": [
+            "TypeScript evidence is token-backed, and the represented tests were not executed."
+          ]
+        },
+        {
+          "id": "target:work:packaging-release:58eb8ae7efef939a19b5:review-0001",
+          "category": "packaging-deployment-and-release-artifacts",
+          "title": "Prepare represented packages and release surfaces",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:packaging-release:58eb8ae7efef939a19b5:part-0001"
+          ],
+          "evidenceIds": [
+            "javascript:package:package.json"
+          ],
+          "hours": {
+            "low": 2,
+            "expected": 3,
+            "high": 4.5
+          },
+          "rationale": "Tree-shakable module exports, declarations, development and production builds, files selection, compatibility metadata, and size budgets need release verification.",
+          "uncertaintyReasons": []
+        },
+        {
+          "id": "target:work:project-setup:e56be8fd4646c76f7cdd:review-0001",
+          "category": "repository-and-solution-setup",
+          "title": "Set up \u0027.\u0027 (library)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:project-setup:e56be8fd4646c76f7cdd:part-0001"
+          ],
+          "evidenceIds": [
+            "javascript:configuration:tsconfig.json",
+            "javascript:package-reference:package.json:@logux~oxc-configs:development",
+            "javascript:package-reference:package.json:@sinonjs~fake-timers:development",
+            "javascript:package-reference:package.json:@size-limit~preset-small-lib:development",
+            "javascript:package-reference:package.json:@types~node:development",
+            "javascript:package-reference:package.json:@types~sinonjs__fake-timers:development",
+            "javascript:package-reference:package.json:@types~ws:development",
+            "javascript:package-reference:package.json:actions-up:development",
+            "javascript:package-reference:package.json:benchmark:development",
+            "javascript:package-reference:package.json:better-node-test:development",
+            "javascript:package-reference:package.json:check-dts:development",
+            "javascript:package-reference:package.json:eslint-plugin-prefer-let:development",
+            "javascript:package-reference:package.json:multiocular:development",
+            "javascript:package-reference:package.json:oxlint-tsgolint:development",
+            "javascript:package-reference:package.json:oxlint:development",
+            "javascript:package-reference:package.json:size-limit:development",
+            "javascript:package-reference:package.json:tsx:development",
+            "javascript:package-reference:package.json:typescript:development",
+            "javascript:package:package.json"
+          ],
+          "hours": {
+            "low": 1.5,
+            "expected": 2.5,
+            "high": 4
+          },
+          "rationale": "A single ESM package has conventional project structure despite a broad test, type, benchmark, and release toolchain.",
+          "uncertaintyReasons": []
+        },
+        {
+          "id": "target:work:self-review:e943a6db2e8c464b145a:review-0001",
+          "category": "self-review-and-system-integration",
+          "title": "Self-review and integrate the completed system",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:self-review:e943a6db2e8c464b145a:part-0001"
+          ],
+          "evidenceIds": [
+            "inventory:repository",
+            "javascript:package:package.json",
+            "javascript:ui:atom/index.test.ts",
+            "javascript:ui:clean-stores/index.test.ts",
+            "javascript:ui:computed/index.js",
+            "javascript:ui:computed/index.test.ts",
+            "javascript:ui:deep-map/index.test.ts",
+            "javascript:ui:deep-map/production.test.js",
+            "javascript:ui:keep-mount/index.test.ts",
+            "javascript:ui:lifecycle/index.test.ts",
+            "javascript:ui:map-creator/index.js",
+            "javascript:ui:map/index.test.ts",
+            "javascript:ui:map/production.test.js",
+            "javascript:ui:test/benchmark.js"
+          ],
+          "hours": {
+            "low": 2,
+            "expected": 3,
+            "high": 4.5
+          },
+          "rationale": "Reactive ordering and cleanup semantics require a final coherence pass across runtime modules, declarations, tests, documentation, builds, and exports.",
+          "uncertaintyReasons": [
+            "TypeScript evidence is token-backed, and the represented tests were not executed."
+          ]
+        },
+        {
+          "id": "target:work:specification-comprehension:49aec33b6a46fb626dad:review-0001",
+          "category": "specification-comprehension-and-domain-learning",
+          "title": "Comprehend the supplied specification and bounded business domain",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:specification-comprehension:49aec33b6a46fb626dad:part-0001"
+          ],
+          "evidenceIds": [
+            "inventory:repository",
+            "javascript:package:package.json",
+            "javascript:ui:atom/index.test.ts",
+            "javascript:ui:clean-stores/index.test.ts",
+            "javascript:ui:computed/index.js",
+            "javascript:ui:computed/index.test.ts",
+            "javascript:ui:deep-map/index.test.ts",
+            "javascript:ui:deep-map/production.test.js",
+            "javascript:ui:keep-mount/index.test.ts",
+            "javascript:ui:lifecycle/index.test.ts",
+            "javascript:ui:map-creator/index.js",
+            "javascript:ui:map/index.test.ts",
+            "javascript:ui:map/production.test.js",
+            "javascript:ui:test/benchmark.js"
+          ],
+          "hours": {
+            "low": 2,
+            "expected": 3,
+            "high": 4.5
+          },
+          "rationale": "The bounded domain includes reactive dependency graphs, lifecycle, batching, deep paths, async tasks, effects, cleanup, and integration constraints.",
+          "uncertaintyReasons": []
+        },
+        {
+          "id": "target:work:ui-surface:918438cc13339fb696f4:review-0001",
+          "category": "ui-implementation-and-represented-ux-decisions",
+          "title": "Implement represented UI and UX behavior for \u0027.\u0027 (library) (review target 1 of 2)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:ui-surface:918438cc13339fb696f4:part-0001"
+          ],
+          "evidenceIds": [
+            "javascript:ui:atom/index.test.ts",
+            "javascript:ui:clean-stores/index.test.ts",
+            "javascript:ui:computed/index.js",
+            "javascript:ui:computed/index.test.ts",
+            "javascript:ui:deep-map/index.test.ts",
+            "javascript:ui:deep-map/production.test.js",
+            "javascript:ui:keep-mount/index.test.ts",
+            "javascript:ui:lifecycle/index.test.ts",
+            "javascript:ui:map-creator/index.js",
+            "javascript:ui:map/index.test.ts",
+            "javascript:ui:map/production.test.js",
+            "javascript:ui:test/benchmark.js"
+          ],
+          "hours": {
+            "low": 0,
+            "expected": 0,
+            "high": 0
+          },
+          "rationale": "Generic effect and store calls expose reactive state behavior but no represented UI implementation.",
+          "uncertaintyReasons": [],
+          "sizeException": "Explicit reviewed exclusion: generic effect/store calls expose state-library behavior but no represented UI or UX implementation."
+        },
+        {
+          "id": "target:work:ui-surface:918438cc13339fb696f4:review-0002",
+          "category": "ui-implementation-and-represented-ux-decisions",
+          "title": "Implement represented UI and UX behavior for \u0027.\u0027 (library) (review target 2 of 2)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:ui-surface:918438cc13339fb696f4:part-0002"
+          ],
+          "evidenceIds": [
+            "javascript:ui:atom/index.test.ts",
+            "javascript:ui:clean-stores/index.test.ts",
+            "javascript:ui:computed/index.js",
+            "javascript:ui:computed/index.test.ts",
+            "javascript:ui:deep-map/index.test.ts",
+            "javascript:ui:deep-map/production.test.js",
+            "javascript:ui:keep-mount/index.test.ts",
+            "javascript:ui:lifecycle/index.test.ts",
+            "javascript:ui:map-creator/index.js",
+            "javascript:ui:map/index.test.ts",
+            "javascript:ui:map/production.test.js",
+            "javascript:ui:test/benchmark.js"
+          ],
+          "hours": {
+            "low": 0,
+            "expected": 0,
+            "high": 0
+          },
+          "rationale": "Generic effect and store calls expose reactive state behavior but no represented UI implementation.",
+          "uncertaintyReasons": [],
+          "sizeException": "Explicit reviewed exclusion: generic effect/store calls expose state-library behavior but no represented UI or UX implementation."
+        },
+        {
+          "id": "target:work:unit-tests:875ec9f8d2f4b23af140:review-0001",
+          "category": "unit-testing",
+          "title": "Create represented unit tests for \u0027.\u0027 (library) (review target 1 of 11)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:unit-tests:875ec9f8d2f4b23af140:part-0001"
+          ],
+          "evidenceIds": [
+            "javascript:test:atom/index.test.ts",
+            "javascript:test:clean-stores/index.test.ts",
+            "javascript:test:computed/index.test.ts",
+            "javascript:test:deep-map/index.test.ts",
+            "javascript:test:deep-map/path.js",
+            "javascript:test:deep-map/path.test.ts",
+            "javascript:test:deep-map/production.test.js",
+            "javascript:test:effect/index.test.ts",
+            "javascript:test:keep-mount/index.test.ts",
+            "javascript:test:lifecycle/index.test.ts",
+            "javascript:test:listen-keys/index.test.ts",
+            "javascript:test:map-creator/index.test.ts",
+            "javascript:test:map/index.test.ts",
+            "javascript:test:map/production.test.js",
+            "javascript:test:task/index.test.ts",
+            "javascript:test:test/benchmark.js",
+            "javascript:test:test/set-production.js"
+          ],
+          "hours": {
+            "low": 3,
+            "expected": 5,
+            "high": 8
+          },
+          "rationale": "Roughly 166 cases exercise all reactive primitives, edge ordering, cleanup, errors, asynchronous tasks, deep paths, declarations, development behavior, and the declared 100 percent coverage threshold with reusable fixtures.",
+          "uncertaintyReasons": [
+            "The suite was not executed; the configured 100 percent coverage threshold is declared-and-assumed, not measured."
+          ]
+        },
+        {
+          "id": "target:work:unit-tests:875ec9f8d2f4b23af140:review-0002",
+          "category": "unit-testing",
+          "title": "Create represented unit tests for \u0027.\u0027 (library) (review target 2 of 11)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:unit-tests:875ec9f8d2f4b23af140:part-0002"
+          ],
+          "evidenceIds": [
+            "javascript:test:atom/index.test.ts",
+            "javascript:test:clean-stores/index.test.ts",
+            "javascript:test:computed/index.test.ts",
+            "javascript:test:deep-map/index.test.ts",
+            "javascript:test:deep-map/path.js",
+            "javascript:test:deep-map/path.test.ts",
+            "javascript:test:deep-map/production.test.js",
+            "javascript:test:effect/index.test.ts",
+            "javascript:test:keep-mount/index.test.ts",
+            "javascript:test:lifecycle/index.test.ts",
+            "javascript:test:listen-keys/index.test.ts",
+            "javascript:test:map-creator/index.test.ts",
+            "javascript:test:map/index.test.ts",
+            "javascript:test:map/production.test.js",
+            "javascript:test:task/index.test.ts",
+            "javascript:test:test/benchmark.js",
+            "javascript:test:test/set-production.js"
+          ],
+          "hours": {
+            "low": 3,
+            "expected": 5,
+            "high": 8
+          },
+          "rationale": "Roughly 166 cases exercise all reactive primitives, edge ordering, cleanup, errors, asynchronous tasks, deep paths, declarations, development behavior, and the declared 100 percent coverage threshold with reusable fixtures.",
+          "uncertaintyReasons": [
+            "The suite was not executed; the configured 100 percent coverage threshold is declared-and-assumed, not measured."
+          ]
+        },
+        {
+          "id": "target:work:unit-tests:875ec9f8d2f4b23af140:review-0003",
+          "category": "unit-testing",
+          "title": "Create represented unit tests for \u0027.\u0027 (library) (review target 3 of 11)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:unit-tests:875ec9f8d2f4b23af140:part-0003"
+          ],
+          "evidenceIds": [
+            "javascript:test:atom/index.test.ts",
+            "javascript:test:clean-stores/index.test.ts",
+            "javascript:test:computed/index.test.ts",
+            "javascript:test:deep-map/index.test.ts",
+            "javascript:test:deep-map/path.js",
+            "javascript:test:deep-map/path.test.ts",
+            "javascript:test:deep-map/production.test.js",
+            "javascript:test:effect/index.test.ts",
+            "javascript:test:keep-mount/index.test.ts",
+            "javascript:test:lifecycle/index.test.ts",
+            "javascript:test:listen-keys/index.test.ts",
+            "javascript:test:map-creator/index.test.ts",
+            "javascript:test:map/index.test.ts",
+            "javascript:test:map/production.test.js",
+            "javascript:test:task/index.test.ts",
+            "javascript:test:test/benchmark.js",
+            "javascript:test:test/set-production.js"
+          ],
+          "hours": {
+            "low": 3,
+            "expected": 5,
+            "high": 8
+          },
+          "rationale": "Roughly 166 cases exercise all reactive primitives, edge ordering, cleanup, errors, asynchronous tasks, deep paths, declarations, development behavior, and the declared 100 percent coverage threshold with reusable fixtures.",
+          "uncertaintyReasons": [
+            "The suite was not executed; the configured 100 percent coverage threshold is declared-and-assumed, not measured."
+          ]
+        },
+        {
+          "id": "target:work:unit-tests:875ec9f8d2f4b23af140:review-0004",
+          "category": "unit-testing",
+          "title": "Create represented unit tests for \u0027.\u0027 (library) (review target 4 of 11)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:unit-tests:875ec9f8d2f4b23af140:part-0004"
+          ],
+          "evidenceIds": [
+            "javascript:test:atom/index.test.ts",
+            "javascript:test:clean-stores/index.test.ts",
+            "javascript:test:computed/index.test.ts",
+            "javascript:test:deep-map/index.test.ts",
+            "javascript:test:deep-map/path.js",
+            "javascript:test:deep-map/path.test.ts",
+            "javascript:test:deep-map/production.test.js",
+            "javascript:test:effect/index.test.ts",
+            "javascript:test:keep-mount/index.test.ts",
+            "javascript:test:lifecycle/index.test.ts",
+            "javascript:test:listen-keys/index.test.ts",
+            "javascript:test:map-creator/index.test.ts",
+            "javascript:test:map/index.test.ts",
+            "javascript:test:map/production.test.js",
+            "javascript:test:task/index.test.ts",
+            "javascript:test:test/benchmark.js",
+            "javascript:test:test/set-production.js"
+          ],
+          "hours": {
+            "low": 3,
+            "expected": 5,
+            "high": 8
+          },
+          "rationale": "Roughly 166 cases exercise all reactive primitives, edge ordering, cleanup, errors, asynchronous tasks, deep paths, declarations, development behavior, and the declared 100 percent coverage threshold with reusable fixtures.",
+          "uncertaintyReasons": [
+            "The suite was not executed; the configured 100 percent coverage threshold is declared-and-assumed, not measured."
+          ]
+        },
+        {
+          "id": "target:work:unit-tests:875ec9f8d2f4b23af140:review-0005",
+          "category": "unit-testing",
+          "title": "Create represented unit tests for \u0027.\u0027 (library) (review target 5 of 11)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:unit-tests:875ec9f8d2f4b23af140:part-0005"
+          ],
+          "evidenceIds": [
+            "javascript:test:atom/index.test.ts",
+            "javascript:test:clean-stores/index.test.ts",
+            "javascript:test:computed/index.test.ts",
+            "javascript:test:deep-map/index.test.ts",
+            "javascript:test:deep-map/path.js",
+            "javascript:test:deep-map/path.test.ts",
+            "javascript:test:deep-map/production.test.js",
+            "javascript:test:effect/index.test.ts",
+            "javascript:test:keep-mount/index.test.ts",
+            "javascript:test:lifecycle/index.test.ts",
+            "javascript:test:listen-keys/index.test.ts",
+            "javascript:test:map-creator/index.test.ts",
+            "javascript:test:map/index.test.ts",
+            "javascript:test:map/production.test.js",
+            "javascript:test:task/index.test.ts",
+            "javascript:test:test/benchmark.js",
+            "javascript:test:test/set-production.js"
+          ],
+          "hours": {
+            "low": 3,
+            "expected": 5,
+            "high": 8
+          },
+          "rationale": "Roughly 166 cases exercise all reactive primitives, edge ordering, cleanup, errors, asynchronous tasks, deep paths, declarations, development behavior, and the declared 100 percent coverage threshold with reusable fixtures.",
+          "uncertaintyReasons": [
+            "The suite was not executed; the configured 100 percent coverage threshold is declared-and-assumed, not measured."
+          ]
+        },
+        {
+          "id": "target:work:unit-tests:875ec9f8d2f4b23af140:review-0006",
+          "category": "unit-testing",
+          "title": "Create represented unit tests for \u0027.\u0027 (library) (review target 6 of 11)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:unit-tests:875ec9f8d2f4b23af140:part-0006"
+          ],
+          "evidenceIds": [
+            "javascript:test:atom/index.test.ts",
+            "javascript:test:clean-stores/index.test.ts",
+            "javascript:test:computed/index.test.ts",
+            "javascript:test:deep-map/index.test.ts",
+            "javascript:test:deep-map/path.js",
+            "javascript:test:deep-map/path.test.ts",
+            "javascript:test:deep-map/production.test.js",
+            "javascript:test:effect/index.test.ts",
+            "javascript:test:keep-mount/index.test.ts",
+            "javascript:test:lifecycle/index.test.ts",
+            "javascript:test:listen-keys/index.test.ts",
+            "javascript:test:map-creator/index.test.ts",
+            "javascript:test:map/index.test.ts",
+            "javascript:test:map/production.test.js",
+            "javascript:test:task/index.test.ts",
+            "javascript:test:test/benchmark.js",
+            "javascript:test:test/set-production.js"
+          ],
+          "hours": {
+            "low": 3,
+            "expected": 5,
+            "high": 8
+          },
+          "rationale": "Roughly 166 cases exercise all reactive primitives, edge ordering, cleanup, errors, asynchronous tasks, deep paths, declarations, development behavior, and the declared 100 percent coverage threshold with reusable fixtures.",
+          "uncertaintyReasons": [
+            "The suite was not executed; the configured 100 percent coverage threshold is declared-and-assumed, not measured."
+          ]
+        },
+        {
+          "id": "target:work:unit-tests:875ec9f8d2f4b23af140:review-0007",
+          "category": "unit-testing",
+          "title": "Create represented unit tests for \u0027.\u0027 (library) (review target 7 of 11)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:unit-tests:875ec9f8d2f4b23af140:part-0007"
+          ],
+          "evidenceIds": [
+            "javascript:test:atom/index.test.ts",
+            "javascript:test:clean-stores/index.test.ts",
+            "javascript:test:computed/index.test.ts",
+            "javascript:test:deep-map/index.test.ts",
+            "javascript:test:deep-map/path.js",
+            "javascript:test:deep-map/path.test.ts",
+            "javascript:test:deep-map/production.test.js",
+            "javascript:test:effect/index.test.ts",
+            "javascript:test:keep-mount/index.test.ts",
+            "javascript:test:lifecycle/index.test.ts",
+            "javascript:test:listen-keys/index.test.ts",
+            "javascript:test:map-creator/index.test.ts",
+            "javascript:test:map/index.test.ts",
+            "javascript:test:map/production.test.js",
+            "javascript:test:task/index.test.ts",
+            "javascript:test:test/benchmark.js",
+            "javascript:test:test/set-production.js"
+          ],
+          "hours": {
+            "low": 3,
+            "expected": 5,
+            "high": 8
+          },
+          "rationale": "Roughly 166 cases exercise all reactive primitives, edge ordering, cleanup, errors, asynchronous tasks, deep paths, declarations, development behavior, and the declared 100 percent coverage threshold with reusable fixtures.",
+          "uncertaintyReasons": [
+            "The suite was not executed; the configured 100 percent coverage threshold is declared-and-assumed, not measured."
+          ]
+        },
+        {
+          "id": "target:work:unit-tests:875ec9f8d2f4b23af140:review-0008",
+          "category": "unit-testing",
+          "title": "Create represented unit tests for \u0027.\u0027 (library) (review target 8 of 11)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:unit-tests:875ec9f8d2f4b23af140:part-0008"
+          ],
+          "evidenceIds": [
+            "javascript:test:atom/index.test.ts",
+            "javascript:test:clean-stores/index.test.ts",
+            "javascript:test:computed/index.test.ts",
+            "javascript:test:deep-map/index.test.ts",
+            "javascript:test:deep-map/path.js",
+            "javascript:test:deep-map/path.test.ts",
+            "javascript:test:deep-map/production.test.js",
+            "javascript:test:effect/index.test.ts",
+            "javascript:test:keep-mount/index.test.ts",
+            "javascript:test:lifecycle/index.test.ts",
+            "javascript:test:listen-keys/index.test.ts",
+            "javascript:test:map-creator/index.test.ts",
+            "javascript:test:map/index.test.ts",
+            "javascript:test:map/production.test.js",
+            "javascript:test:task/index.test.ts",
+            "javascript:test:test/benchmark.js",
+            "javascript:test:test/set-production.js"
+          ],
+          "hours": {
+            "low": 3,
+            "expected": 5,
+            "high": 8
+          },
+          "rationale": "Roughly 166 cases exercise all reactive primitives, edge ordering, cleanup, errors, asynchronous tasks, deep paths, declarations, development behavior, and the declared 100 percent coverage threshold with reusable fixtures.",
+          "uncertaintyReasons": [
+            "The suite was not executed; the configured 100 percent coverage threshold is declared-and-assumed, not measured."
+          ]
+        },
+        {
+          "id": "target:work:unit-tests:875ec9f8d2f4b23af140:review-0009",
+          "category": "unit-testing",
+          "title": "Create represented unit tests for \u0027.\u0027 (library) (review target 9 of 11)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:unit-tests:875ec9f8d2f4b23af140:part-0009"
+          ],
+          "evidenceIds": [
+            "javascript:test:atom/index.test.ts",
+            "javascript:test:clean-stores/index.test.ts",
+            "javascript:test:computed/index.test.ts",
+            "javascript:test:deep-map/index.test.ts",
+            "javascript:test:deep-map/path.js",
+            "javascript:test:deep-map/path.test.ts",
+            "javascript:test:deep-map/production.test.js",
+            "javascript:test:effect/index.test.ts",
+            "javascript:test:keep-mount/index.test.ts",
+            "javascript:test:lifecycle/index.test.ts",
+            "javascript:test:listen-keys/index.test.ts",
+            "javascript:test:map-creator/index.test.ts",
+            "javascript:test:map/index.test.ts",
+            "javascript:test:map/production.test.js",
+            "javascript:test:task/index.test.ts",
+            "javascript:test:test/benchmark.js",
+            "javascript:test:test/set-production.js"
+          ],
+          "hours": {
+            "low": 3,
+            "expected": 5,
+            "high": 8
+          },
+          "rationale": "Roughly 166 cases exercise all reactive primitives, edge ordering, cleanup, errors, asynchronous tasks, deep paths, declarations, development behavior, and the declared 100 percent coverage threshold with reusable fixtures.",
+          "uncertaintyReasons": [
+            "The suite was not executed; the configured 100 percent coverage threshold is declared-and-assumed, not measured."
+          ]
+        },
+        {
+          "id": "target:work:unit-tests:875ec9f8d2f4b23af140:review-0010",
+          "category": "unit-testing",
+          "title": "Create represented unit tests for \u0027.\u0027 (library) (review target 10 of 11)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:unit-tests:875ec9f8d2f4b23af140:part-0010"
+          ],
+          "evidenceIds": [
+            "javascript:test:atom/index.test.ts",
+            "javascript:test:clean-stores/index.test.ts",
+            "javascript:test:computed/index.test.ts",
+            "javascript:test:deep-map/index.test.ts",
+            "javascript:test:deep-map/path.js",
+            "javascript:test:deep-map/path.test.ts",
+            "javascript:test:deep-map/production.test.js",
+            "javascript:test:effect/index.test.ts",
+            "javascript:test:keep-mount/index.test.ts",
+            "javascript:test:lifecycle/index.test.ts",
+            "javascript:test:listen-keys/index.test.ts",
+            "javascript:test:map-creator/index.test.ts",
+            "javascript:test:map/index.test.ts",
+            "javascript:test:map/production.test.js",
+            "javascript:test:task/index.test.ts",
+            "javascript:test:test/benchmark.js",
+            "javascript:test:test/set-production.js"
+          ],
+          "hours": {
+            "low": 3,
+            "expected": 5,
+            "high": 8
+          },
+          "rationale": "Roughly 166 cases exercise all reactive primitives, edge ordering, cleanup, errors, asynchronous tasks, deep paths, declarations, development behavior, and the declared 100 percent coverage threshold with reusable fixtures.",
+          "uncertaintyReasons": [
+            "The suite was not executed; the configured 100 percent coverage threshold is declared-and-assumed, not measured."
+          ]
+        },
+        {
+          "id": "target:work:unit-tests:875ec9f8d2f4b23af140:review-0011",
+          "category": "unit-testing",
+          "title": "Create represented unit tests for \u0027.\u0027 (library) (review target 11 of 11)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:unit-tests:875ec9f8d2f4b23af140:part-0011"
+          ],
+          "evidenceIds": [
+            "javascript:test:atom/index.test.ts",
+            "javascript:test:clean-stores/index.test.ts",
+            "javascript:test:computed/index.test.ts",
+            "javascript:test:deep-map/index.test.ts",
+            "javascript:test:deep-map/path.js",
+            "javascript:test:deep-map/path.test.ts",
+            "javascript:test:deep-map/production.test.js",
+            "javascript:test:effect/index.test.ts",
+            "javascript:test:keep-mount/index.test.ts",
+            "javascript:test:lifecycle/index.test.ts",
+            "javascript:test:listen-keys/index.test.ts",
+            "javascript:test:map-creator/index.test.ts",
+            "javascript:test:map/index.test.ts",
+            "javascript:test:map/production.test.js",
+            "javascript:test:task/index.test.ts",
+            "javascript:test:test/benchmark.js",
+            "javascript:test:test/set-production.js"
+          ],
+          "hours": {
+            "low": 1.25,
+            "expected": 2,
+            "high": 3.5
+          },
+          "rationale": "Roughly 166 cases exercise all reactive primitives, edge ordering, cleanup, errors, asynchronous tasks, deep paths, declarations, development behavior, and the declared 100 percent coverage threshold with reusable fixtures.",
+          "uncertaintyReasons": [
+            "The suite was not executed; the configured 100 percent coverage threshold is declared-and-assumed, not measured."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "record:tyrrrz-cliwrap:implementation",
+      "repository": {
+        "id": "repository:github.com/tyrrrz/cliwrap",
+        "name": "Tyrrrz/CliWrap",
+        "sourceDigest": "sha256:de315d5bf4c4bfef5fc3c9ed498358a7041aff9456490c83b80e0bb48a885c9a"
+      },
+      "profile": "implementation",
+      "baselineId": "senior-contractor-2026-no-ai",
+      "partition": "validation",
+      "sourceEstimatorVersion": "seed-rules/0.2.1",
+      "sourceEstimateDigest": "sha256:be3ea95f92f4f0907aa294808ef3ae33e5e09fc907819c1d29a03ea94688a36e",
+      "source": {
+        "dataClassification": "public-redistributable",
+        "sourceReference": "https://github.com/Tyrrrz/CliWrap",
+        "revision": "release:3.10.4",
+        "licenseExpression": "MIT",
+        "redistributionAllowed": true,
+        "notes": "Reviewed from the immutable 3.10.4 release snapshot. Downloaded source archive SHA256 C4ADC4F3E8526058D941DFB9DE2E79285A2C2AAFE91298BF14AEE57C98DB9A39; in-archive License.txt SHA256 974FBF83EF71EF9B9C24BF59453B0E05323338193192EC7D49E14A37F11BA57E."
+      },
+      "review": {
+        "status": "teacher-estimate",
+        "completedOn": "2026-08-06",
+        "reviewers": [
+          {
+            "id": "teacher:openai-codex-gpt-5-2026-08",
+            "kind": "host-ai",
+            "role": "teacher",
+            "modelId": "openai-codex",
+            "modelVersion": "gpt-5"
+          }
+        ],
+        "notes": "Single host-AI teacher review; no independent correction or adjudication. Target-level candidate hours were hidden during label authoring; repository totals were observed during pipeline verification only. Capability totals were estimated after source and evidence inspection, then apportioned across deterministic source partitions. Low/high bounds use the documented risk-tier policy."
+      },
+      "targets": [
+        {
+          "id": "target:work:application-entry-point:5a370a6fd96ea8dde2e5:review-0001",
+          "category": "production-implementation",
+          "title": "Implement application entry points for \u0027CliWrap.Signaler/CliWrap.Signaler.csproj\u0027 (executable)",
+          "scope": "CliWrap.Signaler/CliWrap.Signaler.csproj",
+          "sourceWorkItemIds": [
+            "work:application-entry-point:5a370a6fd96ea8dde2e5:part-0001"
+          ],
+          "evidenceIds": [
+            "dotnet:entry-point:CliWrap.Signaler/Program.cs"
+          ],
+          "hours": {
+            "low": 0.5,
+            "expected": 1,
+            "high": 1.75
+          },
+          "rationale": "The Windows signaler has a small native-helper entry point with argument validation and process signaling.",
+          "uncertaintyReasons": [
+            "The static review did not execute the represented cross-platform process behavior."
+          ]
+        },
+        {
+          "id": "target:work:application-entry-point:e921fe2e9e8197b73df3:review-0001",
+          "category": "production-implementation",
+          "title": "Implement application entry points for \u0027CliWrap.Tests.Dummy/CliWrap.Tests.Dummy.csproj\u0027 (executable)",
+          "scope": "CliWrap.Tests.Dummy/CliWrap.Tests.Dummy.csproj",
+          "sourceWorkItemIds": [
+            "work:application-entry-point:e921fe2e9e8197b73df3:part-0001"
+          ],
+          "evidenceIds": [
+            "dotnet:entry-point:CliWrap.Tests.Dummy/Program.cs"
+          ],
+          "hours": {
+            "low": 0.5,
+            "expected": 1,
+            "high": 1.75
+          },
+          "rationale": "The dummy command application exposes deterministic process behaviors used by the integration-style suite.",
+          "uncertaintyReasons": [
+            "The static review did not execute the represented cross-platform process behavior."
+          ]
+        },
+        {
+          "id": "target:work:application-entry-point:fbbd9ecfc18b96282600:review-0001",
+          "category": "production-implementation",
+          "title": "Implement application entry points for \u0027CliWrap.Benchmarks/CliWrap.Benchmarks.csproj\u0027 (executable)",
+          "scope": "CliWrap.Benchmarks/CliWrap.Benchmarks.csproj",
+          "sourceWorkItemIds": [
+            "work:application-entry-point:fbbd9ecfc18b96282600:part-0001"
+          ],
+          "evidenceIds": [
+            "dotnet:entry-point:CliWrap.Benchmarks/Program.cs"
+          ],
+          "hours": {
+            "low": 0.25,
+            "expected": 0.5,
+            "high": 1
+          },
+          "rationale": "The benchmark entry point is a thin BenchmarkDotNet host for maintained performance scenarios.",
+          "uncertaintyReasons": []
+        },
+        {
+          "id": "target:work:architecture-design:2baf06b5c25cb9711fe5:review-0001",
+          "category": "architecture-and-technical-design",
+          "title": "Design the technical structure of \u0027CliWrap.Signaler/CliWrap.Signaler.csproj\u0027 (executable)",
+          "scope": "CliWrap.Signaler/CliWrap.Signaler.csproj",
+          "sourceWorkItemIds": [
+            "work:architecture-design:2baf06b5c25cb9711fe5:part-0001"
+          ],
+          "evidenceIds": [
+            "dotnet:project:CliWrap.Signaler/CliWrap.Signaler.csproj"
+          ],
+          "hours": {
+            "low": 1,
+            "expected": 1.5,
+            "high": 2.5
+          },
+          "rationale": "The native signal helper needs a narrow process-boundary design and embedded-artifact lifecycle.",
+          "uncertaintyReasons": [
+            "The static review did not execute the represented cross-platform process behavior."
+          ]
+        },
+        {
+          "id": "target:work:architecture-design:81a0f37c2e02df7c293e:review-0001",
+          "category": "architecture-and-technical-design",
+          "title": "Design the technical structure of \u0027CliWrap.Tests.Dummy/CliWrap.Tests.Dummy.csproj\u0027 (executable)",
+          "scope": "CliWrap.Tests.Dummy/CliWrap.Tests.Dummy.csproj",
+          "sourceWorkItemIds": [
+            "work:architecture-design:81a0f37c2e02df7c293e:part-0001"
+          ],
+          "evidenceIds": [
+            "dotnet:project:CliWrap.Tests.Dummy/CliWrap.Tests.Dummy.csproj"
+          ],
+          "hours": {
+            "low": 0.5,
+            "expected": 1,
+            "high": 1.75
+          },
+          "rationale": "The dummy command application needs a small scenario-oriented command structure for deterministic subprocess tests.",
+          "uncertaintyReasons": []
+        },
+        {
+          "id": "target:work:architecture-design:b31b12dcd3fbb129db77:review-0001",
+          "category": "architecture-and-technical-design",
+          "title": "Design the technical structure of \u0027CliWrap/CliWrap.csproj\u0027 (library)",
+          "scope": "CliWrap/CliWrap.csproj",
+          "sourceWorkItemIds": [
+            "work:architecture-design:b31b12dcd3fbb129db77:part-0001"
+          ],
+          "evidenceIds": [
+            "dotnet:data:CliWrap/Buffered/BufferedCommandExtensions.cs",
+            "dotnet:data:CliWrap/Command.Execution.cs",
+            "dotnet:data:CliWrap/EventStream/PullEventStreamCommandExtensions.cs",
+            "dotnet:data:CliWrap/EventStream/PushEventStreamCommandExtensions.cs",
+            "dotnet:data:CliWrap/PipeSource.cs",
+            "dotnet:project-reference:CliWrap/CliWrap.csproj:CliWrap.Signaler/CliWrap.Signaler.csproj",
+            "dotnet:project:CliWrap/CliWrap.csproj"
+          ],
+          "hours": {
+            "low": 2.5,
+            "expected": 4,
+            "high": 6.5
+          },
+          "rationale": "The public library coordinates immutable commands, execution models, stream pipes, cancellation, events, platform policy, and extensibility across clean boundaries.",
+          "uncertaintyReasons": [
+            "The static review did not execute the represented cross-platform process behavior."
+          ]
+        },
+        {
+          "id": "target:work:architecture-design:b339ecc4d882b57fe65c:review-0001",
+          "category": "architecture-and-technical-design",
+          "title": "Design the technical structure of \u0027CliWrap.Benchmarks/CliWrap.Benchmarks.csproj\u0027 (executable)",
+          "scope": "CliWrap.Benchmarks/CliWrap.Benchmarks.csproj",
+          "sourceWorkItemIds": [
+            "work:architecture-design:b339ecc4d882b57fe65c:part-0001"
+          ],
+          "evidenceIds": [
+            "dotnet:data:CliWrap.Benchmarks/BasicBenchmarks.cs",
+            "dotnet:data:CliWrap.Benchmarks/PipeFromStreamBenchmarks.cs",
+            "dotnet:data:CliWrap.Benchmarks/PipeToMultipleStreamsBenchmark.cs",
+            "dotnet:data:CliWrap.Benchmarks/PipeToStreamBenchmarks.cs",
+            "dotnet:project-reference:CliWrap.Benchmarks/CliWrap.Benchmarks.csproj:CliWrap.Tests.Dummy/CliWrap.Tests.Dummy.csproj",
+            "dotnet:project-reference:CliWrap.Benchmarks/CliWrap.Benchmarks.csproj:CliWrap/CliWrap.csproj",
+            "dotnet:project:CliWrap.Benchmarks/CliWrap.Benchmarks.csproj"
+          ],
+          "hours": {
+            "low": 0.5,
+            "expected": 1,
+            "high": 1.75
+          },
+          "rationale": "Benchmarks need a compact fixture and scenario design around representative process execution paths.",
+          "uncertaintyReasons": []
+        },
+        {
+          "id": "target:work:build-tooling:c2c91d07e063088d401a:review-0001",
+          "category": "build-configuration-and-developer-tooling",
+          "title": "Configure build behavior and developer tooling",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:build-tooling:c2c91d07e063088d401a:part-0001"
+          ],
+          "evidenceIds": [
+            "file:.gitignore",
+            "file:Directory.Build.props",
+            "file:Directory.Packages.props",
+            "file:NuGet.config",
+            "file:global.json"
+          ],
+          "hours": {
+            "low": 3,
+            "expected": 5,
+            "high": 8
+          },
+          "rationale": "Central build properties, multi-targeting, nullable and analyzer policy, trimming, AOT, formatting, benchmarks, tests, and helper projects require coordinated setup.",
+          "uncertaintyReasons": [
+            "The static review did not execute the represented cross-platform process behavior."
+          ]
+        },
+        {
+          "id": "target:work:ci-infrastructure:bee22f5b9a094661eb75:review-0001",
+          "category": "ci-cd-and-infrastructure-as-code",
+          "title": "Implement represented CI/CD and infrastructure configuration",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:ci-infrastructure:bee22f5b9a094661eb75:part-0001"
+          ],
+          "evidenceIds": [
+            "ci:repository",
+            "file:.github/workflows/main.yml"
+          ],
+          "hours": {
+            "low": 1.25,
+            "expected": 2,
+            "high": 3.5
+          },
+          "rationale": "The focused CI and release automation builds, tests, packages, and publishes a cross-platform library.",
+          "uncertaintyReasons": []
+        },
+        {
+          "id": "target:work:data-persistence:0acbf5cf192dee295cdc:review-0001",
+          "category": "data-modeling-persistence-and-migrations",
+          "title": "Implement data modeling and persistence for \u0027CliWrap/CliWrap.csproj\u0027 (library)",
+          "scope": "CliWrap/CliWrap.csproj",
+          "sourceWorkItemIds": [
+            "work:data-persistence:0acbf5cf192dee295cdc:part-0001"
+          ],
+          "evidenceIds": [
+            "dotnet:data:CliWrap/Buffered/BufferedCommandExtensions.cs",
+            "dotnet:data:CliWrap/Command.Execution.cs",
+            "dotnet:data:CliWrap/EventStream/PullEventStreamCommandExtensions.cs",
+            "dotnet:data:CliWrap/EventStream/PushEventStreamCommandExtensions.cs",
+            "dotnet:data:CliWrap/PipeSource.cs"
+          ],
+          "hours": {
+            "low": 0,
+            "expected": 0,
+            "high": 0
+          },
+          "rationale": "The detected stream operations transfer process data and do not represent durable storage behavior.",
+          "uncertaintyReasons": [],
+          "sizeException": "Explicit reviewed exclusion: stream read/write calls are process-pipe behavior, not data persistence."
+        },
+        {
+          "id": "target:work:data-persistence:be2185e707c22a7688f2:review-0001",
+          "category": "data-modeling-persistence-and-migrations",
+          "title": "Implement data modeling and persistence for \u0027CliWrap.Tests/CliWrap.Tests.csproj\u0027 (test) (review target 1 of 2)",
+          "scope": "CliWrap.Tests/CliWrap.Tests.csproj",
+          "sourceWorkItemIds": [
+            "work:data-persistence:be2185e707c22a7688f2:part-0001"
+          ],
+          "evidenceIds": [
+            "dotnet:data:CliWrap.Tests/CredentialsSpecs.cs",
+            "dotnet:data:CliWrap.Tests/ExecutionSpecs.cs",
+            "dotnet:data:CliWrap.Tests/LineBreakSpecs.cs",
+            "dotnet:data:CliWrap.Tests/PipingSpecs.cs",
+            "dotnet:data:CliWrap.Tests/ResourcePolicySpecs.cs",
+            "dotnet:data:CliWrap.Tests/ValidationSpecs.cs"
+          ],
+          "hours": {
+            "low": 0,
+            "expected": 0,
+            "high": 0
+          },
+          "rationale": "The detected stream operations transfer process data and do not represent durable storage behavior.",
+          "uncertaintyReasons": [],
+          "sizeException": "Explicit reviewed exclusion: stream read/write calls are process-pipe behavior, not data persistence."
+        },
+        {
+          "id": "target:work:data-persistence:be2185e707c22a7688f2:review-0002",
+          "category": "data-modeling-persistence-and-migrations",
+          "title": "Implement data modeling and persistence for \u0027CliWrap.Tests/CliWrap.Tests.csproj\u0027 (test) (review target 2 of 2)",
+          "scope": "CliWrap.Tests/CliWrap.Tests.csproj",
+          "sourceWorkItemIds": [
+            "work:data-persistence:be2185e707c22a7688f2:part-0002"
+          ],
+          "evidenceIds": [
+            "dotnet:data:CliWrap.Tests/CredentialsSpecs.cs",
+            "dotnet:data:CliWrap.Tests/ExecutionSpecs.cs",
+            "dotnet:data:CliWrap.Tests/LineBreakSpecs.cs",
+            "dotnet:data:CliWrap.Tests/PipingSpecs.cs",
+            "dotnet:data:CliWrap.Tests/ResourcePolicySpecs.cs",
+            "dotnet:data:CliWrap.Tests/ValidationSpecs.cs"
+          ],
+          "hours": {
+            "low": 0,
+            "expected": 0,
+            "high": 0
+          },
+          "rationale": "The detected stream operations transfer process data and do not represent durable storage behavior.",
+          "uncertaintyReasons": [],
+          "sizeException": "Explicit reviewed exclusion: stream read/write calls are process-pipe behavior, not data persistence."
+        },
+        {
+          "id": "target:work:data-persistence:c86f83565d4252e1165e:review-0001",
+          "category": "data-modeling-persistence-and-migrations",
+          "title": "Implement data modeling and persistence for \u0027CliWrap.Benchmarks/CliWrap.Benchmarks.csproj\u0027 (executable)",
+          "scope": "CliWrap.Benchmarks/CliWrap.Benchmarks.csproj",
+          "sourceWorkItemIds": [
+            "work:data-persistence:c86f83565d4252e1165e:part-0001"
+          ],
+          "evidenceIds": [
+            "dotnet:data:CliWrap.Benchmarks/BasicBenchmarks.cs",
+            "dotnet:data:CliWrap.Benchmarks/PipeFromStreamBenchmarks.cs",
+            "dotnet:data:CliWrap.Benchmarks/PipeToMultipleStreamsBenchmark.cs",
+            "dotnet:data:CliWrap.Benchmarks/PipeToStreamBenchmarks.cs"
+          ],
+          "hours": {
+            "low": 0,
+            "expected": 0,
+            "high": 0
+          },
+          "rationale": "The detected stream operations transfer process data and do not represent durable storage behavior.",
+          "uncertaintyReasons": [],
+          "sizeException": "Explicit reviewed exclusion: stream read/write calls are process-pipe behavior, not data persistence."
+        },
+        {
+          "id": "target:work:documentation:bebbc838ff439c1b4e49:review-0001",
+          "category": "documentation",
+          "title": "Author and verify maintained repository documentation (review target 1 of 2)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:documentation:bebbc838ff439c1b4e49:part-0001"
+          ],
+          "evidenceIds": [
+            "documentation:repository",
+            "file:CliWrap.Benchmarks/Readme.md",
+            "file:License.txt",
+            "file:Readme.md"
+          ],
+          "hours": {
+            "low": 3.5,
+            "expected": 6,
+            "high": 10
+          },
+          "rationale": "The extensive maintained guide covers command construction, buffered and streaming execution, piping, cancellation, credentials, resource policy, events, recipes, compatibility, and release usage.",
+          "uncertaintyReasons": [
+            "The static review did not execute the represented cross-platform process behavior."
+          ]
+        },
+        {
+          "id": "target:work:documentation:bebbc838ff439c1b4e49:review-0002",
+          "category": "documentation",
+          "title": "Author and verify maintained repository documentation (review target 2 of 2)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:documentation:bebbc838ff439c1b4e49:part-0002"
+          ],
+          "evidenceIds": [
+            "documentation:repository",
+            "file:CliWrap.Benchmarks/Readme.md",
+            "file:License.txt",
+            "file:Readme.md"
+          ],
+          "hours": {
+            "low": 2.5,
+            "expected": 4,
+            "high": 6.5
+          },
+          "rationale": "The extensive maintained guide covers command construction, buffered and streaming execution, piping, cancellation, credentials, resource policy, events, recipes, compatibility, and release usage.",
+          "uncertaintyReasons": [
+            "The static review did not execute the represented cross-platform process behavior."
+          ]
+        },
+        {
+          "id": "target:work:dotnet-source-backbone:0e62be7c6d2d8617652b:review-0001",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027CliWrap/CliWrap.csproj\u0027 (library) (review target 1 of 18)",
+          "scope": "CliWrap/CliWrap.csproj",
+          "sourceWorkItemIds": [
+            "work:dotnet-source-backbone:0e62be7c6d2d8617652b:part-0001"
+          ],
+          "evidenceIds": [
+            "dotnet:source-structure:CliWrap/CliWrap.csproj"
+          ],
+          "hours": {
+            "low": 2.5,
+            "expected": 4,
+            "high": 6.5
+          },
+          "rationale": "The main library implements a mature cross-platform process abstraction: immutable builders, path resolution, environment and credentials, buffered/pull/push execution, pipe composition, cancellation, event streams, resource policy, native signaling, and public extension seams.",
+          "uncertaintyReasons": [
+            "The static review did not execute the represented cross-platform process behavior."
+          ]
+        },
+        {
+          "id": "target:work:dotnet-source-backbone:0e62be7c6d2d8617652b:review-0002",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027CliWrap/CliWrap.csproj\u0027 (library) (review target 2 of 18)",
+          "scope": "CliWrap/CliWrap.csproj",
+          "sourceWorkItemIds": [
+            "work:dotnet-source-backbone:0e62be7c6d2d8617652b:part-0002"
+          ],
+          "evidenceIds": [
+            "dotnet:source-structure:CliWrap/CliWrap.csproj"
+          ],
+          "hours": {
+            "low": 2.5,
+            "expected": 4,
+            "high": 6.5
+          },
+          "rationale": "The main library implements a mature cross-platform process abstraction: immutable builders, path resolution, environment and credentials, buffered/pull/push execution, pipe composition, cancellation, event streams, resource policy, native signaling, and public extension seams.",
+          "uncertaintyReasons": [
+            "The static review did not execute the represented cross-platform process behavior."
+          ]
+        },
+        {
+          "id": "target:work:dotnet-source-backbone:0e62be7c6d2d8617652b:review-0003",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027CliWrap/CliWrap.csproj\u0027 (library) (review target 3 of 18)",
+          "scope": "CliWrap/CliWrap.csproj",
+          "sourceWorkItemIds": [
+            "work:dotnet-source-backbone:0e62be7c6d2d8617652b:part-0003"
+          ],
+          "evidenceIds": [
+            "dotnet:source-structure:CliWrap/CliWrap.csproj"
+          ],
+          "hours": {
+            "low": 2.5,
+            "expected": 4,
+            "high": 6.5
+          },
+          "rationale": "The main library implements a mature cross-platform process abstraction: immutable builders, path resolution, environment and credentials, buffered/pull/push execution, pipe composition, cancellation, event streams, resource policy, native signaling, and public extension seams.",
+          "uncertaintyReasons": [
+            "The static review did not execute the represented cross-platform process behavior."
+          ]
+        },
+        {
+          "id": "target:work:dotnet-source-backbone:0e62be7c6d2d8617652b:review-0004",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027CliWrap/CliWrap.csproj\u0027 (library) (review target 4 of 18)",
+          "scope": "CliWrap/CliWrap.csproj",
+          "sourceWorkItemIds": [
+            "work:dotnet-source-backbone:0e62be7c6d2d8617652b:part-0004"
+          ],
+          "evidenceIds": [
+            "dotnet:source-structure:CliWrap/CliWrap.csproj"
+          ],
+          "hours": {
+            "low": 2.5,
+            "expected": 4,
+            "high": 6.5
+          },
+          "rationale": "The main library implements a mature cross-platform process abstraction: immutable builders, path resolution, environment and credentials, buffered/pull/push execution, pipe composition, cancellation, event streams, resource policy, native signaling, and public extension seams.",
+          "uncertaintyReasons": [
+            "The static review did not execute the represented cross-platform process behavior."
+          ]
+        },
+        {
+          "id": "target:work:dotnet-source-backbone:0e62be7c6d2d8617652b:review-0005",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027CliWrap/CliWrap.csproj\u0027 (library) (review target 5 of 18)",
+          "scope": "CliWrap/CliWrap.csproj",
+          "sourceWorkItemIds": [
+            "work:dotnet-source-backbone:0e62be7c6d2d8617652b:part-0005"
+          ],
+          "evidenceIds": [
+            "dotnet:source-structure:CliWrap/CliWrap.csproj"
+          ],
+          "hours": {
+            "low": 2.5,
+            "expected": 4,
+            "high": 6.5
+          },
+          "rationale": "The main library implements a mature cross-platform process abstraction: immutable builders, path resolution, environment and credentials, buffered/pull/push execution, pipe composition, cancellation, event streams, resource policy, native signaling, and public extension seams.",
+          "uncertaintyReasons": [
+            "The static review did not execute the represented cross-platform process behavior."
+          ]
+        },
+        {
+          "id": "target:work:dotnet-source-backbone:0e62be7c6d2d8617652b:review-0006",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027CliWrap/CliWrap.csproj\u0027 (library) (review target 6 of 18)",
+          "scope": "CliWrap/CliWrap.csproj",
+          "sourceWorkItemIds": [
+            "work:dotnet-source-backbone:0e62be7c6d2d8617652b:part-0006"
+          ],
+          "evidenceIds": [
+            "dotnet:source-structure:CliWrap/CliWrap.csproj"
+          ],
+          "hours": {
+            "low": 2.5,
+            "expected": 4,
+            "high": 6.5
+          },
+          "rationale": "The main library implements a mature cross-platform process abstraction: immutable builders, path resolution, environment and credentials, buffered/pull/push execution, pipe composition, cancellation, event streams, resource policy, native signaling, and public extension seams.",
+          "uncertaintyReasons": [
+            "The static review did not execute the represented cross-platform process behavior."
+          ]
+        },
+        {
+          "id": "target:work:dotnet-source-backbone:0e62be7c6d2d8617652b:review-0007",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027CliWrap/CliWrap.csproj\u0027 (library) (review target 7 of 18)",
+          "scope": "CliWrap/CliWrap.csproj",
+          "sourceWorkItemIds": [
+            "work:dotnet-source-backbone:0e62be7c6d2d8617652b:part-0007"
+          ],
+          "evidenceIds": [
+            "dotnet:source-structure:CliWrap/CliWrap.csproj"
+          ],
+          "hours": {
+            "low": 2.5,
+            "expected": 4,
+            "high": 6.5
+          },
+          "rationale": "The main library implements a mature cross-platform process abstraction: immutable builders, path resolution, environment and credentials, buffered/pull/push execution, pipe composition, cancellation, event streams, resource policy, native signaling, and public extension seams.",
+          "uncertaintyReasons": [
+            "The static review did not execute the represented cross-platform process behavior."
+          ]
+        },
+        {
+          "id": "target:work:dotnet-source-backbone:0e62be7c6d2d8617652b:review-0008",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027CliWrap/CliWrap.csproj\u0027 (library) (review target 8 of 18)",
+          "scope": "CliWrap/CliWrap.csproj",
+          "sourceWorkItemIds": [
+            "work:dotnet-source-backbone:0e62be7c6d2d8617652b:part-0008"
+          ],
+          "evidenceIds": [
+            "dotnet:source-structure:CliWrap/CliWrap.csproj"
+          ],
+          "hours": {
+            "low": 2.5,
+            "expected": 4,
+            "high": 6.5
+          },
+          "rationale": "The main library implements a mature cross-platform process abstraction: immutable builders, path resolution, environment and credentials, buffered/pull/push execution, pipe composition, cancellation, event streams, resource policy, native signaling, and public extension seams.",
+          "uncertaintyReasons": [
+            "The static review did not execute the represented cross-platform process behavior."
+          ]
+        },
+        {
+          "id": "target:work:dotnet-source-backbone:0e62be7c6d2d8617652b:review-0009",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027CliWrap/CliWrap.csproj\u0027 (library) (review target 9 of 18)",
+          "scope": "CliWrap/CliWrap.csproj",
+          "sourceWorkItemIds": [
+            "work:dotnet-source-backbone:0e62be7c6d2d8617652b:part-0009"
+          ],
+          "evidenceIds": [
+            "dotnet:source-structure:CliWrap/CliWrap.csproj"
+          ],
+          "hours": {
+            "low": 2.5,
+            "expected": 4,
+            "high": 6.5
+          },
+          "rationale": "The main library implements a mature cross-platform process abstraction: immutable builders, path resolution, environment and credentials, buffered/pull/push execution, pipe composition, cancellation, event streams, resource policy, native signaling, and public extension seams.",
+          "uncertaintyReasons": [
+            "The static review did not execute the represented cross-platform process behavior."
+          ]
+        },
+        {
+          "id": "target:work:dotnet-source-backbone:0e62be7c6d2d8617652b:review-0010",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027CliWrap/CliWrap.csproj\u0027 (library) (review target 10 of 18)",
+          "scope": "CliWrap/CliWrap.csproj",
+          "sourceWorkItemIds": [
+            "work:dotnet-source-backbone:0e62be7c6d2d8617652b:part-0010"
+          ],
+          "evidenceIds": [
+            "dotnet:source-structure:CliWrap/CliWrap.csproj"
+          ],
+          "hours": {
+            "low": 2.5,
+            "expected": 4,
+            "high": 6.5
+          },
+          "rationale": "The main library implements a mature cross-platform process abstraction: immutable builders, path resolution, environment and credentials, buffered/pull/push execution, pipe composition, cancellation, event streams, resource policy, native signaling, and public extension seams.",
+          "uncertaintyReasons": [
+            "The static review did not execute the represented cross-platform process behavior."
+          ]
+        },
+        {
+          "id": "target:work:dotnet-source-backbone:0e62be7c6d2d8617652b:review-0011",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027CliWrap/CliWrap.csproj\u0027 (library) (review target 11 of 18)",
+          "scope": "CliWrap/CliWrap.csproj",
+          "sourceWorkItemIds": [
+            "work:dotnet-source-backbone:0e62be7c6d2d8617652b:part-0011"
+          ],
+          "evidenceIds": [
+            "dotnet:source-structure:CliWrap/CliWrap.csproj"
+          ],
+          "hours": {
+            "low": 2.5,
+            "expected": 4,
+            "high": 6.5
+          },
+          "rationale": "The main library implements a mature cross-platform process abstraction: immutable builders, path resolution, environment and credentials, buffered/pull/push execution, pipe composition, cancellation, event streams, resource policy, native signaling, and public extension seams.",
+          "uncertaintyReasons": [
+            "The static review did not execute the represented cross-platform process behavior."
+          ]
+        },
+        {
+          "id": "target:work:dotnet-source-backbone:0e62be7c6d2d8617652b:review-0012",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027CliWrap/CliWrap.csproj\u0027 (library) (review target 12 of 18)",
+          "scope": "CliWrap/CliWrap.csproj",
+          "sourceWorkItemIds": [
+            "work:dotnet-source-backbone:0e62be7c6d2d8617652b:part-0012"
+          ],
+          "evidenceIds": [
+            "dotnet:source-structure:CliWrap/CliWrap.csproj"
+          ],
+          "hours": {
+            "low": 2.5,
+            "expected": 4,
+            "high": 6.5
+          },
+          "rationale": "The main library implements a mature cross-platform process abstraction: immutable builders, path resolution, environment and credentials, buffered/pull/push execution, pipe composition, cancellation, event streams, resource policy, native signaling, and public extension seams.",
+          "uncertaintyReasons": [
+            "The static review did not execute the represented cross-platform process behavior."
+          ]
+        },
+        {
+          "id": "target:work:dotnet-source-backbone:0e62be7c6d2d8617652b:review-0013",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027CliWrap/CliWrap.csproj\u0027 (library) (review target 13 of 18)",
+          "scope": "CliWrap/CliWrap.csproj",
+          "sourceWorkItemIds": [
+            "work:dotnet-source-backbone:0e62be7c6d2d8617652b:part-0013"
+          ],
+          "evidenceIds": [
+            "dotnet:source-structure:CliWrap/CliWrap.csproj"
+          ],
+          "hours": {
+            "low": 2.5,
+            "expected": 4,
+            "high": 6.5
+          },
+          "rationale": "The main library implements a mature cross-platform process abstraction: immutable builders, path resolution, environment and credentials, buffered/pull/push execution, pipe composition, cancellation, event streams, resource policy, native signaling, and public extension seams.",
+          "uncertaintyReasons": [
+            "The static review did not execute the represented cross-platform process behavior."
+          ]
+        },
+        {
+          "id": "target:work:dotnet-source-backbone:0e62be7c6d2d8617652b:review-0014",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027CliWrap/CliWrap.csproj\u0027 (library) (review target 14 of 18)",
+          "scope": "CliWrap/CliWrap.csproj",
+          "sourceWorkItemIds": [
+            "work:dotnet-source-backbone:0e62be7c6d2d8617652b:part-0014"
+          ],
+          "evidenceIds": [
+            "dotnet:source-structure:CliWrap/CliWrap.csproj"
+          ],
+          "hours": {
+            "low": 2.5,
+            "expected": 4,
+            "high": 6.5
+          },
+          "rationale": "The main library implements a mature cross-platform process abstraction: immutable builders, path resolution, environment and credentials, buffered/pull/push execution, pipe composition, cancellation, event streams, resource policy, native signaling, and public extension seams.",
+          "uncertaintyReasons": [
+            "The static review did not execute the represented cross-platform process behavior."
+          ]
+        },
+        {
+          "id": "target:work:dotnet-source-backbone:0e62be7c6d2d8617652b:review-0015",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027CliWrap/CliWrap.csproj\u0027 (library) (review target 15 of 18)",
+          "scope": "CliWrap/CliWrap.csproj",
+          "sourceWorkItemIds": [
+            "work:dotnet-source-backbone:0e62be7c6d2d8617652b:part-0015"
+          ],
+          "evidenceIds": [
+            "dotnet:source-structure:CliWrap/CliWrap.csproj"
+          ],
+          "hours": {
+            "low": 2.5,
+            "expected": 4,
+            "high": 6.5
+          },
+          "rationale": "The main library implements a mature cross-platform process abstraction: immutable builders, path resolution, environment and credentials, buffered/pull/push execution, pipe composition, cancellation, event streams, resource policy, native signaling, and public extension seams.",
+          "uncertaintyReasons": [
+            "The static review did not execute the represented cross-platform process behavior."
+          ]
+        },
+        {
+          "id": "target:work:dotnet-source-backbone:0e62be7c6d2d8617652b:review-0016",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027CliWrap/CliWrap.csproj\u0027 (library) (review target 16 of 18)",
+          "scope": "CliWrap/CliWrap.csproj",
+          "sourceWorkItemIds": [
+            "work:dotnet-source-backbone:0e62be7c6d2d8617652b:part-0016"
+          ],
+          "evidenceIds": [
+            "dotnet:source-structure:CliWrap/CliWrap.csproj"
+          ],
+          "hours": {
+            "low": 2.5,
+            "expected": 4,
+            "high": 6.5
+          },
+          "rationale": "The main library implements a mature cross-platform process abstraction: immutable builders, path resolution, environment and credentials, buffered/pull/push execution, pipe composition, cancellation, event streams, resource policy, native signaling, and public extension seams.",
+          "uncertaintyReasons": [
+            "The static review did not execute the represented cross-platform process behavior."
+          ]
+        },
+        {
+          "id": "target:work:dotnet-source-backbone:0e62be7c6d2d8617652b:review-0017",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027CliWrap/CliWrap.csproj\u0027 (library) (review target 17 of 18)",
+          "scope": "CliWrap/CliWrap.csproj",
+          "sourceWorkItemIds": [
+            "work:dotnet-source-backbone:0e62be7c6d2d8617652b:part-0017"
+          ],
+          "evidenceIds": [
+            "dotnet:source-structure:CliWrap/CliWrap.csproj"
+          ],
+          "hours": {
+            "low": 2.5,
+            "expected": 4,
+            "high": 6.5
+          },
+          "rationale": "The main library implements a mature cross-platform process abstraction: immutable builders, path resolution, environment and credentials, buffered/pull/push execution, pipe composition, cancellation, event streams, resource policy, native signaling, and public extension seams.",
+          "uncertaintyReasons": [
+            "The static review did not execute the represented cross-platform process behavior."
+          ]
+        },
+        {
+          "id": "target:work:dotnet-source-backbone:0e62be7c6d2d8617652b:review-0018",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027CliWrap/CliWrap.csproj\u0027 (library) (review target 18 of 18)",
+          "scope": "CliWrap/CliWrap.csproj",
+          "sourceWorkItemIds": [
+            "work:dotnet-source-backbone:0e62be7c6d2d8617652b:part-0018"
+          ],
+          "evidenceIds": [
+            "dotnet:source-structure:CliWrap/CliWrap.csproj"
+          ],
+          "hours": {
+            "low": 1.25,
+            "expected": 2,
+            "high": 3.5
+          },
+          "rationale": "The main library implements a mature cross-platform process abstraction: immutable builders, path resolution, environment and credentials, buffered/pull/push execution, pipe composition, cancellation, event streams, resource policy, native signaling, and public extension seams.",
+          "uncertaintyReasons": [
+            "The static review did not execute the represented cross-platform process behavior."
+          ]
+        },
+        {
+          "id": "target:work:dotnet-source-backbone:82c6f462b95679cc72e3:review-0001",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027CliWrap.Tests.Dummy/CliWrap.Tests.Dummy.csproj\u0027 (executable) (review target 1 of 5)",
+          "scope": "CliWrap.Tests.Dummy/CliWrap.Tests.Dummy.csproj",
+          "sourceWorkItemIds": [
+            "work:dotnet-source-backbone:82c6f462b95679cc72e3:part-0001"
+          ],
+          "evidenceIds": [
+            "dotnet:source-structure:CliWrap.Tests.Dummy/CliWrap.Tests.Dummy.csproj"
+          ],
+          "hours": {
+            "low": 1.25,
+            "expected": 2,
+            "high": 3.5
+          },
+          "rationale": "The dummy command application implements varied deterministic child-process scenarios used to validate I/O, timing, cancellation, signals, environment, and exit behavior.",
+          "uncertaintyReasons": [
+            "The static review did not execute the represented cross-platform process behavior."
+          ]
+        },
+        {
+          "id": "target:work:dotnet-source-backbone:82c6f462b95679cc72e3:review-0002",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027CliWrap.Tests.Dummy/CliWrap.Tests.Dummy.csproj\u0027 (executable) (review target 2 of 5)",
+          "scope": "CliWrap.Tests.Dummy/CliWrap.Tests.Dummy.csproj",
+          "sourceWorkItemIds": [
+            "work:dotnet-source-backbone:82c6f462b95679cc72e3:part-0002"
+          ],
+          "evidenceIds": [
+            "dotnet:source-structure:CliWrap.Tests.Dummy/CliWrap.Tests.Dummy.csproj"
+          ],
+          "hours": {
+            "low": 1,
+            "expected": 1.5,
+            "high": 2.5
+          },
+          "rationale": "The dummy command application implements varied deterministic child-process scenarios used to validate I/O, timing, cancellation, signals, environment, and exit behavior.",
+          "uncertaintyReasons": [
+            "The static review did not execute the represented cross-platform process behavior."
+          ]
+        },
+        {
+          "id": "target:work:dotnet-source-backbone:82c6f462b95679cc72e3:review-0003",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027CliWrap.Tests.Dummy/CliWrap.Tests.Dummy.csproj\u0027 (executable) (review target 3 of 5)",
+          "scope": "CliWrap.Tests.Dummy/CliWrap.Tests.Dummy.csproj",
+          "sourceWorkItemIds": [
+            "work:dotnet-source-backbone:82c6f462b95679cc72e3:part-0003"
+          ],
+          "evidenceIds": [
+            "dotnet:source-structure:CliWrap.Tests.Dummy/CliWrap.Tests.Dummy.csproj"
+          ],
+          "hours": {
+            "low": 1,
+            "expected": 1.5,
+            "high": 2.5
+          },
+          "rationale": "The dummy command application implements varied deterministic child-process scenarios used to validate I/O, timing, cancellation, signals, environment, and exit behavior.",
+          "uncertaintyReasons": [
+            "The static review did not execute the represented cross-platform process behavior."
+          ]
+        },
+        {
+          "id": "target:work:dotnet-source-backbone:82c6f462b95679cc72e3:review-0004",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027CliWrap.Tests.Dummy/CliWrap.Tests.Dummy.csproj\u0027 (executable) (review target 4 of 5)",
+          "scope": "CliWrap.Tests.Dummy/CliWrap.Tests.Dummy.csproj",
+          "sourceWorkItemIds": [
+            "work:dotnet-source-backbone:82c6f462b95679cc72e3:part-0004"
+          ],
+          "evidenceIds": [
+            "dotnet:source-structure:CliWrap.Tests.Dummy/CliWrap.Tests.Dummy.csproj"
+          ],
+          "hours": {
+            "low": 1,
+            "expected": 1.5,
+            "high": 2.5
+          },
+          "rationale": "The dummy command application implements varied deterministic child-process scenarios used to validate I/O, timing, cancellation, signals, environment, and exit behavior.",
+          "uncertaintyReasons": [
+            "The static review did not execute the represented cross-platform process behavior."
+          ]
+        },
+        {
+          "id": "target:work:dotnet-source-backbone:82c6f462b95679cc72e3:review-0005",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027CliWrap.Tests.Dummy/CliWrap.Tests.Dummy.csproj\u0027 (executable) (review target 5 of 5)",
+          "scope": "CliWrap.Tests.Dummy/CliWrap.Tests.Dummy.csproj",
+          "sourceWorkItemIds": [
+            "work:dotnet-source-backbone:82c6f462b95679cc72e3:part-0005"
+          ],
+          "evidenceIds": [
+            "dotnet:source-structure:CliWrap.Tests.Dummy/CliWrap.Tests.Dummy.csproj"
+          ],
+          "hours": {
+            "low": 1,
+            "expected": 1.5,
+            "high": 2.5
+          },
+          "rationale": "The dummy command application implements varied deterministic child-process scenarios used to validate I/O, timing, cancellation, signals, environment, and exit behavior.",
+          "uncertaintyReasons": [
+            "The static review did not execute the represented cross-platform process behavior."
+          ]
+        },
+        {
+          "id": "target:work:dotnet-source-backbone:888867a9d8b811b0531d:review-0001",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027CliWrap.Signaler/CliWrap.Signaler.csproj\u0027 (executable)",
+          "scope": "CliWrap.Signaler/CliWrap.Signaler.csproj",
+          "sourceWorkItemIds": [
+            "work:dotnet-source-backbone:888867a9d8b811b0531d:part-0001"
+          ],
+          "evidenceIds": [
+            "dotnet:source-structure:CliWrap.Signaler/CliWrap.Signaler.csproj"
+          ],
+          "hours": {
+            "low": 2.5,
+            "expected": 4,
+            "high": 6.5
+          },
+          "rationale": "The embedded Windows signaler bridges managed execution to the relevant native console-control behavior.",
+          "uncertaintyReasons": [
+            "The static review did not execute the represented cross-platform process behavior."
+          ]
+        },
+        {
+          "id": "target:work:dotnet-source-backbone:bff334a3ff0bfc0ff2f6:review-0001",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027CliWrap.Benchmarks/CliWrap.Benchmarks.csproj\u0027 (executable) (review target 1 of 4)",
+          "scope": "CliWrap.Benchmarks/CliWrap.Benchmarks.csproj",
+          "sourceWorkItemIds": [
+            "work:dotnet-source-backbone:bff334a3ff0bfc0ff2f6:part-0001"
+          ],
+          "evidenceIds": [
+            "dotnet:source-structure:CliWrap.Benchmarks/CliWrap.Benchmarks.csproj"
+          ],
+          "hours": {
+            "low": 1,
+            "expected": 1.5,
+            "high": 2.5
+          },
+          "rationale": "Maintained benchmark fixtures exercise representative command and pipe execution paths without being product functionality.",
+          "uncertaintyReasons": []
+        },
+        {
+          "id": "target:work:dotnet-source-backbone:bff334a3ff0bfc0ff2f6:review-0002",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027CliWrap.Benchmarks/CliWrap.Benchmarks.csproj\u0027 (executable) (review target 2 of 4)",
+          "scope": "CliWrap.Benchmarks/CliWrap.Benchmarks.csproj",
+          "sourceWorkItemIds": [
+            "work:dotnet-source-backbone:bff334a3ff0bfc0ff2f6:part-0002"
+          ],
+          "evidenceIds": [
+            "dotnet:source-structure:CliWrap.Benchmarks/CliWrap.Benchmarks.csproj"
+          ],
+          "hours": {
+            "low": 1,
+            "expected": 1.5,
+            "high": 2.5
+          },
+          "rationale": "Maintained benchmark fixtures exercise representative command and pipe execution paths without being product functionality.",
+          "uncertaintyReasons": []
+        },
+        {
+          "id": "target:work:dotnet-source-backbone:bff334a3ff0bfc0ff2f6:review-0003",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027CliWrap.Benchmarks/CliWrap.Benchmarks.csproj\u0027 (executable) (review target 3 of 4)",
+          "scope": "CliWrap.Benchmarks/CliWrap.Benchmarks.csproj",
+          "sourceWorkItemIds": [
+            "work:dotnet-source-backbone:bff334a3ff0bfc0ff2f6:part-0003"
+          ],
+          "evidenceIds": [
+            "dotnet:source-structure:CliWrap.Benchmarks/CliWrap.Benchmarks.csproj"
+          ],
+          "hours": {
+            "low": 1,
+            "expected": 1.5,
+            "high": 2.5
+          },
+          "rationale": "Maintained benchmark fixtures exercise representative command and pipe execution paths without being product functionality.",
+          "uncertaintyReasons": []
+        },
+        {
+          "id": "target:work:dotnet-source-backbone:bff334a3ff0bfc0ff2f6:review-0004",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027CliWrap.Benchmarks/CliWrap.Benchmarks.csproj\u0027 (executable) (review target 4 of 4)",
+          "scope": "CliWrap.Benchmarks/CliWrap.Benchmarks.csproj",
+          "sourceWorkItemIds": [
+            "work:dotnet-source-backbone:bff334a3ff0bfc0ff2f6:part-0004"
+          ],
+          "evidenceIds": [
+            "dotnet:source-structure:CliWrap.Benchmarks/CliWrap.Benchmarks.csproj"
+          ],
+          "hours": {
+            "low": 1,
+            "expected": 1.5,
+            "high": 2.5
+          },
+          "rationale": "Maintained benchmark fixtures exercise representative command and pipe execution paths without being product functionality.",
+          "uncertaintyReasons": []
+        },
+        {
+          "id": "target:work:manual-validation:13a1d5c2bbf0fa759582:review-0001",
+          "category": "manual-validation-debugging-and-hardening",
+          "title": "Manually validate, debug, and harden \u0027CliWrap/CliWrap.csproj\u0027 (library)",
+          "scope": "CliWrap/CliWrap.csproj",
+          "sourceWorkItemIds": [
+            "work:manual-validation:13a1d5c2bbf0fa759582:part-0001"
+          ],
+          "evidenceIds": [
+            "dotnet:data:CliWrap/Buffered/BufferedCommandExtensions.cs",
+            "dotnet:data:CliWrap/Command.Execution.cs",
+            "dotnet:data:CliWrap/EventStream/PullEventStreamCommandExtensions.cs",
+            "dotnet:data:CliWrap/EventStream/PushEventStreamCommandExtensions.cs",
+            "dotnet:data:CliWrap/PipeSource.cs",
+            "dotnet:project-reference:CliWrap/CliWrap.csproj:CliWrap.Signaler/CliWrap.Signaler.csproj",
+            "dotnet:project:CliWrap/CliWrap.csproj"
+          ],
+          "hours": {
+            "low": 2.5,
+            "expected": 4,
+            "high": 6.5
+          },
+          "rationale": "The main library needs focused manual checks across operating systems, quoting, path lookup, encoding, stream flow, cancellation, signals, and resource policy.",
+          "uncertaintyReasons": [
+            "The static review did not execute the represented cross-platform process behavior."
+          ]
+        },
+        {
+          "id": "target:work:manual-validation:2f30231effeda20fa0c4:review-0001",
+          "category": "manual-validation-debugging-and-hardening",
+          "title": "Manually validate, debug, and harden \u0027CliWrap.Benchmarks/CliWrap.Benchmarks.csproj\u0027 (executable)",
+          "scope": "CliWrap.Benchmarks/CliWrap.Benchmarks.csproj",
+          "sourceWorkItemIds": [
+            "work:manual-validation:2f30231effeda20fa0c4:part-0001"
+          ],
+          "evidenceIds": [
+            "dotnet:data:CliWrap.Benchmarks/BasicBenchmarks.cs",
+            "dotnet:data:CliWrap.Benchmarks/PipeFromStreamBenchmarks.cs",
+            "dotnet:data:CliWrap.Benchmarks/PipeToMultipleStreamsBenchmark.cs",
+            "dotnet:data:CliWrap.Benchmarks/PipeToStreamBenchmarks.cs",
+            "dotnet:entry-point:CliWrap.Benchmarks/Program.cs",
+            "dotnet:project-reference:CliWrap.Benchmarks/CliWrap.Benchmarks.csproj:CliWrap.Tests.Dummy/CliWrap.Tests.Dummy.csproj",
+            "dotnet:project-reference:CliWrap.Benchmarks/CliWrap.Benchmarks.csproj:CliWrap/CliWrap.csproj",
+            "dotnet:project:CliWrap.Benchmarks/CliWrap.Benchmarks.csproj"
+          ],
+          "hours": {
+            "low": 0.5,
+            "expected": 1,
+            "high": 1.75
+          },
+          "rationale": "A bounded benchmark smoke pass verifies that scenarios launch and measure the intended paths.",
+          "uncertaintyReasons": []
+        },
+        {
+          "id": "target:work:manual-validation:760419422c64b12f8328:review-0001",
+          "category": "manual-validation-debugging-and-hardening",
+          "title": "Manually validate, debug, and harden \u0027CliWrap.Tests.Dummy/CliWrap.Tests.Dummy.csproj\u0027 (executable)",
+          "scope": "CliWrap.Tests.Dummy/CliWrap.Tests.Dummy.csproj",
+          "sourceWorkItemIds": [
+            "work:manual-validation:760419422c64b12f8328:part-0001"
+          ],
+          "evidenceIds": [
+            "dotnet:entry-point:CliWrap.Tests.Dummy/Program.cs",
+            "dotnet:project:CliWrap.Tests.Dummy/CliWrap.Tests.Dummy.csproj"
+          ],
+          "hours": {
+            "low": 0.5,
+            "expected": 1,
+            "high": 1.75
+          },
+          "rationale": "The dummy command scenarios need a small direct validation pass before serving as subprocess fixtures.",
+          "uncertaintyReasons": []
+        },
+        {
+          "id": "target:work:manual-validation:8080ab37fe1b4f3b2481:review-0001",
+          "category": "manual-validation-debugging-and-hardening",
+          "title": "Manually validate, debug, and harden \u0027CliWrap.Signaler/CliWrap.Signaler.csproj\u0027 (executable)",
+          "scope": "CliWrap.Signaler/CliWrap.Signaler.csproj",
+          "sourceWorkItemIds": [
+            "work:manual-validation:8080ab37fe1b4f3b2481:part-0001"
+          ],
+          "evidenceIds": [
+            "dotnet:entry-point:CliWrap.Signaler/Program.cs",
+            "dotnet:project:CliWrap.Signaler/CliWrap.Signaler.csproj"
+          ],
+          "hours": {
+            "low": 1.25,
+            "expected": 2,
+            "high": 3.5
+          },
+          "rationale": "Native signal behavior and embedded-helper extraction warrant targeted Windows validation.",
+          "uncertaintyReasons": [
+            "The static review did not execute the represented cross-platform process behavior."
+          ]
+        },
+        {
+          "id": "target:work:packaging-release:58eb8ae7efef939a19b5:review-0001",
+          "category": "packaging-deployment-and-release-artifacts",
+          "title": "Prepare represented packages and release surfaces",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:packaging-release:58eb8ae7efef939a19b5:part-0001"
+          ],
+          "evidenceIds": [
+            "dotnet:project:CliWrap/CliWrap.csproj"
+          ],
+          "hours": {
+            "low": 2,
+            "expected": 3,
+            "high": 4.5
+          },
+          "rationale": "Multi-target NuGet packaging, embedded native helper handling, trimming and AOT compatibility, symbols, and release metadata need explicit verification.",
+          "uncertaintyReasons": [
+            "The static review did not execute the represented cross-platform process behavior."
+          ]
+        },
+        {
+          "id": "target:work:project-setup:19974c0b73f256f2f9d8:review-0001",
+          "category": "repository-and-solution-setup",
+          "title": "Set up \u0027CliWrap/CliWrap.csproj\u0027 (library)",
+          "scope": "CliWrap/CliWrap.csproj",
+          "sourceWorkItemIds": [
+            "work:project-setup:19974c0b73f256f2f9d8:part-0001"
+          ],
+          "evidenceIds": [
+            "dotnet:package:CliWrap/CliWrap.csproj:binternal",
+            "dotnet:package:CliWrap/CliWrap.csproj:csharpier.msbuild",
+            "dotnet:package:CliWrap/CliWrap.csproj:microsoft.bcl.asyncinterfaces",
+            "dotnet:package:CliWrap/CliWrap.csproj:polyshim",
+            "dotnet:package:CliWrap/CliWrap.csproj:powerkit",
+            "dotnet:package:CliWrap/CliWrap.csproj:snek",
+            "dotnet:package:CliWrap/CliWrap.csproj:system.management",
+            "dotnet:package:CliWrap/CliWrap.csproj:system.memory",
+            "dotnet:package:CliWrap/CliWrap.csproj:system.threading.tasks.extensions",
+            "dotnet:project:CliWrap/CliWrap.csproj"
+          ],
+          "hours": {
+            "low": 2,
+            "expected": 3,
+            "high": 4.5
+          },
+          "rationale": "The main multi-target library project includes package metadata, analyzers, embedded resources, and compatibility settings.",
+          "uncertaintyReasons": []
+        },
+        {
+          "id": "target:work:project-setup:41e1e99994ca2cde51af:review-0001",
+          "category": "repository-and-solution-setup",
+          "title": "Set up \u0027CliWrap.Tests.Dummy/CliWrap.Tests.Dummy.csproj\u0027 (executable)",
+          "scope": "CliWrap.Tests.Dummy/CliWrap.Tests.Dummy.csproj",
+          "sourceWorkItemIds": [
+            "work:project-setup:41e1e99994ca2cde51af:part-0001"
+          ],
+          "evidenceIds": [
+            "dotnet:package:CliWrap.Tests.Dummy/CliWrap.Tests.Dummy.csproj:clifx",
+            "dotnet:package:CliWrap.Tests.Dummy/CliWrap.Tests.Dummy.csproj:csharpier.msbuild",
+            "dotnet:project:CliWrap.Tests.Dummy/CliWrap.Tests.Dummy.csproj"
+          ],
+          "hours": {
+            "low": 1,
+            "expected": 1.5,
+            "high": 2.5
+          },
+          "rationale": "The dummy command fixture project has compact but purpose-specific process-test setup.",
+          "uncertaintyReasons": []
+        },
+        {
+          "id": "target:work:project-setup:52495b7bafdb0ae18d68:review-0001",
+          "category": "repository-and-solution-setup",
+          "title": "Set up \u0027CliWrap.Benchmarks/CliWrap.Benchmarks.csproj\u0027 (executable)",
+          "scope": "CliWrap.Benchmarks/CliWrap.Benchmarks.csproj",
+          "sourceWorkItemIds": [
+            "work:project-setup:52495b7bafdb0ae18d68:part-0001"
+          ],
+          "evidenceIds": [
+            "dotnet:package:CliWrap.Benchmarks/CliWrap.Benchmarks.csproj:benchmarkdotnet",
+            "dotnet:package:CliWrap.Benchmarks/CliWrap.Benchmarks.csproj:csharpier.msbuild",
+            "dotnet:package:CliWrap.Benchmarks/CliWrap.Benchmarks.csproj:medallionshell",
+            "dotnet:package:CliWrap.Benchmarks/CliWrap.Benchmarks.csproj:processx",
+            "dotnet:package:CliWrap.Benchmarks/CliWrap.Benchmarks.csproj:runprocessastask",
+            "dotnet:package:CliWrap.Benchmarks/CliWrap.Benchmarks.csproj:system.reactive",
+            "dotnet:project:CliWrap.Benchmarks/CliWrap.Benchmarks.csproj"
+          ],
+          "hours": {
+            "low": 1,
+            "expected": 1.5,
+            "high": 2.5
+          },
+          "rationale": "The benchmark project needs conventional BenchmarkDotNet references and scenario configuration.",
+          "uncertaintyReasons": []
+        },
+        {
+          "id": "target:work:project-setup:63d54b6b24ae883da0b6:review-0001",
+          "category": "repository-and-solution-setup",
+          "title": "Set up \u0027CliWrap.Signaler/CliWrap.Signaler.csproj\u0027 (executable)",
+          "scope": "CliWrap.Signaler/CliWrap.Signaler.csproj",
+          "sourceWorkItemIds": [
+            "work:project-setup:63d54b6b24ae883da0b6:part-0001"
+          ],
+          "evidenceIds": [
+            "dotnet:package:CliWrap.Signaler/CliWrap.Signaler.csproj:csharpier.msbuild",
+            "dotnet:package:CliWrap.Signaler/CliWrap.Signaler.csproj:polyshim",
+            "dotnet:project:CliWrap.Signaler/CliWrap.Signaler.csproj"
+          ],
+          "hours": {
+            "low": 0.5,
+            "expected": 1,
+            "high": 1.75
+          },
+          "rationale": "The Windows signaler project has a small native-interoperability and publication role.",
+          "uncertaintyReasons": []
+        },
+        {
+          "id": "target:work:project-setup:655f61bec43e3dbccb1a:review-0001",
+          "category": "repository-and-solution-setup",
+          "title": "Set up \u0027CliWrap.Tests/CliWrap.Tests.csproj\u0027 (test)",
+          "scope": "CliWrap.Tests/CliWrap.Tests.csproj",
+          "sourceWorkItemIds": [
+            "work:project-setup:655f61bec43e3dbccb1a:part-0001"
+          ],
+          "evidenceIds": [
+            "dotnet:package:CliWrap.Tests/CliWrap.Tests.csproj:coverlet.collector",
+            "dotnet:package:CliWrap.Tests/CliWrap.Tests.csproj:csharpier.msbuild",
+            "dotnet:package:CliWrap.Tests/CliWrap.Tests.csproj:fluentassertions",
+            "dotnet:package:CliWrap.Tests/CliWrap.Tests.csproj:githubactionstestlogger",
+            "dotnet:package:CliWrap.Tests/CliWrap.Tests.csproj:microsoft.net.test.sdk",
+            "dotnet:package:CliWrap.Tests/CliWrap.Tests.csproj:powerkit",
+            "dotnet:package:CliWrap.Tests/CliWrap.Tests.csproj:system.reactive",
+            "dotnet:package:CliWrap.Tests/CliWrap.Tests.csproj:xunit",
+            "dotnet:package:CliWrap.Tests/CliWrap.Tests.csproj:xunit.runner.visualstudio",
+            "dotnet:package:CliWrap.Tests/CliWrap.Tests.csproj:xunit.skippablefact",
+            "dotnet:project:CliWrap.Tests/CliWrap.Tests.csproj"
+          ],
+          "hours": {
+            "low": 1.25,
+            "expected": 2,
+            "high": 3.5
+          },
+          "rationale": "The test project coordinates xUnit, coverage, the dummy executable, and cross-platform process fixtures.",
+          "uncertaintyReasons": []
+        },
+        {
+          "id": "target:work:self-review:e943a6db2e8c464b145a:review-0001",
+          "category": "self-review-and-system-integration",
+          "title": "Self-review and integrate the completed system (review target 1 of 2)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:self-review:e943a6db2e8c464b145a:part-0001"
+          ],
+          "evidenceIds": [
+            "dotnet:data:CliWrap.Benchmarks/BasicBenchmarks.cs",
+            "dotnet:data:CliWrap.Benchmarks/PipeFromStreamBenchmarks.cs",
+            "dotnet:data:CliWrap.Benchmarks/PipeToMultipleStreamsBenchmark.cs",
+            "dotnet:data:CliWrap.Benchmarks/PipeToStreamBenchmarks.cs",
+            "dotnet:data:CliWrap.Tests/CredentialsSpecs.cs",
+            "dotnet:data:CliWrap.Tests/ExecutionSpecs.cs",
+            "dotnet:data:CliWrap.Tests/LineBreakSpecs.cs",
+            "dotnet:data:CliWrap.Tests/PipingSpecs.cs",
+            "dotnet:data:CliWrap.Tests/ResourcePolicySpecs.cs",
+            "dotnet:data:CliWrap.Tests/ValidationSpecs.cs",
+            "dotnet:data:CliWrap/Buffered/BufferedCommandExtensions.cs",
+            "dotnet:data:CliWrap/Command.Execution.cs",
+            "dotnet:data:CliWrap/EventStream/PullEventStreamCommandExtensions.cs",
+            "dotnet:data:CliWrap/EventStream/PushEventStreamCommandExtensions.cs",
+            "dotnet:data:CliWrap/PipeSource.cs",
+            "dotnet:project-reference:CliWrap.Benchmarks/CliWrap.Benchmarks.csproj:CliWrap.Tests.Dummy/CliWrap.Tests.Dummy.csproj",
+            "dotnet:project-reference:CliWrap.Benchmarks/CliWrap.Benchmarks.csproj:CliWrap/CliWrap.csproj",
+            "dotnet:project-reference:CliWrap.Tests/CliWrap.Tests.csproj:CliWrap.Tests.Dummy/CliWrap.Tests.Dummy.csproj",
+            "dotnet:project-reference:CliWrap.Tests/CliWrap.Tests.csproj:CliWrap/CliWrap.csproj",
+            "dotnet:project-reference:CliWrap/CliWrap.csproj:CliWrap.Signaler/CliWrap.Signaler.csproj",
+            "dotnet:project:CliWrap.Benchmarks/CliWrap.Benchmarks.csproj",
+            "dotnet:project:CliWrap.Signaler/CliWrap.Signaler.csproj",
+            "dotnet:project:CliWrap.Tests.Dummy/CliWrap.Tests.Dummy.csproj",
+            "dotnet:project:CliWrap.Tests/CliWrap.Tests.csproj",
+            "dotnet:project:CliWrap/CliWrap.csproj",
+            "dotnet:repository",
+            "inventory:repository"
+          ],
+          "hours": {
+            "low": 2.5,
+            "expected": 4,
+            "high": 6.5
+          },
+          "rationale": "A mature public process library needs final API, cross-platform, stream, cancellation, package, documentation, and test coherence passes.",
+          "uncertaintyReasons": [
+            "The static review did not execute the represented cross-platform process behavior."
+          ]
+        },
+        {
+          "id": "target:work:self-review:e943a6db2e8c464b145a:review-0002",
+          "category": "self-review-and-system-integration",
+          "title": "Self-review and integrate the completed system (review target 2 of 2)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:self-review:e943a6db2e8c464b145a:part-0002"
+          ],
+          "evidenceIds": [
+            "dotnet:data:CliWrap.Benchmarks/BasicBenchmarks.cs",
+            "dotnet:data:CliWrap.Benchmarks/PipeFromStreamBenchmarks.cs",
+            "dotnet:data:CliWrap.Benchmarks/PipeToMultipleStreamsBenchmark.cs",
+            "dotnet:data:CliWrap.Benchmarks/PipeToStreamBenchmarks.cs",
+            "dotnet:data:CliWrap.Tests/CredentialsSpecs.cs",
+            "dotnet:data:CliWrap.Tests/ExecutionSpecs.cs",
+            "dotnet:data:CliWrap.Tests/LineBreakSpecs.cs",
+            "dotnet:data:CliWrap.Tests/PipingSpecs.cs",
+            "dotnet:data:CliWrap.Tests/ResourcePolicySpecs.cs",
+            "dotnet:data:CliWrap.Tests/ValidationSpecs.cs",
+            "dotnet:data:CliWrap/Buffered/BufferedCommandExtensions.cs",
+            "dotnet:data:CliWrap/Command.Execution.cs",
+            "dotnet:data:CliWrap/EventStream/PullEventStreamCommandExtensions.cs",
+            "dotnet:data:CliWrap/EventStream/PushEventStreamCommandExtensions.cs",
+            "dotnet:data:CliWrap/PipeSource.cs",
+            "dotnet:project-reference:CliWrap.Benchmarks/CliWrap.Benchmarks.csproj:CliWrap.Tests.Dummy/CliWrap.Tests.Dummy.csproj",
+            "dotnet:project-reference:CliWrap.Benchmarks/CliWrap.Benchmarks.csproj:CliWrap/CliWrap.csproj",
+            "dotnet:project-reference:CliWrap.Tests/CliWrap.Tests.csproj:CliWrap.Tests.Dummy/CliWrap.Tests.Dummy.csproj",
+            "dotnet:project-reference:CliWrap.Tests/CliWrap.Tests.csproj:CliWrap/CliWrap.csproj",
+            "dotnet:project-reference:CliWrap/CliWrap.csproj:CliWrap.Signaler/CliWrap.Signaler.csproj",
+            "dotnet:project:CliWrap.Benchmarks/CliWrap.Benchmarks.csproj",
+            "dotnet:project:CliWrap.Signaler/CliWrap.Signaler.csproj",
+            "dotnet:project:CliWrap.Tests.Dummy/CliWrap.Tests.Dummy.csproj",
+            "dotnet:project:CliWrap.Tests/CliWrap.Tests.csproj",
+            "dotnet:project:CliWrap/CliWrap.csproj",
+            "dotnet:repository",
+            "inventory:repository"
+          ],
+          "hours": {
+            "low": 2,
+            "expected": 3,
+            "high": 4.5
+          },
+          "rationale": "A mature public process library needs final API, cross-platform, stream, cancellation, package, documentation, and test coherence passes.",
+          "uncertaintyReasons": [
+            "The static review did not execute the represented cross-platform process behavior."
+          ]
+        },
+        {
+          "id": "target:work:solution-coordination:c6246e076bb47f8310ce:review-0001",
+          "category": "repository-and-solution-setup",
+          "title": "Coordinate solution, workspace, and local dependency boundaries",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:solution-coordination:c6246e076bb47f8310ce:part-0001"
+          ],
+          "evidenceIds": [
+            "dotnet:project-reference:CliWrap.Benchmarks/CliWrap.Benchmarks.csproj:CliWrap.Tests.Dummy/CliWrap.Tests.Dummy.csproj",
+            "dotnet:project-reference:CliWrap.Benchmarks/CliWrap.Benchmarks.csproj:CliWrap/CliWrap.csproj",
+            "dotnet:project-reference:CliWrap.Tests/CliWrap.Tests.csproj:CliWrap.Tests.Dummy/CliWrap.Tests.Dummy.csproj",
+            "dotnet:project-reference:CliWrap.Tests/CliWrap.Tests.csproj:CliWrap/CliWrap.csproj",
+            "dotnet:project-reference:CliWrap/CliWrap.csproj:CliWrap.Signaler/CliWrap.Signaler.csproj",
+            "dotnet:solution:CliWrap.slnx"
+          ],
+          "hours": {
+            "low": 1,
+            "expected": 1.5,
+            "high": 2.5
+          },
+          "rationale": "Five related projects need straightforward references, shared settings, embedded-artifact flow, and build ordering.",
+          "uncertaintyReasons": []
+        },
+        {
+          "id": "target:work:specification-comprehension:49aec33b6a46fb626dad:review-0001",
+          "category": "specification-comprehension-and-domain-learning",
+          "title": "Comprehend the supplied specification and bounded business domain",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:specification-comprehension:49aec33b6a46fb626dad:part-0001"
+          ],
+          "evidenceIds": [
+            "dotnet:data:CliWrap.Benchmarks/BasicBenchmarks.cs",
+            "dotnet:data:CliWrap.Benchmarks/PipeFromStreamBenchmarks.cs",
+            "dotnet:data:CliWrap.Benchmarks/PipeToMultipleStreamsBenchmark.cs",
+            "dotnet:data:CliWrap.Benchmarks/PipeToStreamBenchmarks.cs",
+            "dotnet:data:CliWrap.Tests/CredentialsSpecs.cs",
+            "dotnet:data:CliWrap.Tests/ExecutionSpecs.cs",
+            "dotnet:data:CliWrap.Tests/LineBreakSpecs.cs",
+            "dotnet:data:CliWrap.Tests/PipingSpecs.cs",
+            "dotnet:data:CliWrap.Tests/ResourcePolicySpecs.cs",
+            "dotnet:data:CliWrap.Tests/ValidationSpecs.cs",
+            "dotnet:data:CliWrap/Buffered/BufferedCommandExtensions.cs",
+            "dotnet:data:CliWrap/Command.Execution.cs",
+            "dotnet:data:CliWrap/EventStream/PullEventStreamCommandExtensions.cs",
+            "dotnet:data:CliWrap/EventStream/PushEventStreamCommandExtensions.cs",
+            "dotnet:data:CliWrap/PipeSource.cs",
+            "dotnet:project:CliWrap.Benchmarks/CliWrap.Benchmarks.csproj",
+            "dotnet:project:CliWrap.Signaler/CliWrap.Signaler.csproj",
+            "dotnet:project:CliWrap.Tests.Dummy/CliWrap.Tests.Dummy.csproj",
+            "dotnet:project:CliWrap.Tests/CliWrap.Tests.csproj",
+            "dotnet:project:CliWrap/CliWrap.csproj",
+            "dotnet:repository",
+            "inventory:repository"
+          ],
+          "hours": {
+            "low": 2.5,
+            "expected": 4,
+            "high": 6.5
+          },
+          "rationale": "Cross-platform process creation, pipe semantics, cancellation modes, signals, credentials, resource policies, and compatibility constraints form a substantial but bounded domain.",
+          "uncertaintyReasons": [
+            "The static review did not execute the represented cross-platform process behavior."
+          ]
+        },
+        {
+          "id": "target:work:unit-tests:a6ad88961efa60e9f48e:review-0001",
+          "category": "unit-testing",
+          "title": "Create represented unit tests for \u0027CliWrap.Tests/CliWrap.Tests.csproj\u0027 (test) (review target 1 of 10)",
+          "scope": "CliWrap.Tests/CliWrap.Tests.csproj",
+          "sourceWorkItemIds": [
+            "work:unit-tests:a6ad88961efa60e9f48e:part-0001"
+          ],
+          "evidenceIds": [
+            "dotnet:test:CliWrap.Tests/BufferingSpecs.cs",
+            "dotnet:test:CliWrap.Tests/ConfigurationSpecs.cs",
+            "dotnet:test:CliWrap.Tests/CredentialsSpecs.cs",
+            "dotnet:test:CliWrap.Tests/EnvironmentSpecs.cs",
+            "dotnet:test:CliWrap.Tests/ExecutionSpecs.cs",
+            "dotnet:test:CliWrap.Tests/LineBreakSpecs.cs",
+            "dotnet:test:CliWrap.Tests/PathResolutionSpecs.cs",
+            "dotnet:test:CliWrap.Tests/PipingSpecs.cs",
+            "dotnet:test:CliWrap.Tests/PullEventStreamSpecs.cs",
+            "dotnet:test:CliWrap.Tests/PushEventStreamSpecs.cs",
+            "dotnet:test:CliWrap.Tests/ResourcePolicySpecs.cs",
+            "dotnet:test:CliWrap.Tests/Utils/Extensions/AssertionExtensions.cs",
+            "dotnet:test:CliWrap.Tests/Utils/Extensions/EnvironmentExtensions.cs",
+            "dotnet:test:CliWrap.Tests/ValidationSpecs.cs"
+          ],
+          "hours": {
+            "low": 3,
+            "expected": 5,
+            "high": 8
+          },
+          "rationale": "More than one hundred process-focused cases cover command construction, execution models, stream pipes, cancellation, events, environment, quoting, signals, and platform-specific behavior using a purpose-built child process.",
+          "uncertaintyReasons": [
+            "The static review did not execute the suite; passing behavior is assumed under the default policy."
+          ]
+        },
+        {
+          "id": "target:work:unit-tests:a6ad88961efa60e9f48e:review-0002",
+          "category": "unit-testing",
+          "title": "Create represented unit tests for \u0027CliWrap.Tests/CliWrap.Tests.csproj\u0027 (test) (review target 2 of 10)",
+          "scope": "CliWrap.Tests/CliWrap.Tests.csproj",
+          "sourceWorkItemIds": [
+            "work:unit-tests:a6ad88961efa60e9f48e:part-0002"
+          ],
+          "evidenceIds": [
+            "dotnet:test:CliWrap.Tests/BufferingSpecs.cs",
+            "dotnet:test:CliWrap.Tests/ConfigurationSpecs.cs",
+            "dotnet:test:CliWrap.Tests/CredentialsSpecs.cs",
+            "dotnet:test:CliWrap.Tests/EnvironmentSpecs.cs",
+            "dotnet:test:CliWrap.Tests/ExecutionSpecs.cs",
+            "dotnet:test:CliWrap.Tests/LineBreakSpecs.cs",
+            "dotnet:test:CliWrap.Tests/PathResolutionSpecs.cs",
+            "dotnet:test:CliWrap.Tests/PipingSpecs.cs",
+            "dotnet:test:CliWrap.Tests/PullEventStreamSpecs.cs",
+            "dotnet:test:CliWrap.Tests/PushEventStreamSpecs.cs",
+            "dotnet:test:CliWrap.Tests/ResourcePolicySpecs.cs",
+            "dotnet:test:CliWrap.Tests/Utils/Extensions/AssertionExtensions.cs",
+            "dotnet:test:CliWrap.Tests/Utils/Extensions/EnvironmentExtensions.cs",
+            "dotnet:test:CliWrap.Tests/ValidationSpecs.cs"
+          ],
+          "hours": {
+            "low": 2.5,
+            "expected": 4,
+            "high": 6.5
+          },
+          "rationale": "More than one hundred process-focused cases cover command construction, execution models, stream pipes, cancellation, events, environment, quoting, signals, and platform-specific behavior using a purpose-built child process.",
+          "uncertaintyReasons": [
+            "The static review did not execute the suite; passing behavior is assumed under the default policy."
+          ]
+        },
+        {
+          "id": "target:work:unit-tests:a6ad88961efa60e9f48e:review-0003",
+          "category": "unit-testing",
+          "title": "Create represented unit tests for \u0027CliWrap.Tests/CliWrap.Tests.csproj\u0027 (test) (review target 3 of 10)",
+          "scope": "CliWrap.Tests/CliWrap.Tests.csproj",
+          "sourceWorkItemIds": [
+            "work:unit-tests:a6ad88961efa60e9f48e:part-0003"
+          ],
+          "evidenceIds": [
+            "dotnet:test:CliWrap.Tests/BufferingSpecs.cs",
+            "dotnet:test:CliWrap.Tests/ConfigurationSpecs.cs",
+            "dotnet:test:CliWrap.Tests/CredentialsSpecs.cs",
+            "dotnet:test:CliWrap.Tests/EnvironmentSpecs.cs",
+            "dotnet:test:CliWrap.Tests/ExecutionSpecs.cs",
+            "dotnet:test:CliWrap.Tests/LineBreakSpecs.cs",
+            "dotnet:test:CliWrap.Tests/PathResolutionSpecs.cs",
+            "dotnet:test:CliWrap.Tests/PipingSpecs.cs",
+            "dotnet:test:CliWrap.Tests/PullEventStreamSpecs.cs",
+            "dotnet:test:CliWrap.Tests/PushEventStreamSpecs.cs",
+            "dotnet:test:CliWrap.Tests/ResourcePolicySpecs.cs",
+            "dotnet:test:CliWrap.Tests/Utils/Extensions/AssertionExtensions.cs",
+            "dotnet:test:CliWrap.Tests/Utils/Extensions/EnvironmentExtensions.cs",
+            "dotnet:test:CliWrap.Tests/ValidationSpecs.cs"
+          ],
+          "hours": {
+            "low": 2.5,
+            "expected": 4,
+            "high": 6.5
+          },
+          "rationale": "More than one hundred process-focused cases cover command construction, execution models, stream pipes, cancellation, events, environment, quoting, signals, and platform-specific behavior using a purpose-built child process.",
+          "uncertaintyReasons": [
+            "The static review did not execute the suite; passing behavior is assumed under the default policy."
+          ]
+        },
+        {
+          "id": "target:work:unit-tests:a6ad88961efa60e9f48e:review-0004",
+          "category": "unit-testing",
+          "title": "Create represented unit tests for \u0027CliWrap.Tests/CliWrap.Tests.csproj\u0027 (test) (review target 4 of 10)",
+          "scope": "CliWrap.Tests/CliWrap.Tests.csproj",
+          "sourceWorkItemIds": [
+            "work:unit-tests:a6ad88961efa60e9f48e:part-0004"
+          ],
+          "evidenceIds": [
+            "dotnet:test:CliWrap.Tests/BufferingSpecs.cs",
+            "dotnet:test:CliWrap.Tests/ConfigurationSpecs.cs",
+            "dotnet:test:CliWrap.Tests/CredentialsSpecs.cs",
+            "dotnet:test:CliWrap.Tests/EnvironmentSpecs.cs",
+            "dotnet:test:CliWrap.Tests/ExecutionSpecs.cs",
+            "dotnet:test:CliWrap.Tests/LineBreakSpecs.cs",
+            "dotnet:test:CliWrap.Tests/PathResolutionSpecs.cs",
+            "dotnet:test:CliWrap.Tests/PipingSpecs.cs",
+            "dotnet:test:CliWrap.Tests/PullEventStreamSpecs.cs",
+            "dotnet:test:CliWrap.Tests/PushEventStreamSpecs.cs",
+            "dotnet:test:CliWrap.Tests/ResourcePolicySpecs.cs",
+            "dotnet:test:CliWrap.Tests/Utils/Extensions/AssertionExtensions.cs",
+            "dotnet:test:CliWrap.Tests/Utils/Extensions/EnvironmentExtensions.cs",
+            "dotnet:test:CliWrap.Tests/ValidationSpecs.cs"
+          ],
+          "hours": {
+            "low": 2.5,
+            "expected": 4,
+            "high": 6.5
+          },
+          "rationale": "More than one hundred process-focused cases cover command construction, execution models, stream pipes, cancellation, events, environment, quoting, signals, and platform-specific behavior using a purpose-built child process.",
+          "uncertaintyReasons": [
+            "The static review did not execute the suite; passing behavior is assumed under the default policy."
+          ]
+        },
+        {
+          "id": "target:work:unit-tests:a6ad88961efa60e9f48e:review-0005",
+          "category": "unit-testing",
+          "title": "Create represented unit tests for \u0027CliWrap.Tests/CliWrap.Tests.csproj\u0027 (test) (review target 5 of 10)",
+          "scope": "CliWrap.Tests/CliWrap.Tests.csproj",
+          "sourceWorkItemIds": [
+            "work:unit-tests:a6ad88961efa60e9f48e:part-0005"
+          ],
+          "evidenceIds": [
+            "dotnet:test:CliWrap.Tests/BufferingSpecs.cs",
+            "dotnet:test:CliWrap.Tests/ConfigurationSpecs.cs",
+            "dotnet:test:CliWrap.Tests/CredentialsSpecs.cs",
+            "dotnet:test:CliWrap.Tests/EnvironmentSpecs.cs",
+            "dotnet:test:CliWrap.Tests/ExecutionSpecs.cs",
+            "dotnet:test:CliWrap.Tests/LineBreakSpecs.cs",
+            "dotnet:test:CliWrap.Tests/PathResolutionSpecs.cs",
+            "dotnet:test:CliWrap.Tests/PipingSpecs.cs",
+            "dotnet:test:CliWrap.Tests/PullEventStreamSpecs.cs",
+            "dotnet:test:CliWrap.Tests/PushEventStreamSpecs.cs",
+            "dotnet:test:CliWrap.Tests/ResourcePolicySpecs.cs",
+            "dotnet:test:CliWrap.Tests/Utils/Extensions/AssertionExtensions.cs",
+            "dotnet:test:CliWrap.Tests/Utils/Extensions/EnvironmentExtensions.cs",
+            "dotnet:test:CliWrap.Tests/ValidationSpecs.cs"
+          ],
+          "hours": {
+            "low": 3.5,
+            "expected": 6,
+            "high": 10
+          },
+          "rationale": "More than one hundred process-focused cases cover command construction, execution models, stream pipes, cancellation, events, environment, quoting, signals, and platform-specific behavior using a purpose-built child process.",
+          "uncertaintyReasons": [
+            "The static review did not execute the suite; passing behavior is assumed under the default policy."
+          ]
+        },
+        {
+          "id": "target:work:unit-tests:a6ad88961efa60e9f48e:review-0006",
+          "category": "unit-testing",
+          "title": "Create represented unit tests for \u0027CliWrap.Tests/CliWrap.Tests.csproj\u0027 (test) (review target 6 of 10)",
+          "scope": "CliWrap.Tests/CliWrap.Tests.csproj",
+          "sourceWorkItemIds": [
+            "work:unit-tests:a6ad88961efa60e9f48e:part-0006"
+          ],
+          "evidenceIds": [
+            "dotnet:test:CliWrap.Tests/BufferingSpecs.cs",
+            "dotnet:test:CliWrap.Tests/ConfigurationSpecs.cs",
+            "dotnet:test:CliWrap.Tests/CredentialsSpecs.cs",
+            "dotnet:test:CliWrap.Tests/EnvironmentSpecs.cs",
+            "dotnet:test:CliWrap.Tests/ExecutionSpecs.cs",
+            "dotnet:test:CliWrap.Tests/LineBreakSpecs.cs",
+            "dotnet:test:CliWrap.Tests/PathResolutionSpecs.cs",
+            "dotnet:test:CliWrap.Tests/PipingSpecs.cs",
+            "dotnet:test:CliWrap.Tests/PullEventStreamSpecs.cs",
+            "dotnet:test:CliWrap.Tests/PushEventStreamSpecs.cs",
+            "dotnet:test:CliWrap.Tests/ResourcePolicySpecs.cs",
+            "dotnet:test:CliWrap.Tests/Utils/Extensions/AssertionExtensions.cs",
+            "dotnet:test:CliWrap.Tests/Utils/Extensions/EnvironmentExtensions.cs",
+            "dotnet:test:CliWrap.Tests/ValidationSpecs.cs"
+          ],
+          "hours": {
+            "low": 3,
+            "expected": 5,
+            "high": 8
+          },
+          "rationale": "More than one hundred process-focused cases cover command construction, execution models, stream pipes, cancellation, events, environment, quoting, signals, and platform-specific behavior using a purpose-built child process.",
+          "uncertaintyReasons": [
+            "The static review did not execute the suite; passing behavior is assumed under the default policy."
+          ]
+        },
+        {
+          "id": "target:work:unit-tests:a6ad88961efa60e9f48e:review-0007",
+          "category": "unit-testing",
+          "title": "Create represented unit tests for \u0027CliWrap.Tests/CliWrap.Tests.csproj\u0027 (test) (review target 7 of 10)",
+          "scope": "CliWrap.Tests/CliWrap.Tests.csproj",
+          "sourceWorkItemIds": [
+            "work:unit-tests:a6ad88961efa60e9f48e:part-0007"
+          ],
+          "evidenceIds": [
+            "dotnet:test:CliWrap.Tests/BufferingSpecs.cs",
+            "dotnet:test:CliWrap.Tests/ConfigurationSpecs.cs",
+            "dotnet:test:CliWrap.Tests/CredentialsSpecs.cs",
+            "dotnet:test:CliWrap.Tests/EnvironmentSpecs.cs",
+            "dotnet:test:CliWrap.Tests/ExecutionSpecs.cs",
+            "dotnet:test:CliWrap.Tests/LineBreakSpecs.cs",
+            "dotnet:test:CliWrap.Tests/PathResolutionSpecs.cs",
+            "dotnet:test:CliWrap.Tests/PipingSpecs.cs",
+            "dotnet:test:CliWrap.Tests/PullEventStreamSpecs.cs",
+            "dotnet:test:CliWrap.Tests/PushEventStreamSpecs.cs",
+            "dotnet:test:CliWrap.Tests/ResourcePolicySpecs.cs",
+            "dotnet:test:CliWrap.Tests/Utils/Extensions/AssertionExtensions.cs",
+            "dotnet:test:CliWrap.Tests/Utils/Extensions/EnvironmentExtensions.cs",
+            "dotnet:test:CliWrap.Tests/ValidationSpecs.cs"
+          ],
+          "hours": {
+            "low": 2.5,
+            "expected": 4,
+            "high": 6.5
+          },
+          "rationale": "More than one hundred process-focused cases cover command construction, execution models, stream pipes, cancellation, events, environment, quoting, signals, and platform-specific behavior using a purpose-built child process.",
+          "uncertaintyReasons": [
+            "The static review did not execute the suite; passing behavior is assumed under the default policy."
+          ]
+        },
+        {
+          "id": "target:work:unit-tests:a6ad88961efa60e9f48e:review-0008",
+          "category": "unit-testing",
+          "title": "Create represented unit tests for \u0027CliWrap.Tests/CliWrap.Tests.csproj\u0027 (test) (review target 8 of 10)",
+          "scope": "CliWrap.Tests/CliWrap.Tests.csproj",
+          "sourceWorkItemIds": [
+            "work:unit-tests:a6ad88961efa60e9f48e:part-0008"
+          ],
+          "evidenceIds": [
+            "dotnet:test:CliWrap.Tests/BufferingSpecs.cs",
+            "dotnet:test:CliWrap.Tests/ConfigurationSpecs.cs",
+            "dotnet:test:CliWrap.Tests/CredentialsSpecs.cs",
+            "dotnet:test:CliWrap.Tests/EnvironmentSpecs.cs",
+            "dotnet:test:CliWrap.Tests/ExecutionSpecs.cs",
+            "dotnet:test:CliWrap.Tests/LineBreakSpecs.cs",
+            "dotnet:test:CliWrap.Tests/PathResolutionSpecs.cs",
+            "dotnet:test:CliWrap.Tests/PipingSpecs.cs",
+            "dotnet:test:CliWrap.Tests/PullEventStreamSpecs.cs",
+            "dotnet:test:CliWrap.Tests/PushEventStreamSpecs.cs",
+            "dotnet:test:CliWrap.Tests/ResourcePolicySpecs.cs",
+            "dotnet:test:CliWrap.Tests/Utils/Extensions/AssertionExtensions.cs",
+            "dotnet:test:CliWrap.Tests/Utils/Extensions/EnvironmentExtensions.cs",
+            "dotnet:test:CliWrap.Tests/ValidationSpecs.cs"
+          ],
+          "hours": {
+            "low": 2.5,
+            "expected": 4,
+            "high": 6.5
+          },
+          "rationale": "More than one hundred process-focused cases cover command construction, execution models, stream pipes, cancellation, events, environment, quoting, signals, and platform-specific behavior using a purpose-built child process.",
+          "uncertaintyReasons": [
+            "The static review did not execute the suite; passing behavior is assumed under the default policy."
+          ]
+        },
+        {
+          "id": "target:work:unit-tests:a6ad88961efa60e9f48e:review-0009",
+          "category": "unit-testing",
+          "title": "Create represented unit tests for \u0027CliWrap.Tests/CliWrap.Tests.csproj\u0027 (test) (review target 9 of 10)",
+          "scope": "CliWrap.Tests/CliWrap.Tests.csproj",
+          "sourceWorkItemIds": [
+            "work:unit-tests:a6ad88961efa60e9f48e:part-0009"
+          ],
+          "evidenceIds": [
+            "dotnet:test:CliWrap.Tests/BufferingSpecs.cs",
+            "dotnet:test:CliWrap.Tests/ConfigurationSpecs.cs",
+            "dotnet:test:CliWrap.Tests/CredentialsSpecs.cs",
+            "dotnet:test:CliWrap.Tests/EnvironmentSpecs.cs",
+            "dotnet:test:CliWrap.Tests/ExecutionSpecs.cs",
+            "dotnet:test:CliWrap.Tests/LineBreakSpecs.cs",
+            "dotnet:test:CliWrap.Tests/PathResolutionSpecs.cs",
+            "dotnet:test:CliWrap.Tests/PipingSpecs.cs",
+            "dotnet:test:CliWrap.Tests/PullEventStreamSpecs.cs",
+            "dotnet:test:CliWrap.Tests/PushEventStreamSpecs.cs",
+            "dotnet:test:CliWrap.Tests/ResourcePolicySpecs.cs",
+            "dotnet:test:CliWrap.Tests/Utils/Extensions/AssertionExtensions.cs",
+            "dotnet:test:CliWrap.Tests/Utils/Extensions/EnvironmentExtensions.cs",
+            "dotnet:test:CliWrap.Tests/ValidationSpecs.cs"
+          ],
+          "hours": {
+            "low": 2.5,
+            "expected": 4,
+            "high": 6.5
+          },
+          "rationale": "More than one hundred process-focused cases cover command construction, execution models, stream pipes, cancellation, events, environment, quoting, signals, and platform-specific behavior using a purpose-built child process.",
+          "uncertaintyReasons": [
+            "The static review did not execute the suite; passing behavior is assumed under the default policy."
+          ]
+        },
+        {
+          "id": "target:work:unit-tests:a6ad88961efa60e9f48e:review-0010",
+          "category": "unit-testing",
+          "title": "Create represented unit tests for \u0027CliWrap.Tests/CliWrap.Tests.csproj\u0027 (test) (review target 10 of 10)",
+          "scope": "CliWrap.Tests/CliWrap.Tests.csproj",
+          "sourceWorkItemIds": [
+            "work:unit-tests:a6ad88961efa60e9f48e:part-0010"
+          ],
+          "evidenceIds": [
+            "dotnet:test:CliWrap.Tests/BufferingSpecs.cs",
+            "dotnet:test:CliWrap.Tests/ConfigurationSpecs.cs",
+            "dotnet:test:CliWrap.Tests/CredentialsSpecs.cs",
+            "dotnet:test:CliWrap.Tests/EnvironmentSpecs.cs",
+            "dotnet:test:CliWrap.Tests/ExecutionSpecs.cs",
+            "dotnet:test:CliWrap.Tests/LineBreakSpecs.cs",
+            "dotnet:test:CliWrap.Tests/PathResolutionSpecs.cs",
+            "dotnet:test:CliWrap.Tests/PipingSpecs.cs",
+            "dotnet:test:CliWrap.Tests/PullEventStreamSpecs.cs",
+            "dotnet:test:CliWrap.Tests/PushEventStreamSpecs.cs",
+            "dotnet:test:CliWrap.Tests/ResourcePolicySpecs.cs",
+            "dotnet:test:CliWrap.Tests/Utils/Extensions/AssertionExtensions.cs",
+            "dotnet:test:CliWrap.Tests/Utils/Extensions/EnvironmentExtensions.cs",
+            "dotnet:test:CliWrap.Tests/ValidationSpecs.cs"
+          ],
+          "hours": {
+            "low": 2.5,
+            "expected": 4,
+            "high": 6.5
+          },
+          "rationale": "More than one hundred process-focused cases cover command construction, execution models, stream pipes, cancellation, events, environment, quoting, signals, and platform-specific behavior using a purpose-built child process.",
+          "uncertaintyReasons": [
+            "The static review did not execute the suite; passing behavior is assumed under the default policy."
+          ]
+        }
+      ]
+    }
+  ]
+}

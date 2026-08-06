@@ -6,7 +6,9 @@ namespace Fairbill.Calibration;
 
 public static class CalibrationReviewCompiler
 {
-    public const string CompilerVersion = "calibration-review-compiler/0.1.0";
+    public const string CompilerVersion = "calibration-review-compiler/0.2.0";
+
+    private const string LegacyCompilerVersion = "calibration-review-compiler/0.1.0";
 
     private static readonly Regex TitlePartSuffix = new(
         @" \(part \d+ of \d+\)$",
@@ -20,11 +22,23 @@ public static class CalibrationReviewCompiler
         ArgumentNullException.ThrowIfNull(sourceEstimates);
 
         List<string> errors = [.. ContractValidation.Validate(plan)];
-        if (!string.Equals(plan.CompilerVersion, CompilerVersion, StringComparison.Ordinal))
+        if (!IsSupportedCompilerVersion(plan.CompilerVersion))
         {
             errors.Add(
                 $"Review plan requires compiler '{plan.CompilerVersion}', but this build provides " +
-                $"'{CompilerVersion}'.");
+                $"'{CompilerVersion}' and compatibility for '{LegacyCompilerVersion}'.");
+        }
+        else if (string.Equals(
+                     plan.CompilerVersion,
+                     LegacyCompilerVersion,
+                     StringComparison.Ordinal) &&
+                 plan.Records.SelectMany(record => record.Capabilities)
+                     .SelectMany(capability => capability.Targets)
+                     .Any(target => target.Hours.Expected == 0m))
+        {
+            errors.Add(
+                $"Review plan compiler '{LegacyCompilerVersion}' does not support explicit " +
+                $"zero-hour exclusions; use '{CompilerVersion}'.");
         }
 
         Dictionary<CandidateKey, EstimateReport> candidates = [];
@@ -221,4 +235,8 @@ public static class CalibrationReviewCompiler
         string SourceDigest,
         EstimationProfile Profile,
         string BaselineId);
+
+    private static bool IsSupportedCompilerVersion(string version) =>
+        string.Equals(version, CompilerVersion, StringComparison.Ordinal) ||
+        string.Equals(version, LegacyCompilerVersion, StringComparison.Ordinal);
 }

@@ -17,9 +17,9 @@ than reading an entire large repository.
 ## Status
 
 Milestones 1 through 6 and the Milestone 7A calibration foundation are complete.
-Milestone 7B1 through 7B4 public-pilot, review, and mutation
-checkpoints are implemented; actual independent correction and corpus expansion
-remain. The repository now contains:
+Milestone 7B1 through 7B5 public-corpus, review, and mutation checkpoints are
+implemented; actual independent correction and broader multi-observation corpus
+coverage remain. The repository now contains:
 
 - versioned JSON contracts and published schemas for evidence, work items,
   estimates, diagnostics, and rate cards;
@@ -55,7 +55,7 @@ remain. The repository now contains:
 - category-specific capability builders for implementation, UI, data, integrations,
   security, tests, documentation, delivery, validation, and review;
 - explicit `implementation` and `recreation` profile work, deterministic confidence
-  drivers, and a professionalization-gap ledger excluded from represented EHE; and
+  drivers, and a professionalization-gap ledger excluded from represented EHE;
 - a schema-validated, checked-in, embedded `seed-rules/0.2.1` model that partitions
   large capabilities around a four-hour target, retains the 0.2.0 priors, and
   normalizes TypeScript duplicates and test structure through the shared
@@ -63,23 +63,24 @@ remain. The repository now contains:
 - repository, category, scope, capability, and bounded review projections with
   compact JSON and readable Markdown;
 - `explain` drill-down from stable work-item or capability IDs to evidence and
-  calculation lineage; and
+  calculation lineage;
 - a schema-validated, checked-in 2026 US senior-contractor rate model with a
   $160/hour default, $125-$200 market reference, source provenance, formula, and
-  caller override or opt-out; and
+  caller override or opt-out;
 - a versioned reviewed-label corpus, work-item rubric, repository-isolated
   development/validation/test partitions, and deterministic offline evaluator for
   item, category, total, bias, interval, and mapping-coverage metrics;
 - schema-versioned unreviewed authoring packets, optional blind review, and a
   deterministic review-plan compiler that requires complete capability coverage;
-  and
-- an MIT-source-provenanced three-repository public pilot with frozen partitions
-  and checked-in `seed-rules/0.2.0` baseline reports. Its labels have one host-AI
-  teacher and no independent correction, so they remain preliminary weak
-  supervision;
+- two MIT-source-provenanced three-repository public corpora with frozen
+  partitions and checked-in `seed-rules/0.2.0` or `seed-rules/0.2.1` baseline
+  reports. Their six repository families have one host-AI teacher and no
+  independent correction, so they remain preliminary weak supervision;
 - exact-digest subsequent-review packets and compilation with explicit
   accept/replace decisions, preserved lineage, maturity progression, and distinct
-  reviewer identities; and
+  reviewer identities;
+- audited exact-zero reviewed exclusions, permitted only as `0/0/0` with rationale
+  and a size exception under `ehe-work-item/1.1.0`;
 - versioned relational mutation guardrails plus a 48-case, 156-assertion synthetic
   baseline spanning .NET, parser-backed JavaScript, token-backed TypeScript, and
   mixed repositories. It covers formatting, exact duplication, generated bodies,
@@ -112,7 +113,9 @@ network, and does not make the still-uncalibrated seed priors production-ready.
 `fairbill calibration review-scaffold` prepares a reference or blind second-pass
 packet from an existing corpus. `review-compile` advances maturity only after a
 distinct reviewer decides every target and the exact source-corpus digest matches.
-The checked-in pilot packet is still unreviewed. `fairbill calibration mutations`
+Both checked-in public packets are still unreviewed; the combined handoff is in
+[`calibration/INDEPENDENT_REVIEW.md`](calibration/INDEPENDENT_REVIEW.md).
+`fairbill calibration mutations`
 evaluates deterministic relational guardrails; failures emit a report and return
 exit code 5. Mutation relations are not effort labels. The latest near-copy bounds
 do not imply semantic clone detection, and the dead-code invariant is limited to
@@ -260,6 +263,6 @@ without misrepresenting counterfactual hours as historical labor.
   priors.
 - [`rates/us-senior-contractor`](rates/us-senior-contractor) contains the auditable
   bundled contractor-rate derivation.
-- [`calibration`](calibration) contains the public review rubric, pilot corpus,
-  independent-review handoff, mutation fixtures, frozen seed baselines, and
+- [`calibration`](calibration) contains the public review rubrics, two public
+  corpora, independent-review handoff, mutation fixtures, frozen seed baselines, and
   publication guidance; no private calibration data belongs there.

@@ -5,7 +5,9 @@ namespace Fairbill.Calibration;
 
 public static class CalibrationCorpusReviewCompiler
 {
-    public const string CompilerVersion = "calibration-corpus-review-compiler/0.1.0";
+    public const string CompilerVersion = "calibration-corpus-review-compiler/0.2.0";
+
+    private const string LegacyCompilerVersion = "calibration-corpus-review-compiler/0.1.0";
 
     public static CalibrationCorpus Compile(
         CalibrationCorpusReviewPlan plan,
@@ -17,11 +19,24 @@ public static class CalibrationCorpusReviewCompiler
         List<string> errors = [.. ContractValidation.Validate(plan)];
         errors.AddRange(ContractValidation.Validate(sourceCorpus).Select(error =>
             $"Source corpus: {error}"));
-        if (!string.Equals(plan.CompilerVersion, CompilerVersion, StringComparison.Ordinal))
+        if (!IsSupportedCompilerVersion(plan.CompilerVersion))
         {
             errors.Add(
                 $"Corpus review plan requires compiler '{plan.CompilerVersion}', but this build " +
-                $"provides '{CompilerVersion}'.");
+                $"provides '{CompilerVersion}' and compatibility for '{LegacyCompilerVersion}'.");
+        }
+        else if (string.Equals(
+                     plan.CompilerVersion,
+                     LegacyCompilerVersion,
+                     StringComparison.Ordinal) &&
+                 (sourceCorpus.Records.SelectMany(record => record.Targets)
+                      .Any(target => target.Hours.Expected == 0m) ||
+                  plan.Records.SelectMany(record => record.Targets)
+                      .Any(target => target.Hours?.Expected == 0m)))
+        {
+            errors.Add(
+                $"Corpus review compiler '{LegacyCompilerVersion}' does not support explicit " +
+                $"zero-hour exclusions; use '{CompilerVersion}'.");
         }
 
         string sourceDigest = CalibrationDigest.Compute(sourceCorpus);
@@ -211,4 +226,8 @@ public static class CalibrationCorpusReviewCompiler
         string.IsNullOrWhiteSpace(source)
             ? subsequent
             : $"{source}\n\nSubsequent review: {subsequent}";
+
+    private static bool IsSupportedCompilerVersion(string version) =>
+        string.Equals(version, CompilerVersion, StringComparison.Ordinal) ||
+        string.Equals(version, LegacyCompilerVersion, StringComparison.Ordinal);
 }
