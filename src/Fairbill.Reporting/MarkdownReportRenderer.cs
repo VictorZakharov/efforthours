@@ -1,4 +1,3 @@
-using System.Globalization;
 using System.Text;
 using Fairbill.Contracts;
 using Fairbill.Contracts.V1;
@@ -20,30 +19,30 @@ public sealed class MarkdownReportRenderer : IReportRenderer
         }
 
         StringBuilder markdown = new();
-        markdown.Append("# Fairbill estimate - ").AppendLine(Escape(report.Repository.Name));
+        markdown.Append("# Fairbill estimate - ").AppendLine(ReportFormatting.Escape(report.Repository.Name));
         markdown.AppendLine();
         markdown.AppendLine("> Equivalent Human Effort is counterfactual replacement effort, not a record of hours actually worked.");
         markdown.AppendLine();
-        markdown.Append("Profile: `").Append(ToKebabCase(report.Profile)).AppendLine("`  ");
-        markdown.Append("Estimator: `").Append(Escape(report.EstimatorVersion)).AppendLine("`  ");
-        markdown.Append("Verification: `").Append(ToKebabCase(report.Verification.Mode)).Append("` / `")
-            .Append(ToKebabCase(report.Verification.WorkingState)).AppendLine("`");
+        markdown.Append("Profile: `").Append(ReportFormatting.Kebab(report.Profile)).AppendLine("`  ");
+        markdown.Append("Estimator: `").Append(ReportFormatting.Escape(report.EstimatorVersion)).AppendLine("`  ");
+        markdown.Append("Verification: `").Append(ReportFormatting.Kebab(report.Verification.Mode)).Append("` / `")
+            .Append(ReportFormatting.Kebab(report.Verification.WorkingState)).AppendLine("`");
         markdown.AppendLine();
 
         markdown.AppendLine("## Summary");
         markdown.AppendLine();
         markdown.AppendLine("| Measure | Low | Expected | High |");
         markdown.AppendLine("| --- | ---: | ---: | ---: |");
-        markdown.Append("| Human-hours | ").Append(Hours(report.TotalEffort.Low)).Append(" | ")
-            .Append(Hours(report.TotalEffort.Expected)).Append(" | ")
-            .Append(Hours(report.TotalEffort.High)).AppendLine(" |");
+        markdown.Append("| Human-hours | ").Append(ReportFormatting.Hours(report.TotalEffort.Low)).Append(" | ")
+            .Append(ReportFormatting.Hours(report.TotalEffort.Expected)).Append(" | ")
+            .Append(ReportFormatting.Hours(report.TotalEffort.High)).AppendLine(" |");
 
         if (report.TotalCost is not null)
         {
-            markdown.Append("| Replacement cost (").Append(Escape(report.TotalCost.Currency)).Append(") | ")
-                .Append(Money(report.TotalCost.Low)).Append(" | ")
-                .Append(Money(report.TotalCost.Expected)).Append(" | ")
-                .Append(Money(report.TotalCost.High)).AppendLine(" |");
+            markdown.Append("| Replacement cost (").Append(ReportFormatting.Escape(report.TotalCost.Currency)).Append(") | ")
+                .Append(ReportFormatting.Money(report.TotalCost.Low)).Append(" | ")
+                .Append(ReportFormatting.Money(report.TotalCost.Expected)).Append(" | ")
+                .Append(ReportFormatting.Money(report.TotalCost.High)).AppendLine(" |");
         }
 
         markdown.AppendLine();
@@ -53,10 +52,10 @@ public sealed class MarkdownReportRenderer : IReportRenderer
         markdown.AppendLine("| --- | ---: | ---: | ---: |");
         foreach (CategoryEstimate category in report.Categories)
         {
-            markdown.Append("| ").Append(Display(category.Category)).Append(" | ")
-                .Append(Hours(category.Hours.Low)).Append(" | ")
-                .Append(Hours(category.Hours.Expected)).Append(" | ")
-                .Append(Hours(category.Hours.High)).AppendLine(" |");
+            markdown.Append("| ").Append(ReportFormatting.Display(category.Category)).Append(" | ")
+                .Append(ReportFormatting.Hours(category.Hours.Low)).Append(" | ")
+                .Append(ReportFormatting.Hours(category.Hours.Expected)).Append(" | ")
+                .Append(ReportFormatting.Hours(category.Hours.High)).AppendLine(" |");
         }
 
         markdown.AppendLine();
@@ -66,11 +65,11 @@ public sealed class MarkdownReportRenderer : IReportRenderer
         markdown.AppendLine("| --- | --- | ---: | ---: | --- |");
         foreach (WorkItem item in report.WorkItems)
         {
-            markdown.Append("| ").Append(Escape(item.Title)).Append(" | ")
-                .Append(Display(item.Category)).Append(" | ")
-                .Append(Hours(item.Hours.Expected)).Append(" | ")
-                .Append(item.Confidence.ToString("P0", CultureInfo.InvariantCulture)).Append(" | ")
-                .Append(Escape(string.Join(", ", item.EvidenceIds))).AppendLine(" |");
+            markdown.Append("| ").Append(ReportFormatting.Escape(item.Title)).Append(" | ")
+                .Append(ReportFormatting.Display(item.Category)).Append(" | ")
+                .Append(ReportFormatting.Hours(item.Hours.Expected)).Append(" | ")
+                .Append(ReportFormatting.Percent(item.Confidence)).Append(" | ")
+                .Append(ReportFormatting.Escape(string.Join(", ", item.EvidenceIds))).AppendLine(" |");
         }
 
         AppendList(markdown, "Assumptions", report.Assumptions);
@@ -81,7 +80,7 @@ public sealed class MarkdownReportRenderer : IReportRenderer
                 markdown,
                 "Diagnostics",
                 report.Diagnostics.Select(diagnostic =>
-                    $"`{diagnostic.Code}` ({ToKebabCase(diagnostic.Severity)}): {diagnostic.Message}"));
+                    $"`{diagnostic.Code}` ({ReportFormatting.Kebab(diagnostic.Severity)}): {diagnostic.Message}"));
         }
 
         if (report.ProfessionalizationGap.Count > 0)
@@ -93,12 +92,12 @@ public sealed class MarkdownReportRenderer : IReportRenderer
             markdown.AppendLine("| --- | --- | ---: | ---: | ---: | --- |");
             foreach (WorkItem item in report.ProfessionalizationGap)
             {
-                markdown.Append("| ").Append(Escape(item.Title)).Append(" | ")
-                    .Append(Display(item.Category)).Append(" | ")
-                    .Append(Hours(item.Hours.Low)).Append(" | ")
-                    .Append(Hours(item.Hours.Expected)).Append(" | ")
-                    .Append(Hours(item.Hours.High)).Append(" | ")
-                    .Append(Escape(string.Join(", ", item.EvidenceIds))).AppendLine(" |");
+                markdown.Append("| ").Append(ReportFormatting.Escape(item.Title)).Append(" | ")
+                    .Append(ReportFormatting.Display(item.Category)).Append(" | ")
+                    .Append(ReportFormatting.Hours(item.Hours.Low)).Append(" | ")
+                    .Append(ReportFormatting.Hours(item.Hours.Expected)).Append(" | ")
+                    .Append(ReportFormatting.Hours(item.Hours.High)).Append(" | ")
+                    .Append(ReportFormatting.Escape(string.Join(", ", item.EvidenceIds))).AppendLine(" |");
             }
         }
 
@@ -123,46 +122,7 @@ public sealed class MarkdownReportRenderer : IReportRenderer
         markdown.AppendLine();
         foreach (string value in materialized)
         {
-            markdown.Append("- ").AppendLine(Escape(value));
+            markdown.Append("- ").AppendLine(ReportFormatting.Escape(value));
         }
     }
-
-    private static string Display(EffortCategory category) => category switch
-    {
-        EffortCategory.SpecificationComprehensionAndDomainLearning => "Specification and domain learning",
-        EffortCategory.RepositoryAndSolutionSetup => "Repository and solution setup",
-        EffortCategory.ArchitectureAndTechnicalDesign => "Architecture and technical design",
-        EffortCategory.ProductionImplementation => "Production implementation",
-        EffortCategory.UiImplementationAndRepresentedUxDecisions => "UI implementation and UX decisions",
-        EffortCategory.DataModelingPersistenceAndMigrations => "Data modeling, persistence, and migrations",
-        EffortCategory.ExternalIntegrationsAndProtocols => "External integrations and protocols",
-        EffortCategory.UnitTesting => "Unit testing",
-        EffortCategory.IntegrationContractAndComponentTesting => "Integration, contract, and component testing",
-        EffortCategory.EndToEndAndUiTesting => "End-to-end and UI testing",
-        EffortCategory.ManualValidationDebuggingAndHardening => "Manual validation, debugging, and hardening",
-        EffortCategory.Documentation => "Documentation",
-        EffortCategory.BuildConfigurationAndDeveloperTooling => "Build configuration and developer tooling",
-        EffortCategory.CiCdAndInfrastructureAsCode => "CI/CD and infrastructure as code",
-        EffortCategory.SecurityAndAccessibility => "Security and accessibility",
-        EffortCategory.PackagingDeploymentAndReleaseArtifacts => "Packaging, deployment, and release artifacts",
-        EffortCategory.SelfReviewAndSystemIntegration => "Self-review and system integration",
-        _ => throw new ArgumentOutOfRangeException(nameof(category)),
-    };
-
-    private static string ToKebabCase<T>(T value)
-        where T : struct, Enum
-    {
-        return System.Text.Json.JsonNamingPolicy.KebabCaseLower.ConvertName(value.ToString());
-    }
-
-    private static string Hours(decimal value) =>
-        value.ToString("0.##", CultureInfo.InvariantCulture);
-
-    private static string Money(decimal value) =>
-        value.ToString("#,0.00", CultureInfo.InvariantCulture);
-
-    private static string Escape(string value) =>
-        value.Replace("|", "\\|", StringComparison.Ordinal)
-            .Replace("\r", " ", StringComparison.Ordinal)
-            .Replace("\n", " ", StringComparison.Ordinal);
 }

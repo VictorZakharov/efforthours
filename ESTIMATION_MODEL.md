@@ -314,7 +314,7 @@ Pricing is a final, replaceable layer:
 Equivalent Replacement Cost = Equivalent Human Effort × hourly market rate
 ```
 
-The default rate card will contain:
+The bundled `us-senior-software-contractor/2026.1` rate card contains:
 
 - a documented nationwide US senior independent-contractor bill rate, including
   the normal overhead represented by an independent-contractor rate;
@@ -323,8 +323,19 @@ The default rate card will contain:
 - a reasonable market range; and
 - a schema version.
 
-Callers can provide an exact override. Future regional profiles must not change the
-underlying effort estimate.
+The nationwide default is $160 USD/hour, with a disclosed $125-$200 market
+reference. It starts from May 2025 BLS OEWS Software Developer median, 75th, and
+90th-percentile wages, applies the March 2026 BLS ECEC professional-occupation
+total-compensation-to-wage ratio, divides by an explicit 75% billable-utilization
+assumption, and rounds each point to the nearest $5/hour. OEWS excludes
+self-employed workers, so the observations are transparently treated as employee
+wage anchors rather than contractor-rate measurements.
+
+The complete inputs, series IDs, source release dates, formula, assumptions, and
+public-domain provenance are stored under `rates/us-senior-contractor/` and
+described in `MILESTONE_6.md`. Callers can provide an exact override or request
+effort-only output. Future regional profiles must not change the underlying effort
+estimate.
 
 ## 13. Professionalization gap
 
@@ -344,10 +355,9 @@ Gap work must never be silently added to represented EHE.
 
 The remaining questions require implementation evidence or external research:
 
-1. The contractor-rate source and exact 2026 methodology.
-2. Quantitative calibration and accuracy thresholds for held-out repositories.
-3. Practical token, time, and monetary measurements for host-AI adjudication.
-4. Exact benchmark hardware and memory limits for the one-million-line performance
+1. Quantitative calibration and accuracy thresholds for held-out repositories.
+2. Practical token, time, and monetary measurements for host-AI adjudication.
+3. Exact benchmark hardware and memory limits for the one-million-line performance
    target.
-5. Whether self-contained executables should supplement the primary .NET global
+4. Whether self-contained executables should supplement the primary .NET global
    tool package.

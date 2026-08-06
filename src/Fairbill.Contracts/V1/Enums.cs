@@ -21,6 +21,21 @@ public enum EstimationProfile
     Recreation,
 }
 
+public enum EstimateViewKind
+{
+    Repository,
+    Category,
+    Scope,
+    WorkItem,
+    Review,
+}
+
+public enum ExplanationMatchKind
+{
+    WorkItem,
+    Capability,
+}
+
 public enum ComplexityLevel
 {
     Routine,

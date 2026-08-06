@@ -3,9 +3,9 @@ using Fairbill.Contracts.V1;
 
 namespace Fairbill.Reporting;
 
-public sealed class JsonReportRenderer(bool compact = false) : IReportRenderer
+public sealed class EstimateViewJsonRenderer(bool compact = false)
 {
-    public string Render(EstimateReport report)
+    public string Render(EstimateViewReport report)
     {
         ArgumentNullException.ThrowIfNull(report);
 
@@ -13,22 +13,21 @@ public sealed class JsonReportRenderer(bool compact = false) : IReportRenderer
         if (semanticErrors.Count > 0)
         {
             throw new ArgumentException(
-                "The estimate report is invalid: " + string.Join(" ", semanticErrors),
+                "The estimate view is invalid: " + string.Join(" ", semanticErrors),
                 nameof(report));
         }
 
         string json = compact
             ? ContractJson.SerializeCompact(report)
             : ContractJson.Serialize(report);
-        SchemaValidationResult schemaResult = ContractSchemaValidator.Validate(
-            SchemaNames.EstimateReport,
+        SchemaValidationResult schema = ContractSchemaValidator.Validate(
+            SchemaNames.EstimateView,
             json);
-
-        if (!schemaResult.IsValid)
+        if (!schema.IsValid)
         {
             throw new InvalidOperationException(
-                "The estimate report does not satisfy its JSON Schema: " +
-                string.Join(" ", schemaResult.Errors));
+                "The estimate view does not satisfy its JSON Schema: " +
+                string.Join(" ", schema.Errors));
         }
 
         return json;

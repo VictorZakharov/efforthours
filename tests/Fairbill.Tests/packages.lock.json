@@ -169,6 +169,12 @@
           "Fairbill.Contracts": "[1.0.0, )"
         }
       },
+      "fairbill.pricing": {
+        "type": "Project",
+        "dependencies": {
+          "Fairbill.Contracts": "[1.0.0, )"
+        }
+      },
       "fairbill.reporting": {
         "type": "Project",
         "dependencies": {

@@ -9,7 +9,10 @@ public sealed class ContractSchemaTests
     [Fact]
     public void CatalogContainsAllV1SchemasWithUniqueIds()
     {
-        Assert.Equal(7, ContractSchemaCatalog.Names.Count);
+        Assert.Equal(10, ContractSchemaCatalog.Names.Count);
+        Assert.Contains(SchemaNames.EstimateExplanation, ContractSchemaCatalog.Names);
+        Assert.Contains(SchemaNames.EstimateView, ContractSchemaCatalog.Names);
+        Assert.Contains(SchemaNames.RateCardModel, ContractSchemaCatalog.Names);
         Assert.Contains(SchemaNames.SeedRuleModel, ContractSchemaCatalog.Names);
         HashSet<string> ids = new(StringComparer.Ordinal);
 

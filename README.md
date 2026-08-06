@@ -16,7 +16,7 @@ than reading an entire large repository.
 
 ## Status
 
-Milestones 1 through 5 are complete. The repository now contains:
+Milestones 1 through 6 are complete. The repository now contains:
 
 - versioned JSON contracts and published schemas for evidence, work items,
   estimates, diagnostics, and rate cards;
@@ -54,7 +54,14 @@ Milestones 1 through 5 are complete. The repository now contains:
 - explicit `implementation` and `recreation` profile work, deterministic confidence
   drivers, and a professionalization-gap ledger excluded from represented EHE; and
 - a schema-validated, checked-in, embedded `seed-rules/0.2.0` model that partitions
-  large capabilities around a four-hour target.
+  large capabilities around a four-hour target;
+- repository, category, scope, capability, and bounded review projections with
+  compact JSON and readable Markdown;
+- `explain` drill-down from stable work-item or capability IDs to evidence and
+  calculation lineage; and
+- a schema-validated, checked-in 2026 US senior-contractor rate model with a
+  $160/hour default, $125-$200 market reference, source provenance, formula, and
+  caller override or opt-out.
 
 `fairbill scan <folder>` now produces common, static .NET, and static
 JavaScript/TypeScript evidence, including mixed-repository output.
@@ -62,6 +69,11 @@ JavaScript/TypeScript evidence, including mixed-repository output.
 pipeline. Every represented hour belongs to an evidence-backed work item, but the
 priors remain experimental and uncalibrated. Seed-rule output must not be presented
 as a production-ready or empirically validated estimate.
+
+`fairbill estimate` now applies the bundled 2026 USD rate by default. Use
+`--no-rate` for effort-only output or `--hourly-rate` for an explicit replacement.
+Pricing never changes EHE. Use `--view review` for a bounded AI-review packet and
+pass any reported capability ID to `fairbill explain` for its evidence lineage.
 
 Fairbill is intended to be released as open-source software. Development should be
 public-repository-ready from the beginning, even before the repository is published.
@@ -120,7 +132,11 @@ fairbill schema list
 fairbill schema show <name>
 fairbill model info
 fairbill model show
-fairbill estimate <repository-or-evidence.json> --profile <implementation|recreation> --format <json|markdown> [--hourly-rate <amount>] [--currency <code>]
+fairbill rate info
+fairbill rate show
+fairbill estimate <repository-or-evidence.json> [--profile <implementation|recreation>] [--view <full|repository|category|scope|work-item|review>] [--format <json|markdown>] [--compact] [--no-rate | --hourly-rate <amount> [--currency <code>]]
+fairbill report <estimate.json> [--view <full|repository|category|scope|work-item|review>] [--format <json|markdown>] [--compact]
+fairbill explain <repository-or-evidence.json> --item <work-item-or-capability-id> [--profile <implementation|recreation>] [--format <json|markdown>] [--compact]
 ```
 
 The optional scan cache trusts file path, size, and last-write metadata for
@@ -138,6 +154,13 @@ including Roslyn syntax analysis, in 6.608 seconds plus 0.107 seconds for
 serialization. See [BENCHMARKS.md](BENCHMARKS.md) for the methods, environment, and
 limitations. The v0.4 static JavaScript/TypeScript path processed a mixed 10,000-file,
 one-million-line fixture in 13.303 seconds plus 0.118 seconds for serialization.
+
+The Milestone 6 Fairbill snapshot produced 240,464 bytes of compact canonical
+estimate JSON. The bounded review projection used 17,694 bytes (7.4%), and review
+Markdown used 8,763 bytes (3.6%). See
+[REPORT_BENCHMARKS.md](REPORT_BENCHMARKS.md) for all views, small .NET,
+JavaScript/TypeScript, and mixed fixtures, the measurement method, and the initial
+usefulness review.
 
 ## Important distinction
 
@@ -166,8 +189,14 @@ without misrepresenting counterfactual hours as historical labor.
 - [PLAN.md](PLAN.md) describes the proposed architecture and delivery roadmap.
 - [MILESTONE_5.md](MILESTONE_5.md) records the granular seed-estimator design and
   its current limitations.
+- [MILESTONE_6.md](MILESTONE_6.md) records reporting, explanation, and default-rate
+  decisions.
+- [REPORT_BENCHMARKS.md](REPORT_BENCHMARKS.md) records reporting size and usefulness
+  measurements.
 - [MODEL_REVIEWS.md](MODEL_REVIEWS.md) records provisional realism checks with
   source and model provenance; they are not calibration claims.
+- [CHANGE_ESTIMATION.md](CHANGE_ESTIMATION.md) records the deferred PR, commit,
+  range, and contribution-portfolio semantics and safeguards.
 - [AGENTS.md](AGENTS.md) contains repository-wide instructions for coding agents.
 - [CONTRIBUTING.md](CONTRIBUTING.md) contains the verified development workflow.
 - [SECURITY.md](SECURITY.md) explains private vulnerability reporting expectations.
@@ -177,3 +206,5 @@ without misrepresenting counterfactual hours as historical labor.
   seed-rule model schema.
 - [`models/seed-rules`](models/seed-rules) contains the transparent bundled seed
   priors.
+- [`rates/us-senior-contractor`](rates/us-senior-contractor) contains the auditable
+  bundled contractor-rate derivation.

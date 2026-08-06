@@ -11,8 +11,11 @@ public static class ContractSchemaCatalog
     public static IReadOnlyList<string> Names { get; } =
     [
         SchemaNames.Diagnostic,
+        SchemaNames.EstimateExplanation,
         SchemaNames.EstimateReport,
+        SchemaNames.EstimateView,
         SchemaNames.RateCard,
+        SchemaNames.RateCardModel,
         SchemaNames.RepositoryEvidence,
         SchemaNames.RepositoryScanCache,
         SchemaNames.SeedRuleModel,

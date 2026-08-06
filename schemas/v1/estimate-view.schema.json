@@ -1,0 +1,333 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:fairbill:schema:v1:estimate-view",
+  "title": "Fairbill estimate projection v1",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "sourceEstimateSchemaVersion",
+    "view",
+    "estimatorVersion",
+    "repository",
+    "profile",
+    "baseline",
+    "totalEffort",
+    "counts",
+    "categories",
+    "scopes",
+    "capabilities",
+    "reviewQueue",
+    "professionalizationGap",
+    "omissions",
+    "diagnostics",
+    "assumptions",
+    "verification",
+    "professionalizationGapTreatment"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "1.0.0"
+    },
+    "sourceEstimateSchemaVersion": {
+      "const": "1.0.0"
+    },
+    "view": {
+      "enum": [
+        "repository",
+        "category",
+        "scope",
+        "work-item",
+        "review"
+      ]
+    },
+    "estimatorVersion": {
+      "type": "string",
+      "minLength": 1
+    },
+    "repository": {
+      "$ref": "urn:fairbill:schema:v1:estimate-report#/$defs/repository"
+    },
+    "profile": {
+      "enum": [
+        "implementation",
+        "recreation"
+      ]
+    },
+    "baseline": {
+      "$ref": "urn:fairbill:schema:v1:estimate-report#/$defs/baseline"
+    },
+    "totalEffort": {
+      "$ref": "urn:fairbill:schema:v1:estimate-report#/$defs/effortRange"
+    },
+    "rateCard": {
+      "$ref": "urn:fairbill:schema:v1:rate-card"
+    },
+    "totalCost": {
+      "$ref": "urn:fairbill:schema:v1:estimate-report#/$defs/costRange"
+    },
+    "counts": {
+      "$ref": "#/$defs/counts"
+    },
+    "categories": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/categoryEntry"
+      }
+    },
+    "scopes": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/scopeEntry"
+      }
+    },
+    "capabilities": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/capabilityEntry"
+      }
+    },
+    "reviewQueue": {
+      "type": "array",
+      "maxItems": 12,
+      "items": {
+        "$ref": "#/$defs/capabilityEntry"
+      }
+    },
+    "professionalizationGap": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/capabilityEntry"
+      }
+    },
+    "omissions": {
+      "$ref": "#/$defs/omissions"
+    },
+    "diagnostics": {
+      "type": "array",
+      "items": {
+        "$ref": "urn:fairbill:schema:v1:diagnostic"
+      }
+    },
+    "assumptions": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "verification": {
+      "$ref": "urn:fairbill:schema:v1:estimate-report#/$defs/verification"
+    },
+    "professionalizationGapTreatment": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "dependentRequired": {
+    "rateCard": [
+      "totalCost"
+    ],
+    "totalCost": [
+      "rateCard"
+    ]
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "counts": {
+      "type": "object",
+      "required": [
+        "representedWorkItems",
+        "capabilityGroups",
+        "scopes",
+        "professionalizationGapItems"
+      ],
+      "properties": {
+        "representedWorkItems": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "capabilityGroups": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "scopes": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "professionalizationGapItems": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "additionalProperties": false
+    },
+    "categoryEntry": {
+      "type": "object",
+      "required": [
+        "category",
+        "hours",
+        "workItemCount",
+        "capabilityCount",
+        "confidence"
+      ],
+      "properties": {
+        "category": {
+          "$ref": "urn:fairbill:schema:v1:estimate-report#/$defs/category"
+        },
+        "hours": {
+          "$ref": "urn:fairbill:schema:v1:estimate-report#/$defs/effortRange"
+        },
+        "cost": {
+          "$ref": "urn:fairbill:schema:v1:estimate-report#/$defs/costRange"
+        },
+        "workItemCount": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "capabilityCount": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "scopeEntry": {
+      "type": "object",
+      "required": [
+        "scope",
+        "hours",
+        "workItemCount",
+        "capabilityCount",
+        "confidence"
+      ],
+      "properties": {
+        "scope": {
+          "type": "string",
+          "minLength": 1
+        },
+        "hours": {
+          "$ref": "urn:fairbill:schema:v1:estimate-report#/$defs/effortRange"
+        },
+        "cost": {
+          "$ref": "urn:fairbill:schema:v1:estimate-report#/$defs/costRange"
+        },
+        "workItemCount": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "capabilityCount": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "capabilityEntry": {
+      "type": "object",
+      "required": [
+        "id",
+        "category",
+        "title",
+        "scope",
+        "hours",
+        "confidence",
+        "workItemCount",
+        "evidenceCount",
+        "uncertaintyReasons",
+        "reviewReasons"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "category": {
+          "$ref": "urn:fairbill:schema:v1:estimate-report#/$defs/category"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "scope": {
+          "type": "string",
+          "minLength": 1
+        },
+        "hours": {
+          "$ref": "urn:fairbill:schema:v1:estimate-report#/$defs/effortRange"
+        },
+        "cost": {
+          "$ref": "urn:fairbill:schema:v1:estimate-report#/$defs/costRange"
+        },
+        "confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "workItemCount": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "evidenceCount": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "uncertaintyReasons": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "reviewReasons": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "omissions": {
+      "type": "object",
+      "required": [
+        "scopeCount",
+        "scopeExpectedHours",
+        "capabilityCount",
+        "capabilityExpectedHours"
+      ],
+      "properties": {
+        "scopeCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "scopeExpectedHours": {
+          "type": "number",
+          "minimum": 0
+        },
+        "capabilityCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "capabilityExpectedHours": {
+          "type": "number",
+          "minimum": 0
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

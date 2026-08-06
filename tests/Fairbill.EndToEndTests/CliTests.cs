@@ -35,6 +35,25 @@ public sealed class CliTests
     }
 
     [Fact]
+    public async Task RateInfoReportsBundledAuditableDefault()
+    {
+        ProcessResult result = await RunCliAsync("rate", "info");
+
+        Assert.Equal(0, result.ExitCode);
+        Assert.Equal(string.Empty, result.StandardError);
+        using JsonDocument document = JsonDocument.Parse(result.StandardOutput);
+        Assert.Equal("us-senior-software-contractor", document.RootElement.GetProperty("id").GetString());
+        Assert.Equal("2026.1", document.RootElement.GetProperty("version").GetString());
+        Assert.Equal(160m, document.RootElement.GetProperty("hourlyRate").GetDecimal());
+        Assert.Equal(
+            125m,
+            document.RootElement.GetProperty("marketRange").GetProperty("low").GetDecimal());
+        Assert.Equal(
+            200m,
+            document.RootElement.GetProperty("marketRange").GetProperty("high").GetDecimal());
+    }
+
+    [Fact]
     public async Task EstimateProducesSchemaVersionedJsonWithoutDiagnosticsOnStandardError()
     {
         string fixture = Path.Combine(AppContext.BaseDirectory, "fixtures", "evidence", "minimal.repository-evidence.json");
@@ -54,6 +73,122 @@ public sealed class CliTests
         Assert.Equal("seed-rules/0.2.0", document.RootElement.GetProperty("estimatorVersion").GetString());
         Assert.True(document.RootElement.GetProperty("totalEffort").GetProperty("expected").GetDecimal() > 0m);
         Assert.True(document.RootElement.GetProperty("workItems").GetArrayLength() > 0);
+        Assert.Equal(
+            "us-senior-software-contractor/2026.1",
+            document.RootElement.GetProperty("rateCard").GetProperty("id").GetString());
+        Assert.Equal(160m, document.RootElement.GetProperty("rateCard").GetProperty("hourlyRate").GetDecimal());
+        Assert.True(document.RootElement.GetProperty("totalCost").GetProperty("expected").GetDecimal() > 0m);
+    }
+
+    [Theory]
+    [InlineData("minimal-dotnet.repository-evidence.json", "dotnet")]
+    [InlineData("minimal-javascript.repository-evidence.json", "javascript")]
+    [InlineData("minimal.repository-evidence.json", "typescript")]
+    public async Task CuratedEcosystemEvidenceProducesCompactRepositoryView(
+        string fixtureName,
+        string expectedEcosystem)
+    {
+        string fixture = Path.Combine(AppContext.BaseDirectory, "fixtures", "evidence", fixtureName);
+
+        ProcessResult result = await RunCliAsync(
+            "estimate",
+            fixture,
+            "--view",
+            "repository",
+            "--no-rate",
+            "--compact");
+
+        Assert.Equal(0, result.ExitCode);
+        Assert.Equal(string.Empty, result.StandardError);
+        using JsonDocument document = JsonDocument.Parse(result.StandardOutput);
+        Assert.Equal("repository", document.RootElement.GetProperty("view").GetString());
+        Assert.Contains(
+            document.RootElement.GetProperty("repository").GetProperty("ecosystems").EnumerateArray(),
+            ecosystem => ecosystem.GetString() == expectedEcosystem);
+        Assert.False(document.RootElement.TryGetProperty("rateCard", out _));
+    }
+
+    [Fact]
+    public async Task EstimateCanExplicitlyOmitRateAndCost()
+    {
+        string fixture = Path.Combine(AppContext.BaseDirectory, "fixtures", "evidence", "minimal.repository-evidence.json");
+
+        ProcessResult result = await RunCliAsync("estimate", fixture, "--no-rate", "--compact");
+
+        Assert.Equal(0, result.ExitCode);
+        Assert.Equal(string.Empty, result.StandardError);
+        using JsonDocument document = JsonDocument.Parse(result.StandardOutput);
+        Assert.False(document.RootElement.TryGetProperty("rateCard", out _));
+        Assert.False(document.RootElement.TryGetProperty("totalCost", out _));
+        Assert.DoesNotContain('\n', result.StandardOutput);
+    }
+
+    [Fact]
+    public async Task CompactReviewAndExplainOutputsAreTraceable()
+    {
+        string fixture = Path.Combine(AppContext.BaseDirectory, "fixtures", "evidence", "minimal.repository-evidence.json");
+        ProcessResult workItems = await RunCliAsync(
+            "estimate",
+            fixture,
+            "--view",
+            "work-item",
+            "--compact");
+        Assert.Equal(0, workItems.ExitCode);
+        using JsonDocument workItemDocument = JsonDocument.Parse(workItems.StandardOutput);
+        string capabilityId = workItemDocument.RootElement
+            .GetProperty("capabilities")[0]
+            .GetProperty("id")
+            .GetString()!;
+
+        ProcessResult review = await RunCliAsync(
+            "estimate",
+            fixture,
+            "--view",
+            "review",
+            "--compact");
+        ProcessResult explanation = await RunCliAsync(
+            "explain",
+            fixture,
+            "--item",
+            capabilityId,
+            "--compact");
+
+        Assert.Equal(0, review.ExitCode);
+        Assert.Equal(string.Empty, review.StandardError);
+        using JsonDocument reviewDocument = JsonDocument.Parse(review.StandardOutput);
+        Assert.Equal("review", reviewDocument.RootElement.GetProperty("view").GetString());
+        Assert.InRange(reviewDocument.RootElement.GetProperty("reviewQueue").GetArrayLength(), 1, 12);
+
+        Assert.Equal(0, explanation.ExitCode);
+        Assert.Equal(string.Empty, explanation.StandardError);
+        using JsonDocument explanationDocument = JsonDocument.Parse(explanation.StandardOutput);
+        Assert.Equal(capabilityId, explanationDocument.RootElement.GetProperty("requestedId").GetString());
+        Assert.Equal("capability", explanationDocument.RootElement.GetProperty("matchKind").GetString());
+        Assert.True(explanationDocument.RootElement.GetProperty("workItems").GetArrayLength() > 0);
+        Assert.True(explanationDocument.RootElement.GetProperty("evidenceFacts").GetArrayLength() > 0);
+    }
+
+    [Fact]
+    public async Task ReportReprojectsASavedCanonicalEstimate()
+    {
+        string fixture = Path.Combine(AppContext.BaseDirectory, "fixtures", "evidence", "minimal.repository-evidence.json");
+        ProcessResult estimate = await RunCliAsync("estimate", fixture, "--compact");
+        Assert.Equal(0, estimate.ExitCode);
+
+        using TemporaryRepository repository = new();
+        repository.WriteText("estimate.json", estimate.StandardOutput);
+        ProcessResult result = await RunCliAsync(
+            "report",
+            Path.Combine(repository.RootPath, "estimate.json"),
+            "--compact");
+
+        Assert.Equal(0, result.ExitCode);
+        Assert.Equal(string.Empty, result.StandardError);
+        using JsonDocument document = JsonDocument.Parse(result.StandardOutput);
+        Assert.Equal("review", document.RootElement.GetProperty("view").GetString());
+        Assert.Equal(
+            160m,
+            document.RootElement.GetProperty("rateCard").GetProperty("hourlyRate").GetDecimal());
     }
 
     [Fact]

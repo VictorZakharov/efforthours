@@ -1,0 +1,91 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "us-senior-software-contractor",
+  "version": "2026.1",
+  "status": "current-methodology",
+  "name": "2026 US senior independent software contractor",
+  "currency": "USD",
+  "effectiveDate": "2026-06-12",
+  "geography": "United States, nationwide",
+  "role": "Competent senior independent software contractor",
+  "hourlyRate": 160.00,
+  "marketRange": {
+    "low": 125.00,
+    "expected": 160.00,
+    "high": 200.00
+  },
+  "formula": {
+    "expression": "round-to-increment(wage-per-hour * (total-compensation-per-hour / wages-and-salaries-per-hour) / billable-utilization)",
+    "totalCompensationPerHour": 72.99,
+    "wagesAndSalariesPerHour": 50.53,
+    "compensationLoad": 1.44448842,
+    "billableUtilization": 0.75,
+    "roundingIncrement": 5.00
+  },
+  "wagePoints": [
+    {
+      "label": "low",
+      "percentile": 50,
+      "seriesId": "OEUN000000000000015125208",
+      "wagePerHour": 65.38,
+      "rawBillRate": 125.9209,
+      "roundedBillRate": 125.00
+    },
+    {
+      "label": "expected",
+      "percentile": 75,
+      "seriesId": "OEUN000000000000015125209",
+      "wagePerHour": 82.68,
+      "rawBillRate": 159.2404,
+      "roundedBillRate": 160.00
+    },
+    {
+      "label": "high",
+      "percentile": 90,
+      "seriesId": "OEUN000000000000015125210",
+      "wagePerHour": 103.21,
+      "rawBillRate": 198.7809,
+      "roundedBillRate": 200.00
+    }
+  ],
+  "sources": [
+    {
+      "id": "bls-oews-may-2025",
+      "publisher": "US Bureau of Labor Statistics",
+      "title": "Occupational Employment and Wage Statistics, May 2025, Software Developers (SOC 15-1252)",
+      "releaseDate": "2026-05-15",
+      "uri": "https://www.bls.gov/oes/tables.htm",
+      "license": "US Government public domain"
+    },
+    {
+      "id": "bls-oews-series-documentation",
+      "publisher": "US Bureau of Labor Statistics",
+      "title": "Occupational Employment and Wage Statistics public time-series documentation",
+      "releaseDate": "2026-05-15",
+      "uri": "https://download.bls.gov/pub/time.series/oe/oe.txt",
+      "license": "US Government public domain"
+    },
+    {
+      "id": "bls-ecec-march-2026",
+      "publisher": "US Bureau of Labor Statistics",
+      "title": "Employer Costs for Employee Compensation, private-industry professional and related occupations, March 2026",
+      "releaseDate": "2026-06-12",
+      "uri": "https://www.bls.gov/news.release/ecec.t04.htm",
+      "license": "US Government public domain"
+    },
+    {
+      "id": "bls-copyright-policy",
+      "publisher": "US Bureau of Labor Statistics",
+      "title": "Linking and Copyright Information",
+      "releaseDate": "2016-08-05",
+      "uri": "https://www.bls.gov/bls/linksite.htm",
+      "license": "US Government public domain"
+    }
+  ],
+  "assumptions": [
+    "The 75th-percentile employee wage is a reasonable nationwide anchor for a competent senior contractor.",
+    "The private-industry professional compensation-to-wage ratio approximates benefits and employer-paid load that an independent contractor must replace.",
+    "Seventy-five percent billable utilization allows for ordinary business development, administration, leave, and bench time.",
+    "The rate is a nationwide USD replacement-cost default, not a regional quote, mandated rate, or currency conversion."
+  ]
+}

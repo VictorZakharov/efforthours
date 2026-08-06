@@ -22,7 +22,10 @@ Read these root documents completely:
 3. `PLAN.md`
 4. `README.md`
 5. `MILESTONE_5.md` when changing evidence-to-effort behavior
-6. `MODEL_REVIEWS.md` when changing priors, calibration labels, or review policy
+6. `MILESTONE_6.md` when changing reporting, explanation, or default pricing
+7. `MODEL_REVIEWS.md` when changing priors, calibration labels, or review policy
+8. `CHANGE_ESTIMATION.md` when changing future diff, PR, commit, or contribution
+   semantics
 
 If an implementation request conflicts with those documents, surface the conflict
 and update the relevant decision explicitly. Do not silently change estimation
@@ -34,6 +37,9 @@ semantics.
 - Implement .NET and JavaScript/TypeScript analysis first.
 - Implement the tool and reusable libraries on .NET 10.
 - Ignore Git history, churn, contributors, and timestamps as effort signals.
+- A future explicit change-estimation command may use revisions, author identity,
+  and time only to select final changes. Ordinary repository estimates remain
+  history-free, and selection metadata must never become an effort multiplier.
 - Estimate the current artifact, not historical rework or abandoned approaches.
 - Prefer functional and quality equivalence over line-for-line reproduction.
 - Recreate with sensible modern 2026-equivalent technology while preserving
@@ -142,7 +148,7 @@ semantics.
 
 ## Current project stage
 
-Milestones 1 through 5 are complete. The repository has a working common scanner,
+Milestones 1 through 6 are complete. The repository has a working common scanner,
 static .NET project/Roslyn analyzer, static JavaScript/TypeScript package and source
 analyzer, mixed-repository evidence pipeline, published v1 schemas, optional
 external scan cache, installable global-tool package, memory-only unit fixtures,
@@ -152,7 +158,11 @@ TypeScript is explicitly token-backed. The bundled `seed-rules/0.2.0` model uses
 transparent marginal priors, exact-content normalization, two explicit profiles,
 approximately four-hour work-item partitions, confidence drivers, and a separate
 professionalization-gap ledger. It remains explicitly uncalibrated and must not be
-described as production-ready. Milestone 6 reporting and agent usability are next.
+described as production-ready. Milestone 6 adds schema-versioned compact
+projections, capability and evidence explanation, saved-report reprojection, and
+the auditable `us-senior-software-contractor/2026.1` default rate. Its Fairbill
+review projection is 7.4% of compact full JSON in the recorded checkpoint.
+Milestone 7 calibration and local ML are next.
 
 The following commands have been run successfully from the repository root:
 

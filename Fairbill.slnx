@@ -7,6 +7,7 @@
   <Project Path="src/Fairbill.Contracts/Fairbill.Contracts.csproj" />
   <Project Path="src/Fairbill.Core/Fairbill.Core.csproj" />
   <Project Path="src/Fairbill.Estimation/Fairbill.Estimation.csproj" />
+  <Project Path="src/Fairbill.Pricing/Fairbill.Pricing.csproj" />
   <Project Path="src/Fairbill.Reporting/Fairbill.Reporting.csproj" />
   <Project Path="tests/Fairbill.EndToEndTests/Fairbill.EndToEndTests.csproj" />
   <Project Path="tests/Fairbill.Tests/Fairbill.Tests.csproj" />

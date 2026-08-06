@@ -8,8 +8,11 @@ public static class ContractVersions
 public static class SchemaNames
 {
     public const string Diagnostic = "diagnostic.schema.json";
+    public const string EstimateExplanation = "estimate-explanation.schema.json";
     public const string EstimateReport = "estimate-report.schema.json";
+    public const string EstimateView = "estimate-view.schema.json";
     public const string RateCard = "rate-card.schema.json";
+    public const string RateCardModel = "rate-card-model.schema.json";
     public const string RepositoryEvidence = "repository-evidence.schema.json";
     public const string RepositoryScanCache = "repository-scan-cache.schema.json";
     public const string SeedRuleModel = "seed-rule-model.schema.json";
@@ -19,8 +22,11 @@ public static class SchemaNames
 public static class SchemaIds
 {
     public const string Diagnostic = "urn:fairbill:schema:v1:diagnostic";
+    public const string EstimateExplanation = "urn:fairbill:schema:v1:estimate-explanation";
     public const string EstimateReport = "urn:fairbill:schema:v1:estimate-report";
+    public const string EstimateView = "urn:fairbill:schema:v1:estimate-view";
     public const string RateCard = "urn:fairbill:schema:v1:rate-card";
+    public const string RateCardModel = "urn:fairbill:schema:v1:rate-card-model";
     public const string RepositoryEvidence = "urn:fairbill:schema:v1:repository-evidence";
     public const string RepositoryScanCache = "urn:fairbill:schema:v1:repository-scan-cache";
     public const string SeedRuleModel = "urn:fairbill:schema:v1:seed-rule-model";

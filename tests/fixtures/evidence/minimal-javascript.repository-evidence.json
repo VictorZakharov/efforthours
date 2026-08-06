@@ -1,0 +1,197 @@
+{
+  "schemaVersion": "1.0.0",
+  "repository": {
+    "name": "Minimal JavaScript sample",
+    "scope": ".",
+    "ecosystems": [
+      "javascript",
+      "typescript"
+    ],
+    "sourceDigest": "sha256:synthetic-javascript-fixture"
+  },
+  "facts": [
+    {
+      "id": "javascript:package:package.json",
+      "kind": "javascript-package",
+      "scope": "package.json",
+      "summary": "React and Express package",
+      "provenance": {
+        "sourceKind": "inferred",
+        "analyzer": "synthetic-fixture",
+        "analyzerVersion": "1.0.0",
+        "method": "curated test fixture"
+      },
+      "locations": [
+        {
+          "path": "package.json"
+        }
+      ],
+      "measurements": [
+        {
+          "name": "dependencies",
+          "value": 10,
+          "unit": "packages"
+        },
+        {
+          "name": "scripts",
+          "value": 5,
+          "unit": "scripts"
+        }
+      ],
+      "tags": [
+        "framework:react",
+        "framework:express"
+      ]
+    },
+    {
+      "id": "javascript:api:src/server.ts",
+      "kind": "api-surface",
+      "scope": "package.json",
+      "summary": "Express HTTP API surface",
+      "provenance": {
+        "sourceKind": "observed",
+        "analyzer": "synthetic-fixture",
+        "analyzerVersion": "1.0.0",
+        "method": "curated test fixture"
+      },
+      "locations": [
+        {
+          "path": "src/server.ts"
+        }
+      ],
+      "measurements": [
+        {
+          "name": "endpoints",
+          "value": 9,
+          "unit": "endpoints"
+        }
+      ],
+      "tags": [
+        "framework:express",
+        "http-method:get",
+        "http-method:post"
+      ]
+    },
+    {
+      "id": "javascript:ui:src/App.tsx",
+      "kind": "user-interface",
+      "scope": "package.json",
+      "summary": "React user interface",
+      "provenance": {
+        "sourceKind": "observed",
+        "analyzer": "synthetic-fixture",
+        "analyzerVersion": "1.0.0",
+        "method": "curated test fixture"
+      },
+      "locations": [
+        {
+          "path": "src/App.tsx"
+        }
+      ],
+      "measurements": [
+        {
+          "name": "pages",
+          "value": 4,
+          "unit": "pages"
+        },
+        {
+          "name": "components",
+          "value": 14,
+          "unit": "components"
+        },
+        {
+          "name": "forms",
+          "value": 3,
+          "unit": "forms"
+        }
+      ],
+      "tags": [
+        "framework:react"
+      ]
+    },
+    {
+      "id": "javascript:test:tests/app.test.tsx",
+      "kind": "javascript-test",
+      "scope": "package.json",
+      "summary": "Unit and component tests",
+      "provenance": {
+        "sourceKind": "inferred",
+        "analyzer": "synthetic-fixture",
+        "analyzerVersion": "1.0.0",
+        "method": "curated test fixture"
+      },
+      "locations": [
+        {
+          "path": "tests/app.test.tsx"
+        }
+      ],
+      "measurements": [
+        {
+          "name": "test-cases",
+          "value": 38,
+          "unit": "cases"
+        },
+        {
+          "name": "assertions",
+          "value": 82,
+          "unit": "calls"
+        }
+      ],
+      "tags": [
+        "test-type:unit",
+        "test-type:component",
+        "framework:vitest"
+      ]
+    },
+    {
+      "id": "documentation:readme",
+      "kind": "documentation",
+      "scope": ".",
+      "summary": "Repository onboarding documentation",
+      "provenance": {
+        "sourceKind": "measured",
+        "analyzer": "synthetic-fixture",
+        "analyzerVersion": "1.0.0",
+        "method": "curated test fixture"
+      },
+      "locations": [
+        {
+          "path": "README.md"
+        }
+      ],
+      "measurements": [
+        {
+          "name": "files",
+          "value": 1,
+          "unit": "files"
+        },
+        {
+          "name": "physical-lines",
+          "value": 70,
+          "unit": "lines"
+        }
+      ],
+      "tags": []
+    },
+    {
+      "id": "build:package-scripts",
+      "kind": "build-configuration",
+      "scope": ".",
+      "summary": "Package scripts and TypeScript build",
+      "provenance": {
+        "sourceKind": "observed",
+        "analyzer": "synthetic-fixture",
+        "analyzerVersion": "1.0.0",
+        "method": "curated test fixture"
+      },
+      "locations": [
+        {
+          "path": "package.json"
+        }
+      ],
+      "measurements": [],
+      "tags": []
+    }
+  ],
+  "diagnostics": []
+}

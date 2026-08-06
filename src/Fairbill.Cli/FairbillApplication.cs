@@ -6,6 +6,7 @@ using Fairbill.Contracts;
 using Fairbill.Contracts.V1;
 using Fairbill.Core;
 using Fairbill.Estimation;
+using Fairbill.Pricing;
 using Fairbill.Reporting;
 
 namespace Fairbill.Cli;
@@ -61,11 +62,25 @@ public sealed class FairbillApplication
                     standardOutput,
                     standardError,
                     cancellationToken).ConfigureAwait(false),
+                "report" => await ReportAsync(
+                    [.. arguments.Skip(1)],
+                    standardOutput,
+                    standardError,
+                    cancellationToken).ConfigureAwait(false),
+                "explain" => await ExplainAsync(
+                    [.. arguments.Skip(1)],
+                    standardOutput,
+                    standardError,
+                    cancellationToken).ConfigureAwait(false),
                 "schema" => await SchemaAsync(
                     [.. arguments.Skip(1)],
                     standardOutput,
                     standardError).ConfigureAwait(false),
                 "model" => await ModelAsync(
+                    [.. arguments.Skip(1)],
+                    standardOutput,
+                    standardError).ConfigureAwait(false),
+                "rate" => await RateAsync(
                     [.. arguments.Skip(1)],
                     standardOutput,
                     standardError).ConfigureAwait(false),
@@ -246,8 +261,12 @@ public sealed class FairbillApplication
         string inputPath = arguments[0];
         EstimationProfile profile = EstimationProfile.Implementation;
         string format = "json";
+        EstimateViewKind? view = null;
+        bool compact = false;
+        bool noRate = false;
         decimal? hourlyRate = null;
         string currency = "USD";
+        bool currencyProvided = false;
 
         for (int index = 1; index < arguments.Length; index++)
         {
@@ -256,6 +275,18 @@ public sealed class FairbillApplication
             {
                 await standardOutput.WriteLineAsync(EstimateHelpText).ConfigureAwait(false);
                 return CliExitCodes.Success;
+            }
+
+            if (option == "--compact")
+            {
+                compact = true;
+                continue;
+            }
+
+            if (option == "--no-rate")
+            {
+                noRate = true;
+                continue;
             }
 
             if (index + 1 >= arguments.Length)
@@ -289,6 +320,25 @@ public sealed class FairbillApplication
 
                     break;
 
+                case "--view":
+                    if (value.Equals("full", StringComparison.OrdinalIgnoreCase))
+                    {
+                        view = null;
+                    }
+                    else if (!TryParseView(value, out EstimateViewKind parsedView))
+                    {
+                        return await UsageErrorAsync(
+                            standardError,
+                            "View must be 'full', 'repository', 'category', 'scope', " +
+                            "'work-item', or 'review'.").ConfigureAwait(false);
+                    }
+                    else
+                    {
+                        view = parsedView;
+                    }
+
+                    break;
+
                 case "--hourly-rate":
                     if (!decimal.TryParse(value, NumberStyles.Number, CultureInfo.InvariantCulture, out decimal parsedRate) ||
                         parsedRate < 0m)
@@ -303,6 +353,7 @@ public sealed class FairbillApplication
 
                 case "--currency":
                     currency = value.ToUpperInvariant();
+                    currencyProvided = true;
                     if (currency.Length != 3 || currency.Any(character => character is < 'A' or > 'Z'))
                     {
                         return await UsageErrorAsync(
@@ -319,6 +370,283 @@ public sealed class FairbillApplication
             }
         }
 
+        if (compact && format != "json")
+        {
+            return await UsageErrorAsync(
+                standardError,
+                "Option '--compact' can only be used with JSON output.").ConfigureAwait(false);
+        }
+
+        if (noRate && (hourlyRate is not null || currencyProvided))
+        {
+            return await UsageErrorAsync(
+                standardError,
+                "Option '--no-rate' cannot be combined with '--hourly-rate' or '--currency'.")
+                .ConfigureAwait(false);
+        }
+
+        if (currencyProvided && hourlyRate is null)
+        {
+            return await UsageErrorAsync(
+                standardError,
+                "Option '--currency' requires a caller-supplied '--hourly-rate'.")
+                .ConfigureAwait(false);
+        }
+
+        RepositoryEvidence? evidence = await LoadEvidenceAsync(
+            inputPath,
+            standardError,
+            cancellationToken).ConfigureAwait(false);
+        if (evidence is null)
+        {
+            return CliExitCodes.InvalidInput;
+        }
+
+        RateCard? rateCard = noRate
+            ? null
+            : hourlyRate is null
+                ? DefaultRateCatalog.RateCard
+                : new RateCard
+                {
+                    Id = "user-supplied-cli-rate",
+                    Name = "User-supplied CLI rate",
+                    Currency = currency,
+                    HourlyRate = hourlyRate.Value,
+                    Methodology =
+                        "Explicit caller override; this rate is not a Fairbill market-rate claim.",
+                };
+
+        EstimateReport report = _estimator.Estimate(evidence, profile, rateCard);
+        string output = RenderEstimate(report, view, format, compact);
+        await standardOutput.WriteLineAsync(output.TrimEnd()).ConfigureAwait(false);
+        return CliExitCodes.Success;
+    }
+
+    private static async Task<int> ReportAsync(
+        string[] arguments,
+        TextWriter standardOutput,
+        TextWriter standardError,
+        CancellationToken cancellationToken)
+    {
+        if (arguments.Length == 0 || IsHelp(arguments[0]))
+        {
+            await standardOutput.WriteLineAsync(ReportHelpText).ConfigureAwait(false);
+            return arguments.Length == 0 ? CliExitCodes.UsageError : CliExitCodes.Success;
+        }
+
+        string inputPath = arguments[0];
+        EstimateViewKind? view = EstimateViewKind.Review;
+        string format = "json";
+        bool compact = false;
+        for (int index = 1; index < arguments.Length; index++)
+        {
+            string option = arguments[index];
+            if (IsHelp(option))
+            {
+                await standardOutput.WriteLineAsync(ReportHelpText).ConfigureAwait(false);
+                return CliExitCodes.Success;
+            }
+
+            if (option == "--compact")
+            {
+                compact = true;
+                continue;
+            }
+
+            if (index + 1 >= arguments.Length)
+            {
+                return await UsageErrorAsync(
+                    standardError,
+                    $"Option '{option}' requires a value.").ConfigureAwait(false);
+            }
+
+            string value = arguments[++index];
+            switch (option)
+            {
+                case "--view":
+                    if (value.Equals("full", StringComparison.OrdinalIgnoreCase))
+                    {
+                        view = null;
+                    }
+                    else if (!TryParseView(value, out EstimateViewKind parsedView))
+                    {
+                        return await UsageErrorAsync(
+                            standardError,
+                            "View must be 'full', 'repository', 'category', 'scope', " +
+                            "'work-item', or 'review'.").ConfigureAwait(false);
+                    }
+                    else
+                    {
+                        view = parsedView;
+                    }
+
+                    break;
+
+                case "--format":
+                    format = value.ToLowerInvariant();
+                    if (format is not ("json" or "markdown"))
+                    {
+                        return await UsageErrorAsync(
+                            standardError,
+                            "Format must be 'json' or 'markdown'.").ConfigureAwait(false);
+                    }
+
+                    break;
+
+                default:
+                    return await UsageErrorAsync(
+                        standardError,
+                        $"Unknown report option '{option}'.").ConfigureAwait(false);
+            }
+        }
+
+        if (compact && format != "json")
+        {
+            return await UsageErrorAsync(
+                standardError,
+                "Option '--compact' can only be used with JSON output.").ConfigureAwait(false);
+        }
+
+        EstimateReport? report = await LoadEstimateAsync(
+            inputPath,
+            standardError,
+            cancellationToken).ConfigureAwait(false);
+        if (report is null)
+        {
+            return CliExitCodes.InvalidInput;
+        }
+
+        string output = RenderEstimate(report, view, format, compact);
+        await standardOutput.WriteLineAsync(output.TrimEnd()).ConfigureAwait(false);
+        return CliExitCodes.Success;
+    }
+
+    private async Task<int> ExplainAsync(
+        string[] arguments,
+        TextWriter standardOutput,
+        TextWriter standardError,
+        CancellationToken cancellationToken)
+    {
+        if (arguments.Length == 0 || IsHelp(arguments[0]))
+        {
+            await standardOutput.WriteLineAsync(ExplainHelpText).ConfigureAwait(false);
+            return arguments.Length == 0 ? CliExitCodes.UsageError : CliExitCodes.Success;
+        }
+
+        string inputPath = arguments[0];
+        EstimationProfile profile = EstimationProfile.Implementation;
+        string format = "json";
+        string? itemId = null;
+        bool compact = false;
+        for (int index = 1; index < arguments.Length; index++)
+        {
+            string option = arguments[index];
+            if (IsHelp(option))
+            {
+                await standardOutput.WriteLineAsync(ExplainHelpText).ConfigureAwait(false);
+                return CliExitCodes.Success;
+            }
+
+            if (option == "--compact")
+            {
+                compact = true;
+                continue;
+            }
+
+            if (index + 1 >= arguments.Length)
+            {
+                return await UsageErrorAsync(
+                    standardError,
+                    $"Option '{option}' requires a value.").ConfigureAwait(false);
+            }
+
+            string value = arguments[++index];
+            switch (option)
+            {
+                case "--item":
+                    itemId = value;
+                    break;
+
+                case "--profile":
+                    if (!TryParseProfile(value, out profile))
+                    {
+                        return await UsageErrorAsync(
+                            standardError,
+                            "Profile must be 'implementation' or 'recreation'.").ConfigureAwait(false);
+                    }
+
+                    break;
+
+                case "--format":
+                    format = value.ToLowerInvariant();
+                    if (format is not ("json" or "markdown"))
+                    {
+                        return await UsageErrorAsync(
+                            standardError,
+                            "Format must be 'json' or 'markdown'.").ConfigureAwait(false);
+                    }
+
+                    break;
+
+                default:
+                    return await UsageErrorAsync(
+                        standardError,
+                        $"Unknown explain option '{option}'.").ConfigureAwait(false);
+            }
+        }
+
+        if (string.IsNullOrWhiteSpace(itemId))
+        {
+            return await UsageErrorAsync(
+                standardError,
+                "Option '--item' is required.").ConfigureAwait(false);
+        }
+
+        if (compact && format != "json")
+        {
+            return await UsageErrorAsync(
+                standardError,
+                "Option '--compact' can only be used with JSON output.").ConfigureAwait(false);
+        }
+
+        RepositoryEvidence? evidence = await LoadEvidenceAsync(
+            inputPath,
+            standardError,
+            cancellationToken).ConfigureAwait(false);
+        if (evidence is null)
+        {
+            return CliExitCodes.InvalidInput;
+        }
+
+        EstimateReport report = _estimator.Estimate(evidence, profile);
+        EstimateExplanation explanation;
+        try
+        {
+            explanation = EstimateProjector.Explain(report, evidence, itemId);
+        }
+        catch (KeyNotFoundException exception)
+        {
+            await standardError.WriteLineAsync($"fairbill: {exception.Message}").ConfigureAwait(false);
+            return CliExitCodes.InvalidInput;
+        }
+        catch (ArgumentException exception)
+        {
+            await standardError.WriteLineAsync($"fairbill: {exception.Message}").ConfigureAwait(false);
+            return CliExitCodes.InvalidInput;
+        }
+
+        string output = format == "markdown"
+            ? EstimateExplanationMarkdownRenderer.Render(explanation)
+            : new EstimateExplanationJsonRenderer(compact).Render(explanation);
+        await standardOutput.WriteLineAsync(output.TrimEnd()).ConfigureAwait(false);
+        return CliExitCodes.Success;
+    }
+
+    private async Task<RepositoryEvidence?> LoadEvidenceAsync(
+        string inputPath,
+        TextWriter standardError,
+        CancellationToken cancellationToken)
+    {
         RepositoryEvidence evidence;
         if (Directory.Exists(inputPath))
         {
@@ -337,7 +665,7 @@ public sealed class FairbillApplication
             {
                 await standardError.WriteLineAsync($"Could not read evidence: {exception.Message}")
                     .ConfigureAwait(false);
-                return CliExitCodes.InvalidInput;
+                return null;
             }
 
             SchemaValidationResult schemaResult = ContractSchemaValidator.Validate(
@@ -345,14 +673,15 @@ public sealed class FairbillApplication
                 json);
             if (!schemaResult.IsValid)
             {
-                await standardError.WriteLineAsync("Evidence does not satisfy the repository evidence schema:")
+                await standardError.WriteLineAsync(
+                    "Evidence does not satisfy the repository evidence schema:")
                     .ConfigureAwait(false);
                 foreach (string error in schemaResult.Errors)
                 {
                     await standardError.WriteLineAsync($"- {error}").ConfigureAwait(false);
                 }
 
-                return CliExitCodes.InvalidInput;
+                return null;
             }
 
             try
@@ -363,46 +692,114 @@ public sealed class FairbillApplication
             {
                 await standardError.WriteLineAsync($"Could not deserialize evidence: {exception.Message}")
                     .ConfigureAwait(false);
-                return CliExitCodes.InvalidInput;
+                return null;
             }
         }
         else
         {
-            await standardError.WriteLineAsync($"Repository or evidence path was not found: {inputPath}")
-                .ConfigureAwait(false);
-            return CliExitCodes.InvalidInput;
+            await standardError.WriteLineAsync(
+                $"Repository or evidence path was not found: {inputPath}").ConfigureAwait(false);
+            return null;
         }
 
         IReadOnlyList<string> semanticErrors = ContractValidation.Validate(evidence);
-        if (semanticErrors.Count > 0)
+        if (semanticErrors.Count == 0)
         {
-            await standardError.WriteLineAsync("Evidence is semantically invalid:").ConfigureAwait(false);
-            foreach (string error in semanticErrors)
+            return evidence;
+        }
+
+        await standardError.WriteLineAsync("Evidence is semantically invalid:").ConfigureAwait(false);
+        foreach (string error in semanticErrors)
+        {
+            await standardError.WriteLineAsync($"- {error}").ConfigureAwait(false);
+        }
+
+        return null;
+    }
+
+    private static async Task<EstimateReport?> LoadEstimateAsync(
+        string inputPath,
+        TextWriter standardError,
+        CancellationToken cancellationToken)
+    {
+        if (!File.Exists(inputPath))
+        {
+            await standardError.WriteLineAsync($"Estimate path was not found: {inputPath}")
+                .ConfigureAwait(false);
+            return null;
+        }
+
+        string json;
+        try
+        {
+            json = await File.ReadAllTextAsync(inputPath, cancellationToken).ConfigureAwait(false);
+        }
+        catch (Exception exception) when (exception is IOException or UnauthorizedAccessException)
+        {
+            await standardError.WriteLineAsync($"Could not read estimate: {exception.Message}")
+                .ConfigureAwait(false);
+            return null;
+        }
+
+        SchemaValidationResult schema = ContractSchemaValidator.Validate(
+            SchemaNames.EstimateReport,
+            json);
+        if (!schema.IsValid)
+        {
+            await standardError.WriteLineAsync("Estimate does not satisfy the estimate-report schema:")
+                .ConfigureAwait(false);
+            foreach (string error in schema.Errors)
             {
                 await standardError.WriteLineAsync($"- {error}").ConfigureAwait(false);
             }
 
-            return CliExitCodes.InvalidInput;
+            return null;
         }
 
-        RateCard? rateCard = hourlyRate is null
-            ? null
-            : new RateCard
-            {
-                Id = "user-supplied-cli-rate",
-                Name = "User-supplied CLI rate",
-                Currency = currency,
-                HourlyRate = hourlyRate.Value,
-                Methodology = "Explicit caller override; this rate is not a Fairbill market-rate claim.",
-            };
+        EstimateReport report;
+        try
+        {
+            report = ContractJson.Deserialize<EstimateReport>(json);
+        }
+        catch (System.Text.Json.JsonException exception)
+        {
+            await standardError.WriteLineAsync($"Could not deserialize estimate: {exception.Message}")
+                .ConfigureAwait(false);
+            return null;
+        }
 
-        EstimateReport report = _estimator.Estimate(evidence, profile, rateCard);
-        IReportRenderer renderer = format == "markdown"
-            ? new MarkdownReportRenderer()
-            : new JsonReportRenderer();
-        string output = renderer.Render(report);
-        await standardOutput.WriteLineAsync(output.TrimEnd()).ConfigureAwait(false);
-        return CliExitCodes.Success;
+        IReadOnlyList<string> semanticErrors = ContractValidation.Validate(report);
+        if (semanticErrors.Count == 0)
+        {
+            return report;
+        }
+
+        await standardError.WriteLineAsync("Estimate is semantically invalid:").ConfigureAwait(false);
+        foreach (string error in semanticErrors)
+        {
+            await standardError.WriteLineAsync($"- {error}").ConfigureAwait(false);
+        }
+
+        return null;
+    }
+
+    private static string RenderEstimate(
+        EstimateReport report,
+        EstimateViewKind? view,
+        string format,
+        bool compact)
+    {
+        if (view is null)
+        {
+            return format == "markdown"
+                ? new MarkdownReportRenderer().Render(report)
+                : new JsonReportRenderer(compact).Render(report);
+        }
+
+        EstimateViewReport projection = EstimateProjector.Project(report, view.Value);
+        return format == "markdown"
+            ? EstimateViewMarkdownRenderer.Render(projection)
+            : new EstimateViewJsonRenderer(compact).Render(projection);
     }
 
     private static async Task<int> SchemaAsync(
@@ -474,6 +871,35 @@ public sealed class FairbillApplication
             .ConfigureAwait(false);
     }
 
+    private static async Task<int> RateAsync(
+        string[] arguments,
+        TextWriter standardOutput,
+        TextWriter standardError)
+    {
+        if (arguments.Length == 0 || IsHelp(arguments[0]))
+        {
+            await standardOutput.WriteLineAsync(RateHelpText).ConfigureAwait(false);
+            return arguments.Length == 0 ? CliExitCodes.UsageError : CliExitCodes.Success;
+        }
+
+        if (arguments is ["info"])
+        {
+            await standardOutput.WriteLineAsync(
+                ContractJson.Serialize(DefaultRateCatalog.Info)).ConfigureAwait(false);
+            return CliExitCodes.Success;
+        }
+
+        if (arguments is ["show"])
+        {
+            await standardOutput.WriteLineAsync(
+                DefaultRateCatalog.ReadJson().TrimEnd()).ConfigureAwait(false);
+            return CliExitCodes.Success;
+        }
+
+        return await UsageErrorAsync(standardError, "Expected 'rate info' or 'rate show'.")
+            .ConfigureAwait(false);
+    }
+
     private static async Task<int> VersionAsync(TextWriter standardOutput)
     {
         string version = Assembly.GetExecutingAssembly()
@@ -508,16 +934,45 @@ public sealed class FairbillApplication
         }
     }
 
+    private static bool TryParseView(string value, out EstimateViewKind view)
+    {
+        switch (value.ToLowerInvariant())
+        {
+            case "repository":
+                view = EstimateViewKind.Repository;
+                return true;
+            case "category":
+                view = EstimateViewKind.Category;
+                return true;
+            case "scope":
+                view = EstimateViewKind.Scope;
+                return true;
+            case "work-item":
+                view = EstimateViewKind.WorkItem;
+                return true;
+            case "review":
+                view = EstimateViewKind.Review;
+                return true;
+            default:
+                view = default;
+                return false;
+        }
+    }
+
     private const string HelpText = """
         Fairbill - estimate equivalent non-AI human effort represented by software.
 
         Usage:
           fairbill scan <repository> [options]
           fairbill estimate <repository-or-evidence.json> [options]
+          fairbill report <estimate.json> [options]
+          fairbill explain <repository-or-evidence.json> --item <id> [options]
           fairbill schema list
           fairbill schema show <name>
           fairbill model info
           fairbill model show
+          fairbill rate info
+          fairbill rate show
           fairbill version
 
         Static analysis is deterministic, local, and read-only by default. The .NET
@@ -548,8 +1003,36 @@ public sealed class FairbillApplication
         Options:
           --profile <implementation|recreation>  Estimation profile (default: implementation)
           --format <json|markdown>                Output format (default: json)
-          --hourly-rate <number>                  Optional caller-supplied hourly rate
-          --currency <code>                       Three-letter currency code (default: USD)
+          --view <name>                           full (default), repository, category, scope,
+                                                  work-item, or review
+          --compact                               Emit compact JSON
+          --hourly-rate <number>                  Override the bundled 2026 US rate
+          --currency <code>                       Currency for an overridden rate (default: USD)
+          --no-rate                               Omit rate and cost projection
+          -h, --help                              Show this help
+        """;
+
+    private const string ReportHelpText = """
+        Usage:
+          fairbill report <estimate.json> [options]
+
+        Options:
+          --view <name>             review (default), full, repository, category, scope,
+                                    or work-item
+          --format <json|markdown>  Output format (default: json)
+          --compact                 Emit compact JSON
+          -h, --help                Show this help
+        """;
+
+    private const string ExplainHelpText = """
+        Usage:
+          fairbill explain <repository-or-evidence.json> --item <id> [options]
+
+        Options:
+          --item <id>                             Work-item or capability ID (required)
+          --profile <implementation|recreation>  Estimation profile (default: implementation)
+          --format <json|markdown>                Output format (default: json)
+          --compact                               Emit compact JSON
           -h, --help                              Show this help
         """;
 
@@ -563,5 +1046,11 @@ public sealed class FairbillApplication
         Usage:
           fairbill model info
           fairbill model show
+        """;
+
+    private const string RateHelpText = """
+        Usage:
+          fairbill rate info
+          fairbill rate show
         """;
 }

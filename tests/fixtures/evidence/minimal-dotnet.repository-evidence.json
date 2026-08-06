@@ -1,0 +1,194 @@
+{
+  "schemaVersion": "1.0.0",
+  "repository": {
+    "name": "Minimal .NET sample",
+    "scope": ".",
+    "ecosystems": [
+      "dotnet"
+    ],
+    "sourceDigest": "sha256:synthetic-dotnet-fixture"
+  },
+  "facts": [
+    {
+      "id": "dotnet:project:src/App/App.csproj",
+      "kind": "dotnet-project",
+      "scope": "src/App/App.csproj",
+      "summary": "ASP.NET Core application project",
+      "provenance": {
+        "sourceKind": "inferred",
+        "analyzer": "synthetic-fixture",
+        "analyzerVersion": "1.0.0",
+        "method": "curated test fixture"
+      },
+      "locations": [
+        {
+          "path": "src/App/App.csproj"
+        }
+      ],
+      "measurements": [
+        {
+          "name": "target-frameworks",
+          "value": 1,
+          "unit": "frameworks"
+        },
+        {
+          "name": "packages",
+          "value": 6,
+          "unit": "references"
+        }
+      ],
+      "tags": [
+        "project-role:web",
+        "target-framework:net10.0"
+      ]
+    },
+    {
+      "id": "dotnet:api:src/App/Program.cs",
+      "kind": "api-surface",
+      "scope": "src/App/App.csproj",
+      "summary": "HTTP API surface",
+      "provenance": {
+        "sourceKind": "observed",
+        "analyzer": "synthetic-fixture",
+        "analyzerVersion": "1.0.0",
+        "method": "curated test fixture"
+      },
+      "locations": [
+        {
+          "path": "src/App/Program.cs"
+        }
+      ],
+      "measurements": [
+        {
+          "name": "minimal-api-endpoints",
+          "value": 8,
+          "unit": "endpoints"
+        }
+      ],
+      "tags": [
+        "http-method:get",
+        "http-method:post"
+      ]
+    },
+    {
+      "id": "dotnet:data:src/App/AppDbContext.cs",
+      "kind": "data-access",
+      "scope": "src/App/App.csproj",
+      "summary": "Entity Framework Core persistence",
+      "provenance": {
+        "sourceKind": "observed",
+        "analyzer": "synthetic-fixture",
+        "analyzerVersion": "1.0.0",
+        "method": "curated test fixture"
+      },
+      "locations": [
+        {
+          "path": "src/App/AppDbContext.cs"
+        }
+      ],
+      "measurements": [
+        {
+          "name": "db-contexts",
+          "value": 1,
+          "unit": "types"
+        },
+        {
+          "name": "db-sets",
+          "value": 5,
+          "unit": "properties"
+        },
+        {
+          "name": "migrations",
+          "value": 3,
+          "unit": "types"
+        }
+      ],
+      "tags": [
+        "technology:entity-framework-core"
+      ]
+    },
+    {
+      "id": "dotnet:test:tests/App.Tests/ApiTests.cs",
+      "kind": "dotnet-test",
+      "scope": "tests/App.Tests/App.Tests.csproj",
+      "summary": "Unit and component tests",
+      "provenance": {
+        "sourceKind": "inferred",
+        "analyzer": "synthetic-fixture",
+        "analyzerVersion": "1.0.0",
+        "method": "curated test fixture"
+      },
+      "locations": [
+        {
+          "path": "tests/App.Tests/ApiTests.cs"
+        }
+      ],
+      "measurements": [
+        {
+          "name": "test-methods",
+          "value": 32,
+          "unit": "methods"
+        },
+        {
+          "name": "assertions",
+          "value": 70,
+          "unit": "calls"
+        }
+      ],
+      "tags": [
+        "test-type:unit",
+        "test-type:component"
+      ]
+    },
+    {
+      "id": "documentation:readme",
+      "kind": "documentation",
+      "scope": ".",
+      "summary": "Repository onboarding documentation",
+      "provenance": {
+        "sourceKind": "measured",
+        "analyzer": "synthetic-fixture",
+        "analyzerVersion": "1.0.0",
+        "method": "curated test fixture"
+      },
+      "locations": [
+        {
+          "path": "README.md"
+        }
+      ],
+      "measurements": [
+        {
+          "name": "files",
+          "value": 1,
+          "unit": "files"
+        },
+        {
+          "name": "physical-lines",
+          "value": 80,
+          "unit": "lines"
+        }
+      ],
+      "tags": []
+    },
+    {
+      "id": "build:solution",
+      "kind": "build-configuration",
+      "scope": ".",
+      "summary": "Solution build configuration",
+      "provenance": {
+        "sourceKind": "observed",
+        "analyzer": "synthetic-fixture",
+        "analyzerVersion": "1.0.0",
+        "method": "curated test fixture"
+      },
+      "locations": [
+        {
+          "path": "Sample.slnx"
+        }
+      ],
+      "measurements": [],
+      "tags": []
+    }
+  ],
+  "diagnostics": []
+}

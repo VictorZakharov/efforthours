@@ -8,6 +8,26 @@ Fairbill is licensed under the MIT License. Third-party components remain under
 their respective licenses. This notice is included in the global-tool package
 alongside Fairbill's `LICENSE` file.
 
+## Public data used by the bundled rate model
+
+`rates/us-senior-contractor/2026.1.json` contains a small derived set of numeric
+observations and series identifiers from the US Bureau of Labor Statistics:
+
+- May 2025 Occupational Employment and Wage Statistics for Software Developers,
+  SOC 15-1252, released May 15, 2026;
+- March 2026 Employer Costs for Employee Compensation for private-industry
+  professional and related occupations, released June 12, 2026; and
+- BLS series and publication provenance needed to reproduce the calculation.
+
+The source pages are <https://www.bls.gov/oes/tables.htm>,
+<https://download.bls.gov/pub/time.series/oe/oe.txt>, and
+<https://www.bls.gov/news.release/ecec.t04.htm>. BLS states at
+<https://www.bls.gov/bls/linksite.htm> that its published information is in the
+public domain except for specifically identified third-party material. Fairbill
+does not redistribute BLS photographs, illustrations, branding, or bulk datasets.
+The derived Fairbill artifact and calculation code are distributed under Fairbill's
+MIT License.
+
 ## Runtime dependencies
 
 | Package | Version | License | Project |

@@ -31,6 +31,7 @@ src/
   Fairbill.Analyzers.DotNet/     .NET/MSBuild/Roslyn evidence
   Fairbill.Analyzers.JavaScript/ JavaScript/TypeScript evidence
   Fairbill.Estimation/           rules, work items, aggregation
+  Fairbill.Pricing/              versioned offline rate artifacts and mapping
   Fairbill.ML/                   optional local inference and calibration contracts
   Fairbill.Reporting/            JSON and Markdown output
 tests/
@@ -83,11 +84,14 @@ shape is:
 
 ```text
 fairbill scan <path> [--spec <path>] [--output <path>]
-fairbill estimate <path-or-evidence> --profile <implementation|recreation>
-fairbill report <estimate> --format <json|markdown>
-fairbill explain <estimate> [--item <id>]
+fairbill estimate <path-or-evidence> [--profile <implementation|recreation>]
+  [--view <full|repository|category|scope|work-item|review>]
+fairbill report <estimate> [--view <full|repository|category|scope|work-item|review>]
+  [--format <json|markdown>] [--compact]
+fairbill explain <path-or-evidence> --item <id> [--format <json|markdown>]
 fairbill verify <path> [--build] [--test] [--coverage]
 fairbill model info
+fairbill rate info
 fairbill rate show
 ```
 
@@ -125,8 +129,13 @@ Status as of August 5, 2026:
   category capability builders, a versioned embedded seed-rule catalog, explicit
   profile work, approximately four-hour work-item partitioning, deterministic
   uncertainty drivers, manual validation, self-review, and a separate conservative
-  professionalization gap are implemented. Milestone 6 is next. The seed estimator
-  remains explicitly uncalibrated and is not a production estimate.
+  professionalization gap are implemented.
+- Milestone 6 is complete: compact repository, category, scope, capability, and
+  bounded review projections; evidence-backed explanation queries; saved-report
+  reprojection; a reproducible 2026 US contractor-rate artifact; default pricing
+  with override and opt-out; and measured output-size reductions are implemented.
+  The seed estimator remains explicitly uncalibrated and is not a production
+  estimate. Milestone 7 is next.
 
 ### Milestone 0: Product and contract decisions
 
@@ -228,6 +237,12 @@ self-review anchor. The model is transparent but not calibrated.
 Exit condition: a strong AI can review an estimate from the compressed output
 without reading the full repository in ordinary cases.
 
+Implementation note: `MILESTONE_6.md` records the projection and rate decisions.
+`REPORT_BENCHMARKS.md` records the output-size and usefulness checkpoint: on the
+Fairbill snapshot, review JSON was 7.4% of compact canonical JSON and review
+Markdown was 3.6%. The canonical v1 estimate remains available unchanged as the
+full view, and every compact capability retains a stable `explain` path.
+
 ### Milestone 7: Calibration and local ML
 
 - Establish the structured teacher-estimate rubric.
@@ -257,6 +272,19 @@ review.
 ### Milestone 9: Expansion
 
 - Add feature-oriented reporting.
+- Add provider-neutral incremental-change estimation from base and head snapshots,
+  valuing the final behavior, tests, documentation, migration, and integration
+  delta without using commit history or churn as effort signals.
+- Support one commit, a revision range, and explicitly selected author-and-period
+  portfolios. Treat author and time as selectors only, normalize overlaps and
+  reversals, disclose shared-credit limitations, and label portfolio results as
+  repository-attributed change EHE rather than individual productivity.
+- Add optional GitHub pull-request input through the `gh` CLI when it is installed
+  and authenticated. Keep GitHub access outside the offline core, make network and
+  privacy implications explicit, and use PR metadata only as bounded specification
+  context rather than labor evidence.
+- Follow the deferred semantics and safeguards in `CHANGE_ESTIMATION.md` before
+  implementing any history-backed command.
 - Publish analyzer extension contracts.
 - Add languages and ecosystems based on demand.
 - Add regional rate cards without coupling geography to effort.
@@ -319,13 +347,13 @@ benchmark corpus exists.
 
 ## 8. Immediate next steps
 
-1. Build Milestone 6 compact repository, category, scope, and explain views without
-   losing work-item calculation lineage.
-2. Define reviewed repository-level calibration labels and isolate train/test
+1. Define reviewed repository-level calibration labels and isolate train/test
    splits by repository.
-3. Measure evidence-to-estimate accuracy by category and validate deterministic
+2. Measure evidence-to-estimate accuracy by category and validate deterministic
    uncertainty drivers before considering local ML.
-4. Extend performance and safety measurements to curated, redistributable mixed
+3. Extend performance and safety measurements to curated, redistributable mixed
    repository shapes and peak-memory measurements.
-5. Evaluate a compiler-grade TypeScript adapter only if reviewed calibration shows
+4. Evaluate a compiler-grade TypeScript adapter only if reviewed calibration shows
    material error from the bounded token evidence.
+5. Prototype the provider-neutral change-evidence contract in
+   `CHANGE_ESTIMATION.md` only after repository-level calibration work is underway.

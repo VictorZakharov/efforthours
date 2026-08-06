@@ -6,12 +6,20 @@ namespace Fairbill.Contracts;
 
 public static class ContractJson
 {
-    public static JsonSerializerOptions Options { get; } = CreateOptions();
+    public static JsonSerializerOptions Options { get; } = CreateOptions(writeIndented: true);
+
+    public static JsonSerializerOptions CompactOptions { get; } = CreateOptions(writeIndented: false);
 
     public static string Serialize<T>(T value)
     {
         ArgumentNullException.ThrowIfNull(value);
         return JsonSerializer.Serialize(value, Options);
+    }
+
+    public static string SerializeCompact<T>(T value)
+    {
+        ArgumentNullException.ThrowIfNull(value);
+        return JsonSerializer.Serialize(value, CompactOptions);
     }
 
     public static T Deserialize<T>(string json)
@@ -22,7 +30,7 @@ public static class ContractJson
             ?? throw new JsonException($"The JSON value could not be deserialized as {typeof(T).Name}.");
     }
 
-    private static JsonSerializerOptions CreateOptions()
+    private static JsonSerializerOptions CreateOptions(bool writeIndented)
     {
         JsonSerializerOptions options = new(JsonSerializerDefaults.Web)
         {
@@ -34,7 +42,7 @@ public static class ContractJson
             ReadCommentHandling = JsonCommentHandling.Disallow,
             TypeInfoResolver = new DefaultJsonTypeInfoResolver(),
             UnmappedMemberHandling = JsonUnmappedMemberHandling.Disallow,
-            WriteIndented = true,
+            WriteIndented = writeIndented,
         };
 
         options.Converters.Add(
