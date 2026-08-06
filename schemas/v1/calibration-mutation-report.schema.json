@@ -1,0 +1,129 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:fairbill:schema:v1:calibration-mutation-report",
+  "title": "Fairbill calibration mutation report v1",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "evaluatorVersion",
+    "metricVersion",
+    "suiteId",
+    "suiteVersion",
+    "caseCount",
+    "assertionCount",
+    "passedCount",
+    "failedCount",
+    "allPassed",
+    "ignoredCandidateCount",
+    "candidateEstimatorVersions",
+    "cases",
+    "assertions"
+  ],
+  "properties": {
+    "schemaVersion": { "const": "1.0.0" },
+    "evaluatorVersion": { "type": "string", "minLength": 1 },
+    "metricVersion": { "type": "string", "minLength": 1 },
+    "suiteId": { "type": "string", "minLength": 1 },
+    "suiteVersion": { "type": "string", "minLength": 1 },
+    "caseCount": { "type": "integer", "minimum": 2 },
+    "assertionCount": { "type": "integer", "minimum": 1 },
+    "passedCount": { "type": "integer", "minimum": 0 },
+    "failedCount": { "type": "integer", "minimum": 0 },
+    "allPassed": { "type": "boolean" },
+    "ignoredCandidateCount": { "type": "integer", "minimum": 0 },
+    "candidateEstimatorVersions": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "cases": {
+      "type": "array",
+      "minItems": 2,
+      "items": { "$ref": "#/$defs/case" }
+    },
+    "assertions": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/assertion" }
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "case": {
+      "type": "object",
+      "required": ["caseId", "candidateEstimatorVersion", "candidateEstimateDigest", "totalHours"],
+      "properties": {
+        "caseId": { "type": "string", "minLength": 1 },
+        "candidateEstimatorVersion": { "type": "string", "minLength": 1 },
+        "candidateEstimateDigest": { "type": "string", "pattern": "^sha256:.+" },
+        "totalHours": { "$ref": "#/$defs/effortRange" }
+      },
+      "additionalProperties": false
+    },
+    "assertion": {
+      "type": "object",
+      "required": [
+        "id",
+        "family",
+        "subjectCaseId",
+        "referenceCaseId",
+        "point",
+        "scope",
+        "subjectHours",
+        "referenceHours",
+        "differenceHours",
+        "passed",
+        "rationale"
+      ],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "family": { "type": "string", "minLength": 1 },
+        "subjectCaseId": { "type": "string", "minLength": 1 },
+        "referenceCaseId": { "type": "string", "minLength": 1 },
+        "point": { "enum": ["low", "expected", "high"] },
+        "scope": { "enum": ["repository-total", "category"] },
+        "category": { "$ref": "#/$defs/category" },
+        "subjectHours": { "type": "number", "minimum": 0 },
+        "referenceHours": { "type": "number", "minimum": 0 },
+        "differenceHours": { "type": "number" },
+        "minimumDifferenceHours": { "type": "number" },
+        "maximumDifferenceHours": { "type": "number" },
+        "passed": { "type": "boolean" },
+        "rationale": { "type": "string", "minLength": 1 }
+      },
+      "additionalProperties": false
+    },
+    "effortRange": {
+      "type": "object",
+      "required": ["low", "expected", "high"],
+      "properties": {
+        "low": { "type": "number", "minimum": 0 },
+        "expected": { "type": "number", "minimum": 0 },
+        "high": { "type": "number", "minimum": 0 }
+      },
+      "additionalProperties": false
+    },
+    "category": {
+      "enum": [
+        "specification-comprehension-and-domain-learning",
+        "repository-and-solution-setup",
+        "architecture-and-technical-design",
+        "production-implementation",
+        "ui-implementation-and-represented-ux-decisions",
+        "data-modeling-persistence-and-migrations",
+        "external-integrations-and-protocols",
+        "unit-testing",
+        "integration-contract-and-component-testing",
+        "end-to-end-and-ui-testing",
+        "manual-validation-debugging-and-hardening",
+        "documentation",
+        "build-configuration-and-developer-tooling",
+        "ci-cd-and-infrastructure-as-code",
+        "security-and-accessibility",
+        "packaging-deployment-and-release-artifacts",
+        "self-review-and-system-integration"
+      ]
+    }
+  }
+}

@@ -9,7 +9,11 @@ public static class SchemaNames
 {
     public const string CalibrationAuthoringPacket = "calibration-authoring-packet.schema.json";
     public const string CalibrationCorpus = "calibration-corpus.schema.json";
+    public const string CalibrationCorpusReviewPacket = "calibration-corpus-review-packet.schema.json";
+    public const string CalibrationCorpusReviewPlan = "calibration-corpus-review-plan.schema.json";
     public const string CalibrationEvaluation = "calibration-evaluation.schema.json";
+    public const string CalibrationMutationReport = "calibration-mutation-report.schema.json";
+    public const string CalibrationMutationSuite = "calibration-mutation-suite.schema.json";
     public const string CalibrationReviewPlan = "calibration-review-plan.schema.json";
     public const string CalibrationValidation = "calibration-validation.schema.json";
     public const string Diagnostic = "diagnostic.schema.json";
@@ -28,7 +32,11 @@ public static class SchemaIds
 {
     public const string CalibrationAuthoringPacket = "urn:fairbill:schema:v1:calibration-authoring-packet";
     public const string CalibrationCorpus = "urn:fairbill:schema:v1:calibration-corpus";
+    public const string CalibrationCorpusReviewPacket = "urn:fairbill:schema:v1:calibration-corpus-review-packet";
+    public const string CalibrationCorpusReviewPlan = "urn:fairbill:schema:v1:calibration-corpus-review-plan";
     public const string CalibrationEvaluation = "urn:fairbill:schema:v1:calibration-evaluation";
+    public const string CalibrationMutationReport = "urn:fairbill:schema:v1:calibration-mutation-report";
+    public const string CalibrationMutationSuite = "urn:fairbill:schema:v1:calibration-mutation-suite";
     public const string CalibrationReviewPlan = "urn:fairbill:schema:v1:calibration-review-plan";
     public const string CalibrationValidation = "urn:fairbill:schema:v1:calibration-validation";
     public const string Diagnostic = "urn:fairbill:schema:v1:diagnostic";

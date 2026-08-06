@@ -8,6 +8,8 @@ The current checkpoint contains the versioned
 [`fairbill-public-pilot/0.1.0`](corpora/public-pilot/BASELINE.md) teacher-estimate
 corpus. The pilot is intentionally small, has not received independent correction,
 and does not justify a production accuracy claim or distributable learned model.
+The [`public-synthetic/0.1.0`](mutations/public-synthetic/BASELINE.md) mutation
+suite adds relational guardrails but is not effort-label data.
 
 ## Local workflow
 
@@ -15,8 +17,11 @@ and does not justify a production accuracy claim or distributable learned model.
 fairbill estimate <repository> --no-rate --compact --output <estimate.json>
 fairbill calibration scaffold <estimate.json> [--blind] --output <packet.json>
 fairbill calibration compile <review-plan.json> <estimate.json>... --output <corpus.json>
+fairbill calibration review-scaffold <corpus.json> [--blind] --output <packet.json>
+fairbill calibration review-compile <plan.json> <corpus.json> --output <reviewed-corpus.json>
 fairbill calibration validate <corpus.json>
 fairbill calibration evaluate <corpus.json> <estimate.json>... --partition test
+fairbill calibration mutations <suite.json> <estimate.json>... --output <report.json>
 ```
 
 The corpus stores reviewed labels and provenance. Candidate estimates stay in
@@ -27,6 +32,19 @@ frozen labels to evaluate new rules or models without rewriting the corpus.
 `compile` accepts only completed capability decisions, requires every represented
 capability, verifies the exact source-estimate digest, and restores source
 work-item/evidence lineage deterministically.
+
+`review-scaffold` creates a second-pass packet from an existing corpus. Blind mode
+hides prior target ranges, rationale, uncertainty, and totals. `review-compile`
+requires an explicit accept/replace decision for every target, verifies the exact
+source-corpus digest, rejects reviewer identities already present in the record,
+and preserves structural lineage while advancing review maturity. Generating a
+packet does not itself make labels independently reviewed.
+
+`mutations` evaluates explicit lower/upper bounds on the difference between two
+candidate estimates at a repository-total or category point. Mutation suites are
+deterministic regression and model-admission guardrails; they must remain separate
+from reviewed target labels. A failed relation emits its report and returns exit
+code 5.
 
 ## Publication checklist
 

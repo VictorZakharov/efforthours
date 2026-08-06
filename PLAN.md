@@ -110,7 +110,7 @@ required for an ordinary estimate.
 
 ## 5. Milestones
 
-Status as of August 5, 2026:
+Status as of August 6, 2026:
 
 - Milestone 0 is complete: the initial product semantics, MIT License, packaging
   identity, and repository conventions are recorded.
@@ -147,6 +147,11 @@ Status as of August 5, 2026:
   frozen repository partitions, and checked-in seed baseline reports are implemented.
   The pilot has one host-AI teacher and no independent correction, so corpus
   expansion and independent review remain; no learned model has been admitted.
+- Milestone 7B2 is complete: exact-digest second-review packets and compilation,
+  distinct reviewer-identity enforcement, mutation suite/report contracts, a
+  regression exit code, and the first 8-case/14-assertion synthetic .NET guardrail
+  baseline are implemented. The pilot still lacks an actual independent review,
+  and JavaScript/TypeScript and mixed mutation families remain.
 
 ### Milestone 0: Product and contract decisions
 
@@ -266,12 +271,14 @@ full view, and every compact capability retains a stable `explain` path.
 Exit condition: the local model improves held-out agreement and calibration over
 the seed rules without making reports opaque.
 
-Implementation note: `MILESTONE_7.md` records the staged design. Milestones 7A and
-7B1 are implemented without an ML dependency: reviewed labels remain separate from
-canonical candidate estimates, every repository and its revisions/profiles stay in
-one partition, completed capability decisions compile back to full evidence
-lineage, and `calibration-metrics/1.0.0` reports deterministic low/expected/high
-error, bias, interval coverage, and work-item mapping coverage. The seed model
+Implementation note: `MILESTONE_7.md` records the staged design. Milestones 7A,
+7B1, and 7B2 are implemented without an ML dependency: reviewed labels remain
+separate from canonical candidate estimates, every repository and its
+revisions/profiles stay in one partition, completed capability and subsequent
+review decisions compile back to full evidence lineage, and
+`calibration-metrics/1.0.0` reports deterministic low/expected/high error, bias,
+interval coverage, and work-item mapping coverage. Versioned mutation relations
+now guard invariance, directionality, and category isolation. The seed model
 remains uncalibrated until the licensed corpus is diverse and independently
 reviewed.
 
@@ -367,13 +374,15 @@ benchmark corpus exists.
 
 ## 8. Immediate next steps
 
-1. Build the first diverse, redistributable reviewed corpus using the
-   `ehe-work-item/1.0.0` rubric and freeze repository-level partitions.
-2. Run the implemented evaluator against `seed-rules/0.2.0`, publish category and
-   total baselines, and review interval and mapping-coverage failures.
-3. Extend performance and safety measurements to curated, redistributable mixed
+1. Hand the frozen blind public-pilot packet to a genuinely distinct reviewer and
+   compile corrections without exposing the test partition to tuning.
+2. Add redistributable repository families per ecosystem and partition, then
+   extend the published seed category/total baselines.
+3. Expand mutation guardrails to JavaScript/TypeScript, mixed repositories,
+   generated customization, near-duplicates, and low/high range behavior.
+4. Extend performance and safety measurements to curated, redistributable mixed
    repository shapes and peak-memory measurements.
-4. Evaluate a compiler-grade TypeScript adapter only if reviewed calibration shows
+5. Evaluate a compiler-grade TypeScript adapter only if reviewed calibration shows
    material error from the bounded token evidence.
-5. Prototype the provider-neutral change-evidence contract in
+6. Prototype the provider-neutral change-evidence contract in
    `CHANGE_ESTIMATION.md` only after repository-level calibration work is underway.

@@ -2,16 +2,19 @@
 
 ## Status
 
-Milestone 7A and the Milestone 7B1 public-pilot checkpoint were implemented on
-August 6, 2026. They establish the versioned review corpus, low-cost authoring and
-compilation boundary, deterministic offline evaluation, initial licensed labels,
-and acceptance gates needed before Fairbill adopts any learned model. The seed
-estimator remains `experimental-uncalibrated`; this milestone does not make its
-current hours production-ready.
+Milestone 7A, the Milestone 7B1 public-pilot checkpoint, and the Milestone 7B2
+review/mutation checkpoint were implemented on August 6, 2026. They establish the
+versioned review corpus, low-cost authoring and compilation boundaries,
+deterministic offline evaluation, initial licensed labels, exact-digest subsequent
+review, and relational model guardrails needed before Fairbill adopts any learned
+model. The seed estimator remains `experimental-uncalibrated`; this milestone does
+not make its current hours production-ready.
 
-The pilot has one host-AI teacher and no independent correction. Milestone 7B is
-therefore still in progress: broader repository/mutation coverage and independent
-review are required before numerical admission thresholds or model training.
+The pilot still has one host-AI teacher and no independent correction. Milestone
+7B is therefore in progress: broader repository and JavaScript/TypeScript/mixed
+mutation coverage plus an actual independent review are required before numerical
+admission thresholds or model training. The presence of second-review tooling must
+not be confused with completion of that review.
 
 Local model training and inference are deferred until a diverse, licensed corpus
 exists and a candidate model demonstrates an improvement on repository-held-out
@@ -80,6 +83,47 @@ The public pilot and baseline interpretation are documented in
 `calibration/corpora/public-pilot/BASELINE.md`; exact source/license provenance is
 in `calibration/corpora/public-pilot/SOURCES.md`. The fixed test partition must not
 be used to tune the seed rules or candidate hyperparameters.
+
+## Implemented Milestone 7B2 scope
+
+The review/mutation slice still adds no ML runtime or training dependency. It adds:
+
+1. a v1 explicitly unreviewed corpus-review packet and JSON Schema;
+2. `fairbill calibration review-scaffold`, whose blind mode hides prior ranges,
+   rationale, uncertainty decisions, and totals;
+3. a v1 completed corpus-review plan and JSON Schema;
+4. `fairbill calibration review-compile`, which pins the exact source-corpus
+   digest, requires every record and target, rejects reused reviewer identities,
+   and preserves all structural lineage while advancing maturity;
+5. v1 mutation-suite and mutation-report contracts;
+6. `fairbill calibration mutations`, with deterministic repository/category
+   difference bounds and a dedicated regression exit code;
+7. a public synthetic .NET archetype with formatting, duplication, generated,
+   API, test, documentation, and integration variants; and
+8. a compact blind handoff packet for all 99 public-pilot targets.
+
+Subsequent review decisions are explicit `accept` or `replace` actions. An accepted
+target copies the prior reviewed target only after the second reviewer deliberately
+checks it. A replacement supplies a complete range, rationale, uncertainty, and
+size exception when needed. The compiler preserves target IDs, categories, scopes,
+source work-item IDs, evidence IDs, source estimates, repository identities, and
+partitions. It retains earlier reviewer provenance and appends distinct subsequent
+reviewers. `reviewed` requires a reviewer; `adjudicated` requires an adjudicator and
+combined reviewer provenance. Maturity cannot be downgraded, and an adjudicated
+record cannot be advanced again.
+
+The checked-in blind packet remains `unreviewed`; it contains no prior numeric or
+rationale fields and is not a corpus. The agent that produced the teacher pass and
+this implementation is not an independent reviewer. The public pilot therefore
+remains at `teacher-estimate` maturity.
+
+Mutation suites are relational guardrails, not reviewed labels. Each case selects
+one canonical candidate by source digest, profile, and baseline. Each assertion
+compares one low, expected, or high repository/category point and defines an
+allowed minimum and/or maximum difference. Missing categories are zero, which
+allows a test or documentation addition to be compared with an absent base
+category. A failed assertion still emits a complete deterministic report and
+returns exit code 5; malformed inputs use the ordinary invalid-input path.
 
 ## Contract boundaries
 
@@ -160,10 +204,23 @@ fairbill calibration compile <review-plan.json> <estimate.json>...
   [--compact]
   [--output <path>]
 
+fairbill calibration review-scaffold <corpus.json>
+  [--blind]
+  [--compact]
+  [--output <path>]
+
+fairbill calibration review-compile <plan.json> <corpus.json>
+  [--compact]
+  [--output <path>]
+
 fairbill calibration validate <corpus.json> [--compact] [--output <path>]
 
 fairbill calibration evaluate <corpus.json> <estimate.json>...
   --partition <development|validation|test>
+  [--compact]
+  [--output <path>]
+
+fairbill calibration mutations <suite.json> <estimate.json>...
   [--compact]
   [--output <path>]
 ```
@@ -179,9 +236,16 @@ JSON. Extra candidate reports are disclosed but do not affect metrics.
 
 The calibration commands do not read repository source, Git history, or the
 network. Physical file access belongs only to the CLI boundary; the reusable
-authoring, compiler, validator, and evaluator operate on in-memory contract
-objects. `estimate` may analyze a repository, but writes only when the caller gives
-an explicit output path.
+authoring, compiler, validator, corpus-review, and mutation evaluators operate on
+in-memory contract objects. `estimate` may analyze a repository, but writes only
+when the caller gives an explicit output path.
+
+Mutation semantics are versioned as `calibration-mutation-metrics/1.0.0`. A result
+passes when `subject - reference` is within every supplied inclusive difference
+bound. Assertions must name different known cases, use at least one bound, and
+identify a category exactly when category scope is selected. The report records
+the actual values, difference, bounds, candidate digests and estimators, and
+per-assertion pass/fail state without a generated timestamp.
 
 ## Metric set
 
@@ -257,9 +321,11 @@ model hyperparameters.
 
 ### Remaining 7B: corpus and baseline measurement
 
-- Build small synthetic archetypes and mutation families.
+- Expand synthetic mutations to JavaScript/TypeScript, mixed repositories,
+  near-duplicates, generated customization, more categories, and range behavior.
 - Add diverse, redistributable real repositories with recorded licenses.
-- Expand the consistent teacher reviews and obtain independent correction.
+- Expand the consistent teacher reviews and complete the prepared independent
+  correction handoff with a genuinely distinct reviewer.
 - Preserve the frozen repository-level partitions before tuning.
 - Extend the published seed-rule baseline measurements and disagreement notes.
 
@@ -318,3 +384,26 @@ each partition. Its 99 reviewed targets retain all 228 source work-item referenc
 Combined teacher expected effort is 401.50 hours versus 805.75 seed hours; the
 three-repository observation WAPE and aggregate bias are both 1.0068. These values
 are a diagnostic baseline against preliminary weak labels, not an accuracy claim.
+
+## Milestone 7B2 completion evidence
+
+The review/mutation checkpoint passes a zero-warning Release build, 81 memory-only
+unit tests, and 19 disk-backed CLI end-to-end tests before the final release gate.
+The `Fairbill.Tool` version advances to `0.7.0-alpha.3`. Nineteen v1 schemas are
+embedded. Unit tests construct every packet, plan, corpus, mutation suite,
+candidate, and report in memory; only CLI tests and explicit public-artifact
+generation use physical files.
+
+The public synthetic baseline contains 8 canonical .NET cases and 14 assertions.
+All seed assertions pass: formatting, exact excluded duplication, and conventional
+generated output leave both expected total and production EHE unchanged; API,
+tests, documentation, and integration variants increase the intended totals or
+categories; test- and documentation-only variants leave production unchanged.
+This establishes qualitative invariant/directionality guardrails, not numerical
+accuracy. JavaScript/TypeScript and mixed mutation coverage remain open.
+
+The public-pilot blind packet covers all 3 records and 99 targets and pins source
+corpus digest
+`sha256:216ee9e2289290c43bb843a51cacd9b8cb8d5da0d9da50f90ff77cf0ed11d5c0`.
+All prior hours and rationales are absent. No completed second-review plan is
+checked in, so the source corpus correctly remains `teacher-estimate`.

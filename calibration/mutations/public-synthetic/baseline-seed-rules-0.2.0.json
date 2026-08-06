@@ -1,0 +1,313 @@
+{
+  "schemaVersion": "1.0.0",
+  "evaluatorVersion": "calibration-mutation-evaluator/0.1.0",
+  "metricVersion": "calibration-mutation-metrics/1.0.0",
+  "suiteId": "fairbill-public-synthetic-mutations",
+  "suiteVersion": "0.1.0",
+  "caseCount": 8,
+  "assertionCount": 14,
+  "passedCount": 14,
+  "failedCount": 0,
+  "allPassed": true,
+  "ignoredCandidateCount": 0,
+  "candidateEstimatorVersions": [
+    "seed-rules/0.2.0"
+  ],
+  "cases": [
+    {
+      "caseId": "dotnet-api",
+      "candidateEstimatorVersion": "seed-rules/0.2.0",
+      "candidateEstimateDigest": "sha256:1d8ba6544cbea22dbbcd1e95a8c97f2e3c4813ed450a4a99693541d7bfa91f74",
+      "totalHours": {
+        "low": 6.00,
+        "expected": 11.75,
+        "high": 21.25
+      }
+    },
+    {
+      "caseId": "dotnet-base",
+      "candidateEstimatorVersion": "seed-rules/0.2.0",
+      "candidateEstimateDigest": "sha256:841ba1eb50c688ccda86a6026f9f3c50004d8a57bf1139db78f87e145f7de12e",
+      "totalHours": {
+        "low": 4.00,
+        "expected": 7.25,
+        "high": 13.00
+      }
+    },
+    {
+      "caseId": "dotnet-documentation",
+      "candidateEstimatorVersion": "seed-rules/0.2.0",
+      "candidateEstimateDigest": "sha256:564beb45ad21b349baa7f05b910856f0b4f3846c20cedea47ae6ec26935246e2",
+      "totalHours": {
+        "low": 4.50,
+        "expected": 8.25,
+        "high": 14.75
+      }
+    },
+    {
+      "caseId": "dotnet-duplicate",
+      "candidateEstimatorVersion": "seed-rules/0.2.0",
+      "candidateEstimateDigest": "sha256:616fd42ff0afade770cc875cd3bbc59241bb2047e82dc2990a13b861c140f070",
+      "totalHours": {
+        "low": 4.00,
+        "expected": 7.25,
+        "high": 13.00
+      }
+    },
+    {
+      "caseId": "dotnet-formatting",
+      "candidateEstimatorVersion": "seed-rules/0.2.0",
+      "candidateEstimateDigest": "sha256:6e264d5c5dbd4bffd9b01fa8fa608407ab77888326b210b7e8b8da8f578cc704",
+      "totalHours": {
+        "low": 4.00,
+        "expected": 7.25,
+        "high": 13.00
+      }
+    },
+    {
+      "caseId": "dotnet-generated",
+      "candidateEstimatorVersion": "seed-rules/0.2.0",
+      "candidateEstimateDigest": "sha256:738d4779480ca0bf5372645074093a07c70587cec9857d618e5939762406c1a7",
+      "totalHours": {
+        "low": 4.00,
+        "expected": 7.25,
+        "high": 13.00
+      }
+    },
+    {
+      "caseId": "dotnet-integration",
+      "candidateEstimatorVersion": "seed-rules/0.2.0",
+      "candidateEstimateDigest": "sha256:efd322aa0b3ec942af81f520f490387e6f99408438979abdf35cd3b41a828122",
+      "totalHours": {
+        "low": 6.50,
+        "expected": 13.00,
+        "high": 24.00
+      }
+    },
+    {
+      "caseId": "dotnet-tests",
+      "candidateEstimatorVersion": "seed-rules/0.2.0",
+      "candidateEstimateDigest": "sha256:3a84d9c3737be7117fca7f5b7c67c1073b4c829acc139782579931abf8b58750",
+      "totalHours": {
+        "low": 6.25,
+        "expected": 11.25,
+        "high": 19.50
+      }
+    }
+  ],
+  "assertions": [
+    {
+      "id": "dotnet-api-production-increases",
+      "family": "meaningful-api-behavior",
+      "subjectCaseId": "dotnet-api",
+      "referenceCaseId": "dotnet-base",
+      "point": "expected",
+      "scope": "category",
+      "category": "production-implementation",
+      "subjectHours": 3.50,
+      "referenceHours": 1.50,
+      "differenceHours": 2.00,
+      "minimumDifferenceHours": 0.5,
+      "passed": true,
+      "rationale": "HTTP behavior must increase production implementation effort."
+    },
+    {
+      "id": "dotnet-api-total-increases",
+      "family": "meaningful-api-behavior",
+      "subjectCaseId": "dotnet-api",
+      "referenceCaseId": "dotnet-base",
+      "point": "expected",
+      "scope": "repository-total",
+      "subjectHours": 11.75,
+      "referenceHours": 7.25,
+      "differenceHours": 4.50,
+      "minimumDifferenceHours": 0.5,
+      "passed": true,
+      "rationale": "A runnable HTTP boundary must increase total represented effort."
+    },
+    {
+      "id": "dotnet-documentation-increases",
+      "family": "represented-documentation",
+      "subjectCaseId": "dotnet-documentation",
+      "referenceCaseId": "dotnet-base",
+      "point": "expected",
+      "scope": "category",
+      "category": "documentation",
+      "subjectHours": 1.00,
+      "referenceHours": 0,
+      "differenceHours": 1.00,
+      "minimumDifferenceHours": 0.5,
+      "passed": true,
+      "rationale": "Maintained onboarding and usage guidance must add documentation effort."
+    },
+    {
+      "id": "dotnet-documentation-production-isolated",
+      "family": "represented-documentation",
+      "subjectCaseId": "dotnet-documentation",
+      "referenceCaseId": "dotnet-base",
+      "point": "expected",
+      "scope": "category",
+      "category": "production-implementation",
+      "subjectHours": 1.50,
+      "referenceHours": 1.50,
+      "differenceHours": 0.00,
+      "minimumDifferenceHours": 0,
+      "maximumDifferenceHours": 0,
+      "passed": true,
+      "rationale": "A documentation-only addition must not inflate production implementation."
+    },
+    {
+      "id": "dotnet-duplicate-production-invariant",
+      "family": "exact-duplication",
+      "subjectCaseId": "dotnet-duplicate",
+      "referenceCaseId": "dotnet-base",
+      "point": "expected",
+      "scope": "category",
+      "category": "production-implementation",
+      "subjectHours": 1.50,
+      "referenceHours": 1.50,
+      "differenceHours": 0.00,
+      "minimumDifferenceHours": 0,
+      "maximumDifferenceHours": 0,
+      "passed": true,
+      "rationale": "Exact duplicate implementation volume must be normalized."
+    },
+    {
+      "id": "dotnet-duplicate-total-invariant",
+      "family": "exact-duplication",
+      "subjectCaseId": "dotnet-duplicate",
+      "referenceCaseId": "dotnet-base",
+      "point": "expected",
+      "scope": "repository-total",
+      "subjectHours": 7.25,
+      "referenceHours": 7.25,
+      "differenceHours": 0.00,
+      "minimumDifferenceHours": 0,
+      "maximumDifferenceHours": 0,
+      "passed": true,
+      "rationale": "An excluded exact source copy must not increase represented EHE."
+    },
+    {
+      "id": "dotnet-formatting-production-invariant",
+      "family": "formatting-only",
+      "subjectCaseId": "dotnet-formatting",
+      "referenceCaseId": "dotnet-base",
+      "point": "expected",
+      "scope": "category",
+      "category": "production-implementation",
+      "subjectHours": 1.50,
+      "referenceHours": 1.50,
+      "differenceHours": 0.00,
+      "minimumDifferenceHours": 0,
+      "maximumDifferenceHours": 0,
+      "passed": true,
+      "rationale": "Formatting alone must not change production effort."
+    },
+    {
+      "id": "dotnet-formatting-total-invariant",
+      "family": "formatting-only",
+      "subjectCaseId": "dotnet-formatting",
+      "referenceCaseId": "dotnet-base",
+      "point": "expected",
+      "scope": "repository-total",
+      "subjectHours": 7.25,
+      "referenceHours": 7.25,
+      "differenceHours": 0.00,
+      "minimumDifferenceHours": 0,
+      "maximumDifferenceHours": 0,
+      "passed": true,
+      "rationale": "Formatting alone must not change represented EHE."
+    },
+    {
+      "id": "dotnet-generated-production-invariant",
+      "family": "generated-content",
+      "subjectCaseId": "dotnet-generated",
+      "referenceCaseId": "dotnet-base",
+      "point": "expected",
+      "scope": "category",
+      "category": "production-implementation",
+      "subjectHours": 1.50,
+      "referenceHours": 1.50,
+      "differenceHours": 0.00,
+      "minimumDifferenceHours": 0,
+      "maximumDifferenceHours": 0,
+      "passed": true,
+      "rationale": "Generated implementation volume must remain excluded from production effort."
+    },
+    {
+      "id": "dotnet-generated-total-invariant",
+      "family": "generated-content",
+      "subjectCaseId": "dotnet-generated",
+      "referenceCaseId": "dotnet-base",
+      "point": "expected",
+      "scope": "repository-total",
+      "subjectHours": 7.25,
+      "referenceHours": 7.25,
+      "differenceHours": 0.00,
+      "minimumDifferenceHours": 0,
+      "maximumDifferenceHours": 0,
+      "passed": true,
+      "rationale": "A conventional generated body must not increase represented EHE."
+    },
+    {
+      "id": "dotnet-integration-category-increases",
+      "family": "external-integration",
+      "subjectCaseId": "dotnet-integration",
+      "referenceCaseId": "dotnet-base",
+      "point": "expected",
+      "scope": "category",
+      "category": "external-integrations-and-protocols",
+      "subjectHours": 3.50,
+      "referenceHours": 0,
+      "differenceHours": 3.50,
+      "minimumDifferenceHours": 0.5,
+      "passed": true,
+      "rationale": "The external-integration category must receive the integration work."
+    },
+    {
+      "id": "dotnet-integration-total-increases",
+      "family": "external-integration",
+      "subjectCaseId": "dotnet-integration",
+      "referenceCaseId": "dotnet-base",
+      "point": "expected",
+      "scope": "repository-total",
+      "subjectHours": 13.00,
+      "referenceHours": 7.25,
+      "differenceHours": 5.75,
+      "minimumDifferenceHours": 0.5,
+      "passed": true,
+      "rationale": "A maintained external client boundary must increase total represented effort."
+    },
+    {
+      "id": "dotnet-tests-production-isolated",
+      "family": "represented-tests",
+      "subjectCaseId": "dotnet-tests",
+      "referenceCaseId": "dotnet-base",
+      "point": "expected",
+      "scope": "category",
+      "category": "production-implementation",
+      "subjectHours": 1.50,
+      "referenceHours": 1.50,
+      "differenceHours": 0.00,
+      "minimumDifferenceHours": 0,
+      "maximumDifferenceHours": 0,
+      "passed": true,
+      "rationale": "A test-only addition must not inflate production implementation."
+    },
+    {
+      "id": "dotnet-tests-unit-testing-increases",
+      "family": "represented-tests",
+      "subjectCaseId": "dotnet-tests",
+      "referenceCaseId": "dotnet-base",
+      "point": "expected",
+      "scope": "category",
+      "category": "unit-testing",
+      "subjectHours": 1.75,
+      "referenceHours": 0,
+      "differenceHours": 1.75,
+      "minimumDifferenceHours": 0.5,
+      "passed": true,
+      "rationale": "Maintained unit tests must add represented unit-testing effort."
+    }
+  ]
+}

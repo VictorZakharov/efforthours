@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:fairbill:schema:v1:calibration-mutation-suite",
+  "title": "Fairbill calibration mutation suite v1",
+  "type": "object",
+  "required": ["schemaVersion", "metricVersion", "id", "version", "description", "cases", "assertions"],
+  "properties": {
+    "schemaVersion": { "const": "1.0.0" },
+    "metricVersion": { "type": "string", "minLength": 1 },
+    "id": { "type": "string", "minLength": 1 },
+    "version": { "type": "string", "minLength": 1 },
+    "description": { "type": "string", "minLength": 1 },
+    "cases": {
+      "type": "array",
+      "minItems": 2,
+      "items": { "$ref": "#/$defs/case" }
+    },
+    "assertions": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/assertion" }
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "case": {
+      "type": "object",
+      "required": ["id", "description", "sourceDigest", "profile", "baselineId"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "description": { "type": "string", "minLength": 1 },
+        "sourceDigest": { "type": "string", "pattern": "^sha256:.+" },
+        "profile": { "enum": ["implementation", "recreation"] },
+        "baselineId": { "type": "string", "minLength": 1 }
+      },
+      "additionalProperties": false
+    },
+    "assertion": {
+      "type": "object",
+      "required": [
+        "id",
+        "family",
+        "subjectCaseId",
+        "referenceCaseId",
+        "point",
+        "scope",
+        "rationale"
+      ],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "family": { "type": "string", "minLength": 1 },
+        "subjectCaseId": { "type": "string", "minLength": 1 },
+        "referenceCaseId": { "type": "string", "minLength": 1 },
+        "point": { "enum": ["low", "expected", "high"] },
+        "scope": { "enum": ["repository-total", "category"] },
+        "category": { "$ref": "#/$defs/category" },
+        "minimumDifferenceHours": { "type": "number" },
+        "maximumDifferenceHours": { "type": "number" },
+        "rationale": { "type": "string", "minLength": 1 }
+      },
+      "additionalProperties": false
+    },
+    "category": {
+      "enum": [
+        "specification-comprehension-and-domain-learning",
+        "repository-and-solution-setup",
+        "architecture-and-technical-design",
+        "production-implementation",
+        "ui-implementation-and-represented-ux-decisions",
+        "data-modeling-persistence-and-migrations",
+        "external-integrations-and-protocols",
+        "unit-testing",
+        "integration-contract-and-component-testing",
+        "end-to-end-and-ui-testing",
+        "manual-validation-debugging-and-hardening",
+        "documentation",
+        "build-configuration-and-developer-tooling",
+        "ci-cd-and-infrastructure-as-code",
+        "security-and-accessibility",
+        "packaging-deployment-and-release-artifacts",
+        "self-review-and-system-integration"
+      ]
+    }
+  }
+}

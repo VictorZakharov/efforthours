@@ -353,6 +353,128 @@ public sealed class CliTests
     }
 
     [Fact]
+    public async Task CalibrationCorpusReviewRequiresExplicitSecondPassAndPreservesTargets()
+    {
+        string fixture = Path.Combine(
+            AppContext.BaseDirectory,
+            "fixtures",
+            "evidence",
+            "minimal.repository-evidence.json");
+        ProcessResult estimate = await RunCliAsync("estimate", fixture, "--no-rate", "--compact");
+        Assert.Equal(0, estimate.ExitCode);
+
+        using TemporaryRepository repository = new();
+        string corpusJson = CreateCalibrationCorpus(estimate.StandardOutput);
+        repository.WriteText("corpus.json", corpusJson);
+        string corpusPath = Path.Combine(repository.RootPath, "corpus.json");
+        string packetPath = Path.Combine(repository.RootPath, "review-packet.json");
+        string planPath = Path.Combine(repository.RootPath, "corpus-review-plan.json");
+        string reviewedPath = Path.Combine(repository.RootPath, "reviewed-corpus.json");
+
+        ProcessResult scaffold = await RunCliAsync(
+            "calibration",
+            "review-scaffold",
+            corpusPath,
+            "--blind",
+            "--compact",
+            "--output",
+            packetPath);
+        Assert.Equal(0, scaffold.ExitCode);
+        Assert.Equal(string.Empty, scaffold.StandardOutput);
+        Assert.Equal(string.Empty, scaffold.StandardError);
+
+        string packetJson = await File.ReadAllTextAsync(packetPath);
+        repository.WriteText("corpus-review-plan.json", CreateCorpusReviewPlan(packetJson));
+        ProcessResult compiled = await RunCliAsync(
+            "calibration",
+            "review-compile",
+            planPath,
+            corpusPath,
+            "--compact",
+            "--output",
+            reviewedPath);
+
+        Assert.Equal(0, compiled.ExitCode);
+        Assert.Equal(string.Empty, compiled.StandardOutput);
+        Assert.Equal(string.Empty, compiled.StandardError);
+        using JsonDocument packet = JsonDocument.Parse(packetJson);
+        Assert.Equal(
+            JsonValueKind.Null,
+            packet.RootElement
+                .GetProperty("records")[0]
+                .GetProperty("candidateTotalHours")
+                .ValueKind);
+        Assert.All(
+            packet.RootElement.GetProperty("records")[0].GetProperty("targets").EnumerateArray(),
+            target => Assert.Equal(
+                JsonValueKind.Null,
+                target.GetProperty("candidate").GetProperty("hours").ValueKind));
+
+        using JsonDocument reviewed = JsonDocument.Parse(await File.ReadAllTextAsync(reviewedPath));
+        JsonElement record = reviewed.RootElement.GetProperty("records")[0];
+        Assert.Equal("reviewed", record.GetProperty("review").GetProperty("status").GetString());
+        Assert.Equal(2, record.GetProperty("review").GetProperty("reviewers").GetArrayLength());
+        using JsonDocument source = JsonDocument.Parse(corpusJson);
+        Assert.Equal(
+            source.RootElement.GetProperty("records")[0].GetProperty("targets").GetArrayLength(),
+            record.GetProperty("targets").GetArrayLength());
+    }
+
+    [Fact]
+    public async Task CalibrationMutationsEmitReportAndUseDedicatedRegressionExitCode()
+    {
+        string fixture = Path.Combine(
+            AppContext.BaseDirectory,
+            "fixtures",
+            "evidence",
+            "minimal.repository-evidence.json");
+        ProcessResult estimate = await RunCliAsync("estimate", fixture, "--no-rate", "--compact");
+        Assert.Equal(0, estimate.ExitCode);
+
+        using TemporaryRepository repository = new();
+        string subjectJson = CreateMutationCandidate(estimate.StandardOutput);
+        string suiteJson = CreateMutationSuite(estimate.StandardOutput, subjectJson, shouldPass: true);
+        string failingSuiteJson = CreateMutationSuite(estimate.StandardOutput, subjectJson, shouldPass: false);
+        repository.WriteText("reference.json", estimate.StandardOutput);
+        repository.WriteText("subject.json", subjectJson);
+        repository.WriteText("suite.json", suiteJson);
+        repository.WriteText("failing-suite.json", failingSuiteJson);
+        string referencePath = Path.Combine(repository.RootPath, "reference.json");
+        string subjectPath = Path.Combine(repository.RootPath, "subject.json");
+        string reportPath = Path.Combine(repository.RootPath, "mutation-report.json");
+
+        ProcessResult passing = await RunCliAsync(
+            "calibration",
+            "mutations",
+            Path.Combine(repository.RootPath, "suite.json"),
+            referencePath,
+            subjectPath,
+            "--compact",
+            "--output",
+            reportPath);
+        ProcessResult failing = await RunCliAsync(
+            "calibration",
+            "mutations",
+            Path.Combine(repository.RootPath, "failing-suite.json"),
+            referencePath,
+            subjectPath,
+            "--compact");
+
+        Assert.Equal(0, passing.ExitCode);
+        Assert.Equal(string.Empty, passing.StandardOutput);
+        Assert.Equal(string.Empty, passing.StandardError);
+        using JsonDocument passingReport = JsonDocument.Parse(await File.ReadAllTextAsync(reportPath));
+        Assert.True(passingReport.RootElement.GetProperty("allPassed").GetBoolean());
+        Assert.Equal(1, passingReport.RootElement.GetProperty("passedCount").GetInt32());
+
+        Assert.Equal(5, failing.ExitCode);
+        Assert.Equal(string.Empty, failing.StandardError);
+        using JsonDocument failingReport = JsonDocument.Parse(failing.StandardOutput);
+        Assert.False(failingReport.RootElement.GetProperty("allPassed").GetBoolean());
+        Assert.Equal(1, failingReport.RootElement.GetProperty("failedCount").GetInt32());
+    }
+
+    [Fact]
     public async Task EstimateCanWriteAnExplicitOutputWithoutMixingStdoutAndDiagnostics()
     {
         string fixture = Path.Combine(
@@ -690,6 +812,130 @@ public sealed class CliTests
         };
 
         return plan.ToJsonString();
+    }
+
+    private static string CreateCorpusReviewPlan(string packetJson)
+    {
+        JsonObject packet = JsonNode.Parse(packetJson)!.AsObject();
+        JsonArray records = [];
+        foreach (JsonNode? recordNode in packet["records"]!.AsArray())
+        {
+            JsonObject sourceRecord = recordNode!.AsObject();
+            JsonArray targets = [];
+            foreach (JsonNode? targetNode in sourceRecord["targets"]!.AsArray())
+            {
+                targets.Add(new JsonObject
+                {
+                    ["sourceTargetId"] = targetNode!["sourceTargetId"]!.DeepClone(),
+                    ["action"] = "accept",
+                    ["hours"] = null,
+                    ["rationale"] = null,
+                    ["uncertaintyReasons"] = new JsonArray(),
+                    ["sizeException"] = null,
+                });
+            }
+
+            records.Add(new JsonObject
+            {
+                ["sourceRecordId"] = sourceRecord["sourceRecordId"]!.DeepClone(),
+                ["resultStatus"] = "reviewed",
+                ["completedOn"] = "2026-08-07",
+                ["reviewers"] = new JsonArray
+                {
+                    new JsonObject
+                    {
+                        ["id"] = "reviewer:e2e-independent",
+                        ["kind"] = "host-ai",
+                        ["role"] = "reviewer",
+                        ["modelId"] = "synthetic-independent-reviewer",
+                        ["modelVersion"] = "1",
+                    },
+                },
+                ["notes"] = "Synthetic process-level second review.",
+                ["targets"] = targets,
+            });
+        }
+
+        return new JsonObject
+        {
+            ["schemaVersion"] = "1.0.0",
+            ["compilerVersion"] = "calibration-corpus-review-compiler/0.1.0",
+            ["sourceCorpus"] = packet["sourceCorpus"]!.DeepClone(),
+            ["id"] = "synthetic-cli-corpus-reviewed",
+            ["version"] = "1.1.0",
+            ["description"] = "Process-level independently reviewed synthetic corpus.",
+            ["records"] = records,
+        }.ToJsonString();
+    }
+
+    private static string CreateMutationCandidate(string estimateJson)
+    {
+        JsonObject candidate = JsonNode.Parse(estimateJson)!.AsObject();
+        candidate["repository"]!["sourceDigest"] = "sha256:e2e-mutated";
+        JsonObject itemHours = candidate["workItems"]![0]!["hours"]!.AsObject();
+        string categoryName = candidate["workItems"]![0]!["category"]!.GetValue<string>();
+        AddToRange(itemHours, 1m);
+        JsonObject categoryHours = candidate["categories"]!
+            .AsArray()
+            .Single(node => node!["category"]!.GetValue<string>() == categoryName)!["hours"]!
+            .AsObject();
+        AddToRange(categoryHours, 1m);
+        AddToRange(candidate["totalEffort"]!.AsObject(), 1m);
+        return candidate.ToJsonString();
+    }
+
+    private static string CreateMutationSuite(
+        string referenceJson,
+        string subjectJson,
+        bool shouldPass)
+    {
+        JsonObject reference = JsonNode.Parse(referenceJson)!.AsObject();
+        JsonObject subject = JsonNode.Parse(subjectJson)!.AsObject();
+        return new JsonObject
+        {
+            ["schemaVersion"] = "1.0.0",
+            ["metricVersion"] = "calibration-mutation-metrics/1.0.0",
+            ["id"] = shouldPass ? "synthetic-cli-mutations" : "synthetic-cli-mutations-failing",
+            ["version"] = "1.0.0",
+            ["description"] = "Process-level mutation evaluator fixture.",
+            ["cases"] = new JsonArray
+            {
+                MutationCase("reference", reference),
+                MutationCase("subject", subject),
+            },
+            ["assertions"] = new JsonArray
+            {
+                new JsonObject
+                {
+                    ["id"] = "expected-total-change",
+                    ["family"] = "behavior",
+                    ["subjectCaseId"] = "subject",
+                    ["referenceCaseId"] = "reference",
+                    ["point"] = "expected",
+                    ["scope"] = "repository-total",
+                    ["minimumDifferenceHours"] = shouldPass ? 1m : 0m,
+                    ["maximumDifferenceHours"] = shouldPass ? 1m : 0m,
+                    ["rationale"] = "Synthetic candidate changes expected effort by one hour.",
+                },
+            },
+        }.ToJsonString();
+    }
+
+    private static JsonObject MutationCase(string id, JsonObject estimate) => new()
+    {
+        ["id"] = id,
+        ["description"] = $"Synthetic {id} mutation case.",
+        ["sourceDigest"] = estimate["repository"]!["sourceDigest"]!.DeepClone(),
+        ["profile"] = estimate["profile"]!.DeepClone(),
+        ["baselineId"] = estimate["baseline"]!["id"]!.DeepClone(),
+    };
+
+    private static void AddToRange(JsonObject range, decimal amount)
+    {
+        foreach (string point in new[] { "low", "expected", "high" })
+        {
+            range[point] = range[point]!.GetValue<decimal>() + amount;
+        }
     }
 
     private static string FindRepositoryRoot()

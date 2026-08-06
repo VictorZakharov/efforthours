@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Description>Offline calibration validation and evaluation for Fairbill estimates.</Description>
+    <Description>Offline calibration authoring, review, mutation, and evaluation for Fairbill estimates.</Description>
     <RootNamespace>Fairbill.Calibration</RootNamespace>
     <AssemblyName>Fairbill.Calibration</AssemblyName>
   </PropertyGroup>

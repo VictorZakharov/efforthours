@@ -881,6 +881,21 @@ public sealed class FairbillApplication
                 standardOutput,
                 standardError,
                 cancellationToken).ConfigureAwait(false),
+            "review-scaffold" => await ScaffoldCorpusReviewAsync(
+                [.. arguments.Skip(1)],
+                standardOutput,
+                standardError,
+                cancellationToken).ConfigureAwait(false),
+            "review-compile" => await CompileCorpusReviewAsync(
+                [.. arguments.Skip(1)],
+                standardOutput,
+                standardError,
+                cancellationToken).ConfigureAwait(false),
+            "mutations" => await EvaluateMutationsAsync(
+                [.. arguments.Skip(1)],
+                standardOutput,
+                standardError,
+                cancellationToken).ConfigureAwait(false),
             "validate" => await ValidateCalibrationAsync(
                 [.. arguments.Skip(1)],
                 standardOutput,
@@ -894,9 +909,363 @@ public sealed class FairbillApplication
             _ => await UsageErrorAsync(
                 standardError,
                 "Expected 'calibration scaffold', 'calibration compile', " +
-                "'calibration validate', or 'calibration evaluate'.")
+                "'calibration review-scaffold', 'calibration review-compile', " +
+                "'calibration mutations', 'calibration validate', or 'calibration evaluate'.")
                 .ConfigureAwait(false),
         };
+    }
+
+    private static async Task<int> ScaffoldCorpusReviewAsync(
+        string[] arguments,
+        TextWriter standardOutput,
+        TextWriter standardError,
+        CancellationToken cancellationToken)
+    {
+        if (arguments.Length == 0 || IsHelp(arguments[0]))
+        {
+            await standardOutput.WriteLineAsync(CalibrationReviewScaffoldHelpText).ConfigureAwait(false);
+            return arguments.Length == 0 ? CliExitCodes.UsageError : CliExitCodes.Success;
+        }
+
+        string corpusPath = arguments[0];
+        bool blind = false;
+        bool compact = false;
+        string? outputPath = null;
+        for (int index = 1; index < arguments.Length; index++)
+        {
+            string option = arguments[index];
+            switch (option)
+            {
+                case "--blind":
+                    blind = true;
+                    break;
+                case "--compact":
+                    compact = true;
+                    break;
+                case "--output":
+                    if (index + 1 >= arguments.Length)
+                    {
+                        return await UsageErrorAsync(
+                            standardError,
+                            "Option '--output' requires a value.").ConfigureAwait(false);
+                    }
+
+                    outputPath = arguments[++index];
+                    break;
+                case "-h":
+                case "--help":
+                    await standardOutput.WriteLineAsync(CalibrationReviewScaffoldHelpText)
+                        .ConfigureAwait(false);
+                    return CliExitCodes.Success;
+                default:
+                    return await UsageErrorAsync(
+                        standardError,
+                        $"Unknown calibration review-scaffold option '{option}'.").ConfigureAwait(false);
+            }
+        }
+
+        CalibrationCorpus? corpus = await LoadCalibrationCorpusAsync(
+            corpusPath,
+            standardError,
+            cancellationToken).ConfigureAwait(false);
+        if (corpus is null)
+        {
+            return CliExitCodes.InvalidInput;
+        }
+
+        CalibrationCorpusReviewPacket packet;
+        try
+        {
+            packet = CalibrationCorpusReviewAuthoring.Scaffold(corpus, blind);
+        }
+        catch (CalibrationEvaluationException exception)
+        {
+            await WriteCalibrationErrorsAsync(standardError, exception.Errors).ConfigureAwait(false);
+            return CliExitCodes.InvalidInput;
+        }
+
+        string json = compact
+            ? ContractJson.SerializeCompact(packet)
+            : ContractJson.Serialize(packet);
+        SchemaValidationResult schema = ContractSchemaValidator.Validate(
+            SchemaNames.CalibrationCorpusReviewPacket,
+            json);
+        if (!schema.IsValid)
+        {
+            await standardError.WriteLineAsync(
+                "Calibration corpus review authoring produced an invalid packet.").ConfigureAwait(false);
+            foreach (string error in schema.Errors)
+            {
+                await standardError.WriteLineAsync($"- {error}").ConfigureAwait(false);
+            }
+
+            return CliExitCodes.InternalError;
+        }
+
+        return await WriteCliOutputAsync(
+            json,
+            outputPath,
+            "calibration corpus review packet",
+            standardOutput,
+            standardError,
+            cancellationToken).ConfigureAwait(false);
+    }
+
+    private static async Task<int> CompileCorpusReviewAsync(
+        string[] arguments,
+        TextWriter standardOutput,
+        TextWriter standardError,
+        CancellationToken cancellationToken)
+    {
+        if (arguments.Length == 0 || IsHelp(arguments[0]))
+        {
+            await standardOutput.WriteLineAsync(CalibrationReviewCompileHelpText).ConfigureAwait(false);
+            return arguments.Length == 0 ? CliExitCodes.UsageError : CliExitCodes.Success;
+        }
+
+        string planPath = arguments[0];
+        string? corpusPath = null;
+        bool compact = false;
+        string? outputPath = null;
+        for (int index = 1; index < arguments.Length; index++)
+        {
+            string option = arguments[index];
+            if (option == "--compact")
+            {
+                compact = true;
+                continue;
+            }
+
+            if (IsHelp(option))
+            {
+                await standardOutput.WriteLineAsync(CalibrationReviewCompileHelpText).ConfigureAwait(false);
+                return CliExitCodes.Success;
+            }
+
+            if (option == "--output")
+            {
+                if (index + 1 >= arguments.Length)
+                {
+                    return await UsageErrorAsync(
+                        standardError,
+                        "Option '--output' requires a value.").ConfigureAwait(false);
+                }
+
+                outputPath = arguments[++index];
+                continue;
+            }
+
+            if (option.StartsWith("--", StringComparison.Ordinal))
+            {
+                return await UsageErrorAsync(
+                    standardError,
+                    $"Unknown calibration review-compile option '{option}'.").ConfigureAwait(false);
+            }
+
+            if (corpusPath is not null)
+            {
+                return await UsageErrorAsync(
+                    standardError,
+                    "Calibration review compilation accepts exactly one source corpus path.")
+                    .ConfigureAwait(false);
+            }
+
+            corpusPath = option;
+        }
+
+        if (corpusPath is null)
+        {
+            return await UsageErrorAsync(
+                standardError,
+                "Calibration review compilation requires a source corpus path.").ConfigureAwait(false);
+        }
+
+        CalibrationCorpusReviewPlan? plan = await LoadCalibrationCorpusReviewPlanAsync(
+            planPath,
+            standardError,
+            cancellationToken).ConfigureAwait(false);
+        if (plan is null)
+        {
+            return CliExitCodes.InvalidInput;
+        }
+
+        CalibrationCorpus? sourceCorpus = await LoadCalibrationCorpusAsync(
+            corpusPath,
+            standardError,
+            cancellationToken).ConfigureAwait(false);
+        if (sourceCorpus is null)
+        {
+            return CliExitCodes.InvalidInput;
+        }
+
+        CalibrationCorpus corpus;
+        try
+        {
+            corpus = CalibrationCorpusReviewCompiler.Compile(plan, sourceCorpus);
+        }
+        catch (CalibrationEvaluationException exception)
+        {
+            await WriteCalibrationErrorsAsync(standardError, exception.Errors).ConfigureAwait(false);
+            return CliExitCodes.InvalidInput;
+        }
+
+        string json = compact
+            ? ContractJson.SerializeCompact(corpus)
+            : ContractJson.Serialize(corpus);
+        SchemaValidationResult schema = ContractSchemaValidator.Validate(
+            SchemaNames.CalibrationCorpus,
+            json);
+        if (!schema.IsValid)
+        {
+            await standardError.WriteLineAsync(
+                "The calibration corpus review compiler produced an invalid corpus.").ConfigureAwait(false);
+            foreach (string error in schema.Errors)
+            {
+                await standardError.WriteLineAsync($"- {error}").ConfigureAwait(false);
+            }
+
+            return CliExitCodes.InternalError;
+        }
+
+        return await WriteCliOutputAsync(
+            json,
+            outputPath,
+            "reviewed calibration corpus",
+            standardOutput,
+            standardError,
+            cancellationToken).ConfigureAwait(false);
+    }
+
+    private static async Task<int> EvaluateMutationsAsync(
+        string[] arguments,
+        TextWriter standardOutput,
+        TextWriter standardError,
+        CancellationToken cancellationToken)
+    {
+        if (arguments.Length == 0 || IsHelp(arguments[0]))
+        {
+            await standardOutput.WriteLineAsync(CalibrationMutationsHelpText).ConfigureAwait(false);
+            return arguments.Length == 0 ? CliExitCodes.UsageError : CliExitCodes.Success;
+        }
+
+        string suitePath = arguments[0];
+        List<string> candidatePaths = [];
+        bool compact = false;
+        string? outputPath = null;
+        for (int index = 1; index < arguments.Length; index++)
+        {
+            string option = arguments[index];
+            if (option == "--compact")
+            {
+                compact = true;
+                continue;
+            }
+
+            if (IsHelp(option))
+            {
+                await standardOutput.WriteLineAsync(CalibrationMutationsHelpText).ConfigureAwait(false);
+                return CliExitCodes.Success;
+            }
+
+            if (option == "--output")
+            {
+                if (index + 1 >= arguments.Length)
+                {
+                    return await UsageErrorAsync(
+                        standardError,
+                        "Option '--output' requires a value.").ConfigureAwait(false);
+                }
+
+                outputPath = arguments[++index];
+                continue;
+            }
+
+            if (option.StartsWith("--", StringComparison.Ordinal))
+            {
+                return await UsageErrorAsync(
+                    standardError,
+                    $"Unknown calibration mutations option '{option}'.").ConfigureAwait(false);
+            }
+
+            candidatePaths.Add(option);
+        }
+
+        if (candidatePaths.Count == 0)
+        {
+            return await UsageErrorAsync(
+                standardError,
+                "Calibration mutation evaluation requires at least one estimate path.")
+                .ConfigureAwait(false);
+        }
+
+        CalibrationMutationSuite? suite = await LoadCalibrationMutationSuiteAsync(
+            suitePath,
+            standardError,
+            cancellationToken).ConfigureAwait(false);
+        if (suite is null)
+        {
+            return CliExitCodes.InvalidInput;
+        }
+
+        List<EstimateReport> candidates = [];
+        foreach (string candidatePath in candidatePaths)
+        {
+            EstimateReport? candidate = await LoadEstimateAsync(
+                candidatePath,
+                standardError,
+                cancellationToken).ConfigureAwait(false);
+            if (candidate is null)
+            {
+                return CliExitCodes.InvalidInput;
+            }
+
+            candidates.Add(candidate);
+        }
+
+        CalibrationMutationReport report;
+        try
+        {
+            report = CalibrationMutationEvaluator.Evaluate(suite, candidates);
+        }
+        catch (CalibrationEvaluationException exception)
+        {
+            await WriteCalibrationErrorsAsync(standardError, exception.Errors).ConfigureAwait(false);
+            return CliExitCodes.InvalidInput;
+        }
+
+        string json = compact
+            ? ContractJson.SerializeCompact(report)
+            : ContractJson.Serialize(report);
+        SchemaValidationResult schema = ContractSchemaValidator.Validate(
+            SchemaNames.CalibrationMutationReport,
+            json);
+        if (!schema.IsValid)
+        {
+            await standardError.WriteLineAsync(
+                "The calibration mutation evaluator produced an invalid report.").ConfigureAwait(false);
+            foreach (string error in schema.Errors)
+            {
+                await standardError.WriteLineAsync($"- {error}").ConfigureAwait(false);
+            }
+
+            return CliExitCodes.InternalError;
+        }
+
+        int outputCode = await WriteCliOutputAsync(
+            json,
+            outputPath,
+            "calibration mutation report",
+            standardOutput,
+            standardError,
+            cancellationToken).ConfigureAwait(false);
+        if (outputCode != CliExitCodes.Success)
+        {
+            return outputCode;
+        }
+
+        return report.AllPassed
+            ? CliExitCodes.Success
+            : CliExitCodes.CalibrationRegression;
     }
 
     private static async Task<int> CompileCalibrationAsync(
@@ -1498,6 +1867,136 @@ public sealed class FairbillApplication
         return null;
     }
 
+    private static async Task<CalibrationCorpusReviewPlan?> LoadCalibrationCorpusReviewPlanAsync(
+        string inputPath,
+        TextWriter standardError,
+        CancellationToken cancellationToken)
+    {
+        if (!File.Exists(inputPath))
+        {
+            await standardError.WriteLineAsync(
+                $"Calibration corpus review-plan path was not found: {inputPath}")
+                .ConfigureAwait(false);
+            return null;
+        }
+
+        string json;
+        try
+        {
+            json = await File.ReadAllTextAsync(inputPath, cancellationToken).ConfigureAwait(false);
+        }
+        catch (Exception exception) when (exception is IOException or UnauthorizedAccessException)
+        {
+            await standardError.WriteLineAsync(
+                $"Could not read calibration corpus review plan: {exception.Message}")
+                .ConfigureAwait(false);
+            return null;
+        }
+
+        SchemaValidationResult schema = ContractSchemaValidator.Validate(
+            SchemaNames.CalibrationCorpusReviewPlan,
+            json);
+        if (!schema.IsValid)
+        {
+            await standardError.WriteLineAsync(
+                "Calibration corpus review plan does not satisfy its schema:")
+                .ConfigureAwait(false);
+            foreach (string error in schema.Errors)
+            {
+                await standardError.WriteLineAsync($"- {error}").ConfigureAwait(false);
+            }
+
+            return null;
+        }
+
+        CalibrationCorpusReviewPlan plan;
+        try
+        {
+            plan = ContractJson.Deserialize<CalibrationCorpusReviewPlan>(json);
+        }
+        catch (System.Text.Json.JsonException exception)
+        {
+            await standardError.WriteLineAsync(
+                $"Could not deserialize calibration corpus review plan: {exception.Message}")
+                .ConfigureAwait(false);
+            return null;
+        }
+
+        IReadOnlyList<string> errors = ContractValidation.Validate(plan);
+        if (errors.Count == 0)
+        {
+            return plan;
+        }
+
+        await WriteCalibrationErrorsAsync(standardError, errors).ConfigureAwait(false);
+        return null;
+    }
+
+    private static async Task<CalibrationMutationSuite?> LoadCalibrationMutationSuiteAsync(
+        string inputPath,
+        TextWriter standardError,
+        CancellationToken cancellationToken)
+    {
+        if (!File.Exists(inputPath))
+        {
+            await standardError.WriteLineAsync(
+                $"Calibration mutation-suite path was not found: {inputPath}")
+                .ConfigureAwait(false);
+            return null;
+        }
+
+        string json;
+        try
+        {
+            json = await File.ReadAllTextAsync(inputPath, cancellationToken).ConfigureAwait(false);
+        }
+        catch (Exception exception) when (exception is IOException or UnauthorizedAccessException)
+        {
+            await standardError.WriteLineAsync(
+                $"Could not read calibration mutation suite: {exception.Message}")
+                .ConfigureAwait(false);
+            return null;
+        }
+
+        SchemaValidationResult schema = ContractSchemaValidator.Validate(
+            SchemaNames.CalibrationMutationSuite,
+            json);
+        if (!schema.IsValid)
+        {
+            await standardError.WriteLineAsync(
+                "Calibration mutation suite does not satisfy the calibration-mutation-suite schema:")
+                .ConfigureAwait(false);
+            foreach (string error in schema.Errors)
+            {
+                await standardError.WriteLineAsync($"- {error}").ConfigureAwait(false);
+            }
+
+            return null;
+        }
+
+        CalibrationMutationSuite suite;
+        try
+        {
+            suite = ContractJson.Deserialize<CalibrationMutationSuite>(json);
+        }
+        catch (System.Text.Json.JsonException exception)
+        {
+            await standardError.WriteLineAsync(
+                $"Could not deserialize calibration mutation suite: {exception.Message}")
+                .ConfigureAwait(false);
+            return null;
+        }
+
+        IReadOnlyList<string> errors = ContractValidation.Validate(suite);
+        if (errors.Count == 0)
+        {
+            return suite;
+        }
+
+        await WriteCalibrationErrorsAsync(standardError, errors).ConfigureAwait(false);
+        return null;
+    }
+
     private static async Task WriteCalibrationErrorsAsync(
         TextWriter standardError,
         IReadOnlyList<string> errors)
@@ -1698,6 +2197,9 @@ public sealed class FairbillApplication
           fairbill explain <repository-or-evidence.json> --item <id> [options]
           fairbill calibration scaffold <estimate.json> [--blind] [--compact] [--output <path>]
           fairbill calibration compile <review-plan.json> <estimate.json>... [--compact] [--output <path>]
+          fairbill calibration review-scaffold <corpus.json> [--blind] [--compact] [--output <path>]
+          fairbill calibration review-compile <plan.json> <corpus.json> [--compact] [--output <path>]
+          fairbill calibration mutations <suite.json> <estimate.json>... [--compact] [--output <path>]
           fairbill calibration validate <corpus.json> [--compact] [--output <path>]
           fairbill calibration evaluate <corpus.json> <estimate.json>... --partition <name> [--compact] [--output <path>]
           fairbill schema list
@@ -1721,11 +2223,55 @@ public sealed class FairbillApplication
         Usage:
           fairbill calibration scaffold <estimate.json> [--blind] [--compact] [--output <path>]
           fairbill calibration compile <review-plan.json> <estimate.json>... [--compact] [--output <path>]
+          fairbill calibration review-scaffold <corpus.json> [--blind] [--compact] [--output <path>]
+          fairbill calibration review-compile <plan.json> <corpus.json> [--compact] [--output <path>]
+          fairbill calibration mutations <suite.json> <estimate.json>... [--compact] [--output <path>]
           fairbill calibration validate <corpus.json> [--compact] [--output <path>]
           fairbill calibration evaluate <corpus.json> <estimate.json>... --partition <name> [--compact] [--output <path>]
 
         Calibration is offline and effort-only. Reviewed labels are weak supervision,
         not historical labor or literal ground truth.
+        """;
+
+    private const string CalibrationReviewScaffoldHelpText = """
+        Usage:
+          fairbill calibration review-scaffold <corpus.json> [options]
+
+        Produces an explicitly unreviewed second-pass packet from an existing corpus.
+        Blind mode hides prior ranges, rationale, uncertainty, and record totals.
+
+        Options:
+          --blind          Hide prior target judgments and record totals
+          --compact        Emit compact JSON
+          --output <path>  Write the packet to an explicit path instead of stdout
+          -h, --help       Show this help
+        """;
+
+    private const string CalibrationReviewCompileHelpText = """
+        Usage:
+          fairbill calibration review-compile <plan.json> <corpus.json> [options]
+
+        Advances every source record through explicit accept/replace decisions.
+        The exact source-corpus digest and distinct subsequent reviewer identities
+        are required. Structural target and evidence lineage remains unchanged.
+
+        Options:
+          --compact        Emit compact JSON
+          --output <path>  Write the reviewed corpus to an explicit path instead of stdout
+          -h, --help       Show this help
+        """;
+
+    private const string CalibrationMutationsHelpText = """
+        Usage:
+          fairbill calibration mutations <suite.json> <estimate.json>... [options]
+
+        Evaluates deterministic relational guardrails over synthetic mutation cases.
+        A complete report is emitted; failed assertions return exit code 5.
+
+        Options:
+          --compact        Emit compact JSON
+          --output <path>  Write the mutation report to an explicit path instead of stdout
+          -h, --help       Show this help
         """;
 
     private const string CalibrationCompileHelpText = """

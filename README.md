@@ -17,8 +17,9 @@ than reading an entire large repository.
 ## Status
 
 Milestones 1 through 6 and the Milestone 7A calibration foundation are complete.
-The Milestone 7B public-pilot checkpoint is implemented; independent review and
-corpus expansion remain. The repository now contains:
+Milestone 7B1 public-pilot and 7B2 review/mutation checkpoints are implemented;
+actual independent correction and corpus expansion remain. The repository now
+contains:
 
 - versioned JSON contracts and published schemas for evidence, work items,
   estimates, diagnostics, and rate cards;
@@ -73,7 +74,13 @@ corpus expansion remain. The repository now contains:
 - an MIT-source-provenanced three-repository public pilot with frozen partitions
   and checked-in `seed-rules/0.2.0` baseline reports. Its labels have one host-AI
   teacher and no independent correction, so they remain preliminary weak
-  supervision.
+  supervision;
+- exact-digest subsequent-review packets and compilation with explicit
+  accept/replace decisions, preserved lineage, maturity progression, and distinct
+  reviewer identities; and
+- versioned relational mutation guardrails plus an 8-case, 14-assertion synthetic
+  .NET baseline covering formatting, duplication, generated code, API behavior,
+  tests, documentation, and integrations.
 
 `fairbill scan <folder>` now produces common, static .NET, and static
 JavaScript/TypeScript evidence, including mixed-repository output.
@@ -95,6 +102,13 @@ verifying exact estimate digests and full represented-capability coverage.
 `fairbill calibration evaluate` compares canonical estimates with one explicit
 repository-held-out partition. It evaluates effort only, never calls an AI or the
 network, and does not make the still-uncalibrated seed priors production-ready.
+
+`fairbill calibration review-scaffold` prepares a reference or blind second-pass
+packet from an existing corpus. `review-compile` advances maturity only after a
+distinct reviewer decides every target and the exact source-corpus digest matches.
+The checked-in pilot packet is still unreviewed. `fairbill calibration mutations`
+evaluates deterministic relational guardrails; failures emit a report and return
+exit code 5. Mutation relations are not effort labels.
 
 Fairbill is intended to be released as open-source software. Development should be
 public-repository-ready from the beginning, even before the repository is published.
@@ -160,6 +174,9 @@ fairbill report <estimate.json> [--view <full|repository|category|scope|work-ite
 fairbill explain <repository-or-evidence.json> --item <work-item-or-capability-id> [--profile <implementation|recreation>] [--format <json|markdown>] [--compact]
 fairbill calibration scaffold <estimate.json> [--blind] [--compact] [--output <path>]
 fairbill calibration compile <review-plan.json> <estimate.json>... [--compact] [--output <path>]
+fairbill calibration review-scaffold <corpus.json> [--blind] [--compact] [--output <path>]
+fairbill calibration review-compile <plan.json> <corpus.json> [--compact] [--output <path>]
+fairbill calibration mutations <suite.json> <estimate.json>... [--compact] [--output <path>]
 fairbill calibration validate <corpus.json> [--compact] [--output <path>]
 fairbill calibration evaluate <corpus.json> <estimate.json>... --partition <development|validation|test> [--compact] [--output <path>]
 ```
@@ -236,5 +253,5 @@ without misrepresenting counterfactual hours as historical labor.
 - [`rates/us-senior-contractor`](rates/us-senior-contractor) contains the auditable
   bundled contractor-rate derivation.
 - [`calibration`](calibration) contains the public review rubric, pilot corpus,
-  source manifest, frozen seed baseline, and publication guidance; no private
-  calibration data belongs there.
+  independent-review handoff, mutation fixtures, frozen seed baselines, and
+  publication guidance; no private calibration data belongs there.

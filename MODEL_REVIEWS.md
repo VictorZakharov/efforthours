@@ -18,7 +18,9 @@ The first records that satisfy that boundary live in
 `calibration/corpora/public-pilot/0.1.0.corpus.json`; their source manifest and
 frozen seed measurements are documented beside the corpus. They have
 `teacher-estimate` maturity only and must not be conflated with the provisional
-anchors below or described as independently validated.
+anchors below or described as independently validated. Milestone 7B2 adds a blind
+second-review handoff and exact-digest compiler, but no completed independent plan;
+the record maturity therefore remains unchanged.
 
 Because Fairbill's own anchor informed the seed-model and calibration design, it is
 a development diagnostic rather than an eligible held-out test record unless a

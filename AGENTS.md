@@ -148,8 +148,8 @@ semantics.
 
 ## Current project stage
 
-Milestones 1 through 6, Milestone 7A, and the Milestone 7B1 public-pilot checkpoint
-are complete. The repository has a working common scanner, static .NET
+Milestones 1 through 6, Milestone 7A, and the Milestone 7B1 and 7B2 checkpoints are
+complete. The repository has a working common scanner, static .NET
 project/Roslyn analyzer, static JavaScript/TypeScript package and source analyzer,
 mixed-repository evidence pipeline, published v1 schemas, optional external scan
 cache, installable global-tool package, memory-only unit fixtures, automated
@@ -169,8 +169,13 @@ metrics, and `calibration validate/evaluate`. Milestone 7B1 adds explicitly
 unreviewed authoring packets, blind review, completed review-plan compilation,
 explicit output paths, and the provenance-checked `fairbill-public-pilot/0.1.0`
 corpus with frozen seed reports. The pilot has three MIT-licensed repositories, 99
-teacher targets, one host-AI teacher, and no independent correction. Corpus
-expansion and independent review are next; local ML has not been selected or added.
+teacher targets, one host-AI teacher, and no independent correction. Milestone 7B2
+adds exact-digest subsequent-review packets/compilation, explicit accept/replace
+decisions, reviewer-identity independence checks, versioned relational mutation
+contracts, and an 8-case/14-assertion synthetic .NET guardrail baseline. A compact
+blind handoff exists, but no independent reviewer has completed it. Corpus and
+JavaScript/TypeScript/mixed mutation expansion plus actual independent review are
+next; local ML has not been selected or added.
 
 The following commands have been run successfully from the repository root:
 

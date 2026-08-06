@@ -312,6 +312,23 @@ every represented capability, and complete source-work-item/evidence lineage bef
 it can emit a valid corpus. This prevents mechanically copied scaffold output from
 silently becoming a reviewed label.
 
+Milestone 7B2 adds a separate subsequent-review boundary around an existing
+corpus. A corpus-review packet is always unreviewed; blind mode removes prior
+ranges, rationale, uncertainty decisions, and totals. Compilation pins the exact
+canonical source-corpus digest, requires an accept/replace decision for every
+record and target, rejects reviewer identities already present in source
+provenance, preserves all structural lineage, and prevents maturity downgrades.
+This tooling does not itself constitute independent correction: maturity advances
+only when a genuinely distinct reviewer or adjudicator completes a plan.
+
+The same slice adds versioned mutation guardrails. A mutation suite compares a
+subject and reference canonical estimate at one repository/category low, expected,
+or high point and asserts inclusive bounds on `subject - reference`. These
+relations test invariance, directionality, and category isolation. They are not
+effort labels and cannot be used as numerical training targets. The first public
+suite covers a small .NET archetype; JavaScript/TypeScript, mixed, and more complex
+mutation families remain required before learned-model admission.
+
 The initial public pilot freezes three MIT-licensed repository families across
 development, validation, and test partitions and measures `seed-rules/0.2.0`.
 Those labels have one host-AI teacher and no independent correction. They are

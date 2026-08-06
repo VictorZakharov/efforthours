@@ -12,7 +12,11 @@ public static class ContractSchemaCatalog
     [
         SchemaNames.CalibrationAuthoringPacket,
         SchemaNames.CalibrationCorpus,
+        SchemaNames.CalibrationCorpusReviewPacket,
+        SchemaNames.CalibrationCorpusReviewPlan,
         SchemaNames.CalibrationEvaluation,
+        SchemaNames.CalibrationMutationReport,
+        SchemaNames.CalibrationMutationSuite,
         SchemaNames.CalibrationReviewPlan,
         SchemaNames.CalibrationValidation,
         SchemaNames.Diagnostic,

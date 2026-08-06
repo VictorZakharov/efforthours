@@ -123,6 +123,271 @@ public sealed class CalibrationTests
     }
 
     [Fact]
+    public void CorpusReviewScaffoldIsDeterministicSchemaValidAndCanHidePriorJudgmentsInMemory()
+    {
+        CalibrationCorpus corpus = CreateCorpus();
+
+        CalibrationCorpusReviewPacket reference = CalibrationCorpusReviewAuthoring.Scaffold(corpus);
+        CalibrationCorpusReviewPacket second = CalibrationCorpusReviewAuthoring.Scaffold(corpus);
+        CalibrationCorpusReviewPacket blind = CalibrationCorpusReviewAuthoring.Scaffold(
+            corpus,
+            blind: true);
+        string json = ContractJson.Serialize(reference);
+        SchemaValidationResult schema = ContractSchemaValidator.Validate(
+            SchemaNames.CalibrationCorpusReviewPacket,
+            json);
+
+        Assert.True(schema.IsValid, string.Join(Environment.NewLine, schema.Errors));
+        Assert.Empty(ContractValidation.Validate(reference));
+        Assert.Empty(ContractValidation.Validate(blind));
+        Assert.Equal(json, ContractJson.Serialize(second));
+        Assert.Equal(CalibrationDigest.Compute(corpus), reference.SourceCorpus.Digest);
+        Assert.NotNull(Assert.Single(reference.Records).CandidateTotalHours);
+        Assert.All(Assert.Single(reference.Records).Targets, target =>
+        {
+            Assert.NotNull(target.Candidate.Hours);
+            Assert.NotNull(target.Candidate.Rationale);
+            Assert.Null(target.Review.Action);
+        });
+        Assert.Null(Assert.Single(blind.Records).CandidateTotalHours);
+        Assert.All(Assert.Single(blind.Records).Targets, target =>
+        {
+            Assert.Null(target.Candidate.Hours);
+            Assert.Null(target.Candidate.Rationale);
+            Assert.Empty(target.Candidate.UncertaintyReasons);
+            Assert.Null(target.Candidate.SizeException);
+        });
+        Assert.Contains("\"action\": null", ContractJson.Serialize(blind), StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public void CorpusReviewCompilerAdvancesMaturityAndPreservesStructuralLineageInMemory()
+    {
+        CalibrationCorpus source = CreateCorpus();
+        CalibrationCorpusReviewPlan plan = CreateCorpusReviewPlan(source);
+        string planJson = ContractJson.Serialize(plan);
+        SchemaValidationResult planSchema = ContractSchemaValidator.Validate(
+            SchemaNames.CalibrationCorpusReviewPlan,
+            planJson);
+
+        CalibrationCorpus first = CalibrationCorpusReviewCompiler.Compile(plan, source);
+        CalibrationCorpus second = CalibrationCorpusReviewCompiler.Compile(plan, source);
+        CalibrationRecord sourceRecord = Assert.Single(source.Records);
+        CalibrationRecord revised = Assert.Single(first.Records);
+
+        Assert.True(planSchema.IsValid, string.Join(Environment.NewLine, planSchema.Errors));
+        Assert.Empty(ContractValidation.Validate(plan));
+        Assert.Empty(ContractValidation.Validate(first));
+        Assert.Equal(ContractJson.Serialize(first), ContractJson.Serialize(second));
+        Assert.Equal(CalibrationReviewStatus.Reviewed, revised.Review.Status);
+        Assert.Equal(2, revised.Review.Reviewers.Count);
+        Assert.Contains(revised.Review.Reviewers, reviewer =>
+            reviewer.Role == CalibrationReviewerRole.Reviewer &&
+            reviewer.Id == "reviewer:independent-test");
+        Assert.Equal(
+            sourceRecord.Targets.Select(target => new
+            {
+                target.Id,
+                target.Category,
+                target.Scope,
+                target.SourceWorkItemIds,
+                target.EvidenceIds,
+            }),
+            revised.Targets.Select(target => new
+            {
+                target.Id,
+                target.Category,
+                target.Scope,
+                target.SourceWorkItemIds,
+                target.EvidenceIds,
+            }));
+        Assert.Equal(sourceRecord.Targets[0].Hours, revised.Targets[0].Hours);
+        Assert.Equal(Hours(2m, 4m, 6m), revised.Targets[1].Hours);
+        Assert.Equal("Independent correction of test depth.", revised.Targets[1].Rationale);
+    }
+
+    [Fact]
+    public void CorpusReviewCompilerAdvancesReviewedCorpusToAdjudicatedInMemory()
+    {
+        CalibrationCorpus teacher = CreateCorpus();
+        CalibrationCorpus reviewed = CalibrationCorpusReviewCompiler.Compile(
+            CreateCorpusReviewPlan(teacher),
+            teacher);
+        CalibrationRecord sourceRecord = Assert.Single(reviewed.Records);
+        CalibrationCorpusReviewPlan adjudication = new()
+        {
+            CompilerVersion = CalibrationCorpusReviewCompiler.CompilerVersion,
+            SourceCorpus = new CalibrationCorpusReference
+            {
+                Id = reviewed.Id,
+                Version = reviewed.Version,
+                Digest = CalibrationDigest.Compute(reviewed),
+            },
+            Id = "synthetic-calibration-adjudicated",
+            Version = "1.2.0",
+            Description = "Memory-only adjudicated calibration fixture.",
+            Records =
+            [
+                new CalibrationCorpusReviewPlanRecord
+                {
+                    SourceRecordId = sourceRecord.Id,
+                    ResultStatus = CalibrationReviewStatus.Adjudicated,
+                    CompletedOn = new DateOnly(2026, 8, 8),
+                    Reviewers =
+                    [
+                        new CalibrationReviewer
+                        {
+                            Id = "adjudicator:independent-test",
+                            Kind = CalibrationReviewerKind.Human,
+                            Role = CalibrationReviewerRole.Adjudicator,
+                        },
+                    ],
+                    Notes = "A distinct adjudicator resolved the reviewed fixture.",
+                    Targets = [.. sourceRecord.Targets.Select(target =>
+                        new CalibrationCorpusReviewTargetDecision
+                        {
+                            SourceTargetId = target.Id,
+                            Action = CalibrationCorpusReviewAction.Accept,
+                        })],
+                },
+            ],
+        };
+
+        CalibrationCorpus result = CalibrationCorpusReviewCompiler.Compile(adjudication, reviewed);
+        CalibrationRecord record = Assert.Single(result.Records);
+
+        Assert.Empty(ContractValidation.Validate(result));
+        Assert.Equal(CalibrationReviewStatus.Adjudicated, record.Review.Status);
+        Assert.Equal(3, record.Review.Reviewers.Count);
+        Assert.Contains(record.Review.Reviewers, reviewer =>
+            reviewer.Role == CalibrationReviewerRole.Adjudicator);
+    }
+
+    [Fact]
+    public void CorpusReviewCompilerRejectsDigestDriftMissingDecisionsAndReusedTeacherIdentityInMemory()
+    {
+        CalibrationCorpus source = CreateCorpus();
+        CalibrationCorpusReviewPlan plan = CreateCorpusReviewPlan(source);
+        CalibrationCorpusReviewPlanRecord record = Assert.Single(plan.Records);
+
+        CalibrationEvaluationException digest = Assert.Throws<CalibrationEvaluationException>(() =>
+            CalibrationCorpusReviewCompiler.Compile(
+                plan with
+                {
+                    SourceCorpus = plan.SourceCorpus with { Digest = "sha256:changed" },
+                },
+                source));
+        CalibrationEvaluationException missing = Assert.Throws<CalibrationEvaluationException>(() =>
+            CalibrationCorpusReviewCompiler.Compile(
+                plan with
+                {
+                    Records =
+                    [
+                        record with { Targets = [record.Targets[0]] },
+                    ],
+                },
+                source));
+        CalibrationReviewer teacher = Assert.Single(Assert.Single(source.Records).Review.Reviewers);
+        CalibrationEvaluationException identity = Assert.Throws<CalibrationEvaluationException>(() =>
+            CalibrationCorpusReviewCompiler.Compile(
+                plan with
+                {
+                    Records =
+                    [
+                        record with
+                        {
+                            Reviewers =
+                            [
+                                teacher with { Role = CalibrationReviewerRole.Reviewer },
+                            ],
+                        },
+                    ],
+                },
+                source));
+
+        Assert.Contains(digest.Errors, error => error.Contains("expects source corpus", StringComparison.Ordinal));
+        Assert.Contains(missing.Errors, error => error.Contains("no decision", StringComparison.Ordinal));
+        Assert.Contains(identity.Errors, error => error.Contains("reuses prior reviewer", StringComparison.Ordinal));
+    }
+
+    [Fact]
+    public void MutationEvaluationIsDeterministicSchemaValidAndReportsRelationalFailuresInMemory()
+    {
+        EstimateReport reference = CreateCandidate();
+        EstimateReport subject = IncreaseProduction(reference, "sha256:mutated");
+        CalibrationMutationSuite suite = CreateMutationSuite(reference, subject);
+
+        CalibrationMutationReport first = CalibrationMutationEvaluator.Evaluate(
+            suite,
+            [subject, reference]);
+        CalibrationMutationReport second = CalibrationMutationEvaluator.Evaluate(
+            suite,
+            [reference, subject]);
+        string json = ContractJson.Serialize(first);
+        SchemaValidationResult suiteSchema = ContractSchemaValidator.Validate(
+            SchemaNames.CalibrationMutationSuite,
+            ContractJson.Serialize(suite));
+        SchemaValidationResult reportSchema = ContractSchemaValidator.Validate(
+            SchemaNames.CalibrationMutationReport,
+            json);
+
+        Assert.True(suiteSchema.IsValid, string.Join(Environment.NewLine, suiteSchema.Errors));
+        Assert.True(reportSchema.IsValid, string.Join(Environment.NewLine, reportSchema.Errors));
+        Assert.Empty(ContractValidation.Validate(suite));
+        Assert.Empty(ContractValidation.Validate(first));
+        Assert.Equal(json, ContractJson.Serialize(second));
+        Assert.True(first.AllPassed);
+        Assert.Equal(3, first.PassedCount);
+        Assert.All(first.Assertions, assertion => Assert.True(assertion.Passed));
+
+        CalibrationMutationAssertion total = suite.Assertions[0];
+        CalibrationMutationSuite failingSuite = suite with
+        {
+            Assertions =
+            [
+                total with
+                {
+                    Id = "mutation:unexpected-equality",
+                    MinimumDifferenceHours = 0m,
+                    MaximumDifferenceHours = 0m,
+                },
+            ],
+        };
+        CalibrationMutationReport failed = CalibrationMutationEvaluator.Evaluate(
+            failingSuite,
+            [reference, subject]);
+        Assert.False(failed.AllPassed);
+        Assert.Equal(1, failed.FailedCount);
+        Assert.False(Assert.Single(failed.Assertions).Passed);
+    }
+
+    [Fact]
+    public void MutationEvaluationRejectsMissingCandidatesAndInvalidBoundsInMemory()
+    {
+        EstimateReport reference = CreateCandidate();
+        EstimateReport subject = IncreaseProduction(reference, "sha256:mutated");
+        CalibrationMutationSuite suite = CreateMutationSuite(reference, subject);
+        CalibrationMutationAssertion assertion = suite.Assertions[0];
+
+        CalibrationEvaluationException missing = Assert.Throws<CalibrationEvaluationException>(() =>
+            CalibrationMutationEvaluator.Evaluate(suite, [reference]));
+        IReadOnlyList<string> bounds = ContractValidation.Validate(suite with
+        {
+            Assertions =
+            [
+                assertion with
+                {
+                    MinimumDifferenceHours = 2m,
+                    MaximumDifferenceHours = 1m,
+                },
+            ],
+        });
+
+        Assert.Contains(missing.Errors, error => error.Contains("No candidate matches", StringComparison.Ordinal));
+        Assert.Contains(bounds, error => error.Contains("cannot exceed", StringComparison.Ordinal));
+    }
+
+    [Fact]
     public void CorpusRoundTripsAndSatisfiesPublishedSchemaWithoutStorage()
     {
         CalibrationCorpus corpus = CreateCorpus();
@@ -496,6 +761,153 @@ public sealed class CalibrationTests
             },
         ],
     };
+
+    private static CalibrationCorpusReviewPlan CreateCorpusReviewPlan(CalibrationCorpus corpus)
+    {
+        CalibrationRecord record = Assert.Single(corpus.Records);
+        return new CalibrationCorpusReviewPlan
+        {
+            CompilerVersion = CalibrationCorpusReviewCompiler.CompilerVersion,
+            SourceCorpus = new CalibrationCorpusReference
+            {
+                Id = corpus.Id,
+                Version = corpus.Version,
+                Digest = CalibrationDigest.Compute(corpus),
+            },
+            Id = "synthetic-calibration-reviewed",
+            Version = "1.1.0",
+            Description = "Memory-only independently reviewed calibration fixture.",
+            Records =
+            [
+                new CalibrationCorpusReviewPlanRecord
+                {
+                    SourceRecordId = record.Id,
+                    ResultStatus = CalibrationReviewStatus.Reviewed,
+                    CompletedOn = new DateOnly(2026, 8, 7),
+                    Reviewers =
+                    [
+                        new CalibrationReviewer
+                        {
+                            Id = "reviewer:independent-test",
+                            Kind = CalibrationReviewerKind.HostAi,
+                            Role = CalibrationReviewerRole.Reviewer,
+                            ModelId = "independent-logical-estimator",
+                            ModelVersion = "test-2",
+                        },
+                    ],
+                    Notes = "A distinct reviewer checked every target.",
+                    Targets =
+                    [
+                        new CalibrationCorpusReviewTargetDecision
+                        {
+                            SourceTargetId = record.Targets[0].Id,
+                            Action = CalibrationCorpusReviewAction.Accept,
+                        },
+                        new CalibrationCorpusReviewTargetDecision
+                        {
+                            SourceTargetId = record.Targets[1].Id,
+                            Action = CalibrationCorpusReviewAction.Replace,
+                            Hours = Hours(2m, 4m, 6m),
+                            Rationale = "Independent correction of test depth.",
+                        },
+                    ],
+                },
+            ],
+        };
+    }
+
+    private static CalibrationMutationSuite CreateMutationSuite(
+        EstimateReport reference,
+        EstimateReport subject) => new()
+        {
+            MetricVersion = CalibrationMutationEvaluator.MetricVersion,
+            Id = "synthetic-mutations",
+            Version = "1.0.0",
+            Description = "Memory-only mutation relation fixture.",
+            Cases =
+            [
+                new CalibrationMutationCase
+                {
+                    Id = "reference",
+                    Description = "Reference estimate.",
+                    SourceDigest = reference.Repository.SourceDigest!,
+                    Profile = reference.Profile,
+                    BaselineId = reference.Baseline.Id,
+                },
+                new CalibrationMutationCase
+                {
+                    Id = "subject",
+                    Description = "Production behavior increased.",
+                    SourceDigest = subject.Repository.SourceDigest!,
+                    Profile = subject.Profile,
+                    BaselineId = subject.Baseline.Id,
+                },
+            ],
+            Assertions =
+            [
+                new CalibrationMutationAssertion
+                {
+                    Id = "mutation:total-increases",
+                    Family = "meaningful-behavior",
+                    SubjectCaseId = "subject",
+                    ReferenceCaseId = "reference",
+                    Point = CalibrationMutationPoint.Expected,
+                    Scope = CalibrationMutationScope.RepositoryTotal,
+                    MinimumDifferenceHours = 1m,
+                    Rationale = "Meaningful production behavior must increase total expected EHE.",
+                },
+                new CalibrationMutationAssertion
+                {
+                    Id = "mutation:production-increases",
+                    Family = "meaningful-behavior",
+                    SubjectCaseId = "subject",
+                    ReferenceCaseId = "reference",
+                    Point = CalibrationMutationPoint.Expected,
+                    Scope = CalibrationMutationScope.Category,
+                    Category = EffortCategory.ProductionImplementation,
+                    MinimumDifferenceHours = 1m,
+                    Rationale = "The production category must receive the represented behavior.",
+                },
+                new CalibrationMutationAssertion
+                {
+                    Id = "mutation:tests-unchanged",
+                    Family = "category-isolation",
+                    SubjectCaseId = "subject",
+                    ReferenceCaseId = "reference",
+                    Point = CalibrationMutationPoint.Expected,
+                    Scope = CalibrationMutationScope.Category,
+                    Category = EffortCategory.UnitTesting,
+                    MinimumDifferenceHours = 0m,
+                    MaximumDifferenceHours = 0m,
+                    Rationale = "Production-only mutation must not invent test effort.",
+                },
+            ],
+        };
+
+    private static EstimateReport IncreaseProduction(EstimateReport source, string digest)
+    {
+        WorkItem implementation = source.WorkItems[0] with { Hours = Hours(3m, 5m, 7m) };
+        WorkItem tests = source.WorkItems[1];
+        return source with
+        {
+            Repository = source.Repository with { SourceDigest = digest },
+            TotalEffort = ContractValidation.Sum([implementation.Hours, tests.Hours]),
+            Categories =
+            [
+                new CategoryEstimate
+                {
+                    Category = EffortCategory.ProductionImplementation,
+                    Hours = implementation.Hours,
+                },
+                new CategoryEstimate
+                {
+                    Category = EffortCategory.UnitTesting,
+                    Hours = tests.Hours,
+                },
+            ],
+            WorkItems = [implementation, tests],
+        };
+    }
 
     private static EstimateReport CreateCandidate()
     {

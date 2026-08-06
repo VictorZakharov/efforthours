@@ -97,6 +97,25 @@ public enum CalibrationCandidateVisibility
     Blind,
 }
 
+public enum CalibrationCorpusReviewAction
+{
+    Accept,
+    Replace,
+}
+
+public enum CalibrationMutationPoint
+{
+    Low,
+    Expected,
+    High,
+}
+
+public enum CalibrationMutationScope
+{
+    RepositoryTotal,
+    Category,
+}
+
 public enum VerificationMode
 {
     StaticAssumed,

@@ -13,6 +13,11 @@ correction or adjudication. The candidate estimate was visible during review, so
 the records may contain anchoring effects. These measurements are weak-supervision
 diagnostics, not production accuracy, historical labor, or ground truth.
 
+Milestone 7B2 adds `0.1.0.blind-review-packet.json` and the exact-digest
+second-review compiler, but does not advance these labels. See
+[`SECOND_REVIEW.md`](SECOND_REVIEW.md) for the independent-review boundary and
+handoff procedure.
+
 ## Frozen repository-level results
 
 | Partition | Repository | Reviewed expected | Seed expected | Expected error | WAPE | Bias | Reviewed expected inside seed range | Full reviewed range inside seed range |
@@ -93,5 +98,7 @@ analyzer/mutation fixture before reconsideration.
 
 Do not tune against the test record. Before calling Milestone 7B complete or trying
 local ML, add independently corrected labels, more repository families per
-ecosystem and partition, synthetic mutation families, and frozen numerical model
-admission thresholds.
+ecosystem and partition, JavaScript/TypeScript and mixed mutation families, and
+frozen numerical model-admission thresholds. The first .NET mutation suite is
+recorded under `calibration/mutations/public-synthetic/`; it is a guardrail suite,
+not reviewed effort-label data.
