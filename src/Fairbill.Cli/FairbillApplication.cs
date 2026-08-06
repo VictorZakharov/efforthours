@@ -273,6 +273,7 @@ public sealed class FairbillApplication
         decimal? hourlyRate = null;
         string currency = "USD";
         bool currencyProvided = false;
+        string? outputPath = null;
 
         for (int index = 1; index < arguments.Length; index++)
         {
@@ -369,6 +370,10 @@ public sealed class FairbillApplication
 
                     break;
 
+                case "--output":
+                    outputPath = value;
+                    break;
+
                 default:
                     return await UsageErrorAsync(
                         standardError,
@@ -424,8 +429,13 @@ public sealed class FairbillApplication
 
         EstimateReport report = _estimator.Estimate(evidence, profile, rateCard);
         string output = RenderEstimate(report, view, format, compact);
-        await standardOutput.WriteLineAsync(output.TrimEnd()).ConfigureAwait(false);
-        return CliExitCodes.Success;
+        return await WriteCliOutputAsync(
+            output,
+            outputPath,
+            "estimate",
+            standardOutput,
+            standardError,
+            cancellationToken).ConfigureAwait(false);
     }
 
     private static async Task<int> ReportAsync(
@@ -808,6 +818,45 @@ public sealed class FairbillApplication
             : new EstimateViewJsonRenderer(compact).Render(projection);
     }
 
+    private static async Task<int> WriteCliOutputAsync(
+        string content,
+        string? outputPath,
+        string artifactName,
+        TextWriter standardOutput,
+        TextWriter standardError,
+        CancellationToken cancellationToken)
+    {
+        if (outputPath is null)
+        {
+            await standardOutput.WriteLineAsync(content.TrimEnd()).ConfigureAwait(false);
+            return CliExitCodes.Success;
+        }
+
+        try
+        {
+            string fullOutputPath = Path.GetFullPath(outputPath);
+            string? outputDirectory = Path.GetDirectoryName(fullOutputPath);
+            if (!string.IsNullOrEmpty(outputDirectory))
+            {
+                Directory.CreateDirectory(outputDirectory);
+            }
+
+            await File.WriteAllTextAsync(
+                fullOutputPath,
+                content.TrimEnd() + Environment.NewLine,
+                new UTF8Encoding(encoderShouldEmitUTF8Identifier: false),
+                cancellationToken).ConfigureAwait(false);
+        }
+        catch (Exception exception) when (exception is IOException or UnauthorizedAccessException)
+        {
+            await standardError.WriteLineAsync(
+                $"Could not write {artifactName}: {exception.Message}").ConfigureAwait(false);
+            return CliExitCodes.InvalidInput;
+        }
+
+        return CliExitCodes.Success;
+    }
+
     private static async Task<int> CalibrationAsync(
         string[] arguments,
         TextWriter standardOutput,
@@ -822,6 +871,16 @@ public sealed class FairbillApplication
 
         return arguments[0] switch
         {
+            "scaffold" => await ScaffoldCalibrationAsync(
+                [.. arguments.Skip(1)],
+                standardOutput,
+                standardError,
+                cancellationToken).ConfigureAwait(false),
+            "compile" => await CompileCalibrationAsync(
+                [.. arguments.Skip(1)],
+                standardOutput,
+                standardError,
+                cancellationToken).ConfigureAwait(false),
             "validate" => await ValidateCalibrationAsync(
                 [.. arguments.Skip(1)],
                 standardOutput,
@@ -834,8 +893,230 @@ public sealed class FairbillApplication
                 cancellationToken).ConfigureAwait(false),
             _ => await UsageErrorAsync(
                 standardError,
-                "Expected 'calibration validate' or 'calibration evaluate'.").ConfigureAwait(false),
+                "Expected 'calibration scaffold', 'calibration compile', " +
+                "'calibration validate', or 'calibration evaluate'.")
+                .ConfigureAwait(false),
         };
+    }
+
+    private static async Task<int> CompileCalibrationAsync(
+        string[] arguments,
+        TextWriter standardOutput,
+        TextWriter standardError,
+        CancellationToken cancellationToken)
+    {
+        if (arguments.Length == 0 || IsHelp(arguments[0]))
+        {
+            await standardOutput.WriteLineAsync(CalibrationCompileHelpText).ConfigureAwait(false);
+            return arguments.Length == 0 ? CliExitCodes.UsageError : CliExitCodes.Success;
+        }
+
+        string planPath = arguments[0];
+        List<string> estimatePaths = [];
+        bool compact = false;
+        string? outputPath = null;
+        for (int index = 1; index < arguments.Length; index++)
+        {
+            string option = arguments[index];
+            if (option == "--compact")
+            {
+                compact = true;
+                continue;
+            }
+
+            if (IsHelp(option))
+            {
+                await standardOutput.WriteLineAsync(CalibrationCompileHelpText).ConfigureAwait(false);
+                return CliExitCodes.Success;
+            }
+
+            if (option == "--output")
+            {
+                if (index + 1 >= arguments.Length)
+                {
+                    return await UsageErrorAsync(
+                        standardError,
+                        "Option '--output' requires a value.").ConfigureAwait(false);
+                }
+
+                outputPath = arguments[++index];
+                continue;
+            }
+
+            if (option.StartsWith("--", StringComparison.Ordinal))
+            {
+                return await UsageErrorAsync(
+                    standardError,
+                    $"Unknown calibration compile option '{option}'.").ConfigureAwait(false);
+            }
+
+            estimatePaths.Add(option);
+        }
+
+        if (estimatePaths.Count == 0)
+        {
+            return await UsageErrorAsync(
+                standardError,
+                "Calibration compilation requires at least one source estimate path.")
+                .ConfigureAwait(false);
+        }
+
+        CalibrationReviewPlan? plan = await LoadCalibrationReviewPlanAsync(
+            planPath,
+            standardError,
+            cancellationToken).ConfigureAwait(false);
+        if (plan is null)
+        {
+            return CliExitCodes.InvalidInput;
+        }
+
+        List<EstimateReport> estimates = [];
+        foreach (string estimatePath in estimatePaths)
+        {
+            EstimateReport? estimate = await LoadEstimateAsync(
+                estimatePath,
+                standardError,
+                cancellationToken).ConfigureAwait(false);
+            if (estimate is null)
+            {
+                return CliExitCodes.InvalidInput;
+            }
+
+            estimates.Add(estimate);
+        }
+
+        CalibrationCorpus corpus;
+        try
+        {
+            corpus = CalibrationReviewCompiler.Compile(plan, estimates);
+        }
+        catch (CalibrationEvaluationException exception)
+        {
+            await WriteCalibrationErrorsAsync(standardError, exception.Errors).ConfigureAwait(false);
+            return CliExitCodes.InvalidInput;
+        }
+
+        string json = compact
+            ? ContractJson.SerializeCompact(corpus)
+            : ContractJson.Serialize(corpus);
+        SchemaValidationResult schema = ContractSchemaValidator.Validate(
+            SchemaNames.CalibrationCorpus,
+            json);
+        if (!schema.IsValid)
+        {
+            await standardError.WriteLineAsync(
+                "The calibration review compiler produced an invalid corpus.").ConfigureAwait(false);
+            foreach (string error in schema.Errors)
+            {
+                await standardError.WriteLineAsync($"- {error}").ConfigureAwait(false);
+            }
+
+            return CliExitCodes.InternalError;
+        }
+
+        return await WriteCliOutputAsync(
+            json,
+            outputPath,
+            "calibration corpus",
+            standardOutput,
+            standardError,
+            cancellationToken).ConfigureAwait(false);
+    }
+
+    private static async Task<int> ScaffoldCalibrationAsync(
+        string[] arguments,
+        TextWriter standardOutput,
+        TextWriter standardError,
+        CancellationToken cancellationToken)
+    {
+        if (arguments.Length == 0 || IsHelp(arguments[0]))
+        {
+            await standardOutput.WriteLineAsync(CalibrationScaffoldHelpText).ConfigureAwait(false);
+            return arguments.Length == 0 ? CliExitCodes.UsageError : CliExitCodes.Success;
+        }
+
+        string estimatePath = arguments[0];
+        bool blind = false;
+        bool compact = false;
+        string? outputPath = null;
+        for (int index = 1; index < arguments.Length; index++)
+        {
+            string option = arguments[index];
+            switch (option)
+            {
+                case "--blind":
+                    blind = true;
+                    break;
+                case "--compact":
+                    compact = true;
+                    break;
+                case "--output":
+                    if (index + 1 >= arguments.Length)
+                    {
+                        return await UsageErrorAsync(
+                            standardError,
+                            "Option '--output' requires a value.").ConfigureAwait(false);
+                    }
+
+                    outputPath = arguments[++index];
+                    break;
+                case "-h":
+                case "--help":
+                    await standardOutput.WriteLineAsync(CalibrationScaffoldHelpText)
+                        .ConfigureAwait(false);
+                    return CliExitCodes.Success;
+                default:
+                    return await UsageErrorAsync(
+                        standardError,
+                        $"Unknown calibration scaffold option '{option}'.").ConfigureAwait(false);
+            }
+        }
+
+        EstimateReport? estimate = await LoadEstimateAsync(
+            estimatePath,
+            standardError,
+            cancellationToken).ConfigureAwait(false);
+        if (estimate is null)
+        {
+            return CliExitCodes.InvalidInput;
+        }
+
+        CalibrationAuthoringPacket packet;
+        try
+        {
+            packet = CalibrationAuthoring.Scaffold(estimate, blind);
+        }
+        catch (CalibrationEvaluationException exception)
+        {
+            await WriteCalibrationErrorsAsync(standardError, exception.Errors).ConfigureAwait(false);
+            return CliExitCodes.InvalidInput;
+        }
+
+        string json = compact
+            ? ContractJson.SerializeCompact(packet)
+            : ContractJson.Serialize(packet);
+        SchemaValidationResult schema = ContractSchemaValidator.Validate(
+            SchemaNames.CalibrationAuthoringPacket,
+            json);
+        if (!schema.IsValid)
+        {
+            await standardError.WriteLineAsync(
+                "Calibration authoring produced an invalid packet.").ConfigureAwait(false);
+            foreach (string error in schema.Errors)
+            {
+                await standardError.WriteLineAsync($"- {error}").ConfigureAwait(false);
+            }
+
+            return CliExitCodes.InternalError;
+        }
+
+        return await WriteCliOutputAsync(
+            json,
+            outputPath,
+            "calibration authoring packet",
+            standardOutput,
+            standardError,
+            cancellationToken).ConfigureAwait(false);
     }
 
     private static async Task<int> ValidateCalibrationAsync(
@@ -852,8 +1133,10 @@ public sealed class FairbillApplication
 
         string corpusPath = arguments[0];
         bool compact = false;
-        foreach (string option in arguments.Skip(1))
+        string? outputPath = null;
+        for (int index = 1; index < arguments.Length; index++)
         {
+            string option = arguments[index];
             if (option == "--compact")
             {
                 compact = true;
@@ -864,6 +1147,19 @@ public sealed class FairbillApplication
             {
                 await standardOutput.WriteLineAsync(CalibrationValidateHelpText).ConfigureAwait(false);
                 return CliExitCodes.Success;
+            }
+
+            if (option == "--output")
+            {
+                if (index + 1 >= arguments.Length)
+                {
+                    return await UsageErrorAsync(
+                        standardError,
+                        "Option '--output' requires a value.").ConfigureAwait(false);
+                }
+
+                outputPath = arguments[++index];
+                continue;
             }
 
             return await UsageErrorAsync(
@@ -909,8 +1205,13 @@ public sealed class FairbillApplication
             return CliExitCodes.InternalError;
         }
 
-        await standardOutput.WriteLineAsync(json).ConfigureAwait(false);
-        return CliExitCodes.Success;
+        return await WriteCliOutputAsync(
+            json,
+            outputPath,
+            "calibration validation summary",
+            standardOutput,
+            standardError,
+            cancellationToken).ConfigureAwait(false);
     }
 
     private static async Task<int> EvaluateCalibrationAsync(
@@ -929,6 +1230,7 @@ public sealed class FairbillApplication
         List<string> candidatePaths = [];
         CalibrationPartition? partition = null;
         bool compact = false;
+        string? outputPath = null;
         for (int index = 1; index < arguments.Length; index++)
         {
             string option = arguments[index];
@@ -963,6 +1265,19 @@ public sealed class FairbillApplication
                 }
 
                 partition = parsed;
+                continue;
+            }
+
+            if (option == "--output")
+            {
+                if (index + 1 >= arguments.Length)
+                {
+                    return await UsageErrorAsync(
+                        standardError,
+                        "Option '--output' requires a value.").ConfigureAwait(false);
+                }
+
+                outputPath = arguments[++index];
                 continue;
             }
 
@@ -1050,8 +1365,13 @@ public sealed class FairbillApplication
             return CliExitCodes.InternalError;
         }
 
-        await standardOutput.WriteLineAsync(json).ConfigureAwait(false);
-        return CliExitCodes.Success;
+        return await WriteCliOutputAsync(
+            json,
+            outputPath,
+            "calibration evaluation report",
+            standardOutput,
+            standardError,
+            cancellationToken).ConfigureAwait(false);
     }
 
     private static async Task<CalibrationCorpus?> LoadCalibrationCorpusAsync(
@@ -1110,6 +1430,68 @@ public sealed class FairbillApplication
         if (errors.Count == 0)
         {
             return corpus;
+        }
+
+        await WriteCalibrationErrorsAsync(standardError, errors).ConfigureAwait(false);
+        return null;
+    }
+
+    private static async Task<CalibrationReviewPlan?> LoadCalibrationReviewPlanAsync(
+        string inputPath,
+        TextWriter standardError,
+        CancellationToken cancellationToken)
+    {
+        if (!File.Exists(inputPath))
+        {
+            await standardError.WriteLineAsync($"Calibration review-plan path was not found: {inputPath}")
+                .ConfigureAwait(false);
+            return null;
+        }
+
+        string json;
+        try
+        {
+            json = await File.ReadAllTextAsync(inputPath, cancellationToken).ConfigureAwait(false);
+        }
+        catch (Exception exception) when (exception is IOException or UnauthorizedAccessException)
+        {
+            await standardError.WriteLineAsync($"Could not read calibration review plan: {exception.Message}")
+                .ConfigureAwait(false);
+            return null;
+        }
+
+        SchemaValidationResult schema = ContractSchemaValidator.Validate(
+            SchemaNames.CalibrationReviewPlan,
+            json);
+        if (!schema.IsValid)
+        {
+            await standardError.WriteLineAsync(
+                "Calibration review plan does not satisfy the calibration-review-plan schema:")
+                .ConfigureAwait(false);
+            foreach (string error in schema.Errors)
+            {
+                await standardError.WriteLineAsync($"- {error}").ConfigureAwait(false);
+            }
+
+            return null;
+        }
+
+        CalibrationReviewPlan plan;
+        try
+        {
+            plan = ContractJson.Deserialize<CalibrationReviewPlan>(json);
+        }
+        catch (System.Text.Json.JsonException exception)
+        {
+            await standardError.WriteLineAsync(
+                $"Could not deserialize calibration review plan: {exception.Message}").ConfigureAwait(false);
+            return null;
+        }
+
+        IReadOnlyList<string> errors = ContractValidation.Validate(plan);
+        if (errors.Count == 0)
+        {
+            return plan;
         }
 
         await WriteCalibrationErrorsAsync(standardError, errors).ConfigureAwait(false);
@@ -1314,8 +1696,10 @@ public sealed class FairbillApplication
           fairbill estimate <repository-or-evidence.json> [options]
           fairbill report <estimate.json> [options]
           fairbill explain <repository-or-evidence.json> --item <id> [options]
-          fairbill calibration validate <corpus.json> [--compact]
-          fairbill calibration evaluate <corpus.json> <estimate.json>... --partition <name> [--compact]
+          fairbill calibration scaffold <estimate.json> [--blind] [--compact] [--output <path>]
+          fairbill calibration compile <review-plan.json> <estimate.json>... [--compact] [--output <path>]
+          fairbill calibration validate <corpus.json> [--compact] [--output <path>]
+          fairbill calibration evaluate <corpus.json> <estimate.json>... --partition <name> [--compact] [--output <path>]
           fairbill schema list
           fairbill schema show <name>
           fairbill model info
@@ -1335,16 +1719,46 @@ public sealed class FairbillApplication
 
     private const string CalibrationHelpText = """
         Usage:
-          fairbill calibration validate <corpus.json> [--compact]
-          fairbill calibration evaluate <corpus.json> <estimate.json>... --partition <name> [--compact]
+          fairbill calibration scaffold <estimate.json> [--blind] [--compact] [--output <path>]
+          fairbill calibration compile <review-plan.json> <estimate.json>... [--compact] [--output <path>]
+          fairbill calibration validate <corpus.json> [--compact] [--output <path>]
+          fairbill calibration evaluate <corpus.json> <estimate.json>... --partition <name> [--compact] [--output <path>]
 
         Calibration is offline and effort-only. Reviewed labels are weak supervision,
         not historical labor or literal ground truth.
         """;
 
+    private const string CalibrationCompileHelpText = """
+        Usage:
+          fairbill calibration compile <review-plan.json> <estimate.json>... [options]
+
+        Compiles completed capability-level review decisions into a calibration corpus.
+        Every represented source capability must be reviewed; source estimates and their
+        digests must exactly match the plan. The command is deterministic and offline.
+
+        Options:
+          --compact        Emit compact JSON
+          --output <path>  Write the corpus to an explicit path instead of stdout
+          -h, --help       Show this help
+        """;
+
+    private const string CalibrationScaffoldHelpText = """
+        Usage:
+          fairbill calibration scaffold <estimate.json> [options]
+
+        Produces a schema-versioned, explicitly unreviewed authoring packet. Candidate
+        values are reference material and cannot be consumed as calibration labels.
+
+        Options:
+          --blind          Hide candidate hours, category totals, and confidence while reviewing
+          --compact        Emit compact JSON
+          --output <path>  Write the packet to an explicit path instead of stdout
+          -h, --help       Show this help
+        """;
+
     private const string CalibrationValidateHelpText = """
         Usage:
-          fairbill calibration validate <corpus.json> [--compact]
+          fairbill calibration validate <corpus.json> [--compact] [--output <path>]
         """;
 
     private const string CalibrationEvaluateHelpText = """
@@ -1354,6 +1768,7 @@ public sealed class FairbillApplication
         Options:
           --partition <development|validation|test>  Required repository-held-out partition
           --compact                                  Emit compact JSON
+          --output <path>                            Write report to a path instead of stdout
           -h, --help                                 Show this help
         """;
 
@@ -1382,6 +1797,7 @@ public sealed class FairbillApplication
           --hourly-rate <number>                  Override the bundled 2026 US rate
           --currency <code>                       Currency for an overridden rate (default: USD)
           --no-rate                               Omit rate and cost projection
+          --output <path>                         Write output to an explicit path instead of stdout
           -h, --help                              Show this help
         """;
 

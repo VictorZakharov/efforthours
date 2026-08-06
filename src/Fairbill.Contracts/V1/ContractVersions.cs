@@ -7,8 +7,10 @@ public static class ContractVersions
 
 public static class SchemaNames
 {
+    public const string CalibrationAuthoringPacket = "calibration-authoring-packet.schema.json";
     public const string CalibrationCorpus = "calibration-corpus.schema.json";
     public const string CalibrationEvaluation = "calibration-evaluation.schema.json";
+    public const string CalibrationReviewPlan = "calibration-review-plan.schema.json";
     public const string CalibrationValidation = "calibration-validation.schema.json";
     public const string Diagnostic = "diagnostic.schema.json";
     public const string EstimateExplanation = "estimate-explanation.schema.json";
@@ -24,8 +26,10 @@ public static class SchemaNames
 
 public static class SchemaIds
 {
+    public const string CalibrationAuthoringPacket = "urn:fairbill:schema:v1:calibration-authoring-packet";
     public const string CalibrationCorpus = "urn:fairbill:schema:v1:calibration-corpus";
     public const string CalibrationEvaluation = "urn:fairbill:schema:v1:calibration-evaluation";
+    public const string CalibrationReviewPlan = "urn:fairbill:schema:v1:calibration-review-plan";
     public const string CalibrationValidation = "urn:fairbill:schema:v1:calibration-validation";
     public const string Diagnostic = "urn:fairbill:schema:v1:diagnostic";
     public const string EstimateExplanation = "urn:fairbill:schema:v1:estimate-explanation";

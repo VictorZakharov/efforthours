@@ -1,0 +1,3129 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "fairbill-public-pilot",
+  "version": "0.1.0",
+  "description": "Initial public teacher-estimate corpus for authoring-workflow and frozen seed-baseline measurement. These weak labels are not independently reviewed and are not production accuracy evidence.",
+  "rubric": {
+    "id": "ehe-work-item",
+    "version": "1.0.0"
+  },
+  "records": [
+    {
+      "id": "record:ardalis-guardclauses:implementation",
+      "repository": {
+        "id": "repository:github.com/ardalis/guardclauses",
+        "name": "ardalis/GuardClauses",
+        "sourceDigest": "sha256:8000fcacf968cde7b06d2b4a17fd979c89df9ade30a3dbcbf0a9dbe02a39b374"
+      },
+      "profile": "implementation",
+      "baselineId": "senior-contractor-2026-no-ai",
+      "partition": "development",
+      "sourceEstimatorVersion": "seed-rules/0.2.0",
+      "sourceEstimateDigest": "sha256:fa5741ade8213dd595c61faab7f2023748b9e690085b3139ae04c792f685f07e",
+      "source": {
+        "dataClassification": "public-redistributable",
+        "sourceReference": "https://github.com/ardalis/GuardClauses",
+        "revision": "41162c46946214600a1f5a55b0abc94b0744691a",
+        "licenseExpression": "MIT",
+        "redistributionAllowed": true,
+        "notes": "Reviewed from the fixed GitHub source archive. Commit tree a270ed1a37135600e62deb6a261f3ffa7c9b6260; LICENSE blob 45b51efe1c6e720d3d45bbacdeebb7db9311a977."
+      },
+      "review": {
+        "status": "teacher-estimate",
+        "completedOn": "2026-08-06",
+        "reviewers": [
+          {
+            "id": "teacher:openai-codex-gpt-5-2026-08",
+            "kind": "host-ai",
+            "role": "teacher",
+            "modelId": "openai-codex",
+            "modelVersion": "gpt-5"
+          }
+        ],
+        "notes": "Single host-AI teacher review; no independent correction or adjudication. Candidate values were visible as reference, but capability totals were re-estimated after source and evidence inspection. Low/high bounds use a documented risk-tier policy."
+      },
+      "targets": [
+        {
+          "id": "target:work:architecture-design:b7d785bf6773cdeff5d4:review-0001",
+          "category": "architecture-and-technical-design",
+          "title": "Design the technical structure of \u0027src/GuardClauses/GuardClauses.csproj\u0027 (library)",
+          "scope": "src/GuardClauses/GuardClauses.csproj",
+          "sourceWorkItemIds": [
+            "work:architecture-design:b7d785bf6773cdeff5d4:part-0001"
+          ],
+          "evidenceIds": [
+            "dotnet:project:src/GuardClauses/GuardClauses.csproj"
+          ],
+          "hours": {
+            "low": 1.5,
+            "expected": 2,
+            "high": 2.75
+          },
+          "rationale": "The extension-method API is simple, but generic overload, exception, and nullable-flow conventions need coherent design.",
+          "uncertaintyReasons": []
+        },
+        {
+          "id": "target:work:build-tooling:c2c91d07e063088d401a:review-0001",
+          "category": "build-configuration-and-developer-tooling",
+          "title": "Configure build behavior and developer tooling",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:build-tooling:c2c91d07e063088d401a:part-0001"
+          ],
+          "evidenceIds": [
+            "file:.editorconfig",
+            "file:Directory.Build.props"
+          ],
+          "hours": {
+            "low": 1.5,
+            "expected": 2,
+            "high": 2.75
+          },
+          "rationale": "Shared build properties, editor settings, and packaging conventions require modest setup and verification.",
+          "uncertaintyReasons": []
+        },
+        {
+          "id": "target:work:ci-infrastructure:bee22f5b9a094661eb75:review-0001",
+          "category": "ci-cd-and-infrastructure-as-code",
+          "title": "Implement represented CI/CD and infrastructure configuration (review target 1 of 2)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:ci-infrastructure:bee22f5b9a094661eb75:part-0001"
+          ],
+          "evidenceIds": [
+            "ci:repository",
+            "file:.github/workflows/build.yml",
+            "file:.github/workflows/codeql-analysis.yml",
+            "file:.github/workflows/comment-on-pr.yml",
+            "file:.github/workflows/publish.yml"
+          ],
+          "hours": {
+            "low": 1.75,
+            "expected": 2.5,
+            "high": 3.75
+          },
+          "rationale": "Multiple build, publication, CodeQL, and repository-automation workflows require configuration and safe release-path checking.",
+          "uncertaintyReasons": [
+            "Publication credentials and hosted-environment behavior are not exercised by static review."
+          ]
+        },
+        {
+          "id": "target:work:ci-infrastructure:bee22f5b9a094661eb75:review-0002",
+          "category": "ci-cd-and-infrastructure-as-code",
+          "title": "Implement represented CI/CD and infrastructure configuration (review target 2 of 2)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:ci-infrastructure:bee22f5b9a094661eb75:part-0002"
+          ],
+          "evidenceIds": [
+            "ci:repository",
+            "file:.github/workflows/build.yml",
+            "file:.github/workflows/codeql-analysis.yml",
+            "file:.github/workflows/comment-on-pr.yml",
+            "file:.github/workflows/publish.yml"
+          ],
+          "hours": {
+            "low": 1.75,
+            "expected": 2.5,
+            "high": 3.75
+          },
+          "rationale": "Multiple build, publication, CodeQL, and repository-automation workflows require configuration and safe release-path checking.",
+          "uncertaintyReasons": [
+            "Publication credentials and hosted-environment behavior are not exercised by static review."
+          ]
+        },
+        {
+          "id": "target:work:documentation:bebbc838ff439c1b4e49:review-0001",
+          "category": "documentation",
+          "title": "Author and verify maintained repository documentation (review target 1 of 2)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:documentation:bebbc838ff439c1b4e49:part-0001"
+          ],
+          "evidenceIds": [
+            "documentation:repository",
+            "file:.github/ISSUE_TEMPLATE/bug_report.md",
+            "file:.github/ISSUE_TEMPLATE/feature_request.md",
+            "file:CODE_OF_CONDUCT.md",
+            "file:CONTRIBUTING.md",
+            "file:LICENSE",
+            "file:README.md"
+          ],
+          "hours": {
+            "low": 2.25,
+            "expected": 3,
+            "high": 4
+          },
+          "rationale": "The maintained README, contribution guidance, build notes, and public usage examples are useful but conventional library documentation.",
+          "uncertaintyReasons": []
+        },
+        {
+          "id": "target:work:documentation:bebbc838ff439c1b4e49:review-0002",
+          "category": "documentation",
+          "title": "Author and verify maintained repository documentation (review target 2 of 2)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:documentation:bebbc838ff439c1b4e49:part-0002"
+          ],
+          "evidenceIds": [
+            "documentation:repository",
+            "file:.github/ISSUE_TEMPLATE/bug_report.md",
+            "file:.github/ISSUE_TEMPLATE/feature_request.md",
+            "file:CODE_OF_CONDUCT.md",
+            "file:CONTRIBUTING.md",
+            "file:LICENSE",
+            "file:README.md"
+          ],
+          "hours": {
+            "low": 2.25,
+            "expected": 3,
+            "high": 4
+          },
+          "rationale": "The maintained README, contribution guidance, build notes, and public usage examples are useful but conventional library documentation.",
+          "uncertaintyReasons": []
+        },
+        {
+          "id": "target:work:dotnet-source-backbone:0c31060cecd97aaf3392:review-0001",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027src/GuardClauses/GuardClauses.csproj\u0027 (library) (review target 1 of 8)",
+          "scope": "src/GuardClauses/GuardClauses.csproj",
+          "sourceWorkItemIds": [
+            "work:dotnet-source-backbone:0c31060cecd97aaf3392:part-0001",
+            "work:dotnet-source-backbone:0c31060cecd97aaf3392:part-0002"
+          ],
+          "evidenceIds": [
+            "dotnet:source-structure:src/GuardClauses/GuardClauses.csproj"
+          ],
+          "hours": {
+            "low": 3.25,
+            "expected": 5,
+            "high": 7.5
+          },
+          "rationale": "The reviewed public API contains roughly fifty mostly patterned guard overloads plus exception semantics and XML documentation; shared implementation patterns substantially reduce marginal effort.",
+          "uncertaintyReasons": [
+            "Compatibility attributes, nullable annotations, and overload edge behavior add bounded uncertainty."
+          ]
+        },
+        {
+          "id": "target:work:dotnet-source-backbone:0c31060cecd97aaf3392:review-0002",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027src/GuardClauses/GuardClauses.csproj\u0027 (library) (review target 2 of 8)",
+          "scope": "src/GuardClauses/GuardClauses.csproj",
+          "sourceWorkItemIds": [
+            "work:dotnet-source-backbone:0c31060cecd97aaf3392:part-0003",
+            "work:dotnet-source-backbone:0c31060cecd97aaf3392:part-0004"
+          ],
+          "evidenceIds": [
+            "dotnet:source-structure:src/GuardClauses/GuardClauses.csproj"
+          ],
+          "hours": {
+            "low": 3.25,
+            "expected": 5,
+            "high": 7.5
+          },
+          "rationale": "The reviewed public API contains roughly fifty mostly patterned guard overloads plus exception semantics and XML documentation; shared implementation patterns substantially reduce marginal effort.",
+          "uncertaintyReasons": [
+            "Compatibility attributes, nullable annotations, and overload edge behavior add bounded uncertainty."
+          ]
+        },
+        {
+          "id": "target:work:dotnet-source-backbone:0c31060cecd97aaf3392:review-0003",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027src/GuardClauses/GuardClauses.csproj\u0027 (library) (review target 3 of 8)",
+          "scope": "src/GuardClauses/GuardClauses.csproj",
+          "sourceWorkItemIds": [
+            "work:dotnet-source-backbone:0c31060cecd97aaf3392:part-0005",
+            "work:dotnet-source-backbone:0c31060cecd97aaf3392:part-0006"
+          ],
+          "evidenceIds": [
+            "dotnet:source-structure:src/GuardClauses/GuardClauses.csproj"
+          ],
+          "hours": {
+            "low": 3.25,
+            "expected": 5,
+            "high": 7.5
+          },
+          "rationale": "The reviewed public API contains roughly fifty mostly patterned guard overloads plus exception semantics and XML documentation; shared implementation patterns substantially reduce marginal effort.",
+          "uncertaintyReasons": [
+            "Compatibility attributes, nullable annotations, and overload edge behavior add bounded uncertainty."
+          ]
+        },
+        {
+          "id": "target:work:dotnet-source-backbone:0c31060cecd97aaf3392:review-0004",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027src/GuardClauses/GuardClauses.csproj\u0027 (library) (review target 4 of 8)",
+          "scope": "src/GuardClauses/GuardClauses.csproj",
+          "sourceWorkItemIds": [
+            "work:dotnet-source-backbone:0c31060cecd97aaf3392:part-0007",
+            "work:dotnet-source-backbone:0c31060cecd97aaf3392:part-0008"
+          ],
+          "evidenceIds": [
+            "dotnet:source-structure:src/GuardClauses/GuardClauses.csproj"
+          ],
+          "hours": {
+            "low": 3.25,
+            "expected": 5,
+            "high": 7.5
+          },
+          "rationale": "The reviewed public API contains roughly fifty mostly patterned guard overloads plus exception semantics and XML documentation; shared implementation patterns substantially reduce marginal effort.",
+          "uncertaintyReasons": [
+            "Compatibility attributes, nullable annotations, and overload edge behavior add bounded uncertainty."
+          ]
+        },
+        {
+          "id": "target:work:dotnet-source-backbone:0c31060cecd97aaf3392:review-0005",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027src/GuardClauses/GuardClauses.csproj\u0027 (library) (review target 5 of 8)",
+          "scope": "src/GuardClauses/GuardClauses.csproj",
+          "sourceWorkItemIds": [
+            "work:dotnet-source-backbone:0c31060cecd97aaf3392:part-0009",
+            "work:dotnet-source-backbone:0c31060cecd97aaf3392:part-0010"
+          ],
+          "evidenceIds": [
+            "dotnet:source-structure:src/GuardClauses/GuardClauses.csproj"
+          ],
+          "hours": {
+            "low": 3.25,
+            "expected": 5,
+            "high": 7.5
+          },
+          "rationale": "The reviewed public API contains roughly fifty mostly patterned guard overloads plus exception semantics and XML documentation; shared implementation patterns substantially reduce marginal effort.",
+          "uncertaintyReasons": [
+            "Compatibility attributes, nullable annotations, and overload edge behavior add bounded uncertainty."
+          ]
+        },
+        {
+          "id": "target:work:dotnet-source-backbone:0c31060cecd97aaf3392:review-0006",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027src/GuardClauses/GuardClauses.csproj\u0027 (library) (review target 6 of 8)",
+          "scope": "src/GuardClauses/GuardClauses.csproj",
+          "sourceWorkItemIds": [
+            "work:dotnet-source-backbone:0c31060cecd97aaf3392:part-0011",
+            "work:dotnet-source-backbone:0c31060cecd97aaf3392:part-0012"
+          ],
+          "evidenceIds": [
+            "dotnet:source-structure:src/GuardClauses/GuardClauses.csproj"
+          ],
+          "hours": {
+            "low": 3.25,
+            "expected": 5,
+            "high": 7.5
+          },
+          "rationale": "The reviewed public API contains roughly fifty mostly patterned guard overloads plus exception semantics and XML documentation; shared implementation patterns substantially reduce marginal effort.",
+          "uncertaintyReasons": [
+            "Compatibility attributes, nullable annotations, and overload edge behavior add bounded uncertainty."
+          ]
+        },
+        {
+          "id": "target:work:dotnet-source-backbone:0c31060cecd97aaf3392:review-0007",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027src/GuardClauses/GuardClauses.csproj\u0027 (library) (review target 7 of 8)",
+          "scope": "src/GuardClauses/GuardClauses.csproj",
+          "sourceWorkItemIds": [
+            "work:dotnet-source-backbone:0c31060cecd97aaf3392:part-0013"
+          ],
+          "evidenceIds": [
+            "dotnet:source-structure:src/GuardClauses/GuardClauses.csproj"
+          ],
+          "hours": {
+            "low": 3.25,
+            "expected": 5,
+            "high": 7.5
+          },
+          "rationale": "The reviewed public API contains roughly fifty mostly patterned guard overloads plus exception semantics and XML documentation; shared implementation patterns substantially reduce marginal effort.",
+          "uncertaintyReasons": [
+            "Compatibility attributes, nullable annotations, and overload edge behavior add bounded uncertainty."
+          ]
+        },
+        {
+          "id": "target:work:dotnet-source-backbone:0c31060cecd97aaf3392:review-0008",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027src/GuardClauses/GuardClauses.csproj\u0027 (library) (review target 8 of 8)",
+          "scope": "src/GuardClauses/GuardClauses.csproj",
+          "sourceWorkItemIds": [
+            "work:dotnet-source-backbone:0c31060cecd97aaf3392:part-0014"
+          ],
+          "evidenceIds": [
+            "dotnet:source-structure:src/GuardClauses/GuardClauses.csproj"
+          ],
+          "hours": {
+            "low": 3.25,
+            "expected": 5,
+            "high": 7.5
+          },
+          "rationale": "The reviewed public API contains roughly fifty mostly patterned guard overloads plus exception semantics and XML documentation; shared implementation patterns substantially reduce marginal effort.",
+          "uncertaintyReasons": [
+            "Compatibility attributes, nullable annotations, and overload edge behavior add bounded uncertainty."
+          ]
+        },
+        {
+          "id": "target:work:manual-validation:701784d00b3a27227a8f:review-0001",
+          "category": "manual-validation-debugging-and-hardening",
+          "title": "Manually validate, debug, and harden \u0027src/GuardClauses/GuardClauses.csproj\u0027 (library)",
+          "scope": "src/GuardClauses/GuardClauses.csproj",
+          "sourceWorkItemIds": [
+            "work:manual-validation:701784d00b3a27227a8f:part-0001"
+          ],
+          "evidenceIds": [
+            "dotnet:project:src/GuardClauses/GuardClauses.csproj"
+          ],
+          "hours": {
+            "low": 2,
+            "expected": 3,
+            "high": 4.5
+          },
+          "rationale": "Public exception messages, parameter names, generic constraints, and representative boundary cases warrant focused manual validation beyond automated-test authoring.",
+          "uncertaintyReasons": []
+        },
+        {
+          "id": "target:work:project-setup:64adc9ee5d09db90f68a:review-0001",
+          "category": "repository-and-solution-setup",
+          "title": "Set up \u0027test/GuardClauses.UnitTests/GuardClauses.UnitTests.csproj\u0027 (test)",
+          "scope": "test/GuardClauses.UnitTests/GuardClauses.UnitTests.csproj",
+          "sourceWorkItemIds": [
+            "work:project-setup:64adc9ee5d09db90f68a:part-0001"
+          ],
+          "evidenceIds": [
+            "dotnet:package:test/GuardClauses.UnitTests/GuardClauses.UnitTests.csproj:altcover",
+            "dotnet:package:test/GuardClauses.UnitTests/GuardClauses.UnitTests.csproj:coverlet.collector",
+            "dotnet:package:test/GuardClauses.UnitTests/GuardClauses.UnitTests.csproj:coverlet.msbuild",
+            "dotnet:package:test/GuardClauses.UnitTests/GuardClauses.UnitTests.csproj:microsoft.net.test.sdk",
+            "dotnet:package:test/GuardClauses.UnitTests/GuardClauses.UnitTests.csproj:reportgenerator",
+            "dotnet:package:test/GuardClauses.UnitTests/GuardClauses.UnitTests.csproj:xunit",
+            "dotnet:package:test/GuardClauses.UnitTests/GuardClauses.UnitTests.csproj:xunit.runner.visualstudio",
+            "dotnet:project:test/GuardClauses.UnitTests/GuardClauses.UnitTests.csproj"
+          ],
+          "hours": {
+            "low": 0.75,
+            "expected": 1,
+            "high": 1.25
+          },
+          "rationale": "The xUnit test project setup is conventional and reuses the solution conventions.",
+          "uncertaintyReasons": []
+        },
+        {
+          "id": "target:work:project-setup:64c63cd2d1c89da11f82:review-0001",
+          "category": "repository-and-solution-setup",
+          "title": "Set up \u0027src/GuardClauses/GuardClauses.csproj\u0027 (library)",
+          "scope": "src/GuardClauses/GuardClauses.csproj",
+          "sourceWorkItemIds": [
+            "work:project-setup:64c63cd2d1c89da11f82:part-0001"
+          ],
+          "evidenceIds": [
+            "dotnet:package:src/GuardClauses/GuardClauses.csproj:microsoft.sourcelink.github",
+            "dotnet:project:src/GuardClauses/GuardClauses.csproj"
+          ],
+          "hours": {
+            "low": 1.25,
+            "expected": 1.5,
+            "high": 2
+          },
+          "rationale": "The multi-targeted library project and package metadata are conventional and compact.",
+          "uncertaintyReasons": []
+        },
+        {
+          "id": "target:work:self-review:e943a6db2e8c464b145a:review-0001",
+          "category": "self-review-and-system-integration",
+          "title": "Self-review and integrate the completed system",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:self-review:e943a6db2e8c464b145a:part-0001"
+          ],
+          "evidenceIds": [
+            "dotnet:project-reference:test/GuardClauses.UnitTests/GuardClauses.UnitTests.csproj:src/GuardClauses/GuardClauses.csproj",
+            "dotnet:project:src/GuardClauses/GuardClauses.csproj",
+            "dotnet:project:test/GuardClauses.UnitTests/GuardClauses.UnitTests.csproj",
+            "dotnet:repository",
+            "inventory:repository"
+          ],
+          "hours": {
+            "low": 2.25,
+            "expected": 3,
+            "high": 4
+          },
+          "rationale": "A public compatibility-sensitive library needs a final API, package, documentation, and suite coherence pass.",
+          "uncertaintyReasons": []
+        },
+        {
+          "id": "target:work:solution-coordination:c6246e076bb47f8310ce:review-0001",
+          "category": "repository-and-solution-setup",
+          "title": "Coordinate solution, workspace, and local dependency boundaries",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:solution-coordination:c6246e076bb47f8310ce:part-0001"
+          ],
+          "evidenceIds": [
+            "dotnet:project-reference:test/GuardClauses.UnitTests/GuardClauses.UnitTests.csproj:src/GuardClauses/GuardClauses.csproj",
+            "dotnet:solution:GuardClauses.sln"
+          ],
+          "hours": {
+            "low": 1.25,
+            "expected": 1.5,
+            "high": 2
+          },
+          "rationale": "A small two-project solution needs straightforward dependency and repository coordination.",
+          "uncertaintyReasons": []
+        },
+        {
+          "id": "target:work:specification-comprehension:49aec33b6a46fb626dad:review-0001",
+          "category": "specification-comprehension-and-domain-learning",
+          "title": "Comprehend the supplied specification and bounded business domain",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:specification-comprehension:49aec33b6a46fb626dad:part-0001"
+          ],
+          "evidenceIds": [
+            "dotnet:project:src/GuardClauses/GuardClauses.csproj",
+            "dotnet:project:test/GuardClauses.UnitTests/GuardClauses.UnitTests.csproj",
+            "dotnet:repository",
+            "inventory:repository"
+          ],
+          "hours": {
+            "low": 1.25,
+            "expected": 1.5,
+            "high": 2
+          },
+          "rationale": "The guard-clause domain is familiar, but the exact supported clause matrix and compatibility behavior require a bounded review.",
+          "uncertaintyReasons": []
+        },
+        {
+          "id": "target:work:unit-tests:bf83431635913fb9c445:review-0001",
+          "category": "unit-testing",
+          "title": "Create represented unit tests for \u0027test/GuardClauses.UnitTests/GuardClauses.UnitTests.csproj\u0027 (test) (review target 1 of 10)",
+          "scope": "test/GuardClauses.UnitTests/GuardClauses.UnitTests.csproj",
+          "sourceWorkItemIds": [
+            "work:unit-tests:bf83431635913fb9c445:part-0001",
+            "work:unit-tests:bf83431635913fb9c445:part-0002",
+            "work:unit-tests:bf83431635913fb9c445:part-0003",
+            "work:unit-tests:bf83431635913fb9c445:part-0004"
+          ],
+          "evidenceIds": [
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstDefault.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstExpression.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstExpressionDeprecated.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstFooExtension.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstInvalidFormatTests.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstNegative.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstNegativeOrZero.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstNotFound.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstNull.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstNullOrEmpty.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstNullOrInvalidInput.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstNullOrOutOfRangeForClassIComparable.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstNullOrOutOfRangeForInt.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstNullOrOutOfRangeForNullableInt.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstNullOrOutOfSQLDateRange.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstNullOrWhiteSpace.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForDateTime.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForDecimal.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForDouble.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForEnum.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForEnumerableDecimal.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForEnumerableDouble.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForEnumerableFloat.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForEnumerableInt.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForEnumerableLong.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForEnumerableShort.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForEnumerableTimeSpan.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForFloat.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForInt.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForInvalidInput.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForShort.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForStructIComparable.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForTimeSpan.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForUint.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfSQLDateRange.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstStringLengthOutOfRange.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstStringTooLong.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstStringTooShort.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstZero.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/NamespaceSeparate/ExtendingGuard.cs"
+          ],
+          "hours": {
+            "low": 3.5,
+            "expected": 5.25,
+            "high": 8
+          },
+          "rationale": "The comprehensive xUnit matrix covers guard families and edge types, while repeated numeric, range, and null cases reuse strong test patterns and fixtures.",
+          "uncertaintyReasons": [
+            "The static review did not execute the suite; passing behavior is assumed under the default policy."
+          ]
+        },
+        {
+          "id": "target:work:unit-tests:bf83431635913fb9c445:review-0002",
+          "category": "unit-testing",
+          "title": "Create represented unit tests for \u0027test/GuardClauses.UnitTests/GuardClauses.UnitTests.csproj\u0027 (test) (review target 2 of 10)",
+          "scope": "test/GuardClauses.UnitTests/GuardClauses.UnitTests.csproj",
+          "sourceWorkItemIds": [
+            "work:unit-tests:bf83431635913fb9c445:part-0005",
+            "work:unit-tests:bf83431635913fb9c445:part-0006",
+            "work:unit-tests:bf83431635913fb9c445:part-0007",
+            "work:unit-tests:bf83431635913fb9c445:part-0008"
+          ],
+          "evidenceIds": [
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstDefault.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstExpression.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstExpressionDeprecated.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstFooExtension.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstInvalidFormatTests.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstNegative.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstNegativeOrZero.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstNotFound.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstNull.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstNullOrEmpty.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstNullOrInvalidInput.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstNullOrOutOfRangeForClassIComparable.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstNullOrOutOfRangeForInt.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstNullOrOutOfRangeForNullableInt.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstNullOrOutOfSQLDateRange.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstNullOrWhiteSpace.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForDateTime.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForDecimal.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForDouble.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForEnum.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForEnumerableDecimal.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForEnumerableDouble.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForEnumerableFloat.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForEnumerableInt.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForEnumerableLong.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForEnumerableShort.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForEnumerableTimeSpan.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForFloat.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForInt.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForInvalidInput.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForShort.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForStructIComparable.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForTimeSpan.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForUint.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfSQLDateRange.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstStringLengthOutOfRange.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstStringTooLong.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstStringTooShort.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstZero.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/NamespaceSeparate/ExtendingGuard.cs"
+          ],
+          "hours": {
+            "low": 3.5,
+            "expected": 5.25,
+            "high": 8
+          },
+          "rationale": "The comprehensive xUnit matrix covers guard families and edge types, while repeated numeric, range, and null cases reuse strong test patterns and fixtures.",
+          "uncertaintyReasons": [
+            "The static review did not execute the suite; passing behavior is assumed under the default policy."
+          ]
+        },
+        {
+          "id": "target:work:unit-tests:bf83431635913fb9c445:review-0003",
+          "category": "unit-testing",
+          "title": "Create represented unit tests for \u0027test/GuardClauses.UnitTests/GuardClauses.UnitTests.csproj\u0027 (test) (review target 3 of 10)",
+          "scope": "test/GuardClauses.UnitTests/GuardClauses.UnitTests.csproj",
+          "sourceWorkItemIds": [
+            "work:unit-tests:bf83431635913fb9c445:part-0009",
+            "work:unit-tests:bf83431635913fb9c445:part-0010",
+            "work:unit-tests:bf83431635913fb9c445:part-0011",
+            "work:unit-tests:bf83431635913fb9c445:part-0012"
+          ],
+          "evidenceIds": [
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstDefault.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstExpression.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstExpressionDeprecated.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstFooExtension.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstInvalidFormatTests.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstNegative.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstNegativeOrZero.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstNotFound.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstNull.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstNullOrEmpty.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstNullOrInvalidInput.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstNullOrOutOfRangeForClassIComparable.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstNullOrOutOfRangeForInt.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstNullOrOutOfRangeForNullableInt.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstNullOrOutOfSQLDateRange.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstNullOrWhiteSpace.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForDateTime.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForDecimal.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForDouble.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForEnum.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForEnumerableDecimal.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForEnumerableDouble.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForEnumerableFloat.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForEnumerableInt.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForEnumerableLong.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForEnumerableShort.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForEnumerableTimeSpan.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForFloat.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForInt.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForInvalidInput.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForShort.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForStructIComparable.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForTimeSpan.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForUint.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfSQLDateRange.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstStringLengthOutOfRange.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstStringTooLong.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstStringTooShort.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstZero.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/NamespaceSeparate/ExtendingGuard.cs"
+          ],
+          "hours": {
+            "low": 3.5,
+            "expected": 5.25,
+            "high": 8
+          },
+          "rationale": "The comprehensive xUnit matrix covers guard families and edge types, while repeated numeric, range, and null cases reuse strong test patterns and fixtures.",
+          "uncertaintyReasons": [
+            "The static review did not execute the suite; passing behavior is assumed under the default policy."
+          ]
+        },
+        {
+          "id": "target:work:unit-tests:bf83431635913fb9c445:review-0004",
+          "category": "unit-testing",
+          "title": "Create represented unit tests for \u0027test/GuardClauses.UnitTests/GuardClauses.UnitTests.csproj\u0027 (test) (review target 4 of 10)",
+          "scope": "test/GuardClauses.UnitTests/GuardClauses.UnitTests.csproj",
+          "sourceWorkItemIds": [
+            "work:unit-tests:bf83431635913fb9c445:part-0013",
+            "work:unit-tests:bf83431635913fb9c445:part-0014",
+            "work:unit-tests:bf83431635913fb9c445:part-0015",
+            "work:unit-tests:bf83431635913fb9c445:part-0016"
+          ],
+          "evidenceIds": [
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstDefault.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstExpression.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstExpressionDeprecated.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstFooExtension.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstInvalidFormatTests.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstNegative.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstNegativeOrZero.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstNotFound.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstNull.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstNullOrEmpty.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstNullOrInvalidInput.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstNullOrOutOfRangeForClassIComparable.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstNullOrOutOfRangeForInt.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstNullOrOutOfRangeForNullableInt.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstNullOrOutOfSQLDateRange.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstNullOrWhiteSpace.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForDateTime.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForDecimal.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForDouble.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForEnum.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForEnumerableDecimal.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForEnumerableDouble.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForEnumerableFloat.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForEnumerableInt.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForEnumerableLong.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForEnumerableShort.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForEnumerableTimeSpan.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForFloat.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForInt.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForInvalidInput.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForShort.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForStructIComparable.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForTimeSpan.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForUint.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfSQLDateRange.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstStringLengthOutOfRange.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstStringTooLong.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstStringTooShort.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstZero.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/NamespaceSeparate/ExtendingGuard.cs"
+          ],
+          "hours": {
+            "low": 3.5,
+            "expected": 5.25,
+            "high": 8
+          },
+          "rationale": "The comprehensive xUnit matrix covers guard families and edge types, while repeated numeric, range, and null cases reuse strong test patterns and fixtures.",
+          "uncertaintyReasons": [
+            "The static review did not execute the suite; passing behavior is assumed under the default policy."
+          ]
+        },
+        {
+          "id": "target:work:unit-tests:bf83431635913fb9c445:review-0005",
+          "category": "unit-testing",
+          "title": "Create represented unit tests for \u0027test/GuardClauses.UnitTests/GuardClauses.UnitTests.csproj\u0027 (test) (review target 5 of 10)",
+          "scope": "test/GuardClauses.UnitTests/GuardClauses.UnitTests.csproj",
+          "sourceWorkItemIds": [
+            "work:unit-tests:bf83431635913fb9c445:part-0017",
+            "work:unit-tests:bf83431635913fb9c445:part-0018",
+            "work:unit-tests:bf83431635913fb9c445:part-0019",
+            "work:unit-tests:bf83431635913fb9c445:part-0020"
+          ],
+          "evidenceIds": [
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstDefault.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstExpression.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstExpressionDeprecated.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstFooExtension.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstInvalidFormatTests.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstNegative.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstNegativeOrZero.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstNotFound.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstNull.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstNullOrEmpty.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstNullOrInvalidInput.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstNullOrOutOfRangeForClassIComparable.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstNullOrOutOfRangeForInt.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstNullOrOutOfRangeForNullableInt.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstNullOrOutOfSQLDateRange.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstNullOrWhiteSpace.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForDateTime.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForDecimal.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForDouble.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForEnum.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForEnumerableDecimal.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForEnumerableDouble.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForEnumerableFloat.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForEnumerableInt.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForEnumerableLong.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForEnumerableShort.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForEnumerableTimeSpan.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForFloat.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForInt.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForInvalidInput.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForShort.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForStructIComparable.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForTimeSpan.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForUint.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfSQLDateRange.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstStringLengthOutOfRange.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstStringTooLong.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstStringTooShort.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstZero.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/NamespaceSeparate/ExtendingGuard.cs"
+          ],
+          "hours": {
+            "low": 3.5,
+            "expected": 5.25,
+            "high": 8
+          },
+          "rationale": "The comprehensive xUnit matrix covers guard families and edge types, while repeated numeric, range, and null cases reuse strong test patterns and fixtures.",
+          "uncertaintyReasons": [
+            "The static review did not execute the suite; passing behavior is assumed under the default policy."
+          ]
+        },
+        {
+          "id": "target:work:unit-tests:bf83431635913fb9c445:review-0006",
+          "category": "unit-testing",
+          "title": "Create represented unit tests for \u0027test/GuardClauses.UnitTests/GuardClauses.UnitTests.csproj\u0027 (test) (review target 6 of 10)",
+          "scope": "test/GuardClauses.UnitTests/GuardClauses.UnitTests.csproj",
+          "sourceWorkItemIds": [
+            "work:unit-tests:bf83431635913fb9c445:part-0021",
+            "work:unit-tests:bf83431635913fb9c445:part-0022",
+            "work:unit-tests:bf83431635913fb9c445:part-0023",
+            "work:unit-tests:bf83431635913fb9c445:part-0024"
+          ],
+          "evidenceIds": [
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstDefault.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstExpression.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstExpressionDeprecated.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstFooExtension.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstInvalidFormatTests.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstNegative.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstNegativeOrZero.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstNotFound.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstNull.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstNullOrEmpty.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstNullOrInvalidInput.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstNullOrOutOfRangeForClassIComparable.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstNullOrOutOfRangeForInt.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstNullOrOutOfRangeForNullableInt.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstNullOrOutOfSQLDateRange.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstNullOrWhiteSpace.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForDateTime.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForDecimal.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForDouble.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForEnum.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForEnumerableDecimal.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForEnumerableDouble.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForEnumerableFloat.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForEnumerableInt.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForEnumerableLong.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForEnumerableShort.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForEnumerableTimeSpan.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForFloat.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForInt.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForInvalidInput.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForShort.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForStructIComparable.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForTimeSpan.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForUint.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfSQLDateRange.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstStringLengthOutOfRange.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstStringTooLong.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstStringTooShort.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstZero.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/NamespaceSeparate/ExtendingGuard.cs"
+          ],
+          "hours": {
+            "low": 3.5,
+            "expected": 5.25,
+            "high": 8
+          },
+          "rationale": "The comprehensive xUnit matrix covers guard families and edge types, while repeated numeric, range, and null cases reuse strong test patterns and fixtures.",
+          "uncertaintyReasons": [
+            "The static review did not execute the suite; passing behavior is assumed under the default policy."
+          ]
+        },
+        {
+          "id": "target:work:unit-tests:bf83431635913fb9c445:review-0007",
+          "category": "unit-testing",
+          "title": "Create represented unit tests for \u0027test/GuardClauses.UnitTests/GuardClauses.UnitTests.csproj\u0027 (test) (review target 7 of 10)",
+          "scope": "test/GuardClauses.UnitTests/GuardClauses.UnitTests.csproj",
+          "sourceWorkItemIds": [
+            "work:unit-tests:bf83431635913fb9c445:part-0025",
+            "work:unit-tests:bf83431635913fb9c445:part-0026",
+            "work:unit-tests:bf83431635913fb9c445:part-0027",
+            "work:unit-tests:bf83431635913fb9c445:part-0028"
+          ],
+          "evidenceIds": [
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstDefault.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstExpression.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstExpressionDeprecated.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstFooExtension.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstInvalidFormatTests.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstNegative.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstNegativeOrZero.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstNotFound.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstNull.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstNullOrEmpty.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstNullOrInvalidInput.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstNullOrOutOfRangeForClassIComparable.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstNullOrOutOfRangeForInt.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstNullOrOutOfRangeForNullableInt.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstNullOrOutOfSQLDateRange.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstNullOrWhiteSpace.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForDateTime.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForDecimal.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForDouble.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForEnum.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForEnumerableDecimal.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForEnumerableDouble.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForEnumerableFloat.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForEnumerableInt.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForEnumerableLong.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForEnumerableShort.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForEnumerableTimeSpan.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForFloat.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForInt.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForInvalidInput.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForShort.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForStructIComparable.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForTimeSpan.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForUint.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfSQLDateRange.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstStringLengthOutOfRange.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstStringTooLong.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstStringTooShort.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstZero.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/NamespaceSeparate/ExtendingGuard.cs"
+          ],
+          "hours": {
+            "low": 3.5,
+            "expected": 5.25,
+            "high": 8
+          },
+          "rationale": "The comprehensive xUnit matrix covers guard families and edge types, while repeated numeric, range, and null cases reuse strong test patterns and fixtures.",
+          "uncertaintyReasons": [
+            "The static review did not execute the suite; passing behavior is assumed under the default policy."
+          ]
+        },
+        {
+          "id": "target:work:unit-tests:bf83431635913fb9c445:review-0008",
+          "category": "unit-testing",
+          "title": "Create represented unit tests for \u0027test/GuardClauses.UnitTests/GuardClauses.UnitTests.csproj\u0027 (test) (review target 8 of 10)",
+          "scope": "test/GuardClauses.UnitTests/GuardClauses.UnitTests.csproj",
+          "sourceWorkItemIds": [
+            "work:unit-tests:bf83431635913fb9c445:part-0029",
+            "work:unit-tests:bf83431635913fb9c445:part-0030",
+            "work:unit-tests:bf83431635913fb9c445:part-0031",
+            "work:unit-tests:bf83431635913fb9c445:part-0032"
+          ],
+          "evidenceIds": [
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstDefault.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstExpression.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstExpressionDeprecated.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstFooExtension.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstInvalidFormatTests.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstNegative.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstNegativeOrZero.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstNotFound.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstNull.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstNullOrEmpty.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstNullOrInvalidInput.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstNullOrOutOfRangeForClassIComparable.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstNullOrOutOfRangeForInt.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstNullOrOutOfRangeForNullableInt.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstNullOrOutOfSQLDateRange.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstNullOrWhiteSpace.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForDateTime.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForDecimal.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForDouble.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForEnum.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForEnumerableDecimal.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForEnumerableDouble.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForEnumerableFloat.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForEnumerableInt.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForEnumerableLong.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForEnumerableShort.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForEnumerableTimeSpan.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForFloat.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForInt.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForInvalidInput.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForShort.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForStructIComparable.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForTimeSpan.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForUint.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfSQLDateRange.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstStringLengthOutOfRange.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstStringTooLong.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstStringTooShort.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstZero.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/NamespaceSeparate/ExtendingGuard.cs"
+          ],
+          "hours": {
+            "low": 3.5,
+            "expected": 5.25,
+            "high": 8
+          },
+          "rationale": "The comprehensive xUnit matrix covers guard families and edge types, while repeated numeric, range, and null cases reuse strong test patterns and fixtures.",
+          "uncertaintyReasons": [
+            "The static review did not execute the suite; passing behavior is assumed under the default policy."
+          ]
+        },
+        {
+          "id": "target:work:unit-tests:bf83431635913fb9c445:review-0009",
+          "category": "unit-testing",
+          "title": "Create represented unit tests for \u0027test/GuardClauses.UnitTests/GuardClauses.UnitTests.csproj\u0027 (test) (review target 9 of 10)",
+          "scope": "test/GuardClauses.UnitTests/GuardClauses.UnitTests.csproj",
+          "sourceWorkItemIds": [
+            "work:unit-tests:bf83431635913fb9c445:part-0033",
+            "work:unit-tests:bf83431635913fb9c445:part-0034",
+            "work:unit-tests:bf83431635913fb9c445:part-0035",
+            "work:unit-tests:bf83431635913fb9c445:part-0036"
+          ],
+          "evidenceIds": [
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstDefault.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstExpression.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstExpressionDeprecated.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstFooExtension.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstInvalidFormatTests.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstNegative.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstNegativeOrZero.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstNotFound.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstNull.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstNullOrEmpty.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstNullOrInvalidInput.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstNullOrOutOfRangeForClassIComparable.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstNullOrOutOfRangeForInt.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstNullOrOutOfRangeForNullableInt.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstNullOrOutOfSQLDateRange.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstNullOrWhiteSpace.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForDateTime.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForDecimal.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForDouble.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForEnum.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForEnumerableDecimal.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForEnumerableDouble.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForEnumerableFloat.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForEnumerableInt.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForEnumerableLong.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForEnumerableShort.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForEnumerableTimeSpan.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForFloat.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForInt.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForInvalidInput.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForShort.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForStructIComparable.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForTimeSpan.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForUint.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfSQLDateRange.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstStringLengthOutOfRange.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstStringTooLong.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstStringTooShort.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstZero.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/NamespaceSeparate/ExtendingGuard.cs"
+          ],
+          "hours": {
+            "low": 3.25,
+            "expected": 5,
+            "high": 7.5
+          },
+          "rationale": "The comprehensive xUnit matrix covers guard families and edge types, while repeated numeric, range, and null cases reuse strong test patterns and fixtures.",
+          "uncertaintyReasons": [
+            "The static review did not execute the suite; passing behavior is assumed under the default policy."
+          ]
+        },
+        {
+          "id": "target:work:unit-tests:bf83431635913fb9c445:review-0010",
+          "category": "unit-testing",
+          "title": "Create represented unit tests for \u0027test/GuardClauses.UnitTests/GuardClauses.UnitTests.csproj\u0027 (test) (review target 10 of 10)",
+          "scope": "test/GuardClauses.UnitTests/GuardClauses.UnitTests.csproj",
+          "sourceWorkItemIds": [
+            "work:unit-tests:bf83431635913fb9c445:part-0037",
+            "work:unit-tests:bf83431635913fb9c445:part-0038",
+            "work:unit-tests:bf83431635913fb9c445:part-0039",
+            "work:unit-tests:bf83431635913fb9c445:part-0040"
+          ],
+          "evidenceIds": [
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstDefault.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstExpression.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstExpressionDeprecated.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstFooExtension.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstInvalidFormatTests.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstNegative.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstNegativeOrZero.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstNotFound.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstNull.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstNullOrEmpty.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstNullOrInvalidInput.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstNullOrOutOfRangeForClassIComparable.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstNullOrOutOfRangeForInt.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstNullOrOutOfRangeForNullableInt.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstNullOrOutOfSQLDateRange.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstNullOrWhiteSpace.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForDateTime.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForDecimal.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForDouble.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForEnum.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForEnumerableDecimal.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForEnumerableDouble.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForEnumerableFloat.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForEnumerableInt.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForEnumerableLong.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForEnumerableShort.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForEnumerableTimeSpan.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForFloat.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForInt.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForInvalidInput.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForShort.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForStructIComparable.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForTimeSpan.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfRangeForUint.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstOutOfSQLDateRange.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstStringLengthOutOfRange.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstStringTooLong.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstStringTooShort.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/GuardAgainstZero.cs",
+            "dotnet:test:test/GuardClauses.UnitTests/NamespaceSeparate/ExtendingGuard.cs"
+          ],
+          "hours": {
+            "low": 3.25,
+            "expected": 5,
+            "high": 7.5
+          },
+          "rationale": "The comprehensive xUnit matrix covers guard families and edge types, while repeated numeric, range, and null cases reuse strong test patterns and fixtures.",
+          "uncertaintyReasons": [
+            "The static review did not execute the suite; passing behavior is assumed under the default policy."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "record:kristofferstrube-blazor-filesystemaccess:implementation",
+      "repository": {
+        "id": "repository:github.com/kristofferstrube/blazor-filesystemaccess",
+        "name": "KristofferStrube/Blazor.FileSystemAccess",
+        "sourceDigest": "sha256:555a7b525db2fc835870d231d3df86dc9cb43aea663fce0bb93f6dcf9f645896"
+      },
+      "profile": "implementation",
+      "baselineId": "senior-contractor-2026-no-ai",
+      "partition": "test",
+      "sourceEstimatorVersion": "seed-rules/0.2.0",
+      "sourceEstimateDigest": "sha256:a7397ed1d4516f3f47ffe452275c97a2b7a695ffc3756fe44a24f44f8e7f1ffa",
+      "source": {
+        "dataClassification": "public-redistributable",
+        "sourceReference": "https://github.com/KristofferStrube/Blazor.FileSystemAccess",
+        "revision": "a318303142cbec91e7c82b3d6dd69685adcfbac1",
+        "licenseExpression": "MIT",
+        "redistributionAllowed": true,
+        "notes": "Reviewed from the fixed GitHub source archive. Commit tree b1bda3e99bc3a194d20bf7c056e18cb614cd42ea; LICENSE blob e9302c54553450a17884483313969a72d02c8993."
+      },
+      "review": {
+        "status": "teacher-estimate",
+        "completedOn": "2026-08-06",
+        "reviewers": [
+          {
+            "id": "teacher:openai-codex-gpt-5-2026-08",
+            "kind": "host-ai",
+            "role": "teacher",
+            "modelId": "openai-codex",
+            "modelVersion": "gpt-5"
+          }
+        ],
+        "notes": "Single host-AI teacher review; no independent correction or adjudication. Candidate values were visible as reference, but capability totals were re-estimated after source and evidence inspection. Low/high bounds use a documented risk-tier policy."
+      },
+      "targets": [
+        {
+          "id": "target:work:application-entry-point:419b2322c294c366ec07:review-0001",
+          "category": "production-implementation",
+          "title": "Implement application entry points for \u0027samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/KristofferStrube.Blazor.FileSystemAccess.WasmExample.csproj\u0027 (library)",
+          "scope": "samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/KristofferStrube.Blazor.FileSystemAccess.WasmExample.csproj",
+          "sourceWorkItemIds": [
+            "work:application-entry-point:419b2322c294c366ec07:part-0001"
+          ],
+          "evidenceIds": [
+            "dotnet:entry-point:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/Program.cs"
+          ],
+          "hours": {
+            "low": 0.5,
+            "expected": 0.5,
+            "high": 0.75
+          },
+          "rationale": "The WebAssembly sample entry point is conventional host registration.",
+          "uncertaintyReasons": []
+        },
+        {
+          "id": "target:work:application-entry-point:d0ba0a2292f100e4cb63:review-0001",
+          "category": "production-implementation",
+          "title": "Implement application entry points for \u0027samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/KristofferStrube.Blazor.FileSystemAccess.ServerExample.csproj\u0027 (web)",
+          "scope": "samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/KristofferStrube.Blazor.FileSystemAccess.ServerExample.csproj",
+          "sourceWorkItemIds": [
+            "work:application-entry-point:d0ba0a2292f100e4cb63:part-0001"
+          ],
+          "evidenceIds": [
+            "dotnet:entry-point:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Program.cs"
+          ],
+          "hours": {
+            "low": 0.5,
+            "expected": 0.5,
+            "high": 0.75
+          },
+          "rationale": "The server sample entry point is conventional host registration.",
+          "uncertaintyReasons": []
+        },
+        {
+          "id": "target:work:architecture-design:1301c834bf26665d0695:review-0001",
+          "category": "architecture-and-technical-design",
+          "title": "Design the technical structure of \u0027.\u0027 (component)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:architecture-design:1301c834bf26665d0695:part-0001"
+          ],
+          "evidenceIds": [
+            "javascript:source-structure:.",
+            "javascript:ui-assets:."
+          ],
+          "hours": {
+            "low": 0.75,
+            "expected": 1,
+            "high": 1.25
+          },
+          "rationale": "Repository-level structure is direct: one wrapper library plus two demonstration hosts.",
+          "uncertaintyReasons": []
+        },
+        {
+          "id": "target:work:architecture-design:58379b26e1de39dfef48:review-0001",
+          "category": "architecture-and-technical-design",
+          "title": "Design the technical structure of \u0027samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/KristofferStrube.Blazor.FileSystemAccess.ServerExample.csproj\u0027 (web)",
+          "scope": "samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/KristofferStrube.Blazor.FileSystemAccess.ServerExample.csproj",
+          "sourceWorkItemIds": [
+            "work:architecture-design:58379b26e1de39dfef48:part-0001"
+          ],
+          "evidenceIds": [
+            "dotnet:integration:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Program.cs",
+            "dotnet:project-reference:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/KristofferStrube.Blazor.FileSystemAccess.ServerExample.csproj:src/KristofferStrube.Blazor.FileSystemAccess/KristofferStrube.Blazor.FileSystemAccess.csproj",
+            "dotnet:project:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/KristofferStrube.Blazor.FileSystemAccess.ServerExample.csproj",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/App.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/AppendOnly.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/Error.cshtml",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/Index.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/IndexedDB.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/InputFileExample.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/MemeGenerator.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/MultipleFiles.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/OpenDirectory.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/OpenFile.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/SaveFile.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/TreeMapChart.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/ViewPDF.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/ViewZipFile.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/_Host.cshtml",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Shared/MainLayout.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Shared/NavMenu.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Shared/TreemapChart.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/_Imports.razor",
+            "dotnet:ui:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/Error.cshtml.cs"
+          ],
+          "hours": {
+            "low": 1.25,
+            "expected": 1.5,
+            "high": 2
+          },
+          "rationale": "The server sample needs modest page, service, and host composition decisions.",
+          "uncertaintyReasons": []
+        },
+        {
+          "id": "target:work:architecture-design:c05b91d64af6150ae414:review-0001",
+          "category": "architecture-and-technical-design",
+          "title": "Design the technical structure of \u0027samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/KristofferStrube.Blazor.FileSystemAccess.WasmExample.csproj\u0027 (library)",
+          "scope": "samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/KristofferStrube.Blazor.FileSystemAccess.WasmExample.csproj",
+          "sourceWorkItemIds": [
+            "work:architecture-design:c05b91d64af6150ae414:part-0001"
+          ],
+          "evidenceIds": [
+            "dotnet:integration:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/Program.cs",
+            "dotnet:project-reference:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/KristofferStrube.Blazor.FileSystemAccess.WasmExample.csproj:src/KristofferStrube.Blazor.FileSystemAccess/KristofferStrube.Blazor.FileSystemAccess.csproj",
+            "dotnet:project:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/KristofferStrube.Blazor.FileSystemAccess.WasmExample.csproj",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/App.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/Pages/AppendOnly.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/Pages/Index.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/Pages/IndexedDB.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/Pages/InputFileExample.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/Pages/MemeGenerator.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/Pages/MultipleFiles.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/Pages/OpenDirectory.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/Pages/OpenFile.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/Pages/SaveFile.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/Pages/Status.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/Pages/TreeMapChart.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/Pages/ViewPDF.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/Pages/ViewZipFile.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/Shared/MainLayout.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/Shared/NavMenu.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/Shared/TreemapChart.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/_Imports.razor"
+          ],
+          "hours": {
+            "low": 1.25,
+            "expected": 1.5,
+            "high": 2
+          },
+          "rationale": "The WebAssembly sample mirrors most server-sample decisions with a different hosting boundary.",
+          "uncertaintyReasons": []
+        },
+        {
+          "id": "target:work:architecture-design:d6500f67b0a5ee1061a6:review-0001",
+          "category": "architecture-and-technical-design",
+          "title": "Design the technical structure of \u0027src/KristofferStrube.Blazor.FileSystemAccess/KristofferStrube.Blazor.FileSystemAccess.csproj\u0027 (library)",
+          "scope": "src/KristofferStrube.Blazor.FileSystemAccess/KristofferStrube.Blazor.FileSystemAccess.csproj",
+          "sourceWorkItemIds": [
+            "work:architecture-design:d6500f67b0a5ee1061a6:part-0001"
+          ],
+          "evidenceIds": [
+            "dotnet:project:src/KristofferStrube.Blazor.FileSystemAccess/KristofferStrube.Blazor.FileSystemAccess.csproj"
+          ],
+          "hours": {
+            "low": 1.25,
+            "expected": 2,
+            "high": 3
+          },
+          "rationale": "The wrapper library separates interfaces, in-process variants, option DTOs, converters, union types, DI, and handle extensions.",
+          "uncertaintyReasons": []
+        },
+        {
+          "id": "target:work:build-tooling:c2c91d07e063088d401a:review-0001",
+          "category": "build-configuration-and-developer-tooling",
+          "title": "Configure build behavior and developer tooling",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:build-tooling:c2c91d07e063088d401a:part-0001"
+          ],
+          "evidenceIds": [
+            "file:.EditorConfig",
+            "javascript:repository"
+          ],
+          "hours": {
+            "low": 0.75,
+            "expected": 1,
+            "high": 1.25
+          },
+          "rationale": "The represented editor and build configuration is minimal.",
+          "uncertaintyReasons": []
+        },
+        {
+          "id": "target:work:ci-infrastructure:bee22f5b9a094661eb75:review-0001",
+          "category": "ci-cd-and-infrastructure-as-code",
+          "title": "Implement represented CI/CD and infrastructure configuration",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:ci-infrastructure:bee22f5b9a094661eb75:part-0001"
+          ],
+          "evidenceIds": [
+            "ci:repository",
+            "file:.github/workflows/main.yml"
+          ],
+          "hours": {
+            "low": 1.5,
+            "expected": 2,
+            "high": 2.75
+          },
+          "rationale": "The single build and package workflow is focused and conventional.",
+          "uncertaintyReasons": []
+        },
+        {
+          "id": "target:work:documentation:bebbc838ff439c1b4e49:review-0001",
+          "category": "documentation",
+          "title": "Author and verify maintained repository documentation (review target 1 of 2)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:documentation:bebbc838ff439c1b4e49:part-0001"
+          ],
+          "evidenceIds": [
+            "documentation:repository",
+            "file:CHANGELOG.md",
+            "file:CONTRIBUTING.md",
+            "file:LICENSE",
+            "file:README.md",
+            "file:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/wwwroot/css/open-iconic/README.md",
+            "file:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/wwwroot/css/open-iconic/README.md"
+          ],
+          "hours": {
+            "low": 2.75,
+            "expected": 3.5,
+            "high": 4.75
+          },
+          "rationale": "The README, changelog, contribution notes, installation steps, DI usage, option examples, and migration notes form useful maintained package documentation.",
+          "uncertaintyReasons": []
+        },
+        {
+          "id": "target:work:documentation:bebbc838ff439c1b4e49:review-0002",
+          "category": "documentation",
+          "title": "Author and verify maintained repository documentation (review target 2 of 2)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:documentation:bebbc838ff439c1b4e49:part-0002"
+          ],
+          "evidenceIds": [
+            "documentation:repository",
+            "file:CHANGELOG.md",
+            "file:CONTRIBUTING.md",
+            "file:LICENSE",
+            "file:README.md",
+            "file:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/wwwroot/css/open-iconic/README.md",
+            "file:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/wwwroot/css/open-iconic/README.md"
+          ],
+          "hours": {
+            "low": 2.75,
+            "expected": 3.5,
+            "high": 4.75
+          },
+          "rationale": "The README, changelog, contribution notes, installation steps, DI usage, option examples, and migration notes form useful maintained package documentation.",
+          "uncertaintyReasons": []
+        },
+        {
+          "id": "target:work:dotnet-source-backbone:0a9541f766b2340792d7:review-0001",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/KristofferStrube.Blazor.FileSystemAccess.ServerExample.csproj\u0027 (web)",
+          "scope": "samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/KristofferStrube.Blazor.FileSystemAccess.ServerExample.csproj",
+          "sourceWorkItemIds": [
+            "work:dotnet-source-backbone:0a9541f766b2340792d7:part-0001"
+          ],
+          "evidenceIds": [
+            "dotnet:source-structure:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/KristofferStrube.Blazor.FileSystemAccess.ServerExample.csproj"
+          ],
+          "hours": {
+            "low": 1.25,
+            "expected": 1.5,
+            "high": 2
+          },
+          "rationale": "Server-sample non-UI support code is small and conventional.",
+          "uncertaintyReasons": []
+        },
+        {
+          "id": "target:work:dotnet-source-backbone:319e6199f7cca1822fbb:review-0001",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/KristofferStrube.Blazor.FileSystemAccess.WasmExample.csproj\u0027 (library)",
+          "scope": "samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/KristofferStrube.Blazor.FileSystemAccess.WasmExample.csproj",
+          "sourceWorkItemIds": [
+            "work:dotnet-source-backbone:319e6199f7cca1822fbb:part-0001"
+          ],
+          "evidenceIds": [
+            "dotnet:source-structure:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/KristofferStrube.Blazor.FileSystemAccess.WasmExample.csproj"
+          ],
+          "hours": {
+            "low": 0.75,
+            "expected": 1,
+            "high": 1.25
+          },
+          "rationale": "WebAssembly-sample non-UI support code is very small and reuses the server-sample pattern.",
+          "uncertaintyReasons": []
+        },
+        {
+          "id": "target:work:dotnet-source-backbone:835ac5c5b66a0f178324:review-0001",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027src/KristofferStrube.Blazor.FileSystemAccess/KristofferStrube.Blazor.FileSystemAccess.csproj\u0027 (library) (review target 1 of 4)",
+          "scope": "src/KristofferStrube.Blazor.FileSystemAccess/KristofferStrube.Blazor.FileSystemAccess.csproj",
+          "sourceWorkItemIds": [
+            "work:dotnet-source-backbone:835ac5c5b66a0f178324:part-0001",
+            "work:dotnet-source-backbone:835ac5c5b66a0f178324:part-0002"
+          ],
+          "evidenceIds": [
+            "dotnet:source-structure:src/KristofferStrube.Blazor.FileSystemAccess/KristofferStrube.Blazor.FileSystemAccess.csproj"
+          ],
+          "hours": {
+            "low": 4,
+            "expected": 6.25,
+            "high": 9.5
+          },
+          "rationale": "Roughly 745 maintained library lines wrap picker calls, JSON options and union values, permission operations, service registration, and in-process variants across a public API.",
+          "uncertaintyReasons": [
+            "The wrapper depends on adjacent browser-handle abstractions whose behavior is represented through external package contracts."
+          ]
+        },
+        {
+          "id": "target:work:dotnet-source-backbone:835ac5c5b66a0f178324:review-0002",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027src/KristofferStrube.Blazor.FileSystemAccess/KristofferStrube.Blazor.FileSystemAccess.csproj\u0027 (library) (review target 2 of 4)",
+          "scope": "src/KristofferStrube.Blazor.FileSystemAccess/KristofferStrube.Blazor.FileSystemAccess.csproj",
+          "sourceWorkItemIds": [
+            "work:dotnet-source-backbone:835ac5c5b66a0f178324:part-0003",
+            "work:dotnet-source-backbone:835ac5c5b66a0f178324:part-0004"
+          ],
+          "evidenceIds": [
+            "dotnet:source-structure:src/KristofferStrube.Blazor.FileSystemAccess/KristofferStrube.Blazor.FileSystemAccess.csproj"
+          ],
+          "hours": {
+            "low": 4,
+            "expected": 6.25,
+            "high": 9.5
+          },
+          "rationale": "Roughly 745 maintained library lines wrap picker calls, JSON options and union values, permission operations, service registration, and in-process variants across a public API.",
+          "uncertaintyReasons": [
+            "The wrapper depends on adjacent browser-handle abstractions whose behavior is represented through external package contracts."
+          ]
+        },
+        {
+          "id": "target:work:dotnet-source-backbone:835ac5c5b66a0f178324:review-0003",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027src/KristofferStrube.Blazor.FileSystemAccess/KristofferStrube.Blazor.FileSystemAccess.csproj\u0027 (library) (review target 3 of 4)",
+          "scope": "src/KristofferStrube.Blazor.FileSystemAccess/KristofferStrube.Blazor.FileSystemAccess.csproj",
+          "sourceWorkItemIds": [
+            "work:dotnet-source-backbone:835ac5c5b66a0f178324:part-0005",
+            "work:dotnet-source-backbone:835ac5c5b66a0f178324:part-0006"
+          ],
+          "evidenceIds": [
+            "dotnet:source-structure:src/KristofferStrube.Blazor.FileSystemAccess/KristofferStrube.Blazor.FileSystemAccess.csproj"
+          ],
+          "hours": {
+            "low": 4,
+            "expected": 6.25,
+            "high": 9.5
+          },
+          "rationale": "Roughly 745 maintained library lines wrap picker calls, JSON options and union values, permission operations, service registration, and in-process variants across a public API.",
+          "uncertaintyReasons": [
+            "The wrapper depends on adjacent browser-handle abstractions whose behavior is represented through external package contracts."
+          ]
+        },
+        {
+          "id": "target:work:dotnet-source-backbone:835ac5c5b66a0f178324:review-0004",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027src/KristofferStrube.Blazor.FileSystemAccess/KristofferStrube.Blazor.FileSystemAccess.csproj\u0027 (library) (review target 4 of 4)",
+          "scope": "src/KristofferStrube.Blazor.FileSystemAccess/KristofferStrube.Blazor.FileSystemAccess.csproj",
+          "sourceWorkItemIds": [
+            "work:dotnet-source-backbone:835ac5c5b66a0f178324:part-0007",
+            "work:dotnet-source-backbone:835ac5c5b66a0f178324:part-0008"
+          ],
+          "evidenceIds": [
+            "dotnet:source-structure:src/KristofferStrube.Blazor.FileSystemAccess/KristofferStrube.Blazor.FileSystemAccess.csproj"
+          ],
+          "hours": {
+            "low": 4,
+            "expected": 6.25,
+            "high": 9.5
+          },
+          "rationale": "Roughly 745 maintained library lines wrap picker calls, JSON options and union values, permission operations, service registration, and in-process variants across a public API.",
+          "uncertaintyReasons": [
+            "The wrapper depends on adjacent browser-handle abstractions whose behavior is represented through external package contracts."
+          ]
+        },
+        {
+          "id": "target:work:external-integration:19f077ecb559f35bbcdd:review-0001",
+          "category": "external-integrations-and-protocols",
+          "title": "Integrate external services and protocols for \u0027samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/KristofferStrube.Blazor.FileSystemAccess.ServerExample.csproj\u0027 (web)",
+          "scope": "samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/KristofferStrube.Blazor.FileSystemAccess.ServerExample.csproj",
+          "sourceWorkItemIds": [
+            "work:external-integration:19f077ecb559f35bbcdd:part-0001"
+          ],
+          "evidenceIds": [
+            "dotnet:integration:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Program.cs"
+          ],
+          "hours": {
+            "low": 1.25,
+            "expected": 2,
+            "high": 3
+          },
+          "rationale": "The server sample integrates browser APIs and demonstration packages through a conventional Blazor interop boundary.",
+          "uncertaintyReasons": []
+        },
+        {
+          "id": "target:work:external-integration:826cc339cf9ec09173ce:review-0001",
+          "category": "external-integrations-and-protocols",
+          "title": "Integrate external services and protocols for \u0027samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/KristofferStrube.Blazor.FileSystemAccess.WasmExample.csproj\u0027 (library)",
+          "scope": "samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/KristofferStrube.Blazor.FileSystemAccess.WasmExample.csproj",
+          "sourceWorkItemIds": [
+            "work:external-integration:826cc339cf9ec09173ce:part-0001"
+          ],
+          "evidenceIds": [
+            "dotnet:integration:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/Program.cs"
+          ],
+          "hours": {
+            "low": 1.25,
+            "expected": 2,
+            "high": 3
+          },
+          "rationale": "The WebAssembly sample reuses the same integrations with a different host runtime.",
+          "uncertaintyReasons": []
+        },
+        {
+          "id": "target:work:javascript-source-backbone:2f5795bda39a0bae4a33:review-0001",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027.\u0027 (component)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0001"
+          ],
+          "evidenceIds": [
+            "javascript:source-structure:."
+          ],
+          "hours": {
+            "low": 0.75,
+            "expected": 1,
+            "high": 1.25
+          },
+          "rationale": "The maintained JavaScript module is a very small dynamic-import and browser-API bridge.",
+          "uncertaintyReasons": []
+        },
+        {
+          "id": "target:work:manual-validation:7e123cdce40dc8296ddd:review-0001",
+          "category": "manual-validation-debugging-and-hardening",
+          "title": "Manually validate, debug, and harden \u0027samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/KristofferStrube.Blazor.FileSystemAccess.ServerExample.csproj\u0027 (web)",
+          "scope": "samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/KristofferStrube.Blazor.FileSystemAccess.ServerExample.csproj",
+          "sourceWorkItemIds": [
+            "work:manual-validation:7e123cdce40dc8296ddd:part-0001",
+            "work:manual-validation:7e123cdce40dc8296ddd:part-0002",
+            "work:manual-validation:7e123cdce40dc8296ddd:part-0003"
+          ],
+          "evidenceIds": [
+            "dotnet:entry-point:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Program.cs",
+            "dotnet:integration:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Program.cs",
+            "dotnet:project-reference:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/KristofferStrube.Blazor.FileSystemAccess.ServerExample.csproj:src/KristofferStrube.Blazor.FileSystemAccess/KristofferStrube.Blazor.FileSystemAccess.csproj",
+            "dotnet:project:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/KristofferStrube.Blazor.FileSystemAccess.ServerExample.csproj",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/App.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/AppendOnly.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/Error.cshtml",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/Index.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/IndexedDB.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/InputFileExample.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/MemeGenerator.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/MultipleFiles.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/OpenDirectory.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/OpenFile.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/SaveFile.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/TreeMapChart.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/ViewPDF.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/ViewZipFile.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/_Host.cshtml",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Shared/MainLayout.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Shared/NavMenu.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Shared/TreemapChart.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/_Imports.razor",
+            "dotnet:ui:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/Error.cshtml.cs"
+          ],
+          "hours": {
+            "low": 3.25,
+            "expected": 6,
+            "high": 10.5
+          },
+          "rationale": "The server sample needs manual browser validation across picker permissions, file workflows, rendering examples, and failure paths.",
+          "uncertaintyReasons": [
+            "Browser permission state and feature support vary by environment."
+          ]
+        },
+        {
+          "id": "target:work:manual-validation:930ec6a04686f80da0f3:review-0001",
+          "category": "manual-validation-debugging-and-hardening",
+          "title": "Manually validate, debug, and harden \u0027samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/KristofferStrube.Blazor.FileSystemAccess.WasmExample.csproj\u0027 (library)",
+          "scope": "samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/KristofferStrube.Blazor.FileSystemAccess.WasmExample.csproj",
+          "sourceWorkItemIds": [
+            "work:manual-validation:930ec6a04686f80da0f3:part-0001",
+            "work:manual-validation:930ec6a04686f80da0f3:part-0002"
+          ],
+          "evidenceIds": [
+            "dotnet:entry-point:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/Program.cs",
+            "dotnet:integration:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/Program.cs",
+            "dotnet:project-reference:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/KristofferStrube.Blazor.FileSystemAccess.WasmExample.csproj:src/KristofferStrube.Blazor.FileSystemAccess/KristofferStrube.Blazor.FileSystemAccess.csproj",
+            "dotnet:project:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/KristofferStrube.Blazor.FileSystemAccess.WasmExample.csproj",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/App.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/Pages/AppendOnly.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/Pages/Index.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/Pages/IndexedDB.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/Pages/InputFileExample.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/Pages/MemeGenerator.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/Pages/MultipleFiles.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/Pages/OpenDirectory.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/Pages/OpenFile.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/Pages/SaveFile.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/Pages/Status.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/Pages/TreeMapChart.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/Pages/ViewPDF.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/Pages/ViewZipFile.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/Shared/MainLayout.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/Shared/NavMenu.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/Shared/TreemapChart.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/_Imports.razor"
+          ],
+          "hours": {
+            "low": 2,
+            "expected": 3,
+            "high": 4.5
+          },
+          "rationale": "The WebAssembly host needs a smaller validation pass focused on hosting-specific behavior because most workflows duplicate the server sample.",
+          "uncertaintyReasons": []
+        },
+        {
+          "id": "target:work:manual-validation:a0df1126ba2f8dbcb19b:review-0001",
+          "category": "manual-validation-debugging-and-hardening",
+          "title": "Manually validate, debug, and harden \u0027.\u0027 (component)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:manual-validation:a0df1126ba2f8dbcb19b:part-0001"
+          ],
+          "evidenceIds": [
+            "javascript:source-structure:.",
+            "javascript:ui-assets:."
+          ],
+          "hours": {
+            "low": 0.75,
+            "expected": 1,
+            "high": 1.25
+          },
+          "rationale": "A brief repository-level browser compatibility smoke pass is represented.",
+          "uncertaintyReasons": []
+        },
+        {
+          "id": "target:work:manual-validation:d5c7dfa886f9e4271416:review-0001",
+          "category": "manual-validation-debugging-and-hardening",
+          "title": "Manually validate, debug, and harden \u0027src/KristofferStrube.Blazor.FileSystemAccess/KristofferStrube.Blazor.FileSystemAccess.csproj\u0027 (library)",
+          "scope": "src/KristofferStrube.Blazor.FileSystemAccess/KristofferStrube.Blazor.FileSystemAccess.csproj",
+          "sourceWorkItemIds": [
+            "work:manual-validation:d5c7dfa886f9e4271416:part-0001"
+          ],
+          "evidenceIds": [
+            "dotnet:project:src/KristofferStrube.Blazor.FileSystemAccess/KristofferStrube.Blazor.FileSystemAccess.csproj"
+          ],
+          "hours": {
+            "low": 2,
+            "expected": 3,
+            "high": 4.5
+          },
+          "rationale": "The public wrapper API needs focused interop serialization, disposal, permission, and picker-option validation.",
+          "uncertaintyReasons": []
+        },
+        {
+          "id": "target:work:project-setup:a38e303844d20c837048:review-0001",
+          "category": "repository-and-solution-setup",
+          "title": "Set up \u0027samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/KristofferStrube.Blazor.FileSystemAccess.WasmExample.csproj\u0027 (library)",
+          "scope": "samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/KristofferStrube.Blazor.FileSystemAccess.WasmExample.csproj",
+          "sourceWorkItemIds": [
+            "work:project-setup:a38e303844d20c837048:part-0001"
+          ],
+          "evidenceIds": [
+            "dotnet:package:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/KristofferStrube.Blazor.FileSystemAccess.WasmExample.csproj:htmlagilitypack",
+            "dotnet:package:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/KristofferStrube.Blazor.FileSystemAccess.WasmExample.csproj:microsoft.aspnetcore.components.webassembly",
+            "dotnet:package:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/KristofferStrube.Blazor.FileSystemAccess.WasmExample.csproj:microsoft.aspnetcore.components.webassembly.devserver",
+            "dotnet:package:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/KristofferStrube.Blazor.FileSystemAccess.WasmExample.csproj:tg.blazor.indexeddb",
+            "dotnet:project:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/KristofferStrube.Blazor.FileSystemAccess.WasmExample.csproj"
+          ],
+          "hours": {
+            "low": 0.75,
+            "expected": 1,
+            "high": 1.25
+          },
+          "rationale": "The WebAssembly sample uses conventional project setup and largely mirrors the server sample.",
+          "uncertaintyReasons": []
+        },
+        {
+          "id": "target:work:project-setup:a7acab6cf983b01bfde6:review-0001",
+          "category": "repository-and-solution-setup",
+          "title": "Set up \u0027src/KristofferStrube.Blazor.FileSystemAccess/KristofferStrube.Blazor.FileSystemAccess.csproj\u0027 (library)",
+          "scope": "src/KristofferStrube.Blazor.FileSystemAccess/KristofferStrube.Blazor.FileSystemAccess.csproj",
+          "sourceWorkItemIds": [
+            "work:project-setup:a7acab6cf983b01bfde6:part-0001"
+          ],
+          "evidenceIds": [
+            "dotnet:package:src/KristofferStrube.Blazor.FileSystemAccess/KristofferStrube.Blazor.FileSystemAccess.csproj:kristofferstrube.blazor.filesystem",
+            "dotnet:project:src/KristofferStrube.Blazor.FileSystemAccess/KristofferStrube.Blazor.FileSystemAccess.csproj"
+          ],
+          "hours": {
+            "low": 1.25,
+            "expected": 1.5,
+            "high": 2
+          },
+          "rationale": "The Razor class library setup includes package metadata, JavaScript assets, and framework/package references.",
+          "uncertaintyReasons": []
+        },
+        {
+          "id": "target:work:project-setup:e56be8fd4646c76f7cdd:review-0001",
+          "category": "repository-and-solution-setup",
+          "title": "Set up \u0027.\u0027 (component)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:project-setup:e56be8fd4646c76f7cdd:part-0001"
+          ],
+          "evidenceIds": [
+            "javascript:source-structure:."
+          ],
+          "hours": {
+            "low": 0.5,
+            "expected": 0.5,
+            "high": 0.75
+          },
+          "rationale": "Repository-root setup beyond the solution and project-specific work is minimal.",
+          "uncertaintyReasons": []
+        },
+        {
+          "id": "target:work:project-setup:fecf9863f34ef9765ca3:review-0001",
+          "category": "repository-and-solution-setup",
+          "title": "Set up \u0027samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/KristofferStrube.Blazor.FileSystemAccess.ServerExample.csproj\u0027 (web)",
+          "scope": "samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/KristofferStrube.Blazor.FileSystemAccess.ServerExample.csproj",
+          "sourceWorkItemIds": [
+            "work:project-setup:fecf9863f34ef9765ca3:part-0001"
+          ],
+          "evidenceIds": [
+            "dotnet:package:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/KristofferStrube.Blazor.FileSystemAccess.ServerExample.csproj:htmlagilitypack",
+            "dotnet:package:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/KristofferStrube.Blazor.FileSystemAccess.ServerExample.csproj:tg.blazor.indexeddb",
+            "dotnet:project:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/KristofferStrube.Blazor.FileSystemAccess.ServerExample.csproj"
+          ],
+          "hours": {
+            "low": 0.75,
+            "expected": 1,
+            "high": 1.25
+          },
+          "rationale": "The server-hosted Blazor sample uses conventional project setup.",
+          "uncertaintyReasons": []
+        },
+        {
+          "id": "target:work:self-review:e943a6db2e8c464b145a:review-0001",
+          "category": "self-review-and-system-integration",
+          "title": "Self-review and integrate the completed system",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:self-review:e943a6db2e8c464b145a:part-0001"
+          ],
+          "evidenceIds": [
+            "dotnet:integration:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Program.cs",
+            "dotnet:integration:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/Program.cs",
+            "dotnet:project-reference:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/KristofferStrube.Blazor.FileSystemAccess.ServerExample.csproj:src/KristofferStrube.Blazor.FileSystemAccess/KristofferStrube.Blazor.FileSystemAccess.csproj",
+            "dotnet:project-reference:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/KristofferStrube.Blazor.FileSystemAccess.WasmExample.csproj:src/KristofferStrube.Blazor.FileSystemAccess/KristofferStrube.Blazor.FileSystemAccess.csproj",
+            "dotnet:project:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/KristofferStrube.Blazor.FileSystemAccess.ServerExample.csproj",
+            "dotnet:project:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/KristofferStrube.Blazor.FileSystemAccess.WasmExample.csproj",
+            "dotnet:project:src/KristofferStrube.Blazor.FileSystemAccess/KristofferStrube.Blazor.FileSystemAccess.csproj",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/App.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/AppendOnly.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/Error.cshtml",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/Index.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/IndexedDB.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/InputFileExample.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/MemeGenerator.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/MultipleFiles.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/OpenDirectory.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/OpenFile.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/SaveFile.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/TreeMapChart.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/ViewPDF.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/ViewZipFile.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/_Host.cshtml",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Shared/MainLayout.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Shared/NavMenu.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Shared/TreemapChart.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/_Imports.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/App.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/Pages/AppendOnly.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/Pages/Index.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/Pages/IndexedDB.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/Pages/InputFileExample.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/Pages/MemeGenerator.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/Pages/MultipleFiles.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/Pages/OpenDirectory.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/Pages/OpenFile.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/Pages/SaveFile.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/Pages/Status.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/Pages/TreeMapChart.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/Pages/ViewPDF.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/Pages/ViewZipFile.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/Shared/MainLayout.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/Shared/NavMenu.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/Shared/TreemapChart.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/_Imports.razor",
+            "dotnet:repository",
+            "dotnet:ui:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/Error.cshtml.cs",
+            "inventory:repository",
+            "javascript:source-structure:.",
+            "javascript:ui-assets:."
+          ],
+          "hours": {
+            "low": 2.5,
+            "expected": 4,
+            "high": 6
+          },
+          "rationale": "A browser-interop package with two samples needs a final API, serialization, package, documentation, and cross-host consistency pass.",
+          "uncertaintyReasons": []
+        },
+        {
+          "id": "target:work:solution-coordination:c6246e076bb47f8310ce:review-0001",
+          "category": "repository-and-solution-setup",
+          "title": "Coordinate solution, workspace, and local dependency boundaries",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:solution-coordination:c6246e076bb47f8310ce:part-0001"
+          ],
+          "evidenceIds": [
+            "dotnet:project-reference:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/KristofferStrube.Blazor.FileSystemAccess.ServerExample.csproj:src/KristofferStrube.Blazor.FileSystemAccess/KristofferStrube.Blazor.FileSystemAccess.csproj",
+            "dotnet:project-reference:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/KristofferStrube.Blazor.FileSystemAccess.WasmExample.csproj:src/KristofferStrube.Blazor.FileSystemAccess/KristofferStrube.Blazor.FileSystemAccess.csproj",
+            "dotnet:solution:Blazor.FileSystemAccess.sln"
+          ],
+          "hours": {
+            "low": 1.25,
+            "expected": 1.5,
+            "high": 2
+          },
+          "rationale": "The library and two sample hosts need straightforward solution and project-reference coordination.",
+          "uncertaintyReasons": []
+        },
+        {
+          "id": "target:work:specification-comprehension:49aec33b6a46fb626dad:review-0001",
+          "category": "specification-comprehension-and-domain-learning",
+          "title": "Comprehend the supplied specification and bounded business domain",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:specification-comprehension:49aec33b6a46fb626dad:part-0001"
+          ],
+          "evidenceIds": [
+            "dotnet:integration:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Program.cs",
+            "dotnet:integration:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/Program.cs",
+            "dotnet:project:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/KristofferStrube.Blazor.FileSystemAccess.ServerExample.csproj",
+            "dotnet:project:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/KristofferStrube.Blazor.FileSystemAccess.WasmExample.csproj",
+            "dotnet:project:src/KristofferStrube.Blazor.FileSystemAccess/KristofferStrube.Blazor.FileSystemAccess.csproj",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/App.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/AppendOnly.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/Error.cshtml",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/Index.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/IndexedDB.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/InputFileExample.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/MemeGenerator.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/MultipleFiles.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/OpenDirectory.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/OpenFile.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/SaveFile.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/TreeMapChart.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/ViewPDF.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/ViewZipFile.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/_Host.cshtml",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Shared/MainLayout.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Shared/NavMenu.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Shared/TreemapChart.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/_Imports.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/App.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/Pages/AppendOnly.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/Pages/Index.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/Pages/IndexedDB.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/Pages/InputFileExample.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/Pages/MemeGenerator.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/Pages/MultipleFiles.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/Pages/OpenDirectory.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/Pages/OpenFile.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/Pages/SaveFile.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/Pages/Status.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/Pages/TreeMapChart.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/Pages/ViewPDF.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/Pages/ViewZipFile.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/Shared/MainLayout.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/Shared/NavMenu.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/Shared/TreemapChart.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/_Imports.razor",
+            "dotnet:repository",
+            "dotnet:ui:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/Error.cshtml.cs",
+            "inventory:repository",
+            "javascript:source-structure:.",
+            "javascript:ui-assets:."
+          ],
+          "hours": {
+            "low": 2,
+            "expected": 3,
+            "high": 4.5
+          },
+          "rationale": "The browser File System Access API, Blazor interop constraints, and server-versus-WASM hosting differences require bounded domain study.",
+          "uncertaintyReasons": []
+        },
+        {
+          "id": "target:work:ui-surface:2bf4846449f9ac45aed2:review-0001",
+          "category": "ui-implementation-and-represented-ux-decisions",
+          "title": "Implement represented UI and UX behavior for \u0027samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/KristofferStrube.Blazor.FileSystemAccess.ServerExample.csproj\u0027 (web) (review target 1 of 5)",
+          "scope": "samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/KristofferStrube.Blazor.FileSystemAccess.ServerExample.csproj",
+          "sourceWorkItemIds": [
+            "work:ui-surface:2bf4846449f9ac45aed2:part-0001",
+            "work:ui-surface:2bf4846449f9ac45aed2:part-0002",
+            "work:ui-surface:2bf4846449f9ac45aed2:part-0003",
+            "work:ui-surface:2bf4846449f9ac45aed2:part-0004"
+          ],
+          "evidenceIds": [
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/App.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/AppendOnly.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/Error.cshtml",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/Index.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/IndexedDB.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/InputFileExample.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/MemeGenerator.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/MultipleFiles.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/OpenDirectory.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/OpenFile.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/SaveFile.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/TreeMapChart.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/ViewPDF.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/ViewZipFile.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/_Host.cshtml",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Shared/MainLayout.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Shared/NavMenu.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Shared/TreemapChart.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/_Imports.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/Pages/InputFileExample.razor",
+            "dotnet:ui:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/Error.cshtml.cs"
+          ],
+          "hours": {
+            "low": 4,
+            "expected": 6,
+            "high": 9
+          },
+          "rationale": "The server sample demonstrates open/save/directory pickers, multiple files, append-only access, IndexedDB, PDF/ZIP viewing, meme generation, and a treemap; vendor styling is excluded.",
+          "uncertaintyReasons": [
+            "Browser support and third-party visualization/archive behavior increase example-integration uncertainty."
+          ]
+        },
+        {
+          "id": "target:work:ui-surface:2bf4846449f9ac45aed2:review-0002",
+          "category": "ui-implementation-and-represented-ux-decisions",
+          "title": "Implement represented UI and UX behavior for \u0027samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/KristofferStrube.Blazor.FileSystemAccess.ServerExample.csproj\u0027 (web) (review target 2 of 5)",
+          "scope": "samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/KristofferStrube.Blazor.FileSystemAccess.ServerExample.csproj",
+          "sourceWorkItemIds": [
+            "work:ui-surface:2bf4846449f9ac45aed2:part-0005",
+            "work:ui-surface:2bf4846449f9ac45aed2:part-0006",
+            "work:ui-surface:2bf4846449f9ac45aed2:part-0007"
+          ],
+          "evidenceIds": [
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/App.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/AppendOnly.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/Error.cshtml",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/Index.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/IndexedDB.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/InputFileExample.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/MemeGenerator.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/MultipleFiles.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/OpenDirectory.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/OpenFile.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/SaveFile.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/TreeMapChart.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/ViewPDF.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/ViewZipFile.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/_Host.cshtml",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Shared/MainLayout.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Shared/NavMenu.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Shared/TreemapChart.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/_Imports.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/Pages/InputFileExample.razor",
+            "dotnet:ui:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/Error.cshtml.cs"
+          ],
+          "hours": {
+            "low": 4,
+            "expected": 6,
+            "high": 9
+          },
+          "rationale": "The server sample demonstrates open/save/directory pickers, multiple files, append-only access, IndexedDB, PDF/ZIP viewing, meme generation, and a treemap; vendor styling is excluded.",
+          "uncertaintyReasons": [
+            "Browser support and third-party visualization/archive behavior increase example-integration uncertainty."
+          ]
+        },
+        {
+          "id": "target:work:ui-surface:2bf4846449f9ac45aed2:review-0003",
+          "category": "ui-implementation-and-represented-ux-decisions",
+          "title": "Implement represented UI and UX behavior for \u0027samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/KristofferStrube.Blazor.FileSystemAccess.ServerExample.csproj\u0027 (web) (review target 3 of 5)",
+          "scope": "samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/KristofferStrube.Blazor.FileSystemAccess.ServerExample.csproj",
+          "sourceWorkItemIds": [
+            "work:ui-surface:2bf4846449f9ac45aed2:part-0008",
+            "work:ui-surface:2bf4846449f9ac45aed2:part-0009",
+            "work:ui-surface:2bf4846449f9ac45aed2:part-0010"
+          ],
+          "evidenceIds": [
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/App.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/AppendOnly.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/Error.cshtml",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/Index.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/IndexedDB.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/InputFileExample.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/MemeGenerator.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/MultipleFiles.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/OpenDirectory.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/OpenFile.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/SaveFile.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/TreeMapChart.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/ViewPDF.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/ViewZipFile.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/_Host.cshtml",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Shared/MainLayout.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Shared/NavMenu.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Shared/TreemapChart.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/_Imports.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/Pages/InputFileExample.razor",
+            "dotnet:ui:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/Error.cshtml.cs"
+          ],
+          "hours": {
+            "low": 4,
+            "expected": 6,
+            "high": 9
+          },
+          "rationale": "The server sample demonstrates open/save/directory pickers, multiple files, append-only access, IndexedDB, PDF/ZIP viewing, meme generation, and a treemap; vendor styling is excluded.",
+          "uncertaintyReasons": [
+            "Browser support and third-party visualization/archive behavior increase example-integration uncertainty."
+          ]
+        },
+        {
+          "id": "target:work:ui-surface:2bf4846449f9ac45aed2:review-0004",
+          "category": "ui-implementation-and-represented-ux-decisions",
+          "title": "Implement represented UI and UX behavior for \u0027samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/KristofferStrube.Blazor.FileSystemAccess.ServerExample.csproj\u0027 (web) (review target 4 of 5)",
+          "scope": "samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/KristofferStrube.Blazor.FileSystemAccess.ServerExample.csproj",
+          "sourceWorkItemIds": [
+            "work:ui-surface:2bf4846449f9ac45aed2:part-0011",
+            "work:ui-surface:2bf4846449f9ac45aed2:part-0012",
+            "work:ui-surface:2bf4846449f9ac45aed2:part-0013"
+          ],
+          "evidenceIds": [
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/App.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/AppendOnly.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/Error.cshtml",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/Index.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/IndexedDB.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/InputFileExample.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/MemeGenerator.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/MultipleFiles.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/OpenDirectory.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/OpenFile.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/SaveFile.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/TreeMapChart.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/ViewPDF.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/ViewZipFile.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/_Host.cshtml",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Shared/MainLayout.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Shared/NavMenu.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Shared/TreemapChart.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/_Imports.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/Pages/InputFileExample.razor",
+            "dotnet:ui:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/Error.cshtml.cs"
+          ],
+          "hours": {
+            "low": 4,
+            "expected": 6,
+            "high": 9
+          },
+          "rationale": "The server sample demonstrates open/save/directory pickers, multiple files, append-only access, IndexedDB, PDF/ZIP viewing, meme generation, and a treemap; vendor styling is excluded.",
+          "uncertaintyReasons": [
+            "Browser support and third-party visualization/archive behavior increase example-integration uncertainty."
+          ]
+        },
+        {
+          "id": "target:work:ui-surface:2bf4846449f9ac45aed2:review-0005",
+          "category": "ui-implementation-and-represented-ux-decisions",
+          "title": "Implement represented UI and UX behavior for \u0027samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/KristofferStrube.Blazor.FileSystemAccess.ServerExample.csproj\u0027 (web) (review target 5 of 5)",
+          "scope": "samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/KristofferStrube.Blazor.FileSystemAccess.ServerExample.csproj",
+          "sourceWorkItemIds": [
+            "work:ui-surface:2bf4846449f9ac45aed2:part-0014",
+            "work:ui-surface:2bf4846449f9ac45aed2:part-0015",
+            "work:ui-surface:2bf4846449f9ac45aed2:part-0016"
+          ],
+          "evidenceIds": [
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/App.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/AppendOnly.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/Error.cshtml",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/Index.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/IndexedDB.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/InputFileExample.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/MemeGenerator.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/MultipleFiles.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/OpenDirectory.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/OpenFile.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/SaveFile.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/TreeMapChart.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/ViewPDF.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/ViewZipFile.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/_Host.cshtml",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Shared/MainLayout.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Shared/NavMenu.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Shared/TreemapChart.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/_Imports.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/Pages/InputFileExample.razor",
+            "dotnet:ui:samples/KristofferStrube.Blazor.FileSystemAccess.ServerExample/Pages/Error.cshtml.cs"
+          ],
+          "hours": {
+            "low": 4,
+            "expected": 6,
+            "high": 9
+          },
+          "rationale": "The server sample demonstrates open/save/directory pickers, multiple files, append-only access, IndexedDB, PDF/ZIP viewing, meme generation, and a treemap; vendor styling is excluded.",
+          "uncertaintyReasons": [
+            "Browser support and third-party visualization/archive behavior increase example-integration uncertainty."
+          ]
+        },
+        {
+          "id": "target:work:ui-surface:7cf26ee0b2c020a59db3:review-0001",
+          "category": "ui-implementation-and-represented-ux-decisions",
+          "title": "Implement represented UI and UX behavior for \u0027samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/KristofferStrube.Blazor.FileSystemAccess.WasmExample.csproj\u0027 (library) (review target 1 of 2)",
+          "scope": "samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/KristofferStrube.Blazor.FileSystemAccess.WasmExample.csproj",
+          "sourceWorkItemIds": [
+            "work:ui-surface:7cf26ee0b2c020a59db3:part-0001",
+            "work:ui-surface:7cf26ee0b2c020a59db3:part-0002",
+            "work:ui-surface:7cf26ee0b2c020a59db3:part-0003",
+            "work:ui-surface:7cf26ee0b2c020a59db3:part-0004",
+            "work:ui-surface:7cf26ee0b2c020a59db3:part-0005",
+            "work:ui-surface:7cf26ee0b2c020a59db3:part-0006",
+            "work:ui-surface:7cf26ee0b2c020a59db3:part-0007"
+          ],
+          "evidenceIds": [
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/App.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/Pages/AppendOnly.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/Pages/Index.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/Pages/IndexedDB.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/Pages/MemeGenerator.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/Pages/MultipleFiles.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/Pages/OpenDirectory.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/Pages/OpenFile.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/Pages/SaveFile.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/Pages/Status.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/Pages/TreeMapChart.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/Pages/ViewPDF.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/Pages/ViewZipFile.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/Shared/MainLayout.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/Shared/NavMenu.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/Shared/TreemapChart.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/_Imports.razor"
+          ],
+          "hours": {
+            "low": 2.5,
+            "expected": 4,
+            "high": 6
+          },
+          "rationale": "The WebAssembly pages substantially duplicate the server sample; the label retains only hosting-specific adaptation and its small unique status behavior rather than rewarding duplicated UI volume.",
+          "uncertaintyReasons": [
+            "Static evidence cannot perfectly separate shared page copies from hosting-specific edits."
+          ]
+        },
+        {
+          "id": "target:work:ui-surface:7cf26ee0b2c020a59db3:review-0002",
+          "category": "ui-implementation-and-represented-ux-decisions",
+          "title": "Implement represented UI and UX behavior for \u0027samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/KristofferStrube.Blazor.FileSystemAccess.WasmExample.csproj\u0027 (library) (review target 2 of 2)",
+          "scope": "samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/KristofferStrube.Blazor.FileSystemAccess.WasmExample.csproj",
+          "sourceWorkItemIds": [
+            "work:ui-surface:7cf26ee0b2c020a59db3:part-0008",
+            "work:ui-surface:7cf26ee0b2c020a59db3:part-0009",
+            "work:ui-surface:7cf26ee0b2c020a59db3:part-0010",
+            "work:ui-surface:7cf26ee0b2c020a59db3:part-0011",
+            "work:ui-surface:7cf26ee0b2c020a59db3:part-0012",
+            "work:ui-surface:7cf26ee0b2c020a59db3:part-0013"
+          ],
+          "evidenceIds": [
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/App.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/Pages/AppendOnly.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/Pages/Index.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/Pages/IndexedDB.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/Pages/MemeGenerator.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/Pages/MultipleFiles.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/Pages/OpenDirectory.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/Pages/OpenFile.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/Pages/SaveFile.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/Pages/Status.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/Pages/TreeMapChart.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/Pages/ViewPDF.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/Pages/ViewZipFile.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/Shared/MainLayout.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/Shared/NavMenu.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/Shared/TreemapChart.razor",
+            "dotnet:razor:samples/KristofferStrube.Blazor.FileSystemAccess.WasmExample/_Imports.razor"
+          ],
+          "hours": {
+            "low": 2.5,
+            "expected": 4,
+            "high": 6
+          },
+          "rationale": "The WebAssembly pages substantially duplicate the server sample; the label retains only hosting-specific adaptation and its small unique status behavior rather than rewarding duplicated UI volume.",
+          "uncertaintyReasons": [
+            "Static evidence cannot perfectly separate shared page copies from hosting-specific edits."
+          ]
+        },
+        {
+          "id": "target:work:ui-surface:918438cc13339fb696f4:review-0001",
+          "category": "ui-implementation-and-represented-ux-decisions",
+          "title": "Implement represented UI and UX behavior for \u0027.\u0027 (component)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:ui-surface:918438cc13339fb696f4:part-0001",
+            "work:ui-surface:918438cc13339fb696f4:part-0002"
+          ],
+          "evidenceIds": [
+            "javascript:ui-assets:."
+          ],
+          "hours": {
+            "low": 2.25,
+            "expected": 3,
+            "high": 4
+          },
+          "rationale": "Repository-level Razor/component surface outside the host projects is small.",
+          "uncertaintyReasons": []
+        }
+      ]
+    },
+    {
+      "id": "record:sindresorhus-p-queue:implementation",
+      "repository": {
+        "id": "repository:github.com/sindresorhus/p-queue",
+        "name": "sindresorhus/p-queue",
+        "sourceDigest": "sha256:3073a4209d8325e0d0692a519caa6992f8851ba96908a1295c56e26b2a2e6edf"
+      },
+      "profile": "implementation",
+      "baselineId": "senior-contractor-2026-no-ai",
+      "partition": "validation",
+      "sourceEstimatorVersion": "seed-rules/0.2.0",
+      "sourceEstimateDigest": "sha256:d4d819f788f89a24e190824c3fdc45f60354a7713e1046af825c3871faeb1fe3",
+      "source": {
+        "dataClassification": "public-redistributable",
+        "sourceReference": "https://github.com/sindresorhus/p-queue",
+        "revision": "180ab9e25cd10b6f548767d7176076b50d25e188",
+        "licenseExpression": "MIT",
+        "redistributionAllowed": true,
+        "notes": "Reviewed from the fixed GitHub source archive. Commit tree e8e63896c7368b45ead03441d007c76f2b2591e5; license blob fa7ceba3eb4a9657a9db7f3ffca4e4e97a9019de."
+      },
+      "review": {
+        "status": "teacher-estimate",
+        "completedOn": "2026-08-06",
+        "reviewers": [
+          {
+            "id": "teacher:openai-codex-gpt-5-2026-08",
+            "kind": "host-ai",
+            "role": "teacher",
+            "modelId": "openai-codex",
+            "modelVersion": "gpt-5"
+          }
+        ],
+        "notes": "Single host-AI teacher review; no independent correction or adjudication. Candidate values were visible as reference, but capability totals were re-estimated after source and evidence inspection. Low/high bounds use a documented risk-tier policy."
+      },
+      "targets": [
+        {
+          "id": "target:work:architecture-design:1301c834bf26665d0695:review-0001",
+          "category": "architecture-and-technical-design",
+          "title": "Design the technical structure of \u0027.\u0027 (library)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:architecture-design:1301c834bf26665d0695:part-0001"
+          ],
+          "evidenceIds": [
+            "javascript:background:bench.ts",
+            "javascript:background:source/index.ts",
+            "javascript:background:source/priority-queue.ts",
+            "javascript:background:test/priority-queue.ts",
+            "javascript:package:package.json"
+          ],
+          "hours": {
+            "low": 2.75,
+            "expected": 5,
+            "high": 8.75
+          },
+          "rationale": "Queue abstraction, priority storage, scheduler state, timers, promises, and typed public options need deliberate boundaries before implementation.",
+          "uncertaintyReasons": [
+            "Timer and event-ordering invariants are easy to specify incompletely."
+          ]
+        },
+        {
+          "id": "target:work:background-work:b2b0c773b9f5aa6478f5:review-0001",
+          "category": "production-implementation",
+          "title": "Implement background, queue, and handler behavior for \u0027.\u0027 (library) (review target 1 of 3)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:background-work:b2b0c773b9f5aa6478f5:part-0001",
+            "work:background-work:b2b0c773b9f5aa6478f5:part-0002",
+            "work:background-work:b2b0c773b9f5aa6478f5:part-0003"
+          ],
+          "evidenceIds": [
+            "javascript:background:bench.ts",
+            "javascript:background:source/index.ts",
+            "javascript:background:source/priority-queue.ts",
+            "javascript:background:test/priority-queue.ts"
+          ],
+          "hours": {
+            "low": 3.25,
+            "expected": 6,
+            "high": 10.5
+          },
+          "rationale": "Concurrency and interval/strict rate-limit scheduling require careful asynchronous state reasoning beyond routine TypeScript implementation.",
+          "uncertaintyReasons": [
+            "Clock behavior, microtask ordering, and simultaneous capacity transitions drive uncertainty."
+          ]
+        },
+        {
+          "id": "target:work:background-work:b2b0c773b9f5aa6478f5:review-0002",
+          "category": "production-implementation",
+          "title": "Implement background, queue, and handler behavior for \u0027.\u0027 (library) (review target 2 of 3)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:background-work:b2b0c773b9f5aa6478f5:part-0004",
+            "work:background-work:b2b0c773b9f5aa6478f5:part-0005"
+          ],
+          "evidenceIds": [
+            "javascript:background:bench.ts",
+            "javascript:background:source/index.ts",
+            "javascript:background:source/priority-queue.ts",
+            "javascript:background:test/priority-queue.ts"
+          ],
+          "hours": {
+            "low": 3.25,
+            "expected": 6,
+            "high": 10.5
+          },
+          "rationale": "Concurrency and interval/strict rate-limit scheduling require careful asynchronous state reasoning beyond routine TypeScript implementation.",
+          "uncertaintyReasons": [
+            "Clock behavior, microtask ordering, and simultaneous capacity transitions drive uncertainty."
+          ]
+        },
+        {
+          "id": "target:work:background-work:b2b0c773b9f5aa6478f5:review-0003",
+          "category": "production-implementation",
+          "title": "Implement background, queue, and handler behavior for \u0027.\u0027 (library) (review target 3 of 3)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:background-work:b2b0c773b9f5aa6478f5:part-0006",
+            "work:background-work:b2b0c773b9f5aa6478f5:part-0007"
+          ],
+          "evidenceIds": [
+            "javascript:background:bench.ts",
+            "javascript:background:source/index.ts",
+            "javascript:background:source/priority-queue.ts",
+            "javascript:background:test/priority-queue.ts"
+          ],
+          "hours": {
+            "low": 3.25,
+            "expected": 6,
+            "high": 10.5
+          },
+          "rationale": "Concurrency and interval/strict rate-limit scheduling require careful asynchronous state reasoning beyond routine TypeScript implementation.",
+          "uncertaintyReasons": [
+            "Clock behavior, microtask ordering, and simultaneous capacity transitions drive uncertainty."
+          ]
+        },
+        {
+          "id": "target:work:build-tooling:c2c91d07e063088d401a:review-0001",
+          "category": "build-configuration-and-developer-tooling",
+          "title": "Configure build behavior and developer tooling",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:build-tooling:c2c91d07e063088d401a:part-0001"
+          ],
+          "evidenceIds": [
+            "file:.editorconfig",
+            "file:.gitattributes",
+            "file:.gitignore",
+            "file:.npmrc",
+            "file:tsconfig.json",
+            "javascript:configuration:tsconfig.json",
+            "javascript:package:package.json",
+            "javascript:repository"
+          ],
+          "hours": {
+            "low": 3.25,
+            "expected": 5,
+            "high": 7.5
+          },
+          "rationale": "Strict TypeScript, linting, type tests, benchmark entry points, and package scripts require an integrated developer-tooling pass.",
+          "uncertaintyReasons": []
+        },
+        {
+          "id": "target:work:ci-infrastructure:bee22f5b9a094661eb75:review-0001",
+          "category": "ci-cd-and-infrastructure-as-code",
+          "title": "Implement represented CI/CD and infrastructure configuration",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:ci-infrastructure:bee22f5b9a094661eb75:part-0001"
+          ],
+          "evidenceIds": [
+            "ci:repository",
+            "file:.github/workflows/main.yml"
+          ],
+          "hours": {
+            "low": 2,
+            "expected": 2.5,
+            "high": 3.5
+          },
+          "rationale": "The represented CI workflow is focused and conventional for the package.",
+          "uncertaintyReasons": []
+        },
+        {
+          "id": "target:work:documentation:bebbc838ff439c1b4e49:review-0001",
+          "category": "documentation",
+          "title": "Author and verify maintained repository documentation (review target 1 of 2)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:documentation:bebbc838ff439c1b4e49:part-0001"
+          ],
+          "evidenceIds": [
+            "documentation:repository",
+            "file:.github/security.md",
+            "file:license",
+            "file:readme.md"
+          ],
+          "hours": {
+            "low": 4,
+            "expected": 6,
+            "high": 9
+          },
+          "rationale": "The README is a substantial API manual with examples, event semantics, advanced patterns, timeout guidance, and an operational FAQ.",
+          "uncertaintyReasons": []
+        },
+        {
+          "id": "target:work:documentation:bebbc838ff439c1b4e49:review-0002",
+          "category": "documentation",
+          "title": "Author and verify maintained repository documentation (review target 2 of 2)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:documentation:bebbc838ff439c1b4e49:part-0002"
+          ],
+          "evidenceIds": [
+            "documentation:repository",
+            "file:.github/security.md",
+            "file:license",
+            "file:readme.md"
+          ],
+          "hours": {
+            "low": 4,
+            "expected": 6,
+            "high": 9
+          },
+          "rationale": "The README is a substantial API manual with examples, event semantics, advanced patterns, timeout guidance, and an operational FAQ.",
+          "uncertaintyReasons": []
+        },
+        {
+          "id": "target:work:javascript-source-backbone:2f5795bda39a0bae4a33:review-0001",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027.\u0027 (library) (review target 1 of 7)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0001",
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0002",
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0003",
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0004",
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0005",
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0006",
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0007",
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0008",
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0009",
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0010"
+          ],
+          "evidenceIds": [
+            "javascript:source-structure:."
+          ],
+          "hours": {
+            "low": 3.25,
+            "expected": 6,
+            "high": 10.5
+          },
+          "rationale": "About 1,300 maintained source lines implement queue state, priority operations, aborts, timeouts, events, introspection, and public types; token volume alone materially overstates equivalent effort.",
+          "uncertaintyReasons": [
+            "Behavior spans timer, promise, abort-signal, and custom-queue interactions."
+          ]
+        },
+        {
+          "id": "target:work:javascript-source-backbone:2f5795bda39a0bae4a33:review-0002",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027.\u0027 (library) (review target 2 of 7)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0011",
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0012",
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0013",
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0014",
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0015",
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0016",
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0017",
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0018",
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0019",
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0020"
+          ],
+          "evidenceIds": [
+            "javascript:source-structure:."
+          ],
+          "hours": {
+            "low": 3.25,
+            "expected": 6,
+            "high": 10.5
+          },
+          "rationale": "About 1,300 maintained source lines implement queue state, priority operations, aborts, timeouts, events, introspection, and public types; token volume alone materially overstates equivalent effort.",
+          "uncertaintyReasons": [
+            "Behavior spans timer, promise, abort-signal, and custom-queue interactions."
+          ]
+        },
+        {
+          "id": "target:work:javascript-source-backbone:2f5795bda39a0bae4a33:review-0003",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027.\u0027 (library) (review target 3 of 7)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0021",
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0022",
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0023",
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0024",
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0025",
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0026",
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0027",
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0028",
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0029"
+          ],
+          "evidenceIds": [
+            "javascript:source-structure:."
+          ],
+          "hours": {
+            "low": 3.25,
+            "expected": 6,
+            "high": 10.5
+          },
+          "rationale": "About 1,300 maintained source lines implement queue state, priority operations, aborts, timeouts, events, introspection, and public types; token volume alone materially overstates equivalent effort.",
+          "uncertaintyReasons": [
+            "Behavior spans timer, promise, abort-signal, and custom-queue interactions."
+          ]
+        },
+        {
+          "id": "target:work:javascript-source-backbone:2f5795bda39a0bae4a33:review-0004",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027.\u0027 (library) (review target 4 of 7)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0030",
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0031",
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0032",
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0033",
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0034",
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0035",
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0036",
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0037",
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0038"
+          ],
+          "evidenceIds": [
+            "javascript:source-structure:."
+          ],
+          "hours": {
+            "low": 3.25,
+            "expected": 6,
+            "high": 10.5
+          },
+          "rationale": "About 1,300 maintained source lines implement queue state, priority operations, aborts, timeouts, events, introspection, and public types; token volume alone materially overstates equivalent effort.",
+          "uncertaintyReasons": [
+            "Behavior spans timer, promise, abort-signal, and custom-queue interactions."
+          ]
+        },
+        {
+          "id": "target:work:javascript-source-backbone:2f5795bda39a0bae4a33:review-0005",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027.\u0027 (library) (review target 5 of 7)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0039",
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0040",
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0041",
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0042",
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0043",
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0044",
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0045",
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0046",
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0047"
+          ],
+          "evidenceIds": [
+            "javascript:source-structure:."
+          ],
+          "hours": {
+            "low": 3.25,
+            "expected": 6,
+            "high": 10.5
+          },
+          "rationale": "About 1,300 maintained source lines implement queue state, priority operations, aborts, timeouts, events, introspection, and public types; token volume alone materially overstates equivalent effort.",
+          "uncertaintyReasons": [
+            "Behavior spans timer, promise, abort-signal, and custom-queue interactions."
+          ]
+        },
+        {
+          "id": "target:work:javascript-source-backbone:2f5795bda39a0bae4a33:review-0006",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027.\u0027 (library) (review target 6 of 7)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0048",
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0049",
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0050",
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0051",
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0052",
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0053",
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0054",
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0055",
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0056"
+          ],
+          "evidenceIds": [
+            "javascript:source-structure:."
+          ],
+          "hours": {
+            "low": 3.25,
+            "expected": 6,
+            "high": 10.5
+          },
+          "rationale": "About 1,300 maintained source lines implement queue state, priority operations, aborts, timeouts, events, introspection, and public types; token volume alone materially overstates equivalent effort.",
+          "uncertaintyReasons": [
+            "Behavior spans timer, promise, abort-signal, and custom-queue interactions."
+          ]
+        },
+        {
+          "id": "target:work:javascript-source-backbone:2f5795bda39a0bae4a33:review-0007",
+          "category": "production-implementation",
+          "title": "Implement maintained internal logic for \u0027.\u0027 (library) (review target 7 of 7)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0057",
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0058",
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0059",
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0060",
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0061",
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0062",
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0063",
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0064",
+            "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0065"
+          ],
+          "evidenceIds": [
+            "javascript:source-structure:."
+          ],
+          "hours": {
+            "low": 3.25,
+            "expected": 6,
+            "high": 10.5
+          },
+          "rationale": "About 1,300 maintained source lines implement queue state, priority operations, aborts, timeouts, events, introspection, and public types; token volume alone materially overstates equivalent effort.",
+          "uncertaintyReasons": [
+            "Behavior spans timer, promise, abort-signal, and custom-queue interactions."
+          ]
+        },
+        {
+          "id": "target:work:manual-validation:a0df1126ba2f8dbcb19b:review-0001",
+          "category": "manual-validation-debugging-and-hardening",
+          "title": "Manually validate, debug, and harden \u0027.\u0027 (library)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:manual-validation:a0df1126ba2f8dbcb19b:part-0001"
+          ],
+          "evidenceIds": [
+            "javascript:background:bench.ts",
+            "javascript:background:source/index.ts",
+            "javascript:background:source/priority-queue.ts",
+            "javascript:background:test/priority-queue.ts",
+            "javascript:package:package.json"
+          ],
+          "hours": {
+            "low": 3.25,
+            "expected": 6,
+            "high": 10.5
+          },
+          "rationale": "Representative live scheduling, pause/resume, timeout, cancellation, and backpressure scenarios need manual debugging beyond suite creation.",
+          "uncertaintyReasons": []
+        },
+        {
+          "id": "target:work:packaging-release:58eb8ae7efef939a19b5:review-0001",
+          "category": "packaging-deployment-and-release-artifacts",
+          "title": "Prepare represented packages and release surfaces",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:packaging-release:58eb8ae7efef939a19b5:part-0001"
+          ],
+          "evidenceIds": [
+            "javascript:package:package.json"
+          ],
+          "hours": {
+            "low": 1.5,
+            "expected": 2,
+            "high": 2.75
+          },
+          "rationale": "ESM exports, declaration publication, files selection, engines, and package metadata need release verification.",
+          "uncertaintyReasons": []
+        },
+        {
+          "id": "target:work:project-setup:e56be8fd4646c76f7cdd:review-0001",
+          "category": "repository-and-solution-setup",
+          "title": "Set up \u0027.\u0027 (library)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:project-setup:e56be8fd4646c76f7cdd:part-0001"
+          ],
+          "evidenceIds": [
+            "javascript:configuration:tsconfig.json",
+            "javascript:package-reference:package.json:@sindresorhus~tsconfig:development",
+            "javascript:package-reference:package.json:@types~benchmark:development",
+            "javascript:package-reference:package.json:@types~node:development",
+            "javascript:package-reference:package.json:benchmark:development",
+            "javascript:package-reference:package.json:del-cli:development",
+            "javascript:package-reference:package.json:delay:development",
+            "javascript:package-reference:package.json:eventemitter3:runtime",
+            "javascript:package-reference:package.json:in-range:development",
+            "javascript:package-reference:package.json:p-defer:development",
+            "javascript:package-reference:package.json:p-timeout:runtime",
+            "javascript:package-reference:package.json:random-int:development",
+            "javascript:package-reference:package.json:time-span:development",
+            "javascript:package-reference:package.json:tsd:development",
+            "javascript:package-reference:package.json:tsx:development",
+            "javascript:package-reference:package.json:typescript:development",
+            "javascript:package-reference:package.json:xo:development",
+            "javascript:package:package.json"
+          ],
+          "hours": {
+            "low": 1.25,
+            "expected": 1.5,
+            "high": 2
+          },
+          "rationale": "A single modern ESM TypeScript package has compact, conventional setup despite strict metadata.",
+          "uncertaintyReasons": []
+        },
+        {
+          "id": "target:work:self-review:e943a6db2e8c464b145a:review-0001",
+          "category": "self-review-and-system-integration",
+          "title": "Self-review and integrate the completed system",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:self-review:e943a6db2e8c464b145a:part-0001"
+          ],
+          "evidenceIds": [
+            "inventory:repository",
+            "javascript:background:bench.ts",
+            "javascript:background:source/index.ts",
+            "javascript:background:source/priority-queue.ts",
+            "javascript:background:test/priority-queue.ts",
+            "javascript:package:package.json"
+          ],
+          "hours": {
+            "low": 2.75,
+            "expected": 5,
+            "high": 8.75
+          },
+          "rationale": "Concurrency-sensitive public behavior needs a final cross-check of scheduler invariants, API types, tests, and documentation.",
+          "uncertaintyReasons": []
+        },
+        {
+          "id": "target:work:specification-comprehension:49aec33b6a46fb626dad:review-0001",
+          "category": "specification-comprehension-and-domain-learning",
+          "title": "Comprehend the supplied specification and bounded business domain",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:specification-comprehension:49aec33b6a46fb626dad:part-0001"
+          ],
+          "evidenceIds": [
+            "inventory:repository",
+            "javascript:background:bench.ts",
+            "javascript:background:source/index.ts",
+            "javascript:background:source/priority-queue.ts",
+            "javascript:background:test/priority-queue.ts",
+            "javascript:package:package.json"
+          ],
+          "hours": {
+            "low": 2,
+            "expected": 3,
+            "high": 4.5
+          },
+          "rationale": "Concurrency, interval limiting, strict-mode semantics, cancellation, priority, and backpressure form a compact but nontrivial behavioral domain.",
+          "uncertaintyReasons": []
+        },
+        {
+          "id": "target:work:unit-tests:875ec9f8d2f4b23af140:review-0001",
+          "category": "unit-testing",
+          "title": "Create represented unit tests for \u0027.\u0027 (library) (review target 1 of 11)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:unit-tests:875ec9f8d2f4b23af140:part-0001",
+            "work:unit-tests:875ec9f8d2f4b23af140:part-0002"
+          ],
+          "evidenceIds": [
+            "javascript:test:test/advanced.ts",
+            "javascript:test:test/basic.ts",
+            "javascript:test:test/debug.ts",
+            "javascript:test:test/priority-queue.ts",
+            "javascript:test:test/rate-limit.ts",
+            "javascript:test:test/strict.ts",
+            "javascript:test:test/validation.ts"
+          ],
+          "hours": {
+            "low": 3.25,
+            "expected": 6,
+            "high": 10.5
+          },
+          "rationale": "Seven behavior suites of roughly 5,400 lines exercise timing, saturation, aborts, priorities, strict rate limits, validation, and debugging; fixtures repeat, but the edge-case matrix is risk-sensitive.",
+          "uncertaintyReasons": [
+            "The static review assumes the represented timing tests pass and does not calibrate fake-timer runtime differences."
+          ]
+        },
+        {
+          "id": "target:work:unit-tests:875ec9f8d2f4b23af140:review-0002",
+          "category": "unit-testing",
+          "title": "Create represented unit tests for \u0027.\u0027 (library) (review target 2 of 11)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:unit-tests:875ec9f8d2f4b23af140:part-0003"
+          ],
+          "evidenceIds": [
+            "javascript:test:test/advanced.ts",
+            "javascript:test:test/basic.ts",
+            "javascript:test:test/debug.ts",
+            "javascript:test:test/priority-queue.ts",
+            "javascript:test:test/rate-limit.ts",
+            "javascript:test:test/strict.ts",
+            "javascript:test:test/validation.ts"
+          ],
+          "hours": {
+            "low": 3.25,
+            "expected": 6,
+            "high": 10.5
+          },
+          "rationale": "Seven behavior suites of roughly 5,400 lines exercise timing, saturation, aborts, priorities, strict rate limits, validation, and debugging; fixtures repeat, but the edge-case matrix is risk-sensitive.",
+          "uncertaintyReasons": [
+            "The static review assumes the represented timing tests pass and does not calibrate fake-timer runtime differences."
+          ]
+        },
+        {
+          "id": "target:work:unit-tests:875ec9f8d2f4b23af140:review-0003",
+          "category": "unit-testing",
+          "title": "Create represented unit tests for \u0027.\u0027 (library) (review target 3 of 11)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:unit-tests:875ec9f8d2f4b23af140:part-0004"
+          ],
+          "evidenceIds": [
+            "javascript:test:test/advanced.ts",
+            "javascript:test:test/basic.ts",
+            "javascript:test:test/debug.ts",
+            "javascript:test:test/priority-queue.ts",
+            "javascript:test:test/rate-limit.ts",
+            "javascript:test:test/strict.ts",
+            "javascript:test:test/validation.ts"
+          ],
+          "hours": {
+            "low": 3.25,
+            "expected": 6,
+            "high": 10.5
+          },
+          "rationale": "Seven behavior suites of roughly 5,400 lines exercise timing, saturation, aborts, priorities, strict rate limits, validation, and debugging; fixtures repeat, but the edge-case matrix is risk-sensitive.",
+          "uncertaintyReasons": [
+            "The static review assumes the represented timing tests pass and does not calibrate fake-timer runtime differences."
+          ]
+        },
+        {
+          "id": "target:work:unit-tests:875ec9f8d2f4b23af140:review-0004",
+          "category": "unit-testing",
+          "title": "Create represented unit tests for \u0027.\u0027 (library) (review target 4 of 11)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:unit-tests:875ec9f8d2f4b23af140:part-0005"
+          ],
+          "evidenceIds": [
+            "javascript:test:test/advanced.ts",
+            "javascript:test:test/basic.ts",
+            "javascript:test:test/debug.ts",
+            "javascript:test:test/priority-queue.ts",
+            "javascript:test:test/rate-limit.ts",
+            "javascript:test:test/strict.ts",
+            "javascript:test:test/validation.ts"
+          ],
+          "hours": {
+            "low": 3.25,
+            "expected": 6,
+            "high": 10.5
+          },
+          "rationale": "Seven behavior suites of roughly 5,400 lines exercise timing, saturation, aborts, priorities, strict rate limits, validation, and debugging; fixtures repeat, but the edge-case matrix is risk-sensitive.",
+          "uncertaintyReasons": [
+            "The static review assumes the represented timing tests pass and does not calibrate fake-timer runtime differences."
+          ]
+        },
+        {
+          "id": "target:work:unit-tests:875ec9f8d2f4b23af140:review-0005",
+          "category": "unit-testing",
+          "title": "Create represented unit tests for \u0027.\u0027 (library) (review target 5 of 11)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:unit-tests:875ec9f8d2f4b23af140:part-0006"
+          ],
+          "evidenceIds": [
+            "javascript:test:test/advanced.ts",
+            "javascript:test:test/basic.ts",
+            "javascript:test:test/debug.ts",
+            "javascript:test:test/priority-queue.ts",
+            "javascript:test:test/rate-limit.ts",
+            "javascript:test:test/strict.ts",
+            "javascript:test:test/validation.ts"
+          ],
+          "hours": {
+            "low": 3.25,
+            "expected": 6,
+            "high": 10.5
+          },
+          "rationale": "Seven behavior suites of roughly 5,400 lines exercise timing, saturation, aborts, priorities, strict rate limits, validation, and debugging; fixtures repeat, but the edge-case matrix is risk-sensitive.",
+          "uncertaintyReasons": [
+            "The static review assumes the represented timing tests pass and does not calibrate fake-timer runtime differences."
+          ]
+        },
+        {
+          "id": "target:work:unit-tests:875ec9f8d2f4b23af140:review-0006",
+          "category": "unit-testing",
+          "title": "Create represented unit tests for \u0027.\u0027 (library) (review target 6 of 11)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:unit-tests:875ec9f8d2f4b23af140:part-0007"
+          ],
+          "evidenceIds": [
+            "javascript:test:test/advanced.ts",
+            "javascript:test:test/basic.ts",
+            "javascript:test:test/debug.ts",
+            "javascript:test:test/priority-queue.ts",
+            "javascript:test:test/rate-limit.ts",
+            "javascript:test:test/strict.ts",
+            "javascript:test:test/validation.ts"
+          ],
+          "hours": {
+            "low": 3.25,
+            "expected": 6,
+            "high": 10.5
+          },
+          "rationale": "Seven behavior suites of roughly 5,400 lines exercise timing, saturation, aborts, priorities, strict rate limits, validation, and debugging; fixtures repeat, but the edge-case matrix is risk-sensitive.",
+          "uncertaintyReasons": [
+            "The static review assumes the represented timing tests pass and does not calibrate fake-timer runtime differences."
+          ]
+        },
+        {
+          "id": "target:work:unit-tests:875ec9f8d2f4b23af140:review-0007",
+          "category": "unit-testing",
+          "title": "Create represented unit tests for \u0027.\u0027 (library) (review target 7 of 11)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:unit-tests:875ec9f8d2f4b23af140:part-0008"
+          ],
+          "evidenceIds": [
+            "javascript:test:test/advanced.ts",
+            "javascript:test:test/basic.ts",
+            "javascript:test:test/debug.ts",
+            "javascript:test:test/priority-queue.ts",
+            "javascript:test:test/rate-limit.ts",
+            "javascript:test:test/strict.ts",
+            "javascript:test:test/validation.ts"
+          ],
+          "hours": {
+            "low": 3.25,
+            "expected": 6,
+            "high": 10.5
+          },
+          "rationale": "Seven behavior suites of roughly 5,400 lines exercise timing, saturation, aborts, priorities, strict rate limits, validation, and debugging; fixtures repeat, but the edge-case matrix is risk-sensitive.",
+          "uncertaintyReasons": [
+            "The static review assumes the represented timing tests pass and does not calibrate fake-timer runtime differences."
+          ]
+        },
+        {
+          "id": "target:work:unit-tests:875ec9f8d2f4b23af140:review-0008",
+          "category": "unit-testing",
+          "title": "Create represented unit tests for \u0027.\u0027 (library) (review target 8 of 11)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:unit-tests:875ec9f8d2f4b23af140:part-0009"
+          ],
+          "evidenceIds": [
+            "javascript:test:test/advanced.ts",
+            "javascript:test:test/basic.ts",
+            "javascript:test:test/debug.ts",
+            "javascript:test:test/priority-queue.ts",
+            "javascript:test:test/rate-limit.ts",
+            "javascript:test:test/strict.ts",
+            "javascript:test:test/validation.ts"
+          ],
+          "hours": {
+            "low": 3.25,
+            "expected": 6,
+            "high": 10.5
+          },
+          "rationale": "Seven behavior suites of roughly 5,400 lines exercise timing, saturation, aborts, priorities, strict rate limits, validation, and debugging; fixtures repeat, but the edge-case matrix is risk-sensitive.",
+          "uncertaintyReasons": [
+            "The static review assumes the represented timing tests pass and does not calibrate fake-timer runtime differences."
+          ]
+        },
+        {
+          "id": "target:work:unit-tests:875ec9f8d2f4b23af140:review-0009",
+          "category": "unit-testing",
+          "title": "Create represented unit tests for \u0027.\u0027 (library) (review target 9 of 11)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:unit-tests:875ec9f8d2f4b23af140:part-0010"
+          ],
+          "evidenceIds": [
+            "javascript:test:test/advanced.ts",
+            "javascript:test:test/basic.ts",
+            "javascript:test:test/debug.ts",
+            "javascript:test:test/priority-queue.ts",
+            "javascript:test:test/rate-limit.ts",
+            "javascript:test:test/strict.ts",
+            "javascript:test:test/validation.ts"
+          ],
+          "hours": {
+            "low": 3.25,
+            "expected": 6,
+            "high": 10.5
+          },
+          "rationale": "Seven behavior suites of roughly 5,400 lines exercise timing, saturation, aborts, priorities, strict rate limits, validation, and debugging; fixtures repeat, but the edge-case matrix is risk-sensitive.",
+          "uncertaintyReasons": [
+            "The static review assumes the represented timing tests pass and does not calibrate fake-timer runtime differences."
+          ]
+        },
+        {
+          "id": "target:work:unit-tests:875ec9f8d2f4b23af140:review-0010",
+          "category": "unit-testing",
+          "title": "Create represented unit tests for \u0027.\u0027 (library) (review target 10 of 11)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:unit-tests:875ec9f8d2f4b23af140:part-0011"
+          ],
+          "evidenceIds": [
+            "javascript:test:test/advanced.ts",
+            "javascript:test:test/basic.ts",
+            "javascript:test:test/debug.ts",
+            "javascript:test:test/priority-queue.ts",
+            "javascript:test:test/rate-limit.ts",
+            "javascript:test:test/strict.ts",
+            "javascript:test:test/validation.ts"
+          ],
+          "hours": {
+            "low": 3.25,
+            "expected": 6,
+            "high": 10.5
+          },
+          "rationale": "Seven behavior suites of roughly 5,400 lines exercise timing, saturation, aborts, priorities, strict rate limits, validation, and debugging; fixtures repeat, but the edge-case matrix is risk-sensitive.",
+          "uncertaintyReasons": [
+            "The static review assumes the represented timing tests pass and does not calibrate fake-timer runtime differences."
+          ]
+        },
+        {
+          "id": "target:work:unit-tests:875ec9f8d2f4b23af140:review-0011",
+          "category": "unit-testing",
+          "title": "Create represented unit tests for \u0027.\u0027 (library) (review target 11 of 11)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "work:unit-tests:875ec9f8d2f4b23af140:part-0012"
+          ],
+          "evidenceIds": [
+            "javascript:test:test/advanced.ts",
+            "javascript:test:test/basic.ts",
+            "javascript:test:test/debug.ts",
+            "javascript:test:test/priority-queue.ts",
+            "javascript:test:test/rate-limit.ts",
+            "javascript:test:test/strict.ts",
+            "javascript:test:test/validation.ts"
+          ],
+          "hours": {
+            "low": 2.75,
+            "expected": 5,
+            "high": 8.75
+          },
+          "rationale": "Seven behavior suites of roughly 5,400 lines exercise timing, saturation, aborts, priorities, strict rate limits, validation, and debugging; fixtures repeat, but the edge-case matrix is risk-sensitive.",
+          "uncertaintyReasons": [
+            "The static review assumes the represented timing tests pass and does not calibrate fake-timer runtime differences."
+          ]
+        }
+      ]
+    }
+  ]
+}

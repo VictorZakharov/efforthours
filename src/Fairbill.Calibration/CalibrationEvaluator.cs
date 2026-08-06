@@ -1,5 +1,3 @@
-using System.Security.Cryptography;
-using System.Text;
 using Fairbill.Contracts;
 using Fairbill.Contracts.V1;
 
@@ -229,7 +227,7 @@ public static class CalibrationEvaluator
                 Profile = record.Profile,
                 BaselineId = record.BaselineId,
                 CandidateEstimatorVersion = candidate.EstimatorVersion,
-                CandidateEstimateDigest = ComputeDigest(candidate),
+                CandidateEstimateDigest = CalibrationDigest.Compute(candidate),
                 ReviewedTotal = reviewedTotal,
                 CandidateTotal = candidate.TotalEffort,
                 ExpectedAbsoluteErrorHours = Round4(
@@ -420,12 +418,6 @@ public static class CalibrationEvaluator
 
     private static decimal Round4(decimal value) =>
         decimal.Round(value, 4, MidpointRounding.AwayFromZero);
-
-    private static string ComputeDigest(EstimateReport candidate)
-    {
-        byte[] bytes = Encoding.UTF8.GetBytes(ContractJson.SerializeCompact(candidate));
-        return $"sha256:{Convert.ToHexString(SHA256.HashData(bytes)).ToLowerInvariant()}";
-    }
 
     private static EffortRange ZeroRange { get; } = new()
     {

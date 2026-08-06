@@ -148,25 +148,29 @@ semantics.
 
 ## Current project stage
 
-Milestones 1 through 6 and Milestone 7A are complete. The repository has a working common scanner,
-static .NET project/Roslyn analyzer, static JavaScript/TypeScript package and source
-analyzer, mixed-repository evidence pipeline, published v1 schemas, optional
-external scan cache, installable global-tool package, memory-only unit fixtures,
-automated process-level CLI tests, reproducible million-line benchmarks, and a
-granular evidence-to-work-item estimator. The JavaScript path uses Acornima ASTs;
-TypeScript is explicitly token-backed. The bundled `seed-rules/0.2.0` model uses
-transparent marginal priors, exact-content normalization, two explicit profiles,
-approximately four-hour work-item partitions, confidence drivers, and a separate
+Milestones 1 through 6, Milestone 7A, and the Milestone 7B1 public-pilot checkpoint
+are complete. The repository has a working common scanner, static .NET
+project/Roslyn analyzer, static JavaScript/TypeScript package and source analyzer,
+mixed-repository evidence pipeline, published v1 schemas, optional external scan
+cache, installable global-tool package, memory-only unit fixtures, automated
+process-level CLI tests, reproducible million-line benchmarks, and a granular
+evidence-to-work-item estimator. The JavaScript path uses Acornima ASTs; TypeScript
+is explicitly token-backed. The bundled `seed-rules/0.2.0` model uses transparent
+marginal priors, exact-content normalization, two explicit profiles, approximately
+four-hour work-item partitions, confidence drivers, and a separate
 professionalization-gap ledger. It remains explicitly uncalibrated and must not be
 described as production-ready. Milestone 6 adds schema-versioned compact
 projections, capability and evidence explanation, saved-report reprojection, and
 the auditable `us-senior-software-contractor/2026.1` default rate. Its Fairbill
 review projection is 7.4% of compact full JSON in the recorded checkpoint.
-Milestone 7A adds versioned reviewed-label and evaluation contracts, an
+Milestone 7A adds reviewed-label and evaluation contracts, the
 `ehe-work-item/1.0.0` rubric, repository-isolated partitions, deterministic offline
-item/category/total/bias/interval metrics, and `calibration validate/evaluate` CLI
-commands. The seed model is still uncalibrated. A diverse licensed corpus and
-baseline measurements are next; local ML has not been selected or added.
+metrics, and `calibration validate/evaluate`. Milestone 7B1 adds explicitly
+unreviewed authoring packets, blind review, completed review-plan compilation,
+explicit output paths, and the provenance-checked `fairbill-public-pilot/0.1.0`
+corpus with frozen seed reports. The pilot has three MIT-licensed repositories, 99
+teacher targets, one host-AI teacher, and no independent correction. Corpus
+expansion and independent review are next; local ML has not been selected or added.
 
 The following commands have been run successfully from the repository root:
 

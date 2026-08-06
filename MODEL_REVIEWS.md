@@ -14,6 +14,12 @@ under a versioned rubric, assigned to a repository-owned partition, and supplied
 with the required source/license/distribution provenance. Revisions are retained
 only for reproducibility and never become effort signals.
 
+The first records that satisfy that boundary live in
+`calibration/corpora/public-pilot/0.1.0.corpus.json`; their source manifest and
+frozen seed measurements are documented beside the corpus. They have
+`teacher-estimate` maturity only and must not be conflated with the provisional
+anchors below or described as independently validated.
+
 Because Fairbill's own anchor informed the seed-model and calibration design, it is
 a development diagnostic rather than an eligible held-out test record unless a
 future independent snapshot and review policy explicitly establishes otherwise.

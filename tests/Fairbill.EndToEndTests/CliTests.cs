@@ -204,12 +204,28 @@ public sealed class CliTests
         repository.WriteText("corpus.json", CreateCalibrationCorpus(estimate.StandardOutput));
         string corpusPath = Path.Combine(repository.RootPath, "corpus.json");
         string estimatePath = Path.Combine(repository.RootPath, "estimate.json");
+        string reviewPlanPath = Path.Combine(repository.RootPath, "review-plan.json");
+        string validationOutputPath = Path.Combine(repository.RootPath, "validation.json");
+        string evaluationOutputPath = Path.Combine(repository.RootPath, "evaluation.json");
+        string compiledOutputPath = Path.Combine(repository.RootPath, "compiled-corpus.json");
+
+        ProcessResult scaffold = await RunCliAsync(
+            "calibration",
+            "scaffold",
+            estimatePath,
+            "--compact");
+        Assert.Equal(0, scaffold.ExitCode);
+        repository.WriteText(
+            "review-plan.json",
+            CreateCalibrationReviewPlan(scaffold.StandardOutput));
 
         ProcessResult validation = await RunCliAsync(
             "calibration",
             "validate",
             corpusPath,
-            "--compact");
+            "--compact",
+            "--output",
+            validationOutputPath);
         ProcessResult evaluation = await RunCliAsync(
             "calibration",
             "evaluate",
@@ -217,7 +233,9 @@ public sealed class CliTests
             estimatePath,
             "--partition",
             "test",
-            "--compact");
+            "--compact",
+            "--output",
+            evaluationOutputPath);
         ProcessResult wrongPartition = await RunCliAsync(
             "calibration",
             "evaluate",
@@ -226,16 +244,28 @@ public sealed class CliTests
             "--partition",
             "development",
             "--compact");
+        ProcessResult compiled = await RunCliAsync(
+            "calibration",
+            "compile",
+            reviewPlanPath,
+            estimatePath,
+            "--compact",
+            "--output",
+            compiledOutputPath);
 
         Assert.Equal(0, validation.ExitCode);
+        Assert.Equal(string.Empty, validation.StandardOutput);
         Assert.Equal(string.Empty, validation.StandardError);
-        using JsonDocument validationDocument = JsonDocument.Parse(validation.StandardOutput);
+        using JsonDocument validationDocument = JsonDocument.Parse(
+            await File.ReadAllTextAsync(validationOutputPath));
         Assert.True(validationDocument.RootElement.GetProperty("valid").GetBoolean());
         Assert.Equal(1, validationDocument.RootElement.GetProperty("repositoryCount").GetInt32());
 
         Assert.Equal(0, evaluation.ExitCode);
+        Assert.Equal(string.Empty, evaluation.StandardOutput);
         Assert.Equal(string.Empty, evaluation.StandardError);
-        using JsonDocument evaluationDocument = JsonDocument.Parse(evaluation.StandardOutput);
+        using JsonDocument evaluationDocument = JsonDocument.Parse(
+            await File.ReadAllTextAsync(evaluationOutputPath));
         Assert.Equal(
             "calibration-metrics/1.0.0",
             evaluationDocument.RootElement.GetProperty("metricVersion").GetString());
@@ -253,6 +283,100 @@ public sealed class CliTests
         Assert.Equal(3, wrongPartition.ExitCode);
         Assert.Equal(string.Empty, wrongPartition.StandardOutput);
         Assert.Contains("no 'Development' records", wrongPartition.StandardError, StringComparison.Ordinal);
+
+        Assert.True(
+            compiled.ExitCode == 0,
+            $"Compilation failed with exit code {compiled.ExitCode}: {compiled.StandardError}");
+        Assert.Equal(string.Empty, compiled.StandardOutput);
+        Assert.Equal(string.Empty, compiled.StandardError);
+        using JsonDocument compiledDocument = JsonDocument.Parse(
+            await File.ReadAllTextAsync(compiledOutputPath));
+        Assert.Equal(
+            "synthetic-cli-review-plan",
+            compiledDocument.RootElement.GetProperty("id").GetString());
+        Assert.NotEmpty(
+            compiledDocument.RootElement.GetProperty("records")[0].GetProperty("targets").EnumerateArray());
+    }
+
+    [Fact]
+    public async Task CalibrationScaffoldEmitsUnreviewedPacketAndSupportsBlindReview()
+    {
+        string fixture = Path.Combine(
+            AppContext.BaseDirectory,
+            "fixtures",
+            "evidence",
+            "minimal.repository-evidence.json");
+        ProcessResult estimate = await RunCliAsync("estimate", fixture, "--no-rate", "--compact");
+        Assert.Equal(0, estimate.ExitCode);
+
+        using TemporaryRepository repository = new();
+        repository.WriteText("estimate.json", estimate.StandardOutput);
+        string estimatePath = Path.Combine(repository.RootPath, "estimate.json");
+
+        ProcessResult reference = await RunCliAsync(
+            "calibration",
+            "scaffold",
+            estimatePath,
+            "--compact");
+        ProcessResult blind = await RunCliAsync(
+            "calibration",
+            "scaffold",
+            estimatePath,
+            "--blind",
+            "--compact");
+
+        Assert.Equal(0, reference.ExitCode);
+        Assert.Equal(string.Empty, reference.StandardError);
+        using JsonDocument referenceDocument = JsonDocument.Parse(reference.StandardOutput);
+        Assert.Equal("unreviewed", referenceDocument.RootElement.GetProperty("status").GetString());
+        Assert.Equal(
+            "reference",
+            referenceDocument.RootElement.GetProperty("candidateVisibility").GetString());
+        Assert.Equal(
+            JsonValueKind.Object,
+            referenceDocument.RootElement.GetProperty("candidate").GetProperty("totalHours").ValueKind);
+
+        Assert.Equal(0, blind.ExitCode);
+        Assert.Equal(string.Empty, blind.StandardError);
+        using JsonDocument blindDocument = JsonDocument.Parse(blind.StandardOutput);
+        Assert.Equal(
+            "blind",
+            blindDocument.RootElement.GetProperty("candidateVisibility").GetString());
+        Assert.Equal(
+            JsonValueKind.Null,
+            blindDocument.RootElement.GetProperty("candidate").GetProperty("totalHours").ValueKind);
+        Assert.All(
+            blindDocument.RootElement.GetProperty("targets").EnumerateArray(),
+            target => Assert.Equal(
+                JsonValueKind.Null,
+                target.GetProperty("review").GetProperty("hours").ValueKind));
+    }
+
+    [Fact]
+    public async Task EstimateCanWriteAnExplicitOutputWithoutMixingStdoutAndDiagnostics()
+    {
+        string fixture = Path.Combine(
+            AppContext.BaseDirectory,
+            "fixtures",
+            "evidence",
+            "minimal.repository-evidence.json");
+        using TemporaryRepository repository = new();
+        string outputPath = Path.Combine(repository.RootPath, "nested", "estimate.json");
+
+        ProcessResult result = await RunCliAsync(
+            "estimate",
+            fixture,
+            "--no-rate",
+            "--compact",
+            "--output",
+            outputPath);
+
+        Assert.Equal(0, result.ExitCode);
+        Assert.Equal(string.Empty, result.StandardOutput);
+        Assert.Equal(string.Empty, result.StandardError);
+        using JsonDocument document = JsonDocument.Parse(await File.ReadAllTextAsync(outputPath));
+        Assert.Equal("1.0.0", document.RootElement.GetProperty("schemaVersion").GetString());
+        Assert.False(document.RootElement.TryGetProperty("rateCard", out _));
     }
 
     [Fact]
@@ -478,6 +602,94 @@ public sealed class CliTests
         };
 
         return corpus.ToJsonString();
+    }
+
+    private static string CreateCalibrationReviewPlan(string scaffoldJson)
+    {
+        JsonObject scaffold = JsonNode.Parse(scaffoldJson)!.AsObject();
+        IEnumerable<IGrouping<string, JsonNode?>> capabilityGroups = scaffold["targets"]!
+            .AsArray()
+            .GroupBy(node => node!["sourceCapabilityId"]!.GetValue<string>());
+        JsonArray capabilities = [];
+        foreach (IGrouping<string, JsonNode?> group in capabilityGroups)
+        {
+            JsonArray targets = [];
+            foreach (JsonNode? node in group)
+            {
+                JsonObject item = node!.AsObject();
+                targets.Add(new JsonObject
+                {
+                    ["hours"] = item["candidate"]!["hours"]!.DeepClone(),
+                    ["uncertaintyReasons"] = item["uncertaintyReasons"]!.DeepClone(),
+                });
+            }
+
+            capabilities.Add(new JsonObject
+            {
+                ["sourceCapabilityId"] = group.Key,
+                ["rationale"] = "Synthetic process-level completed review decision.",
+                ["targets"] = targets,
+            });
+        }
+
+        JsonObject plan = new()
+        {
+            ["schemaVersion"] = "1.0.0",
+            ["compilerVersion"] = "calibration-review-compiler/0.1.0",
+            ["id"] = "synthetic-cli-review-plan",
+            ["version"] = "1.0.0",
+            ["description"] = "Process-level synthetic completed review plan.",
+            ["rubric"] = new JsonObject
+            {
+                ["id"] = "ehe-work-item",
+                ["version"] = "1.0.0",
+            },
+            ["records"] = new JsonArray
+            {
+                new JsonObject
+                {
+                    ["id"] = "record:minimal:implementation",
+                    ["repository"] = new JsonObject
+                    {
+                        ["id"] = "repository:minimal",
+                        ["name"] = scaffold["repository"]!["name"]!.DeepClone(),
+                        ["sourceDigest"] = scaffold["repository"]!["sourceDigest"]!.DeepClone(),
+                    },
+                    ["profile"] = scaffold["profile"]!.DeepClone(),
+                    ["baselineId"] = scaffold["baselineId"]!.DeepClone(),
+                    ["partition"] = "test",
+                    ["sourceEstimatorVersion"] = scaffold["candidate"]!["estimatorVersion"]!.DeepClone(),
+                    ["sourceEstimateDigest"] = scaffold["candidate"]!["estimateDigest"]!.DeepClone(),
+                    ["source"] = new JsonObject
+                    {
+                        ["dataClassification"] = "synthetic",
+                        ["sourceReference"] = "synthetic:end-to-end-fixture",
+                        ["revision"] = "1",
+                        ["licenseExpression"] = "MIT",
+                        ["redistributionAllowed"] = true,
+                    },
+                    ["review"] = new JsonObject
+                    {
+                        ["status"] = "teacher-estimate",
+                        ["completedOn"] = "2026-08-06",
+                        ["reviewers"] = new JsonArray
+                        {
+                            new JsonObject
+                            {
+                                ["id"] = "teacher:cli-fixture",
+                                ["kind"] = "host-ai",
+                                ["role"] = "teacher",
+                                ["modelId"] = "synthetic-logical-estimator",
+                                ["modelVersion"] = "1",
+                            },
+                        },
+                    },
+                    ["capabilities"] = capabilities,
+                },
+            },
+        };
+
+        return plan.ToJsonString();
     }
 
     private static string FindRepositoryRoot()

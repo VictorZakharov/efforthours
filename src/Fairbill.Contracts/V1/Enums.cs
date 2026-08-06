@@ -86,6 +86,17 @@ public enum CalibrationDataClassification
     Synthetic,
 }
 
+public enum CalibrationAuthoringStatus
+{
+    Unreviewed,
+}
+
+public enum CalibrationCandidateVisibility
+{
+    Reference,
+    Blind,
+}
+
 public enum VerificationMode
 {
     StaticAssumed,

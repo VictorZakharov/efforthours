@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace Fairbill.Contracts.V1;
 
 public sealed record CalibrationRubricReference
@@ -114,6 +116,155 @@ public sealed record CalibrationCorpus
     public required CalibrationRubricReference Rubric { get; init; }
 
     public IReadOnlyList<CalibrationRecord> Records { get; init; } = [];
+}
+
+public sealed record CalibrationAuthoringCandidate
+{
+    public required string EstimatorVersion { get; init; }
+
+    public required string EstimateDigest { get; init; }
+
+    [JsonIgnore(Condition = JsonIgnoreCondition.Never)]
+    public EffortRange? TotalHours { get; init; }
+
+    public IReadOnlyList<CategoryEstimate> Categories { get; init; } = [];
+}
+
+public sealed record CalibrationAuthoringSuggestion
+{
+    [JsonIgnore(Condition = JsonIgnoreCondition.Never)]
+    public EffortRange? Hours { get; init; }
+
+    [JsonIgnore(Condition = JsonIgnoreCondition.Never)]
+    public decimal? Confidence { get; init; }
+
+    public required string Reason { get; init; }
+}
+
+public sealed record CalibrationAuthoringReviewFields
+{
+    [JsonIgnore(Condition = JsonIgnoreCondition.Never)]
+    public EffortRange? Hours { get; init; }
+
+    [JsonIgnore(Condition = JsonIgnoreCondition.Never)]
+    public string? Rationale { get; init; }
+
+    [JsonIgnore(Condition = JsonIgnoreCondition.Never)]
+    public string? SizeException { get; init; }
+}
+
+public sealed record CalibrationAuthoringTarget
+{
+    public required string Id { get; init; }
+
+    public required string SourceCapabilityId { get; init; }
+
+    public required EffortCategory Category { get; init; }
+
+    public required string Title { get; init; }
+
+    public required string Scope { get; init; }
+
+    public IReadOnlyList<string> SourceWorkItemIds { get; init; } = [];
+
+    public IReadOnlyList<string> EvidenceIds { get; init; } = [];
+
+    public required CalibrationAuthoringSuggestion Candidate { get; init; }
+
+    public required CalibrationAuthoringReviewFields Review { get; init; }
+
+    public IReadOnlyList<string> Assumptions { get; init; } = [];
+
+    public IReadOnlyList<string> Exclusions { get; init; } = [];
+
+    public IReadOnlyList<string> UncertaintyReasons { get; init; } = [];
+}
+
+public sealed record CalibrationAuthoringPacket
+{
+    public string SchemaVersion { get; init; } = ContractVersions.V1;
+
+    public required string AuthoringVersion { get; init; }
+
+    public required CalibrationAuthoringStatus Status { get; init; }
+
+    public required string Warning { get; init; }
+
+    public required CalibrationRubricReference Rubric { get; init; }
+
+    public required CalibrationRepositoryReference Repository { get; init; }
+
+    public required EstimationProfile Profile { get; init; }
+
+    public required string BaselineId { get; init; }
+
+    public required CalibrationCandidateVisibility CandidateVisibility { get; init; }
+
+    public required CalibrationAuthoringCandidate Candidate { get; init; }
+
+    public IReadOnlyList<CalibrationAuthoringTarget> Targets { get; init; } = [];
+
+    public IReadOnlyList<string> ProfessionalizationGapWorkItemIds { get; init; } = [];
+
+    public IReadOnlyList<string> Instructions { get; init; } = [];
+}
+
+public sealed record CalibrationReviewTargetDecision
+{
+    public required EffortRange Hours { get; init; }
+
+    public IReadOnlyList<string> UncertaintyReasons { get; init; } = [];
+
+    public string? SizeException { get; init; }
+}
+
+public sealed record CalibrationCapabilityReviewDecision
+{
+    public required string SourceCapabilityId { get; init; }
+
+    public required string Rationale { get; init; }
+
+    public IReadOnlyList<CalibrationReviewTargetDecision> Targets { get; init; } = [];
+}
+
+public sealed record CalibrationReviewPlanRecord
+{
+    public required string Id { get; init; }
+
+    public required CalibrationRepositoryReference Repository { get; init; }
+
+    public required EstimationProfile Profile { get; init; }
+
+    public required string BaselineId { get; init; }
+
+    public required CalibrationPartition Partition { get; init; }
+
+    public required string SourceEstimatorVersion { get; init; }
+
+    public required string SourceEstimateDigest { get; init; }
+
+    public required CalibrationSourceProvenance Source { get; init; }
+
+    public required CalibrationReviewProvenance Review { get; init; }
+
+    public IReadOnlyList<CalibrationCapabilityReviewDecision> Capabilities { get; init; } = [];
+}
+
+public sealed record CalibrationReviewPlan
+{
+    public string SchemaVersion { get; init; } = ContractVersions.V1;
+
+    public required string CompilerVersion { get; init; }
+
+    public required string Id { get; init; }
+
+    public required string Version { get; init; }
+
+    public required string Description { get; init; }
+
+    public required CalibrationRubricReference Rubric { get; init; }
+
+    public IReadOnlyList<CalibrationReviewPlanRecord> Records { get; init; } = [];
 }
 
 public sealed record CalibrationPartitionSummary

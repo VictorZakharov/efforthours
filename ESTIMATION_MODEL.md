@@ -300,6 +300,23 @@ Metric semantics are versioned as `calibration-metrics/1.0.0`. WAPE is defined a
 MAPE because category observations may legitimately be zero. Interval results are
 agreement diagnostics against weak reviewed labels; they do not yet make low/high
 ranges formal probability intervals. `MILESTONE_7.md` and the
+published schemas define the full metric boundary.
+
+Milestone 7B1 adds a low-cost authoring boundary. A canonical estimate can be
+projected into a schema-versioned packet whose status is always `unreviewed` and
+which cannot be consumed as a corpus. Candidate values are visibly reference-only;
+blind mode removes candidate hours, category totals, and confidence. A separate
+completed review plan records explicit capability-level target ranges and
+rationale. Compilation requires the exact source-estimate digest, a decision for
+every represented capability, and complete source-work-item/evidence lineage before
+it can emit a valid corpus. This prevents mechanically copied scaffold output from
+silently becoming a reviewed label.
+
+The initial public pilot freezes three MIT-licensed repository families across
+development, validation, and test partitions and measures `seed-rules/0.2.0`.
+Those labels have one host-AI teacher and no independent correction. They are
+preliminary weak supervision and do not make the seed model calibrated or
+production-ready. `MILESTONE_7.md` and the
 `ehe-work-item/1.0.0` rubric define the complete implemented policy and the gates
 for admitting a learned model.
 

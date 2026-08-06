@@ -140,8 +140,13 @@ Status as of August 5, 2026:
 - Milestone 7A is complete: versioned reviewed-label, validation-summary, and
   evaluation contracts; a teacher/reviewer rubric; repository-isolated partitions;
   deterministic item/category/total/bias/interval metrics; and offline calibration
-  validation/evaluation commands are implemented. Corpus construction and baseline
-  measurement are next; no learned model has been admitted.
+  validation/evaluation commands are implemented.
+- Milestone 7B1 is complete: explicitly unreviewed authoring packets, optional blind
+  review, completed review-plan compilation with exact-digest and full-capability
+  checks, explicit output paths, a provenance-checked three-repository public pilot,
+  frozen repository partitions, and checked-in seed baseline reports are implemented.
+  The pilot has one host-AI teacher and no independent correction, so corpus
+  expansion and independent review remain; no learned model has been admitted.
 
 ### Milestone 0: Product and contract decisions
 
@@ -261,12 +266,14 @@ full view, and every compact capability retains a stable `explain` path.
 Exit condition: the local model improves held-out agreement and calibration over
 the seed rules without making reports opaque.
 
-Implementation note: `MILESTONE_7.md` records the staged design. Milestone 7A is
-implemented without an ML dependency: reviewed labels remain separate from
+Implementation note: `MILESTONE_7.md` records the staged design. Milestones 7A and
+7B1 are implemented without an ML dependency: reviewed labels remain separate from
 canonical candidate estimates, every repository and its revisions/profiles stay in
-one partition, and `calibration-metrics/1.0.0` reports deterministic low/expected/
-high error, bias, interval coverage, and work-item mapping coverage. The seed model
-remains uncalibrated until a diverse licensed corpus is reviewed and measured.
+one partition, completed capability decisions compile back to full evidence
+lineage, and `calibration-metrics/1.0.0` reports deterministic low/expected/high
+error, bias, interval coverage, and work-item mapping coverage. The seed model
+remains uncalibrated until the licensed corpus is diverse and independently
+reviewed.
 
 ### Milestone 8: Host AI integration and measurement
 

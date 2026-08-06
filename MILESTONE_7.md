@@ -2,11 +2,16 @@
 
 ## Status
 
-Milestone 7A was implemented on August 6, 2026. It establishes the
-versioned review corpus, deterministic offline evaluation, and acceptance gates
-needed before Fairbill adopts any learned model. The seed estimator remains
-`experimental-uncalibrated`; this milestone does not make its current hours
-production-ready.
+Milestone 7A and the Milestone 7B1 public-pilot checkpoint were implemented on
+August 6, 2026. They establish the versioned review corpus, low-cost authoring and
+compilation boundary, deterministic offline evaluation, initial licensed labels,
+and acceptance gates needed before Fairbill adopts any learned model. The seed
+estimator remains `experimental-uncalibrated`; this milestone does not make its
+current hours production-ready.
+
+The pilot has one host-AI teacher and no independent correction. Milestone 7B is
+therefore still in progress: broader repository/mutation coverage and independent
+review are required before numerical admission thresholds or model training.
 
 Local model training and inference are deferred until a diverse, licensed corpus
 exists and a candidate model demonstrates an improvement on repository-held-out
@@ -42,6 +47,39 @@ The first slice contains no ML runtime or training dependency. It adds:
 
 The first slice deliberately does not tune `seed-rules/0.2.0`, publish an accuracy
 claim, train a model, call a remote provider, or implement PR/commit estimation.
+
+## Implemented Milestone 7B1 scope
+
+The public-pilot slice adds no ML runtime or training dependency. It adds:
+
+1. a v1 unreviewed authoring-packet contract and JSON Schema;
+2. `fairbill calibration scaffold`, with visible reference values or `--blind`;
+3. a v1 completed review-plan contract and JSON Schema;
+4. `fairbill calibration compile`, which verifies exact source-estimate digests,
+   pins its compiler version, requires every represented capability, and restores
+   all work-item/evidence mappings deterministically;
+5. explicit `--output` support for estimates and calibration artifacts;
+6. a three-repository MIT-provenanced pilot with repository-level partitions
+   frozen before tuning;
+7. 99 teacher-estimate targets covering all 228 represented source work items; and
+8. checked-in development, validation, and test reports for `seed-rules/0.2.0`.
+
+The authoring packet is structurally separate from the corpus. Its status is always
+`unreviewed`, its review fields begin null, and corpus validation cannot consume it.
+Reference mode identifies seed values as suggestions; blind mode removes candidate
+hours, category totals, and confidence. Completed review plans contain explicit
+small-target ranges and rationale rather than an instruction to copy seed values.
+
+The compiler groups only the source estimate's deterministic sliced work-item IDs.
+It rejects changed estimate digests, unknown or missing capabilities, incomplete
+coverage, mixed capability categories/scopes, and attempts to create more reviewed
+targets than there are uniquely assignable source work items. Professionalization
+gaps remain outside represented calibration targets.
+
+The public pilot and baseline interpretation are documented in
+`calibration/corpora/public-pilot/BASELINE.md`; exact source/license provenance is
+in `calibration/corpora/public-pilot/SOURCES.md`. The fixed test partition must not
+be used to tune the seed rules or candidate hyperparameters.
 
 ## Contract boundaries
 
@@ -111,11 +149,23 @@ public corpus and distributable model artifacts unless separately authorized.
 ## CLI surface
 
 ```text
-fairbill calibration validate <corpus.json> [--compact]
+fairbill estimate <repository-or-evidence.json> --no-rate [--compact] [--output <path>]
+
+fairbill calibration scaffold <estimate.json>
+  [--blind]
+  [--compact]
+  [--output <path>]
+
+fairbill calibration compile <review-plan.json> <estimate.json>...
+  [--compact]
+  [--output <path>]
+
+fairbill calibration validate <corpus.json> [--compact] [--output <path>]
 
 fairbill calibration evaluate <corpus.json> <estimate.json>...
   --partition <development|validation|test>
   [--compact]
+  [--output <path>]
 ```
 
 `validate` checks both the JSON Schema and semantic invariants and emits a compact
@@ -127,9 +177,11 @@ mistaken for held-out results. It requires exactly one matching candidate for ea
 selected label record, validates every candidate estimate, and emits deterministic
 JSON. Extra candidate reports are disclosed but do not affect metrics.
 
-Neither command reads repository source, Git history, or the network. Physical
-file access belongs only to the CLI boundary; the reusable validator and evaluator
-operate on in-memory contract objects.
+The calibration commands do not read repository source, Git history, or the
+network. Physical file access belongs only to the CLI boundary; the reusable
+authoring, compiler, validator, and evaluator operate on in-memory contract
+objects. `estimate` may analyze a repository, but writes only when the caller gives
+an explicit output path.
 
 ## Metric set
 
@@ -203,13 +255,13 @@ model hyperparameters.
 
 ## Later Milestone 7 slices
 
-### 7B: corpus and baseline measurement
+### Remaining 7B: corpus and baseline measurement
 
 - Build small synthetic archetypes and mutation families.
 - Add diverse, redistributable real repositories with recorded licenses.
-- Run consistent teacher reviews and independent correction.
-- Freeze repository-level partitions before tuning.
-- Publish seed-rule baseline measurements and disagreement notes.
+- Expand the consistent teacher reviews and obtain independent correction.
+- Preserve the frozen repository-level partitions before tuning.
+- Extend the published seed-rule baseline measurements and disagreement notes.
 
 ### 7C: statistical and local-model candidates
 
@@ -251,3 +303,18 @@ end-to-end tests. The `Fairbill.Tool` `0.7.0-alpha.1` package includes the reusa
 `Fairbill.Calibration` assembly; the v1 calibration schemas remain embedded in
 `Fairbill.Contracts`. A source audit confirmed that the unit suite added no
 physical filesystem access.
+
+## Milestone 7B1 completion evidence
+
+The public-pilot checkpoint passes a zero-warning Release build, 75 memory-only
+unit tests, and 17 disk-backed CLI end-to-end tests before the final release gate.
+The `Fairbill.Tool` version advances to `0.7.0-alpha.2`. Fifteen v1 schemas are
+embedded, including authoring-packet and review-plan contracts. Unit tests build
+packets, plans, corpora, and compiler/evaluator results entirely in memory; only
+the separate end-to-end suite exercises explicit file output and process loading.
+
+The frozen corpus validates as three records and three repository families, one in
+each partition. Its 99 reviewed targets retain all 228 source work-item references.
+Combined teacher expected effort is 401.50 hours versus 805.75 seed hours; the
+three-repository observation WAPE and aggregate bias are both 1.0068. These values
+are a diagnostic baseline against preliminary weak labels, not an accuracy claim.

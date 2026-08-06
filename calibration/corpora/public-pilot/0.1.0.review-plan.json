@@ -1,0 +1,1342 @@
+{
+  "schemaVersion": "1.0.0",
+  "compilerVersion": "calibration-review-compiler/0.1.0",
+  "id": "fairbill-public-pilot",
+  "version": "0.1.0",
+  "description": "Initial public teacher-estimate corpus for authoring-workflow and frozen seed-baseline measurement. These weak labels are not independently reviewed and are not production accuracy evidence.",
+  "rubric": {
+    "id": "ehe-work-item",
+    "version": "1.0.0"
+  },
+  "records": [
+    {
+      "id": "record:ardalis-guardclauses:implementation",
+      "repository": {
+        "id": "repository:github.com/ardalis/guardclauses",
+        "name": "ardalis/GuardClauses",
+        "sourceDigest": "sha256:8000fcacf968cde7b06d2b4a17fd979c89df9ade30a3dbcbf0a9dbe02a39b374"
+      },
+      "profile": "implementation",
+      "baselineId": "senior-contractor-2026-no-ai",
+      "sourceEstimatorVersion": "seed-rules/0.2.0",
+      "partition": "development",
+      "sourceEstimateDigest": "sha256:fa5741ade8213dd595c61faab7f2023748b9e690085b3139ae04c792f685f07e",
+      "source": {
+        "dataClassification": "public-redistributable",
+        "sourceReference": "https://github.com/ardalis/GuardClauses",
+        "revision": "41162c46946214600a1f5a55b0abc94b0744691a",
+        "licenseExpression": "MIT",
+        "redistributionAllowed": true,
+        "notes": "Reviewed from the fixed GitHub source archive. Commit tree a270ed1a37135600e62deb6a261f3ffa7c9b6260; LICENSE blob 45b51efe1c6e720d3d45bbacdeebb7db9311a977."
+      },
+      "review": {
+        "status": "teacher-estimate",
+        "completedOn": "2026-08-06",
+        "reviewers": [
+          {
+            "id": "teacher:openai-codex-gpt-5-2026-08",
+            "kind": "host-ai",
+            "role": "teacher",
+            "modelId": "openai-codex",
+            "modelVersion": "gpt-5"
+          }
+        ],
+        "notes": "Single host-AI teacher review; no independent correction or adjudication. Candidate values were visible as reference, but capability totals were re-estimated after source and evidence inspection. Low/high bounds use a documented risk-tier policy."
+      },
+      "capabilities": [
+        {
+          "sourceCapabilityId": "work:specification-comprehension:49aec33b6a46fb626dad",
+          "rationale": "The guard-clause domain is familiar, but the exact supported clause matrix and compatibility behavior require a bounded review.",
+          "targets": [
+            {
+              "hours": {
+                "low": 1.25,
+                "expected": 1.5,
+                "high": 2
+              },
+              "uncertaintyReasons": []
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:solution-coordination:c6246e076bb47f8310ce",
+          "rationale": "A small two-project solution needs straightforward dependency and repository coordination.",
+          "targets": [
+            {
+              "hours": {
+                "low": 1.25,
+                "expected": 1.5,
+                "high": 2
+              },
+              "uncertaintyReasons": []
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:project-setup:64c63cd2d1c89da11f82",
+          "rationale": "The multi-targeted library project and package metadata are conventional and compact.",
+          "targets": [
+            {
+              "hours": {
+                "low": 1.25,
+                "expected": 1.5,
+                "high": 2
+              },
+              "uncertaintyReasons": []
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:project-setup:64adc9ee5d09db90f68a",
+          "rationale": "The xUnit test project setup is conventional and reuses the solution conventions.",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.75,
+                "expected": 1,
+                "high": 1.25
+              },
+              "uncertaintyReasons": []
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:architecture-design:b7d785bf6773cdeff5d4",
+          "rationale": "The extension-method API is simple, but generic overload, exception, and nullable-flow conventions need coherent design.",
+          "targets": [
+            {
+              "hours": {
+                "low": 1.5,
+                "expected": 2,
+                "high": 2.75
+              },
+              "uncertaintyReasons": []
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:dotnet-source-backbone:0c31060cecd97aaf3392",
+          "rationale": "The reviewed public API contains roughly fifty mostly patterned guard overloads plus exception semantics and XML documentation; shared implementation patterns substantially reduce marginal effort.",
+          "targets": [
+            {
+              "hours": {
+                "low": 3.25,
+                "expected": 5,
+                "high": 7.5
+              },
+              "uncertaintyReasons": [
+                "Compatibility attributes, nullable annotations, and overload edge behavior add bounded uncertainty."
+              ]
+            },
+            {
+              "hours": {
+                "low": 3.25,
+                "expected": 5,
+                "high": 7.5
+              },
+              "uncertaintyReasons": [
+                "Compatibility attributes, nullable annotations, and overload edge behavior add bounded uncertainty."
+              ]
+            },
+            {
+              "hours": {
+                "low": 3.25,
+                "expected": 5,
+                "high": 7.5
+              },
+              "uncertaintyReasons": [
+                "Compatibility attributes, nullable annotations, and overload edge behavior add bounded uncertainty."
+              ]
+            },
+            {
+              "hours": {
+                "low": 3.25,
+                "expected": 5,
+                "high": 7.5
+              },
+              "uncertaintyReasons": [
+                "Compatibility attributes, nullable annotations, and overload edge behavior add bounded uncertainty."
+              ]
+            },
+            {
+              "hours": {
+                "low": 3.25,
+                "expected": 5,
+                "high": 7.5
+              },
+              "uncertaintyReasons": [
+                "Compatibility attributes, nullable annotations, and overload edge behavior add bounded uncertainty."
+              ]
+            },
+            {
+              "hours": {
+                "low": 3.25,
+                "expected": 5,
+                "high": 7.5
+              },
+              "uncertaintyReasons": [
+                "Compatibility attributes, nullable annotations, and overload edge behavior add bounded uncertainty."
+              ]
+            },
+            {
+              "hours": {
+                "low": 3.25,
+                "expected": 5,
+                "high": 7.5
+              },
+              "uncertaintyReasons": [
+                "Compatibility attributes, nullable annotations, and overload edge behavior add bounded uncertainty."
+              ]
+            },
+            {
+              "hours": {
+                "low": 3.25,
+                "expected": 5,
+                "high": 7.5
+              },
+              "uncertaintyReasons": [
+                "Compatibility attributes, nullable annotations, and overload edge behavior add bounded uncertainty."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:unit-tests:bf83431635913fb9c445",
+          "rationale": "The comprehensive xUnit matrix covers guard families and edge types, while repeated numeric, range, and null cases reuse strong test patterns and fixtures.",
+          "targets": [
+            {
+              "hours": {
+                "low": 3.5,
+                "expected": 5.25,
+                "high": 8
+              },
+              "uncertaintyReasons": [
+                "The static review did not execute the suite; passing behavior is assumed under the default policy."
+              ]
+            },
+            {
+              "hours": {
+                "low": 3.5,
+                "expected": 5.25,
+                "high": 8
+              },
+              "uncertaintyReasons": [
+                "The static review did not execute the suite; passing behavior is assumed under the default policy."
+              ]
+            },
+            {
+              "hours": {
+                "low": 3.5,
+                "expected": 5.25,
+                "high": 8
+              },
+              "uncertaintyReasons": [
+                "The static review did not execute the suite; passing behavior is assumed under the default policy."
+              ]
+            },
+            {
+              "hours": {
+                "low": 3.5,
+                "expected": 5.25,
+                "high": 8
+              },
+              "uncertaintyReasons": [
+                "The static review did not execute the suite; passing behavior is assumed under the default policy."
+              ]
+            },
+            {
+              "hours": {
+                "low": 3.5,
+                "expected": 5.25,
+                "high": 8
+              },
+              "uncertaintyReasons": [
+                "The static review did not execute the suite; passing behavior is assumed under the default policy."
+              ]
+            },
+            {
+              "hours": {
+                "low": 3.5,
+                "expected": 5.25,
+                "high": 8
+              },
+              "uncertaintyReasons": [
+                "The static review did not execute the suite; passing behavior is assumed under the default policy."
+              ]
+            },
+            {
+              "hours": {
+                "low": 3.5,
+                "expected": 5.25,
+                "high": 8
+              },
+              "uncertaintyReasons": [
+                "The static review did not execute the suite; passing behavior is assumed under the default policy."
+              ]
+            },
+            {
+              "hours": {
+                "low": 3.5,
+                "expected": 5.25,
+                "high": 8
+              },
+              "uncertaintyReasons": [
+                "The static review did not execute the suite; passing behavior is assumed under the default policy."
+              ]
+            },
+            {
+              "hours": {
+                "low": 3.25,
+                "expected": 5,
+                "high": 7.5
+              },
+              "uncertaintyReasons": [
+                "The static review did not execute the suite; passing behavior is assumed under the default policy."
+              ]
+            },
+            {
+              "hours": {
+                "low": 3.25,
+                "expected": 5,
+                "high": 7.5
+              },
+              "uncertaintyReasons": [
+                "The static review did not execute the suite; passing behavior is assumed under the default policy."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:manual-validation:701784d00b3a27227a8f",
+          "rationale": "Public exception messages, parameter names, generic constraints, and representative boundary cases warrant focused manual validation beyond automated-test authoring.",
+          "targets": [
+            {
+              "hours": {
+                "low": 2,
+                "expected": 3,
+                "high": 4.5
+              },
+              "uncertaintyReasons": []
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:documentation:bebbc838ff439c1b4e49",
+          "rationale": "The maintained README, contribution guidance, build notes, and public usage examples are useful but conventional library documentation.",
+          "targets": [
+            {
+              "hours": {
+                "low": 2.25,
+                "expected": 3,
+                "high": 4
+              },
+              "uncertaintyReasons": []
+            },
+            {
+              "hours": {
+                "low": 2.25,
+                "expected": 3,
+                "high": 4
+              },
+              "uncertaintyReasons": []
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:build-tooling:c2c91d07e063088d401a",
+          "rationale": "Shared build properties, editor settings, and packaging conventions require modest setup and verification.",
+          "targets": [
+            {
+              "hours": {
+                "low": 1.5,
+                "expected": 2,
+                "high": 2.75
+              },
+              "uncertaintyReasons": []
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:ci-infrastructure:bee22f5b9a094661eb75",
+          "rationale": "Multiple build, publication, CodeQL, and repository-automation workflows require configuration and safe release-path checking.",
+          "targets": [
+            {
+              "hours": {
+                "low": 1.75,
+                "expected": 2.5,
+                "high": 3.75
+              },
+              "uncertaintyReasons": [
+                "Publication credentials and hosted-environment behavior are not exercised by static review."
+              ]
+            },
+            {
+              "hours": {
+                "low": 1.75,
+                "expected": 2.5,
+                "high": 3.75
+              },
+              "uncertaintyReasons": [
+                "Publication credentials and hosted-environment behavior are not exercised by static review."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:self-review:e943a6db2e8c464b145a",
+          "rationale": "A public compatibility-sensitive library needs a final API, package, documentation, and suite coherence pass.",
+          "targets": [
+            {
+              "hours": {
+                "low": 2.25,
+                "expected": 3,
+                "high": 4
+              },
+              "uncertaintyReasons": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "record:sindresorhus-p-queue:implementation",
+      "repository": {
+        "id": "repository:github.com/sindresorhus/p-queue",
+        "name": "sindresorhus/p-queue",
+        "sourceDigest": "sha256:3073a4209d8325e0d0692a519caa6992f8851ba96908a1295c56e26b2a2e6edf"
+      },
+      "profile": "implementation",
+      "baselineId": "senior-contractor-2026-no-ai",
+      "sourceEstimatorVersion": "seed-rules/0.2.0",
+      "partition": "validation",
+      "sourceEstimateDigest": "sha256:d4d819f788f89a24e190824c3fdc45f60354a7713e1046af825c3871faeb1fe3",
+      "source": {
+        "dataClassification": "public-redistributable",
+        "sourceReference": "https://github.com/sindresorhus/p-queue",
+        "revision": "180ab9e25cd10b6f548767d7176076b50d25e188",
+        "licenseExpression": "MIT",
+        "redistributionAllowed": true,
+        "notes": "Reviewed from the fixed GitHub source archive. Commit tree e8e63896c7368b45ead03441d007c76f2b2591e5; license blob fa7ceba3eb4a9657a9db7f3ffca4e4e97a9019de."
+      },
+      "review": {
+        "status": "teacher-estimate",
+        "completedOn": "2026-08-06",
+        "reviewers": [
+          {
+            "id": "teacher:openai-codex-gpt-5-2026-08",
+            "kind": "host-ai",
+            "role": "teacher",
+            "modelId": "openai-codex",
+            "modelVersion": "gpt-5"
+          }
+        ],
+        "notes": "Single host-AI teacher review; no independent correction or adjudication. Candidate values were visible as reference, but capability totals were re-estimated after source and evidence inspection. Low/high bounds use a documented risk-tier policy."
+      },
+      "capabilities": [
+        {
+          "sourceCapabilityId": "work:specification-comprehension:49aec33b6a46fb626dad",
+          "rationale": "Concurrency, interval limiting, strict-mode semantics, cancellation, priority, and backpressure form a compact but nontrivial behavioral domain.",
+          "targets": [
+            {
+              "hours": {
+                "low": 2,
+                "expected": 3,
+                "high": 4.5
+              },
+              "uncertaintyReasons": []
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:project-setup:e56be8fd4646c76f7cdd",
+          "rationale": "A single modern ESM TypeScript package has compact, conventional setup despite strict metadata.",
+          "targets": [
+            {
+              "hours": {
+                "low": 1.25,
+                "expected": 1.5,
+                "high": 2
+              },
+              "uncertaintyReasons": []
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:architecture-design:1301c834bf26665d0695",
+          "rationale": "Queue abstraction, priority storage, scheduler state, timers, promises, and typed public options need deliberate boundaries before implementation.",
+          "targets": [
+            {
+              "hours": {
+                "low": 2.75,
+                "expected": 5,
+                "high": 8.75
+              },
+              "uncertaintyReasons": [
+                "Timer and event-ordering invariants are easy to specify incompletely."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:background-work:b2b0c773b9f5aa6478f5",
+          "rationale": "Concurrency and interval/strict rate-limit scheduling require careful asynchronous state reasoning beyond routine TypeScript implementation.",
+          "targets": [
+            {
+              "hours": {
+                "low": 3.25,
+                "expected": 6,
+                "high": 10.5
+              },
+              "uncertaintyReasons": [
+                "Clock behavior, microtask ordering, and simultaneous capacity transitions drive uncertainty."
+              ]
+            },
+            {
+              "hours": {
+                "low": 3.25,
+                "expected": 6,
+                "high": 10.5
+              },
+              "uncertaintyReasons": [
+                "Clock behavior, microtask ordering, and simultaneous capacity transitions drive uncertainty."
+              ]
+            },
+            {
+              "hours": {
+                "low": 3.25,
+                "expected": 6,
+                "high": 10.5
+              },
+              "uncertaintyReasons": [
+                "Clock behavior, microtask ordering, and simultaneous capacity transitions drive uncertainty."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:javascript-source-backbone:2f5795bda39a0bae4a33",
+          "rationale": "About 1,300 maintained source lines implement queue state, priority operations, aborts, timeouts, events, introspection, and public types; token volume alone materially overstates equivalent effort.",
+          "targets": [
+            {
+              "hours": {
+                "low": 3.25,
+                "expected": 6,
+                "high": 10.5
+              },
+              "uncertaintyReasons": [
+                "Behavior spans timer, promise, abort-signal, and custom-queue interactions."
+              ]
+            },
+            {
+              "hours": {
+                "low": 3.25,
+                "expected": 6,
+                "high": 10.5
+              },
+              "uncertaintyReasons": [
+                "Behavior spans timer, promise, abort-signal, and custom-queue interactions."
+              ]
+            },
+            {
+              "hours": {
+                "low": 3.25,
+                "expected": 6,
+                "high": 10.5
+              },
+              "uncertaintyReasons": [
+                "Behavior spans timer, promise, abort-signal, and custom-queue interactions."
+              ]
+            },
+            {
+              "hours": {
+                "low": 3.25,
+                "expected": 6,
+                "high": 10.5
+              },
+              "uncertaintyReasons": [
+                "Behavior spans timer, promise, abort-signal, and custom-queue interactions."
+              ]
+            },
+            {
+              "hours": {
+                "low": 3.25,
+                "expected": 6,
+                "high": 10.5
+              },
+              "uncertaintyReasons": [
+                "Behavior spans timer, promise, abort-signal, and custom-queue interactions."
+              ]
+            },
+            {
+              "hours": {
+                "low": 3.25,
+                "expected": 6,
+                "high": 10.5
+              },
+              "uncertaintyReasons": [
+                "Behavior spans timer, promise, abort-signal, and custom-queue interactions."
+              ]
+            },
+            {
+              "hours": {
+                "low": 3.25,
+                "expected": 6,
+                "high": 10.5
+              },
+              "uncertaintyReasons": [
+                "Behavior spans timer, promise, abort-signal, and custom-queue interactions."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:unit-tests:875ec9f8d2f4b23af140",
+          "rationale": "Seven behavior suites of roughly 5,400 lines exercise timing, saturation, aborts, priorities, strict rate limits, validation, and debugging; fixtures repeat, but the edge-case matrix is risk-sensitive.",
+          "targets": [
+            {
+              "hours": {
+                "low": 3.25,
+                "expected": 6,
+                "high": 10.5
+              },
+              "uncertaintyReasons": [
+                "The static review assumes the represented timing tests pass and does not calibrate fake-timer runtime differences."
+              ]
+            },
+            {
+              "hours": {
+                "low": 3.25,
+                "expected": 6,
+                "high": 10.5
+              },
+              "uncertaintyReasons": [
+                "The static review assumes the represented timing tests pass and does not calibrate fake-timer runtime differences."
+              ]
+            },
+            {
+              "hours": {
+                "low": 3.25,
+                "expected": 6,
+                "high": 10.5
+              },
+              "uncertaintyReasons": [
+                "The static review assumes the represented timing tests pass and does not calibrate fake-timer runtime differences."
+              ]
+            },
+            {
+              "hours": {
+                "low": 3.25,
+                "expected": 6,
+                "high": 10.5
+              },
+              "uncertaintyReasons": [
+                "The static review assumes the represented timing tests pass and does not calibrate fake-timer runtime differences."
+              ]
+            },
+            {
+              "hours": {
+                "low": 3.25,
+                "expected": 6,
+                "high": 10.5
+              },
+              "uncertaintyReasons": [
+                "The static review assumes the represented timing tests pass and does not calibrate fake-timer runtime differences."
+              ]
+            },
+            {
+              "hours": {
+                "low": 3.25,
+                "expected": 6,
+                "high": 10.5
+              },
+              "uncertaintyReasons": [
+                "The static review assumes the represented timing tests pass and does not calibrate fake-timer runtime differences."
+              ]
+            },
+            {
+              "hours": {
+                "low": 3.25,
+                "expected": 6,
+                "high": 10.5
+              },
+              "uncertaintyReasons": [
+                "The static review assumes the represented timing tests pass and does not calibrate fake-timer runtime differences."
+              ]
+            },
+            {
+              "hours": {
+                "low": 3.25,
+                "expected": 6,
+                "high": 10.5
+              },
+              "uncertaintyReasons": [
+                "The static review assumes the represented timing tests pass and does not calibrate fake-timer runtime differences."
+              ]
+            },
+            {
+              "hours": {
+                "low": 3.25,
+                "expected": 6,
+                "high": 10.5
+              },
+              "uncertaintyReasons": [
+                "The static review assumes the represented timing tests pass and does not calibrate fake-timer runtime differences."
+              ]
+            },
+            {
+              "hours": {
+                "low": 3.25,
+                "expected": 6,
+                "high": 10.5
+              },
+              "uncertaintyReasons": [
+                "The static review assumes the represented timing tests pass and does not calibrate fake-timer runtime differences."
+              ]
+            },
+            {
+              "hours": {
+                "low": 2.75,
+                "expected": 5,
+                "high": 8.75
+              },
+              "uncertaintyReasons": [
+                "The static review assumes the represented timing tests pass and does not calibrate fake-timer runtime differences."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:manual-validation:a0df1126ba2f8dbcb19b",
+          "rationale": "Representative live scheduling, pause/resume, timeout, cancellation, and backpressure scenarios need manual debugging beyond suite creation.",
+          "targets": [
+            {
+              "hours": {
+                "low": 3.25,
+                "expected": 6,
+                "high": 10.5
+              },
+              "uncertaintyReasons": []
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:documentation:bebbc838ff439c1b4e49",
+          "rationale": "The README is a substantial API manual with examples, event semantics, advanced patterns, timeout guidance, and an operational FAQ.",
+          "targets": [
+            {
+              "hours": {
+                "low": 4,
+                "expected": 6,
+                "high": 9
+              },
+              "uncertaintyReasons": []
+            },
+            {
+              "hours": {
+                "low": 4,
+                "expected": 6,
+                "high": 9
+              },
+              "uncertaintyReasons": []
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:build-tooling:c2c91d07e063088d401a",
+          "rationale": "Strict TypeScript, linting, type tests, benchmark entry points, and package scripts require an integrated developer-tooling pass.",
+          "targets": [
+            {
+              "hours": {
+                "low": 3.25,
+                "expected": 5,
+                "high": 7.5
+              },
+              "uncertaintyReasons": []
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:ci-infrastructure:bee22f5b9a094661eb75",
+          "rationale": "The represented CI workflow is focused and conventional for the package.",
+          "targets": [
+            {
+              "hours": {
+                "low": 2,
+                "expected": 2.5,
+                "high": 3.5
+              },
+              "uncertaintyReasons": []
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:packaging-release:58eb8ae7efef939a19b5",
+          "rationale": "ESM exports, declaration publication, files selection, engines, and package metadata need release verification.",
+          "targets": [
+            {
+              "hours": {
+                "low": 1.5,
+                "expected": 2,
+                "high": 2.75
+              },
+              "uncertaintyReasons": []
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:self-review:e943a6db2e8c464b145a",
+          "rationale": "Concurrency-sensitive public behavior needs a final cross-check of scheduler invariants, API types, tests, and documentation.",
+          "targets": [
+            {
+              "hours": {
+                "low": 2.75,
+                "expected": 5,
+                "high": 8.75
+              },
+              "uncertaintyReasons": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "record:kristofferstrube-blazor-filesystemaccess:implementation",
+      "repository": {
+        "id": "repository:github.com/kristofferstrube/blazor-filesystemaccess",
+        "name": "KristofferStrube/Blazor.FileSystemAccess",
+        "sourceDigest": "sha256:555a7b525db2fc835870d231d3df86dc9cb43aea663fce0bb93f6dcf9f645896"
+      },
+      "profile": "implementation",
+      "baselineId": "senior-contractor-2026-no-ai",
+      "sourceEstimatorVersion": "seed-rules/0.2.0",
+      "partition": "test",
+      "sourceEstimateDigest": "sha256:a7397ed1d4516f3f47ffe452275c97a2b7a695ffc3756fe44a24f44f8e7f1ffa",
+      "source": {
+        "dataClassification": "public-redistributable",
+        "sourceReference": "https://github.com/KristofferStrube/Blazor.FileSystemAccess",
+        "revision": "a318303142cbec91e7c82b3d6dd69685adcfbac1",
+        "licenseExpression": "MIT",
+        "redistributionAllowed": true,
+        "notes": "Reviewed from the fixed GitHub source archive. Commit tree b1bda3e99bc3a194d20bf7c056e18cb614cd42ea; LICENSE blob e9302c54553450a17884483313969a72d02c8993."
+      },
+      "review": {
+        "status": "teacher-estimate",
+        "completedOn": "2026-08-06",
+        "reviewers": [
+          {
+            "id": "teacher:openai-codex-gpt-5-2026-08",
+            "kind": "host-ai",
+            "role": "teacher",
+            "modelId": "openai-codex",
+            "modelVersion": "gpt-5"
+          }
+        ],
+        "notes": "Single host-AI teacher review; no independent correction or adjudication. Candidate values were visible as reference, but capability totals were re-estimated after source and evidence inspection. Low/high bounds use a documented risk-tier policy."
+      },
+      "capabilities": [
+        {
+          "sourceCapabilityId": "work:specification-comprehension:49aec33b6a46fb626dad",
+          "rationale": "The browser File System Access API, Blazor interop constraints, and server-versus-WASM hosting differences require bounded domain study.",
+          "targets": [
+            {
+              "hours": {
+                "low": 2,
+                "expected": 3,
+                "high": 4.5
+              },
+              "uncertaintyReasons": []
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:project-setup:e56be8fd4646c76f7cdd",
+          "rationale": "Repository-root setup beyond the solution and project-specific work is minimal.",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.5,
+                "expected": 0.5,
+                "high": 0.75
+              },
+              "uncertaintyReasons": []
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:solution-coordination:c6246e076bb47f8310ce",
+          "rationale": "The library and two sample hosts need straightforward solution and project-reference coordination.",
+          "targets": [
+            {
+              "hours": {
+                "low": 1.25,
+                "expected": 1.5,
+                "high": 2
+              },
+              "uncertaintyReasons": []
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:project-setup:fecf9863f34ef9765ca3",
+          "rationale": "The server-hosted Blazor sample uses conventional project setup.",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.75,
+                "expected": 1,
+                "high": 1.25
+              },
+              "uncertaintyReasons": []
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:project-setup:a38e303844d20c837048",
+          "rationale": "The WebAssembly sample uses conventional project setup and largely mirrors the server sample.",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.75,
+                "expected": 1,
+                "high": 1.25
+              },
+              "uncertaintyReasons": []
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:project-setup:a7acab6cf983b01bfde6",
+          "rationale": "The Razor class library setup includes package metadata, JavaScript assets, and framework/package references.",
+          "targets": [
+            {
+              "hours": {
+                "low": 1.25,
+                "expected": 1.5,
+                "high": 2
+              },
+              "uncertaintyReasons": []
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:architecture-design:1301c834bf26665d0695",
+          "rationale": "Repository-level structure is direct: one wrapper library plus two demonstration hosts.",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.75,
+                "expected": 1,
+                "high": 1.25
+              },
+              "uncertaintyReasons": []
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:architecture-design:58379b26e1de39dfef48",
+          "rationale": "The server sample needs modest page, service, and host composition decisions.",
+          "targets": [
+            {
+              "hours": {
+                "low": 1.25,
+                "expected": 1.5,
+                "high": 2
+              },
+              "uncertaintyReasons": []
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:architecture-design:c05b91d64af6150ae414",
+          "rationale": "The WebAssembly sample mirrors most server-sample decisions with a different hosting boundary.",
+          "targets": [
+            {
+              "hours": {
+                "low": 1.25,
+                "expected": 1.5,
+                "high": 2
+              },
+              "uncertaintyReasons": []
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:architecture-design:d6500f67b0a5ee1061a6",
+          "rationale": "The wrapper library separates interfaces, in-process variants, option DTOs, converters, union types, DI, and handle extensions.",
+          "targets": [
+            {
+              "hours": {
+                "low": 1.25,
+                "expected": 2,
+                "high": 3
+              },
+              "uncertaintyReasons": []
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:javascript-source-backbone:2f5795bda39a0bae4a33",
+          "rationale": "The maintained JavaScript module is a very small dynamic-import and browser-API bridge.",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.75,
+                "expected": 1,
+                "high": 1.25
+              },
+              "uncertaintyReasons": []
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:application-entry-point:d0ba0a2292f100e4cb63",
+          "rationale": "The server sample entry point is conventional host registration.",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.5,
+                "expected": 0.5,
+                "high": 0.75
+              },
+              "uncertaintyReasons": []
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:dotnet-source-backbone:0a9541f766b2340792d7",
+          "rationale": "Server-sample non-UI support code is small and conventional.",
+          "targets": [
+            {
+              "hours": {
+                "low": 1.25,
+                "expected": 1.5,
+                "high": 2
+              },
+              "uncertaintyReasons": []
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:application-entry-point:419b2322c294c366ec07",
+          "rationale": "The WebAssembly sample entry point is conventional host registration.",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.5,
+                "expected": 0.5,
+                "high": 0.75
+              },
+              "uncertaintyReasons": []
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:dotnet-source-backbone:319e6199f7cca1822fbb",
+          "rationale": "WebAssembly-sample non-UI support code is very small and reuses the server-sample pattern.",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.75,
+                "expected": 1,
+                "high": 1.25
+              },
+              "uncertaintyReasons": []
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:dotnet-source-backbone:835ac5c5b66a0f178324",
+          "rationale": "Roughly 745 maintained library lines wrap picker calls, JSON options and union values, permission operations, service registration, and in-process variants across a public API.",
+          "targets": [
+            {
+              "hours": {
+                "low": 4,
+                "expected": 6.25,
+                "high": 9.5
+              },
+              "uncertaintyReasons": [
+                "The wrapper depends on adjacent browser-handle abstractions whose behavior is represented through external package contracts."
+              ]
+            },
+            {
+              "hours": {
+                "low": 4,
+                "expected": 6.25,
+                "high": 9.5
+              },
+              "uncertaintyReasons": [
+                "The wrapper depends on adjacent browser-handle abstractions whose behavior is represented through external package contracts."
+              ]
+            },
+            {
+              "hours": {
+                "low": 4,
+                "expected": 6.25,
+                "high": 9.5
+              },
+              "uncertaintyReasons": [
+                "The wrapper depends on adjacent browser-handle abstractions whose behavior is represented through external package contracts."
+              ]
+            },
+            {
+              "hours": {
+                "low": 4,
+                "expected": 6.25,
+                "high": 9.5
+              },
+              "uncertaintyReasons": [
+                "The wrapper depends on adjacent browser-handle abstractions whose behavior is represented through external package contracts."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:ui-surface:918438cc13339fb696f4",
+          "rationale": "Repository-level Razor/component surface outside the host projects is small.",
+          "targets": [
+            {
+              "hours": {
+                "low": 2.25,
+                "expected": 3,
+                "high": 4
+              },
+              "uncertaintyReasons": []
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:ui-surface:2bf4846449f9ac45aed2",
+          "rationale": "The server sample demonstrates open/save/directory pickers, multiple files, append-only access, IndexedDB, PDF/ZIP viewing, meme generation, and a treemap; vendor styling is excluded.",
+          "targets": [
+            {
+              "hours": {
+                "low": 4,
+                "expected": 6,
+                "high": 9
+              },
+              "uncertaintyReasons": [
+                "Browser support and third-party visualization/archive behavior increase example-integration uncertainty."
+              ]
+            },
+            {
+              "hours": {
+                "low": 4,
+                "expected": 6,
+                "high": 9
+              },
+              "uncertaintyReasons": [
+                "Browser support and third-party visualization/archive behavior increase example-integration uncertainty."
+              ]
+            },
+            {
+              "hours": {
+                "low": 4,
+                "expected": 6,
+                "high": 9
+              },
+              "uncertaintyReasons": [
+                "Browser support and third-party visualization/archive behavior increase example-integration uncertainty."
+              ]
+            },
+            {
+              "hours": {
+                "low": 4,
+                "expected": 6,
+                "high": 9
+              },
+              "uncertaintyReasons": [
+                "Browser support and third-party visualization/archive behavior increase example-integration uncertainty."
+              ]
+            },
+            {
+              "hours": {
+                "low": 4,
+                "expected": 6,
+                "high": 9
+              },
+              "uncertaintyReasons": [
+                "Browser support and third-party visualization/archive behavior increase example-integration uncertainty."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:ui-surface:7cf26ee0b2c020a59db3",
+          "rationale": "The WebAssembly pages substantially duplicate the server sample; the label retains only hosting-specific adaptation and its small unique status behavior rather than rewarding duplicated UI volume.",
+          "targets": [
+            {
+              "hours": {
+                "low": 2.5,
+                "expected": 4,
+                "high": 6
+              },
+              "uncertaintyReasons": [
+                "Static evidence cannot perfectly separate shared page copies from hosting-specific edits."
+              ]
+            },
+            {
+              "hours": {
+                "low": 2.5,
+                "expected": 4,
+                "high": 6
+              },
+              "uncertaintyReasons": [
+                "Static evidence cannot perfectly separate shared page copies from hosting-specific edits."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:external-integration:19f077ecb559f35bbcdd",
+          "rationale": "The server sample integrates browser APIs and demonstration packages through a conventional Blazor interop boundary.",
+          "targets": [
+            {
+              "hours": {
+                "low": 1.25,
+                "expected": 2,
+                "high": 3
+              },
+              "uncertaintyReasons": []
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:external-integration:826cc339cf9ec09173ce",
+          "rationale": "The WebAssembly sample reuses the same integrations with a different host runtime.",
+          "targets": [
+            {
+              "hours": {
+                "low": 1.25,
+                "expected": 2,
+                "high": 3
+              },
+              "uncertaintyReasons": []
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:manual-validation:a0df1126ba2f8dbcb19b",
+          "rationale": "A brief repository-level browser compatibility smoke pass is represented.",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.75,
+                "expected": 1,
+                "high": 1.25
+              },
+              "uncertaintyReasons": []
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:manual-validation:7e123cdce40dc8296ddd",
+          "rationale": "The server sample needs manual browser validation across picker permissions, file workflows, rendering examples, and failure paths.",
+          "targets": [
+            {
+              "hours": {
+                "low": 3.25,
+                "expected": 6,
+                "high": 10.5
+              },
+              "uncertaintyReasons": [
+                "Browser permission state and feature support vary by environment."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:manual-validation:930ec6a04686f80da0f3",
+          "rationale": "The WebAssembly host needs a smaller validation pass focused on hosting-specific behavior because most workflows duplicate the server sample.",
+          "targets": [
+            {
+              "hours": {
+                "low": 2,
+                "expected": 3,
+                "high": 4.5
+              },
+              "uncertaintyReasons": []
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:manual-validation:d5c7dfa886f9e4271416",
+          "rationale": "The public wrapper API needs focused interop serialization, disposal, permission, and picker-option validation.",
+          "targets": [
+            {
+              "hours": {
+                "low": 2,
+                "expected": 3,
+                "high": 4.5
+              },
+              "uncertaintyReasons": []
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:documentation:bebbc838ff439c1b4e49",
+          "rationale": "The README, changelog, contribution notes, installation steps, DI usage, option examples, and migration notes form useful maintained package documentation.",
+          "targets": [
+            {
+              "hours": {
+                "low": 2.75,
+                "expected": 3.5,
+                "high": 4.75
+              },
+              "uncertaintyReasons": []
+            },
+            {
+              "hours": {
+                "low": 2.75,
+                "expected": 3.5,
+                "high": 4.75
+              },
+              "uncertaintyReasons": []
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:build-tooling:c2c91d07e063088d401a",
+          "rationale": "The represented editor and build configuration is minimal.",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.75,
+                "expected": 1,
+                "high": 1.25
+              },
+              "uncertaintyReasons": []
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:ci-infrastructure:bee22f5b9a094661eb75",
+          "rationale": "The single build and package workflow is focused and conventional.",
+          "targets": [
+            {
+              "hours": {
+                "low": 1.5,
+                "expected": 2,
+                "high": 2.75
+              },
+              "uncertaintyReasons": []
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:self-review:e943a6db2e8c464b145a",
+          "rationale": "A browser-interop package with two samples needs a final API, serialization, package, documentation, and cross-host consistency pass.",
+          "targets": [
+            {
+              "hours": {
+                "low": 2.5,
+                "expected": 4,
+                "high": 6
+              },
+              "uncertaintyReasons": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

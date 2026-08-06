@@ -17,7 +17,8 @@ than reading an entire large repository.
 ## Status
 
 Milestones 1 through 6 and the Milestone 7A calibration foundation are complete.
-The repository now contains:
+The Milestone 7B public-pilot checkpoint is implemented; independent review and
+corpus expansion remain. The repository now contains:
 
 - versioned JSON contracts and published schemas for evidence, work items,
   estimates, diagnostics, and rate cards;
@@ -65,7 +66,14 @@ The repository now contains:
   caller override or opt-out; and
 - a versioned reviewed-label corpus, work-item rubric, repository-isolated
   development/validation/test partitions, and deterministic offline evaluator for
-  item, category, total, bias, interval, and mapping-coverage metrics.
+  item, category, total, bias, interval, and mapping-coverage metrics;
+- schema-versioned unreviewed authoring packets, optional blind review, and a
+  deterministic review-plan compiler that requires complete capability coverage;
+  and
+- an MIT-source-provenanced three-repository public pilot with frozen partitions
+  and checked-in `seed-rules/0.2.0` baseline reports. Its labels have one host-AI
+  teacher and no independent correction, so they remain preliminary weak
+  supervision.
 
 `fairbill scan <folder>` now produces common, static .NET, and static
 JavaScript/TypeScript evidence, including mixed-repository output.
@@ -79,6 +87,10 @@ as a production-ready or empirically validated estimate.
 Pricing never changes EHE. Use `--view review` for a bounded AI-review packet and
 pass any reported capability ID to `fairbill explain` for its evidence lineage.
 
+`fairbill calibration scaffold` creates an explicitly unreviewed packet from a
+saved canonical estimate; `--blind` hides numeric seed guidance. `fairbill
+calibration compile` turns completed capability decisions into a corpus only after
+verifying exact estimate digests and full represented-capability coverage.
 `fairbill calibration validate` checks a reviewed corpus and its provenance.
 `fairbill calibration evaluate` compares canonical estimates with one explicit
 repository-held-out partition. It evaluates effort only, never calls an AI or the
@@ -143,11 +155,13 @@ fairbill model info
 fairbill model show
 fairbill rate info
 fairbill rate show
-fairbill estimate <repository-or-evidence.json> [--profile <implementation|recreation>] [--view <full|repository|category|scope|work-item|review>] [--format <json|markdown>] [--compact] [--no-rate | --hourly-rate <amount> [--currency <code>]]
+fairbill estimate <repository-or-evidence.json> [--profile <implementation|recreation>] [--view <full|repository|category|scope|work-item|review>] [--format <json|markdown>] [--compact] [--output <path>] [--no-rate | --hourly-rate <amount> [--currency <code>]]
 fairbill report <estimate.json> [--view <full|repository|category|scope|work-item|review>] [--format <json|markdown>] [--compact]
 fairbill explain <repository-or-evidence.json> --item <work-item-or-capability-id> [--profile <implementation|recreation>] [--format <json|markdown>] [--compact]
-fairbill calibration validate <corpus.json> [--compact]
-fairbill calibration evaluate <corpus.json> <estimate.json>... --partition <development|validation|test> [--compact]
+fairbill calibration scaffold <estimate.json> [--blind] [--compact] [--output <path>]
+fairbill calibration compile <review-plan.json> <estimate.json>... [--compact] [--output <path>]
+fairbill calibration validate <corpus.json> [--compact] [--output <path>]
+fairbill calibration evaluate <corpus.json> <estimate.json>... --partition <development|validation|test> [--compact] [--output <path>]
 ```
 
 The optional scan cache trusts file path, size, and last-write metadata for
@@ -221,5 +235,6 @@ without misrepresenting counterfactual hours as historical labor.
   priors.
 - [`rates/us-senior-contractor`](rates/us-senior-contractor) contains the auditable
   bundled contractor-rate derivation.
-- [`calibration`](calibration) contains the public review rubric and corpus
-  publication guidance; no private calibration data belongs there.
+- [`calibration`](calibration) contains the public review rubric, pilot corpus,
+  source manifest, frozen seed baseline, and publication guidance; no private
+  calibration data belongs there.

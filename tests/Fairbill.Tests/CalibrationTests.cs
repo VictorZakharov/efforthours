@@ -7,6 +7,122 @@ namespace Fairbill.Tests;
 public sealed class CalibrationTests
 {
     [Fact]
+    public void AuthoringScaffoldIsDeterministicSchemaValidAndExplicitlyUnreviewedInMemory()
+    {
+        EstimateReport estimate = CreateCandidate();
+
+        CalibrationAuthoringPacket first = CalibrationAuthoring.Scaffold(estimate);
+        CalibrationAuthoringPacket second = CalibrationAuthoring.Scaffold(estimate);
+        string json = ContractJson.Serialize(first);
+        SchemaValidationResult schema = ContractSchemaValidator.Validate(
+            SchemaNames.CalibrationAuthoringPacket,
+            json);
+
+        Assert.True(schema.IsValid, string.Join(Environment.NewLine, schema.Errors));
+        Assert.Empty(ContractValidation.Validate(first));
+        Assert.Equal(json, ContractJson.Serialize(second));
+        Assert.Equal(CalibrationAuthoringStatus.Unreviewed, first.Status);
+        Assert.Contains("UNREVIEWED", first.Warning, StringComparison.Ordinal);
+        Assert.Equal(CalibrationCandidateVisibility.Reference, first.CandidateVisibility);
+        Assert.Equal(estimate.TotalEffort, first.Candidate.TotalHours);
+        Assert.Equal(CalibrationDigest.Compute(estimate), first.Candidate.EstimateDigest);
+
+        CalibrationAuthoringTarget target = first.Targets[0];
+        Assert.NotNull(target.Candidate.Hours);
+        Assert.NotNull(target.Candidate.Confidence);
+        Assert.Null(target.Review.Hours);
+        Assert.Null(target.Review.Rationale);
+    }
+
+    [Fact]
+    public void BlindAuthoringScaffoldHidesNumericCandidateGuidanceInMemory()
+    {
+        CalibrationAuthoringPacket packet = CalibrationAuthoring.Scaffold(
+            CreateCandidate(),
+            blind: true);
+        string json = ContractJson.SerializeCompact(packet);
+        CalibrationAuthoringPacket roundTrip =
+            ContractJson.Deserialize<CalibrationAuthoringPacket>(json);
+
+        Assert.Empty(ContractValidation.Validate(packet));
+        Assert.Equal(CalibrationCandidateVisibility.Blind, packet.CandidateVisibility);
+        Assert.Null(packet.Candidate.TotalHours);
+        Assert.Empty(packet.Candidate.Categories);
+        Assert.All(packet.Targets, target =>
+        {
+            Assert.Null(target.Candidate.Hours);
+            Assert.Null(target.Candidate.Confidence);
+            Assert.False(string.IsNullOrWhiteSpace(target.Candidate.Reason));
+        });
+        Assert.Equal(json, ContractJson.SerializeCompact(roundTrip));
+        Assert.Contains("\"hours\":null", json, StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public void ReviewPlanCompilesCompleteCapabilityDecisionsWithStableLineageInMemory()
+    {
+        EstimateReport estimate = CreateCandidate();
+        CalibrationReviewPlan plan = CreateReviewPlan(estimate);
+
+        string planJson = ContractJson.Serialize(plan);
+        SchemaValidationResult planSchema = ContractSchemaValidator.Validate(
+            SchemaNames.CalibrationReviewPlan,
+            planJson);
+        CalibrationCorpus first = CalibrationReviewCompiler.Compile(plan, [estimate]);
+        CalibrationCorpus second = CalibrationReviewCompiler.Compile(plan, [estimate]);
+
+        Assert.True(planSchema.IsValid, string.Join(Environment.NewLine, planSchema.Errors));
+        Assert.Empty(ContractValidation.Validate(plan));
+        Assert.Empty(ContractValidation.Validate(first));
+        Assert.Equal(ContractJson.Serialize(first), ContractJson.Serialize(second));
+
+        CalibrationRecord record = Assert.Single(first.Records);
+        Assert.Equal(2, record.Targets.Count);
+        Assert.Equal(
+            estimate.WorkItems.Select(item => item.Id).OrderBy(id => id, StringComparer.Ordinal),
+            record.Targets.SelectMany(target => target.SourceWorkItemIds)
+                .OrderBy(id => id, StringComparer.Ordinal));
+        Assert.All(record.Targets, target => Assert.NotEmpty(target.EvidenceIds));
+    }
+
+    [Fact]
+    public void ReviewCompilerRejectsMissingCapabilitiesAndChangedEstimateDigestInMemory()
+    {
+        EstimateReport estimate = CreateCandidate();
+        CalibrationReviewPlan plan = CreateReviewPlan(estimate);
+        CalibrationReviewPlanRecord record = Assert.Single(plan.Records);
+
+        CalibrationEvaluationException missing = Assert.Throws<CalibrationEvaluationException>(() =>
+            CalibrationReviewCompiler.Compile(
+                plan with
+                {
+                    Records =
+                    [
+                        record with { Capabilities = [record.Capabilities[0]] },
+                    ],
+                },
+                [estimate]));
+        CalibrationEvaluationException digest = Assert.Throws<CalibrationEvaluationException>(() =>
+            CalibrationReviewCompiler.Compile(
+                plan with
+                {
+                    Records =
+                    [
+                        record with { SourceEstimateDigest = "sha256:changed" },
+                    ],
+                },
+                [estimate]));
+        CalibrationEvaluationException compiler = Assert.Throws<CalibrationEvaluationException>(() =>
+            CalibrationReviewCompiler.Compile(
+                plan with { CompilerVersion = "calibration-review-compiler/future" },
+                [estimate]));
+
+        Assert.Contains(missing.Errors, error => error.Contains("no decision", StringComparison.Ordinal));
+        Assert.Contains(digest.Errors, error => error.Contains("expects estimate digest", StringComparison.Ordinal));
+        Assert.Contains(compiler.Errors, error => error.Contains("provides", StringComparison.Ordinal));
+    }
+
+    [Fact]
     public void CorpusRoundTripsAndSatisfiesPublishedSchemaWithoutStorage()
     {
         CalibrationCorpus corpus = CreateCorpus();
@@ -308,6 +424,75 @@ public sealed class CalibrationTests
                         Rationale = "One bounded unit-test capability.",
                     },
                 ],
+            },
+        ],
+    };
+
+    private static CalibrationReviewPlan CreateReviewPlan(EstimateReport estimate) => new()
+    {
+        CompilerVersion = CalibrationReviewCompiler.CompilerVersion,
+        Id = "synthetic-review-plan",
+        Version = "1.0.0",
+        Description = "Memory-only completed review-plan fixture.",
+        Rubric = new CalibrationRubricReference
+        {
+            Id = "ehe-work-item",
+            Version = "1.0.0",
+        },
+        Records =
+        [
+            new CalibrationReviewPlanRecord
+            {
+                Id = "record:sample:implementation",
+                Repository = new CalibrationRepositoryReference
+                {
+                    Id = "repository:sample",
+                    Name = "Synthetic sample",
+                    SourceDigest = estimate.Repository.SourceDigest!,
+                },
+                Profile = estimate.Profile,
+                BaselineId = estimate.Baseline.Id,
+                Partition = CalibrationPartition.Test,
+                SourceEstimatorVersion = estimate.EstimatorVersion,
+                SourceEstimateDigest = CalibrationDigest.Compute(estimate),
+                Source = new CalibrationSourceProvenance
+                {
+                    DataClassification = CalibrationDataClassification.Synthetic,
+                    SourceReference = "synthetic:memory-only",
+                    Revision = "1",
+                    LicenseExpression = "MIT",
+                    RedistributionAllowed = true,
+                },
+                Review = new CalibrationReviewProvenance
+                {
+                    Status = CalibrationReviewStatus.TeacherEstimate,
+                    CompletedOn = new DateOnly(2026, 8, 6),
+                    Reviewers =
+                    [
+                        new CalibrationReviewer
+                        {
+                            Id = "teacher:test-model",
+                            Kind = CalibrationReviewerKind.HostAi,
+                            Role = CalibrationReviewerRole.Teacher,
+                            ModelId = "logical-estimator",
+                            ModelVersion = "test-1",
+                        },
+                    ],
+                },
+                Capabilities = [.. estimate.WorkItems.Select(item =>
+                    new CalibrationCapabilityReviewDecision
+                    {
+                        SourceCapabilityId = CalibrationAuthoring.GetSourceCapabilityId(item.Id),
+                        Rationale = "Independently reviewed synthetic capability.",
+                        Targets =
+                        [
+                            new CalibrationReviewTargetDecision
+                            {
+                                Hours = item.Hours,
+                                UncertaintyReasons = item.UncertaintyReasons,
+                            },
+                        ],
+                    })],
             },
         ],
     };
