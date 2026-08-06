@@ -70,6 +70,7 @@ public static class CalibrationCorpusReviewAuthoring
         {
             SourceRecordId = record.Id,
             Repository = record.Repository,
+            Change = record.Change,
             Profile = record.Profile,
             BaselineId = record.BaselineId,
             Partition = record.Partition,

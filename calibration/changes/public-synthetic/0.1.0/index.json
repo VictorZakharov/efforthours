@@ -1,0 +1,425 @@
+{
+  "schemaVersion": "1.0.0",
+  "generatorVersion": "change-fixture-generator/0.1.0",
+  "suiteId": "fairbill-change-public-synthetic",
+  "suiteVersion": "0.1.0",
+  "suiteDigest": "sha256:3a3cb8caca7625169c67c024eb9b336cd9b041bab5e24a1d141059252497b797",
+  "cases": [
+    {
+      "id": "change:dn-data-integration",
+      "repositoryFamilyId": "repository:change-dn-data-b",
+      "partition": "validation",
+      "ecosystem": "dotnet",
+      "selectionKind": "base-head",
+      "estimatePath": "reports/change-dn-data-integration.change-estimate.json",
+      "blindPacketPath": "blind-packets/change-dn-data-integration.authoring.json",
+      "estimateDigest": "sha256:d7ac1a8a75657d4d383938cea209d630594407306772314067d3d658fc3fd2c0",
+      "finalDeltaDigest": "sha256:7e7972b6f3ed011f65703ed2c7cc113caf7d810b520ec0ca4d973ec862ed100a",
+      "workItemCount": 8,
+      "coverageTags": [
+        "data",
+        "dotnet",
+        "integration",
+        "production"
+      ]
+    },
+    {
+      "id": "change:dn-data-migration",
+      "repositoryFamilyId": "repository:change-dn-data-b",
+      "partition": "validation",
+      "ecosystem": "dotnet",
+      "selectionKind": "base-head",
+      "estimatePath": "reports/change-dn-data-migration.change-estimate.json",
+      "blindPacketPath": "blind-packets/change-dn-data-migration.authoring.json",
+      "estimateDigest": "sha256:5f6a03076ecf1878d1cc5c3f824c63598cc326a92ac7657e565d84e0a2c4aedf",
+      "finalDeltaDigest": "sha256:6ceee70acf696893d67cad80d13e347f5e74b183c6022c0fce33d6660d0ada0d",
+      "workItemCount": 8,
+      "coverageTags": [
+        "data",
+        "dotnet",
+        "migration"
+      ]
+    },
+    {
+      "id": "change:dn-data-removal",
+      "repositoryFamilyId": "repository:change-dn-data-b",
+      "partition": "validation",
+      "ecosystem": "dotnet",
+      "selectionKind": "base-head",
+      "estimatePath": "reports/change-dn-data-removal.change-estimate.json",
+      "blindPacketPath": "blind-packets/change-dn-data-removal.authoring.json",
+      "estimateDigest": "sha256:e38d0d9b7ed2d70c8d204f042ff40d7ad3aad031f9d88dccf59203db6020fc35",
+      "finalDeltaDigest": "sha256:da0181b11fb21b7be22911413a031e4ac013f80e8b1d76a503b1ee0987056092",
+      "workItemCount": 8,
+      "coverageTags": [
+        "deletion",
+        "dotnet",
+        "migration",
+        "validation"
+      ]
+    },
+    {
+      "id": "change:dn-lib-docs",
+      "repositoryFamilyId": "repository:change-dn-lib-a",
+      "partition": "development",
+      "ecosystem": "dotnet",
+      "selectionKind": "base-head",
+      "estimatePath": "reports/change-dn-lib-docs.change-estimate.json",
+      "blindPacketPath": "blind-packets/change-dn-lib-docs.authoring.json",
+      "estimateDigest": "sha256:4d729ca6412cc3156035e9a9978ce8a31ca17f3f3aca386b52b5d49f8f28a453",
+      "finalDeltaDigest": "sha256:3c1c3343d4aea753374838235f2720dc78c6e19c8a2e6707e2d85326973cfb9d",
+      "workItemCount": 3,
+      "coverageTags": [
+        "clean-disjoint",
+        "documentation",
+        "dotnet"
+      ]
+    },
+    {
+      "id": "change:dn-lib-production",
+      "repositoryFamilyId": "repository:change-dn-lib-a",
+      "partition": "development",
+      "ecosystem": "dotnet",
+      "selectionKind": "base-head",
+      "estimatePath": "reports/change-dn-lib-production.change-estimate.json",
+      "blindPacketPath": "blind-packets/change-dn-lib-production.authoring.json",
+      "estimateDigest": "sha256:74ddd2272887b9f6bc0444233f26f33f75127cf0ac3827e1c61ca4d63f2b02db",
+      "finalDeltaDigest": "sha256:b248b960913b00536f39397ae8081b16ad1f9ee01adf701b2c8bdaf280631514",
+      "workItemCount": 3,
+      "coverageTags": [
+        "clean-disjoint",
+        "dotnet",
+        "production"
+      ]
+    },
+    {
+      "id": "change:dn-lib-tests",
+      "repositoryFamilyId": "repository:change-dn-lib-a",
+      "partition": "development",
+      "ecosystem": "dotnet",
+      "selectionKind": "base-head",
+      "estimatePath": "reports/change-dn-lib-tests.change-estimate.json",
+      "blindPacketPath": "blind-packets/change-dn-lib-tests.authoring.json",
+      "estimateDigest": "sha256:bfe88a2a5cbeefcda4075477a6784271d2d66b498c4c367d1efd95aee61b5850",
+      "finalDeltaDigest": "sha256:264a64714ae9d3f06e88f20de091284161fe822ddc885a5864c90b3fbd063f6b",
+      "workItemCount": 6,
+      "coverageTags": [
+        "clean-disjoint",
+        "dotnet",
+        "tests"
+      ]
+    },
+    {
+      "id": "change:js-lib-formatting",
+      "repositoryFamilyId": "repository:change-js-lib-b",
+      "partition": "validation",
+      "ecosystem": "javascript",
+      "selectionKind": "base-head",
+      "estimatePath": "reports/change-js-lib-formatting.change-estimate.json",
+      "blindPacketPath": "blind-packets/change-js-lib-formatting.authoring.json",
+      "estimateDigest": "sha256:bc948742c8807e9e2f6eb0266569dff62d70c8a9696ac087277774b4fc73ae89",
+      "finalDeltaDigest": "sha256:e9a1e384d1667f7012d3f101dedf99ccfbc5926d63c4899a459bdd8db9023f38",
+      "workItemCount": 0,
+      "coverageTags": [
+        "formatting-only",
+        "javascript",
+        "zero-delta"
+      ]
+    },
+    {
+      "id": "change:js-lib-move",
+      "repositoryFamilyId": "repository:change-js-lib-b",
+      "partition": "validation",
+      "ecosystem": "javascript",
+      "selectionKind": "base-head",
+      "estimatePath": "reports/change-js-lib-move.change-estimate.json",
+      "blindPacketPath": "blind-packets/change-js-lib-move.authoring.json",
+      "estimateDigest": "sha256:9f051b888e66c25927a4854be411fe7054abbe6887779f44e89ff38ea58ca213",
+      "finalDeltaDigest": "sha256:ed86494a11dc02ebf9a552aa0fb30881e36c2f840205821f4e54d457790073b0",
+      "workItemCount": 0,
+      "coverageTags": [
+        "exact-move",
+        "javascript",
+        "zero-delta"
+      ]
+    },
+    {
+      "id": "change:js-lib-quality",
+      "repositoryFamilyId": "repository:change-js-lib-b",
+      "partition": "validation",
+      "ecosystem": "javascript",
+      "selectionKind": "base-head",
+      "estimatePath": "reports/change-js-lib-quality.change-estimate.json",
+      "blindPacketPath": "blind-packets/change-js-lib-quality.authoring.json",
+      "estimateDigest": "sha256:b3d9dc9cd4d1e7868308476f64c73d623dd13f533a0118eb34994dad2f94fd12",
+      "finalDeltaDigest": "sha256:61b64b1b2fcad567ad335f196bff92b11f97e125495f8fcb0e97faf247c2a7b6",
+      "workItemCount": 5,
+      "coverageTags": [
+        "documentation",
+        "javascript",
+        "tests"
+      ]
+    },
+    {
+      "id": "change:js-service-config",
+      "repositoryFamilyId": "repository:change-js-service-a",
+      "partition": "development",
+      "ecosystem": "javascript",
+      "selectionKind": "base-head",
+      "estimatePath": "reports/change-js-service-config.change-estimate.json",
+      "blindPacketPath": "blind-packets/change-js-service-config.authoring.json",
+      "estimateDigest": "sha256:2c2d9e773c6f45d4c93ce48dd18161dca2feb965955a17c799bbda5c2f7a9838",
+      "finalDeltaDigest": "sha256:f976e2428efac4d01da4a2901a0567a7fc008a8d295fa6b137e6462291b62dc9",
+      "workItemCount": 4,
+      "coverageTags": [
+        "configuration",
+        "integration",
+        "javascript"
+      ]
+    },
+    {
+      "id": "change:js-service-deletion",
+      "repositoryFamilyId": "repository:change-js-service-a",
+      "partition": "development",
+      "ecosystem": "javascript",
+      "selectionKind": "base-head",
+      "estimatePath": "reports/change-js-service-deletion.change-estimate.json",
+      "blindPacketPath": "blind-packets/change-js-service-deletion.authoring.json",
+      "estimateDigest": "sha256:d0b314123f4ab159df9c2ced60d3c5796531356fcc07ccb2b97be82b456e6ced",
+      "finalDeltaDigest": "sha256:dfbf708052f79bb1ba41416a578b9a61a2de5d07eeae994895dd93175c8521d3",
+      "workItemCount": 9,
+      "coverageTags": [
+        "deletion",
+        "javascript",
+        "validation"
+      ]
+    },
+    {
+      "id": "change:js-service-integration",
+      "repositoryFamilyId": "repository:change-js-service-a",
+      "partition": "development",
+      "ecosystem": "javascript",
+      "selectionKind": "base-head",
+      "estimatePath": "reports/change-js-service-integration.change-estimate.json",
+      "blindPacketPath": "blind-packets/change-js-service-integration.authoring.json",
+      "estimateDigest": "sha256:11bd86bc6cbf54cb608c565d1004561bfecc1bdcd2d733b1bfbe2d8745a8b5b8",
+      "finalDeltaDigest": "sha256:4abeb518b832c908d913d0c5bd1ebdebb14b8e8d7d45d1e03ac83b47303b28ad",
+      "workItemCount": 3,
+      "coverageTags": [
+        "integration",
+        "javascript",
+        "production"
+      ]
+    },
+    {
+      "id": "change:mixed-disjoint-range",
+      "repositoryFamilyId": "repository:change-mixed-app-a",
+      "partition": "development",
+      "ecosystem": "mixed",
+      "selectionKind": "range",
+      "estimatePath": "reports/change-mixed-disjoint-range.change-estimate.json",
+      "blindPacketPath": "blind-packets/change-mixed-disjoint-range.authoring.json",
+      "estimateDigest": "sha256:1c54d0d81d636d5fbd721d2241c789a6bb3893f2208b01991ffefc394087e25f",
+      "finalDeltaDigest": "sha256:208cc22532930fb9f68586bf52b74c548d410f96f72bccd3358201bc4068596c",
+      "workItemCount": 5,
+      "coverageTags": [
+        "additivity",
+        "clean-disjoint",
+        "mixed",
+        "range"
+      ]
+    },
+    {
+      "id": "change:mixed-overlap-range",
+      "repositoryFamilyId": "repository:change-mixed-app-a",
+      "partition": "development",
+      "ecosystem": "mixed",
+      "selectionKind": "range",
+      "estimatePath": "reports/change-mixed-overlap-range.change-estimate.json",
+      "blindPacketPath": "blind-packets/change-mixed-overlap-range.authoring.json",
+      "estimateDigest": "sha256:5db6a1db1bf272c89c9ab4355417b926bdc1eaf5b1b9ff164bb158f2ea6738bb",
+      "finalDeltaDigest": "sha256:cbf9041cf567c7d879d939b7ea6a175e35d00a665f5860cc08155664e3b0341d",
+      "workItemCount": 3,
+      "coverageTags": [
+        "mixed",
+        "overlap",
+        "range",
+        "reconciliation"
+      ]
+    },
+    {
+      "id": "change:mixed-revert-range",
+      "repositoryFamilyId": "repository:change-mixed-app-a",
+      "partition": "development",
+      "ecosystem": "mixed",
+      "selectionKind": "range",
+      "estimatePath": "reports/change-mixed-revert-range.change-estimate.json",
+      "blindPacketPath": "blind-packets/change-mixed-revert-range.authoring.json",
+      "estimateDigest": "sha256:1ba47bca693b859a88fd9e1e622571c0603ee22493df139f366d4641024370ec",
+      "finalDeltaDigest": "sha256:6feeadceb574d3e92955f2e23928e75bf6cb672ab9c1dffec26be598e35d603b",
+      "workItemCount": 0,
+      "coverageTags": [
+        "mixed",
+        "range",
+        "revert",
+        "zero-delta"
+      ]
+    },
+    {
+      "id": "change:mixed-tool-feature",
+      "repositoryFamilyId": "repository:change-mixed-tool-c",
+      "partition": "test",
+      "ecosystem": "mixed",
+      "selectionKind": "base-head",
+      "estimatePath": "reports/change-mixed-tool-feature.change-estimate.json",
+      "blindPacketPath": "blind-packets/change-mixed-tool-feature.authoring.json",
+      "estimateDigest": "sha256:2a478cd895582eafd5a7dfcd4978b03db6756893af7ea3c08fd7a38824e8f0c9",
+      "finalDeltaDigest": "sha256:e8d9fb2600833b89864126ec8da15109cd1af51b16d476ef3053710d97367ec8",
+      "workItemCount": 4,
+      "coverageTags": [
+        "integration",
+        "mixed",
+        "production"
+      ]
+    },
+    {
+      "id": "change:mixed-tool-range",
+      "repositoryFamilyId": "repository:change-mixed-tool-c",
+      "partition": "test",
+      "ecosystem": "mixed",
+      "selectionKind": "range",
+      "estimatePath": "reports/change-mixed-tool-range.change-estimate.json",
+      "blindPacketPath": "blind-packets/change-mixed-tool-range.authoring.json",
+      "estimateDigest": "sha256:5dbac27c5461b772ac6adc87ca8086d89198579ef4e9c5b67b2d96aa1eeb6710",
+      "finalDeltaDigest": "sha256:c79daf96cfefecc722d78c0887404f75d3aa2a8884431a5ccdb580cb7f6aa3e5",
+      "workItemCount": 10,
+      "coverageTags": [
+        "additivity",
+        "clean-disjoint",
+        "mixed",
+        "range"
+      ]
+    },
+    {
+      "id": "change:mixed-tool-simplify",
+      "repositoryFamilyId": "repository:change-mixed-tool-c",
+      "partition": "test",
+      "ecosystem": "mixed",
+      "selectionKind": "base-head",
+      "estimatePath": "reports/change-mixed-tool-simplify.change-estimate.json",
+      "blindPacketPath": "blind-packets/change-mixed-tool-simplify.authoring.json",
+      "estimateDigest": "sha256:63ea22f0472ceebde214d41a3d5b38b5f1f4df9cd0a40c369771734bf3c78034",
+      "finalDeltaDigest": "sha256:53321ee88039a9b4003107659f9fa1da33f6aa6d04b3b1fb63ec2648967b1bcc",
+      "workItemCount": 10,
+      "coverageTags": [
+        "deletion",
+        "documentation",
+        "mixed",
+        "validation"
+      ]
+    },
+    {
+      "id": "change:ts-package-customization",
+      "repositoryFamilyId": "repository:change-ts-package-a",
+      "partition": "development",
+      "ecosystem": "typescript",
+      "selectionKind": "base-head",
+      "estimatePath": "reports/change-ts-package-customization.change-estimate.json",
+      "blindPacketPath": "blind-packets/change-ts-package-customization.authoring.json",
+      "estimateDigest": "sha256:accd12500bbc854de27e1b20394f4338b89feebcd756e95b71a87f532dc3b9a8",
+      "finalDeltaDigest": "sha256:6d3ec4764da46cb7faa35f0f6c2385676ec40b905565a4c474b17058443a2f52",
+      "workItemCount": 3,
+      "coverageTags": [
+        "generated-customization",
+        "integration",
+        "typescript"
+      ]
+    },
+    {
+      "id": "change:ts-package-delivery",
+      "repositoryFamilyId": "repository:change-ts-package-a",
+      "partition": "development",
+      "ecosystem": "typescript",
+      "selectionKind": "base-head",
+      "estimatePath": "reports/change-ts-package-delivery.change-estimate.json",
+      "blindPacketPath": "blind-packets/change-ts-package-delivery.authoring.json",
+      "estimateDigest": "sha256:8333c1a2d1904da058f5103a2f0e8f5a5b2287d896504609b33e9f350a4936c6",
+      "finalDeltaDigest": "sha256:7dea9815fc8f6e706587ad1cf9a6f884673d6d1c13a80faa1dad7b5cf24a301d",
+      "workItemCount": 10,
+      "coverageTags": [
+        "delivery",
+        "packaging",
+        "typescript"
+      ]
+    },
+    {
+      "id": "change:ts-package-generated",
+      "repositoryFamilyId": "repository:change-ts-package-a",
+      "partition": "development",
+      "ecosystem": "typescript",
+      "selectionKind": "base-head",
+      "estimatePath": "reports/change-ts-package-generated.change-estimate.json",
+      "blindPacketPath": "blind-packets/change-ts-package-generated.authoring.json",
+      "estimateDigest": "sha256:cdd9eac570ac7dd550a323659aee7d970559f8ceece97dfa20b7672868a38263",
+      "finalDeltaDigest": "sha256:71bd9177f128defaa61df2fdc8d36765c0b89a51e334162bdf1aa9510b944ff0",
+      "workItemCount": 0,
+      "coverageTags": [
+        "generated-conventional",
+        "typescript",
+        "zero-delta"
+      ]
+    },
+    {
+      "id": "change:ts-service-delivery",
+      "repositoryFamilyId": "repository:change-ts-service-c",
+      "partition": "test",
+      "ecosystem": "typescript",
+      "selectionKind": "base-head",
+      "estimatePath": "reports/change-ts-service-delivery.change-estimate.json",
+      "blindPacketPath": "blind-packets/change-ts-service-delivery.authoring.json",
+      "estimateDigest": "sha256:afe6765503b55e17ada143e1f0b4eea5b39d067841e7a209cd76e9f3ea3ba8c6",
+      "finalDeltaDigest": "sha256:18d44ed9102e75911aef479e2fa39024f9e715a8f8befd15f3d5f2e58c654944",
+      "workItemCount": 6,
+      "coverageTags": [
+        "ci",
+        "container",
+        "delivery",
+        "typescript"
+      ]
+    },
+    {
+      "id": "change:ts-service-integration",
+      "repositoryFamilyId": "repository:change-ts-service-c",
+      "partition": "test",
+      "ecosystem": "typescript",
+      "selectionKind": "base-head",
+      "estimatePath": "reports/change-ts-service-integration.change-estimate.json",
+      "blindPacketPath": "blind-packets/change-ts-service-integration.authoring.json",
+      "estimateDigest": "sha256:2c501567d951845b71a52691fbee771985e30a12a641f56883fb3ed6fdf1dc33",
+      "finalDeltaDigest": "sha256:7a5ccf4143c167192279704921fec71dae4f14ae21edfe27df7cde62161ce8f6",
+      "workItemCount": 8,
+      "coverageTags": [
+        "integration",
+        "production",
+        "typescript"
+      ]
+    },
+    {
+      "id": "change:ts-service-tests",
+      "repositoryFamilyId": "repository:change-ts-service-c",
+      "partition": "test",
+      "ecosystem": "typescript",
+      "selectionKind": "base-head",
+      "estimatePath": "reports/change-ts-service-tests.change-estimate.json",
+      "blindPacketPath": "blind-packets/change-ts-service-tests.authoring.json",
+      "estimateDigest": "sha256:e481ef0f852f4f7c9fac4b3b9f5f76579a442fd6c130398d2c56f202ac61ba67",
+      "finalDeltaDigest": "sha256:ba02079d791f96e7a62020d126399fee348fede6e367adbbd78faec8265a01ab",
+      "workItemCount": 5,
+      "coverageTags": [
+        "integration-testing",
+        "tests",
+        "typescript"
+      ]
+    }
+  ]
+}

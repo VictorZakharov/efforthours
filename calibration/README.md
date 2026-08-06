@@ -16,6 +16,10 @@ not justify a production accuracy claim or distributable learned model. See the
 The [`public-synthetic/0.3.0`](mutations/public-synthetic/BASELINE.md) mutation
 suite adds cross-ecosystem relational guardrails for exclusions, behavior,
 quality, delivery, and category isolation but is not effort-label data.
+The [`changes`](changes) area adds the `change-ehe-work-item/1.0.0` rubric,
+immutable final-delta review tooling, and a 24-case matrix frozen before labels.
+It now contains a preliminary 121-target host-AI teacher corpus and blind handoff,
+but no independent Change correction or accuracy claim.
 
 ## Local workflow
 
@@ -28,11 +32,16 @@ fairbill calibration review-compile <plan.json> <corpus.json> --output <reviewed
 fairbill calibration validate <corpus.json>
 fairbill calibration evaluate <corpus.json> <estimate.json>... --partition test
 fairbill calibration mutations <suite.json> <estimate.json>... --output <report.json>
+fairbill calibration change-scaffold <change-estimate.json> --repository-family <id> --case <id> --tag <tag>... [--blind] --output <packet.json>
+fairbill calibration change-compile <review-plan.json> <change-estimate.json>... --output <corpus.json>
+fairbill calibration change-evaluate <corpus.json> <change-estimate.json>... --partition development
 ```
 
 The corpus stores reviewed labels and provenance. Candidate estimates stay in
 ordinary canonical `EstimateReport` files. Keeping them separate allows the same
 frozen labels to evaluate new rules or models without rewriting the corpus.
+Change candidates remain canonical `ChangeEstimateReport` files and match by a
+content-derived base/head final-delta digest plus profile and baseline.
 
 `scaffold` output is explicitly `unreviewed` and cannot be consumed as a corpus.
 `compile` accepts only completed capability decisions, requires every represented

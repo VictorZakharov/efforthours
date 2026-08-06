@@ -13,4 +13,5 @@
   <Project Path="src/Fairbill.Reporting/Fairbill.Reporting.csproj" />
   <Project Path="tests/Fairbill.EndToEndTests/Fairbill.EndToEndTests.csproj" />
   <Project Path="tests/Fairbill.Tests/Fairbill.Tests.csproj" />
+  <Project Path="tools/Fairbill.ChangeCalibration/Fairbill.ChangeCalibration.csproj" />
 </Solution>

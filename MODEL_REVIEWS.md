@@ -27,6 +27,43 @@ Because Fairbill's own anchor informed the seed-model and calibration design, it
 a development diagnostic rather than an eligible held-out test record unless a
 future independent snapshot and review policy explicitly establishes otherwise.
 
+## 2026-08-06: `fairbill-change-public-synthetic/0.1.0`
+
+Status: **preliminary host-AI teacher labels; not independently reviewed**
+
+`change-ehe-work-item/1.0.0` now defines logical review of normalized immutable
+final deltas. The existing corpus and independent-review machinery carries an
+optional Change reference with base/head objects, evidence digests, a derived
+final-delta digest, and non-valuing coverage tags. Scaffold, exact-provenance
+compile, validation, blind second review, and held-out evaluation are executable
+without changing `change-seed/0.1.0` or adding ML.
+
+Twenty-four synthetic case identities across eight repository families were
+assigned to development, validation, and test before numerical review. The
+MIT-licensed `0.1.0.fixtures.json` suite now deterministically reproduces 24
+effort-only source reports and 24 blind authoring packets with
+`change-fixture-generator/0.1.0`; the suite digest is
+`sha256:3a3cb8caca7625169c67c024eb9b336cd9b041bab5e24a1d141059252497b797`.
+One disclosed host-AI teacher then authored category budgets from the final
+synthetic behavior. Candidate totals had already been seen during invariant
+verification, so the 121 compiled targets are weak supervision rather than a blind
+label claim. Twenty-two targets are explicit `0/0/0` false-positive or duplicate
+exclusions with retained lineage. No prior was changed.
+
+| Partition | Records | Reviewed expected | Seed expected | WAPE / bias |
+|---|---:|---:|---:|---:|
+| development | 12 | 38.50 h | 41.25 h | 0.3701 / 0.0714 |
+| validation | 6 | 26.00 h | 27.50 h | 0.0962 / 0.0577 |
+| test | 6 | 41.75 h | not evaluated | deliberately withheld |
+
+Development and validation metrics are diagnostic error scales only. The test
+comparison was not run because no independently reviewed corpus, numerical
+thresholds, or frozen release candidate exists. The blind 121-target handoff pins
+source-corpus digest
+`sha256:b1d6f8a7a64078953508082454ab56bbc559196bb0810e369035880c765fcbd7`.
+Metric identity and candidate selection order are frozen, while numerical
+thresholds remain blocked on realistic independently reviewed error scales.
+
 ## 2026-08-06: `fairbill-public-expansion/0.1.0`
 
 Status: **preliminary host-AI teacher labels; not independently reviewed**

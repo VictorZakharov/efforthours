@@ -14,6 +14,13 @@ public static class CalibrationDigest
         return ComputeCanonical(estimate);
     }
 
+    public static string Compute(ChangeEstimateReport estimate)
+    {
+        ArgumentNullException.ThrowIfNull(estimate);
+
+        return ComputeCanonical(estimate);
+    }
+
     public static string Compute(CalibrationCorpus corpus)
     {
         ArgumentNullException.ThrowIfNull(corpus);

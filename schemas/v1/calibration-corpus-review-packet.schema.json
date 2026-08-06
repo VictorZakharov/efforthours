@@ -70,6 +70,7 @@
       "properties": {
         "sourceRecordId": { "type": "string", "minLength": 1 },
         "repository": { "$ref": "#/$defs/repository" },
+        "change": { "$ref": "#/$defs/change" },
         "profile": { "$ref": "#/$defs/profile" },
         "baselineId": { "type": "string", "minLength": 1 },
         "partition": { "$ref": "#/$defs/partition" },
@@ -82,7 +83,6 @@
         },
         "targets": {
           "type": "array",
-          "minItems": 1,
           "items": { "$ref": "#/$defs/target" }
         }
       },
@@ -95,6 +95,35 @@
         "id": { "type": "string", "minLength": 1 },
         "name": { "type": "string", "minLength": 1 },
         "sourceDigest": { "type": "string", "pattern": "^sha256:.+" }
+      },
+      "additionalProperties": false
+    },
+    "change": {
+      "type": "object",
+      "required": [
+        "id",
+        "selectionKind",
+        "baseObjectId",
+        "headObjectId",
+        "baseEvidenceDigest",
+        "headEvidenceDigest",
+        "finalDeltaDigest",
+        "coverageTags"
+      ],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "selectionKind": { "enum": ["base-head", "commit", "range", "pull-request"] },
+        "baseObjectId": { "type": "string", "minLength": 1 },
+        "headObjectId": { "type": "string", "minLength": 1 },
+        "baseEvidenceDigest": { "type": "string", "pattern": "^sha256:.+" },
+        "headEvidenceDigest": { "type": "string", "pattern": "^sha256:.+" },
+        "finalDeltaDigest": { "type": "string", "pattern": "^sha256:.+" },
+        "coverageTags": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "type": "string", "minLength": 1 }
+        }
       },
       "additionalProperties": false
     },

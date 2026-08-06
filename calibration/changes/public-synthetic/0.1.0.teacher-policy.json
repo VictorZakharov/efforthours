@@ -1,0 +1,255 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "fairbill-change-public-synthetic",
+  "version": "0.1.0",
+  "description": "Preliminary logical teacher estimates for 24 small synthetic immutable final changes.",
+  "completedOn": "2026-08-06",
+  "reviewer": {
+    "id": "teacher:openai-codex-gpt-5-2026-08",
+    "kind": "host-ai",
+    "role": "teacher",
+    "modelId": "openai-codex",
+    "modelVersion": "gpt-5"
+  },
+  "reviewNotes": "Single host-AI teacher review mapped by change-teacher-plan-generator/0.1.0; no independent correction or adjudication. Candidate totals were observed during fixture-invariant verification before this policy was authored, so this is disclosed weak supervision rather than a blind label claim. Category budgets were reasoned from the final synthetic behavior and frozen without fitting seed priors, validation outcomes, test outcomes, or preferred WAPE.",
+  "cases": [
+    {
+      "id": "change:dn-lib-production",
+      "rationale": "A senior contractor must understand one small string-normalization rule, implement the maintained API, and check edge behavior.",
+      "categories": [
+        {"category": "specification-comprehension-and-domain-learning", "action": "target", "hours": {"low": 0.25, "expected": 0.50, "high": 1.00}, "uncertaintyReasons": ["Input and Unicode edge requirements may need clarification."]},
+        {"category": "production-implementation", "action": "target", "hours": {"low": 0.75, "expected": 1.50, "high": 3.00}, "uncertaintyReasons": ["Normalization edge cases can expand implementation and validation."]},
+        {"category": "self-review-and-system-integration", "action": "target", "hours": {"low": 0.25, "expected": 0.50, "high": 1.00}, "uncertaintyReasons": ["The tiny library has a bounded integration surface."]}
+      ]
+    },
+    {
+      "id": "change:dn-lib-tests",
+      "rationale": "The final delta adds a test project plus two focused behavioral examples for existing code.",
+      "categories": [
+        {"category": "specification-comprehension-and-domain-learning", "action": "target", "targetCount": 1, "hours": {"low": 0.25, "expected": 0.50, "high": 1.00}, "uncertaintyReasons": ["Expected edge coverage is only briefly represented."]},
+        {"category": "repository-and-solution-setup", "action": "target", "hours": {"low": 0.50, "expected": 0.75, "high": 1.50}, "uncertaintyReasons": ["Project wiring may require a small amount of package and reference setup."]},
+        {"category": "unit-testing", "action": "target", "hours": {"low": 0.75, "expected": 1.50, "high": 3.00}, "uncertaintyReasons": ["Additional normalization cases may be expected by the clear specification."]},
+        {"category": "self-review-and-system-integration", "action": "target", "targetCount": 1, "hours": {"low": 0.25, "expected": 0.50, "high": 1.00}, "uncertaintyReasons": ["Static analysis assumes the new tests pass."]}
+      ]
+    },
+    {
+      "id": "change:dn-lib-docs",
+      "rationale": "The final delta is one concise maintained usage guide with an example and explicit limitations.",
+      "categories": [
+        {"category": "specification-comprehension-and-domain-learning", "action": "target", "hours": {"low": 0.25, "expected": 0.50, "high": 1.00}, "uncertaintyReasons": ["The intended audience and terminology may need brief confirmation."]},
+        {"category": "documentation", "action": "target", "hours": {"low": 0.50, "expected": 1.00, "high": 2.00}, "uncertaintyReasons": ["Example verification and wording review create modest variability."]},
+        {"category": "self-review-and-system-integration", "action": "target", "hours": {"low": 0.25, "expected": 0.50, "high": 1.00}, "uncertaintyReasons": ["Documentation integration is bounded."]}
+      ]
+    },
+    {
+      "id": "change:js-service-integration",
+      "rationale": "The maintained client must construct an authenticated request, handle provider failures, parse JSON, and map the response.",
+      "categories": [
+        {"category": "specification-comprehension-and-domain-learning", "action": "target", "hours": {"low": 0.50, "expected": 0.75, "high": 1.50}, "uncertaintyReasons": ["Provider contract details may require clarification."]},
+        {"category": "production-implementation", "action": "target", "hours": {"low": 1.25, "expected": 2.50, "high": 5.00}, "uncertaintyReasons": ["HTTP error shapes and response validation are only partially represented."]},
+        {"category": "self-review-and-system-integration", "action": "target", "hours": {"low": 0.50, "expected": 0.75, "high": 1.50}, "uncertaintyReasons": ["The external boundary merits a focused manual review."]}
+      ]
+    },
+    {
+      "id": "change:js-service-config",
+      "rationale": "The delta adds two integration settings, defaulting, validation, and an operator-facing example file.",
+      "categories": [
+        {"category": "specification-comprehension-and-domain-learning", "action": "target", "hours": {"low": 0.25, "expected": 0.50, "high": 1.00}, "uncertaintyReasons": ["Operational constraints are compact but not exhaustive."]},
+        {"category": "production-implementation", "action": "target", "hours": {"low": 0.75, "expected": 1.25, "high": 2.50}, "uncertaintyReasons": ["Validation conventions may require alignment with the host service."]},
+        {"category": "build-configuration-and-developer-tooling", "action": "target", "hours": {"low": 0.25, "expected": 0.50, "high": 1.00}, "uncertaintyReasons": ["The example configuration is small and maintained."]},
+        {"category": "self-review-and-system-integration", "action": "target", "hours": {"low": 0.50, "expected": 0.75, "high": 1.50}, "uncertaintyReasons": ["Environment behavior needs a brief integration check."]}
+      ]
+    },
+    {
+      "id": "change:js-service-deletion",
+      "rationale": "A deliberate endpoint retirement includes route removal, compatibility reasoning, manual validation, and migration documentation.",
+      "categories": [
+        {"category": "specification-comprehension-and-domain-learning", "action": "target", "targetCount": 1, "hours": {"low": 0.50, "expected": 0.75, "high": 1.50}, "uncertaintyReasons": ["Consumer and compatibility expectations may need confirmation."]},
+        {"category": "architecture-and-technical-design", "action": "target", "hours": {"low": 0.25, "expected": 0.50, "high": 1.00}, "uncertaintyReasons": ["The removal decision is bounded to one route."]},
+        {"category": "production-implementation", "action": "target", "hours": {"low": 0.75, "expected": 1.50, "high": 3.00}, "uncertaintyReasons": ["Two source capabilities jointly represent the route simplification."]},
+        {"category": "manual-validation-debugging-and-hardening", "action": "target", "hours": {"low": 0.50, "expected": 1.00, "high": 2.00}, "uncertaintyReasons": ["404 behavior and unaffected routes need validation."]},
+        {"category": "documentation", "action": "target", "hours": {"low": 0.50, "expected": 0.75, "high": 1.50}, "uncertaintyReasons": ["Migration wording may require consumer context."]},
+        {"category": "self-review-and-system-integration", "action": "target", "targetCount": 1, "hours": {"low": 0.50, "expected": 0.75, "high": 1.50}, "uncertaintyReasons": ["Deletion risk is higher than its code volume."]}
+      ]
+    },
+    {
+      "id": "change:ts-package-generated",
+      "rationale": "The only final artifact is conventional generated output, so equivalent maintained implementation effort is exactly zero.",
+      "categories": []
+    },
+    {
+      "id": "change:ts-package-customization",
+      "rationale": "The maintained wrapper adds retry behavior around a conventional generated client and must preserve generic result and error behavior.",
+      "categories": [
+        {"category": "specification-comprehension-and-domain-learning", "action": "target", "hours": {"low": 0.50, "expected": 0.75, "high": 1.50}, "uncertaintyReasons": ["Retry eligibility and backoff requirements are not fully expressed."]},
+        {"category": "production-implementation", "action": "target", "hours": {"low": 1.25, "expected": 2.50, "high": 5.00}, "uncertaintyReasons": ["Error classification and retry policy can materially change the wrapper."]},
+        {"category": "self-review-and-system-integration", "action": "target", "hours": {"low": 0.50, "expected": 0.75, "high": 1.50}, "uncertaintyReasons": ["Generated-client compatibility needs review."]}
+      ]
+    },
+    {
+      "id": "change:ts-package-delivery",
+      "rationale": "The final package becomes buildable and distributable with declarations, a controlled file set, and prepack behavior.",
+      "categories": [
+        {"category": "specification-comprehension-and-domain-learning", "action": "target", "targetCount": 1, "hours": {"low": 0.50, "expected": 0.75, "high": 1.50}, "uncertaintyReasons": ["Consumer module and declaration requirements may vary."]},
+        {"category": "repository-and-solution-setup", "action": "target", "hours": {"low": 0.50, "expected": 0.75, "high": 1.50}, "uncertaintyReasons": ["Existing package conventions reduce setup effort."]},
+        {"category": "architecture-and-technical-design", "action": "target", "hours": {"low": 0.25, "expected": 0.50, "high": 1.00}, "uncertaintyReasons": ["The output layout is small but consumer-facing."]},
+        {"category": "production-implementation", "action": "exclude"},
+        {"category": "manual-validation-debugging-and-hardening", "action": "target", "hours": {"low": 0.50, "expected": 0.75, "high": 1.50}, "uncertaintyReasons": ["Packed file contents and imports need checking."]},
+        {"category": "build-configuration-and-developer-tooling", "action": "target", "hours": {"low": 1.00, "expected": 2.00, "high": 4.00}, "uncertaintyReasons": ["TypeScript module settings can expose compatibility issues."]},
+        {"category": "packaging-deployment-and-release-artifacts", "action": "target", "hours": {"low": 0.50, "expected": 1.00, "high": 2.00}, "uncertaintyReasons": ["Package metadata and included-file verification are represented."]},
+        {"category": "self-review-and-system-integration", "action": "target", "targetCount": 1, "hours": {"low": 0.50, "expected": 0.75, "high": 1.50}, "uncertaintyReasons": ["Consumer-facing package changes merit final review."]}
+      ]
+    },
+    {
+      "id": "change:mixed-disjoint-range",
+      "rationale": "Three independent final capabilities add a small .NET clock, a web formatter, and maintained usage documentation without rework.",
+      "categories": [
+        {"category": "specification-comprehension-and-domain-learning", "action": "target", "hours": {"low": 0.50, "expected": 0.75, "high": 1.50}, "uncertaintyReasons": ["The three small requirements are explicit and separable."]},
+        {"category": "production-implementation", "action": "target", "hours": {"low": 1.00, "expected": 2.00, "high": 4.00}, "uncertaintyReasons": ["Cross-runtime date behavior creates limited ambiguity."]},
+        {"category": "documentation", "action": "target", "hours": {"low": 0.50, "expected": 0.75, "high": 1.50}, "uncertaintyReasons": ["The usage note is concise."]},
+        {"category": "self-review-and-system-integration", "action": "target", "hours": {"low": 0.50, "expected": 1.00, "high": 2.00}, "uncertaintyReasons": ["Both ecosystem surfaces need a coherent final check."]}
+      ]
+    },
+    {
+      "id": "change:mixed-overlap-range",
+      "rationale": "Only the final structured status capability is valued; repeated intermediate edits do not multiply its clean implementation.",
+      "categories": [
+        {"category": "specification-comprehension-and-domain-learning", "action": "target", "hours": {"low": 0.50, "expected": 0.75, "high": 1.50}, "uncertaintyReasons": ["Status-state semantics may require clarification."]},
+        {"category": "production-implementation", "action": "target", "hours": {"low": 1.00, "expected": 2.00, "high": 4.00}, "uncertaintyReasons": ["Type and error-state behavior are small but externally visible."]},
+        {"category": "self-review-and-system-integration", "action": "target", "hours": {"low": 0.50, "expected": 0.75, "high": 1.50}, "uncertaintyReasons": ["The final API shape needs review independent of churn."]}
+      ]
+    },
+    {
+      "id": "change:mixed-revert-range",
+      "rationale": "The base and head artifacts are identical, so completely reverted intermediate activity contributes no final EHE.",
+      "categories": []
+    },
+    {
+      "id": "change:dn-data-migration",
+      "rationale": "A nullable persisted field requires model design, a reversible migration, validation, and integration review.",
+      "categories": [
+        {"category": "specification-comprehension-and-domain-learning", "action": "target", "targetCount": 1, "hours": {"low": 0.50, "expected": 0.75, "high": 1.50}, "uncertaintyReasons": ["Locale format and null semantics may need confirmation."]},
+        {"category": "architecture-and-technical-design", "action": "target", "hours": {"low": 0.50, "expected": 0.75, "high": 1.50}, "uncertaintyReasons": ["Schema compatibility is bounded to one optional field."]},
+        {"category": "production-implementation", "action": "target", "hours": {"low": 0.25, "expected": 0.50, "high": 1.00}, "uncertaintyReasons": ["The model change is mechanical once semantics are decided."]},
+        {"category": "data-modeling-persistence-and-migrations", "action": "target", "hours": {"low": 1.50, "expected": 3.00, "high": 6.00}, "uncertaintyReasons": ["Migration conventions and rollback verification vary by persistence stack."]},
+        {"category": "manual-validation-debugging-and-hardening", "action": "target", "hours": {"low": 0.50, "expected": 1.00, "high": 2.00}, "uncertaintyReasons": ["Upgrade and downgrade paths need checking."]},
+        {"category": "self-review-and-system-integration", "action": "target", "targetCount": 1, "hours": {"low": 0.50, "expected": 0.75, "high": 1.50}, "uncertaintyReasons": ["The schema and model must remain aligned."]}
+      ]
+    },
+    {
+      "id": "change:dn-data-integration",
+      "rationale": "The delta adds repository lookup plus an HTTP endpoint with not-found behavior and cancellation propagation.",
+      "categories": [
+        {"category": "specification-comprehension-and-domain-learning", "action": "target", "targetCount": 1, "hours": {"low": 0.50, "expected": 0.75, "high": 1.50}, "uncertaintyReasons": ["API and persistence contracts are compact but cross layers."]},
+        {"category": "architecture-and-technical-design", "action": "target", "hours": {"low": 0.50, "expected": 1.00, "high": 2.00}, "uncertaintyReasons": ["Dependency registration and boundary ownership may vary."]},
+        {"category": "production-implementation", "action": "target", "hours": {"low": 2.00, "expected": 4.00, "high": 7.00}, "uncertaintyReasons": ["Two source capabilities span API mapping and persistence behavior."]},
+        {"category": "manual-validation-debugging-and-hardening", "action": "target", "hours": {"low": 0.50, "expected": 1.00, "high": 2.00}, "uncertaintyReasons": ["Success, missing data, and cancellation paths need validation."]},
+        {"category": "self-review-and-system-integration", "action": "target", "targetCount": 1, "hours": {"low": 0.50, "expected": 1.00, "high": 2.00}, "uncertaintyReasons": ["Cross-layer integration creates moderate review risk."]}
+      ]
+    },
+    {
+      "id": "change:dn-data-removal",
+      "rationale": "Removing a persisted field requires model and mapping simplification, a reversible destructive migration, and compatibility validation.",
+      "categories": [
+        {"category": "specification-comprehension-and-domain-learning", "action": "target", "targetCount": 1, "hours": {"low": 0.50, "expected": 0.75, "high": 1.50}, "uncertaintyReasons": ["Data-retention and consumer expectations may need confirmation."]},
+        {"category": "architecture-and-technical-design", "action": "target", "hours": {"low": 0.50, "expected": 1.00, "high": 2.00}, "uncertaintyReasons": ["Destructive schema decisions carry compatibility risk."]},
+        {"category": "production-implementation", "action": "target", "hours": {"low": 0.50, "expected": 1.00, "high": 2.00}, "uncertaintyReasons": ["Model and DTO mapping must change together."]},
+        {"category": "data-modeling-persistence-and-migrations", "action": "target", "hours": {"low": 1.50, "expected": 3.00, "high": 6.00}, "uncertaintyReasons": ["Production data safety and rollback policy may increase effort."]},
+        {"category": "manual-validation-debugging-and-hardening", "action": "target", "hours": {"low": 0.75, "expected": 1.25, "high": 2.50}, "uncertaintyReasons": ["Existing data and API compatibility need deliberate checks."]},
+        {"category": "self-review-and-system-integration", "action": "target", "targetCount": 1, "hours": {"low": 0.50, "expected": 1.00, "high": 2.00}, "uncertaintyReasons": ["Removal correctness matters more than deleted volume."]}
+      ]
+    },
+    {
+      "id": "change:js-lib-formatting",
+      "rationale": "Conservative lexical normalization proves that the maintained source differs only in formatting, so final EHE is exactly zero.",
+      "categories": []
+    },
+    {
+      "id": "change:js-lib-move",
+      "rationale": "The immutable source body moved paths without content change, so mechanical movement creates no represented body effort.",
+      "categories": []
+    },
+    {
+      "id": "change:js-lib-quality",
+      "rationale": "The final delta adds one focused test and one concise usage contract without changing production behavior.",
+      "categories": [
+        {"category": "specification-comprehension-and-domain-learning", "action": "target", "hours": {"low": 0.25, "expected": 0.50, "high": 1.00}, "uncertaintyReasons": ["Expected quality depth is represented by only one example."]},
+        {"category": "production-implementation", "action": "exclude"},
+        {"category": "unit-testing", "action": "target", "hours": {"low": 0.75, "expected": 1.50, "high": 3.00}, "uncertaintyReasons": ["Additional numeric edge cases may be expected."]},
+        {"category": "documentation", "action": "target", "hours": {"low": 0.50, "expected": 1.00, "high": 2.00}, "uncertaintyReasons": ["Contract wording and example verification are bounded."]},
+        {"category": "self-review-and-system-integration", "action": "target", "hours": {"low": 0.25, "expected": 0.50, "high": 1.00}, "uncertaintyReasons": ["The quality-only delta needs a short consistency review."]}
+      ]
+    },
+    {
+      "id": "change:ts-service-integration",
+      "rationale": "A protocol client adds request construction, missing-item semantics, failure translation, response validation, and typed mapping.",
+      "categories": [
+        {"category": "specification-comprehension-and-domain-learning", "action": "target", "targetCount": 1, "hours": {"low": 0.50, "expected": 0.75, "high": 1.50}, "uncertaintyReasons": ["Warehouse protocol details may require clarification."]},
+        {"category": "architecture-and-technical-design", "action": "target", "hours": {"low": 0.50, "expected": 1.00, "high": 2.00}, "uncertaintyReasons": ["Error ownership and transport abstraction are design choices."]},
+        {"category": "production-implementation", "action": "target", "hours": {"low": 0.75, "expected": 1.50, "high": 3.00}, "uncertaintyReasons": ["Typed mapping and validation are modest but maintained."]},
+        {"category": "external-integrations-and-protocols", "action": "target", "hours": {"low": 2.00, "expected": 4.00, "high": 8.00}, "uncertaintyReasons": ["Remote error and payload variants can materially expand the protocol work."]},
+        {"category": "manual-validation-debugging-and-hardening", "action": "target", "hours": {"low": 0.50, "expected": 1.00, "high": 2.00}, "uncertaintyReasons": ["Success, 404, malformed, and failure paths need checks."]},
+        {"category": "self-review-and-system-integration", "action": "target", "targetCount": 1, "hours": {"low": 0.50, "expected": 1.00, "high": 2.00}, "uncertaintyReasons": ["External compatibility merits a focused review."]}
+      ]
+    },
+    {
+      "id": "change:ts-service-delivery",
+      "rationale": "The service gains a multi-stage non-root container and a basic Node build workflow with maintained ignore and compiler configuration.",
+      "categories": [
+        {"category": "specification-comprehension-and-domain-learning", "action": "target", "hours": {"low": 0.50, "expected": 0.75, "high": 1.50}, "uncertaintyReasons": ["Target runtime and CI policy may vary."]},
+        {"category": "repository-and-solution-setup", "action": "target", "hours": {"low": 0.50, "expected": 0.75, "high": 1.50}, "uncertaintyReasons": ["Existing package scripts reduce setup effort."]},
+        {"category": "build-configuration-and-developer-tooling", "action": "target", "hours": {"low": 0.50, "expected": 1.00, "high": 2.00}, "uncertaintyReasons": ["TypeScript output assumptions need verification."]},
+        {"category": "ci-cd-and-infrastructure-as-code", "action": "target", "hours": {"low": 1.00, "expected": 2.00, "high": 4.00}, "uncertaintyReasons": ["Dependency caching and policy hardening are outside the represented state."]},
+        {"category": "packaging-deployment-and-release-artifacts", "action": "target", "hours": {"low": 1.50, "expected": 3.00, "high": 6.00}, "uncertaintyReasons": ["Container build correctness and runtime ownership may require iteration."]},
+        {"category": "self-review-and-system-integration", "action": "target", "hours": {"low": 0.50, "expected": 1.00, "high": 2.00}, "uncertaintyReasons": ["CI and container behavior need a coherent delivery review."]}
+      ]
+    },
+    {
+      "id": "change:ts-service-tests",
+      "rationale": "The final delta is quality-only: focused stock unit cases plus a small transport-boundary integration scenario.",
+      "categories": [
+        {"category": "specification-comprehension-and-domain-learning", "action": "target", "hours": {"low": 0.25, "expected": 0.50, "high": 1.00}, "uncertaintyReasons": ["Required depth is represented by a small test set."]},
+        {"category": "production-implementation", "action": "exclude"},
+        {"category": "unit-testing", "action": "target", "hours": {"low": 0.75, "expected": 1.50, "high": 3.00}, "uncertaintyReasons": ["Boundary cases may expand slightly."]},
+        {"category": "integration-contract-and-component-testing", "action": "target", "hours": {"low": 1.00, "expected": 2.00, "high": 4.00}, "uncertaintyReasons": ["The synthetic transport is simple and may underrepresent real harness setup."]},
+        {"category": "self-review-and-system-integration", "action": "target", "hours": {"low": 0.50, "expected": 0.75, "high": 1.50}, "uncertaintyReasons": ["Static analysis assumes the test suite passes."]}
+      ]
+    },
+    {
+      "id": "change:mixed-tool-feature",
+      "rationale": "A cross-runtime CLI capability dispatches to a Node JSON summarizer and must preserve process and data-boundary behavior.",
+      "categories": [
+        {"category": "specification-comprehension-and-domain-learning", "action": "target", "hours": {"low": 0.50, "expected": 0.75, "high": 1.50}, "uncertaintyReasons": ["CLI error and quoting requirements are only partially represented."]},
+        {"category": "production-implementation", "action": "target", "hours": {"low": 2.00, "expected": 4.00, "high": 8.00}, "uncertaintyReasons": ["Two runtime surfaces, subprocess behavior, paths, and JSON errors create integration risk."]},
+        {"category": "self-review-and-system-integration", "action": "target", "hours": {"low": 0.50, "expected": 1.00, "high": 2.00}, "uncertaintyReasons": ["Cross-platform process behavior needs review."]}
+      ]
+    },
+    {
+      "id": "change:mixed-tool-simplify",
+      "rationale": "The final change deliberately retires a command and script, simplifies dispatch, and documents the supported migration path.",
+      "categories": [
+        {"category": "specification-comprehension-and-domain-learning", "action": "target", "targetCount": 1, "hours": {"low": 0.50, "expected": 0.75, "high": 1.50}, "uncertaintyReasons": ["Consumer compatibility expectations may need confirmation."]},
+        {"category": "repository-and-solution-setup", "action": "exclude"},
+        {"category": "architecture-and-technical-design", "action": "target", "hours": {"low": 0.50, "expected": 0.75, "high": 1.50}, "uncertaintyReasons": ["The retirement boundary is small but externally visible."]},
+        {"category": "production-implementation", "action": "target", "hours": {"low": 1.00, "expected": 2.00, "high": 4.00}, "uncertaintyReasons": ["Two maintained source surfaces are simplified together."]},
+        {"category": "manual-validation-debugging-and-hardening", "action": "target", "hours": {"low": 0.50, "expected": 1.00, "high": 2.00}, "uncertaintyReasons": ["Removed and current command behavior both need checks."]},
+        {"category": "documentation", "action": "target", "hours": {"low": 0.50, "expected": 0.75, "high": 1.50}, "uncertaintyReasons": ["Migration wording may require product context."]},
+        {"category": "self-review-and-system-integration", "action": "target", "targetCount": 1, "hours": {"low": 0.50, "expected": 0.75, "high": 1.50}, "uncertaintyReasons": ["Deletion and documentation must stay consistent."]}
+      ]
+    },
+    {
+      "id": "change:mixed-tool-range",
+      "rationale": "Three clean disjoint changes add a small production helper, focused unit coverage, and maintained documentation.",
+      "categories": [
+        {"category": "specification-comprehension-and-domain-learning", "action": "target", "targetCount": 1, "hours": {"low": 0.50, "expected": 0.75, "high": 1.50}, "uncertaintyReasons": ["The three requirements are compact and independent."]},
+        {"category": "repository-and-solution-setup", "action": "target", "hours": {"low": 0.50, "expected": 0.75, "high": 1.50}, "uncertaintyReasons": ["Test project conventions are not fully represented."]},
+        {"category": "architecture-and-technical-design", "action": "target", "hours": {"low": 0.25, "expected": 0.50, "high": 1.00}, "uncertaintyReasons": ["The helper API has a small design surface."]},
+        {"category": "production-implementation", "action": "target", "hours": {"low": 0.75, "expected": 1.50, "high": 3.00}, "uncertaintyReasons": ["Input enumeration semantics may need a small decision."]},
+        {"category": "unit-testing", "action": "target", "hours": {"low": 0.75, "expected": 1.50, "high": 3.00}, "uncertaintyReasons": ["Additional empty and deferred-enumeration cases may be desired."]},
+        {"category": "manual-validation-debugging-and-hardening", "action": "target", "hours": {"low": 0.50, "expected": 0.75, "high": 1.50}, "uncertaintyReasons": ["The final range should be checked as one coherent artifact."]},
+        {"category": "documentation", "action": "target", "hours": {"low": 0.50, "expected": 0.75, "high": 1.50}, "uncertaintyReasons": ["The usage contract is concise."]},
+        {"category": "self-review-and-system-integration", "action": "target", "targetCount": 1, "hours": {"low": 0.50, "expected": 1.00, "high": 2.00}, "uncertaintyReasons": ["Code, tests, and documentation need an integrated review."]}
+      ]
+    }
+  ]
+}

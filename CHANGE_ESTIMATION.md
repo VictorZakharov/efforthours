@@ -6,7 +6,10 @@ The first Change Estimation MVP is implemented after Milestone 7B5. It includes
 provider-neutral immutable base/head analysis, one commit, one final revision
 range, and one GitHub pull request through an optional `gh` adapter. The
 `change-seed/0.1.0` rules are transparent but uncalibrated and remain experimental.
-Multiple pull requests and author-and-period portfolios remain deferred.
+The first calibration-infrastructure checkpoint and a preliminary 24-record
+host-AI teacher corpus are implemented, but no independent correction exists.
+Multiple pull
+requests and author-and-period portfolios remain deferred.
 
 ## Purpose
 
@@ -167,6 +170,36 @@ The v1 public schemas are `change-evidence`, `change-estimate-report`, and
 The implementation is covered by memory-only unit snapshots plus separate
 process-level Git tests. See `MILESTONE_CHANGE_1.md` for the delivered boundaries
 and remaining limitations.
+
+## Calibration boundary
+
+Change calibration uses `change-ehe-work-item/1.0.0` and the existing v1 corpus,
+blind-review, validation, and evaluation contracts with an optional immutable
+Change reference. Repository records omit that member and retain their canonical
+serialization. A Change record pins case ID, selector kind, base/head object IDs,
+base/head evidence digests, a content-derived final-delta digest, and non-valuing
+coverage tags. Repository family owns the development/validation/test partition.
+
+`calibration change-scaffold` produces unreviewed effort-only packets;
+`change-compile` verifies the exact report and final-delta provenance;
+`change-evaluate` applies the same versioned WAPE, bias, absolute-error, interval,
+and mapping metrics as repository evaluation. Ordinary `review-scaffold` and
+`review-compile` provide independent correction without dropping Change lineage.
+A zero normalized delta has an empty reviewed target list rather than an invented
+zero-hour task. A reviewer rejects a false-positive or duplicate candidate
+capability with a lineage-preserving exact `0/0/0` target, concrete rationale, and
+size exception. That exclusion remains visible to evaluation and independent
+review.
+
+The first 24 synthetic case identities and partitions are frozen under
+`calibration/changes/public-synthetic` before numerical labels. Their 24 canonical
+source reports and blind authoring packets are reproducible from the checked-in
+MIT synthetic suite without physical target-repository snapshots. The first-pass
+teacher corpus has 121 targets and an exact-digest blind handoff; it is disclosed
+weak supervision, not an accuracy claim. Metric identity and
+candidate decision order are frozen in `CHANGE_MODEL_ADMISSION.md`; numerical
+thresholds, model fitting, and accuracy claims remain blocked on realistic,
+independently reviewed error measurements. See `MILESTONE_CHANGE_2.md`.
 
 ## Author-and-period portfolios
 

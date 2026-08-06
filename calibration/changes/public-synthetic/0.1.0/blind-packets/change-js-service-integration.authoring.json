@@ -1,0 +1,142 @@
+{
+  "schemaVersion": "1.0.0",
+  "authoringVersion": "change-calibration-authoring/0.1.0",
+  "status": "unreviewed",
+  "warning": "UNREVIEWED CHANGE EHE: candidate values are reference material, not calibration labels. Review the normalized final delta without using history activity as effort evidence.",
+  "rubric": {
+    "id": "change-ehe-work-item",
+    "version": "1.0.0"
+  },
+  "repository": {
+    "id": "repository:change-js-service-a",
+    "name": "repository:change-js-service-a",
+    "sourceDigest": "sha256:4abeb518b832c908d913d0c5bd1ebdebb14b8e8d7d45d1e03ac83b47303b28ad"
+  },
+  "change": {
+    "id": "change:js-service-integration",
+    "selectionKind": "base-head",
+    "baseObjectId": "5087c2000629623d2ea5646e39fa467375937400359d83d65068c648f654027c",
+    "headObjectId": "1c8ca983953b953c179a22022b20833e28713a236e0906d517ab2a50d568ee0b",
+    "baseEvidenceDigest": "sha256:e0e40128681339cd58f680eac7d98ca4f91938262b64a82ac1cc30d07976a5ba",
+    "headEvidenceDigest": "sha256:ef7039288a63adf67d777350d9f7bec2eaef0674d1d4ee593e8d6260c0fd003c",
+    "finalDeltaDigest": "sha256:4abeb518b832c908d913d0c5bd1ebdebb14b8e8d7d45d1e03ac83b47303b28ad",
+    "coverageTags": [
+      "integration",
+      "javascript",
+      "production"
+    ]
+  },
+  "profile": "implementation",
+  "baselineId": "senior-contractor-2026-no-ai",
+  "candidateVisibility": "blind",
+  "candidate": {
+    "estimatorVersion": "change-seed/0.1.0\u002Bseed-rules/0.2.1",
+    "estimateDigest": "sha256:11bd86bc6cbf54cb608c565d1004561bfecc1bdcd2d733b1bfbe2d8745a8b5b8",
+    "totalHours": null,
+    "categories": []
+  },
+  "targets": [
+    {
+      "id": "target:change-item:capability-marginal:fcbdb5ca1cb3ae9d4e72",
+      "sourceCapabilityId": "change-item:capability-marginal:fcbdb5ca1cb3ae9d4e72",
+      "category": "production-implementation",
+      "title": "Expand Implement maintained internal logic for \u0027.\u0027 (application)",
+      "scope": ".",
+      "sourceWorkItemIds": [
+        "change-item:capability-marginal:fcbdb5ca1cb3ae9d4e72"
+      ],
+      "evidenceIds": [
+        "change:path:0a43c28fc4b46dede733760a"
+      ],
+      "candidate": {
+        "hours": null,
+        "confidence": null,
+        "reason": "Positive base-to-head marginal effort from the existing repository capability model, bounded by touched final-change regions when existing behavior was also modified."
+      },
+      "review": {
+        "hours": null,
+        "rationale": null,
+        "sizeException": null
+      },
+      "assumptions": [
+        "The final base-to-head artifact delta is valued once with modern 2026-equivalent technology.",
+        "Commit count, elapsed time, authorship, messages, and intermediate churn are not effort multipliers."
+      ],
+      "exclusions": [
+        "Historical rework and discarded intermediate states are excluded."
+      ],
+      "uncertaintyReasons": []
+    },
+    {
+      "id": "target:change-item:change-comprehension:204ad7801bbc0dd5b8d3",
+      "sourceCapabilityId": "change-item:change-comprehension:204ad7801bbc0dd5b8d3",
+      "category": "specification-comprehension-and-domain-learning",
+      "title": "Understand the bounded change specification",
+      "scope": ".",
+      "sourceWorkItemIds": [
+        "change-item:change-comprehension:204ad7801bbc0dd5b8d3"
+      ],
+      "evidenceIds": [
+        "change:path:0a43c28fc4b46dede733760a"
+      ],
+      "candidate": {
+        "hours": null,
+        "confidence": null,
+        "reason": "Comprehend the final behavior and quality delta represented by the affected capability categories."
+      },
+      "review": {
+        "hours": null,
+        "rationale": null,
+        "sizeException": null
+      },
+      "assumptions": [
+        "The final base-to-head artifact delta is valued once with modern 2026-equivalent technology.",
+        "Commit count, elapsed time, authorship, messages, and intermediate churn are not effort multipliers."
+      ],
+      "exclusions": [
+        "Historical rework and discarded intermediate states are excluded."
+      ],
+      "uncertaintyReasons": []
+    },
+    {
+      "id": "target:change-item:change-review:9acdd5a4b85273da27ab",
+      "sourceCapabilityId": "change-item:change-review:9acdd5a4b85273da27ab",
+      "category": "self-review-and-system-integration",
+      "title": "Review and integrate the completed change",
+      "scope": ".",
+      "sourceWorkItemIds": [
+        "change-item:change-review:9acdd5a4b85273da27ab"
+      ],
+      "evidenceIds": [
+        "change:path:0a43c28fc4b46dede733760a"
+      ],
+      "candidate": {
+        "hours": null,
+        "confidence": null,
+        "reason": "Review the coherent final delta and integrate its affected maintained artifacts; this is derived from final scope rather than commit count."
+      },
+      "review": {
+        "hours": null,
+        "rationale": null,
+        "sizeException": null
+      },
+      "assumptions": [
+        "The final base-to-head artifact delta is valued once with modern 2026-equivalent technology.",
+        "Commit count, elapsed time, authorship, messages, and intermediate churn are not effort multipliers."
+      ],
+      "exclusions": [
+        "Historical rework and discarded intermediate states are excluded."
+      ],
+      "uncertaintyReasons": []
+    }
+  ],
+  "professionalizationGapWorkItemIds": [],
+  "instructions": [
+    "Confirm repository-family identity, immutable base/head provenance, license, redistribution, and partition before compilation.",
+    "Estimate only the normalized final functional and quality delta; intermediate churn, commit count, author, and elapsed time are forbidden signals.",
+    "Use the source Change report and explain query to verify evidence, exclusions, and final-delta reconciliation without using candidate hours when blind.",
+    "Fill review hours and rationale independently for every represented target; use an exact 0/0/0 range plus a size exception for a reviewed false positive, while an empty target list is valid only for a zero-EHE final delta.",
+    "Keep expected targets near 0.5 to 8 hours, record uncertainty explicitly, and reconcile the final total only after target review.",
+    "Compile teacher labels before a distinct reviewer receives a blind second-pass packet; packet generation alone does not advance maturity."
+  ]
+}

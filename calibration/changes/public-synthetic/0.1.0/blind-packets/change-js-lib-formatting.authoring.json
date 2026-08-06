@@ -1,0 +1,48 @@
+{
+  "schemaVersion": "1.0.0",
+  "authoringVersion": "change-calibration-authoring/0.1.0",
+  "status": "unreviewed",
+  "warning": "UNREVIEWED CHANGE EHE: candidate values are reference material, not calibration labels. Review the normalized final delta without using history activity as effort evidence.",
+  "rubric": {
+    "id": "change-ehe-work-item",
+    "version": "1.0.0"
+  },
+  "repository": {
+    "id": "repository:change-js-lib-b",
+    "name": "repository:change-js-lib-b",
+    "sourceDigest": "sha256:e9a1e384d1667f7012d3f101dedf99ccfbc5926d63c4899a459bdd8db9023f38"
+  },
+  "change": {
+    "id": "change:js-lib-formatting",
+    "selectionKind": "base-head",
+    "baseObjectId": "713ffeddf7789b8ff5e06095f7cb4effa1dc9c2e20d950cf6b1cb29fccaed82b",
+    "headObjectId": "d91d2a732d4fecf60805da53c23bb0754c21ed5992936ab061a1eda06c4c252d",
+    "baseEvidenceDigest": "sha256:47e5d5f6e22aeeaf9481ac0e61c2dd73d28e324494df07c9a8887586d308e94c",
+    "headEvidenceDigest": "sha256:06227f8734f2b1c6e8b3801d89dfdbb5191c6dd736cd2c64c9bf9233bca7fe5e",
+    "finalDeltaDigest": "sha256:e9a1e384d1667f7012d3f101dedf99ccfbc5926d63c4899a459bdd8db9023f38",
+    "coverageTags": [
+      "formatting-only",
+      "javascript",
+      "zero-delta"
+    ]
+  },
+  "profile": "implementation",
+  "baselineId": "senior-contractor-2026-no-ai",
+  "candidateVisibility": "blind",
+  "candidate": {
+    "estimatorVersion": "change-seed/0.1.0\u002Bseed-rules/0.2.1",
+    "estimateDigest": "sha256:bc948742c8807e9e2f6eb0266569dff62d70c8a9696ac087277774b4fc73ae89",
+    "totalHours": null,
+    "categories": []
+  },
+  "targets": [],
+  "professionalizationGapWorkItemIds": [],
+  "instructions": [
+    "Confirm repository-family identity, immutable base/head provenance, license, redistribution, and partition before compilation.",
+    "Estimate only the normalized final functional and quality delta; intermediate churn, commit count, author, and elapsed time are forbidden signals.",
+    "Use the source Change report and explain query to verify evidence, exclusions, and final-delta reconciliation without using candidate hours when blind.",
+    "Fill review hours and rationale independently for every represented target; use an exact 0/0/0 range plus a size exception for a reviewed false positive, while an empty target list is valid only for a zero-EHE final delta.",
+    "Keep expected targets near 0.5 to 8 hours, record uncertainty explicitly, and reconcile the final total only after target review.",
+    "Compile teacher labels before a distinct reviewer receives a blind second-pass packet; packet generation alone does not advance maturity."
+  ]
+}

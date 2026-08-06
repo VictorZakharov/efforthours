@@ -1,0 +1,679 @@
+{
+  "schemaVersion": "1.0.0",
+  "changeEvidenceSchemaVersion": "1.0.0",
+  "estimatorVersion": "change-seed/0.1.0\u002Bseed-rules/0.2.1",
+  "sourceEstimatorVersion": "seed-rules/0.2.1",
+  "repository": {
+    "name": "repository:change-mixed-tool-c",
+    "scope": ".",
+    "ecosystems": [
+      "dotnet"
+    ],
+    "sourceDigest": "sha256:be701f7b07d1e564d4a9be79b6b1bcc3265d2a737eb08bfe5f995b580f2f21da"
+  },
+  "selection": {
+    "schemaVersion": "1.0.0",
+    "kind": "base-head",
+    "base": {
+      "selector": "fixture:change:mixed-tool-simplify:base",
+      "objectId": "a51a331bbcfefb49d2ca0538fff689a0d08c9cf548160a4ad1091b3c0096a8ce",
+      "kind": "evidence"
+    },
+    "head": {
+      "selector": "fixture:change:mixed-tool-simplify:head",
+      "objectId": "c722c8ccf4e62c1cc8c76e5877b49ad577486dac83780e3bd7ac53eccfe5df32",
+      "kind": "evidence"
+    }
+  },
+  "evidence": {
+    "schemaVersion": "1.0.0",
+    "selection": {
+      "schemaVersion": "1.0.0",
+      "kind": "base-head",
+      "base": {
+        "selector": "fixture:change:mixed-tool-simplify:base",
+        "objectId": "a51a331bbcfefb49d2ca0538fff689a0d08c9cf548160a4ad1091b3c0096a8ce",
+        "kind": "evidence"
+      },
+      "head": {
+        "selector": "fixture:change:mixed-tool-simplify:head",
+        "objectId": "c722c8ccf4e62c1cc8c76e5877b49ad577486dac83780e3bd7ac53eccfe5df32",
+        "kind": "evidence"
+      }
+    },
+    "repository": {
+      "name": "repository:change-mixed-tool-c",
+      "scope": ".",
+      "ecosystems": [
+        "dotnet"
+      ],
+      "sourceDigest": "sha256:be701f7b07d1e564d4a9be79b6b1bcc3265d2a737eb08bfe5f995b580f2f21da"
+    },
+    "baseEvidenceDigest": "sha256:3070ba4fbdccd2ff8fb24bb341b4d56983597fe3848692dabcf5f0651547fdad",
+    "headEvidenceDigest": "sha256:be701f7b07d1e564d4a9be79b6b1bcc3265d2a737eb08bfe5f995b580f2f21da",
+    "unchangedContextPathCount": 0,
+    "paths": [
+      {
+        "id": "change:path:9d6cddbfee951c63335e4409",
+        "status": "modified",
+        "path": "README.md",
+        "baseObjectId": "f21c093c3f6d4f5b6bb30467eaf76249497363f169977cb948933eacabde179a",
+        "headObjectId": "86b0b077bf869f55a7acb41a1a9bd707d3a9dfb108482d6e124f6d81ca3345aa",
+        "baseBytes": 42,
+        "headBytes": 143,
+        "editRegions": 1,
+        "classification": "represented",
+        "represented": true,
+        "reason": "The final modified artifact is maintained, non-mechanical change evidence.",
+        "tags": [
+          "classification:represented",
+          "content:text",
+          "extension:.md",
+          "role:documentation",
+          "sha256:86b0b077bf869f55a7acb41a1a9bd707d3a9dfb108482d6e124f6d81ca3345aa",
+          "sha256:f21c093c3f6d4f5b6bb30467eaf76249497363f169977cb948933eacabde179a",
+          "status:modified"
+        ]
+      },
+      {
+        "id": "change:path:35f8461126f445c7c2e87a7e",
+        "status": "modified",
+        "path": "src/Tool/Program.cs",
+        "baseObjectId": "cb2b313ad08c84e5286acfc3f0a1696f61103e51288dbc1d536a99950fe96e90",
+        "headObjectId": "079bdfdfe180bc641e0c42c739a85f19fb8b38cca1d06f63d5b4f6a098a79710",
+        "baseBytes": 100,
+        "headBytes": 30,
+        "editRegions": 1,
+        "classification": "represented",
+        "represented": true,
+        "reason": "The final modified artifact is maintained, non-mechanical change evidence.",
+        "tags": [
+          "classification:represented",
+          "content:text",
+          "ecosystem:dotnet",
+          "extension:.cs",
+          "language:csharp",
+          "role:source",
+          "sha256:079bdfdfe180bc641e0c42c739a85f19fb8b38cca1d06f63d5b4f6a098a79710",
+          "sha256:cb2b313ad08c84e5286acfc3f0a1696f61103e51288dbc1d536a99950fe96e90",
+          "status:modified"
+        ]
+      },
+      {
+        "id": "change:path:b169dfa9598aa64d2fd1749c",
+        "status": "removed",
+        "path": "scripts/legacy-export.js",
+        "baseObjectId": "3b07e4538bbe6c11855e76f8e00489738a26fdac7eaf637522e2d0646c90459c",
+        "baseBytes": 82,
+        "editRegions": 1,
+        "classification": "represented",
+        "represented": true,
+        "reason": "The final removed artifact is maintained, non-mechanical change evidence.",
+        "tags": [
+          "classification:represented",
+          "content:text",
+          "ecosystem:javascript",
+          "extension:.js",
+          "language:javascript",
+          "role:source",
+          "sha256:3b07e4538bbe6c11855e76f8e00489738a26fdac7eaf637522e2d0646c90459c",
+          "status:removed"
+        ]
+      }
+    ],
+    "diagnostics": [
+      {
+        "code": "FB3000",
+        "severity": "information",
+        "message": "The .NET analyzer parsed project XML and source syntax statically; it did not evaluate MSBuild, restore packages, compile, or execute target code.",
+        "evidenceIds": [],
+        "locations": []
+      },
+      {
+        "code": "FB4000",
+        "severity": "information",
+        "message": "The JavaScript/TypeScript analyzer parsed manifests, JSONC configuration, JavaScript/JSX syntax, and bounded TypeScript token streams statically; it did not run package managers, load executable configuration, install dependencies, transpile, or execute target code.",
+        "evidenceIds": [],
+        "locations": []
+      }
+    ]
+  },
+  "profile": "implementation",
+  "baseline": {
+    "id": "senior-contractor-2026-no-ai",
+    "workerProfile": "Competent senior contractor familiar with the technical ecosystem",
+    "technologyBaselineYear": 2026,
+    "businessDomainFamiliar": false,
+    "usesAi": false,
+    "description": "One senior contractor recreating the described working system with modern 2026 tools and no AI."
+  },
+  "totalEffort": {
+    "low": 4.50,
+    "expected": 8.00,
+    "high": 15.50
+  },
+  "categories": [
+    {
+      "category": "specification-comprehension-and-domain-learning",
+      "hours": {
+        "low": 1.50,
+        "expected": 2.50,
+        "high": 4.75
+      }
+    },
+    {
+      "category": "repository-and-solution-setup",
+      "hours": {
+        "low": 0.25,
+        "expected": 0.5,
+        "high": 1
+      }
+    },
+    {
+      "category": "architecture-and-technical-design",
+      "hours": {
+        "low": 0.25,
+        "expected": 0.5,
+        "high": 1
+      }
+    },
+    {
+      "category": "production-implementation",
+      "hours": {
+        "low": 0.75,
+        "expected": 1.5,
+        "high": 3
+      }
+    },
+    {
+      "category": "manual-validation-debugging-and-hardening",
+      "hours": {
+        "low": 0.25,
+        "expected": 0.5,
+        "high": 1
+      }
+    },
+    {
+      "category": "documentation",
+      "hours": {
+        "low": 0.5,
+        "expected": 0.75,
+        "high": 1.5
+      }
+    },
+    {
+      "category": "self-review-and-system-integration",
+      "hours": {
+        "low": 1.00,
+        "expected": 1.75,
+        "high": 3.25
+      }
+    }
+  ],
+  "workItems": [
+    {
+      "schemaVersion": "1.0.0",
+      "id": "change-item:capability-removal:f93bd6e5a0c76681b593",
+      "category": "specification-comprehension-and-domain-learning",
+      "title": "Remove or simplify Comprehend the supplied specification and bounded business domain",
+      "scope": ".",
+      "evidenceIds": [
+        "change:path:b169dfa9598aa64d2fd1749c"
+      ],
+      "quantity": 1,
+      "complexity": "moderate",
+      "hours": {
+        "low": 0.25,
+        "expected": 0.5,
+        "high": 1
+      },
+      "confidence": 0.64,
+      "reason": "Bounded removal and simplification work derived from capability context; deleted volume is not treated as negative effort or a direct labor multiplier.",
+      "estimator": {
+        "id": "change-rule:capability-removal",
+        "version": "change-seed/0.1.0",
+        "kind": "rule"
+      },
+      "profiles": [
+        "implementation"
+      ],
+      "dependencyIds": [],
+      "correlationGroup": "change:capability-removal:.",
+      "assumptions": [
+        "The final base-to-head artifact delta is valued once with modern 2026-equivalent technology.",
+        "Commit count, elapsed time, authorship, messages, and intermediate churn are not effort multipliers."
+      ],
+      "exclusions": [
+        "Historical rework and discarded intermediate states are excluded."
+      ],
+      "uncertaintyReasons": [
+        "No external specification artifact is represented in the current estimator request contract."
+      ]
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "id": "change-item:change-comprehension:6c8a3e8e37679778357d",
+      "category": "specification-comprehension-and-domain-learning",
+      "title": "Understand the bounded change specification",
+      "scope": ".",
+      "evidenceIds": [
+        "change:path:35f8461126f445c7c2e87a7e",
+        "change:path:9d6cddbfee951c63335e4409",
+        "change:path:b169dfa9598aa64d2fd1749c"
+      ],
+      "quantity": 7,
+      "complexity": "moderate",
+      "hours": {
+        "low": 1.25,
+        "expected": 2.00,
+        "high": 3.75
+      },
+      "confidence": 0.78,
+      "reason": "Comprehend the final behavior and quality delta represented by the affected capability categories.",
+      "estimator": {
+        "id": "change-rule:change-comprehension",
+        "version": "change-seed/0.1.0",
+        "kind": "rule"
+      },
+      "profiles": [
+        "implementation"
+      ],
+      "dependencyIds": [],
+      "correlationGroup": "change:change-comprehension:.",
+      "assumptions": [
+        "The final base-to-head artifact delta is valued once with modern 2026-equivalent technology.",
+        "Commit count, elapsed time, authorship, messages, and intermediate churn are not effort multipliers."
+      ],
+      "exclusions": [
+        "Historical rework and discarded intermediate states are excluded."
+      ],
+      "uncertaintyReasons": []
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "id": "change-item:capability-removal:7eda66484775e320b2de",
+      "category": "repository-and-solution-setup",
+      "title": "Remove or simplify Set up \u0027.\u0027 (component)",
+      "scope": ".",
+      "evidenceIds": [
+        "change:path:b169dfa9598aa64d2fd1749c"
+      ],
+      "quantity": 1,
+      "complexity": "routine",
+      "hours": {
+        "low": 0.25,
+        "expected": 0.5,
+        "high": 1
+      },
+      "confidence": 0.81,
+      "reason": "Bounded removal and simplification work derived from capability context; deleted volume is not treated as negative effort or a direct labor multiplier.",
+      "estimator": {
+        "id": "change-rule:capability-removal",
+        "version": "change-seed/0.1.0",
+        "kind": "rule"
+      },
+      "profiles": [
+        "implementation"
+      ],
+      "dependencyIds": [],
+      "correlationGroup": "change:capability-removal:.",
+      "assumptions": [
+        "The final base-to-head artifact delta is valued once with modern 2026-equivalent technology.",
+        "Commit count, elapsed time, authorship, messages, and intermediate churn are not effort multipliers."
+      ],
+      "exclusions": [
+        "Historical rework and discarded intermediate states are excluded."
+      ],
+      "uncertaintyReasons": []
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "id": "change-item:capability-removal:870ba69859581c205e9f",
+      "category": "architecture-and-technical-design",
+      "title": "Remove or simplify Design the technical structure of \u0027.\u0027 (component)",
+      "scope": ".",
+      "evidenceIds": [
+        "change:path:b169dfa9598aa64d2fd1749c"
+      ],
+      "quantity": 1,
+      "complexity": "moderate",
+      "hours": {
+        "low": 0.25,
+        "expected": 0.5,
+        "high": 1
+      },
+      "confidence": 0.73,
+      "reason": "Bounded removal and simplification work derived from capability context; deleted volume is not treated as negative effort or a direct labor multiplier.",
+      "estimator": {
+        "id": "change-rule:capability-removal",
+        "version": "change-seed/0.1.0",
+        "kind": "rule"
+      },
+      "profiles": [
+        "implementation"
+      ],
+      "dependencyIds": [],
+      "correlationGroup": "change:capability-removal:.",
+      "assumptions": [
+        "The final base-to-head artifact delta is valued once with modern 2026-equivalent technology.",
+        "Commit count, elapsed time, authorship, messages, and intermediate churn are not effort multipliers."
+      ],
+      "exclusions": [
+        "Historical rework and discarded intermediate states are excluded."
+      ],
+      "uncertaintyReasons": []
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "id": "change-item:capability-removal:b19657fd2c187d6a9ef5",
+      "category": "production-implementation",
+      "title": "Remove or simplify Implement maintained internal logic for \u0027.\u0027 (component)",
+      "scope": ".",
+      "evidenceIds": [
+        "change:path:b169dfa9598aa64d2fd1749c"
+      ],
+      "quantity": 1,
+      "complexity": "routine",
+      "hours": {
+        "low": 0.25,
+        "expected": 0.5,
+        "high": 1
+      },
+      "confidence": 0.75,
+      "reason": "Bounded removal and simplification work derived from capability context; deleted volume is not treated as negative effort or a direct labor multiplier.",
+      "estimator": {
+        "id": "change-rule:capability-removal",
+        "version": "change-seed/0.1.0",
+        "kind": "rule"
+      },
+      "profiles": [
+        "implementation"
+      ],
+      "dependencyIds": [],
+      "correlationGroup": "change:capability-removal:.",
+      "assumptions": [
+        "The final base-to-head artifact delta is valued once with modern 2026-equivalent technology.",
+        "Commit count, elapsed time, authorship, messages, and intermediate churn are not effort multipliers."
+      ],
+      "exclusions": [
+        "Historical rework and discarded intermediate states are excluded."
+      ],
+      "uncertaintyReasons": []
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "id": "change-item:maintained-artifact-fallback:c6157ebb0c8d6a636c40",
+      "category": "production-implementation",
+      "title": "Modify maintained artifact \u0027src/Tool/Program.cs\u0027",
+      "scope": "src/Tool/Program.cs",
+      "evidenceIds": [
+        "change:path:35f8461126f445c7c2e87a7e"
+      ],
+      "quantity": 1,
+      "complexity": "moderate",
+      "hours": {
+        "low": 0.5,
+        "expected": 1,
+        "high": 2
+      },
+      "confidence": 0.58,
+      "reason": "No more specific positive capability delta explained this maintained final change; a bounded edit-region fallback preserves visible effort without using physical lines as value.",
+      "estimator": {
+        "id": "change-rule:maintained-artifact-fallback",
+        "version": "change-seed/0.1.0",
+        "kind": "rule"
+      },
+      "profiles": [
+        "implementation"
+      ],
+      "dependencyIds": [],
+      "correlationGroup": "change:maintained-artifact-fallback:src/Tool/Program.cs",
+      "assumptions": [
+        "The final base-to-head artifact delta is valued once with modern 2026-equivalent technology.",
+        "Commit count, elapsed time, authorship, messages, and intermediate churn are not effort multipliers."
+      ],
+      "exclusions": [
+        "Historical rework and discarded intermediate states are excluded."
+      ],
+      "uncertaintyReasons": [
+        "The current analyzer could not map this artifact change to a more specific capability."
+      ]
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "id": "change-item:capability-removal:c11223bc3cc23a1c3992",
+      "category": "manual-validation-debugging-and-hardening",
+      "title": "Remove or simplify Manually validate, debug, and harden \u0027.\u0027 (component)",
+      "scope": ".",
+      "evidenceIds": [
+        "change:path:b169dfa9598aa64d2fd1749c"
+      ],
+      "quantity": 1,
+      "complexity": "moderate",
+      "hours": {
+        "low": 0.25,
+        "expected": 0.5,
+        "high": 1
+      },
+      "confidence": 0.66,
+      "reason": "Bounded removal and simplification work derived from capability context; deleted volume is not treated as negative effort or a direct labor multiplier.",
+      "estimator": {
+        "id": "change-rule:capability-removal",
+        "version": "change-seed/0.1.0",
+        "kind": "rule"
+      },
+      "profiles": [
+        "implementation"
+      ],
+      "dependencyIds": [],
+      "correlationGroup": "change:capability-removal:.",
+      "assumptions": [
+        "The final base-to-head artifact delta is valued once with modern 2026-equivalent technology.",
+        "Commit count, elapsed time, authorship, messages, and intermediate churn are not effort multipliers."
+      ],
+      "exclusions": [
+        "Historical rework and discarded intermediate states are excluded."
+      ],
+      "uncertaintyReasons": [
+        "The target checkout was not executed on the default static path."
+      ]
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "id": "change-item:capability-modification:a3bee9364b393c101924",
+      "category": "documentation",
+      "title": "Modify Author and verify maintained repository documentation",
+      "scope": ".",
+      "evidenceIds": [
+        "change:path:9d6cddbfee951c63335e4409"
+      ],
+      "quantity": 1,
+      "complexity": "routine",
+      "hours": {
+        "low": 0.5,
+        "expected": 0.75,
+        "high": 1.5
+      },
+      "confidence": 0.80,
+      "reason": "The final artifact changed inside an existing evidence-backed capability even though its repository-level structural quantity did not increase.",
+      "estimator": {
+        "id": "change-rule:capability-modification",
+        "version": "change-seed/0.1.0",
+        "kind": "rule"
+      },
+      "profiles": [
+        "implementation"
+      ],
+      "dependencyIds": [],
+      "correlationGroup": "change:capability-modification:.",
+      "assumptions": [
+        "The final base-to-head artifact delta is valued once with modern 2026-equivalent technology.",
+        "Commit count, elapsed time, authorship, messages, and intermediate churn are not effort multipliers."
+      ],
+      "exclusions": [
+        "Historical rework and discarded intermediate states are excluded."
+      ],
+      "uncertaintyReasons": []
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "id": "change-item:capability-removal:de4b9bde02917189d9b9",
+      "category": "self-review-and-system-integration",
+      "title": "Remove or simplify Self-review and integrate the completed system",
+      "scope": ".",
+      "evidenceIds": [
+        "change:path:b169dfa9598aa64d2fd1749c"
+      ],
+      "quantity": 1,
+      "complexity": "moderate",
+      "hours": {
+        "low": 0.25,
+        "expected": 0.5,
+        "high": 1
+      },
+      "confidence": 0.74,
+      "reason": "Bounded removal and simplification work derived from capability context; deleted volume is not treated as negative effort or a direct labor multiplier.",
+      "estimator": {
+        "id": "change-rule:capability-removal",
+        "version": "change-seed/0.1.0",
+        "kind": "rule"
+      },
+      "profiles": [
+        "implementation"
+      ],
+      "dependencyIds": [],
+      "correlationGroup": "change:capability-removal:.",
+      "assumptions": [
+        "The final base-to-head artifact delta is valued once with modern 2026-equivalent technology.",
+        "Commit count, elapsed time, authorship, messages, and intermediate churn are not effort multipliers."
+      ],
+      "exclusions": [
+        "Historical rework and discarded intermediate states are excluded."
+      ],
+      "uncertaintyReasons": []
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "id": "change-item:change-review:68ae069eb965a76c368b",
+      "category": "self-review-and-system-integration",
+      "title": "Review and integrate the completed change",
+      "scope": ".",
+      "evidenceIds": [
+        "change:path:35f8461126f445c7c2e87a7e",
+        "change:path:9d6cddbfee951c63335e4409",
+        "change:path:b169dfa9598aa64d2fd1749c"
+      ],
+      "quantity": 3,
+      "complexity": "moderate",
+      "hours": {
+        "low": 0.75,
+        "expected": 1.25,
+        "high": 2.25
+      },
+      "confidence": 0.8,
+      "reason": "Review the coherent final delta and integrate its affected maintained artifacts; this is derived from final scope rather than commit count.",
+      "estimator": {
+        "id": "change-rule:change-review",
+        "version": "change-seed/0.1.0",
+        "kind": "rule"
+      },
+      "profiles": [
+        "implementation"
+      ],
+      "dependencyIds": [],
+      "correlationGroup": "change:change-review:.",
+      "assumptions": [
+        "The final base-to-head artifact delta is valued once with modern 2026-equivalent technology.",
+        "Commit count, elapsed time, authorship, messages, and intermediate churn are not effort multipliers."
+      ],
+      "exclusions": [
+        "Historical rework and discarded intermediate states are excluded."
+      ],
+      "uncertaintyReasons": []
+    }
+  ],
+  "professionalizationGap": [],
+  "reconciliation": {
+    "isolatedComponentSum": {
+      "low": 4.50,
+      "expected": 8.00,
+      "high": 15.50
+    },
+    "normalizedEffort": {
+      "low": 4.50,
+      "expected": 8.00,
+      "high": 15.50
+    },
+    "additivityToleranceHours": 1,
+    "expectedDifferenceHours": 0.00,
+    "assessment": "within-no-rework-tolerance",
+    "allocationMethod": "Proportional to isolated expected Change EHE with deterministic cent-level residual assignment; allocations are attribution, not historical hours.",
+    "components": [
+      {
+        "id": "change-component:0d661fc24a432e83d6fb",
+        "kind": "final-delta",
+        "selector": "final-delta",
+        "baseObjectId": "a51a331bbcfefb49d2ca0538fff689a0d08c9cf548160a4ad1091b3c0096a8ce",
+        "headObjectId": "c722c8ccf4e62c1cc8c76e5877b49ad577486dac83780e3bd7ac53eccfe5df32",
+        "isolatedEffort": {
+          "low": 4.50,
+          "expected": 8.00,
+          "high": 15.50
+        },
+        "allocatedExpectedHours": 8.00,
+        "evidenceIds": [
+          "change:path:35f8461126f445c7c2e87a7e",
+          "change:path:9d6cddbfee951c63335e4409",
+          "change:path:b169dfa9598aa64d2fd1749c"
+        ]
+      }
+    ],
+    "adjustments": []
+  },
+  "diagnostics": [
+    {
+      "code": "FB3000",
+      "severity": "information",
+      "message": "The .NET analyzer parsed project XML and source syntax statically; it did not evaluate MSBuild, restore packages, compile, or execute target code.",
+      "evidenceIds": [],
+      "locations": []
+    },
+    {
+      "code": "FB4000",
+      "severity": "information",
+      "message": "The JavaScript/TypeScript analyzer parsed manifests, JSONC configuration, JavaScript/JSX syntax, and bounded TypeScript token streams statically; it did not run package managers, load executable configuration, install dependencies, transpile, or execute target code.",
+      "evidenceIds": [],
+      "locations": []
+    },
+    {
+      "code": "FB5000",
+      "severity": "warning",
+      "message": "Change EHE uses transparent but uncalibrated change-seed and repository seed priors. It is experimental and requires review before consequential use.",
+      "evidenceIds": [],
+      "locations": []
+    },
+    {
+      "code": "FB5001",
+      "severity": "information",
+      "message": "Normalized Change EHE values the immutable final base-to-head artifact delta. Component activity, commit count, timestamps, authors, and intermediate churn do not multiply it.",
+      "evidenceIds": [],
+      "locations": []
+    }
+  ],
+  "assumptions": [
+    "Change EHE is counterfactual non-AI replacement effort represented by the final artifact delta, not actual labor or a timesheet.",
+    "Base and head are immutable snapshots; intermediate history is excluded from normalized effort.",
+    "A clear specification exists at the level promised by the selected profile.",
+    "Discovered tests are assumed to pass on the static path and the described delta is estimated as working.",
+    "Formatting-only, exact movement, conventional generated, vendored, minified, binary, lockfile, build-output, and exact-copy bodies are excluded when classified.",
+    "Deletion is never negative EHE; supported removal and simplification work is bounded by capability context rather than deleted volume.",
+    "Low and high values are preliminary dependent planning bounds, not calibrated probability intervals.",
+    "Professionalization gaps are separate and are not added to represented Change EHE or cost."
+  ],
+  "verification": {
+    "mode": "static-assumed",
+    "workingState": "assumed-working",
+    "testsAssumedPassing": true,
+    "note": "Neither immutable snapshot was built or executed."
+  }
+}

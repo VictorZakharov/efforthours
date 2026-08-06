@@ -1,0 +1,312 @@
+{
+  "schemaVersion": "1.0.0",
+  "authoringVersion": "change-calibration-authoring/0.1.0",
+  "status": "unreviewed",
+  "warning": "UNREVIEWED CHANGE EHE: candidate values are reference material, not calibration labels. Review the normalized final delta without using history activity as effort evidence.",
+  "rubric": {
+    "id": "change-ehe-work-item",
+    "version": "1.0.0"
+  },
+  "repository": {
+    "id": "repository:change-dn-data-b",
+    "name": "repository:change-dn-data-b",
+    "sourceDigest": "sha256:6ceee70acf696893d67cad80d13e347f5e74b183c6022c0fce33d6660d0ada0d"
+  },
+  "change": {
+    "id": "change:dn-data-migration",
+    "selectionKind": "base-head",
+    "baseObjectId": "d787f9e4e6b561032fb05e6cceb6b50ae88fe12d01939d6d003c2bf75dd68b46",
+    "headObjectId": "85c9c6aea1de4b20aa9c34453d9e89e7cae11cc893ad03314d81b8ef9a251428",
+    "baseEvidenceDigest": "sha256:9f29d9b3ecea9fdf3111a6b5ef8f260c1f77cb72588338890d8dd4add83f6480",
+    "headEvidenceDigest": "sha256:7270e677aa09c9b89065ae2c5d25ed7d7f060dbe80bdc43bd3f829f88df58e40",
+    "finalDeltaDigest": "sha256:6ceee70acf696893d67cad80d13e347f5e74b183c6022c0fce33d6660d0ada0d",
+    "coverageTags": [
+      "data",
+      "dotnet",
+      "migration"
+    ]
+  },
+  "profile": "implementation",
+  "baselineId": "senior-contractor-2026-no-ai",
+  "candidateVisibility": "blind",
+  "candidate": {
+    "estimatorVersion": "change-seed/0.1.0\u002Bseed-rules/0.2.1",
+    "estimateDigest": "sha256:5f6a03076ecf1878d1cc5c3f824c63598cc326a92ac7657e565d84e0a2c4aedf",
+    "totalHours": null,
+    "categories": []
+  },
+  "targets": [
+    {
+      "id": "target:change-item:capability-marginal:3a3b9ad8c4de63b43a16",
+      "sourceCapabilityId": "change-item:capability-marginal:3a3b9ad8c4de63b43a16",
+      "category": "manual-validation-debugging-and-hardening",
+      "title": "Expand Manually validate, debug, and harden \u0027src/Data/Data.csproj\u0027 (library)",
+      "scope": "src/Data/Data.csproj",
+      "sourceWorkItemIds": [
+        "change-item:capability-marginal:3a3b9ad8c4de63b43a16"
+      ],
+      "evidenceIds": [
+        "change:path:0a907f6a86aa42374a48c3e7"
+      ],
+      "candidate": {
+        "hours": null,
+        "confidence": null,
+        "reason": "Positive base-to-head marginal effort from the existing repository capability model, bounded by touched final-change regions when existing behavior was also modified."
+      },
+      "review": {
+        "hours": null,
+        "rationale": null,
+        "sizeException": null
+      },
+      "assumptions": [
+        "The final base-to-head artifact delta is valued once with modern 2026-equivalent technology.",
+        "Commit count, elapsed time, authorship, messages, and intermediate churn are not effort multipliers."
+      ],
+      "exclusions": [
+        "Historical rework and discarded intermediate states are excluded."
+      ],
+      "uncertaintyReasons": [
+        "Some supporting evidence is inferred rather than directly observed.",
+        "The target checkout was not executed on the default static path."
+      ]
+    },
+    {
+      "id": "target:change-item:capability-marginal:5d7e5545002a17d8b921",
+      "sourceCapabilityId": "change-item:capability-marginal:5d7e5545002a17d8b921",
+      "category": "data-modeling-persistence-and-migrations",
+      "title": "Add Implement data modeling and persistence for \u0027src/Data/Data.csproj\u0027 (library)",
+      "scope": "src/Data/Data.csproj",
+      "sourceWorkItemIds": [
+        "change-item:capability-marginal:5d7e5545002a17d8b921"
+      ],
+      "evidenceIds": [
+        "change:path:0a907f6a86aa42374a48c3e7"
+      ],
+      "candidate": {
+        "hours": null,
+        "confidence": null,
+        "reason": "Positive base-to-head marginal effort from the existing repository capability model, bounded by touched final-change regions when existing behavior was also modified."
+      },
+      "review": {
+        "hours": null,
+        "rationale": null,
+        "sizeException": null
+      },
+      "assumptions": [
+        "The final base-to-head artifact delta is valued once with modern 2026-equivalent technology.",
+        "Commit count, elapsed time, authorship, messages, and intermediate churn are not effort multipliers."
+      ],
+      "exclusions": [
+        "Historical rework and discarded intermediate states are excluded."
+      ],
+      "uncertaintyReasons": [
+        "Some supporting evidence is inferred rather than directly observed."
+      ]
+    },
+    {
+      "id": "target:change-item:capability-marginal:7d3a184511845665a1e8",
+      "sourceCapabilityId": "change-item:capability-marginal:7d3a184511845665a1e8",
+      "category": "production-implementation",
+      "title": "Expand Implement maintained internal logic for \u0027src/Data/Data.csproj\u0027 (library)",
+      "scope": "src/Data/Data.csproj",
+      "sourceWorkItemIds": [
+        "change-item:capability-marginal:7d3a184511845665a1e8"
+      ],
+      "evidenceIds": [
+        "change:path:0a907f6a86aa42374a48c3e7",
+        "change:path:abedeb027254a817737eaea5"
+      ],
+      "candidate": {
+        "hours": null,
+        "confidence": null,
+        "reason": "Positive base-to-head marginal effort from the existing repository capability model, bounded by touched final-change regions when existing behavior was also modified."
+      },
+      "review": {
+        "hours": null,
+        "rationale": null,
+        "sizeException": null
+      },
+      "assumptions": [
+        "The final base-to-head artifact delta is valued once with modern 2026-equivalent technology.",
+        "Commit count, elapsed time, authorship, messages, and intermediate churn are not effort multipliers."
+      ],
+      "exclusions": [
+        "Historical rework and discarded intermediate states are excluded."
+      ],
+      "uncertaintyReasons": []
+    },
+    {
+      "id": "target:change-item:capability-marginal:8e8437bf3c1c4f7f3cfc",
+      "sourceCapabilityId": "change-item:capability-marginal:8e8437bf3c1c4f7f3cfc",
+      "category": "self-review-and-system-integration",
+      "title": "Expand Self-review and integrate the completed system",
+      "scope": ".",
+      "sourceWorkItemIds": [
+        "change-item:capability-marginal:8e8437bf3c1c4f7f3cfc"
+      ],
+      "evidenceIds": [
+        "change:path:0a907f6a86aa42374a48c3e7"
+      ],
+      "candidate": {
+        "hours": null,
+        "confidence": null,
+        "reason": "Positive base-to-head marginal effort from the existing repository capability model, bounded by touched final-change regions when existing behavior was also modified."
+      },
+      "review": {
+        "hours": null,
+        "rationale": null,
+        "sizeException": null
+      },
+      "assumptions": [
+        "The final base-to-head artifact delta is valued once with modern 2026-equivalent technology.",
+        "Commit count, elapsed time, authorship, messages, and intermediate churn are not effort multipliers."
+      ],
+      "exclusions": [
+        "Historical rework and discarded intermediate states are excluded."
+      ],
+      "uncertaintyReasons": [
+        "Some supporting evidence is inferred rather than directly observed."
+      ]
+    },
+    {
+      "id": "target:change-item:capability-marginal:bb013239b20259b40deb",
+      "sourceCapabilityId": "change-item:capability-marginal:bb013239b20259b40deb",
+      "category": "architecture-and-technical-design",
+      "title": "Expand Design the technical structure of \u0027src/Data/Data.csproj\u0027 (library)",
+      "scope": "src/Data/Data.csproj",
+      "sourceWorkItemIds": [
+        "change-item:capability-marginal:bb013239b20259b40deb"
+      ],
+      "evidenceIds": [
+        "change:path:0a907f6a86aa42374a48c3e7"
+      ],
+      "candidate": {
+        "hours": null,
+        "confidence": null,
+        "reason": "Positive base-to-head marginal effort from the existing repository capability model, bounded by touched final-change regions when existing behavior was also modified."
+      },
+      "review": {
+        "hours": null,
+        "rationale": null,
+        "sizeException": null
+      },
+      "assumptions": [
+        "The final base-to-head artifact delta is valued once with modern 2026-equivalent technology.",
+        "Commit count, elapsed time, authorship, messages, and intermediate churn are not effort multipliers."
+      ],
+      "exclusions": [
+        "Historical rework and discarded intermediate states are excluded."
+      ],
+      "uncertaintyReasons": [
+        "Some supporting evidence is inferred rather than directly observed."
+      ]
+    },
+    {
+      "id": "target:change-item:capability-marginal:dcd6517a9099eb7c5b5f",
+      "sourceCapabilityId": "change-item:capability-marginal:dcd6517a9099eb7c5b5f",
+      "category": "specification-comprehension-and-domain-learning",
+      "title": "Expand Comprehend the supplied specification and bounded business domain",
+      "scope": ".",
+      "sourceWorkItemIds": [
+        "change-item:capability-marginal:dcd6517a9099eb7c5b5f"
+      ],
+      "evidenceIds": [
+        "change:path:0a907f6a86aa42374a48c3e7"
+      ],
+      "candidate": {
+        "hours": null,
+        "confidence": null,
+        "reason": "Positive base-to-head marginal effort from the existing repository capability model, bounded by touched final-change regions when existing behavior was also modified."
+      },
+      "review": {
+        "hours": null,
+        "rationale": null,
+        "sizeException": null
+      },
+      "assumptions": [
+        "The final base-to-head artifact delta is valued once with modern 2026-equivalent technology.",
+        "Commit count, elapsed time, authorship, messages, and intermediate churn are not effort multipliers."
+      ],
+      "exclusions": [
+        "Historical rework and discarded intermediate states are excluded."
+      ],
+      "uncertaintyReasons": [
+        "No external specification artifact is represented in the current estimator request contract.",
+        "Some supporting evidence is inferred rather than directly observed."
+      ]
+    },
+    {
+      "id": "target:change-item:change-comprehension:1db851c0bde0bcfa31f8",
+      "sourceCapabilityId": "change-item:change-comprehension:1db851c0bde0bcfa31f8",
+      "category": "specification-comprehension-and-domain-learning",
+      "title": "Understand the bounded change specification",
+      "scope": ".",
+      "sourceWorkItemIds": [
+        "change-item:change-comprehension:1db851c0bde0bcfa31f8"
+      ],
+      "evidenceIds": [
+        "change:path:0a907f6a86aa42374a48c3e7",
+        "change:path:abedeb027254a817737eaea5"
+      ],
+      "candidate": {
+        "hours": null,
+        "confidence": null,
+        "reason": "Comprehend the final behavior and quality delta represented by the affected capability categories."
+      },
+      "review": {
+        "hours": null,
+        "rationale": null,
+        "sizeException": null
+      },
+      "assumptions": [
+        "The final base-to-head artifact delta is valued once with modern 2026-equivalent technology.",
+        "Commit count, elapsed time, authorship, messages, and intermediate churn are not effort multipliers."
+      ],
+      "exclusions": [
+        "Historical rework and discarded intermediate states are excluded."
+      ],
+      "uncertaintyReasons": []
+    },
+    {
+      "id": "target:change-item:change-review:479abc28465cce6fa1e6",
+      "sourceCapabilityId": "change-item:change-review:479abc28465cce6fa1e6",
+      "category": "self-review-and-system-integration",
+      "title": "Review and integrate the completed change",
+      "scope": ".",
+      "sourceWorkItemIds": [
+        "change-item:change-review:479abc28465cce6fa1e6"
+      ],
+      "evidenceIds": [
+        "change:path:0a907f6a86aa42374a48c3e7",
+        "change:path:abedeb027254a817737eaea5"
+      ],
+      "candidate": {
+        "hours": null,
+        "confidence": null,
+        "reason": "Review the coherent final delta and integrate its affected maintained artifacts; this is derived from final scope rather than commit count."
+      },
+      "review": {
+        "hours": null,
+        "rationale": null,
+        "sizeException": null
+      },
+      "assumptions": [
+        "The final base-to-head artifact delta is valued once with modern 2026-equivalent technology.",
+        "Commit count, elapsed time, authorship, messages, and intermediate churn are not effort multipliers."
+      ],
+      "exclusions": [
+        "Historical rework and discarded intermediate states are excluded."
+      ],
+      "uncertaintyReasons": []
+    }
+  ],
+  "professionalizationGapWorkItemIds": [],
+  "instructions": [
+    "Confirm repository-family identity, immutable base/head provenance, license, redistribution, and partition before compilation.",
+    "Estimate only the normalized final functional and quality delta; intermediate churn, commit count, author, and elapsed time are forbidden signals.",
+    "Use the source Change report and explain query to verify evidence, exclusions, and final-delta reconciliation without using candidate hours when blind.",
+    "Fill review hours and rationale independently for every represented target; use an exact 0/0/0 range plus a size exception for a reviewed false positive, while an empty target list is valid only for a zero-EHE final delta.",
+    "Keep expected targets near 0.5 to 8 hours, record uncertainty explicitly, and reconcile the final total only after target review.",
+    "Compile teacher labels before a distinct reviewer receives a blind second-pass packet; packet generation alone does not advance maturity."
+  ]
+}

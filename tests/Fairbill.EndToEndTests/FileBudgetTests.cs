@@ -19,7 +19,7 @@ public sealed class FileBudgetTests
         List<string> failures = [];
         HashSet<string> discovered = new(StringComparer.Ordinal);
 
-        foreach (string topLevel in new[] { "src", "tests", "benchmarks" })
+        foreach (string topLevel in new[] { "src", "tests", "benchmarks", "tools" })
         {
             string path = Path.Combine(repositoryRoot, topLevel);
             foreach (string file in Directory.EnumerateFiles(path, "*.cs", SearchOption.AllDirectories))

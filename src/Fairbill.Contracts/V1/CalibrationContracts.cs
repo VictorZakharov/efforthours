@@ -86,6 +86,8 @@ public sealed record CalibrationRecord
 
     public required CalibrationRepositoryReference Repository { get; init; }
 
+    public ChangeCalibrationReference? Change { get; init; }
+
     public required EstimationProfile Profile { get; init; }
 
     public required string BaselineId { get; init; }
@@ -194,6 +196,8 @@ public sealed record CalibrationAuthoringPacket
 
     public required CalibrationRepositoryReference Repository { get; init; }
 
+    public ChangeCalibrationReference? Change { get; init; }
+
     public required EstimationProfile Profile { get; init; }
 
     public required string BaselineId { get; init; }
@@ -232,6 +236,8 @@ public sealed record CalibrationReviewPlanRecord
     public required string Id { get; init; }
 
     public required CalibrationRepositoryReference Repository { get; init; }
+
+    public ChangeCalibrationReference? Change { get; init; }
 
     public required EstimationProfile Profile { get; init; }
 
@@ -331,6 +337,8 @@ public sealed record CalibrationCorpusReviewRecord
     public required string SourceRecordId { get; init; }
 
     public required CalibrationRepositoryReference Repository { get; init; }
+
+    public ChangeCalibrationReference? Change { get; init; }
 
     public required EstimationProfile Profile { get; init; }
 

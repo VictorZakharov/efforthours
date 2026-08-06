@@ -1,0 +1,3155 @@
+{
+  "schemaVersion": "1.0.0",
+  "compilerVersion": "change-calibration-review-compiler/0.1.0",
+  "id": "fairbill-change-public-synthetic",
+  "version": "0.1.0",
+  "description": "Preliminary logical teacher estimates for 24 small synthetic immutable final changes.",
+  "rubric": {
+    "id": "change-ehe-work-item",
+    "version": "1.0.0"
+  },
+  "records": [
+    {
+      "id": "record:change:dn-data-integration",
+      "repository": {
+        "id": "repository:change-dn-data-b",
+        "name": "repository:change-dn-data-b",
+        "sourceDigest": "sha256:7e7972b6f3ed011f65703ed2c7cc113caf7d810b520ec0ca4d973ec862ed100a"
+      },
+      "change": {
+        "id": "change:dn-data-integration",
+        "selectionKind": "base-head",
+        "baseObjectId": "2ebe1d45d969ae3be5a759837a5b8bf398cbfa2cffefa35c6f5c4c0b369eceaa",
+        "headObjectId": "7b49c537cd7143560394478080374a8fef1f745d38bc72bab89c51e659343147",
+        "baseEvidenceDigest": "sha256:bc7aab759225d8486f0ce9a524ab4f51b98872f9f21ba05898daea0e16b909e3",
+        "headEvidenceDigest": "sha256:899026d5ab8ca7d27698a449deeb826ba7143cd05f3bf532a3f4abf5217dc1a2",
+        "finalDeltaDigest": "sha256:7e7972b6f3ed011f65703ed2c7cc113caf7d810b520ec0ca4d973ec862ed100a",
+        "coverageTags": [
+          "data",
+          "dotnet",
+          "integration",
+          "production"
+        ]
+      },
+      "profile": "implementation",
+      "baselineId": "senior-contractor-2026-no-ai",
+      "partition": "validation",
+      "sourceEstimatorVersion": "change-seed/0.1.0\u002Bseed-rules/0.2.1",
+      "sourceEstimateDigest": "sha256:d7ac1a8a75657d4d383938cea209d630594407306772314067d3d658fc3fd2c0",
+      "source": {
+        "dataClassification": "synthetic",
+        "sourceReference": "fairbill://calibration/changes/public-synthetic/0.1.0.fixtures.json#change:dn-data-integration",
+        "revision": "2ebe1d45d969ae3be5a759837a5b8bf398cbfa2cffefa35c6f5c4c0b369eceaa..7b49c537cd7143560394478080374a8fef1f745d38bc72bab89c51e659343147",
+        "licenseExpression": "MIT",
+        "redistributionAllowed": true,
+        "notes": "Project-owned synthetic immutable states; generated without Git activity metadata."
+      },
+      "review": {
+        "status": "teacher-estimate",
+        "completedOn": "2026-08-06",
+        "reviewers": [
+          {
+            "id": "teacher:openai-codex-gpt-5-2026-08",
+            "kind": "host-ai",
+            "role": "teacher",
+            "modelId": "openai-codex",
+            "modelVersion": "gpt-5"
+          }
+        ],
+        "notes": "Single host-AI teacher review mapped by change-teacher-plan-generator/0.1.0; no independent correction or adjudication. Candidate totals were observed during fixture-invariant verification before this policy was authored, so this is disclosed weak supervision rather than a blind label claim. Category budgets were reasoned from the final synthetic behavior and frozen without fitting seed priors, validation outcomes, test outcomes, or preferred WAPE."
+      },
+      "capabilities": [
+        {
+          "sourceCapabilityId": "change-item:capability-marginal:124f796d41ae14b58655",
+          "rationale": "The delta adds repository lookup plus an HTTP endpoint with not-found behavior and cancellation propagation. The teacher allocated the independently reasoned manual-validation-debugging-and-hardening category budget across 1 represented source capability target(s).",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.50,
+                "expected": 1.00,
+                "high": 2.00
+              },
+              "uncertaintyReasons": [
+                "Success, missing data, and cancellation paths need validation."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "change-item:capability-marginal:16ded8a1d6c55071811b",
+          "rationale": "The delta adds repository lookup plus an HTTP endpoint with not-found behavior and cancellation propagation. The teacher allocated the independently reasoned production-implementation category budget across 2 represented source capability target(s).",
+          "targets": [
+            {
+              "hours": {
+                "low": 1.00,
+                "expected": 2.00,
+                "high": 3.50
+              },
+              "uncertaintyReasons": [
+                "Two source capabilities span API mapping and persistence behavior."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "change-item:capability-marginal:7a9d1c7058ed1606b627",
+          "rationale": "The delta adds repository lookup plus an HTTP endpoint with not-found behavior and cancellation propagation. The teacher rejected this source capability as duplicate, mechanically excluded, or outside the final logical category work.",
+          "targets": [
+            {
+              "hours": {
+                "low": 0,
+                "expected": 0,
+                "high": 0
+              },
+              "uncertaintyReasons": [],
+              "sizeException": "Explicit false-positive exclusion: the source capability does not represent distinct final-delta EHE under the Change rubric."
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "change-item:capability-marginal:c16f9d619a882751b056",
+          "rationale": "The delta adds repository lookup plus an HTTP endpoint with not-found behavior and cancellation propagation. The teacher rejected this source capability as duplicate, mechanically excluded, or outside the final logical category work.",
+          "targets": [
+            {
+              "hours": {
+                "low": 0,
+                "expected": 0,
+                "high": 0
+              },
+              "uncertaintyReasons": [],
+              "sizeException": "Explicit false-positive exclusion: the source capability does not represent distinct final-delta EHE under the Change rubric."
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "change-item:capability-marginal:e288c4551eaf00fc5104",
+          "rationale": "The delta adds repository lookup plus an HTTP endpoint with not-found behavior and cancellation propagation. The teacher allocated the independently reasoned production-implementation category budget across 2 represented source capability target(s).",
+          "targets": [
+            {
+              "hours": {
+                "low": 1.00,
+                "expected": 2.00,
+                "high": 3.50
+              },
+              "uncertaintyReasons": [
+                "Two source capabilities span API mapping and persistence behavior."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "change-item:capability-marginal:eda4c2d4baf6390cd5eb",
+          "rationale": "The delta adds repository lookup plus an HTTP endpoint with not-found behavior and cancellation propagation. The teacher allocated the independently reasoned architecture-and-technical-design category budget across 1 represented source capability target(s).",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.50,
+                "expected": 1.00,
+                "high": 2.00
+              },
+              "uncertaintyReasons": [
+                "Dependency registration and boundary ownership may vary."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "change-item:change-comprehension:4fe22659d306053b1481",
+          "rationale": "The delta adds repository lookup plus an HTTP endpoint with not-found behavior and cancellation propagation. The teacher allocated the independently reasoned specification-comprehension-and-domain-learning category budget across 1 represented source capability target(s).",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.50,
+                "expected": 0.75,
+                "high": 1.50
+              },
+              "uncertaintyReasons": [
+                "API and persistence contracts are compact but cross layers."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "change-item:change-review:46ba1fa47e1004986815",
+          "rationale": "The delta adds repository lookup plus an HTTP endpoint with not-found behavior and cancellation propagation. The teacher allocated the independently reasoned self-review-and-system-integration category budget across 1 represented source capability target(s).",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.50,
+                "expected": 1.00,
+                "high": 2.00
+              },
+              "uncertaintyReasons": [
+                "Cross-layer integration creates moderate review risk."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "record:change:dn-data-migration",
+      "repository": {
+        "id": "repository:change-dn-data-b",
+        "name": "repository:change-dn-data-b",
+        "sourceDigest": "sha256:6ceee70acf696893d67cad80d13e347f5e74b183c6022c0fce33d6660d0ada0d"
+      },
+      "change": {
+        "id": "change:dn-data-migration",
+        "selectionKind": "base-head",
+        "baseObjectId": "d787f9e4e6b561032fb05e6cceb6b50ae88fe12d01939d6d003c2bf75dd68b46",
+        "headObjectId": "85c9c6aea1de4b20aa9c34453d9e89e7cae11cc893ad03314d81b8ef9a251428",
+        "baseEvidenceDigest": "sha256:9f29d9b3ecea9fdf3111a6b5ef8f260c1f77cb72588338890d8dd4add83f6480",
+        "headEvidenceDigest": "sha256:7270e677aa09c9b89065ae2c5d25ed7d7f060dbe80bdc43bd3f829f88df58e40",
+        "finalDeltaDigest": "sha256:6ceee70acf696893d67cad80d13e347f5e74b183c6022c0fce33d6660d0ada0d",
+        "coverageTags": [
+          "data",
+          "dotnet",
+          "migration"
+        ]
+      },
+      "profile": "implementation",
+      "baselineId": "senior-contractor-2026-no-ai",
+      "partition": "validation",
+      "sourceEstimatorVersion": "change-seed/0.1.0\u002Bseed-rules/0.2.1",
+      "sourceEstimateDigest": "sha256:5f6a03076ecf1878d1cc5c3f824c63598cc326a92ac7657e565d84e0a2c4aedf",
+      "source": {
+        "dataClassification": "synthetic",
+        "sourceReference": "fairbill://calibration/changes/public-synthetic/0.1.0.fixtures.json#change:dn-data-migration",
+        "revision": "d787f9e4e6b561032fb05e6cceb6b50ae88fe12d01939d6d003c2bf75dd68b46..85c9c6aea1de4b20aa9c34453d9e89e7cae11cc893ad03314d81b8ef9a251428",
+        "licenseExpression": "MIT",
+        "redistributionAllowed": true,
+        "notes": "Project-owned synthetic immutable states; generated without Git activity metadata."
+      },
+      "review": {
+        "status": "teacher-estimate",
+        "completedOn": "2026-08-06",
+        "reviewers": [
+          {
+            "id": "teacher:openai-codex-gpt-5-2026-08",
+            "kind": "host-ai",
+            "role": "teacher",
+            "modelId": "openai-codex",
+            "modelVersion": "gpt-5"
+          }
+        ],
+        "notes": "Single host-AI teacher review mapped by change-teacher-plan-generator/0.1.0; no independent correction or adjudication. Candidate totals were observed during fixture-invariant verification before this policy was authored, so this is disclosed weak supervision rather than a blind label claim. Category budgets were reasoned from the final synthetic behavior and frozen without fitting seed priors, validation outcomes, test outcomes, or preferred WAPE."
+      },
+      "capabilities": [
+        {
+          "sourceCapabilityId": "change-item:capability-marginal:3a3b9ad8c4de63b43a16",
+          "rationale": "A nullable persisted field requires model design, a reversible migration, validation, and integration review. The teacher allocated the independently reasoned manual-validation-debugging-and-hardening category budget across 1 represented source capability target(s).",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.50,
+                "expected": 1.00,
+                "high": 2.00
+              },
+              "uncertaintyReasons": [
+                "Upgrade and downgrade paths need checking."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "change-item:capability-marginal:5d7e5545002a17d8b921",
+          "rationale": "A nullable persisted field requires model design, a reversible migration, validation, and integration review. The teacher allocated the independently reasoned data-modeling-persistence-and-migrations category budget across 1 represented source capability target(s).",
+          "targets": [
+            {
+              "hours": {
+                "low": 1.50,
+                "expected": 3.00,
+                "high": 6.00
+              },
+              "uncertaintyReasons": [
+                "Migration conventions and rollback verification vary by persistence stack."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "change-item:capability-marginal:7d3a184511845665a1e8",
+          "rationale": "A nullable persisted field requires model design, a reversible migration, validation, and integration review. The teacher allocated the independently reasoned production-implementation category budget across 1 represented source capability target(s).",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.25,
+                "expected": 0.50,
+                "high": 1.00
+              },
+              "uncertaintyReasons": [
+                "The model change is mechanical once semantics are decided."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "change-item:capability-marginal:8e8437bf3c1c4f7f3cfc",
+          "rationale": "A nullable persisted field requires model design, a reversible migration, validation, and integration review. The teacher rejected this source capability as duplicate, mechanically excluded, or outside the final logical category work.",
+          "targets": [
+            {
+              "hours": {
+                "low": 0,
+                "expected": 0,
+                "high": 0
+              },
+              "uncertaintyReasons": [],
+              "sizeException": "Explicit false-positive exclusion: the source capability does not represent distinct final-delta EHE under the Change rubric."
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "change-item:capability-marginal:bb013239b20259b40deb",
+          "rationale": "A nullable persisted field requires model design, a reversible migration, validation, and integration review. The teacher allocated the independently reasoned architecture-and-technical-design category budget across 1 represented source capability target(s).",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.50,
+                "expected": 0.75,
+                "high": 1.50
+              },
+              "uncertaintyReasons": [
+                "Schema compatibility is bounded to one optional field."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "change-item:capability-marginal:dcd6517a9099eb7c5b5f",
+          "rationale": "A nullable persisted field requires model design, a reversible migration, validation, and integration review. The teacher rejected this source capability as duplicate, mechanically excluded, or outside the final logical category work.",
+          "targets": [
+            {
+              "hours": {
+                "low": 0,
+                "expected": 0,
+                "high": 0
+              },
+              "uncertaintyReasons": [],
+              "sizeException": "Explicit false-positive exclusion: the source capability does not represent distinct final-delta EHE under the Change rubric."
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "change-item:change-comprehension:1db851c0bde0bcfa31f8",
+          "rationale": "A nullable persisted field requires model design, a reversible migration, validation, and integration review. The teacher allocated the independently reasoned specification-comprehension-and-domain-learning category budget across 1 represented source capability target(s).",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.50,
+                "expected": 0.75,
+                "high": 1.50
+              },
+              "uncertaintyReasons": [
+                "Locale format and null semantics may need confirmation."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "change-item:change-review:479abc28465cce6fa1e6",
+          "rationale": "A nullable persisted field requires model design, a reversible migration, validation, and integration review. The teacher allocated the independently reasoned self-review-and-system-integration category budget across 1 represented source capability target(s).",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.50,
+                "expected": 0.75,
+                "high": 1.50
+              },
+              "uncertaintyReasons": [
+                "The schema and model must remain aligned."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "record:change:dn-data-removal",
+      "repository": {
+        "id": "repository:change-dn-data-b",
+        "name": "repository:change-dn-data-b",
+        "sourceDigest": "sha256:da0181b11fb21b7be22911413a031e4ac013f80e8b1d76a503b1ee0987056092"
+      },
+      "change": {
+        "id": "change:dn-data-removal",
+        "selectionKind": "base-head",
+        "baseObjectId": "a08d8b7f51d986156e84617398344240ea583c55a4fbc546c52d50ef23fdda81",
+        "headObjectId": "76e9d37ad72e5d0d00ea49f54cc343745979e645e028bfaefd134db0e42923cf",
+        "baseEvidenceDigest": "sha256:6be12be633b1c6dce89644de8d69f2519b446ec42867076418bf3398112137b0",
+        "headEvidenceDigest": "sha256:f05d607c7493d99550185311ea02121d85c4d9c475892248cf241c422fbfd07f",
+        "finalDeltaDigest": "sha256:da0181b11fb21b7be22911413a031e4ac013f80e8b1d76a503b1ee0987056092",
+        "coverageTags": [
+          "deletion",
+          "dotnet",
+          "migration",
+          "validation"
+        ]
+      },
+      "profile": "implementation",
+      "baselineId": "senior-contractor-2026-no-ai",
+      "partition": "validation",
+      "sourceEstimatorVersion": "change-seed/0.1.0\u002Bseed-rules/0.2.1",
+      "sourceEstimateDigest": "sha256:e38d0d9b7ed2d70c8d204f042ff40d7ad3aad031f9d88dccf59203db6020fc35",
+      "source": {
+        "dataClassification": "synthetic",
+        "sourceReference": "fairbill://calibration/changes/public-synthetic/0.1.0.fixtures.json#change:dn-data-removal",
+        "revision": "a08d8b7f51d986156e84617398344240ea583c55a4fbc546c52d50ef23fdda81..76e9d37ad72e5d0d00ea49f54cc343745979e645e028bfaefd134db0e42923cf",
+        "licenseExpression": "MIT",
+        "redistributionAllowed": true,
+        "notes": "Project-owned synthetic immutable states; generated without Git activity metadata."
+      },
+      "review": {
+        "status": "teacher-estimate",
+        "completedOn": "2026-08-06",
+        "reviewers": [
+          {
+            "id": "teacher:openai-codex-gpt-5-2026-08",
+            "kind": "host-ai",
+            "role": "teacher",
+            "modelId": "openai-codex",
+            "modelVersion": "gpt-5"
+          }
+        ],
+        "notes": "Single host-AI teacher review mapped by change-teacher-plan-generator/0.1.0; no independent correction or adjudication. Candidate totals were observed during fixture-invariant verification before this policy was authored, so this is disclosed weak supervision rather than a blind label claim. Category budgets were reasoned from the final synthetic behavior and frozen without fitting seed priors, validation outcomes, test outcomes, or preferred WAPE."
+      },
+      "capabilities": [
+        {
+          "sourceCapabilityId": "change-item:capability-marginal:19c54625f7be133714b6",
+          "rationale": "Removing a persisted field requires model and mapping simplification, a reversible destructive migration, and compatibility validation. The teacher allocated the independently reasoned manual-validation-debugging-and-hardening category budget across 1 represented source capability target(s).",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.75,
+                "expected": 1.25,
+                "high": 2.50
+              },
+              "uncertaintyReasons": [
+                "Existing data and API compatibility need deliberate checks."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "change-item:capability-marginal:7deb0afbfece0ce7c2e2",
+          "rationale": "Removing a persisted field requires model and mapping simplification, a reversible destructive migration, and compatibility validation. The teacher rejected this source capability as duplicate, mechanically excluded, or outside the final logical category work.",
+          "targets": [
+            {
+              "hours": {
+                "low": 0,
+                "expected": 0,
+                "high": 0
+              },
+              "uncertaintyReasons": [],
+              "sizeException": "Explicit false-positive exclusion: the source capability does not represent distinct final-delta EHE under the Change rubric."
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "change-item:capability-marginal:9b6ac82cc1e3bec63112",
+          "rationale": "Removing a persisted field requires model and mapping simplification, a reversible destructive migration, and compatibility validation. The teacher allocated the independently reasoned data-modeling-persistence-and-migrations category budget across 1 represented source capability target(s).",
+          "targets": [
+            {
+              "hours": {
+                "low": 1.50,
+                "expected": 3.00,
+                "high": 6.00
+              },
+              "uncertaintyReasons": [
+                "Production data safety and rollback policy may increase effort."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "change-item:capability-marginal:a37bd4eef829aa780df6",
+          "rationale": "Removing a persisted field requires model and mapping simplification, a reversible destructive migration, and compatibility validation. The teacher allocated the independently reasoned production-implementation category budget across 1 represented source capability target(s).",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.50,
+                "expected": 1.00,
+                "high": 2.00
+              },
+              "uncertaintyReasons": [
+                "Model and DTO mapping must change together."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "change-item:capability-marginal:a6503200b435d4e7c93d",
+          "rationale": "Removing a persisted field requires model and mapping simplification, a reversible destructive migration, and compatibility validation. The teacher rejected this source capability as duplicate, mechanically excluded, or outside the final logical category work.",
+          "targets": [
+            {
+              "hours": {
+                "low": 0,
+                "expected": 0,
+                "high": 0
+              },
+              "uncertaintyReasons": [],
+              "sizeException": "Explicit false-positive exclusion: the source capability does not represent distinct final-delta EHE under the Change rubric."
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "change-item:capability-marginal:bee55370e38ba7947704",
+          "rationale": "Removing a persisted field requires model and mapping simplification, a reversible destructive migration, and compatibility validation. The teacher allocated the independently reasoned architecture-and-technical-design category budget across 1 represented source capability target(s).",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.50,
+                "expected": 1.00,
+                "high": 2.00
+              },
+              "uncertaintyReasons": [
+                "Destructive schema decisions carry compatibility risk."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "change-item:change-comprehension:0d46cd7eec01493f9351",
+          "rationale": "Removing a persisted field requires model and mapping simplification, a reversible destructive migration, and compatibility validation. The teacher allocated the independently reasoned specification-comprehension-and-domain-learning category budget across 1 represented source capability target(s).",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.50,
+                "expected": 0.75,
+                "high": 1.50
+              },
+              "uncertaintyReasons": [
+                "Data-retention and consumer expectations may need confirmation."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "change-item:change-review:376d459eba30feff26ee",
+          "rationale": "Removing a persisted field requires model and mapping simplification, a reversible destructive migration, and compatibility validation. The teacher allocated the independently reasoned self-review-and-system-integration category budget across 1 represented source capability target(s).",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.50,
+                "expected": 1.00,
+                "high": 2.00
+              },
+              "uncertaintyReasons": [
+                "Removal correctness matters more than deleted volume."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "record:change:dn-lib-docs",
+      "repository": {
+        "id": "repository:change-dn-lib-a",
+        "name": "repository:change-dn-lib-a",
+        "sourceDigest": "sha256:3c1c3343d4aea753374838235f2720dc78c6e19c8a2e6707e2d85326973cfb9d"
+      },
+      "change": {
+        "id": "change:dn-lib-docs",
+        "selectionKind": "base-head",
+        "baseObjectId": "3b1bd803b7a068fca04e63ab60ba2ad4bb97c0f494f491db474cc435f2081eef",
+        "headObjectId": "5f0d877b23124ac7880d476556f6d2cead82cb2aa6d122e16bc0aa22a890684b",
+        "baseEvidenceDigest": "sha256:e888fb7b1a3fdc773a399fffdb649dddb2b352e487ad74cc01682ef87d52837b",
+        "headEvidenceDigest": "sha256:ffd086d53b00d6799a54fa6acdcf500ec9b3694273954060d7afd6e201c71722",
+        "finalDeltaDigest": "sha256:3c1c3343d4aea753374838235f2720dc78c6e19c8a2e6707e2d85326973cfb9d",
+        "coverageTags": [
+          "clean-disjoint",
+          "documentation",
+          "dotnet"
+        ]
+      },
+      "profile": "implementation",
+      "baselineId": "senior-contractor-2026-no-ai",
+      "partition": "development",
+      "sourceEstimatorVersion": "change-seed/0.1.0\u002Bseed-rules/0.2.1",
+      "sourceEstimateDigest": "sha256:4d729ca6412cc3156035e9a9978ce8a31ca17f3f3aca386b52b5d49f8f28a453",
+      "source": {
+        "dataClassification": "synthetic",
+        "sourceReference": "fairbill://calibration/changes/public-synthetic/0.1.0.fixtures.json#change:dn-lib-docs",
+        "revision": "3b1bd803b7a068fca04e63ab60ba2ad4bb97c0f494f491db474cc435f2081eef..5f0d877b23124ac7880d476556f6d2cead82cb2aa6d122e16bc0aa22a890684b",
+        "licenseExpression": "MIT",
+        "redistributionAllowed": true,
+        "notes": "Project-owned synthetic immutable states; generated without Git activity metadata."
+      },
+      "review": {
+        "status": "teacher-estimate",
+        "completedOn": "2026-08-06",
+        "reviewers": [
+          {
+            "id": "teacher:openai-codex-gpt-5-2026-08",
+            "kind": "host-ai",
+            "role": "teacher",
+            "modelId": "openai-codex",
+            "modelVersion": "gpt-5"
+          }
+        ],
+        "notes": "Single host-AI teacher review mapped by change-teacher-plan-generator/0.1.0; no independent correction or adjudication. Candidate totals were observed during fixture-invariant verification before this policy was authored, so this is disclosed weak supervision rather than a blind label claim. Category budgets were reasoned from the final synthetic behavior and frozen without fitting seed priors, validation outcomes, test outcomes, or preferred WAPE."
+      },
+      "capabilities": [
+        {
+          "sourceCapabilityId": "change-item:capability-marginal:0fa2dc1b7d629388d3b8",
+          "rationale": "The final delta is one concise maintained usage guide with an example and explicit limitations. The teacher allocated the independently reasoned documentation category budget across 1 represented source capability target(s).",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.50,
+                "expected": 1.00,
+                "high": 2.00
+              },
+              "uncertaintyReasons": [
+                "Example verification and wording review create modest variability."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "change-item:change-comprehension:2151fc3fccaf9037255a",
+          "rationale": "The final delta is one concise maintained usage guide with an example and explicit limitations. The teacher allocated the independently reasoned specification-comprehension-and-domain-learning category budget across 1 represented source capability target(s).",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.25,
+                "expected": 0.50,
+                "high": 1.00
+              },
+              "uncertaintyReasons": [
+                "The intended audience and terminology may need brief confirmation."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "change-item:change-review:4e8b393db820c2d25331",
+          "rationale": "The final delta is one concise maintained usage guide with an example and explicit limitations. The teacher allocated the independently reasoned self-review-and-system-integration category budget across 1 represented source capability target(s).",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.25,
+                "expected": 0.50,
+                "high": 1.00
+              },
+              "uncertaintyReasons": [
+                "Documentation integration is bounded."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "record:change:dn-lib-production",
+      "repository": {
+        "id": "repository:change-dn-lib-a",
+        "name": "repository:change-dn-lib-a",
+        "sourceDigest": "sha256:b248b960913b00536f39397ae8081b16ad1f9ee01adf701b2c8bdaf280631514"
+      },
+      "change": {
+        "id": "change:dn-lib-production",
+        "selectionKind": "base-head",
+        "baseObjectId": "020c1a6afd52700f68fa76d12c82dd45e66d0428d400fb6729a877bf74495976",
+        "headObjectId": "716343eb8f3f969f9764a9dc548b6f59b794e3066d33cc58fc96cbcc77aa99f6",
+        "baseEvidenceDigest": "sha256:1f257cb29f21608b94c804bf3bac4c4dc673809c90c71be6d20843e94c873737",
+        "headEvidenceDigest": "sha256:2604d06417c02eaa0e16132e831f11211bb9f3c03ca1e6f7159b8d3589fb7174",
+        "finalDeltaDigest": "sha256:b248b960913b00536f39397ae8081b16ad1f9ee01adf701b2c8bdaf280631514",
+        "coverageTags": [
+          "clean-disjoint",
+          "dotnet",
+          "production"
+        ]
+      },
+      "profile": "implementation",
+      "baselineId": "senior-contractor-2026-no-ai",
+      "partition": "development",
+      "sourceEstimatorVersion": "change-seed/0.1.0\u002Bseed-rules/0.2.1",
+      "sourceEstimateDigest": "sha256:74ddd2272887b9f6bc0444233f26f33f75127cf0ac3827e1c61ca4d63f2b02db",
+      "source": {
+        "dataClassification": "synthetic",
+        "sourceReference": "fairbill://calibration/changes/public-synthetic/0.1.0.fixtures.json#change:dn-lib-production",
+        "revision": "020c1a6afd52700f68fa76d12c82dd45e66d0428d400fb6729a877bf74495976..716343eb8f3f969f9764a9dc548b6f59b794e3066d33cc58fc96cbcc77aa99f6",
+        "licenseExpression": "MIT",
+        "redistributionAllowed": true,
+        "notes": "Project-owned synthetic immutable states; generated without Git activity metadata."
+      },
+      "review": {
+        "status": "teacher-estimate",
+        "completedOn": "2026-08-06",
+        "reviewers": [
+          {
+            "id": "teacher:openai-codex-gpt-5-2026-08",
+            "kind": "host-ai",
+            "role": "teacher",
+            "modelId": "openai-codex",
+            "modelVersion": "gpt-5"
+          }
+        ],
+        "notes": "Single host-AI teacher review mapped by change-teacher-plan-generator/0.1.0; no independent correction or adjudication. Candidate totals were observed during fixture-invariant verification before this policy was authored, so this is disclosed weak supervision rather than a blind label claim. Category budgets were reasoned from the final synthetic behavior and frozen without fitting seed priors, validation outcomes, test outcomes, or preferred WAPE."
+      },
+      "capabilities": [
+        {
+          "sourceCapabilityId": "change-item:capability-marginal:e76424ac4c86f9a7a366",
+          "rationale": "A senior contractor must understand one small string-normalization rule, implement the maintained API, and check edge behavior. The teacher allocated the independently reasoned production-implementation category budget across 1 represented source capability target(s).",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.75,
+                "expected": 1.50,
+                "high": 3.00
+              },
+              "uncertaintyReasons": [
+                "Normalization edge cases can expand implementation and validation."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "change-item:change-comprehension:c3bff0f91468e4bcb82f",
+          "rationale": "A senior contractor must understand one small string-normalization rule, implement the maintained API, and check edge behavior. The teacher allocated the independently reasoned specification-comprehension-and-domain-learning category budget across 1 represented source capability target(s).",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.25,
+                "expected": 0.50,
+                "high": 1.00
+              },
+              "uncertaintyReasons": [
+                "Input and Unicode edge requirements may need clarification."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "change-item:change-review:f2f9f7f8f9c59b53afeb",
+          "rationale": "A senior contractor must understand one small string-normalization rule, implement the maintained API, and check edge behavior. The teacher allocated the independently reasoned self-review-and-system-integration category budget across 1 represented source capability target(s).",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.25,
+                "expected": 0.50,
+                "high": 1.00
+              },
+              "uncertaintyReasons": [
+                "The tiny library has a bounded integration surface."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "record:change:dn-lib-tests",
+      "repository": {
+        "id": "repository:change-dn-lib-a",
+        "name": "repository:change-dn-lib-a",
+        "sourceDigest": "sha256:264a64714ae9d3f06e88f20de091284161fe822ddc885a5864c90b3fbd063f6b"
+      },
+      "change": {
+        "id": "change:dn-lib-tests",
+        "selectionKind": "base-head",
+        "baseObjectId": "1d38706a98151cfc4a0d3cb38cc54a83d6d98ba0a84c347f2ec4475e456bb590",
+        "headObjectId": "30abc995b987d60afd758fdf8f49fe60cc23f89be5648510ea67ee46c7c7f618",
+        "baseEvidenceDigest": "sha256:b86ebc8fbb9825e6f4925cea2b8d2a3d02749e2dfd8f79e03dba8f7ca13bf523",
+        "headEvidenceDigest": "sha256:86f0306e6c77940c8f07298dd629f44160db048dd61e290fa28e18e6f62cc988",
+        "finalDeltaDigest": "sha256:264a64714ae9d3f06e88f20de091284161fe822ddc885a5864c90b3fbd063f6b",
+        "coverageTags": [
+          "clean-disjoint",
+          "dotnet",
+          "tests"
+        ]
+      },
+      "profile": "implementation",
+      "baselineId": "senior-contractor-2026-no-ai",
+      "partition": "development",
+      "sourceEstimatorVersion": "change-seed/0.1.0\u002Bseed-rules/0.2.1",
+      "sourceEstimateDigest": "sha256:bfe88a2a5cbeefcda4075477a6784271d2d66b498c4c367d1efd95aee61b5850",
+      "source": {
+        "dataClassification": "synthetic",
+        "sourceReference": "fairbill://calibration/changes/public-synthetic/0.1.0.fixtures.json#change:dn-lib-tests",
+        "revision": "1d38706a98151cfc4a0d3cb38cc54a83d6d98ba0a84c347f2ec4475e456bb590..30abc995b987d60afd758fdf8f49fe60cc23f89be5648510ea67ee46c7c7f618",
+        "licenseExpression": "MIT",
+        "redistributionAllowed": true,
+        "notes": "Project-owned synthetic immutable states; generated without Git activity metadata."
+      },
+      "review": {
+        "status": "teacher-estimate",
+        "completedOn": "2026-08-06",
+        "reviewers": [
+          {
+            "id": "teacher:openai-codex-gpt-5-2026-08",
+            "kind": "host-ai",
+            "role": "teacher",
+            "modelId": "openai-codex",
+            "modelVersion": "gpt-5"
+          }
+        ],
+        "notes": "Single host-AI teacher review mapped by change-teacher-plan-generator/0.1.0; no independent correction or adjudication. Candidate totals were observed during fixture-invariant verification before this policy was authored, so this is disclosed weak supervision rather than a blind label claim. Category budgets were reasoned from the final synthetic behavior and frozen without fitting seed priors, validation outcomes, test outcomes, or preferred WAPE."
+      },
+      "capabilities": [
+        {
+          "sourceCapabilityId": "change-item:capability-marginal:1cc6d8d65eb676b4b04b",
+          "rationale": "The final delta adds a test project plus two focused behavioral examples for existing code. The teacher allocated the independently reasoned repository-and-solution-setup category budget across 1 represented source capability target(s).",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.50,
+                "expected": 0.75,
+                "high": 1.50
+              },
+              "uncertaintyReasons": [
+                "Project wiring may require a small amount of package and reference setup."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "change-item:capability-marginal:dac4ad7501985fb3fdd1",
+          "rationale": "The final delta adds a test project plus two focused behavioral examples for existing code. The teacher allocated the independently reasoned unit-testing category budget across 1 represented source capability target(s).",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.75,
+                "expected": 1.50,
+                "high": 3.00
+              },
+              "uncertaintyReasons": [
+                "Additional normalization cases may be expected by the clear specification."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "change-item:capability-modification:0da45ec17be27cf9ce54",
+          "rationale": "The final delta adds a test project plus two focused behavioral examples for existing code. The teacher rejected this source capability as duplicate, mechanically excluded, or outside the final logical category work.",
+          "targets": [
+            {
+              "hours": {
+                "low": 0,
+                "expected": 0,
+                "high": 0
+              },
+              "uncertaintyReasons": [],
+              "sizeException": "Explicit false-positive exclusion: the source capability does not represent distinct final-delta EHE under the Change rubric."
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "change-item:capability-modification:413e261a97a663a57190",
+          "rationale": "The final delta adds a test project plus two focused behavioral examples for existing code. The teacher rejected this source capability as duplicate, mechanically excluded, or outside the final logical category work.",
+          "targets": [
+            {
+              "hours": {
+                "low": 0,
+                "expected": 0,
+                "high": 0
+              },
+              "uncertaintyReasons": [],
+              "sizeException": "Explicit false-positive exclusion: the source capability does not represent distinct final-delta EHE under the Change rubric."
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "change-item:change-comprehension:a0366bb102a13c5e7437",
+          "rationale": "The final delta adds a test project plus two focused behavioral examples for existing code. The teacher allocated the independently reasoned specification-comprehension-and-domain-learning category budget across 1 represented source capability target(s).",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.25,
+                "expected": 0.50,
+                "high": 1.00
+              },
+              "uncertaintyReasons": [
+                "Expected edge coverage is only briefly represented."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "change-item:change-review:42052215a3bbf66f1692",
+          "rationale": "The final delta adds a test project plus two focused behavioral examples for existing code. The teacher allocated the independently reasoned self-review-and-system-integration category budget across 1 represented source capability target(s).",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.25,
+                "expected": 0.50,
+                "high": 1.00
+              },
+              "uncertaintyReasons": [
+                "Static analysis assumes the new tests pass."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "record:change:js-lib-formatting",
+      "repository": {
+        "id": "repository:change-js-lib-b",
+        "name": "repository:change-js-lib-b",
+        "sourceDigest": "sha256:e9a1e384d1667f7012d3f101dedf99ccfbc5926d63c4899a459bdd8db9023f38"
+      },
+      "change": {
+        "id": "change:js-lib-formatting",
+        "selectionKind": "base-head",
+        "baseObjectId": "713ffeddf7789b8ff5e06095f7cb4effa1dc9c2e20d950cf6b1cb29fccaed82b",
+        "headObjectId": "d91d2a732d4fecf60805da53c23bb0754c21ed5992936ab061a1eda06c4c252d",
+        "baseEvidenceDigest": "sha256:47e5d5f6e22aeeaf9481ac0e61c2dd73d28e324494df07c9a8887586d308e94c",
+        "headEvidenceDigest": "sha256:06227f8734f2b1c6e8b3801d89dfdbb5191c6dd736cd2c64c9bf9233bca7fe5e",
+        "finalDeltaDigest": "sha256:e9a1e384d1667f7012d3f101dedf99ccfbc5926d63c4899a459bdd8db9023f38",
+        "coverageTags": [
+          "formatting-only",
+          "javascript",
+          "zero-delta"
+        ]
+      },
+      "profile": "implementation",
+      "baselineId": "senior-contractor-2026-no-ai",
+      "partition": "validation",
+      "sourceEstimatorVersion": "change-seed/0.1.0\u002Bseed-rules/0.2.1",
+      "sourceEstimateDigest": "sha256:bc948742c8807e9e2f6eb0266569dff62d70c8a9696ac087277774b4fc73ae89",
+      "source": {
+        "dataClassification": "synthetic",
+        "sourceReference": "fairbill://calibration/changes/public-synthetic/0.1.0.fixtures.json#change:js-lib-formatting",
+        "revision": "713ffeddf7789b8ff5e06095f7cb4effa1dc9c2e20d950cf6b1cb29fccaed82b..d91d2a732d4fecf60805da53c23bb0754c21ed5992936ab061a1eda06c4c252d",
+        "licenseExpression": "MIT",
+        "redistributionAllowed": true,
+        "notes": "Project-owned synthetic immutable states; generated without Git activity metadata."
+      },
+      "review": {
+        "status": "teacher-estimate",
+        "completedOn": "2026-08-06",
+        "reviewers": [
+          {
+            "id": "teacher:openai-codex-gpt-5-2026-08",
+            "kind": "host-ai",
+            "role": "teacher",
+            "modelId": "openai-codex",
+            "modelVersion": "gpt-5"
+          }
+        ],
+        "notes": "Single host-AI teacher review mapped by change-teacher-plan-generator/0.1.0; no independent correction or adjudication. Candidate totals were observed during fixture-invariant verification before this policy was authored, so this is disclosed weak supervision rather than a blind label claim. Category budgets were reasoned from the final synthetic behavior and frozen without fitting seed priors, validation outcomes, test outcomes, or preferred WAPE."
+      },
+      "capabilities": []
+    },
+    {
+      "id": "record:change:js-lib-move",
+      "repository": {
+        "id": "repository:change-js-lib-b",
+        "name": "repository:change-js-lib-b",
+        "sourceDigest": "sha256:ed86494a11dc02ebf9a552aa0fb30881e36c2f840205821f4e54d457790073b0"
+      },
+      "change": {
+        "id": "change:js-lib-move",
+        "selectionKind": "base-head",
+        "baseObjectId": "c3ae6c9a84057eca86ed1c4709c75f888710c3c19923d442a3016bb12aeb877c",
+        "headObjectId": "671fb4bc86e6717137d3c8453a2ad4d49d1821e12aca4ab117e9d14ed92bcf1e",
+        "baseEvidenceDigest": "sha256:875002251e3f77a904e0239815484be432c0a462c9f36ea4e370cff21dbaacdf",
+        "headEvidenceDigest": "sha256:234978b87da1da40179af7503809111858976e428912dcd847676ab7bbcb94fd",
+        "finalDeltaDigest": "sha256:ed86494a11dc02ebf9a552aa0fb30881e36c2f840205821f4e54d457790073b0",
+        "coverageTags": [
+          "exact-move",
+          "javascript",
+          "zero-delta"
+        ]
+      },
+      "profile": "implementation",
+      "baselineId": "senior-contractor-2026-no-ai",
+      "partition": "validation",
+      "sourceEstimatorVersion": "change-seed/0.1.0\u002Bseed-rules/0.2.1",
+      "sourceEstimateDigest": "sha256:9f051b888e66c25927a4854be411fe7054abbe6887779f44e89ff38ea58ca213",
+      "source": {
+        "dataClassification": "synthetic",
+        "sourceReference": "fairbill://calibration/changes/public-synthetic/0.1.0.fixtures.json#change:js-lib-move",
+        "revision": "c3ae6c9a84057eca86ed1c4709c75f888710c3c19923d442a3016bb12aeb877c..671fb4bc86e6717137d3c8453a2ad4d49d1821e12aca4ab117e9d14ed92bcf1e",
+        "licenseExpression": "MIT",
+        "redistributionAllowed": true,
+        "notes": "Project-owned synthetic immutable states; generated without Git activity metadata."
+      },
+      "review": {
+        "status": "teacher-estimate",
+        "completedOn": "2026-08-06",
+        "reviewers": [
+          {
+            "id": "teacher:openai-codex-gpt-5-2026-08",
+            "kind": "host-ai",
+            "role": "teacher",
+            "modelId": "openai-codex",
+            "modelVersion": "gpt-5"
+          }
+        ],
+        "notes": "Single host-AI teacher review mapped by change-teacher-plan-generator/0.1.0; no independent correction or adjudication. Candidate totals were observed during fixture-invariant verification before this policy was authored, so this is disclosed weak supervision rather than a blind label claim. Category budgets were reasoned from the final synthetic behavior and frozen without fitting seed priors, validation outcomes, test outcomes, or preferred WAPE."
+      },
+      "capabilities": []
+    },
+    {
+      "id": "record:change:js-lib-quality",
+      "repository": {
+        "id": "repository:change-js-lib-b",
+        "name": "repository:change-js-lib-b",
+        "sourceDigest": "sha256:61b64b1b2fcad567ad335f196bff92b11f97e125495f8fcb0e97faf247c2a7b6"
+      },
+      "change": {
+        "id": "change:js-lib-quality",
+        "selectionKind": "base-head",
+        "baseObjectId": "a7fea269f6561da9c338eb33b5da16e6f22ca04a7f8cb0750114ec1633628c57",
+        "headObjectId": "baee61630f16c6ac6aac83c4a2526a7bd12b95973bd549aa3fdfda291e6a87d8",
+        "baseEvidenceDigest": "sha256:56a65652f5a7e6eacd3f45c86c8fb82f10c1404558b8aaf82ed41b20be32f075",
+        "headEvidenceDigest": "sha256:c8c7f7148da42ac3b8687a226f2dbf9ee73eb3da1191ffefb481c0cc0a9ec781",
+        "finalDeltaDigest": "sha256:61b64b1b2fcad567ad335f196bff92b11f97e125495f8fcb0e97faf247c2a7b6",
+        "coverageTags": [
+          "documentation",
+          "javascript",
+          "tests"
+        ]
+      },
+      "profile": "implementation",
+      "baselineId": "senior-contractor-2026-no-ai",
+      "partition": "validation",
+      "sourceEstimatorVersion": "change-seed/0.1.0\u002Bseed-rules/0.2.1",
+      "sourceEstimateDigest": "sha256:b3d9dc9cd4d1e7868308476f64c73d623dd13f533a0118eb34994dad2f94fd12",
+      "source": {
+        "dataClassification": "synthetic",
+        "sourceReference": "fairbill://calibration/changes/public-synthetic/0.1.0.fixtures.json#change:js-lib-quality",
+        "revision": "a7fea269f6561da9c338eb33b5da16e6f22ca04a7f8cb0750114ec1633628c57..baee61630f16c6ac6aac83c4a2526a7bd12b95973bd549aa3fdfda291e6a87d8",
+        "licenseExpression": "MIT",
+        "redistributionAllowed": true,
+        "notes": "Project-owned synthetic immutable states; generated without Git activity metadata."
+      },
+      "review": {
+        "status": "teacher-estimate",
+        "completedOn": "2026-08-06",
+        "reviewers": [
+          {
+            "id": "teacher:openai-codex-gpt-5-2026-08",
+            "kind": "host-ai",
+            "role": "teacher",
+            "modelId": "openai-codex",
+            "modelVersion": "gpt-5"
+          }
+        ],
+        "notes": "Single host-AI teacher review mapped by change-teacher-plan-generator/0.1.0; no independent correction or adjudication. Candidate totals were observed during fixture-invariant verification before this policy was authored, so this is disclosed weak supervision rather than a blind label claim. Category budgets were reasoned from the final synthetic behavior and frozen without fitting seed priors, validation outcomes, test outcomes, or preferred WAPE."
+      },
+      "capabilities": [
+        {
+          "sourceCapabilityId": "change-item:capability-marginal:642ee2bf883c7e867a23",
+          "rationale": "The final delta adds one focused test and one concise usage contract without changing production behavior. The teacher allocated the independently reasoned unit-testing category budget across 1 represented source capability target(s).",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.75,
+                "expected": 1.50,
+                "high": 3.00
+              },
+              "uncertaintyReasons": [
+                "Additional numeric edge cases may be expected."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "change-item:capability-marginal:8d9eeb16554812f09577",
+          "rationale": "The final delta adds one focused test and one concise usage contract without changing production behavior. The teacher allocated the independently reasoned documentation category budget across 1 represented source capability target(s).",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.50,
+                "expected": 1.00,
+                "high": 2.00
+              },
+              "uncertaintyReasons": [
+                "Contract wording and example verification are bounded."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "change-item:capability-modification:df7b5afaec3fb445df60",
+          "rationale": "The final delta adds one focused test and one concise usage contract without changing production behavior. The teacher rejected this source capability as duplicate, mechanically excluded, or outside the final logical category work.",
+          "targets": [
+            {
+              "hours": {
+                "low": 0,
+                "expected": 0,
+                "high": 0
+              },
+              "uncertaintyReasons": [],
+              "sizeException": "Explicit false-positive exclusion: the source capability does not represent distinct final-delta EHE under the Change rubric."
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "change-item:change-comprehension:0e8e9f9cbe2e447a42db",
+          "rationale": "The final delta adds one focused test and one concise usage contract without changing production behavior. The teacher allocated the independently reasoned specification-comprehension-and-domain-learning category budget across 1 represented source capability target(s).",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.25,
+                "expected": 0.50,
+                "high": 1.00
+              },
+              "uncertaintyReasons": [
+                "Expected quality depth is represented by only one example."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "change-item:change-review:61963b074c40be2353b4",
+          "rationale": "The final delta adds one focused test and one concise usage contract without changing production behavior. The teacher allocated the independently reasoned self-review-and-system-integration category budget across 1 represented source capability target(s).",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.25,
+                "expected": 0.50,
+                "high": 1.00
+              },
+              "uncertaintyReasons": [
+                "The quality-only delta needs a short consistency review."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "record:change:js-service-config",
+      "repository": {
+        "id": "repository:change-js-service-a",
+        "name": "repository:change-js-service-a",
+        "sourceDigest": "sha256:f976e2428efac4d01da4a2901a0567a7fc008a8d295fa6b137e6462291b62dc9"
+      },
+      "change": {
+        "id": "change:js-service-config",
+        "selectionKind": "base-head",
+        "baseObjectId": "eddfb8527867d1f166d4d0449cb814e8bbea25e1b870f82ab92a71d26fb720b1",
+        "headObjectId": "055b8b6c192085abcfb42ebfd82ba474f83c8ad0158637e1e94e5091193035c2",
+        "baseEvidenceDigest": "sha256:6fb1364dd615e7c117ecab3be8797ede1840cc84f5b9bac14b5f2f58610f578e",
+        "headEvidenceDigest": "sha256:3cd01bde883a3ee0ba68243d9e622bdf915789ebabead4cf39cd55ae8bfa982c",
+        "finalDeltaDigest": "sha256:f976e2428efac4d01da4a2901a0567a7fc008a8d295fa6b137e6462291b62dc9",
+        "coverageTags": [
+          "configuration",
+          "integration",
+          "javascript"
+        ]
+      },
+      "profile": "implementation",
+      "baselineId": "senior-contractor-2026-no-ai",
+      "partition": "development",
+      "sourceEstimatorVersion": "change-seed/0.1.0\u002Bseed-rules/0.2.1",
+      "sourceEstimateDigest": "sha256:2c2d9e773c6f45d4c93ce48dd18161dca2feb965955a17c799bbda5c2f7a9838",
+      "source": {
+        "dataClassification": "synthetic",
+        "sourceReference": "fairbill://calibration/changes/public-synthetic/0.1.0.fixtures.json#change:js-service-config",
+        "revision": "eddfb8527867d1f166d4d0449cb814e8bbea25e1b870f82ab92a71d26fb720b1..055b8b6c192085abcfb42ebfd82ba474f83c8ad0158637e1e94e5091193035c2",
+        "licenseExpression": "MIT",
+        "redistributionAllowed": true,
+        "notes": "Project-owned synthetic immutable states; generated without Git activity metadata."
+      },
+      "review": {
+        "status": "teacher-estimate",
+        "completedOn": "2026-08-06",
+        "reviewers": [
+          {
+            "id": "teacher:openai-codex-gpt-5-2026-08",
+            "kind": "host-ai",
+            "role": "teacher",
+            "modelId": "openai-codex",
+            "modelVersion": "gpt-5"
+          }
+        ],
+        "notes": "Single host-AI teacher review mapped by change-teacher-plan-generator/0.1.0; no independent correction or adjudication. Candidate totals were observed during fixture-invariant verification before this policy was authored, so this is disclosed weak supervision rather than a blind label claim. Category budgets were reasoned from the final synthetic behavior and frozen without fitting seed priors, validation outcomes, test outcomes, or preferred WAPE."
+      },
+      "capabilities": [
+        {
+          "sourceCapabilityId": "change-item:capability-marginal:efb068f51853327abe26",
+          "rationale": "The delta adds two integration settings, defaulting, validation, and an operator-facing example file. The teacher allocated the independently reasoned production-implementation category budget across 1 represented source capability target(s).",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.75,
+                "expected": 1.25,
+                "high": 2.50
+              },
+              "uncertaintyReasons": [
+                "Validation conventions may require alignment with the host service."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "change-item:change-comprehension:f8287a21cf1f0ba2329b",
+          "rationale": "The delta adds two integration settings, defaulting, validation, and an operator-facing example file. The teacher allocated the independently reasoned specification-comprehension-and-domain-learning category budget across 1 represented source capability target(s).",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.25,
+                "expected": 0.50,
+                "high": 1.00
+              },
+              "uncertaintyReasons": [
+                "Operational constraints are compact but not exhaustive."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "change-item:change-review:67ece750b8344500eacc",
+          "rationale": "The delta adds two integration settings, defaulting, validation, and an operator-facing example file. The teacher allocated the independently reasoned self-review-and-system-integration category budget across 1 represented source capability target(s).",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.50,
+                "expected": 0.75,
+                "high": 1.50
+              },
+              "uncertaintyReasons": [
+                "Environment behavior needs a brief integration check."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "change-item:maintained-artifact-fallback:2fb44e3c477f9151c75a",
+          "rationale": "The delta adds two integration settings, defaulting, validation, and an operator-facing example file. The teacher allocated the independently reasoned build-configuration-and-developer-tooling category budget across 1 represented source capability target(s).",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.25,
+                "expected": 0.50,
+                "high": 1.00
+              },
+              "uncertaintyReasons": [
+                "The example configuration is small and maintained."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "record:change:js-service-deletion",
+      "repository": {
+        "id": "repository:change-js-service-a",
+        "name": "repository:change-js-service-a",
+        "sourceDigest": "sha256:dfbf708052f79bb1ba41416a578b9a61a2de5d07eeae994895dd93175c8521d3"
+      },
+      "change": {
+        "id": "change:js-service-deletion",
+        "selectionKind": "base-head",
+        "baseObjectId": "a47256f78b98772f32e4d4facb58ad8423dc9b69f4dbff16ccd0e4206d0a9a32",
+        "headObjectId": "b57d69fe072806d13d208c08d5bece2278b6305f4d57f39f02c58ebea3f4a964",
+        "baseEvidenceDigest": "sha256:fb0c38d43860deb7674c8f5f4b38db59d9f07e0fd94c4d13131d2adffcfd2e1d",
+        "headEvidenceDigest": "sha256:614eed13ad8af259658f0194b0123b03ed44821ce5759981c673be1dcc6876f8",
+        "finalDeltaDigest": "sha256:dfbf708052f79bb1ba41416a578b9a61a2de5d07eeae994895dd93175c8521d3",
+        "coverageTags": [
+          "deletion",
+          "javascript",
+          "validation"
+        ]
+      },
+      "profile": "implementation",
+      "baselineId": "senior-contractor-2026-no-ai",
+      "partition": "development",
+      "sourceEstimatorVersion": "change-seed/0.1.0\u002Bseed-rules/0.2.1",
+      "sourceEstimateDigest": "sha256:d0b314123f4ab159df9c2ced60d3c5796531356fcc07ccb2b97be82b456e6ced",
+      "source": {
+        "dataClassification": "synthetic",
+        "sourceReference": "fairbill://calibration/changes/public-synthetic/0.1.0.fixtures.json#change:js-service-deletion",
+        "revision": "a47256f78b98772f32e4d4facb58ad8423dc9b69f4dbff16ccd0e4206d0a9a32..b57d69fe072806d13d208c08d5bece2278b6305f4d57f39f02c58ebea3f4a964",
+        "licenseExpression": "MIT",
+        "redistributionAllowed": true,
+        "notes": "Project-owned synthetic immutable states; generated without Git activity metadata."
+      },
+      "review": {
+        "status": "teacher-estimate",
+        "completedOn": "2026-08-06",
+        "reviewers": [
+          {
+            "id": "teacher:openai-codex-gpt-5-2026-08",
+            "kind": "host-ai",
+            "role": "teacher",
+            "modelId": "openai-codex",
+            "modelVersion": "gpt-5"
+          }
+        ],
+        "notes": "Single host-AI teacher review mapped by change-teacher-plan-generator/0.1.0; no independent correction or adjudication. Candidate totals were observed during fixture-invariant verification before this policy was authored, so this is disclosed weak supervision rather than a blind label claim. Category budgets were reasoned from the final synthetic behavior and frozen without fitting seed priors, validation outcomes, test outcomes, or preferred WAPE."
+      },
+      "capabilities": [
+        {
+          "sourceCapabilityId": "change-item:capability-marginal:edaccfdeecd769fa4ed4",
+          "rationale": "A deliberate endpoint retirement includes route removal, compatibility reasoning, manual validation, and migration documentation. The teacher allocated the independently reasoned documentation category budget across 1 represented source capability target(s).",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.50,
+                "expected": 0.75,
+                "high": 1.50
+              },
+              "uncertaintyReasons": [
+                "Migration wording may require consumer context."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "change-item:capability-modification:45e9230811271584523d",
+          "rationale": "A deliberate endpoint retirement includes route removal, compatibility reasoning, manual validation, and migration documentation. The teacher allocated the independently reasoned production-implementation category budget across 2 represented source capability target(s).",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.38,
+                "expected": 0.75,
+                "high": 1.50
+              },
+              "uncertaintyReasons": [
+                "Two source capabilities jointly represent the route simplification."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "change-item:capability-modification:636decb87189ee1e23a8",
+          "rationale": "A deliberate endpoint retirement includes route removal, compatibility reasoning, manual validation, and migration documentation. The teacher rejected this source capability as duplicate, mechanically excluded, or outside the final logical category work.",
+          "targets": [
+            {
+              "hours": {
+                "low": 0,
+                "expected": 0,
+                "high": 0
+              },
+              "uncertaintyReasons": [],
+              "sizeException": "Explicit false-positive exclusion: the source capability does not represent distinct final-delta EHE under the Change rubric."
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "change-item:capability-modification:8504eb92be281e2e4497",
+          "rationale": "A deliberate endpoint retirement includes route removal, compatibility reasoning, manual validation, and migration documentation. The teacher allocated the independently reasoned architecture-and-technical-design category budget across 1 represented source capability target(s).",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.25,
+                "expected": 0.50,
+                "high": 1.00
+              },
+              "uncertaintyReasons": [
+                "The removal decision is bounded to one route."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "change-item:capability-modification:94a7e407e055b4dc1d90",
+          "rationale": "A deliberate endpoint retirement includes route removal, compatibility reasoning, manual validation, and migration documentation. The teacher rejected this source capability as duplicate, mechanically excluded, or outside the final logical category work.",
+          "targets": [
+            {
+              "hours": {
+                "low": 0,
+                "expected": 0,
+                "high": 0
+              },
+              "uncertaintyReasons": [],
+              "sizeException": "Explicit false-positive exclusion: the source capability does not represent distinct final-delta EHE under the Change rubric."
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "change-item:capability-removal:6f8f06b75fb3e4264c57",
+          "rationale": "A deliberate endpoint retirement includes route removal, compatibility reasoning, manual validation, and migration documentation. The teacher allocated the independently reasoned production-implementation category budget across 2 represented source capability target(s).",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.37,
+                "expected": 0.75,
+                "high": 1.50
+              },
+              "uncertaintyReasons": [
+                "Two source capabilities jointly represent the route simplification."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "change-item:capability-removal:fa3a136e5222294489e8",
+          "rationale": "A deliberate endpoint retirement includes route removal, compatibility reasoning, manual validation, and migration documentation. The teacher allocated the independently reasoned manual-validation-debugging-and-hardening category budget across 1 represented source capability target(s).",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.50,
+                "expected": 1.00,
+                "high": 2.00
+              },
+              "uncertaintyReasons": [
+                "404 behavior and unaffected routes need validation."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "change-item:change-comprehension:965718a454ed24b5fd72",
+          "rationale": "A deliberate endpoint retirement includes route removal, compatibility reasoning, manual validation, and migration documentation. The teacher allocated the independently reasoned specification-comprehension-and-domain-learning category budget across 1 represented source capability target(s).",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.50,
+                "expected": 0.75,
+                "high": 1.50
+              },
+              "uncertaintyReasons": [
+                "Consumer and compatibility expectations may need confirmation."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "change-item:change-review:4284a1b7ee633fec9daf",
+          "rationale": "A deliberate endpoint retirement includes route removal, compatibility reasoning, manual validation, and migration documentation. The teacher allocated the independently reasoned self-review-and-system-integration category budget across 1 represented source capability target(s).",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.50,
+                "expected": 0.75,
+                "high": 1.50
+              },
+              "uncertaintyReasons": [
+                "Deletion risk is higher than its code volume."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "record:change:js-service-integration",
+      "repository": {
+        "id": "repository:change-js-service-a",
+        "name": "repository:change-js-service-a",
+        "sourceDigest": "sha256:4abeb518b832c908d913d0c5bd1ebdebb14b8e8d7d45d1e03ac83b47303b28ad"
+      },
+      "change": {
+        "id": "change:js-service-integration",
+        "selectionKind": "base-head",
+        "baseObjectId": "5087c2000629623d2ea5646e39fa467375937400359d83d65068c648f654027c",
+        "headObjectId": "1c8ca983953b953c179a22022b20833e28713a236e0906d517ab2a50d568ee0b",
+        "baseEvidenceDigest": "sha256:e0e40128681339cd58f680eac7d98ca4f91938262b64a82ac1cc30d07976a5ba",
+        "headEvidenceDigest": "sha256:ef7039288a63adf67d777350d9f7bec2eaef0674d1d4ee593e8d6260c0fd003c",
+        "finalDeltaDigest": "sha256:4abeb518b832c908d913d0c5bd1ebdebb14b8e8d7d45d1e03ac83b47303b28ad",
+        "coverageTags": [
+          "integration",
+          "javascript",
+          "production"
+        ]
+      },
+      "profile": "implementation",
+      "baselineId": "senior-contractor-2026-no-ai",
+      "partition": "development",
+      "sourceEstimatorVersion": "change-seed/0.1.0\u002Bseed-rules/0.2.1",
+      "sourceEstimateDigest": "sha256:11bd86bc6cbf54cb608c565d1004561bfecc1bdcd2d733b1bfbe2d8745a8b5b8",
+      "source": {
+        "dataClassification": "synthetic",
+        "sourceReference": "fairbill://calibration/changes/public-synthetic/0.1.0.fixtures.json#change:js-service-integration",
+        "revision": "5087c2000629623d2ea5646e39fa467375937400359d83d65068c648f654027c..1c8ca983953b953c179a22022b20833e28713a236e0906d517ab2a50d568ee0b",
+        "licenseExpression": "MIT",
+        "redistributionAllowed": true,
+        "notes": "Project-owned synthetic immutable states; generated without Git activity metadata."
+      },
+      "review": {
+        "status": "teacher-estimate",
+        "completedOn": "2026-08-06",
+        "reviewers": [
+          {
+            "id": "teacher:openai-codex-gpt-5-2026-08",
+            "kind": "host-ai",
+            "role": "teacher",
+            "modelId": "openai-codex",
+            "modelVersion": "gpt-5"
+          }
+        ],
+        "notes": "Single host-AI teacher review mapped by change-teacher-plan-generator/0.1.0; no independent correction or adjudication. Candidate totals were observed during fixture-invariant verification before this policy was authored, so this is disclosed weak supervision rather than a blind label claim. Category budgets were reasoned from the final synthetic behavior and frozen without fitting seed priors, validation outcomes, test outcomes, or preferred WAPE."
+      },
+      "capabilities": [
+        {
+          "sourceCapabilityId": "change-item:capability-marginal:fcbdb5ca1cb3ae9d4e72",
+          "rationale": "The maintained client must construct an authenticated request, handle provider failures, parse JSON, and map the response. The teacher allocated the independently reasoned production-implementation category budget across 1 represented source capability target(s).",
+          "targets": [
+            {
+              "hours": {
+                "low": 1.25,
+                "expected": 2.50,
+                "high": 5.00
+              },
+              "uncertaintyReasons": [
+                "HTTP error shapes and response validation are only partially represented."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "change-item:change-comprehension:204ad7801bbc0dd5b8d3",
+          "rationale": "The maintained client must construct an authenticated request, handle provider failures, parse JSON, and map the response. The teacher allocated the independently reasoned specification-comprehension-and-domain-learning category budget across 1 represented source capability target(s).",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.50,
+                "expected": 0.75,
+                "high": 1.50
+              },
+              "uncertaintyReasons": [
+                "Provider contract details may require clarification."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "change-item:change-review:9acdd5a4b85273da27ab",
+          "rationale": "The maintained client must construct an authenticated request, handle provider failures, parse JSON, and map the response. The teacher allocated the independently reasoned self-review-and-system-integration category budget across 1 represented source capability target(s).",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.50,
+                "expected": 0.75,
+                "high": 1.50
+              },
+              "uncertaintyReasons": [
+                "The external boundary merits a focused manual review."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "record:change:mixed-disjoint-range",
+      "repository": {
+        "id": "repository:change-mixed-app-a",
+        "name": "repository:change-mixed-app-a",
+        "sourceDigest": "sha256:208cc22532930fb9f68586bf52b74c548d410f96f72bccd3358201bc4068596c"
+      },
+      "change": {
+        "id": "change:mixed-disjoint-range",
+        "selectionKind": "range",
+        "baseObjectId": "04085c7749c0e27f0ced6d6f5336bd09eb2f51451a14bf7c21ee34ea784c0103",
+        "headObjectId": "61f0d2831740889237787d1f6b6627056528ed4f22a6ade22c8ec6fbb3858a96",
+        "baseEvidenceDigest": "sha256:f781cac9d1b3534f95ddba7eff5a7799a2fc2076d28d60424f6df997c95495eb",
+        "headEvidenceDigest": "sha256:cbb429725aff5d14e43cde614ac0ac0d89749d35d1b5ac9d8344a5af189ae340",
+        "finalDeltaDigest": "sha256:208cc22532930fb9f68586bf52b74c548d410f96f72bccd3358201bc4068596c",
+        "coverageTags": [
+          "additivity",
+          "clean-disjoint",
+          "mixed",
+          "range"
+        ]
+      },
+      "profile": "implementation",
+      "baselineId": "senior-contractor-2026-no-ai",
+      "partition": "development",
+      "sourceEstimatorVersion": "change-seed/0.1.0\u002Bseed-rules/0.2.1",
+      "sourceEstimateDigest": "sha256:1c54d0d81d636d5fbd721d2241c789a6bb3893f2208b01991ffefc394087e25f",
+      "source": {
+        "dataClassification": "synthetic",
+        "sourceReference": "fairbill://calibration/changes/public-synthetic/0.1.0.fixtures.json#change:mixed-disjoint-range",
+        "revision": "04085c7749c0e27f0ced6d6f5336bd09eb2f51451a14bf7c21ee34ea784c0103..61f0d2831740889237787d1f6b6627056528ed4f22a6ade22c8ec6fbb3858a96",
+        "licenseExpression": "MIT",
+        "redistributionAllowed": true,
+        "notes": "Project-owned synthetic immutable states; generated without Git activity metadata."
+      },
+      "review": {
+        "status": "teacher-estimate",
+        "completedOn": "2026-08-06",
+        "reviewers": [
+          {
+            "id": "teacher:openai-codex-gpt-5-2026-08",
+            "kind": "host-ai",
+            "role": "teacher",
+            "modelId": "openai-codex",
+            "modelVersion": "gpt-5"
+          }
+        ],
+        "notes": "Single host-AI teacher review mapped by change-teacher-plan-generator/0.1.0; no independent correction or adjudication. Candidate totals were observed during fixture-invariant verification before this policy was authored, so this is disclosed weak supervision rather than a blind label claim. Category budgets were reasoned from the final synthetic behavior and frozen without fitting seed priors, validation outcomes, test outcomes, or preferred WAPE."
+      },
+      "capabilities": [
+        {
+          "sourceCapabilityId": "change-item:capability-marginal:69e289d1854e8fad7103",
+          "rationale": "Three independent final capabilities add a small .NET clock, a web formatter, and maintained usage documentation without rework. The teacher allocated the independently reasoned documentation category budget across 1 represented source capability target(s).",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.50,
+                "expected": 0.75,
+                "high": 1.50
+              },
+              "uncertaintyReasons": [
+                "The usage note is concise."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "change-item:capability-marginal:80f756eba17191aee1ee",
+          "rationale": "Three independent final capabilities add a small .NET clock, a web formatter, and maintained usage documentation without rework. The teacher allocated the independently reasoned production-implementation category budget across 2 represented source capability target(s).",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.50,
+                "expected": 1.00,
+                "high": 2.00
+              },
+              "uncertaintyReasons": [
+                "Cross-runtime date behavior creates limited ambiguity."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "change-item:capability-marginal:8eab33463949b6cfe567",
+          "rationale": "Three independent final capabilities add a small .NET clock, a web formatter, and maintained usage documentation without rework. The teacher allocated the independently reasoned production-implementation category budget across 2 represented source capability target(s).",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.50,
+                "expected": 1.00,
+                "high": 2.00
+              },
+              "uncertaintyReasons": [
+                "Cross-runtime date behavior creates limited ambiguity."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "change-item:change-comprehension:4a7843544458d8e3bbaf",
+          "rationale": "Three independent final capabilities add a small .NET clock, a web formatter, and maintained usage documentation without rework. The teacher allocated the independently reasoned specification-comprehension-and-domain-learning category budget across 1 represented source capability target(s).",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.50,
+                "expected": 0.75,
+                "high": 1.50
+              },
+              "uncertaintyReasons": [
+                "The three small requirements are explicit and separable."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "change-item:change-review:b07c14a52ecfaba44be7",
+          "rationale": "Three independent final capabilities add a small .NET clock, a web formatter, and maintained usage documentation without rework. The teacher allocated the independently reasoned self-review-and-system-integration category budget across 1 represented source capability target(s).",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.50,
+                "expected": 1.00,
+                "high": 2.00
+              },
+              "uncertaintyReasons": [
+                "Both ecosystem surfaces need a coherent final check."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "record:change:mixed-overlap-range",
+      "repository": {
+        "id": "repository:change-mixed-app-a",
+        "name": "repository:change-mixed-app-a",
+        "sourceDigest": "sha256:cbf9041cf567c7d879d939b7ea6a175e35d00a665f5860cc08155664e3b0341d"
+      },
+      "change": {
+        "id": "change:mixed-overlap-range",
+        "selectionKind": "range",
+        "baseObjectId": "ca1b2033595e90f099e346a6244d153d1f75c8ec7aca505619561a66cc420454",
+        "headObjectId": "fd8ce75783eba2a56d1da9270ae35a26fa8bcf73e1ac364813d645724574a972",
+        "baseEvidenceDigest": "sha256:cf04fe80e4007f1f54818e3a4c73d305695f16ac44fe6ed884ef28e04458355a",
+        "headEvidenceDigest": "sha256:9cb82215488dbef8fa4b0a3024eb2a41e08a3c471c020c2e17e930b9e745b56f",
+        "finalDeltaDigest": "sha256:cbf9041cf567c7d879d939b7ea6a175e35d00a665f5860cc08155664e3b0341d",
+        "coverageTags": [
+          "mixed",
+          "overlap",
+          "range",
+          "reconciliation"
+        ]
+      },
+      "profile": "implementation",
+      "baselineId": "senior-contractor-2026-no-ai",
+      "partition": "development",
+      "sourceEstimatorVersion": "change-seed/0.1.0\u002Bseed-rules/0.2.1",
+      "sourceEstimateDigest": "sha256:5db6a1db1bf272c89c9ab4355417b926bdc1eaf5b1b9ff164bb158f2ea6738bb",
+      "source": {
+        "dataClassification": "synthetic",
+        "sourceReference": "fairbill://calibration/changes/public-synthetic/0.1.0.fixtures.json#change:mixed-overlap-range",
+        "revision": "ca1b2033595e90f099e346a6244d153d1f75c8ec7aca505619561a66cc420454..fd8ce75783eba2a56d1da9270ae35a26fa8bcf73e1ac364813d645724574a972",
+        "licenseExpression": "MIT",
+        "redistributionAllowed": true,
+        "notes": "Project-owned synthetic immutable states; generated without Git activity metadata."
+      },
+      "review": {
+        "status": "teacher-estimate",
+        "completedOn": "2026-08-06",
+        "reviewers": [
+          {
+            "id": "teacher:openai-codex-gpt-5-2026-08",
+            "kind": "host-ai",
+            "role": "teacher",
+            "modelId": "openai-codex",
+            "modelVersion": "gpt-5"
+          }
+        ],
+        "notes": "Single host-AI teacher review mapped by change-teacher-plan-generator/0.1.0; no independent correction or adjudication. Candidate totals were observed during fixture-invariant verification before this policy was authored, so this is disclosed weak supervision rather than a blind label claim. Category budgets were reasoned from the final synthetic behavior and frozen without fitting seed priors, validation outcomes, test outcomes, or preferred WAPE."
+      },
+      "capabilities": [
+        {
+          "sourceCapabilityId": "change-item:capability-marginal:1df06ce623534ba0a6df",
+          "rationale": "Only the final structured status capability is valued; repeated intermediate edits do not multiply its clean implementation. The teacher allocated the independently reasoned production-implementation category budget across 1 represented source capability target(s).",
+          "targets": [
+            {
+              "hours": {
+                "low": 1.00,
+                "expected": 2.00,
+                "high": 4.00
+              },
+              "uncertaintyReasons": [
+                "Type and error-state behavior are small but externally visible."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "change-item:change-comprehension:9783732704ae1ef40446",
+          "rationale": "Only the final structured status capability is valued; repeated intermediate edits do not multiply its clean implementation. The teacher allocated the independently reasoned specification-comprehension-and-domain-learning category budget across 1 represented source capability target(s).",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.50,
+                "expected": 0.75,
+                "high": 1.50
+              },
+              "uncertaintyReasons": [
+                "Status-state semantics may require clarification."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "change-item:change-review:06d95c06c1e299f2d1b2",
+          "rationale": "Only the final structured status capability is valued; repeated intermediate edits do not multiply its clean implementation. The teacher allocated the independently reasoned self-review-and-system-integration category budget across 1 represented source capability target(s).",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.50,
+                "expected": 0.75,
+                "high": 1.50
+              },
+              "uncertaintyReasons": [
+                "The final API shape needs review independent of churn."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "record:change:mixed-revert-range",
+      "repository": {
+        "id": "repository:change-mixed-app-a",
+        "name": "repository:change-mixed-app-a",
+        "sourceDigest": "sha256:6feeadceb574d3e92955f2e23928e75bf6cb672ab9c1dffec26be598e35d603b"
+      },
+      "change": {
+        "id": "change:mixed-revert-range",
+        "selectionKind": "range",
+        "baseObjectId": "1c493f8ef6635120194e3ac89d3b1a0d25d53a6c0df77950e9dd6339bb442469",
+        "headObjectId": "1c493f8ef6635120194e3ac89d3b1a0d25d53a6c0df77950e9dd6339bb442469",
+        "baseEvidenceDigest": "sha256:5a63af92cbbf181e2e8ca5fe7cb8bc1dcb84f47508f631fdd5517cf40d47d434",
+        "headEvidenceDigest": "sha256:5a63af92cbbf181e2e8ca5fe7cb8bc1dcb84f47508f631fdd5517cf40d47d434",
+        "finalDeltaDigest": "sha256:6feeadceb574d3e92955f2e23928e75bf6cb672ab9c1dffec26be598e35d603b",
+        "coverageTags": [
+          "mixed",
+          "range",
+          "revert",
+          "zero-delta"
+        ]
+      },
+      "profile": "implementation",
+      "baselineId": "senior-contractor-2026-no-ai",
+      "partition": "development",
+      "sourceEstimatorVersion": "change-seed/0.1.0\u002Bseed-rules/0.2.1",
+      "sourceEstimateDigest": "sha256:1ba47bca693b859a88fd9e1e622571c0603ee22493df139f366d4641024370ec",
+      "source": {
+        "dataClassification": "synthetic",
+        "sourceReference": "fairbill://calibration/changes/public-synthetic/0.1.0.fixtures.json#change:mixed-revert-range",
+        "revision": "1c493f8ef6635120194e3ac89d3b1a0d25d53a6c0df77950e9dd6339bb442469..1c493f8ef6635120194e3ac89d3b1a0d25d53a6c0df77950e9dd6339bb442469",
+        "licenseExpression": "MIT",
+        "redistributionAllowed": true,
+        "notes": "Project-owned synthetic immutable states; generated without Git activity metadata."
+      },
+      "review": {
+        "status": "teacher-estimate",
+        "completedOn": "2026-08-06",
+        "reviewers": [
+          {
+            "id": "teacher:openai-codex-gpt-5-2026-08",
+            "kind": "host-ai",
+            "role": "teacher",
+            "modelId": "openai-codex",
+            "modelVersion": "gpt-5"
+          }
+        ],
+        "notes": "Single host-AI teacher review mapped by change-teacher-plan-generator/0.1.0; no independent correction or adjudication. Candidate totals were observed during fixture-invariant verification before this policy was authored, so this is disclosed weak supervision rather than a blind label claim. Category budgets were reasoned from the final synthetic behavior and frozen without fitting seed priors, validation outcomes, test outcomes, or preferred WAPE."
+      },
+      "capabilities": []
+    },
+    {
+      "id": "record:change:mixed-tool-feature",
+      "repository": {
+        "id": "repository:change-mixed-tool-c",
+        "name": "repository:change-mixed-tool-c",
+        "sourceDigest": "sha256:e8d9fb2600833b89864126ec8da15109cd1af51b16d476ef3053710d97367ec8"
+      },
+      "change": {
+        "id": "change:mixed-tool-feature",
+        "selectionKind": "base-head",
+        "baseObjectId": "2fb100a96a10123d64abece21e121944176d1897f382341ccbc8e73644a18018",
+        "headObjectId": "f0224949255de508f89c6f3b24a2715d549114f40322c23d8861a01d7c96722b",
+        "baseEvidenceDigest": "sha256:fcb8980bd050e836f867d36b2bf35d424f1df5a150480b6ee62a85db2b13b26d",
+        "headEvidenceDigest": "sha256:bd5c7553ae9935f3ab0cc8ff9b9a8dc525b35b07b7f6b360ab882fe9fe7714f4",
+        "finalDeltaDigest": "sha256:e8d9fb2600833b89864126ec8da15109cd1af51b16d476ef3053710d97367ec8",
+        "coverageTags": [
+          "integration",
+          "mixed",
+          "production"
+        ]
+      },
+      "profile": "implementation",
+      "baselineId": "senior-contractor-2026-no-ai",
+      "partition": "test",
+      "sourceEstimatorVersion": "change-seed/0.1.0\u002Bseed-rules/0.2.1",
+      "sourceEstimateDigest": "sha256:2a478cd895582eafd5a7dfcd4978b03db6756893af7ea3c08fd7a38824e8f0c9",
+      "source": {
+        "dataClassification": "synthetic",
+        "sourceReference": "fairbill://calibration/changes/public-synthetic/0.1.0.fixtures.json#change:mixed-tool-feature",
+        "revision": "2fb100a96a10123d64abece21e121944176d1897f382341ccbc8e73644a18018..f0224949255de508f89c6f3b24a2715d549114f40322c23d8861a01d7c96722b",
+        "licenseExpression": "MIT",
+        "redistributionAllowed": true,
+        "notes": "Project-owned synthetic immutable states; generated without Git activity metadata."
+      },
+      "review": {
+        "status": "teacher-estimate",
+        "completedOn": "2026-08-06",
+        "reviewers": [
+          {
+            "id": "teacher:openai-codex-gpt-5-2026-08",
+            "kind": "host-ai",
+            "role": "teacher",
+            "modelId": "openai-codex",
+            "modelVersion": "gpt-5"
+          }
+        ],
+        "notes": "Single host-AI teacher review mapped by change-teacher-plan-generator/0.1.0; no independent correction or adjudication. Candidate totals were observed during fixture-invariant verification before this policy was authored, so this is disclosed weak supervision rather than a blind label claim. Category budgets were reasoned from the final synthetic behavior and frozen without fitting seed priors, validation outcomes, test outcomes, or preferred WAPE."
+      },
+      "capabilities": [
+        {
+          "sourceCapabilityId": "change-item:capability-marginal:74d8969cee776de9f381",
+          "rationale": "A cross-runtime CLI capability dispatches to a Node JSON summarizer and must preserve process and data-boundary behavior. The teacher allocated the independently reasoned production-implementation category budget across 2 represented source capability target(s).",
+          "targets": [
+            {
+              "hours": {
+                "low": 1.00,
+                "expected": 2.00,
+                "high": 4.00
+              },
+              "uncertaintyReasons": [
+                "Two runtime surfaces, subprocess behavior, paths, and JSON errors create integration risk."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "change-item:change-comprehension:2791caf1c3c1ad2229fc",
+          "rationale": "A cross-runtime CLI capability dispatches to a Node JSON summarizer and must preserve process and data-boundary behavior. The teacher allocated the independently reasoned specification-comprehension-and-domain-learning category budget across 1 represented source capability target(s).",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.50,
+                "expected": 0.75,
+                "high": 1.50
+              },
+              "uncertaintyReasons": [
+                "CLI error and quoting requirements are only partially represented."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "change-item:change-review:b0c618ef76e5f6f4676c",
+          "rationale": "A cross-runtime CLI capability dispatches to a Node JSON summarizer and must preserve process and data-boundary behavior. The teacher allocated the independently reasoned self-review-and-system-integration category budget across 1 represented source capability target(s).",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.50,
+                "expected": 1.00,
+                "high": 2.00
+              },
+              "uncertaintyReasons": [
+                "Cross-platform process behavior needs review."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "change-item:maintained-artifact-fallback:61348ad36f0f836b3249",
+          "rationale": "A cross-runtime CLI capability dispatches to a Node JSON summarizer and must preserve process and data-boundary behavior. The teacher allocated the independently reasoned production-implementation category budget across 2 represented source capability target(s).",
+          "targets": [
+            {
+              "hours": {
+                "low": 1.00,
+                "expected": 2.00,
+                "high": 4.00
+              },
+              "uncertaintyReasons": [
+                "Two runtime surfaces, subprocess behavior, paths, and JSON errors create integration risk."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "record:change:mixed-tool-range",
+      "repository": {
+        "id": "repository:change-mixed-tool-c",
+        "name": "repository:change-mixed-tool-c",
+        "sourceDigest": "sha256:c79daf96cfefecc722d78c0887404f75d3aa2a8884431a5ccdb580cb7f6aa3e5"
+      },
+      "change": {
+        "id": "change:mixed-tool-range",
+        "selectionKind": "range",
+        "baseObjectId": "ae99b51d6a4fae6125ff6ad545e4e4ce1722c36b7ff0ec183969d3384ef982d7",
+        "headObjectId": "03e5a9a42ec27acffe193e84d380b79f4626a96d40a6f798eaf43a15cab6f912",
+        "baseEvidenceDigest": "sha256:a1801b5d15864e941e2ba7a05274bfc66ff6a1809aa747071332876c3fa6fcb7",
+        "headEvidenceDigest": "sha256:6ab094d365fe50678794ffaae6aaca628fb8acab07f0ad23b5d20a3295df75eb",
+        "finalDeltaDigest": "sha256:c79daf96cfefecc722d78c0887404f75d3aa2a8884431a5ccdb580cb7f6aa3e5",
+        "coverageTags": [
+          "additivity",
+          "clean-disjoint",
+          "mixed",
+          "range"
+        ]
+      },
+      "profile": "implementation",
+      "baselineId": "senior-contractor-2026-no-ai",
+      "partition": "test",
+      "sourceEstimatorVersion": "change-seed/0.1.0\u002Bseed-rules/0.2.1",
+      "sourceEstimateDigest": "sha256:5dbac27c5461b772ac6adc87ca8086d89198579ef4e9c5b67b2d96aa1eeb6710",
+      "source": {
+        "dataClassification": "synthetic",
+        "sourceReference": "fairbill://calibration/changes/public-synthetic/0.1.0.fixtures.json#change:mixed-tool-range",
+        "revision": "ae99b51d6a4fae6125ff6ad545e4e4ce1722c36b7ff0ec183969d3384ef982d7..03e5a9a42ec27acffe193e84d380b79f4626a96d40a6f798eaf43a15cab6f912",
+        "licenseExpression": "MIT",
+        "redistributionAllowed": true,
+        "notes": "Project-owned synthetic immutable states; generated without Git activity metadata."
+      },
+      "review": {
+        "status": "teacher-estimate",
+        "completedOn": "2026-08-06",
+        "reviewers": [
+          {
+            "id": "teacher:openai-codex-gpt-5-2026-08",
+            "kind": "host-ai",
+            "role": "teacher",
+            "modelId": "openai-codex",
+            "modelVersion": "gpt-5"
+          }
+        ],
+        "notes": "Single host-AI teacher review mapped by change-teacher-plan-generator/0.1.0; no independent correction or adjudication. Candidate totals were observed during fixture-invariant verification before this policy was authored, so this is disclosed weak supervision rather than a blind label claim. Category budgets were reasoned from the final synthetic behavior and frozen without fitting seed priors, validation outcomes, test outcomes, or preferred WAPE."
+      },
+      "capabilities": [
+        {
+          "sourceCapabilityId": "change-item:capability-marginal:380b6de90fd21804c3f7",
+          "rationale": "Three clean disjoint changes add a small production helper, focused unit coverage, and maintained documentation. The teacher allocated the independently reasoned documentation category budget across 1 represented source capability target(s).",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.50,
+                "expected": 0.75,
+                "high": 1.50
+              },
+              "uncertaintyReasons": [
+                "The usage contract is concise."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "change-item:capability-marginal:413eb1b1f58dfb6a5523",
+          "rationale": "Three clean disjoint changes add a small production helper, focused unit coverage, and maintained documentation. The teacher allocated the independently reasoned production-implementation category budget across 1 represented source capability target(s).",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.75,
+                "expected": 1.50,
+                "high": 3.00
+              },
+              "uncertaintyReasons": [
+                "Input enumeration semantics may need a small decision."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "change-item:capability-marginal:5d00ff2fee198f4e147e",
+          "rationale": "Three clean disjoint changes add a small production helper, focused unit coverage, and maintained documentation. The teacher allocated the independently reasoned manual-validation-debugging-and-hardening category budget across 1 represented source capability target(s).",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.50,
+                "expected": 0.75,
+                "high": 1.50
+              },
+              "uncertaintyReasons": [
+                "The final range should be checked as one coherent artifact."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "change-item:capability-marginal:8394cbeab143db4e9c38",
+          "rationale": "Three clean disjoint changes add a small production helper, focused unit coverage, and maintained documentation. The teacher allocated the independently reasoned architecture-and-technical-design category budget across 1 represented source capability target(s).",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.25,
+                "expected": 0.50,
+                "high": 1.00
+              },
+              "uncertaintyReasons": [
+                "The helper API has a small design surface."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "change-item:capability-marginal:a3b540ae39fef4fad66c",
+          "rationale": "Three clean disjoint changes add a small production helper, focused unit coverage, and maintained documentation. The teacher allocated the independently reasoned repository-and-solution-setup category budget across 1 represented source capability target(s).",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.50,
+                "expected": 0.75,
+                "high": 1.50
+              },
+              "uncertaintyReasons": [
+                "Test project conventions are not fully represented."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "change-item:capability-marginal:db1a66aa155cec0e70f7",
+          "rationale": "Three clean disjoint changes add a small production helper, focused unit coverage, and maintained documentation. The teacher rejected this source capability as duplicate, mechanically excluded, or outside the final logical category work.",
+          "targets": [
+            {
+              "hours": {
+                "low": 0,
+                "expected": 0,
+                "high": 0
+              },
+              "uncertaintyReasons": [],
+              "sizeException": "Explicit false-positive exclusion: the source capability does not represent distinct final-delta EHE under the Change rubric."
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "change-item:capability-marginal:de5ca34cd018b44730da",
+          "rationale": "Three clean disjoint changes add a small production helper, focused unit coverage, and maintained documentation. The teacher rejected this source capability as duplicate, mechanically excluded, or outside the final logical category work.",
+          "targets": [
+            {
+              "hours": {
+                "low": 0,
+                "expected": 0,
+                "high": 0
+              },
+              "uncertaintyReasons": [],
+              "sizeException": "Explicit false-positive exclusion: the source capability does not represent distinct final-delta EHE under the Change rubric."
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "change-item:capability-marginal:e35eb0a9245b936e832c",
+          "rationale": "Three clean disjoint changes add a small production helper, focused unit coverage, and maintained documentation. The teacher allocated the independently reasoned unit-testing category budget across 1 represented source capability target(s).",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.75,
+                "expected": 1.50,
+                "high": 3.00
+              },
+              "uncertaintyReasons": [
+                "Additional empty and deferred-enumeration cases may be desired."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "change-item:change-comprehension:35b56f4e04145432d244",
+          "rationale": "Three clean disjoint changes add a small production helper, focused unit coverage, and maintained documentation. The teacher allocated the independently reasoned specification-comprehension-and-domain-learning category budget across 1 represented source capability target(s).",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.50,
+                "expected": 0.75,
+                "high": 1.50
+              },
+              "uncertaintyReasons": [
+                "The three requirements are compact and independent."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "change-item:change-review:3bac939077137b97f02a",
+          "rationale": "Three clean disjoint changes add a small production helper, focused unit coverage, and maintained documentation. The teacher allocated the independently reasoned self-review-and-system-integration category budget across 1 represented source capability target(s).",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.50,
+                "expected": 1.00,
+                "high": 2.00
+              },
+              "uncertaintyReasons": [
+                "Code, tests, and documentation need an integrated review."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "record:change:mixed-tool-simplify",
+      "repository": {
+        "id": "repository:change-mixed-tool-c",
+        "name": "repository:change-mixed-tool-c",
+        "sourceDigest": "sha256:53321ee88039a9b4003107659f9fa1da33f6aa6d04b3b1fb63ec2648967b1bcc"
+      },
+      "change": {
+        "id": "change:mixed-tool-simplify",
+        "selectionKind": "base-head",
+        "baseObjectId": "a51a331bbcfefb49d2ca0538fff689a0d08c9cf548160a4ad1091b3c0096a8ce",
+        "headObjectId": "c722c8ccf4e62c1cc8c76e5877b49ad577486dac83780e3bd7ac53eccfe5df32",
+        "baseEvidenceDigest": "sha256:3070ba4fbdccd2ff8fb24bb341b4d56983597fe3848692dabcf5f0651547fdad",
+        "headEvidenceDigest": "sha256:be701f7b07d1e564d4a9be79b6b1bcc3265d2a737eb08bfe5f995b580f2f21da",
+        "finalDeltaDigest": "sha256:53321ee88039a9b4003107659f9fa1da33f6aa6d04b3b1fb63ec2648967b1bcc",
+        "coverageTags": [
+          "deletion",
+          "documentation",
+          "mixed",
+          "validation"
+        ]
+      },
+      "profile": "implementation",
+      "baselineId": "senior-contractor-2026-no-ai",
+      "partition": "test",
+      "sourceEstimatorVersion": "change-seed/0.1.0\u002Bseed-rules/0.2.1",
+      "sourceEstimateDigest": "sha256:63ea22f0472ceebde214d41a3d5b38b5f1f4df9cd0a40c369771734bf3c78034",
+      "source": {
+        "dataClassification": "synthetic",
+        "sourceReference": "fairbill://calibration/changes/public-synthetic/0.1.0.fixtures.json#change:mixed-tool-simplify",
+        "revision": "a51a331bbcfefb49d2ca0538fff689a0d08c9cf548160a4ad1091b3c0096a8ce..c722c8ccf4e62c1cc8c76e5877b49ad577486dac83780e3bd7ac53eccfe5df32",
+        "licenseExpression": "MIT",
+        "redistributionAllowed": true,
+        "notes": "Project-owned synthetic immutable states; generated without Git activity metadata."
+      },
+      "review": {
+        "status": "teacher-estimate",
+        "completedOn": "2026-08-06",
+        "reviewers": [
+          {
+            "id": "teacher:openai-codex-gpt-5-2026-08",
+            "kind": "host-ai",
+            "role": "teacher",
+            "modelId": "openai-codex",
+            "modelVersion": "gpt-5"
+          }
+        ],
+        "notes": "Single host-AI teacher review mapped by change-teacher-plan-generator/0.1.0; no independent correction or adjudication. Candidate totals were observed during fixture-invariant verification before this policy was authored, so this is disclosed weak supervision rather than a blind label claim. Category budgets were reasoned from the final synthetic behavior and frozen without fitting seed priors, validation outcomes, test outcomes, or preferred WAPE."
+      },
+      "capabilities": [
+        {
+          "sourceCapabilityId": "change-item:capability-modification:a3bee9364b393c101924",
+          "rationale": "The final change deliberately retires a command and script, simplifies dispatch, and documents the supported migration path. The teacher allocated the independently reasoned documentation category budget across 1 represented source capability target(s).",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.50,
+                "expected": 0.75,
+                "high": 1.50
+              },
+              "uncertaintyReasons": [
+                "Migration wording may require product context."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "change-item:capability-removal:7eda66484775e320b2de",
+          "rationale": "The final change deliberately retires a command and script, simplifies dispatch, and documents the supported migration path. The teacher rejected this source capability as duplicate, mechanically excluded, or outside the final logical category work.",
+          "targets": [
+            {
+              "hours": {
+                "low": 0,
+                "expected": 0,
+                "high": 0
+              },
+              "uncertaintyReasons": [],
+              "sizeException": "Explicit false-positive exclusion: the source capability does not represent distinct final-delta EHE under the Change rubric."
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "change-item:capability-removal:870ba69859581c205e9f",
+          "rationale": "The final change deliberately retires a command and script, simplifies dispatch, and documents the supported migration path. The teacher allocated the independently reasoned architecture-and-technical-design category budget across 1 represented source capability target(s).",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.50,
+                "expected": 0.75,
+                "high": 1.50
+              },
+              "uncertaintyReasons": [
+                "The retirement boundary is small but externally visible."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "change-item:capability-removal:b19657fd2c187d6a9ef5",
+          "rationale": "The final change deliberately retires a command and script, simplifies dispatch, and documents the supported migration path. The teacher allocated the independently reasoned production-implementation category budget across 2 represented source capability target(s).",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.50,
+                "expected": 1.00,
+                "high": 2.00
+              },
+              "uncertaintyReasons": [
+                "Two maintained source surfaces are simplified together."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "change-item:capability-removal:c11223bc3cc23a1c3992",
+          "rationale": "The final change deliberately retires a command and script, simplifies dispatch, and documents the supported migration path. The teacher allocated the independently reasoned manual-validation-debugging-and-hardening category budget across 1 represented source capability target(s).",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.50,
+                "expected": 1.00,
+                "high": 2.00
+              },
+              "uncertaintyReasons": [
+                "Removed and current command behavior both need checks."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "change-item:capability-removal:de4b9bde02917189d9b9",
+          "rationale": "The final change deliberately retires a command and script, simplifies dispatch, and documents the supported migration path. The teacher rejected this source capability as duplicate, mechanically excluded, or outside the final logical category work.",
+          "targets": [
+            {
+              "hours": {
+                "low": 0,
+                "expected": 0,
+                "high": 0
+              },
+              "uncertaintyReasons": [],
+              "sizeException": "Explicit false-positive exclusion: the source capability does not represent distinct final-delta EHE under the Change rubric."
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "change-item:capability-removal:f93bd6e5a0c76681b593",
+          "rationale": "The final change deliberately retires a command and script, simplifies dispatch, and documents the supported migration path. The teacher rejected this source capability as duplicate, mechanically excluded, or outside the final logical category work.",
+          "targets": [
+            {
+              "hours": {
+                "low": 0,
+                "expected": 0,
+                "high": 0
+              },
+              "uncertaintyReasons": [],
+              "sizeException": "Explicit false-positive exclusion: the source capability does not represent distinct final-delta EHE under the Change rubric."
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "change-item:change-comprehension:6c8a3e8e37679778357d",
+          "rationale": "The final change deliberately retires a command and script, simplifies dispatch, and documents the supported migration path. The teacher allocated the independently reasoned specification-comprehension-and-domain-learning category budget across 1 represented source capability target(s).",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.50,
+                "expected": 0.75,
+                "high": 1.50
+              },
+              "uncertaintyReasons": [
+                "Consumer compatibility expectations may need confirmation."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "change-item:change-review:68ae069eb965a76c368b",
+          "rationale": "The final change deliberately retires a command and script, simplifies dispatch, and documents the supported migration path. The teacher allocated the independently reasoned self-review-and-system-integration category budget across 1 represented source capability target(s).",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.50,
+                "expected": 0.75,
+                "high": 1.50
+              },
+              "uncertaintyReasons": [
+                "Deletion and documentation must stay consistent."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "change-item:maintained-artifact-fallback:c6157ebb0c8d6a636c40",
+          "rationale": "The final change deliberately retires a command and script, simplifies dispatch, and documents the supported migration path. The teacher allocated the independently reasoned production-implementation category budget across 2 represented source capability target(s).",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.50,
+                "expected": 1.00,
+                "high": 2.00
+              },
+              "uncertaintyReasons": [
+                "Two maintained source surfaces are simplified together."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "record:change:ts-package-customization",
+      "repository": {
+        "id": "repository:change-ts-package-a",
+        "name": "repository:change-ts-package-a",
+        "sourceDigest": "sha256:6d3ec4764da46cb7faa35f0f6c2385676ec40b905565a4c474b17058443a2f52"
+      },
+      "change": {
+        "id": "change:ts-package-customization",
+        "selectionKind": "base-head",
+        "baseObjectId": "0eee6e7d7ee01fe97236b360bb735bd0c56a0babd5d911d27ebbe94bbc26d3d6",
+        "headObjectId": "c81a815888d9568973df4bf43b1c804a9d905b787556d3eb0f6bf9598a5f0d7c",
+        "baseEvidenceDigest": "sha256:d213568cf452e8d79519fdd57ec4cbae2e406b9fa33345630f93fb619302a43b",
+        "headEvidenceDigest": "sha256:78b4dd5982a2b008f5db3082b904fdb2b5ec59f9f66373da3e3667a93cce27a8",
+        "finalDeltaDigest": "sha256:6d3ec4764da46cb7faa35f0f6c2385676ec40b905565a4c474b17058443a2f52",
+        "coverageTags": [
+          "generated-customization",
+          "integration",
+          "typescript"
+        ]
+      },
+      "profile": "implementation",
+      "baselineId": "senior-contractor-2026-no-ai",
+      "partition": "development",
+      "sourceEstimatorVersion": "change-seed/0.1.0\u002Bseed-rules/0.2.1",
+      "sourceEstimateDigest": "sha256:accd12500bbc854de27e1b20394f4338b89feebcd756e95b71a87f532dc3b9a8",
+      "source": {
+        "dataClassification": "synthetic",
+        "sourceReference": "fairbill://calibration/changes/public-synthetic/0.1.0.fixtures.json#change:ts-package-customization",
+        "revision": "0eee6e7d7ee01fe97236b360bb735bd0c56a0babd5d911d27ebbe94bbc26d3d6..c81a815888d9568973df4bf43b1c804a9d905b787556d3eb0f6bf9598a5f0d7c",
+        "licenseExpression": "MIT",
+        "redistributionAllowed": true,
+        "notes": "Project-owned synthetic immutable states; generated without Git activity metadata."
+      },
+      "review": {
+        "status": "teacher-estimate",
+        "completedOn": "2026-08-06",
+        "reviewers": [
+          {
+            "id": "teacher:openai-codex-gpt-5-2026-08",
+            "kind": "host-ai",
+            "role": "teacher",
+            "modelId": "openai-codex",
+            "modelVersion": "gpt-5"
+          }
+        ],
+        "notes": "Single host-AI teacher review mapped by change-teacher-plan-generator/0.1.0; no independent correction or adjudication. Candidate totals were observed during fixture-invariant verification before this policy was authored, so this is disclosed weak supervision rather than a blind label claim. Category budgets were reasoned from the final synthetic behavior and frozen without fitting seed priors, validation outcomes, test outcomes, or preferred WAPE."
+      },
+      "capabilities": [
+        {
+          "sourceCapabilityId": "change-item:capability-marginal:ddaba916cc806a9af879",
+          "rationale": "The maintained wrapper adds retry behavior around a conventional generated client and must preserve generic result and error behavior. The teacher allocated the independently reasoned production-implementation category budget across 1 represented source capability target(s).",
+          "targets": [
+            {
+              "hours": {
+                "low": 1.25,
+                "expected": 2.50,
+                "high": 5.00
+              },
+              "uncertaintyReasons": [
+                "Error classification and retry policy can materially change the wrapper."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "change-item:change-comprehension:e87c2bc7a37e20232b90",
+          "rationale": "The maintained wrapper adds retry behavior around a conventional generated client and must preserve generic result and error behavior. The teacher allocated the independently reasoned specification-comprehension-and-domain-learning category budget across 1 represented source capability target(s).",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.50,
+                "expected": 0.75,
+                "high": 1.50
+              },
+              "uncertaintyReasons": [
+                "Retry eligibility and backoff requirements are not fully expressed."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "change-item:change-review:106e78345f0c81c6d7fd",
+          "rationale": "The maintained wrapper adds retry behavior around a conventional generated client and must preserve generic result and error behavior. The teacher allocated the independently reasoned self-review-and-system-integration category budget across 1 represented source capability target(s).",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.50,
+                "expected": 0.75,
+                "high": 1.50
+              },
+              "uncertaintyReasons": [
+                "Generated-client compatibility needs review."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "record:change:ts-package-delivery",
+      "repository": {
+        "id": "repository:change-ts-package-a",
+        "name": "repository:change-ts-package-a",
+        "sourceDigest": "sha256:7dea9815fc8f6e706587ad1cf9a6f884673d6d1c13a80faa1dad7b5cf24a301d"
+      },
+      "change": {
+        "id": "change:ts-package-delivery",
+        "selectionKind": "base-head",
+        "baseObjectId": "d84b95e849e233616d66d03d8725f66afe4a18ea7ad1cb814c9efddb6e835e08",
+        "headObjectId": "e3bb7943f6a6b9ad786d6f57615b6221d25250955615966f6199805c80cdc30c",
+        "baseEvidenceDigest": "sha256:d3f5467329233d997e8a1271137f9fe6a89b81cea95e6da04852e604994764b5",
+        "headEvidenceDigest": "sha256:4bb28f572c1ec2c0216b95add2bb83f2062f0faf53efbe4590196989b62020c1",
+        "finalDeltaDigest": "sha256:7dea9815fc8f6e706587ad1cf9a6f884673d6d1c13a80faa1dad7b5cf24a301d",
+        "coverageTags": [
+          "delivery",
+          "packaging",
+          "typescript"
+        ]
+      },
+      "profile": "implementation",
+      "baselineId": "senior-contractor-2026-no-ai",
+      "partition": "development",
+      "sourceEstimatorVersion": "change-seed/0.1.0\u002Bseed-rules/0.2.1",
+      "sourceEstimateDigest": "sha256:8333c1a2d1904da058f5103a2f0e8f5a5b2287d896504609b33e9f350a4936c6",
+      "source": {
+        "dataClassification": "synthetic",
+        "sourceReference": "fairbill://calibration/changes/public-synthetic/0.1.0.fixtures.json#change:ts-package-delivery",
+        "revision": "d84b95e849e233616d66d03d8725f66afe4a18ea7ad1cb814c9efddb6e835e08..e3bb7943f6a6b9ad786d6f57615b6221d25250955615966f6199805c80cdc30c",
+        "licenseExpression": "MIT",
+        "redistributionAllowed": true,
+        "notes": "Project-owned synthetic immutable states; generated without Git activity metadata."
+      },
+      "review": {
+        "status": "teacher-estimate",
+        "completedOn": "2026-08-06",
+        "reviewers": [
+          {
+            "id": "teacher:openai-codex-gpt-5-2026-08",
+            "kind": "host-ai",
+            "role": "teacher",
+            "modelId": "openai-codex",
+            "modelVersion": "gpt-5"
+          }
+        ],
+        "notes": "Single host-AI teacher review mapped by change-teacher-plan-generator/0.1.0; no independent correction or adjudication. Candidate totals were observed during fixture-invariant verification before this policy was authored, so this is disclosed weak supervision rather than a blind label claim. Category budgets were reasoned from the final synthetic behavior and frozen without fitting seed priors, validation outcomes, test outcomes, or preferred WAPE."
+      },
+      "capabilities": [
+        {
+          "sourceCapabilityId": "change-item:capability-marginal:301956fd0a3eff2be5d2",
+          "rationale": "The final package becomes buildable and distributable with declarations, a controlled file set, and prepack behavior. The teacher allocated the independently reasoned build-configuration-and-developer-tooling category budget across 1 represented source capability target(s).",
+          "targets": [
+            {
+              "hours": {
+                "low": 1.00,
+                "expected": 2.00,
+                "high": 4.00
+              },
+              "uncertaintyReasons": [
+                "TypeScript module settings can expose compatibility issues."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "change-item:capability-marginal:f12af85b43555293f372",
+          "rationale": "The final package becomes buildable and distributable with declarations, a controlled file set, and prepack behavior. The teacher allocated the independently reasoned repository-and-solution-setup category budget across 1 represented source capability target(s).",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.50,
+                "expected": 0.75,
+                "high": 1.50
+              },
+              "uncertaintyReasons": [
+                "Existing package conventions reduce setup effort."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "change-item:capability-modification:00a8c94dda4338ad2713",
+          "rationale": "The final package becomes buildable and distributable with declarations, a controlled file set, and prepack behavior. The teacher allocated the independently reasoned architecture-and-technical-design category budget across 1 represented source capability target(s).",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.25,
+                "expected": 0.50,
+                "high": 1.00
+              },
+              "uncertaintyReasons": [
+                "The output layout is small but consumer-facing."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "change-item:capability-modification:1a6b4ea61ea0294873c1",
+          "rationale": "The final package becomes buildable and distributable with declarations, a controlled file set, and prepack behavior. The teacher allocated the independently reasoned packaging-deployment-and-release-artifacts category budget across 1 represented source capability target(s).",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.50,
+                "expected": 1.00,
+                "high": 2.00
+              },
+              "uncertaintyReasons": [
+                "Package metadata and included-file verification are represented."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "change-item:capability-modification:26853e925aeba2a3a9b8",
+          "rationale": "The final package becomes buildable and distributable with declarations, a controlled file set, and prepack behavior. The teacher rejected this source capability as duplicate, mechanically excluded, or outside the final logical category work.",
+          "targets": [
+            {
+              "hours": {
+                "low": 0,
+                "expected": 0,
+                "high": 0
+              },
+              "uncertaintyReasons": [],
+              "sizeException": "Explicit false-positive exclusion: the source capability does not represent distinct final-delta EHE under the Change rubric."
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "change-item:capability-modification:36221446aa20f6bb371c",
+          "rationale": "The final package becomes buildable and distributable with declarations, a controlled file set, and prepack behavior. The teacher rejected this source capability as duplicate, mechanically excluded, or outside the final logical category work.",
+          "targets": [
+            {
+              "hours": {
+                "low": 0,
+                "expected": 0,
+                "high": 0
+              },
+              "uncertaintyReasons": [],
+              "sizeException": "Explicit false-positive exclusion: the source capability does not represent distinct final-delta EHE under the Change rubric."
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "change-item:capability-modification:8e23002f27e221b8adab",
+          "rationale": "The final package becomes buildable and distributable with declarations, a controlled file set, and prepack behavior. The teacher allocated the independently reasoned manual-validation-debugging-and-hardening category budget across 1 represented source capability target(s).",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.50,
+                "expected": 0.75,
+                "high": 1.50
+              },
+              "uncertaintyReasons": [
+                "Packed file contents and imports need checking."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "change-item:change-comprehension:6491e9a7fc0283ee4a3b",
+          "rationale": "The final package becomes buildable and distributable with declarations, a controlled file set, and prepack behavior. The teacher allocated the independently reasoned specification-comprehension-and-domain-learning category budget across 1 represented source capability target(s).",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.50,
+                "expected": 0.75,
+                "high": 1.50
+              },
+              "uncertaintyReasons": [
+                "Consumer module and declaration requirements may vary."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "change-item:change-review:a77ec9967f57994990cd",
+          "rationale": "The final package becomes buildable and distributable with declarations, a controlled file set, and prepack behavior. The teacher allocated the independently reasoned self-review-and-system-integration category budget across 1 represented source capability target(s).",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.50,
+                "expected": 0.75,
+                "high": 1.50
+              },
+              "uncertaintyReasons": [
+                "Consumer-facing package changes merit final review."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "change-item:maintained-artifact-fallback:8e5b5ec59e96cc76dd29",
+          "rationale": "The final package becomes buildable and distributable with declarations, a controlled file set, and prepack behavior. The teacher rejected this source capability as duplicate, mechanically excluded, or outside the final logical category work.",
+          "targets": [
+            {
+              "hours": {
+                "low": 0,
+                "expected": 0,
+                "high": 0
+              },
+              "uncertaintyReasons": [],
+              "sizeException": "Explicit false-positive exclusion: the source capability does not represent distinct final-delta EHE under the Change rubric."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "record:change:ts-package-generated",
+      "repository": {
+        "id": "repository:change-ts-package-a",
+        "name": "repository:change-ts-package-a",
+        "sourceDigest": "sha256:71bd9177f128defaa61df2fdc8d36765c0b89a51e334162bdf1aa9510b944ff0"
+      },
+      "change": {
+        "id": "change:ts-package-generated",
+        "selectionKind": "base-head",
+        "baseObjectId": "4efaf290c905fbb1336e14d0c90b1638dffbbf31a13c10186fb2a0f287abfd05",
+        "headObjectId": "0263fa762851dc131d3b827cd0d0234fdf99588d3e7f4323197f8f22962ded38",
+        "baseEvidenceDigest": "sha256:cae2ae355f3cb8b5bfbb65e16a7c2586a9fe642798bc8927c3f3a0418cfa0112",
+        "headEvidenceDigest": "sha256:23c9feea7efe1762c7629b70c526644a6459722a71b19c6a1bf3b86c114b4cd4",
+        "finalDeltaDigest": "sha256:71bd9177f128defaa61df2fdc8d36765c0b89a51e334162bdf1aa9510b944ff0",
+        "coverageTags": [
+          "generated-conventional",
+          "typescript",
+          "zero-delta"
+        ]
+      },
+      "profile": "implementation",
+      "baselineId": "senior-contractor-2026-no-ai",
+      "partition": "development",
+      "sourceEstimatorVersion": "change-seed/0.1.0\u002Bseed-rules/0.2.1",
+      "sourceEstimateDigest": "sha256:cdd9eac570ac7dd550a323659aee7d970559f8ceece97dfa20b7672868a38263",
+      "source": {
+        "dataClassification": "synthetic",
+        "sourceReference": "fairbill://calibration/changes/public-synthetic/0.1.0.fixtures.json#change:ts-package-generated",
+        "revision": "4efaf290c905fbb1336e14d0c90b1638dffbbf31a13c10186fb2a0f287abfd05..0263fa762851dc131d3b827cd0d0234fdf99588d3e7f4323197f8f22962ded38",
+        "licenseExpression": "MIT",
+        "redistributionAllowed": true,
+        "notes": "Project-owned synthetic immutable states; generated without Git activity metadata."
+      },
+      "review": {
+        "status": "teacher-estimate",
+        "completedOn": "2026-08-06",
+        "reviewers": [
+          {
+            "id": "teacher:openai-codex-gpt-5-2026-08",
+            "kind": "host-ai",
+            "role": "teacher",
+            "modelId": "openai-codex",
+            "modelVersion": "gpt-5"
+          }
+        ],
+        "notes": "Single host-AI teacher review mapped by change-teacher-plan-generator/0.1.0; no independent correction or adjudication. Candidate totals were observed during fixture-invariant verification before this policy was authored, so this is disclosed weak supervision rather than a blind label claim. Category budgets were reasoned from the final synthetic behavior and frozen without fitting seed priors, validation outcomes, test outcomes, or preferred WAPE."
+      },
+      "capabilities": []
+    },
+    {
+      "id": "record:change:ts-service-delivery",
+      "repository": {
+        "id": "repository:change-ts-service-c",
+        "name": "repository:change-ts-service-c",
+        "sourceDigest": "sha256:18d44ed9102e75911aef479e2fa39024f9e715a8f8befd15f3d5f2e58c654944"
+      },
+      "change": {
+        "id": "change:ts-service-delivery",
+        "selectionKind": "base-head",
+        "baseObjectId": "320f4c8f83a9d4e6b52d110d3c71c9353a7327049051534d59c648d0c3fcea34",
+        "headObjectId": "1f95c0f0cc480ad7aa9a5e9e905b664627f682dbab178904680d33819df74ef9",
+        "baseEvidenceDigest": "sha256:3b4e0cb48477cd16ec5a00971f4439bf10900b8e90a87c478e375e392b903eaf",
+        "headEvidenceDigest": "sha256:550cd82fd37f9036cbd41fca9f60f6eb9e430d97e99abe23d694706501a8d76c",
+        "finalDeltaDigest": "sha256:18d44ed9102e75911aef479e2fa39024f9e715a8f8befd15f3d5f2e58c654944",
+        "coverageTags": [
+          "ci",
+          "container",
+          "delivery",
+          "typescript"
+        ]
+      },
+      "profile": "implementation",
+      "baselineId": "senior-contractor-2026-no-ai",
+      "partition": "test",
+      "sourceEstimatorVersion": "change-seed/0.1.0\u002Bseed-rules/0.2.1",
+      "sourceEstimateDigest": "sha256:afe6765503b55e17ada143e1f0b4eea5b39d067841e7a209cd76e9f3ea3ba8c6",
+      "source": {
+        "dataClassification": "synthetic",
+        "sourceReference": "fairbill://calibration/changes/public-synthetic/0.1.0.fixtures.json#change:ts-service-delivery",
+        "revision": "320f4c8f83a9d4e6b52d110d3c71c9353a7327049051534d59c648d0c3fcea34..1f95c0f0cc480ad7aa9a5e9e905b664627f682dbab178904680d33819df74ef9",
+        "licenseExpression": "MIT",
+        "redistributionAllowed": true,
+        "notes": "Project-owned synthetic immutable states; generated without Git activity metadata."
+      },
+      "review": {
+        "status": "teacher-estimate",
+        "completedOn": "2026-08-06",
+        "reviewers": [
+          {
+            "id": "teacher:openai-codex-gpt-5-2026-08",
+            "kind": "host-ai",
+            "role": "teacher",
+            "modelId": "openai-codex",
+            "modelVersion": "gpt-5"
+          }
+        ],
+        "notes": "Single host-AI teacher review mapped by change-teacher-plan-generator/0.1.0; no independent correction or adjudication. Candidate totals were observed during fixture-invariant verification before this policy was authored, so this is disclosed weak supervision rather than a blind label claim. Category budgets were reasoned from the final synthetic behavior and frozen without fitting seed priors, validation outcomes, test outcomes, or preferred WAPE."
+      },
+      "capabilities": [
+        {
+          "sourceCapabilityId": "change-item:capability-marginal:1509ea8d1487d6c16002",
+          "rationale": "The service gains a multi-stage non-root container and a basic Node build workflow with maintained ignore and compiler configuration. The teacher allocated the independently reasoned build-configuration-and-developer-tooling category budget across 1 represented source capability target(s).",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.50,
+                "expected": 1.00,
+                "high": 2.00
+              },
+              "uncertaintyReasons": [
+                "TypeScript output assumptions need verification."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "change-item:capability-marginal:632af60214ef1eb3909b",
+          "rationale": "The service gains a multi-stage non-root container and a basic Node build workflow with maintained ignore and compiler configuration. The teacher allocated the independently reasoned repository-and-solution-setup category budget across 1 represented source capability target(s).",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.50,
+                "expected": 0.75,
+                "high": 1.50
+              },
+              "uncertaintyReasons": [
+                "Existing package scripts reduce setup effort."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "change-item:capability-marginal:8fd9ee4861aa3b521c26",
+          "rationale": "The service gains a multi-stage non-root container and a basic Node build workflow with maintained ignore and compiler configuration. The teacher allocated the independently reasoned packaging-deployment-and-release-artifacts category budget across 1 represented source capability target(s).",
+          "targets": [
+            {
+              "hours": {
+                "low": 1.50,
+                "expected": 3.00,
+                "high": 6.00
+              },
+              "uncertaintyReasons": [
+                "Container build correctness and runtime ownership may require iteration."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "change-item:capability-marginal:fcbea885de968f161c84",
+          "rationale": "The service gains a multi-stage non-root container and a basic Node build workflow with maintained ignore and compiler configuration. The teacher allocated the independently reasoned ci-cd-and-infrastructure-as-code category budget across 1 represented source capability target(s).",
+          "targets": [
+            {
+              "hours": {
+                "low": 1.00,
+                "expected": 2.00,
+                "high": 4.00
+              },
+              "uncertaintyReasons": [
+                "Dependency caching and policy hardening are outside the represented state."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "change-item:change-comprehension:92f9da6ff25199ef43ed",
+          "rationale": "The service gains a multi-stage non-root container and a basic Node build workflow with maintained ignore and compiler configuration. The teacher allocated the independently reasoned specification-comprehension-and-domain-learning category budget across 1 represented source capability target(s).",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.50,
+                "expected": 0.75,
+                "high": 1.50
+              },
+              "uncertaintyReasons": [
+                "Target runtime and CI policy may vary."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "change-item:change-review:9c31173bb863e245f131",
+          "rationale": "The service gains a multi-stage non-root container and a basic Node build workflow with maintained ignore and compiler configuration. The teacher allocated the independently reasoned self-review-and-system-integration category budget across 1 represented source capability target(s).",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.50,
+                "expected": 1.00,
+                "high": 2.00
+              },
+              "uncertaintyReasons": [
+                "CI and container behavior need a coherent delivery review."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "record:change:ts-service-integration",
+      "repository": {
+        "id": "repository:change-ts-service-c",
+        "name": "repository:change-ts-service-c",
+        "sourceDigest": "sha256:7a5ccf4143c167192279704921fec71dae4f14ae21edfe27df7cde62161ce8f6"
+      },
+      "change": {
+        "id": "change:ts-service-integration",
+        "selectionKind": "base-head",
+        "baseObjectId": "a4996dc9ae5cd8015dc38a348ef4617ca417a0fe85ce02b93475fa89ed5761df",
+        "headObjectId": "f202b7a39d5d86f84d2ea26bc889f252bcaf70b6439b7640bad7be832f4f9e80",
+        "baseEvidenceDigest": "sha256:6c7197c3b7d67ff99a3bc36687be435f749382fbe2b8975b66a0261b2f5894d8",
+        "headEvidenceDigest": "sha256:27ed092d1554d0f85039760b77d000d6b392ea140be8d6f5b29e752a7bb74147",
+        "finalDeltaDigest": "sha256:7a5ccf4143c167192279704921fec71dae4f14ae21edfe27df7cde62161ce8f6",
+        "coverageTags": [
+          "integration",
+          "production",
+          "typescript"
+        ]
+      },
+      "profile": "implementation",
+      "baselineId": "senior-contractor-2026-no-ai",
+      "partition": "test",
+      "sourceEstimatorVersion": "change-seed/0.1.0\u002Bseed-rules/0.2.1",
+      "sourceEstimateDigest": "sha256:2c501567d951845b71a52691fbee771985e30a12a641f56883fb3ed6fdf1dc33",
+      "source": {
+        "dataClassification": "synthetic",
+        "sourceReference": "fairbill://calibration/changes/public-synthetic/0.1.0.fixtures.json#change:ts-service-integration",
+        "revision": "a4996dc9ae5cd8015dc38a348ef4617ca417a0fe85ce02b93475fa89ed5761df..f202b7a39d5d86f84d2ea26bc889f252bcaf70b6439b7640bad7be832f4f9e80",
+        "licenseExpression": "MIT",
+        "redistributionAllowed": true,
+        "notes": "Project-owned synthetic immutable states; generated without Git activity metadata."
+      },
+      "review": {
+        "status": "teacher-estimate",
+        "completedOn": "2026-08-06",
+        "reviewers": [
+          {
+            "id": "teacher:openai-codex-gpt-5-2026-08",
+            "kind": "host-ai",
+            "role": "teacher",
+            "modelId": "openai-codex",
+            "modelVersion": "gpt-5"
+          }
+        ],
+        "notes": "Single host-AI teacher review mapped by change-teacher-plan-generator/0.1.0; no independent correction or adjudication. Candidate totals were observed during fixture-invariant verification before this policy was authored, so this is disclosed weak supervision rather than a blind label claim. Category budgets were reasoned from the final synthetic behavior and frozen without fitting seed priors, validation outcomes, test outcomes, or preferred WAPE."
+      },
+      "capabilities": [
+        {
+          "sourceCapabilityId": "change-item:capability-marginal:143747188c28c06d829c",
+          "rationale": "A protocol client adds request construction, missing-item semantics, failure translation, response validation, and typed mapping. The teacher allocated the independently reasoned external-integrations-and-protocols category budget across 1 represented source capability target(s).",
+          "targets": [
+            {
+              "hours": {
+                "low": 2.00,
+                "expected": 4.00,
+                "high": 8.00
+              },
+              "uncertaintyReasons": [
+                "Remote error and payload variants can materially expand the protocol work."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "change-item:capability-marginal:1b4213f6d8ff1c42ab8c",
+          "rationale": "A protocol client adds request construction, missing-item semantics, failure translation, response validation, and typed mapping. The teacher allocated the independently reasoned production-implementation category budget across 1 represented source capability target(s).",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.75,
+                "expected": 1.50,
+                "high": 3.00
+              },
+              "uncertaintyReasons": [
+                "Typed mapping and validation are modest but maintained."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "change-item:capability-marginal:a6f4770e9d1071880f76",
+          "rationale": "A protocol client adds request construction, missing-item semantics, failure translation, response validation, and typed mapping. The teacher rejected this source capability as duplicate, mechanically excluded, or outside the final logical category work.",
+          "targets": [
+            {
+              "hours": {
+                "low": 0,
+                "expected": 0,
+                "high": 0
+              },
+              "uncertaintyReasons": [],
+              "sizeException": "Explicit false-positive exclusion: the source capability does not represent distinct final-delta EHE under the Change rubric."
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "change-item:capability-marginal:ccfe7abd68c9bc1678b3",
+          "rationale": "A protocol client adds request construction, missing-item semantics, failure translation, response validation, and typed mapping. The teacher allocated the independently reasoned architecture-and-technical-design category budget across 1 represented source capability target(s).",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.50,
+                "expected": 1.00,
+                "high": 2.00
+              },
+              "uncertaintyReasons": [
+                "Error ownership and transport abstraction are design choices."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "change-item:capability-marginal:cd6aa29d7f540eb37926",
+          "rationale": "A protocol client adds request construction, missing-item semantics, failure translation, response validation, and typed mapping. The teacher rejected this source capability as duplicate, mechanically excluded, or outside the final logical category work.",
+          "targets": [
+            {
+              "hours": {
+                "low": 0,
+                "expected": 0,
+                "high": 0
+              },
+              "uncertaintyReasons": [],
+              "sizeException": "Explicit false-positive exclusion: the source capability does not represent distinct final-delta EHE under the Change rubric."
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "change-item:capability-marginal:d1db5b1e5b35fd93e3cc",
+          "rationale": "A protocol client adds request construction, missing-item semantics, failure translation, response validation, and typed mapping. The teacher allocated the independently reasoned manual-validation-debugging-and-hardening category budget across 1 represented source capability target(s).",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.50,
+                "expected": 1.00,
+                "high": 2.00
+              },
+              "uncertaintyReasons": [
+                "Success, 404, malformed, and failure paths need checks."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "change-item:change-comprehension:cfd102ad0f23b0b17444",
+          "rationale": "A protocol client adds request construction, missing-item semantics, failure translation, response validation, and typed mapping. The teacher allocated the independently reasoned specification-comprehension-and-domain-learning category budget across 1 represented source capability target(s).",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.50,
+                "expected": 0.75,
+                "high": 1.50
+              },
+              "uncertaintyReasons": [
+                "Warehouse protocol details may require clarification."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "change-item:change-review:1415fb33ad2b5b11c131",
+          "rationale": "A protocol client adds request construction, missing-item semantics, failure translation, response validation, and typed mapping. The teacher allocated the independently reasoned self-review-and-system-integration category budget across 1 represented source capability target(s).",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.50,
+                "expected": 1.00,
+                "high": 2.00
+              },
+              "uncertaintyReasons": [
+                "External compatibility merits a focused review."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "record:change:ts-service-tests",
+      "repository": {
+        "id": "repository:change-ts-service-c",
+        "name": "repository:change-ts-service-c",
+        "sourceDigest": "sha256:ba02079d791f96e7a62020d126399fee348fede6e367adbbd78faec8265a01ab"
+      },
+      "change": {
+        "id": "change:ts-service-tests",
+        "selectionKind": "base-head",
+        "baseObjectId": "1b01e1b95ec71a8c8663491c3dcf10efed860516bbd00da42b657d4096959bb2",
+        "headObjectId": "92799d13745949ab4f7867c689b07e83b996fbfe543bea0fb1ac38f600313f5d",
+        "baseEvidenceDigest": "sha256:f51ab1bd11230266ce218a36a81208f7ecad8537b4c13cfe0b1b3df4308527bb",
+        "headEvidenceDigest": "sha256:9411dfe818b84fa778bdb20a146a449403ed8938c56c0cc4d28850b7ec33369a",
+        "finalDeltaDigest": "sha256:ba02079d791f96e7a62020d126399fee348fede6e367adbbd78faec8265a01ab",
+        "coverageTags": [
+          "integration-testing",
+          "tests",
+          "typescript"
+        ]
+      },
+      "profile": "implementation",
+      "baselineId": "senior-contractor-2026-no-ai",
+      "partition": "test",
+      "sourceEstimatorVersion": "change-seed/0.1.0\u002Bseed-rules/0.2.1",
+      "sourceEstimateDigest": "sha256:e481ef0f852f4f7c9fac4b3b9f5f76579a442fd6c130398d2c56f202ac61ba67",
+      "source": {
+        "dataClassification": "synthetic",
+        "sourceReference": "fairbill://calibration/changes/public-synthetic/0.1.0.fixtures.json#change:ts-service-tests",
+        "revision": "1b01e1b95ec71a8c8663491c3dcf10efed860516bbd00da42b657d4096959bb2..92799d13745949ab4f7867c689b07e83b996fbfe543bea0fb1ac38f600313f5d",
+        "licenseExpression": "MIT",
+        "redistributionAllowed": true,
+        "notes": "Project-owned synthetic immutable states; generated without Git activity metadata."
+      },
+      "review": {
+        "status": "teacher-estimate",
+        "completedOn": "2026-08-06",
+        "reviewers": [
+          {
+            "id": "teacher:openai-codex-gpt-5-2026-08",
+            "kind": "host-ai",
+            "role": "teacher",
+            "modelId": "openai-codex",
+            "modelVersion": "gpt-5"
+          }
+        ],
+        "notes": "Single host-AI teacher review mapped by change-teacher-plan-generator/0.1.0; no independent correction or adjudication. Candidate totals were observed during fixture-invariant verification before this policy was authored, so this is disclosed weak supervision rather than a blind label claim. Category budgets were reasoned from the final synthetic behavior and frozen without fitting seed priors, validation outcomes, test outcomes, or preferred WAPE."
+      },
+      "capabilities": [
+        {
+          "sourceCapabilityId": "change-item:capability-marginal:3176f40a7461d97075e6",
+          "rationale": "The final delta is quality-only: focused stock unit cases plus a small transport-boundary integration scenario. The teacher rejected this source capability as duplicate, mechanically excluded, or outside the final logical category work.",
+          "targets": [
+            {
+              "hours": {
+                "low": 0,
+                "expected": 0,
+                "high": 0
+              },
+              "uncertaintyReasons": [],
+              "sizeException": "Explicit false-positive exclusion: the source capability does not represent distinct final-delta EHE under the Change rubric."
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "change-item:capability-marginal:7e9cd8caa7cd09774fbe",
+          "rationale": "The final delta is quality-only: focused stock unit cases plus a small transport-boundary integration scenario. The teacher allocated the independently reasoned integration-contract-and-component-testing category budget across 1 represented source capability target(s).",
+          "targets": [
+            {
+              "hours": {
+                "low": 1.00,
+                "expected": 2.00,
+                "high": 4.00
+              },
+              "uncertaintyReasons": [
+                "The synthetic transport is simple and may underrepresent real harness setup."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "change-item:capability-marginal:ed4f0f47ef974cb42c48",
+          "rationale": "The final delta is quality-only: focused stock unit cases plus a small transport-boundary integration scenario. The teacher allocated the independently reasoned unit-testing category budget across 1 represented source capability target(s).",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.75,
+                "expected": 1.50,
+                "high": 3.00
+              },
+              "uncertaintyReasons": [
+                "Boundary cases may expand slightly."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "change-item:change-comprehension:908856949ec55b00e725",
+          "rationale": "The final delta is quality-only: focused stock unit cases plus a small transport-boundary integration scenario. The teacher allocated the independently reasoned specification-comprehension-and-domain-learning category budget across 1 represented source capability target(s).",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.25,
+                "expected": 0.50,
+                "high": 1.00
+              },
+              "uncertaintyReasons": [
+                "Required depth is represented by a small test set."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "change-item:change-review:2ccdc8bdea1c9799e261",
+          "rationale": "The final delta is quality-only: focused stock unit cases plus a small transport-boundary integration scenario. The teacher allocated the independently reasoned self-review-and-system-integration category budget across 1 represented source capability target(s).",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.50,
+                "expected": 0.75,
+                "high": 1.50
+              },
+              "uncertaintyReasons": [
+                "Static analysis assumes the test suite passes."
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

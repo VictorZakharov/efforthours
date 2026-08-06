@@ -1,0 +1,383 @@
+{
+  "schemaVersion": "1.0.0",
+  "authoringVersion": "change-calibration-authoring/0.1.0",
+  "status": "unreviewed",
+  "warning": "UNREVIEWED CHANGE EHE: candidate values are reference material, not calibration labels. Review the normalized final delta without using history activity as effort evidence.",
+  "rubric": {
+    "id": "change-ehe-work-item",
+    "version": "1.0.0"
+  },
+  "repository": {
+    "id": "repository:change-ts-package-a",
+    "name": "repository:change-ts-package-a",
+    "sourceDigest": "sha256:7dea9815fc8f6e706587ad1cf9a6f884673d6d1c13a80faa1dad7b5cf24a301d"
+  },
+  "change": {
+    "id": "change:ts-package-delivery",
+    "selectionKind": "base-head",
+    "baseObjectId": "d84b95e849e233616d66d03d8725f66afe4a18ea7ad1cb814c9efddb6e835e08",
+    "headObjectId": "e3bb7943f6a6b9ad786d6f57615b6221d25250955615966f6199805c80cdc30c",
+    "baseEvidenceDigest": "sha256:d3f5467329233d997e8a1271137f9fe6a89b81cea95e6da04852e604994764b5",
+    "headEvidenceDigest": "sha256:4bb28f572c1ec2c0216b95add2bb83f2062f0faf53efbe4590196989b62020c1",
+    "finalDeltaDigest": "sha256:7dea9815fc8f6e706587ad1cf9a6f884673d6d1c13a80faa1dad7b5cf24a301d",
+    "coverageTags": [
+      "delivery",
+      "packaging",
+      "typescript"
+    ]
+  },
+  "profile": "implementation",
+  "baselineId": "senior-contractor-2026-no-ai",
+  "candidateVisibility": "blind",
+  "candidate": {
+    "estimatorVersion": "change-seed/0.1.0\u002Bseed-rules/0.2.1",
+    "estimateDigest": "sha256:8333c1a2d1904da058f5103a2f0e8f5a5b2287d896504609b33e9f350a4936c6",
+    "totalHours": null,
+    "categories": []
+  },
+  "targets": [
+    {
+      "id": "target:change-item:capability-marginal:301956fd0a3eff2be5d2",
+      "sourceCapabilityId": "change-item:capability-marginal:301956fd0a3eff2be5d2",
+      "category": "build-configuration-and-developer-tooling",
+      "title": "Expand Configure build behavior and developer tooling",
+      "scope": ".",
+      "sourceWorkItemIds": [
+        "change-item:capability-marginal:301956fd0a3eff2be5d2"
+      ],
+      "evidenceIds": [
+        "change:path:23c8da1c767907e61b89818c",
+        "change:path:8db528bbe67a585ae8ba01f2"
+      ],
+      "candidate": {
+        "hours": null,
+        "confidence": null,
+        "reason": "Positive base-to-head marginal effort from the existing repository capability model, bounded by touched final-change regions when existing behavior was also modified."
+      },
+      "review": {
+        "hours": null,
+        "rationale": null,
+        "sizeException": null
+      },
+      "assumptions": [
+        "The final base-to-head artifact delta is valued once with modern 2026-equivalent technology.",
+        "Commit count, elapsed time, authorship, messages, and intermediate churn are not effort multipliers."
+      ],
+      "exclusions": [
+        "Historical rework and discarded intermediate states are excluded."
+      ],
+      "uncertaintyReasons": [
+        "Some supporting evidence is inferred rather than directly observed."
+      ]
+    },
+    {
+      "id": "target:change-item:capability-marginal:f12af85b43555293f372",
+      "sourceCapabilityId": "change-item:capability-marginal:f12af85b43555293f372",
+      "category": "repository-and-solution-setup",
+      "title": "Expand Set up \u0027.\u0027 (library)",
+      "scope": ".",
+      "sourceWorkItemIds": [
+        "change-item:capability-marginal:f12af85b43555293f372"
+      ],
+      "evidenceIds": [
+        "change:path:23c8da1c767907e61b89818c",
+        "change:path:8db528bbe67a585ae8ba01f2"
+      ],
+      "candidate": {
+        "hours": null,
+        "confidence": null,
+        "reason": "Positive base-to-head marginal effort from the existing repository capability model, bounded by touched final-change regions when existing behavior was also modified."
+      },
+      "review": {
+        "hours": null,
+        "rationale": null,
+        "sizeException": null
+      },
+      "assumptions": [
+        "The final base-to-head artifact delta is valued once with modern 2026-equivalent technology.",
+        "Commit count, elapsed time, authorship, messages, and intermediate churn are not effort multipliers."
+      ],
+      "exclusions": [
+        "Historical rework and discarded intermediate states are excluded."
+      ],
+      "uncertaintyReasons": [
+        "Some supporting evidence is inferred rather than directly observed."
+      ]
+    },
+    {
+      "id": "target:change-item:capability-modification:00a8c94dda4338ad2713",
+      "sourceCapabilityId": "change-item:capability-modification:00a8c94dda4338ad2713",
+      "category": "architecture-and-technical-design",
+      "title": "Modify Design the technical structure of \u0027.\u0027 (library)",
+      "scope": ".",
+      "sourceWorkItemIds": [
+        "change-item:capability-modification:00a8c94dda4338ad2713"
+      ],
+      "evidenceIds": [
+        "change:path:23c8da1c767907e61b89818c"
+      ],
+      "candidate": {
+        "hours": null,
+        "confidence": null,
+        "reason": "The final artifact changed inside an existing evidence-backed capability even though its repository-level structural quantity did not increase."
+      },
+      "review": {
+        "hours": null,
+        "rationale": null,
+        "sizeException": null
+      },
+      "assumptions": [
+        "The final base-to-head artifact delta is valued once with modern 2026-equivalent technology.",
+        "Commit count, elapsed time, authorship, messages, and intermediate churn are not effort multipliers."
+      ],
+      "exclusions": [
+        "Historical rework and discarded intermediate states are excluded."
+      ],
+      "uncertaintyReasons": [
+        "Some supporting evidence is inferred rather than directly observed."
+      ]
+    },
+    {
+      "id": "target:change-item:capability-modification:1a6b4ea61ea0294873c1",
+      "sourceCapabilityId": "change-item:capability-modification:1a6b4ea61ea0294873c1",
+      "category": "packaging-deployment-and-release-artifacts",
+      "title": "Modify Prepare represented packages and release surfaces",
+      "scope": ".",
+      "sourceWorkItemIds": [
+        "change-item:capability-modification:1a6b4ea61ea0294873c1"
+      ],
+      "evidenceIds": [
+        "change:path:23c8da1c767907e61b89818c"
+      ],
+      "candidate": {
+        "hours": null,
+        "confidence": null,
+        "reason": "The final artifact changed inside an existing evidence-backed capability even though its repository-level structural quantity did not increase."
+      },
+      "review": {
+        "hours": null,
+        "rationale": null,
+        "sizeException": null
+      },
+      "assumptions": [
+        "The final base-to-head artifact delta is valued once with modern 2026-equivalent technology.",
+        "Commit count, elapsed time, authorship, messages, and intermediate churn are not effort multipliers."
+      ],
+      "exclusions": [
+        "Historical rework and discarded intermediate states are excluded."
+      ],
+      "uncertaintyReasons": [
+        "Some supporting evidence is inferred rather than directly observed."
+      ]
+    },
+    {
+      "id": "target:change-item:capability-modification:26853e925aeba2a3a9b8",
+      "sourceCapabilityId": "change-item:capability-modification:26853e925aeba2a3a9b8",
+      "category": "specification-comprehension-and-domain-learning",
+      "title": "Modify Comprehend the supplied specification and bounded business domain",
+      "scope": ".",
+      "sourceWorkItemIds": [
+        "change-item:capability-modification:26853e925aeba2a3a9b8"
+      ],
+      "evidenceIds": [
+        "change:path:23c8da1c767907e61b89818c"
+      ],
+      "candidate": {
+        "hours": null,
+        "confidence": null,
+        "reason": "The final artifact changed inside an existing evidence-backed capability even though its repository-level structural quantity did not increase."
+      },
+      "review": {
+        "hours": null,
+        "rationale": null,
+        "sizeException": null
+      },
+      "assumptions": [
+        "The final base-to-head artifact delta is valued once with modern 2026-equivalent technology.",
+        "Commit count, elapsed time, authorship, messages, and intermediate churn are not effort multipliers."
+      ],
+      "exclusions": [
+        "Historical rework and discarded intermediate states are excluded."
+      ],
+      "uncertaintyReasons": [
+        "No external specification artifact is represented in the current estimator request contract.",
+        "Some supporting evidence is inferred rather than directly observed."
+      ]
+    },
+    {
+      "id": "target:change-item:capability-modification:36221446aa20f6bb371c",
+      "sourceCapabilityId": "change-item:capability-modification:36221446aa20f6bb371c",
+      "category": "self-review-and-system-integration",
+      "title": "Modify Self-review and integrate the completed system",
+      "scope": ".",
+      "sourceWorkItemIds": [
+        "change-item:capability-modification:36221446aa20f6bb371c"
+      ],
+      "evidenceIds": [
+        "change:path:23c8da1c767907e61b89818c"
+      ],
+      "candidate": {
+        "hours": null,
+        "confidence": null,
+        "reason": "The final artifact changed inside an existing evidence-backed capability even though its repository-level structural quantity did not increase."
+      },
+      "review": {
+        "hours": null,
+        "rationale": null,
+        "sizeException": null
+      },
+      "assumptions": [
+        "The final base-to-head artifact delta is valued once with modern 2026-equivalent technology.",
+        "Commit count, elapsed time, authorship, messages, and intermediate churn are not effort multipliers."
+      ],
+      "exclusions": [
+        "Historical rework and discarded intermediate states are excluded."
+      ],
+      "uncertaintyReasons": [
+        "Some supporting evidence is inferred rather than directly observed."
+      ]
+    },
+    {
+      "id": "target:change-item:capability-modification:8e23002f27e221b8adab",
+      "sourceCapabilityId": "change-item:capability-modification:8e23002f27e221b8adab",
+      "category": "manual-validation-debugging-and-hardening",
+      "title": "Modify Manually validate, debug, and harden \u0027.\u0027 (library)",
+      "scope": ".",
+      "sourceWorkItemIds": [
+        "change-item:capability-modification:8e23002f27e221b8adab"
+      ],
+      "evidenceIds": [
+        "change:path:23c8da1c767907e61b89818c"
+      ],
+      "candidate": {
+        "hours": null,
+        "confidence": null,
+        "reason": "The final artifact changed inside an existing evidence-backed capability even though its repository-level structural quantity did not increase."
+      },
+      "review": {
+        "hours": null,
+        "rationale": null,
+        "sizeException": null
+      },
+      "assumptions": [
+        "The final base-to-head artifact delta is valued once with modern 2026-equivalent technology.",
+        "Commit count, elapsed time, authorship, messages, and intermediate churn are not effort multipliers."
+      ],
+      "exclusions": [
+        "Historical rework and discarded intermediate states are excluded."
+      ],
+      "uncertaintyReasons": [
+        "Some supporting evidence is inferred rather than directly observed.",
+        "The target checkout was not executed on the default static path."
+      ]
+    },
+    {
+      "id": "target:change-item:change-comprehension:6491e9a7fc0283ee4a3b",
+      "sourceCapabilityId": "change-item:change-comprehension:6491e9a7fc0283ee4a3b",
+      "category": "specification-comprehension-and-domain-learning",
+      "title": "Understand the bounded change specification",
+      "scope": ".",
+      "sourceWorkItemIds": [
+        "change-item:change-comprehension:6491e9a7fc0283ee4a3b"
+      ],
+      "evidenceIds": [
+        "change:path:23c8da1c767907e61b89818c",
+        "change:path:41ae2c6c2a19ffc4af8ff286",
+        "change:path:8db528bbe67a585ae8ba01f2"
+      ],
+      "candidate": {
+        "hours": null,
+        "confidence": null,
+        "reason": "Comprehend the final behavior and quality delta represented by the affected capability categories."
+      },
+      "review": {
+        "hours": null,
+        "rationale": null,
+        "sizeException": null
+      },
+      "assumptions": [
+        "The final base-to-head artifact delta is valued once with modern 2026-equivalent technology.",
+        "Commit count, elapsed time, authorship, messages, and intermediate churn are not effort multipliers."
+      ],
+      "exclusions": [
+        "Historical rework and discarded intermediate states are excluded."
+      ],
+      "uncertaintyReasons": []
+    },
+    {
+      "id": "target:change-item:change-review:a77ec9967f57994990cd",
+      "sourceCapabilityId": "change-item:change-review:a77ec9967f57994990cd",
+      "category": "self-review-and-system-integration",
+      "title": "Review and integrate the completed change",
+      "scope": ".",
+      "sourceWorkItemIds": [
+        "change-item:change-review:a77ec9967f57994990cd"
+      ],
+      "evidenceIds": [
+        "change:path:23c8da1c767907e61b89818c",
+        "change:path:41ae2c6c2a19ffc4af8ff286",
+        "change:path:8db528bbe67a585ae8ba01f2"
+      ],
+      "candidate": {
+        "hours": null,
+        "confidence": null,
+        "reason": "Review the coherent final delta and integrate its affected maintained artifacts; this is derived from final scope rather than commit count."
+      },
+      "review": {
+        "hours": null,
+        "rationale": null,
+        "sizeException": null
+      },
+      "assumptions": [
+        "The final base-to-head artifact delta is valued once with modern 2026-equivalent technology.",
+        "Commit count, elapsed time, authorship, messages, and intermediate churn are not effort multipliers."
+      ],
+      "exclusions": [
+        "Historical rework and discarded intermediate states are excluded."
+      ],
+      "uncertaintyReasons": []
+    },
+    {
+      "id": "target:change-item:maintained-artifact-fallback:8e5b5ec59e96cc76dd29",
+      "sourceCapabilityId": "change-item:maintained-artifact-fallback:8e5b5ec59e96cc76dd29",
+      "category": "production-implementation",
+      "title": "Add maintained artifact \u0027.npmignore\u0027",
+      "scope": ".npmignore",
+      "sourceWorkItemIds": [
+        "change-item:maintained-artifact-fallback:8e5b5ec59e96cc76dd29"
+      ],
+      "evidenceIds": [
+        "change:path:41ae2c6c2a19ffc4af8ff286"
+      ],
+      "candidate": {
+        "hours": null,
+        "confidence": null,
+        "reason": "No more specific positive capability delta explained this maintained final change; a bounded edit-region fallback preserves visible effort without using physical lines as value."
+      },
+      "review": {
+        "hours": null,
+        "rationale": null,
+        "sizeException": null
+      },
+      "assumptions": [
+        "The final base-to-head artifact delta is valued once with modern 2026-equivalent technology.",
+        "Commit count, elapsed time, authorship, messages, and intermediate churn are not effort multipliers."
+      ],
+      "exclusions": [
+        "Historical rework and discarded intermediate states are excluded."
+      ],
+      "uncertaintyReasons": [
+        "The current analyzer could not map this artifact change to a more specific capability."
+      ]
+    }
+  ],
+  "professionalizationGapWorkItemIds": [],
+  "instructions": [
+    "Confirm repository-family identity, immutable base/head provenance, license, redistribution, and partition before compilation.",
+    "Estimate only the normalized final functional and quality delta; intermediate churn, commit count, author, and elapsed time are forbidden signals.",
+    "Use the source Change report and explain query to verify evidence, exclusions, and final-delta reconciliation without using candidate hours when blind.",
+    "Fill review hours and rationale independently for every represented target; use an exact 0/0/0 range plus a size exception for a reviewed false positive, while an empty target list is valid only for a zero-EHE final delta.",
+    "Keep expected targets near 0.5 to 8 hours, record uncertainty explicitly, and reconcile the final total only after target review.",
+    "Compile teacher labels before a distinct reviewer receives a blind second-pass packet; packet generation alone does not advance maturity."
+  ]
+}

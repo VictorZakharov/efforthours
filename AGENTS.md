@@ -27,6 +27,9 @@ Read these root documents completely:
 8. `CHANGE_ESTIMATION.md` when changing diff, PR, commit, range, or contribution
    semantics
 9. `MILESTONE_CHANGE_1.md` when changing the implemented Change EHE boundary
+10. `MILESTONE_CHANGE_2.md`, `MILESTONE_CHANGE_3.md`, and
+    `CHANGE_MODEL_ADMISSION.md` when changing Change
+    calibration identity, labels, metrics, review maturity, or admission policy
 
 If an implementation request conflicts with those documents, surface the conflict
 and update the relevant decision explicitly. Do not silently change estimation
@@ -206,6 +209,20 @@ process-level Git tests. It remains experimental and uncalibrated. Multiple PRs,
 directory/evidence selectors, and author-period portfolios remain deferred. The
 former large CLI application class is split into focused partial modules, and
 `eng/file-budgets.json` enforces early refactoring through the end-to-end suite.
+
+The first Change calibration checkpoint adds `change-ehe-work-item/1.0.0`,
+content-derived final-delta identity, backward-compatible Change provenance in the
+existing corpus/review contracts, Change scaffold/compile/evaluate CLI paths, and
+a 24-case eight-family matrix frozen before labels. Its in-memory fixture generator
+reproduces 24 source reports and blind authoring packets, including exact-zero
+formatting, move, generation, and revert cases. Change review plans may explicitly
+reject duplicate or false-positive capabilities with lineage-preserving `0/0/0`
+targets. The preliminary public synthetic corpus has
+24 records, 121 teacher targets, 22 exact-zero exclusions, and one disclosed
+host-AI teacher. Development and validation diagnostics are recorded; test
+comparison remains withheld. No independent Change review is complete. The corpus
+changes no estimator prior and adds no ML dependency;
+`change-seed/0.1.0` remains experimental and uncalibrated.
 
 The following commands have been run successfully from the repository root:
 

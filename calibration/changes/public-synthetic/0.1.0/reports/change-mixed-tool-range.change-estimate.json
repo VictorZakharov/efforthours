@@ -1,0 +1,771 @@
+{
+  "schemaVersion": "1.0.0",
+  "changeEvidenceSchemaVersion": "1.0.0",
+  "estimatorVersion": "change-seed/0.1.0\u002Bseed-rules/0.2.1",
+  "sourceEstimatorVersion": "seed-rules/0.2.1",
+  "repository": {
+    "name": "repository:change-mixed-tool-c",
+    "scope": ".",
+    "ecosystems": [
+      "dotnet",
+      "javascript"
+    ],
+    "sourceDigest": "sha256:6ab094d365fe50678794ffaae6aaca628fb8acab07f0ad23b5d20a3295df75eb"
+  },
+  "selection": {
+    "schemaVersion": "1.0.0",
+    "kind": "range",
+    "base": {
+      "selector": "fixture:change:mixed-tool-range:base",
+      "objectId": "ae99b51d6a4fae6125ff6ad545e4e4ce1722c36b7ff0ec183969d3384ef982d7",
+      "kind": "evidence"
+    },
+    "head": {
+      "selector": "fixture:change:mixed-tool-range:head",
+      "objectId": "03e5a9a42ec27acffe193e84d380b79f4626a96d40a6f798eaf43a15cab6f912",
+      "kind": "evidence"
+    },
+    "range": "fixture:change:mixed-tool-range:base..fixture:change:mixed-tool-range:head"
+  },
+  "evidence": {
+    "schemaVersion": "1.0.0",
+    "selection": {
+      "schemaVersion": "1.0.0",
+      "kind": "range",
+      "base": {
+        "selector": "fixture:change:mixed-tool-range:base",
+        "objectId": "ae99b51d6a4fae6125ff6ad545e4e4ce1722c36b7ff0ec183969d3384ef982d7",
+        "kind": "evidence"
+      },
+      "head": {
+        "selector": "fixture:change:mixed-tool-range:head",
+        "objectId": "03e5a9a42ec27acffe193e84d380b79f4626a96d40a6f798eaf43a15cab6f912",
+        "kind": "evidence"
+      },
+      "range": "fixture:change:mixed-tool-range:base..fixture:change:mixed-tool-range:head"
+    },
+    "repository": {
+      "name": "repository:change-mixed-tool-c",
+      "scope": ".",
+      "ecosystems": [
+        "dotnet",
+        "javascript"
+      ],
+      "sourceDigest": "sha256:6ab094d365fe50678794ffaae6aaca628fb8acab07f0ad23b5d20a3295df75eb"
+    },
+    "baseEvidenceDigest": "sha256:a1801b5d15864e941e2ba7a05274bfc66ff6a1809aa747071332876c3fa6fcb7",
+    "headEvidenceDigest": "sha256:6ab094d365fe50678794ffaae6aaca628fb8acab07f0ad23b5d20a3295df75eb",
+    "unchangedContextPathCount": 2,
+    "paths": [
+      {
+        "id": "change:path:dbf32a4ab221f2a624d2a782",
+        "status": "added",
+        "path": "README.md",
+        "headObjectId": "c64724c343cebe82bdf97ba8136c0f3c853bfc02f79477eb0e06c116ecd4d350",
+        "headBytes": 95,
+        "editRegions": 1,
+        "classification": "represented",
+        "represented": true,
+        "reason": "The final added artifact is maintained, non-mechanical change evidence.",
+        "tags": [
+          "classification:represented",
+          "content:text",
+          "extension:.md",
+          "role:documentation",
+          "sha256:c64724c343cebe82bdf97ba8136c0f3c853bfc02f79477eb0e06c116ecd4d350",
+          "status:added"
+        ]
+      },
+      {
+        "id": "change:path:7101be6d44d343fa1cf691d1",
+        "status": "added",
+        "path": "src/Tool/Counter.cs",
+        "headObjectId": "5c524b08ee8034bdf18959ed2302cbc43f7119367ca5c4536cd90d9aaad33a69",
+        "headBytes": 119,
+        "editRegions": 1,
+        "classification": "represented",
+        "represented": true,
+        "reason": "The final added artifact is maintained, non-mechanical change evidence.",
+        "tags": [
+          "classification:represented",
+          "content:text",
+          "ecosystem:dotnet",
+          "extension:.cs",
+          "language:csharp",
+          "role:source",
+          "sha256:5c524b08ee8034bdf18959ed2302cbc43f7119367ca5c4536cd90d9aaad33a69",
+          "status:added"
+        ]
+      },
+      {
+        "id": "change:path:94d340928b149dff46db4b69",
+        "status": "added",
+        "path": "tests/Tool.Tests/CounterTests.cs",
+        "headObjectId": "871a02aa10132d0dc4e4b85ec96532b4ce1a15c23d8b64bc57c5b2c6b9699952",
+        "headBytes": 161,
+        "editRegions": 1,
+        "classification": "represented",
+        "represented": true,
+        "reason": "The final added artifact is maintained, non-mechanical change evidence.",
+        "tags": [
+          "classification:represented",
+          "classification:test",
+          "content:text",
+          "ecosystem:dotnet",
+          "extension:.cs",
+          "language:csharp",
+          "role:test",
+          "sha256:871a02aa10132d0dc4e4b85ec96532b4ce1a15c23d8b64bc57c5b2c6b9699952",
+          "status:added"
+        ]
+      }
+    ],
+    "diagnostics": [
+      {
+        "code": "FB3000",
+        "severity": "information",
+        "message": "The .NET analyzer parsed project XML and source syntax statically; it did not evaluate MSBuild, restore packages, compile, or execute target code.",
+        "evidenceIds": [],
+        "locations": []
+      },
+      {
+        "code": "FB4000",
+        "severity": "information",
+        "message": "The JavaScript/TypeScript analyzer parsed manifests, JSONC configuration, JavaScript/JSX syntax, and bounded TypeScript token streams statically; it did not run package managers, load executable configuration, install dependencies, transpile, or execute target code.",
+        "evidenceIds": [],
+        "locations": []
+      }
+    ]
+  },
+  "profile": "implementation",
+  "baseline": {
+    "id": "senior-contractor-2026-no-ai",
+    "workerProfile": "Competent senior contractor familiar with the technical ecosystem",
+    "technologyBaselineYear": 2026,
+    "businessDomainFamiliar": false,
+    "usesAi": false,
+    "description": "One senior contractor recreating the described working system with modern 2026 tools and no AI."
+  },
+  "totalEffort": {
+    "low": 6.25,
+    "expected": 11.00,
+    "high": 19.00
+  },
+  "categories": [
+    {
+      "category": "specification-comprehension-and-domain-learning",
+      "hours": {
+        "low": 1.75,
+        "expected": 3.00,
+        "high": 5.25
+      }
+    },
+    {
+      "category": "repository-and-solution-setup",
+      "hours": {
+        "low": 0.75,
+        "expected": 1.00,
+        "high": 1.50
+      }
+    },
+    {
+      "category": "architecture-and-technical-design",
+      "hours": {
+        "low": 0.75,
+        "expected": 1.50,
+        "high": 2.75
+      }
+    },
+    {
+      "category": "production-implementation",
+      "hours": {
+        "low": 0.50,
+        "expected": 1.00,
+        "high": 1.75
+      }
+    },
+    {
+      "category": "unit-testing",
+      "hours": {
+        "low": 0.75,
+        "expected": 1.25,
+        "high": 2.00
+      }
+    },
+    {
+      "category": "manual-validation-debugging-and-hardening",
+      "hours": {
+        "low": 0.25,
+        "expected": 0.50,
+        "high": 1.00
+      }
+    },
+    {
+      "category": "documentation",
+      "hours": {
+        "low": 0.50,
+        "expected": 0.75,
+        "high": 1.25
+      }
+    },
+    {
+      "category": "self-review-and-system-integration",
+      "hours": {
+        "low": 1.00,
+        "expected": 2.00,
+        "high": 3.50
+      }
+    }
+  ],
+  "workItems": [
+    {
+      "schemaVersion": "1.0.0",
+      "id": "change-item:capability-marginal:db1a66aa155cec0e70f7",
+      "category": "specification-comprehension-and-domain-learning",
+      "title": "Expand Comprehend the supplied specification and bounded business domain",
+      "scope": ".",
+      "evidenceIds": [
+        "change:path:7101be6d44d343fa1cf691d1",
+        "change:path:94d340928b149dff46db4b69",
+        "change:path:dbf32a4ab221f2a624d2a782"
+      ],
+      "quantity": 0.01,
+      "complexity": "moderate",
+      "hours": {
+        "low": 0.50,
+        "expected": 0.75,
+        "high": 1.25
+      },
+      "confidence": 0.60,
+      "reason": "Positive base-to-head marginal effort from the existing repository capability model, bounded by touched final-change regions when existing behavior was also modified.",
+      "estimator": {
+        "id": "change-rule:capability-marginal",
+        "version": "change-seed/0.1.0",
+        "kind": "rule"
+      },
+      "profiles": [
+        "implementation"
+      ],
+      "dependencyIds": [],
+      "correlationGroup": "change:capability-marginal:.",
+      "assumptions": [
+        "The final base-to-head artifact delta is valued once with modern 2026-equivalent technology.",
+        "Commit count, elapsed time, authorship, messages, and intermediate churn are not effort multipliers."
+      ],
+      "exclusions": [
+        "Historical rework and discarded intermediate states are excluded."
+      ],
+      "uncertaintyReasons": [
+        "No external specification artifact is represented in the current estimator request contract.",
+        "Some supporting evidence is inferred rather than directly observed."
+      ]
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "id": "change-item:change-comprehension:35b56f4e04145432d244",
+      "category": "specification-comprehension-and-domain-learning",
+      "title": "Understand the bounded change specification",
+      "scope": ".",
+      "evidenceIds": [
+        "change:path:7101be6d44d343fa1cf691d1",
+        "change:path:94d340928b149dff46db4b69",
+        "change:path:dbf32a4ab221f2a624d2a782"
+      ],
+      "quantity": 8,
+      "complexity": "moderate",
+      "hours": {
+        "low": 1.25,
+        "expected": 2.25,
+        "high": 4
+      },
+      "confidence": 0.78,
+      "reason": "Comprehend the final behavior and quality delta represented by the affected capability categories.",
+      "estimator": {
+        "id": "change-rule:change-comprehension",
+        "version": "change-seed/0.1.0",
+        "kind": "rule"
+      },
+      "profiles": [
+        "implementation"
+      ],
+      "dependencyIds": [],
+      "correlationGroup": "change:change-comprehension:.",
+      "assumptions": [
+        "The final base-to-head artifact delta is valued once with modern 2026-equivalent technology.",
+        "Commit count, elapsed time, authorship, messages, and intermediate churn are not effort multipliers."
+      ],
+      "exclusions": [
+        "Historical rework and discarded intermediate states are excluded."
+      ],
+      "uncertaintyReasons": []
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "id": "change-item:capability-marginal:a3b540ae39fef4fad66c",
+      "category": "repository-and-solution-setup",
+      "title": "Add Set up \u0027.\u0027 (component)",
+      "scope": ".",
+      "evidenceIds": [
+        "change:path:7101be6d44d343fa1cf691d1",
+        "change:path:94d340928b149dff46db4b69",
+        "change:path:dbf32a4ab221f2a624d2a782"
+      ],
+      "quantity": 0.01,
+      "complexity": "routine",
+      "hours": {
+        "low": 0.75,
+        "expected": 1.00,
+        "high": 1.50
+      },
+      "confidence": 0.81,
+      "reason": "Positive base-to-head marginal effort from the existing repository capability model, bounded by touched final-change regions when existing behavior was also modified.",
+      "estimator": {
+        "id": "change-rule:capability-marginal",
+        "version": "change-seed/0.1.0",
+        "kind": "rule"
+      },
+      "profiles": [
+        "implementation"
+      ],
+      "dependencyIds": [],
+      "correlationGroup": "change:capability-marginal:.",
+      "assumptions": [
+        "The final base-to-head artifact delta is valued once with modern 2026-equivalent technology.",
+        "Commit count, elapsed time, authorship, messages, and intermediate churn are not effort multipliers."
+      ],
+      "exclusions": [
+        "Historical rework and discarded intermediate states are excluded."
+      ],
+      "uncertaintyReasons": []
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "id": "change-item:capability-marginal:8394cbeab143db4e9c38",
+      "category": "architecture-and-technical-design",
+      "title": "Add Design the technical structure of \u0027.\u0027 (component)",
+      "scope": ".",
+      "evidenceIds": [
+        "change:path:7101be6d44d343fa1cf691d1",
+        "change:path:94d340928b149dff46db4b69",
+        "change:path:dbf32a4ab221f2a624d2a782"
+      ],
+      "quantity": 0.01,
+      "complexity": "moderate",
+      "hours": {
+        "low": 0.75,
+        "expected": 1.50,
+        "high": 2.75
+      },
+      "confidence": 0.73,
+      "reason": "Positive base-to-head marginal effort from the existing repository capability model, bounded by touched final-change regions when existing behavior was also modified.",
+      "estimator": {
+        "id": "change-rule:capability-marginal",
+        "version": "change-seed/0.1.0",
+        "kind": "rule"
+      },
+      "profiles": [
+        "implementation"
+      ],
+      "dependencyIds": [],
+      "correlationGroup": "change:capability-marginal:.",
+      "assumptions": [
+        "The final base-to-head artifact delta is valued once with modern 2026-equivalent technology.",
+        "Commit count, elapsed time, authorship, messages, and intermediate churn are not effort multipliers."
+      ],
+      "exclusions": [
+        "Historical rework and discarded intermediate states are excluded."
+      ],
+      "uncertaintyReasons": []
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "id": "change-item:capability-marginal:413eb1b1f58dfb6a5523",
+      "category": "production-implementation",
+      "title": "Add Implement maintained internal logic for \u0027src/Tool/Tool.csproj\u0027 (library)",
+      "scope": "src/Tool/Tool.csproj",
+      "evidenceIds": [
+        "change:path:7101be6d44d343fa1cf691d1",
+        "change:path:94d340928b149dff46db4b69",
+        "change:path:dbf32a4ab221f2a624d2a782"
+      ],
+      "quantity": 0.01,
+      "complexity": "routine",
+      "hours": {
+        "low": 0.50,
+        "expected": 1.00,
+        "high": 1.75
+      },
+      "confidence": 0.78,
+      "reason": "Positive base-to-head marginal effort from the existing repository capability model, bounded by touched final-change regions when existing behavior was also modified.",
+      "estimator": {
+        "id": "change-rule:capability-marginal",
+        "version": "change-seed/0.1.0",
+        "kind": "rule"
+      },
+      "profiles": [
+        "implementation"
+      ],
+      "dependencyIds": [],
+      "correlationGroup": "change:capability-marginal:src/Tool/Tool.csproj",
+      "assumptions": [
+        "The final base-to-head artifact delta is valued once with modern 2026-equivalent technology.",
+        "Commit count, elapsed time, authorship, messages, and intermediate churn are not effort multipliers."
+      ],
+      "exclusions": [
+        "Historical rework and discarded intermediate states are excluded."
+      ],
+      "uncertaintyReasons": []
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "id": "change-item:capability-marginal:e35eb0a9245b936e832c",
+      "category": "unit-testing",
+      "title": "Add Create represented unit tests for \u0027.\u0027 (component)",
+      "scope": ".",
+      "evidenceIds": [
+        "change:path:94d340928b149dff46db4b69"
+      ],
+      "quantity": 1,
+      "complexity": "routine",
+      "hours": {
+        "low": 0.75,
+        "expected": 1.25,
+        "high": 2.00
+      },
+      "confidence": 0.66,
+      "reason": "Positive base-to-head marginal effort from the existing repository capability model, bounded by touched final-change regions when existing behavior was also modified.",
+      "estimator": {
+        "id": "change-rule:capability-marginal",
+        "version": "change-seed/0.1.0",
+        "kind": "rule"
+      },
+      "profiles": [
+        "implementation"
+      ],
+      "dependencyIds": [],
+      "correlationGroup": "change:capability-marginal:.",
+      "assumptions": [
+        "The final base-to-head artifact delta is valued once with modern 2026-equivalent technology.",
+        "Commit count, elapsed time, authorship, messages, and intermediate churn are not effort multipliers."
+      ],
+      "exclusions": [
+        "Historical rework and discarded intermediate states are excluded."
+      ],
+      "uncertaintyReasons": [
+        "Some supporting evidence is inferred rather than directly observed."
+      ]
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "id": "change-item:capability-marginal:5d00ff2fee198f4e147e",
+      "category": "manual-validation-debugging-and-hardening",
+      "title": "Add Manually validate, debug, and harden \u0027.\u0027 (component)",
+      "scope": ".",
+      "evidenceIds": [
+        "change:path:7101be6d44d343fa1cf691d1",
+        "change:path:94d340928b149dff46db4b69",
+        "change:path:dbf32a4ab221f2a624d2a782"
+      ],
+      "quantity": 0.01,
+      "complexity": "moderate",
+      "hours": {
+        "low": 0.25,
+        "expected": 0.50,
+        "high": 1.00
+      },
+      "confidence": 0.66,
+      "reason": "Positive base-to-head marginal effort from the existing repository capability model, bounded by touched final-change regions when existing behavior was also modified.",
+      "estimator": {
+        "id": "change-rule:capability-marginal",
+        "version": "change-seed/0.1.0",
+        "kind": "rule"
+      },
+      "profiles": [
+        "implementation"
+      ],
+      "dependencyIds": [],
+      "correlationGroup": "change:capability-marginal:.",
+      "assumptions": [
+        "The final base-to-head artifact delta is valued once with modern 2026-equivalent technology.",
+        "Commit count, elapsed time, authorship, messages, and intermediate churn are not effort multipliers."
+      ],
+      "exclusions": [
+        "Historical rework and discarded intermediate states are excluded."
+      ],
+      "uncertaintyReasons": [
+        "The target checkout was not executed on the default static path."
+      ]
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "id": "change-item:capability-marginal:380b6de90fd21804c3f7",
+      "category": "documentation",
+      "title": "Add Author and verify maintained repository documentation",
+      "scope": ".",
+      "evidenceIds": [
+        "change:path:dbf32a4ab221f2a624d2a782"
+      ],
+      "quantity": 1,
+      "complexity": "routine",
+      "hours": {
+        "low": 0.50,
+        "expected": 0.75,
+        "high": 1.25
+      },
+      "confidence": 0.80,
+      "reason": "Positive base-to-head marginal effort from the existing repository capability model, bounded by touched final-change regions when existing behavior was also modified.",
+      "estimator": {
+        "id": "change-rule:capability-marginal",
+        "version": "change-seed/0.1.0",
+        "kind": "rule"
+      },
+      "profiles": [
+        "implementation"
+      ],
+      "dependencyIds": [],
+      "correlationGroup": "change:capability-marginal:.",
+      "assumptions": [
+        "The final base-to-head artifact delta is valued once with modern 2026-equivalent technology.",
+        "Commit count, elapsed time, authorship, messages, and intermediate churn are not effort multipliers."
+      ],
+      "exclusions": [
+        "Historical rework and discarded intermediate states are excluded."
+      ],
+      "uncertaintyReasons": []
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "id": "change-item:capability-marginal:de5ca34cd018b44730da",
+      "category": "self-review-and-system-integration",
+      "title": "Expand Self-review and integrate the completed system",
+      "scope": ".",
+      "evidenceIds": [
+        "change:path:7101be6d44d343fa1cf691d1",
+        "change:path:94d340928b149dff46db4b69",
+        "change:path:dbf32a4ab221f2a624d2a782"
+      ],
+      "quantity": 0.01,
+      "complexity": "moderate",
+      "hours": {
+        "low": 0.25,
+        "expected": 0.75,
+        "high": 1.25
+      },
+      "confidence": 0.69,
+      "reason": "Positive base-to-head marginal effort from the existing repository capability model, bounded by touched final-change regions when existing behavior was also modified.",
+      "estimator": {
+        "id": "change-rule:capability-marginal",
+        "version": "change-seed/0.1.0",
+        "kind": "rule"
+      },
+      "profiles": [
+        "implementation"
+      ],
+      "dependencyIds": [],
+      "correlationGroup": "change:capability-marginal:.",
+      "assumptions": [
+        "The final base-to-head artifact delta is valued once with modern 2026-equivalent technology.",
+        "Commit count, elapsed time, authorship, messages, and intermediate churn are not effort multipliers."
+      ],
+      "exclusions": [
+        "Historical rework and discarded intermediate states are excluded."
+      ],
+      "uncertaintyReasons": [
+        "Some supporting evidence is inferred rather than directly observed."
+      ]
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "id": "change-item:change-review:3bac939077137b97f02a",
+      "category": "self-review-and-system-integration",
+      "title": "Review and integrate the completed change",
+      "scope": ".",
+      "evidenceIds": [
+        "change:path:7101be6d44d343fa1cf691d1",
+        "change:path:94d340928b149dff46db4b69",
+        "change:path:dbf32a4ab221f2a624d2a782"
+      ],
+      "quantity": 3,
+      "complexity": "moderate",
+      "hours": {
+        "low": 0.75,
+        "expected": 1.25,
+        "high": 2.25
+      },
+      "confidence": 0.8,
+      "reason": "Review the coherent final delta and integrate its affected maintained artifacts; this is derived from final scope rather than commit count.",
+      "estimator": {
+        "id": "change-rule:change-review",
+        "version": "change-seed/0.1.0",
+        "kind": "rule"
+      },
+      "profiles": [
+        "implementation"
+      ],
+      "dependencyIds": [],
+      "correlationGroup": "change:change-review:.",
+      "assumptions": [
+        "The final base-to-head artifact delta is valued once with modern 2026-equivalent technology.",
+        "Commit count, elapsed time, authorship, messages, and intermediate churn are not effort multipliers."
+      ],
+      "exclusions": [
+        "Historical rework and discarded intermediate states are excluded."
+      ],
+      "uncertaintyReasons": []
+    }
+  ],
+  "professionalizationGap": [],
+  "reconciliation": {
+    "isolatedComponentSum": {
+      "low": 6.50,
+      "expected": 11.75,
+      "high": 21.00
+    },
+    "normalizedEffort": {
+      "low": 6.25,
+      "expected": 11.00,
+      "high": 19.00
+    },
+    "additivityToleranceHours": 1.18,
+    "expectedDifferenceHours": -0.75,
+    "assessment": "within-no-rework-tolerance",
+    "allocationMethod": "Proportional to isolated expected Change EHE with deterministic cent-level residual assignment; allocations are attribution, not historical hours.",
+    "components": [
+      {
+        "id": "change-component:c94e3ae135fec0f924f1",
+        "kind": "commit",
+        "selector": "commit:counter-code",
+        "baseObjectId": "ae99b51d6a4fae6125ff6ad545e4e4ce1722c36b7ff0ec183969d3384ef982d7",
+        "headObjectId": "77b8e9fae2be9abc9d50a8fc1e70ec5698ece7457c5fc1eb3b1811249296c547",
+        "isolatedEffort": {
+          "low": 1.00,
+          "expected": 2.00,
+          "high": 3.75
+        },
+        "allocatedExpectedHours": 1.87,
+        "evidenceIds": [
+          "change:path:7101be6d44d343fa1cf691d1"
+        ]
+      },
+      {
+        "id": "change-component:590fcc7511e220e5925a",
+        "kind": "commit",
+        "selector": "commit:counter-tests",
+        "baseObjectId": "77b8e9fae2be9abc9d50a8fc1e70ec5698ece7457c5fc1eb3b1811249296c547",
+        "headObjectId": "6813f8829f4df894fdbfe9b69191c02e823cf7cb76a5fe28f285e85f73a4c5f0",
+        "isolatedEffort": {
+          "low": 4.50,
+          "expected": 8.00,
+          "high": 14.00
+        },
+        "allocatedExpectedHours": 7.49,
+        "evidenceIds": [
+          "change:path:94d340928b149dff46db4b69"
+        ]
+      },
+      {
+        "id": "change-component:519c8e07be733e7c9dd8",
+        "kind": "commit",
+        "selector": "commit:counter-docs",
+        "baseObjectId": "6813f8829f4df894fdbfe9b69191c02e823cf7cb76a5fe28f285e85f73a4c5f0",
+        "headObjectId": "03e5a9a42ec27acffe193e84d380b79f4626a96d40a6f798eaf43a15cab6f912",
+        "isolatedEffort": {
+          "low": 1.00,
+          "expected": 1.75,
+          "high": 3.25
+        },
+        "allocatedExpectedHours": 1.64,
+        "evidenceIds": [
+          "change:path:dbf32a4ab221f2a624d2a782"
+        ]
+      }
+    ],
+    "adjustments": [
+      {
+        "id": "change-adjustment:ba9276c5c069d13a410d",
+        "kind": "shared-setup",
+        "effortDelta": {
+          "low": -0.11,
+          "expected": -0.32,
+          "high": -0.86
+        },
+        "reason": "Repeated specification, architecture/setup, or review capability work in isolated components is shared by the coherent final delta. Point-level attribution is a transparent structural reconciliation heuristic, not calibrated causal accounting.",
+        "componentIds": [
+          "change-component:519c8e07be733e7c9dd8",
+          "change-component:590fcc7511e220e5925a",
+          "change-component:c94e3ae135fec0f924f1"
+        ],
+        "evidenceIds": []
+      },
+      {
+        "id": "change-adjustment:1841606d4140d5ebe809",
+        "kind": "interaction",
+        "effortDelta": {
+          "low": -0.14,
+          "expected": -0.43,
+          "high": -1.14
+        },
+        "reason": "Residual interaction reconciles the independently estimated components with the authoritative coherent final base-to-head artifact delta. Point-level attribution is a transparent structural reconciliation heuristic, not calibrated causal accounting.",
+        "componentIds": [
+          "change-component:519c8e07be733e7c9dd8",
+          "change-component:590fcc7511e220e5925a",
+          "change-component:c94e3ae135fec0f924f1"
+        ],
+        "evidenceIds": []
+      }
+    ]
+  },
+  "diagnostics": [
+    {
+      "code": "FB3000",
+      "severity": "information",
+      "message": "The .NET analyzer parsed project XML and source syntax statically; it did not evaluate MSBuild, restore packages, compile, or execute target code.",
+      "evidenceIds": [],
+      "locations": []
+    },
+    {
+      "code": "FB4000",
+      "severity": "information",
+      "message": "The JavaScript/TypeScript analyzer parsed manifests, JSONC configuration, JavaScript/JSX syntax, and bounded TypeScript token streams statically; it did not run package managers, load executable configuration, install dependencies, transpile, or execute target code.",
+      "evidenceIds": [],
+      "locations": []
+    },
+    {
+      "code": "FB5000",
+      "severity": "warning",
+      "message": "Change EHE uses transparent but uncalibrated change-seed and repository seed priors. It is experimental and requires review before consequential use.",
+      "evidenceIds": [],
+      "locations": []
+    },
+    {
+      "code": "FB5001",
+      "severity": "information",
+      "message": "Normalized Change EHE values the immutable final base-to-head artifact delta. Component activity, commit count, timestamps, authors, and intermediate churn do not multiply it.",
+      "evidenceIds": [],
+      "locations": []
+    },
+    {
+      "code": "FB5002",
+      "severity": "information",
+      "message": "2 explicit reconciliation adjustment(s) bridge isolated components to the normalized final delta.",
+      "evidenceIds": [],
+      "locations": []
+    }
+  ],
+  "assumptions": [
+    "Change EHE is counterfactual non-AI replacement effort represented by the final artifact delta, not actual labor or a timesheet.",
+    "Base and head are immutable snapshots; intermediate history is excluded from normalized effort.",
+    "A clear specification exists at the level promised by the selected profile.",
+    "Discovered tests are assumed to pass on the static path and the described delta is estimated as working.",
+    "Formatting-only, exact movement, conventional generated, vendored, minified, binary, lockfile, build-output, and exact-copy bodies are excluded when classified.",
+    "Deletion is never negative EHE; supported removal and simplification work is bounded by capability context rather than deleted volume.",
+    "Low and high values are preliminary dependent planning bounds, not calibrated probability intervals.",
+    "Professionalization gaps are separate and are not added to represented Change EHE or cost."
+  ],
+  "verification": {
+    "mode": "static-assumed",
+    "workingState": "assumed-working",
+    "testsAssumedPassing": true,
+    "note": "Neither immutable snapshot was built or executed."
+  }
+}

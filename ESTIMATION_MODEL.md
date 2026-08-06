@@ -365,6 +365,18 @@ calibrated or production-ready. `MILESTONE_7.md`, the versioned rubrics, and the
 blind packets under `calibration/corpora` define the implemented policy and the
 next independent-review gate.
 
+Change EHE reuses this corpus and metric boundary with additional immutable
+final-delta provenance. A Change calibration source digest is derived from the
+base and head repository-evidence digests, while selector kind, object IDs, and
+coverage tags remain non-valuing provenance. Every change from one repository
+family stays in one partition. Empty targets explicitly represent a normalized
+zero final delta without inventing effort; exact `0/0/0` targets preserve lineage
+for reviewed false-positive exclusions. `change-ehe-work-item/1.0.0`,
+`MILESTONE_CHANGE_2.md`, `MILESTONE_CHANGE_3.md`, and
+`CHANGE_MODEL_ADMISSION.md` define the current checkpoints. A preliminary
+24-record host-AI teacher corpus exists, but no independent correction, numerical
+threshold, or fitted model exists yet.
+
 ## 11. Uncertainty
 
 The CLI should resolve structural facts and routine cases. Semantic ambiguity and

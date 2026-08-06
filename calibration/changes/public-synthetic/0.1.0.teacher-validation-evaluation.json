@@ -1,0 +1,673 @@
+{
+  "schemaVersion": "1.0.0",
+  "evaluatorVersion": "change-calibration-evaluator/0.1.0",
+  "metricVersion": "calibration-metrics/1.0.0",
+  "corpusId": "fairbill-change-public-synthetic",
+  "corpusVersion": "0.1.0",
+  "partition": "validation",
+  "recordCount": 6,
+  "repositoryCount": 2,
+  "ignoredCandidateCount": 18,
+  "candidateEstimatorVersions": [
+    "change-seed/0.1.0\u002Bseed-rules/0.2.1"
+  ],
+  "repositoryTotals": {
+    "low": {
+      "sampleCount": 6,
+      "reviewedHours": 13.75,
+      "candidateHours": 14.50,
+      "meanAbsoluteErrorHours": 0.2083,
+      "medianAbsoluteErrorHours": 0.125,
+      "rootMeanSquaredErrorHours": 0.3385,
+      "meanSignedErrorHours": 0.125,
+      "weightedAbsolutePercentageError": 0.0909,
+      "aggregateBiasRate": 0.0545
+    },
+    "expected": {
+      "sampleCount": 6,
+      "reviewedHours": 26.00,
+      "candidateHours": 27.50,
+      "meanAbsoluteErrorHours": 0.4167,
+      "medianAbsoluteErrorHours": 0.50,
+      "rootMeanSquaredErrorHours": 0.5401,
+      "meanSignedErrorHours": 0.25,
+      "weightedAbsolutePercentageError": 0.0962,
+      "aggregateBiasRate": 0.0577
+    },
+    "high": {
+      "sampleCount": 6,
+      "reviewedHours": 51.00,
+      "candidateHours": 51.50,
+      "meanAbsoluteErrorHours": 0.6667,
+      "medianAbsoluteErrorHours": 0.625,
+      "rootMeanSquaredErrorHours": 0.9014,
+      "meanSignedErrorHours": 0.0833,
+      "weightedAbsolutePercentageError": 0.0784,
+      "aggregateBiasRate": 0.0098
+    },
+    "interval": {
+      "sampleCount": 6,
+      "reviewedExpectedCoveredCount": 6,
+      "reviewedExpectedCoverage": 1,
+      "reviewedRangeFullyCoveredCount": 3,
+      "reviewedRangeFullyCoveredRate": 0.5,
+      "meanCandidateWidthHours": 6.1667,
+      "meanReviewedWidthHours": 6.2083
+    }
+  },
+  "categories": [
+    {
+      "category": "specification-comprehension-and-domain-learning",
+      "metrics": {
+        "low": {
+          "sampleCount": 4,
+          "reviewedHours": 1.75,
+          "candidateHours": 4.25,
+          "meanAbsoluteErrorHours": 0.625,
+          "medianAbsoluteErrorHours": 0.75,
+          "rootMeanSquaredErrorHours": 0.6614,
+          "meanSignedErrorHours": 0.625,
+          "weightedAbsolutePercentageError": 1.4286,
+          "aggregateBiasRate": 1.4286
+        },
+        "expected": {
+          "sampleCount": 4,
+          "reviewedHours": 2.75,
+          "candidateHours": 7.50,
+          "meanAbsoluteErrorHours": 1.1875,
+          "medianAbsoluteErrorHours": 1.375,
+          "rootMeanSquaredErrorHours": 1.2562,
+          "meanSignedErrorHours": 1.1875,
+          "weightedAbsolutePercentageError": 1.7273,
+          "aggregateBiasRate": 1.7273
+        },
+        "high": {
+          "sampleCount": 4,
+          "reviewedHours": 5.50,
+          "candidateHours": 14.00,
+          "meanAbsoluteErrorHours": 2.125,
+          "medianAbsoluteErrorHours": 2.50,
+          "rootMeanSquaredErrorHours": 2.2776,
+          "meanSignedErrorHours": 2.125,
+          "weightedAbsolutePercentageError": 1.5455,
+          "aggregateBiasRate": 1.5455
+        },
+        "interval": {
+          "sampleCount": 4,
+          "reviewedExpectedCoveredCount": 1,
+          "reviewedExpectedCoverage": 0.25,
+          "reviewedRangeFullyCoveredCount": 0,
+          "reviewedRangeFullyCoveredRate": 0,
+          "meanCandidateWidthHours": 2.4375,
+          "meanReviewedWidthHours": 0.9375
+        }
+      }
+    },
+    {
+      "category": "architecture-and-technical-design",
+      "metrics": {
+        "low": {
+          "sampleCount": 3,
+          "reviewedHours": 1.50,
+          "candidateHours": 0.75,
+          "meanAbsoluteErrorHours": 0.25,
+          "medianAbsoluteErrorHours": 0.25,
+          "rootMeanSquaredErrorHours": 0.25,
+          "meanSignedErrorHours": -0.25,
+          "weightedAbsolutePercentageError": 0.5,
+          "aggregateBiasRate": -0.5
+        },
+        "expected": {
+          "sampleCount": 3,
+          "reviewedHours": 2.75,
+          "candidateHours": 1.5,
+          "meanAbsoluteErrorHours": 0.4167,
+          "medianAbsoluteErrorHours": 0.50,
+          "rootMeanSquaredErrorHours": 0.4330,
+          "meanSignedErrorHours": -0.4167,
+          "weightedAbsolutePercentageError": 0.4545,
+          "aggregateBiasRate": -0.4545
+        },
+        "high": {
+          "sampleCount": 3,
+          "reviewedHours": 5.50,
+          "candidateHours": 3,
+          "meanAbsoluteErrorHours": 0.8333,
+          "medianAbsoluteErrorHours": 1.00,
+          "rootMeanSquaredErrorHours": 0.8660,
+          "meanSignedErrorHours": -0.8333,
+          "weightedAbsolutePercentageError": 0.4545,
+          "aggregateBiasRate": -0.4545
+        },
+        "interval": {
+          "sampleCount": 3,
+          "reviewedExpectedCoveredCount": 3,
+          "reviewedExpectedCoverage": 1,
+          "reviewedRangeFullyCoveredCount": 0,
+          "reviewedRangeFullyCoveredRate": 0,
+          "meanCandidateWidthHours": 0.75,
+          "meanReviewedWidthHours": 1.3333
+        }
+      }
+    },
+    {
+      "category": "production-implementation",
+      "metrics": {
+        "low": {
+          "sampleCount": 4,
+          "reviewedHours": 2.75,
+          "candidateHours": 2.50,
+          "meanAbsoluteErrorHours": 0.1875,
+          "medianAbsoluteErrorHours": 0.25,
+          "rootMeanSquaredErrorHours": 0.2165,
+          "meanSignedErrorHours": -0.0625,
+          "weightedAbsolutePercentageError": 0.2727,
+          "aggregateBiasRate": -0.0909
+        },
+        "expected": {
+          "sampleCount": 4,
+          "reviewedHours": 5.50,
+          "candidateHours": 5.25,
+          "meanAbsoluteErrorHours": 0.3125,
+          "medianAbsoluteErrorHours": 0.375,
+          "rootMeanSquaredErrorHours": 0.375,
+          "meanSignedErrorHours": -0.0625,
+          "weightedAbsolutePercentageError": 0.2273,
+          "aggregateBiasRate": -0.0455
+        },
+        "high": {
+          "sampleCount": 4,
+          "reviewedHours": 10.00,
+          "candidateHours": 9.75,
+          "meanAbsoluteErrorHours": 0.5625,
+          "medianAbsoluteErrorHours": 0.50,
+          "rootMeanSquaredErrorHours": 0.8004,
+          "meanSignedErrorHours": -0.0625,
+          "weightedAbsolutePercentageError": 0.225,
+          "aggregateBiasRate": -0.025
+        },
+        "interval": {
+          "sampleCount": 4,
+          "reviewedExpectedCoveredCount": 2,
+          "reviewedExpectedCoverage": 0.5,
+          "reviewedRangeFullyCoveredCount": 2,
+          "reviewedRangeFullyCoveredRate": 0.5,
+          "meanCandidateWidthHours": 1.8125,
+          "meanReviewedWidthHours": 1.8125
+        }
+      }
+    },
+    {
+      "category": "data-modeling-persistence-and-migrations",
+      "metrics": {
+        "low": {
+          "sampleCount": 2,
+          "reviewedHours": 3.00,
+          "candidateHours": 2.00,
+          "meanAbsoluteErrorHours": 0.50,
+          "medianAbsoluteErrorHours": 0.50,
+          "rootMeanSquaredErrorHours": 0.5,
+          "meanSignedErrorHours": -0.50,
+          "weightedAbsolutePercentageError": 0.3333,
+          "aggregateBiasRate": -0.3333
+        },
+        "expected": {
+          "sampleCount": 2,
+          "reviewedHours": 6.00,
+          "candidateHours": 4.00,
+          "meanAbsoluteErrorHours": 1.00,
+          "medianAbsoluteErrorHours": 1.00,
+          "rootMeanSquaredErrorHours": 1,
+          "meanSignedErrorHours": -1.00,
+          "weightedAbsolutePercentageError": 0.3333,
+          "aggregateBiasRate": -0.3333
+        },
+        "high": {
+          "sampleCount": 2,
+          "reviewedHours": 12.00,
+          "candidateHours": 8.00,
+          "meanAbsoluteErrorHours": 2.00,
+          "medianAbsoluteErrorHours": 2.00,
+          "rootMeanSquaredErrorHours": 2,
+          "meanSignedErrorHours": -2.00,
+          "weightedAbsolutePercentageError": 0.3333,
+          "aggregateBiasRate": -0.3333
+        },
+        "interval": {
+          "sampleCount": 2,
+          "reviewedExpectedCoveredCount": 2,
+          "reviewedExpectedCoverage": 1,
+          "reviewedRangeFullyCoveredCount": 0,
+          "reviewedRangeFullyCoveredRate": 0,
+          "meanCandidateWidthHours": 3.00,
+          "meanReviewedWidthHours": 4.50
+        }
+      }
+    },
+    {
+      "category": "unit-testing",
+      "metrics": {
+        "low": {
+          "sampleCount": 1,
+          "reviewedHours": 0.75,
+          "candidateHours": 0.75,
+          "meanAbsoluteErrorHours": 0.00,
+          "medianAbsoluteErrorHours": 0.00,
+          "rootMeanSquaredErrorHours": 0,
+          "meanSignedErrorHours": 0.00,
+          "weightedAbsolutePercentageError": 0,
+          "aggregateBiasRate": 0
+        },
+        "expected": {
+          "sampleCount": 1,
+          "reviewedHours": 1.50,
+          "candidateHours": 1.25,
+          "meanAbsoluteErrorHours": 0.25,
+          "medianAbsoluteErrorHours": 0.25,
+          "rootMeanSquaredErrorHours": 0.25,
+          "meanSignedErrorHours": -0.25,
+          "weightedAbsolutePercentageError": 0.1667,
+          "aggregateBiasRate": -0.1667
+        },
+        "high": {
+          "sampleCount": 1,
+          "reviewedHours": 3.00,
+          "candidateHours": 2.00,
+          "meanAbsoluteErrorHours": 1.00,
+          "medianAbsoluteErrorHours": 1.00,
+          "rootMeanSquaredErrorHours": 1,
+          "meanSignedErrorHours": -1.00,
+          "weightedAbsolutePercentageError": 0.3333,
+          "aggregateBiasRate": -0.3333
+        },
+        "interval": {
+          "sampleCount": 1,
+          "reviewedExpectedCoveredCount": 1,
+          "reviewedExpectedCoverage": 1,
+          "reviewedRangeFullyCoveredCount": 0,
+          "reviewedRangeFullyCoveredRate": 0,
+          "meanCandidateWidthHours": 1.25,
+          "meanReviewedWidthHours": 2.25
+        }
+      }
+    },
+    {
+      "category": "manual-validation-debugging-and-hardening",
+      "metrics": {
+        "low": {
+          "sampleCount": 3,
+          "reviewedHours": 1.75,
+          "candidateHours": 0.75,
+          "meanAbsoluteErrorHours": 0.3333,
+          "medianAbsoluteErrorHours": 0.25,
+          "rootMeanSquaredErrorHours": 0.3536,
+          "meanSignedErrorHours": -0.3333,
+          "weightedAbsolutePercentageError": 0.5714,
+          "aggregateBiasRate": -0.5714
+        },
+        "expected": {
+          "sampleCount": 3,
+          "reviewedHours": 3.25,
+          "candidateHours": 1.50,
+          "meanAbsoluteErrorHours": 0.5833,
+          "medianAbsoluteErrorHours": 0.50,
+          "rootMeanSquaredErrorHours": 0.5951,
+          "meanSignedErrorHours": -0.5833,
+          "weightedAbsolutePercentageError": 0.5385,
+          "aggregateBiasRate": -0.5385
+        },
+        "high": {
+          "sampleCount": 3,
+          "reviewedHours": 6.50,
+          "candidateHours": 3.00,
+          "meanAbsoluteErrorHours": 1.1667,
+          "medianAbsoluteErrorHours": 1.00,
+          "rootMeanSquaredErrorHours": 1.1902,
+          "meanSignedErrorHours": -1.1667,
+          "weightedAbsolutePercentageError": 0.5385,
+          "aggregateBiasRate": -0.5385
+        },
+        "interval": {
+          "sampleCount": 3,
+          "reviewedExpectedCoveredCount": 2,
+          "reviewedExpectedCoverage": 0.6667,
+          "reviewedRangeFullyCoveredCount": 0,
+          "reviewedRangeFullyCoveredRate": 0,
+          "meanCandidateWidthHours": 0.75,
+          "meanReviewedWidthHours": 1.5833
+        }
+      }
+    },
+    {
+      "category": "documentation",
+      "metrics": {
+        "low": {
+          "sampleCount": 1,
+          "reviewedHours": 0.50,
+          "candidateHours": 0.50,
+          "meanAbsoluteErrorHours": 0.00,
+          "medianAbsoluteErrorHours": 0.00,
+          "rootMeanSquaredErrorHours": 0,
+          "meanSignedErrorHours": 0.00,
+          "weightedAbsolutePercentageError": 0,
+          "aggregateBiasRate": 0
+        },
+        "expected": {
+          "sampleCount": 1,
+          "reviewedHours": 1.00,
+          "candidateHours": 0.75,
+          "meanAbsoluteErrorHours": 0.25,
+          "medianAbsoluteErrorHours": 0.25,
+          "rootMeanSquaredErrorHours": 0.25,
+          "meanSignedErrorHours": -0.25,
+          "weightedAbsolutePercentageError": 0.25,
+          "aggregateBiasRate": -0.25
+        },
+        "high": {
+          "sampleCount": 1,
+          "reviewedHours": 2.00,
+          "candidateHours": 1.25,
+          "meanAbsoluteErrorHours": 0.75,
+          "medianAbsoluteErrorHours": 0.75,
+          "rootMeanSquaredErrorHours": 0.75,
+          "meanSignedErrorHours": -0.75,
+          "weightedAbsolutePercentageError": 0.375,
+          "aggregateBiasRate": -0.375
+        },
+        "interval": {
+          "sampleCount": 1,
+          "reviewedExpectedCoveredCount": 1,
+          "reviewedExpectedCoverage": 1,
+          "reviewedRangeFullyCoveredCount": 0,
+          "reviewedRangeFullyCoveredRate": 0,
+          "meanCandidateWidthHours": 0.75,
+          "meanReviewedWidthHours": 1.50
+        }
+      }
+    },
+    {
+      "category": "self-review-and-system-integration",
+      "metrics": {
+        "low": {
+          "sampleCount": 4,
+          "reviewedHours": 1.75,
+          "candidateHours": 3.00,
+          "meanAbsoluteErrorHours": 0.3125,
+          "medianAbsoluteErrorHours": 0.25,
+          "rootMeanSquaredErrorHours": 0.3307,
+          "meanSignedErrorHours": 0.3125,
+          "weightedAbsolutePercentageError": 0.7143,
+          "aggregateBiasRate": 0.7143
+        },
+        "expected": {
+          "sampleCount": 4,
+          "reviewedHours": 3.25,
+          "candidateHours": 5.75,
+          "meanAbsoluteErrorHours": 0.625,
+          "medianAbsoluteErrorHours": 0.625,
+          "rootMeanSquaredErrorHours": 0.6374,
+          "meanSignedErrorHours": 0.625,
+          "weightedAbsolutePercentageError": 0.7692,
+          "aggregateBiasRate": 0.7692
+        },
+        "high": {
+          "sampleCount": 4,
+          "reviewedHours": 6.50,
+          "candidateHours": 10.50,
+          "meanAbsoluteErrorHours": 1.00,
+          "medianAbsoluteErrorHours": 1.00,
+          "rootMeanSquaredErrorHours": 1.0308,
+          "meanSignedErrorHours": 1.00,
+          "weightedAbsolutePercentageError": 0.6154,
+          "aggregateBiasRate": 0.6154
+        },
+        "interval": {
+          "sampleCount": 4,
+          "reviewedExpectedCoveredCount": 4,
+          "reviewedExpectedCoverage": 1,
+          "reviewedRangeFullyCoveredCount": 0,
+          "reviewedRangeFullyCoveredRate": 0,
+          "meanCandidateWidthHours": 1.875,
+          "meanReviewedWidthHours": 1.1875
+        }
+      }
+    }
+  ],
+  "workItems": {
+    "low": {
+      "sampleCount": 29,
+      "reviewedHours": 13.75,
+      "candidateHours": 14.50,
+      "meanAbsoluteErrorHours": 0.2672,
+      "medianAbsoluteErrorHours": 0.25,
+      "rootMeanSquaredErrorHours": 0.3114,
+      "meanSignedErrorHours": 0.0259,
+      "weightedAbsolutePercentageError": 0.5636,
+      "aggregateBiasRate": 0.0545
+    },
+    "expected": {
+      "sampleCount": 29,
+      "reviewedHours": 26.00,
+      "candidateHours": 27.50,
+      "meanAbsoluteErrorHours": 0.5172,
+      "medianAbsoluteErrorHours": 0.5,
+      "rootMeanSquaredErrorHours": 0.5798,
+      "meanSignedErrorHours": 0.0517,
+      "weightedAbsolutePercentageError": 0.5769,
+      "aggregateBiasRate": 0.0577
+    },
+    "high": {
+      "sampleCount": 29,
+      "reviewedHours": 51.00,
+      "candidateHours": 51.50,
+      "meanAbsoluteErrorHours": 1.00,
+      "medianAbsoluteErrorHours": 1.00,
+      "rootMeanSquaredErrorHours": 1.1084,
+      "meanSignedErrorHours": 0.0172,
+      "weightedAbsolutePercentageError": 0.5686,
+      "aggregateBiasRate": 0.0098
+    },
+    "interval": {
+      "sampleCount": 29,
+      "reviewedExpectedCoveredCount": 17,
+      "reviewedExpectedCoverage": 0.5862,
+      "reviewedRangeFullyCoveredCount": 2,
+      "reviewedRangeFullyCoveredRate": 0.0690,
+      "meanCandidateWidthHours": 1.2759,
+      "meanReviewedWidthHours": 1.2845
+    }
+  },
+  "match": {
+    "targetCount": 29,
+    "matchedTargetCount": 29,
+    "targetMatchRate": 1,
+    "sourceWorkItemReferenceCount": 29,
+    "matchedSourceWorkItemReferenceCount": 29,
+    "sourceWorkItemReferenceMatchRate": 1,
+    "candidateWorkItemCount": 29,
+    "matchedCandidateWorkItemCount": 29,
+    "candidateWorkItemMatchRate": 1
+  },
+  "repositories": [
+    {
+      "recordId": "record:change:dn-data-integration",
+      "repositoryId": "repository:change-dn-data-b",
+      "sourceDigest": "sha256:7e7972b6f3ed011f65703ed2c7cc113caf7d810b520ec0ca4d973ec862ed100a",
+      "profile": "implementation",
+      "baselineId": "senior-contractor-2026-no-ai",
+      "candidateEstimatorVersion": "change-seed/0.1.0\u002Bseed-rules/0.2.1",
+      "candidateEstimateDigest": "sha256:d7ac1a8a75657d4d383938cea209d630594407306772314067d3d658fc3fd2c0",
+      "reviewedTotal": {
+        "low": 4.00,
+        "expected": 7.75,
+        "high": 14.50
+      },
+      "candidateTotal": {
+        "low": 4.25,
+        "expected": 8.25,
+        "high": 15.50
+      },
+      "expectedAbsoluteErrorHours": 0.50,
+      "expectedSignedErrorHours": 0.50,
+      "reviewedExpectedCovered": true,
+      "reviewedRangeFullyCovered": false,
+      "targetCount": 8,
+      "matchedTargetCount": 8,
+      "candidateWorkItemCount": 8,
+      "matchedCandidateWorkItemCount": 8,
+      "unmatchedTargetIds": [],
+      "unmatchedCandidateWorkItemIds": [],
+      "categoryMismatchTargetIds": []
+    },
+    {
+      "recordId": "record:change:dn-data-migration",
+      "repositoryId": "repository:change-dn-data-b",
+      "sourceDigest": "sha256:6ceee70acf696893d67cad80d13e347f5e74b183c6022c0fce33d6660d0ada0d",
+      "profile": "implementation",
+      "baselineId": "senior-contractor-2026-no-ai",
+      "candidateEstimatorVersion": "change-seed/0.1.0\u002Bseed-rules/0.2.1",
+      "candidateEstimateDigest": "sha256:5f6a03076ecf1878d1cc5c3f824c63598cc326a92ac7657e565d84e0a2c4aedf",
+      "reviewedTotal": {
+        "low": 3.75,
+        "expected": 6.75,
+        "high": 13.50
+      },
+      "candidateTotal": {
+        "low": 3.75,
+        "expected": 7.25,
+        "high": 14.00
+      },
+      "expectedAbsoluteErrorHours": 0.50,
+      "expectedSignedErrorHours": 0.50,
+      "reviewedExpectedCovered": true,
+      "reviewedRangeFullyCovered": true,
+      "targetCount": 8,
+      "matchedTargetCount": 8,
+      "candidateWorkItemCount": 8,
+      "matchedCandidateWorkItemCount": 8,
+      "unmatchedTargetIds": [],
+      "unmatchedCandidateWorkItemIds": [],
+      "categoryMismatchTargetIds": []
+    },
+    {
+      "recordId": "record:change:dn-data-removal",
+      "repositoryId": "repository:change-dn-data-b",
+      "sourceDigest": "sha256:da0181b11fb21b7be22911413a031e4ac013f80e8b1d76a503b1ee0987056092",
+      "profile": "implementation",
+      "baselineId": "senior-contractor-2026-no-ai",
+      "candidateEstimatorVersion": "change-seed/0.1.0\u002Bseed-rules/0.2.1",
+      "candidateEstimateDigest": "sha256:e38d0d9b7ed2d70c8d204f042ff40d7ad3aad031f9d88dccf59203db6020fc35",
+      "reviewedTotal": {
+        "low": 4.25,
+        "expected": 8.00,
+        "high": 16.00
+      },
+      "candidateTotal": {
+        "low": 4.00,
+        "expected": 7.50,
+        "high": 14.25
+      },
+      "expectedAbsoluteErrorHours": 0.50,
+      "expectedSignedErrorHours": -0.50,
+      "reviewedExpectedCovered": true,
+      "reviewedRangeFullyCovered": false,
+      "targetCount": 8,
+      "matchedTargetCount": 8,
+      "candidateWorkItemCount": 8,
+      "matchedCandidateWorkItemCount": 8,
+      "unmatchedTargetIds": [],
+      "unmatchedCandidateWorkItemIds": [],
+      "categoryMismatchTargetIds": []
+    },
+    {
+      "recordId": "record:change:js-lib-formatting",
+      "repositoryId": "repository:change-js-lib-b",
+      "sourceDigest": "sha256:e9a1e384d1667f7012d3f101dedf99ccfbc5926d63c4899a459bdd8db9023f38",
+      "profile": "implementation",
+      "baselineId": "senior-contractor-2026-no-ai",
+      "candidateEstimatorVersion": "change-seed/0.1.0\u002Bseed-rules/0.2.1",
+      "candidateEstimateDigest": "sha256:bc948742c8807e9e2f6eb0266569dff62d70c8a9696ac087277774b4fc73ae89",
+      "reviewedTotal": {
+        "low": 0,
+        "expected": 0,
+        "high": 0
+      },
+      "candidateTotal": {
+        "low": 0,
+        "expected": 0,
+        "high": 0
+      },
+      "expectedAbsoluteErrorHours": 0,
+      "expectedSignedErrorHours": 0,
+      "reviewedExpectedCovered": true,
+      "reviewedRangeFullyCovered": true,
+      "targetCount": 0,
+      "matchedTargetCount": 0,
+      "candidateWorkItemCount": 0,
+      "matchedCandidateWorkItemCount": 0,
+      "unmatchedTargetIds": [],
+      "unmatchedCandidateWorkItemIds": [],
+      "categoryMismatchTargetIds": []
+    },
+    {
+      "recordId": "record:change:js-lib-move",
+      "repositoryId": "repository:change-js-lib-b",
+      "sourceDigest": "sha256:ed86494a11dc02ebf9a552aa0fb30881e36c2f840205821f4e54d457790073b0",
+      "profile": "implementation",
+      "baselineId": "senior-contractor-2026-no-ai",
+      "candidateEstimatorVersion": "change-seed/0.1.0\u002Bseed-rules/0.2.1",
+      "candidateEstimateDigest": "sha256:9f051b888e66c25927a4854be411fe7054abbe6887779f44e89ff38ea58ca213",
+      "reviewedTotal": {
+        "low": 0,
+        "expected": 0,
+        "high": 0
+      },
+      "candidateTotal": {
+        "low": 0,
+        "expected": 0,
+        "high": 0
+      },
+      "expectedAbsoluteErrorHours": 0,
+      "expectedSignedErrorHours": 0,
+      "reviewedExpectedCovered": true,
+      "reviewedRangeFullyCovered": true,
+      "targetCount": 0,
+      "matchedTargetCount": 0,
+      "candidateWorkItemCount": 0,
+      "matchedCandidateWorkItemCount": 0,
+      "unmatchedTargetIds": [],
+      "unmatchedCandidateWorkItemIds": [],
+      "categoryMismatchTargetIds": []
+    },
+    {
+      "recordId": "record:change:js-lib-quality",
+      "repositoryId": "repository:change-js-lib-b",
+      "sourceDigest": "sha256:61b64b1b2fcad567ad335f196bff92b11f97e125495f8fcb0e97faf247c2a7b6",
+      "profile": "implementation",
+      "baselineId": "senior-contractor-2026-no-ai",
+      "candidateEstimatorVersion": "change-seed/0.1.0\u002Bseed-rules/0.2.1",
+      "candidateEstimateDigest": "sha256:b3d9dc9cd4d1e7868308476f64c73d623dd13f533a0118eb34994dad2f94fd12",
+      "reviewedTotal": {
+        "low": 1.75,
+        "expected": 3.50,
+        "high": 7.00
+      },
+      "candidateTotal": {
+        "low": 2.50,
+        "expected": 4.50,
+        "high": 7.75
+      },
+      "expectedAbsoluteErrorHours": 1.00,
+      "expectedSignedErrorHours": 1.00,
+      "reviewedExpectedCovered": true,
+      "reviewedRangeFullyCovered": false,
+      "targetCount": 5,
+      "matchedTargetCount": 5,
+      "candidateWorkItemCount": 5,
+      "matchedCandidateWorkItemCount": 5,
+      "unmatchedTargetIds": [],
+      "unmatchedCandidateWorkItemIds": [],
+      "categoryMismatchTargetIds": []
+    }
+  ]
+}

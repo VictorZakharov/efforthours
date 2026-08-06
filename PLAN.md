@@ -178,6 +178,18 @@ Status as of August 6, 2026:
   output; memory-only unit fixtures; and process-level Git tests are implemented.
   `change-seed/0.1.0` remains experimental and uncalibrated. Multiple PRs,
   directory/evidence selectors, and author-period portfolios remain deferred.
+- The first Change calibration checkpoint is complete: immutable final-delta
+  provenance extends the existing corpus/review boundary; Change-specific
+  scaffold, compile, and evaluate commands reuse the same metric implementation;
+  `change-ehe-work-item/1.0.0` and a 24-case partitioned matrix are frozen before
+  labels. An in-memory generator now reproduces all 24 source reports and blind
+  packets, including four exact-zero guardrails, and Change reviewers can reject
+  duplicate or false-positive capabilities with explicit lineage-preserving zero
+  labels rather than manufacturing positive effort. The 24-record preliminary
+  teacher corpus has 121 targets and a blind exact-digest handoff; development and
+  validation diagnostics are recorded while test comparison remains withheld.
+  No independent correction exists yet, so
+  `change-seed/0.1.0` remains uncalibrated and unchanged.
 - Source-file budgets are enforced as an end-to-end architecture ratchet: 500
   lines by default, 400 for CLI files, and explicit non-precedent overrides for
   legacy debt. The former large CLI application class is split by responsibility.
@@ -409,7 +421,7 @@ benchmark corpus exists.
 
 ## 8. Immediate next steps
 
-1. Hand one or both frozen blind public-corpus packets to genuinely distinct
+1. Hand one or more frozen blind public-corpus packets to genuinely distinct
    reviewers and compile corrections without exposing test partitions to tuning.
 2. Add enough redistributable repository families to place multiple independent
    observations in every ecosystem/partition cell, then freeze numerical
@@ -421,6 +433,7 @@ benchmark corpus exists.
    repository shapes and peak-memory measurements.
 5. Evaluate a compiler-grade TypeScript adapter only if reviewed calibration shows
    material error from the bounded token evidence.
-6. Build reviewed, redistributable Change EHE examples and record large-range
-   performance before tuning `change-seed/0.1.0` or expanding to multiple PRs and
-   author-period portfolios.
+6. Obtain genuinely independent correction for the frozen 24-case Change teacher
+   corpus, add redistributable real final-change families, and record large-range
+   performance before tuning
+   `change-seed/0.1.0` or expanding to multiple PRs and author-period portfolios.

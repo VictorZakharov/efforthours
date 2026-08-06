@@ -21,7 +21,11 @@ Milestone 7B1 through 7B5 public-corpus, review, and mutation checkpoints are
 implemented; actual independent correction and broader multi-observation corpus
 coverage remain. The first experimental Change Estimation MVP is also implemented
 for immutable base/head revisions, one commit, one range, and one GitHub pull
-request. The repository now contains:
+request. Its first calibration checkpoint adds final-delta provenance, review and
+evaluation commands, a frozen rubric, and a 24-case matrix with reproducible source
+reports, 121 preliminary teacher targets, and a blind independent-review packet.
+No independent Change correction or accuracy claim is complete.
+The repository now contains:
 
 - versioned JSON contracts and published schemas for evidence, work items,
   estimates, diagnostics, and rate cards;
@@ -52,6 +56,10 @@ request. The repository now contains:
 - schema-versioned Change EHE evidence, reports, explanations, immutable Git-tree
   analysis, additive range reconciliation, and an optional identity-only `gh` PR
   adapter;
+- Change calibration authoring, compilation, independent-review handoff, and
+  evaluation paths that preserve immutable final-delta lineage and repository-held-out
+  partitions without changing `change-seed/0.1.0`, plus a deterministic in-memory
+  generator for 24 public synthetic source cases;
 - JSON and Markdown reports with evidence lineage, ranges, and optional pricing;
 - synthetic fixtures, contract tests, and process-level CLI tests;
 - evidence normalization that separates production/test structure, gives fine
@@ -136,6 +144,13 @@ exit code 5. Mutation relations are not effort labels. The latest near-copy boun
 do not imply semantic clone detection, and the dead-code invariant is limited to
 C# syntax excluded by the compiler preprocessor rather than general reachability.
 
+Change reports use parallel `calibration change-scaffold`, `change-compile`, and
+`change-evaluate` commands. They reuse ordinary corpus validation and blind
+second-review commands while adding immutable base/head and final-delta provenance.
+See [`calibration/changes`](calibration/changes); its source reports and blind
+packets are reproducible, and its teacher labels are preliminary until a genuinely
+distinct reviewer completes the frozen handoff.
+
 Fairbill is intended to be released as open-source software. Development should be
 public-repository-ready from the beginning, even before the repository is published.
 It is licensed under the [MIT License](LICENSE).
@@ -211,6 +226,9 @@ fairbill calibration review-compile <plan.json> <corpus.json> [--compact] [--out
 fairbill calibration mutations <suite.json> <estimate.json>... [--compact] [--output <path>]
 fairbill calibration validate <corpus.json> [--compact] [--output <path>]
 fairbill calibration evaluate <corpus.json> <estimate.json>... --partition <development|validation|test> [--compact] [--output <path>]
+fairbill calibration change-scaffold <change-estimate.json> --repository-family <id> --case <id> --tag <tag>... [--blind] [--compact] [--output <path>]
+fairbill calibration change-compile <review-plan.json> <change-estimate.json>... [--compact] [--output <path>]
+fairbill calibration change-evaluate <corpus.json> <change-estimate.json>... --partition <development|validation|test> [--compact] [--output <path>]
 ```
 
 The optional scan cache trusts file path, size, and last-write metadata for
@@ -275,6 +293,12 @@ without misrepresenting counterfactual hours as historical labor.
   range semantics plus deferred contribution-portfolio safeguards.
 - [MILESTONE_CHANGE_1.md](MILESTONE_CHANGE_1.md) records the first Change EHE
   implementation, verification, and limitations.
+- [MILESTONE_CHANGE_2.md](MILESTONE_CHANGE_2.md) records Change calibration
+  identity, review, evaluation, and the remaining independent-label boundary.
+- [MILESTONE_CHANGE_3.md](MILESTONE_CHANGE_3.md) records the reproducible 24-case
+  source suite, first-pass teacher corpus, diagnostics, and withheld test boundary.
+- [CHANGE_MODEL_ADMISSION.md](CHANGE_MODEL_ADMISSION.md) freezes Change candidate
+  metric identities and decision order before any local-ML fitting.
 - [CODE_BUDGETS.md](CODE_BUDGETS.md) defines enforced early-refactoring thresholds
   and legacy ratchets.
 - [AGENTS.md](AGENTS.md) contains repository-wide instructions for coding agents.
@@ -288,6 +312,8 @@ without misrepresenting counterfactual hours as historical labor.
   priors.
 - [`rates/us-senior-contractor`](rates/us-senior-contractor) contains the auditable
   bundled contractor-rate derivation.
-- [`calibration`](calibration) contains the public review rubrics, two public
-  corpora, independent-review handoff, mutation fixtures, frozen seed baselines, and
-  publication guidance; no private calibration data belongs there.
+- [`calibration`](calibration) contains the public review rubrics, two repository
+  corpora, independent-review handoff, mutation fixtures, frozen seed baselines,
+  the Change case matrix, reproducible source packets, and preliminary Change
+  teacher corpus, and publication guidance; no private calibration data belongs
+  there.

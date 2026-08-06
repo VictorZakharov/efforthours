@@ -1,0 +1,200 @@
+{
+  "schemaVersion": "1.0.0",
+  "changeEvidenceSchemaVersion": "1.0.0",
+  "estimatorVersion": "change-seed/0.1.0\u002Bseed-rules/0.2.1",
+  "sourceEstimatorVersion": "seed-rules/0.2.1",
+  "repository": {
+    "name": "repository:change-js-lib-b",
+    "scope": ".",
+    "ecosystems": [
+      "javascript"
+    ],
+    "sourceDigest": "sha256:234978b87da1da40179af7503809111858976e428912dcd847676ab7bbcb94fd"
+  },
+  "selection": {
+    "schemaVersion": "1.0.0",
+    "kind": "base-head",
+    "base": {
+      "selector": "fixture:change:js-lib-move:base",
+      "objectId": "c3ae6c9a84057eca86ed1c4709c75f888710c3c19923d442a3016bb12aeb877c",
+      "kind": "evidence"
+    },
+    "head": {
+      "selector": "fixture:change:js-lib-move:head",
+      "objectId": "671fb4bc86e6717137d3c8453a2ad4d49d1821e12aca4ab117e9d14ed92bcf1e",
+      "kind": "evidence"
+    }
+  },
+  "evidence": {
+    "schemaVersion": "1.0.0",
+    "selection": {
+      "schemaVersion": "1.0.0",
+      "kind": "base-head",
+      "base": {
+        "selector": "fixture:change:js-lib-move:base",
+        "objectId": "c3ae6c9a84057eca86ed1c4709c75f888710c3c19923d442a3016bb12aeb877c",
+        "kind": "evidence"
+      },
+      "head": {
+        "selector": "fixture:change:js-lib-move:head",
+        "objectId": "671fb4bc86e6717137d3c8453a2ad4d49d1821e12aca4ab117e9d14ed92bcf1e",
+        "kind": "evidence"
+      }
+    },
+    "repository": {
+      "name": "repository:change-js-lib-b",
+      "scope": ".",
+      "ecosystems": [
+        "javascript"
+      ],
+      "sourceDigest": "sha256:234978b87da1da40179af7503809111858976e428912dcd847676ab7bbcb94fd"
+    },
+    "baseEvidenceDigest": "sha256:875002251e3f77a904e0239815484be432c0a462c9f36ea4e370cff21dbaacdf",
+    "headEvidenceDigest": "sha256:234978b87da1da40179af7503809111858976e428912dcd847676ab7bbcb94fd",
+    "unchangedContextPathCount": 1,
+    "paths": [
+      {
+        "id": "change:path:305b9eb23be9c152e70544be",
+        "status": "moved",
+        "path": "src/math/sum.js",
+        "previousPath": "src/number/sum.js",
+        "baseObjectId": "a2b58bea5e245e2a5a85193cfd038c2680ca3eb996399101a88083520598e52b",
+        "headObjectId": "a2b58bea5e245e2a5a85193cfd038c2680ca3eb996399101a88083520598e52b",
+        "baseBytes": 58,
+        "headBytes": 58,
+        "editRegions": 0,
+        "classification": "exact-move",
+        "represented": false,
+        "reason": "The same immutable blob moved paths; mechanical movement does not create body implementation effort.",
+        "tags": [
+          "classification:exact-move",
+          "content:text",
+          "ecosystem:javascript",
+          "extension:.js",
+          "language:javascript",
+          "role:source",
+          "sha256:a2b58bea5e245e2a5a85193cfd038c2680ca3eb996399101a88083520598e52b",
+          "status:moved"
+        ]
+      }
+    ],
+    "diagnostics": [
+      {
+        "code": "FB4000",
+        "severity": "information",
+        "message": "The JavaScript/TypeScript analyzer parsed manifests, JSONC configuration, JavaScript/JSX syntax, and bounded TypeScript token streams statically; it did not run package managers, load executable configuration, install dependencies, transpile, or execute target code.",
+        "evidenceIds": [],
+        "locations": []
+      },
+      {
+        "code": "FB5200",
+        "severity": "information",
+        "message": "1 final path change(s) were classified as mechanical or excluded body evidence and do not create represented implementation effort.",
+        "evidenceIds": [
+          "change:path:305b9eb23be9c152e70544be"
+        ],
+        "locations": []
+      }
+    ]
+  },
+  "profile": "implementation",
+  "baseline": {
+    "id": "senior-contractor-2026-no-ai",
+    "workerProfile": "Competent senior contractor familiar with the technical ecosystem",
+    "technologyBaselineYear": 2026,
+    "businessDomainFamiliar": false,
+    "usesAi": false,
+    "description": "One senior contractor recreating the described working system with modern 2026 tools and no AI."
+  },
+  "totalEffort": {
+    "low": 0,
+    "expected": 0,
+    "high": 0
+  },
+  "categories": [],
+  "workItems": [],
+  "professionalizationGap": [],
+  "reconciliation": {
+    "isolatedComponentSum": {
+      "low": 0,
+      "expected": 0,
+      "high": 0
+    },
+    "normalizedEffort": {
+      "low": 0,
+      "expected": 0,
+      "high": 0
+    },
+    "additivityToleranceHours": 1,
+    "expectedDifferenceHours": 0,
+    "assessment": "within-no-rework-tolerance",
+    "allocationMethod": "Proportional to isolated expected Change EHE with deterministic cent-level residual assignment; allocations are attribution, not historical hours.",
+    "components": [
+      {
+        "id": "change-component:82271bfbdcd85f6d598f",
+        "kind": "final-delta",
+        "selector": "final-delta",
+        "baseObjectId": "c3ae6c9a84057eca86ed1c4709c75f888710c3c19923d442a3016bb12aeb877c",
+        "headObjectId": "671fb4bc86e6717137d3c8453a2ad4d49d1821e12aca4ab117e9d14ed92bcf1e",
+        "isolatedEffort": {
+          "low": 0,
+          "expected": 0,
+          "high": 0
+        },
+        "allocatedExpectedHours": 0,
+        "evidenceIds": [
+          "change:path:305b9eb23be9c152e70544be"
+        ]
+      }
+    ],
+    "adjustments": []
+  },
+  "diagnostics": [
+    {
+      "code": "FB4000",
+      "severity": "information",
+      "message": "The JavaScript/TypeScript analyzer parsed manifests, JSONC configuration, JavaScript/JSX syntax, and bounded TypeScript token streams statically; it did not run package managers, load executable configuration, install dependencies, transpile, or execute target code.",
+      "evidenceIds": [],
+      "locations": []
+    },
+    {
+      "code": "FB5000",
+      "severity": "warning",
+      "message": "Change EHE uses transparent but uncalibrated change-seed and repository seed priors. It is experimental and requires review before consequential use.",
+      "evidenceIds": [],
+      "locations": []
+    },
+    {
+      "code": "FB5001",
+      "severity": "information",
+      "message": "Normalized Change EHE values the immutable final base-to-head artifact delta. Component activity, commit count, timestamps, authors, and intermediate churn do not multiply it.",
+      "evidenceIds": [],
+      "locations": []
+    },
+    {
+      "code": "FB5200",
+      "severity": "information",
+      "message": "1 final path change(s) were classified as mechanical or excluded body evidence and do not create represented implementation effort.",
+      "evidenceIds": [
+        "change:path:305b9eb23be9c152e70544be"
+      ],
+      "locations": []
+    }
+  ],
+  "assumptions": [
+    "Change EHE is counterfactual non-AI replacement effort represented by the final artifact delta, not actual labor or a timesheet.",
+    "Base and head are immutable snapshots; intermediate history is excluded from normalized effort.",
+    "A clear specification exists at the level promised by the selected profile.",
+    "Discovered tests are assumed to pass on the static path and the described delta is estimated as working.",
+    "Formatting-only, exact movement, conventional generated, vendored, minified, binary, lockfile, build-output, and exact-copy bodies are excluded when classified.",
+    "Deletion is never negative EHE; supported removal and simplification work is bounded by capability context rather than deleted volume.",
+    "Low and high values are preliminary dependent planning bounds, not calibrated probability intervals.",
+    "Professionalization gaps are separate and are not added to represented Change EHE or cost."
+  ],
+  "verification": {
+    "mode": "static-assumed",
+    "workingState": "assumed-working",
+    "testsAssumedPassing": true,
+    "note": "Neither immutable snapshot was built or executed."
+  }
+}

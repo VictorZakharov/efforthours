@@ -1,17 +1,19 @@
 # Independent calibration review handoff
 
-Fairbill currently publishes two blind second-pass packets. Both source corpora
-remain `teacher-estimate`; neither has received independent correction or
+Fairbill currently publishes three blind second-pass packets. All source corpora
+remain `teacher-estimate`; none has received independent correction or
 adjudication.
 
 | Corpus | Blind packet | Records | Targets | Canonical source-corpus digest |
 |---|---|---:|---:|---|
 | `fairbill-public-pilot/0.1.0` | [`public-pilot/0.1.0.blind-review-packet.json`](corpora/public-pilot/0.1.0.blind-review-packet.json) | 3 | 99 | `sha256:216ee9e2289290c43bb843a51cacd9b8cb8d5da0d9da50f90ff77cf0ed11d5c0` |
 | `fairbill-public-expansion/0.1.0` | [`public-expansion/0.1.0.blind-review-packet.json`](corpora/public-expansion/0.1.0.blind-review-packet.json) | 3 | 133 | `sha256:93ec8d7d1872318dbe20429ce294d164947a2c107efcca12013acc5b313b2705` |
+| `fairbill-change-public-synthetic/0.1.0` | [`changes/public-synthetic/0.1.0.independent-review-packet.json`](changes/public-synthetic/0.1.0.independent-review-packet.json) | 24 | 121 | `sha256:b1d6f8a7a64078953508082454ab56bbc559196bb0810e369035880c765fcbd7` |
 
 The corresponding source manifests, first-pass review methods, numerical
 baselines, and corpus-specific instructions are next to each packet. A reviewer
-may take one corpus independently; reviewing both is useful but not required.
+may take one corpus independently; reviewing more than one is useful but not
+required.
 
 ## Assignment boundary
 

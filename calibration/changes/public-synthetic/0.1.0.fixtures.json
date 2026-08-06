@@ -1,0 +1,576 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "fairbill-change-public-synthetic",
+  "version": "0.1.0",
+  "description": "Small MIT-licensed synthetic final-change cases frozen for Change EHE calibration.",
+  "cases": [
+    {
+      "id": "change:dn-lib-production",
+      "repositoryFamilyId": "repository:change-dn-lib-a",
+      "partition": "development",
+      "ecosystem": "dotnet",
+      "selectionKind": "base-head",
+      "baseStateId": "base",
+      "headStateId": "head",
+      "coverageTags": ["dotnet", "production", "clean-disjoint"],
+      "states": [
+        {"id": "base", "files": {
+          "src/Slug/Slug.csproj": "<Project Sdk=\"Microsoft.NET.Sdk\"><PropertyGroup><TargetFramework>net10.0</TargetFramework></PropertyGroup></Project>\n"
+        }},
+        {"id": "head", "files": {
+          "src/Slug/Slug.csproj": "<Project Sdk=\"Microsoft.NET.Sdk\"><PropertyGroup><TargetFramework>net10.0</TargetFramework></PropertyGroup></Project>\n",
+          "src/Slug/SlugFormatter.cs": "namespace Slug;\n\npublic static class SlugFormatter\n{\n    public static string Format(string value) => string.Join('-', value.Trim().ToLowerInvariant().Split(' ', StringSplitOptions.RemoveEmptyEntries));\n}\n"
+        }}
+      ]
+    },
+    {
+      "id": "change:dn-lib-tests",
+      "repositoryFamilyId": "repository:change-dn-lib-a",
+      "partition": "development",
+      "ecosystem": "dotnet",
+      "selectionKind": "base-head",
+      "baseStateId": "base",
+      "headStateId": "head",
+      "coverageTags": ["dotnet", "tests", "clean-disjoint"],
+      "states": [
+        {"id": "base", "files": {
+          "src/Slug/Slug.csproj": "<Project Sdk=\"Microsoft.NET.Sdk\"><PropertyGroup><TargetFramework>net10.0</TargetFramework></PropertyGroup></Project>\n",
+          "src/Slug/SlugFormatter.cs": "namespace Slug;\npublic static class SlugFormatter { public static string Format(string value) => value.Trim().ToLowerInvariant().Replace(' ', '-'); }\n"
+        }},
+        {"id": "head", "files": {
+          "src/Slug/Slug.csproj": "<Project Sdk=\"Microsoft.NET.Sdk\"><PropertyGroup><TargetFramework>net10.0</TargetFramework></PropertyGroup></Project>\n",
+          "src/Slug/SlugFormatter.cs": "namespace Slug;\npublic static class SlugFormatter { public static string Format(string value) => value.Trim().ToLowerInvariant().Replace(' ', '-'); }\n",
+          "tests/Slug.Tests/SlugFormatterTests.cs": "using Xunit;\nnamespace Slug.Tests;\npublic sealed class SlugFormatterTests\n{\n    [Theory]\n    [InlineData(\"Hello World\", \"hello-world\")]\n    [InlineData(\" Ready \", \"ready\")]\n    public void FormatsKnownInputs(string input, string expected) => Assert.Equal(expected, SlugFormatter.Format(input));\n}\n",
+          "tests/Slug.Tests/Slug.Tests.csproj": "<Project Sdk=\"Microsoft.NET.Sdk\"><PropertyGroup><TargetFramework>net10.0</TargetFramework></PropertyGroup><ItemGroup><PackageReference Include=\"xunit\" Version=\"2.9.3\" /></ItemGroup></Project>\n"
+        }}
+      ]
+    },
+    {
+      "id": "change:dn-lib-docs",
+      "repositoryFamilyId": "repository:change-dn-lib-a",
+      "partition": "development",
+      "ecosystem": "dotnet",
+      "selectionKind": "base-head",
+      "baseStateId": "base",
+      "headStateId": "head",
+      "coverageTags": ["dotnet", "documentation", "clean-disjoint"],
+      "states": [
+        {"id": "base", "files": {
+          "src/Slug/SlugFormatter.cs": "namespace Slug;\npublic static class SlugFormatter { public static string Format(string value) => value.Trim().ToLowerInvariant().Replace(' ', '-'); }\n"
+        }},
+        {"id": "head", "files": {
+          "src/Slug/SlugFormatter.cs": "namespace Slug;\npublic static class SlugFormatter { public static string Format(string value) => value.Trim().ToLowerInvariant().Replace(' ', '-'); }\n",
+          "README.md": "# Slug\n\nCall SlugFormatter.Format with a non-null phrase to produce a lowercase URL segment.\n\nExample: SlugFormatter.Format(\"Release Notes\").\n\nThe caller remains responsible for Unicode normalization and uniqueness.\n"
+        }}
+      ]
+    },
+    {
+      "id": "change:js-service-integration",
+      "repositoryFamilyId": "repository:change-js-service-a",
+      "partition": "development",
+      "ecosystem": "javascript",
+      "selectionKind": "base-head",
+      "baseStateId": "base",
+      "headStateId": "head",
+      "coverageTags": ["javascript", "integration", "production"],
+      "states": [
+        {"id": "base", "files": {
+          "package.json": "{\"name\":\"weather-status\",\"type\":\"module\",\"scripts\":{\"start\":\"node src/server.js\"}}\n",
+          "src/server.js": "export function health() { return { status: 'ok' }; }\n"
+        }},
+        {"id": "head", "files": {
+          "package.json": "{\"name\":\"weather-status\",\"type\":\"module\",\"scripts\":{\"start\":\"node src/server.js\"}}\n",
+          "src/server.js": "export function health() { return { status: 'ok' }; }\n",
+          "src/weather-client.js": "export async function currentWeather(city, apiKey, fetchImpl = fetch) {\n  const response = await fetchImpl('https://weather.example/v1/current?city=' + encodeURIComponent(city), { headers: { authorization: 'Bearer ' + apiKey } });\n  if (!response.ok) throw new Error('Weather provider returned ' + response.status);\n  const body = await response.json();\n  return { temperatureC: Number(body.temperatureC), observedAt: body.observedAt };\n}\n"
+        }}
+      ]
+    },
+    {
+      "id": "change:js-service-config",
+      "repositoryFamilyId": "repository:change-js-service-a",
+      "partition": "development",
+      "ecosystem": "javascript",
+      "selectionKind": "base-head",
+      "baseStateId": "base",
+      "headStateId": "head",
+      "coverageTags": ["javascript", "configuration", "integration"],
+      "states": [
+        {"id": "base", "files": {
+          "package.json": "{\"name\":\"weather-status\",\"type\":\"module\"}\n",
+          "src/config.js": "export function loadConfig(env) { return { port: Number(env.PORT || 3000) }; }\n"
+        }},
+        {"id": "head", "files": {
+          "package.json": "{\"name\":\"weather-status\",\"type\":\"module\"}\n",
+          "src/config.js": "export function loadConfig(env) {\n  const timeoutMs = Number(env.WEATHER_TIMEOUT_MS || 3000);\n  if (!env.WEATHER_API_KEY) throw new Error('WEATHER_API_KEY is required');\n  if (!Number.isInteger(timeoutMs) || timeoutMs < 100) throw new Error('WEATHER_TIMEOUT_MS must be at least 100');\n  return { port: Number(env.PORT || 3000), weatherApiKey: env.WEATHER_API_KEY, timeoutMs };\n}\n",
+          "config/example.env": "WEATHER_API_KEY=replace-me\nWEATHER_TIMEOUT_MS=3000\n"
+        }}
+      ]
+    },
+    {
+      "id": "change:js-service-deletion",
+      "repositoryFamilyId": "repository:change-js-service-a",
+      "partition": "development",
+      "ecosystem": "javascript",
+      "selectionKind": "base-head",
+      "baseStateId": "base",
+      "headStateId": "head",
+      "coverageTags": ["javascript", "deletion", "validation"],
+      "states": [
+        {"id": "base", "files": {
+          "package.json": "{\"name\":\"weather-status\",\"type\":\"module\"}\n",
+          "src/routes.js": "export function registerRoutes(app) {\n  app.get('/health', () => ({ status: 'ok' }));\n  app.get('/v1/legacy-weather', () => ({ temperature: null, deprecated: true }));\n}\n"
+        }},
+        {"id": "head", "files": {
+          "package.json": "{\"name\":\"weather-status\",\"type\":\"module\"}\n",
+          "src/routes.js": "export function registerRoutes(app) {\n  app.get('/health', () => ({ status: 'ok' }));\n}\n",
+          "docs/api.md": "# API\n\nThe retired /v1/legacy-weather endpoint now returns the platform-standard 404 response. Use /v2/weather instead.\n"
+        }}
+      ]
+    },
+    {
+      "id": "change:ts-package-generated",
+      "repositoryFamilyId": "repository:change-ts-package-a",
+      "partition": "development",
+      "ecosystem": "typescript",
+      "selectionKind": "base-head",
+      "baseStateId": "base",
+      "headStateId": "head",
+      "coverageTags": ["typescript", "generated-conventional", "zero-delta"],
+      "states": [
+        {"id": "base", "files": {
+          "package.json": "{\"name\":\"pet-client\",\"type\":\"module\"}\n"
+        }},
+        {"id": "head", "files": {
+          "package.json": "{\"name\":\"pet-client\",\"type\":\"module\"}\n",
+          "generated/pet-client.generated.ts": "/* @generated by schema-client 1.0; do not edit */\nexport interface PetDto { id: string; name: string; }\nexport class PetApi { constructor(private readonly baseUrl: string) {} async getPet(id: string): Promise<PetDto> { const response = await fetch(this.baseUrl + '/pets/' + id); return response.json(); } }\n"
+        }}
+      ]
+    },
+    {
+      "id": "change:ts-package-customization",
+      "repositoryFamilyId": "repository:change-ts-package-a",
+      "partition": "development",
+      "ecosystem": "typescript",
+      "selectionKind": "base-head",
+      "baseStateId": "base",
+      "headStateId": "head",
+      "coverageTags": ["typescript", "generated-customization", "integration"],
+      "states": [
+        {"id": "base", "files": {
+          "package.json": "{\"name\":\"pet-client\",\"type\":\"module\"}\n",
+          "generated/pet-client.generated.ts": "/* @generated by schema-client 1.0; do not edit */\nexport class PetApi { constructor(public readonly baseUrl: string) {} }\n"
+        }},
+        {"id": "head", "files": {
+          "package.json": "{\"name\":\"pet-client\",\"type\":\"module\"}\n",
+          "generated/pet-client.generated.ts": "/* @generated by schema-client 1.0; do not edit */\nexport class PetApi { constructor(public readonly baseUrl: string) {} }\n",
+          "src/retrying-pet-client.ts": "import { PetApi } from '../generated/pet-client.generated.js';\nexport class RetryingPetClient {\n  constructor(private readonly inner: PetApi, private readonly retries = 2) {}\n  async execute<T>(operation: (client: PetApi) => Promise<T>): Promise<T> {\n    let lastError: unknown;\n    for (let attempt = 0; attempt <= this.retries; attempt++) {\n      try { return await operation(this.inner); } catch (error) { lastError = error; }\n    }\n    throw lastError;\n  }\n}\n"
+        }}
+      ]
+    },
+    {
+      "id": "change:ts-package-delivery",
+      "repositoryFamilyId": "repository:change-ts-package-a",
+      "partition": "development",
+      "ecosystem": "typescript",
+      "selectionKind": "base-head",
+      "baseStateId": "base",
+      "headStateId": "head",
+      "coverageTags": ["typescript", "delivery", "packaging"],
+      "states": [
+        {"id": "base", "files": {
+          "package.json": "{\"name\":\"pet-client\",\"version\":\"0.0.0\",\"type\":\"module\",\"main\":\"dist/index.js\"}\n",
+          "src/index.ts": "export const clientVersion = 'dev';\n"
+        }},
+        {"id": "head", "files": {
+          "package.json": "{\"name\":\"pet-client\",\"version\":\"0.1.0\",\"type\":\"module\",\"main\":\"dist/index.js\",\"types\":\"dist/index.d.ts\",\"files\":[\"dist\"],\"scripts\":{\"build\":\"tsc -p tsconfig.json\",\"prepack\":\"npm run build\"}}\n",
+          "src/index.ts": "export const clientVersion = 'dev';\n",
+          "tsconfig.json": "{\"compilerOptions\":{\"target\":\"ES2022\",\"module\":\"NodeNext\",\"moduleResolution\":\"NodeNext\",\"declaration\":true,\"outDir\":\"dist\",\"strict\":true},\"include\":[\"src\"]}\n",
+          ".npmignore": "src\ntests\n"
+        }}
+      ]
+    },
+    {
+      "id": "change:mixed-disjoint-range",
+      "repositoryFamilyId": "repository:change-mixed-app-a",
+      "partition": "development",
+      "ecosystem": "mixed",
+      "selectionKind": "range",
+      "baseStateId": "base",
+      "headStateId": "head",
+      "coverageTags": ["mixed", "clean-disjoint", "range", "additivity"],
+      "states": [
+        {"id": "base", "files": {
+          "src/Core/Core.csproj": "<Project Sdk=\"Microsoft.NET.Sdk\"><PropertyGroup><TargetFramework>net10.0</TargetFramework></PropertyGroup></Project>\n",
+          "web/package.json": "{\"name\":\"mixed-app\",\"type\":\"module\"}\n"
+        }},
+        {"id": "code-dotnet", "files": {
+          "src/Core/Core.csproj": "<Project Sdk=\"Microsoft.NET.Sdk\"><PropertyGroup><TargetFramework>net10.0</TargetFramework></PropertyGroup></Project>\n",
+          "src/Core/Clock.cs": "namespace Core;\npublic sealed class Clock { public DateTimeOffset UtcNow() => DateTimeOffset.UtcNow; }\n",
+          "web/package.json": "{\"name\":\"mixed-app\",\"type\":\"module\"}\n"
+        }},
+        {"id": "code-web", "files": {
+          "src/Core/Core.csproj": "<Project Sdk=\"Microsoft.NET.Sdk\"><PropertyGroup><TargetFramework>net10.0</TargetFramework></PropertyGroup></Project>\n",
+          "src/Core/Clock.cs": "namespace Core;\npublic sealed class Clock { public DateTimeOffset UtcNow() => DateTimeOffset.UtcNow; }\n",
+          "web/package.json": "{\"name\":\"mixed-app\",\"type\":\"module\"}\n",
+          "web/src/format-time.js": "export function formatTime(iso) { return new Date(iso).toISOString(); }\n"
+        }},
+        {"id": "head", "files": {
+          "src/Core/Core.csproj": "<Project Sdk=\"Microsoft.NET.Sdk\"><PropertyGroup><TargetFramework>net10.0</TargetFramework></PropertyGroup></Project>\n",
+          "src/Core/Clock.cs": "namespace Core;\npublic sealed class Clock { public DateTimeOffset UtcNow() => DateTimeOffset.UtcNow; }\n",
+          "web/package.json": "{\"name\":\"mixed-app\",\"type\":\"module\"}\n",
+          "web/src/format-time.js": "export function formatTime(iso) { return new Date(iso).toISOString(); }\n",
+          "README.md": "# Mixed app\n\nThe .NET core returns UTC timestamps and the web helper renders ISO-8601 values.\n"
+        }}
+      ],
+      "components": [
+        {"selector": "commit:dotnet-clock", "baseStateId": "base", "headStateId": "code-dotnet"},
+        {"selector": "commit:web-format", "baseStateId": "code-dotnet", "headStateId": "code-web"},
+        {"selector": "commit:docs", "baseStateId": "code-web", "headStateId": "head"}
+      ]
+    },
+    {
+      "id": "change:mixed-overlap-range",
+      "repositoryFamilyId": "repository:change-mixed-app-a",
+      "partition": "development",
+      "ecosystem": "mixed",
+      "selectionKind": "range",
+      "baseStateId": "base",
+      "headStateId": "head",
+      "coverageTags": ["mixed", "overlap", "range", "reconciliation"],
+      "states": [
+        {"id": "base", "files": {
+          "package.json": "{\"name\":\"mixed-status\",\"type\":\"module\"}\n",
+          "src/status.ts": "export function status() { return 'starting'; }\n"
+        }},
+        {"id": "first", "files": {
+          "package.json": "{\"name\":\"mixed-status\",\"type\":\"module\"}\n",
+          "src/status.ts": "export function status() { return 'ready'; }\n"
+        }},
+        {"id": "second", "files": {
+          "package.json": "{\"name\":\"mixed-status\",\"type\":\"module\"}\n",
+          "src/status.ts": "export type Status = { state: 'ready' | 'degraded'; detail?: string };\nexport function status(): Status { return { state: 'ready' }; }\n"
+        }},
+        {"id": "head", "files": {
+          "package.json": "{\"name\":\"mixed-status\",\"type\":\"module\"}\n",
+          "src/status.ts": "export type Status = { state: 'ready' | 'degraded'; detail?: string };\nexport function status(dependencyReady = true): Status { return dependencyReady ? { state: 'ready' } : { state: 'degraded', detail: 'dependency unavailable' }; }\n"
+        }}
+      ],
+      "components": [
+        {"selector": "commit:simple-status", "baseStateId": "base", "headStateId": "first"},
+        {"selector": "commit:structured-status", "baseStateId": "first", "headStateId": "second"},
+        {"selector": "commit:degraded-status", "baseStateId": "second", "headStateId": "head"}
+      ]
+    },
+    {
+      "id": "change:mixed-revert-range",
+      "repositoryFamilyId": "repository:change-mixed-app-a",
+      "partition": "development",
+      "ecosystem": "mixed",
+      "selectionKind": "range",
+      "baseStateId": "base",
+      "headStateId": "head",
+      "coverageTags": ["mixed", "revert", "range", "zero-delta"],
+      "states": [
+        {"id": "base", "files": {
+          "package.json": "{\"name\":\"mixed-revert\",\"type\":\"module\"}\n",
+          "src/status.js": "export const status = 'ready';\n"
+        }},
+        {"id": "added", "files": {
+          "package.json": "{\"name\":\"mixed-revert\",\"type\":\"module\"}\n",
+          "src/status.js": "export const status = 'ready';\n",
+          "src/temporary-feature.js": "export function temporaryFeature(value) { return value.toUpperCase(); }\n"
+        }},
+        {"id": "reworked", "files": {
+          "package.json": "{\"name\":\"mixed-revert\",\"type\":\"module\"}\n",
+          "src/status.js": "export const status = 'ready';\n",
+          "src/temporary-feature.js": "export function temporaryFeature(value) { return value.trim().toUpperCase(); }\n"
+        }},
+        {"id": "head", "files": {
+          "package.json": "{\"name\":\"mixed-revert\",\"type\":\"module\"}\n",
+          "src/status.js": "export const status = 'ready';\n"
+        }}
+      ],
+      "components": [
+        {"selector": "commit:add-temporary", "baseStateId": "base", "headStateId": "added"},
+        {"selector": "commit:rework-temporary", "baseStateId": "added", "headStateId": "reworked"},
+        {"selector": "commit:revert-temporary", "baseStateId": "reworked", "headStateId": "head"}
+      ]
+    },
+    {
+      "id": "change:dn-data-migration",
+      "repositoryFamilyId": "repository:change-dn-data-b",
+      "partition": "validation",
+      "ecosystem": "dotnet",
+      "selectionKind": "base-head",
+      "baseStateId": "base",
+      "headStateId": "head",
+      "coverageTags": ["dotnet", "migration", "data"],
+      "states": [
+        {"id": "base", "files": {
+          "src/Data/Data.csproj": "<Project Sdk=\"Microsoft.NET.Sdk\"><PropertyGroup><TargetFramework>net10.0</TargetFramework></PropertyGroup></Project>\n",
+          "src/Data/Customer.cs": "namespace Data;\npublic sealed class Customer { public required Guid Id { get; init; } public required string Name { get; init; } }\n"
+        }},
+        {"id": "head", "files": {
+          "src/Data/Data.csproj": "<Project Sdk=\"Microsoft.NET.Sdk\"><PropertyGroup><TargetFramework>net10.0</TargetFramework></PropertyGroup></Project>\n",
+          "src/Data/Customer.cs": "namespace Data;\npublic sealed class Customer { public required Guid Id { get; init; } public required string Name { get; init; } public string? PreferredLocale { get; init; } }\n",
+          "src/Data/Migrations/20260806_AddPreferredLocale.cs": "namespace Data.Migrations;\npublic sealed class AddPreferredLocale\n{\n    public string UpSql => \"ALTER TABLE customers ADD preferred_locale varchar(16) NULL\";\n    public string DownSql => \"ALTER TABLE customers DROP COLUMN preferred_locale\";\n}\n"
+        }}
+      ]
+    },
+    {
+      "id": "change:dn-data-integration",
+      "repositoryFamilyId": "repository:change-dn-data-b",
+      "partition": "validation",
+      "ecosystem": "dotnet",
+      "selectionKind": "base-head",
+      "baseStateId": "base",
+      "headStateId": "head",
+      "coverageTags": ["dotnet", "integration", "data", "production"],
+      "states": [
+        {"id": "base", "files": {
+          "src/Orders/Orders.csproj": "<Project Sdk=\"Microsoft.NET.Sdk.Web\"><PropertyGroup><TargetFramework>net10.0</TargetFramework></PropertyGroup></Project>\n",
+          "src/Orders/Order.cs": "namespace Orders;\npublic sealed record Order(Guid Id, decimal Total);\n"
+        }},
+        {"id": "head", "files": {
+          "src/Orders/Orders.csproj": "<Project Sdk=\"Microsoft.NET.Sdk.Web\"><PropertyGroup><TargetFramework>net10.0</TargetFramework></PropertyGroup></Project>\n",
+          "src/Orders/Order.cs": "namespace Orders;\npublic sealed record Order(Guid Id, decimal Total);\n",
+          "src/Orders/OrderRepository.cs": "namespace Orders;\npublic interface IOrderRepository { Task<Order?> FindAsync(Guid id, CancellationToken cancellationToken); }\npublic sealed class OrderRepository : IOrderRepository { public Task<Order?> FindAsync(Guid id, CancellationToken cancellationToken) => Task.FromResult<Order?>(new Order(id, 42m)); }\n",
+          "src/Orders/OrderEndpoints.cs": "namespace Orders;\npublic static class OrderEndpoints\n{\n    public static void MapOrderEndpoints(this WebApplication app) => app.MapGet(\"/orders/{id:guid}\", async (Guid id, IOrderRepository repository, CancellationToken token) => await repository.FindAsync(id, token) is { } order ? Results.Ok(order) : Results.NotFound());\n}\n"
+        }}
+      ]
+    },
+    {
+      "id": "change:dn-data-removal",
+      "repositoryFamilyId": "repository:change-dn-data-b",
+      "partition": "validation",
+      "ecosystem": "dotnet",
+      "selectionKind": "base-head",
+      "baseStateId": "base",
+      "headStateId": "head",
+      "coverageTags": ["dotnet", "deletion", "migration", "validation"],
+      "states": [
+        {"id": "base", "files": {
+          "src/Data/Customer.cs": "namespace Data;\npublic sealed class Customer { public required Guid Id { get; init; } public string? FaxNumber { get; init; } }\n",
+          "src/Data/CustomerMapper.cs": "namespace Data;\npublic static class CustomerMapper { public static object ToDto(Customer value) => new { value.Id, value.FaxNumber }; }\n"
+        }},
+        {"id": "head", "files": {
+          "src/Data/Customer.cs": "namespace Data;\npublic sealed class Customer { public required Guid Id { get; init; } }\n",
+          "src/Data/CustomerMapper.cs": "namespace Data;\npublic static class CustomerMapper { public static object ToDto(Customer value) => new { value.Id }; }\n",
+          "src/Data/Migrations/20260806_RemoveFaxNumber.cs": "namespace Data.Migrations;\npublic sealed class RemoveFaxNumber { public string UpSql => \"ALTER TABLE customers DROP COLUMN fax_number\"; public string DownSql => \"ALTER TABLE customers ADD fax_number varchar(32) NULL\"; }\n"
+        }}
+      ]
+    },
+    {
+      "id": "change:js-lib-formatting",
+      "repositoryFamilyId": "repository:change-js-lib-b",
+      "partition": "validation",
+      "ecosystem": "javascript",
+      "selectionKind": "base-head",
+      "baseStateId": "base",
+      "headStateId": "head",
+      "coverageTags": ["javascript", "formatting-only", "zero-delta"],
+      "states": [
+        {"id": "base", "files": {
+          "package.json": "{\"name\":\"number-tools\",\"type\":\"module\"}\n",
+          "src/sum.js": "export function sum(left, right) { return left + right; }\n"
+        }},
+        {"id": "head", "files": {
+          "package.json": "{\"name\":\"number-tools\",\"type\":\"module\"}\n",
+          "src/sum.js": "export function sum(left, right) {\n  return left + right;\n}\n"
+        }}
+      ]
+    },
+    {
+      "id": "change:js-lib-move",
+      "repositoryFamilyId": "repository:change-js-lib-b",
+      "partition": "validation",
+      "ecosystem": "javascript",
+      "selectionKind": "base-head",
+      "baseStateId": "base",
+      "headStateId": "head",
+      "coverageTags": ["javascript", "exact-move", "zero-delta"],
+      "states": [
+        {"id": "base", "files": {
+          "package.json": "{\"name\":\"number-tools\",\"type\":\"module\"}\n",
+          "src/number/sum.js": "export function sum(left, right) { return left + right; }\n"
+        }},
+        {"id": "head", "files": {
+          "package.json": "{\"name\":\"number-tools\",\"type\":\"module\"}\n",
+          "src/math/sum.js": "export function sum(left, right) { return left + right; }\n"
+        }}
+      ]
+    },
+    {
+      "id": "change:js-lib-quality",
+      "repositoryFamilyId": "repository:change-js-lib-b",
+      "partition": "validation",
+      "ecosystem": "javascript",
+      "selectionKind": "base-head",
+      "baseStateId": "base",
+      "headStateId": "head",
+      "coverageTags": ["javascript", "tests", "documentation"],
+      "states": [
+        {"id": "base", "files": {
+          "package.json": "{\"name\":\"number-tools\",\"type\":\"module\",\"scripts\":{\"test\":\"node --test\"}}\n",
+          "src/sum.js": "export function sum(left, right) { return left + right; }\n"
+        }},
+        {"id": "head", "files": {
+          "package.json": "{\"name\":\"number-tools\",\"type\":\"module\",\"scripts\":{\"test\":\"node --test\"}}\n",
+          "src/sum.js": "export function sum(left, right) { return left + right; }\n",
+          "test/sum.test.js": "import test from 'node:test';\nimport assert from 'node:assert/strict';\nimport { sum } from '../src/sum.js';\ntest('adds positive and negative values', () => { assert.equal(sum(2, -5), -3); });\n",
+          "README.md": "# number-tools\n\nsum(left, right) returns the JavaScript numeric sum of its two inputs. The function does not coerce or validate values.\n"
+        }}
+      ]
+    },
+    {
+      "id": "change:ts-service-integration",
+      "repositoryFamilyId": "repository:change-ts-service-c",
+      "partition": "test",
+      "ecosystem": "typescript",
+      "selectionKind": "base-head",
+      "baseStateId": "base",
+      "headStateId": "head",
+      "coverageTags": ["typescript", "integration", "production"],
+      "states": [
+        {"id": "base", "files": {
+          "package.json": "{\"name\":\"inventory-service\",\"type\":\"module\"}\n",
+          "src/inventory.ts": "export type Inventory = { sku: string; available: number };\n"
+        }},
+        {"id": "head", "files": {
+          "package.json": "{\"name\":\"inventory-service\",\"type\":\"module\"}\n",
+          "src/inventory.ts": "export type Inventory = { sku: string; available: number };\n",
+          "src/warehouse-client.ts": "import type { Inventory } from './inventory.js';\nexport class WarehouseUnavailable extends Error {}\nexport async function readInventory(baseUrl: string, sku: string, signal?: AbortSignal): Promise<Inventory> {\n  const response = await fetch(baseUrl + '/inventory/' + encodeURIComponent(sku), { signal, headers: { accept: 'application/json' } });\n  if (response.status === 404) return { sku, available: 0 };\n  if (!response.ok) throw new WarehouseUnavailable('Warehouse returned ' + response.status);\n  const payload: unknown = await response.json();\n  if (!payload || typeof payload !== 'object' || !('available' in payload)) throw new WarehouseUnavailable('Invalid warehouse response');\n  return { sku, available: Number(payload.available) };\n}\n"
+        }}
+      ]
+    },
+    {
+      "id": "change:ts-service-delivery",
+      "repositoryFamilyId": "repository:change-ts-service-c",
+      "partition": "test",
+      "ecosystem": "typescript",
+      "selectionKind": "base-head",
+      "baseStateId": "base",
+      "headStateId": "head",
+      "coverageTags": ["typescript", "delivery", "ci", "container"],
+      "states": [
+        {"id": "base", "files": {
+          "package.json": "{\"name\":\"inventory-service\",\"type\":\"module\",\"scripts\":{\"build\":\"tsc\"}}\n",
+          "src/index.ts": "console.log('inventory service');\n"
+        }},
+        {"id": "head", "files": {
+          "package.json": "{\"name\":\"inventory-service\",\"type\":\"module\",\"scripts\":{\"build\":\"tsc\"}}\n",
+          "src/index.ts": "console.log('inventory service');\n",
+          "Dockerfile": "FROM node:24-alpine AS build\nWORKDIR /app\nCOPY package.json tsconfig.json ./\nCOPY src ./src\nRUN npm run build\nFROM node:24-alpine\nWORKDIR /app\nCOPY --from=build /app/dist ./dist\nUSER node\nCMD [\"node\", \"dist/index.js\"]\n",
+          ".dockerignore": "node_modules\ndist\n.git\n",
+          ".github/workflows/ci.yml": "name: ci\non: [push, pull_request]\njobs:\n  verify:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n      - uses: actions/setup-node@v4\n        with:\n          node-version: 24\n      - run: npm ci\n      - run: npm run build\n",
+          "tsconfig.json": "{\"compilerOptions\":{\"target\":\"ES2022\",\"module\":\"NodeNext\",\"outDir\":\"dist\",\"strict\":true},\"include\":[\"src\"]}\n"
+        }}
+      ]
+    },
+    {
+      "id": "change:ts-service-tests",
+      "repositoryFamilyId": "repository:change-ts-service-c",
+      "partition": "test",
+      "ecosystem": "typescript",
+      "selectionKind": "base-head",
+      "baseStateId": "base",
+      "headStateId": "head",
+      "coverageTags": ["typescript", "tests", "integration-testing"],
+      "states": [
+        {"id": "base", "files": {
+          "package.json": "{\"name\":\"inventory-service\",\"type\":\"module\",\"scripts\":{\"test\":\"vitest run\"}}\n",
+          "src/stock.ts": "export function canReserve(available: number, requested: number) { return requested > 0 && requested <= available; }\n"
+        }},
+        {"id": "head", "files": {
+          "package.json": "{\"name\":\"inventory-service\",\"type\":\"module\",\"scripts\":{\"test\":\"vitest run\"}}\n",
+          "src/stock.ts": "export function canReserve(available: number, requested: number) { return requested > 0 && requested <= available; }\n",
+          "tests/stock.test.ts": "import { describe, expect, it } from 'vitest';\nimport { canReserve } from '../src/stock.js';\ndescribe('canReserve', () => { it('accepts only positive requests within stock', () => { expect(canReserve(4, 4)).toBe(true); expect(canReserve(4, 5)).toBe(false); expect(canReserve(4, 0)).toBe(false); }); });\n",
+          "tests/integration/reservation.test.ts": "import { expect, it } from 'vitest';\nit('maps an accepted reservation response', async () => { const transport = async () => ({ status: 201, body: { reserved: 2 } }); const response = await transport(); expect(response).toEqual({ status: 201, body: { reserved: 2 } }); });\n"
+        }}
+      ]
+    },
+    {
+      "id": "change:mixed-tool-feature",
+      "repositoryFamilyId": "repository:change-mixed-tool-c",
+      "partition": "test",
+      "ecosystem": "mixed",
+      "selectionKind": "base-head",
+      "baseStateId": "base",
+      "headStateId": "head",
+      "coverageTags": ["mixed", "production", "integration"],
+      "states": [
+        {"id": "base", "files": {
+          "src/Tool/Tool.csproj": "<Project Sdk=\"Microsoft.NET.Sdk\"><PropertyGroup><OutputType>Exe</OutputType><TargetFramework>net10.0</TargetFramework></PropertyGroup></Project>\n",
+          "src/Tool/Program.cs": "Console.WriteLine(\"tool ready\");\n",
+          "scripts/package.json": "{\"name\":\"tool-scripts\",\"type\":\"module\"}\n"
+        }},
+        {"id": "head", "files": {
+          "src/Tool/Tool.csproj": "<Project Sdk=\"Microsoft.NET.Sdk\"><PropertyGroup><OutputType>Exe</OutputType><TargetFramework>net10.0</TargetFramework></PropertyGroup></Project>\n",
+          "src/Tool/Program.cs": "using System.Diagnostics;\nif (args is [\"summarize\", var path]) { using var process = Process.Start(new ProcessStartInfo(\"node\", \"scripts/summarize.js \" + path) { RedirectStandardOutput = true, UseShellExecute = false }); Console.WriteLine(process?.StandardOutput.ReadToEnd()); } else { Console.Error.WriteLine(\"usage: tool summarize <file>\"); }\n",
+          "scripts/package.json": "{\"name\":\"tool-scripts\",\"type\":\"module\"}\n",
+          "scripts/summarize.js": "import { readFile } from 'node:fs/promises';\nconst input = JSON.parse(await readFile(process.argv[2], 'utf8'));\nconst values = Array.isArray(input.values) ? input.values : [];\nprocess.stdout.write(JSON.stringify({ count: values.length, total: values.reduce((sum, value) => sum + Number(value), 0) }));\n"
+        }}
+      ]
+    },
+    {
+      "id": "change:mixed-tool-simplify",
+      "repositoryFamilyId": "repository:change-mixed-tool-c",
+      "partition": "test",
+      "ecosystem": "mixed",
+      "selectionKind": "base-head",
+      "baseStateId": "base",
+      "headStateId": "head",
+      "coverageTags": ["mixed", "deletion", "documentation", "validation"],
+      "states": [
+        {"id": "base", "files": {
+          "src/Tool/Program.cs": "if (args.Contains(\"legacy-export\")) Console.WriteLine(\"legacy\"); else Console.WriteLine(\"current\");\n",
+          "scripts/legacy-export.js": "export function legacyExport(value) { return JSON.stringify({ legacy: value }); }\n",
+          "README.md": "# Tool\n\nCommands: current, legacy-export.\n"
+        }},
+        {"id": "head", "files": {
+          "src/Tool/Program.cs": "Console.WriteLine(\"current\");\n",
+          "README.md": "# Tool\n\nRun current for the supported output. The obsolete legacy-export command was removed; use the versioned JSON export API for migration.\n"
+        }}
+      ]
+    },
+    {
+      "id": "change:mixed-tool-range",
+      "repositoryFamilyId": "repository:change-mixed-tool-c",
+      "partition": "test",
+      "ecosystem": "mixed",
+      "selectionKind": "range",
+      "baseStateId": "base",
+      "headStateId": "head",
+      "coverageTags": ["mixed", "clean-disjoint", "range", "additivity"],
+      "states": [
+        {"id": "base", "files": {
+          "src/Tool/Tool.csproj": "<Project Sdk=\"Microsoft.NET.Sdk\"><PropertyGroup><TargetFramework>net10.0</TargetFramework></PropertyGroup></Project>\n",
+          "scripts/package.json": "{\"name\":\"tool-scripts\",\"type\":\"module\"}\n"
+        }},
+        {"id": "code", "files": {
+          "src/Tool/Tool.csproj": "<Project Sdk=\"Microsoft.NET.Sdk\"><PropertyGroup><TargetFramework>net10.0</TargetFramework></PropertyGroup></Project>\n",
+          "src/Tool/Counter.cs": "namespace Tool;\npublic static class Counter { public static int Count(IEnumerable<string> values) => values.Count(); }\n",
+          "scripts/package.json": "{\"name\":\"tool-scripts\",\"type\":\"module\"}\n"
+        }},
+        {"id": "tests", "files": {
+          "src/Tool/Tool.csproj": "<Project Sdk=\"Microsoft.NET.Sdk\"><PropertyGroup><TargetFramework>net10.0</TargetFramework></PropertyGroup></Project>\n",
+          "src/Tool/Counter.cs": "namespace Tool;\npublic static class Counter { public static int Count(IEnumerable<string> values) => values.Count(); }\n",
+          "scripts/package.json": "{\"name\":\"tool-scripts\",\"type\":\"module\"}\n",
+          "tests/Tool.Tests/CounterTests.cs": "using Xunit;\nnamespace Tool.Tests;\npublic sealed class CounterTests { [Fact] public void CountsValues() => Assert.Equal(2, Counter.Count(new[] { \"a\", \"b\" })); }\n"
+        }},
+        {"id": "head", "files": {
+          "src/Tool/Tool.csproj": "<Project Sdk=\"Microsoft.NET.Sdk\"><PropertyGroup><TargetFramework>net10.0</TargetFramework></PropertyGroup></Project>\n",
+          "src/Tool/Counter.cs": "namespace Tool;\npublic static class Counter { public static int Count(IEnumerable<string> values) => values.Count(); }\n",
+          "scripts/package.json": "{\"name\":\"tool-scripts\",\"type\":\"module\"}\n",
+          "tests/Tool.Tests/CounterTests.cs": "using Xunit;\nnamespace Tool.Tests;\npublic sealed class CounterTests { [Fact] public void CountsValues() => Assert.Equal(2, Counter.Count(new[] { \"a\", \"b\" })); }\n",
+          "README.md": "# Counter tool\n\nCounter.Count returns the number of supplied values. Empty input returns zero.\n"
+        }}
+      ],
+      "components": [
+        {"selector": "commit:counter-code", "baseStateId": "base", "headStateId": "code"},
+        {"selector": "commit:counter-tests", "baseStateId": "code", "headStateId": "tests"},
+        {"selector": "commit:counter-docs", "baseStateId": "tests", "headStateId": "head"}
+      ]
+    }
+  ]
+}

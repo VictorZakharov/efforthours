@@ -33,7 +33,17 @@ public sealed partial class FairbillApplication
                 standardOutput,
                 standardError,
                 cancellationToken).ConfigureAwait(false),
+            "change-scaffold" => await ScaffoldChangeCalibrationAsync(
+                [.. arguments.Skip(1)],
+                standardOutput,
+                standardError,
+                cancellationToken).ConfigureAwait(false),
             "compile" => await CompileCalibrationAsync(
+                [.. arguments.Skip(1)],
+                standardOutput,
+                standardError,
+                cancellationToken).ConfigureAwait(false),
+            "change-compile" => await CompileChangeCalibrationAsync(
                 [.. arguments.Skip(1)],
                 standardOutput,
                 standardError,
@@ -63,11 +73,18 @@ public sealed partial class FairbillApplication
                 standardOutput,
                 standardError,
                 cancellationToken).ConfigureAwait(false),
+            "change-evaluate" => await EvaluateChangeCalibrationAsync(
+                [.. arguments.Skip(1)],
+                standardOutput,
+                standardError,
+                cancellationToken).ConfigureAwait(false),
             _ => await UsageErrorAsync(
                 standardError,
-                "Expected 'calibration scaffold', 'calibration compile', " +
+                "Expected 'calibration scaffold', 'calibration change-scaffold', " +
+                "'calibration compile', 'calibration change-compile', " +
                 "'calibration review-scaffold', 'calibration review-compile', " +
-                "'calibration mutations', 'calibration validate', or 'calibration evaluate'.")
+                "'calibration mutations', 'calibration validate', 'calibration evaluate', " +
+                "or 'calibration change-evaluate'.")
                 .ConfigureAwait(false),
         };
     }
@@ -296,12 +313,15 @@ public sealed partial class FairbillApplication
     private const string CalibrationHelpText = """
         Usage:
           fairbill calibration scaffold <estimate.json> [--blind] [--compact] [--output <path>]
+          fairbill calibration change-scaffold <change-estimate.json> --repository-family <id> --case <id> --tag <tag>... [--blind] [--compact] [--output <path>]
           fairbill calibration compile <review-plan.json> <estimate.json>... [--compact] [--output <path>]
+          fairbill calibration change-compile <review-plan.json> <change-estimate.json>... [--compact] [--output <path>]
           fairbill calibration review-scaffold <corpus.json> [--blind] [--compact] [--output <path>]
           fairbill calibration review-compile <plan.json> <corpus.json> [--compact] [--output <path>]
           fairbill calibration mutations <suite.json> <estimate.json>... [--compact] [--output <path>]
           fairbill calibration validate <corpus.json> [--compact] [--output <path>]
           fairbill calibration evaluate <corpus.json> <estimate.json>... --partition <name> [--compact] [--output <path>]
+          fairbill calibration change-evaluate <corpus.json> <change-estimate.json>... --partition <name> [--compact] [--output <path>]
 
         Calibration is offline and effort-only. Reviewed labels are weak supervision,
         not historical labor or literal ground truth.

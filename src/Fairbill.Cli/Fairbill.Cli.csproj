@@ -7,7 +7,7 @@
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>fairbill</ToolCommandName>
     <PackageId>Fairbill.Tool</PackageId>
-    <Version>0.8.0-alpha.1</Version>
+    <Version>0.8.0-alpha.2</Version>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageTags>estimation;developer-tools;cli;repository-analysis</PackageTags>
   </PropertyGroup>

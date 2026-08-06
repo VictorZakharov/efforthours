@@ -9,7 +9,7 @@
     "src/Fairbill.Analyzers.DotNet/CSharpFileAnalyzer.cs": 750,
     "src/Fairbill.Analyzers.JavaScript/JavaScriptRepositoryAnalyzer.cs": 825,
     "src/Fairbill.Analyzers.JavaScript/JavaScriptSyntaxAnalyzer.cs": 850,
-    "src/Fairbill.Contracts/ContractValidation.cs": 1850,
+    "src/Fairbill.Contracts/ContractValidation.cs": 750,
     "src/Fairbill.Contracts/V1/CalibrationContracts.cs": 750,
     "src/Fairbill.Estimation/SeedCapabilityBuilder.cs": 1350,
     "src/Fairbill.Estimation/SeedEvidenceIndex.cs": 550,
