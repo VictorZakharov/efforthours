@@ -150,8 +150,15 @@ Status as of August 6, 2026:
 - Milestone 7B2 is complete: exact-digest second-review packets and compilation,
   distinct reviewer-identity enforcement, mutation suite/report contracts, a
   regression exit code, and the first 8-case/14-assertion synthetic .NET guardrail
-  baseline are implemented. The pilot still lacks an actual independent review,
-  and JavaScript/TypeScript and mixed mutation families remain.
+  baseline are implemented. At that checkpoint the pilot still lacked an actual
+  independent review, and JavaScript/TypeScript and mixed mutation families were
+  deferred to 7B3.
+- Milestone 7B3 is complete: the public synthetic baseline now has 30 cases and 84
+  passing assertions across .NET, JavaScript, TypeScript, and mixed repositories;
+  low/expected/high behavior, generated customization, and test/category isolation
+  are explicit. `seed-rules/0.2.1` fixes TypeScript ownership during exact-duplicate
+  and test-structure normalization without changing any numerical prior. The pilot
+  labels remain frozen and still lack independent correction.
 
 ### Milestone 0: Product and contract decisions
 
@@ -233,7 +240,7 @@ Exit condition: every hour in an estimate traces to named work items and evidenc
 there is no unexplained repository-level total multiplier.
 
 Implementation note: `MILESTONE_5.md` records the detailed design. The checked-in
-`models/seed-rules/0.2.0.json` artifact is schema-validated and embedded into the
+`models/seed-rules/0.2.1.json` artifact is schema-validated and embedded into the
 estimation assembly for deterministic offline loading. Broad inventory facts yield
 to fine semantic facts, exact byte-identical maintained bodies are normalized,
 general source structure supplies residual implementation work, and specialized
@@ -271,16 +278,16 @@ full view, and every compact capability retains a stable `explain` path.
 Exit condition: the local model improves held-out agreement and calibration over
 the seed rules without making reports opaque.
 
-Implementation note: `MILESTONE_7.md` records the staged design. Milestones 7A,
-7B1, and 7B2 are implemented without an ML dependency: reviewed labels remain
+Implementation note: `MILESTONE_7.md` records the staged design. Milestones 7A and
+7B1 through 7B3 are implemented without an ML dependency: reviewed labels remain
 separate from canonical candidate estimates, every repository and its
 revisions/profiles stay in one partition, completed capability and subsequent
 review decisions compile back to full evidence lineage, and
 `calibration-metrics/1.0.0` reports deterministic low/expected/high error, bias,
 interval coverage, and work-item mapping coverage. Versioned mutation relations
-now guard invariance, directionality, and category isolation. The seed model
-remains uncalibrated until the licensed corpus is diverse and independently
-reviewed.
+now guard invariance, directionality, range behavior, generated customization, and
+category isolation across the initial ecosystems. The seed model remains
+uncalibrated until the licensed corpus is diverse and independently reviewed.
 
 ### Milestone 8: Host AI integration and measurement
 
@@ -378,8 +385,9 @@ benchmark corpus exists.
    compile corrections without exposing the test partition to tuning.
 2. Add redistributable repository families per ecosystem and partition, then
    extend the published seed category/total baselines.
-3. Expand mutation guardrails to JavaScript/TypeScript, mixed repositories,
-   generated customization, near-duplicates, and low/high range behavior.
+3. Expand mutation guardrails to near-duplicates, dead-code shapes, data,
+   persistence, security, coverage levels, and more realistic multi-package
+   boundaries.
 4. Extend performance and safety measurements to curated, redistributable mixed
    repository shapes and peak-memory measurements.
 5. Evaluate a compiler-grade TypeScript adapter only if reviewed calibration shows

@@ -26,6 +26,25 @@ Because Fairbill's own anchor informed the seed-model and calibration design, it
 a development diagnostic rather than an eligible held-out test record unless a
 future independent snapshot and review policy explicitly establishes otherwise.
 
+## 2026-08-06: `seed-rules/0.2.1` normalization revision
+
+Status: **qualitative guardrail correction; no prior calibration**
+
+The Milestone 7B3 TypeScript exact-copy mutation exposed an ecosystem-ownership
+defect: the common scanner tags `.ts` files as `ecosystem:typescript`, while the
+package estimator deliberately groups JavaScript and TypeScript under a shared
+`javascript` scope. The duplicate and production/test normalizer therefore skipped
+TypeScript file facts. Version 0.2.1 treats those tags as compatible.
+
+The `models/seed-rules/0.2.1.json` numerical priors are identical to 0.2.0. No
+teacher target, test-partition label, repository total, or preferred hour value was
+used to choose the correction. The new artifact digest is
+`sha256:57378795593acd2ff0a2f4361698193a11dca86da11493f072da6a9f9b344d4e`.
+The public synthetic 0.2.0 suite passes all 84 qualitative assertions across 30
+source states. The frozen public-pilot corpus and its 0.2.0 source-estimate
+provenance remain unchanged; 0.2.1 has not yet received a new repository-level
+logical-review anchor.
+
 ## 2026-08-05: Fairbill at `f84a58a`
 
 Status: **provisional logical-review anchor; not calibration data**

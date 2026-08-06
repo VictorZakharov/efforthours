@@ -25,7 +25,7 @@ public sealed class CliTests
         Assert.Equal(string.Empty, result.StandardError);
         using JsonDocument document = JsonDocument.Parse(result.StandardOutput);
         Assert.Equal("seed-rules", document.RootElement.GetProperty("id").GetString());
-        Assert.Equal("0.2.0", document.RootElement.GetProperty("version").GetString());
+        Assert.Equal("0.2.1", document.RootElement.GetProperty("version").GetString());
         Assert.Equal(
             "experimental-uncalibrated",
             document.RootElement.GetProperty("status").GetString());
@@ -71,7 +71,7 @@ public sealed class CliTests
         Assert.Equal(string.Empty, result.StandardError);
         using JsonDocument document = JsonDocument.Parse(result.StandardOutput);
         Assert.Equal("1.0.0", document.RootElement.GetProperty("schemaVersion").GetString());
-        Assert.Equal("seed-rules/0.2.0", document.RootElement.GetProperty("estimatorVersion").GetString());
+        Assert.Equal("seed-rules/0.2.1", document.RootElement.GetProperty("estimatorVersion").GetString());
         Assert.True(document.RootElement.GetProperty("totalEffort").GetProperty("expected").GetDecimal() > 0m);
         Assert.True(document.RootElement.GetProperty("workItems").GetArrayLength() > 0);
         Assert.Equal(
@@ -465,7 +465,7 @@ public sealed class CliTests
         Assert.Equal(string.Empty, passing.StandardError);
         using JsonDocument passingReport = JsonDocument.Parse(await File.ReadAllTextAsync(reportPath));
         Assert.True(passingReport.RootElement.GetProperty("allPassed").GetBoolean());
-        Assert.Equal(1, passingReport.RootElement.GetProperty("passedCount").GetInt32());
+        Assert.Equal(3, passingReport.RootElement.GetProperty("passedCount").GetInt32());
 
         Assert.Equal(5, failing.ExitCode);
         Assert.Equal(string.Empty, failing.StandardError);
@@ -518,7 +518,7 @@ public sealed class CliTests
 
         Assert.Equal(0, result.ExitCode);
         Assert.Contains("Profile: `recreation`", result.StandardOutput, StringComparison.Ordinal);
-        Assert.Contains("Estimator: `seed-rules/0.2.0`", result.StandardOutput, StringComparison.Ordinal);
+        Assert.Contains("Estimator: `seed-rules/0.2.1`", result.StandardOutput, StringComparison.Ordinal);
         Assert.Contains("| Human-hours |", result.StandardOutput, StringComparison.Ordinal);
         Assert.Contains("| Replacement cost (USD) |", result.StandardOutput, StringComparison.Ordinal);
     }
@@ -568,7 +568,7 @@ public sealed class CliTests
         Assert.Equal(0, result.ExitCode);
         Assert.Equal(string.Empty, result.StandardError);
         using JsonDocument document = JsonDocument.Parse(result.StandardOutput);
-        Assert.Equal("seed-rules/0.2.0", document.RootElement.GetProperty("estimatorVersion").GetString());
+        Assert.Equal("seed-rules/0.2.1", document.RootElement.GetProperty("estimatorVersion").GetString());
         Assert.True(
             document.RootElement.GetProperty("totalEffort").GetProperty("expected").GetDecimal() > 0m);
         Assert.Contains(
@@ -916,6 +916,30 @@ public sealed class CliTests
                     ["minimumDifferenceHours"] = shouldPass ? 1m : 0m,
                     ["maximumDifferenceHours"] = shouldPass ? 1m : 0m,
                     ["rationale"] = "Synthetic candidate changes expected effort by one hour.",
+                },
+                new JsonObject
+                {
+                    ["id"] = "low-total-change",
+                    ["family"] = "range-behavior",
+                    ["subjectCaseId"] = "subject",
+                    ["referenceCaseId"] = "reference",
+                    ["point"] = "low",
+                    ["scope"] = "repository-total",
+                    ["minimumDifferenceHours"] = 1m,
+                    ["maximumDifferenceHours"] = 1m,
+                    ["rationale"] = "Synthetic candidate changes low effort by one hour.",
+                },
+                new JsonObject
+                {
+                    ["id"] = "high-total-change",
+                    ["family"] = "range-behavior",
+                    ["subjectCaseId"] = "subject",
+                    ["referenceCaseId"] = "reference",
+                    ["point"] = "high",
+                    ["scope"] = "repository-total",
+                    ["minimumDifferenceHours"] = 1m,
+                    ["maximumDifferenceHours"] = 1m,
+                    ["rationale"] = "Synthetic candidate changes high effort by one hour.",
                 },
             },
         }.ToJsonString();

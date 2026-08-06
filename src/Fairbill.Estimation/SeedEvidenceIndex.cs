@@ -381,7 +381,7 @@ internal sealed class SeedEvidenceIndex
 
     private bool IsOwnedBy(SeedFileEvidence file, SeedEstimationScope scope)
     {
-        if (file.Ecosystems.Count > 0 && !file.Ecosystems.Contains(scope.Ecosystem, StringComparer.Ordinal))
+        if (!MatchesScopeEcosystem(file, scope))
         {
             return false;
         }
@@ -389,6 +389,13 @@ internal sealed class SeedEvidenceIndex
         SeedEstimationScope? owner = FindScopeForPath(file.Path, scope.Ecosystem);
         return owner?.Id == scope.Id;
     }
+
+    private static bool MatchesScopeEcosystem(
+        SeedFileEvidence file,
+        SeedEstimationScope scope) =>
+        file.Ecosystems.Count == 0 ||
+        file.Ecosystems.Contains(scope.Ecosystem, StringComparer.Ordinal) ||
+        scope.Ecosystem == "javascript" && file.Ecosystems.Contains("typescript", StringComparer.Ordinal);
 
     private static bool IsAnalyzedSource(SeedFileEvidence file, string ecosystem)
     {

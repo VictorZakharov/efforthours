@@ -254,6 +254,75 @@ internal static class TestRepositoryEvidence
         };
     }
 
+    public static RepositoryEvidence CreateStructuredTypeScript(int sourceCopies = 1)
+    {
+        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(sourceCopies);
+
+        EvidenceProvenance measured = Provenance(EvidenceSourceKind.Measured, "synthetic measurement");
+        EvidenceProvenance inferred = Provenance(EvidenceSourceKind.Inferred, "synthetic inference");
+        List<EvidenceFact> facts =
+        [
+            new EvidenceFact
+            {
+                Id = "javascript:package:package.json",
+                Kind = EvidenceKinds.JavaScriptPackage,
+                Scope = ".",
+                Summary = "Synthetic TypeScript package.",
+                Provenance = inferred,
+                Locations = [new EvidenceLocation { Path = "package.json" }],
+                Measurements =
+                [
+                    new EvidenceMeasurement { Name = "dependencies", Value = 0m, Unit = "references" },
+                    new EvidenceMeasurement { Name = "scripts", Value = 0m, Unit = "scripts" },
+                    new EvidenceMeasurement { Name = "workspace-patterns", Value = 0m, Unit = "patterns" },
+                ],
+                Tags = ["package-role:package", "package:private"],
+            },
+        ];
+
+        for (int index = 0; index < sourceCopies; index++)
+        {
+            facts.Add(FileFact(
+                $"src/status-{index + 1}.ts",
+                "source",
+                new string('t', 64),
+                measured,
+                "language:typescript",
+                "ecosystem:typescript"));
+        }
+
+        facts.Add(new EvidenceFact
+        {
+            Id = "javascript:source-structure:.",
+            Kind = EvidenceKinds.SourceStructure,
+            Scope = ".",
+            Summary = "Synthetic TypeScript source structure.",
+            Provenance = measured,
+            Locations = [new EvidenceLocation { Path = "src/status-1.ts" }],
+            Measurements =
+            [
+                new EvidenceMeasurement { Name = "files", Value = sourceCopies, Unit = "files" },
+                new EvidenceMeasurement { Name = "token-backed-files", Value = sourceCopies, Unit = "files" },
+                new EvidenceMeasurement { Name = "functions", Value = sourceCopies, Unit = "functions" },
+                new EvidenceMeasurement { Name = "interfaces", Value = sourceCopies, Unit = "interfaces" },
+                new EvidenceMeasurement { Name = "exports", Value = sourceCopies * 2m, Unit = "exports" },
+            ],
+            Tags = ["syntax:token-backed"],
+        });
+
+        return new RepositoryEvidence
+        {
+            Repository = new RepositoryDescriptor
+            {
+                Name = "Structured synthetic TypeScript repository",
+                Scope = ".",
+                Ecosystems = ["typescript"],
+                SourceDigest = $"sha256:structured-typescript-{sourceCopies}",
+            },
+            Facts = facts,
+        };
+    }
+
     private static EvidenceFact FileFact(
         string path,
         string role,

@@ -5,7 +5,7 @@ namespace Fairbill.Estimation;
 
 public sealed class SeedEstimator : IEstimator
 {
-    public const string Version = "seed-rules/0.2.0";
+    public const string Version = "seed-rules/0.2.1";
 
     private static readonly HashSet<string> KnownEvidenceKinds =
     [

@@ -2,17 +2,17 @@
 
 ## Status
 
-Milestone 7A, the Milestone 7B1 public-pilot checkpoint, and the Milestone 7B2
-review/mutation checkpoint were implemented on August 6, 2026. They establish the
-versioned review corpus, low-cost authoring and compilation boundaries,
-deterministic offline evaluation, initial licensed labels, exact-digest subsequent
-review, and relational model guardrails needed before Fairbill adopts any learned
-model. The seed estimator remains `experimental-uncalibrated`; this milestone does
-not make its current hours production-ready.
+Milestone 7A and the Milestone 7B1 through 7B3 public-pilot, review, and mutation
+checkpoints were implemented on August 6, 2026. They establish the versioned review
+corpus, low-cost authoring and compilation boundaries, deterministic offline
+evaluation, initial licensed labels, exact-digest subsequent review, and
+cross-ecosystem relational model guardrails needed before Fairbill adopts any
+learned model. The seed estimator remains `experimental-uncalibrated`; this
+milestone does not make its current hours production-ready.
 
 The pilot still has one host-AI teacher and no independent correction. Milestone
-7B is therefore in progress: broader repository and JavaScript/TypeScript/mixed
-mutation coverage plus an actual independent review are required before numerical
+7B is therefore in progress: broader licensed repository coverage, more complex
+mutation families, and an actual independent review are required before numerical
 admission thresholds or model training. The presence of second-review tooling must
 not be confused with completion of that review.
 
@@ -124,6 +124,31 @@ allowed minimum and/or maximum difference. Missing categories are zero, which
 allows a test or documentation addition to be compared with an absent base
 category. A failed assertion still emits a complete deterministic report and
 returns exit code 5; malformed inputs use the ordinary invalid-input path.
+
+## Implemented Milestone 7B3 scope
+
+The cross-ecosystem mutation slice adds no schema, remote service, training
+dependency, or numerical prior change. It adds:
+
+1. parser-backed JavaScript formatting, exact-copy, generated, customized-generated,
+   API, unit-test, documentation, and external-integration variants;
+2. token-backed TypeScript formatting, exact-copy, generated, API, unit-test,
+   documentation, and external-integration variants;
+3. mixed .NET/JavaScript generated, .NET API, JavaScript UI, and TypeScript-test
+   variants;
+4. explicit low, expected, and high assertions for invariance and meaningful
+   category movement;
+5. nested synthetic test packages that prove test-only additions do not inflate
+   production categories; and
+6. `seed-rules/0.2.1`, a normalization correction that treats TypeScript file tags
+   as members of the shared JavaScript/TypeScript estimation scope.
+
+The aggregate public suite now contains 30 source states and 84 assertions. All
+relations pass `seed-rules/0.2.1`. The 0.2.1 JSON catalog has exactly the same
+numerical priors as 0.2.0; its version changes because the file-ownership correction
+can change estimates for TypeScript repositories containing exact copies or tests
+in a shared package scope. The frozen pilot labels and 0.2.0 candidate reports are
+not rewritten.
 
 ## Contract boundaries
 
@@ -296,7 +321,8 @@ IDs, unmatched candidate work-item IDs, and category mismatches for investigatio
 
 ## Baseline and model-admission gates
 
-The deterministic seed rules are the baseline every learned candidate must beat.
+The current deterministic `seed-rules/0.2.1` rules are the baseline every learned
+candidate must beat.
 A local model is considered only after the corpus contains multiple
 redistributable repository families and a frozen repository-level test partition.
 
@@ -321,8 +347,9 @@ model hyperparameters.
 
 ### Remaining 7B: corpus and baseline measurement
 
-- Expand synthetic mutations to JavaScript/TypeScript, mixed repositories,
-  near-duplicates, generated customization, more categories, and range behavior.
+- Expand synthetic mutations to near-duplicates, dead-code shapes, data,
+  persistence, security, coverage levels, more realistic multi-package boundaries,
+  and additional delivery categories.
 - Add diverse, redistributable real repositories with recorded licenses.
 - Expand the consistent teacher reviews and complete the prepared independent
   correction handoff with a genuinely distinct reviewer.
@@ -399,11 +426,29 @@ All seed assertions pass: formatting, exact excluded duplication, and convention
 generated output leave both expected total and production EHE unchanged; API,
 tests, documentation, and integration variants increase the intended totals or
 categories; test- and documentation-only variants leave production unchanged.
-This establishes qualitative invariant/directionality guardrails, not numerical
-accuracy. JavaScript/TypeScript and mixed mutation coverage remain open.
+This established the first qualitative invariant/directionality guardrails, not
+numerical accuracy. JavaScript/TypeScript and mixed mutation coverage was deferred
+to 7B3.
 
 The public-pilot blind packet covers all 3 records and 99 targets and pins source
 corpus digest
 `sha256:216ee9e2289290c43bb843a51cacd9b8cb8d5da0d9da50f90ff77cf0ed11d5c0`.
 All prior hours and rationales are absent. No completed second-review plan is
 checked in, so the source corpus correctly remains `teacher-estimate`.
+
+## Milestone 7B3 completion evidence
+
+The cross-ecosystem mutation checkpoint passes a zero-warning Release build, 83
+memory-only unit tests, and 19 disk-backed CLI end-to-end tests before the final
+release gate. The `Fairbill.Tool` version advances to `0.7.0-alpha.4`; the schema
+count remains 19 because this slice reuses the 7B2 mutation contracts. A dedicated
+memory-only regression proves TypeScript exact-copy normalization, and the existing
+process-level mutation test now exercises low, expected, and high points.
+
+The aggregate `public-synthetic/0.2.0` suite contains 30 canonical cases: 8 .NET,
+9 JavaScript, 8 TypeScript, and 5 mixed. All 84 assertions pass
+`seed-rules/0.2.1`. The baseline covers formatting and exact-copy invariance,
+conventional generated exclusion, separately maintained generated customization,
+API and UI directionality, represented unit tests and documentation, external
+integrations, missing-category zero behavior, and production/test category
+isolation. These remain qualitative relations, not reviewed numeric effort labels.

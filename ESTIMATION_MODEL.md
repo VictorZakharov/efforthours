@@ -223,11 +223,14 @@ Rules convert well-understood repository facts into work units, enforce exclusio
 apply transparent productivity priors, and provide guardrails against impossible
 or perverse results.
 
-The initial implementation is `seed-rules/0.2.0`. Its checked-in JSON artifact is
+The current implementation is `seed-rules/0.2.1`. Its checked-in JSON artifact is
 validated against the published seed-model schema and embedded for deterministic
-offline loading. Before applying priors, the estimator resolves project/package
-scope and role, separates production and test structure, gives fine semantic facts
-precedence over broad aggregates, and normalizes byte-identical maintained bodies.
+offline loading. Version 0.2.1 retains every numerical prior from 0.2.0 and fixes
+TypeScript file ownership in the shared JavaScript/TypeScript estimation scope so
+exact duplicates and test structure are normalized consistently. Before applying
+priors, the estimator resolves project/package scope and role, separates production
+and test structure, gives fine semantic facts precedence over broad aggregates,
+and normalizes byte-identical maintained bodies.
 
 The seed model combines a lower-rate general implementation backbone with explicit
 specialized work for API, UI, data, integration, security, validation, background,
@@ -325,9 +328,13 @@ The same slice adds versioned mutation guardrails. A mutation suite compares a
 subject and reference canonical estimate at one repository/category low, expected,
 or high point and asserts inclusive bounds on `subject - reference`. These
 relations test invariance, directionality, and category isolation. They are not
-effort labels and cannot be used as numerical training targets. The first public
-suite covers a small .NET archetype; JavaScript/TypeScript, mixed, and more complex
-mutation families remain required before learned-model admission.
+effort labels and cannot be used as numerical training targets. The public 0.2.0
+suite covers 30 small .NET, parser-backed JavaScript, token-backed TypeScript, and
+mixed-repository source states with 84 passing relations. It includes all three
+range points, exact duplication, conventional generated output, separately
+maintained generated customization, API/UI behavior, tests, documentation,
+integrations, and category isolation. Near-duplicates and more complex behavior
+families remain required before learned-model admission.
 
 The initial public pilot freezes three MIT-licensed repository families across
 development, validation, and test partitions and measures `seed-rules/0.2.0`.

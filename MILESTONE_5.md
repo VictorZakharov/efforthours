@@ -155,9 +155,21 @@ they do not create a new integration selection effort for every call.
 
 ## Seed-rule artifact
 
-The initial catalog is `models/seed-rules/0.2.0.json`. It is checked in for public
+The current catalog is `models/seed-rules/0.2.1.json`. It is checked in for public
 review and embedded into `Fairbill.Estimation` so normal execution does not depend
-on the current directory, external files, or network access.
+on the current directory, external files, or network access. The original 0.2.0
+artifact remains checked in because the frozen public-pilot labels and baseline
+reports record that source estimator.
+
+Version 0.2.1 became effective on August 6, 2026. It copies all 0.2.0 numerical
+priors unchanged and corrects one evidence-normalization defect: TypeScript files
+carry an `ecosystem:typescript` tag while their package estimation scope belongs to
+the shared `javascript` language family. Treating those tags as compatible makes
+exact TypeScript copies and TypeScript test structure participate in the same
+duplicate/production normalization already used by JavaScript. The change was
+triggered by the public 0.2.0 mutation expansion, not by tuning against reviewed
+hour labels. Its artifact digest is
+`sha256:57378795593acd2ff0a2f4361698193a11dca86da11493f072da6a9f9b344d4e`.
 
 The artifact records:
 

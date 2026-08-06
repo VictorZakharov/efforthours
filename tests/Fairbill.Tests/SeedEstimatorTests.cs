@@ -26,7 +26,7 @@ public sealed class SeedEstimatorTests
             Assert.InRange(item.Hours.Expected, 0.5m, 8m);
             Assert.Contains(EstimationProfile.Implementation, item.Profiles);
             Assert.StartsWith("seed-rule:", item.Estimator.Id, StringComparison.Ordinal);
-            Assert.Equal("0.2.0", item.Estimator.Version);
+            Assert.Equal("0.2.1", item.Estimator.Version);
             Assert.Contains("Rule '", item.Reason, StringComparison.Ordinal);
         });
         Assert.Equal(
@@ -135,6 +135,25 @@ public sealed class SeedEstimatorTests
                 item.Assumptions.Any(assumption => assumption.Contains(
                     "Exact duplicate source was normalized",
                     StringComparison.Ordinal)));
+    }
+
+    [Fact]
+    public void ExactDuplicateTypeScriptSourceDoesNotIncreaseRepresentedEffort()
+    {
+        EstimateReport single = _estimator.Estimate(
+            TestRepositoryEvidence.CreateStructuredTypeScript(sourceCopies: 1),
+            EstimationProfile.Implementation);
+        EstimateReport duplicated = _estimator.Estimate(
+            TestRepositoryEvidence.CreateStructuredTypeScript(sourceCopies: 2),
+            EstimationProfile.Implementation);
+
+        Assert.Equal(single.TotalEffort, duplicated.TotalEffort);
+        Assert.Contains(duplicated.Diagnostics, diagnostic => diagnostic.Code == "FB1003");
+        Assert.Contains(
+            duplicated.WorkItems,
+            item => item.Assumptions.Any(assumption => assumption.Contains(
+                "Exact duplicate source was normalized",
+                StringComparison.Ordinal)));
     }
 
     [Fact]

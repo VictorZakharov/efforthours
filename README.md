@@ -17,9 +17,9 @@ than reading an entire large repository.
 ## Status
 
 Milestones 1 through 6 and the Milestone 7A calibration foundation are complete.
-Milestone 7B1 public-pilot and 7B2 review/mutation checkpoints are implemented;
-actual independent correction and corpus expansion remain. The repository now
-contains:
+Milestone 7B1 through 7B3 public-pilot, review, and cross-ecosystem mutation
+checkpoints are implemented; actual independent correction and corpus expansion
+remain. The repository now contains:
 
 - versioned JSON contracts and published schemas for evidence, work items,
   estimates, diagnostics, and rate cards;
@@ -56,8 +56,10 @@ contains:
   security, tests, documentation, delivery, validation, and review;
 - explicit `implementation` and `recreation` profile work, deterministic confidence
   drivers, and a professionalization-gap ledger excluded from represented EHE; and
-- a schema-validated, checked-in, embedded `seed-rules/0.2.0` model that partitions
-  large capabilities around a four-hour target;
+- a schema-validated, checked-in, embedded `seed-rules/0.2.1` model that partitions
+  large capabilities around a four-hour target, retains the 0.2.0 priors, and
+  normalizes TypeScript duplicates and test structure through the shared
+  JavaScript/TypeScript estimation scope;
 - repository, category, scope, capability, and bounded review projections with
   compact JSON and readable Markdown;
 - `explain` drill-down from stable work-item or capability IDs to evidence and
@@ -78,9 +80,11 @@ contains:
 - exact-digest subsequent-review packets and compilation with explicit
   accept/replace decisions, preserved lineage, maturity progression, and distinct
   reviewer identities; and
-- versioned relational mutation guardrails plus an 8-case, 14-assertion synthetic
-  .NET baseline covering formatting, duplication, generated code, API behavior,
-  tests, documentation, and integrations.
+- versioned relational mutation guardrails plus a 30-case, 84-assertion synthetic
+  baseline spanning .NET, parser-backed JavaScript, token-backed TypeScript, and
+  mixed repositories. It covers formatting, exact duplication, generated bodies,
+  maintained generated customization, API/UI behavior, tests, documentation,
+  integrations, all three range points, and category isolation.
 
 `fairbill scan <folder>` now produces common, static .NET, and static
 JavaScript/TypeScript evidence, including mixed-repository output.

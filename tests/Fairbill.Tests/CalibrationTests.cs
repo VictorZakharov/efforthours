@@ -388,6 +388,54 @@ public sealed class CalibrationTests
     }
 
     [Fact]
+    public void MutationEvaluationReadsLowAndHighPointsAndTreatsMissingCategoriesAsZeroInMemory()
+    {
+        EstimateReport reference = CreateCandidate();
+        EstimateReport subject = IncreaseProduction(reference, "sha256:mutated");
+        CalibrationMutationSuite source = CreateMutationSuite(reference, subject);
+        CalibrationMutationAssertion production = source.Assertions[1];
+        CalibrationMutationSuite suite = source with
+        {
+            Assertions =
+            [
+                production with
+                {
+                    Id = "mutation:production-low",
+                    Point = CalibrationMutationPoint.Low,
+                    MinimumDifferenceHours = 1m,
+                    MaximumDifferenceHours = 1m,
+                },
+                production with
+                {
+                    Id = "mutation:production-high",
+                    Point = CalibrationMutationPoint.High,
+                    MinimumDifferenceHours = 1m,
+                    MaximumDifferenceHours = 1m,
+                },
+                production with
+                {
+                    Id = "mutation:missing-documentation",
+                    Category = EffortCategory.Documentation,
+                    MinimumDifferenceHours = 0m,
+                    MaximumDifferenceHours = 0m,
+                },
+            ],
+        };
+
+        CalibrationMutationReport report = CalibrationMutationEvaluator.Evaluate(
+            suite,
+            [reference, subject]);
+        CalibrationMutationAssertionResult missing = report.Assertions.Single(
+            assertion => assertion.Id == "mutation:missing-documentation");
+
+        Assert.True(report.AllPassed);
+        Assert.Equal(3, report.PassedCount);
+        Assert.Equal(0m, missing.SubjectHours);
+        Assert.Equal(0m, missing.ReferenceHours);
+        Assert.Equal(0m, missing.DifferenceHours);
+    }
+
+    [Fact]
     public void CorpusRoundTripsAndSatisfiesPublishedSchemaWithoutStorage()
     {
         CalibrationCorpus corpus = CreateCorpus();

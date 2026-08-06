@@ -17,7 +17,7 @@ public sealed class SeedRuleCatalogTests
 
         Assert.True(validation.IsValid, string.Join(Environment.NewLine, validation.Errors));
         Assert.Equal("seed-rules", info.Id);
-        Assert.Equal("0.2.0", info.Version);
+        Assert.Equal("0.2.1", info.Version);
         Assert.Equal(SeedEstimator.Version, info.EstimatorVersion);
         Assert.Equal("experimental-uncalibrated", info.Status);
         Assert.Equal(2026, info.TechnologyBaselineYear);

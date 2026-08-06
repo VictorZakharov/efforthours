@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "target": "ES2025",
+    "module": "ESNext",
+    "strict": true,
+    "noEmit": true
+  },
+  "include": ["src/**/*.ts", "test/**/*.ts"]
+}
