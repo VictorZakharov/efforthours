@@ -17,7 +17,7 @@ than reading an entire large repository.
 ## Status
 
 Milestones 1 through 6 and the Milestone 7A calibration foundation are complete.
-Milestone 7B1 through 7B3 public-pilot, review, and cross-ecosystem mutation
+Milestone 7B1 through 7B4 public-pilot, review, and mutation
 checkpoints are implemented; actual independent correction and corpus expansion
 remain. The repository now contains:
 
@@ -80,11 +80,13 @@ remain. The repository now contains:
 - exact-digest subsequent-review packets and compilation with explicit
   accept/replace decisions, preserved lineage, maturity progression, and distinct
   reviewer identities; and
-- versioned relational mutation guardrails plus a 30-case, 84-assertion synthetic
+- versioned relational mutation guardrails plus a 48-case, 156-assertion synthetic
   baseline spanning .NET, parser-backed JavaScript, token-backed TypeScript, and
   mixed repositories. It covers formatting, exact duplication, generated bodies,
-  maintained generated customization, API/UI behavior, tests, documentation,
-  integrations, all three range points, and category isolation.
+  maintained generated customization, bounded renamed near-copies,
+  compiler-disabled C# syntax, API/UI/data/security behavior, tests, declared
+  coverage levels, documentation, integrations, workspace boundaries, CI,
+  containers, all three range points, and category isolation.
 
 `fairbill scan <folder>` now produces common, static .NET, and static
 JavaScript/TypeScript evidence, including mixed-repository output.
@@ -112,7 +114,9 @@ packet from an existing corpus. `review-compile` advances maturity only after a
 distinct reviewer decides every target and the exact source-corpus digest matches.
 The checked-in pilot packet is still unreviewed. `fairbill calibration mutations`
 evaluates deterministic relational guardrails; failures emit a report and return
-exit code 5. Mutation relations are not effort labels.
+exit code 5. Mutation relations are not effort labels. The latest near-copy bounds
+do not imply semantic clone detection, and the dead-code invariant is limited to
+C# syntax excluded by the compiler preprocessor rather than general reachability.
 
 Fairbill is intended to be released as open-source software. Development should be
 public-repository-ready from the beginning, even before the repository is published.

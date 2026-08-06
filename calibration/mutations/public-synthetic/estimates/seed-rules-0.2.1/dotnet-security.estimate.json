@@ -1,0 +1,593 @@
+{
+  "schemaVersion": "1.0.0",
+  "evidenceSchemaVersion": "1.0.0",
+  "estimatorVersion": "seed-rules/0.2.1",
+  "repository": {
+    "name": "dotnet-security",
+    "scope": ".",
+    "ecosystems": [
+      "dotnet"
+    ],
+    "sourceDigest": "sha256:31f7f971f8cdd3ba5d4dc34ae82a4d2354bc5ddf6889e1086d78a081f113fb02"
+  },
+  "profile": "implementation",
+  "baseline": {
+    "id": "senior-contractor-2026-no-ai",
+    "workerProfile": "Competent senior contractor familiar with the technical ecosystem",
+    "technologyBaselineYear": 2026,
+    "businessDomainFamiliar": false,
+    "usesAi": false,
+    "description": "One senior contractor recreating the described working system with modern 2026 tools and no AI."
+  },
+  "totalEffort": {
+    "low": 9.50,
+    "expected": 20.00,
+    "high": 38.25
+  },
+  "categories": [
+    {
+      "category": "specification-comprehension-and-domain-learning",
+      "hours": {
+        "low": 0.75,
+        "expected": 1.50,
+        "high": 2.50
+      }
+    },
+    {
+      "category": "repository-and-solution-setup",
+      "hours": {
+        "low": 0.75,
+        "expected": 1.25,
+        "high": 2.00
+      }
+    },
+    {
+      "category": "architecture-and-technical-design",
+      "hours": {
+        "low": 1.00,
+        "expected": 1.75,
+        "high": 3.25
+      }
+    },
+    {
+      "category": "production-implementation",
+      "hours": {
+        "low": 1.25,
+        "expected": 2.50,
+        "high": 4.50
+      }
+    },
+    {
+      "category": "manual-validation-debugging-and-hardening",
+      "hours": {
+        "low": 0.75,
+        "expected": 1.50,
+        "high": 3.00
+      }
+    },
+    {
+      "category": "documentation",
+      "hours": {
+        "low": 0.50,
+        "expected": 1.00,
+        "high": 1.75
+      }
+    },
+    {
+      "category": "security-and-accessibility",
+      "hours": {
+        "low": 3.75,
+        "expected": 9.00,
+        "high": 18.75
+      }
+    },
+    {
+      "category": "self-review-and-system-integration",
+      "hours": {
+        "low": 0.75,
+        "expected": 1.50,
+        "high": 2.50
+      }
+    }
+  ],
+  "workItems": [
+    {
+      "schemaVersion": "1.0.0",
+      "id": "work:specification-comprehension:49aec33b6a46fb626dad:part-0001",
+      "category": "specification-comprehension-and-domain-learning",
+      "title": "Comprehend the supplied specification and bounded business domain",
+      "scope": ".",
+      "evidenceIds": [
+        "dotnet:project:src/App/App.csproj",
+        "dotnet:repository",
+        "dotnet:security:src/App/SecurityConfiguration.cs",
+        "inventory:repository"
+      ],
+      "quantity": 1,
+      "complexity": "moderate",
+      "hours": {
+        "low": 0.75,
+        "expected": 1.50,
+        "high": 2.50
+      },
+      "confidence": 0.61,
+      "reason": "The modeled contractor must understand the specified behavior and bounded domain represented across the repository before implementing it. Rule \u0027specification-comprehension\u0027 uses production-scopes=1, semantic-families=1; complexity \u0027moderate\u0027 applies factor 1.",
+      "estimator": {
+        "id": "seed-rule:specification-comprehension",
+        "version": "0.2.1",
+        "kind": "rule"
+      },
+      "profiles": [
+        "implementation",
+        "recreation"
+      ],
+      "dependencyIds": [],
+      "correlationGroup": "repository:understanding-and-design",
+      "assumptions": [
+        "A clear specification exists at the level promised by the selected profile.",
+        "Open-ended stakeholder discovery is excluded."
+      ],
+      "exclusions": [],
+      "uncertaintyReasons": [
+        "No external specification artifact is represented in the current estimator request contract.",
+        "Some supporting evidence is inferred rather than directly observed."
+      ]
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "id": "work:project-setup:6190f6c9a71886192151:part-0001",
+      "category": "repository-and-solution-setup",
+      "title": "Set up \u0027src/App/App.csproj\u0027 (web)",
+      "scope": "src/App/App.csproj",
+      "evidenceIds": [
+        "dotnet:project:src/App/App.csproj"
+      ],
+      "quantity": 1,
+      "complexity": "routine",
+      "hours": {
+        "low": 0.75,
+        "expected": 1.25,
+        "high": 2.00
+      },
+      "confidence": 0.68,
+      "reason": "A project or package manifest represents ecosystem setup, dependency selection, configuration, and validation work. Rule \u0027project-setup\u0027 uses scopes=1, target-frameworks=1; complexity \u0027routine\u0027 applies factor 0.85.",
+      "estimator": {
+        "id": "seed-rule:project-setup",
+        "version": "0.2.1",
+        "kind": "rule"
+      },
+      "profiles": [
+        "implementation",
+        "recreation"
+      ],
+      "dependencyIds": [],
+      "correlationGroup": "scope:dotnet:src/App/App.csproj:setup",
+      "assumptions": [],
+      "exclusions": [],
+      "uncertaintyReasons": [
+        "Some supporting evidence is inferred rather than directly observed."
+      ]
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "id": "work:architecture-design:5833c516fd8e0dd8c16a:part-0001",
+      "category": "architecture-and-technical-design",
+      "title": "Design the technical structure of \u0027src/App/App.csproj\u0027 (web)",
+      "scope": "src/App/App.csproj",
+      "evidenceIds": [
+        "dotnet:project:src/App/App.csproj",
+        "dotnet:security:src/App/SecurityConfiguration.cs"
+      ],
+      "quantity": 1,
+      "complexity": "moderate",
+      "hours": {
+        "low": 1.00,
+        "expected": 1.75,
+        "high": 3.25
+      },
+      "confidence": 0.65,
+      "reason": "Even with supplied requirements, a competent implementation requires bounded technical design across the observed boundaries. Rule \u0027architecture-design\u0027 uses production-scopes=1, boundary-families=1; complexity \u0027moderate\u0027 applies factor 1.",
+      "estimator": {
+        "id": "seed-rule:architecture-design",
+        "version": "0.2.1",
+        "kind": "rule"
+      },
+      "profiles": [
+        "implementation",
+        "recreation"
+      ],
+      "dependencyIds": [],
+      "correlationGroup": "scope:dotnet:src/App/App.csproj:design",
+      "assumptions": [
+        "Detailed product and visual design inputs are supplied under the implementation profile."
+      ],
+      "exclusions": [],
+      "uncertaintyReasons": [
+        "Some supporting evidence is inferred rather than directly observed."
+      ]
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "id": "work:dotnet-source-backbone:265126c6ef535c0fbb24:part-0001",
+      "category": "production-implementation",
+      "title": "Implement maintained internal logic for \u0027src/App/App.csproj\u0027 (web)",
+      "scope": "src/App/App.csproj",
+      "evidenceIds": [
+        "dotnet:source-structure:src/App/App.csproj"
+      ],
+      "quantity": 13,
+      "complexity": "moderate",
+      "hours": {
+        "low": 1.25,
+        "expected": 2.50,
+        "high": 4.50
+      },
+      "confidence": 0.78,
+      "reason": "Parser or token structure represents maintained internal logic that routine semantic classifiers cannot name. Rule \u0027dotnet-source-backbone\u0027 uses files=2, types=3, public-types=3, methods=2, public-methods=2, branch-points=1; complexity \u0027moderate\u0027 applies factor 1.",
+      "estimator": {
+        "id": "seed-rule:dotnet-source-backbone",
+        "version": "0.2.1",
+        "kind": "rule"
+      },
+      "profiles": [
+        "implementation",
+        "recreation"
+      ],
+      "dependencyIds": [],
+      "correlationGroup": "scope:dotnet:src/App/App.csproj:implementation",
+      "assumptions": [
+        "Backbone priors value residual internal code construction at lower rates than complete feature delivery."
+      ],
+      "exclusions": [],
+      "uncertaintyReasons": []
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "id": "work:manual-validation:a3c04d9b0d5818b2000d:part-0001",
+      "category": "manual-validation-debugging-and-hardening",
+      "title": "Manually validate, debug, and harden \u0027src/App/App.csproj\u0027 (web)",
+      "scope": "src/App/App.csproj",
+      "evidenceIds": [
+        "dotnet:project:src/App/App.csproj",
+        "dotnet:security:src/App/SecurityConfiguration.cs"
+      ],
+      "quantity": 1,
+      "complexity": "moderate",
+      "hours": {
+        "low": 0.75,
+        "expected": 1.50,
+        "high": 3.00
+      },
+      "confidence": 0.58,
+      "reason": "Working behavior requires explicit manual validation, debugging, and hardening based on the observed runtime and external boundaries rather than a fixed percentage. Rule \u0027manual-validation\u0027 uses runnable-scopes=1, specialized-boundaries=1; complexity \u0027moderate\u0027 applies factor 1.",
+      "estimator": {
+        "id": "seed-rule:manual-validation",
+        "version": "0.2.1",
+        "kind": "rule"
+      },
+      "profiles": [
+        "implementation",
+        "recreation"
+      ],
+      "dependencyIds": [],
+      "correlationGroup": "scope:dotnet:src/App/App.csproj:validation",
+      "assumptions": [
+        "Automated-test authoring is valued separately."
+      ],
+      "exclusions": [],
+      "uncertaintyReasons": [
+        "Some supporting evidence is inferred rather than directly observed.",
+        "The target checkout was not executed on the default static path."
+      ]
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "id": "work:documentation:bebbc838ff439c1b4e49:part-0001",
+      "category": "documentation",
+      "title": "Author and verify maintained repository documentation",
+      "scope": ".",
+      "evidenceIds": [
+        "documentation:repository",
+        "file:src/App/SecurityConfiguration.cs"
+      ],
+      "quantity": 1,
+      "complexity": "routine",
+      "hours": {
+        "low": 0.50,
+        "expected": 1.00,
+        "high": 1.75
+      },
+      "confidence": 0.80,
+      "reason": "Maintained onboarding, architecture, API, operational, and other guidance represents explicit authoring and verification work. Rule \u0027documentation\u0027 uses documents=1, physical-lines=15; complexity \u0027routine\u0027 applies factor 0.85.",
+      "estimator": {
+        "id": "seed-rule:documentation",
+        "version": "0.2.1",
+        "kind": "rule"
+      },
+      "profiles": [
+        "implementation",
+        "recreation"
+      ],
+      "dependencyIds": [],
+      "correlationGroup": "repository:documentation",
+      "assumptions": [],
+      "exclusions": [],
+      "uncertaintyReasons": []
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "id": "work:security-surface:cd82cccf6be0eaba4dca:part-0001",
+      "category": "security-and-accessibility",
+      "title": "Implement represented authentication and security behavior for \u0027src/App/App.csproj\u0027 (web) (part 1 of 3)",
+      "scope": "src/App/App.csproj",
+      "evidenceIds": [
+        "dotnet:security:src/App/SecurityConfiguration.cs"
+      ],
+      "quantity": 0.3333,
+      "complexity": "high",
+      "hours": {
+        "low": 1.25,
+        "expected": 3.00,
+        "high": 6.25
+      },
+      "confidence": 0.71,
+      "reason": "Security priors value authentication, authorization, credential handling, pipeline configuration, and careful validation beyond residual source construction. Rule \u0027security-surface\u0027 uses security-surfaces=1, security-configuration-calls=4, authorization-attributes=1; complexity \u0027high\u0027 applies factor 1.25.",
+      "estimator": {
+        "id": "seed-rule:security-surface",
+        "version": "0.2.1",
+        "kind": "rule"
+      },
+      "profiles": [
+        "implementation",
+        "recreation"
+      ],
+      "dependencyIds": [],
+      "correlationGroup": "scope:dotnet:src/App/App.csproj:implementation",
+      "assumptions": [
+        "The specialized prior values boundary-specific design, configuration, adaptation, and validation rather than a second full price for source syntax."
+      ],
+      "exclusions": [],
+      "uncertaintyReasons": []
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "id": "work:security-surface:cd82cccf6be0eaba4dca:part-0002",
+      "category": "security-and-accessibility",
+      "title": "Implement represented authentication and security behavior for \u0027src/App/App.csproj\u0027 (web) (part 2 of 3)",
+      "scope": "src/App/App.csproj",
+      "evidenceIds": [
+        "dotnet:security:src/App/SecurityConfiguration.cs"
+      ],
+      "quantity": 0.3333,
+      "complexity": "high",
+      "hours": {
+        "low": 1.25,
+        "expected": 3.00,
+        "high": 6.25
+      },
+      "confidence": 0.71,
+      "reason": "Security priors value authentication, authorization, credential handling, pipeline configuration, and careful validation beyond residual source construction. Rule \u0027security-surface\u0027 uses security-surfaces=1, security-configuration-calls=4, authorization-attributes=1; complexity \u0027high\u0027 applies factor 1.25.",
+      "estimator": {
+        "id": "seed-rule:security-surface",
+        "version": "0.2.1",
+        "kind": "rule"
+      },
+      "profiles": [
+        "implementation",
+        "recreation"
+      ],
+      "dependencyIds": [],
+      "correlationGroup": "scope:dotnet:src/App/App.csproj:implementation",
+      "assumptions": [
+        "The specialized prior values boundary-specific design, configuration, adaptation, and validation rather than a second full price for source syntax."
+      ],
+      "exclusions": [],
+      "uncertaintyReasons": []
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "id": "work:security-surface:cd82cccf6be0eaba4dca:part-0003",
+      "category": "security-and-accessibility",
+      "title": "Implement represented authentication and security behavior for \u0027src/App/App.csproj\u0027 (web) (part 3 of 3)",
+      "scope": "src/App/App.csproj",
+      "evidenceIds": [
+        "dotnet:security:src/App/SecurityConfiguration.cs"
+      ],
+      "quantity": 0.3334,
+      "complexity": "high",
+      "hours": {
+        "low": 1.25,
+        "expected": 3.00,
+        "high": 6.25
+      },
+      "confidence": 0.71,
+      "reason": "Security priors value authentication, authorization, credential handling, pipeline configuration, and careful validation beyond residual source construction. Rule \u0027security-surface\u0027 uses security-surfaces=1, security-configuration-calls=4, authorization-attributes=1; complexity \u0027high\u0027 applies factor 1.25.",
+      "estimator": {
+        "id": "seed-rule:security-surface",
+        "version": "0.2.1",
+        "kind": "rule"
+      },
+      "profiles": [
+        "implementation",
+        "recreation"
+      ],
+      "dependencyIds": [],
+      "correlationGroup": "scope:dotnet:src/App/App.csproj:implementation",
+      "assumptions": [
+        "The specialized prior values boundary-specific design, configuration, adaptation, and validation rather than a second full price for source syntax."
+      ],
+      "exclusions": [],
+      "uncertaintyReasons": []
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "id": "work:self-review:e943a6db2e8c464b145a:part-0001",
+      "category": "self-review-and-system-integration",
+      "title": "Self-review and integrate the completed system",
+      "scope": ".",
+      "evidenceIds": [
+        "dotnet:project:src/App/App.csproj",
+        "dotnet:repository",
+        "dotnet:security:src/App/SecurityConfiguration.cs",
+        "inventory:repository"
+      ],
+      "quantity": 1,
+      "complexity": "moderate",
+      "hours": {
+        "low": 0.75,
+        "expected": 1.50,
+        "high": 2.50
+      },
+      "confidence": 0.70,
+      "reason": "A solo senior contractor must review cross-scope behavior and integrate the completed artifact as explicit work. Rule \u0027self-review\u0027 uses production-scopes=1, specialized-boundaries=1; complexity \u0027moderate\u0027 applies factor 1.",
+      "estimator": {
+        "id": "seed-rule:self-review",
+        "version": "0.2.1",
+        "kind": "rule"
+      },
+      "profiles": [
+        "implementation",
+        "recreation"
+      ],
+      "dependencyIds": [],
+      "correlationGroup": "repository:system-integration",
+      "assumptions": [],
+      "exclusions": [],
+      "uncertaintyReasons": [
+        "Some supporting evidence is inferred rather than directly observed."
+      ]
+    }
+  ],
+  "professionalizationGap": [
+    {
+      "schemaVersion": "1.0.0",
+      "id": "work:gap-automated-tests:d379c6870aa7e129bfb5:part-0001",
+      "category": "unit-testing",
+      "title": "Add representative automated tests",
+      "scope": ".",
+      "evidenceIds": [
+        "dotnet:project:src/App/App.csproj",
+        "dotnet:repository",
+        "dotnet:security:src/App/SecurityConfiguration.cs",
+        "inventory:repository"
+      ],
+      "quantity": 1,
+      "complexity": "moderate",
+      "hours": {
+        "low": 1.00,
+        "expected": 2.50,
+        "high": 5.25
+      },
+      "confidence": 0.47,
+      "reason": "Maintained production scopes exist but no automated-test artifacts were detected; this is conservative missing professionalization work, not represented EHE. Rule \u0027gap-automated-tests\u0027 uses production-backbone-hours=2.5; complexity \u0027moderate\u0027 applies factor 1.",
+      "estimator": {
+        "id": "seed-rule:gap-automated-tests",
+        "version": "0.2.1",
+        "kind": "rule"
+      },
+      "profiles": [
+        "implementation",
+        "recreation"
+      ],
+      "dependencyIds": [],
+      "correlationGroup": "gap:repository:tests",
+      "assumptions": [
+        "Only representative baseline coverage is proposed; an idealized coverage target is not invented."
+      ],
+      "exclusions": [],
+      "uncertaintyReasons": [
+        "Absence evidence cannot determine the product\u0027s desired test strategy.",
+        "Some supporting evidence is inferred rather than directly observed."
+      ]
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "id": "work:gap-ci:15c5bc61d8acc4767929:part-0001",
+      "category": "ci-cd-and-infrastructure-as-code",
+      "title": "Add a basic continuous-integration workflow",
+      "scope": ".",
+      "evidenceIds": [
+        "dotnet:project:src/App/App.csproj",
+        "dotnet:repository",
+        "inventory:repository"
+      ],
+      "quantity": 1,
+      "complexity": "routine",
+      "hours": {
+        "low": 0.75,
+        "expected": 2.25,
+        "high": 4.75
+      },
+      "confidence": 0.54,
+      "reason": "A multi-scope or runnable repository has no detected CI configuration; a basic workflow is reported only as missing professionalization work. Rule \u0027gap-ci\u0027 uses production-scopes=1; complexity \u0027routine\u0027 applies factor 0.85.",
+      "estimator": {
+        "id": "seed-rule:gap-ci",
+        "version": "0.2.1",
+        "kind": "rule"
+      },
+      "profiles": [
+        "implementation",
+        "recreation"
+      ],
+      "dependencyIds": [],
+      "correlationGroup": "gap:repository:delivery",
+      "assumptions": [],
+      "exclusions": [],
+      "uncertaintyReasons": [
+        "Organizational delivery requirements are outside repository evidence.",
+        "Some supporting evidence is inferred rather than directly observed."
+      ]
+    }
+  ],
+  "diagnostics": [
+    {
+      "code": "FB1000",
+      "severity": "warning",
+      "message": "This estimate uses transparent but uncalibrated seed priors. It is experimental and requires review before consequential use.",
+      "evidenceIds": [],
+      "locations": []
+    },
+    {
+      "code": "FB1004",
+      "severity": "information",
+      "message": "2 conservative professionalization-gap item(s) are reported separately and excluded from represented EHE and replacement cost.",
+      "evidenceIds": [
+        "dotnet:project:src/App/App.csproj",
+        "dotnet:repository",
+        "dotnet:security:src/App/SecurityConfiguration.cs",
+        "inventory:repository"
+      ],
+      "locations": []
+    },
+    {
+      "code": "FB1005",
+      "severity": "information",
+      "message": "Seed model \u0027seed-rules/0.2.1\u0027 (experimental-uncalibrated, sha256:57378795593acd2ff0a2f4361698193a11dca86da11493f072da6a9f9b344d4e) was loaded from the bundled offline artifact.",
+      "evidenceIds": [],
+      "locations": []
+    },
+    {
+      "code": "FB3000",
+      "severity": "information",
+      "message": "The .NET analyzer parsed project XML and source syntax statically; it did not evaluate MSBuild, restore packages, compile, or execute target code.",
+      "evidenceIds": [],
+      "locations": []
+    }
+  ],
+  "assumptions": [
+    "The estimate values a clean, competent recreation of current functional and quality state, not historical labor or rework.",
+    "A clear specification exists at the level promised by the selected profile.",
+    "Discovered tests are assumed to pass on the default static path.",
+    "The described system is estimated as working even when the checkout was not executed.",
+    "Generated, vendored, minified, binary, copied, and duplicate bodies do not create hand-written implementation value.",
+    "Low and high values are preliminary planning bounds formed from item priors and evidence confidence; they are not calibrated probability intervals.",
+    "Professionalization-gap work is excluded from represented effort and replacement cost.",
+    "Seed productivity priors are experimental and uncalibrated."
+  ],
+  "verification": {
+    "mode": "static-assumed",
+    "workingState": "assumed-working",
+    "testsAssumedPassing": true,
+    "note": "The repository was not built or executed."
+  }
+}

@@ -8,8 +8,9 @@ The current checkpoint contains the versioned
 [`fairbill-public-pilot/0.1.0`](corpora/public-pilot/BASELINE.md) teacher-estimate
 corpus. The pilot is intentionally small, has not received independent correction,
 and does not justify a production accuracy claim or distributable learned model.
-The [`public-synthetic/0.2.0`](mutations/public-synthetic/BASELINE.md) mutation
-suite adds cross-ecosystem relational guardrails but is not effort-label data.
+The [`public-synthetic/0.3.0`](mutations/public-synthetic/BASELINE.md) mutation
+suite adds cross-ecosystem relational guardrails for exclusions, behavior,
+quality, delivery, and category isolation but is not effort-label data.
 
 ## Local workflow
 

@@ -148,7 +148,7 @@ semantics.
 
 ## Current project stage
 
-Milestones 1 through 6, Milestone 7A, and the Milestone 7B1 through 7B3 checkpoints
+Milestones 1 through 6, Milestone 7A, and the Milestone 7B1 through 7B4 checkpoints
 are complete. The repository has a working common scanner, static .NET
 project/Roslyn analyzer, static JavaScript/TypeScript package and source analyzer,
 mixed-repository evidence pipeline, published v1 schemas, optional external scan
@@ -179,8 +179,12 @@ blind handoff exists, but no independent reviewer has completed it. Milestone 7B
 expands the public synthetic baseline to 30 cases and 84 passing assertions across
 .NET, parser-backed JavaScript, token-backed TypeScript, and mixed repositories,
 including all three range points, generated customization, and category isolation.
-Corpus expansion, near-duplicate and broader behavior guardrails, plus actual
-independent review are next; local ML has not been selected or added.
+Milestone 7B4 expands that unchanged seed baseline to 48 cases and 156 passing
+assertions with bounded renamed near-copies, compiler-disabled C# syntax, data,
+migrations, security, declared coverage levels, workspace reuse, CI, and container
+delivery. General semantic-clone/reachability analysis, broader licensed corpus
+coverage, and actual independent review are next; local ML has not been selected
+or added.
 
 The following commands have been run successfully from the repository root:
 

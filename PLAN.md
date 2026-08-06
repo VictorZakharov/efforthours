@@ -159,6 +159,11 @@ Status as of August 6, 2026:
   are explicit. `seed-rules/0.2.1` fixes TypeScript ownership during exact-duplicate
   and test-structure normalization without changing any numerical prior. The pilot
   labels remain frozen and still lack independent correction.
+- Milestone 7B4 is complete: the unchanged `seed-rules/0.2.1` baseline passes 156
+  assertions across 48 source states, adding bounded renamed near-copies,
+  compiler-disabled C# boundaries, data, migrations, security, declared coverage,
+  workspace reuse, CI, and container delivery. General semantic-clone and
+  reachability analysis remain explicit limitations.
 
 ### Milestone 0: Product and contract decisions
 
@@ -279,14 +284,16 @@ Exit condition: the local model improves held-out agreement and calibration over
 the seed rules without making reports opaque.
 
 Implementation note: `MILESTONE_7.md` records the staged design. Milestones 7A and
-7B1 through 7B3 are implemented without an ML dependency: reviewed labels remain
+7B1 through 7B4 are implemented without an ML dependency: reviewed labels remain
 separate from canonical candidate estimates, every repository and its
 revisions/profiles stay in one partition, completed capability and subsequent
 review decisions compile back to full evidence lineage, and
 `calibration-metrics/1.0.0` reports deterministic low/expected/high error, bias,
 interval coverage, and work-item mapping coverage. Versioned mutation relations
-now guard invariance, directionality, range behavior, generated customization, and
-category isolation across the initial ecosystems. The seed model remains
+now guard invariance, bounded near-copy marginality, compiler-disabled code,
+directionality, range behavior, generated customization, data, security, declared
+coverage, delivery, workspace boundaries, and category isolation across the
+initial ecosystems. The seed model remains
 uncalibrated until the licensed corpus is diverse and independently reviewed.
 
 ### Milestone 8: Host AI integration and measurement
@@ -385,9 +392,9 @@ benchmark corpus exists.
    compile corrections without exposing the test partition to tuning.
 2. Add redistributable repository families per ecosystem and partition, then
    extend the published seed category/total baselines.
-3. Expand mutation guardrails to near-duplicates, dead-code shapes, data,
-   persistence, security, coverage levels, and more realistic multi-package
-   boundaries.
+3. Expand mutation guardrails from bounded renamed near-copies and
+   compiler-disabled C# to semantic clone detection, general reachability,
+   accessibility, measured coverage, and realistic multi-package boundaries.
 4. Extend performance and safety measurements to curated, redistributable mixed
    repository shapes and peak-memory measurements.
 5. Evaluate a compiler-grade TypeScript adapter only if reviewed calibration shows

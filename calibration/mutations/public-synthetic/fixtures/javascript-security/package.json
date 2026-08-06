@@ -1,0 +1,10 @@
+{
+  "name": "fairbill-mutation-javascript-security",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "express": "5.0.0",
+    "helmet": "8.0.0",
+    "passport": "0.7.0"
+  }
+}

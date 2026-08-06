@@ -2,7 +2,7 @@
 
 ## Status
 
-Milestone 7A and the Milestone 7B1 through 7B3 public-pilot, review, and mutation
+Milestone 7A and the Milestone 7B1 through 7B4 public-pilot, review, and mutation
 checkpoints were implemented on August 6, 2026. They establish the versioned review
 corpus, low-cost authoring and compilation boundaries, deterministic offline
 evaluation, initial licensed labels, exact-digest subsequent review, and
@@ -11,10 +11,11 @@ learned model. The seed estimator remains `experimental-uncalibrated`; this
 milestone does not make its current hours production-ready.
 
 The pilot still has one host-AI teacher and no independent correction. Milestone
-7B is therefore in progress: broader licensed repository coverage, more complex
-mutation families, and an actual independent review are required before numerical
-admission thresholds or model training. The presence of second-review tooling must
-not be confused with completion of that review.
+7B is therefore in progress: broader licensed repository coverage, richer
+reachability/accessibility/measured-coverage guardrails, and an actual independent
+review are required before numerical admission thresholds or model training. The
+presence of second-review tooling must not be confused with completion of that
+review.
 
 Local model training and inference are deferred until a diverse, licensed corpus
 exists and a candidate model demonstrates an improvement on repository-held-out
@@ -149,6 +150,34 @@ numerical priors as 0.2.0; its version changes because the file-ownership correc
 can change estimates for TypeScript repositories containing exact copies or tests
 in a shared package scope. The frozen pilot labels and 0.2.0 candidate reports are
 not rewritten.
+
+## Implemented Milestone 7B4 scope
+
+The behavior-and-delivery mutation slice adds no schema, ML dependency, remote
+service, estimator code change, or numerical-prior change. It adds:
+
+1. bounded marginality cases for renamed .NET, JavaScript, and TypeScript
+   near-copies, without claiming general semantic clone detection;
+2. a C# compiler-disabled block containing data and authorization syntax that must
+   remain invisible to represented effort;
+3. .NET, JavaScript, and TypeScript data/persistence boundaries plus an additional
+   .NET schema migration;
+4. .NET, JavaScript, and TypeScript authentication and hardening boundaries;
+5. identical JavaScript code and tests with no coverage declaration, an 80%
+   declared-and-assumed threshold, and a 100% declared-and-assumed threshold;
+6. one- and two-package JavaScript workspaces where the second package reuses an
+   exact source body but still adds setup and integration-review work;
+7. isolated CI-workflow and container-definition delivery cases; and
+8. a memory-only pipeline regression proving that compiler-disabled C# boundary
+   syntax neither emits data/security evidence nor changes EHE.
+
+The aggregate public suite now contains 48 source states and 156 assertions. All
+relations pass the unchanged `seed-rules/0.2.1` artifact. These checks were chosen
+from product semantics before evaluation and are still qualitative guardrails, not
+reviewed effort labels. Near-copy bounds protect the current diminishing-marginal
+behavior; the estimator still has no semantic clone detector. The dead-code claim
+is limited to syntax excluded by the C# preprocessor and does not imply general
+reachability or liveness analysis.
 
 ## Contract boundaries
 
@@ -334,8 +363,9 @@ A candidate must, at minimum:
   wide ranges;
 - retain acceptable results across .NET, JavaScript/TypeScript, and mixed
   repositories rather than only the aggregate;
-- pass the existing formatting, duplication, generated-content, and history
-  invariants; and
+- pass the existing formatting, duplication, generated-content, near-copy,
+  compiler-disabled-code, data, security, coverage, workspace, delivery, and
+  history guardrails; and
 - preserve evidence, rule/model version, and adjustment lineage in the final work
   items.
 
@@ -347,9 +377,10 @@ model hyperparameters.
 
 ### Remaining 7B: corpus and baseline measurement
 
-- Expand synthetic mutations to near-duplicates, dead-code shapes, data,
-  persistence, security, coverage levels, more realistic multi-package boundaries,
-  and additional delivery categories.
+- Expand synthetic mutations from the initial bounded near-copy and
+  compiler-disabled cases to semantic clones, unreachable/unreferenced behavior,
+  accessibility-specific evidence, measured coverage, larger multi-package
+  dependency graphs, richer infrastructure, and additional delivery categories.
 - Add diverse, redistributable real repositories with recorded licenses.
 - Expand the consistent teacher reviews and complete the prepared independent
   correction handoff with a genuinely distinct reviewer.
@@ -452,3 +483,20 @@ conventional generated exclusion, separately maintained generated customization,
 API and UI directionality, represented unit tests and documentation, external
 integrations, missing-category zero behavior, and production/test category
 isolation. These remain qualitative relations, not reviewed numeric effort labels.
+
+## Milestone 7B4 completion evidence
+
+The behavior-and-delivery guardrail checkpoint passes a zero-warning Release
+build, 84 memory-only unit tests, and 19 disk-backed CLI end-to-end tests before
+the final release gate. The `Fairbill.Tool` version advances to
+`0.7.0-alpha.5`; the schema count and active estimator remain unchanged.
+
+The aggregate `public-synthetic/0.3.0` suite contains 48 canonical cases and 156
+passing assertions. It retains every earlier relation and adds bounded renamed
+near-copies, compiler-disabled C# boundaries, data and persistence across the
+initial ecosystems, a .NET migration, security across the initial ecosystems,
+declared-and-assumed 80% and 100% coverage, exact body reuse across a second
+workspace package, CI, and container delivery. The checked baseline uses the same
+`seed-rules/0.2.1` artifact and changes no numerical prior. A new in-memory pipeline
+test independently proves the compiler-disabled exclusion without reading or
+writing a physical fixture tree.

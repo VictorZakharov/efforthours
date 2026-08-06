@@ -1,0 +1,8 @@
+{
+  "name": "fairbill-mutation-javascript-data",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@prisma/client": "6.0.0"
+  }
+}

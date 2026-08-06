@@ -1,0 +1,15 @@
+{
+  "name": "fairbill-mutation-javascript-coverage",
+  "private": true,
+  "type": "module",
+  "jest": {
+    "coverageThreshold": {
+      "global": {
+        "lines": 80,
+        "branches": 80,
+        "functions": 80,
+        "statements": 80
+      }
+    }
+  }
+}

@@ -132,4 +132,61 @@ public sealed class EstimatorPipelineTests
         Assert.True(report.TotalEffort.Expected > 0m);
         Assert.Empty(ContractValidation.Validate(report));
     }
+
+    [Fact]
+    public async Task CompilerDisabledCSharpBoundariesDoNotIncreaseRepresentedEffort()
+    {
+        InMemoryRepository baselineRepository = CreateMinimalDotNetRepository(string.Empty);
+        InMemoryRepository disabledRepository = CreateMinimalDotNetRepository(
+            """
+
+            #if false
+            [Authorize]
+            public sealed class DisabledOrdersContext : DbContext
+            {
+                public DbSet<DisabledOrder> Orders { get; } = default!;
+                public Task PersistAsync() => SaveChangesAsync();
+            }
+
+            public sealed record DisabledOrder(Guid Id);
+            #endif
+            """);
+        RepositoryEvidence baselineEvidence = await new RepositoryAnalysisPipeline(baselineRepository)
+            .ScanAsync(baselineRepository.RootPath);
+        RepositoryEvidence disabledEvidence = await new RepositoryAnalysisPipeline(disabledRepository)
+            .ScanAsync(disabledRepository.RootPath);
+        SeedEstimator estimator = new();
+        EstimateReport baseline = estimator.Estimate(
+            baselineEvidence,
+            EstimationProfile.Implementation);
+        EstimateReport disabled = estimator.Estimate(
+            disabledEvidence,
+            EstimationProfile.Implementation);
+
+        Assert.DoesNotContain(disabledEvidence.Facts, fact => fact.Kind == EvidenceKinds.DataAccess);
+        Assert.DoesNotContain(
+            disabledEvidence.Facts,
+            fact => fact.Kind == EvidenceKinds.SecurityConfiguration);
+        Assert.Equal(baseline.TotalEffort, disabled.TotalEffort);
+        Assert.Equal(baseline.Categories, disabled.Categories);
+    }
+
+    private static InMemoryRepository CreateMinimalDotNetRepository(string additionalSource)
+    {
+        InMemoryRepository repository = new();
+        repository.WriteText(
+            "src/App/App.csproj",
+            "<Project Sdk=\"Microsoft.NET.Sdk\"><PropertyGroup><TargetFramework>net10.0</TargetFramework></PropertyGroup></Project>\n");
+        repository.WriteText(
+            "src/App/StatusFormatter.cs",
+            """
+            namespace FairbillSynthetic;
+
+            public sealed class StatusFormatter
+            {
+                public string Format(bool healthy) => healthy ? "ok" : "down";
+            }
+            """ + additionalSource);
+        return repository;
+    }
 }

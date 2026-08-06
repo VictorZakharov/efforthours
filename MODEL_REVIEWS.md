@@ -41,7 +41,11 @@ teacher target, test-partition label, repository total, or preferred hour value 
 used to choose the correction. The new artifact digest is
 `sha256:57378795593acd2ff0a2f4361698193a11dca86da11493f072da6a9f9b344d4e`.
 The public synthetic 0.2.0 suite passes all 84 qualitative assertions across 30
-source states. The frozen public-pilot corpus and its 0.2.0 source-estimate
+source states. Milestone 7B4 subsequently evaluates the same 0.2.1 artifact against
+suite 0.3.0: 156 assertions across 48 states, including bounded renamed
+near-copies, compiler-disabled syntax, data, security, declared coverage,
+workspace boundaries, CI, and containers. No prior or estimator code changed for
+that expansion. The frozen public-pilot corpus and its 0.2.0 source-estimate
 provenance remain unchanged; 0.2.1 has not yet received a new repository-level
 logical-review anchor.
 

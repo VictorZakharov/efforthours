@@ -1,0 +1,8 @@
+{
+  "name": "@fairbill-mutation/app",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@fairbill-mutation/shared": "workspace:*"
+  }
+}

@@ -1,0 +1,646 @@
+{
+  "schemaVersion": "1.0.0",
+  "metricVersion": "calibration-mutation-metrics/1.0.0",
+  "id": "fairbill-public-synthetic-mutations",
+  "version": "0.3.0",
+  "description": "Synthetic .NET, JavaScript, TypeScript, and mixed-repository mutation guardrails for invariance, bounded near-copy marginality, dead-code exclusion, represented quality and delivery behavior, range directionality, and category isolation.",
+  "cases": [
+    {
+      "id": "dotnet-base",
+      "description": "Minimal maintained .NET library used as the .NET reference case.",
+      "sourceDigest": "sha256:ca0f6aeacb0908075926743ac86d24d73f7b201f5c41b8b58f6cd96f48978654",
+      "profile": "implementation",
+      "baselineId": "senior-contractor-2026-no-ai"
+    },
+    {
+      "id": "dotnet-formatting",
+      "description": "The maintained .NET behavior is reformatted without semantic changes.",
+      "sourceDigest": "sha256:6c8c8921d2d6b9802894ec232fe79551337d5363506a9329d08e67af664bb2e7",
+      "profile": "implementation",
+      "baselineId": "senior-contractor-2026-no-ai"
+    },
+    {
+      "id": "dotnet-duplicate",
+      "description": "An exact .NET source copy excluded from compilation is added.",
+      "sourceDigest": "sha256:88d0afae1e47072c5f5d733dbb5faac425d1461e1dfbd1867630c7c7665f9aee",
+      "profile": "implementation",
+      "baselineId": "senior-contractor-2026-no-ai"
+    },
+    {
+      "id": "dotnet-generated",
+      "description": "A conventional generated .NET source body is added.",
+      "sourceDigest": "sha256:1933ac9f6723eb62ea30b0a3e7add9460049c381b587a0947418d79320eebb51",
+      "profile": "implementation",
+      "baselineId": "senior-contractor-2026-no-ai"
+    },
+    {
+      "id": "dotnet-api",
+      "description": "A runnable .NET HTTP status endpoint is added.",
+      "sourceDigest": "sha256:32d059ad9bdb456b025c62f0f5930595bda0b91b03ca21c2bde53de2caaea798",
+      "profile": "implementation",
+      "baselineId": "senior-contractor-2026-no-ai"
+    },
+    {
+      "id": "dotnet-tests",
+      "description": "A .NET unit-test project and two behavioral tests are added.",
+      "sourceDigest": "sha256:28f7c087f4ad5fae688577f4d3fc0969747d356a1faf3ee76b2ee16ac46af13f",
+      "profile": "implementation",
+      "baselineId": "senior-contractor-2026-no-ai"
+    },
+    {
+      "id": "dotnet-documentation",
+      "description": "Maintained .NET onboarding and usage documentation is added.",
+      "sourceDigest": "sha256:3ff70723926d3f556545001dd8caa8633eec811ce9589cc93915734727abc73d",
+      "profile": "implementation",
+      "baselineId": "senior-contractor-2026-no-ai"
+    },
+    {
+      "id": "dotnet-integration",
+      "description": "A maintained .NET external HTTP integration boundary is added.",
+      "sourceDigest": "sha256:ff3b6704a03fbfab0dbe622dcb656ea3b4bb5706685b4f202d8174890acc6907",
+      "profile": "implementation",
+      "baselineId": "senior-contractor-2026-no-ai"
+    },
+    {
+      "id": "javascript-base",
+      "description": "Minimal maintained JavaScript module used as the JavaScript reference case.",
+      "sourceDigest": "sha256:c548dab19b2d7ab943301506c45ae155b5a433d2bb3b432ce4d8833e03d1918c",
+      "profile": "implementation",
+      "baselineId": "senior-contractor-2026-no-ai"
+    },
+    {
+      "id": "javascript-formatting",
+      "description": "The maintained JavaScript behavior is reformatted without semantic changes.",
+      "sourceDigest": "sha256:7736b9c8a8d4602ca1deaef73493deebb22217cde72dbcd4f70945517e3a934d",
+      "profile": "implementation",
+      "baselineId": "senior-contractor-2026-no-ai"
+    },
+    {
+      "id": "javascript-duplicate",
+      "description": "A byte-identical maintained JavaScript body is added.",
+      "sourceDigest": "sha256:5db3c730100d0593243cacdba5061cb43415d1a028d5d6eb13e32915fc3e091a",
+      "profile": "implementation",
+      "baselineId": "senior-contractor-2026-no-ai"
+    },
+    {
+      "id": "javascript-generated",
+      "description": "A conventional generated JavaScript client body is added.",
+      "sourceDigest": "sha256:f57c923cef310a27e09789a6b1bc3a4e97330525fa9cf0c8dcfcbce6137936a4",
+      "profile": "implementation",
+      "baselineId": "senior-contractor-2026-no-ai"
+    },
+    {
+      "id": "javascript-generated-customized",
+      "description": "Maintained customization is added beside the conventional generated JavaScript client.",
+      "sourceDigest": "sha256:1f27ad6837f1398fe27b0dbc6af18e70bb4531d28594f4dc087b4b5e8e8ecf97",
+      "profile": "implementation",
+      "baselineId": "senior-contractor-2026-no-ai"
+    },
+    {
+      "id": "javascript-api",
+      "description": "A JavaScript HTTP route boundary is added.",
+      "sourceDigest": "sha256:7584c96018807984d444b07aae4fdbd4710607dcfcfd4936315534d26aedc2ce",
+      "profile": "implementation",
+      "baselineId": "senior-contractor-2026-no-ai"
+    },
+    {
+      "id": "javascript-tests",
+      "description": "A nested JavaScript unit-test package and two behavioral tests are added.",
+      "sourceDigest": "sha256:ad69f65a6a6b626ad0574854ce7b88dd65bfe7929c93810f640ad6705bece0bd",
+      "profile": "implementation",
+      "baselineId": "senior-contractor-2026-no-ai"
+    },
+    {
+      "id": "javascript-documentation",
+      "description": "Maintained JavaScript onboarding and usage documentation is added.",
+      "sourceDigest": "sha256:85bfb6d90a5ebbf0e97530f8a83ea75376e5b3912fe3ee325ed98c555ea46214",
+      "profile": "implementation",
+      "baselineId": "senior-contractor-2026-no-ai"
+    },
+    {
+      "id": "javascript-integration",
+      "description": "A JavaScript fetch-based external integration boundary is added.",
+      "sourceDigest": "sha256:586afcf486b0c776a298cb867be0eb3886405a708ce67dbba68133bb795fe0a5",
+      "profile": "implementation",
+      "baselineId": "senior-contractor-2026-no-ai"
+    },
+    {
+      "id": "typescript-base",
+      "description": "Minimal maintained TypeScript module used as the TypeScript reference case.",
+      "sourceDigest": "sha256:e7b5f2cc4b6936aacdf0c130c83447c34a3be62587c439c6446cca48e8dcc5cd",
+      "profile": "implementation",
+      "baselineId": "senior-contractor-2026-no-ai"
+    },
+    {
+      "id": "typescript-formatting",
+      "description": "The maintained TypeScript behavior is reformatted without semantic changes.",
+      "sourceDigest": "sha256:5f4aef76d831addb753a9aeed5fcc77b6d1b86aa48d6209539d4137537b10d92",
+      "profile": "implementation",
+      "baselineId": "senior-contractor-2026-no-ai"
+    },
+    {
+      "id": "typescript-duplicate",
+      "description": "A byte-identical maintained TypeScript body is added.",
+      "sourceDigest": "sha256:29342bd75685ce804cfbe46f84ac144de3fda9af7938cc33569e1bb7341e0510",
+      "profile": "implementation",
+      "baselineId": "senior-contractor-2026-no-ai"
+    },
+    {
+      "id": "typescript-generated",
+      "description": "A conventional generated TypeScript client contract is added.",
+      "sourceDigest": "sha256:ce4c9750024d1dc209a4c64795a6ed226e1ccc031e2dc5beeb00aeb95191ef33",
+      "profile": "implementation",
+      "baselineId": "senior-contractor-2026-no-ai"
+    },
+    {
+      "id": "typescript-api",
+      "description": "A typed HTTP route boundary is added.",
+      "sourceDigest": "sha256:d692fca6dfc204c47e76abc9dfc3c707903b631fa137d608d5cb0422dee11d0a",
+      "profile": "implementation",
+      "baselineId": "senior-contractor-2026-no-ai"
+    },
+    {
+      "id": "typescript-tests",
+      "description": "A nested TypeScript unit-test package and two behavioral tests are added.",
+      "sourceDigest": "sha256:a5000cc104c1052fa5135c5dada29ae80d239f4dcf91664805baeca28788dcc5",
+      "profile": "implementation",
+      "baselineId": "senior-contractor-2026-no-ai"
+    },
+    {
+      "id": "typescript-documentation",
+      "description": "Maintained TypeScript usage and contract documentation is added.",
+      "sourceDigest": "sha256:c1e7bee0945c62a0fe872a059c951630c46509c76302f2dbb7aff81823908eb9",
+      "profile": "implementation",
+      "baselineId": "senior-contractor-2026-no-ai"
+    },
+    {
+      "id": "typescript-integration",
+      "description": "A typed fetch-based external integration boundary is added.",
+      "sourceDigest": "sha256:f23bad7ef65739f1878be1dc0cde239728769d69df01522bf7eefa2b562a6cfb",
+      "profile": "implementation",
+      "baselineId": "senior-contractor-2026-no-ai"
+    },
+    {
+      "id": "mixed-base",
+      "description": "Minimal maintained .NET and JavaScript modules used as the mixed reference case.",
+      "sourceDigest": "sha256:b78e1dd0cd5d9bef97339680311e4be5e8f02079f9392a5270af4dd1aad22763",
+      "profile": "implementation",
+      "baselineId": "senior-contractor-2026-no-ai"
+    },
+    {
+      "id": "mixed-generated",
+      "description": "A conventional generated JavaScript body is added to the mixed repository.",
+      "sourceDigest": "sha256:41998946ae81a5c21cbbb7b1e5b59beb8e4f313c0796c372fddea4b4d00da55c",
+      "profile": "implementation",
+      "baselineId": "senior-contractor-2026-no-ai"
+    },
+    {
+      "id": "mixed-dotnet-api",
+      "description": "A .NET HTTP endpoint is added while the JavaScript module remains unchanged.",
+      "sourceDigest": "sha256:be080e780f9e1d2f2a9f8c5ae6267761c800a0915c788c0460d0a92a3f4f6011",
+      "profile": "implementation",
+      "baselineId": "senior-contractor-2026-no-ai"
+    },
+    {
+      "id": "mixed-javascript-ui",
+      "description": "A maintained JavaScript UI component is added while the .NET module remains unchanged.",
+      "sourceDigest": "sha256:1823b387afd7cafc4aa4356bca574e25f4fb4ea4159f78b5339782dbdefb9def",
+      "profile": "implementation",
+      "baselineId": "senior-contractor-2026-no-ai"
+    },
+    {
+      "id": "mixed-typescript-tests",
+      "description": "A nested TypeScript unit-test package is added while both production modules remain unchanged.",
+      "sourceDigest": "sha256:4ba1e7b73493285c234d1167e9cab89339a352788612d30002ec97d2bc3bf4dd",
+      "profile": "implementation",
+      "baselineId": "senior-contractor-2026-no-ai"
+    },
+    {
+      "id": "dotnet-near-duplicate",
+      "description": "A renamed internal .NET near-copy preserves the reference behavior while changing identifiers.",
+      "sourceDigest": "sha256:12ea1b991dfa85e409417ce7010eeeeb6b1d2867150770cedc9c88b8da02b83a",
+      "profile": "implementation",
+      "baselineId": "senior-contractor-2026-no-ai"
+    },
+    {
+      "id": "dotnet-dead-code",
+      "description": "Compiler-disabled .NET data and security syntax is added to the maintained source file.",
+      "sourceDigest": "sha256:e2610e17f807d87392d65fa8fff09cfd3804c73f49871310c8481d6a631e9e9c",
+      "profile": "implementation",
+      "baselineId": "senior-contractor-2026-no-ai"
+    },
+    {
+      "id": "dotnet-data",
+      "description": "A .NET data model and persistence context are added.",
+      "sourceDigest": "sha256:b13baa4aa0604c292f503707a11ae850fdfc2f3a2bd4272e61c579c37e4ac172",
+      "profile": "implementation",
+      "baselineId": "senior-contractor-2026-no-ai"
+    },
+    {
+      "id": "dotnet-migration",
+      "description": "A maintained .NET schema migration is added to the data-backed case.",
+      "sourceDigest": "sha256:d33336b9078a22ceafa681fa79d037f1666cf8d24aefa01c52ca1c2fb970d6b5",
+      "profile": "implementation",
+      "baselineId": "senior-contractor-2026-no-ai"
+    },
+    {
+      "id": "dotnet-security",
+      "description": "Represented .NET authentication, authorization, and protected-endpoint behavior is added.",
+      "sourceDigest": "sha256:31f7f971f8cdd3ba5d4dc34ae82a4d2354bc5ddf6889e1086d78a081f113fb02",
+      "profile": "implementation",
+      "baselineId": "senior-contractor-2026-no-ai"
+    },
+    {
+      "id": "javascript-near-duplicate",
+      "description": "A renamed JavaScript near-copy preserves the reference normalization behavior.",
+      "sourceDigest": "sha256:9f98346b9db85b4f7382bd4eaf3643a5aa3853bc8964a6bc9490dc025fc6bd43",
+      "profile": "implementation",
+      "baselineId": "senior-contractor-2026-no-ai"
+    },
+    {
+      "id": "javascript-data",
+      "description": "A JavaScript Prisma persistence boundary and query are added.",
+      "sourceDigest": "sha256:75f70d1f8417d86e33b0f23551027958c20ec757ad1da2570c6ec3e4c3da60c3",
+      "profile": "implementation",
+      "baselineId": "senior-contractor-2026-no-ai"
+    },
+    {
+      "id": "javascript-security",
+      "description": "JavaScript authentication and HTTP hardening behavior are added.",
+      "sourceDigest": "sha256:32466f78e82649ff1675a32239d6401a94c0c420fe67504bab8f789cda33658d",
+      "profile": "implementation",
+      "baselineId": "senior-contractor-2026-no-ai"
+    },
+    {
+      "id": "typescript-near-duplicate",
+      "description": "A renamed TypeScript near-copy preserves the reference typed normalization behavior.",
+      "sourceDigest": "sha256:6fbc5f9f9aded37ee83e01d9b1e9f32ed65448fa52a54ff3c92370b735d01c37",
+      "profile": "implementation",
+      "baselineId": "senior-contractor-2026-no-ai"
+    },
+    {
+      "id": "typescript-data",
+      "description": "A typed Prisma persistence boundary, model, and query are added.",
+      "sourceDigest": "sha256:3aef2436ff9d58487e4079b0df1bef947fa81d1fed83118bff769f540d5ede94",
+      "profile": "implementation",
+      "baselineId": "senior-contractor-2026-no-ai"
+    },
+    {
+      "id": "typescript-security",
+      "description": "Typed authentication and HTTP hardening behavior are added.",
+      "sourceDigest": "sha256:70a17e045094e927f57eb2317f56c25adc2c5cf9fa559c9cbbed63e3e2dd321f",
+      "profile": "implementation",
+      "baselineId": "senior-contractor-2026-no-ai"
+    },
+    {
+      "id": "javascript-coverage-base",
+      "description": "A JavaScript behavior-and-test case has no declared coverage threshold.",
+      "sourceDigest": "sha256:ea10fdc3fbe1f7066be400f2e00685a83ee1ee7f9fb4ad75896f1b901cd85b16",
+      "profile": "implementation",
+      "baselineId": "senior-contractor-2026-no-ai"
+    },
+    {
+      "id": "javascript-coverage-80",
+      "description": "The same JavaScript behavior and tests declare an assumed 80 percent global coverage threshold.",
+      "sourceDigest": "sha256:26323c17bb5e5d6ec4ebd14be57cbd5784badb0cb7fd8ecd2c5b48e8bd03b4e2",
+      "profile": "implementation",
+      "baselineId": "senior-contractor-2026-no-ai"
+    },
+    {
+      "id": "javascript-coverage-100",
+      "description": "The same JavaScript behavior and tests declare an assumed 100 percent global coverage threshold.",
+      "sourceDigest": "sha256:bd79b0347bba69491bb381634e16bbd7f3be33ab3747bc506a9e365751003f77",
+      "profile": "implementation",
+      "baselineId": "senior-contractor-2026-no-ai"
+    },
+    {
+      "id": "javascript-workspace-single",
+      "description": "A JavaScript workspace contains one maintained application package.",
+      "sourceDigest": "sha256:aff43488fa74c4faf4f5d10a55fbb55b641220dc02c20b3aaf7ed288e0a09cc4",
+      "profile": "implementation",
+      "baselineId": "senior-contractor-2026-no-ai"
+    },
+    {
+      "id": "javascript-workspace-multi",
+      "description": "A second workspace package and dependency edge reuse the same exact maintained implementation body.",
+      "sourceDigest": "sha256:19bdd11ddd79f5ba4a5760db78518e6ceadfa78cae01e4305fd5d73ef128e473",
+      "profile": "implementation",
+      "baselineId": "senior-contractor-2026-no-ai"
+    },
+    {
+      "id": "javascript-ci",
+      "description": "A maintained GitHub Actions test workflow is added without changing production source.",
+      "sourceDigest": "sha256:db2b3f785df314828c8bd690433c476a585fea46faf240dbd8567fea7393f717",
+      "profile": "implementation",
+      "baselineId": "senior-contractor-2026-no-ai"
+    },
+    {
+      "id": "javascript-container",
+      "description": "A maintained container build and runtime definition is added without changing production source.",
+      "sourceDigest": "sha256:b27aa9f60864d5e8cd3035d939e356ce7714629ae87242f832ebfd97b76eee33",
+      "profile": "implementation",
+      "baselineId": "senior-contractor-2026-no-ai"
+    }
+  ],
+  "assertions": [
+    {
+      "id": "dotnet-formatting-total-invariant",
+      "family": "formatting-only",
+      "subjectCaseId": "dotnet-formatting",
+      "referenceCaseId": "dotnet-base",
+      "point": "expected",
+      "scope": "repository-total",
+      "minimumDifferenceHours": 0,
+      "maximumDifferenceHours": 0,
+      "rationale": "Formatting alone must not change represented EHE."
+    },
+    {
+      "id": "dotnet-formatting-production-invariant",
+      "family": "formatting-only",
+      "subjectCaseId": "dotnet-formatting",
+      "referenceCaseId": "dotnet-base",
+      "point": "expected",
+      "scope": "category",
+      "category": "production-implementation",
+      "minimumDifferenceHours": 0,
+      "maximumDifferenceHours": 0,
+      "rationale": "Formatting alone must not change production effort."
+    },
+    {
+      "id": "dotnet-duplicate-total-invariant",
+      "family": "exact-duplication",
+      "subjectCaseId": "dotnet-duplicate",
+      "referenceCaseId": "dotnet-base",
+      "point": "expected",
+      "scope": "repository-total",
+      "minimumDifferenceHours": 0,
+      "maximumDifferenceHours": 0,
+      "rationale": "An excluded exact source copy must not increase represented EHE."
+    },
+    {
+      "id": "dotnet-duplicate-production-invariant",
+      "family": "exact-duplication",
+      "subjectCaseId": "dotnet-duplicate",
+      "referenceCaseId": "dotnet-base",
+      "point": "expected",
+      "scope": "category",
+      "category": "production-implementation",
+      "minimumDifferenceHours": 0,
+      "maximumDifferenceHours": 0,
+      "rationale": "Exact duplicate implementation volume must be normalized."
+    },
+    {
+      "id": "dotnet-generated-total-invariant",
+      "family": "generated-content",
+      "subjectCaseId": "dotnet-generated",
+      "referenceCaseId": "dotnet-base",
+      "point": "expected",
+      "scope": "repository-total",
+      "minimumDifferenceHours": 0,
+      "maximumDifferenceHours": 0,
+      "rationale": "A conventional generated body must not increase represented EHE."
+    },
+    {
+      "id": "dotnet-generated-production-invariant",
+      "family": "generated-content",
+      "subjectCaseId": "dotnet-generated",
+      "referenceCaseId": "dotnet-base",
+      "point": "expected",
+      "scope": "category",
+      "category": "production-implementation",
+      "minimumDifferenceHours": 0,
+      "maximumDifferenceHours": 0,
+      "rationale": "Generated implementation volume must remain excluded from production effort."
+    },
+    {
+      "id": "dotnet-api-total-increases",
+      "family": "meaningful-api-behavior",
+      "subjectCaseId": "dotnet-api",
+      "referenceCaseId": "dotnet-base",
+      "point": "expected",
+      "scope": "repository-total",
+      "minimumDifferenceHours": 0.5,
+      "rationale": "A runnable HTTP boundary must increase total represented effort."
+    },
+    {
+      "id": "dotnet-api-production-increases",
+      "family": "meaningful-api-behavior",
+      "subjectCaseId": "dotnet-api",
+      "referenceCaseId": "dotnet-base",
+      "point": "expected",
+      "scope": "category",
+      "category": "production-implementation",
+      "minimumDifferenceHours": 0.5,
+      "rationale": "HTTP behavior must increase production implementation effort."
+    },
+    {
+      "id": "dotnet-tests-unit-testing-increases",
+      "family": "represented-tests",
+      "subjectCaseId": "dotnet-tests",
+      "referenceCaseId": "dotnet-base",
+      "point": "expected",
+      "scope": "category",
+      "category": "unit-testing",
+      "minimumDifferenceHours": 0.5,
+      "rationale": "Maintained unit tests must add represented unit-testing effort."
+    },
+    {
+      "id": "dotnet-tests-production-isolated",
+      "family": "represented-tests",
+      "subjectCaseId": "dotnet-tests",
+      "referenceCaseId": "dotnet-base",
+      "point": "expected",
+      "scope": "category",
+      "category": "production-implementation",
+      "minimumDifferenceHours": 0,
+      "maximumDifferenceHours": 0,
+      "rationale": "A test-only addition must not inflate production implementation."
+    },
+    {
+      "id": "dotnet-documentation-increases",
+      "family": "represented-documentation",
+      "subjectCaseId": "dotnet-documentation",
+      "referenceCaseId": "dotnet-base",
+      "point": "expected",
+      "scope": "category",
+      "category": "documentation",
+      "minimumDifferenceHours": 0.5,
+      "rationale": "Maintained onboarding and usage guidance must add documentation effort."
+    },
+    {
+      "id": "dotnet-documentation-production-isolated",
+      "family": "represented-documentation",
+      "subjectCaseId": "dotnet-documentation",
+      "referenceCaseId": "dotnet-base",
+      "point": "expected",
+      "scope": "category",
+      "category": "production-implementation",
+      "minimumDifferenceHours": 0,
+      "maximumDifferenceHours": 0,
+      "rationale": "A documentation-only addition must not inflate production implementation."
+    },
+    {
+      "id": "dotnet-integration-total-increases",
+      "family": "external-integration",
+      "subjectCaseId": "dotnet-integration",
+      "referenceCaseId": "dotnet-base",
+      "point": "expected",
+      "scope": "repository-total",
+      "minimumDifferenceHours": 0.5,
+      "rationale": "A maintained external client boundary must increase total represented effort."
+    },
+    {
+      "id": "dotnet-integration-category-increases",
+      "family": "external-integration",
+      "subjectCaseId": "dotnet-integration",
+      "referenceCaseId": "dotnet-base",
+      "point": "expected",
+      "scope": "category",
+      "category": "external-integrations-and-protocols",
+      "minimumDifferenceHours": 0.5,
+      "rationale": "The external-integration category must receive the integration work."
+    },
+    { "id": "javascript-formatting-total-low-invariant", "family": "formatting-only", "subjectCaseId": "javascript-formatting", "referenceCaseId": "javascript-base", "point": "low", "scope": "repository-total", "minimumDifferenceHours": 0, "maximumDifferenceHours": 0, "rationale": "Formatting alone must not change JavaScript low EHE." },
+    { "id": "javascript-formatting-total-expected-invariant", "family": "formatting-only", "subjectCaseId": "javascript-formatting", "referenceCaseId": "javascript-base", "point": "expected", "scope": "repository-total", "minimumDifferenceHours": 0, "maximumDifferenceHours": 0, "rationale": "Formatting alone must not change JavaScript expected EHE." },
+    { "id": "javascript-formatting-total-high-invariant", "family": "formatting-only", "subjectCaseId": "javascript-formatting", "referenceCaseId": "javascript-base", "point": "high", "scope": "repository-total", "minimumDifferenceHours": 0, "maximumDifferenceHours": 0, "rationale": "Formatting alone must not change JavaScript high EHE." },
+    { "id": "javascript-duplicate-total-low-invariant", "family": "exact-duplication", "subjectCaseId": "javascript-duplicate", "referenceCaseId": "javascript-base", "point": "low", "scope": "repository-total", "minimumDifferenceHours": 0, "maximumDifferenceHours": 0, "rationale": "A byte-identical JavaScript body must not change low EHE." },
+    { "id": "javascript-duplicate-total-expected-invariant", "family": "exact-duplication", "subjectCaseId": "javascript-duplicate", "referenceCaseId": "javascript-base", "point": "expected", "scope": "repository-total", "minimumDifferenceHours": 0, "maximumDifferenceHours": 0, "rationale": "A byte-identical JavaScript body must not change expected EHE." },
+    { "id": "javascript-duplicate-total-high-invariant", "family": "exact-duplication", "subjectCaseId": "javascript-duplicate", "referenceCaseId": "javascript-base", "point": "high", "scope": "repository-total", "minimumDifferenceHours": 0, "maximumDifferenceHours": 0, "rationale": "A byte-identical JavaScript body must not change high EHE." },
+    { "id": "javascript-generated-total-low-invariant", "family": "generated-content", "subjectCaseId": "javascript-generated", "referenceCaseId": "javascript-base", "point": "low", "scope": "repository-total", "minimumDifferenceHours": 0, "maximumDifferenceHours": 0, "rationale": "Conventional generated JavaScript must not change low EHE." },
+    { "id": "javascript-generated-total-expected-invariant", "family": "generated-content", "subjectCaseId": "javascript-generated", "referenceCaseId": "javascript-base", "point": "expected", "scope": "repository-total", "minimumDifferenceHours": 0, "maximumDifferenceHours": 0, "rationale": "Conventional generated JavaScript must not change expected EHE." },
+    { "id": "javascript-generated-total-high-invariant", "family": "generated-content", "subjectCaseId": "javascript-generated", "referenceCaseId": "javascript-base", "point": "high", "scope": "repository-total", "minimumDifferenceHours": 0, "maximumDifferenceHours": 0, "rationale": "Conventional generated JavaScript must not change high EHE." },
+    { "id": "javascript-generated-customization-production-low-increases", "family": "generated-customization", "subjectCaseId": "javascript-generated-customized", "referenceCaseId": "javascript-generated", "point": "low", "scope": "category", "category": "production-implementation", "minimumDifferenceHours": 0.25, "rationale": "Separately maintained generated-client customization must increase low production EHE." },
+    { "id": "javascript-generated-customization-production-expected-increases", "family": "generated-customization", "subjectCaseId": "javascript-generated-customized", "referenceCaseId": "javascript-generated", "point": "expected", "scope": "category", "category": "production-implementation", "minimumDifferenceHours": 0.25, "rationale": "Separately maintained generated-client customization must increase expected production EHE." },
+    { "id": "javascript-generated-customization-production-high-increases", "family": "generated-customization", "subjectCaseId": "javascript-generated-customized", "referenceCaseId": "javascript-generated", "point": "high", "scope": "category", "category": "production-implementation", "minimumDifferenceHours": 0.25, "rationale": "Separately maintained generated-client customization must increase high production EHE." },
+    { "id": "javascript-api-production-low-increases", "family": "meaningful-api-behavior", "subjectCaseId": "javascript-api", "referenceCaseId": "javascript-base", "point": "low", "scope": "category", "category": "production-implementation", "minimumDifferenceHours": 0.5, "rationale": "A JavaScript HTTP boundary must increase low production EHE." },
+    { "id": "javascript-api-production-expected-increases", "family": "meaningful-api-behavior", "subjectCaseId": "javascript-api", "referenceCaseId": "javascript-base", "point": "expected", "scope": "category", "category": "production-implementation", "minimumDifferenceHours": 0.5, "rationale": "A JavaScript HTTP boundary must increase expected production EHE." },
+    { "id": "javascript-api-production-high-increases", "family": "meaningful-api-behavior", "subjectCaseId": "javascript-api", "referenceCaseId": "javascript-base", "point": "high", "scope": "category", "category": "production-implementation", "minimumDifferenceHours": 0.5, "rationale": "A JavaScript HTTP boundary must increase high production EHE." },
+    { "id": "javascript-tests-unit-low-increases", "family": "represented-tests", "subjectCaseId": "javascript-tests", "referenceCaseId": "javascript-base", "point": "low", "scope": "category", "category": "unit-testing", "minimumDifferenceHours": 0.5, "rationale": "Maintained JavaScript unit tests must increase low unit-testing EHE." },
+    { "id": "javascript-tests-unit-expected-increases", "family": "represented-tests", "subjectCaseId": "javascript-tests", "referenceCaseId": "javascript-base", "point": "expected", "scope": "category", "category": "unit-testing", "minimumDifferenceHours": 0.5, "rationale": "Maintained JavaScript unit tests must increase expected unit-testing EHE." },
+    { "id": "javascript-tests-unit-high-increases", "family": "represented-tests", "subjectCaseId": "javascript-tests", "referenceCaseId": "javascript-base", "point": "high", "scope": "category", "category": "unit-testing", "minimumDifferenceHours": 0.5, "rationale": "Maintained JavaScript unit tests must increase high unit-testing EHE." },
+    { "id": "javascript-tests-production-low-isolated", "family": "category-isolation", "subjectCaseId": "javascript-tests", "referenceCaseId": "javascript-base", "point": "low", "scope": "category", "category": "production-implementation", "minimumDifferenceHours": 0, "maximumDifferenceHours": 0, "rationale": "A nested JavaScript test package must not change low production EHE." },
+    { "id": "javascript-tests-production-expected-isolated", "family": "category-isolation", "subjectCaseId": "javascript-tests", "referenceCaseId": "javascript-base", "point": "expected", "scope": "category", "category": "production-implementation", "minimumDifferenceHours": 0, "maximumDifferenceHours": 0, "rationale": "A nested JavaScript test package must not change expected production EHE." },
+    { "id": "javascript-tests-production-high-isolated", "family": "category-isolation", "subjectCaseId": "javascript-tests", "referenceCaseId": "javascript-base", "point": "high", "scope": "category", "category": "production-implementation", "minimumDifferenceHours": 0, "maximumDifferenceHours": 0, "rationale": "A nested JavaScript test package must not change high production EHE." },
+    { "id": "javascript-documentation-low-increases", "family": "represented-documentation", "subjectCaseId": "javascript-documentation", "referenceCaseId": "javascript-base", "point": "low", "scope": "category", "category": "documentation", "minimumDifferenceHours": 0.5, "rationale": "Maintained JavaScript guidance must increase low documentation EHE." },
+    { "id": "javascript-documentation-expected-increases", "family": "represented-documentation", "subjectCaseId": "javascript-documentation", "referenceCaseId": "javascript-base", "point": "expected", "scope": "category", "category": "documentation", "minimumDifferenceHours": 0.5, "rationale": "Maintained JavaScript guidance must increase expected documentation EHE." },
+    { "id": "javascript-documentation-high-increases", "family": "represented-documentation", "subjectCaseId": "javascript-documentation", "referenceCaseId": "javascript-base", "point": "high", "scope": "category", "category": "documentation", "minimumDifferenceHours": 0.5, "rationale": "Maintained JavaScript guidance must increase high documentation EHE." },
+    { "id": "javascript-documentation-production-isolated", "family": "category-isolation", "subjectCaseId": "javascript-documentation", "referenceCaseId": "javascript-base", "point": "expected", "scope": "category", "category": "production-implementation", "minimumDifferenceHours": 0, "maximumDifferenceHours": 0, "rationale": "JavaScript documentation alone must not change expected production EHE." },
+    { "id": "javascript-integration-low-increases", "family": "external-integration", "subjectCaseId": "javascript-integration", "referenceCaseId": "javascript-base", "point": "low", "scope": "category", "category": "external-integrations-and-protocols", "minimumDifferenceHours": 1, "rationale": "A fetch boundary must increase low external-integration EHE." },
+    { "id": "javascript-integration-expected-increases", "family": "external-integration", "subjectCaseId": "javascript-integration", "referenceCaseId": "javascript-base", "point": "expected", "scope": "category", "category": "external-integrations-and-protocols", "minimumDifferenceHours": 1, "rationale": "A fetch boundary must increase expected external-integration EHE." },
+    { "id": "javascript-integration-high-increases", "family": "external-integration", "subjectCaseId": "javascript-integration", "referenceCaseId": "javascript-base", "point": "high", "scope": "category", "category": "external-integrations-and-protocols", "minimumDifferenceHours": 1, "rationale": "A fetch boundary must increase high external-integration EHE." },
+    { "id": "typescript-formatting-total-low-invariant", "family": "formatting-only", "subjectCaseId": "typescript-formatting", "referenceCaseId": "typescript-base", "point": "low", "scope": "repository-total", "minimumDifferenceHours": 0, "maximumDifferenceHours": 0, "rationale": "Formatting alone must not change TypeScript low EHE." },
+    { "id": "typescript-formatting-total-expected-invariant", "family": "formatting-only", "subjectCaseId": "typescript-formatting", "referenceCaseId": "typescript-base", "point": "expected", "scope": "repository-total", "minimumDifferenceHours": 0, "maximumDifferenceHours": 0, "rationale": "Formatting alone must not change TypeScript expected EHE." },
+    { "id": "typescript-formatting-total-high-invariant", "family": "formatting-only", "subjectCaseId": "typescript-formatting", "referenceCaseId": "typescript-base", "point": "high", "scope": "repository-total", "minimumDifferenceHours": 0, "maximumDifferenceHours": 0, "rationale": "Formatting alone must not change TypeScript high EHE." },
+    { "id": "typescript-duplicate-total-low-invariant", "family": "exact-duplication", "subjectCaseId": "typescript-duplicate", "referenceCaseId": "typescript-base", "point": "low", "scope": "repository-total", "minimumDifferenceHours": 0, "maximumDifferenceHours": 0, "rationale": "A byte-identical TypeScript body must not change low EHE." },
+    { "id": "typescript-duplicate-total-expected-invariant", "family": "exact-duplication", "subjectCaseId": "typescript-duplicate", "referenceCaseId": "typescript-base", "point": "expected", "scope": "repository-total", "minimumDifferenceHours": 0, "maximumDifferenceHours": 0, "rationale": "A byte-identical TypeScript body must not change expected EHE." },
+    { "id": "typescript-duplicate-total-high-invariant", "family": "exact-duplication", "subjectCaseId": "typescript-duplicate", "referenceCaseId": "typescript-base", "point": "high", "scope": "repository-total", "minimumDifferenceHours": 0, "maximumDifferenceHours": 0, "rationale": "A byte-identical TypeScript body must not change high EHE." },
+    { "id": "typescript-generated-total-low-invariant", "family": "generated-content", "subjectCaseId": "typescript-generated", "referenceCaseId": "typescript-base", "point": "low", "scope": "repository-total", "minimumDifferenceHours": 0, "maximumDifferenceHours": 0, "rationale": "Conventional generated TypeScript must not change low EHE." },
+    { "id": "typescript-generated-total-expected-invariant", "family": "generated-content", "subjectCaseId": "typescript-generated", "referenceCaseId": "typescript-base", "point": "expected", "scope": "repository-total", "minimumDifferenceHours": 0, "maximumDifferenceHours": 0, "rationale": "Conventional generated TypeScript must not change expected EHE." },
+    { "id": "typescript-generated-total-high-invariant", "family": "generated-content", "subjectCaseId": "typescript-generated", "referenceCaseId": "typescript-base", "point": "high", "scope": "repository-total", "minimumDifferenceHours": 0, "maximumDifferenceHours": 0, "rationale": "Conventional generated TypeScript must not change high EHE." },
+    { "id": "typescript-api-production-low-increases", "family": "meaningful-api-behavior", "subjectCaseId": "typescript-api", "referenceCaseId": "typescript-base", "point": "low", "scope": "category", "category": "production-implementation", "minimumDifferenceHours": 0.5, "rationale": "A typed HTTP boundary must increase low production EHE." },
+    { "id": "typescript-api-production-expected-increases", "family": "meaningful-api-behavior", "subjectCaseId": "typescript-api", "referenceCaseId": "typescript-base", "point": "expected", "scope": "category", "category": "production-implementation", "minimumDifferenceHours": 0.5, "rationale": "A typed HTTP boundary must increase expected production EHE." },
+    { "id": "typescript-api-production-high-increases", "family": "meaningful-api-behavior", "subjectCaseId": "typescript-api", "referenceCaseId": "typescript-base", "point": "high", "scope": "category", "category": "production-implementation", "minimumDifferenceHours": 0.5, "rationale": "A typed HTTP boundary must increase high production EHE." },
+    { "id": "typescript-tests-unit-low-increases", "family": "represented-tests", "subjectCaseId": "typescript-tests", "referenceCaseId": "typescript-base", "point": "low", "scope": "category", "category": "unit-testing", "minimumDifferenceHours": 0.5, "rationale": "Maintained TypeScript unit tests must increase low unit-testing EHE." },
+    { "id": "typescript-tests-unit-expected-increases", "family": "represented-tests", "subjectCaseId": "typescript-tests", "referenceCaseId": "typescript-base", "point": "expected", "scope": "category", "category": "unit-testing", "minimumDifferenceHours": 0.5, "rationale": "Maintained TypeScript unit tests must increase expected unit-testing EHE." },
+    { "id": "typescript-tests-unit-high-increases", "family": "represented-tests", "subjectCaseId": "typescript-tests", "referenceCaseId": "typescript-base", "point": "high", "scope": "category", "category": "unit-testing", "minimumDifferenceHours": 0.5, "rationale": "Maintained TypeScript unit tests must increase high unit-testing EHE." },
+    { "id": "typescript-tests-production-low-isolated", "family": "category-isolation", "subjectCaseId": "typescript-tests", "referenceCaseId": "typescript-base", "point": "low", "scope": "category", "category": "production-implementation", "minimumDifferenceHours": 0, "maximumDifferenceHours": 0, "rationale": "A nested TypeScript test package must not change low production EHE." },
+    { "id": "typescript-tests-production-expected-isolated", "family": "category-isolation", "subjectCaseId": "typescript-tests", "referenceCaseId": "typescript-base", "point": "expected", "scope": "category", "category": "production-implementation", "minimumDifferenceHours": 0, "maximumDifferenceHours": 0, "rationale": "A nested TypeScript test package must not change expected production EHE." },
+    { "id": "typescript-tests-production-high-isolated", "family": "category-isolation", "subjectCaseId": "typescript-tests", "referenceCaseId": "typescript-base", "point": "high", "scope": "category", "category": "production-implementation", "minimumDifferenceHours": 0, "maximumDifferenceHours": 0, "rationale": "A nested TypeScript test package must not change high production EHE." },
+    { "id": "typescript-documentation-low-increases", "family": "represented-documentation", "subjectCaseId": "typescript-documentation", "referenceCaseId": "typescript-base", "point": "low", "scope": "category", "category": "documentation", "minimumDifferenceHours": 0.5, "rationale": "Maintained TypeScript guidance must increase low documentation EHE." },
+    { "id": "typescript-documentation-expected-increases", "family": "represented-documentation", "subjectCaseId": "typescript-documentation", "referenceCaseId": "typescript-base", "point": "expected", "scope": "category", "category": "documentation", "minimumDifferenceHours": 0.5, "rationale": "Maintained TypeScript guidance must increase expected documentation EHE." },
+    { "id": "typescript-documentation-high-increases", "family": "represented-documentation", "subjectCaseId": "typescript-documentation", "referenceCaseId": "typescript-base", "point": "high", "scope": "category", "category": "documentation", "minimumDifferenceHours": 0.5, "rationale": "Maintained TypeScript guidance must increase high documentation EHE." },
+    { "id": "typescript-documentation-production-isolated", "family": "category-isolation", "subjectCaseId": "typescript-documentation", "referenceCaseId": "typescript-base", "point": "expected", "scope": "category", "category": "production-implementation", "minimumDifferenceHours": 0, "maximumDifferenceHours": 0, "rationale": "TypeScript documentation alone must not change expected production EHE." },
+    { "id": "typescript-integration-low-increases", "family": "external-integration", "subjectCaseId": "typescript-integration", "referenceCaseId": "typescript-base", "point": "low", "scope": "category", "category": "external-integrations-and-protocols", "minimumDifferenceHours": 1, "rationale": "A typed fetch boundary must increase low external-integration EHE." },
+    { "id": "typescript-integration-expected-increases", "family": "external-integration", "subjectCaseId": "typescript-integration", "referenceCaseId": "typescript-base", "point": "expected", "scope": "category", "category": "external-integrations-and-protocols", "minimumDifferenceHours": 1, "rationale": "A typed fetch boundary must increase expected external-integration EHE." },
+    { "id": "typescript-integration-high-increases", "family": "external-integration", "subjectCaseId": "typescript-integration", "referenceCaseId": "typescript-base", "point": "high", "scope": "category", "category": "external-integrations-and-protocols", "minimumDifferenceHours": 1, "rationale": "A typed fetch boundary must increase high external-integration EHE." },
+    { "id": "mixed-generated-total-low-invariant", "family": "generated-content", "subjectCaseId": "mixed-generated", "referenceCaseId": "mixed-base", "point": "low", "scope": "repository-total", "minimumDifferenceHours": 0, "maximumDifferenceHours": 0, "rationale": "Generated JavaScript inside a mixed repository must not change low EHE." },
+    { "id": "mixed-generated-total-expected-invariant", "family": "generated-content", "subjectCaseId": "mixed-generated", "referenceCaseId": "mixed-base", "point": "expected", "scope": "repository-total", "minimumDifferenceHours": 0, "maximumDifferenceHours": 0, "rationale": "Generated JavaScript inside a mixed repository must not change expected EHE." },
+    { "id": "mixed-generated-total-high-invariant", "family": "generated-content", "subjectCaseId": "mixed-generated", "referenceCaseId": "mixed-base", "point": "high", "scope": "repository-total", "minimumDifferenceHours": 0, "maximumDifferenceHours": 0, "rationale": "Generated JavaScript inside a mixed repository must not change high EHE." },
+    { "id": "mixed-dotnet-api-production-low-increases", "family": "mixed-dotnet-behavior", "subjectCaseId": "mixed-dotnet-api", "referenceCaseId": "mixed-base", "point": "low", "scope": "category", "category": "production-implementation", "minimumDifferenceHours": 1, "rationale": "A .NET API addition inside a mixed repository must increase low production EHE." },
+    { "id": "mixed-dotnet-api-production-expected-increases", "family": "mixed-dotnet-behavior", "subjectCaseId": "mixed-dotnet-api", "referenceCaseId": "mixed-base", "point": "expected", "scope": "category", "category": "production-implementation", "minimumDifferenceHours": 1, "rationale": "A .NET API addition inside a mixed repository must increase expected production EHE." },
+    { "id": "mixed-dotnet-api-production-high-increases", "family": "mixed-dotnet-behavior", "subjectCaseId": "mixed-dotnet-api", "referenceCaseId": "mixed-base", "point": "high", "scope": "category", "category": "production-implementation", "minimumDifferenceHours": 1, "rationale": "A .NET API addition inside a mixed repository must increase high production EHE." },
+    { "id": "mixed-dotnet-api-unit-isolated", "family": "category-isolation", "subjectCaseId": "mixed-dotnet-api", "referenceCaseId": "mixed-base", "point": "expected", "scope": "category", "category": "unit-testing", "minimumDifferenceHours": 0, "maximumDifferenceHours": 0, "rationale": "A production-only .NET mutation must not invent unit-test effort in a mixed repository." },
+    { "id": "mixed-javascript-ui-low-increases", "family": "mixed-javascript-ui", "subjectCaseId": "mixed-javascript-ui", "referenceCaseId": "mixed-base", "point": "low", "scope": "category", "category": "ui-implementation-and-represented-ux-decisions", "minimumDifferenceHours": 0.5, "rationale": "A JavaScript UI component inside a mixed repository must increase low UI EHE." },
+    { "id": "mixed-javascript-ui-expected-increases", "family": "mixed-javascript-ui", "subjectCaseId": "mixed-javascript-ui", "referenceCaseId": "mixed-base", "point": "expected", "scope": "category", "category": "ui-implementation-and-represented-ux-decisions", "minimumDifferenceHours": 0.5, "rationale": "A JavaScript UI component inside a mixed repository must increase expected UI EHE." },
+    { "id": "mixed-javascript-ui-high-increases", "family": "mixed-javascript-ui", "subjectCaseId": "mixed-javascript-ui", "referenceCaseId": "mixed-base", "point": "high", "scope": "category", "category": "ui-implementation-and-represented-ux-decisions", "minimumDifferenceHours": 0.5, "rationale": "A JavaScript UI component inside a mixed repository must increase high UI EHE." },
+    { "id": "mixed-javascript-ui-unit-isolated", "family": "category-isolation", "subjectCaseId": "mixed-javascript-ui", "referenceCaseId": "mixed-base", "point": "expected", "scope": "category", "category": "unit-testing", "minimumDifferenceHours": 0, "maximumDifferenceHours": 0, "rationale": "A UI-only mutation must not invent unit-test effort in a mixed repository." },
+    { "id": "mixed-typescript-tests-unit-low-increases", "family": "mixed-typescript-tests", "subjectCaseId": "mixed-typescript-tests", "referenceCaseId": "mixed-base", "point": "low", "scope": "category", "category": "unit-testing", "minimumDifferenceHours": 0.5, "rationale": "A nested TypeScript test package inside a mixed repository must increase low unit-testing EHE." },
+    { "id": "mixed-typescript-tests-unit-expected-increases", "family": "mixed-typescript-tests", "subjectCaseId": "mixed-typescript-tests", "referenceCaseId": "mixed-base", "point": "expected", "scope": "category", "category": "unit-testing", "minimumDifferenceHours": 0.5, "rationale": "A nested TypeScript test package inside a mixed repository must increase expected unit-testing EHE." },
+    { "id": "mixed-typescript-tests-unit-high-increases", "family": "mixed-typescript-tests", "subjectCaseId": "mixed-typescript-tests", "referenceCaseId": "mixed-base", "point": "high", "scope": "category", "category": "unit-testing", "minimumDifferenceHours": 0.5, "rationale": "A nested TypeScript test package inside a mixed repository must increase high unit-testing EHE." },
+    { "id": "mixed-typescript-tests-production-low-isolated", "family": "category-isolation", "subjectCaseId": "mixed-typescript-tests", "referenceCaseId": "mixed-base", "point": "low", "scope": "category", "category": "production-implementation", "minimumDifferenceHours": 0, "maximumDifferenceHours": 0, "rationale": "A nested TypeScript test package must not change low mixed production EHE." },
+    { "id": "mixed-typescript-tests-production-expected-isolated", "family": "category-isolation", "subjectCaseId": "mixed-typescript-tests", "referenceCaseId": "mixed-base", "point": "expected", "scope": "category", "category": "production-implementation", "minimumDifferenceHours": 0, "maximumDifferenceHours": 0, "rationale": "A nested TypeScript test package must not change expected mixed production EHE." },
+    { "id": "mixed-typescript-tests-production-high-isolated", "family": "category-isolation", "subjectCaseId": "mixed-typescript-tests", "referenceCaseId": "mixed-base", "point": "high", "scope": "category", "category": "production-implementation", "minimumDifferenceHours": 0, "maximumDifferenceHours": 0, "rationale": "A nested TypeScript test package must not change high mixed production EHE." },
+    { "id": "dotnet-near-duplicate-production-low-bounded", "family": "near-duplicate-marginality", "subjectCaseId": "dotnet-near-duplicate", "referenceCaseId": "dotnet-base", "point": "low", "scope": "category", "category": "production-implementation", "minimumDifferenceHours": 0, "maximumDifferenceHours": 0.75, "rationale": "A renamed .NET near-copy may add bounded adaptation effort but must not receive another full implementation." },
+    { "id": "dotnet-near-duplicate-production-expected-bounded", "family": "near-duplicate-marginality", "subjectCaseId": "dotnet-near-duplicate", "referenceCaseId": "dotnet-base", "point": "expected", "scope": "category", "category": "production-implementation", "minimumDifferenceHours": 0, "maximumDifferenceHours": 1.25, "rationale": "A renamed .NET near-copy may add bounded adaptation effort but must not receive another full implementation." },
+    { "id": "dotnet-near-duplicate-production-high-bounded", "family": "near-duplicate-marginality", "subjectCaseId": "dotnet-near-duplicate", "referenceCaseId": "dotnet-base", "point": "high", "scope": "category", "category": "production-implementation", "minimumDifferenceHours": 0, "maximumDifferenceHours": 2, "rationale": "Uncertainty around a renamed .NET near-copy must remain bounded rather than pricing it as independent behavior." },
+    { "id": "dotnet-near-duplicate-total-expected-bounded", "family": "near-duplicate-marginality", "subjectCaseId": "dotnet-near-duplicate", "referenceCaseId": "dotnet-base", "point": "expected", "scope": "repository-total", "minimumDifferenceHours": 0, "maximumDifferenceHours": 1.25, "rationale": "The renamed .NET near-copy must have a bounded repository-level effect." },
+    { "id": "javascript-near-duplicate-production-low-bounded", "family": "near-duplicate-marginality", "subjectCaseId": "javascript-near-duplicate", "referenceCaseId": "javascript-base", "point": "low", "scope": "category", "category": "production-implementation", "minimumDifferenceHours": 0, "maximumDifferenceHours": 0.5, "rationale": "A renamed JavaScript near-copy may add bounded adaptation effort but must not receive another full implementation." },
+    { "id": "javascript-near-duplicate-production-expected-bounded", "family": "near-duplicate-marginality", "subjectCaseId": "javascript-near-duplicate", "referenceCaseId": "javascript-base", "point": "expected", "scope": "category", "category": "production-implementation", "minimumDifferenceHours": 0, "maximumDifferenceHours": 0.75, "rationale": "A renamed JavaScript near-copy may add bounded adaptation effort but must not receive another full implementation." },
+    { "id": "javascript-near-duplicate-production-high-bounded", "family": "near-duplicate-marginality", "subjectCaseId": "javascript-near-duplicate", "referenceCaseId": "javascript-base", "point": "high", "scope": "category", "category": "production-implementation", "minimumDifferenceHours": 0, "maximumDifferenceHours": 1, "rationale": "Uncertainty around a renamed JavaScript near-copy must remain bounded rather than pricing it as independent behavior." },
+    { "id": "javascript-near-duplicate-total-expected-bounded", "family": "near-duplicate-marginality", "subjectCaseId": "javascript-near-duplicate", "referenceCaseId": "javascript-base", "point": "expected", "scope": "repository-total", "minimumDifferenceHours": 0, "maximumDifferenceHours": 0.75, "rationale": "The renamed JavaScript near-copy must have a bounded repository-level effect." },
+    { "id": "typescript-near-duplicate-production-low-bounded", "family": "near-duplicate-marginality", "subjectCaseId": "typescript-near-duplicate", "referenceCaseId": "typescript-base", "point": "low", "scope": "category", "category": "production-implementation", "minimumDifferenceHours": 0, "maximumDifferenceHours": 0.5, "rationale": "A renamed TypeScript near-copy may add bounded adaptation effort but must not receive another full implementation." },
+    { "id": "typescript-near-duplicate-production-expected-bounded", "family": "near-duplicate-marginality", "subjectCaseId": "typescript-near-duplicate", "referenceCaseId": "typescript-base", "point": "expected", "scope": "category", "category": "production-implementation", "minimumDifferenceHours": 0, "maximumDifferenceHours": 0.75, "rationale": "A renamed TypeScript near-copy may add bounded adaptation effort but must not receive another full implementation." },
+    { "id": "typescript-near-duplicate-production-high-bounded", "family": "near-duplicate-marginality", "subjectCaseId": "typescript-near-duplicate", "referenceCaseId": "typescript-base", "point": "high", "scope": "category", "category": "production-implementation", "minimumDifferenceHours": 0, "maximumDifferenceHours": 1, "rationale": "Uncertainty around a renamed TypeScript near-copy must remain bounded rather than pricing it as independent behavior." },
+    { "id": "typescript-near-duplicate-total-expected-bounded", "family": "near-duplicate-marginality", "subjectCaseId": "typescript-near-duplicate", "referenceCaseId": "typescript-base", "point": "expected", "scope": "repository-total", "minimumDifferenceHours": 0, "maximumDifferenceHours": 0.75, "rationale": "The renamed TypeScript near-copy must have a bounded repository-level effect." },
+    { "id": "dotnet-dead-code-total-low-invariant", "family": "compiler-disabled-dead-code", "subjectCaseId": "dotnet-dead-code", "referenceCaseId": "dotnet-base", "point": "low", "scope": "repository-total", "minimumDifferenceHours": 0, "maximumDifferenceHours": 0, "rationale": "Compiler-disabled .NET syntax must not change low EHE." },
+    { "id": "dotnet-dead-code-total-expected-invariant", "family": "compiler-disabled-dead-code", "subjectCaseId": "dotnet-dead-code", "referenceCaseId": "dotnet-base", "point": "expected", "scope": "repository-total", "minimumDifferenceHours": 0, "maximumDifferenceHours": 0, "rationale": "Compiler-disabled .NET syntax must not change expected EHE." },
+    { "id": "dotnet-dead-code-total-high-invariant", "family": "compiler-disabled-dead-code", "subjectCaseId": "dotnet-dead-code", "referenceCaseId": "dotnet-base", "point": "high", "scope": "repository-total", "minimumDifferenceHours": 0, "maximumDifferenceHours": 0, "rationale": "Compiler-disabled .NET syntax must not change high EHE." },
+    { "id": "dotnet-dead-code-data-invariant", "family": "compiler-disabled-dead-code", "subjectCaseId": "dotnet-dead-code", "referenceCaseId": "dotnet-base", "point": "expected", "scope": "category", "category": "data-modeling-persistence-and-migrations", "minimumDifferenceHours": 0, "maximumDifferenceHours": 0, "rationale": "Compiler-disabled persistence syntax must not invent represented data effort." },
+    { "id": "dotnet-dead-code-security-invariant", "family": "compiler-disabled-dead-code", "subjectCaseId": "dotnet-dead-code", "referenceCaseId": "dotnet-base", "point": "expected", "scope": "category", "category": "security-and-accessibility", "minimumDifferenceHours": 0, "maximumDifferenceHours": 0, "rationale": "Compiler-disabled authorization syntax must not invent represented security effort." },
+    { "id": "dotnet-data-low-increases", "family": "data-persistence", "subjectCaseId": "dotnet-data", "referenceCaseId": "dotnet-base", "point": "low", "scope": "category", "category": "data-modeling-persistence-and-migrations", "minimumDifferenceHours": 0.5, "rationale": "A .NET model and persistence context must increase low data EHE." },
+    { "id": "dotnet-data-expected-increases", "family": "data-persistence", "subjectCaseId": "dotnet-data", "referenceCaseId": "dotnet-base", "point": "expected", "scope": "category", "category": "data-modeling-persistence-and-migrations", "minimumDifferenceHours": 0.5, "rationale": "A .NET model and persistence context must increase expected data EHE." },
+    { "id": "dotnet-data-high-increases", "family": "data-persistence", "subjectCaseId": "dotnet-data", "referenceCaseId": "dotnet-base", "point": "high", "scope": "category", "category": "data-modeling-persistence-and-migrations", "minimumDifferenceHours": 0.5, "rationale": "A .NET model and persistence context must increase high data EHE." },
+    { "id": "dotnet-data-total-increases", "family": "data-persistence", "subjectCaseId": "dotnet-data", "referenceCaseId": "dotnet-base", "point": "expected", "scope": "repository-total", "minimumDifferenceHours": 0.5, "rationale": "Represented .NET persistence must increase total EHE." },
+    { "id": "dotnet-data-security-isolated", "family": "category-isolation", "subjectCaseId": "dotnet-data", "referenceCaseId": "dotnet-base", "point": "expected", "scope": "category", "category": "security-and-accessibility", "minimumDifferenceHours": 0, "maximumDifferenceHours": 0, "rationale": "A data-only .NET boundary must not invent security effort." },
+    { "id": "javascript-data-low-increases", "family": "data-persistence", "subjectCaseId": "javascript-data", "referenceCaseId": "javascript-base", "point": "low", "scope": "category", "category": "data-modeling-persistence-and-migrations", "minimumDifferenceHours": 0.5, "rationale": "A JavaScript persistence boundary must increase low data EHE." },
+    { "id": "javascript-data-expected-increases", "family": "data-persistence", "subjectCaseId": "javascript-data", "referenceCaseId": "javascript-base", "point": "expected", "scope": "category", "category": "data-modeling-persistence-and-migrations", "minimumDifferenceHours": 0.5, "rationale": "A JavaScript persistence boundary must increase expected data EHE." },
+    { "id": "javascript-data-high-increases", "family": "data-persistence", "subjectCaseId": "javascript-data", "referenceCaseId": "javascript-base", "point": "high", "scope": "category", "category": "data-modeling-persistence-and-migrations", "minimumDifferenceHours": 0.5, "rationale": "A JavaScript persistence boundary must increase high data EHE." },
+    { "id": "javascript-data-total-increases", "family": "data-persistence", "subjectCaseId": "javascript-data", "referenceCaseId": "javascript-base", "point": "expected", "scope": "repository-total", "minimumDifferenceHours": 0.5, "rationale": "Represented JavaScript persistence must increase total EHE." },
+    { "id": "javascript-data-security-isolated", "family": "category-isolation", "subjectCaseId": "javascript-data", "referenceCaseId": "javascript-base", "point": "expected", "scope": "category", "category": "security-and-accessibility", "minimumDifferenceHours": 0, "maximumDifferenceHours": 0, "rationale": "A data-only JavaScript boundary must not invent security effort." },
+    { "id": "typescript-data-low-increases", "family": "data-persistence", "subjectCaseId": "typescript-data", "referenceCaseId": "typescript-base", "point": "low", "scope": "category", "category": "data-modeling-persistence-and-migrations", "minimumDifferenceHours": 0.5, "rationale": "A TypeScript persistence boundary must increase low data EHE." },
+    { "id": "typescript-data-expected-increases", "family": "data-persistence", "subjectCaseId": "typescript-data", "referenceCaseId": "typescript-base", "point": "expected", "scope": "category", "category": "data-modeling-persistence-and-migrations", "minimumDifferenceHours": 0.5, "rationale": "A TypeScript persistence boundary must increase expected data EHE." },
+    { "id": "typescript-data-high-increases", "family": "data-persistence", "subjectCaseId": "typescript-data", "referenceCaseId": "typescript-base", "point": "high", "scope": "category", "category": "data-modeling-persistence-and-migrations", "minimumDifferenceHours": 0.5, "rationale": "A TypeScript persistence boundary must increase high data EHE." },
+    { "id": "typescript-data-total-increases", "family": "data-persistence", "subjectCaseId": "typescript-data", "referenceCaseId": "typescript-base", "point": "expected", "scope": "repository-total", "minimumDifferenceHours": 0.5, "rationale": "Represented TypeScript persistence must increase total EHE." },
+    { "id": "typescript-data-security-isolated", "family": "category-isolation", "subjectCaseId": "typescript-data", "referenceCaseId": "typescript-base", "point": "expected", "scope": "category", "category": "security-and-accessibility", "minimumDifferenceHours": 0, "maximumDifferenceHours": 0, "rationale": "A data-only TypeScript boundary must not invent security effort." },
+    { "id": "dotnet-migration-low-increases", "family": "schema-migration", "subjectCaseId": "dotnet-migration", "referenceCaseId": "dotnet-data", "point": "low", "scope": "category", "category": "data-modeling-persistence-and-migrations", "minimumDifferenceHours": 0.5, "rationale": "A maintained .NET schema migration must increase low data EHE beyond the base persistence context." },
+    { "id": "dotnet-migration-expected-increases", "family": "schema-migration", "subjectCaseId": "dotnet-migration", "referenceCaseId": "dotnet-data", "point": "expected", "scope": "category", "category": "data-modeling-persistence-and-migrations", "minimumDifferenceHours": 0.5, "rationale": "A maintained .NET schema migration must increase expected data EHE beyond the base persistence context." },
+    { "id": "dotnet-migration-high-increases", "family": "schema-migration", "subjectCaseId": "dotnet-migration", "referenceCaseId": "dotnet-data", "point": "high", "scope": "category", "category": "data-modeling-persistence-and-migrations", "minimumDifferenceHours": 0.5, "rationale": "A maintained .NET schema migration must increase high data EHE beyond the base persistence context." },
+    { "id": "dotnet-migration-total-increases", "family": "schema-migration", "subjectCaseId": "dotnet-migration", "referenceCaseId": "dotnet-data", "point": "expected", "scope": "repository-total", "minimumDifferenceHours": 0.5, "rationale": "A maintained schema migration must increase total EHE." },
+    { "id": "dotnet-security-low-increases", "family": "represented-security", "subjectCaseId": "dotnet-security", "referenceCaseId": "dotnet-base", "point": "low", "scope": "category", "category": "security-and-accessibility", "minimumDifferenceHours": 0.5, "rationale": "Represented .NET authentication and authorization must increase low security EHE." },
+    { "id": "dotnet-security-expected-increases", "family": "represented-security", "subjectCaseId": "dotnet-security", "referenceCaseId": "dotnet-base", "point": "expected", "scope": "category", "category": "security-and-accessibility", "minimumDifferenceHours": 0.5, "rationale": "Represented .NET authentication and authorization must increase expected security EHE." },
+    { "id": "dotnet-security-high-increases", "family": "represented-security", "subjectCaseId": "dotnet-security", "referenceCaseId": "dotnet-base", "point": "high", "scope": "category", "category": "security-and-accessibility", "minimumDifferenceHours": 0.5, "rationale": "Represented .NET authentication and authorization must increase high security EHE." },
+    { "id": "dotnet-security-total-increases", "family": "represented-security", "subjectCaseId": "dotnet-security", "referenceCaseId": "dotnet-base", "point": "expected", "scope": "repository-total", "minimumDifferenceHours": 0.5, "rationale": "Represented .NET security behavior must increase total EHE." },
+    { "id": "dotnet-security-data-isolated", "family": "category-isolation", "subjectCaseId": "dotnet-security", "referenceCaseId": "dotnet-base", "point": "expected", "scope": "category", "category": "data-modeling-persistence-and-migrations", "minimumDifferenceHours": 0, "maximumDifferenceHours": 0, "rationale": "A security-only .NET boundary must not invent persistence effort." },
+    { "id": "javascript-security-low-increases", "family": "represented-security", "subjectCaseId": "javascript-security", "referenceCaseId": "javascript-base", "point": "low", "scope": "category", "category": "security-and-accessibility", "minimumDifferenceHours": 0.5, "rationale": "Represented JavaScript authentication and hardening must increase low security EHE." },
+    { "id": "javascript-security-expected-increases", "family": "represented-security", "subjectCaseId": "javascript-security", "referenceCaseId": "javascript-base", "point": "expected", "scope": "category", "category": "security-and-accessibility", "minimumDifferenceHours": 0.5, "rationale": "Represented JavaScript authentication and hardening must increase expected security EHE." },
+    { "id": "javascript-security-high-increases", "family": "represented-security", "subjectCaseId": "javascript-security", "referenceCaseId": "javascript-base", "point": "high", "scope": "category", "category": "security-and-accessibility", "minimumDifferenceHours": 0.5, "rationale": "Represented JavaScript authentication and hardening must increase high security EHE." },
+    { "id": "javascript-security-total-increases", "family": "represented-security", "subjectCaseId": "javascript-security", "referenceCaseId": "javascript-base", "point": "expected", "scope": "repository-total", "minimumDifferenceHours": 0.5, "rationale": "Represented JavaScript security behavior must increase total EHE." },
+    { "id": "javascript-security-data-isolated", "family": "category-isolation", "subjectCaseId": "javascript-security", "referenceCaseId": "javascript-base", "point": "expected", "scope": "category", "category": "data-modeling-persistence-and-migrations", "minimumDifferenceHours": 0, "maximumDifferenceHours": 0, "rationale": "A security-only JavaScript boundary must not invent persistence effort." },
+    { "id": "typescript-security-low-increases", "family": "represented-security", "subjectCaseId": "typescript-security", "referenceCaseId": "typescript-base", "point": "low", "scope": "category", "category": "security-and-accessibility", "minimumDifferenceHours": 0.5, "rationale": "Represented TypeScript authentication and hardening must increase low security EHE." },
+    { "id": "typescript-security-expected-increases", "family": "represented-security", "subjectCaseId": "typescript-security", "referenceCaseId": "typescript-base", "point": "expected", "scope": "category", "category": "security-and-accessibility", "minimumDifferenceHours": 0.5, "rationale": "Represented TypeScript authentication and hardening must increase expected security EHE." },
+    { "id": "typescript-security-high-increases", "family": "represented-security", "subjectCaseId": "typescript-security", "referenceCaseId": "typescript-base", "point": "high", "scope": "category", "category": "security-and-accessibility", "minimumDifferenceHours": 0.5, "rationale": "Represented TypeScript authentication and hardening must increase high security EHE." },
+    { "id": "typescript-security-total-increases", "family": "represented-security", "subjectCaseId": "typescript-security", "referenceCaseId": "typescript-base", "point": "expected", "scope": "repository-total", "minimumDifferenceHours": 0.5, "rationale": "Represented TypeScript security behavior must increase total EHE." },
+    { "id": "typescript-security-data-isolated", "family": "category-isolation", "subjectCaseId": "typescript-security", "referenceCaseId": "typescript-base", "point": "expected", "scope": "category", "category": "data-modeling-persistence-and-migrations", "minimumDifferenceHours": 0, "maximumDifferenceHours": 0, "rationale": "A security-only TypeScript boundary must not invent persistence effort." },
+    { "id": "javascript-coverage-80-unit-low-increases", "family": "declared-assumed-coverage", "subjectCaseId": "javascript-coverage-80", "referenceCaseId": "javascript-coverage-base", "point": "low", "scope": "category", "category": "unit-testing", "minimumDifferenceHours": 0.25, "rationale": "An assumed 80 percent coverage threshold must increase low unit-testing EHE above the same tests without a declaration." },
+    { "id": "javascript-coverage-80-unit-expected-increases", "family": "declared-assumed-coverage", "subjectCaseId": "javascript-coverage-80", "referenceCaseId": "javascript-coverage-base", "point": "expected", "scope": "category", "category": "unit-testing", "minimumDifferenceHours": 0.25, "rationale": "An assumed 80 percent coverage threshold must increase expected unit-testing EHE above the same tests without a declaration." },
+    { "id": "javascript-coverage-80-unit-high-increases", "family": "declared-assumed-coverage", "subjectCaseId": "javascript-coverage-80", "referenceCaseId": "javascript-coverage-base", "point": "high", "scope": "category", "category": "unit-testing", "minimumDifferenceHours": 0.25, "rationale": "An assumed 80 percent coverage threshold must increase high unit-testing EHE above the same tests without a declaration." },
+    { "id": "javascript-coverage-80-production-isolated", "family": "category-isolation", "subjectCaseId": "javascript-coverage-80", "referenceCaseId": "javascript-coverage-base", "point": "expected", "scope": "category", "category": "production-implementation", "minimumDifferenceHours": 0, "maximumDifferenceHours": 0, "rationale": "A coverage declaration must not change production EHE." },
+    { "id": "javascript-coverage-100-unit-low-increases", "family": "declared-assumed-coverage", "subjectCaseId": "javascript-coverage-100", "referenceCaseId": "javascript-coverage-80", "point": "low", "scope": "category", "category": "unit-testing", "minimumDifferenceHours": 0.25, "rationale": "Assumed 100 percent coverage must represent more low unit-testing EHE than 80 percent for identical code and tests." },
+    { "id": "javascript-coverage-100-unit-expected-increases", "family": "declared-assumed-coverage", "subjectCaseId": "javascript-coverage-100", "referenceCaseId": "javascript-coverage-80", "point": "expected", "scope": "category", "category": "unit-testing", "minimumDifferenceHours": 0.25, "rationale": "Assumed 100 percent coverage must represent more expected unit-testing EHE than 80 percent for identical code and tests." },
+    { "id": "javascript-coverage-100-unit-high-increases", "family": "declared-assumed-coverage", "subjectCaseId": "javascript-coverage-100", "referenceCaseId": "javascript-coverage-80", "point": "high", "scope": "category", "category": "unit-testing", "minimumDifferenceHours": 0.25, "rationale": "Assumed 100 percent coverage must represent more high unit-testing EHE than 80 percent for identical code and tests." },
+    { "id": "javascript-coverage-100-production-isolated", "family": "category-isolation", "subjectCaseId": "javascript-coverage-100", "referenceCaseId": "javascript-coverage-80", "point": "expected", "scope": "category", "category": "production-implementation", "minimumDifferenceHours": 0, "maximumDifferenceHours": 0, "rationale": "Raising only the coverage declaration must not change production EHE." },
+    { "id": "javascript-workspace-setup-low-increases", "family": "multi-package-boundary", "subjectCaseId": "javascript-workspace-multi", "referenceCaseId": "javascript-workspace-single", "point": "low", "scope": "category", "category": "repository-and-solution-setup", "minimumDifferenceHours": 0.5, "rationale": "A second package and dependency edge must increase low setup EHE." },
+    { "id": "javascript-workspace-setup-expected-increases", "family": "multi-package-boundary", "subjectCaseId": "javascript-workspace-multi", "referenceCaseId": "javascript-workspace-single", "point": "expected", "scope": "category", "category": "repository-and-solution-setup", "minimumDifferenceHours": 0.5, "rationale": "A second package and dependency edge must increase expected setup EHE." },
+    { "id": "javascript-workspace-setup-high-increases", "family": "multi-package-boundary", "subjectCaseId": "javascript-workspace-multi", "referenceCaseId": "javascript-workspace-single", "point": "high", "scope": "category", "category": "repository-and-solution-setup", "minimumDifferenceHours": 0.5, "rationale": "A second package and dependency edge must increase high setup EHE." },
+    { "id": "javascript-workspace-review-increases", "family": "multi-package-boundary", "subjectCaseId": "javascript-workspace-multi", "referenceCaseId": "javascript-workspace-single", "point": "expected", "scope": "category", "category": "self-review-and-system-integration", "minimumDifferenceHours": 0.5, "rationale": "An additional package boundary must increase expected integration and self-review EHE." },
+    { "id": "javascript-workspace-production-invariant", "family": "multi-package-boundary", "subjectCaseId": "javascript-workspace-multi", "referenceCaseId": "javascript-workspace-single", "point": "expected", "scope": "category", "category": "production-implementation", "minimumDifferenceHours": 0, "maximumDifferenceHours": 0, "rationale": "Reusing an exact implementation body in another package must add boundary work without duplicating production EHE." },
+    { "id": "javascript-ci-low-increases", "family": "represented-ci", "subjectCaseId": "javascript-ci", "referenceCaseId": "javascript-base", "point": "low", "scope": "category", "category": "ci-cd-and-infrastructure-as-code", "minimumDifferenceHours": 0.5, "rationale": "A maintained CI workflow must increase low CI/CD EHE." },
+    { "id": "javascript-ci-expected-increases", "family": "represented-ci", "subjectCaseId": "javascript-ci", "referenceCaseId": "javascript-base", "point": "expected", "scope": "category", "category": "ci-cd-and-infrastructure-as-code", "minimumDifferenceHours": 0.5, "rationale": "A maintained CI workflow must increase expected CI/CD EHE." },
+    { "id": "javascript-ci-high-increases", "family": "represented-ci", "subjectCaseId": "javascript-ci", "referenceCaseId": "javascript-base", "point": "high", "scope": "category", "category": "ci-cd-and-infrastructure-as-code", "minimumDifferenceHours": 0.5, "rationale": "A maintained CI workflow must increase high CI/CD EHE." },
+    { "id": "javascript-ci-production-isolated", "family": "category-isolation", "subjectCaseId": "javascript-ci", "referenceCaseId": "javascript-base", "point": "expected", "scope": "category", "category": "production-implementation", "minimumDifferenceHours": 0, "maximumDifferenceHours": 0, "rationale": "A CI-only mutation must not change production EHE." },
+    { "id": "javascript-container-low-increases", "family": "represented-container", "subjectCaseId": "javascript-container", "referenceCaseId": "javascript-base", "point": "low", "scope": "category", "category": "packaging-deployment-and-release-artifacts", "minimumDifferenceHours": 0.5, "rationale": "A maintained container definition must increase low packaging and deployment EHE." },
+    { "id": "javascript-container-expected-increases", "family": "represented-container", "subjectCaseId": "javascript-container", "referenceCaseId": "javascript-base", "point": "expected", "scope": "category", "category": "packaging-deployment-and-release-artifacts", "minimumDifferenceHours": 0.5, "rationale": "A maintained container definition must increase expected packaging and deployment EHE." },
+    { "id": "javascript-container-high-increases", "family": "represented-container", "subjectCaseId": "javascript-container", "referenceCaseId": "javascript-base", "point": "high", "scope": "category", "category": "packaging-deployment-and-release-artifacts", "minimumDifferenceHours": 0.5, "rationale": "A maintained container definition must increase high packaging and deployment EHE." },
+    { "id": "javascript-container-production-isolated", "family": "category-isolation", "subjectCaseId": "javascript-container", "referenceCaseId": "javascript-base", "point": "expected", "scope": "category", "category": "production-implementation", "minimumDifferenceHours": 0, "maximumDifferenceHours": 0, "rationale": "A container-only mutation must not change production EHE." }
+  ]
+}

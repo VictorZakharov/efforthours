@@ -1,0 +1,5 @@
+{
+  "name": "@fairbill-mutation/shared",
+  "private": true,
+  "type": "module"
+}

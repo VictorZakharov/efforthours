@@ -327,14 +327,18 @@ only when a genuinely distinct reviewer or adjudicator completes a plan.
 The same slice adds versioned mutation guardrails. A mutation suite compares a
 subject and reference canonical estimate at one repository/category low, expected,
 or high point and asserts inclusive bounds on `subject - reference`. These
-relations test invariance, directionality, and category isolation. They are not
-effort labels and cannot be used as numerical training targets. The public 0.2.0
-suite covers 30 small .NET, parser-backed JavaScript, token-backed TypeScript, and
-mixed-repository source states with 84 passing relations. It includes all three
-range points, exact duplication, conventional generated output, separately
-maintained generated customization, API/UI behavior, tests, documentation,
-integrations, and category isolation. Near-duplicates and more complex behavior
-families remain required before learned-model admission.
+relations test invariance, directionality, bounded marginality, and category
+isolation. They are not effort labels and cannot be used as numerical training
+targets. The public 0.3.0 suite covers 48 small .NET, parser-backed JavaScript,
+token-backed TypeScript, and mixed-repository source states with 156 passing
+relations. It includes all three range points, exact duplication, conventional
+generated output, separately maintained generated customization, bounded renamed
+near-copies, compiler-disabled C# syntax, API/UI/data/security behavior, tests,
+declared-and-assumed coverage levels, documentation, integrations, workspace
+boundaries, CI, containers, and category isolation. It does not yet provide
+semantic clone detection, general dead-code reachability, accessibility-specific
+depth, or measured-coverage parsing; those and more realistic repository shapes
+remain required before learned-model admission.
 
 The initial public pilot freezes three MIT-licensed repository families across
 development, validation, and test partitions and measures `seed-rules/0.2.0`.

@@ -1,0 +1,5 @@
+{
+  "name": "@fairbill-mutation/app",
+  "private": true,
+  "type": "module"
+}

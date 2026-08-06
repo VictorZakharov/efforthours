@@ -1,0 +1,477 @@
+{
+  "schemaVersion": "1.0.0",
+  "evidenceSchemaVersion": "1.0.0",
+  "estimatorVersion": "seed-rules/0.2.1",
+  "repository": {
+    "name": "typescript-near-duplicate",
+    "scope": ".",
+    "ecosystems": [
+      "javascript",
+      "typescript"
+    ],
+    "sourceDigest": "sha256:6fbc5f9f9aded37ee83e01d9b1e9f32ed65448fa52a54ff3c92370b735d01c37"
+  },
+  "profile": "implementation",
+  "baseline": {
+    "id": "senior-contractor-2026-no-ai",
+    "workerProfile": "Competent senior contractor familiar with the technical ecosystem",
+    "technologyBaselineYear": 2026,
+    "businessDomainFamiliar": false,
+    "usesAi": false,
+    "description": "One senior contractor recreating the described working system with modern 2026 tools and no AI."
+  },
+  "totalEffort": {
+    "low": 4.50,
+    "expected": 8.00,
+    "high": 14.50
+  },
+  "categories": [
+    {
+      "category": "specification-comprehension-and-domain-learning",
+      "hours": {
+        "low": 0.75,
+        "expected": 1.25,
+        "high": 2.25
+      }
+    },
+    {
+      "category": "repository-and-solution-setup",
+      "hours": {
+        "low": 0.75,
+        "expected": 1.25,
+        "high": 2.00
+      }
+    },
+    {
+      "category": "architecture-and-technical-design",
+      "hours": {
+        "low": 0.75,
+        "expected": 1.50,
+        "high": 2.75
+      }
+    },
+    {
+      "category": "production-implementation",
+      "hours": {
+        "low": 0.50,
+        "expected": 1.00,
+        "high": 2.00
+      }
+    },
+    {
+      "category": "manual-validation-debugging-and-hardening",
+      "hours": {
+        "low": 0.25,
+        "expected": 0.50,
+        "high": 1.00
+      }
+    },
+    {
+      "category": "build-configuration-and-developer-tooling",
+      "hours": {
+        "low": 0.75,
+        "expected": 1.25,
+        "high": 2.25
+      }
+    },
+    {
+      "category": "self-review-and-system-integration",
+      "hours": {
+        "low": 0.75,
+        "expected": 1.25,
+        "high": 2.25
+      }
+    }
+  ],
+  "workItems": [
+    {
+      "schemaVersion": "1.0.0",
+      "id": "work:specification-comprehension:49aec33b6a46fb626dad:part-0001",
+      "category": "specification-comprehension-and-domain-learning",
+      "title": "Comprehend the supplied specification and bounded business domain",
+      "scope": ".",
+      "evidenceIds": [
+        "inventory:repository",
+        "javascript:package:package.json"
+      ],
+      "quantity": 1,
+      "complexity": "moderate",
+      "hours": {
+        "low": 0.75,
+        "expected": 1.25,
+        "high": 2.25
+      },
+      "confidence": 0.59,
+      "reason": "The modeled contractor must understand the specified behavior and bounded domain represented across the repository before implementing it. Rule \u0027specification-comprehension\u0027 uses production-scopes=1; complexity \u0027moderate\u0027 applies factor 1.",
+      "estimator": {
+        "id": "seed-rule:specification-comprehension",
+        "version": "0.2.1",
+        "kind": "rule"
+      },
+      "profiles": [
+        "implementation",
+        "recreation"
+      ],
+      "dependencyIds": [],
+      "correlationGroup": "repository:understanding-and-design",
+      "assumptions": [
+        "A clear specification exists at the level promised by the selected profile.",
+        "Open-ended stakeholder discovery is excluded."
+      ],
+      "exclusions": [],
+      "uncertaintyReasons": [
+        "No external specification artifact is represented in the current estimator request contract.",
+        "Some supporting evidence is inferred rather than directly observed."
+      ]
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "id": "work:project-setup:e56be8fd4646c76f7cdd:part-0001",
+      "category": "repository-and-solution-setup",
+      "title": "Set up \u0027.\u0027 (package)",
+      "scope": ".",
+      "evidenceIds": [
+        "javascript:configuration:tsconfig.json",
+        "javascript:package:package.json"
+      ],
+      "quantity": 1,
+      "complexity": "routine",
+      "hours": {
+        "low": 0.75,
+        "expected": 1.25,
+        "high": 2.00
+      },
+      "confidence": 0.73,
+      "reason": "A project or package manifest represents ecosystem setup, dependency selection, configuration, and validation work. Rule \u0027project-setup\u0027 uses scopes=1, configuration-options=4; complexity \u0027routine\u0027 applies factor 0.85.",
+      "estimator": {
+        "id": "seed-rule:project-setup",
+        "version": "0.2.1",
+        "kind": "rule"
+      },
+      "profiles": [
+        "implementation",
+        "recreation"
+      ],
+      "dependencyIds": [],
+      "correlationGroup": "scope:javascript:.:setup",
+      "assumptions": [],
+      "exclusions": [],
+      "uncertaintyReasons": [
+        "Some supporting evidence is inferred rather than directly observed."
+      ]
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "id": "work:architecture-design:1301c834bf26665d0695:part-0001",
+      "category": "architecture-and-technical-design",
+      "title": "Design the technical structure of \u0027.\u0027 (package)",
+      "scope": ".",
+      "evidenceIds": [
+        "javascript:package:package.json"
+      ],
+      "quantity": 1,
+      "complexity": "moderate",
+      "hours": {
+        "low": 0.75,
+        "expected": 1.50,
+        "high": 2.75
+      },
+      "confidence": 0.60,
+      "reason": "Even with supplied requirements, a competent implementation requires bounded technical design across the observed boundaries. Rule \u0027architecture-design\u0027 uses production-scopes=1; complexity \u0027moderate\u0027 applies factor 1.",
+      "estimator": {
+        "id": "seed-rule:architecture-design",
+        "version": "0.2.1",
+        "kind": "rule"
+      },
+      "profiles": [
+        "implementation",
+        "recreation"
+      ],
+      "dependencyIds": [],
+      "correlationGroup": "scope:javascript:.:design",
+      "assumptions": [
+        "Detailed product and visual design inputs are supplied under the implementation profile."
+      ],
+      "exclusions": [],
+      "uncertaintyReasons": [
+        "Some supporting evidence is inferred rather than directly observed."
+      ]
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "id": "work:javascript-source-backbone:2f5795bda39a0bae4a33:part-0001",
+      "category": "production-implementation",
+      "title": "Implement maintained internal logic for \u0027.\u0027 (package)",
+      "scope": ".",
+      "evidenceIds": [
+        "javascript:source-structure:."
+      ],
+      "quantity": 10,
+      "complexity": "routine",
+      "hours": {
+        "low": 0.50,
+        "expected": 1.00,
+        "high": 2.00
+      },
+      "confidence": 0.67,
+      "reason": "Parser or token structure represents maintained internal logic that routine semantic classifiers cannot name. Rule \u0027javascript-source-backbone\u0027 uses files=2, functions=2, interfaces=2, exports=4; complexity \u0027routine\u0027 applies factor 0.85.",
+      "estimator": {
+        "id": "seed-rule:javascript-source-backbone",
+        "version": "0.2.1",
+        "kind": "rule"
+      },
+      "profiles": [
+        "implementation",
+        "recreation"
+      ],
+      "dependencyIds": [],
+      "correlationGroup": "scope:javascript:.:implementation",
+      "assumptions": [
+        "Backbone priors value residual internal code construction at lower rates than complete feature delivery."
+      ],
+      "exclusions": [],
+      "uncertaintyReasons": [
+        "Some TypeScript or fallback structure is token-backed rather than parser-backed."
+      ]
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "id": "work:manual-validation:a0df1126ba2f8dbcb19b:part-0001",
+      "category": "manual-validation-debugging-and-hardening",
+      "title": "Manually validate, debug, and harden \u0027.\u0027 (package)",
+      "scope": ".",
+      "evidenceIds": [
+        "javascript:package:package.json"
+      ],
+      "quantity": 1,
+      "complexity": "moderate",
+      "hours": {
+        "low": 0.25,
+        "expected": 0.50,
+        "high": 1.00
+      },
+      "confidence": 0.54,
+      "reason": "Working behavior requires explicit manual validation, debugging, and hardening based on the observed runtime and external boundaries rather than a fixed percentage. Rule \u0027manual-validation\u0027 uses setup-only; complexity \u0027moderate\u0027 applies factor 1.",
+      "estimator": {
+        "id": "seed-rule:manual-validation",
+        "version": "0.2.1",
+        "kind": "rule"
+      },
+      "profiles": [
+        "implementation",
+        "recreation"
+      ],
+      "dependencyIds": [],
+      "correlationGroup": "scope:javascript:.:validation",
+      "assumptions": [
+        "Automated-test authoring is valued separately."
+      ],
+      "exclusions": [],
+      "uncertaintyReasons": [
+        "Some supporting evidence is inferred rather than directly observed.",
+        "The target checkout was not executed on the default static path."
+      ]
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "id": "work:build-tooling:c2c91d07e063088d401a:part-0001",
+      "category": "build-configuration-and-developer-tooling",
+      "title": "Configure build behavior and developer tooling",
+      "scope": ".",
+      "evidenceIds": [
+        "file:tsconfig.json",
+        "javascript:configuration:tsconfig.json",
+        "javascript:package:package.json",
+        "javascript:repository"
+      ],
+      "quantity": 2,
+      "complexity": "routine",
+      "hours": {
+        "low": 0.75,
+        "expected": 1.25,
+        "high": 2.25
+      },
+      "confidence": 0.76,
+      "reason": "Maintained build, compiler, dependency-lock, and script configuration represents setup, integration, and validation work beyond individual project manifests. Rule \u0027build-tooling\u0027 uses configuration-files=2, compiler-options=4; complexity \u0027routine\u0027 applies factor 0.85.",
+      "estimator": {
+        "id": "seed-rule:build-tooling",
+        "version": "0.2.1",
+        "kind": "rule"
+      },
+      "profiles": [
+        "implementation",
+        "recreation"
+      ],
+      "dependencyIds": [],
+      "correlationGroup": "repository:setup",
+      "assumptions": [],
+      "exclusions": [],
+      "uncertaintyReasons": [
+        "Some supporting evidence is inferred rather than directly observed."
+      ]
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "id": "work:self-review:e943a6db2e8c464b145a:part-0001",
+      "category": "self-review-and-system-integration",
+      "title": "Self-review and integrate the completed system",
+      "scope": ".",
+      "evidenceIds": [
+        "inventory:repository",
+        "javascript:package:package.json"
+      ],
+      "quantity": 1,
+      "complexity": "moderate",
+      "hours": {
+        "low": 0.75,
+        "expected": 1.25,
+        "high": 2.25
+      },
+      "confidence": 0.68,
+      "reason": "A solo senior contractor must review cross-scope behavior and integrate the completed artifact as explicit work. Rule \u0027self-review\u0027 uses production-scopes=1; complexity \u0027moderate\u0027 applies factor 1.",
+      "estimator": {
+        "id": "seed-rule:self-review",
+        "version": "0.2.1",
+        "kind": "rule"
+      },
+      "profiles": [
+        "implementation",
+        "recreation"
+      ],
+      "dependencyIds": [],
+      "correlationGroup": "repository:system-integration",
+      "assumptions": [],
+      "exclusions": [],
+      "uncertaintyReasons": [
+        "Some supporting evidence is inferred rather than directly observed."
+      ]
+    }
+  ],
+  "professionalizationGap": [
+    {
+      "schemaVersion": "1.0.0",
+      "id": "work:gap-automated-tests:d379c6870aa7e129bfb5:part-0001",
+      "category": "unit-testing",
+      "title": "Add representative automated tests",
+      "scope": ".",
+      "evidenceIds": [
+        "inventory:repository",
+        "javascript:package:package.json"
+      ],
+      "quantity": 1,
+      "complexity": "moderate",
+      "hours": {
+        "low": 0.75,
+        "expected": 2.25,
+        "high": 4.75
+      },
+      "confidence": 0.46,
+      "reason": "Maintained production scopes exist but no automated-test artifacts were detected; this is conservative missing professionalization work, not represented EHE. Rule \u0027gap-automated-tests\u0027 uses production-backbone-hours=1; complexity \u0027moderate\u0027 applies factor 1.",
+      "estimator": {
+        "id": "seed-rule:gap-automated-tests",
+        "version": "0.2.1",
+        "kind": "rule"
+      },
+      "profiles": [
+        "implementation",
+        "recreation"
+      ],
+      "dependencyIds": [],
+      "correlationGroup": "gap:repository:tests",
+      "assumptions": [
+        "Only representative baseline coverage is proposed; an idealized coverage target is not invented."
+      ],
+      "exclusions": [],
+      "uncertaintyReasons": [
+        "Absence evidence cannot determine the product\u0027s desired test strategy.",
+        "Some supporting evidence is inferred rather than directly observed."
+      ]
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "id": "work:gap-documentation:5d607e4bb449aa64a329:part-0001",
+      "category": "documentation",
+      "title": "Add basic repository onboarding documentation",
+      "scope": ".",
+      "evidenceIds": [
+        "inventory:repository",
+        "javascript:package:package.json"
+      ],
+      "quantity": 1,
+      "complexity": "routine",
+      "hours": {
+        "low": 0.75,
+        "expected": 1.75,
+        "high": 3.25
+      },
+      "confidence": 0.57,
+      "reason": "No maintained documentation was detected; a conservative onboarding document is reported only as missing professionalization work. Rule \u0027gap-documentation\u0027 uses setup-only; complexity \u0027routine\u0027 applies factor 0.85.",
+      "estimator": {
+        "id": "seed-rule:gap-documentation",
+        "version": "0.2.1",
+        "kind": "rule"
+      },
+      "profiles": [
+        "implementation",
+        "recreation"
+      ],
+      "dependencyIds": [],
+      "correlationGroup": "gap:repository:documentation",
+      "assumptions": [],
+      "exclusions": [],
+      "uncertaintyReasons": [
+        "Some supporting evidence is inferred rather than directly observed.",
+        "The intended audience and required documentation depth are unknown."
+      ]
+    }
+  ],
+  "diagnostics": [
+    {
+      "code": "FB1000",
+      "severity": "warning",
+      "message": "This estimate uses transparent but uncalibrated seed priors. It is experimental and requires review before consequential use.",
+      "evidenceIds": [],
+      "locations": []
+    },
+    {
+      "code": "FB1004",
+      "severity": "information",
+      "message": "2 conservative professionalization-gap item(s) are reported separately and excluded from represented EHE and replacement cost.",
+      "evidenceIds": [
+        "inventory:repository",
+        "javascript:package:package.json"
+      ],
+      "locations": []
+    },
+    {
+      "code": "FB1005",
+      "severity": "information",
+      "message": "Seed model \u0027seed-rules/0.2.1\u0027 (experimental-uncalibrated, sha256:57378795593acd2ff0a2f4361698193a11dca86da11493f072da6a9f9b344d4e) was loaded from the bundled offline artifact.",
+      "evidenceIds": [],
+      "locations": []
+    },
+    {
+      "code": "FB4000",
+      "severity": "information",
+      "message": "The JavaScript/TypeScript analyzer parsed manifests, JSONC configuration, JavaScript/JSX syntax, and bounded TypeScript token streams statically; it did not run package managers, load executable configuration, install dependencies, transpile, or execute target code.",
+      "evidenceIds": [],
+      "locations": []
+    }
+  ],
+  "assumptions": [
+    "The estimate values a clean, competent recreation of current functional and quality state, not historical labor or rework.",
+    "A clear specification exists at the level promised by the selected profile.",
+    "Discovered tests are assumed to pass on the default static path.",
+    "The described system is estimated as working even when the checkout was not executed.",
+    "Generated, vendored, minified, binary, copied, and duplicate bodies do not create hand-written implementation value.",
+    "Low and high values are preliminary planning bounds formed from item priors and evidence confidence; they are not calibrated probability intervals.",
+    "Professionalization-gap work is excluded from represented effort and replacement cost.",
+    "Seed productivity priors are experimental and uncalibrated."
+  ],
+  "verification": {
+    "mode": "static-assumed",
+    "workingState": "assumed-working",
+    "testsAssumedPassing": true,
+    "note": "The repository was not built or executed."
+  }
+}

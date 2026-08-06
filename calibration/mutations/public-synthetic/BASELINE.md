@@ -9,12 +9,16 @@ effort-label corpora, accuracy claims, or model-training data.
   assertions evaluated with `seed-rules/0.2.0`.
 - Suite `0.2.0` records the Milestone 7B3 aggregate checkpoint: 30 cases and 84
   assertions evaluated with `seed-rules/0.2.1`.
+- Suite `0.3.0` records the Milestone 7B4 behavior-and-delivery checkpoint: 48
+  cases and 156 assertions evaluated with the same `seed-rules/0.2.1` model.
 
 The fixtures are small synthetic repositories authored for Fairbill and distributed
 under the repository's MIT License. They contain no copied project source, external
-dataset, third-party package dependency, private evidence, or Git history. Fairbill
-analyzed them statically without building, running, restoring, or accessing the
-network.
+dataset, installed/vendored third-party code, private evidence, or Git history.
+Some manifests, the CI fixture, and the Dockerfile contain inert public package,
+action, or image identifiers solely to exercise static classification. Fairbill
+does not install or redistribute that software and analyzed every fixture without
+building, running, restoring, pulling images, or accessing the network.
 
 `seed-rules/0.2.1` retains every 0.2.0 numerical prior. It corrects TypeScript file
 ownership in the shared JavaScript/TypeScript estimation scope so byte-identical
@@ -22,24 +26,33 @@ TypeScript bodies and TypeScript test structure participate in normalization. Th
 catalog digest is
 `sha256:57378795593acd2ff0a2f4361698193a11dca86da11493f072da6a9f9b344d4e`.
 
-## What suite 0.2.0 measures
+Suite 0.3.0 changes no seed-rule prior or estimator behavior. It was designed from
+product invariants, then evaluated against the unchanged model. The new bounds are
+qualitative guardrails and must not be treated as reviewed numeric labels.
+
+## What suite 0.3.0 measures
 
 | Ecosystem family | Cases | Principal variants |
 | --- | ---: | --- |
-| .NET | 8 | Base, formatting, excluded exact copy, generated body, API, tests, documentation, integration |
-| JavaScript | 9 | Base, formatting, exact copy, generated body, generated customization, API, tests, documentation, integration |
-| TypeScript | 8 | Base, formatting, exact copy, generated body, API, tests, documentation, integration |
+| .NET | 13 | Existing variants plus renamed near-copy, compiler-disabled boundaries, data context, migration, security |
+| JavaScript | 19 | Existing variants plus renamed near-copy, data, security, coverage levels, workspace boundaries, CI, container |
+| TypeScript | 11 | Existing variants plus renamed near-copy, data, and security |
 | Mixed | 5 | Base, generated JavaScript, .NET API, JavaScript UI, TypeScript tests |
 
-All 84 assertions pass. The relations cover:
+All 156 assertions pass. The relations cover:
 
 - zero-difference formatting, exact-copy, and conventional-generated invariants;
 - low, expected, and high points rather than expected hours alone;
 - positive production movement for API behavior and separately maintained
   customization beside generated output;
 - positive UI, unit-test, documentation, and integration category movement; and
-- category isolation for test-only, documentation-only, UI-only, and
-  production-only variants.
+- bounded marginal rather than full-body treatment for small renamed near-copies;
+- zero movement from compiler-disabled C# data and authorization syntax;
+- positive data, migration, security, declared coverage, workspace-boundary, CI,
+  and container movement in the intended categories; and
+- category isolation for test-only, documentation-only, UI-only, data-only,
+  security-only, coverage-only, CI-only, container-only, and production-only
+  variants.
 
 Missing categories are evaluated as zero. This allows, for example, the unit-test
 category in a test variant to be compared directly with an absent base category.
@@ -85,9 +98,32 @@ their production-category invariants are not artifacts of aggregate rounding.
 | JavaScript UI | 16.00 h | +1.75 h UI; unit testing unchanged |
 | TypeScript tests | 15.50 h | +1.75 h unit testing; production unchanged |
 
+### Milestone 7B4 additions
+
+| Variant | Expected total | Intended category result |
+| --- | ---: | --- |
+| .NET renamed near-copy | 8.25 h | +1.00 h bounded production marginality |
+| .NET compiler-disabled boundaries | 7.25 h | Total, data, and security unchanged |
+| .NET data context | 13.25 h | +4.00 h data/persistence |
+| .NET data context plus migration | 15.50 h | +1.25 h data/persistence over the context case |
+| .NET security | 20.00 h | +9.00 h security/accessibility |
+| JavaScript renamed near-copy | 6.75 h | +0.25 h bounded production marginality |
+| JavaScript data | 9.25 h | +1.00 h data/persistence |
+| JavaScript security | 16.75 h | +4.75 h security/accessibility |
+| TypeScript renamed near-copy | 8.00 h | +0.25 h bounded production marginality |
+| TypeScript data | 10.75 h | +1.00 h data/persistence |
+| TypeScript security | 17.75 h | +4.75 h security/accessibility |
+| Coverage base | 11.00 h | 1.75 h unit testing with no declared percentage |
+| Declared-and-assumed 80% coverage | 12.25 h | +1.25 h unit testing over identical code/tests |
+| Declared-and-assumed 100% coverage | 12.50 h | +0.25 h unit testing over the 80% case |
+| One-package workspace | 12.75 h | Reference workspace boundary |
+| Two-package workspace with exact body reuse | 18.00 h | +1.25 h setup and +1.00 h review; production unchanged |
+| JavaScript CI workflow | 8.50 h | +2.00 h CI/CD; production unchanged |
+| JavaScript container definition | 8.50 h | +2.00 h packaging/deployment; production unchanged |
+
 The original .NET-only 0.1.0 table and its exact results remain represented by its
-frozen suite, canonical estimates, and baseline report. Suite 0.2.0 includes all 14
-of those assertions unchanged.
+frozen suite, canonical estimates, and baseline report. Suites 0.2.0 and 0.3.0
+retain all earlier assertions unchanged.
 
 ## Artifacts
 
@@ -97,14 +133,16 @@ of those assertions unchanged.
 - `0.2.0.suite.json` defines the 30-case aggregate suite.
 - `baseline-seed-rules-0.2.1-suite-0.2.0.json` is the aggregate deterministic
   report.
-- `estimates/seed-rules-0.2.1/` contains all 30 aggregate candidates.
+- `0.3.0.suite.json` defines the 48-case expanded aggregate suite.
+- `baseline-seed-rules-0.2.1-suite-0.3.0.json` is its deterministic report.
+- `estimates/seed-rules-0.2.1/` contains all 48 current aggregate candidates.
 - `fixtures/` contains every complete synthetic source state.
 
 Every case has a distinct repository source digest. Assertions select canonical
 estimates only by source digest, profile, and worker-baseline ID. File timestamps,
 contributors, commit activity, and history are not inputs.
 
-## Reproduce suite 0.2.0
+## Reproduce suite 0.3.0
 
 From a Release build, regenerate each candidate with:
 
@@ -114,16 +152,16 @@ fairbill estimate calibration/mutations/public-synthetic/fixtures/<fixture> \
   --output calibration/mutations/public-synthetic/estimates/seed-rules-0.2.1/<case>.estimate.json
 ```
 
-For the eight .NET cases, `<fixture>` is the case ID without the `dotnet-` prefix.
-For all other cases, fixture and case IDs are identical.
+For the original eight .NET cases, `<fixture>` is the case ID without the
+`dotnet-` prefix. For every later case, fixture and case IDs are identical.
 
 Then evaluate all versioned candidate paths:
 
 ```text
 fairbill calibration mutations \
-  calibration/mutations/public-synthetic/0.2.0.suite.json \
+  calibration/mutations/public-synthetic/0.3.0.suite.json \
   calibration/mutations/public-synthetic/estimates/seed-rules-0.2.1/*.estimate.json \
-  --output calibration/mutations/public-synthetic/baseline-seed-rules-0.2.1-suite-0.2.0.json
+  --output calibration/mutations/public-synthetic/baseline-seed-rules-0.2.1-suite-0.3.0.json
 ```
 
 The wildcard is shell convenience, not part of Fairbill's argument semantics.
@@ -133,13 +171,17 @@ malformed inputs return the ordinary invalid-input code.
 
 ## Limitations and next expansion
 
-The suite uses deliberately small archetypes. It does not yet test near-duplicate
-or dead-code normalization, data and persistence behavior, security/accessibility,
-coverage levels, CI/infrastructure, large work-item partitioning, realistic
-multi-package dependency graphs, or change-estimation semantics. The TypeScript
-path remains token-backed. Generated customization is represented as a maintained
-companion file beside conventional generated output; distinguishing edits inside a
-generated body remains an analyzer research problem.
+The suite uses deliberately small archetypes. Near-copy assertions bound the
+current marginal result; Fairbill does not yet perform semantic clone detection.
+The dead-code case covers only C# syntax excluded by the compiler preprocessor, not
+arbitrary unreachable or unreferenced behavior. Coverage cases are
+declared-and-assumed Jest thresholds, not parsed measured results. Security cases
+do not replace a security audit, and accessibility-specific evidence remains thin.
+The workspace case is intentionally small and does not represent a realistic large
+dependency graph. Large work-item partitioning, measured coverage, richer
+infrastructure, in-body generated customization, general reachability, and
+change-estimation semantics remain future guardrails. The TypeScript path remains
+token-backed.
 
 Passing these relations prevents known perverse movements. It does not establish
 that any absolute hour or delta is numerically correct, and it does not make the
