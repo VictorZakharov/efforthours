@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RootNamespace>EffortHours.Analyzers.JavaScript</RootNamespace>
+    <Description>EffortHours static JavaScript and TypeScript repository analyzer.</Description>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../EffortHours.Analysis/EffortHours.Analysis.csproj" />
+    <ProjectReference Include="../EffortHours.Contracts/EffortHours.Contracts.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Acornima" />
+    <PackageReference Include="Acornima.Extras" />
+  </ItemGroup>
+</Project>

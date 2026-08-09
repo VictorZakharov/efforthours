@@ -1,217 +1,217 @@
 {
   "schemaVersion": "1.0.0",
   "metricVersion": "calibration-mutation-metrics/1.0.0",
-  "id": "fairbill-public-synthetic-mutations",
+  "id": "efforthours-public-synthetic-mutations",
   "version": "0.2.0",
   "description": "Synthetic .NET, JavaScript, TypeScript, and mixed-repository mutation guardrails for invariance, range directionality, generated customization, and category isolation.",
   "cases": [
     {
       "id": "dotnet-base",
       "description": "Minimal maintained .NET library used as the .NET reference case.",
-      "sourceDigest": "sha256:ca0f6aeacb0908075926743ac86d24d73f7b201f5c41b8b58f6cd96f48978654",
+      "sourceDigest": "sha256:125e0d7acdddc9e5ed948a7dcb0a56745135a91626c0deacaf6bdc813334b1c5",
       "profile": "implementation",
       "baselineId": "senior-contractor-2026-no-ai"
     },
     {
       "id": "dotnet-formatting",
       "description": "The maintained .NET behavior is reformatted without semantic changes.",
-      "sourceDigest": "sha256:6c8c8921d2d6b9802894ec232fe79551337d5363506a9329d08e67af664bb2e7",
+      "sourceDigest": "sha256:ddae2b4f235b05ecaa0d3ef8a9926f65163f4d1314f0e7ee61a72474d4a4c305",
       "profile": "implementation",
       "baselineId": "senior-contractor-2026-no-ai"
     },
     {
       "id": "dotnet-duplicate",
       "description": "An exact .NET source copy excluded from compilation is added.",
-      "sourceDigest": "sha256:88d0afae1e47072c5f5d733dbb5faac425d1461e1dfbd1867630c7c7665f9aee",
+      "sourceDigest": "sha256:4bacee4a98cb4e4d5e2ef54ab5ab919c7d07921558656af5b0a37598b4608884",
       "profile": "implementation",
       "baselineId": "senior-contractor-2026-no-ai"
     },
     {
       "id": "dotnet-generated",
       "description": "A conventional generated .NET source body is added.",
-      "sourceDigest": "sha256:1933ac9f6723eb62ea30b0a3e7add9460049c381b587a0947418d79320eebb51",
+      "sourceDigest": "sha256:cedc7fef102c809f46a14d305b336ef4495db89550d6b40a4280746efee9d6da",
       "profile": "implementation",
       "baselineId": "senior-contractor-2026-no-ai"
     },
     {
       "id": "dotnet-api",
       "description": "A runnable .NET HTTP status endpoint is added.",
-      "sourceDigest": "sha256:32d059ad9bdb456b025c62f0f5930595bda0b91b03ca21c2bde53de2caaea798",
+      "sourceDigest": "sha256:7cea0cbeeca5776eccefaf97453ff652bca782cbc28a77505b5feb8e730944ed",
       "profile": "implementation",
       "baselineId": "senior-contractor-2026-no-ai"
     },
     {
       "id": "dotnet-tests",
       "description": "A .NET unit-test project and two behavioral tests are added.",
-      "sourceDigest": "sha256:28f7c087f4ad5fae688577f4d3fc0969747d356a1faf3ee76b2ee16ac46af13f",
+      "sourceDigest": "sha256:3be273ba7e9b0b35d722cbb54db68a3782a82fa8358bd8de14ece3d2e4edd946",
       "profile": "implementation",
       "baselineId": "senior-contractor-2026-no-ai"
     },
     {
       "id": "dotnet-documentation",
       "description": "Maintained .NET onboarding and usage documentation is added.",
-      "sourceDigest": "sha256:3ff70723926d3f556545001dd8caa8633eec811ce9589cc93915734727abc73d",
+      "sourceDigest": "sha256:06094258a7709e6879b0189e67d9109bca4dd1b25399e7a1416753987e259a32",
       "profile": "implementation",
       "baselineId": "senior-contractor-2026-no-ai"
     },
     {
       "id": "dotnet-integration",
       "description": "A maintained .NET external HTTP integration boundary is added.",
-      "sourceDigest": "sha256:ff3b6704a03fbfab0dbe622dcb656ea3b4bb5706685b4f202d8174890acc6907",
+      "sourceDigest": "sha256:b5ac5c0c74a150c8ca645c65e369c359a60a4a725e6b58d1f70344873c371178",
       "profile": "implementation",
       "baselineId": "senior-contractor-2026-no-ai"
     },
     {
       "id": "javascript-base",
       "description": "Minimal maintained JavaScript module used as the JavaScript reference case.",
-      "sourceDigest": "sha256:c548dab19b2d7ab943301506c45ae155b5a433d2bb3b432ce4d8833e03d1918c",
+      "sourceDigest": "sha256:6731d83b5285d1adb7a7bbd4b68fb98d4dba1e76da797a8a54caeb965736af89",
       "profile": "implementation",
       "baselineId": "senior-contractor-2026-no-ai"
     },
     {
       "id": "javascript-formatting",
       "description": "The maintained JavaScript behavior is reformatted without semantic changes.",
-      "sourceDigest": "sha256:7736b9c8a8d4602ca1deaef73493deebb22217cde72dbcd4f70945517e3a934d",
+      "sourceDigest": "sha256:5b0a257b070e868ac63f381e6e9c9eb04d68c82863cdc6e9ad46434aa84d9b8e",
       "profile": "implementation",
       "baselineId": "senior-contractor-2026-no-ai"
     },
     {
       "id": "javascript-duplicate",
       "description": "A byte-identical maintained JavaScript body is added.",
-      "sourceDigest": "sha256:5db3c730100d0593243cacdba5061cb43415d1a028d5d6eb13e32915fc3e091a",
+      "sourceDigest": "sha256:cee93b1dd2da2e1df32216b4e417c5cb389ee502b8a0d8bb323d714c63ea3334",
       "profile": "implementation",
       "baselineId": "senior-contractor-2026-no-ai"
     },
     {
       "id": "javascript-generated",
       "description": "A conventional generated JavaScript client body is added.",
-      "sourceDigest": "sha256:f57c923cef310a27e09789a6b1bc3a4e97330525fa9cf0c8dcfcbce6137936a4",
+      "sourceDigest": "sha256:77571150486f68aec4d0e47510582d45f7731eb8460d67315d1cae537c9368b7",
       "profile": "implementation",
       "baselineId": "senior-contractor-2026-no-ai"
     },
     {
       "id": "javascript-generated-customized",
       "description": "Maintained customization is added beside the conventional generated JavaScript client.",
-      "sourceDigest": "sha256:1f27ad6837f1398fe27b0dbc6af18e70bb4531d28594f4dc087b4b5e8e8ecf97",
+      "sourceDigest": "sha256:b923745348d6ef25d973776bcebe7375d3668b1f284453ba42eb2d786beb4f9e",
       "profile": "implementation",
       "baselineId": "senior-contractor-2026-no-ai"
     },
     {
       "id": "javascript-api",
       "description": "A JavaScript HTTP route boundary is added.",
-      "sourceDigest": "sha256:7584c96018807984d444b07aae4fdbd4710607dcfcfd4936315534d26aedc2ce",
+      "sourceDigest": "sha256:4904791482554a568d44523268e4b11726c6b458296bf11c39115e6f78ca4a7a",
       "profile": "implementation",
       "baselineId": "senior-contractor-2026-no-ai"
     },
     {
       "id": "javascript-tests",
       "description": "A nested JavaScript unit-test package and two behavioral tests are added.",
-      "sourceDigest": "sha256:ad69f65a6a6b626ad0574854ce7b88dd65bfe7929c93810f640ad6705bece0bd",
+      "sourceDigest": "sha256:1466203d98e417a96194733dc5cdb9647e61d6a71fb39f373425c6f2e0461542",
       "profile": "implementation",
       "baselineId": "senior-contractor-2026-no-ai"
     },
     {
       "id": "javascript-documentation",
       "description": "Maintained JavaScript onboarding and usage documentation is added.",
-      "sourceDigest": "sha256:85bfb6d90a5ebbf0e97530f8a83ea75376e5b3912fe3ee325ed98c555ea46214",
+      "sourceDigest": "sha256:00114a4244bb18ef3e29be02c7ba47286d6d68210609e614d15b443504dd3447",
       "profile": "implementation",
       "baselineId": "senior-contractor-2026-no-ai"
     },
     {
       "id": "javascript-integration",
       "description": "A JavaScript fetch-based external integration boundary is added.",
-      "sourceDigest": "sha256:586afcf486b0c776a298cb867be0eb3886405a708ce67dbba68133bb795fe0a5",
+      "sourceDigest": "sha256:4b9ed262eb02d99bee9b5783361c727f97cd21b49005fe20d6da7b30faf88c05",
       "profile": "implementation",
       "baselineId": "senior-contractor-2026-no-ai"
     },
     {
       "id": "typescript-base",
       "description": "Minimal maintained TypeScript module used as the TypeScript reference case.",
-      "sourceDigest": "sha256:e7b5f2cc4b6936aacdf0c130c83447c34a3be62587c439c6446cca48e8dcc5cd",
+      "sourceDigest": "sha256:fb583ddd2997b0e80f6417f9fc4fc38a962b9dfce986b07866d8768e4c770f8f",
       "profile": "implementation",
       "baselineId": "senior-contractor-2026-no-ai"
     },
     {
       "id": "typescript-formatting",
       "description": "The maintained TypeScript behavior is reformatted without semantic changes.",
-      "sourceDigest": "sha256:5f4aef76d831addb753a9aeed5fcc77b6d1b86aa48d6209539d4137537b10d92",
+      "sourceDigest": "sha256:dd6fc283edb31492f07919bc97c8f6e218b2e3b2b285cf6e90944ecccc46618b",
       "profile": "implementation",
       "baselineId": "senior-contractor-2026-no-ai"
     },
     {
       "id": "typescript-duplicate",
       "description": "A byte-identical maintained TypeScript body is added.",
-      "sourceDigest": "sha256:29342bd75685ce804cfbe46f84ac144de3fda9af7938cc33569e1bb7341e0510",
+      "sourceDigest": "sha256:abe82cb29b6c69a18d51524170e19e3bd8a796ac320fd9fbc5f0b326209b7650",
       "profile": "implementation",
       "baselineId": "senior-contractor-2026-no-ai"
     },
     {
       "id": "typescript-generated",
       "description": "A conventional generated TypeScript client contract is added.",
-      "sourceDigest": "sha256:ce4c9750024d1dc209a4c64795a6ed226e1ccc031e2dc5beeb00aeb95191ef33",
+      "sourceDigest": "sha256:70fd5e453c20364ec5110f00c89aba51b135dac9055fc29f36f8c7cdac739d2e",
       "profile": "implementation",
       "baselineId": "senior-contractor-2026-no-ai"
     },
     {
       "id": "typescript-api",
       "description": "A typed HTTP route boundary is added.",
-      "sourceDigest": "sha256:d692fca6dfc204c47e76abc9dfc3c707903b631fa137d608d5cb0422dee11d0a",
+      "sourceDigest": "sha256:85cd298f0773b0b1373ea938b296f169f81b17e994c8a14d58fb0e6b6afafb98",
       "profile": "implementation",
       "baselineId": "senior-contractor-2026-no-ai"
     },
     {
       "id": "typescript-tests",
       "description": "A nested TypeScript unit-test package and two behavioral tests are added.",
-      "sourceDigest": "sha256:a5000cc104c1052fa5135c5dada29ae80d239f4dcf91664805baeca28788dcc5",
+      "sourceDigest": "sha256:19da845d19cc6bb0f9036efd339fc0e692b1f3dca0406ea017a3480d5c947f5c",
       "profile": "implementation",
       "baselineId": "senior-contractor-2026-no-ai"
     },
     {
       "id": "typescript-documentation",
       "description": "Maintained TypeScript usage and contract documentation is added.",
-      "sourceDigest": "sha256:c1e7bee0945c62a0fe872a059c951630c46509c76302f2dbb7aff81823908eb9",
+      "sourceDigest": "sha256:f3bda37d43aed6fd01fa60e5df34a62ef38289c66ee45d3e59a0b43258dfba1e",
       "profile": "implementation",
       "baselineId": "senior-contractor-2026-no-ai"
     },
     {
       "id": "typescript-integration",
       "description": "A typed fetch-based external integration boundary is added.",
-      "sourceDigest": "sha256:f23bad7ef65739f1878be1dc0cde239728769d69df01522bf7eefa2b562a6cfb",
+      "sourceDigest": "sha256:f9567dce21ec3f7f706ff9341c754130c80e7fc253ab8fe1b9af39738fe18a3e",
       "profile": "implementation",
       "baselineId": "senior-contractor-2026-no-ai"
     },
     {
       "id": "mixed-base",
       "description": "Minimal maintained .NET and JavaScript modules used as the mixed reference case.",
-      "sourceDigest": "sha256:b78e1dd0cd5d9bef97339680311e4be5e8f02079f9392a5270af4dd1aad22763",
+      "sourceDigest": "sha256:8b15e28e69c025234fb06dd4535ef2adf1656622f2ddc8d68301b5ca867c8849",
       "profile": "implementation",
       "baselineId": "senior-contractor-2026-no-ai"
     },
     {
       "id": "mixed-generated",
       "description": "A conventional generated JavaScript body is added to the mixed repository.",
-      "sourceDigest": "sha256:41998946ae81a5c21cbbb7b1e5b59beb8e4f313c0796c372fddea4b4d00da55c",
+      "sourceDigest": "sha256:643d1ecb244765f7f5439f998956b3200f65a6f77fab4388257806bf9e6f4e2c",
       "profile": "implementation",
       "baselineId": "senior-contractor-2026-no-ai"
     },
     {
       "id": "mixed-dotnet-api",
       "description": "A .NET HTTP endpoint is added while the JavaScript module remains unchanged.",
-      "sourceDigest": "sha256:be080e780f9e1d2f2a9f8c5ae6267761c800a0915c788c0460d0a92a3f4f6011",
+      "sourceDigest": "sha256:d3306e004761c47fb640abbc408d4b79eab055a340d48129c58c012dd68381d6",
       "profile": "implementation",
       "baselineId": "senior-contractor-2026-no-ai"
     },
     {
       "id": "mixed-javascript-ui",
       "description": "A maintained JavaScript UI component is added while the .NET module remains unchanged.",
-      "sourceDigest": "sha256:1823b387afd7cafc4aa4356bca574e25f4fb4ea4159f78b5339782dbdefb9def",
+      "sourceDigest": "sha256:03930e324616cfcecad645356e4e81a82e0fa16d82cf36895872e8f58cfc11d6",
       "profile": "implementation",
       "baselineId": "senior-contractor-2026-no-ai"
     },
     {
       "id": "mixed-typescript-tests",
       "description": "A nested TypeScript unit-test package is added while both production modules remain unchanged.",
-      "sourceDigest": "sha256:4ba1e7b73493285c234d1167e9cab89339a352788612d30002ec97d2bc3bf4dd",
+      "sourceDigest": "sha256:276ab4815b57382669313eef1fc5953837fcbfe2b374337eb01b3a2d5a154fa9",
       "profile": "implementation",
       "baselineId": "senior-contractor-2026-no-ai"
     }

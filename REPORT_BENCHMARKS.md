@@ -6,9 +6,9 @@ This checkpoint measures the Milestone 6 reporting surfaces as serialized text.
 It is an output-volume comparison, not an estimator-accuracy benchmark or an exact
 provider-token measurement.
 
-The measurements were taken on August 5, 2026 with `fairbill` version
+The measurements were taken on August 5, 2026 with `eh` version
 `0.6.0-alpha.1`, `seed-rules/0.2.0`, and the bundled
-`us-senior-software-contractor/2026.1` rate. The Fairbill row uses a static scan of
+`us-senior-software-contractor/2026.1` rate. The EffortHours row uses a static scan of
 the Milestone 6 working tree with source digest
 `sha256:33b6016cbdc9330e4fabd68cbcff9942ecef4d1a97072f0813d7397dc6c8a9c7`.
 The three small rows use the curated evidence bundles under
@@ -25,14 +25,14 @@ input.
 
 | Dataset | View | Format | UTF-8 bytes | Characters | Lines | Approx. tokens | Full compact |
 | --- | --- | --- | ---: | ---: | ---: | ---: | ---: |
-| Fairbill | full | pretty JSON | 292,276 | 292,276 | 6,349 | 73,069 | 121.5% |
-| Fairbill | full | compact JSON | 240,464 | 240,464 | 1 | 60,116 | 100.0% |
-| Fairbill | repository | compact JSON | 4,935 | 4,935 | 1 | 1,234 | 2.1% |
-| Fairbill | category | compact JSON | 7,218 | 7,218 | 1 | 1,805 | 3.0% |
-| Fairbill | scope | compact JSON | 8,086 | 8,086 | 1 | 2,022 | 3.4% |
-| Fairbill | work-item | compact JSON | 32,981 | 32,981 | 1 | 8,246 | 13.7% |
-| Fairbill | review | compact JSON | 17,694 | 17,694 | 1 | 4,424 | 7.4% |
-| Fairbill | review | Markdown | 8,763 | 8,763 | 106 | 2,191 | 3.6% |
+| EffortHours | full | pretty JSON | 292,276 | 292,276 | 6,349 | 73,069 | 121.5% |
+| EffortHours | full | compact JSON | 240,464 | 240,464 | 1 | 60,116 | 100.0% |
+| EffortHours | repository | compact JSON | 4,935 | 4,935 | 1 | 1,234 | 2.1% |
+| EffortHours | category | compact JSON | 7,218 | 7,218 | 1 | 1,805 | 3.0% |
+| EffortHours | scope | compact JSON | 8,086 | 8,086 | 1 | 2,022 | 3.4% |
+| EffortHours | work-item | compact JSON | 32,981 | 32,981 | 1 | 8,246 | 13.7% |
+| EffortHours | review | compact JSON | 17,694 | 17,694 | 1 | 4,424 | 7.4% |
+| EffortHours | review | Markdown | 8,763 | 8,763 | 106 | 2,191 | 3.6% |
 | Small .NET | full | pretty JSON | 24,376 | 24,376 | 670 | 6,094 | 127.1% |
 | Small .NET | full | compact JSON | 19,178 | 19,178 | 1 | 4,795 | 100.0% |
 | Small .NET | repository | compact JSON | 3,822 | 3,822 | 1 | 956 | 19.9% |
@@ -60,7 +60,7 @@ input.
 
 ## Initial usefulness review
 
-The Fairbill review projection is materially smaller than the canonical report:
+The EffortHours review projection is materially smaller than the canonical report:
 7.4% as compact JSON and 3.6% as Markdown. Without opening source or the full
 ledger, a reviewer can see the complete EHE and cost range, rate identity,
 represented-item inventory, every category, every project scope, the six largest
@@ -74,10 +74,10 @@ The bounded review view saves less on very small inputs because its fixed contex
 and category summaries are a larger share of the report. It still reduces all
 three small fixtures, but callers asking one narrow question should prefer the
 repository, category, or scope projection. The work-item projection is the useful
-middle layer when capability coverage matters; on Fairbill it reverses 154 ledger
+middle layer when capability coverage matters; on EffortHours it reverses 154 ledger
 parts into 51 capabilities and uses 13.7% of compact full JSON.
 
-One limitation is visible in the initial Fairbill review: several of the six
+One limitation is visible in the initial EffortHours review: several of the six
 lowest-confidence entries are similar manual-validation capabilities from
 different projects. They are valid distinct scopes, but a future review policy may
 add category or reason diversity if representative host-AI evaluations show that
@@ -86,20 +86,20 @@ the repetition displaces more useful uncertainty. The unbounded views and
 
 ## Reproduction method
 
-The Fairbill evidence bundle was produced once so the comparison did not rescan
+The EffortHours evidence bundle was produced once so the comparison did not rescan
 the repository for every view:
 
 ```text
-fairbill scan . --output artifacts/benchmarks/fairbill-m6.repository-evidence.json
+eh scan . --output artifacts/benchmarks/efforthours-m6.repository-evidence.json
 ```
 
 For each evidence bundle, the canonical full report and each projection were then
 rendered with commands of this form:
 
 ```text
-fairbill estimate <evidence.json> --view full --compact
-fairbill estimate <evidence.json> --view <repository|category|scope|work-item|review> --compact
-fairbill estimate <evidence.json> --view review --format markdown
+eh estimate <evidence.json> --view full --compact
+eh estimate <evidence.json> --view <repository|category|scope|work-item|review> --compact
+eh estimate <evidence.json> --view review --format markdown
 ```
 
 The ignored `artifacts/` evidence file is not a release artifact and is not needed

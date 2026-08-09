@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RootNamespace>EffortHours.Analyzers.DotNet</RootNamespace>
+    <Description>Static .NET project and C# evidence analyzer for EffortHours.</Description>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="../EffortHours.Analysis/EffortHours.Analysis.csproj" />
+    <ProjectReference Include="../EffortHours.Contracts/EffortHours.Contracts.csproj" />
+  </ItemGroup>
+</Project>

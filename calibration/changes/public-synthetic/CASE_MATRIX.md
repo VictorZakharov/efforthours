@@ -4,7 +4,7 @@ Status: **design-frozen; preliminary teacher labels available; not independently
 
 This matrix was frozen on August 6, 2026, before reviewing candidate totals. It
 defines the first 24 small final-change cases and their repository-owned
-partitions. The fixtures will be synthetic, MIT-licensed Fairbill project assets;
+partitions. The fixtures will be synthetic, MIT-licensed EffortHours project assets;
 Git activity, elapsed time, author data, and actual labor records are out of scope.
 
 All cases from one repository family remain in one partition. Validation and test

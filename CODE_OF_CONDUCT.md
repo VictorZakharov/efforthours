@@ -1,8 +1,8 @@
-# Fairbill Code of Conduct
+# EffortHours Code of Conduct
 
 ## Our standard
 
-Fairbill welcomes people who disagree constructively about software, estimation,
+EffortHours welcomes people who disagree constructively about software, estimation,
 compensation, and the meaning of engineering work. Participants must remain
 respectful, specific, and evidence-oriented.
 
@@ -20,7 +20,7 @@ communications, or repeatedly disrupting productive discussion.
 
 ## Scope
 
-This standard applies in the Fairbill repository, issue tracker, pull requests,
+This standard applies in the EffortHours repository, issue tracker, pull requests,
 reviews, release discussions, and other spaces where someone is representing the
 project.
 
@@ -35,4 +35,4 @@ far as practical, and may edit or remove content, issue a private warning, limit
 participation, or permanently exclude a participant. Enforcement decisions should
 be proportionate, documented privately, and free from retaliation.
 
-This policy is project-authored and distributed under Fairbill's MIT License.
+This policy is project-authored and distributed under EffortHours's MIT License.

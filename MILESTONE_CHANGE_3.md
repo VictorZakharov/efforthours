@@ -32,7 +32,7 @@ empty record target lists.
 Candidate totals were visible during earlier fixture-invariant checks. That
 exposure is recorded in every review provenance note; these labels are disclosed
 weak supervision, not a blind estimate or ground truth. The exact corpus digest is
-`sha256:b1d6f8a7a64078953508082454ab56bbc559196bb0810e369035880c765fcbd7`.
+`sha256:ecfdb867ed2ba4912c9550277fc050b5e5511d0e15a107c8a08c044f61793c10`.
 
 ## Diagnostic evaluation
 

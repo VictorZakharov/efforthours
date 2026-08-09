@@ -8,7 +8,7 @@
     "ecosystems": [
       "javascript"
     ],
-    "sourceDigest": "sha256:bd79b0347bba69491bb381634e16bbd7f3be33ab3747bc506a9e365751003f77"
+    "sourceDigest": "sha256:b11e35e39cb2bad66d20daa3d6fe3ca254d64117553652e17e4e23e6960ce70a"
   },
   "profile": "implementation",
   "baseline": {
@@ -308,7 +308,7 @@
       ],
       "exclusions": [],
       "uncertaintyReasons": [
-        "Declared coverage was not executed or measured by Fairbill.",
+        "Declared coverage was not executed or measured by EffortHours.",
         "Static source construction is a proxy for the amount of behavior covered."
       ]
     },

@@ -22,11 +22,11 @@ coverage.*
 *.userosscache
 *.sln.docstates
 
-# Fairbill output and local calibration data
-.fairbill/
-.fairbill-private/
+# EffortHours output and local calibration data
+.efforthours/
+.efforthours-private/
 calibration/private/
-*.fairbill-cache
+*.efforthours-cache
 
 # Operating-system files
 .DS_Store

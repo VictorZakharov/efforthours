@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "urn:fairbill:schema:v1:change-evidence",
-  "title": "Fairbill change evidence v1",
+  "$id": "urn:eh:schema:v1:change-evidence",
+  "title": "EffortHours change evidence v1",
   "type": "object",
   "required": [
     "schemaVersion",
@@ -26,7 +26,7 @@
     },
     "diagnostics": {
       "type": "array",
-      "items": { "$ref": "urn:fairbill:schema:v1:diagnostic" }
+      "items": { "$ref": "urn:eh:schema:v1:diagnostic" }
     }
   },
   "additionalProperties": false,

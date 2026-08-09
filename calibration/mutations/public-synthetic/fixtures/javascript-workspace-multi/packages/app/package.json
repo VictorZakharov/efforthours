@@ -1,8 +1,8 @@
 {
-  "name": "@fairbill-mutation/app",
+  "name": "@efforthours-mutation/app",
   "private": true,
   "type": "module",
   "dependencies": {
-    "@fairbill-mutation/shared": "workspace:*"
+    "@efforthours-mutation/shared": "workspace:*"
   }
 }

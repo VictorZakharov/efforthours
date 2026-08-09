@@ -1,6 +1,6 @@
-# Releasing Fairbill
+# Releasing EffortHours
 
-This checklist covers a quiet experimental public alpha and the `Fairbill.Tool`
+This checklist covers a quiet experimental public alpha and the `EffortHours.Tool`
 .NET global-tool preview. It does not authorize repository visibility changes,
 GitHub releases, or NuGet publication; each external action requires an explicit
 maintainer decision.
@@ -16,7 +16,7 @@ production-ready estimate.
 ## Prepare the candidate
 
 1. Start from a clean `main` branch synchronized with `origin/main`.
-2. Choose an unused prerelease version in `src/Fairbill.Cli/Fairbill.Cli.csproj` and
+2. Choose an unused prerelease version in `src/EffortHours.Cli/EffortHours.Cli.csproj` and
    update `CHANGELOG.md` and user-facing installation examples together.
 3. Complete GitHub issue #28 against the entire reachable Git history, not only the
    working tree. Resolve any public author-email, credential, private evidence,
@@ -24,18 +24,18 @@ production-ready estimate.
 4. Recheck `LICENSE`, `THIRD-PARTY-NOTICES.md`, calibration source manifests, rate
    provenance, and every package dependency or workflow action changed since the
    prior audit.
-5. Confirm ignored `artifacts/`, `.fairbill/`, `.fairbill-private/`, and
+5. Confirm ignored `artifacts/`, `.efforthours/`, `.efforthours-private/`, and
    `calibration/private/` content is not tracked.
 
 Run the release gates:
 
 ```text
-dotnet restore Fairbill.slnx --configfile NuGet.Config --force-evaluate
-dotnet format Fairbill.slnx --no-restore --verify-no-changes --severity info
-dotnet build Fairbill.slnx --no-restore --configuration Release
-dotnet test tests/Fairbill.Tests/Fairbill.Tests.csproj --no-build --no-restore --configuration Release
-dotnet test tests/Fairbill.EndToEndTests/Fairbill.EndToEndTests.csproj --no-build --no-restore --configuration Release
-dotnet pack src/Fairbill.Cli/Fairbill.Cli.csproj --configuration Release --no-build --no-restore --output artifacts/packages
+dotnet restore EffortHours.slnx --configfile NuGet.Config --force-evaluate
+dotnet format EffortHours.slnx --no-restore --verify-no-changes --severity info
+dotnet build EffortHours.slnx --no-restore --configuration Release
+dotnet test tests/EffortHours.Tests/EffortHours.Tests.csproj --no-build --no-restore --configuration Release
+dotnet test tests/EffortHours.EndToEndTests/EffortHours.EndToEndTests.csproj --no-build --no-restore --configuration Release
+dotnet pack src/EffortHours.Cli/EffortHours.Cli.csproj --configuration Release --no-build --no-restore --output artifacts/packages
 ```
 
 Push the candidate normally and require the `CI` workflow to pass on Windows,
@@ -44,21 +44,24 @@ and inspect the resulting package artifact before creating a tag.
 
 ## Configure trusted NuGet publishing
 
-Fairbill uses NuGet.org trusted publishing, which exchanges a GitHub OIDC token for
+EffortHours uses NuGet.org trusted publishing, which exchanges a GitHub OIDC token for
 a short-lived credential. Do not create or store a long-lived NuGet API key in the
 repository or GitHub secrets.
 
 Before the first preview:
 
-1. Create or select the NuGet.org owner account, enable two-factor authentication,
-   and decide how ownership succession will work.
-2. Recheck that `Fairbill.Tool` is still an available package ID.
-3. Create a protected GitHub environment named `nuget.org` with required reviewer
-   approval. Add environment variable `NUGET_USER` containing the NuGet.org profile
-   name, not an email address.
+1. Use the verified NuGet.org organization `WellScoped`, keep two-factor
+   authentication enabled for its owners, and decide how ownership succession will
+   work.
+2. Recheck that `EffortHours.Tool` is still an available package ID.
+3. Use the GitHub environment named `nuget.org`, restrict deployment to `v*` tags,
+   and set environment variable `NUGET_USER` to the NuGet.org profile name
+   `WellScoped`, not an email address. Add the maintainer as the sole required
+   reviewer after the repository is public and before enabling publication; leave
+   self-review permitted so the sole maintainer can approve the deployment.
 4. In NuGet.org **Trusted Publishing**, create a GitHub Actions policy with:
    - repository owner: `VictorZakharov`;
-   - repository: `fairbill`;
+   - repository: `efforthours`;
    - workflow file: `nuget-preview.yml`; and
    - environment: `nuget.org`.
 5. If the repository is still private, create the policy close to the release. A
@@ -89,10 +92,10 @@ documented security emergency.
 3. Wait for NuGet.org validation and indexing, then install from a clean location:
 
 ```text
-dotnet tool install --global Fairbill.Tool --version <prerelease-version>
-fairbill version
-fairbill --help
-fairbill schema list
+dotnet tool install --global EffortHours.Tool --version <prerelease-version>
+eh version
+eh --help
+eh schema list
 ```
 
 4. Confirm the NuGet page renders the packaged README, MIT license, repository URL,

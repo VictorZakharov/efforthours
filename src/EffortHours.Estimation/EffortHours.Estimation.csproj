@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <Description>Transparent estimation engines for EffortHours.</Description>
+    <RootNamespace>EffortHours.Estimation</RootNamespace>
+    <AssemblyName>EffortHours.Estimation</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../EffortHours.Contracts/EffortHours.Contracts.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="../../models/seed-rules/0.2.1.json">
+      <LogicalName>EffortHours.Estimation.Models.SeedRules.0.2.1.json</LogicalName>
+    </EmbeddedResource>
+  </ItemGroup>
+</Project>

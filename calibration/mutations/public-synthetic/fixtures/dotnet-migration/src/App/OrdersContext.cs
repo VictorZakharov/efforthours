@@ -1,4 +1,4 @@
-namespace FairbillSynthetic;
+namespace EffortHoursSynthetic;
 
 public sealed class OrdersContext : DbContext
 {

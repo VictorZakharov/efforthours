@@ -1,63 +1,63 @@
 {
   "schemaVersion": "1.0.0",
   "metricVersion": "calibration-mutation-metrics/1.0.0",
-  "id": "fairbill-public-synthetic-mutations",
+  "id": "efforthours-public-synthetic-mutations",
   "version": "0.1.0",
   "description": "Synthetic .NET mutation guardrails for invariance, directionality, and category isolation.",
   "cases": [
     {
       "id": "dotnet-base",
       "description": "Minimal maintained .NET library used as the reference case.",
-      "sourceDigest": "sha256:ca0f6aeacb0908075926743ac86d24d73f7b201f5c41b8b58f6cd96f48978654",
+      "sourceDigest": "sha256:125e0d7acdddc9e5ed948a7dcb0a56745135a91626c0deacaf6bdc813334b1c5",
       "profile": "implementation",
       "baselineId": "senior-contractor-2026-no-ai"
     },
     {
       "id": "dotnet-formatting",
       "description": "The maintained behavior is reformatted without semantic changes.",
-      "sourceDigest": "sha256:6c8c8921d2d6b9802894ec232fe79551337d5363506a9329d08e67af664bb2e7",
+      "sourceDigest": "sha256:ddae2b4f235b05ecaa0d3ef8a9926f65163f4d1314f0e7ee61a72474d4a4c305",
       "profile": "implementation",
       "baselineId": "senior-contractor-2026-no-ai"
     },
     {
       "id": "dotnet-duplicate",
       "description": "An exact source copy excluded from compilation is added.",
-      "sourceDigest": "sha256:88d0afae1e47072c5f5d733dbb5faac425d1461e1dfbd1867630c7c7665f9aee",
+      "sourceDigest": "sha256:4bacee4a98cb4e4d5e2ef54ab5ab919c7d07921558656af5b0a37598b4608884",
       "profile": "implementation",
       "baselineId": "senior-contractor-2026-no-ai"
     },
     {
       "id": "dotnet-generated",
       "description": "A conventional generated source body is added.",
-      "sourceDigest": "sha256:1933ac9f6723eb62ea30b0a3e7add9460049c381b587a0947418d79320eebb51",
+      "sourceDigest": "sha256:cedc7fef102c809f46a14d305b336ef4495db89550d6b40a4280746efee9d6da",
       "profile": "implementation",
       "baselineId": "senior-contractor-2026-no-ai"
     },
     {
       "id": "dotnet-api",
       "description": "A runnable HTTP status endpoint is added.",
-      "sourceDigest": "sha256:32d059ad9bdb456b025c62f0f5930595bda0b91b03ca21c2bde53de2caaea798",
+      "sourceDigest": "sha256:7cea0cbeeca5776eccefaf97453ff652bca782cbc28a77505b5feb8e730944ed",
       "profile": "implementation",
       "baselineId": "senior-contractor-2026-no-ai"
     },
     {
       "id": "dotnet-tests",
       "description": "A unit-test project and two behavioral tests are added.",
-      "sourceDigest": "sha256:28f7c087f4ad5fae688577f4d3fc0969747d356a1faf3ee76b2ee16ac46af13f",
+      "sourceDigest": "sha256:3be273ba7e9b0b35d722cbb54db68a3782a82fa8358bd8de14ece3d2e4edd946",
       "profile": "implementation",
       "baselineId": "senior-contractor-2026-no-ai"
     },
     {
       "id": "dotnet-documentation",
       "description": "Maintained onboarding and usage documentation is added.",
-      "sourceDigest": "sha256:3ff70723926d3f556545001dd8caa8633eec811ce9589cc93915734727abc73d",
+      "sourceDigest": "sha256:06094258a7709e6879b0189e67d9109bca4dd1b25399e7a1416753987e259a32",
       "profile": "implementation",
       "baselineId": "senior-contractor-2026-no-ai"
     },
     {
       "id": "dotnet-integration",
       "description": "A maintained external HTTP integration boundary is added.",
-      "sourceDigest": "sha256:ff3b6704a03fbfab0dbe622dcb656ea3b4bb5706685b4f202d8174890acc6907",
+      "sourceDigest": "sha256:b5ac5c0c74a150c8ca645c65e369c359a60a4a725e6b58d1f70344873c371178",
       "profile": "implementation",
       "baselineId": "senior-contractor-2026-no-ai"
     }

@@ -1,6 +1,6 @@
 # Security Policy
 
-Fairbill treats analyzed repositories as untrusted input. Vulnerabilities that could
+EffortHours treats analyzed repositories as untrusted input. Vulnerabilities that could
 execute target code unexpectedly, escape the selected analysis scope, disclose
 secrets unintentionally, or corrupt evidence and estimates are especially important.
 
@@ -16,5 +16,5 @@ mitigation. Do not include real client source or credentials in a report.
 
 ## Supported versions
 
-Fairbill has not published a supported release yet. This section will be updated
+EffortHours has not published a supported release yet. This section will be updated
 when the first public package is available.

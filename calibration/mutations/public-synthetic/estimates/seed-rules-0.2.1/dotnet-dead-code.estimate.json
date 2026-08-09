@@ -8,7 +8,7 @@
     "ecosystems": [
       "dotnet"
     ],
-    "sourceDigest": "sha256:e2610e17f807d87392d65fa8fff09cfd3804c73f49871310c8481d6a631e9e9c"
+    "sourceDigest": "sha256:1c4c64c44b8a69590184bdb3628f2662e0ee48345ffd9aa67c533f1db257fe76"
   },
   "profile": "implementation",
   "baseline": {

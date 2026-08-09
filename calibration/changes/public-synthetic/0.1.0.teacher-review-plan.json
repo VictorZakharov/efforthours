@@ -1,7 +1,7 @@
 {
   "schemaVersion": "1.0.0",
   "compilerVersion": "change-calibration-review-compiler/0.1.0",
-  "id": "fairbill-change-public-synthetic",
+  "id": "efforthours-change-public-synthetic",
   "version": "0.1.0",
   "description": "Preliminary logical teacher estimates for 24 small synthetic immutable final changes.",
   "rubric": {
@@ -38,7 +38,7 @@
       "sourceEstimateDigest": "sha256:d7ac1a8a75657d4d383938cea209d630594407306772314067d3d658fc3fd2c0",
       "source": {
         "dataClassification": "synthetic",
-        "sourceReference": "fairbill://calibration/changes/public-synthetic/0.1.0.fixtures.json#change:dn-data-integration",
+        "sourceReference": "eh://calibration/changes/public-synthetic/0.1.0.fixtures.json#change:dn-data-integration",
         "revision": "2ebe1d45d969ae3be5a759837a5b8bf398cbfa2cffefa35c6f5c4c0b369eceaa..7b49c537cd7143560394478080374a8fef1f745d38bc72bab89c51e659343147",
         "licenseExpression": "MIT",
         "redistributionAllowed": true,
@@ -215,7 +215,7 @@
       "sourceEstimateDigest": "sha256:5f6a03076ecf1878d1cc5c3f824c63598cc326a92ac7657e565d84e0a2c4aedf",
       "source": {
         "dataClassification": "synthetic",
-        "sourceReference": "fairbill://calibration/changes/public-synthetic/0.1.0.fixtures.json#change:dn-data-migration",
+        "sourceReference": "eh://calibration/changes/public-synthetic/0.1.0.fixtures.json#change:dn-data-migration",
         "revision": "d787f9e4e6b561032fb05e6cceb6b50ae88fe12d01939d6d003c2bf75dd68b46..85c9c6aea1de4b20aa9c34453d9e89e7cae11cc893ad03314d81b8ef9a251428",
         "licenseExpression": "MIT",
         "redistributionAllowed": true,
@@ -393,7 +393,7 @@
       "sourceEstimateDigest": "sha256:e38d0d9b7ed2d70c8d204f042ff40d7ad3aad031f9d88dccf59203db6020fc35",
       "source": {
         "dataClassification": "synthetic",
-        "sourceReference": "fairbill://calibration/changes/public-synthetic/0.1.0.fixtures.json#change:dn-data-removal",
+        "sourceReference": "eh://calibration/changes/public-synthetic/0.1.0.fixtures.json#change:dn-data-removal",
         "revision": "a08d8b7f51d986156e84617398344240ea583c55a4fbc546c52d50ef23fdda81..76e9d37ad72e5d0d00ea49f54cc343745979e645e028bfaefd134db0e42923cf",
         "licenseExpression": "MIT",
         "redistributionAllowed": true,
@@ -570,7 +570,7 @@
       "sourceEstimateDigest": "sha256:4d729ca6412cc3156035e9a9978ce8a31ca17f3f3aca386b52b5d49f8f28a453",
       "source": {
         "dataClassification": "synthetic",
-        "sourceReference": "fairbill://calibration/changes/public-synthetic/0.1.0.fixtures.json#change:dn-lib-docs",
+        "sourceReference": "eh://calibration/changes/public-synthetic/0.1.0.fixtures.json#change:dn-lib-docs",
         "revision": "3b1bd803b7a068fca04e63ab60ba2ad4bb97c0f494f491db474cc435f2081eef..5f0d877b23124ac7880d476556f6d2cead82cb2aa6d122e16bc0aa22a890684b",
         "licenseExpression": "MIT",
         "redistributionAllowed": true,
@@ -669,7 +669,7 @@
       "sourceEstimateDigest": "sha256:74ddd2272887b9f6bc0444233f26f33f75127cf0ac3827e1c61ca4d63f2b02db",
       "source": {
         "dataClassification": "synthetic",
-        "sourceReference": "fairbill://calibration/changes/public-synthetic/0.1.0.fixtures.json#change:dn-lib-production",
+        "sourceReference": "eh://calibration/changes/public-synthetic/0.1.0.fixtures.json#change:dn-lib-production",
         "revision": "020c1a6afd52700f68fa76d12c82dd45e66d0428d400fb6729a877bf74495976..716343eb8f3f969f9764a9dc548b6f59b794e3066d33cc58fc96cbcc77aa99f6",
         "licenseExpression": "MIT",
         "redistributionAllowed": true,
@@ -768,7 +768,7 @@
       "sourceEstimateDigest": "sha256:bfe88a2a5cbeefcda4075477a6784271d2d66b498c4c367d1efd95aee61b5850",
       "source": {
         "dataClassification": "synthetic",
-        "sourceReference": "fairbill://calibration/changes/public-synthetic/0.1.0.fixtures.json#change:dn-lib-tests",
+        "sourceReference": "eh://calibration/changes/public-synthetic/0.1.0.fixtures.json#change:dn-lib-tests",
         "revision": "1d38706a98151cfc4a0d3cb38cc54a83d6d98ba0a84c347f2ec4475e456bb590..30abc995b987d60afd758fdf8f49fe60cc23f89be5648510ea67ee46c7c7f618",
         "licenseExpression": "MIT",
         "redistributionAllowed": true,
@@ -913,7 +913,7 @@
       "sourceEstimateDigest": "sha256:bc948742c8807e9e2f6eb0266569dff62d70c8a9696ac087277774b4fc73ae89",
       "source": {
         "dataClassification": "synthetic",
-        "sourceReference": "fairbill://calibration/changes/public-synthetic/0.1.0.fixtures.json#change:js-lib-formatting",
+        "sourceReference": "eh://calibration/changes/public-synthetic/0.1.0.fixtures.json#change:js-lib-formatting",
         "revision": "713ffeddf7789b8ff5e06095f7cb4effa1dc9c2e20d950cf6b1cb29fccaed82b..d91d2a732d4fecf60805da53c23bb0754c21ed5992936ab061a1eda06c4c252d",
         "licenseExpression": "MIT",
         "redistributionAllowed": true,
@@ -963,7 +963,7 @@
       "sourceEstimateDigest": "sha256:9f051b888e66c25927a4854be411fe7054abbe6887779f44e89ff38ea58ca213",
       "source": {
         "dataClassification": "synthetic",
-        "sourceReference": "fairbill://calibration/changes/public-synthetic/0.1.0.fixtures.json#change:js-lib-move",
+        "sourceReference": "eh://calibration/changes/public-synthetic/0.1.0.fixtures.json#change:js-lib-move",
         "revision": "c3ae6c9a84057eca86ed1c4709c75f888710c3c19923d442a3016bb12aeb877c..671fb4bc86e6717137d3c8453a2ad4d49d1821e12aca4ab117e9d14ed92bcf1e",
         "licenseExpression": "MIT",
         "redistributionAllowed": true,
@@ -1013,7 +1013,7 @@
       "sourceEstimateDigest": "sha256:b3d9dc9cd4d1e7868308476f64c73d623dd13f533a0118eb34994dad2f94fd12",
       "source": {
         "dataClassification": "synthetic",
-        "sourceReference": "fairbill://calibration/changes/public-synthetic/0.1.0.fixtures.json#change:js-lib-quality",
+        "sourceReference": "eh://calibration/changes/public-synthetic/0.1.0.fixtures.json#change:js-lib-quality",
         "revision": "a7fea269f6561da9c338eb33b5da16e6f22ca04a7f8cb0750114ec1633628c57..baee61630f16c6ac6aac83c4a2526a7bd12b95973bd549aa3fdfda291e6a87d8",
         "licenseExpression": "MIT",
         "redistributionAllowed": true,
@@ -1143,7 +1143,7 @@
       "sourceEstimateDigest": "sha256:2c2d9e773c6f45d4c93ce48dd18161dca2feb965955a17c799bbda5c2f7a9838",
       "source": {
         "dataClassification": "synthetic",
-        "sourceReference": "fairbill://calibration/changes/public-synthetic/0.1.0.fixtures.json#change:js-service-config",
+        "sourceReference": "eh://calibration/changes/public-synthetic/0.1.0.fixtures.json#change:js-service-config",
         "revision": "eddfb8527867d1f166d4d0449cb814e8bbea25e1b870f82ab92a71d26fb720b1..055b8b6c192085abcfb42ebfd82ba474f83c8ad0158637e1e94e5091193035c2",
         "licenseExpression": "MIT",
         "redistributionAllowed": true,
@@ -1258,7 +1258,7 @@
       "sourceEstimateDigest": "sha256:d0b314123f4ab159df9c2ced60d3c5796531356fcc07ccb2b97be82b456e6ced",
       "source": {
         "dataClassification": "synthetic",
-        "sourceReference": "fairbill://calibration/changes/public-synthetic/0.1.0.fixtures.json#change:js-service-deletion",
+        "sourceReference": "eh://calibration/changes/public-synthetic/0.1.0.fixtures.json#change:js-service-deletion",
         "revision": "a47256f78b98772f32e4d4facb58ad8423dc9b69f4dbff16ccd0e4206d0a9a32..b57d69fe072806d13d208c08d5bece2278b6305f4d57f39f02c58ebea3f4a964",
         "licenseExpression": "MIT",
         "redistributionAllowed": true,
@@ -1451,7 +1451,7 @@
       "sourceEstimateDigest": "sha256:11bd86bc6cbf54cb608c565d1004561bfecc1bdcd2d733b1bfbe2d8745a8b5b8",
       "source": {
         "dataClassification": "synthetic",
-        "sourceReference": "fairbill://calibration/changes/public-synthetic/0.1.0.fixtures.json#change:js-service-integration",
+        "sourceReference": "eh://calibration/changes/public-synthetic/0.1.0.fixtures.json#change:js-service-integration",
         "revision": "5087c2000629623d2ea5646e39fa467375937400359d83d65068c648f654027c..1c8ca983953b953c179a22022b20833e28713a236e0906d517ab2a50d568ee0b",
         "licenseExpression": "MIT",
         "redistributionAllowed": true,
@@ -1551,7 +1551,7 @@
       "sourceEstimateDigest": "sha256:1c54d0d81d636d5fbd721d2241c789a6bb3893f2208b01991ffefc394087e25f",
       "source": {
         "dataClassification": "synthetic",
-        "sourceReference": "fairbill://calibration/changes/public-synthetic/0.1.0.fixtures.json#change:mixed-disjoint-range",
+        "sourceReference": "eh://calibration/changes/public-synthetic/0.1.0.fixtures.json#change:mixed-disjoint-range",
         "revision": "04085c7749c0e27f0ced6d6f5336bd09eb2f51451a14bf7c21ee34ea784c0103..61f0d2831740889237787d1f6b6627056528ed4f22a6ade22c8ec6fbb3858a96",
         "licenseExpression": "MIT",
         "redistributionAllowed": true,
@@ -1683,7 +1683,7 @@
       "sourceEstimateDigest": "sha256:5db6a1db1bf272c89c9ab4355417b926bdc1eaf5b1b9ff164bb158f2ea6738bb",
       "source": {
         "dataClassification": "synthetic",
-        "sourceReference": "fairbill://calibration/changes/public-synthetic/0.1.0.fixtures.json#change:mixed-overlap-range",
+        "sourceReference": "eh://calibration/changes/public-synthetic/0.1.0.fixtures.json#change:mixed-overlap-range",
         "revision": "ca1b2033595e90f099e346a6244d153d1f75c8ec7aca505619561a66cc420454..fd8ce75783eba2a56d1da9270ae35a26fa8bcf73e1ac364813d645724574a972",
         "licenseExpression": "MIT",
         "redistributionAllowed": true,
@@ -1783,7 +1783,7 @@
       "sourceEstimateDigest": "sha256:1ba47bca693b859a88fd9e1e622571c0603ee22493df139f366d4641024370ec",
       "source": {
         "dataClassification": "synthetic",
-        "sourceReference": "fairbill://calibration/changes/public-synthetic/0.1.0.fixtures.json#change:mixed-revert-range",
+        "sourceReference": "eh://calibration/changes/public-synthetic/0.1.0.fixtures.json#change:mixed-revert-range",
         "revision": "1c493f8ef6635120194e3ac89d3b1a0d25d53a6c0df77950e9dd6339bb442469..1c493f8ef6635120194e3ac89d3b1a0d25d53a6c0df77950e9dd6339bb442469",
         "licenseExpression": "MIT",
         "redistributionAllowed": true,
@@ -1833,7 +1833,7 @@
       "sourceEstimateDigest": "sha256:2a478cd895582eafd5a7dfcd4978b03db6756893af7ea3c08fd7a38824e8f0c9",
       "source": {
         "dataClassification": "synthetic",
-        "sourceReference": "fairbill://calibration/changes/public-synthetic/0.1.0.fixtures.json#change:mixed-tool-feature",
+        "sourceReference": "eh://calibration/changes/public-synthetic/0.1.0.fixtures.json#change:mixed-tool-feature",
         "revision": "2fb100a96a10123d64abece21e121944176d1897f382341ccbc8e73644a18018..f0224949255de508f89c6f3b24a2715d549114f40322c23d8861a01d7c96722b",
         "licenseExpression": "MIT",
         "redistributionAllowed": true,
@@ -1949,7 +1949,7 @@
       "sourceEstimateDigest": "sha256:5dbac27c5461b772ac6adc87ca8086d89198579ef4e9c5b67b2d96aa1eeb6710",
       "source": {
         "dataClassification": "synthetic",
-        "sourceReference": "fairbill://calibration/changes/public-synthetic/0.1.0.fixtures.json#change:mixed-tool-range",
+        "sourceReference": "eh://calibration/changes/public-synthetic/0.1.0.fixtures.json#change:mixed-tool-range",
         "revision": "ae99b51d6a4fae6125ff6ad545e4e4ce1722c36b7ff0ec183969d3384ef982d7..03e5a9a42ec27acffe193e84d380b79f4626a96d40a6f798eaf43a15cab6f912",
         "licenseExpression": "MIT",
         "redistributionAllowed": true,
@@ -2159,7 +2159,7 @@
       "sourceEstimateDigest": "sha256:63ea22f0472ceebde214d41a3d5b38b5f1f4df9cd0a40c369771734bf3c78034",
       "source": {
         "dataClassification": "synthetic",
-        "sourceReference": "fairbill://calibration/changes/public-synthetic/0.1.0.fixtures.json#change:mixed-tool-simplify",
+        "sourceReference": "eh://calibration/changes/public-synthetic/0.1.0.fixtures.json#change:mixed-tool-simplify",
         "revision": "a51a331bbcfefb49d2ca0538fff689a0d08c9cf548160a4ad1091b3c0096a8ce..c722c8ccf4e62c1cc8c76e5877b49ad577486dac83780e3bd7ac53eccfe5df32",
         "licenseExpression": "MIT",
         "redistributionAllowed": true,
@@ -2367,7 +2367,7 @@
       "sourceEstimateDigest": "sha256:accd12500bbc854de27e1b20394f4338b89feebcd756e95b71a87f532dc3b9a8",
       "source": {
         "dataClassification": "synthetic",
-        "sourceReference": "fairbill://calibration/changes/public-synthetic/0.1.0.fixtures.json#change:ts-package-customization",
+        "sourceReference": "eh://calibration/changes/public-synthetic/0.1.0.fixtures.json#change:ts-package-customization",
         "revision": "0eee6e7d7ee01fe97236b360bb735bd0c56a0babd5d911d27ebbe94bbc26d3d6..c81a815888d9568973df4bf43b1c804a9d905b787556d3eb0f6bf9598a5f0d7c",
         "licenseExpression": "MIT",
         "redistributionAllowed": true,
@@ -2466,7 +2466,7 @@
       "sourceEstimateDigest": "sha256:8333c1a2d1904da058f5103a2f0e8f5a5b2287d896504609b33e9f350a4936c6",
       "source": {
         "dataClassification": "synthetic",
-        "sourceReference": "fairbill://calibration/changes/public-synthetic/0.1.0.fixtures.json#change:ts-package-delivery",
+        "sourceReference": "eh://calibration/changes/public-synthetic/0.1.0.fixtures.json#change:ts-package-delivery",
         "revision": "d84b95e849e233616d66d03d8725f66afe4a18ea7ad1cb814c9efddb6e835e08..e3bb7943f6a6b9ad786d6f57615b6221d25250955615966f6199805c80cdc30c",
         "licenseExpression": "MIT",
         "redistributionAllowed": true,
@@ -2674,7 +2674,7 @@
       "sourceEstimateDigest": "sha256:cdd9eac570ac7dd550a323659aee7d970559f8ceece97dfa20b7672868a38263",
       "source": {
         "dataClassification": "synthetic",
-        "sourceReference": "fairbill://calibration/changes/public-synthetic/0.1.0.fixtures.json#change:ts-package-generated",
+        "sourceReference": "eh://calibration/changes/public-synthetic/0.1.0.fixtures.json#change:ts-package-generated",
         "revision": "4efaf290c905fbb1336e14d0c90b1638dffbbf31a13c10186fb2a0f287abfd05..0263fa762851dc131d3b827cd0d0234fdf99588d3e7f4323197f8f22962ded38",
         "licenseExpression": "MIT",
         "redistributionAllowed": true,
@@ -2725,7 +2725,7 @@
       "sourceEstimateDigest": "sha256:afe6765503b55e17ada143e1f0b4eea5b39d067841e7a209cd76e9f3ea3ba8c6",
       "source": {
         "dataClassification": "synthetic",
-        "sourceReference": "fairbill://calibration/changes/public-synthetic/0.1.0.fixtures.json#change:ts-service-delivery",
+        "sourceReference": "eh://calibration/changes/public-synthetic/0.1.0.fixtures.json#change:ts-service-delivery",
         "revision": "320f4c8f83a9d4e6b52d110d3c71c9353a7327049051534d59c648d0c3fcea34..1f95c0f0cc480ad7aa9a5e9e905b664627f682dbab178904680d33819df74ef9",
         "licenseExpression": "MIT",
         "redistributionAllowed": true,
@@ -2872,7 +2872,7 @@
       "sourceEstimateDigest": "sha256:2c501567d951845b71a52691fbee771985e30a12a641f56883fb3ed6fdf1dc33",
       "source": {
         "dataClassification": "synthetic",
-        "sourceReference": "fairbill://calibration/changes/public-synthetic/0.1.0.fixtures.json#change:ts-service-integration",
+        "sourceReference": "eh://calibration/changes/public-synthetic/0.1.0.fixtures.json#change:ts-service-integration",
         "revision": "a4996dc9ae5cd8015dc38a348ef4617ca417a0fe85ce02b93475fa89ed5761df..f202b7a39d5d86f84d2ea26bc889f252bcaf70b6439b7640bad7be832f4f9e80",
         "licenseExpression": "MIT",
         "redistributionAllowed": true,
@@ -3049,7 +3049,7 @@
       "sourceEstimateDigest": "sha256:e481ef0f852f4f7c9fac4b3b9f5f76579a442fd6c130398d2c56f202ac61ba67",
       "source": {
         "dataClassification": "synthetic",
-        "sourceReference": "fairbill://calibration/changes/public-synthetic/0.1.0.fixtures.json#change:ts-service-tests",
+        "sourceReference": "eh://calibration/changes/public-synthetic/0.1.0.fixtures.json#change:ts-service-tests",
         "revision": "1b01e1b95ec71a8c8663491c3dcf10efed860516bbd00da42b657d4096959bb2..92799d13745949ab4f7867c689b07e83b996fbfe543bea0fb1ac38f600313f5d",
         "licenseExpression": "MIT",
         "redistributionAllowed": true,

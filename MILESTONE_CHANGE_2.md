@@ -5,7 +5,7 @@
 The first Change EHE calibration checkpoint is complete as of August 6, 2026. It
 adds review, provenance, compilation, independent-correction, and evaluation
 boundaries around `change-seed/0.1.0` without changing a numerical prior or adding
-an ML dependency. The global-tool package advances to `Fairbill.Tool`
+an ML dependency. The global-tool package advances to `EffortHours.Tool`
 `0.8.0-alpha.2`.
 
 This infrastructure checkpoint initially contained no public Change EHE label
@@ -20,7 +20,7 @@ the estimator remains experimental and uncalibrated.
   authoring, review-plan, corpus, and second-review records;
 - content-derived final-delta identity plus immutable base/head object and evidence
   provenance;
-- `fairbill calibration change-scaffold`, `change-compile`, and
+- `eh calibration change-scaffold`, `change-compile`, and
   `change-evaluate`;
 - reuse of ordinary corpus validation plus blind `review-scaffold` and exact-digest
   `review-compile` for genuinely independent correction;

@@ -4,9 +4,9 @@ This file records the third-party packages resolved by the checked-in NuGet lock
 files and the actions pinned by release workflows as of 2026-08-06. Package versions are centrally pinned in
 `Directory.Packages.props`.
 
-Fairbill is licensed under the MIT License. Third-party components remain under
+EffortHours is licensed under the MIT License. Third-party components remain under
 their respective licenses. This notice is included in the global-tool package
-alongside Fairbill's `LICENSE` file.
+alongside EffortHours's `LICENSE` file.
 
 ## Public data used by the bundled rate model
 
@@ -23,14 +23,14 @@ The source pages are <https://www.bls.gov/oes/tables.htm>,
 <https://download.bls.gov/pub/time.series/oe/oe.txt>, and
 <https://www.bls.gov/news.release/ecec.t04.htm>. BLS states at
 <https://www.bls.gov/bls/linksite.htm> that its published information is in the
-public domain except for specifically identified third-party material. Fairbill
+public domain except for specifically identified third-party material. EffortHours
 does not redistribute BLS photographs, illustrations, branding, or bulk datasets.
-The derived Fairbill artifact and calculation code are distributed under Fairbill's
+The derived EffortHours artifact and calculation code are distributed under EffortHours's
 MIT License.
 
 ## Public repositories used by the calibration pilot
 
-`calibration/corpora/public-pilot` contains Fairbill-derived evidence identifiers,
+`calibration/corpora/public-pilot` contains EffortHours-derived evidence identifiers,
 teacher labels, and baseline measurements for fixed revisions of these MIT-licensed
 repositories:
 
@@ -40,11 +40,11 @@ repositories:
 | <https://github.com/sindresorhus/p-queue> | `180ab9e25cd10b6f548767d7176076b50d25e188` | MIT |
 | <https://github.com/KristofferStrube/Blazor.FileSystemAccess> | `a318303142cbec91e7c82b3d6dd69685adcfbac1` | MIT |
 
-Fairbill does not redistribute their source archives, images, or documentation.
+EffortHours does not redistribute their source archives, images, or documentation.
 The exact commit trees, license-file links and blob identifiers, partition choices,
-and Fairbill source digests are recorded in
+and EffortHours source digests are recorded in
 `calibration/corpora/public-pilot/SOURCES.md`. The project-authored review plan,
-derived labels, and evaluation reports are distributed under Fairbill's MIT
+derived labels, and evaluation reports are distributed under EffortHours's MIT
 License; the upstream projects remain under their own MIT licenses.
 
 ## Runtime dependencies
@@ -115,8 +115,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 | xunit.extensibility.execution | 2.9.3 | Apache-2.0 |
 | xunit.runner.visualstudio | 3.1.4 | Apache-2.0 |
 
-These packages are used to build or test Fairbill and are not shipped as runtime
-dependencies of the Fairbill global-tool package unless a future package layout
+These packages are used to build or test EffortHours and are not shipped as runtime
+dependencies of the EffortHours global-tool package unless a future package layout
 explicitly changes that fact.
 
 The authoritative license text and notices for each dependency are available in
@@ -126,7 +126,7 @@ authoritative record of the versions resolved for this repository.
 ## Continuous-integration actions
 
 Workflow actions are pinned to immutable commits. They run in GitHub Actions and
-are not redistributed inside `Fairbill.Tool`.
+are not redistributed inside `EffortHours.Tool`.
 
 | Action | Release | Commit | License |
 | --- | --- | --- | --- |

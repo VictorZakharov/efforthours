@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0.0",
-  "id": "fairbill-public-pilot",
+  "id": "efforthours-public-pilot",
   "version": "0.1.0",
   "description": "Initial public teacher-estimate corpus for authoring-workflow and frozen seed-baseline measurement. These weak labels are not independently reviewed and are not production accuracy evidence.",
   "rubric": {

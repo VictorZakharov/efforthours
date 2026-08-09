@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <Description>Versioned, independently replaceable pricing catalogs for EffortHours.</Description>
+    <RootNamespace>EffortHours.Pricing</RootNamespace>
+    <AssemblyName>EffortHours.Pricing</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../EffortHours.Contracts/EffortHours.Contracts.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="../../rates/us-senior-contractor/2026.1.json">
+      <LogicalName>EffortHours.Pricing.Rates.UsSeniorContractor.2026.1.json</LogicalName>
+    </EmbeddedResource>
+  </ItemGroup>
+</Project>

@@ -1,13 +1,13 @@
-# Fairbill benchmarks
+# EffortHours benchmarks
 
-Fairbill records reproducible engineering checkpoints rather than presenting a
+EffortHours records reproducible engineering checkpoints rather than presenting a
 single synthetic run as a universal performance guarantee.
 
 ## Common scanner v0.2 checkpoint
 
 Measured on August 5, 2026 with:
 
-- Fairbill common scanner `0.2.0`;
+- EffortHours common scanner `0.2.0`;
 - .NET runtime `10.0.7` and .NET SDK `10.0.203`;
 - Windows `10.0.26200`, x64;
 - 24 logical processors exposed to the process; and
@@ -17,7 +17,7 @@ Measured on August 5, 2026 with:
 Command:
 
 ```text
-dotnet benchmarks/Fairbill.ScannerBenchmarks/bin/Release/net10.0/Fairbill.ScannerBenchmarks.dll --files 10000 --lines-per-file 100 --warm-cache
+dotnet benchmarks/EffortHours.ScannerBenchmarks/bin/Release/net10.0/EffortHours.ScannerBenchmarks.dll --files 10000 --lines-per-file 100 --warm-cache
 ```
 
 Observed result:
@@ -66,7 +66,7 @@ does not evaluate MSBuild, restore or compile the fixture, or execute target cod
 Command:
 
 ```text
-dotnet benchmarks/Fairbill.ScannerBenchmarks/bin/Release/net10.0/Fairbill.ScannerBenchmarks.dll --files 10000 --lines-per-file 100 --dotnet
+dotnet benchmarks/EffortHours.ScannerBenchmarks/bin/Release/net10.0/EffortHours.ScannerBenchmarks.dll --files 10000 --lines-per-file 100 --dotnet
 ```
 
 Observed result:
@@ -103,7 +103,7 @@ transpiler, executable configuration, or target code.
 Command:
 
 ```text
-dotnet benchmarks/Fairbill.ScannerBenchmarks/bin/Release/net10.0/Fairbill.ScannerBenchmarks.dll --files 10000 --lines-per-file 100 --javascript
+dotnet benchmarks/EffortHours.ScannerBenchmarks/bin/Release/net10.0/EffortHours.ScannerBenchmarks.dll --files 10000 --lines-per-file 100 --javascript
 ```
 
 Observed result:

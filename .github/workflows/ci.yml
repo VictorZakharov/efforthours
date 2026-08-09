@@ -41,19 +41,19 @@ jobs:
           global-json-file: global.json
 
       - name: Restore
-        run: dotnet restore Fairbill.slnx --configfile NuGet.Config --force-evaluate
+        run: dotnet restore EffortHours.slnx --configfile NuGet.Config --force-evaluate
 
       - name: Verify formatting
-        run: dotnet format Fairbill.slnx --no-restore --verify-no-changes --severity info
+        run: dotnet format EffortHours.slnx --no-restore --verify-no-changes --severity info
 
       - name: Build
-        run: dotnet build Fairbill.slnx --no-restore --configuration Release
+        run: dotnet build EffortHours.slnx --no-restore --configuration Release
 
       - name: Run storage-independent unit tests
-        run: dotnet test tests/Fairbill.Tests/Fairbill.Tests.csproj --no-build --no-restore --configuration Release
+        run: dotnet test tests/EffortHours.Tests/EffortHours.Tests.csproj --no-build --no-restore --configuration Release
 
       - name: Run process-level end-to-end tests
-        run: dotnet test tests/Fairbill.EndToEndTests/Fairbill.EndToEndTests.csproj --no-build --no-restore --configuration Release
+        run: dotnet test tests/EffortHours.EndToEndTests/EffortHours.EndToEndTests.csproj --no-build --no-restore --configuration Release
 
   package:
     name: Pack preview artifact
@@ -70,18 +70,18 @@ jobs:
           global-json-file: global.json
 
       - name: Restore
-        run: dotnet restore Fairbill.slnx --configfile NuGet.Config --force-evaluate
+        run: dotnet restore EffortHours.slnx --configfile NuGet.Config --force-evaluate
 
       - name: Build
-        run: dotnet build Fairbill.slnx --no-restore --configuration Release
+        run: dotnet build EffortHours.slnx --no-restore --configuration Release
 
       - name: Pack
-        run: dotnet pack src/Fairbill.Cli/Fairbill.Cli.csproj --configuration Release --no-build --no-restore --output artifacts/packages
+        run: dotnet pack src/EffortHours.Cli/EffortHours.Cli.csproj --configuration Release --no-build --no-restore --output artifacts/packages
 
       - name: Upload package artifact
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
-          name: fairbill-tool-${{ github.sha }}
-          path: artifacts/packages/Fairbill.Tool.*.nupkg
+          name: efforthours-tool-${{ github.sha }}
+          path: artifacts/packages/EffortHours.Tool.*.nupkg
           if-no-files-found: error
           retention-days: 14

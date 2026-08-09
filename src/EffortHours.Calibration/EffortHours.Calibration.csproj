@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <Description>Offline calibration authoring, review, mutation, and evaluation for EffortHours estimates.</Description>
+    <RootNamespace>EffortHours.Calibration</RootNamespace>
+    <AssemblyName>EffortHours.Calibration</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../EffortHours.Contracts/EffortHours.Contracts.csproj" />
+  </ItemGroup>
+</Project>

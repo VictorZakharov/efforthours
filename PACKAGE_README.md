@@ -1,30 +1,30 @@
-# Fairbill CLI
+# EffortHours CLI
 
-Fairbill is an experimental .NET 10 command-line tool for estimating **Equivalent
+EffortHours is an experimental .NET 10 command-line tool for estimating **Equivalent
 Human Effort (EHE)**: the counterfactual time one competent senior contractor,
 unfamiliar with the business domain and not using AI, would need to recreate a
 software repository's current functional and quality state from a clear
 specification.
 
 > This is a public alpha. The bundled estimators are transparent but uncalibrated.
-> Fairbill output is not actual labor history, a timesheet, an invoice, or an
+> EffortHours output is not actual labor history, a timesheet, an invoice, or an
 > empirically validated billing determination.
 
 ## Install
 
 ```text
-dotnet tool install --global Fairbill.Tool --version 0.8.0-alpha.2
-fairbill version
-fairbill --help
+dotnet tool install --global EffortHours.Tool --version 0.9.0-alpha.1
+eh version
+eh --help
 ```
 
 ## Estimate a repository
 
 ```text
-fairbill estimate ./my-repository --profile implementation --format markdown
+eh estimate ./my-repository --profile implementation --format markdown
 ```
 
-Fairbill statically analyzes .NET, JavaScript, TypeScript, and mixed repositories.
+EffortHours statically analyzes .NET, JavaScript, TypeScript, and mixed repositories.
 It reports evidence-backed work items across implementation, testing,
 documentation, integration, delivery, validation, and review, then optionally
 applies a dated contractor rate without changing the effort estimate.
@@ -32,9 +32,9 @@ applies a dated contractor rate without changing the effort estimate.
 ## Estimate a final change
 
 ```text
-fairbill change ./my-repository --commit <revision> --format markdown
-fairbill change ./my-repository --range <base>..<head> --format markdown
-fairbill change ./my-repository --pr <number> --format markdown
+eh change ./my-repository --commit <revision> --format markdown
+eh change ./my-repository --range <base>..<head> --format markdown
+eh change ./my-repository --pr <number> --format markdown
 ```
 
 Change EHE estimates the normalized final functional and quality delta. Commit
@@ -57,7 +57,7 @@ treated as untrusted input, and reports avoid source excerpts by default.
 
 The schemas, estimation decisions, calibration provenance, benchmarks, source,
 issues, and contribution process are available in the
-[Fairbill GitHub repository](https://github.com/VictorZakharov/fairbill).
+[EffortHours GitHub repository](https://github.com/VictorZakharov/efforthours).
 
-Fairbill is distributed under the
-[MIT License](https://github.com/VictorZakharov/fairbill/blob/main/LICENSE).
+EffortHours is distributed under the
+[MIT License](https://github.com/VictorZakharov/efforthours/blob/main/LICENSE).

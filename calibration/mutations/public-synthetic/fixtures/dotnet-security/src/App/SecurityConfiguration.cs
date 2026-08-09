@@ -1,4 +1,4 @@
-namespace FairbillSynthetic;
+namespace EffortHoursSynthetic;
 
 [Authorize]
 public sealed class ProtectedStatusEndpoint;

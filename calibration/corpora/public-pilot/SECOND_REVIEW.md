@@ -11,7 +11,7 @@ target structures while hiding every prior target range, rationale, uncertainty
 decision, and repository-total value. Its pinned source-corpus digest is:
 
 ```text
-sha256:216ee9e2289290c43bb843a51cacd9b8cb8d5da0d9da50f90ff77cf0ed11d5c0
+sha256:43b73a6e7ecc743612037349e07cd93c43fc258c926dac326734f304f4a75222
 ```
 
 The packet itself is always `unreviewed` and cannot be consumed as a calibration
@@ -34,7 +34,7 @@ corpus.
 6. Compile only against the exact source corpus:
 
 ```text
-fairbill calibration review-compile <completed-plan.json> \
+eh calibration review-compile <completed-plan.json> \
   calibration/corpora/public-pilot/0.1.0.corpus.json \
   --output <reviewed-corpus.json>
 ```

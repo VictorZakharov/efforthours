@@ -8,7 +8,7 @@
     "ecosystems": [
       "javascript"
     ],
-    "sourceDigest": "sha256:586afcf486b0c776a298cb867be0eb3886405a708ce67dbba68133bb795fe0a5"
+    "sourceDigest": "sha256:4b9ed262eb02d99bee9b5783361c727f97cd21b49005fe20d6da7b30faf88c05"
   },
   "profile": "implementation",
   "baseline": {

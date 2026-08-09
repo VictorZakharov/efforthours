@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "urn:fairbill:schema:v1:calibration-evaluation",
-  "title": "Fairbill calibration evaluation report v1",
+  "$id": "urn:eh:schema:v1:calibration-evaluation",
+  "title": "EffortHours calibration evaluation report v1",
   "type": "object",
   "required": [
     "schemaVersion",

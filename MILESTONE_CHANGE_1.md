@@ -5,24 +5,24 @@
 Complete as of August 6, 2026. The implementation is experimental and
 uncalibrated. It estimates counterfactual Equivalent Human Effort represented by a
 final artifact delta; it does not reconstruct actual work or timesheets.
-The global-tool package advances to `Fairbill.Tool` `0.8.0-alpha.1`.
+The global-tool package advances to `EffortHours.Tool` `0.8.0-alpha.1`.
 
 ## Delivered scope
 
-- `fairbill change <repository> --base <revision> --head <revision>`
-- `fairbill change <repository> --commit <revision> [--parent <revision>]`
-- `fairbill change <repository> --range <base>..<head>`
-- `fairbill change <repository> --pr <number-or-url> [--repo <owner/name>]`
+- `eh change <repository> --base <revision> --head <revision>`
+- `eh change <repository> --commit <revision> [--parent <revision>]`
+- `eh change <repository> --range <base>..<head>`
+- `eh change <repository> --pr <number-or-url> [--repo <owner/name>]`
 - implementation and recreation profiles, JSON or Markdown, compact JSON, explicit
   output paths, the bundled dated rate, caller rate overrides, and effort-only mode
-- saved-report work-item explanation through `fairbill change explain`
+- saved-report work-item explanation through `eh change explain`
 
 Multiple PRs, directory/evidence selectors, author-period portfolios, and shared
 credit remain deferred.
 
 ## Architecture
 
-`Fairbill.Change` is a reusable, provider-neutral snapshot comparison and Change
+`EffortHours.Change` is a reusable, provider-neutral snapshot comparison and Change
 EHE library. Git selection is an adapter around it. Immutable Git trees are exposed
 through the existing repository-file-system abstraction using `git ls-tree` and a
 bounded `git cat-file --batch` reader. No checkout, fetch, dependency installation,
@@ -79,7 +79,7 @@ access.
 
 ## Maintainability checkpoint
 
-The former 2,391-line `FairbillApplication.cs` was split into focused partial
+The former 2,391-line `EffortHoursApplication.cs` was split into focused partial
 command modules; its dispatcher is now small. `eng/file-budgets.json` enforces a
 500-line default, a 400-line CLI ceiling, and explicit ratchets for legacy debt.
 New code should be split near 80% of its applicable ceiling. The disk-backed budget
@@ -95,6 +95,6 @@ test lives only in the end-to-end suite; ordinary unit tests remain memory-only.
   not.
 - Range component selection uses first-parent comparison for merge components and
   reports that limitation; normalized final effort remains authoritative.
-- PR objects must already exist locally; Fairbill does not fetch them.
+- PR objects must already exist locally; EffortHours does not fetch them.
 - Change-specific million-line and large-range performance measurements remain to
   be recorded.

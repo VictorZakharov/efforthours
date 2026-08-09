@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "urn:fairbill:schema:v1:estimate-view",
-  "title": "Fairbill estimate projection v1",
+  "$id": "urn:eh:schema:v1:estimate-view",
+  "title": "EffortHours estimate projection v1",
   "type": "object",
   "required": [
     "schemaVersion",
@@ -45,7 +45,7 @@
       "minLength": 1
     },
     "repository": {
-      "$ref": "urn:fairbill:schema:v1:estimate-report#/$defs/repository"
+      "$ref": "urn:eh:schema:v1:estimate-report#/$defs/repository"
     },
     "profile": {
       "enum": [
@@ -54,16 +54,16 @@
       ]
     },
     "baseline": {
-      "$ref": "urn:fairbill:schema:v1:estimate-report#/$defs/baseline"
+      "$ref": "urn:eh:schema:v1:estimate-report#/$defs/baseline"
     },
     "totalEffort": {
-      "$ref": "urn:fairbill:schema:v1:estimate-report#/$defs/effortRange"
+      "$ref": "urn:eh:schema:v1:estimate-report#/$defs/effortRange"
     },
     "rateCard": {
-      "$ref": "urn:fairbill:schema:v1:rate-card"
+      "$ref": "urn:eh:schema:v1:rate-card"
     },
     "totalCost": {
-      "$ref": "urn:fairbill:schema:v1:estimate-report#/$defs/costRange"
+      "$ref": "urn:eh:schema:v1:estimate-report#/$defs/costRange"
     },
     "counts": {
       "$ref": "#/$defs/counts"
@@ -105,7 +105,7 @@
     "diagnostics": {
       "type": "array",
       "items": {
-        "$ref": "urn:fairbill:schema:v1:diagnostic"
+        "$ref": "urn:eh:schema:v1:diagnostic"
       }
     },
     "assumptions": {
@@ -117,7 +117,7 @@
       "uniqueItems": true
     },
     "verification": {
-      "$ref": "urn:fairbill:schema:v1:estimate-report#/$defs/verification"
+      "$ref": "urn:eh:schema:v1:estimate-report#/$defs/verification"
     },
     "professionalizationGapTreatment": {
       "type": "string",
@@ -173,13 +173,13 @@
       ],
       "properties": {
         "category": {
-          "$ref": "urn:fairbill:schema:v1:estimate-report#/$defs/category"
+          "$ref": "urn:eh:schema:v1:estimate-report#/$defs/category"
         },
         "hours": {
-          "$ref": "urn:fairbill:schema:v1:estimate-report#/$defs/effortRange"
+          "$ref": "urn:eh:schema:v1:estimate-report#/$defs/effortRange"
         },
         "cost": {
-          "$ref": "urn:fairbill:schema:v1:estimate-report#/$defs/costRange"
+          "$ref": "urn:eh:schema:v1:estimate-report#/$defs/costRange"
         },
         "workItemCount": {
           "type": "integer",
@@ -212,10 +212,10 @@
           "minLength": 1
         },
         "hours": {
-          "$ref": "urn:fairbill:schema:v1:estimate-report#/$defs/effortRange"
+          "$ref": "urn:eh:schema:v1:estimate-report#/$defs/effortRange"
         },
         "cost": {
-          "$ref": "urn:fairbill:schema:v1:estimate-report#/$defs/costRange"
+          "$ref": "urn:eh:schema:v1:estimate-report#/$defs/costRange"
         },
         "workItemCount": {
           "type": "integer",
@@ -253,7 +253,7 @@
           "minLength": 1
         },
         "category": {
-          "$ref": "urn:fairbill:schema:v1:estimate-report#/$defs/category"
+          "$ref": "urn:eh:schema:v1:estimate-report#/$defs/category"
         },
         "title": {
           "type": "string",
@@ -264,10 +264,10 @@
           "minLength": 1
         },
         "hours": {
-          "$ref": "urn:fairbill:schema:v1:estimate-report#/$defs/effortRange"
+          "$ref": "urn:eh:schema:v1:estimate-report#/$defs/effortRange"
         },
         "cost": {
-          "$ref": "urn:fairbill:schema:v1:estimate-report#/$defs/costRange"
+          "$ref": "urn:eh:schema:v1:estimate-report#/$defs/costRange"
         },
         "confidence": {
           "type": "number",

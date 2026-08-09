@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "urn:fairbill:schema:v1:rate-card-model",
-  "title": "Fairbill bundled rate-card model v1",
+  "$id": "urn:eh:schema:v1:rate-card-model",
+  "title": "EffortHours bundled rate-card model v1",
   "type": "object",
   "required": [
     "schemaVersion",
@@ -60,7 +60,7 @@
       "minimum": 0
     },
     "marketRange": {
-      "$ref": "urn:fairbill:schema:v1:rate-card#/$defs/rateRange"
+      "$ref": "urn:eh:schema:v1:rate-card#/$defs/rateRange"
     },
     "formula": {
       "$ref": "#/$defs/formula"

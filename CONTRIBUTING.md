@@ -1,6 +1,6 @@
-# Contributing to Fairbill
+# Contributing to EffortHours
 
-Fairbill is being built in public for eventual open-source release. Contributions
+EffortHours is being built in public for eventual open-source release. Contributions
 should preserve the distinction between observed repository evidence, inferred
 classification, estimated effort, and pricing.
 
@@ -19,12 +19,12 @@ classification, estimated effort, and pricing.
 Run these commands from the repository root:
 
 ```text
-dotnet restore Fairbill.slnx --configfile NuGet.Config --force-evaluate
-dotnet format Fairbill.slnx --no-restore --verify-no-changes --severity info
-dotnet build Fairbill.slnx --no-restore --configuration Release
-dotnet test tests/Fairbill.Tests/Fairbill.Tests.csproj --no-build --no-restore --configuration Release
-dotnet test tests/Fairbill.EndToEndTests/Fairbill.EndToEndTests.csproj --no-build --no-restore --configuration Release
-dotnet pack src/Fairbill.Cli/Fairbill.Cli.csproj --configuration Release --no-build --no-restore --output artifacts/packages
+dotnet restore EffortHours.slnx --configfile NuGet.Config --force-evaluate
+dotnet format EffortHours.slnx --no-restore --verify-no-changes --severity info
+dotnet build EffortHours.slnx --no-restore --configuration Release
+dotnet test tests/EffortHours.Tests/EffortHours.Tests.csproj --no-build --no-restore --configuration Release
+dotnet test tests/EffortHours.EndToEndTests/EffortHours.EndToEndTests.csproj --no-build --no-restore --configuration Release
+dotnet pack src/EffortHours.Cli/EffortHours.Cli.csproj --configuration Release --no-build --no-restore --output artifacts/packages
 ```
 
 The first test command is the frequent, storage-independent loop: all repository
@@ -36,9 +36,9 @@ enforces the source-file ratchets in `eng/file-budgets.json`; follow
 Run the synthetic one-million-line scanner checkpoint with:
 
 ```text
-dotnet benchmarks/Fairbill.ScannerBenchmarks/bin/Release/net10.0/Fairbill.ScannerBenchmarks.dll --files 10000 --lines-per-file 100 --warm-cache
-dotnet benchmarks/Fairbill.ScannerBenchmarks/bin/Release/net10.0/Fairbill.ScannerBenchmarks.dll --files 10000 --lines-per-file 100 --dotnet
-dotnet benchmarks/Fairbill.ScannerBenchmarks/bin/Release/net10.0/Fairbill.ScannerBenchmarks.dll --files 10000 --lines-per-file 100 --javascript
+dotnet benchmarks/EffortHours.ScannerBenchmarks/bin/Release/net10.0/EffortHours.ScannerBenchmarks.dll --files 10000 --lines-per-file 100 --warm-cache
+dotnet benchmarks/EffortHours.ScannerBenchmarks/bin/Release/net10.0/EffortHours.ScannerBenchmarks.dll --files 10000 --lines-per-file 100 --dotnet
+dotnet benchmarks/EffortHours.ScannerBenchmarks/bin/Release/net10.0/EffortHours.ScannerBenchmarks.dll --files 10000 --lines-per-file 100 --javascript
 ```
 
 All behavioral changes require tests, and schema changes require contract and

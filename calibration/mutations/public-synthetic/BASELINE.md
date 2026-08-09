@@ -12,11 +12,11 @@ effort-label corpora, accuracy claims, or model-training data.
 - Suite `0.3.0` records the Milestone 7B4 behavior-and-delivery checkpoint: 48
   cases and 156 assertions evaluated with the same `seed-rules/0.2.1` model.
 
-The fixtures are small synthetic repositories authored for Fairbill and distributed
+The fixtures are small synthetic repositories authored for EffortHours and distributed
 under the repository's MIT License. They contain no copied project source, external
 dataset, installed/vendored third-party code, private evidence, or Git history.
 Some manifests, the CI fixture, and the Dockerfile contain inert public package,
-action, or image identifiers solely to exercise static classification. Fairbill
+action, or image identifiers solely to exercise static classification. EffortHours
 does not install or redistribute that software and analyzed every fixture without
 building, running, restoring, pulling images, or accessing the network.
 
@@ -147,7 +147,7 @@ contributors, commit activity, and history are not inputs.
 From a Release build, regenerate each candidate with:
 
 ```text
-fairbill estimate calibration/mutations/public-synthetic/fixtures/<fixture> \
+eh estimate calibration/mutations/public-synthetic/fixtures/<fixture> \
   --profile implementation --no-rate \
   --output calibration/mutations/public-synthetic/estimates/seed-rules-0.2.1/<case>.estimate.json
 ```
@@ -158,13 +158,13 @@ For the original eight .NET cases, `<fixture>` is the case ID without the
 Then evaluate all versioned candidate paths:
 
 ```text
-fairbill calibration mutations \
+eh calibration mutations \
   calibration/mutations/public-synthetic/0.3.0.suite.json \
   calibration/mutations/public-synthetic/estimates/seed-rules-0.2.1/*.estimate.json \
   --output calibration/mutations/public-synthetic/baseline-seed-rules-0.2.1-suite-0.3.0.json
 ```
 
-The wildcard is shell convenience, not part of Fairbill's argument semantics.
+The wildcard is shell convenience, not part of EffortHours's argument semantics.
 Callers on shells without wildcard expansion should list the estimate paths. Failed
 assertions still produce the complete report and return process exit code `5`;
 malformed inputs return the ordinary invalid-input code.
@@ -172,7 +172,7 @@ malformed inputs return the ordinary invalid-input code.
 ## Limitations and next expansion
 
 The suite uses deliberately small archetypes. Near-copy assertions bound the
-current marginal result; Fairbill does not yet perform semantic clone detection.
+current marginal result; EffortHours does not yet perform semantic clone detection.
 The dead-code case covers only C# syntax excluded by the compiler preprocessor, not
 arbitrary unreachable or unreferenced behavior. Coverage cases are
 declared-and-assumed Jest thresholds, not parsed measured results. Security cases

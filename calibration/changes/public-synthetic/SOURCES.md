@@ -1,8 +1,8 @@
 # Public synthetic Change source provenance
 
-Suite: `fairbill-change-public-synthetic/0.1.0`
+Suite: `efforthours-change-public-synthetic/0.1.0`
 
-All source states in `0.1.0.fixtures.json` were authored specifically for Fairbill
+All source states in `0.1.0.fixtures.json` were authored specifically for EffortHours
 on August 6, 2026. They are project-owned synthetic examples, not copies of client,
 employer, benchmark-repository, or third-party source. They are distributed under
 the repository's root MIT license.

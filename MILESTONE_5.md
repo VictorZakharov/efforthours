@@ -32,7 +32,7 @@ repository-level multiplier. Work items normally contain 0.5 to 8 expected hours
 2. Store seed productivity priors in a checked-in, versioned JSON artifact.
 3. Emit a conservative professionalization-gap ledger by default and exclude it
    from represented EHE and replacement cost.
-4. Use Fairbill itself as the first realistic reviewed teacher estimate, while
+4. Use EffortHours itself as the first realistic reviewed teacher estimate, while
    explicitly avoiding calibration to a single repository.
 
 ## Estimation pipeline
@@ -156,7 +156,7 @@ they do not create a new integration selection effort for every call.
 ## Seed-rule artifact
 
 The current catalog is `models/seed-rules/0.2.1.json`. It is checked in for public
-review and embedded into `Fairbill.Estimation` so normal execution does not depend
+review and embedded into `EffortHours.Estimation` so normal execution does not depend
 on the current directory, external files, or network access. The original 0.2.0
 artifact remains checked in because the frozen public-pilot labels and baseline
 reports record that source estimator.
@@ -281,8 +281,8 @@ Ordinary unit tests remain entirely memory-backed. Milestone 5 tests must cover:
 - rate changes affecting cost but never effort; and
 - unknown evidence producing diagnostics without invented effort.
 
-Disk-backed CLI tests remain in `Fairbill.EndToEndTests`. No physical fixture tree,
-temporary file, model file, or cache is read or written by `Fairbill.Tests`.
+Disk-backed CLI tests remain in `EffortHours.EndToEndTests`. No physical fixture tree,
+temporary file, model file, or cache is read or written by `EffortHours.Tests`.
 
 ## First review anchors
 
@@ -291,9 +291,9 @@ The initial priors will be reviewed against:
 1. small synthetic, memory-backed archetypes with obvious bounded work;
 2. mutation variants proving that meaningful behavior changes the correct category
    while formatting and exact duplication do not; and
-3. a repository-level logical estimate of Fairbill itself.
+3. a repository-level logical estimate of EffortHours itself.
 
-Fairbill is only an initial realism check. Seed values must not be tuned to make one
+EffortHours is only an initial realism check. Seed values must not be tuned to make one
 self-estimate look desirable, and the model remains uncalibrated until a diverse,
 licensed, repository-separated corpus exists.
 

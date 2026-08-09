@@ -2,7 +2,7 @@
   "schemaVersion": "1.0.0",
   "evaluatorVersion": "calibration-mutation-evaluator/0.1.0",
   "metricVersion": "calibration-mutation-metrics/1.0.0",
-  "suiteId": "fairbill-public-synthetic-mutations",
+  "suiteId": "efforthours-public-synthetic-mutations",
   "suiteVersion": "0.2.0",
   "caseCount": 30,
   "assertionCount": 84,
@@ -17,7 +17,7 @@
     {
       "caseId": "dotnet-api",
       "candidateEstimatorVersion": "seed-rules/0.2.1",
-      "candidateEstimateDigest": "sha256:0d2fc13cd248b5a593679a43a1868fb4bebdbb24310a2c458dcacb455067fc35",
+      "candidateEstimateDigest": "sha256:3ee4dde99158fba89619ce341a382a5ffb63e41e29b06bc63c82ed963a233c0f",
       "totalHours": {
         "low": 6.00,
         "expected": 11.75,
@@ -27,7 +27,7 @@
     {
       "caseId": "dotnet-base",
       "candidateEstimatorVersion": "seed-rules/0.2.1",
-      "candidateEstimateDigest": "sha256:9b31b5e8760d87c55eca7738852c5b4c52b22bb3818996b1e4d9f93bd62005b6",
+      "candidateEstimateDigest": "sha256:963ce95610d2a14ab953a17395002f9cd3cc5e6320c91ad88429a4e60da6e59b",
       "totalHours": {
         "low": 4.00,
         "expected": 7.25,
@@ -37,7 +37,7 @@
     {
       "caseId": "dotnet-documentation",
       "candidateEstimatorVersion": "seed-rules/0.2.1",
-      "candidateEstimateDigest": "sha256:d4e6a38dbb2fd264cb3715e62b314186767b27a3071db04ea3a556f162f1e4d9",
+      "candidateEstimateDigest": "sha256:ff691b10cc638f30ae0e7b3ecb3f58b399e9bdfdc97ad9745af3e48c9c088b15",
       "totalHours": {
         "low": 4.50,
         "expected": 8.25,
@@ -47,7 +47,7 @@
     {
       "caseId": "dotnet-duplicate",
       "candidateEstimatorVersion": "seed-rules/0.2.1",
-      "candidateEstimateDigest": "sha256:b4a95aa3820f78473739c1a56ea5c5891408d16225dd39a57b5e9dd821118dca",
+      "candidateEstimateDigest": "sha256:9ef1813194ab4221c64d6c8d97ae7d08a4fc480fc363a0d190cd5336e5f8cabc",
       "totalHours": {
         "low": 4.00,
         "expected": 7.25,
@@ -57,7 +57,7 @@
     {
       "caseId": "dotnet-formatting",
       "candidateEstimatorVersion": "seed-rules/0.2.1",
-      "candidateEstimateDigest": "sha256:1240fdff5c24bf736626f51d7318cb6f9a1588b47762803f8385c69c3d215e4c",
+      "candidateEstimateDigest": "sha256:a42e2918e06b9673c79afb6e691567da1fd9abeae24d8b44aa7563563c499ca2",
       "totalHours": {
         "low": 4.00,
         "expected": 7.25,
@@ -67,7 +67,7 @@
     {
       "caseId": "dotnet-generated",
       "candidateEstimatorVersion": "seed-rules/0.2.1",
-      "candidateEstimateDigest": "sha256:e61ad9f3a55ad6eb3ec98016f7b5ecd237ab224e68cadb61c088bcb7cbd450ab",
+      "candidateEstimateDigest": "sha256:ddc27c5dfa13cac51e4ffbf3cd79b91d8fd2db5e83c687d0b20c58383e353916",
       "totalHours": {
         "low": 4.00,
         "expected": 7.25,
@@ -77,7 +77,7 @@
     {
       "caseId": "dotnet-integration",
       "candidateEstimatorVersion": "seed-rules/0.2.1",
-      "candidateEstimateDigest": "sha256:bac93dda713ab7f3572b31e18cb3a61c8a733eb7fdab8fc7b321a5bff5b08e98",
+      "candidateEstimateDigest": "sha256:e9231ae5f0292d2a76853ce10900d5b7073b4e8b966e4b6d642277957304fc28",
       "totalHours": {
         "low": 6.50,
         "expected": 13.00,
@@ -87,7 +87,7 @@
     {
       "caseId": "dotnet-tests",
       "candidateEstimatorVersion": "seed-rules/0.2.1",
-      "candidateEstimateDigest": "sha256:39dd80690bbd0014cf68cd3c65b1de9d341ce09858f378c2b15b9f9a2b452623",
+      "candidateEstimateDigest": "sha256:8cf9491d783132e0fb82c298cbec3f930c33c3a2fef7863409d855cce3239ec3",
       "totalHours": {
         "low": 6.25,
         "expected": 11.25,
@@ -97,7 +97,7 @@
     {
       "caseId": "javascript-api",
       "candidateEstimatorVersion": "seed-rules/0.2.1",
-      "candidateEstimateDigest": "sha256:b900bcbf0202934db007e2b675c7adbd20aa39eccb51f0fad100f6f975441a36",
+      "candidateEstimateDigest": "sha256:8008c7473cc3b3b93b00e4d28418f0878d6a837a2dd13aef385ec681822c79a9",
       "totalHours": {
         "low": 4.75,
         "expected": 9.50,
@@ -107,7 +107,7 @@
     {
       "caseId": "javascript-base",
       "candidateEstimatorVersion": "seed-rules/0.2.1",
-      "candidateEstimateDigest": "sha256:a3fee09810ae9d9e823371fb8e838629fb8ae992a99f04880ba3bcffee8d8bb0",
+      "candidateEstimateDigest": "sha256:0251eba7d5f2d1aa0e296f595bfbe600ff7af4c564ee320222b21f49d2323e78",
       "totalHours": {
         "low": 3.50,
         "expected": 6.50,
@@ -117,7 +117,7 @@
     {
       "caseId": "javascript-documentation",
       "candidateEstimatorVersion": "seed-rules/0.2.1",
-      "candidateEstimateDigest": "sha256:185105d5a0cb78bb76b37e704e47c0518369695f881405b09cf03cbcd65d64c3",
+      "candidateEstimateDigest": "sha256:1d87d2bb561319c97a44946f79032f0ac9b8254d4cf1a9c6d96b740bb8be1072",
       "totalHours": {
         "low": 4.00,
         "expected": 7.50,
@@ -127,7 +127,7 @@
     {
       "caseId": "javascript-duplicate",
       "candidateEstimatorVersion": "seed-rules/0.2.1",
-      "candidateEstimateDigest": "sha256:3d6d33b6b1cd676808488228986190e2b1646f9c8f525d5c725200d775b3919d",
+      "candidateEstimateDigest": "sha256:5d78c40680985b25fe73bb8502bbfb9fdb7c5bfd0cdb62e28278365aeb11f580",
       "totalHours": {
         "low": 3.50,
         "expected": 6.50,
@@ -137,7 +137,7 @@
     {
       "caseId": "javascript-formatting",
       "candidateEstimatorVersion": "seed-rules/0.2.1",
-      "candidateEstimateDigest": "sha256:614c6ed1d0066897cdd84fc70d35111e6d870e21511238e3f07815f695f43490",
+      "candidateEstimateDigest": "sha256:42961fc8838c34eeb810eee259ebc1b116eacccfaf2d5ae16c0a5a3f41d78e19",
       "totalHours": {
         "low": 3.50,
         "expected": 6.50,
@@ -147,7 +147,7 @@
     {
       "caseId": "javascript-generated",
       "candidateEstimatorVersion": "seed-rules/0.2.1",
-      "candidateEstimateDigest": "sha256:dd0be0cb580fc3c7b061f1e3609f3578dd1e48b97b4845110e3d203f66218e1e",
+      "candidateEstimateDigest": "sha256:0fb2c8c0cc903553e0d14845dc9d440cb43ccd75cdafd59320140ae68e72adc7",
       "totalHours": {
         "low": 3.50,
         "expected": 6.50,
@@ -157,7 +157,7 @@
     {
       "caseId": "javascript-generated-customized",
       "candidateEstimatorVersion": "seed-rules/0.2.1",
-      "candidateEstimateDigest": "sha256:5ebad9c60d957a0ba5d774638912237caf4f8e2d6f2d584c88e84ccdc003f080",
+      "candidateEstimateDigest": "sha256:c672e8d806b0c24d1518b1a2bd42dcebfb4aaa5d7f16ddec2e0135b518317c9b",
       "totalHours": {
         "low": 3.75,
         "expected": 7.00,
@@ -167,7 +167,7 @@
     {
       "caseId": "javascript-integration",
       "candidateEstimatorVersion": "seed-rules/0.2.1",
-      "candidateEstimateDigest": "sha256:e80667a757e24ad6017933a230fe5b5528d9882abe40653ebc378694e24f3c0e",
+      "candidateEstimateDigest": "sha256:a2bb49c67f96d741fc0cd4b6e473cea255b516efaf9cbce0f2cccf3ad823a6fd",
       "totalHours": {
         "low": 5.25,
         "expected": 11.50,
@@ -177,7 +177,7 @@
     {
       "caseId": "javascript-tests",
       "candidateEstimatorVersion": "seed-rules/0.2.1",
-      "candidateEstimateDigest": "sha256:c83963290d0ebafb2165f46bc0763336894a3144223ae1bd2f3408779c6d1564",
+      "candidateEstimateDigest": "sha256:51981d82868305d95bf844e3e0e1960c168811cfc9de4c05bc71a3fbaa10c0f3",
       "totalHours": {
         "low": 5.00,
         "expected": 9.25,
@@ -187,7 +187,7 @@
     {
       "caseId": "mixed-base",
       "candidateEstimatorVersion": "seed-rules/0.2.1",
-      "candidateEstimateDigest": "sha256:45aa17540ae46c657fffc62ac3e046f1d3371d249eadc0db00f756bf433b4771",
+      "candidateEstimateDigest": "sha256:50d15b9c709e2304d15767b7921245bf8adf1d2c93e3cd33a2881bd23702e5eb",
       "totalHours": {
         "low": 6.75,
         "expected": 12.75,
@@ -197,7 +197,7 @@
     {
       "caseId": "mixed-dotnet-api",
       "candidateEstimatorVersion": "seed-rules/0.2.1",
-      "candidateEstimateDigest": "sha256:7102e7874071c2cf8d7f07c3966cc3efc85a4e7a129e236356c723ac826b49cf",
+      "candidateEstimateDigest": "sha256:860db0427fa4436492fe8fad96255a12e7ae5381b0259b2cee9de71198bf0799",
       "totalHours": {
         "low": 9.00,
         "expected": 17.25,
@@ -207,7 +207,7 @@
     {
       "caseId": "mixed-generated",
       "candidateEstimatorVersion": "seed-rules/0.2.1",
-      "candidateEstimateDigest": "sha256:42b1e3b79f194cbc4c9b8bc53265d0efebfe573b24c6909c56cf4c6b173d658a",
+      "candidateEstimateDigest": "sha256:57d0bc585882ed771a90ea681e028ef3b4e147198f28e818823108a0b4c32b75",
       "totalHours": {
         "low": 6.75,
         "expected": 12.75,
@@ -217,7 +217,7 @@
     {
       "caseId": "mixed-javascript-ui",
       "candidateEstimatorVersion": "seed-rules/0.2.1",
-      "candidateEstimateDigest": "sha256:9948acefae566aac78749e2918b37e873891cd270c44316fd0111b70eb449785",
+      "candidateEstimateDigest": "sha256:3152c1e2db4f83ac45de5bac8ca8fd4c355fa731cb0579a66fec4a02976d3eb1",
       "totalHours": {
         "low": 8.25,
         "expected": 16.00,
@@ -227,7 +227,7 @@
     {
       "caseId": "mixed-typescript-tests",
       "candidateEstimatorVersion": "seed-rules/0.2.1",
-      "candidateEstimateDigest": "sha256:09f381c919e75292a4de935c07fa95cab8ddb472ba87f7946133ec18b53a0cc0",
+      "candidateEstimateDigest": "sha256:e7026b71ae0ada0f73319eb0cb3d535b8796430d9751544cf053977846b06d0e",
       "totalHours": {
         "low": 8.25,
         "expected": 15.50,
@@ -237,7 +237,7 @@
     {
       "caseId": "typescript-api",
       "candidateEstimatorVersion": "seed-rules/0.2.1",
-      "candidateEstimateDigest": "sha256:7a80186907968ac4d6ac957e5d6529368a3a68d946063530324c4b93aa13469a",
+      "candidateEstimateDigest": "sha256:6f02a854aab65f5622b13cd44fa8afd4b512fa56a46c2f7ad351bb0715e6e4f8",
       "totalHours": {
         "low": 5.50,
         "expected": 10.75,
@@ -247,7 +247,7 @@
     {
       "caseId": "typescript-base",
       "candidateEstimatorVersion": "seed-rules/0.2.1",
-      "candidateEstimateDigest": "sha256:0296f210151cf95ca96a21a674381aac47486d624c0d3b996b16c1ddff0eb7fb",
+      "candidateEstimateDigest": "sha256:e12b972722105ec0a9a8af20639e02bb2c3d1bdb824353e8b9859f3b7dc68075",
       "totalHours": {
         "low": 4.25,
         "expected": 7.75,
@@ -257,7 +257,7 @@
     {
       "caseId": "typescript-documentation",
       "candidateEstimatorVersion": "seed-rules/0.2.1",
-      "candidateEstimateDigest": "sha256:f5ed3aa4975f49f35ad09cfd789ac5cfbed1a9650e8327662f01754540717d11",
+      "candidateEstimateDigest": "sha256:32e692b02ccd5f3881fa8aeb35ca419ae83e317e62add0cc21fd1e721e7323f0",
       "totalHours": {
         "low": 4.75,
         "expected": 8.75,
@@ -267,7 +267,7 @@
     {
       "caseId": "typescript-duplicate",
       "candidateEstimatorVersion": "seed-rules/0.2.1",
-      "candidateEstimateDigest": "sha256:8f52c0992a1630a4230f24ccc26bea6a5e17a952d24db3ac036a85f06c67d9f6",
+      "candidateEstimateDigest": "sha256:b4009fa254baefa54041df2d9410cc29bb078f1ae3e4e543a47480d8f1c1ad9c",
       "totalHours": {
         "low": 4.25,
         "expected": 7.75,
@@ -277,7 +277,7 @@
     {
       "caseId": "typescript-formatting",
       "candidateEstimatorVersion": "seed-rules/0.2.1",
-      "candidateEstimateDigest": "sha256:54a12b0bd2a4ac3a9efc587386c2329254e852e08d4686e90028c82321fe72bb",
+      "candidateEstimateDigest": "sha256:e3c15f4b27e5fb7fca8106d26e94a3d3528a96c144bd344a58003ad9b04cdb51",
       "totalHours": {
         "low": 4.25,
         "expected": 7.75,
@@ -287,7 +287,7 @@
     {
       "caseId": "typescript-generated",
       "candidateEstimatorVersion": "seed-rules/0.2.1",
-      "candidateEstimateDigest": "sha256:e49cbe652056d4c4518f7d253c9713a2f724464428a48737925993315d84b076",
+      "candidateEstimateDigest": "sha256:6b4c711e4d4743e61e1530aa2796ea5575470f618d9be4891f3cd9e4417b6c67",
       "totalHours": {
         "low": 4.25,
         "expected": 7.75,
@@ -297,7 +297,7 @@
     {
       "caseId": "typescript-integration",
       "candidateEstimatorVersion": "seed-rules/0.2.1",
-      "candidateEstimateDigest": "sha256:4685313052a863bc44d8b60afe8b57033f1c86e29f075979ab95bdb1a9728815",
+      "candidateEstimateDigest": "sha256:677463b9caa78c2e7f9d85926d396a74f73c8efbed6f7114f429bad0d53f2018",
       "totalHours": {
         "low": 6.25,
         "expected": 13.00,
@@ -307,7 +307,7 @@
     {
       "caseId": "typescript-tests",
       "candidateEstimatorVersion": "seed-rules/0.2.1",
-      "candidateEstimateDigest": "sha256:243b356a1e1fb34dbecd0eb96e2a3e04e3a11e8c5a612715d300b63e4e1842f0",
+      "candidateEstimateDigest": "sha256:984b990d3bdbafd70222dda93331ceca81577771cdff85242b64fc8a821ccab8",
       "totalHours": {
         "low": 5.75,
         "expected": 10.50,

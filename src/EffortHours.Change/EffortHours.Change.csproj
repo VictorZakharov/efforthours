@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <Description>Provider-neutral final-change analysis and Git/GitHub selectors for EffortHours.</Description>
+    <RootNamespace>EffortHours.Change</RootNamespace>
+    <AssemblyName>EffortHours.Change</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../EffortHours.Analysis/EffortHours.Analysis.csproj" />
+    <ProjectReference Include="../EffortHours.Contracts/EffortHours.Contracts.csproj" />
+    <ProjectReference Include="../EffortHours.Core/EffortHours.Core.csproj" />
+    <ProjectReference Include="../EffortHours.Estimation/EffortHours.Estimation.csproj" />
+  </ItemGroup>
+</Project>

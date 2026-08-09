@@ -1,9 +1,9 @@
 # Independent Change calibration handoff
 
-The source corpus `fairbill-change-public-synthetic/0.1.0` has one host-AI teacher
+The source corpus `efforthours-change-public-synthetic/0.1.0` has one host-AI teacher
 and no independent correction. Its blind packet contains 24 records and 121
 targets pinned to corpus digest
-`sha256:b1d6f8a7a64078953508082454ab56bbc559196bb0810e369035880c765fcbd7`.
+`sha256:ecfdb867ed2ba4912c9550277fc050b5e5511d0e15a107c8a08c044f61793c10`.
 
 ## Blind assignment
 
@@ -45,11 +45,11 @@ repository family, partition, lineage, or source-corpus digest.
 The maintainer compiles the returned plan mechanically:
 
 ```text
-fairbill calibration review-compile <completed-plan.json>
+eh calibration review-compile <completed-plan.json>
   calibration/changes/public-synthetic/0.1.0.teacher-corpus.json
   --output <reviewed-corpus.json>
 
-fairbill calibration validate <reviewed-corpus.json>
+eh calibration validate <reviewed-corpus.json>
 ```
 
 Compilation alone is not review. Do not compute or disclose the held-out test

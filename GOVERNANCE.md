@@ -1,8 +1,8 @@
-# Fairbill Governance
+# EffortHours Governance
 
 ## Project direction
 
-Fairbill is an MIT-licensed reference implementation for evidence-backed
+EffortHours is an MIT-licensed reference implementation for evidence-backed
 Equivalent Human Effort estimation. Its core semantic boundary is documented in
 `PRODUCT.md` and `ESTIMATION_MODEL.md`: EHE is counterfactual replacement effort,
 not reconstructed time worked.

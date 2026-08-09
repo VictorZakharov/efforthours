@@ -1,7 +1,7 @@
 # Change EHE calibration
 
 This directory holds policy and eventually redistributable reviewed labels for
-Fairbill's experimental `change-seed/0.1.0` estimator. Change labels use the same
+EffortHours's experimental `change-seed/0.1.0` estimator. Change labels use the same
 corpus, independent-review, validation, and metric contracts as repository labels,
 with an additional immutable final-delta provenance record.
 
@@ -16,23 +16,23 @@ complete.
 ## Workflow
 
 ```text
-fairbill change <repository> --base <revision> --head <revision> --no-rate --output <change-estimate.json>
+eh change <repository> --base <revision> --head <revision> --no-rate --output <change-estimate.json>
 
-fairbill calibration change-scaffold <change-estimate.json>
+eh calibration change-scaffold <change-estimate.json>
   --repository-family <stable-id>
   --case <stable-id>
   --tag <coverage-tag>...
   [--blind]
   --output <packet.json>
 
-fairbill calibration change-compile <review-plan.json> <change-estimate.json>...
+eh calibration change-compile <review-plan.json> <change-estimate.json>...
   --output <corpus.json>
 
-fairbill calibration validate <corpus.json>
-fairbill calibration review-scaffold <corpus.json> --blind --output <second-pass.json>
-fairbill calibration review-compile <completed-plan.json> <corpus.json> --output <reviewed.json>
+eh calibration validate <corpus.json>
+eh calibration review-scaffold <corpus.json> --blind --output <second-pass.json>
+eh calibration review-compile <completed-plan.json> <corpus.json> --output <reviewed.json>
 
-fairbill calibration change-evaluate <reviewed.json> <change-estimate.json>...
+eh calibration change-evaluate <reviewed.json> <change-estimate.json>...
   --partition <development|validation|test>
 ```
 
@@ -60,7 +60,7 @@ The public synthetic source artifacts are generated without disk-backed target
 snapshots:
 
 ```text
-dotnet tools/Fairbill.ChangeCalibration/bin/Release/net10.0/Fairbill.ChangeCalibration.dll
+dotnet tools/EffortHours.ChangeCalibration/bin/Release/net10.0/EffortHours.ChangeCalibration.dll
   --suite calibration/changes/public-synthetic/0.1.0.fixtures.json
   --output calibration/changes/public-synthetic/0.1.0
 ```

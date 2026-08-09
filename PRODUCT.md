@@ -1,4 +1,20 @@
-# Fairbill Product Charter
+# EffortHours Product Charter
+
+## Product identity
+
+The product is **EffortHours**, maintained under the **WellScoped** publishing
+identity. Its primary distribution and command identities are:
+
+- NuGet package: `EffortHours.Tool`;
+- installed command: `eh`;
+- repository and durable file/URI stem: `efforthours`; and
+- primary metric: Equivalent Human Effort (EHE).
+
+The deliberately short `eh` command is the product's Canadian mnemonic as well as
+an abbreviation of Equivalent Human. Documentation uses the full EffortHours name
+for discovery and `eh` for executable examples. Because a two-letter executable
+can collide with unrelated local tools, installation guidance must always identify
+the `EffortHours.Tool` package explicitly.
 
 ## Problem
 
@@ -7,7 +23,7 @@ repository and logically decomposing it. On a large repository, however, giving 
 strong remote model enough source context can take a long time and cost hundreds
 of dollars per estimate.
 
-Fairbill should compress the repository into the facts and small work units that
+EffortHours should compress the repository into the facts and small work units that
 matter for estimation. Its normal path must be fast, local, explainable, and much
 less expensive than asking a model to read the complete source tree.
 
@@ -27,8 +43,8 @@ The modeled contractor:
   generators, and third-party libraries; and
 - does not use AI while performing the modeled work.
 
-The last point applies to the counterfactual worker. Fairbill itself may use local
-ML, and the AI session orchestrating Fairbill may use any tools available to it.
+The last point applies to the counterfactual worker. EffortHours itself may use local
+ML, and the AI session orchestrating EffortHours may use any tools available to it.
 
 ## Recreation target
 
@@ -52,7 +68,7 @@ when current technology provides an equivalent result.
 
 ## Estimation profiles
 
-Fairbill will support two profiles.
+EffortHours will support two profiles.
 
 ### Implementation profile
 
@@ -69,7 +85,7 @@ recreate the artifact. It still excludes open-ended stakeholder discovery unless
 future profile explicitly adds it.
 
 Both profiles should be reportable from the same repository evidence. A supplied
-specification is optional; without one, Fairbill infers the product surface and
+specification is optional; without one, EffortHours infers the product surface and
 reports lower confidence where appropriate.
 
 ## Goals
@@ -154,12 +170,12 @@ hours. Reports must make that boundary visible.
 
 ### Small estimates compose better
 
-Fairbill should prefer work items that normally represent roughly 0.5 to 8 hours.
+EffortHours should prefer work items that normally represent roughly 0.5 to 8 hours.
 A large item should be decomposed further or explicitly explain why it cannot be.
 
 ### Current state, not historical struggle
 
-If a feature was rewritten ten times, Fairbill estimates a competent recreation of
+If a feature was rewritten ten times, EffortHours estimates a competent recreation of
 the current result once.
 
 ### Artifact value is not artifact volume
@@ -170,7 +186,7 @@ Behavior, complexity, quality, constraints, and supporting artifacts matter more
 ### Offline first
 
 The core CLI path should be deterministic and local. The host AI session can use
-the evidence and any other tools it has, but Fairbill should not require an embedded
+the evidence and any other tools it has, but EffortHours should not require an embedded
 AI provider or full-source model ingestion.
 
 ### Honest uncertainty

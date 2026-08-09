@@ -2,13 +2,13 @@
 
 ## 1. Purpose
 
-This document defines the planned semantics of a Fairbill estimate. It is the
+This document defines the planned semantics of a EffortHours estimate. It is the
 contract between repository analyzers, estimation engines, reports, calibration
 data, and reviewers in a host AI session.
 
 ## 2. Estimate definition
 
-For a repository `R`, profile `P`, baseline `B`, and rate card `M`, Fairbill
+For a repository `R`, profile `P`, baseline `B`, and rate card `M`, EffortHours
 produces:
 
 - an evidence set describing the current state of `R`;
@@ -81,7 +81,7 @@ separately when evidence allows.
 If a reliable coverage artifact exists, report its relevant line, branch, method,
 or statement measures with provenance. On the default fast static path, discovered
 tests are assumed to pass. When coverage configuration explicitly declares a
-coverage level, Fairbill may assume that declared level is achieved; in particular,
+coverage level, EffortHours may assume that declared level is achieved; in particular,
 a declared 100% level is treated as 100% coverage. Such a claim must be labeled
 `declared-assumed`, not `measured`. Configuration that declares no coverage level
 must not be translated into an invented percentage.
@@ -109,7 +109,7 @@ appear in the separate professionalization gap.
 Estimate the system as fully working according to its supplied specification and
 the behavior materially described by the current repository. TODOs, failing tests,
 build failures, stubs, and obvious incomplete areas must add a visible warning or
-asterisk to the report. They do not cause Fairbill to value historical repair work,
+asterisk to the report. They do not cause EffortHours to value historical repair work,
 and the report must not falsely claim that the analyzed checkout was verified as
 working. Compatibility quirks that form part of an external contract may remain in
 scope; accidental defects do not add value.
@@ -259,15 +259,15 @@ toolchain.
 
 ### 9.3 Host AI adjudication
 
-Fairbill is expected to be callable from an AI development session. The host AI can
-consume compact, low-confidence work-item packets, invoke additional Fairbill
+EffortHours is expected to be callable from an AI development session. The host AI can
+consume compact, low-confidence work-item packets, invoke additional EffortHours
 queries, inspect selected source when necessary, and refine semantic classification,
 assumptions, ranges, or effort. Adjustments should be recorded with their reason and
 available model identity.
 
 The core CLI requires no embedded AI provider. Concrete time, token, and monetary
 budgets will be chosen only after representative implementations are measured.
-Users who run Fairbill through an AI session are responsible for that session's
+Users who run EffortHours through an AI session are responsible for that session's
 provider, tool, disclosure, and privacy policies.
 
 ## 10. Calibration
@@ -288,7 +288,7 @@ The calibration process should:
 9. Add voluntary reviewed corrections over time.
 
 Every distributable calibration record, benchmark repository, model, and derived
-artifact needs recorded provenance and terms compatible with Fairbill's MIT
+artifact needs recorded provenance and terms compatible with EffortHours's MIT
 License. Private client evidence may be used only in its authorized environment and
 must not be added to the public corpus by default.
 

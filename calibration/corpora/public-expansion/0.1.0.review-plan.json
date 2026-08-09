@@ -1,7 +1,7 @@
 {
     "schemaVersion":  "1.0.0",
     "compilerVersion":  "calibration-review-compiler/0.2.0",
-    "id":  "fairbill-public-expansion",
+    "id":  "efforthours-public-expansion",
     "version":  "0.1.0",
     "description":  "Second public teacher-estimate corpus adding three immutable MIT-licensed release snapshots and explicit reviewed false-positive exclusions. These weak labels are not independently reviewed and are not production accuracy evidence.",
     "rubric":  {

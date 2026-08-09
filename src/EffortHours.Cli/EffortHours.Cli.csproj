@@ -1,0 +1,33 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>EffortHours.Cli</RootNamespace>
+    <AssemblyName>efforthours</AssemblyName>
+    <Description>Estimate equivalent non-AI human effort represented by a software repository.</Description>
+    <PackAsTool>true</PackAsTool>
+    <ToolCommandName>eh</ToolCommandName>
+    <PackageId>EffortHours.Tool</PackageId>
+    <Version>0.9.0-alpha.1</Version>
+    <Title>EffortHours CLI</Title>
+    <PackageReadmeFile>PACKAGE_README.md</PackageReadmeFile>
+    <PackageTags>estimation;effort-estimation;developer-tools;cli;repository-analysis;static-analysis;dotnet-tool</PackageTags>
+    <PackageReleaseNotes>Experimental public alpha. Equivalent Human Effort is counterfactual replacement effort; bundled seed estimators remain uncalibrated.</PackageReleaseNotes>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../EffortHours.Analysis/EffortHours.Analysis.csproj" />
+    <ProjectReference Include="../EffortHours.Calibration/EffortHours.Calibration.csproj" />
+    <ProjectReference Include="../EffortHours.Change/EffortHours.Change.csproj" />
+    <ProjectReference Include="../EffortHours.Contracts/EffortHours.Contracts.csproj" />
+    <ProjectReference Include="../EffortHours.Core/EffortHours.Core.csproj" />
+    <ProjectReference Include="../EffortHours.Estimation/EffortHours.Estimation.csproj" />
+    <ProjectReference Include="../EffortHours.Pricing/EffortHours.Pricing.csproj" />
+    <ProjectReference Include="../EffortHours.Reporting/EffortHours.Reporting.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="../../LICENSE" Pack="true" PackagePath="/" />
+    <None Include="../../models/seed-rules/0.2.1.json" Pack="true" PackagePath="models/seed-rules/" />
+    <None Include="../../rates/us-senior-contractor/2026.1.json" Pack="true" PackagePath="rates/us-senior-contractor/" />
+    <None Include="../../PACKAGE_README.md" Pack="true" PackagePath="/" />
+    <None Include="../../THIRD-PARTY-NOTICES.md" Pack="true" PackagePath="/" />
+  </ItemGroup>
+</Project>

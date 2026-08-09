@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+    <RootNamespace>EffortHours.Tests</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="xunit" />
+    <PackageReference Include="xunit.runner.visualstudio">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Using Include="Xunit" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="../../src/EffortHours.Analysis/EffortHours.Analysis.csproj" />
+    <ProjectReference Include="../../src/EffortHours.Calibration/EffortHours.Calibration.csproj" />
+    <ProjectReference Include="../../src/EffortHours.Change/EffortHours.Change.csproj" />
+    <ProjectReference Include="../../src/EffortHours.Contracts/EffortHours.Contracts.csproj" />
+    <ProjectReference Include="../../src/EffortHours.Core/EffortHours.Core.csproj" />
+    <ProjectReference Include="../../src/EffortHours.Estimation/EffortHours.Estimation.csproj" />
+    <ProjectReference Include="../../src/EffortHours.Pricing/EffortHours.Pricing.csproj" />
+    <ProjectReference Include="../../src/EffortHours.Reporting/EffortHours.Reporting.csproj" />
+  </ItemGroup>
+</Project>

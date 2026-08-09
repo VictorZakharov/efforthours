@@ -1,6 +1,6 @@
 # Changelog
 
-Significant user-visible Fairbill changes are recorded here. The project follows
+Significant user-visible EffortHours changes are recorded here. The project follows
 Semantic Versioning once a package version has been released; prerelease versions
 may still change public contracts with explicit documentation.
 
@@ -8,6 +8,10 @@ may still change public contracts with explicit documentation.
 
 ### Added
 
+- The pre-public product identity is now EffortHours, distributed as
+  `EffortHours.Tool` with the `eh` command. Projects, namespaces, schema URNs,
+  repository metadata, cache/ignore conventions, and calibration identities were
+  renamed together for the `0.9.0-alpha.1` candidate.
 - Public-alpha governance, contribution templates, cross-platform CI, and release
   instructions.
 - A manually dispatched NuGet preview workflow with local installation checks and

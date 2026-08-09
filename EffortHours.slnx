@@ -1,0 +1,17 @@
+<Solution>
+  <Project Path="benchmarks/EffortHours.ScannerBenchmarks/EffortHours.ScannerBenchmarks.csproj" />
+  <Project Path="src/EffortHours.Analysis/EffortHours.Analysis.csproj" />
+  <Project Path="src/EffortHours.Analyzers.DotNet/EffortHours.Analyzers.DotNet.csproj" />
+  <Project Path="src/EffortHours.Analyzers.JavaScript/EffortHours.Analyzers.JavaScript.csproj" />
+  <Project Path="src/EffortHours.Cli/EffortHours.Cli.csproj" />
+  <Project Path="src/EffortHours.Calibration/EffortHours.Calibration.csproj" />
+  <Project Path="src/EffortHours.Change/EffortHours.Change.csproj" />
+  <Project Path="src/EffortHours.Contracts/EffortHours.Contracts.csproj" />
+  <Project Path="src/EffortHours.Core/EffortHours.Core.csproj" />
+  <Project Path="src/EffortHours.Estimation/EffortHours.Estimation.csproj" />
+  <Project Path="src/EffortHours.Pricing/EffortHours.Pricing.csproj" />
+  <Project Path="src/EffortHours.Reporting/EffortHours.Reporting.csproj" />
+  <Project Path="tests/EffortHours.EndToEndTests/EffortHours.EndToEndTests.csproj" />
+  <Project Path="tests/EffortHours.Tests/EffortHours.Tests.csproj" />
+  <Project Path="tools/EffortHours.ChangeCalibration/EffortHours.ChangeCalibration.csproj" />
+</Solution>

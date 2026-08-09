@@ -1,8 +1,8 @@
-# Fairbill Implementation Plan
+# EffortHours Implementation Plan
 
 ## 1. Delivery strategy
 
-Fairbill will be built evidence-first. The initial product should be useful as a
+EffortHours will be built evidence-first. The initial product should be useful as a
 repository compressor for a human or AI estimator before its local effort model is
 fully calibrated.
 
@@ -17,29 +17,30 @@ The sequence is therefore:
 
 ## 2. Proposed architecture
 
-One .NET 10 global tool named `fairbill` will expose composable subcommands. Shared
+One .NET 10 global tool named `EffortHours.Tool` will install the `eh` command and
+expose composable subcommands. Shared
 libraries will make the analyzers and estimator reusable outside the CLI.
 
 Proposed solution boundaries:
 
 ```text
 src/
-  Fairbill.Cli/                  command parsing and process UX
-  Fairbill.Contracts/            versioned evidence/report contracts
-  Fairbill.Core/                 scope, pipeline, diagnostics, shared services
-  Fairbill.Analysis/             language-neutral repository analysis
-  Fairbill.Analyzers.DotNet/     .NET/MSBuild/Roslyn evidence
-  Fairbill.Analyzers.JavaScript/ JavaScript/TypeScript evidence
-  Fairbill.Change/               final-delta evidence, Git/PR selectors, reconciliation
-  Fairbill.Estimation/           rules, work items, aggregation
-  Fairbill.Calibration/          reviewed labels and offline evaluation
-  Fairbill.Pricing/              versioned offline rate artifacts and mapping
-  Fairbill.ML/                   future optional local training and inference
-  Fairbill.Reporting/            JSON and Markdown output
+  EffortHours.Cli/                  command parsing and process UX
+  EffortHours.Contracts/            versioned evidence/report contracts
+  EffortHours.Core/                 scope, pipeline, diagnostics, shared services
+  EffortHours.Analysis/             language-neutral repository analysis
+  EffortHours.Analyzers.DotNet/     .NET/MSBuild/Roslyn evidence
+  EffortHours.Analyzers.JavaScript/ JavaScript/TypeScript evidence
+  EffortHours.Change/               final-delta evidence, Git/PR selectors, reconciliation
+  EffortHours.Estimation/           rules, work items, aggregation
+  EffortHours.Calibration/          reviewed labels and offline evaluation
+  EffortHours.Pricing/              versioned offline rate artifacts and mapping
+  EffortHours.ML/                   future optional local training and inference
+  EffortHours.Reporting/            JSON and Markdown output
 tests/
   unit and contract tests by production project
-  Fairbill.TestFixtures/         synthetic and curated repository fixtures
-  Fairbill.EndToEndTests/        packaged CLI behavior
+  EffortHours.TestFixtures/         synthetic and curated repository fixtures
+  EffortHours.EndToEndTests/        packaged CLI behavior
 benchmarks/
   analyzer and large-repository performance checks
 schemas/
@@ -85,17 +86,17 @@ The exact command names will be validated during the CLI milestone. The initial
 shape is:
 
 ```text
-fairbill scan <path> [--spec <path>] [--output <path>]
-fairbill estimate <path-or-evidence> [--profile <implementation|recreation>]
+eh scan <path> [--spec <path>] [--output <path>]
+eh estimate <path-or-evidence> [--profile <implementation|recreation>]
   [--view <full|repository|category|scope|work-item|review>]
-fairbill report <estimate> [--view <full|repository|category|scope|work-item|review>]
+eh report <estimate> [--view <full|repository|category|scope|work-item|review>]
   [--format <json|markdown>] [--compact]
-fairbill explain <path-or-evidence> --item <id> [--format <json|markdown>]
-fairbill change <repository> (--base <revision> --head <revision> | --commit <revision> | --range <base>..<head> | --pr <number-or-url>)
-fairbill verify <path> [--build] [--test] [--coverage]
-fairbill model info
-fairbill rate info
-fairbill rate show
+eh explain <path-or-evidence> --item <id> [--format <json|markdown>]
+eh change <repository> (--base <revision> --head <revision> | --commit <revision> | --range <base>..<head> | --pr <number-or-url>)
+eh verify <path> [--build] [--test] [--coverage]
+eh model info
+eh rate info
+eh rate show
 ```
 
 Machine-readable output goes to standard output when no output path is given.
@@ -301,7 +302,7 @@ without reading the full repository in ordinary cases.
 
 Implementation note: `MILESTONE_6.md` records the projection and rate decisions.
 `REPORT_BENCHMARKS.md` records the output-size and usefulness checkpoint: on the
-Fairbill snapshot, review JSON was 7.4% of compact canonical JSON and review
+EffortHours snapshot, review JSON was 7.4% of compact canonical JSON and review
 Markdown was 3.6%. The canonical v1 estimate remains available unchanged as the
 full view, and every compact capability retains a stable `explain` path.
 
@@ -369,7 +370,7 @@ review.
 
 ## 6. Test strategy
 
-Fairbill's credibility depends on analyzer and calculation tests as much as product
+EffortHours's credibility depends on analyzer and calculation tests as much as product
 features.
 
 - Unit tests cover scope, exclusions, classification, work-item rules, aggregation,
@@ -428,7 +429,7 @@ benchmark corpus exists.
 
 1. Complete the public-history identity decision and final issue #28 audit, require
    green cross-platform CI, then prepare the quiet public repository and
-   `Fairbill.Tool` NuGet preview without claiming calibrated accuracy.
+   `EffortHours.Tool` NuGet preview without claiming calibrated accuracy.
 2. Hand one or more frozen blind public-corpus packets to genuinely distinct
    reviewers and compile corrections without exposing test partitions to tuning.
 3. Add enough redistributable repository families to place multiple independent

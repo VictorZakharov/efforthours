@@ -1,4 +1,4 @@
-namespace FairbillSynthetic;
+namespace EffortHoursSynthetic;
 
 internal sealed class HealthFormatter
 {

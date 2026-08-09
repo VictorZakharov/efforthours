@@ -1,7 +1,7 @@
 {
   "schemaVersion": "1.0.0",
   "repository": {
-    "name": "Fairbill sample",
+    "name": "EffortHours sample",
     "scope": ".",
     "ecosystems": [
       "dotnet",
@@ -116,7 +116,7 @@
       },
       "locations": [
         {
-          "path": "Fairbill.slnx"
+          "path": "EffortHours.slnx"
         }
       ],
       "measurements": [],

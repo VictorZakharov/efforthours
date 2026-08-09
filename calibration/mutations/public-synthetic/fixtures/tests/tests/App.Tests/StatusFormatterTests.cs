@@ -1,4 +1,4 @@
-using FairbillSynthetic;
+using EffortHoursSynthetic;
 
 [AttributeUsage(AttributeTargets.Method)]
 internal sealed class FactAttribute : Attribute;

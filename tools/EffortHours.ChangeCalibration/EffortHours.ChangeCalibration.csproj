@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <IsPackable>false</IsPackable>
+    <Description>Reproducibly generates synthetic Change EHE calibration source reports.</Description>
+    <RootNamespace>EffortHours.ChangeCalibration</RootNamespace>
+    <AssemblyName>EffortHours.ChangeCalibration</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../../src/EffortHours.Analysis/EffortHours.Analysis.csproj" />
+    <ProjectReference Include="../../src/EffortHours.Calibration/EffortHours.Calibration.csproj" />
+    <ProjectReference Include="../../src/EffortHours.Change/EffortHours.Change.csproj" />
+    <ProjectReference Include="../../src/EffortHours.Contracts/EffortHours.Contracts.csproj" />
+  </ItemGroup>
+</Project>

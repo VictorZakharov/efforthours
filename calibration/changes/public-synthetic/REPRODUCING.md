@@ -3,7 +3,7 @@
 Build the solution, then run from the repository root:
 
 ```text
-dotnet tools/Fairbill.ChangeCalibration/bin/Release/net10.0/Fairbill.ChangeCalibration.dll
+dotnet tools/EffortHours.ChangeCalibration/bin/Release/net10.0/EffortHours.ChangeCalibration.dll
   --suite calibration/changes/public-synthetic/0.1.0.fixtures.json
   --output calibration/changes/public-synthetic/0.1.0
 ```
@@ -27,14 +27,14 @@ The preliminary teacher review plan is reproducible from the separately reviewed
 category policy and pinned source index:
 
 ```text
-dotnet tools/Fairbill.ChangeCalibration/bin/Release/net10.0/Fairbill.ChangeCalibration.dll
+dotnet tools/EffortHours.ChangeCalibration/bin/Release/net10.0/EffortHours.ChangeCalibration.dll
   --teacher-policy calibration/changes/public-synthetic/0.1.0.teacher-policy.json
   --index calibration/changes/public-synthetic/0.1.0/index.json
   --output calibration/changes/public-synthetic/0.1.0.teacher-review-plan.json
 ```
 
-Compile that plan with `fairbill calibration change-compile` and all 24 indexed
-reports, then scaffold the blind second pass with `calibration review-scaffold
---blind`. Only development and validation teacher diagnostics are checked in. Do
+Compile that plan with `eh calibration change-compile` and all 24 indexed
+reports, then scaffold the blind second pass with
+`eh calibration review-scaffold --blind`. Only development and validation teacher diagnostics are checked in. Do
 not evaluate the test partition before independent review, numerical gates, and a
 release candidate are frozen under `CHANGE_MODEL_ADMISSION.md`.

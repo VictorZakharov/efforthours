@@ -6,7 +6,7 @@ Milestone 7A and the Milestone 7B1 through 7B5 public-corpus, review, and mutati
 checkpoints were implemented on August 6, 2026. They establish the versioned review
 corpus, low-cost authoring and compilation boundaries, deterministic offline
 evaluation, expanded licensed labels, exact-digest subsequent review, and
-cross-ecosystem relational model guardrails needed before Fairbill adopts any
+cross-ecosystem relational model guardrails needed before EffortHours adopts any
 learned model. The seed estimator remains `experimental-uncalibrated`; this
 milestone does not make its current hours production-ready.
 
@@ -46,7 +46,7 @@ The first slice contains no ML runtime or training dependency. It adds:
 3. semantic validation, including repository-level split isolation;
 4. an offline evaluator for existing canonical estimate reports;
 5. versioned validation and evaluation output contracts;
-6. `fairbill calibration validate` and `fairbill calibration evaluate`; and
+6. `eh calibration validate` and `eh calibration evaluate`; and
 7. memory-only unit tests plus focused disk-backed CLI tests.
 
 The first slice deliberately does not tune `seed-rules/0.2.0`, publish an accuracy
@@ -57,9 +57,9 @@ claim, train a model, call a remote provider, or implement PR/commit estimation.
 The public-pilot slice adds no ML runtime or training dependency. It adds:
 
 1. a v1 unreviewed authoring-packet contract and JSON Schema;
-2. `fairbill calibration scaffold`, with visible reference values or `--blind`;
+2. `eh calibration scaffold`, with visible reference values or `--blind`;
 3. a v1 completed review-plan contract and JSON Schema;
-4. `fairbill calibration compile`, which verifies exact source-estimate digests,
+4. `eh calibration compile`, which verifies exact source-estimate digests,
    pins its compiler version, requires every represented capability, and restores
    all work-item/evidence mappings deterministically;
 5. explicit `--output` support for estimates and calibration artifacts;
@@ -90,14 +90,14 @@ be used to tune the seed rules or candidate hyperparameters.
 The review/mutation slice still adds no ML runtime or training dependency. It adds:
 
 1. a v1 explicitly unreviewed corpus-review packet and JSON Schema;
-2. `fairbill calibration review-scaffold`, whose blind mode hides prior ranges,
+2. `eh calibration review-scaffold`, whose blind mode hides prior ranges,
    rationale, uncertainty decisions, and totals;
 3. a v1 completed corpus-review plan and JSON Schema;
-4. `fairbill calibration review-compile`, which pins the exact source-corpus
+4. `eh calibration review-compile`, which pins the exact source-corpus
    digest, requires every record and target, rejects reused reviewer identities,
    and preserves all structural lineage while advancing maturity;
 5. v1 mutation-suite and mutation-report contracts;
-6. `fairbill calibration mutations`, with deterministic repository/category
+6. `eh calibration mutations`, with deterministic repository/category
    difference bounds and a dedicated regression exit code;
 7. a public synthetic .NET archetype with formatting, duplication, generated,
    API, test, documentation, and integration variants; and
@@ -187,7 +187,7 @@ provider, estimator rule change, or numerical-prior change. It adds:
 1. three additional MIT-licensed repository families selected and partitioned
    before numerical review from immutable release archives, without Git-history
    inspection;
-2. `fairbill-public-expansion/0.1.0`, containing 133 teacher-estimate targets for
+2. `efforthours-public-expansion/0.1.0`, containing 133 teacher-estimate targets for
    developit/mitt, Tyrrrz/CliWrap, and nanostores/nanostores across fixed
    development, validation, and test partitions;
 3. `ehe-work-item/1.1.0`, which preserves positive-label semantics and adds exact
@@ -291,34 +291,34 @@ public corpus and distributable model artifacts unless separately authorized.
 ## CLI surface
 
 ```text
-fairbill estimate <repository-or-evidence.json> --no-rate [--compact] [--output <path>]
+eh estimate <repository-or-evidence.json> --no-rate [--compact] [--output <path>]
 
-fairbill calibration scaffold <estimate.json>
+eh calibration scaffold <estimate.json>
   [--blind]
   [--compact]
   [--output <path>]
 
-fairbill calibration compile <review-plan.json> <estimate.json>...
+eh calibration compile <review-plan.json> <estimate.json>...
   [--compact]
   [--output <path>]
 
-fairbill calibration review-scaffold <corpus.json>
+eh calibration review-scaffold <corpus.json>
   [--blind]
   [--compact]
   [--output <path>]
 
-fairbill calibration review-compile <plan.json> <corpus.json>
+eh calibration review-compile <plan.json> <corpus.json>
   [--compact]
   [--output <path>]
 
-fairbill calibration validate <corpus.json> [--compact] [--output <path>]
+eh calibration validate <corpus.json> [--compact] [--output <path>]
 
-fairbill calibration evaluate <corpus.json> <estimate.json>...
+eh calibration evaluate <corpus.json> <estimate.json>...
   --partition <development|validation|test>
   [--compact]
   [--output <path>]
 
-fairbill calibration mutations <suite.json> <estimate.json>...
+eh calibration mutations <suite.json> <estimate.json>...
   [--compact]
   [--output <path>]
 ```
@@ -349,7 +349,7 @@ per-assertion pass/fail state without a generated timestamp.
 
 Metric semantics are versioned as `calibration-metrics/1.0.0`.
 
-For low, expected, and high hours, Fairbill reports:
+For low, expected, and high hours, EffortHours reports:
 
 - sample count;
 - summed reviewed and candidate hours;
@@ -390,7 +390,7 @@ IDs, unmatched candidate work-item IDs, and category mismatches for investigatio
 - The evaluator does not execute target code, load target dependencies, inspect
   Git history, access the network, or write to a repository.
 - Unit tests construct every corpus and estimate in memory. Disk-backed corpus and
-  estimate loading is tested only through `Fairbill.EndToEndTests`.
+  estimate loading is tested only through `EffortHours.EndToEndTests`.
 
 ## Baseline and model-admission gates
 
@@ -467,16 +467,16 @@ Milestone 7A is complete when:
 
 The implemented checkpoint passed locked restore, formatting verification, a
 zero-warning Release build, 71 memory-only unit tests, and 15 disk-backed CLI
-end-to-end tests. The `Fairbill.Tool` `0.7.0-alpha.1` package includes the reusable
-`Fairbill.Calibration` assembly; the v1 calibration schemas remain embedded in
-`Fairbill.Contracts`. A source audit confirmed that the unit suite added no
+end-to-end tests. The `EffortHours.Tool` `0.7.0-alpha.1` package includes the reusable
+`EffortHours.Calibration` assembly; the v1 calibration schemas remain embedded in
+`EffortHours.Contracts`. A source audit confirmed that the unit suite added no
 physical filesystem access.
 
 ## Milestone 7B1 completion evidence
 
 The public-pilot checkpoint passes a zero-warning Release build, 75 memory-only
 unit tests, and 17 disk-backed CLI end-to-end tests before the final release gate.
-The `Fairbill.Tool` version advances to `0.7.0-alpha.2`. Fifteen v1 schemas are
+The `EffortHours.Tool` version advances to `0.7.0-alpha.2`. Fifteen v1 schemas are
 embedded, including authoring-packet and review-plan contracts. Unit tests build
 packets, plans, corpora, and compiler/evaluator results entirely in memory; only
 the separate end-to-end suite exercises explicit file output and process loading.
@@ -491,7 +491,7 @@ are a diagnostic baseline against preliminary weak labels, not an accuracy claim
 
 The review/mutation checkpoint passes a zero-warning Release build, 81 memory-only
 unit tests, and 19 disk-backed CLI end-to-end tests before the final release gate.
-The `Fairbill.Tool` version advances to `0.7.0-alpha.3`. Nineteen v1 schemas are
+The `EffortHours.Tool` version advances to `0.7.0-alpha.3`. Nineteen v1 schemas are
 embedded. Unit tests construct every packet, plan, corpus, mutation suite,
 candidate, and report in memory; only CLI tests and explicit public-artifact
 generation use physical files.
@@ -507,7 +507,7 @@ to 7B3.
 
 The public-pilot blind packet covers all 3 records and 99 targets and pins source
 corpus digest
-`sha256:216ee9e2289290c43bb843a51cacd9b8cb8d5da0d9da50f90ff77cf0ed11d5c0`.
+`sha256:43b73a6e7ecc743612037349e07cd93c43fc258c926dac326734f304f4a75222`.
 All prior hours and rationales are absent. No completed second-review plan is
 checked in, so the source corpus correctly remains `teacher-estimate`.
 
@@ -515,7 +515,7 @@ checked in, so the source corpus correctly remains `teacher-estimate`.
 
 The cross-ecosystem mutation checkpoint passes a zero-warning Release build, 83
 memory-only unit tests, and 19 disk-backed CLI end-to-end tests before the final
-release gate. The `Fairbill.Tool` version advances to `0.7.0-alpha.4`; the schema
+release gate. The `EffortHours.Tool` version advances to `0.7.0-alpha.4`; the schema
 count remains 19 because this slice reuses the 7B2 mutation contracts. A dedicated
 memory-only regression proves TypeScript exact-copy normalization, and the existing
 process-level mutation test now exercises low, expected, and high points.
@@ -532,7 +532,7 @@ isolation. These remain qualitative relations, not reviewed numeric effort label
 
 The behavior-and-delivery guardrail checkpoint passes a zero-warning Release
 build, 84 memory-only unit tests, and 19 disk-backed CLI end-to-end tests before
-the final release gate. The `Fairbill.Tool` version advances to
+the final release gate. The `EffortHours.Tool` version advances to
 `0.7.0-alpha.5`; the schema count and active estimator remain unchanged.
 
 The aggregate `public-synthetic/0.3.0` suite contains 48 canonical cases and 156
@@ -549,15 +549,15 @@ writing a physical fixture tree.
 
 The corpus-expansion checkpoint passes a zero-warning Release build, 87
 memory-only unit tests, and 19 disk-backed CLI end-to-end tests before the final
-release gate. The `Fairbill.Tool` version advances to `0.7.0-alpha.6`; the schema
+release gate. The `EffortHours.Tool` version advances to `0.7.0-alpha.6`; the schema
 count remains 19, with four backward-compatible v1 effort-range schemas broadened
 to serialize exact-zero reviewed exclusions.
 
-The `fairbill-public-expansion/0.1.0` corpus has three immutable MIT-licensed
+The `efforthours-public-expansion/0.1.0` corpus has three immutable MIT-licensed
 release snapshots, 133 lineage-complete teacher targets, frozen partitions, and
 three checked-in `seed-rules/0.2.1` evaluation reports. Its blind packet pins
 canonical source-corpus digest
-`sha256:93ec8d7d1872318dbe20429ce294d164947a2c107efcca12013acc5b313b2705`.
-Together with the earlier pilot, Fairbill now publishes six repository families
+`sha256:a411961985414eb65228991abdbe8165e5fc8abdeea92934902aacac7f405070`.
+Together with the earlier pilot, EffortHours now publishes six repository families
 and 232 blind review targets. No completed second-review plan is checked in, so all
 public labels correctly remain `teacher-estimate`.

@@ -2,7 +2,7 @@
 
 ## Status
 
-This is the frozen initial comparison for `fairbill-public-expansion/0.1.0`,
+This is the frozen initial comparison for `efforthours-public-expansion/0.1.0`,
 measured on 2026-08-06 with `seed-rules/0.2.1` and
 `calibration-metrics/1.0.0`. The completed review plan pins
 `calibration-review-compiler/0.2.0`.
@@ -83,10 +83,10 @@ effort-only estimates, compile the completed plan, and evaluate one explicit
 partition at a time:
 
 ```text
-fairbill estimate <snapshot> --no-rate --compact --output <estimate.json>
-fairbill calibration compile 0.1.0.review-plan.json <estimate.json>... --output 0.1.0.corpus.json
-fairbill calibration validate 0.1.0.corpus.json
-fairbill calibration evaluate 0.1.0.corpus.json <matching-estimate.json>... --partition <development|validation|test>
+eh estimate <snapshot> --no-rate --compact --output <estimate.json>
+eh calibration compile 0.1.0.review-plan.json <estimate.json>... --output 0.1.0.corpus.json
+eh calibration validate 0.1.0.corpus.json
+eh calibration evaluate 0.1.0.corpus.json <matching-estimate.json>... --partition <development|validation|test>
 ```
 
 The checked-in `baseline-seed-rules-0.2.1-*.json` reports are the authoritative

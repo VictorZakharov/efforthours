@@ -2,7 +2,7 @@
   "schemaVersion": "1.0.0",
   "evaluatorVersion": "change-calibration-evaluator/0.1.0",
   "metricVersion": "calibration-metrics/1.0.0",
-  "corpusId": "fairbill-change-public-synthetic",
+  "corpusId": "efforthours-change-public-synthetic",
   "corpusVersion": "0.1.0",
   "partition": "validation",
   "recordCount": 6,

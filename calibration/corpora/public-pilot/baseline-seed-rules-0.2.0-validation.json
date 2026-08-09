@@ -2,7 +2,7 @@
   "schemaVersion": "1.0.0",
   "evaluatorVersion": "calibration-evaluator/0.1.0",
   "metricVersion": "calibration-metrics/1.0.0",
-  "corpusId": "fairbill-public-pilot",
+  "corpusId": "efforthours-public-pilot",
   "corpusVersion": "0.1.0",
   "partition": "validation",
   "recordCount": 1,

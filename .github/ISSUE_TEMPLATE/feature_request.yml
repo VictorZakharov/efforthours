@@ -7,7 +7,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        Fairbill estimates counterfactual replacement effort, not historical labor.
+        EffortHours estimates counterfactual replacement effort, not historical labor.
         Proposals that change that semantic boundary should explain the new evidence
         and safeguards explicitly.
 

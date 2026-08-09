@@ -2,7 +2,7 @@
   "schemaVersion": "1.0.0",
   "evaluatorVersion": "calibration-mutation-evaluator/0.1.0",
   "metricVersion": "calibration-mutation-metrics/1.0.0",
-  "suiteId": "fairbill-public-synthetic-mutations",
+  "suiteId": "efforthours-public-synthetic-mutations",
   "suiteVersion": "0.1.0",
   "caseCount": 8,
   "assertionCount": 14,
@@ -17,7 +17,7 @@
     {
       "caseId": "dotnet-api",
       "candidateEstimatorVersion": "seed-rules/0.2.0",
-      "candidateEstimateDigest": "sha256:1d8ba6544cbea22dbbcd1e95a8c97f2e3c4813ed450a4a99693541d7bfa91f74",
+      "candidateEstimateDigest": "sha256:57a6caec8da6b962f1fc458c202c85387dc17e2278d7ffeb9106faeec157b5ef",
       "totalHours": {
         "low": 6.00,
         "expected": 11.75,
@@ -27,7 +27,7 @@
     {
       "caseId": "dotnet-base",
       "candidateEstimatorVersion": "seed-rules/0.2.0",
-      "candidateEstimateDigest": "sha256:841ba1eb50c688ccda86a6026f9f3c50004d8a57bf1139db78f87e145f7de12e",
+      "candidateEstimateDigest": "sha256:e60c0245f2f1d7fc1253584ad768ea2ed0e7a12ad1201c2e8e3869361a27c149",
       "totalHours": {
         "low": 4.00,
         "expected": 7.25,
@@ -37,7 +37,7 @@
     {
       "caseId": "dotnet-documentation",
       "candidateEstimatorVersion": "seed-rules/0.2.0",
-      "candidateEstimateDigest": "sha256:564beb45ad21b349baa7f05b910856f0b4f3846c20cedea47ae6ec26935246e2",
+      "candidateEstimateDigest": "sha256:b1d5dfe60827f09866f292ecdfa9145bbae92b8b9c70cf2f7b5d4d022f358fae",
       "totalHours": {
         "low": 4.50,
         "expected": 8.25,
@@ -47,7 +47,7 @@
     {
       "caseId": "dotnet-duplicate",
       "candidateEstimatorVersion": "seed-rules/0.2.0",
-      "candidateEstimateDigest": "sha256:616fd42ff0afade770cc875cd3bbc59241bb2047e82dc2990a13b861c140f070",
+      "candidateEstimateDigest": "sha256:27ca9a9607b1920970e04e4c020c0f8b209d19bbd9978e92d65d2b18a05843e5",
       "totalHours": {
         "low": 4.00,
         "expected": 7.25,
@@ -57,7 +57,7 @@
     {
       "caseId": "dotnet-formatting",
       "candidateEstimatorVersion": "seed-rules/0.2.0",
-      "candidateEstimateDigest": "sha256:6e264d5c5dbd4bffd9b01fa8fa608407ab77888326b210b7e8b8da8f578cc704",
+      "candidateEstimateDigest": "sha256:47254cae42c62417ff2e4f46ecffb118e4c33aef3647a8a6953274140a927db7",
       "totalHours": {
         "low": 4.00,
         "expected": 7.25,
@@ -67,7 +67,7 @@
     {
       "caseId": "dotnet-generated",
       "candidateEstimatorVersion": "seed-rules/0.2.0",
-      "candidateEstimateDigest": "sha256:738d4779480ca0bf5372645074093a07c70587cec9857d618e5939762406c1a7",
+      "candidateEstimateDigest": "sha256:e233853bc2ed2e01f87c85585dff14bbf8ef15733bd4a0df9b5bdf816db157ad",
       "totalHours": {
         "low": 4.00,
         "expected": 7.25,
@@ -77,7 +77,7 @@
     {
       "caseId": "dotnet-integration",
       "candidateEstimatorVersion": "seed-rules/0.2.0",
-      "candidateEstimateDigest": "sha256:efd322aa0b3ec942af81f520f490387e6f99408438979abdf35cd3b41a828122",
+      "candidateEstimateDigest": "sha256:b1128e8ce801e54aa60f3e84f0c4feabc474cdfb03c4a517d9c8cd0680f88c19",
       "totalHours": {
         "low": 6.50,
         "expected": 13.00,
@@ -87,7 +87,7 @@
     {
       "caseId": "dotnet-tests",
       "candidateEstimatorVersion": "seed-rules/0.2.0",
-      "candidateEstimateDigest": "sha256:3a84d9c3737be7117fca7f5b7c67c1073b4c829acc139782579931abf8b58750",
+      "candidateEstimateDigest": "sha256:28e870367b490f30337f40d311322d9fe6c887984a2ca702bca94a8458874145",
       "totalHours": {
         "low": 6.25,
         "expected": 11.25,

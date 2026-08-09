@@ -1,4 +1,4 @@
-namespace FairbillSynthetic.Migrations;
+namespace EffortHoursSynthetic.Migrations;
 
 public sealed class AddOrders : Migration
 {

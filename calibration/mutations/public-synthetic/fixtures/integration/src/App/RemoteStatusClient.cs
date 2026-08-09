@@ -1,6 +1,6 @@
 using System.Net.Http;
 
-namespace FairbillSynthetic;
+namespace EffortHoursSynthetic;
 
 public sealed class RemoteStatusClient(HttpClient client)
 {

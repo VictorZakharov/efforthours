@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "urn:fairbill:schema:v1:estimate-report",
-  "title": "Fairbill estimate report v1",
+  "$id": "urn:eh:schema:v1:estimate-report",
+  "title": "EffortHours estimate report v1",
   "type": "object",
   "required": [
     "schemaVersion",
@@ -45,7 +45,7 @@
       "$ref": "#/$defs/effortRange"
     },
     "rateCard": {
-      "$ref": "urn:fairbill:schema:v1:rate-card"
+      "$ref": "urn:eh:schema:v1:rate-card"
     },
     "totalCost": {
       "$ref": "#/$defs/costRange"
@@ -59,19 +59,19 @@
     "workItems": {
       "type": "array",
       "items": {
-        "$ref": "urn:fairbill:schema:v1:work-item"
+        "$ref": "urn:eh:schema:v1:work-item"
       }
     },
     "professionalizationGap": {
       "type": "array",
       "items": {
-        "$ref": "urn:fairbill:schema:v1:work-item"
+        "$ref": "urn:eh:schema:v1:work-item"
       }
     },
     "diagnostics": {
       "type": "array",
       "items": {
-        "$ref": "urn:fairbill:schema:v1:diagnostic"
+        "$ref": "urn:eh:schema:v1:diagnostic"
       }
     },
     "assumptions": {

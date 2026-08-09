@@ -2,7 +2,7 @@
 
 ## Scope
 
-These instructions apply to the entire Fairbill repository.
+These instructions apply to the entire EffortHours repository.
 
 ## Mission
 
@@ -81,7 +81,7 @@ semantics.
 
 ## Architecture and implementation guidance
 
-- Prefer one `fairbill` executable with composable subcommands and reusable
+- Prefer one `eh` executable with composable subcommands and reusable
   libraries.
 - Keep language-neutral contracts separate from ecosystem analyzers.
 - Treat repository evidence, work items, estimates, diagnostics, models, and rate
@@ -129,7 +129,7 @@ semantics.
 ## Testing expectations
 
 - Add tests with every behavioral change.
-- Keep ordinary unit tests storage-independent. `tests/Fairbill.Tests` must use
+- Keep ordinary unit tests storage-independent. `tests/EffortHours.Tests` must use
   in-memory repository/cache abstractions rather than temporary physical files;
   reserve physical filesystem and subprocess checks for the separate end-to-end
   suite and explicitly invoked benchmarks.
@@ -175,13 +175,13 @@ fixes TypeScript file ownership for duplicate and test normalization. It remains
 explicitly uncalibrated and must not be described as production-ready. Milestone 6
 adds schema-versioned compact projections, capability and evidence explanation,
 saved-report reprojection, and the auditable
-`us-senior-software-contractor/2026.1` default rate. Its Fairbill review projection
+`us-senior-software-contractor/2026.1` default rate. Its EffortHours review projection
 is 7.4% of compact full JSON in the recorded checkpoint.
 Milestone 7A adds reviewed-label and evaluation contracts, the
 `ehe-work-item/1.0.0` rubric, repository-isolated partitions, deterministic offline
 metrics, and `calibration validate/evaluate`. Milestone 7B1 adds explicitly
 unreviewed authoring packets, blind review, completed review-plan compilation,
-explicit output paths, and the provenance-checked `fairbill-public-pilot/0.1.0`
+explicit output paths, and the provenance-checked `efforthours-public-pilot/0.1.0`
 corpus with frozen seed reports. The pilot has three MIT-licensed repositories, 99
 teacher targets, one host-AI teacher, and no independent correction. Milestone 7B2
 adds exact-digest subsequent-review packets/compilation, explicit accept/replace
@@ -194,7 +194,7 @@ including all three range points, generated customization, and category isolatio
 Milestone 7B4 expands that unchanged seed baseline to 48 cases and 156 passing
 assertions with bounded renamed near-copies, compiler-disabled C# syntax, data,
 migrations, security, declared coverage levels, workspace reuse, CI, and container
-delivery. Milestone 7B5 adds `fairbill-public-expansion/0.1.0`: three immutable
+delivery. Milestone 7B5 adds `efforthours-public-expansion/0.1.0`: three immutable
 MIT-licensed releases, 133 lineage-complete teacher targets, frozen
 `seed-rules/0.2.1` baselines, the `ehe-work-item/1.1.0` explicit-exclusion policy,
 review compilers `0.2.0`, and a combined blind independent-review handoff. Across
@@ -229,7 +229,7 @@ changes no estimator prior and adds no ML dependency;
 The public-alpha candidate includes project-authored governance and conduct
 policies, issue and pull-request templates, full-SHA-pinned Windows/Linux/macOS CI,
 weekly dependency update configuration, a dedicated NuGet README, and a manually
-dispatched `Fairbill.Tool` preview workflow. Package publication uses a protected
+dispatched `EffortHours.Tool` preview workflow. Package publication uses a protected
 `nuget.org` GitHub environment and short-lived NuGet trusted-publishing/OIDC
 credentials; long-lived publishing keys must not be committed or stored. The
 repository remains private and no package is public until the user separately
@@ -238,17 +238,17 @@ authorizes those external actions. Follow `RELEASING.md` for the exact boundary.
 The following commands have been run successfully from the repository root:
 
 ```text
-dotnet restore Fairbill.slnx --configfile NuGet.Config --force-evaluate
-dotnet format Fairbill.slnx --no-restore --verify-no-changes --severity info
-dotnet build Fairbill.slnx --no-restore --configuration Release
-dotnet test tests/Fairbill.Tests/Fairbill.Tests.csproj --no-build --no-restore --configuration Release
-dotnet test tests/Fairbill.EndToEndTests/Fairbill.EndToEndTests.csproj --no-build --no-restore --configuration Release
-dotnet pack src/Fairbill.Cli/Fairbill.Cli.csproj --configuration Release --no-build --no-restore --output artifacts/packages
-dotnet benchmarks/Fairbill.ScannerBenchmarks/bin/Release/net10.0/Fairbill.ScannerBenchmarks.dll --files 10000 --lines-per-file 100 --warm-cache
-dotnet benchmarks/Fairbill.ScannerBenchmarks/bin/Release/net10.0/Fairbill.ScannerBenchmarks.dll --files 10000 --lines-per-file 100 --dotnet
-dotnet benchmarks/Fairbill.ScannerBenchmarks/bin/Release/net10.0/Fairbill.ScannerBenchmarks.dll --files 10000 --lines-per-file 100 --javascript
+dotnet restore EffortHours.slnx --configfile NuGet.Config --force-evaluate
+dotnet format EffortHours.slnx --no-restore --verify-no-changes --severity info
+dotnet build EffortHours.slnx --no-restore --configuration Release
+dotnet test tests/EffortHours.Tests/EffortHours.Tests.csproj --no-build --no-restore --configuration Release
+dotnet test tests/EffortHours.EndToEndTests/EffortHours.EndToEndTests.csproj --no-build --no-restore --configuration Release
+dotnet pack src/EffortHours.Cli/EffortHours.Cli.csproj --configuration Release --no-build --no-restore --output artifacts/packages
+dotnet benchmarks/EffortHours.ScannerBenchmarks/bin/Release/net10.0/EffortHours.ScannerBenchmarks.dll --files 10000 --lines-per-file 100 --warm-cache
+dotnet benchmarks/EffortHours.ScannerBenchmarks/bin/Release/net10.0/EffortHours.ScannerBenchmarks.dll --files 10000 --lines-per-file 100 --dotnet
+dotnet benchmarks/EffortHours.ScannerBenchmarks/bin/Release/net10.0/EffortHours.ScannerBenchmarks.dll --files 10000 --lines-per-file 100 --javascript
 ```
 
-The primary distribution is the `Fairbill.Tool` .NET global-tool package with the
-command name `fairbill`. Self-contained executables may be added later if they
+The primary distribution is the `EffortHours.Tool` .NET global-tool package with the
+command name `eh`. Self-contained executables may be added later if they
 materially improve distribution.

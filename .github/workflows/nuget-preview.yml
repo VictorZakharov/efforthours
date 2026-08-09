@@ -37,7 +37,7 @@ jobs:
         id: package_version
         shell: bash
         run: |
-          version="$(dotnet msbuild src/Fairbill.Cli/Fairbill.Cli.csproj -getProperty:Version -nologo)"
+          version="$(dotnet msbuild src/EffortHours.Cli/EffortHours.Cli.csproj -getProperty:Version -nologo)"
           if [[ -z "$version" || "$version" != *-* ]]; then
             echo "NuGet preview requires an explicit prerelease version; received '$version'." >&2
             exit 1
@@ -49,57 +49,61 @@ jobs:
           echo "value=$version" >> "$GITHUB_OUTPUT"
 
       - name: Restore
-        run: dotnet restore Fairbill.slnx --configfile NuGet.Config --force-evaluate
+        run: dotnet restore EffortHours.slnx --configfile NuGet.Config --force-evaluate
 
       - name: Verify formatting
-        run: dotnet format Fairbill.slnx --no-restore --verify-no-changes --severity info
+        run: dotnet format EffortHours.slnx --no-restore --verify-no-changes --severity info
 
       - name: Build
-        run: dotnet build Fairbill.slnx --no-restore --configuration Release
+        run: dotnet build EffortHours.slnx --no-restore --configuration Release
 
       - name: Run unit tests
-        run: dotnet test tests/Fairbill.Tests/Fairbill.Tests.csproj --no-build --no-restore --configuration Release
+        run: dotnet test tests/EffortHours.Tests/EffortHours.Tests.csproj --no-build --no-restore --configuration Release
 
       - name: Run end-to-end tests
-        run: dotnet test tests/Fairbill.EndToEndTests/Fairbill.EndToEndTests.csproj --no-build --no-restore --configuration Release
+        run: dotnet test tests/EffortHours.EndToEndTests/EffortHours.EndToEndTests.csproj --no-build --no-restore --configuration Release
 
       - name: Pack
-        run: dotnet pack src/Fairbill.Cli/Fairbill.Cli.csproj --configuration Release --no-build --no-restore --output artifacts/packages
+        run: dotnet pack src/EffortHours.Cli/EffortHours.Cli.csproj --configuration Release --no-build --no-restore --output artifacts/packages
 
       - name: Inspect package payload
         shell: bash
         run: |
-          package="artifacts/packages/Fairbill.Tool.${{ steps.package_version.outputs.value }}.nupkg"
+          package="artifacts/packages/EffortHours.Tool.${{ steps.package_version.outputs.value }}.nupkg"
           test -f "$package"
           entries="$(unzip -Z1 "$package")"
           for required in \
-            Fairbill.Tool.nuspec \
+            EffortHours.Tool.nuspec \
             LICENSE \
             PACKAGE_README.md \
             THIRD-PARTY-NOTICES.md \
             models/seed-rules/0.2.1.json \
             rates/us-senior-contractor/2026.1.json \
-            tools/net10.0/any/fairbill.dll; do
+            tools/net10.0/any/efforthours.dll \
+            tools/net10.0/any/efforthours.deps.json \
+            tools/net10.0/any/efforthours.runtimeconfig.json; do
             grep -Fxq "$required" <<< "$entries"
           done
+          test "$(grep -Ec '^tools/net10.0/any/[^/]+\.deps\.json$' <<< "$entries")" -eq 1
+          test "$(grep -Ec '^tools/net10.0/any/[^/]+\.runtimeconfig\.json$' <<< "$entries")" -eq 1
 
       - name: Install and run packed tool
         shell: bash
         run: |
-          dotnet tool install Fairbill.Tool \
+          dotnet tool install EffortHours.Tool \
             --tool-path artifacts/smoke-tool \
             --source "$(pwd)/artifacts/packages" \
             --configfile NuGet.Config \
             --version "${{ steps.package_version.outputs.value }}"
-          artifacts/smoke-tool/fairbill version
-          artifacts/smoke-tool/fairbill --help >/dev/null
-          artifacts/smoke-tool/fairbill schema list >/dev/null
+          artifacts/smoke-tool/eh version
+          artifacts/smoke-tool/eh --help >/dev/null
+          artifacts/smoke-tool/eh schema list >/dev/null
 
       - name: Upload verified package
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
-          name: fairbill-tool-${{ steps.package_version.outputs.value }}
-          path: artifacts/packages/Fairbill.Tool.${{ steps.package_version.outputs.value }}.nupkg
+          name: efforthours-tool-${{ steps.package_version.outputs.value }}
+          path: artifacts/packages/EffortHours.Tool.${{ steps.package_version.outputs.value }}.nupkg
           if-no-files-found: error
           retention-days: 30
 
@@ -117,7 +121,7 @@ jobs:
       - name: Download verified package
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
-          name: fairbill-tool-${{ needs.package.outputs.version }}
+          name: efforthours-tool-${{ needs.package.outputs.version }}
           path: artifacts/packages
 
       - name: Request short-lived NuGet credential
@@ -130,6 +134,6 @@ jobs:
         shell: bash
         run: |
           dotnet nuget push \
-            "artifacts/packages/Fairbill.Tool.${{ needs.package.outputs.version }}.nupkg" \
+            "artifacts/packages/EffortHours.Tool.${{ needs.package.outputs.version }}.nupkg" \
             --api-key "${{ steps.nuget_login.outputs.NUGET_API_KEY }}" \
             --source https://api.nuget.org/v3/index.json

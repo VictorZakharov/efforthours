@@ -1,6 +1,6 @@
 # Seed-model review records
 
-This file records reviewed repository-level anchors for Fairbill's transparent seed
+This file records reviewed repository-level anchors for EffortHours's transparent seed
 model. A record is evidence for later calibration work; it is not itself a
 calibration result, a benchmark of actual historical hours, or permission to tune
 the model until one repository looks desirable.
@@ -23,11 +23,11 @@ anchors below or described as independently validated. Blind second-review
 handoffs and exact-digest compilers exist, but no completed independent plan; the
 record maturity therefore remains unchanged.
 
-Because Fairbill's own anchor informed the seed-model and calibration design, it is
+Because EffortHours's own anchor informed the seed-model and calibration design, it is
 a development diagnostic rather than an eligible held-out test record unless a
 future independent snapshot and review policy explicitly establishes otherwise.
 
-## 2026-08-06: `fairbill-change-public-synthetic/0.1.0`
+## 2026-08-06: `efforthours-change-public-synthetic/0.1.0`
 
 Status: **preliminary host-AI teacher labels; not independently reviewed**
 
@@ -43,7 +43,7 @@ assigned to development, validation, and test before numerical review. The
 MIT-licensed `0.1.0.fixtures.json` suite now deterministically reproduces 24
 effort-only source reports and 24 blind authoring packets with
 `change-fixture-generator/0.1.0`; the suite digest is
-`sha256:3a3cb8caca7625169c67c024eb9b336cd9b041bab5e24a1d141059252497b797`.
+`sha256:3e1788edea45616613baea8876de8f2336c3061135bb1c7f77dfc5707fba49a5`.
 One disclosed host-AI teacher then authored category budgets from the final
 synthetic behavior. Candidate totals had already been seen during invariant
 verification, so the 121 compiled targets are weak supervision rather than a blind
@@ -60,11 +60,11 @@ Development and validation metrics are diagnostic error scales only. The test
 comparison was not run because no independently reviewed corpus, numerical
 thresholds, or frozen release candidate exists. The blind 121-target handoff pins
 source-corpus digest
-`sha256:b1d6f8a7a64078953508082454ab56bbc559196bb0810e369035880c765fcbd7`.
+`sha256:ecfdb867ed2ba4912c9550277fc050b5e5511d0e15a107c8a08c044f61793c10`.
 Metric identity and candidate selection order are frozen, while numerical
 thresholds remain blocked on realistic independently reviewed error scales.
 
-## 2026-08-06: `fairbill-public-expansion/0.1.0`
+## 2026-08-06: `efforthours-public-expansion/0.1.0`
 
 Status: **preliminary host-AI teacher labels; not independently reviewed**
 
@@ -121,12 +121,12 @@ suite 0.3.0: 156 assertions across 48 states, including bounded renamed
 near-copies, compiler-disabled syntax, data, security, declared coverage,
 workspace boundaries, CI, and containers. No prior or estimator code changed for
 that expansion. The frozen public-pilot corpus and its 0.2.0 source-estimate
-provenance remain unchanged. `fairbill-public-expansion/0.1.0` subsequently
+provenance remain unchanged. `efforthours-public-expansion/0.1.0` subsequently
 evaluates the same 0.2.1 artifact against three additional teacher-reviewed
 release snapshots; those labels did not change the model and still lack
 independent correction.
 
-## 2026-08-05: Fairbill at `f84a58a`
+## 2026-08-05: EffortHours at `f84a58a`
 
 Status: **provisional logical-review anchor; not calibration data**
 
@@ -148,7 +148,7 @@ result land on a preferred total.
 | Worker baseline | One competent senior contractor, technically familiar, business-domain unfamiliar, no AI |
 | Technology baseline | Modern 2026 implementation |
 | Rate card | None; pricing is deliberately omitted until the dated Milestone 6 rate card exists |
-| Fairbill verification mode | Static assumed-working; target code was not executed by the analyzer |
+| EffortHours verification mode | Static assumed-working; target code was not executed by the analyzer |
 | Separate development check | Release build passed; 46 memory-only unit tests and 7 end-to-end tests passed |
 
 ### Observed repository shape

@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RootNamespace>EffortHours.Core</RootNamespace>
+    <Description>EffortHours repository analysis orchestration.</Description>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../EffortHours.Analysis/EffortHours.Analysis.csproj" />
+    <ProjectReference Include="../EffortHours.Analyzers.DotNet/EffortHours.Analyzers.DotNet.csproj" />
+    <ProjectReference Include="../EffortHours.Analyzers.JavaScript/EffortHours.Analyzers.JavaScript.csproj" />
+    <ProjectReference Include="../EffortHours.Contracts/EffortHours.Contracts.csproj" />
+  </ItemGroup>
+</Project>

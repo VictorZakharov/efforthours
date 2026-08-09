@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <IsPackable>false</IsPackable>
+    <RootNamespace>EffortHours.ScannerBenchmarks</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../../src/EffortHours.Analysis/EffortHours.Analysis.csproj" />
+    <ProjectReference Include="../../src/EffortHours.Contracts/EffortHours.Contracts.csproj" />
+    <ProjectReference Include="../../src/EffortHours.Core/EffortHours.Core.csproj" />
+  </ItemGroup>
+</Project>

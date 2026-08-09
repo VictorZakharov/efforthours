@@ -13,7 +13,7 @@ requests and author-and-period portfolios remain deferred.
 
 ## Purpose
 
-Repository-wide recreation is only one billing context. Fairbill should eventually
+Repository-wide recreation is only one billing context. EffortHours should eventually
 estimate the Equivalent Human Effort embodied in a completed incremental change,
 while retaining the same current-artifact, no-churn valuation principles.
 
@@ -38,12 +38,12 @@ future selectors separate from valuation.
 The initial CLI shape is:
 
 ```text
-fairbill change <repository> --base <revision> --head <revision>
-fairbill change <repository> --commit <revision> [--parent <revision>]
-fairbill change <repository> --range <base>..<head>
-fairbill change --author <identity> --since <instant> --until <instant>
+eh change <repository> --base <revision> --head <revision>
+eh change <repository> --commit <revision> [--parent <revision>]
+eh change <repository> --range <base>..<head>
+eh change --author <identity> --since <instant> --until <instant>
   [--date-field <author|committer>] [--timezone <iana-zone>]
-fairbill change <repository> --pr <number-or-url> [--repo <owner/name>]
+eh change <repository> --pr <number-or-url> [--repo <owner/name>]
 ```
 
 The implemented forms share the repository-estimate profile, format, rate, compact,
@@ -156,7 +156,7 @@ The v1 public schemas are `change-evidence`, `change-estimate-report`, and
 ## Implemented CLI behavior
 
 - Moving selectors are resolved to immutable object IDs before analysis.
-- Git trees are streamed through `ls-tree` and bounded `cat-file --batch`; Fairbill
+- Git trees are streamed through `ls-tree` and bounded `cat-file --batch`; EffortHours
   does not create temporary checkouts or source trees.
 - Root commits use Git's empty tree. Merge commits require an explicit parent.
 - Ranges expose isolated commit estimates, normalized final effort, named signed
@@ -219,7 +219,7 @@ credible, prototypes must address:
 - changes whose tests or documentation land in another contributor's commit; and
 - work moved across the interval boundary.
 
-Fairbill may expose both per-change rows and a normalized portfolio total, but it
+EffortHours may expose both per-change rows and a normalized portfolio total, but it
 must not sum raw commit estimates when doing so would double count the same final
 capability. Any unresolved attribution ambiguity widens ranges and remains visible.
 
@@ -234,7 +234,7 @@ Repositories do not capture many valuable activities: requirements work,
 architecture discussions, code review, mentoring, incident response, debugging,
 coordination, research, pair work, and work credited through another person's
 commit. Conversely, commit authorship does not prove sole responsibility for the
-change. Fairbill must not generate employee rankings, performance grades, or
+change. EffortHours must not generate employee rankings, performance grades, or
 compensation recommendations from this signal alone.
 
 ## Privacy and safety
@@ -245,7 +245,7 @@ the CLI must announce that boundary and avoid persisting PR bodies, author email
 private diffs, or repository evidence unless the caller requests an output path.
 
 Public fixtures must use synthetic identities and repositories. Private company
-contribution data must never enter Fairbill's public calibration corpus by default.
+contribution data must never enter EffortHours's public calibration corpus by default.
 
 ## Deferred portfolio work
 

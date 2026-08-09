@@ -1,14 +1,14 @@
-# Fairbill calibration material
+# EffortHours calibration material
 
-This directory is the public home for Fairbill calibration policy,
+This directory is the public home for EffortHours calibration policy,
 redistributable corpus manifests, and reviewed labels.
 
 The current checkpoint contains the original
 [`ehe-work-item/1.0.0`](rubrics/ehe-work-item/1.0.0.md) review rubric and the
 [`ehe-work-item/1.1.0`](rubrics/ehe-work-item/1.1.0.md) revision for explicit
 reviewed exclusions. The
-[`fairbill-public-pilot/0.1.0`](corpora/public-pilot/BASELINE.md) and
-[`fairbill-public-expansion/0.1.0`](corpora/public-expansion/BASELINE.md)
+[`efforthours-public-pilot/0.1.0`](corpora/public-pilot/BASELINE.md) and
+[`efforthours-public-expansion/0.1.0`](corpora/public-expansion/BASELINE.md)
 teacher-estimate corpora provide six public repository families. They remain
 small, share one host-AI teacher, have not received independent correction, and do
 not justify a production accuracy claim or distributable learned model. See the
@@ -24,17 +24,17 @@ but no independent Change correction or accuracy claim.
 ## Local workflow
 
 ```text
-fairbill estimate <repository> --no-rate --compact --output <estimate.json>
-fairbill calibration scaffold <estimate.json> [--blind] --output <packet.json>
-fairbill calibration compile <review-plan.json> <estimate.json>... --output <corpus.json>
-fairbill calibration review-scaffold <corpus.json> [--blind] --output <packet.json>
-fairbill calibration review-compile <plan.json> <corpus.json> --output <reviewed-corpus.json>
-fairbill calibration validate <corpus.json>
-fairbill calibration evaluate <corpus.json> <estimate.json>... --partition test
-fairbill calibration mutations <suite.json> <estimate.json>... --output <report.json>
-fairbill calibration change-scaffold <change-estimate.json> --repository-family <id> --case <id> --tag <tag>... [--blind] --output <packet.json>
-fairbill calibration change-compile <review-plan.json> <change-estimate.json>... --output <corpus.json>
-fairbill calibration change-evaluate <corpus.json> <change-estimate.json>... --partition development
+eh estimate <repository> --no-rate --compact --output <estimate.json>
+eh calibration scaffold <estimate.json> [--blind] --output <packet.json>
+eh calibration compile <review-plan.json> <estimate.json>... --output <corpus.json>
+eh calibration review-scaffold <corpus.json> [--blind] --output <packet.json>
+eh calibration review-compile <plan.json> <corpus.json> --output <reviewed-corpus.json>
+eh calibration validate <corpus.json>
+eh calibration evaluate <corpus.json> <estimate.json>... --partition test
+eh calibration mutations <suite.json> <estimate.json>... --output <report.json>
+eh calibration change-scaffold <change-estimate.json> --repository-family <id> --case <id> --tag <tag>... [--blind] --output <packet.json>
+eh calibration change-compile <review-plan.json> <change-estimate.json>... --output <corpus.json>
+eh calibration change-evaluate <corpus.json> <change-estimate.json>... --partition development
 ```
 
 The corpus stores reviewed labels and provenance. Candidate estimates stay in

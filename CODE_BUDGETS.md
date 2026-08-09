@@ -1,11 +1,11 @@
 # Source-file budgets
 
-Fairbill uses line budgets as an early architecture signal. They are not a style
+EffortHours uses line budgets as an early architecture signal. They are not a style
 score: a file approaching its budget is a prompt to separate responsibilities
 while the code is still cheap to move.
 
 The enforced manifest is [`eng/file-budgets.json`](eng/file-budgets.json).
-`Fairbill.EndToEndTests` checks every C# file under `src`, `tests`, and `benchmarks`.
+`EffortHours.EndToEndTests` checks every C# file under `src`, `tests`, and `benchmarks`.
 This check is intentionally disk-backed and therefore does not enter the
 memory-only unit suite.
 
@@ -13,7 +13,7 @@ memory-only unit suite.
 
 - The default hard ceiling is 500 physical lines per C# file.
 - CLI files have a stricter 400-line ceiling.
-- `FairbillApplication.cs` should remain a thin dispatcher substantially below the
+- `EffortHoursApplication.cs` should remain a thin dispatcher substantially below the
   CLI ceiling.
 - Start refactoring near 80% of a hard ceiling; do not wait for the test to fail.
 - Existing larger files have explicit ratchet budgets. Their entries record debt,

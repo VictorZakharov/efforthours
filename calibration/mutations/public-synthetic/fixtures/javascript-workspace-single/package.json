@@ -1,5 +1,5 @@
 {
-  "name": "fairbill-mutation-workspace",
+  "name": "efforthours-mutation-workspace",
   "private": true,
   "type": "module",
   "workspaces": ["packages/*"]

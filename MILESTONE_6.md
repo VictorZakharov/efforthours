@@ -28,7 +28,7 @@ The existing `EstimateReport` remains the canonical, lossless estimate contract.
 The existing command below continues to emit that contract:
 
 ```text
-fairbill estimate <repository-or-evidence.json> --format json
+eh estimate <repository-or-evidence.json> --format json
 ```
 
 New report views are projections. They do not change hours, confidence, evidence,
@@ -47,26 +47,26 @@ provide an exact `--hourly-rate`; an override never changes EHE.
 The target command shape is:
 
 ```text
-fairbill estimate <repository-or-evidence.json>
+eh estimate <repository-or-evidence.json>
   [--profile <implementation|recreation>]
   [--view <full|repository|category|scope|work-item|review>]
   [--format <json|markdown>]
   [--compact]
   [--no-rate | --hourly-rate <amount> [--currency <code>]]
 
-fairbill report <estimate.json>
+eh report <estimate.json>
   [--view <full|repository|category|scope|work-item|review>]
   [--format <json|markdown>]
   [--compact]
 
-fairbill explain <repository-or-evidence.json>
+eh explain <repository-or-evidence.json>
   --item <work-item-or-capability-id>
   [--profile <implementation|recreation>]
   [--format <json|markdown>]
   [--compact]
 
-fairbill rate info
-fairbill rate show
+eh rate info
+eh rate show
 ```
 
 `estimate` defaults to the full view for compatibility. `report` defaults to the
@@ -185,7 +185,7 @@ Developers, SOC 15-1252, its public API reports:
 | 90th percentile | `OEUN000000000000015125210` | $103.21/hour |
 
 OEWS excludes self-employed people, so these are wage anchors rather than contractor
-bill rates. Fairbill converts them transparently instead of claiming that BLS
+bill rates. EffortHours converts them transparently instead of claiming that BLS
 measures independent-contractor prices.
 
 The BLS Employer Costs for Employee Compensation table for March 2026, published
@@ -193,9 +193,9 @@ June 12, 2026, reports $72.99 total compensation and $50.53 wages and salaries p
 hour for private-industry professional and related occupations. Their ratio is
 `1.44448842`.
 
-Fairbill then applies an explicit 75% billable-utilization assumption to cover
+EffortHours then applies an explicit 75% billable-utilization assumption to cover
 ordinary independent-contractor nonbillable time such as business development,
-administration, leave, and bench time. This is a Fairbill policy assumption, not a
+administration, leave, and bench time. This is a EffortHours policy assumption, not a
 BLS measurement.
 
 ```text
@@ -215,7 +215,7 @@ Primary sources:
 - https://www.bls.gov/bls/linksite.htm
 
 BLS states that its published material is public domain, apart from previously
-copyrighted photographs and illustrations. Fairbill stores only the cited numeric
+copyrighted photographs and illustrations. EffortHours stores only the cited numeric
 observations, series IDs, formula, and provenance; it does not redistribute BLS
 branding or bulk data.
 
@@ -240,7 +240,7 @@ cross-multiplied with effort uncertainty.
 
 ## Output-size measurement
 
-`REPORT_BENCHMARKS.md` records the completed measurements for Fairbill itself and
+`REPORT_BENCHMARKS.md` records the completed measurements for EffortHours itself and
 small .NET, JavaScript/TypeScript, and mixed fixtures:
 
 - UTF-8 bytes;
@@ -254,7 +254,7 @@ small .NET, JavaScript/TypeScript, and mixed fixtures:
 The four-character approximation is used only as a provider-neutral size indicator.
 It is not presented as an exact token count for any model. Exact tokenizer and
 provider-cost measurements remain part of host-AI integration after representative
-models and workflows are selected. On the Fairbill snapshot, review JSON was 7.4%
+models and workflows are selected. On the EffortHours snapshot, review JSON was 7.4%
 of compact full JSON and review Markdown was 3.6%; the detailed table, method, and
 usefulness findings are in `REPORT_BENCHMARKS.md`.
 
@@ -276,8 +276,8 @@ Ordinary unit tests remain entirely memory-backed. Milestone 6 tests must cover:
 - Markdown readability and gap-exclusion labels; and
 - CLI exit codes and stdout/stderr separation.
 
-Physical files and subprocesses remain confined to `Fairbill.EndToEndTests` and
-explicit benchmarks. `Fairbill.Tests` must not read or write temporary files,
+Physical files and subprocesses remain confined to `EffortHours.EndToEndTests` and
+explicit benchmarks. `EffortHours.Tests` must not read or write temporary files,
 reports, rate artifacts, or fixture trees.
 
 ## Exit criteria
@@ -286,7 +286,7 @@ Milestone 6 is complete when:
 
 - all five projections are deterministic and schema-valid;
 - compact capability summaries can be expanded without losing lineage;
-- the review projection is materially smaller than the full estimate on Fairbill;
+- the review projection is materially smaller than the full estimate on EffortHours;
 - a documented usefulness review and output-size table are checked in;
 - the dated default rate is reproducible from public inputs and independently
   replaceable from EHE;
@@ -298,7 +298,7 @@ Milestone 6 is complete when:
 
 The completed implementation passed the locked restore, formatting verification,
 zero-warning Release build, 64 memory-only unit tests, and 14 disk-backed CLI
-end-to-end cases. The `Fairbill.Tool` `0.6.0-alpha.1` package was built, inspected
+end-to-end cases. The `EffortHours.Tool` `0.6.0-alpha.1` package was built, inspected
 for the pricing assembly and rate artifact, installed into an isolated local tool
 path, and smoke-tested through `version`, `rate info`, and a compact review
 estimate. `REPORT_BENCHMARKS.md` supplies the required output-size and usefulness

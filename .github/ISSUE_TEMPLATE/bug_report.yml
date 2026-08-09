@@ -7,16 +7,16 @@ body:
   - type: markdown
     attributes:
       value: |
-        Thank you for helping improve Fairbill. Do not attach private repositories,
+        Thank you for helping improve EffortHours. Do not attach private repositories,
         credentials, client evidence, or proprietary source. Prefer a small synthetic
         reproduction that you have the right to share.
 
   - type: input
     id: version
     attributes:
-      label: Fairbill version
-      description: Run `fairbill version` and paste the result.
-      placeholder: 0.8.0-alpha.2
+      label: EffortHours version
+      description: Run `eh version` and paste the result.
+      placeholder: 0.9.0-alpha.1
     validations:
       required: true
 

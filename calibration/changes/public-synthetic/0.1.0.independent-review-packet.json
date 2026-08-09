@@ -4,9 +4,9 @@
   "status": "unreviewed",
   "warning": "UNREVIEWED SECOND-PASS PACKET: prior labels are weak supervision, not ground truth. An independent reviewer must decide every target before review maturity can advance.",
   "sourceCorpus": {
-    "id": "fairbill-change-public-synthetic",
+    "id": "efforthours-change-public-synthetic",
     "version": "0.1.0",
-    "digest": "sha256:b1d6f8a7a64078953508082454ab56bbc559196bb0810e369035880c765fcbd7"
+    "digest": "sha256:ecfdb867ed2ba4912c9550277fc050b5e5511d0e15a107c8a08c044f61793c10"
   },
   "rubric": {
     "id": "change-ehe-work-item",

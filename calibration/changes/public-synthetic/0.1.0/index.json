@@ -1,9 +1,9 @@
 {
   "schemaVersion": "1.0.0",
   "generatorVersion": "change-fixture-generator/0.1.0",
-  "suiteId": "fairbill-change-public-synthetic",
+  "suiteId": "efforthours-change-public-synthetic",
   "suiteVersion": "0.1.0",
-  "suiteDigest": "sha256:3a3cb8caca7625169c67c024eb9b336cd9b041bab5e24a1d141059252497b797",
+  "suiteDigest": "sha256:3e1788edea45616613baea8876de8f2336c3061135bb1c7f77dfc5707fba49a5",
   "cases": [
     {
       "id": "change:dn-data-integration",
