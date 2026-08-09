@@ -163,6 +163,12 @@ semantics.
 - Keep `docs/CODE_BUDGETS.md` and the enforced manifest aligned when responsibilities
   move between files.
 
+## Pull-request handoff
+
+- Agents may create commits, push topic branches, and open or update pull requests.
+- Agents must never merge a pull request or enable auto-merge. The maintainer
+  manually reviews and merges every pull request.
+
 ## Current project stage
 
 Milestones 1 through 6, Milestone 7A, the Milestone 7B1 through 7B5 checkpoints,

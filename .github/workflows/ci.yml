@@ -20,6 +20,29 @@ env:
   NUGET_XMLDOC_MODE: skip
 
 jobs:
+  pull-request-history:
+    name: Pull request commits are linear
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out source history
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+
+      - name: Reject merge commits in the pull request
+        shell: bash
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          merge_count="$(git rev-list --count --merges "$BASE_SHA..$HEAD_SHA")"
+          if [ "$merge_count" -ne 0 ]; then
+            echo "::error::Pull request branches must be rebased and contain no merge commits ($merge_count found)."
+            exit 1
+          fi
+
   quality:
     name: Quality (${{ matrix.os }})
     runs-on: ${{ matrix.os }}
