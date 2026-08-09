@@ -113,7 +113,7 @@ required for an ordinary estimate.
 
 ## 5. Milestones
 
-Status as of August 6, 2026:
+Status as of August 9, 2026:
 
 - Milestone 0 is complete: the initial product semantics, MIT License, packaging
   identity, and repository conventions are recorded.
@@ -186,6 +186,13 @@ Status as of August 6, 2026:
   output; memory-only unit fixtures; and process-level Git tests are implemented.
   `change-seed/0.1.0` remains experimental and uncalibrated. Multiple PRs,
   directory/evidence selectors, and author-period portfolios remain deferred.
+- The Change behavioral-safeguard checkpoint is complete: memory-only mutations
+  cover formatting, movement, excluded output, duplication, meaningful code/tests/
+  docs, migrations, integrations, CI, container delivery, simplification,
+  additivity, overlap, and reverts across all range points and intended categories.
+  Cancellation is cooperative from Ctrl+C through the Change engine, uses a
+  stderr-only diagnostic and exit code 130, and leaves the target and model
+  semantics unchanged.
 - The first Change calibration checkpoint is complete: immutable final-delta
   provenance extends the existing corpus/review boundary; Change-specific
   scaffold, compile, and evaluate commands reuse the same metric implementation;
@@ -435,9 +442,10 @@ benchmark corpus exists.
 
 ## 8. Immediate next steps
 
-1. Complete the public-history identity decision and final issue #28 audit, require
-   green cross-platform CI, then prepare the quiet public repository and
-   `EffortHours.Tool` NuGet preview without claiming calibrated accuracy.
+1. Keep the repository private until visibility is separately authorized. At that
+   boundary, recheck the package ID, require green cross-platform CI on the exact
+   candidate, then prepare the quiet `EffortHours.Tool` NuGet preview without
+   claiming calibrated accuracy.
 2. Hand one or more frozen blind public-corpus packets to genuinely distinct
    reviewers and compile corrections without exposing test partitions to tuning.
 3. Add enough redistributable repository families to place multiple independent

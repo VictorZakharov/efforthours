@@ -51,6 +51,7 @@ public sealed partial class EffortHoursApplication
 
         try
         {
+            cancellationToken.ThrowIfCancellationRequested();
             return arguments[0].ToLowerInvariant() switch
             {
                 "scan" => await ScanAsync(
@@ -104,7 +105,7 @@ public sealed partial class EffortHoursApplication
         catch (OperationCanceledException)
         {
             await standardError.WriteLineAsync("The operation was cancelled.").ConfigureAwait(false);
-            return CliExitCodes.InvalidInput;
+            return CliExitCodes.Cancelled;
         }
         catch (Exception exception) when (
             exception is IOException or UnauthorizedAccessException or InvalidOperationException)

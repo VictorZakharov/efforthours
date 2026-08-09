@@ -29,9 +29,11 @@ framework-neutral JavaScript UI, and benchmark-entry-point false positives witho
 changing seed priors. Actual independent correction and broader multi-observation
 corpus coverage remain. The first experimental Change Estimation MVP is also
 implemented for immutable base/head revisions, one commit, one range, and one
-GitHub pull request. Its first calibration checkpoint adds final-delta provenance,
-review and evaluation commands, a frozen rubric, and a 24-case matrix with
-reproducible source reports, 121 preliminary teacher targets, and a blind
+GitHub pull request. Its behavioral safeguard checkpoint adds cooperative
+cancellation and category-isolated migration, integration, CI, container-delivery,
+and simplification mutations. Its first calibration checkpoint adds final-delta
+provenance, review and evaluation commands, a frozen rubric, and a 24-case matrix
+with reproducible source reports, 121 preliminary teacher targets, and a blind
 independent-review packet. No independent Change correction or accuracy claim is
 complete.
 The repository now contains:
@@ -132,6 +134,10 @@ reports reconcile isolated commits with the authoritative normalized final delta
 commit count and intermediate churn never multiply effort. PR mode uses optional
 `gh` only to resolve immutable identities and requires those objects locally. The
 `change-seed/0.1.0` model is uncalibrated and experimental.
+
+The first Ctrl+C requests cooperative cancellation and returns exit code 130 after
+writing a concise diagnostic to stderr; pressing Ctrl+C again retains immediate
+termination. Partial structured output is not presented as a successful report.
 
 `eh calibration scaffold` creates an explicitly unreviewed packet from a
 saved canonical estimate; `--blind` hides numeric seed guidance.

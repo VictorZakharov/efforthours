@@ -31,6 +31,12 @@ may still change public contracts with explicit documentation.
   as UI or development benchmark hashbangs as product entry points. Checked-in
   frozen-corpus reevaluations disclose the resulting target-mapping changes; the
   `seed-rules/0.2.1` priors remain unchanged and uncalibrated.
+- The CLI now handles the first Ctrl+C cooperatively, emits its cancellation
+  diagnostic only on stderr, and returns exit code 130; a second Ctrl+C retains
+  immediate termination.
+- Change-EHE safeguards now include category-isolated migration, integration, CI,
+  container-delivery, and simplification mutations plus pre-start and in-flight
+  cancellation, without changing `change-seed/0.1.0`.
 
 ### Known limitations
 

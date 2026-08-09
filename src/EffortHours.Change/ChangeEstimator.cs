@@ -69,6 +69,7 @@ public sealed partial class ChangeEstimator
     {
         ArgumentNullException.ThrowIfNull(input);
         ArgumentException.ThrowIfNullOrWhiteSpace(input.RepositoryName);
+        cancellationToken.ThrowIfCancellationRequested();
         string[] selectionErrors = ValidateSelection(input.Selection);
         if (selectionErrors.Length > 0)
         {

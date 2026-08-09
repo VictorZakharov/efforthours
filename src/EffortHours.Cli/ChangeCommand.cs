@@ -123,9 +123,11 @@ internal sealed class ChangeCommand
             return CliExitCodes.InvalidInput;
         }
 
+        cancellationToken.ThrowIfCancellationRequested();
         string output = options.Format == "markdown"
             ? ChangeEstimateMarkdownRenderer.Render(report)
             : new ChangeEstimateJsonRenderer(options.Compact).Render(report);
+        cancellationToken.ThrowIfCancellationRequested();
         return await WriteOutputAsync(
             output,
             options.OutputPath,
@@ -145,12 +147,15 @@ internal sealed class ChangeCommand
     {
         if (outputPath is null)
         {
-            await standardOutput.WriteLineAsync(content.TrimEnd()).ConfigureAwait(false);
+            await standardOutput.WriteLineAsync(
+                content.TrimEnd().AsMemory(),
+                cancellationToken).ConfigureAwait(false);
             return CliExitCodes.Success;
         }
 
         try
         {
+            cancellationToken.ThrowIfCancellationRequested();
             string fullOutputPath = Path.GetFullPath(outputPath);
             string? directory = Path.GetDirectoryName(fullOutputPath);
             if (!string.IsNullOrEmpty(directory))

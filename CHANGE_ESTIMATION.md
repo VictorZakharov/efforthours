@@ -8,8 +8,10 @@ range, and one GitHub pull request through an optional `gh` adapter. The
 `change-seed/0.1.0` rules are transparent but uncalibrated and remain experimental.
 The first calibration-infrastructure checkpoint and a preliminary 24-record
 host-AI teacher corpus are implemented, but no independent correction exists.
-Multiple pull
-requests and author-and-period portfolios remain deferred.
+The behavioral safeguard suite now covers cancellation and category-isolated
+migration, integration, CI, container-delivery, and simplification mutations in
+addition to the initial normalization and Git boundaries. Multiple pull requests
+and author-and-period portfolios remain deferred.
 
 ## Purpose
 
@@ -166,10 +168,16 @@ The v1 public schemas are `change-evidence`, `change-estimate-report`, and
 - JSON and Markdown output include optional pricing only after hours are estimated;
   saved JSON supports work-item explanation queries.
 - The CLI and model are deterministic for the same objects, options, and versions.
+- The first Ctrl+C requests cooperative cancellation through snapshot selection,
+  analysis, and output; it emits a stderr-only diagnostic with exit code 130. A
+  second Ctrl+C retains immediate operating-system termination.
 
 The implementation is covered by memory-only unit snapshots plus separate
-process-level Git tests. See `MILESTONE_CHANGE_1.md` for the delivered boundaries
-and remaining limitations.
+process-level Git tests. The mutation matrix includes formatting, movement,
+generation, lockfiles, exact duplication, code, tests, documentation, migration,
+integration, CI, container delivery, simplification, additivity, overlap, and
+revert behavior while preserving range-point and category isolation. See
+`MILESTONE_CHANGE_1.md` for the delivered boundaries and remaining limitations.
 
 ## Calibration boundary
 

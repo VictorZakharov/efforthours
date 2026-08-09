@@ -7,6 +7,10 @@ uncalibrated. It estimates counterfactual Equivalent Human Effort represented by
 final artifact delta; it does not reconstruct actual work or timesheets.
 The global-tool package advances to `EffortHours.Tool` `0.8.0-alpha.1`.
 
+The behavioral-safeguard checkpoint was completed on August 9, 2026. It adds the
+remaining cancellation and category-isolation coverage without changing
+`change-seed/0.1.0`, any contract, or any calibration artifact.
+
 ## Delivered scope
 
 - `eh change <repository> --base <revision> --head <revision>`
@@ -66,16 +70,25 @@ excerpts.
 
 ## Verification
 
-Memory-only unit fixtures cover meaningful code, tests, documentation, deletion,
+Memory-only unit fixtures cover meaningful code, tests, documentation, migrations,
+external integrations, CI, container delivery, deletion and simplification,
 formatting, literal whitespace, exact movement/copying, generated and lock output,
-determinism, schema-valid reports/explanations, clean additivity, overlap, and
-reverts. The unit suite performs no physical repository reads or writes.
+determinism, schema-valid reports/explanations, clean additivity, overlap, reverts,
+and cancellation before and during snapshot opening. Category-isolation checks
+retain low, expected, and high range behavior. The unit suite performs no physical
+repository reads or writes.
 
 The separate end-to-end suite uses temporary Git repositories to cover root and
 ordinary commits, ranges, merge-parent ambiguity, immutable worktree behavior,
 stdout/stderr separation, deterministic CLI output, and an offline PR identity
 substitution. The `gh` JSON/error boundary is tested without filesystem or network
 access.
+
+The installed CLI now translates the first Ctrl+C into cooperative cancellation
+through the complete command pipeline. Cancellation writes only a concise stderr
+diagnostic and returns exit code 130; a second Ctrl+C retains the operating system's
+immediate-termination behavior. This checkpoint passes 115 memory-only unit tests
+and 33 process-level end-to-end tests.
 
 ## Maintainability checkpoint
 

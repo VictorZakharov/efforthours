@@ -19,6 +19,7 @@
     <ProjectReference Include="../../src/EffortHours.Analysis/EffortHours.Analysis.csproj" />
     <ProjectReference Include="../../src/EffortHours.Calibration/EffortHours.Calibration.csproj" />
     <ProjectReference Include="../../src/EffortHours.Change/EffortHours.Change.csproj" />
+    <ProjectReference Include="../../src/EffortHours.Cli/EffortHours.Cli.csproj" />
     <ProjectReference Include="../../src/EffortHours.Contracts/EffortHours.Contracts.csproj" />
     <ProjectReference Include="../../src/EffortHours.Core/EffortHours.Core.csproj" />
     <ProjectReference Include="../../src/EffortHours.Estimation/EffortHours.Estimation.csproj" />

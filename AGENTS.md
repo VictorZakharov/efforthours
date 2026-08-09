@@ -215,10 +215,15 @@ The first Change Estimation MVP adds provider-neutral immutable snapshot analysi
 local Git base/head, commit, and range selectors, one optional identity-only `gh`
 PR selector, v1 change schemas, `change-seed/0.1.0` work items, final-delta
 normalization, component reconciliation, saved-report explanation, and
-process-level Git tests. It remains experimental and uncalibrated. Multiple PRs,
-directory/evidence selectors, and author-period portfolios remain deferred. The
-former large CLI application class is split into focused partial modules, and
-`eng/file-budgets.json` enforces early refactoring through the end-to-end suite.
+process-level Git tests. Its completed safeguard matrix covers normalization,
+meaningful code/tests/docs, migrations, integrations, CI, container delivery,
+simplification, additivity, overlap, reverts, category isolation, all three range
+points, and cooperative cancellation. The first Ctrl+C returns 130 after a
+stderr-only diagnostic; a second retains immediate termination. It remains
+experimental and uncalibrated. Multiple PRs, directory/evidence selectors, and
+author-period portfolios remain deferred. The former large CLI application class
+is split into focused partial modules, and `eng/file-budgets.json` enforces early
+refactoring through the end-to-end suite.
 
 The first Change calibration checkpoint adds `change-ehe-work-item/1.0.0`,
 content-derived final-delta identity, backward-compatible Change provenance in the
