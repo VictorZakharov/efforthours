@@ -4,8 +4,8 @@
 
 EffortHours is an MIT-licensed reference implementation for evidence-backed
 Equivalent Human Effort estimation. Its core semantic boundary is documented in
-`PRODUCT.md` and `ESTIMATION_MODEL.md`: EHE is counterfactual replacement effort,
-not reconstructed time worked.
+`docs/PRODUCT.md` and `docs/ESTIMATION_MODEL.md`: EHE is counterfactual
+replacement effort, not reconstructed time worked.
 
 The current lead maintainer is the repository owner, Victor Zakharov
 ([`@VictorZakharov`](https://github.com/VictorZakharov)). The lead maintainer has
@@ -47,8 +47,8 @@ may intentionally ship experimental, uncalibrated estimators when those limits a
 prominent. Production-readiness or billing-accuracy claims require the independent
 evidence and gates documented in the model-review policies.
 
-The mechanical and authorization steps are in `RELEASING.md`. Repository visibility,
-GitHub releases, and NuGet publication are distinct actions.
+The mechanical and authorization steps are in `docs/RELEASING.md`. Repository
+visibility, GitHub releases, and NuGet publication are distinct actions.
 
 ## Succession
 

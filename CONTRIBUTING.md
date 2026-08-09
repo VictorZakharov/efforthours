@@ -1,13 +1,14 @@
 # Contributing to EffortHours
 
-EffortHours is being built in public for eventual open-source release. Contributions
-should preserve the distinction between observed repository evidence, inferred
-classification, estimated effort, and pricing.
+EffortHours is an MIT-licensed open-source project. Contributions should preserve
+the distinction between observed repository evidence, inferred classification,
+estimated effort, and pricing.
 
 ## Before contributing
 
-- Read `PRODUCT.md`, `ESTIMATION_MODEL.md`, `PLAN.md`, and `AGENTS.md`. Read
-  `CHANGE_ESTIMATION.md` before changing explicit revision/PR behavior.
+- Read `docs/PRODUCT.md`, `docs/ESTIMATION_MODEL.md`, `docs/PLAN.md`, and
+  `AGENTS.md`. Read `docs/CHANGE_ESTIMATION.md` before changing explicit
+  revision/PR behavior.
 - Use the .NET 10 SDK selected by `global.json`.
 - Do not use Git history, churn, author activity, or timestamps as effort signals.
 - Do not commit client source, private calibration data, credentials, or fixtures
@@ -31,7 +32,7 @@ The first test command is the frequent, storage-independent loop: all repository
 and cache fixtures are in memory. The end-to-end project intentionally exercises
 the physical CLI/process boundary and is primarily a release check. It also
 enforces the source-file ratchets in `eng/file-budgets.json`; follow
-`CODE_BUDGETS.md` and split responsibilities near 80% of a ceiling.
+`docs/CODE_BUDGETS.md` and split responsibilities near 80% of a ceiling.
 
 Run the synthetic one-million-line scanner checkpoint with:
 

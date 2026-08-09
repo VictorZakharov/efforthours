@@ -4,11 +4,11 @@ Significant user-visible EffortHours changes are recorded here. The project foll
 Semantic Versioning once a package version has been released; prerelease versions
 may still change public contracts with explicit documentation.
 
-## Unreleased
+## 0.9.0-alpha.1 - 2026-08-09
 
 ### Added
 
-- The pre-public product identity is now EffortHours, distributed as
+- The product identity is EffortHours, distributed as
   `EffortHours.Tool` with the `eh` command. Projects, namespaces, schema URNs,
   repository metadata, cache/ignore conventions, and calibration identities were
   renamed together for the `0.9.0-alpha.1` candidate.
@@ -38,6 +38,9 @@ may still change public contracts with explicit documentation.
 
 ### Changed
 
+- Product, architecture, benchmark, calibration, and milestone records now live
+  under an indexed `docs/` directory; standard GitHub community files remain at
+  the repository root, and the release suite verifies relative Markdown links.
 - `.NET` analyzer `0.3.2` no longer treats generic process-command execute calls as
   persistence without data context.
 - JavaScript analyzer `0.4.1` no longer treats framework-neutral state/effect calls

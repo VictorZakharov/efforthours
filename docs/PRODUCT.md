@@ -156,12 +156,11 @@ of an employee's performance. See `CHANGE_ESTIMATION.md`.
 
 ### Open-source from the start
 
-Although publication may happen after the first useful build, the repository should
-be maintained as if it were already public. Dependencies, model files, calibration
-data, fixtures, and copied assets need clear provenance and redistribution-compatible
-terms compatible with the MIT License. Client repositories, proprietary source,
-credentials, and private estimation inputs must never become project fixtures or
-committed calibration data.
+The repository is maintained as public open source. Dependencies, model files,
+calibration data, fixtures, and copied assets need clear provenance and
+redistribution terms compatible with the MIT License. Client
+repositories, proprietary source, credentials, and private estimation inputs must
+never become project fixtures or committed calibration data.
 
 ### Evidence before inference
 

@@ -180,7 +180,7 @@ too uniform to establish an asymptotic guarantee.
 
 The repository-input mode was also run over the exact, SHA-256-verified MIT release
 archives already recorded in
-[`calibration/corpora/public-expansion/SOURCES.md`](calibration/corpora/public-expansion/SOURCES.md):
+[`calibration/corpora/public-expansion/SOURCES.md`](../calibration/corpora/public-expansion/SOURCES.md):
 developit/mitt `3.0.1`, Tyrrrz/CliWrap `3.10.4`, and nanostores/nanostores `1.4.2`.
 Their extracted trees were placed under one temporary parent to exercise a mixed
 .NET, JavaScript, and TypeScript collection; no archive or extracted source was

@@ -156,8 +156,8 @@ proposed evidence-backed adjustment ledger but never applies it. `review measure
 records one completed review with caller-supplied telemetry; `review benchmark`
 compares one compact and one broader-source session per opaque subject. No review
 command chooses or calls a provider; provider, privacy, disclosure, and retention
-decisions remain with the caller. See [MILESTONE_8.md](MILESTONE_8.md) and
-[MILESTONE_8_MEASUREMENT.md](MILESTONE_8_MEASUREMENT.md).
+decisions remain with the caller. See [Milestone 8](docs/MILESTONE_8.md) and its
+[measurement checkpoint](docs/MILESTONE_8_MEASUREMENT.md).
 
 `eh change` estimates the final functional and quality delta for explicit
 base/head revisions, a commit, a range, or one PR. It reads immutable local Git
@@ -227,8 +227,7 @@ inventoried but not interpreted as measured percentages in this checkpoint.
 ## Install the preview
 
 The NuGet package identity is `EffortHours.Tool`, and the installed command is
-`eh`. Once the public preview is listed on NuGet.org, install the pinned
-prerelease with:
+`eh`. Install the pinned prerelease with:
 
 ```text
 dotnet tool install --global EffortHours.Tool --version 0.9.0-alpha.1
@@ -237,9 +236,9 @@ eh --help
 ```
 
 Preview versions are intentionally opt-in. To replace an older preview, use
-`dotnet tool update --global EffortHours.Tool --version <version>`. See
-[RELEASING.md](RELEASING.md) for package verification, trusted-publishing, and
-release procedures.
+`dotnet tool update --global EffortHours.Tool --version <version>`. See the
+[release procedure](docs/RELEASING.md) for package verification,
+trusted-publishing, and release steps.
 
 ## Build from source
 
@@ -318,13 +317,13 @@ sampled scan peaks were 272.52, 185.69, and 234.20 MiB respectively. The mixed
 warm-cache pass took 4.581 seconds. A combined set of three exact, verified MIT
 releases and the EffortHours development tree were also measured read-only. These
 are reproducible engineering checkpoints, not universal performance guarantees or
-release thresholds. See [BENCHMARKS.md](BENCHMARKS.md) for commands, provenance,
-hardware, cache semantics, scaling samples, and limitations.
+release thresholds. See [scanner benchmarks](docs/BENCHMARKS.md) for commands,
+provenance, hardware, cache semantics, scaling samples, and limitations.
 
 The Milestone 6 EffortHours snapshot produced 240,464 bytes of compact canonical
 estimate JSON. The bounded review projection used 17,694 bytes (7.4%), and review
 Markdown used 8,763 bytes (3.6%). See
-[REPORT_BENCHMARKS.md](REPORT_BENCHMARKS.md) for all views, small .NET,
+[reporting benchmarks](docs/REPORT_BENCHMARKS.md) for all views, small .NET,
 JavaScript/TypeScript, and mixed fixtures, the measurement method, and the initial
 usefulness review.
 
@@ -347,60 +346,18 @@ without misrepresenting counterfactual hours as historical labor.
 6. Aggregate effort by category and apply a dated, configurable market rate.
 7. Produce machine-readable evidence and a human-readable report.
 
-## Project documents
+## Documentation
 
-- [PRODUCT.md](PRODUCT.md) defines the product, metric, scope, and principles.
-- [ESTIMATION_MODEL.md](ESTIMATION_MODEL.md) specifies how evidence becomes effort
-  and cost.
-- [PLAN.md](PLAN.md) describes the proposed architecture and delivery roadmap.
-- [MILESTONE_5.md](MILESTONE_5.md) records the granular seed-estimator design and
-  its current limitations.
-- [MILESTONE_6.md](MILESTONE_6.md) records reporting, explanation, and default-rate
-  decisions.
-- [MILESTONE_7.md](MILESTONE_7.md) defines reviewed labels, repository-held-out
-  evaluation, metrics, and the admission gates for later local models.
-- [MILESTONE_8.md](MILESTONE_8.md) defines the provider-neutral host-review packet,
-  digest-bound follow-up queries, adjustment ledger, and provider boundary.
-- [MILESTONE_8_MEASUREMENT.md](MILESTONE_8_MEASUREMENT.md) defines sanitized review
-  telemetry, comparison metrics, public-benchmark privacy, and budget admission.
-- [`benchmarks/host-review/public-expansion/0.1.0`](benchmarks/host-review/public-expansion/0.1.0)
-  records the first three-repository host-review diagnostic.
-- [REPORT_BENCHMARKS.md](REPORT_BENCHMARKS.md) records reporting size and usefulness
-  measurements.
-- [MODEL_REVIEWS.md](MODEL_REVIEWS.md) records provisional realism checks with
-  source and model provenance; they are not calibration claims.
-- [CHANGE_ESTIMATION.md](CHANGE_ESTIMATION.md) records implemented PR, commit, and
-  range semantics plus deferred contribution-portfolio safeguards.
-- [MILESTONE_CHANGE_1.md](MILESTONE_CHANGE_1.md) records the first Change EHE
-  implementation, verification, and limitations.
-- [MILESTONE_CHANGE_2.md](MILESTONE_CHANGE_2.md) records Change calibration
-  identity, review, evaluation, and the remaining independent-label boundary.
-- [MILESTONE_CHANGE_3.md](MILESTONE_CHANGE_3.md) records the reproducible 24-case
-  source suite, first-pass teacher corpus, diagnostics, and withheld test boundary.
-- [CHANGE_MODEL_ADMISSION.md](CHANGE_MODEL_ADMISSION.md) freezes Change candidate
-  metric identities and decision order before any local-ML fitting.
-- [CODE_BUDGETS.md](CODE_BUDGETS.md) defines enforced early-refactoring thresholds
-  and legacy ratchets.
-- [AGENTS.md](AGENTS.md) contains repository-wide instructions for coding agents.
-- [CONTRIBUTING.md](CONTRIBUTING.md) contains the verified development workflow.
-- [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) defines participation and enforcement
-  expectations.
-- [GOVERNANCE.md](GOVERNANCE.md) records decision authority, contribution policy,
-  calibration independence, and succession.
-- [RELEASING.md](RELEASING.md) defines the public-source and NuGet preview checklist.
-- [CHANGELOG.md](CHANGELOG.md) records user-visible release changes and known
-  limitations.
-- [SECURITY.md](SECURITY.md) explains private vulnerability reporting expectations.
-- [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md) records dependency provenance.
-- [BENCHMARKS.md](BENCHMARKS.md) records reproducible performance checkpoints.
-- [`schemas/v1`](schemas/v1) contains the published v1 JSON schemas, including the
-  seed-rule model schema.
-- [`models/seed-rules`](models/seed-rules) contains the transparent bundled seed
-  priors.
-- [`rates/us-senior-contractor`](rates/us-senior-contractor) contains the auditable
-  bundled contractor-rate derivation.
-- [`calibration`](calibration) contains the public review rubrics, two repository
-  corpora, independent-review handoff, mutation fixtures, frozen seed baselines,
-  the Change case matrix, reproducible source packets, and preliminary Change
-  teacher corpus, and publication guidance; no private calibration data belongs
-  there.
+The [documentation index](docs/README.md) separates current product and engineering
+contracts from historical implementation checkpoints. Key starting points are the
+[product charter](docs/PRODUCT.md), [estimation model](docs/ESTIMATION_MODEL.md),
+[change-estimation contract](docs/CHANGE_ESTIMATION.md), and
+[release procedure](docs/RELEASING.md).
+
+Public schemas, transparent seed priors, auditable rate provenance, and review
+corpora live under [`schemas/v1`](schemas/v1),
+[`models/seed-rules`](models/seed-rules),
+[`rates/us-senior-contractor`](rates/us-senior-contractor), and
+[`calibration`](calibration), respectively. Contribution, conduct, governance,
+security, changelog, and third-party-notice files remain at the repository root for
+normal GitHub discovery.

@@ -97,7 +97,6 @@ public sealed partial class PublicReleaseHygieneTests
                      "CODE_OF_CONDUCT.md",
                      "CONTRIBUTING.md",
                      "GOVERNANCE.md",
-                     "RELEASING.md",
                      "SECURITY.md",
                      "THIRD-PARTY-NOTICES.md",
                      "CHANGELOG.md",
@@ -106,16 +105,67 @@ public sealed partial class PublicReleaseHygieneTests
             Assert.True(File.Exists(Path.Combine(root, name)), $"Missing public document '{name}'.");
         }
 
+        Assert.True(File.Exists(Path.Combine(root, "docs", "README.md")));
+        Assert.True(File.Exists(Path.Combine(root, "docs", "RELEASING.md")));
+
         string ignore = File.ReadAllText(Path.Combine(root, ".gitignore"));
         Assert.Contains("artifacts/", ignore, StringComparison.Ordinal);
         Assert.Contains(".efforthours-private/", ignore, StringComparison.Ordinal);
         Assert.Contains("calibration/private/", ignore, StringComparison.Ordinal);
 
-        string releasing = File.ReadAllText(Path.Combine(root, "RELEASING.md"));
+        string releasing = File.ReadAllText(Path.Combine(root, "docs", "RELEASING.md"));
         Assert.Contains("explicit", releasing, StringComparison.Ordinal);
         Assert.Contains("maintainer decision", releasing, StringComparison.Ordinal);
         Assert.Contains("Trusted Publishing", releasing, StringComparison.Ordinal);
         Assert.Contains("cannot be deleted", releasing, StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public void RelativeMarkdownLinksResolveWithinTheRepository()
+    {
+        string root = FindRepositoryRoot();
+        string[] excludedPrefixes =
+        [
+            ".packages/",
+            "artifacts/",
+            "bin/",
+            "obj/",
+        ];
+
+        foreach (string path in Directory.EnumerateFiles(root, "*.md", SearchOption.AllDirectories))
+        {
+            string repositoryPath = Path.GetRelativePath(root, path).Replace('\\', '/');
+            if (excludedPrefixes.Any(prefix =>
+                repositoryPath.StartsWith(prefix, StringComparison.Ordinal) ||
+                repositoryPath.Contains($"/{prefix}", StringComparison.Ordinal)))
+            {
+                continue;
+            }
+
+            string markdown = File.ReadAllText(path);
+            foreach (Match match in MarkdownLink().Matches(markdown))
+            {
+                string target = match.Groups["target"].Value.Trim('<', '>');
+                int fragment = target.IndexOf('#', StringComparison.Ordinal);
+                if (fragment >= 0)
+                {
+                    target = target[..fragment];
+                }
+
+                if (string.IsNullOrWhiteSpace(target) ||
+                    Uri.TryCreate(target, UriKind.Absolute, out _))
+                {
+                    continue;
+                }
+
+                string resolved = Path.GetFullPath(Path.Combine(
+                    Path.GetDirectoryName(path)!,
+                    Uri.UnescapeDataString(target).Replace('/', Path.DirectorySeparatorChar)));
+                Assert.True(
+                    File.Exists(resolved) || Directory.Exists(resolved),
+                    $"Broken relative Markdown link '{target}' in '{repositoryPath}'.");
+            }
+        }
     }
 
     private static string Property(XDocument document, string name) =>
@@ -141,4 +191,9 @@ public sealed partial class PublicReleaseHygieneTests
         @"^\s*uses:\s*(?<action>[^@\s]+)@(?<reference>[^\s#]+)",
         RegexOptions.Multiline | RegexOptions.CultureInvariant)]
     private static partial Regex ActionReference();
+
+    [GeneratedRegex(
+        @"\[[^\]]+\]\((?<target>[^)]+)\)",
+        RegexOptions.CultureInvariant)]
+    private static partial Regex MarkdownLink();
 }

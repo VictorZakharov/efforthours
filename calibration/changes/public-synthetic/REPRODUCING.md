@@ -37,4 +37,5 @@ Compile that plan with `eh calibration change-compile` and all 24 indexed
 reports, then scaffold the blind second pass with
 `eh calibration review-scaffold --blind`. Only development and validation teacher diagnostics are checked in. Do
 not evaluate the test partition before independent review, numerical gates, and a
-release candidate are frozen under `CHANGE_MODEL_ADMISSION.md`.
+release candidate are frozen under the
+[Change model-admission policy](../../../docs/CHANGE_MODEL_ADMISSION.md).

@@ -8,7 +8,7 @@ provider-token measurement.
 
 These historical measurements cover the Milestone 6 `--view review` projection,
 not the later `host-review/1.0.0` packet or follow-up queries. The separate
-[Milestone 8 public checkpoint](benchmarks/host-review/public-expansion/0.1.0)
+[Milestone 8 public checkpoint](../benchmarks/host-review/public-expansion/0.1.0)
 records exact packet/query payload sizes and item/category/total agreement for
 three public repositories. Provider tokens, elapsed time, complete paired-session
 context sizes, and cost were unavailable, so that checkpoint makes no savings

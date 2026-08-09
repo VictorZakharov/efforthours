@@ -4,7 +4,7 @@ EffortHours uses line budgets as an early architecture signal. They are not a st
 score: a file approaching its budget is a prompt to separate responsibilities
 while the code is still cheap to move.
 
-The enforced manifest is [`eng/file-budgets.json`](eng/file-budgets.json).
+The enforced manifest is [`eng/file-budgets.json`](../eng/file-budgets.json).
 `EffortHours.EndToEndTests` checks every C# file under `src`, `tests`, and `benchmarks`.
 This check is intentionally disk-backed and therefore does not enter the
 memory-only unit suite.

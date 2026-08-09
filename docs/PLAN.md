@@ -235,7 +235,7 @@ Status as of August 9, 2026:
   policies, issue/PR templates, pinned cross-platform CI, dependency automation,
   NuGet-specific package metadata and README, an OIDC-only manual preview
   workflow, and an exact release checklist are checked in. Repository visibility,
-  tagging, and NuGet publication remain separately authorized external actions.
+  tagging, and NuGet publication are separately authorized external actions.
 
 ### Milestone 0: Product and contract decisions
 
@@ -479,10 +479,10 @@ cross-platform measurements and a more representative benchmark corpus exist.
 
 ## 8. Immediate next steps
 
-1. Keep the repository private until visibility is separately authorized. At that
-   boundary, recheck the package ID, require green cross-platform CI on the exact
-   candidate, then prepare the quiet `EffortHours.Tool` NuGet preview without
-   claiming calibrated accuracy.
+1. Complete the separately authorized public-alpha boundary: recheck the package
+   ID, require green cross-platform CI on the exact candidate, make the audited
+   source public, and publish the quiet `EffortHours.Tool` preview without claiming
+   calibrated accuracy.
 2. Hand one or more frozen blind public-corpus packets to genuinely distinct
    reviewers and compile corrections without exposing test partitions to tuning.
 3. Repeat the host-review benchmark blindly across multiple models with exact

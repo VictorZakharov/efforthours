@@ -53,6 +53,6 @@ eh calibration validate <reviewed-corpus.json>
 ```
 
 After compilation, maintainers must inspect the diff, reproduce validation, update
-`MODEL_REVIEWS.md`, and record agreement and disagreement without tuning against
-validation or test records. `reviewed` and `adjudicated` are evidence states, not
-automatic quality claims.
+the [model-review record](../docs/MODEL_REVIEWS.md), and record agreement and
+disagreement without tuning against validation or test records. `reviewed` and
+`adjudicated` are evidence states, not automatic quality claims.

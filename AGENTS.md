@@ -15,27 +15,28 @@ This is replacement-effort estimation, not reconstruction of actual hours worked
 
 ## Read before changing the repository
 
-Read these root documents completely:
+Read these documents completely:
 
-1. `PRODUCT.md`
-2. `ESTIMATION_MODEL.md`
-3. `PLAN.md`
+1. `docs/PRODUCT.md`
+2. `docs/ESTIMATION_MODEL.md`
+3. `docs/PLAN.md`
 4. `README.md`
-5. `MILESTONE_5.md` when changing evidence-to-effort behavior
-6. `MILESTONE_6.md` when changing reporting, explanation, or default pricing
-7. `MILESTONE_8.md` when changing host-review packets, queries, adjustment
+5. `docs/MILESTONE_5.md` when changing evidence-to-effort behavior
+6. `docs/MILESTONE_6.md` when changing reporting, explanation, or default pricing
+7. `docs/MILESTONE_7.md` and `docs/MODEL_REVIEWS.md` when changing priors,
+   calibration labels, evaluation, mutation guardrails, or review policy
+8. `docs/MILESTONE_8.md` when changing host-review packets, queries, adjustment
    validation, source disclosure, provider boundaries, or review budgets
-8. `MODEL_REVIEWS.md` when changing priors, calibration labels, or review policy
-9. `CHANGE_ESTIMATION.md` when changing diff, PR, commit, range, or contribution
-   semantics
-10. `MILESTONE_CHANGE_1.md` when changing the implemented Change EHE boundary
-11. `MILESTONE_CHANGE_2.md`, `MILESTONE_CHANGE_3.md`, and
-    `CHANGE_MODEL_ADMISSION.md` when changing Change
+9. `docs/MILESTONE_8_MEASUREMENT.md` when changing host-review telemetry,
+   comparison metrics, benchmark privacy, or model-budget admission
+10. `docs/CHANGE_ESTIMATION.md` when changing diff, PR, commit, range, or
+    contribution semantics
+11. `docs/MILESTONE_CHANGE_1.md` when changing the implemented Change EHE boundary
+12. `docs/MILESTONE_CHANGE_2.md`, `docs/MILESTONE_CHANGE_3.md`, and
+    `docs/CHANGE_MODEL_ADMISSION.md` when changing Change
     calibration identity, labels, metrics, review maturity, or admission policy
-12. `RELEASING.md` when changing package metadata, public-release automation,
+13. `docs/RELEASING.md` when changing package metadata, public-release automation,
     repository visibility procedure, or NuGet publication
-13. `MILESTONE_8_MEASUREMENT.md` when changing host-review telemetry, comparison
-    metrics, benchmark privacy, or model-budget admission
 
 If an implementation request conflicts with those documents, surface the conflict
 and update the relevant decision explicitly. Do not silently change estimation
@@ -118,8 +119,8 @@ semantics.
 - Record the source, version, and license of third-party dependencies, datasets,
   benchmark repositories, model files, generated templates, and substantial copied
   assets.
-- Prefer dependencies and assets compatible with the project's eventual
-  MIT-licensed distribution. Surface uncertain or restrictive terms before
+- Prefer dependencies and assets compatible with the project's MIT-licensed
+  distribution. Surface uncertain or restrictive terms before
   adoption.
 - Keep private calibration data separable from the public schemas, tooling, and
   distributable model artifacts.
@@ -159,7 +160,7 @@ semantics.
 - Record the provenance and effective date of default rate cards and model files.
 - Do not describe EHE as actual labor, a timesheet, or hours historically worked.
 - Prefer explicit uncertainty over unsupported precision.
-- Keep `CODE_BUDGETS.md` and the enforced manifest aligned when responsibilities
+- Keep `docs/CODE_BUDGETS.md` and the enforced manifest aligned when responsibilities
   move between files.
 
 ## Current project stage
@@ -279,9 +280,9 @@ policies, issue and pull-request templates, full-SHA-pinned Windows/Linux/macOS 
 weekly dependency update configuration, a dedicated NuGet README, and a manually
 dispatched `EffortHours.Tool` preview workflow. Package publication uses a protected
 `nuget.org` GitHub environment and short-lived NuGet trusted-publishing/OIDC
-credentials; long-lived publishing keys must not be committed or stored. The
-repository remains private and no package is public until the user separately
-authorizes those external actions. Follow `RELEASING.md` for the exact boundary.
+credentials; long-lived publishing keys must not be committed or stored.
+Repository visibility, tagging, GitHub releases, and package publication remain
+separately authorized actions. Follow `docs/RELEASING.md` for the exact boundary.
 
 The following commands have been run successfully from the repository root:
 
