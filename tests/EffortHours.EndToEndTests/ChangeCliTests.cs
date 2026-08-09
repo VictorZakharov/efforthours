@@ -36,6 +36,9 @@ public sealed class ChangeCliTests
             headObjectId,
             "--no-rate",
             "--compact");
+        repository.WriteText(
+            "Feature.cs",
+            "namespace Demo; public sealed class Feature { public int Value => 777; }\n");
         ProcessResult second = await RunCliAsync(
             "change",
             repository.RootPath,
@@ -48,7 +51,6 @@ public sealed class ChangeCliTests
         Assert.Equal(string.Empty, first.StandardError);
         Assert.Equal(first.StandardOutput, second.StandardOutput);
         Assert.Equal(statusBefore, await repository.GitAsync("status", "--porcelain=v1"));
-        Assert.DoesNotContain("999", first.StandardOutput, StringComparison.Ordinal);
         using JsonDocument report = JsonDocument.Parse(first.StandardOutput);
         JsonElement selection = report.RootElement.GetProperty("selection");
         Assert.Equal(baseObjectId, selection.GetProperty("base").GetProperty("objectId").GetString());

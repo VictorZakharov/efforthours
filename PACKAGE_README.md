@@ -42,6 +42,20 @@ activity, author identity, timestamps, and intermediate churn do not multiply
 effort. Pull-request identity resolution optionally uses an installed `gh` CLI;
 the selected Git objects must already exist locally.
 
+## Review consequential uncertainty
+
+```text
+eh review packet ./my-repository --compact
+eh review query ./my-repository --input-digest <packet-digest> --capability <id> --reason <reason>
+eh review validate review-packet.json proposed-adjustments.json
+```
+
+The provider-neutral review packet is rate-free and contains no source excerpts.
+A surrounding AI session can request bounded capability, evidence, scope, or
+explicitly selected admitted-source detail. EffortHours does not call a provider,
+transmit repository material, or apply proposed adjustments. The caller controls
+provider, privacy, disclosure, and retention choices.
+
 ## Offline and safety boundary
 
 Default repository analysis does not execute target code, install target
@@ -54,6 +68,8 @@ treated as untrusted input, and reports avoid source excerpts by default.
 - Public calibration labels have not completed genuinely independent correction.
 - TypeScript and TSX evidence is token-backed rather than compiler-backed.
 - Multiple-PR and contributor-period portfolio estimation is not implemented.
+- Host-review token use, cost, and estimate improvement have not yet been measured
+  across representative repositories; no automatic review budget is selected.
 
 The schemas, estimation decisions, calibration provenance, benchmarks, source,
 issues, and contribution process are available in the

@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:eh:schema:v1:host-review-adjustment",
+  "title": "EffortHours host-review adjustment ledger v1",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "protocolVersion",
+    "inputDigest",
+    "reviewerModel",
+    "adjustments",
+    "notes"
+  ],
+  "properties": {
+    "schemaVersion": { "const": "1.0.0" },
+    "protocolVersion": { "const": "host-review/1.0.0" },
+    "inputDigest": { "$ref": "urn:eh:schema:v1:host-review-packet#/$defs/digest" },
+    "reviewerModel": { "$ref": "urn:eh:schema:v1:host-review-packet#/$defs/modelIdentity" },
+    "adjustments": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/adjustment" }
+    },
+    "notes": { "$ref": "urn:eh:schema:v1:host-review-packet#/$defs/uniqueStrings" }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "adjustment": {
+      "type": "object",
+      "required": [
+        "targetId",
+        "decision",
+        "originalHours",
+        "evidenceIds",
+        "reason"
+      ],
+      "properties": {
+        "targetId": { "type": "string", "minLength": 1 },
+        "decision": { "enum": ["affirm", "replace"] },
+        "originalHours": { "$ref": "urn:eh:schema:v1:estimate-report#/$defs/effortRange" },
+        "replacement": { "$ref": "#/$defs/replacement" },
+        "evidenceIds": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        },
+        "reason": { "type": "string", "minLength": 1 }
+      },
+      "additionalProperties": false
+    },
+    "replacement": {
+      "type": "object",
+      "required": [
+        "category",
+        "hours",
+        "confidence",
+        "assumptions",
+        "exclusions",
+        "uncertaintyReasons"
+      ],
+      "properties": {
+        "category": { "$ref": "urn:eh:schema:v1:estimate-report#/$defs/category" },
+        "hours": { "$ref": "urn:eh:schema:v1:estimate-report#/$defs/effortRange" },
+        "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+        "assumptions": { "$ref": "urn:eh:schema:v1:host-review-packet#/$defs/uniqueStrings" },
+        "exclusions": { "$ref": "urn:eh:schema:v1:host-review-packet#/$defs/uniqueStrings" },
+        "uncertaintyReasons": { "$ref": "urn:eh:schema:v1:host-review-packet#/$defs/uniqueStrings" }
+      },
+      "additionalProperties": false
+    }
+  }
+}

@@ -36,6 +36,11 @@ provenance, review and evaluation commands, a frozen rubric, and a 24-case matri
 with reproducible source reports, 121 preliminary teacher targets, and a blind
 independent-review packet. No independent Change correction or accuracy claim is
 complete.
+The first Milestone 8 host-review checkpoint is implemented: a surrounding AI
+session can consume a rate-free, digest-bound uncertainty packet, request bounded
+capability, evidence, scope, or explicitly selected source detail, and return a
+schema-validated adjustment ledger. EffortHours does not call a provider or apply
+those adjustments; representative cost and improvement measurements remain.
 The repository now contains:
 
 - versioned JSON contracts and published schemas for evidence, work items,
@@ -88,6 +93,9 @@ The repository now contains:
   compact JSON and readable Markdown;
 - `explain` drill-down from stable work-item or capability IDs to evidence and
   calculation lineage;
+- provider-neutral `review packet`, digest-bound `review query`, and non-applying
+  `review validate` commands with versioned packet, query-result, adjustment, and
+  validation schemas;
 - a schema-validated, checked-in 2026 US senior-contractor rate model with a
   $160/hour default, $125-$200 market reference, source provenance, formula, and
   caller override or opt-out;
@@ -124,8 +132,16 @@ as a production-ready or empirically validated estimate.
 
 `eh estimate` now applies the bundled 2026 USD rate by default. Use
 `--no-rate` for effort-only output or `--hourly-rate` for an explicit replacement.
-Pricing never changes EHE. Use `--view review` for a bounded AI-review packet and
+Pricing never changes EHE. Use `--view review` for the compact local projection and
 pass any reported capability ID to `eh explain` for its evidence lineage.
+
+`eh review packet <folder>` creates the provider-neutral, rate-free handoff for a
+surrounding AI session. Follow-up `review query` calls must repeat the packet's
+input digest and can request one capability, one evidence fact, a bounded scope
+page, or an explicit admitted-source line window. `review validate` checks a
+proposed evidence-backed adjustment ledger but never applies it. No review command
+chooses or calls a provider; provider, privacy, disclosure, and retention decisions
+remain with the caller. See [MILESTONE_8.md](MILESTONE_8.md).
 
 `eh change` estimates the final functional and quality delta for explicit
 base/head revisions, a commit, a range, or one PR. It reads immutable local Git
@@ -321,6 +337,8 @@ without misrepresenting counterfactual hours as historical labor.
   decisions.
 - [MILESTONE_7.md](MILESTONE_7.md) defines reviewed labels, repository-held-out
   evaluation, metrics, and the admission gates for later local models.
+- [MILESTONE_8.md](MILESTONE_8.md) defines the provider-neutral host-review packet,
+  digest-bound follow-up queries, adjustment ledger, and deferred measurement gate.
 - [REPORT_BENCHMARKS.md](REPORT_BENCHMARKS.md) records reporting size and usefulness
   measurements.
 - [MODEL_REVIEWS.md](MODEL_REVIEWS.md) records provisional realism checks with

@@ -9,6 +9,7 @@ using EffortHours.Core;
 using EffortHours.Estimation;
 using EffortHours.Pricing;
 using EffortHours.Reporting;
+using EffortHours.Review;
 
 namespace EffortHours.Cli;
 
@@ -75,6 +76,11 @@ public sealed partial class EffortHoursApplication
                     standardError,
                     cancellationToken).ConfigureAwait(false),
                 "explain" => await ExplainAsync(
+                    [.. arguments.Skip(1)],
+                    standardOutput,
+                    standardError,
+                    cancellationToken).ConfigureAwait(false),
+                "review" => await ReviewAsync(
                     [.. arguments.Skip(1)],
                     standardOutput,
                     standardError,

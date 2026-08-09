@@ -22,6 +22,10 @@ may still change public contracts with explicit documentation.
   contracts with checked-in schemas.
 - Preliminary public repository and synthetic Change calibration corpora, mutation
   guardrails, and blind independent-review handoffs.
+- Provider-neutral `host-review/1.0.0` packets, digest-bound capability/evidence/
+  scope/selected-source queries, adjustment ledgers, and non-applying validation.
+  The local baseline remains complete and offline; no provider is embedded or
+  selected.
 
 ### Changed
 

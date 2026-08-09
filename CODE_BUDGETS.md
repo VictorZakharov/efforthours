@@ -36,6 +36,12 @@ generation and cleanup, target-tree fingerprinting, inventory projection, and
 working-set sampling from benchmark orchestration. The largest scanner-benchmark
 source file is 193 lines, and no ratchet override was added.
 
+The August 9, 2026 host-review checkpoint placed packet construction, querying,
+selected-source safety, rendering, and adjustment validation in a separate
+`EffortHours.Review` library. CLI parsing is split by subcommand, and contract
+validation is split into focused partial files after the budget test caught the
+first oversized draft. No ratchet override was added.
+
 Line count is deliberately simple, deterministic, cross-platform, and difficult
 to game accidentally. The useful outcome is earlier decomposition into cohesive
 contracts, commands, analyzers, and renderers—not compressed formatting.

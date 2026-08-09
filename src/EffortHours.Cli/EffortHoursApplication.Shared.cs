@@ -220,6 +220,9 @@ public sealed partial class EffortHoursApplication
           eh change explain <change-estimate.json> --item <id> [options]
           eh report <estimate.json> [options]
           eh explain <repository-or-evidence.json> --item <id> [options]
+          eh review packet <repository-or-evidence.json> [options]
+          eh review query <repository-or-evidence.json> --input-digest <digest> [selector] [options]
+          eh review validate <packet.json> <adjustment.json> [options]
           eh calibration scaffold <estimate.json> [--blind] [--compact] [--output <path>]
           eh calibration compile <review-plan.json> <estimate.json>... [--compact] [--output <path>]
           eh calibration review-scaffold <corpus.json> [--blind] [--compact] [--output <path>]
@@ -240,8 +243,10 @@ public sealed partial class EffortHoursApplication
         JavaScript/TypeScript analyzer parses manifests, configuration, JS/JSX ASTs,
         and TS/TSX token streams without running package managers or executable
         configuration. EffortHours does not execute target code, access Git history,
-        install dependencies, or emit source excerpts. The current seed estimator is
-        explicitly uncalibrated and must not be treated as a production estimate.
+        install dependencies, or emit source excerpts unless one admitted file is
+        explicitly requested through a digest-bound review query. The current seed
+        estimator is explicitly uncalibrated and must not be treated as a production
+        estimate.
         """;
 
     private const string SchemaHelpText = """

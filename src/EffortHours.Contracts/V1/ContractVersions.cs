@@ -5,6 +5,11 @@ public static class ContractVersions
     public const string V1 = "1.0.0";
 }
 
+public static class HostReviewProtocolVersions
+{
+    public const string V1 = "host-review/1.0.0";
+}
+
 public static class SchemaNames
 {
     public const string CalibrationAuthoringPacket = "calibration-authoring-packet.schema.json";
@@ -23,6 +28,10 @@ public static class SchemaNames
     public const string EstimateExplanation = "estimate-explanation.schema.json";
     public const string EstimateReport = "estimate-report.schema.json";
     public const string EstimateView = "estimate-view.schema.json";
+    public const string HostReviewAdjustment = "host-review-adjustment.schema.json";
+    public const string HostReviewPacket = "host-review-packet.schema.json";
+    public const string HostReviewQueryResult = "host-review-query-result.schema.json";
+    public const string HostReviewValidation = "host-review-validation.schema.json";
     public const string RateCard = "rate-card.schema.json";
     public const string RateCardModel = "rate-card-model.schema.json";
     public const string RepositoryEvidence = "repository-evidence.schema.json";
@@ -49,6 +58,10 @@ public static class SchemaIds
     public const string EstimateExplanation = "urn:eh:schema:v1:estimate-explanation";
     public const string EstimateReport = "urn:eh:schema:v1:estimate-report";
     public const string EstimateView = "urn:eh:schema:v1:estimate-view";
+    public const string HostReviewAdjustment = "urn:eh:schema:v1:host-review-adjustment";
+    public const string HostReviewPacket = "urn:eh:schema:v1:host-review-packet";
+    public const string HostReviewQueryResult = "urn:eh:schema:v1:host-review-query-result";
+    public const string HostReviewValidation = "urn:eh:schema:v1:host-review-validation";
     public const string RateCard = "urn:eh:schema:v1:rate-card";
     public const string RateCardModel = "urn:eh:schema:v1:rate-card-model";
     public const string RepositoryEvidence = "urn:eh:schema:v1:repository-evidence";

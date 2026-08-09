@@ -22,6 +22,7 @@
     <ProjectReference Include="../EffortHours.Estimation/EffortHours.Estimation.csproj" />
     <ProjectReference Include="../EffortHours.Pricing/EffortHours.Pricing.csproj" />
     <ProjectReference Include="../EffortHours.Reporting/EffortHours.Reporting.csproj" />
+    <ProjectReference Include="../EffortHours.Review/EffortHours.Review.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Include="../../LICENSE" Pack="true" PackagePath="/" />

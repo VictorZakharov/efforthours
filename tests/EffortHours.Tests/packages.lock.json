@@ -196,6 +196,28 @@
           "EffortHours.Contracts": "[1.0.0, )"
         }
       },
+      "efforthours.review": {
+        "type": "Project",
+        "dependencies": {
+          "EffortHours.Analysis": "[1.0.0, )",
+          "EffortHours.Contracts": "[1.0.0, )",
+          "EffortHours.Reporting": "[1.0.0, )"
+        }
+      },
+      "EffortHours.Tool": {
+        "type": "Project",
+        "dependencies": {
+          "EffortHours.Analysis": "[1.0.0, )",
+          "EffortHours.Calibration": "[1.0.0, )",
+          "EffortHours.Change": "[1.0.0, )",
+          "EffortHours.Contracts": "[1.0.0, )",
+          "EffortHours.Core": "[1.0.0, )",
+          "EffortHours.Estimation": "[1.0.0, )",
+          "EffortHours.Pricing": "[1.0.0, )",
+          "EffortHours.Reporting": "[1.0.0, )",
+          "EffortHours.Review": "[1.0.0, )"
+        }
+      },
       "Acornima": {
         "type": "CentralTransitive",
         "requested": "[1.6.2, )",

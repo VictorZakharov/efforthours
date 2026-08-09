@@ -1,0 +1,114 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:eh:schema:v1:host-review-query-result",
+  "title": "EffortHours host-review query result v1",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "protocolVersion",
+    "inputDigest",
+    "repository",
+    "query",
+    "capabilities",
+    "evidenceFacts",
+    "omissions",
+    "containsSourceExcerpt",
+    "disclosureNotice"
+  ],
+  "properties": {
+    "schemaVersion": { "const": "1.0.0" },
+    "protocolVersion": { "const": "host-review/1.0.0" },
+    "inputDigest": { "$ref": "urn:eh:schema:v1:host-review-packet#/$defs/digest" },
+    "repository": { "$ref": "urn:eh:schema:v1:estimate-report#/$defs/repository" },
+    "query": { "$ref": "#/$defs/query" },
+    "capabilities": {
+      "type": "array",
+      "maxItems": 20,
+      "items": { "$ref": "urn:eh:schema:v1:host-review-packet#/$defs/candidate" }
+    },
+    "evidenceFacts": {
+      "type": "array",
+      "maxItems": 48,
+      "items": { "$ref": "urn:eh:schema:v1:repository-evidence#/$defs/fact" }
+    },
+    "sourceExcerpt": { "$ref": "#/$defs/sourceExcerpt" },
+    "omissions": { "$ref": "#/$defs/omissions" },
+    "containsSourceExcerpt": { "type": "boolean" },
+    "disclosureNotice": { "type": "string", "minLength": 1 }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "query": {
+      "type": "object",
+      "required": ["kind", "selector", "reason", "profile", "inputDigest"],
+      "properties": {
+        "kind": {
+          "enum": ["capability", "evidence", "scope", "selected-source"]
+        },
+        "selector": { "type": "string", "minLength": 1 },
+        "reason": { "type": "string", "minLength": 1 },
+        "profile": { "enum": ["implementation", "recreation"] },
+        "inputDigest": { "$ref": "urn:eh:schema:v1:host-review-packet#/$defs/digest" },
+        "offset": { "type": "integer", "minimum": 0 },
+        "limit": { "type": "integer", "minimum": 1, "maximum": 20 },
+        "startLine": { "type": "integer", "minimum": 1 },
+        "lineCount": { "type": "integer", "minimum": 1, "maximum": 200 }
+      },
+      "additionalProperties": false
+    },
+    "sourceLine": {
+      "type": "object",
+      "required": ["line", "text", "truncated"],
+      "properties": {
+        "line": { "type": "integer", "minimum": 1 },
+        "text": { "type": "string" },
+        "truncated": { "type": "boolean" }
+      },
+      "additionalProperties": false
+    },
+    "sourceExcerpt": {
+      "type": "object",
+      "required": [
+        "path",
+        "evidenceId",
+        "fileDigest",
+        "totalLines",
+        "requestedStartLine",
+        "requestedLineCount",
+        "lines",
+        "contentTruncated"
+      ],
+      "properties": {
+        "path": { "type": "string", "minLength": 1 },
+        "evidenceId": { "type": "string", "minLength": 1 },
+        "fileDigest": { "$ref": "urn:eh:schema:v1:host-review-packet#/$defs/digest" },
+        "totalLines": { "type": "integer", "minimum": 0 },
+        "requestedStartLine": { "type": "integer", "minimum": 1 },
+        "requestedLineCount": { "type": "integer", "minimum": 1, "maximum": 200 },
+        "lines": {
+          "type": "array",
+          "maxItems": 200,
+          "items": { "$ref": "#/$defs/sourceLine" }
+        },
+        "contentTruncated": { "type": "boolean" }
+      },
+      "additionalProperties": false
+    },
+    "omissions": {
+      "type": "object",
+      "required": [
+        "capabilityCount",
+        "evidenceFactCount",
+        "sourceLineCount",
+        "sourceCharacterCount"
+      ],
+      "properties": {
+        "capabilityCount": { "type": "integer", "minimum": 0 },
+        "evidenceFactCount": { "type": "integer", "minimum": 0 },
+        "sourceLineCount": { "type": "integer", "minimum": 0 },
+        "sourceCharacterCount": { "type": "integer", "minimum": 0 }
+      },
+      "additionalProperties": false
+    }
+  }
+}

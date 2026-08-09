@@ -270,6 +270,15 @@ budgets will be chosen only after representative implementations are measured.
 Users who run EffortHours through an AI session are responsible for that session's
 provider, tool, disclosure, and privacy policies.
 
+The first `host-review/1.0.0` checkpoint implements this as an optional protocol
+around a complete rate-free local estimate. A compact packet binds the complete
+estimate and evidence with a canonical SHA-256 input digest. Follow-up capability,
+evidence, scope, and explicitly selected-source queries must repeat that digest.
+The adjustment ledger records affirm/replace intent, the exact original range,
+supporting evidence, rationale, and available model identity. Validation checks
+identity and lineage but does not apply the ledger or establish correctness,
+calibration, or independence. `MILESTONE_8.md` defines the exact boundary.
+
 ## 10. Calibration
 
 Strong AI estimates can serve as teacher labels even when historical labor data is

@@ -23,14 +23,16 @@ Read these root documents completely:
 4. `README.md`
 5. `MILESTONE_5.md` when changing evidence-to-effort behavior
 6. `MILESTONE_6.md` when changing reporting, explanation, or default pricing
-7. `MODEL_REVIEWS.md` when changing priors, calibration labels, or review policy
-8. `CHANGE_ESTIMATION.md` when changing diff, PR, commit, range, or contribution
+7. `MILESTONE_8.md` when changing host-review packets, queries, adjustment
+   validation, source disclosure, provider boundaries, or review budgets
+8. `MODEL_REVIEWS.md` when changing priors, calibration labels, or review policy
+9. `CHANGE_ESTIMATION.md` when changing diff, PR, commit, range, or contribution
    semantics
-9. `MILESTONE_CHANGE_1.md` when changing the implemented Change EHE boundary
-10. `MILESTONE_CHANGE_2.md`, `MILESTONE_CHANGE_3.md`, and
+10. `MILESTONE_CHANGE_1.md` when changing the implemented Change EHE boundary
+11. `MILESTONE_CHANGE_2.md`, `MILESTONE_CHANGE_3.md`, and
     `CHANGE_MODEL_ADMISSION.md` when changing Change
     calibration identity, labels, metrics, review maturity, or admission policy
-11. `RELEASING.md` when changing package metadata, public-release automation,
+12. `RELEASING.md` when changing package metadata, public-release automation,
     repository visibility procedure, or NuGet publication
 
 If an implementation request conflicts with those documents, surface the conflict
@@ -248,6 +250,16 @@ host-AI teacher. Development and validation diagnostics are recorded; test
 comparison remains withheld. No independent Change review is complete. The corpus
 changes no estimator prior and adds no ML dependency;
 `change-seed/0.1.0` remains experimental and uncalibrated.
+
+The first Milestone 8 host-review checkpoint adds the provider-neutral
+`host-review/1.0.0` protocol: rate-free compact packets, canonical estimate-plus-
+evidence input digests, bounded capability/evidence/scope/selected-source queries,
+explicit model-identity availability, evidence-backed affirm/replace ledgers, and
+non-applying validation. Selected source is opt-in, restricted to scanner-admitted
+files, link-safe, size/encoding bounded, and digest checked. The local baseline
+remains complete without AI; EffortHours calls no provider and chooses no model.
+Representative token, time, monetary-cost, and estimate-improvement measurement is
+still required before any host-review budget or automatic default is selected.
 
 The public-alpha candidate includes project-authored governance and conduct
 policies, issue and pull-request templates, full-SHA-pinned Windows/Linux/macOS CI,

@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:eh:schema:v1:host-review-validation",
+  "title": "EffortHours host-review validation report v1",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "protocolVersion",
+    "inputDigest",
+    "isValid",
+    "adjustmentCount",
+    "adjustmentsApplied",
+    "errors",
+    "warnings"
+  ],
+  "properties": {
+    "schemaVersion": { "const": "1.0.0" },
+    "protocolVersion": { "const": "host-review/1.0.0" },
+    "inputDigest": { "$ref": "urn:eh:schema:v1:host-review-packet#/$defs/digest" },
+    "isValid": { "type": "boolean" },
+    "adjustmentCount": { "type": "integer", "minimum": 0 },
+    "adjustmentsApplied": { "const": false },
+    "errors": { "$ref": "urn:eh:schema:v1:host-review-packet#/$defs/uniqueStrings" },
+    "warnings": { "$ref": "urn:eh:schema:v1:host-review-packet#/$defs/uniqueStrings" }
+  },
+  "additionalProperties": false
+}

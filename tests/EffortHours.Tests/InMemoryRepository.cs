@@ -13,6 +13,7 @@ internal class InMemoryRepository : IRepositoryFileSystem
 
     private readonly HashSet<string> _directories = new(PathComparer);
     private readonly Dictionary<string, MemoryFile> _files = new(PathComparer);
+    private readonly Dictionary<string, FileAttributes> _attributeOverrides = new(PathComparer);
     private long _logicalClock = new DateTime(2026, 1, 1, 0, 0, 0, DateTimeKind.Utc).Ticks;
 
     public InMemoryRepository()
@@ -44,6 +45,17 @@ internal class InMemoryRepository : IRepositoryFileSystem
             .Select(path => Path.GetRelativePath(RootPath, path).Replace('\\', '/'))
             .OrderBy(path => path, StringComparer.Ordinal)];
 
+    public void SetAttributes(string relativePath, FileAttributes attributes)
+    {
+        string fullPath = ResolveRepositoryPath(relativePath);
+        if (!_directories.Contains(fullPath) && !_files.ContainsKey(fullPath))
+        {
+            throw new FileNotFoundException("The in-memory entry does not exist.", fullPath);
+        }
+
+        _attributeOverrides[fullPath] = attributes;
+    }
+
     public string GetFullPath(string path) => Path.GetFullPath(path);
 
     public bool DirectoryExists(string path) => _directories.Contains(Normalize(path));
@@ -53,6 +65,11 @@ internal class InMemoryRepository : IRepositoryFileSystem
     public FileAttributes GetAttributes(string path)
     {
         string fullPath = Normalize(path);
+        if (_attributeOverrides.TryGetValue(fullPath, out FileAttributes attributes))
+        {
+            return attributes;
+        }
+
         if (_directories.Contains(fullPath))
         {
             return FileAttributes.Directory;

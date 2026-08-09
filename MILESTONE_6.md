@@ -304,6 +304,15 @@ path, and smoke-tested through `version`, `rate info`, and a compact review
 estimate. `REPORT_BENCHMARKS.md` supplies the required output-size and usefulness
 evidence.
 
+## Milestone 8 continuation
+
+`host-review/1.0.0` now wraps this milestone's deterministic review queue in a
+rate-free packet, binds it to the complete estimate and evidence by digest, and
+adds bounded follow-up queries plus non-applying adjustment validation. The
+canonical estimate and every Milestone 6 projection remain unchanged. Concrete
+token, provider-cost, and improvement measurement is still deferred; see
+`MILESTONE_8.md`.
+
 ## Deferred incremental-change mode
 
 Milestone 6 reports the current repository as a whole. `CHANGE_ESTIMATION.md`

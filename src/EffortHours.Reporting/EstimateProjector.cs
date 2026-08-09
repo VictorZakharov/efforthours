@@ -6,7 +6,7 @@ namespace EffortHours.Reporting;
 public static class EstimateProjector
 {
     public const int MaximumReviewScopes = 20;
-    public const int MaximumReviewCapabilities = 12;
+    public const int MaximumReviewCapabilities = HostReviewProtocol.MaximumPacketCapabilities;
 
     private const int MaterialCapabilityCount = 6;
     private const int UncertainCapabilityCount = 6;

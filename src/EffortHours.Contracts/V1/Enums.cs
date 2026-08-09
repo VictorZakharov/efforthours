@@ -90,6 +90,20 @@ public enum ExplanationMatchKind
     Capability,
 }
 
+public enum HostReviewQueryKind
+{
+    Capability,
+    Evidence,
+    Scope,
+    SelectedSource,
+}
+
+public enum HostReviewDecision
+{
+    Affirm,
+    Replace,
+}
+
 public enum ComplexityLevel
 {
     Routine,

@@ -188,6 +188,12 @@ Status as of August 9, 2026:
   the EffortHours tree were measured without target execution, dependency install,
   network access, or target-tree mutation. No regression threshold was inferred
   from this single workstation.
+- The first Milestone 8 protocol checkpoint is complete: provider-neutral,
+  rate-free review packets bind the full local estimate and evidence by digest;
+  bounded capability, evidence, scope, and explicit selected-source queries expose
+  only requested detail; and adjustment validation records model identity,
+  evidence, and rationale without applying changes. Representative host-review
+  cost and improvement measurement remains.
 - The first Milestone 9 Change Estimation subset is complete: immutable base/head,
   commit, range, and single-PR selectors; v1 Change EHE schemas; final-delta
   normalization; additive component reconciliation; JSON/Markdown/explanation
@@ -358,13 +364,20 @@ uncalibrated until the licensed corpus is diverse and independently reviewed.
 
 ### Milestone 8: Host AI integration and measurement
 
-- Define compact uncertainty packets and follow-up query commands for an AI agent.
-- Record available AI model identity, input digest, adjustment, and rationale.
+- The first protocol checkpoint is complete: compact rate-free uncertainty packets,
+  canonical input digests, and bounded capability, evidence, scope, and explicit
+  selected-source queries are implemented under `host-review/1.0.0`.
+- Provider-neutral adjustment ledgers record affirm/replace intent, the exact local
+  range, supporting evidence, rationale, and available model identity; validation
+  is deterministic and does not apply changes.
 - Benchmark token use, elapsed time, cost, and estimate improvement on representative
   repositories before choosing defaults or limits.
 - Keep provider and privacy choices in the surrounding AI session rather than
   embedding them into the core estimator.
 - Ensure the same repository can always receive a local baseline estimate.
+
+The implemented contract and safety boundary are recorded in `MILESTONE_8.md`.
+Representative measurement remains the open part of this milestone.
 
 Exit condition: host AI review materially improves low-confidence cases while using
 only a small, measurable fraction of the context and cost required for full-source

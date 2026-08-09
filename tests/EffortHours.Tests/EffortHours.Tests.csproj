@@ -25,5 +25,6 @@
     <ProjectReference Include="../../src/EffortHours.Estimation/EffortHours.Estimation.csproj" />
     <ProjectReference Include="../../src/EffortHours.Pricing/EffortHours.Pricing.csproj" />
     <ProjectReference Include="../../src/EffortHours.Reporting/EffortHours.Reporting.csproj" />
+    <ProjectReference Include="../../src/EffortHours.Review/EffortHours.Review.csproj" />
   </ItemGroup>
 </Project>

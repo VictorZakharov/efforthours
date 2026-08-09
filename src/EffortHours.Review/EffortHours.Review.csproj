@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <Description>Provider-neutral host-review packets, queries, and adjustment validation for EffortHours.</Description>
+    <RootNamespace>EffortHours.Review</RootNamespace>
+    <AssemblyName>EffortHours.Review</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../EffortHours.Analysis/EffortHours.Analysis.csproj" />
+    <ProjectReference Include="../EffortHours.Contracts/EffortHours.Contracts.csproj" />
+    <ProjectReference Include="../EffortHours.Reporting/EffortHours.Reporting.csproj" />
+  </ItemGroup>
+</Project>
