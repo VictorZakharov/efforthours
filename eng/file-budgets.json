@@ -10,7 +10,7 @@
     "src/EffortHours.Analyzers.JavaScript/JavaScriptSyntaxAnalyzer.cs": 850,
     "src/EffortHours.Contracts/ContractValidation.cs": 750,
     "src/EffortHours.Contracts/V1/CalibrationContracts.cs": 750,
-    "src/EffortHours.Estimation/SeedCapabilityBuilder.cs": 1350,
+    "src/EffortHours.Estimation/SeedCapabilityBuilder.cs": 1300,
     "src/EffortHours.Estimation/SeedEvidenceIndex.cs": 550,
     "tests/EffortHours.EndToEndTests/CliTests.cs": 1100,
     "tests/EffortHours.Tests/CalibrationTests.cs": 1250

@@ -47,6 +47,13 @@ measurement, session construction, comparison metrics, aggregation, rendering,
 and CLI option parsing in focused files. Measurement semantic validation was split
 again before reaching the ordinary ceiling. No ratchet override was added.
 
+The August 9, 2026 measured-coverage checkpoint separates LCOV parsing, Cobertura
+parsing, scope matching, evidence construction, and orchestration. Every new file
+uses the ordinary 500-line ceiling, and the orchestrator was split below the 80%
+refactoring threshold. Coverage capability construction moved out of the legacy
+seed builder, allowing its ratchet to decrease from 1350 to 1300 lines. No override
+was added or increased.
+
 Line count is deliberately simple, deterministic, cross-platform, and difficult
 to game accidentally. The useful outcome is earlier decomposition into cohesive
 contracts, commands, analyzers, and renderers—not compressed formatting.

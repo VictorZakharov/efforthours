@@ -27,7 +27,11 @@ Milestone 7B1 through 7B5 public-corpus, review, and mutation checkpoints are
 implemented. A post-7B5 precision checkpoint corrects reviewed .NET persistence,
 framework-neutral JavaScript UI, and benchmark-entry-point false positives without
 changing seed priors. Actual independent correction and broader multi-observation
-corpus coverage remain. The first experimental Change Estimation MVP is also
+corpus coverage remain. A subsequent measured-coverage checkpoint statically
+parses digest-verified LCOV and Cobertura reports, maps them to maintained
+production scopes without emitting reported source paths, and gives measured
+values precedence over same-scope declarations. The first experimental Change
+Estimation MVP is also
 implemented for immutable base/head revisions, one commit, one range, and one
 GitHub pull request. Its behavioral safeguard checkpoint adds cooperative
 cancellation and category-isolated migration, integration, CI, container-delivery,
@@ -117,18 +121,23 @@ The repository now contains:
   reviewer identities;
 - audited exact-zero reviewed exclusions, permitted only as `0/0/0` with rationale
   and a size exception under `ehe-work-item/1.1.0`;
-- versioned relational mutation guardrails plus a 48-case, 156-assertion synthetic
+- versioned relational mutation guardrails plus a 51-case, 170-assertion synthetic
   baseline spanning .NET, parser-backed JavaScript, token-backed TypeScript, and
   mixed repositories. It covers formatting, exact duplication, generated bodies,
   maintained generated customization, bounded renamed near-copies,
   compiler-disabled C# syntax, API/UI/data/security behavior, tests, declared
-  coverage levels, documentation, integrations, workspace boundaries, CI,
-  containers, all three range points, and category isolation.
+  and measured coverage levels, measured-over-declared precedence, documentation,
+  integrations, workspace boundaries, CI, containers, all three range points, and
+  category isolation;
+- bounded, non-executing LCOV and Cobertura parsing with common-inventory digest
+  checks, line/branch/function measurements, and privacy-safe project/package
+  scope mapping;
 - enforced source-file budgets with a 500-line default, a 400-line CLI ceiling,
   explicit legacy ratchets, and a thin command dispatcher.
 
 `eh scan <folder>` now produces common, static .NET, and static
-JavaScript/TypeScript evidence, including mixed-repository output.
+JavaScript/TypeScript evidence, including mixed-repository output and supported
+checked-in measured-coverage artifacts.
 `eh estimate <folder>` connects that evidence directly to the granular seed
 pipeline. Every represented hour belongs to an evidence-backed work item, but the
 priors remain experimental and uncalibrated. Seed-rule output must not be presented
@@ -208,6 +217,12 @@ purpose-built, non-executing token analyzer in this release; evidence tags discl
 which path was used. EffortHours never imports JavaScript modules or runs package
 scripts, package managers, transpilers, or executable configuration during the
 default scan.
+
+Measured coverage parsing currently supports checked-in LCOV and Cobertura only.
+EffortHours does not generate or refresh those reports, so a stale or mismatched
+artifact remains an explicit uncertainty even after its checked-in bytes are
+digest-verified. OpenCover, JaCoCo, Istanbul JSON, and binary `.coverage` files are
+inventoried but not interpreted as measured percentages in this checkpoint.
 
 ## Install the preview
 

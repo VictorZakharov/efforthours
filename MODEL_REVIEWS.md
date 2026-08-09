@@ -27,6 +27,33 @@ Because EffortHours's own anchor informed the seed-model and calibration design,
 a development diagnostic rather than an eligible held-out test record unless a
 future independent snapshot and review policy explicitly establishes otherwise.
 
+## 2026-08-09: measured-coverage evidence admission
+
+Status: **qualitative evidence correction; no prior calibration**
+
+The common analyzer now parses checked-in LCOV and Cobertura reports into
+digest-verified `measured` line, branch, and function evidence. Covered source
+paths are matched privately to maintained production project/package scopes and
+are not copied into emitted evidence, diagnostics, or estimates. Public fixtures
+use only synthetic repository-relative paths. Changed, ambiguous, unmatched,
+malformed, unsupported, unsafe, or oversized artifacts are not valued. EffortHours
+still does not execute tests or prove that a report belongs to the analyzed source
+snapshot.
+
+When measured and `declared-assumed` percentages apply to the same scope, the
+measured facts alone feed the existing `coverage-achievement` rule. The declaration
+remains visible in repository evidence but is neither averaged nor double-counted.
+No value in `models/seed-rules/0.2.1.json`, reviewed target, corpus partition, or
+review maturity changed.
+
+Synthetic suite `efforthours-public-synthetic-mutations/0.4.0` expands the prior
+48-case/156-relation checkpoint to 51 cases and 170 passing relations. Measured 80%
+and 100% cases move unit-test low/expected/high effort directionally while leaving
+production unchanged; a measured 80% report plus a conflicting declared 100%
+threshold remains identical to measured 80% alone at every repository-total and
+unit-test range point. These are qualitative safeguards, not reviewed effort
+labels or an accuracy result.
+
 ## 2026-08-08: analyzer precision from reviewed exclusions
 
 Status: **qualitative analyzer correction; no prior calibration**

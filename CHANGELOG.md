@@ -31,6 +31,10 @@ may still change public contracts with explicit documentation.
   first three-repository public diagnostic reports payload and agreement evidence,
   explicitly withholds unavailable token/time/cost ratios, and selects no default
   review budget.
+- Static, digest-verified LCOV and Cobertura coverage parsing with privacy-safe
+  project/package scope mapping. Measured coverage is distinct from and takes
+  precedence over a conflicting same-scope declared threshold; the public mutation
+  baseline now has 51 cases and 170 passing relations.
 
 ### Changed
 
@@ -60,6 +64,9 @@ may still change public contracts with explicit documentation.
 - No checked-in corpus has completed genuinely independent correction.
 - Multiple pull requests and contributor-period portfolios are not implemented.
 - TypeScript and TSX analysis is token-backed rather than compiler-backed.
+- Measured coverage formats other than LCOV and Cobertura are inventoried but not
+  parsed, and checked-in reports can be stale because EffortHours does not rerun
+  tests on the default path.
 
 No version in this file is a public release until a matching immutable Git tag and
 package/release record exist.

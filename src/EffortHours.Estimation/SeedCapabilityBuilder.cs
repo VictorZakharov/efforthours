@@ -7,7 +7,7 @@ internal sealed record SeedCapabilityLedger(
     IReadOnlyList<CapabilityUnit> Represented,
     IReadOnlyList<CapabilityUnit> ProfessionalizationGap);
 
-internal sealed class SeedCapabilityBuilder(
+internal sealed partial class SeedCapabilityBuilder(
     SeedEvidenceIndex index,
     SeedWorkItemFactory workItemFactory)
 {
@@ -677,56 +677,6 @@ internal sealed class SeedCapabilityBuilder(
         }
 
         AddCoverageCapabilities(capabilities);
-    }
-
-    private void AddCoverageCapabilities(List<CapabilityUnit> capabilities)
-    {
-        foreach (IGrouping<string, EvidenceFact> group in _index.FactsOfKind(EvidenceKinds.Coverage)
-            .Where(fact => fact.Measurements.Any(measurement => measurement.Unit == "percent"))
-            .Where(fact => _index.FindScope(fact) is not null)
-            .GroupBy(fact => _index.FindScope(fact)!.Id, StringComparer.Ordinal)
-            .OrderBy(group => group.Key, StringComparer.Ordinal))
-        {
-            EvidenceFact[] facts = [.. group.OrderBy(fact => fact.Id, StringComparer.Ordinal)];
-            SeedEstimationScope scope = _index.FindScope(facts[0])!;
-            decimal[] percentages = [.. facts
-                .SelectMany(fact => fact.Measurements)
-                .Where(measurement => measurement.Unit == "percent")
-                .Select(measurement => measurement.Value)];
-            decimal target = percentages.Average();
-            decimal sourceExpected = _sourceExpectedByScope.GetValueOrDefault(scope.Id);
-            decimal coveredImplementationHours = sourceExpected * target / 100m;
-            CapabilityUnit capability = new()
-            {
-                Id = $"scope:{scope.Id}:declared-coverage",
-                RuleId = "coverage-achievement",
-                Title = $"Achieve the declared coverage level for {DisplayScope(scope)}",
-                Scope = scope.Scope,
-                Quantity = decimal.Max(0.01m, coveredImplementationHours),
-                Drivers = Drivers(("covered-implementation-hours", coveredImplementationHours)),
-                Complexity = target >= 100m
-                    ? ComplexityLevel.High
-                    : target >= 80m
-                        ? ComplexityLevel.Moderate
-                        : ComplexityLevel.Routine,
-                Reason = $"A declared-and-assumed average coverage target of {target.ToString("0.##", CultureInfo.InvariantCulture)}% represents breadth and edge-case effort beyond test syntax counts alone.",
-                Evidence = facts,
-                Profiles = BothProfiles,
-                CorrelationGroup = $"scope:{scope.Id}:tests",
-                Assumptions =
-                [
-                    "The declared configured coverage threshold is assumed achieved on the default static path.",
-                    "This item values represented coverage breadth; it is not measured coverage.",
-                ],
-                UncertaintyReasons =
-                [
-                    "Declared coverage was not executed or measured by EffortHours.",
-                    "Static source construction is a proxy for the amount of behavior covered.",
-                ],
-                ConfidencePenalty = 0.08m,
-            };
-            capabilities.Add(capability);
-        }
     }
 
     private void AddDocumentationAndTooling(List<CapabilityUnit> capabilities)

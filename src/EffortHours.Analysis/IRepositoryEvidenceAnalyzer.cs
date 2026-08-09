@@ -8,6 +8,8 @@ public interface IRepositoryEvidenceAnalyzer
 
     public IReadOnlyList<string> Ecosystems => [Ecosystem];
 
+    public bool AppliesToAllRepositories => false;
+
     public Task<RepositoryAnalysisContribution> AnalyzeAsync(
         string repositoryPath,
         RepositoryEvidence evidence,

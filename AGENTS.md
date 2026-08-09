@@ -211,10 +211,14 @@ analyzer `0.4.1` requires UI-framework context for state/effect/form-only UI
 evidence and excludes development benchmark hashbangs from product entry points.
 The unchanged 48-case seed mutation baseline retains identical numeric estimates
 and 156 passing relations. Frozen-corpus reevaluations disclose mapping changes and
-are contamination diagnostics, not held-out accuracy evidence. General
-semantic-clone and reachability analysis, multiple observations per
-ecosystem/partition cell, and actual independent review are next; local ML has not
-been selected or added.
+are contamination diagnostics, not held-out accuracy evidence. The first
+measured-coverage checkpoint adds bounded, digest-verified LCOV and Cobertura
+parsing plus measured-over-declared precedence without changing the
+`seed-rules/0.2.1` catalog; public suite `0.4.0` has 51 cases and 170 passing
+relations. General semantic-clone and reachability analysis,
+accessibility-specific depth, realistic multi-package boundaries, multiple
+observations per ecosystem/partition cell, and actual independent review are next;
+local ML has not been selected or added.
 
 The scanner benchmark now measures fresh-process .NET, JavaScript/TypeScript, and
 mixed million-line shapes, samples peak resident memory, labels explicit external

@@ -86,6 +86,15 @@ a declared 100% level is treated as 100% coverage. Such a claim must be labeled
 `declared-assumed`, not `measured`. Configuration that declares no coverage level
 must not be translated into an invented percentage.
 
+The current static analyzer parses checked-in LCOV and Cobertura reports without
+executing tests. It verifies the report against the common-scanner content digest,
+maps covered source paths to maintained production project or package scopes, and
+emits `measured` evidence without copying source paths from the report. When a
+measured report and a configured threshold describe the same scope, the measured
+level is valued and the declaration remains non-valued evidence; the two values are
+never averaged. A report can be stale or belong to another checkout, so that
+limitation remains explicit even when its artifact digest is verified.
+
 A repository with 80% measured coverage is valued at that observed level. A
 repository with more extensive, meaningful coverage represents more testing effort.
 Raw test counts must be moderated for generated tests, repetition, triviality, data
@@ -354,16 +363,16 @@ subject and reference canonical estimate at one repository/category low, expecte
 or high point and asserts inclusive bounds on `subject - reference`. These
 relations test invariance, directionality, bounded marginality, and category
 isolation. They are not effort labels and cannot be used as numerical training
-targets. The public 0.3.0 suite covers 48 small .NET, parser-backed JavaScript,
-token-backed TypeScript, and mixed-repository source states with 156 passing
+targets. The public 0.4.0 suite covers 51 small .NET, parser-backed JavaScript,
+token-backed TypeScript, and mixed-repository source states with 170 passing
 relations. It includes all three range points, exact duplication, conventional
 generated output, separately maintained generated customization, bounded renamed
 near-copies, compiler-disabled C# syntax, API/UI/data/security behavior, tests,
-declared-and-assumed coverage levels, documentation, integrations, workspace
-boundaries, CI, containers, and category isolation. It does not yet provide
-semantic clone detection, general dead-code reachability, accessibility-specific
-depth, or measured-coverage parsing; those and more realistic repository shapes
-remain required before learned-model admission.
+declared-and-assumed and measured coverage levels, measured-over-declared
+precedence, documentation, integrations, workspace boundaries, CI, containers,
+and category isolation. It does not yet provide semantic clone detection, general
+dead-code reachability, accessibility-specific depth, or realistic large
+multi-package boundaries; those remain required before learned-model admission.
 
 The public pilot and public expansion freeze six MIT-licensed repository families
 across development, validation, and test partitions and measure

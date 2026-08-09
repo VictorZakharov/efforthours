@@ -3,6 +3,7 @@
     <RootNamespace>EffortHours.Analysis</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <InternalsVisibleTo Include="EffortHours.Tests" />
     <ProjectReference Include="../EffortHours.Contracts/EffortHours.Contracts.csproj" />
   </ItemGroup>
 </Project>

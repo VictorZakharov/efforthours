@@ -4,7 +4,8 @@
 
 Milestone 7A and the Milestone 7B1 through 7B5 public-corpus, review, and mutation
 checkpoints were implemented on August 6, 2026. A post-7B5 analyzer-precision
-checkpoint was implemented on August 8, 2026. Together they establish the
+checkpoint was implemented on August 8, 2026, and the first measured-coverage
+checkpoint was implemented on August 9, 2026. Together they establish the
 versioned review corpus, low-cost authoring and compilation boundaries,
 deterministic offline evaluation, expanded licensed labels, exact-digest
 subsequent review, cross-ecosystem relational model guardrails, and a documented
@@ -13,9 +14,10 @@ remains `experimental-uncalibrated`; this milestone does not make its current ho
 production-ready.
 
 Both public corpora still have one host-AI teacher and no independent correction.
-Milestone 7B is therefore in progress: broader licensed repository coverage, richer
-reachability/accessibility/measured-coverage guardrails, and an actual independent
-review are required before numerical admission thresholds or model training. The
+Milestone 7B is therefore in progress: broader licensed repository coverage,
+semantic-clone, reachability, accessibility, and realistic multi-package
+guardrails, and an actual independent review are required before numerical
+admission thresholds or model training. The
 presence of second-review tooling must not be confused with completion of that
 review.
 
@@ -257,6 +259,34 @@ target also no longer maps because removal of the false UI boundary changes the
 deterministic work-item partition. Every current candidate item maps. These mapping
 changes are disclosed rather than treated as zero error.
 
+## Implemented measured-coverage checkpoint
+
+This checkpoint closes the first measured-versus-declared coverage boundary without
+changing `seed-rules/0.2.1`, its JSON artifact, any numerical prior, a reviewed
+label, or corpus partition:
+
+1. a language-neutral analyzer parses checked-in LCOV and Cobertura reports with
+   DTD processing disabled, a 128 MiB input bound, and no test execution;
+2. report bytes are checked against the common-scanner SHA-256 before any
+   measurement is admitted;
+3. reported source paths are used only to map maintained production files to the
+   most specific .NET project or JavaScript/TypeScript package and are never copied
+   into emitted evidence or diagnostics;
+4. line, branch, and function counts and percentages are emitted as `measured`
+   evidence, while unmatched, ambiguous, changed, unsafe, malformed, and unsupported
+   artifacts remain unvalued with diagnostics;
+5. measured coverage supersedes configured `declared-assumed` percentages within
+   the same scope instead of being averaged or double-counted; and
+6. `public-synthetic/0.4.0` expands the unchanged seed-rule baseline to 51 cases and
+   170 passing assertions, adding measured 80% and 100% directionality plus
+   measured-over-conflicting-declared precedence across low, expected, and high
+   points and category isolation.
+
+The coverage artifact is still not proof that it was generated from the analyzed
+source snapshot. That staleness risk remains an explicit uncertainty. OpenCover,
+JaCoCo, Istanbul JSON, and other report formats are not parsed by this checkpoint.
+Mutation relations remain qualitative guardrails, not calibration labels.
+
 ## Contract boundaries
 
 ### Reviewed corpus
@@ -447,8 +477,8 @@ A candidate must, at minimum:
 - retain acceptable results across .NET, JavaScript/TypeScript, and mixed
   repositories rather than only the aggregate;
 - pass the existing formatting, duplication, generated-content, near-copy,
-  compiler-disabled-code, data, security, coverage, workspace, delivery, and
-  history guardrails; and
+  compiler-disabled-code, data, security, declared/measured-coverage precedence,
+  workspace, delivery, and history guardrails; and
 - preserve evidence, rule/model version, and adjustment lineage in the final work
   items.
 
@@ -462,8 +492,9 @@ model hyperparameters.
 
 - Expand synthetic mutations from the initial bounded near-copy and
   compiler-disabled cases to semantic clones, unreachable/unreferenced behavior,
-  accessibility-specific evidence, measured coverage, larger multi-package
-  dependency graphs, richer infrastructure, and additional delivery categories.
+  accessibility-specific evidence, additional measured-coverage formats, larger
+  multi-package dependency graphs, richer infrastructure, and additional delivery
+  categories.
 - Add diverse, redistributable real repositories with recorded licenses.
 - Expand the consistent teacher reviews and complete the prepared independent
   correction handoff with a genuinely distinct reviewer.
@@ -620,3 +651,19 @@ digests, and candidate estimator identity; their filenames identify analyzer
 versions `0.3.2` and `0.4.1`, while candidate digests pin the exact outputs. Their
 mapping loss and observation contamination are explicit; they do not advance
 review maturity or justify model admission.
+
+## Measured-coverage completion evidence
+
+The checkpoint passes formatting verification, a zero-warning Release build, 146
+memory-only unit tests, and 40 disk-backed CLI end-to-end tests. Coverage unit
+fixtures use `InMemoryRepository` exclusively; they cover LCOV, Cobertura,
+measured-over-declared precedence, deterministic output, schema validity, digest
+changes, bounded reads, unmatched-source isolation, privacy, and DTD rejection.
+The process-level test confirms stdout/stderr separation and the CLI process
+boundary on a physical fixture, where disk access belongs.
+
+The reproducible `public-synthetic/0.4.0` report contains 51 canonical candidates
+and 170 passing assertions under the unchanged `seed-rules/0.2.1` catalog. The
+three new candidate reports and their source digests are checked in beside complete
+MIT-authored fixtures. No schema, package version, model artifact, numerical prior,
+reviewed target, or review maturity changed.

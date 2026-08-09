@@ -180,6 +180,13 @@ Status as of August 9, 2026:
   48-case mutation baseline retains identical numeric estimates and 156 passing
   relations, and frozen-corpus reevaluations disclose both improved diagnostics and
   reduced target mapping. No estimator prior or review maturity changed.
+- The first measured-coverage checkpoint is complete: a language-neutral static
+  analyzer parses digest-verified LCOV and Cobertura artifacts into scoped
+  `measured` line, branch, and function evidence without exposing reported source
+  paths. Measured percentages supersede same-scope declared thresholds, using the
+  unchanged `coverage-achievement` rule. Public synthetic suite `0.4.0` contains
+  51 cases and 170 passing low/expected/high and category-isolation relations; no
+  seed catalog prior or reviewed label changed.
 - The scanner performance-and-safety checkpoint is complete: fresh-process
   one-million-line .NET, JavaScript/TypeScript, and mixed scans now report sampled
   peak resident memory and cumulative allocation; explicit warm-cache runs are
@@ -485,9 +492,10 @@ cross-platform measurements and a more representative benchmark corpus exist.
    observations in every ecosystem/partition cell, then freeze numerical
    model-admission thresholds before fitting.
 5. Expand analyzer precision and mutation guardrails beyond the corrected
-   process-stream, framework-neutral-state, and benchmark-entry-point boundaries to
-   semantic clone detection, general reachability, accessibility, measured
-   coverage, and realistic multi-package boundaries.
+   process-stream, framework-neutral-state, benchmark-entry-point, and first
+   measured-coverage boundaries to semantic clone detection, general reachability,
+   accessibility, additional coverage formats, and realistic multi-package
+   boundaries.
 6. Repeat the new peak-memory and read-only benchmark protocol across constrained
    Windows/Linux/macOS hosts and larger redistributable monorepos before freezing
    regression thresholds.

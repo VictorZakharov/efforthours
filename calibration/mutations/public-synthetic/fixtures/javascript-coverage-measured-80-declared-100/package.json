@@ -1,0 +1,15 @@
+{
+  "name": "efforthours-mutation-javascript-coverage",
+  "private": true,
+  "type": "module",
+  "jest": {
+    "coverageThreshold": {
+      "global": {
+        "lines": 100,
+        "branches": 100,
+        "functions": 100,
+        "statements": 100
+      }
+    }
+  }
+}

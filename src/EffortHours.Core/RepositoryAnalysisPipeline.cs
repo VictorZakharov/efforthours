@@ -13,7 +13,11 @@ public sealed class RepositoryAnalysisPipeline : IRepositoryScanner
     public RepositoryAnalysisPipeline()
         : this(
             new RepositoryScanner(),
-            [new DotNetRepositoryAnalyzer(), new JavaScriptRepositoryAnalyzer()])
+            [
+                new DotNetRepositoryAnalyzer(),
+                new JavaScriptRepositoryAnalyzer(),
+                new CoverageReportAnalyzer(),
+            ])
     {
     }
 
@@ -22,7 +26,11 @@ public sealed class RepositoryAnalysisPipeline : IRepositoryScanner
         IRepositoryScanCacheStore? cacheStore = null)
         : this(
             new RepositoryScanner(fileSystem, cacheStore),
-            [new DotNetRepositoryAnalyzer(fileSystem), new JavaScriptRepositoryAnalyzer(fileSystem)])
+            [
+                new DotNetRepositoryAnalyzer(fileSystem),
+                new JavaScriptRepositoryAnalyzer(fileSystem),
+                new CoverageReportAnalyzer(fileSystem),
+            ])
     {
     }
 
@@ -49,15 +57,21 @@ public sealed class RepositoryAnalysisPipeline : IRepositoryScanner
         foreach (IRepositoryEvidenceAnalyzer analyzer in _analyzers)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            if (!analyzer.Ecosystems.Any(ecosystem =>
-                evidence.Repository.Ecosystems.Contains(ecosystem, StringComparer.Ordinal)))
+            if (!analyzer.AppliesToAllRepositories &&
+                !analyzer.Ecosystems.Any(ecosystem =>
+                    evidence.Repository.Ecosystems.Contains(ecosystem, StringComparer.Ordinal)))
             {
                 continue;
             }
 
+            RepositoryEvidence analyzerInput = evidence with
+            {
+                Facts = facts,
+                Diagnostics = diagnostics,
+            };
             RepositoryAnalysisContribution contribution = await analyzer.AnalyzeAsync(
                 repositoryPath,
-                evidence,
+                analyzerInput,
                 cancellationToken).ConfigureAwait(false);
             facts.AddRange(contribution.Facts);
             diagnostics.AddRange(contribution.Diagnostics);

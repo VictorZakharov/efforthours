@@ -11,6 +11,8 @@ effort-label corpora, accuracy claims, or model-training data.
   assertions evaluated with `seed-rules/0.2.1`.
 - Suite `0.3.0` records the Milestone 7B4 behavior-and-delivery checkpoint: 48
   cases and 156 assertions evaluated with the same `seed-rules/0.2.1` model.
+- Suite `0.4.0` records the first measured-coverage checkpoint: 51 cases and 170
+  assertions evaluated with the same `seed-rules/0.2.1` catalog.
 
 The August 8, 2026 analyzer-precision reevaluation with `.NET` analyzer `0.3.2`
 and JavaScript analyzer `0.4.1` reproduced identical low, expected, and high
@@ -31,20 +33,22 @@ TypeScript bodies and TypeScript test structure participate in normalization. Th
 catalog digest is
 `sha256:57378795593acd2ff0a2f4361698193a11dca86da11493f072da6a9f9b344d4e`.
 
-Suite 0.3.0 changes no seed-rule prior or estimator behavior. It was designed from
-product invariants, then evaluated against the unchanged model. The new bounds are
-qualitative guardrails and must not be treated as reviewed numeric labels.
+Suite 0.3.0 changes no seed-rule prior or estimator behavior. Suite 0.4.0 adds
+coverage analyzer `0.1.0` and measured-over-declared evidence precedence while
+reusing the unchanged `coverage-achievement` prior. Both suites were designed from
+product invariants, then evaluated. Their bounds are qualitative guardrails and
+must not be treated as reviewed numeric labels.
 
-## What suite 0.3.0 measures
+## What suite 0.4.0 measures
 
 | Ecosystem family | Cases | Principal variants |
 | --- | ---: | --- |
 | .NET | 13 | Existing variants plus renamed near-copy, compiler-disabled boundaries, data context, migration, security |
-| JavaScript | 19 | Existing variants plus renamed near-copy, data, security, coverage levels, workspace boundaries, CI, container |
+| JavaScript | 22 | Existing variants plus renamed near-copy, data, security, declared/measured coverage levels, workspace boundaries, CI, container |
 | TypeScript | 11 | Existing variants plus renamed near-copy, data, and security |
 | Mixed | 5 | Base, generated JavaScript, .NET API, JavaScript UI, TypeScript tests |
 
-All 156 assertions pass. The relations cover:
+All 170 assertions pass. The relations cover:
 
 - zero-difference formatting, exact-copy, and conventional-generated invariants;
 - low, expected, and high points rather than expected hours alone;
@@ -53,8 +57,10 @@ All 156 assertions pass. The relations cover:
 - positive UI, unit-test, documentation, and integration category movement; and
 - bounded marginal rather than full-body treatment for small renamed near-copies;
 - zero movement from compiler-disabled C# data and authorization syntax;
-- positive data, migration, security, declared coverage, workspace-boundary, CI,
-  and container movement in the intended categories; and
+- positive data, migration, security, declared and measured coverage,
+  workspace-boundary, CI, and container movement in the intended categories;
+- measured-over-conflicting-declared precedence at every total and unit-test range
+  point; and
 - category isolation for test-only, documentation-only, UI-only, data-only,
   security-only, coverage-only, CI-only, container-only, and production-only
   variants.
@@ -126,9 +132,22 @@ their production-category invariants are not artifacts of aggregate rounding.
 | JavaScript CI workflow | 8.50 h | +2.00 h CI/CD; production unchanged |
 | JavaScript container definition | 8.50 h | +2.00 h packaging/deployment; production unchanged |
 
+### Measured-coverage additions
+
+| Variant | Expected total | Intended category result |
+| --- | ---: | --- |
+| Measured 80% LCOV | 12.25 h | 3.00 h unit testing; production unchanged |
+| Measured 100% LCOV | 12.50 h | +0.25 h unit testing over measured 80% |
+| Measured 80% plus declared 100% | 12.25 h | Identical to measured 80% at every total and unit-test range point |
+
+The LCOV files contain only synthetic repository-relative paths. Parser privacy is
+separately tested with non-public absolute path text that must not appear in output.
+LCOV and Cobertura inputs are bounded, parsed without execution, and checked against
+their common-inventory SHA-256 before measurements are admitted.
+
 The original .NET-only 0.1.0 table and its exact results remain represented by its
-frozen suite, canonical estimates, and baseline report. Suites 0.2.0 and 0.3.0
-retain all earlier assertions unchanged.
+frozen suite, canonical estimates, and baseline report. Suites 0.2.0, 0.3.0, and
+0.4.0 retain all earlier assertions unchanged.
 
 ## Artifacts
 
@@ -140,14 +159,16 @@ retain all earlier assertions unchanged.
   report.
 - `0.3.0.suite.json` defines the 48-case expanded aggregate suite.
 - `baseline-seed-rules-0.2.1-suite-0.3.0.json` is its deterministic report.
-- `estimates/seed-rules-0.2.1/` contains all 48 current aggregate candidates.
+- `0.4.0.suite.json` defines the 51-case measured-coverage aggregate suite.
+- `baseline-seed-rules-0.2.1-suite-0.4.0.json` is its deterministic report.
+- `estimates/seed-rules-0.2.1/` contains all 51 current aggregate candidates.
 - `fixtures/` contains every complete synthetic source state.
 
 Every case has a distinct repository source digest. Assertions select canonical
 estimates only by source digest, profile, and worker-baseline ID. File timestamps,
 contributors, commit activity, and history are not inputs.
 
-## Reproduce suite 0.3.0
+## Reproduce suite 0.4.0
 
 From a Release build, regenerate each candidate with:
 
@@ -164,9 +185,9 @@ Then evaluate all versioned candidate paths:
 
 ```text
 eh calibration mutations \
-  calibration/mutations/public-synthetic/0.3.0.suite.json \
+  calibration/mutations/public-synthetic/0.4.0.suite.json \
   calibration/mutations/public-synthetic/estimates/seed-rules-0.2.1/*.estimate.json \
-  --output calibration/mutations/public-synthetic/baseline-seed-rules-0.2.1-suite-0.3.0.json
+  --output calibration/mutations/public-synthetic/baseline-seed-rules-0.2.1-suite-0.4.0.json
 ```
 
 The wildcard is shell convenience, not part of EffortHours's argument semantics.
@@ -179,14 +200,15 @@ malformed inputs return the ordinary invalid-input code.
 The suite uses deliberately small archetypes. Near-copy assertions bound the
 current marginal result; EffortHours does not yet perform semantic clone detection.
 The dead-code case covers only C# syntax excluded by the compiler preprocessor, not
-arbitrary unreachable or unreferenced behavior. Coverage cases are
-declared-and-assumed Jest thresholds, not parsed measured results. Security cases
-do not replace a security audit, and accessibility-specific evidence remains thin.
-The workspace case is intentionally small and does not represent a realistic large
-dependency graph. Large work-item partitioning, measured coverage, richer
-infrastructure, in-body generated customization, general reachability, and
-change-estimation semantics remain future guardrails. The TypeScript path remains
-token-backed.
+arbitrary unreachable or unreferenced behavior. Measured coverage supports LCOV
+and Cobertura only, and a digest-verified checked-in report can still be stale or
+belong to a different source snapshot. Security cases do not replace a security
+audit, and accessibility-specific evidence remains thin. The workspace case is
+intentionally small and does not represent a realistic large dependency graph.
+Large work-item partitioning, additional coverage formats, richer infrastructure,
+in-body generated customization, general reachability, semantic clones, realistic
+multi-package shapes, and change-estimation semantics remain future guardrails.
+The TypeScript path remains token-backed.
 
 Passing these relations prevents known perverse movements. It does not establish
 that any absolute hour or delta is numerically correct, and it does not make the

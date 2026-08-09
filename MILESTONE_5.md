@@ -100,6 +100,13 @@ more precise ecosystem fact represents the same artifact. Examples include:
 - coverage evidence modifying represented test work instead of becoming another
   copy of the tests.
 
+Coverage provenance participates in precedence as well as normalization. A
+digest-verified parsed LCOV or Cobertura report is `measured`; a configured
+threshold remains `declared-assumed`. When both apply to one scope, the estimator
+uses measured percentages only and retains the declaration as non-valued evidence
+instead of averaging or double-counting them. This uses the existing
+`coverage-achievement` rule and does not change its numerical prior.
+
 Known inventory, language, file, exclusion, package-reference, and graph facts may
 be supporting or deliberately non-valued evidence. Only unknown evidence kinds are
 reported as unsupported by the estimator.
@@ -274,7 +281,8 @@ Ordinary unit tests remain entirely memory-backed. Milestone 5 tests must cover:
 - generated, vendored, minified, and binary bodies not increasing effort;
 - broad/fine evidence precedence;
 - .NET, JavaScript/TypeScript, and mixed evidence;
-- tests and declared-assumed coverage at the represented level;
+- tests, declared-assumed coverage, measured coverage, and measured-over-declared
+  precedence at the represented level;
 - explicit recreation-profile additions;
 - manual validation and self-review as named items;
 - professionalization gaps remaining outside totals and pricing;
