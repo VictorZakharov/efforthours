@@ -48,6 +48,11 @@ directory.
 
 ## Pull requests
 
+Keep each pull-request branch rebased and free of merge commits; rebase onto the
+current `main` instead of merging `main` into the branch. Accepted pull requests
+land on `main` through GitHub's merge-commit action. Direct pushes, squash merges,
+and rebase merges into `main` are disabled.
+
 Keep changes focused and explain:
 
 - which evidence or estimation behavior changes;
