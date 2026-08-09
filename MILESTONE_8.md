@@ -2,11 +2,13 @@
 
 ## Status
 
-Initial protocol checkpoint implemented on August 9, 2026. Implementation and cost
-measurement are tracked separately: issue #26 defines and implements the local
-protocol; issue #27 must measure token use, elapsed time, monetary cost, packet
-size, and estimate improvement before EffortHours chooses any model-facing budget
-or automatic-review default.
+Initial protocol and measurement checkpoints implemented on August 9, 2026. Issue
+#26 defines and implements the local protocol. Issue #27 adds sanitized session
+measurement and paired comparison, then exercises it on three public repositories.
+The diagnostic improved item/category agreement but worsened repository-total
+agreement; exact provider token, elapsed, cost, and complete paired-session context
+telemetry were unavailable. EffortHours therefore chooses no model-facing budget or
+automatic-review default.
 
 This milestone does not calibrate `seed-rules/0.2.1`, select an AI provider, call a
 remote model, or claim that an AI-reviewed estimate is production-ready.
@@ -205,9 +207,10 @@ correct, independent, calibrated, or admitted into an official model.
 
 ## Deferred work
 
-Issue #27 owns representative measurement and comparison against full-source host
-review. It must record packet/query sizes, token use where observable, elapsed time,
-monetary cost, adjustment frequency, and improvement against reviewed references.
+The first representative diagnostic and its measurement machinery are recorded in
+`MILESTONE_8_MEASUREMENT.md`. Blind multi-model repetitions with exact provider,
+elapsed, cost, and complete paired-session context telemetry remain necessary
+before claiming savings or selecting a default budget.
 
 The following remain deferred until evidence justifies them:
 
@@ -241,3 +244,9 @@ package check are the release gate for this checkpoint. The August 9 checkpoint
 passed formatting verification, a zero-warning Release build, 122 memory-only unit
 tests, 37 process-level end-to-end tests, and creation of the
 `EffortHours.Tool.0.9.0-alpha.1` package with the review assembly included.
+
+The separate measurement checkpoint adds two checked-in schemas, sanitized
+`review measure` and paired `review benchmark` commands, deterministic
+item/category/total agreement metrics, and a reproducible six-measurement public
+artifact. Its exact verification record is maintained in
+`MILESTONE_8_MEASUREMENT.md`; it changes no estimator prior and selects no budget.

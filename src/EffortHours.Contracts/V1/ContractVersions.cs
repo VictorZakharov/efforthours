@@ -10,6 +10,13 @@ public static class HostReviewProtocolVersions
     public const string V1 = "host-review/1.0.0";
 }
 
+public static class HostReviewMeasurementVersions
+{
+    public const string V1 = "host-review-measurement/1.0.0";
+
+    public const string MetricsV1 = "host-review-comparison-metrics/1.0.0";
+}
+
 public static class SchemaNames
 {
     public const string CalibrationAuthoringPacket = "calibration-authoring-packet.schema.json";
@@ -29,6 +36,8 @@ public static class SchemaNames
     public const string EstimateReport = "estimate-report.schema.json";
     public const string EstimateView = "estimate-view.schema.json";
     public const string HostReviewAdjustment = "host-review-adjustment.schema.json";
+    public const string HostReviewBenchmark = "host-review-benchmark.schema.json";
+    public const string HostReviewMeasurement = "host-review-measurement.schema.json";
     public const string HostReviewPacket = "host-review-packet.schema.json";
     public const string HostReviewQueryResult = "host-review-query-result.schema.json";
     public const string HostReviewValidation = "host-review-validation.schema.json";
@@ -59,6 +68,8 @@ public static class SchemaIds
     public const string EstimateReport = "urn:eh:schema:v1:estimate-report";
     public const string EstimateView = "urn:eh:schema:v1:estimate-view";
     public const string HostReviewAdjustment = "urn:eh:schema:v1:host-review-adjustment";
+    public const string HostReviewBenchmark = "urn:eh:schema:v1:host-review-benchmark";
+    public const string HostReviewMeasurement = "urn:eh:schema:v1:host-review-measurement";
     public const string HostReviewPacket = "urn:eh:schema:v1:host-review-packet";
     public const string HostReviewQueryResult = "urn:eh:schema:v1:host-review-query-result";
     public const string HostReviewValidation = "urn:eh:schema:v1:host-review-validation";

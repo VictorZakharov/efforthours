@@ -1,0 +1,247 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:eh:schema:v1:host-review-measurement",
+  "title": "EffortHours host-review measurement v1",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "measurementVersion",
+    "subjectId",
+    "context",
+    "protocolVersion",
+    "inputDigest",
+    "estimatorVersion",
+    "profile",
+    "reviewerModel",
+    "packetPayload",
+    "adjustmentPayload",
+    "queries",
+    "additionalInput",
+    "observedInput",
+    "observedInputComplete",
+    "providerTokens",
+    "elapsed",
+    "cost",
+    "conditions",
+    "decisions",
+    "baselineCategories",
+    "reviewedCategories",
+    "baselineTotal",
+    "reviewedTotal",
+    "privacy"
+  ],
+  "properties": {
+    "schemaVersion": { "const": "1.0.0" },
+    "measurementVersion": { "const": "host-review-measurement/1.0.0" },
+    "subjectId": { "type": "string", "minLength": 1, "maxLength": 256 },
+    "context": { "enum": ["compact", "broader-source"] },
+    "protocolVersion": { "const": "host-review/1.0.0" },
+    "inputDigest": { "$ref": "urn:eh:schema:v1:host-review-packet#/$defs/digest" },
+    "estimatorVersion": { "type": "string", "minLength": 1 },
+    "profile": { "enum": ["implementation", "recreation"] },
+    "reviewerModel": { "$ref": "urn:eh:schema:v1:host-review-packet#/$defs/modelIdentity" },
+    "packetPayload": { "$ref": "#/$defs/payload" },
+    "adjustmentPayload": { "$ref": "#/$defs/payload" },
+    "queries": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/query" }
+    },
+    "additionalInput": { "$ref": "#/$defs/additionalInput" },
+    "observedInput": { "$ref": "#/$defs/payloadTotals" },
+    "observedInputComplete": { "type": "boolean" },
+    "providerTokens": { "$ref": "#/$defs/providerTokens" },
+    "elapsed": { "$ref": "#/$defs/elapsed" },
+    "cost": { "$ref": "#/$defs/cost" },
+    "conditions": { "$ref": "#/$defs/conditions" },
+    "decisions": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/decision" }
+    },
+    "baselineCategories": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/categoryEffort" }
+    },
+    "reviewedCategories": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/categoryEffort" }
+    },
+    "baselineTotal": { "$ref": "urn:eh:schema:v1:estimate-report#/$defs/effortRange" },
+    "reviewedTotal": { "$ref": "urn:eh:schema:v1:estimate-report#/$defs/effortRange" },
+    "privacy": { "$ref": "#/$defs/privacy" }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "payloadTotals": {
+      "type": "object",
+      "required": ["utf8Bytes", "characterCount", "approximateTokens"],
+      "properties": {
+        "utf8Bytes": { "type": "integer", "minimum": 0 },
+        "characterCount": { "type": "integer", "minimum": 0 },
+        "approximateTokens": { "type": "integer", "minimum": 0 }
+      },
+      "additionalProperties": false
+    },
+    "payload": {
+      "type": "object",
+      "required": ["digest", "size"],
+      "properties": {
+        "digest": { "$ref": "urn:eh:schema:v1:host-review-packet#/$defs/digest" },
+        "size": { "$ref": "#/$defs/payloadTotals" }
+      },
+      "additionalProperties": false
+    },
+    "query": {
+      "type": "object",
+      "required": ["kind", "containsSourceExcerpt", "payload"],
+      "properties": {
+        "kind": { "enum": ["capability", "evidence", "scope", "selected-source"] },
+        "containsSourceExcerpt": { "type": "boolean" },
+        "payload": { "$ref": "#/$defs/payload" }
+      },
+      "additionalProperties": false
+    },
+    "additionalInput": {
+      "type": "object",
+      "required": ["sizeReported", "size", "basis"],
+      "properties": {
+        "sizeReported": { "type": "boolean" },
+        "size": { "$ref": "#/$defs/payloadTotals" },
+        "basis": { "type": "string", "minLength": 1 }
+      },
+      "additionalProperties": false
+    },
+    "providerTokens": {
+      "oneOf": [
+        {
+          "type": "object",
+          "required": ["inputTokens", "outputTokens", "basis"],
+          "properties": {
+            "inputTokens": { "type": "integer", "minimum": 0 },
+            "outputTokens": { "type": "integer", "minimum": 0 },
+            "cachedInputTokens": { "type": "integer", "minimum": 0 },
+            "basis": { "type": "string", "minLength": 1 }
+          },
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "required": ["unavailableReason"],
+          "properties": {
+            "unavailableReason": { "type": "string", "minLength": 1 }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "elapsed": {
+      "oneOf": [
+        {
+          "type": "object",
+          "required": ["milliseconds", "basis"],
+          "properties": {
+            "milliseconds": { "type": "integer", "minimum": 0 },
+            "basis": { "type": "string", "minLength": 1 }
+          },
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "required": ["unavailableReason"],
+          "properties": {
+            "unavailableReason": { "type": "string", "minLength": 1 }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "cost": {
+      "oneOf": [
+        {
+          "type": "object",
+          "required": ["amount", "currency", "basis"],
+          "properties": {
+            "amount": { "type": "number", "minimum": 0 },
+            "currency": { "type": "string", "pattern": "^[A-Z]{3}$" },
+            "basis": { "type": "string", "minLength": 1 }
+          },
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "required": ["unavailableReason"],
+          "properties": {
+            "unavailableReason": { "type": "string", "minLength": 1 }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "conditions": {
+      "type": "object",
+      "required": [
+        "sessionId",
+        "broaderSourceAvailableBeforeDecision",
+        "referenceReviewAvailableBeforeDecision",
+        "independentOfPairedReview",
+        "notes"
+      ],
+      "properties": {
+        "sessionId": { "type": "string", "minLength": 1, "maxLength": 256 },
+        "broaderSourceAvailableBeforeDecision": { "type": "boolean" },
+        "referenceReviewAvailableBeforeDecision": { "type": "boolean" },
+        "independentOfPairedReview": { "type": "boolean" },
+        "notes": { "$ref": "urn:eh:schema:v1:host-review-packet#/$defs/uniqueStrings" }
+      },
+      "additionalProperties": false
+    },
+    "decision": {
+      "type": "object",
+      "required": [
+        "targetId",
+        "decision",
+        "baselineCategory",
+        "baselineHours",
+        "reviewedCategory",
+        "reviewedHours"
+      ],
+      "properties": {
+        "targetId": { "type": "string", "minLength": 1 },
+        "decision": { "enum": ["affirm", "replace"] },
+        "baselineCategory": { "$ref": "urn:eh:schema:v1:estimate-report#/$defs/category" },
+        "baselineHours": { "$ref": "urn:eh:schema:v1:estimate-report#/$defs/effortRange" },
+        "reviewedCategory": { "$ref": "urn:eh:schema:v1:estimate-report#/$defs/category" },
+        "reviewedHours": { "$ref": "urn:eh:schema:v1:estimate-report#/$defs/effortRange" }
+      },
+      "additionalProperties": false
+    },
+    "categoryEffort": {
+      "type": "object",
+      "required": ["category", "hours"],
+      "properties": {
+        "category": { "$ref": "urn:eh:schema:v1:estimate-report#/$defs/category" },
+        "hours": { "$ref": "urn:eh:schema:v1:estimate-report#/$defs/effortRange" }
+      },
+      "additionalProperties": false
+    },
+    "privacy": {
+      "type": "object",
+      "required": [
+        "repositoryIdentityCopied",
+        "promptTextCopied",
+        "sourceTextCopied",
+        "querySelectorsCopied",
+        "callerSuppliedTextRetained",
+        "disclosureNotice"
+      ],
+      "properties": {
+        "repositoryIdentityCopied": { "const": false },
+        "promptTextCopied": { "const": false },
+        "sourceTextCopied": { "const": false },
+        "querySelectorsCopied": { "const": false },
+        "callerSuppliedTextRetained": { "const": true },
+        "disclosureNotice": { "type": "string", "minLength": 1 }
+      },
+      "additionalProperties": false
+    }
+  }
+}

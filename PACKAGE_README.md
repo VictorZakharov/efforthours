@@ -48,6 +48,8 @@ the selected Git objects must already exist locally.
 eh review packet ./my-repository --compact
 eh review query ./my-repository --input-digest <packet-digest> --capability <id> --reason <reason>
 eh review validate review-packet.json proposed-adjustments.json
+eh review measure review-packet.json proposed-adjustments.json --subject <opaque-id> --session <opaque-id> --context compact
+eh review benchmark compact.measurement.json broader-source.measurement.json
 ```
 
 The provider-neutral review packet is rate-free and contains no source excerpts.
@@ -55,6 +57,12 @@ A surrounding AI session can request bounded capability, evidence, scope, or
 explicitly selected admitted-source detail. EffortHours does not call a provider,
 transmit repository material, or apply proposed adjustments. The caller controls
 provider, privacy, disclosure, and retention choices.
+
+Optional measurement commands sanitize completed-session telemetry and compare
+compact review with a broader-source reference. They record only telemetry the
+caller supplies, do not infer missing provider tokens, time, or cost, and do not
+select an automatic review budget. Caller-supplied IDs, telemetry bases, and notes
+are retained verbatim and must be non-sensitive.
 
 ## Offline and safety boundary
 

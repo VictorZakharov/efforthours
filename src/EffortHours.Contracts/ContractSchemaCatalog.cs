@@ -27,6 +27,8 @@ public static class ContractSchemaCatalog
         SchemaNames.EstimateReport,
         SchemaNames.EstimateView,
         SchemaNames.HostReviewAdjustment,
+        SchemaNames.HostReviewBenchmark,
+        SchemaNames.HostReviewMeasurement,
         SchemaNames.HostReviewPacket,
         SchemaNames.HostReviewQueryResult,
         SchemaNames.HostReviewValidation,

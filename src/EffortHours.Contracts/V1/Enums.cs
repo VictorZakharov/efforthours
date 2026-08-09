@@ -104,6 +104,19 @@ public enum HostReviewDecision
     Replace,
 }
 
+public enum HostReviewContextMode
+{
+    Compact,
+    BroaderSource,
+}
+
+public enum HostReviewComparisonLevel
+{
+    CapabilityItem,
+    Category,
+    RepositoryTotal,
+}
+
 public enum ComplexityLevel
 {
     Routine,

@@ -1,0 +1,202 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:eh:schema:v1:host-review-benchmark",
+  "title": "EffortHours host-review benchmark report v1",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "measurementVersion",
+    "metricVersion",
+    "subjectCount",
+    "measurementCount",
+    "subjects",
+    "capabilityItems",
+    "categories",
+    "repositoryTotals",
+    "budgetDecision",
+    "limitations"
+  ],
+  "properties": {
+    "schemaVersion": { "const": "1.0.0" },
+    "measurementVersion": { "const": "host-review-measurement/1.0.0" },
+    "metricVersion": { "const": "host-review-comparison-metrics/1.0.0" },
+    "subjectCount": { "type": "integer", "minimum": 1 },
+    "measurementCount": { "type": "integer", "minimum": 2 },
+    "subjects": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/subject" }
+    },
+    "capabilityItems": { "$ref": "#/$defs/levelComparison" },
+    "categories": { "$ref": "#/$defs/levelComparison" },
+    "repositoryTotals": { "$ref": "#/$defs/levelComparison" },
+    "budgetDecision": { "$ref": "#/$defs/budgetDecision" },
+    "limitations": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": { "type": "string", "minLength": 1 }
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "pointAgreement": {
+      "type": "object",
+      "required": [
+        "sampleCount",
+        "referenceHours",
+        "candidateHours",
+        "absoluteErrorHours",
+        "meanAbsoluteErrorHours",
+        "signedErrorHours"
+      ],
+      "properties": {
+        "sampleCount": { "type": "integer", "minimum": 0 },
+        "referenceHours": { "type": "number", "minimum": 0 },
+        "candidateHours": { "type": "number", "minimum": 0 },
+        "absoluteErrorHours": { "type": "number", "minimum": 0 },
+        "meanAbsoluteErrorHours": { "type": "number", "minimum": 0 },
+        "signedErrorHours": { "type": "number" },
+        "weightedAbsolutePercentageError": { "type": "number", "minimum": 0 },
+        "aggregateBiasRate": { "type": "number" }
+      },
+      "additionalProperties": false
+    },
+    "intervalAgreement": {
+      "type": "object",
+      "required": [
+        "sampleCount",
+        "referenceExpectedCoveredCount",
+        "referenceRangeFullyCoveredCount",
+        "rangeOverlapCount"
+      ],
+      "properties": {
+        "sampleCount": { "type": "integer", "minimum": 0 },
+        "referenceExpectedCoveredCount": { "type": "integer", "minimum": 0 },
+        "referenceExpectedCoverage": { "type": "number", "minimum": 0, "maximum": 1 },
+        "referenceRangeFullyCoveredCount": { "type": "integer", "minimum": 0 },
+        "referenceRangeFullyCoveredRate": { "type": "number", "minimum": 0, "maximum": 1 },
+        "rangeOverlapCount": { "type": "integer", "minimum": 0 },
+        "rangeOverlapRate": { "type": "number", "minimum": 0, "maximum": 1 }
+      },
+      "additionalProperties": false
+    },
+    "rangeAgreement": {
+      "type": "object",
+      "required": ["low", "expected", "high", "interval"],
+      "properties": {
+        "low": { "$ref": "#/$defs/pointAgreement" },
+        "expected": { "$ref": "#/$defs/pointAgreement" },
+        "high": { "$ref": "#/$defs/pointAgreement" },
+        "interval": { "$ref": "#/$defs/intervalAgreement" }
+      },
+      "additionalProperties": false
+    },
+    "levelComparison": {
+      "type": "object",
+      "required": [
+        "level",
+        "baselineAgreement",
+        "compactAgreement",
+        "baselineToCompactAbsoluteExpectedCorrectionHours",
+        "baselineToReferenceAbsoluteExpectedCorrectionHours",
+        "expectedAbsoluteErrorReductionHours"
+      ],
+      "properties": {
+        "level": { "enum": ["capability-item", "category", "repository-total"] },
+        "baselineAgreement": { "$ref": "#/$defs/rangeAgreement" },
+        "compactAgreement": { "$ref": "#/$defs/rangeAgreement" },
+        "baselineToCompactAbsoluteExpectedCorrectionHours": { "type": "number", "minimum": 0 },
+        "baselineToReferenceAbsoluteExpectedCorrectionHours": { "type": "number", "minimum": 0 },
+        "expectedAbsoluteErrorReductionHours": { "type": "number" },
+        "expectedAbsoluteErrorReductionRate": { "type": "number" }
+      },
+      "additionalProperties": false
+    },
+    "contextTelemetry": {
+      "type": "object",
+      "required": [
+        "observedInput",
+        "observedInputComplete",
+        "queryCount",
+        "selectedSourceQueryCount",
+        "providerTokens",
+        "elapsed",
+        "cost"
+      ],
+      "properties": {
+        "observedInput": { "$ref": "urn:eh:schema:v1:host-review-measurement#/$defs/payloadTotals" },
+        "observedInputComplete": { "type": "boolean" },
+        "queryCount": { "type": "integer", "minimum": 0 },
+        "selectedSourceQueryCount": { "type": "integer", "minimum": 0 },
+        "providerTokens": { "$ref": "urn:eh:schema:v1:host-review-measurement#/$defs/providerTokens" },
+        "elapsed": { "$ref": "urn:eh:schema:v1:host-review-measurement#/$defs/elapsed" },
+        "cost": { "$ref": "urn:eh:schema:v1:host-review-measurement#/$defs/cost" }
+      },
+      "additionalProperties": false
+    },
+    "telemetryComparison": {
+      "type": "object",
+      "required": ["compact", "broaderSource", "diagnostics"],
+      "properties": {
+        "compact": { "$ref": "#/$defs/contextTelemetry" },
+        "broaderSource": { "$ref": "#/$defs/contextTelemetry" },
+        "observedInputByteRatio": { "type": "number", "minimum": 0 },
+        "approximateInputTokenRatio": { "type": "number", "minimum": 0 },
+        "providerInputTokenRatio": { "type": "number", "minimum": 0 },
+        "elapsedTimeRatio": { "type": "number", "minimum": 0 },
+        "monetaryCostRatio": { "type": "number", "minimum": 0 },
+        "diagnostics": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "type": "string", "minLength": 1 }
+        }
+      },
+      "additionalProperties": false
+    },
+    "subject": {
+      "type": "object",
+      "required": [
+        "subjectId",
+        "inputDigest",
+        "estimatorVersion",
+        "profile",
+        "compactMeasurementDigest",
+        "broaderSourceMeasurementDigest",
+        "capabilityItems",
+        "categories",
+        "repositoryTotal",
+        "telemetry",
+        "limitations"
+      ],
+      "properties": {
+        "subjectId": { "type": "string", "minLength": 1, "maxLength": 256 },
+        "inputDigest": { "$ref": "urn:eh:schema:v1:host-review-packet#/$defs/digest" },
+        "estimatorVersion": { "type": "string", "minLength": 1 },
+        "profile": { "enum": ["implementation", "recreation"] },
+        "compactMeasurementDigest": { "$ref": "urn:eh:schema:v1:host-review-packet#/$defs/digest" },
+        "broaderSourceMeasurementDigest": { "$ref": "urn:eh:schema:v1:host-review-packet#/$defs/digest" },
+        "capabilityItems": { "$ref": "#/$defs/levelComparison" },
+        "categories": { "$ref": "#/$defs/levelComparison" },
+        "repositoryTotal": { "$ref": "#/$defs/levelComparison" },
+        "telemetry": { "$ref": "#/$defs/telemetryComparison" },
+        "limitations": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "type": "string", "minLength": 1 }
+        }
+      },
+      "additionalProperties": false
+    },
+    "budgetDecision": {
+      "type": "object",
+      "required": ["defaultBudgetSelected", "reason"],
+      "properties": {
+        "defaultBudgetSelected": { "const": false },
+        "reason": { "type": "string", "minLength": 1 }
+      },
+      "additionalProperties": false
+    }
+  }
+}

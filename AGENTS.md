@@ -34,6 +34,8 @@ Read these root documents completely:
     calibration identity, labels, metrics, review maturity, or admission policy
 12. `RELEASING.md` when changing package metadata, public-release automation,
     repository visibility procedure, or NuGet publication
+13. `MILESTONE_8_MEASUREMENT.md` when changing host-review telemetry, comparison
+    metrics, benchmark privacy, or model-budget admission
 
 If an implementation request conflicts with those documents, surface the conflict
 and update the relevant decision explicitly. Do not silently change estimation
@@ -258,8 +260,15 @@ explicit model-identity availability, evidence-backed affirm/replace ledgers, an
 non-applying validation. Selected source is opt-in, restricted to scanner-admitted
 files, link-safe, size/encoding bounded, and digest checked. The local baseline
 remains complete without AI; EffortHours calls no provider and chooses no model.
-Representative token, time, monetary-cost, and estimate-improvement measurement is
-still required before any host-review budget or automatic default is selected.
+The measurement checkpoint adds `host-review-measurement/1.0.0`,
+`host-review-comparison-metrics/1.0.0`, sanitized `review measure`, paired
+`review benchmark`, explicit incomplete-context accounting, and a reproducible
+three-repository/six-session public diagnostic. Compact review improves the frozen
+reference agreement at item/category levels but worsens repository-total
+agreement. Exact provider token/time/cost and complete surrounding-context
+telemetry for both paired sessions were unavailable, so no savings claim,
+host-review budget, or automatic default is selected. Blind multi-model repetition
+remains next.
 
 The public-alpha candidate includes project-authored governance and conduct
 policies, issue and pull-request templates, full-SHA-pinned Windows/Linux/macOS CI,

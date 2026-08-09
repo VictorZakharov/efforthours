@@ -7,9 +7,12 @@ It is an output-volume comparison, not an estimator-accuracy benchmark or an exa
 provider-token measurement.
 
 These historical measurements cover the Milestone 6 `--view review` projection,
-not the later `host-review/1.0.0` packet or follow-up queries. Milestone 8 issue #27
-must measure those protocol payloads and their actual review value before any
-model-facing budget or automatic default is selected.
+not the later `host-review/1.0.0` packet or follow-up queries. The separate
+[Milestone 8 public checkpoint](benchmarks/host-review/public-expansion/0.1.0)
+records exact packet/query payload sizes and item/category/total agreement for
+three public repositories. Provider tokens, elapsed time, complete paired-session
+context sizes, and cost were unavailable, so that checkpoint makes no savings
+claim and selects no model-facing budget or automatic default.
 
 The measurements were taken on August 5, 2026 with `eh` version
 `0.6.0-alpha.1`, `seed-rules/0.2.0`, and the bundled

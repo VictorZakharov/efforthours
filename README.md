@@ -36,11 +36,14 @@ provenance, review and evaluation commands, a frozen rubric, and a 24-case matri
 with reproducible source reports, 121 preliminary teacher targets, and a blind
 independent-review packet. No independent Change correction or accuracy claim is
 complete.
-The first Milestone 8 host-review checkpoint is implemented: a surrounding AI
-session can consume a rate-free, digest-bound uncertainty packet, request bounded
-capability, evidence, scope, or explicitly selected source detail, and return a
-schema-validated adjustment ledger. EffortHours does not call a provider or apply
-those adjustments; representative cost and improvement measurements remain.
+The first Milestone 8 host-review and measurement checkpoints are implemented: a
+surrounding AI session can consume a rate-free, digest-bound uncertainty packet,
+request bounded capability, evidence, scope, or explicitly selected source detail,
+and return a schema-validated adjustment ledger. EffortHours can record sanitized
+session telemetry and compare compact/broader-source review pairs without calling
+a provider or applying adjustments. The initial three-repository public diagnostic
+improved item/category agreement but worsened total agreement; exact provider
+tokens, time, and cost were unavailable, so no default review budget was selected.
 The repository now contains:
 
 - versioned JSON contracts and published schemas for evidence, work items,
@@ -93,9 +96,10 @@ The repository now contains:
   compact JSON and readable Markdown;
 - `explain` drill-down from stable work-item or capability IDs to evidence and
   calculation lineage;
-- provider-neutral `review packet`, digest-bound `review query`, and non-applying
-  `review validate` commands with versioned packet, query-result, adjustment, and
-  validation schemas;
+- provider-neutral `review packet`, digest-bound `review query`, non-applying
+  `review validate`, sanitized `review measure`, and paired `review benchmark`
+  commands with versioned packet, query-result, adjustment, validation,
+  measurement, and comparison schemas;
 - a schema-validated, checked-in 2026 US senior-contractor rate model with a
   $160/hour default, $125-$200 market reference, source provenance, formula, and
   caller override or opt-out;
@@ -139,9 +143,12 @@ pass any reported capability ID to `eh explain` for its evidence lineage.
 surrounding AI session. Follow-up `review query` calls must repeat the packet's
 input digest and can request one capability, one evidence fact, a bounded scope
 page, or an explicit admitted-source line window. `review validate` checks a
-proposed evidence-backed adjustment ledger but never applies it. No review command
-chooses or calls a provider; provider, privacy, disclosure, and retention decisions
-remain with the caller. See [MILESTONE_8.md](MILESTONE_8.md).
+proposed evidence-backed adjustment ledger but never applies it. `review measure`
+records one completed review with caller-supplied telemetry; `review benchmark`
+compares one compact and one broader-source session per opaque subject. No review
+command chooses or calls a provider; provider, privacy, disclosure, and retention
+decisions remain with the caller. See [MILESTONE_8.md](MILESTONE_8.md) and
+[MILESTONE_8_MEASUREMENT.md](MILESTONE_8_MEASUREMENT.md).
 
 `eh change` estimates the final functional and quality delta for explicit
 base/head revisions, a commit, a range, or one PR. It reads immutable local Git
@@ -338,7 +345,11 @@ without misrepresenting counterfactual hours as historical labor.
 - [MILESTONE_7.md](MILESTONE_7.md) defines reviewed labels, repository-held-out
   evaluation, metrics, and the admission gates for later local models.
 - [MILESTONE_8.md](MILESTONE_8.md) defines the provider-neutral host-review packet,
-  digest-bound follow-up queries, adjustment ledger, and deferred measurement gate.
+  digest-bound follow-up queries, adjustment ledger, and provider boundary.
+- [MILESTONE_8_MEASUREMENT.md](MILESTONE_8_MEASUREMENT.md) defines sanitized review
+  telemetry, comparison metrics, public-benchmark privacy, and budget admission.
+- [`benchmarks/host-review/public-expansion/0.1.0`](benchmarks/host-review/public-expansion/0.1.0)
+  records the first three-repository host-review diagnostic.
 - [REPORT_BENCHMARKS.md](REPORT_BENCHMARKS.md) records reporting size and usefulness
   measurements.
 - [MODEL_REVIEWS.md](MODEL_REVIEWS.md) records provisional realism checks with

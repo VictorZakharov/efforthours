@@ -223,6 +223,8 @@ public sealed partial class EffortHoursApplication
           eh review packet <repository-or-evidence.json> [options]
           eh review query <repository-or-evidence.json> --input-digest <digest> [selector] [options]
           eh review validate <packet.json> <adjustment.json> [options]
+          eh review measure <packet.json> <adjustment.json> --subject <id> --session <id> --context <mode> [options]
+          eh review benchmark <measurement.json>... [options]
           eh calibration scaffold <estimate.json> [--blind] [--compact] [--output <path>]
           eh calibration compile <review-plan.json> <estimate.json>... [--compact] [--output <path>]
           eh calibration review-scaffold <corpus.json> [--blind] [--compact] [--output <path>]

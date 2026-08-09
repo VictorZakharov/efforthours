@@ -29,6 +29,18 @@ public sealed class HostReviewJsonRenderer(bool compact = false)
         ContractValidation.Validate,
         "validation report");
 
+    public string Render(HostReviewMeasurement measurement) => RenderDocument(
+        measurement,
+        SchemaNames.HostReviewMeasurement,
+        ContractValidation.Validate,
+        "measurement");
+
+    public string Render(HostReviewBenchmarkReport report) => RenderDocument(
+        report,
+        SchemaNames.HostReviewBenchmark,
+        ContractValidation.Validate,
+        "benchmark report");
+
     private string RenderDocument<T>(
         T document,
         string schemaName,

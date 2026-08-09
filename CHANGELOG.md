@@ -26,6 +26,11 @@ may still change public contracts with explicit documentation.
   scope/selected-source queries, adjustment ledgers, and non-applying validation.
   The local baseline remains complete and offline; no provider is embedded or
   selected.
+- Sanitized `host-review-measurement/1.0.0` session records and
+  `host-review-comparison-metrics/1.0.0` compact/broader-source benchmarks. The
+  first three-repository public diagnostic reports payload and agreement evidence,
+  explicitly withholds unavailable token/time/cost ratios, and selects no default
+  review budget.
 
 ### Changed
 

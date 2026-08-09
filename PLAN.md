@@ -188,12 +188,14 @@ Status as of August 9, 2026:
   the EffortHours tree were measured without target execution, dependency install,
   network access, or target-tree mutation. No regression threshold was inferred
   from this single workstation.
-- The first Milestone 8 protocol checkpoint is complete: provider-neutral,
-  rate-free review packets bind the full local estimate and evidence by digest;
-  bounded capability, evidence, scope, and explicit selected-source queries expose
-  only requested detail; and adjustment validation records model identity,
-  evidence, and rationale without applying changes. Representative host-review
-  cost and improvement measurement remains.
+- The first Milestone 8 protocol and measurement checkpoints are complete:
+  provider-neutral, rate-free review packets bind the full local estimate and
+  evidence by digest; bounded queries expose only requested detail; adjustment
+  validation never applies changes; and sanitized measurement/benchmark contracts
+  compare compact and broader-source decisions. The initial three-repository
+  diagnostic improves item/category agreement but worsens total agreement. Exact
+  provider token/time/cost and complete paired-session context telemetry were
+  unavailable, so no savings claim or default review budget is admitted.
 - The first Milestone 9 Change Estimation subset is complete: immutable base/head,
   commit, range, and single-PR selectors; v1 Change EHE schemas; final-delta
   normalization; additive component reconciliation; JSON/Markdown/explanation
@@ -370,14 +372,20 @@ uncalibrated until the licensed corpus is diverse and independently reviewed.
 - Provider-neutral adjustment ledgers record affirm/replace intent, the exact local
   range, supporting evidence, rationale, and available model identity; validation
   is deterministic and does not apply changes.
-- Benchmark token use, elapsed time, cost, and estimate improvement on representative
-  repositories before choosing defaults or limits.
+- Sanitized `review measure` and `review benchmark` commands now record packet,
+  query, caller-supplied provider/time/cost telemetry, complete-decision
+  projections, and item/category/total agreement without embedding source or
+  prompts.
+- The first three-repository public diagnostic is complete. It records mixed
+  accuracy results and unavailable provider/complete-context telemetry, so all
+  defaults and limits remain deferred pending blind multi-model repetitions.
 - Keep provider and privacy choices in the surrounding AI session rather than
   embedding them into the core estimator.
 - Ensure the same repository can always receive a local baseline estimate.
 
 The implemented contract and safety boundary are recorded in `MILESTONE_8.md`.
-Representative measurement remains the open part of this milestone.
+Measurement semantics and the initial public diagnostic are recorded in
+`MILESTONE_8_MEASUREMENT.md` and `benchmarks/host-review/public-expansion/0.1.0`.
 
 Exit condition: host AI review materially improves low-confidence cases while using
 only a small, measurable fraction of the context and cost required for full-source
@@ -470,19 +478,22 @@ cross-platform measurements and a more representative benchmark corpus exist.
    claiming calibrated accuracy.
 2. Hand one or more frozen blind public-corpus packets to genuinely distinct
    reviewers and compile corrections without exposing test partitions to tuning.
-3. Add enough redistributable repository families to place multiple independent
+3. Repeat the host-review benchmark blindly across multiple models with exact
+   provider tokens, wall-clock time, monetary cost, and complete paired-session
+   context accounting before considering any automatic review budget.
+4. Add enough redistributable repository families to place multiple independent
    observations in every ecosystem/partition cell, then freeze numerical
    model-admission thresholds before fitting.
-4. Expand analyzer precision and mutation guardrails beyond the corrected
+5. Expand analyzer precision and mutation guardrails beyond the corrected
    process-stream, framework-neutral-state, and benchmark-entry-point boundaries to
    semantic clone detection, general reachability, accessibility, measured
    coverage, and realistic multi-package boundaries.
-5. Repeat the new peak-memory and read-only benchmark protocol across constrained
+6. Repeat the new peak-memory and read-only benchmark protocol across constrained
    Windows/Linux/macOS hosts and larger redistributable monorepos before freezing
    regression thresholds.
-6. Evaluate a compiler-grade TypeScript adapter only if reviewed calibration shows
+7. Evaluate a compiler-grade TypeScript adapter only if reviewed calibration shows
    material error from the bounded token evidence.
-7. Obtain genuinely independent correction for the frozen 24-case Change teacher
+8. Obtain genuinely independent correction for the frozen 24-case Change teacher
    corpus, add redistributable real final-change families, and record large-range
    performance before tuning
    `change-seed/0.1.0` or expanding to multiple PRs and author-period portfolios.

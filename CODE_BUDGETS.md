@@ -42,6 +42,11 @@ selected-source safety, rendering, and adjustment validation in a separate
 validation is split into focused partial files after the budget test caught the
 first oversized draft. No ratchet override was added.
 
+The August 9, 2026 measurement checkpoint kept telemetry contracts, payload
+measurement, session construction, comparison metrics, aggregation, rendering,
+and CLI option parsing in focused files. Measurement semantic validation was split
+again before reaching the ordinary ceiling. No ratchet override was added.
+
 Line count is deliberately simple, deterministic, cross-platform, and difficult
 to game accidentally. The useful outcome is earlier decomposition into cohesive
 contracts, commands, analyzers, and renderers—not compressed formatting.
