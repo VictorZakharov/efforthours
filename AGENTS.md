@@ -161,7 +161,8 @@ semantics.
 ## Current project stage
 
 Milestones 1 through 6, Milestone 7A, the Milestone 7B1 through 7B5 checkpoints,
-and the post-7B5 analyzer-precision checkpoint are complete. The repository has a
+the post-7B5 analyzer-precision checkpoint, and the scanner performance-and-safety
+checkpoint are complete. The repository has a
 working common scanner, static .NET
 project/Roslyn analyzer, static JavaScript/TypeScript package and source analyzer,
 mixed-repository evidence pipeline, published v1 schemas, optional external scan
@@ -210,6 +211,15 @@ are contamination diagnostics, not held-out accuracy evidence. General
 semantic-clone and reachability analysis, multiple observations per
 ecosystem/partition cell, and actual independent review are next; local ML has not
 been selected or added.
+
+The scanner benchmark now measures fresh-process .NET, JavaScript/TypeScript, and
+mixed million-line shapes, samples peak resident memory, labels explicit external
+cache passes separately, and fingerprints caller-supplied target trees before and
+after analysis. The recorded mixed full scan completes in 10.876 seconds with a
+234.20 MiB sampled peak on the documented workstation; three exact MIT release
+trees and the EffortHours tree also retain unchanged target metadata. The benchmark
+is explicitly disk-backed, while ordinary unit tests remain memory-only. No
+cross-platform regression threshold has been frozen from the single-machine data.
 
 The first Change Estimation MVP adds provider-neutral immutable snapshot analysis,
 local Git base/head, commit, and range selectors, one optional identity-only `gh`
@@ -260,6 +270,8 @@ dotnet pack src/EffortHours.Cli/EffortHours.Cli.csproj --configuration Release -
 dotnet benchmarks/EffortHours.ScannerBenchmarks/bin/Release/net10.0/EffortHours.ScannerBenchmarks.dll --files 10000 --lines-per-file 100 --warm-cache
 dotnet benchmarks/EffortHours.ScannerBenchmarks/bin/Release/net10.0/EffortHours.ScannerBenchmarks.dll --files 10000 --lines-per-file 100 --dotnet
 dotnet benchmarks/EffortHours.ScannerBenchmarks/bin/Release/net10.0/EffortHours.ScannerBenchmarks.dll --files 10000 --lines-per-file 100 --javascript
+dotnet benchmarks/EffortHours.ScannerBenchmarks/bin/Release/net10.0/EffortHours.ScannerBenchmarks.dll --files 10000 --lines-per-file 100 --mixed --warm-cache
+dotnet benchmarks/EffortHours.ScannerBenchmarks/bin/Release/net10.0/EffortHours.ScannerBenchmarks.dll --repository . --warm-cache
 ```
 
 The primary distribution is the `EffortHours.Tool` .NET global-tool package with the

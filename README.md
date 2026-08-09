@@ -271,15 +271,17 @@ integrity mechanism. Omit it for a full content re-read.
 
 ## Performance checkpoint
 
-The v0.2 scanner processed a synthetic one-million-line repository containing
-10,000 C# files in 4.275 seconds, plus 0.116 seconds for JSON serialization, on the
-documented development machine. An unchanged warm-cache scan took 1.646 seconds and
-produced the same digest. This is a repeatable engineering checkpoint, not a claim
-about every repository shape. The v0.3 static .NET path processed the same fixture,
-including Roslyn syntax analysis, in 6.608 seconds plus 0.107 seconds for
-serialization. See [BENCHMARKS.md](BENCHMARKS.md) for the methods, environment, and
-limitations. The v0.4 static JavaScript/TypeScript path processed a mixed 10,000-file,
-one-million-line fixture in 13.303 seconds plus 0.118 seconds for serialization.
+The current benchmark harness records cumulative managed allocation, sampled peak
+resident memory, fresh-process-versus-explicit-cache conditions, and a before/after
+target-tree metadata digest. On the documented development machine, fresh-process
+one-million-line scans took 7.083 seconds for static .NET, 12.088 seconds for static
+JavaScript/TypeScript, and 10.876 seconds for a mixed C#/JavaScript/TypeScript tree;
+sampled scan peaks were 272.52, 185.69, and 234.20 MiB respectively. The mixed
+warm-cache pass took 4.581 seconds. A combined set of three exact, verified MIT
+releases and the EffortHours development tree were also measured read-only. These
+are reproducible engineering checkpoints, not universal performance guarantees or
+release thresholds. See [BENCHMARKS.md](BENCHMARKS.md) for commands, provenance,
+hardware, cache semantics, scaling samples, and limitations.
 
 The Milestone 6 EffortHours snapshot produced 240,464 bytes of compact canonical
 estimate JSON. The bounded review projection used 17,694 bytes (7.4%), and review

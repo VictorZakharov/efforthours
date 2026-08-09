@@ -180,6 +180,14 @@ Status as of August 9, 2026:
   48-case mutation baseline retains identical numeric estimates and 156 passing
   relations, and frozen-corpus reevaluations disclose both improved diagnostics and
   reduced target mapping. No estimator prior or review maturity changed.
+- The scanner performance-and-safety checkpoint is complete: fresh-process
+  one-million-line .NET, JavaScript/TypeScript, and mixed scans now report sampled
+  peak resident memory and cumulative allocation; explicit warm-cache runs are
+  labeled separately; and caller-supplied repository mode fingerprints every
+  target entry before and after static analysis. Three exact MIT release trees and
+  the EffortHours tree were measured without target execution, dependency install,
+  network access, or target-tree mutation. No regression threshold was inferred
+  from this single workstation.
 - The first Milestone 9 Change Estimation subset is complete: immutable base/head,
   commit, range, and single-PR selectors; v1 Change EHE schemas; final-delta
   normalization; additive component reconciliation; JSON/Markdown/explanation
@@ -430,15 +438,16 @@ The first useful release should:
 - use only dependencies, fixtures, model artifacts, and distributed data that can
   legally accompany the chosen open-source distribution, with recorded provenance.
 
-The initial common-scanner checkpoint analyzes one million synthetic C# source
-lines across 10,000 files in 4.275 seconds and serializes the evidence in another
-0.116 seconds on the environment recorded in `BENCHMARKS.md`; an unchanged
-warm-cache scan takes 1.646 seconds with the same evidence digest. Representative
-mixed and real-world corpora are still required before establishing release
-thresholds.
+The latest scanner checkpoint analyzes one million lines in 7.083 seconds for
+static .NET, 12.088 seconds for static JavaScript/TypeScript, and 10.876 seconds for
+a mixed C#/JavaScript/TypeScript tree on the environment recorded in
+`BENCHMARKS.md`. Sampled scan peaks remain at or below 272.52 MiB in those fresh
+processes. An explicit mixed warm-cache pass takes 4.581 seconds. Three verified
+MIT releases and the EffortHours tree provide initial real-source measurements,
+with unchanged before/after target metadata.
 
-Numerical accuracy and performance thresholds will be added after a representative
-benchmark corpus exists.
+Numerical accuracy and performance thresholds will be added only after repeated
+cross-platform measurements and a more representative benchmark corpus exist.
 
 ## 8. Immediate next steps
 
@@ -455,8 +464,9 @@ benchmark corpus exists.
    process-stream, framework-neutral-state, and benchmark-entry-point boundaries to
    semantic clone detection, general reachability, accessibility, measured
    coverage, and realistic multi-package boundaries.
-5. Extend performance and safety measurements to curated, redistributable mixed
-   repository shapes and peak-memory measurements.
+5. Repeat the new peak-memory and read-only benchmark protocol across constrained
+   Windows/Linux/macOS hosts and larger redistributable monorepos before freezing
+   regression thresholds.
 6. Evaluate a compiler-grade TypeScript adapter only if reviewed calibration shows
    material error from the bounded token evidence.
 7. Obtain genuinely independent correction for the frozen 24-case Change teacher

@@ -52,9 +52,9 @@ or future compiler-based semantic analysis.
 
 The run was not a controlled cold-cache benchmark, allocated bytes are cumulative
 managed allocations rather than peak resident memory, and the generated files are
-uniform. Future benchmark work should add repeated cold/warm runs, peak working-set
-measurement, mixed .NET/JavaScript fixtures, and curated redistributable real-world
-repositories.
+uniform. The August 9 checkpoint below adds fresh-process/cache-labeled runs,
+sampled peak working set, mixed fixtures, and initial redistributable real-source
+measurements; repeated controlled OS-cache runs remain future work.
 
 ## Static .NET analyzer v0.3 checkpoint
 
@@ -89,7 +89,7 @@ and cache fixtures are memory-backed to avoid repeated test-tree I/O.
 
 The generated source is deliberately syntax-simple, so this checkpoint establishes
 scalability for many files rather than a universal semantic-complexity threshold.
-Future runs should add mixed syntax shapes and peak working-set measurement.
+The August 9 checkpoint below adds mixed shapes and sampled peak working set.
 
 ## Static JavaScript/TypeScript analyzer v0.4 checkpoint
 
@@ -126,5 +126,97 @@ suite uses only memory-backed repository and cache fixtures.
 
 The allocation figure is cumulative allocation, not peak live memory. Half of the
 files deliberately contain many exported JavaScript declarations, so this run
-exercises substantial AST allocation. Curated real-world mixed repositories and
-peak working-set measurements remain future benchmark work.
+exercises substantial AST allocation. The newer checkpoint below adds sampled
+peak working set plus mixed generated and curated real-source measurements.
+
+## Peak working-set and mixed-repository v0.2.1 checkpoint
+
+Measured on August 9, 2026 with:
+
+- common scanner `0.2.1`, .NET analyzer `0.3.2`, and JavaScript analyzer `0.4.1`;
+- .NET runtime `10.0.7` and .NET SDK `10.0.203`;
+- Windows `10.0.26200`, x64;
+- an AMD Ryzen 9 5900X with 12 physical cores and 24 logical processors; and
+- 127.9 GiB installed memory.
+
+This is a local developer workstation, not a memory-constrained runner. Each
+full-scan row below starts a fresh process over a newly generated tree. Generation
+immediately precedes analysis, so these are fresh-process full scans, not controlled
+OS cold-cache measurements. The explicit warm-cache result populates EffortHours's
+external scan cache and then measures an unchanged scan in the same process.
+
+Commands:
+
+```text
+dotnet benchmarks/EffortHours.ScannerBenchmarks/bin/Release/net10.0/EffortHours.ScannerBenchmarks.dll --files 10000 --lines-per-file 100 --dotnet
+dotnet benchmarks/EffortHours.ScannerBenchmarks/bin/Release/net10.0/EffortHours.ScannerBenchmarks.dll --files 10000 --lines-per-file 100 --javascript
+dotnet benchmarks/EffortHours.ScannerBenchmarks/bin/Release/net10.0/EffortHours.ScannerBenchmarks.dll --files 10000 --lines-per-file 100 --mixed --warm-cache
+```
+
+The mixed fixture divides its 10,000 source files deterministically among C#,
+JavaScript, and TypeScript and includes both project and package manifests.
+
+| Full-scan mode | Text lines | Scan | Lines/s | Managed allocation | Sampled peak working set | Evidence JSON |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| Static .NET | 1,000,001 | 7.083 s | 141,179 | 619.32 MiB | 272.52 MiB | 9.94 MiB |
+| Static JavaScript/TypeScript | 1,000,001 | 12.088 s | 82,728 | 1,723.34 MiB | 185.69 MiB | 10.03 MiB |
+| Static mixed | 1,000,002 | 10.876 s | 91,947 | 1,361.23 MiB | 234.20 MiB | 10.01 MiB |
+
+The mixed run's measured warm-cache pass took 4.581 seconds, cumulatively allocated
+1,266.78 MiB, and reached a sampled 431.68 MiB process working set. That absolute
+warm peak is not comparable to a fresh process: it follows the full scan and an
+untimed cache-population pass, so its starting working set was already 384.33 MiB.
+The cache avoids unchanged common-file inspection; ecosystem analyzers still parse
+their retained source evidence.
+
+Fresh-process mixed samples at 250,000, 500,000, and 1,000,000 requested lines
+recorded sampled scan peaks of 121.95, 127.65, and 234.20 MiB respectively. The
+corresponding cumulative managed allocations were 343.27, 682.66, and 1,361.23 MiB.
+These points demonstrate bounded resident behavior for this fixture while also
+showing why cumulative allocation is not a peak-memory proxy. They are too few and
+too uniform to establish an asymptotic guarantee.
+
+### Curated real-source and project-tree checks
+
+The repository-input mode was also run over the exact, SHA-256-verified MIT release
+archives already recorded in
+[`calibration/corpora/public-expansion/SOURCES.md`](calibration/corpora/public-expansion/SOURCES.md):
+developit/mitt `3.0.1`, Tyrrrz/CliWrap `3.10.4`, and nanostores/nanostores `1.4.2`.
+Their extracted trees were placed under one temporary parent to exercise a mixed
+.NET, JavaScript, and TypeScript collection; no archive or extracted source was
+committed.
+
+| Dataset | Included files | Text lines | Full scan | Allocation | Sampled peak | Warm scan | Target unchanged |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | --- |
+| Three verified MIT releases | 168 | 16,823 | 0.637 s | 26.17 MiB | 71.70 MiB | 0.147 s | yes |
+| EffortHours development tree | 591 | 135,720 | 1.184 s | 74.62 MiB | 81.54 MiB | 0.561 s | yes |
+
+The curated-release collection produced source digest
+`sha256:09b545d80b5294faac3655e843236d29e41adab4f7ba747e45f76a7e0a08560a`.
+The EffortHours reading includes the current project-authored mixed tree; ignored
+Git/build/artifact entries remain part of the safety fingerprint but not analyzed
+source totals. These are realistic safety and latency checks, not a representative
+population or an estimator-accuracy benchmark.
+
+### Safety and measurement boundary
+
+The harness samples process resident working set every 10 milliseconds only during
+the measured scan. It records cumulative managed allocation separately. Before and
+after analysis it hashes the normalized path, attributes, length, and last-write
+timestamp of every target-tree entry, including excluded `.git` and build entries,
+without following reparse points. All runs above retained the same metadata digest.
+This detects ordinary target writes, additions, and removals; it is not an
+adversarial content-integrity proof.
+
+The benchmark calls only the static scanner pipeline. It does not execute target
+code, start target tools, install dependencies, or invoke network operations. Its
+optional cache is outside caller-supplied repositories. A process-level E2E smoke
+test covers mixed generation, memory fields, repository input, cache placement,
+and byte-identical target contents. Ordinary unit tests remain memory-only and do
+not run this disk-backed benchmark.
+
+No regression threshold is frozen from this checkpoint. The measurements cover
+one workstation, uniform large fixtures, three small public releases, and one
+project tree; repeated cross-platform samples and larger realistic monorepos are
+still required before a threshold can distinguish regressions from environment
+variance.

@@ -31,6 +31,11 @@ the ordinary 500-line ceiling, so its former 750-line ratchet was removed; all n
 classifiers also use the ordinary ceiling. This is a responsibility split, not a
 new exception.
 
+The August 9, 2026 benchmark checkpoint separated option parsing, fixture
+generation and cleanup, target-tree fingerprinting, inventory projection, and
+working-set sampling from benchmark orchestration. The largest scanner-benchmark
+source file is 193 lines, and no ratchet override was added.
+
 Line count is deliberately simple, deterministic, cross-platform, and difficult
 to game accidentally. The useful outcome is earlier decomposition into cohesive
 contracts, commands, analyzers, and renderers—not compressed formatting.

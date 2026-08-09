@@ -37,6 +37,13 @@ may still change public contracts with explicit documentation.
 - Change-EHE safeguards now include category-isolated migration, integration, CI,
   container-delivery, and simplification mutations plus pre-start and in-flight
   cancellation, without changing `change-seed/0.1.0`.
+- Scanner benchmarks now support mixed generated trees and caller-supplied
+  repositories, sample peak working set, distinguish explicit warm-cache passes,
+  and verify a before/after target-tree metadata digest.
+- The documented performance checkpoint now includes million-line .NET,
+  JavaScript/TypeScript, and mixed measurements plus three exact MIT releases and
+  the EffortHours development tree; no regression threshold is claimed from the
+  single-workstation results.
 
 ### Known limitations
 
