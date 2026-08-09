@@ -231,11 +231,13 @@ Status as of August 9, 2026:
 - Source-file budgets are enforced as an end-to-end architecture ratchet: 500
   lines by default, 400 for CLI files, and explicit non-precedent overrides for
   legacy debt. The former large CLI application class is split by responsibility.
-- Public-alpha release engineering is implemented: public governance and conduct
-  policies, issue/PR templates, pinned cross-platform CI, dependency automation,
-  NuGet-specific package metadata and README, an OIDC-only manual preview
-  workflow, and an exact release checklist are checked in. Repository visibility,
-  tagging, and NuGet publication are separately authorized external actions.
+- The first public-alpha boundary is complete: public governance and conduct
+  policies, issue/PR templates, protected cross-platform CI, dependency automation,
+  NuGet-specific package metadata and README, an OIDC-only protected release
+  workflow, and an exact release checklist are in place. The audited repository is
+  public, and `EffortHours.Tool` `0.9.0-alpha.1` is available from NuGet.org with a
+  matching immutable tag and GitHub prerelease. The release retains every
+  uncalibrated-model warning and makes no production-accuracy claim.
 
 ### Milestone 0: Product and contract decisions
 
@@ -479,29 +481,25 @@ cross-platform measurements and a more representative benchmark corpus exist.
 
 ## 8. Immediate next steps
 
-1. Complete the separately authorized public-alpha boundary: recheck the package
-   ID, require green cross-platform CI on the exact candidate, make the audited
-   source public, and publish the quiet `EffortHours.Tool` preview without claiming
-   calibrated accuracy.
-2. Hand one or more frozen blind public-corpus packets to genuinely distinct
+1. Hand one or more frozen blind public-corpus packets to genuinely distinct
    reviewers and compile corrections without exposing test partitions to tuning.
-3. Repeat the host-review benchmark blindly across multiple models with exact
+2. Repeat the host-review benchmark blindly across multiple models with exact
    provider tokens, wall-clock time, monetary cost, and complete paired-session
    context accounting before considering any automatic review budget.
-4. Add enough redistributable repository families to place multiple independent
+3. Add enough redistributable repository families to place multiple independent
    observations in every ecosystem/partition cell, then freeze numerical
    model-admission thresholds before fitting.
-5. Expand analyzer precision and mutation guardrails beyond the corrected
+4. Expand analyzer precision and mutation guardrails beyond the corrected
    process-stream, framework-neutral-state, benchmark-entry-point, and first
    measured-coverage boundaries to semantic clone detection, general reachability,
    accessibility, additional coverage formats, and realistic multi-package
    boundaries.
-6. Repeat the new peak-memory and read-only benchmark protocol across constrained
+5. Repeat the new peak-memory and read-only benchmark protocol across constrained
    Windows/Linux/macOS hosts and larger redistributable monorepos before freezing
    regression thresholds.
-7. Evaluate a compiler-grade TypeScript adapter only if reviewed calibration shows
+6. Evaluate a compiler-grade TypeScript adapter only if reviewed calibration shows
    material error from the bounded token evidence.
-8. Obtain genuinely independent correction for the frozen 24-case Change teacher
+7. Obtain genuinely independent correction for the frozen 24-case Change teacher
    corpus, add redistributable real final-change families, and record large-range
    performance before tuning
    `change-seed/0.1.0` or expanding to multiple PRs and author-period portfolios.

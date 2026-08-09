@@ -14,15 +14,17 @@ local models should compress and handle most of the repository. The host AI shou
 need to reason about only compact evidence and unresolved semantic questions rather
 than reading an entire large repository.
 
-> **Experimental public-alpha candidate:** EffortHours is a working reference
+> **Experimental public alpha:** EffortHours is a working reference
 > implementation, but its bundled seed estimators have not completed independent
 > calibration. Outputs are counterfactual replacement-effort estimates, not actual
 > labor records, invoices, or production-validated billing determinations.
 
 ## Status
 
-EffortHours is being prepared for a quiet public source and NuGet preview. Milestones
-1 through 6 and the Milestone 7A calibration foundation are complete.
+[EffortHours 0.9.0-alpha.1](https://github.com/VictorZakharov/efforthours/releases/tag/v0.9.0-alpha.1)
+is available as public source and as the
+[`EffortHours.Tool` NuGet preview](https://www.nuget.org/packages/EffortHours.Tool/0.9.0-alpha.1).
+Milestones 1 through 6 and the Milestone 7A calibration foundation are complete.
 Milestone 7B1 through 7B5 public-corpus, review, and mutation checkpoints are
 implemented. A post-7B5 precision checkpoint corrects reviewed .NET persistence,
 framework-neutral JavaScript UI, and benchmark-entry-point false positives without
