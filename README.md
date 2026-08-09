@@ -24,13 +24,16 @@ than reading an entire large repository.
 EffortHours is being prepared for a quiet public source and NuGet preview. Milestones
 1 through 6 and the Milestone 7A calibration foundation are complete.
 Milestone 7B1 through 7B5 public-corpus, review, and mutation checkpoints are
-implemented; actual independent correction and broader multi-observation corpus
-coverage remain. The first experimental Change Estimation MVP is also implemented
-for immutable base/head revisions, one commit, one range, and one GitHub pull
-request. Its first calibration checkpoint adds final-delta provenance, review and
-evaluation commands, a frozen rubric, and a 24-case matrix with reproducible source
-reports, 121 preliminary teacher targets, and a blind independent-review packet.
-No independent Change correction or accuracy claim is complete.
+implemented. A post-7B5 precision checkpoint corrects reviewed .NET persistence,
+framework-neutral JavaScript UI, and benchmark-entry-point false positives without
+changing seed priors. Actual independent correction and broader multi-observation
+corpus coverage remain. The first experimental Change Estimation MVP is also
+implemented for immutable base/head revisions, one commit, one range, and one
+GitHub pull request. Its first calibration checkpoint adds final-delta provenance,
+review and evaluation commands, a frozen rubric, and a 24-case matrix with
+reproducible source reports, 121 preliminary teacher targets, and a blind
+independent-review packet. No independent Change correction or accuracy claim is
+complete.
 The repository now contains:
 
 - versioned JSON contracts and published schemas for evidence, work items,

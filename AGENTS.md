@@ -160,8 +160,9 @@ semantics.
 
 ## Current project stage
 
-Milestones 1 through 6, Milestone 7A, and the Milestone 7B1 through 7B5 checkpoints
-are complete. The repository has a working common scanner, static .NET
+Milestones 1 through 6, Milestone 7A, the Milestone 7B1 through 7B5 checkpoints,
+and the post-7B5 analyzer-precision checkpoint are complete. The repository has a
+working common scanner, static .NET
 project/Roslyn analyzer, static JavaScript/TypeScript package and source analyzer,
 mixed-repository evidence pipeline, published v1 schemas, optional external scan
 cache, installable global-tool package, memory-only unit fixtures, automated
@@ -199,9 +200,16 @@ MIT-licensed releases, 133 lineage-complete teacher targets, frozen
 `seed-rules/0.2.1` baselines, the `ehe-work-item/1.1.0` explicit-exclusion policy,
 review compilers `0.2.0`, and a combined blind independent-review handoff. Across
 both public corpora there are six repository families and 232 blind targets, still
-with one host-AI teacher and no independent correction. General semantic-clone and
-reachability analysis, multiple observations per ecosystem/partition cell, and
-actual independent review are next; local ML has not been selected or added.
+with one host-AI teacher and no independent correction. `.NET` analyzer `0.3.2`
+now qualifies ambiguous execute/query calls with persistence context; JavaScript
+analyzer `0.4.1` requires UI-framework context for state/effect/form-only UI
+evidence and excludes development benchmark hashbangs from product entry points.
+The unchanged 48-case seed mutation baseline retains identical numeric estimates
+and 156 passing relations. Frozen-corpus reevaluations disclose mapping changes and
+are contamination diagnostics, not held-out accuracy evidence. General
+semantic-clone and reachability analysis, multiple observations per
+ecosystem/partition cell, and actual independent review are next; local ML has not
+been selected or added.
 
 The first Change Estimation MVP adds provider-neutral immutable snapshot analysis,
 local Git base/head, commit, and range selectors, one optional identity-only `gh`

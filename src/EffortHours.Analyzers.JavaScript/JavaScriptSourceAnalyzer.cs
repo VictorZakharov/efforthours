@@ -41,7 +41,12 @@ internal sealed class JavaScriptSourceAnalyzer(RepositoryTextReader textReader)
             hasJsx);
         AddPackageTechnologies(package, syntax.Metrics);
         AddFrameworkFileSignals(extension, package, syntax.Metrics);
-        AddEntrypointSignal(path, package, tokens, syntax.Metrics);
+        JavaScriptEntrypointClassifier.AddSignal(
+            path,
+            package,
+            tokens,
+            syntax.Metrics,
+            fileFact.Tags.Contains("classification:test", StringComparer.Ordinal));
 
         List<EvidenceFact> facts = CreateFacts(path, package?.Scope ?? ".", fileFact, syntax);
         List<Diagnostic> diagnostics = [];
@@ -98,27 +103,7 @@ internal sealed class JavaScriptSourceAnalyzer(RepositoryTextReader textReader)
                 [syntaxTag, .. metrics.HttpMethods.Select(method => $"http-method:{method}")]));
         }
 
-        if (metrics.UiComponents > 0 || metrics.UiPages > 0 || metrics.JsxElements > 0 ||
-            metrics.StateUsages > 0 || metrics.EffectUsages > 0 || metrics.FormUsages > 0)
-        {
-            facts.Add(JavaScriptEvidence.Fact(
-                $"javascript:ui:{path}",
-                EvidenceKinds.UserInterface,
-                packageScope,
-                $"Web UI component or page structure detected in '{path}'.",
-                EvidenceSourceKind.Inferred,
-                "AST or token structure, framework, component, page-path, and state classification",
-                [JavaScriptEvidence.Location(path, metrics.UiLine)],
-                [
-                    JavaScriptEvidence.Measurement("components", metrics.UiComponents, "components"),
-                    JavaScriptEvidence.Measurement("pages", metrics.UiPages, "pages"),
-                    JavaScriptEvidence.Measurement("jsx-elements", metrics.JsxElements, "elements"),
-                    JavaScriptEvidence.Measurement("state-usages", metrics.StateUsages, "usages"),
-                    JavaScriptEvidence.Measurement("effect-usages", metrics.EffectUsages, "usages"),
-                    JavaScriptEvidence.Measurement("form-usages", metrics.FormUsages, "usages"),
-                ],
-                [syntaxTag, .. TechnologyTags(metrics, "ui", "full-stack")]));
-        }
+        JavaScriptUiEvidence.AddFact(facts, path, packageScope, syntaxTag, metrics);
 
         if (metrics.DataCalls > 0 || metrics.Migrations > 0)
         {
@@ -304,39 +289,6 @@ internal sealed class JavaScriptSourceAnalyzer(RepositoryTextReader textReader)
         if (package?.Role is "web-ui" or "full-stack-web" && metrics.UiPages > 0)
         {
             metrics.UiLine ??= 1;
-        }
-    }
-
-    private static void AddEntrypointSignal(
-        string path,
-        JavaScriptPackageModel? package,
-        JavaScriptTokenization tokens,
-        JavaScriptSourceMetrics metrics)
-    {
-        if (tokens.HasHashBang)
-        {
-            metrics.EntryPointLine = 1;
-            return;
-        }
-
-        if (package?.Role is not ("application" or "server" or "full-stack-web" or "cli" or "worker"))
-        {
-            return;
-        }
-
-        string relativeToPackage = package.Scope == "."
-            ? path
-            : path.StartsWith(package.Scope + "/", StringComparison.Ordinal)
-                ? path[(package.Scope.Length + 1)..]
-                : path;
-        string directory = relativeToPackage.Contains('/')
-            ? relativeToPackage[..relativeToPackage.LastIndexOf('/')]
-            : ".";
-        string name = Path.GetFileNameWithoutExtension(path).ToLowerInvariant();
-        if ((directory == "." || directory == "src") &&
-            name is "index" or "main" or "server" or "cli" or "worker")
-        {
-            metrics.EntryPointLine = 1;
         }
     }
 

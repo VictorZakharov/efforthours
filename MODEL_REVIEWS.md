@@ -27,6 +27,36 @@ Because EffortHours's own anchor informed the seed-model and calibration design,
 a development diagnostic rather than an eligible held-out test record unless a
 future independent snapshot and review policy explicitly establishes otherwise.
 
+## 2026-08-08: analyzer precision from reviewed exclusions
+
+Status: **qualitative analyzer correction; no prior calibration**
+
+The seven exact-zero exclusions in `efforthours-public-expansion/0.1.0` exposed
+three general classification defects. `.NET` analyzer `0.3.2` now qualifies
+ambiguous execute/query calls with persistence context. JavaScript analyzer `0.4.1`
+requires UI-framework context for state/effect/form-only UI evidence and excludes
+test or benchmark hashbang scripts from product entry points. Positive database,
+React-state, and CLI-entry-point boundaries remain covered by memory-only tests.
+
+No `seed-rules/0.2.1` prior, normalization rule, reviewed target, or corpus
+partition changed. All 156 public mutation assertions remain green and all 48
+canonical mutation estimates retain their prior numerical totals and categories.
+
+| Partition | Repository | Reviewed expected | Before | After | Repository WAPE / bias after | Target / candidate mapping after |
+|---|---|---:|---:|---:|---:|---:|
+| development | developit/mitt | 24.75 h | 31.50 h | 31.50 h | 0.2727 / +0.2727 | 14/14; 14/14 |
+| validation | Tyrrrz/CliWrap | 191.50 h | 204.00 h | 192.25 h | 0.0039 / +0.0039 | 63/67; 63/63 |
+| test | nanostores/nanostores | 170.50 h | 185.00 h | 169.75 h | 0.0044 / -0.0044 | 48/52; 48/48 |
+
+The validation and test labels directly motivated these rule corrections. Their
+after-values therefore cannot be used as held-out accuracy or calibration evidence,
+and the test observation is now contaminated for this analyzer family. Four
+CliWrap zero targets and three nanostores zero targets intentionally lose mappings
+when their false evidence disappears. A positive nanostores manual-validation
+target also loses its old source partition after the false UI work item is removed;
+all 48 current candidate work items still map. The checked-in reevaluation reports
+retain this structural mismatch instead of scoring eliminated targets as zero.
+
 ## 2026-08-06: `efforthours-change-public-synthetic/0.1.0`
 
 Status: **preliminary host-AI teacher labels; not independently reviewed**

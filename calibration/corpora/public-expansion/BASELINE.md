@@ -61,6 +61,34 @@ reviewed range. Validation and test ranges contain both reviewed expected totals
 and complete reviewed ranges. With one observation per partition, this is only a
 diagnostic of interval behavior, not calibrated uncertainty evidence.
 
+## 2026-08-08 analyzer-precision reevaluation
+
+The seven explicit exclusions subsequently drove general analyzer corrections,
+without changing `seed-rules/0.2.1`, the corpus, any reviewed target, or the original
+baseline reports. `.NET` analyzer `0.3.2` qualifies ambiguous execute/query calls
+with persistence context. JavaScript analyzer `0.4.1` requires UI-framework context
+for state/effect/form-only UI evidence and excludes test or benchmark hashbangs from
+product entry-point evidence.
+
+| Partition | Repository | Reviewed expected | Frozen candidate | Corrected-analyzer candidate | WAPE / bias after | Target / candidate mapping after |
+|---|---|---:|---:|---:|---:|---:|
+| development | developit/mitt | 24.75 h | 31.50 h | 31.50 h | 0.2727 / +0.2727 | 14/14; 14/14 |
+| validation | Tyrrrz/CliWrap | 191.50 h | 204.00 h | 192.25 h | 0.0039 / +0.0039 | 63/67; 63/63 |
+| test | nanostores/nanostores | 170.50 h | 185.00 h | 169.75 h | 0.0044 / -0.0044 | 48/52; 48/48 |
+
+These after-values are diagnostics, not evidence of generalization: the validation
+and test exclusions motivated the corrections, so those observations are no longer
+held out for this analyzer family. Four eliminated CliWrap persistence targets and
+three eliminated nanostores entry-point/UI targets no longer map. One positive
+nanostores manual-validation target also loses its old deterministic source
+partition when the false UI work item disappears. Every corrected candidate work
+item maps, and the reports preserve the target mismatch rather than interpreting it
+as zero effort.
+
+The unchanged 48-case public mutation baseline retains identical numeric totals and
+categories and passes all 156 relations. That qualitative guardrail result supports
+the classification boundary, but it does not calibrate hours.
+
 ## Review method
 
 Expected effort was reasoned at capability level after static inspection of public
@@ -89,12 +117,14 @@ eh calibration validate 0.1.0.corpus.json
 eh calibration evaluate 0.1.0.corpus.json <matching-estimate.json>... --partition <development|validation|test>
 ```
 
-The checked-in `baseline-seed-rules-0.2.1-*.json` reports are the authoritative
-schema-versioned outputs for this checkpoint.
+The checked-in `baseline-seed-rules-0.2.1-*.json` reports remain the authoritative
+frozen outputs for the original checkpoint. The additive
+`reevaluation-dotnet-0.3.2-javascript-0.4.1-*.json` reports record the later analyzer
+diagnostic without rewriting that baseline.
 
 ## Next gate
 
 Do not tune against the validation or test records. Before numerical model
 admission, obtain independent corrections, add multiple repository families per
 ecosystem and partition, freeze acceptance thresholds, and audit whether explicit
-zero labels expose analyzer defects that should be fixed before estimator fitting.
+zero labels expose additional general analyzer defects before estimator fitting.

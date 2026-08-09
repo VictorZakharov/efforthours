@@ -173,6 +173,13 @@ Status as of August 6, 2026:
   `0/0/0` labels; frozen `seed-rules/0.2.1` baselines and a combined blind-review
   handoff are checked in. The model remains unchanged and uncalibrated, and
   no independent review is claimed.
+- The post-7B5 analyzer-precision checkpoint is complete: `.NET` analyzer `0.3.2`
+  removes unqualified process-command persistence, and JavaScript analyzer `0.4.1`
+  removes framework-neutral state/effect UI and development-benchmark entry-point
+  classifications. Memory-only positive/negative regressions pass, the unchanged
+  48-case mutation baseline retains identical numeric estimates and 156 passing
+  relations, and frozen-corpus reevaluations disclose both improved diagnostics and
+  reduced target mapping. No estimator prior or review maturity changed.
 - The first Milestone 9 Change Estimation subset is complete: immutable base/head,
   commit, range, and single-PR selectors; v1 Change EHE schemas; final-delta
   normalization; additive component reconciliation; JSON/Markdown/explanation
@@ -318,8 +325,9 @@ full view, and every compact capability retains a stable `explain` path.
 Exit condition: the local model improves held-out agreement and calibration over
 the seed rules without making reports opaque.
 
-Implementation note: `MILESTONE_7.md` records the staged design. Milestones 7A and
-7B1 through 7B5 are implemented without an ML dependency: reviewed labels remain
+Implementation note: `MILESTONE_7.md` records the staged design. Milestones 7A,
+7B1 through 7B5, and the post-7B5 analyzer-precision checkpoint are implemented
+without an ML dependency: reviewed labels remain
 separate from canonical candidate estimates, every repository and its
 revisions/profiles stay in one partition, completed capability and subsequent
 review decisions compile back to full evidence lineage, and
@@ -435,9 +443,10 @@ benchmark corpus exists.
 3. Add enough redistributable repository families to place multiple independent
    observations in every ecosystem/partition cell, then freeze numerical
    model-admission thresholds before fitting.
-4. Expand mutation guardrails from bounded renamed near-copies and
-   compiler-disabled C# to semantic clone detection, general reachability,
-   accessibility, measured coverage, and realistic multi-package boundaries.
+4. Expand analyzer precision and mutation guardrails beyond the corrected
+   process-stream, framework-neutral-state, and benchmark-entry-point boundaries to
+   semantic clone detection, general reachability, accessibility, measured
+   coverage, and realistic multi-package boundaries.
 5. Extend performance and safety measurements to curated, redistributable mixed
    repository shapes and peak-memory measurements.
 6. Evaluate a compiler-grade TypeScript adapter only if reviewed calibration shows

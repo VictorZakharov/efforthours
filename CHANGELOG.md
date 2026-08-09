@@ -23,6 +23,15 @@ may still change public contracts with explicit documentation.
 - Preliminary public repository and synthetic Change calibration corpora, mutation
   guardrails, and blind independent-review handoffs.
 
+### Changed
+
+- `.NET` analyzer `0.3.2` no longer treats generic process-command execute calls as
+  persistence without data context.
+- JavaScript analyzer `0.4.1` no longer treats framework-neutral state/effect calls
+  as UI or development benchmark hashbangs as product entry points. Checked-in
+  frozen-corpus reevaluations disclose the resulting target-mapping changes; the
+  `seed-rules/0.2.1` priors remain unchanged and uncalibrated.
+
 ### Known limitations
 
 - `seed-rules/0.2.1` and `change-seed/0.1.0` are experimental and uncalibrated.

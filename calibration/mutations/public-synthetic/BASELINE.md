@@ -12,6 +12,11 @@ effort-label corpora, accuracy claims, or model-training data.
 - Suite `0.3.0` records the Milestone 7B4 behavior-and-delivery checkpoint: 48
   cases and 156 assertions evaluated with the same `seed-rules/0.2.1` model.
 
+The August 8, 2026 analyzer-precision reevaluation with `.NET` analyzer `0.3.2`
+and JavaScript analyzer `0.4.1` reproduced identical low, expected, and high
+repository/category values for all 48 candidates. The checked-in 0.3.0 report is
+therefore unchanged and all 156 relations remain green.
+
 The fixtures are small synthetic repositories authored for EffortHours and distributed
 under the repository's MIT License. They contain no copied project source, external
 dataset, installed/vendored third-party code, private evidence, or Git history.

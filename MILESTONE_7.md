@@ -3,12 +3,14 @@
 ## Status
 
 Milestone 7A and the Milestone 7B1 through 7B5 public-corpus, review, and mutation
-checkpoints were implemented on August 6, 2026. They establish the versioned review
-corpus, low-cost authoring and compilation boundaries, deterministic offline
-evaluation, expanded licensed labels, exact-digest subsequent review, and
-cross-ecosystem relational model guardrails needed before EffortHours adopts any
-learned model. The seed estimator remains `experimental-uncalibrated`; this
-milestone does not make its current hours production-ready.
+checkpoints were implemented on August 6, 2026. A post-7B5 analyzer-precision
+checkpoint was implemented on August 8, 2026. Together they establish the
+versioned review corpus, low-cost authoring and compilation boundaries,
+deterministic offline evaluation, expanded licensed labels, exact-digest
+subsequent review, cross-ecosystem relational model guardrails, and a documented
+path from reviewed exclusions to general analyzer corrections. The seed estimator
+remains `experimental-uncalibrated`; this milestone does not make its current hours
+production-ready.
 
 Both public corpora still have one host-AI teacher and no independent correction.
 Milestone 7B is therefore in progress: broader licensed repository coverage, richer
@@ -217,6 +219,43 @@ effort is 420.50 hours; WAPE and aggregate bias are both 0.0873. This favorable
 small-sample result is descriptive weak supervision, not an accuracy claim. The
 model remains unchanged, the validation and test records remain unavailable for
 tuning, and no independent review is claimed.
+
+## Implemented post-7B5 analyzer-precision checkpoint
+
+This checkpoint corrects the three general analyzer defects represented by the
+seven reviewed exclusions. It does not change a schema, effort prior, normalization
+rule, reviewed label, corpus partition, or estimator artifact:
+
+1. `.NET` analyzer `0.3.2` requires persistence context for ambiguous
+   `Execute`, `ExecuteAsync`, `Query`, and `QueryAsync` calls, while retaining
+   direct database primitives and unambiguous persistence operations;
+2. JavaScript analyzer `0.4.1` requires UI/full-stack framework context before
+   state, effect, or form calls alone imply a UI surface, while retaining
+   structural component, page, and JSX evidence; and
+3. JavaScript analyzer `0.4.1` excludes test and benchmark hashbang scripts from
+   product entry-point evidence while retaining ordinary CLI hashbangs.
+
+Four memory-only analyzer tests cover the negative and positive boundaries. The
+existing `seed-rules/0.2.1` mutation estimates retain identical numerical totals
+and category totals across all 48 source states, and all 156 relational assertions
+remain green.
+
+The exact public-expansion snapshots were also reevaluated without rewriting the
+frozen corpus or its original baseline reports:
+
+| Partition | Repository | Reviewed expected | Original candidate | Corrected-analyzer candidate | Target mapping | Candidate mapping |
+|---|---|---:|---:|---:|---:|---:|
+| development | developit/mitt | 24.75 h | 31.50 h | 31.50 h | 14/14 | 14/14 |
+| validation | Tyrrrz/CliWrap | 191.50 h | 204.00 h | 192.25 h | 63/67 | 63/63 |
+| test | nanostores/nanostores | 170.50 h | 185.00 h | 169.75 h | 48/52 | 48/48 |
+
+The validation and test exclusions motivated these corrections, so their improved
+repository totals are contamination diagnostics, not held-out accuracy evidence.
+Four eliminated CliWrap persistence targets and three eliminated nanostores
+entry-point/UI targets no longer map. One positive nanostores manual-validation
+target also no longer maps because removal of the false UI boundary changes the
+deterministic work-item partition. Every current candidate item maps. These mapping
+changes are disclosed rather than treated as zero error.
 
 ## Contract boundaries
 
@@ -561,3 +600,23 @@ canonical source-corpus digest
 Together with the earlier pilot, EffortHours now publishes six repository families
 and 232 blind review targets. No completed second-review plan is checked in, so all
 public labels correctly remain `teacher-estimate`.
+
+## Post-7B5 analyzer-precision completion evidence
+
+The checkpoint passes a zero-warning Release build, 110 memory-only unit tests,
+the complete disk-backed CLI end-to-end suite, and formatting verification. The
+analyzer regression fixture uses `InMemoryRepository` exclusively. The unchanged
+`seed-rules/0.2.1` mutation baseline still passes all 156 assertions, with no
+numeric change to any of its 48 canonical estimates.
+
+The C# file analyzer was split while the new data rule was introduced: data,
+application-boundary, and service-boundary classification now have focused files.
+The orchestrator is 354 lines, its former 750-line ratchet is removed, and every
+new analyzer uses the ordinary 500-line ceiling.
+
+Three deterministic reevaluation reports are checked in beside the frozen
+public-expansion baseline. They preserve the corpus, reviewed targets, source
+digests, and candidate estimator identity; their filenames identify analyzer
+versions `0.3.2` and `0.4.1`, while candidate digests pin the exact outputs. Their
+mapping loss and observation contamination are explicit; they do not advance
+review maturity or justify model admission.

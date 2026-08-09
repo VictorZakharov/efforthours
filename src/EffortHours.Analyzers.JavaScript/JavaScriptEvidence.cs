@@ -7,7 +7,7 @@ namespace EffortHours.Analyzers.JavaScript;
 internal static class JavaScriptEvidence
 {
     public const string AnalyzerName = "efforthours.javascript-analyzer";
-    public const string AnalyzerVersion = "0.4.0";
+    public const string AnalyzerVersion = "0.4.1";
 
     public static EvidenceFact Fact(
         string id,
