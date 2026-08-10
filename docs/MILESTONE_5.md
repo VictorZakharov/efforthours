@@ -162,20 +162,24 @@ they do not create a new integration selection effort for every call.
 
 ## Seed-rule artifact
 
-The current catalog is `models/seed-rules/0.2.1.json`. It is checked in for public
+The current catalog is `models/seed-rules/0.3.0.json`. It is checked in for public
 review and embedded into `EffortHours.Estimation` so normal execution does not depend
-on the current directory, external files, or network access. The original 0.2.0
-artifact remains checked in because the frozen public-pilot labels and baseline
-reports record that source estimator.
+on the current directory, external files, or network access. The 0.2.0 and 0.2.1
+artifacts remain checked in because frozen reviewed corpora and baseline reports
+record those source estimators.
+
+Version 0.3.0 became effective on August 10, 2026. It retains every non-UI
+numerical prior from 0.2.1. Within `ui-surface`, it removes physical asset lines as
+an effort driver and adds bounded semantic units for template structure and
+bindings, stylesheet structure, responsive behavior, design tokens, and
+animation/theme behavior. The new values are transparent preliminary priors, not
+fitted calibration. The public mutation suite was expanded before acceptance, and
+all 51 prior cases retain identical numeric ranges. Its artifact digest is
+`sha256:e8bce2f76c97564919ab6be41f1cfd6b222d531a4dbd08a8b22c7abe6b1eebdf`.
 
 Version 0.2.1 became effective on August 6, 2026. It copies all 0.2.0 numerical
-priors unchanged and corrects one evidence-normalization defect: TypeScript files
-carry an `ecosystem:typescript` tag while their package estimation scope belongs to
-the shared `javascript` language family. Treating those tags as compatible makes
-exact TypeScript copies and TypeScript test structure participate in the same
-duplicate/production normalization already used by JavaScript. The change was
-triggered by the public 0.2.0 mutation expansion, not by tuning against reviewed
-hour labels. Its artifact digest is
+priors unchanged and corrects TypeScript ownership in the shared JavaScript family
+for duplicate and test normalization. Its frozen artifact digest is
 `sha256:57378795593acd2ff0a2f4361698193a11dca86da11493f072da6a9f9b344d4e`.
 
 The artifact records:

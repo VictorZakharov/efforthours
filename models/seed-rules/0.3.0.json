@@ -1,0 +1,1745 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "seed-rules",
+  "version": "0.3.0",
+  "status": "experimental-uncalibrated",
+  "description": "Transparent preliminary priors for decomposing repository evidence into Equivalent Human Effort work items. Version 0.3.0 replaces frontend line-volume pricing with bounded semantic template and stylesheet units; all non-UI priors remain unchanged. These values are uncalibrated and intended for review, testing, and future teacher-label calibration.",
+  "technologyBaselineYear": 2026,
+  "itemSizing": {
+    "minimumExpectedHours": 0.5,
+    "targetExpectedHours": 4,
+    "maximumExpectedHours": 8,
+    "roundingIncrementHours": 0.25
+  },
+  "complexityFactors": {
+    "routine": 0.85,
+    "moderate": 1,
+    "high": 1.25,
+    "exceptional": 1.6
+  },
+  "provenanceConfidence": {
+    "observed": 0.82,
+    "measured": 0.88,
+    "declaredAssumed": 0.72,
+    "inferred": 0.62
+  },
+  "rules": [
+    {
+      "id": "specification-comprehension",
+      "category": "specification-comprehension-and-domain-learning",
+      "quantityUnit": "scope",
+      "setupHours": 0.5,
+      "lowFactor": 0.65,
+      "highFactor": 1.65,
+      "defaultConfidence": 0.55,
+      "drivers": [
+        {
+          "name": "production-scopes",
+          "tiers": [
+            {
+              "upTo": 4,
+              "hoursPerUnit": 0.75
+            },
+            {
+              "upTo": 12,
+              "hoursPerUnit": 0.45
+            },
+            {
+              "hoursPerUnit": 0.25
+            }
+          ]
+        },
+        {
+          "name": "semantic-families",
+          "tiers": [
+            {
+              "upTo": 8,
+              "hoursPerUnit": 0.2
+            },
+            {
+              "hoursPerUnit": 0.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "solution-coordination",
+      "category": "repository-and-solution-setup",
+      "quantityUnit": "boundary",
+      "setupHours": 0.5,
+      "lowFactor": 0.7,
+      "highFactor": 1.5,
+      "defaultConfidence": 0.76,
+      "drivers": [
+        {
+          "name": "solutions",
+          "tiers": [
+            {
+              "hoursPerUnit": 1
+            }
+          ]
+        },
+        {
+          "name": "workspaces",
+          "tiers": [
+            {
+              "hoursPerUnit": 1.25
+            }
+          ]
+        },
+        {
+          "name": "reference-edges",
+          "tiers": [
+            {
+              "upTo": 10,
+              "hoursPerUnit": 0.18
+            },
+            {
+              "hoursPerUnit": 0.08
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "project-setup",
+      "category": "repository-and-solution-setup",
+      "quantityUnit": "project-or-package",
+      "setupHours": 0.5,
+      "lowFactor": 0.7,
+      "highFactor": 1.5,
+      "defaultConfidence": 0.74,
+      "drivers": [
+        {
+          "name": "scopes",
+          "tiers": [
+            {
+              "hoursPerUnit": 0.75
+            }
+          ]
+        },
+        {
+          "name": "target-frameworks",
+          "tiers": [
+            {
+              "hoursPerUnit": 0.25
+            }
+          ]
+        },
+        {
+          "name": "dependencies",
+          "tiers": [
+            {
+              "upTo": 20,
+              "hoursPerUnit": 0.04
+            },
+            {
+              "upTo": 100,
+              "hoursPerUnit": 0.015
+            },
+            {
+              "hoursPerUnit": 0.005
+            }
+          ]
+        },
+        {
+          "name": "configuration-options",
+          "tiers": [
+            {
+              "upTo": 20,
+              "hoursPerUnit": 0.04
+            },
+            {
+              "hoursPerUnit": 0.015
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "architecture-design",
+      "category": "architecture-and-technical-design",
+      "quantityUnit": "scope",
+      "setupHours": 0.5,
+      "lowFactor": 0.6,
+      "highFactor": 1.75,
+      "defaultConfidence": 0.58,
+      "drivers": [
+        {
+          "name": "production-scopes",
+          "tiers": [
+            {
+              "hoursPerUnit": 1
+            }
+          ]
+        },
+        {
+          "name": "boundary-families",
+          "tiers": [
+            {
+              "upTo": 8,
+              "hoursPerUnit": 0.25
+            },
+            {
+              "hoursPerUnit": 0.12
+            }
+          ]
+        },
+        {
+          "name": "reference-edges",
+          "tiers": [
+            {
+              "upTo": 12,
+              "hoursPerUnit": 0.15
+            },
+            {
+              "hoursPerUnit": 0.06
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "recreation-design",
+      "category": "architecture-and-technical-design",
+      "quantityUnit": "decision-surface",
+      "setupHours": 0.75,
+      "lowFactor": 0.5,
+      "highFactor": 2,
+      "defaultConfidence": 0.45,
+      "drivers": [
+        {
+          "name": "decision-surfaces",
+          "tiers": [
+            {
+              "upTo": 6,
+              "hoursPerUnit": 0.65
+            },
+            {
+              "upTo": 20,
+              "hoursPerUnit": 0.35
+            },
+            {
+              "hoursPerUnit": 0.15
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "dotnet-source-backbone",
+      "category": "production-implementation",
+      "quantityUnit": "construction-point",
+      "setupHours": 0.25,
+      "lowFactor": 0.6,
+      "highFactor": 1.7,
+      "defaultConfidence": 0.68,
+      "drivers": [
+        {
+          "name": "files",
+          "tiers": [
+            {
+              "upTo": 20,
+              "hoursPerUnit": 0.08
+            },
+            {
+              "upTo": 200,
+              "hoursPerUnit": 0.04
+            },
+            {
+              "hoursPerUnit": 0.02
+            }
+          ]
+        },
+        {
+          "name": "types",
+          "tiers": [
+            {
+              "upTo": 50,
+              "hoursPerUnit": 0.35
+            },
+            {
+              "upTo": 500,
+              "hoursPerUnit": 0.22
+            },
+            {
+              "hoursPerUnit": 0.12
+            }
+          ]
+        },
+        {
+          "name": "public-types",
+          "tiers": [
+            {
+              "upTo": 100,
+              "hoursPerUnit": 0.15
+            },
+            {
+              "hoursPerUnit": 0.08
+            }
+          ]
+        },
+        {
+          "name": "methods",
+          "tiers": [
+            {
+              "upTo": 200,
+              "hoursPerUnit": 0.2
+            },
+            {
+              "upTo": 1000,
+              "hoursPerUnit": 0.12
+            },
+            {
+              "hoursPerUnit": 0.07
+            }
+          ]
+        },
+        {
+          "name": "public-methods",
+          "tiers": [
+            {
+              "upTo": 300,
+              "hoursPerUnit": 0.08
+            },
+            {
+              "hoursPerUnit": 0.04
+            }
+          ]
+        },
+        {
+          "name": "async-methods",
+          "tiers": [
+            {
+              "upTo": 100,
+              "hoursPerUnit": 0.12
+            },
+            {
+              "hoursPerUnit": 0.07
+            }
+          ]
+        },
+        {
+          "name": "branch-points",
+          "tiers": [
+            {
+              "upTo": 200,
+              "hoursPerUnit": 0.1
+            },
+            {
+              "upTo": 1200,
+              "hoursPerUnit": 0.06
+            },
+            {
+              "hoursPerUnit": 0.03
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "javascript-source-backbone",
+      "category": "production-implementation",
+      "quantityUnit": "construction-point",
+      "setupHours": 0.25,
+      "lowFactor": 0.55,
+      "highFactor": 1.8,
+      "defaultConfidence": 0.62,
+      "drivers": [
+        {
+          "name": "files",
+          "tiers": [
+            {
+              "upTo": 20,
+              "hoursPerUnit": 0.08
+            },
+            {
+              "upTo": 200,
+              "hoursPerUnit": 0.04
+            },
+            {
+              "hoursPerUnit": 0.02
+            }
+          ]
+        },
+        {
+          "name": "functions",
+          "tiers": [
+            {
+              "upTo": 200,
+              "hoursPerUnit": 0.2
+            },
+            {
+              "upTo": 1000,
+              "hoursPerUnit": 0.12
+            },
+            {
+              "hoursPerUnit": 0.07
+            }
+          ]
+        },
+        {
+          "name": "methods",
+          "tiers": [
+            {
+              "upTo": 200,
+              "hoursPerUnit": 0.16
+            },
+            {
+              "upTo": 1000,
+              "hoursPerUnit": 0.1
+            },
+            {
+              "hoursPerUnit": 0.06
+            }
+          ]
+        },
+        {
+          "name": "classes",
+          "tiers": [
+            {
+              "upTo": 100,
+              "hoursPerUnit": 0.35
+            },
+            {
+              "hoursPerUnit": 0.2
+            }
+          ]
+        },
+        {
+          "name": "interfaces",
+          "tiers": [
+            {
+              "upTo": 150,
+              "hoursPerUnit": 0.14
+            },
+            {
+              "hoursPerUnit": 0.07
+            }
+          ]
+        },
+        {
+          "name": "type-aliases",
+          "tiers": [
+            {
+              "upTo": 200,
+              "hoursPerUnit": 0.1
+            },
+            {
+              "hoursPerUnit": 0.05
+            }
+          ]
+        },
+        {
+          "name": "enums",
+          "tiers": [
+            {
+              "upTo": 100,
+              "hoursPerUnit": 0.2
+            },
+            {
+              "hoursPerUnit": 0.1
+            }
+          ]
+        },
+        {
+          "name": "async-functions",
+          "tiers": [
+            {
+              "upTo": 100,
+              "hoursPerUnit": 0.12
+            },
+            {
+              "hoursPerUnit": 0.07
+            }
+          ]
+        },
+        {
+          "name": "branch-points",
+          "tiers": [
+            {
+              "upTo": 200,
+              "hoursPerUnit": 0.1
+            },
+            {
+              "upTo": 1200,
+              "hoursPerUnit": 0.06
+            },
+            {
+              "hoursPerUnit": 0.03
+            }
+          ]
+        },
+        {
+          "name": "exports",
+          "tiers": [
+            {
+              "upTo": 200,
+              "hoursPerUnit": 0.04
+            },
+            {
+              "hoursPerUnit": 0.015
+            }
+          ]
+        },
+        {
+          "name": "dynamic-imports",
+          "tiers": [
+            {
+              "upTo": 50,
+              "hoursPerUnit": 0.15
+            },
+            {
+              "hoursPerUnit": 0.07
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "application-entry-point",
+      "category": "production-implementation",
+      "quantityUnit": "entry-point",
+      "setupHours": 0.25,
+      "lowFactor": 0.7,
+      "highFactor": 1.5,
+      "defaultConfidence": 0.72,
+      "drivers": [
+        {
+          "name": "entry-points",
+          "tiers": [
+            {
+              "upTo": 4,
+              "hoursPerUnit": 0.75
+            },
+            {
+              "hoursPerUnit": 0.5
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "api-surface",
+      "category": "production-implementation",
+      "quantityUnit": "endpoint-or-operation",
+      "setupHours": 0.5,
+      "lowFactor": 0.55,
+      "highFactor": 1.85,
+      "defaultConfidence": 0.63,
+      "drivers": [
+        {
+          "name": "endpoints",
+          "tiers": [
+            {
+              "upTo": 20,
+              "hoursPerUnit": 0.85
+            },
+            {
+              "upTo": 100,
+              "hoursPerUnit": 0.55
+            },
+            {
+              "hoursPerUnit": 0.3
+            }
+          ]
+        },
+        {
+          "name": "controllers",
+          "tiers": [
+            {
+              "upTo": 20,
+              "hoursPerUnit": 1
+            },
+            {
+              "hoursPerUnit": 0.55
+            }
+          ]
+        },
+        {
+          "name": "graphql-operations",
+          "tiers": [
+            {
+              "upTo": 20,
+              "hoursPerUnit": 1.1
+            },
+            {
+              "hoursPerUnit": 0.65
+            }
+          ]
+        },
+        {
+          "name": "route-groups",
+          "tiers": [
+            {
+              "hoursPerUnit": 0.4
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ui-surface",
+      "category": "ui-implementation-and-represented-ux-decisions",
+      "quantityUnit": "ui-surface",
+      "setupHours": 0.5,
+      "lowFactor": 0.5,
+      "highFactor": 1.95,
+      "defaultConfidence": 0.58,
+      "drivers": [
+        {
+          "name": "pages",
+          "tiers": [
+            {
+              "upTo": 20,
+              "hoursPerUnit": 2.5
+            },
+            {
+              "hoursPerUnit": 1.75
+            }
+          ]
+        },
+        {
+          "name": "components",
+          "tiers": [
+            {
+              "upTo": 20,
+              "hoursPerUnit": 1.25
+            },
+            {
+              "upTo": 100,
+              "hoursPerUnit": 0.8
+            },
+            {
+              "hoursPerUnit": 0.45
+            }
+          ]
+        },
+        {
+          "name": "ui-types",
+          "tiers": [
+            {
+              "upTo": 30,
+              "hoursPerUnit": 1.5
+            },
+            {
+              "hoursPerUnit": 0.8
+            }
+          ]
+        },
+        {
+          "name": "forms",
+          "tiers": [
+            {
+              "upTo": 30,
+              "hoursPerUnit": 1
+            },
+            {
+              "hoursPerUnit": 0.6
+            }
+          ]
+        },
+        {
+          "name": "state-usages",
+          "tiers": [
+            {
+              "upTo": 20,
+              "hoursPerUnit": 0.5
+            },
+            {
+              "hoursPerUnit": 0.25
+            }
+          ]
+        },
+        {
+          "name": "effect-usages",
+          "tiers": [
+            {
+              "upTo": 50,
+              "hoursPerUnit": 0.2
+            },
+            {
+              "hoursPerUnit": 0.1
+            }
+          ]
+        },
+        {
+          "name": "component-parameters",
+          "tiers": [
+            {
+              "upTo": 100,
+              "hoursPerUnit": 0.12
+            },
+            {
+              "hoursPerUnit": 0.05
+            }
+          ]
+        },
+        {
+          "name": "commands",
+          "tiers": [
+            {
+              "upTo": 30,
+              "hoursPerUnit": 0.75
+            },
+            {
+              "hoursPerUnit": 0.4
+            }
+          ]
+        },
+        {
+          "name": "asset-files",
+          "tiers": [
+            {
+              "upTo": 20,
+              "hoursPerUnit": 0.45
+            },
+            {
+              "hoursPerUnit": 0.25
+            }
+          ]
+        },
+        {
+          "name": "template-structure-units",
+          "tiers": [
+            {
+              "upTo": 20,
+              "hoursPerUnit": 0.25
+            },
+            {
+              "upTo": 100,
+              "hoursPerUnit": 0.1
+            },
+            {
+              "hoursPerUnit": 0.04
+            }
+          ]
+        },
+        {
+          "name": "template-binding-units",
+          "tiers": [
+            {
+              "upTo": 20,
+              "hoursPerUnit": 0.35
+            },
+            {
+              "upTo": 100,
+              "hoursPerUnit": 0.15
+            },
+            {
+              "hoursPerUnit": 0.06
+            }
+          ]
+        },
+        {
+          "name": "style-structure-units",
+          "tiers": [
+            {
+              "upTo": 20,
+              "hoursPerUnit": 0.2
+            },
+            {
+              "upTo": 100,
+              "hoursPerUnit": 0.08
+            },
+            {
+              "hoursPerUnit": 0.03
+            }
+          ]
+        },
+        {
+          "name": "responsive-surfaces",
+          "tiers": [
+            {
+              "upTo": 20,
+              "hoursPerUnit": 0.5
+            },
+            {
+              "hoursPerUnit": 0.2
+            }
+          ]
+        },
+        {
+          "name": "design-token-units",
+          "tiers": [
+            {
+              "upTo": 20,
+              "hoursPerUnit": 0.2
+            },
+            {
+              "hoursPerUnit": 0.08
+            }
+          ]
+        },
+        {
+          "name": "animation-theme-surfaces",
+          "tiers": [
+            {
+              "upTo": 20,
+              "hoursPerUnit": 0.4
+            },
+            {
+              "hoursPerUnit": 0.15
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "data-persistence",
+      "category": "data-modeling-persistence-and-migrations",
+      "quantityUnit": "data-surface",
+      "setupHours": 1,
+      "lowFactor": 0.55,
+      "highFactor": 1.85,
+      "defaultConfidence": 0.62,
+      "drivers": [
+        {
+          "name": "db-contexts",
+          "tiers": [
+            {
+              "hoursPerUnit": 3
+            }
+          ]
+        },
+        {
+          "name": "db-sets",
+          "tiers": [
+            {
+              "upTo": 30,
+              "hoursPerUnit": 1.2
+            },
+            {
+              "hoursPerUnit": 0.8
+            }
+          ]
+        },
+        {
+          "name": "migrations",
+          "tiers": [
+            {
+              "upTo": 20,
+              "hoursPerUnit": 1
+            },
+            {
+              "hoursPerUnit": 0.6
+            }
+          ]
+        },
+        {
+          "name": "entity-configurations",
+          "tiers": [
+            {
+              "upTo": 30,
+              "hoursPerUnit": 1
+            },
+            {
+              "hoursPerUnit": 0.55
+            }
+          ]
+        },
+        {
+          "name": "repository-types",
+          "tiers": [
+            {
+              "upTo": 30,
+              "hoursPerUnit": 1.2
+            },
+            {
+              "hoursPerUnit": 0.65
+            }
+          ]
+        },
+        {
+          "name": "data-calls",
+          "tiers": [
+            {
+              "upTo": 50,
+              "hoursPerUnit": 0.12
+            },
+            {
+              "upTo": 300,
+              "hoursPerUnit": 0.06
+            },
+            {
+              "hoursPerUnit": 0.025
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "external-integration",
+      "category": "external-integrations-and-protocols",
+      "quantityUnit": "technology-boundary",
+      "setupHours": 1,
+      "lowFactor": 0.5,
+      "highFactor": 2,
+      "defaultConfidence": 0.56,
+      "drivers": [
+        {
+          "name": "boundaries",
+          "tiers": [
+            {
+              "upTo": 3,
+              "hoursPerUnit": 2
+            },
+            {
+              "hoursPerUnit": 1.5
+            }
+          ]
+        },
+        {
+          "name": "client-constructions",
+          "tiers": [
+            {
+              "upTo": 20,
+              "hoursPerUnit": 0.4
+            },
+            {
+              "hoursPerUnit": 0.15
+            }
+          ]
+        },
+        {
+          "name": "integration-calls",
+          "tiers": [
+            {
+              "upTo": 20,
+              "hoursPerUnit": 0.15
+            },
+            {
+              "upTo": 100,
+              "hoursPerUnit": 0.06
+            },
+            {
+              "hoursPerUnit": 0.025
+            }
+          ]
+        },
+        {
+          "name": "integration-namespaces",
+          "tiers": [
+            {
+              "hoursPerUnit": 0.4
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "security-surface",
+      "category": "security-and-accessibility",
+      "quantityUnit": "security-surface",
+      "setupHours": 1.5,
+      "lowFactor": 0.5,
+      "highFactor": 2,
+      "defaultConfidence": 0.6,
+      "drivers": [
+        {
+          "name": "security-surfaces",
+          "tiers": [
+            {
+              "hoursPerUnit": 1.5
+            }
+          ]
+        },
+        {
+          "name": "security-configuration-calls",
+          "tiers": [
+            {
+              "upTo": 15,
+              "hoursPerUnit": 1
+            },
+            {
+              "hoursPerUnit": 0.4
+            }
+          ]
+        },
+        {
+          "name": "authorization-attributes",
+          "tiers": [
+            {
+              "upTo": 30,
+              "hoursPerUnit": 0.2
+            },
+            {
+              "hoursPerUnit": 0.08
+            }
+          ]
+        },
+        {
+          "name": "security-usages",
+          "tiers": [
+            {
+              "upTo": 20,
+              "hoursPerUnit": 0.4
+            },
+            {
+              "hoursPerUnit": 0.15
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "validation-surface",
+      "category": "security-and-accessibility",
+      "quantityUnit": "validation-surface",
+      "setupHours": 0.5,
+      "lowFactor": 0.6,
+      "highFactor": 1.75,
+      "defaultConfidence": 0.67,
+      "drivers": [
+        {
+          "name": "validator-types",
+          "tiers": [
+            {
+              "hoursPerUnit": 1.25
+            }
+          ]
+        },
+        {
+          "name": "validation-rules",
+          "tiers": [
+            {
+              "upTo": 50,
+              "hoursPerUnit": 0.3
+            },
+            {
+              "hoursPerUnit": 0.15
+            }
+          ]
+        },
+        {
+          "name": "validation-attributes",
+          "tiers": [
+            {
+              "upTo": 100,
+              "hoursPerUnit": 0.08
+            },
+            {
+              "hoursPerUnit": 0.03
+            }
+          ]
+        },
+        {
+          "name": "validation-usages",
+          "tiers": [
+            {
+              "upTo": 50,
+              "hoursPerUnit": 0.25
+            },
+            {
+              "hoursPerUnit": 0.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "background-work",
+      "category": "production-implementation",
+      "quantityUnit": "background-surface",
+      "setupHours": 0.75,
+      "lowFactor": 0.55,
+      "highFactor": 1.85,
+      "defaultConfidence": 0.61,
+      "drivers": [
+        {
+          "name": "hosted-services",
+          "tiers": [
+            {
+              "hoursPerUnit": 2.25
+            }
+          ]
+        },
+        {
+          "name": "message-handlers",
+          "tiers": [
+            {
+              "upTo": 30,
+              "hoursPerUnit": 1.5
+            },
+            {
+              "hoursPerUnit": 0.8
+            }
+          ]
+        },
+        {
+          "name": "functions",
+          "tiers": [
+            {
+              "upTo": 30,
+              "hoursPerUnit": 1.5
+            },
+            {
+              "hoursPerUnit": 0.8
+            }
+          ]
+        },
+        {
+          "name": "background-usages",
+          "tiers": [
+            {
+              "upTo": 30,
+              "hoursPerUnit": 0.75
+            },
+            {
+              "hoursPerUnit": 0.35
+            }
+          ]
+        },
+        {
+          "name": "hosted-service-registrations",
+          "tiers": [
+            {
+              "hoursPerUnit": 0.25
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "unit-tests",
+      "category": "unit-testing",
+      "quantityUnit": "test-case",
+      "setupHours": 0.75,
+      "lowFactor": 0.65,
+      "highFactor": 1.6,
+      "defaultConfidence": 0.7,
+      "drivers": [
+        {
+          "name": "test-files",
+          "tiers": [
+            {
+              "upTo": 20,
+              "hoursPerUnit": 0.25
+            },
+            {
+              "hoursPerUnit": 0.12
+            }
+          ]
+        },
+        {
+          "name": "test-cases",
+          "tiers": [
+            {
+              "upTo": 20,
+              "hoursPerUnit": 0.5
+            },
+            {
+              "upTo": 100,
+              "hoursPerUnit": 0.3
+            },
+            {
+              "hoursPerUnit": 0.18
+            }
+          ]
+        },
+        {
+          "name": "parameterized-cases",
+          "tiers": [
+            {
+              "upTo": 50,
+              "hoursPerUnit": 0.2
+            },
+            {
+              "hoursPerUnit": 0.08
+            }
+          ]
+        },
+        {
+          "name": "assertions",
+          "tiers": [
+            {
+              "upTo": 100,
+              "hoursPerUnit": 0.04
+            },
+            {
+              "hoursPerUnit": 0.015
+            }
+          ]
+        },
+        {
+          "name": "mock-usages",
+          "tiers": [
+            {
+              "upTo": 50,
+              "hoursPerUnit": 0.12
+            },
+            {
+              "hoursPerUnit": 0.05
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "integration-tests",
+      "category": "integration-contract-and-component-testing",
+      "quantityUnit": "test-case",
+      "setupHours": 1.5,
+      "lowFactor": 0.55,
+      "highFactor": 1.85,
+      "defaultConfidence": 0.64,
+      "drivers": [
+        {
+          "name": "test-files",
+          "tiers": [
+            {
+              "upTo": 20,
+              "hoursPerUnit": 0.5
+            },
+            {
+              "hoursPerUnit": 0.25
+            }
+          ]
+        },
+        {
+          "name": "test-cases",
+          "tiers": [
+            {
+              "upTo": 15,
+              "hoursPerUnit": 1
+            },
+            {
+              "upTo": 80,
+              "hoursPerUnit": 0.65
+            },
+            {
+              "hoursPerUnit": 0.35
+            }
+          ]
+        },
+        {
+          "name": "parameterized-cases",
+          "tiers": [
+            {
+              "upTo": 30,
+              "hoursPerUnit": 0.4
+            },
+            {
+              "hoursPerUnit": 0.18
+            }
+          ]
+        },
+        {
+          "name": "assertions",
+          "tiers": [
+            {
+              "upTo": 100,
+              "hoursPerUnit": 0.08
+            },
+            {
+              "hoursPerUnit": 0.03
+            }
+          ]
+        },
+        {
+          "name": "mock-usages",
+          "tiers": [
+            {
+              "upTo": 50,
+              "hoursPerUnit": 0.15
+            },
+            {
+              "hoursPerUnit": 0.06
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "end-to-end-tests",
+      "category": "end-to-end-and-ui-testing",
+      "quantityUnit": "test-case",
+      "setupHours": 2.5,
+      "lowFactor": 0.5,
+      "highFactor": 2,
+      "defaultConfidence": 0.6,
+      "drivers": [
+        {
+          "name": "test-files",
+          "tiers": [
+            {
+              "upTo": 15,
+              "hoursPerUnit": 0.75
+            },
+            {
+              "hoursPerUnit": 0.35
+            }
+          ]
+        },
+        {
+          "name": "test-cases",
+          "tiers": [
+            {
+              "upTo": 10,
+              "hoursPerUnit": 1.75
+            },
+            {
+              "upTo": 50,
+              "hoursPerUnit": 1.2
+            },
+            {
+              "hoursPerUnit": 0.65
+            }
+          ]
+        },
+        {
+          "name": "parameterized-cases",
+          "tiers": [
+            {
+              "upTo": 20,
+              "hoursPerUnit": 0.75
+            },
+            {
+              "hoursPerUnit": 0.3
+            }
+          ]
+        },
+        {
+          "name": "assertions",
+          "tiers": [
+            {
+              "upTo": 100,
+              "hoursPerUnit": 0.12
+            },
+            {
+              "hoursPerUnit": 0.05
+            }
+          ]
+        },
+        {
+          "name": "mock-usages",
+          "tiers": [
+            {
+              "upTo": 50,
+              "hoursPerUnit": 0.15
+            },
+            {
+              "hoursPerUnit": 0.06
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "coverage-achievement",
+      "category": "unit-testing",
+      "quantityUnit": "covered-implementation-hour",
+      "setupHours": 0.5,
+      "lowFactor": 0.55,
+      "highFactor": 1.85,
+      "defaultConfidence": 0.58,
+      "drivers": [
+        {
+          "name": "covered-implementation-hours",
+          "tiers": [
+            {
+              "upTo": 100,
+              "hoursPerUnit": 0.35
+            },
+            {
+              "upTo": 500,
+              "hoursPerUnit": 0.24
+            },
+            {
+              "hoursPerUnit": 0.16
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "documentation",
+      "category": "documentation",
+      "quantityUnit": "document",
+      "setupHours": 0.25,
+      "lowFactor": 0.65,
+      "highFactor": 1.6,
+      "defaultConfidence": 0.76,
+      "drivers": [
+        {
+          "name": "documents",
+          "tiers": [
+            {
+              "upTo": 10,
+              "hoursPerUnit": 0.75
+            },
+            {
+              "hoursPerUnit": 0.4
+            }
+          ]
+        },
+        {
+          "name": "physical-lines",
+          "tiers": [
+            {
+              "upTo": 500,
+              "hoursPerUnit": 0.008
+            },
+            {
+              "hoursPerUnit": 0.003
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "build-tooling",
+      "category": "build-configuration-and-developer-tooling",
+      "quantityUnit": "configuration",
+      "setupHours": 0.25,
+      "lowFactor": 0.65,
+      "highFactor": 1.65,
+      "defaultConfidence": 0.74,
+      "drivers": [
+        {
+          "name": "configuration-files",
+          "tiers": [
+            {
+              "upTo": 20,
+              "hoursPerUnit": 0.6
+            },
+            {
+              "hoursPerUnit": 0.3
+            }
+          ]
+        },
+        {
+          "name": "lockfiles",
+          "tiers": [
+            {
+              "hoursPerUnit": 0.4
+            }
+          ]
+        },
+        {
+          "name": "compiler-options",
+          "tiers": [
+            {
+              "upTo": 50,
+              "hoursPerUnit": 0.04
+            },
+            {
+              "hoursPerUnit": 0.015
+            }
+          ]
+        },
+        {
+          "name": "scripts",
+          "tiers": [
+            {
+              "upTo": 30,
+              "hoursPerUnit": 0.08
+            },
+            {
+              "hoursPerUnit": 0.03
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ci-infrastructure",
+      "category": "ci-cd-and-infrastructure-as-code",
+      "quantityUnit": "configuration",
+      "setupHours": 0.5,
+      "lowFactor": 0.55,
+      "highFactor": 1.85,
+      "defaultConfidence": 0.7,
+      "drivers": [
+        {
+          "name": "ci-files",
+          "tiers": [
+            {
+              "upTo": 10,
+              "hoursPerUnit": 1.5
+            },
+            {
+              "hoursPerUnit": 0.75
+            }
+          ]
+        },
+        {
+          "name": "infrastructure-files",
+          "tiers": [
+            {
+              "upTo": 20,
+              "hoursPerUnit": 1.25
+            },
+            {
+              "hoursPerUnit": 0.65
+            }
+          ]
+        },
+        {
+          "name": "physical-lines",
+          "tiers": [
+            {
+              "upTo": 1000,
+              "hoursPerUnit": 0.003
+            },
+            {
+              "hoursPerUnit": 0.001
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "container-deployment",
+      "category": "packaging-deployment-and-release-artifacts",
+      "quantityUnit": "container-configuration",
+      "setupHours": 0.5,
+      "lowFactor": 0.55,
+      "highFactor": 1.8,
+      "defaultConfidence": 0.7,
+      "drivers": [
+        {
+          "name": "container-files",
+          "tiers": [
+            {
+              "upTo": 10,
+              "hoursPerUnit": 1.5
+            },
+            {
+              "hoursPerUnit": 0.75
+            }
+          ]
+        },
+        {
+          "name": "physical-lines",
+          "tiers": [
+            {
+              "upTo": 1000,
+              "hoursPerUnit": 0.004
+            },
+            {
+              "hoursPerUnit": 0.0015
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "packaging-release",
+      "category": "packaging-deployment-and-release-artifacts",
+      "quantityUnit": "release-surface",
+      "setupHours": 0.5,
+      "lowFactor": 0.6,
+      "highFactor": 1.75,
+      "defaultConfidence": 0.67,
+      "drivers": [
+        {
+          "name": "packaging-surfaces",
+          "tiers": [
+            {
+              "upTo": 10,
+              "hoursPerUnit": 1.5
+            },
+            {
+              "hoursPerUnit": 0.75
+            }
+          ]
+        },
+        {
+          "name": "release-configurations",
+          "tiers": [
+            {
+              "hoursPerUnit": 0.75
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "manual-validation",
+      "category": "manual-validation-debugging-and-hardening",
+      "quantityUnit": "validation-session",
+      "setupHours": 0.5,
+      "lowFactor": 0.55,
+      "highFactor": 1.9,
+      "defaultConfidence": 0.55,
+      "drivers": [
+        {
+          "name": "runnable-scopes",
+          "tiers": [
+            {
+              "hoursPerUnit": 0.75
+            }
+          ]
+        },
+        {
+          "name": "runtime-surfaces",
+          "tiers": [
+            {
+              "upTo": 10,
+              "hoursPerUnit": 0.5
+            },
+            {
+              "upTo": 50,
+              "hoursPerUnit": 0.25
+            },
+            {
+              "hoursPerUnit": 0.12
+            }
+          ]
+        },
+        {
+          "name": "specialized-boundaries",
+          "tiers": [
+            {
+              "upTo": 20,
+              "hoursPerUnit": 0.35
+            },
+            {
+              "hoursPerUnit": 0.15
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "self-review",
+      "category": "self-review-and-system-integration",
+      "quantityUnit": "integration-boundary",
+      "setupHours": 0.5,
+      "lowFactor": 0.65,
+      "highFactor": 1.65,
+      "defaultConfidence": 0.62,
+      "drivers": [
+        {
+          "name": "production-scopes",
+          "tiers": [
+            {
+              "upTo": 4,
+              "hoursPerUnit": 0.75
+            },
+            {
+              "hoursPerUnit": 0.4
+            }
+          ]
+        },
+        {
+          "name": "reference-edges",
+          "tiers": [
+            {
+              "upTo": 20,
+              "hoursPerUnit": 0.15
+            },
+            {
+              "hoursPerUnit": 0.06
+            }
+          ]
+        },
+        {
+          "name": "specialized-boundaries",
+          "tiers": [
+            {
+              "upTo": 20,
+              "hoursPerUnit": 0.15
+            },
+            {
+              "hoursPerUnit": 0.06
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "gap-automated-tests",
+      "category": "unit-testing",
+      "quantityUnit": "missing-test-slice",
+      "setupHours": 2,
+      "lowFactor": 0.5,
+      "highFactor": 2,
+      "defaultConfidence": 0.4,
+      "drivers": [
+        {
+          "name": "production-backbone-hours",
+          "tiers": [
+            {
+              "upTo": 100,
+              "hoursPerUnit": 0.18
+            },
+            {
+              "hoursPerUnit": 0.12
+            }
+          ]
+        },
+        {
+          "name": "runtime-surfaces",
+          "tiers": [
+            {
+              "upTo": 20,
+              "hoursPerUnit": 0.4
+            },
+            {
+              "hoursPerUnit": 0.2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "gap-system-tests",
+      "category": "integration-contract-and-component-testing",
+      "quantityUnit": "missing-system-test-slice",
+      "setupHours": 2.5,
+      "lowFactor": 0.45,
+      "highFactor": 2.1,
+      "defaultConfidence": 0.38,
+      "drivers": [
+        {
+          "name": "runtime-surfaces",
+          "tiers": [
+            {
+              "upTo": 12,
+              "hoursPerUnit": 0.75
+            },
+            {
+              "hoursPerUnit": 0.35
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "gap-documentation",
+      "category": "documentation",
+      "quantityUnit": "missing-onboarding-document",
+      "setupHours": 2,
+      "lowFactor": 0.6,
+      "highFactor": 1.8,
+      "defaultConfidence": 0.55,
+      "drivers": []
+    },
+    {
+      "id": "gap-ci",
+      "category": "ci-cd-and-infrastructure-as-code",
+      "quantityUnit": "missing-ci-workflow",
+      "setupHours": 2.5,
+      "lowFactor": 0.5,
+      "highFactor": 2,
+      "defaultConfidence": 0.5,
+      "drivers": [
+        {
+          "name": "production-scopes",
+          "tiers": [
+            {
+              "upTo": 6,
+              "hoursPerUnit": 0.25
+            },
+            {
+              "hoursPerUnit": 0.1
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

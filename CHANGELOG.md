@@ -8,6 +8,15 @@ may still change public contracts with explicit documentation.
 
 ### Added
 
+- JavaScript analyzer `0.5.0` adds bounded semantic HTML/template and CSS, SCSS,
+  Sass, and Less evidence, plus conservative static Angular `@Component`
+  metadata when a named `Component` import from `@angular/core` is present, with
+  inline and repository-relative external asset ownership. It does not execute
+  TypeScript/configuration, render, compile frameworks, run preprocessors, or
+  emit source excerpts.
+- Public synthetic mutation suite `0.5.0` adds standalone frontend formatting,
+  exact-copy, semantic-behavior, and Angular component cases. All 192 relations
+  pass across 56 cases, and all 51 prior cases retain identical numeric ranges.
 - Change estimation can represent exact, balanced, EffortHours-specific
   `<custom-code>` regions inside otherwise generated UTF-8 files while continuing
   to exclude the generated body. Additions, modifications, and removals are
@@ -16,6 +25,12 @@ may still change public contracts with explicit documentation.
 
 ### Changed
 
+- The bundled repository model advances to experimental `seed-rules/0.3.0`.
+  UI asset line volume is no longer priced; bounded template structure/binding,
+  stylesheet structure, responsive, design-token, animation, and theme units
+  replace it. Every non-UI numerical prior remains unchanged. The composite
+  source Change identity advances to `change-seed/0.4.0+seed-rules/0.3.0`
+  without changing Change rules or frozen reports.
 - The source Change estimator advances to experimental `change-seed/0.4.0` without
   changing repository priors, public schemas, calibration labels, or frozen
   reports. Represented, unchanged, formatting-only, and ambiguous customization

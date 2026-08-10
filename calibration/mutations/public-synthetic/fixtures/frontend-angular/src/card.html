@@ -1,0 +1,6 @@
+<article *ngIf="ready">
+  <form (ngSubmit)="save()">
+    <input [(ngModel)]="name">
+    <button>Save</button>
+  </form>
+</article>

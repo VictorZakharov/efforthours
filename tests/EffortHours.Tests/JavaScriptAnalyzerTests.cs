@@ -69,7 +69,7 @@ public sealed class JavaScriptAnalyzerTests
         EvidenceFact tsStructure = Fact(first, "javascript:source-structure:apps/api");
         Assert.True(Measurement(tsStructure, "token-backed-files") >= 1m);
         Assert.Equal(1m, Measurement(tsStructure, "interfaces"));
-        EvidenceFact webAssets = Fact(first, "javascript:ui-assets:apps/web");
+        EvidenceFact webAssets = Fact(first, "javascript:ui-asset:apps/web/app/page.css");
         Assert.Equal(1m, Measurement(webAssets, "style-files"));
 
         EvidenceFact unitTest = Fact(

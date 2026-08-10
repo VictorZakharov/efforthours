@@ -299,12 +299,6 @@ internal static class JavaScriptSyntaxAnalyzer
             metrics.ApiLine ??= line;
         }
 
-        if (IsAny(tokenization, nameIndex, "Component", "Directive", "Pipe"))
-        {
-            metrics.UiComponents++;
-            metrics.UiLine ??= line;
-        }
-
         if (IsAny(tokenization, nameIndex, "Entity", "Column", "Schema", "Prop"))
         {
             metrics.DataCalls++;

@@ -497,7 +497,7 @@ IDs, unmatched candidate work-item IDs, and category mismatches for investigatio
 
 ## Baseline and model-admission gates
 
-The current deterministic `seed-rules/0.2.1` rules are the baseline every learned
+The current deterministic `seed-rules/0.3.0` rules are the baseline every learned
 candidate must beat.
 A local model is considered only after the corpus contains multiple
 redistributable repository families and a frozen repository-level test partition.
@@ -701,3 +701,40 @@ and 170 passing assertions under the unchanged `seed-rules/0.2.1` catalog. The
 three new candidate reports and their source digests are checked in beside complete
 MIT-authored fixtures. No schema, package version, model artifact, numerical prior,
 reviewed target, or review maturity changed.
+
+## Frontend semantic-evidence completion
+
+The August 10, 2026 checkpoint advances JavaScript analyzer `0.4.1` to `0.5.0`
+and repository model `seed-rules/0.2.1` to `seed-rules/0.3.0`. The analyzer adds:
+
+- conservative static Angular `@Component` metadata after a named import from
+  `@angular/core`, including aliases, with literal strings/arrays, inline
+  templates/styles, and repository-relative external asset references;
+- unambiguous component/package ownership when an admitted asset has one owner,
+  with shared assets retained as generic evidence;
+- bounded HTML/template elements, forms, controls, bindings, directives, and
+  custom-element evidence; and
+- bounded CSS, SCSS, Sass, and Less rule/selector, responsive, token, animation,
+  and theme evidence.
+
+All reads reuse the common scanner's admitted path, size, encoding, and SHA-256
+boundary. Generated, vendored, minified, test, documentation, binary, and ignored
+build-output assets do not become semantic UI facts. Output retains locations and
+counts, never source excerpts. The scanners do not execute TypeScript or
+configuration, render, compile frameworks, run preprocessors, establish runtime
+reachability, or perform an accessibility audit.
+
+`seed-rules/0.3.0` removes `asset-lines` from the UI rule and replaces it with six
+bounded semantic drivers: template structure, template bindings, stylesheet
+structure, responsive surfaces, design-token units, and animation/theme surfaces.
+Every non-UI numerical prior is identical to 0.2.1. The new UI values are
+transparent preliminary priors, not label-fitted calibration. The artifact digest
+is `sha256:e8bce2f76c97564919ab6be41f1cfd6b222d531a4dbd08a8b22c7abe6b1eebdf`.
+
+Public suite `0.5.0` adds five synthetic frontend states and 22 relations. Its 56
+canonical candidates pass all 192 low/expected/high and category relations under
+`seed-rules/0.3.0`. Formatting and an exact stylesheet copy remain invariant;
+meaningful template/style semantics and static Angular component ownership raise
+UI EHE. Re-evaluating the prior 51 states produces identical numeric ranges, so
+the earlier 0.1.0 through 0.4.0 reports remain frozen. This checkpoint changes no
+reviewed label, partition, review maturity, threshold, or ML admission decision.

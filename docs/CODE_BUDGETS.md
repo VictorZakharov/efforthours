@@ -54,6 +54,14 @@ refactoring threshold. Coverage capability construction moved out of the legacy
 seed builder, allowing its ratchet to decrease from 1350 to 1300 lines. No override
 was added or increased.
 
+The August 10, 2026 frontend semantic-evidence checkpoint moved maintained web-
+asset orchestration out of the already ratcheted
+`JavaScriptRepositoryAnalyzer.cs`. Angular import-context recognition, Angular
+metadata parsing, HTML/template scanning, CSS-family scanning, and evidence/
+ownership construction each live in a focused file under the ordinary 500-line
+ceiling. The repository orchestrator decreased from 772 to 744 lines; no override
+was added or increased.
+
 Line count is deliberately simple, deterministic, cross-platform, and difficult
 to game accidentally. The useful outcome is earlier decomposition into cohesive
 contracts, commands, analyzers, and renderers—not compressed formatting.

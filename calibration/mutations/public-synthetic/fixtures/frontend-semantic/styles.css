@@ -1,0 +1,4 @@
+:root { --space: 1rem; }
+@media (width > 40rem) {
+  .card, .grid { display: grid; animation: enter .2s; }
+}

@@ -85,7 +85,9 @@ repository or Change calibration implementations approached their file ceilings.
    genuinely distinct reviewers.
 2. Preserve the completed `change-seed/0.4.0` generated-customization boundary,
    including the inherited 0.3.0 logical-marginality correction and separately
-   versioned diagnostics, while compiling independent reviews.
+   versioned diagnostics, while compiling independent reviews. The current source
+   composes repository `seed-rules/0.3.0`; frozen Change reports retain their
+   original repository-model identity.
 3. Add multiple real observations per ecosystem/partition cell, then freeze
    numerical admission thresholds from development/validation behavior before
    deciding whether transparent corrections or local ML merit evaluation.

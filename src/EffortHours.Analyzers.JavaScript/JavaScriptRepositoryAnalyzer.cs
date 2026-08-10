@@ -57,10 +57,9 @@ public sealed class JavaScriptRepositoryAnalyzer : IRepositoryEvidenceAnalyzer
             configurationResult.Configurations,
             facts,
             diagnostics);
-        AddWebAssetFacts(evidence, packageResult.Packages, facts);
-
         Dictionary<string, JavaScriptSourceMetrics> structureByScope = new(StringComparer.Ordinal);
         Dictionary<string, List<EvidenceLocation>> structureLocations = new(StringComparer.Ordinal);
+        List<AngularComponentMetadata> angularComponents = [];
         JavaScriptSourceAnalyzer sourceAnalyzer = new(textReader);
         foreach (EvidenceFact fileFact in evidence.Facts
             .Where(IsMaintainedSource)
@@ -74,6 +73,7 @@ public sealed class JavaScriptRepositoryAnalyzer : IRepositoryEvidenceAnalyzer
                 cancellationToken).ConfigureAwait(false);
             facts.AddRange(analysis.Facts);
             diagnostics.AddRange(analysis.Diagnostics);
+            angularComponents.AddRange(analysis.AngularComponents);
             if (analysis.Metrics.Files == 0)
             {
                 continue;
@@ -97,11 +97,21 @@ public sealed class JavaScriptRepositoryAnalyzer : IRepositoryEvidenceAnalyzer
             facts.Add(CreateSourceStructureFact(scope, metrics, structureLocations[scope]));
         }
 
+        FrontendAnalysisResult frontend = await new FrontendEvidenceAnalyzer(textReader)
+            .AnalyzeAsync(
+                evidence,
+                packageResult.Packages,
+                angularComponents,
+                cancellationToken)
+            .ConfigureAwait(false);
+        facts.AddRange(frontend.Facts);
+        diagnostics.AddRange(frontend.Diagnostics);
+
         AddPackageManagerDiagnostic(evidence, packageResult.Packages, diagnostics);
         diagnostics.Add(JavaScriptEvidence.Diagnostic(
             "FB4000",
             DiagnosticSeverity.Information,
-            "The JavaScript/TypeScript analyzer parsed manifests, JSONC configuration, JavaScript/JSX syntax, and bounded TypeScript token streams statically; it did not run package managers, load executable configuration, install dependencies, transpile, or execute target code."));
+            "The JavaScript/TypeScript/frontend analyzer parsed manifests, JSONC configuration, JavaScript/JSX syntax, bounded TypeScript token streams, static Angular component metadata, and bounded HTML/CSS-family semantics; it did not render, compile frameworks or preprocessors, run package managers, load executable configuration, install dependencies, transpile, or execute target code."));
         facts.Sort((left, right) => StringComparer.Ordinal.Compare(left.Id, right.Id));
         diagnostics.Sort(CompareDiagnostics);
         return new RepositoryAnalysisContribution
@@ -119,6 +129,24 @@ public sealed class JavaScriptRepositoryAnalyzer : IRepositoryEvidenceAnalyzer
     {
         EvidenceFact[] files = [.. evidence.Facts.Where(fact => fact.Kind == EvidenceKinds.File)];
         string[] packageManagers = DetectPackageManagers(files, packages);
+        bool hasFrontendAssets = files.Any(file =>
+            JavaScriptEvidence.FindTagValue(file.Tags, "language:") is
+                "css" or "scss" or "sass" or "less" or "html");
+        List<string> tags =
+        [
+            .. packageManagers.Select(manager => $"package-manager:{manager}"),
+            "target-code:not-executed",
+            "script-bodies:not-emitted",
+        ];
+        if (hasFrontendAssets)
+        {
+            tags.Add("frontend-assets:present");
+            if (packages.Count == 0)
+            {
+                tags.Add("package-role:web-ui");
+            }
+        }
+
         return JavaScriptEvidence.Fact(
             "javascript:repository",
             EvidenceKinds.JavaScriptPackage,
@@ -135,11 +163,7 @@ public sealed class JavaScriptRepositoryAnalyzer : IRepositoryEvidenceAnalyzer
                 JavaScriptEvidence.Measurement("scripts", packages.Sum(package => package.ScriptNames.Count), "scripts"),
                 JavaScriptEvidence.Measurement("lockfiles", CountLockfiles(files), "files"),
             ],
-            [
-                .. packageManagers.Select(manager => $"package-manager:{manager}"),
-                "target-code:not-executed",
-                "script-bodies:not-emitted",
-            ]);
+            tags);
     }
 
     private static void AddPackageFacts(
@@ -509,43 +533,6 @@ public sealed class JavaScriptRepositoryAnalyzer : IRepositoryEvidenceAnalyzer
                 .. metrics.Technologies.Select(technology => $"technology:{technology}"),
             ]);
 
-    private static void AddWebAssetFacts(
-        RepositoryEvidence evidence,
-        IReadOnlyList<JavaScriptPackageModel> packages,
-        List<EvidenceFact> facts)
-    {
-        foreach (IGrouping<string, EvidenceFact> group in evidence.Facts
-            .Where(IsMaintainedWebAsset)
-            .GroupBy(
-                fact => FindOwningPackage(fact.Scope, packages)?.Scope ?? ".",
-                StringComparer.Ordinal)
-            .OrderBy(group => group.Key, StringComparer.Ordinal))
-        {
-            EvidenceFact[] assets = [.. group.OrderBy(fact => fact.Scope, StringComparer.Ordinal)];
-            int markupFiles = assets.Count(asset =>
-                JavaScriptEvidence.FindTagValue(asset.Tags, "language:") == "html");
-            int styleFiles = assets.Length - markupFiles;
-            decimal lines = assets.SelectMany(asset => asset.Measurements)
-                .Where(measurement => measurement.Name == "physical-lines")
-                .Sum(measurement => measurement.Value);
-            facts.Add(JavaScriptEvidence.Fact(
-                $"javascript:ui-assets:{group.Key}",
-                EvidenceKinds.UserInterface,
-                group.Key,
-                $"Maintained web markup and style assets for package scope '{group.Key}'.",
-                EvidenceSourceKind.Measured,
-                "common-scanner language and maintained-content classification",
-                assets.Select(asset => JavaScriptEvidence.Location(asset.Scope)),
-                [
-                    JavaScriptEvidence.Measurement("files", assets.Length, "files"),
-                    JavaScriptEvidence.Measurement("markup-files", markupFiles, "files"),
-                    JavaScriptEvidence.Measurement("style-files", styleFiles, "files"),
-                    JavaScriptEvidence.Measurement("physical-lines", lines, "lines"),
-                ],
-                ["ui-asset:maintained"]));
-        }
-    }
-
     private static JavaScriptPackageModel? FindOwningPackage(
         string path,
         IReadOnlyList<JavaScriptPackageModel> packages) => packages
@@ -568,21 +555,6 @@ public sealed class JavaScriptRepositoryAnalyzer : IRepositoryEvidenceAnalyzer
 
         string? language = JavaScriptEvidence.FindTagValue(fact.Tags, "language:");
         return language is "javascript" or "typescript" or "vue" or "svelte";
-    }
-
-    private static bool IsMaintainedWebAsset(EvidenceFact fact)
-    {
-        if (fact.Kind != EvidenceKinds.File ||
-            fact.Tags.Contains("classification:generated", StringComparer.Ordinal) ||
-            fact.Tags.Contains("classification:minified", StringComparer.Ordinal) ||
-            fact.Tags.Contains("classification:vendored", StringComparer.Ordinal) ||
-            fact.Tags.Contains("content:binary", StringComparer.Ordinal))
-        {
-            return false;
-        }
-
-        string? language = JavaScriptEvidence.FindTagValue(fact.Tags, "language:");
-        return language is "css" or "scss" or "sass" or "less" or "html";
     }
 
     private static void AddPackageManagerDiagnostic(

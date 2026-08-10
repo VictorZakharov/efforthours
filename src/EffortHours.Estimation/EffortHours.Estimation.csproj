@@ -8,8 +8,8 @@
     <ProjectReference Include="../EffortHours.Contracts/EffortHours.Contracts.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="../../models/seed-rules/0.2.1.json">
-      <LogicalName>EffortHours.Estimation.Models.SeedRules.0.2.1.json</LogicalName>
+    <EmbeddedResource Include="../../models/seed-rules/0.3.0.json">
+      <LogicalName>EffortHours.Estimation.Models.SeedRules.0.3.0.json</LogicalName>
     </EmbeddedResource>
   </ItemGroup>
 </Project>

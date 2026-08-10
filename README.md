@@ -18,7 +18,7 @@ It does **not** claim how long anyone actually worked. It is not a timesheet,
 productivity score, invoice, or reconstruction of repository history.
 
 > **Experimental public alpha:** the CLI and reporting pipeline work, but the
-> bundled `seed-rules/0.2.1` repository estimator and current Change estimator are
+> bundled `seed-rules/0.3.0` repository estimator and current Change estimator are
 > not independently calibrated or production-validated. Review the evidence and
 > ranges before using an estimate for a consequential decision.
 
@@ -144,7 +144,12 @@ The current static analyzers support:
 - JavaScript, JSX, TypeScript, and TSX package/workspace structure, APIs, UI,
   data access, integrations, security, background work, and tests;
 - React/Preact/Next-style JSX plus Vue and Svelte components;
-- maintained HTML, CSS, SCSS/Sass, and Less as bounded UI asset evidence;
+- static Angular `@Component` metadata, including literal inline and relative
+  external templates and styles when ownership is unambiguous;
+- maintained HTML template structure, forms, bindings, and directives through a
+  bounded tolerant scanner; and
+- CSS, SCSS/Sass, and Less rules/selectors, responsive surfaces, design tokens,
+  animation, and theme signals through bounded tolerant scanners;
 - mixed .NET and JavaScript/TypeScript repositories;
 - documentation, build configuration, CI, containers, infrastructure, package
   metadata, and checked-in LCOV or Cobertura coverage reports; and
@@ -152,10 +157,15 @@ The current static analyzers support:
   classification used to prevent mechanical volume from inflating effort.
 
 JavaScript and JSX structure is parser-backed. TypeScript and TSX are explicitly
-token-backed in this release. HTML and CSS-family files currently contribute as
-maintained assets rather than through deep template/style semantics. Angular
-package context is recognized, but Angular component/template depth is limited;
-follow-up is tracked in [issue #49](https://github.com/VictorZakharov/efforthours/issues/49).
+token-backed in this release. Angular metadata analysis requires a named
+`Component` import from `@angular/core` (including a local alias), accepts only
+static literals and arrays, and never evaluates TypeScript or executable
+configuration; external assets must resolve to scanner-admitted files inside the
+repository.
+HTML and CSS-family analysis is tolerant and structural: it does not render a UI,
+compile a framework, run a preprocessor, prove runtime behavior, or perform an
+accessibility audit. Physical markup/style line count is retained as evidence but
+is not an EHE driver.
 Standalone SQL is inventoried but does not yet have semantic schema/query analysis;
 that work is tracked in [issue #50](https://github.com/VictorZakharov/efforthours/issues/50).
 
@@ -195,7 +205,7 @@ in this alpha. See the [host-review protocol](docs/MILESTONE_8.md).
 - Static analysis assumes discovered tests pass on the fastest path and does not
   prove that a checkout builds or runs.
 - Unsupported languages still receive common inventory evidence but not the same
-  semantic depth as .NET and JavaScript/TypeScript.
+  semantic depth as .NET, JavaScript/TypeScript, and the supported frontend forms.
 - Checked-in coverage can be stale even when its bytes match the analyzed tree;
   EffortHours does not regenerate it.
 - Multiple-PR and author/time portfolio estimation is not implemented.

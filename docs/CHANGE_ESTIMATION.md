@@ -10,7 +10,8 @@ request through an optional `gh` adapter. The current
 `change-seed/0.4.0` rules are transparent but uncalibrated and remain experimental.
 Version 0.4.0 retains the 0.3.0 logical-marginality correction and adds a
 fail-closed boundary for explicitly delimited customization inside otherwise
-generated files without changing repository `seed-rules/0.2.1`.
+generated files. The current source composes repository `seed-rules/0.3.0`; this
+mechanical identity advance does not change the 0.4.0 Change rules.
 The first calibration-infrastructure checkpoint, a preliminary 24-record synthetic
 host-AI teacher corpus, a one-record real public pilot, a blind six-family
 real-source expansion, and a released-alpha.3 public validation follow-on are
@@ -242,8 +243,8 @@ unchanged path.
 
 The v1 public schemas are `change-evidence`, `change-estimate-report`, and
 `change-estimate-explanation`. The current estimator identity is
-`change-seed/0.4.0`; it composes the still-uncalibrated repository
-`seed-rules/0.2.1` model and must not be described as production-ready. Frozen
+`change-seed/0.4.0+seed-rules/0.3.0`; it composes the still-uncalibrated repository
+model and must not be described as production-ready. Frozen
 calibration source reports retain the exact earlier estimator identity they were
 created from.
 

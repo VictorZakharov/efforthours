@@ -23,7 +23,7 @@ public sealed record SeedRuleCatalogInfo
 
 public static class SeedRuleCatalog
 {
-    private const string ResourceName = "EffortHours.Estimation.Models.SeedRules.0.2.1.json";
+    private const string ResourceName = "EffortHours.Estimation.Models.SeedRules.0.3.0.json";
 
     private static readonly Lazy<LoadedSeedRuleCatalog> Loaded = new(
         Load,

@@ -213,7 +213,9 @@ internal static class FileClassifier
             ecosystems.Add("dotnet");
         }
 
-        if (language is "javascript" or "vue" or "svelte" || lowerName == "package.json")
+        if (language is "javascript" or "vue" or "svelte" or
+            "css" or "scss" or "sass" or "less" or "html" ||
+            lowerName == "package.json")
         {
             ecosystems.Add("javascript");
         }

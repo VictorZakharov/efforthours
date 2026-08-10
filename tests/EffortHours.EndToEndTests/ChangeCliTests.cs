@@ -86,7 +86,7 @@ public sealed class ChangeCliTests
         Assert.DoesNotContain("customer-custom-secret", result.StandardOutput, StringComparison.Ordinal);
         using JsonDocument report = JsonDocument.Parse(result.StandardOutput);
         Assert.Equal(
-            "change-seed/0.4.0+seed-rules/0.2.1",
+            "change-seed/0.4.0+seed-rules/0.3.0",
             report.RootElement.GetProperty("estimatorVersion").GetString());
         JsonElement path = Assert.Single(report.RootElement
             .GetProperty("evidence")

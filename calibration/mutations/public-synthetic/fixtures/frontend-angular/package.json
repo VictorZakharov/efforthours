@@ -1,0 +1,7 @@
+{
+  "name": "synthetic-angular-frontend",
+  "private": true,
+  "dependencies": {
+    "@angular/core": "21.0.0"
+  }
+}

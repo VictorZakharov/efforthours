@@ -31,6 +31,11 @@ markers, so their numeric reports and 0.3.0 diagnostics remain unchanged. No
 corpus, label, prior, threshold, or maturity changed, and the withheld test
 comparison was not opened.
 
+The subsequent repository-only frontend semantic revision advances the current
+composite source identity to `change-seed/0.4.0+seed-rules/0.3.0`. It changes no
+Change rule, label, threshold, review maturity, or frozen report; every historical
+Change artifact retains the exact repository-model version it evaluated.
+
 ## Reproducible source boundary
 
 `change-fixture-generator/0.1.0` analyzes synthetic base/head states through

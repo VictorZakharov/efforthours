@@ -180,11 +180,11 @@ mixed-repository evidence pipeline, published v1 schemas, optional external scan
 cache, installable global-tool package, memory-only unit fixtures, automated
 process-level CLI tests, reproducible million-line benchmarks, and a granular
 evidence-to-work-item estimator. The JavaScript path uses Acornima ASTs; TypeScript
-is explicitly token-backed. The bundled `seed-rules/0.2.1` model uses transparent
+is explicitly token-backed. The bundled `seed-rules/0.3.0` model uses transparent
 marginal priors, exact-content normalization, two explicit profiles, approximately
 four-hour work-item partitions, confidence drivers, and a separate
-professionalization-gap ledger. Version 0.2.1 keeps the 0.2.0 priors unchanged and
-fixes TypeScript file ownership for duplicate and test normalization. It remains
+professionalization-gap ledger. Version 0.3.0 retains every non-UI 0.2.1 prior and
+replaces UI physical-line pricing with bounded template/style semantic units. It remains
 explicitly uncalibrated and must not be described as production-ready. Milestone 6
 adds schema-versioned compact projections, capability and evidence explanation,
 saved-report reprojection, and the auditable
@@ -222,7 +222,12 @@ are contamination diagnostics, not held-out accuracy evidence. The first
 measured-coverage checkpoint adds bounded, digest-verified LCOV and Cobertura
 parsing plus measured-over-declared precedence without changing the
 `seed-rules/0.2.1` catalog; public suite `0.4.0` has 51 cases and 170 passing
-relations. General semantic-clone and reachability analysis,
+relations. The frontend semantic-evidence checkpoint advances JavaScript analyzer
+to `0.5.0` with static Angular component metadata, bounded HTML/template and
+CSS-family semantics, digest-verified relative asset ownership, and no framework
+or preprocessor execution. `seed-rules/0.3.0` removes UI asset-line pricing;
+public suite `0.5.0` has 56 cases and 192 passing relations, while all 51 prior
+cases retain identical numeric ranges. General semantic-clone and reachability analysis,
 accessibility-specific depth, realistic multi-package boundaries, multiple
 observations per ecosystem/partition cell, and actual independent review are next;
 local ML has not been selected or added.
@@ -245,7 +250,7 @@ meaningful code/tests/docs, migrations, integrations, CI, container delivery,
 simplification, additivity, overlap, reverts, category isolation, all three range
 points, and cooperative cancellation. The first Ctrl+C returns 130 after a
 stderr-only diagnostic; a second retains immediate termination. Current
-`change-seed/0.4.0` rules retain the bounded 0.3.0 logical-marginality correction
+`change-seed/0.4.0+seed-rules/0.3.0` rules retain the bounded 0.3.0 logical-marginality correction
 and can isolate exact, balanced, EffortHours-specific `<custom-code>` regions
 inside otherwise generated source. Only those regions can contribute;
 conventional generated bodies,

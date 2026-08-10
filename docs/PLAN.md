@@ -189,6 +189,14 @@ Status as of August 10, 2026:
   unchanged `coverage-achievement` rule. Public synthetic suite `0.4.0` contains
   51 cases and 170 passing low/expected/high and category-isolation relations; no
   seed catalog prior or reviewed label changed.
+- The frontend semantic-evidence checkpoint is complete: JavaScript analyzer
+  `0.5.0` adds bounded HTML/template and CSS-family structure plus static Angular
+  component metadata and digest-verified asset ownership. `seed-rules/0.3.0`
+  replaces UI physical-line pricing with bounded semantic units while preserving
+  every non-UI prior. Public suite `0.5.0` has 56 cases and 192 passing relations;
+  all 51 prior cases retain identical low/expected/high ranges. Rendering,
+  framework compilation, preprocessors, runtime proof, and accessibility auditing
+  remain outside this static boundary.
 - The scanner performance-and-safety checkpoint is complete: fresh-process
   one-million-line .NET, JavaScript/TypeScript, and mixed scans now report sampled
   peak resident memory and cumulative allocation; explicit warm-cache runs are
@@ -356,7 +364,12 @@ ASTs. It does not parse TypeScript grammar, so the initial TS/TSX path uses a
 bounded deterministic token analyzer and labels that provenance explicitly. No
 Node process, package manager, transpiler, target dependency, or executable config
 is loaded. A compiler-grade TypeScript adapter remains a future precision option
-if calibration shows the token evidence is insufficient.
+if calibration shows the token evidence is insufficient. Analyzer `0.5.0` also
+uses tolerant bounded scanners for HTML/template and CSS-family semantics. Angular
+`@Component` metadata is admitted only from static literals and arrays, and
+relative external assets must resolve to scanner-admitted files. This does not
+render, compile a framework, execute a preprocessor, prove runtime behavior, or
+perform an accessibility audit.
 
 ### Milestone 5: Seed estimation model
 
@@ -372,11 +385,13 @@ Exit condition: every hour in an estimate traces to named work items and evidenc
 there is no unexplained repository-level total multiplier.
 
 Implementation note: `MILESTONE_5.md` records the detailed design. The checked-in
-`models/seed-rules/0.2.1.json` artifact is schema-validated and embedded into the
+`models/seed-rules/0.3.0.json` artifact is schema-validated and embedded into the
 estimation assembly for deterministic offline loading. Broad inventory facts yield
 to fine semantic facts, exact byte-identical maintained bodies are normalized,
 general source structure supplies residual implementation work, and specialized
-builders value behavior-specific boundaries. Large capabilities are deterministically
+builders value behavior-specific boundaries. The 0.3.0 UI rule uses bounded
+template/style semantic units instead of physical asset lines and preserves every
+non-UI 0.2.1 prior. Large capabilities are deterministically
 partitioned around a four-hour target while remaining within the 0.5-to-8-hour
 expected range. `MODEL_REVIEWS.md` records the first provenance-bound, provisional
 self-review anchor. The model is transparent but not calibrated.

@@ -26,7 +26,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="../../LICENSE" Pack="true" PackagePath="/" />
-    <None Include="../../models/seed-rules/0.2.1.json" Pack="true" PackagePath="models/seed-rules/" />
+    <None Include="../../models/seed-rules/0.3.0.json" Pack="true" PackagePath="models/seed-rules/" />
     <None Include="../../rates/us-senior-contractor/2026.1.json" Pack="true" PackagePath="rates/us-senior-contractor/" />
     <None Include="../../PACKAGE_README.md" Pack="true" PackagePath="/" />
     <None Include="../../THIRD-PARTY-NOTICES.md" Pack="true" PackagePath="/" />
