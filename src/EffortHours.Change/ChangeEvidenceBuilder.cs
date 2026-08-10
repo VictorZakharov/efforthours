@@ -88,7 +88,13 @@ internal static class ChangeEvidenceBuilder
             if (candidate.Status == ChangePathStatus.Modified &&
                 classification == ChangePathClassification.Represented)
             {
-                if (candidate.Base!.Length > ContentChangeAnalyzer.MaximumTextBytes ||
+                if (!SupportsSourceReads(baseSnapshot) || !SupportsSourceReads(headSnapshot))
+                {
+                    reason += " Source bodies were unavailable, so formatting-only normalization and " +
+                        "detailed edit-region comparison could not be performed; the path remains " +
+                        "represented conservatively.";
+                }
+                else if (candidate.Base!.Length > ContentChangeAnalyzer.MaximumTextBytes ||
                     candidate.Head!.Length > ContentChangeAnalyzer.MaximumTextBytes)
                 {
                     reason += " Detailed edit-region comparison was bounded because at least one blob " +
@@ -162,6 +168,10 @@ internal static class ChangeEvidenceBuilder
             Diagnostics = diagnostics,
         };
     }
+
+    private static bool SupportsSourceReads(IChangeSnapshot snapshot) =>
+        snapshot is not IRepositoryEvidenceChangeSnapshot analyzedSnapshot ||
+        analyzedSnapshot.SupportsSourceReads;
 
     private static List<PathCandidate> PairExactMoves(
         List<PathCandidate> removed,

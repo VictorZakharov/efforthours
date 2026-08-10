@@ -11,18 +11,23 @@ The behavioral-safeguard checkpoint was completed on August 9, 2026. It adds the
 remaining cancellation and category-isolation coverage without changing
 `change-seed/0.1.0`, any contract, or any calibration artifact.
 
+The non-Git snapshot follow-on was completed on August 10, 2026. It adds paired
+directory and paired evidence-bundle base/head selectors without changing the v1
+contracts or `change-seed/0.3.0` valuation rules.
+
 ## Delivered scope
 
 - `eh change <repository> --base <revision> --head <revision>`
 - `eh change <repository> --commit <revision> [--parent <revision>]`
 - `eh change <repository> --range <base>..<head>`
 - `eh change <repository> --pr <number-or-url> [--repo <owner/name>]`
+- `eh change --base-path <directory> --head-path <directory>`
+- `eh change --base-evidence <evidence.json> --head-evidence <evidence.json>`
 - implementation and recreation profiles, JSON or Markdown, compact JSON, explicit
   output paths, the bundled dated rate, caller rate overrides, and effort-only mode
 - saved-report work-item explanation through `eh change explain`
 
-Multiple PRs, directory/evidence selectors, author-period portfolios, and shared
-credit remain deferred.
+Multiple PRs, author-period portfolios, and shared credit remain deferred.
 
 ## Architecture
 
@@ -31,6 +36,15 @@ EHE library. Git selection is an adapter around it. Immutable Git trees are expo
 through the existing repository-file-system abstraction using `git ls-tree` and a
 bounded `git cat-file --batch` reader. No checkout, fetch, dependency installation,
 target-code execution, or target-repository write occurs.
+
+The non-Git adapter scans two directory roots through the same safe static pipeline,
+bounds each snapshot to admitted file facts, and records the scanner-compatible
+content digest as its immutable identity. Hash-checked reads reject a selected body
+that changes after pinning. The evidence adapter validates two saved v1 inventories
+and reuses their frozen analysis without target-tree access. Because evidence files
+do not embed source bodies, modified maintained paths that otherwise qualify as
+represented keep one conservative edit region and an explicit warning instead of
+receiving formatting-only exclusion.
 
 The optional GitHub adapter invokes `gh pr view` only for PR number/URL and immutable
 base/head object IDs. Analysis requires those objects in the local Git database.
@@ -84,6 +98,12 @@ stdout/stderr separation, deterministic CLI output, and an offline PR identity
 substitution. The `gh` JSON/error boundary is tested without filesystem or network
 access.
 
+The non-Git follow-on adds memory-only directory/evidence planner tests and
+process-level pairs with no Git repository. They cover deterministic identities,
+unchanged target trees, digest movement failure, saved-evidence reuse, conservative
+bodyless modification, invalid inventory digests, and incomplete or mixed CLI
+selector rejection.
+
 The installed CLI now translates the first Ctrl+C into cooperative cancellation
 through the complete command pipeline. Cancellation writes only a concise stderr
 diagnostic and returns exit code 130; a second Ctrl+C retains the operating system's
@@ -104,6 +124,8 @@ test lives only in the end-to-end suite; ordinary unit tests remain memory-only.
 - TypeScript source semantics remain token-backed through the repository analyzer.
 - Formatting exclusion is intentionally conservative and limited to the initial
   .NET and JavaScript/TypeScript source extensions.
+- Saved repository evidence has no source bodies, so modified evidence-only paths
+  cannot receive formatting-only exclusion or detailed edit-region analysis.
 - Exact blob movement/copying is recognized; general semantic clone detection is
   not.
 - Range component selection uses first-parent comparison for merge components and

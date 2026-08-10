@@ -5,7 +5,7 @@ namespace EffortHours.Cli;
 
 internal sealed record ChangeCommandOptions
 {
-    public required string RepositoryPath { get; init; }
+    public string? RepositoryPath { get; init; }
 
     public string? BaseRevision { get; init; }
 
@@ -21,6 +21,14 @@ internal sealed record ChangeCommandOptions
 
     public string? GitHubRepository { get; init; }
 
+    public string? BaseDirectory { get; init; }
+
+    public string? HeadDirectory { get; init; }
+
+    public string? BaseEvidencePath { get; init; }
+
+    public string? HeadEvidencePath { get; init; }
+
     public EstimationProfile Profile { get; init; } = EstimationProfile.Implementation;
 
     public string Format { get; init; } = "json";
@@ -34,6 +42,10 @@ internal sealed record ChangeCommandOptions
     public string Currency { get; init; } = "USD";
 
     public string? OutputPath { get; init; }
+
+    public bool IsDirectorySelection => BaseDirectory is not null;
+
+    public bool IsEvidenceSelection => BaseEvidencePath is not null;
 }
 
 internal readonly record struct ChangeCommandParseResult(
@@ -48,8 +60,13 @@ internal static class ChangeCommandOptionsParser
         ArgumentNullException.ThrowIfNull(arguments);
         if (arguments.Length == 0)
         {
-            return Error("A repository path is required.");
+            return Error("A change selector is required.");
         }
+
+        string? repositoryPath = arguments[0].StartsWith('-')
+            ? null
+            : arguments[0];
+        int firstOptionIndex = repositoryPath is null ? 0 : 1;
 
         string? baseRevision = null;
         string? headRevision = null;
@@ -58,6 +75,10 @@ internal static class ChangeCommandOptionsParser
         string? range = null;
         string? pullRequest = null;
         string? githubRepository = null;
+        string? baseDirectory = null;
+        string? headDirectory = null;
+        string? baseEvidencePath = null;
+        string? headEvidencePath = null;
         EstimationProfile profile = EstimationProfile.Implementation;
         string format = "json";
         bool compact = false;
@@ -67,7 +88,7 @@ internal static class ChangeCommandOptionsParser
         bool currencyProvided = false;
         string? outputPath = null;
 
-        for (int index = 1; index < arguments.Length; index++)
+        for (int index = firstOptionIndex; index < arguments.Length; index++)
         {
             string option = arguments[index];
             if (IsHelp(option))
@@ -116,6 +137,18 @@ internal static class ChangeCommandOptionsParser
                 case "--repo":
                     githubRepository = value;
                     break;
+                case "--base-path":
+                    baseDirectory = value;
+                    break;
+                case "--head-path":
+                    headDirectory = value;
+                    break;
+                case "--base-evidence":
+                    baseEvidencePath = value;
+                    break;
+                case "--head-evidence":
+                    headEvidencePath = value;
+                    break;
                 case "--profile":
                     if (!TryParseProfile(value, out profile))
                     {
@@ -162,18 +195,44 @@ internal static class ChangeCommandOptionsParser
             }
         }
 
-        int selectorCount = (commit is null ? 0 : 1) +
-            (range is null ? 0 : 1) +
-            (pullRequest is null ? 0 : 1) +
-            (baseRevision is null && headRevision is null ? 0 : 1);
-        if (selectorCount != 1)
-        {
-            return Error("Select exactly one of --commit, --range, --pr, or the --base/--head pair.");
-        }
-
         if ((baseRevision is null) != (headRevision is null))
         {
             return Error("Options --base and --head must be supplied together.");
+        }
+
+        if ((baseDirectory is null) != (headDirectory is null))
+        {
+            return Error("Options --base-path and --head-path must be supplied together.");
+        }
+
+        if ((baseEvidencePath is null) != (headEvidencePath is null))
+        {
+            return Error("Options --base-evidence and --head-evidence must be supplied together.");
+        }
+
+        int selectorCount = (commit is null ? 0 : 1) +
+            (range is null ? 0 : 1) +
+            (pullRequest is null ? 0 : 1) +
+            (baseRevision is null ? 0 : 1) +
+            (baseDirectory is null ? 0 : 1) +
+            (baseEvidencePath is null ? 0 : 1);
+        if (selectorCount != 1)
+        {
+            return Error(
+                "Select exactly one Git revision selector, one --base-path/--head-path pair, " +
+                "or one --base-evidence/--head-evidence pair.");
+        }
+
+        bool nonGitSelection = baseDirectory is not null || baseEvidencePath is not null;
+        if (nonGitSelection && repositoryPath is not null)
+        {
+            return Error(
+                "Do not supply a positional repository path with directory or evidence snapshot selectors.");
+        }
+
+        if (!nonGitSelection && repositoryPath is null)
+        {
+            return Error("A repository path is required for Git revision and pull-request selectors.");
         }
 
         if (parent is not null && commit is null)
@@ -203,7 +262,7 @@ internal static class ChangeCommandOptionsParser
 
         return new ChangeCommandParseResult(new ChangeCommandOptions
         {
-            RepositoryPath = arguments[0],
+            RepositoryPath = repositoryPath,
             BaseRevision = baseRevision,
             HeadRevision = headRevision,
             Commit = commit,
@@ -211,6 +270,10 @@ internal static class ChangeCommandOptionsParser
             Range = range,
             PullRequest = pullRequest,
             GitHubRepository = githubRepository,
+            BaseDirectory = baseDirectory,
+            HeadDirectory = headDirectory,
+            BaseEvidencePath = baseEvidencePath,
+            HeadEvidencePath = headEvidencePath,
             Profile = profile,
             Format = format,
             Compact = compact,

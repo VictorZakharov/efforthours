@@ -15,11 +15,11 @@ public sealed partial class ChangeEstimator
         EstimationProfile profile,
         CancellationToken cancellationToken)
     {
-        RepositoryEvidence baseEvidence = await new RepositoryAnalysisPipeline(baseSnapshot.FileSystem)
-            .ScanAsync(baseSnapshot.RootPath, cancellationToken: cancellationToken)
+        ValidateSnapshotReference("base", selection.Base, baseSnapshot);
+        ValidateSnapshotReference("head", selection.Head, headSnapshot);
+        RepositoryEvidence baseEvidence = await ReadEvidenceAsync(baseSnapshot, cancellationToken)
             .ConfigureAwait(false);
-        RepositoryEvidence headEvidence = await new RepositoryAnalysisPipeline(headSnapshot.FileSystem)
-            .ScanAsync(headSnapshot.RootPath, cancellationToken: cancellationToken)
+        RepositoryEvidence headEvidence = await ReadEvidenceAsync(headSnapshot, cancellationToken)
             .ConfigureAwait(false);
         baseEvidence = RenameRepository(baseEvidence, repositoryName);
         headEvidence = RenameRepository(headEvidence, repositoryName);
@@ -104,6 +104,43 @@ public sealed partial class ChangeEstimator
             headEvidence,
             baseEstimate,
             headEstimate);
+    }
+
+    private static async Task<RepositoryEvidence> ReadEvidenceAsync(
+        IChangeSnapshot snapshot,
+        CancellationToken cancellationToken)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+        if (snapshot is IRepositoryEvidenceChangeSnapshot analyzedSnapshot)
+        {
+            return analyzedSnapshot.Evidence;
+        }
+
+        return await new RepositoryAnalysisPipeline(snapshot.FileSystem)
+            .ScanAsync(snapshot.RootPath, cancellationToken: cancellationToken)
+            .ConfigureAwait(false);
+    }
+
+    private static void ValidateSnapshotReference(
+        string label,
+        ChangeSnapshotReference reference,
+        IChangeSnapshot snapshot)
+    {
+        if (!string.Equals(reference.ObjectId, snapshot.ObjectId, StringComparison.OrdinalIgnoreCase))
+        {
+            throw new InvalidOperationException(
+                $"The opened {label} snapshot identity does not match the pinned selection.");
+        }
+
+        if (snapshot is IRepositoryEvidenceChangeSnapshot analyzedSnapshot &&
+            !string.Equals(
+                analyzedSnapshot.Evidence.Repository.SourceDigest,
+                snapshot.ObjectId,
+                StringComparison.OrdinalIgnoreCase))
+        {
+            throw new InvalidOperationException(
+                $"The opened {label} snapshot evidence does not match its content-derived identity.");
+        }
     }
 
     private static RepositoryEvidence RenameRepository(

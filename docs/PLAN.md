@@ -93,6 +93,8 @@ eh report <estimate> [--view <full|repository|category|scope|work-item|review>]
   [--format <json|markdown>] [--compact]
 eh explain <path-or-evidence> --item <id> [--format <json|markdown>]
 eh change <repository> (--base <revision> --head <revision> | --commit <revision> | --range <base>..<head> | --pr <number-or-url>)
+eh change --base-path <directory> --head-path <directory>
+eh change --base-evidence <evidence.json> --head-evidence <evidence.json>
 eh verify <path> [--build] [--test] [--coverage]
 eh model info
 eh rate info
@@ -207,8 +209,10 @@ Status as of August 10, 2026:
   commit, range, and single-PR selectors; v1 Change EHE schemas; final-delta
   normalization; additive component reconciliation; JSON/Markdown/explanation
   output; memory-only unit fixtures; and process-level Git tests are implemented.
-  The initial `change-seed/0.1.0` was experimental and uncalibrated. Multiple PRs,
-  directory/evidence selectors, and author-period portfolios remain deferred.
+  A follow-on adds content-pinned directory pairs and digest-checked saved-evidence
+  pairs with memory-only and process-level coverage. The initial
+  `change-seed/0.1.0` was experimental and uncalibrated. Multiple PRs and
+  author-period portfolios remain deferred.
 - The Change behavioral-safeguard checkpoint is complete: memory-only mutations
   cover formatting, movement, excluded output, duplication, meaningful code/tests/
   docs, migrations, integrations, CI, container delivery, simplification,
@@ -446,8 +450,8 @@ review.
 ### Milestone 9: Expansion
 
 - Add feature-oriented reporting.
-- Extend the implemented provider-neutral snapshot engine with directory/evidence
-  selectors when they add practical value.
+- Maintain the implemented provider-neutral directory/evidence selectors and
+  measure their large-tree performance before broadening their scope.
 - Extend the implemented one-commit and range forms to multiple-PR and explicitly
   selected author-and-period portfolios. Treat author and time as selectors only,
   normalize overlaps and reversals, disclose shared-credit limitations, and label

@@ -2,9 +2,11 @@
 
 ## Status
 
-The first Change Estimation MVP is implemented after Milestone 7B5. It includes
-provider-neutral immutable base/head analysis, one commit, one final revision
-range, and one GitHub pull request through an optional `gh` adapter. The current
+The first Change Estimation MVP and its first non-Git selector follow-on are
+implemented after Milestone 7B5. They include provider-neutral immutable
+base/head analysis, two statically scanned directories, two saved repository
+evidence bundles, one commit, one final revision range, and one GitHub pull
+request through an optional `gh` adapter. The current
 `change-seed/0.3.0` rules are transparent but uncalibrated and remain experimental.
 Version 0.3.0 retains the 0.2.0 non-marginal stacking correction and fixes
 repository work-item partition multiplication without changing repository
@@ -37,15 +39,18 @@ or a reconstruction of what a contributor actually did.
 
 The implemented provider-neutral engine and Git adapter support:
 
+- two local directory snapshots, each statically scanned and pinned to its
+  content-derived repository source digest;
+- two v1 serialized repository-evidence bundles with digest-checked file
+  inventories;
 - immutable base and head snapshots selected by local Git revisions;
 - one commit compared with a selected parent;
 - a revision range compared by its final base and head;
 - one pull request, with GitHub available through an optional `gh` CLI adapter.
 
-Provider-neutral directory/evidence-bundle selectors, multiple pull requests, and
-commits selected by author identity and time interval remain roadmap work. The
-engine itself accepts storage-independent snapshot factories, which keeps those
-future selectors separate from valuation.
+Multiple pull requests and commits selected by author identity and time interval
+remain roadmap work. The engine accepts storage-independent snapshot factories,
+which keeps selector adapters separate from valuation.
 
 The initial CLI shape is:
 
@@ -53,14 +58,19 @@ The initial CLI shape is:
 eh change <repository> --base <revision> --head <revision>
 eh change <repository> --commit <revision> [--parent <revision>]
 eh change <repository> --range <base>..<head>
+eh change --base-path <directory> --head-path <directory>
+eh change --base-evidence <repository-evidence.json>
+  --head-evidence <repository-evidence.json>
 eh change --author <identity> --since <instant> --until <instant>
   [--date-field <author|committer>] [--timezone <iana-zone>]
 eh change <repository> --pr <number-or-url> [--repo <owner/name>]
 ```
 
-The implemented forms share the repository-estimate profile, format, rate, compact,
-and explicit-output options. The author form is illustrative and remains deferred.
-Local snapshot and Git-ref inputs do not depend on GitHub. Pull-request resolution
+The implemented forms share the repository-estimate profile, format, rate,
+compact, and explicit-output options. Directory pairs and evidence pairs are
+deliberately separate selector families; incomplete or mixed pairs fail before
+analysis. The author form is illustrative and remains deferred. Local snapshot
+and Git-ref inputs do not depend on GitHub. Pull-request resolution
 uses `gh pr view` only when the caller explicitly selects `--pr`; `gh` must be
 installed and authenticated. The adapter retains only the requested PR number or
 URL and its immutable base/head object identities. It does not retain the PR body,
@@ -72,6 +82,24 @@ head or base object is absent locally, the command fails with an explicit
 instruction to fetch that object before retrying. Automatic external object
 materialization can be considered later, but it must not silently mutate the
 target repository.
+
+Directory selection runs the ordinary non-executing repository pipeline against
+each caller-selected root with no implicit cache and writes nothing into either
+tree. The admitted file inventory, per-file SHA-256 and byte length, and repository
+source digest become the snapshot boundary. Content reads needed for modified-file
+normalization are checked against the pinned hash; a changed selected body fails
+visibly instead of being silently mixed into the report. Output records logical
+directory selectors and content identities, not absolute host paths.
+
+Evidence selection requires two schema-valid and semantically valid v1 repository
+evidence documents. Each file fact must provide its canonical relative path, one
+SHA-256 tag, one integral byte measurement, and a repository source digest that
+matches the ordered inventory. Evidence bundles contain no source bodies. Exact
+addition, removal, movement, duplication, classification, and repository-fact
+deltas remain available, but a modified maintained body cannot be proven
+formatting-only or partitioned into detailed edit regions. A path that otherwise
+qualifies as represented remains represented with one conservative edit region and
+a warning; it is never silently excluded.
 
 ## History boundary
 
@@ -192,6 +220,13 @@ created from.
 
 ## Implemented CLI behavior
 
+- Directory and evidence pairs work without Git or GitHub and use the existing
+  base-head selection with explicit `directory` or `evidence` snapshot kinds.
+- Directory inputs are bounded to scanner-admitted files and use content-derived
+  source digests; saved evidence inventories are independently digest checked.
+- Bodyless evidence modifications that otherwise qualify as represented retain one
+  edit region and an explicit warning because formatting-only normalization is
+  unavailable.
 - Moving selectors are resolved to immutable object IDs before analysis.
 - Git trees are streamed through `ls-tree` and bounded `cat-file --batch`; EffortHours
   does not create temporary checkouts or source trees.
@@ -211,13 +246,15 @@ created from.
 - Change comprehension, manual validation, and self-review are emitted once for
   the coherent final delta instead of being inherited repeatedly from repository
   scopes.
-- The CLI and model are deterministic for the same objects, options, and versions.
+- The CLI and model are deterministic for the same snapshot identities, options,
+  and versions.
 - The first Ctrl+C requests cooperative cancellation through snapshot selection,
   analysis, and output; it emits a stderr-only diagnostic with exit code 130. A
   second Ctrl+C retains immediate operating-system termination.
 
 The implementation is covered by memory-only unit snapshots plus separate
-process-level Git tests. The mutation matrix includes formatting, movement,
+process-level Git and non-Git directory/evidence tests. The mutation matrix
+includes formatting, movement,
 generation, lockfiles, exact duplication, code, tests, documentation, migration,
 integration, CI, container delivery, simplification, additivity, overlap, and
 revert behavior while preserving range-point and category isolation. See

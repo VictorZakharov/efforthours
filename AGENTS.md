@@ -249,9 +249,13 @@ stderr-only diagnostic; a second retains immediate termination. Current
 on touched paths, consolidate repository capability partitions through bounded
 logical change units, preserve distinct added capabilities, and emit bounded
 change-level comprehension, validation, and review once. They remain experimental
-and uncalibrated. Multiple PRs, directory/evidence selectors, and
-author-period portfolios remain deferred. The former large CLI application class
-is split into focused partial modules, and `eng/file-budgets.json` enforces early
+and uncalibrated. Non-Git Change mode now accepts two statically scanned,
+content-pinned directories or two digest-checked saved repository-evidence bundles;
+bodyless evidence modifications that otherwise qualify as represented remain
+conservative with an explicit warning. Multiple PRs and author-period portfolios
+remain deferred. The former
+large CLI application class is split into focused partial modules, and
+`eng/file-budgets.json` enforces early
 refactoring through the end-to-end suite.
 
 The first Change calibration checkpoint adds `change-ehe-work-item/1.0.0`,
