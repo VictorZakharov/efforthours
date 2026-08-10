@@ -4,6 +4,29 @@ Significant user-visible EffortHours changes are recorded here. The project foll
 Semantic Versioning once a package version has been released; prerelease versions
 may still change public contracts with explicit documentation.
 
+## Unreleased
+
+### Added
+
+- Change estimation can represent exact, balanced, EffortHours-specific
+  `<custom-code>` regions inside otherwise generated UTF-8 files while continuing
+  to exclude the generated body. Additions, modifications, and removals are
+  supported for source-readable snapshots; malformed, oversized, and bodyless
+  cases fail closed.
+
+### Changed
+
+- The source Change estimator advances to experimental `change-seed/0.4.0` without
+  changing repository priors, public schemas, calibration labels, or frozen
+  reports. Represented, unchanged, formatting-only, and ambiguous customization
+  outcomes carry explicit trace tags; represented and ambiguous paths add
+  diagnostics.
+- Change path normalization now preserves vendored, minified, binary, lockfile,
+  build-output, and exact-copy precedence even when the repository scanner omits
+  those files from emitted evidence.
+- The root README now leads with installation, first-use workflows, interpretation,
+  privacy, supported ecosystems, and limitations instead of milestone history.
+
 ## 0.9.0-alpha.3 - 2026-08-10
 
 ### Changed

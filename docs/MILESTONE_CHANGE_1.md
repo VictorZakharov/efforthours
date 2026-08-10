@@ -15,6 +15,13 @@ The non-Git snapshot follow-on was completed on August 10, 2026. It adds paired
 directory and paired evidence-bundle base/head selectors without changing the v1
 contracts or `change-seed/0.3.0` valuation rules.
 
+The generated-customization normalization follow-on was completed on August 10,
+2026. It advances the source identity to `change-seed/0.4.0` and represents only
+valid, explicit, EffortHours-specific `<custom-code>` projections inside otherwise
+generated source. Generated bodies, ambiguous markers, oversized blobs, and
+bodyless evidence remain excluded. The v1 contracts, repository priors, frozen
+Change reports, and labels are unchanged.
+
 ## Delivered scope
 
 - `eh change <repository> --base <revision> --head <revision>`
@@ -58,6 +65,9 @@ removed, exact-move, formatting-only, generated, vendored, minified, binary,
 lockfile, build-output, exact-copy, and unsupported paths. Maintained final changes
 feed granular work items through repository capability deltas plus bounded
 edit-region rules. Lines of code and deleted volume are not value multipliers.
+Generated files may contribute only when exact, balanced, EffortHours-specific
+`<custom-code>` markers isolate maintained content; stronger exclusions still win
+and the generated body never contributes.
 
 For ranges, each commit is also estimated against its selected parent for audit.
 The normalized final base-to-head estimate is authoritative. Reports name shared

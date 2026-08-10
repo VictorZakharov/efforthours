@@ -22,7 +22,7 @@ public sealed record ChangeEstimateInput
 
 public sealed partial class ChangeEstimator
 {
-    public const string Version = "change-seed/0.3.0+seed-rules/0.2.1";
+    public const string Version = "change-seed/0.4.0+seed-rules/0.2.1";
 
     private readonly IEstimator _repositoryEstimator;
 
@@ -232,7 +232,7 @@ public sealed partial class ChangeEstimator
                 "Base and head are immutable snapshots; intermediate history is excluded from normalized effort.",
                 "A clear specification exists at the level promised by the selected profile.",
                 "Discovered tests are assumed to pass on the static path and the described delta is estimated as working.",
-                "Formatting-only, exact movement, conventional generated, vendored, minified, binary, lockfile, build-output, and exact-copy bodies are excluded when classified.",
+                "Formatting-only, exact movement, conventional generated, vendored, minified, binary, lockfile, build-output, and exact-copy bodies are excluded when classified; only safely isolated explicit custom-code regions inside generated files can contribute effort.",
                 "Deletion is never negative EHE; supported removal and simplification work is bounded by capability context rather than deleted volume.",
                 "Low and high values are preliminary dependent planning bounds, not calibrated probability intervals.",
                 "Professionalization gaps are separate and are not added to represented Change EHE or cost.",

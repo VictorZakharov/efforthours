@@ -65,6 +65,42 @@ public sealed partial class ChangeEstimator
             });
         }
 
+        ChangePathEvidence[] generatedCustomization = [.. evidence.Paths.Where(path =>
+            path.Tags.Contains(
+                "normalization:generated-customization-represented",
+                StringComparer.Ordinal))];
+        if (generatedCustomization.Length > 0)
+        {
+            normalizedDiagnostics.Add(new Diagnostic
+            {
+                Code = "FB5203",
+                Severity = DiagnosticSeverity.Information,
+                Message = $"{generatedCustomization.Length} generated path change(s) contain supported, " +
+                    "explicit custom-code regions. Only those regions contribute represented effort.",
+                EvidenceIds = [.. generatedCustomization
+                    .Select(path => path.Id)
+                    .Order(StringComparer.Ordinal)],
+            });
+        }
+
+        ChangePathEvidence[] ambiguousCustomization = [.. evidence.Paths.Where(path =>
+            path.Tags.Contains(
+                "normalization:generated-customization-ambiguous",
+                StringComparer.Ordinal))];
+        if (ambiguousCustomization.Length > 0)
+        {
+            normalizedDiagnostics.Add(new Diagnostic
+            {
+                Code = "FB5204",
+                Severity = DiagnosticSeverity.Warning,
+                Message = $"{ambiguousCustomization.Length} generated path change(s) contain ambiguous " +
+                    "custom-code markers. Their bodies are excluded and require review.",
+                EvidenceIds = [.. ambiguousCustomization
+                    .Select(path => path.Id)
+                    .Order(StringComparer.Ordinal)],
+            });
+        }
+
         if (evidence.Paths.Count == 0)
         {
             normalizedDiagnostics.Add(new Diagnostic
