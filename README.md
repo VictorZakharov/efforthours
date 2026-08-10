@@ -40,10 +40,11 @@ cancellation and category-isolated migration, integration, CI, container-deliver
 and simplification mutations. Its first calibration checkpoint adds final-delta
 provenance, review and evaluation commands, a frozen rubric, and a 24-case matrix
 with reproducible source reports, 121 preliminary teacher targets, and a blind
-independent-review packet. A follow-on real public pull-request pilot exercises the
-released alpha.2 `change-seed/0.2.0` path with one provenance-checked development
-record and a separate five-target host-AI teacher estimate. No independent Change
-correction or accuracy claim is complete.
+independent-review packet. Real-source follow-ons exercise released alpha.2 on one
+pilot plus a blind six-family .NET/JavaScript/TypeScript expansion. The visible
+expansion diagnostics expose repeated category-slice overcounting; its test
+comparison remains withheld. No independent Change correction or accuracy claim
+is complete.
 The first Milestone 8 host-review and measurement checkpoints are implemented: a
 surrounding AI session can consume a rate-free, digest-bound uncertainty packet,
 request bounded capability, evidence, scope, or explicitly selected source detail,
@@ -87,7 +88,8 @@ The repository now contains:
   evaluation paths that preserve immutable final-delta lineage and repository-held-out
   partitions, plus a deterministic in-memory generator for 24 public synthetic
   source cases whose frozen reports retain `change-seed/0.1.0` provenance and a
-  one-record public pull-request pilot for current `change-seed/0.2.0`;
+  one-record public pilot plus a six-record blind public expansion for current
+  `change-seed/0.2.0`;
 - current `change-seed/0.2.0` marginal-modification rules that require changed
   normalized capability evidence, correlate repeated category/path evidence, and
   emit final-delta comprehension, validation, and review once;
@@ -176,6 +178,12 @@ commit count and intermediate churn never multiply effort. PR mode uses optional
 `change-seed/0.2.0` model is uncalibrated and experimental. It treats modification
 work marginally and does not assign a specialized category merely because a
 changed path belongs to a scope that already has that capability.
+
+The blind six-family real-source diagnostic shows that repeated category
+partitions can still multiply one logical Change work item, especially for tests
+and security evidence. The result supports a general structural correction, not a
+blanket ratio; no correction has been applied and the test comparison remains
+withheld.
 
 The first Ctrl+C requests cooperative cancellation and returns exit code 130 after
 writing a concise diagnostic to stderr; pressing Ctrl+C again retains immediate

@@ -1,4 +1,4 @@
-# Public Synthetic Change Teacher Corpus
+# Change calibration teacher corpora
 
 ## Status
 
@@ -6,6 +6,11 @@ The second Change calibration checkpoint is complete as of August 6, 2026. It
 materializes the frozen 24-case source suite and compiles one disclosed host-AI
 teacher pass. The estimator remains experimental and uncalibrated; no independent
 review, admission threshold, prior change, or ML dependency is claimed.
+
+An August 10 real-source expansion adds six blind teacher records from immutable
+MIT-licensed public pull requests. It diagnoses a repeated-slice overcounting
+defect in the current estimator without changing a rule or opening its test
+comparison.
 
 ## Reproducible source boundary
 
@@ -66,19 +71,55 @@ maturity, or model dependency. Exact commits, trees, license provenance, report
 digest, corpus digest, and a blind five-target handoff are checked in without a
 source checkout or source excerpts.
 
+## Blind public real expansion
+
+`efforthours-change-public-real-expansion/0.1.0` freezes six new repository
+families before candidate analysis: two .NET, two JavaScript, and two TypeScript,
+split 3/2/1 across development, validation, and test. Released
+`EffortHours.Tool` `0.9.0-alpha.2` wrote all six
+`change-seed/0.2.0+seed-rules/0.2.1` reports without displaying their numeric
+content. The teacher then used only blind packets, public final specifications,
+immutable final deltas, and bounded adjacent source to author 34 logical targets.
+The plan was committed before compilation or candidate access.
+
+| Partition | Records | Teacher expected | Seed expected | Expected WAPE | Bias |
+|---|---:|---:|---:|---:|---:|
+| development | 3 | 19.00 h | 55.75 h | 1.9605 | +1.9342 |
+| validation | 2 | 16.00 h | 34.75 h | 1.1719 | +1.1719 |
+| test | 1 | 4.00 h | not evaluated | withheld | withheld |
+
+All 29 visible teacher targets and all 40 candidate work-item references match
+their exact source lineage. The disagreement is numerical and structural rather
+than a mapping failure. Repeated source partitions multiply one logical category:
+Zod receives four security items totaling 16 hours and four unit-test items
+totaling another 16; Axios receives four unit-test items totaling 14.50 hours;
+p-limit receives two production items totaling 5.25 hours. Their corresponding
+teacher targets are 1.25, 2.25, 3.50, and 0.50 hours. BenchmarkDotNet's 5.75-hour
+candidate and 6.00-hour teacher totals agree only after category cancellation,
+including 0.25 candidate production hour versus 2.50 teacher hours.
+
+This pattern rules out a blanket multiplier. A correctness revision must
+consolidate repeated logical slices, preserve meaningful marginal implementation,
+add general synthetic guardrails, use a new estimator version, and report mixed
+development/validation diagnostics. The corpus changes no estimator prior,
+threshold, review maturity, or production-readiness decision.
+
 ## Independent boundary
 
-The checked-in blind packet contains all 121 targets with prior hours, rationales,
-uncertainty, and explicit-zero decisions hidden. A genuinely distinct reviewer
-must inspect the frozen fixture and blind evidence, replace every target with an
-independent range or explicit exclusion, and sign off the four empty zero-delta
-records. Until exact-digest compilation advances maturity, no Change calibration
-accuracy claim is permitted.
+The synthetic blind packet contains all 121 targets with prior hours, rationales,
+uncertainty, and explicit-zero decisions hidden. The real pilot and expansion have
+separate five-target and 34-target packets. A genuinely distinct reviewer must
+inspect only the applicable frozen source boundary and blind evidence, replace
+every target with an independent range or explicit exclusion, and sign off empty
+zero-delta records where applicable. Until exact-digest compilation advances
+maturity, no Change calibration accuracy claim is permitted.
 
 ## Next checkpoint
 
-1. Complete and compile the distinct blind review without opening teacher files.
-2. Add more redistributable real final-change families with the same provenance
-   rules and preserve repository-held-out partitions.
-3. Freeze numerical development/validation gates before any candidate fitting.
-4. Evaluate the test partition once only for a frozen release decision.
+1. Complete and compile the distinct blind reviews without opening teacher files.
+2. Correct repeated logical-slice overcounting with a new transparent estimator
+   version and general synthetic regressions; compare development and validation
+   only, without fitting a preferred aggregate ratio.
+3. Add multiple redistributable observations per ecosystem/partition cell and
+   freeze numerical development/validation gates before any candidate fitting.
+4. Evaluate each test partition once only for a frozen release decision.

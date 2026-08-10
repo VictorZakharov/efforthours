@@ -27,6 +27,38 @@ Because EffortHours's own anchor informed the seed-model and calibration design,
 a development diagnostic rather than an eligible held-out test record unless a
 future independent snapshot and review policy explicitly establishes otherwise.
 
+## 2026-08-10: `efforthours-change-public-real-expansion/0.1.0`
+
+Status: **blind preliminary real-source host-AI teacher labels; not independently reviewed**
+
+Six immutable MIT-licensed pull requests from six new repository families were
+frozen across .NET, JavaScript, and TypeScript before candidate analysis. The
+3/2/1 development/validation/test assignment, exact commits and trees, unchanged
+license blobs, and forbidden-signal policy were committed first. Released
+`EffortHours.Tool` `0.9.0-alpha.2` then wrote
+`change-seed/0.2.0+seed-rules/0.2.1` reports without displaying numeric content.
+
+One disclosed host-AI teacher used blind authoring packets, public final
+specifications, immutable deltas, and bounded adjacent source to author 34 logical
+targets. Contributor identity, activity, elapsed time, actual labor, commit count,
+intermediate churn, candidate hours, and candidate category totals did not inform
+the judgment. The teacher plan was committed before compilation or evaluation.
+
+Development compares 19.00 teacher expected hours with 55.75 candidate hours
+(WAPE 1.9605, bias +1.9342); validation compares 16.00 with 34.75 (WAPE and bias
+1.1719). All target and candidate-item references match. Repeated partitions are
+the dominant defect: Zod emits four security and four unit-test items totaling
+16.00 expected hours per category, Axios emits four unit-test items totaling
+14.50, and p-limit emits two production items totaling 5.25. Their corresponding
+teacher targets are 1.25, 2.25, 3.50, and 0.50 hours. BenchmarkDotNet's 5.75 versus
+6.00 total masks material category cancellation.
+
+This is evidence for a general double-counting correction, not a fitted scale
+factor or accuracy claim. No rule, prior, threshold, review maturity, or ML
+dependency changed, and the ofetch test comparison remains unopened. The blind
+34-target handoff pins corpus digest
+`sha256:a60aed52d78368cad69fc39bb7fa399a255dbf237f7739bf78dfd55356c96c7c`.
+
 ## 2026-08-10: `efforthours-change-public-real-pilot/0.1.0`
 
 Status: **preliminary real-source host-AI teacher label; not independently reviewed**

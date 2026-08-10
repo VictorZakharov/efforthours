@@ -1,0 +1,1118 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "efforthours-change-public-real-expansion",
+  "version": "0.1.0",
+  "description": "Blind host-AI teacher estimates for six immutable public open-source pull requests across .NET, JavaScript, and TypeScript.",
+  "rubric": {
+    "id": "change-ehe-work-item",
+    "version": "1.0.0"
+  },
+  "records": [
+    {
+      "id": "record:change:github.com/axios/axios:pr-11094",
+      "repository": {
+        "id": "repository:github.com/axios/axios",
+        "name": "axios",
+        "sourceDigest": "sha256:6ceb27f5b61e71aef277e8c5089e3367a337d5ec4129ce47726e85fb1d1f9fbc"
+      },
+      "change": {
+        "id": "change:github.com/axios/axios:pr-11094",
+        "selectionKind": "base-head",
+        "baseObjectId": "529ce70296334a0397f9e45e7dfa5658f6b6fdba",
+        "headObjectId": "27b9d9761cba6fe477dfa6104527523ba2450ad4",
+        "baseEvidenceDigest": "sha256:926f002364d972a8ce964074179115fb6ab0667dd50b0cf474cab703a08d267e",
+        "headEvidenceDigest": "sha256:fa81b70b33feb6f1ca5dd08375e9f5917ecdb704236863df4e9c446467be3dc6",
+        "finalDeltaDigest": "sha256:6ceb27f5b61e71aef277e8c5089e3367a337d5ec4129ce47726e85fb1d1f9fbc",
+        "coverageTags": [
+          "browser",
+          "bug-fix",
+          "external-integration",
+          "javascript",
+          "public-real-change",
+          "pull-request",
+          "unit-tests"
+        ]
+      },
+      "profile": "implementation",
+      "baselineId": "senior-contractor-2026-no-ai",
+      "partition": "validation",
+      "sourceEstimatorVersion": "change-seed/0.2.0\u002Bseed-rules/0.2.1",
+      "sourceEstimateDigest": "sha256:b2b5224b7f70681add6e16ead891b61fed0c4245f24f1376131539b0577e7451",
+      "source": {
+        "dataClassification": "public-redistributable",
+        "sourceReference": "https://github.com/axios/axios/pull/11094",
+        "revision": "529ce70296334a0397f9e45e7dfa5658f6b6fdba..27b9d9761cba6fe477dfa6104527523ba2450ad4",
+        "licenseExpression": "MIT",
+        "redistributionAllowed": true,
+        "notes": "Immutable base tree 25020340ec571e2becd17350cfb37e378d2460fd and head tree 5b34c5547f2051adcc5b705ac9c3f2abe0430b9f retain LICENSE blob 05006a51eb888282323883df740cd90ad72d0700. Review used the public final specification, final delta, bounded adjacent source, and a blind authoring packet; no candidate hours, contributor identity, activity, elapsed time, actual labor, commit count, or intermediate churn was used as an effort signal. No source excerpt is redistributed."
+      },
+      "review": {
+        "status": "teacher-estimate",
+        "completedOn": "2026-08-10",
+        "reviewers": [
+          {
+            "id": "teacher:openai-codex-sol-max-2026-08",
+            "kind": "host-ai",
+            "role": "teacher",
+            "modelId": "openai-codex",
+            "modelVersion": "sol-max"
+          }
+        ],
+        "notes": "Single disclosed host-AI teacher; no independent correction or adjudication. The teacher ranges were frozen without access to candidate hours or category totals and before compilation or evaluation. This is weak supervision, not actual labor, held-out accuracy, or production-readiness evidence."
+      },
+      "targets": [
+        {
+          "id": "target:change-item:capability-marginal:b9d1231ce0324b5a7144:review-0001",
+          "category": "production-implementation",
+          "title": "Expand Implement maintained internal logic for \u0027.\u0027 (server)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "change-item:capability-marginal:b9d1231ce0324b5a7144"
+          ],
+          "evidenceIds": [
+            "change:path:121486b04a87ac1c6f13f397",
+            "change:path:317ffe356eb21fea67aae703"
+          ],
+          "hours": {
+            "low": 1.50,
+            "expected": 2.50,
+            "high": 4.00
+          },
+          "rationale": "Implement status-zero cancellation handling in the XHR lifecycle, preserve successful file reads through request, origin, and response URL evidence, and reuse browser-style URL preprocessing in the existing malformed-protocol guard.",
+          "uncertaintyReasons": [
+            "Browser event ordering, validateStatus bypass, relative URLs, and file-protocol exceptions interact at the adapter boundary."
+          ]
+        },
+        {
+          "id": "target:change-item:capability-marginal:c72f90d8ea8f507a5b48:review-0001",
+          "category": "unit-testing",
+          "title": "Expand Create represented unit tests for \u0027.\u0027 (server)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "change-item:capability-marginal:c72f90d8ea8f507a5b48:part-0001",
+            "change-item:capability-marginal:c72f90d8ea8f507a5b48:part-0002",
+            "change-item:capability-marginal:c72f90d8ea8f507a5b48:part-0003",
+            "change-item:capability-marginal:c72f90d8ea8f507a5b48:part-0004"
+          ],
+          "evidenceIds": [
+            "change:path:121486b04a87ac1c6f13f397",
+            "change:path:a11dc2ba063016c9d475861b",
+            "change:path:ac4d27e2afe65cf3f626aeb5"
+          ],
+          "hours": {
+            "low": 2.00,
+            "expected": 3.50,
+            "high": 5.50
+          },
+          "rationale": "Create the represented browser and isolated-adapter regression coverage for canceled HTTP requests, file reads, responseURL absence, validateStatus bypass, page origins, and URL preprocessing.",
+          "uncertaintyReasons": [
+            "Fresh-module browser globals and a faithful XHR stub add setup complexity beyond the individual assertions."
+          ]
+        },
+        {
+          "id": "target:change-item:capability-modification:8d97c216a8da61ce4451:review-0001",
+          "category": "documentation",
+          "title": "Modify Author and verify maintained repository documentation",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "change-item:capability-modification:8d97c216a8da61ce4451"
+          ],
+          "evidenceIds": [
+            "change:path:2906fea3ec893bf8d630e735"
+          ],
+          "hours": {
+            "low": 0.25,
+            "expected": 0.50,
+            "high": 0.75
+          },
+          "rationale": "Document the user-visible cancellation correction, compatibility rationale, error code, validateStatus behavior, and retained file-protocol exceptions in the maintained prerelease changelog.",
+          "uncertaintyReasons": [
+            "The note is concise but must state browser-version and compatibility details accurately."
+          ]
+        },
+        {
+          "id": "target:change-item:change-comprehension:8afcadccfea19ef08ef4:review-0001",
+          "category": "specification-comprehension-and-domain-learning",
+          "title": "Understand the bounded change specification",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "change-item:change-comprehension:8afcadccfea19ef08ef4"
+          ],
+          "evidenceIds": [
+            "change:path:121486b04a87ac1c6f13f397",
+            "change:path:2906fea3ec893bf8d630e735",
+            "change:path:317ffe356eb21fea67aae703",
+            "change:path:a11dc2ba063016c9d475861b",
+            "change:path:ac4d27e2afe65cf3f626aeb5",
+            "change:path:de0eb77c697692f27af8adb4"
+          ],
+          "hours": {
+            "low": 1.00,
+            "expected": 1.50,
+            "high": 2.50
+          },
+          "rationale": "Understand XHR completion and cancellation ordering, Axios settlement semantics, browser URL preprocessing, and the legitimate status-zero file cases before choosing the rejection boundary.",
+          "uncertaintyReasons": [
+            "The defect depends on a browser-specific event-shape change plus cross-environment file behavior."
+          ]
+        },
+        {
+          "id": "target:change-item:change-review:a849df28c57a339f8b2d:review-0001",
+          "category": "self-review-and-system-integration",
+          "title": "Review and integrate the completed change",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "change-item:change-review:a849df28c57a339f8b2d"
+          ],
+          "evidenceIds": [
+            "change:path:121486b04a87ac1c6f13f397",
+            "change:path:2906fea3ec893bf8d630e735",
+            "change:path:317ffe356eb21fea67aae703",
+            "change:path:a11dc2ba063016c9d475861b",
+            "change:path:ac4d27e2afe65cf3f626aeb5",
+            "change:path:de0eb77c697692f27af8adb4"
+          ],
+          "hours": {
+            "low": 0.75,
+            "expected": 1.00,
+            "high": 1.75
+          },
+          "rationale": "Review error compatibility, cleanup ordering, protocol precedence, file exemptions, shared normalization, and the two levels of regression coverage as one adapter change.",
+          "uncertaintyReasons": [
+            "A false rejection of a valid status-zero environment would be a meaningful compatibility regression."
+          ]
+        },
+        {
+          "id": "target:change-item:change-validation:45f79e72d5be3a84e6a3:review-0001",
+          "category": "manual-validation-debugging-and-hardening",
+          "title": "Validate and harden the completed change",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "change-item:change-validation:45f79e72d5be3a84e6a3"
+          ],
+          "evidenceIds": [
+            "change:path:121486b04a87ac1c6f13f397",
+            "change:path:2906fea3ec893bf8d630e735",
+            "change:path:317ffe356eb21fea67aae703",
+            "change:path:a11dc2ba063016c9d475861b",
+            "change:path:ac4d27e2afe65cf3f626aeb5",
+            "change:path:de0eb77c697692f27af8adb4"
+          ],
+          "hours": {
+            "low": 1.00,
+            "expected": 1.50,
+            "high": 2.50
+          },
+          "rationale": "Exercise the adapter across canceled HTTP requests and all represented file URL sources, confirming the expected error code, cleanup, and settlement behavior independently from test authoring.",
+          "uncertaintyReasons": [
+            "Browser and simulated-XHR behavior may differ enough to require debugging or an additional compatibility check."
+          ]
+        },
+        {
+          "id": "target:change-item:maintained-artifact-fallback:cd85124427e9c45d5d21:review-0001",
+          "category": "production-implementation",
+          "title": "Add maintained artifact \u0027lib/helpers/normalizeURLForProtocolCheck.js\u0027",
+          "scope": "lib/helpers/normalizeURLForProtocolCheck.js",
+          "sourceWorkItemIds": [
+            "change-item:maintained-artifact-fallback:cd85124427e9c45d5d21"
+          ],
+          "evidenceIds": [
+            "change:path:de0eb77c697692f27af8adb4"
+          ],
+          "hours": {
+            "low": 0.50,
+            "expected": 1.00,
+            "high": 1.75
+          },
+          "rationale": "Extract the bounded WHATWG-style leading-control and tab/newline normalization helper with non-string pass-through so protocol checks share one maintained implementation.",
+          "uncertaintyReasons": [
+            "Control-character handling must match URL preprocessing closely enough for both existing validation and the new adapter use."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "record:change:github.com/colinhacks/zod:pr-6354",
+      "repository": {
+        "id": "repository:github.com/colinhacks/zod",
+        "name": "zod",
+        "sourceDigest": "sha256:b540a3b064df3d3161b37c8674406d5b0f135bba033088e969ae0e4eefdee85b"
+      },
+      "change": {
+        "id": "change:github.com/colinhacks/zod:pr-6354",
+        "selectionKind": "base-head",
+        "baseObjectId": "24b4cc7a6fc0008ef3ad129bde3f2bc1816c72fd",
+        "headObjectId": "17bbe5609b423349e4d8fbc1291948497f8d3544",
+        "baseEvidenceDigest": "sha256:5e115ca471f93e952019087ac1eabceb9fed5a639876468e56275eb99467ca69",
+        "headEvidenceDigest": "sha256:3122310d22347bee88f833e539e8c9eab18280a43813fd0549565c729da2e99e",
+        "finalDeltaDigest": "sha256:b540a3b064df3d3161b37c8674406d5b0f135bba033088e969ae0e4eefdee85b",
+        "coverageTags": [
+          "bug-fix",
+          "parser",
+          "public-real-change",
+          "pull-request",
+          "security",
+          "typescript",
+          "unit-tests"
+        ]
+      },
+      "profile": "implementation",
+      "baselineId": "senior-contractor-2026-no-ai",
+      "partition": "development",
+      "sourceEstimatorVersion": "change-seed/0.2.0\u002Bseed-rules/0.2.1",
+      "sourceEstimateDigest": "sha256:3301b8cee632b88eaf0300e2025b0124e3c01c281f40cf02435ce4bdb6ef47f1",
+      "source": {
+        "dataClassification": "public-redistributable",
+        "sourceReference": "https://github.com/colinhacks/zod/pull/6354",
+        "revision": "24b4cc7a6fc0008ef3ad129bde3f2bc1816c72fd..17bbe5609b423349e4d8fbc1291948497f8d3544",
+        "licenseExpression": "MIT",
+        "redistributionAllowed": true,
+        "notes": "Immutable base tree 1089474af99a94273be8d86fc48f140a98621a34 and head tree 0869aaa628cd61f814b521d13c33be2ba92bdc22 retain LICENSE blob c06579627b432d09779094cd0166b7f37fe51db8. Review used the public final specification, final delta, bounded adjacent source, and a blind authoring packet; no candidate hours, contributor identity, activity, elapsed time, actual labor, commit count, or intermediate churn was used as an effort signal. No source excerpt is redistributed."
+      },
+      "review": {
+        "status": "teacher-estimate",
+        "completedOn": "2026-08-10",
+        "reviewers": [
+          {
+            "id": "teacher:openai-codex-sol-max-2026-08",
+            "kind": "host-ai",
+            "role": "teacher",
+            "modelId": "openai-codex",
+            "modelVersion": "sol-max"
+          }
+        ],
+        "notes": "Single disclosed host-AI teacher; no independent correction or adjudication. The teacher ranges were frozen without access to candidate hours or category totals and before compilation or evaluation. This is weak supervision, not actual labor, held-out accuracy, or production-readiness evidence."
+      },
+      "targets": [
+        {
+          "id": "target:change-item:capability-marginal:4222b6db4f19a067a381:review-0001",
+          "category": "unit-testing",
+          "title": "Expand Create represented unit tests for \u0027.\u0027 (application)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "change-item:capability-marginal:4222b6db4f19a067a381:part-0001",
+            "change-item:capability-marginal:4222b6db4f19a067a381:part-0002",
+            "change-item:capability-marginal:4222b6db4f19a067a381:part-0003",
+            "change-item:capability-marginal:4222b6db4f19a067a381:part-0004"
+          ],
+          "evidenceIds": [
+            "change:path:3d09bdfefe7cdc7e0c3ef8e9",
+            "change:path:b0b1c7e25da768f746c7dad7",
+            "change:path:be74de5276ddd22cc10c66a5"
+          ],
+          "hours": {
+            "low": 1.25,
+            "expected": 2.25,
+            "high": 3.50
+          },
+          "rationale": "Create regression coverage for declared __proto__ fields across JIT, jitless, asynchronous, primitive, validation, prototype-safety, enum-record, and literal-record paths.",
+          "uncertaintyReasons": [
+            "The matrix must prove both own-property preservation and the absence of prototype mutation across multiple parser implementations."
+          ]
+        },
+        {
+          "id": "target:change-item:capability-marginal:5da54cfe97926cfd4002:review-0001",
+          "category": "production-implementation",
+          "title": "Expand Implement maintained internal logic for \u0027.\u0027 (application)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "change-item:capability-marginal:5da54cfe97926cfd4002"
+          ],
+          "evidenceIds": [
+            "change:path:3d09bdfefe7cdc7e0c3ef8e9",
+            "change:path:586313855af61c4b8d5f6e3b",
+            "change:path:b0b1c7e25da768f746c7dad7",
+            "change:path:be74de5276ddd22cc10c66a5"
+          ],
+          "hours": {
+            "low": 1.50,
+            "expected": 2.50,
+            "high": 4.00
+          },
+          "rationale": "Introduce a shared safe property write and integrate it into interpreted object parsing, generated fast paths, asynchronous results, and finite-key record parsing without slowing ordinary keys unnecessarily.",
+          "uncertaintyReasons": [
+            "Generated-code emission and several sync/async assignment paths must remain semantically aligned."
+          ]
+        },
+        {
+          "id": "target:change-item:capability-marginal:e816330325722b1e7789:review-0001",
+          "category": "security-and-accessibility",
+          "title": "Expand Implement represented validation behavior for \u0027.\u0027 (application)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "change-item:capability-marginal:e816330325722b1e7789:part-0001",
+            "change-item:capability-marginal:e816330325722b1e7789:part-0002",
+            "change-item:capability-marginal:e816330325722b1e7789:part-0003",
+            "change-item:capability-marginal:e816330325722b1e7789:part-0004"
+          ],
+          "evidenceIds": [
+            "change:path:3d09bdfefe7cdc7e0c3ef8e9",
+            "change:path:b0b1c7e25da768f746c7dad7",
+            "change:path:be74de5276ddd22cc10c66a5"
+          ],
+          "hours": {
+            "low": 0.75,
+            "expected": 1.25,
+            "high": 2.00
+          },
+          "rationale": "Define and implement the security-sensitive boundary: declared __proto__ is retained as an own data property while inherited setter invocation and prototype pollution remain impossible.",
+          "uncertaintyReasons": [
+            "JavaScript\u0027s special __proto__ assignment behavior requires deliberate descriptor and threat-boundary review."
+          ]
+        },
+        {
+          "id": "target:change-item:capability-modification:664d2cfe73bbeb7e73e8:review-0001",
+          "category": "ci-cd-and-infrastructure-as-code",
+          "title": "Modify Implement represented CI/CD and infrastructure configuration",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "change-item:capability-modification:664d2cfe73bbeb7e73e8"
+          ],
+          "evidenceIds": [
+            "change:path:586313855af61c4b8d5f6e3b"
+          ],
+          "hours": {
+            "low": 0.50,
+            "expected": 0.75,
+            "high": 1.25
+          },
+          "rationale": "Update the release workflow\u0027s TypeScript matrix and build ordering so the shipped build is exercised under the represented compiler versions without the former special-case comments and fail-fast override.",
+          "uncertaintyReasons": [
+            "The workflow edit is compact, but package-manager ordering and compiler compatibility affect a release gate."
+          ]
+        },
+        {
+          "id": "target:change-item:change-comprehension:4cd3843a5549fa53ed44:review-0001",
+          "category": "specification-comprehension-and-domain-learning",
+          "title": "Understand the bounded change specification",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "change-item:change-comprehension:4cd3843a5549fa53ed44"
+          ],
+          "evidenceIds": [
+            "change:path:3d09bdfefe7cdc7e0c3ef8e9",
+            "change:path:586313855af61c4b8d5f6e3b",
+            "change:path:b0b1c7e25da768f746c7dad7",
+            "change:path:be74de5276ddd22cc10c66a5"
+          ],
+          "hours": {
+            "low": 0.75,
+            "expected": 1.25,
+            "high": 2.00
+          },
+          "rationale": "Understand Zod\u0027s object and record parser variants, generated fast path, optional-property handling, and existing prototype-pollution boundary before changing property writes.",
+          "uncertaintyReasons": [
+            "The same logical field is materialized through interpreted, generated, synchronous, asynchronous, and record-specific paths."
+          ]
+        },
+        {
+          "id": "target:change-item:change-review:d10f7aee4630c50d8377:review-0001",
+          "category": "self-review-and-system-integration",
+          "title": "Review and integrate the completed change",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "change-item:change-review:d10f7aee4630c50d8377"
+          ],
+          "evidenceIds": [
+            "change:path:3d09bdfefe7cdc7e0c3ef8e9",
+            "change:path:586313855af61c4b8d5f6e3b",
+            "change:path:b0b1c7e25da768f746c7dad7",
+            "change:path:be74de5276ddd22cc10c66a5"
+          ],
+          "hours": {
+            "low": 0.50,
+            "expected": 1.00,
+            "high": 1.50
+          },
+          "rationale": "Review descriptors, prototype invariants, parser-path parity, generated code, record behavior, regression completeness, and the independent release-workflow adjustment.",
+          "uncertaintyReasons": [
+            "A missed assignment path or descriptor difference could leave inconsistent or unsafe behavior."
+          ]
+        },
+        {
+          "id": "target:change-item:change-validation:91cdc82fa4edb329eae5:review-0001",
+          "category": "manual-validation-debugging-and-hardening",
+          "title": "Validate and harden the completed change",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "change-item:change-validation:91cdc82fa4edb329eae5"
+          ],
+          "evidenceIds": [
+            "change:path:3d09bdfefe7cdc7e0c3ef8e9",
+            "change:path:586313855af61c4b8d5f6e3b",
+            "change:path:b0b1c7e25da768f746c7dad7",
+            "change:path:be74de5276ddd22cc10c66a5"
+          ],
+          "hours": {
+            "low": 0.75,
+            "expected": 1.25,
+            "high": 2.00
+          },
+          "rationale": "Exercise all represented parser modes and prototype invariants, run the affected test/build surface, and verify the release-workflow ordering independently from automated-test authoring.",
+          "uncertaintyReasons": [
+            "JIT availability, async parsing, and compiler-matrix behavior can vary by environment."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "record:change:github.com/dotnet/benchmarkdotnet:pr-3211",
+      "repository": {
+        "id": "repository:github.com/dotnet/benchmarkdotnet",
+        "name": "benchmarkdotnet",
+        "sourceDigest": "sha256:2d182bc194300bf71cdb47f302251641214d07100a1bba07440fa47b973ba656"
+      },
+      "change": {
+        "id": "change:github.com/dotnet/benchmarkdotnet:pr-3211",
+        "selectionKind": "base-head",
+        "baseObjectId": "17f218589e5a3364b01d1d0ae4c4ca87e5b4bfad",
+        "headObjectId": "e90b701ed71a3b3e571ab40a9192715d0e453a0b",
+        "baseEvidenceDigest": "sha256:d71e9bfa0b4178724be8d0ac91f6abc202092f2a53982973e5b7ae990fa519a9",
+        "headEvidenceDigest": "sha256:4fdd496496d254ce592c31d724c067f038a25227f6e8713c0d9603d83e837ce8",
+        "finalDeltaDigest": "sha256:2d182bc194300bf71cdb47f302251641214d07100a1bba07440fa47b973ba656",
+        "coverageTags": [
+          "dotnet",
+          "feature",
+          "public-real-change",
+          "pull-request",
+          "selection-ui",
+          "unit-tests"
+        ]
+      },
+      "profile": "implementation",
+      "baselineId": "senior-contractor-2026-no-ai",
+      "partition": "development",
+      "sourceEstimatorVersion": "change-seed/0.2.0\u002Bseed-rules/0.2.1",
+      "sourceEstimateDigest": "sha256:132c2ccca4eeaa9a9d537a28e5034b226500ba342d13ff13187850d25a842a0f",
+      "source": {
+        "dataClassification": "public-redistributable",
+        "sourceReference": "https://github.com/dotnet/BenchmarkDotNet/pull/3211",
+        "revision": "17f218589e5a3364b01d1d0ae4c4ca87e5b4bfad..e90b701ed71a3b3e571ab40a9192715d0e453a0b",
+        "licenseExpression": "MIT",
+        "redistributionAllowed": true,
+        "notes": "Immutable base tree 6f1134235128212c0f1a89ad95e9a4b5e0c8c0d9 and head tree 3e80277f6ab06e4fbe5ae4020b41d93106840619 retain LICENSE.md blob 6272f97306b54ad0554e1c9ae5530ae1186ccbeb. Review used the public final specification, final delta, bounded adjacent source, and a blind authoring packet; no candidate hours, contributor identity, activity, elapsed time, actual labor, commit count, or intermediate churn was used as an effort signal. No source excerpt is redistributed."
+      },
+      "review": {
+        "status": "teacher-estimate",
+        "completedOn": "2026-08-10",
+        "reviewers": [
+          {
+            "id": "teacher:openai-codex-sol-max-2026-08",
+            "kind": "host-ai",
+            "role": "teacher",
+            "modelId": "openai-codex",
+            "modelVersion": "sol-max"
+          }
+        ],
+        "notes": "Single disclosed host-AI teacher; no independent correction or adjudication. The teacher ranges were frozen without access to candidate hours or category totals and before compilation or evaluation. This is weak supervision, not actual labor, held-out accuracy, or production-readiness evidence."
+      },
+      "targets": [
+        {
+          "id": "target:change-item:capability-marginal:489b9f0383e772554a97:review-0001",
+          "category": "production-implementation",
+          "title": "Expand Implement maintained internal logic for \u0027src/BenchmarkDotNet/BenchmarkDotNet.csproj\u0027 (library)",
+          "scope": "src/BenchmarkDotNet/BenchmarkDotNet.csproj",
+          "sourceWorkItemIds": [
+            "change-item:capability-marginal:489b9f0383e772554a97"
+          ],
+          "evidenceIds": [
+            "change:path:22659de8535ecbe646a5b12c",
+            "change:path:75c4dcdc1838c4b29b27401b",
+            "change:path:98d0b4e39ab55d980ece1e39"
+          ],
+          "hours": {
+            "low": 1.50,
+            "expected": 2.50,
+            "high": 4.00
+          },
+          "rationale": "Implement collision-aware type display names and carry the selected names consistently through interactive enumeration, examples, and matching while preserving concise names for unambiguous types.",
+          "uncertaintyReasons": [
+            "Selection identity and display behavior cross reusable reflection helpers and interactive matching paths."
+          ]
+        },
+        {
+          "id": "target:change-item:capability-marginal:fefb11822d16f00bc0af:review-0001",
+          "category": "unit-testing",
+          "title": "Expand Create represented unit tests for \u0027tests/BenchmarkDotNet.Tests/BenchmarkDotNet.Tests.csproj\u0027 (test)",
+          "scope": "tests/BenchmarkDotNet.Tests/BenchmarkDotNet.Tests.csproj",
+          "sourceWorkItemIds": [
+            "change-item:capability-marginal:fefb11822d16f00bc0af"
+          ],
+          "evidenceIds": [
+            "change:path:75c4dcdc1838c4b29b27401b"
+          ],
+          "hours": {
+            "low": 0.75,
+            "expected": 1.25,
+            "high": 2.00
+          },
+          "rationale": "Create focused tests for colliding simple type names in distinct namespaces and for unchanged concise names when no collision exists.",
+          "uncertaintyReasons": [
+            "Representative nested and namespace fixtures require care so the tests exercise identity rather than formatting accidents."
+          ]
+        },
+        {
+          "id": "target:change-item:change-comprehension:4453adbde4e9c5576673:review-0001",
+          "category": "specification-comprehension-and-domain-learning",
+          "title": "Understand the bounded change specification",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "change-item:change-comprehension:4453adbde4e9c5576673"
+          ],
+          "evidenceIds": [
+            "change:path:22659de8535ecbe646a5b12c",
+            "change:path:75c4dcdc1838c4b29b27401b",
+            "change:path:98d0b4e39ab55d980ece1e39"
+          ],
+          "hours": {
+            "low": 0.50,
+            "expected": 0.75,
+            "high": 1.25
+          },
+          "rationale": "Understand BenchmarkDotNet\u0027s type-display conventions and the interactive selection flow before defining the collision boundary.",
+          "uncertaintyReasons": [
+            "The distinction between display text and selection identity needs confirmation in adjacent code."
+          ]
+        },
+        {
+          "id": "target:change-item:change-review:7db3d6665b9bda568ecd:review-0001",
+          "category": "self-review-and-system-integration",
+          "title": "Review and integrate the completed change",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "change-item:change-review:7db3d6665b9bda568ecd"
+          ],
+          "evidenceIds": [
+            "change:path:22659de8535ecbe646a5b12c",
+            "change:path:75c4dcdc1838c4b29b27401b",
+            "change:path:98d0b4e39ab55d980ece1e39"
+          ],
+          "hours": {
+            "low": 0.50,
+            "expected": 0.75,
+            "high": 1.25
+          },
+          "rationale": "Review the helper API, deterministic ordering, interactive presentation, matching behavior, and regression coverage as one integrated selection change.",
+          "uncertaintyReasons": [
+            "The main review risk is consistency across all consumers of the derived display name."
+          ]
+        },
+        {
+          "id": "target:change-item:change-validation:753670208daf51bb65d6:review-0001",
+          "category": "manual-validation-debugging-and-hardening",
+          "title": "Validate and harden the completed change",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "change-item:change-validation:753670208daf51bb65d6"
+          ],
+          "evidenceIds": [
+            "change:path:22659de8535ecbe646a5b12c",
+            "change:path:75c4dcdc1838c4b29b27401b",
+            "change:path:98d0b4e39ab55d980ece1e39"
+          ],
+          "hours": {
+            "low": 0.50,
+            "expected": 0.75,
+            "high": 1.25
+          },
+          "rationale": "Build and exercise unique and colliding selection scenarios, including manual confirmation that displayed examples and accepted choices stay aligned.",
+          "uncertaintyReasons": [
+            "Interactive behavior can reveal a mismatch not visible in helper-level tests."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "record:change:github.com/sindresorhus/p-limit:pr-108",
+      "repository": {
+        "id": "repository:github.com/sindresorhus/p-limit",
+        "name": "p-limit",
+        "sourceDigest": "sha256:15db2e094e61bc68b2e49e3763cdb32180382a8f9c35a12c2dc209c34745ba79"
+      },
+      "change": {
+        "id": "change:github.com/sindresorhus/p-limit:pr-108",
+        "selectionKind": "base-head",
+        "baseObjectId": "42599ebbbb1228a5bdab381fcf8f4ac20eb8d551",
+        "headObjectId": "1183b5d50a21a3b5825bdf111341552d3de35701",
+        "baseEvidenceDigest": "sha256:21fd286cf93f7d60001a5eb51c7381b632f47c1d0ff52ae0f23de92816ab47e5",
+        "headEvidenceDigest": "sha256:9bf877f0c5506d4d01636855b3fe1d7965bd59f761b74f9e376ace257281cf4b",
+        "finalDeltaDigest": "sha256:15db2e094e61bc68b2e49e3763cdb32180382a8f9c35a12c2dc209c34745ba79",
+        "coverageTags": [
+          "bug-fix",
+          "concurrency",
+          "javascript",
+          "public-real-change",
+          "pull-request",
+          "unit-tests"
+        ]
+      },
+      "profile": "implementation",
+      "baselineId": "senior-contractor-2026-no-ai",
+      "partition": "development",
+      "sourceEstimatorVersion": "change-seed/0.2.0\u002Bseed-rules/0.2.1",
+      "sourceEstimateDigest": "sha256:8bed39006c8649b58b5b60d67d11bddf7893f4bf46900ac5903bd7c3b1e457d9",
+      "source": {
+        "dataClassification": "public-redistributable",
+        "sourceReference": "https://github.com/sindresorhus/p-limit/pull/108",
+        "revision": "42599ebbbb1228a5bdab381fcf8f4ac20eb8d551..1183b5d50a21a3b5825bdf111341552d3de35701",
+        "licenseExpression": "MIT",
+        "redistributionAllowed": true,
+        "notes": "Immutable base tree b29ee56afd5b6050d88332d82fec3271c867fa07 and head tree 92cfe6b8a610c3a0e23c9c850d0ffe600229a146 retain license blob fa7ceba3eb4a9657a9db7f3ffca4e4e97a9019de. Review used the public final specification, final delta, bounded adjacent source, and a blind authoring packet; no candidate hours, contributor identity, activity, elapsed time, actual labor, commit count, or intermediate churn was used as an effort signal. No source excerpt is redistributed."
+      },
+      "review": {
+        "status": "teacher-estimate",
+        "completedOn": "2026-08-10",
+        "reviewers": [
+          {
+            "id": "teacher:openai-codex-sol-max-2026-08",
+            "kind": "host-ai",
+            "role": "teacher",
+            "modelId": "openai-codex",
+            "modelVersion": "sol-max"
+          }
+        ],
+        "notes": "Single disclosed host-AI teacher; no independent correction or adjudication. The teacher ranges were frozen without access to candidate hours or category totals and before compilation or evaluation. This is weak supervision, not actual labor, held-out accuracy, or production-readiness evidence."
+      },
+      "targets": [
+        {
+          "id": "target:change-item:capability-marginal:e305ed5c68f99610d886:review-0001",
+          "category": "unit-testing",
+          "title": "Expand Create represented unit tests for \u0027.\u0027 (library)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "change-item:capability-marginal:e305ed5c68f99610d886"
+          ],
+          "evidenceIds": [
+            "change:path:02a17fd3739f72082b02f8c1"
+          ],
+          "hours": {
+            "low": 0.50,
+            "expected": 0.75,
+            "high": 1.25
+          },
+          "rationale": "Add a detached-method regression that also proves the mapped tasks share the limiter\u0027s concurrency accounting, preserve order, and receive iterable values and indexes.",
+          "uncertaintyReasons": [
+            "The concurrency assertion must be deterministic while covering both mapped and directly limited tasks."
+          ]
+        },
+        {
+          "id": "target:change-item:capability-marginal:fc908711f8ac53f87e7a:review-0001",
+          "category": "production-implementation",
+          "title": "Expand Implement maintained internal logic for \u0027.\u0027 (library)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "change-item:capability-marginal:fc908711f8ac53f87e7a:part-0001",
+            "change-item:capability-marginal:fc908711f8ac53f87e7a:part-0002"
+          ],
+          "evidenceIds": [
+            "change:path:02a17fd3739f72082b02f8c1",
+            "change:path:c290c681b012db10110ae847"
+          ],
+          "hours": {
+            "low": 0.25,
+            "expected": 0.50,
+            "high": 0.75
+          },
+          "rationale": "Remove the mapped helper\u0027s dynamic receiver dependency by closing over the owning limiter while preserving existing scheduling and result semantics.",
+          "uncertaintyReasons": [
+            "The code change is one expression, but it must retain a shared limiter rather than create independent scheduling."
+          ]
+        },
+        {
+          "id": "target:change-item:change-comprehension:d4cf148a954f3fa712ad:review-0001",
+          "category": "specification-comprehension-and-domain-learning",
+          "title": "Understand the bounded change specification",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "change-item:change-comprehension:d4cf148a954f3fa712ad"
+          ],
+          "evidenceIds": [
+            "change:path:02a17fd3739f72082b02f8c1",
+            "change:path:c290c681b012db10110ae847"
+          ],
+          "hours": {
+            "low": 0.25,
+            "expected": 0.50,
+            "high": 0.75
+          },
+          "rationale": "Understand the public method\u0027s receiver-independent contract and how map work participates in the limiter\u0027s shared concurrency state.",
+          "uncertaintyReasons": [
+            "The detached-call failure is compact but requires checking closure and receiver semantics."
+          ]
+        },
+        {
+          "id": "target:change-item:change-review:7d1c8e97271e20e74aec:review-0001",
+          "category": "self-review-and-system-integration",
+          "title": "Review and integrate the completed change",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "change-item:change-review:7d1c8e97271e20e74aec"
+          ],
+          "evidenceIds": [
+            "change:path:02a17fd3739f72082b02f8c1",
+            "change:path:c290c681b012db10110ae847"
+          ],
+          "hours": {
+            "low": 0.25,
+            "expected": 0.50,
+            "high": 0.75
+          },
+          "rationale": "Review receiver independence, shared concurrency, iterable mapping, and result ordering as a single public-library behavior.",
+          "uncertaintyReasons": [
+            "A focused review should confirm the fix does not accidentally bind to another limiter instance."
+          ]
+        },
+        {
+          "id": "target:change-item:change-validation:83db6fa5169513ef86da:review-0001",
+          "category": "manual-validation-debugging-and-hardening",
+          "title": "Validate and harden the completed change",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "change-item:change-validation:83db6fa5169513ef86da"
+          ],
+          "evidenceIds": [
+            "change:path:02a17fd3739f72082b02f8c1",
+            "change:path:c290c681b012db10110ae847"
+          ],
+          "hours": {
+            "low": 0.25,
+            "expected": 0.50,
+            "high": 0.75
+          },
+          "rationale": "Exercise attached and detached calls together under a low concurrency limit and check scheduling, ordering, and results independently from test creation.",
+          "uncertaintyReasons": [
+            "Asynchronous ordering can expose a subtle test or implementation mistake despite the tiny patch."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "record:change:github.com/spectreconsole/spectre.console:pr-2162",
+      "repository": {
+        "id": "repository:github.com/spectreconsole/spectre.console",
+        "name": "spectre-console",
+        "sourceDigest": "sha256:e2c514278552a2325e11c0e4c970919fe38f2b40e65b23316029c59388237752"
+      },
+      "change": {
+        "id": "change:github.com/spectreconsole/spectre.console:pr-2162",
+        "selectionKind": "base-head",
+        "baseObjectId": "bbbb5729dde27b58deee44f447a788eea46ee451",
+        "headObjectId": "8b3a236cc812d8799808ddc06c797ac8d4522360",
+        "baseEvidenceDigest": "sha256:843ae567b3156ef8dbfea426585deeab293aaa9344cd9be969511f63a089fb10",
+        "headEvidenceDigest": "sha256:4c9922a45f642b8110d6a0b432c449fb62ee412ad41e878c9850c861d8509b84",
+        "finalDeltaDigest": "sha256:e2c514278552a2325e11c0e4c970919fe38f2b40e65b23316029c59388237752",
+        "coverageTags": [
+          "algorithm",
+          "bug-fix",
+          "dotnet",
+          "public-real-change",
+          "pull-request",
+          "unit-tests"
+        ]
+      },
+      "profile": "implementation",
+      "baselineId": "senior-contractor-2026-no-ai",
+      "partition": "validation",
+      "sourceEstimatorVersion": "change-seed/0.2.0\u002Bseed-rules/0.2.1",
+      "sourceEstimateDigest": "sha256:9f92b143aa65cc7470014950ec9b4cfe88bfc270c56ca57a810bcc076a1e7252",
+      "source": {
+        "dataClassification": "public-redistributable",
+        "sourceReference": "https://github.com/spectreconsole/spectre.console/pull/2162",
+        "revision": "bbbb5729dde27b58deee44f447a788eea46ee451..8b3a236cc812d8799808ddc06c797ac8d4522360",
+        "licenseExpression": "MIT",
+        "redistributionAllowed": true,
+        "notes": "Immutable base tree eadd249f822099b8a78819ea603e38f2f7259385 and head tree 98cf75a8908873fc2a6c5e9db892aa82522b5c31 retain LICENSE.md blob a8373c40dfe39d28621ea162b52280bf0592bbfd. Review used the public final specification, final delta, bounded adjacent source, and a blind authoring packet; no candidate hours, contributor identity, activity, elapsed time, actual labor, commit count, or intermediate churn was used as an effort signal. No source excerpt is redistributed."
+      },
+      "review": {
+        "status": "teacher-estimate",
+        "completedOn": "2026-08-10",
+        "reviewers": [
+          {
+            "id": "teacher:openai-codex-sol-max-2026-08",
+            "kind": "host-ai",
+            "role": "teacher",
+            "modelId": "openai-codex",
+            "modelVersion": "sol-max"
+          }
+        ],
+        "notes": "Single disclosed host-AI teacher; no independent correction or adjudication. The teacher ranges were frozen without access to candidate hours or category totals and before compilation or evaluation. This is weak supervision, not actual labor, held-out accuracy, or production-readiness evidence."
+      },
+      "targets": [
+        {
+          "id": "target:change-item:capability-marginal:abcf3c694d89d6f8466e:review-0001",
+          "category": "unit-testing",
+          "title": "Expand Create represented unit tests for \u0027src/Spectre.Console.Tests/Spectre.Console.Tests.csproj\u0027 (test)",
+          "scope": "src/Spectre.Console.Tests/Spectre.Console.Tests.csproj",
+          "sourceWorkItemIds": [
+            "change-item:capability-marginal:abcf3c694d89d6f8466e:part-0001",
+            "change-item:capability-marginal:abcf3c694d89d6f8466e:part-0002"
+          ],
+          "evidenceIds": [
+            "change:path:aab576745b837762d0f740a4"
+          ],
+          "hours": {
+            "low": 0.75,
+            "expected": 1.25,
+            "high": 2.00
+          },
+          "rationale": "Create the represented regression table whose zero-width wrappable columns and oversized fixed column previously failed to make progress, with a bounded completion assertion and output check.",
+          "uncertaintyReasons": [
+            "The fixture must reproduce the termination edge without becoming timing-fragile."
+          ]
+        },
+        {
+          "id": "target:change-item:change-comprehension:943f5cea472637df8be9:review-0001",
+          "category": "specification-comprehension-and-domain-learning",
+          "title": "Understand the bounded change specification",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "change-item:change-comprehension:943f5cea472637df8be9"
+          ],
+          "evidenceIds": [
+            "change:path:0f6c5211f235bee909195c87",
+            "change:path:aab576745b837762d0f740a4"
+          ],
+          "hours": {
+            "low": 0.75,
+            "expected": 1.25,
+            "high": 2.00
+          },
+          "rationale": "Trace the width-collapse loop, its progress invariant, and the interaction between wrappable and non-wrappable columns to isolate the zero-width termination defect.",
+          "uncertaintyReasons": [
+            "A compact arithmetic change depends on understanding a non-obvious iterative layout invariant."
+          ]
+        },
+        {
+          "id": "target:change-item:change-review:83a287c67b853d1acaaf:review-0001",
+          "category": "self-review-and-system-integration",
+          "title": "Review and integrate the completed change",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "change-item:change-review:83a287c67b853d1acaaf"
+          ],
+          "evidenceIds": [
+            "change:path:0f6c5211f235bee909195c87",
+            "change:path:aab576745b837762d0f740a4"
+          ],
+          "hours": {
+            "low": 0.25,
+            "expected": 0.50,
+            "high": 0.75
+          },
+          "rationale": "Review the progress guarantee, preserved rendering behavior, and regression-test boundedness.",
+          "uncertaintyReasons": [
+            "The small patch still merits checking adjacent break conditions for unintended early exit."
+          ]
+        },
+        {
+          "id": "target:change-item:change-validation:8e2fd231314b37f089ae:review-0001",
+          "category": "manual-validation-debugging-and-hardening",
+          "title": "Validate and harden the completed change",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "change-item:change-validation:8e2fd231314b37f089ae"
+          ],
+          "evidenceIds": [
+            "change:path:0f6c5211f235bee909195c87",
+            "change:path:aab576745b837762d0f740a4"
+          ],
+          "hours": {
+            "low": 0.50,
+            "expected": 0.75,
+            "high": 1.25
+          },
+          "rationale": "Exercise the former infinite-loop shape and nearby normal table layouts, confirming termination and stable rendered output independently from test authoring.",
+          "uncertaintyReasons": [
+            "Layout edge cases may expose a second no-progress path during validation."
+          ]
+        },
+        {
+          "id": "target:change-item:maintained-artifact-fallback:05e3f317e4e18d86c0b6:review-0001",
+          "category": "production-implementation",
+          "title": "Modify maintained artifact \u0027src/Spectre.Console/Widgets/Table/TableMeasurer.cs\u0027",
+          "scope": "src/Spectre.Console/Widgets/Table/TableMeasurer.cs",
+          "sourceWorkItemIds": [
+            "change-item:maintained-artifact-fallback:05e3f317e4e18d86c0b6"
+          ],
+          "evidenceIds": [
+            "change:path:0f6c5211f235bee909195c87"
+          ],
+          "hours": {
+            "low": 0.50,
+            "expected": 0.75,
+            "high": 1.25
+          },
+          "rationale": "Correct the collapse loop so zero-width candidates can terminate and non-positive remaining width breaks the iteration without changing the normal allocation algorithm.",
+          "uncertaintyReasons": [
+            "The implementation is tiny once diagnosed, but the boundary must preserve existing layout semantics."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "record:change:github.com/unjs/ofetch:pr-524",
+      "repository": {
+        "id": "repository:github.com/unjs/ofetch",
+        "name": "ofetch",
+        "sourceDigest": "sha256:6138ba55319ebd63d06b6636146051de49652ea881a77225ba8305efb2600e4e"
+      },
+      "change": {
+        "id": "change:github.com/unjs/ofetch:pr-524",
+        "selectionKind": "base-head",
+        "baseObjectId": "47fe80799e23406dd0fb1c504bb493b6a6d0a5af",
+        "headObjectId": "646bb130721efc442517f241ad728786fd704243",
+        "baseEvidenceDigest": "sha256:8ab5410a6eaa6c2d5d73f1332e8bf7a26e167bf49d240a0be345d143173ef577",
+        "headEvidenceDigest": "sha256:3fd14df4dba2de55a4b838fd58609557f99b200a0dce49ce6fdfad5dea6e46a9",
+        "finalDeltaDigest": "sha256:6138ba55319ebd63d06b6636146051de49652ea881a77225ba8305efb2600e4e",
+        "coverageTags": [
+          "bug-fix",
+          "hooks",
+          "public-real-change",
+          "pull-request",
+          "typescript",
+          "unit-tests"
+        ]
+      },
+      "profile": "implementation",
+      "baselineId": "senior-contractor-2026-no-ai",
+      "partition": "test",
+      "sourceEstimatorVersion": "change-seed/0.2.0\u002Bseed-rules/0.2.1",
+      "sourceEstimateDigest": "sha256:694ea61a8bbda7e3c350a72cb56cf5b5f4cb78b53410517c92d542f2cb4c762b",
+      "source": {
+        "dataClassification": "public-redistributable",
+        "sourceReference": "https://github.com/unjs/ofetch/pull/524",
+        "revision": "47fe80799e23406dd0fb1c504bb493b6a6d0a5af..646bb130721efc442517f241ad728786fd704243",
+        "licenseExpression": "MIT",
+        "redistributionAllowed": true,
+        "notes": "Immutable base tree aa20e0c974567ad08903b32778d6203a8b3d055d and head tree 0dd9fa8e0e6de97262a5a3c382b379390224e42d retain LICENSE blob e739abce461d8b2899aaec6529a4af24a417e0fc. Review used the public final specification, final delta, bounded adjacent source, and a blind authoring packet; no candidate hours, contributor identity, activity, elapsed time, actual labor, commit count, or intermediate churn was used as an effort signal. No source excerpt is redistributed."
+      },
+      "review": {
+        "status": "teacher-estimate",
+        "completedOn": "2026-08-10",
+        "reviewers": [
+          {
+            "id": "teacher:openai-codex-sol-max-2026-08",
+            "kind": "host-ai",
+            "role": "teacher",
+            "modelId": "openai-codex",
+            "modelVersion": "sol-max"
+          }
+        ],
+        "notes": "Single disclosed host-AI teacher; no independent correction or adjudication. The teacher ranges were frozen without access to candidate hours or category totals and before compilation or evaluation. This is weak supervision, not actual labor, held-out accuracy, or production-readiness evidence."
+      },
+      "targets": [
+        {
+          "id": "target:change-item:capability-marginal:6e201156a83288c3ee1c:review-0001",
+          "category": "unit-testing",
+          "title": "Expand Create represented unit tests for \u0027.\u0027 (library)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "change-item:capability-marginal:6e201156a83288c3ee1c:part-0001",
+            "change-item:capability-marginal:6e201156a83288c3ee1c:part-0002"
+          ],
+          "evidenceIds": [
+            "change:path:8dd559c575ef55093801eaea"
+          ],
+          "hours": {
+            "low": 0.50,
+            "expected": 1.00,
+            "high": 1.50
+          },
+          "rationale": "Add regressions for hooks that replace normalized Headers with either a new Headers instance or a plain object, proving custom and JSON content headers survive the request pipeline.",
+          "uncertaintyReasons": [
+            "Both replacement shapes must reach the same serialized request behavior without coupling the test to implementation details."
+          ]
+        },
+        {
+          "id": "target:change-item:capability-marginal:adb463d8adba92804624:review-0001",
+          "category": "production-implementation",
+          "title": "Expand Implement maintained internal logic for \u0027.\u0027 (library)",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "change-item:capability-marginal:adb463d8adba92804624:part-0001",
+            "change-item:capability-marginal:adb463d8adba92804624:part-0002"
+          ],
+          "evidenceIds": [
+            "change:path:8dd559c575ef55093801eaea",
+            "change:path:995533fe75de8a8170ea9fa2"
+          ],
+          "hours": {
+            "low": 0.50,
+            "expected": 1.00,
+            "high": 1.50
+          },
+          "rationale": "Re-normalize headers after the onRequest hook and move the normalization boundary so later body processing and dispatch always receive a Headers instance.",
+          "uncertaintyReasons": [
+            "Hook ordering and body-dependent content-type insertion must remain unchanged for existing callers."
+          ]
+        },
+        {
+          "id": "target:change-item:change-comprehension:e1b8070dc812c02901a9:review-0001",
+          "category": "specification-comprehension-and-domain-learning",
+          "title": "Understand the bounded change specification",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "change-item:change-comprehension:e1b8070dc812c02901a9"
+          ],
+          "evidenceIds": [
+            "change:path:8dd559c575ef55093801eaea",
+            "change:path:995533fe75de8a8170ea9fa2"
+          ],
+          "hours": {
+            "low": 0.50,
+            "expected": 0.75,
+            "high": 1.25
+          },
+          "rationale": "Understand the request option normalization sequence, mutation rights of onRequest hooks, and when JSON body logic relies on Headers methods.",
+          "uncertaintyReasons": [
+            "The correct normalization point depends on the hook contract and downstream body handling."
+          ]
+        },
+        {
+          "id": "target:change-item:change-review:7e8d71e078b4f2305554:review-0001",
+          "category": "self-review-and-system-integration",
+          "title": "Review and integrate the completed change",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "change-item:change-review:7e8d71e078b4f2305554"
+          ],
+          "evidenceIds": [
+            "change:path:8dd559c575ef55093801eaea",
+            "change:path:995533fe75de8a8170ea9fa2"
+          ],
+          "hours": {
+            "low": 0.25,
+            "expected": 0.50,
+            "high": 0.75
+          },
+          "rationale": "Review hook mutability, header normalization, content-type behavior, and coverage for both supported replacement forms.",
+          "uncertaintyReasons": [
+            "The main review risk is an ordering regression for request bodies or later hooks."
+          ]
+        },
+        {
+          "id": "target:change-item:change-validation:c3e4ab460bb5be65dcc9:review-0001",
+          "category": "manual-validation-debugging-and-hardening",
+          "title": "Validate and harden the completed change",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "change-item:change-validation:c3e4ab460bb5be65dcc9"
+          ],
+          "evidenceIds": [
+            "change:path:8dd559c575ef55093801eaea",
+            "change:path:995533fe75de8a8170ea9fa2"
+          ],
+          "hours": {
+            "low": 0.50,
+            "expected": 0.75,
+            "high": 1.25
+          },
+          "rationale": "Exercise hook-replaced headers with JSON and ordinary request paths, confirming dispatch receives normalized headers and preserves user values independently from test authoring.",
+          "uncertaintyReasons": [
+            "A downstream fetch implementation may expose normalization differences not visible in unit assertions."
+          ]
+        }
+      ]
+    }
+  ]
+}

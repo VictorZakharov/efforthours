@@ -243,6 +243,16 @@ Status as of August 10, 2026:
   is 4.25 hours and the separately reasoned host-AI teacher value is 4.00 hours.
   This is one non-independent development diagnostic, so no prior, threshold,
   maturity, or production-readiness decision changed.
+- The blind public real Change expansion is complete: six new immutable
+  MIT-licensed repository families span .NET, JavaScript, and TypeScript with a
+  frozen 3/2/1 development/validation/test split. Released alpha.2 reports were
+  written without displaying candidate numbers, and a 34-target host-AI teacher
+  plan was committed before compilation or evaluation. Development compares
+  19.00 reviewed expected hours with 55.75 candidate hours; validation compares
+  16.00 with 34.75. Repeated test, security, and production slices dominate the
+  disagreement, while a near-equal BenchmarkDotNet total masks category
+  cancellation. No ratio, prior, threshold, or maturity changed, and the test
+  comparison remains withheld.
 - Source-file budgets are enforced as an end-to-end architecture ratchet: 500
   lines by default, 400 for CLI files, and explicit non-precedent overrides for
   legacy debt. The former large CLI application class is split by responsibility.
@@ -515,6 +525,7 @@ cross-platform measurements and a more representative benchmark corpus exist.
 6. Evaluate a compiler-grade TypeScript adapter only if reviewed calibration shows
    material error from the bounded token evidence.
 7. Obtain genuinely independent correction for the frozen Change teacher corpora,
-   expand beyond the first redistributable real final-change record, and record
-   large-range performance before tuning
-   `change-seed/0.2.0` or expanding to multiple PRs and author-period portfolios.
+   correct repeated logical-slice overcounting with a subject-neutral transparent
+   revision and synthetic guardrails, add multiple real observations per
+   ecosystem/partition cell, and record large-range performance before fitting a
+   calibrated model or expanding to multiple PRs and author-period portfolios.

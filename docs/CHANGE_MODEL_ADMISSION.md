@@ -12,8 +12,10 @@ The current source baseline is `change-seed/0.2.0`. It is a versioned structural
 correctness revision to the original transparent rules, not an admitted calibrated
 candidate. The frozen public synthetic corpus and source reports retain
 `change-seed/0.1.0` provenance. The first real public Change pilot directly records
-the current `change-seed/0.2.0` candidate, but remains one development-only teacher
-observation without independent correction.
+the current `change-seed/0.2.0` candidate. A subsequent six-family blind real-source
+expansion adds development and validation diagnostics, while its test comparison
+remains withheld. Both corpora have one host-AI teacher and no independent
+correction.
 
 ## Immutable decision boundary
 
@@ -115,3 +117,34 @@ guidance was visible, and there is no distinct reviewer, validation-family
 observation, or held-out comparison. It therefore cannot set a correction factor,
 threshold, uncertainty width, candidate choice, or release decision. It changes no
 rule or prior.
+
+## Blind real-public expansion diagnostic
+
+`efforthours-change-public-real-expansion/0.1.0` freezes six immutable
+MIT-licensed pull requests from six new repository families before candidate
+analysis. The 3/2/1 development/validation/test partition assignment, exact
+commits and trees, unchanged license blobs, and source boundary were committed
+first. Released alpha.2 reports were written without displaying numeric content;
+the 34-target teacher plan was then completed and committed without candidate
+hours or category totals before compilation and evaluation.
+
+| Partition | Reviewed expected | 0.2.0 expected | WAPE | Bias | Mapping |
+|---|---:|---:|---:|---:|---:|
+| development | 19.00 h | 55.75 h | 1.9605 | +1.9342 | 17/17 targets; 24/24 candidate items |
+| validation | 16.00 h | 34.75 h | 1.1719 | +1.1719 | 12/12 targets; 16/16 candidate items |
+| test | 4.00 h | withheld | withheld | withheld | not evaluated |
+
+The visible defect is concentrated in partitioned category work. Zod emits four
+security items totaling 16.00 expected hours and four unit-test items totaling
+another 16.00; the corresponding logical teacher targets are 1.25 and 2.25 hours.
+Axios emits four unit-test items totaling 14.50 hours against 3.50 teacher hours,
+and p-limit emits two production items totaling 5.25 hours against 0.50 hour.
+BenchmarkDotNet's total happens to agree while its categories cancel materially,
+so the evidence does not support a single aggregate correction factor.
+
+This is teacher-label diagnosis, not calibration or admission. The general
+double-counting exception in the immutable decision boundary permits a new
+transparent correctness revision only if it uses subject-neutral rules, synthetic
+semantic regressions, a new estimator version, and development/validation
+disclosure without consulting the test result. This corpus itself changes no
+prior, threshold, candidate, or release decision.

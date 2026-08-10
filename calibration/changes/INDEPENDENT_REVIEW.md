@@ -9,6 +9,11 @@ The separate one-record real public pilot has its own five-target blind handoff 
 [`public-real/INDEPENDENT_REVIEW.md`](public-real/INDEPENDENT_REVIEW.md). It shares
 the same no-unblinding and distinct-reviewer requirements.
 
+The six-record public real expansion has a separate 34-target blind handoff in
+[`public-real-expansion/INDEPENDENT_REVIEW.md`](public-real-expansion/INDEPENDENT_REVIEW.md).
+Its development and validation teacher diagnostics are visible, but its test
+candidate comparison remains withheld.
+
 ## Blind assignment
 
 A reviewer must be a person or separately identified host-AI that did not create
