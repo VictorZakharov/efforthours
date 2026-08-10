@@ -1,0 +1,55 @@
+{
+  "selectionVersion": "public-real-change-selection/0.1.0",
+  "id": "efforthours-change-public-real-alpha3",
+  "version": "0.1.0",
+  "frozenOn": "2026-08-10",
+  "status": "frozen-before-candidate-analysis",
+  "methodology": {
+    "candidateVisibility": "blind",
+    "teacherInputs": "Public final specification, immutable base/head delta, bounded adjacent source, and blind authoring evidence.",
+    "forbiddenSignals": [
+      "candidate hours or confidence before teacher-plan completion",
+      "contributor identity or activity",
+      "elapsed time or actual labor",
+      "commit count or intermediate churn",
+      "pricing or a preferred aggregate result"
+    ],
+    "evaluationBoundary": "Validation diagnostics only after teacher-plan completion; no test record is included.",
+    "sourceBoundary": "Derived evidence and reasoning only; source checkouts and excerpts are not redistributed."
+  },
+  "cases": [
+    {
+      "id": "change:github.com/ardalis/result:pr-256",
+      "repositoryFamilyId": "repository:github.com/ardalis/result",
+      "repositoryName": "ardalis/Result",
+      "repositoryUrl": "https://github.com/ardalis/Result",
+      "pullRequestNumber": 256,
+      "pullRequestUrl": "https://github.com/ardalis/Result/pull/256",
+      "title": "Add configure-once ProblemDetails customization for Minimal API",
+      "partition": "validation",
+      "ecosystem": "dotnet",
+      "scopeStratum": "medium",
+      "baseCommit": "182c134ef9c5dc0338bd44883bfc46bc7c66a75a",
+      "baseTree": "30ca1b4e412ebe5d59541bd1fdc29f8a2cb1ae27",
+      "headCommit": "7b5ff9b6d8140236303b0a7974138e507060ed1d",
+      "headTree": "0e99f1b3078c446a009447ed2bf6da384ea28f18",
+      "license": {
+        "expression": "MIT",
+        "path": "LICENSE",
+        "baseBlob": "a828b2bd27ecea488ea8c4f5ebcbc7860235f98b",
+        "headBlob": "a828b2bd27ecea488ea8c4f5ebcbc7860235f98b",
+        "redistributionAllowed": true
+      },
+      "coverageTags": [
+        "api",
+        "configuration",
+        "dotnet",
+        "feature",
+        "public-real-change",
+        "pull-request",
+        "unit-tests"
+      ],
+      "selectionRationale": "A bounded Minimal API integration adds a configure-once public customization hook and context, preserves default output, and represents focused status-specific tests."
+    }
+  ]
+}

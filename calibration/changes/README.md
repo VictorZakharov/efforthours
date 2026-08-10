@@ -3,8 +3,9 @@
 This directory holds policy and redistributable teacher labels for EffortHours's
 experimental Change estimators. The current source baseline is
 `change-seed/0.3.0`; the frozen synthetic corpus retains its original
-`change-seed/0.1.0` source-report provenance, and the real pilot/expansion retain
-their released `change-seed/0.2.0` reports. Change labels use the same corpus,
+`change-seed/0.1.0` source-report provenance, the real pilot/expansion retain their
+released `change-seed/0.2.0` reports, and the released-alpha.3 diagnostic exercises
+`change-seed/0.3.0` directly. Change labels use the same corpus,
 independent-review, validation, and metric contracts as repository labels, with an
 additional immutable final-delta provenance record.
 
@@ -32,6 +33,14 @@ test comparison remains withheld. A separate
 records the subject-neutral structural correction on development and validation
 only. Frozen reports and labels remain unchanged; no prior, threshold, review
 maturity, or accuracy claim follows.
+
+The [`public-real-alpha3`](public-real-alpha3) checkpoint adds a new .NET
+validation family analyzed with released `EffortHours.Tool` `0.9.0-alpha.3`. Its
+blind teacher expected value is 5.75 hours against 7.00 candidate hours. The
+candidate covers the complete reviewed range but uses a substantially wider
+interval, overstates self-review, and attaches the represented test path to the
+production capability instead of emitting a separate unit-testing target. This is
+one non-independent diagnostic; it changes no rule, prior, threshold, or maturity.
 
 ## Workflow
 
@@ -86,6 +95,7 @@ dotnet tools/EffortHours.ChangeCalibration/bin/Release/net10.0/EffortHours.Chang
 ```
 
 See `public-synthetic/SOURCES.md` and `public-synthetic/REPRODUCING.md` for the
-synthetic provenance and reproduction checks. See `public-real/SOURCES.md` and
-`public-real-expansion/SOURCES.md` for the real final-change records and their
-reproduction boundaries. All three blind handoffs remain open.
+synthetic provenance and reproduction checks. See `public-real/SOURCES.md`,
+`public-real-expansion/SOURCES.md`, and `public-real-alpha3/SOURCES.md` for the
+real final-change records and their reproduction boundaries. All four blind
+handoffs remain open.

@@ -10,12 +10,14 @@ Version 0.3.0 retains the 0.2.0 non-marginal stacking correction and fixes
 repository work-item partition multiplication without changing repository
 `seed-rules/0.2.1`.
 The first calibration-infrastructure checkpoint, a preliminary 24-record synthetic
-host-AI teacher corpus, a one-record real public pilot, and a blind six-family
-real-source expansion are implemented, but no independent correction exists. The
-visible expansion diagnostics exposed repeated category-slice overcounting. A
-subject-neutral 0.3.0 correctness revision and separate development/validation
-diagnostics now exist; the test comparison remains withheld and no repository
-prior, threshold, or review maturity changed.
+host-AI teacher corpus, a one-record real public pilot, a blind six-family
+real-source expansion, and a released-alpha.3 public validation follow-on are
+implemented, but no independent correction exists. The visible expansion
+diagnostics exposed repeated category-slice overcounting. A subject-neutral 0.3.0
+correctness revision and separate development/validation diagnostics now exist;
+the alpha.3 follow-on exercises that revision on a new family, the expansion test
+comparison remains withheld, and no repository prior, threshold, or review
+maturity changed.
 The behavioral safeguard suite now covers cancellation and category-isolated
 migration, integration, CI, container-delivery, and simplification mutations in
 addition to the initial normalization and Git boundaries. Multiple pull requests
@@ -272,6 +274,14 @@ Consolidated item identities reduce exact mapping, some categories undershoot, a
 candidate high totals remain above reviewed high totals. These one-teacher results
 diagnose the correction; they do not establish calibration or accuracy. See
 `MILESTONE_CHANGE_2.md` and `MILESTONE_CHANGE_3.md`.
+
+`calibration/changes/public-real-alpha3` adds one new MIT-licensed .NET validation
+family selected before candidate analysis. Released alpha.3 reports 7.00 expected
+hours and a blind host-AI teacher reports 5.75 across four targets, for 1.25 hours
+absolute error, 0.2174 WAPE, and +0.2174 bias. The candidate covers the full
+teacher range but uses a twice-as-wide interval, overstates self-review, and maps
+the added test path into production instead of a distinct unit-testing target. This
+non-independent validation diagnostic changes no model or admission decision.
 
 ## Author-and-period portfolios
 

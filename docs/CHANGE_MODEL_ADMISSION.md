@@ -14,7 +14,8 @@ calibrated candidate. The frozen public synthetic corpus and source reports reta
 `change-seed/0.1.0` provenance. The first real public Change pilot and subsequent
 six-family expansion retain released `change-seed/0.2.0` provenance. Separate
 0.3.0 development/validation diagnostics leave the expansion's test comparison
-withheld. Both real corpora have one host-AI teacher and no independent correction.
+withheld. A released-alpha.3 public validation follow-on exercises 0.3.0 directly.
+All three real corpora have one host-AI teacher and no independent correction.
 
 ## Immutable decision boundary
 
@@ -193,3 +194,25 @@ These diagnostics show that the identified multiplication was removed, but they
 do not establish accuracy, calibrate uncertainty, set a threshold, advance review
 maturity, or admit a model. The test-family candidate report and evaluation were
 not generated for this candidate.
+
+## Released-alpha.3 validation diagnostic
+
+`efforthours-change-public-real-alpha3/0.1.0` freezes one new MIT-licensed .NET
+repository family in validation before candidate analysis. Released
+`EffortHours.Tool` `0.9.0-alpha.3` generated the
+`change-seed/0.3.0+seed-rules/0.2.1` report and blind packet; the four-target
+teacher plan was committed before candidate values were opened.
+
+| Partition | Reviewed expected | 0.3.0 expected | WAPE | Bias | Mapping |
+|---|---:|---:|---:|---:|---:|
+| validation | 5.75 h | 7.00 h | 0.2174 | +0.2174 | 4/4 targets; 4/4 candidate items |
+
+The candidate's `4.00/7.00/13.50` interval contains the complete reviewed
+`4.00/5.75/8.75` interval but is twice as wide. Expected production is 4.00 hours
+against 3.50 reviewed, validation 1.25 against 1.00, comprehension 0.50 against
+0.75, and self-review 1.25 against 0.50. The production capability cites both
+source and test paths, leaving no separately measurable unit-testing category.
+
+This is one non-independent validation observation. It cannot fit a rule, select a
+candidate, calibrate uncertainty, set an admission threshold, advance review
+maturity, or establish held-out accuracy.

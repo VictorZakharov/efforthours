@@ -1,0 +1,609 @@
+{
+  "schemaVersion": "1.0.0",
+  "changeEvidenceSchemaVersion": "1.0.0",
+  "estimatorVersion": "change-seed/0.3.0\u002Bseed-rules/0.2.1",
+  "sourceEstimatorVersion": "seed-rules/0.2.1",
+  "repository": {
+    "name": "ardalis-result-pr-256",
+    "scope": ".",
+    "ecosystems": [
+      "dotnet"
+    ],
+    "sourceDigest": "sha256:6332827e66561b0522a9e88b282e995a2790c440c8323b442ba0e404fea71271"
+  },
+  "selection": {
+    "schemaVersion": "1.0.0",
+    "kind": "base-head",
+    "base": {
+      "selector": "182c134ef9c5dc0338bd44883bfc46bc7c66a75a",
+      "objectId": "182c134ef9c5dc0338bd44883bfc46bc7c66a75a",
+      "kind": "git-commit"
+    },
+    "head": {
+      "selector": "7b5ff9b6d8140236303b0a7974138e507060ed1d",
+      "objectId": "7b5ff9b6d8140236303b0a7974138e507060ed1d",
+      "kind": "git-commit"
+    }
+  },
+  "evidence": {
+    "schemaVersion": "1.0.0",
+    "selection": {
+      "schemaVersion": "1.0.0",
+      "kind": "base-head",
+      "base": {
+        "selector": "182c134ef9c5dc0338bd44883bfc46bc7c66a75a",
+        "objectId": "182c134ef9c5dc0338bd44883bfc46bc7c66a75a",
+        "kind": "git-commit"
+      },
+      "head": {
+        "selector": "7b5ff9b6d8140236303b0a7974138e507060ed1d",
+        "objectId": "7b5ff9b6d8140236303b0a7974138e507060ed1d",
+        "kind": "git-commit"
+      }
+    },
+    "repository": {
+      "name": "ardalis-result-pr-256",
+      "scope": ".",
+      "ecosystems": [
+        "dotnet"
+      ],
+      "sourceDigest": "sha256:6332827e66561b0522a9e88b282e995a2790c440c8323b442ba0e404fea71271"
+    },
+    "baseEvidenceDigest": "sha256:c9926a6e83bcf3bc1a7780149960f2c21d46d86e6fea770a0c35c047d9630d6d",
+    "headEvidenceDigest": "sha256:6332827e66561b0522a9e88b282e995a2790c440c8323b442ba0e404fea71271",
+    "unchangedContextPathCount": 139,
+    "paths": [
+      {
+        "id": "change:path:74cb2e5dd7ec976ed27ede4d",
+        "status": "added",
+        "path": "src/Ardalis.Result.AspNetCore/ResultProblemDetailsOptions.cs",
+        "headObjectId": "5fb0b439e52776e5403a1769a693ffd37ebdfe21",
+        "headBytes": 1883,
+        "editRegions": 1,
+        "classification": "represented",
+        "represented": true,
+        "reason": "The final added artifact is maintained, non-mechanical change evidence.",
+        "tags": [
+          "classification:represented",
+          "content:text",
+          "ecosystem:dotnet",
+          "extension:.cs",
+          "language:csharp",
+          "role:source",
+          "sha256:608b7bc5bada2a07f5332c34dd6e665ec71850ef03c511a459b05344a6a10502",
+          "status:added"
+        ]
+      },
+      {
+        "id": "change:path:7b75af560a128629cff468e0",
+        "status": "added",
+        "path": "tests/Ardalis.Result.AspNetCore.UnitTests/MinimalApiResultProblemDetailsCustomizationTests.cs",
+        "headObjectId": "74e384650d9da5b79456ec6aa395954005986aa1",
+        "headBytes": 2626,
+        "editRegions": 1,
+        "classification": "represented",
+        "represented": true,
+        "reason": "The final added artifact is maintained, non-mechanical change evidence.",
+        "tags": [
+          "classification:represented",
+          "classification:test",
+          "content:text",
+          "ecosystem:dotnet",
+          "extension:.cs",
+          "language:csharp",
+          "role:test",
+          "sha256:25c413ff858092bc155c3d0cdae6e07b9ac69510a7544cf54c427063b59de819",
+          "status:added"
+        ]
+      },
+      {
+        "id": "change:path:e3af10d5f384991b3bb5023f",
+        "status": "modified",
+        "path": "src/Ardalis.Result.AspNetCore/MinimalApiResultExtensions.cs",
+        "baseObjectId": "da3f558857b85eafcd5bfeb3cddaaaeb9adcb976",
+        "headObjectId": "9222370bba1c142521a81656e403dcea7dd0ca94",
+        "baseBytes": 6295,
+        "headBytes": 7511,
+        "editRegions": 29,
+        "classification": "represented",
+        "represented": true,
+        "reason": "The final modified artifact is maintained, non-mechanical change evidence.",
+        "tags": [
+          "classification:represented",
+          "content:text",
+          "ecosystem:dotnet",
+          "extension:.cs",
+          "language:csharp",
+          "role:source",
+          "sha256:8c54f7af2b10447e5256e4e9ea5de87075be22c7bdf137c64ad4f07a5d94bbac",
+          "sha256:f1dfbd0c63ac46d030a980120e11a25bf20362dae560642a43cab70407e262e3",
+          "status:modified"
+        ]
+      }
+    ],
+    "diagnostics": [
+      {
+        "code": "FB3000",
+        "severity": "information",
+        "message": "The .NET analyzer parsed project XML and source syntax statically; it did not evaluate MSBuild, restore packages, compile, or execute target code.",
+        "evidenceIds": [],
+        "locations": []
+      },
+      {
+        "code": "FB3005",
+        "severity": "information",
+        "message": "Project \u0027sample/Ardalis.Result.SampleWeb.FunctionalTests/Ardalis.Result.SampleWeb.FunctionalTests.csproj\u0027 contains 1 unresolved MSBuild value(s); static evidence may be incomplete.",
+        "evidenceIds": [],
+        "locations": [
+          {
+            "path": "sample/Ardalis.Result.SampleWeb.FunctionalTests/Ardalis.Result.SampleWeb.FunctionalTests.csproj"
+          }
+        ]
+      },
+      {
+        "code": "FB3005",
+        "severity": "information",
+        "message": "Project \u0027sample/Ardalis.Result.SampleWeb.FunctionalTests/Ardalis.Result.SampleWeb.FunctionalTests.csproj\u0027 contains 1 unresolved MSBuild value(s); static evidence may be incomplete.",
+        "evidenceIds": [],
+        "locations": [
+          {
+            "path": "sample/Ardalis.Result.SampleWeb.FunctionalTests/Ardalis.Result.SampleWeb.FunctionalTests.csproj"
+          }
+        ]
+      },
+      {
+        "code": "FB3005",
+        "severity": "information",
+        "message": "Project \u0027sample/Ardalis.Result.SampleWeb/Ardalis.Result.SampleWeb.csproj\u0027 contains 1 unresolved MSBuild value(s); static evidence may be incomplete.",
+        "evidenceIds": [],
+        "locations": [
+          {
+            "path": "sample/Ardalis.Result.SampleWeb/Ardalis.Result.SampleWeb.csproj"
+          }
+        ]
+      },
+      {
+        "code": "FB3005",
+        "severity": "information",
+        "message": "Project \u0027sample/Ardalis.Result.SampleWeb/Ardalis.Result.SampleWeb.csproj\u0027 contains 1 unresolved MSBuild value(s); static evidence may be incomplete.",
+        "evidenceIds": [],
+        "locations": [
+          {
+            "path": "sample/Ardalis.Result.SampleWeb/Ardalis.Result.SampleWeb.csproj"
+          }
+        ]
+      },
+      {
+        "code": "FB3005",
+        "severity": "information",
+        "message": "Project \u0027src/Ardalis.Result.AspNetCore/Ardalis.Result.AspNetCore.csproj\u0027 contains 1 unresolved MSBuild value(s); static evidence may be incomplete.",
+        "evidenceIds": [],
+        "locations": [
+          {
+            "path": "src/Ardalis.Result.AspNetCore/Ardalis.Result.AspNetCore.csproj"
+          }
+        ]
+      },
+      {
+        "code": "FB3005",
+        "severity": "information",
+        "message": "Project \u0027src/Ardalis.Result.AspNetCore/Ardalis.Result.AspNetCore.csproj\u0027 contains 1 unresolved MSBuild value(s); static evidence may be incomplete.",
+        "evidenceIds": [],
+        "locations": [
+          {
+            "path": "src/Ardalis.Result.AspNetCore/Ardalis.Result.AspNetCore.csproj"
+          }
+        ]
+      },
+      {
+        "code": "FB3005",
+        "severity": "information",
+        "message": "Project \u0027tests/Ardalis.Result.AspNetCore.UnitTests/Ardalis.Result.AspNetCore.UnitTests.csproj\u0027 contains 1 unresolved MSBuild value(s); static evidence may be incomplete.",
+        "evidenceIds": [],
+        "locations": [
+          {
+            "path": "tests/Ardalis.Result.AspNetCore.UnitTests/Ardalis.Result.AspNetCore.UnitTests.csproj"
+          }
+        ]
+      },
+      {
+        "code": "FB3005",
+        "severity": "information",
+        "message": "Project \u0027tests/Ardalis.Result.AspNetCore.UnitTests/Ardalis.Result.AspNetCore.UnitTests.csproj\u0027 contains 1 unresolved MSBuild value(s); static evidence may be incomplete.",
+        "evidenceIds": [],
+        "locations": [
+          {
+            "path": "tests/Ardalis.Result.AspNetCore.UnitTests/Ardalis.Result.AspNetCore.UnitTests.csproj"
+          }
+        ]
+      },
+      {
+        "code": "FB5100",
+        "severity": "information",
+        "message": "Moving selectors were resolved to immutable object IDs before analysis; selector metadata does not multiply effort.",
+        "evidenceIds": [],
+        "locations": []
+      }
+    ]
+  },
+  "profile": "implementation",
+  "baseline": {
+    "id": "senior-contractor-2026-no-ai",
+    "workerProfile": "Competent senior contractor familiar with the technical ecosystem",
+    "technologyBaselineYear": 2026,
+    "businessDomainFamiliar": false,
+    "usesAi": false,
+    "description": "One senior contractor recreating the described working system with modern 2026 tools and no AI."
+  },
+  "totalEffort": {
+    "low": 4.00,
+    "expected": 7.00,
+    "high": 13.50
+  },
+  "categories": [
+    {
+      "category": "specification-comprehension-and-domain-learning",
+      "hours": {
+        "low": 0.25,
+        "expected": 0.50,
+        "high": 1
+      }
+    },
+    {
+      "category": "production-implementation",
+      "hours": {
+        "low": 2.25,
+        "expected": 4,
+        "high": 7.75
+      }
+    },
+    {
+      "category": "manual-validation-debugging-and-hardening",
+      "hours": {
+        "low": 0.75,
+        "expected": 1.25,
+        "high": 2.5
+      }
+    },
+    {
+      "category": "self-review-and-system-integration",
+      "hours": {
+        "low": 0.75,
+        "expected": 1.25,
+        "high": 2.25
+      }
+    }
+  ],
+  "workItems": [
+    {
+      "schemaVersion": "1.0.0",
+      "id": "change-item:change-comprehension:c5b60df6d6160b436bdd",
+      "category": "specification-comprehension-and-domain-learning",
+      "title": "Understand the bounded change specification",
+      "scope": ".",
+      "evidenceIds": [
+        "change:path:74cb2e5dd7ec976ed27ede4d",
+        "change:path:7b75af560a128629cff468e0",
+        "change:path:e3af10d5f384991b3bb5023f"
+      ],
+      "quantity": 1,
+      "complexity": "moderate",
+      "hours": {
+        "low": 0.25,
+        "expected": 0.50,
+        "high": 1
+      },
+      "confidence": 0.78,
+      "reason": "Comprehend the final behavior and quality delta represented by the affected capability categories.",
+      "estimator": {
+        "id": "change-rule:change-comprehension",
+        "version": "change-seed/0.3.0",
+        "kind": "rule"
+      },
+      "profiles": [
+        "implementation"
+      ],
+      "dependencyIds": [],
+      "correlationGroup": "change:change-comprehension:.",
+      "assumptions": [
+        "The final base-to-head artifact delta is valued once with modern 2026-equivalent technology.",
+        "Commit count, elapsed time, authorship, messages, and intermediate churn are not effort multipliers."
+      ],
+      "exclusions": [
+        "Historical rework and discarded intermediate states are excluded."
+      ],
+      "uncertaintyReasons": []
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "id": "change-item:capability-marginal:767cdd55b1910aeb1f91",
+      "category": "production-implementation",
+      "title": "Expand Implement maintained internal logic for \u0027src/Ardalis.Result.AspNetCore/Ardalis.Result.AspNetCore.csproj\u0027 (web)",
+      "scope": "src/Ardalis.Result.AspNetCore/Ardalis.Result.AspNetCore.csproj",
+      "evidenceIds": [
+        "change:path:74cb2e5dd7ec976ed27ede4d",
+        "change:path:7b75af560a128629cff468e0",
+        "change:path:e3af10d5f384991b3bb5023f"
+      ],
+      "quantity": 31,
+      "complexity": "high",
+      "hours": {
+        "low": 2.25,
+        "expected": 4,
+        "high": 7.75
+      },
+      "confidence": 0.78,
+      "reason": "The final change expands an existing artifact-backed capability. Repository work-item partitions provide context but share one evidence-derived logical marginal budget.",
+      "estimator": {
+        "id": "change-rule:capability-marginal",
+        "version": "change-seed/0.3.0",
+        "kind": "rule"
+      },
+      "profiles": [
+        "implementation"
+      ],
+      "dependencyIds": [],
+      "correlationGroup": "change:capability-marginal:src/Ardalis.Result.AspNetCore/Ardalis.Result.AspNetCore.csproj",
+      "assumptions": [
+        "The final base-to-head artifact delta is valued once with modern 2026-equivalent technology.",
+        "Commit count, elapsed time, authorship, messages, and intermediate churn are not effort multipliers."
+      ],
+      "exclusions": [
+        "Historical rework and discarded intermediate states are excluded."
+      ],
+      "uncertaintyReasons": []
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "id": "change-item:change-validation:9a194bbc2eece0c4503b",
+      "category": "manual-validation-debugging-and-hardening",
+      "title": "Validate and harden the completed change",
+      "scope": ".",
+      "evidenceIds": [
+        "change:path:74cb2e5dd7ec976ed27ede4d",
+        "change:path:7b75af560a128629cff468e0",
+        "change:path:e3af10d5f384991b3bb5023f"
+      ],
+      "quantity": 3,
+      "complexity": "moderate",
+      "hours": {
+        "low": 0.75,
+        "expected": 1.25,
+        "high": 2.5
+      },
+      "confidence": 0.68,
+      "reason": "Perform bounded validation and debugging once across the coherent final delta; static repository-level validation capabilities are not repeated for every touched scope.",
+      "estimator": {
+        "id": "change-rule:change-validation",
+        "version": "change-seed/0.3.0",
+        "kind": "rule"
+      },
+      "profiles": [
+        "implementation"
+      ],
+      "dependencyIds": [],
+      "correlationGroup": "change:change-validation:.",
+      "assumptions": [
+        "The final base-to-head artifact delta is valued once with modern 2026-equivalent technology.",
+        "Commit count, elapsed time, authorship, messages, and intermediate churn are not effort multipliers."
+      ],
+      "exclusions": [
+        "Historical rework and discarded intermediate states are excluded."
+      ],
+      "uncertaintyReasons": [
+        "The immutable snapshots were not executed; validation effort is inferred from represented change surfaces."
+      ]
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "id": "change-item:change-review:65824fcc2bb1399a8025",
+      "category": "self-review-and-system-integration",
+      "title": "Review and integrate the completed change",
+      "scope": ".",
+      "evidenceIds": [
+        "change:path:74cb2e5dd7ec976ed27ede4d",
+        "change:path:7b75af560a128629cff468e0",
+        "change:path:e3af10d5f384991b3bb5023f"
+      ],
+      "quantity": 3,
+      "complexity": "moderate",
+      "hours": {
+        "low": 0.75,
+        "expected": 1.25,
+        "high": 2.25
+      },
+      "confidence": 0.8,
+      "reason": "Review the coherent final delta and integrate its affected maintained artifacts; this is derived from final scope rather than commit count.",
+      "estimator": {
+        "id": "change-rule:change-review",
+        "version": "change-seed/0.3.0",
+        "kind": "rule"
+      },
+      "profiles": [
+        "implementation"
+      ],
+      "dependencyIds": [],
+      "correlationGroup": "change:change-review:.",
+      "assumptions": [
+        "The final base-to-head artifact delta is valued once with modern 2026-equivalent technology.",
+        "Commit count, elapsed time, authorship, messages, and intermediate churn are not effort multipliers."
+      ],
+      "exclusions": [
+        "Historical rework and discarded intermediate states are excluded."
+      ],
+      "uncertaintyReasons": []
+    }
+  ],
+  "professionalizationGap": [],
+  "reconciliation": {
+    "isolatedComponentSum": {
+      "low": 4.00,
+      "expected": 7.00,
+      "high": 13.50
+    },
+    "normalizedEffort": {
+      "low": 4.00,
+      "expected": 7.00,
+      "high": 13.50
+    },
+    "additivityToleranceHours": 1,
+    "expectedDifferenceHours": 0.00,
+    "assessment": "within-no-rework-tolerance",
+    "allocationMethod": "Proportional to isolated expected Change EHE with deterministic cent-level residual assignment; allocations are attribution, not historical hours.",
+    "components": [
+      {
+        "id": "change-component:2eaaf0a2738eb9f1a00e",
+        "kind": "final-delta",
+        "selector": "final-delta",
+        "baseObjectId": "182c134ef9c5dc0338bd44883bfc46bc7c66a75a",
+        "headObjectId": "7b5ff9b6d8140236303b0a7974138e507060ed1d",
+        "isolatedEffort": {
+          "low": 4.00,
+          "expected": 7.00,
+          "high": 13.50
+        },
+        "allocatedExpectedHours": 7.00,
+        "evidenceIds": [
+          "change:path:74cb2e5dd7ec976ed27ede4d",
+          "change:path:7b75af560a128629cff468e0",
+          "change:path:e3af10d5f384991b3bb5023f"
+        ]
+      }
+    ],
+    "adjustments": []
+  },
+  "diagnostics": [
+    {
+      "code": "FB3000",
+      "severity": "information",
+      "message": "The .NET analyzer parsed project XML and source syntax statically; it did not evaluate MSBuild, restore packages, compile, or execute target code.",
+      "evidenceIds": [],
+      "locations": []
+    },
+    {
+      "code": "FB3005",
+      "severity": "information",
+      "message": "Project \u0027sample/Ardalis.Result.SampleWeb.FunctionalTests/Ardalis.Result.SampleWeb.FunctionalTests.csproj\u0027 contains 1 unresolved MSBuild value(s); static evidence may be incomplete.",
+      "evidenceIds": [],
+      "locations": [
+        {
+          "path": "sample/Ardalis.Result.SampleWeb.FunctionalTests/Ardalis.Result.SampleWeb.FunctionalTests.csproj"
+        }
+      ]
+    },
+    {
+      "code": "FB3005",
+      "severity": "information",
+      "message": "Project \u0027sample/Ardalis.Result.SampleWeb.FunctionalTests/Ardalis.Result.SampleWeb.FunctionalTests.csproj\u0027 contains 1 unresolved MSBuild value(s); static evidence may be incomplete.",
+      "evidenceIds": [],
+      "locations": [
+        {
+          "path": "sample/Ardalis.Result.SampleWeb.FunctionalTests/Ardalis.Result.SampleWeb.FunctionalTests.csproj"
+        }
+      ]
+    },
+    {
+      "code": "FB3005",
+      "severity": "information",
+      "message": "Project \u0027sample/Ardalis.Result.SampleWeb/Ardalis.Result.SampleWeb.csproj\u0027 contains 1 unresolved MSBuild value(s); static evidence may be incomplete.",
+      "evidenceIds": [],
+      "locations": [
+        {
+          "path": "sample/Ardalis.Result.SampleWeb/Ardalis.Result.SampleWeb.csproj"
+        }
+      ]
+    },
+    {
+      "code": "FB3005",
+      "severity": "information",
+      "message": "Project \u0027sample/Ardalis.Result.SampleWeb/Ardalis.Result.SampleWeb.csproj\u0027 contains 1 unresolved MSBuild value(s); static evidence may be incomplete.",
+      "evidenceIds": [],
+      "locations": [
+        {
+          "path": "sample/Ardalis.Result.SampleWeb/Ardalis.Result.SampleWeb.csproj"
+        }
+      ]
+    },
+    {
+      "code": "FB3005",
+      "severity": "information",
+      "message": "Project \u0027src/Ardalis.Result.AspNetCore/Ardalis.Result.AspNetCore.csproj\u0027 contains 1 unresolved MSBuild value(s); static evidence may be incomplete.",
+      "evidenceIds": [],
+      "locations": [
+        {
+          "path": "src/Ardalis.Result.AspNetCore/Ardalis.Result.AspNetCore.csproj"
+        }
+      ]
+    },
+    {
+      "code": "FB3005",
+      "severity": "information",
+      "message": "Project \u0027src/Ardalis.Result.AspNetCore/Ardalis.Result.AspNetCore.csproj\u0027 contains 1 unresolved MSBuild value(s); static evidence may be incomplete.",
+      "evidenceIds": [],
+      "locations": [
+        {
+          "path": "src/Ardalis.Result.AspNetCore/Ardalis.Result.AspNetCore.csproj"
+        }
+      ]
+    },
+    {
+      "code": "FB3005",
+      "severity": "information",
+      "message": "Project \u0027tests/Ardalis.Result.AspNetCore.UnitTests/Ardalis.Result.AspNetCore.UnitTests.csproj\u0027 contains 1 unresolved MSBuild value(s); static evidence may be incomplete.",
+      "evidenceIds": [],
+      "locations": [
+        {
+          "path": "tests/Ardalis.Result.AspNetCore.UnitTests/Ardalis.Result.AspNetCore.UnitTests.csproj"
+        }
+      ]
+    },
+    {
+      "code": "FB3005",
+      "severity": "information",
+      "message": "Project \u0027tests/Ardalis.Result.AspNetCore.UnitTests/Ardalis.Result.AspNetCore.UnitTests.csproj\u0027 contains 1 unresolved MSBuild value(s); static evidence may be incomplete.",
+      "evidenceIds": [],
+      "locations": [
+        {
+          "path": "tests/Ardalis.Result.AspNetCore.UnitTests/Ardalis.Result.AspNetCore.UnitTests.csproj"
+        }
+      ]
+    },
+    {
+      "code": "FB5000",
+      "severity": "warning",
+      "message": "Change EHE uses transparent but uncalibrated change-seed and repository seed priors. It is experimental and requires review before consequential use.",
+      "evidenceIds": [],
+      "locations": []
+    },
+    {
+      "code": "FB5001",
+      "severity": "information",
+      "message": "Normalized Change EHE values the immutable final base-to-head artifact delta. Component activity, commit count, timestamps, authors, and intermediate churn do not multiply it.",
+      "evidenceIds": [],
+      "locations": []
+    },
+    {
+      "code": "FB5100",
+      "severity": "information",
+      "message": "Moving selectors were resolved to immutable object IDs before analysis; selector metadata does not multiply effort.",
+      "evidenceIds": [],
+      "locations": []
+    }
+  ],
+  "assumptions": [
+    "Change EHE is counterfactual non-AI replacement effort represented by the final artifact delta, not actual labor or a timesheet.",
+    "Base and head are immutable snapshots; intermediate history is excluded from normalized effort.",
+    "A clear specification exists at the level promised by the selected profile.",
+    "Discovered tests are assumed to pass on the static path and the described delta is estimated as working.",
+    "Formatting-only, exact movement, conventional generated, vendored, minified, binary, lockfile, build-output, and exact-copy bodies are excluded when classified.",
+    "Deletion is never negative EHE; supported removal and simplification work is bounded by capability context rather than deleted volume.",
+    "Low and high values are preliminary dependent planning bounds, not calibrated probability intervals.",
+    "Professionalization gaps are separate and are not added to represented Change EHE or cost."
+  ],
+  "verification": {
+    "mode": "static-assumed",
+    "workingState": "assumed-working",
+    "testsAssumedPassing": true,
+    "note": "Neither immutable snapshot was built or executed."
+  }
+}

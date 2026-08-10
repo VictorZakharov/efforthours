@@ -18,6 +18,12 @@ logical-budget rules were fixed before generating separate development/validatio
 candidate reports. Frozen source reports and labels remain unchanged, the test
 comparison remains withheld, and no calibration or accuracy claim follows.
 
+A released-alpha.3 follow-on adds one new blind .NET validation record using the
+corrected `change-seed/0.3.0` source estimator. It records close implementation
+agreement alongside broad uncertainty, self-review overstatement, and a
+production/test category-mapping limitation. It changes no rule or admission
+decision.
+
 ## Reproducible source boundary
 
 `change-fixture-generator/0.1.0` analyzes synthetic base/head states through
@@ -137,11 +143,38 @@ consolidated work items have new identities. Candidate high
 totals remain above reviewed high totals. These are transparent teacher-label
 diagnostics, not held-out accuracy or model admission.
 
+## Released alpha.3 public validation diagnostic
+
+`efforthours-change-public-real-alpha3/0.1.0` freezes one new immutable
+MIT-licensed Ardalis.Result pull request in validation. The selection was
+committed before candidate analysis. Released `EffortHours.Tool` `0.9.0-alpha.3`
+then wrote a `change-seed/0.3.0+seed-rules/0.2.1` report and blind packet without
+displaying candidate values; the four-target host-AI teacher plan was committed
+before compilation or candidate access.
+
+| Partition | Records | Teacher expected | Alpha.3 expected | Expected WAPE | Bias |
+|---|---:|---:|---:|---:|---:|
+| validation | 1 | 5.75 h | 7.00 h | 0.2174 | +0.2174 |
+
+The candidate and teacher lows both equal 4.00 hours. The candidate covers the
+teacher expected value and complete teacher range, but its `4.00/7.00/13.50`
+interval is 9.50 hours wide versus 4.75 hours for the teacher's
+`4.00/5.75/8.75`. Expected production differs by +0.50 hour, validation by +0.25,
+comprehension by -0.25, and self-review by +0.75.
+
+The report attaches both production files and the new focused test file to one
+production capability. The teacher preserves that lineage and includes the
+represented automated-test work there, so repository-total comparison remains
+valid but independent unit-testing category agreement is not measurable for this
+record. This observation can motivate subject-neutral mapping guardrails; it
+cannot justify a one-case correction factor or tuning on validation.
+
 ## Independent boundary
 
 The synthetic blind packet contains all 121 targets with prior hours, rationales,
-uncertainty, and explicit-zero decisions hidden. The real pilot and expansion have
-separate five-target and 34-target packets. A genuinely distinct reviewer must
+uncertainty, and explicit-zero decisions hidden. The real pilot, expansion, and
+released-alpha.3 diagnostic have separate five-target, 34-target, and four-target
+packets. A genuinely distinct reviewer must
 inspect only the applicable frozen source boundary and blind evidence, replace
 every target with an independent range or explicit exclusion, and sign off empty
 zero-delta records where applicable. Until exact-digest compilation advances
@@ -151,5 +184,6 @@ maturity, no Change calibration accuracy claim is permitted.
 
 1. Complete and compile the distinct blind reviews without opening teacher files.
 2. Add multiple redistributable observations per ecosystem/partition cell and
-   freeze numerical development/validation gates before any candidate fitting.
+   freeze numerical development/validation gates before any candidate fitting;
+   this checkpoint supplies the second .NET validation observation only.
 3. Evaluate each test partition once only for a frozen release decision.

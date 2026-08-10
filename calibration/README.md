@@ -23,9 +23,12 @@ plus a one-record real public pilot and a blind six-family public expansion for
 released `change-seed/0.2.0`. The expansion's visible development and validation
 diagnostics exposed repeated category-slice overcounting. Separate
 `change-seed/0.3.0` source-candidate diagnostics record a subject-neutral structural
-correction without rewriting the frozen corpus or opening its test comparison.
-None of the Change corpora has independent correction, and no result is an
-accuracy or production-readiness claim.
+correction without rewriting the frozen corpus or opening its test comparison. A
+new released-alpha.3 public validation record compares a 7.00-hour candidate with
+a 5.75-hour blind teacher estimate and records broad uncertainty, self-review
+overstatement, and missing unit-test category separation. None of the Change
+corpora has independent correction, and no result is an accuracy or
+production-readiness claim.
 
 ## Local workflow
 
