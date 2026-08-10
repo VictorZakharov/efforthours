@@ -4,7 +4,7 @@ Significant user-visible EffortHours changes are recorded here. The project foll
 Semantic Versioning once a package version has been released; prerelease versions
 may still change public contracts with explicit documentation.
 
-## Unreleased
+## 0.9.0-alpha.3 - 2026-08-10
 
 ### Changed
 

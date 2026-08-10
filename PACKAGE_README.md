@@ -13,7 +13,7 @@ specification.
 ## Install
 
 ```text
-dotnet tool install --global EffortHours.Tool --version 0.9.0-alpha.2
+dotnet tool install --global EffortHours.Tool --version 0.9.0-alpha.3
 eh version
 eh --help
 ```
@@ -42,7 +42,8 @@ activity, author identity, timestamps, and intermediate churn do not multiply
 effort. Pull-request identity resolution optionally uses an installed `gh` CLI;
 the selected Git objects must already exist locally. The current change rules
 require changed capability evidence for existing-capability modifications and
-share repeated category/path evidence through a marginal budget.
+consolidate repository work-item partitions for one capability into a bounded
+logical budget while preserving distinct capabilities.
 
 ## Review consequential uncertainty
 
@@ -74,7 +75,7 @@ treated as untrusted input, and reports avoid source excerpts by default.
 
 ## Current limitations
 
-- `seed-rules/0.2.1` and `change-seed/0.2.0` remain experimental and uncalibrated.
+- `seed-rules/0.2.1` and `change-seed/0.3.0` remain experimental and uncalibrated.
 - Public calibration labels have not completed genuinely independent correction.
 - TypeScript and TSX evidence is token-backed rather than compiler-backed.
 - Multiple-PR and contributor-period portfolio estimation is not implemented.
