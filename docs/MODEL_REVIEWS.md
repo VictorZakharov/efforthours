@@ -27,6 +27,53 @@ Because EffortHours's own anchor informed the seed-model and calibration design,
 a development diagnostic rather than an eligible held-out test record unless a
 future independent snapshot and review policy explicitly establishes otherwise.
 
+## 2026-08-10: `change-seed/0.3.0` logical-marginality correction
+
+Status: **transparent structural correctness revision; not calibrated or independently reviewed**
+
+The frozen public-real expansion diagnosed repository capability parts being
+summed into a full positive Change prior. The correction was expressed without
+repository-specific identifiers: repeated production, test, and security
+partitions for the same logical capability/path evidence must share one budget;
+distinct added capabilities remain additive; and a capability detected on a
+materially modified artifact cannot collapse to a 0.25-hour classification delta.
+These in-memory regressions were fixed before new candidate reports were generated.
+
+`change-seed/0.3.0` replaces the summed repository-capability delta for existing or
+modified artifacts with one evidence-derived budget. Each changed path contributes
+one to four logical units through capped edit-region bands, which feed the existing
+diminishing tiers with an eight-hour cap. Unmapped maintained-artifact fallbacks
+use the same units. Distinct capabilities added through new artifacts retain their
+positive repository marginal. Repository `seed-rules/0.2.1`, labels, thresholds,
+and dependencies are unchanged.
+
+Five new reports and development/validation evaluations are stored separately
+under `calibration/changes/public-real-expansion/diagnostics/change-seed-0.3.0`.
+Every frozen alpha.2 report, review plan, corpus, and evaluation remains unchanged.
+
+| Partition | Reviewed expected | Alpha.2 expected / WAPE / bias | 0.3.0 expected / WAPE / bias |
+|---|---:|---:|---:|
+| development | 19.00 h | 55.75 h / 1.9605 / +1.9342 | 20.75 h / 0.1447 / +0.0921 |
+| validation | 16.00 h | 34.75 h / 1.1719 / +1.1719 | 15.75 h / 0.0156 / -0.0156 |
+
+The structural symptom is removed, but effects remain mixed. Development unit
+testing moves from 21.50 to 2.75 hours against 4.25 reviewed and security from
+16.00 to 2.00 against 1.25; validation unit testing moves from 19.75 to 4.50
+against 4.75. Production moves to 5.00 against 5.50 in development and 3.25
+against 4.25 in validation. Unchanged change-level validation/review work retains
+its prior disagreement, and candidate high totals remain 39.25 versus 30.25
+reviewed in development and 30.00 versus 26.00 in validation.
+
+Consolidated work items reduce exact mapping: development target/source-reference/
+candidate-item matches are 14/17, 14/24, and 14/17; validation matches are 10/12,
+10/16, and 10/12. Repository and category metrics include every item, while item
+metrics disclose this lower coverage.
+
+These one-teacher development/validation measurements are a diagnostic of the
+correction, not an accuracy result or admission decision. No test-family candidate
+report or evaluation was generated for 0.3.0; the held-out comparison remains
+unopened.
+
 ## 2026-08-10: `efforthours-change-public-real-expansion/0.1.0`
 
 Status: **blind preliminary real-source host-AI teacher labels; not independently reviewed**

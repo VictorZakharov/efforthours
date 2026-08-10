@@ -73,8 +73,7 @@ internal static partial class ChangeWorkItemBuilder
 
     private static EffortRange ModificationRange(
         EffortCategory category,
-        ChangePathEvidence[] paths,
-        decimal contextExpected)
+        ChangePathEvidence[] paths)
     {
         decimal factor = category switch
         {
@@ -98,14 +97,14 @@ internal static partial class ChangeWorkItemBuilder
         };
         decimal statusFactor = paths.Max(path => StatusFactor(path.Status));
         decimal marginalFactor = factor * statusFactor;
-        int editRegions = paths.Sum(path => path.EditRegions);
+        int logicalUnits = LogicalChangeUnits(paths);
         decimal raw = MarginalPathHours(
-            Math.Max(1, editRegions),
+            logicalUnits,
             marginalFactor,
             marginalFactor * 0.5m,
             marginalFactor * 0.15m,
-            16m);
-        decimal expected = RoundQuarter(Math.Clamp(raw, 0.5m, Math.Max(0.5m, Math.Min(16m, contextExpected))));
+            8m);
+        decimal expected = RoundQuarter(Math.Clamp(raw, 0.5m, 8m));
         return RangeFromExpected(expected, 0.7m);
     }
 
@@ -125,15 +124,24 @@ internal static partial class ChangeWorkItemBuilder
             _ => 1m,
         };
         decimal statusFactor = StatusFactor(paths[0].Status);
-        int editRegions = paths.Sum(path => path.EditRegions);
+        int logicalUnits = LogicalChangeUnits(paths);
         decimal expected = RoundQuarter(MarginalPathHours(
-            Math.Max(1, editRegions),
+            logicalUnits,
             factor * statusFactor,
             factor * 0.5m * statusFactor,
             factor * 0.15m * statusFactor,
-            16m));
+            8m));
         return RangeFromExpected(Math.Max(0.5m, expected), 0.58m);
     }
+
+    private static int LogicalChangeUnits(IEnumerable<ChangePathEvidence> paths) => paths.Sum(path =>
+        path.EditRegions switch
+        {
+            <= 1 => 1,
+            <= 3 => 2,
+            <= 15 => 3,
+            _ => 4,
+        });
 
     private static EffortCategory FallbackCategory(ChangePathEvidence path)
     {
@@ -296,9 +304,6 @@ internal static partial class ChangeWorkItemBuilder
         decimal high = Math.Max(expected, RoundQuarter(expected * highFactor));
         return new EffortRange { Low = low, Expected = expected, High = high };
     }
-
-    private static EffortRange MaxExpected(EffortRange first, EffortRange second) =>
-        second.Expected > first.Expected ? second : first;
 
     private static decimal MarginalPathHours(
         int quantity,

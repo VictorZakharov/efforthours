@@ -25,19 +25,9 @@ internal static partial class ChangeWorkItemBuilder
             headCapability is null;
     }
 
-    private static ChangePathEvidence[] ClaimCorrelatedModificationEvidence(
-        EffortCategory category,
-        IReadOnlyList<ChangePathEvidence> touched,
-        Dictionary<EffortCategory, HashSet<string>> claimedByCategory)
-    {
-        if (!claimedByCategory.TryGetValue(category, out HashSet<string>? claimed))
-        {
-            claimed = new HashSet<string>(StringComparer.Ordinal);
-            claimedByCategory.Add(category, claimed);
-        }
-
-        return [.. touched.Where(path => claimed.Add(path.Id))];
-    }
+    private static ChangePathEvidence[] DistinctLogicalPaths(
+        IEnumerable<ChangePathEvidence> touched) =>
+        [.. touched.DistinctBy(path => path.Id, StringComparer.Ordinal)];
 
     private static bool HasMaterialCapabilityEvidenceChange(
         Capability baseCapability,

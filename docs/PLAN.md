@@ -253,6 +253,15 @@ Status as of August 10, 2026:
   disagreement, while a near-equal BenchmarkDotNet total masks category
   cancellation. No ratio, prior, threshold, or maturity changed, and the test
   comparison remains withheld.
+- The Change logical-marginality correction advances the source baseline to
+  `change-seed/0.3.0` under the structural-correctness exception. Subject-neutral
+  in-memory regressions prevent repository work-item partitions from multiplying
+  one existing or modified capability, preserve distinct added capabilities, and
+  require meaningful effort for a modified artifact despite a tiny classification
+  delta. Separate development/validation reports compare 20.75 with 19.00 teacher
+  expected hours and 15.75 with 16.00; category, interval, and exact-item mapping
+  effects remain mixed. Frozen alpha.2 artifacts are unchanged, no aggregate ratio
+  was fitted, and the test comparison remains withheld.
 - Source-file budgets are enforced as an end-to-end architecture ratchet: 500
   lines by default, 400 for CLI files, and explicit non-precedent overrides for
   legacy debt. The former large CLI application class is split by responsibility.
@@ -437,7 +446,7 @@ review.
   productivity.
 - Extend the implemented optional identity-only `gh` adapter only when network,
   privacy, immutable-object, and cross-PR normalization safeguards are explicit.
-- Calibrate `change-seed/0.2.0` on reviewed, redistributable final-change examples
+- Calibrate `change-seed/0.3.0` on reviewed, redistributable final-change examples
   before consequential use or any production-readiness claim.
 - Follow the remaining deferred semantics and safeguards in
   `CHANGE_ESTIMATION.md` before expanding any history-backed command.
@@ -525,7 +534,7 @@ cross-platform measurements and a more representative benchmark corpus exist.
 6. Evaluate a compiler-grade TypeScript adapter only if reviewed calibration shows
    material error from the bounded token evidence.
 7. Obtain genuinely independent correction for the frozen Change teacher corpora,
-   correct repeated logical-slice overcounting with a subject-neutral transparent
-   revision and synthetic guardrails, add multiple real observations per
-   ecosystem/partition cell, and record large-range performance before fitting a
-   calibrated model or expanding to multiple PRs and author-period portfolios.
+   add multiple real observations per ecosystem/partition cell, and record
+   large-range performance before fitting a calibrated model or expanding to
+   multiple PRs and author-period portfolios. Preserve the completed subject-neutral
+   `change-seed/0.3.0` logical-marginality guardrails throughout that work.

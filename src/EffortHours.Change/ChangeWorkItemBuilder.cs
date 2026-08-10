@@ -12,7 +12,7 @@ internal sealed record ChangeWorkItemResult(
 
 internal static partial class ChangeWorkItemBuilder
 {
-    public const string EstimatorVersion = "change-seed/0.2.0";
+    public const string EstimatorVersion = "change-seed/0.3.0";
 
     public static ChangeWorkItemResult Build(
         ChangeSelection selection,
@@ -31,7 +31,6 @@ internal static partial class ChangeWorkItemBuilder
         Dictionary<string, Capability> headCapabilities = Capabilities(headEstimate, headFacts);
         ChangePathEvidence[] represented = [.. changeEvidence.Paths.Where(path => path.Represented)];
         HashSet<string> usedEvidenceIds = new(StringComparer.Ordinal);
-        Dictionary<EffortCategory, HashSet<string>> correlatedModificationEvidence = [];
         List<WorkItem> items = [];
 
         foreach (string capabilityId in baseCapabilities.Keys
@@ -60,20 +59,22 @@ internal static partial class ChangeWorkItemBuilder
             if (expectedDifference > 0m)
             {
                 EffortRange marginal = PositiveDifference(baseHours, headHours);
-                if (touched.Length > 0 && baseCapability is not null)
+                ChangePathEvidence[] logicalCandidates = touched.Length > 0
+                    ? touched
+                    : represented;
+                bool modifiesExistingArtifact = logicalCandidates.Any(path =>
+                    path.Status == ChangePathStatus.Modified);
+                if (logicalCandidates.Length > 0 &&
+                    (baseCapability is not null || modifiesExistingArtifact))
                 {
-                    ChangePathEvidence[] floorEvidence = ClaimCorrelatedModificationEvidence(
-                        source.Category,
-                        touched,
-                        correlatedModificationEvidence);
-                    hours = floorEvidence.Length == 0
-                        ? marginal
-                        : MaxExpected(
-                            marginal,
-                            ModificationRange(
-                                source.Category,
-                                floorEvidence,
-                                Math.Max(baseHours.Expected, headHours.Expected)));
+                    ChangePathEvidence[] logicalEvidence = DistinctLogicalPaths(logicalCandidates);
+                    if (logicalEvidence.Length == 0)
+                    {
+                        continue;
+                    }
+
+                    touched = logicalEvidence;
+                    hours = ModificationRange(source.Category, logicalEvidence);
                 }
                 else
                 {
@@ -82,8 +83,10 @@ internal static partial class ChangeWorkItemBuilder
 
                 rule = "capability-marginal";
                 verb = baseCapability is null ? "Add" : "Expand";
-                reason = "Positive base-to-head marginal effort from the existing repository capability model, " +
-                    "bounded by touched final-change regions when existing behavior was also modified.";
+                reason = baseCapability is null && !modifiesExistingArtifact
+                    ? "Positive base-to-head marginal effort for a distinct capability added by the final change."
+                    : "The final change expands an existing artifact-backed capability. Repository work-item " +
+                        "partitions provide context but share one evidence-derived logical marginal budget.";
             }
             else if (expectedDifference < 0m && touched.Length > 0)
             {
@@ -103,23 +106,17 @@ internal static partial class ChangeWorkItemBuilder
                     headFacts,
                     touched))
             {
-                touched = ClaimCorrelatedModificationEvidence(
-                    source.Category,
-                    touched,
-                    correlatedModificationEvidence);
+                touched = DistinctLogicalPaths(touched);
                 if (touched.Length == 0)
                 {
                     continue;
                 }
 
-                hours = ModificationRange(
-                    source.Category,
-                    touched,
-                    Math.Max(baseHours.Expected, headHours.Expected));
+                hours = ModificationRange(source.Category, touched);
                 rule = "capability-modification";
                 verb = "Modify";
                 reason = "The final artifact materially changed the normalized evidence for an existing " +
-                    "capability. Repeated path evidence in this category shares one marginal modification budget.";
+                    "capability. Its distinct changed paths share one logical marginal modification budget.";
             }
 
             if (hours is null || hours.Expected <= 0m || rule is null || verb is null || reason is null)

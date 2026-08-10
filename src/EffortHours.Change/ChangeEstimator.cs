@@ -22,7 +22,7 @@ public sealed record ChangeEstimateInput
 
 public sealed partial class ChangeEstimator
 {
-    public const string Version = "change-seed/0.2.0+seed-rules/0.2.1";
+    public const string Version = "change-seed/0.3.0+seed-rules/0.2.1";
 
     private readonly IEstimator _repositoryEstimator;
 

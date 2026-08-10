@@ -245,8 +245,9 @@ meaningful code/tests/docs, migrations, integrations, CI, container delivery,
 simplification, additivity, overlap, reverts, category isolation, all three range
 points, and cooperative cancellation. The first Ctrl+C returns 130 after a
 stderr-only diagnostic; a second retains immediate termination. Current
-`change-seed/0.2.0` rules prevent broad repository capability context from stacking
-on touched paths, correlate repeated marginal evidence, and emit bounded
+`change-seed/0.3.0` rules prevent broad repository capability context from stacking
+on touched paths, consolidate repository capability partitions through bounded
+logical change units, preserve distinct added capabilities, and emit bounded
 change-level comprehension, validation, and review once. They remain experimental
 and uncalibrated. Multiple PRs, directory/evidence selectors, and
 author-period portfolios remain deferred. The former large CLI application class
@@ -265,12 +266,14 @@ targets. The preliminary public synthetic corpus has
 host-AI teacher. Development and validation diagnostics are recorded; test
 comparison remains withheld. No independent Change review is complete. The corpus
 changes no estimator prior and adds no ML dependency; its frozen source reports
-retain `change-seed/0.1.0` provenance while current `change-seed/0.2.0` remains
-experimental and uncalibrated.
+retain `change-seed/0.1.0` provenance. The source baseline subsequently advances
+from the historical 0.2.0 correction to `change-seed/0.3.0` under the
+structural-correctness exception; frozen source reports retain their original
+estimator identities.
 
 The first real public Change follow-on adds one immutable MIT-licensed
 GuardClauses pull-request record in that repository family's existing development
-partition. Released alpha.2 and current `change-seed/0.2.0` report 4.25 expected
+partition. Released alpha.2 `change-seed/0.2.0` reports 4.25 expected
 hours; one disclosed host-AI teacher separately reports 4.00 across five targets.
 Exact commits, trees, license and report digests, a compiled corpus, a development
 diagnostic, and a blind follow-up packet are checked in without source excerpts.
@@ -287,6 +290,16 @@ tests, and p-limit production, while BenchmarkDotNet's near-equal total masks
 category cancellation. The ofetch test comparison remains withheld. The corpus
 changes no prior, rule, threshold, maturity, or dependency and has no independent
 correction.
+
+The `change-seed/0.3.0` structural-correction checkpoint freezes subject-neutral
+in-memory regressions before candidate analysis. Existing or modified logical
+capabilities no longer inherit the sum of repository work-item partitions; capped
+edit-region bands feed one diminishing evidence-derived budget, while distinct
+added capabilities remain additive. Separate visible-only reports compare 20.75
+candidate with 19.00 teacher expected hours in development and 15.75 with 16.00 in
+validation. Item mapping and interval/category behavior remain explicitly mixed.
+Frozen alpha.2 artifacts are unchanged, the ofetch comparison remains withheld,
+and no threshold, independent maturity, calibration, or accuracy claim advances.
 
 The first Milestone 8 host-review checkpoint adds the provider-neutral
 `host-review/1.0.0` protocol: rate-free compact packets, canonical estimate-plus-

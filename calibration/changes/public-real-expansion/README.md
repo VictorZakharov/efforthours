@@ -39,11 +39,15 @@ items totaling 5.25 hours against 0.50 hour. BenchmarkDotNet's near-equal total 
 also cancellation: alpha.2 assigns only 0.25 hour to production versus the
 teacher's 2.50 hours while assigning more elsewhere.
 
-Those disagreements must not be collapsed into a blanket ratio. A subsequent
-general rule correction should consolidate repeated logical slices, preserve
-meaningful marginal implementation, add synthetic guardrails, use a new estimator
-version, and compare development and validation only. This corpus itself changes
-no estimator prior or rule.
+Those disagreements must not be collapsed into a blanket ratio. The subsequent
+subject-neutral `change-seed/0.3.0` correction consolidates repository partitions
+through bounded logical change budgets, preserves distinct added capabilities,
+and adds in-memory guardrails. Its reports and development/validation evaluations
+are kept under
+[`diagnostics/change-seed-0.3.0`](diagnostics/change-seed-0.3.0), separate from
+this frozen corpus. The test comparison remains withheld. Neither the corpus nor
+the correction establishes calibration, independent review, or production-ready
+accuracy.
 
 The committed material contains derived evidence, repository-relative paths,
 hashes, review reasoning, and ranges. It contains no source checkout, source

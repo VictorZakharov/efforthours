@@ -20,10 +20,12 @@ The [`changes`](changes) area adds the `change-ehe-work-item/1.0.0` rubric,
 immutable final-delta review tooling, and a 24-case matrix frozen before labels.
 It now contains a preliminary 121-target host-AI teacher corpus and blind handoff,
 plus a one-record real public pilot and a blind six-family public expansion for
-current `change-seed/0.2.0`. The expansion's visible development and validation
-diagnostics expose repeated category-slice overcounting while its test comparison
-remains withheld. None of the Change corpora has independent correction, and no
-result is an accuracy or production-readiness claim.
+released `change-seed/0.2.0`. The expansion's visible development and validation
+diagnostics exposed repeated category-slice overcounting. Separate
+`change-seed/0.3.0` source-candidate diagnostics record a subject-neutral structural
+correction without rewriting the frozen corpus or opening its test comparison.
+None of the Change corpora has independent correction, and no result is an
+accuracy or production-readiness claim.
 
 ## Local workflow
 

@@ -1,0 +1,942 @@
+{
+  "schemaVersion": "1.0.0",
+  "changeEvidenceSchemaVersion": "1.0.0",
+  "estimatorVersion": "change-seed/0.3.0\u002Bseed-rules/0.2.1",
+  "sourceEstimatorVersion": "seed-rules/0.2.1",
+  "repository": {
+    "name": "benchmarkdotnet",
+    "scope": ".",
+    "ecosystems": [
+      "dotnet",
+      "javascript"
+    ],
+    "sourceDigest": "sha256:4fdd496496d254ce592c31d724c067f038a25227f6e8713c0d9603d83e837ce8"
+  },
+  "selection": {
+    "schemaVersion": "1.0.0",
+    "kind": "base-head",
+    "base": {
+      "selector": "17f218589e5a3364b01d1d0ae4c4ca87e5b4bfad",
+      "objectId": "17f218589e5a3364b01d1d0ae4c4ca87e5b4bfad",
+      "kind": "git-commit"
+    },
+    "head": {
+      "selector": "e90b701ed71a3b3e571ab40a9192715d0e453a0b",
+      "objectId": "e90b701ed71a3b3e571ab40a9192715d0e453a0b",
+      "kind": "git-commit"
+    }
+  },
+  "evidence": {
+    "schemaVersion": "1.0.0",
+    "selection": {
+      "schemaVersion": "1.0.0",
+      "kind": "base-head",
+      "base": {
+        "selector": "17f218589e5a3364b01d1d0ae4c4ca87e5b4bfad",
+        "objectId": "17f218589e5a3364b01d1d0ae4c4ca87e5b4bfad",
+        "kind": "git-commit"
+      },
+      "head": {
+        "selector": "e90b701ed71a3b3e571ab40a9192715d0e453a0b",
+        "objectId": "e90b701ed71a3b3e571ab40a9192715d0e453a0b",
+        "kind": "git-commit"
+      }
+    },
+    "repository": {
+      "name": "benchmarkdotnet",
+      "scope": ".",
+      "ecosystems": [
+        "dotnet",
+        "javascript"
+      ],
+      "sourceDigest": "sha256:4fdd496496d254ce592c31d724c067f038a25227f6e8713c0d9603d83e837ce8"
+    },
+    "baseEvidenceDigest": "sha256:d71e9bfa0b4178724be8d0ac91f6abc202092f2a53982973e5b7ae990fa519a9",
+    "headEvidenceDigest": "sha256:4fdd496496d254ce592c31d724c067f038a25227f6e8713c0d9603d83e837ce8",
+    "unchangedContextPathCount": 1460,
+    "paths": [
+      {
+        "id": "change:path:98d0b4e39ab55d980ece1e39",
+        "status": "modified",
+        "path": "src/BenchmarkDotNet/Extensions/ReflectionExtensions.cs",
+        "baseObjectId": "4f2eaf0dc4d52c1221fede7590479ef8ce2f037c",
+        "headObjectId": "1bfaf346ce4153731ec6f8c1dd7341d871847b7a",
+        "baseBytes": 18995,
+        "headBytes": 20295,
+        "editRegions": 63,
+        "classification": "represented",
+        "represented": true,
+        "reason": "The final modified artifact is maintained, non-mechanical change evidence.",
+        "tags": [
+          "classification:represented",
+          "content:text",
+          "ecosystem:dotnet",
+          "extension:.cs",
+          "language:csharp",
+          "role:source",
+          "sha256:09dfb320f705e086d000a5e3c07daef60fa43e0df0eb85d8f793916a3e3dca25",
+          "sha256:3e72afdb1d40444360c1b5321b6777f284258b9c5fe27509cb816598ef65b72f",
+          "status:modified"
+        ]
+      },
+      {
+        "id": "change:path:22659de8535ecbe646a5b12c",
+        "status": "modified",
+        "path": "src/BenchmarkDotNet/Running/UserInteraction.cs",
+        "baseObjectId": "d706110142d4a1b48a6f595bd42ea71c2087b2f2",
+        "headObjectId": "0bdc99314c6dfcc605eb1969f760cb3494a5693f",
+        "baseBytes": 5517,
+        "headBytes": 5626,
+        "editRegions": 23,
+        "classification": "represented",
+        "represented": true,
+        "reason": "The final modified artifact is maintained, non-mechanical change evidence.",
+        "tags": [
+          "classification:represented",
+          "content:text",
+          "ecosystem:dotnet",
+          "extension:.cs",
+          "language:csharp",
+          "role:source",
+          "sha256:3c24a96e83e8b3c29d951627ab866bedb3fb5f9b7fbf68a91e3bdfd9007715f7",
+          "sha256:92c0d79078e1d97abb955e94f9837dbabddc96c3b2ca08c2f109393239d2b673",
+          "status:modified"
+        ]
+      },
+      {
+        "id": "change:path:75c4dcdc1838c4b29b27401b",
+        "status": "modified",
+        "path": "tests/BenchmarkDotNet.Tests/ReflectionTests.cs",
+        "baseObjectId": "17b6a78d9a308ef261015659c6b597658a2861c8",
+        "headObjectId": "e39c71af8262bbdf3ab9f5f4177101ded073049a",
+        "baseBytes": 8788,
+        "headBytes": 9900,
+        "editRegions": 39,
+        "classification": "represented",
+        "represented": true,
+        "reason": "The final modified artifact is maintained, non-mechanical change evidence.",
+        "tags": [
+          "classification:represented",
+          "classification:test",
+          "content:text",
+          "ecosystem:dotnet",
+          "extension:.cs",
+          "language:csharp",
+          "role:test",
+          "sha256:63c97a9ab8ea20aa8f8b97d2e4beb185340b6288137ccddf3aa3d88b42608652",
+          "sha256:a8dd501b5091155bdc00543610de96357bea737d61d85583315f76a35aba0632",
+          "status:modified"
+        ]
+      }
+    ],
+    "diagnostics": [
+      {
+        "code": "FB3000",
+        "severity": "information",
+        "message": "The .NET analyzer parsed project XML and source syntax statically; it did not evaluate MSBuild, restore packages, compile, or execute target code.",
+        "evidenceIds": [],
+        "locations": []
+      },
+      {
+        "code": "FB3005",
+        "severity": "information",
+        "message": "Project \u0027samples/BenchmarkDotNet.Samples.Maui/BenchmarkDotNet.Samples.Maui.csproj\u0027 contains 4 unresolved MSBuild value(s); static evidence may be incomplete.",
+        "evidenceIds": [],
+        "locations": [
+          {
+            "path": "samples/BenchmarkDotNet.Samples.Maui/BenchmarkDotNet.Samples.Maui.csproj"
+          }
+        ]
+      },
+      {
+        "code": "FB3005",
+        "severity": "information",
+        "message": "Project \u0027samples/BenchmarkDotNet.Samples.Maui/BenchmarkDotNet.Samples.Maui.csproj\u0027 contains 4 unresolved MSBuild value(s); static evidence may be incomplete.",
+        "evidenceIds": [],
+        "locations": [
+          {
+            "path": "samples/BenchmarkDotNet.Samples.Maui/BenchmarkDotNet.Samples.Maui.csproj"
+          }
+        ]
+      },
+      {
+        "code": "FB3005",
+        "severity": "information",
+        "message": "Project \u0027samples/BenchmarkDotNet.Samples/BenchmarkDotNet.Samples.csproj\u0027 contains 1 unresolved MSBuild value(s); static evidence may be incomplete.",
+        "evidenceIds": [],
+        "locations": [
+          {
+            "path": "samples/BenchmarkDotNet.Samples/BenchmarkDotNet.Samples.csproj"
+          }
+        ]
+      },
+      {
+        "code": "FB3005",
+        "severity": "information",
+        "message": "Project \u0027samples/BenchmarkDotNet.Samples/BenchmarkDotNet.Samples.csproj\u0027 contains 1 unresolved MSBuild value(s); static evidence may be incomplete.",
+        "evidenceIds": [],
+        "locations": [
+          {
+            "path": "samples/BenchmarkDotNet.Samples/BenchmarkDotNet.Samples.csproj"
+          }
+        ]
+      },
+      {
+        "code": "FB3005",
+        "severity": "information",
+        "message": "Project \u0027src/BenchmarkDotNet.Annotations/BenchmarkDotNet.Annotations.csproj\u0027 contains 1 unresolved MSBuild value(s); static evidence may be incomplete.",
+        "evidenceIds": [],
+        "locations": [
+          {
+            "path": "src/BenchmarkDotNet.Annotations/BenchmarkDotNet.Annotations.csproj"
+          }
+        ]
+      },
+      {
+        "code": "FB3005",
+        "severity": "information",
+        "message": "Project \u0027src/BenchmarkDotNet.Annotations/BenchmarkDotNet.Annotations.csproj\u0027 contains 1 unresolved MSBuild value(s); static evidence may be incomplete.",
+        "evidenceIds": [],
+        "locations": [
+          {
+            "path": "src/BenchmarkDotNet.Annotations/BenchmarkDotNet.Annotations.csproj"
+          }
+        ]
+      },
+      {
+        "code": "FB3005",
+        "severity": "information",
+        "message": "Project \u0027src/BenchmarkDotNet/BenchmarkDotNet.csproj\u0027 contains 1 unresolved MSBuild value(s); static evidence may be incomplete.",
+        "evidenceIds": [],
+        "locations": [
+          {
+            "path": "src/BenchmarkDotNet/BenchmarkDotNet.csproj"
+          }
+        ]
+      },
+      {
+        "code": "FB3005",
+        "severity": "information",
+        "message": "Project \u0027src/BenchmarkDotNet/BenchmarkDotNet.csproj\u0027 contains 1 unresolved MSBuild value(s); static evidence may be incomplete.",
+        "evidenceIds": [],
+        "locations": [
+          {
+            "path": "src/BenchmarkDotNet/BenchmarkDotNet.csproj"
+          }
+        ]
+      },
+      {
+        "code": "FB3005",
+        "severity": "information",
+        "message": "Project \u0027templates/templates/BenchmarkDotNet.BenchmarkProjectTemplate.CSharp/_BenchmarkProjectName_.csproj\u0027 contains 3 unresolved MSBuild value(s); static evidence may be incomplete.",
+        "evidenceIds": [],
+        "locations": [
+          {
+            "path": "templates/templates/BenchmarkDotNet.BenchmarkProjectTemplate.CSharp/_BenchmarkProjectName_.csproj"
+          }
+        ]
+      },
+      {
+        "code": "FB3005",
+        "severity": "information",
+        "message": "Project \u0027templates/templates/BenchmarkDotNet.BenchmarkProjectTemplate.CSharp/_BenchmarkProjectName_.csproj\u0027 contains 3 unresolved MSBuild value(s); static evidence may be incomplete.",
+        "evidenceIds": [],
+        "locations": [
+          {
+            "path": "templates/templates/BenchmarkDotNet.BenchmarkProjectTemplate.CSharp/_BenchmarkProjectName_.csproj"
+          }
+        ]
+      },
+      {
+        "code": "FB3005",
+        "severity": "information",
+        "message": "Project \u0027templates/templates/BenchmarkDotNet.BenchmarkProjectTemplate.FSharp/_BenchmarkProjectName_.fsproj\u0027 contains 3 unresolved MSBuild value(s); static evidence may be incomplete.",
+        "evidenceIds": [],
+        "locations": [
+          {
+            "path": "templates/templates/BenchmarkDotNet.BenchmarkProjectTemplate.FSharp/_BenchmarkProjectName_.fsproj"
+          }
+        ]
+      },
+      {
+        "code": "FB3005",
+        "severity": "information",
+        "message": "Project \u0027templates/templates/BenchmarkDotNet.BenchmarkProjectTemplate.FSharp/_BenchmarkProjectName_.fsproj\u0027 contains 3 unresolved MSBuild value(s); static evidence may be incomplete.",
+        "evidenceIds": [],
+        "locations": [
+          {
+            "path": "templates/templates/BenchmarkDotNet.BenchmarkProjectTemplate.FSharp/_BenchmarkProjectName_.fsproj"
+          }
+        ]
+      },
+      {
+        "code": "FB3005",
+        "severity": "information",
+        "message": "Project \u0027templates/templates/BenchmarkDotNet.BenchmarkProjectTemplate.VB/_BenchmarkProjectName_.vbproj\u0027 contains 3 unresolved MSBuild value(s); static evidence may be incomplete.",
+        "evidenceIds": [],
+        "locations": [
+          {
+            "path": "templates/templates/BenchmarkDotNet.BenchmarkProjectTemplate.VB/_BenchmarkProjectName_.vbproj"
+          }
+        ]
+      },
+      {
+        "code": "FB3005",
+        "severity": "information",
+        "message": "Project \u0027templates/templates/BenchmarkDotNet.BenchmarkProjectTemplate.VB/_BenchmarkProjectName_.vbproj\u0027 contains 3 unresolved MSBuild value(s); static evidence may be incomplete.",
+        "evidenceIds": [],
+        "locations": [
+          {
+            "path": "templates/templates/BenchmarkDotNet.BenchmarkProjectTemplate.VB/_BenchmarkProjectName_.vbproj"
+          }
+        ]
+      },
+      {
+        "code": "FB3100",
+        "severity": "warning",
+        "message": "Roslyn reported 26 syntax error(s) in \u0027src/BenchmarkDotNet/Detectors/Cpu/HardwareIntrinsics.cs\u0027; partial evidence was retained.",
+        "evidenceIds": [],
+        "locations": [
+          {
+            "path": "src/BenchmarkDotNet/Detectors/Cpu/HardwareIntrinsics.cs"
+          }
+        ]
+      },
+      {
+        "code": "FB3100",
+        "severity": "warning",
+        "message": "Roslyn reported 26 syntax error(s) in \u0027src/BenchmarkDotNet/Detectors/Cpu/HardwareIntrinsics.cs\u0027; partial evidence was retained.",
+        "evidenceIds": [],
+        "locations": [
+          {
+            "path": "src/BenchmarkDotNet/Detectors/Cpu/HardwareIntrinsics.cs"
+          }
+        ]
+      },
+      {
+        "code": "FB3100",
+        "severity": "warning",
+        "message": "Roslyn reported 3 syntax error(s) in \u0027templates/templates/BenchmarkDotNet.BenchmarkProjectTemplate.CSharp/Program.cs\u0027; partial evidence was retained.",
+        "evidenceIds": [],
+        "locations": [
+          {
+            "path": "templates/templates/BenchmarkDotNet.BenchmarkProjectTemplate.CSharp/Program.cs"
+          }
+        ]
+      },
+      {
+        "code": "FB3100",
+        "severity": "warning",
+        "message": "Roslyn reported 3 syntax error(s) in \u0027templates/templates/BenchmarkDotNet.BenchmarkProjectTemplate.CSharp/Program.cs\u0027; partial evidence was retained.",
+        "evidenceIds": [],
+        "locations": [
+          {
+            "path": "templates/templates/BenchmarkDotNet.BenchmarkProjectTemplate.CSharp/Program.cs"
+          }
+        ]
+      },
+      {
+        "code": "FB3100",
+        "severity": "warning",
+        "message": "Roslyn reported 7 syntax error(s) in \u0027templates/templates/BenchmarkDotNet.BenchmarkProjectTemplate.CSharp/_BenchmarkName_.cs\u0027; partial evidence was retained.",
+        "evidenceIds": [],
+        "locations": [
+          {
+            "path": "templates/templates/BenchmarkDotNet.BenchmarkProjectTemplate.CSharp/_BenchmarkName_.cs"
+          }
+        ]
+      },
+      {
+        "code": "FB3100",
+        "severity": "warning",
+        "message": "Roslyn reported 7 syntax error(s) in \u0027templates/templates/BenchmarkDotNet.BenchmarkProjectTemplate.CSharp/_BenchmarkName_.cs\u0027; partial evidence was retained.",
+        "evidenceIds": [],
+        "locations": [
+          {
+            "path": "templates/templates/BenchmarkDotNet.BenchmarkProjectTemplate.CSharp/_BenchmarkName_.cs"
+          }
+        ]
+      },
+      {
+        "code": "FB4000",
+        "severity": "information",
+        "message": "The JavaScript/TypeScript analyzer parsed manifests, JSONC configuration, JavaScript/JSX syntax, and bounded TypeScript token streams statically; it did not run package managers, load executable configuration, install dependencies, transpile, or execute target code.",
+        "evidenceIds": [],
+        "locations": []
+      },
+      {
+        "code": "FB5100",
+        "severity": "information",
+        "message": "Moving selectors were resolved to immutable object IDs before analysis; selector metadata does not multiply effort.",
+        "evidenceIds": [],
+        "locations": []
+      }
+    ]
+  },
+  "profile": "implementation",
+  "baseline": {
+    "id": "senior-contractor-2026-no-ai",
+    "workerProfile": "Competent senior contractor familiar with the technical ecosystem",
+    "technologyBaselineYear": 2026,
+    "businessDomainFamiliar": false,
+    "usesAi": false,
+    "description": "One senior contractor recreating the described working system with modern 2026 tools and no AI."
+  },
+  "totalEffort": {
+    "low": 3.50,
+    "expected": 5.75,
+    "high": 10.75
+  },
+  "categories": [
+    {
+      "category": "specification-comprehension-and-domain-learning",
+      "hours": {
+        "low": 0.5,
+        "expected": 0.75,
+        "high": 1.25
+      }
+    },
+    {
+      "category": "production-implementation",
+      "hours": {
+        "low": 1,
+        "expected": 1.75,
+        "high": 3.25
+      }
+    },
+    {
+      "category": "unit-testing",
+      "hours": {
+        "low": 0.5,
+        "expected": 0.75,
+        "high": 1.5
+      }
+    },
+    {
+      "category": "manual-validation-debugging-and-hardening",
+      "hours": {
+        "low": 0.75,
+        "expected": 1.25,
+        "high": 2.5
+      }
+    },
+    {
+      "category": "self-review-and-system-integration",
+      "hours": {
+        "low": 0.75,
+        "expected": 1.25,
+        "high": 2.25
+      }
+    }
+  ],
+  "workItems": [
+    {
+      "schemaVersion": "1.0.0",
+      "id": "change-item:change-comprehension:4453adbde4e9c5576673",
+      "category": "specification-comprehension-and-domain-learning",
+      "title": "Understand the bounded change specification",
+      "scope": ".",
+      "evidenceIds": [
+        "change:path:22659de8535ecbe646a5b12c",
+        "change:path:75c4dcdc1838c4b29b27401b",
+        "change:path:98d0b4e39ab55d980ece1e39"
+      ],
+      "quantity": 2,
+      "complexity": "moderate",
+      "hours": {
+        "low": 0.5,
+        "expected": 0.75,
+        "high": 1.25
+      },
+      "confidence": 0.78,
+      "reason": "Comprehend the final behavior and quality delta represented by the affected capability categories.",
+      "estimator": {
+        "id": "change-rule:change-comprehension",
+        "version": "change-seed/0.3.0",
+        "kind": "rule"
+      },
+      "profiles": [
+        "implementation"
+      ],
+      "dependencyIds": [],
+      "correlationGroup": "change:change-comprehension:.",
+      "assumptions": [
+        "The final base-to-head artifact delta is valued once with modern 2026-equivalent technology.",
+        "Commit count, elapsed time, authorship, messages, and intermediate churn are not effort multipliers."
+      ],
+      "exclusions": [
+        "Historical rework and discarded intermediate states are excluded."
+      ],
+      "uncertaintyReasons": []
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "id": "change-item:capability-marginal:489b9f0383e772554a97",
+      "category": "production-implementation",
+      "title": "Expand Implement maintained internal logic for \u0027src/BenchmarkDotNet/BenchmarkDotNet.csproj\u0027 (library)",
+      "scope": "src/BenchmarkDotNet/BenchmarkDotNet.csproj",
+      "evidenceIds": [
+        "change:path:22659de8535ecbe646a5b12c",
+        "change:path:75c4dcdc1838c4b29b27401b",
+        "change:path:98d0b4e39ab55d980ece1e39"
+      ],
+      "quantity": 125,
+      "complexity": "high",
+      "hours": {
+        "low": 1,
+        "expected": 1.75,
+        "high": 3.25
+      },
+      "confidence": 0.78,
+      "reason": "The final change expands an existing artifact-backed capability. Repository work-item partitions provide context but share one evidence-derived logical marginal budget.",
+      "estimator": {
+        "id": "change-rule:capability-marginal",
+        "version": "change-seed/0.3.0",
+        "kind": "rule"
+      },
+      "profiles": [
+        "implementation"
+      ],
+      "dependencyIds": [],
+      "correlationGroup": "change:capability-marginal:src/BenchmarkDotNet/BenchmarkDotNet.csproj",
+      "assumptions": [
+        "The final base-to-head artifact delta is valued once with modern 2026-equivalent technology.",
+        "Commit count, elapsed time, authorship, messages, and intermediate churn are not effort multipliers."
+      ],
+      "exclusions": [
+        "Historical rework and discarded intermediate states are excluded."
+      ],
+      "uncertaintyReasons": []
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "id": "change-item:capability-marginal:fefb11822d16f00bc0af",
+      "category": "unit-testing",
+      "title": "Expand Create represented unit tests for \u0027tests/BenchmarkDotNet.Tests/BenchmarkDotNet.Tests.csproj\u0027 (test)",
+      "scope": "tests/BenchmarkDotNet.Tests/BenchmarkDotNet.Tests.csproj",
+      "evidenceIds": [
+        "change:path:75c4dcdc1838c4b29b27401b"
+      ],
+      "quantity": 39,
+      "complexity": "routine",
+      "hours": {
+        "low": 0.5,
+        "expected": 0.75,
+        "high": 1.5
+      },
+      "confidence": 0.66,
+      "reason": "The final change expands an existing artifact-backed capability. Repository work-item partitions provide context but share one evidence-derived logical marginal budget.",
+      "estimator": {
+        "id": "change-rule:capability-marginal",
+        "version": "change-seed/0.3.0",
+        "kind": "rule"
+      },
+      "profiles": [
+        "implementation"
+      ],
+      "dependencyIds": [],
+      "correlationGroup": "change:capability-marginal:tests/BenchmarkDotNet.Tests/BenchmarkDotNet.Tests.csproj",
+      "assumptions": [
+        "The final base-to-head artifact delta is valued once with modern 2026-equivalent technology.",
+        "Commit count, elapsed time, authorship, messages, and intermediate churn are not effort multipliers."
+      ],
+      "exclusions": [
+        "Historical rework and discarded intermediate states are excluded."
+      ],
+      "uncertaintyReasons": [
+        "Some supporting evidence is inferred rather than directly observed."
+      ]
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "id": "change-item:change-validation:753670208daf51bb65d6",
+      "category": "manual-validation-debugging-and-hardening",
+      "title": "Validate and harden the completed change",
+      "scope": ".",
+      "evidenceIds": [
+        "change:path:22659de8535ecbe646a5b12c",
+        "change:path:75c4dcdc1838c4b29b27401b",
+        "change:path:98d0b4e39ab55d980ece1e39"
+      ],
+      "quantity": 3,
+      "complexity": "moderate",
+      "hours": {
+        "low": 0.75,
+        "expected": 1.25,
+        "high": 2.5
+      },
+      "confidence": 0.68,
+      "reason": "Perform bounded validation and debugging once across the coherent final delta; static repository-level validation capabilities are not repeated for every touched scope.",
+      "estimator": {
+        "id": "change-rule:change-validation",
+        "version": "change-seed/0.3.0",
+        "kind": "rule"
+      },
+      "profiles": [
+        "implementation"
+      ],
+      "dependencyIds": [],
+      "correlationGroup": "change:change-validation:.",
+      "assumptions": [
+        "The final base-to-head artifact delta is valued once with modern 2026-equivalent technology.",
+        "Commit count, elapsed time, authorship, messages, and intermediate churn are not effort multipliers."
+      ],
+      "exclusions": [
+        "Historical rework and discarded intermediate states are excluded."
+      ],
+      "uncertaintyReasons": [
+        "The immutable snapshots were not executed; validation effort is inferred from represented change surfaces."
+      ]
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "id": "change-item:change-review:7db3d6665b9bda568ecd",
+      "category": "self-review-and-system-integration",
+      "title": "Review and integrate the completed change",
+      "scope": ".",
+      "evidenceIds": [
+        "change:path:22659de8535ecbe646a5b12c",
+        "change:path:75c4dcdc1838c4b29b27401b",
+        "change:path:98d0b4e39ab55d980ece1e39"
+      ],
+      "quantity": 3,
+      "complexity": "moderate",
+      "hours": {
+        "low": 0.75,
+        "expected": 1.25,
+        "high": 2.25
+      },
+      "confidence": 0.8,
+      "reason": "Review the coherent final delta and integrate its affected maintained artifacts; this is derived from final scope rather than commit count.",
+      "estimator": {
+        "id": "change-rule:change-review",
+        "version": "change-seed/0.3.0",
+        "kind": "rule"
+      },
+      "profiles": [
+        "implementation"
+      ],
+      "dependencyIds": [],
+      "correlationGroup": "change:change-review:.",
+      "assumptions": [
+        "The final base-to-head artifact delta is valued once with modern 2026-equivalent technology.",
+        "Commit count, elapsed time, authorship, messages, and intermediate churn are not effort multipliers."
+      ],
+      "exclusions": [
+        "Historical rework and discarded intermediate states are excluded."
+      ],
+      "uncertaintyReasons": []
+    }
+  ],
+  "professionalizationGap": [],
+  "reconciliation": {
+    "isolatedComponentSum": {
+      "low": 3.50,
+      "expected": 5.75,
+      "high": 10.75
+    },
+    "normalizedEffort": {
+      "low": 3.50,
+      "expected": 5.75,
+      "high": 10.75
+    },
+    "additivityToleranceHours": 1,
+    "expectedDifferenceHours": 0.00,
+    "assessment": "within-no-rework-tolerance",
+    "allocationMethod": "Proportional to isolated expected Change EHE with deterministic cent-level residual assignment; allocations are attribution, not historical hours.",
+    "components": [
+      {
+        "id": "change-component:33788e36ea95df6627a8",
+        "kind": "final-delta",
+        "selector": "final-delta",
+        "baseObjectId": "17f218589e5a3364b01d1d0ae4c4ca87e5b4bfad",
+        "headObjectId": "e90b701ed71a3b3e571ab40a9192715d0e453a0b",
+        "isolatedEffort": {
+          "low": 3.50,
+          "expected": 5.75,
+          "high": 10.75
+        },
+        "allocatedExpectedHours": 5.75,
+        "evidenceIds": [
+          "change:path:22659de8535ecbe646a5b12c",
+          "change:path:75c4dcdc1838c4b29b27401b",
+          "change:path:98d0b4e39ab55d980ece1e39"
+        ]
+      }
+    ],
+    "adjustments": []
+  },
+  "diagnostics": [
+    {
+      "code": "FB3000",
+      "severity": "information",
+      "message": "The .NET analyzer parsed project XML and source syntax statically; it did not evaluate MSBuild, restore packages, compile, or execute target code.",
+      "evidenceIds": [],
+      "locations": []
+    },
+    {
+      "code": "FB3005",
+      "severity": "information",
+      "message": "Project \u0027samples/BenchmarkDotNet.Samples.Maui/BenchmarkDotNet.Samples.Maui.csproj\u0027 contains 4 unresolved MSBuild value(s); static evidence may be incomplete.",
+      "evidenceIds": [],
+      "locations": [
+        {
+          "path": "samples/BenchmarkDotNet.Samples.Maui/BenchmarkDotNet.Samples.Maui.csproj"
+        }
+      ]
+    },
+    {
+      "code": "FB3005",
+      "severity": "information",
+      "message": "Project \u0027samples/BenchmarkDotNet.Samples.Maui/BenchmarkDotNet.Samples.Maui.csproj\u0027 contains 4 unresolved MSBuild value(s); static evidence may be incomplete.",
+      "evidenceIds": [],
+      "locations": [
+        {
+          "path": "samples/BenchmarkDotNet.Samples.Maui/BenchmarkDotNet.Samples.Maui.csproj"
+        }
+      ]
+    },
+    {
+      "code": "FB3005",
+      "severity": "information",
+      "message": "Project \u0027samples/BenchmarkDotNet.Samples/BenchmarkDotNet.Samples.csproj\u0027 contains 1 unresolved MSBuild value(s); static evidence may be incomplete.",
+      "evidenceIds": [],
+      "locations": [
+        {
+          "path": "samples/BenchmarkDotNet.Samples/BenchmarkDotNet.Samples.csproj"
+        }
+      ]
+    },
+    {
+      "code": "FB3005",
+      "severity": "information",
+      "message": "Project \u0027samples/BenchmarkDotNet.Samples/BenchmarkDotNet.Samples.csproj\u0027 contains 1 unresolved MSBuild value(s); static evidence may be incomplete.",
+      "evidenceIds": [],
+      "locations": [
+        {
+          "path": "samples/BenchmarkDotNet.Samples/BenchmarkDotNet.Samples.csproj"
+        }
+      ]
+    },
+    {
+      "code": "FB3005",
+      "severity": "information",
+      "message": "Project \u0027src/BenchmarkDotNet.Annotations/BenchmarkDotNet.Annotations.csproj\u0027 contains 1 unresolved MSBuild value(s); static evidence may be incomplete.",
+      "evidenceIds": [],
+      "locations": [
+        {
+          "path": "src/BenchmarkDotNet.Annotations/BenchmarkDotNet.Annotations.csproj"
+        }
+      ]
+    },
+    {
+      "code": "FB3005",
+      "severity": "information",
+      "message": "Project \u0027src/BenchmarkDotNet.Annotations/BenchmarkDotNet.Annotations.csproj\u0027 contains 1 unresolved MSBuild value(s); static evidence may be incomplete.",
+      "evidenceIds": [],
+      "locations": [
+        {
+          "path": "src/BenchmarkDotNet.Annotations/BenchmarkDotNet.Annotations.csproj"
+        }
+      ]
+    },
+    {
+      "code": "FB3005",
+      "severity": "information",
+      "message": "Project \u0027src/BenchmarkDotNet/BenchmarkDotNet.csproj\u0027 contains 1 unresolved MSBuild value(s); static evidence may be incomplete.",
+      "evidenceIds": [],
+      "locations": [
+        {
+          "path": "src/BenchmarkDotNet/BenchmarkDotNet.csproj"
+        }
+      ]
+    },
+    {
+      "code": "FB3005",
+      "severity": "information",
+      "message": "Project \u0027src/BenchmarkDotNet/BenchmarkDotNet.csproj\u0027 contains 1 unresolved MSBuild value(s); static evidence may be incomplete.",
+      "evidenceIds": [],
+      "locations": [
+        {
+          "path": "src/BenchmarkDotNet/BenchmarkDotNet.csproj"
+        }
+      ]
+    },
+    {
+      "code": "FB3005",
+      "severity": "information",
+      "message": "Project \u0027templates/templates/BenchmarkDotNet.BenchmarkProjectTemplate.CSharp/_BenchmarkProjectName_.csproj\u0027 contains 3 unresolved MSBuild value(s); static evidence may be incomplete.",
+      "evidenceIds": [],
+      "locations": [
+        {
+          "path": "templates/templates/BenchmarkDotNet.BenchmarkProjectTemplate.CSharp/_BenchmarkProjectName_.csproj"
+        }
+      ]
+    },
+    {
+      "code": "FB3005",
+      "severity": "information",
+      "message": "Project \u0027templates/templates/BenchmarkDotNet.BenchmarkProjectTemplate.CSharp/_BenchmarkProjectName_.csproj\u0027 contains 3 unresolved MSBuild value(s); static evidence may be incomplete.",
+      "evidenceIds": [],
+      "locations": [
+        {
+          "path": "templates/templates/BenchmarkDotNet.BenchmarkProjectTemplate.CSharp/_BenchmarkProjectName_.csproj"
+        }
+      ]
+    },
+    {
+      "code": "FB3005",
+      "severity": "information",
+      "message": "Project \u0027templates/templates/BenchmarkDotNet.BenchmarkProjectTemplate.FSharp/_BenchmarkProjectName_.fsproj\u0027 contains 3 unresolved MSBuild value(s); static evidence may be incomplete.",
+      "evidenceIds": [],
+      "locations": [
+        {
+          "path": "templates/templates/BenchmarkDotNet.BenchmarkProjectTemplate.FSharp/_BenchmarkProjectName_.fsproj"
+        }
+      ]
+    },
+    {
+      "code": "FB3005",
+      "severity": "information",
+      "message": "Project \u0027templates/templates/BenchmarkDotNet.BenchmarkProjectTemplate.FSharp/_BenchmarkProjectName_.fsproj\u0027 contains 3 unresolved MSBuild value(s); static evidence may be incomplete.",
+      "evidenceIds": [],
+      "locations": [
+        {
+          "path": "templates/templates/BenchmarkDotNet.BenchmarkProjectTemplate.FSharp/_BenchmarkProjectName_.fsproj"
+        }
+      ]
+    },
+    {
+      "code": "FB3005",
+      "severity": "information",
+      "message": "Project \u0027templates/templates/BenchmarkDotNet.BenchmarkProjectTemplate.VB/_BenchmarkProjectName_.vbproj\u0027 contains 3 unresolved MSBuild value(s); static evidence may be incomplete.",
+      "evidenceIds": [],
+      "locations": [
+        {
+          "path": "templates/templates/BenchmarkDotNet.BenchmarkProjectTemplate.VB/_BenchmarkProjectName_.vbproj"
+        }
+      ]
+    },
+    {
+      "code": "FB3005",
+      "severity": "information",
+      "message": "Project \u0027templates/templates/BenchmarkDotNet.BenchmarkProjectTemplate.VB/_BenchmarkProjectName_.vbproj\u0027 contains 3 unresolved MSBuild value(s); static evidence may be incomplete.",
+      "evidenceIds": [],
+      "locations": [
+        {
+          "path": "templates/templates/BenchmarkDotNet.BenchmarkProjectTemplate.VB/_BenchmarkProjectName_.vbproj"
+        }
+      ]
+    },
+    {
+      "code": "FB3100",
+      "severity": "warning",
+      "message": "Roslyn reported 26 syntax error(s) in \u0027src/BenchmarkDotNet/Detectors/Cpu/HardwareIntrinsics.cs\u0027; partial evidence was retained.",
+      "evidenceIds": [],
+      "locations": [
+        {
+          "path": "src/BenchmarkDotNet/Detectors/Cpu/HardwareIntrinsics.cs"
+        }
+      ]
+    },
+    {
+      "code": "FB3100",
+      "severity": "warning",
+      "message": "Roslyn reported 26 syntax error(s) in \u0027src/BenchmarkDotNet/Detectors/Cpu/HardwareIntrinsics.cs\u0027; partial evidence was retained.",
+      "evidenceIds": [],
+      "locations": [
+        {
+          "path": "src/BenchmarkDotNet/Detectors/Cpu/HardwareIntrinsics.cs"
+        }
+      ]
+    },
+    {
+      "code": "FB3100",
+      "severity": "warning",
+      "message": "Roslyn reported 3 syntax error(s) in \u0027templates/templates/BenchmarkDotNet.BenchmarkProjectTemplate.CSharp/Program.cs\u0027; partial evidence was retained.",
+      "evidenceIds": [],
+      "locations": [
+        {
+          "path": "templates/templates/BenchmarkDotNet.BenchmarkProjectTemplate.CSharp/Program.cs"
+        }
+      ]
+    },
+    {
+      "code": "FB3100",
+      "severity": "warning",
+      "message": "Roslyn reported 3 syntax error(s) in \u0027templates/templates/BenchmarkDotNet.BenchmarkProjectTemplate.CSharp/Program.cs\u0027; partial evidence was retained.",
+      "evidenceIds": [],
+      "locations": [
+        {
+          "path": "templates/templates/BenchmarkDotNet.BenchmarkProjectTemplate.CSharp/Program.cs"
+        }
+      ]
+    },
+    {
+      "code": "FB3100",
+      "severity": "warning",
+      "message": "Roslyn reported 7 syntax error(s) in \u0027templates/templates/BenchmarkDotNet.BenchmarkProjectTemplate.CSharp/_BenchmarkName_.cs\u0027; partial evidence was retained.",
+      "evidenceIds": [],
+      "locations": [
+        {
+          "path": "templates/templates/BenchmarkDotNet.BenchmarkProjectTemplate.CSharp/_BenchmarkName_.cs"
+        }
+      ]
+    },
+    {
+      "code": "FB3100",
+      "severity": "warning",
+      "message": "Roslyn reported 7 syntax error(s) in \u0027templates/templates/BenchmarkDotNet.BenchmarkProjectTemplate.CSharp/_BenchmarkName_.cs\u0027; partial evidence was retained.",
+      "evidenceIds": [],
+      "locations": [
+        {
+          "path": "templates/templates/BenchmarkDotNet.BenchmarkProjectTemplate.CSharp/_BenchmarkName_.cs"
+        }
+      ]
+    },
+    {
+      "code": "FB4000",
+      "severity": "information",
+      "message": "The JavaScript/TypeScript analyzer parsed manifests, JSONC configuration, JavaScript/JSX syntax, and bounded TypeScript token streams statically; it did not run package managers, load executable configuration, install dependencies, transpile, or execute target code.",
+      "evidenceIds": [],
+      "locations": []
+    },
+    {
+      "code": "FB5000",
+      "severity": "warning",
+      "message": "Change EHE uses transparent but uncalibrated change-seed and repository seed priors. It is experimental and requires review before consequential use.",
+      "evidenceIds": [],
+      "locations": []
+    },
+    {
+      "code": "FB5001",
+      "severity": "information",
+      "message": "Normalized Change EHE values the immutable final base-to-head artifact delta. Component activity, commit count, timestamps, authors, and intermediate churn do not multiply it.",
+      "evidenceIds": [],
+      "locations": []
+    },
+    {
+      "code": "FB5100",
+      "severity": "information",
+      "message": "Moving selectors were resolved to immutable object IDs before analysis; selector metadata does not multiply effort.",
+      "evidenceIds": [],
+      "locations": []
+    }
+  ],
+  "assumptions": [
+    "Change EHE is counterfactual non-AI replacement effort represented by the final artifact delta, not actual labor or a timesheet.",
+    "Base and head are immutable snapshots; intermediate history is excluded from normalized effort.",
+    "A clear specification exists at the level promised by the selected profile.",
+    "Discovered tests are assumed to pass on the static path and the described delta is estimated as working.",
+    "Formatting-only, exact movement, conventional generated, vendored, minified, binary, lockfile, build-output, and exact-copy bodies are excluded when classified.",
+    "Deletion is never negative EHE; supported removal and simplification work is bounded by capability context rather than deleted volume.",
+    "Low and high values are preliminary dependent planning bounds, not calibrated probability intervals.",
+    "Professionalization gaps are separate and are not added to represented Change EHE or cost."
+  ],
+  "verification": {
+    "mode": "static-assumed",
+    "workingState": "assumed-working",
+    "testsAssumedPassing": true,
+    "note": "Neither immutable snapshot was built or executed."
+  }
+}

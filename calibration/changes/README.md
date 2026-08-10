@@ -1,11 +1,12 @@
 # Change EHE calibration
 
 This directory holds policy and redistributable teacher labels for EffortHours's
-experimental Change estimators. The current baseline is `change-seed/0.2.0`; the
-frozen synthetic corpus retains its original `change-seed/0.1.0` source-report
-provenance. Change labels use the same corpus, independent-review, validation, and
-metric contracts as repository labels, with an additional immutable final-delta
-provenance record.
+experimental Change estimators. The current source baseline is
+`change-seed/0.3.0`; the frozen synthetic corpus retains its original
+`change-seed/0.1.0` source-report provenance, and the real pilot/expansion retain
+their released `change-seed/0.2.0` reports. Change labels use the same corpus,
+independent-review, validation, and metric contracts as repository labels, with an
+additional immutable final-delta provenance record.
 
 The current checkpoint contains tooling, the
 [`change-ehe-work-item/1.0.0`](../rubrics/change-ehe-work-item/1.0.0.md) rubric, and
@@ -16,7 +17,7 @@ review packet are checked in, but no independent correction or accuracy claim is
 complete.
 
 The [`public-real`](public-real) pilot adds the first immutable public open-source
-pull-request record for the current `change-seed/0.2.0` estimator. Released alpha.2
+pull-request record for the released `change-seed/0.2.0` estimator. Alpha.2
 reports 4.25 expected hours and the separately reasoned host-AI teacher reports
 4.00. This single development record is a workflow and realism diagnostic only;
 it changes no prior, threshold, review maturity, or production-readiness claim.
@@ -26,7 +27,11 @@ immutable MIT-licensed families across .NET, JavaScript, and TypeScript, split
 3/2/1 across development, validation, and test. Its blind teacher plan was frozen
 before candidate values were opened. Visible development and validation results
 diagnose severe repeated-slice overcounting in tests and security work, while the
-test comparison remains withheld. The checkpoint changes no rule or prior.
+test comparison remains withheld. A separate
+[`change-seed/0.3.0` diagnostic](public-real-expansion/diagnostics/change-seed-0.3.0)
+records the subject-neutral structural correction on development and validation
+only. Frozen reports and labels remain unchanged; no prior, threshold, review
+maturity, or accuracy claim follows.
 
 ## Workflow
 

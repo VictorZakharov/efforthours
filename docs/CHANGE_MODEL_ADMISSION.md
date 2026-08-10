@@ -8,14 +8,13 @@ reviewed Change EHE corpus exists. No local ML fitting or production-readiness
 claim is permitted until thresholds are set from development/validation error
 scales without consulting the test partition.
 
-The current source baseline is `change-seed/0.2.0`. It is a versioned structural
-correctness revision to the original transparent rules, not an admitted calibrated
-candidate. The frozen public synthetic corpus and source reports retain
-`change-seed/0.1.0` provenance. The first real public Change pilot directly records
-the current `change-seed/0.2.0` candidate. A subsequent six-family blind real-source
-expansion adds development and validation diagnostics, while its test comparison
-remains withheld. Both corpora have one host-AI teacher and no independent
-correction.
+The current source baseline is `change-seed/0.3.0`. It is a second versioned
+structural correctness revision to the transparent rules, not an admitted
+calibrated candidate. The frozen public synthetic corpus and source reports retain
+`change-seed/0.1.0` provenance. The first real public Change pilot and subsequent
+six-family expansion retain released `change-seed/0.2.0` provenance. Separate
+0.3.0 development/validation diagnostics leave the expansion's test comparison
+withheld. Both real corpora have one host-AI teacher and no independent correction.
 
 ## Immutable decision boundary
 
@@ -148,3 +147,49 @@ transparent correctness revision only if it uses subject-neutral rules, syntheti
 semantic regressions, a new estimator version, and development/validation
 disclosure without consulting the test result. This corpus itself changes no
 prior, threshold, candidate, or release decision.
+
+## `change-seed/0.3.0` logical-marginality diagnostic
+
+Version 0.3.0 uses the correctness exception above. Subject-neutral in-memory
+regressions were frozen before its candidate reports were generated: changing the
+number of repository partitions for one production, test, or security capability
+cannot change its logical Change budget; distinct added capabilities remain
+additive; and a capability detected on a materially modified production artifact
+cannot collapse to a 0.25-hour classification delta.
+
+The rule does not fit a teacher ratio or change a repository prior. Existing or
+modified capabilities replace the summed positive repository-capability difference
+with one evidence-derived marginal budget. Fixed edit-region bands contribute one
+to four logical units per changed path, existing diminishing tiers cap the budget,
+and unmapped fallbacks use the same units. Distinct capabilities added through new
+artifacts retain their repository marginal. The estimator identity advances to
+`change-seed/0.3.0+seed-rules/0.2.1`.
+
+The five visible candidate reports and two evaluations are stored separately under
+`calibration/changes/public-real-expansion/diagnostics/change-seed-0.3.0`; no frozen
+alpha.2 report or label changed.
+
+| Partition | Reviewed expected | 0.2.0 expected / WAPE / bias | 0.3.0 expected / WAPE / bias |
+|---|---:|---:|---:|
+| development | 19.00 h | 55.75 h / 1.9605 / +1.9342 | 20.75 h / 0.1447 / +0.0921 |
+| validation | 16.00 h | 34.75 h / 1.1719 / +1.1719 | 15.75 h / 0.0156 / -0.0156 |
+
+Expected category movement is mixed. Development production moves from 6.25 to
+5.00 hours against 5.50 reviewed, unit testing from 21.50 to 2.75 against 4.25,
+security from 16.00 to 2.00 against 1.25, and CI from 1.75 to 0.75 against 0.75.
+Validation production moves from 7.00 to 3.25 against 4.25 and unit testing from
+19.75 to 4.50 against 4.75. Unchanged change-level validation and review rules
+retain their prior disagreements.
+
+Consolidated items change exact lineage coverage. Development target matches move
+from 17/17 to 14/17, source-item-reference matches from 24/24 to 14/24, and
+candidate-item matches from 24/24 to 14/17. Validation moves from 12/12 to 10/12,
+16/16 to 10/16, and 16/16 to 10/12 respectively. Candidate high totals remain
+39.25 versus 30.25 reviewed hours in development and 30.00 versus 26.00 in
+validation. Repository/category metrics retain all items; item metrics disclose
+the lower match coverage.
+
+These diagnostics show that the identified multiplication was removed, but they
+do not establish accuracy, calibrate uncertainty, set a threshold, advance review
+maturity, or admit a model. The test-family candidate report and evaluation were
+not generated for this candidate.
