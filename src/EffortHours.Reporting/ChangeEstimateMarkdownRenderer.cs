@@ -54,6 +54,11 @@ public static class ChangeEstimateMarkdownRenderer
             .Append(ReportFormatting.Hours(report.Reconciliation.AdditivityToleranceHours))
             .AppendLine(")");
 
+        if (report.Reconciliation.Normalization is not null)
+        {
+            AppendNormalization(markdown, report.Reconciliation.Normalization);
+        }
+
         markdown.AppendLine();
         markdown.AppendLine("## Final path evidence");
         markdown.AppendLine();
@@ -115,11 +120,12 @@ public static class ChangeEstimateMarkdownRenderer
         if (report.Reconciliation.Adjustments.Count > 0)
         {
             markdown.AppendLine();
-            markdown.AppendLine("| Adjustment | Low delta | Expected delta | High delta | Reason |");
-            markdown.AppendLine("| --- | ---: | ---: | ---: | --- |");
+            markdown.AppendLine("| Adjustment ID | Kind | Low delta | Expected delta | High delta | Reason |");
+            markdown.AppendLine("| --- | --- | ---: | ---: | ---: | --- |");
             foreach (ChangeAdjustment adjustment in report.Reconciliation.Adjustments)
             {
-                markdown.Append("| ").Append(ReportFormatting.Kebab(adjustment.Kind)).Append(" | ")
+                markdown.Append("| `").Append(ReportFormatting.Escape(adjustment.Id)).Append("` | ")
+                    .Append(ReportFormatting.Kebab(adjustment.Kind)).Append(" | ")
                     .Append(ReportFormatting.Hours(adjustment.EffortDelta.Low)).Append(" | ")
                     .Append(ReportFormatting.Hours(adjustment.EffortDelta.Expected)).Append(" | ")
                     .Append(ReportFormatting.Hours(adjustment.EffortDelta.High)).Append(" | ")
@@ -140,6 +146,66 @@ public static class ChangeEstimateMarkdownRenderer
         }
 
         return markdown.ToString().TrimEnd() + "\n";
+    }
+
+    private static void AppendNormalization(
+        StringBuilder markdown,
+        ChangeNormalizationSummary summary)
+    {
+        markdown.AppendLine();
+        markdown.AppendLine("## Gross-to-final normalization");
+        markdown.AppendLine();
+        markdown.AppendLine(
+            "> These percentages diagnose structural normalization in an explicit multi-commit range. They are not historical rework, actual labor, a productivity score, or effort multipliers.");
+        markdown.AppendLine();
+        markdown.Append("Explanation ID: `")
+            .Append(ReportFormatting.Escape(summary.Id)).AppendLine("`  ");
+        markdown.AppendLine(
+            "Shares use gross isolated expected EHE as the denominator and four-decimal structured rounding. Low/high planning bounds remain dependent hour ranges and are not converted to percentages.");
+        markdown.AppendLine();
+        markdown.AppendLine("| Measure | Expected hours | Share of gross isolated EHE |");
+        markdown.AppendLine("| --- | ---: | ---: |");
+        AppendNormalizationRow(markdown, "Gross isolated EHE", summary.GrossIsolatedEffort.Expected, null);
+        AppendNormalizationRow(
+            markdown,
+            "Normalized final-delta EHE (authoritative)",
+            summary.NormalizedFinalDeltaEffort.Expected,
+            null);
+        AppendNormalizationRow(
+            markdown,
+            "Gross-to-final normalization",
+            summary.ExpectedGrossToFinalNormalizationHours,
+            summary.ExpectedGrossToFinalNormalizationShare);
+        AppendNormalizationRow(
+            markdown,
+            "Rework-like (explicit overlap + revert only)",
+            summary.ExpectedReworkLikeHours,
+            summary.ExpectedReworkLikeShare);
+        AppendNormalizationRow(
+            markdown,
+            "Other normalization",
+            summary.ExpectedOtherNormalizationHours,
+            summary.ExpectedOtherNormalizationShare);
+        if (summary.ExpectedPositiveInteractionHours > 0m)
+        {
+            AppendNormalizationRow(
+                markdown,
+                "Positive interaction adjustment",
+                summary.ExpectedPositiveInteractionHours,
+                null);
+        }
+    }
+
+    private static void AppendNormalizationRow(
+        StringBuilder markdown,
+        string title,
+        decimal hours,
+        decimal? share)
+    {
+        markdown.Append("| ").Append(ReportFormatting.Escape(title)).Append(" | ")
+            .Append(ReportFormatting.Hours(hours)).Append(" | ")
+            .Append(share is null ? "—" : ReportFormatting.SharePercent(share.Value))
+            .AppendLine(" |");
     }
 
     private static void AppendRangeRow(StringBuilder markdown, string title, EffortRange range)

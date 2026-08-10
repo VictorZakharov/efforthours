@@ -22,7 +22,7 @@ public sealed record ChangeEstimateInput
 
 public sealed partial class ChangeEstimator
 {
-    public const string Version = "change-seed/0.4.0+seed-rules/0.3.0";
+    public const string Version = "change-seed/0.5.0+seed-rules/0.3.0";
 
     private readonly IEstimator _repositoryEstimator;
 
@@ -235,6 +235,7 @@ public sealed partial class ChangeEstimator
                 "Formatting-only, exact movement, conventional generated, vendored, minified, binary, lockfile, build-output, and exact-copy bodies are excluded when classified; only safely isolated explicit custom-code regions inside generated files can contribute effort.",
                 "Deletion is never negative EHE; supported removal and simplification work is bounded by capability context rather than deleted volume.",
                 "Low and high values are preliminary dependent planning bounds, not calibrated probability intervals.",
+                "Range normalization shares, when present, are expected-point structural diagnostics, not historical rework, actual labor, productivity scores, or effort multipliers.",
                 "Professionalization gaps are separate and are not added to represented Change EHE or cost.",
             ],
             Verification = new VerificationSummary

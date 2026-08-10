@@ -195,6 +195,97 @@
       },
       "additionalProperties": false
     },
+    "normalization": {
+      "type": "object",
+      "required": [
+        "id",
+        "status",
+        "calculationMethod",
+        "grossIsolatedEffort",
+        "normalizedFinalDeltaEffort",
+        "expectedGrossToFinalNormalizationHours",
+        "expectedReworkLikeHours",
+        "expectedOtherNormalizationHours",
+        "expectedSharedOrRepeatedHours",
+        "expectedOverlapHours",
+        "expectedRevertHours",
+        "expectedResidualInteractionHours",
+        "expectedPositiveInteractionHours",
+        "sharedOrRepeatedAdjustmentIds",
+        "overlapAdjustmentIds",
+        "revertAdjustmentIds",
+        "residualInteractionAdjustmentIds",
+        "positiveInteractionAdjustmentIds"
+      ],
+      "properties": {
+        "id": { "type": "string", "pattern": "^change-normalization:[a-f0-9]{20}$" },
+        "status": { "enum": ["calculated", "not-applicable-zero-gross"] },
+        "calculationMethod": { "const": "expected-point/gross-isolated-v1" },
+        "grossIsolatedEffort": { "$ref": "#/$defs/effortRange" },
+        "normalizedFinalDeltaEffort": { "$ref": "#/$defs/effortRange" },
+        "expectedGrossToFinalNormalizationHours": { "type": "number", "minimum": 0 },
+        "expectedGrossToFinalNormalizationShare": { "type": "number", "minimum": 0, "maximum": 1 },
+        "expectedReworkLikeHours": { "type": "number", "minimum": 0 },
+        "expectedReworkLikeShare": { "type": "number", "minimum": 0, "maximum": 1 },
+        "expectedOtherNormalizationHours": { "type": "number", "minimum": 0 },
+        "expectedOtherNormalizationShare": { "type": "number", "minimum": 0, "maximum": 1 },
+        "expectedSharedOrRepeatedHours": { "type": "number", "minimum": 0 },
+        "expectedOverlapHours": { "type": "number", "minimum": 0 },
+        "expectedRevertHours": { "type": "number", "minimum": 0 },
+        "expectedResidualInteractionHours": { "type": "number", "minimum": 0 },
+        "expectedPositiveInteractionHours": { "type": "number", "minimum": 0 },
+        "sharedOrRepeatedAdjustmentIds": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        },
+        "overlapAdjustmentIds": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        },
+        "revertAdjustmentIds": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        },
+        "residualInteractionAdjustmentIds": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        },
+        "positiveInteractionAdjustmentIds": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "status": { "const": "calculated" } } },
+          "then": {
+            "required": [
+              "expectedGrossToFinalNormalizationShare",
+              "expectedReworkLikeShare",
+              "expectedOtherNormalizationShare"
+            ]
+          }
+        },
+        {
+          "if": { "properties": { "status": { "const": "not-applicable-zero-gross" } } },
+          "then": {
+            "not": {
+              "anyOf": [
+                { "required": ["expectedGrossToFinalNormalizationShare"] },
+                { "required": ["expectedReworkLikeShare"] },
+                { "required": ["expectedOtherNormalizationShare"] }
+              ]
+            }
+          }
+        }
+      ],
+      "additionalProperties": false
+    },
     "reconciliation": {
       "type": "object",
       "required": [
@@ -215,7 +306,8 @@
         "assessment": { "type": "string", "minLength": 1 },
         "allocationMethod": { "type": "string", "minLength": 1 },
         "components": { "type": "array", "items": { "$ref": "#/$defs/component" } },
-        "adjustments": { "type": "array", "items": { "$ref": "#/$defs/adjustment" } }
+        "adjustments": { "type": "array", "items": { "$ref": "#/$defs/adjustment" } },
+        "normalization": { "$ref": "#/$defs/normalization" }
       },
       "additionalProperties": false
     },

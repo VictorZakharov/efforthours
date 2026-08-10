@@ -27,6 +27,37 @@ Because EffortHours's own anchor informed the seed-model and calibration design,
 a development diagnostic rather than an eligible held-out test record unless a
 future independent snapshot and review policy explicitly establishes otherwise.
 
+## 2026-08-10: `change-seed/0.5.0` range-normalization diagnostic
+
+Status: **transparent reporting revision; no valuation or calibration change**
+
+Explicit multi-commit ranges already exposed gross isolated component EHE,
+authoritative normalized final-delta EHE, named signed adjustments, and exact
+allocations. Version 0.5.0 adds an auditable expected-point projection of that
+unchanged ledger. Gross-to-final normalization is `max(0, gross - normalized)`
+over gross isolated expected EHE. The narrower rework-like numerator is capped at
+that normalization amount and includes only negative overlap/revert adjustment
+attribution; shared/repeated work and residual interaction remain separate.
+
+Zero gross effort produces a not-applicable status and no percentage. A normalized
+total above gross produces zero normalization and retains positive interaction.
+Structured shares round to four decimal places away from zero. Low/high planning
+bounds remain hours and are not converted to percentages. Base/head, commit,
+directory, evidence, and current base/head-only PR forms do not receive an invented
+intermediate-history diagnostic.
+
+The v1 report adds an optional summary with a content-stable explanation ID and
+exact adjustment-ID lineage. Existing frozen reports remain valid and are not
+rewritten. Memory-only tests cover exact 10-to-5 normalization, clean additivity,
+overlap, complete/partial reverts, shared work, zero gross, positive interaction,
+rounding, and selector eligibility. A process-level Git range covers a complete
+revert and saved-report explanation.
+
+No repository or Change prior, threshold, work-item amount, normalized total,
+label, dependency, metric, partition, or review maturity changes. These percentages
+are structural diagnostics, not historical labor/rework, productivity scoring,
+calibration evidence, an effort multiplier, or model admission.
+
 ## 2026-08-10: `seed-rules/0.3.0` frontend semantic revision
 
 Status: **transparent evidence/prior correction; not calibrated or independently reviewed**

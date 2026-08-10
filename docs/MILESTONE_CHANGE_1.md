@@ -22,6 +22,12 @@ generated source. Generated bodies, ambiguous markers, oversized blobs, and
 bodyless evidence remain excluded. The v1 contracts, repository priors, frozen
 Change reports, and labels are unchanged.
 
+The range-normalization reporting follow-on was completed on August 10, 2026. It
+advances the source identity to `change-seed/0.5.0`, adds deterministic expected-
+point gross-to-final and bounded rework-like diagnostics for explicit multi-commit
+ranges, and adds saved-report explanation lineage. It changes no EHE prior,
+normalized final-delta total, calibration label, or frozen report.
+
 ## Delivered scope
 
 - `eh change <repository> --base <revision> --head <revision>`
@@ -32,7 +38,8 @@ Change reports, and labels are unchanged.
 - `eh change --base-evidence <evidence.json> --head-evidence <evidence.json>`
 - implementation and recreation profiles, JSON or Markdown, compact JSON, explicit
   output paths, the bundled dated rate, caller rate overrides, and effort-only mode
-- saved-report work-item explanation through `eh change explain`
+- saved-report work-item and normalization-lineage explanation through
+  `eh change explain`
 
 Multiple PRs, author-period portfolios, and shared credit remain deferred.
 
@@ -75,9 +82,18 @@ setup, overlap, revert, and residual interaction adjustments and allocate normal
 expected hours exactly across components. Clean disjoint no-rework changes are
 guarded by the greater of 10% or one hour.
 
-The initial model identity is `change-seed/0.1.0`, composed with
-`seed-rules/0.2.1`. Both its range behavior and confidence bounds require reviewed
-calibration before consequential use.
+Explicit ranges with at least two commit components also report gross isolated EHE,
+normalized final-delta EHE, gross-to-final normalization share, and a separately
+bounded rework-like share containing only negative overlap/revert attribution.
+Zero-gross ranges report shares as not applicable; net-above-gross ranges preserve
+positive interaction. These expected-point diagnostics are not multipliers,
+historical labor, rework reconstruction, or productivity scoring. Base/head and PR
+selectors do not infer an intermediate history.
+
+The initial model identity was `change-seed/0.1.0`, composed with
+`seed-rules/0.2.1`. The current source identity is
+`change-seed/0.5.0+seed-rules/0.3.0`. Its range behavior and confidence bounds still
+require reviewed calibration before consequential use.
 
 ## Contracts and output
 

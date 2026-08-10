@@ -152,7 +152,7 @@ internal static class ChangeExplainCommand
           eh change explain <change-estimate.json> --item <id> [options]
 
         Options:
-          --item <id>               Exact change work-item ID (required)
+          --item <id>               Exact change work-item or normalization ID (required)
           --format <json|markdown>  Output format (default: json)
           --compact                 Emit compact JSON
           -h, --help                Show this help

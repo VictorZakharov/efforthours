@@ -126,6 +126,12 @@ internal static class ChangeReconciler
             normalizedPaths,
             overlapPaths,
             revertedPaths);
+        ChangeNormalizationSummary? normalization = ChangeNormalizationCalculator.Calculate(
+            selection,
+            isolated,
+            normalized,
+            components,
+            adjustments);
         decimal tolerance = Math.Max(1m, decimal.Round(
             isolated.Expected * 0.10m,
             2,
@@ -146,6 +152,7 @@ internal static class ChangeReconciler
             AllocationMethod = "Proportional to isolated expected Change EHE with deterministic cent-level residual assignment; allocations are attribution, not historical hours.",
             Components = components,
             Adjustments = adjustments,
+            Normalization = normalization,
         };
     }
 

@@ -75,6 +75,12 @@ public enum ChangeAdjustmentKind
     Interaction,
 }
 
+public enum ChangeNormalizationStatus
+{
+    Calculated,
+    NotApplicableZeroGross,
+}
+
 public enum EstimateViewKind
 {
     Repository,
