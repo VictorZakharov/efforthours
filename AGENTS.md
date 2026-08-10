@@ -281,14 +281,16 @@ telemetry for both paired sessions were unavailable, so no savings claim,
 host-review budget, or automatic default is selected. Blind multi-model repetition
 remains next.
 
-The public-alpha candidate includes project-authored governance and conduct
+The first public alpha includes project-authored governance and conduct
 policies, issue and pull-request templates, full-SHA-pinned Windows/Linux/macOS CI,
 weekly dependency update configuration, a dedicated NuGet README, and a manually
 dispatched `EffortHours.Tool` preview workflow. Package publication uses a protected
 `nuget.org` GitHub environment and short-lived NuGet trusted-publishing/OIDC
-credentials; long-lived publishing keys must not be committed or stored.
-Repository visibility, tagging, GitHub releases, and package publication remain
-separately authorized actions. Follow `docs/RELEASING.md` for the exact boundary.
+credentials; long-lived publishing keys must not be committed or stored. The
+audited repository is public, and version `0.9.0-alpha.1` has a matching immutable
+tag, NuGet package, and GitHub prerelease. Future visibility, tagging, GitHub
+release, and package-publication actions remain separately authorized. Follow
+`docs/RELEASING.md` for the exact boundary.
 
 The following commands have been run successfully from the repository root:
 
