@@ -1,0 +1,132 @@
+{
+  "schemaVersion": "1.0.0",
+  "compilerVersion": "change-calibration-review-compiler/0.1.0",
+  "id": "efforthours-change-public-real-alpha3",
+  "version": "0.1.0",
+  "description": "A blind host-AI teacher estimate for one immutable public open-source pull request analyzed with the released EffortHours alpha.3 package.",
+  "rubric": {
+    "id": "change-ehe-work-item",
+    "version": "1.0.0"
+  },
+  "records": [
+    {
+      "id": "record:change:github.com/ardalis/result:pr-256",
+      "repository": {
+        "id": "repository:github.com/ardalis/result",
+        "name": "ardalis-result-pr-256",
+        "sourceDigest": "sha256:2e000f86ae003fab7b9e8df42bf8a892f42cc58150fe668530baf52d3a2f7ab1"
+      },
+      "change": {
+        "id": "change:github.com/ardalis/result:pr-256",
+        "selectionKind": "base-head",
+        "baseObjectId": "182c134ef9c5dc0338bd44883bfc46bc7c66a75a",
+        "headObjectId": "7b5ff9b6d8140236303b0a7974138e507060ed1d",
+        "baseEvidenceDigest": "sha256:c9926a6e83bcf3bc1a7780149960f2c21d46d86e6fea770a0c35c047d9630d6d",
+        "headEvidenceDigest": "sha256:6332827e66561b0522a9e88b282e995a2790c440c8323b442ba0e404fea71271",
+        "finalDeltaDigest": "sha256:2e000f86ae003fab7b9e8df42bf8a892f42cc58150fe668530baf52d3a2f7ab1",
+        "coverageTags": [
+          "api",
+          "configuration",
+          "dotnet",
+          "feature",
+          "public-real-change",
+          "pull-request",
+          "unit-tests"
+        ]
+      },
+      "profile": "implementation",
+      "baselineId": "senior-contractor-2026-no-ai",
+      "partition": "validation",
+      "sourceEstimatorVersion": "change-seed/0.3.0+seed-rules/0.2.1",
+      "sourceEstimateDigest": "sha256:08555e49e6e275252de95e1904967ce706170308c68f567479543cb5e7db32c9",
+      "source": {
+        "dataClassification": "public-redistributable",
+        "sourceReference": "https://github.com/ardalis/Result/pull/256",
+        "revision": "182c134ef9c5dc0338bd44883bfc46bc7c66a75a..7b5ff9b6d8140236303b0a7974138e507060ed1d",
+        "licenseExpression": "MIT",
+        "redistributionAllowed": true,
+        "notes": "Immutable base tree 30ca1b4e412ebe5d59541bd1fdc29f8a2cb1ae27 and head tree 0e99f1b3078c446a009447ed2bf6da384ea28f18 retain LICENSE blob a828b2bd27ecea488ea8c4f5ebcbc7860235f98b. Review used the public final specification, final delta, bounded adjacent source, and a blind authoring packet; no candidate hours, contributor identity, activity, elapsed time, actual labor, commit count, or intermediate churn was used as an effort signal. No source excerpt is redistributed."
+      },
+      "review": {
+        "status": "teacher-estimate",
+        "completedOn": "2026-08-10",
+        "reviewers": [
+          {
+            "id": "teacher:openai-codex-sol-max-2026-08",
+            "kind": "host-ai",
+            "role": "teacher",
+            "modelId": "openai-codex",
+            "modelVersion": "sol-max"
+          }
+        ],
+        "notes": "Single disclosed host-AI teacher; no independent correction or adjudication. The teacher ranges were frozen without access to candidate hours or category totals and before compilation or evaluation. This is weak supervision, not actual labor, held-out accuracy, or production-readiness evidence."
+      },
+      "capabilities": [
+        {
+          "sourceCapabilityId": "change-item:capability-marginal:767cdd55b1910aeb1f91",
+          "rationale": "Design and implement the represented configure-once public ProblemDetails customization hook and context, wire all seven error responses while preserving default behavior, document the API, and create the focused cross-target tests. The source capability attaches both production and test paths, so the represented automated-test effort remains in this lineage rather than being invented as a separate category.",
+          "targets": [
+            {
+              "hours": {
+                "low": 2.50,
+                "expected": 3.50,
+                "high": 5.00
+              },
+              "uncertaintyReasons": [
+                "A public global configuration surface needs compatibility judgment, while the net6.0 through net8.0 result implementations require version-tolerant test inspection."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "change-item:change-comprehension:c5b60df6d6160b436bdd",
+          "rationale": "Understand the existing Minimal API result conversion, the customization requirement, the error-status branches, and the repository's three-target compatibility boundary before choosing the public API shape.",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.50,
+                "expected": 0.75,
+                "high": 1.25
+              },
+              "uncertaintyReasons": [
+                "The static configure-once tradeoff and framework-specific IResult shapes require bounded API and compatibility investigation."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "change-item:change-review:65824fcc2bb1399a8025",
+          "rationale": "Review the completed public API, null-default compatibility, status-code mapping, all wired error paths, documentation, and focused regression coverage as one integrated library change.",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.25,
+                "expected": 0.50,
+                "high": 0.75
+              },
+              "uncertaintyReasons": [
+                "The repeated response-path edits merit a deliberate completeness and compatibility pass."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "change-item:change-validation:9a194bbc2eece0c4503b",
+          "rationale": "Build and exercise the represented net6.0, net7.0, and net8.0 change, verify unchanged defaults and customized output across distinct statuses, and debug framework-specific result inspection independently from automated-test authoring.",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.75,
+                "expected": 1.00,
+                "high": 1.75
+              },
+              "uncertaintyReasons": [
+                "Different concrete Minimal API result types across target frameworks may require a compatibility adjustment during validation."
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
