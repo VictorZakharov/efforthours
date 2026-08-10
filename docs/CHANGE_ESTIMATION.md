@@ -5,14 +5,17 @@
 The first Change Estimation MVP is implemented after Milestone 7B5. It includes
 provider-neutral immutable base/head analysis, one commit, one final revision
 range, and one GitHub pull request through an optional `gh` adapter. The current
-`change-seed/0.2.0` rules are transparent but uncalibrated and remain experimental.
-Version 0.2.0 corrects non-marginal modification stacking in the initial rules
-without changing repository `seed-rules/0.2.1`.
+`change-seed/0.3.0` rules are transparent but uncalibrated and remain experimental.
+Version 0.3.0 retains the 0.2.0 non-marginal stacking correction and fixes
+repository work-item partition multiplication without changing repository
+`seed-rules/0.2.1`.
 The first calibration-infrastructure checkpoint, a preliminary 24-record synthetic
 host-AI teacher corpus, a one-record real public pilot, and a blind six-family
 real-source expansion are implemented, but no independent correction exists. The
-visible expansion diagnostics expose repeated category-slice overcounting; its
-test comparison remains withheld and no rule or prior changed.
+visible expansion diagnostics exposed repeated category-slice overcounting. A
+subject-neutral 0.3.0 correctness revision and separate development/validation
+diagnostics now exist; the test comparison remains withheld and no repository
+prior, threshold, or review maturity changed.
 The behavioral safeguard suite now covers cancellation and category-isolated
 migration, integration, CI, container-delivery, and simplification mutations in
 addition to the initial normalization and Git boundaries. Multiple pull requests
@@ -110,16 +113,28 @@ and visible rather than being silently discarded. Exact blob moves are excluded
 from body implementation effort. Path-sensitive integration work is included only
 when separate analyzer evidence supports it.
 
-`change-seed/0.2.0` treats repository capabilities as context rather than charging
+`change-seed/0.3.0` treats repository capabilities as context rather than charging
 their full modification priors whenever one cited path changes. An existing
 capability receives modification work only when its normalized non-file evidence
 changes. Repository-level specification, validation, and review capabilities are
 replaced by one bounded change-level item each; setup and architecture apply only
-when a scope is added or removed. Repeated modified paths in one category share a
-single diminishing marginal budget, and the edit-region rates for an existing
-modified artifact are 30% of the corresponding new-artifact fallback rates. A
-specialized UI or other boundary category therefore requires changed boundary
-evidence; a source file's location inside such a scope is not sufficient.
+when a scope is added or removed. Repeated repository parts and changed paths
+within one logical capability/category share a single diminishing marginal budget,
+and modified-artifact rates remain 30% of the corresponding new-artifact fallback
+rates. A specialized UI or other boundary
+category therefore requires changed boundary evidence; a source file's location
+inside such a scope is not sufficient.
+
+Version 0.3.0 no longer uses the summed positive repository-capability difference
+when an existing capability or modified artifact grows. Repository work-item
+parts for one capability are context, not separate Change work. The changed paths
+feed one logical budget: each path contributes one to four units through fixed,
+capped edit-region bands, and the existing diminishing tiers cap one budget at
+eight expected hours. The same logical units bound unmapped maintained-artifact
+fallbacks. A newly detected capability on a modified artifact receives that
+meaningful modification budget; a genuinely distinct capability added on a new
+artifact retains its positive repository marginal. This is a structural
+double-counting correction, not a fitted scale factor.
 
 ## Additivity and reconciliation
 
@@ -168,7 +183,7 @@ unchanged path.
 
 The v1 public schemas are `change-evidence`, `change-estimate-report`, and
 `change-estimate-explanation`. The current estimator identity is
-`change-seed/0.2.0`; it composes the still-uncalibrated repository
+`change-seed/0.3.0`; it composes the still-uncalibrated repository
 `seed-rules/0.2.1` model and must not be described as production-ready. Frozen
 calibration source reports retain the exact earlier estimator identity they were
 created from.
@@ -186,7 +201,11 @@ created from.
 - JSON and Markdown output include optional pricing only after hours are estimated;
   saved JSON supports work-item explanation queries.
 - Existing-capability modifications require changed normalized capability evidence,
-  and correlated category/path evidence receives one marginal budget.
+  and repeated path evidence within each logical capability/category receives one
+  marginal budget.
+- Positive repository-capability partitions for one existing or modified logical
+  capability collapse into one bounded evidence-derived Change budget; distinct
+  newly added capabilities remain additive.
 - Change comprehension, manual validation, and self-review are emitted once for
   the coherent final delta instead of being inherited repeatedly from repository
   scopes.
@@ -243,8 +262,16 @@ families across .NET, JavaScript, and TypeScript. Its blind teacher plan was
 committed before candidate values were opened. Development and validation compare
 35.00 teacher expected hours with 90.50 alpha.2 hours and diagnose repeated
 test/security/production slices rather than a stable aggregate multiplier. The
-one test-family candidate comparison remains withheld. See `MILESTONE_CHANGE_2.md`
-and `MILESTONE_CHANGE_3.md`.
+one test-family candidate comparison remains withheld.
+
+Separate `change-seed/0.3.0` diagnostics preserve every frozen alpha.2 artifact and
+compare only the three development and two validation records. Development moves
+to 20.75 candidate versus 19.00 teacher expected hours (WAPE 0.1447, bias
++0.0921); validation moves to 15.75 versus 16.00 (WAPE 0.0156, bias -0.0156).
+Consolidated item identities reduce exact mapping, some categories undershoot, and
+candidate high totals remain above reviewed high totals. These one-teacher results
+diagnose the correction; they do not establish calibration or accuracy. See
+`MILESTONE_CHANGE_2.md` and `MILESTONE_CHANGE_3.md`.
 
 ## Author-and-period portfolios
 

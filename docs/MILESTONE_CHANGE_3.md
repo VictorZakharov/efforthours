@@ -12,6 +12,12 @@ MIT-licensed public pull requests. It diagnoses a repeated-slice overcounting
 defect in the current estimator without changing a rule or opening its test
 comparison.
 
+A subsequent August 10 structural-correction checkpoint advances the source
+estimator to `change-seed/0.3.0`. Subject-neutral in-memory regressions and bounded
+logical-budget rules were fixed before generating separate development/validation
+candidate reports. Frozen source reports and labels remain unchanged, the test
+comparison remains withheld, and no calibration or accuracy claim follows.
+
 ## Reproducible source boundary
 
 `change-fixture-generator/0.1.0` analyzes synthetic base/head states through
@@ -104,6 +110,33 @@ add general synthetic guardrails, use a new estimator version, and report mixed
 development/validation diagnostics. The corpus changes no estimator prior,
 threshold, review maturity, or production-readiness decision.
 
+## Logical marginality correction
+
+`change-seed/0.3.0` implements that bounded correctness revision without changing
+`seed-rules/0.2.1`. Repository parts belonging to one existing or modified logical
+capability no longer contribute their summed positive prior. Changed paths instead
+contribute one to four units through capped edit-region bands to one diminishing
+budget; the same units bound fallback work. A newly detected capability on a
+modified artifact receives a meaningful modification floor, while distinct
+capabilities added through distinct final artifacts remain additive.
+
+The five visible reports and two evaluations live under
+`public-real-expansion/diagnostics/change-seed-0.3.0`, separate from the frozen
+alpha.2 artifacts.
+
+| Partition | Teacher expected | Alpha.2 expected / WAPE / bias | 0.3.0 expected / WAPE / bias |
+|---|---:|---:|---:|
+| development | 19.00 h | 55.75 h / 1.9605 / +1.9342 | 20.75 h / 0.1447 / +0.0921 |
+| validation | 16.00 h | 34.75 h / 1.1719 / +1.1719 | 15.75 h / 0.0156 / -0.0156 |
+
+Category behavior remains mixed: the repeated unit-test and security totals no
+longer dominate, while some production and test categories undershoot. Exact
+target, source-reference, and candidate-item matching becomes 14/17, 14/24, and
+14/17 in development and 10/12, 10/16, and 10/12 in validation because
+consolidated work items have new identities. Candidate high
+totals remain above reviewed high totals. These are transparent teacher-label
+diagnostics, not held-out accuracy or model admission.
+
 ## Independent boundary
 
 The synthetic blind packet contains all 121 targets with prior hours, rationales,
@@ -117,9 +150,6 @@ maturity, no Change calibration accuracy claim is permitted.
 ## Next checkpoint
 
 1. Complete and compile the distinct blind reviews without opening teacher files.
-2. Correct repeated logical-slice overcounting with a new transparent estimator
-   version and general synthetic regressions; compare development and validation
-   only, without fitting a preferred aggregate ratio.
-3. Add multiple redistributable observations per ecosystem/partition cell and
+2. Add multiple redistributable observations per ecosystem/partition cell and
    freeze numerical development/validation gates before any candidate fitting.
-4. Evaluate each test partition once only for a frozen release decision.
+3. Evaluate each test partition once only for a frozen release decision.

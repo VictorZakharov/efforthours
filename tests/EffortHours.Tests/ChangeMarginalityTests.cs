@@ -18,7 +18,7 @@ public sealed class ChangeMarginalityTests
             before,
             afterWithoutLockfileDelta);
 
-        Assert.Equal("change-seed/0.2.0+seed-rules/0.2.1", report.EstimatorVersion);
+        Assert.Equal("change-seed/0.3.0+seed-rules/0.2.1", report.EstimatorVersion);
         Assert.InRange(report.TotalEffort.Expected, 3m, 8m);
         Assert.InRange(report.WorkItems.Count, 4, 8);
         Assert.DoesNotContain(report.Categories, category => category.Category is

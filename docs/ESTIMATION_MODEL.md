@@ -395,14 +395,18 @@ for reviewed false-positive exclusions. `change-ehe-work-item/1.0.0`,
 24-record host-AI teacher corpus exists, but no independent correction, numerical
 threshold, or fitted model exists yet.
 
-The current `change-seed/0.2.0` correction keeps repository seed capabilities as
+The current `change-seed/0.3.0` correction keeps repository seed capabilities as
 context for a final delta but does not infer a capability modification from path
 overlap alone. Existing capabilities require changed normalized non-file evidence;
 unchanged broad setup, architecture, UI, validation, and review context cannot each
-charge an independent minimum for the same edit. Unmapped modified artifacts use
-one diminishing category-and-status budget, followed by one bounded change-level
-comprehension, manual-validation, and self-review item. This remains an
-experimental transparent rule revision, not calibrated-model admission.
+charge an independent minimum for the same edit. Repository work-item partitions
+for one existing or modified capability do not contribute their summed prior.
+Instead, capped edit-region bands contribute one to four logical units per changed
+path to one diminishing budget; distinct newly added capabilities remain additive.
+Unmapped modified artifacts use the same bounded category-and-status units,
+followed by one change-level comprehension, manual-validation, and self-review
+item. This remains an experimental transparent correctness revision, not
+calibrated-model admission.
 
 ## 11. Uncertainty
 

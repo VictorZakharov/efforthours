@@ -42,9 +42,11 @@ provenance, review and evaluation commands, a frozen rubric, and a 24-case matri
 with reproducible source reports, 121 preliminary teacher targets, and a blind
 independent-review packet. Real-source follow-ons exercise released alpha.2 on one
 pilot plus a blind six-family .NET/JavaScript/TypeScript expansion. The visible
-expansion diagnostics expose repeated category-slice overcounting; its test
-comparison remains withheld. No independent Change correction or accuracy claim
-is complete.
+expansion diagnostics expose repeated category-slice overcounting. The current
+source `change-seed/0.3.0` correction now consolidates those repository partitions
+through subject-neutral logical-budget rules and records separate development and
+validation diagnostics; the test comparison remains withheld. No independent
+Change correction or accuracy claim is complete.
 The first Milestone 8 host-review and measurement checkpoints are implemented: a
 surrounding AI session can consume a rate-free, digest-bound uncertainty packet,
 request bounded capability, evidence, scope, or explicitly selected source detail,
@@ -88,10 +90,11 @@ The repository now contains:
   evaluation paths that preserve immutable final-delta lineage and repository-held-out
   partitions, plus a deterministic in-memory generator for 24 public synthetic
   source cases whose frozen reports retain `change-seed/0.1.0` provenance and a
-  one-record public pilot plus a six-record blind public expansion for current
-  `change-seed/0.2.0`;
-- current `change-seed/0.2.0` marginal-modification rules that require changed
-  normalized capability evidence, correlate repeated category/path evidence, and
+  one-record public pilot plus a six-record blind public expansion whose released
+  reports retain `change-seed/0.2.0` provenance;
+- current `change-seed/0.3.0` marginal-modification rules that require changed
+  normalized capability evidence, consolidate repository capability partitions
+  into bounded evidence-derived logical budgets, preserve distinct additions, and
   emit final-delta comprehension, validation, and review once;
 - JSON and Markdown reports with evidence lineage, ranges, and optional pricing;
 - synthetic fixtures, contract tests, and process-level CLI tests;
@@ -175,15 +178,18 @@ objects without checking out, fetching, executing, or modifying the target. Rang
 reports reconcile isolated commits with the authoritative normalized final delta;
 commit count and intermediate churn never multiply effort. PR mode uses optional
 `gh` only to resolve immutable identities and requires those objects locally. The
-`change-seed/0.2.0` model is uncalibrated and experimental. It treats modification
-work marginally and does not assign a specialized category merely because a
-changed path belongs to a scope that already has that capability.
+`change-seed/0.3.0` source model is uncalibrated and experimental. It treats
+modification work through bounded logical change units, does not multiply
+repository work-item partitions, and does not assign a specialized category merely
+because a changed path belongs to a scope that already has that capability.
 
-The blind six-family real-source diagnostic shows that repeated category
-partitions can still multiply one logical Change work item, especially for tests
-and security evidence. The result supports a general structural correction, not a
-blanket ratio; no correction has been applied and the test comparison remains
-withheld.
+The blind six-family real-source diagnostic motivated that general structural
+correction, not a blanket ratio. Separate `0.3.0` candidate diagnostics compare
+development and validation only: expected totals move from 55.75 to 20.75 hours
+against 19.00 teacher hours, and from 34.75 to 15.75 against 16.00. Category,
+interval, and exact-item mapping effects remain mixed; the labels have one host-AI
+teacher, no independent correction, and no accuracy standing. The test comparison
+remains withheld.
 
 The first Ctrl+C requests cooperative cancellation and returns exit code 130 after
 writing a concise diagnostic to stderr; pressing Ctrl+C again retains immediate

@@ -4,6 +4,22 @@ Significant user-visible EffortHours changes are recorded here. The project foll
 Semantic Versioning once a package version has been released; prerelease versions
 may still change public contracts with explicit documentation.
 
+## Unreleased
+
+### Changed
+
+- Change estimation advances to experimental `change-seed/0.3.0`. Repeated
+  repository work-item partitions for one existing or modified capability now
+  share a bounded evidence-derived logical marginal budget instead of contributing
+  their summed repository prior. Distinct added capabilities remain additive.
+- Logical modification and fallback budgets use capped edit-region bands per path
+  rather than growing linearly with diff fragmentation. A capability newly
+  detected on a modified artifact receives a meaningful modification floor.
+- Separate five-family development/validation diagnostics record the correction
+  without rewriting frozen alpha.2 reports or consulting the withheld test
+  comparison. The teacher-only results remain weak supervision, not calibration or
+  an accuracy claim.
+
 ## 0.9.0-alpha.2 - 2026-08-10
 
 ### Changed

@@ -292,7 +292,7 @@ Mutation relations remain qualitative guardrails, not calibration labels.
 `efforthours-change-public-real-pilot/0.1.0` adds the first calibration record from
 an immutable public open-source final delta. Its GuardClauses repository family
 remains in the pre-existing development partition. Released alpha.2 provides the
-current `change-seed/0.2.0` candidate, while one disclosed host-AI teacher provides
+frozen `change-seed/0.2.0` candidate, while one disclosed host-AI teacher provides
 five separately reasoned target ranges under `change-ehe-work-item/1.0.0`.
 
 Candidate and teacher expected totals are 4.25 and 4.00 hours. That close one-case
@@ -300,6 +300,26 @@ result is descriptive weak supervision only: no independent correction,
 validation observation, numerical threshold, model fit, prior change, or accuracy
 claim follows from it. The public artifacts retain exact base/head, tree, license,
 final-delta, source-estimate, and corpus provenance without copying source.
+
+## Change logical-marginality correction
+
+The blind six-family public-real expansion subsequently exposed repository
+work-item partitions being summed as if they were separate Change capabilities.
+The source estimator advances to `change-seed/0.3.0` under the pre-admission
+structural-correctness exception. General memory-only regressions cover repeated
+production, test, and security partitions, distinct added capabilities, and a
+meaningful modification whose repository classification delta is only 0.25 hour.
+
+One existing or modified capability now receives one bounded evidence-derived
+budget. Capped edit-region bands contribute logical path units to diminishing
+tiers; distinct capabilities added on new final paths retain their positive
+marginal. No repository prior, label, partition, threshold, or dependency changes.
+
+Separate visible-only diagnostics compare 20.75 candidate with 19.00 teacher
+expected hours in development and 15.75 with 16.00 in validation. Category,
+interval, and exact-item mapping behavior is mixed and fully disclosed. These
+one-teacher diagnostics do not establish accuracy or review maturity, and the test
+comparison remains withheld.
 
 ## Contract boundaries
 
