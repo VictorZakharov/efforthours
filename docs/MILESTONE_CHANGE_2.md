@@ -83,7 +83,9 @@ repository or Change calibration implementations approached their file ceilings.
 
 1. Hand the generated blind packet, grouped by repository family, to
    genuinely distinct reviewers.
-2. Expand the first redistributable real final-change pilot across multiple
-   repository families.
-3. Freeze numerical admission thresholds from development/validation behavior,
-   then decide whether transparent corrections or local ML merit evaluation.
+2. Correct the repeated logical-slice defect diagnosed by the frozen six-family
+   real-source expansion using a new transparent version and synthetic guardrails,
+   without consulting its test comparison.
+3. Add multiple real observations per ecosystem/partition cell, then freeze
+   numerical admission thresholds from development/validation behavior before
+   deciding whether transparent corrections or local ML merit evaluation.

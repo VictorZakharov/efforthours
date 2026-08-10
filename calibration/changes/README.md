@@ -21,6 +21,13 @@ reports 4.25 expected hours and the separately reasoned host-AI teacher reports
 4.00. This single development record is a workflow and realism diagnostic only;
 it changes no prior, threshold, review maturity, or production-readiness claim.
 
+The [`public-real-expansion`](public-real-expansion) checkpoint adds six more
+immutable MIT-licensed families across .NET, JavaScript, and TypeScript, split
+3/2/1 across development, validation, and test. Its blind teacher plan was frozen
+before candidate values were opened. Visible development and validation results
+diagnose severe repeated-slice overcounting in tests and security work, while the
+test comparison remains withheld. The checkpoint changes no rule or prior.
+
 ## Workflow
 
 ```text
@@ -75,5 +82,5 @@ dotnet tools/EffortHours.ChangeCalibration/bin/Release/net10.0/EffortHours.Chang
 
 See `public-synthetic/SOURCES.md` and `public-synthetic/REPRODUCING.md` for the
 synthetic provenance and reproduction checks. See `public-real/SOURCES.md` and
-`public-real/REPRODUCING.md` for the first real final-change record. Both blind
-handoffs remain open.
+`public-real-expansion/SOURCES.md` for the real final-change records and their
+reproduction boundaries. All three blind handoffs remain open.

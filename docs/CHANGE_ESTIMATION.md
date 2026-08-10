@@ -9,8 +9,10 @@ range, and one GitHub pull request through an optional `gh` adapter. The current
 Version 0.2.0 corrects non-marginal modification stacking in the initial rules
 without changing repository `seed-rules/0.2.1`.
 The first calibration-infrastructure checkpoint, a preliminary 24-record synthetic
-host-AI teacher corpus, and a one-record real public pull-request pilot are
-implemented, but no independent correction exists.
+host-AI teacher corpus, a one-record real public pilot, and a blind six-family
+real-source expansion are implemented, but no independent correction exists. The
+visible expansion diagnostics expose repeated category-slice overcounting; its
+test comparison remains withheld and no rule or prior changed.
 The behavioral safeguard suite now covers cancellation and category-isolated
 migration, integration, CI, container-delivery, and simplification mutations in
 addition to the initial normalization and Git boundaries. Multiple pull requests
@@ -234,8 +236,15 @@ independently reviewed error measurements.
 delta: one MIT-licensed pull request in an already-development repository family.
 Released alpha.2 reports 4.25 expected hours and a separately reasoned host-AI
 teacher reports 4.00 across five targets. This one-case diagnostic changes no
-prior, threshold, review maturity, or production-readiness claim. See
-`MILESTONE_CHANGE_2.md` and `MILESTONE_CHANGE_3.md`.
+prior, threshold, review maturity, or production-readiness claim.
+
+`calibration/changes/public-real-expansion` adds six new MIT-licensed repository
+families across .NET, JavaScript, and TypeScript. Its blind teacher plan was
+committed before candidate values were opened. Development and validation compare
+35.00 teacher expected hours with 90.50 alpha.2 hours and diagnose repeated
+test/security/production slices rather than a stable aggregate multiplier. The
+one test-family candidate comparison remains withheld. See `MILESTONE_CHANGE_2.md`
+and `MILESTONE_CHANGE_3.md`.
 
 ## Author-and-period portfolios
 

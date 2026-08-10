@@ -171,6 +171,136 @@ public sealed class ChangeCalibrationArtifactTests
         Assert.DoesNotContain("C:\\\\", combined, StringComparison.OrdinalIgnoreCase);
     }
 
+    [Fact]
+    public void PublicRealExpansionPreservesBlindFreezeAndWithheldTestBoundary()
+    {
+        string root = Path.Combine(
+            FindRepositoryRoot(),
+            "calibration",
+            "changes",
+            "public-real-expansion");
+        string selectionJson = File.ReadAllText(Path.Combine(root, "0.1.0.selection.json"));
+        using JsonDocument selection = JsonDocument.Parse(selectionJson);
+        JsonElement[] cases = [.. selection.RootElement.GetProperty("cases").EnumerateArray()];
+        Assert.Equal(6, cases.Length);
+        Assert.Equal(6, cases.Select(item => item.GetProperty("repositoryFamilyId").GetString()).Distinct().Count());
+        Assert.Equal(2, cases.Count(item => item.GetProperty("ecosystem").GetString() == "dotnet"));
+        Assert.Equal(2, cases.Count(item => item.GetProperty("ecosystem").GetString() == "javascript"));
+        Assert.Equal(2, cases.Count(item => item.GetProperty("ecosystem").GetString() == "typescript"));
+        Assert.Equal(3, cases.Count(item => item.GetProperty("partition").GetString() == "development"));
+        Assert.Equal(2, cases.Count(item => item.GetProperty("partition").GetString() == "validation"));
+        Assert.Equal(1, cases.Count(item => item.GetProperty("partition").GetString() == "test"));
+        Assert.All(cases, item =>
+        {
+            JsonElement license = item.GetProperty("license");
+            Assert.Equal("MIT", license.GetProperty("expression").GetString());
+            Assert.Equal(
+                license.GetProperty("baseBlob").GetString(),
+                license.GetProperty("headBlob").GetString());
+            Assert.True(license.GetProperty("redistributionAllowed").GetBoolean());
+        });
+
+        string[] names =
+        [
+            "benchmarkdotnet",
+            "spectre-console",
+            "p-limit",
+            "axios",
+            "zod",
+            "ofetch",
+        ];
+        Dictionary<string, ChangeEstimateReport> reports = [];
+        List<string> artifactJson = [selectionJson];
+        foreach (string name in names)
+        {
+            string reportJson = File.ReadAllText(Path.Combine(
+                root,
+                "0.1.0",
+                "reports",
+                $"{name}.change-estimate.json"));
+            string packetJson = File.ReadAllText(Path.Combine(
+                root,
+                "0.1.0",
+                "blind-packets",
+                $"{name}.blind-authoring.json"));
+            ChangeEstimateReport report = ContractJson.Deserialize<ChangeEstimateReport>(reportJson);
+            CalibrationAuthoringPacket packet = ContractJson.Deserialize<CalibrationAuthoringPacket>(packetJson);
+            reports.Add(name, report);
+            artifactJson.Add(reportJson);
+            artifactJson.Add(packetJson);
+
+            Assert.Empty(ContractValidation.Validate(report));
+            Assert.Empty(ContractValidation.Validate(packet));
+            Assert.True(ContractSchemaValidator.Validate(SchemaNames.ChangeEstimateReport, reportJson).IsValid);
+            Assert.True(ContractSchemaValidator.Validate(
+                SchemaNames.CalibrationAuthoringPacket,
+                packetJson).IsValid);
+            Assert.Equal("change-seed/0.2.0+seed-rules/0.2.1", report.EstimatorVersion);
+            Assert.Equal(CalibrationCandidateVisibility.Blind, packet.CandidateVisibility);
+            Assert.Null(packet.Candidate.TotalHours);
+            Assert.Empty(packet.Candidate.Categories);
+            Assert.Equal(CalibrationDigest.Compute(report), packet.Candidate.EstimateDigest);
+            Assert.Equal(
+                ChangeCalibrationIdentity.ComputeFinalDeltaDigest(report),
+                packet.Change!.FinalDeltaDigest);
+            Assert.All(packet.Targets, target => Assert.Null(target.Candidate.Hours));
+        }
+
+        string planJson = File.ReadAllText(Path.Combine(root, "0.1.0.teacher-review-plan.json"));
+        string corpusJson = File.ReadAllText(Path.Combine(root, "0.1.0.teacher-corpus.json"));
+        string blindJson = File.ReadAllText(Path.Combine(root, "0.1.0.independent-review-packet.json"));
+        CalibrationReviewPlan plan = ContractJson.Deserialize<CalibrationReviewPlan>(planJson);
+        CalibrationCorpus corpus = ContractJson.Deserialize<CalibrationCorpus>(corpusJson);
+        CalibrationCorpusReviewPacket blind = ContractJson.Deserialize<CalibrationCorpusReviewPacket>(blindJson);
+        artifactJson.AddRange([planJson, corpusJson, blindJson]);
+
+        Assert.Empty(ContractValidation.Validate(plan));
+        Assert.Empty(ContractValidation.Validate(corpus));
+        Assert.Empty(ContractValidation.Validate(blind));
+        Assert.True(ContractSchemaValidator.Validate(SchemaNames.CalibrationReviewPlan, planJson).IsValid);
+        Assert.True(ContractSchemaValidator.Validate(SchemaNames.CalibrationCorpus, corpusJson).IsValid);
+        Assert.True(ContractSchemaValidator.Validate(
+            SchemaNames.CalibrationCorpusReviewPacket,
+            blindJson).IsValid);
+        Assert.Equal(6, plan.Records.Count);
+        Assert.Equal(6, corpus.Records.Count);
+        Assert.Equal(34, corpus.Records.Sum(record => record.Targets.Count));
+        Assert.Equal(39.00m, corpus.Records.SelectMany(record => record.Targets).Sum(target => target.Hours.Expected));
+        Assert.Equal(CalibrationDigest.Compute(corpus), blind.SourceCorpus.Digest);
+        Assert.Equal(
+            "sha256:a60aed52d78368cad69fc39bb7fa399a255dbf237f7739bf78dfd55356c96c7c",
+            blind.SourceCorpus.Digest);
+        Assert.Equal(CalibrationCandidateVisibility.Blind, blind.CandidateVisibility);
+        Assert.All(corpus.Records, record =>
+        {
+            Assert.Equal(CalibrationDataClassification.PublicRedistributable, record.Source.DataClassification);
+            Assert.Equal("MIT", record.Source.LicenseExpression);
+            Assert.True(record.Source.RedistributionAllowed);
+            Assert.Equal(CalibrationReviewStatus.TeacherEstimate, record.Review.Status);
+        });
+        Assert.All(blind.Records.SelectMany(record => record.Targets), target =>
+        {
+            Assert.Null(target.Candidate.Hours);
+            Assert.Null(target.Candidate.Rationale);
+            Assert.Null(target.Candidate.SizeException);
+        });
+
+        AssertExpansionEvaluation(root, "development", 3, 19.00m, 55.75m, 1.9605m);
+        AssertExpansionEvaluation(root, "validation", 2, 16.00m, 34.75m, 1.1719m);
+        Assert.False(File.Exists(Path.Combine(root, "0.1.0.teacher-test-evaluation.json")));
+
+        Assert.Equal(4, reports["zod"].WorkItems.Count(item =>
+            item.Category == EffortCategory.SecurityAndAccessibility));
+        Assert.Equal(4, reports["zod"].WorkItems.Count(item => item.Category == EffortCategory.UnitTesting));
+        Assert.Equal(4, reports["axios"].WorkItems.Count(item => item.Category == EffortCategory.UnitTesting));
+        Assert.Equal(2, reports["p-limit"].WorkItems.Count(item =>
+            item.Category == EffortCategory.ProductionImplementation));
+
+        string combined = string.Concat(artifactJson);
+        Assert.DoesNotContain("G:\\\\", combined, StringComparison.OrdinalIgnoreCase);
+        Assert.DoesNotContain("C:\\\\", combined, StringComparison.OrdinalIgnoreCase);
+    }
+
     private static void AssertTeacherArtifacts(string root)
     {
         string planJson = File.ReadAllText(Path.Combine(root, "0.1.0.teacher-review-plan.json"));
@@ -221,6 +351,26 @@ public sealed class ChangeCalibrationArtifactTests
         Assert.Equal(reviewedHours, report.RepositoryTotals.Expected.ReviewedHours);
         Assert.Equal(candidateHours, report.RepositoryTotals.Expected.CandidateHours);
         Assert.Equal(wape, report.RepositoryTotals.Expected.WeightedAbsolutePercentageError);
+    }
+
+    private static void AssertExpansionEvaluation(
+        string root,
+        string partition,
+        int recordCount,
+        decimal reviewedHours,
+        decimal candidateHours,
+        decimal wape)
+    {
+        string json = File.ReadAllText(Path.Combine(root, $"0.1.0.teacher-{partition}-evaluation.json"));
+        CalibrationEvaluationReport report = ContractJson.Deserialize<CalibrationEvaluationReport>(json);
+        Assert.Empty(ContractValidation.Validate(report));
+        Assert.True(ContractSchemaValidator.Validate(SchemaNames.CalibrationEvaluation, json).IsValid);
+        Assert.Equal(recordCount, report.RecordCount);
+        Assert.Equal(reviewedHours, report.RepositoryTotals.Expected.ReviewedHours);
+        Assert.Equal(candidateHours, report.RepositoryTotals.Expected.CandidateHours);
+        Assert.Equal(wape, report.RepositoryTotals.Expected.WeightedAbsolutePercentageError);
+        Assert.Equal(report.Match.TargetCount, report.Match.MatchedTargetCount);
+        Assert.Equal(report.Match.CandidateWorkItemCount, report.Match.MatchedCandidateWorkItemCount);
     }
 
     private static string ReadIndexed(string root, JsonElement fixture, string property)

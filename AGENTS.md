@@ -276,6 +276,18 @@ Exact commits, trees, license and report digests, a compiled corpus, a developme
 diagnostic, and a blind follow-up packet are checked in without source excerpts.
 There is no independent correction, prior change, threshold, or accuracy claim.
 
+The blind public real Change expansion adds six new immutable MIT-licensed
+repository families across .NET, JavaScript, and TypeScript, split 3/2/1 across
+development, validation, and test. Released alpha.2 reports were written without
+displaying candidate values; one disclosed host-AI teacher then froze 34 logical
+targets before compilation or evaluation. Development compares 19.00 teacher
+expected hours with 55.75 candidate hours, and validation compares 16.00 with
+34.75. Repeated category slices materially overcount Zod security/tests, Axios
+tests, and p-limit production, while BenchmarkDotNet's near-equal total masks
+category cancellation. The ofetch test comparison remains withheld. The corpus
+changes no prior, rule, threshold, maturity, or dependency and has no independent
+correction.
+
 The first Milestone 8 host-review checkpoint adds the provider-neutral
 `host-review/1.0.0` protocol: rate-free compact packets, canonical estimate-plus-
 evidence input digests, bounded capability/evidence/scope/selected-source queries,
