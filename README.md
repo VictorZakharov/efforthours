@@ -34,8 +34,9 @@ parses digest-verified LCOV and Cobertura reports, maps them to maintained
 production scopes without emitting reported source paths, and gives measured
 values precedence over same-scope declarations. The first experimental Change
 Estimation MVP is also
-implemented for immutable base/head revisions, one commit, one range, and one
-GitHub pull request. Its behavioral safeguard checkpoint adds cooperative
+implemented for two local directories, two saved repository-evidence bundles,
+immutable Git base/head revisions, one commit, one range, and one GitHub pull
+request. Its behavioral safeguard checkpoint adds cooperative
 cancellation and category-isolated migration, integration, CI, container-delivery,
 and simplification mutations. Its first calibration checkpoint adds final-delta
 provenance, review and evaluation commands, a frozen rubric, and a 24-case matrix
@@ -87,8 +88,8 @@ The repository now contains:
 - an injectable repository-storage boundary with memory-only unit fixtures;
 - an installable `EffortHours.Tool` .NET global tool with the command `eh`;
 - schema-versioned Change EHE evidence, reports, explanations, immutable Git-tree
-  analysis, additive range reconciliation, and an optional identity-only `gh` PR
-  adapter;
+  analysis, content-pinned directory pairs, digest-checked evidence pairs, additive
+  range reconciliation, and an optional identity-only `gh` PR adapter;
 - Change calibration authoring, compilation, independent-review handoff, and
   evaluation paths that preserve immutable final-delta lineage and repository-held-out
   partitions, plus a deterministic in-memory generator for 24 public synthetic
@@ -176,9 +177,16 @@ command chooses or calls a provider; provider, privacy, disclosure, and retentio
 decisions remain with the caller. See [Milestone 8](docs/MILESTONE_8.md) and its
 [measurement checkpoint](docs/MILESTONE_8_MEASUREMENT.md).
 
-`eh change` estimates the final functional and quality delta for explicit
-base/head revisions, a commit, a range, or one PR. It reads immutable local Git
-objects without checking out, fetching, executing, or modifying the target. Range
+`eh change` estimates the final functional and quality delta for two directories,
+two saved repository-evidence bundles, explicit Git base/head revisions, a commit,
+a range, or one PR. Use `--base-path` with `--head-path` for directories, or
+`--base-evidence` with `--head-evidence` for saved evidence. These forms require no
+Git or GitHub. Directory inputs are statically scanned and content-pinned without
+writing into either tree. Evidence inputs have no source bodies, so modified
+maintained paths that otherwise qualify as represented remain conservative when
+formatting-only and detailed edit-region analysis cannot run. Git forms read
+immutable local objects without checking out,
+fetching, executing, or modifying the target. Range
 reports reconcile isolated commits with the authoritative normalized final delta;
 commit count and intermediate churn never multiply effort. PR mode uses optional
 `gh` only to resolve immutable identities and requires those objects locally. The

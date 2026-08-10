@@ -144,10 +144,14 @@ Feature-oriented reporting is intentionally deferred until repository-level
 analysis is trustworthy.
 
 The experimental incremental-change mode estimates the functional and quality
-delta for immutable base/head snapshots, one commit, a revision range, or one
+delta for two statically scanned directories, two saved repository-evidence
+bundles, immutable Git base/head snapshots, one commit, a revision range, or one
 GitHub pull request. The optional `gh` adapter resolves only the PR number or URL
-and immutable base/head object IDs; analysis then remains local. Multiple-PR and
-author-and-period portfolios are deferred. Commit count, activity, timestamps,
+and immutable base/head object IDs; analysis then remains local. Evidence-only
+modified maintained paths that otherwise qualify as represented are retained
+conservatively because saved evidence has no source bodies. Multiple-PR and
+author-and-period portfolios are deferred. Commit count,
+activity, timestamps,
 review duration, and discarded intermediate revisions remain excluded as effort
 signals. The result is still EHE, not actual hours worked or a standalone measure
 of an employee's performance. See `CHANGE_ESTIMATION.md`.

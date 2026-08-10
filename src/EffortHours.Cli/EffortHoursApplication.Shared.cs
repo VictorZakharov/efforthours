@@ -217,6 +217,7 @@ public sealed partial class EffortHoursApplication
           eh scan <repository> [options]
           eh estimate <repository-or-evidence.json> [options]
           eh change <repository> <--commit|--range|--base/--head|--pr> [options]
+          eh change <--base-path/--head-path|--base-evidence/--head-evidence> [options]
           eh change explain <change-estimate.json> --item <id> [options]
           eh report <estimate.json> [options]
           eh explain <repository-or-evidence.json> --item <id> [options]

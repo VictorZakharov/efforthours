@@ -33,6 +33,22 @@ public interface IChangeSnapshot : IAsyncDisposable
         CancellationToken cancellationToken = default);
 }
 
+/// <summary>
+/// A change snapshot whose repository analysis was completed while the snapshot
+/// identity was established. Consumers can reuse the frozen evidence instead of
+/// traversing the backing source again.
+/// </summary>
+public interface IRepositoryEvidenceChangeSnapshot : IChangeSnapshot
+{
+    public RepositoryEvidence Evidence { get; }
+
+    /// <summary>
+    /// Indicates whether source bodies can be read for content-level normalization.
+    /// Serialized repository evidence carries hashes and measurements, but no bodies.
+    /// </summary>
+    public bool SupportsSourceReads { get; }
+}
+
 public sealed record ChangeComponentInput
 {
     public ChangeComponentKind Kind { get; init; } = ChangeComponentKind.Commit;

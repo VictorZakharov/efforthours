@@ -1,4 +1,5 @@
 using System.Text;
+using System.Text.Json;
 using EffortHours.Change;
 using EffortHours.Contracts;
 using EffortHours.Contracts.V1;
@@ -10,17 +11,22 @@ namespace EffortHours.Cli;
 internal sealed class ChangeCommand
 {
     private readonly ChangeEstimator _estimator;
-    private readonly GitChangePlanner _planner;
+    private readonly GitChangePlanner _gitPlanner;
+    private readonly NonGitChangePlanner _nonGitPlanner;
 
     public ChangeCommand()
-        : this(new ChangeEstimator(), new GitChangePlanner())
+        : this(new ChangeEstimator(), new GitChangePlanner(), new NonGitChangePlanner())
     {
     }
 
-    public ChangeCommand(ChangeEstimator estimator, GitChangePlanner planner)
+    public ChangeCommand(
+        ChangeEstimator estimator,
+        GitChangePlanner gitPlanner,
+        NonGitChangePlanner nonGitPlanner)
     {
         _estimator = estimator ?? throw new ArgumentNullException(nameof(estimator));
-        _planner = planner ?? throw new ArgumentNullException(nameof(planner));
+        _gitPlanner = gitPlanner ?? throw new ArgumentNullException(nameof(gitPlanner));
+        _nonGitPlanner = nonGitPlanner ?? throw new ArgumentNullException(nameof(nonGitPlanner));
     }
 
     public async Task<int> ExecuteAsync(
@@ -58,37 +64,38 @@ internal sealed class ChangeCommand
 
         ChangeCommandOptions options = parsed.Options!;
 
-        GitChangePlan plan;
+        GitChangePlan? gitPlan = null;
+        ChangeEstimateInput? nonGitPlan = null;
         try
         {
-            plan = options.Commit is not null
-                ? await _planner.PlanCommitAsync(
-                    options.RepositoryPath,
-                    options.Commit,
-                    options.Parent,
-                    cancellationToken)
-                    .ConfigureAwait(false)
-                : options.Range is not null
-                    ? await _planner.PlanRangeAsync(
-                        options.RepositoryPath,
-                        options.Range,
-                        cancellationToken)
-                        .ConfigureAwait(false)
-                    : options.PullRequest is not null
-                        ? await _planner.PlanPullRequestAsync(
-                            options.RepositoryPath,
-                            options.PullRequest,
-                            options.GitHubRepository,
-                            cancellationToken).ConfigureAwait(false)
-                        : await _planner.PlanBaseHeadAsync(
-                            options.RepositoryPath,
-                            options.BaseRevision!,
-                            options.HeadRevision!,
-                            cancellationToken).ConfigureAwait(false);
+            if (options.IsDirectorySelection)
+            {
+                nonGitPlan = await _nonGitPlanner.PlanDirectoriesAsync(
+                    options.BaseDirectory!,
+                    options.HeadDirectory!,
+                    cancellationToken).ConfigureAwait(false);
+            }
+            else if (options.IsEvidenceSelection)
+            {
+                RepositoryEvidence baseEvidence = await ChangeEvidenceFileLoader.LoadAsync(
+                    options.BaseEvidencePath!,
+                    cancellationToken).ConfigureAwait(false);
+                RepositoryEvidence headEvidence = await ChangeEvidenceFileLoader.LoadAsync(
+                    options.HeadEvidencePath!,
+                    cancellationToken).ConfigureAwait(false);
+                nonGitPlan = NonGitChangePlanner.PlanEvidence(
+                    baseEvidence,
+                    headEvidence,
+                    cancellationToken);
+            }
+            else
+            {
+                gitPlan = await PlanGitAsync(options, cancellationToken).ConfigureAwait(false);
+            }
         }
         catch (Exception exception) when (
             exception is ArgumentException or DirectoryNotFoundException or ExternalCommandException or
-            InvalidOperationException)
+            InvalidOperationException or IOException or UnauthorizedAccessException or JsonException)
         {
             await standardError.WriteLineAsync($"eh: {exception.Message}").ConfigureAwait(false);
             return CliExitCodes.InvalidInput;
@@ -109,15 +116,21 @@ internal sealed class ChangeCommand
         ChangeEstimateReport report;
         try
         {
-            report = await _estimator.EstimateAsync(
-                plan,
-                options.Profile,
-                rateCard,
-                cancellationToken).ConfigureAwait(false);
+            report = nonGitPlan is not null
+                ? await _estimator.EstimateAsync(
+                    nonGitPlan,
+                    options.Profile,
+                    rateCard,
+                    cancellationToken).ConfigureAwait(false)
+                : await _estimator.EstimateAsync(
+                    gitPlan!,
+                    options.Profile,
+                    rateCard,
+                    cancellationToken).ConfigureAwait(false);
         }
         catch (Exception exception) when (
             exception is ArgumentException or DirectoryNotFoundException or ExternalCommandException or
-            InvalidOperationException)
+            InvalidOperationException or IOException or UnauthorizedAccessException)
         {
             await standardError.WriteLineAsync($"eh: {exception.Message}").ConfigureAwait(false);
             return CliExitCodes.InvalidInput;
@@ -136,6 +149,31 @@ internal sealed class ChangeCommand
             standardError,
             cancellationToken).ConfigureAwait(false);
     }
+
+    private async Task<GitChangePlan> PlanGitAsync(
+        ChangeCommandOptions options,
+        CancellationToken cancellationToken) => options.Commit is not null
+            ? await _gitPlanner.PlanCommitAsync(
+                options.RepositoryPath!,
+                options.Commit,
+                options.Parent,
+                cancellationToken).ConfigureAwait(false)
+            : options.Range is not null
+                ? await _gitPlanner.PlanRangeAsync(
+                    options.RepositoryPath!,
+                    options.Range,
+                    cancellationToken).ConfigureAwait(false)
+                : options.PullRequest is not null
+                    ? await _gitPlanner.PlanPullRequestAsync(
+                        options.RepositoryPath!,
+                        options.PullRequest,
+                        options.GitHubRepository,
+                        cancellationToken).ConfigureAwait(false)
+                    : await _gitPlanner.PlanBaseHeadAsync(
+                        options.RepositoryPath!,
+                        options.BaseRevision!,
+                        options.HeadRevision!,
+                        cancellationToken).ConfigureAwait(false);
 
     private static async Task<int> WriteOutputAsync(
         string content,
@@ -193,6 +231,8 @@ internal sealed class ChangeCommand
           eh change <repository> --range <base>..<head> [options]
           eh change <repository> --base <revision> --head <revision> [options]
           eh change <repository> --pr <number-or-url> [--repo <owner/name>] [options]
+          eh change --base-path <directory> --head-path <directory> [options]
+          eh change --base-evidence <evidence.json> --head-evidence <evidence.json> [options]
           eh change explain <change-estimate.json> --item <id> [options]
 
         Selectors:
@@ -204,6 +244,12 @@ internal sealed class ChangeCommand
           --head <revision>    Explicit final head revision (requires --base)
           --pr <number-or-url> Resolve one PR's immutable base/head through optional gh support
           --repo <owner/name>  Explicit GitHub repository for --pr
+          --base-path <path>   Statically scan one local base directory (requires --head-path)
+          --head-path <path>   Statically scan one local head directory (requires --base-path)
+          --base-evidence <path>
+                               Load one saved repository-evidence base snapshot
+          --head-evidence <path>
+                               Load one saved repository-evidence head snapshot
 
         Output:
           --profile <implementation|recreation>  Estimation profile (default: implementation)
@@ -215,9 +261,11 @@ internal sealed class ChangeCommand
           --output <path>                         Write output to an explicit path instead of stdout
           -h, --help                              Show this help
 
-        Change mode reads immutable Git objects directly and does not check out, fetch,
-        execute, or write into the selected repository. Normalized effort values the final
-        artifact delta; commit activity and intermediate churn are not effort multipliers.
-        The current change model is experimental and uncalibrated.
+        Directory and evidence pairs work without Git or GitHub. Directory inputs are
+        statically scanned and content-pinned; saved evidence has no source bodies, so
+        modified maintained paths retain conservative normalization. Git mode reads
+        immutable objects directly and does not check out or fetch. No selector executes
+        target code or writes into either target tree. The current change model is
+        experimental and uncalibrated.
         """;
 }
