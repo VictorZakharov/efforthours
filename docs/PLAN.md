@@ -275,6 +275,12 @@ Status as of August 10, 2026:
   added test path remains mapped into production rather than a distinct
   unit-testing target.
   One non-independent record changes no rule, prior, threshold, or maturity.
+- The generated-customization Change boundary is complete in source as
+  `change-seed/0.4.0`: exact, balanced, EffortHours-specific `<custom-code>`
+  regions can contribute bounded effort while the surrounding generated body
+  remains excluded. Unchanged or formatting-only regions remain zero; ambiguous,
+  oversized, or bodyless cases fail closed. Frozen reports and labels are
+  unchanged because no released corpus case contains the supported markers.
 - Source-file budgets are enforced as an end-to-end architecture ratchet: 500
   lines by default, 400 for CLI files, and explicit non-precedent overrides for
   legacy debt. The former large CLI application class is split by responsibility.
@@ -459,7 +465,7 @@ review.
   productivity.
 - Extend the implemented optional identity-only `gh` adapter only when network,
   privacy, immutable-object, and cross-PR normalization safeguards are explicit.
-- Calibrate `change-seed/0.3.0` on reviewed, redistributable final-change examples
+- Calibrate `change-seed/0.4.0` on reviewed, redistributable final-change examples
   before consequential use or any production-readiness claim.
 - Follow the remaining deferred semantics and safeguards in
   `CHANGE_ESTIMATION.md` before expanding any history-backed command.
@@ -550,4 +556,5 @@ cross-platform measurements and a more representative benchmark corpus exist.
    add multiple real observations per ecosystem/partition cell, and record
    large-range performance before fitting a calibrated model or expanding to
    multiple PRs and author-period portfolios. Preserve the completed subject-neutral
-   `change-seed/0.3.0` logical-marginality guardrails throughout that work.
+   `change-seed/0.4.0` generated-customization and inherited logical-marginality
+   guardrails throughout that work.

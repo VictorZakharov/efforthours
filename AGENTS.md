@@ -245,12 +245,16 @@ meaningful code/tests/docs, migrations, integrations, CI, container delivery,
 simplification, additivity, overlap, reverts, category isolation, all three range
 points, and cooperative cancellation. The first Ctrl+C returns 130 after a
 stderr-only diagnostic; a second retains immediate termination. Current
-`change-seed/0.3.0` rules prevent broad repository capability context from stacking
-on touched paths, consolidate repository capability partitions through bounded
-logical change units, preserve distinct added capabilities, and emit bounded
-change-level comprehension, validation, and review once. They remain experimental
-and uncalibrated. Non-Git Change mode now accepts two statically scanned,
-content-pinned directories or two digest-checked saved repository-evidence bundles;
+`change-seed/0.4.0` rules retain the bounded 0.3.0 logical-marginality correction
+and can isolate exact, balanced, EffortHours-specific `<custom-code>` regions
+inside otherwise generated source. Only those regions can contribute;
+conventional generated bodies,
+unchanged/formatting-only regions, ambiguous markers, oversized blobs, and
+bodyless generated evidence remain excluded. The rules preserve distinct added
+capabilities and emit bounded change-level comprehension, validation, and review
+once. They remain experimental and uncalibrated. Non-Git Change mode now accepts
+two statically scanned, content-pinned directories or two digest-checked saved
+repository-evidence bundles;
 bodyless evidence modifications that otherwise qualify as represented remain
 conservative with an explicit warning. Multiple PRs and author-period portfolios
 remain deferred. The former
@@ -271,7 +275,7 @@ host-AI teacher. Development and validation diagnostics are recorded; test
 comparison remains withheld. No independent Change review is complete. The corpus
 changes no estimator prior and adds no ML dependency; its frozen source reports
 retain `change-seed/0.1.0` provenance. The source baseline subsequently advances
-from the historical 0.2.0 correction to `change-seed/0.3.0` under the
+from the historical 0.2.0 and 0.3.0 corrections to `change-seed/0.4.0` under the
 structural-correctness exception; frozen source reports retain their original
 estimator identities.
 

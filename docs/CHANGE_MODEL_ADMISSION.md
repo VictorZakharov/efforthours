@@ -8,14 +8,15 @@ reviewed Change EHE corpus exists. No local ML fitting or production-readiness
 claim is permitted until thresholds are set from development/validation error
 scales without consulting the test partition.
 
-The current source baseline is `change-seed/0.3.0`. It is a second versioned
-structural correctness revision to the transparent rules, not an admitted
-calibrated candidate. The frozen public synthetic corpus and source reports retain
-`change-seed/0.1.0` provenance. The first real public Change pilot and subsequent
-six-family expansion retain released `change-seed/0.2.0` provenance. Separate
-0.3.0 development/validation diagnostics leave the expansion's test comparison
-withheld. A released-alpha.3 public validation follow-on exercises 0.3.0 directly.
-All three real corpora have one host-AI teacher and no independent correction.
+The current source baseline is `change-seed/0.4.0`. It retains the 0.3.0 logical
+marginality correction and adds a versioned, fail-closed generated-customization
+normalization boundary; it is not an admitted calibrated candidate. The frozen
+public synthetic corpus and source reports retain `change-seed/0.1.0` provenance.
+The first real public Change pilot and subsequent six-family expansion retain
+released `change-seed/0.2.0` provenance. Separate 0.3.0 development/validation
+diagnostics leave the expansion's test comparison withheld. A released-alpha.3
+public validation follow-on exercises 0.3.0 directly. All three real corpora have
+one host-AI teacher and no independent correction.
 
 ## Immutable decision boundary
 
@@ -216,3 +217,29 @@ source and test paths, leaving no separately measurable unit-testing category.
 This is one non-independent validation observation. It cannot fit a rule, select a
 candidate, calibrate uncertainty, set an admission threshold, advance review
 maturity, or establish held-out accuracy.
+
+## `change-seed/0.4.0` generated-customization normalization
+
+Version 0.4.0 uses the correctness exception only to close the settled generated-
+artifact boundary. Exact, balanced, non-nested, EffortHours-specific
+`<custom-code>` regions can be isolated from otherwise generated UTF-8 source when
+bodies are available and bounded; unrelated generator-specific protected-region
+syntax is not inferred. Only that projection can contribute edit-region work. The
+surrounding generated body remains excluded; unchanged or formatting-only
+projections remain zero; ambiguous, oversized, or bodyless cases fail closed.
+Vendored, minified, binary, lockfile, build-output, and exact-copy exclusions take
+precedence.
+
+The rule is subject-neutral and changes no numerical prior, repository model,
+label, dependency, threshold, or public schema. Memory-only regressions cover
+generated-body invariance, meaningful/formatting custom-region changes, additions,
+removals, malformed markers, and bodyless evidence. A process-level Git test covers
+the packaged command boundary and verifies that custom source is not emitted.
+
+The checked-in Change source cases contain no supported custom-code marker, and
+their only generated-path case is the existing conventional exact-zero synthetic
+case. Therefore every frozen numeric report and the visible 0.3.0 development/
+validation diagnostic remain applicable without regeneration; rewriting only the
+estimator identity would destroy frozen provenance without adding evidence. The
+test comparison remains unopened. This is normalization correctness, not
+calibration, accuracy evidence, or model admission.

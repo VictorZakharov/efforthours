@@ -24,6 +24,13 @@ agreement alongside broad uncertainty, self-review overstatement, and a
 production/test category-mapping limitation. It changes no rule or admission
 decision.
 
+A later source-only normalization checkpoint advances to `change-seed/0.4.0` by
+isolating exact, EffortHours-specific `<custom-code>` regions inside generated
+artifacts. None of the frozen synthetic or real-source records uses the supported
+markers, so their numeric reports and 0.3.0 diagnostics remain unchanged. No
+corpus, label, prior, threshold, or maturity changed, and the withheld test
+comparison was not opened.
+
 ## Reproducible source boundary
 
 `change-fixture-generator/0.1.0` analyzes synthetic base/head states through

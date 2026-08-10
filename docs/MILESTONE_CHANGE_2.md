@@ -83,8 +83,9 @@ repository or Change calibration implementations approached their file ceilings.
 
 1. Hand the generated blind packet, grouped by repository family, to
    genuinely distinct reviewers.
-2. Preserve the completed `change-seed/0.3.0` logical-marginality correction and
-   its separately versioned diagnostics while compiling independent reviews.
+2. Preserve the completed `change-seed/0.4.0` generated-customization boundary,
+   including the inherited 0.3.0 logical-marginality correction and separately
+   versioned diagnostics, while compiling independent reviews.
 3. Add multiple real observations per ecosystem/partition cell, then freeze
    numerical admission thresholds from development/validation behavior before
    deciding whether transparent corrections or local ML merit evaluation.

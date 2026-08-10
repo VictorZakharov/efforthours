@@ -6,10 +6,6 @@ namespace EffortHours.Change;
 
 internal static class ChangeEvidenceBuilder
 {
-    private static readonly HashSet<string> BuildOutputDirectories = new(
-        ["obj", "bin", "dist", "out", "target", "artifacts", ".next", ".nuxt", ".svelte-kit"],
-        StringComparer.OrdinalIgnoreCase);
-
     public static async Task<ChangeEvidence> BuildAsync(
         ChangeSelection selection,
         IChangeSnapshot baseSnapshot,
@@ -77,16 +73,48 @@ internal static class ChangeEvidenceBuilder
             EvidenceFact? headFact = candidate.Head is null
                 ? null
                 : headFileFacts.GetValueOrDefault(candidate.Path);
-            ChangePathClassification classification = Classify(
-                candidate,
-                baseFact,
-                headFact,
+            string[] sourceTags = [.. (baseFact?.Tags ?? []).Concat(headFact?.Tags ?? [])];
+            ChangePathClassification classification = ChangePathClassifier.Classify(
+                candidate.Status,
+                candidate.Path,
+                candidate.PreviousPath,
+                candidate.Base,
+                candidate.Head,
+                sourceTags,
                 baseObjectIds,
                 headObjectIds);
             int editRegions = classification == ChangePathClassification.Represented ? 1 : 0;
             string reason = ClassificationReason(classification, candidate.Status);
+            List<string> normalizationTags = [];
+            bool representsGeneratedCustomization = false;
+            if (classification == ChangePathClassification.Generated)
+            {
+                GeneratedCustomizationResult customization =
+                    await GeneratedCustomizationAnalyzer.AnalyzeAsync(
+                        candidate.Path,
+                        candidate.PreviousPath,
+                        candidate.Base,
+                        candidate.Head,
+                        baseSnapshot,
+                        headSnapshot,
+                        cancellationToken).ConfigureAwait(false);
+                if (customization.TraceTag is not null)
+                {
+                    normalizationTags.Add(customization.TraceTag);
+                }
+
+                reason = GeneratedCustomizationAnalyzer.Describe(customization);
+                if (customization.Outcome == GeneratedCustomizationOutcome.Represented)
+                {
+                    classification = ChangePathClassification.Represented;
+                    editRegions = customization.EditRegions;
+                    representsGeneratedCustomization = true;
+                }
+            }
+
             if (candidate.Status == ChangePathStatus.Modified &&
-                classification == ChangePathClassification.Represented)
+                classification == ChangePathClassification.Represented &&
+                !representsGeneratedCustomization)
             {
                 if (!SupportsSourceReads(baseSnapshot) || !SupportsSourceReads(headSnapshot))
                 {
@@ -126,8 +154,8 @@ internal static class ChangeEvidenceBuilder
             }
 
             bool represented = classification == ChangePathClassification.Represented;
-            string[] tags = [.. (baseFact?.Tags ?? [])
-                .Concat(headFact?.Tags ?? [])
+            string[] tags = [.. sourceTags
+                .Concat(normalizationTags)
                 .Append($"status:{Kebab(candidate.Status)}")
                 .Append($"classification:{Kebab(classification)}")
                 .Distinct(StringComparer.Ordinal)
@@ -220,77 +248,9 @@ internal static class ChangeEvidenceBuilder
         return moved;
     }
 
-    private static ChangePathClassification Classify(
-        PathCandidate candidate,
-        EvidenceFact? baseFact,
-        EvidenceFact? headFact,
-        HashSet<string> baseObjectIds,
-        HashSet<string> headObjectIds)
-    {
-        if (candidate.Status == ChangePathStatus.Moved)
-        {
-            return ChangePathClassification.ExactMove;
-        }
-
-        ChangeSnapshotFile? file = candidate.Head ?? candidate.Base;
-        if (file is null ||
-            candidate.Base is { IsLink: true } or { IsSubmodule: true } ||
-            candidate.Head is { IsLink: true } or { IsSubmodule: true })
-        {
-            return ChangePathClassification.Unsupported;
-        }
-
-        string[] tags = [.. (baseFact?.Tags ?? []).Concat(headFact?.Tags ?? [])];
-        if (tags.Contains("classification:generated", StringComparer.Ordinal))
-        {
-            return ChangePathClassification.Generated;
-        }
-
-        if (tags.Contains("classification:vendored", StringComparer.Ordinal))
-        {
-            return ChangePathClassification.Vendored;
-        }
-
-        if (tags.Contains("classification:minified", StringComparer.Ordinal))
-        {
-            return ChangePathClassification.Minified;
-        }
-
-        if (tags.Contains("content:binary", StringComparer.Ordinal))
-        {
-            return ChangePathClassification.Binary;
-        }
-
-        if (tags.Contains("role:dependency-lock", StringComparer.Ordinal))
-        {
-            return ChangePathClassification.Lockfile;
-        }
-
-        if (IsBuildOutput(candidate.Path) ||
-            (candidate.PreviousPath is not null && IsBuildOutput(candidate.PreviousPath)))
-        {
-            return ChangePathClassification.BuildOutput;
-        }
-
-        if (candidate.Status == ChangePathStatus.Added && baseObjectIds.Contains(file.ObjectId))
-        {
-            return ChangePathClassification.ExactDuplicate;
-        }
-
-        if (candidate.Status == ChangePathStatus.Removed && headObjectIds.Contains(file.ObjectId))
-        {
-            return ChangePathClassification.ExactDuplicate;
-        }
-
-        return ChangePathClassification.Represented;
-    }
-
     private static bool SameObject(ChangeSnapshotFile left, ChangeSnapshotFile right) =>
         string.Equals(left.ObjectId, right.ObjectId, StringComparison.Ordinal) &&
         string.Equals(left.Mode, right.Mode, StringComparison.Ordinal);
-
-    private static bool IsBuildOutput(string path) =>
-        path.Split('/').Any(BuildOutputDirectories.Contains);
 
     private static Dictionary<string, EvidenceFact> FileFacts(RepositoryEvidence evidence) =>
         evidence.Facts
