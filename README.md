@@ -40,8 +40,10 @@ cancellation and category-isolated migration, integration, CI, container-deliver
 and simplification mutations. Its first calibration checkpoint adds final-delta
 provenance, review and evaluation commands, a frozen rubric, and a 24-case matrix
 with reproducible source reports, 121 preliminary teacher targets, and a blind
-independent-review packet. No independent Change correction or accuracy claim is
-complete.
+independent-review packet. A follow-on real public pull-request pilot exercises the
+released alpha.2 `change-seed/0.2.0` path with one provenance-checked development
+record and a separate five-target host-AI teacher estimate. No independent Change
+correction or accuracy claim is complete.
 The first Milestone 8 host-review and measurement checkpoints are implemented: a
 surrounding AI session can consume a rate-free, digest-bound uncertainty packet,
 request bounded capability, evidence, scope, or explicitly selected source detail,
@@ -84,7 +86,8 @@ The repository now contains:
 - Change calibration authoring, compilation, independent-review handoff, and
   evaluation paths that preserve immutable final-delta lineage and repository-held-out
   partitions, plus a deterministic in-memory generator for 24 public synthetic
-  source cases whose frozen reports retain `change-seed/0.1.0` provenance;
+  source cases whose frozen reports retain `change-seed/0.1.0` provenance and a
+  one-record public pull-request pilot for current `change-seed/0.2.0`;
 - current `change-seed/0.2.0` marginal-modification rules that require changed
   normalized capability evidence, correlate repeated category/path evidence, and
   emit final-delta comprehension, validation, and review once;

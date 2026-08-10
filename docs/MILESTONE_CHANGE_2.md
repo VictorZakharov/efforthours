@@ -83,7 +83,7 @@ repository or Change calibration implementations approached their file ceilings.
 
 1. Hand the generated blind packet, grouped by repository family, to
    genuinely distinct reviewers.
-2. Add redistributable real final-change examples from multiple repository
-   families.
+2. Expand the first redistributable real final-change pilot across multiple
+   repository families.
 3. Freeze numerical admission thresholds from development/validation behavior,
    then decide whether transparent corrections or local ML merit evaluation.

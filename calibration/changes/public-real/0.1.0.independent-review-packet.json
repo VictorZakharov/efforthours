@@ -1,0 +1,186 @@
+{
+  "schemaVersion": "1.0.0",
+  "authoringVersion": "calibration-corpus-review-authoring/0.1.0",
+  "status": "unreviewed",
+  "warning": "UNREVIEWED SECOND-PASS PACKET: prior labels are weak supervision, not ground truth. An independent reviewer must decide every target before review maturity can advance.",
+  "sourceCorpus": {
+    "id": "efforthours-change-public-real-pilot",
+    "version": "0.1.0",
+    "digest": "sha256:73966db241d7c272b11ad02e3ca87cf1433ef5213809a347648889452374d28a"
+  },
+  "rubric": {
+    "id": "change-ehe-work-item",
+    "version": "1.0.0"
+  },
+  "candidateVisibility": "blind",
+  "records": [
+    {
+      "sourceRecordId": "record:change:github.com/ardalis/guardclauses:pr-333",
+      "repository": {
+        "id": "repository:github.com/ardalis/guardclauses",
+        "name": "guardclauses-pr-333",
+        "sourceDigest": "sha256:9ad52a2ad03dedd2edb932bf85a44c82bcfa2a9709386aec414e525bcbeb05b6"
+      },
+      "change": {
+        "id": "change:github.com/ardalis/guardclauses:pr-333",
+        "selectionKind": "base-head",
+        "baseObjectId": "36051ca70d97183e2ad2091a14b65a384f298c47",
+        "headObjectId": "967e717bb88fa0ee0b87d054ca255934105e0f7e",
+        "baseEvidenceDigest": "sha256:1884bb1ef2fd9a003b66edb54caeecff23b4d1c46040cdee1d3f7109aa7c8ae3",
+        "headEvidenceDigest": "sha256:3cb320ede2796f66e41c2c693d4fd71447787d561b7781a5cb059aa1ee252fda",
+        "finalDeltaDigest": "sha256:9ad52a2ad03dedd2edb932bf85a44c82bcfa2a9709386aec414e525bcbeb05b6",
+        "coverageTags": [
+          "dotnet",
+          "feature",
+          "public-real-change",
+          "pull-request",
+          "unit-tests"
+        ]
+      },
+      "profile": "implementation",
+      "baselineId": "senior-contractor-2026-no-ai",
+      "partition": "development",
+      "sourceReviewStatus": "teacher-estimate",
+      "candidateTotalHours": null,
+      "targets": [
+        {
+          "sourceTargetId": "target:change-item:capability-marginal:192cbd13c3d22b34401b:review-0001",
+          "category": "production-implementation",
+          "title": "Expand Implement maintained internal logic for \u0027src/GuardClauses/GuardClauses.csproj\u0027 (library)",
+          "scope": "src/GuardClauses/GuardClauses.csproj",
+          "sourceWorkItemIds": [
+            "change-item:capability-marginal:192cbd13c3d22b34401b"
+          ],
+          "evidenceIds": [
+            "change:path:0f2a671aa60bdc35eae3054d",
+            "change:path:f208e70b8b2da3787d598c1c"
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:change-item:capability-marginal:3a96f18942e33a0100ba:review-0001",
+          "category": "unit-testing",
+          "title": "Expand Create represented unit tests for \u0027test/GuardClauses.UnitTests/GuardClauses.UnitTests.csproj\u0027 (test)",
+          "scope": "test/GuardClauses.UnitTests/GuardClauses.UnitTests.csproj",
+          "sourceWorkItemIds": [
+            "change-item:capability-marginal:3a96f18942e33a0100ba"
+          ],
+          "evidenceIds": [
+            "change:path:0f2a671aa60bdc35eae3054d"
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:change-item:change-comprehension:41fd22ba3485da0fd04a:review-0001",
+          "category": "specification-comprehension-and-domain-learning",
+          "title": "Understand the bounded change specification",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "change-item:change-comprehension:41fd22ba3485da0fd04a"
+          ],
+          "evidenceIds": [
+            "change:path:0f2a671aa60bdc35eae3054d",
+            "change:path:f208e70b8b2da3787d598c1c"
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:change-item:change-review:fc39c864d48e6dc71a48:review-0001",
+          "category": "self-review-and-system-integration",
+          "title": "Review and integrate the completed change",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "change-item:change-review:fc39c864d48e6dc71a48"
+          ],
+          "evidenceIds": [
+            "change:path:0f2a671aa60bdc35eae3054d",
+            "change:path:f208e70b8b2da3787d598c1c"
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        },
+        {
+          "sourceTargetId": "target:change-item:change-validation:29401de8082b50140592:review-0001",
+          "category": "manual-validation-debugging-and-hardening",
+          "title": "Validate and harden the completed change",
+          "scope": ".",
+          "sourceWorkItemIds": [
+            "change-item:change-validation:29401de8082b50140592"
+          ],
+          "evidenceIds": [
+            "change:path:0f2a671aa60bdc35eae3054d",
+            "change:path:f208e70b8b2da3787d598c1c"
+          ],
+          "candidate": {
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          },
+          "review": {
+            "action": null,
+            "hours": null,
+            "rationale": null,
+            "uncertaintyReasons": [],
+            "sizeException": null
+          }
+        }
+      ]
+    }
+  ],
+  "instructions": [
+    "Use a reviewer identity distinct from every teacher or reviewer already recorded on the source record.",
+    "Check each target against its evidence and the referenced rubric; do not use repository history, price, or a preferred total.",
+    "Choose accept only after independently checking the prior target; choose replace with a complete range and rationale when correcting it.",
+    "Decide every source target exactly once and retain its structural lineage.",
+    "Use reviewed only for a genuine second review; use adjudicated only after disagreements are explicitly resolved by a distinct adjudicator.",
+    "Compile the completed corpus-review plan only against the exact source-corpus digest in this packet."
+  ]
+}

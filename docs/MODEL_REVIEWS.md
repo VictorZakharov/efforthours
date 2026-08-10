@@ -27,6 +27,31 @@ Because EffortHours's own anchor informed the seed-model and calibration design,
 a development diagnostic rather than an eligible held-out test record unless a
 future independent snapshot and review policy explicitly establishes otherwise.
 
+## 2026-08-10: `efforthours-change-public-real-pilot/0.1.0`
+
+Status: **preliminary real-source host-AI teacher label; not independently reviewed**
+
+One immutable MIT-licensed GuardClauses pull request was selected from a repository
+family already assigned to development. Released `EffortHours.Tool`
+`0.9.0-alpha.2` analyzed exact local base/head objects with its remote disabled,
+using `change-seed/0.2.0+seed-rules/0.2.1`. The public final specification,
+normalized delta, and bounded adjacent source informed the teacher judgment;
+contributor identity, activity, elapsed time, commit count, and intermediate churn
+did not.
+
+The released candidate range is `1.75/4.25/6.75` hours. One disclosed host-AI
+teacher separately reasoned five targets totaling `2.25/4.00/6.25` hours, then
+froze the plan before exact-digest compilation and evaluation. Expected absolute
+error is 0.25 hour and expected WAPE is 0.0625. Candidate guidance was visible, so
+this is weak supervision rather than blind review.
+
+The record proves that the public-source provenance and current-estimator workflow
+operate on a real final delta. It is not actual labor, independent correction,
+validation evidence, or held-out accuracy. No rule, prior, threshold, review
+maturity, or ML dependency changed. The blind five-target handoff pins corpus
+digest
+`sha256:73966db241d7c272b11ad02e3ca87cf1433ef5213809a347648889452374d28a`.
+
 ## 2026-08-09: measured-coverage evidence admission
 
 Status: **qualitative evidence correction; no prior calibration**

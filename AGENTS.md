@@ -268,6 +268,14 @@ changes no estimator prior and adds no ML dependency; its frozen source reports
 retain `change-seed/0.1.0` provenance while current `change-seed/0.2.0` remains
 experimental and uncalibrated.
 
+The first real public Change follow-on adds one immutable MIT-licensed
+GuardClauses pull-request record in that repository family's existing development
+partition. Released alpha.2 and current `change-seed/0.2.0` report 4.25 expected
+hours; one disclosed host-AI teacher separately reports 4.00 across five targets.
+Exact commits, trees, license and report digests, a compiled corpus, a development
+diagnostic, and a blind follow-up packet are checked in without source excerpts.
+There is no independent correction, prior change, threshold, or accuracy claim.
+
 The first Milestone 8 host-review checkpoint adds the provider-neutral
 `host-review/1.0.0` protocol: rate-free compact packets, canonical estimate-plus-
 evidence input digests, bounded capability/evidence/scope/selected-source queries,

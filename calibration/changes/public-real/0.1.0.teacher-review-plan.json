@@ -1,0 +1,146 @@
+{
+  "schemaVersion": "1.0.0",
+  "compilerVersion": "change-calibration-review-compiler/0.1.0",
+  "id": "efforthours-change-public-real-pilot",
+  "version": "0.1.0",
+  "description": "A preliminary host-AI teacher estimate for one immutable public open-source pull request.",
+  "rubric": {
+    "id": "change-ehe-work-item",
+    "version": "1.0.0"
+  },
+  "records": [
+    {
+      "id": "record:change:github.com/ardalis/guardclauses:pr-333",
+      "repository": {
+        "id": "repository:github.com/ardalis/guardclauses",
+        "name": "guardclauses-pr-333",
+        "sourceDigest": "sha256:9ad52a2ad03dedd2edb932bf85a44c82bcfa2a9709386aec414e525bcbeb05b6"
+      },
+      "change": {
+        "id": "change:github.com/ardalis/guardclauses:pr-333",
+        "selectionKind": "base-head",
+        "baseObjectId": "36051ca70d97183e2ad2091a14b65a384f298c47",
+        "headObjectId": "967e717bb88fa0ee0b87d054ca255934105e0f7e",
+        "baseEvidenceDigest": "sha256:1884bb1ef2fd9a003b66edb54caeecff23b4d1c46040cdee1d3f7109aa7c8ae3",
+        "headEvidenceDigest": "sha256:3cb320ede2796f66e41c2c693d4fd71447787d561b7781a5cb059aa1ee252fda",
+        "finalDeltaDigest": "sha256:9ad52a2ad03dedd2edb932bf85a44c82bcfa2a9709386aec414e525bcbeb05b6",
+        "coverageTags": [
+          "dotnet",
+          "feature",
+          "public-real-change",
+          "pull-request",
+          "unit-tests"
+        ]
+      },
+      "profile": "implementation",
+      "baselineId": "senior-contractor-2026-no-ai",
+      "partition": "development",
+      "sourceEstimatorVersion": "change-seed/0.2.0+seed-rules/0.2.1",
+      "sourceEstimateDigest": "sha256:2df014bff65da8beead6ba8173ef718376afd9e772cf3cf35a85b03ab1afa20b",
+      "source": {
+        "dataClassification": "public-redistributable",
+        "sourceReference": "https://github.com/ardalis/GuardClauses/pull/333",
+        "revision": "36051ca70d97183e2ad2091a14b65a384f298c47..967e717bb88fa0ee0b87d054ca255934105e0f7e",
+        "licenseExpression": "MIT",
+        "redistributionAllowed": true,
+        "notes": "Immutable base tree c96dc3b5fd1c52300e427583002000ff4d5d0935 and head tree d2f37fa1cb832ccd8d535c0cd17fbf963ef15aff retain LICENSE blob 45b51efe1c6e720d3d45bbacdeebb7db9311a977. Review used the public final specification, final delta, and bounded adjacent source; no contributor identity, activity, elapsed time, commit count, or intermediate churn was used as an effort signal. No source excerpt is redistributed."
+      },
+      "review": {
+        "status": "teacher-estimate",
+        "completedOn": "2026-08-10",
+        "reviewers": [
+          {
+            "id": "teacher:openai-codex-sol-max-2026-08",
+            "kind": "host-ai",
+            "role": "teacher",
+            "modelId": "openai-codex",
+            "modelVersion": "sol-max"
+          }
+        ],
+        "notes": "Single disclosed host-AI teacher; no independent correction or adjudication. The released alpha.2 candidate was generated first and visible, while the teacher range was reasoned separately from the public final specification and artifact delta, then frozen before compilation or evaluation. This is development-only weak supervision, not actual labor, held-out accuracy, or production-readiness evidence."
+      },
+      "capabilities": [
+        {
+          "sourceCapabilityId": "change-item:capability-marginal:192cbd13c3d22b34401b",
+          "rationale": "Implement the small public guard API across the represented target frameworks, align it with existing exception and caller-expression conventions, and provide maintained API documentation. Existing guard helpers keep the implementation bounded.",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.50,
+                "expected": 1.00,
+                "high": 1.50
+              },
+              "uncertaintyReasons": [
+                "Cross-target conditional signatures and public API compatibility may require a small amount of iteration."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "change-item:capability-marginal:3a96f18942e33a0100ba",
+          "rationale": "Create the represented focused unit cases for pass-through behavior, both length bounds, invalid range input, and return-value behavior using the repository's existing xUnit conventions.",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.75,
+                "expected": 1.25,
+                "high": 2.00
+              },
+              "uncertaintyReasons": [
+                "Additional boundary combinations or framework-specific assertions could modestly expand the represented seven-case suite."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "change-item:change-comprehension:41fd22ba3485da0fd04a",
+          "rationale": "Understand the bounded string-length range contract and the library's established public guard-clause conventions before implementation.",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.25,
+                "expected": 0.50,
+                "high": 0.75
+              },
+              "uncertaintyReasons": [
+                "Inclusive-bound and exception semantics require brief confirmation against adjacent guards."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "change-item:change-review:fc39c864d48e6dc71a48",
+          "rationale": "Review the completed public API, documentation, multi-target behavior, and test coverage as one integrated library change.",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.25,
+                "expected": 0.50,
+                "high": 0.75
+              },
+              "uncertaintyReasons": [
+                "Public API consistency across target frameworks is the main review variable."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "change-item:change-validation:29401de8082b50140592",
+          "rationale": "Build and exercise the represented multi-target library change, checking pass and failure paths plus argument behavior independently from automated-test authoring.",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.50,
+                "expected": 0.75,
+                "high": 1.25
+              },
+              "uncertaintyReasons": [
+                "Target-framework compatibility or an initially missed boundary condition may require debugging."
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -287,6 +287,20 @@ source snapshot. That staleness risk remains an explicit uncertainty. OpenCover,
 JaCoCo, Istanbul JSON, and other report formats are not parsed by this checkpoint.
 Mutation relations remain qualitative guardrails, not calibration labels.
 
+## Change real-source follow-on
+
+`efforthours-change-public-real-pilot/0.1.0` adds the first calibration record from
+an immutable public open-source final delta. Its GuardClauses repository family
+remains in the pre-existing development partition. Released alpha.2 provides the
+current `change-seed/0.2.0` candidate, while one disclosed host-AI teacher provides
+five separately reasoned target ranges under `change-ehe-work-item/1.0.0`.
+
+Candidate and teacher expected totals are 4.25 and 4.00 hours. That close one-case
+result is descriptive weak supervision only: no independent correction,
+validation observation, numerical threshold, model fit, prior change, or accuracy
+claim follows from it. The public artifacts retain exact base/head, tree, license,
+final-delta, source-estimate, and corpus provenance without copying source.
+
 ## Contract boundaries
 
 ### Reviewed corpus
