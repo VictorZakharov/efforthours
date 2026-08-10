@@ -5,6 +5,10 @@ and no independent correction. Its blind packet contains 24 records and 121
 targets pinned to corpus digest
 `sha256:ecfdb867ed2ba4912c9550277fc050b5e5511d0e15a107c8a08c044f61793c10`.
 
+The separate one-record real public pilot has its own five-target blind handoff in
+[`public-real/INDEPENDENT_REVIEW.md`](public-real/INDEPENDENT_REVIEW.md). It shares
+the same no-unblinding and distinct-reviewer requirements.
+
 ## Blind assignment
 
 A reviewer must be a person or separately identified host-AI that did not create

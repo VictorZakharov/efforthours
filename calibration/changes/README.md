@@ -1,9 +1,11 @@
 # Change EHE calibration
 
-This directory holds policy and eventually redistributable reviewed labels for
-EffortHours's experimental `change-seed/0.1.0` estimator. Change labels use the same
-corpus, independent-review, validation, and metric contracts as repository labels,
-with an additional immutable final-delta provenance record.
+This directory holds policy and redistributable teacher labels for EffortHours's
+experimental Change estimators. The current baseline is `change-seed/0.2.0`; the
+frozen synthetic corpus retains its original `change-seed/0.1.0` source-report
+provenance. Change labels use the same corpus, independent-review, validation, and
+metric contracts as repository labels, with an additional immutable final-delta
+provenance record.
 
 The current checkpoint contains tooling, the
 [`change-ehe-work-item/1.0.0`](../rubrics/change-ehe-work-item/1.0.0.md) rubric, and
@@ -12,6 +14,12 @@ Its synthetic source suite now reproduces 24 canonical source reports and blind
 authoring packets. A preliminary 24-record teacher corpus and blind independent-
 review packet are checked in, but no independent correction or accuracy claim is
 complete.
+
+The [`public-real`](public-real) pilot adds the first immutable public open-source
+pull-request record for the current `change-seed/0.2.0` estimator. Released alpha.2
+reports 4.25 expected hours and the separately reasoned host-AI teacher reports
+4.00. This single development record is a workflow and realism diagnostic only;
+it changes no prior, threshold, review maturity, or production-readiness claim.
 
 ## Workflow
 
@@ -65,6 +73,7 @@ dotnet tools/EffortHours.ChangeCalibration/bin/Release/net10.0/EffortHours.Chang
   --output calibration/changes/public-synthetic/0.1.0
 ```
 
-See `public-synthetic/SOURCES.md` and `public-synthetic/REPRODUCING.md` for
-provenance and deterministic reproduction checks. See `INDEPENDENT_REVIEW.md` for
-the still-open blind handoff.
+See `public-synthetic/SOURCES.md` and `public-synthetic/REPRODUCING.md` for the
+synthetic provenance and reproduction checks. See `public-real/SOURCES.md` and
+`public-real/REPRODUCING.md` for the first real final-change record. Both blind
+handoffs remain open.

@@ -8,8 +8,9 @@ range, and one GitHub pull request through an optional `gh` adapter. The current
 `change-seed/0.2.0` rules are transparent but uncalibrated and remain experimental.
 Version 0.2.0 corrects non-marginal modification stacking in the initial rules
 without changing repository `seed-rules/0.2.1`.
-The first calibration-infrastructure checkpoint and a preliminary 24-record
-host-AI teacher corpus are implemented, but no independent correction exists.
+The first calibration-infrastructure checkpoint, a preliminary 24-record synthetic
+host-AI teacher corpus, and a one-record real public pull-request pilot are
+implemented, but no independent correction exists.
 The behavioral safeguard suite now covers cancellation and category-isolated
 migration, integration, CI, container-delivery, and simplification mutations in
 addition to the initial normalization and Git boundaries. Multiple pull requests
@@ -227,7 +228,14 @@ teacher corpus has 121 targets and an exact-digest blind handoff; it is disclose
 weak supervision, not an accuracy claim. Metric identity and
 candidate decision order are frozen in `CHANGE_MODEL_ADMISSION.md`; numerical
 thresholds, model fitting, and accuracy claims remain blocked on realistic,
-independently reviewed error measurements. See `MILESTONE_CHANGE_2.md`.
+independently reviewed error measurements.
+
+`calibration/changes/public-real` adds the first current-estimator public final
+delta: one MIT-licensed pull request in an already-development repository family.
+Released alpha.2 reports 4.25 expected hours and a separately reasoned host-AI
+teacher reports 4.00 across five targets. This one-case diagnostic changes no
+prior, threshold, review maturity, or production-readiness claim. See
+`MILESTONE_CHANGE_2.md` and `MILESTONE_CHANGE_3.md`.
 
 ## Author-and-period portfolios
 

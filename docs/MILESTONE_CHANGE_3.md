@@ -48,6 +48,24 @@ validation measurement is diagnostic only. Numerical admission thresholds were
 not invented from this one teacher, and the test comparison is withheld until
 independent review, thresholds, and a release candidate are frozen.
 
+## First real public follow-on
+
+On August 10, 2026,
+`efforthours-change-public-real-pilot/0.1.0` added one immutable MIT-licensed public
+pull request from the GuardClauses repository family. That family was already in
+development, so the Change record remains there. Released
+`EffortHours.Tool` `0.9.0-alpha.2` produced a
+`change-seed/0.2.0+seed-rules/0.2.1` range of `1.75/4.25/6.75` hours. A disclosed
+host-AI teacher separately reasoned five target ranges totaling
+`2.25/4.00/6.25` hours before compilation and evaluation.
+
+The 0.25-hour expected difference and 0.0625 WAPE demonstrate the real-source
+workflow, not estimator accuracy. Candidate guidance was visible, the record has
+no independent correction, and it changes no prior, admission threshold, review
+maturity, or model dependency. Exact commits, trees, license provenance, report
+digest, corpus digest, and a blind five-target handoff are checked in without a
+source checkout or source excerpts.
+
 ## Independent boundary
 
 The checked-in blind packet contains all 121 targets with prior hours, rationales,
@@ -60,6 +78,7 @@ accuracy claim is permitted.
 ## Next checkpoint
 
 1. Complete and compile the distinct blind review without opening teacher files.
-2. Add redistributable real final-change families with the same provenance rules.
+2. Add more redistributable real final-change families with the same provenance
+   rules and preserve repository-held-out partitions.
 3. Freeze numerical development/validation gates before any candidate fitting.
 4. Evaluate the test partition once only for a frozen release decision.

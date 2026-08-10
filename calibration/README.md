@@ -19,7 +19,10 @@ quality, delivery, and category isolation but is not effort-label data.
 The [`changes`](changes) area adds the `change-ehe-work-item/1.0.0` rubric,
 immutable final-delta review tooling, and a 24-case matrix frozen before labels.
 It now contains a preliminary 121-target host-AI teacher corpus and blind handoff,
-but no independent Change correction or accuracy claim.
+plus a one-record real public pull-request pilot for current `change-seed/0.2.0`.
+The real pilot's released-tool and teacher expected values are 4.25 and 4.00 hours,
+respectively. Neither corpus has independent Change correction, and the one-case
+development diagnostic is not an accuracy claim.
 
 ## Local workflow
 

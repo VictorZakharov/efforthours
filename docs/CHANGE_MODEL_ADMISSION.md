@@ -10,8 +10,10 @@ scales without consulting the test partition.
 
 The current source baseline is `change-seed/0.2.0`. It is a versioned structural
 correctness revision to the original transparent rules, not an admitted calibrated
-candidate. The frozen public corpus and source reports retain
-`change-seed/0.1.0` provenance.
+candidate. The frozen public synthetic corpus and source reports retain
+`change-seed/0.1.0` provenance. The first real public Change pilot directly records
+the current `change-seed/0.2.0` candidate, but remains one development-only teacher
+observation without independent correction.
 
 ## Immutable decision boundary
 
@@ -99,3 +101,17 @@ agreement and mapping worsen. Changed work-item identities are expected when bro
 repository-derived modification items disappear, but unmatched reviewed targets
 remain visible rather than being scored as zero. These teacher-label diagnostics
 do not establish accuracy, select a calibrated model, or advance review maturity.
+
+## First real-public `change-seed/0.2.0` diagnostic
+
+`efforthours-change-public-real-pilot/0.1.0` freezes one MIT-licensed public pull
+request from a repository family already assigned to development. Released
+alpha.2 estimates `1.75/4.25/6.75` hours; one disclosed host-AI teacher estimates
+`2.25/4.00/6.25`. The expected absolute error is 0.25 hour and expected WAPE is
+0.0625.
+
+This result was compiled only after the teacher range was frozen. Candidate
+guidance was visible, and there is no distinct reviewer, validation-family
+observation, or held-out comparison. It therefore cannot set a correction factor,
+threshold, uncertainty width, candidate choice, or release decision. It changes no
+rule or prior.

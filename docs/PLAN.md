@@ -236,6 +236,13 @@ Status as of August 10, 2026:
   validation diagnostics are recorded while test comparison remains withheld.
   No independent correction exists yet, so
   that checkpoint left `change-seed/0.1.0` uncalibrated and unchanged.
+- The first real public Change follow-on is complete: one immutable MIT-licensed
+  GuardClauses pull request exercises released alpha.2 and current
+  `change-seed/0.2.0` through source reporting, exact-provenance compilation,
+  development evaluation, and a blind five-target handoff. The seed expected value
+  is 4.25 hours and the separately reasoned host-AI teacher value is 4.00 hours.
+  This is one non-independent development diagnostic, so no prior, threshold,
+  maturity, or production-readiness decision changed.
 - Source-file budgets are enforced as an end-to-end architecture ratchet: 500
   lines by default, 400 for CLI files, and explicit non-precedent overrides for
   legacy debt. The former large CLI application class is split by responsibility.
@@ -507,7 +514,7 @@ cross-platform measurements and a more representative benchmark corpus exist.
    regression thresholds.
 6. Evaluate a compiler-grade TypeScript adapter only if reviewed calibration shows
    material error from the bounded token evidence.
-7. Obtain genuinely independent correction for the frozen 24-case Change teacher
-   corpus, add redistributable real final-change families, and record large-range
-   performance before tuning
+7. Obtain genuinely independent correction for the frozen Change teacher corpora,
+   expand beyond the first redistributable real final-change record, and record
+   large-range performance before tuning
    `change-seed/0.2.0` or expanding to multiple PRs and author-period portfolios.
