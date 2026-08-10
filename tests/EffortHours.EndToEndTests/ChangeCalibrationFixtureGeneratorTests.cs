@@ -77,7 +77,7 @@ public sealed class ChangeCalibrationFixtureGeneratorTests
         CalibrationReviewPlan plan = ContractJson.Deserialize<CalibrationReviewPlan>(json);
         CalibrationReviewPlanRecord record = Assert.Single(plan.Records);
         Assert.NotNull(record.Change);
-        Assert.Equal(3, record.Capabilities.Count);
+        Assert.Equal(4, record.Capabilities.Count);
         Assert.All(record.Capabilities, capability => Assert.Single(capability.Targets));
         Assert.Empty(ContractValidation.Validate(plan));
         Assert.True(ContractSchemaValidator.Validate(SchemaNames.CalibrationReviewPlan, json).IsValid);
@@ -184,6 +184,7 @@ public sealed class ChangeCalibrationFixtureGeneratorTests
             "categories": [
               {"category": "specification-comprehension-and-domain-learning", "action": "target", "hours": {"low": 0.25, "expected": 0.5, "high": 1}},
               {"category": "production-implementation", "action": "target", "hours": {"low": 0.5, "expected": 1, "high": 2}},
+              {"category": "manual-validation-debugging-and-hardening", "action": "target", "hours": {"low": 0.25, "expected": 0.5, "high": 1}},
               {"category": "self-review-and-system-integration", "action": "target", "hours": {"low": 0.25, "expected": 0.5, "high": 1}}
             ]
           }]

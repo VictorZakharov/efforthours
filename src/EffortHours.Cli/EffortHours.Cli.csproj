@@ -7,11 +7,11 @@
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>eh</ToolCommandName>
     <PackageId>EffortHours.Tool</PackageId>
-    <Version>0.9.0-alpha.1</Version>
+    <Version>0.9.0-alpha.2</Version>
     <Title>EffortHours CLI</Title>
     <PackageReadmeFile>PACKAGE_README.md</PackageReadmeFile>
     <PackageTags>estimation;effort-estimation;developer-tools;cli;repository-analysis;static-analysis;dotnet-tool</PackageTags>
-    <PackageReleaseNotes>Experimental public alpha. Equivalent Human Effort is counterfactual replacement effort; bundled seed estimators remain uncalibrated.</PackageReleaseNotes>
+    <PackageReleaseNotes>Bug-fix alpha: Change EHE 0.2.0 prevents broad repository capability context from stacking on touched paths and redirects Change reports to the dedicated calibration workflow. Bundled seed estimators remain experimental and uncalibrated.</PackageReleaseNotes>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="../EffortHours.Analysis/EffortHours.Analysis.csproj" />

@@ -13,6 +13,25 @@ namespace EffortHours.EndToEndTests;
 public sealed class ChangeCalibrationCliTests
 {
     [Fact]
+    public async Task RepositoryScaffoldRedirectsChangeEstimateToDedicatedWorkflow()
+    {
+        ChangeEstimateReport estimate = await CreateEstimateAsync();
+        using TemporaryDirectory directory = new();
+        string estimatePath = directory.Write("change-estimate.json", ContractJson.Serialize(estimate));
+
+        ProcessResult scaffold = await RunCliAsync(
+            "calibration",
+            "scaffold",
+            estimatePath,
+            "--compact");
+
+        Assert.Equal(3, scaffold.ExitCode);
+        Assert.Equal(string.Empty, scaffold.StandardOutput);
+        Assert.Contains("eh calibration change-scaffold", scaffold.StandardError, StringComparison.Ordinal);
+        Assert.DoesNotContain("All values fail", scaffold.StandardError, StringComparison.Ordinal);
+    }
+
+    [Fact]
     public async Task ChangeCalibrationCommandsRoundTripExplicitFilesOffline()
     {
         ChangeEstimateReport estimate = await CreateEstimateAsync();

@@ -16,7 +16,7 @@ body:
     attributes:
       label: EffortHours version
       description: Run `eh version` and paste the result.
-      placeholder: 0.9.0-alpha.1
+      placeholder: 0.9.0-alpha.2
     validations:
       required: true
 

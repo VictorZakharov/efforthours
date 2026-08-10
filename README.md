@@ -21,9 +21,9 @@ than reading an entire large repository.
 
 ## Status
 
-[EffortHours 0.9.0-alpha.1](https://github.com/VictorZakharov/efforthours/releases/tag/v0.9.0-alpha.1)
+[EffortHours 0.9.0-alpha.2](https://github.com/VictorZakharov/efforthours/releases/tag/v0.9.0-alpha.2)
 is available as public source and as the
-[`EffortHours.Tool` NuGet preview](https://www.nuget.org/packages/EffortHours.Tool/0.9.0-alpha.1).
+[`EffortHours.Tool` NuGet preview](https://www.nuget.org/packages/EffortHours.Tool/0.9.0-alpha.2).
 Milestones 1 through 6 and the Milestone 7A calibration foundation are complete.
 Milestone 7B1 through 7B5 public-corpus, review, and mutation checkpoints are
 implemented. A post-7B5 precision checkpoint corrects reviewed .NET persistence,
@@ -83,8 +83,11 @@ The repository now contains:
   adapter;
 - Change calibration authoring, compilation, independent-review handoff, and
   evaluation paths that preserve immutable final-delta lineage and repository-held-out
-  partitions without changing `change-seed/0.1.0`, plus a deterministic in-memory
-  generator for 24 public synthetic source cases;
+  partitions, plus a deterministic in-memory generator for 24 public synthetic
+  source cases whose frozen reports retain `change-seed/0.1.0` provenance;
+- current `change-seed/0.2.0` marginal-modification rules that require changed
+  normalized capability evidence, correlate repeated category/path evidence, and
+  emit final-delta comprehension, validation, and review once;
 - JSON and Markdown reports with evidence lineage, ranges, and optional pricing;
 - synthetic fixtures, contract tests, and process-level CLI tests;
 - evidence normalization that separates production/test structure, gives fine
@@ -167,7 +170,9 @@ objects without checking out, fetching, executing, or modifying the target. Rang
 reports reconcile isolated commits with the authoritative normalized final delta;
 commit count and intermediate churn never multiply effort. PR mode uses optional
 `gh` only to resolve immutable identities and requires those objects locally. The
-`change-seed/0.1.0` model is uncalibrated and experimental.
+`change-seed/0.2.0` model is uncalibrated and experimental. It treats modification
+work marginally and does not assign a specialized category merely because a
+changed path belongs to a scope that already has that capability.
 
 The first Ctrl+C requests cooperative cancellation and returns exit code 130 after
 writing a concise diagnostic to stderr; pressing Ctrl+C again retains immediate
@@ -175,6 +180,8 @@ termination. Partial structured output is not presented as a successful report.
 
 `eh calibration scaffold` creates an explicitly unreviewed packet from a
 saved canonical estimate; `--blind` hides numeric seed guidance.
+Change reports use the dedicated `calibration change-scaffold` command; passing one
+to the repository scaffold returns an actionable redirect.
 `eh calibration compile` turns completed capability decisions into a corpus only after
 verifying exact estimate digests and full represented-capability coverage.
 `eh calibration validate` checks a reviewed corpus and its provenance.
@@ -232,7 +239,7 @@ The NuGet package identity is `EffortHours.Tool`, and the installed command is
 `eh`. Install the pinned prerelease with:
 
 ```text
-dotnet tool install --global EffortHours.Tool --version 0.9.0-alpha.1
+dotnet tool install --global EffortHours.Tool --version 0.9.0-alpha.2
 eh version
 eh --help
 ```
