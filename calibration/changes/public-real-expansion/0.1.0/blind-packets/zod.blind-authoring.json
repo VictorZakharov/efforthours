@@ -1,0 +1,506 @@
+{
+  "schemaVersion": "1.0.0",
+  "authoringVersion": "change-calibration-authoring/0.1.0",
+  "status": "unreviewed",
+  "warning": "UNREVIEWED CHANGE EHE: candidate values are reference material, not calibration labels. Review the normalized final delta without using history activity as effort evidence.",
+  "rubric": {
+    "id": "change-ehe-work-item",
+    "version": "1.0.0"
+  },
+  "repository": {
+    "id": "repository:github.com/colinhacks/zod",
+    "name": "zod",
+    "sourceDigest": "sha256:b540a3b064df3d3161b37c8674406d5b0f135bba033088e969ae0e4eefdee85b"
+  },
+  "change": {
+    "id": "change:github.com/colinhacks/zod:pr-6354",
+    "selectionKind": "base-head",
+    "baseObjectId": "24b4cc7a6fc0008ef3ad129bde3f2bc1816c72fd",
+    "headObjectId": "17bbe5609b423349e4d8fbc1291948497f8d3544",
+    "baseEvidenceDigest": "sha256:5e115ca471f93e952019087ac1eabceb9fed5a639876468e56275eb99467ca69",
+    "headEvidenceDigest": "sha256:3122310d22347bee88f833e539e8c9eab18280a43813fd0549565c729da2e99e",
+    "finalDeltaDigest": "sha256:b540a3b064df3d3161b37c8674406d5b0f135bba033088e969ae0e4eefdee85b",
+    "coverageTags": [
+      "bug-fix",
+      "parser",
+      "public-real-change",
+      "pull-request",
+      "security",
+      "typescript",
+      "unit-tests"
+    ]
+  },
+  "profile": "implementation",
+  "baselineId": "senior-contractor-2026-no-ai",
+  "candidateVisibility": "blind",
+  "candidate": {
+    "estimatorVersion": "change-seed/0.2.0\u002Bseed-rules/0.2.1",
+    "estimateDigest": "sha256:3301b8cee632b88eaf0300e2025b0124e3c01c281f40cf02435ce4bdb6ef47f1",
+    "totalHours": null,
+    "categories": []
+  },
+  "targets": [
+    {
+      "id": "target:change-item:capability-marginal:4222b6db4f19a067a381:part-0001",
+      "sourceCapabilityId": "change-item:capability-marginal:4222b6db4f19a067a381",
+      "category": "unit-testing",
+      "title": "Expand Create represented unit tests for \u0027.\u0027 (application) (part 1 of 4)",
+      "scope": ".",
+      "sourceWorkItemIds": [
+        "change-item:capability-marginal:4222b6db4f19a067a381:part-0001"
+      ],
+      "evidenceIds": [
+        "change:path:3d09bdfefe7cdc7e0c3ef8e9",
+        "change:path:b0b1c7e25da768f746c7dad7",
+        "change:path:be74de5276ddd22cc10c66a5"
+      ],
+      "candidate": {
+        "hours": null,
+        "confidence": null,
+        "reason": "Positive base-to-head marginal effort from the existing repository capability model, bounded by touched final-change regions when existing behavior was also modified."
+      },
+      "review": {
+        "hours": null,
+        "rationale": null,
+        "sizeException": null
+      },
+      "assumptions": [
+        "The final base-to-head artifact delta is valued once with modern 2026-equivalent technology.",
+        "Commit count, elapsed time, authorship, messages, and intermediate churn are not effort multipliers."
+      ],
+      "exclusions": [
+        "Historical rework and discarded intermediate states are excluded."
+      ],
+      "uncertaintyReasons": [
+        "Some supporting evidence is inferred rather than directly observed."
+      ]
+    },
+    {
+      "id": "target:change-item:capability-marginal:4222b6db4f19a067a381:part-0002",
+      "sourceCapabilityId": "change-item:capability-marginal:4222b6db4f19a067a381",
+      "category": "unit-testing",
+      "title": "Expand Create represented unit tests for \u0027.\u0027 (application) (part 2 of 4)",
+      "scope": ".",
+      "sourceWorkItemIds": [
+        "change-item:capability-marginal:4222b6db4f19a067a381:part-0002"
+      ],
+      "evidenceIds": [
+        "change:path:3d09bdfefe7cdc7e0c3ef8e9",
+        "change:path:b0b1c7e25da768f746c7dad7",
+        "change:path:be74de5276ddd22cc10c66a5"
+      ],
+      "candidate": {
+        "hours": null,
+        "confidence": null,
+        "reason": "Positive base-to-head marginal effort from the existing repository capability model, bounded by touched final-change regions when existing behavior was also modified."
+      },
+      "review": {
+        "hours": null,
+        "rationale": null,
+        "sizeException": null
+      },
+      "assumptions": [
+        "The final base-to-head artifact delta is valued once with modern 2026-equivalent technology.",
+        "Commit count, elapsed time, authorship, messages, and intermediate churn are not effort multipliers."
+      ],
+      "exclusions": [
+        "Historical rework and discarded intermediate states are excluded."
+      ],
+      "uncertaintyReasons": [
+        "Some supporting evidence is inferred rather than directly observed."
+      ]
+    },
+    {
+      "id": "target:change-item:capability-marginal:4222b6db4f19a067a381:part-0003",
+      "sourceCapabilityId": "change-item:capability-marginal:4222b6db4f19a067a381",
+      "category": "unit-testing",
+      "title": "Expand Create represented unit tests for \u0027.\u0027 (application) (part 3 of 4)",
+      "scope": ".",
+      "sourceWorkItemIds": [
+        "change-item:capability-marginal:4222b6db4f19a067a381:part-0003"
+      ],
+      "evidenceIds": [
+        "change:path:3d09bdfefe7cdc7e0c3ef8e9",
+        "change:path:b0b1c7e25da768f746c7dad7",
+        "change:path:be74de5276ddd22cc10c66a5"
+      ],
+      "candidate": {
+        "hours": null,
+        "confidence": null,
+        "reason": "Positive base-to-head marginal effort from the existing repository capability model, bounded by touched final-change regions when existing behavior was also modified."
+      },
+      "review": {
+        "hours": null,
+        "rationale": null,
+        "sizeException": null
+      },
+      "assumptions": [
+        "The final base-to-head artifact delta is valued once with modern 2026-equivalent technology.",
+        "Commit count, elapsed time, authorship, messages, and intermediate churn are not effort multipliers."
+      ],
+      "exclusions": [
+        "Historical rework and discarded intermediate states are excluded."
+      ],
+      "uncertaintyReasons": [
+        "Some supporting evidence is inferred rather than directly observed."
+      ]
+    },
+    {
+      "id": "target:change-item:capability-marginal:4222b6db4f19a067a381:part-0004",
+      "sourceCapabilityId": "change-item:capability-marginal:4222b6db4f19a067a381",
+      "category": "unit-testing",
+      "title": "Expand Create represented unit tests for \u0027.\u0027 (application) (part 4 of 4)",
+      "scope": ".",
+      "sourceWorkItemIds": [
+        "change-item:capability-marginal:4222b6db4f19a067a381:part-0004"
+      ],
+      "evidenceIds": [
+        "change:path:3d09bdfefe7cdc7e0c3ef8e9",
+        "change:path:b0b1c7e25da768f746c7dad7",
+        "change:path:be74de5276ddd22cc10c66a5"
+      ],
+      "candidate": {
+        "hours": null,
+        "confidence": null,
+        "reason": "Positive base-to-head marginal effort from the existing repository capability model, bounded by touched final-change regions when existing behavior was also modified."
+      },
+      "review": {
+        "hours": null,
+        "rationale": null,
+        "sizeException": null
+      },
+      "assumptions": [
+        "The final base-to-head artifact delta is valued once with modern 2026-equivalent technology.",
+        "Commit count, elapsed time, authorship, messages, and intermediate churn are not effort multipliers."
+      ],
+      "exclusions": [
+        "Historical rework and discarded intermediate states are excluded."
+      ],
+      "uncertaintyReasons": [
+        "Some supporting evidence is inferred rather than directly observed."
+      ]
+    },
+    {
+      "id": "target:change-item:capability-marginal:5da54cfe97926cfd4002",
+      "sourceCapabilityId": "change-item:capability-marginal:5da54cfe97926cfd4002",
+      "category": "production-implementation",
+      "title": "Expand Implement maintained internal logic for \u0027.\u0027 (application)",
+      "scope": ".",
+      "sourceWorkItemIds": [
+        "change-item:capability-marginal:5da54cfe97926cfd4002"
+      ],
+      "evidenceIds": [
+        "change:path:3d09bdfefe7cdc7e0c3ef8e9",
+        "change:path:586313855af61c4b8d5f6e3b",
+        "change:path:b0b1c7e25da768f746c7dad7",
+        "change:path:be74de5276ddd22cc10c66a5"
+      ],
+      "candidate": {
+        "hours": null,
+        "confidence": null,
+        "reason": "Positive base-to-head marginal effort from the existing repository capability model, bounded by touched final-change regions when existing behavior was also modified."
+      },
+      "review": {
+        "hours": null,
+        "rationale": null,
+        "sizeException": null
+      },
+      "assumptions": [
+        "The final base-to-head artifact delta is valued once with modern 2026-equivalent technology.",
+        "Commit count, elapsed time, authorship, messages, and intermediate churn are not effort multipliers."
+      ],
+      "exclusions": [
+        "Historical rework and discarded intermediate states are excluded."
+      ],
+      "uncertaintyReasons": [
+        "Aggregate parser structure was proportionally normalized because per-file structure is not serialized.",
+        "Aggregate source structure was proportionally adjusted using production/test file classification.",
+        "Some TypeScript or fallback structure is token-backed rather than parser-backed."
+      ]
+    },
+    {
+      "id": "target:change-item:capability-marginal:e816330325722b1e7789:part-0001",
+      "sourceCapabilityId": "change-item:capability-marginal:e816330325722b1e7789",
+      "category": "security-and-accessibility",
+      "title": "Expand Implement represented validation behavior for \u0027.\u0027 (application) (part 1 of 4)",
+      "scope": ".",
+      "sourceWorkItemIds": [
+        "change-item:capability-marginal:e816330325722b1e7789:part-0001"
+      ],
+      "evidenceIds": [
+        "change:path:3d09bdfefe7cdc7e0c3ef8e9",
+        "change:path:b0b1c7e25da768f746c7dad7",
+        "change:path:be74de5276ddd22cc10c66a5"
+      ],
+      "candidate": {
+        "hours": null,
+        "confidence": null,
+        "reason": "Positive base-to-head marginal effort from the existing repository capability model, bounded by touched final-change regions when existing behavior was also modified."
+      },
+      "review": {
+        "hours": null,
+        "rationale": null,
+        "sizeException": null
+      },
+      "assumptions": [
+        "The final base-to-head artifact delta is valued once with modern 2026-equivalent technology.",
+        "Commit count, elapsed time, authorship, messages, and intermediate churn are not effort multipliers."
+      ],
+      "exclusions": [
+        "Historical rework and discarded intermediate states are excluded."
+      ],
+      "uncertaintyReasons": [
+        "Some supporting evidence is inferred rather than directly observed."
+      ]
+    },
+    {
+      "id": "target:change-item:capability-marginal:e816330325722b1e7789:part-0002",
+      "sourceCapabilityId": "change-item:capability-marginal:e816330325722b1e7789",
+      "category": "security-and-accessibility",
+      "title": "Expand Implement represented validation behavior for \u0027.\u0027 (application) (part 2 of 4)",
+      "scope": ".",
+      "sourceWorkItemIds": [
+        "change-item:capability-marginal:e816330325722b1e7789:part-0002"
+      ],
+      "evidenceIds": [
+        "change:path:3d09bdfefe7cdc7e0c3ef8e9",
+        "change:path:b0b1c7e25da768f746c7dad7",
+        "change:path:be74de5276ddd22cc10c66a5"
+      ],
+      "candidate": {
+        "hours": null,
+        "confidence": null,
+        "reason": "Positive base-to-head marginal effort from the existing repository capability model, bounded by touched final-change regions when existing behavior was also modified."
+      },
+      "review": {
+        "hours": null,
+        "rationale": null,
+        "sizeException": null
+      },
+      "assumptions": [
+        "The final base-to-head artifact delta is valued once with modern 2026-equivalent technology.",
+        "Commit count, elapsed time, authorship, messages, and intermediate churn are not effort multipliers."
+      ],
+      "exclusions": [
+        "Historical rework and discarded intermediate states are excluded."
+      ],
+      "uncertaintyReasons": [
+        "Some supporting evidence is inferred rather than directly observed."
+      ]
+    },
+    {
+      "id": "target:change-item:capability-marginal:e816330325722b1e7789:part-0003",
+      "sourceCapabilityId": "change-item:capability-marginal:e816330325722b1e7789",
+      "category": "security-and-accessibility",
+      "title": "Expand Implement represented validation behavior for \u0027.\u0027 (application) (part 3 of 4)",
+      "scope": ".",
+      "sourceWorkItemIds": [
+        "change-item:capability-marginal:e816330325722b1e7789:part-0003"
+      ],
+      "evidenceIds": [
+        "change:path:3d09bdfefe7cdc7e0c3ef8e9",
+        "change:path:b0b1c7e25da768f746c7dad7",
+        "change:path:be74de5276ddd22cc10c66a5"
+      ],
+      "candidate": {
+        "hours": null,
+        "confidence": null,
+        "reason": "Positive base-to-head marginal effort from the existing repository capability model, bounded by touched final-change regions when existing behavior was also modified."
+      },
+      "review": {
+        "hours": null,
+        "rationale": null,
+        "sizeException": null
+      },
+      "assumptions": [
+        "The final base-to-head artifact delta is valued once with modern 2026-equivalent technology.",
+        "Commit count, elapsed time, authorship, messages, and intermediate churn are not effort multipliers."
+      ],
+      "exclusions": [
+        "Historical rework and discarded intermediate states are excluded."
+      ],
+      "uncertaintyReasons": [
+        "Some supporting evidence is inferred rather than directly observed."
+      ]
+    },
+    {
+      "id": "target:change-item:capability-marginal:e816330325722b1e7789:part-0004",
+      "sourceCapabilityId": "change-item:capability-marginal:e816330325722b1e7789",
+      "category": "security-and-accessibility",
+      "title": "Expand Implement represented validation behavior for \u0027.\u0027 (application) (part 4 of 4)",
+      "scope": ".",
+      "sourceWorkItemIds": [
+        "change-item:capability-marginal:e816330325722b1e7789:part-0004"
+      ],
+      "evidenceIds": [
+        "change:path:3d09bdfefe7cdc7e0c3ef8e9",
+        "change:path:b0b1c7e25da768f746c7dad7",
+        "change:path:be74de5276ddd22cc10c66a5"
+      ],
+      "candidate": {
+        "hours": null,
+        "confidence": null,
+        "reason": "Positive base-to-head marginal effort from the existing repository capability model, bounded by touched final-change regions when existing behavior was also modified."
+      },
+      "review": {
+        "hours": null,
+        "rationale": null,
+        "sizeException": null
+      },
+      "assumptions": [
+        "The final base-to-head artifact delta is valued once with modern 2026-equivalent technology.",
+        "Commit count, elapsed time, authorship, messages, and intermediate churn are not effort multipliers."
+      ],
+      "exclusions": [
+        "Historical rework and discarded intermediate states are excluded."
+      ],
+      "uncertaintyReasons": [
+        "Some supporting evidence is inferred rather than directly observed."
+      ]
+    },
+    {
+      "id": "target:change-item:capability-modification:664d2cfe73bbeb7e73e8",
+      "sourceCapabilityId": "change-item:capability-modification:664d2cfe73bbeb7e73e8",
+      "category": "ci-cd-and-infrastructure-as-code",
+      "title": "Modify Implement represented CI/CD and infrastructure configuration",
+      "scope": ".",
+      "sourceWorkItemIds": [
+        "change-item:capability-modification:664d2cfe73bbeb7e73e8"
+      ],
+      "evidenceIds": [
+        "change:path:586313855af61c4b8d5f6e3b"
+      ],
+      "candidate": {
+        "hours": null,
+        "confidence": null,
+        "reason": "The final artifact materially changed the normalized evidence for an existing capability. Repeated path evidence in this category shares one marginal modification budget."
+      },
+      "review": {
+        "hours": null,
+        "rationale": null,
+        "sizeException": null
+      },
+      "assumptions": [
+        "The final base-to-head artifact delta is valued once with modern 2026-equivalent technology.",
+        "Commit count, elapsed time, authorship, messages, and intermediate churn are not effort multipliers."
+      ],
+      "exclusions": [
+        "Historical rework and discarded intermediate states are excluded."
+      ],
+      "uncertaintyReasons": []
+    },
+    {
+      "id": "target:change-item:change-comprehension:4cd3843a5549fa53ed44",
+      "sourceCapabilityId": "change-item:change-comprehension:4cd3843a5549fa53ed44",
+      "category": "specification-comprehension-and-domain-learning",
+      "title": "Understand the bounded change specification",
+      "scope": ".",
+      "sourceWorkItemIds": [
+        "change-item:change-comprehension:4cd3843a5549fa53ed44"
+      ],
+      "evidenceIds": [
+        "change:path:3d09bdfefe7cdc7e0c3ef8e9",
+        "change:path:586313855af61c4b8d5f6e3b",
+        "change:path:b0b1c7e25da768f746c7dad7",
+        "change:path:be74de5276ddd22cc10c66a5"
+      ],
+      "candidate": {
+        "hours": null,
+        "confidence": null,
+        "reason": "Comprehend the final behavior and quality delta represented by the affected capability categories."
+      },
+      "review": {
+        "hours": null,
+        "rationale": null,
+        "sizeException": null
+      },
+      "assumptions": [
+        "The final base-to-head artifact delta is valued once with modern 2026-equivalent technology.",
+        "Commit count, elapsed time, authorship, messages, and intermediate churn are not effort multipliers."
+      ],
+      "exclusions": [
+        "Historical rework and discarded intermediate states are excluded."
+      ],
+      "uncertaintyReasons": []
+    },
+    {
+      "id": "target:change-item:change-review:d10f7aee4630c50d8377",
+      "sourceCapabilityId": "change-item:change-review:d10f7aee4630c50d8377",
+      "category": "self-review-and-system-integration",
+      "title": "Review and integrate the completed change",
+      "scope": ".",
+      "sourceWorkItemIds": [
+        "change-item:change-review:d10f7aee4630c50d8377"
+      ],
+      "evidenceIds": [
+        "change:path:3d09bdfefe7cdc7e0c3ef8e9",
+        "change:path:586313855af61c4b8d5f6e3b",
+        "change:path:b0b1c7e25da768f746c7dad7",
+        "change:path:be74de5276ddd22cc10c66a5"
+      ],
+      "candidate": {
+        "hours": null,
+        "confidence": null,
+        "reason": "Review the coherent final delta and integrate its affected maintained artifacts; this is derived from final scope rather than commit count."
+      },
+      "review": {
+        "hours": null,
+        "rationale": null,
+        "sizeException": null
+      },
+      "assumptions": [
+        "The final base-to-head artifact delta is valued once with modern 2026-equivalent technology.",
+        "Commit count, elapsed time, authorship, messages, and intermediate churn are not effort multipliers."
+      ],
+      "exclusions": [
+        "Historical rework and discarded intermediate states are excluded."
+      ],
+      "uncertaintyReasons": []
+    },
+    {
+      "id": "target:change-item:change-validation:91cdc82fa4edb329eae5",
+      "sourceCapabilityId": "change-item:change-validation:91cdc82fa4edb329eae5",
+      "category": "manual-validation-debugging-and-hardening",
+      "title": "Validate and harden the completed change",
+      "scope": ".",
+      "sourceWorkItemIds": [
+        "change-item:change-validation:91cdc82fa4edb329eae5"
+      ],
+      "evidenceIds": [
+        "change:path:3d09bdfefe7cdc7e0c3ef8e9",
+        "change:path:586313855af61c4b8d5f6e3b",
+        "change:path:b0b1c7e25da768f746c7dad7",
+        "change:path:be74de5276ddd22cc10c66a5"
+      ],
+      "candidate": {
+        "hours": null,
+        "confidence": null,
+        "reason": "Perform bounded validation and debugging once across the coherent final delta; static repository-level validation capabilities are not repeated for every touched scope."
+      },
+      "review": {
+        "hours": null,
+        "rationale": null,
+        "sizeException": null
+      },
+      "assumptions": [
+        "The final base-to-head artifact delta is valued once with modern 2026-equivalent technology.",
+        "Commit count, elapsed time, authorship, messages, and intermediate churn are not effort multipliers."
+      ],
+      "exclusions": [
+        "Historical rework and discarded intermediate states are excluded."
+      ],
+      "uncertaintyReasons": [
+        "The immutable snapshots were not executed; validation effort is inferred from represented change surfaces."
+      ]
+    }
+  ],
+  "professionalizationGapWorkItemIds": [],
+  "instructions": [
+    "Confirm repository-family identity, immutable base/head provenance, license, redistribution, and partition before compilation.",
+    "Estimate only the normalized final functional and quality delta; intermediate churn, commit count, author, and elapsed time are forbidden signals.",
+    "Use the source Change report and explain query to verify evidence, exclusions, and final-delta reconciliation without using candidate hours when blind.",
+    "Fill review hours and rationale independently for every represented target; use an exact 0/0/0 range plus a size exception for a reviewed false positive, while an empty target list is valid only for a zero-EHE final delta.",
+    "Keep expected targets near 0.5 to 8 hours, record uncertainty explicitly, and reconcile the final total only after target review.",
+    "Compile teacher labels before a distinct reviewer receives a blind second-pass packet; packet generation alone does not advance maturity."
+  ]
+}
