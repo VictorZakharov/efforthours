@@ -269,7 +269,7 @@ Status as of August 10, 2026:
   policies, issue/PR templates, protected cross-platform CI, dependency automation,
   NuGet-specific package metadata and README, an OIDC-only protected release
   workflow, and an exact release checklist are in place. The audited repository is
-  public, and the bug-fix `EffortHours.Tool` `0.9.0-alpha.2` is available from
+  public, and the bug-fix `EffortHours.Tool` `0.9.0-alpha.3` is available from
   NuGet.org with a matching immutable tag and GitHub prerelease. The release
   retains every uncalibrated-model warning and makes no production-accuracy claim.
 

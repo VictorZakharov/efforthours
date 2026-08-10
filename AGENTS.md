@@ -324,7 +324,7 @@ weekly dependency update configuration, a dedicated NuGet README, and a manually
 dispatched `EffortHours.Tool` preview workflow. Package publication uses a protected
 `nuget.org` GitHub environment and short-lived NuGet trusted-publishing/OIDC
 credentials; long-lived publishing keys must not be committed or stored. The
-audited repository is public, and version `0.9.0-alpha.2` has a matching immutable
+audited repository is public, and version `0.9.0-alpha.3` has a matching immutable
 tag, NuGet package, and GitHub prerelease. Future visibility, tagging, GitHub
 release, and package-publication actions remain separately authorized. Follow
 `docs/RELEASING.md` for the exact boundary.

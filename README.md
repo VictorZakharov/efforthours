@@ -21,9 +21,9 @@ than reading an entire large repository.
 
 ## Status
 
-[EffortHours 0.9.0-alpha.2](https://github.com/VictorZakharov/efforthours/releases/tag/v0.9.0-alpha.2)
+[EffortHours 0.9.0-alpha.3](https://github.com/VictorZakharov/efforthours/releases/tag/v0.9.0-alpha.3)
 is available as public source and as the
-[`EffortHours.Tool` NuGet preview](https://www.nuget.org/packages/EffortHours.Tool/0.9.0-alpha.2).
+[`EffortHours.Tool` NuGet preview](https://www.nuget.org/packages/EffortHours.Tool/0.9.0-alpha.3).
 Milestones 1 through 6 and the Milestone 7A calibration foundation are complete.
 Milestone 7B1 through 7B5 public-corpus, review, and mutation checkpoints are
 implemented. A post-7B5 precision checkpoint corrects reviewed .NET persistence,
@@ -256,7 +256,7 @@ The NuGet package identity is `EffortHours.Tool`, and the installed command is
 `eh`. Install the pinned prerelease with:
 
 ```text
-dotnet tool install --global EffortHours.Tool --version 0.9.0-alpha.2
+dotnet tool install --global EffortHours.Tool --version 0.9.0-alpha.3
 eh version
 eh --help
 ```
