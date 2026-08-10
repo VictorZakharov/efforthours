@@ -44,6 +44,8 @@ internal sealed class JavaScriptSourceMetrics
 
     public int UiPages { get; set; }
 
+    public bool HasExplicitUiFile { get; set; }
+
     public int JsxElements { get; set; }
 
     public int StateUsages { get; set; }
@@ -130,6 +132,7 @@ internal sealed class JavaScriptSourceMetrics
         GraphQlOperations += other.GraphQlOperations;
         UiComponents += other.UiComponents;
         UiPages += other.UiPages;
+        HasExplicitUiFile |= other.HasExplicitUiFile;
         JsxElements += other.JsxElements;
         StateUsages += other.StateUsages;
         EffectUsages += other.EffectUsages;
@@ -158,4 +161,5 @@ internal sealed class JavaScriptSourceMetrics
 internal sealed record JavaScriptFileAnalysis(
     JavaScriptSourceMetrics Metrics,
     IReadOnlyList<EffortHours.Contracts.V1.EvidenceFact> Facts,
-    IReadOnlyList<EffortHours.Contracts.V1.Diagnostic> Diagnostics);
+    IReadOnlyList<EffortHours.Contracts.V1.Diagnostic> Diagnostics,
+    IReadOnlyList<AngularComponentMetadata> AngularComponents);

@@ -5,7 +5,7 @@ namespace EffortHours.Estimation;
 
 public sealed class SeedEstimator : IEstimator
 {
-    public const string Version = "seed-rules/0.2.1";
+    public const string Version = "seed-rules/0.3.0";
 
     private static readonly HashSet<string> KnownEvidenceKinds =
     [

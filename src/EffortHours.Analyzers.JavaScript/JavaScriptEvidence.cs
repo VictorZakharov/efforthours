@@ -7,7 +7,7 @@ namespace EffortHours.Analyzers.JavaScript;
 internal static class JavaScriptEvidence
 {
     public const string AnalyzerName = "efforthours.javascript-analyzer";
-    public const string AnalyzerVersion = "0.4.1";
+    public const string AnalyzerVersion = "0.5.0";
 
     public static EvidenceFact Fact(
         string id,
@@ -43,6 +43,43 @@ internal static class JavaScriptEvidence
                 .OrderBy(tag => tag, StringComparer.Ordinal)
                 .ToArray() ?? [],
         };
+
+    public static EvidenceFact FactWithPrimaryLocation(
+        string id,
+        string kind,
+        string scope,
+        string summary,
+        EvidenceSourceKind sourceKind,
+        string method,
+        EvidenceLocation primaryLocation,
+        IEnumerable<EvidenceLocation>? relatedLocations = null,
+        IEnumerable<EvidenceMeasurement>? measurements = null,
+        IEnumerable<string>? tags = null)
+    {
+        EvidenceFact fact = Fact(
+            id,
+            kind,
+            scope,
+            summary,
+            sourceKind,
+            method,
+            measurements: measurements,
+            tags: tags);
+        return fact with
+        {
+            Locations =
+            [
+                primaryLocation,
+                .. (relatedLocations ?? [])
+                    .Where(location => location != primaryLocation)
+                    .Distinct()
+                    .OrderBy(location => location.Path, StringComparer.Ordinal)
+                    .ThenBy(location => location.Line ?? int.MaxValue)
+                    .ThenBy(location => location.Symbol, StringComparer.Ordinal)
+                    .Take(49),
+            ],
+        };
+    }
 
     public static EvidenceMeasurement Measurement(string name, decimal value, string unit) => new()
     {

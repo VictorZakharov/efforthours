@@ -24,7 +24,10 @@ eh --help
 eh estimate ./my-repository --profile implementation --format markdown
 ```
 
-EffortHours statically analyzes .NET, JavaScript, TypeScript, and mixed repositories.
+EffortHours statically analyzes .NET, JavaScript, TypeScript, HTML/CSS-family
+frontends, and mixed repositories. Frontend support includes bounded template and
+stylesheet semantics plus static Angular component metadata; it does not render,
+compile frameworks, or execute preprocessors.
 It reports evidence-backed work items across implementation, testing,
 documentation, integration, delivery, validation, and review, then optionally
 applies a dated contractor rate without changing the effort estimate.
@@ -75,7 +78,7 @@ treated as untrusted input, and reports avoid source excerpts by default.
 
 ## Current limitations
 
-- `seed-rules/0.2.1` and `change-seed/0.3.0` remain experimental and uncalibrated.
+- `seed-rules/0.3.0` and `change-seed/0.4.0` remain experimental and uncalibrated.
 - Public calibration labels have not completed genuinely independent correction.
 - TypeScript and TSX evidence is token-backed rather than compiler-backed.
 - Multiple-PR and contributor-period portfolio estimation is not implemented.

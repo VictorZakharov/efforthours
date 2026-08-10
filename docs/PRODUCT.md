@@ -109,6 +109,16 @@ reports lower confidence where appropriate.
   commit activity or elapsed history as effort evidence.
 - Be suitable for public open-source development and redistribution.
 
+The implemented JavaScript/frontend boundary includes parser-backed JavaScript/
+JSX, token-backed TypeScript/TSX, explicit JSX/Vue/Svelte structure, conservative
+static Angular component metadata, bounded HTML/template semantics, and bounded
+CSS/SCSS/Sass/Less semantics. Angular components require a named `Component`
+import from `@angular/core` (a local alias is accepted), and static metadata values
+must be literals or arrays; external assets must resolve inside the scanner-
+admitted repository scope. This evidence does not claim rendering, framework
+compilation, preprocessor execution, runtime reachability, visual correctness, or
+accessibility conformance.
+
 ## Non-goals
 
 - Reconstructing actual hours worked.

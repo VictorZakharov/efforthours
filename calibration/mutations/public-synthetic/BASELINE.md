@@ -13,6 +13,8 @@ effort-label corpora, accuracy claims, or model-training data.
   cases and 156 assertions evaluated with the same `seed-rules/0.2.1` model.
 - Suite `0.4.0` records the first measured-coverage checkpoint: 51 cases and 170
   assertions evaluated with the same `seed-rules/0.2.1` catalog.
+- Suite `0.5.0` records the frontend semantic-evidence checkpoint: 56 cases and
+  192 assertions evaluated with `seed-rules/0.3.0`.
 
 The August 8, 2026 analyzer-precision reevaluation with `.NET` analyzer `0.3.2`
 and JavaScript analyzer `0.4.1` reproduced identical low, expected, and high
@@ -33,11 +35,23 @@ TypeScript bodies and TypeScript test structure participate in normalization. Th
 catalog digest is
 `sha256:57378795593acd2ff0a2f4361698193a11dca86da11493f072da6a9f9b344d4e`.
 
+`seed-rules/0.3.0` retains every non-UI 0.2.1 numerical prior. It removes
+physical asset lines from the UI rule and adds bounded semantic template
+structure/binding, stylesheet structure, responsive, design-token, and
+animation/theme drivers. Its digest is
+`sha256:e8bce2f76c97564919ab6be41f1cfd6b222d531a4dbd08a8b22c7abe6b1eebdf`.
+Re-evaluating all 51 suite-0.4.0 states produces identical low, expected, and high
+repository/category values; their frozen reports remain unchanged.
+
 Suite 0.3.0 changes no seed-rule prior or estimator behavior. Suite 0.4.0 adds
 coverage analyzer `0.1.0` and measured-over-declared evidence precedence while
 reusing the unchanged `coverage-achievement` prior. Both suites were designed from
 product invariants, then evaluated. Their bounds are qualitative guardrails and
 must not be treated as reviewed numeric labels.
+
+Suite 0.5.0 follows the same policy. Its five added states and 22 relations were
+specified around frontend invariance, directionality, and category isolation, not
+reviewed hour targets. Passing them does not calibrate the new UI rates.
 
 ## What suite 0.4.0 measures
 
@@ -71,6 +85,16 @@ Nested synthetic test packages keep test structure in an explicit test scope, so
 their production-category invariants are not artifacts of aggregate rounding.
 
 ## Seed expected checkpoints
+
+### Frontend semantic additions
+
+| Variant | Expected total | Intended category result |
+| --- | ---: | --- |
+| Frontend base | 10.25 h | 1.75 h UI reference |
+| Frontend formatting | 10.25 h | Total and UI unchanged at every range point |
+| Frontend exact stylesheet copy | 10.25 h | Total and UI unchanged at every range point |
+| Frontend semantic behavior | 13.75 h | +3.50 h UI; production unchanged |
+| Angular component and owned assets | 17.00 h | 7.25 h UI with static component ownership |
 
 ### JavaScript
 
@@ -146,8 +170,8 @@ LCOV and Cobertura inputs are bounded, parsed without execution, and checked aga
 their common-inventory SHA-256 before measurements are admitted.
 
 The original .NET-only 0.1.0 table and its exact results remain represented by its
-frozen suite, canonical estimates, and baseline report. Suites 0.2.0, 0.3.0, and
-0.4.0 retain all earlier assertions unchanged.
+frozen suite, canonical estimates, and baseline report. Suites 0.2.0 through 0.5.0
+retain all earlier assertions unchanged.
 
 ## Artifacts
 
@@ -161,7 +185,10 @@ frozen suite, canonical estimates, and baseline report. Suites 0.2.0, 0.3.0, and
 - `baseline-seed-rules-0.2.1-suite-0.3.0.json` is its deterministic report.
 - `0.4.0.suite.json` defines the 51-case measured-coverage aggregate suite.
 - `baseline-seed-rules-0.2.1-suite-0.4.0.json` is its deterministic report.
-- `estimates/seed-rules-0.2.1/` contains all 51 current aggregate candidates.
+- `estimates/seed-rules-0.2.1/` contains the 51 frozen suite-0.4.0 candidates.
+- `0.5.0.suite.json` defines the 56-case frontend semantic aggregate suite.
+- `baseline-seed-rules-0.3.0-suite-0.5.0.json` is its deterministic report.
+- `estimates/seed-rules-0.3.0/` contains all 56 current aggregate candidates.
 - `fixtures/` contains every complete synthetic source state.
 
 Every case has a distinct repository source digest. Assertions select canonical
@@ -195,6 +222,21 @@ Callers on shells without wildcard expansion should list the estimate paths. Fai
 assertions still produce the complete report and return process exit code `5`;
 malformed inputs return the ordinary invalid-input code.
 
+## Reproduce suite 0.5.0
+
+Use the same estimate command for every case, changing the output directory to
+`estimates/seed-rules-0.3.0`. The original eight .NET fixture aliases remain as
+documented above; every other fixture matches its case ID. Then run:
+
+```text
+eh calibration mutations \
+  calibration/mutations/public-synthetic/0.5.0.suite.json \
+  calibration/mutations/public-synthetic/estimates/seed-rules-0.3.0/*.estimate.json \
+  --output calibration/mutations/public-synthetic/baseline-seed-rules-0.3.0-suite-0.5.0.json
+```
+
+Callers whose shell does not expand wildcards must list the 56 paths explicitly.
+
 ## Limitations and next expansion
 
 The suite uses deliberately small archetypes. Near-copy assertions bound the
@@ -209,6 +251,10 @@ Large work-item partitioning, additional coverage formats, richer infrastructure
 in-body generated customization, general reachability, semantic clones, realistic
 multi-package shapes, and change-estimation semantics remain future guardrails.
 The TypeScript path remains token-backed.
+
+Frontend scanners are tolerant and bounded. They do not render, execute
+TypeScript/configuration, compile Angular or another framework, run CSS
+preprocessors, establish runtime reachability, or perform accessibility auditing.
 
 Passing these relations prevents known perverse movements. It does not establish
 that any absolute hour or delta is numerically correct, and it does not make the

@@ -27,6 +27,48 @@ Because EffortHours's own anchor informed the seed-model and calibration design,
 a development diagnostic rather than an eligible held-out test record unless a
 future independent snapshot and review policy explicitly establishes otherwise.
 
+## 2026-08-10: `seed-rules/0.3.0` frontend semantic revision
+
+Status: **transparent evidence/prior correction; not calibrated or independently reviewed**
+
+The prior UI rule priced maintained HTML and CSS-family physical lines while the
+analyzer exposed only file and line aggregates. That made formatting a possible
+effort signal and could not distinguish a simple asset from represented forms,
+bindings, responsive rules, design tokens, animation, or theme behavior. The
+correction was specified as a subject-neutral invariant before evaluation: raw
+line layout must not move EHE, exact copies must normalize, and additional
+represented frontend behavior must move the UI category.
+
+JavaScript analyzer `0.5.0` adds bounded tolerant HTML/template and CSS-family
+structure plus static Angular `@Component` metadata. A named `Component` import
+from `@angular/core` is required (a local alias is accepted), and metadata values
+must be literal strings or arrays. External references resolve only relative to
+the component and only to common-scanner-admitted, digest-verified assets;
+ambiguous shared assets retain generic ownership. Generated, vendored, minified,
+test, documentation, binary, and ignored build-output assets remain excluded. No
+source excerpt is emitted. The implementation does not render, compile a
+framework, execute TypeScript/configuration or preprocessors, prove runtime
+behavior, or perform an accessibility audit.
+
+`seed-rules/0.3.0` removes the `asset-lines` UI driver and adds bounded template
+structure/binding, stylesheet structure, responsive, design-token, and
+animation/theme drivers. Every non-UI numerical prior remains identical to 0.2.1.
+The new UI rates are transparent preliminary priors, not fitted values. The model
+digest is
+`sha256:e8bce2f76c97564919ab6be41f1cfd6b222d531a4dbd08a8b22c7abe6b1eebdf`.
+
+Public mutation suite `0.5.0` contains 56 cases and 192 passing relations. Its five
+new frontend states cover all three range points for formatting and exact-copy
+invariance, semantic template/style directionality, Angular UI directionality,
+and production-category isolation. Re-evaluating the previous 51 cases under the
+new analyzer/model produces identical numeric ranges. All earlier mutation
+reports, reviewed corpora, labels, and estimator provenance remain frozen.
+
+The current composite Change identity advances mechanically to
+`change-seed/0.4.0+seed-rules/0.3.0`; no Change rule, threshold, label, diagnostic
+comparison, or frozen Change report changes. This record is a correctness and
+guardrail disclosure, not calibration, accuracy evidence, or model admission.
+
 ## 2026-08-10: `change-seed/0.4.0` generated-customization boundary
 
 Status: **transparent structural normalization revision; not calibrated or independently reviewed**

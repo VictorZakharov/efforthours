@@ -11,9 +11,9 @@ internal static class JavaScriptUiEvidence
         string syntaxTag,
         JavaScriptSourceMetrics metrics)
     {
-        bool hasStructuralUi = metrics.UiComponents > 0 ||
-            metrics.UiPages > 0 ||
-            metrics.JsxElements > 0;
+        bool hasStructuralUi = metrics.JsxElements > 0 ||
+            metrics.HasExplicitUiFile ||
+            (HasUiFramework(metrics) && (metrics.UiComponents > 0 || metrics.UiPages > 0));
         bool hasFrameworkUiBehavior = HasUiFramework(metrics) &&
             (metrics.StateUsages > 0 || metrics.EffectUsages > 0 || metrics.FormUsages > 0);
         if (!hasStructuralUi && !hasFrameworkUiBehavior)

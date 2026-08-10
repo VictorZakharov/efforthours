@@ -1,0 +1,9 @@
+$accent: #246;
+
+:root { --space: 1rem; }
+
+[data-theme="dark"] { color: $accent; }
+
+@media (width > 40rem) {
+  .card { display: grid; animation: enter .2s; }
+}

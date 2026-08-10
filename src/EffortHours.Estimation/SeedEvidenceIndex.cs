@@ -215,6 +215,19 @@ internal sealed class SeedEvidenceIndex
                 NormalizeDirectory(fact.Scope)));
         }
 
+        foreach (EvidenceFact fact in Facts.Where(fact =>
+            fact.Kind == EvidenceKinds.JavaScriptPackage &&
+            fact.Id == "javascript:repository" &&
+            fact.Tags.Contains("frontend-assets:present", StringComparer.Ordinal) &&
+            !scopes.Any(scope => scope.Ecosystem == "javascript" && scope.Scope == ".")))
+        {
+            scopes.Add(CreateScope(
+                fact,
+                "javascript",
+                TagValue(fact, "package-role:") ?? "web-ui",
+                "."));
+        }
+
         foreach (EvidenceFact fact in Facts.Where(fact => fact.Kind == EvidenceKinds.SourceStructure))
         {
             string ecosystem = EcosystemFor(fact);

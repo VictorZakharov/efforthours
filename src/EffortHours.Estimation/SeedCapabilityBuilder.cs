@@ -405,10 +405,15 @@ internal sealed partial class SeedCapabilityBuilder(
                     ("component-parameters", aggregate.Measurement("component-parameters")),
                     ("commands", aggregate.Measurement("commands")),
                     ("asset-files", assetFiles),
-                    ("asset-lines", aggregate.Measurement("physical-lines"))),
+                    ("template-structure-units", aggregate.Measurement("template-structure-units")),
+                    ("template-binding-units", aggregate.Measurement("template-binding-units")),
+                    ("style-structure-units", aggregate.Measurement("style-structure-units")),
+                    ("responsive-surfaces", aggregate.Measurement("responsive-surfaces")),
+                    ("design-token-units", aggregate.Measurement("design-token-units")),
+                    ("animation-theme-surfaces", aggregate.Measurement("animation-theme-surfaces"))),
                 quantity,
                 pages + forms > 20m ? ComplexityLevel.High : ComplexityLevel.Moderate,
-                "UI priors value represented pages, components, state, forms, maintained assets, and UX decisions beyond residual source construction."));
+                "UI priors value represented pages, components, state, forms, bounded template/style semantics, maintained assets, and UX decisions beyond residual source construction."));
         }
     }
 

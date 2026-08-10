@@ -8,7 +8,8 @@ reviewed Change EHE corpus exists. No local ML fitting or production-readiness
 claim is permitted until thresholds are set from development/validation error
 scales without consulting the test partition.
 
-The current source baseline is `change-seed/0.4.0`. It retains the 0.3.0 logical
+The current source baseline is `change-seed/0.4.0+seed-rules/0.3.0`. Its Change
+rules retain the 0.3.0 logical
 marginality correction and adds a versioned, fail-closed generated-customization
 normalization boundary; it is not an admitted calibrated candidate. The frozen
 public synthetic corpus and source reports retain `change-seed/0.1.0` provenance.
@@ -243,3 +244,18 @@ validation diagnostic remain applicable without regeneration; rewriting only the
 estimator identity would destroy frozen provenance without adding evidence. The
 test comparison remains unopened. This is normalization correctness, not
 calibration, accuracy evidence, or model admission.
+
+## Repository `seed-rules/0.3.0` composition
+
+The repository frontend semantic revision mechanically advances the current
+composite identity from `change-seed/0.4.0+seed-rules/0.2.1` to
+`change-seed/0.4.0+seed-rules/0.3.0`. It removes repository UI physical-line
+pricing, adds bounded frontend semantic drivers, and preserves every non-UI
+repository prior. No Change rule, normalized-final-delta policy, threshold,
+label, candidate comparison, or admission gate changes.
+
+All frozen Change reports retain their original composite identities. No frozen
+corpus was regenerated merely to rewrite provenance, and the withheld expansion
+test comparison remains unopened. The repository transition is documented in
+`MODEL_REVIEWS.md` and its public 56-case/192-relation mutation checkpoint; it is
+not Change calibration or Change model admission.

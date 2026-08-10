@@ -21,7 +21,7 @@ internal sealed class JavaScriptSourceAnalyzer(RepositoryTextReader textReader)
             cancellationToken).ConfigureAwait(false);
         if (read.Diagnostic is not null)
         {
-            return new JavaScriptFileAnalysis(new JavaScriptSourceMetrics(), [], [read.Diagnostic]);
+            return new JavaScriptFileAnalysis(new JavaScriptSourceMetrics(), [], [read.Diagnostic], []);
         }
 
         string path = fileFact.Scope;
@@ -41,12 +41,19 @@ internal sealed class JavaScriptSourceAnalyzer(RepositoryTextReader textReader)
             hasJsx);
         AddPackageTechnologies(package, syntax.Metrics);
         AddFrameworkFileSignals(extension, package, syntax.Metrics);
+        bool isTestFile = fileFact.Tags.Contains("classification:test", StringComparer.Ordinal);
+        IReadOnlyList<AngularComponentMetadata> angularComponents = isTestFile
+            ? []
+            : AngularComponentAnalyzer.Analyze(
+                path,
+                package?.Scope ?? ".",
+                tokens);
         JavaScriptEntrypointClassifier.AddSignal(
             path,
             package,
             tokens,
             syntax.Metrics,
-            fileFact.Tags.Contains("classification:test", StringComparer.Ordinal));
+            isTestFile);
 
         List<EvidenceFact> facts = CreateFacts(path, package?.Scope ?? ".", fileFact, syntax);
         List<Diagnostic> diagnostics = [];
@@ -60,7 +67,7 @@ internal sealed class JavaScriptSourceAnalyzer(RepositoryTextReader textReader)
                 syntax.ParseErrorLine));
         }
 
-        return new JavaScriptFileAnalysis(syntax.Metrics, facts, diagnostics);
+        return new JavaScriptFileAnalysis(syntax.Metrics, facts, diagnostics, angularComponents);
     }
 
     private static List<EvidenceFact> CreateFacts(
@@ -278,6 +285,10 @@ internal sealed class JavaScriptSourceAnalyzer(RepositoryTextReader textReader)
         {
             metrics.UiComponents = Math.Max(metrics.UiComponents, 1);
             metrics.UiLine ??= 1;
+            metrics.HasExplicitUiFile = true;
+            string technology = extension[1..];
+            metrics.Technologies.Add(technology);
+            metrics.TechnologyFamilies.Add("ui");
         }
 
         if (extension is ".jsx" or ".tsx" && metrics.JsxElements > 0)
