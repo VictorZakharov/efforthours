@@ -192,6 +192,11 @@ public sealed class ChangeEstimatorTests
             report.Reconciliation.Adjustments.Sum(adjustment => adjustment.EffortDelta.Expected));
         Assert.Contains(report.Reconciliation.Adjustments, adjustment =>
             adjustment.Kind == ChangeAdjustmentKind.Revert);
+        ChangeNormalizationSummary normalization = Assert.IsType<ChangeNormalizationSummary>(
+            report.Reconciliation.Normalization);
+        Assert.Equal(1m, normalization.ExpectedGrossToFinalNormalizationShare);
+        Assert.True(normalization.ExpectedReworkLikeHours > 0m);
+        Assert.True(normalization.ExpectedRevertHours > 0m);
     }
 
     [Fact]
@@ -219,6 +224,10 @@ public sealed class ChangeEstimatorTests
         Assert.Equal(
             report.TotalEffort.Expected,
             report.Reconciliation.Components.Sum(component => component.AllocatedExpectedHours));
+        ChangeNormalizationSummary normalization = Assert.IsType<ChangeNormalizationSummary>(
+            report.Reconciliation.Normalization);
+        Assert.Equal(0m, normalization.ExpectedReworkLikeHours);
+        Assert.True(normalization.ExpectedSharedOrRepeatedHours >= 0m);
     }
 
     [Fact]
@@ -245,6 +254,51 @@ public sealed class ChangeEstimatorTests
         Assert.Equal(
             report.Reconciliation.ExpectedDifferenceHours,
             report.Reconciliation.Adjustments.Sum(adjustment => adjustment.EffortDelta.Expected));
+        ChangeNormalizationSummary normalization = Assert.IsType<ChangeNormalizationSummary>(
+            report.Reconciliation.Normalization);
+        Assert.True(normalization.ExpectedOverlapHours > 0m);
+        Assert.True(normalization.ExpectedReworkLikeShare > 0m);
+        ChangeEstimateExplanation explanation = ChangeEstimateExplainer.Explain(
+            report,
+            normalization.Id);
+        Assert.Empty(explanation.WorkItems);
+        Assert.Equal(normalization, explanation.Normalization);
+        Assert.NotNull(explanation.Adjustments);
+        _ = new ChangeEstimateJsonRenderer().Render(report);
+        _ = new ChangeEstimateExplanationJsonRenderer().Render(explanation);
+        string reportMarkdown = ChangeEstimateMarkdownRenderer.Render(report);
+        Assert.Contains("Gross isolated EHE", reportMarkdown, StringComparison.Ordinal);
+        Assert.Contains("Rework-like (explicit overlap + revert only)", reportMarkdown, StringComparison.Ordinal);
+        Assert.Contains(
+            "not historical rework",
+            ChangeEstimateExplanationMarkdownRenderer.Render(explanation),
+            StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public async Task PartialRevertSeparatesAbsentEffectsFromTheRemainingFinalDelta()
+    {
+        ChangeState initial = State(("Demo.csproj", ProjectFile));
+        ChangeState first = State(
+            ("Demo.csproj", ProjectFile),
+            ("Keep.cs", "namespace Demo; public sealed class Keep { public int Value => 1; }\n"),
+            ("Temporary.cs", "namespace Demo; public sealed class Temporary { }\n"));
+        ChangeState final = State(
+            ("Demo.csproj", ProjectFile),
+            ("Keep.cs", "namespace Demo; public sealed class Keep { public int Value => 1; }\n"));
+
+        ChangeEstimateReport report = await EstimateRangeAsync(
+            initial,
+            final,
+            [Component("commit-one", initial, first), Component("commit-two", first, final)]);
+
+        ChangeNormalizationSummary normalization = Assert.IsType<ChangeNormalizationSummary>(
+            report.Reconciliation.Normalization);
+        Assert.True(report.TotalEffort.Expected > 0m);
+        Assert.True(normalization.ExpectedGrossToFinalNormalizationShare is > 0m and < 1m);
+        Assert.True(normalization.ExpectedRevertHours > 0m);
+        Assert.Contains(report.Reconciliation.Adjustments, adjustment =>
+            adjustment.Kind == ChangeAdjustmentKind.Revert);
     }
 
     private static async Task<ChangeEstimateReport> EstimateAsync(

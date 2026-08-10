@@ -130,6 +130,51 @@ public sealed record ChangeAdjustment
     public IReadOnlyList<string> EvidenceIds { get; init; } = [];
 }
 
+public sealed record ChangeNormalizationSummary
+{
+    public required string Id { get; init; }
+
+    public required ChangeNormalizationStatus Status { get; init; }
+
+    public required string CalculationMethod { get; init; }
+
+    public required EffortRange GrossIsolatedEffort { get; init; }
+
+    public required EffortRange NormalizedFinalDeltaEffort { get; init; }
+
+    public required decimal ExpectedGrossToFinalNormalizationHours { get; init; }
+
+    public decimal? ExpectedGrossToFinalNormalizationShare { get; init; }
+
+    public required decimal ExpectedReworkLikeHours { get; init; }
+
+    public decimal? ExpectedReworkLikeShare { get; init; }
+
+    public required decimal ExpectedOtherNormalizationHours { get; init; }
+
+    public decimal? ExpectedOtherNormalizationShare { get; init; }
+
+    public required decimal ExpectedSharedOrRepeatedHours { get; init; }
+
+    public required decimal ExpectedOverlapHours { get; init; }
+
+    public required decimal ExpectedRevertHours { get; init; }
+
+    public required decimal ExpectedResidualInteractionHours { get; init; }
+
+    public required decimal ExpectedPositiveInteractionHours { get; init; }
+
+    public IReadOnlyList<string> SharedOrRepeatedAdjustmentIds { get; init; } = [];
+
+    public IReadOnlyList<string> OverlapAdjustmentIds { get; init; } = [];
+
+    public IReadOnlyList<string> RevertAdjustmentIds { get; init; } = [];
+
+    public IReadOnlyList<string> ResidualInteractionAdjustmentIds { get; init; } = [];
+
+    public IReadOnlyList<string> PositiveInteractionAdjustmentIds { get; init; } = [];
+}
+
 public sealed record ChangeReconciliation
 {
     public required EffortRange IsolatedComponentSum { get; init; }
@@ -147,6 +192,8 @@ public sealed record ChangeReconciliation
     public IReadOnlyList<ChangeComponentEstimate> Components { get; init; } = [];
 
     public IReadOnlyList<ChangeAdjustment> Adjustments { get; init; } = [];
+
+    public ChangeNormalizationSummary? Normalization { get; init; }
 }
 
 public sealed record ChangeEstimateReport
@@ -203,6 +250,10 @@ public sealed record ChangeEstimateExplanation
     public required string RequestedId { get; init; }
 
     public IReadOnlyList<WorkItem> WorkItems { get; init; } = [];
+
+    public ChangeNormalizationSummary? Normalization { get; init; }
+
+    public IReadOnlyList<ChangeAdjustment>? Adjustments { get; init; }
 
     public IReadOnlyList<ChangePathEvidence> Evidence { get; init; } = [];
 

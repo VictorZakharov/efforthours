@@ -250,7 +250,8 @@ meaningful code/tests/docs, migrations, integrations, CI, container delivery,
 simplification, additivity, overlap, reverts, category isolation, all three range
 points, and cooperative cancellation. The first Ctrl+C returns 130 after a
 stderr-only diagnostic; a second retains immediate termination. Current
-`change-seed/0.4.0+seed-rules/0.3.0` rules retain the bounded 0.3.0 logical-marginality correction
+`change-seed/0.5.0+seed-rules/0.3.0` rules retain the bounded 0.3.0 logical-
+marginality correction
 and can isolate exact, balanced, EffortHours-specific `<custom-code>` regions
 inside otherwise generated source. Only those regions can contribute;
 conventional generated bodies,
@@ -262,7 +263,10 @@ two statically scanned, content-pinned directories or two digest-checked saved
 repository-evidence bundles;
 bodyless evidence modifications that otherwise qualify as represented remain
 conservative with an explicit warning. Multiple PRs and author-period portfolios
-remain deferred. The former
+remain deferred. Explicit multi-commit ranges report deterministic expected-point
+gross-to-final normalization plus a bounded overlap/revert-only rework-like subset
+with stable explanation lineage. These diagnostics do not change final-delta EHE
+and are absent from base/head-only and PR selections. The former
 large CLI application class is split into focused partial modules, and
 `eng/file-budgets.json` enforces early
 refactoring through the end-to-end suite.
@@ -280,8 +284,8 @@ host-AI teacher. Development and validation diagnostics are recorded; test
 comparison remains withheld. No independent Change review is complete. The corpus
 changes no estimator prior and adds no ML dependency; its frozen source reports
 retain `change-seed/0.1.0` provenance. The source baseline subsequently advances
-from the historical 0.2.0 and 0.3.0 corrections to `change-seed/0.4.0` under the
-structural-correctness exception; frozen source reports retain their original
+through the historical 0.2.0 and 0.3.0 corrections, the 0.4.0 structural boundary,
+and the 0.5.0 reporting revision; frozen source reports retain their original
 estimator identities.
 
 The first real public Change follow-on adds one immutable MIT-licensed

@@ -7,11 +7,12 @@ implemented after Milestone 7B5. They include provider-neutral immutable
 base/head analysis, two statically scanned directories, two saved repository
 evidence bundles, one commit, one final revision range, and one GitHub pull
 request through an optional `gh` adapter. The current
-`change-seed/0.4.0` rules are transparent but uncalibrated and remain experimental.
-Version 0.4.0 retains the 0.3.0 logical-marginality correction and adds a
+`change-seed/0.5.0` rules are transparent but uncalibrated and remain experimental.
+Version 0.5.0 retains the 0.3.0 logical-marginality correction and the 0.4.0
 fail-closed boundary for explicitly delimited customization inside otherwise
-generated files. The current source composes repository `seed-rules/0.3.0`; this
-mechanical identity advance does not change the 0.4.0 Change rules.
+generated files. It adds an expected-point gross-to-final normalization diagnostic
+for explicit multi-commit ranges without changing any Change EHE prior or final-
+delta total. The current source composes repository `seed-rules/0.3.0`.
 The first calibration-infrastructure checkpoint, a preliminary 24-record synthetic
 host-AI teacher corpus, a one-record real public pilot, a blind six-family
 real-source expansion, and a released-alpha.3 public validation follow-on are
@@ -212,6 +213,44 @@ A range report contains:
 - one expected-hour allocation per selected commit whose exact sum equals the
   normalized expected total.
 
+An explicit range with at least two enumerated commit components also contains a
+gross-to-final normalization summary. Let `G` be gross isolated expected EHE and
+`N` be authoritative normalized final-delta expected EHE:
+
+- normalization hours are `max(0, G - N)`;
+- gross-to-final normalization share is `max(0, G - N) / G`;
+- rework-like hours are the lesser of normalization hours and the magnitudes of
+  negative expected overlap plus revert adjustments;
+- rework-like share uses the same `G` denominator; and
+- other normalization is normalization hours minus bounded rework-like hours. It
+  retains shared/repeated capability work and residual interaction rather than
+  relabeling them as rework; and
+- positive interaction hours sum positive residual-interaction adjustments, so a
+  mixed-sign reconciliation remains visible rather than being netted out of its
+  adjustment lineage.
+
+Structured shares are fractions from zero through one, rounded to four decimal
+places with midpoint rounding away from zero. When `G` is exactly zero, all three
+shares are omitted and status is `not-applicable-zero-gross`; hours remain exact.
+When positive `G` is below `N`, normalization hours and all three shares are zero,
+and the positive interaction hours remain explicit. Only expected-point shares are
+reported. Low and high remain dependent planning-hour bounds because converting
+them into separate percentages would imply unsupported independence or interval
+semantics.
+
+The rework-like numerator is a bounded structural attribution, not a reconstruction
+of historical rework. It includes only explicit overlap and revert adjustment
+lineage. Shared setup, specification, review, validation, and unexplained residual
+interaction stay outside it. The percentages diagnose reconciliation and never
+multiply, reduce, or replace authoritative final-delta EHE.
+Commit count, churn, timestamps, authors, logged-time records, and individual or
+team identity do not enter either numerator or denominator.
+
+The summary is not emitted for base/head, single-commit, directory, saved-evidence,
+or current PR selections. PR mode currently pins only base/head identities and must
+not invent intermediate work. A future PR form would need explicit opt-in immutable
+commit enumeration before this diagnostic could be available.
+
 The normalized final delta is authoritative. Intermediate commit activity never
 multiplies it. Component estimates exist to audit composition and detect model
 non-additivity. Repeated specification, setup, or review work is reconciled as
@@ -242,8 +281,10 @@ is represented by counts and snapshot evidence rather than by repeating every
 unchanged path.
 
 The v1 public schemas are `change-evidence`, `change-estimate-report`, and
-`change-estimate-explanation`. The current estimator identity is
-`change-seed/0.4.0+seed-rules/0.3.0`; it composes the still-uncalibrated repository
+`change-estimate-explanation`. The report schema adds an optional normalization
+summary, so frozen v1 reports remain valid; explanation queries accept its stable
+calculation ID and return exact adjustment lineage. The current estimator identity
+is `change-seed/0.5.0+seed-rules/0.3.0`; it composes the still-uncalibrated repository
 model and must not be described as production-ready. Frozen
 calibration source reports retain the exact earlier estimator identity they were
 created from.
@@ -262,11 +303,12 @@ created from.
   does not create temporary checkouts or source trees.
 - Root commits use Git's empty tree. Merge commits require an explicit parent.
 - Ranges expose isolated commit estimates, normalized final effort, named signed
-  adjustments, and allocations that sum exactly to normalized expected hours.
+  adjustments, allocations that sum exactly to normalized expected hours, and the
+  expected-point normalization diagnostic for explicit multi-commit ranges.
 - PR mode invokes `gh` only to resolve number/URL and base/head object IDs, then
   requires both objects to exist locally.
 - JSON and Markdown output include optional pricing only after hours are estimated;
-  saved JSON supports work-item explanation queries.
+  saved JSON supports work-item and normalization-lineage explanation queries.
 - Existing-capability modifications require changed normalized capability evidence,
   and repeated path evidence within each logical capability/category receives one
   marginal budget.

@@ -278,48 +278,9 @@ public static partial class ContractValidation
             errors.Add("Reconciliation assessment is inconsistent with its expected difference and tolerance.");
         }
 
+        ValidateChangeNormalization(report, componentIds, adjustmentIds, errors);
+
         ValidateRateAndCost(report.RateCard, report.TotalCost, report.TotalEffort, "totalCost", errors);
-        return errors;
-    }
-
-    public static IReadOnlyList<string> Validate(ChangeEstimateExplanation explanation)
-    {
-        ArgumentNullException.ThrowIfNull(explanation);
-
-        List<string> errors = [];
-        RequireVersion(explanation.SchemaVersion, "change estimate explanation", errors);
-        RequireVersion(
-            explanation.SourceChangeEstimateSchemaVersion,
-            "source change estimate",
-            errors);
-        RequireText(explanation.EstimatorVersion, "estimatorVersion", errors);
-        ValidateChangeSelection(explanation.Selection, errors);
-        RequireText(explanation.RequestedId, "requestedId", errors);
-        if (explanation.WorkItems.Count == 0)
-        {
-            errors.Add("A change estimate explanation must contain at least one work item.");
-        }
-
-        HashSet<string> evidenceIds = explanation.Evidence
-            .Select(evidence => evidence.Id)
-            .ToHashSet(StringComparer.Ordinal);
-        foreach (WorkItem item in explanation.WorkItems)
-        {
-            if (!string.Equals(item.Id, explanation.RequestedId, StringComparison.Ordinal))
-            {
-                errors.Add($"Explanation work item '{item.Id}' does not match the requested ID.");
-            }
-
-            foreach (string evidenceId in item.EvidenceIds)
-            {
-                if (!evidenceIds.Contains(evidenceId) &&
-                    !explanation.UnresolvedEvidenceIds.Contains(evidenceId, StringComparer.Ordinal))
-                {
-                    errors.Add($"Explanation omits referenced evidence '{evidenceId}'.");
-                }
-            }
-        }
-
         return errors;
     }
 

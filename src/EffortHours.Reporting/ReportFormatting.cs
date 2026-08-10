@@ -40,6 +40,9 @@ internal static class ReportFormatting
     public static string Percent(decimal value) =>
         value.ToString("P0", CultureInfo.InvariantCulture);
 
+    public static string SharePercent(decimal value) =>
+        value.ToString("0.##%", CultureInfo.InvariantCulture);
+
     public static string Escape(string value) =>
         value.Replace("|", "\\|", StringComparison.Ordinal)
             .Replace("\r", " ", StringComparison.Ordinal)

@@ -8,11 +8,12 @@ reviewed Change EHE corpus exists. No local ML fitting or production-readiness
 claim is permitted until thresholds are set from development/validation error
 scales without consulting the test partition.
 
-The current source baseline is `change-seed/0.4.0+seed-rules/0.3.0`. Its Change
-rules retain the 0.3.0 logical
-marginality correction and adds a versioned, fail-closed generated-customization
-normalization boundary; it is not an admitted calibrated candidate. The frozen
-public synthetic corpus and source reports retain `change-seed/0.1.0` provenance.
+The current source baseline is `change-seed/0.5.0+seed-rules/0.3.0`. Its Change
+rules retain the 0.3.0 logical-marginality correction and the versioned, fail-closed
+0.4.0 generated-customization boundary. Version 0.5.0 adds range reconciliation
+diagnostics without changing valuation; it is not an admitted calibrated
+candidate. The frozen public synthetic corpus and source reports retain
+`change-seed/0.1.0` provenance.
 The first real public Change pilot and subsequent six-family expansion retain
 released `change-seed/0.2.0` provenance. Separate 0.3.0 development/validation
 diagnostics leave the expansion's test comparison withheld. A released-alpha.3
@@ -259,3 +260,26 @@ corpus was regenerated merely to rewrite provenance, and the withheld expansion
 test comparison remains unopened. The repository transition is documented in
 `MODEL_REVIEWS.md` and its public 56-case/192-relation mutation checkpoint; it is
 not Change calibration or Change model admission.
+
+## `change-seed/0.5.0` range-normalization reporting
+
+Version 0.5.0 projects the existing signed range-reconciliation ledger into a
+deterministic expected-point gross-to-final normalization share. Its separately
+bounded rework-like numerator includes only negative overlap/revert attribution;
+shared/repeated capability work and residual interaction remain explicit outside
+that subset. Zero gross effort has no percentage, normalized effort above gross
+retains positive interaction, and dependent low/high planning bounds are not
+converted into percentages.
+
+The projection is available only when an explicit range enumerates at least two
+immutable commit components. It is absent from base/head, commit, directory,
+evidence, and current PR reports. This prevents a base/head-only PR selector from
+inventing intermediate activity. Stable adjustment IDs provide explanation
+lineage, while the normalized final delta and exact component allocations remain
+authoritative and unchanged.
+
+This reporting revision changes no rule rate, prior, total, label, metric,
+threshold, dependency, partition, or review maturity. Frozen reports retain their
+original identities and are not regenerated. The new shares are not admitted
+calibration targets, accuracy evidence, historical labor/rework, productivity
+scores, or effort multipliers.

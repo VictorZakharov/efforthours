@@ -83,6 +83,14 @@ eh change . --range main..HEAD --format markdown --no-rate
 eh change . --pr 123 --format markdown --no-rate
 ```
 
+For an explicit range containing at least two commits, the report also compares
+gross isolated commit EHE with authoritative normalized final-delta EHE. It shows
+the gross-to-final normalization share and a narrower rework-like share containing
+only explicit overlap/revert attribution. These are structural diagnostics—not
+historical rework, actual hours, productivity scores, or multipliers. Copy the
+normalization ID into `eh change explain <report.json> --item <id>` to inspect its
+signed-adjustment lineage.
+
 You can also compare two directories or two saved evidence bundles without Git:
 
 ```text

@@ -6,7 +6,7 @@ using EffortHours.Contracts.V1;
 
 namespace EffortHours.EndToEndTests;
 
-public sealed class ChangeCliTests
+public sealed partial class ChangeCliTests
 {
     private const string ProjectFile =
         "<Project Sdk=\"Microsoft.NET.Sdk\"><PropertyGroup>" +
@@ -86,7 +86,7 @@ public sealed class ChangeCliTests
         Assert.DoesNotContain("customer-custom-secret", result.StandardOutput, StringComparison.Ordinal);
         using JsonDocument report = JsonDocument.Parse(result.StandardOutput);
         Assert.Equal(
-            "change-seed/0.4.0+seed-rules/0.3.0",
+            "change-seed/0.5.0+seed-rules/0.3.0",
             report.RootElement.GetProperty("estimatorVersion").GetString());
         JsonElement path = Assert.Single(report.RootElement
             .GetProperty("evidence")
@@ -161,6 +161,18 @@ public sealed class ChangeCliTests
         Assert.Equal(
             report.RootElement.GetProperty("totalEffort").GetProperty("expected").GetDecimal(),
             allocated);
+        JsonElement normalization = reconciliation.GetProperty("normalization");
+        decimal gross = normalization.GetProperty("grossIsolatedEffort").GetProperty("expected").GetDecimal();
+        decimal normalized = normalization
+            .GetProperty("normalizedFinalDeltaEffort")
+            .GetProperty("expected")
+            .GetDecimal();
+        decimal normalizationHours = normalization
+            .GetProperty("expectedGrossToFinalNormalizationHours")
+            .GetDecimal();
+        Assert.Equal(reconciliation.GetProperty("isolatedComponentSum").GetProperty("expected").GetDecimal(), gross);
+        Assert.Equal(report.RootElement.GetProperty("totalEffort").GetProperty("expected").GetDecimal(), normalized);
+        Assert.Equal(Math.Max(0m, gross - normalized), normalizationHours);
         Assert.Equal(baseObjectId, report.RootElement.GetProperty("selection").GetProperty("base").GetProperty("objectId").GetString());
         Assert.Equal(headObjectId, report.RootElement.GetProperty("selection").GetProperty("head").GetProperty("objectId").GetString());
     }
@@ -199,6 +211,8 @@ public sealed class ChangeCliTests
         Assert.Equal(headObjectId, pullRequest.Selection.Head.ObjectId);
         Assert.Equal(baseHead.TotalEffort, pullRequest.TotalEffort);
         Assert.Equal(baseHead.Categories, pullRequest.Categories);
+        Assert.Null(pullRequest.Reconciliation.Normalization);
+        Assert.Null(baseHead.Reconciliation.Normalization);
     }
 
     [Fact]

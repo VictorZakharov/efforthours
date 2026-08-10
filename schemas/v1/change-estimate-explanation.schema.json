@@ -21,8 +21,14 @@
     "requestedId": { "type": "string", "minLength": 1 },
     "workItems": {
       "type": "array",
-      "minItems": 1,
       "items": { "$ref": "urn:eh:schema:v1:work-item" }
+    },
+    "normalization": {
+      "$ref": "urn:eh:schema:v1:change-estimate-report#/$defs/normalization"
+    },
+    "adjustments": {
+      "type": "array",
+      "items": { "$ref": "urn:eh:schema:v1:change-estimate-report#/$defs/adjustment" }
     },
     "evidence": {
       "type": "array",
@@ -34,5 +40,15 @@
       "uniqueItems": true
     }
   },
+  "oneOf": [
+    {
+      "properties": { "workItems": { "minItems": 1 } },
+      "not": { "required": ["normalization"] }
+    },
+    {
+      "required": ["normalization", "adjustments"],
+      "properties": { "workItems": { "maxItems": 0 } }
+    }
+  ],
   "additionalProperties": false
 }

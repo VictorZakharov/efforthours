@@ -289,6 +289,12 @@ Status as of August 10, 2026:
   remains excluded. Unchanged or formatting-only regions remain zero; ambiguous,
   oversized, or bodyless cases fail closed. Frozen reports and labels are
   unchanged because no released corpus case contains the supported markers.
+- The explicit-range normalization diagnostic is complete in source as
+  `change-seed/0.5.0`: expected gross isolated and authoritative final-delta EHE
+  produce a deterministic gross-to-final share, while the rework-like subset is
+  bounded to overlap/revert adjustment lineage. Zero denominators, positive
+  interaction, explanation IDs, and the base/head/PR exclusion are explicit. No
+  prior, final EHE total, frozen report, label, or review maturity changes.
 - Source-file budgets are enforced as an end-to-end architecture ratchet: 500
   lines by default, 400 for CLI files, and explicit non-precedent overrides for
   legacy debt. The former large CLI application class is split by responsibility.
@@ -480,7 +486,7 @@ review.
   productivity.
 - Extend the implemented optional identity-only `gh` adapter only when network,
   privacy, immutable-object, and cross-PR normalization safeguards are explicit.
-- Calibrate `change-seed/0.4.0` on reviewed, redistributable final-change examples
+- Calibrate `change-seed/0.5.0` on reviewed, redistributable final-change examples
   before consequential use or any production-readiness claim.
 - Follow the remaining deferred semantics and safeguards in
   `CHANGE_ESTIMATION.md` before expanding any history-backed command.
@@ -572,4 +578,5 @@ cross-platform measurements and a more representative benchmark corpus exist.
    large-range performance before fitting a calibrated model or expanding to
    multiple PRs and author-period portfolios. Preserve the completed subject-neutral
    `change-seed/0.4.0` generated-customization and inherited logical-marginality
-   guardrails throughout that work.
+   guardrails plus the `change-seed/0.5.0` diagnostic/non-productivity boundary
+   throughout that work.
