@@ -238,14 +238,17 @@ cross-platform regression threshold has been frozen from the single-machine data
 
 The first Change Estimation MVP adds provider-neutral immutable snapshot analysis,
 local Git base/head, commit, and range selectors, one optional identity-only `gh`
-PR selector, v1 change schemas, `change-seed/0.1.0` work items, final-delta
+PR selector, v1 change schemas, initial `change-seed/0.1.0` work items, final-delta
 normalization, component reconciliation, saved-report explanation, and
 process-level Git tests. Its completed safeguard matrix covers normalization,
 meaningful code/tests/docs, migrations, integrations, CI, container delivery,
 simplification, additivity, overlap, reverts, category isolation, all three range
 points, and cooperative cancellation. The first Ctrl+C returns 130 after a
-stderr-only diagnostic; a second retains immediate termination. It remains
-experimental and uncalibrated. Multiple PRs, directory/evidence selectors, and
+stderr-only diagnostic; a second retains immediate termination. Current
+`change-seed/0.2.0` rules prevent broad repository capability context from stacking
+on touched paths, correlate repeated marginal evidence, and emit bounded
+change-level comprehension, validation, and review once. They remain experimental
+and uncalibrated. Multiple PRs, directory/evidence selectors, and
 author-period portfolios remain deferred. The former large CLI application class
 is split into focused partial modules, and `eng/file-budgets.json` enforces early
 refactoring through the end-to-end suite.
@@ -261,8 +264,9 @@ targets. The preliminary public synthetic corpus has
 24 records, 121 teacher targets, 22 exact-zero exclusions, and one disclosed
 host-AI teacher. Development and validation diagnostics are recorded; test
 comparison remains withheld. No independent Change review is complete. The corpus
-changes no estimator prior and adds no ML dependency;
-`change-seed/0.1.0` remains experimental and uncalibrated.
+changes no estimator prior and adds no ML dependency; its frozen source reports
+retain `change-seed/0.1.0` provenance while current `change-seed/0.2.0` remains
+experimental and uncalibrated.
 
 The first Milestone 8 host-review checkpoint adds the provider-neutral
 `host-review/1.0.0` protocol: rate-free compact packets, canonical estimate-plus-
@@ -287,7 +291,7 @@ weekly dependency update configuration, a dedicated NuGet README, and a manually
 dispatched `EffortHours.Tool` preview workflow. Package publication uses a protected
 `nuget.org` GitHub environment and short-lived NuGet trusted-publishing/OIDC
 credentials; long-lived publishing keys must not be committed or stored. The
-audited repository is public, and version `0.9.0-alpha.1` has a matching immutable
+audited repository is public, and version `0.9.0-alpha.2` has a matching immutable
 tag, NuGet package, and GitHub prerelease. Future visibility, tagging, GitHub
 release, and package-publication actions remain separately authorized. Follow
 `docs/RELEASING.md` for the exact boundary.

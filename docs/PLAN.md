@@ -113,7 +113,7 @@ required for an ordinary estimate.
 
 ## 5. Milestones
 
-Status as of August 9, 2026:
+Status as of August 10, 2026:
 
 - Milestone 0 is complete: the initial product semantics, MIT License, packaging
   identity, and repository conventions are recorded.
@@ -207,7 +207,7 @@ Status as of August 9, 2026:
   commit, range, and single-PR selectors; v1 Change EHE schemas; final-delta
   normalization; additive component reconciliation; JSON/Markdown/explanation
   output; memory-only unit fixtures; and process-level Git tests are implemented.
-  `change-seed/0.1.0` remains experimental and uncalibrated. Multiple PRs,
+  The initial `change-seed/0.1.0` was experimental and uncalibrated. Multiple PRs,
   directory/evidence selectors, and author-period portfolios remain deferred.
 - The Change behavioral-safeguard checkpoint is complete: memory-only mutations
   cover formatting, movement, excluded output, duplication, meaningful code/tests/
@@ -216,6 +216,14 @@ Status as of August 9, 2026:
   Cancellation is cooperative from Ctrl+C through the Change engine, uses a
   stderr-only diagnostic and exit code 130, and leaves the target and model
   semantics unchanged.
+- The Change marginality-correction checkpoint advances the current transparent
+  rules to `change-seed/0.2.0`: existing capability modifications require changed
+  normalized non-file evidence, repeated category/path evidence shares one
+  diminishing budget, and change-level comprehension, validation, and review are
+  emitted once. A synthetic compatibility-upgrade regression preserves mechanical
+  lockfile exclusion and prevents scope membership alone from creating UI work.
+  Public development agreement improves while validation agreement and mapping
+  worsen, so the revision remains experimental and makes no calibration claim.
 - The first Change calibration checkpoint is complete: immutable final-delta
   provenance extends the existing corpus/review boundary; Change-specific
   scaffold, compile, and evaluate commands reuse the same metric implementation;
@@ -227,7 +235,7 @@ Status as of August 9, 2026:
   teacher corpus has 121 targets and a blind exact-digest handoff; development and
   validation diagnostics are recorded while test comparison remains withheld.
   No independent correction exists yet, so
-  `change-seed/0.1.0` remains uncalibrated and unchanged.
+  that checkpoint left `change-seed/0.1.0` uncalibrated and unchanged.
 - Source-file budgets are enforced as an end-to-end architecture ratchet: 500
   lines by default, 400 for CLI files, and explicit non-precedent overrides for
   legacy debt. The former large CLI application class is split by responsibility.
@@ -235,9 +243,9 @@ Status as of August 9, 2026:
   policies, issue/PR templates, protected cross-platform CI, dependency automation,
   NuGet-specific package metadata and README, an OIDC-only protected release
   workflow, and an exact release checklist are in place. The audited repository is
-  public, and `EffortHours.Tool` `0.9.0-alpha.1` is available from NuGet.org with a
-  matching immutable tag and GitHub prerelease. The release retains every
-  uncalibrated-model warning and makes no production-accuracy claim.
+  public, and the bug-fix `EffortHours.Tool` `0.9.0-alpha.2` is available from
+  NuGet.org with a matching immutable tag and GitHub prerelease. The release
+  retains every uncalibrated-model warning and makes no production-accuracy claim.
 
 ### Milestone 0: Product and contract decisions
 
@@ -412,7 +420,7 @@ review.
   productivity.
 - Extend the implemented optional identity-only `gh` adapter only when network,
   privacy, immutable-object, and cross-PR normalization safeguards are explicit.
-- Calibrate `change-seed/0.1.0` on reviewed, redistributable final-change examples
+- Calibrate `change-seed/0.2.0` on reviewed, redistributable final-change examples
   before consequential use or any production-readiness claim.
 - Follow the remaining deferred semantics and safeguards in
   `CHANGE_ESTIMATION.md` before expanding any history-backed command.
@@ -502,4 +510,4 @@ cross-platform measurements and a more representative benchmark corpus exist.
 7. Obtain genuinely independent correction for the frozen 24-case Change teacher
    corpus, add redistributable real final-change families, and record large-range
    performance before tuning
-   `change-seed/0.1.0` or expanding to multiple PRs and author-period portfolios.
+   `change-seed/0.2.0` or expanding to multiple PRs and author-period portfolios.

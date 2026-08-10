@@ -4,8 +4,10 @@
 
 The first Change Estimation MVP is implemented after Milestone 7B5. It includes
 provider-neutral immutable base/head analysis, one commit, one final revision
-range, and one GitHub pull request through an optional `gh` adapter. The
-`change-seed/0.1.0` rules are transparent but uncalibrated and remain experimental.
+range, and one GitHub pull request through an optional `gh` adapter. The current
+`change-seed/0.2.0` rules are transparent but uncalibrated and remain experimental.
+Version 0.2.0 corrects non-marginal modification stacking in the initial rules
+without changing repository `seed-rules/0.2.1`.
 The first calibration-infrastructure checkpoint and a preliminary 24-record
 host-AI teacher corpus are implemented, but no independent correction exists.
 The behavioral safeguard suite now covers cancellation and category-isolated
@@ -105,6 +107,17 @@ and visible rather than being silently discarded. Exact blob moves are excluded
 from body implementation effort. Path-sensitive integration work is included only
 when separate analyzer evidence supports it.
 
+`change-seed/0.2.0` treats repository capabilities as context rather than charging
+their full modification priors whenever one cited path changes. An existing
+capability receives modification work only when its normalized non-file evidence
+changes. Repository-level specification, validation, and review capabilities are
+replaced by one bounded change-level item each; setup and architecture apply only
+when a scope is added or removed. Repeated modified paths in one category share a
+single diminishing marginal budget, and the edit-region rates for an existing
+modified artifact are 30% of the corresponding new-artifact fallback rates. A
+specialized UI or other boundary category therefore requires changed boundary
+evidence; a source file's location inside such a scope is not sufficient.
+
 ## Additivity and reconciliation
 
 For clean, disjoint commits with no rework, isolated expected Change EHE should be
@@ -151,9 +164,11 @@ is represented by counts and snapshot evidence rather than by repeating every
 unchanged path.
 
 The v1 public schemas are `change-evidence`, `change-estimate-report`, and
-`change-estimate-explanation`. The first estimator identity is
-`change-seed/0.1.0`; it composes the still-uncalibrated repository
-`seed-rules/0.2.1` model and must not be described as production-ready.
+`change-estimate-explanation`. The current estimator identity is
+`change-seed/0.2.0`; it composes the still-uncalibrated repository
+`seed-rules/0.2.1` model and must not be described as production-ready. Frozen
+calibration source reports retain the exact earlier estimator identity they were
+created from.
 
 ## Implemented CLI behavior
 
@@ -167,6 +182,11 @@ The v1 public schemas are `change-evidence`, `change-estimate-report`, and
   requires both objects to exist locally.
 - JSON and Markdown output include optional pricing only after hours are estimated;
   saved JSON supports work-item explanation queries.
+- Existing-capability modifications require changed normalized capability evidence,
+  and correlated category/path evidence receives one marginal budget.
+- Change comprehension, manual validation, and self-review are emitted once for
+  the coherent final delta instead of being inherited repeatedly from repository
+  scopes.
 - The CLI and model are deterministic for the same objects, options, and versions.
 - The first Ctrl+C requests cooperative cancellation through snapshot selection,
   analysis, and output; it emits a stderr-only diagnostic with exit code 130. A

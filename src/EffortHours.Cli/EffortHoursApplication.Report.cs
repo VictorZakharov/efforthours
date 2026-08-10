@@ -142,6 +142,18 @@ public sealed partial class EffortHoursApplication
             json);
         if (!schema.IsValid)
         {
+            SchemaValidationResult changeSchema = ContractSchemaValidator.Validate(
+                SchemaNames.ChangeEstimateReport,
+                json);
+            if (changeSchema.IsValid)
+            {
+                await standardError.WriteLineAsync(
+                    "Input is a Change estimate report. Use a Change-specific command; " +
+                    "for calibration authoring, run 'eh calibration change-scaffold'.")
+                    .ConfigureAwait(false);
+                return null;
+            }
+
             await standardError.WriteLineAsync("Estimate does not satisfy the estimate-report schema:")
                 .ConfigureAwait(false);
             foreach (string error in schema.Errors)

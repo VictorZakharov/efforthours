@@ -12,7 +12,7 @@ internal sealed record ChangeWorkItemResult(
 
 internal static partial class ChangeWorkItemBuilder
 {
-    public const string EstimatorVersion = "change-seed/0.1.0";
+    public const string EstimatorVersion = "change-seed/0.2.0";
 
     public static ChangeWorkItemResult Build(
         ChangeSelection selection,
@@ -31,6 +31,7 @@ internal static partial class ChangeWorkItemBuilder
         Dictionary<string, Capability> headCapabilities = Capabilities(headEstimate, headFacts);
         ChangePathEvidence[] represented = [.. changeEvidence.Paths.Where(path => path.Represented)];
         HashSet<string> usedEvidenceIds = new(StringComparer.Ordinal);
+        Dictionary<EffortCategory, HashSet<string>> correlatedModificationEvidence = [];
         List<WorkItem> items = [];
 
         foreach (string capabilityId in baseCapabilities.Keys
@@ -51,16 +52,28 @@ internal static partial class ChangeWorkItemBuilder
             string? verb = null;
             string? reason = null;
 
+            if (!SupportsCapabilityDelta(source.Category, baseCapability, headCapability))
+            {
+                continue;
+            }
+
             if (expectedDifference > 0m)
             {
                 EffortRange marginal = PositiveDifference(baseHours, headHours);
                 if (touched.Length > 0 && baseCapability is not null)
                 {
-                    EffortRange modification = ModificationRange(
+                    ChangePathEvidence[] floorEvidence = ClaimCorrelatedModificationEvidence(
                         source.Category,
-                        touched.Sum(path => path.EditRegions),
-                        Math.Max(baseHours.Expected, headHours.Expected));
-                    hours = MaxExpected(marginal, modification);
+                        touched,
+                        correlatedModificationEvidence);
+                    hours = floorEvidence.Length == 0
+                        ? marginal
+                        : MaxExpected(
+                            marginal,
+                            ModificationRange(
+                                source.Category,
+                                floorEvidence,
+                                Math.Max(baseHours.Expected, headHours.Expected)));
                 }
                 else
                 {
@@ -80,16 +93,33 @@ internal static partial class ChangeWorkItemBuilder
                 reason = "Bounded removal and simplification work derived from capability context; deleted volume " +
                     "is not treated as negative effort or a direct labor multiplier.";
             }
-            else if (touched.Length > 0)
+            else if (touched.Length > 0 &&
+                baseCapability is not null &&
+                headCapability is not null &&
+                HasMaterialCapabilityEvidenceChange(
+                    baseCapability,
+                    headCapability,
+                    baseFacts,
+                    headFacts,
+                    touched))
             {
+                touched = ClaimCorrelatedModificationEvidence(
+                    source.Category,
+                    touched,
+                    correlatedModificationEvidence);
+                if (touched.Length == 0)
+                {
+                    continue;
+                }
+
                 hours = ModificationRange(
                     source.Category,
-                    touched.Sum(path => path.EditRegions),
+                    touched,
                     Math.Max(baseHours.Expected, headHours.Expected));
                 rule = "capability-modification";
                 verb = "Modify";
-                reason = "The final artifact changed inside an existing evidence-backed capability even though " +
-                    "its repository-level structural quantity did not increase.";
+                reason = "The final artifact materially changed the normalized evidence for an existing " +
+                    "capability. Repeated path evidence in this category shares one marginal modification budget.";
             }
 
             if (hours is null || hours.Expected <= 0m || rule is null || verb is null || reason is null)
@@ -123,27 +153,36 @@ internal static partial class ChangeWorkItemBuilder
                 source.UncertaintyReasons));
         }
 
-        foreach (ChangePathEvidence path in represented.Where(path => !usedEvidenceIds.Contains(path.Id)))
+        IGrouping<(EffortCategory Category, ChangePathStatus Status), ChangePathEvidence>[] fallbackGroups =
+        [.. represented
+            .Where(path => !usedEvidenceIds.Contains(path.Id))
+            .GroupBy(path => (Category: FallbackCategory(path), path.Status))
+            .OrderBy(group => group.Key.Category)
+            .ThenBy(group => group.Key.Status)];
+        foreach (IGrouping<(EffortCategory Category, ChangePathStatus Status), ChangePathEvidence> group in
+            fallbackGroups)
         {
-            EffortCategory category = FallbackCategory(path);
-            EffortRange hours = FallbackRange(path, category);
+            ChangePathEvidence[] paths = [.. group.OrderBy(path => path.Path, StringComparer.Ordinal)];
+            EffortCategory category = group.Key.Category;
+            EffortRange hours = FallbackRange(paths, category);
+            string[] evidenceIds = [.. paths.Select(path => path.Id).Order(StringComparer.Ordinal)];
             items.AddRange(CreateItems(
                 selection,
                 "maintained-artifact-fallback",
-                path.Id,
+                string.Join(':', evidenceIds),
                 category,
-                FallbackTitle(path),
-                path.Path,
+                FallbackTitle(paths, category),
+                paths.Length == 1 ? paths[0].Path : ".",
                 ComplexityLevel.Moderate,
                 hours,
                 0.58m,
-                "No more specific positive capability delta explained this maintained final change; " +
-                    "a bounded edit-region fallback preserves visible effort without using physical lines as value.",
-                [path.Id],
+                "No more specific material capability delta explained these maintained artifacts. Their edit " +
+                    "regions share one category-and-status marginal budget rather than repeating a per-path minimum.",
+                evidenceIds,
                 profile,
-                path.EditRegions,
+                paths.Sum(path => path.EditRegions),
                 ["The current analyzer could not map this artifact change to a more specific capability."]));
-            usedEvidenceIds.Add(path.Id);
+            usedEvidenceIds.UnionWith(evidenceIds);
         }
 
         if (represented.Length > 0)
@@ -189,6 +228,29 @@ internal static partial class ChangeWorkItemBuilder
                 profile,
                 represented.Length,
                 []));
+
+            decimal validationExpected = RoundQuarter(MarginalPathHours(
+                represented.Length,
+                0.5m,
+                0.2m,
+                0.05m,
+                6m));
+            items.AddRange(CreateItems(
+                selection,
+                "change-validation",
+                "change-validation",
+                EffortCategory.ManualValidationDebuggingAndHardening,
+                "Validate and harden the completed change",
+                ".",
+                ComplexityLevel.Moderate,
+                RangeFromExpected(validationExpected, 0.68m),
+                0.68m,
+                "Perform bounded validation and debugging once across the coherent final delta; static " +
+                    "repository-level validation capabilities are not repeated for every touched scope.",
+                allEvidenceIds,
+                profile,
+                represented.Length,
+                ["The immutable snapshots were not executed; validation effort is inferred from represented change surfaces."]));
 
             if (profile == EstimationProfile.Recreation)
             {

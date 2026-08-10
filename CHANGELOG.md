@@ -4,6 +4,23 @@ Significant user-visible EffortHours changes are recorded here. The project foll
 Semantic Versioning once a package version has been released; prerelease versions
 may still change public contracts with explicit documentation.
 
+## 0.9.0-alpha.2 - 2026-08-10
+
+### Changed
+
+- Change estimation advances to experimental `change-seed/0.2.0`. Existing
+  capability modifications now require changed normalized non-file evidence,
+  repeated category/path evidence shares one diminishing marginal budget, and
+  final-delta comprehension, validation, and review are emitted once.
+- Modified artifacts use 30% of the corresponding new-artifact edit-region rates;
+  scope membership alone no longer assigns specialized UI or other boundary work.
+
+### Fixed
+
+- Passing a Change estimate to repository calibration authoring now points to
+  `eh calibration change-scaffold` instead of printing unrelated repository-schema
+  failures.
+
 ## 0.9.0-alpha.1 - 2026-08-09
 
 ### Added

@@ -33,6 +33,7 @@ internal static partial class ChangeWorkItemBuilder
                     ContractValidation.Sum(group.Select(item => item.Hours)),
                     group.Min(item => item.Confidence),
                     paths,
+                    evidenceIds,
                     [.. group.SelectMany(item => item.UncertaintyReasons)
                         .Distinct(StringComparer.Ordinal)
                         .Order(StringComparer.Ordinal)]);
@@ -72,7 +73,7 @@ internal static partial class ChangeWorkItemBuilder
 
     private static EffortRange ModificationRange(
         EffortCategory category,
-        int editRegions,
+        ChangePathEvidence[] paths,
         decimal contextExpected)
     {
         decimal factor = category switch
@@ -95,12 +96,22 @@ internal static partial class ChangeWorkItemBuilder
             EffortCategory.SelfReviewAndSystemIntegration => 0.5m,
             _ => 1m,
         };
-        decimal raw = MarginalPathHours(Math.Max(1, editRegions), factor, factor * 0.5m, factor * 0.15m, 16m);
+        decimal statusFactor = paths.Max(path => StatusFactor(path.Status));
+        decimal marginalFactor = factor * statusFactor;
+        int editRegions = paths.Sum(path => path.EditRegions);
+        decimal raw = MarginalPathHours(
+            Math.Max(1, editRegions),
+            marginalFactor,
+            marginalFactor * 0.5m,
+            marginalFactor * 0.15m,
+            16m);
         decimal expected = RoundQuarter(Math.Clamp(raw, 0.5m, Math.Max(0.5m, Math.Min(16m, contextExpected))));
         return RangeFromExpected(expected, 0.7m);
     }
 
-    private static EffortRange FallbackRange(ChangePathEvidence path, EffortCategory category)
+    private static EffortRange FallbackRange(
+        ChangePathEvidence[] paths,
+        EffortCategory category)
     {
         decimal factor = category switch
         {
@@ -113,9 +124,10 @@ internal static partial class ChangeWorkItemBuilder
             EffortCategory.EndToEndAndUiTesting => 0.75m,
             _ => 1m,
         };
-        decimal statusFactor = path.Status == ChangePathStatus.Removed ? 0.75m : 1m;
+        decimal statusFactor = StatusFactor(paths[0].Status);
+        int editRegions = paths.Sum(path => path.EditRegions);
         decimal expected = RoundQuarter(MarginalPathHours(
-            Math.Max(1, path.EditRegions),
+            Math.Max(1, editRegions),
             factor * statusFactor,
             factor * 0.5m * statusFactor,
             factor * 0.15m * statusFactor,
@@ -166,15 +178,35 @@ internal static partial class ChangeWorkItemBuilder
         return EffortCategory.ProductionImplementation;
     }
 
-    private static string FallbackTitle(ChangePathEvidence path) =>
-        $"{path.Status switch
+    private static string FallbackTitle(
+        ChangePathEvidence[] paths,
+        EffortCategory category)
+    {
+        ChangePathEvidence path = paths[0];
+        string verb = path.Status switch
         {
             ChangePathStatus.Added => "Add",
             ChangePathStatus.Modified => "Modify",
             ChangePathStatus.Removed => "Remove",
             ChangePathStatus.Moved => "Move",
             _ => "Change",
-        }} maintained artifact '{path.Path}'";
+        };
+        return paths.Length == 1
+            ? $"{verb} maintained artifact '{path.Path}'"
+            : $"{verb} {paths.Length} correlated {CategoryName(category)} artifacts";
+    }
+
+    private static string CategoryName(EffortCategory category) => category switch
+    {
+        EffortCategory.ProductionImplementation => "production",
+        EffortCategory.UnitTesting => "unit-test",
+        EffortCategory.IntegrationContractAndComponentTesting => "integration-test",
+        EffortCategory.EndToEndAndUiTesting => "end-to-end-test",
+        EffortCategory.Documentation => "documentation",
+        EffortCategory.BuildConfigurationAndDeveloperTooling => "build-configuration",
+        EffortCategory.CiCdAndInfrastructureAsCode => "delivery-configuration",
+        _ => "maintained",
+    };
 
     private static List<WorkItem> CreateItems(
         ChangeSelection selection,
@@ -333,5 +365,6 @@ internal static partial class ChangeWorkItemBuilder
         EffortRange Hours,
         decimal Confidence,
         IReadOnlySet<string> Paths,
+        IReadOnlyList<string> EvidenceIds,
         IReadOnlyList<string> UncertaintyReasons);
 }
