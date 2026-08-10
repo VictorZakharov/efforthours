@@ -1,0 +1,216 @@
+{
+  "selectionVersion": "public-real-change-selection/0.1.0",
+  "id": "efforthours-change-public-real-expansion",
+  "version": "0.1.0",
+  "frozenOn": "2026-08-10",
+  "status": "frozen-before-candidate-analysis",
+  "methodology": {
+    "candidateVisibility": "blind",
+    "teacherInputs": "Public final specification, immutable base/head delta, bounded adjacent source, and blind authoring evidence.",
+    "forbiddenSignals": [
+      "candidate hours or confidence before teacher-plan completion",
+      "contributor identity or activity",
+      "elapsed time or actual labor",
+      "commit count or intermediate churn",
+      "pricing or a preferred aggregate result"
+    ],
+    "evaluationBoundary": "Development and validation diagnostics only; test comparison is withheld.",
+    "sourceBoundary": "Derived evidence and reasoning only; source checkouts and excerpts are not redistributed."
+  },
+  "cases": [
+    {
+      "id": "change:github.com/dotnet/benchmarkdotnet:pr-3211",
+      "repositoryFamilyId": "repository:github.com/dotnet/benchmarkdotnet",
+      "repositoryName": "dotnet/BenchmarkDotNet",
+      "repositoryUrl": "https://github.com/dotnet/BenchmarkDotNet",
+      "pullRequestNumber": 3211,
+      "pullRequestUrl": "https://github.com/dotnet/BenchmarkDotNet/pull/3211",
+      "title": "Disambiguate type display names in benchmark selection",
+      "partition": "development",
+      "ecosystem": "dotnet",
+      "scopeStratum": "medium",
+      "baseCommit": "17f218589e5a3364b01d1d0ae4c4ca87e5b4bfad",
+      "baseTree": "6f1134235128212c0f1a89ad95e9a4b5e0c8c0d9",
+      "headCommit": "e90b701ed71a3b3e571ab40a9192715d0e453a0b",
+      "headTree": "3e80277f6ab06e4fbe5ae4020b41d93106840619",
+      "license": {
+        "expression": "MIT",
+        "path": "LICENSE.md",
+        "baseBlob": "6272f97306b54ad0554e1c9ae5530ae1186ccbeb",
+        "headBlob": "6272f97306b54ad0554e1c9ae5530ae1186ccbeb",
+        "redistributionAllowed": true
+      },
+      "coverageTags": [
+        "dotnet",
+        "feature",
+        "public-real-change",
+        "pull-request",
+        "selection-ui",
+        "unit-tests"
+      ],
+      "selectionRationale": "A bounded public selection feature spans reusable name disambiguation, interactive selection behavior, and focused tests."
+    },
+    {
+      "id": "change:github.com/spectreconsole/spectre.console:pr-2162",
+      "repositoryFamilyId": "repository:github.com/spectreconsole/spectre.console",
+      "repositoryName": "spectreconsole/spectre.console",
+      "repositoryUrl": "https://github.com/spectreconsole/spectre.console",
+      "pullRequestNumber": 2162,
+      "pullRequestUrl": "https://github.com/spectreconsole/spectre.console/pull/2162",
+      "title": "Fix infinite loop in TableMeasurer.CollapseWidths when wrappable columns have zero width",
+      "partition": "validation",
+      "ecosystem": "dotnet",
+      "scopeStratum": "small",
+      "baseCommit": "bbbb5729dde27b58deee44f447a788eea46ee451",
+      "baseTree": "eadd249f822099b8a78819ea603e38f2f7259385",
+      "headCommit": "8b3a236cc812d8799808ddc06c797ac8d4522360",
+      "headTree": "98cf75a8908873fc2a6c5e9db892aa82522b5c31",
+      "license": {
+        "expression": "MIT",
+        "path": "LICENSE.md",
+        "baseBlob": "a8373c40dfe39d28621ea162b52280bf0592bbfd",
+        "headBlob": "a8373c40dfe39d28621ea162b52280bf0592bbfd",
+        "redistributionAllowed": true
+      },
+      "coverageTags": [
+        "algorithm",
+        "bug-fix",
+        "dotnet",
+        "public-real-change",
+        "pull-request",
+        "unit-tests"
+      ],
+      "selectionRationale": "A bounded rendering-algorithm termination defect pairs a small production correction with a focused regression scenario."
+    },
+    {
+      "id": "change:github.com/sindresorhus/p-limit:pr-108",
+      "repositoryFamilyId": "repository:github.com/sindresorhus/p-limit",
+      "repositoryName": "sindresorhus/p-limit",
+      "repositoryUrl": "https://github.com/sindresorhus/p-limit",
+      "pullRequestNumber": 108,
+      "pullRequestUrl": "https://github.com/sindresorhus/p-limit/pull/108",
+      "title": "Fix detached limit.map calls",
+      "partition": "development",
+      "ecosystem": "javascript",
+      "scopeStratum": "small",
+      "baseCommit": "42599ebbbb1228a5bdab381fcf8f4ac20eb8d551",
+      "baseTree": "b29ee56afd5b6050d88332d82fec3271c867fa07",
+      "headCommit": "1183b5d50a21a3b5825bdf111341552d3de35701",
+      "headTree": "92cfe6b8a610c3a0e23c9c850d0ffe600229a146",
+      "license": {
+        "expression": "MIT",
+        "path": "license",
+        "baseBlob": "fa7ceba3eb4a9657a9db7f3ffca4e4e97a9019de",
+        "headBlob": "fa7ceba3eb4a9657a9db7f3ffca4e4e97a9019de",
+        "redistributionAllowed": true
+      },
+      "coverageTags": [
+        "bug-fix",
+        "concurrency",
+        "javascript",
+        "public-real-change",
+        "pull-request",
+        "unit-tests"
+      ],
+      "selectionRationale": "A detached-method receiver defect must preserve shared concurrency, ordering, iterable, and index behavior."
+    },
+    {
+      "id": "change:github.com/axios/axios:pr-11094",
+      "repositoryFamilyId": "repository:github.com/axios/axios",
+      "repositoryName": "axios/axios",
+      "repositoryUrl": "https://github.com/axios/axios",
+      "pullRequestNumber": 11094,
+      "pullRequestUrl": "https://github.com/axios/axios/pull/11094",
+      "title": "Reject navigation-canceled XHR requests as ECONNABORTED",
+      "partition": "validation",
+      "ecosystem": "javascript",
+      "scopeStratum": "integration",
+      "baseCommit": "529ce70296334a0397f9e45e7dfa5658f6b6fdba",
+      "baseTree": "25020340ec571e2becd17350cfb37e378d2460fd",
+      "headCommit": "27b9d9761cba6fe477dfa6104527523ba2450ad4",
+      "headTree": "5b34c5547f2051adcc5b705ac9c3f2abe0430b9f",
+      "license": {
+        "expression": "MIT",
+        "path": "LICENSE",
+        "baseBlob": "05006a51eb888282323883df740cd90ad72d0700",
+        "headBlob": "05006a51eb888282323883df740cd90ad72d0700",
+        "redistributionAllowed": true
+      },
+      "coverageTags": [
+        "browser",
+        "bug-fix",
+        "external-integration",
+        "javascript",
+        "public-real-change",
+        "pull-request",
+        "unit-tests"
+      ],
+      "selectionRationale": "A browser-protocol edge case spans XHR cancellation semantics, URL protocol normalization, exemptions, and browser/unit regressions."
+    },
+    {
+      "id": "change:github.com/colinhacks/zod:pr-6354",
+      "repositoryFamilyId": "repository:github.com/colinhacks/zod",
+      "repositoryName": "colinhacks/zod",
+      "repositoryUrl": "https://github.com/colinhacks/zod",
+      "pullRequestNumber": 6354,
+      "pullRequestUrl": "https://github.com/colinhacks/zod/pull/6354",
+      "title": "Write a declared __proto__ key as an own property",
+      "partition": "development",
+      "ecosystem": "typescript",
+      "scopeStratum": "medium",
+      "baseCommit": "24b4cc7a6fc0008ef3ad129bde3f2bc1816c72fd",
+      "baseTree": "1089474af99a94273be8d86fc48f140a98621a34",
+      "headCommit": "17bbe5609b423349e4d8fbc1291948497f8d3544",
+      "headTree": "0869aaa628cd61f814b521d13c33be2ba92bdc22",
+      "license": {
+        "expression": "MIT",
+        "path": "LICENSE",
+        "baseBlob": "c06579627b432d09779094cd0166b7f37fe51db8",
+        "headBlob": "c06579627b432d09779094cd0166b7f37fe51db8",
+        "redistributionAllowed": true
+      },
+      "coverageTags": [
+        "bug-fix",
+        "parser",
+        "public-real-change",
+        "pull-request",
+        "security",
+        "typescript",
+        "unit-tests"
+      ],
+      "selectionRationale": "Declared own-property semantics cross interpreted, generated fast-path, and finite-record parsing with security-sensitive regressions."
+    },
+    {
+      "id": "change:github.com/unjs/ofetch:pr-524",
+      "repositoryFamilyId": "repository:github.com/unjs/ofetch",
+      "repositoryName": "unjs/ofetch",
+      "repositoryUrl": "https://github.com/unjs/ofetch",
+      "pullRequestNumber": 524,
+      "pullRequestUrl": "https://github.com/unjs/ofetch/pull/524",
+      "title": "Normalize options.headers again after the onRequest hook",
+      "partition": "test",
+      "ecosystem": "typescript",
+      "scopeStratum": "small",
+      "baseCommit": "47fe80799e23406dd0fb1c504bb493b6a6d0a5af",
+      "baseTree": "aa20e0c974567ad08903b32778d6203a8b3d055d",
+      "headCommit": "646bb130721efc442517f241ad728786fd704243",
+      "headTree": "0dd9fa8e0e6de97262a5a3c382b379390224e42d",
+      "license": {
+        "expression": "MIT",
+        "path": "LICENSE",
+        "baseBlob": "e739abce461d8b2899aaec6529a4af24a417e0fc",
+        "headBlob": "e739abce461d8b2899aaec6529a4af24a417e0fc",
+        "redistributionAllowed": true
+      },
+      "coverageTags": [
+        "bug-fix",
+        "hooks",
+        "public-real-change",
+        "pull-request",
+        "typescript",
+        "unit-tests"
+      ],
+      "selectionRationale": "A request-hook mutation boundary requires a second normalization pass while preserving header behavior and hook ordering."
+    }
+  ]
+}
