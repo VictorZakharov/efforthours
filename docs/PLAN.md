@@ -262,6 +262,15 @@ Status as of August 10, 2026:
   expected hours and 15.75 with 16.00; category, interval, and exact-item mapping
   effects remain mixed. Frozen alpha.2 artifacts are unchanged, no aggregate ratio
   was fitted, and the test comparison remains withheld.
+- A released-alpha.3 public Change diagnostic is complete: one new immutable
+  MIT-licensed .NET family was frozen in validation before candidate analysis, and
+  its four-target host-AI teacher plan was committed before candidate values were
+  opened. Released `change-seed/0.3.0` estimates 7.00 expected hours versus 5.75
+  reviewed, with 0.2174 WAPE, +0.2174 bias, and complete reviewed-range
+  coverage. The candidate interval is twice as wide, self-review is high, and the
+  added test path remains mapped into production rather than a distinct
+  unit-testing target.
+  One non-independent record changes no rule, prior, threshold, or maturity.
 - Source-file budgets are enforced as an end-to-end architecture ratchet: 500
   lines by default, 400 for CLI files, and explicit non-precedent overrides for
   legacy debt. The former large CLI application class is split by responsibility.

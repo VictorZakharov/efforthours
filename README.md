@@ -45,8 +45,11 @@ pilot plus a blind six-family .NET/JavaScript/TypeScript expansion. The visible
 expansion diagnostics expose repeated category-slice overcounting. The current
 source `change-seed/0.3.0` correction now consolidates those repository partitions
 through subject-neutral logical-budget rules and records separate development and
-validation diagnostics; the test comparison remains withheld. No independent
-Change correction or accuracy claim is complete.
+validation diagnostics; the test comparison remains withheld. A released-alpha.3
+follow-on adds one new .NET validation family: alpha.3 estimates 7.00 expected
+hours against a 5.75-hour blind teacher estimate, with the reviewed range covered
+but category separation and uncertainty still imperfect. No independent Change
+correction or accuracy claim is complete.
 The first Milestone 8 host-review and measurement checkpoints are implemented: a
 surrounding AI session can consume a rate-free, digest-bound uncertainty packet,
 request bounded capability, evidence, scope, or explicitly selected source detail,
@@ -91,7 +94,8 @@ The repository now contains:
   partitions, plus a deterministic in-memory generator for 24 public synthetic
   source cases whose frozen reports retain `change-seed/0.1.0` provenance and a
   one-record public pilot plus a six-record blind public expansion whose released
-  reports retain `change-seed/0.2.0` provenance;
+  reports retain `change-seed/0.2.0` provenance, plus one released-alpha.3 public
+  validation diagnostic with a teacher plan frozen before candidate access;
 - current `change-seed/0.3.0` marginal-modification rules that require changed
   normalized capability evidence, consolidate repository capability partitions
   into bounded evidence-derived logical budgets, preserve distinct additions, and

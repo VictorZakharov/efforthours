@@ -14,6 +14,11 @@ The six-record public real expansion has a separate 34-target blind handoff in
 Its development and validation teacher diagnostics are visible, but its test
 candidate comparison remains withheld.
 
+The released-alpha.3 public diagnostic has a separate four-target validation
+handoff in
+[`public-real-alpha3/INDEPENDENT_REVIEW.md`](public-real-alpha3/INDEPENDENT_REVIEW.md).
+Its candidate comparison is visible, but its teacher remains uncorrected.
+
 ## Blind assignment
 
 A reviewer must be a person or separately identified host-AI that did not create
