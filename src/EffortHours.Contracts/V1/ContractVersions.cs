@@ -109,6 +109,10 @@ public static class EvidenceKinds
     public const string ProjectReference = "project-reference";
     public const string RepositoryInventory = "repository-inventory";
     public const string SecurityConfiguration = "security-configuration";
+    public const string SqlArtifact = "sql-artifact";
+    public const string SqlDelivery = "sql-delivery";
+    public const string SqlRepository = "sql-repository";
+    public const string SqlTest = "sql-test";
     public const string SourceStructure = "source-structure";
     public const string TestSuite = "test-suite";
     public const string UserInterface = "user-interface";

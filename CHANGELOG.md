@@ -8,6 +8,16 @@ may still change public contracts with explicit documentation.
 
 ### Added
 
+- SQL analyzer `0.1.0` adds offline bounded evidence for `.sql` schemas,
+  migrations, indexes, constraints, stored programs, queries, test fixtures,
+  deployment scripts, and explicit cross-database boundaries. Dialect and parser
+  confidence are separate; PostgreSQL, SQL Server, MySQL/MariaDB, and SQLite
+  signals are conservative, and EffortHours never connects to or executes a
+  database.
+- Public synthetic mutation suite `0.6.0` adds 11 SQL states for formatting,
+  exact-copy, generated-dump, unknown-syntax, semantic, test, delivery,
+  cross-database, and bounded seed-volume behavior. All 247 relations pass across
+  67 cases; the 56 earlier candidate reports remain frozen.
 - JavaScript analyzer `0.5.0` adds bounded semantic HTML/template and CSS, SCSS,
   Sass, and Less evidence, plus conservative static Angular `@Component`
   metadata when a named `Component` import from `@angular/core` is present, with
@@ -25,6 +35,13 @@ may still change public contracts with explicit documentation.
 
 ### Changed
 
+- Existing `seed-rules/0.3.0` data, integration, testing, and packaging priors now
+  consume supported SQL evidence without a fitted SQL-specific rate. Repeated seed
+  rows, exact copies, dumps, and formatting do not inflate any range point.
+- Change source identity advances to
+  `change-seed/0.7.0+seed-rules/0.3.0` for token-aware SQL formatting and semantic
+  role routing. Existing Change priors and frozen reports are unchanged; SQL was
+  not part of the earlier 0.6.0 Stage A admission.
 - The bundled repository model advances to experimental `seed-rules/0.3.0`.
   UI asset line volume is no longer priced; bounded template structure/binding,
   stylesheet structure, responsive, design-token, animation, and theme units

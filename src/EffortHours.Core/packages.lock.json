@@ -57,6 +57,13 @@
           "EffortHours.Contracts": "[1.0.0, )"
         }
       },
+      "efforthours.analyzers.sql": {
+        "type": "Project",
+        "dependencies": {
+          "EffortHours.Analysis": "[1.0.0, )",
+          "EffortHours.Contracts": "[1.0.0, )"
+        }
+      },
       "efforthours.contracts": {
         "type": "Project",
         "dependencies": {

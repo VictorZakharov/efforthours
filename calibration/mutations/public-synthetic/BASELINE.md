@@ -15,6 +15,8 @@ effort-label corpora, accuracy claims, or model-training data.
   assertions evaluated with the same `seed-rules/0.2.1` catalog.
 - Suite `0.5.0` records the frontend semantic-evidence checkpoint: 56 cases and
   192 assertions evaluated with `seed-rules/0.3.0`.
+- Suite `0.6.0` records the static SQL checkpoint: 67 cases and 247 assertions
+  evaluated with the unchanged `seed-rules/0.3.0` model.
 
 The August 8, 2026 analyzer-precision reevaluation with `.NET` analyzer `0.3.2`
 and JavaScript analyzer `0.4.1` reproduced identical low, expected, and high
@@ -52,6 +54,11 @@ must not be treated as reviewed numeric labels.
 Suite 0.5.0 follows the same policy. Its five added states and 22 relations were
 specified around frontend invariance, directionality, and category isolation, not
 reviewed hour targets. Passing them does not calibrate the new UI rates.
+
+Suite 0.6.0 adds 11 SQL states and 55 relations specified around formatting,
+exact-copy, dump, unknown-syntax, seed-volume, semantic directionality, and role/
+category isolation. It reuses existing data, integration, testing, and packaging
+priors; passing does not calibrate SQL or add a reviewed label.
 
 ## What suite 0.4.0 measures
 
@@ -95,6 +102,21 @@ their production-category invariants are not artifacts of aggregate rounding.
 | Frontend exact stylesheet copy | 10.25 h | Total and UI unchanged at every range point |
 | Frontend semantic behavior | 13.75 h | +3.50 h UI; production unchanged |
 | Angular component and owned assets | 17.00 h | 7.25 h UI with static component ownership |
+
+### Static SQL additions
+
+| Variant | Expected total | Intended category result |
+| --- | ---: | --- |
+| SQL base | 9.75 h | 3.25 h data reference |
+| SQL formatting | 9.75 h | Total and data unchanged at every range point |
+| SQL exact copy | 9.75 h | Total and data unchanged at every range point |
+| SQL generated dump | 9.75 h | Total and data unchanged at every range point |
+| SQL unknown vendor statement | 9.75 h | Visible without guessed effort |
+| SQL semantic schema/query | 14.50 h | +4.75 h data |
+| SQL test fixture | 18.25 h | +8.50 h integration/component testing; data unchanged |
+| SQL delivery script | 11.00 h | +1.25 h packaging/deployment; data unchanged |
+| SQL cross-database query | 14.25 h | +3.25 h external integration |
+| SQL seed, one vs twenty rows | 9.75 h | Total and data unchanged between row counts |
 
 ### JavaScript
 
@@ -188,7 +210,9 @@ retain all earlier assertions unchanged.
 - `estimates/seed-rules-0.2.1/` contains the 51 frozen suite-0.4.0 candidates.
 - `0.5.0.suite.json` defines the 56-case frontend semantic aggregate suite.
 - `baseline-seed-rules-0.3.0-suite-0.5.0.json` is its deterministic report.
-- `estimates/seed-rules-0.3.0/` contains all 56 current aggregate candidates.
+- `0.6.0.suite.json` defines the 67-case static SQL aggregate suite.
+- `baseline-seed-rules-0.3.0-suite-0.6.0.json` is its deterministic report.
+- `estimates/seed-rules-0.3.0/` contains all 67 current aggregate candidates.
 - `fixtures/` contains every complete synthetic source state.
 
 Every case has a distinct repository source digest. Assertions select canonical
@@ -237,6 +261,14 @@ eh calibration mutations \
 
 Callers whose shell does not expand wildcards must list the 56 paths explicitly.
 
+## Reproduce suite 0.6.0
+
+Retain the 56 frozen suite-0.5.0 candidates and generate the 11 `sql-*` fixtures
+with the same estimate command into `estimates/seed-rules-0.3.0`. Then evaluate
+all 67 explicitly listed candidate paths against `0.6.0.suite.json`, writing
+`baseline-seed-rules-0.3.0-suite-0.6.0.json`. Shells that expand wildcards may use
+the same command shape shown for suite 0.5.0.
+
 ## Limitations and next expansion
 
 The suite uses deliberately small archetypes. Near-copy assertions bound the
@@ -255,6 +287,11 @@ The TypeScript path remains token-backed.
 Frontend scanners are tolerant and bounded. They do not render, execute
 TypeScript/configuration, compile Angular or another framework, run CSS
 preprocessors, establish runtime reachability, or perform accessibility auditing.
+
+The SQL scanner is also tolerant and bounded. It does not connect to a database,
+execute or validate SQL, bind object names/types, calculate query plans, prove
+migration order/reversibility, or exhaustively parse vendor procedural languages.
+Its dialect labels are confidence signals rather than server selection.
 
 Passing these relations prevents known perverse movements. It does not establish
 that any absolute hour or delta is numerically correct, and it does not make the

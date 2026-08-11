@@ -577,6 +577,7 @@ internal sealed partial class SeedCapabilityBuilder(
         [
             .. _index.NormalizedFactsOfKind(EvidenceKinds.DotNetTest),
             .. _index.NormalizedFactsOfKind(EvidenceKinds.JavaScriptTest),
+            .. _index.NormalizedFactsOfKind(EvidenceKinds.SqlTest),
         ];
         foreach (IGrouping<string, NormalizedEvidenceFact> group in fineTests
             .Where(fact => _index.FindScope(fact.Facts[0]) is not null)
@@ -868,10 +869,16 @@ internal sealed partial class SeedCapabilityBuilder(
         SeedEstimationScope[] packagingScopes = [.. _index.Scopes.Where(scope =>
             scope.Fact.Tags.Any(tag => tag is
                 "packable:declared-true" or "package:cli-bin" or "package:library-exports"))];
-        if (packagingScopes.Length == 0)
+        NormalizedEvidenceFact[] sqlDelivery =
+            [.. _index.NormalizedFactsOfKind(EvidenceKinds.SqlDelivery)];
+        if (packagingScopes.Length == 0 && sqlDelivery.Length == 0)
         {
             return;
         }
+
+        EvidenceFact[] evidence = Evidence(
+            packagingScopes.Select(scope => scope.Fact),
+            sqlDelivery.SelectMany(fact => fact.Facts));
 
         capabilities.Add(new CapabilityUnit
         {
@@ -879,13 +886,15 @@ internal sealed partial class SeedCapabilityBuilder(
             RuleId = "packaging-release",
             Title = "Prepare represented packages and release surfaces",
             Scope = ".",
-            Quantity = packagingScopes.Length,
+            Quantity = packagingScopes.Length + sqlDelivery.Length,
             Drivers = Drivers(
                 ("packaging-surfaces", packagingScopes.Length),
-                ("release-configurations", 0m)),
-            Complexity = packagingScopes.Length > 4 ? ComplexityLevel.High : ComplexityLevel.Moderate,
-            Reason = "Packable projects, CLI bins, and library exports require packaging metadata, compatibility checks, and release preparation.",
-            Evidence = Evidence(packagingScopes.Select(scope => scope.Fact)),
+                ("release-configurations", sqlDelivery.Length)),
+            Complexity = packagingScopes.Length + sqlDelivery.Length > 4
+                ? ComplexityLevel.High
+                : ComplexityLevel.Moderate,
+            Reason = "Packable projects, CLI bins, library exports, and explicit SQL deployment scripts require packaging metadata, compatibility checks, release configuration, and preparation.",
+            Evidence = evidence,
             Profiles = BothProfiles,
             CorrelationGroup = "repository:delivery",
         });

@@ -45,7 +45,7 @@ internal static class ContentChangeAnalyzer
         }
 
         if (SupportsFormattingComparison(path) &&
-            FormattingSignature(baseText) == FormattingSignature(headText))
+            FormattingEquivalent(baseText, headText, path))
         {
             return new ContentChangeResult(true, 0);
         }
@@ -57,6 +57,18 @@ internal static class ContentChangeAnalyzer
     }
 
     private static bool ContainsNull(string value) => value.AsSpan().Contains('\0');
+
+    private static bool FormattingEquivalent(string left, string right, string path)
+    {
+        if (Path.GetExtension(path).Equals(".sql", StringComparison.OrdinalIgnoreCase))
+        {
+            return SqlFormattingNormalizer.TryCreateSignature(left, out string leftSignature) &&
+                SqlFormattingNormalizer.TryCreateSignature(right, out string rightSignature) &&
+                leftSignature == rightSignature;
+        }
+
+        return FormattingSignature(left) == FormattingSignature(right);
+    }
 
     private static string FormattingSignature(string value)
     {
@@ -163,7 +175,7 @@ internal static class ContentChangeAnalyzer
     private static bool SupportsFormattingComparison(string path) =>
         Path.GetExtension(path).ToLowerInvariant() is
             ".cs" or ".js" or ".jsx" or ".mjs" or ".cjs" or
-            ".ts" or ".tsx" or ".mts" or ".cts";
+            ".ts" or ".tsx" or ".mts" or ".cts" or ".sql";
 
     private static string[] NormalizeLines(string value) =>
     [

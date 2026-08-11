@@ -77,6 +77,10 @@ such as application, server, library, worker, CLI, web UI, and test. Source,
 semantic, test, configuration, and dependency facts are associated with the most
 specific matching scope.
 
+SQL files use the deepest unambiguous containing .NET project or JavaScript package;
+otherwise one standalone SQL scope is explicit. Equal-depth ownership conflicts
+remain visible and are not guessed.
+
 ### Exact duplication
 
 Common-scanner SHA-256 tags identify byte-identical maintained files. Identical
@@ -87,6 +91,10 @@ Separate project setup, deployment, configuration, and integration context may
 still represent real work when the same body is used in multiple runnable scopes.
 The initial seed model handles exact duplicates only. Near-duplicate and dead-code
 detection remain explicit limitations rather than invented precision.
+
+SQL semantic normalization selects one canonical maintained body per exact digest
+and role family. Duplicate paths retain artifact/exclusion lineage but do not add
+data, test, delivery, integration, review-width, or total effort.
 
 ### Broad and fine facts
 
@@ -284,7 +292,7 @@ Ordinary unit tests remain entirely memory-backed. Milestone 5 tests must cover:
 - exact duplicate content not increasing implementation effort;
 - generated, vendored, minified, and binary bodies not increasing effort;
 - broad/fine evidence precedence;
-- .NET, JavaScript/TypeScript, and mixed evidence;
+- .NET, JavaScript/TypeScript, SQL, and mixed evidence;
 - tests, declared-assumed coverage, measured coverage, and measured-over-declared
   precedence at the represented level;
 - explicit recreation-profile additions;

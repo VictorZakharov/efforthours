@@ -36,6 +36,13 @@ reuses immutable snapshot analysis, bounds optional range audits, and records lo
 million-line and 128-commit performance gates. The implementation remains
 experimental and is not empirically production-validated.
 
+The static SQL follow-on was completed on August 11, 2026. It advances the source
+identity to `change-seed/0.7.0`, adds literal-aware SQL formatting normalization,
+and routes scanner-derived SQL schema/query, test, delivery, and cross-database
+roles to their intended categories. It changes no existing Change prior or frozen
+report. SQL was absent from the 0.6.0 Stage A records and is not admitted by that
+gate.
+
 ## Delivered scope
 
 - `eh change <repository> --base <revision> --head <revision>`
@@ -84,6 +91,12 @@ Generated files may contribute only when exact, balanced, EffortHours-specific
 `<custom-code>` markers isolate maintained content; stronger exclusions still win
 and the generated body never contributes.
 
+Source-readable SQL uses token-aware formatting comparison that preserves string,
+quoted-identifier, dollar-quote, and comment content. Exact copies, dumps, and
+formatting-only SQL remain zero; meaningful schema/query, test, delivery, and
+cross-database deltas use the data, integration/component-test, packaging, and
+integration categories respectively.
+
 For ranges, each commit is also estimated against its selected parent for audit.
 The normalized final base-to-head estimate is authoritative. Reports name shared
 setup, overlap, revert, and residual interaction adjustments and allocate normalized
@@ -100,8 +113,9 @@ selectors do not infer an intermediate history.
 
 The initial model identity was `change-seed/0.1.0`, composed with
 `seed-rules/0.2.1`. The current source identity is
-`change-seed/0.6.0+seed-rules/0.3.0`. It is admitted only as the experimental
-Stage A logical baseline for 4-to-32-hour changes; its ranges are not formal
+`change-seed/0.7.0+seed-rules/0.3.0`. Version 0.6.0 alone is admitted as the
+experimental Stage A logical baseline for 4-to-32-hour changes; 0.7.0 preserves
+its non-SQL rules but adds an unadmitted SQL path. Its ranges are not formal
 probability intervals and it is not production-validated.
 
 ## Contracts and output
@@ -156,10 +170,11 @@ test lives only in the end-to-end suite; ordinary unit tests remain memory-only.
 ## Known limitations
 
 - Change has model-authored logical calibration labels but no empirical production
-  calibration; the current admission applies only to the first 4-to-32-hour band.
+  calibration; the 0.6.0 admission applies only to the first 4-to-32-hour band and
+  does not include SQL.
 - TypeScript source semantics remain token-backed through the repository analyzer.
-- Formatting exclusion is intentionally conservative and limited to the initial
-  .NET and JavaScript/TypeScript source extensions.
+- Formatting exclusion is intentionally conservative and limited to .NET,
+  JavaScript/TypeScript, and token-aware SQL source extensions.
 - Saved repository evidence has no source bodies, so modified evidence-only paths
   cannot receive formatting-only exclusion or detailed edit-region analysis.
 - Exact blob movement/copying is recognized; general semantic clone detection is

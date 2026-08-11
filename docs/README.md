@@ -14,6 +14,8 @@ repository root without discarding their decision history.
 - [Implementation plan](PLAN.md) records current architecture and roadmap status.
 - [Change estimation](CHANGE_ESTIMATION.md) defines repository, commit, range,
   and pull-request semantics.
+- [Static SQL analysis](SQL_ANALYSIS.md) defines supported SQL evidence, dialect
+  confidence, effort mapping, safety bounds, Change behavior, and limitations.
 - [Source-file budgets](CODE_BUDGETS.md) documents the enforced early-refactoring
   policy.
 - [Release procedure](RELEASING.md) defines the source-visibility and NuGet

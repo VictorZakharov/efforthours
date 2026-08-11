@@ -176,6 +176,7 @@ the post-7B5 analyzer-precision checkpoint, and the scanner performance-and-safe
 checkpoint are complete. The repository has a
 working common scanner, static .NET
 project/Roslyn analyzer, static JavaScript/TypeScript package and source analyzer,
+bounded static SQL analyzer,
 mixed-repository evidence pipeline, published v1 schemas, optional external scan
 cache, installable global-tool package, memory-only unit fixtures, automated
 process-level CLI tests, reproducible million-line benchmarks, and a granular
@@ -227,10 +228,15 @@ to `0.5.0` with static Angular component metadata, bounded HTML/template and
 CSS-family semantics, digest-verified relative asset ownership, and no framework
 or preprocessor execution. `seed-rules/0.3.0` removes UI asset-line pricing;
 public suite `0.5.0` has 56 cases and 192 passing relations, while all 51 prior
-cases retain identical numeric ranges. General semantic-clone and reachability analysis,
-accessibility-specific depth, realistic multi-package boundaries, multiple
-observations per ecosystem/partition cell, and actual independent review are next;
-local ML has not been selected or added.
+cases retain identical numeric ranges. The static SQL checkpoint adds common
+scanner `0.2.2` and SQL analyzer `0.1.0` for bounded schema, migration,
+stored-program, query, test, delivery, and cross-database evidence with explicit
+parser/dialect confidence and no database execution. Existing `seed-rules/0.3.0`
+priors are reused; public suite `0.6.0` has 67 cases and 247 passing relations,
+including 11 SQL states, while prior reports remain frozen. General semantic-clone
+and reachability analysis, accessibility-specific depth, realistic multi-package
+boundaries, multiple observations per ecosystem/partition cell, and actual
+independent review are next; local ML has not been selected or added.
 
 The scanner benchmark now measures fresh-process .NET, JavaScript/TypeScript, and
 mixed million-line shapes, samples peak resident memory, labels explicit external
@@ -250,7 +256,7 @@ meaningful code/tests/docs, migrations, integrations, CI, container delivery,
 simplification, additivity, overlap, reverts, category isolation, all three range
 points, and cooperative cancellation. The first Ctrl+C returns 130 after a
 stderr-only diagnostic; a second retains immediate termination. Current
-`change-seed/0.6.0+seed-rules/0.3.0` rules retain the bounded 0.3.0 logical-
+`change-seed/0.7.0+seed-rules/0.3.0` rules retain the bounded 0.3.0 logical-
 marginality correction
 and can isolate exact, balanced, EffortHours-specific `<custom-code>` regions
 inside otherwise generated source. Only those regions can contribute;
@@ -258,8 +264,10 @@ conventional generated bodies,
 unchanged/formatting-only regions, ambiguous markers, oversized blobs, and
 bodyless generated evidence remain excluded. The rules preserve distinct added
 capabilities and emit bounded change-level comprehension, validation, and review
-once. They remain experimental; only the 4-to-32-hour Stage A logical band is
-admitted, and no empirical production validation is claimed. Non-Git Change mode now accepts
+once. Version 0.7.0 adds SQL-aware formatting and category routing without changing
+non-SQL rules. They remain experimental; only version 0.6.0 on the non-SQL
+4-to-32-hour Stage A logical band is admitted, and no empirical production
+validation is claimed. Non-Git Change mode now accepts
 two statically scanned, content-pinned directories or two digest-checked saved
 repository-evidence bundles;
 bodyless evidence modifications that otherwise qualify as represented remain
@@ -329,7 +337,7 @@ total 38.00 teacher hours and 38.50 candidate hours under
 total, per-case, category, decomposition, interval, semantic, and local performance
 gates pass without opening the expansion test comparison. The stricter logical
 audit decomposes all 28 eligible frozen parent targets into 45 distinct
-0.5-to-1.5-hour tasks; all 41 current candidate items meet the same ceiling.
+0.5-to-1.5-hour tasks; all 41 version-0.6.0 candidate items meet the same ceiling.
 Mixed-role capability budgets now split across disjoint native categories without
 changing totals. Repository
 analysis is reused once per immutable snapshot, optional range audits default to a

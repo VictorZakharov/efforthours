@@ -147,7 +147,19 @@ internal static partial class ChangeWorkItemBuilder
     {
         string role = path.Tags
             .FirstOrDefault(tag => tag.StartsWith("role:", StringComparison.Ordinal))?[5..] ?? string.Empty;
+        string sqlRole = path.Tags
+            .FirstOrDefault(tag => tag.StartsWith("sql-role:", StringComparison.Ordinal))?[9..] ?? string.Empty;
         string lowerPath = path.Path.ToLowerInvariant();
+        if (sqlRole == "test-fixture")
+        {
+            return EffortCategory.IntegrationContractAndComponentTesting;
+        }
+
+        if (sqlRole == "delivery")
+        {
+            return EffortCategory.PackagingDeploymentAndReleaseArtifacts;
+        }
+
         if (role == "test")
         {
             if (lowerPath.Contains("e2e", StringComparison.Ordinal) ||
@@ -179,6 +191,11 @@ internal static partial class ChangeWorkItemBuilder
         }
 
         if (lowerPath.Contains("migration", StringComparison.Ordinal))
+        {
+            return EffortCategory.DataModelingPersistenceAndMigrations;
+        }
+
+        if (Path.GetExtension(lowerPath).Equals(".sql", StringComparison.OrdinalIgnoreCase))
         {
             return EffortCategory.DataModelingPersistenceAndMigrations;
         }

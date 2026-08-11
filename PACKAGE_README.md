@@ -25,9 +25,12 @@ eh estimate ./my-repository --profile implementation --format markdown
 ```
 
 EffortHours statically analyzes .NET, JavaScript, TypeScript, HTML/CSS-family
-frontends, and mixed repositories. Frontend support includes bounded template and
-stylesheet semantics plus static Angular component metadata; it does not render,
-compile frameworks, or execute preprocessors.
+frontends, SQL, and mixed repositories. Frontend support includes bounded template
+and stylesheet semantics plus static Angular component metadata. SQL support
+includes bounded schema, migration, stored-program, query, test, deployment, and
+cross-database evidence for common PostgreSQL, SQL Server, MySQL/MariaDB, and
+SQLite syntax. It does not render, compile frameworks, execute preprocessors,
+connect to a database, or execute SQL.
 It reports evidence-backed work items across implementation, testing,
 documentation, integration, delivery, validation, and review, then optionally
 applies a dated contractor rate without changing the effort estimate.
@@ -78,7 +81,9 @@ treated as untrusted input, and reports avoid source excerpts by default.
 
 ## Current limitations
 
-- `seed-rules/0.3.0` and `change-seed/0.4.0` remain experimental and uncalibrated.
+- `seed-rules/0.3.0` and `change-seed/0.7.0` remain experimental and uncalibrated.
+- SQL uses bounded token/statement evidence mapped to existing priors; it is not a
+  full grammar, schema diff engine, query optimizer, or database validator.
 - Public calibration labels have not completed genuinely independent correction.
 - TypeScript and TSX evidence is token-backed rather than compiler-backed.
 - Multiple-PR and contributor-period portfolio estimation is not implemented.

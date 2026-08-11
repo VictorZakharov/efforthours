@@ -31,6 +31,7 @@ src/
   EffortHours.Analysis/             language-neutral repository analysis
   EffortHours.Analyzers.DotNet/     .NET/MSBuild/Roslyn evidence
   EffortHours.Analyzers.JavaScript/ JavaScript/TypeScript evidence
+  EffortHours.Analyzers.Sql/        bounded static SQL evidence
   EffortHours.Change/               final-delta evidence, Git/PR selectors, reconciliation
   EffortHours.Estimation/           rules, work items, aggregation
   EffortHours.Calibration/          reviewed labels and offline evaluation
@@ -115,7 +116,7 @@ required for an ordinary estimate.
 
 ## 5. Milestones
 
-Status as of August 10, 2026:
+Status as of August 11, 2026:
 
 - Milestone 0 is complete: the initial product semantics, MIT License, packaging
   identity, and repository conventions are recorded.
@@ -197,6 +198,13 @@ Status as of August 10, 2026:
   all 51 prior cases retain identical low/expected/high ranges. Rendering,
   framework compilation, preprocessors, runtime proof, and accessibility auditing
   remain outside this static boundary.
+- The static SQL checkpoint is complete: common scanner `0.2.2` and SQL analyzer
+  `0.1.0` admit bounded `.sql` schema, migration, stored-program, query, test,
+  deployment, and cross-database evidence with separate parser/dialect confidence.
+  Existing `seed-rules/0.3.0` category priors are reused without fitting. Public
+  suite `0.6.0` has 67 cases and 247 passing relations, including 11 SQL states;
+  all earlier reports remain frozen. SQL is not executed or connected to a server,
+  and it remains experimental and uncalibrated.
 - The scanner performance-and-safety checkpoint is complete: fresh-process
   one-million-line .NET, JavaScript/TypeScript, and mixed scans now report sampled
   peak resident memory and cumulative allocation; explicit warm-cache runs are
@@ -391,6 +399,23 @@ relative external assets must resolve to scanner-admitted files. This does not
 render, compile a framework, execute a preprocessor, prove runtime behavior, or
 perform an accessibility audit.
 
+### Static SQL analyzer extension
+
+- Admit `.sql` through the common scanner's path, link, byte, encoding, and digest
+  boundary.
+- Recognize bounded DDL, schema objects, migrations, stored programs, queries,
+  tests, delivery scripts, and explicit cross-database syntax.
+- Keep generated dumps, exact copies, row volume, migration timestamps, and unknown
+  vendor syntax from inflating effort.
+- Map only supported roles to existing data, integration, testing, and packaging
+  priors; do not fit a SQL-specific rate without reviewed evidence.
+- Preserve final-delta exclusions and category routing in Change EHE.
+
+Implementation note: SQL analyzer `0.1.0` uses a deterministic bounded token and
+statement stream and labels parser/dialect confidence explicitly. It never connects
+to or executes a database. The exact support and limitation boundary is recorded
+in `SQL_ANALYSIS.md`.
+
 ### Milestone 5: Seed estimation model
 
 - Define category-specific work-unit builders.
@@ -504,6 +529,8 @@ review.
   4-to-32-hour final changes before freezing a larger size band. Record host-model
   context, tokens, wall time, and cost when available, and keep empirical
   production validation separate from logical labels.
+- Evaluate the current `change-seed/0.7.0` SQL extension on decomposed public SQL
+  changes before considering it part of any admitted size band.
 - Follow the remaining deferred semantics and safeguards in
   `CHANGE_ESTIMATION.md` before expanding any history-backed command.
 - Publish analyzer extension contracts.

@@ -20,8 +20,9 @@ productivity score, invoice, or reconstruction of repository history.
 > **Experimental public alpha:** the CLI and reporting pipeline work. The bundled
 > repository estimator is not independently calibrated. The Change estimator has
 > passed its first model-authored logical gate for changes estimated at 4 to 32
-> hours, but it is not empirically production-validated. Review the evidence and
-> ranges before using any estimate for a consequential decision.
+> hours on the previously admitted non-SQL families, but it is not empirically
+> production-validated and the newer SQL path is outside that gate. Review the
+> evidence and ranges before using any estimate for a consequential decision.
 
 ## Install
 
@@ -115,6 +116,8 @@ estimate does not inspect Git history.
 Formatting-only changes, exact moves, conventional generated output, vendored or
 minified bodies, lockfiles, build output, and exact copies do not create body
 implementation effort. Deletion is never negative or valued by deleted volume.
+For `.sql`, formatting comparison is token-aware while preserving literal,
+quoted-identifier, and comment content.
 The current source build can retain bounded customization inside generated files
 only when exact, EffortHours-specific `<custom-code>` regions isolate it safely;
 the generated body still contributes zero. Generator-specific protected-region
@@ -167,6 +170,9 @@ The current static analyzers support:
   bounded tolerant scanner; and
 - CSS, SCSS/Sass, and Less rules/selectors, responsive surfaces, design tokens,
   animation, and theme signals through bounded tolerant scanners;
+- standalone or project/package-owned `.sql` schemas, migrations, indexes,
+  constraints, stored programs, queries, test fixtures, deployment scripts, and
+  explicit cross-database boundaries through bounded static token analysis;
 - mixed .NET and JavaScript/TypeScript repositories;
 - documentation, build configuration, CI, containers, infrastructure, package
   metadata, and checked-in LCOV or Cobertura coverage reports; and
@@ -183,8 +189,11 @@ HTML and CSS-family analysis is tolerant and structural: it does not render a UI
 compile a framework, run a preprocessor, prove runtime behavior, or perform an
 accessibility audit. Physical markup/style line count is retained as evidence but
 is not an EHE driver.
-Standalone SQL is inventoried but does not yet have semantic schema/query analysis;
-that work is tracked in [issue #50](https://github.com/VictorZakharov/efforthours/issues/50).
+SQL analysis recognizes conservative PostgreSQL, SQL Server, MySQL/MariaDB, and
+SQLite syntax signals without choosing or connecting to a database. It does not
+compile SQL, prove name/type correctness, execute migrations, inspect query plans,
+or infer effort from rows, dumps, timestamps, or migration versions. See the
+[static SQL boundary](docs/SQL_ANALYSIS.md).
 
 ## Offline and safe by default
 
@@ -224,7 +233,8 @@ in this alpha. See the [host-review protocol](docs/MILESTONE_8.md).
 - Static analysis assumes discovered tests pass on the fastest path and does not
   prove that a checkout builds or runs.
 - Unsupported languages still receive common inventory evidence but not the same
-  semantic depth as .NET, JavaScript/TypeScript, and the supported frontend forms.
+  semantic depth as .NET, JavaScript/TypeScript, SQL, and the supported frontend
+  forms.
 - Checked-in coverage can be stale even when its bytes match the analyzed tree;
   EffortHours does not regenerate it.
 - Multiple-PR and author/time portfolio estimation is not implemented.

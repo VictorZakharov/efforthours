@@ -1,6 +1,7 @@
 using EffortHours.Analysis;
 using EffortHours.Analyzers.DotNet;
 using EffortHours.Analyzers.JavaScript;
+using EffortHours.Analyzers.Sql;
 using EffortHours.Contracts.V1;
 
 namespace EffortHours.Core;
@@ -16,6 +17,7 @@ public sealed class RepositoryAnalysisPipeline : IRepositoryScanner
             [
                 new DotNetRepositoryAnalyzer(),
                 new JavaScriptRepositoryAnalyzer(),
+                new SqlRepositoryAnalyzer(),
                 new CoverageReportAnalyzer(),
             ])
     {
@@ -29,6 +31,7 @@ public sealed class RepositoryAnalysisPipeline : IRepositoryScanner
             [
                 new DotNetRepositoryAnalyzer(fileSystem),
                 new JavaScriptRepositoryAnalyzer(fileSystem),
+                new SqlRepositoryAnalyzer(fileSystem),
                 new CoverageReportAnalyzer(fileSystem),
             ])
     {

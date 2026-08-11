@@ -12,6 +12,11 @@ This infrastructure checkpoint initially contained no public Change EHE label
 corpus. `MILESTONE_CHANGE_3.md` records the subsequent preliminary teacher corpus;
 the estimator remains experimental and uncalibrated.
 
+The August 11, 2026 SQL analyzer extension changes no contract, rubric, corpus,
+label, partition, metric, compiler, or review maturity. Its current source identity
+is `change-seed/0.7.0+seed-rules/0.3.0`, but no SQL Change calibration record exists
+and the earlier Stage A gate must not be generalized to it.
+
 ## Delivered scope
 
 - `change-ehe-work-item/1.0.0`, a final-delta review rubric that forbids history,
