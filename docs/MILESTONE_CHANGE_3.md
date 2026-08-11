@@ -56,10 +56,15 @@ The later Python follow-on advanced source identity at that checkpoint to
 normalization and Python semantic routing, and changes no frozen Change label or
 admission decision. No Stage A record contains Python.
 
-The Go follow-on advances current source identity to
+The Go follow-on advanced source identity at that checkpoint to
 `change-seed/0.9.0+seed-rules/0.4.0`, adds Go-aware `.go` normalization and
 semantic routing, and changes no frozen Change label or admission decision. No
 Stage A record contains Go.
+
+The Java follow-on advances current source identity to
+`change-seed/0.10.0+seed-rules/0.4.0`, adds Java-aware `.java` normalization and
+semantic routing, and changes no frozen Change label or admission decision. No
+Stage A record contains Java.
 
 ## Reproducible source boundary
 

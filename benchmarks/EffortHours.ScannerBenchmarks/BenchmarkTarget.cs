@@ -124,6 +124,15 @@ internal static class BenchmarkFixtureGenerator
                 "module example.com/efforthours-benchmark\n\ngo 1.24\n");
         }
 
+        if (options.Shape == BenchmarkShape.Java)
+        {
+            File.WriteAllText(
+                Path.Combine(rootPath, "pom.xml"),
+                "<project><modelVersion>4.0.0</modelVersion>" +
+                "<groupId>example.com</groupId><artifactId>efforthours-benchmark</artifactId>" +
+                "<version>1.0.0</version></project>\n");
+        }
+
         string csharpLines = string.Concat(
             Enumerable.Range(1, Math.Max(0, options.LinesPerFile - 1))
                 .Select(line => $"// representative source line {line.ToString(CultureInfo.InvariantCulture)}\n"));
@@ -140,6 +149,10 @@ internal static class BenchmarkFixtureGenerator
             Enumerable.Range(1, Math.Max(0, options.LinesPerFile - 2))
                 .Select(line =>
                     $"var value{line:D4} = {line.ToString(CultureInfo.InvariantCulture)}\n"));
+        string javaLines = string.Concat(
+            Enumerable.Range(1, Math.Max(0, options.LinesPerFile - 3))
+                .Select(line =>
+                    $"    private final int value{line:D4} = {line.ToString(CultureInfo.InvariantCulture)};\n"));
 
         Parallel.For(0, options.Files, index =>
         {
@@ -151,6 +164,7 @@ internal static class BenchmarkFixtureGenerator
                     BenchmarkSourceKind.CSharp => "src",
                     BenchmarkSourceKind.Python => "python",
                     BenchmarkSourceKind.Go => "go",
+                    BenchmarkSourceKind.Java => Path.Combine("src", "main", "java", "benchmark"),
                     _ => "web",
                 },
                 $"group-{index / 100:D5}");
@@ -181,6 +195,11 @@ internal static class BenchmarkFixtureGenerator
                     $"file{index:D7}.go",
                     "package benchmark\n" + goLines +
                     $"func File{index:D7}[T any](value T) T {{ return value }}\n"),
+                BenchmarkSourceKind.Java => (
+                    $"File{index:D7}.java",
+                    "package benchmark;\n" +
+                    $"public final class File{index:D7}<T> {{\n" + javaLines +
+                    "    public T value(T input) { return input; }\n}\n"),
                 _ => throw new InvalidOperationException($"Unsupported benchmark source kind '{kind}'."),
             };
             File.WriteAllText(Path.Combine(directory, fileName), content);
@@ -195,6 +214,7 @@ internal static class BenchmarkFixtureGenerator
             : BenchmarkSourceKind.TypeScript,
         BenchmarkShape.Python => BenchmarkSourceKind.Python,
         BenchmarkShape.Go => BenchmarkSourceKind.Go,
+        BenchmarkShape.Java => BenchmarkSourceKind.Java,
         BenchmarkShape.Mixed => (index % 3) switch
         {
             0 => BenchmarkSourceKind.CSharp,
@@ -211,5 +231,6 @@ internal static class BenchmarkFixtureGenerator
         TypeScript,
         Python,
         Go,
+        Java,
     }
 }

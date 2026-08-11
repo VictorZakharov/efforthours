@@ -541,7 +541,7 @@ review.
 
 ### Milestone 9: Expansion
 
-The first two expansion slices are complete. Issue #63 adds language-neutral analyzed/
+The first three expansion slices are complete. Issue #63 adds language-neutral analyzed/
 inventory-only status, generic package and fine-test evidence, generic source
 normalization/backbone routing, and the token-backed Python 3 analyzer. Python
 repository and Change estimates now cover static package ownership, local import
@@ -562,6 +562,17 @@ relations, and its million-line checkpoint completes in 6.577 seconds with a
 119.95 MiB sampled peak. This also remains experimental, uncalibrated, and outside
 Change admission.
 
+Issue #71 adds common scanner `0.2.5` and Java analyzer `0.1.0`. Java repository
+and Change estimates now cover static Maven reactors/POMs, conservative Gradle
+multi-project metadata, local project edges, token-backed package/module/type/
+method/public-API/concurrency structure, JUnit/TestNG tests, import-qualified
+semantic evidence, and explicit dynamic-build/runtime uncertainty without
+invoking a JVM or build tool. Java reuses `seed-rules/0.4.0` unchanged; Change
+advances to `change-seed/0.10.0`. A standalone 13-state Java mutation slice passes
+all 56 relations, and its million-line checkpoint completes in 13.954 seconds
+with a 167.31 MiB sampled peak. This remains experimental, uncalibrated, and
+outside Change admission.
+
 - Add feature-oriented reporting.
 - Maintain the implemented provider-neutral directory/evidence selectors and
   measure their large-tree performance before broadening their scope.
@@ -577,7 +588,7 @@ Change admission.
   4-to-32-hour final changes before freezing a larger size band. Record host-model
   context, tokens, wall time, and cost when available, and keep empirical
   production validation separate from logical labels.
-- Evaluate the current `change-seed/0.9.0` SQL, Python, and Go extensions on
+- Evaluate the current `change-seed/0.10.0` SQL, Python, Go, and Java extensions on
   decomposed public changes before considering any of them part of an admitted
   size band.
 - Follow the remaining deferred semantics and safeguards in
@@ -641,7 +652,8 @@ static .NET, 12.088 seconds for static JavaScript/TypeScript, and 10.876 seconds
 a mixed C#/JavaScript/TypeScript tree on the environment recorded in
 `BENCHMARKS.md`. The static Python shape completes in 13.354 seconds with a
 109.63 MiB sampled peak; the static Go shape completes in 6.577 seconds with a
-119.95 MiB sampled peak. An explicit mixed warm-cache pass takes 4.581 seconds. Three verified
+119.95 MiB sampled peak; and the static Java shape completes in 13.954 seconds
+with a 167.31 MiB sampled peak. An explicit mixed warm-cache pass takes 4.581 seconds. Three verified
 MIT releases and the EffortHours tree provide initial real-source measurements,
 with unchanged before/after target metadata.
 
@@ -667,7 +679,7 @@ cross-platform measurements and a more representative benchmark corpus exist.
 5. Repeat the new peak-memory and read-only benchmark protocol across constrained
    Windows/Linux/macOS hosts and larger redistributable monorepos before freezing
    regression thresholds.
-6. Continue issue #62 with the next demand-ordered language analyzer after Go,
+6. Continue issue #62 with the next demand-ordered language analyzer after Java,
    retaining explicit parser depth and inventory-only diagnostics.
 7. Evaluate a compiler-grade TypeScript adapter only if reviewed calibration shows
    material error from the bounded token evidence.

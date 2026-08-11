@@ -33,6 +33,42 @@ Because EffortHours's own anchor informed the seed-model and calibration design,
 a development diagnostic rather than an eligible held-out test record unless a
 future independent snapshot and review policy explicitly establishes otherwise.
 
+## 2026-08-11: Java source-boundary review
+
+Status: **qualitative analyzer and prior-reuse checkpoint; no numerical calibration or Change admission**
+
+Java analyzer `0.1.0` was reviewed as bounded token-backed static analysis with a
+conservative Maven/Gradle metadata projection, not a Java parser, compiler, type
+checker, bytecode reader, JVM, or effective build-model adapter. It decomposes
+maintained Java evidence into projects, packages, modules, files, methods, types,
+public symbols, generics, asynchronous/concurrency units, and branches. The
+existing `seed-rules/0.4.0` `polyglot-source-backbone` consumes those analogous
+units without any model-artifact or numerical-prior change. Import- and annotation-
+qualified API, CLI, data, integration, security, validation, background, build,
+and test facts reuse existing specialized rules. No fitted dataset, logged time,
+private repository, source-volume regression, or external reviewer value was used.
+
+Static Maven/Gradle parsing never invokes a JVM, compiler, build tool, wrapper,
+dependency resolver, annotation processor, or test runner, and never follows a
+local project path outside repository scope. Semantic evidence requires recognized
+canonical imports or fully qualified names; local framework namesakes remain
+ordinary source structure. Dynamic build values, profiles, processors, module
+resolution, reflection, generated types, and runtime behavior retain explicit
+uncertainty. Ordinary output emits no source excerpts.
+
+The standalone public qualitative gate has 13 Java source states and 56 relations.
+It covers formatting/comments, exact copies, generated output, API, tests, data,
+integration, security, background work, static build metadata, concurrency, and
+namesake rejection. All 56 assertions pass. The prior aggregate and Go candidates
+remain unchanged; the dedicated suite isolates the Java boundary without
+presenting version-only regeneration as accuracy evidence.
+
+Change `0.10.0` adds Java-aware normalization and semantic routing but no fitted
+prior. The existing Stage A admission contains no Java, Go, Python, or SQL cases
+and remains limited to the previously admitted `0.6.0` families. Absolute Java EHE
+accuracy, independent review, real-repository family coverage, and decomposed
+public Java Change labels remain unresolved.
+
 ## 2026-08-11: Go source-boundary review
 
 Status: **qualitative analyzer and prior-reuse checkpoint; no numerical calibration or Change admission**

@@ -99,6 +99,14 @@ Go Change formatting normalization is a separate focused component. Every new
 source and test file remains below the ordinary 500-line ceiling, the Go CLI E2E
 file remains below 400 lines, and no override was added or increased.
 
+The August 11, 2026 Java checkpoint separates digest-checked text admission,
+tokenization, syntax measurement, import and annotation qualification, Maven XML
+parsing, Gradle literal projection, project ownership, evidence construction, and
+repository orchestration. Java Change formatting normalization is a separate
+focused component. Every new source and test file remains below the ordinary
+500-line ceiling, the Java CLI E2E file remains below 400 lines, and no override
+was added or increased.
+
 Line count is deliberately simple, deterministic, cross-platform, and difficult
 to game accidentally. The useful outcome is earlier decomposition into cohesive
 contracts, commands, analyzers, and renderers—not compressed formatting.

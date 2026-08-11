@@ -74,7 +74,7 @@ internal static class FileClassifier
         string extension = Path.GetExtension(fileName);
         Languages.TryGetValue(extension, out string? language);
 
-        bool isTest = IsTestPath(lowerPath, lowerName, language);
+        bool isTest = IsTestPath(lowerPath, fileName, lowerName, language);
         bool isGenerated = IsGeneratedPath(
             lowerPath,
             lowerName,
@@ -194,6 +194,11 @@ internal static class FileClassifier
             return "package-manifest";
         }
 
+        if (JavaFileClassification.IsProjectManifest(lowerName))
+        {
+            return "package-manifest";
+        }
+
         if (EcosystemClassification.IsProjectFile(lowerName, extension))
         {
             return "project";
@@ -222,7 +227,11 @@ internal static class FileClassifier
         return "other";
     }
 
-    private static bool IsTestPath(string lowerPath, string lowerName, string? language)
+    private static bool IsTestPath(
+        string lowerPath,
+        string fileName,
+        string lowerName,
+        string? language)
     {
         if (HasAnySegment(lowerPath, "test", "tests", "__tests__", "spec", "specs", "e2e"))
         {
@@ -245,6 +254,11 @@ internal static class FileClassifier
 
         if (language == "go" &&
             (GoFileClassification.IsTestSource(lowerName) || HasAnySegment(lowerPath, "testdata")))
+        {
+            return true;
+        }
+
+        if (language == "java" && JavaFileClassification.IsTestSource(fileName))
         {
             return true;
         }
@@ -398,11 +412,12 @@ internal static class FileClassifier
             "pnpm-lock.yaml" or "bun.lock" or "bun.lockb" or "packages.lock.json" or
             "paket.lock" or "composer.lock" or "gemfile.lock" or
             "poetry.lock" or "pdm.lock" or "uv.lock" or "pipfile.lock" or
-            "cargo.lock" or "go.sum";
+            "cargo.lock" or "go.sum" or "gradle.lockfile";
 
     private static bool IsComponentManifest(string lowerName, string extension) =>
         lowerName == "package.json" || PythonFileClassification.IsProjectManifest(lowerName) ||
         GoFileClassification.IsProjectManifest(lowerName) ||
+        JavaFileClassification.IsProjectManifest(lowerName) ||
         EcosystemClassification.IsProjectFile(lowerName, extension);
 
     private static bool IsBuildConfiguration(string lowerName, string extension) =>
@@ -411,6 +426,8 @@ internal static class FileClassifier
             "taskfile.yaml" or "tsconfig.json" or "jsconfig.json" or ".npmrc" or ".yarnrc" or
             "pyproject.toml" or "setup.cfg" or "setup.py" or "pipfile" or
             "go.work" or
+            "settings.gradle" or "settings.gradle.kts" or "gradle.properties" or
+            "gradlew" or "gradlew.bat" or "mvnw" or "mvnw.cmd" or
             "tox.ini" or "pytest.ini" or ".coveragerc" or
             ".yarnrc.yml" or ".editorconfig" or ".gitattributes" or ".gitignore" or ".efforthoursignore" ||
         PythonFileClassification.IsRequirementsFile(lowerName) ||

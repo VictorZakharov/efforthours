@@ -24,6 +24,9 @@ repository root without discarding their decision history.
 - [Static Go analysis](GO_ANALYSIS.md) defines module/workspace discovery, bounded
   token and import-qualified evidence, build uncertainty, exclusions, Change
   behavior, benchmark results, and non-goals.
+- [Static Java analysis](JAVA_ANALYSIS.md) defines Maven/Gradle project discovery,
+  bounded token and import-qualified evidence, build/runtime uncertainty,
+  exclusions, Change behavior, benchmark results, and non-goals.
 - [Source-file budgets](CODE_BUDGETS.md) documents the enforced early-refactoring
   policy.
 - [Release procedure](RELEASING.md) defines the source-visibility and NuGet

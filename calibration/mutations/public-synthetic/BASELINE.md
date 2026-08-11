@@ -24,6 +24,8 @@ effort-label corpora, accuracy claims, or model-training data.
   `seed-rules/0.4.0` candidates.
 - Standalone suite `go-0.1.0` records the Go expansion checkpoint: 13 cases and 56
   assertions evaluated with unchanged `seed-rules/0.4.0`.
+- Standalone suite `java-0.1.0` records the Java expansion checkpoint: 13 cases
+  and 56 assertions evaluated with unchanged `seed-rules/0.4.0`.
 
 The August 8, 2026 analyzer-precision reevaluation with `.NET` analyzer `0.3.2`
 and JavaScript analyzer `0.4.1` reproduced identical low, expected, and high
@@ -89,6 +91,12 @@ category isolation; build/concurrency evidence; and framework-namesake rejection
 It reuses `seed-rules/0.4.0` without changing the model artifact or fitting a Go
 rate. Passing this suite does not calibrate Go or establish absolute-hour accuracy.
 
+Standalone Java suite 0.1.0 adds 13 Java states and 56 relations specified around
+formatting/comment, exact-copy, and generated invariance; semantic directionality;
+category isolation; build/concurrency evidence; and framework-namesake rejection.
+It reuses `seed-rules/0.4.0` without changing the model artifact or fitting a Java
+rate. Passing this suite does not calibrate Java or establish absolute-hour accuracy.
+
 ## What suite 0.4.0 measures
 
 | Ecosystem family | Cases | Principal variants |
@@ -139,6 +147,24 @@ their production-category invariants are not artifacts of aggregate rounding.
 | Go build semantics | 8.75 h | +0.75 h build/tooling; production unchanged |
 | Go concurrency | 8.75 h | Positive bounded production movement |
 | Go framework namesakes | 9.50 h | No API, data, integration, security, or background category |
+
+### Java expansion additions
+
+| Variant | Expected total | Intended category result |
+| --- | ---: | --- |
+| Java base | 8.25 h | 0.75 h production plus one explicit library release surface |
+| Java formatting | 8.25 h | Total and production unchanged at every range point |
+| Java exact copy | 8.25 h | Total and production unchanged at every range point |
+| Java generated body | 8.25 h | Total and production unchanged at every range point |
+| Java API | 11.50 h | Positive production/API movement |
+| Java tests | 9.50 h | +1.25 h unit testing; production unchanged |
+| Java data | 10.25 h | +1.00 h data/persistence |
+| Java integration | 12.50 h | +3.25 h external integration |
+| Java security | 13.50 h | +4.25 h security/accessibility |
+| Java background work | 12.75 h | Positive background/production movement |
+| Java build semantics | 9.00 h | +0.75 h build/tooling; production unchanged |
+| Java concurrency | 12.50 h | Positive bounded production movement |
+| Java framework namesakes | 10.00 h | No API, data, integration, security, or background category |
 
 ### Frontend semantic additions
 
@@ -371,6 +397,16 @@ estimator version, 13 cases, 56 assertions, and zero failures. The suite is
 standalone so the frozen aggregate and its mixed estimator identities remain
 untouched.
 
+## Reproduce standalone Java suite 0.1.0
+
+Generate each of the 13 `java-*` fixtures with repository estimator
+`seed-rules/0.4.0` into `estimates/seed-rules-0.4.0/`. Then evaluate the 13 exact
+candidate paths against `java-0.1.0.suite.json`, writing
+`baseline-seed-rules-0.4.0-java-0.1.0.json`. The result must disclose one candidate
+estimator version, 13 cases, 56 assertions, and zero failures. The suite is
+standalone so the frozen aggregate and its mixed estimator identities remain
+untouched.
+
 ## Limitations and next expansion
 
 The suite uses deliberately small archetypes. Near-copy and the two new
@@ -400,6 +436,12 @@ The SQL scanner is also tolerant and bounded. It does not connect to a database,
 execute or validate SQL, bind object names/types, calculate query plans, prove
 migration order/reversibility, or exhaustively parse vendor procedural languages.
 Its dialect labels are confidence signals rather than server selection.
+
+The Java scanner is token-backed rather than a compiler or full build-system
+model. It does not resolve types, annotation processors, Maven interpolation,
+Gradle execution, dependency graphs outside scanner-admitted literals, generated
+sources, reflection, or runtime reachability. Build and semantic labels are static
+confidence signals, not proof that a Java build compiles or runs.
 
 Passing these relations prevents known perverse movements. It does not establish
 that any absolute hour or delta is numerically correct, and it does not make the

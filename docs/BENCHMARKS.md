@@ -303,6 +303,48 @@ constraints, framework-heavy modules, or the eight-MiB/250,000-token per-file
 safeguards. Process-level E2E coverage runs a smaller Go shape in a fresh process
 and verifies the same read-only/offline signals.
 
+## Static Java analyzer v0.1.0 checkpoint
+
+Measured on August 11, 2026 with the same Windows/.NET/hardware environment as the
+fresh-process checkpoint, common scanner `0.2.5`, and Java analyzer `0.1.0`. The
+generated repository contains one root `pom.xml` and 10,000 `.java` files with
+approximately 100 physical lines each. Each source contains a package, a generic
+class, bounded fields, and one method so the run exercises scanning, digest
+verification, managed tokenization, structure, evidence construction, and JSON
+serialization without invoking a JDK, Maven, or Gradle.
+
+```text
+dotnet benchmarks/EffortHours.ScannerBenchmarks/bin/Release/net10.0/EffortHours.ScannerBenchmarks.dll --files 10000 --lines-per-file 100 --java
+```
+
+Observed fresh-process result:
+
+| Measure | Result |
+| --- | ---: |
+| Requested source lines | 1,000,000 |
+| Analyzed text lines | 1,010,001 |
+| Source/metadata files | 10,001 |
+| Fixture generation | 1.461 s |
+| Common scan plus static Java analysis | 13.954 s |
+| Evidence serialization | 0.114 s |
+| Analysis throughput | 72,379 lines/s |
+| Cumulative managed allocation | 1,413.15 MiB |
+| Sampled peak working set | 167.31 MiB |
+| Evidence JSON size | 10.77 MiB |
+| Evidence facts | 10,009 |
+
+The before/after target metadata digest was identical. The analyzer did not
+execute target code, invoke a JDK/Maven/Gradle, install dependencies, or access
+the network. Fixture generation and serialization are timed separately from
+analysis.
+
+This is a many-small-files scaling checkpoint, not a representative distribution
+of Java syntax or a cross-platform regression gate. The uniform fixture does not
+exercise Maven reactors, Gradle multi-project builds, annotations, framework-heavy
+applications, modules, text blocks, malformed syntax, or the eight-MiB/250,000-
+token per-file safeguards. Process-level E2E coverage runs a smaller Java shape in
+a fresh process and verifies the same read-only/offline signals.
+
 ## Change EHE scale-and-safety v1.0.0 checkpoint
 
 Measured on August 10, 2026 with:

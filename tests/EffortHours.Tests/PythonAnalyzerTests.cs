@@ -191,21 +191,21 @@ public sealed partial class PythonAnalyzerTests
     {
         InMemoryRepository repository = new();
         repository.WriteText("main.py", "def run():\n    return 1\n");
-        repository.WriteText("Main.java", "public class Main { }");
+        repository.WriteText("Main.kt", "class Main\n");
 
         RepositoryEvidence evidence = await ScanAsync(repository);
         EvidenceFact python = evidence.Facts.Single(fact => fact.Kind == EvidenceKinds.Language &&
             fact.Tags.Contains("language:python", StringComparer.Ordinal));
-        EvidenceFact java = evidence.Facts.Single(fact => fact.Kind == EvidenceKinds.Language &&
-            fact.Tags.Contains("language:java", StringComparer.Ordinal));
+        EvidenceFact kotlin = evidence.Facts.Single(fact => fact.Kind == EvidenceKinds.Language &&
+            fact.Tags.Contains("language:kotlin", StringComparer.Ordinal));
         EstimateReport estimate = new SeedEstimator().Estimate(evidence, EstimationProfile.Implementation);
 
         Assert.Contains("analysis-status:analyzed", python.Tags);
-        Assert.Contains("analysis-status:inventory-only", java.Tags);
+        Assert.Contains("analysis-status:inventory-only", kotlin.Tags);
         Assert.Contains(evidence.Diagnostics, diagnostic => diagnostic.Code == "FB2002" &&
-            diagnostic.Message.Contains("java", StringComparison.Ordinal));
+            diagnostic.Message.Contains("kotlin", StringComparison.Ordinal));
         Assert.Contains(estimate.Diagnostics, diagnostic => diagnostic.Code == "FB1002" &&
-            diagnostic.Message.Contains("java", StringComparison.Ordinal));
+            diagnostic.Message.Contains("kotlin", StringComparison.Ordinal));
     }
 
     [Fact]

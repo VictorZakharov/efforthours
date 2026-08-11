@@ -150,6 +150,17 @@ native code, loads plugins, or proves runtime registration. `GO_ANALYSIS.md`
 defines the exact scope. Go reuses the existing language-neutral source backbone
 and analogous specialized priors without a fitted Go-specific rate.
 
+The third polyglot expansion is Java. Scanner-admitted `.java` files receive
+bounded token-backed package/module/type/method/public-API/concurrency structure,
+test evidence, and conservative import- and annotation-qualified framework
+semantics. Scanner-admitted Maven POM/reactor and Gradle multi-project descriptors
+receive bounded static ownership and local-edge analysis with unresolved dynamic
+values disclosed explicitly. The analyzer never invokes a JVM, compiler, Maven,
+Gradle, wrapper, annotation processor, test runner, dependency resolver, or target
+code; `JAVA_ANALYSIS.md` defines the exact scope. Java reuses the unchanged
+language-neutral source backbone and analogous specialized priors without a fitted
+Java-specific rate.
+
 ## Non-goals
 
 - Reconstructing actual hours worked.

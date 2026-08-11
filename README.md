@@ -21,7 +21,7 @@ productivity score, invoice, or reconstruction of repository history.
 > repository estimator is not numerically calibrated or admitted. The Change
 > estimator has passed its first model-authored logical gate for changes estimated at 4 to 32
 > hours on the previously admitted non-SQL families, but it is not empirically
-> production-validated and the newer SQL, Python, and Go paths are outside that gate.
+> production-validated and the newer SQL, Python, Go, and Java paths are outside that gate.
 > Review the evidence and ranges before using any estimate for a consequential
 > decision.
 
@@ -145,6 +145,9 @@ indentation-aware: formatting and ordinary comments can normalize to zero, while
 dedentation, literals, and docstrings remain meaningful. For `.go`, ordinary
 formatting and comments can normalize to zero while compiler directives, implicit
 semicolon boundaries, identifiers, operators, and literals remain meaningful.
+For `.java`, ordinary formatting and non-documentation comments can normalize to
+zero while Javadoc/Markdown documentation comments, literals, identifiers,
+operators, delimiters, and ambiguous Unicode escapes remain meaningful.
 The current source build can retain bounded customization inside generated files
 only when exact, EffortHours-specific `<custom-code>` regions isolate it safely;
 the generated body still contributes zero. Generator-specific protected-region
@@ -212,7 +215,15 @@ The current static analyzers support:
   token analysis;
 - conservative import-qualified Go API, CLI, data, integration, security,
   validation, background-work, synchronization, and test evidence;
-- mixed .NET, JavaScript/TypeScript, Python, Go, and SQL repositories;
+- Java packages, modules, classes, records, interfaces, enums, methods,
+  annotations, generics, exceptions, concurrency, public APIs, and JUnit/TestNG
+  tests through bounded static token analysis;
+- static Maven POM/reactor and conservative Gradle multi-project metadata,
+  including local edges and explicit dynamic-build uncertainty, without invoking
+  a JVM, Maven, Gradle, wrappers, compilers, or annotation processors;
+- import- and annotation-qualified Spring/Jakarta API, persistence, security,
+  messaging, scheduling, validation, CLI, and integration evidence;
+- mixed .NET, JavaScript/TypeScript, Python, Go, Java, and SQL repositories;
 - documentation, build configuration, CI, containers, infrastructure, package
   metadata, and checked-in LCOV or Cobertura coverage reports; and
 - generated, vendored, minified, binary, duplicate, test, and documentation
@@ -245,6 +256,11 @@ files. It does not invoke the Go toolchain, resolve build constraints, expand
 `go:embed` patterns, run `go:generate`, compile cgo, prove reflection or runtime
 registration, or emit source excerpts. See the
 [static Go boundary](docs/GO_ANALYSIS.md).
+Java analysis statically reads scanner-admitted Maven/Gradle descriptors and
+maintained `.java` files. It does not evaluate build DSL, resolve dependencies,
+compile source, run annotation processors/tests, inspect bytecode, or prove
+reflection/runtime behavior. See the
+[static Java boundary](docs/JAVA_ANALYSIS.md).
 
 ## Offline and safe by default
 
@@ -284,7 +300,7 @@ in this alpha. See the [host-review protocol](docs/MILESTONE_8.md).
 - Static analysis assumes discovered tests pass on the fastest path and does not
   prove that a checkout builds or runs.
 - Unsupported languages still receive common inventory evidence but not the same
-  semantic depth as .NET, JavaScript/TypeScript, Python, Go, SQL, and the supported
+  semantic depth as .NET, JavaScript/TypeScript, Python, Go, Java, SQL, and the supported
   frontend forms.
 - Checked-in coverage can be stale even when its bytes match the analyzed tree;
   EffortHours does not regenerate it.

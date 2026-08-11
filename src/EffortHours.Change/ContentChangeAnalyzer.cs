@@ -81,6 +81,13 @@ internal static class ContentChangeAnalyzer
                 leftSignature == rightSignature;
         }
 
+        if (Path.GetExtension(path).Equals(".java", StringComparison.OrdinalIgnoreCase))
+        {
+            return JavaFormattingNormalizer.TryCreateSignature(left, out string leftSignature) &&
+                JavaFormattingNormalizer.TryCreateSignature(right, out string rightSignature) &&
+                leftSignature == rightSignature;
+        }
+
         return FormattingSignature(left) == FormattingSignature(right);
     }
 
@@ -189,7 +196,8 @@ internal static class ContentChangeAnalyzer
     private static bool SupportsFormattingComparison(string path) =>
         Path.GetExtension(path).ToLowerInvariant() is
             ".cs" or ".js" or ".jsx" or ".mjs" or ".cjs" or
-            ".ts" or ".tsx" or ".mts" or ".cts" or ".py" or ".pyi" or ".go" or ".sql";
+            ".ts" or ".tsx" or ".mts" or ".cts" or ".py" or ".pyi" or
+            ".go" or ".java" or ".sql";
 
     private static string[] NormalizeLines(string value) =>
     [

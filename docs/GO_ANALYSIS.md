@@ -9,6 +9,10 @@ Go is a first-class, token-backed EffortHours ecosystem beginning with:
 - unchanged repository estimator `seed-rules/0.4.0`; and
 - Change estimator `change-seed/0.9.0+seed-rules/0.4.0`.
 
+The later Java extension advances the current composite source identity to
+`change-seed/0.10.0+seed-rules/0.4.0` without changing Go normalization or
+valuation behavior.
+
 This boundary is experimental and uncalibrated. It adds static Go evidence and
 reuses transparent analogous priors; it does not establish numerical accuracy or
 production admission. The admitted Change Stage A slice remains the pre-Go

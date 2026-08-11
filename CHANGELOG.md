@@ -8,6 +8,20 @@ may still change public contracts with explicit documentation.
 
 ### Added
 
+- Java analyzer `0.1.0` adds offline, digest-verified analysis for maintained
+  `.java` files; static Maven POM/reactor and conservative Gradle multi-project
+  discovery; package/module/type/method/public-API/concurrency structure; JUnit/
+  TestNG tests; and import-qualified Spring/Jakarta, data, integration, security,
+  messaging, scheduling, validation, and CLI evidence. It never invokes a JVM,
+  Maven, Gradle, wrappers, compilers, annotation processors, or tests and emits no
+  source excerpts.
+- A standalone public Java mutation suite adds 13 project-authored states and 56
+  passing relations for formatting, exact-copy and generated invariance,
+  semantic/category directionality, static build/concurrency evidence, and
+  framework-namesake rejection.
+- Scanner benchmark mode `java-static` records a fresh-process million-line Java
+  checkpoint with target metadata unchanged and no target execution, dependency
+  installation, or network access.
 - Go analyzer `0.1.0` adds offline, digest-verified analysis for `go.mod`,
   `go.work`, and maintained `.go` files; module/workspace/package ownership; local
   replacements and references; token-backed structure and concurrency; tests;
@@ -69,6 +83,15 @@ may still change public contracts with explicit documentation.
 
 ### Changed
 
+- Common scanner `0.2.5` classifies Java sources/tests plus Maven and Gradle build
+  artifacts. The unchanged experimental `seed-rules/0.4.0`
+  `polyglot-source-backbone` and existing specialized priors consume Java evidence;
+  no fitted Java-specific rate or calibration claim was added.
+- Change source identity advances to
+  `change-seed/0.10.0+seed-rules/0.4.0` for Java-aware formatting, documentation-
+  comment/literal/operator preservation, and semantic-category routing. The
+  admitted Stage A boundary remains `change-seed/0.6.0`; Java is not included in
+  that admission.
 - Common scanner `0.2.4` classifies Go modules, workspaces, lockfiles, and
   `_test.go` files. The unchanged experimental `seed-rules/0.4.0`
   `polyglot-source-backbone` and existing specialized priors now consume Go

@@ -26,6 +26,8 @@ internal static class EcosystemClassification
             ecosystems.Add("python");
         if (language == "go" || GoFileClassification.IsProjectArtifact(lowerName))
             ecosystems.Add("go");
+        if (language == "java" || JavaFileClassification.IsProjectArtifact(lowerName))
+            ecosystems.Add("java");
         return ecosystems;
     }
 
