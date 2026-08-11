@@ -32,8 +32,11 @@ comparison remains withheld, and no repository prior, threshold, or review
 maturity changed.
 The behavioral safeguard suite now covers cancellation and category-isolated
 migration, integration, CI, container-delivery, and simplification mutations in
-addition to the initial normalization and Git boundaries. Multiple pull requests
-and author-and-period portfolios remain deferred.
+addition to the initial normalization and Git boundaries. The first Change
+portfolio checkpoint adds repeated PRs, a versioned cross-repository PR manifest,
+and bounded author-and-period selection. Its separate
+`change-portfolio/0.1.0+change-seed/0.7.0+seed-rules/0.3.0` reconciler changes no
+Change prior, frozen report, label, or admission decision and remains experimental.
 
 ## Purpose
 
@@ -56,11 +59,14 @@ The implemented provider-neutral engine and Git adapter support:
 - immutable base and head snapshots selected by local Git revisions;
 - one commit compared with a selected parent;
 - a revision range compared by its final base and head;
-- one pull request, with GitHub available through an optional `gh` CLI adapter.
+- one pull request, with GitHub available through an optional `gh` CLI adapter;
+- repeated pull requests from one local repository;
+- a v1 manifest selecting pull requests from multiple local repositories; and
+- commits selected by exact author/co-author alias and an explicit time interval.
 
-Multiple pull requests and commits selected by author identity and time interval
-remain roadmap work. The engine accepts storage-independent snapshot factories,
-which keeps selector adapters separate from valuation.
+The engine accepts storage-independent snapshot factories, which keeps selector
+adapters separate from valuation. Portfolio selection composes canonical immutable
+Change reports and applies pricing only after repository-level normalization.
 
 The initial CLI shape is:
 
@@ -71,20 +77,41 @@ eh change <repository> --range <base>..<head>
 eh change --base-path <directory> --head-path <directory>
 eh change --base-evidence <repository-evidence.json>
   --head-evidence <repository-evidence.json>
-eh change --author <identity> --since <instant> --until <instant>
-  [--date-field <author|committer>] [--timezone <iana-zone>]
 eh change <repository> --pr <number-or-url> [--repo <owner/name>]
+eh change portfolio <repository> --pr <pr> --pr <pr>
+eh change portfolio --manifest <portfolio.json>
+eh change portfolio <repository> --author <identity> --since <instant> --until <instant>
+  [--date-field <author|committer>] [--timezone <iana-or-host-zone>]
+  [--merge-policy <exclude|first-parent>] [--coauthors <include|exclude>]
 ```
 
 The implemented forms share the repository-estimate profile, format, rate,
 compact, and explicit-output options. Directory pairs and evidence pairs are
 deliberately separate selector families; incomplete or mixed pairs fail before
-analysis. The author form is illustrative and remains deferred. Local snapshot
-and Git-ref inputs do not depend on GitHub. Pull-request resolution
+analysis. Portfolio commands likewise require exactly one repeated-PR, manifest,
+or author-period family. Local snapshot and Git-ref inputs do not depend on GitHub.
+Pull-request resolution
 uses `gh pr view` only when the caller explicitly selects `--pr`; `gh` must be
 installed and authenticated. The adapter retains only the requested PR number or
 URL and its immutable base/head object identities. It does not retain the PR body,
 discussion, author, reviews, timestamps, or private diff.
+
+Repeated PR selection accepts at most 128 rows. A manifest gives each row a stable
+caller ID, repository ID, execution-only local repository path, PR selector, and
+optional GitHub repository. Relative paths resolve from the manifest directory and
+never enter report output. Caller repository IDs and resolved local Git roots must
+map one-to-one, so labels cannot combine separate repositories or split one
+repository around normalization. Each repository is normalized independently;
+totals are then added without cross-repository deduplication.
+
+Author-period selection reads at most 10,000 commits reachable from a pinned head
+and emits at most 128 selected rows. Exact case-insensitive aliases match author
+name, email, or `Name <email>`. The interval is start-inclusive and end-exclusive;
+offset-free timestamps use the declared timezone, and skipped or ambiguous local
+times fail unless the caller supplies an offset. Author versus committer time,
+co-author trailer inclusion, and merge exclusion versus first-parent valuation are
+explicit report policies. Git returns only valid `Co-authored-by` trailer values;
+commit bodies are not returned to EffortHours or retained.
 
 The first PR adapter analyzes objects already available in the selected local Git
 object database. It does not fetch, check out, or modify the repository. When a PR
@@ -137,6 +164,12 @@ commit uses Git's empty tree as its base and reports that choice. A merge commit
 requires `--parent`; the selected object must be one of the commit's parents.
 Commit messages, authors, timestamps, and branch names are neither read into the
 change contract nor used as effort evidence.
+
+The explicit author-period portfolio is a selector-layer exception: it reads
+bounded author/committer identity, timestamps, parents, and valid co-author
+trailers to choose immutable commits. The canonical Change estimate for each row
+still receives only base/head content and never receives identity, timestamp,
+message, activity, or commit-count multipliers.
 
 Formatting, generated output, vendored content, exact duplication, lockfile noise,
 and mechanical movement must not create implementation value. Deletion is not
@@ -268,6 +301,34 @@ or current PR selections. PR mode currently pins only base/head identities and m
 not invent intermediate work. A future PR form would need explicit opt-in immutable
 commit enumeration before this diagnostic could be available.
 
+A portfolio report uses a separate reconciliation boundary. Every row first
+receives one canonical isolated Change estimate with no rate. Rows are then grouped
+by repository and immutable base context. Disjoint connected components remain
+additive. Within one repository, repeated PRs with the exact represented patch
+identity are counted once, including cherry-picked equivalents; identical patches
+in different repositories are never deduplicated. Non-shared category effort is
+mapped through each source work item's cited path evidence, so overlap takes a
+deterministic order-independent maximum only for the same path and category while
+independent code, test, or documentation paths remain additive. Caller selector
+order is not an application order. Opposing PR effects remain once with explicit
+ordering uncertainty rather than being replayed arbitrarily.
+
+Author-period rows use their selected timestamps as the explicit chronological
+policy. An exact selected object chain that returns a path to its starting state is
+excluded from normalized final effects. A later reintroduction after a revert is
+preserved. Interleaved rows that do not form one exact object chain remain
+represented with visible attribution uncertainty. Shared specification, setup,
+design, validation, and review context is represented once only inside an
+overlapping connected component; disjoint work does not lose those categories.
+Each repository exposes signed adjustments and exact expected-hour allocations,
+and cross-repository totals add only after independent normalization.
+
+The regression matrix includes sequential same-path mechanical splitting,
+implementation/tests/documentation delivered in separate rows, and test or
+documentation paths shared by otherwise independent PRs. Distinct-path work with
+no structural overlap remains additive: the reconciler does not infer a shared
+feature merely from path names, timestamps, or contributor identity.
+
 The normalized final delta is authoritative. Intermediate commit activity never
 multiplies it. Component estimates exist to audit composition and detect model
 non-additivity. Repeated specification, setup, or review work is reconciled as
@@ -297,16 +358,24 @@ Reports emit paths and structural facts but no source excerpts. Unchanged contex
 is represented by counts and snapshot evidence rather than by repeating every
 unchanged path.
 
-The v1 public schemas are `change-evidence`, `change-estimate-report`, and
-`change-estimate-explanation`. The report schema adds an optional normalization
+The v1 public schemas are `change-evidence`, `change-estimate-report`,
+`change-estimate-explanation`, `change-portfolio-manifest`, and
+`change-portfolio-report`. The Change report schema adds an optional normalization
 summary, so frozen v1 reports remain valid; explanation queries accept its stable
-calculation ID and return exact adjustment lineage. The current estimator identity
-is `change-seed/0.7.0+seed-rules/0.3.0`; it composes the still-uncalibrated repository
-model. The earlier 0.6.0 identity alone passed the experimental Stage A logical
-gate, and that record contains no SQL. Version 0.7.0 must not be described as
-empirically calibrated, generally admitted, or production-ready. Frozen
-calibration source reports retain the exact earlier estimator identity they were
-created from.
+calculation ID and return exact adjustment lineage. Portfolio contracts separately
+record selection policy, source estimator identity, immutable base contexts,
+patch/evidence digests, isolated rows, repository-normalized categories, signed
+adjustments, exact allocations, attribution uncertainty, verification, and
+post-EHE pricing. They emit neither local repository paths nor source excerpts.
+
+The current source Change estimator identity is
+`change-seed/0.7.0+seed-rules/0.3.0`; the portfolio reconciler identity is
+`change-portfolio/0.1.0+change-seed/0.7.0+seed-rules/0.3.0`. The earlier 0.6.0
+Change identity alone passed the experimental Stage A logical gate, and that
+record contains no SQL. Portfolio aggregation does not broaden that admission.
+Neither 0.7.0 nor portfolio 0.1.0 may be described as empirically calibrated,
+generally admitted, or production-ready. Frozen calibration source reports retain
+the exact earlier estimator identity they were created from.
 
 ## Implemented CLI behavior
 
@@ -333,6 +402,16 @@ created from.
   even for large component sets.
 - PR mode invokes `gh` only to resolve number/URL and base/head object IDs, then
   requires both objects to exist locally.
+- Portfolio mode accepts at most 128 repeated PRs or 128 schema-valid manifest
+  rows; every source item is estimated without a rate before reconciliation.
+- Manifest repository paths are execution-only. Reports retain caller IDs,
+  immutable PR identities, and stable digests without host paths.
+- Author-period mode scans at most 10,000 commits reachable from a pinned head,
+  selects at most 128 exact alias matches, and records the inclusive/exclusive
+  interval, timezone, date field, co-author policy, and merge policy.
+- Portfolio JSON and Markdown show isolated and repository-normalized totals,
+  base contexts, every selected row, exact expected allocations, signed
+  adjustments, and unresolved attribution without source excerpts.
 - JSON and Markdown output include optional pricing only after hours are estimated;
   saved JSON supports work-item and normalization-lineage explanation queries.
 - Existing-capability modifications require changed normalized capability evidence,
@@ -365,7 +444,8 @@ includes formatting, movement,
 generation, lockfiles, exact duplication, code, tests, documentation, migration,
 integration, CI, container delivery, simplification, additivity, overlap, and
 revert behavior while preserving range-point and category isolation. See
-`MILESTONE_CHANGE_1.md` for the delivered boundaries and remaining limitations.
+`MILESTONE_CHANGE_1.md` for the original boundary and
+`MILESTONE_CHANGE_PORTFOLIOS.md` for the portfolio policy and fixture matrix.
 
 ## Calibration boundary
 
@@ -445,23 +525,24 @@ non-independent validation diagnostic changes no model or admission decision.
 
 Author and time values are selectors, not labor evidence. Identity aliases, author
 versus committer timestamp, timezone, interval inclusivity, merge handling, and
-co-authorship must be explicit in the report.
+co-authorship are explicit in the implemented report. Start is inclusive, end is
+exclusive, offset-free values use the selected timezone, merges are excluded by
+default, and co-author trailers are included by default. First-parent merge
+valuation and co-author exclusion require explicit options.
 
 The selected portfolio requires more normalization than a simple range because
-other contributors' commits may be interleaved. Before this mode is considered
-credible, prototypes must address:
+other contributors' commits may be interleaved. EffortHours estimates each selected
+commit against its immutable parent, orders selected rows by the chosen timestamp,
+and follows only exact object-state chains. Exact net-zero chains are removed;
+overlap that is not one exact chain is retained once with attribution uncertainty.
+Repeated author patches are not pre-deduplicated because a later identical patch
+can be a meaningful reintroduction after a revert.
 
-- exact duplicate and cherry-picked patches;
-- reverts and net-zero change sequences;
-- overlapping edits across selected commits;
-- merge commits and rebases;
-- co-authored and pair-programmed changes;
-- changes whose tests or documentation land in another contributor's commit; and
-- work moved across the interval boundary.
-
-EffortHours may expose both per-change rows and a normalized portfolio total, but it
-must not sum raw commit estimates when doing so would double count the same final
-capability. Any unresolved attribution ambiguity widens ranges and remains visible.
+Per-change rows and their isolated estimates remain visible, but raw commit
+estimates are not the portfolio total. Exact normalized expected allocations sum
+to the repository-attributed total. Merge/rebase equivalence, pair-programming
+shares, tests or documentation committed by another person, and work moved across
+the interval boundary remain unresolved and are never inferred as personal credit.
 
 ## Use in performance reviews
 
@@ -479,20 +560,27 @@ compensation recommendations from this signal alone.
 
 ## Privacy and safety
 
-The default offline engine should invoke local Git only for an explicitly requested
+The default offline engine invokes local Git only for an explicitly requested
 change operation. The optional `gh` adapter may access network data and credentials;
-the CLI must announce that boundary and avoid persisting PR bodies, author emails,
-private diffs, or repository evidence unless the caller requests an output path.
+the CLI announces that boundary and does not retain PR bodies, discussions,
+reviews, activity, or private diff bodies. Author-period reports intentionally
+retain the exact caller-supplied aliases and selection policy for auditability, so
+callers must treat reports containing real identities according to their own
+privacy and retention requirements. Commit messages and local repository paths are
+not retained.
 
 Public fixtures must use synthetic identities and repositories. Private company
 contribution data must never enter EffortHours's public calibration corpus by default.
 
 ## Deferred portfolio work
 
-- Multiple-PR selection and cross-PR normalization.
-- Author-and-period identity, timezone, co-author, merge, and interval semantics.
-- Shared-credit policy beyond transparent repository attribution.
-- Performance-review workflows, rankings, grades, or compensation decisions.
+- General semantic patch equivalence across rebases, squashes, conflict
+  resolutions, and non-exact clones.
+- Shared-credit allocation beyond transparent repository attribution.
+- More public reviewed multi-PR and author-period examples plus measured
+  large-history and realistic monorepository performance.
 
-Portfolio aggregation and shared-credit behavior still need reviewed examples
-before performance-review use is described as anything beyond experimental.
+Performance rankings, grades, and compensation decisions are deliberately
+unsupported, not future portfolio features. Portfolio aggregation remains
+experimental and does not broaden the source Change model's admitted size or
+ecosystem boundary.

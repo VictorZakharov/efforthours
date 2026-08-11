@@ -13,7 +13,9 @@ repository root without discarding their decision history.
   Equivalent Replacement Cost.
 - [Implementation plan](PLAN.md) records current architecture and roadmap status.
 - [Change estimation](CHANGE_ESTIMATION.md) defines repository, commit, range,
-  and pull-request semantics.
+  pull-request, portfolio, and contributor-period semantics.
+- [Change portfolio checkpoint](MILESTONE_CHANGE_PORTFOLIOS.md) records the
+  multiple-PR/manifest/author-period reconciliation policy and fixture matrix.
 - [Static SQL analysis](SQL_ANALYSIS.md) defines supported SQL evidence, dialect
   confidence, effort mapping, safety bounds, Change behavior, and limitations.
 - [Source-file budgets](CODE_BUDGETS.md) documents the enforced early-refactoring

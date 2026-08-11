@@ -1,0 +1,311 @@
+using System.Text;
+using System.Text.Json;
+using EffortHours.Change;
+using EffortHours.Contracts.V1;
+using EffortHours.Pricing;
+using EffortHours.Reporting;
+
+namespace EffortHours.Cli;
+
+internal sealed class ChangePortfolioCommand
+{
+    private readonly ChangeEstimator _changeEstimator;
+    private readonly Func<string, string, string?, CancellationToken, Task<GitChangePlan>>
+        _planPullRequest;
+    private readonly Func<string, GitAuthorPeriodPortfolioOptions, CancellationToken,
+        Task<GitAuthorPeriodPortfolioPlan>> _planAuthorPeriod;
+    private readonly Func<string, CancellationToken,
+        Task<IReadOnlyList<ResolvedChangePortfolioManifestItem>>> _loadManifest;
+
+    public ChangePortfolioCommand()
+        : this(new ChangeEstimator(), new GitChangePlanner(), new GitPortfolioPlanner())
+    {
+    }
+
+    internal ChangePortfolioCommand(
+        ChangeEstimator changeEstimator,
+        GitChangePlanner gitPlanner,
+        GitPortfolioPlanner portfolioPlanner)
+        : this(
+            changeEstimator,
+            gitPlanner.PlanPullRequestAsync,
+            portfolioPlanner.PlanAuthorPeriodAsync,
+            ChangePortfolioManifestLoader.LoadAsync)
+    {
+    }
+
+    internal ChangePortfolioCommand(
+        ChangeEstimator changeEstimator,
+        Func<string, string, string?, CancellationToken, Task<GitChangePlan>> planPullRequest,
+        Func<string, GitAuthorPeriodPortfolioOptions, CancellationToken,
+            Task<GitAuthorPeriodPortfolioPlan>> planAuthorPeriod)
+        : this(
+            changeEstimator,
+            planPullRequest,
+            planAuthorPeriod,
+            ChangePortfolioManifestLoader.LoadAsync)
+    {
+    }
+
+    internal ChangePortfolioCommand(
+        ChangeEstimator changeEstimator,
+        Func<string, string, string?, CancellationToken, Task<GitChangePlan>> planPullRequest,
+        Func<string, GitAuthorPeriodPortfolioOptions, CancellationToken,
+            Task<GitAuthorPeriodPortfolioPlan>> planAuthorPeriod,
+        Func<string, CancellationToken,
+            Task<IReadOnlyList<ResolvedChangePortfolioManifestItem>>> loadManifest)
+    {
+        _changeEstimator = changeEstimator ?? throw new ArgumentNullException(nameof(changeEstimator));
+        _planPullRequest = planPullRequest ?? throw new ArgumentNullException(nameof(planPullRequest));
+        _planAuthorPeriod = planAuthorPeriod ?? throw new ArgumentNullException(nameof(planAuthorPeriod));
+        _loadManifest = loadManifest ?? throw new ArgumentNullException(nameof(loadManifest));
+    }
+
+    public async Task<int> ExecuteAsync(
+        string[] arguments,
+        TextWriter standardOutput,
+        TextWriter standardError,
+        CancellationToken cancellationToken)
+    {
+        ChangePortfolioCommandParseResult parsed = ChangePortfolioCommandOptionsParser.Parse(arguments);
+        if (parsed.ShowHelp)
+        {
+            await standardOutput.WriteLineAsync(ChangePortfolioHelp.Text).ConfigureAwait(false);
+            return CliExitCodes.Success;
+        }
+
+        if (parsed.Error is not null)
+        {
+            return await UsageErrorAsync(standardError, parsed.Error).ConfigureAwait(false);
+        }
+
+        ChangePortfolioCommandOptions options = parsed.Options!;
+        RateCard? rateCard = Rate(options);
+        try
+        {
+            PortfolioCandidates planned = options.IsManifest
+                ? await PlanManifestAsync(options, cancellationToken).ConfigureAwait(false)
+                : options.IsAuthorPeriod
+                    ? await PlanAuthorPeriodAsync(options, cancellationToken).ConfigureAwait(false)
+                    : await PlanPullRequestsAsync(options, cancellationToken).ConfigureAwait(false);
+            ChangePortfolioReport report = ChangePortfolioReconciler.Reconcile(
+                planned.Selection,
+                planned.Candidates,
+                options.Profile,
+                rateCard,
+                planned.Diagnostics);
+            cancellationToken.ThrowIfCancellationRequested();
+            string output = options.Format == "markdown"
+                ? ChangePortfolioMarkdownRenderer.Render(report)
+                : new ChangePortfolioJsonRenderer(options.Compact).Render(report);
+            return await WriteOutputAsync(
+                output,
+                options.OutputPath,
+                standardOutput,
+                standardError,
+                cancellationToken).ConfigureAwait(false);
+        }
+        catch (Exception exception) when (
+            exception is ArgumentException or DirectoryNotFoundException or ExternalCommandException or
+            InvalidOperationException or IOException or UnauthorizedAccessException or JsonException)
+        {
+            await standardError.WriteLineAsync($"eh: {exception.Message}").ConfigureAwait(false);
+            return CliExitCodes.InvalidInput;
+        }
+    }
+
+    private async Task<PortfolioCandidates> PlanPullRequestsAsync(
+        ChangePortfolioCommandOptions options,
+        CancellationToken cancellationToken)
+    {
+        List<ChangePortfolioCandidate> candidates = [];
+        Dictionary<int, int> occurrences = [];
+        foreach (string input in options.PullRequests)
+        {
+            GitChangePlan plan = await _planPullRequest(
+                options.RepositoryPath!,
+                input,
+                options.GitHubRepository,
+                cancellationToken).ConfigureAwait(false);
+            ChangeEstimateReport report = await _changeEstimator.EstimateAsync(
+                plan,
+                options.Profile,
+                rateCard: null,
+                cancellationToken).ConfigureAwait(false);
+            int number = report.Selection.PullRequest!.Number;
+            int occurrence = occurrences.GetValueOrDefault(number) + 1;
+            occurrences[number] = occurrence;
+            candidates.Add(new ChangePortfolioCandidate
+            {
+                RepositoryId = report.Repository.Name,
+                SelectorId = occurrence == 1 ? $"pr:{number}" : $"pr:{number}:duplicate-{occurrence}",
+                Report = report,
+                Attribution = PullRequestAttribution(),
+            });
+        }
+
+        return new PortfolioCandidates(
+            new ChangePortfolioSelection { Kind = ChangePortfolioSelectionKind.PullRequests },
+            candidates,
+            []);
+    }
+
+    private async Task<PortfolioCandidates> PlanManifestAsync(
+        ChangePortfolioCommandOptions options,
+        CancellationToken cancellationToken)
+    {
+        IReadOnlyList<ResolvedChangePortfolioManifestItem> manifest =
+            await _loadManifest(options.ManifestPath!, cancellationToken)
+                .ConfigureAwait(false);
+        List<ChangePortfolioCandidate> candidates = [];
+        ChangePortfolioRepositoryMap repositories = new();
+        foreach (ResolvedChangePortfolioManifestItem resolved in manifest)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            ChangePortfolioManifestItem item = resolved.Item;
+            GitChangePlan plan = await _planPullRequest(
+                resolved.RepositoryPath,
+                item.PullRequest,
+                item.GitHubRepository,
+                cancellationToken).ConfigureAwait(false);
+            repositories.Add(item.RepositoryId, plan.RepositoryPath);
+            ChangeEstimateReport report = await _changeEstimator.EstimateAsync(
+                plan,
+                options.Profile,
+                rateCard: null,
+                cancellationToken).ConfigureAwait(false);
+            candidates.Add(new ChangePortfolioCandidate
+            {
+                RepositoryId = item.RepositoryId,
+                SelectorId = item.Id,
+                Report = report,
+                Attribution = PullRequestAttribution(),
+            });
+        }
+
+        return new PortfolioCandidates(
+            new ChangePortfolioSelection
+            {
+                Kind = ChangePortfolioSelectionKind.PullRequests,
+                ManifestBased = true,
+            },
+            candidates,
+            [
+                new Diagnostic
+                {
+                    Code = "FB5320",
+                    Severity = DiagnosticSeverity.Information,
+                    Message = "The manifest supplied execution-only local repository paths. Reports retain caller repository IDs and immutable PR identities, not host paths.",
+                },
+            ]);
+    }
+
+    private async Task<PortfolioCandidates> PlanAuthorPeriodAsync(
+        ChangePortfolioCommandOptions options,
+        CancellationToken cancellationToken)
+    {
+        GitAuthorPeriodPortfolioPlan plan = await _planAuthorPeriod(
+            options.RepositoryPath!,
+            new GitAuthorPeriodPortfolioOptions
+            {
+                Aliases = options.AuthorAliases,
+                SinceInclusive = options.SinceInclusive!.Value,
+                UntilExclusive = options.UntilExclusive!.Value,
+                TimeZone = options.TimeZone,
+                DateField = options.DateField,
+                MergePolicy = options.MergePolicy,
+                CoauthorPolicy = options.CoauthorPolicy,
+                HeadRevision = options.HeadRevision,
+            },
+            cancellationToken).ConfigureAwait(false);
+        List<ChangePortfolioCandidate> candidates = [];
+        foreach (GitAuthorPeriodPortfolioItem item in plan.Items)
+        {
+            ChangeEstimateReport report = await _changeEstimator.EstimateAsync(
+                item.Plan,
+                options.Profile,
+                rateCard: null,
+                cancellationToken).ConfigureAwait(false);
+            candidates.Add(new ChangePortfolioCandidate
+            {
+                RepositoryId = plan.RepositoryId,
+                SelectorId = item.SelectorId,
+                Report = report,
+                Attribution = item.Attribution,
+            });
+        }
+
+        return new PortfolioCandidates(plan.Selection, candidates, plan.Diagnostics);
+    }
+
+    private static ChangePortfolioAttribution PullRequestAttribution() => new()
+    {
+        Kind = ChangePortfolioAttributionKind.PullRequest,
+        MergeCommit = false,
+        ParentCount = 0,
+    };
+
+    private static RateCard? Rate(ChangePortfolioCommandOptions options) => options.NoRate
+        ? null
+        : options.HourlyRate is null
+            ? DefaultRateCatalog.RateCard
+            : new RateCard
+            {
+                Id = "user-supplied-cli-rate",
+                Name = "User-supplied CLI rate",
+                Currency = options.Currency,
+                HourlyRate = options.HourlyRate.Value,
+                Methodology = "Explicit caller override; this rate is not an EffortHours market-rate claim.",
+            };
+
+    private static async Task<int> WriteOutputAsync(
+        string content,
+        string? outputPath,
+        TextWriter standardOutput,
+        TextWriter standardError,
+        CancellationToken cancellationToken)
+    {
+        if (outputPath is null)
+        {
+            await standardOutput.WriteLineAsync(content.TrimEnd().AsMemory(), cancellationToken)
+                .ConfigureAwait(false);
+            return CliExitCodes.Success;
+        }
+
+        try
+        {
+            string fullPath = Path.GetFullPath(outputPath);
+            string? directory = Path.GetDirectoryName(fullPath);
+            if (!string.IsNullOrEmpty(directory))
+            {
+                Directory.CreateDirectory(directory);
+            }
+
+            await File.WriteAllTextAsync(
+                fullPath,
+                content.TrimEnd() + Environment.NewLine,
+                new UTF8Encoding(false),
+                cancellationToken).ConfigureAwait(false);
+            return CliExitCodes.Success;
+        }
+        catch (Exception exception) when (exception is IOException or UnauthorizedAccessException)
+        {
+            await standardError.WriteLineAsync($"Could not write change portfolio: {exception.Message}")
+                .ConfigureAwait(false);
+            return CliExitCodes.InvalidInput;
+        }
+    }
+
+    private static async Task<int> UsageErrorAsync(TextWriter standardError, string message)
+    {
+        await standardError.WriteLineAsync($"eh: {message}").ConfigureAwait(false);
+        await standardError.WriteLineAsync("Run 'eh change portfolio --help' for usage.").ConfigureAwait(false);
+        return CliExitCodes.UsageError;
+    }
+
+    private sealed record PortfolioCandidates(
+        ChangePortfolioSelection Selection,
+        IReadOnlyList<ChangePortfolioCandidate> Candidates,
+        IReadOnlyList<Diagnostic> Diagnostics);
+
+}

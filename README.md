@@ -85,6 +85,28 @@ eh change . --range main..HEAD --format markdown --no-rate
 eh change . --pr 123 --format markdown --no-rate
 ```
 
+Combine completed changes without summing overlapping work twice:
+
+```text
+eh change portfolio . --pr 123 --pr 127 --format markdown --no-rate
+eh change portfolio --manifest portfolio.json --format markdown --no-rate
+eh change portfolio . --author "Contributor <contributor@example.com>" --since 2026-07-01 --until 2026-08-01 --timezone America/Toronto --format markdown --no-rate
+```
+
+Portfolio reports show the isolated sum, repository-normalized EHE, one row per
+selected change, named duplicate/overlap/revert/shared-context adjustments, and
+allocations that sum exactly to normalized expected hours. Repeated PRs are
+order-independent; author periods use explicit chronological commit selection.
+Cross-repository manifests normalize each repository independently and then add
+the results. Identity and time select immutable changes only and never multiply
+effort.
+
+This output is repository-attributed Change EHE, not actual labor, sole-authorship
+proof, individual productivity, a performance grade, or compensation advice.
+Co-authored, interleaved, merge, and overlapping changes retain visible attribution
+uncertainty. Portfolio aggregation does not widen the experimental Change model's
+existing per-item admission boundary.
+
 For an explicit range containing at least two commits, the report also compares
 gross isolated commit EHE with authoritative normalized final-delta EHE. It shows
 the gross-to-final normalization share and a narrower rework-like share containing
@@ -239,7 +261,9 @@ in this alpha. See the [host-review protocol](docs/MILESTONE_8.md).
   forms.
 - Checked-in coverage can be stale even when its bytes match the analyzed tree;
   EffortHours does not regenerate it.
-- Multiple-PR and author/time portfolio estimation is not implemented.
+- Change portfolio reconciliation is experimental. Exact patch/object-chain
+  normalization does not recover general rebases, squashes, semantic clones, or
+  shared human credit.
 - A repository estimate is not a security, accessibility, architecture, or code-
   quality audit.
 
@@ -257,6 +281,9 @@ eh change <repository> --base <revision> --head <revision>
 eh change <repository> --commit <revision> [--parent <revision>]
 eh change <repository> --range <base>..<head>
 eh change <repository> --pr <number-or-url> [--repo <owner/name>]
+eh change portfolio <repository> --pr <pr> --pr <pr>
+eh change portfolio --manifest <portfolio.json>
+eh change portfolio <repository> --author <alias> --since <instant> --until <instant>
 eh change explain <change-estimate.json> --item <id>
 eh model info
 eh rate info

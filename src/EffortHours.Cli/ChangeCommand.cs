@@ -50,6 +50,15 @@ internal sealed class ChangeCommand
                 cancellationToken).ConfigureAwait(false);
         }
 
+        if (arguments[0].Equals("portfolio", StringComparison.OrdinalIgnoreCase))
+        {
+            return await new ChangePortfolioCommand().ExecuteAsync(
+                [.. arguments.Skip(1)],
+                standardOutput,
+                standardError,
+                cancellationToken).ConfigureAwait(false);
+        }
+
         ChangeCommandParseResult parsed = ChangeCommandOptionsParser.Parse(arguments);
         if (parsed.ShowHelp)
         {
@@ -234,6 +243,9 @@ internal sealed class ChangeCommand
           eh change --base-path <directory> --head-path <directory> [options]
           eh change --base-evidence <evidence.json> --head-evidence <evidence.json> [options]
           eh change explain <change-estimate.json> --item <id> [options]
+          eh change portfolio <repository> --pr <pr> --pr <pr> [options]
+          eh change portfolio --manifest <portfolio.json> [options]
+          eh change portfolio <repository> --author <alias> --since <instant> --until <instant> [options]
 
         Selectors:
           --commit <revision>  Compare one commit with its first parent; root uses the empty tree

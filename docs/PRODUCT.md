@@ -168,12 +168,16 @@ bundles, immutable Git base/head snapshots, one commit, a revision range, or one
 GitHub pull request. The optional `gh` adapter resolves only the PR number or URL
 and immutable base/head object IDs; analysis then remains local. Evidence-only
 modified maintained paths that otherwise qualify as represented are retained
-conservatively because saved evidence has no source bodies. Multiple-PR and
-author-and-period portfolios are deferred. Commit count,
-activity, timestamps,
-review duration, and discarded intermediate revisions remain excluded as effort
-signals. The result is still EHE, not actual hours worked or a standalone measure
-of an employee's performance. Change calibration advances through explicit size
+conservatively because saved evidence has no source bodies. The explicit portfolio
+command can combine repeated PRs, schema-valid multi-repository PR manifests, or
+bounded commits selected by exact author/co-author alias and time interval. It
+normalizes each repository independently, exposes isolated rows and exact
+allocations, and labels the result repository-attributed Change EHE. Commit count,
+activity, timestamps, review duration, identity, and discarded intermediate
+revisions remain excluded as effort signals; portfolio identity/time values select
+rows only. The result is still EHE, not actual hours worked, proof of sole
+authorship, or a standalone measure of an employee's performance. Change
+calibration advances through explicit size
 bands, beginning with 4-to-32-hour final deltas decomposed into small,
 evidence-backed tasks. Model-authored logical labels and later production
 observations retain separate provenance; neither logged time nor AI review cost is

@@ -43,6 +43,12 @@ roles to their intended categories. It changes no existing Change prior or froze
 report. SQL was absent from the 0.6.0 Stage A records and is not admitted by that
 gate.
 
+The Change portfolio follow-on was completed in source on August 11, 2026. It adds
+repeated and manifest-based PR portfolios plus bounded author-period selection,
+using a separate experimental `change-portfolio/0.1.0` reconciler. It changes no
+Change prior, frozen report, label, or admission decision. The full policy is
+recorded in `MILESTONE_CHANGE_PORTFOLIOS.md`.
+
 ## Delivered scope
 
 - `eh change <repository> --base <revision> --head <revision>`
@@ -51,12 +57,15 @@ gate.
 - `eh change <repository> --pr <number-or-url> [--repo <owner/name>]`
 - `eh change --base-path <directory> --head-path <directory>`
 - `eh change --base-evidence <evidence.json> --head-evidence <evidence.json>`
+- `eh change portfolio <repository> --pr <pr> --pr <pr>`
+- `eh change portfolio --manifest <portfolio.json>`
+- `eh change portfolio <repository> --author <alias> --since <instant> --until <instant>`
 - implementation and recreation profiles, JSON or Markdown, compact JSON, explicit
   output paths, the bundled dated rate, caller rate overrides, and effort-only mode
 - saved-report work-item and normalization-lineage explanation through
   `eh change explain`
 
-Multiple PRs, author-period portfolios, and shared credit remain deferred.
+General semantic patch equivalence and shared-credit inference remain deferred.
 
 ## Architecture
 
@@ -79,6 +88,12 @@ The optional GitHub adapter invokes `gh pr view` only for PR number/URL and immu
 base/head object IDs. Analysis requires those objects in the local Git database.
 PR authors, text, comments, reviews, timestamps, activity, and private diff bodies
 do not enter the report or effort model.
+
+The portfolio adapter composes canonical Change reports without rates, groups them
+by repository and immutable base context, normalizes exact PR patches, overlaps,
+shared context, and exact chronological author reverts, then applies pricing. The
+author selector reads bounded identity/time/parent/co-author metadata only to
+select commits. Neither selector metadata nor row count is an effort multiplier.
 
 ## Valuation and reconciliation
 
@@ -125,6 +140,8 @@ The v1 schema catalog now includes:
 - `change-evidence`
 - `change-estimate-report`
 - `change-estimate-explanation`
+- `change-portfolio-manifest`
+- `change-portfolio-report`
 
 Selectors, observed path evidence, inferred normalization, work items,
 reconciliation, verification, diagnostics, and pricing remain separate. Stable IDs
@@ -153,11 +170,18 @@ unchanged target trees, digest movement failure, saved-evidence reuse, conservat
 bodyless modification, invalid inventory digests, and incomplete or mixed CLI
 selector rejection.
 
+The portfolio follow-on adds memory-only additivity, mechanical-split,
+cross-boundary test/documentation, exact-duplicate, overlap, revert,
+reintroduction, cross-repository, selector-policy, schema, allocation, and
+reporting fixtures. A separate process-level temporary-Git test covers
+deterministic offline author selection, immutable output, path/source privacy,
+exact allocation, and an unchanged worktree.
+
 The installed CLI now translates the first Ctrl+C into cooperative cancellation
 through the complete command pipeline. Cancellation writes only a concise stderr
 diagnostic and returns exit code 130; a second Ctrl+C retains the operating system's
-immediate-termination behavior. This checkpoint passes 115 memory-only unit tests
-and 33 process-level end-to-end tests.
+immediate-termination behavior. The full unit and process-level suites retain this
+checkpoint without relying on stale fixed test counts.
 
 ## Maintainability checkpoint
 
@@ -182,5 +206,10 @@ test lives only in the end-to-end suite; ordinary unit tests remain memory-only.
 - Range component selection uses first-parent comparison for merge components and
   reports that limitation; normalized final effort remains authoritative.
 - PR objects must already exist locally; EffortHours does not fetch them.
+- Portfolio patch normalization is exact and structural; it does not infer general
+  rebase, squash, conflict-resolution, semantic-clone, or human shared-credit
+  equivalence.
+- Author-period selection cannot recover requirements, design, review, mentoring,
+  pair work, incidents, coordination, or work committed under another identity.
 - Change-specific million-line and 128-commit performance gates are recorded for
   one workstation; cross-platform and realistic large-monorepo measurements remain.
