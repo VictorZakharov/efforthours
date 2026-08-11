@@ -52,6 +52,21 @@ public sealed class ContractJsonTests
     }
 
     [Fact]
+    public void RepositoryEvidenceSchemaResolvesReferencedDiagnosticSchema()
+    {
+        JsonObject json = JsonNode.Parse(ContractJson.Serialize(TestRepositoryEvidence.Create()))!
+            .AsObject();
+        json["diagnostics"] = new JsonArray(42);
+
+        SchemaValidationResult result = ContractSchemaValidator.Validate(
+            SchemaNames.RepositoryEvidence,
+            json.ToJsonString());
+
+        Assert.False(result.IsValid);
+        Assert.NotEmpty(result.Errors);
+    }
+
+    [Fact]
     public void DeserializeRejectsUnknownProperties()
     {
         JsonObject json = JsonNode.Parse(ContractJson.Serialize(TestRepositoryEvidence.Create()))!
