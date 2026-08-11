@@ -7,7 +7,7 @@
   "fileBudgets": {
     "src/EffortHours.Analysis/RepositoryScanner.cs": 1000,
     "src/EffortHours.Analyzers.JavaScript/JavaScriptRepositoryAnalyzer.cs": 825,
-    "src/EffortHours.Analyzers.JavaScript/JavaScriptSyntaxAnalyzer.cs": 850,
+    "src/EffortHours.Analyzers.JavaScript/JavaScriptSyntaxAnalyzer.cs": 800,
     "src/EffortHours.Contracts/ContractValidation.cs": 750,
     "src/EffortHours.Contracts/V1/CalibrationContracts.cs": 750,
     "src/EffortHours.Estimation/SeedCapabilityBuilder.cs": 1300,

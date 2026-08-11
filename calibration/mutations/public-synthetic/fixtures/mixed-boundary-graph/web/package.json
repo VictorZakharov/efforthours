@@ -1,0 +1,6 @@
+{
+  "name": "efforthours-mutation-mixed-workspace",
+  "private": true,
+  "type": "module",
+  "workspaces": ["packages/*"]
+}

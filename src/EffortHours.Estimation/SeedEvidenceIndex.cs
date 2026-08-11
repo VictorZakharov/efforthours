@@ -6,6 +6,7 @@ internal sealed class SeedEvidenceIndex
 {
     private static readonly HashSet<string> SourceSemanticKinds =
     [
+        EvidenceKinds.Accessibility,
         EvidenceKinds.ApiSurface,
         EvidenceKinds.BackgroundWork,
         EvidenceKinds.DataAccess,

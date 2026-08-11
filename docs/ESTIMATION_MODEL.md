@@ -255,7 +255,12 @@ Angular metadata requires a named `Component` import from `@angular/core`
 external assets must resolve to digest-verified scanner-admitted files.
 HTML/template and CSS-family scanners count bounded structural constructs rather
 than raw text volume. They do not render, compile frameworks, execute
-preprocessors, establish runtime reachability, or perform an accessibility audit.
+preprocessors, or establish runtime reachability. JavaScript analyzer `0.5.1`
+records explicit static roles, labels, alternative text, live regions, and
+keyboard/focus signals from maintained HTML and Angular templates as represented
+accessibility work under the existing combined security/accessibility prior. This
+is bounded implementation evidence with `accessibility-conformance:not-proven`;
+it is not an accessibility audit or runtime conformance result.
 
 SQL analyzer `0.1.0` uses a bounded token/statement stream rather than raw lines or
 row volume. Recognized schema, migration, stored-program, query, seed, test,
@@ -310,15 +315,22 @@ calibration, or independence. `MILESTONE_8.md` defines the exact boundary.
 ## 10. Calibration
 
 Strong AI estimates can serve as teacher labels even when historical labor data is
-unavailable. They are weak supervision rather than literal ground truth.
+unavailable. They are weak supervision rather than literal ground truth. A
+disclosed host-AI teacher can satisfy a logical calibration or admission gate when
+the total reconciles exactly from distinct evidence-backed tasks small enough to
+audit, normally about 0.5 to 1.5 expected hours for the current one-to-several-day
+band. Independent replication is useful optional corroboration, not a prerequisite
+for that logical judgment. It does not change `teacher-estimate` maturity or imply
+human review, empirical accuracy, or production validation.
 
 The calibration process should:
 
 1. Analyze representative repositories into normalized evidence.
 2. Decompose them into small work items.
 3. Ask a consistent strong-AI rubric to estimate item categories and ranges.
-4. Review and correct disputed or implausible labels.
-5. Train local category and quantile models on the reviewed ledger.
+4. Audit and correct disputed, unsupported, or non-reconciling labels.
+5. Train candidate local category and quantile models only after their applicable
+   admission policy is frozen.
 6. Split training and evaluation by repository, never randomly by file.
 7. Measure category error, total error, interval coverage, and calibration.
 8. Retain the teacher rationale and evidence for diagnosis.
@@ -329,8 +341,9 @@ artifact needs recorded provenance and terms compatible with EffortHours's MIT
 License. Private client evidence may be used only in its authorized environment and
 must not be added to the public corpus by default.
 
-The guiding premise is that a four-hour work item can be judged and calibrated more
-accurately than a single four-hundred-hour total.
+The guiding premise is that small logical work items can be judged and audited more
+reliably than one unsupported large total. Production observations collected later
+retain separate empirical provenance and never become effort multipliers.
 
 Milestone 7A implements the first calibration boundary. A versioned corpus stores
 reviewed target work units separately from candidate `EstimateReport` documents.
@@ -382,20 +395,24 @@ subject and reference canonical estimate at one repository/category low, expecte
 or high point and asserts inclusive bounds on `subject - reference`. These
 relations test invariance, directionality, bounded marginality, and category
 isolation. They are not effort labels and cannot be used as numerical training
-targets. The public 0.6.0 suite covers 67 small .NET, parser-backed JavaScript,
+targets. The public 0.7.0 suite covers 77 small .NET, parser-backed JavaScript,
 token-backed TypeScript, token-backed SQL, standalone frontend, Angular, and
-mixed-repository source states with 247 passing relations. It includes all three
+mixed-repository source states with 309 passing relations. It includes all three
 range points, exact duplication, conventional
 generated output, separately maintained generated customization, bounded renamed
-near-copies, compiler-disabled C# syntax, API/UI/data/security behavior, tests,
+near-copies, two specified non-exact equivalent-purpose shapes,
+compiler-disabled and explicitly included C# syntax, bounded intra-file private
+method reachability, API/UI/data/security/accessibility behavior, accessibility-
+focused test depth, tests,
 declared-and-assumed and measured coverage levels, measured-over-declared
 precedence, documentation, integrations, workspace boundaries, frontend
 formatting/duplication/semantic behavior, SQL formatting/dumps/unknown syntax/
 semantic directionality/roles/seed-volume bounds, CI, containers, and category
-isolation.
-It does not yet provide semantic clone detection, general
-dead-code reachability, accessibility-specific depth, or realistic large
-multi-package boundaries; those remain required before learned-model admission.
+isolation. Its representative four-package and mixed dependency graphs are small
+synthetic boundaries, not large-repository benchmarks. It does not provide general
+semantic-clone detection, liveness/reflection/dynamic-dispatch analysis, broad JSX
+accessibility semantics, or multiple observations per ecosystem/partition cell;
+those remain model-risk inputs for learned-model admission.
 
 The public pilot and public expansion freeze six MIT-licensed repository families
 across development, validation, and test partitions and measure
@@ -403,8 +420,10 @@ across development, validation, and test partitions and measure
 reviewed. Those labels share one host-AI teacher and have no independent
 correction. They are preliminary weak supervision and do not make the seed model
 calibrated or production-ready. `MILESTONE_7.md`, the versioned rubrics, and the
-blind packets under `calibration/corpora` define the implemented policy and the
-next independent-review gate.
+blind packets under `calibration/corpora` define the implemented policy. Their
+decomposed host-AI judgments may support a future logical admission decision with
+explicit gates; independent replication remains available as optional
+corroboration, and later production observations are a separate empirical track.
 
 Change EHE reuses this corpus and metric boundary with additional immutable
 final-delta provenance. A Change calibration source digest is derived from the

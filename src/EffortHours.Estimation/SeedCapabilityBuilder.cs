@@ -18,6 +18,7 @@ internal sealed partial class SeedCapabilityBuilder(
 
     private static readonly string[] SemanticKinds =
     [
+        EvidenceKinds.Accessibility,
         EvidenceKinds.ApiSurface,
         EvidenceKinds.BackgroundWork,
         EvidenceKinds.DataAccess,
@@ -322,6 +323,7 @@ internal sealed partial class SeedCapabilityBuilder(
         AddUiSurfaces(capabilities);
         AddDataSurfaces(capabilities);
         AddIntegrationSurfaces(capabilities);
+        AddAccessibilitySurfaces(capabilities);
         AddSecuritySurfaces(capabilities);
         AddValidationSurfaces(capabilities);
         AddBackgroundSurfaces(capabilities);

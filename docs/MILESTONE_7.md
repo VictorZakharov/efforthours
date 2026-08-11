@@ -5,7 +5,8 @@
 Milestone 7A and the Milestone 7B1 through 7B5 public-corpus, review, and mutation
 checkpoints were implemented on August 6, 2026. A post-7B5 analyzer-precision
 checkpoint was implemented on August 8, 2026, and the first measured-coverage
-checkpoint was implemented on August 9, 2026. Together they establish the
+checkpoint was implemented on August 9, 2026. Milestone 7B6 completed on August
+11, 2026. Together they establish the
 versioned review corpus, low-cost authoring and compilation boundaries,
 deterministic offline evaluation, expanded licensed labels, exact-digest
 subsequent review, cross-ecosystem relational model guardrails, and a documented
@@ -13,13 +14,15 @@ path from reviewed exclusions to general analyzer corrections. The seed estimato
 remains `experimental-uncalibrated`; this milestone does not make its current hours
 production-ready.
 
-Both public corpora still have one host-AI teacher and no independent correction.
-Milestone 7B is therefore in progress: broader licensed repository coverage,
-semantic-clone, reachability, accessibility, and realistic multi-package
-guardrails, and an actual independent review are required before numerical
-admission thresholds or model training. The
-presence of second-review tooling must not be confused with completion of that
-review.
+Both public corpora still have one host-AI teacher and no independent correction;
+their maturity remains `teacher-estimate`. Milestone 7B6 accepts decomposed
+host-AI judgment as logical weak supervision when totals reconcile exactly from
+small evidence-backed tasks. Independent replication remains available as optional
+corroboration, not a logical-admission prerequisite, and must never be implied when
+it did not occur. Broader licensed coverage and multiple observations per
+ecosystem/partition cell remain before Milestone 7C can freeze numerical admission
+thresholds or train a candidate local model. Later production observations are a
+separate empirical track, not effort labels or multipliers.
 
 Local model training and inference are deferred until a diverse, licensed corpus
 exists and a candidate model demonstrates an improvement on repository-held-out
@@ -413,6 +416,13 @@ Reviews use three explicit maturity states:
 - `reviewed`: a second reviewer has checked and corrected material judgments; and
 - `adjudicated`: documented disagreements have been resolved.
 
+`teacher-estimate` is sufficient for an explicitly labeled logical gate when the
+applicable policy requires exact reconciliation from small evidence-backed tasks
+and the frozen measurements pass. This does not upgrade the record to `reviewed`,
+claim independence, or establish empirical production accuracy. A distinct second
+reviewer can still provide optional replication or advance maturity under the
+existing exact-digest compiler.
+
 Reviewers are identified by a stable, publishable ID and a role. Host-AI entries
 also record the available model identity and version. A completion date is
 provenance only; elapsed time, contributor identity, commit activity, and other
@@ -542,9 +552,10 @@ A candidate must, at minimum:
   wide ranges;
 - retain acceptable results across .NET, JavaScript/TypeScript, and mixed
   repositories rather than only the aggregate;
-- pass the existing formatting, duplication, generated-content, near-copy,
-  compiler-disabled-code, data, security, declared/measured-coverage precedence,
-  workspace, delivery, and history guardrails; and
+- pass the existing formatting, duplication, generated-content, near-copy and
+  specified equivalent-purpose, compiler-disabled and bounded reachability, data,
+  security/accessibility, declared/measured-coverage precedence, representative
+  dependency-graph, delivery, and history guardrails; and
 - preserve evidence, rule/model version, and adjustment lineage in the final work
   items.
 
@@ -554,16 +565,20 @@ model hyperparameters.
 
 ## Later Milestone 7 slices
 
-### Remaining 7B: corpus and baseline measurement
+### Completed 7B6 and remaining corpus expansion
 
-- Expand synthetic mutations from the initial bounded near-copy and
-  compiler-disabled cases to semantic clones, unreachable/unreferenced behavior,
-  accessibility-specific evidence, additional measured-coverage formats, larger
-  multi-package dependency graphs, richer infrastructure, and additional delivery
-  categories.
+- The 7B6 mutation expansion is complete for two specified non-exact
+  equivalent-purpose shapes, bounded reachable/unreferenced private .NET behavior,
+  explicit static accessibility evidence and test depth, and representative small
+  package/mixed dependency graphs.
+- Expand beyond those bounded shapes to general clone/liveness/reflection analysis,
+  broader JSX accessibility semantics, additional measured-coverage formats,
+  larger real monorepositories, richer infrastructure, and additional delivery
+  categories when evidence justifies the complexity.
 - Add diverse, redistributable real repositories with recorded licenses.
-- Expand the consistent teacher reviews and complete the prepared independent
-  correction handoff with a genuinely distinct reviewer.
+- Expand consistent decomposed host-AI teacher reviews. The prepared independent
+  correction handoff remains an optional replication path for a genuinely distinct
+  reviewer, not a required maturity claim.
 - Preserve the frozen repository-level partitions before tuning.
 - Extend the published seed-rule baseline measurements and disagreement notes.
 
@@ -794,3 +809,42 @@ formatting and exact-copy invariance, dump and unknown-syntax exclusion, semanti
 data directionality, test/delivery/integration category routing, seed-volume
 bounds, and category isolation at all range points. They are qualitative
 guardrails, not reviewed numeric labels or calibration evidence.
+
+## Milestone 7B6 precision completion
+
+The August 11, 2026 checkpoint advances the .NET analyzer from `0.3.2` to
+`0.3.3`. Its bounded reachability pass excludes only an explicit private method
+whose declaring type is non-partial and has no attributes or base type, and whose
+method has no attributes, partial implementation, or external implementation.
+Name references are followed transitively within the file; overload-name ambiguity
+and matching string names retain candidates. Excluded descendants do not contribute
+structure or semantic facts, and a separate exclusion fact preserves the decision.
+Partial types and framework-derived types fail closed. This is not general control-flow,
+reflection, dynamic-dispatch, or cross-file liveness analysis.
+
+JavaScript analyzer `0.5.1` adds bounded explicit accessibility evidence for
+maintained HTML and Angular inline/external templates: roles, accessible labels,
+alternative text, live regions, focus controls, and keyboard handlers. Evidence
+never includes source excerpts and always records that conformance is not proven.
+Accessibility-focused Testing Library, `jest-axe`, and Axe Playwright provenance
+is retained in the existing component/end-to-end test categories. Static signals
+do not constitute an audit, rendered behavior, or standards compliance.
+
+Repository estimator `seed-rules/0.3.0` is unchanged. Accessibility facts reuse
+its existing combined `security-surface` prior with a distinct accessibility work
+item and rationale; no JSON model value, rate, learned parameter, or ML dependency
+changes. Public mutation suite `0.7.0` adds 10 project-authored MIT synthetic states
+and 62 relations. All 309 relations pass across 77 cases. The new cases cover
+reachable, unreferenced, and explicitly included conditional .NET behavior; two
+specified non-exact equivalent-purpose marginal shapes; explicit accessibility and
+accessibility-test depth; and representative four-package and mixed dependency
+graphs. All 67 earlier reports and all 247 earlier assertions remain frozen and
+structurally unchanged.
+
+These relations are qualitative safeguards, not numerical labels or evidence of
+general semantic clone detection. The review policy accepts a disclosed host-AI
+teacher's exact small-task decomposition as logical weak supervision while keeping
+`teacher-estimate` maturity. Independent replication is optional corroboration;
+later production observations remain separately governed empirical evidence. The
+checkpoint does not calibrate absolute repository hours, formalize intervals, or
+make the seed estimator production-ready.

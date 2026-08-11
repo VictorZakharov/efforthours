@@ -80,6 +80,8 @@ internal sealed class JavaScriptSourceMetrics
 
     public int EndToEndTestUsages { get; set; }
 
+    public int AccessibilityTestUsages { get; set; }
+
     public int? EntryPointLine { get; set; }
 
     public int? ApiLine { get; set; }
@@ -150,6 +152,7 @@ internal sealed class JavaScriptSourceMetrics
         ComponentTestUsages += other.ComponentTestUsages;
         IntegrationTestUsages += other.IntegrationTestUsages;
         EndToEndTestUsages += other.EndToEndTestUsages;
+        AccessibilityTestUsages += other.AccessibilityTestUsages;
         Technologies.UnionWith(other.Technologies);
         TechnologyFamilies.UnionWith(other.TechnologyFamilies);
         ObservedTechnologies.UnionWith(other.ObservedTechnologies);

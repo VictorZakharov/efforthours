@@ -99,7 +99,6 @@ internal sealed class CSharpFileAnalyzer(
             cancellationToken);
         CompilationUnitSyntax root = (CompilationUnitSyntax)await tree.GetRootAsync(cancellationToken)
             .ConfigureAwait(false);
-        SyntaxNode[] nodes = [.. root.DescendantNodes()];
         List<ContractDiagnostic> diagnostics = [];
         int syntaxErrors = tree.GetDiagnostics(cancellationToken)
             .Count(diagnostic => diagnostic.Severity == Microsoft.CodeAnalysis.DiagnosticSeverity.Error);
@@ -111,6 +110,14 @@ internal sealed class CSharpFileAnalyzer(
                 $"Roslyn reported {syntaxErrors} syntax error(s) in '{relativePath}'; partial evidence was retained.",
                 relativePath));
         }
+
+        CSharpReachabilityResult reachability = syntaxErrors == 0
+            ? CSharpReachabilityAnalyzer.Analyze(root, relativePath, projectScope)
+            : CSharpReachabilityResult.Empty;
+        SyntaxNode[] nodes =
+        [
+            .. root.DescendantNodes().Where(node => !reachability.IsExcluded(node)),
+        ];
 
         BaseTypeDeclarationSyntax[] types = [.. nodes.OfType<BaseTypeDeclarationSyntax>()];
         MethodDeclarationSyntax[] methods = [.. nodes.OfType<MethodDeclarationSyntax>()];
@@ -124,6 +131,11 @@ internal sealed class CSharpFileAnalyzer(
             BranchPoints: nodes.Count(IsBranchPoint));
 
         List<EvidenceFact> facts = [];
+        if (reachability.ExclusionFact is not null)
+        {
+            facts.Add(reachability.ExclusionFact);
+        }
+
         CSharpApplicationBoundaryAnalyzer.AddFacts(
             facts,
             relativePath,

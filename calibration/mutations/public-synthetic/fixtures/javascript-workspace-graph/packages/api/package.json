@@ -1,0 +1,9 @@
+{
+  "name": "@efforthours-mutation/api",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@efforthours-mutation/domain": "workspace:*",
+    "express": "5.0.0"
+  }
+}

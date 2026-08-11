@@ -9,6 +9,7 @@ public sealed class SeedEstimator : IEstimator
 
     private static readonly HashSet<string> KnownEvidenceKinds =
     [
+        EvidenceKinds.Accessibility,
         EvidenceKinds.ApiSurface,
         EvidenceKinds.BackgroundWork,
         EvidenceKinds.BuildConfiguration,

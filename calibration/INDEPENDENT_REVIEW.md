@@ -4,6 +4,11 @@ EffortHours currently publishes three blind second-pass packets. All source corp
 remain `teacher-estimate`; none has received independent correction or
 adjudication.
 
+This is an optional replication and maturity-advancement path. Current logical
+admission may use honestly disclosed, exactly decomposed host-AI teacher judgment
+without implying that this handoff was completed. Production observations are a
+separate empirical track.
+
 | Corpus | Blind packet | Records | Targets | Canonical source-corpus digest |
 |---|---|---:|---:|---|
 | `efforthours-public-pilot/0.1.0` | [`public-pilot/0.1.0.blind-review-packet.json`](corpora/public-pilot/0.1.0.blind-review-packet.json) | 3 | 99 | `sha256:43b73a6e7ecc743612037349e07cd93c43fc258c926dac326734f304f4a75222` |

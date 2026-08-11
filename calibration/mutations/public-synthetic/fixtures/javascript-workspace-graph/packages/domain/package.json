@@ -1,0 +1,11 @@
+{
+  "name": "@efforthours-mutation/domain",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@efforthours-mutation/contracts": "workspace:*"
+  },
+  "devDependencies": {
+    "vitest": "4.0.0"
+  }
+}

@@ -198,6 +198,12 @@ hours. Reports must make that boundary visible.
 
 EffortHours should prefer work items that normally represent roughly 0.5 to 8 hours.
 A large item should be decomposed further or explicitly explain why it cannot be.
+For a logical calibration or admission gate, a disclosed host-AI teacher's total
+must reconcile exactly from distinct evidence-backed tasks small enough to audit;
+the current one-to-several-day band normally uses 0.5-to-1.5-hour tasks.
+Independent replication is optional corroboration and does not silently upgrade
+`teacher-estimate` maturity. Later production observations retain separate
+empirical provenance and never become effort multipliers.
 
 ### Current state, not historical struggle
 
