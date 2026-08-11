@@ -51,10 +51,16 @@ public static class ContractSchemaValidator
     private static Dictionary<string, JsonSchema> CreateSchemas()
     {
         Dictionary<string, JsonSchema> schemas = new(StringComparer.Ordinal);
+        BuildOptions buildOptions = new()
+        {
+            SchemaRegistry = new SchemaRegistry(),
+        };
 
         foreach (string name in ContractSchemaCatalog.Names)
         {
-            JsonSchema schema = JsonSchema.FromText(ContractSchemaCatalog.Read(name));
+            JsonSchema schema = JsonSchema.FromText(
+                ContractSchemaCatalog.Read(name),
+                buildOptions);
             schemas.Add(name, schema);
         }
 
@@ -63,18 +69,11 @@ public static class ContractSchemaValidator
 
     private static EvaluationOptions CreateEvaluationOptions()
     {
-        EvaluationOptions options = new()
+        return new EvaluationOptions
         {
             OutputFormat = OutputFormat.List,
             RequireFormatValidation = true,
         };
-
-        foreach (JsonSchema schema in Schemas.Value.Values)
-        {
-            options.SchemaRegistry.Register(schema);
-        }
-
-        return options;
     }
 
     private static IEnumerable<string> FlattenErrors(EvaluationResults result)
