@@ -21,6 +21,9 @@ repository root without discarding their decision history.
 - [Static Python analysis](PYTHON_ANALYSIS.md) defines package discovery, bounded
   token/indentation evidence, framework qualification, exclusions, Change
   behavior, benchmark results, and non-goals.
+- [Static Go analysis](GO_ANALYSIS.md) defines module/workspace discovery, bounded
+  token and import-qualified evidence, build uncertainty, exclusions, Change
+  behavior, benchmark results, and non-goals.
 - [Source-file budgets](CODE_BUDGETS.md) documents the enforced early-refactoring
   policy.
 - [Release procedure](RELEASING.md) defines the source-visibility and NuGet

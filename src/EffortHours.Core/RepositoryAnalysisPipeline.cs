@@ -1,5 +1,6 @@
 using EffortHours.Analysis;
 using EffortHours.Analyzers.DotNet;
+using EffortHours.Analyzers.Go;
 using EffortHours.Analyzers.JavaScript;
 using EffortHours.Analyzers.Python;
 using EffortHours.Analyzers.Sql;
@@ -17,6 +18,7 @@ public sealed class RepositoryAnalysisPipeline : IRepositoryScanner
             new RepositoryScanner(),
             [
                 new DotNetRepositoryAnalyzer(),
+                new GoRepositoryAnalyzer(),
                 new JavaScriptRepositoryAnalyzer(),
                 new PythonRepositoryAnalyzer(),
                 new SqlRepositoryAnalyzer(),
@@ -32,6 +34,7 @@ public sealed class RepositoryAnalysisPipeline : IRepositoryScanner
             new RepositoryScanner(fileSystem, cacheStore),
             [
                 new DotNetRepositoryAnalyzer(fileSystem),
+                new GoRepositoryAnalyzer(fileSystem),
                 new JavaScriptRepositoryAnalyzer(fileSystem),
                 new PythonRepositoryAnalyzer(fileSystem),
                 new SqlRepositoryAnalyzer(fileSystem),

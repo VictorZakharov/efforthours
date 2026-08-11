@@ -105,7 +105,7 @@ internal static class FileClassifier
         return new FileClassification(
             role,
             language,
-            DetectEcosystems(lowerName, extension, language),
+            EcosystemClassification.Detect(lowerName, extension, language),
             isTest,
             isGenerated,
             isMinified,
@@ -189,12 +189,17 @@ internal static class FileClassifier
             return "package-manifest";
         }
 
-        if (IsProjectFile(lowerName, extension))
+        if (GoFileClassification.IsProjectManifest(lowerName))
+        {
+            return "package-manifest";
+        }
+
+        if (EcosystemClassification.IsProjectFile(lowerName, extension))
         {
             return "project";
         }
 
-        if (IsSolutionFile(extension))
+        if (EcosystemClassification.IsSolutionFile(extension))
         {
             return "solution";
         }
@@ -217,45 +222,6 @@ internal static class FileClassifier
         return "other";
     }
 
-    private static List<string> DetectEcosystems(
-        string lowerName,
-        string extension,
-        string? language)
-    {
-        List<string> ecosystems = [];
-        if (language is "csharp" or "razor" or "fsharp" or "visual-basic" ||
-            IsProjectFile(lowerName, extension) ||
-            IsSolutionFile(extension) ||
-            lowerName is "directory.build.props" or "directory.build.targets" or "directory.packages.props" or "global.json")
-        {
-            ecosystems.Add("dotnet");
-        }
-
-        if (language is "javascript" or "vue" or "svelte" or
-            "css" or "scss" or "sass" or "less" or "html" ||
-            lowerName == "package.json")
-        {
-            ecosystems.Add("javascript");
-        }
-
-        if (language == "typescript" || lowerName is "tsconfig.json" or "jsconfig.json")
-        {
-            ecosystems.Add("typescript");
-        }
-
-        if (language == "sql")
-        {
-            ecosystems.Add("sql");
-        }
-
-        if (language == "python" || PythonFileClassification.IsProjectArtifact(lowerName))
-        {
-            ecosystems.Add("python");
-        }
-
-        return ecosystems;
-    }
-
     private static bool IsTestPath(string lowerPath, string lowerName, string? language)
     {
         if (HasAnySegment(lowerPath, "test", "tests", "__tests__", "spec", "specs", "e2e"))
@@ -273,6 +239,12 @@ internal static class FileClassifier
             (lowerName.StartsWith("test_", StringComparison.Ordinal) ||
              lowerName.EndsWith("_test.py", StringComparison.Ordinal) ||
              lowerName == "conftest.py"))
+        {
+            return true;
+        }
+
+        if (language == "go" &&
+            (GoFileClassification.IsTestSource(lowerName) || HasAnySegment(lowerPath, "testdata")))
         {
             return true;
         }
@@ -430,19 +402,15 @@ internal static class FileClassifier
 
     private static bool IsComponentManifest(string lowerName, string extension) =>
         lowerName == "package.json" || PythonFileClassification.IsProjectManifest(lowerName) ||
-        IsProjectFile(lowerName, extension);
-
-    private static bool IsProjectFile(string lowerName, string extension) =>
-        extension is ".csproj" or ".fsproj" or ".vbproj" or ".vcxproj" or ".esproj" ||
-        lowerName == "project.json";
-
-    private static bool IsSolutionFile(string extension) => extension is ".sln" or ".slnx";
+        GoFileClassification.IsProjectManifest(lowerName) ||
+        EcosystemClassification.IsProjectFile(lowerName, extension);
 
     private static bool IsBuildConfiguration(string lowerName, string extension) =>
         lowerName is "directory.build.props" or "directory.build.targets" or "directory.packages.props" or
             "global.json" or "nuget.config" or "makefile" or "cmakelists.txt" or "taskfile.yml" or
             "taskfile.yaml" or "tsconfig.json" or "jsconfig.json" or ".npmrc" or ".yarnrc" or
             "pyproject.toml" or "setup.cfg" or "setup.py" or "pipfile" or
+            "go.work" or
             "tox.ini" or "pytest.ini" or ".coveragerc" or
             ".yarnrc.yml" or ".editorconfig" or ".gitattributes" or ".gitignore" or ".efforthoursignore" ||
         PythonFileClassification.IsRequirementsFile(lowerName) ||

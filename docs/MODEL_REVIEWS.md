@@ -33,6 +33,41 @@ Because EffortHours's own anchor informed the seed-model and calibration design,
 a development diagnostic rather than an eligible held-out test record unless a
 future independent snapshot and review policy explicitly establishes otherwise.
 
+## 2026-08-11: Go source-boundary review
+
+Status: **qualitative analyzer and prior-reuse checkpoint; no numerical calibration or Change admission**
+
+Go analyzer `0.1.0` was reviewed as bounded token-backed static analysis, not a Go
+parser, type checker, compiler, or toolchain adapter. It decomposes maintained Go
+evidence into modules, packages, files, functions, methods, types, interfaces,
+exported symbols, generics, asynchronous/concurrency units, and branches. The
+existing `seed-rules/0.4.0` `polyglot-source-backbone` consumes those analogous
+units without any model-artifact or numerical-prior change. Import-qualified Go
+API, CLI, data, integration, security, validation, background, build, and test
+facts reuse existing specialized rules. No fitted dataset, logged time, private
+repository, source-volume regression, or external reviewer value was used.
+
+Static module/workspace parsing never invokes the Go toolchain or follows a local
+replacement outside repository scope. Semantic evidence requires recognized
+imports and qualified use; local framework namesakes remain ordinary source
+structure. Build constraints, platform filenames, `go:embed`, `go:generate`, cgo,
+and blank-import registration retain explicit uncertainty because the analyzer
+does not resolve, expand, execute, compile, or prove them. Ordinary output emits no
+source excerpts.
+
+The standalone public qualitative gate has 13 Go source states and 56 relations.
+It covers formatting/comments, exact copies, generated output, API, tests, data,
+integration, security, background work, build semantics, concurrency, and namesake
+rejection. All 56 assertions pass. The prior 88-state aggregate and every frozen
+candidate remain unchanged. A dedicated suite isolates the new analyzer boundary
+without presenting a version-only aggregate regeneration as accuracy evidence.
+
+Change `0.9.0` adds Go-aware normalization and semantic routing but no fitted
+prior. The existing Stage A admission contains no Go, Python, or SQL cases and
+remains limited to the previously admitted `0.6.0` families. Absolute Go EHE
+accuracy, independent review, real-repository family coverage, and decomposed
+public Go Change labels remain unresolved.
+
 ## 2026-08-11: Python polyglot source-boundary review
 
 Status: **qualitative analyzer and prior-extension checkpoint; no numerical calibration or Change admission**

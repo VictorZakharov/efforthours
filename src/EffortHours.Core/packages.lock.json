@@ -48,6 +48,13 @@
           "Microsoft.CodeAnalysis.CSharp": "[5.6.0, )"
         }
       },
+      "efforthours.analyzers.go": {
+        "type": "Project",
+        "dependencies": {
+          "EffortHours.Analysis": "[1.0.0, )",
+          "EffortHours.Contracts": "[1.0.0, )"
+        }
+      },
       "efforthours.analyzers.javascript": {
         "type": "Project",
         "dependencies": {

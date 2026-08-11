@@ -51,10 +51,15 @@ teacher task, metric, threshold, partition, or maturity changes. Because the Sta
 A records contain no SQL, version 0.7.0 and its SQL path are not separately
 admitted by the 0.6.0 result.
 
-The later Python follow-on advances current source identity to
+The later Python follow-on advanced source identity at that checkpoint to
 `change-seed/0.8.0+seed-rules/0.4.0`, adds indentation-aware `.py`/`.pyi`
 normalization and Python semantic routing, and changes no frozen Change label or
 admission decision. No Stage A record contains Python.
+
+The Go follow-on advances current source identity to
+`change-seed/0.9.0+seed-rules/0.4.0`, adds Go-aware `.go` normalization and
+semantic routing, and changes no frozen Change label or admission decision. No
+Stage A record contains Go.
 
 ## Reproducible source boundary
 

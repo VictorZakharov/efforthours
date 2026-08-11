@@ -139,6 +139,17 @@ separate safety boundary. `PYTHON_ANALYSIS.md` defines the exact scope. The
 language-neutral package/test contracts and source-backbone routing are intended
 to keep later ecosystem extensions additive rather than one-off estimator forks.
 
+The second polyglot expansion is Go. Scanner-admitted `go.mod`, `go.work`, and
+`.go` files receive static module/workspace/package ownership, local replacement
+and internal-reference edges, bounded token structure, `_test.go` evidence, and
+conservative import-qualified framework semantics. The analyzer records build
+constraints, platform filenames, `go:embed`, `go:generate`, cgo, and blank-import
+registration as explicit static evidence or uncertainty; it never invokes the Go
+toolchain, resolves target selection, expands assets, runs generators, compiles
+native code, loads plugins, or proves runtime registration. `GO_ANALYSIS.md`
+defines the exact scope. Go reuses the existing language-neutral source backbone
+and analogous specialized priors without a fitted Go-specific rate.
+
 ## Non-goals
 
 - Reconstructing actual hours worked.

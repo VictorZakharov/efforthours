@@ -181,6 +181,7 @@ working common scanner, static .NET
 project/Roslyn analyzer, static JavaScript/TypeScript package and source analyzer,
 bounded static SQL analyzer,
 bounded static Python package and token/indentation analyzer,
+bounded static Go module/workspace and token analyzer,
 mixed-repository evidence pipeline, published v1 schemas, optional external scan
 cache, installable global-tool package, memory-only unit fixtures, automated
 process-level CLI tests, reproducible million-line benchmarks, and a granular
@@ -262,8 +263,17 @@ wider uncertainty. Public mutation suite `0.8.0` has 88 states and 339 passing
 relations; the earlier 77 reports remain frozen at `0.3.0`. Jupyter remains a
 separate safety boundary. The Python model is experimental and uncalibrated.
 
+The second polyglot expansion adds common scanner `0.2.4` and Go analyzer `0.1.0`.
+Scanner-admitted `go.mod`, `go.work`, and `.go` files receive static module,
+workspace, package, local replacement/reference, token structure, concurrency,
+test, import-qualified semantic, and explicit build/runtime uncertainty evidence
+without invoking the Go toolchain. The unchanged `seed-rules/0.4.0` generic
+polyglot backbone and existing specialized priors are reused. The standalone Go
+mutation suite has 13 states and 56 passing relations. The Go model is experimental
+and uncalibrated.
+
 The scanner benchmark now measures fresh-process .NET, JavaScript/TypeScript,
-Python, and mixed million-line shapes, samples peak resident memory, labels explicit external
+Python, Go, and mixed million-line shapes, samples peak resident memory, labels explicit external
 cache passes separately, and fingerprints caller-supplied target trees before and
 after analysis. The recorded mixed full scan completes in 10.876 seconds with a
 234.20 MiB sampled peak on the documented workstation; three exact MIT release
@@ -272,6 +282,8 @@ is explicitly disk-backed, while ordinary unit tests remain memory-only. No
 cross-platform regression threshold has been frozen from the single-machine data.
 The Python shape completes in 13.354 seconds with a 109.63 MiB sampled peak on the
 same workstation and retains unchanged target metadata.
+The Go shape completes in 6.577 seconds with a 119.95 MiB sampled peak and also
+retains unchanged target metadata.
 
 The first Change Estimation MVP adds provider-neutral immutable snapshot analysis,
 local Git base/head, commit, and range selectors, one optional identity-only `gh`
@@ -282,7 +294,7 @@ meaningful code/tests/docs, migrations, integrations, CI, container delivery,
 simplification, additivity, overlap, reverts, category isolation, all three range
 points, and cooperative cancellation. The first Ctrl+C returns 130 after a
 stderr-only diagnostic; a second retains immediate termination. Current
-`change-seed/0.8.0+seed-rules/0.4.0` rules retain the bounded 0.3.0 logical-
+`change-seed/0.9.0+seed-rules/0.4.0` rules retain the bounded 0.3.0 logical-
 marginality correction
 and can isolate exact, balanced, EffortHours-specific `<custom-code>` regions
 inside otherwise generated source. Only those regions can contribute;
@@ -292,14 +304,16 @@ bodyless generated evidence remain excluded. The rules preserve distinct added
 capabilities and emit bounded change-level comprehension, validation, and review
 once. Version 0.7.0 adds SQL-aware formatting/category routing, and 0.8.0 adds
 Python indentation-aware formatting/category routing without changing previously
-admitted rules. They remain experimental; only version 0.6.0 on the non-SQL
+admitted rules. Version 0.9.0 adds Go-aware formatting, compiler-directive,
+implicit-semicolon, cgo, and category routing without changing previously admitted
+rules. They remain experimental; only version 0.6.0 on the pre-SQL/Python/Go
 4-to-32-hour Stage A logical band is admitted, and no empirical production
 validation is claimed. Non-Git Change mode now accepts
 two statically scanned, content-pinned directories or two digest-checked saved
 repository-evidence bundles;
 bodyless evidence modifications that otherwise qualify as represented remain
 conservative with an explicit warning. Experimental
-`change-portfolio/0.1.0+change-seed/0.8.0+seed-rules/0.4.0` now composes repeated
+`change-portfolio/0.1.0+change-seed/0.9.0+seed-rules/0.4.0` now composes repeated
 PRs, versioned cross-repository PR manifests, and bounded author-period commits.
 It normalizes repositories independently, suppresses exact same-repository PR
 patches, follows exact chronological author object chains, exposes immutable base
@@ -425,6 +439,7 @@ dotnet benchmarks/EffortHours.ScannerBenchmarks/bin/Release/net10.0/EffortHours.
 dotnet benchmarks/EffortHours.ScannerBenchmarks/bin/Release/net10.0/EffortHours.ScannerBenchmarks.dll --files 10000 --lines-per-file 100 --dotnet
 dotnet benchmarks/EffortHours.ScannerBenchmarks/bin/Release/net10.0/EffortHours.ScannerBenchmarks.dll --files 10000 --lines-per-file 100 --javascript
 dotnet benchmarks/EffortHours.ScannerBenchmarks/bin/Release/net10.0/EffortHours.ScannerBenchmarks.dll --files 10000 --lines-per-file 100 --python
+dotnet benchmarks/EffortHours.ScannerBenchmarks/bin/Release/net10.0/EffortHours.ScannerBenchmarks.dll --files 10000 --lines-per-file 100 --go
 dotnet benchmarks/EffortHours.ScannerBenchmarks/bin/Release/net10.0/EffortHours.ScannerBenchmarks.dll --files 10000 --lines-per-file 100 --mixed --warm-cache
 dotnet benchmarks/EffortHours.ScannerBenchmarks/bin/Release/net10.0/EffortHours.ScannerBenchmarks.dll --repository . --warm-cache
 dotnet benchmarks/EffortHours.ChangeBenchmarks/bin/Release/net10.0/EffortHours.ChangeBenchmarks.dll --tree --files 10000 --lines-per-file 100 --max-seconds 30 --max-peak-mib 512

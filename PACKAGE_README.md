@@ -24,7 +24,7 @@ eh --help
 eh estimate ./my-repository --profile implementation --format markdown
 ```
 
-EffortHours statically analyzes .NET, JavaScript, TypeScript, Python,
+EffortHours statically analyzes .NET, JavaScript, TypeScript, Python, Go,
 HTML/CSS-family frontends, SQL, and mixed repositories. Frontend support includes bounded template
 and stylesheet semantics plus static Angular component metadata. SQL support
 includes bounded schema, migration, stored-program, query, test, deployment, and
@@ -35,6 +35,11 @@ Python support includes `.py`/`.pyi`, static package metadata, bounded token and
 indentation structure, tests, and conservative import-qualified framework
 evidence. It does not invoke Python, import modules, resolve environments, install
 packages, execute `setup.py`, or parse notebooks.
+Go support includes modules, workspaces, packages, local replacements, bounded
+token structure, import-qualified semantic evidence, concurrency, build
+directives, and `_test.go` tests. It does not invoke the Go toolchain, resolve
+build constraints, expand embedded assets, run generators, compile cgo, or prove
+runtime registration.
 It reports evidence-backed work items across implementation, testing,
 documentation, integration, delivery, validation, and review, then optionally
 applies a dated contractor rate without changing the effort estimate.
@@ -85,12 +90,13 @@ treated as untrusted input, and reports avoid source excerpts by default.
 
 ## Current limitations
 
-- `seed-rules/0.4.0` and `change-seed/0.8.0` remain experimental and uncalibrated.
+- `seed-rules/0.4.0` and `change-seed/0.9.0` remain experimental and uncalibrated.
 - SQL uses bounded token/statement evidence mapped to existing priors; it is not a
   full grammar, schema diff engine, query optimizer, or database validator.
 - Public calibration labels have not completed genuinely independent correction.
 - TypeScript and TSX evidence is token-backed rather than compiler-backed.
 - Python evidence is token/indentation-backed rather than compiler- or runtime-backed.
+- Go evidence is token-backed rather than compiler- or toolchain-backed.
 - Host-review token use, cost, and estimate improvement have not yet been measured
   across representative repositories; no automatic review budget is selected.
 

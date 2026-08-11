@@ -8,6 +8,19 @@ may still change public contracts with explicit documentation.
 
 ### Added
 
+- Go analyzer `0.1.0` adds offline, digest-verified analysis for `go.mod`,
+  `go.work`, and maintained `.go` files; module/workspace/package ownership; local
+  replacements and references; token-backed structure and concurrency; tests;
+  and conservative import-qualified API, CLI, data, integration, security,
+  validation, and background-work evidence. It never invokes the Go toolchain or
+  emits source excerpts.
+- A standalone public Go mutation suite adds 13 project-authored states and 56
+  passing relations for formatting, exact-copy and generated invariance,
+  semantic/category directionality, build/concurrency evidence, and framework-
+  namesake rejection.
+- Scanner benchmark mode `go-static` records a fresh-process million-line Go
+  checkpoint with target metadata unchanged and no target execution, dependency
+  installation, or network access.
 - Python analyzer `0.1.0` adds offline, digest-verified analysis for `.py` and
   `.pyi` files; static package metadata; token- and indentation-backed source
   structure; tests; local package edges; and conservative import-qualified API,
@@ -56,6 +69,14 @@ may still change public contracts with explicit documentation.
 
 ### Changed
 
+- Common scanner `0.2.4` classifies Go modules, workspaces, lockfiles, and
+  `_test.go` files. The unchanged experimental `seed-rules/0.4.0`
+  `polyglot-source-backbone` and existing specialized priors now consume Go
+  evidence; no fitted Go-specific rate or calibration claim was added.
+- Change source identity advances to
+  `change-seed/0.9.0+seed-rules/0.4.0` for Go-aware formatting, implicit-semicolon,
+  compiler-directive, cgo, and semantic-category routing. The admitted Stage A
+  boundary remains `change-seed/0.6.0`; Go is not included in that admission.
 - The bundled repository model advances to experimental `seed-rules/0.4.0` with
   one language-neutral source backbone for Python. Its transparent rates reuse
   analogous `0.3.0` construction priors with wider uncertainty; all existing

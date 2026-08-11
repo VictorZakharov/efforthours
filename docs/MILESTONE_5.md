@@ -177,11 +177,11 @@ artifacts remain checked in because frozen reviewed corpora and baseline reports
 record those source estimators.
 
 Version 0.4.0 became effective on August 11, 2026. It retains all 30 version-0.3.0
-rules unchanged and adds one transparent language-neutral source backbone for the
-token-backed Python analyzer. Its analogous construction rates use wider
-uncertainty and are not fitted calibration. The earlier 77 synthetic candidates
-remain frozen at 0.3.0; only the 11 new Python states use 0.4.0. Its artifact
-digest is
+rules unchanged and adds one transparent language-neutral source backbone, first
+used by the token-backed Python analyzer and now reused unchanged by Go analyzer
+`0.1.0`. Its analogous construction rates use wider uncertainty and are not fitted
+calibration. The earlier 77 synthetic candidates remain frozen at 0.3.0; the 11
+Python and 13 standalone Go states use 0.4.0. Its artifact digest remains
 `sha256:7cc0cd517ccf096470b98ef72993312263a4e60a2396967f5a07a1104a8c3a01`.
 
 Version 0.3.0 became effective on August 10, 2026. It retains every non-UI
