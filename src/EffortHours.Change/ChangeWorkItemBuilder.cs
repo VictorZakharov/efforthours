@@ -12,7 +12,7 @@ internal sealed record ChangeWorkItemResult(
 
 internal static partial class ChangeWorkItemBuilder
 {
-    public const string EstimatorVersion = "change-seed/0.7.0";
+    public const string EstimatorVersion = "change-seed/0.8.0";
 
     public static ChangeWorkItemResult Build(
         ChangeSelection selection,

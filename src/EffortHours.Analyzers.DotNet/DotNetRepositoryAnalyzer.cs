@@ -21,6 +21,12 @@ public sealed class DotNetRepositoryAnalyzer : IRepositoryEvidenceAnalyzer
 
     public string Ecosystem => "dotnet";
 
+    public IReadOnlyList<LanguageAnalysisSupport> LanguageSupport { get; } =
+    [
+        new("csharp", LanguageAnalysisSupport.ParserBacked),
+        new("razor", LanguageAnalysisSupport.Structural),
+    ];
+
     public async Task<RepositoryAnalysisContribution> AnalyzeAsync(
         string repositoryPath,
         RepositoryEvidence evidence,

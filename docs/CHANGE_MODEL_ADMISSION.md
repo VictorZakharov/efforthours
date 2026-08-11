@@ -6,9 +6,9 @@ Metric identity, decision order, and the first small-change logical gate are fro
 as `change-model-admission/0.2.0`. The admitted source baseline is
 `change-seed/0.6.0+seed-rules/0.3.0`; it is the transparent Stage A logical
 baseline for experimental one-to-several-day Change estimates. The current source
-has advanced to `change-seed/0.7.0+seed-rules/0.3.0` for static SQL support. That
-extension preserves non-SQL rules but is not separately admitted, and no Stage A
-record contains SQL. This is weak-supervision admission, not empirical accuracy,
+has advanced to `change-seed/0.8.0+seed-rules/0.4.0` for static SQL and Python
+support. Those extensions preserve admitted rules but are not separately admitted,
+and no Stage A record contains SQL or Python. This is weak-supervision admission, not empirical accuracy,
 formal interval calibration, or production readiness.
 
 Rubric `change-ehe-work-item/1.1.0` permits a disclosed host-AI teacher to author
@@ -403,3 +403,21 @@ not an admitted successor. Admission would require appropriately licensed,
 decomposed SQL Change records in the declared size band, followed by the ordinary
 development/validation/test decision order. The 0.6.0 gate remains the last
 versioned admission decision.
+
+## `change-seed/0.8.0` static Python extension
+
+Version 0.8.0 adds `.py`/`.pyi` final-delta support. Its formatting comparison
+normalizes ordinary comments, horizontal spacing, blank lines, and consistently
+changed indentation widths while preserving indentation depth, identifiers,
+operators, literals, and docstrings. Repository analyzer evidence routes
+import-qualified Python API, data, integration, security, validation, background,
+and test changes through existing category rules. It adds no fitted Change prior.
+
+Public mutation suite `0.8.0` adds 11 Python source states to the unchanged 77-case
+checkpoint and passes 339/339 relations. That is qualitative safeguard evidence,
+not reviewed Change labeling. The Stage A corpus and its exact logical
+decomposition contain no Python changes. Version 0.8.0 is therefore an
+experimental source revision, not an admitted successor; `0.6.0` remains the last
+admitted source baseline. Python admission requires licensed public final changes
+in the declared size band, exact small-task logical decomposition, repository-
+isolated partitions, and the normal development/validation/test decision order.

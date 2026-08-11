@@ -18,7 +18,7 @@ public sealed class SeedRuleCatalogTests
 
         Assert.True(validation.IsValid, string.Join(Environment.NewLine, validation.Errors));
         Assert.Equal("seed-rules", info.Id);
-        Assert.Equal("0.3.0", info.Version);
+        Assert.Equal("0.4.0", info.Version);
         Assert.Equal(SeedEstimator.Version, info.EstimatorVersion);
         Assert.Equal("experimental-uncalibrated", info.Status);
         Assert.Equal(2026, info.TechnologyBaselineYear);
@@ -42,5 +42,13 @@ public sealed class SeedRuleCatalogTests
         Assert.Contains("responsive-surfaces", drivers);
         Assert.Contains("design-token-units", drivers);
         Assert.Contains("animation-theme-surfaces", drivers);
+
+        JsonElement polyglotRule = Assert.Single(
+            rules,
+            rule => rule.GetProperty("id").GetString() == "polyglot-source-backbone");
+        Assert.Equal("experimental-uncalibrated", info.Status);
+        Assert.Contains(
+            polyglotRule.GetProperty("drivers").EnumerateArray(),
+            driver => driver.GetProperty("name").GetString() == "public-symbols");
     }
 }

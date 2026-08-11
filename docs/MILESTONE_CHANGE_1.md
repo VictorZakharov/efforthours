@@ -128,9 +128,9 @@ selectors do not infer an intermediate history.
 
 The initial model identity was `change-seed/0.1.0`, composed with
 `seed-rules/0.2.1`. The current source identity is
-`change-seed/0.7.0+seed-rules/0.3.0`. Version 0.6.0 alone is admitted as the
-experimental Stage A logical baseline for 4-to-32-hour changes; 0.7.0 preserves
-its non-SQL rules but adds an unadmitted SQL path. Its ranges are not formal
+`change-seed/0.8.0+seed-rules/0.4.0`. Version 0.6.0 alone is admitted as the
+experimental Stage A logical baseline for 4-to-32-hour changes; later revisions
+preserve its admitted rules but add unadmitted SQL and Python paths. Its ranges are not formal
 probability intervals and it is not production-validated.
 
 ## Contracts and output

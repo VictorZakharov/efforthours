@@ -110,6 +110,13 @@ internal static class BenchmarkFixtureGenerator
                 "\"devDependencies\":{\"typescript\":\"5.9.0\"}}\n");
         }
 
+        if (options.Shape == BenchmarkShape.Python)
+        {
+            File.WriteAllText(
+                Path.Combine(rootPath, "pyproject.toml"),
+                "[project]\nname = \"efforthours-benchmark\"\nversion = \"1.0.0\"\n");
+        }
+
         string csharpLines = string.Concat(
             Enumerable.Range(1, Math.Max(0, options.LinesPerFile - 1))
                 .Select(line => $"// representative source line {line.ToString(CultureInfo.InvariantCulture)}\n"));
@@ -118,11 +125,23 @@ internal static class BenchmarkFixtureGenerator
                 .Select(line =>
                     $"export const value{line:D4} = (input) => input ?? " +
                     $"{line.ToString(CultureInfo.InvariantCulture)};\n"));
+        string pythonLines = string.Concat(
+            Enumerable.Range(1, Math.Max(0, options.LinesPerFile - 2))
+                .Select(line =>
+                    $"value_{line:D4} = {line.ToString(CultureInfo.InvariantCulture)}\n"));
 
         Parallel.For(0, options.Files, index =>
         {
             BenchmarkSourceKind kind = SourceKind(options.Shape, index);
-            string directory = Path.Combine(rootPath, kind == BenchmarkSourceKind.CSharp ? "src" : "web", $"group-{index / 100:D5}");
+            string directory = Path.Combine(
+                rootPath,
+                kind switch
+                {
+                    BenchmarkSourceKind.CSharp => "src",
+                    BenchmarkSourceKind.Python => "python",
+                    _ => "web",
+                },
+                $"group-{index / 100:D5}");
             Directory.CreateDirectory(directory);
             (string fileName, string content) = kind switch
             {
@@ -141,6 +160,11 @@ internal static class BenchmarkFixtureGenerator
                     scriptLines +
                     $"export async function file{index:D7}(input: number): Promise<number> {{ return input ? " +
                     $"{index.ToString(CultureInfo.InvariantCulture)} : 0; }}\n"),
+                BenchmarkSourceKind.Python => (
+                    $"file{index:D7}.py",
+                    pythonLines +
+                    $"async def file_{index:D7}(value):\n    return value if value else " +
+                    $"{index.ToString(CultureInfo.InvariantCulture)}\n"),
                 _ => throw new InvalidOperationException($"Unsupported benchmark source kind '{kind}'."),
             };
             File.WriteAllText(Path.Combine(directory, fileName), content);
@@ -153,6 +177,7 @@ internal static class BenchmarkFixtureGenerator
         BenchmarkShape.JavaScript => index % 2 == 0
             ? BenchmarkSourceKind.JavaScript
             : BenchmarkSourceKind.TypeScript,
+        BenchmarkShape.Python => BenchmarkSourceKind.Python,
         BenchmarkShape.Mixed => (index % 3) switch
         {
             0 => BenchmarkSourceKind.CSharp,
@@ -167,5 +192,6 @@ internal static class BenchmarkFixtureGenerator
         CSharp,
         JavaScript,
         TypeScript,
+        Python,
     }
 }

@@ -10,10 +10,21 @@ public interface IRepositoryEvidenceAnalyzer
 
     public bool AppliesToAllRepositories => false;
 
+    public IReadOnlyList<LanguageAnalysisSupport> LanguageSupport => [];
+
     public Task<RepositoryAnalysisContribution> AnalyzeAsync(
         string repositoryPath,
         RepositoryEvidence evidence,
         CancellationToken cancellationToken = default);
+}
+
+public sealed record LanguageAnalysisSupport(string Language, string Depth)
+{
+    public const string ParserBacked = "parser-backed";
+
+    public const string TokenBacked = "token-backed";
+
+    public const string Structural = "structural";
 }
 
 public sealed record RepositoryAnalysisContribution

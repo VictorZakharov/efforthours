@@ -26,7 +26,7 @@ public sealed class SeedEstimatorTests
             Assert.InRange(item.Hours.Expected, 0.5m, 8m);
             Assert.Contains(EstimationProfile.Implementation, item.Profiles);
             Assert.StartsWith("seed-rule:", item.Estimator.Id, StringComparison.Ordinal);
-            Assert.Equal("0.3.0", item.Estimator.Version);
+            Assert.Equal("0.4.0", item.Estimator.Version);
             Assert.Contains("Rule '", item.Reason, StringComparison.Ordinal);
         });
         Assert.Equal(

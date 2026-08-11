@@ -70,6 +70,14 @@ mixed dependency graphs. It reuses the existing source, UI, test, and combined
 security/accessibility priors without fitting a rate. All 67 prior candidate
 reports and all 247 prior assertions remain frozen and structurally unchanged.
 
+Suite 0.8.0 adds 11 Python states and 30 relations specified around formatting,
+exact-copy and generated invariance, semantic directionality, category isolation,
+and framework-namesake rejection. It advances only the Python candidates to
+`seed-rules/0.4.0`, whose digest is
+`sha256:7cc0cd517ccf096470b98ef72993312263a4e60a2396967f5a07a1104a8c3a01`.
+The earlier 77 candidates remain frozen. Passing this suite does not calibrate
+Python or establish absolute-hour accuracy.
+
 ## What suite 0.4.0 measures
 
 | Ecosystem family | Cases | Principal variants |
@@ -240,6 +248,11 @@ retain all earlier assertions unchanged.
 - `0.7.0.suite.json` defines the 77-case Milestone 7B6 aggregate suite.
 - `baseline-seed-rules-0.3.0-suite-0.7.0.json` is its deterministic report.
 - `estimates/seed-rules-0.3.0/` contains all 77 current aggregate candidates.
+- `0.8.0.suite.json` extends that checkpoint to 88 cases with 11 synthetic Python
+  states and 339 relations.
+- `baseline-seed-rules-0.4.0-suite-0.8.0.json` records all 339 passing assertions.
+  The earlier 77 candidates remain frozen at `seed-rules/0.3.0`; only the Python
+  candidates under `estimates/seed-rules-0.4.0/` use the new model identity.
 - `fixtures/` contains every complete synthetic source state.
 
 Every case has a distinct repository source digest. Assertions select canonical
@@ -303,6 +316,18 @@ IDs listed in the Milestone 7B6 table with the same estimate command into
 `estimates/seed-rules-0.3.0`. Then evaluate all 77 explicitly listed candidate
 paths against `0.7.0.suite.json`, writing
 `baseline-seed-rules-0.3.0-suite-0.7.0.json`.
+
+## Reproduce suite 0.8.0
+
+Retain all 77 frozen suite-0.7.0 candidates. Generate the 11 `python-*` fixtures
+with repository estimator `seed-rules/0.4.0` into
+`estimates/seed-rules-0.4.0/`, then evaluate both candidate directories against
+`0.8.0.suite.json`, writing
+`baseline-seed-rules-0.4.0-suite-0.8.0.json`. The resulting report must disclose
+both candidate estimator versions, 88 cases, 339 assertions, and zero failures.
+Mixing versions here is deliberate: it preserves all earlier reports and isolates
+the new Python boundary instead of presenting a version-only regeneration as new
+accuracy evidence.
 
 ## Limitations and next expansion
 

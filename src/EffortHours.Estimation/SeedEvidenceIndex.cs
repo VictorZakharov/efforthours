@@ -11,6 +11,7 @@ internal sealed class SeedEvidenceIndex
         EvidenceKinds.BackgroundWork,
         EvidenceKinds.DataAccess,
         EvidenceKinds.DotNetTest,
+        EvidenceKinds.EcosystemTest,
         EvidenceKinds.EntryPoint,
         EvidenceKinds.Integration,
         EvidenceKinds.JavaScriptTest,
@@ -147,7 +148,7 @@ internal sealed class SeedEvidenceIndex
     {
         EvidenceFact[] anchors = [.. Facts.Where(fact => fact.Kind is
             EvidenceKinds.RepositoryInventory or EvidenceKinds.DotNetProject or
-            EvidenceKinds.JavaScriptWorkspace)];
+            EvidenceKinds.JavaScriptWorkspace or EvidenceKinds.EcosystemPackage)];
         if (anchors.Length > 0)
         {
             return anchors;
@@ -229,6 +230,18 @@ internal sealed class SeedEvidenceIndex
                 "javascript",
                 TagValue(fact, "package-role:") ?? "web-ui",
                 "."));
+        }
+
+        foreach (EvidenceFact fact in Facts.Where(fact =>
+            fact.Kind == EvidenceKinds.EcosystemPackage &&
+            fact.Tags.Contains("scope:analyzed", StringComparer.Ordinal)))
+        {
+            string ecosystem = TagValue(fact, "ecosystem:") ?? "common";
+            scopes.Add(CreateScope(
+                fact,
+                ecosystem,
+                TagValue(fact, "package-role:") ?? "package",
+                NormalizeDirectory(fact.Scope)));
         }
 
         foreach (EvidenceFact fact in Facts.Where(fact =>
@@ -433,7 +446,9 @@ internal sealed class SeedEvidenceIndex
 
         return ecosystem == "dotnet"
             ? file.Extension.Equals(".cs", StringComparison.OrdinalIgnoreCase)
-            : ecosystem == "javascript" && JavaScriptSourceExtensions.Contains(file.Extension);
+            : ecosystem == "javascript"
+                ? JavaScriptSourceExtensions.Contains(file.Extension)
+                : file.Ecosystems.Contains(ecosystem, StringComparer.Ordinal);
     }
 
     private static string ProjectDirectory(string scope)
@@ -451,96 +466,3 @@ internal sealed class SeedEvidenceIndex
         path.Equals(directory, StringComparison.Ordinal) ||
         path.StartsWith(directory + "/", StringComparison.Ordinal);
 }
-
-internal sealed record SeedEstimationScope
-{
-    public required string Id { get; init; }
-
-    public required string Scope { get; init; }
-
-    public required string Directory { get; init; }
-
-    public required string Ecosystem { get; init; }
-
-    public required string Role { get; init; }
-
-    public required EvidenceFact Fact { get; init; }
-
-    public required bool IsTest { get; init; }
-
-    public required bool IsRunnable { get; init; }
-
-    public bool IsProduction => !IsTest;
-}
-
-internal sealed record SeedFileEvidence
-{
-    public required string Path { get; init; }
-
-    public required string Role { get; init; }
-
-    public required string RoleFamily { get; init; }
-
-    public string? Language { get; init; }
-
-    public required string Extension { get; init; }
-
-    public IReadOnlyList<string> Ecosystems { get; init; } = [];
-
-    public string? Sha256 { get; init; }
-
-    public string? DuplicateKey { get; init; }
-
-    public required bool IsTest { get; init; }
-
-    public required bool IsMaintained { get; init; }
-
-    public required decimal PhysicalLines { get; init; }
-
-    public required EvidenceFact Fact { get; init; }
-}
-
-internal sealed record NormalizedEvidenceFact
-{
-    public required string Key { get; init; }
-
-    public required string Kind { get; init; }
-
-    public required string Scope { get; init; }
-
-    public required string Summary { get; init; }
-
-    public IReadOnlyList<EvidenceFact> Facts { get; init; } = [];
-
-    public IReadOnlyDictionary<string, decimal> Measurements { get; init; } =
-        new Dictionary<string, decimal>(StringComparer.Ordinal);
-
-    public IReadOnlyList<string> Tags { get; init; } = [];
-
-    public required bool HasExactDuplicates { get; init; }
-
-    public static NormalizedEvidenceFact Single(EvidenceFact fact) => new()
-    {
-        Key = fact.Id,
-        Kind = fact.Kind,
-        Scope = fact.Scope,
-        Summary = fact.Summary,
-        Facts = [fact],
-        Measurements = fact.Measurements
-            .GroupBy(measurement => measurement.Name, StringComparer.Ordinal)
-            .ToDictionary(
-                group => group.Key,
-                group => group.Sum(measurement => measurement.Value),
-                StringComparer.Ordinal),
-        Tags = fact.Tags,
-        HasExactDuplicates = false,
-    };
-}
-
-internal sealed record StructureNormalization(
-    decimal Factor,
-    int AnalyzedFiles,
-    int ProductionFiles,
-    int CanonicalProductionFiles,
-    bool HasTests,
-    bool HasDuplicates);

@@ -21,6 +21,19 @@ public sealed class JavaScriptRepositoryAnalyzer : IRepositoryEvidenceAnalyzer
 
     public IReadOnlyList<string> Ecosystems { get; } = ["javascript", "typescript"];
 
+    public IReadOnlyList<LanguageAnalysisSupport> LanguageSupport { get; } =
+    [
+        new("javascript", LanguageAnalysisSupport.ParserBacked),
+        new("typescript", LanguageAnalysisSupport.TokenBacked),
+        new("vue", LanguageAnalysisSupport.Structural),
+        new("svelte", LanguageAnalysisSupport.Structural),
+        new("html", LanguageAnalysisSupport.Structural),
+        new("css", LanguageAnalysisSupport.Structural),
+        new("scss", LanguageAnalysisSupport.Structural),
+        new("sass", LanguageAnalysisSupport.Structural),
+        new("less", LanguageAnalysisSupport.Structural),
+    ];
+
     public async Task<RepositoryAnalysisContribution> AnalyzeAsync(
         string repositoryPath,
         RepositoryEvidence evidence,

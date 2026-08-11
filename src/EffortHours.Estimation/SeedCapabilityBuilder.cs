@@ -250,12 +250,21 @@ internal sealed partial class SeedCapabilityBuilder(
                 continue;
             }
 
-            string ruleId = SeedEvidenceIndex.EcosystemFor(fact) == "dotnet"
-                ? "dotnet-source-backbone"
-                : "javascript-source-backbone";
-            string[] allowedDrivers = ruleId == "dotnet-source-backbone"
-                ? ["files", "types", "public-types", "methods", "public-methods", "async-methods", "branch-points"]
-                : ["files", "functions", "methods", "classes", "interfaces", "type-aliases", "enums", "async-functions", "branch-points", "exports", "dynamic-imports"];
+            string ecosystem = SeedEvidenceIndex.EcosystemFor(fact);
+            string ruleId = ecosystem switch
+            {
+                "dotnet" => "dotnet-source-backbone",
+                "javascript" => "javascript-source-backbone",
+                _ => "polyglot-source-backbone",
+            };
+            string[] allowedDrivers = ruleId switch
+            {
+                "dotnet-source-backbone" =>
+                    ["files", "types", "public-types", "methods", "public-methods", "async-methods", "branch-points"],
+                "javascript-source-backbone" =>
+                    ["files", "functions", "methods", "classes", "interfaces", "type-aliases", "enums", "async-functions", "branch-points", "exports", "dynamic-imports"],
+                _ => ["files", "functions", "methods", "types", "public-symbols", "async-units", "branch-points"],
+            };
             Dictionary<string, decimal> drivers = allowedDrivers.ToDictionary(
                 name => name,
                 name => SeedEvidenceIndex.Measurement(fact, name) * normalization.Factor,
@@ -578,6 +587,7 @@ internal sealed partial class SeedCapabilityBuilder(
         NormalizedEvidenceFact[] fineTests =
         [
             .. _index.NormalizedFactsOfKind(EvidenceKinds.DotNetTest),
+            .. _index.NormalizedFactsOfKind(EvidenceKinds.EcosystemTest),
             .. _index.NormalizedFactsOfKind(EvidenceKinds.JavaScriptTest),
             .. _index.NormalizedFactsOfKind(EvidenceKinds.SqlTest),
         ];
@@ -987,6 +997,7 @@ internal sealed partial class SeedCapabilityBuilder(
         SeedEstimationScope[] productionScopes = [.. _index.Scopes.Where(scope => scope.IsProduction)];
         EvidenceFact[] fineTests = Evidence(
             _index.FactsOfKind(EvidenceKinds.DotNetTest),
+            _index.FactsOfKind(EvidenceKinds.EcosystemTest),
             _index.FactsOfKind(EvidenceKinds.JavaScriptTest),
             _index.FactsOfKind(EvidenceKinds.TestSuite));
         EvidenceFact[] semantic = Evidence(SemanticKinds.SelectMany(kind =>
@@ -1167,7 +1178,8 @@ internal sealed partial class SeedCapabilityBuilder(
             drivers.GetValueOrDefault("functions");
         decimal branches = drivers.GetValueOrDefault("branch-points");
         decimal async = drivers.GetValueOrDefault("async-methods") +
-            drivers.GetValueOrDefault("async-functions");
+            drivers.GetValueOrDefault("async-functions") +
+            drivers.GetValueOrDefault("async-units");
         if (methods == 0m)
         {
             return ComplexityLevel.Routine;

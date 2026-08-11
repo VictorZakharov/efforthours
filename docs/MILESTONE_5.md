@@ -170,11 +170,19 @@ they do not create a new integration selection effort for every call.
 
 ## Seed-rule artifact
 
-The current catalog is `models/seed-rules/0.3.0.json`. It is checked in for public
+The current catalog is `models/seed-rules/0.4.0.json`. It is checked in for public
 review and embedded into `EffortHours.Estimation` so normal execution does not depend
 on the current directory, external files, or network access. The 0.2.0 and 0.2.1
 artifacts remain checked in because frozen reviewed corpora and baseline reports
 record those source estimators.
+
+Version 0.4.0 became effective on August 11, 2026. It retains all 30 version-0.3.0
+rules unchanged and adds one transparent language-neutral source backbone for the
+token-backed Python analyzer. Its analogous construction rates use wider
+uncertainty and are not fitted calibration. The earlier 77 synthetic candidates
+remain frozen at 0.3.0; only the 11 new Python states use 0.4.0. Its artifact
+digest is
+`sha256:7cc0cd517ccf096470b98ef72993312263a4e60a2396967f5a07a1104a8c3a01`.
 
 Version 0.3.0 became effective on August 10, 2026. It retains every non-UI
 numerical prior from 0.2.1. Within `ui-surface`, it removes physical asset lines as

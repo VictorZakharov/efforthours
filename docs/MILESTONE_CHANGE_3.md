@@ -51,6 +51,11 @@ teacher task, metric, threshold, partition, or maturity changes. Because the Sta
 A records contain no SQL, version 0.7.0 and its SQL path are not separately
 admitted by the 0.6.0 result.
 
+The later Python follow-on advances current source identity to
+`change-seed/0.8.0+seed-rules/0.4.0`, adds indentation-aware `.py`/`.pyi`
+normalization and Python semantic routing, and changes no frozen Change label or
+admission decision. No Stage A record contains Python.
+
 ## Reproducible source boundary
 
 `change-fixture-generator/0.1.0` analyzes synthetic base/head states through

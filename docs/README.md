@@ -18,6 +18,9 @@ repository root without discarding their decision history.
   multiple-PR/manifest/author-period reconciliation policy and fixture matrix.
 - [Static SQL analysis](SQL_ANALYSIS.md) defines supported SQL evidence, dialect
   confidence, effort mapping, safety bounds, Change behavior, and limitations.
+- [Static Python analysis](PYTHON_ANALYSIS.md) defines package discovery, bounded
+  token/indentation evidence, framework qualification, exclusions, Change
+  behavior, benchmark results, and non-goals.
 - [Source-file budgets](CODE_BUDGETS.md) documents the enforced early-refactoring
   policy.
 - [Release procedure](RELEASING.md) defines the source-visibility and NuGet
