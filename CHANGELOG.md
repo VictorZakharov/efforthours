@@ -8,6 +8,14 @@ may still change public contracts with explicit documentation.
 
 ### Added
 
+- Experimental Change portfolios add repeated local-repository PR selection, a
+  versioned cross-repository PR manifest, and bounded author-period commit
+  selection with explicit identity, timezone, date-field, merge, co-author, and
+  interval policies. Reports separate isolated and normalized EHE, expose immutable
+  base contexts and signed duplicate/overlap/revert/shared-context adjustments,
+  and allocate normalized expected effort exactly without producing employee
+  rankings or treating identity/time as effort signals.
+
 - SQL analyzer `0.1.0` adds offline bounded evidence for `.sql` schemas,
   migrations, indexes, constraints, stored programs, queries, test fixtures,
   deployment scripts, and explicit cross-database boundaries. Dialect and parser

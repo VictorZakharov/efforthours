@@ -22,6 +22,8 @@ public static class ContractSchemaCatalog
         SchemaNames.ChangeEstimateExplanation,
         SchemaNames.ChangeEstimateReport,
         SchemaNames.ChangeEvidence,
+        SchemaNames.ChangePortfolioManifest,
+        SchemaNames.ChangePortfolioReport,
         SchemaNames.Diagnostic,
         SchemaNames.EstimateExplanation,
         SchemaNames.EstimateReport,

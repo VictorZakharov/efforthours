@@ -81,6 +81,52 @@ public enum ChangeNormalizationStatus
     NotApplicableZeroGross,
 }
 
+public enum ChangePortfolioSelectionKind
+{
+    PullRequests,
+    AuthorPeriod,
+}
+
+public enum ChangePortfolioDateField
+{
+    Author,
+    Committer,
+}
+
+public enum ChangePortfolioMergePolicy
+{
+    Exclude,
+    FirstParent,
+}
+
+public enum ChangePortfolioCoauthorPolicy
+{
+    Include,
+    Exclude,
+}
+
+public enum ChangePortfolioAttributionKind
+{
+    PullRequest,
+    DirectAuthor,
+    Coauthor,
+}
+
+public enum ChangePortfolioOrderPolicy
+{
+    OrderIndependent,
+    ChronologicalSelectedCommits,
+}
+
+public enum ChangePortfolioAdjustmentKind
+{
+    ExactDuplicate,
+    SharedContext,
+    Overlap,
+    Revert,
+    Interaction,
+}
+
 public enum EstimateViewKind
 {
     Repository,

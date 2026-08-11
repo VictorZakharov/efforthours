@@ -76,6 +76,15 @@ classification out of `JavaScriptSyntaxAnalyzer.cs` reduces that legacy file fro
 800 to 760 lines and lowers its ratchet from 850 to 800. All new files use the
 ordinary 500-line ceiling; no override was added or increased.
 
+The August 11, 2026 Change portfolio checkpoint separates public contracts,
+semantic validation, immutable identity, repository-group normalization, exact
+allocation, adjustment construction, Git metadata selection, CLI parsing,
+manifest loading, time parsing, CLI help, topology, and JSON/Markdown rendering.
+Allocation, topology, option validation, and group-level contract validation were
+split before their callers approached the ordinary ceiling. Every CLI file remains
+below 400 lines, every other new file remains below 500, and no override was added
+or increased.
+
 Line count is deliberately simple, deterministic, cross-platform, and difficult
 to game accidentally. The useful outcome is earlier decomposition into cohesive
 contracts, commands, analyzers, and renderers—not compressed formatting.

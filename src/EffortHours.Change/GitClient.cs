@@ -97,6 +97,28 @@ public sealed class GitClient
         return [.. values.Skip(1).Select(value => value.ToLowerInvariant())];
     }
 
+    internal async Task<IReadOnlyList<GitCommitMetadata>> ListCommitMetadataAsync(
+        string repositoryPath,
+        string headObjectId,
+        int maximumCount,
+        CancellationToken cancellationToken = default)
+    {
+        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(maximumCount);
+        ExternalCommandResult result = await _commands.RunAsync(
+            "git",
+            repositoryPath,
+            [
+                "log",
+                "--reverse",
+                "--topo-order",
+                $"--max-count={maximumCount}",
+                "--format=%H%x00%P%x00%an%x00%ae%x00%aI%x00%cn%x00%ce%x00%cI%x00%(trailers:key=Co-authored-by,valueonly,separator=%x1f)%x00",
+                headObjectId,
+            ],
+            cancellationToken).ConfigureAwait(false);
+        return GitCommitMetadataParser.Parse(result.StandardOutput);
+    }
+
     public async Task EnsureAncestorAsync(
         string repositoryPath,
         string baseObjectId,

@@ -35,7 +35,10 @@ Read these documents completely:
 12. `docs/MILESTONE_CHANGE_2.md`, `docs/MILESTONE_CHANGE_3.md`, and
     `docs/CHANGE_MODEL_ADMISSION.md` when changing Change
     calibration identity, labels, metrics, review maturity, or admission policy
-13. `docs/RELEASING.md` when changing package metadata, public-release automation,
+13. `docs/MILESTONE_CHANGE_PORTFOLIOS.md` when changing multi-PR manifests,
+    author-period selection, portfolio reconciliation, attribution, or ranking
+    safeguards
+14. `docs/RELEASING.md` when changing package metadata, public-release automation,
     repository visibility procedure, or NuGet publication
 
 If an implementation request conflicts with those documents, surface the conflict
@@ -280,8 +283,17 @@ validation is claimed. Non-Git Change mode now accepts
 two statically scanned, content-pinned directories or two digest-checked saved
 repository-evidence bundles;
 bodyless evidence modifications that otherwise qualify as represented remain
-conservative with an explicit warning. Multiple PRs and author-period portfolios
-remain deferred. Explicit multi-commit ranges report deterministic expected-point
+conservative with an explicit warning. Experimental
+`change-portfolio/0.1.0+change-seed/0.7.0+seed-rules/0.3.0` now composes repeated
+PRs, versioned cross-repository PR manifests, and bounded author-period commits.
+It normalizes repositories independently, suppresses exact same-repository PR
+patches, follows exact chronological author object chains, exposes immutable base
+contexts and signed adjustments, and allocates normalized expected EHE exactly.
+Identity and time remain selectors only; source paths and messages are not emitted,
+shared-credit ambiguity stays visible, and ranking/grading/compensation workflows
+are unsupported. The portfolio reconciler changes no source Change prior, label,
+frozen report, or admission decision and has no empirical production validation.
+Explicit multi-commit ranges report deterministic expected-point
 gross-to-final normalization plus a bounded overlap/revert-only rework-like subset
 with stable explanation lineage. These diagnostics do not change final-delta EHE
 and are absent from base/head-only and PR selections. The former

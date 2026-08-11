@@ -96,6 +96,9 @@ eh explain <path-or-evidence> --item <id> [--format <json|markdown>]
 eh change <repository> (--base <revision> --head <revision> | --commit <revision> | --range <base>..<head> | --pr <number-or-url>)
 eh change --base-path <directory> --head-path <directory>
 eh change --base-evidence <evidence.json> --head-evidence <evidence.json>
+eh change portfolio <repository> --pr <pr> --pr <pr>
+eh change portfolio --manifest <portfolio.json>
+eh change portfolio <repository> --author <alias> --since <instant> --until <instant>
 eh verify <path> [--build] [--test] [--coverage]
 eh model info
 eh rate info
@@ -240,8 +243,12 @@ Status as of August 11, 2026:
   output; memory-only unit fixtures; and process-level Git tests are implemented.
   A follow-on adds content-pinned directory pairs and digest-checked saved-evidence
   pairs with memory-only and process-level coverage. The initial
-  `change-seed/0.1.0` was experimental and uncalibrated. Multiple PRs and
-  author-period portfolios remain deferred.
+  `change-seed/0.1.0` was experimental and uncalibrated. A further portfolio
+  checkpoint adds repeated PRs, a versioned cross-repository PR manifest, bounded
+  author-period selection, repository-group normalization, signed adjustments,
+  exact allocations, v1 schemas, and no-ranking safeguards through a separate
+  experimental `change-portfolio/0.1.0` reconciler. It changes no Change prior,
+  label, frozen report, or admission decision.
 - The Change behavioral-safeguard checkpoint is complete: memory-only mutations
   cover formatting, movement, excluded output, duplication, meaningful code/tests/
   docs, migrations, integrations, CI, container delivery, simplification,
@@ -537,13 +544,14 @@ review.
 - Add feature-oriented reporting.
 - Maintain the implemented provider-neutral directory/evidence selectors and
   measure their large-tree performance before broadening their scope.
-- Extend the implemented one-commit and range forms to multiple-PR and explicitly
-  selected author-and-period portfolios. Treat author and time as selectors only,
-  normalize overlaps and reversals, disclose shared-credit limitations, and label
-  portfolio results as repository-attributed change EHE rather than individual
-  productivity.
-- Extend the implemented optional identity-only `gh` adapter only when network,
-  privacy, immutable-object, and cross-PR normalization safeguards are explicit.
+- Maintain the implemented repeated-PR, manifest-based cross-repository, and
+  explicitly selected author-period portfolios. Treat author and time as selectors
+  only, preserve exact immutable base contexts and allocations, normalize overlap
+  and exact reversals, disclose shared-credit limitations, and label portfolio
+  results as repository-attributed Change EHE rather than individual productivity.
+- Extend the implemented optional identity-only `gh` adapter beyond its current
+  immutable PR lookup only when network, privacy, immutable-object, and
+  normalization safeguards remain explicit.
 - Extend the admitted `change-seed/0.6.0` Stage A baseline with redistributable
   4-to-32-hour final changes before freezing a larger size band. Record host-model
   context, tokens, wall time, and cost when available, and keep empirical
@@ -639,6 +647,6 @@ cross-platform measurements and a more representative benchmark corpus exist.
 7. Collect separately governed production observations for empirical Change
    validation, without using actual time as a model multiplier or relabeling it as
    counterfactual EHE. Preserve the completed `change-seed/0.6.0` semantics and
-   performance bounds before expanding to multiple PRs and author-period
-   portfolios. Independent review remains optional corroboration and must retain
-   honest provenance if performed.
+   performance bounds while evaluating the separate portfolio reconciler.
+   Independent review remains optional corroboration and must retain honest
+   provenance if performed.
