@@ -539,7 +539,7 @@ IDs, unmatched candidate work-item IDs, and category mismatches for investigatio
 
 ## Baseline and model-admission gates
 
-The current deterministic `seed-rules/0.3.0` rules are the baseline every learned
+The current deterministic `seed-rules/0.4.0` rules are the baseline every learned
 candidate must beat.
 A local model is considered only after the corpus contains multiple
 redistributable repository families and a frozen repository-level test partition.
@@ -550,7 +550,7 @@ A candidate must, at minimum:
 - avoid a material regression in median absolute error or signed bias;
 - improve or preserve interval coverage without achieving it through unjustifiably
   wide ranges;
-- retain acceptable results across .NET, JavaScript/TypeScript, and mixed
+- retain acceptable results across .NET, JavaScript/TypeScript, Python, and mixed
   repositories rather than only the aggregate;
 - pass the existing formatting, duplication, generated-content, near-copy and
   specified equivalent-purpose, compiler-disabled and bounded reachability, data,
@@ -848,3 +848,19 @@ teacher's exact small-task decomposition as logical weak supervision while keepi
 later production observations remain separately governed empirical evidence. The
 checkpoint does not calibrate absolute repository hours, formalize intervals, or
 make the seed estimator production-ready.
+
+## Post-7B6 Python mutation extension
+
+The first polyglot expansion adds public mutation suite `0.8.0`. It retains all
+77 suite-0.7.0 cases and their exact `seed-rules/0.3.0` reports, then adds 11
+project-authored MIT synthetic Python states estimated with `seed-rules/0.4.0`.
+The new cases cover formatting/comments, exact copies, generated content, API,
+tests, data, integrations, security, background work, and local framework
+namesakes. The combined report explicitly lists both estimator versions.
+
+All 339 relations pass across 88 states. These are qualitative directionality,
+invariance, category-isolation, and false-positive guardrails. They are not
+reviewed work-item labels, held-out accuracy evidence, interval calibration, or a
+production-admission decision. No existing corpus, partition, reviewer identity,
+teacher target, or frozen report changes. Python has no independent correction or
+real-repository calibration family yet.

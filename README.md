@@ -18,11 +18,12 @@ It does **not** claim how long anyone actually worked. It is not a timesheet,
 productivity score, invoice, or reconstruction of repository history.
 
 > **Experimental public alpha:** the CLI and reporting pipeline work. The bundled
-> repository estimator is not numerically calibrated or admitted. The Change estimator has
-> passed its first model-authored logical gate for changes estimated at 4 to 32
+> repository estimator is not numerically calibrated or admitted. The Change
+> estimator has passed its first model-authored logical gate for changes estimated at 4 to 32
 > hours on the previously admitted non-SQL families, but it is not empirically
-> production-validated and the newer SQL path is outside that gate. Review the
-> evidence and ranges before using any estimate for a consequential decision.
+> production-validated and the newer SQL and Python paths are outside that gate.
+> Review the evidence and ranges before using any estimate for a consequential
+> decision.
 
 ## Install
 
@@ -139,7 +140,9 @@ Formatting-only changes, exact moves, conventional generated output, vendored or
 minified bodies, lockfiles, build output, and exact copies do not create body
 implementation effort. Deletion is never negative or valued by deleted volume.
 For `.sql`, formatting comparison is token-aware while preserving literal,
-quoted-identifier, and comment content.
+quoted-identifier, and comment content. For `.py` and `.pyi`, it is token- and
+indentation-aware: formatting and ordinary comments can normalize to zero, while
+dedentation, literals, and docstrings remain meaningful.
 The current source build can retain bounded customization inside generated files
 only when exact, EffortHours-specific `<custom-code>` regions isolate it safely;
 the generated body still contributes zero. Generator-specific protected-region
@@ -189,13 +192,19 @@ The current static analyzers support:
 - static Angular `@Component` metadata, including literal inline and relative
   external templates and styles when ownership is unambiguous;
 - maintained HTML template structure, forms, bindings, and directives through a
-  bounded tolerant scanner; and
+  bounded tolerant scanner;
 - CSS, SCSS/Sass, and Less rules/selectors, responsive surfaces, design tokens,
   animation, and theme signals through bounded tolerant scanners;
 - standalone or project/package-owned `.sql` schemas, migrations, indexes,
   constraints, stored programs, queries, test fixtures, deployment scripts, and
   explicit cross-database boundaries through bounded static token analysis;
-- mixed .NET and JavaScript/TypeScript repositories;
+- Python 3 `.py` and `.pyi` package/module/import structure, functions, classes,
+  async and branching structure, tests, and conservative import-qualified API,
+  CLI, data, integration, security, validation, and background-work evidence;
+- static Python package metadata from `pyproject.toml`, `setup.cfg`, literal-only
+  `setup.py`, requirements, Pipfile, and common Poetry/PDM/uv surfaces without
+  invoking Python or resolving an environment;
+- mixed .NET, JavaScript/TypeScript, Python, and SQL repositories;
 - documentation, build configuration, CI, containers, infrastructure, package
   metadata, and checked-in LCOV or Cobertura coverage reports; and
 - generated, vendored, minified, binary, duplicate, test, and documentation
@@ -218,6 +227,11 @@ SQLite syntax signals without choosing or connecting to a database. It does not
 compile SQL, prove name/type correctness, execute migrations, inspect query plans,
 or infer effort from rows, dumps, timestamps, or migration versions. See the
 [static SQL boundary](docs/SQL_ANALYSIS.md).
+Python analysis uses a bounded managed tokenizer and indentation-aware structural
+pass. Framework evidence requires matching import context; local namesakes do not
+qualify. It does not execute `setup.py`, import modules, install dependencies,
+type-check, discover runtime routes, or parse notebooks. See the
+[static Python boundary](docs/PYTHON_ANALYSIS.md).
 
 ## Offline and safe by default
 

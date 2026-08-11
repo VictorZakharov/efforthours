@@ -238,15 +238,16 @@ Rules convert well-understood repository facts into work units, enforce exclusio
 apply transparent productivity priors, and provide guardrails against impossible
 or perverse results.
 
-The current implementation is `seed-rules/0.3.0`. Its checked-in JSON artifact is
+The current implementation is `seed-rules/0.4.0`. Its checked-in JSON artifact is
 validated against the published seed-model schema and embedded for deterministic
-offline loading. Version 0.3.0 retains every non-UI numerical prior from 0.2.1 and
-replaces the UI rule's physical asset-line driver with bounded template structure,
-template binding, stylesheet structure, responsive-surface, design-token, and
-animation/theme units. Version 0.2.1 remains the frozen source estimator for the
-existing reviewed corpora and first four mutation checkpoints. Before applying
-priors, the estimator resolves project/package scope and role, separates production
-and test structure, gives fine semantic facts precedence over broad aggregates,
+offline loading. Version 0.4.0 retains every 0.3.0 rule unchanged and adds the
+language-neutral source backbone described in section 13. Version 0.3.0 retains
+every non-UI numerical prior from 0.2.1 and replaces the UI rule's physical
+asset-line driver with bounded semantic units. Version 0.2.1 remains the frozen
+source estimator for the existing reviewed corpora and first four mutation
+checkpoints. Before applying priors, the estimator resolves project/package scope
+and role, separates production and test structure, gives fine semantic facts
+precedence over broad aggregates,
 and normalizes byte-identical maintained bodies.
 
 Frontend semantic evidence is deterministic and formatting-insensitive. Static
@@ -442,7 +443,7 @@ rubric-1.0.0 labels are not rewritten; the separate Stage A logical audit maps a
 eligible parent targets into rubric-1.1.0 tasks while preserving their exact
 expected totals and uncertainty provenance.
 
-The current `change-seed/0.7.0` rules retain the 0.3.0 correction that keeps
+The current `change-seed/0.8.0` rules retain the 0.3.0 correction that keeps
 repository seed capabilities as context for a final delta but does not infer a
 capability modification from path overlap alone. Existing capabilities require
 changed normalized non-file evidence;
@@ -462,6 +463,14 @@ data, test fixtures to integration/component testing, deployment scripts to
 packaging, and explicit cross-database syntax to integrations. It adds no fitted
 prior and preserves every non-SQL rule. The prior 0.6.0 Stage A admission did not
 contain SQL records and therefore does not admit the SQL extension.
+
+Version 0.8.0 adds Python `.py`/`.pyi` final-delta support and an indentation-aware
+formatting signature. Comments and horizontal formatting can normalize to zero;
+indent depth, identifiers, operators, literals, and docstrings remain meaningful.
+Python repository evidence routes API, data, integration, security, validation,
+background, and test deltas through the existing category rules. No fitted Change
+prior was added. The admitted 0.6.0 Stage A records contain no Python, so this
+extension is explicitly unadmitted.
 
 Version 0.4.0 also distinguishes only exact, balanced, EffortHours-specific
 `<custom-code>` regions inside otherwise generated files; it does not infer other
@@ -490,11 +499,12 @@ allocation keeps every component nonnegative while reconciling to the normalized
 total.
 
 The current composite source identity is
-`change-seed/0.7.0+seed-rules/0.3.0`; every frozen Change report retains its
+`change-seed/0.8.0+seed-rules/0.4.0`; every frozen Change report retains its
 original identity and numbers. `change-model-admission/0.2.0` admitted version
 0.6.0 only for experimental 4-to-32-hour Stage A changes after model-authored
-logical agreement and performance gates. Version 0.7.0 preserves those non-SQL
-rules but is not separately admitted, and SQL has no reviewed Change labels.
+logical agreement and performance gates. Versions 0.7.0 and 0.8.0 preserve those
+non-SQL rules but are not separately admitted, and SQL and Python have no reviewed
+Change labels.
 Larger size bands and empirical production accuracy remain separate decisions.
 
 ## 11. Uncertainty
@@ -548,7 +558,29 @@ described in `MILESTONE_6.md`. Callers can provide an exact override or request
 effort-only output. Future regional profiles must not change the underlying effort
 estimate.
 
-## 13. Professionalization gap
+## 13. Polyglot source backbone and Python
+
+`seed-rules/0.4.0` introduces language-neutral analyzed package and fine-test
+contracts plus `polyglot-source-backbone`. The new source rule consumes files,
+functions, methods, types, public symbols, async units, and branch points. Its
+marginal rates transparently reuse analogous `0.3.0` JavaScript construction rates
+with wider uncertainty; they are not fitted calibration. Every existing .NET,
+JavaScript/TypeScript, frontend, SQL, and specialized rule remains numerically
+unchanged.
+
+Python analyzer `0.1.0` supplies the first evidence to this generic rule. Its
+bounded managed tokenizer and indentation pass are explicitly token-backed.
+Package ownership comes from static metadata, and framework semantics require
+matching import-qualified calls, decorators, or base types. Inventory-only
+maintained languages remain visible and emit diagnostics instead of receiving a
+guessed source prior. `PYTHON_ANALYSIS.md` defines exact supported inputs,
+exclusions, uncertainty, safety, and non-goals.
+
+Public mutation suite `0.8.0` combines 77 unchanged `seed-rules/0.3.0` candidates
+with 11 Python `seed-rules/0.4.0` candidates. All 339 relational assertions pass.
+This protects directionality and invariance; it does not calibrate absolute hours.
+
+## 14. Professionalization gap
 
 The primary EHE estimate values the current artifact. A separate gap report may
 estimate reasonable missing work such as:
@@ -562,7 +594,7 @@ estimate reasonable missing work such as:
 
 Gap work must never be silently added to represented EHE.
 
-## 14. Open decisions and measurements
+## 15. Open decisions and measurements
 
 The remaining questions require implementation evidence or external research:
 

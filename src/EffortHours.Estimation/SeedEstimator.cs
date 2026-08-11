@@ -5,7 +5,7 @@ namespace EffortHours.Estimation;
 
 public sealed class SeedEstimator : IEstimator
 {
-    public const string Version = "seed-rules/0.3.0";
+    public const string Version = "seed-rules/0.4.0";
 
     private static readonly HashSet<string> KnownEvidenceKinds =
     [
@@ -23,6 +23,8 @@ public sealed class SeedEstimator : IEstimator
         EvidenceKinds.DotNetSolution,
         EvidenceKinds.DotNetTest,
         EvidenceKinds.EntryPoint,
+        EvidenceKinds.EcosystemPackage,
+        EvidenceKinds.EcosystemTest,
         EvidenceKinds.ExcludedContent,
         EvidenceKinds.File,
         EvidenceKinds.Infrastructure,
@@ -51,6 +53,7 @@ public sealed class SeedEstimator : IEstimator
         {
             "dotnet",
             "javascript",
+            "python",
             "sql",
             "typescript",
         };
@@ -145,7 +148,15 @@ public sealed class SeedEstimator : IEstimator
         }
 
         string[] unsupportedEcosystems = [.. evidence.Repository.Ecosystems
+            .Concat(evidence.Facts
+                .Where(fact => fact.Kind == EvidenceKinds.Language &&
+                    fact.Tags.Contains("analysis-status:inventory-only", StringComparer.Ordinal))
+                .Select(fact => fact.Tags.FirstOrDefault(tag =>
+                    tag.StartsWith("language:", StringComparison.Ordinal))?[9..])
+                .Where(language => language is not null)
+                .Select(language => language!))
             .Where(ecosystem => !SupportedEcosystems.Contains(ecosystem))
+            .Distinct(StringComparer.Ordinal)
             .Order(StringComparer.Ordinal)];
         if (unsupportedEcosystems.Length > 0)
         {

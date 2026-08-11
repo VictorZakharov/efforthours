@@ -50,7 +50,7 @@ public sealed class SqlCliTests
 
         using JsonDocument estimateDocument = JsonDocument.Parse(estimate.StandardOutput);
         Assert.Equal(
-            "seed-rules/0.3.0",
+            "seed-rules/0.4.0",
             estimateDocument.RootElement.GetProperty("estimatorVersion").GetString());
         Assert.Contains(
             estimateDocument.RootElement.GetProperty("categories").EnumerateArray(),

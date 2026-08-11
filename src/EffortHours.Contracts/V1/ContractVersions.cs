@@ -101,6 +101,8 @@ public static class EvidenceKinds
     public const string DotNetSolution = "dotnet-solution";
     public const string DotNetTest = "dotnet-test";
     public const string EntryPoint = "entry-point";
+    public const string EcosystemPackage = "ecosystem-package";
+    public const string EcosystemTest = "ecosystem-test";
     public const string ExcludedContent = "excluded-content";
     public const string File = "file";
     public const string Infrastructure = "infrastructure";

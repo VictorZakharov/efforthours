@@ -128,6 +128,17 @@ database, execute SQL, prove semantic validity or performance, or value dump/row
 timestamp volume. Supported semantics map to existing category priors and remain
 experimental; [SQL_ANALYSIS.md](SQL_ANALYSIS.md) defines the exact boundary.
 
+The first implemented polyglot expansion is Python 3. Scanner-admitted `.py` and
+`.pyi` files receive bounded managed tokenization and indentation-aware structure,
+static package ownership, local import edges, test evidence, and conservative
+import-qualified framework evidence. Static metadata includes `pyproject.toml`,
+`setup.cfg`, literal-only `setup.py`, requirements, Pipfile, and common Poetry,
+PDM, and uv surfaces. The analyzer never invokes Python, imports modules, resolves
+an environment, installs dependencies, or executes `setup.py`; notebooks remain a
+separate safety boundary. `PYTHON_ANALYSIS.md` defines the exact scope. The
+language-neutral package/test contracts and source-backbone routing are intended
+to keep later ecosystem extensions additive rather than one-off estimator forks.
+
 ## Non-goals
 
 - Reconstructing actual hours worked.

@@ -14,8 +14,8 @@ the estimator remains experimental and uncalibrated.
 
 The August 11, 2026 SQL analyzer extension changes no contract, rubric, corpus,
 label, partition, metric, compiler, or review maturity. Its current source identity
-is `change-seed/0.7.0+seed-rules/0.3.0`, but no SQL Change calibration record exists
-and the earlier Stage A gate must not be generalized to it.
+is `change-seed/0.8.0+seed-rules/0.4.0`, but no SQL or Python Change calibration
+record exists and the earlier Stage A gate must not be generalized to it.
 
 ## Delivered scope
 
@@ -91,7 +91,7 @@ repository or Change calibration implementations approached their file ceilings.
 2. Preserve the completed `change-seed/0.4.0` generated-customization boundary,
    including the inherited 0.3.0 logical-marginality correction and separately
    versioned diagnostics, while compiling independent reviews. The current source
-   composes repository `seed-rules/0.3.0`; frozen Change reports retain their
+   composes repository `seed-rules/0.4.0`; frozen Change reports retain their
    original repository-model identity.
 3. Add multiple real observations per ecosystem/partition cell, then freeze
    numerical admission thresholds from development/validation behavior before

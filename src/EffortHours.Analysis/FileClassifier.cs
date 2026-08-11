@@ -44,6 +44,7 @@ internal static class FileClassifier
             [".bash"] = "shell",
             [".ps1"] = "powershell",
             [".py"] = "python",
+            [".pyi"] = "python",
             [".java"] = "java",
             [".kt"] = "kotlin",
             [".go"] = "go",
@@ -80,7 +81,15 @@ internal static class FileClassifier
             language,
             inspection.SampleText);
         bool isMinified = IsMinifiedFile(lowerName, extension, inspection);
-        bool isVendored = HasAnySegment(lowerPath, "vendor", "third_party", "third-party", "external");
+        bool isVendored = HasAnySegment(
+            lowerPath,
+            "vendor",
+            "third_party",
+            "third-party",
+            "external",
+            "site-packages",
+            ".venv",
+            "venv");
         bool isComponentManifest = IsComponentManifest(lowerName, extension);
         string role = DetermineRole(
             lowerPath,
@@ -175,6 +184,11 @@ internal static class FileClassifier
             return "package-manifest";
         }
 
+        if (PythonFileClassification.IsProjectManifest(lowerName))
+        {
+            return "package-manifest";
+        }
+
         if (IsProjectFile(lowerName, extension))
         {
             return "project";
@@ -234,6 +248,11 @@ internal static class FileClassifier
             ecosystems.Add("sql");
         }
 
+        if (language == "python" || PythonFileClassification.IsProjectArtifact(lowerName))
+        {
+            ecosystems.Add("python");
+        }
+
         return ecosystems;
     }
 
@@ -246,6 +265,14 @@ internal static class FileClassifier
 
         if (language == "sql" &&
             HasAnySegment(lowerPath, "fixture", "fixtures", "test-data", "testdata"))
+        {
+            return true;
+        }
+
+        if (language == "python" &&
+            (lowerName.StartsWith("test_", StringComparison.Ordinal) ||
+             lowerName.EndsWith("_test.py", StringComparison.Ordinal) ||
+             lowerName == "conftest.py"))
         {
             return true;
         }
@@ -398,10 +425,12 @@ internal static class FileClassifier
         lowerName is "package-lock.json" or "npm-shrinkwrap.json" or "yarn.lock" or
             "pnpm-lock.yaml" or "bun.lock" or "bun.lockb" or "packages.lock.json" or
             "paket.lock" or "composer.lock" or "gemfile.lock" or
-            "poetry.lock" or "cargo.lock" or "go.sum";
+            "poetry.lock" or "pdm.lock" or "uv.lock" or "pipfile.lock" or
+            "cargo.lock" or "go.sum";
 
     private static bool IsComponentManifest(string lowerName, string extension) =>
-        lowerName == "package.json" || IsProjectFile(lowerName, extension);
+        lowerName == "package.json" || PythonFileClassification.IsProjectManifest(lowerName) ||
+        IsProjectFile(lowerName, extension);
 
     private static bool IsProjectFile(string lowerName, string extension) =>
         extension is ".csproj" or ".fsproj" or ".vbproj" or ".vcxproj" or ".esproj" ||
@@ -413,7 +442,10 @@ internal static class FileClassifier
         lowerName is "directory.build.props" or "directory.build.targets" or "directory.packages.props" or
             "global.json" or "nuget.config" or "makefile" or "cmakelists.txt" or "taskfile.yml" or
             "taskfile.yaml" or "tsconfig.json" or "jsconfig.json" or ".npmrc" or ".yarnrc" or
+            "pyproject.toml" or "setup.cfg" or "setup.py" or "pipfile" or
+            "tox.ini" or "pytest.ini" or ".coveragerc" or
             ".yarnrc.yml" or ".editorconfig" or ".gitattributes" or ".gitignore" or ".efforthoursignore" ||
+        PythonFileClassification.IsRequirementsFile(lowerName) ||
         lowerName.StartsWith("webpack.config.", StringComparison.Ordinal) ||
         lowerName.StartsWith("vite.config.", StringComparison.Ordinal) ||
         lowerName.StartsWith("rollup.config.", StringComparison.Ordinal) ||

@@ -7,19 +7,20 @@ implemented after Milestone 7B5. They include provider-neutral immutable
 base/head analysis, two statically scanned directories, two saved repository
 evidence bundles, one commit, one final revision range, and one GitHub pull
 request through an optional `gh` adapter. The current
-`change-seed/0.7.0` rules remain experimental and are not empirically calibrated,
+`change-seed/0.8.0` rules remain experimental and are not empirically calibrated,
 production-ready, or separately model-admitted. They preserve the non-SQL
 valuation behavior of the Stage A logically admitted 0.6.0 baseline, but the new
-SQL path was not present in that gate.
-Version 0.7.0 retains the 0.3.0 logical-marginality correction and the 0.4.0
+Neither the SQL nor Python path was present in that gate.
+Version 0.8.0 retains the 0.3.0 logical-marginality correction and the 0.4.0
 fail-closed boundary for explicitly delimited customization inside otherwise
 generated files. It adds an expected-point gross-to-final normalization diagnostic
 for explicit multi-commit ranges, disjoint mixed-role category partitions,
 roughly-one-hour logical work-item decomposition, unique-snapshot analysis reuse,
-bounded component audits, and SQL-aware formatting/category routing without
+bounded component audits, SQL-aware formatting/category routing, and Python
+indentation-aware formatting/category routing without
 changing any existing Change EHE prior or non-SQL final-delta total. The current
 source composes repository
-`seed-rules/0.3.0`.
+`seed-rules/0.4.0`.
 The first calibration-infrastructure checkpoint, a preliminary 24-record synthetic
 host-AI teacher corpus, a one-record real public pilot, a blind six-family
 real-source expansion, and a released-alpha.3 public validation follow-on are
@@ -35,7 +36,7 @@ migration, integration, CI, container-delivery, and simplification mutations in
 addition to the initial normalization and Git boundaries. The first Change
 portfolio checkpoint adds repeated PRs, a versioned cross-repository PR manifest,
 and bounded author-and-period selection. Its separate
-`change-portfolio/0.1.0+change-seed/0.7.0+seed-rules/0.3.0` reconciler changes no
+`change-portfolio/0.1.0+change-seed/0.8.0+seed-rules/0.4.0` reconciler changes no
 Change prior, frozen report, label, or admission decision and remains experimental.
 
 ## Purpose
@@ -369,11 +370,11 @@ adjustments, exact allocations, attribution uncertainty, verification, and
 post-EHE pricing. They emit neither local repository paths nor source excerpts.
 
 The current source Change estimator identity is
-`change-seed/0.7.0+seed-rules/0.3.0`; the portfolio reconciler identity is
-`change-portfolio/0.1.0+change-seed/0.7.0+seed-rules/0.3.0`. The earlier 0.6.0
+`change-seed/0.8.0+seed-rules/0.4.0`; the portfolio reconciler identity is
+`change-portfolio/0.1.0+change-seed/0.8.0+seed-rules/0.4.0`. The earlier 0.6.0
 Change identity alone passed the experimental Stage A logical gate, and that
-record contains no SQL. Portfolio aggregation does not broaden that admission.
-Neither 0.7.0 nor portfolio 0.1.0 may be described as empirically calibrated,
+record contains no SQL or Python. Portfolio aggregation does not broaden that admission.
+Neither 0.8.0 nor portfolio 0.1.0 may be described as empirically calibrated,
 generally admitted, or production-ready. Frozen calibration source reports retain
 the exact earlier estimator identity they were created from.
 
@@ -423,6 +424,9 @@ the exact earlier estimator identity they were created from.
 - Source-readable `.sql` paths use SQL-aware formatting normalization and
   scanner-derived role tags; bodyless evidence modifications retain the ordinary
   conservative fallback.
+- Source-readable `.py` and `.pyi` paths use an indentation-aware token signature:
+  ordinary comments and formatting can normalize to zero, while indentation
+  depth, literals, identifiers, operators, and docstrings remain meaningful.
 - When one logical capability cites explicit production, test, documentation,
   build, or delivery roles, its existing low/expected/high budget is partitioned
   across disjoint category evidence rather than duplicated or left in one category.

@@ -7,6 +7,7 @@
     <ProjectReference Include="../EffortHours.Analysis/EffortHours.Analysis.csproj" />
     <ProjectReference Include="../EffortHours.Analyzers.DotNet/EffortHours.Analyzers.DotNet.csproj" />
     <ProjectReference Include="../EffortHours.Analyzers.JavaScript/EffortHours.Analyzers.JavaScript.csproj" />
+    <ProjectReference Include="../EffortHours.Analyzers.Python/EffortHours.Analyzers.Python.csproj" />
     <ProjectReference Include="../EffortHours.Analyzers.Sql/EffortHours.Analyzers.Sql.csproj" />
     <ProjectReference Include="../EffortHours.Contracts/EffortHours.Contracts.csproj" />
   </ItemGroup>

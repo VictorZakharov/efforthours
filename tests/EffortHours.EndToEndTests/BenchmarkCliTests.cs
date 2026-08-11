@@ -66,6 +66,29 @@ public sealed class BenchmarkCliTests
         Assert.All(before, pair => Assert.Equal(pair.Value, after[pair.Key]));
     }
 
+    [Fact]
+    public async Task PythonBenchmarkRunsInFreshProcessWithStaticSafetySignals()
+    {
+        ProcessResult result = await RunBenchmarkAsync(
+            "--files",
+            "12",
+            "--lines-per-file",
+            "10",
+            "--python");
+
+        Assert.Equal(0, result.ExitCode);
+        Assert.Equal(string.Empty, result.StandardError);
+        Dictionary<string, string> measurements = ParseMeasurements(result.StandardOutput);
+        Assert.Equal("python-static", measurements["mode"]);
+        Assert.Equal("true", measurements["generated-fixture"]);
+        Assert.Equal("true", measurements["target-metadata-unchanged"]);
+        Assert.Equal("not-performed", measurements["target-execution"]);
+        Assert.Equal("not-performed", measurements["dependency-installation"]);
+        Assert.Equal("not-performed", measurements["network-access"]);
+        AssertPositive(measurements, "scan-peak-working-set-mib");
+        AssertPositive(measurements, "analyzed-text-lines");
+    }
+
     private static void AssertPositive(Dictionary<string, string> measurements, string name)
     {
         Assert.True(

@@ -8,6 +8,19 @@ may still change public contracts with explicit documentation.
 
 ### Added
 
+- Python analyzer `0.1.0` adds offline, digest-verified analysis for `.py` and
+  `.pyi` files; static package metadata; token- and indentation-backed source
+  structure; tests; local package edges; and conservative import-qualified API,
+  CLI, persistence, integration, security, validation, and background-work
+  evidence. It never invokes Python, imports modules, installs dependencies,
+  executes `setup.py`, or emits source excerpts.
+- Public synthetic mutation suite `0.8.0` adds 11 Python states for formatting,
+  exact-copy and generated invariance, semantic directionality, category
+  isolation, and framework-namesake rejection. All 339 relations pass across 88
+  cases; the earlier 77 candidate reports remain frozen.
+- Language evidence now distinguishes semantically analyzed source from
+  inventory-only maintained languages and reports the active analysis depth.
+
 - Experimental Change portfolios add repeated local-repository PR selection, a
   versioned cross-repository PR manifest, and bounded author-period commit
   selection with explicit identity, timezone, date-field, merge, co-author, and
@@ -43,6 +56,14 @@ may still change public contracts with explicit documentation.
 
 ### Changed
 
+- The bundled repository model advances to experimental `seed-rules/0.4.0` with
+  one language-neutral source backbone for Python. Its transparent rates reuse
+  analogous `0.3.0` construction priors with wider uncertainty; all existing
+  rules remain unchanged and no fitted calibration was added.
+- Change source identity advances to
+  `change-seed/0.8.0+seed-rules/0.4.0` for indentation-aware Python formatting
+  normalization and evidence routing. The admitted Stage A boundary remains
+  `change-seed/0.6.0`; neither SQL nor Python is included in that admission.
 - Existing `seed-rules/0.3.0` data, integration, testing, and packaging priors now
   consume supported SQL evidence without a fitted SQL-specific rate. Repeated seed
   rows, exact copies, dumps, and formatting do not inflate any range point.

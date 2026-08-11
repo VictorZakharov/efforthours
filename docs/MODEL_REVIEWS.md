@@ -33,6 +33,41 @@ Because EffortHours's own anchor informed the seed-model and calibration design,
 a development diagnostic rather than an eligible held-out test record unless a
 future independent snapshot and review policy explicitly establishes otherwise.
 
+## 2026-08-11: Python polyglot source-boundary review
+
+Status: **qualitative analyzer and prior-extension checkpoint; no numerical calibration or Change admission**
+
+Repository estimator `seed-rules/0.4.0` adds one generic
+`polyglot-source-backbone` for the new token-backed Python analyzer. The review
+first decomposed Python evidence into files, functions, methods, types, public
+symbols, async units, and branch points, then mapped those units to the analogous
+transparent JavaScript construction rates already published in `0.3.0`. The new
+rule deliberately widens default uncertainty. No fitted dataset, logged time,
+private repository, source-volume regression, or external reviewer value was used.
+All existing .NET, JavaScript/TypeScript, frontend, SQL, and specialized rule
+definitions remain byte-equivalent to their `0.3.0` counterparts.
+
+Python analyzer `0.1.0` was reviewed as token/indentation-backed, not parser- or
+compiler-backed. Semantic evidence requires import-qualified calls, decorators,
+or base types. Negative local FastAPI/httpx/Celery namesakes remain ordinary
+source structure. Static package metadata never invokes Python or `setup.py`, and
+the analyzer emits no source excerpts. Jupyter is excluded pending its own output,
+magic, embedded-data, and mixed-kernel safety boundary.
+
+The public qualitative gate advances from 77 to 88 source states and from 309 to
+339 relations. The 11 new Python states cover formatting/comments, exact copies,
+generated output, API, tests, data, integration, security, background work, and
+namesake rejection. All 339 assertions pass. The earlier 77 candidate reports
+remain frozen at `seed-rules/0.3.0`; only the Python states use `0.4.0`. This mixed
+candidate identity is explicit in the mutation report and prevents a model-version
+rename from masquerading as reevaluation evidence.
+
+Change `0.8.0` adds indentation-aware `.py`/`.pyi` normalization and category
+routing but no fitted prior. The existing Stage A admission contains no Python or
+SQL cases and remains limited to the previously admitted `0.6.0` non-SQL families.
+Absolute Python EHE accuracy, independent review, real-repository family coverage,
+and decomposed public Python Change labels remain unresolved.
+
 ## 2026-08-11: Milestone 7B6 analyzer precision and mutation guardrails
 
 Status: **qualitative precision checkpoint; no numerical calibration or independent-review claim**

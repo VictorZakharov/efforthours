@@ -20,6 +20,9 @@ public sealed class SqlRepositoryAnalyzer : IRepositoryEvidenceAnalyzer
 
     public string Ecosystem => "sql";
 
+    public IReadOnlyList<LanguageAnalysisSupport> LanguageSupport { get; } =
+        [new("sql", LanguageAnalysisSupport.TokenBacked)];
+
     public async Task<RepositoryAnalysisContribution> AnalyzeAsync(
         string repositoryPath,
         RepositoryEvidence evidence,

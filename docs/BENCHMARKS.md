@@ -221,6 +221,47 @@ project tree; repeated cross-platform samples and larger realistic monorepos are
 still required before a threshold can distinguish regressions from environment
 variance.
 
+## Static Python analyzer v0.1.0 checkpoint
+
+Measured on August 11, 2026 with the same Windows/.NET/hardware environment as the
+fresh-process checkpoint, common scanner `0.2.3`, and Python analyzer `0.1.0`.
+The generated repository contains one root `pyproject.toml` and 10,000 `.py` files
+with approximately 100 physical lines each. Each file contains simple assignments
+plus one async function so the run exercises scanning, digest verification,
+bounded tokenization, indentation structure, evidence construction, and JSON
+serialization without invoking Python.
+
+```text
+dotnet benchmarks/EffortHours.ScannerBenchmarks/bin/Release/net10.0/EffortHours.ScannerBenchmarks.dll --files 10000 --lines-per-file 100 --python
+```
+
+Observed fresh-process result:
+
+| Measure | Result |
+| --- | ---: |
+| Requested source lines | 1,000,000 |
+| Analyzed text lines | 1,000,003 |
+| Source/metadata files | 10,001 |
+| Fixture generation | 1.502 s |
+| Common scan plus static Python analysis | 13.354 s |
+| Evidence serialization | 0.123 s |
+| Analysis throughput | 74,883 lines/s |
+| Cumulative managed allocation | 804.09 MiB |
+| Sampled peak working set | 109.63 MiB |
+| Evidence JSON size | 10.06 MiB |
+| Evidence facts | 10,007 |
+
+The before/after target metadata digest was identical. The analyzer did not
+execute target code, invoke Python, install dependencies, or access the network.
+Fixture generation and serialization are timed separately from analysis.
+
+This is a many-small-files scaling checkpoint, not a representative distribution
+of Python syntax or a cross-platform regression gate. The uniform fixture does
+not exercise large literals, deeply nested indentation, framework-heavy modules,
+namespace packages, dynamic import patterns, or the eight-MiB/250,000-token per-
+file safeguards. Process-level E2E coverage runs a smaller Python shape in a fresh
+process and verifies the same read-only/offline signals.
+
 ## Change EHE scale-and-safety v1.0.0 checkpoint
 
 Measured on August 10, 2026 with:

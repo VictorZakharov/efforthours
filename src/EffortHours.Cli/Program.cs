@@ -1,19 +1,7 @@
 using EffortHours.Cli;
 
 using CancellationTokenSource cancellation = new();
-ConsoleCancelEventHandler cancelHandler = (_, eventArgs) =>
-{
-    if (cancellation.IsCancellationRequested)
-    {
-        eventArgs.Cancel = false;
-        return;
-    }
-
-    eventArgs.Cancel = true;
-    cancellation.Cancel();
-};
-
-Console.CancelKeyPress += cancelHandler;
+Console.CancelKeyPress += HandleCancel;
 try
 {
     return await new EffortHoursApplication().RunAsync(
@@ -24,5 +12,17 @@ try
 }
 finally
 {
-    Console.CancelKeyPress -= cancelHandler;
+    Console.CancelKeyPress -= HandleCancel;
+}
+
+void HandleCancel(object? _, ConsoleCancelEventArgs eventArgs)
+{
+    if (cancellation.IsCancellationRequested)
+    {
+        eventArgs.Cancel = false;
+        return;
+    }
+
+    eventArgs.Cancel = true;
+    cancellation.Cancel();
 }

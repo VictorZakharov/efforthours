@@ -541,6 +541,17 @@ review.
 
 ### Milestone 9: Expansion
 
+The first expansion slice is complete. Issue #63 adds language-neutral analyzed/
+inventory-only status, generic package and fine-test evidence, generic source
+normalization/backbone routing, and the token-backed Python 3 analyzer. Python
+repository and Change estimates now cover static package ownership, local import
+edges, `.py`/`.pyi` structure, tests, and conservative import-qualified framework
+semantics. Public mutation suite `0.8.0` has 88 states and 339 passing relations;
+the new Python estimates use `seed-rules/0.4.0` while the prior 77 reports remain
+frozen at `0.3.0`. The million-line Python checkpoint completes in 13.354 seconds
+with a 109.63 MiB sampled peak on the documented workstation. This is an
+experimental uncalibrated extension and does not expand Change admission.
+
 - Add feature-oriented reporting.
 - Maintain the implemented provider-neutral directory/evidence selectors and
   measure their large-tree performance before broadening their scope.
@@ -556,12 +567,14 @@ review.
   4-to-32-hour final changes before freezing a larger size band. Record host-model
   context, tokens, wall time, and cost when available, and keep empirical
   production validation separate from logical labels.
-- Evaluate the current `change-seed/0.7.0` SQL extension on decomposed public SQL
-  changes before considering it part of any admitted size band.
+- Evaluate the current `change-seed/0.8.0` SQL and Python extensions on decomposed
+  public changes before considering either part of any admitted size band.
 - Follow the remaining deferred semantics and safeguards in
   `CHANGE_ESTIMATION.md` before expanding any history-backed command.
 - Publish analyzer extension contracts.
-- Add languages and ecosystems based on demand.
+- Execute the issue #62 polyglot roadmap one bounded ecosystem at a time, using the
+  shared package/test/status contracts and adding a public analysis boundary,
+  mutation slice, Change checks, and fresh-process benchmark for each language.
 - Add regional rate cards without coupling geography to effort.
 - Explore local semantic models where deterministic analysis is insufficient.
 
@@ -580,8 +593,8 @@ features.
 - Golden fixture tests compare reviewed evidence and reports for small repositories.
 - Mutation-style fixture variants verify that meaningful changes alter estimates
   while formatting, generated output, duplication, and history do not.
-- End-to-end tests invoke the packaged CLI on .NET, JavaScript, TypeScript, and mixed
-  repositories.
+- End-to-end tests invoke the packaged CLI on .NET, JavaScript, TypeScript, Python,
+  SQL, and mixed repositories.
 - Performance tests cover large trees, incremental scans, and bounded memory.
 - Calibration tests split by repository and measure item, category, total, and
   interval behavior.
@@ -615,8 +628,8 @@ The first useful release should:
 The latest scanner checkpoint analyzes one million lines in 7.083 seconds for
 static .NET, 12.088 seconds for static JavaScript/TypeScript, and 10.876 seconds for
 a mixed C#/JavaScript/TypeScript tree on the environment recorded in
-`BENCHMARKS.md`. Sampled scan peaks remain at or below 272.52 MiB in those fresh
-processes. An explicit mixed warm-cache pass takes 4.581 seconds. Three verified
+`BENCHMARKS.md`. The new static Python shape completes in 13.354 seconds with a
+109.63 MiB sampled peak. An explicit mixed warm-cache pass takes 4.581 seconds. Three verified
 MIT releases and the EffortHours tree provide initial real-source measurements,
 with unchanged before/after target metadata.
 
@@ -642,9 +655,11 @@ cross-platform measurements and a more representative benchmark corpus exist.
 5. Repeat the new peak-memory and read-only benchmark protocol across constrained
    Windows/Linux/macOS hosts and larger redistributable monorepos before freezing
    regression thresholds.
-6. Evaluate a compiler-grade TypeScript adapter only if reviewed calibration shows
+6. Continue issue #62 with the next demand-ordered language analyzer after the
+   Python PR, retaining explicit parser depth and inventory-only diagnostics.
+7. Evaluate a compiler-grade TypeScript adapter only if reviewed calibration shows
    material error from the bounded token evidence.
-7. Collect separately governed production observations for empirical Change
+8. Collect separately governed production observations for empirical Change
    validation, without using actual time as a model multiplier or relabeling it as
    counterfactual EHE. Preserve the completed `change-seed/0.6.0` semantics and
    performance bounds while evaluating the separate portfolio reconciler.

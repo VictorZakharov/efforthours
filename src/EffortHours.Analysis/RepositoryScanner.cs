@@ -8,7 +8,7 @@ namespace EffortHours.Analysis;
 public sealed class RepositoryScanner : IRepositoryScanner
 {
     public const string AnalyzerName = "efforthours.common-scanner";
-    public const string AnalyzerVersion = "0.2.2";
+    public const string AnalyzerVersion = "0.2.3";
 
     private const int AggregateLocationLimit = 50;
 
@@ -24,6 +24,15 @@ public sealed class RepositoryScanner : IRepositoryScanner
             ["node_modules"] = "vendored-dependencies",
             ["bower_components"] = "vendored-dependencies",
             ["vendor"] = "vendored-dependencies",
+            [".venv"] = "vendored-dependencies",
+            ["venv"] = "vendored-dependencies",
+            ["site-packages"] = "vendored-dependencies",
+            ["__pycache__"] = "generated-cache",
+            [".tox"] = "tool-cache",
+            [".nox"] = "tool-cache",
+            [".pytest_cache"] = "tool-cache",
+            [".mypy_cache"] = "tool-cache",
+            [".ruff_cache"] = "tool-cache",
             ["obj"] = "build-output",
             ["dist"] = "build-output",
             ["out"] = "build-output",
