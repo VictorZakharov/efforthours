@@ -82,6 +82,8 @@ internal static class JavaScriptTechnologyCatalog
             ["@testing-library/react"] = new("testing-library", "test-component"),
             ["@testing-library/vue"] = new("testing-library", "test-component"),
             ["@testing-library/svelte"] = new("testing-library", "test-component"),
+            ["jest-axe"] = new("jest-axe", "test-accessibility-component"),
+            ["@axe-core/playwright"] = new("axe-playwright", "test-accessibility-e2e"),
             ["typescript"] = new("typescript", "build"),
             ["vite"] = new("vite", "build"),
             ["webpack"] = new("webpack", "build"),

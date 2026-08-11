@@ -5,7 +5,7 @@ namespace EffortHours.Analyzers.DotNet;
 internal static class DotNetEvidence
 {
     public const string AnalyzerName = "efforthours.dotnet-analyzer";
-    public const string AnalyzerVersion = "0.3.2";
+    public const string AnalyzerVersion = "0.3.3";
 
     public static EvidenceFact Fact(
         string id,

@@ -12,10 +12,14 @@ reviewed exclusions. The
 teacher-estimate corpora provide six public repository families. They remain
 small, share one host-AI teacher, have not received independent correction, and do
 not justify a production accuracy claim or distributable learned model. See the
-[`independent-review handoff`](INDEPENDENT_REVIEW.md) for both blind packets.
-The [`public-synthetic/0.3.0`](mutations/public-synthetic/BASELINE.md) mutation
+optional [`independent-review handoff`](INDEPENDENT_REVIEW.md) for both blind
+packets. Exact, evidence-backed small-task decomposition permits host-AI teacher
+labels to support an explicitly logical gate without claiming higher review
+maturity; empirical production observations remain separate.
+The [`public-synthetic/0.7.0`](mutations/public-synthetic/BASELINE.md) mutation
 suite adds cross-ecosystem relational guardrails for exclusions, behavior,
-quality, delivery, and category isolation but is not effort-label data.
+reachability, accessibility, dependency graphs, quality, delivery, and category
+isolation but is not effort-label data.
 The [`changes`](changes) area adds the `change-ehe-work-item/1.0.0` rubric,
 immutable final-delta review tooling, and a 24-case matrix frozen before labels.
 It now contains a preliminary 121-target host-AI teacher corpus and blind handoff,

@@ -23,9 +23,51 @@ anchors below or described as independently validated. Blind second-review
 handoffs and exact-digest compilers exist, but no completed independent plan; the
 record maturity therefore remains unchanged.
 
+Current logical admission may use those honestly disclosed `teacher-estimate`
+records when each total reconciles exactly from small evidence-backed tasks and a
+frozen gate passes. Independent replication is optional corroboration, not a
+prerequisite or an implied maturity upgrade. Empirical production observations are
+separate evidence and never become effort multipliers.
+
 Because EffortHours's own anchor informed the seed-model and calibration design, it is
 a development diagnostic rather than an eligible held-out test record unless a
 future independent snapshot and review policy explicitly establishes otherwise.
+
+## 2026-08-11: Milestone 7B6 analyzer precision and mutation guardrails
+
+Status: **qualitative precision checkpoint; no numerical calibration or independent-review claim**
+
+.NET analyzer `0.3.3` adds conservative intra-file reachability for explicit
+private methods. It considers only methods with no bounded intra-file reference in
+non-partial, unattributed types without a base list, and retains methods with
+attributes or partial/external implementations. Reachable private helper chains,
+overload ambiguity, and matching string names are also retained, while exclusions
+emit explicit evidence. Recognized framework-derived and partial types fail closed.
+This is not general liveness, reflection, dynamic-dispatch, or cross-file analysis.
+
+JavaScript analyzer `0.5.1` records explicit static accessibility semantics from
+maintained HTML and Angular templates, including roles, labels, alternative text,
+live regions, focus, and keyboard handlers. It also records accessibility-focused
+component/end-to-end test provenance for Testing Library and Axe-family tools.
+Every accessibility fact states that conformance is not proven; no renderer,
+framework compiler, test runner, audit, source excerpt, dependency install, or
+network access is involved.
+
+The unchanged `seed-rules/0.3.0` artifact maps accessibility to its existing
+combined security/accessibility prior with distinct work-item reasoning. Public
+mutation suite `0.7.0` adds 10 synthetic states and 62 relations for bounded
+reachability, explicitly included conditional behavior, two specified non-exact
+equivalent-purpose shapes, accessibility implementation/test depth, and
+representative package/mixed dependency graphs. All 309 relations pass across 77
+states; the earlier 67 candidate reports and 247 assertions remain frozen.
+
+The two equivalent-purpose cases demonstrate non-explosive marginal movement for
+those shapes only; they do not establish general semantic-clone detection. No
+numerical prior, teacher label, corpus partition, review maturity, threshold, or ML
+dependency changes. The policy accepts exact decomposed host-AI teacher judgment as
+logical weak supervision while preserving `teacher-estimate` provenance.
+Independent replication remains optional, and later production observations remain
+a separate empirical validation track.
 
 ## 2026-08-11: static SQL evidence and Change normalization revision
 
@@ -390,13 +432,16 @@ exclusions with retained lineage. No prior was changed.
 | validation | 6 | 26.00 h | 27.50 h | 0.0962 / 0.0577 |
 | test | 6 | 41.75 h | not evaluated | deliberately withheld |
 
-Development and validation metrics are diagnostic error scales only. The test
-comparison was not run because no independently reviewed corpus, numerical
-thresholds, or frozen release candidate exists. The blind 121-target handoff pins
+Development and validation metrics are diagnostic error scales only. At that
+checkpoint the test comparison was not run because no independently reviewed
+corpus, numerical thresholds, or frozen release candidate existed. The blind
+121-target handoff pins
 source-corpus digest
 `sha256:ecfdb867ed2ba4912c9550277fc050b5e5511d0e15a107c8a08c044f61793c10`.
-Metric identity and candidate selection order are frozen, while numerical
-thresholds remain blocked on realistic independently reviewed error scales.
+Metric identity and candidate selection order are frozen. Milestone 7B6 supersedes
+independence as a prerequisite, but any future threshold still requires a frozen
+logical-admission policy, adequate repository diversity, and an unopened eligible
+comparison.
 
 ## 2026-08-06: `efforthours-public-expansion/0.1.0`
 
@@ -432,8 +477,10 @@ test observations.
 
 The result broadens ecosystem and repository-shape coverage, but each partition
 still has only one new observation and all six public families share one teacher.
-No numerical fitting or admission threshold should use this expansion until a
-genuinely distinct review is compiled and repository-held-out policies are frozen.
+No numerical fitting or admission threshold should use this expansion until the
+repository-held-out policy, decomposed logical-label gate, and adequate diversity
+requirements are frozen. A genuinely distinct review remains optional
+corroboration rather than a prerequisite.
 
 ## 2026-08-06: `seed-rules/0.2.1` normalization revision
 
@@ -551,5 +598,6 @@ validation may be understated for a polished public release. The narrow recreati
 premium also needs comparison with repositories whose architecture is difficult to
 infer from the finished artifact.
 
-This anchor should next receive an independent work-item review. It must remain out
-of any held-out evaluation set if its corrections are used to change priors.
+This anchor may receive an optional independent work-item replication. It must
+remain out of any held-out evaluation set if its corrections are used to change
+priors.

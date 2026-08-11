@@ -38,7 +38,9 @@ internal sealed class FrontendEvidenceAnalyzer(RepositoryTextReader textReader)
         List<Diagnostic> diagnostics = [];
         foreach (ComponentOwner owner in owners)
         {
-            facts.Add(CreateComponentFact(owner, unresolvedByOwner.GetValueOrDefault(owner.Token)));
+            facts.AddRange(CreateComponentFacts(
+                owner,
+                unresolvedByOwner.GetValueOrDefault(owner.Token)));
             if (unresolvedByOwner.GetValueOrDefault(owner.Token) > 0)
             {
                 diagnostics.Add(JavaScriptEvidence.Diagnostic(
@@ -65,7 +67,7 @@ internal sealed class FrontendEvidenceAnalyzer(RepositoryTextReader textReader)
             }
 
             ownersByAsset.TryGetValue(asset.Scope, out List<ComponentOwner>? assetOwners);
-            facts.Add(CreateAssetFact(asset, read.Text!, packages, assetOwners ?? []));
+            facts.AddRange(CreateAssetFacts(asset, read.Text!, packages, assetOwners ?? []));
         }
 
         return new FrontendAnalysisResult(facts, diagnostics);
@@ -102,7 +104,9 @@ internal sealed class FrontendEvidenceAnalyzer(RepositoryTextReader textReader)
         }
     }
 
-    private static EvidenceFact CreateComponentFact(ComponentOwner owner, int unresolvedReferences)
+    private static IReadOnlyList<EvidenceFact> CreateComponentFacts(
+        ComponentOwner owner,
+        int unresolvedReferences)
     {
         AngularComponentMetadata component = owner.Component;
         FrontendMarkupMetrics markup = new();
@@ -129,7 +133,7 @@ internal sealed class FrontendEvidenceAnalyzer(RepositoryTextReader textReader)
             tags.Add("angular-metadata:dynamic-values-excluded");
         }
 
-        return JavaScriptEvidence.Fact(
+        EvidenceFact uiFact = JavaScriptEvidence.Fact(
             $"javascript:angular-component:{owner.Token}",
             EvidenceKinds.UserInterface,
             component.PackageScope,
@@ -150,9 +154,18 @@ internal sealed class FrontendEvidenceAnalyzer(RepositoryTextReader textReader)
                 component.DynamicProperties,
                 unresolvedReferences),
             tags);
+        EvidenceFact? accessibilityFact = FrontendAccessibilityAnalyzer.CreateFact(
+            $"javascript:accessibility:angular-component:{owner.Token}",
+            component.PackageScope,
+            $"Explicit static accessibility semantics were detected in Angular component '{component.SourcePath}'.",
+            "static Angular inline-template accessibility token scanning",
+            markup,
+            [JavaScriptEvidence.Location(component.SourcePath, component.Line)],
+            ["technology:angular", "framework-flavor:angular"]);
+        return accessibilityFact is null ? [uiFact] : [uiFact, accessibilityFact];
     }
 
-    private static EvidenceFact CreateAssetFact(
+    private static IReadOnlyList<EvidenceFact> CreateAssetFacts(
         EvidenceFact asset,
         string source,
         IReadOnlyList<JavaScriptPackageModel> packages,
@@ -193,7 +206,7 @@ internal sealed class FrontendEvidenceAnalyzer(RepositoryTextReader textReader)
         decimal physicalLines = asset.Measurements
             .Where(measurement => measurement.Name == "physical-lines")
             .Sum(measurement => measurement.Value);
-        return JavaScriptEvidence.FactWithPrimaryLocation(
+        EvidenceFact uiFact = JavaScriptEvidence.FactWithPrimaryLocation(
             $"javascript:ui-asset:{asset.Scope}",
             EvidenceKinds.UserInterface,
             scope,
@@ -212,6 +225,21 @@ internal sealed class FrontendEvidenceAnalyzer(RepositoryTextReader textReader)
                 JavaScriptEvidence.Measurement("physical-lines", physicalLines, "lines"),
             ],
             tags);
+        EvidenceFact? accessibilityFact = FrontendAccessibilityAnalyzer.CreateFact(
+            $"javascript:accessibility:{asset.Scope}",
+            scope,
+            $"Explicit static accessibility semantics were detected in maintained template '{asset.Scope}'.",
+            "tolerant bounded HTML/template accessibility token scanning",
+            markup,
+            [
+                JavaScriptEvidence.Location(asset.Scope),
+                .. owners.Select(owner => JavaScriptEvidence.Location(
+                    owner.Component.SourcePath,
+                    owner.Component.Line)),
+            ],
+            tags.Where(tag => tag.StartsWith("technology:", StringComparison.Ordinal) ||
+                tag.StartsWith("asset-ownership:", StringComparison.Ordinal)));
+        return accessibilityFact is null ? [uiFact] : [uiFact, accessibilityFact];
     }
 
     private static IReadOnlyList<EvidenceMeasurement> Measurements(

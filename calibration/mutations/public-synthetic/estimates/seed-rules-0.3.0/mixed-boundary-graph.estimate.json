@@ -1,0 +1,1370 @@
+{
+  "schemaVersion": "1.0.0",
+  "evidenceSchemaVersion": "1.0.0",
+  "estimatorVersion": "seed-rules/0.3.0",
+  "repository": {
+    "name": "mixed-boundary-graph",
+    "scope": ".",
+    "ecosystems": [
+      "dotnet",
+      "javascript"
+    ],
+    "sourceDigest": "sha256:6cebdebdc779b09e46e2565981316501f478e4103d2f9f2d0e6e63cabe42c47e"
+  },
+  "profile": "implementation",
+  "baseline": {
+    "id": "senior-contractor-2026-no-ai",
+    "workerProfile": "Competent senior contractor familiar with the technical ecosystem",
+    "technologyBaselineYear": 2026,
+    "businessDomainFamiliar": false,
+    "usesAi": false,
+    "description": "One senior contractor recreating the described working system with modern 2026 tools and no AI."
+  },
+  "totalEffort": {
+    "low": 21.25,
+    "expected": 40.75,
+    "high": 73.50
+  },
+  "categories": [
+    {
+      "category": "specification-comprehension-and-domain-learning",
+      "hours": {
+        "low": 2.25,
+        "expected": 4.25,
+        "high": 7.50
+      }
+    },
+    {
+      "category": "repository-and-solution-setup",
+      "hours": {
+        "low": 5.25,
+        "expected": 8.75,
+        "high": 13.75
+      }
+    },
+    {
+      "category": "architecture-and-technical-design",
+      "hours": {
+        "low": 4.25,
+        "expected": 8.50,
+        "high": 15.75
+      }
+    },
+    {
+      "category": "production-implementation",
+      "hours": {
+        "low": 2.25,
+        "expected": 4.50,
+        "high": 8.50
+      }
+    },
+    {
+      "category": "ui-implementation-and-represented-ux-decisions",
+      "hours": {
+        "low": 0.75,
+        "expected": 1.75,
+        "high": 3.50
+      }
+    },
+    {
+      "category": "integration-contract-and-component-testing",
+      "hours": {
+        "low": 1.25,
+        "expected": 2.50,
+        "high": 4.75
+      }
+    },
+    {
+      "category": "manual-validation-debugging-and-hardening",
+      "hours": {
+        "low": 2.50,
+        "expected": 5.50,
+        "high": 11.00
+      }
+    },
+    {
+      "category": "build-configuration-and-developer-tooling",
+      "hours": {
+        "low": 0.25,
+        "expected": 0.50,
+        "high": 0.75
+      }
+    },
+    {
+      "category": "self-review-and-system-integration",
+      "hours": {
+        "low": 2.50,
+        "expected": 4.50,
+        "high": 8.00
+      }
+    }
+  ],
+  "workItems": [
+    {
+      "schemaVersion": "1.0.0",
+      "id": "work:specification-comprehension:49aec33b6a46fb626dad:part-0001",
+      "category": "specification-comprehension-and-domain-learning",
+      "title": "Comprehend the supplied specification and bounded business domain (part 1 of 2)",
+      "scope": ".",
+      "evidenceIds": [
+        "dotnet:api:src/Api/Program.cs",
+        "dotnet:project:src/Api/Api.csproj",
+        "dotnet:project:src/Domain/Domain.csproj",
+        "dotnet:repository",
+        "inventory:repository",
+        "javascript:package:web/package.json",
+        "javascript:package:web/packages/app/package.json",
+        "javascript:package:web/packages/shared/package.json",
+        "javascript:ui:web/packages/app/src/StatusCard.jsx",
+        "javascript:workspace:web/package.json"
+      ],
+      "quantity": 2.5,
+      "complexity": "moderate",
+      "hours": {
+        "low": 1.25,
+        "expected": 2.25,
+        "high": 4.00
+      },
+      "confidence": 0.57,
+      "reason": "The modeled contractor must understand the specified behavior and bounded domain represented across the repository before implementing it. Rule \u0027specification-comprehension\u0027 uses production-scopes=5, semantic-families=2; complexity \u0027moderate\u0027 applies factor 1.",
+      "estimator": {
+        "id": "seed-rule:specification-comprehension",
+        "version": "0.3.0",
+        "kind": "rule"
+      },
+      "profiles": [
+        "implementation",
+        "recreation"
+      ],
+      "dependencyIds": [],
+      "correlationGroup": "repository:understanding-and-design",
+      "assumptions": [
+        "A clear specification exists at the level promised by the selected profile.",
+        "Open-ended stakeholder discovery is excluded."
+      ],
+      "exclusions": [],
+      "uncertaintyReasons": [
+        "No external specification artifact is represented in the current estimator request contract.",
+        "Some supporting evidence is inferred rather than directly observed."
+      ]
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "id": "work:specification-comprehension:49aec33b6a46fb626dad:part-0002",
+      "category": "specification-comprehension-and-domain-learning",
+      "title": "Comprehend the supplied specification and bounded business domain (part 2 of 2)",
+      "scope": ".",
+      "evidenceIds": [
+        "dotnet:api:src/Api/Program.cs",
+        "dotnet:project:src/Api/Api.csproj",
+        "dotnet:project:src/Domain/Domain.csproj",
+        "dotnet:repository",
+        "inventory:repository",
+        "javascript:package:web/package.json",
+        "javascript:package:web/packages/app/package.json",
+        "javascript:package:web/packages/shared/package.json",
+        "javascript:ui:web/packages/app/src/StatusCard.jsx",
+        "javascript:workspace:web/package.json"
+      ],
+      "quantity": 2.5,
+      "complexity": "moderate",
+      "hours": {
+        "low": 1.00,
+        "expected": 2.00,
+        "high": 3.50
+      },
+      "confidence": 0.57,
+      "reason": "The modeled contractor must understand the specified behavior and bounded domain represented across the repository before implementing it. Rule \u0027specification-comprehension\u0027 uses production-scopes=5, semantic-families=2; complexity \u0027moderate\u0027 applies factor 1.",
+      "estimator": {
+        "id": "seed-rule:specification-comprehension",
+        "version": "0.3.0",
+        "kind": "rule"
+      },
+      "profiles": [
+        "implementation",
+        "recreation"
+      ],
+      "dependencyIds": [],
+      "correlationGroup": "repository:understanding-and-design",
+      "assumptions": [
+        "A clear specification exists at the level promised by the selected profile.",
+        "Open-ended stakeholder discovery is excluded."
+      ],
+      "exclusions": [],
+      "uncertaintyReasons": [
+        "No external specification artifact is represented in the current estimator request contract.",
+        "Some supporting evidence is inferred rather than directly observed."
+      ]
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "id": "work:solution-coordination:c6246e076bb47f8310ce:part-0001",
+      "category": "repository-and-solution-setup",
+      "title": "Coordinate solution, workspace, and local dependency boundaries",
+      "scope": ".",
+      "evidenceIds": [
+        "dotnet:project-reference:src/Api/Api.csproj:src/Domain/Domain.csproj",
+        "dotnet:solution:EffortHoursSynthetic.slnx",
+        "javascript:project-reference:web/packages/app/package.json:web/packages/shared/package.json:runtime",
+        "javascript:workspace:web/package.json"
+      ],
+      "quantity": 4,
+      "complexity": "moderate",
+      "hours": {
+        "low": 2.00,
+        "expected": 3.00,
+        "high": 4.75
+      },
+      "confidence": 0.75,
+      "reason": "Multi-project and workspace coordination represents explicit graph, configuration, and integration setup. Rule \u0027solution-coordination\u0027 uses solutions=1, workspaces=1, reference-edges=2; complexity \u0027moderate\u0027 applies factor 1.",
+      "estimator": {
+        "id": "seed-rule:solution-coordination",
+        "version": "0.3.0",
+        "kind": "rule"
+      },
+      "profiles": [
+        "implementation",
+        "recreation"
+      ],
+      "dependencyIds": [],
+      "correlationGroup": "repository:setup",
+      "assumptions": [],
+      "exclusions": [],
+      "uncertaintyReasons": [
+        "Some supporting evidence is inferred rather than directly observed."
+      ]
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "id": "work:project-setup:ee70af1d9f4f19e31e85:part-0001",
+      "category": "repository-and-solution-setup",
+      "title": "Set up \u0027src/Api/Api.csproj\u0027 (web)",
+      "scope": "src/Api/Api.csproj",
+      "evidenceIds": [
+        "dotnet:project:src/Api/Api.csproj"
+      ],
+      "quantity": 1,
+      "complexity": "routine",
+      "hours": {
+        "low": 0.75,
+        "expected": 1.25,
+        "high": 2.00
+      },
+      "confidence": 0.68,
+      "reason": "A project or package manifest represents ecosystem setup, dependency selection, configuration, and validation work. Rule \u0027project-setup\u0027 uses scopes=1, target-frameworks=1; complexity \u0027routine\u0027 applies factor 0.85.",
+      "estimator": {
+        "id": "seed-rule:project-setup",
+        "version": "0.3.0",
+        "kind": "rule"
+      },
+      "profiles": [
+        "implementation",
+        "recreation"
+      ],
+      "dependencyIds": [],
+      "correlationGroup": "scope:dotnet:src/Api/Api.csproj:setup",
+      "assumptions": [],
+      "exclusions": [],
+      "uncertaintyReasons": [
+        "Some supporting evidence is inferred rather than directly observed."
+      ]
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "id": "work:project-setup:9a040135ceac79b42e4f:part-0001",
+      "category": "repository-and-solution-setup",
+      "title": "Set up \u0027src/Domain/Domain.csproj\u0027 (library)",
+      "scope": "src/Domain/Domain.csproj",
+      "evidenceIds": [
+        "dotnet:project:src/Domain/Domain.csproj"
+      ],
+      "quantity": 1,
+      "complexity": "routine",
+      "hours": {
+        "low": 0.75,
+        "expected": 1.25,
+        "high": 2.00
+      },
+      "confidence": 0.68,
+      "reason": "A project or package manifest represents ecosystem setup, dependency selection, configuration, and validation work. Rule \u0027project-setup\u0027 uses scopes=1, target-frameworks=1; complexity \u0027routine\u0027 applies factor 0.85.",
+      "estimator": {
+        "id": "seed-rule:project-setup",
+        "version": "0.3.0",
+        "kind": "rule"
+      },
+      "profiles": [
+        "implementation",
+        "recreation"
+      ],
+      "dependencyIds": [],
+      "correlationGroup": "scope:dotnet:src/Domain/Domain.csproj:setup",
+      "assumptions": [],
+      "exclusions": [],
+      "uncertaintyReasons": [
+        "Some supporting evidence is inferred rather than directly observed."
+      ]
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "id": "work:project-setup:bdeafb6a363253d6470f:part-0001",
+      "category": "repository-and-solution-setup",
+      "title": "Set up \u0027web\u0027 (package)",
+      "scope": "web",
+      "evidenceIds": [
+        "javascript:package:web/package.json"
+      ],
+      "quantity": 1,
+      "complexity": "routine",
+      "hours": {
+        "low": 0.50,
+        "expected": 1.00,
+        "high": 1.50
+      },
+      "confidence": 0.68,
+      "reason": "A project or package manifest represents ecosystem setup, dependency selection, configuration, and validation work. Rule \u0027project-setup\u0027 uses scopes=1; complexity \u0027routine\u0027 applies factor 0.85.",
+      "estimator": {
+        "id": "seed-rule:project-setup",
+        "version": "0.3.0",
+        "kind": "rule"
+      },
+      "profiles": [
+        "implementation",
+        "recreation"
+      ],
+      "dependencyIds": [],
+      "correlationGroup": "scope:javascript:web:setup",
+      "assumptions": [],
+      "exclusions": [],
+      "uncertaintyReasons": [
+        "Some supporting evidence is inferred rather than directly observed."
+      ]
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "id": "work:project-setup:92c545d34b55a9374a93:part-0001",
+      "category": "repository-and-solution-setup",
+      "title": "Set up \u0027web/packages/app\u0027 (web-ui)",
+      "scope": "web/packages/app",
+      "evidenceIds": [
+        "javascript:package-reference:web/packages/app/package.json:@testing-library~react:development",
+        "javascript:package-reference:web/packages/app/package.json:react:runtime",
+        "javascript:package-reference:web/packages/app/package.json:vitest:development",
+        "javascript:package:web/packages/app/package.json"
+      ],
+      "quantity": 1,
+      "complexity": "routine",
+      "hours": {
+        "low": 0.75,
+        "expected": 1.25,
+        "high": 2.00
+      },
+      "confidence": 0.76,
+      "reason": "A project or package manifest represents ecosystem setup, dependency selection, configuration, and validation work. Rule \u0027project-setup\u0027 uses scopes=1, dependencies=4; complexity \u0027routine\u0027 applies factor 0.85.",
+      "estimator": {
+        "id": "seed-rule:project-setup",
+        "version": "0.3.0",
+        "kind": "rule"
+      },
+      "profiles": [
+        "implementation",
+        "recreation"
+      ],
+      "dependencyIds": [],
+      "correlationGroup": "scope:javascript:web/packages/app:setup",
+      "assumptions": [],
+      "exclusions": [],
+      "uncertaintyReasons": [
+        "Some supporting evidence is inferred rather than directly observed."
+      ]
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "id": "work:project-setup:7a67ad71794a16d328cd:part-0001",
+      "category": "repository-and-solution-setup",
+      "title": "Set up \u0027web/packages/shared\u0027 (package)",
+      "scope": "web/packages/shared",
+      "evidenceIds": [
+        "javascript:package:web/packages/shared/package.json"
+      ],
+      "quantity": 1,
+      "complexity": "routine",
+      "hours": {
+        "low": 0.50,
+        "expected": 1.00,
+        "high": 1.50
+      },
+      "confidence": 0.68,
+      "reason": "A project or package manifest represents ecosystem setup, dependency selection, configuration, and validation work. Rule \u0027project-setup\u0027 uses scopes=1; complexity \u0027routine\u0027 applies factor 0.85.",
+      "estimator": {
+        "id": "seed-rule:project-setup",
+        "version": "0.3.0",
+        "kind": "rule"
+      },
+      "profiles": [
+        "implementation",
+        "recreation"
+      ],
+      "dependencyIds": [],
+      "correlationGroup": "scope:javascript:web/packages/shared:setup",
+      "assumptions": [],
+      "exclusions": [],
+      "uncertaintyReasons": [
+        "Some supporting evidence is inferred rather than directly observed."
+      ]
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "id": "work:architecture-design:dee472b48a8c38cdc3d1:part-0001",
+      "category": "architecture-and-technical-design",
+      "title": "Design the technical structure of \u0027src/Api/Api.csproj\u0027 (web)",
+      "scope": "src/Api/Api.csproj",
+      "evidenceIds": [
+        "dotnet:api:src/Api/Program.cs",
+        "dotnet:project-reference:src/Api/Api.csproj:src/Domain/Domain.csproj",
+        "dotnet:project:src/Api/Api.csproj"
+      ],
+      "quantity": 1,
+      "complexity": "moderate",
+      "hours": {
+        "low": 1.00,
+        "expected": 2.00,
+        "high": 3.75
+      },
+      "confidence": 0.65,
+      "reason": "Even with supplied requirements, a competent implementation requires bounded technical design across the observed boundaries. Rule \u0027architecture-design\u0027 uses production-scopes=1, boundary-families=1, reference-edges=1; complexity \u0027moderate\u0027 applies factor 1.",
+      "estimator": {
+        "id": "seed-rule:architecture-design",
+        "version": "0.3.0",
+        "kind": "rule"
+      },
+      "profiles": [
+        "implementation",
+        "recreation"
+      ],
+      "dependencyIds": [],
+      "correlationGroup": "scope:dotnet:src/Api/Api.csproj:design",
+      "assumptions": [
+        "Detailed product and visual design inputs are supplied under the implementation profile."
+      ],
+      "exclusions": [],
+      "uncertaintyReasons": [
+        "Some supporting evidence is inferred rather than directly observed."
+      ]
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "id": "work:architecture-design:7c6a50a2f0a5e27a0d79:part-0001",
+      "category": "architecture-and-technical-design",
+      "title": "Design the technical structure of \u0027src/Domain/Domain.csproj\u0027 (library)",
+      "scope": "src/Domain/Domain.csproj",
+      "evidenceIds": [
+        "dotnet:project:src/Domain/Domain.csproj"
+      ],
+      "quantity": 1,
+      "complexity": "moderate",
+      "hours": {
+        "low": 0.75,
+        "expected": 1.50,
+        "high": 2.75
+      },
+      "confidence": 0.60,
+      "reason": "Even with supplied requirements, a competent implementation requires bounded technical design across the observed boundaries. Rule \u0027architecture-design\u0027 uses production-scopes=1; complexity \u0027moderate\u0027 applies factor 1.",
+      "estimator": {
+        "id": "seed-rule:architecture-design",
+        "version": "0.3.0",
+        "kind": "rule"
+      },
+      "profiles": [
+        "implementation",
+        "recreation"
+      ],
+      "dependencyIds": [],
+      "correlationGroup": "scope:dotnet:src/Domain/Domain.csproj:design",
+      "assumptions": [
+        "Detailed product and visual design inputs are supplied under the implementation profile."
+      ],
+      "exclusions": [],
+      "uncertaintyReasons": [
+        "Some supporting evidence is inferred rather than directly observed."
+      ]
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "id": "work:architecture-design:2995d12323821d240cb2:part-0001",
+      "category": "architecture-and-technical-design",
+      "title": "Design the technical structure of \u0027web\u0027 (package)",
+      "scope": "web",
+      "evidenceIds": [
+        "javascript:package:web/package.json"
+      ],
+      "quantity": 1,
+      "complexity": "moderate",
+      "hours": {
+        "low": 0.75,
+        "expected": 1.50,
+        "high": 2.75
+      },
+      "confidence": 0.60,
+      "reason": "Even with supplied requirements, a competent implementation requires bounded technical design across the observed boundaries. Rule \u0027architecture-design\u0027 uses production-scopes=1; complexity \u0027moderate\u0027 applies factor 1.",
+      "estimator": {
+        "id": "seed-rule:architecture-design",
+        "version": "0.3.0",
+        "kind": "rule"
+      },
+      "profiles": [
+        "implementation",
+        "recreation"
+      ],
+      "dependencyIds": [],
+      "correlationGroup": "scope:javascript:web:design",
+      "assumptions": [
+        "Detailed product and visual design inputs are supplied under the implementation profile."
+      ],
+      "exclusions": [],
+      "uncertaintyReasons": [
+        "Some supporting evidence is inferred rather than directly observed."
+      ]
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "id": "work:architecture-design:06de58f3a7340b087735:part-0001",
+      "category": "architecture-and-technical-design",
+      "title": "Design the technical structure of \u0027web/packages/app\u0027 (web-ui)",
+      "scope": "web/packages/app",
+      "evidenceIds": [
+        "javascript:package:web/packages/app/package.json",
+        "javascript:project-reference:web/packages/app/package.json:web/packages/shared/package.json:runtime",
+        "javascript:ui:web/packages/app/src/StatusCard.jsx"
+      ],
+      "quantity": 1,
+      "complexity": "moderate",
+      "hours": {
+        "low": 1.00,
+        "expected": 2.00,
+        "high": 3.75
+      },
+      "confidence": 0.60,
+      "reason": "Even with supplied requirements, a competent implementation requires bounded technical design across the observed boundaries. Rule \u0027architecture-design\u0027 uses production-scopes=1, boundary-families=1, reference-edges=1; complexity \u0027moderate\u0027 applies factor 1.",
+      "estimator": {
+        "id": "seed-rule:architecture-design",
+        "version": "0.3.0",
+        "kind": "rule"
+      },
+      "profiles": [
+        "implementation",
+        "recreation"
+      ],
+      "dependencyIds": [],
+      "correlationGroup": "scope:javascript:web/packages/app:design",
+      "assumptions": [
+        "Detailed product and visual design inputs are supplied under the implementation profile."
+      ],
+      "exclusions": [],
+      "uncertaintyReasons": [
+        "Some supporting evidence is inferred rather than directly observed."
+      ]
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "id": "work:architecture-design:dff10f6dd7ff48d36e7e:part-0001",
+      "category": "architecture-and-technical-design",
+      "title": "Design the technical structure of \u0027web/packages/shared\u0027 (package)",
+      "scope": "web/packages/shared",
+      "evidenceIds": [
+        "javascript:package:web/packages/shared/package.json"
+      ],
+      "quantity": 1,
+      "complexity": "moderate",
+      "hours": {
+        "low": 0.75,
+        "expected": 1.50,
+        "high": 2.75
+      },
+      "confidence": 0.60,
+      "reason": "Even with supplied requirements, a competent implementation requires bounded technical design across the observed boundaries. Rule \u0027architecture-design\u0027 uses production-scopes=1; complexity \u0027moderate\u0027 applies factor 1.",
+      "estimator": {
+        "id": "seed-rule:architecture-design",
+        "version": "0.3.0",
+        "kind": "rule"
+      },
+      "profiles": [
+        "implementation",
+        "recreation"
+      ],
+      "dependencyIds": [],
+      "correlationGroup": "scope:javascript:web/packages/shared:design",
+      "assumptions": [
+        "Detailed product and visual design inputs are supplied under the implementation profile."
+      ],
+      "exclusions": [],
+      "uncertaintyReasons": [
+        "Some supporting evidence is inferred rather than directly observed."
+      ]
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "id": "work:api-surface:8a3e10d7df0abdb01674:part-0001",
+      "category": "production-implementation",
+      "title": "Implement API and route behavior for \u0027src/Api/Api.csproj\u0027 (web)",
+      "scope": "src/Api/Api.csproj",
+      "evidenceIds": [
+        "dotnet:api:src/Api/Program.cs"
+      ],
+      "quantity": 1,
+      "complexity": "moderate",
+      "hours": {
+        "low": 0.50,
+        "expected": 1.25,
+        "high": 2.50
+      },
+      "confidence": 0.72,
+      "reason": "API priors value routing, contracts, framework wiring, edge behavior, and adaptation beyond residual method construction. Rule \u0027api-surface\u0027 uses endpoints=1; complexity \u0027moderate\u0027 applies factor 1.",
+      "estimator": {
+        "id": "seed-rule:api-surface",
+        "version": "0.3.0",
+        "kind": "rule"
+      },
+      "profiles": [
+        "implementation",
+        "recreation"
+      ],
+      "dependencyIds": [],
+      "correlationGroup": "scope:dotnet:src/Api/Api.csproj:implementation",
+      "assumptions": [
+        "The specialized prior values boundary-specific design, configuration, adaptation, and validation rather than a second full price for source syntax."
+      ],
+      "exclusions": [],
+      "uncertaintyReasons": []
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "id": "work:application-entry-point:9ba705fe5bd85b0af318:part-0001",
+      "category": "production-implementation",
+      "title": "Implement application entry points for \u0027src/Api/Api.csproj\u0027 (web)",
+      "scope": "src/Api/Api.csproj",
+      "evidenceIds": [
+        "dotnet:entry-point:src/Api/Program.cs"
+      ],
+      "quantity": 1,
+      "complexity": "routine",
+      "hours": {
+        "low": 0.50,
+        "expected": 0.75,
+        "high": 1.25
+      },
+      "confidence": 0.67,
+      "reason": "Application startup and command entry points require explicit wiring and usable startup behavior. Rule \u0027application-entry-point\u0027 uses entry-points=1; complexity \u0027routine\u0027 applies factor 0.85.",
+      "estimator": {
+        "id": "seed-rule:application-entry-point",
+        "version": "0.3.0",
+        "kind": "rule"
+      },
+      "profiles": [
+        "implementation",
+        "recreation"
+      ],
+      "dependencyIds": [],
+      "correlationGroup": "scope:dotnet:src/Api/Api.csproj:implementation",
+      "assumptions": [
+        "The specialized prior values boundary-specific design, configuration, adaptation, and validation rather than a second full price for source syntax."
+      ],
+      "exclusions": [],
+      "uncertaintyReasons": [
+        "Some supporting evidence is inferred rather than directly observed."
+      ]
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "id": "work:dotnet-source-backbone:fac136c05851fcc15f24:part-0001",
+      "category": "production-implementation",
+      "title": "Implement maintained internal logic for \u0027src/Api/Api.csproj\u0027 (web)",
+      "scope": "src/Api/Api.csproj",
+      "evidenceIds": [
+        "dotnet:source-structure:src/Api/Api.csproj"
+      ],
+      "quantity": 1,
+      "complexity": "routine",
+      "hours": {
+        "low": 0.25,
+        "expected": 0.50,
+        "high": 1.00
+      },
+      "confidence": 0.78,
+      "reason": "Parser or token structure represents maintained internal logic that routine semantic classifiers cannot name. Rule \u0027dotnet-source-backbone\u0027 uses files=1; complexity \u0027routine\u0027 applies factor 0.85.",
+      "estimator": {
+        "id": "seed-rule:dotnet-source-backbone",
+        "version": "0.3.0",
+        "kind": "rule"
+      },
+      "profiles": [
+        "implementation",
+        "recreation"
+      ],
+      "dependencyIds": [],
+      "correlationGroup": "scope:dotnet:src/Api/Api.csproj:implementation",
+      "assumptions": [
+        "Backbone priors value residual internal code construction at lower rates than complete feature delivery."
+      ],
+      "exclusions": [],
+      "uncertaintyReasons": []
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "id": "work:dotnet-source-backbone:0926d228e9e96d275301:part-0001",
+      "category": "production-implementation",
+      "title": "Implement maintained internal logic for \u0027src/Domain/Domain.csproj\u0027 (library)",
+      "scope": "src/Domain/Domain.csproj",
+      "evidenceIds": [
+        "dotnet:source-structure:src/Domain/Domain.csproj"
+      ],
+      "quantity": 3,
+      "complexity": "routine",
+      "hours": {
+        "low": 0.50,
+        "expected": 0.75,
+        "high": 1.25
+      },
+      "confidence": 0.78,
+      "reason": "Parser or token structure represents maintained internal logic that routine semantic classifiers cannot name. Rule \u0027dotnet-source-backbone\u0027 uses files=1, types=1, public-types=1; complexity \u0027routine\u0027 applies factor 0.85.",
+      "estimator": {
+        "id": "seed-rule:dotnet-source-backbone",
+        "version": "0.3.0",
+        "kind": "rule"
+      },
+      "profiles": [
+        "implementation",
+        "recreation"
+      ],
+      "dependencyIds": [],
+      "correlationGroup": "scope:dotnet:src/Domain/Domain.csproj:implementation",
+      "assumptions": [
+        "Backbone priors value residual internal code construction at lower rates than complete feature delivery."
+      ],
+      "exclusions": [],
+      "uncertaintyReasons": []
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "id": "work:javascript-source-backbone:240767103493880343a8:part-0001",
+      "category": "production-implementation",
+      "title": "Implement maintained internal logic for \u0027web/packages/app\u0027 (web-ui)",
+      "scope": "web/packages/app",
+      "evidenceIds": [
+        "javascript:source-structure:web/packages/app"
+      ],
+      "quantity": 2.5,
+      "complexity": "routine",
+      "hours": {
+        "low": 0.25,
+        "expected": 0.50,
+        "high": 1.00
+      },
+      "confidence": 0.71,
+      "reason": "Parser or token structure represents maintained internal logic that routine semantic classifiers cannot name. Rule \u0027javascript-source-backbone\u0027 uses files=1, functions=1, exports=0.5; complexity \u0027routine\u0027 applies factor 0.85.",
+      "estimator": {
+        "id": "seed-rule:javascript-source-backbone",
+        "version": "0.3.0",
+        "kind": "rule"
+      },
+      "profiles": [
+        "implementation",
+        "recreation"
+      ],
+      "dependencyIds": [],
+      "correlationGroup": "scope:javascript:web/packages/app:implementation",
+      "assumptions": [
+        "Backbone priors value residual internal code construction at lower rates than complete feature delivery.",
+        "Test-file structure is excluded from the production implementation backbone."
+      ],
+      "exclusions": [],
+      "uncertaintyReasons": [
+        "Aggregate source structure was proportionally adjusted using production/test file classification."
+      ]
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "id": "work:javascript-source-backbone:6feeb980fbb3f5f3e2ff:part-0001",
+      "category": "production-implementation",
+      "title": "Implement maintained internal logic for \u0027web/packages/shared\u0027 (package)",
+      "scope": "web/packages/shared",
+      "evidenceIds": [
+        "javascript:source-structure:web/packages/shared"
+      ],
+      "quantity": 4,
+      "complexity": "high",
+      "hours": {
+        "low": 0.25,
+        "expected": 0.75,
+        "high": 1.50
+      },
+      "confidence": 0.75,
+      "reason": "Parser or token structure represents maintained internal logic that routine semantic classifiers cannot name. Rule \u0027javascript-source-backbone\u0027 uses files=1, functions=1, branch-points=1, exports=1; complexity \u0027high\u0027 applies factor 1.25.",
+      "estimator": {
+        "id": "seed-rule:javascript-source-backbone",
+        "version": "0.3.0",
+        "kind": "rule"
+      },
+      "profiles": [
+        "implementation",
+        "recreation"
+      ],
+      "dependencyIds": [],
+      "correlationGroup": "scope:javascript:web/packages/shared:implementation",
+      "assumptions": [
+        "Backbone priors value residual internal code construction at lower rates than complete feature delivery."
+      ],
+      "exclusions": [],
+      "uncertaintyReasons": []
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "id": "work:ui-surface:4098532da7d4239193f5:part-0001",
+      "category": "ui-implementation-and-represented-ux-decisions",
+      "title": "Implement represented UI and UX behavior for \u0027web/packages/app\u0027 (web-ui)",
+      "scope": "web/packages/app",
+      "evidenceIds": [
+        "javascript:ui:web/packages/app/src/StatusCard.jsx"
+      ],
+      "quantity": 1,
+      "complexity": "moderate",
+      "hours": {
+        "low": 0.75,
+        "expected": 1.75,
+        "high": 3.50
+      },
+      "confidence": 0.60,
+      "reason": "UI priors value represented pages, components, state, forms, bounded template/style semantics, maintained assets, and UX decisions beyond residual source construction. Rule \u0027ui-surface\u0027 uses components=1; complexity \u0027moderate\u0027 applies factor 1.",
+      "estimator": {
+        "id": "seed-rule:ui-surface",
+        "version": "0.3.0",
+        "kind": "rule"
+      },
+      "profiles": [
+        "implementation",
+        "recreation"
+      ],
+      "dependencyIds": [],
+      "correlationGroup": "scope:javascript:web/packages/app:implementation",
+      "assumptions": [
+        "The specialized prior values boundary-specific design, configuration, adaptation, and validation rather than a second full price for source syntax."
+      ],
+      "exclusions": [],
+      "uncertaintyReasons": [
+        "Some supporting evidence is inferred rather than directly observed."
+      ]
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "id": "work:integration-tests:dcff2eb5cc659a745063:part-0001",
+      "category": "integration-contract-and-component-testing",
+      "title": "Create represented component tests for \u0027web/packages/app\u0027 (web-ui)",
+      "scope": "web/packages/app",
+      "evidenceIds": [
+        "javascript:test:web/packages/app/tests/StatusCard.test.jsx"
+      ],
+      "quantity": 1,
+      "complexity": "routine",
+      "hours": {
+        "low": 1.25,
+        "expected": 2.50,
+        "high": 4.75
+      },
+      "confidence": 0.63,
+      "reason": "Test priors value the represented test type, cases, parameterization, assertions, fixtures, and isolation at the level statically observed. Rule \u0027integration-tests\u0027 uses test-files=1, test-cases=1, assertions=1; complexity \u0027routine\u0027 applies factor 0.85.",
+      "estimator": {
+        "id": "seed-rule:integration-tests",
+        "version": "0.3.0",
+        "kind": "rule"
+      },
+      "profiles": [
+        "implementation",
+        "recreation"
+      ],
+      "dependencyIds": [],
+      "correlationGroup": "scope:javascript:web/packages/app:tests",
+      "assumptions": [
+        "Discovered tests are assumed to pass on the default static path.",
+        "Repeated assertions and parameterized cases receive diminishing marginal effort."
+      ],
+      "exclusions": [],
+      "uncertaintyReasons": [
+        "Some supporting evidence is inferred rather than directly observed."
+      ]
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "id": "work:manual-validation:3f858fc15620a403609d:part-0001",
+      "category": "manual-validation-debugging-and-hardening",
+      "title": "Manually validate, debug, and harden \u0027src/Api/Api.csproj\u0027 (web)",
+      "scope": "src/Api/Api.csproj",
+      "evidenceIds": [
+        "dotnet:api:src/Api/Program.cs",
+        "dotnet:entry-point:src/Api/Program.cs",
+        "dotnet:project-reference:src/Api/Api.csproj:src/Domain/Domain.csproj",
+        "dotnet:project:src/Api/Api.csproj"
+      ],
+      "quantity": 2,
+      "complexity": "moderate",
+      "hours": {
+        "low": 1.00,
+        "expected": 2.25,
+        "high": 4.50
+      },
+      "confidence": 0.57,
+      "reason": "Working behavior requires explicit manual validation, debugging, and hardening based on the observed runtime and external boundaries rather than a fixed percentage. Rule \u0027manual-validation\u0027 uses runnable-scopes=1, runtime-surfaces=2; complexity \u0027moderate\u0027 applies factor 1.",
+      "estimator": {
+        "id": "seed-rule:manual-validation",
+        "version": "0.3.0",
+        "kind": "rule"
+      },
+      "profiles": [
+        "implementation",
+        "recreation"
+      ],
+      "dependencyIds": [],
+      "correlationGroup": "scope:dotnet:src/Api/Api.csproj:validation",
+      "assumptions": [
+        "Automated-test authoring is valued separately."
+      ],
+      "exclusions": [],
+      "uncertaintyReasons": [
+        "Some supporting evidence is inferred rather than directly observed.",
+        "The target checkout was not executed on the default static path."
+      ]
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "id": "work:manual-validation:72a94cf7471a924c6541:part-0001",
+      "category": "manual-validation-debugging-and-hardening",
+      "title": "Manually validate, debug, and harden \u0027src/Domain/Domain.csproj\u0027 (library)",
+      "scope": "src/Domain/Domain.csproj",
+      "evidenceIds": [
+        "dotnet:project:src/Domain/Domain.csproj"
+      ],
+      "quantity": 1,
+      "complexity": "moderate",
+      "hours": {
+        "low": 0.25,
+        "expected": 0.50,
+        "high": 1.00
+      },
+      "confidence": 0.54,
+      "reason": "Working behavior requires explicit manual validation, debugging, and hardening based on the observed runtime and external boundaries rather than a fixed percentage. Rule \u0027manual-validation\u0027 uses setup-only; complexity \u0027moderate\u0027 applies factor 1.",
+      "estimator": {
+        "id": "seed-rule:manual-validation",
+        "version": "0.3.0",
+        "kind": "rule"
+      },
+      "profiles": [
+        "implementation",
+        "recreation"
+      ],
+      "dependencyIds": [],
+      "correlationGroup": "scope:dotnet:src/Domain/Domain.csproj:validation",
+      "assumptions": [
+        "Automated-test authoring is valued separately."
+      ],
+      "exclusions": [],
+      "uncertaintyReasons": [
+        "Some supporting evidence is inferred rather than directly observed.",
+        "The target checkout was not executed on the default static path."
+      ]
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "id": "work:manual-validation:fa5ac75594bc447b8636:part-0001",
+      "category": "manual-validation-debugging-and-hardening",
+      "title": "Manually validate, debug, and harden \u0027web\u0027 (package)",
+      "scope": "web",
+      "evidenceIds": [
+        "javascript:package:web/package.json"
+      ],
+      "quantity": 1,
+      "complexity": "moderate",
+      "hours": {
+        "low": 0.25,
+        "expected": 0.50,
+        "high": 1.00
+      },
+      "confidence": 0.54,
+      "reason": "Working behavior requires explicit manual validation, debugging, and hardening based on the observed runtime and external boundaries rather than a fixed percentage. Rule \u0027manual-validation\u0027 uses setup-only; complexity \u0027moderate\u0027 applies factor 1.",
+      "estimator": {
+        "id": "seed-rule:manual-validation",
+        "version": "0.3.0",
+        "kind": "rule"
+      },
+      "profiles": [
+        "implementation",
+        "recreation"
+      ],
+      "dependencyIds": [],
+      "correlationGroup": "scope:javascript:web:validation",
+      "assumptions": [
+        "Automated-test authoring is valued separately."
+      ],
+      "exclusions": [],
+      "uncertaintyReasons": [
+        "Some supporting evidence is inferred rather than directly observed.",
+        "The target checkout was not executed on the default static path."
+      ]
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "id": "work:manual-validation:c0f757f520ff79ff8f4d:part-0001",
+      "category": "manual-validation-debugging-and-hardening",
+      "title": "Manually validate, debug, and harden \u0027web/packages/app\u0027 (web-ui)",
+      "scope": "web/packages/app",
+      "evidenceIds": [
+        "javascript:package:web/packages/app/package.json",
+        "javascript:project-reference:web/packages/app/package.json:web/packages/shared/package.json:runtime",
+        "javascript:ui:web/packages/app/src/StatusCard.jsx"
+      ],
+      "quantity": 1,
+      "complexity": "moderate",
+      "hours": {
+        "low": 0.75,
+        "expected": 1.75,
+        "high": 3.50
+      },
+      "confidence": 0.54,
+      "reason": "Working behavior requires explicit manual validation, debugging, and hardening based on the observed runtime and external boundaries rather than a fixed percentage. Rule \u0027manual-validation\u0027 uses runnable-scopes=1, runtime-surfaces=1; complexity \u0027moderate\u0027 applies factor 1.",
+      "estimator": {
+        "id": "seed-rule:manual-validation",
+        "version": "0.3.0",
+        "kind": "rule"
+      },
+      "profiles": [
+        "implementation",
+        "recreation"
+      ],
+      "dependencyIds": [],
+      "correlationGroup": "scope:javascript:web/packages/app:validation",
+      "assumptions": [
+        "Automated-test authoring is valued separately."
+      ],
+      "exclusions": [],
+      "uncertaintyReasons": [
+        "Some supporting evidence is inferred rather than directly observed.",
+        "The target checkout was not executed on the default static path."
+      ]
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "id": "work:manual-validation:a3936568ae4ac058ee0b:part-0001",
+      "category": "manual-validation-debugging-and-hardening",
+      "title": "Manually validate, debug, and harden \u0027web/packages/shared\u0027 (package)",
+      "scope": "web/packages/shared",
+      "evidenceIds": [
+        "javascript:package:web/packages/shared/package.json"
+      ],
+      "quantity": 1,
+      "complexity": "moderate",
+      "hours": {
+        "low": 0.25,
+        "expected": 0.50,
+        "high": 1.00
+      },
+      "confidence": 0.54,
+      "reason": "Working behavior requires explicit manual validation, debugging, and hardening based on the observed runtime and external boundaries rather than a fixed percentage. Rule \u0027manual-validation\u0027 uses setup-only; complexity \u0027moderate\u0027 applies factor 1.",
+      "estimator": {
+        "id": "seed-rule:manual-validation",
+        "version": "0.3.0",
+        "kind": "rule"
+      },
+      "profiles": [
+        "implementation",
+        "recreation"
+      ],
+      "dependencyIds": [],
+      "correlationGroup": "scope:javascript:web/packages/shared:validation",
+      "assumptions": [
+        "Automated-test authoring is valued separately."
+      ],
+      "exclusions": [],
+      "uncertaintyReasons": [
+        "Some supporting evidence is inferred rather than directly observed.",
+        "The target checkout was not executed on the default static path."
+      ]
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "id": "work:build-tooling:c2c91d07e063088d401a:part-0001",
+      "category": "build-configuration-and-developer-tooling",
+      "title": "Configure build behavior and developer tooling",
+      "scope": ".",
+      "evidenceIds": [
+        "javascript:package:web/package.json",
+        "javascript:package:web/packages/app/package.json",
+        "javascript:package:web/packages/shared/package.json",
+        "javascript:repository"
+      ],
+      "quantity": 1,
+      "complexity": "routine",
+      "hours": {
+        "low": 0.25,
+        "expected": 0.50,
+        "high": 0.75
+      },
+      "confidence": 0.70,
+      "reason": "Maintained build, compiler, dependency-lock, and script configuration represents setup, integration, and validation work beyond individual project manifests. Rule \u0027build-tooling\u0027 uses setup-only; complexity \u0027routine\u0027 applies factor 0.85.",
+      "estimator": {
+        "id": "seed-rule:build-tooling",
+        "version": "0.3.0",
+        "kind": "rule"
+      },
+      "profiles": [
+        "implementation",
+        "recreation"
+      ],
+      "dependencyIds": [],
+      "correlationGroup": "repository:setup",
+      "assumptions": [],
+      "exclusions": [],
+      "uncertaintyReasons": [
+        "Some supporting evidence is inferred rather than directly observed."
+      ]
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "id": "work:self-review:e943a6db2e8c464b145a:part-0001",
+      "category": "self-review-and-system-integration",
+      "title": "Self-review and integrate the completed system (part 1 of 2)",
+      "scope": ".",
+      "evidenceIds": [
+        "dotnet:api:src/Api/Program.cs",
+        "dotnet:project-reference:src/Api/Api.csproj:src/Domain/Domain.csproj",
+        "dotnet:project:src/Api/Api.csproj",
+        "dotnet:project:src/Domain/Domain.csproj",
+        "dotnet:repository",
+        "inventory:repository",
+        "javascript:package:web/package.json",
+        "javascript:package:web/packages/app/package.json",
+        "javascript:package:web/packages/shared/package.json",
+        "javascript:project-reference:web/packages/app/package.json:web/packages/shared/package.json:runtime",
+        "javascript:ui:web/packages/app/src/StatusCard.jsx",
+        "javascript:workspace:web/package.json"
+      ],
+      "quantity": 3.5,
+      "complexity": "moderate",
+      "hours": {
+        "low": 1.25,
+        "expected": 2.25,
+        "high": 4.00
+      },
+      "confidence": 0.66,
+      "reason": "A solo senior contractor must review cross-scope behavior and integrate the completed artifact as explicit work. Rule \u0027self-review\u0027 uses production-scopes=5, reference-edges=2, specialized-boundaries=2; complexity \u0027moderate\u0027 applies factor 1.",
+      "estimator": {
+        "id": "seed-rule:self-review",
+        "version": "0.3.0",
+        "kind": "rule"
+      },
+      "profiles": [
+        "implementation",
+        "recreation"
+      ],
+      "dependencyIds": [],
+      "correlationGroup": "repository:system-integration",
+      "assumptions": [],
+      "exclusions": [],
+      "uncertaintyReasons": [
+        "Some supporting evidence is inferred rather than directly observed."
+      ]
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "id": "work:self-review:e943a6db2e8c464b145a:part-0002",
+      "category": "self-review-and-system-integration",
+      "title": "Self-review and integrate the completed system (part 2 of 2)",
+      "scope": ".",
+      "evidenceIds": [
+        "dotnet:api:src/Api/Program.cs",
+        "dotnet:project-reference:src/Api/Api.csproj:src/Domain/Domain.csproj",
+        "dotnet:project:src/Api/Api.csproj",
+        "dotnet:project:src/Domain/Domain.csproj",
+        "dotnet:repository",
+        "inventory:repository",
+        "javascript:package:web/package.json",
+        "javascript:package:web/packages/app/package.json",
+        "javascript:package:web/packages/shared/package.json",
+        "javascript:project-reference:web/packages/app/package.json:web/packages/shared/package.json:runtime",
+        "javascript:ui:web/packages/app/src/StatusCard.jsx",
+        "javascript:workspace:web/package.json"
+      ],
+      "quantity": 3.5,
+      "complexity": "moderate",
+      "hours": {
+        "low": 1.25,
+        "expected": 2.25,
+        "high": 4.00
+      },
+      "confidence": 0.66,
+      "reason": "A solo senior contractor must review cross-scope behavior and integrate the completed artifact as explicit work. Rule \u0027self-review\u0027 uses production-scopes=5, reference-edges=2, specialized-boundaries=2; complexity \u0027moderate\u0027 applies factor 1.",
+      "estimator": {
+        "id": "seed-rule:self-review",
+        "version": "0.3.0",
+        "kind": "rule"
+      },
+      "profiles": [
+        "implementation",
+        "recreation"
+      ],
+      "dependencyIds": [],
+      "correlationGroup": "repository:system-integration",
+      "assumptions": [],
+      "exclusions": [],
+      "uncertaintyReasons": [
+        "Some supporting evidence is inferred rather than directly observed."
+      ]
+    }
+  ],
+  "professionalizationGap": [
+    {
+      "schemaVersion": "1.0.0",
+      "id": "work:gap-documentation:5d607e4bb449aa64a329:part-0001",
+      "category": "documentation",
+      "title": "Add basic repository onboarding documentation",
+      "scope": ".",
+      "evidenceIds": [
+        "dotnet:project:src/Api/Api.csproj",
+        "dotnet:project:src/Domain/Domain.csproj",
+        "dotnet:repository",
+        "inventory:repository",
+        "javascript:package:web/package.json",
+        "javascript:package:web/packages/app/package.json",
+        "javascript:package:web/packages/shared/package.json",
+        "javascript:workspace:web/package.json"
+      ],
+      "quantity": 1,
+      "complexity": "routine",
+      "hours": {
+        "low": 0.75,
+        "expected": 1.75,
+        "high": 3.25
+      },
+      "confidence": 0.55,
+      "reason": "No maintained documentation was detected; a conservative onboarding document is reported only as missing professionalization work. Rule \u0027gap-documentation\u0027 uses setup-only; complexity \u0027routine\u0027 applies factor 0.85.",
+      "estimator": {
+        "id": "seed-rule:gap-documentation",
+        "version": "0.3.0",
+        "kind": "rule"
+      },
+      "profiles": [
+        "implementation",
+        "recreation"
+      ],
+      "dependencyIds": [],
+      "correlationGroup": "gap:repository:documentation",
+      "assumptions": [],
+      "exclusions": [],
+      "uncertaintyReasons": [
+        "Some supporting evidence is inferred rather than directly observed.",
+        "The intended audience and required documentation depth are unknown."
+      ]
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "id": "work:gap-ci:15c5bc61d8acc4767929:part-0001",
+      "category": "ci-cd-and-infrastructure-as-code",
+      "title": "Add a basic continuous-integration workflow",
+      "scope": ".",
+      "evidenceIds": [
+        "dotnet:project:src/Api/Api.csproj",
+        "dotnet:project:src/Domain/Domain.csproj",
+        "dotnet:repository",
+        "inventory:repository",
+        "javascript:package:web/package.json",
+        "javascript:package:web/packages/app/package.json",
+        "javascript:package:web/packages/shared/package.json",
+        "javascript:workspace:web/package.json"
+      ],
+      "quantity": 1,
+      "complexity": "routine",
+      "hours": {
+        "low": 1.25,
+        "expected": 3.25,
+        "high": 7.00
+      },
+      "confidence": 0.50,
+      "reason": "A multi-scope or runnable repository has no detected CI configuration; a basic workflow is reported only as missing professionalization work. Rule \u0027gap-ci\u0027 uses production-scopes=5; complexity \u0027routine\u0027 applies factor 0.85.",
+      "estimator": {
+        "id": "seed-rule:gap-ci",
+        "version": "0.3.0",
+        "kind": "rule"
+      },
+      "profiles": [
+        "implementation",
+        "recreation"
+      ],
+      "dependencyIds": [],
+      "correlationGroup": "gap:repository:delivery",
+      "assumptions": [],
+      "exclusions": [],
+      "uncertaintyReasons": [
+        "Organizational delivery requirements are outside repository evidence.",
+        "Some supporting evidence is inferred rather than directly observed."
+      ]
+    }
+  ],
+  "diagnostics": [
+    {
+      "code": "FB1000",
+      "severity": "warning",
+      "message": "This estimate uses transparent but uncalibrated seed priors. It is experimental and requires review before consequential use.",
+      "evidenceIds": [],
+      "locations": []
+    },
+    {
+      "code": "FB1004",
+      "severity": "information",
+      "message": "2 conservative professionalization-gap item(s) are reported separately and excluded from represented EHE and replacement cost.",
+      "evidenceIds": [
+        "dotnet:project:src/Api/Api.csproj",
+        "dotnet:project:src/Domain/Domain.csproj",
+        "dotnet:repository",
+        "inventory:repository",
+        "javascript:package:web/package.json",
+        "javascript:package:web/packages/app/package.json",
+        "javascript:package:web/packages/shared/package.json",
+        "javascript:workspace:web/package.json"
+      ],
+      "locations": []
+    },
+    {
+      "code": "FB1005",
+      "severity": "information",
+      "message": "Seed model \u0027seed-rules/0.3.0\u0027 (experimental-uncalibrated, sha256:e8bce2f76c97564919ab6be41f1cfd6b222d531a4dbd08a8b22c7abe6b1eebdf) was loaded from the bundled offline artifact.",
+      "evidenceIds": [],
+      "locations": []
+    },
+    {
+      "code": "FB3000",
+      "severity": "information",
+      "message": "The .NET analyzer parsed project XML and source syntax statically; it did not evaluate MSBuild, restore packages, compile, or execute target code.",
+      "evidenceIds": [],
+      "locations": []
+    },
+    {
+      "code": "FB4000",
+      "severity": "information",
+      "message": "The JavaScript/TypeScript/frontend analyzer parsed manifests, JSONC configuration, JavaScript/JSX syntax, bounded TypeScript token streams, static Angular component metadata, and bounded HTML/CSS-family semantics; it did not render, compile frameworks or preprocessors, run package managers, load executable configuration, install dependencies, transpile, or execute target code.",
+      "evidenceIds": [],
+      "locations": []
+    }
+  ],
+  "assumptions": [
+    "The estimate values a clean, competent recreation of current functional and quality state, not historical labor or rework.",
+    "A clear specification exists at the level promised by the selected profile.",
+    "Discovered tests are assumed to pass on the default static path.",
+    "The described system is estimated as working even when the checkout was not executed.",
+    "Generated, vendored, minified, binary, copied, and duplicate bodies do not create hand-written implementation value.",
+    "Low and high values are preliminary planning bounds formed from item priors and evidence confidence; they are not calibrated probability intervals.",
+    "Professionalization-gap work is excluded from represented effort and replacement cost.",
+    "Seed productivity priors are experimental and uncalibrated."
+  ],
+  "verification": {
+    "mode": "static-assumed",
+    "workingState": "assumed-working",
+    "testsAssumedPassing": true,
+    "note": "The repository was not built or executed."
+  }
+}

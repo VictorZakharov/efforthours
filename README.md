@@ -18,7 +18,7 @@ It does **not** claim how long anyone actually worked. It is not a timesheet,
 productivity score, invoice, or reconstruction of repository history.
 
 > **Experimental public alpha:** the CLI and reporting pipeline work. The bundled
-> repository estimator is not independently calibrated. The Change estimator has
+> repository estimator is not numerically calibrated or admitted. The Change estimator has
 > passed its first model-authored logical gate for changes estimated at 4 to 32
 > hours on the previously admitted non-SQL families, but it is not empirically
 > production-validated and the newer SQL path is outside that gate. Review the
@@ -186,9 +186,11 @@ static literals and arrays, and never evaluates TypeScript or executable
 configuration; external assets must resolve to scanner-admitted files inside the
 repository.
 HTML and CSS-family analysis is tolerant and structural: it does not render a UI,
-compile a framework, run a preprocessor, prove runtime behavior, or perform an
-accessibility audit. Physical markup/style line count is retained as evidence but
-is not an EHE driver.
+compile a framework, run a preprocessor, or prove runtime behavior. Explicit static
+roles, labels, alternative text, live regions, and keyboard/focus signals in HTML
+and Angular templates contribute bounded accessibility evidence, clearly labeled
+as not proving conformance. This is not an accessibility audit. Physical
+markup/style line count is retained as evidence but is not an EHE driver.
 SQL analysis recognizes conservative PostgreSQL, SQL Server, MySQL/MariaDB, and
 SQLite syntax signals without choosing or connecting to a database. It does not
 compile SQL, prove name/type correctness, execute migrations, inspect query plans,

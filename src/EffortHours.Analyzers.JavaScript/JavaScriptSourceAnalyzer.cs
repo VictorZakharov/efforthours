@@ -203,8 +203,15 @@ internal sealed class JavaScriptSourceAnalyzer(RepositoryTextReader textReader)
                     JavaScriptEvidence.Measurement("test-suites", metrics.TestSuites, "suites"),
                     JavaScriptEvidence.Measurement("assertions", metrics.Assertions, "calls"),
                     JavaScriptEvidence.Measurement("mock-usages", metrics.MockUsages, "usages"),
+                    JavaScriptEvidence.Measurement("accessibility-checks", metrics.AccessibilityTestUsages, "checks"),
                 ],
-                [syntaxTag, $"test-type:{testType}", TestEstimatorTag(testType), .. TestTechnologyTags(metrics)]));
+                [
+                    syntaxTag,
+                    $"test-type:{testType}",
+                    TestEstimatorTag(testType),
+                    .. AccessibilityTestTags(metrics),
+                    .. TestTechnologyTags(metrics),
+                ]));
         }
 
         return facts;
@@ -215,6 +222,7 @@ internal sealed class JavaScriptSourceAnalyzer(RepositoryTextReader textReader)
         string lowerPath = path.ToLowerInvariant();
         if (metrics.EndToEndTestUsages > 0 ||
             metrics.ObservedTechnologyFamilies.Contains("test-e2e") ||
+            metrics.ObservedTechnologyFamilies.Contains("test-accessibility-e2e") ||
             lowerPath.Contains("/e2e/", StringComparison.Ordinal))
         {
             return "end-to-end";
@@ -228,7 +236,8 @@ internal sealed class JavaScriptSourceAnalyzer(RepositoryTextReader textReader)
         }
 
         if (metrics.ComponentTestUsages > 0 ||
-            metrics.ObservedTechnologyFamilies.Contains("test-component"))
+            metrics.ObservedTechnologyFamilies.Contains("test-component") ||
+            metrics.ObservedTechnologyFamilies.Contains("test-accessibility-component"))
         {
             return "component";
         }
@@ -253,8 +262,12 @@ internal sealed class JavaScriptSourceAnalyzer(RepositoryTextReader textReader)
         metrics.Technologies.Where(technology =>
             technology is "vitest" or "jest" or "mocha" or "jasmine" or "ava" or
                 "playwright" or "cypress" or "puppeteer" or "webdriverio" or
-                "supertest" or "testcontainers" or "pact" or "testing-library")
+                "supertest" or "testcontainers" or "pact" or "testing-library" or
+                "jest-axe" or "axe-playwright")
             .Select(technology => $"technology:{technology}");
+
+    private static IEnumerable<string> AccessibilityTestTags(JavaScriptSourceMetrics metrics) =>
+        metrics.AccessibilityTestUsages > 0 ? ["test-focus:accessibility"] : [];
 
     private static void AddPackageTechnologies(
         JavaScriptPackageModel? package,

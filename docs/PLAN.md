@@ -152,7 +152,7 @@ Status as of August 11, 2026:
   checks, explicit output paths, a provenance-checked three-repository public pilot,
   frozen repository partitions, and checked-in seed baseline reports are implemented.
   The pilot has one host-AI teacher and no independent correction, so corpus
-  expansion and independent review remain; no learned model has been admitted.
+  expansion remained at that checkpoint; no learned model has been admitted.
 - Milestone 7B2 is complete: exact-digest second-review packets and compilation,
   distinct reviewer-identity enforcement, mutation suite/report contracts, a
   regression exit code, and the first 8-case/14-assertion synthetic .NET guardrail
@@ -205,6 +205,19 @@ Status as of August 11, 2026:
   suite `0.6.0` has 67 cases and 247 passing relations, including 11 SQL states;
   all earlier reports remain frozen. SQL is not executed or connected to a server,
   and it remains experimental and uncalibrated.
+- Milestone 7B6 is complete: .NET analyzer `0.3.3` conservatively excludes only
+  explicit private methods with no bounded intra-file reference in non-partial,
+  unattributed types without a base list; JavaScript analyzer `0.5.1` records
+  explicit static HTML/Angular accessibility semantics and accessibility-focused
+  test provenance. Public suite
+  `0.7.0` has 77 cases and 309 passing relations, adding specified semantic-clone
+  bounds, reachable/unreachable/conditional behavior, accessibility depth, and
+  representative package/mixed dependency graphs while preserving all 67 prior
+  reports and 247 prior relations. `seed-rules/0.3.0` is unchanged and no numerical
+  prior was fitted. Decomposed host-AI teacher judgment is accepted for future
+  logical admission gates with honest `teacher-estimate` provenance; independent
+  replication is optional corroboration, and empirical production observations
+  remain separate.
 - The scanner performance-and-safety checkpoint is complete: fresh-process
   one-million-line .NET, JavaScript/TypeScript, and mixed scans now report sampled
   peak resident memory and cumulative allocation; explicit warm-cache runs are
@@ -254,8 +267,9 @@ Status as of August 11, 2026:
   labels rather than manufacturing positive effort. The 24-record preliminary
   teacher corpus has 121 targets and a blind exact-digest handoff; development and
   validation diagnostics are recorded while test comparison remains withheld.
-  No independent correction exists yet, so
-  that checkpoint left `change-seed/0.1.0` uncalibrated and unchanged.
+  Under the policy at that checkpoint, the absence of independent correction left
+  `change-seed/0.1.0` uncalibrated and unchanged; the later Stage A policy uses
+  decomposed host-AI logical admission instead.
 - The first real public Change follow-on is complete: one immutable MIT-licensed
   GuardClauses pull request exercises released alpha.2 and current
   `change-seed/0.2.0` through source reporting, exact-provenance compilation,
@@ -392,12 +406,14 @@ ASTs. It does not parse TypeScript grammar, so the initial TS/TSX path uses a
 bounded deterministic token analyzer and labels that provenance explicitly. No
 Node process, package manager, transpiler, target dependency, or executable config
 is loaded. A compiler-grade TypeScript adapter remains a future precision option
-if calibration shows the token evidence is insufficient. Analyzer `0.5.0` also
+if calibration shows the token evidence is insufficient. Analyzer `0.5.1` also
 uses tolerant bounded scanners for HTML/template and CSS-family semantics. Angular
 `@Component` metadata is admitted only from static literals and arrays, and
-relative external assets must resolve to scanner-admitted files. This does not
-render, compile a framework, execute a preprocessor, prove runtime behavior, or
-perform an accessibility audit.
+relative external assets must resolve to scanner-admitted files. Explicit static
+roles, labels, alternative text, live regions, and keyboard/focus signals are
+represented with a conformance-not-proven tag. This does not render, compile a
+framework, execute a preprocessor, prove runtime behavior, or perform an
+accessibility audit.
 
 ### Static SQL analyzer extension
 
@@ -471,20 +487,23 @@ Exit condition: the local model improves held-out agreement and calibration over
 the seed rules without making reports opaque.
 
 Implementation note: `MILESTONE_7.md` records the staged design. Milestones 7A,
-7B1 through 7B5, and the post-7B5 analyzer-precision checkpoint are implemented
+7B1 through 7B6, and the post-7B5 analyzer-precision checkpoint are implemented
 without an ML dependency: reviewed labels remain
 separate from canonical candidate estimates, every repository and its
 revisions/profiles stay in one partition, completed capability and subsequent
 review decisions compile back to full evidence lineage, and
 `calibration-metrics/1.0.0` reports deterministic low/expected/high error, bias,
 interval coverage, and work-item mapping coverage. Versioned mutation relations
-now guard invariance, bounded near-copy marginality, compiler-disabled code,
-directionality, range behavior, generated customization, data, security, declared
-coverage, delivery, workspace boundaries, and category isolation across the
-initial ecosystems. Six public repository families provide preliminary
+now guard invariance, bounded near-copy and specified equivalent-purpose
+marginality, compiler-disabled and bounded reachable/unreachable code,
+directionality, range behavior, generated customization, data, security,
+accessibility and test depth, declared coverage, delivery, representative
+dependency graphs, and category isolation across the initial ecosystems. Six
+public repository families provide preliminary
 teacher-estimate labels, including explicit reviewed false-positive exclusions;
-the seed model remains
-uncalibrated until the licensed corpus is diverse and independently reviewed.
+the seed model remains uncalibrated until Milestone 7C freezes and passes explicit
+logical admission gates on a sufficiently diverse licensed corpus. Independent
+replication is optional corroboration and does not alter label maturity.
 
 ### Milestone 8: Host AI integration and measurement
 
@@ -605,14 +624,13 @@ cross-platform measurements and a more representative benchmark corpus exist.
    provider tokens, wall-clock time, monetary cost, and complete paired-session
    context accounting before considering any automatic review budget.
 3. Add enough redistributable repository families to place multiple observations
-   in every ecosystem/partition cell. Keep repository-estimator admission under
-   its existing independent-review policy; Change uses its separately frozen
-   model-authored logical-admission boundary.
-4. Expand analyzer precision and mutation guardrails beyond the corrected
-   process-stream, framework-neutral-state, benchmark-entry-point, and first
-   measured-coverage boundaries to semantic clone detection, general reachability,
-   accessibility, additional coverage formats, and realistic multi-package
-   boundaries.
+   in every ecosystem/partition cell. Freeze repository-estimator logical admission
+   around exact evidence-backed small-task decomposition and honest host-AI teacher
+   provenance; keep optional independent replication and later empirical production
+   observations as separate evidence tracks.
+4. Expand beyond the bounded 7B6 shapes to general semantic-clone and liveness/
+   reflection analysis, broader JSX accessibility semantics, additional coverage
+   formats, richer infrastructure, and larger real monorepository boundaries.
 5. Repeat the new peak-memory and read-only benchmark protocol across constrained
    Windows/Linux/macOS hosts and larger redistributable monorepos before freezing
    regression thresholds.

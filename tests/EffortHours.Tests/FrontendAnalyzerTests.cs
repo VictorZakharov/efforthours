@@ -16,7 +16,7 @@ public sealed class FrontendAnalyzerTests
         string json = ContractJson.Serialize(evidence);
 
         EvidenceFact component = SingleFact(evidence, "javascript:angular-component:");
-        Assert.Equal("0.5.0", component.Provenance.AnalyzerVersion);
+        Assert.Equal("0.5.1", component.Provenance.AnalyzerVersion);
         Assert.Equal(1m, Measurement(component, "components"));
         Assert.True(Measurement(component, "template-structure-units") > 0m);
         Assert.True(Measurement(component, "template-binding-units") > 0m);
@@ -182,6 +182,66 @@ public sealed class FrontendAnalyzerTests
         Assert.DoesNotContain(asset.Tags, tag => tag.StartsWith("component-owner:", StringComparison.Ordinal));
         Assert.Equal("src/shared.css", asset.Locations[0].Path);
         Assert.Equal(3, asset.Locations.Count);
+    }
+
+    [Fact]
+    public async Task ExplicitAccessibilityMarkupProducesBoundedEvidenceAndRepresentedEffort()
+    {
+        InMemoryRepository repository = new();
+        repository.WriteText(
+            "index.html",
+            "<main role='main'><label for='name'>Name</label><input id='name' aria-describedby='help'><img alt='Account'><button tabindex='0' (keydown.enter)='save()'>Save</button><output aria-live='polite'>private-a11y-marker</output></main>");
+
+        RepositoryEvidence evidence = await ScanAsync(repository);
+        EvidenceFact accessibility = Fact(evidence, "javascript:accessibility:index.html");
+        string json = ContractJson.Serialize(evidence);
+
+        Assert.Equal("0.5.1", accessibility.Provenance.AnalyzerVersion);
+        Assert.True(Measurement(accessibility, "accessibility-attributes") >= 3m);
+        Assert.True(Measurement(accessibility, "labels") >= 2m);
+        Assert.Equal(1m, Measurement(accessibility, "alternative-texts"));
+        Assert.Equal(1m, Measurement(accessibility, "keyboard-interactions"));
+        Assert.Equal(1m, Measurement(accessibility, "live-regions"));
+        Assert.Equal(1m, Measurement(accessibility, "focus-controls"));
+        Assert.Contains("accessibility-conformance:not-proven", accessibility.Tags);
+        Assert.DoesNotContain("private-a11y-marker", json, StringComparison.Ordinal);
+
+        EstimateReport report = new SeedEstimator().Estimate(
+            evidence,
+            EstimationProfile.Implementation);
+        Assert.True(Category(report, EffortCategory.SecurityAndAccessibility).Expected > 0m);
+        Assert.DoesNotContain(report.Diagnostics, diagnostic => diagnostic.Code == "FB1001");
+    }
+
+    [Fact]
+    public async Task StructuralMarkupAloneDoesNotInventAccessibilityEvidence()
+    {
+        InMemoryRepository repository = new();
+        repository.WriteText("index.html", "<main><section>Summary</section></main>");
+
+        RepositoryEvidence evidence = await ScanAsync(repository);
+
+        Assert.DoesNotContain(evidence.Facts, fact => fact.Kind == EvidenceKinds.Accessibility);
+    }
+
+    [Fact]
+    public async Task AccessibilityFocusedComponentTestsRetainDepthAndProvenance()
+    {
+        InMemoryRepository repository = new();
+        repository.WriteText(
+            "package.json",
+            "{ \"devDependencies\": { \"vitest\": \"4.0.0\", \"@testing-library/react\": \"16.0.0\", \"jest-axe\": \"10.0.0\" } }");
+        repository.WriteText(
+            "tests/card.test.jsx",
+            "import { render, screen } from '@testing-library/react'; import { axe } from 'jest-axe'; test('accessible card', async () => { render(Card()); screen.getByRole('article'); expect(await axe(document.body)).toHaveNoViolations(); });");
+
+        RepositoryEvidence evidence = await ScanAsync(repository);
+        EvidenceFact test = Fact(evidence, "javascript:test:tests/card.test.jsx");
+
+        Assert.Contains("test-type:component", test.Tags);
+        Assert.Contains("test-focus:accessibility", test.Tags);
+        Assert.Contains("technology:jest-axe", test.Tags);
+        Assert.True(Measurement(test, "accessibility-checks") >= 2m);
     }
 
     [Fact]

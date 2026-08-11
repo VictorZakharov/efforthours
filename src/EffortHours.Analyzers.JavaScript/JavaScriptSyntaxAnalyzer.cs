@@ -164,47 +164,7 @@ internal static class JavaScriptSyntaxAnalyzer
             AddRequiredTechnology(tokenization, nameIndex + 2, metrics);
         }
 
-        if (IsAny(tokenization, nameIndex, "test", "it"))
-        {
-            metrics.TestCases++;
-            metrics.TestLine ??= line;
-        }
-        else if (IsAny(tokenization, nameIndex, "describe", "suite"))
-        {
-            metrics.TestSuites++;
-            metrics.TestLine ??= line;
-        }
-        else if (IsAny(tokenization, nameIndex, "expect", "assert", "assertThat"))
-        {
-            metrics.Assertions++;
-            metrics.TestLine ??= line;
-        }
-        else if (IsAny(tokenization, nameIndex, "mock", "spyOn", "stub", "vi", "jest"))
-        {
-            metrics.MockUsages++;
-            metrics.TestLine ??= line;
-        }
-
-        if (IsAny(tokenization, nameIndex, "render", "renderHook", "mount", "shallow") &&
-            metrics.TechnologyFamilies.Contains("test-component"))
-        {
-            metrics.ComponentTestUsages++;
-            metrics.TestLine ??= line;
-        }
-
-        if (IsAny(tokenization, nameIndex, "request") &&
-            metrics.Technologies.Contains("supertest"))
-        {
-            metrics.IntegrationTestUsages++;
-            metrics.TestLine ??= line;
-        }
-
-        if (IsAny(tokenization, nameIndex, "goto", "visit", "locator") &&
-            metrics.TechnologyFamilies.Contains("test-e2e"))
-        {
-            metrics.EndToEndTestUsages++;
-            metrics.TestLine ??= line;
-        }
+        JavaScriptTestCallAnalyzer.Analyze(tokenization, nameIndex, line, metrics);
 
         if (IsHttpMethod(tokenization, nameIndex) && HasRouteReceiver(tokenization, nameIndex))
         {

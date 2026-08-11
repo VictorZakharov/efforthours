@@ -83,6 +83,7 @@ public static class SchemaIds
 
 public static class EvidenceKinds
 {
+    public const string Accessibility = "accessibility";
     public const string ApiSurface = "api-surface";
     public const string BackgroundWork = "background-work";
     public const string BuildConfiguration = "build-configuration";

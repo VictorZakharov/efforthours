@@ -1,0 +1,9 @@
+{
+  "name": "@efforthours-mutation/web",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@efforthours-mutation/domain": "workspace:*",
+    "react": "19.0.0"
+  }
+}

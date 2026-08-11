@@ -73,6 +73,7 @@ internal static class FrontendMarkupAnalyzer
                 metrics.FormControls = Cap(metrics.FormControls + 1);
             }
 
+            FrontendAccessibilityAnalyzer.AnalyzeElement(tagName, body[nameLength..], metrics);
             AnalyzeAttributes(body[nameLength..], metrics);
             index = tagEnd + 1;
             if (tagName is "script" or "style" && !body.EndsWith("/", StringComparison.Ordinal))
@@ -93,6 +94,7 @@ internal static class FrontendMarkupAnalyzer
         metrics.TemplateBindingUnits = Units(
             metrics.Bindings + metrics.Directives + metrics.FormControls,
             4);
+        FrontendAccessibilityAnalyzer.Complete(metrics);
         return metrics;
     }
 
@@ -277,6 +279,20 @@ internal sealed class FrontendMarkupMetrics
 
     public int TemplateBindingUnits { get; set; }
 
+    public int AccessibilityAttributes { get; set; }
+
+    public int AccessibilityLabels { get; set; }
+
+    public int AccessibilityAlternativeTexts { get; set; }
+
+    public int AccessibilityKeyboardInteractions { get; set; }
+
+    public int AccessibilityLiveRegions { get; set; }
+
+    public int AccessibilityFocusControls { get; set; }
+
+    public int AccessibilityUnits { get; set; }
+
     public void Merge(FrontendMarkupMetrics other)
     {
         Elements += other.Elements;
@@ -288,5 +304,12 @@ internal sealed class FrontendMarkupMetrics
         CustomElements += other.CustomElements;
         TemplateStructureUnits += other.TemplateStructureUnits;
         TemplateBindingUnits += other.TemplateBindingUnits;
+        AccessibilityAttributes += other.AccessibilityAttributes;
+        AccessibilityLabels += other.AccessibilityLabels;
+        AccessibilityAlternativeTexts += other.AccessibilityAlternativeTexts;
+        AccessibilityKeyboardInteractions += other.AccessibilityKeyboardInteractions;
+        AccessibilityLiveRegions += other.AccessibilityLiveRegions;
+        AccessibilityFocusControls += other.AccessibilityFocusControls;
+        AccessibilityUnits += other.AccessibilityUnits;
     }
 }

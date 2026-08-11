@@ -1,0 +1,13 @@
+{
+  "name": "@efforthours-mutation/app",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@efforthours-mutation/shared": "workspace:*",
+    "react": "19.0.0"
+  },
+  "devDependencies": {
+    "@testing-library/react": "16.0.0",
+    "vitest": "4.0.0"
+  }
+}

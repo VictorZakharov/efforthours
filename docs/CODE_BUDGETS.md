@@ -69,6 +69,13 @@ semantic analyzer was split before the 80% threshold, and SQL Change formatting
 normalization remains a separate component. No ratchet override was added or
 increased.
 
+The August 11, 2026 Milestone 7B6 checkpoint keeps bounded .NET reachability,
+frontend accessibility scanning, accessibility capability construction, and
+JavaScript test-call classification in focused files. Moving all test-call
+classification out of `JavaScriptSyntaxAnalyzer.cs` reduces that legacy file from
+800 to 760 lines and lowers its ratchet from 850 to 800. All new files use the
+ordinary 500-line ceiling; no override was added or increased.
+
 Line count is deliberately simple, deterministic, cross-platform, and difficult
 to game accidentally. The useful outcome is earlier decomposition into cohesive
 contracts, commands, analyzers, and renderers—not compressed formatting.

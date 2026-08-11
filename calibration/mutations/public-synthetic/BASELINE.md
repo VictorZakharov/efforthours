@@ -17,6 +17,8 @@ effort-label corpora, accuracy claims, or model-training data.
   192 assertions evaluated with `seed-rules/0.3.0`.
 - Suite `0.6.0` records the static SQL checkpoint: 67 cases and 247 assertions
   evaluated with the unchanged `seed-rules/0.3.0` model.
+- Suite `0.7.0` records the Milestone 7B6 precision checkpoint: 77 cases and 309
+  assertions evaluated with the unchanged `seed-rules/0.3.0` model.
 
 The August 8, 2026 analyzer-precision reevaluation with `.NET` analyzer `0.3.2`
 and JavaScript analyzer `0.4.1` reproduced identical low, expected, and high
@@ -59,6 +61,14 @@ Suite 0.6.0 adds 11 SQL states and 55 relations specified around formatting,
 exact-copy, dump, unknown-syntax, seed-volume, semantic directionality, and role/
 category isolation. It reuses existing data, integration, testing, and packaging
 priors; passing does not calibrate SQL or add a reviewed label.
+
+Suite 0.7.0 adds 10 states and 62 relations for bounded intra-file .NET
+reachability, explicitly included conditional code, two specified non-exact
+equivalent-purpose shapes, explicit static accessibility semantics,
+accessibility-focused component-test depth, and representative JavaScript and
+mixed dependency graphs. It reuses the existing source, UI, test, and combined
+security/accessibility priors without fitting a rate. All 67 prior candidate
+reports and all 247 prior assertions remain frozen and structurally unchanged.
 
 ## What suite 0.4.0 measures
 
@@ -117,6 +127,21 @@ their production-category invariants are not artifacts of aggregate rounding.
 | SQL delivery script | 11.00 h | +1.25 h packaging/deployment; data unchanged |
 | SQL cross-database query | 14.25 h | +3.25 h external integration |
 | SQL seed, one vs twenty rows | 9.75 h | Total and data unchanged between row counts |
+
+### Milestone 7B6 precision additions
+
+| Variant | Expected total | Intended category result |
+| --- | ---: | --- |
+| Reachable .NET helper chain | 8.00 h | +0.75 h production over .NET base |
+| Unreferenced private .NET integration | 7.25 h | Total, production, and integration remain at base |
+| Explicitly included conditional .NET behavior | 7.75 h | +0.50 h production |
+| Specified .NET equivalent-purpose shape | 8.25 h | +1.00 h bounded production marginality |
+| Specified JavaScript equivalent-purpose shape | 7.00 h | +0.50 h bounded production marginality |
+| Explicit frontend accessibility semantics | 14.50 h | 3.75 h security/accessibility; UI unchanged |
+| Shallow component tests | 16.50 h | 2.50 h integration/component testing |
+| Accessibility-focused component tests | 17.50 h | +1.00 h integration/component testing; UI/accessibility implementation unchanged |
+| Representative four-package workspace | 38.75 h | Setup, architecture, production, UI, and unit tests increase |
+| Representative mixed dependency graph | 40.75 h | Setup, architecture, production, UI, and component tests increase |
 
 ### JavaScript
 
@@ -192,7 +217,7 @@ LCOV and Cobertura inputs are bounded, parsed without execution, and checked aga
 their common-inventory SHA-256 before measurements are admitted.
 
 The original .NET-only 0.1.0 table and its exact results remain represented by its
-frozen suite, canonical estimates, and baseline report. Suites 0.2.0 through 0.5.0
+frozen suite, canonical estimates, and baseline report. Suites 0.2.0 through 0.7.0
 retain all earlier assertions unchanged.
 
 ## Artifacts
@@ -212,7 +237,9 @@ retain all earlier assertions unchanged.
 - `baseline-seed-rules-0.3.0-suite-0.5.0.json` is its deterministic report.
 - `0.6.0.suite.json` defines the 67-case static SQL aggregate suite.
 - `baseline-seed-rules-0.3.0-suite-0.6.0.json` is its deterministic report.
-- `estimates/seed-rules-0.3.0/` contains all 67 current aggregate candidates.
+- `0.7.0.suite.json` defines the 77-case Milestone 7B6 aggregate suite.
+- `baseline-seed-rules-0.3.0-suite-0.7.0.json` is its deterministic report.
+- `estimates/seed-rules-0.3.0/` contains all 77 current aggregate candidates.
 - `fixtures/` contains every complete synthetic source state.
 
 Every case has a distinct repository source digest. Assertions select canonical
@@ -269,24 +296,38 @@ all 67 explicitly listed candidate paths against `0.6.0.suite.json`, writing
 `baseline-seed-rules-0.3.0-suite-0.6.0.json`. Shells that expand wildcards may use
 the same command shape shown for suite 0.5.0.
 
+## Reproduce suite 0.7.0
+
+Retain all 67 frozen suite-0.6.0 candidates and generate only the 10 new fixture
+IDs listed in the Milestone 7B6 table with the same estimate command into
+`estimates/seed-rules-0.3.0`. Then evaluate all 77 explicitly listed candidate
+paths against `0.7.0.suite.json`, writing
+`baseline-seed-rules-0.3.0-suite-0.7.0.json`.
+
 ## Limitations and next expansion
 
-The suite uses deliberately small archetypes. Near-copy assertions bound the
-current marginal result; EffortHours does not yet perform semantic clone detection.
-The dead-code case covers only C# syntax excluded by the compiler preprocessor, not
-arbitrary unreachable or unreferenced behavior. Measured coverage supports LCOV
-and Cobertura only, and a digest-verified checked-in report can still be stale or
-belong to a different source snapshot. Security cases do not replace a security
-audit, and accessibility-specific evidence remains thin. The workspace case is
-intentionally small and does not represent a realistic large dependency graph.
-Large work-item partitioning, additional coverage formats, richer infrastructure,
-in-body generated customization, general reachability, semantic clones, realistic
-multi-package shapes, and change-estimation semantics remain future guardrails.
-The TypeScript path remains token-backed.
+The suite uses deliberately small archetypes. Near-copy and the two new
+equivalent-purpose assertions bound only their specified shapes; EffortHours does
+not perform general semantic-clone detection. .NET reachability excludes only
+explicit private methods with no bounded intra-file reference in a non-partial,
+unattributed type without a base list; attributed, partial, and external methods
+are retained, as are conservative string-name matches. It is not a
+general liveness, reflection, dynamic-dispatch, or cross-file analysis. Measured
+coverage supports LCOV and Cobertura only, and a digest-verified checked-in report
+can still be stale or belong to a different source snapshot. Security and explicit
+static accessibility evidence do not replace audits or prove runtime conformance.
+The new dependency graphs are representative small synthetic boundaries, not
+large-repository benchmarks. Additional coverage formats, richer infrastructure,
+general reachability/clones, broader JSX accessibility semantics, and multiple
+observations per ecosystem/partition cell remain future guardrails. The TypeScript
+path remains token-backed.
 
 Frontend scanners are tolerant and bounded. They do not render, execute
 TypeScript/configuration, compile Angular or another framework, run CSS
 preprocessors, establish runtime reachability, or perform accessibility auditing.
+Explicit roles, labels, alternative text, live regions, and keyboard/focus signals
+are represented only as static implementation evidence and carry an explicit
+`accessibility-conformance:not-proven` tag.
 
 The SQL scanner is also tolerant and bounded. It does not connect to a database,
 execute or validate SQL, bind object names/types, calculate query plans, prove

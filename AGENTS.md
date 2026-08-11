@@ -171,7 +171,7 @@ semantics.
 
 ## Current project stage
 
-Milestones 1 through 6, Milestone 7A, the Milestone 7B1 through 7B5 checkpoints,
+Milestones 1 through 6, Milestone 7A, the Milestone 7B1 through 7B6 checkpoints,
 the post-7B5 analyzer-precision checkpoint, and the scanner performance-and-safety
 checkpoint are complete. The repository has a
 working common scanner, static .NET
@@ -233,10 +233,19 @@ scanner `0.2.2` and SQL analyzer `0.1.0` for bounded schema, migration,
 stored-program, query, test, delivery, and cross-database evidence with explicit
 parser/dialect confidence and no database execution. Existing `seed-rules/0.3.0`
 priors are reused; public suite `0.6.0` has 67 cases and 247 passing relations,
-including 11 SQL states, while prior reports remain frozen. General semantic-clone
-and reachability analysis, accessibility-specific depth, realistic multi-package
-boundaries, multiple observations per ecosystem/partition cell, and actual
-independent review are next; local ML has not been selected or added.
+including 11 SQL states, while prior reports remain frozen. Milestone 7B6 advances
+.NET analyzer to `0.3.3` with conservative exclusion of explicit private methods
+that have no bounded intra-file reference and JavaScript analyzer to `0.5.1` with
+explicit static HTML/Angular accessibility evidence plus accessibility-test
+provenance. Public suite `0.7.0` has 77 cases and 309 passing relations covering
+bounded reachability, specified semantic-clone marginality, accessibility depth,
+and representative package/mixed graphs; all 67 earlier reports and 247 relations
+remain frozen. General semantic-clone/liveness analysis, broader JSX accessibility,
+larger real monorepository boundaries, and multiple observations per ecosystem/
+partition cell are next. Decomposed host-AI teacher judgment is accepted as
+logical weak supervision with `teacher-estimate` provenance; independent
+replication is optional corroboration, and empirical production observations
+remain separate. Local ML has not been selected or added.
 
 The scanner benchmark now measures fresh-process .NET, JavaScript/TypeScript, and
 mixed million-line shapes, samples peak resident memory, labels explicit external

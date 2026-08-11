@@ -1,0 +1,6 @@
+{
+  "name": "efforthours-mutation-workspace-graph",
+  "private": true,
+  "type": "module",
+  "workspaces": ["packages/*"]
+}
