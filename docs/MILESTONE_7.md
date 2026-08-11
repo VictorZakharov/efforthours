@@ -336,12 +336,15 @@ targets into 45 rubric-1.1.0 tasks without rewriting a label or uncertainty rang
 Candidate values were visible during decomposition, so the artifact proves logical
 granularity rather than creating a new blind estimate.
 
-The current `change-seed/0.6.0+seed-rules/0.3.0` baseline passes the frozen first
+The admitted `change-seed/0.6.0+seed-rules/0.3.0` baseline passes the frozen first
 band for five public 4-to-32-hour changes across .NET, JavaScript, and TypeScript.
 Reviewed and candidate expected totals are 38.00 and 38.50 hours, expected WAPE is
 0.0526, and aggregate bias is +0.0132. The category, decomposition, interval,
 performance, and qualitative gates are recorded in `CHANGE_MODEL_ADMISSION.md`.
 The held-out expansion test comparison was not used.
+
+The current 0.7.0 source revision preserves those non-SQL rules but adds SQL
+support that was absent from every Stage A record; it is not separately admitted.
 
 This Change-specific decision does not alter the repository-estimator admission
 policy elsewhere in this milestone. It admits only an experimental logical
@@ -767,3 +770,27 @@ meaningful template/style semantics and static Angular component ownership raise
 UI EHE. Re-evaluating the prior 51 states produces identical numeric ranges, so
 the earlier 0.1.0 through 0.4.0 reports remain frozen. This checkpoint changes no
 reviewed label, partition, review maturity, threshold, or ML admission decision.
+
+## Static SQL evidence completion
+
+The August 11, 2026 checkpoint advances common scanner `0.2.1` to `0.2.2` and adds
+SQL analyzer `0.1.0`. The analyzer performs bounded, digest-verified token and
+statement analysis over `.sql` files and emits separate parser confidence, dialect
+confidence, artifact role, and supported semantic evidence. PostgreSQL, SQL Server,
+MySQL/MariaDB, and SQLite signals are conservative and never select or connect to
+a database.
+
+Recognized SQL semantics reuse existing `seed-rules/0.3.0` data, integration,
+testing, and packaging drivers. No model artifact, numerical prior, reviewed label,
+partition, or review maturity changes. Exact copies, formatting, dumps, repeated
+seed rows, and unknown syntax do not inflate low, expected, or high EHE. SQL Change
+support advances the source identity to
+`change-seed/0.7.0+seed-rules/0.3.0`; the earlier 0.6.0 Stage A records contain no
+SQL and do not admit this path.
+
+Public suite `0.6.0` adds 11 SQL states and 55 relations to the unchanged 56 prior
+states. All 247 relations pass across 67 cases. The added relations cover SQL
+formatting and exact-copy invariance, dump and unknown-syntax exclusion, semantic
+data directionality, test/delivery/integration category routing, seed-volume
+bounds, and category isolation at all range points. They are qualitative
+guardrails, not reviewed numeric labels or calibration evidence.

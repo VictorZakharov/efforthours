@@ -91,6 +91,7 @@ internal static class ChangePathClassifier
         }
 
         if (HasTag(tags, "classification:generated") ||
+            HasTag(tags, "classification:sql-dump") ||
             IsGenerated(path) ||
             (previousPath is not null && IsGenerated(previousPath)))
         {

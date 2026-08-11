@@ -2,7 +2,7 @@
 
 This directory holds policy and redistributable teacher labels for EffortHours's
 experimental Change estimators. The current source baseline is
-`change-seed/0.6.0`; the frozen synthetic corpus retains its original
+`change-seed/0.7.0`; the frozen synthetic corpus retains its original
 `change-seed/0.1.0` source-report provenance, the real pilot/expansion retain their
 released `change-seed/0.2.0` reports, and the released-alpha.3 diagnostic exercises
 `change-seed/0.3.0` directly. Change labels use the same corpus, optional
@@ -47,7 +47,7 @@ interval, overstates self-review, and attaches the represented test path to the
 production capability instead of emitting a separate unit-testing target. This is
 one non-independent diagnostic; it changes no rule, prior, threshold, or maturity.
 
-Current `change-seed/0.6.0+seed-rules/0.3.0` keeps the visible 0.3.0 repository
+Admitted `change-seed/0.6.0+seed-rules/0.3.0` keeps the visible 0.3.0 repository
 totals while splitting mixed maintained-file roles into disjoint categories and
 decomposing larger candidate items into named roughly-one-hour phases. The
 [`stage-a-logical-review`](stage-a-logical-review/README.md) audit preserves the
@@ -57,6 +57,11 @@ Stage A total, per-case, native-category, decomposition, interval, and safety ga
 recorded in `docs/CHANGE_MODEL_ADMISSION.md`. The expansion test comparison remains
 withheld. This admits experimental small-change logical use, not a general accuracy
 rate or production readiness.
+
+Current source `change-seed/0.7.0+seed-rules/0.3.0` adds static SQL formatting and
+role routing without changing those non-SQL rules. No checked-in Change corpus or
+Stage A task contains SQL, so version 0.7.0 is not separately admitted and no SQL
+accuracy claim follows.
 
 ## Workflow
 

@@ -245,7 +245,10 @@ internal sealed class SeedWorkItemFactory(SeedRuleModel model)
         if (capability.Evidence.Any(fact => fact.Tags.Any(tag => tag is
             "syntax:token-backed" or "syntax:token-fallback")))
         {
-            yield return "Some TypeScript or fallback structure is token-backed rather than parser-backed.";
+            yield return capability.Evidence.Any(fact => fact.Tags.Any(tag =>
+                tag.StartsWith("sql-role:", StringComparison.Ordinal)))
+                ? "Some SQL structure is token-backed rather than grammar-parser-backed."
+                : "Some TypeScript or fallback structure is token-backed rather than parser-backed.";
         }
 
         if (capability.Evidence.Any(fact => fact.Tags.Contains(

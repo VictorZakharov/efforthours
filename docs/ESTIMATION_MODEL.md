@@ -257,6 +257,15 @@ HTML/template and CSS-family scanners count bounded structural constructs rather
 than raw text volume. They do not render, compile frameworks, execute
 preprocessors, establish runtime reachability, or perform an accessibility audit.
 
+SQL analyzer `0.1.0` uses a bounded token/statement stream rather than raw lines or
+row volume. Recognized schema, migration, stored-program, query, seed, test,
+delivery, and cross-database facts map to the unchanged `seed-rules/0.3.0` data,
+testing, packaging, and integration drivers. Exact bodies are valued once; dumps
+and conventional generated snapshots are excluded; seed rows collapse to bounded
+intent. Parser confidence and dialect confidence are explicit uncertainty inputs,
+not proof of validity for a selected database. No SQL-specific numerical prior was
+fit, and the SQL path remains uncalibrated. `SQL_ANALYSIS.md` defines limitations.
+
 The seed model combines a lower-rate general implementation backbone with explicit
 specialized work for API, UI, data, integration, security, validation, background,
 test, documentation, delivery, manual-validation, and review boundaries. Marginal
@@ -373,14 +382,17 @@ subject and reference canonical estimate at one repository/category low, expecte
 or high point and asserts inclusive bounds on `subject - reference`. These
 relations test invariance, directionality, bounded marginality, and category
 isolation. They are not effort labels and cannot be used as numerical training
-targets. The public 0.5.0 suite covers 56 small .NET, parser-backed JavaScript,
-token-backed TypeScript, standalone frontend, Angular, and mixed-repository source
-states with 192 passing relations. It includes all three range points, exact duplication, conventional
+targets. The public 0.6.0 suite covers 67 small .NET, parser-backed JavaScript,
+token-backed TypeScript, token-backed SQL, standalone frontend, Angular, and
+mixed-repository source states with 247 passing relations. It includes all three
+range points, exact duplication, conventional
 generated output, separately maintained generated customization, bounded renamed
 near-copies, compiler-disabled C# syntax, API/UI/data/security behavior, tests,
 declared-and-assumed and measured coverage levels, measured-over-declared
 precedence, documentation, integrations, workspace boundaries, frontend
-formatting/duplication/semantic behavior, CI, containers, and category isolation.
+formatting/duplication/semantic behavior, SQL formatting/dumps/unknown syntax/
+semantic directionality/roles/seed-volume bounds, CI, containers, and category
+isolation.
 It does not yet provide semantic clone detection, general
 dead-code reachability, accessibility-specific depth, or realistic large
 multi-package boundaries; those remain required before learned-model admission.
@@ -411,7 +423,7 @@ rubric-1.0.0 labels are not rewritten; the separate Stage A logical audit maps a
 eligible parent targets into rubric-1.1.0 tasks while preserving their exact
 expected totals and uncertainty provenance.
 
-The current `change-seed/0.6.0` rules retain the 0.3.0 correction that keeps
+The current `change-seed/0.7.0` rules retain the 0.3.0 correction that keeps
 repository seed capabilities as context for a final delta but does not infer a
 capability modification from path overlap alone. Existing capabilities require
 changed normalized non-file evidence;
@@ -424,6 +436,13 @@ Unmapped modified artifacts use the same bounded category-and-status units,
 followed by one change-level comprehension, manual-validation, and self-review
 item. This remains an experimental transparent correctness revision, not
 calibrated-model admission.
+
+Version 0.7.0 adds SQL-aware formatting normalization and carries scanner-derived
+SQL role tags into Change path evidence. Meaningful schema/query deltas map to
+data, test fixtures to integration/component testing, deployment scripts to
+packaging, and explicit cross-database syntax to integrations. It adds no fitted
+prior and preserves every non-SQL rule. The prior 0.6.0 Stage A admission did not
+contain SQL records and therefore does not admit the SQL extension.
 
 Version 0.4.0 also distinguishes only exact, balanced, EffortHours-specific
 `<custom-code>` regions inside otherwise generated files; it does not infer other
@@ -452,11 +471,12 @@ allocation keeps every component nonnegative while reconciling to the normalized
 total.
 
 The current composite source identity is
-`change-seed/0.6.0+seed-rules/0.3.0`; every frozen Change report retains its
-original identity and numbers. `change-model-admission/0.2.0` admits this baseline
-only for experimental 4-to-32-hour Stage A changes after model-authored logical
-agreement and performance gates. Larger size bands and empirical production
-accuracy remain separate future decisions.
+`change-seed/0.7.0+seed-rules/0.3.0`; every frozen Change report retains its
+original identity and numbers. `change-model-admission/0.2.0` admitted version
+0.6.0 only for experimental 4-to-32-hour Stage A changes after model-authored
+logical agreement and performance gates. Version 0.7.0 preserves those non-SQL
+rules but is not separately admitted, and SQL has no reviewed Change labels.
+Larger size bands and empirical production accuracy remain separate decisions.
 
 ## 11. Uncertainty
 

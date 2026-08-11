@@ -14,6 +14,8 @@ internal sealed class SeedEvidenceIndex
         EvidenceKinds.Integration,
         EvidenceKinds.JavaScriptTest,
         EvidenceKinds.SecurityConfiguration,
+        EvidenceKinds.SqlDelivery,
+        EvidenceKinds.SqlTest,
         EvidenceKinds.UserInterface,
         EvidenceKinds.Validation,
     ];
@@ -226,6 +228,17 @@ internal sealed class SeedEvidenceIndex
                 "javascript",
                 TagValue(fact, "package-role:") ?? "web-ui",
                 "."));
+        }
+
+        foreach (EvidenceFact fact in Facts.Where(fact =>
+            fact.Kind == EvidenceKinds.SqlRepository &&
+            fact.Tags.Contains("scope:standalone", StringComparer.Ordinal)))
+        {
+            scopes.Add(CreateScope(
+                fact,
+                "sql",
+                "data",
+                NormalizeDirectory(fact.Scope)));
         }
 
         foreach (EvidenceFact fact in Facts.Where(fact => fact.Kind == EvidenceKinds.SourceStructure))

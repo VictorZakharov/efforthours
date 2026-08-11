@@ -4,6 +4,7 @@
   <Project Path="src/EffortHours.Analysis/EffortHours.Analysis.csproj" />
   <Project Path="src/EffortHours.Analyzers.DotNet/EffortHours.Analyzers.DotNet.csproj" />
   <Project Path="src/EffortHours.Analyzers.JavaScript/EffortHours.Analyzers.JavaScript.csproj" />
+  <Project Path="src/EffortHours.Analyzers.Sql/EffortHours.Analyzers.Sql.csproj" />
   <Project Path="src/EffortHours.Cli/EffortHours.Cli.csproj" />
   <Project Path="src/EffortHours.Calibration/EffortHours.Calibration.csproj" />
   <Project Path="src/EffortHours.Change/EffortHours.Change.csproj" />

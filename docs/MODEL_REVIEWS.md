@@ -27,6 +27,34 @@ Because EffortHours's own anchor informed the seed-model and calibration design,
 a development diagnostic rather than an eligible held-out test record unless a
 future independent snapshot and review policy explicitly establishes otherwise.
 
+## 2026-08-11: static SQL evidence and Change normalization revision
+
+Status: **transparent experimental analyzer extension; not calibrated, admitted, or independently reviewed**
+
+Common scanner `0.2.2` and SQL analyzer `0.1.0` add bounded static `.sql` evidence
+for schemas, migrations, constraints, indexes, stored programs, queries, test
+fixtures, deployment scripts, and explicit cross-database boundaries. Parser and
+dialect confidence remain distinct. Reads are scanner-admitted, digest checked,
+UTF-8/size/token bounded, link safe, offline, and non-executing; output includes no
+source excerpts. Unknown syntax remains visible without guessed units.
+
+Repository `seed-rules/0.3.0` is unchanged. Supported SQL roles reuse its existing
+data, integration, testing, and packaging priors, so this revision adds no fitted
+SQL rate or new model artifact. Exact duplicate bodies contribute semantic value
+once, dumps are excluded, and seed row volume is bounded to represented intent.
+
+Public mutation suite `0.6.0` has 67 source states and 247 passing relations. Its
+11 SQL additions test all three range points for formatting/copy/dump/unknown
+invariance, semantic directionality, role/category isolation, cross-database
+integration, and seed-volume bounds. The earlier 56 candidate reports remain
+frozen. The relations establish qualitative non-perverse movement only; they are
+not hour labels, independent review, held-out accuracy, or calibration.
+
+Change source identity advances to
+`change-seed/0.7.0+seed-rules/0.3.0` for SQL-aware formatting and category routing.
+Every non-SQL Change rule and frozen report remains unchanged. The admitted 0.6.0
+Stage A set contains no SQL records, so its gate cannot be generalized to SQL.
+
 ## 2026-08-10: `change-seed/0.6.0` Stage A logical admission
 
 Status: **experimental 4-to-32-hour logical baseline; not empirically calibrated or production-ready**

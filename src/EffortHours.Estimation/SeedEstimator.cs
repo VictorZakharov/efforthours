@@ -35,6 +35,10 @@ public sealed class SeedEstimator : IEstimator
         EvidenceKinds.ProjectReference,
         EvidenceKinds.RepositoryInventory,
         EvidenceKinds.SecurityConfiguration,
+        EvidenceKinds.SqlArtifact,
+        EvidenceKinds.SqlDelivery,
+        EvidenceKinds.SqlRepository,
+        EvidenceKinds.SqlTest,
         EvidenceKinds.SourceStructure,
         EvidenceKinds.TestSuite,
         EvidenceKinds.UserInterface,
@@ -46,6 +50,7 @@ public sealed class SeedEstimator : IEstimator
         {
             "dotnet",
             "javascript",
+            "sql",
             "typescript",
         };
 

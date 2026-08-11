@@ -7,15 +7,18 @@ implemented after Milestone 7B5. They include provider-neutral immutable
 base/head analysis, two statically scanned directories, two saved repository
 evidence bundles, one commit, one final revision range, and one GitHub pull
 request through an optional `gh` adapter. The current
-`change-seed/0.6.0` rules are the Stage A logically admitted baseline and remain
-experimental. They are not empirically calibrated or production-ready.
-Version 0.6.0 retains the 0.3.0 logical-marginality correction and the 0.4.0
+`change-seed/0.7.0` rules remain experimental and are not empirically calibrated,
+production-ready, or separately model-admitted. They preserve the non-SQL
+valuation behavior of the Stage A logically admitted 0.6.0 baseline, but the new
+SQL path was not present in that gate.
+Version 0.7.0 retains the 0.3.0 logical-marginality correction and the 0.4.0
 fail-closed boundary for explicitly delimited customization inside otherwise
 generated files. It adds an expected-point gross-to-final normalization diagnostic
 for explicit multi-commit ranges, disjoint mixed-role category partitions,
 roughly-one-hour logical work-item decomposition, unique-snapshot analysis reuse,
-and bounded component audits without changing any Change EHE prior or final-delta
-total. The current source composes repository
+bounded component audits, and SQL-aware formatting/category routing without
+changing any existing Change EHE prior or non-SQL final-delta total. The current
+source composes repository
 `seed-rules/0.3.0`.
 The first calibration-infrastructure checkpoint, a preliminary 24-record synthetic
 host-AI teacher corpus, a one-record real public pilot, a blind six-family
@@ -145,10 +148,19 @@ The MVP compares immutable base and head trees directly. It derives added,
 modified, removed, exact-move, excluded, and unchanged-context evidence without
 checking out either tree. Formatting-only classification uses conservative,
 literal-aware whitespace normalization for the initial .NET and JavaScript/
-TypeScript source extensions; unsupported or uncertain rewrites remain represented
-and visible rather than being silently discarded. Exact blob moves are excluded
-from body implementation effort. Path-sensitive integration work is included only
-when separate analyzer evidence supports it.
+TypeScript source extensions plus token-aware SQL normalization. SQL whitespace
+between tokens can normalize to zero, while string, quoted-identifier, dollar-
+quoted, and comment content remains significant. Unsupported or uncertain rewrites
+remain represented and visible rather than being silently discarded. Exact blob
+moves are excluded from body implementation effort. Path-sensitive integration
+work is included only when separate analyzer evidence supports it.
+
+SQL schema, migration, stored-program, and query deltas use the data category;
+test fixtures use integration/component testing; explicit deployment/install
+scripts use packaging; and supported cross-database syntax uses integrations.
+Generated dumps, exact copies, formatting-only SQL, and repeated seed rows do not
+inflate body effort. This is bounded token/statement evidence, not database
+execution, grammar validation, query planning, or a semantic schema diff.
 
 Generated artifacts remain excluded by default. Change analysis may represent
 only content inside exact, balanced, non-nested `<custom-code>` regions when source
@@ -289,9 +301,10 @@ The v1 public schemas are `change-evidence`, `change-estimate-report`, and
 `change-estimate-explanation`. The report schema adds an optional normalization
 summary, so frozen v1 reports remain valid; explanation queries accept its stable
 calculation ID and return exact adjustment lineage. The current estimator identity
-is `change-seed/0.6.0+seed-rules/0.3.0`; it composes the still-uncalibrated repository
-model and is admitted only for experimental Stage A logical use. It must not be
-described as empirically calibrated or production-ready. Frozen
+is `change-seed/0.7.0+seed-rules/0.3.0`; it composes the still-uncalibrated repository
+model. The earlier 0.6.0 identity alone passed the experimental Stage A logical
+gate, and that record contains no SQL. Version 0.7.0 must not be described as
+empirically calibrated, generally admitted, or production-ready. Frozen
 calibration source reports retain the exact earlier estimator identity they were
 created from.
 
@@ -328,6 +341,9 @@ created from.
 - Positive repository-capability partitions for one existing or modified logical
   capability collapse into one bounded evidence-derived Change budget; distinct
   newly added capabilities remain additive.
+- Source-readable `.sql` paths use SQL-aware formatting normalization and
+  scanner-derived role tags; bodyless evidence modifications retain the ordinary
+  conservative fallback.
 - When one logical capability cites explicit production, test, documentation,
   build, or delivery roles, its existing low/expected/high budget is partitioned
   across disjoint category evidence rather than duplicated or left in one category.

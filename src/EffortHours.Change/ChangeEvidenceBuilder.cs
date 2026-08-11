@@ -21,6 +21,8 @@ internal static class ChangeEvidenceBuilder
             .ToDictionary(file => file.Path, StringComparer.Ordinal);
         Dictionary<string, EvidenceFact> baseFileFacts = FileFacts(baseEvidence);
         Dictionary<string, EvidenceFact> headFileFacts = FileFacts(headEvidence);
+        Dictionary<string, IReadOnlyList<string>> baseSemanticTags = SemanticTagsByPath(baseEvidence);
+        Dictionary<string, IReadOnlyList<string>> headSemanticTags = SemanticTagsByPath(headEvidence);
         int unchanged = baseFiles.Keys.Intersect(headFiles.Keys, StringComparer.Ordinal)
             .Count(path => SameObject(baseFiles[path], headFiles[path]));
 
@@ -73,7 +75,14 @@ internal static class ChangeEvidenceBuilder
             EvidenceFact? headFact = candidate.Head is null
                 ? null
                 : headFileFacts.GetValueOrDefault(candidate.Path);
-            string[] sourceTags = [.. (baseFact?.Tags ?? []).Concat(headFact?.Tags ?? [])];
+            string basePath = candidate.PreviousPath ?? candidate.Path;
+            string[] sourceTags =
+            [
+                .. (baseFact?.Tags ?? [])
+                    .Concat(headFact?.Tags ?? [])
+                    .Concat(baseSemanticTags.GetValueOrDefault(basePath) ?? [])
+                    .Concat(headSemanticTags.GetValueOrDefault(candidate.Path) ?? []),
+            ];
             ChangePathClassification classification = ChangePathClassifier.Classify(
                 candidate.Status,
                 candidate.Path,
@@ -256,6 +265,24 @@ internal static class ChangeEvidenceBuilder
         evidence.Facts
             .Where(fact => fact.Kind == EvidenceKinds.File && fact.Id.StartsWith("file:", StringComparison.Ordinal))
             .ToDictionary(fact => fact.Id[5..], StringComparer.Ordinal);
+
+    private static Dictionary<string, IReadOnlyList<string>> SemanticTagsByPath(
+        RepositoryEvidence evidence) => evidence.Facts
+        .Where(fact => fact.Id.StartsWith("sql:", StringComparison.Ordinal) &&
+            fact.Kind != EvidenceKinds.SqlRepository)
+        .SelectMany(fact => fact.Locations.Select(location => new
+        {
+            location.Path,
+            fact.Tags,
+        }))
+        .GroupBy(item => item.Path, StringComparer.Ordinal)
+        .ToDictionary(
+            group => group.Key,
+            group => (IReadOnlyList<string>)[.. group
+                .SelectMany(item => item.Tags)
+                .Distinct(StringComparer.Ordinal)
+                .Order(StringComparer.Ordinal)],
+            StringComparer.Ordinal);
 
     private static string ClassificationReason(
         ChangePathClassification classification,

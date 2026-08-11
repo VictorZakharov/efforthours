@@ -44,6 +44,13 @@ the exact sum of small, evidence-backed tasks. This is logical weak supervision,
 not human or independent review, empirical accuracy, calibrated probability
 intervals, or production readiness. No numerical prior or ML dependency changes.
 
+The August 11 SQL follow-on advances only the current source identity to
+`change-seed/0.7.0+seed-rules/0.3.0`. It adds SQL formatting and semantic role
+routing while preserving every prior non-SQL rule. No frozen source report, label,
+teacher task, metric, threshold, partition, or maturity changes. Because the Stage
+A records contain no SQL, version 0.7.0 and its SQL path are not separately
+admitted by the 0.6.0 result.
+
 ## Reproducible source boundary
 
 `change-fixture-generator/0.1.0` analyzes synthetic base/head states through

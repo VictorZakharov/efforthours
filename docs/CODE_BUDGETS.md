@@ -62,6 +62,13 @@ ownership construction each live in a focused file under the ordinary 500-line
 ceiling. The repository orchestrator decreased from 772 to 744 lines; no override
 was added or increased.
 
+The August 11, 2026 SQL checkpoint separates bounded text admission, tokenization,
+statement measurement, dialect assessment, artifact-role classification,
+project/package ownership, and evidence construction into focused files. The
+semantic analyzer was split before the 80% threshold, and SQL Change formatting
+normalization remains a separate component. No ratchet override was added or
+increased.
+
 Line count is deliberately simple, deterministic, cross-platform, and difficult
 to game accidentally. The useful outcome is earlier decomposition into cohesive
 contracts, commands, analyzers, and renderers—not compressed formatting.

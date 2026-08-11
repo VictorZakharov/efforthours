@@ -119,6 +119,15 @@ admitted repository scope. This evidence does not claim rendering, framework
 compilation, preprocessor execution, runtime reachability, visual correctness, or
 accessibility conformance.
 
+The implemented SQL boundary admits scanner-owned `.sql` files to a bounded,
+comment/string/quoted-identifier-aware token analyzer. It records schema,
+migration, stored-program, query, test, delivery, and explicit cross-database
+evidence with separate parser and dialect confidence for common PostgreSQL, SQL
+Server, MySQL/MariaDB, and SQLite syntax. It does not choose or connect to a
+database, execute SQL, prove semantic validity or performance, or value dump/row/
+timestamp volume. Supported semantics map to existing category priors and remain
+experimental; [SQL_ANALYSIS.md](SQL_ANALYSIS.md) defines the exact boundary.
+
 ## Non-goals
 
 - Reconstructing actual hours worked.

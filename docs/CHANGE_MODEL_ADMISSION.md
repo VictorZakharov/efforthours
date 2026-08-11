@@ -3,11 +3,13 @@
 ## Status
 
 Metric identity, decision order, and the first small-change logical gate are frozen
-as `change-model-admission/0.2.0`. The current source baseline is
-`change-seed/0.6.0+seed-rules/0.3.0`. It is admitted as the transparent Stage A
-logical baseline for experimental one-to-several-day Change estimates. This is
-weak-supervision admission, not empirical accuracy, formal interval calibration,
-or production readiness.
+as `change-model-admission/0.2.0`. The admitted source baseline is
+`change-seed/0.6.0+seed-rules/0.3.0`; it is the transparent Stage A logical
+baseline for experimental one-to-several-day Change estimates. The current source
+has advanced to `change-seed/0.7.0+seed-rules/0.3.0` for static SQL support. That
+extension preserves non-SQL rules but is not separately admitted, and no Stage A
+record contains SQL. This is weak-supervision admission, not empirical accuracy,
+formal interval calibration, or production readiness.
 
 Rubric `change-ehe-work-item/1.1.0` permits a disclosed host-AI teacher to author
 logical labels when every total is built exactly from small, evidence-backed tasks
@@ -43,7 +45,7 @@ remain unchanged.
 
 ## Immutable decision boundary
 
-The current deterministic baseline remains in place unless a candidate passes the
+The admitted deterministic baseline remains in place unless a candidate passes the
 gate for its declared size stage. Failure, insufficient data, ambiguous provenance,
 or a regression leaves that transparent estimator in place. Candidate selection never
 changes the normalized-final-delta, history-exclusion, pricing-separation, or
@@ -132,7 +134,7 @@ scales without evaluating the expansion test record. Five eligible families have
 38.00 reviewed and 38.50 candidate expected hours under the total-invariant 0.6.0
 rules: WAPE 0.0526 and bias +0.0132, with every per-case bound passing. Their
 native-category WAPE is 0.3963 with +0.0132 bias; all 28 frozen parent targets are
-covered by 45 audited logical tasks; all 41 current candidate work items are at
+covered by 45 audited logical tasks; all 41 version-0.6.0 candidate work items are at
 most 1.5 expected hours; teacher-expected interval coverage is 1.0000; and the
 mean-width ratio is 1.3624. The 2.75-hour p-limit record remains a semantic
 guardrail and does not contribute to these size-band gates.
@@ -373,11 +375,11 @@ only the optional component ledger, and retains the complete final base-to-head
 estimate. The allocator uses deterministic floor-plus-largest-remainder cents so
 large component sets remain nonnegative and sum exactly.
 
-Current development/validation regeneration preserves every 0.3.0 repository
+Version-0.6.0 development/validation regeneration preserves every 0.3.0 repository
 total. Deliberate role and logical-task splits reduce exact legacy work-item ID
 matching, so that metric remains a diagnostic rather than an admission gate. The
 Stage A audit instead covers all 28 eligible frozen parent targets with 45
-fine-grained teacher tasks, while all 41 current candidate items meet the same
+fine-grained teacher tasks, while all 41 version-0.6.0 candidate items meet the same
 1.5-hour ceiling. Frozen released reports, teacher corpora, and their exact
 estimator identities remain untouched. The expansion test comparison remains
 withheld.
@@ -386,3 +388,18 @@ The performance checkpoint and exact commands are in `BENCHMARKS.md`. Three fres
 million-line two-snapshot runs and three fresh 128-commit runs establish the local
 time/memory gates; a 257-commit run proves the default audit cap. These measurements
 change no EHE prior and do not establish cross-platform performance.
+
+## `change-seed/0.7.0` static SQL extension
+
+Version 0.7.0 adds token-aware `.sql` formatting normalization and carries bounded
+SQL artifact roles into Change category selection. It adds no fitted rate and
+changes no pre-existing non-SQL rule, frozen report, label, metric, threshold,
+partition, or review maturity.
+
+The public repository mutation suite supplies qualitative SQL final-delta
+guardrails, but the Stage A teacher set and logical decomposition audit contain no
+SQL changes. Consequently 0.7.0 is a transparent experimental source revision,
+not an admitted successor. Admission would require appropriately licensed,
+decomposed SQL Change records in the declared size band, followed by the ordinary
+development/validation/test decision order. The 0.6.0 gate remains the last
+versioned admission decision.
