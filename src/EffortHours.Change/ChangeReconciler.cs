@@ -229,43 +229,41 @@ internal static class ChangeReconciler
     private static decimal[] AllocateExpected(decimal[] isolated, decimal normalized)
     {
         decimal[] allocations = new decimal[isolated.Length];
-        if (isolated.Length == 0)
+        if (isolated.Length == 0 || normalized == 0m)
         {
             return allocations;
         }
 
         decimal total = isolated.Sum();
-        decimal used = 0m;
+        decimal[] remainders = new decimal[isolated.Length];
         for (int index = 0; index < isolated.Length; index++)
         {
-            decimal allocation;
-            if (index == isolated.Length - 1)
-            {
-                allocation = normalized - used;
-            }
-            else if (total > 0m)
-            {
-                allocation = decimal.Round(
-                    normalized * isolated[index] / total,
-                    2,
-                    MidpointRounding.AwayFromZero);
-            }
-            else
-            {
-                allocation = decimal.Round(
-                    normalized / isolated.Length,
-                    2,
-                    MidpointRounding.AwayFromZero);
-            }
-
-            allocation = Math.Max(0m, allocation);
-            allocations[index] = allocation;
-            used += allocation;
+            decimal raw = total > 0m
+                ? normalized * isolated[index] / total
+                : normalized / isolated.Length;
+            decimal floor = decimal.Floor(raw * 100m) / 100m;
+            allocations[index] = floor;
+            remainders[index] = raw - floor;
         }
 
-        if (used != normalized)
+        decimal residual = normalized - allocations.Sum();
+        foreach (int index in Enumerable.Range(0, isolated.Length)
+                     .OrderByDescending(index => remainders[index])
+                     .ThenBy(index => index))
         {
-            allocations[^1] += normalized - used;
+            if (residual <= 0m)
+            {
+                break;
+            }
+
+            decimal increment = Math.Min(0.01m, residual);
+            allocations[index] += increment;
+            residual -= increment;
+        }
+
+        if (residual > 0m)
+        {
+            allocations[0] += residual;
         }
 
         return allocations;

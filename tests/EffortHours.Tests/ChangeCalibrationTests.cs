@@ -5,7 +5,7 @@ using EffortHours.Contracts.V1;
 
 namespace EffortHours.Tests;
 
-public sealed class ChangeCalibrationTests
+public sealed partial class ChangeCalibrationTests
 {
     [Fact]
     public async Task BlindScaffoldPinsFinalDeltaAndHidesCandidateHours()
@@ -353,6 +353,9 @@ public sealed class ChangeCalibrationTests
                                 .Select(item => new CalibrationReviewTargetDecision
                                 {
                                     Hours = item.Hours,
+                                    SizeException = item.Hours.Expected > 2m
+                                        ? "Synthetic test fixture retains one indivisible source capability."
+                                        : null,
                                     UncertaintyReasons = item.UncertaintyReasons,
                                 })],
                         })],

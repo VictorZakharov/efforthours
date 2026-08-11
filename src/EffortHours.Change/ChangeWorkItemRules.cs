@@ -232,7 +232,9 @@ internal static partial class ChangeWorkItemBuilder
         decimal quantity,
         IReadOnlyList<string> uncertaintyReasons)
     {
-        int partCount = Math.Max(1, (int)decimal.Ceiling(hours.Expected / 4m));
+        int partCount = hours.Expected <= 1.5m
+            ? 1
+            : Math.Max(2, (int)decimal.Ceiling(hours.Expected));
         while (hours.Expected / partCount > 8m)
         {
             partCount++;
@@ -250,18 +252,24 @@ internal static partial class ChangeWorkItemBuilder
             decimal high = Part(hours.High, partCount, index, ref usedHigh);
             low = Math.Min(low, expected);
             high = Math.Max(high, expected);
+            (string partTitle, string partReason) = DescribeLogicalPart(
+                category,
+                title,
+                reason,
+                index,
+                partCount);
             items.Add(new WorkItem
             {
                 Id = partCount == 1 ? capabilityId : $"{capabilityId}:part-{index + 1:D4}",
                 Category = category,
-                Title = partCount == 1 ? title : $"{title} (part {index + 1} of {partCount})",
+                Title = partTitle,
                 Scope = string.IsNullOrWhiteSpace(scope) ? "." : scope,
                 EvidenceIds = [.. evidenceIds.Distinct(StringComparer.Ordinal).Order(StringComparer.Ordinal)],
                 Quantity = Math.Max(0.01m, quantity / partCount),
                 Complexity = complexity,
                 Hours = new EffortRange { Low = low, Expected = expected, High = high },
                 Confidence = Math.Clamp(confidence, 0m, 1m),
-                Reason = reason,
+                Reason = partReason,
                 Estimator = new EstimatorReference
                 {
                     Id = $"change-rule:{rule}",

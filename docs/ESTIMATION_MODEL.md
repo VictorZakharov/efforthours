@@ -400,13 +400,18 @@ base and head repository-evidence digests, while selector kind, object IDs, and
 coverage tags remain non-valuing provenance. Every change from one repository
 family stays in one partition. Empty targets explicitly represent a normalized
 zero final delta without inventing effort; exact `0/0/0` targets preserve lineage
-for reviewed false-positive exclusions. `change-ehe-work-item/1.0.0`,
+for reviewed false-positive exclusions. `change-ehe-work-item/1.1.0`,
 `MILESTONE_CHANGE_2.md`, `MILESTONE_CHANGE_3.md`, and
-`CHANGE_MODEL_ADMISSION.md` define the current checkpoints. A preliminary
-24-record host-AI teacher corpus exists, but no independent correction, numerical
-threshold, or fitted model exists yet.
+`CHANGE_MODEL_ADMISSION.md` define the current checkpoints. A disclosed host-AI
+teacher may supply logical weak supervision when the estimate reconciles exactly
+from evidence-backed tasks normally about one hour each. The maturity remains
+`teacher-estimate`; logical admission does not imply human review, empirical
+accuracy, calibrated probability intervals, or production readiness. Frozen
+rubric-1.0.0 labels are not rewritten; the separate Stage A logical audit maps all
+eligible parent targets into rubric-1.1.0 tasks while preserving their exact
+expected totals and uncertainty provenance.
 
-The current `change-seed/0.5.0` rules retain the 0.3.0 correction that keeps
+The current `change-seed/0.6.0` rules retain the 0.3.0 correction that keeps
 repository seed capabilities as context for a final delta but does not infer a
 capability modification from path overlap alone. Existing capabilities require
 changed normalized non-file evidence;
@@ -434,9 +439,24 @@ ranges it reports expected-point gross-to-final normalization and bounds a separ
 rework-like numerator to negative overlap/revert adjustment attribution. Shared or
 repeated work and residual interaction remain separate. Zero-gross shares are not
 applicable, positive net interaction is preserved, and no low/high percentage is
-derived from dependent planning bounds. The current composite source identity is
-`change-seed/0.5.0+seed-rules/0.3.0`; every frozen Change report retains its
-original identity and numbers.
+derived from dependent planning bounds.
+
+Version 0.6.0 adds no fitted numerical prior. It partitions the existing budget of
+a mixed-role capability across disjoint production, test, documentation, build,
+and delivery evidence without changing its low/expected/high total. Candidate
+items above 1.5 expected hours are partitioned into distinct named logical phases
+of roughly one hour without changing category totals. Repository analysis is
+cached once per immutable snapshot within a Change estimate, optional
+per-commit range audits default to 256 components, and exact largest-remainder
+allocation keeps every component nonnegative while reconciling to the normalized
+total.
+
+The current composite source identity is
+`change-seed/0.6.0+seed-rules/0.3.0`; every frozen Change report retains its
+original identity and numbers. `change-model-admission/0.2.0` admits this baseline
+only for experimental 4-to-32-hour Stage A changes after model-authored logical
+agreement and performance gates. Larger size bands and empirical production
+accuracy remain separate future decisions.
 
 ## 11. Uncertainty
 

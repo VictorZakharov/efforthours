@@ -51,7 +51,13 @@ public sealed class ChangeLogicalMarginalityTests
                 item.Category == EffortCategory.ProductionImplementation &&
                 item.Estimator.Id == "change-rule:capability-marginal"),
         ];
-        Assert.Equal(2, capabilityItems.Length);
+        Assert.Equal(4, capabilityItems.Length);
+        Assert.Equal(
+            2,
+            capabilityItems.Select(item => item.Id.Split(":part-", StringSplitOptions.None)[0])
+                .Distinct(StringComparer.Ordinal)
+                .Count());
+        Assert.All(capabilityItems, item => Assert.InRange(item.Hours.Expected, 0.5m, 1.5m));
         Assert.Equal(4m, capabilityItems.Sum(item => item.Hours.Expected));
     }
 

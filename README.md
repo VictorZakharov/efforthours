@@ -17,10 +17,11 @@ EHE answers this counterfactual question:
 It does **not** claim how long anyone actually worked. It is not a timesheet,
 productivity score, invoice, or reconstruction of repository history.
 
-> **Experimental public alpha:** the CLI and reporting pipeline work, but the
-> bundled `seed-rules/0.3.0` repository estimator and current Change estimator are
-> not independently calibrated or production-validated. Review the evidence and
-> ranges before using an estimate for a consequential decision.
+> **Experimental public alpha:** the CLI and reporting pipeline work. The bundled
+> repository estimator is not independently calibrated. The Change estimator has
+> passed its first model-authored logical gate for changes estimated at 4 to 32
+> hours, but it is not empirically production-validated. Review the evidence and
+> ranges before using any estimate for a consequential decision.
 
 ## Install
 
@@ -90,6 +91,14 @@ only explicit overlap/revert attribution. These are structural diagnostics—not
 historical rework, actual hours, productivity scores, or multipliers. Copy the
 normalization ID into `eh change explain <report.json> --item <id>` to inspect its
 signed-adjustment lineage.
+
+The current Change model is intended first for one-to-several-day changes. Its
+calibration totals are built from distinct evidence-backed tasks normally about an
+hour each, and its own larger work items are split into named phases capped at 1.5
+expected hours rather than one unsupported aggregate guess. Larger deliverables
+remain outside that admitted size band. For long ranges, EffortHours bounds the
+optional per-commit audit while retaining the complete base-to-head estimate as
+authoritative.
 
 You can also compare two directories or two saved evidence bundles without Git:
 
@@ -208,8 +217,10 @@ in this alpha. See the [host-review protocol](docs/MILESTONE_8.md).
 
 ## Important limitations
 
-- The bundled estimators are experimental and uncalibrated; ranges are planning
-  bounds, not formal confidence intervals.
+- The bundled estimators are experimental. The repository model remains
+  uncalibrated; Change has only first-band logical calibration, not empirical
+  production validation. Ranges are planning bounds, not formal confidence
+  intervals.
 - Static analysis assumes discovered tests pass on the fastest path and does not
   prove that a checkout builds or runs.
 - Unsupported languages still receive common inventory evidence but not the same

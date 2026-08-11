@@ -47,14 +47,14 @@ internal static class TeacherPlanGenerator
 
         CalibrationReviewPlan plan = new()
         {
-            CompilerVersion = ChangeCalibrationReviewCompiler.CompilerVersion,
+            CompilerVersion = ChangeCalibrationReviewCompiler.LegacyCompilerVersion,
             Id = policy.Id,
             Version = policy.Version,
             Description = policy.Description,
             Rubric = new CalibrationRubricReference
             {
                 Id = ChangeCalibrationAuthoring.RubricId,
-                Version = ChangeCalibrationAuthoring.RubricVersion,
+                Version = ChangeCalibrationAuthoring.LegacyRubricVersion,
             },
             Records = records,
         };

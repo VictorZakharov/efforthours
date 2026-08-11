@@ -295,6 +295,20 @@ Status as of August 10, 2026:
   bounded to overlap/revert adjustment lineage. Zero denominators, positive
   interaction, explanation IDs, and the base/head/PR exclusion are explicit. No
   prior, final EHE total, frozen report, label, or review maturity changes.
+- The first Change size-and-admission checkpoint is complete as
+  `change-seed/0.6.0+seed-rules/0.3.0`. Rubric
+  `change-ehe-work-item/1.1.0` requires model-authored totals to decompose into
+  distinct evidence-backed tasks normally about one hour each, and
+  `change-model-admission/0.2.0` freezes a progressive size ladder. Five eligible
+  public 4-to-32-hour changes pass the Stage A total, per-case, category, decomposition,
+  interval, semantic, and local performance gates. A transparent audit decomposes
+  all 28 eligible frozen parent targets into 45 distinct 0.5-to-1.5-hour tasks,
+  while current candidate work uses the same ceiling. Mixed-role work now retains
+  one capability total while partitioning native test/docs/delivery categories;
+  repository snapshots are analyzed once per object ID; optional range audits are
+  bounded; and component cents remain exact and nonnegative. This is experimental
+  logical weak-supervision admission, not empirical accuracy, human/independent
+  review, formal interval calibration, or production readiness.
 - Source-file budgets are enforced as an end-to-end architecture ratchet: 500
   lines by default, 400 for CLI files, and explicit non-precedent overrides for
   legacy debt. The former large CLI application class is split by responsibility.
@@ -486,8 +500,10 @@ review.
   productivity.
 - Extend the implemented optional identity-only `gh` adapter only when network,
   privacy, immutable-object, and cross-PR normalization safeguards are explicit.
-- Calibrate `change-seed/0.5.0` on reviewed, redistributable final-change examples
-  before consequential use or any production-readiness claim.
+- Extend the admitted `change-seed/0.6.0` Stage A baseline with redistributable
+  4-to-32-hour final changes before freezing a larger size band. Record host-model
+  context, tokens, wall time, and cost when available, and keep empirical
+  production validation separate from logical labels.
 - Follow the remaining deferred semantics and safeguards in
   `CHANGE_ESTIMATION.md` before expanding any history-backed command.
 - Publish analyzer extension contracts.
@@ -555,14 +571,16 @@ cross-platform measurements and a more representative benchmark corpus exist.
 
 ## 8. Immediate next steps
 
-1. Hand one or more frozen blind public-corpus packets to genuinely distinct
-   reviewers and compile corrections without exposing test partitions to tuning.
+1. Add immutable public PRs in the 4-to-32-hour Change band, preserving exact
+   one-hour-scale decomposition and the frozen Stage A gates; then widen to
+   multi-day/multi-week deliverables only through a new size-specific decision.
 2. Repeat the host-review benchmark blindly across multiple models with exact
    provider tokens, wall-clock time, monetary cost, and complete paired-session
    context accounting before considering any automatic review budget.
-3. Add enough redistributable repository families to place multiple independent
-   observations in every ecosystem/partition cell, then freeze numerical
-   model-admission thresholds before fitting.
+3. Add enough redistributable repository families to place multiple observations
+   in every ecosystem/partition cell. Keep repository-estimator admission under
+   its existing independent-review policy; Change uses its separately frozen
+   model-authored logical-admission boundary.
 4. Expand analyzer precision and mutation guardrails beyond the corrected
    process-stream, framework-neutral-state, benchmark-entry-point, and first
    measured-coverage boundaries to semantic clone detection, general reachability,
@@ -573,10 +591,9 @@ cross-platform measurements and a more representative benchmark corpus exist.
    regression thresholds.
 6. Evaluate a compiler-grade TypeScript adapter only if reviewed calibration shows
    material error from the bounded token evidence.
-7. Obtain genuinely independent correction for the frozen Change teacher corpora,
-   add multiple real observations per ecosystem/partition cell, and record
-   large-range performance before fitting a calibrated model or expanding to
-   multiple PRs and author-period portfolios. Preserve the completed subject-neutral
-   `change-seed/0.4.0` generated-customization and inherited logical-marginality
-   guardrails plus the `change-seed/0.5.0` diagnostic/non-productivity boundary
-   throughout that work.
+7. Collect separately governed production observations for empirical Change
+   validation, without using actual time as a model multiplier or relabeling it as
+   counterfactual EHE. Preserve the completed `change-seed/0.6.0` semantics and
+   performance bounds before expanding to multiple PRs and author-period
+   portfolios. Independent review remains optional corroboration and must retain
+   honest provenance if performed.

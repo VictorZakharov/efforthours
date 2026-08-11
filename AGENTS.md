@@ -250,7 +250,7 @@ meaningful code/tests/docs, migrations, integrations, CI, container delivery,
 simplification, additivity, overlap, reverts, category isolation, all three range
 points, and cooperative cancellation. The first Ctrl+C returns 130 after a
 stderr-only diagnostic; a second retains immediate termination. Current
-`change-seed/0.5.0+seed-rules/0.3.0` rules retain the bounded 0.3.0 logical-
+`change-seed/0.6.0+seed-rules/0.3.0` rules retain the bounded 0.3.0 logical-
 marginality correction
 and can isolate exact, balanced, EffortHours-specific `<custom-code>` regions
 inside otherwise generated source. Only those regions can contribute;
@@ -258,7 +258,8 @@ conventional generated bodies,
 unchanged/formatting-only regions, ambiguous markers, oversized blobs, and
 bodyless generated evidence remain excluded. The rules preserve distinct added
 capabilities and emit bounded change-level comprehension, validation, and review
-once. They remain experimental and uncalibrated. Non-Git Change mode now accepts
+once. They remain experimental; only the 4-to-32-hour Stage A logical band is
+admitted, and no empirical production validation is claimed. Non-Git Change mode now accepts
 two statically scanned, content-pinned directories or two digest-checked saved
 repository-evidence bundles;
 bodyless evidence modifications that otherwise qualify as represented remain
@@ -318,6 +319,27 @@ validation. Item mapping and interval/category behavior remain explicitly mixed.
 Frozen alpha.2 artifacts are unchanged, the ofetch comparison remains withheld,
 and no threshold, independent maturity, calibration, or accuracy claim advances.
 
+The Stage A Change admission checkpoint adds rubric
+`change-ehe-work-item/1.1.0` and policy `change-model-admission/0.2.0`. A disclosed
+host-AI teacher remains `teacher-estimate` maturity but can provide logical weak
+supervision when each total reconciles exactly from distinct evidence-backed tasks
+normally about 0.5 to 1.5 expected hours. Five eligible public 4-to-32-hour changes
+total 38.00 teacher hours and 38.50 candidate hours under
+`change-seed/0.6.0+seed-rules/0.3.0`, with 0.0526 WAPE and +0.0132 bias; all frozen
+total, per-case, category, decomposition, interval, semantic, and local performance
+gates pass without opening the expansion test comparison. The stricter logical
+audit decomposes all 28 eligible frozen parent targets into 45 distinct
+0.5-to-1.5-hour tasks; all 41 current candidate items meet the same ceiling.
+Mixed-role capability budgets now split across disjoint native categories without
+changing totals. Repository
+analysis is reused once per immutable snapshot, optional range audits default to a
+256-component cap, and exact nonnegative allocation replaces cent-rounding drift.
+Recorded local gates are 30 seconds/512 MiB for a million-line base/head and 45
+seconds/192 MiB for 128 commits. This is not human or independent review, formal
+interval calibration, empirical accuracy, or production readiness. Larger change
+bands advance only through new frozen gates; model context/token/time/cost should
+be recorded when available, and later production observations remain separate.
+
 The first Milestone 8 host-review checkpoint adds the provider-neutral
 `host-review/1.0.0` protocol: rate-free compact packets, canonical estimate-plus-
 evidence input digests, bounded capability/evidence/scope/selected-source queries,
@@ -360,6 +382,8 @@ dotnet benchmarks/EffortHours.ScannerBenchmarks/bin/Release/net10.0/EffortHours.
 dotnet benchmarks/EffortHours.ScannerBenchmarks/bin/Release/net10.0/EffortHours.ScannerBenchmarks.dll --files 10000 --lines-per-file 100 --javascript
 dotnet benchmarks/EffortHours.ScannerBenchmarks/bin/Release/net10.0/EffortHours.ScannerBenchmarks.dll --files 10000 --lines-per-file 100 --mixed --warm-cache
 dotnet benchmarks/EffortHours.ScannerBenchmarks/bin/Release/net10.0/EffortHours.ScannerBenchmarks.dll --repository . --warm-cache
+dotnet benchmarks/EffortHours.ChangeBenchmarks/bin/Release/net10.0/EffortHours.ChangeBenchmarks.dll --tree --files 10000 --lines-per-file 100 --max-seconds 30 --max-peak-mib 512
+dotnet benchmarks/EffortHours.ChangeBenchmarks/bin/Release/net10.0/EffortHours.ChangeBenchmarks.dll --range --files 32 --lines-per-file 20 --commits 128 --max-seconds 45 --max-peak-mib 192
 ```
 
 The primary distribution is the `EffortHours.Tool` .NET global-tool package with the

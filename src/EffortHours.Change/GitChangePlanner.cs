@@ -17,20 +17,46 @@ public sealed record GitChangePlan
     public IReadOnlyList<Diagnostic> Diagnostics { get; init; } = [];
 }
 
+public sealed record GitChangePlannerOptions
+{
+    public const int DefaultMaximumRangeComponents = 256;
+    public const int MaximumSupportedRangeComponents = 1_024;
+
+    public int MaximumRangeComponents { get; init; } = DefaultMaximumRangeComponents;
+}
+
 public sealed class GitChangePlanner
 {
     private readonly GitClient _git;
     private readonly IPullRequestResolver _pullRequests;
+    private readonly GitChangePlannerOptions _options;
 
     public GitChangePlanner()
-        : this(new GitClient(), new GitHubPullRequestResolver())
+        : this(new GitClient(), new GitHubPullRequestResolver(), new GitChangePlannerOptions())
     {
     }
 
     public GitChangePlanner(GitClient git, IPullRequestResolver pullRequests)
+        : this(git, pullRequests, new GitChangePlannerOptions())
+    {
+    }
+
+    public GitChangePlanner(
+        GitClient git,
+        IPullRequestResolver pullRequests,
+        GitChangePlannerOptions options)
     {
         _git = git ?? throw new ArgumentNullException(nameof(git));
         _pullRequests = pullRequests ?? throw new ArgumentNullException(nameof(pullRequests));
+        _options = options ?? throw new ArgumentNullException(nameof(options));
+        if (_options.MaximumRangeComponents is < 1 or > GitChangePlannerOptions.MaximumSupportedRangeComponents)
+        {
+            throw new ArgumentOutOfRangeException(
+                nameof(options),
+                _options.MaximumRangeComponents,
+                $"Maximum range components must be between 1 and " +
+                $"{GitChangePlannerOptions.MaximumSupportedRangeComponents}.");
+        }
     }
 
     public async Task<GitChangePlan> PlanBaseHeadAsync(
@@ -165,26 +191,47 @@ public sealed class GitChangePlanner
             root,
             baseObjectId,
             headObjectId,
+            _options.MaximumRangeComponents + 1,
             cancellationToken).ConfigureAwait(false);
         List<Diagnostic> diagnostics = [PinnedReferenceDiagnostic()];
         List<ChangeComponentInput> components = [];
-        foreach (string commit in commits)
+        if (commits.Count > _options.MaximumRangeComponents)
         {
-            IReadOnlyList<string> parents = await _git.GetParentsAsync(root, commit, cancellationToken)
-                .ConfigureAwait(false);
-            string parent = parents.Count == 0 ? GitClient.EmptyTreeObjectId : parents[0];
-            if (parents.Count > 1)
+            diagnostics.Add(new Diagnostic
             {
-                diagnostics.Add(new Diagnostic
+                Code = "FB5105",
+                Severity = DiagnosticSeverity.Warning,
+                Message = $"The range contains more than {_options.MaximumRangeComponents} commits. " +
+                    "The bounded per-commit reconciliation audit was omitted; the immutable final " +
+                    "base-to-head estimate remains complete and authoritative.",
+            });
+            components.Add(Component(
+                root,
+                range,
+                baseObjectId,
+                headObjectId,
+                ChangeComponentKind.FinalDelta));
+        }
+        else
+        {
+            foreach (string commit in commits)
+            {
+                IReadOnlyList<string> parents = await _git.GetParentsAsync(root, commit, cancellationToken)
+                    .ConfigureAwait(false);
+                string parent = parents.Count == 0 ? GitClient.EmptyTreeObjectId : parents[0];
+                if (parents.Count > 1)
                 {
-                    Code = "FB5103",
-                    Severity = DiagnosticSeverity.Warning,
-                    Message = "Range reconciliation contains a merge component valued against its first parent; " +
-                        "the normalized final base-to-head estimate remains authoritative.",
-                });
-            }
+                    diagnostics.Add(new Diagnostic
+                    {
+                        Code = "FB5103",
+                        Severity = DiagnosticSeverity.Warning,
+                        Message = "Range reconciliation contains a merge component valued against its first " +
+                            "parent; the normalized final base-to-head estimate remains authoritative.",
+                    });
+                }
 
-            components.Add(Component(root, commit, parent, commit));
+                components.Add(Component(root, commit, parent, commit));
+            }
         }
 
         ChangeSelection selection = new()

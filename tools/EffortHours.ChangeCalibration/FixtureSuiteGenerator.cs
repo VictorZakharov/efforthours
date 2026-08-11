@@ -34,7 +34,7 @@ internal static class FixtureSuiteGenerator
             cancellationToken.ThrowIfCancellationRequested();
             ChangeEstimateReport estimate = await EstimateAsync(fixture, cancellationToken)
                 .ConfigureAwait(false);
-            CalibrationAuthoringPacket packet = ChangeCalibrationAuthoring.Scaffold(
+            CalibrationAuthoringPacket packet = ChangeCalibrationAuthoring.ScaffoldLegacy100(
                 estimate,
                 fixture.RepositoryFamilyId,
                 fixture.Id,

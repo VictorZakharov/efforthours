@@ -1,0 +1,423 @@
+{
+  "schemaVersion": "change-logical-decomposition/1.0.0",
+  "id": "efforthours-change-stage-a-logical-review",
+  "version": "0.1.0",
+  "rubric": "change-ehe-work-item/1.1.0",
+  "review": {
+    "status": "teacher-estimate",
+    "completedOn": "2026-08-10",
+    "reviewerId": "teacher:openai-codex-gpt-5.6-sol-2026-08",
+    "reviewerKind": "host-ai",
+    "modelId": "openai-codex",
+    "modelVersion": "gpt-5.6-sol",
+    "inputBoundary": "Checked-in public teacher targets, evidence references, rationales, and public final-change provenance; candidate values were visible during decomposition.",
+    "notes": "Logical weak supervision only; not human or independent review, actual labor, empirical accuracy, or production readiness."
+  },
+  "records": [
+    {
+      "recordId": "record:change:github.com/axios/axios:pr-11094",
+      "repositoryId": "repository:github.com/axios/axios",
+      "partition": "validation",
+      "sourceCorpus": "calibration/changes/public-real-expansion/0.1.0.teacher-corpus.json",
+      "teacherExpectedHours": 11.50,
+      "tasks": [
+        {
+          "id": "axios-01-xhr-settlement",
+          "parentTargetId": "target:change-item:change-comprehension:8afcadccfea19ef08ef4:review-0001",
+          "category": "specification-comprehension-and-domain-learning",
+          "title": "Trace XHR completion, cancellation, cleanup, and settlement ordering",
+          "expectedHours": 0.75,
+          "rationale": "The rejection boundary depends on distinguishing cancellation from legitimate completion before changing adapter behavior."
+        },
+        {
+          "id": "axios-02-file-protocol-boundary",
+          "parentTargetId": "target:change-item:change-comprehension:8afcadccfea19ef08ef4:review-0001",
+          "category": "specification-comprehension-and-domain-learning",
+          "title": "Resolve browser URL preprocessing and valid status-zero file cases",
+          "expectedHours": 0.75,
+          "rationale": "Request URL, page origin, and response URL evidence must be reconciled so the cancellation fix does not reject successful file reads."
+        },
+        {
+          "id": "axios-03-cancellation-boundary",
+          "parentTargetId": "target:change-item:capability-marginal:b9d1231ce0324b5a7144:review-0001",
+          "category": "production-implementation",
+          "title": "Implement status-zero cancellation handling in the XHR lifecycle",
+          "expectedHours": 0.75,
+          "rationale": "The adapter needs an explicit rejection path that preserves cleanup and existing settlement semantics."
+        },
+        {
+          "id": "axios-04-file-read-exceptions",
+          "parentTargetId": "target:change-item:capability-marginal:b9d1231ce0324b5a7144:review-0001",
+          "category": "production-implementation",
+          "title": "Preserve successful file reads across available URL evidence",
+          "expectedHours": 0.75,
+          "rationale": "Legitimate file-protocol status-zero responses require a bounded compatibility exception across request, origin, and response URLs."
+        },
+        {
+          "id": "axios-05-protocol-guard-integration",
+          "parentTargetId": "target:change-item:capability-marginal:b9d1231ce0324b5a7144:review-0001",
+          "category": "production-implementation",
+          "title": "Integrate shared URL preprocessing with the malformed-protocol guard",
+          "expectedHours": 1.00,
+          "rationale": "The existing protocol check and the new status-zero boundary must consume the same normalized URL semantics without changing valid requests."
+        },
+        {
+          "id": "axios-06-url-normalizer",
+          "parentTargetId": "target:change-item:maintained-artifact-fallback:cd85124427e9c45d5d21:review-0001",
+          "category": "production-implementation",
+          "title": "Implement the bounded WHATWG-style URL normalization helper",
+          "expectedHours": 1.00,
+          "rationale": "Leading controls and embedded tabs or newlines need one reusable non-string-safe implementation for every protocol check."
+        },
+        {
+          "id": "axios-07-cancel-regressions",
+          "parentTargetId": "target:change-item:capability-marginal:c72f90d8ea8f507a5b48:review-0001",
+          "category": "unit-testing",
+          "title": "Add canceled-request regression coverage",
+          "expectedHours": 0.75,
+          "rationale": "Browser-style tests must prove the expected error, settlement, and cleanup behavior for canceled HTTP requests."
+        },
+        {
+          "id": "axios-08-file-url-regressions",
+          "parentTargetId": "target:change-item:capability-marginal:c72f90d8ea8f507a5b48:review-0001",
+          "category": "unit-testing",
+          "title": "Cover successful file reads from request, origin, and response URLs",
+          "expectedHours": 1.00,
+          "rationale": "Separate represented URL sources need regression cases so the cancellation correction cannot mask valid local reads."
+        },
+        {
+          "id": "axios-09-settlement-edge-regressions",
+          "parentTargetId": "target:change-item:capability-marginal:c72f90d8ea8f507a5b48:review-0001",
+          "category": "unit-testing",
+          "title": "Cover absent responseURL and validateStatus bypass behavior",
+          "expectedHours": 0.75,
+          "rationale": "These settlement edges exercise distinct adapter branches and prevent a broad status-zero rule from changing established outcomes."
+        },
+        {
+          "id": "axios-10-normalization-regressions",
+          "parentTargetId": "target:change-item:capability-marginal:c72f90d8ea8f507a5b48:review-0001",
+          "category": "unit-testing",
+          "title": "Cover page-origin and URL-preprocessing variants",
+          "expectedHours": 1.00,
+          "rationale": "Control-character and newline normalization needs isolated-adapter and browser-level cases across the represented origin variants."
+        },
+        {
+          "id": "axios-11-changelog",
+          "parentTargetId": "target:change-item:capability-modification:8d97c216a8da61ce4451:review-0001",
+          "category": "documentation",
+          "title": "Document the cancellation correction and retained compatibility cases",
+          "expectedHours": 0.50,
+          "rationale": "The maintained prerelease changelog must explain the error code, validateStatus behavior, protocol rationale, and file exceptions."
+        },
+        {
+          "id": "axios-12-cancel-validation",
+          "parentTargetId": "target:change-item:change-validation:45f79e72d5be3a84e6a3:review-0001",
+          "category": "manual-validation-debugging-and-hardening",
+          "title": "Exercise canceled HTTP requests through the completed adapter",
+          "expectedHours": 0.75,
+          "rationale": "Manual validation independently confirms rejection, cleanup, and single-settlement behavior beyond writing automated tests."
+        },
+        {
+          "id": "axios-13-file-validation",
+          "parentTargetId": "target:change-item:change-validation:45f79e72d5be3a84e6a3:review-0001",
+          "category": "manual-validation-debugging-and-hardening",
+          "title": "Exercise every represented successful file URL path",
+          "expectedHours": 0.75,
+          "rationale": "The final adapter needs an independent compatibility pass over request, origin, and response URL sources."
+        },
+        {
+          "id": "axios-14-integrated-review",
+          "parentTargetId": "target:change-item:change-review:a849df28c57a339f8b2d:review-0001",
+          "category": "self-review-and-system-integration",
+          "title": "Review protocol precedence, cleanup, compatibility, and regression completeness",
+          "expectedHours": 1.00,
+          "rationale": "The helper, adapter lifecycle, file exceptions, documentation, and two test levels must be reviewed as one coherent change."
+        }
+      ]
+    },
+    {
+      "recordId": "record:change:github.com/colinhacks/zod:pr-6354",
+      "repositoryId": "repository:github.com/colinhacks/zod",
+      "partition": "development",
+      "sourceCorpus": "calibration/changes/public-real-expansion/0.1.0.teacher-corpus.json",
+      "teacherExpectedHours": 10.25,
+      "tasks": [
+        {
+          "id": "zod-01-parser-boundary",
+          "parentTargetId": "target:change-item:change-comprehension:4cd3843a5549fa53ed44:review-0001",
+          "category": "specification-comprehension-and-domain-learning",
+          "title": "Trace object and record parser variants and their prototype boundary",
+          "expectedHours": 1.25,
+          "rationale": "Interpreted, generated, asynchronous, optional-property, and finite-record paths must share one understood safety contract."
+        },
+        {
+          "id": "zod-02-safe-property-write",
+          "parentTargetId": "target:change-item:capability-marginal:5da54cfe97926cfd4002:review-0001",
+          "category": "production-implementation",
+          "title": "Design and implement the shared safe property write",
+          "expectedHours": 1.00,
+          "rationale": "Declared __proto__ values require an own-data-property operation that avoids the inherited setter while keeping ordinary keys fast."
+        },
+        {
+          "id": "zod-03-interpreted-async-integration",
+          "parentTargetId": "target:change-item:capability-marginal:5da54cfe97926cfd4002:review-0001",
+          "category": "production-implementation",
+          "title": "Integrate safe writes into interpreted and asynchronous object parsing",
+          "expectedHours": 0.75,
+          "rationale": "Both result paths must retain optional-property and validation behavior while adopting the new write boundary."
+        },
+        {
+          "id": "zod-04-generated-record-integration",
+          "parentTargetId": "target:change-item:capability-marginal:5da54cfe97926cfd4002:review-0001",
+          "category": "production-implementation",
+          "title": "Integrate safe writes into generated and finite-record paths",
+          "expectedHours": 0.75,
+          "rationale": "Generated fast paths and enum or literal records need parity with interpreted parsing without changing ordinary output."
+        },
+        {
+          "id": "zod-05-jit-regressions",
+          "parentTargetId": "target:change-item:capability-marginal:4222b6db4f19a067a381:review-0001",
+          "category": "unit-testing",
+          "title": "Cover declared __proto__ behavior in JIT and jitless parsers",
+          "expectedHours": 0.75,
+          "rationale": "Both execution modes need focused regression assertions for own-property retention and prototype safety."
+        },
+        {
+          "id": "zod-06-async-validation-regressions",
+          "parentTargetId": "target:change-item:capability-marginal:4222b6db4f19a067a381:review-0001",
+          "category": "unit-testing",
+          "title": "Cover asynchronous, primitive, and validation paths",
+          "expectedHours": 0.75,
+          "rationale": "These represented branches must preserve existing validation outcomes while avoiding prototype mutation."
+        },
+        {
+          "id": "zod-07-record-regressions",
+          "parentTargetId": "target:change-item:capability-marginal:4222b6db4f19a067a381:review-0001",
+          "category": "unit-testing",
+          "title": "Cover enum-record, literal-record, and prototype invariants",
+          "expectedHours": 0.75,
+          "rationale": "Finite-key record variants require their own regression surface and explicit prototype-pollution assertions."
+        },
+        {
+          "id": "zod-08-security-boundary",
+          "parentTargetId": "target:change-item:capability-marginal:e816330325722b1e7789:review-0001",
+          "category": "security-and-accessibility",
+          "title": "Verify own-property retention without inherited setter invocation",
+          "expectedHours": 1.25,
+          "rationale": "The security-sensitive contract must distinguish a declared data property from prototype mutation across every parser path."
+        },
+        {
+          "id": "zod-09-release-workflow",
+          "parentTargetId": "target:change-item:capability-modification:664d2cfe73bbeb7e73e8:review-0001",
+          "category": "ci-cd-and-infrastructure-as-code",
+          "title": "Update and verify the release TypeScript build matrix",
+          "expectedHours": 0.75,
+          "rationale": "The shipped build must run under the represented compiler versions with the corrected ordering and fail-fast behavior."
+        },
+        {
+          "id": "zod-10-validation",
+          "parentTargetId": "target:change-item:change-validation:91cdc82fa4edb329eae5:review-0001",
+          "category": "manual-validation-debugging-and-hardening",
+          "title": "Exercise parser modes, prototype invariants, tests, and build ordering",
+          "expectedHours": 1.25,
+          "rationale": "An independent validation pass must cover interpreted, generated, asynchronous, record, and delivery surfaces."
+        },
+        {
+          "id": "zod-11-integrated-review",
+          "parentTargetId": "target:change-item:change-review:d10f7aee4630c50d8377:review-0001",
+          "category": "self-review-and-system-integration",
+          "title": "Review descriptors, parser parity, security, tests, and delivery",
+          "expectedHours": 1.00,
+          "rationale": "The property-write boundary and independent workflow adjustment need one completeness and compatibility review."
+        }
+      ]
+    },
+    {
+      "recordId": "record:change:github.com/dotnet/benchmarkdotnet:pr-3211",
+      "repositoryId": "repository:github.com/dotnet/benchmarkdotnet",
+      "partition": "development",
+      "sourceCorpus": "calibration/changes/public-real-expansion/0.1.0.teacher-corpus.json",
+      "teacherExpectedHours": 6.00,
+      "tasks": [
+        {
+          "id": "benchmarkdotnet-01-selection-contract",
+          "parentTargetId": "target:change-item:change-comprehension:4453adbde4e9c5576673:review-0001",
+          "category": "specification-comprehension-and-domain-learning",
+          "title": "Trace type-display conventions and interactive selection flow",
+          "expectedHours": 0.75,
+          "rationale": "The collision boundary must preserve concise names while keeping displayed choices and accepted matches aligned."
+        },
+        {
+          "id": "benchmarkdotnet-02-collision-detection",
+          "parentTargetId": "target:change-item:capability-marginal:489b9f0383e772554a97:review-0001",
+          "category": "production-implementation",
+          "title": "Detect ambiguous simple type names deterministically",
+          "expectedHours": 0.75,
+          "rationale": "The helper must identify namespace collisions without changing unique-name behavior or depending on enumeration accidents."
+        },
+        {
+          "id": "benchmarkdotnet-03-display-name-selection",
+          "parentTargetId": "target:change-item:capability-marginal:489b9f0383e772554a97:review-0001",
+          "category": "production-implementation",
+          "title": "Select concise or qualified display names from collision state",
+          "expectedHours": 0.75,
+          "rationale": "Unambiguous types retain the established short form while colliding types receive enough identity to distinguish them."
+        },
+        {
+          "id": "benchmarkdotnet-04-selection-integration",
+          "parentTargetId": "target:change-item:capability-marginal:489b9f0383e772554a97:review-0001",
+          "category": "production-implementation",
+          "title": "Integrate selected names into enumeration, examples, and matching",
+          "expectedHours": 1.00,
+          "rationale": "Presentation and input matching must use the same stable identity throughout the interactive selection path."
+        },
+        {
+          "id": "benchmarkdotnet-05-regressions",
+          "parentTargetId": "target:change-item:capability-marginal:fefb11822d16f00bc0af:review-0001",
+          "category": "unit-testing",
+          "title": "Cover colliding and unchanged unique type names",
+          "expectedHours": 1.25,
+          "rationale": "Focused tests need distinct-namespace collisions plus a control proving ordinary concise output remains unchanged."
+        },
+        {
+          "id": "benchmarkdotnet-06-validation",
+          "parentTargetId": "target:change-item:change-validation:753670208daf51bb65d6:review-0001",
+          "category": "manual-validation-debugging-and-hardening",
+          "title": "Exercise displayed examples and accepted choices for both name modes",
+          "expectedHours": 0.75,
+          "rationale": "Manual selection confirms deterministic presentation and matching independently from the focused unit tests."
+        },
+        {
+          "id": "benchmarkdotnet-07-review",
+          "parentTargetId": "target:change-item:change-review:7db3d6665b9bda568ecd:review-0001",
+          "category": "self-review-and-system-integration",
+          "title": "Review helper API, ordering, presentation, matching, and coverage",
+          "expectedHours": 0.75,
+          "rationale": "The reusable helper and interactive caller must remain consistent as one integrated selection change."
+        }
+      ]
+    },
+    {
+      "recordId": "record:change:github.com/spectreconsole/spectre.console:pr-2162",
+      "repositoryId": "repository:github.com/spectreconsole/spectre.console",
+      "partition": "validation",
+      "sourceCorpus": "calibration/changes/public-real-expansion/0.1.0.teacher-corpus.json",
+      "teacherExpectedHours": 4.50,
+      "tasks": [
+        {
+          "id": "spectre-01-progress-invariant",
+          "parentTargetId": "target:change-item:change-comprehension:943f5cea472637df8be9:review-0001",
+          "category": "specification-comprehension-and-domain-learning",
+          "title": "Trace the width-collapse loop and its progress invariant",
+          "expectedHours": 1.25,
+          "rationale": "Wrappable zero-width and oversized fixed columns interact in the nontermination boundary and must be understood together."
+        },
+        {
+          "id": "spectre-02-loop-correction",
+          "parentTargetId": "target:change-item:maintained-artifact-fallback:05e3f317e4e18d86c0b6:review-0001",
+          "category": "production-implementation",
+          "title": "Correct zero-width termination without changing normal allocation",
+          "expectedHours": 0.75,
+          "rationale": "The loop must skip exhausted candidates and stop at nonpositive remaining width while preserving ordinary rendering."
+        },
+        {
+          "id": "spectre-03-regression-table",
+          "parentTargetId": "target:change-item:capability-marginal:abcf3c694d89d6f8466e:review-0001",
+          "category": "unit-testing",
+          "title": "Add bounded-completion and output regression coverage",
+          "expectedHours": 1.25,
+          "rationale": "The former infinite-loop table needs a time-bounded assertion and a rendering check that would expose behavioral drift."
+        },
+        {
+          "id": "spectre-04-validation",
+          "parentTargetId": "target:change-item:change-validation:8e2fd231314b37f089ae:review-0001",
+          "category": "manual-validation-debugging-and-hardening",
+          "title": "Exercise the failing shape and nearby normal layouts",
+          "expectedHours": 0.75,
+          "rationale": "Independent validation confirms termination and stable output outside the single automated regression."
+        },
+        {
+          "id": "spectre-05-review",
+          "parentTargetId": "target:change-item:change-review:83a287c67b853d1acaaf:review-0001",
+          "category": "self-review-and-system-integration",
+          "title": "Review progress guarantees, rendering behavior, and test boundedness",
+          "expectedHours": 0.50,
+          "rationale": "A concise integrated pass checks that the termination fix cannot create a new allocation or test-hang defect."
+        }
+      ]
+    },
+    {
+      "recordId": "record:change:github.com/ardalis/result:pr-256",
+      "repositoryId": "repository:github.com/ardalis/result",
+      "partition": "validation",
+      "sourceCorpus": "calibration/changes/public-real-alpha3/0.1.0.teacher-corpus.json",
+      "teacherExpectedHours": 5.75,
+      "tasks": [
+        {
+          "id": "ardalis-01-compatibility-boundary",
+          "parentTargetId": "target:change-item:change-comprehension:c5b60df6d6160b436bdd:review-0001",
+          "category": "specification-comprehension-and-domain-learning",
+          "title": "Trace result conversion, status branches, and target-framework compatibility",
+          "expectedHours": 0.75,
+          "rationale": "The public configuration shape depends on existing Minimal API conversions, unchanged defaults, and three supported targets."
+        },
+        {
+          "id": "ardalis-02-public-api-design",
+          "parentTargetId": "target:change-item:capability-marginal:767cdd55b1910aeb1f91:review-0001",
+          "category": "production-implementation",
+          "title": "Define the configure-once public customization API and context",
+          "expectedHours": 0.75,
+          "rationale": "The hook needs a stable public contract that exposes enough status context while preserving null-default compatibility."
+        },
+        {
+          "id": "ardalis-03-hook-implementation",
+          "parentTargetId": "target:change-item:capability-marginal:767cdd55b1910aeb1f91:review-0001",
+          "category": "production-implementation",
+          "title": "Implement storage and invocation of the customization hook",
+          "expectedHours": 0.75,
+          "rationale": "Configuration must be applied once and invoked consistently by result conversion without changing default output."
+        },
+        {
+          "id": "ardalis-04-error-path-wiring",
+          "parentTargetId": "target:change-item:capability-marginal:767cdd55b1910aeb1f91:review-0001",
+          "category": "production-implementation",
+          "title": "Wire customization through all represented error responses",
+          "expectedHours": 0.75,
+          "rationale": "Seven status paths require complete, compatible mapping so no error response silently bypasses the public hook."
+        },
+        {
+          "id": "ardalis-05-cross-target-tests",
+          "parentTargetId": "target:change-item:capability-marginal:767cdd55b1910aeb1f91:review-0001",
+          "category": "unit-testing",
+          "title": "Create focused default and customized-output tests across targets",
+          "expectedHours": 0.75,
+          "rationale": "The regression suite must cover unchanged defaults and customization for distinct statuses on net6.0, net7.0, and net8.0."
+        },
+        {
+          "id": "ardalis-06-api-documentation",
+          "parentTargetId": "target:change-item:capability-marginal:767cdd55b1910aeb1f91:review-0001",
+          "category": "documentation",
+          "title": "Document the public customization API and compatibility behavior",
+          "expectedHours": 0.50,
+          "rationale": "Users need maintained guidance for configuring the hook, interpreting its context, and relying on unchanged defaults."
+        },
+        {
+          "id": "ardalis-07-validation",
+          "parentTargetId": "target:change-item:change-validation:9a194bbc2eece0c4503b:review-0001",
+          "category": "manual-validation-debugging-and-hardening",
+          "title": "Build and exercise default and customized results on all targets",
+          "expectedHours": 1.00,
+          "rationale": "Framework-specific result types require an independent compatibility and debugging pass beyond automated-test authoring."
+        },
+        {
+          "id": "ardalis-08-review",
+          "parentTargetId": "target:change-item:change-review:65824fcc2bb1399a8025:review-0001",
+          "category": "self-review-and-system-integration",
+          "title": "Review API compatibility, status coverage, documentation, and regressions",
+          "expectedHours": 0.50,
+          "rationale": "The public surface and every wired response path need one final integrated completeness pass."
+        }
+      ]
+    }
+  ]
+}
