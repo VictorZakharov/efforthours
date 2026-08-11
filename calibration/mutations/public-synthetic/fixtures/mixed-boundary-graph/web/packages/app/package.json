@@ -8,6 +8,6 @@
   },
   "devDependencies": {
     "@testing-library/react": "16.0.0",
-    "vitest": "4.0.0"
+    "vitest": "4.1.0"
   }
 }
