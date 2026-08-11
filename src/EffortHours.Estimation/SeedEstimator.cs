@@ -53,6 +53,7 @@ public sealed class SeedEstimator : IEstimator
         {
             "dotnet",
             "go",
+            "java",
             "javascript",
             "python",
             "sql",

@@ -756,13 +756,14 @@ internal sealed partial class SeedCapabilityBuilder(
             file.IsMaintained && file.Role is "build-configuration" or "dependency-lock")];
         SeedFileEvidence[] canonical = [.. files.Where(_index.IsCanonical)];
         EvidenceFact[] configurations = [.. _index.FactsOfKind(EvidenceKinds.JavaScriptConfiguration)];
-        EvidenceFact[] goConfigurations = [.. _index.FactsOfKind(EvidenceKinds.BuildConfiguration)
-            .Where(fact => fact.Provenance.Analyzer == "efforthours.go-analyzer")];
+        EvidenceFact[] ecosystemConfigurations = [.. _index.FactsOfKind(EvidenceKinds.BuildConfiguration)
+            .Where(fact => fact.Provenance.Analyzer is
+                "efforthours.go-analyzer" or "efforthours.java-analyzer")];
         EvidenceFact[] packages = [.. _index.FactsOfKind(EvidenceKinds.JavaScriptPackage)];
         EvidenceFact[] evidence = Evidence(
             files.Select(file => file.Fact),
             configurations,
-            goConfigurations,
+            ecosystemConfigurations,
             packages);
         if (evidence.Length == 0)
         {
@@ -770,7 +771,7 @@ internal sealed partial class SeedCapabilityBuilder(
         }
 
         decimal configFiles = canonical.Count(file => file.Role == "build-configuration") +
-            configurations.Length + goConfigurations.Length;
+            configurations.Length + ecosystemConfigurations.Length;
         decimal lockfiles = canonical.Count(file => file.Role == "dependency-lock");
         decimal compilerOptions = configurations.Sum(fact =>
             SeedEvidenceIndex.Measurement(fact, "compiler-options"));

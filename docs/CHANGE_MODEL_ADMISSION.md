@@ -6,9 +6,9 @@ Metric identity, decision order, and the first small-change logical gate are fro
 as `change-model-admission/0.2.0`. The admitted source baseline is
 `change-seed/0.6.0+seed-rules/0.3.0`; it is the transparent Stage A logical
 baseline for experimental one-to-several-day Change estimates. The current source
-has advanced to `change-seed/0.9.0+seed-rules/0.4.0` for static SQL, Python, and Go
+has advanced to `change-seed/0.10.0+seed-rules/0.4.0` for static SQL, Python, Go, and Java
 support. Those extensions preserve admitted rules but are not separately admitted,
-and no Stage A record contains SQL, Python, or Go. This is weak-supervision
+and no Stage A record contains SQL, Python, Go, or Java. This is weak-supervision
 admission, not empirical accuracy,
 formal interval calibration, or production readiness.
 
@@ -439,4 +439,24 @@ Version 0.9.0 is therefore an experimental source revision, not an admitted
 successor; `0.6.0` remains the last admitted source baseline. Go admission requires
 licensed public final changes in the declared size band, exact small-task logical
 decomposition, repository-isolated partitions, and the normal development/
+validation/test decision order.
+
+## `change-seed/0.10.0` static Java extension
+
+Version 0.10.0 adds `.java` final-delta support. Its formatting comparison
+normalizes layout and ordinary non-documentation comments while preserving
+Javadoc/Markdown documentation comments, strings, text blocks, character/numeric
+literals, identifiers, operators, delimiters, and Unicode-escape ambiguity.
+Repository analyzer evidence routes
+import- and annotation-qualified Java API, CLI, data, integration, security,
+validation, background, build, concurrency, and test changes through existing
+rules. It adds no fitted Change prior.
+
+The standalone public Java mutation suite adds 13 source states and passes 56/56
+relations. That is qualitative safeguard evidence, not reviewed Change labeling.
+The Stage A corpus and its exact logical decomposition contain no Java changes.
+Version 0.10.0 is therefore an experimental source revision, not an admitted
+successor; `0.6.0` remains the last admitted source baseline. Java admission
+requires licensed public final changes in the declared size band, exact small-task
+logical decomposition, repository-isolated partitions, and the normal development/
 validation/test decision order.

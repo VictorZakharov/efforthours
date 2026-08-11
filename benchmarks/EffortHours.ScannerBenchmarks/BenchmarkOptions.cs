@@ -9,6 +9,7 @@ internal enum BenchmarkShape
     JavaScript,
     Python,
     Go,
+    Java,
     Mixed,
     ExistingRepository,
 }
@@ -23,7 +24,7 @@ internal sealed record BenchmarkOptions(
 {
     public const string Usage =
         "Usage: scanner-benchmark [--files <count>] [--lines-per-file <count>] " +
-        "[--dotnet|--javascript|--python|--go|--mixed] [--warm-cache] [--keep] " +
+        "[--dotnet|--javascript|--python|--go|--java|--mixed] [--warm-cache] [--keep] " +
         "or scanner-benchmark --repository <path> [--warm-cache]";
 
     public string Mode => Shape switch
@@ -33,6 +34,7 @@ internal sealed record BenchmarkOptions(
         BenchmarkShape.JavaScript => "javascript-typescript-static",
         BenchmarkShape.Python => "python-static",
         BenchmarkShape.Go => "go-static",
+        BenchmarkShape.Java => "java-static",
         BenchmarkShape.Mixed => "mixed-static",
         BenchmarkShape.ExistingRepository => "repository-static",
         _ => throw new InvalidOperationException($"Unsupported benchmark shape '{Shape}'."),
@@ -79,6 +81,9 @@ internal sealed record BenchmarkOptions(
                 case "--go":
                     shape = SelectShape(shape, BenchmarkShape.Go);
                     break;
+                case "--java":
+                    shape = SelectShape(shape, BenchmarkShape.Java);
+                    break;
                 case "--mixed":
                     shape = SelectShape(shape, BenchmarkShape.Mixed);
                     break;
@@ -110,7 +115,7 @@ internal sealed record BenchmarkOptions(
     {
         if (current is not null)
         {
-            throw new ArgumentException("Options '--dotnet', '--javascript', '--python', '--go', and '--mixed' are mutually exclusive.");
+            throw new ArgumentException("Options '--dotnet', '--javascript', '--python', '--go', '--java', and '--mixed' are mutually exclusive.");
         }
 
         return selected;
