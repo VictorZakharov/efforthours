@@ -22,7 +22,7 @@ public sealed record ChangeEstimateInput
 
 public sealed partial class ChangeEstimator
 {
-    public const string Version = "change-seed/0.5.0+seed-rules/0.3.0";
+    public const string Version = "change-seed/0.6.0+seed-rules/0.3.0";
 
     private readonly IEstimator _repositoryEstimator;
 
@@ -78,6 +78,7 @@ public sealed partial class ChangeEstimator
                 nameof(input));
         }
 
+        Dictionary<string, SnapshotAnalysis> snapshotAnalyses = new(StringComparer.Ordinal);
         PairEstimate normalized;
         await using (IChangeSnapshot baseSnapshot = await input.OpenBaseAsync(cancellationToken)
             .ConfigureAwait(false))
@@ -91,6 +92,7 @@ public sealed partial class ChangeEstimator
                 headSnapshot,
                 input.Diagnostics,
                 profile,
+                snapshotAnalyses,
                 cancellationToken).ConfigureAwait(false);
         }
 
@@ -156,6 +158,7 @@ public sealed partial class ChangeEstimator
                     componentHead,
                     [],
                     profile,
+                    snapshotAnalyses,
                     cancellationToken).ConfigureAwait(false);
             }
 

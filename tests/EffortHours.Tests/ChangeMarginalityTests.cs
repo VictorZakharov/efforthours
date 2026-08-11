@@ -18,9 +18,10 @@ public sealed class ChangeMarginalityTests
             before,
             afterWithoutLockfileDelta);
 
-        Assert.Equal("change-seed/0.5.0+seed-rules/0.3.0", report.EstimatorVersion);
+        Assert.Equal(ChangeEstimator.Version, report.EstimatorVersion);
         Assert.InRange(report.TotalEffort.Expected, 3m, 8m);
-        Assert.InRange(report.WorkItems.Count, 4, 8);
+        Assert.InRange(report.WorkItems.Count, 4, 16);
+        Assert.All(report.WorkItems, item => Assert.InRange(item.Hours.Expected, 0.01m, 1.5m));
         Assert.DoesNotContain(report.Categories, category => category.Category is
             EffortCategory.RepositoryAndSolutionSetup or
             EffortCategory.ArchitectureAndTechnicalDesign or
@@ -30,8 +31,10 @@ public sealed class ChangeMarginalityTests
             item.Estimator.Id == "change-rule:change-comprehension");
         Assert.Single(report.WorkItems, item =>
             item.Estimator.Id == "change-rule:change-validation");
-        Assert.Single(report.WorkItems, item =>
-            item.Estimator.Id == "change-rule:change-review");
+        WorkItem[] reviewItems = [.. report.WorkItems.Where(item =>
+            item.Estimator.Id == "change-rule:change-review")];
+        Assert.NotEmpty(reviewItems);
+        Assert.Single(reviewItems.Select(item => item.CorrelationGroup).Distinct(StringComparer.Ordinal));
 
         ChangePathEvidence lockfile = Assert.Single(report.Evidence.Paths, path =>
             path.Path == "package-lock.json");

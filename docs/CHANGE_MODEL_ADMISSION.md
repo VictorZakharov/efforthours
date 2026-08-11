@@ -2,40 +2,59 @@
 
 ## Status
 
-Metric identity and decision order are frozen as `change-model-admission/0.1.0`.
-Numerical thresholds are deliberately not frozen yet because no independently
-reviewed Change EHE corpus exists. No local ML fitting or production-readiness
-claim is permitted until thresholds are set from development/validation error
-scales without consulting the test partition.
+Metric identity, decision order, and the first small-change logical gate are frozen
+as `change-model-admission/0.2.0`. The current source baseline is
+`change-seed/0.6.0+seed-rules/0.3.0`. It is admitted as the transparent Stage A
+logical baseline for experimental one-to-several-day Change estimates. This is
+weak-supervision admission, not empirical accuracy, formal interval calibration,
+or production readiness.
 
-The current source baseline is `change-seed/0.5.0+seed-rules/0.3.0`. Its Change
-rules retain the 0.3.0 logical-marginality correction and the versioned, fail-closed
-0.4.0 generated-customization boundary. Version 0.5.0 adds range reconciliation
-diagnostics without changing valuation; it is not an admitted calibrated
-candidate. The frozen public synthetic corpus and source reports retain
+Rubric `change-ehe-work-item/1.1.0` permits a disclosed host-AI teacher to author
+logical labels when every total is built exactly from small, evidence-backed tasks
+and model/input provenance is recorded. The record remains `teacher-estimate`; it
+must not be described as human or independent. Later production observations test
+empirical accuracy separately and do not become effort multipliers.
+
+The frozen real-source labels retain rubric 1.0.0 provenance. A separate
+[`stage-a-logical-review/0.1.0`](../calibration/changes/stage-a-logical-review/README.md)
+audit applies the stricter 1.1.0 decomposition boundary without rewriting those
+labels: all 28 parent targets in the five eligible records resolve into 45 distinct
+0.5-to-1.5-hour tasks whose expected totals remain exactly 38.00 hours. Candidate
+values were visible during this audit, so it is transparent logical review rather
+than a new blind estimate.
+
+Version 0.6.0 retains the 0.3.0 logical-marginality correction, the 0.4.0
+fail-closed generated-customization boundary, and the 0.5.0 range diagnostic. It
+partitions one mixed-role capability budget across disjoint production, test,
+documentation, build, and delivery evidence without changing that budget. It also
+decomposes every candidate item above 1.5 expected hours into distinct logical
+phases, reuses unique snapshot analyses, bounds optional range-component audits,
+and fixes cent allocation for large component counts. No repository or Change
+numerical prior changes.
+
+The frozen public synthetic corpus and source reports retain
 `change-seed/0.1.0` provenance.
 The first real public Change pilot and subsequent six-family expansion retain
 released `change-seed/0.2.0` provenance. Separate 0.3.0 development/validation
 diagnostics leave the expansion's test comparison withheld. A released-alpha.3
 public validation follow-on exercises 0.3.0 directly. All three real corpora have
-one host-AI teacher and no independent correction.
+one disclosed host-AI teacher and no independent correction; those maturity facts
+remain unchanged.
 
 ## Immutable decision boundary
 
-The current deterministic baseline remains in place unless a fitted or calibrated
-candidate passes every gate. Failure, insufficient data, ambiguous provenance, or
-a regression leaves that transparent estimator in place. Candidate selection never
+The current deterministic baseline remains in place unless a candidate passes the
+gate for its declared size stage. Failure, insufficient data, ambiguous provenance,
+or a regression leaves that transparent estimator in place. Candidate selection never
 changes the normalized-final-delta, history-exclusion, pricing-separation, or
 evidence-lineage semantics.
 
-Before independent labels exist, a general correctness defect in the transparent
-rules may advance the baseline without pretending to pass model admission. Such a
-revision must use a new estimator version, be expressed without subject-specific
-identifiers, add synthetic semantic and invariant regressions, preserve frozen
-source reports and label provenance, avoid test-partition tuning, and disclose
-mixed development/validation diagnostics without making an accuracy claim. This
-exception covers rule correctness and double-counting defects only; it cannot be
-used to fit numerical priors to preferred totals or bypass independent review.
+A general correctness defect in transparent rules may advance the baseline without
+numerical fitting. Such a revision must use a new estimator version, be expressed
+without subject-specific identifiers, add synthetic semantic/invariant regressions,
+preserve frozen reports and label provenance, avoid test-partition tuning, and
+disclose mixed development/validation diagnostics. This exception cannot fit
+priors to a preferred total or convert logical agreement into empirical accuracy.
 
 ## Frozen metric set
 
@@ -63,7 +82,9 @@ A candidate must also:
 - use only records with complete immutable base/head, source/license, reviewer,
   and repository-family provenance;
 - preserve repository-owned development/validation/test isolation;
-- use independently `reviewed` or `adjudicated` records for a release decision;
+- use rubric-1.1.0 decomposed teacher labels for logical admission and preserve
+  their exact `teacher-estimate` maturity; distinct review remains optional
+  corroboration rather than a gate;
 - pass all formatting, movement, generated, duplication, deletion, overlap,
   revert, additivity, history-boundary, and category-isolation guardrails;
 - remain deterministic for identical evidence, configuration, and model versions;
@@ -72,18 +93,67 @@ A candidate must also:
   budgets; and
 - add only dependencies and model artifacts compatible with MIT distribution.
 
-Teacher labels may diagnose infrastructure and provisional error scales, but they
-cannot select a validation candidate, establish held-out accuracy, support a
-release decision, or advance independent maturity.
+Host-AI teacher labels may select an experimental logical baseline and size-stage
+advance. They cannot establish historical truth, empirical production accuracy,
+or independent maturity. A production-readiness claim requires separately defined
+outcome observations and privacy policy.
+
+## Stage A numerical and decomposition gates
+
+Stage A covers changes with 4 to 32 expected teacher hours. Exact-zero and sub-day
+cases remain required semantic guardrails but do not advance the size ladder. The
+first gate requires at least five public repository families spanning .NET,
+JavaScript, and TypeScript across development and validation.
+
+For a Stage A candidate:
+
+- targets should normally be 0.5 to 1.5 expected hours; any target above 2 hours
+  needs a concrete indivisibility exception and no target may exceed 8 hours;
+- every target has distinct evidence and rationale, and target/category/change
+  sums reconcile exactly;
+- eligible-case expected-total WAPE is at most 0.15 and absolute aggregate bias is
+  at most 0.10;
+- each eligible case has expected absolute error no greater than the larger of
+  1.5 hours and 25% of its teacher expected total;
+- category-observation expected WAPE is at most 0.40 and absolute aggregate bias
+  is at most 0.15;
+- every frozen parent target used for admission has a rubric-1.1.0 logical
+  decomposition, every candidate work item is at most 1.5 expected hours, and both
+  ledgers have unique task titles and nonempty evidence-backed reasoning; legacy
+  exact work-item ID matching remains diagnostic because deliberate role and task
+  splits change those identities;
+- candidate ranges cover at least 0.80 of teacher expected points and mean
+  candidate width is no more than 1.75 times mean teacher width; and
+- every qualitative Change guardrail and the recorded performance/safety gate
+  passes.
+
+These initial numbers were selected from visible development/validation error
+scales without evaluating the expansion test record. Five eligible families have
+38.00 reviewed and 38.50 candidate expected hours under the total-invariant 0.6.0
+rules: WAPE 0.0526 and bias +0.0132, with every per-case bound passing. Their
+native-category WAPE is 0.3963 with +0.0132 bias; all 28 frozen parent targets are
+covered by 45 audited logical tasks; all 41 current candidate work items are at
+most 1.5 expected hours; teacher-expected interval coverage is 1.0000; and the
+mean-width ratio is 1.3624. The 2.75-hour p-limit record remains a semantic
+guardrail and does not contribute to these size-band gates.
+
+The evidence is one-teacher logical agreement and is sparse by ecosystem/partition
+cell. It admits only Stage A experimental use. It does not justify a general error
+rate, a calibrated probability interval, or a larger size band.
 
 ## Candidate selection order
 
-1. Fit rules, correction factors, or ML only on development records.
-2. Compare a finite, predeclared candidate set on validation and select at most one.
-3. Freeze the candidate, numerical admission thresholds, and release rationale.
-4. Evaluate the test partition once for that release decision.
-5. Ship only if every numerical and non-numerical gate passes; otherwise retain the
-   seed baseline and report the failed gates.
+1. Author labels from evidence without a preferred total; record host model and
+   exact input boundary.
+2. Freeze the size band, candidate set, and gates before comparison.
+3. Use development records for fitting and validation records to select at most
+   one candidate. Transparent subject-neutral correctness changes remain separate
+   from fitting.
+4. Advance to a larger band only after the current band passes and host-review
+   input/token/time/cost telemetry is recorded when available.
+5. Reserve the test partition and later production observations for a separately
+   frozen empirical release claim; Stage A logical admission does not consume
+   them.
 
 Test results must not tune priors, thresholds, features, uncertainty widths, or
 hyperparameters. A later attempt after test failure is a new model/version and
@@ -283,3 +353,36 @@ threshold, dependency, partition, or review maturity. Frozen reports retain thei
 original identities and are not regenerated. The new shares are not admitted
 calibration targets, accuracy evidence, historical labor/rework, productivity
 scores, or effort multipliers.
+
+## `change-seed/0.6.0` Stage A and scale-safety checkpoint
+
+Version 0.6.0 fixes the remaining mixed production/test category boundary by
+splitting one already-computed capability range across explicit maintained-file
+roles. Weighted cent allocation is deterministic, evidence sets are disjoint, and
+the capability low/expected/high sums are unchanged. Common change-level
+comprehension, review, and validation totals therefore retain their prior values.
+Any resulting work item above 1.5 expected hours is further partitioned into
+distinct, named logical phases of roughly one hour. This changes decomposition
+identity and granularity, not category or repository totals.
+
+Within one estimate call, repository evidence and its repository estimate are now
+cached by immutable snapshot object ID. An explicit adjacent range analyzes each
+unique snapshot once. Per-commit audit enumeration is capped at 256 components by
+default and 1,024 by the public hard ceiling. A larger range emits `FB5105`, omits
+only the optional component ledger, and retains the complete final base-to-head
+estimate. The allocator uses deterministic floor-plus-largest-remainder cents so
+large component sets remain nonnegative and sum exactly.
+
+Current development/validation regeneration preserves every 0.3.0 repository
+total. Deliberate role and logical-task splits reduce exact legacy work-item ID
+matching, so that metric remains a diagnostic rather than an admission gate. The
+Stage A audit instead covers all 28 eligible frozen parent targets with 45
+fine-grained teacher tasks, while all 41 current candidate items meet the same
+1.5-hour ceiling. Frozen released reports, teacher corpora, and their exact
+estimator identities remain untouched. The expansion test comparison remains
+withheld.
+
+The performance checkpoint and exact commands are in `BENCHMARKS.md`. Three fresh
+million-line two-snapshot runs and three fresh 128-commit runs establish the local
+time/memory gates; a 257-commit run proves the default audit cap. These measurements
+change no EHE prior and do not establish cross-platform performance.

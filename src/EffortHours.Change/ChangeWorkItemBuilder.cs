@@ -12,7 +12,7 @@ internal sealed record ChangeWorkItemResult(
 
 internal static partial class ChangeWorkItemBuilder
 {
-    public const string EstimatorVersion = "change-seed/0.3.0";
+    public const string EstimatorVersion = "change-seed/0.6.0";
 
     public static ChangeWorkItemResult Build(
         ChangeSelection selection,
@@ -31,6 +31,7 @@ internal static partial class ChangeWorkItemBuilder
         Dictionary<string, Capability> headCapabilities = Capabilities(headEstimate, headFacts);
         ChangePathEvidence[] represented = [.. changeEvidence.Paths.Where(path => path.Represented)];
         HashSet<string> usedEvidenceIds = new(StringComparer.Ordinal);
+        HashSet<EffortCategory> comprehensionCategories = [];
         List<WorkItem> items = [];
 
         foreach (string capabilityId in baseCapabilities.Keys
@@ -132,22 +133,43 @@ internal static partial class ChangeWorkItemBuilder
                 continue;
             }
 
-            usedEvidenceIds.UnionWith(evidenceIds);
-            items.AddRange(CreateItems(
-                selection,
-                rule,
-                capabilityId,
+            comprehensionCategories.Add(source.Category);
+            CapabilityRolePartition[] partitions = PartitionCapabilityRoleBudget(
                 source.Category,
-                $"{verb} {source.Title}",
-                source.Scope,
-                source.Complexity,
-                hours,
-                Math.Min(source.Confidence, 0.82m),
-                reason,
+                touched,
                 evidenceIds,
-                profile,
-                touched.Sum(path => path.EditRegions),
-                source.UncertaintyReasons));
+                hours);
+            foreach (CapabilityRolePartition partition in partitions)
+            {
+                bool primary = partition.Category == source.Category;
+                string partitionTitle = primary
+                    ? $"{verb} {source.Title}"
+                    : $"{verb} {CategoryName(partition.Category)} support for {source.Title}";
+                string partitionScope = primary || partition.Paths.Count != 1
+                    ? source.Scope
+                    : partition.Paths[0].Path;
+                string partitionReason = partitions.Length == 1
+                    ? reason
+                    : reason + " The capability's unchanged logical budget is partitioned by explicit " +
+                        "maintained-artifact role so production, tests, documentation, and delivery evidence " +
+                        "remain disjoint without multiplying total effort.";
+                usedEvidenceIds.UnionWith(partition.EvidenceIds);
+                items.AddRange(CreateItems(
+                    selection,
+                    rule,
+                    capabilityId,
+                    partition.Category,
+                    partitionTitle,
+                    partitionScope,
+                    source.Complexity,
+                    partition.Hours,
+                    Math.Min(source.Confidence, 0.82m),
+                    partitionReason,
+                    partition.EvidenceIds,
+                    profile,
+                    partition.Paths.Sum(path => path.EditRegions),
+                    source.UncertaintyReasons));
+            }
         }
 
         IGrouping<(EffortCategory Category, ChangePathStatus Status), ChangePathEvidence>[] fallbackGroups =
@@ -161,6 +183,7 @@ internal static partial class ChangeWorkItemBuilder
         {
             ChangePathEvidence[] paths = [.. group.OrderBy(path => path.Path, StringComparer.Ordinal)];
             EffortCategory category = group.Key.Category;
+            comprehensionCategories.Add(category);
             EffortRange hours = FallbackRange(paths, category);
             string[] evidenceIds = [.. paths.Select(path => path.Id).Order(StringComparer.Ordinal)];
             items.AddRange(CreateItems(
@@ -185,10 +208,7 @@ internal static partial class ChangeWorkItemBuilder
         if (represented.Length > 0)
         {
             string[] allEvidenceIds = [.. represented.Select(path => path.Id).Order(StringComparer.Ordinal)];
-            int capabilityCount = items
-                .Select(item => item.Category)
-                .Distinct()
-                .Count();
+            int capabilityCount = comprehensionCategories.Count;
             decimal comprehensionExpected = Math.Min(
                 4m,
                 0.5m + (Math.Max(1, capabilityCount) - 1) * 0.25m);

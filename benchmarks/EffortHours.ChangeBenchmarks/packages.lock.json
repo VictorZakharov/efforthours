@@ -1,0 +1,126 @@
+{
+  "version": 2,
+  "dependencies": {
+    "net10.0": {
+      "Humanizer.Core": {
+        "type": "Transitive",
+        "resolved": "3.0.10",
+        "contentHash": "yZIhtw8sYuvsONzQbZxWpR60tMWYHXoo0DL6nyOqSFiU5POjBTSEyWFpTQtJEZuy+oqiYTXKXY/Mjx7KnqIQFw=="
+      },
+      "Json.More.Net": {
+        "type": "Transitive",
+        "resolved": "3.0.1",
+        "contentHash": "fRctF2J2SILYG6wqP21drmeEODmCVkVQ/b3MndDu2fT1swfySyUgq7ePCk+aENGlDcIm05fyfjh9vcuqDEfv3w=="
+      },
+      "JsonPointer.Net": {
+        "type": "Transitive",
+        "resolved": "7.0.2",
+        "contentHash": "oClYHv2ooeRrtPZyC9sb/Za/ie5pGhjTbNHlAyFg4XOCyU+606FdoZKS7UdaWvtsPlrF+U2w0Ja3TRvn5+spyA==",
+        "dependencies": {
+          "Humanizer.Core": "3.0.10",
+          "Json.More.Net": "3.0.1"
+        }
+      },
+      "Microsoft.CodeAnalysis.Analyzers": {
+        "type": "Transitive",
+        "resolved": "5.3.0",
+        "contentHash": "KuLhbZwB0L8JikL86AE5VWEp3RLNjIcp+j8yz9EJ/UBgRz4+qDEjHg/tluRFbpYpD/e37BqaaNFbQ0vqawBwWQ=="
+      },
+      "Microsoft.CodeAnalysis.Common": {
+        "type": "Transitive",
+        "resolved": "5.6.0",
+        "contentHash": "eWYNB5e92PSdkQ0xcmy2aLtrvBXNydnVi0Hj/VjaAely6XBqA3By+ClGAJaj4d16pzQmrXPLLK9RDVuS1Ec9xQ==",
+        "dependencies": {
+          "Microsoft.CodeAnalysis.Analyzers": "5.3.0"
+        }
+      },
+      "efforthours.analysis": {
+        "type": "Project",
+        "dependencies": {
+          "EffortHours.Contracts": "[1.0.0, )"
+        }
+      },
+      "efforthours.analyzers.dotnet": {
+        "type": "Project",
+        "dependencies": {
+          "EffortHours.Analysis": "[1.0.0, )",
+          "EffortHours.Contracts": "[1.0.0, )",
+          "Microsoft.CodeAnalysis.CSharp": "[5.6.0, )"
+        }
+      },
+      "efforthours.analyzers.javascript": {
+        "type": "Project",
+        "dependencies": {
+          "Acornima": "[1.7.0, )",
+          "Acornima.Extras": "[1.7.0, )",
+          "EffortHours.Analysis": "[1.0.0, )",
+          "EffortHours.Contracts": "[1.0.0, )"
+        }
+      },
+      "efforthours.change": {
+        "type": "Project",
+        "dependencies": {
+          "EffortHours.Analysis": "[1.0.0, )",
+          "EffortHours.Contracts": "[1.0.0, )",
+          "EffortHours.Core": "[1.0.0, )",
+          "EffortHours.Estimation": "[1.0.0, )"
+        }
+      },
+      "efforthours.contracts": {
+        "type": "Project",
+        "dependencies": {
+          "JsonSchema.Net": "[9.4.0, )"
+        }
+      },
+      "efforthours.core": {
+        "type": "Project",
+        "dependencies": {
+          "EffortHours.Analysis": "[1.0.0, )",
+          "EffortHours.Analyzers.DotNet": "[1.0.0, )",
+          "EffortHours.Analyzers.JavaScript": "[1.0.0, )",
+          "EffortHours.Contracts": "[1.0.0, )"
+        }
+      },
+      "efforthours.estimation": {
+        "type": "Project",
+        "dependencies": {
+          "EffortHours.Contracts": "[1.0.0, )"
+        }
+      },
+      "Acornima": {
+        "type": "CentralTransitive",
+        "requested": "[1.7.0, )",
+        "resolved": "1.7.0",
+        "contentHash": "a2I4O4qkuAdB0oSaGz6/k0n/bXxMbGcLBra5dNTTVSLmTwM7uORA8ebpOrNMmDfFWOMwvuaRL6gPprRV4HTV0w=="
+      },
+      "Acornima.Extras": {
+        "type": "CentralTransitive",
+        "requested": "[1.7.0, )",
+        "resolved": "1.7.0",
+        "contentHash": "lEp6OUPKmiSp+iCHcxFTLTJUTk6O+YxUdP3WB3nxuS1jRJ4PJLOTDlBSRkG3h2tjTB5dE30Hlra6dwvcoq2NNg==",
+        "dependencies": {
+          "Acornima": "1.7.0"
+        }
+      },
+      "JsonSchema.Net": {
+        "type": "CentralTransitive",
+        "requested": "[9.4.0, )",
+        "resolved": "9.4.0",
+        "contentHash": "muE4nPuzbD9x5XA1mkXJNqX4mhz47oF3EY8qFLY1pyUY7lhXFKq65t/dSKIHeNSLBV17zwZuq24MD1em90rMNg==",
+        "dependencies": {
+          "JsonPointer.Net": "7.0.2"
+        }
+      },
+      "Microsoft.CodeAnalysis.CSharp": {
+        "type": "CentralTransitive",
+        "requested": "[5.6.0, )",
+        "resolved": "5.6.0",
+        "contentHash": "r1DrKQ/L0xTw03wJrLr36AMQNslyaeEKBFyFmQcOKa8HX3YvmhY//JEUafb6IR/m0gmaUVCfBTWitKJRNb7YAA==",
+        "dependencies": {
+          "Microsoft.CodeAnalysis.Analyzers": "5.3.0",
+          "Microsoft.CodeAnalysis.Common": "[5.6.0]"
+        }
+      }
+    }
+  }
+}

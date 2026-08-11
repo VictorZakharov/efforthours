@@ -7,16 +7,21 @@ implemented after Milestone 7B5. They include provider-neutral immutable
 base/head analysis, two statically scanned directories, two saved repository
 evidence bundles, one commit, one final revision range, and one GitHub pull
 request through an optional `gh` adapter. The current
-`change-seed/0.5.0` rules are transparent but uncalibrated and remain experimental.
-Version 0.5.0 retains the 0.3.0 logical-marginality correction and the 0.4.0
+`change-seed/0.6.0` rules are the Stage A logically admitted baseline and remain
+experimental. They are not empirically calibrated or production-ready.
+Version 0.6.0 retains the 0.3.0 logical-marginality correction and the 0.4.0
 fail-closed boundary for explicitly delimited customization inside otherwise
 generated files. It adds an expected-point gross-to-final normalization diagnostic
-for explicit multi-commit ranges without changing any Change EHE prior or final-
-delta total. The current source composes repository `seed-rules/0.3.0`.
+for explicit multi-commit ranges, disjoint mixed-role category partitions,
+roughly-one-hour logical work-item decomposition, unique-snapshot analysis reuse,
+and bounded component audits without changing any Change EHE prior or final-delta
+total. The current source composes repository
+`seed-rules/0.3.0`.
 The first calibration-infrastructure checkpoint, a preliminary 24-record synthetic
 host-AI teacher corpus, a one-record real public pilot, a blind six-family
 real-source expansion, and a released-alpha.3 public validation follow-on are
-implemented, but no independent correction exists. The visible expansion
+implemented. No independent correction exists, but disclosed, decomposed host-AI
+teacher labels are now sufficient for Stage A logical admission. The visible expansion
 diagnostics exposed repeated category-slice overcounting. A subject-neutral 0.3.0
 correctness revision and separate development/validation diagnostics now exist;
 the alpha.3 follow-on exercises that revision on a new family, the expansion test
@@ -284,8 +289,9 @@ The v1 public schemas are `change-evidence`, `change-estimate-report`, and
 `change-estimate-explanation`. The report schema adds an optional normalization
 summary, so frozen v1 reports remain valid; explanation queries accept its stable
 calculation ID and return exact adjustment lineage. The current estimator identity
-is `change-seed/0.5.0+seed-rules/0.3.0`; it composes the still-uncalibrated repository
-model and must not be described as production-ready. Frozen
+is `change-seed/0.6.0+seed-rules/0.3.0`; it composes the still-uncalibrated repository
+model and is admitted only for experimental Stage A logical use. It must not be
+described as empirically calibrated or production-ready. Frozen
 calibration source reports retain the exact earlier estimator identity they were
 created from.
 
@@ -305,6 +311,13 @@ created from.
 - Ranges expose isolated commit estimates, normalized final effort, named signed
   adjustments, allocations that sum exactly to normalized expected hours, and the
   expected-point normalization diagnostic for explicit multi-commit ranges.
+- Adjacent range components reuse repository analysis by immutable snapshot ID;
+  `N` commits require `N + 1` repository estimates instead of `2N`.
+- The optional per-commit reconciliation audit is capped at 256 components by
+  default. Larger ranges emit `FB5105` and retain the complete final base-to-head
+  estimate while omitting the oversized component ledger.
+- Component attribution uses nonnegative largest-remainder cents and sums exactly
+  even for large component sets.
 - PR mode invokes `gh` only to resolve number/URL and base/head object IDs, then
   requires both objects to exist locally.
 - JSON and Markdown output include optional pricing only after hours are estimated;
@@ -315,6 +328,12 @@ created from.
 - Positive repository-capability partitions for one existing or modified logical
   capability collapse into one bounded evidence-derived Change budget; distinct
   newly added capabilities remain additive.
+- When one logical capability cites explicit production, test, documentation,
+  build, or delivery roles, its existing low/expected/high budget is partitioned
+  across disjoint category evidence rather than duplicated or left in one category.
+- Any candidate work item above 1.5 expected hours is partitioned into distinct,
+  named logical phases of roughly one hour while preserving its category and exact
+  low/expected/high sum.
 - Change comprehension, manual validation, and self-review are emitted once for
   the coherent final delta instead of being inherited repeatedly from repository
   scopes.
@@ -334,18 +353,23 @@ revert behavior while preserving range-point and category isolation. See
 
 ## Calibration boundary
 
-Change calibration uses `change-ehe-work-item/1.0.0` and the existing v1 corpus,
+New Change calibration uses `change-ehe-work-item/1.1.0` and the existing v1 corpus,
 blind-review, validation, and evaluation contracts with an optional immutable
 Change reference. Repository records omit that member and retain their canonical
 serialization. A Change record pins case ID, selector kind, base/head object IDs,
 base/head evidence digests, a content-derived final-delta digest, and non-valuing
 coverage tags. Repository family owns the development/validation/test partition.
+Frozen 1.0.0 packets and corpora retain their original rubric and are reproduced
+through an explicit legacy authoring path.
 
 `calibration change-scaffold` produces unreviewed effort-only packets;
 `change-compile` verifies the exact report and final-delta provenance;
 `change-evaluate` applies the same versioned WAPE, bias, absolute-error, interval,
-and mapping metrics as repository evaluation. Ordinary `review-scaffold` and
-`review-compile` provide independent correction without dropping Change lineage.
+and mapping metrics as repository evaluation. A disclosed host-AI teacher may
+supply logical labels without a second reviewer when model/input provenance and
+evidence-backed decomposition are complete. Ordinary `review-scaffold` and
+`review-compile` remain available for optional independent correction without
+dropping Change lineage or changing the original maturity claim.
 A zero normalized delta has an empty reviewed target list rather than an invented
 zero-hour task. A reviewer rejects a false-positive or duplicate candidate
 capability with a lineage-preserving exact `0/0/0` target, concrete rationale, and
@@ -357,10 +381,19 @@ The first 24 synthetic case identities and partitions are frozen under
 source reports and blind authoring packets are reproducible from the checked-in
 MIT synthetic suite without physical target-repository snapshots. The first-pass
 teacher corpus has 121 targets and an exact-digest blind handoff; it is disclosed
-weak supervision, not an accuracy claim. Metric identity and
-candidate decision order are frozen in `CHANGE_MODEL_ADMISSION.md`; numerical
-thresholds, model fitting, and accuracy claims remain blocked on realistic,
-independently reviewed error measurements.
+weak supervision, not an empirical accuracy claim. Metric identity, Stage A gates,
+and candidate decision order are frozen in `CHANGE_MODEL_ADMISSION.md`.
+
+Rubric 1.1.0 builds totals from roughly 0.5-to-1.5-hour tasks. Targets above two
+hours require a concrete indivisibility exception. Calibration starts with changes
+of roughly 4 to 32 expected hours and advances to larger deliverables only after
+the current band passes. Host-AI input size, token use, wall time, and cost are
+recorded when available because review expense grows with source scope; none is an
+EHE multiplier.
+
+Frozen rubric-1.0.0 labels are not rewritten. The versioned Stage A logical audit
+decomposes all eligible parent targets under the stricter 1.1.0 boundary while
+preserving exact teacher totals and original uncertainty provenance.
 
 `calibration/changes/public-real` adds the first current-estimator public final
 delta: one MIT-licensed pull request in an already-development repository family.

@@ -127,16 +127,54 @@ public sealed class GitClient
             $"Git could not test range ancestry: {result.StandardError.Trim()}");
     }
 
-    public async Task<IReadOnlyList<string>> ListRangeCommitsAsync(
+    public Task<IReadOnlyList<string>> ListRangeCommitsAsync(
         string repositoryPath,
         string baseObjectId,
         string headObjectId,
         CancellationToken cancellationToken = default)
     {
+        return ListRangeCommitsCoreAsync(
+            repositoryPath,
+            baseObjectId,
+            headObjectId,
+            maximumCount: null,
+            cancellationToken);
+    }
+
+    public Task<IReadOnlyList<string>> ListRangeCommitsAsync(
+        string repositoryPath,
+        string baseObjectId,
+        string headObjectId,
+        int maximumCount,
+        CancellationToken cancellationToken = default)
+    {
+        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(maximumCount);
+        return ListRangeCommitsCoreAsync(
+            repositoryPath,
+            baseObjectId,
+            headObjectId,
+            maximumCount,
+            cancellationToken);
+    }
+
+    private async Task<IReadOnlyList<string>> ListRangeCommitsCoreAsync(
+        string repositoryPath,
+        string baseObjectId,
+        string headObjectId,
+        int? maximumCount,
+        CancellationToken cancellationToken)
+    {
+        List<string> arguments = ["rev-list", "--reverse", "--topo-order"];
+        if (maximumCount is not null)
+        {
+            arguments.Add($"--max-count={maximumCount.Value}");
+        }
+
+        arguments.Add($"{baseObjectId}..{headObjectId}");
         ExternalCommandResult result = await _commands.RunAsync(
             "git",
             repositoryPath,
-            ["rev-list", "--reverse", "--topo-order", $"{baseObjectId}..{headObjectId}"],
+            arguments,
             cancellationToken).ConfigureAwait(false);
         return [.. result.StandardOutput
             .Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)

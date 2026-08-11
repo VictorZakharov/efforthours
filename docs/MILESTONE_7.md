@@ -321,6 +321,35 @@ interval, and exact-item mapping behavior is mixed and fully disclosed. These
 one-teacher diagnostics do not establish accuracy or review maturity, and the test
 comparison remains withheld.
 
+## Change Stage A logical-admission checkpoint
+
+Change rubric `change-ehe-work-item/1.1.0` and admission policy
+`change-model-admission/0.2.0` now distinguish logical weak-supervision admission
+from empirical validation. A disclosed host-AI teacher can support the former when
+every estimate is built from distinct evidence-backed targets normally about 0.5
+to 1.5 expected hours and all totals reconcile exactly. Its maturity remains
+`teacher-estimate`; it is neither human nor independent review.
+
+The released corpora retain their exact rubric-1.0.0 provenance. The separate
+`stage-a-logical-review/0.1.0` artifact transparently audits all 28 eligible parent
+targets into 45 rubric-1.1.0 tasks without rewriting a label or uncertainty range.
+Candidate values were visible during decomposition, so the artifact proves logical
+granularity rather than creating a new blind estimate.
+
+The current `change-seed/0.6.0+seed-rules/0.3.0` baseline passes the frozen first
+band for five public 4-to-32-hour changes across .NET, JavaScript, and TypeScript.
+Reviewed and candidate expected totals are 38.00 and 38.50 hours, expected WAPE is
+0.0526, and aggregate bias is +0.0132. The category, decomposition, interval,
+performance, and qualitative gates are recorded in `CHANGE_MODEL_ADMISSION.md`.
+The held-out expansion test comparison was not used.
+
+This Change-specific decision does not alter the repository-estimator admission
+policy elsewhere in this milestone. It admits only an experimental logical
+baseline for one-to-several-day changes. Larger size bands, empirical production
+accuracy, formal interval calibration, and production readiness remain separate
+future gates; independent review remains optional corroboration for Change and
+does not change teacher provenance unless actually completed.
+
 ## Contract boundaries
 
 ### Reviewed corpus

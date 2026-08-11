@@ -2,20 +2,25 @@
 
 This directory holds policy and redistributable teacher labels for EffortHours's
 experimental Change estimators. The current source baseline is
-`change-seed/0.3.0`; the frozen synthetic corpus retains its original
+`change-seed/0.6.0`; the frozen synthetic corpus retains its original
 `change-seed/0.1.0` source-report provenance, the real pilot/expansion retain their
 released `change-seed/0.2.0` reports, and the released-alpha.3 diagnostic exercises
-`change-seed/0.3.0` directly. Change labels use the same corpus,
+`change-seed/0.3.0` directly. Change labels use the same corpus, optional
 independent-review, validation, and metric contracts as repository labels, with an
 additional immutable final-delta provenance record.
 
-The current checkpoint contains tooling, the
-[`change-ehe-work-item/1.0.0`](../rubrics/change-ehe-work-item/1.0.0.md) rubric, and
-a [24-case matrix](public-synthetic/CASE_MATRIX.md) frozen before numerical review.
+New packets use
+[`change-ehe-work-item/1.1.0`](../rubrics/change-ehe-work-item/1.1.0.md); frozen
+packets retain [`1.0.0`](../rubrics/change-ehe-work-item/1.0.0.md) and its explicit
+byte-reproducible legacy authoring path. Current review plans use compiler 0.2.0;
+compiler 0.1.0 remains accepted only with rubric 1.0.0 for frozen reproduction.
+The checkpoint also contains a
+[24-case matrix](public-synthetic/CASE_MATRIX.md) frozen before numerical review.
 Its synthetic source suite now reproduces 24 canonical source reports and blind
 authoring packets. A preliminary 24-record teacher corpus and blind independent-
-review packet are checked in, but no independent correction or accuracy claim is
-complete.
+review packet are checked in. No independent correction or empirical accuracy
+claim is complete; decomposed host-AI teacher labels are nevertheless admitted as
+Stage A logical weak supervision under the 1.1.0 policy.
 
 The [`public-real`](public-real) pilot adds the first immutable public open-source
 pull-request record for the released `change-seed/0.2.0` estimator. Alpha.2
@@ -41,6 +46,17 @@ candidate covers the complete reviewed range but uses a substantially wider
 interval, overstates self-review, and attaches the represented test path to the
 production capability instead of emitting a separate unit-testing target. This is
 one non-independent diagnostic; it changes no rule, prior, threshold, or maturity.
+
+Current `change-seed/0.6.0+seed-rules/0.3.0` keeps the visible 0.3.0 repository
+totals while splitting mixed maintained-file roles into disjoint categories and
+decomposing larger candidate items into named roughly-one-hour phases. The
+[`stage-a-logical-review`](stage-a-logical-review/README.md) audit preserves the
+legacy labels while resolving all 28 eligible parent targets into 45 distinct
+0.5-to-1.5-hour tasks. Five visible 4-to-32-hour public families pass the frozen
+Stage A total, per-case, native-category, decomposition, interval, and safety gates
+recorded in `docs/CHANGE_MODEL_ADMISSION.md`. The expansion test comparison remains
+withheld. This admits experimental small-change logical use, not a general accuracy
+rate or production readiness.
 
 ## Workflow
 
@@ -83,7 +99,9 @@ reverts to enter held-out evaluation without invented work items.
 A Change review-plan capability uses an exact `0/0/0` target plus a concrete
 rationale and `sizeException` to reject a candidate false positive or duplicate.
 The lineage-preserving exclusion remains visible in evaluation and in blind
-independent review. Empty target lists are reserved for exact-zero final deltas.
+optional independent review. Empty target lists are reserved for exact-zero final
+deltas. Positive 1.1.0 targets should be roughly 0.5 to 1.5 expected hours; any
+target above two hours requires a concrete indivisibility exception.
 
 The public synthetic source artifacts are generated without disk-backed target
 snapshots:

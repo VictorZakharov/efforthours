@@ -2,9 +2,9 @@
 
 ## Status
 
-Complete as of August 6, 2026. The implementation is experimental and
-uncalibrated. It estimates counterfactual Equivalent Human Effort represented by a
-final artifact delta; it does not reconstruct actual work or timesheets.
+Complete as of August 6, 2026. At that checkpoint the implementation was
+experimental and uncalibrated. It estimates counterfactual Equivalent Human Effort
+represented by a final artifact delta; it does not reconstruct actual work or timesheets.
 The global-tool package advances to `EffortHours.Tool` `0.8.0-alpha.1`.
 
 The behavioral-safeguard checkpoint was completed on August 9, 2026. It adds the
@@ -27,6 +27,14 @@ advances the source identity to `change-seed/0.5.0`, adds deterministic expected
 point gross-to-final and bounded rework-like diagnostics for explicit multi-commit
 ranges, and adds saved-report explanation lineage. It changes no EHE prior,
 normalized final-delta total, calibration label, or frozen report.
+
+The scale-and-admission follow-on was completed on August 10, 2026. It advances
+the source identity to `change-seed/0.6.0`, passes the first model-authored logical
+gate for 4-to-32-hour changes, partitions mixed-role evidence without inflating
+totals, decomposes larger candidate items into named roughly-one-hour phases,
+reuses immutable snapshot analysis, bounds optional range audits, and records local
+million-line and 128-commit performance gates. The implementation remains
+experimental and is not empirically production-validated.
 
 ## Delivered scope
 
@@ -92,8 +100,9 @@ selectors do not infer an intermediate history.
 
 The initial model identity was `change-seed/0.1.0`, composed with
 `seed-rules/0.2.1`. The current source identity is
-`change-seed/0.5.0+seed-rules/0.3.0`. Its range behavior and confidence bounds still
-require reviewed calibration before consequential use.
+`change-seed/0.6.0+seed-rules/0.3.0`. It is admitted only as the experimental
+Stage A logical baseline for 4-to-32-hour changes; its ranges are not formal
+probability intervals and it is not production-validated.
 
 ## Contracts and output
 
@@ -146,7 +155,8 @@ test lives only in the end-to-end suite; ordinary unit tests remain memory-only.
 
 ## Known limitations
 
-- Change priors have no reviewed Change EHE corpus or empirical calibration.
+- Change has model-authored logical calibration labels but no empirical production
+  calibration; the current admission applies only to the first 4-to-32-hour band.
 - TypeScript source semantics remain token-backed through the repository analyzer.
 - Formatting exclusion is intentionally conservative and limited to the initial
   .NET and JavaScript/TypeScript source extensions.
@@ -157,5 +167,5 @@ test lives only in the end-to-end suite; ordinary unit tests remain memory-only.
 - Range component selection uses first-parent comparison for merge components and
   reports that limitation; normalized final effort remains authoritative.
 - PR objects must already exist locally; EffortHours does not fetch them.
-- Change-specific million-line and large-range performance measurements remain to
-  be recorded.
+- Change-specific million-line and 128-commit performance gates are recorded for
+  one workstation; cross-platform and realistic large-monorepo measurements remain.

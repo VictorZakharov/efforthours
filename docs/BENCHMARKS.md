@@ -220,3 +220,74 @@ one workstation, uniform large fixtures, three small public releases, and one
 project tree; repeated cross-platform samples and larger realistic monorepos are
 still required before a threshold can distinguish regressions from environment
 variance.
+
+## Change EHE scale-and-safety v1.0.0 checkpoint
+
+Measured on August 10, 2026 with:
+
+- Change estimator `change-seed/0.6.0+seed-rules/0.3.0`;
+- benchmark protocol `change/1.0.0`;
+- .NET runtime `10.0.7` and .NET SDK `10.0.203`;
+- Windows `10.0.26200`, x64, with 24 logical processors; and
+- fresh generated local Git repositories with automatic maintenance disabled.
+
+The dedicated harness has two shapes. `large-tree` compares two immutable Git
+snapshots containing 10,000 C# files of approximately 100 physical lines each.
+`long-range` creates 32 base files and changes one bounded file through 128 commits,
+so an untruncated audit analyzes 129 unique snapshots.
+
+```text
+dotnet benchmarks/EffortHours.ChangeBenchmarks/bin/Release/net10.0/EffortHours.ChangeBenchmarks.dll
+  --tree --files 10000 --lines-per-file 100
+  --max-seconds 30 --max-peak-mib 512
+
+dotnet benchmarks/EffortHours.ChangeBenchmarks/bin/Release/net10.0/EffortHours.ChangeBenchmarks.dll
+  --range --files 32 --lines-per-file 20 --commits 128
+  --max-seconds 45 --max-peak-mib 192
+```
+
+Three fresh processes were measured for each shape:
+
+| Shape | Repository-estimator calls | Analysis seconds min / median / max | Sampled peak MiB min / median / max | Cumulative allocation MiB min / median / max |
+| --- | ---: | ---: | ---: | ---: |
+| Million-line base/head | 2 | 16.975 / 17.181 / 17.187 | 357.16 / 357.54 / 357.80 | 3,642.24 / 3,642.43 / 3,642.61 |
+| 128-commit audit | 129 | 26.916 / 27.003 / 27.024 | 109.20 / 113.67 / 114.02 | 600.00 / 600.07 / 600.21 |
+
+The first ceiling is therefore 30 seconds and 512 MiB for the exact million-line
+shape on this workstation. The second is 45 seconds and 192 MiB for the exact
+128-commit shape. Supplying either ceiling makes the harness return exit code 3
+when it is exceeded. These are local regression gates with deliberate run-to-run
+margin, not cross-platform product guarantees.
+
+### Unique-snapshot reuse and bounded audits
+
+Range analysis caches repository evidence and repository estimates by immutable
+snapshot object ID for the duration of one Change estimate. An adjacent `N`-commit
+range therefore invokes the repository estimator `N + 1` times instead of `2N`.
+Content-delta comparison still opens the exact immutable base/head pair for each
+component; only redundant repository analysis is reused.
+
+The optional per-commit reconciliation audit defaults to 256 components and has a
+public hard ceiling of 1,024. The planner asks Git for at most `limit + 1` commit
+IDs. When the limit is exceeded, diagnostic `FB5105` records the omission and the
+complete final base-to-head Change estimate remains authoritative. A boundary run
+with 257 commits and the default cap planned one final-delta component, performed
+two repository-estimator calls, completed measured analysis in 0.860 seconds with
+a 75.07 MiB sampled peak, and retained exact nonnegative allocation semantics.
+
+### Read-only and measurement boundary
+
+Fixture generation, Git commits, and before/after integrity hashing are outside the
+analysis timer. The measured interval includes selector planning, immutable Git
+snapshot access, repository analysis, Change evidence/work-item construction, and
+reconciliation. Sampled peak working set covers the benchmark process every 10
+milliseconds; cumulative managed allocation is reported separately. Short-lived
+Git child-process memory is not included in that sampled process peak.
+
+Before and after every run, the harness hashes normalized path, length,
+last-write time, and complete bytes for both the worktree and the full `.git`
+state. Every recorded run was unchanged. The benchmark does not execute target
+code, install dependencies, or access the network. Process-level smoke tests cover
+both shapes, threshold output, the 256-component omission path at a smaller test
+limit, unique-snapshot counts, and exact read-only digests. Ordinary unit tests
+remain memory-only.

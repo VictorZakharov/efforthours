@@ -27,6 +27,43 @@ Because EffortHours's own anchor informed the seed-model and calibration design,
 a development diagnostic rather than an eligible held-out test record unless a
 future independent snapshot and review policy explicitly establishes otherwise.
 
+## 2026-08-10: `change-seed/0.6.0` Stage A logical admission
+
+Status: **experimental 4-to-32-hour logical baseline; not empirically calibrated or production-ready**
+
+`change-model-admission/0.2.0` and rubric `change-ehe-work-item/1.1.0` permit a
+disclosed host-AI teacher to supply logical weak supervision when each total is an
+exact sum of small, distinct, evidence-backed tasks. Targets normally carry 0.5
+to 1.5 expected hours; more than two hours requires a concrete indivisibility
+exception. The label remains `teacher-estimate` and is never represented as human
+or independent review. Production observations, if collected later, are a
+separate empirical comparison rather than an effort signal or multiplier.
+
+The current baseline passes the frozen Stage A gates on five eligible public
+repository families spanning .NET, JavaScript, and TypeScript. Teacher and
+candidate totals are 38.00 and 38.50 expected hours, WAPE is 0.0526, aggregate
+bias is +0.0132, and every per-case error bound passes. Their native-category WAPE
+is 0.3963 with +0.0132 bias, teacher-expected interval coverage is 1.0000, and the
+mean-width ratio is 1.3624. A transparent rubric-1.1.0 audit covers all 28 frozen
+parent targets with 45 distinct 0.5-to-1.5-hour teacher tasks; all 41 current
+candidate work items meet the same ceiling. The sub-day p-limit record remains a
+semantic guardrail, and the expansion test comparison remains withheld.
+
+Version 0.6.0 does not fit or alter a numerical prior. It partitions an unchanged
+mixed-role capability budget across disjoint native-category evidence, decomposes
+larger items into named roughly one-hour phases, caches repository analysis once
+per immutable snapshot, caps the optional commit audit, and replaces cent rounding
+with exact nonnegative largest-remainder allocation.
+The documented million-line base/head and 128-commit benchmarks pass local
+30-second/512-MiB and 45-second/192-MiB gates in three fresh processes; a
+257-commit boundary retains the complete final delta while explicitly omitting the
+bounded optional audit.
+
+This decision admits only one-to-several-day experimental use. A larger band is a
+new decision after the first band remains stable and model context/token/time/cost
+telemetry is recorded when available. It does not establish a general error rate,
+formal interval calibration, historical truth, or production accuracy.
+
 ## 2026-08-10: `change-seed/0.5.0` range-normalization diagnostic
 
 Status: **transparent reporting revision; no valuation or calibration change**

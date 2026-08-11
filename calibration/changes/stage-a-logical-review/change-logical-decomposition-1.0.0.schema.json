@@ -1,0 +1,109 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:eh:calibration:change-logical-decomposition:1.0.0",
+  "title": "EffortHours Change logical decomposition 1.0.0",
+  "type": "object",
+  "required": ["schemaVersion", "id", "version", "rubric", "review", "records"],
+  "properties": {
+    "schemaVersion": { "const": "change-logical-decomposition/1.0.0" },
+    "id": { "type": "string", "minLength": 1 },
+    "version": { "type": "string", "minLength": 1 },
+    "rubric": { "const": "change-ehe-work-item/1.1.0" },
+    "review": { "$ref": "#/$defs/review" },
+    "records": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/record" }
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "review": {
+      "type": "object",
+      "required": [
+        "status",
+        "completedOn",
+        "reviewerId",
+        "reviewerKind",
+        "modelId",
+        "modelVersion",
+        "inputBoundary",
+        "notes"
+      ],
+      "properties": {
+        "status": { "const": "teacher-estimate" },
+        "completedOn": { "type": "string", "format": "date" },
+        "reviewerId": { "type": "string", "minLength": 1 },
+        "reviewerKind": { "const": "host-ai" },
+        "modelId": { "type": "string", "minLength": 1 },
+        "modelVersion": { "type": "string", "minLength": 1 },
+        "inputBoundary": { "type": "string", "minLength": 1 },
+        "notes": { "type": "string", "minLength": 1 }
+      },
+      "additionalProperties": false
+    },
+    "record": {
+      "type": "object",
+      "required": [
+        "recordId",
+        "repositoryId",
+        "partition",
+        "sourceCorpus",
+        "teacherExpectedHours",
+        "tasks"
+      ],
+      "properties": {
+        "recordId": { "type": "string", "minLength": 1 },
+        "repositoryId": { "type": "string", "minLength": 1 },
+        "partition": { "enum": ["development", "validation"] },
+        "sourceCorpus": { "type": "string", "minLength": 1 },
+        "teacherExpectedHours": { "type": "number", "minimum": 4, "maximum": 32 },
+        "tasks": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/task" }
+        }
+      },
+      "additionalProperties": false
+    },
+    "task": {
+      "type": "object",
+      "required": [
+        "id",
+        "parentTargetId",
+        "category",
+        "title",
+        "expectedHours",
+        "rationale"
+      ],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "parentTargetId": { "type": "string", "minLength": 1 },
+        "category": {
+          "enum": [
+            "specification-comprehension-and-domain-learning",
+            "architecture-and-technical-design",
+            "production-implementation",
+            "ui-implementation-and-represented-ux-decisions",
+            "data-modeling-persistence-and-migrations",
+            "external-integrations-and-protocols",
+            "unit-testing",
+            "integration-contract-and-component-testing",
+            "end-to-end-and-ui-testing",
+            "manual-validation-debugging-and-hardening",
+            "documentation",
+            "build-configuration-and-developer-tooling",
+            "ci-cd-and-infrastructure-as-code",
+            "security-and-accessibility",
+            "packaging-deployment-and-release-artifacts",
+            "self-review-and-system-integration"
+          ]
+        },
+        "title": { "type": "string", "minLength": 20 },
+        "expectedHours": { "type": "number", "minimum": 0.5, "maximum": 1.5 },
+        "rationale": { "type": "string", "minLength": 40 }
+      },
+      "additionalProperties": false
+    }
+  }
+}

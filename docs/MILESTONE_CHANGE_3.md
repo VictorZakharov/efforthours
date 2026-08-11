@@ -2,10 +2,10 @@
 
 ## Status
 
-The second Change calibration checkpoint is complete as of August 6, 2026. It
-materializes the frozen 24-case source suite and compiles one disclosed host-AI
-teacher pass. The estimator remains experimental and uncalibrated; no independent
-review, admission threshold, prior change, or ML dependency is claimed.
+The second Change calibration checkpoint was completed on August 6, 2026. It
+materialized the frozen 24-case source suite and compiled one disclosed host-AI
+teacher pass. That historical corpus and every frozen report retain their original
+version and maturity.
 
 An August 10 real-source expansion adds six blind teacher records from immutable
 MIT-licensed public pull requests. It diagnoses a repeated-slice overcounting
@@ -35,6 +35,14 @@ The subsequent repository-only frontend semantic revision advances the current
 composite source identity to `change-seed/0.4.0+seed-rules/0.3.0`. It changes no
 Change rule, label, threshold, review maturity, or frozen report; every historical
 Change artifact retains the exact repository-model version it evaluated.
+
+The August 10 scale-and-admission checkpoint advances the current source identity
+to `change-seed/0.6.0+seed-rules/0.3.0` and admits it only as the experimental
+Stage A logical baseline for 4-to-32-hour changes. Rubric
+`change-ehe-work-item/1.1.0` accepts a disclosed host-AI teacher when its total is
+the exact sum of small, evidence-backed tasks. This is logical weak supervision,
+not human or independent review, empirical accuracy, calibrated probability
+intervals, or production readiness. No numerical prior or ML dependency changes.
 
 ## Reproducible source boundary
 
@@ -181,21 +189,61 @@ valid but independent unit-testing category agreement is not measurable for this
 record. This observation can motivate subject-neutral mapping guardrails; it
 cannot justify a one-case correction factor or tuning on validation.
 
-## Independent boundary
+## Stage A logical admission
+
+`change-model-admission/0.2.0` separates logical model admission from empirical
+validation. A disclosed host-AI teacher remains `teacher-estimate` maturity, but
+it can supply logical weak supervision when its range is independently reasoned
+from evidence and reconciles exactly from tasks normally about 0.5 to 1.5 expected
+hours. A target above two hours requires an indivisibility explanation; eight
+hours remains the contract ceiling. Distinct blind review is useful corroboration,
+not a gate for this experimental stage.
+
+Stage A covers one-to-several-day changes with 4 to 32 teacher expected hours.
+Five eligible public families total 38.00 teacher hours versus 38.50 candidate
+hours under the total-invariant 0.6.0 rules: expected WAPE is 0.0526 and aggregate
+bias is +0.0132, and every case passes the frozen absolute-error bound. Their
+native-category WAPE is 0.3963 with +0.0132 bias, teacher-expected interval
+coverage is 1.0000, and the mean-width ratio is 1.3624. A transparent
+rubric-1.1.0 audit covers all 28 frozen parent targets with 45 distinct
+0.5-to-1.5-hour teacher tasks, while all 41 current candidate work items meet the
+same ceiling. The withheld expansion test comparison was not used; the sub-day
+p-limit record remains a semantic guardrail outside the size gate.
+
+Version 0.6.0 partitions mixed production/test/documentation/delivery evidence
+into disjoint native-category tasks without increasing the capability total and
+decomposes larger candidate items into named phases of roughly one hour. It also
+reuses repository analysis once per immutable snapshot, caps optional
+per-commit range audits at 256 components by default, and allocates rounded
+component totals exactly and nonnegatively. Repeated benchmark runs establish
+local 30-second/512-MiB and 45-second/192-MiB gates for the documented million-line
+base/head and 128-commit shapes. A 257-commit boundary run retains the complete
+authoritative final delta while omitting the optional component audit with an
+explicit diagnostic.
+
+This evidence admits only an experimental logical baseline in the first size
+band. It does not establish a general error rate, formal interval calibration,
+historical truth, or production accuracy.
+
+## Review boundary
 
 The synthetic blind packet contains all 121 targets with prior hours, rationales,
 uncertainty, and explicit-zero decisions hidden. The real pilot, expansion, and
 released-alpha.3 diagnostic have separate five-target, 34-target, and four-target
-packets. A genuinely distinct reviewer must
-inspect only the applicable frozen source boundary and blind evidence, replace
-every target with an independent range or explicit exclusion, and sign off empty
-zero-delta records where applicable. Until exact-digest compilation advances
-maturity, no Change calibration accuracy claim is permitted.
+packets. A genuinely distinct reviewer may inspect only the applicable frozen
+source boundary and blind evidence, replace every target with an independent range
+or explicit exclusion, and sign off empty zero-delta records. Such a review may
+advance the recorded maturity to `reviewed`; it is not required to retain Stage A
+logical admission. No teacher estimate may be represented as independent or human.
 
 ## Next checkpoint
 
-1. Complete and compile the distinct blind reviews without opening teacher files.
-2. Add multiple redistributable observations per ecosystem/partition cell and
-   freeze numerical development/validation gates before any candidate fitting;
-   this checkpoint supplies the second .NET validation observation only.
-3. Evaluate each test partition once only for a frozen release decision.
+1. Add new immutable public PRs in the 4-to-32-hour band, preserving one-hour-scale
+   decomposition and recording host-model context, tokens, wall time, and cost
+   whenever available.
+2. Use separately governed production observations to test empirical accuracy;
+   never fit an effort multiplier from logged time or relabel logical estimates as
+   ground truth.
+3. Advance to multi-day/multi-week deliverables only after the current band remains
+   within its frozen gates, then freeze a new size-specific decision boundary.
+4. Keep test partitions reserved for one frozen empirical release decision.

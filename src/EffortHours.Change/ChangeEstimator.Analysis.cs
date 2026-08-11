@@ -13,18 +13,29 @@ public sealed partial class ChangeEstimator
         IChangeSnapshot headSnapshot,
         IReadOnlyList<Diagnostic> selectorDiagnostics,
         EstimationProfile profile,
+        Dictionary<string, SnapshotAnalysis> snapshotAnalyses,
         CancellationToken cancellationToken)
     {
         ValidateSnapshotReference("base", selection.Base, baseSnapshot);
         ValidateSnapshotReference("head", selection.Head, headSnapshot);
-        RepositoryEvidence baseEvidence = await ReadEvidenceAsync(baseSnapshot, cancellationToken)
+        SnapshotAnalysis baseAnalysis = await AnalyzeSnapshotAsync(
+            repositoryName,
+            baseSnapshot,
+            profile,
+            snapshotAnalyses,
+            cancellationToken)
             .ConfigureAwait(false);
-        RepositoryEvidence headEvidence = await ReadEvidenceAsync(headSnapshot, cancellationToken)
+        SnapshotAnalysis headAnalysis = await AnalyzeSnapshotAsync(
+            repositoryName,
+            headSnapshot,
+            profile,
+            snapshotAnalyses,
+            cancellationToken)
             .ConfigureAwait(false);
-        baseEvidence = RenameRepository(baseEvidence, repositoryName);
-        headEvidence = RenameRepository(headEvidence, repositoryName);
-        EstimateReport baseEstimate = _repositoryEstimator.Estimate(baseEvidence, profile);
-        EstimateReport headEstimate = _repositoryEstimator.Estimate(headEvidence, profile);
+        RepositoryEvidence baseEvidence = baseAnalysis.Evidence;
+        RepositoryEvidence headEvidence = headAnalysis.Evidence;
+        EstimateReport baseEstimate = baseAnalysis.Estimate;
+        EstimateReport headEstimate = headAnalysis.Estimate;
         List<Diagnostic> evidenceDiagnostics = [.. selectorDiagnostics];
         evidenceDiagnostics.AddRange(baseEvidence.Diagnostics);
         evidenceDiagnostics.AddRange(headEvidence.Diagnostics);
@@ -142,6 +153,28 @@ public sealed partial class ChangeEstimator
             headEstimate);
     }
 
+    private async Task<SnapshotAnalysis> AnalyzeSnapshotAsync(
+        string repositoryName,
+        IChangeSnapshot snapshot,
+        EstimationProfile profile,
+        Dictionary<string, SnapshotAnalysis> snapshotAnalyses,
+        CancellationToken cancellationToken)
+    {
+        if (snapshotAnalyses.TryGetValue(snapshot.ObjectId, out SnapshotAnalysis? cached))
+        {
+            return cached;
+        }
+
+        RepositoryEvidence evidence = await ReadEvidenceAsync(snapshot, cancellationToken)
+            .ConfigureAwait(false);
+        evidence = RenameRepository(evidence, repositoryName);
+        SnapshotAnalysis analysis = new(
+            evidence,
+            _repositoryEstimator.Estimate(evidence, profile));
+        snapshotAnalyses.Add(snapshot.ObjectId, analysis);
+        return analysis;
+    }
+
     private static async Task<RepositoryEvidence> ReadEvidenceAsync(
         IChangeSnapshot snapshot,
         CancellationToken cancellationToken)
@@ -221,4 +254,8 @@ public sealed partial class ChangeEstimator
         RepositoryEvidence HeadEvidence,
         EstimateReport BaseEstimate,
         EstimateReport HeadEstimate);
+
+    private sealed record SnapshotAnalysis(
+        RepositoryEvidence Evidence,
+        EstimateReport Estimate);
 }

@@ -5,7 +5,8 @@ namespace EffortHours.Calibration;
 
 public static class ChangeCalibrationReviewCompiler
 {
-    public const string CompilerVersion = "change-calibration-review-compiler/0.1.0";
+    public const string CompilerVersion = "change-calibration-review-compiler/0.2.0";
+    public const string LegacyCompilerVersion = "change-calibration-review-compiler/0.1.0";
 
     public static CalibrationCorpus Compile(
         CalibrationReviewPlan plan,
@@ -15,11 +16,19 @@ public static class ChangeCalibrationReviewCompiler
         ArgumentNullException.ThrowIfNull(sourceEstimates);
 
         List<string> errors = [.. ContractValidation.Validate(plan)];
-        if (!string.Equals(plan.CompilerVersion, CompilerVersion, StringComparison.Ordinal))
+        ValidateLogicalDecomposition(plan, errors);
+        bool legacyPlan =
+            string.Equals(plan.Rubric.Id, ChangeCalibrationAuthoring.RubricId, StringComparison.Ordinal) &&
+            string.Equals(
+                plan.Rubric.Version,
+                ChangeCalibrationAuthoring.LegacyRubricVersion,
+                StringComparison.Ordinal) &&
+            string.Equals(plan.CompilerVersion, LegacyCompilerVersion, StringComparison.Ordinal);
+        if (!legacyPlan && !string.Equals(plan.CompilerVersion, CompilerVersion, StringComparison.Ordinal))
         {
             errors.Add(
                 $"Review plan requires compiler '{plan.CompilerVersion}', but this build provides " +
-                $"'{CompilerVersion}'.");
+                $"'{CompilerVersion}' (with '{LegacyCompilerVersion}' retained only for rubric 1.0.0 reproduction).");
         }
 
         Dictionary<CandidateKey, ChangeEstimateReport> candidates = [];
@@ -149,6 +158,35 @@ public static class ChangeCalibrationReviewCompiler
         {
             errors.Add(
                 $"Review-plan record '{recordId}' Change provenance does not match the source estimate.");
+        }
+    }
+
+    private static void ValidateLogicalDecomposition(
+        CalibrationReviewPlan plan,
+        List<string> errors)
+    {
+        if (!string.Equals(plan.Rubric.Id, ChangeCalibrationAuthoring.RubricId, StringComparison.Ordinal) ||
+            !string.Equals(plan.Rubric.Version, ChangeCalibrationAuthoring.RubricVersion, StringComparison.Ordinal))
+        {
+            return;
+        }
+
+        foreach (CalibrationReviewPlanRecord record in plan.Records)
+        {
+            foreach (CalibrationCapabilityReviewDecision capability in record.Capabilities)
+            {
+                for (int index = 0; index < capability.Targets.Count; index++)
+                {
+                    CalibrationReviewTargetDecision target = capability.Targets[index];
+                    if (target.Hours.Expected > 2m && string.IsNullOrWhiteSpace(target.SizeException))
+                    {
+                        errors.Add(
+                            $"Review-plan record '{record.Id}' capability '{capability.SourceCapabilityId}' " +
+                            $"target {index} exceeds the 2-hour logical-decomposition boundary and requires " +
+                            "a concrete size exception under Change rubric 1.1.0.");
+                    }
+                }
+            }
         }
     }
 

@@ -86,7 +86,7 @@ public sealed partial class ChangeCliTests
         Assert.DoesNotContain("customer-custom-secret", result.StandardOutput, StringComparison.Ordinal);
         using JsonDocument report = JsonDocument.Parse(result.StandardOutput);
         Assert.Equal(
-            "change-seed/0.5.0+seed-rules/0.3.0",
+            ChangeEstimator.Version,
             report.RootElement.GetProperty("estimatorVersion").GetString());
         JsonElement path = Assert.Single(report.RootElement
             .GetProperty("evidence")
@@ -175,6 +175,42 @@ public sealed partial class ChangeCliTests
         Assert.Equal(Math.Max(0m, gross - normalized), normalizationHours);
         Assert.Equal(baseObjectId, report.RootElement.GetProperty("selection").GetProperty("base").GetProperty("objectId").GetString());
         Assert.Equal(headObjectId, report.RootElement.GetProperty("selection").GetProperty("head").GetProperty("objectId").GetString());
+    }
+
+    [Fact]
+    public async Task OversizedRangeRetainsFinalDeltaAndBoundsComponentAudit()
+    {
+        using GitFixture repository = await GitFixture.CreateAsync();
+        repository.WriteText("Demo.csproj", ProjectFile);
+        string baseObjectId = await repository.CommitAsync("base");
+        for (int index = 1; index <= 3; index++)
+        {
+            repository.WriteText(
+                $"Feature{index}.cs",
+                $"namespace Demo; public sealed class Feature{index} {{ }}\n");
+            _ = await repository.CommitAsync($"feature {index}");
+        }
+
+        string headObjectId = await repository.GitAsync("rev-parse", "HEAD");
+        GitChangePlanner planner = new(
+            new GitClient(),
+            new FixedPullRequestResolver(baseObjectId, headObjectId),
+            new GitChangePlannerOptions { MaximumRangeComponents = 2 });
+
+        GitChangePlan plan = await planner.PlanRangeAsync(
+            repository.RootPath,
+            $"{baseObjectId}..{headObjectId}");
+        ChangeEstimateReport report = await new ChangeEstimator().EstimateAsync(
+            plan,
+            EstimationProfile.Implementation);
+
+        ChangeComponentInput component = Assert.Single(plan.Components);
+        Assert.Equal(ChangeComponentKind.FinalDelta, component.Kind);
+        Assert.Contains(plan.Diagnostics, diagnostic => diagnostic.Code == "FB5105");
+        Assert.Null(report.Reconciliation.Normalization);
+        Assert.Equal(baseObjectId, report.Selection.Base.ObjectId);
+        Assert.Equal(headObjectId, report.Selection.Head.ObjectId);
+        Assert.True(report.TotalEffort.Expected > 0m);
     }
 
     [Fact]
