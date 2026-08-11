@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RootNamespace>EffortHours.Analyzers.Go</RootNamespace>
+    <Description>Bounded static Go evidence analyzer for EffortHours.</Description>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../EffortHours.Analysis/EffortHours.Analysis.csproj" />
+    <ProjectReference Include="../EffortHours.Contracts/EffortHours.Contracts.csproj" />
+  </ItemGroup>
+</Project>

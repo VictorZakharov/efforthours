@@ -443,7 +443,7 @@ rubric-1.0.0 labels are not rewritten; the separate Stage A logical audit maps a
 eligible parent targets into rubric-1.1.0 tasks while preserving their exact
 expected totals and uncertainty provenance.
 
-The current `change-seed/0.8.0` rules retain the 0.3.0 correction that keeps
+The current `change-seed/0.9.0` rules retain the 0.3.0 correction that keeps
 repository seed capabilities as context for a final delta but does not infer a
 capability modification from path overlap alone. Existing capabilities require
 changed normalized non-file evidence;
@@ -472,6 +472,14 @@ background, and test deltas through the existing category rules. No fitted Chang
 prior was added. The admitted 0.6.0 Stage A records contain no Python, so this
 extension is explicitly unadmitted.
 
+Version 0.9.0 adds Go `.go` final-delta support and a token signature that ignores
+ordinary formatting/comments while preserving compiler directives, cgo comments,
+implicit-semicolon boundaries, identifiers, operators, and literals. Go repository
+evidence routes API, CLI, data, integration, security, validation, background,
+build, concurrency, and test deltas through existing rules. No fitted Change prior
+was added. The admitted 0.6.0 Stage A records contain no Go, so this extension is
+explicitly unadmitted.
+
 Version 0.4.0 also distinguishes only exact, balanced, EffortHours-specific
 `<custom-code>` regions inside otherwise generated files; it does not infer other
 generator-specific protected-region syntax. Only the extracted maintained
@@ -499,12 +507,12 @@ allocation keeps every component nonnegative while reconciling to the normalized
 total.
 
 The current composite source identity is
-`change-seed/0.8.0+seed-rules/0.4.0`; every frozen Change report retains its
+`change-seed/0.9.0+seed-rules/0.4.0`; every frozen Change report retains its
 original identity and numbers. `change-model-admission/0.2.0` admitted version
 0.6.0 only for experimental 4-to-32-hour Stage A changes after model-authored
-logical agreement and performance gates. Versions 0.7.0 and 0.8.0 preserve those
-non-SQL rules but are not separately admitted, and SQL and Python have no reviewed
-Change labels.
+logical agreement and performance gates. Versions 0.7.0 through 0.9.0 preserve
+those admitted rules but are not separately admitted, and SQL, Python, and Go have
+no reviewed Change labels.
 Larger size bands and empirical production accuracy remain separate decisions.
 
 ## 11. Uncertainty
@@ -558,7 +566,7 @@ described in `MILESTONE_6.md`. Callers can provide an exact override or request
 effort-only output. Future regional profiles must not change the underlying effort
 estimate.
 
-## 13. Polyglot source backbone and Python
+## 13. Polyglot source backbone, Python, and Go
 
 `seed-rules/0.4.0` introduces language-neutral analyzed package and fine-test
 contracts plus `polyglot-source-backbone`. The new source rule consumes files,
@@ -576,9 +584,19 @@ maintained languages remain visible and emit diagnostics instead of receiving a
 guessed source prior. `PYTHON_ANALYSIS.md` defines exact supported inputs,
 exclusions, uncertainty, safety, and non-goals.
 
+Go analyzer `0.1.0` reuses the same generic rule without changing its artifact or
+rates. Its bounded managed tokenizer supplies files, functions, methods, types,
+interfaces, exported symbols, generics, goroutines/async units, and branches;
+specialized import-qualified facts continue through existing category rules.
+Static `go.mod`/`go.work` ownership and explicit build/cgo/runtime-registration
+uncertainty do not invoke the Go toolchain. `GO_ANALYSIS.md` defines the exact
+boundary.
+
 Public mutation suite `0.8.0` combines 77 unchanged `seed-rules/0.3.0` candidates
 with 11 Python `seed-rules/0.4.0` candidates. All 339 relational assertions pass.
 This protects directionality and invariance; it does not calibrate absolute hours.
+The standalone Go suite adds 13 `seed-rules/0.4.0` candidates and passes 56/56
+relations under the same qualitative-only interpretation.
 
 ## 14. Professionalization gap
 

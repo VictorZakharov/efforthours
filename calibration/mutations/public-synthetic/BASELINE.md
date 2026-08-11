@@ -19,6 +19,11 @@ effort-label corpora, accuracy claims, or model-training data.
   evaluated with the unchanged `seed-rules/0.3.0` model.
 - Suite `0.7.0` records the Milestone 7B6 precision checkpoint: 77 cases and 309
   assertions evaluated with the unchanged `seed-rules/0.3.0` model.
+- Suite `0.8.0` records the Python expansion checkpoint: 88 cases and 339
+  assertions, preserving 77 frozen `seed-rules/0.3.0` candidates and adding 11
+  `seed-rules/0.4.0` candidates.
+- Standalone suite `go-0.1.0` records the Go expansion checkpoint: 13 cases and 56
+  assertions evaluated with unchanged `seed-rules/0.4.0`.
 
 The August 8, 2026 analyzer-precision reevaluation with `.NET` analyzer `0.3.2`
 and JavaScript analyzer `0.4.1` reproduced identical low, expected, and high
@@ -78,6 +83,12 @@ and framework-namesake rejection. It advances only the Python candidates to
 The earlier 77 candidates remain frozen. Passing this suite does not calibrate
 Python or establish absolute-hour accuracy.
 
+Standalone Go suite 0.1.0 adds 13 Go states and 56 relations specified around
+formatting/comment, exact-copy, and generated invariance; semantic directionality;
+category isolation; build/concurrency evidence; and framework-namesake rejection.
+It reuses `seed-rules/0.4.0` without changing the model artifact or fitting a Go
+rate. Passing this suite does not calibrate Go or establish absolute-hour accuracy.
+
 ## What suite 0.4.0 measures
 
 | Ecosystem family | Cases | Principal variants |
@@ -110,6 +121,24 @@ Nested synthetic test packages keep test structure in an explicit test scope, so
 their production-category invariants are not artifacts of aggregate rounding.
 
 ## Seed expected checkpoints
+
+### Go expansion additions
+
+| Variant | Expected total | Intended category result |
+| --- | ---: | --- |
+| Go base | 8.00 h | 0.50 h production plus one explicit library release surface |
+| Go formatting | 8.00 h | Total and production unchanged at every range point |
+| Go exact copy | 8.00 h | Total and production unchanged at every range point |
+| Go generated body | 8.00 h | Total and production unchanged at every range point |
+| Go API | 11.50 h | Positive production/API movement |
+| Go tests | 9.25 h | +1.25 h unit testing; production unchanged |
+| Go data | 10.25 h | +1.00 h data/persistence |
+| Go integration | 12.50 h | +3.25 h external integration |
+| Go security | 13.50 h | +4.25 h security/accessibility |
+| Go background work | 12.75 h | Positive background/production movement |
+| Go build semantics | 8.75 h | +0.75 h build/tooling; production unchanged |
+| Go concurrency | 8.75 h | Positive bounded production movement |
+| Go framework namesakes | 9.50 h | No API, data, integration, security, or background category |
 
 ### Frontend semantic additions
 
@@ -253,6 +282,9 @@ retain all earlier assertions unchanged.
 - `baseline-seed-rules-0.4.0-suite-0.8.0.json` records all 339 passing assertions.
   The earlier 77 candidates remain frozen at `seed-rules/0.3.0`; only the Python
   candidates under `estimates/seed-rules-0.4.0/` use the new model identity.
+- `go-0.1.0.suite.json` defines the standalone 13-case Go suite.
+- `baseline-seed-rules-0.4.0-go-0.1.0.json` records all 56 passing Go assertions.
+- `estimates/seed-rules-0.4.0/go-*.estimate.json` contains its candidates.
 - `fixtures/` contains every complete synthetic source state.
 
 Every case has a distinct repository source digest. Assertions select canonical
@@ -328,6 +360,16 @@ both candidate estimator versions, 88 cases, 339 assertions, and zero failures.
 Mixing versions here is deliberate: it preserves all earlier reports and isolates
 the new Python boundary instead of presenting a version-only regeneration as new
 accuracy evidence.
+
+## Reproduce standalone Go suite 0.1.0
+
+Generate each of the 13 `go-*` fixtures with repository estimator
+`seed-rules/0.4.0` into `estimates/seed-rules-0.4.0/`. Then evaluate the 13 exact
+candidate paths against `go-0.1.0.suite.json`, writing
+`baseline-seed-rules-0.4.0-go-0.1.0.json`. The result must disclose one candidate
+estimator version, 13 cases, 56 assertions, and zero failures. The suite is
+standalone so the frozen aggregate and its mixed estimator identities remain
+untouched.
 
 ## Limitations and next expansion
 

@@ -550,7 +550,7 @@ A candidate must, at minimum:
 - avoid a material regression in median absolute error or signed bias;
 - improve or preserve interval coverage without achieving it through unjustifiably
   wide ranges;
-- retain acceptable results across .NET, JavaScript/TypeScript, Python, and mixed
+- retain acceptable results across .NET, JavaScript/TypeScript, Python, Go, and mixed
   repositories rather than only the aggregate;
 - pass the existing formatting, duplication, generated-content, near-copy and
   specified equivalent-purpose, compiler-disabled and bounded reachability, data,
@@ -864,3 +864,18 @@ reviewed work-item labels, held-out accuracy evidence, interval calibration, or 
 production-admission decision. No existing corpus, partition, reviewer identity,
 teacher target, or frozen report changes. Python has no independent correction or
 real-repository calibration family yet.
+
+## Go mutation extension
+
+The second polyglot expansion adds a standalone `go-0.1.0` mutation suite rather
+than regenerating the frozen 88-state aggregate. Its 13 project-authored MIT
+synthetic Go states use unchanged `seed-rules/0.4.0` and cover formatting/comments,
+exact copies, generated content, API, tests, data, integrations, security,
+background work, build directives, concurrency, and local framework namesakes.
+
+All 56 relations pass. These are qualitative directionality, invariance,
+category-isolation, and false-positive guardrails. They are not reviewed work-item
+labels, held-out accuracy evidence, interval calibration, or a production-admission
+decision. No existing corpus, aggregate suite, partition, reviewer identity,
+teacher target, estimator artifact, or frozen report changes. Go has no independent
+correction or real-repository calibration family yet.
