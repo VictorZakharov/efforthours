@@ -161,6 +161,19 @@ code; `JAVA_ANALYSIS.md` defines the exact scope. Java reuses the unchanged
 language-neutral source backbone and analogous specialized priors without a fitted
 Java-specific rate.
 
+The fourth polyglot expansion is Kotlin/JVM. Scanner-admitted maintained `.kt`
+and non-Gradle `.kts` files receive bounded token-backed package/type/function/
+extension/public-API/nullability/coroutine/Flow structure, test evidence, and
+conservative import-qualified server, Android/Compose, persistence, integration,
+security, validation, and background semantics. Kotlin reuses static Maven/Gradle
+JVM module ownership and avoids duplicate project/build evidence in mixed
+Java/Kotlin modules; Gradle Kotlin DSL remains build configuration rather than
+product script effort. The analyzer never invokes a JVM, Kotlin compiler, Maven,
+Gradle, Android tooling, KSP, kapt, compiler plugins, test runner, dependency
+resolver, or target code; `KOTLIN_ANALYSIS.md` defines the exact scope. Kotlin
+reuses the unchanged language-neutral source backbone and analogous specialized
+priors without a fitted Kotlin-specific rate.
+
 ## Non-goals
 
 - Reconstructing actual hours worked.

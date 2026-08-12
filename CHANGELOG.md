@@ -8,6 +8,20 @@ may still change public contracts with explicit documentation.
 
 ### Added
 
+- Kotlin analyzer `0.1.0` adds offline, digest-verified analysis for maintained
+  `.kt` and non-Gradle `.kts` files; shared Maven/Gradle JVM project ownership;
+  package/type/function/public-API/nullability/coroutine structure; Kotlin tests;
+  and import-qualified server, Android/Compose, data, integration, security,
+  validation, and background-work evidence. It never invokes a JVM, Kotlin
+  compiler, Gradle, Android tooling, KSP, kapt, or tests and emits no source
+  excerpts.
+- A standalone public Kotlin mutation suite adds 14 project-authored states and 63
+  passing relations for formatting, exact-copy and generated invariance,
+  semantic/category directionality, build/coroutine/Android evidence, and
+  framework-namesake rejection.
+- Scanner benchmark mode `kotlin-static` records a fresh-process million-line
+  Kotlin checkpoint with target metadata unchanged and no target execution,
+  dependency installation, or network access.
 - Java analyzer `0.1.0` adds offline, digest-verified analysis for maintained
   `.java` files; static Maven POM/reactor and conservative Gradle multi-project
   discovery; package/module/type/method/public-API/concurrency structure; JUnit/
@@ -83,6 +97,15 @@ may still change public contracts with explicit documentation.
 
 ### Changed
 
+- Common scanner `0.2.6` classifies Kotlin source, scripts, tests, and Gradle Kotlin
+  DSL configuration. The unchanged experimental `seed-rules/0.4.0`
+  `polyglot-source-backbone` and existing specialized priors consume Kotlin
+  evidence; no fitted Kotlin-specific rate or calibration claim was added.
+- Change source identity advances to
+  `change-seed/0.11.0+seed-rules/0.4.0` for Kotlin-aware formatting,
+  documentation-comment/literal/operator preservation, semantic-newline handling,
+  and semantic-category routing. The admitted Stage A boundary remains
+  `change-seed/0.6.0`; Kotlin is not included in that admission.
 - Common scanner `0.2.5` classifies Java sources/tests plus Maven and Gradle build
   artifacts. The unchanged experimental `seed-rules/0.4.0`
   `polyglot-source-backbone` and existing specialized priors consume Java evidence;

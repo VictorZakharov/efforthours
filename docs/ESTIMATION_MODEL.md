@@ -443,7 +443,7 @@ rubric-1.0.0 labels are not rewritten; the separate Stage A logical audit maps a
 eligible parent targets into rubric-1.1.0 tasks while preserving their exact
 expected totals and uncertainty provenance.
 
-The current `change-seed/0.10.0` rules retain the 0.3.0 correction that keeps
+The current `change-seed/0.11.0` rules retain the 0.3.0 correction that keeps
 repository seed capabilities as context for a final delta but does not infer a
 capability modification from path overlap alone. Existing capabilities require
 changed normalized non-file evidence;
@@ -489,6 +489,16 @@ validation, background, build, concurrency, and test deltas through existing
 rules. No fitted Change prior was added. The admitted 0.6.0 Stage A records contain
 no Java, so this extension is explicitly unadmitted.
 
+Version 0.11.0 adds Kotlin `.kt`/`.kts` final-delta support and a bounded token
+signature that ignores ordinary formatting, optional semicolons/trailing commas,
+and non-documentation comments while preserving KDoc, regular/raw strings,
+characters, numbers, identifiers, backtick names, operators, delimiters, and
+semantic newlines after jump expressions. Kotlin repository evidence routes
+server/API, Android/UI, data, integration, security, validation, background,
+coroutine/Flow, build, and test deltas through existing category rules. No fitted
+Change prior was added. The admitted 0.6.0 Stage A records contain no Kotlin, so
+this extension is explicitly unadmitted.
+
 Version 0.4.0 also distinguishes only exact, balanced, EffortHours-specific
 `<custom-code>` regions inside otherwise generated files; it does not infer other
 generator-specific protected-region syntax. Only the extracted maintained
@@ -516,12 +526,12 @@ allocation keeps every component nonnegative while reconciling to the normalized
 total.
 
 The current composite source identity is
-`change-seed/0.10.0+seed-rules/0.4.0`; every frozen Change report retains its
+`change-seed/0.11.0+seed-rules/0.4.0`; every frozen Change report retains its
 original identity and numbers. `change-model-admission/0.2.0` admitted version
 0.6.0 only for experimental 4-to-32-hour Stage A changes after model-authored
-logical agreement and performance gates. Versions 0.7.0 through 0.10.0 preserve
-those admitted rules but are not separately admitted, and SQL, Python, Go, and
-Java have no reviewed Change labels.
+logical agreement and performance gates. Versions 0.7.0 through 0.11.0 preserve
+those admitted rules but are not separately admitted, and SQL, Python, Go, Java,
+and Kotlin have no reviewed Change labels.
 Larger size bands and empirical production accuracy remain separate decisions.
 
 ## 11. Uncertainty
@@ -608,6 +618,15 @@ facts continue through existing category rules. Static Maven/Gradle project
 ownership and explicit dynamic-build/annotation-processor/runtime uncertainty do
 not invoke a JVM or build tool. `JAVA_ANALYSIS.md` defines the exact boundary.
 
+Kotlin analyzer `0.1.0` reuses that same generic rule inside its owning JVM scope.
+Its bounded managed tokenizer supplies files, functions, methods, types, public
+symbols, extensions, generics, suspend/async units, coroutines, Flow, nullability,
+and branches; import-qualified server, Android/UI, persistence, integration,
+security, validation, background, build, and test facts continue through existing
+category rules. Static Maven/Gradle ownership and explicit compiler-plugin,
+generation, Android, multiplatform, and runtime uncertainty do not invoke a JVM,
+compiler, plugin, or build tool. `KOTLIN_ANALYSIS.md` defines the exact boundary.
+
 Public mutation suite `0.8.0` combines 77 unchanged `seed-rules/0.3.0` candidates
 with 11 Python `seed-rules/0.4.0` candidates. All 339 relational assertions pass.
 This protects directionality and invariance; it does not calibrate absolute hours.
@@ -615,6 +634,8 @@ The standalone Go suite adds 13 `seed-rules/0.4.0` candidates and passes 56/56
 relations under the same qualitative-only interpretation.
 The separate standalone Java suite likewise adds 13 `seed-rules/0.4.0` candidates
 and passes 56/56 relations without altering the frozen aggregate or Go suites.
+The standalone Kotlin suite adds 14 `seed-rules/0.4.0` candidates and passes 63/63
+relations without altering any earlier aggregate or standalone suite.
 
 ## 14. Professionalization gap
 

@@ -31,6 +31,7 @@ src/
   EffortHours.Analysis/             language-neutral repository analysis
   EffortHours.Analyzers.DotNet/     .NET/MSBuild/Roslyn evidence
   EffortHours.Analyzers.JavaScript/ JavaScript/TypeScript evidence
+  EffortHours.Analyzers.Java/       Java and Kotlin/JVM evidence plus static Maven/Gradle ownership
   EffortHours.Analyzers.Sql/        bounded static SQL evidence
   EffortHours.Change/               final-delta evidence, Git/PR selectors, reconciliation
   EffortHours.Estimation/           rules, work items, aggregation
@@ -541,7 +542,7 @@ review.
 
 ### Milestone 9: Expansion
 
-The first three expansion slices are complete. Issue #63 adds language-neutral analyzed/
+The first four expansion slices are complete. Issue #63 adds language-neutral analyzed/
 inventory-only status, generic package and fine-test evidence, generic source
 normalization/backbone routing, and the token-backed Python 3 analyzer. Python
 repository and Change estimates now cover static package ownership, local import
@@ -573,6 +574,18 @@ all 56 relations, and its million-line checkpoint completes in 13.954 seconds
 with a 167.31 MiB sampled peak. This remains experimental, uncalibrated, and
 outside Change admission.
 
+Issue #69 adds common scanner `0.2.6` and Kotlin analyzer `0.1.0`. Kotlin/JVM
+repository and Change estimates cover maintained `.kt` and non-Gradle `.kts`
+source, shared Maven/Gradle JVM ownership, token-backed declarations, public APIs,
+extensions, nullability, coroutines/Flow, Kotlin tests, import-qualified server,
+Android/Compose, persistence, integration, security, validation, background, and
+explicit compiler-plugin/multiplatform/runtime uncertainty without invoking a JVM,
+compiler, build tool, Android tooling, KSP, or kapt. Kotlin reuses
+`seed-rules/0.4.0` unchanged; Change advances to `change-seed/0.11.0`. A standalone
+14-state Kotlin mutation slice passes all 63 relations, and its million-line
+checkpoint completes in 9.393 seconds with a 166.83 MiB sampled peak. This remains
+experimental, uncalibrated, and outside Change admission.
+
 - Add feature-oriented reporting.
 - Maintain the implemented provider-neutral directory/evidence selectors and
   measure their large-tree performance before broadening their scope.
@@ -588,7 +601,7 @@ outside Change admission.
   4-to-32-hour final changes before freezing a larger size band. Record host-model
   context, tokens, wall time, and cost when available, and keep empirical
   production validation separate from logical labels.
-- Evaluate the current `change-seed/0.10.0` SQL, Python, Go, and Java extensions on
+- Evaluate the current `change-seed/0.11.0` SQL, Python, Go, Java, and Kotlin extensions on
   decomposed public changes before considering any of them part of an admitted
   size band.
 - Follow the remaining deferred semantics and safeguards in

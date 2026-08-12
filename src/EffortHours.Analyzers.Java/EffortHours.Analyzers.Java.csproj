@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <RootNamespace>EffortHours.Analyzers.Java</RootNamespace>
-    <Description>Bounded static Java, Maven, and Gradle evidence analyzer for EffortHours.</Description>
+    <Description>Bounded static Java and Kotlin/JVM evidence analyzer with Maven and Gradle metadata for EffortHours.</Description>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="../EffortHours.Analysis/EffortHours.Analysis.csproj" />

@@ -88,6 +88,13 @@ internal static class ContentChangeAnalyzer
                 leftSignature == rightSignature;
         }
 
+        if (Path.GetExtension(path).ToLowerInvariant() is ".kt" or ".kts")
+        {
+            return KotlinFormattingNormalizer.TryCreateSignature(left, out string leftSignature) &&
+                KotlinFormattingNormalizer.TryCreateSignature(right, out string rightSignature) &&
+                leftSignature == rightSignature;
+        }
+
         return FormattingSignature(left) == FormattingSignature(right);
     }
 
@@ -197,7 +204,7 @@ internal static class ContentChangeAnalyzer
         Path.GetExtension(path).ToLowerInvariant() is
             ".cs" or ".js" or ".jsx" or ".mjs" or ".cjs" or
             ".ts" or ".tsx" or ".mts" or ".cts" or ".py" or ".pyi" or
-            ".go" or ".java" or ".sql";
+            ".go" or ".java" or ".kt" or ".kts" or ".sql";
 
     private static string[] NormalizeLines(string value) =>
     [

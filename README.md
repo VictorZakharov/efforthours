@@ -21,7 +21,7 @@ productivity score, invoice, or reconstruction of repository history.
 > repository estimator is not numerically calibrated or admitted. The Change
 > estimator has passed its first model-authored logical gate for changes estimated at 4 to 32
 > hours on the previously admitted non-SQL families, but it is not empirically
-> production-validated and the newer SQL, Python, Go, and Java paths are outside that gate.
+> production-validated and the newer SQL, Python, Go, Java, and Kotlin paths are outside that gate.
 > Review the evidence and ranges before using any estimate for a consequential
 > decision.
 
@@ -148,6 +148,10 @@ semicolon boundaries, identifiers, operators, and literals remain meaningful.
 For `.java`, ordinary formatting and non-documentation comments can normalize to
 zero while Javadoc/Markdown documentation comments, literals, identifiers,
 operators, delimiters, and ambiguous Unicode escapes remain meaningful.
+For `.kt` and `.kts`, ordinary formatting, optional semicolons/trailing commas,
+and non-documentation comments can normalize to zero while KDoc, literals,
+backtick identifiers, operators, delimiters, and semantic newlines after jump
+expressions remain meaningful.
 The current source build can retain bounded customization inside generated files
 only when exact, EffortHours-specific `<custom-code>` regions isolate it safely;
 the generated body still contributes zero. Generator-specific protected-region
@@ -223,7 +227,13 @@ The current static analyzers support:
   a JVM, Maven, Gradle, wrappers, compilers, or annotation processors;
 - import- and annotation-qualified Spring/Jakarta API, persistence, security,
   messaging, scheduling, validation, CLI, and integration evidence;
-- mixed .NET, JavaScript/TypeScript, Python, Go, Java, and SQL repositories;
+- Kotlin/JVM `.kt` and maintained `.kts` package, class/object/data/sealed type,
+  function, extension, nullability, coroutine, Flow, public API, and test
+  structure through bounded static token analysis;
+- import-qualified Ktor/Spring server, Android/Compose, Room/Exposed/JPA,
+  integration, security, validation, scheduling, coroutine, Flow, and test
+  evidence, with Gradle Kotlin DSL kept separate from maintained scripts;
+- mixed .NET, JavaScript/TypeScript, Python, Go, Java/Kotlin, and SQL repositories;
 - documentation, build configuration, CI, containers, infrastructure, package
   metadata, and checked-in LCOV or Cobertura coverage reports; and
 - generated, vendored, minified, binary, duplicate, test, and documentation
@@ -261,6 +271,11 @@ maintained `.java` files. It does not evaluate build DSL, resolve dependencies,
 compile source, run annotation processors/tests, inspect bytecode, or prove
 reflection/runtime behavior. See the
 [static Java boundary](docs/JAVA_ANALYSIS.md).
+Kotlin analysis reuses static JVM module ownership while reading maintained `.kt`
+and non-Gradle `.kts` files. It does not evaluate Gradle Kotlin DSL, resolve
+dependencies or source sets, compile source, run KSP/kapt/compiler plugins/tests,
+inspect bytecode, or prove Android, multiplatform, reflection, or runtime DSL
+behavior. See the [static Kotlin/JVM boundary](docs/KOTLIN_ANALYSIS.md).
 
 ## Offline and safe by default
 
@@ -300,7 +315,7 @@ in this alpha. See the [host-review protocol](docs/MILESTONE_8.md).
 - Static analysis assumes discovered tests pass on the fastest path and does not
   prove that a checkout builds or runs.
 - Unsupported languages still receive common inventory evidence but not the same
-  semantic depth as .NET, JavaScript/TypeScript, Python, Go, Java, SQL, and the supported
+  semantic depth as .NET, JavaScript/TypeScript, Python, Go, Java/Kotlin, SQL, and the supported
   frontend forms.
 - Checked-in coverage can be stale even when its bytes match the analyzed tree;
   EffortHours does not regenerate it.

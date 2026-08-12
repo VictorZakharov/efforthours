@@ -9,14 +9,14 @@ Python 3 is a first-class, token-backed EffortHours ecosystem beginning with:
 - repository estimator `seed-rules/0.4.0`; and
 - Change estimator `change-seed/0.8.0+seed-rules/0.4.0`.
 
-The later Java extension advances the current composite source identity to
-`change-seed/0.10.0+seed-rules/0.4.0` without changing Python normalization or
+The later Kotlin extension advances the current composite source identity to
+`change-seed/0.11.0+seed-rules/0.4.0` without changing Python normalization or
 valuation behavior.
 
 This boundary is experimental and uncalibrated. It adds static Python evidence and
 transparent analogous source priors; it does not establish numerical accuracy or
 production admission. The previously admitted Change Stage A slice remains the
-non-SQL, non-Python, non-Go, non-Java `change-seed/0.6.0` boundary documented in
+non-SQL, non-Python, non-Go, non-Java, non-Kotlin `change-seed/0.6.0` boundary documented in
 `CHANGE_MODEL_ADMISSION.md`.
 
 ## Admitted files and package metadata

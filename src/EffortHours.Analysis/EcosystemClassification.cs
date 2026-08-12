@@ -28,6 +28,8 @@ internal static class EcosystemClassification
             ecosystems.Add("go");
         if (language == "java" || JavaFileClassification.IsProjectArtifact(lowerName))
             ecosystems.Add("java");
+        if (language == "kotlin")
+            ecosystems.Add("kotlin");
         return ecosystems;
     }
 

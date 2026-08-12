@@ -47,6 +47,7 @@ internal static class FileClassifier
             [".pyi"] = "python",
             [".java"] = "java",
             [".kt"] = "kotlin",
+            [".kts"] = "kotlin",
             [".go"] = "go",
             [".rs"] = "rust",
             [".rb"] = "ruby",
@@ -263,6 +264,11 @@ internal static class FileClassifier
             return true;
         }
 
+        if (language == "kotlin" && KotlinFileClassification.IsTestSource(fileName))
+        {
+            return true;
+        }
+
         return lowerName.Contains(".test.", StringComparison.Ordinal) ||
                lowerName.Contains(".spec.", StringComparison.Ordinal) ||
                lowerName.EndsWith("tests.cs", StringComparison.Ordinal) ||
@@ -430,6 +436,7 @@ internal static class FileClassifier
             "gradlew" or "gradlew.bat" or "mvnw" or "mvnw.cmd" or
             "tox.ini" or "pytest.ini" or ".coveragerc" or
             ".yarnrc.yml" or ".editorconfig" or ".gitattributes" or ".gitignore" or ".efforthoursignore" ||
+        KotlinFileClassification.IsGradleScript(lowerName) ||
         PythonFileClassification.IsRequirementsFile(lowerName) ||
         lowerName.StartsWith("webpack.config.", StringComparison.Ordinal) ||
         lowerName.StartsWith("vite.config.", StringComparison.Ordinal) ||

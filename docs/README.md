@@ -27,6 +27,10 @@ repository root without discarding their decision history.
 - [Static Java analysis](JAVA_ANALYSIS.md) defines Maven/Gradle project discovery,
   bounded token and import-qualified evidence, build/runtime uncertainty,
   exclusions, Change behavior, benchmark results, and non-goals.
+- [Static Kotlin/JVM analysis](KOTLIN_ANALYSIS.md) defines shared JVM project
+  ownership, Kotlin source/script boundaries, server and Android semantics,
+  compiler-plugin uncertainty, exclusions, Change behavior, benchmarks, and
+  non-goals.
 - [Source-file budgets](CODE_BUDGETS.md) documents the enforced early-refactoring
   policy.
 - [Release procedure](RELEASING.md) defines the source-visibility and NuGet

@@ -35,6 +35,8 @@ public sealed class JavaRepositoryAnalyzer : IRepositoryEvidenceAnalyzer
             .Where(fact => fact.Kind == EvidenceKinds.File)
             .OrderBy(fact => fact.Scope, StringComparer.Ordinal)];
         EvidenceFact[] sourceFiles = [.. allFiles.Where(IsMaintainedJavaSource)];
+        if (sourceFiles.Length == 0 && allFiles.Any(IsMaintainedKotlinSource))
+            return new RepositoryAnalysisContribution();
         if (sourceFiles.Length == 0 && !allFiles.Any(IsJavaBuildDescriptor))
             return new RepositoryAnalysisContribution();
 
@@ -221,6 +223,14 @@ public sealed class JavaRepositoryAnalyzer : IRepositoryEvidenceAnalyzer
     private static bool IsMaintainedJavaSource(EvidenceFact fact) =>
         fact.Kind == EvidenceKinds.File &&
         fact.Tags.Contains("language:java", StringComparer.Ordinal) &&
+        fact.Tags.Any(tag => tag is "role:source" or "role:test") &&
+        !fact.Tags.Any(tag => tag is
+            "classification:generated" or "classification:minified" or
+            "classification:vendored" or "content:binary");
+
+    private static bool IsMaintainedKotlinSource(EvidenceFact fact) =>
+        fact.Kind == EvidenceKinds.File &&
+        fact.Tags.Contains("language:kotlin", StringComparer.Ordinal) &&
         fact.Tags.Any(tag => tag is "role:source" or "role:test") &&
         !fact.Tags.Any(tag => tag is
             "classification:generated" or "classification:minified" or

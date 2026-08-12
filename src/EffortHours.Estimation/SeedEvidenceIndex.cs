@@ -191,6 +191,11 @@ internal sealed class SeedEvidenceIndex
             return "javascript";
         }
 
+        if (fact.Id.StartsWith("kotlin:", StringComparison.Ordinal))
+        {
+            return "java";
+        }
+
         return TagValue(fact, "ecosystem:") ?? "common";
     }
 
@@ -435,6 +440,7 @@ internal sealed class SeedEvidenceIndex
         SeedEstimationScope scope) =>
         file.Ecosystems.Count == 0 ||
         file.Ecosystems.Contains(scope.Ecosystem, StringComparer.Ordinal) ||
+        scope.Ecosystem == "java" && file.Ecosystems.Contains("kotlin", StringComparer.Ordinal) ||
         scope.Ecosystem == "javascript" && file.Ecosystems.Contains("typescript", StringComparer.Ordinal);
 
     private static bool IsAnalyzedSource(SeedFileEvidence file, string ecosystem)
@@ -446,6 +452,8 @@ internal sealed class SeedEvidenceIndex
 
         return ecosystem == "dotnet"
             ? file.Extension.Equals(".cs", StringComparison.OrdinalIgnoreCase)
+            : ecosystem == "java"
+                ? file.Ecosystems.Any(item => item is "java" or "kotlin")
             : ecosystem == "javascript"
                 ? JavaScriptSourceExtensions.Contains(file.Extension)
                 : file.Ecosystems.Contains(ecosystem, StringComparer.Ordinal);
