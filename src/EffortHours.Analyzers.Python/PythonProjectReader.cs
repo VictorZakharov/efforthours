@@ -29,7 +29,7 @@ internal sealed class PythonProjectReader(PythonTextReader textReader)
         }
         else if (!packageDirectories.Contains(".", StringComparer.Ordinal) &&
             fileFacts.Any(fact => fact.Kind == EvidenceKinds.File &&
-                fact.Tags.Contains("language:python", StringComparer.Ordinal) &&
+                fact.Tags.Any(tag => tag is "language:python" or "language:jupyter") &&
                 !packageDirectories.Any(directory => IsWithin(fact.Scope, directory))))
         {
             packageDirectories = [".", .. packageDirectories];

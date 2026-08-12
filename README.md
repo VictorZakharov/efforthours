@@ -22,7 +22,7 @@ productivity score, invoice, or reconstruction of repository history.
 > estimator has passed its first model-authored logical gate for changes estimated at 4 to 32
 > hours on the previously admitted non-SQL families, but it is not empirically
 > production-validated and the newer SQL, Python, Go, Java, Kotlin, Shell,
-> PowerShell, Terraform/HCL, PHP/Composer, Rust/Cargo, and Docker/Compose paths are outside that
+> PowerShell, Terraform/HCL, PHP/Composer, Rust/Cargo, Docker/Compose, and Jupyter paths are outside that
 > gate.
 > Review the evidence and ranges before using any estimate for a consequential
 > decision.
@@ -176,6 +176,10 @@ can normalize to zero while keys, values, sequences, and document markers remain
 meaningful; tabs, malformed flow syntax, and block scalars fail closed.
 `.dockerignore` comments and surrounding layout can normalize to zero while
 ordered patterns and negations remain meaningful.
+For `.ipynb`, JSON layout, source string/array representation, outputs, execution
+state, widgets, attachments, raw/non-Python cells, magics, and shell escapes can
+normalize to zero. Maintained Python tokens, Markdown, declared language, cell
+tags, and meaningful cell ordering remain significant; unsafe inputs fail closed.
 The current source build can retain bounded customization inside generated files
 only when exact, EffortHours-specific `<custom-code>` regions isolate it safely;
 the generated body still contributes zero. Generator-specific protected-region
@@ -237,6 +241,11 @@ The current static analyzers support:
 - static Python package metadata from `pyproject.toml`, `setup.cfg`, literal-only
   `setup.py`, requirements, Pipfile, and common Poetry/PDM/uv surfaces without
   invoking Python or resolving an environment;
+- maintained Jupyter `.ipynb` Python code cells and Markdown narrative through a
+  digest-verified bounded JSON projection, including qualified data-analysis,
+  visualization, integration, and test evidence while excluding outputs,
+  execution state, widgets, attachments, magics, shell escapes, and unsupported
+  language cells;
 - Go modules, workspaces, packages, local replacements, internal references,
   commands, libraries, exported APIs, generics, concurrency, build constraints,
   embedded-asset declarations, and `_test.go` structure through bounded static
@@ -286,7 +295,7 @@ The current static analyzers support:
   environment boundaries, volumes, networks, dependencies, health checks,
   profiles, secrets/configs, deploy/security structure, and literal local
   Compose-to-Dockerfile references, plus bounded `.dockerignore` rules;
-- mixed .NET, JavaScript/TypeScript, Python, Go, Java/Kotlin, Shell/PowerShell,
+- mixed .NET, JavaScript/TypeScript, Python/Jupyter, Go, Java/Kotlin, Shell/PowerShell,
   Terraform/HCL, PHP/Composer, Rust/Cargo, Docker/Compose, and SQL repositories;
 - documentation, build configuration, CI, containers, infrastructure, package
   metadata, and checked-in LCOV or Cobertura coverage reports; and
@@ -313,8 +322,13 @@ or infer effort from rows, dumps, timestamps, or migration versions. See the
 Python analysis uses a bounded managed tokenizer and indentation-aware structural
 pass. Framework evidence requires matching import context; local namesakes do not
 qualify. It does not execute `setup.py`, import modules, install dependencies,
-type-check, discover runtime routes, or parse notebooks. See the
+type-check, or discover runtime routes. See the
 [static Python boundary](docs/PYTHON_ANALYSIS.md).
+Jupyter analysis never starts a kernel or reads output payloads. It admits only
+bounded Python cells through the Python tokenizer, represents Markdown separately,
+and treats execution state, data provenance, reproducibility, output correctness,
+runtime dependencies, mixed languages, and scientific validity as unverified. See
+the [static Jupyter boundary](docs/JUPYTER_ANALYSIS.md).
 Go analysis statically reads scanner-admitted `go.mod`, `go.work`, and `.go`
 files. It does not invoke the Go toolchain, resolve build constraints, expand
 `go:embed` patterns, run `go:generate`, compile cgo, prove reflection or runtime
@@ -398,7 +412,7 @@ in this alpha. See the [host-review protocol](docs/MILESTONE_8.md).
 - Static analysis assumes discovered tests pass on the fastest path and does not
   prove that a checkout builds or runs.
 - Unsupported languages still receive common inventory evidence but not the same
-  semantic depth as .NET, JavaScript/TypeScript, Python, Go, Java/Kotlin,
+  semantic depth as .NET, JavaScript/TypeScript, Python/Jupyter, Go, Java/Kotlin,
   Shell/PowerShell, Terraform/HCL, PHP/Composer, Rust/Cargo, Docker/Compose, SQL, and the supported
   frontend forms.
 - Checked-in coverage can be stale even when its bytes match the analyzed tree;

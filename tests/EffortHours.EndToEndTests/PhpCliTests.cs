@@ -65,7 +65,7 @@ public sealed class PhpCliTests
         Assert.DoesNotContain(after.RootPath, result.StandardOutput, StringComparison.OrdinalIgnoreCase);
         using JsonDocument document = JsonDocument.Parse(result.StandardOutput);
         Assert.Equal(
-            "change-seed/0.16.0+seed-rules/0.4.0",
+            "change-seed/0.17.0+seed-rules/0.4.0",
             document.RootElement.GetProperty("estimatorVersion").GetString());
         Assert.Contains(
             document.RootElement.GetProperty("categories").EnumerateArray(),

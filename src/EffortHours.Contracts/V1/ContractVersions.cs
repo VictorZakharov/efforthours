@@ -112,6 +112,7 @@ public static class EvidenceKinds
     public const string JavaScriptConfiguration = "javascript-configuration";
     public const string JavaScriptTest = "javascript-test";
     public const string JavaScriptWorkspace = "javascript-workspace";
+    public const string JupyterNotebook = "jupyter-notebook";
     public const string Language = "language";
     public const string PackageReference = "package-reference";
     public const string ProjectReference = "project-reference";

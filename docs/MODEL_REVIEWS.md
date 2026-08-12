@@ -33,6 +33,40 @@ Because EffortHours's own anchor informed the seed-model and calibration design,
 a development diagnostic rather than an eligible held-out test record unless a
 future independent snapshot and review policy explicitly establishes otherwise.
 
+## 2026-08-12: Jupyter notebook source-boundary review
+
+Status: **qualitative analyzer and prior-reuse checkpoint; no numerical calibration, scientific validation, or Change admission**
+
+Python analyzer `0.2.0` was reviewed as bounded maintained-cell projection, not a
+Jupyter runtime, kernel, environment resolver, notebook executor, data-provenance
+system, reproducibility checker, output validator, or scientific-review tool. It
+admits digest-verified `.ipynb` JSON, sends only unambiguous Python cells through
+the existing managed tokenizer, represents Markdown separately, and recognizes
+qualified data-analysis, visualization, integration, and test evidence. The
+existing `seed-rules/0.4.0` generic source and specialized priors consume those
+analogous facts without a model-artifact or fitted-prior change.
+
+Reads are scanner-admitted, root-contained, digest-verified, strict UTF-8, and
+size/depth/cell bounded. Outputs, execution counts, widget state, attachments,
+embedded payloads, transient metadata, raw and unsupported-language cells, magics,
+shell escapes, checkpoints, generated bodies, exact duplicate cells, and exact
+duplicate notebook projections do not add semantic units. Jupyter, kernels,
+Python, packages, target code, and cells are not executed, and source/output/
+payload values are not emitted.
+
+The standalone public qualitative gate has 14 Jupyter repository states and 52
+relations. All assertions pass across serialization and execution-state
+invariance, duplicate/generated/checkpoint exclusion, mixed-syntax bounds,
+semantic/category directionality, and category isolation. Earlier aggregate and
+standalone candidates remain unchanged; this suite is not accuracy evidence.
+
+Change `0.17.0` adds bounded notebook normalization and analyzer-backed semantic
+routing but no fitted prior. The existing Stage A admission contains no Jupyter
+changes and remains limited to the previously admitted `0.6.0` families. Absolute
+notebook EHE accuracy, scientific validity, independent review, representative
+real notebook coverage, and decomposed public Jupyter Change labels remain
+unresolved.
+
 ## 2026-08-12: Docker and Compose source-boundary review
 
 Status: **qualitative analyzer and prior-reuse checkpoint; no numerical calibration or Change admission**
@@ -345,8 +379,9 @@ Python analyzer `0.1.0` was reviewed as token/indentation-backed, not parser- or
 compiler-backed. Semantic evidence requires import-qualified calls, decorators,
 or base types. Negative local FastAPI/httpx/Celery namesakes remain ordinary
 source structure. Static package metadata never invokes Python or `setup.py`, and
-the analyzer emits no source excerpts. Jupyter is excluded pending its own output,
-magic, embedded-data, and mixed-kernel safety boundary.
+the analyzer emits no source excerpts. Jupyter was excluded at this checkpoint
+pending its own output, magic, embedded-data, and mixed-kernel safety boundary;
+the later `0.2.0` review above records that separately delivered boundary.
 
 The public qualitative gate advances from 77 to 88 source states and from 309 to
 339 relations. The 11 new Python states cover formatting/comments, exact copies,

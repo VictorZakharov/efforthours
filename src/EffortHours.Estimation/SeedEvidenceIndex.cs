@@ -110,6 +110,18 @@ internal sealed class SeedEvidenceIndex
     {
         ArgumentNullException.ThrowIfNull(scope);
         ArgumentNullException.ThrowIfNull(structure);
+        if (structure.Tags.Contains("structure:projection-normalized", StringComparer.Ordinal))
+        {
+            int projectedFiles = (int)Measurement(structure, "files");
+            return new StructureNormalization(
+                projectedFiles == 0 ? 0m : 1m,
+                projectedFiles,
+                projectedFiles,
+                projectedFiles,
+                HasTests: false,
+                HasDuplicates: false);
+        }
+
         SeedFileEvidence[] analyzed = [.. Files
             .Where(file => IsOwnedBy(file, scope))
             .Where(file => IsAnalyzedSource(file, scope.Ecosystem))];

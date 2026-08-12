@@ -8,6 +8,7 @@ internal enum BenchmarkShape
     DotNet,
     JavaScript,
     Python,
+    Jupyter,
     Go,
     Java,
     Kotlin,
@@ -31,7 +32,7 @@ internal sealed record BenchmarkOptions(
 {
     public const string Usage =
         "Usage: scanner-benchmark [--files <count>] [--lines-per-file <count>] " +
-        "[--dotnet|--javascript|--python|--go|--java|--kotlin|--shell|--powershell|--php|--rust|--terraform|--docker|--mixed] [--warm-cache] [--keep] " +
+        "[--dotnet|--javascript|--python|--jupyter|--go|--java|--kotlin|--shell|--powershell|--php|--rust|--terraform|--docker|--mixed] [--warm-cache] [--keep] " +
         "or scanner-benchmark --repository <path> [--warm-cache]";
 
     public string Mode => Shape switch
@@ -40,6 +41,7 @@ internal sealed record BenchmarkOptions(
         BenchmarkShape.DotNet => "dotnet-static",
         BenchmarkShape.JavaScript => "javascript-typescript-static",
         BenchmarkShape.Python => "python-static",
+        BenchmarkShape.Jupyter => "jupyter-notebook-static",
         BenchmarkShape.Go => "go-static",
         BenchmarkShape.Java => "java-static",
         BenchmarkShape.Kotlin => "kotlin-static",
@@ -91,6 +93,9 @@ internal sealed record BenchmarkOptions(
                     break;
                 case "--python":
                     shape = SelectShape(shape, BenchmarkShape.Python);
+                    break;
+                case "--jupyter":
+                    shape = SelectShape(shape, BenchmarkShape.Jupyter);
                     break;
                 case "--go":
                     shape = SelectShape(shape, BenchmarkShape.Go);

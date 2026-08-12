@@ -14,8 +14,9 @@ the estimator remains experimental and uncalibrated.
 
 The August 11, 2026 SQL analyzer extension changes no contract, rubric, corpus,
 label, partition, metric, compiler, or review maturity. Its current source identity
-is `change-seed/0.16.0+seed-rules/0.4.0`, but no SQL, Python, Go, Java, Kotlin,
-Shell, PowerShell, Terraform/HCL, PHP/Composer, Rust/Cargo, or Docker/Compose Change calibration record exists,
+is `change-seed/0.17.0+seed-rules/0.4.0`, but no SQL, Python, Jupyter, Go, Java,
+Kotlin, Shell, PowerShell, Terraform/HCL, PHP/Composer, Rust/Cargo, or
+Docker/Compose Change calibration record exists,
 and the earlier Stage A gate must not be generalized to those paths.
 
 ## Delivered scope

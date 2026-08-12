@@ -5,12 +5,13 @@
 Python 3 is a first-class, token-backed EffortHours ecosystem beginning with:
 
 - common scanner `0.2.3`;
-- Python analyzer `0.1.0`;
+- Python analyzer `0.2.0` (the `.py`/`.pyi` boundary remains the original `0.1.0`
+  behavior; `0.2.0` adds the separate Jupyter projection);
 - repository estimator `seed-rules/0.4.0`; and
 - Change estimator `change-seed/0.8.0+seed-rules/0.4.0`.
 
 Later additive ecosystem extensions advance the current composite source identity to
-`change-seed/0.16.0+seed-rules/0.4.0` without changing Python normalization or
+`change-seed/0.17.0+seed-rules/0.4.0` without changing `.py`/`.pyi` normalization or
 valuation behavior.
 
 This boundary is experimental and uncalibrated. It adds static Python evidence and
@@ -145,9 +146,10 @@ cross-platform regression threshold or a realistic distribution of Python syntax
 ## Explicit non-goals
 
 This boundary does not execute Python; discover or activate virtual environments;
-install, import, or inspect distributions; evaluate `setup.py`; parse notebooks;
-run tests; measure runtime coverage; type-check; expand dynamic imports; execute
+install, import, or inspect distributions; evaluate `setup.py`; run tests; measure
+runtime coverage; type-check; expand dynamic imports; execute
 framework configuration; discover runtime routes; validate database models; prove
-security; or establish calibration/production readiness. Jupyter notebooks remain
-separate because outputs, magics, embedded data, and mixed kernels require a
-different safety and effort policy.
+security; or establish calibration/production readiness. Jupyter notebooks are
+supported only through the separate bounded projection in `JUPYTER_ANALYSIS.md`;
+that path does not verify outputs, execution state, runtime dependencies, data
+provenance, reproducibility, or scientific validity.

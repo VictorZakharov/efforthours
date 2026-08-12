@@ -2,7 +2,10 @@ using System.Text;
 
 namespace EffortHours.Change;
 
-internal readonly record struct ContentChangeResult(bool FormattingOnly, int EditRegions);
+internal readonly record struct ContentChangeResult(
+    bool FormattingOnly,
+    int EditRegions,
+    string? SemanticRole = null);
 
 internal static class ContentChangeAnalyzer
 {
@@ -54,7 +57,14 @@ internal static class ContentChangeAnalyzer
         string[] baseLines = NormalizeLines(baseText);
         string[] headLines = NormalizeLines(headText);
         int regions = CountPatienceRegions(baseLines, headLines);
-        return new ContentChangeResult(false, Math.Clamp(regions, 1, MaximumReportedRegions));
+        string? semanticRole = Path.GetExtension(path).Equals(".ipynb", StringComparison.OrdinalIgnoreCase) &&
+            JupyterNotebookFormattingNormalizer.TryClassifyDifference(baseText, headText, out string role)
+                ? role
+                : null;
+        return new ContentChangeResult(
+            false,
+            Math.Clamp(regions, 1, MaximumReportedRegions),
+            semanticRole);
     }
 
     private static bool ContainsNull(string value) => value.AsSpan().Contains('\0');
@@ -62,6 +72,13 @@ internal static class ContentChangeAnalyzer
     private static bool FormattingEquivalent(string left, string right, string path)
     {
         string extension = Path.GetExtension(path).ToLowerInvariant();
+        if (extension == ".ipynb")
+        {
+            return JupyterNotebookFormattingNormalizer.TryCreateSignature(left, out string leftSignature) &&
+                JupyterNotebookFormattingNormalizer.TryCreateSignature(right, out string rightSignature) &&
+                leftSignature == rightSignature;
+        }
+
         if (IsDockerfile(path))
         {
             return DockerFormattingNormalizer.TryCreateDockerfileSignature(left, out string leftSignature) &&
@@ -263,6 +280,7 @@ internal static class ContentChangeAnalyzer
         Path.GetExtension(path).ToLowerInvariant() is
             ".cs" or ".js" or ".jsx" or ".mjs" or ".cjs" or
             ".ts" or ".tsx" or ".mts" or ".cts" or ".py" or ".pyi" or
+            ".ipynb" or
             ".go" or ".java" or ".kt" or ".kts" or ".php" or ".rs" or ".sql" or
             ".tf" or ".tfvars" or ".tfbackend" or ".hcl" or
             ".sh" or ".bash" or ".ksh" or ".bats" or ".ps1" or ".psm1" or ".psd1" ||

@@ -156,6 +156,10 @@ internal static partial class ChangeWorkItemBuilder
         string testType = path.Tags
             .FirstOrDefault(tag => tag.StartsWith("test-type:", StringComparison.Ordinal))?[10..] ?? string.Empty;
         string lowerPath = path.Path.ToLowerInvariant();
+        string notebookRole = path.Tags
+            .FirstOrDefault(tag => tag.StartsWith("notebook-role:", StringComparison.Ordinal))?[14..] ?? string.Empty;
+        if (notebookRole == "documentation") return EffortCategory.Documentation;
+        if (notebookRole == "configuration") return EffortCategory.BuildConfigurationAndDeveloperTooling;
         if (hclRole == "test")
         {
             return EffortCategory.IntegrationContractAndComponentTesting;

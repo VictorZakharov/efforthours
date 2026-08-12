@@ -572,6 +572,41 @@ Process-level benchmark coverage also runs a smaller `--docker` shape and assert
 static safety signals, positive line/memory measurements, and unchanged target
 metadata.
 
+## Static Jupyter analyzer v0.2.0 checkpoint
+
+Measured on August 12, 2026 with the same Windows/.NET workstation, a fresh
+process, common scanner `0.2.12`, and Python analyzer `0.2.0`.
+
+```text
+dotnet benchmarks/EffortHours.ScannerBenchmarks/bin/Release/net10.0/EffortHours.ScannerBenchmarks.dll --files 10000 --lines-per-file 100 --jupyter
+```
+
+| Measure | Jupyter |
+| --- | ---: |
+| Requested/analyzed physical lines | 1,000,000 / 1,120,003 |
+| Included files | 10,001 |
+| Included bytes | 30,018,949 |
+| Fixture generation | 1.684 s |
+| Full static scan | 7.561 s |
+| Evidence serialization | 0.231 s |
+| Full-scan throughput | 148,131 lines/s |
+| Managed allocation | 1,347.94 MiB |
+| Sampled peak working set | 159.33 MiB |
+| Evidence JSON | 62.71 MiB |
+| Evidence facts | 40,007 |
+
+The fixture uses 10,000 maintained Python notebooks with Markdown and bounded
+code-cell arrays plus one static `pyproject.toml`. Target metadata retained the
+same digest before and after analysis. The benchmark did not launch Jupyter or a
+kernel, execute cells or target code, read outputs, install dependencies, access
+the network, or write into the target. This single synthetic workstation
+measurement is a reproducible checkpoint, not a frozen cross-platform threshold,
+a realistic scientific workload, or a claim about notebook correctness.
+
+Process-level benchmark coverage also runs a smaller `--jupyter` shape and asserts
+static safety signals, positive line/memory measurements, and unchanged target
+metadata.
+
 ## Change EHE scale-and-safety v1.0.0 checkpoint
 
 Measured on August 10, 2026 with:

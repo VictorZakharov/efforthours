@@ -6,8 +6,9 @@ Metric identity, decision order, and the first small-change logical gate are fro
 as `change-model-admission/0.2.0`. The admitted source baseline is
 `change-seed/0.6.0+seed-rules/0.3.0`; it is the transparent Stage A logical
 baseline for experimental one-to-several-day Change estimates. The current source
-has advanced to `change-seed/0.16.0+seed-rules/0.4.0` for static SQL, Python, Go,
-Java, Kotlin, Shell, PowerShell, Terraform/HCL, PHP/Composer, Rust/Cargo, and Docker/Compose support. Those
+has advanced to `change-seed/0.17.0+seed-rules/0.4.0` for static SQL, Python,
+Jupyter, Go, Java, Kotlin, Shell, PowerShell, Terraform/HCL, PHP/Composer,
+Rust/Cargo, and Docker/Compose support. Those
 extensions preserve admitted rules but are not separately admitted, and no Stage A
 record contains any of those ecosystems. This is weak-supervision admission, not empirical accuracy,
 formal interval calibration, or production readiness.
@@ -584,3 +585,26 @@ source revision, not an admitted successor; `0.6.0` remains the last admitted
 source baseline. Docker admission requires licensed public final changes in the
 declared size band, exact small-task logical decomposition, repository-isolated
 partitions, and the normal development/validation/test decision order.
+
+## `change-seed/0.17.0` static Jupyter extension
+
+Version 0.17.0 adds maintained `.ipynb` final-delta support. Its bounded cell
+projection normalizes JSON layout, source string/array representation, outputs,
+execution counts, widgets, attachments, transient metadata, raw or unsupported-
+language cells, magics, and shell escapes. Python token structure, Markdown,
+declared language, maintained cell tags, and meaningful ordering remain
+significant; invalid, oversized, or incomplete notebooks fail closed. Repository
+analyzer evidence routes code, documentation, data, visualization, integration,
+and test changes through existing rules without adding a fitted Change prior.
+Checkpoint, generated, duplicate, transient, and formatting-only bodies retain
+zero implementation value.
+
+The standalone public Jupyter mutation suite adds 14 repository states and passes
+52/52 relations. That is qualitative analyzer and routing safeguard evidence, not
+reviewed Change labeling or scientific validation. The Stage A corpus and its
+exact logical decomposition contain no Jupyter changes. Version 0.17.0 is
+therefore an experimental source revision, not an admitted successor; `0.6.0`
+remains the last admitted source baseline. Jupyter admission requires licensed
+public final changes in the declared size band, exact small-task logical
+decomposition, repository-isolated partitions, and the normal development/
+validation/test decision order.

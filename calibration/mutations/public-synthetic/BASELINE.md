@@ -590,6 +590,16 @@ candidate estimator version, 13 cases, 38 assertions, and zero failures. The sui
 is standalone so the frozen aggregate and all earlier standalone suites remain
 untouched.
 
+## Reproduce standalone Jupyter suite 0.1.0
+
+Generate each of the 14 `jupyter-*` fixtures with repository estimator
+`seed-rules/0.4.0` into `estimates/seed-rules-0.4.0/`. Then evaluate the 14 exact
+candidate paths against `jupyter-0.1.0.suite.json`, writing
+`baseline-seed-rules-0.4.0-jupyter-0.1.0.json`. The result must disclose one
+candidate estimator version, 14 cases, 52 assertions, and zero failures. The suite
+is standalone so the frozen aggregate and all earlier standalone suites remain
+untouched.
+
 ## Limitations and next expansion
 
 The suite uses deliberately small archetypes. Near-copy and the two new
@@ -657,6 +667,13 @@ or runtime planner. It does not pull images, expand build contexts, load include
 or environment files, resolve secrets, invoke Docker/Compose/BuildKit, or prove
 build/runtime correctness. Static container labels are confidence signals, not
 proof that a stack builds or runs.
+
+The Jupyter reader is not a notebook runtime, kernel, environment resolver,
+executor, data-provenance system, output validator, or scientific-review tool. It
+does not execute cells or magics, load outputs/attachments/widgets, resolve
+runtime dependencies, verify reproducibility, or establish output/scientific
+correctness. Static maintained-cell evidence and the passing qualitative suite do
+not prove that a notebook runs or that its results are valid.
 
 Passing these relations prevents known perverse movements. It does not establish
 that any absolute hour or delta is numerically correct, and it does not make the

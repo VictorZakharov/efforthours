@@ -23,7 +23,7 @@ internal static class EcosystemClassification
         if (language == "typescript" || lowerName is "tsconfig.json" or "jsconfig.json")
             ecosystems.Add("typescript");
         if (language == "sql") ecosystems.Add("sql");
-        if (language == "python" || PythonFileClassification.IsProjectArtifact(lowerName))
+        if (language is "python" or "jupyter" || PythonFileClassification.IsProjectArtifact(lowerName))
             ecosystems.Add("python");
         if (language == "go" || GoFileClassification.IsProjectArtifact(lowerName))
             ecosystems.Add("go");

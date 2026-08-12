@@ -81,7 +81,7 @@ public sealed partial class PythonAnalyzerTests
         EvidenceFact structure = FactOfKind(evidence, EvidenceKinds.SourceStructure);
         EvidenceFact test = FactOfKind(evidence, EvidenceKinds.EcosystemTest);
 
-        Assert.Equal("0.1.0", package.Provenance.AnalyzerVersion);
+        Assert.Equal("0.2.0", package.Provenance.AnalyzerVersion);
         Assert.Equal(".", package.Scope);
         Assert.Contains("package-role:server", package.Tags);
         Assert.Contains("syntax:token-backed", structure.Tags);

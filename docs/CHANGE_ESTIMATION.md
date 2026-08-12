@@ -7,11 +7,12 @@ implemented after Milestone 7B5. They include provider-neutral immutable
 base/head analysis, two statically scanned directories, two saved repository
 evidence bundles, one commit, one final revision range, and one GitHub pull
 request through an optional `gh` adapter. The current
-`change-seed/0.16.0` rules remain experimental and are not empirically calibrated,
+`change-seed/0.17.0` rules remain experimental and are not empirically calibrated,
 production-ready, or separately model-admitted. They preserve the valuation
 behavior of the Stage A logically admitted 0.6.0 baseline; the SQL, Python, Go,
-Java, Kotlin, Shell, PowerShell, Terraform/HCL, PHP/Composer, Rust/Cargo, and Docker/Compose paths
-were not present in that gate. Version 0.16.0 retains the 0.3.0 logical-marginality
+Java, Kotlin, Shell, PowerShell, Terraform/HCL, PHP/Composer, Rust/Cargo,
+Docker/Compose, and Jupyter paths were not present in that gate. Version 0.17.0
+retains the 0.3.0 logical-marginality
 correction and the 0.4.0 fail-closed boundary for explicitly delimited
 customization inside otherwise generated files. It adds an expected-point gross-
 to-final normalization diagnostic
@@ -25,7 +26,8 @@ formatting/semantic role routing, and HCL-aware formatting/Terraform semantic
 routing, PHP-aware formatting and analyzer-backed semantic/category routing, plus
 Rust-aware formatting and analyzer-backed semantic/category routing, plus
 Dockerfile, Compose, and `.dockerignore` formatting normalization with analyzer-
-backed packaging/deployment routing, without
+backed packaging/deployment routing, plus bounded Jupyter container/output
+normalization and analyzer-backed semantic routing, without
 changing any existing Change EHE prior or previously supported final-delta total.
 The current source composes repository `seed-rules/0.4.0`.
 The first calibration-infrastructure checkpoint, a preliminary 24-record synthetic
@@ -43,7 +45,7 @@ migration, integration, CI, container-delivery, and simplification mutations in
 addition to the initial normalization and Git boundaries. The first Change
 portfolio checkpoint adds repeated PRs, a versioned cross-repository PR manifest,
 and bounded author-and-period selection. Its separate
-`change-portfolio/0.1.0+change-seed/0.16.0+seed-rules/0.4.0` reconciler changes no
+`change-portfolio/0.1.0+change-seed/0.17.0+seed-rules/0.4.0` reconciler changes no
 Change prior, frozen report, label, or admission decision and remains experimental.
 
 ## Purpose
@@ -190,7 +192,8 @@ modified, removed, exact-move, excluded, and unchanged-context evidence without
 checking out either tree. Formatting-only classification uses conservative,
 literal-aware whitespace normalization for the initial .NET and JavaScript/
 TypeScript source extensions plus bounded language-aware normalizers for SQL,
-Python, Go, Java, Kotlin, Shell, PowerShell, Terraform/HCL, PHP, Rust, and Docker artifacts. Shell and
+Python, Go, Java, Kotlin, Shell, PowerShell, Terraform/HCL, PHP, Rust, Docker, and
+Jupyter artifacts. Shell and
 PowerShell ordinary formatting and non-directive comments can normalize to zero while shebangs,
 PowerShell `#requires`, literals, identifiers, operators, and delimiters remain
 significant. Here-documents and here-strings fail closed. Unsupported or uncertain
@@ -214,6 +217,11 @@ preserving keys, values, sequence structure, and document markers; tabs,
 malformed flow syntax, and block scalars fail closed. `.dockerignore` comparison
 ignores comments and surrounding layout while preserving ordered patterns and
 negations.
+Jupyter comparison projects bounded maintained cells. JSON layout, source
+string/array representation, outputs, execution state, widgets, attachments,
+transient metadata, raw/non-Python cells, magics, and shell escapes can normalize
+to zero. Python tokens, Markdown, declared language, maintained cell tags, and
+meaningful ordering remain significant; invalid or oversized content fails closed.
 Exact blob moves are excluded from body implementation effort. Path-sensitive
 integration work is included only when separate analyzer evidence supports it.
 
@@ -398,12 +406,13 @@ adjustments, exact allocations, attribution uncertainty, verification, and
 post-EHE pricing. They emit neither local repository paths nor source excerpts.
 
 The current source Change estimator identity is
-`change-seed/0.16.0+seed-rules/0.4.0`; the portfolio reconciler identity is
-`change-portfolio/0.1.0+change-seed/0.16.0+seed-rules/0.4.0`. The earlier 0.6.0
+`change-seed/0.17.0+seed-rules/0.4.0`; the portfolio reconciler identity is
+`change-portfolio/0.1.0+change-seed/0.17.0+seed-rules/0.4.0`. The earlier 0.6.0
 Change identity alone passed the experimental Stage A logical gate, and that
 record contains no SQL, Python, Go, Java, Kotlin, Shell, PowerShell, Terraform,
-HCL, PHP, Composer, Rust, Cargo, Docker, or Compose. Portfolio aggregation does not broaden that
-admission. Neither 0.16.0 nor portfolio 0.1.0 may be described as empirically calibrated,
+HCL, PHP, Composer, Rust, Cargo, Docker, Compose, or Jupyter. Portfolio aggregation
+does not broaden that admission. Neither 0.17.0 nor portfolio 0.1.0 may be
+described as empirically calibrated,
 generally admitted, or production-ready. Frozen calibration source reports retain
 the exact earlier estimator identity they were created from.
 

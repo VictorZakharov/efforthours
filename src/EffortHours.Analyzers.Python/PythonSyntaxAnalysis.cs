@@ -60,6 +60,10 @@ internal sealed class PythonSourceMetrics
 
     public int MockUsages { get; set; }
 
+    public int DataAnalysisCalls { get; set; }
+
+    public int VisualizationCalls { get; set; }
+
     public HashSet<string> ImportsSeen { get; } = new(StringComparer.Ordinal);
 
     public HashSet<string> Technologies { get; } = new(StringComparer.Ordinal);

@@ -5,7 +5,7 @@
 Rust analyzer `0.1.0` and common scanner `0.2.10` provide an experimental,
 offline-only Rust/Cargo evidence path. Repository estimates reuse the unchanged
 `seed-rules/0.4.0` language-neutral source backbone and existing specialized
-priors. Change estimates use `change-seed/0.16.0+seed-rules/0.4.0`.
+priors. Current Change estimates use `change-seed/0.17.0+seed-rules/0.4.0`.
 
 No Rust-specific rate was fitted. The repository and Change paths are
 uncalibrated, the Rust Change extension is outside the admitted
