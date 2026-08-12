@@ -66,9 +66,11 @@ Before the first preview:
 2. Recheck that `EffortHours.Tool` is still an available package ID.
 3. Use the GitHub environment named `nuget.org`, restrict deployment to `v*` tags,
    and set environment variable `NUGET_USER` to the NuGet.org profile name
-   `WellScoped`, not an email address. Add the maintainer as the sole required
-   reviewer after the repository is public and before enabling publication; leave
-   self-review permitted so the sole maintainer can approve the deployment.
+   `VictorZakharov` used by the trusted-publishing policy, not an email address or
+   the separate `WellScoped` organization owner. Add the maintainer as the sole
+   required reviewer after the repository is public and before enabling
+   publication; leave self-review permitted so the sole maintainer can approve the
+   deployment.
 4. In NuGet.org **Trusted Publishing**, create a GitHub Actions policy with:
    - repository owner: `VictorZakharov`;
    - repository: `efforthours`;

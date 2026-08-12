@@ -1,7 +1,7 @@
 # Third-party notices
 
 This file records the third-party packages resolved by the checked-in NuGet lock
-files and the actions pinned by release workflows as of 2026-08-06. Package versions are centrally pinned in
+files and the actions pinned by release workflows as of 2026-08-12. Package versions are centrally pinned in
 `Directory.Packages.props`.
 
 EffortHours is licensed under the MIT License. Third-party components remain under
@@ -51,23 +51,24 @@ License; the upstream projects remain under their own MIT licenses.
 
 | Package | Version | License | Project |
 | --- | --- | --- | --- |
-| Acornima | 1.6.2 | BSD-3-Clause | <https://github.com/adams85/acornima> |
-| Acornima.Extras | 1.6.2 | BSD-3-Clause | <https://github.com/adams85/acornima> |
-| JsonSchema.Net | 7.4.0 | MIT | <https://github.com/gregsdennis/json-everything> |
-| JsonPointer.Net | 5.3.1 | MIT | <https://github.com/gregsdennis/json-everything> |
-| Json.More.Net | 2.1.1 | MIT | <https://github.com/gregsdennis/json-everything> |
-| Humanizer.Core | 2.14.1 | MIT | <https://github.com/Humanizr/Humanizer> |
+| Acornima | 1.7.0 | BSD-3-Clause | <https://github.com/adams85/acornima> |
+| Acornima.Extras | 1.7.0 | BSD-3-Clause | <https://github.com/adams85/acornima> |
+| JsonSchema.Net | 8.0.5 | MIT | <https://github.com/gregsdennis/json-everything> |
+| JsonPointer.Net | 6.0.1 | MIT | <https://github.com/gregsdennis/json-everything> |
+| Json.More.Net | 2.2.0 | MIT | <https://github.com/gregsdennis/json-everything> |
+| Humanizer.Core | 3.0.1 | MIT | <https://github.com/Humanizr/Humanizer> |
 | Microsoft.CodeAnalysis.CSharp | 5.6.0 | MIT | <https://github.com/dotnet/roslyn> |
 | Microsoft.CodeAnalysis.Common | 5.6.0 | MIT | <https://github.com/dotnet/roslyn> |
 
-JsonSchema.Net is intentionally pinned to a release whose NuGet package declares
-the standard MIT license. Any upgrade requires a fresh review of the binary package
-terms as well as API compatibility.
+JsonSchema.Net is intentionally pinned to `8.0.5`, the final binary release whose
+NuGet package declares the standard MIT license. Version 9.x uses different
+OSMFEULA terms and is not included. Any upgrade requires a fresh review of the
+binary package terms as well as API compatibility.
 
 ### Acornima and Acornima.Extras license
 
-The following license applies to Acornima and Acornima.Extras 1.6.2. Both NuGet
-packages identify source commit `93b19e4e2ce0bd2c0fdca9deb92b39d1f5d9f53b`.
+The following license applies to Acornima and Acornima.Extras 1.7.0. Both NuGet
+packages identify source commit `401bd62d8aeb9f7cbe7b6147937a87e0c71747a8`.
 
 Copyright (c) Adam Simon. All rights reserved.
 
@@ -100,12 +101,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 | Package | Version | License |
 | --- | --- | --- |
-| Microsoft.NET.Test.Sdk | 17.14.1 | MIT |
-| Microsoft.CodeCoverage | 17.14.1 | MIT |
+| Microsoft.NET.Test.Sdk | 18.8.1 | MIT |
+| Microsoft.CodeCoverage | 18.8.1 | MIT |
 | Microsoft.CodeAnalysis.Analyzers | 5.3.0 | MIT |
-| Microsoft.TestPlatform.ObjectModel | 17.14.1 | MIT |
-| Microsoft.TestPlatform.TestHost | 17.14.1 | MIT |
-| Newtonsoft.Json | 13.0.3 | MIT |
+| Microsoft.TestPlatform.ObjectModel | 18.8.1 | MIT |
+| Microsoft.TestPlatform.TestHost | 18.8.1 | MIT |
 | xunit | 2.9.3 | Apache-2.0 |
 | xunit.abstractions | 2.0.3 | Apache-2.0, with MIT-licensed imported portions noted by the project |
 | xunit.analyzers | 1.18.0 | Apache-2.0 |

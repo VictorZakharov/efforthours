@@ -6,6 +6,8 @@ may still change public contracts with explicit documentation.
 
 ## Unreleased
 
+## 0.10.0-alpha.1 - 2026-08-12
+
 ### Added
 
 - C/C++ analyzer `0.1.0` adds offline, digest-verified bounded analysis for C99,
@@ -198,6 +200,13 @@ may still change public contracts with explicit documentation.
 
 ### Changed
 
+- Runtime schema validation is pinned to JsonSchema.Net `8.0.5`, the final binary
+  release that declares the MIT license. The centrally pinned dependency, lock
+  files, packaged notices, and release hygiene checks now preserve that audited
+  redistribution boundary.
+- The manual NuGet preview workflow restores in locked mode and verifies the
+  currently bundled `seed-rules/0.4.0` model before it can upload or publish a
+  package.
 - Pull-request CI runs platform-independent formatting once on Linux while
   cross-platform build/unit and process-level end-to-end matrices execute in
   parallel. End-to-end lanes use locked, project-scoped rebuilds, and preview
