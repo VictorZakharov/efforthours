@@ -25,7 +25,7 @@ eh estimate ./my-repository --profile implementation --format markdown
 ```
 
 EffortHours statically analyzes .NET, JavaScript, TypeScript, Python, Go, Java,
-Kotlin/JVM, Shell, PowerShell, Terraform/HCL, PHP/Composer, Rust/Cargo, HTML/CSS-family
+Kotlin/JVM, Shell, PowerShell, Terraform/HCL, PHP/Composer, Rust/Cargo, Docker/Compose, HTML/CSS-family
 frontends, SQL, and mixed repositories. Frontend support includes bounded template and stylesheet semantics
 plus static Angular component metadata. SQL support includes bounded schema,
 migration, stored-program, query, test, deployment, and cross-database evidence
@@ -74,6 +74,12 @@ APIs, async/concurrency, unsafe/error paths, import-qualified semantics, FFI,
 tests, benchmarks, and examples. It never invokes Cargo, rustc, build scripts,
 procedural macros, generators, tests, examples, or benchmarks, and it does not
 resolve dependencies, active features, target triples, or generated bodies.
+Docker/Compose support includes bounded Dockerfile instructions and stages,
+filename-qualified Compose services and orchestration structure, literal local
+Compose-to-Dockerfile references, and `.dockerignore` rules. It never invokes
+Docker, Compose, BuildKit, a shell, or target code; pulls images; expands build
+contexts; loads includes or environment files; resolves interpolation or secrets;
+or treats arbitrary YAML as Compose.
 It reports evidence-backed work items across implementation, testing,
 documentation, integration, delivery, validation, and review, then optionally
 applies a dated contractor rate without changing the effort estimate.
@@ -124,7 +130,7 @@ treated as untrusted input, and reports avoid source excerpts by default.
 
 ## Current limitations
 
-- `seed-rules/0.4.0` and `change-seed/0.15.0` remain experimental and uncalibrated.
+- `seed-rules/0.4.0` and `change-seed/0.16.0` remain experimental and uncalibrated.
 - SQL uses bounded token/statement evidence mapped to existing priors; it is not a
   full grammar, schema diff engine, query optimizer, or database validator.
 - Public calibration labels have not completed genuinely independent correction.
@@ -149,6 +155,10 @@ treated as untrusted input, and reports avoid source excerpts by default.
 - Rust evidence is token-backed rather than rustc-backed; Cargo dependency and
   feature resolution, macro expansion, build-script output, generated bindings,
   borrow checking, trait selection, and runtime behavior are not resolved.
+- Dockerfile and Compose evidence is bounded structural analysis rather than
+  Docker/BuildKit parsing, general YAML parsing, Compose schema validation, or
+  runtime planning; image contents, build contexts, interpolation, includes,
+  secrets, and deploy behavior are not resolved.
 - Host-review token use, cost, and estimate improvement have not yet been measured
   across representative repositories; no automatic review budget is selected.
 

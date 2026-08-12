@@ -42,6 +42,8 @@ internal static class EcosystemClassification
             ecosystems.Add("php");
         if (language == "rust" || RustFileClassification.IsProjectArtifact(lowerName, lowerPath))
             ecosystems.Add("rust");
+        if (DockerFileClassification.IsProjectArtifact(lowerName))
+            ecosystems.Add("docker");
         return ecosystems;
     }
 

@@ -24,7 +24,8 @@ internal static class FileClassifier
             extension,
             inspection.SampleText);
 
-        bool isTest = IsTestPath(lowerPath, fileName, lowerName, language);
+        bool isTest = !DockerFileClassification.IsProjectArtifact(lowerName) &&
+            IsTestPath(lowerPath, fileName, lowerName, language);
         bool isGenerated = IsGeneratedPath(
             lowerPath,
             lowerName,
@@ -119,7 +120,7 @@ internal static class FileClassifier
             return "ci-configuration";
         }
 
-        if (IsContainerConfiguration(lowerName))
+        if (DockerFileClassification.IsProjectArtifact(lowerName))
         {
             return "container-configuration";
         }
@@ -396,12 +397,6 @@ internal static class FileClassifier
         lowerPath.StartsWith(".github/workflows/", StringComparison.Ordinal) ||
         lowerPath.StartsWith(".circleci/", StringComparison.Ordinal) ||
         lowerName is ".gitlab-ci.yml" or ".gitlab-ci.yaml" or "azure-pipelines.yml" or "azure-pipelines.yaml" or "jenkinsfile";
-
-    private static bool IsContainerConfiguration(string lowerName) =>
-        lowerName.StartsWith("dockerfile", StringComparison.Ordinal) ||
-        lowerName.StartsWith("docker-compose", StringComparison.Ordinal) ||
-        lowerName.StartsWith("compose.", StringComparison.Ordinal) ||
-        lowerName == ".dockerignore";
 
     private static bool IsInfrastructure(
         string lowerPath,

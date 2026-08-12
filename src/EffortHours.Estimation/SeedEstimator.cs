@@ -55,6 +55,7 @@ public sealed class SeedEstimator : IEstimator
         new(StringComparer.Ordinal)
         {
             "dotnet",
+            "docker",
             "go",
             "java",
             "javascript",

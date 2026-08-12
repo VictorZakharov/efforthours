@@ -6,6 +6,7 @@
   <ItemGroup>
     <ProjectReference Include="../EffortHours.Analysis/EffortHours.Analysis.csproj" />
     <ProjectReference Include="../EffortHours.Analyzers.DotNet/EffortHours.Analyzers.DotNet.csproj" />
+    <ProjectReference Include="../EffortHours.Analyzers.Docker/EffortHours.Analyzers.Docker.csproj" />
     <ProjectReference Include="../EffortHours.Analyzers.Go/EffortHours.Analyzers.Go.csproj" />
     <ProjectReference Include="../EffortHours.Analyzers.Java/EffortHours.Analyzers.Java.csproj" />
     <ProjectReference Include="../EffortHours.Analyzers.JavaScript/EffortHours.Analyzers.JavaScript.csproj" />

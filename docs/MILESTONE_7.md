@@ -985,3 +985,21 @@ interval calibration, or a production-admission decision. No existing corpus,
 aggregate/standalone suite, partition, reviewer identity, teacher target, estimator
 artifact, or frozen report changes. Rust/Cargo has no independent correction or
 real-repository calibration family yet.
+
+## Docker and Compose mutation extension
+
+The ninth ecosystem expansion adds a standalone `docker-0.1.0` mutation suite
+rather than regenerating the frozen 88-state aggregate or any earlier standalone
+suite. Its 13 project-authored MIT synthetic states use unchanged
+`seed-rules/0.4.0` and cover filename-qualified Compose admission,
+formatting/comments, exact copies, `.dockerignore`, Dockerfile build/runtime
+structure, Compose services/topology/security/deploy structure, literal local
+build references, dynamic YAML bounds, and category isolation.
+
+All 38 relations pass. These are qualitative directionality, range-point
+invariance, bounded-uncertainty, category-isolation, ownership, and false-positive
+guardrails. They are not reviewed work-item labels, held-out accuracy evidence,
+interval calibration, or a production-admission decision. No existing corpus,
+aggregate/standalone suite, partition, reviewer identity, teacher target,
+estimator artifact, or frozen report changes. Docker/Compose has no independent
+correction or real-repository calibration family yet.

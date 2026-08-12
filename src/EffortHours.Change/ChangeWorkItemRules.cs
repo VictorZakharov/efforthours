@@ -234,9 +234,14 @@ internal static partial class ChangeWorkItemBuilder
             return EffortCategory.Documentation;
         }
 
-        if (role is "ci-configuration" or "infrastructure" or "container-configuration")
+        if (role is "ci-configuration" or "infrastructure")
         {
             return EffortCategory.CiCdAndInfrastructureAsCode;
+        }
+
+        if (role == "container-configuration")
+        {
+            return EffortCategory.PackagingDeploymentAndReleaseArtifacts;
         }
 
         if (role is "project" or "solution" or "package-manifest" or "build-configuration" or "configuration")

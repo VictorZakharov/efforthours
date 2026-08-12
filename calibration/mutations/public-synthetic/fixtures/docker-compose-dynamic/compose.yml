@@ -1,0 +1,10 @@
+x-defaults: &defaults
+  restart: unless-stopped
+services:
+  app:
+    <<: *defaults
+    image: ${APP_IMAGE}
+    command: |
+      run-command
+include:
+  - compose.shared.yml

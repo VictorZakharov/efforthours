@@ -443,7 +443,7 @@ rubric-1.0.0 labels are not rewritten; the separate Stage A logical audit maps a
 eligible parent targets into rubric-1.1.0 tasks while preserving their exact
 expected totals and uncertainty provenance.
 
-The current `change-seed/0.15.0` rules retain the 0.3.0 correction that keeps
+The current `change-seed/0.16.0` rules retain the 0.3.0 correction that keeps
 repository seed capabilities as context for a final delta but does not infer a
 capability modification from path overlap alone. Existing capabilities require
 changed normalized non-file evidence;
@@ -543,6 +543,19 @@ zero implementation value. No fitted Change prior was added. The admitted 0.6.0
 Stage A records contain no Rust or Cargo, so this extension is explicitly
 unadmitted.
 
+Version 0.16.0 adds final-delta support for strict Dockerfile variants,
+filename-qualified Compose YAML, and `.dockerignore`. Dockerfile signatures can
+ignore keyword case, ordinary comments, blank lines, and continuation layout;
+Compose signatures can ignore comments, blank lines, indentation width, and
+mapping-colon spacing; `.dockerignore` signatures can ignore ordinary comments
+and surrounding layout. Directives, arguments, commands, YAML keys/values/
+sequences/documents, and ignore patterns remain meaningful. Heredocs, tabs,
+malformed flow syntax, and block scalars fail closed. Analyzer-backed Docker facts
+route through the existing packaging/deployment rule, arbitrary YAML stays
+outside the boundary, and no fitted Change prior was added. The admitted 0.6.0
+Stage A records contain no Docker or Compose, so this extension is explicitly
+unadmitted.
+
 Version 0.4.0 also distinguishes only exact, balanced, EffortHours-specific
 `<custom-code>` regions inside otherwise generated files; it does not infer other
 generator-specific protected-region syntax. Only the extracted maintained
@@ -570,12 +583,12 @@ allocation keeps every component nonnegative while reconciling to the normalized
 total.
 
 The current composite source identity is
-`change-seed/0.15.0+seed-rules/0.4.0`; every frozen Change report retains its
+`change-seed/0.16.0+seed-rules/0.4.0`; every frozen Change report retains its
 original identity and numbers. `change-model-admission/0.2.0` admitted version
 0.6.0 only for experimental 4-to-32-hour Stage A changes after model-authored
-logical agreement and performance gates. Versions 0.7.0 through 0.15.0 preserve
+logical agreement and performance gates. Versions 0.7.0 through 0.16.0 preserve
 those admitted rules but are not separately admitted, and SQL, Python, Go, Java,
-Kotlin, Shell, PowerShell, Terraform, HCL, PHP, Composer, Rust, and Cargo have no
+Kotlin, Shell, PowerShell, Terraform, HCL, PHP, Composer, Rust, Cargo, Docker, and Compose have no
 reviewed Change labels.
 Larger size bands and empirical production accuracy remain separate decisions.
 
@@ -717,6 +730,17 @@ Cargo resolution, feature/target selection, macro expansion, build scripts,
 generated bindings, borrow checking, compilation, and target execution do not
 occur. `RUST_CARGO_ANALYSIS.md` defines the exact boundary.
 
+Docker analyzer `0.1.0` replaces raw Docker artifact file/line pricing with
+bounded semantic container units. Dockerfile stages, build/runtime instructions,
+mount and health boundaries; filename-qualified Compose services and orchestration
+structure; literal local Compose-to-Dockerfile references; and `.dockerignore`
+rules contribute transparent units with exact-body normalization and capped
+dynamic uncertainty. Those units feed the unchanged `container-deployment` rule
+and packaging/deployment category. Arbitrary YAML receives no Docker units, and
+Docker/Compose/BuildKit/runtime execution, image inspection, context expansion,
+interpolation, includes, secrets, and configured-value disclosure do not occur.
+`DOCKER_ANALYSIS.md` defines the exact boundary.
+
 Public mutation suite `0.8.0` combines 77 unchanged `seed-rules/0.3.0` candidates
 with 11 Python `seed-rules/0.4.0` candidates. All 339 relational assertions pass.
 This protects directionality and invariance; it does not calibrate absolute hours.
@@ -734,6 +758,8 @@ The standalone PHP suite adds 14 `seed-rules/0.4.0` candidates and passes 59/59
 relations without altering any earlier aggregate or standalone suite.
 The standalone Rust suite adds 14 `seed-rules/0.4.0` candidates and passes 62/62
 relations without altering any earlier aggregate or standalone suite.
+The standalone Docker suite adds 13 `seed-rules/0.4.0` candidates and passes
+38/38 relations without altering any earlier aggregate or standalone suite.
 
 ## 14. Professionalization gap
 

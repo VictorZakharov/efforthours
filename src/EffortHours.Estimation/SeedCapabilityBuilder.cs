@@ -807,7 +807,13 @@ internal sealed partial class SeedCapabilityBuilder(
     {
         SeedFileEvidence[] files = [.. _index.Files.Where(file =>
             file.IsMaintained && file.Role == "container-configuration")];
-        SeedFileEvidence[] canonical = [.. files.Where(_index.IsCanonical)];
+        EvidenceFact[] dockerFacts = [.. _index.FactsOfKind(EvidenceKinds.ContainerConfiguration)
+            .Where(fact => fact.Provenance.Analyzer == "efforthours.docker-analyzer" &&
+                fact.Tags.Any(tag => tag.StartsWith("docker-artifact:", StringComparison.Ordinal)))];
+        SeedFileEvidence[] canonical = [.. files
+            .Where(file => dockerFacts.Length == 0 ||
+                !file.Ecosystems.Contains("docker", StringComparer.Ordinal))
+            .Where(_index.IsCanonical)];
         EvidenceFact[] aggregateFacts = [.. _index.FactsOfKind(EvidenceKinds.ContainerConfiguration)];
         EvidenceFact[] evidence = Evidence(files.Select(file => file.Fact), aggregateFacts);
         if (evidence.Length == 0)
@@ -815,12 +821,18 @@ internal sealed partial class SeedCapabilityBuilder(
             return;
         }
 
-        decimal count = canonical.Length > 0
-            ? canonical.Length
-            : aggregateFacts.Sum(fact => SeedEvidenceIndex.Measurement(fact, "files"));
-        decimal lines = canonical.Length > 0
-            ? canonical.Sum(file => file.PhysicalLines)
-            : aggregateFacts.Sum(fact => SeedEvidenceIndex.Measurement(fact, "physical-lines"));
+        decimal count = canonical.Length + dockerFacts.Sum(fact =>
+            SeedEvidenceIndex.Measurement(fact, "container-units"));
+        decimal lines = canonical.Sum(file => file.PhysicalLines);
+        if (count == 0m)
+        {
+            count = aggregateFacts
+                .Where(fact => fact.Provenance.Analyzer != "efforthours.docker-analyzer")
+                .Sum(fact => SeedEvidenceIndex.Measurement(fact, "files"));
+            lines = aggregateFacts
+                .Where(fact => fact.Provenance.Analyzer != "efforthours.docker-analyzer")
+                .Sum(fact => SeedEvidenceIndex.Measurement(fact, "physical-lines"));
+        }
         capabilities.Add(new CapabilityUnit
         {
             Id = "repository:containers",
@@ -832,7 +844,9 @@ internal sealed partial class SeedCapabilityBuilder(
                 ("container-files", count),
                 ("physical-lines", lines)),
             Complexity = count > 5m ? ComplexityLevel.High : ComplexityLevel.Moderate,
-            Reason = "Container definitions represent packaging, environment configuration, orchestration, and validation work.",
+            Reason = dockerFacts.Length > 0
+                ? "Bounded Dockerfile, Compose, and build-context semantic units represent packaging, environment configuration, orchestration, and validation work without pricing raw Docker line volume."
+                : "Container definitions represent packaging, environment configuration, orchestration, and validation work.",
             Evidence = evidence,
             Profiles = BothProfiles,
             CorrelationGroup = "repository:delivery",

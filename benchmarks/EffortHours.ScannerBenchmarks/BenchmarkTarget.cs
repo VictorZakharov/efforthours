@@ -216,6 +216,7 @@ internal static class BenchmarkFixtureGenerator
                     BenchmarkSourceKind.Php => "src",
                     BenchmarkSourceKind.Rust => "src",
                     BenchmarkSourceKind.Terraform => "infrastructure",
+                    BenchmarkSourceKind.Dockerfile or BenchmarkSourceKind.Compose => "containers",
                     _ => "web",
                 },
                 $"group-{index / 100:D5}");
@@ -279,6 +280,12 @@ internal static class BenchmarkFixtureGenerator
                     $"file{index:D7}.tf",
                     $"resource \"benchmark_item\" \"item_{index:D7}\" {{\n" +
                     terraformLines + "}\n"),
+                BenchmarkSourceKind.Dockerfile => (
+                    $"Dockerfile.{index:D7}",
+                    DockerfileContent(index, options.LinesPerFile)),
+                BenchmarkSourceKind.Compose => (
+                    $"compose.{index:D7}.yml",
+                    ComposeContent(index, options.LinesPerFile)),
                 _ => throw new InvalidOperationException($"Unsupported benchmark source kind '{kind}'."),
             };
             File.WriteAllText(Path.Combine(directory, fileName), content);
@@ -300,6 +307,9 @@ internal static class BenchmarkFixtureGenerator
         BenchmarkShape.Php => BenchmarkSourceKind.Php,
         BenchmarkShape.Rust => BenchmarkSourceKind.Rust,
         BenchmarkShape.Terraform => BenchmarkSourceKind.Terraform,
+        BenchmarkShape.Docker => index % 2 == 0
+            ? BenchmarkSourceKind.Dockerfile
+            : BenchmarkSourceKind.Compose,
         BenchmarkShape.Mixed => (index % 3) switch
         {
             0 => BenchmarkSourceKind.CSharp,
@@ -308,6 +318,24 @@ internal static class BenchmarkFixtureGenerator
         },
         _ => throw new InvalidOperationException($"Unsupported generated benchmark shape '{shape}'."),
     };
+
+    private static string DockerfileContent(int index, int lines)
+    {
+        string id = index.ToString(CultureInfo.InvariantCulture);
+        if (lines == 1) return $"FROM benchmark/image:{id}\n";
+        return $"FROM scratch AS build\nARG FILE_ID={id}\n" + string.Concat(
+            Enumerable.Range(1, Math.Max(0, lines - 2))
+                .Select(line => $"RUN printf '%s' {line.ToString(CultureInfo.InvariantCulture)} > /tmp/value-{line:D4}\n"));
+    }
+
+    private static string ComposeContent(int index, int lines)
+    {
+        string id = index.ToString(CultureInfo.InvariantCulture);
+        if (lines == 1) return $"name: benchmark-{id}\n";
+        return $"name: benchmark-{id}\nservices:\n" + string.Concat(
+            Enumerable.Range(1, Math.Max(0, lines - 2))
+                .Select(line => $"  service-{line:D4}: {{ image: benchmark/image:{id}-{line:D4} }}\n"));
+    }
 
     private enum BenchmarkSourceKind
     {
@@ -323,5 +351,7 @@ internal static class BenchmarkFixtureGenerator
         Php,
         Rust,
         Terraform,
+        Dockerfile,
+        Compose,
     }
 }

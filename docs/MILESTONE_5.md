@@ -319,6 +319,16 @@ Target/vendor/generated/lock/duplicate bodies and raw Rust line volume do not
 receive guessed Rust effort. This is transparent prior reuse, not fitted
 calibration.
 
+Docker analyzer `0.1.0` replaces coarse container file/line volume for admitted
+Docker artifacts with bounded semantic container units while preserving the
+unchanged `seed-rules/0.4.0` artifact. The existing container-deployment rule
+consumes Dockerfile stage/build/runtime structure, filename-qualified Compose
+service/orchestration structure, literal local build references, and
+`.dockerignore` rules. Exact duplicate bodies are valued once; generic YAML,
+configured values, image contents, build-context volume, and raw Docker line
+volume receive no guessed Docker effort. This is transparent prior reuse, not
+fitted calibration.
+
 ## Testing requirements
 
 Ordinary unit tests remain entirely memory-backed. Milestone 5 tests must cover:

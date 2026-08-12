@@ -95,6 +95,12 @@ analyzer-backed API, data, integration, security, validation, background/
 concurrency, FFI, build, benchmark, and test routing, and changes no frozen Change
 label or admission decision. No Stage A record contains Rust or Cargo.
 
+The Docker/Compose follow-on advances current source identity to
+`change-seed/0.16.0+seed-rules/0.4.0`, adds conservative Dockerfile, Compose, and
+`.dockerignore` formatting normalization plus analyzer-backed packaging/deployment
+routing, and changes no frozen Change label or admission decision. No Stage A
+record contains Docker or Compose.
+
 ## Reproducible source boundary
 
 `change-fixture-generator/0.1.0` analyzes synthetic base/head states through

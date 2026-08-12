@@ -125,6 +125,13 @@
           "EffortHours.Contracts": "[1.0.0, )"
         }
       },
+      "efforthours.analyzers.docker": {
+        "type": "Project",
+        "dependencies": {
+          "EffortHours.Analysis": "[1.0.0, )",
+          "EffortHours.Contracts": "[1.0.0, )"
+        }
+      },
       "efforthours.analyzers.dotnet": {
         "type": "Project",
         "dependencies": {
@@ -223,6 +230,7 @@
         "type": "Project",
         "dependencies": {
           "EffortHours.Analysis": "[1.0.0, )",
+          "EffortHours.Analyzers.Docker": "[1.0.0, )",
           "EffortHours.Analyzers.DotNet": "[1.0.0, )",
           "EffortHours.Analyzers.Go": "[1.0.0, )",
           "EffortHours.Analyzers.Java": "[1.0.0, )",

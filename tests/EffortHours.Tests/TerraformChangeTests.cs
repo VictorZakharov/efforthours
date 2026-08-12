@@ -58,7 +58,7 @@ public sealed class TerraformChangeTests
 
         Assert.Contains(report.Categories, candidate =>
             candidate.Category == category && candidate.Hours.Expected > 0m);
-        Assert.Equal("change-seed/0.15.0+seed-rules/0.4.0", report.EstimatorVersion);
+        Assert.Equal("change-seed/0.16.0+seed-rules/0.4.0", report.EstimatorVersion);
     }
 
     [Fact]

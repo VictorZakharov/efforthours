@@ -61,7 +61,7 @@ public sealed class PythonChangeTests
             candidate => candidate.Category == category);
         Assert.True(estimate.Hours.Expected > 0m);
         Assert.Contains(report.WorkItems, item => item.Category == category);
-        Assert.Equal("change-seed/0.15.0+seed-rules/0.4.0", report.EstimatorVersion);
+        Assert.Equal("change-seed/0.16.0+seed-rules/0.4.0", report.EstimatorVersion);
     }
 
     [Fact]

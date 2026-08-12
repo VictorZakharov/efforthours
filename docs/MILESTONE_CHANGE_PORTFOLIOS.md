@@ -6,7 +6,7 @@ Complete in source as of August 11, 2026. This checkpoint implements issues #3
 and #22 through #25 without changing `change-seed/0.7.0`, repository
 `seed-rules/0.3.0`, any frozen Change report, or any model-admission decision.
 Portfolio reconciliation is identified separately as
-`change-portfolio/0.1.0+change-seed/0.15.0+seed-rules/0.4.0` and remains
+`change-portfolio/0.1.0+change-seed/0.16.0+seed-rules/0.4.0` and remains
 experimental.
 
 The result is **repository-attributed Change EHE**: counterfactual replacement

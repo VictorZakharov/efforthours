@@ -224,6 +224,20 @@ benchmarks, or target code; `RUST_CARGO_ANALYSIS.md` defines the exact scope. Ru
 reuses the unchanged language-neutral source backbone and analogous specialized
 priors without a fitted Rust-specific rate.
 
+The ninth ecosystem expansion is Docker build and local orchestration
+configuration. Scanner-admitted Dockerfile variants receive bounded logical-
+instruction, stage, build, runtime, health, mount, and unresolved-boundary
+analysis. Filename-qualified Compose YAML receives bounded service, build, image,
+command, port, environment, storage, network, dependency, health, profile,
+secret/config, deploy, security, extension, include, and dynamic-YAML structure;
+literal repository-contained builds can reference admitted Dockerfiles.
+`.dockerignore` receives bounded rule inventory. Arbitrary YAML is not Compose.
+The analyzer never invokes Docker, Compose, BuildKit, a shell, container runtime,
+or target code; pulls images; expands build contexts; loads includes/environment
+files; resolves interpolation/secrets; or emits configured values/source excerpts.
+`DOCKER_ANALYSIS.md` defines the exact scope. Docker reuses the unchanged existing
+container prior without a fitted ecosystem-specific rate.
+
 ## Non-goals
 
 - Reconstructing actual hours worked.
