@@ -140,6 +140,13 @@ internal static class BenchmarkFixtureGenerator
                 "plugins { kotlin(\"jvm\") version \"2.2.0\" }\n");
         }
 
+        if (options.Shape == BenchmarkShape.Php)
+        {
+            File.WriteAllText(
+                Path.Combine(rootPath, "composer.json"),
+                "{\"name\":\"efforthours/benchmark\",\"autoload\":{\"psr-4\":{\"Benchmark\\\\\":\"src/\"}}}\n");
+        }
+
         string csharpLines = string.Concat(
             Enumerable.Range(1, Math.Max(0, options.LinesPerFile - 1))
                 .Select(line => $"// representative source line {line.ToString(CultureInfo.InvariantCulture)}\n"));
@@ -172,6 +179,10 @@ internal static class BenchmarkFixtureGenerator
             Enumerable.Range(1, Math.Max(0, options.LinesPerFile - 5))
                 .Select(line =>
                     $"  $value{line:D4} = {line.ToString(CultureInfo.InvariantCulture)}\n"));
+        string phpLines = string.Concat(
+            Enumerable.Range(1, Math.Max(0, options.LinesPerFile - 5))
+                .Select(line =>
+                    $"    private int $value{line:D4} = {line.ToString(CultureInfo.InvariantCulture)};\n"));
         string terraformLines = string.Concat(
             Enumerable.Range(1, Math.Max(0, options.LinesPerFile - 2))
                 .Select(line =>
@@ -191,6 +202,7 @@ internal static class BenchmarkFixtureGenerator
                     BenchmarkSourceKind.Kotlin => Path.Combine("src", "main", "kotlin", "benchmark"),
                     BenchmarkSourceKind.Shell => "scripts",
                     BenchmarkSourceKind.PowerShell => "powershell",
+                    BenchmarkSourceKind.Php => "src",
                     BenchmarkSourceKind.Terraform => "infrastructure",
                     _ => "web",
                 },
@@ -241,6 +253,11 @@ internal static class BenchmarkFixtureGenerator
                     $"function Invoke-File{index:D7} {{\n  param([string] $Value)\n" +
                     powerShellLines +
                     "  if ($Value) { Write-Output $Value }\n}\n"),
+                BenchmarkSourceKind.Php => (
+                    $"File{index:D7}.php",
+                    "<?php\nnamespace Benchmark;\n" +
+                    $"final class File{index:D7} {{\n" + phpLines +
+                    "    public function value(int $input): int { return $input; }\n}\n"),
                 BenchmarkSourceKind.Terraform => (
                     $"file{index:D7}.tf",
                     $"resource \"benchmark_item\" \"item_{index:D7}\" {{\n" +
@@ -263,6 +280,7 @@ internal static class BenchmarkFixtureGenerator
         BenchmarkShape.Kotlin => BenchmarkSourceKind.Kotlin,
         BenchmarkShape.Shell => BenchmarkSourceKind.Shell,
         BenchmarkShape.PowerShell => BenchmarkSourceKind.PowerShell,
+        BenchmarkShape.Php => BenchmarkSourceKind.Php,
         BenchmarkShape.Terraform => BenchmarkSourceKind.Terraform,
         BenchmarkShape.Mixed => (index % 3) switch
         {
@@ -284,6 +302,7 @@ internal static class BenchmarkFixtureGenerator
         Kotlin,
         Shell,
         PowerShell,
+        Php,
         Terraform,
     }
 }

@@ -200,6 +200,18 @@ configured values/source excerpts; `TERRAFORM_HCL_ANALYSIS.md` defines the exact
 scope. Terraform reuses unchanged existing priors without a fitted ecosystem-
 specific rate.
 
+The seventh polyglot expansion is PHP and Composer. Scanner-admitted maintained
+`.php` files, including Blade templates and tests, receive bounded token-backed
+namespace/import/declaration/public-API/control-flow structure, template evidence,
+and conservative import-qualified framework semantics. Strict static
+`composer.json` analysis supplies package ownership, dependencies, autoload
+mappings, scripts, binary entry points, and literal repository-local path edges.
+The analyzer never invokes PHP, Composer, autoloaders, package scripts, framework
+bootstraps, containers, routes, reflection, dependency resolution, tests, or target
+code; `PHP_COMPOSER_ANALYSIS.md` defines the exact scope. PHP reuses the unchanged
+language-neutral source backbone and analogous specialized priors without a fitted
+PHP-specific rate.
+
 ## Non-goals
 
 - Reconstructing actual hours worked.

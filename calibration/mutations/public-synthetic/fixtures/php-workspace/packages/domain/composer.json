@@ -1,0 +1,8 @@
+{
+  "name": "efforthours/php-domain",
+  "autoload": {
+    "psr-4": {
+      "Domain\\": "src/"
+    }
+  }
+}

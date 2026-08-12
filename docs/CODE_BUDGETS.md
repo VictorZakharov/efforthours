@@ -130,6 +130,14 @@ repository orchestration, and Change formatting normalization. Fact construction
 is split between core and category-specific partials. Every new source and test
 file remains below its ordinary ceiling, and no override was added or increased.
 
+The August 12, 2026 PHP/Composer checkpoint separates common PHP classification,
+digest-checked text admission, strict Composer JSON modeling, bounded tokenization,
+namespace/import and syntax measurement, framework semantics, template analysis,
+fact construction, repository orchestration, and Change formatting normalization.
+`PhpFileClassification.cs` keeps ecosystem-specific path policy out of the common
+classifier, which remains below its 500-line ceiling. Every new source and test
+file remains below its ordinary ceiling, and no override was added or increased.
+
 Line count is deliberately simple, deterministic, cross-platform, and difficult
 to game accidentally. The useful outcome is earlier decomposition into cohesive
 contracts, commands, analyzers, and renderers—not compressed formatting.

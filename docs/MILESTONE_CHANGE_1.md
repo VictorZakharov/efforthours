@@ -128,11 +128,11 @@ selectors do not infer an intermediate history.
 
 The initial model identity was `change-seed/0.1.0`, composed with
 `seed-rules/0.2.1`. The current source identity is
-`change-seed/0.13.0+seed-rules/0.4.0`. Version 0.6.0 alone is admitted as the
+`change-seed/0.14.0+seed-rules/0.4.0`. Version 0.6.0 alone is admitted as the
 experimental Stage A logical baseline for 4-to-32-hour changes; later revisions
 preserve its admitted rules but add unadmitted SQL, Python, Go, Java, Kotlin,
-Shell, PowerShell, Terraform, and HCL paths. Its ranges are not formal probability intervals and
-it is not production-validated.
+Shell, PowerShell, Terraform/HCL, and PHP/Composer paths. Its ranges are not formal
+probability intervals and it is not production-validated.
 
 ## Contracts and output
 
@@ -200,8 +200,8 @@ test lives only in the end-to-end suite; ordinary unit tests remain memory-only.
 - TypeScript source semantics remain token-backed through the repository analyzer.
 - Formatting exclusion is intentionally conservative and limited to supported
   .NET, JavaScript/TypeScript, SQL, Python, Go, Java, Kotlin, Shell, PowerShell,
-  Terraform, and HCL
-  source paths. Script here-documents and here-strings fail closed.
+  Terraform/HCL, and PHP source paths. Script here-documents and here-strings fail
+  closed.
 - Saved repository evidence has no source bodies, so modified evidence-only paths
   cannot receive formatting-only exclusion or detailed edit-region analysis.
 - Exact blob movement/copying is recognized; general semantic clone detection is

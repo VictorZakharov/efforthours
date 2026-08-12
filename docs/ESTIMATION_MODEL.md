@@ -443,7 +443,7 @@ rubric-1.0.0 labels are not rewritten; the separate Stage A logical audit maps a
 eligible parent targets into rubric-1.1.0 tasks while preserving their exact
 expected totals and uncertainty provenance.
 
-The current `change-seed/0.13.0` rules retain the 0.3.0 correction that keeps
+The current `change-seed/0.14.0` rules retain the 0.3.0 correction that keeps
 repository seed capabilities as context for a final delta but does not infer a
 capability modification from path overlap alone. Existing capabilities require
 changed normalized non-file evidence;
@@ -520,6 +520,17 @@ and formatting-only bodies retain zero implementation value. No fitted Change
 prior was added. The admitted 0.6.0 Stage A records contain no Terraform or HCL,
 so this extension is explicitly unadmitted.
 
+Version 0.14.0 adds PHP `.php` final-delta support with a conservative token
+signature. Ordinary formatting and non-documentation comments can normalize to
+zero while PHPDoc, identifiers, variables, operators, delimiters, literals,
+heredoc/nowdoc bodies, PHP tags, and inline template content remain significant;
+incomplete constructs fail closed. Analyzer-backed API, UI, data, integration,
+security, validation, background, build, and test facts route through existing
+category rules. Vendor/cache/generated/lock/duplicate and formatting-only bodies
+retain zero implementation value. No fitted Change prior was added. The admitted
+0.6.0 Stage A records contain no PHP or Composer, so this extension is explicitly
+unadmitted.
+
 Version 0.4.0 also distinguishes only exact, balanced, EffortHours-specific
 `<custom-code>` regions inside otherwise generated files; it does not infer other
 generator-specific protected-region syntax. Only the extracted maintained
@@ -547,12 +558,13 @@ allocation keeps every component nonnegative while reconciling to the normalized
 total.
 
 The current composite source identity is
-`change-seed/0.13.0+seed-rules/0.4.0`; every frozen Change report retains its
+`change-seed/0.14.0+seed-rules/0.4.0`; every frozen Change report retains its
 original identity and numbers. `change-model-admission/0.2.0` admitted version
 0.6.0 only for experimental 4-to-32-hour Stage A changes after model-authored
-logical agreement and performance gates. Versions 0.7.0 through 0.13.0 preserve
+logical agreement and performance gates. Versions 0.7.0 through 0.14.0 preserve
 those admitted rules but are not separately admitted, and SQL, Python, Go, Java,
-Kotlin, Shell, PowerShell, Terraform, and HCL have no reviewed Change labels.
+Kotlin, Shell, PowerShell, Terraform, HCL, PHP, and Composer have no reviewed
+Change labels.
 Larger size bands and empirical production accuracy remain separate decisions.
 
 ## 11. Uncertainty
@@ -606,7 +618,7 @@ described in `MILESTONE_6.md`. Callers can provide an exact override or request
 effort-only output. Future regional profiles must not change the underlying effort
 estimate.
 
-## 13. Polyglot source backbone, Python, Go, and Java
+## 13. Polyglot source backbone and ecosystem analyzers
 
 `seed-rules/0.4.0` introduces language-neutral analyzed package and fine-test
 contracts plus `polyglot-source-backbone`. The new source rule consumes files,
@@ -670,6 +682,17 @@ rules. Generic non-Terraform HCL remains visible without guessed Terraform units
 No provider/schema/module/backend/plan/state/policy runtime is loaded or executed.
 `TERRAFORM_HCL_ANALYSIS.md` defines the exact boundary.
 
+PHP analyzer `0.1.0` reuses the unchanged generic source rule inside Composer
+package scopes. Its bounded managed tokenizer supplies files, functions, methods,
+types, public symbols, attributes, branches, exceptions, and explicit dynamic-
+boundary signals; strict static Composer metadata supplies package/test ownership,
+dependencies, autoload surfaces, scripts, binaries, and literal local edges.
+Import-qualified API, UI/template, data, integration, security, validation,
+background, build, and test facts continue through existing category rules.
+Composer resolution, autoloading, framework compilation/container/route behavior,
+reflection, and target execution do not occur. `PHP_COMPOSER_ANALYSIS.md` defines
+the exact boundary.
+
 Public mutation suite `0.8.0` combines 77 unchanged `seed-rules/0.3.0` candidates
 with 11 Python `seed-rules/0.4.0` candidates. All 339 relational assertions pass.
 This protects directionality and invariance; it does not calibrate absolute hours.
@@ -683,6 +706,8 @@ The standalone scripting suite adds 13 `seed-rules/0.4.0` candidates and passes
 46/46 relations without altering any earlier aggregate or standalone suite.
 The standalone Terraform suite adds 14 `seed-rules/0.4.0` candidates and passes
 48/48 relations without altering any earlier aggregate or standalone suite.
+The standalone PHP suite adds 14 `seed-rules/0.4.0` candidates and passes 59/59
+relations without altering any earlier aggregate or standalone suite.
 
 ## 14. Professionalization gap
 

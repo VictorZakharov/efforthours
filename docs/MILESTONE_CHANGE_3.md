@@ -83,6 +83,12 @@ analyzer-backed infrastructure, integration, security, validation, test,
 documentation, build, and delivery routing, and changes no frozen Change label or
 admission decision. No Stage A record contains Terraform or HCL.
 
+The PHP/Composer follow-on advances current source identity to
+`change-seed/0.14.0+seed-rules/0.4.0`, adds conservative PHP-aware formatting and
+analyzer-backed API, UI, data, integration, security, validation, background,
+build, and test routing, and changes no frozen Change label or admission decision.
+No Stage A record contains PHP or Composer.
+
 ## Reproducible source boundary
 
 `change-fixture-generator/0.1.0` analyzes synthetic base/head states through

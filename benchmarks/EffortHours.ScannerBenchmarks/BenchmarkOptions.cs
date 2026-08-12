@@ -13,6 +13,7 @@ internal enum BenchmarkShape
     Kotlin,
     Shell,
     PowerShell,
+    Php,
     Terraform,
     Mixed,
     ExistingRepository,
@@ -28,7 +29,7 @@ internal sealed record BenchmarkOptions(
 {
     public const string Usage =
         "Usage: scanner-benchmark [--files <count>] [--lines-per-file <count>] " +
-        "[--dotnet|--javascript|--python|--go|--java|--kotlin|--shell|--powershell|--terraform|--mixed] [--warm-cache] [--keep] " +
+        "[--dotnet|--javascript|--python|--go|--java|--kotlin|--shell|--powershell|--php|--terraform|--mixed] [--warm-cache] [--keep] " +
         "or scanner-benchmark --repository <path> [--warm-cache]";
 
     public string Mode => Shape switch
@@ -42,6 +43,7 @@ internal sealed record BenchmarkOptions(
         BenchmarkShape.Kotlin => "kotlin-static",
         BenchmarkShape.Shell => "shell-static",
         BenchmarkShape.PowerShell => "powershell-static",
+        BenchmarkShape.Php => "php-composer-static",
         BenchmarkShape.Terraform => "terraform-hcl-static",
         BenchmarkShape.Mixed => "mixed-static",
         BenchmarkShape.ExistingRepository => "repository-static",
@@ -100,6 +102,9 @@ internal sealed record BenchmarkOptions(
                     break;
                 case "--powershell":
                     shape = SelectShape(shape, BenchmarkShape.PowerShell);
+                    break;
+                case "--php":
+                    shape = SelectShape(shape, BenchmarkShape.Php);
                     break;
                 case "--terraform":
                     shape = SelectShape(shape, BenchmarkShape.Terraform);

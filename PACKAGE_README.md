@@ -25,8 +25,8 @@ eh estimate ./my-repository --profile implementation --format markdown
 ```
 
 EffortHours statically analyzes .NET, JavaScript, TypeScript, Python, Go, Java,
-Kotlin/JVM, Shell, PowerShell, Terraform/HCL, HTML/CSS-family frontends, SQL, and mixed
-repositories. Frontend support includes bounded template and stylesheet semantics
+Kotlin/JVM, Shell, PowerShell, Terraform/HCL, PHP/Composer, HTML/CSS-family
+frontends, SQL, and mixed repositories. Frontend support includes bounded template and stylesheet semantics
 plus static Angular component metadata. SQL support includes bounded schema,
 migration, stored-program, query, test, deployment, and cross-database evidence
 for common PostgreSQL, SQL Server, MySQL/MariaDB, and SQLite syntax. It does not
@@ -62,6 +62,12 @@ tests, security-sensitive configuration, documentation, and delivery evidence.
 It resolves repository-local module ownership only and never runs Terraform,
 fetches modules/providers, contacts backends, evaluates plans/interpolation, or
 emits configured values or source excerpts.
+PHP/Composer support includes static package ownership, dependencies, autoload
+mappings, scripts, binary entry points, literal local path repositories, bounded
+token-backed declarations and public APIs, import-qualified framework semantics,
+tests, and PHP/Blade template structure. It never invokes PHP, Composer,
+autoloaders, package scripts, framework bootstraps, containers, routes, reflection,
+dependency resolution, or tests.
 It reports evidence-backed work items across implementation, testing,
 documentation, integration, delivery, validation, and review, then optionally
 applies a dated contractor rate without changing the effort estimate.
@@ -112,7 +118,7 @@ treated as untrusted input, and reports avoid source excerpts by default.
 
 ## Current limitations
 
-- `seed-rules/0.4.0` and `change-seed/0.13.0` remain experimental and uncalibrated.
+- `seed-rules/0.4.0` and `change-seed/0.14.0` remain experimental and uncalibrated.
 - SQL uses bounded token/statement evidence mapped to existing priors; it is not a
   full grammar, schema diff engine, query optimizer, or database validator.
 - Public calibration labels have not completed genuinely independent correction.
@@ -130,6 +136,10 @@ treated as untrusted input, and reports avoid source excerpts by default.
 - Terraform/HCL evidence is token-backed rather than native-parser/provider-
   backed; Terraform JSON, provider schemas, plans, policy validation,
   interpolation results, and runtime correctness are not evaluated.
+- PHP evidence is token-backed rather than native-parser/runtime-backed; Composer
+  dependency resolution, autoload execution, dynamic includes, framework
+  compilation, container/route registration, reflection, and runtime behavior are
+  not resolved.
 - Host-review token use, cost, and estimate improvement have not yet been measured
   across representative repositories; no automatic review budget is selected.
 

@@ -8,6 +8,20 @@ may still change public contracts with explicit documentation.
 
 ### Added
 
+- PHP analyzer `0.1.0` adds offline, digest-verified bounded analysis for Composer
+  packages, dependencies, autoload mappings, scripts, binary entry points, literal
+  repository-local path repositories, maintained `.php` source and tests, and PHP/
+  Blade templates. It records token-backed declarations, public APIs, attributes,
+  branches, exceptions, and import-qualified framework semantics without invoking
+  PHP, Composer, autoloaders, package scripts, framework bootstraps, containers,
+  routes, reflection, dependency resolution, or tests, and emits no source excerpts.
+- A standalone public PHP mutation suite adds 14 project-authored states and 59
+  passing relations for formatting, exact-copy and conventional-exclusion
+  behavior, package ownership, semantic/category directionality, templates, tests,
+  and framework-namesake rejection.
+- Scanner benchmark mode `php-composer-static` records a fresh-process million-line
+  checkpoint with target metadata unchanged and no target execution, dependency
+  installation, or network access.
 - Terraform/HCL analyzer `0.1.0` adds offline, digest-verified bounded analysis
   for maintained `.tf`, `.tfvars`, Terraform tests, CLI configuration, and
   relevant HCL. It records resources, data sources, modules, interfaces, locals,
@@ -126,6 +140,15 @@ may still change public contracts with explicit documentation.
 
 ### Changed
 
+- Common scanner `0.2.9` classifies Composer manifests and maintained PHP source,
+  templates, and tests while excluding conventional vendor/cache/generated bodies
+  and exact duplicates from semantic effort. The unchanged experimental
+  `seed-rules/0.4.0` language-neutral backbone and existing specialized priors
+  consume bounded PHP evidence; no fitted PHP rate or calibration claim was added.
+- Change source identity advances to
+  `change-seed/0.14.0+seed-rules/0.4.0` for conservative PHP-aware formatting and
+  analyzer-backed semantic/category routing. The admitted Stage A boundary remains
+  `change-seed/0.6.0`; PHP and Composer are not included in that admission.
 - Common scanner `0.2.8` classifies maintained Terraform/HCL source, values,
   tests, CLI configuration, and inventory-only Terraform JSON while excluding
   state, plans, `.terraform/` caches, lock mechanics, generated/vendor bodies,

@@ -22,7 +22,7 @@ productivity score, invoice, or reconstruction of repository history.
 > estimator has passed its first model-authored logical gate for changes estimated at 4 to 32
 > hours on the previously admitted non-SQL families, but it is not empirically
 > production-validated and the newer SQL, Python, Go, Java, Kotlin, Shell,
-> PowerShell, Terraform, and HCL paths are outside that gate.
+> PowerShell, Terraform/HCL, and PHP/Composer paths are outside that gate.
 > Review the evidence and ranges before using any estimate for a consequential
 > decision.
 
@@ -161,6 +161,9 @@ For Terraform and HCL, horizontal layout and blank-line count can normalize to
 zero while semantic newlines, comments, identifiers, operators, literals,
 templates, delimiters, and heredoc bodies remain meaningful. Incomplete HCL fails
 closed.
+For PHP, ordinary formatting and non-documentation comments can normalize to zero
+while PHPDoc, literals, identifiers, operators, delimiters, heredoc/nowdoc bodies,
+and inline template content remain meaningful. Incomplete PHP fails closed.
 The current source build can retain bounded customization inside generated files
 only when exact, EffortHours-specific `<custom-code>` regions isolate it safely;
 the generated body still contributes zero. Generator-specific protected-region
@@ -252,8 +255,14 @@ The current static analyzers support:
   and delivery configuration through bounded static token analysis;
 - repository-local Terraform module ownership plus unresolved registry, Git,
   HTTP, object-storage, and dynamic module boundaries without fetching them;
+- Composer packages, dependencies, autoload namespaces and roots, scripts, binary
+  entry points, literal repository-local path repositories, and maintained PHP
+  package ownership without invoking PHP or Composer;
+- PHP namespaces, imports, declarations, public APIs, attributes, branches,
+  exceptions, tests, conservative import-qualified framework semantics, and
+  bounded PHP/Blade template structure through static token analysis;
 - mixed .NET, JavaScript/TypeScript, Python, Go, Java/Kotlin, Shell/PowerShell,
-  Terraform/HCL, and SQL repositories;
+  Terraform/HCL, PHP/Composer, and SQL repositories;
 - documentation, build configuration, CI, containers, infrastructure, package
   metadata, and checked-in LCOV or Cobertura coverage reports; and
 - generated, vendored, minified, binary, duplicate, test, and documentation
@@ -308,6 +317,12 @@ or policy, or prove runtime correctness. State, plans, caches, lock mechanics,
 generated/vendor bodies, exact duplicates, and raw Terraform line volume do not
 inflate semantic effort. See the
 [static Terraform and HCL boundary](docs/TERRAFORM_HCL_ANALYSIS.md).
+PHP/Composer analysis reads only scanner-admitted, digest-matched static text and
+strict JSON. It does not run PHP, Composer, autoloaders, package scripts, framework
+bootstraps, containers, routes, reflection, dependency resolution, or tests.
+Dynamic includes, magic methods, runtime registration, and linked frontend assets
+remain explicit uncertainty. See the
+[static PHP and Composer boundary](docs/PHP_COMPOSER_ANALYSIS.md).
 
 ## Offline and safe by default
 
@@ -348,7 +363,8 @@ in this alpha. See the [host-review protocol](docs/MILESTONE_8.md).
   prove that a checkout builds or runs.
 - Unsupported languages still receive common inventory evidence but not the same
   semantic depth as .NET, JavaScript/TypeScript, Python, Go, Java/Kotlin,
-  Shell/PowerShell, Terraform/HCL, SQL, and the supported frontend forms.
+  Shell/PowerShell, Terraform/HCL, PHP/Composer, SQL, and the supported frontend
+  forms.
 - Checked-in coverage can be stale even when its bytes match the analyzed tree;
   EffortHours does not regenerate it.
 - Change portfolio reconciliation is experimental. Exact patch/object-chain

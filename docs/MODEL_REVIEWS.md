@@ -33,6 +33,41 @@ Because EffortHours's own anchor informed the seed-model and calibration design,
 a development diagnostic rather than an eligible held-out test record unless a
 future independent snapshot and review policy explicitly establishes otherwise.
 
+## 2026-08-12: PHP and Composer source-boundary review
+
+Status: **qualitative analyzer and prior-reuse checkpoint; no numerical calibration or Change admission**
+
+PHP analyzer `0.1.0` was reviewed as bounded token-backed static analysis, not
+PHP's native parser/runtime, Composer's resolver, an autoloader, framework
+bootstrap, service container, route compiler, reflection engine, or test runner.
+It decomposes strict static Composer metadata into package ownership, dependencies,
+autoload surfaces, scripts, binary entry points, and literal local path edges, and
+maintained PHP into namespaces/imports, declarations, public APIs, attributes,
+control flow, exceptions, templates, tests, qualified framework semantics, and
+explicit dynamic uncertainty. The existing `seed-rules/0.4.0` generic source
+backbone and specialized rules consume those bounded analogous facts without a
+model-artifact or fitted-prior change.
+
+Reads are scanner-admitted, root-contained, digest-verified, strict UTF-8, and
+size/token bounded. Vendor and framework caches, generated bodies, lock mechanics,
+exact duplicates, and raw PHP lines do not add PHP semantic units. Composer/PHP,
+dependency resolution, autoloading, scripts/plugins, containers, routes,
+reflection, dynamic includes, framework compilation, tests, and target code are not
+executed, and source values/excerpts are not emitted.
+
+The standalone public qualitative gate has 14 PHP/Composer repository states and
+59 relations. All assertions pass across invariance, bounded exclusion, semantic
+and category directionality, package ownership, templates, tests, and local
+framework-namesake rejection. Earlier aggregate and standalone candidates remain
+unchanged; this suite is not accuracy evidence.
+
+Change `0.14.0` adds PHP-aware normalization and analyzer-backed semantic routing
+but no fitted prior. The existing Stage A admission contains no PHP/Composer,
+Terraform/HCL, Shell/PowerShell, Kotlin, Java, Go, Python, or SQL cases and remains
+limited to the previously admitted `0.6.0` families. Absolute PHP EHE accuracy,
+native-parser parity, independent review, representative real Composer monorepo
+coverage, and decomposed public PHP Change labels remain unresolved.
+
 ## 2026-08-12: Terraform/HCL source-boundary review
 
 Status: **qualitative analyzer and prior-reuse checkpoint; no numerical calibration or Change admission**

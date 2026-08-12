@@ -1,0 +1,9 @@
+{
+  "name": "efforthours/php-base",
+  "type": "library",
+  "autoload": {
+    "psr-4": {
+      "App\\": "src/"
+    }
+  }
+}

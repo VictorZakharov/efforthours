@@ -18,6 +18,7 @@
   <ItemGroup>
     <ProjectReference Include="../../src/EffortHours.Analysis/EffortHours.Analysis.csproj" />
     <ProjectReference Include="../../src/EffortHours.Analyzers.Terraform/EffortHours.Analyzers.Terraform.csproj" />
+    <ProjectReference Include="../../src/EffortHours.Analyzers.Php/EffortHours.Analyzers.Php.csproj" />
     <ProjectReference Include="../../src/EffortHours.Calibration/EffortHours.Calibration.csproj" />
     <ProjectReference Include="../../src/EffortHours.Change/EffortHours.Change.csproj" />
     <ProjectReference Include="../../src/EffortHours.Cli/EffortHours.Cli.csproj" />
