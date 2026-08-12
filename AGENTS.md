@@ -375,6 +375,18 @@ output correctness, runtime dependencies, or scientific validity. The unchanged
 states and 52 passing relations. The Jupyter model is experimental and
 uncalibrated.
 
+The required pre-implementation C/C++ design checkpoint is complete in
+`docs/CPP_ANALYSIS.md`, but no C/C++ semantic analyzer is implemented yet. The
+approved boundary uses a project-authored bounded managed tokenizer and
+conservative declaration parser for C99/C11/C17/C23 and C++11 through C++23 structure,
+normalizes preprocessor alternatives without expanding them, resolves only literal
+repository-local include/build ownership, and statically projects bounded CMake,
+Make, Meson, Visual C++/MSBuild, and supplementary package metadata. It adds no
+parser dependency or fitted prior. Planned implementation identities are common
+scanner `0.2.13`, C/C++ analyzer `0.1.0`, unchanged `seed-rules/0.4.0`, and Change
+`0.18.0`; these are not current runtime identities until implementation passes the
+required repository, Change, mutation, CLI, and benchmark gates.
+
 The scanner benchmark now measures fresh-process .NET, JavaScript/TypeScript,
 Python, Jupyter, Go, Java, Kotlin, Shell, PowerShell, Terraform/HCL, PHP/Composer,
 Rust/Cargo, Docker/Compose, and mixed million-line shapes, samples peak resident memory, labels explicit external

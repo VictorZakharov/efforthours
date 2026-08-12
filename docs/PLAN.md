@@ -38,6 +38,7 @@ src/
   EffortHours.Analyzers.Php/        bounded static PHP and Composer evidence
   EffortHours.Analyzers.Rust/       bounded static Rust and Cargo evidence
   EffortHours.Analyzers.Docker/     bounded static Dockerfile, Compose, and .dockerignore evidence
+  EffortHours.Analyzers.Cpp/        planned bounded static C/C++ and native-build evidence
   EffortHours.Change/               final-delta evidence, Git/PR selectors, reconciliation
   EffortHours.Estimation/           rules, work items, aggregation
   EffortHours.Calibration/          reviewed labels and offline evaluation
@@ -125,7 +126,7 @@ required for an ordinary estimate.
 
 ## 5. Milestones
 
-Status as of August 11, 2026:
+Status as of August 12, 2026:
 
 - Milestone 0 is complete: the initial product semantics, MIT License, packaging
   identity, and repository conventions are recorded.
@@ -547,7 +548,7 @@ review.
 
 ### Milestone 9: Expansion
 
-The first seven expansion slices are complete. Issue #63 adds language-neutral analyzed/
+The demand-ordered expansion slices are implemented through Jupyter. Issue #63 adds language-neutral analyzed/
 inventory-only status, generic package and fine-test evidence, generic source
 normalization/backbone routing, and the token-backed Python 3 analyzer. Python
 repository and Change estimates now cover static package ownership, local import
@@ -664,6 +665,15 @@ checkpoint completes in 7.561 seconds with a 159.33 MiB sampled peak. This remai
 experimental, uncalibrated, scientifically unvalidated, and outside Change
 admission.
 
+Issue #65 has completed its required pre-implementation C/C++ design checkpoint.
+`CPP_ANALYSIS.md` freezes a dependency-free managed tokenizer and conservative
+declaration parser; C99/C11/C17/C23 and C++11 through C++23 structural scope; bounded
+preprocessor-alternative normalization; literal local include and header/source
+ownership; static CMake, Make, Meson, Visual C++/MSBuild, and supplementary package
+metadata; planned Change `0.18.0`; privacy/non-execution rules; and implementation
+verification gates. No C/C++ analyzer or semantic support is implemented yet, and
+the current scanner/estimator identities remain unchanged.
+
 - Add feature-oriented reporting.
 - Maintain the implemented provider-neutral directory/evidence selectors and
   measure their large-tree performance before broadening their scope.
@@ -771,8 +781,11 @@ cross-platform measurements and a more representative benchmark corpus exist.
 5. Repeat the new peak-memory and read-only benchmark protocol across constrained
    Windows/Linux/macOS hosts and larger redistributable monorepos before freezing
    regression thresholds.
-6. Continue issue #62 with the next demand-ordered ecosystem analyzer after Docker/Compose,
-   retaining explicit parser depth and inventory-only diagnostics.
+6. Implement issue #65 under the frozen `CPP_ANALYSIS.md` boundary, retaining
+   token-backed provenance and inventory-only diagnostics until the complete
+   repository, Change, mutation, CLI, and benchmark gates pass. After that change
+   is merged, prepare the next public preview through the separately authorized
+   `RELEASING.md` procedure.
 7. Evaluate a compiler-grade TypeScript adapter only if reviewed calibration shows
    material error from the bounded token evidence.
 8. Collect separately governed production observations for empirical Change

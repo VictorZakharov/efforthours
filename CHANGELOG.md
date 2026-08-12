@@ -8,6 +8,11 @@ may still change public contracts with explicit documentation.
 
 ### Added
 
+- A pre-implementation C/C++ design checkpoint freezes the managed token/
+  declaration parser, supported standard and file boundary, preprocessor
+  alternative normalization, static CMake/Make/Meson/Visual C++ ownership,
+  dependency/licensing decision, Change semantics, privacy rules, and verification
+  gates for issue #65. C/C++ semantic analysis is not implemented by this change.
 - Python analyzer `0.2.0` adds safe Jupyter `.ipynb` analysis through bounded,
   digest-verified JSON and the existing Python tokenizer. It represents maintained
   Python cells, Markdown, qualified data analysis, visualization, integrations,

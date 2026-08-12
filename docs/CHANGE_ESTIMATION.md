@@ -225,6 +225,16 @@ meaningful ordering remain significant; invalid or oversized content fails close
 Exact blob moves are excluded from body implementation effort. Path-sensitive
 integration work is included only when separate analyzer evidence supports it.
 
+The approved C/C++ design reserves `change-seed/0.18.0` for a later implementation
+checkpoint. That planned signature may ignore ordinary layout and non-documentation
+comments while preserving documentation, preprocessing directives and replacement
+tokens, identifiers, operators, delimiters, literals, raw strings, attributes,
+declaration structure, and meaningful ordering. Malformed directives, ambiguous
+line splicing, invalid literals, and unbalanced structure fail closed. Header
+fan-out and translation-unit count never multiply a delta. This design does not
+change the current `change-seed/0.17.0` identity or make current C/C++ changes
+semantically analyzed; `CPP_ANALYSIS.md` defines the complete future boundary.
+
 SQL schema, migration, stored-program, and query deltas use the data category;
 test fixtures use integration/component testing; explicit deployment/install
 scripts use packaging; and supported cross-database syntax uses integrations.
