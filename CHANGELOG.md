@@ -198,6 +198,11 @@ may still change public contracts with explicit documentation.
 
 ### Changed
 
+- Pull-request CI runs platform-independent formatting once on Linux while
+  cross-platform build/unit and process-level end-to-end matrices execute in
+  parallel. End-to-end lanes use locked, project-scoped rebuilds, and preview
+  package compilation is removed from the post-test critical path while final
+  artifact promotion still waits for every required gate.
 - Common scanner `0.2.12` classifies `.ipynb` as Jupyter in the Python ecosystem
   and excludes `.ipynb_checkpoints` by default. The unchanged experimental
   `seed-rules/0.4.0` consumes projection-normalized notebook semantics rather than

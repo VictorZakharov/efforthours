@@ -30,7 +30,7 @@ production-ready estimate.
 Run the release gates:
 
 ```text
-dotnet restore EffortHours.slnx --configfile NuGet.Config --force-evaluate
+dotnet restore EffortHours.slnx --configfile NuGet.Config --locked-mode
 dotnet format EffortHours.slnx --no-restore --verify-no-changes --severity info
 dotnet build EffortHours.slnx --no-restore --configuration Release
 dotnet test tests/EffortHours.Tests/EffortHours.Tests.csproj --no-build --no-restore --configuration Release
@@ -38,9 +38,19 @@ dotnet test tests/EffortHours.EndToEndTests/EffortHours.EndToEndTests.csproj --n
 dotnet pack src/EffortHours.Cli/EffortHours.Cli.csproj --configuration Release --no-build --no-restore --output artifacts/packages
 ```
 
-Push the candidate normally and require the `CI` workflow to pass on Windows,
-Linux, and macOS. Run `NuGet preview` manually with `publish` left false. Download
-and inspect the resulting package artifact before creating a tag.
+Push the candidate normally and require the `Formatting`, all three `Quality`, all
+three `End-to-end`, `Pull request commits are linear`, and `Pack preview artifact`
+checks to pass. Formatting runs once on Linux because it is platform-independent;
+build/unit and process-level end-to-end validation retain separate Windows, Linux,
+and macOS matrices. Each end-to-end job performs a locked restore and rebuilds its
+own OS-specific project graph, so no compiled output crosses operating systems.
+
+Package compilation runs concurrently from the exact workflow commit and uploads
+a run-scoped one-day candidate. `Pack preview artifact` promotes those exact bytes
+to the 14-day artifact only after every formatting, quality, and end-to-end job has
+passed. A failed or cancelled validation lane therefore cannot produce a successful
+package gate. Run `NuGet preview` manually with `publish` left false. Download and
+inspect the resulting package artifact before creating a tag.
 
 ## Configure trusted NuGet publishing
 
