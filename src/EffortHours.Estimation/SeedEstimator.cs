@@ -55,6 +55,7 @@ public sealed class SeedEstimator : IEstimator
             "go",
             "java",
             "javascript",
+            "kotlin",
             "python",
             "sql",
             "typescript",

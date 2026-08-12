@@ -2,7 +2,11 @@ using EffortHours.Contracts.V1;
 
 namespace EffortHours.Analyzers.Java;
 
-internal sealed class JavaProjectReader(JavaTextReader textReader)
+internal sealed class JavaProjectReader(
+    JavaTextReader textReader,
+    string sourceLanguage = "java",
+    string scopeLabel = "Java",
+    string mixedBuildDiagnosticCode = "FB8108")
 {
     public async Task<JavaProjectReadResult> ReadAsync(
         IReadOnlyList<EvidenceFact> fileFacts,
@@ -46,15 +50,15 @@ internal sealed class JavaProjectReader(JavaTextReader textReader)
             }
         }
 
-        AddDiscoveredProjects(projects, fileFacts);
+        AddDiscoveredProjects(projects, fileFacts, sourceLanguage);
         if (projects.Count == 0 && hasMaintainedSource) Get(projects, ".");
         foreach ((string directory, JavaProjectMetadata metadata) in projects)
         {
             if (metadata.BuildSystems.Count > 1)
                 diagnostics.Add(JavaEvidence.Diagnostic(
-                    "FB8108",
+                    mixedBuildDiagnosticCode,
                     DiagnosticSeverity.Information,
-                    $"Java scope '{directory}' contains both Maven and Gradle metadata; both were inventoried without selecting an active build.",
+                    $"{scopeLabel} scope '{directory}' contains both Maven and Gradle metadata; both were inventoried without selecting an active build.",
                     metadata.ManifestPaths.Order(StringComparer.Ordinal).FirstOrDefault()));
         }
 
@@ -66,10 +70,11 @@ internal sealed class JavaProjectReader(JavaTextReader textReader)
 
     private static void AddDiscoveredProjects(
         Dictionary<string, JavaProjectMetadata> projects,
-        IReadOnlyList<EvidenceFact> facts)
+        IReadOnlyList<EvidenceFact> facts,
+        string sourceLanguage)
     {
         HashSet<string> sourceDirectories = [.. facts
-            .Where(fact => fact.Tags.Contains("language:java", StringComparer.Ordinal))
+            .Where(fact => fact.Tags.Contains($"language:{sourceLanguage}", StringComparer.Ordinal))
             .Select(fact => JavaPath.Directory(fact.Scope))];
         string[] referenced = [.. projects.Values
             .SelectMany(project => project.LocalProjectDirectories)

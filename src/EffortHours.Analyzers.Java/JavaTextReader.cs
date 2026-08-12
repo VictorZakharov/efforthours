@@ -5,11 +5,17 @@ using EffortHours.Contracts.V1;
 
 namespace EffortHours.Analyzers.Java;
 
-internal sealed class JavaTextReader(IRepositoryFileSystem fileSystem, string rootPath)
+internal sealed class JavaTextReader(
+    IRepositoryFileSystem fileSystem,
+    string rootPath,
+    string inputName = "Java",
+    string diagnosticCode = "FB8101")
 {
     public const long MaximumBytes = 8 * 1024 * 1024;
 
     private readonly IRepositoryFileSystem _fileSystem = fileSystem;
+    private readonly string _inputName = inputName;
+    private readonly string _diagnosticCode = diagnosticCode;
     private readonly string _rootPath = Path.TrimEndingDirectorySeparator(
         fileSystem.GetFullPath(rootPath));
 
@@ -21,19 +27,19 @@ internal sealed class JavaTextReader(IRepositoryFileSystem fileSystem, string ro
         string path = fileFact.Scope;
         string? expectedSha256 = JavaEvidence.TagValue(fileFact.Tags, "sha256:");
         if (expectedSha256 is null)
-            return Failure(path, $"Java input '{path}' has no common-scanner content digest and was skipped.");
+            return Failure(path, $"{_inputName} input '{path}' has no common-scanner content digest and was skipped.");
 
         decimal bytes = fileFact.Measurements
             .Where(measurement => measurement.Name == "bytes")
             .Sum(measurement => measurement.Value);
         if (bytes > MaximumBytes)
-            return Failure(path, $"Java input '{path}' exceeds the eight-megabyte analysis limit and was skipped.");
+            return Failure(path, $"{_inputName} input '{path}' exceeds the eight-megabyte analysis limit and was skipped.");
 
         string fullPath = Path.GetFullPath(Path.Combine(
             _rootPath,
             path.Replace('/', Path.DirectorySeparatorChar)));
         if (!IsWithinRoot(fullPath))
-            return Failure(path, $"Java input '{path}' resolves outside repository scope and was skipped.");
+            return Failure(path, $"{_inputName} input '{path}' resolves outside repository scope and was skipped.");
 
         byte[] content;
         try
@@ -43,15 +49,15 @@ internal sealed class JavaTextReader(IRepositoryFileSystem fileSystem, string ro
         }
         catch (Exception exception) when (exception is IOException or UnauthorizedAccessException)
         {
-            return Failure(path, $"Java input '{path}' could not be read and was skipped.");
+            return Failure(path, $"{_inputName} input '{path}' could not be read and was skipped.");
         }
 
         if (content.LongLength > MaximumBytes)
-            return Failure(path, $"Java input '{path}' exceeds the eight-megabyte analysis limit and was skipped.");
+            return Failure(path, $"{_inputName} input '{path}' exceeds the eight-megabyte analysis limit and was skipped.");
 
         string actualSha256 = Convert.ToHexString(SHA256.HashData(content)).ToLowerInvariant();
         if (!actualSha256.Equals(expectedSha256, StringComparison.Ordinal))
-            return Failure(path, $"Java input '{path}' changed after common scanning; semantic evidence was skipped.");
+            return Failure(path, $"{_inputName} input '{path}' changed after common scanning; semantic evidence was skipped.");
 
         try
         {
@@ -62,12 +68,12 @@ internal sealed class JavaTextReader(IRepositoryFileSystem fileSystem, string ro
                 detectEncodingFromByteOrderMarks: true);
             string text = await reader.ReadToEndAsync(cancellationToken).ConfigureAwait(false);
             return text.AsSpan().Contains('\0')
-                ? Failure(path, $"Java input '{path}' contains binary null data and was skipped.")
+                ? Failure(path, $"{_inputName} input '{path}' contains binary null data and was skipped.")
                 : new JavaTextReadResult(text, null);
         }
         catch (DecoderFallbackException)
         {
-            return Failure(path, $"Java input '{path}' is not valid supported text and was skipped.");
+            return Failure(path, $"{_inputName} input '{path}' is not valid supported text and was skipped.");
         }
     }
 
@@ -79,9 +85,9 @@ internal sealed class JavaTextReader(IRepositoryFileSystem fileSystem, string ro
             !relative.StartsWith($"..{Path.AltDirectorySeparatorChar}", StringComparison.Ordinal);
     }
 
-    private static JavaTextReadResult Failure(string path, string message) => new(
+    private JavaTextReadResult Failure(string path, string message) => new(
         null,
-        JavaEvidence.Diagnostic("FB8101", DiagnosticSeverity.Warning, message, path));
+        JavaEvidence.Diagnostic(_diagnosticCode, DiagnosticSeverity.Warning, message, path));
 }
 
 internal sealed record JavaTextReadResult(string? Text, Diagnostic? Diagnostic);

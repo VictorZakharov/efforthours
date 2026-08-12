@@ -33,6 +33,47 @@ Because EffortHours's own anchor informed the seed-model and calibration design,
 a development diagnostic rather than an eligible held-out test record unless a
 future independent snapshot and review policy explicitly establishes otherwise.
 
+## 2026-08-11: Kotlin/JVM source-boundary review
+
+Status: **qualitative analyzer and prior-reuse checkpoint; no numerical calibration or Change admission**
+
+Kotlin analyzer `0.1.0` was reviewed as bounded token-backed static analysis with
+shared conservative Maven/Gradle JVM ownership, not a Kotlin parser, compiler
+front-end, type checker, bytecode reader, JVM, Android tool, or effective build-
+model adapter. It decomposes maintained Kotlin evidence into JVM scopes, packages,
+files, functions, methods, types, extensions, public symbols, generics, suspend/
+async units, coroutines, Flow, nullability, and branches. The existing
+`seed-rules/0.4.0` `polyglot-source-backbone` consumes those analogous units
+without a model-artifact or numerical-prior change. Import-qualified server/API,
+Android/UI, CLI, data, integration, security, validation, background, build, and
+test facts reuse existing specialized rules. No fitted dataset, source-volume
+regression, or external reviewer value was used.
+
+Static Maven/Gradle parsing never invokes a JVM, compiler, build tool, wrapper,
+dependency resolver, Android tooling, KSP, kapt, compiler plugin, or test runner,
+and never follows a local project path outside repository scope. Semantic evidence
+requires recognized canonical imports or fully qualified names; local framework
+namesakes remain ordinary source structure. Gradle Kotlin DSL stays build
+configuration, while other maintained `.kts` scripts are inventoried without
+execution. Dynamic build values, source sets, variants, multiplatform
+`expect`/`actual`, plugin-generated declarations, reflection, runtime DSLs, and
+Android behavior retain explicit uncertainty. Ordinary output emits no source
+excerpts.
+
+The standalone public qualitative gate has 14 Kotlin source states and 63
+relations. It covers formatting/comments, exact copies, generated output, Ktor
+API, Android Compose UI, tests, Room data, OkHttp integration, security,
+background work, static Gradle Kotlin DSL, coroutines/Flow, and namesake rejection.
+All 63 assertions pass. Earlier aggregate, Go, and Java candidates remain
+unchanged; the dedicated suite isolates the Kotlin boundary without presenting
+version-only regeneration as accuracy evidence.
+
+Change `0.11.0` adds Kotlin-aware normalization and semantic routing but no fitted
+prior. The existing Stage A admission contains no Kotlin, Java, Go, Python, or SQL
+cases and remains limited to the previously admitted `0.6.0` families. Absolute
+Kotlin EHE accuracy, independent review, real-repository family coverage, and
+decomposed public Kotlin Change labels remain unresolved.
+
 ## 2026-08-11: Java source-boundary review
 
 Status: **qualitative analyzer and prior-reuse checkpoint; no numerical calibration or Change admission**

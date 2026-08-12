@@ -107,6 +107,13 @@ focused component. Every new source and test file remains below the ordinary
 500-line ceiling, the Java CLI E2E file remains below 400 lines, and no override
 was added or increased.
 
+The August 11, 2026 Kotlin checkpoint reuses the safe JVM text and build readers
+while separating tokenization, token utilities, syntax measurement, import
+qualification, semantic classification, evidence construction, repository
+orchestration, and Kotlin Change formatting normalization. Every new source and
+test file remains below the ordinary 500-line ceiling, the Kotlin CLI E2E file
+remains below 400 lines, and no override was added or increased.
+
 Line count is deliberately simple, deterministic, cross-platform, and difficult
 to game accidentally. The useful outcome is earlier decomposition into cohesive
 contracts, commands, analyzers, and renderers—not compressed formatting.

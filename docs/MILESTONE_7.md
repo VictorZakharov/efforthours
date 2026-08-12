@@ -895,3 +895,21 @@ labels, held-out accuracy evidence, interval calibration, or a production-admiss
 decision. No existing corpus, aggregate suite, Go suite, partition, reviewer
 identity, teacher target, estimator artifact, or frozen report changes. Java has no
 independent correction or real-repository calibration family yet.
+
+## Kotlin mutation extension
+
+The fourth polyglot expansion adds a standalone `kotlin-0.1.0` mutation suite
+rather than regenerating the frozen 88-state aggregate or the standalone Go and
+Java suites. Its 14 project-authored MIT synthetic Kotlin states use unchanged
+`seed-rules/0.4.0` and cover formatting/comments, exact copies, generated content,
+Ktor APIs, Android Compose UI, tests, Room data, OkHttp integrations, security,
+background work, static Gradle Kotlin DSL, coroutines/Flow, and local framework
+namesakes.
+
+All 63 relations pass. These are qualitative directionality, range-point
+invariance, category-isolation, and false-positive guardrails. They are not
+reviewed work-item labels, held-out accuracy evidence, interval calibration, or a
+production-admission decision. No existing corpus, aggregate suite, Go/Java
+suite, partition, reviewer identity, teacher target, estimator artifact, or
+frozen report changes. Kotlin has no independent correction or real-repository
+calibration family yet.

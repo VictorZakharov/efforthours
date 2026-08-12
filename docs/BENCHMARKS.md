@@ -345,6 +345,47 @@ applications, modules, text blocks, malformed syntax, or the eight-MiB/250,000-
 token per-file safeguards. Process-level E2E coverage runs a smaller Java shape in
 a fresh process and verifies the same read-only/offline signals.
 
+## Static Kotlin/JVM analyzer v0.1.0 checkpoint
+
+Measured on August 11, 2026 with the same Windows/.NET/hardware environment as the
+fresh-process checkpoint, common scanner `0.2.6`, and Kotlin analyzer `0.1.0`. The
+generated repository contains one root `build.gradle.kts` and 10,000 `.kt` files
+with approximately 100 physical lines each. Each source contains a package, a
+generic class, bounded properties, and one function so the run exercises scanning,
+digest verification, managed tokenization, structure, evidence construction, and
+JSON serialization without invoking a JDK, Kotlin compiler, Gradle, or Android
+tooling.
+
+```text
+dotnet benchmarks/EffortHours.ScannerBenchmarks/bin/Release/net10.0/EffortHours.ScannerBenchmarks.dll --files 10000 --lines-per-file 100 --kotlin
+```
+
+Observed fresh-process result:
+
+| Measure | Result |
+| --- | ---: |
+| Requested source lines | 1,000,000 |
+| Analyzed text lines | 1,000,001 |
+| Source/metadata files | 10,001 |
+| Common scan plus static Kotlin analysis | 9.393 s |
+| Analysis throughput | 106,459 lines/s |
+| Cumulative managed allocation | 9,377.77 MiB |
+| Sampled peak working set | 166.83 MiB |
+| Evidence JSON size | 10.79 MiB |
+
+The before/after target metadata digest was identical. The analyzer did not
+execute target code, invoke a JDK/Kotlin compiler/Gradle/Android tool, run KSP or
+kapt, install dependencies, or access the network. Fixture generation and
+serialization are outside the reported analysis duration.
+
+This is a many-small-files scaling checkpoint, not a representative distribution
+of Kotlin syntax or a cross-platform regression gate. The uniform fixture does not
+exercise mixed Java/Kotlin ownership, Maven builds, scripts, Android/Compose,
+coroutines, compiler plugins, multiplatform source sets, malformed syntax, or the
+eight-MiB/250,000-token per-file safeguards. Process-level E2E coverage runs a
+smaller Kotlin shape in a fresh process and verifies the same read-only/offline
+signals.
+
 ## Change EHE scale-and-safety v1.0.0 checkpoint
 
 Measured on August 10, 2026 with:

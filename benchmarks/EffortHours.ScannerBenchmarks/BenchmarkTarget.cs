@@ -133,6 +133,13 @@ internal static class BenchmarkFixtureGenerator
                 "<version>1.0.0</version></project>\n");
         }
 
+        if (options.Shape == BenchmarkShape.Kotlin)
+        {
+            File.WriteAllText(
+                Path.Combine(rootPath, "build.gradle.kts"),
+                "plugins { kotlin(\"jvm\") version \"2.2.0\" }\n");
+        }
+
         string csharpLines = string.Concat(
             Enumerable.Range(1, Math.Max(0, options.LinesPerFile - 1))
                 .Select(line => $"// representative source line {line.ToString(CultureInfo.InvariantCulture)}\n"));
@@ -153,6 +160,10 @@ internal static class BenchmarkFixtureGenerator
             Enumerable.Range(1, Math.Max(0, options.LinesPerFile - 3))
                 .Select(line =>
                     $"    private final int value{line:D4} = {line.ToString(CultureInfo.InvariantCulture)};\n"));
+        string kotlinLines = string.Concat(
+            Enumerable.Range(1, Math.Max(0, options.LinesPerFile - 4))
+                .Select(line =>
+                    $"    private val value{line:D4}: Int = {line.ToString(CultureInfo.InvariantCulture)}\n"));
 
         Parallel.For(0, options.Files, index =>
         {
@@ -165,6 +176,7 @@ internal static class BenchmarkFixtureGenerator
                     BenchmarkSourceKind.Python => "python",
                     BenchmarkSourceKind.Go => "go",
                     BenchmarkSourceKind.Java => Path.Combine("src", "main", "java", "benchmark"),
+                    BenchmarkSourceKind.Kotlin => Path.Combine("src", "main", "kotlin", "benchmark"),
                     _ => "web",
                 },
                 $"group-{index / 100:D5}");
@@ -200,6 +212,11 @@ internal static class BenchmarkFixtureGenerator
                     "package benchmark;\n" +
                     $"public final class File{index:D7}<T> {{\n" + javaLines +
                     "    public T value(T input) { return input; }\n}\n"),
+                BenchmarkSourceKind.Kotlin => (
+                    $"File{index:D7}.kt",
+                    "package benchmark\n" +
+                    $"data class File{index:D7}<T>(val input: T) {{\n" + kotlinLines +
+                    "    suspend fun value(): T = input\n}\n"),
                 _ => throw new InvalidOperationException($"Unsupported benchmark source kind '{kind}'."),
             };
             File.WriteAllText(Path.Combine(directory, fileName), content);
@@ -215,6 +232,7 @@ internal static class BenchmarkFixtureGenerator
         BenchmarkShape.Python => BenchmarkSourceKind.Python,
         BenchmarkShape.Go => BenchmarkSourceKind.Go,
         BenchmarkShape.Java => BenchmarkSourceKind.Java,
+        BenchmarkShape.Kotlin => BenchmarkSourceKind.Kotlin,
         BenchmarkShape.Mixed => (index % 3) switch
         {
             0 => BenchmarkSourceKind.CSharp,
@@ -232,5 +250,6 @@ internal static class BenchmarkFixtureGenerator
         Python,
         Go,
         Java,
+        Kotlin,
     }
 }

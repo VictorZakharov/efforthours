@@ -26,6 +26,8 @@ effort-label corpora, accuracy claims, or model-training data.
   assertions evaluated with unchanged `seed-rules/0.4.0`.
 - Standalone suite `java-0.1.0` records the Java expansion checkpoint: 13 cases
   and 56 assertions evaluated with unchanged `seed-rules/0.4.0`.
+- Standalone suite `kotlin-0.1.0` records the Kotlin/JVM expansion checkpoint: 14
+  cases and 63 assertions evaluated with unchanged `seed-rules/0.4.0`.
 
 The August 8, 2026 analyzer-precision reevaluation with `.NET` analyzer `0.3.2`
 and JavaScript analyzer `0.4.1` reproduced identical low, expected, and high
@@ -97,6 +99,13 @@ category isolation; build/concurrency evidence; and framework-namesake rejection
 It reuses `seed-rules/0.4.0` without changing the model artifact or fitting a Java
 rate. Passing this suite does not calibrate Java or establish absolute-hour accuracy.
 
+Standalone Kotlin suite 0.1.0 adds 14 Kotlin/JVM states and 63 relations specified
+around formatting/comment, exact-copy, and generated invariance; semantic
+directionality; category isolation; build, coroutine, and Android/Compose evidence;
+and framework-namesake rejection. It reuses `seed-rules/0.4.0` without changing the
+model artifact or fitting a Kotlin rate. Passing this suite does not calibrate
+Kotlin or establish absolute-hour accuracy.
+
 ## What suite 0.4.0 measures
 
 | Ecosystem family | Cases | Principal variants |
@@ -165,6 +174,25 @@ their production-category invariants are not artifacts of aggregate rounding.
 | Java build semantics | 9.00 h | +0.75 h build/tooling; production unchanged |
 | Java concurrency | 12.50 h | Positive bounded production movement |
 | Java framework namesakes | 10.00 h | No API, data, integration, security, or background category |
+
+### Kotlin/JVM expansion additions
+
+| Variant | Expected total | Intended category result |
+| --- | ---: | --- |
+| Kotlin base | 8.25 h | 0.75 h production plus one explicit library release surface |
+| Kotlin formatting | 8.25 h | Total and production unchanged at every range point |
+| Kotlin exact copy | 8.25 h | Total and production unchanged at every range point |
+| Kotlin generated body | 8.25 h | Total and production unchanged at every range point |
+| Kotlin API | 11.75 h | Positive production/API movement |
+| Kotlin Android/Compose | 11.25 h | Positive UI movement |
+| Kotlin tests | 9.50 h | +1.25 h unit testing; production unchanged |
+| Kotlin data | 11.00 h | Positive data/persistence movement |
+| Kotlin integration | 12.75 h | Positive external-integration movement |
+| Kotlin security | 14.25 h | Positive security/accessibility movement |
+| Kotlin background work | 13.00 h | Positive background/production movement |
+| Kotlin build semantics | 9.00 h | +0.75 h build/tooling; production unchanged |
+| Kotlin coroutines | 13.00 h | Positive bounded production movement |
+| Kotlin framework namesakes | 10.00 h | No API, UI, data, integration, security, or background category |
 
 ### Frontend semantic additions
 
@@ -311,6 +339,12 @@ retain all earlier assertions unchanged.
 - `go-0.1.0.suite.json` defines the standalone 13-case Go suite.
 - `baseline-seed-rules-0.4.0-go-0.1.0.json` records all 56 passing Go assertions.
 - `estimates/seed-rules-0.4.0/go-*.estimate.json` contains its candidates.
+- `java-0.1.0.suite.json` defines the standalone 13-case Java suite.
+- `baseline-seed-rules-0.4.0-java-0.1.0.json` records all 56 passing Java assertions.
+- `estimates/seed-rules-0.4.0/java-*.estimate.json` contains its candidates.
+- `kotlin-0.1.0.suite.json` defines the standalone 14-case Kotlin suite.
+- `baseline-seed-rules-0.4.0-kotlin-0.1.0.json` records all 63 passing Kotlin assertions.
+- `estimates/seed-rules-0.4.0/kotlin-*.estimate.json` contains its candidates.
 - `fixtures/` contains every complete synthetic source state.
 
 Every case has a distinct repository source digest. Assertions select canonical
@@ -407,6 +441,16 @@ estimator version, 13 cases, 56 assertions, and zero failures. The suite is
 standalone so the frozen aggregate and its mixed estimator identities remain
 untouched.
 
+## Reproduce standalone Kotlin suite 0.1.0
+
+Generate each of the 14 `kotlin-*` fixtures with repository estimator
+`seed-rules/0.4.0` into `estimates/seed-rules-0.4.0/`. Then evaluate the 14 exact
+candidate paths against `kotlin-0.1.0.suite.json`, writing
+`baseline-seed-rules-0.4.0-kotlin-0.1.0.json`. The result must disclose one
+candidate estimator version, 14 cases, 63 assertions, and zero failures. The suite
+is standalone so the frozen aggregate and its mixed estimator identities remain
+untouched.
+
 ## Limitations and next expansion
 
 The suite uses deliberately small archetypes. Near-copy and the two new
@@ -442,6 +486,12 @@ model. It does not resolve types, annotation processors, Maven interpolation,
 Gradle execution, dependency graphs outside scanner-admitted literals, generated
 sources, reflection, or runtime reachability. Build and semantic labels are static
 confidence signals, not proof that a Java build compiles or runs.
+
+The Kotlin scanner is likewise token-backed. It does not resolve Kotlin/JVM types,
+compiler plugins, Gradle execution, KSP/kapt generation, Android resources,
+multiplatform expect/actual bindings, reflection, or runtime reachability. Build,
+platform, and semantic labels are static confidence signals, not proof that a
+Kotlin project compiles or runs.
 
 Passing these relations prevents known perverse movements. It does not establish
 that any absolute hour or delta is numerically correct, and it does not make the

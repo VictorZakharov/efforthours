@@ -758,7 +758,8 @@ internal sealed partial class SeedCapabilityBuilder(
         EvidenceFact[] configurations = [.. _index.FactsOfKind(EvidenceKinds.JavaScriptConfiguration)];
         EvidenceFact[] ecosystemConfigurations = [.. _index.FactsOfKind(EvidenceKinds.BuildConfiguration)
             .Where(fact => fact.Provenance.Analyzer is
-                "efforthours.go-analyzer" or "efforthours.java-analyzer")];
+                "efforthours.go-analyzer" or "efforthours.java-analyzer" or
+                "efforthours.kotlin-analyzer")];
         EvidenceFact[] packages = [.. _index.FactsOfKind(EvidenceKinds.JavaScriptPackage)];
         EvidenceFact[] evidence = Evidence(
             files.Select(file => file.Fact),

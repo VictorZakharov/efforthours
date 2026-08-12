@@ -58,11 +58,11 @@ recorded in `docs/CHANGE_MODEL_ADMISSION.md`. The expansion test comparison rema
 withheld. This admits experimental small-change logical use, not a general accuracy
 rate or production readiness.
 
-Current source `change-seed/0.10.0+seed-rules/0.4.0` retains the admitted rules while
-adding static SQL, Python, Go, and Java normalization and semantic routing. No
+Current source `change-seed/0.11.0+seed-rules/0.4.0` retains the admitted rules while
+adding static SQL, Python, Go, Java, and Kotlin normalization and semantic routing. No
 checked-in Change corpus or Stage A task contains those ecosystems, so versions
-0.7.0 through 0.10.0 are not separately admitted and no SQL, Python, Go, or Java
-accuracy claim follows.
+0.7.0 through 0.11.0 are not separately admitted and no SQL, Python, Go, Java, or
+Kotlin accuracy claim follows.
 
 ## Workflow
 

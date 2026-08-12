@@ -6,9 +6,9 @@ Metric identity, decision order, and the first small-change logical gate are fro
 as `change-model-admission/0.2.0`. The admitted source baseline is
 `change-seed/0.6.0+seed-rules/0.3.0`; it is the transparent Stage A logical
 baseline for experimental one-to-several-day Change estimates. The current source
-has advanced to `change-seed/0.10.0+seed-rules/0.4.0` for static SQL, Python, Go, and Java
+has advanced to `change-seed/0.11.0+seed-rules/0.4.0` for static SQL, Python, Go, Java, and Kotlin
 support. Those extensions preserve admitted rules but are not separately admitted,
-and no Stage A record contains SQL, Python, Go, or Java. This is weak-supervision
+and no Stage A record contains SQL, Python, Go, Java, or Kotlin. This is weak-supervision
 admission, not empirical accuracy,
 formal interval calibration, or production readiness.
 
@@ -460,3 +460,23 @@ successor; `0.6.0` remains the last admitted source baseline. Java admission
 requires licensed public final changes in the declared size band, exact small-task
 logical decomposition, repository-isolated partitions, and the normal development/
 validation/test decision order.
+
+## `change-seed/0.11.0` static Kotlin extension
+
+Version 0.11.0 adds `.kt` and `.kts` final-delta support. Its formatting
+comparison normalizes layout, optional semicolons/trailing commas, and ordinary
+non-documentation comments while preserving KDoc/Markdown documentation,
+regular/raw strings, character/numeric literals, identifiers, backtick names,
+operators, delimiters, and semantic newlines after jump expressions. Repository
+analyzer evidence routes import-qualified Kotlin/JVM server/API, Android/UI, CLI,
+data, integration, security, validation, background, coroutine/Flow, build, and
+test changes through existing rules. It adds no fitted Change prior.
+
+The standalone public Kotlin mutation suite adds 14 source states and passes
+63/63 relations. That is qualitative safeguard evidence, not reviewed Change
+labeling. The Stage A corpus and its exact logical decomposition contain no Kotlin
+changes. Version 0.11.0 is therefore an experimental source revision, not an
+admitted successor; `0.6.0` remains the last admitted source baseline. Kotlin
+admission requires licensed public final changes in the declared size band, exact
+small-task logical decomposition, repository-isolated partitions, and the normal
+development/validation/test decision order.

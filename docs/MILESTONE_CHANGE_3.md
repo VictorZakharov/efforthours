@@ -66,6 +66,11 @@ The Java follow-on advances current source identity to
 semantic routing, and changes no frozen Change label or admission decision. No
 Stage A record contains Java.
 
+The Kotlin follow-on advances current source identity to
+`change-seed/0.11.0+seed-rules/0.4.0`, adds Kotlin-aware `.kt`/`.kts`
+normalization and semantic routing, and changes no frozen Change label or
+admission decision. No Stage A record contains Kotlin.
+
 ## Reproducible source boundary
 
 `change-fixture-generator/0.1.0` analyzes synthetic base/head states through
