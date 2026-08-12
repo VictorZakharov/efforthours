@@ -162,6 +162,7 @@ public sealed class BenchmarkCliTests
     [InlineData("--shell", "shell-static")]
     [InlineData("--powershell", "powershell-static")]
     [InlineData("--php", "php-composer-static")]
+    [InlineData("--rust", "rust-cargo-static")]
     [InlineData("--terraform", "terraform-hcl-static")]
     public async Task StaticEcosystemBenchmarksRunInFreshProcessesWithSafetySignals(
         string option,

@@ -6,8 +6,8 @@ Metric identity, decision order, and the first small-change logical gate are fro
 as `change-model-admission/0.2.0`. The admitted source baseline is
 `change-seed/0.6.0+seed-rules/0.3.0`; it is the transparent Stage A logical
 baseline for experimental one-to-several-day Change estimates. The current source
-has advanced to `change-seed/0.14.0+seed-rules/0.4.0` for static SQL, Python, Go,
-Java, Kotlin, Shell, PowerShell, Terraform/HCL, and PHP/Composer support. Those
+has advanced to `change-seed/0.15.0+seed-rules/0.4.0` for static SQL, Python, Go,
+Java, Kotlin, Shell, PowerShell, Terraform/HCL, PHP/Composer, and Rust/Cargo support. Those
 extensions preserve admitted rules but are not separately admitted, and no Stage A
 record contains any of those ecosystems. This is weak-supervision admission, not empirical accuracy,
 formal interval calibration, or production readiness.
@@ -539,5 +539,26 @@ reviewed Change labeling. The Stage A corpus and its exact logical decomposition
 contain no PHP or Composer changes. Version 0.14.0 is therefore an experimental
 source revision, not an admitted successor; `0.6.0` remains the last admitted
 source baseline. PHP admission requires licensed public final changes in the
+declared size band, exact small-task logical decomposition, repository-isolated
+partitions, and the normal development/validation/test decision order.
+
+## `change-seed/0.15.0` static Rust and Cargo extension
+
+Version 0.15.0 adds maintained `.rs` final-delta support. Its formatting comparison
+normalizes ordinary layout and non-documentation comments while preserving
+Rustdoc, identifiers and raw identifiers, operators, delimiters, strings and raw
+strings, character literals, numbers, lifetimes, attributes, and compiler
+directives; incomplete lexical or delimiter structure fails closed. Repository
+analyzer evidence routes qualified Rust API, data, integration, security,
+validation, background/concurrency, FFI, build, benchmark, and test changes through
+existing rules without adding a fitted Change prior. Target/vendor/generated/lock/
+duplicate and formatting-only bodies retain zero implementation value.
+
+The standalone public Rust mutation suite adds 14 repository states and passes
+62/62 relations. That is qualitative analyzer and routing safeguard evidence, not
+reviewed Change labeling. The Stage A corpus and its exact logical decomposition
+contain no Rust or Cargo changes. Version 0.15.0 is therefore an experimental
+source revision, not an admitted successor; `0.6.0` remains the last admitted
+source baseline. Rust admission requires licensed public final changes in the
 declared size band, exact small-task logical decomposition, repository-isolated
 partitions, and the normal development/validation/test decision order.

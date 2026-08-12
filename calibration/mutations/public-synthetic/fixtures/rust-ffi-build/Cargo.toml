@@ -1,0 +1,15 @@
+[package]
+name = "rust-ffi-build"
+version = "1.0.0"
+edition = "2024"
+build = "build.rs"
+
+[lib]
+crate-type = ["cdylib"]
+
+[build-dependencies]
+bindgen = "0.72"
+
+[[bin]]
+name = "rust-tool"
+path = "src/main.rs"

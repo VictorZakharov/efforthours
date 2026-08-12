@@ -309,6 +309,16 @@ rules consume separate qualified facts. Vendor/cache/generated/lock/duplicate
 bodies and raw PHP line volume do not receive guessed PHP effort. This is
 transparent prior reuse, not fitted calibration.
 
+Rust analyzer `0.1.0` replaces coarse Rust file inventory with bounded source and
+Cargo package/workspace semantics while preserving the unchanged
+`seed-rules/0.4.0` artifact. The language-neutral source backbone consumes files,
+declarations, public symbols, branches, async/error/unsafe structure, and FFI;
+existing API, data, integration, security, validation, background/concurrency,
+build, benchmark, test, and delivery rules consume separate qualified facts.
+Target/vendor/generated/lock/duplicate bodies and raw Rust line volume do not
+receive guessed Rust effort. This is transparent prior reuse, not fitted
+calibration.
+
 ## Testing requirements
 
 Ordinary unit tests remain entirely memory-backed. Milestone 5 tests must cover:

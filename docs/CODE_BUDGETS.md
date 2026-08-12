@@ -138,6 +138,14 @@ fact construction, repository orchestration, and Change formatting normalization
 classifier, which remains below its 500-line ceiling. Every new source and test
 file remains below its ordinary ceiling, and no override was added or increased.
 
+The August 12, 2026 Rust/Cargo checkpoint separates common Rust classification,
+digest-checked text admission, bounded Cargo TOML parsing, package/workspace
+modeling, tokenization, import and syntax measurement, qualified semantics, fact
+construction, repository orchestration, and Change formatting normalization. The
+Cargo reader and TOML parser are separate before either reaches the 80% split
+threshold. Every new source and test file remains below its ordinary ceiling, and
+no override was added or increased.
+
 Line count is deliberately simple, deterministic, cross-platform, and difficult
 to game accidentally. The useful outcome is earlier decomposition into cohesive
 contracts, commands, analyzers, and renderers—not compressed formatting.

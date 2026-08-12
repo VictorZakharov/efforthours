@@ -68,7 +68,7 @@ public sealed class PhpChangeTests
             item.Category == EffortCategory.UiImplementationAndRepresentedUxDecisions && item.Hours.Expected > 0m);
         Assert.Contains(report.Categories, item =>
             item.Category == EffortCategory.IntegrationContractAndComponentTesting && item.Hours.Expected > 0m);
-        Assert.Equal("change-seed/0.14.0+seed-rules/0.4.0", report.EstimatorVersion);
+        Assert.Equal("change-seed/0.15.0+seed-rules/0.4.0", report.EstimatorVersion);
     }
 
     private static Task<ChangeEstimateReport> EstimateAsync(ChangeState before, ChangeState after) =>

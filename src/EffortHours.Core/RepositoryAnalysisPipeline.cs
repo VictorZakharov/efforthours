@@ -5,6 +5,7 @@ using EffortHours.Analyzers.Java;
 using EffortHours.Analyzers.JavaScript;
 using EffortHours.Analyzers.Php;
 using EffortHours.Analyzers.Python;
+using EffortHours.Analyzers.Rust;
 using EffortHours.Analyzers.Scripting;
 using EffortHours.Analyzers.Sql;
 using EffortHours.Analyzers.Terraform;
@@ -28,6 +29,7 @@ public sealed class RepositoryAnalysisPipeline : IRepositoryScanner
                 new JavaScriptRepositoryAnalyzer(),
                 new PhpRepositoryAnalyzer(),
                 new PythonRepositoryAnalyzer(),
+                new RustRepositoryAnalyzer(),
                 new ScriptingRepositoryAnalyzer(),
                 new SqlRepositoryAnalyzer(),
                 new TerraformRepositoryAnalyzer(),
@@ -49,6 +51,7 @@ public sealed class RepositoryAnalysisPipeline : IRepositoryScanner
                 new JavaScriptRepositoryAnalyzer(fileSystem),
                 new PhpRepositoryAnalyzer(fileSystem),
                 new PythonRepositoryAnalyzer(fileSystem),
+                new RustRepositoryAnalyzer(fileSystem),
                 new ScriptingRepositoryAnalyzer(fileSystem),
                 new SqlRepositoryAnalyzer(fileSystem),
                 new TerraformRepositoryAnalyzer(fileSystem),

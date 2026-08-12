@@ -33,6 +33,43 @@ Because EffortHours's own anchor informed the seed-model and calibration design,
 a development diagnostic rather than an eligible held-out test record unless a
 future independent snapshot and review policy explicitly establishes otherwise.
 
+## 2026-08-12: Rust and Cargo source-boundary review
+
+Status: **qualitative analyzer and prior-reuse checkpoint; no numerical calibration or Change admission**
+
+Rust analyzer `0.1.0` was reviewed as bounded token-backed static analysis, not
+rustc's parser, type system, borrow checker, macro expander, Cargo's resolver or
+build-plan engine, a linker, linter, generator, or test runner. It decomposes
+static Cargo metadata into package/workspace ownership, dependencies, features,
+build scripts, targets, and literal local edges, and maintained Rust into modules,
+uses, declarations, public APIs, generics, lifetimes, async/concurrency, unsafe and
+error paths, tests, benchmarks, examples, FFI, qualified semantics, and explicit
+macro/build/generated uncertainty. The existing `seed-rules/0.4.0` generic source
+backbone and specialized rules consume those bounded analogous facts without a
+model-artifact or fitted-prior change.
+
+Reads are scanner-admitted, root-contained, digest-verified, strict UTF-8, and
+size/token bounded. Target/vendor/generated bodies, lock mechanics, exact
+duplicates, and raw Rust lines do not add Rust semantic units. Cargo, rustc, build
+scripts, procedural macros, generators, tests, examples, benchmarks, and target
+code are not executed; dependencies, features, target triples, macro-expanded
+structure, generated bindings, and borrow checking are not resolved; and source
+values/excerpts are not emitted.
+
+The standalone public qualitative gate has 14 Rust/Cargo repository states and 62
+relations. All assertions pass across invariance, bounded exclusion, semantic and
+category directionality, workspace ownership, FFI/build uncertainty, tests, and
+local crate-namesake rejection. Earlier aggregate and standalone candidates remain
+unchanged; this suite is not accuracy evidence.
+
+Change `0.15.0` adds Rust-aware normalization and analyzer-backed semantic routing
+but no fitted prior. The existing Stage A admission contains no Rust/Cargo,
+PHP/Composer, Terraform/HCL, Shell/PowerShell, Kotlin, Java, Go, Python, or SQL
+cases and remains limited to the previously admitted `0.6.0` families. Absolute
+Rust EHE accuracy, native-parser parity, independent review, representative real
+Cargo workspace coverage, and decomposed public Rust Change labels remain
+unresolved.
+
 ## 2026-08-12: PHP and Composer source-boundary review
 
 Status: **qualitative analyzer and prior-reuse checkpoint; no numerical calibration or Change admission**

@@ -10,7 +10,7 @@ Python 3 is a first-class, token-backed EffortHours ecosystem beginning with:
 - Change estimator `change-seed/0.8.0+seed-rules/0.4.0`.
 
 Later additive ecosystem extensions advance the current composite source identity to
-`change-seed/0.14.0+seed-rules/0.4.0` without changing Python normalization or
+`change-seed/0.15.0+seed-rules/0.4.0` without changing Python normalization or
 valuation behavior.
 
 This boundary is experimental and uncalibrated. It adds static Python evidence and

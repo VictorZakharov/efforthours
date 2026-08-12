@@ -147,6 +147,13 @@ internal static class BenchmarkFixtureGenerator
                 "{\"name\":\"efforthours/benchmark\",\"autoload\":{\"psr-4\":{\"Benchmark\\\\\":\"src/\"}}}\n");
         }
 
+        if (options.Shape == BenchmarkShape.Rust)
+        {
+            File.WriteAllText(
+                Path.Combine(rootPath, "Cargo.toml"),
+                "[package]\nname = \"efforthours-benchmark\"\nversion = \"1.0.0\"\nedition = \"2024\"\n");
+        }
+
         string csharpLines = string.Concat(
             Enumerable.Range(1, Math.Max(0, options.LinesPerFile - 1))
                 .Select(line => $"// representative source line {line.ToString(CultureInfo.InvariantCulture)}\n"));
@@ -183,6 +190,10 @@ internal static class BenchmarkFixtureGenerator
             Enumerable.Range(1, Math.Max(0, options.LinesPerFile - 5))
                 .Select(line =>
                     $"    private int $value{line:D4} = {line.ToString(CultureInfo.InvariantCulture)};\n"));
+        string rustLines = string.Concat(
+            Enumerable.Range(1, Math.Max(0, options.LinesPerFile - 4))
+                .Select(line =>
+                    $"    pub value_{line:D4}: usize,\n"));
         string terraformLines = string.Concat(
             Enumerable.Range(1, Math.Max(0, options.LinesPerFile - 2))
                 .Select(line =>
@@ -203,6 +214,7 @@ internal static class BenchmarkFixtureGenerator
                     BenchmarkSourceKind.Shell => "scripts",
                     BenchmarkSourceKind.PowerShell => "powershell",
                     BenchmarkSourceKind.Php => "src",
+                    BenchmarkSourceKind.Rust => "src",
                     BenchmarkSourceKind.Terraform => "infrastructure",
                     _ => "web",
                 },
@@ -258,6 +270,11 @@ internal static class BenchmarkFixtureGenerator
                     "<?php\nnamespace Benchmark;\n" +
                     $"final class File{index:D7} {{\n" + phpLines +
                     "    public function value(int $input): int { return $input; }\n}\n"),
+                BenchmarkSourceKind.Rust => (
+                    $"file_{index:D7}.rs",
+                    $"pub struct File{index:D7}<'a, T> {{\n" + rustLines +
+                    "    pub input: &'a T,\n}\n" +
+                    $"impl<'a, T> File{index:D7}<'a, T> {{ pub async fn value(&self) -> &T {{ self.input }} }}\n"),
                 BenchmarkSourceKind.Terraform => (
                     $"file{index:D7}.tf",
                     $"resource \"benchmark_item\" \"item_{index:D7}\" {{\n" +
@@ -281,6 +298,7 @@ internal static class BenchmarkFixtureGenerator
         BenchmarkShape.Shell => BenchmarkSourceKind.Shell,
         BenchmarkShape.PowerShell => BenchmarkSourceKind.PowerShell,
         BenchmarkShape.Php => BenchmarkSourceKind.Php,
+        BenchmarkShape.Rust => BenchmarkSourceKind.Rust,
         BenchmarkShape.Terraform => BenchmarkSourceKind.Terraform,
         BenchmarkShape.Mixed => (index % 3) switch
         {
@@ -303,6 +321,7 @@ internal static class BenchmarkFixtureGenerator
         Shell,
         PowerShell,
         Php,
+        Rust,
         Terraform,
     }
 }

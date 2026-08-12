@@ -89,6 +89,12 @@ analyzer-backed API, UI, data, integration, security, validation, background,
 build, and test routing, and changes no frozen Change label or admission decision.
 No Stage A record contains PHP or Composer.
 
+The Rust/Cargo follow-on advances current source identity to
+`change-seed/0.15.0+seed-rules/0.4.0`, adds conservative Rust-aware formatting and
+analyzer-backed API, data, integration, security, validation, background/
+concurrency, FFI, build, benchmark, and test routing, and changes no frozen Change
+label or admission decision. No Stage A record contains Rust or Cargo.
+
 ## Reproducible source boundary
 
 `change-fixture-generator/0.1.0` analyzes synthetic base/head states through
