@@ -36,6 +36,7 @@ src/
   EffortHours.Analyzers.Sql/        bounded static SQL evidence
   EffortHours.Analyzers.Terraform/  bounded static Terraform and HCL evidence
   EffortHours.Analyzers.Php/        bounded static PHP and Composer evidence
+  EffortHours.Analyzers.Rust/       bounded static Rust and Cargo evidence
   EffortHours.Change/               final-delta evidence, Git/PR selectors, reconciliation
   EffortHours.Estimation/           rules, work items, aggregation
   EffortHours.Calibration/          reviewed labels and offline evaluation
@@ -626,6 +627,18 @@ routes, reflection, dependency resolution, or tests. PHP reuses
 checkpoint completes in 7.920 seconds with a 441.57 MiB sampled peak. This remains
 experimental, uncalibrated, and outside Change admission.
 
+Issue #70 adds common scanner `0.2.10` and Rust analyzer `0.1.0`. Repository and
+Change estimates cover scanner-admitted Cargo packages and workspaces,
+dependencies, features, build scripts, local edges, explicit and conventional
+targets, maintained Rust source, tests, benchmarks, examples, token-backed
+declarations/public APIs/generics/lifetimes/async/unsafe/error paths, FFI, and
+import-qualified semantics without invoking Cargo, rustc, build scripts,
+procedural macros, generators, tests, examples, or benchmarks. Rust reuses
+`seed-rules/0.4.0` unchanged; Change advances to `change-seed/0.15.0`. A standalone
+14-state Rust mutation slice passes all 62 relations, and its million-line
+checkpoint completes in 7.540 seconds with a 139.88 MiB sampled peak. This remains
+experimental, uncalibrated, and outside Change admission.
+
 - Add feature-oriented reporting.
 - Maintain the implemented provider-neutral directory/evidence selectors and
   measure their large-tree performance before broadening their scope.
@@ -641,13 +654,13 @@ experimental, uncalibrated, and outside Change admission.
   4-to-32-hour final changes before freezing a larger size band. Record host-model
   context, tokens, wall time, and cost when available, and keep empirical
   production validation separate from logical labels.
-- Evaluate the current `change-seed/0.14.0` SQL, Python, Go, Java, Kotlin, Shell,
-  PowerShell, Terraform/HCL, and PHP/Composer extensions on decomposed public
+- Evaluate the current `change-seed/0.15.0` SQL, Python, Go, Java, Kotlin, Shell,
+  PowerShell, Terraform/HCL, PHP/Composer, and Rust/Cargo extensions on decomposed public
   changes before considering any of them part of an admitted size band.
 - Follow the remaining deferred semantics and safeguards in
   `CHANGE_ESTIMATION.md` before expanding any history-backed command.
 - Publish analyzer extension contracts.
-- Continue the issue #62 polyglot roadmap after PHP/Composer one bounded ecosystem
+- Continue the issue #62 polyglot roadmap after Rust/Cargo one bounded ecosystem
   at a time, using the shared package/test/status contracts and adding a public
   analysis boundary, mutation slice, Change checks, and fresh-process benchmark for
   each language.
@@ -733,7 +746,7 @@ cross-platform measurements and a more representative benchmark corpus exist.
 5. Repeat the new peak-memory and read-only benchmark protocol across constrained
    Windows/Linux/macOS hosts and larger redistributable monorepos before freezing
    regression thresholds.
-6. Continue issue #62 with the next demand-ordered language analyzer after Java,
+6. Continue issue #62 with the next demand-ordered language analyzer after Rust,
    retaining explicit parser depth and inventory-only diagnostics.
 7. Evaluate a compiler-grade TypeScript adapter only if reviewed calibration shows
    material error from the bounded token evidence.

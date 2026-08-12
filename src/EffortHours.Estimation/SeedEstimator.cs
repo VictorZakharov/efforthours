@@ -61,6 +61,7 @@ public sealed class SeedEstimator : IEstimator
             "kotlin",
             "php",
             "python",
+            "rust",
             "powershell",
             "shell",
             "sql",

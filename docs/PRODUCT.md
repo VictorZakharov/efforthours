@@ -212,6 +212,18 @@ code; `PHP_COMPOSER_ANALYSIS.md` defines the exact scope. PHP reuses the unchang
 language-neutral source backbone and analogous specialized priors without a fitted
 PHP-specific rate.
 
+The eighth polyglot expansion is Rust and Cargo. Scanner-admitted maintained `.rs`
+files, tests, benchmarks, examples, and build scripts receive bounded token-backed
+module/use/declaration/public-API/generic/lifetime/async/unsafe/error structure,
+test evidence, FFI boundaries, and conservative import-qualified semantics.
+Static `Cargo.toml` analysis supplies package and workspace ownership,
+dependencies, features, build scripts, conventional and explicit targets, and
+literal repository-local edges. The analyzer never invokes Cargo, rustc, rustdoc,
+rustfmt, Clippy, build scripts, procedural macros, generators, tests, examples,
+benchmarks, or target code; `RUST_CARGO_ANALYSIS.md` defines the exact scope. Rust
+reuses the unchanged language-neutral source backbone and analogous specialized
+priors without a fitted Rust-specific rate.
+
 ## Non-goals
 
 - Reconstructing actual hours worked.

@@ -8,6 +8,20 @@ may still change public contracts with explicit documentation.
 
 ### Added
 
+- Rust analyzer `0.1.0` adds offline, digest-verified bounded analysis for Cargo
+  packages and virtual workspaces, dependencies, features, build scripts, local
+  edges, explicit and conventional targets, maintained `.rs` source, tests,
+  benchmarks, and examples. It records token-backed declarations, public APIs,
+  generics, lifetimes, async/concurrency, unsafe/error paths, FFI, and import-
+  qualified semantics without invoking Cargo, rustc, build scripts, procedural
+  macros, generators, tests, examples, or benchmarks, and emits no source excerpts.
+- A standalone public Rust mutation suite adds 14 project-authored states and 62
+  passing relations for formatting, exact-copy and conventional-exclusion
+  behavior, workspace ownership, semantic/category directionality, FFI/build
+  uncertainty, tests, and crate-namesake rejection.
+- Scanner benchmark mode `rust-cargo-static` records a fresh-process million-line
+  checkpoint with target metadata unchanged and no target execution, dependency
+  installation, or network access.
 - PHP analyzer `0.1.0` adds offline, digest-verified bounded analysis for Composer
   packages, dependencies, autoload mappings, scripts, binary entry points, literal
   repository-local path repositories, maintained `.php` source and tests, and PHP/
@@ -140,6 +154,16 @@ may still change public contracts with explicit documentation.
 
 ### Changed
 
+- Common scanner `0.2.10` classifies Cargo manifests and maintained Rust source,
+  tests, benchmarks, build scripts, and configuration while excluding conventional
+  target/vendor/generated bodies, lock mechanics, and exact duplicates from
+  semantic effort. The unchanged experimental `seed-rules/0.4.0` language-neutral
+  backbone and existing specialized priors consume bounded Rust evidence; no
+  fitted Rust rate or calibration claim was added.
+- Change source identity advances to
+  `change-seed/0.15.0+seed-rules/0.4.0` for conservative Rust-aware formatting and
+  analyzer-backed semantic/category routing. The admitted Stage A boundary remains
+  `change-seed/0.6.0`; Rust and Cargo are not included in that admission.
 - Common scanner `0.2.9` classifies Composer manifests and maintained PHP source,
   templates, and tests while excluding conventional vendor/cache/generated bodies
   and exact duplicates from semantic effort. The unchanged experimental

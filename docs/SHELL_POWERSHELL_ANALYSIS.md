@@ -85,7 +85,7 @@ rather than being discarded as formatting.
 
 Exact moves, exact copies, generated output, vendored content, and copied launchers
 retain the normal Change exclusions. The current composite identity is
-`change-seed/0.14.0+seed-rules/0.4.0`; the logically admitted Stage A boundary
+`change-seed/0.15.0+seed-rules/0.4.0`; the logically admitted Stage A boundary
 remains `change-seed/0.6.0`. Shell and PowerShell were not represented in that
 gate, so the 0.12.0 scripting extension remains experimental and unadmitted.
 

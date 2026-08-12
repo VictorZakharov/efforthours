@@ -36,6 +36,8 @@ effort-label corpora, accuracy claims, or model-training data.
   `seed-rules/0.4.0`.
 - Standalone suite `php-0.1.0` records the PHP/Composer expansion checkpoint: 14
   cases and 59 assertions evaluated with unchanged `seed-rules/0.4.0`.
+- Standalone suite `rust-0.1.0` records the Rust/Cargo expansion checkpoint: 14
+  cases and 62 assertions evaluated with unchanged `seed-rules/0.4.0`.
 
 The August 8, 2026 analyzer-precision reevaluation with `.NET` analyzer `0.3.2`
 and JavaScript analyzer `0.4.1` reproduced identical low, expected, and high
@@ -121,6 +123,13 @@ and infrastructure directionality/category isolation; and local remote-command
 namesake rejection. It reuses `seed-rules/0.4.0` without changing the model
 artifact or fitting a scripting rate. Passing this suite does not calibrate Shell
 or PowerShell or establish absolute-hour accuracy.
+
+Standalone Rust suite 0.1.0 adds 14 Rust/Cargo states and 62 relations specified
+around formatting/comment, exact-copy, and target/vendor/generated/lock exclusion;
+workspace ownership; semantic directionality and category isolation; FFI/build
+uncertainty; test/benchmark/example quality surfaces; and crate-namesake rejection.
+It reuses `seed-rules/0.4.0` without changing the model artifact or fitting a Rust
+rate. Passing this suite does not calibrate Rust or establish absolute-hour accuracy.
 
 ## What suite 0.4.0 measures
 
@@ -227,6 +236,25 @@ their production-category invariants are not artifacts of aggregate rounding.
 | Scripting delivery | 14.75 h | +1.25 h packaging/delivery after scanner/semantic normalization; production unchanged |
 | Scripting infrastructure | 15.25 h | +1.75 h CI/infrastructure; production unchanged |
 | Scripting command namesakes | 14.00 h | No integration or security category |
+
+### Rust and Cargo expansion additions
+
+| Variant | Expected total | Intended category result |
+| --- | ---: | --- |
+| Rust base | 9.75 h | Bounded library package and production backbone |
+| Rust formatting | 9.75 h | Total and production unchanged at every range point |
+| Rust exact copy | 9.75 h | Total and production unchanged at every range point |
+| Rust conventional exclusions | 10.00 h | Semantic production unchanged; lock inventory remains bounded build evidence |
+| Rust workspace | 22.75 h | Positive nested package ownership and local-reference movement |
+| Rust API | 12.50 h | Positive production/API movement |
+| Rust data | 11.00 h | Positive data/persistence movement |
+| Rust integration | 13.25 h | Positive external-integration movement |
+| Rust security | 14.00 h | Positive security/accessibility movement |
+| Rust background work | 13.00 h | Positive background/concurrency movement |
+| Rust FFI/build | 16.50 h | Positive FFI integration, build/tooling, and delivery movement |
+| Rust unit tests | 10.75 h | Positive unit-testing movement |
+| Rust system quality | 17.75 h | Positive integration-test, benchmark, and example movement |
+| Rust crate namesakes | 10.75 h | No API, data, integration, security, or background category |
 
 ### Frontend semantic additions
 
@@ -391,6 +419,9 @@ retain all earlier assertions unchanged.
 - `php-0.1.0.suite.json` defines the standalone 14-case PHP/Composer suite.
 - `baseline-seed-rules-0.4.0-php-0.1.0.json` records all 59 passing PHP assertions.
 - `estimates/seed-rules-0.4.0/php-*.estimate.json` contains its candidates.
+- `rust-0.1.0.suite.json` defines the standalone 14-case Rust/Cargo suite.
+- `baseline-seed-rules-0.4.0-rust-0.1.0.json` records all 62 passing Rust assertions.
+- `estimates/seed-rules-0.4.0/rust-*.estimate.json` contains its candidates.
 - `fixtures/` contains every complete synthetic source state.
 
 Every case has a distinct repository source digest. Assertions select canonical
@@ -532,6 +563,21 @@ create PHP production semantics. The existing language-neutral lock inventory ma
 still add one bounded build/configuration unit; the suite bounds that movement
 explicitly instead of changing the shared prior or regenerating frozen reports.
 
+## Reproduce standalone Rust/Cargo suite 0.1.0
+
+Generate each of the 14 `rust-*` fixtures with repository estimator
+`seed-rules/0.4.0` into `estimates/seed-rules-0.4.0/`. Then evaluate the 14 exact
+candidate paths against `rust-0.1.0.suite.json`, writing
+`baseline-seed-rules-0.4.0-rust-0.1.0.json`. The result must disclose one candidate
+estimator version, 14 cases, 62 assertions, and zero failures. The suite is
+standalone so the frozen aggregate and all earlier standalone suites remain
+untouched.
+
+The `rust-excluded` case includes `Cargo.lock` to verify that lock contents never
+create Rust production semantics. The existing language-neutral lock inventory may
+still add one bounded build/configuration unit; the suite bounds that movement
+explicitly instead of changing the shared prior or regenerating frozen reports.
+
 ## Limitations and next expansion
 
 The suite uses deliberately small archetypes. Near-copy and the two new
@@ -585,6 +631,13 @@ Composer reader is not a dependency resolver. It does not execute autoloaders,
 scripts, plugins, framework bootstraps, containers, routes, reflection, dynamic
 includes, tests, or generated caches. Static package, template, and semantic labels
 are confidence signals, not proof that a PHP application installs or runs.
+
+The Rust scanner is token-backed rather than rustc-backed, and its Cargo reader is
+not a dependency, feature, or build-plan resolver. It does not expand macros, run
+build scripts or generators, resolve target-specific configuration, borrow-check,
+compile, link, execute tests/examples/benchmarks, or inspect generated bindings.
+Static package, source, and semantic labels are confidence signals, not proof that
+a Rust workspace builds or runs.
 
 Passing these relations prevents known perverse movements. It does not establish
 that any absolute hour or delta is numerically correct, and it does not make the

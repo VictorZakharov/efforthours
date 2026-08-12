@@ -187,6 +187,7 @@ bounded static Kotlin/JVM source and token analyzer,
 bounded static Shell and PowerShell token/invocation-context analyzer,
 bounded static Terraform/HCL token and module-boundary analyzer,
 bounded static PHP/Composer package, source, and template analyzer,
+bounded static Rust/Cargo package, workspace, source, and token analyzer,
 mixed-repository evidence pipeline, published v1 schemas, optional external scan
 cache, installable global-tool package, memory-only unit fixtures, automated
 process-level CLI tests, reproducible million-line benchmarks, and a granular
@@ -333,8 +334,22 @@ or tests. The unchanged `seed-rules/0.4.0` generic polyglot backbone and existin
 specialized priors are reused. The standalone PHP mutation suite has 14 states and
 59 passing relations. The PHP model is experimental and uncalibrated.
 
+The eighth polyglot expansion adds common scanner `0.2.10` and Rust analyzer
+`0.1.0`. Scanner-admitted `Cargo.toml`, maintained `.rs` source, Rust tests,
+benchmarks, examples, build scripts, and configuration receive static package and
+workspace ownership, dependency/feature/target metadata, repository-local edges,
+bounded token structure, declaration/public-API/generic/lifetime/async/unsafe/error
+evidence, tests, import-qualified semantics, FFI, and explicit macro/build/
+generated-binding uncertainty. EffortHours invokes no Cargo, rustc, build script,
+procedural macro, generator, test, example, or benchmark and resolves no active
+feature set, dependency graph, target triple, borrow checking, or generated body.
+The unchanged `seed-rules/0.4.0` generic polyglot backbone and existing specialized
+priors are reused. The standalone Rust mutation suite has 14 states and 62 passing
+relations. The Rust model is experimental and uncalibrated.
+
 The scanner benchmark now measures fresh-process .NET, JavaScript/TypeScript,
-Python, Go, Java, Kotlin, Shell, PowerShell, Terraform/HCL, PHP/Composer, and mixed million-line shapes, samples peak resident memory, labels explicit external
+Python, Go, Java, Kotlin, Shell, PowerShell, Terraform/HCL, PHP/Composer,
+Rust/Cargo, and mixed million-line shapes, samples peak resident memory, labels explicit external
 cache passes separately, and fingerprints caller-supplied target trees before and
 after analysis. The recorded mixed full scan completes in 10.876 seconds with a
 234.20 MiB sampled peak on the documented workstation; three exact MIT release
@@ -357,6 +372,8 @@ The Terraform/HCL shape completes in 8.239 seconds with a 303.72 MiB sampled pea
 and also retains unchanged target metadata.
 The PHP/Composer shape completes in 7.920 seconds with a 441.57 MiB sampled peak
 and also retains unchanged target metadata.
+The Rust/Cargo shape completes in 7.540 seconds with a 139.88 MiB sampled peak and
+also retains unchanged target metadata.
 
 The first Change Estimation MVP adds provider-neutral immutable snapshot analysis,
 local Git base/head, commit, and range selectors, one optional identity-only `gh`
@@ -367,7 +384,7 @@ meaningful code/tests/docs, migrations, integrations, CI, container delivery,
 simplification, additivity, overlap, reverts, category isolation, all three range
 points, and cooperative cancellation. The first Ctrl+C returns 130 after a
 stderr-only diagnostic; a second retains immediate termination. Current
-`change-seed/0.14.0+seed-rules/0.4.0` rules retain the bounded 0.3.0 logical-
+`change-seed/0.15.0+seed-rules/0.4.0` rules retain the bounded 0.3.0 logical-
 marginality correction
 and can isolate exact, balanced, EffortHours-specific `<custom-code>` regions
 inside otherwise generated source. Only those regions can contribute;
@@ -387,16 +404,18 @@ formatting and analyzer-backed category routing without changing previously
 admitted rules. Version 0.13.0 adds conservative HCL formatting and Terraform
 semantic/category routing without changing previously admitted rules. Version
 0.14.0 adds conservative PHP formatting and analyzer-backed semantic/category
-routing without changing previously admitted rules. They remain
+routing without changing previously admitted rules. Version 0.15.0 adds
+conservative Rust formatting and analyzer-backed semantic/category routing without
+changing previously admitted rules. They remain
 experimental; only version 0.6.0 on the
-pre-SQL/Python/Go/Java/Kotlin/Shell/PowerShell/Terraform/HCL/PHP/Composer
+pre-SQL/Python/Go/Java/Kotlin/Shell/PowerShell/Terraform/HCL/PHP/Composer/Rust/Cargo
 4-to-32-hour Stage A logical band is admitted, and no empirical production
 validation is claimed. Non-Git Change mode now accepts
 two statically scanned, content-pinned directories or two digest-checked saved
 repository-evidence bundles;
 bodyless evidence modifications that otherwise qualify as represented remain
 conservative with an explicit warning. Experimental
-`change-portfolio/0.1.0+change-seed/0.14.0+seed-rules/0.4.0` now composes repeated
+`change-portfolio/0.1.0+change-seed/0.15.0+seed-rules/0.4.0` now composes repeated
 PRs, versioned cross-repository PR manifests, and bounded author-period commits.
 It normalizes repositories independently, suppresses exact same-repository PR
 patches, follows exact chronological author object chains, exposes immutable base
@@ -529,6 +548,7 @@ dotnet benchmarks/EffortHours.ScannerBenchmarks/bin/Release/net10.0/EffortHours.
 dotnet benchmarks/EffortHours.ScannerBenchmarks/bin/Release/net10.0/EffortHours.ScannerBenchmarks.dll --files 10000 --lines-per-file 100 --powershell
 dotnet benchmarks/EffortHours.ScannerBenchmarks/bin/Release/net10.0/EffortHours.ScannerBenchmarks.dll --files 10000 --lines-per-file 100 --terraform
 dotnet benchmarks/EffortHours.ScannerBenchmarks/bin/Release/net10.0/EffortHours.ScannerBenchmarks.dll --files 10000 --lines-per-file 100 --php
+dotnet benchmarks/EffortHours.ScannerBenchmarks/bin/Release/net10.0/EffortHours.ScannerBenchmarks.dll --files 10000 --lines-per-file 100 --rust
 dotnet benchmarks/EffortHours.ScannerBenchmarks/bin/Release/net10.0/EffortHours.ScannerBenchmarks.dll --files 10000 --lines-per-file 100 --mixed --warm-cache
 dotnet benchmarks/EffortHours.ScannerBenchmarks/bin/Release/net10.0/EffortHours.ScannerBenchmarks.dll --repository . --warm-cache
 dotnet benchmarks/EffortHours.ChangeBenchmarks/bin/Release/net10.0/EffortHours.ChangeBenchmarks.dll --tree --files 10000 --lines-per-file 100 --max-seconds 30 --max-peak-mib 512

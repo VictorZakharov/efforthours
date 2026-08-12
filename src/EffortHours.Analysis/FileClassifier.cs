@@ -55,7 +55,7 @@ internal static class FileClassifier
         return new FileClassification(
             role,
             language,
-            EcosystemClassification.Detect(lowerName, extension, language),
+            EcosystemClassification.Detect(lowerName, extension, language, lowerPath),
             isTest,
             isGenerated,
             isMinified,
@@ -171,6 +171,8 @@ internal static class FileClassifier
 
         if (PhpFileClassification.IsProjectManifest(lowerName)) return "package-manifest";
 
+        if (RustFileClassification.IsProjectManifest(lowerName)) return "package-manifest";
+
         if (EcosystemClassification.IsProjectFile(lowerName, extension))
         {
             return "project";
@@ -181,7 +183,7 @@ internal static class FileClassifier
             return "solution";
         }
 
-        if (IsBuildConfiguration(lowerName, extension))
+        if (IsBuildConfiguration(lowerPath, lowerName, extension))
         {
             return "build-configuration";
         }
@@ -251,6 +253,8 @@ internal static class FileClassifier
         }
 
         if (language == "php" && PhpFileClassification.IsTestSource(fileName)) return true;
+
+        if (language == "rust" && RustFileClassification.IsTestSource(lowerPath)) return true;
 
         return lowerName.Contains(".test.", StringComparison.Ordinal) ||
                lowerName.Contains(".spec.", StringComparison.Ordinal) ||
@@ -429,9 +433,10 @@ internal static class FileClassifier
         GoFileClassification.IsProjectManifest(lowerName) ||
         JavaFileClassification.IsProjectManifest(lowerName) ||
         PhpFileClassification.IsProjectManifest(lowerName) ||
+        RustFileClassification.IsProjectManifest(lowerName) ||
         EcosystemClassification.IsProjectFile(lowerName, extension);
 
-    private static bool IsBuildConfiguration(string lowerName, string extension) =>
+    private static bool IsBuildConfiguration(string lowerPath, string lowerName, string extension) =>
         lowerName is "directory.build.props" or "directory.build.targets" or "directory.packages.props" or
             "global.json" or "nuget.config" or "makefile" or "cmakelists.txt" or "taskfile.yml" or
             "taskfile.yaml" or "tsconfig.json" or "jsconfig.json" or ".npmrc" or ".yarnrc" or
@@ -442,7 +447,10 @@ internal static class FileClassifier
             "tox.ini" or "pytest.ini" or ".coveragerc" or
             "phpunit.xml" or "phpunit.xml.dist" or "phpstan.neon" or "phpstan.neon.dist" or
             "psalm.xml" or "psalm.xml.dist" or
+            "build.rs" or "rust-toolchain" or "rust-toolchain.toml" or
+            "rustfmt.toml" or ".rustfmt.toml" or "clippy.toml" or ".clippy.toml" or
             ".yarnrc.yml" or ".editorconfig" or ".gitattributes" or ".gitignore" or ".efforthoursignore" ||
+        RustFileClassification.IsBuildConfiguration(lowerName, lowerPath) ||
         KotlinFileClassification.IsGradleScript(lowerName) ||
         PythonFileClassification.IsRequirementsFile(lowerName) ||
         lowerName.StartsWith("webpack.config.", StringComparison.Ordinal) ||

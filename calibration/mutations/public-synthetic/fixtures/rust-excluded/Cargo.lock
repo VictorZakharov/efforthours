@@ -1,0 +1,5 @@
+version = 4
+
+[[package]]
+name = "rust-base"
+version = "1.0.0"

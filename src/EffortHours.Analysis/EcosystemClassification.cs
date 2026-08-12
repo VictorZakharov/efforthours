@@ -5,7 +5,8 @@ internal static class EcosystemClassification
     public static List<string> Detect(
         string lowerName,
         string extension,
-        string? language)
+        string? language,
+        string lowerPath)
     {
         List<string> ecosystems = [];
         if (language is "csharp" or "razor" or "fsharp" or "visual-basic" ||
@@ -39,6 +40,8 @@ internal static class EcosystemClassification
             ecosystems.Add("terraform");
         if (language == "php" || PhpFileClassification.IsProjectArtifact(lowerName))
             ecosystems.Add("php");
+        if (language == "rust" || RustFileClassification.IsProjectArtifact(lowerName, lowerPath))
+            ecosystems.Add("rust");
         return ecosystems;
     }
 

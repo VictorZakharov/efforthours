@@ -273,7 +273,7 @@ internal static class ChangeEvidenceBuilder
                 fact.Kind != EvidenceKinds.SqlRepository) ||
             fact.Provenance.Analyzer is
                 "efforthours.php-analyzer" or "efforthours.scripting-analyzer" or
-                "efforthours.terraform-analyzer")
+                "efforthours.terraform-analyzer" or "efforthours.rust-analyzer")
         .SelectMany(fact => fact.Locations.Select(location => new
         {
             location.Path,

@@ -191,21 +191,21 @@ public sealed partial class PythonAnalyzerTests
     {
         InMemoryRepository repository = new();
         repository.WriteText("main.py", "def run():\n    return 1\n");
-        repository.WriteText("main.rs", "fn main() {}\n");
+        repository.WriteText("main.swift", "func main() {}\n");
 
         RepositoryEvidence evidence = await ScanAsync(repository);
         EvidenceFact python = evidence.Facts.Single(fact => fact.Kind == EvidenceKinds.Language &&
             fact.Tags.Contains("language:python", StringComparer.Ordinal));
-        EvidenceFact rust = evidence.Facts.Single(fact => fact.Kind == EvidenceKinds.Language &&
-            fact.Tags.Contains("language:rust", StringComparer.Ordinal));
+        EvidenceFact swift = evidence.Facts.Single(fact => fact.Kind == EvidenceKinds.Language &&
+            fact.Tags.Contains("language:swift", StringComparer.Ordinal));
         EstimateReport estimate = new SeedEstimator().Estimate(evidence, EstimationProfile.Implementation);
 
         Assert.Contains("analysis-status:analyzed", python.Tags);
-        Assert.Contains("analysis-status:inventory-only", rust.Tags);
+        Assert.Contains("analysis-status:inventory-only", swift.Tags);
         Assert.Contains(evidence.Diagnostics, diagnostic => diagnostic.Code == "FB2002" &&
-            diagnostic.Message.Contains("rust", StringComparison.Ordinal));
+            diagnostic.Message.Contains("swift", StringComparison.Ordinal));
         Assert.Contains(estimate.Diagnostics, diagnostic => diagnostic.Code == "FB1002" &&
-            diagnostic.Message.Contains("rust", StringComparison.Ordinal));
+            diagnostic.Message.Contains("swift", StringComparison.Ordinal));
     }
 
     [Fact]

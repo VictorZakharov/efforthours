@@ -8,7 +8,7 @@ namespace EffortHours.Analysis;
 public sealed class RepositoryScanner : IRepositoryScanner
 {
     public const string AnalyzerName = "efforthours.common-scanner";
-    public const string AnalyzerVersion = "0.2.9";
+    public const string AnalyzerVersion = "0.2.10";
 
     private const int AggregateLocationLimit = 50;
 

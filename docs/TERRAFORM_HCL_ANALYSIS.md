@@ -10,8 +10,8 @@ production-accuracy claim is introduced.
 
 Change version `0.13.0` added conservative HCL-aware formatting comparison and
 analyzer-backed routing. The current composite source identity is
-`change-seed/0.14.0+seed-rules/0.4.0`; the additive PHP extension does not change
-Terraform normalization or valuation. Terraform/HCL is not admitted by the earlier
+`change-seed/0.15.0+seed-rules/0.4.0`; the additive PHP and Rust extensions do not
+change Terraform normalization or valuation. Terraform/HCL is not admitted by the earlier
 `change-seed/0.6.0` Stage A gate, whose frozen records contain no Terraform or HCL
 paths.
 

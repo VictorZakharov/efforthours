@@ -22,7 +22,8 @@ productivity score, invoice, or reconstruction of repository history.
 > estimator has passed its first model-authored logical gate for changes estimated at 4 to 32
 > hours on the previously admitted non-SQL families, but it is not empirically
 > production-validated and the newer SQL, Python, Go, Java, Kotlin, Shell,
-> PowerShell, Terraform/HCL, and PHP/Composer paths are outside that gate.
+> PowerShell, Terraform/HCL, PHP/Composer, and Rust/Cargo paths are outside that
+> gate.
 > Review the evidence and ranges before using any estimate for a consequential
 > decision.
 
@@ -164,6 +165,9 @@ closed.
 For PHP, ordinary formatting and non-documentation comments can normalize to zero
 while PHPDoc, literals, identifiers, operators, delimiters, heredoc/nowdoc bodies,
 and inline template content remain meaningful. Incomplete PHP fails closed.
+For Rust, ordinary formatting and non-documentation comments can normalize to zero
+while Rustdoc, raw identifiers, literals, lifetimes, attributes, operators, and
+delimiters remain meaningful. Incomplete Rust fails closed.
 The current source build can retain bounded customization inside generated files
 only when exact, EffortHours-specific `<custom-code>` regions isolate it safely;
 the generated body still contributes zero. Generator-specific protected-region
@@ -261,8 +265,15 @@ The current static analyzers support:
 - PHP namespaces, imports, declarations, public APIs, attributes, branches,
   exceptions, tests, conservative import-qualified framework semantics, and
   bounded PHP/Blade template structure through static token analysis;
+- Cargo packages and virtual workspaces, dependencies, features, build scripts,
+  conventional and explicit targets, literal repository-local edges, and
+  maintained Rust ownership without invoking Cargo or rustc;
+- Rust modules, uses, structs, enums, traits, implementations, functions, public
+  APIs, generics, lifetimes, async/concurrency, unsafe and error paths, tests,
+  benchmarks, examples, FFI boundaries, and import-qualified semantic evidence
+  through bounded static token analysis;
 - mixed .NET, JavaScript/TypeScript, Python, Go, Java/Kotlin, Shell/PowerShell,
-  Terraform/HCL, PHP/Composer, and SQL repositories;
+  Terraform/HCL, PHP/Composer, Rust/Cargo, and SQL repositories;
 - documentation, build configuration, CI, containers, infrastructure, package
   metadata, and checked-in LCOV or Cobertura coverage reports; and
 - generated, vendored, minified, binary, duplicate, test, and documentation
@@ -323,6 +334,11 @@ bootstraps, containers, routes, reflection, dependency resolution, or tests.
 Dynamic includes, magic methods, runtime registration, and linked frontend assets
 remain explicit uncertainty. See the
 [static PHP and Composer boundary](docs/PHP_COMPOSER_ANALYSIS.md).
+Rust/Cargo analysis reads only scanner-admitted, digest-matched static text. It
+does not run Cargo, rustc, build scripts, procedural macros, generators, tests,
+examples, or benchmarks; resolve dependencies, features, or target triples; or
+infer macro-expanded and generated bodies. See the
+[static Rust and Cargo boundary](docs/RUST_CARGO_ANALYSIS.md).
 
 ## Offline and safe by default
 
@@ -363,8 +379,8 @@ in this alpha. See the [host-review protocol](docs/MILESTONE_8.md).
   prove that a checkout builds or runs.
 - Unsupported languages still receive common inventory evidence but not the same
   semantic depth as .NET, JavaScript/TypeScript, Python, Go, Java/Kotlin,
-  Shell/PowerShell, Terraform/HCL, PHP/Composer, SQL, and the supported frontend
-  forms.
+  Shell/PowerShell, Terraform/HCL, PHP/Composer, Rust/Cargo, SQL, and the supported
+  frontend forms.
 - Checked-in coverage can be stale even when its bytes match the analyzed tree;
   EffortHours does not regenerate it.
 - Change portfolio reconciliation is experimental. Exact patch/object-chain

@@ -170,6 +170,13 @@
           "EffortHours.Contracts": "[1.0.0, )"
         }
       },
+      "efforthours.analyzers.rust": {
+        "type": "Project",
+        "dependencies": {
+          "EffortHours.Analysis": "[1.0.0, )",
+          "EffortHours.Contracts": "[1.0.0, )"
+        }
+      },
       "efforthours.analyzers.scripting": {
         "type": "Project",
         "dependencies": {
@@ -222,6 +229,7 @@
           "EffortHours.Analyzers.JavaScript": "[1.0.0, )",
           "EffortHours.Analyzers.Php": "[1.0.0, )",
           "EffortHours.Analyzers.Python": "[1.0.0, )",
+          "EffortHours.Analyzers.Rust": "[1.0.0, )",
           "EffortHours.Analyzers.Scripting": "[1.0.0, )",
           "EffortHours.Analyzers.Sql": "[1.0.0, )",
           "EffortHours.Analyzers.Terraform": "[1.0.0, )",
