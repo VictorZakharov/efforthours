@@ -146,6 +146,14 @@ Cargo reader and TOML parser are separate before either reaches the 80% split
 threshold. Every new source and test file remains below its ordinary ceiling, and
 no override was added or increased.
 
+The August 12, 2026 Docker/Compose checkpoint separates common filename policy,
+digest-checked text admission, Dockerfile instruction metrics, Compose YAML
+scanning and semantic measurement, local build-reference resolution,
+`.dockerignore` rules, fact construction, repository orchestration, and Change
+formatting normalization. Dockerfile metrics are split from instruction parsing
+before the parser reaches the 80% split threshold. Every new source and test file
+remains below its ordinary ceiling, and no override was added or increased.
+
 Line count is deliberately simple, deterministic, cross-platform, and difficult
 to game accidentally. The useful outcome is earlier decomposition into cohesive
 contracts, commands, analyzers, and renderers—not compressed formatting.

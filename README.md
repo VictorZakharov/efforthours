@@ -22,7 +22,7 @@ productivity score, invoice, or reconstruction of repository history.
 > estimator has passed its first model-authored logical gate for changes estimated at 4 to 32
 > hours on the previously admitted non-SQL families, but it is not empirically
 > production-validated and the newer SQL, Python, Go, Java, Kotlin, Shell,
-> PowerShell, Terraform/HCL, PHP/Composer, and Rust/Cargo paths are outside that
+> PowerShell, Terraform/HCL, PHP/Composer, Rust/Cargo, and Docker/Compose paths are outside that
 > gate.
 > Review the evidence and ranges before using any estimate for a consequential
 > decision.
@@ -168,6 +168,14 @@ and inline template content remain meaningful. Incomplete PHP fails closed.
 For Rust, ordinary formatting and non-documentation comments can normalize to zero
 while Rustdoc, raw identifiers, literals, lifetimes, attributes, operators, and
 delimiters remain meaningful. Incomplete Rust fails closed.
+For Dockerfiles, instruction keyword case, ordinary comments, blank lines, and
+continuation layout can normalize to zero while directives, arguments, stages,
+and commands remain meaningful; heredocs fail closed. For filename-qualified
+Compose YAML, comments, blank lines, indentation width, and mapping-colon spacing
+can normalize to zero while keys, values, sequences, and document markers remain
+meaningful; tabs, malformed flow syntax, and block scalars fail closed.
+`.dockerignore` comments and surrounding layout can normalize to zero while
+ordered patterns and negations remain meaningful.
 The current source build can retain bounded customization inside generated files
 only when exact, EffortHours-specific `<custom-code>` regions isolate it safely;
 the generated body still contributes zero. Generator-specific protected-region
@@ -272,8 +280,14 @@ The current static analyzers support:
   APIs, generics, lifetimes, async/concurrency, unsafe and error paths, tests,
   benchmarks, examples, FFI boundaries, and import-qualified semantic evidence
   through bounded static token analysis;
+- Dockerfile logical instructions, stages, build/runtime boundaries, multi-stage
+  copies, health/user/volume/port configuration, and BuildKit mount uncertainty;
+- filename-qualified Docker Compose services, builds, commands, ports,
+  environment boundaries, volumes, networks, dependencies, health checks,
+  profiles, secrets/configs, deploy/security structure, and literal local
+  Compose-to-Dockerfile references, plus bounded `.dockerignore` rules;
 - mixed .NET, JavaScript/TypeScript, Python, Go, Java/Kotlin, Shell/PowerShell,
-  Terraform/HCL, PHP/Composer, Rust/Cargo, and SQL repositories;
+  Terraform/HCL, PHP/Composer, Rust/Cargo, Docker/Compose, and SQL repositories;
 - documentation, build configuration, CI, containers, infrastructure, package
   metadata, and checked-in LCOV or Cobertura coverage reports; and
 - generated, vendored, minified, binary, duplicate, test, and documentation
@@ -339,6 +353,12 @@ does not run Cargo, rustc, build scripts, procedural macros, generators, tests,
 examples, or benchmarks; resolve dependencies, features, or target triples; or
 infer macro-expanded and generated bodies. See the
 [static Rust and Cargo boundary](docs/RUST_CARGO_ANALYSIS.md).
+Docker/Compose analysis reads only scanner-admitted, digest-matched Dockerfile
+variants, filename-qualified Compose YAML, and `.dockerignore`. It does not invoke
+Docker, Compose, BuildKit, a shell, or target code; pull or inspect images; expand
+build contexts; load includes/environment files; resolve interpolation or
+secrets; or treat arbitrary YAML as Compose. See the
+[static Docker and Compose boundary](docs/DOCKER_ANALYSIS.md).
 
 ## Offline and safe by default
 
@@ -379,7 +399,7 @@ in this alpha. See the [host-review protocol](docs/MILESTONE_8.md).
   prove that a checkout builds or runs.
 - Unsupported languages still receive common inventory evidence but not the same
   semantic depth as .NET, JavaScript/TypeScript, Python, Go, Java/Kotlin,
-  Shell/PowerShell, Terraform/HCL, PHP/Composer, Rust/Cargo, SQL, and the supported
+  Shell/PowerShell, Terraform/HCL, PHP/Composer, Rust/Cargo, Docker/Compose, SQL, and the supported
   frontend forms.
 - Checked-in coverage can be stale even when its bytes match the analyzed tree;
   EffortHours does not regenerate it.

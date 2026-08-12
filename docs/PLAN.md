@@ -37,6 +37,7 @@ src/
   EffortHours.Analyzers.Terraform/  bounded static Terraform and HCL evidence
   EffortHours.Analyzers.Php/        bounded static PHP and Composer evidence
   EffortHours.Analyzers.Rust/       bounded static Rust and Cargo evidence
+  EffortHours.Analyzers.Docker/     bounded static Dockerfile, Compose, and .dockerignore evidence
   EffortHours.Change/               final-delta evidence, Git/PR selectors, reconciliation
   EffortHours.Estimation/           rules, work items, aggregation
   EffortHours.Calibration/          reviewed labels and offline evaluation
@@ -639,6 +640,18 @@ procedural macros, generators, tests, examples, or benchmarks. Rust reuses
 checkpoint completes in 7.540 seconds with a 139.88 MiB sampled peak. This remains
 experimental, uncalibrated, and outside Change admission.
 
+Issue #82 adds common scanner `0.2.11` and Docker analyzer `0.1.0`. Repository and
+Change estimates cover strict Dockerfile variants, filename-qualified Compose
+YAML, `.dockerignore`, bounded Dockerfile build/runtime and Compose service/
+topology/security/deploy structure, exact-body normalization, dynamic-YAML
+uncertainty, and literal repository-local Compose-to-Dockerfile references without
+invoking Docker, Compose, BuildKit, a shell, images, build contexts, includes,
+environment files, secrets, or target code. Docker reuses `seed-rules/0.4.0`
+unchanged; Change advances to `change-seed/0.16.0`. A standalone 13-state Docker
+mutation slice passes all 38 relations, and its alternating Dockerfile/Compose
+million-line checkpoint completes in 8.097 seconds with a 203.00 MiB sampled peak.
+This remains experimental, uncalibrated, and outside Change admission.
+
 - Add feature-oriented reporting.
 - Maintain the implemented provider-neutral directory/evidence selectors and
   measure their large-tree performance before broadening their scope.
@@ -654,13 +667,13 @@ experimental, uncalibrated, and outside Change admission.
   4-to-32-hour final changes before freezing a larger size band. Record host-model
   context, tokens, wall time, and cost when available, and keep empirical
   production validation separate from logical labels.
-- Evaluate the current `change-seed/0.15.0` SQL, Python, Go, Java, Kotlin, Shell,
-  PowerShell, Terraform/HCL, PHP/Composer, and Rust/Cargo extensions on decomposed public
+- Evaluate the current `change-seed/0.16.0` SQL, Python, Go, Java, Kotlin, Shell,
+  PowerShell, Terraform/HCL, PHP/Composer, Rust/Cargo, and Docker/Compose extensions on decomposed public
   changes before considering any of them part of an admitted size band.
 - Follow the remaining deferred semantics and safeguards in
   `CHANGE_ESTIMATION.md` before expanding any history-backed command.
 - Publish analyzer extension contracts.
-- Continue the issue #62 polyglot roadmap after Rust/Cargo one bounded ecosystem
+- Continue the issue #62 polyglot roadmap after Docker/Compose one bounded ecosystem
   at a time, using the shared package/test/status contracts and adding a public
   analysis boundary, mutation slice, Change checks, and fresh-process benchmark for
   each language.
@@ -746,7 +759,7 @@ cross-platform measurements and a more representative benchmark corpus exist.
 5. Repeat the new peak-memory and read-only benchmark protocol across constrained
    Windows/Linux/macOS hosts and larger redistributable monorepos before freezing
    regression thresholds.
-6. Continue issue #62 with the next demand-ordered language analyzer after Rust,
+6. Continue issue #62 with the next demand-ordered ecosystem analyzer after Docker/Compose,
    retaining explicit parser depth and inventory-only diagnostics.
 7. Evaluate a compiler-grade TypeScript adapter only if reviewed calibration shows
    material error from the bounded token evidence.

@@ -1,4 +1,5 @@
 using EffortHours.Analysis;
+using EffortHours.Analyzers.Docker;
 using EffortHours.Analyzers.DotNet;
 using EffortHours.Analyzers.Go;
 using EffortHours.Analyzers.Java;
@@ -23,6 +24,7 @@ public sealed class RepositoryAnalysisPipeline : IRepositoryScanner
             new RepositoryScanner(),
             [
                 new DotNetRepositoryAnalyzer(),
+                new DockerRepositoryAnalyzer(),
                 new GoRepositoryAnalyzer(),
                 new JavaRepositoryAnalyzer(),
                 new KotlinRepositoryAnalyzer(),
@@ -45,6 +47,7 @@ public sealed class RepositoryAnalysisPipeline : IRepositoryScanner
             new RepositoryScanner(fileSystem, cacheStore),
             [
                 new DotNetRepositoryAnalyzer(fileSystem),
+                new DockerRepositoryAnalyzer(fileSystem),
                 new GoRepositoryAnalyzer(fileSystem),
                 new JavaRepositoryAnalyzer(fileSystem),
                 new KotlinRepositoryAnalyzer(fileSystem),

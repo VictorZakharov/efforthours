@@ -535,6 +535,43 @@ Process-level benchmark coverage also runs a smaller `--rust` shape and asserts
 static safety signals, positive line/memory measurements, and unchanged target
 metadata.
 
+## Static Docker/Compose analyzer v0.1.0 checkpoint
+
+Measured on August 12, 2026 with the same Windows/.NET workstation, a fresh
+process, common scanner `0.2.11`, and Docker analyzer `0.1.0`.
+
+```text
+dotnet benchmarks/EffortHours.ScannerBenchmarks/bin/Release/net10.0/EffortHours.ScannerBenchmarks.dll --files 10000 --lines-per-file 100 --docker
+```
+
+| Measure | Docker/Compose |
+| --- | ---: |
+| Requested/analyzed lines | 1,000,000 |
+| Included files | 10,000 |
+| Included bytes | 44,349,500 |
+| Fixture generation | 1.560 s |
+| Full static scan | 8.097 s |
+| Evidence serialization | 0.483 s |
+| Full-scan throughput | 123,502 lines/s |
+| Managed allocation | 1,683.01 MiB |
+| Sampled peak working set | 203.00 MiB |
+| Evidence JSON | 53.84 MiB |
+| Evidence facts | 20,003 |
+
+The fixture alternates maintained Dockerfile variants and filename-qualified
+Compose YAML with bounded logical instructions and service structure. Target
+metadata retained the same digest before and after analysis. The benchmark did
+not invoke Docker, Compose, BuildKit, a shell, container runtime, or target code;
+pull images; expand build contexts; load includes/environment files; resolve
+interpolation/secrets; install dependencies; access the network; or write into
+the target. This single synthetic workstation measurement is a reproducible
+checkpoint, not a frozen cross-platform threshold or a claim about native Docker,
+BuildKit, YAML, or Compose performance.
+
+Process-level benchmark coverage also runs a smaller `--docker` shape and asserts
+static safety signals, positive line/memory measurements, and unchanged target
+metadata.
+
 ## Change EHE scale-and-safety v1.0.0 checkpoint
 
 Measured on August 10, 2026 with:

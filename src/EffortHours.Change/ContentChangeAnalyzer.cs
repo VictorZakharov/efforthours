@@ -62,6 +62,26 @@ internal static class ContentChangeAnalyzer
     private static bool FormattingEquivalent(string left, string right, string path)
     {
         string extension = Path.GetExtension(path).ToLowerInvariant();
+        if (IsDockerfile(path))
+        {
+            return DockerFormattingNormalizer.TryCreateDockerfileSignature(left, out string leftSignature) &&
+                DockerFormattingNormalizer.TryCreateDockerfileSignature(right, out string rightSignature) &&
+                leftSignature == rightSignature;
+        }
+
+        if (IsComposeFile(path))
+        {
+            return DockerFormattingNormalizer.TryCreateComposeSignature(left, out string leftSignature) &&
+                DockerFormattingNormalizer.TryCreateComposeSignature(right, out string rightSignature) &&
+                leftSignature == rightSignature;
+        }
+
+        if (Path.GetFileName(path).Equals(".dockerignore", StringComparison.OrdinalIgnoreCase))
+        {
+            return DockerFormattingNormalizer.CreateDockerIgnoreSignature(left) ==
+                DockerFormattingNormalizer.CreateDockerIgnoreSignature(right);
+        }
+
         if (IsHcl(path))
         {
             return HclFormattingNormalizer.TryCreateSignature(left, out string leftSignature) &&
@@ -246,7 +266,26 @@ internal static class ContentChangeAnalyzer
             ".go" or ".java" or ".kt" or ".kts" or ".php" or ".rs" or ".sql" or
             ".tf" or ".tfvars" or ".tfbackend" or ".hcl" or
             ".sh" or ".bash" or ".ksh" or ".bats" or ".ps1" or ".psm1" or ".psd1" ||
-        IsShellProfile(path) || IsHcl(path);
+        IsShellProfile(path) || IsHcl(path) || IsDockerArtifact(path);
+
+    private static bool IsDockerArtifact(string path) => IsDockerfile(path) || IsComposeFile(path) ||
+        Path.GetFileName(path).Equals(".dockerignore", StringComparison.OrdinalIgnoreCase);
+
+    private static bool IsDockerfile(string path)
+    {
+        string name = Path.GetFileName(path).ToLowerInvariant();
+        return name == "dockerfile" || name.StartsWith("dockerfile.", StringComparison.Ordinal) ||
+            name.EndsWith(".dockerfile", StringComparison.Ordinal);
+    }
+
+    private static bool IsComposeFile(string path)
+    {
+        string name = Path.GetFileName(path).ToLowerInvariant();
+        return (name.EndsWith(".yml", StringComparison.Ordinal) ||
+            name.EndsWith(".yaml", StringComparison.Ordinal)) &&
+            (name.StartsWith("compose.", StringComparison.Ordinal) ||
+                name.StartsWith("docker-compose.", StringComparison.Ordinal));
+    }
 
     private static bool IsHcl(string path)
     {

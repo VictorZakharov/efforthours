@@ -16,6 +16,7 @@ internal enum BenchmarkShape
     Php,
     Rust,
     Terraform,
+    Docker,
     Mixed,
     ExistingRepository,
 }
@@ -30,7 +31,7 @@ internal sealed record BenchmarkOptions(
 {
     public const string Usage =
         "Usage: scanner-benchmark [--files <count>] [--lines-per-file <count>] " +
-        "[--dotnet|--javascript|--python|--go|--java|--kotlin|--shell|--powershell|--php|--rust|--terraform|--mixed] [--warm-cache] [--keep] " +
+        "[--dotnet|--javascript|--python|--go|--java|--kotlin|--shell|--powershell|--php|--rust|--terraform|--docker|--mixed] [--warm-cache] [--keep] " +
         "or scanner-benchmark --repository <path> [--warm-cache]";
 
     public string Mode => Shape switch
@@ -47,6 +48,7 @@ internal sealed record BenchmarkOptions(
         BenchmarkShape.Php => "php-composer-static",
         BenchmarkShape.Rust => "rust-cargo-static",
         BenchmarkShape.Terraform => "terraform-hcl-static",
+        BenchmarkShape.Docker => "docker-compose-static",
         BenchmarkShape.Mixed => "mixed-static",
         BenchmarkShape.ExistingRepository => "repository-static",
         _ => throw new InvalidOperationException($"Unsupported benchmark shape '{Shape}'."),
@@ -113,6 +115,9 @@ internal sealed record BenchmarkOptions(
                     break;
                 case "--terraform":
                     shape = SelectShape(shape, BenchmarkShape.Terraform);
+                    break;
+                case "--docker":
+                    shape = SelectShape(shape, BenchmarkShape.Docker);
                     break;
                 case "--mixed":
                     shape = SelectShape(shape, BenchmarkShape.Mixed);

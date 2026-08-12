@@ -1,0 +1,16 @@
+services:
+  app:
+    build: .
+    read_only: true
+    cap_drop:
+      - ALL
+    secrets:
+      - runtime-token
+    configs:
+      - app-settings
+secrets:
+  runtime-token:
+    file: ./token.txt
+configs:
+  app-settings:
+    file: ./settings.json

@@ -33,6 +33,40 @@ Because EffortHours's own anchor informed the seed-model and calibration design,
 a development diagnostic rather than an eligible held-out test record unless a
 future independent snapshot and review policy explicitly establishes otherwise.
 
+## 2026-08-12: Docker and Compose source-boundary review
+
+Status: **qualitative analyzer and prior-reuse checkpoint; no numerical calibration or Change admission**
+
+Docker analyzer `0.1.0` was reviewed as bounded structural static analysis, not
+Docker's parser, a BuildKit frontend, a general YAML parser, the Compose schema or
+interpolation engine, a container runtime, or a deployment validator. It
+decomposes Dockerfile logical instructions into stage/build/runtime boundaries,
+filename-qualified Compose into service/orchestration/dynamic-YAML structure and
+literal local Dockerfile references, and `.dockerignore` into bounded rule
+inventory. The existing `seed-rules/0.4.0` container-deployment prior consumes
+those analogous semantic units without a model-artifact or fitted-prior change.
+
+Reads are scanner-admitted, root-contained, digest-verified, strict UTF-8, and
+size/structure bounded. Exact duplicate bodies and raw Docker lines do not add
+semantic units. Generic YAML is not Compose. Docker, Compose, BuildKit, shells,
+images, build contexts, interpolation, includes, environment files, secrets,
+target code, and runtime behavior are not loaded or executed; configured values
+and source excerpts are not emitted.
+
+The standalone public qualitative gate has 13 Docker repository states and 38
+relations. All assertions pass across filename qualification, invariance,
+build/runtime/topology directionality, dynamic bounds, local build ownership, and
+category isolation. Earlier aggregate and standalone candidates remain unchanged;
+this suite is not accuracy evidence.
+
+Change `0.16.0` adds Dockerfile, Compose, and `.dockerignore` normalization and
+packaging/deployment routing but no fitted prior. The existing Stage A admission
+contains no Docker/Compose, Rust/Cargo, PHP/Composer, Terraform/HCL,
+Shell/PowerShell, Kotlin, Java, Go, Python, or SQL cases and remains limited to the
+previously admitted `0.6.0` families. Absolute Docker EHE accuracy, native parser
+and schema parity, independent review, representative real container repository
+coverage, and decomposed public Docker Change labels remain unresolved.
+
 ## 2026-08-12: Rust and Cargo source-boundary review
 
 Status: **qualitative analyzer and prior-reuse checkpoint; no numerical calibration or Change admission**

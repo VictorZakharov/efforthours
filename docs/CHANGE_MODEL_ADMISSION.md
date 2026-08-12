@@ -6,8 +6,8 @@ Metric identity, decision order, and the first small-change logical gate are fro
 as `change-model-admission/0.2.0`. The admitted source baseline is
 `change-seed/0.6.0+seed-rules/0.3.0`; it is the transparent Stage A logical
 baseline for experimental one-to-several-day Change estimates. The current source
-has advanced to `change-seed/0.15.0+seed-rules/0.4.0` for static SQL, Python, Go,
-Java, Kotlin, Shell, PowerShell, Terraform/HCL, PHP/Composer, and Rust/Cargo support. Those
+has advanced to `change-seed/0.16.0+seed-rules/0.4.0` for static SQL, Python, Go,
+Java, Kotlin, Shell, PowerShell, Terraform/HCL, PHP/Composer, Rust/Cargo, and Docker/Compose support. Those
 extensions preserve admitted rules but are not separately admitted, and no Stage A
 record contains any of those ecosystems. This is weak-supervision admission, not empirical accuracy,
 formal interval calibration, or production readiness.
@@ -560,5 +560,27 @@ reviewed Change labeling. The Stage A corpus and its exact logical decomposition
 contain no Rust or Cargo changes. Version 0.15.0 is therefore an experimental
 source revision, not an admitted successor; `0.6.0` remains the last admitted
 source baseline. Rust admission requires licensed public final changes in the
+declared size band, exact small-task logical decomposition, repository-isolated
+partitions, and the normal development/validation/test decision order.
+
+## `change-seed/0.16.0` static Docker and Compose extension
+
+Version 0.16.0 adds final-delta support for strict Dockerfile variants,
+filename-qualified Compose YAML, and `.dockerignore`. Conservative signatures
+normalize Dockerfile keyword case, ordinary comments, blank lines, and
+continuation layout; Compose comments, blank lines, indentation width, and
+mapping-colon spacing; and `.dockerignore` comments and surrounding layout.
+Directives, arguments, commands, YAML keys/values/sequences/documents, and ordered
+ignore patterns remain significant. Dockerfile heredocs, Compose tabs, malformed
+flow syntax, and block scalars fail closed. Analyzer evidence routes recognized
+container changes through existing packaging/deployment rules without adding a
+fitted Change prior. Generic YAML remains outside the Compose boundary.
+
+The standalone public Docker mutation suite adds 13 repository states and passes
+38/38 relations. That is qualitative analyzer and routing safeguard evidence, not
+reviewed Change labeling. The Stage A corpus and its exact logical decomposition
+contain no Docker or Compose changes. Version 0.16.0 is therefore an experimental
+source revision, not an admitted successor; `0.6.0` remains the last admitted
+source baseline. Docker admission requires licensed public final changes in the
 declared size band, exact small-task logical decomposition, repository-isolated
 partitions, and the normal development/validation/test decision order.

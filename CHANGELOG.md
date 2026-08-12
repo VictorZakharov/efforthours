@@ -8,6 +8,19 @@ may still change public contracts with explicit documentation.
 
 ### Added
 
+- Docker analyzer `0.1.0` adds offline, digest-verified bounded analysis for
+  Dockerfile variants, filename-qualified Docker Compose YAML, `.dockerignore`,
+  literal repository-local Compose-to-Dockerfile references, build/runtime
+  instructions, service topology, health, environment/storage/network boundaries,
+  and security/deploy structure. It invokes no Docker/Compose/BuildKit/runtime,
+  loads no dynamic values, and emits no configured values or source excerpts.
+- A standalone public Docker mutation suite adds 13 project-authored states and
+  38 passing relations for filename qualification, formatting, exact-copy,
+  build/runtime/topology directionality, dynamic YAML bounds, and category
+  isolation.
+- Scanner benchmark mode `docker-compose-static` records a fresh-process
+  million-line Dockerfile/Compose checkpoint with target metadata unchanged and no
+  target execution, dependency installation, or network access.
 - Rust analyzer `0.1.0` adds offline, digest-verified bounded analysis for Cargo
   packages and virtual workspaces, dependencies, features, build scripts, local
   edges, explicit and conventional targets, maintained `.rs` source, tests,
@@ -154,6 +167,16 @@ may still change public contracts with explicit documentation.
 
 ### Changed
 
+- Common scanner `0.2.11` classifies strict Dockerfile variants,
+  filename-qualified Compose YAML, and `.dockerignore`. The unchanged
+  experimental `seed-rules/0.4.0` container-deployment prior consumes bounded
+  semantic units instead of raw Docker line volume; no fitted Docker rate or
+  calibration claim was added.
+- Change source identity advances to
+  `change-seed/0.16.0+seed-rules/0.4.0` for conservative Dockerfile, Compose, and
+  `.dockerignore` normalization plus packaging/deployment routing. The admitted
+  Stage A boundary remains `change-seed/0.6.0`; Docker and Compose are not included
+  in that admission.
 - Common scanner `0.2.10` classifies Cargo manifests and maintained Rust source,
   tests, benchmarks, build scripts, and configuration while excluding conventional
   target/vendor/generated bodies, lock mechanics, and exact duplicates from

@@ -1,0 +1,28 @@
+services:
+  app:
+    build: .
+    ports:
+      - 8080:8080
+    depends_on:
+      database:
+        condition: service_healthy
+    volumes:
+      - app-data:/data
+    networks:
+      - backend
+  database:
+    image: database-image
+    healthcheck:
+      test: [CMD, health]
+    networks:
+      - backend
+  worker:
+    image: worker-image
+    depends_on:
+      - database
+    networks:
+      - backend
+volumes:
+  app-data: {}
+networks:
+  backend: {}

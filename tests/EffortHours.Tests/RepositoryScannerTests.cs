@@ -55,7 +55,7 @@ public sealed class RepositoryScannerTests
             SchemaNames.RepositoryEvidence,
             firstJson);
         Assert.True(schema.IsValid, string.Join(Environment.NewLine, schema.Errors));
-        Assert.Equal(["dotnet", "javascript", "terraform", "typescript"], first.Repository.Ecosystems);
+        Assert.Equal(["docker", "dotnet", "javascript", "terraform", "typescript"], first.Repository.Ecosystems);
         Assert.StartsWith("sha256:", first.Repository.SourceDigest, StringComparison.Ordinal);
         Assert.DoesNotContain(repository.RootPath, firstJson, StringComparison.OrdinalIgnoreCase);
         Assert.DoesNotContain("source-only-marker", firstJson, StringComparison.Ordinal);

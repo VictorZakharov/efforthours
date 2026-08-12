@@ -38,6 +38,8 @@ effort-label corpora, accuracy claims, or model-training data.
   cases and 59 assertions evaluated with unchanged `seed-rules/0.4.0`.
 - Standalone suite `rust-0.1.0` records the Rust/Cargo expansion checkpoint: 14
   cases and 62 assertions evaluated with unchanged `seed-rules/0.4.0`.
+- Standalone suite `docker-0.1.0` records the Docker/Compose expansion checkpoint:
+  13 cases and 38 assertions evaluated with unchanged `seed-rules/0.4.0`.
 
 The August 8, 2026 analyzer-precision reevaluation with `.NET` analyzer `0.3.2`
 and JavaScript analyzer `0.4.1` reproduced identical low, expected, and high
@@ -578,6 +580,16 @@ create Rust production semantics. The existing language-neutral lock inventory m
 still add one bounded build/configuration unit; the suite bounds that movement
 explicitly instead of changing the shared prior or regenerating frozen reports.
 
+## Reproduce standalone Docker/Compose suite 0.1.0
+
+Generate each of the 13 `docker-*` fixtures with repository estimator
+`seed-rules/0.4.0` into `estimates/seed-rules-0.4.0/`. Then evaluate the 13 exact
+candidate paths against `docker-0.1.0.suite.json`, writing
+`baseline-seed-rules-0.4.0-docker-0.1.0.json`. The result must disclose one
+candidate estimator version, 13 cases, 38 assertions, and zero failures. The suite
+is standalone so the frozen aggregate and all earlier standalone suites remain
+untouched.
+
 ## Limitations and next expansion
 
 The suite uses deliberately small archetypes. Near-copy and the two new
@@ -638,6 +650,13 @@ build scripts or generators, resolve target-specific configuration, borrow-check
 compile, link, execute tests/examples/benchmarks, or inspect generated bindings.
 Static package, source, and semantic labels are confidence signals, not proof that
 a Rust workspace builds or runs.
+
+The Dockerfile reader is not Docker's parser or BuildKit frontend, and the Compose
+reader is not a full YAML parser, Compose schema validator, interpolation engine,
+or runtime planner. It does not pull images, expand build contexts, load includes
+or environment files, resolve secrets, invoke Docker/Compose/BuildKit, or prove
+build/runtime correctness. Static container labels are confidence signals, not
+proof that a stack builds or runs.
 
 Passing these relations prevents known perverse movements. It does not establish
 that any absolute hour or delta is numerically correct, and it does not make the

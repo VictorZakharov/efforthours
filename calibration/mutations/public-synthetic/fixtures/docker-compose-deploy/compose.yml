@@ -1,0 +1,10 @@
+services:
+  app:
+    build: .
+    restart: unless-stopped
+    profiles:
+      - production
+    deploy:
+      replicas: 3
+      update_config:
+        parallelism: 1

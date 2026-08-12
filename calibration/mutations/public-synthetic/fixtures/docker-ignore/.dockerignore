@@ -1,0 +1,4 @@
+bin/
+obj/
+**/*.secret
+!examples/public.secret
