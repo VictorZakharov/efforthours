@@ -21,19 +21,38 @@ repository root without discarding their decision history.
 - [Static Python analysis](PYTHON_ANALYSIS.md) defines package discovery, bounded
   token/indentation evidence, framework qualification, exclusions, Change
   behavior, benchmark results, and non-goals.
+- [Static Jupyter analysis](JUPYTER_ANALYSIS.md) defines the bounded maintained-
+  cell projection, output/execution-state exclusions, Python and Markdown scope,
+  Change behavior, privacy limits, and non-goals.
 - [Static Go analysis](GO_ANALYSIS.md) defines module/workspace discovery, bounded
   token and import-qualified evidence, build uncertainty, exclusions, Change
   behavior, benchmark results, and non-goals.
 - [Static Java analysis](JAVA_ANALYSIS.md) defines Maven/Gradle project discovery,
   bounded token and import-qualified evidence, build/runtime uncertainty,
   exclusions, Change behavior, benchmark results, and non-goals.
+- [C and C++ analysis design checkpoint](CPP_ANALYSIS.md) freezes the planned
+  managed parser, preprocessing, build-system, ownership, safety, licensing,
+  Change, and verification boundary. C/C++ semantic analysis is not implemented
+  yet.
 - [Static Kotlin/JVM analysis](KOTLIN_ANALYSIS.md) defines shared JVM project
   ownership, Kotlin source/script boundaries, server and Android semantics,
   compiler-plugin uncertainty, exclusions, Change behavior, benchmarks, and
   non-goals.
+- [Static Shell and PowerShell analysis](SHELL_POWERSHELL_ANALYSIS.md) defines
+  maintained-script roles, token and invocation-context evidence, dynamic-command
+  uncertainty, Change behavior, benchmarks, and non-goals.
 - [Static Terraform and HCL analysis](TERRAFORM_HCL_ANALYSIS.md) defines admitted
   artifacts, bounded semantics, local module ownership, exclusions, effort
   mapping, Change behavior, benchmarks, and non-goals.
+- [Static PHP and Composer analysis](PHP_COMPOSER_ANALYSIS.md) defines package and
+  autoload ownership, token/template evidence, framework qualification, Change
+  behavior, benchmarks, and non-goals.
+- [Static Rust and Cargo analysis](RUST_CARGO_ANALYSIS.md) defines package/workspace
+  ownership, token-backed Rust evidence, macro/build uncertainty, Change behavior,
+  benchmarks, and non-goals.
+- [Static Docker and Compose analysis](DOCKER_ANALYSIS.md) defines Dockerfile,
+  filename-qualified Compose, `.dockerignore`, local build-reference, Change,
+  benchmark, safety, and non-goal boundaries.
 - [Source-file budgets](CODE_BUDGETS.md) documents the enforced early-refactoring
   policy.
 - [Release procedure](RELEASING.md) defines the source-visibility and NuGet

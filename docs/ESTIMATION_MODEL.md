@@ -567,6 +567,15 @@ through existing category rules. No fitted Change prior was added. The admitted
 0.6.0 Stage A records contain no Jupyter changes, so this extension is explicitly
 unadmitted.
 
+The approved C/C++ design reserves `change-seed/0.18.0` for the implementation
+checkpoint; it is not part of the current source identity. That extension will
+use a bounded managed token signature that can ignore ordinary formatting and
+non-documentation comments while preserving documentation, preprocessor
+directives/replacement tokens, identifiers, operators, delimiters, literals, raw
+strings, attributes, declarations, and meaningful ordering. Unsafe or ambiguous
+lexical/preprocessor structure will fail closed. It will add no fitted prior and
+will not expand the 0.6.0 Stage A admission boundary.
+
 Version 0.4.0 also distinguishes only exact, balanced, EffortHours-specific
 `<custom-code>` regions inside otherwise generated files; it does not infer other
 generator-specific protected-region syntax. Only the extracted maintained
@@ -752,6 +761,20 @@ and packaging/deployment category. Arbitrary YAML receives no Docker units, and
 Docker/Compose/BuildKit/runtime execution, image inspection, context expansion,
 interpolation, includes, secrets, and configured-value disclosure do not occur.
 `DOCKER_ANALYSIS.md` defines the exact boundary.
+
+The approved but not-yet-implemented C/C++ analyzer will reuse the unchanged
+generic source rule. A bounded managed lexer and conservative declaration parser
+will supply C/C++ files, functions/methods, types, public symbols, templates,
+async/concurrency units, and branches. Static target/build ownership and qualified
+semantic facts will reuse existing setup, API, UI, data, integration, security,
+validation, background/concurrency, FFI, test, build, delivery, manual-validation, and
+review rules. Header bodies count once; include fan-out and template-instantiation
+potential do not multiply effort. Conditional alternatives normalize identical
+declarations once, retain distinct external surfaces, use a maximum envelope for
+residual sibling-branch structure, and add only capped build/preprocessor
+uncertainty. No C/C++ prior or parser dependency is approved. `CPP_ANALYSIS.md`
+defines the complete design boundary and makes clear that current releases remain
+inventory-only for C/C++.
 
 Public mutation suite `0.8.0` combines 77 unchanged `seed-rules/0.3.0` candidates
 with 11 Python `seed-rules/0.4.0` candidates. All 339 relational assertions pass.
