@@ -249,15 +249,18 @@ provenance, reproducibility, output correctness, runtime dependencies, or
 scientific validity. `JUPYTER_ANALYSIS.md` defines the exact scope. The unchanged
 `seed-rules/0.4.0` priors are reused without a fitted notebook rate.
 
-The next planned ecosystem expansion is C and C++. Its required pre-implementation
-checkpoint selects a bounded managed tokenizer and conservative declaration parser
-instead of a compiler, preprocessor, or native parser runtime. The planned boundary
-covers maintained C99/C11/C17/C23 and C++11 through C++23 structural syntax, literal
-repository-local include and build ownership, and static CMake, Make, Meson, and
-Visual C++ project metadata. It will not expand macros, select conditional branches,
-instantiate templates, compile, link, read system headers, or prove ABI/runtime
-behavior. `CPP_ANALYSIS.md` freezes the design and dependency decision. C/C++
-semantic analysis is not implemented or supported by the current release.
+The eleventh ecosystem expansion is C and C++. Scanner-admitted C99/C11/C17/C23
+and C++11 through C++23 source, headers, and modules receive bounded managed
+tokenization, conservative declaration/public-symbol structure, componentwise
+conditional-alternative normalization, literal repository-local include and
+ownership edges, qualified semantic evidence, and static CMake, Make, Meson, and
+Visual C++/MSBuild metadata. Header fan-out, macro expansion, and template
+instantiation do not multiply effort. The analyzer invokes no compiler,
+preprocessor, linker, build system, package manager, generator, test runner, or
+native parser; reads no system headers; and does not prove compilation, ABI,
+memory/thread safety, or runtime behavior. `CPP_ANALYSIS.md` defines the exact
+scope. C/C++ reuses unchanged `seed-rules/0.4.0` priors and remains experimental
+and uncalibrated.
 
 ## Non-goals
 

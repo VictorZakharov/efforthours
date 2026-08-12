@@ -761,7 +761,7 @@ internal sealed partial class SeedCapabilityBuilder(
             .Where(fact => fact.Provenance.Analyzer is
                 "efforthours.go-analyzer" or "efforthours.java-analyzer" or
                 "efforthours.kotlin-analyzer" or "efforthours.terraform-analyzer" or
-                "efforthours.rust-analyzer")];
+                "efforthours.rust-analyzer" or "efforthours.cpp-analyzer")];
         EvidenceFact[] scriptConfigurations = [.. _index.FactsOfKind(EvidenceKinds.BuildConfiguration)
             .Where(fact => fact.Provenance.Analyzer == "efforthours.scripting-analyzer")];
         EvidenceFact[] packages = [.. _index.FactsOfKind(EvidenceKinds.JavaScriptPackage)];

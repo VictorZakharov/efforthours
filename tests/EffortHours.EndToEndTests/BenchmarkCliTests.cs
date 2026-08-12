@@ -163,6 +163,8 @@ public sealed class BenchmarkCliTests
     [InlineData("--powershell", "powershell-static")]
     [InlineData("--php", "php-composer-static")]
     [InlineData("--rust", "rust-cargo-static")]
+    [InlineData("--c", "c-static")]
+    [InlineData("--cpp", "cpp-static")]
     [InlineData("--terraform", "terraform-hcl-static")]
     [InlineData("--docker", "docker-compose-static")]
     [InlineData("--jupyter", "jupyter-notebook-static")]

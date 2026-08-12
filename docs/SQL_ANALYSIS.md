@@ -9,7 +9,7 @@ estimator `seed-rules/0.3.0` maps supported SQL evidence to its existing transpa
 data, integration, testing, and packaging priors; no SQL-specific rate was fitted.
 
 The current Change source identity is
-`change-seed/0.17.0+seed-rules/0.4.0`. SQL repository and Change estimates remain
+`change-seed/0.18.0+seed-rules/0.4.0`. SQL repository and Change estimates remain
 experimental and uncalibrated. The earlier `change-seed/0.6.0` Stage A admission
 did not contain SQL changes, so it is not evidence for SQL accuracy.
 

@@ -2,28 +2,28 @@
 
 ## Status
 
-This document freezes the design boundary required by issue #65 before C/C++
-implementation begins. It was approved on August 12, 2026.
+This document freezes the design and implemented analysis boundary for issue #65.
+The design was approved and the implementation checkpoint completed on August 12,
+2026.
 
-The analyzer described here is **not implemented yet**. Current EffortHours
-releases inventory C and C++ files but do not provide C/C++ semantic repository or
-Change EHE. User-facing support must not be claimed until the implementation,
-tests, mutation slice, and performance checkpoint are merged.
+The analyzer described here is implemented in source. It provides bounded static
+C and C++ repository evidence plus C/C++ final-delta Change EHE. It remains
+experimental, token-backed, uncalibrated, and outside the admitted Change Stage A
+families until separate public Change evidence passes that policy.
 
-The planned implementation identities are:
+The implementation identities are:
 
 - common scanner `0.2.13`;
 - C/C++ analyzer `0.1.0`;
 - unchanged repository estimator `seed-rules/0.4.0`; and
 - Change estimator `change-seed/0.18.0+seed-rules/0.4.0`.
 
-Those versions are reservations for the implementation checkpoint, not current
-runtime identities. Frozen reports retain their original identities.
+Frozen reports retain their original identities.
 
 ## Decision summary
 
-The first C/C++ analyzer will use an independently authored, bounded managed lexer
-and conservative declaration/structure parser. It will not embed libclang,
+The first C/C++ analyzer uses an independently authored, bounded managed lexer
+and conservative declaration/structure parser. It does not embed libclang,
 Tree-sitter, a compiler, a preprocessor, or a native parser runtime.
 
 This is the smallest trustworthy boundary for the current offline global tool:
@@ -37,7 +37,7 @@ This is the smallest trustworthy boundary for the current offline global tool:
   uncertainty rather than false compiler certainty; and
 - no new third-party runtime or parser license enters the package.
 
-The parser will be reported as `token-backed`, not compiler-backed or
+The parser is reported as `token-backed`, not compiler-backed or
 parser-complete. A later native-parser adapter is permissible only if reviewed
 evidence demonstrates material error and the adapter preserves this document's
 scope, privacy, determinism, packaging, and non-execution rules.
@@ -113,7 +113,7 @@ stable structural signatures, not literal values or source excerpts.
 
 ## Declaration and structure boundary
 
-The conservative parser will recognize, where structurally unambiguous:
+The conservative parser recognizes, where structurally unambiguous:
 
 - C functions and prototypes, structures, unions, enumerations, typedefs,
   external declarations, function pointers, generic selections, atomics, branch
@@ -206,7 +206,7 @@ followed.
 
 ## Static build and package discovery
 
-The implementation will inventory coexisting build systems instead of guessing
+The implementation inventories coexisting build systems instead of guessing
 that one is authoritative. Every reader is static and deliberately narrower than
 the corresponding build language.
 
@@ -290,7 +290,7 @@ a build graph.
 
 Specialized facts require compatible include/import, namespace/type/call/macro,
 and, where available, build-dependency context. Local namesakes must not qualify.
-The initial catalog will cover representative:
+The initial catalog covers representative:
 
 - HTTP/server/API and RPC surfaces;
 - CLI commands and option parsing;
@@ -344,7 +344,7 @@ generator-specific protected regions.
 
 ## Effort mapping
 
-C/C++ source structure will reuse the unchanged `seed-rules/0.4.0`
+C/C++ source structure reuses the unchanged `seed-rules/0.4.0`
 `polyglot-source-backbone`. Files, functions/methods, types, public symbols,
 templates/generics, async/concurrency units, and branches feed the existing
 transparent marginal construction rates with wider token-backed uncertainty.
@@ -362,7 +362,7 @@ implementation.
 
 ## Change EHE boundary
 
-The planned `change-seed/0.18.0` extension will add conservative C/C++ formatting
+The implemented `change-seed/0.18.0` extension adds conservative C/C++ formatting
 normalization without changing any existing prior:
 
 - ordinary layout and non-documentation comments may normalize to zero;
@@ -381,17 +381,17 @@ Formatting-only build-file changes may normalize only where an artifact-specific
 static signature is safe; otherwise uncertain build changes remain represented.
 Header fan-out and translation-unit count never multiply final-delta EHE.
 
-This future extension does not expand the admitted `change-seed/0.6.0` 4-to-32-
+This extension does not expand the admitted `change-seed/0.6.0` 4-to-32-
 hour Stage A band. C/C++ requires separate decomposed public Change evidence before
 any admission claim.
 
 ## Privacy and offline boundary
 
-EffortHours will not invoke a compiler, preprocessor, linker, debugger, build
+EffortHours does not invoke a compiler, preprocessor, linker, debugger, build
 system, package manager, generator, test runner, sanitizer, profiler, target
-binary, shell, or native parser library. It will not read compiler/system include
+binary, shell, or native parser library. It does not read compiler/system include
 trees, SDKs, package caches, environment variables, build caches, generated build
-databases outside the selected root, or links outside scope. It will not install
+databases outside the selected root, or links outside scope. It does not install
 dependencies, access the network, or write into the target repository.
 
 Ordinary evidence and estimates may contain canonical repository paths, bounded
@@ -403,7 +403,7 @@ generated output.
 ## Dependency and license decision
 
 No parser, grammar, native binary, or new package is adopted by this checkpoint.
-The managed implementation will be project-authored under EffortHours's MIT
+The managed implementation is project-authored under EffortHours's MIT
 License and must not copy a third-party grammar or compiler source.
 
 The following alternatives were reviewed on August 12, 2026:
@@ -433,9 +433,9 @@ Language and build shapes were checked against these primary references:
 These sources inform the independently authored bounded projection; their text or
 grammars are not redistributed.
 
-## Verification required for implementation
+## Implementation verification checkpoint
 
-The implementation PR must include:
+The implementation checkpoint includes:
 
 - memory-only scanner, tokenizer, preprocessor, build-reader, ownership,
   semantics, estimator, privacy, and negative-namesake tests;
@@ -462,7 +462,7 @@ suites.
 
 ## Implementation decomposition
 
-The follow-on implementation PR should preserve focused responsibilities:
+The implementation preserves focused responsibilities:
 
 1. common file/ecosystem classification and scanner metadata;
 2. digest-checked text admission;

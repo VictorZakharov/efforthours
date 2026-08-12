@@ -257,6 +257,9 @@ internal static class FileClassifier
 
         if (language == "rust" && RustFileClassification.IsTestSource(lowerPath)) return true;
 
+        if (language is "c" or "cpp" && CppFileClassification.IsTestSource(lowerPath, lowerName))
+            return true;
+
         return lowerName.Contains(".test.", StringComparison.Ordinal) ||
                lowerName.Contains(".spec.", StringComparison.Ordinal) ||
                lowerName.EndsWith("tests.cs", StringComparison.Ordinal) ||
@@ -342,7 +345,11 @@ internal static class FileClassifier
             "psalm.xml" or "psalm.xml.dist" or
             "build.rs" or "rust-toolchain" or "rust-toolchain.toml" or
             "rustfmt.toml" or ".rustfmt.toml" or "clippy.toml" or ".clippy.toml" or
+            "gnumakefile" or "meson.build" or "meson.options" or "meson_options.txt" or
+            "cmakepresets.json" or "cmakeuserpresets.json" or
+            "compile_commands.json" or "vcpkg.json" or "conanfile.txt" or
             ".yarnrc.yml" or ".editorconfig" or ".gitattributes" or ".gitignore" or ".efforthoursignore" ||
+        CppFileClassification.IsBuildConfiguration(lowerName, extension) ||
         RustFileClassification.IsBuildConfiguration(lowerName, lowerPath) ||
         KotlinFileClassification.IsGradleScript(lowerName) ||
         PythonFileClassification.IsRequirementsFile(lowerName) ||

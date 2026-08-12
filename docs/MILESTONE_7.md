@@ -1021,3 +1021,21 @@ calibration, scientific validation, or a production-admission decision. No
 existing corpus, aggregate/standalone suite, partition, reviewer identity, teacher
 target, estimator artifact, or frozen report changes. Jupyter has no independent
 correction or real-repository calibration family yet.
+
+## C and C++ mutation extension
+
+The eleventh ecosystem expansion adds a standalone `cpp-0.1.0` mutation suite
+rather than regenerating the frozen aggregate or any earlier standalone suite.
+Its 20 project-authored MIT synthetic states use unchanged `seed-rules/0.4.0` and
+cover C and modern C++ structure, formatting/comments, exact copies, generated
+exclusion, headers and include fan-out, mutually exclusive conditional branches,
+qualified API/data/integration/security evidence, concurrency, FFI, unit and
+integration tests, CMake/Make/Meson/MSBuild metadata, and local namesakes.
+
+All 67 relations pass. These are qualitative directionality, range-point
+invariance, non-stacking, category-isolation, ownership, bounded fan-out, and
+false-positive guardrails. They are not reviewed work-item labels, held-out
+accuracy evidence, interval calibration, native-parser parity, or a production-
+admission decision. No existing corpus, aggregate/standalone suite, partition,
+reviewer identity, teacher target, estimator artifact, or frozen report changes.
+C/C++ has no independent correction or real-repository calibration family yet.

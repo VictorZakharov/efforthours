@@ -189,6 +189,7 @@ bounded static Terraform/HCL token and module-boundary analyzer,
 bounded static PHP/Composer package, source, and template analyzer,
 bounded static Rust/Cargo package, workspace, source, and token analyzer,
 bounded static Dockerfile, Compose, and `.dockerignore` analyzer,
+bounded static C/C++ source, header, module, and native-build analyzer,
 mixed-repository evidence pipeline, published v1 schemas, optional external scan
 cache, installable global-tool package, memory-only unit fixtures, automated
 process-level CLI tests, reproducible million-line benchmarks, and a granular
@@ -375,24 +376,25 @@ output correctness, runtime dependencies, or scientific validity. The unchanged
 states and 52 passing relations. The Jupyter model is experimental and
 uncalibrated.
 
-The required pre-implementation C/C++ design checkpoint is complete in
-`docs/CPP_ANALYSIS.md`, but no C/C++ semantic analyzer is implemented yet. The
-approved boundary uses a project-authored bounded managed tokenizer and
-conservative declaration parser for C99/C11/C17/C23 and C++11 through C++23 structure,
-normalizes preprocessor alternatives without expanding them, resolves only literal
-repository-local include/build ownership, and statically projects bounded CMake,
-Make, Meson, Visual C++/MSBuild, and supplementary package metadata. It adds no
-parser dependency or fitted prior. Planned implementation identities are common
-scanner `0.2.13`, C/C++ analyzer `0.1.0`, unchanged `seed-rules/0.4.0`, and Change
-`0.18.0`; these are not current runtime identities until implementation passes the
-required repository, Change, mutation, CLI, and benchmark gates.
+The eleventh ecosystem expansion adds common scanner `0.2.13` and C/C++ analyzer
+`0.1.0`. Scanner-admitted C99/C11/C17/C23 and C++11 through C++23 source, headers,
+and modules receive bounded managed tokenization, declaration/public-symbol
+structure, componentwise preprocessor-alternative normalization, literal local
+include/build ownership, qualified semantics, tests, and static CMake, Make,
+Meson, Visual C++/MSBuild, and supplementary metadata. EffortHours invokes no
+compiler, preprocessor, linker, build system, package manager, generator, native
+parser, tests, or target code; reads no system headers; expands no macros/includes;
+and emits no source excerpts, literal/macro values, compiler commands, or recipes.
+The unchanged `seed-rules/0.4.0` priors are reused. The standalone C/C++ mutation
+suite has 21 states and 71 passing relations. The C/C++ model is experimental and
+uncalibrated.
 
 The scanner benchmark now measures fresh-process .NET, JavaScript/TypeScript,
 Python, Jupyter, Go, Java, Kotlin, Shell, PowerShell, Terraform/HCL, PHP/Composer,
-Rust/Cargo, Docker/Compose, and mixed million-line shapes, samples peak resident memory, labels explicit external
+Rust/Cargo, Docker/Compose, C, C++, and mixed million-line shapes, samples peak resident memory, labels explicit external
 cache passes separately, and fingerprints caller-supplied target trees before and
-after analysis. The recorded mixed full scan completes in 10.876 seconds with a
-234.20 MiB sampled peak on the documented workstation; three exact MIT release
+after analysis. The recorded five-language mixed full scan completes in 13.214 seconds with a
+205.70 MiB sampled peak on the documented workstation; three exact MIT release
 trees and the EffortHours tree also retain unchanged target metadata. The benchmark
 is explicitly disk-backed, while ordinary unit tests remain memory-only. No
 cross-platform regression threshold has been frozen from the single-machine data.
@@ -418,6 +420,10 @@ The Docker/Compose shape completes in 8.097 seconds with a 203.00 MiB sampled pe
 and also retains unchanged target metadata.
 The Jupyter shape completes in 7.561 seconds with a 159.33 MiB sampled peak and
 also retains unchanged target metadata.
+The C shape completes in 8.197 seconds with a 127.65 MiB sampled peak and also
+retains unchanged target metadata.
+The C++ shape completes in 9.716 seconds with a 128.84 MiB sampled peak and also
+retains unchanged target metadata.
 
 The first Change Estimation MVP adds provider-neutral immutable snapshot analysis,
 local Git base/head, commit, and range selectors, one optional identity-only `gh`
@@ -428,7 +434,7 @@ meaningful code/tests/docs, migrations, integrations, CI, container delivery,
 simplification, additivity, overlap, reverts, category isolation, all three range
 points, and cooperative cancellation. The first Ctrl+C returns 130 after a
 stderr-only diagnostic; a second retains immediate termination. Current
-`change-seed/0.17.0+seed-rules/0.4.0` rules retain the bounded 0.3.0 logical-
+`change-seed/0.18.0+seed-rules/0.4.0` rules retain the bounded 0.3.0 logical-
 marginality correction
 and can isolate exact, balanced, EffortHours-specific `<custom-code>` regions
 inside otherwise generated source. Only those regions can contribute;
@@ -454,16 +460,18 @@ changing previously admitted rules. Version 0.16.0 adds conservative Dockerfile,
 Compose, and `.dockerignore` formatting plus analyzer-backed packaging/deployment
 routing without changing previously admitted rules. Version 0.17.0 adds bounded
 Jupyter container/output normalization and analyzer-backed semantic/category
-routing without changing previously admitted rules. They remain
+routing without changing previously admitted rules. Version 0.18.0 adds
+conservative C/C++ formatting and analyzer-backed semantic/category routing
+without changing previously admitted rules. They remain
 experimental; only version 0.6.0 on the
-pre-SQL/Python/Jupyter/Go/Java/Kotlin/Shell/PowerShell/Terraform/HCL/PHP/Composer/Rust/Cargo/Docker/Compose
+pre-SQL/Python/Jupyter/Go/Java/Kotlin/Shell/PowerShell/Terraform/HCL/PHP/Composer/Rust/Cargo/Docker/Compose/C/C++
 4-to-32-hour Stage A logical band is admitted, and no empirical production
 validation is claimed. Non-Git Change mode now accepts
 two statically scanned, content-pinned directories or two digest-checked saved
 repository-evidence bundles;
 bodyless evidence modifications that otherwise qualify as represented remain
 conservative with an explicit warning. Experimental
-`change-portfolio/0.1.0+change-seed/0.17.0+seed-rules/0.4.0` now composes repeated
+`change-portfolio/0.1.0+change-seed/0.18.0+seed-rules/0.4.0` now composes repeated
 PRs, versioned cross-repository PR manifests, and bounded author-period commits.
 It normalizes repositories independently, suppresses exact same-repository PR
 patches, follows exact chronological author object chains, exposes immutable base
@@ -599,6 +607,8 @@ dotnet benchmarks/EffortHours.ScannerBenchmarks/bin/Release/net10.0/EffortHours.
 dotnet benchmarks/EffortHours.ScannerBenchmarks/bin/Release/net10.0/EffortHours.ScannerBenchmarks.dll --files 10000 --lines-per-file 100 --rust
 dotnet benchmarks/EffortHours.ScannerBenchmarks/bin/Release/net10.0/EffortHours.ScannerBenchmarks.dll --files 10000 --lines-per-file 100 --docker
 dotnet benchmarks/EffortHours.ScannerBenchmarks/bin/Release/net10.0/EffortHours.ScannerBenchmarks.dll --files 10000 --lines-per-file 100 --jupyter
+dotnet benchmarks/EffortHours.ScannerBenchmarks/bin/Release/net10.0/EffortHours.ScannerBenchmarks.dll --files 10000 --lines-per-file 100 --c
+dotnet benchmarks/EffortHours.ScannerBenchmarks/bin/Release/net10.0/EffortHours.ScannerBenchmarks.dll --files 10000 --lines-per-file 100 --cpp
 dotnet benchmarks/EffortHours.ScannerBenchmarks/bin/Release/net10.0/EffortHours.ScannerBenchmarks.dll --files 10000 --lines-per-file 100 --mixed --warm-cache
 dotnet benchmarks/EffortHours.ScannerBenchmarks/bin/Release/net10.0/EffortHours.ScannerBenchmarks.dll --repository . --warm-cache
 dotnet benchmarks/EffortHours.ChangeBenchmarks/bin/Release/net10.0/EffortHours.ChangeBenchmarks.dll --tree --files 10000 --lines-per-file 100 --max-seconds 30 --max-peak-mib 512

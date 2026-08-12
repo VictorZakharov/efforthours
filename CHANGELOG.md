@@ -8,11 +8,23 @@ may still change public contracts with explicit documentation.
 
 ### Added
 
-- A pre-implementation C/C++ design checkpoint freezes the managed token/
-  declaration parser, supported standard and file boundary, preprocessor
-  alternative normalization, static CMake/Make/Meson/Visual C++ ownership,
-  dependency/licensing decision, Change semantics, privacy rules, and verification
-  gates for issue #65. C/C++ semantic analysis is not implemented by this change.
+- C/C++ analyzer `0.1.0` adds offline, digest-verified bounded analysis for C99,
+  C11, C17, C23 and C++11 through C++23 source, headers, and modules. It records
+  token-backed declarations, public symbols, templates/concepts, concurrency,
+  FFI, tests, qualified semantics, static CMake/Make/Meson/Visual C++ ownership,
+  and explicit preprocessor/build uncertainty without invoking native tooling or
+  emitting source excerpts.
+- Common scanner `0.2.13` admits maintained C/C++ source/header/module forms, and
+  Change `0.18.0` adds conservative C/C++ formatting normalization and analyzer-
+  backed category routing without changing existing priors or the Stage A
+  admission boundary.
+- A standalone public C/C++ mutation suite adds 21 project-authored states and 71
+  passing relations for formatting, exact-copy/generated/vendored exclusion, header
+  fan-out, C and modern C++ structure, conditional non-stacking, qualified
+  semantics, tests, build systems, FFI, concurrency, and namesake rejection.
+- Fresh-process million-line C and C++ benchmark modes complete in 8.197 and
+  9.716 seconds with 127.65 and 128.84 MiB sampled peaks respectively, while
+  preserving target metadata and all offline safety signals.
 - Python analyzer `0.2.0` adds safe Jupyter `.ipynb` analysis through bounded,
   digest-verified JSON and the existing Python tokenizer. It represents maintained
   Python cells, Markdown, qualified data analysis, visualization, integrations,

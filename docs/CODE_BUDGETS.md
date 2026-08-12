@@ -162,6 +162,13 @@ Change formatting normalization. The 384-line parser and 243-line Change
 normalizer remain below the ordinary 500-line ceiling; the process-level CLI test
 remains below 400 lines. No override was added or increased.
 
+The August 12, 2026 C/C++ checkpoint separates common file policy, digest-checked
+text admission, managed tokenization, preprocessing groups, declaration and
+semantic measurement, build syntax and CMake/Make/Meson/MSBuild readers, target/
+source/header ownership, fact construction, repository orchestration, and Change
+formatting normalization. The largest new source file is 377 lines, the C/C++ CLI
+test remains below 400 lines, and no ratchet override was added or increased.
+
 Line count is deliberately simple, deterministic, cross-platform, and difficult
 to game accidentally. The useful outcome is earlier decomposition into cohesive
 contracts, commands, analyzers, and renderers—not compressed formatting.

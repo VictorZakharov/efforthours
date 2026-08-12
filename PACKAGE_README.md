@@ -24,9 +24,10 @@ eh --help
 eh estimate ./my-repository --profile implementation --format markdown
 ```
 
-EffortHours statically analyzes .NET, JavaScript, TypeScript, Python/Jupyter, Go, Java,
-Kotlin/JVM, Shell, PowerShell, Terraform/HCL, PHP/Composer, Rust/Cargo, Docker/Compose, HTML/CSS-family
-frontends, SQL, and mixed repositories. Frontend support includes bounded template and stylesheet semantics
+EffortHours statically analyzes .NET, JavaScript, TypeScript, Python/Jupyter, Go,
+Java, Kotlin/JVM, Shell, PowerShell, Terraform/HCL, PHP/Composer, Rust/Cargo,
+Docker/Compose, C/C++, HTML/CSS-family frontends, SQL, and mixed repositories.
+Frontend support includes bounded template and stylesheet semantics
 plus static Angular component metadata. SQL support includes bounded schema,
 migration, stored-program, query, test, deployment, and cross-database evidence
 for common PostgreSQL, SQL Server, MySQL/MariaDB, and SQLite syntax. It does not
@@ -86,6 +87,13 @@ Compose-to-Dockerfile references, and `.dockerignore` rules. It never invokes
 Docker, Compose, BuildKit, a shell, or target code; pulls images; expands build
 contexts; loads includes or environment files; resolves interpolation or secrets;
 or treats arbitrary YAML as Compose.
+C/C++ support includes maintained C99/C11/C17/C23 and C++11 through C++23 source,
+headers and modules; bounded declarations, public APIs, templates/concepts,
+concurrency, FFI, tests, and qualified semantics; plus static CMake, Make, Meson,
+and Visual C++/MSBuild ownership. It invokes no compiler, preprocessor, linker,
+build system, generator, package manager, tests, or native parser; expands no
+headers or macros; and does not prove compilation, ABI, memory safety, or runtime
+behavior.
 It reports evidence-backed work items across implementation, testing,
 documentation, integration, delivery, validation, and review, then optionally
 applies a dated contractor rate without changing the effort estimate.
@@ -136,7 +144,7 @@ treated as untrusted input, and reports avoid source excerpts by default.
 
 ## Current limitations
 
-- `seed-rules/0.4.0` and `change-seed/0.17.0` remain experimental and uncalibrated.
+- `seed-rules/0.4.0` and `change-seed/0.18.0` remain experimental and uncalibrated.
 - SQL uses bounded token/statement evidence mapped to existing priors; it is not a
   full grammar, schema diff engine, query optimizer, or database validator.
 - Public calibration labels have not completed genuinely independent correction.
@@ -167,6 +175,10 @@ treated as untrusted input, and reports avoid source excerpts by default.
   Docker/BuildKit parsing, general YAML parsing, Compose schema validation, or
   runtime planning; image contents, build contexts, interpolation, includes,
   secrets, and deploy behavior are not resolved.
+- C/C++ evidence is token-backed rather than compiler- or preprocessor-backed;
+  macro expansion, active configurations, system headers, type/link resolution,
+  template instantiation, ABI behavior, and native runtime correctness are not
+  resolved.
 - Host-review token use, cost, and estimate improvement have not yet been measured
   across representative repositories; no automatic review budget is selected.
 

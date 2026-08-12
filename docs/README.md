@@ -30,10 +30,9 @@ repository root without discarding their decision history.
 - [Static Java analysis](JAVA_ANALYSIS.md) defines Maven/Gradle project discovery,
   bounded token and import-qualified evidence, build/runtime uncertainty,
   exclusions, Change behavior, benchmark results, and non-goals.
-- [C and C++ analysis design checkpoint](CPP_ANALYSIS.md) freezes the planned
-  managed parser, preprocessing, build-system, ownership, safety, licensing,
-  Change, and verification boundary. C/C++ semantic analysis is not implemented
-  yet.
+- [Static C and C++ analysis](CPP_ANALYSIS.md) defines the bounded managed
+  tokenizer/declaration parser, preprocessing, build-system ownership, semantic,
+  safety, licensing, Change, benchmark, and non-goal boundary.
 - [Static Kotlin/JVM analysis](KOTLIN_ANALYSIS.md) defines shared JVM project
   ownership, Kotlin source/script boundaries, server and Android semantics,
   compiler-plugin uncertainty, exclusions, Change behavior, benchmarks, and

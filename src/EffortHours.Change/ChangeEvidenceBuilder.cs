@@ -278,7 +278,7 @@ internal static class ChangeEvidenceBuilder
             fact.Provenance.Analyzer is
                 "efforthours.php-analyzer" or "efforthours.scripting-analyzer" or
                 "efforthours.terraform-analyzer" or "efforthours.rust-analyzer" or
-                "efforthours.docker-analyzer" ||
+                "efforthours.docker-analyzer" or "efforthours.cpp-analyzer" ||
             fact.Provenance.Analyzer == "efforthours.python-analyzer" &&
                 fact.Tags.Contains("format:jupyter-notebook", StringComparer.Ordinal))
         .SelectMany(fact => fact.Locations.Select(location => new

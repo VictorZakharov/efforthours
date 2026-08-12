@@ -10,7 +10,7 @@ Kotlin/JVM is a first-class, token-backed EffortHours ecosystem beginning with:
 - Change estimator `change-seed/0.11.0+seed-rules/0.4.0`.
 
 Later additive ecosystem extensions advance the current composite source identity to
-`change-seed/0.17.0+seed-rules/0.4.0` without changing Kotlin normalization or
+`change-seed/0.18.0+seed-rules/0.4.0` without changing Kotlin normalization or
 valuation behavior.
 
 This boundary is experimental and uncalibrated. It adds static Kotlin/JVM,

@@ -66,7 +66,14 @@ internal static class FileClassificationCatalog
             [".cc"] = "cpp",
             [".cpp"] = "cpp",
             [".cxx"] = "cpp",
+            [".cppm"] = "cpp",
+            [".ixx"] = "cpp",
+            [".hh"] = "cpp",
             [".hpp"] = "cpp",
+            [".hxx"] = "cpp",
+            [".inl"] = "cpp",
+            [".ipp"] = "cpp",
+            [".tpp"] = "cpp",
         }.ToFrozenDictionary(StringComparer.OrdinalIgnoreCase);
 
     public static bool IsBinaryExtension(string extension) => BinaryExtensions.Contains(extension);

@@ -22,7 +22,8 @@ productivity score, invoice, or reconstruction of repository history.
 > estimator has passed its first model-authored logical gate for changes estimated at 4 to 32
 > hours on the previously admitted non-SQL families, but it is not empirically
 > production-validated and the newer SQL, Python, Go, Java, Kotlin, Shell,
-> PowerShell, Terraform/HCL, PHP/Composer, Rust/Cargo, Docker/Compose, and Jupyter paths are outside that
+> PowerShell, Terraform/HCL, PHP/Composer, Rust/Cargo, Docker/Compose, Jupyter,
+> and C/C++ paths are outside that
 > gate.
 > Review the evidence and ranges before using any estimate for a consequential
 > decision.
@@ -180,6 +181,11 @@ For `.ipynb`, JSON layout, source string/array representation, outputs, executio
 state, widgets, attachments, raw/non-Python cells, magics, and shell escapes can
 normalize to zero. Maintained Python tokens, Markdown, declared language, cell
 tags, and meaningful cell ordering remain significant; unsafe inputs fail closed.
+For C and C++ source, headers, and module interfaces, ordinary layout and non-
+documentation comments can normalize to zero while documentation, preprocessor
+directives and replacement tokens, identifiers, operators, delimiters, literals,
+raw strings, attributes, declarations, and ordering remain meaningful. Unsafe or
+ambiguous lexical/preprocessor structure fails closed.
 The current source build can retain bounded customization inside generated files
 only when exact, EffortHours-specific `<custom-code>` regions isolate it safely;
 the generated body still contributes zero. Generator-specific protected-region
@@ -295,8 +301,14 @@ The current static analyzers support:
   environment boundaries, volumes, networks, dependencies, health checks,
   profiles, secrets/configs, deploy/security structure, and literal local
   Compose-to-Dockerfile references, plus bounded `.dockerignore` rules;
-- mixed .NET, JavaScript/TypeScript, Python/Jupyter, Go, Java/Kotlin, Shell/PowerShell,
-  Terraform/HCL, PHP/Composer, Rust/Cargo, Docker/Compose, and SQL repositories;
+- maintained C99/C11/C17/C23 and C++11 through C++23 source, headers, modules,
+  declarations, public symbols, templates/concepts, concurrency, FFI, tests, and
+  qualified API, UI, data, integration, security, and validation evidence;
+- static CMake, Make, Meson, Visual C++/MSBuild, `compile_commands.json`, vcpkg,
+  and Conan metadata with literal repository-local source/header ownership;
+- mixed .NET, JavaScript/TypeScript, Python/Jupyter, Go, Java/Kotlin,
+  Shell/PowerShell, Terraform/HCL, PHP/Composer, Rust/Cargo, Docker/Compose,
+  C/C++, and SQL repositories;
 - documentation, build configuration, CI, containers, infrastructure, package
   metadata, and checked-in LCOV or Cobertura coverage reports; and
 - generated, vendored, minified, binary, duplicate, test, and documentation
@@ -373,6 +385,13 @@ Docker, Compose, BuildKit, a shell, or target code; pull or inspect images; expa
 build contexts; load includes/environment files; resolve interpolation or
 secrets; or treat arbitrary YAML as Compose. See the
 [static Docker and Compose boundary](docs/DOCKER_ANALYSIS.md).
+C/C++ analysis uses a project-authored bounded managed tokenizer and conservative
+declaration/build projection. It does not invoke a compiler, preprocessor,
+linker, build system, package manager, generator, test runner, or native parser;
+expand macros or includes; select conditional branches; instantiate templates;
+read system headers; or prove compilation, ABI, memory/thread safety, and runtime
+behavior. Header bodies count once and include fan-out is not an effort
+multiplier. See the [static C and C++ boundary](docs/CPP_ANALYSIS.md).
 
 ## Offline and safe by default
 
@@ -413,8 +432,8 @@ in this alpha. See the [host-review protocol](docs/MILESTONE_8.md).
   prove that a checkout builds or runs.
 - Unsupported languages still receive common inventory evidence but not the same
   semantic depth as .NET, JavaScript/TypeScript, Python/Jupyter, Go, Java/Kotlin,
-  Shell/PowerShell, Terraform/HCL, PHP/Composer, Rust/Cargo, Docker/Compose, SQL, and the supported
-  frontend forms.
+  Shell/PowerShell, Terraform/HCL, PHP/Composer, Rust/Cargo, Docker/Compose,
+  C/C++, SQL, and the supported frontend forms.
 - Checked-in coverage can be stale even when its bytes match the analyzed tree;
   EffortHours does not regenerate it.
 - Change portfolio reconciliation is experimental. Exact patch/object-chain

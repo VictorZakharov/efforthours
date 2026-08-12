@@ -171,6 +171,13 @@ internal static class ContentChangeAnalyzer
                 leftSignature == rightSignature;
         }
 
+        if (IsCpp(path))
+        {
+            return CppFormattingNormalizer.TryCreateSignature(left, out string leftSignature) &&
+                CppFormattingNormalizer.TryCreateSignature(right, out string rightSignature) &&
+                leftSignature == rightSignature;
+        }
+
         return FormattingSignature(left) == FormattingSignature(right);
     }
 
@@ -282,12 +289,18 @@ internal static class ContentChangeAnalyzer
             ".ts" or ".tsx" or ".mts" or ".cts" or ".py" or ".pyi" or
             ".ipynb" or
             ".go" or ".java" or ".kt" or ".kts" or ".php" or ".rs" or ".sql" or
+            ".c" or ".cc" or ".cpp" or ".cxx" or ".cppm" or ".ixx" or
+            ".h" or ".hh" or ".hpp" or ".hxx" or ".inl" or ".ipp" or ".tpp" or
             ".tf" or ".tfvars" or ".tfbackend" or ".hcl" or
             ".sh" or ".bash" or ".ksh" or ".bats" or ".ps1" or ".psm1" or ".psd1" ||
         IsShellProfile(path) || IsHcl(path) || IsDockerArtifact(path);
 
     private static bool IsDockerArtifact(string path) => IsDockerfile(path) || IsComposeFile(path) ||
         Path.GetFileName(path).Equals(".dockerignore", StringComparison.OrdinalIgnoreCase);
+
+    private static bool IsCpp(string path) => Path.GetExtension(path).ToLowerInvariant() is
+        ".c" or ".cc" or ".cpp" or ".cxx" or ".cppm" or ".ixx" or
+        ".h" or ".hh" or ".hpp" or ".hxx" or ".inl" or ".ipp" or ".tpp";
 
     private static bool IsDockerfile(string path)
     {
