@@ -31,6 +31,9 @@ repository root without discarding their decision history.
   ownership, Kotlin source/script boundaries, server and Android semantics,
   compiler-plugin uncertainty, exclusions, Change behavior, benchmarks, and
   non-goals.
+- [Static Terraform and HCL analysis](TERRAFORM_HCL_ANALYSIS.md) defines admitted
+  artifacts, bounded semantics, local module ownership, exclusions, effort
+  mapping, Change behavior, benchmarks, and non-goals.
 - [Source-file budgets](CODE_BUDGETS.md) documents the enforced early-refactoring
   policy.
 - [Release procedure](RELEASING.md) defines the source-visibility and NuGet

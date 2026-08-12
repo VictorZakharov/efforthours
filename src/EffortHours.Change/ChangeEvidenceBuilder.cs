@@ -271,7 +271,8 @@ internal static class ChangeEvidenceBuilder
         .Where(fact =>
             (fact.Id.StartsWith("sql:", StringComparison.Ordinal) &&
                 fact.Kind != EvidenceKinds.SqlRepository) ||
-            fact.Provenance.Analyzer == "efforthours.scripting-analyzer")
+            fact.Provenance.Analyzer is
+                "efforthours.scripting-analyzer" or "efforthours.terraform-analyzer")
         .SelectMany(fact => fact.Locations.Select(location => new
         {
             location.Path,

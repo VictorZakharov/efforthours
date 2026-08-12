@@ -123,6 +123,8 @@ public static class EvidenceKinds
     public const string SqlTest = "sql-test";
     public const string SourceStructure = "source-structure";
     public const string TestSuite = "test-suite";
+    public const string TerraformArtifact = "terraform-artifact";
+    public const string TerraformRepository = "terraform-repository";
     public const string UserInterface = "user-interface";
     public const string Validation = "validation";
 }

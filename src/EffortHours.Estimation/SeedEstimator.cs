@@ -45,6 +45,8 @@ public sealed class SeedEstimator : IEstimator
         EvidenceKinds.SqlTest,
         EvidenceKinds.SourceStructure,
         EvidenceKinds.TestSuite,
+        EvidenceKinds.TerraformArtifact,
+        EvidenceKinds.TerraformRepository,
         EvidenceKinds.UserInterface,
         EvidenceKinds.Validation,
     ];
@@ -62,6 +64,7 @@ public sealed class SeedEstimator : IEstimator
             "shell",
             "sql",
             "typescript",
+            "terraform",
         };
 
     private static readonly EstimationBaseline Baseline = new()

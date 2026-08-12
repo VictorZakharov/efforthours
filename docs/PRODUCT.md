@@ -186,6 +186,20 @@ emits source values or excerpts; `SHELL_POWERSHELL_ANALYSIS.md` defines the exac
 scope. Shell and PowerShell reuse the unchanged language-neutral source backbone
 and analogous specialized priors without a fitted script-specific rate.
 
+The sixth polyglot expansion is Terraform and relevant HCL. Scanner-admitted
+maintained `.tf`, `.tfvars`, Terraform tests, CLI configuration, and HCL receive
+bounded comment/string/heredoc-aware token and structural analysis. Terraform
+evidence separates resources, data sources, modules, inputs/outputs/locals,
+providers/backends, lifecycle/dependency/expression structure, integrations,
+security-sensitive configuration, validation, tests, documentation, and delivery.
+Only literal repository-local module ownership is resolved; external or dynamic
+sources remain classified unresolved boundaries. The analyzer never invokes
+Terraform or related tools, loads schemas, fetches providers/modules, contacts a
+backend, reads plan/state semantics, evaluates interpolation/policy, or emits
+configured values/source excerpts; `TERRAFORM_HCL_ANALYSIS.md` defines the exact
+scope. Terraform reuses unchanged existing priors without a fitted ecosystem-
+specific rate.
+
 ## Non-goals
 
 - Reconstructing actual hours worked.

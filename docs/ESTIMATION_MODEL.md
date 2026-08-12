@@ -443,7 +443,7 @@ rubric-1.0.0 labels are not rewritten; the separate Stage A logical audit maps a
 eligible parent targets into rubric-1.1.0 tasks while preserving their exact
 expected totals and uncertainty provenance.
 
-The current `change-seed/0.12.0` rules retain the 0.3.0 correction that keeps
+The current `change-seed/0.13.0` rules retain the 0.3.0 correction that keeps
 repository seed capabilities as context for a final delta but does not infer a
 capability modification from path overlap alone. Existing capabilities require
 changed normalized non-file evidence;
@@ -509,6 +509,17 @@ through existing category rules. No fitted Change prior was added. The admitted
 0.6.0 Stage A records contain no Shell or PowerShell, so this extension is
 explicitly unadmitted.
 
+Version 0.13.0 adds Terraform/HCL final-delta support with a conservative
+literal- and heredoc-aware signature. Horizontal layout and blank-line count can
+normalize to zero while semantic newlines, comments, identifiers, operators,
+literals, templates, delimiters, and heredoc bodies remain significant;
+incomplete constructs fail closed. Analyzer-backed infrastructure, integration,
+security, validation, test, documentation, build, and delivery facts route through
+existing category rules. State, plan, cache, lock, generated, vendor, duplicate,
+and formatting-only bodies retain zero implementation value. No fitted Change
+prior was added. The admitted 0.6.0 Stage A records contain no Terraform or HCL,
+so this extension is explicitly unadmitted.
+
 Version 0.4.0 also distinguishes only exact, balanced, EffortHours-specific
 `<custom-code>` regions inside otherwise generated files; it does not infer other
 generator-specific protected-region syntax. Only the extracted maintained
@@ -536,12 +547,12 @@ allocation keeps every component nonnegative while reconciling to the normalized
 total.
 
 The current composite source identity is
-`change-seed/0.12.0+seed-rules/0.4.0`; every frozen Change report retains its
+`change-seed/0.13.0+seed-rules/0.4.0`; every frozen Change report retains its
 original identity and numbers. `change-model-admission/0.2.0` admitted version
 0.6.0 only for experimental 4-to-32-hour Stage A changes after model-authored
-logical agreement and performance gates. Versions 0.7.0 through 0.12.0 preserve
+logical agreement and performance gates. Versions 0.7.0 through 0.13.0 preserve
 those admitted rules but are not separately admitted, and SQL, Python, Go, Java,
-Kotlin, Shell, and PowerShell have no reviewed Change labels.
+Kotlin, Shell, PowerShell, Terraform, and HCL have no reviewed Change labels.
 Larger size bands and empirical production accuracy remain separate decisions.
 
 ## 11. Uncertainty
@@ -648,6 +659,17 @@ category rules. No shell, command/module resolver, sourced content, expansion, o
 platform effect is executed. `SHELL_POWERSHELL_ANALYSIS.md` defines the exact
 boundary.
 
+Terraform/HCL analyzer `0.1.0` replaces raw Terraform file/line pricing with
+bounded semantic infrastructure units. Distinct resource/data types, module and
+interface boundaries, providers/backends, lifecycle/dependency structure, and
+expression structure contribute transparent units; conventional repetitions use
+diminishing bands and exact bodies are valued once. Those units feed the existing
+`ci-infrastructure` rule, while integration, security, validation, test,
+documentation, build, and delivery facts continue through existing specialized
+rules. Generic non-Terraform HCL remains visible without guessed Terraform units.
+No provider/schema/module/backend/plan/state/policy runtime is loaded or executed.
+`TERRAFORM_HCL_ANALYSIS.md` defines the exact boundary.
+
 Public mutation suite `0.8.0` combines 77 unchanged `seed-rules/0.3.0` candidates
 with 11 Python `seed-rules/0.4.0` candidates. All 339 relational assertions pass.
 This protects directionality and invariance; it does not calibrate absolute hours.
@@ -659,6 +681,8 @@ The standalone Kotlin suite adds 14 `seed-rules/0.4.0` candidates and passes 63/
 relations without altering any earlier aggregate or standalone suite.
 The standalone scripting suite adds 13 `seed-rules/0.4.0` candidates and passes
 46/46 relations without altering any earlier aggregate or standalone suite.
+The standalone Terraform suite adds 14 `seed-rules/0.4.0` candidates and passes
+48/48 relations without altering any earlier aggregate or standalone suite.
 
 ## 14. Professionalization gap
 

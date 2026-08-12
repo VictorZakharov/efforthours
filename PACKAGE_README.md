@@ -25,7 +25,7 @@ eh estimate ./my-repository --profile implementation --format markdown
 ```
 
 EffortHours statically analyzes .NET, JavaScript, TypeScript, Python, Go, Java,
-Kotlin/JVM, Shell, PowerShell, HTML/CSS-family frontends, SQL, and mixed
+Kotlin/JVM, Shell, PowerShell, Terraform/HCL, HTML/CSS-family frontends, SQL, and mixed
 repositories. Frontend support includes bounded template and stylesheet semantics
 plus static Angular component metadata. SQL support includes bounded schema,
 migration, stored-program, query, test, deployment, and cross-database evidence
@@ -56,6 +56,12 @@ modules, tests, and build/CI/delivery/infrastructure automation with bounded
 token-backed structure and exact invocation-context evidence. It never starts a
 shell, resolves commands or modules, sources files, evaluates expansions, or emits
 source values or excerpts.
+Terraform/HCL support includes bounded resources, data sources, modules, inputs,
+outputs, locals, providers, backends, lifecycle/dependency/expression structure,
+tests, security-sensitive configuration, documentation, and delivery evidence.
+It resolves repository-local module ownership only and never runs Terraform,
+fetches modules/providers, contacts backends, evaluates plans/interpolation, or
+emits configured values or source excerpts.
 It reports evidence-backed work items across implementation, testing,
 documentation, integration, delivery, validation, and review, then optionally
 applies a dated contractor rate without changing the effort estimate.
@@ -106,7 +112,7 @@ treated as untrusted input, and reports avoid source excerpts by default.
 
 ## Current limitations
 
-- `seed-rules/0.4.0` and `change-seed/0.12.0` remain experimental and uncalibrated.
+- `seed-rules/0.4.0` and `change-seed/0.13.0` remain experimental and uncalibrated.
 - SQL uses bounded token/statement evidence mapped to existing priors; it is not a
   full grammar, schema diff engine, query optimizer, or database validator.
 - Public calibration labels have not completed genuinely independent correction.
@@ -121,6 +127,9 @@ treated as untrusted input, and reports avoid source excerpts by default.
 - Shell and PowerShell evidence is token-backed rather than interpreter-backed;
   sourced content, dynamic expansion, command/module resolution, and platform or
   runtime effects are not resolved.
+- Terraform/HCL evidence is token-backed rather than native-parser/provider-
+  backed; Terraform JSON, provider schemas, plans, policy validation,
+  interpolation results, and runtime correctness are not evaluated.
 - Host-review token use, cost, and estimate improvement have not yet been measured
   across representative repositories; no automatic review budget is selected.
 

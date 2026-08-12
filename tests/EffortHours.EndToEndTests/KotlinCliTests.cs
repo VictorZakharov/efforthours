@@ -73,7 +73,7 @@ public sealed class KotlinCliTests
         Assert.DoesNotContain(before.RootPath, result.StandardOutput, StringComparison.OrdinalIgnoreCase);
         Assert.DoesNotContain(after.RootPath, result.StandardOutput, StringComparison.OrdinalIgnoreCase);
         using JsonDocument document = JsonDocument.Parse(result.StandardOutput);
-        Assert.Equal("change-seed/0.12.0+seed-rules/0.4.0",
+        Assert.Equal("change-seed/0.13.0+seed-rules/0.4.0",
             document.RootElement.GetProperty("estimatorVersion").GetString());
         Assert.True(document.RootElement.GetProperty("totalEffort").GetProperty("expected").GetDecimal() > 0m);
         Assert.Contains(document.RootElement.GetProperty("categories").EnumerateArray(),
