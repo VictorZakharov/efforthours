@@ -33,7 +33,7 @@ public sealed class DockerScannerClassificationTests
         AssertNotContainerFile(evidence, "config.yml");
         AssertNotContainerFile(evidence, "compose.json");
         AssertNotContainerFile(evidence, "docker-compose.txt");
-        Assert.Equal("0.2.11", RepositoryScanner.AnalyzerVersion);
+        Assert.Equal("0.2.12", RepositoryScanner.AnalyzerVersion);
     }
 
     private static void AssertContainerFile(RepositoryEvidence evidence, string path)

@@ -158,6 +158,10 @@ internal static class ChangeEvidenceBuilder
                     else
                     {
                         editRegions = content.EditRegions;
+                        if (content.SemanticRole is not null)
+                        {
+                            normalizationTags.Add($"notebook-role:{content.SemanticRole}");
+                        }
                     }
                 }
             }
@@ -274,7 +278,9 @@ internal static class ChangeEvidenceBuilder
             fact.Provenance.Analyzer is
                 "efforthours.php-analyzer" or "efforthours.scripting-analyzer" or
                 "efforthours.terraform-analyzer" or "efforthours.rust-analyzer" or
-                "efforthours.docker-analyzer")
+                "efforthours.docker-analyzer" ||
+            fact.Provenance.Analyzer == "efforthours.python-analyzer" &&
+                fact.Tags.Contains("format:jupyter-notebook", StringComparer.Ordinal))
         .SelectMany(fact => fact.Locations.Select(location => new
         {
             location.Path,

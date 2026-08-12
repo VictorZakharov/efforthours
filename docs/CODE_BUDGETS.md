@@ -154,6 +154,14 @@ formatting normalization. Dockerfile metrics are split from instruction parsing
 before the parser reaches the 80% split threshold. Every new source and test file
 remains below its ordinary ceiling, and no override was added or increased.
 
+The August 12, 2026 Jupyter checkpoint separates common classification,
+generated-marker policy, and checkpoint exclusion, digest-checked strict UTF-8
+admission, bounded JSON/cell
+projection, notebook fact construction, Python repository orchestration, and
+Change formatting normalization. The 384-line parser and 243-line Change
+normalizer remain below the ordinary 500-line ceiling; the process-level CLI test
+remains below 400 lines. No override was added or increased.
+
 Line count is deliberately simple, deterministic, cross-platform, and difficult
 to game accidentally. The useful outcome is earlier decomposition into cohesive
 contracts, commands, analyzers, and renderers—not compressed formatting.

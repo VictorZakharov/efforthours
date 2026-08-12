@@ -84,6 +84,11 @@ internal static class PythonFactFactory
             $"parser-confidence:{file.Syntax.Confidence}",
             "source-excerpts:not-emitted",
         ];
+        if (Path.GetExtension(file.File.Scope).Equals(".ipynb", StringComparison.OrdinalIgnoreCase))
+        {
+            commonTags.Add("format:jupyter-notebook");
+            commonTags.Add("outputs:excluded");
+        }
         string path = file.File.Scope;
         string token = PythonEvidence.IdToken(path);
         EvidenceLocation[] location = [PythonEvidence.Location(path)];

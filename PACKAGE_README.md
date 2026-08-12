@@ -24,7 +24,7 @@ eh --help
 eh estimate ./my-repository --profile implementation --format markdown
 ```
 
-EffortHours statically analyzes .NET, JavaScript, TypeScript, Python, Go, Java,
+EffortHours statically analyzes .NET, JavaScript, TypeScript, Python/Jupyter, Go, Java,
 Kotlin/JVM, Shell, PowerShell, Terraform/HCL, PHP/Composer, Rust/Cargo, Docker/Compose, HTML/CSS-family
 frontends, SQL, and mixed repositories. Frontend support includes bounded template and stylesheet semantics
 plus static Angular component metadata. SQL support includes bounded schema,
@@ -35,7 +35,13 @@ execute SQL.
 Python support includes `.py`/`.pyi`, static package metadata, bounded token and
 indentation structure, tests, and conservative import-qualified framework
 evidence. It does not invoke Python, import modules, resolve environments, install
-packages, execute `setup.py`, or parse notebooks.
+packages, or execute `setup.py`.
+Jupyter support admits bounded, digest-verified `.ipynb` JSON, analyzes only
+unambiguous Python cells through the Python tokenizer, and represents Markdown,
+qualified data analysis, visualization, integrations, and tests separately. It
+never launches Jupyter or a kernel and excludes outputs, execution counts, widget
+state, attachments, embedded payloads, magics, shell escapes, and unsupported
+language cells from EHE.
 Go support includes modules, workspaces, packages, local replacements, bounded
 token structure, import-qualified semantic evidence, concurrency, build
 directives, and `_test.go` tests. It does not invoke the Go toolchain, resolve
@@ -130,12 +136,14 @@ treated as untrusted input, and reports avoid source excerpts by default.
 
 ## Current limitations
 
-- `seed-rules/0.4.0` and `change-seed/0.16.0` remain experimental and uncalibrated.
+- `seed-rules/0.4.0` and `change-seed/0.17.0` remain experimental and uncalibrated.
 - SQL uses bounded token/statement evidence mapped to existing priors; it is not a
   full grammar, schema diff engine, query optimizer, or database validator.
 - Public calibration labels have not completed genuinely independent correction.
 - TypeScript and TSX evidence is token-backed rather than compiler-backed.
 - Python evidence is token/indentation-backed rather than compiler- or runtime-backed.
+- Jupyter evidence does not verify execution state, data provenance,
+  reproducibility, output correctness, runtime dependencies, or scientific validity.
 - Go evidence is token-backed rather than compiler- or toolchain-backed.
 - Java evidence is token-backed rather than compiler-, bytecode-, or JVM-backed;
   Maven/Gradle evidence is a conservative static build-model projection.

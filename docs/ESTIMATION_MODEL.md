@@ -443,7 +443,7 @@ rubric-1.0.0 labels are not rewritten; the separate Stage A logical audit maps a
 eligible parent targets into rubric-1.1.0 tasks while preserving their exact
 expected totals and uncertainty provenance.
 
-The current `change-seed/0.16.0` rules retain the 0.3.0 correction that keeps
+The current `change-seed/0.17.0` rules retain the 0.3.0 correction that keeps
 repository seed capabilities as context for a final delta but does not infer a
 capability modification from path overlap alone. Existing capabilities require
 changed normalized non-file evidence;
@@ -556,6 +556,17 @@ outside the boundary, and no fitted Change prior was added. The admitted 0.6.0
 Stage A records contain no Docker or Compose, so this extension is explicitly
 unadmitted.
 
+Version 0.17.0 adds Jupyter `.ipynb` final-delta support through a bounded
+maintained-cell signature. JSON layout, source string/array representation,
+outputs, execution counts, widgets, attachments, transient metadata, raw or
+unsupported-language cells, magics, and shell escapes can normalize to zero.
+Python token structure, Markdown, declared language, maintained cell tags, and
+meaningful ordering remain significant; unsafe inputs fail closed. Analyzer-backed
+Python, documentation, data, visualization, integration, and test facts route
+through existing category rules. No fitted Change prior was added. The admitted
+0.6.0 Stage A records contain no Jupyter changes, so this extension is explicitly
+unadmitted.
+
 Version 0.4.0 also distinguishes only exact, balanced, EffortHours-specific
 `<custom-code>` regions inside otherwise generated files; it does not infer other
 generator-specific protected-region syntax. Only the extracted maintained
@@ -583,12 +594,13 @@ allocation keeps every component nonnegative while reconciling to the normalized
 total.
 
 The current composite source identity is
-`change-seed/0.16.0+seed-rules/0.4.0`; every frozen Change report retains its
+`change-seed/0.17.0+seed-rules/0.4.0`; every frozen Change report retains its
 original identity and numbers. `change-model-admission/0.2.0` admitted version
 0.6.0 only for experimental 4-to-32-hour Stage A changes after model-authored
-logical agreement and performance gates. Versions 0.7.0 through 0.16.0 preserve
+logical agreement and performance gates. Versions 0.7.0 through 0.17.0 preserve
 those admitted rules but are not separately admitted, and SQL, Python, Go, Java,
-Kotlin, Shell, PowerShell, Terraform, HCL, PHP, Composer, Rust, Cargo, Docker, and Compose have no
+Kotlin, Shell, PowerShell, Terraform, HCL, PHP, Composer, Rust, Cargo, Docker,
+Compose, or Jupyter have no
 reviewed Change labels.
 Larger size bands and empirical production accuracy remain separate decisions.
 

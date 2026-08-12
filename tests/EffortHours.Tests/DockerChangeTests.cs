@@ -81,7 +81,7 @@ public sealed class DockerChangeTests
         Assert.True(report.TotalEffort.Expected > 0m);
         Assert.Contains(report.Categories, item =>
             item.Category == EffortCategory.PackagingDeploymentAndReleaseArtifacts && item.Hours.Expected > 0m);
-        Assert.Equal("change-seed/0.16.0+seed-rules/0.4.0", report.EstimatorVersion);
+        Assert.Equal("change-seed/0.17.0+seed-rules/0.4.0", report.EstimatorVersion);
     }
 
     [Fact]
@@ -121,7 +121,7 @@ public sealed class DockerChangeTests
                 ("compose.yml", "services:\n  app:\n    build: .\n    restart: unless-stopped\n"),
                 (".dockerignore", "bin/\n")));
 
-        Assert.Equal("change-seed/0.16.0+seed-rules/0.4.0", report.EstimatorVersion);
+        Assert.Equal("change-seed/0.17.0+seed-rules/0.4.0", report.EstimatorVersion);
         Assert.Contains(report.Categories, item =>
             item.Category == EffortCategory.PackagingDeploymentAndReleaseArtifacts && item.Hours.Expected > 0m);
         Assert.DoesNotContain(report.Categories, item =>

@@ -356,6 +356,12 @@ internal static class PythonSyntaxAnalyzer
             (lower.Contains("unittest.mock", StringComparison.Ordinal) ||
             lower.EndsWith(".mock", StringComparison.Ordinal) ||
             lower.EndsWith(".patch", StringComparison.Ordinal))) metrics.MockUsages++;
+        if (HasAny(metrics, "numpy", "pandas", "polars", "scipy", "sklearn", "tensorflow", "torch") &&
+            StartsWithAny(lower, "numpy.", "pandas.", "polars.", "scipy.", "sklearn.", "tensorflow.", "torch."))
+            metrics.DataAnalysisCalls++;
+        if (HasAny(metrics, "matplotlib", "seaborn", "plotly", "bokeh", "altair") &&
+            StartsWithAny(lower, "matplotlib.", "seaborn.", "plotly.", "bokeh.", "altair."))
+            metrics.VisualizationCalls++;
     }
 
     private static bool IsApiEndpoint(string name, bool decorator) =>
@@ -378,6 +384,8 @@ internal static class PythonSyntaxAnalyzer
             "fastapi", "flask", "django", "sqlalchemy", "alembic", "requests", "httpx",
             "boto3", "celery", "rq", "argparse", "click", "typer", "pytest", "unittest",
             "pydantic", "marshmallow", "passlib", "bcrypt", "jose", "google", "azure", "openai",
+            "numpy", "pandas", "polars", "scipy", "sklearn", "tensorflow", "torch",
+            "matplotlib", "seaborn", "plotly", "bokeh", "altair",
         })
         {
             if (lower == technology || lower.StartsWith(technology + ".", StringComparison.Ordinal))

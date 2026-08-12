@@ -1,4 +1,5 @@
 using System.Globalization;
+using System.Text.Json;
 
 namespace EffortHours.ScannerBenchmarks;
 
@@ -93,6 +94,9 @@ internal sealed class BenchmarkTarget : IDisposable
 
 internal static class BenchmarkFixtureGenerator
 {
+    private static readonly string[] BenchmarkMarkdownSource = ["# Benchmark notebook\n"];
+    private static readonly JsonSerializerOptions IndentedJson = new() { WriteIndented = true };
+
     public static void Generate(string rootPath, BenchmarkOptions options)
     {
         if (options.Shape is BenchmarkShape.DotNet or BenchmarkShape.Common or BenchmarkShape.Mixed)
@@ -110,7 +114,7 @@ internal static class BenchmarkFixtureGenerator
                 "\"devDependencies\":{\"typescript\":\"5.9.0\"}}\n");
         }
 
-        if (options.Shape == BenchmarkShape.Python)
+        if (options.Shape is BenchmarkShape.Python or BenchmarkShape.Jupyter)
         {
             File.WriteAllText(
                 Path.Combine(rootPath, "pyproject.toml"),
@@ -208,6 +212,7 @@ internal static class BenchmarkFixtureGenerator
                 {
                     BenchmarkSourceKind.CSharp => "src",
                     BenchmarkSourceKind.Python => "python",
+                    BenchmarkSourceKind.Jupyter => "notebooks",
                     BenchmarkSourceKind.Go => "go",
                     BenchmarkSourceKind.Java => Path.Combine("src", "main", "java", "benchmark"),
                     BenchmarkSourceKind.Kotlin => Path.Combine("src", "main", "kotlin", "benchmark"),
@@ -243,6 +248,9 @@ internal static class BenchmarkFixtureGenerator
                     pythonLines +
                     $"async def file_{index:D7}(value):\n    return value if value else " +
                     $"{index.ToString(CultureInfo.InvariantCulture)}\n"),
+                BenchmarkSourceKind.Jupyter => (
+                    $"analysis{index:D7}.ipynb",
+                    JupyterContent(index, options.LinesPerFile)),
                 BenchmarkSourceKind.Go => (
                     $"file{index:D7}.go",
                     "package benchmark\n" + goLines +
@@ -299,6 +307,7 @@ internal static class BenchmarkFixtureGenerator
             ? BenchmarkSourceKind.JavaScript
             : BenchmarkSourceKind.TypeScript,
         BenchmarkShape.Python => BenchmarkSourceKind.Python,
+        BenchmarkShape.Jupyter => BenchmarkSourceKind.Jupyter,
         BenchmarkShape.Go => BenchmarkSourceKind.Go,
         BenchmarkShape.Java => BenchmarkSourceKind.Java,
         BenchmarkShape.Kotlin => BenchmarkSourceKind.Kotlin,
@@ -337,12 +346,53 @@ internal static class BenchmarkFixtureGenerator
                 .Select(line => $"  service-{line:D4}: {{ image: benchmark/image:{id}-{line:D4} }}\n"));
     }
 
+    private static string JupyterContent(int index, int lines)
+    {
+        int sourceLines = Math.Max(1, lines - 18);
+        string[] source = [.. Enumerable.Range(1, sourceLines).Select(line =>
+            line == 1
+                ? "import pandas as pd\n"
+                : line == sourceLines
+                    ? $"frame_{index:D7} = pd.DataFrame({{\"value\": [{index.ToString(CultureInfo.InvariantCulture)}]}})\n"
+                    : $"value_{line:D4} = {line.ToString(CultureInfo.InvariantCulture)}\n")];
+        return JsonSerializer.Serialize(
+            new
+            {
+                cells = new object[]
+                {
+                    new
+                    {
+                        cell_type = "markdown",
+                        metadata = new { },
+                        source = BenchmarkMarkdownSource,
+                    },
+                    new
+                    {
+                        cell_type = "code",
+                        metadata = new { },
+                        source,
+                        execution_count = (int?)null,
+                        outputs = Array.Empty<object>(),
+                    },
+                },
+                metadata = new
+                {
+                    kernelspec = new { name = "python3", language = "python" },
+                    language_info = new { name = "python" },
+                },
+                nbformat = 4,
+                nbformat_minor = 5,
+            },
+            IndentedJson);
+    }
+
     private enum BenchmarkSourceKind
     {
         CSharp,
         JavaScript,
         TypeScript,
         Python,
+        Jupyter,
         Go,
         Java,
         Kotlin,

@@ -7,7 +7,7 @@ namespace EffortHours.Analyzers.Python;
 internal static class PythonEvidence
 {
     public const string AnalyzerName = "efforthours.python-analyzer";
-    public const string AnalyzerVersion = "0.1.0";
+    public const string AnalyzerVersion = "0.2.0";
 
     public static EvidenceFact Fact(
         string id,

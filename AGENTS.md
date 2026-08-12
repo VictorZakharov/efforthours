@@ -267,8 +267,9 @@ semantics without invoking Python, resolving an environment, installing packages
 or executing `setup.py`. Existing `0.3.0` priors remain unchanged; the generic
 polyglot backbone transparently reuses analogous marginal construction rates with
 wider uncertainty. Public mutation suite `0.8.0` has 88 states and 339 passing
-relations; the earlier 77 reports remain frozen at `0.3.0`. Jupyter remains a
-separate safety boundary. The Python model is experimental and uncalibrated.
+relations; the earlier 77 reports remain frozen at `0.3.0`. Jupyter uses the later
+separate safety boundary described below. The Python model is experimental and
+uncalibrated.
 
 The second polyglot expansion adds common scanner `0.2.4` and Go analyzer `0.1.0`.
 Scanner-admitted `go.mod`, `go.work`, and `.go` files receive static module,
@@ -360,8 +361,22 @@ configured value or source excerpt. The unchanged `seed-rules/0.4.0` container
 prior is reused. The standalone Docker mutation suite has 13 states and 38 passing
 relations. The Docker model is experimental and uncalibrated.
 
+The tenth ecosystem expansion adds common scanner `0.2.12` and Python analyzer
+`0.2.0` with a separate safe Jupyter projection. Scanner-admitted `.ipynb` JSON
+receives bounded digest-verified maintained-cell analysis; unambiguous Python cells
+reuse the managed tokenizer, and Markdown plus qualified data, visualization,
+integration, and test evidence remain separate. Outputs, execution counts, widget
+state, attachments, embedded payloads, transient metadata, raw/unsupported cells,
+magics, shell escapes, checkpoints, generated bodies, exact duplicate cells, and
+duplicate notebook projections do not add semantic effort. EffortHours launches no
+Jupyter process or kernel and does not verify data provenance, reproducibility,
+output correctness, runtime dependencies, or scientific validity. The unchanged
+`seed-rules/0.4.0` priors are reused. The standalone Jupyter mutation suite has 14
+states and 52 passing relations. The Jupyter model is experimental and
+uncalibrated.
+
 The scanner benchmark now measures fresh-process .NET, JavaScript/TypeScript,
-Python, Go, Java, Kotlin, Shell, PowerShell, Terraform/HCL, PHP/Composer,
+Python, Jupyter, Go, Java, Kotlin, Shell, PowerShell, Terraform/HCL, PHP/Composer,
 Rust/Cargo, Docker/Compose, and mixed million-line shapes, samples peak resident memory, labels explicit external
 cache passes separately, and fingerprints caller-supplied target trees before and
 after analysis. The recorded mixed full scan completes in 10.876 seconds with a
@@ -389,6 +404,8 @@ The Rust/Cargo shape completes in 7.540 seconds with a 139.88 MiB sampled peak a
 also retains unchanged target metadata.
 The Docker/Compose shape completes in 8.097 seconds with a 203.00 MiB sampled peak
 and also retains unchanged target metadata.
+The Jupyter shape completes in 7.561 seconds with a 159.33 MiB sampled peak and
+also retains unchanged target metadata.
 
 The first Change Estimation MVP adds provider-neutral immutable snapshot analysis,
 local Git base/head, commit, and range selectors, one optional identity-only `gh`
@@ -399,7 +416,7 @@ meaningful code/tests/docs, migrations, integrations, CI, container delivery,
 simplification, additivity, overlap, reverts, category isolation, all three range
 points, and cooperative cancellation. The first Ctrl+C returns 130 after a
 stderr-only diagnostic; a second retains immediate termination. Current
-`change-seed/0.16.0+seed-rules/0.4.0` rules retain the bounded 0.3.0 logical-
+`change-seed/0.17.0+seed-rules/0.4.0` rules retain the bounded 0.3.0 logical-
 marginality correction
 and can isolate exact, balanced, EffortHours-specific `<custom-code>` regions
 inside otherwise generated source. Only those regions can contribute;
@@ -423,16 +440,18 @@ routing without changing previously admitted rules. Version 0.15.0 adds
 conservative Rust formatting and analyzer-backed semantic/category routing without
 changing previously admitted rules. Version 0.16.0 adds conservative Dockerfile,
 Compose, and `.dockerignore` formatting plus analyzer-backed packaging/deployment
+routing without changing previously admitted rules. Version 0.17.0 adds bounded
+Jupyter container/output normalization and analyzer-backed semantic/category
 routing without changing previously admitted rules. They remain
 experimental; only version 0.6.0 on the
-pre-SQL/Python/Go/Java/Kotlin/Shell/PowerShell/Terraform/HCL/PHP/Composer/Rust/Cargo/Docker/Compose
+pre-SQL/Python/Jupyter/Go/Java/Kotlin/Shell/PowerShell/Terraform/HCL/PHP/Composer/Rust/Cargo/Docker/Compose
 4-to-32-hour Stage A logical band is admitted, and no empirical production
 validation is claimed. Non-Git Change mode now accepts
 two statically scanned, content-pinned directories or two digest-checked saved
 repository-evidence bundles;
 bodyless evidence modifications that otherwise qualify as represented remain
 conservative with an explicit warning. Experimental
-`change-portfolio/0.1.0+change-seed/0.16.0+seed-rules/0.4.0` now composes repeated
+`change-portfolio/0.1.0+change-seed/0.17.0+seed-rules/0.4.0` now composes repeated
 PRs, versioned cross-repository PR manifests, and bounded author-period commits.
 It normalizes repositories independently, suppresses exact same-repository PR
 patches, follows exact chronological author object chains, exposes immutable base
@@ -567,6 +586,7 @@ dotnet benchmarks/EffortHours.ScannerBenchmarks/bin/Release/net10.0/EffortHours.
 dotnet benchmarks/EffortHours.ScannerBenchmarks/bin/Release/net10.0/EffortHours.ScannerBenchmarks.dll --files 10000 --lines-per-file 100 --php
 dotnet benchmarks/EffortHours.ScannerBenchmarks/bin/Release/net10.0/EffortHours.ScannerBenchmarks.dll --files 10000 --lines-per-file 100 --rust
 dotnet benchmarks/EffortHours.ScannerBenchmarks/bin/Release/net10.0/EffortHours.ScannerBenchmarks.dll --files 10000 --lines-per-file 100 --docker
+dotnet benchmarks/EffortHours.ScannerBenchmarks/bin/Release/net10.0/EffortHours.ScannerBenchmarks.dll --files 10000 --lines-per-file 100 --jupyter
 dotnet benchmarks/EffortHours.ScannerBenchmarks/bin/Release/net10.0/EffortHours.ScannerBenchmarks.dll --files 10000 --lines-per-file 100 --mixed --warm-cache
 dotnet benchmarks/EffortHours.ScannerBenchmarks/bin/Release/net10.0/EffortHours.ScannerBenchmarks.dll --repository . --warm-cache
 dotnet benchmarks/EffortHours.ChangeBenchmarks/bin/Release/net10.0/EffortHours.ChangeBenchmarks.dll --tree --files 10000 --lines-per-file 100 --max-seconds 30 --max-peak-mib 512

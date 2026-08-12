@@ -1003,3 +1003,21 @@ interval calibration, or a production-admission decision. No existing corpus,
 aggregate/standalone suite, partition, reviewer identity, teacher target,
 estimator artifact, or frozen report changes. Docker/Compose has no independent
 correction or real-repository calibration family yet.
+
+## Jupyter notebook mutation extension
+
+The tenth ecosystem expansion adds a standalone `jupyter-0.1.0` mutation suite
+rather than regenerating the frozen 88-state aggregate or any earlier standalone
+suite. Its 14 project-authored MIT synthetic states use unchanged
+`seed-rules/0.4.0` and cover JSON/source serialization, outputs and execution
+state, attachments/widgets, duplicate cells and notebooks, generated paths,
+checkpoints, unsupported syntax, Python structure, Markdown, qualified data
+analysis, visualization, integration, tests, and category isolation.
+
+All 52 relations pass. These are qualitative directionality, range-point
+invariance, bounded exclusion, category-isolation, and false-positive guardrails.
+They are not reviewed work-item labels, held-out accuracy evidence, interval
+calibration, scientific validation, or a production-admission decision. No
+existing corpus, aggregate/standalone suite, partition, reviewer identity, teacher
+target, estimator artifact, or frozen report changes. Jupyter has no independent
+correction or real-repository calibration family yet.

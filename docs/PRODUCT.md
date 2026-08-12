@@ -134,8 +134,8 @@ static package ownership, local import edges, test evidence, and conservative
 import-qualified framework evidence. Static metadata includes `pyproject.toml`,
 `setup.cfg`, literal-only `setup.py`, requirements, Pipfile, and common Poetry,
 PDM, and uv surfaces. The analyzer never invokes Python, imports modules, resolves
-an environment, installs dependencies, or executes `setup.py`; notebooks remain a
-separate safety boundary. `PYTHON_ANALYSIS.md` defines the exact scope. The
+an environment, installs dependencies, or executes `setup.py`.
+`PYTHON_ANALYSIS.md` defines the exact source/package scope. The
 language-neutral package/test contracts and source-backbone routing are intended
 to keep later ecosystem extensions additive rather than one-off estimator forks.
 
@@ -237,6 +237,17 @@ or target code; pulls images; expands build contexts; loads includes/environment
 files; resolves interpolation/secrets; or emits configured values/source excerpts.
 `DOCKER_ANALYSIS.md` defines the exact scope. Docker reuses the unchanged existing
 container prior without a fitted ecosystem-specific rate.
+
+The tenth ecosystem expansion is safe Jupyter notebook analysis. Scanner-admitted
+`.ipynb` JSON receives bounded, digest-verified maintained-cell projection through
+the Python analyzer. Only unambiguous Python cells enter the existing token and
+indentation pass; Markdown narrative is represented separately. Outputs,
+execution counts, widget state, attachments, embedded payloads, magics, shell
+escapes, raw/unsupported cells, checkpoints, and generated notebooks do not add
+EHE. EffortHours launches no Jupyter process or kernel and does not verify data
+provenance, reproducibility, output correctness, runtime dependencies, or
+scientific validity. `JUPYTER_ANALYSIS.md` defines the exact scope. The unchanged
+`seed-rules/0.4.0` priors are reused without a fitted notebook rate.
 
 ## Non-goals
 

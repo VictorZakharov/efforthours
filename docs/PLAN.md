@@ -652,6 +652,18 @@ mutation slice passes all 38 relations, and its alternating Dockerfile/Compose
 million-line checkpoint completes in 8.097 seconds with a 203.00 MiB sampled peak.
 This remains experimental, uncalibrated, and outside Change admission.
 
+Issue #72 adds common scanner `0.2.12` and Python analyzer `0.2.0` with a separate
+bounded Jupyter projection. Repository and Change estimates cover digest-verified
+`.ipynb` structure, unambiguous Python cells, Markdown narrative, qualified data,
+visualization, integration, and test evidence while excluding outputs, execution
+state, widgets, attachments, payloads, unsupported languages, magics, shell
+escapes, checkpoints, and generated notebooks. Jupyter reuses
+`seed-rules/0.4.0` unchanged; Change advances to `change-seed/0.17.0`. A standalone
+14-state Jupyter mutation slice passes all 52 relations, and its million-line
+checkpoint completes in 7.561 seconds with a 159.33 MiB sampled peak. This remains
+experimental, uncalibrated, scientifically unvalidated, and outside Change
+admission.
+
 - Add feature-oriented reporting.
 - Maintain the implemented provider-neutral directory/evidence selectors and
   measure their large-tree performance before broadening their scope.
@@ -667,13 +679,13 @@ This remains experimental, uncalibrated, and outside Change admission.
   4-to-32-hour final changes before freezing a larger size band. Record host-model
   context, tokens, wall time, and cost when available, and keep empirical
   production validation separate from logical labels.
-- Evaluate the current `change-seed/0.16.0` SQL, Python, Go, Java, Kotlin, Shell,
+- Evaluate the current `change-seed/0.17.0` SQL, Python/Jupyter, Go, Java, Kotlin, Shell,
   PowerShell, Terraform/HCL, PHP/Composer, Rust/Cargo, and Docker/Compose extensions on decomposed public
   changes before considering any of them part of an admitted size band.
 - Follow the remaining deferred semantics and safeguards in
   `CHANGE_ESTIMATION.md` before expanding any history-backed command.
 - Publish analyzer extension contracts.
-- Continue the issue #62 polyglot roadmap after Docker/Compose one bounded ecosystem
+- Continue the issue #62 polyglot roadmap after Jupyter one bounded ecosystem
   at a time, using the shared package/test/status contracts and adding a public
   analysis boundary, mutation slice, Change checks, and fresh-process benchmark for
   each language.

@@ -329,6 +329,16 @@ configured values, image contents, build-context volume, and raw Docker line
 volume receive no guessed Docker effort. This is transparent prior reuse, not
 fitted calibration.
 
+Python analyzer `0.2.0` adds a bounded Jupyter maintained-cell projection while
+preserving unchanged `seed-rules/0.4.0`. Python code-cell structure enters the
+language-neutral source backbone only after output/transient state, unsupported
+syntax, exact duplicate cells, and duplicate notebook projections are excluded.
+Markdown, data analysis, visualization, integrations, and tests remain separate
+facts consumed by existing rules. Physical notebook JSON, outputs, execution
+counts, widget/attachment payloads, checkpoints, and generated bodies receive no
+guessed effort. This is transparent prior reuse, not fitted calibration or a
+scientific-validity claim.
+
 ## Testing requirements
 
 Ordinary unit tests remain entirely memory-backed. Milestone 5 tests must cover:

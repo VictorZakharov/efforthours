@@ -52,6 +52,7 @@ internal static class FileClassificationCatalog
             [".psd1"] = "powershell",
             [".py"] = "python",
             [".pyi"] = "python",
+            [".ipynb"] = "jupyter",
             [".java"] = "java",
             [".kt"] = "kotlin",
             [".kts"] = "kotlin",

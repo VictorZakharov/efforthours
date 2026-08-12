@@ -101,6 +101,13 @@ The Docker/Compose follow-on advances current source identity to
 routing, and changes no frozen Change label or admission decision. No Stage A
 record contains Docker or Compose.
 
+The Jupyter follow-on advances current source identity to
+`change-seed/0.17.0+seed-rules/0.4.0`, adds bounded notebook JSON/source
+serialization, output/execution/widget/attachment, raw/non-Python, magic, and
+shell-escape normalization plus analyzer-backed code/documentation/data/
+visualization/integration/test routing, and changes no frozen Change label or
+admission decision. No Stage A record contains Jupyter.
+
 ## Reproducible source boundary
 
 `change-fixture-generator/0.1.0` analyzes synthetic base/head states through

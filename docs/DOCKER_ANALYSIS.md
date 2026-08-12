@@ -5,7 +5,9 @@
 Docker analyzer `0.1.0` and common scanner `0.2.11` provide an experimental,
 offline-only Dockerfile, Docker Compose, and `.dockerignore` evidence path.
 Repository estimates reuse the unchanged `seed-rules/0.4.0` container-deployment
-prior. Change estimates use `change-seed/0.16.0+seed-rules/0.4.0`.
+prior. Docker Change support was introduced in `change-seed/0.16.0`; the current
+composite is `change-seed/0.17.0+seed-rules/0.4.0` without changing Docker
+normalization or valuation behavior.
 
 No Docker-specific rate was fitted. The repository and Change paths are
 uncalibrated, the Docker Change extension is outside the admitted

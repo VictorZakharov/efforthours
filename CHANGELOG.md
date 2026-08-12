@@ -8,6 +8,20 @@ may still change public contracts with explicit documentation.
 
 ### Added
 
+- Python analyzer `0.2.0` adds safe Jupyter `.ipynb` analysis through bounded,
+  digest-verified JSON and the existing Python tokenizer. It represents maintained
+  Python cells, Markdown, qualified data analysis, visualization, integrations,
+  and tests while excluding outputs, execution state, widgets, attachments,
+  embedded payloads, magics, shell escapes, unsupported-language cells,
+  checkpoints, and generated notebooks. It launches no Jupyter process or kernel
+  and emits no source excerpts or payload values.
+- A standalone public Jupyter mutation suite adds 14 project-authored states and
+  52 passing relations for serialization/output invariance, duplicate/generated/
+  checkpoint exclusion, mixed-syntax bounds, semantic/category directionality,
+  and category isolation.
+- Scanner benchmark mode `jupyter-notebook-static` records a fresh-process
+  million-line checkpoint with target metadata unchanged and no target execution,
+  dependency installation, or network access.
 - Docker analyzer `0.1.0` adds offline, digest-verified bounded analysis for
   Dockerfile variants, filename-qualified Docker Compose YAML, `.dockerignore`,
   literal repository-local Compose-to-Dockerfile references, build/runtime
@@ -167,6 +181,16 @@ may still change public contracts with explicit documentation.
 
 ### Changed
 
+- Common scanner `0.2.12` classifies `.ipynb` as Jupyter in the Python ecosystem
+  and excludes `.ipynb_checkpoints` by default. The unchanged experimental
+  `seed-rules/0.4.0` consumes projection-normalized notebook semantics rather than
+  physical JSON or output volume; no fitted notebook rate or calibration claim
+  was added.
+- Change source identity advances to
+  `change-seed/0.17.0+seed-rules/0.4.0` for bounded Jupyter serialization/output
+  normalization and analyzer-backed code, documentation, data, visualization,
+  integration, and test routing. The admitted Stage A boundary remains
+  `change-seed/0.6.0`; Jupyter is not included in that admission.
 - Common scanner `0.2.11` classifies strict Dockerfile variants,
   filename-qualified Compose YAML, and `.dockerignore`. The unchanged
   experimental `seed-rules/0.4.0` container-deployment prior consumes bounded
