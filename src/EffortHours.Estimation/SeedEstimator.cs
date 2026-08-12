@@ -59,6 +59,7 @@ public sealed class SeedEstimator : IEstimator
             "java",
             "javascript",
             "kotlin",
+            "php",
             "python",
             "powershell",
             "shell",

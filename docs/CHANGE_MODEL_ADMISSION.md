@@ -6,10 +6,10 @@ Metric identity, decision order, and the first small-change logical gate are fro
 as `change-model-admission/0.2.0`. The admitted source baseline is
 `change-seed/0.6.0+seed-rules/0.3.0`; it is the transparent Stage A logical
 baseline for experimental one-to-several-day Change estimates. The current source
-has advanced to `change-seed/0.13.0+seed-rules/0.4.0` for static SQL, Python, Go,
-Java, Kotlin, Shell, PowerShell, Terraform, and HCL support. Those extensions preserve admitted
-rules but are not separately admitted, and no Stage A record contains any of those
-ecosystems. This is weak-supervision admission, not empirical accuracy,
+has advanced to `change-seed/0.14.0+seed-rules/0.4.0` for static SQL, Python, Go,
+Java, Kotlin, Shell, PowerShell, Terraform/HCL, and PHP/Composer support. Those
+extensions preserve admitted rules but are not separately admitted, and no Stage A
+record contains any of those ecosystems. This is weak-supervision admission, not empirical accuracy,
 formal interval calibration, or production readiness.
 
 Rubric `change-ehe-work-item/1.1.0` permits a disclosed host-AI teacher to author
@@ -520,3 +520,24 @@ admitted successor; `0.6.0` remains the last admitted source baseline. Terraform
 HCL admission requires licensed public final changes in the declared size band,
 exact small-task logical decomposition, repository-isolated partitions, and the
 normal development/validation/test decision order.
+
+## `change-seed/0.14.0` static PHP and Composer extension
+
+Version 0.14.0 adds maintained `.php` final-delta support. Its formatting
+comparison normalizes ordinary layout and non-documentation comments while
+preserving PHPDoc, identifiers, variables, operators, delimiters, strings, numbers,
+heredoc/nowdoc bodies, PHP tags, and inline template content; incomplete lexical or
+delimiter structure fails closed. Repository analyzer evidence routes qualified
+PHP API, UI/template, data, integration, security, validation, background, build,
+and test changes through existing rules without adding a fitted Change prior.
+Vendor/cache/generated/lock/duplicate and formatting-only bodies retain zero
+implementation value.
+
+The standalone public PHP mutation suite adds 14 repository states and passes
+59/59 relations. That is qualitative analyzer and routing safeguard evidence, not
+reviewed Change labeling. The Stage A corpus and its exact logical decomposition
+contain no PHP or Composer changes. Version 0.14.0 is therefore an experimental
+source revision, not an admitted successor; `0.6.0` remains the last admitted
+source baseline. PHP admission requires licensed public final changes in the
+declared size band, exact small-task logical decomposition, repository-isolated
+partitions, and the normal development/validation/test decision order.

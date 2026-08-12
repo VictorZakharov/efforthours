@@ -37,6 +37,8 @@ internal static class EcosystemClassification
         if (language is "terraform" or "terraform-json" or "hcl" ||
             TerraformFileClassification.IsProjectArtifact(lowerName, extension))
             ecosystems.Add("terraform");
+        if (language == "php" || PhpFileClassification.IsProjectArtifact(lowerName))
+            ecosystems.Add("php");
         return ecosystems;
     }
 

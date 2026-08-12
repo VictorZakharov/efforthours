@@ -949,3 +949,21 @@ calibration, or a production-admission decision. No existing corpus, aggregate/
 standalone suite, partition, reviewer identity, teacher target, estimator artifact,
 or frozen report changes. Terraform/HCL has no independent correction or real-
 repository calibration family yet.
+
+## PHP and Composer mutation extension
+
+The seventh polyglot expansion adds a standalone `php-0.1.0` mutation suite rather
+than regenerating the frozen 88-state aggregate or any earlier standalone suite.
+Its 14 project-authored MIT synthetic states use unchanged `seed-rules/0.4.0` and
+cover formatting/comments, exact copies, conventional vendor/cache/generated/lock
+exclusions, Composer workspace ownership, API, data, integration, security,
+background, validation, PHP/Blade UI, unit/integration/end-to-end tests, and local
+framework namesakes.
+
+All 59 relations pass. These are qualitative directionality, range-point
+invariance, bounded-exclusion, category-isolation, ownership, and false-positive
+guardrails. They are not reviewed work-item labels, held-out accuracy evidence,
+interval calibration, or a production-admission decision. No existing corpus,
+aggregate/standalone suite, partition, reviewer identity, teacher target, estimator
+artifact, or frozen report changes. PHP/Composer has no independent correction or
+real-repository calibration family yet.

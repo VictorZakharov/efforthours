@@ -34,6 +34,8 @@ effort-label corpora, accuracy claims, or model-training data.
 - Standalone suite `terraform-0.1.0` records the Terraform/HCL expansion
   checkpoint: 14 cases and 48 assertions evaluated with unchanged
   `seed-rules/0.4.0`.
+- Standalone suite `php-0.1.0` records the PHP/Composer expansion checkpoint: 14
+  cases and 59 assertions evaluated with unchanged `seed-rules/0.4.0`.
 
 The August 8, 2026 analyzer-precision reevaluation with `.NET` analyzer `0.3.2`
 and JavaScript analyzer `0.4.1` reproduced identical low, expected, and high
@@ -386,6 +388,9 @@ retain all earlier assertions unchanged.
 - `baseline-seed-rules-0.4.0-terraform-0.1.0.json` records all 48 passing
   Terraform/HCL assertions.
 - `estimates/seed-rules-0.4.0/terraform-*.estimate.json` contains its candidates.
+- `php-0.1.0.suite.json` defines the standalone 14-case PHP/Composer suite.
+- `baseline-seed-rules-0.4.0-php-0.1.0.json` records all 59 passing PHP assertions.
+- `estimates/seed-rules-0.4.0/php-*.estimate.json` contains its candidates.
 - `fixtures/` contains every complete synthetic source state.
 
 Every case has a distinct repository source digest. Assertions select canonical
@@ -512,6 +517,21 @@ candidate estimator version, 14 cases, 48 assertions, and zero failures. The sui
 is standalone so the frozen aggregate and all earlier standalone suites remain
 untouched.
 
+## Reproduce standalone PHP/Composer suite 0.1.0
+
+Generate each of the 14 `php-*` fixtures with repository estimator
+`seed-rules/0.4.0` into `estimates/seed-rules-0.4.0/`. Then evaluate the 14 exact
+candidate paths against `php-0.1.0.suite.json`, writing
+`baseline-seed-rules-0.4.0-php-0.1.0.json`. The result must disclose one candidate
+estimator version, 14 cases, 59 assertions, and zero failures. The suite is
+standalone so the frozen aggregate and all earlier standalone suites remain
+untouched.
+
+The `php-excluded` case includes `composer.lock` to verify that lock contents never
+create PHP production semantics. The existing language-neutral lock inventory may
+still add one bounded build/configuration unit; the suite bounds that movement
+explicitly instead of changing the shared prior or regenerating frozen reports.
+
 ## Limitations and next expansion
 
 The suite uses deliberately small archetypes. Near-copy and the two new
@@ -559,6 +579,12 @@ It does not start a shell, resolve commands/modules, follow sourced content,
 evaluate expansions, prove quoting/pipeline semantics, or observe filesystem,
 process, network, permission, or platform effects. Static role and semantic labels
 are confidence signals, not proof that a script runs correctly or portably.
+
+The PHP scanner is token-backed rather than native-parser/runtime-backed, and its
+Composer reader is not a dependency resolver. It does not execute autoloaders,
+scripts, plugins, framework bootstraps, containers, routes, reflection, dynamic
+includes, tests, or generated caches. Static package, template, and semantic labels
+are confidence signals, not proof that a PHP application installs or runs.
 
 Passing these relations prevents known perverse movements. It does not establish
 that any absolute hour or delta is numerically correct, and it does not make the

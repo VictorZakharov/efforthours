@@ -6,6 +6,7 @@
   <Project Path="src/EffortHours.Analyzers.Go/EffortHours.Analyzers.Go.csproj" />
   <Project Path="src/EffortHours.Analyzers.Java/EffortHours.Analyzers.Java.csproj" />
   <Project Path="src/EffortHours.Analyzers.JavaScript/EffortHours.Analyzers.JavaScript.csproj" />
+  <Project Path="src/EffortHours.Analyzers.Php/EffortHours.Analyzers.Php.csproj" />
   <Project Path="src/EffortHours.Analyzers.Python/EffortHours.Analyzers.Python.csproj" />
   <Project Path="src/EffortHours.Analyzers.Scripting/EffortHours.Analyzers.Scripting.csproj" />
   <Project Path="src/EffortHours.Analyzers.Sql/EffortHours.Analyzers.Sql.csproj" />

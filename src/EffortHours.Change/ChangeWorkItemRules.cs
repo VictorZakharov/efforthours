@@ -153,6 +153,8 @@ internal static partial class ChangeWorkItemBuilder
             .FirstOrDefault(tag => tag.StartsWith("script-role:", StringComparison.Ordinal))?[12..] ?? string.Empty;
         string hclRole = path.Tags
             .FirstOrDefault(tag => tag.StartsWith("hcl-role:", StringComparison.Ordinal))?[9..] ?? string.Empty;
+        string testType = path.Tags
+            .FirstOrDefault(tag => tag.StartsWith("test-type:", StringComparison.Ordinal))?[10..] ?? string.Empty;
         string lowerPath = path.Path.ToLowerInvariant();
         if (hclRole == "test")
         {
@@ -204,6 +206,16 @@ internal static partial class ChangeWorkItemBuilder
 
         if (role == "test")
         {
+            if (testType == "end-to-end")
+            {
+                return EffortCategory.EndToEndAndUiTesting;
+            }
+
+            if (testType is "integration" or "component")
+            {
+                return EffortCategory.IntegrationContractAndComponentTesting;
+            }
+
             if (lowerPath.Contains("e2e", StringComparison.Ordinal) ||
                 lowerPath.Contains("endtoend", StringComparison.Ordinal) ||
                 lowerPath.Contains("playwright", StringComparison.Ordinal) ||

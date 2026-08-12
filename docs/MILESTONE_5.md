@@ -300,6 +300,15 @@ consume separate facts. Generic HCL, lock/state/plan/cache/generated/vendor bodi
 and raw Terraform line volume do not receive guessed Terraform effort. This is
 transparent prior reuse, not fitted calibration.
 
+PHP analyzer `0.1.0` replaces coarse PHP file inventory with bounded source,
+Composer package, and template semantics while preserving the unchanged
+`seed-rules/0.4.0` artifact. The language-neutral source backbone consumes files,
+declarations, public symbols, branches, and exception structure; existing API, UI,
+data, integration, security, validation, background, build, test, and delivery
+rules consume separate qualified facts. Vendor/cache/generated/lock/duplicate
+bodies and raw PHP line volume do not receive guessed PHP effort. This is
+transparent prior reuse, not fitted calibration.
+
 ## Testing requirements
 
 Ordinary unit tests remain entirely memory-backed. Milestone 5 tests must cover:

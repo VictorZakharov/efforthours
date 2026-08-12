@@ -89,7 +89,7 @@ public sealed class ScriptingChangeTests
 
         Assert.Contains(report.Categories, candidate =>
             candidate.Category == category && candidate.Hours.Expected > 0m);
-        Assert.Equal("change-seed/0.13.0+seed-rules/0.4.0", report.EstimatorVersion);
+        Assert.Equal("change-seed/0.14.0+seed-rules/0.4.0", report.EstimatorVersion);
     }
 
     private static Task<ChangeEstimateReport> EstimateAsync(ChangeState before, ChangeState after) =>

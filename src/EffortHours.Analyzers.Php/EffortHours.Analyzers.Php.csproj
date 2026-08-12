@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RootNamespace>EffortHours.Analyzers.Php</RootNamespace>
+    <Description>Bounded static PHP and Composer evidence analyzer for EffortHours.</Description>
+  </PropertyGroup>
+  <ItemGroup>
+    <InternalsVisibleTo Include="EffortHours.Tests" />
+    <ProjectReference Include="../EffortHours.Analysis/EffortHours.Analysis.csproj" />
+    <ProjectReference Include="../EffortHours.Contracts/EffortHours.Contracts.csproj" />
+  </ItemGroup>
+</Project>

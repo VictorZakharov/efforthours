@@ -8,10 +8,12 @@ estimation continues to use the unchanged `seed-rules/0.4.0` model. No fitted
 Terraform-specific rate, reviewed Terraform label, provider-derived prior, or
 production-accuracy claim is introduced.
 
-Change source identity `change-seed/0.13.0+seed-rules/0.4.0` adds conservative
-HCL-aware formatting comparison and analyzer-backed routing. It is not admitted by
-the earlier `change-seed/0.6.0` Stage A gate, whose frozen records contain no
-Terraform or HCL paths.
+Change version `0.13.0` added conservative HCL-aware formatting comparison and
+analyzer-backed routing. The current composite source identity is
+`change-seed/0.14.0+seed-rules/0.4.0`; the additive PHP extension does not change
+Terraform normalization or valuation. Terraform/HCL is not admitted by the earlier
+`change-seed/0.6.0` Stage A gate, whose frozen records contain no Terraform or HCL
+paths.
 
 ## Admitted artifacts
 

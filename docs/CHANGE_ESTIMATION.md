@@ -7,13 +7,14 @@ implemented after Milestone 7B5. They include provider-neutral immutable
 base/head analysis, two statically scanned directories, two saved repository
 evidence bundles, one commit, one final revision range, and one GitHub pull
 request through an optional `gh` adapter. The current
-`change-seed/0.13.0` rules remain experimental and are not empirically calibrated,
+`change-seed/0.14.0` rules remain experimental and are not empirically calibrated,
 production-ready, or separately model-admitted. They preserve the valuation
 behavior of the Stage A logically admitted 0.6.0 baseline; the SQL, Python, Go,
-Java, Kotlin, Shell, PowerShell, Terraform, and HCL paths were not present in that gate.
-Version 0.13.0 retains the 0.3.0 logical-marginality correction and the 0.4.0
-fail-closed boundary for explicitly delimited customization inside otherwise
-generated files. It adds an expected-point gross-to-final normalization diagnostic
+Java, Kotlin, Shell, PowerShell, Terraform/HCL, and PHP/Composer paths were not
+present in that gate. Version 0.14.0 retains the 0.3.0 logical-marginality
+correction and the 0.4.0 fail-closed boundary for explicitly delimited
+customization inside otherwise generated files. It adds an expected-point gross-
+to-final normalization diagnostic
 for explicit multi-commit ranges, disjoint mixed-role category partitions,
 roughly-one-hour logical work-item decomposition, unique-snapshot analysis reuse,
 bounded component audits, SQL-aware formatting/category routing, Python
@@ -21,10 +22,9 @@ indentation-aware formatting/category routing, and Go-aware formatting/directive
 implicit-semicolon/category routing, Java token-aware formatting/category routing,
 Kotlin token-aware formatting/category routing, Shell/PowerShell literal-aware
 formatting/semantic role routing, and HCL-aware formatting/Terraform semantic
-routing without changing any existing Change EHE
-prior or previously supported final-delta total. The current
-source composes repository
-`seed-rules/0.4.0`.
+routing, plus PHP-aware formatting and analyzer-backed semantic/category routing,
+without changing any existing Change EHE prior or previously supported final-delta
+total. The current source composes repository `seed-rules/0.4.0`.
 The first calibration-infrastructure checkpoint, a preliminary 24-record synthetic
 host-AI teacher corpus, a one-record real public pilot, a blind six-family
 real-source expansion, and a released-alpha.3 public validation follow-on are
@@ -40,7 +40,7 @@ migration, integration, CI, container-delivery, and simplification mutations in
 addition to the initial normalization and Git boundaries. The first Change
 portfolio checkpoint adds repeated PRs, a versioned cross-repository PR manifest,
 and bounded author-and-period selection. Its separate
-`change-portfolio/0.1.0+change-seed/0.13.0+seed-rules/0.4.0` reconciler changes no
+`change-portfolio/0.1.0+change-seed/0.14.0+seed-rules/0.4.0` reconciler changes no
 Change prior, frozen report, label, or admission decision and remains experimental.
 
 ## Purpose
@@ -187,14 +187,18 @@ modified, removed, exact-move, excluded, and unchanged-context evidence without
 checking out either tree. Formatting-only classification uses conservative,
 literal-aware whitespace normalization for the initial .NET and JavaScript/
 TypeScript source extensions plus bounded language-aware normalizers for SQL,
-Python, Go, Java, Kotlin, Shell, PowerShell, Terraform, and HCL. Shell and PowerShell ordinary
-formatting and non-directive comments can normalize to zero while shebangs,
+Python, Go, Java, Kotlin, Shell, PowerShell, Terraform/HCL, and PHP. Shell and
+PowerShell ordinary formatting and non-directive comments can normalize to zero while shebangs,
 PowerShell `#requires`, literals, identifiers, operators, and delimiters remain
 significant. Here-documents and here-strings fail closed. Unsupported or uncertain
 rewrites remain represented and visible rather than being silently discarded.
 Terraform/HCL comparison ignores horizontal layout and blank-line count while
 preserving semantic newlines, comments, identifiers, operators, literals,
 templates, delimiters, and heredoc bodies. Incomplete constructs fail closed.
+PHP comparison ignores ordinary formatting and non-documentation comments while
+preserving PHPDoc, identifiers, variables, operators, delimiters, literals,
+heredoc/nowdoc bodies, PHP tags, and inline template content. Incomplete constructs
+fail closed.
 Exact blob moves are excluded from body implementation effort. Path-sensitive
 integration work is included only when separate analyzer evidence supports it.
 
@@ -379,12 +383,13 @@ adjustments, exact allocations, attribution uncertainty, verification, and
 post-EHE pricing. They emit neither local repository paths nor source excerpts.
 
 The current source Change estimator identity is
-`change-seed/0.13.0+seed-rules/0.4.0`; the portfolio reconciler identity is
-`change-portfolio/0.1.0+change-seed/0.13.0+seed-rules/0.4.0`. The earlier 0.6.0
+`change-seed/0.14.0+seed-rules/0.4.0`; the portfolio reconciler identity is
+`change-portfolio/0.1.0+change-seed/0.14.0+seed-rules/0.4.0`. The earlier 0.6.0
 Change identity alone passed the experimental Stage A logical gate, and that
-record contains no SQL, Python, Go, Java, Kotlin, Shell, PowerShell, Terraform, or
-HCL. Portfolio aggregation does not broaden that admission. Neither 0.13.0 nor portfolio 0.1.0
-may be described as empirically calibrated, generally admitted, or production-ready. Frozen calibration source reports retain
+record contains no SQL, Python, Go, Java, Kotlin, Shell, PowerShell, Terraform,
+HCL, PHP, or Composer. Portfolio aggregation does not broaden that admission.
+Neither 0.14.0 nor portfolio 0.1.0 may be described as empirically calibrated,
+generally admitted, or production-ready. Frozen calibration source reports retain
 the exact earlier estimator identity they were created from.
 
 ## Implemented CLI behavior
@@ -463,6 +468,13 @@ the exact earlier estimator identity they were created from.
   facts keep infrastructure, integration, security, validation, tests,
   documentation, build, and delivery in their native categories; state, plan,
   cache, lock, generated, duplicate, and formatting-only bodies remain zero.
+- Source-readable `.php` paths use a conservative PHP signature. Ordinary layout
+  and non-documentation comments can normalize to zero while PHPDoc, literals,
+  identifiers, variables, operators, delimiters, heredoc/nowdoc bodies, PHP tags,
+  and inline template content remain meaningful; incomplete input fails closed.
+- Analyzer-backed PHP facts route API, UI/template, data, integration, security,
+  validation, background, build, and test deltas through existing categories.
+  Vendor/cache/generated/lock/duplicate and formatting-only bodies remain zero.
 - When one logical capability cites explicit production, test, documentation,
   build, or delivery roles, its existing low/expected/high budget is partitioned
   across disjoint category evidence rather than duplicated or left in one category.

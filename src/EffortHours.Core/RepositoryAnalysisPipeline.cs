@@ -3,6 +3,7 @@ using EffortHours.Analyzers.DotNet;
 using EffortHours.Analyzers.Go;
 using EffortHours.Analyzers.Java;
 using EffortHours.Analyzers.JavaScript;
+using EffortHours.Analyzers.Php;
 using EffortHours.Analyzers.Python;
 using EffortHours.Analyzers.Scripting;
 using EffortHours.Analyzers.Sql;
@@ -25,6 +26,7 @@ public sealed class RepositoryAnalysisPipeline : IRepositoryScanner
                 new JavaRepositoryAnalyzer(),
                 new KotlinRepositoryAnalyzer(),
                 new JavaScriptRepositoryAnalyzer(),
+                new PhpRepositoryAnalyzer(),
                 new PythonRepositoryAnalyzer(),
                 new ScriptingRepositoryAnalyzer(),
                 new SqlRepositoryAnalyzer(),
@@ -45,6 +47,7 @@ public sealed class RepositoryAnalysisPipeline : IRepositoryScanner
                 new JavaRepositoryAnalyzer(fileSystem),
                 new KotlinRepositoryAnalyzer(fileSystem),
                 new JavaScriptRepositoryAnalyzer(fileSystem),
+                new PhpRepositoryAnalyzer(fileSystem),
                 new PythonRepositoryAnalyzer(fileSystem),
                 new ScriptingRepositoryAnalyzer(fileSystem),
                 new SqlRepositoryAnalyzer(fileSystem),

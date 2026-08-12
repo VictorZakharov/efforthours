@@ -35,6 +35,7 @@ src/
   EffortHours.Analyzers.Scripting/  bounded static Shell and PowerShell evidence
   EffortHours.Analyzers.Sql/        bounded static SQL evidence
   EffortHours.Analyzers.Terraform/  bounded static Terraform and HCL evidence
+  EffortHours.Analyzers.Php/        bounded static PHP and Composer evidence
   EffortHours.Change/               final-delta evidence, Git/PR selectors, reconciliation
   EffortHours.Estimation/           rules, work items, aggregation
   EffortHours.Calibration/          reviewed labels and offline evaluation
@@ -544,7 +545,7 @@ review.
 
 ### Milestone 9: Expansion
 
-The first five expansion slices are complete. Issue #63 adds language-neutral analyzed/
+The first seven expansion slices are complete. Issue #63 adds language-neutral analyzed/
 inventory-only status, generic package and fine-test evidence, generic source
 normalization/backbone routing, and the token-backed Python 3 analyzer. Python
 repository and Change estimates now cover static package ownership, local import
@@ -613,6 +614,18 @@ relations, and its million-line checkpoint completes in 8.239 seconds with a
 303.72 MiB sampled peak. This remains experimental, uncalibrated, and outside
 Change admission.
 
+Issue #66 adds common scanner `0.2.9` and PHP analyzer `0.1.0`. Repository and
+Change estimates cover scanner-admitted Composer packages, dependencies, autoload
+mappings, scripts, binary entry points, literal local path repositories, maintained
+PHP source and tests, token-backed declarations/public APIs/control flow,
+import-qualified framework semantics, and PHP/Blade templates without invoking
+PHP, Composer, autoloaders, package scripts, framework bootstraps, containers,
+routes, reflection, dependency resolution, or tests. PHP reuses
+`seed-rules/0.4.0` unchanged; Change advances to `change-seed/0.14.0`. A standalone
+14-state PHP mutation slice passes all 59 relations, and its million-line
+checkpoint completes in 7.920 seconds with a 441.57 MiB sampled peak. This remains
+experimental, uncalibrated, and outside Change admission.
+
 - Add feature-oriented reporting.
 - Maintain the implemented provider-neutral directory/evidence selectors and
   measure their large-tree performance before broadening their scope.
@@ -628,15 +641,16 @@ Change admission.
   4-to-32-hour final changes before freezing a larger size band. Record host-model
   context, tokens, wall time, and cost when available, and keep empirical
   production validation separate from logical labels.
-- Evaluate the current `change-seed/0.13.0` SQL, Python, Go, Java, Kotlin, Shell,
-  PowerShell, Terraform, and HCL extensions on decomposed public changes before considering any
-  of them part of an admitted size band.
+- Evaluate the current `change-seed/0.14.0` SQL, Python, Go, Java, Kotlin, Shell,
+  PowerShell, Terraform/HCL, and PHP/Composer extensions on decomposed public
+  changes before considering any of them part of an admitted size band.
 - Follow the remaining deferred semantics and safeguards in
   `CHANGE_ESTIMATION.md` before expanding any history-backed command.
 - Publish analyzer extension contracts.
-- Execute the issue #62 polyglot roadmap one bounded ecosystem at a time, using the
-  shared package/test/status contracts and adding a public analysis boundary,
-  mutation slice, Change checks, and fresh-process benchmark for each language.
+- Continue the issue #62 polyglot roadmap after PHP/Composer one bounded ecosystem
+  at a time, using the shared package/test/status contracts and adding a public
+  analysis boundary, mutation slice, Change checks, and fresh-process benchmark for
+  each language.
 - Add regional rate cards without coupling geography to effort.
 - Explore local semantic models where deterministic analysis is insufficient.
 
