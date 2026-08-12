@@ -25,13 +25,13 @@ eh estimate ./my-repository --profile implementation --format markdown
 ```
 
 EffortHours statically analyzes .NET, JavaScript, TypeScript, Python, Go, Java,
-Kotlin/JVM, HTML/CSS-family frontends, SQL, and mixed repositories. Frontend
-support includes bounded template and stylesheet semantics plus static Angular
-component metadata. SQL support
-includes bounded schema, migration, stored-program, query, test, deployment, and
-cross-database evidence for common PostgreSQL, SQL Server, MySQL/MariaDB, and
-SQLite syntax. It does not render, compile frameworks, execute preprocessors,
-connect to a database, or execute SQL.
+Kotlin/JVM, Shell, PowerShell, HTML/CSS-family frontends, SQL, and mixed
+repositories. Frontend support includes bounded template and stylesheet semantics
+plus static Angular component metadata. SQL support includes bounded schema,
+migration, stored-program, query, test, deployment, and cross-database evidence
+for common PostgreSQL, SQL Server, MySQL/MariaDB, and SQLite syntax. It does not
+render, compile frameworks, execute preprocessors, connect to a database, or
+execute SQL.
 Python support includes `.py`/`.pyi`, static package metadata, bounded token and
 indentation structure, tests, and conservative import-qualified framework
 evidence. It does not invoke Python, import modules, resolve environments, install
@@ -51,6 +51,11 @@ Kotlin declarations, coroutines/Flow, tests, import-qualified server,
 Android/Compose, data, integration, security, and background evidence, and shared
 static Maven/Gradle JVM ownership. It does not invoke a JVM, Kotlin compiler,
 Gradle, Android tooling, KSP, kapt, compiler plugins, or tests.
+Shell and PowerShell support includes maintained product scripts, reusable
+modules, tests, and build/CI/delivery/infrastructure automation with bounded
+token-backed structure and exact invocation-context evidence. It never starts a
+shell, resolves commands or modules, sources files, evaluates expansions, or emits
+source values or excerpts.
 It reports evidence-backed work items across implementation, testing,
 documentation, integration, delivery, validation, and review, then optionally
 applies a dated contractor rate without changing the effort estimate.
@@ -101,7 +106,7 @@ treated as untrusted input, and reports avoid source excerpts by default.
 
 ## Current limitations
 
-- `seed-rules/0.4.0` and `change-seed/0.11.0` remain experimental and uncalibrated.
+- `seed-rules/0.4.0` and `change-seed/0.12.0` remain experimental and uncalibrated.
 - SQL uses bounded token/statement evidence mapped to existing priors; it is not a
   full grammar, schema diff engine, query optimizer, or database validator.
 - Public calibration labels have not completed genuinely independent correction.
@@ -113,6 +118,9 @@ treated as untrusted input, and reports avoid source excerpts by default.
 - Kotlin evidence is token-backed rather than compiler-, bytecode-, or JVM-backed;
   Maven/Gradle evidence is a conservative shared JVM build-model projection, and
   Android resources, KSP/kapt output, and multiplatform binding are not resolved.
+- Shell and PowerShell evidence is token-backed rather than interpreter-backed;
+  sourced content, dynamic expansion, command/module resolution, and platform or
+  runtime effects are not resolved.
 - Host-review token use, cost, and estimate improvement have not yet been measured
   across representative repositories; no automatic review budget is selected.
 

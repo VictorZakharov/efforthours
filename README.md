@@ -21,7 +21,8 @@ productivity score, invoice, or reconstruction of repository history.
 > repository estimator is not numerically calibrated or admitted. The Change
 > estimator has passed its first model-authored logical gate for changes estimated at 4 to 32
 > hours on the previously admitted non-SQL families, but it is not empirically
-> production-validated and the newer SQL, Python, Go, Java, and Kotlin paths are outside that gate.
+> production-validated and the newer SQL, Python, Go, Java, Kotlin, Shell, and
+> PowerShell paths are outside that gate.
 > Review the evidence and ranges before using any estimate for a consequential
 > decision.
 
@@ -152,6 +153,10 @@ For `.kt` and `.kts`, ordinary formatting, optional semicolons/trailing commas,
 and non-documentation comments can normalize to zero while KDoc, literals,
 backtick identifiers, operators, delimiters, and semantic newlines after jump
 expressions remain meaningful.
+For Shell and PowerShell, ordinary formatting and non-directive comments can
+normalize to zero while shebangs, PowerShell `#requires`, literals, identifiers,
+operators, and delimiters remain meaningful. Here-documents and here-strings fail
+closed so uncertain content changes remain represented.
 The current source build can retain bounded customization inside generated files
 only when exact, EffortHours-specific `<custom-code>` regions isolate it safely;
 the generated body still contributes zero. Generator-specific protected-region
@@ -233,7 +238,12 @@ The current static analyzers support:
 - import-qualified Ktor/Spring server, Android/Compose, Room/Exposed/JPA,
   integration, security, validation, scheduling, coroutine, Flow, and test
   evidence, with Gradle Kotlin DSL kept separate from maintained scripts;
-- mixed .NET, JavaScript/TypeScript, Python, Go, Java/Kotlin, and SQL repositories;
+- maintained POSIX-family Shell/Bash and PowerShell product scripts, modules,
+  tests, build/CI/delivery/infrastructure automation, command structure, file/
+  network/process boundaries, security surfaces, and error handling through
+  bounded static token and invocation-context analysis;
+- mixed .NET, JavaScript/TypeScript, Python, Go, Java/Kotlin, Shell/PowerShell,
+  and SQL repositories;
 - documentation, build configuration, CI, containers, infrastructure, package
   metadata, and checked-in LCOV or Cobertura coverage reports; and
 - generated, vendored, minified, binary, duplicate, test, and documentation
@@ -276,6 +286,11 @@ and non-Gradle `.kts` files. It does not evaluate Gradle Kotlin DSL, resolve
 dependencies or source sets, compile source, run KSP/kapt/compiler plugins/tests,
 inspect bytecode, or prove Android, multiplatform, reflection, or runtime DSL
 behavior. See the [static Kotlin/JVM boundary](docs/KOTLIN_ANALYSIS.md).
+Shell and PowerShell analysis reads only scanner-admitted maintained scripts and
+bounded manifest/automation invocation context. It does not start a shell, resolve
+commands or modules, source files, evaluate expansions, observe platform effects,
+or emit source values or excerpts. Dynamic behavior remains explicit uncertainty.
+See the [static Shell and PowerShell boundary](docs/SHELL_POWERSHELL_ANALYSIS.md).
 
 ## Offline and safe by default
 
@@ -315,8 +330,8 @@ in this alpha. See the [host-review protocol](docs/MILESTONE_8.md).
 - Static analysis assumes discovered tests pass on the fastest path and does not
   prove that a checkout builds or runs.
 - Unsupported languages still receive common inventory evidence but not the same
-  semantic depth as .NET, JavaScript/TypeScript, Python, Go, Java/Kotlin, SQL, and the supported
-  frontend forms.
+  semantic depth as .NET, JavaScript/TypeScript, Python, Go, Java/Kotlin,
+  Shell/PowerShell, SQL, and the supported frontend forms.
 - Checked-in coverage can be stale even when its bytes match the analyzed tree;
   EffortHours does not regenerate it.
 - Change portfolio reconciliation is experimental. Exact patch/object-chain

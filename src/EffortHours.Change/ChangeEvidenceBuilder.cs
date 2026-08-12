@@ -268,8 +268,10 @@ internal static class ChangeEvidenceBuilder
 
     private static Dictionary<string, IReadOnlyList<string>> SemanticTagsByPath(
         RepositoryEvidence evidence) => evidence.Facts
-        .Where(fact => fact.Id.StartsWith("sql:", StringComparison.Ordinal) &&
-            fact.Kind != EvidenceKinds.SqlRepository)
+        .Where(fact =>
+            (fact.Id.StartsWith("sql:", StringComparison.Ordinal) &&
+                fact.Kind != EvidenceKinds.SqlRepository) ||
+            fact.Provenance.Analyzer == "efforthours.scripting-analyzer")
         .SelectMany(fact => fact.Locations.Select(location => new
         {
             location.Path,

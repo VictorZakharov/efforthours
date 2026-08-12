@@ -96,6 +96,7 @@ public static class EvidenceKinds
     public const string ContainerConfiguration = "container-configuration";
     public const string Coverage = "coverage";
     public const string DataAccess = "data-access";
+    public const string DeliveryAutomation = "delivery-automation";
     public const string Documentation = "documentation";
     public const string DotNetProject = "dotnet-project";
     public const string DotNetSolution = "dotnet-solution";

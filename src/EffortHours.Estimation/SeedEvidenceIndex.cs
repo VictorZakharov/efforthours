@@ -10,6 +10,7 @@ internal sealed class SeedEvidenceIndex
         EvidenceKinds.ApiSurface,
         EvidenceKinds.BackgroundWork,
         EvidenceKinds.DataAccess,
+        EvidenceKinds.DeliveryAutomation,
         EvidenceKinds.DotNetTest,
         EvidenceKinds.EcosystemTest,
         EvidenceKinds.EntryPoint,
@@ -103,9 +104,12 @@ internal sealed class SeedEvidenceIndex
             .FirstOrDefault();
     }
 
-    public StructureNormalization GetStructureNormalization(SeedEstimationScope scope)
+    public StructureNormalization GetStructureNormalization(
+        SeedEstimationScope scope,
+        EvidenceFact structure)
     {
         ArgumentNullException.ThrowIfNull(scope);
+        ArgumentNullException.ThrowIfNull(structure);
         SeedFileEvidence[] analyzed = [.. Files
             .Where(file => IsOwnedBy(file, scope))
             .Where(file => IsAnalyzedSource(file, scope.Ecosystem))];
@@ -123,12 +127,14 @@ internal sealed class SeedEvidenceIndex
         SeedFileEvidence[] production = [.. analyzed.Where(file => !file.IsTest)];
         int canonicalProduction = production.Count(IsCanonical);
         bool hasDuplicates = canonicalProduction < production.Length;
+        bool productionOnly = structure.Tags.Contains("structure:production-only", StringComparer.Ordinal);
+        int denominator = productionOnly ? production.Length : analyzed.Length;
         return new StructureNormalization(
-            (decimal)canonicalProduction / analyzed.Length,
+            denominator == 0 ? 0m : (decimal)canonicalProduction / denominator,
             analyzed.Length,
             production.Length,
             canonicalProduction,
-            HasTests: production.Length < analyzed.Length,
+            HasTests: !productionOnly && production.Length < analyzed.Length,
             HasDuplicates: hasDuplicates);
     }
 
@@ -380,7 +386,8 @@ internal sealed class SeedEvidenceIndex
                 .SelectMany(fact => fact.Tags)
                 .Distinct(StringComparer.Ordinal)
                 .Order(StringComparer.Ordinal)],
-            HasExactDuplicates = facts.Length > 1,
+            HasExactDuplicates = facts.Length > 1 || facts.Any(fact =>
+                fact.Tags.Contains("content-normalization:exact-duplicates", StringComparer.Ordinal)),
         };
     }
 

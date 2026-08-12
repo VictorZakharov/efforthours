@@ -1,0 +1,3 @@
+#!/bin/sh
+# Project-authored inert stand-in for a copied launcher filename.
+printf '%s\n' wrapper

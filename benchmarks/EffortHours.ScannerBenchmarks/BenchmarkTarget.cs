@@ -164,6 +164,14 @@ internal static class BenchmarkFixtureGenerator
             Enumerable.Range(1, Math.Max(0, options.LinesPerFile - 4))
                 .Select(line =>
                     $"    private val value{line:D4}: Int = {line.ToString(CultureInfo.InvariantCulture)}\n"));
+        string shellLines = string.Concat(
+            Enumerable.Range(1, Math.Max(0, options.LinesPerFile - 5))
+                .Select(line =>
+                    $"  value_{line:D4}={line.ToString(CultureInfo.InvariantCulture)}\n"));
+        string powerShellLines = string.Concat(
+            Enumerable.Range(1, Math.Max(0, options.LinesPerFile - 5))
+                .Select(line =>
+                    $"  $value{line:D4} = {line.ToString(CultureInfo.InvariantCulture)}\n"));
 
         Parallel.For(0, options.Files, index =>
         {
@@ -177,6 +185,8 @@ internal static class BenchmarkFixtureGenerator
                     BenchmarkSourceKind.Go => "go",
                     BenchmarkSourceKind.Java => Path.Combine("src", "main", "java", "benchmark"),
                     BenchmarkSourceKind.Kotlin => Path.Combine("src", "main", "kotlin", "benchmark"),
+                    BenchmarkSourceKind.Shell => "scripts",
+                    BenchmarkSourceKind.PowerShell => "powershell",
                     _ => "web",
                 },
                 $"group-{index / 100:D5}");
@@ -217,6 +227,15 @@ internal static class BenchmarkFixtureGenerator
                     "package benchmark\n" +
                     $"data class File{index:D7}<T>(val input: T) {{\n" + kotlinLines +
                     "    suspend fun value(): T = input\n}\n"),
+                BenchmarkSourceKind.Shell => (
+                    $"file{index:D7}.sh",
+                    "#!/bin/sh\n" + $"file_{index:D7}() {{\n" + shellLines +
+                    "  if test \"$1\"; then printf '%s\\n' \"$1\"; fi\n}\n"),
+                BenchmarkSourceKind.PowerShell => (
+                    $"File{index:D7}.ps1",
+                    $"function Invoke-File{index:D7} {{\n  param([string] $Value)\n" +
+                    powerShellLines +
+                    "  if ($Value) { Write-Output $Value }\n}\n"),
                 _ => throw new InvalidOperationException($"Unsupported benchmark source kind '{kind}'."),
             };
             File.WriteAllText(Path.Combine(directory, fileName), content);
@@ -233,6 +252,8 @@ internal static class BenchmarkFixtureGenerator
         BenchmarkShape.Go => BenchmarkSourceKind.Go,
         BenchmarkShape.Java => BenchmarkSourceKind.Java,
         BenchmarkShape.Kotlin => BenchmarkSourceKind.Kotlin,
+        BenchmarkShape.Shell => BenchmarkSourceKind.Shell,
+        BenchmarkShape.PowerShell => BenchmarkSourceKind.PowerShell,
         BenchmarkShape.Mixed => (index % 3) switch
         {
             0 => BenchmarkSourceKind.CSharp,
@@ -251,5 +272,7 @@ internal static class BenchmarkFixtureGenerator
         Go,
         Java,
         Kotlin,
+        Shell,
+        PowerShell,
     }
 }

@@ -8,6 +8,20 @@ may still change public contracts with explicit documentation.
 
 ### Added
 
+- Scripting analyzer `0.1.0` adds offline, digest-verified token analysis for
+  maintained POSIX-family Shell/Bash and PowerShell product scripts, reusable
+  modules, tests, and build/CI/delivery/infrastructure automation. It records
+  bounded command structure, file/network/process boundaries, security surfaces,
+  validation, and dynamic uncertainty without starting a shell, resolving
+  commands/modules, sourcing content, evaluating expansions, or emitting source
+  values/excerpts.
+- A standalone public scripting mutation suite adds 13 project-authored states
+  and 46 passing relations for formatting, exact-copy/generated/copied-launcher
+  invariance, category directionality/isolation, and remote-command namesake
+  rejection.
+- Scanner benchmark modes `shell-static` and `powershell-static` record fresh-
+  process million-line checkpoints with target metadata unchanged and no target
+  execution, dependency installation, or network access.
 - Kotlin analyzer `0.1.0` adds offline, digest-verified analysis for maintained
   `.kt` and non-Gradle `.kts` files; shared Maven/Gradle JVM project ownership;
   package/type/function/public-API/nullability/coroutine structure; Kotlin tests;
@@ -97,6 +111,17 @@ may still change public contracts with explicit documentation.
 
 ### Changed
 
+- Common scanner `0.2.7` classifies maintained Shell and PowerShell sources,
+  modules, tests, build, CI, delivery, and infrastructure roles while excluding
+  conventional completions and copied launchers/installers. The unchanged
+  experimental `seed-rules/0.4.0` language-neutral backbone and existing
+  specialized priors consume scripting evidence; no fitted scripting rate or
+  calibration claim was added.
+- Change source identity advances to
+  `change-seed/0.12.0+seed-rules/0.4.0` for conservative Shell/PowerShell
+  formatting and analyzer-backed semantic/category routing. The admitted Stage A
+  boundary remains `change-seed/0.6.0`; Shell and PowerShell are not included in
+  that admission.
 - Common scanner `0.2.6` classifies Kotlin source, scripts, tests, and Gradle Kotlin
   DSL configuration. The unchanged experimental `seed-rules/0.4.0`
   `polyglot-source-backbone` and existing specialized priors consume Kotlin

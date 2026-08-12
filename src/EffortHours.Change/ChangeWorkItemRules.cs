@@ -149,6 +149,8 @@ internal static partial class ChangeWorkItemBuilder
             .FirstOrDefault(tag => tag.StartsWith("role:", StringComparison.Ordinal))?[5..] ?? string.Empty;
         string sqlRole = path.Tags
             .FirstOrDefault(tag => tag.StartsWith("sql-role:", StringComparison.Ordinal))?[9..] ?? string.Empty;
+        string scriptRole = path.Tags
+            .FirstOrDefault(tag => tag.StartsWith("script-role:", StringComparison.Ordinal))?[12..] ?? string.Empty;
         string lowerPath = path.Path.ToLowerInvariant();
         if (sqlRole == "test-fixture")
         {
@@ -158,6 +160,29 @@ internal static partial class ChangeWorkItemBuilder
         if (sqlRole == "delivery")
         {
             return EffortCategory.PackagingDeploymentAndReleaseArtifacts;
+        }
+
+        if (scriptRole == "delivery")
+        {
+            return EffortCategory.PackagingDeploymentAndReleaseArtifacts;
+        }
+
+        if (scriptRole is "ci" or "infrastructure")
+        {
+            return EffortCategory.CiCdAndInfrastructureAsCode;
+        }
+
+        if (scriptRole == "build")
+        {
+            return EffortCategory.BuildConfigurationAndDeveloperTooling;
+        }
+
+        if (scriptRole == "test")
+        {
+            return lowerPath.Contains("integration", StringComparison.Ordinal) ||
+                lowerPath.Contains("smoke", StringComparison.Ordinal)
+                    ? EffortCategory.IntegrationContractAndComponentTesting
+                    : EffortCategory.UnitTesting;
         }
 
         if (role == "test")
@@ -188,6 +213,10 @@ internal static partial class ChangeWorkItemBuilder
         if (role is "project" or "solution" or "package-manifest" or "build-configuration" or "configuration")
         {
             return EffortCategory.BuildConfigurationAndDeveloperTooling;
+        }
+        if (role == "delivery")
+        {
+            return EffortCategory.PackagingDeploymentAndReleaseArtifacts;
         }
 
         if (lowerPath.Contains("migration", StringComparison.Ordinal))

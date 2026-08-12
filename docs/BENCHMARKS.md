@@ -223,7 +223,7 @@ variance.
 
 ## Static Python analyzer v0.1.0 checkpoint
 
-Measured on August 11, 2026 with the same Windows/.NET/hardware environment as the
+Measured on August 12, 2026 with the same Windows/.NET/hardware environment as the
 fresh-process checkpoint, common scanner `0.2.3`, and Python analyzer `0.1.0`.
 The generated repository contains one root `pyproject.toml` and 10,000 `.py` files
 with approximately 100 physical lines each. Each file contains simple assignments
@@ -385,6 +385,50 @@ coroutines, compiler plugins, multiplatform source sets, malformed syntax, or th
 eight-MiB/250,000-token per-file safeguards. Process-level E2E coverage runs a
 smaller Kotlin shape in a fresh process and verifies the same read-only/offline
 signals.
+
+## Static Shell and PowerShell analyzer v0.1.0 checkpoints
+
+Measured on August 11, 2026 with the same Windows/.NET/hardware environment as the
+fresh-process checkpoint, common scanner `0.2.7`, and scripting analyzer `0.1.0`.
+Each generated repository contains 10,000 maintained scripts with approximately
+100 physical lines each. The Shell shape exercises functions, variable
+assignments, conditionals, and literal built-ins; the PowerShell shape exercises
+functions, parameters, assignments, conditionals, and cmdlets. Both runs include
+scanning, digest verification, bounded managed tokenization, evidence
+construction, and JSON serialization without starting a shell or resolving a
+command/module.
+
+```text
+dotnet benchmarks/EffortHours.ScannerBenchmarks/bin/Release/net10.0/EffortHours.ScannerBenchmarks.dll --files 10000 --lines-per-file 100 --shell
+dotnet benchmarks/EffortHours.ScannerBenchmarks/bin/Release/net10.0/EffortHours.ScannerBenchmarks.dll --files 10000 --lines-per-file 100 --powershell
+```
+
+Observed fresh-process results:
+
+| Measure | Shell | PowerShell |
+| --- | ---: | ---: |
+| Requested source lines | 1,000,000 | 1,000,000 |
+| Analyzed text lines | 990,000 | 990,000 |
+| Source files | 10,000 | 10,000 |
+| Fixture generation | 2.038 s | 1.813 s |
+| Common scan plus static script analysis | 14.525 s | 13.689 s |
+| Evidence serialization | 0.118 s | 0.145 s |
+| Analysis throughput | 68,161 lines/s | 72,321 lines/s |
+| Cumulative managed allocation | 622.53 MiB | 863.29 MiB |
+| Sampled peak working set | 119.66 MiB | 130.76 MiB |
+| Evidence JSON size | 10.08 MiB | 13.90 MiB |
+| Evidence facts | 10,005 | 10,005 |
+
+Each before/after target metadata digest was identical. Neither analyzer executed
+target code, started a shell, installed dependencies, or accessed the network.
+Fixture generation and serialization are timed separately from analysis.
+
+These are many-small-files scaling checkpoints, not representative distributions
+of shell dialects, platform commands, PowerShell types, module manifests, sourced
+graphs, here-documents/here-strings, malformed syntax, or real automation
+invocation graphs. They are not cross-platform regression gates. Process-level E2E
+coverage runs smaller fresh-process Shell and PowerShell shapes and verifies the
+same read-only/offline signals.
 
 ## Change EHE scale-and-safety v1.0.0 checkpoint
 

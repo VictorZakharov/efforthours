@@ -7,6 +7,7 @@
   <Project Path="src/EffortHours.Analyzers.Java/EffortHours.Analyzers.Java.csproj" />
   <Project Path="src/EffortHours.Analyzers.JavaScript/EffortHours.Analyzers.JavaScript.csproj" />
   <Project Path="src/EffortHours.Analyzers.Python/EffortHours.Analyzers.Python.csproj" />
+  <Project Path="src/EffortHours.Analyzers.Scripting/EffortHours.Analyzers.Scripting.csproj" />
   <Project Path="src/EffortHours.Analyzers.Sql/EffortHours.Analyzers.Sql.csproj" />
   <Project Path="src/EffortHours.Cli/EffortHours.Cli.csproj" />
   <Project Path="src/EffortHours.Calibration/EffortHours.Calibration.csproj" />

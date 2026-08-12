@@ -158,6 +158,32 @@ public sealed class BenchmarkCliTests
         AssertPositive(measurements, "analyzed-text-lines");
     }
 
+    [Theory]
+    [InlineData("--shell", "shell-static")]
+    [InlineData("--powershell", "powershell-static")]
+    public async Task ScriptingBenchmarksRunInFreshProcessesWithStaticSafetySignals(
+        string option,
+        string expectedMode)
+    {
+        ProcessResult result = await RunBenchmarkAsync(
+            "--files",
+            "12",
+            "--lines-per-file",
+            "10",
+            option);
+
+        Assert.Equal(0, result.ExitCode);
+        Assert.Equal(string.Empty, result.StandardError);
+        Dictionary<string, string> measurements = ParseMeasurements(result.StandardOutput);
+        Assert.Equal(expectedMode, measurements["mode"]);
+        Assert.Equal("true", measurements["target-metadata-unchanged"]);
+        Assert.Equal("not-performed", measurements["target-execution"]);
+        Assert.Equal("not-performed", measurements["dependency-installation"]);
+        Assert.Equal("not-performed", measurements["network-access"]);
+        AssertPositive(measurements, "scan-peak-working-set-mib");
+        AssertPositive(measurements, "analyzed-text-lines");
+    }
+
     private static void AssertPositive(Dictionary<string, string> measurements, string name)
     {
         Assert.True(
