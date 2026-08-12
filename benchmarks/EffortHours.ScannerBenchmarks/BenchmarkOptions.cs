@@ -16,6 +16,8 @@ internal enum BenchmarkShape
     PowerShell,
     Php,
     Rust,
+    C,
+    Cpp,
     Terraform,
     Docker,
     Mixed,
@@ -32,7 +34,7 @@ internal sealed record BenchmarkOptions(
 {
     public const string Usage =
         "Usage: scanner-benchmark [--files <count>] [--lines-per-file <count>] " +
-        "[--dotnet|--javascript|--python|--jupyter|--go|--java|--kotlin|--shell|--powershell|--php|--rust|--terraform|--docker|--mixed] [--warm-cache] [--keep] " +
+        "[--dotnet|--javascript|--python|--jupyter|--go|--java|--kotlin|--shell|--powershell|--php|--rust|--c|--cpp|--terraform|--docker|--mixed] [--warm-cache] [--keep] " +
         "or scanner-benchmark --repository <path> [--warm-cache]";
 
     public string Mode => Shape switch
@@ -49,6 +51,8 @@ internal sealed record BenchmarkOptions(
         BenchmarkShape.PowerShell => "powershell-static",
         BenchmarkShape.Php => "php-composer-static",
         BenchmarkShape.Rust => "rust-cargo-static",
+        BenchmarkShape.C => "c-static",
+        BenchmarkShape.Cpp => "cpp-static",
         BenchmarkShape.Terraform => "terraform-hcl-static",
         BenchmarkShape.Docker => "docker-compose-static",
         BenchmarkShape.Mixed => "mixed-static",
@@ -117,6 +121,12 @@ internal sealed record BenchmarkOptions(
                     break;
                 case "--rust":
                     shape = SelectShape(shape, BenchmarkShape.Rust);
+                    break;
+                case "--c":
+                    shape = SelectShape(shape, BenchmarkShape.C);
+                    break;
+                case "--cpp":
+                    shape = SelectShape(shape, BenchmarkShape.Cpp);
                     break;
                 case "--terraform":
                     shape = SelectShape(shape, BenchmarkShape.Terraform);

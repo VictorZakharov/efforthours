@@ -7,11 +7,11 @@ implemented after Milestone 7B5. They include provider-neutral immutable
 base/head analysis, two statically scanned directories, two saved repository
 evidence bundles, one commit, one final revision range, and one GitHub pull
 request through an optional `gh` adapter. The current
-`change-seed/0.17.0` rules remain experimental and are not empirically calibrated,
+`change-seed/0.18.0` rules remain experimental and are not empirically calibrated,
 production-ready, or separately model-admitted. They preserve the valuation
 behavior of the Stage A logically admitted 0.6.0 baseline; the SQL, Python, Go,
 Java, Kotlin, Shell, PowerShell, Terraform/HCL, PHP/Composer, Rust/Cargo,
-Docker/Compose, and Jupyter paths were not present in that gate. Version 0.17.0
+Docker/Compose, Jupyter, and C/C++ paths were not present in that gate. Version 0.18.0
 retains the 0.3.0 logical-marginality
 correction and the 0.4.0 fail-closed boundary for explicitly delimited
 customization inside otherwise generated files. It adds an expected-point gross-
@@ -27,7 +27,8 @@ routing, PHP-aware formatting and analyzer-backed semantic/category routing, plu
 Rust-aware formatting and analyzer-backed semantic/category routing, plus
 Dockerfile, Compose, and `.dockerignore` formatting normalization with analyzer-
 backed packaging/deployment routing, plus bounded Jupyter container/output
-normalization and analyzer-backed semantic routing, without
+normalization and analyzer-backed semantic routing, plus C/C++ token-aware
+formatting and analyzer-backed semantic/category routing, without
 changing any existing Change EHE prior or previously supported final-delta total.
 The current source composes repository `seed-rules/0.4.0`.
 The first calibration-infrastructure checkpoint, a preliminary 24-record synthetic
@@ -45,7 +46,7 @@ migration, integration, CI, container-delivery, and simplification mutations in
 addition to the initial normalization and Git boundaries. The first Change
 portfolio checkpoint adds repeated PRs, a versioned cross-repository PR manifest,
 and bounded author-and-period selection. Its separate
-`change-portfolio/0.1.0+change-seed/0.17.0+seed-rules/0.4.0` reconciler changes no
+`change-portfolio/0.1.0+change-seed/0.18.0+seed-rules/0.4.0` reconciler changes no
 Change prior, frozen report, label, or admission decision and remains experimental.
 
 ## Purpose
@@ -225,15 +226,15 @@ meaningful ordering remain significant; invalid or oversized content fails close
 Exact blob moves are excluded from body implementation effort. Path-sensitive
 integration work is included only when separate analyzer evidence supports it.
 
-The approved C/C++ design reserves `change-seed/0.18.0` for a later implementation
-checkpoint. That planned signature may ignore ordinary layout and non-documentation
+The implemented C/C++ `change-seed/0.18.0` signature may ignore ordinary layout and non-documentation
 comments while preserving documentation, preprocessing directives and replacement
 tokens, identifiers, operators, delimiters, literals, raw strings, attributes,
 declaration structure, and meaningful ordering. Malformed directives, ambiguous
 line splicing, invalid literals, and unbalanced structure fail closed. Header
-fan-out and translation-unit count never multiply a delta. This design does not
-change the current `change-seed/0.17.0` identity or make current C/C++ changes
-semantically analyzed; `CPP_ANALYSIS.md` defines the complete future boundary.
+fan-out and translation-unit count never multiply a delta. Analyzer-backed
+production, API, UI, data, integration, security, validation, concurrency, FFI,
+test, build, and delivery evidence routes through existing categories.
+`CPP_ANALYSIS.md` defines the complete implemented boundary.
 
 SQL schema, migration, stored-program, and query deltas use the data category;
 test fixtures use integration/component testing; explicit deployment/install
@@ -416,12 +417,12 @@ adjustments, exact allocations, attribution uncertainty, verification, and
 post-EHE pricing. They emit neither local repository paths nor source excerpts.
 
 The current source Change estimator identity is
-`change-seed/0.17.0+seed-rules/0.4.0`; the portfolio reconciler identity is
-`change-portfolio/0.1.0+change-seed/0.17.0+seed-rules/0.4.0`. The earlier 0.6.0
+`change-seed/0.18.0+seed-rules/0.4.0`; the portfolio reconciler identity is
+`change-portfolio/0.1.0+change-seed/0.18.0+seed-rules/0.4.0`. The earlier 0.6.0
 Change identity alone passed the experimental Stage A logical gate, and that
 record contains no SQL, Python, Go, Java, Kotlin, Shell, PowerShell, Terraform,
-HCL, PHP, Composer, Rust, Cargo, Docker, Compose, or Jupyter. Portfolio aggregation
-does not broaden that admission. Neither 0.17.0 nor portfolio 0.1.0 may be
+HCL, PHP, Composer, Rust, Cargo, Docker, Compose, Jupyter, C, or C++. Portfolio
+aggregation does not broaden that admission. Neither 0.18.0 nor portfolio 0.1.0 may be
 described as empirically calibrated,
 generally admitted, or production-ready. Frozen calibration source reports retain
 the exact earlier estimator identity they were created from.

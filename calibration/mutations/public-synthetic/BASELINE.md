@@ -600,6 +600,22 @@ candidate estimator version, 14 cases, 52 assertions, and zero failures. The sui
 is standalone so the frozen aggregate and all earlier standalone suites remain
 untouched.
 
+## Reproduce standalone C and C++ suite 0.1.0
+
+Generate each of the 21 `cpp-*` fixtures with repository estimator
+`seed-rules/0.4.0` into `estimates/seed-rules-0.4.0/`. Then evaluate the 21 exact
+candidate paths against `cpp-0.1.0.suite.json`, writing
+`baseline-seed-rules-0.4.0-cpp-0.1.0.json`. The result must disclose one candidate
+estimator version, 21 cases, 71 assertions, and zero failures. The suite is
+standalone so the frozen aggregate and every earlier standalone suite remain
+untouched.
+
+The cases cover maintained C and modern C++ structure, formatting/comments,
+exact-copy, generated, and vendored exclusion, conditional non-stacking, header fan-out,
+qualified semantics, unit/integration tests, concurrency, FFI, CMake/Make/Meson/
+MSBuild boundaries, and local namesake rejection. They do not calibrate absolute
+hours or admit C/C++ Change EHE.
+
 ## Limitations and next expansion
 
 The suite uses deliberately small archetypes. Near-copy and the two new
@@ -674,6 +690,14 @@ does not execute cells or magics, load outputs/attachments/widgets, resolve
 runtime dependencies, verify reproducibility, or establish output/scientific
 correctness. Static maintained-cell evidence and the passing qualitative suite do
 not prove that a notebook runs or that its results are valid.
+
+The C/C++ scanner is token-backed rather than compiler- or preprocessor-backed,
+and its build readers do not evaluate CMake, Make, Meson, or MSBuild. It does not
+expand macros/includes, select configurations, read system headers, instantiate
+templates, resolve types/linkage, compile, link, execute tests, or prove ABI,
+memory/thread safety, portability, or runtime behavior. Static declarations,
+ownership, and semantic labels are confidence signals, not proof that a native
+project builds or runs.
 
 Passing these relations prevents known perverse movements. It does not establish
 that any absolute hour or delta is numerically correct, and it does not make the

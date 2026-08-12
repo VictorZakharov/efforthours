@@ -24,7 +24,7 @@ public sealed class PhpScannerClassificationTests
         AssertFileTag(evidence, "src/AppTest.php", "classification:test");
         AssertFileTag(evidence, "bootstrap/cache/services.php", "classification:generated");
         AssertFileTag(evidence, "phpunit.xml.dist", "role:build-configuration");
-        Assert.Equal("0.2.12", RepositoryScanner.AnalyzerVersion);
+        Assert.Equal("0.2.13", RepositoryScanner.AnalyzerVersion);
     }
 
     private static void AssertFileTag(RepositoryEvidence evidence, string path, string tag)

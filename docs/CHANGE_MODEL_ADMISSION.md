@@ -6,9 +6,9 @@ Metric identity, decision order, and the first small-change logical gate are fro
 as `change-model-admission/0.2.0`. The admitted source baseline is
 `change-seed/0.6.0+seed-rules/0.3.0`; it is the transparent Stage A logical
 baseline for experimental one-to-several-day Change estimates. The current source
-has advanced to `change-seed/0.17.0+seed-rules/0.4.0` for static SQL, Python,
+has advanced to `change-seed/0.18.0+seed-rules/0.4.0` for static SQL, Python,
 Jupyter, Go, Java, Kotlin, Shell, PowerShell, Terraform/HCL, PHP/Composer,
-Rust/Cargo, and Docker/Compose support. Those
+Rust/Cargo, Docker/Compose, and C/C++ support. Those
 extensions preserve admitted rules but are not separately admitted, and no Stage A
 record contains any of those ecosystems. This is weak-supervision admission, not empirical accuracy,
 formal interval calibration, or production readiness.
@@ -608,3 +608,26 @@ remains the last admitted source baseline. Jupyter admission requires licensed
 public final changes in the declared size band, exact small-task logical
 decomposition, repository-isolated partitions, and the normal development/
 validation/test decision order.
+
+## `change-seed/0.18.0` static C and C++ extension
+
+Version 0.18.0 adds maintained C and C++ source, header, and module-interface
+final-delta support. Its bounded managed token signature normalizes ordinary
+layout and non-documentation comments while preserving documentation,
+preprocessor directives and replacement tokens, identifiers, operators,
+delimiters, literals, raw strings, attributes, declaration structure, and
+meaningful ordering. Invalid, oversized, unbalanced, or preprocessor-ambiguous
+content fails closed. Repository analyzer evidence routes production, API, UI,
+data, integration, security, validation, concurrency, FFI, tests, build, and
+delivery through existing rules without adding a fitted Change prior. Generated,
+vendored, duplicate, build-output, and formatting-only bodies retain zero
+implementation value.
+
+The standalone public C/C++ mutation suite adds 21 repository states and passes
+71/71 relations. That is qualitative analyzer and routing safeguard evidence, not
+reviewed Change labeling. The Stage A corpus and its exact logical decomposition
+contain no C or C++ changes. Version 0.18.0 is therefore an experimental source
+revision, not an admitted successor; `0.6.0` remains the last admitted source
+baseline. C/C++ admission requires licensed public final changes in the declared
+size band, exact small-task logical decomposition, repository-isolated partitions,
+and the normal development/validation/test decision order.

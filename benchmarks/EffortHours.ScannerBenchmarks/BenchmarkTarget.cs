@@ -158,6 +158,14 @@ internal static class BenchmarkFixtureGenerator
                 "[package]\nname = \"efforthours-benchmark\"\nversion = \"1.0.0\"\nedition = \"2024\"\n");
         }
 
+        if (options.Shape is BenchmarkShape.C or BenchmarkShape.Cpp or BenchmarkShape.Mixed)
+        {
+            File.WriteAllText(
+                Path.Combine(rootPath, "CMakeLists.txt"),
+                "cmake_minimum_required(VERSION 3.25)\n" +
+                "project(efforthours_benchmark LANGUAGES C CXX)\n");
+        }
+
         string csharpLines = string.Concat(
             Enumerable.Range(1, Math.Max(0, options.LinesPerFile - 1))
                 .Select(line => $"// representative source line {line.ToString(CultureInfo.InvariantCulture)}\n"));
@@ -198,6 +206,12 @@ internal static class BenchmarkFixtureGenerator
             Enumerable.Range(1, Math.Max(0, options.LinesPerFile - 4))
                 .Select(line =>
                     $"    pub value_{line:D4}: usize,\n"));
+        string cLines = string.Concat(
+            Enumerable.Range(1, Math.Max(0, options.LinesPerFile - 4))
+                .Select(line => $"    int value_{line:D4};\n"));
+        string cppLines = string.Concat(
+            Enumerable.Range(1, Math.Max(0, options.LinesPerFile - 4))
+                .Select(line => $"    int value_{line:D4};\n"));
         string terraformLines = string.Concat(
             Enumerable.Range(1, Math.Max(0, options.LinesPerFile - 2))
                 .Select(line =>
@@ -220,6 +234,8 @@ internal static class BenchmarkFixtureGenerator
                     BenchmarkSourceKind.PowerShell => "powershell",
                     BenchmarkSourceKind.Php => "src",
                     BenchmarkSourceKind.Rust => "src",
+                    BenchmarkSourceKind.C => "c",
+                    BenchmarkSourceKind.Cpp => "cpp",
                     BenchmarkSourceKind.Terraform => "infrastructure",
                     BenchmarkSourceKind.Dockerfile or BenchmarkSourceKind.Compose => "containers",
                     _ => "web",
@@ -284,6 +300,14 @@ internal static class BenchmarkFixtureGenerator
                     $"pub struct File{index:D7}<'a, T> {{\n" + rustLines +
                     "    pub input: &'a T,\n}\n" +
                     $"impl<'a, T> File{index:D7}<'a, T> {{ pub async fn value(&self) -> &T {{ self.input }} }}\n"),
+                BenchmarkSourceKind.C => (
+                    $"file_{index:D7}.c",
+                    $"struct file_{index:D7} {{\n" + cLines + "};\n" +
+                    $"int file_{index:D7}_value(int input) {{ return input ? input : {index.ToString(CultureInfo.InvariantCulture)}; }}\n"),
+                BenchmarkSourceKind.Cpp => (
+                    $"file_{index:D7}.cpp",
+                    $"template<class T> struct File{index:D7} {{\n" + cppLines +
+                    "    T value(T input) const { return input; }\n};\n"),
                 BenchmarkSourceKind.Terraform => (
                     $"file{index:D7}.tf",
                     $"resource \"benchmark_item\" \"item_{index:D7}\" {{\n" +
@@ -315,15 +339,19 @@ internal static class BenchmarkFixtureGenerator
         BenchmarkShape.PowerShell => BenchmarkSourceKind.PowerShell,
         BenchmarkShape.Php => BenchmarkSourceKind.Php,
         BenchmarkShape.Rust => BenchmarkSourceKind.Rust,
+        BenchmarkShape.C => BenchmarkSourceKind.C,
+        BenchmarkShape.Cpp => BenchmarkSourceKind.Cpp,
         BenchmarkShape.Terraform => BenchmarkSourceKind.Terraform,
         BenchmarkShape.Docker => index % 2 == 0
             ? BenchmarkSourceKind.Dockerfile
             : BenchmarkSourceKind.Compose,
-        BenchmarkShape.Mixed => (index % 3) switch
+        BenchmarkShape.Mixed => (index % 5) switch
         {
             0 => BenchmarkSourceKind.CSharp,
             1 => BenchmarkSourceKind.JavaScript,
-            _ => BenchmarkSourceKind.TypeScript,
+            2 => BenchmarkSourceKind.TypeScript,
+            3 => BenchmarkSourceKind.C,
+            _ => BenchmarkSourceKind.Cpp,
         },
         _ => throw new InvalidOperationException($"Unsupported generated benchmark shape '{shape}'."),
     };
@@ -400,6 +428,8 @@ internal static class BenchmarkFixtureGenerator
         PowerShell,
         Php,
         Rust,
+        C,
+        Cpp,
         Terraform,
         Dockerfile,
         Compose,

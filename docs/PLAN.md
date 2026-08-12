@@ -38,7 +38,7 @@ src/
   EffortHours.Analyzers.Php/        bounded static PHP and Composer evidence
   EffortHours.Analyzers.Rust/       bounded static Rust and Cargo evidence
   EffortHours.Analyzers.Docker/     bounded static Dockerfile, Compose, and .dockerignore evidence
-  EffortHours.Analyzers.Cpp/        planned bounded static C/C++ and native-build evidence
+  EffortHours.Analyzers.Cpp/        bounded static C/C++ and native-build evidence
   EffortHours.Change/               final-delta evidence, Git/PR selectors, reconciliation
   EffortHours.Estimation/           rules, work items, aggregation
   EffortHours.Calibration/          reviewed labels and offline evaluation
@@ -665,14 +665,16 @@ checkpoint completes in 7.561 seconds with a 159.33 MiB sampled peak. This remai
 experimental, uncalibrated, scientifically unvalidated, and outside Change
 admission.
 
-Issue #65 has completed its required pre-implementation C/C++ design checkpoint.
-`CPP_ANALYSIS.md` freezes a dependency-free managed tokenizer and conservative
-declaration parser; C99/C11/C17/C23 and C++11 through C++23 structural scope; bounded
-preprocessor-alternative normalization; literal local include and header/source
-ownership; static CMake, Make, Meson, Visual C++/MSBuild, and supplementary package
-metadata; planned Change `0.18.0`; privacy/non-execution rules; and implementation
-verification gates. No C/C++ analyzer or semantic support is implemented yet, and
-the current scanner/estimator identities remain unchanged.
+Issue #65 adds common scanner `0.2.13` and C/C++ analyzer `0.1.0`. Repository and
+Change estimates cover maintained C99/C11/C17/C23 and C++11 through C++23 source,
+headers, modules, bounded declarations/public symbols, componentwise conditional-
+alternative normalization, qualified semantics, tests, literal local includes and
+ownership, and static CMake, Make, Meson, Visual C++/MSBuild, and supplementary
+metadata without invoking native tooling or reading system headers. Repository
+priors remain `seed-rules/0.4.0`; Change advances to `change-seed/0.18.0`. A
+standalone 21-state mutation suite passes all 71 relations. Million-line C and C++
+checkpoints complete in 8.197 and 9.716 seconds with 127.65 and 128.84 MiB sampled
+peaks. The path remains experimental, uncalibrated, and outside Change admission.
 
 - Add feature-oriented reporting.
 - Maintain the implemented provider-neutral directory/evidence selectors and
@@ -689,13 +691,14 @@ the current scanner/estimator identities remain unchanged.
   4-to-32-hour final changes before freezing a larger size band. Record host-model
   context, tokens, wall time, and cost when available, and keep empirical
   production validation separate from logical labels.
-- Evaluate the current `change-seed/0.17.0` SQL, Python/Jupyter, Go, Java, Kotlin, Shell,
-  PowerShell, Terraform/HCL, PHP/Composer, Rust/Cargo, and Docker/Compose extensions on decomposed public
+- Evaluate the current `change-seed/0.18.0` SQL, Python/Jupyter, Go, Java, Kotlin,
+  Shell, PowerShell, Terraform/HCL, PHP/Composer, Rust/Cargo, Docker/Compose, and
+  C/C++ extensions on decomposed public
   changes before considering any of them part of an admitted size band.
 - Follow the remaining deferred semantics and safeguards in
   `CHANGE_ESTIMATION.md` before expanding any history-backed command.
 - Publish analyzer extension contracts.
-- Continue the issue #62 polyglot roadmap after Jupyter one bounded ecosystem
+- Continue the issue #62 polyglot roadmap after C/C++ one bounded ecosystem
   at a time, using the shared package/test/status contracts and adding a public
   analysis boundary, mutation slice, Change checks, and fresh-process benchmark for
   each language.
@@ -750,12 +753,12 @@ The first useful release should:
   legally accompany the chosen open-source distribution, with recorded provenance.
 
 The latest scanner checkpoint analyzes one million lines in 7.083 seconds for
-static .NET, 12.088 seconds for static JavaScript/TypeScript, and 10.876 seconds for
-a mixed C#/JavaScript/TypeScript tree on the environment recorded in
+static .NET, 12.088 seconds for static JavaScript/TypeScript, and 13.214 seconds for
+a mixed C#/JavaScript/TypeScript/C/C++ tree on the environment recorded in
 `BENCHMARKS.md`. The static Python shape completes in 13.354 seconds with a
 109.63 MiB sampled peak; the static Go shape completes in 6.577 seconds with a
 119.95 MiB sampled peak; and the static Java shape completes in 13.954 seconds
-with a 167.31 MiB sampled peak. An explicit mixed warm-cache pass takes 4.581 seconds. Three verified
+with a 167.31 MiB sampled peak. An explicit mixed warm-cache pass takes 6.197 seconds. Three verified
 MIT releases and the EffortHours tree provide initial real-source measurements,
 with unchanged before/after target metadata.
 

@@ -1,0 +1,1049 @@
+{
+  "schemaVersion": "1.0.0",
+  "evidenceSchemaVersion": "1.0.0",
+  "estimatorVersion": "seed-rules/0.4.0",
+  "repository": {
+    "name": "cpp-build-systems",
+    "scope": ".",
+    "ecosystems": [
+      "cpp",
+      "dotnet"
+    ],
+    "sourceDigest": "sha256:d2edc74d3c5f8c25aa29d832b6466a8cf4281328a2fdb509a512760453cecdbc"
+  },
+  "profile": "implementation",
+  "baseline": {
+    "id": "senior-contractor-2026-no-ai",
+    "workerProfile": "Competent senior contractor familiar with the technical ecosystem",
+    "technologyBaselineYear": 2026,
+    "businessDomainFamiliar": false,
+    "usesAi": false,
+    "description": "One senior contractor recreating the described working system with modern 2026 tools and no AI."
+  },
+  "totalEffort": {
+    "low": 18.00,
+    "expected": 32.50,
+    "high": 57.25
+  },
+  "categories": [
+    {
+      "category": "specification-comprehension-and-domain-learning",
+      "hours": {
+        "low": 2.00,
+        "expected": 3.50,
+        "high": 6.00
+      }
+    },
+    {
+      "category": "repository-and-solution-setup",
+      "hours": {
+        "low": 3.00,
+        "expected": 4.00,
+        "high": 6.00
+      }
+    },
+    {
+      "category": "architecture-and-technical-design",
+      "hours": {
+        "low": 3.00,
+        "expected": 6.00,
+        "high": 11.00
+      }
+    },
+    {
+      "category": "production-implementation",
+      "hours": {
+        "low": 1.50,
+        "expected": 3.00,
+        "high": 5.75
+      }
+    },
+    {
+      "category": "unit-testing",
+      "hours": {
+        "low": 0.75,
+        "expected": 1.25,
+        "high": 2.00
+      }
+    },
+    {
+      "category": "manual-validation-debugging-and-hardening",
+      "hours": {
+        "low": 1.75,
+        "expected": 4.00,
+        "high": 8.00
+      }
+    },
+    {
+      "category": "build-configuration-and-developer-tooling",
+      "hours": {
+        "low": 2.25,
+        "expected": 3.75,
+        "high": 6.25
+      }
+    },
+    {
+      "category": "packaging-deployment-and-release-artifacts",
+      "hours": {
+        "low": 1.75,
+        "expected": 3.50,
+        "high": 6.25
+      }
+    },
+    {
+      "category": "self-review-and-system-integration",
+      "hours": {
+        "low": 2.00,
+        "expected": 3.50,
+        "high": 6.00
+      }
+    }
+  ],
+  "workItems": [
+    {
+      "schemaVersion": "1.0.0",
+      "id": "work:specification-comprehension:49aec33b6a46fb626dad:part-0001",
+      "category": "specification-comprehension-and-domain-learning",
+      "title": "Comprehend the supplied specification and bounded business domain",
+      "scope": ".",
+      "evidenceIds": [
+        "cpp:project:.",
+        "cpp:project:make",
+        "cpp:project:meson",
+        "cpp:project:msbuild",
+        "dotnet:repository",
+        "inventory:repository"
+      ],
+      "quantity": 4,
+      "complexity": "moderate",
+      "hours": {
+        "low": 2.00,
+        "expected": 3.50,
+        "high": 6.00
+      },
+      "confidence": 0.63,
+      "reason": "The modeled contractor must understand the specified behavior and bounded domain represented across the repository before implementing it. Rule \u0027specification-comprehension\u0027 uses production-scopes=4; complexity \u0027moderate\u0027 applies factor 1.",
+      "estimator": {
+        "id": "seed-rule:specification-comprehension",
+        "version": "0.4.0",
+        "kind": "rule"
+      },
+      "profiles": [
+        "implementation",
+        "recreation"
+      ],
+      "dependencyIds": [],
+      "correlationGroup": "repository:understanding-and-design",
+      "assumptions": [
+        "A clear specification exists at the level promised by the selected profile.",
+        "Open-ended stakeholder discovery is excluded."
+      ],
+      "exclusions": [],
+      "uncertaintyReasons": [
+        "No external specification artifact is represented in the current estimator request contract."
+      ]
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "id": "work:project-setup:852966fd0632e1ef6969:part-0001",
+      "category": "repository-and-solution-setup",
+      "title": "Set up \u0027.\u0027 (cli)",
+      "scope": ".",
+      "evidenceIds": [
+        "cpp:project:."
+      ],
+      "quantity": 1,
+      "complexity": "routine",
+      "hours": {
+        "low": 0.75,
+        "expected": 1.00,
+        "high": 1.50
+      },
+      "confidence": 0.78,
+      "reason": "A project or package manifest represents ecosystem setup, dependency selection, configuration, and validation work. Rule \u0027project-setup\u0027 uses scopes=1, dependencies=1; complexity \u0027routine\u0027 applies factor 0.85.",
+      "estimator": {
+        "id": "seed-rule:project-setup",
+        "version": "0.4.0",
+        "kind": "rule"
+      },
+      "profiles": [
+        "implementation",
+        "recreation"
+      ],
+      "dependencyIds": [],
+      "correlationGroup": "scope:cpp:.:setup",
+      "assumptions": [],
+      "exclusions": [],
+      "uncertaintyReasons": []
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "id": "work:project-setup:fe62bd20d1fdae9d22b7:part-0001",
+      "category": "repository-and-solution-setup",
+      "title": "Set up \u0027make\u0027 (package)",
+      "scope": "make",
+      "evidenceIds": [
+        "cpp:project:make"
+      ],
+      "quantity": 1,
+      "complexity": "routine",
+      "hours": {
+        "low": 0.75,
+        "expected": 1.00,
+        "high": 1.50
+      },
+      "confidence": 0.78,
+      "reason": "A project or package manifest represents ecosystem setup, dependency selection, configuration, and validation work. Rule \u0027project-setup\u0027 uses scopes=1; complexity \u0027routine\u0027 applies factor 0.85.",
+      "estimator": {
+        "id": "seed-rule:project-setup",
+        "version": "0.4.0",
+        "kind": "rule"
+      },
+      "profiles": [
+        "implementation",
+        "recreation"
+      ],
+      "dependencyIds": [],
+      "correlationGroup": "scope:cpp:make:setup",
+      "assumptions": [],
+      "exclusions": [],
+      "uncertaintyReasons": []
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "id": "work:project-setup:554964b34c2e0cf5d5df:part-0001",
+      "category": "repository-and-solution-setup",
+      "title": "Set up \u0027meson\u0027 (application)",
+      "scope": "meson",
+      "evidenceIds": [
+        "cpp:project:meson"
+      ],
+      "quantity": 1,
+      "complexity": "routine",
+      "hours": {
+        "low": 0.75,
+        "expected": 1.00,
+        "high": 1.50
+      },
+      "confidence": 0.78,
+      "reason": "A project or package manifest represents ecosystem setup, dependency selection, configuration, and validation work. Rule \u0027project-setup\u0027 uses scopes=1; complexity \u0027routine\u0027 applies factor 0.85.",
+      "estimator": {
+        "id": "seed-rule:project-setup",
+        "version": "0.4.0",
+        "kind": "rule"
+      },
+      "profiles": [
+        "implementation",
+        "recreation"
+      ],
+      "dependencyIds": [],
+      "correlationGroup": "scope:cpp:meson:setup",
+      "assumptions": [],
+      "exclusions": [],
+      "uncertaintyReasons": []
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "id": "work:project-setup:b8d0fb7e600983a92f6d:part-0001",
+      "category": "repository-and-solution-setup",
+      "title": "Set up \u0027msbuild\u0027 (library)",
+      "scope": "msbuild",
+      "evidenceIds": [
+        "cpp:project:msbuild"
+      ],
+      "quantity": 1,
+      "complexity": "routine",
+      "hours": {
+        "low": 0.75,
+        "expected": 1.00,
+        "high": 1.50
+      },
+      "confidence": 0.78,
+      "reason": "A project or package manifest represents ecosystem setup, dependency selection, configuration, and validation work. Rule \u0027project-setup\u0027 uses scopes=1; complexity \u0027routine\u0027 applies factor 0.85.",
+      "estimator": {
+        "id": "seed-rule:project-setup",
+        "version": "0.4.0",
+        "kind": "rule"
+      },
+      "profiles": [
+        "implementation",
+        "recreation"
+      ],
+      "dependencyIds": [],
+      "correlationGroup": "scope:cpp:msbuild:setup",
+      "assumptions": [],
+      "exclusions": [],
+      "uncertaintyReasons": []
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "id": "work:architecture-design:814a3e37cd73842c3fe2:part-0001",
+      "category": "architecture-and-technical-design",
+      "title": "Design the technical structure of \u0027.\u0027 (cli)",
+      "scope": ".",
+      "evidenceIds": [
+        "cpp:project:."
+      ],
+      "quantity": 1,
+      "complexity": "moderate",
+      "hours": {
+        "low": 0.75,
+        "expected": 1.50,
+        "high": 2.75
+      },
+      "confidence": 0.70,
+      "reason": "Even with supplied requirements, a competent implementation requires bounded technical design across the observed boundaries. Rule \u0027architecture-design\u0027 uses production-scopes=1; complexity \u0027moderate\u0027 applies factor 1.",
+      "estimator": {
+        "id": "seed-rule:architecture-design",
+        "version": "0.4.0",
+        "kind": "rule"
+      },
+      "profiles": [
+        "implementation",
+        "recreation"
+      ],
+      "dependencyIds": [],
+      "correlationGroup": "scope:cpp:.:design",
+      "assumptions": [
+        "Detailed product and visual design inputs are supplied under the implementation profile."
+      ],
+      "exclusions": [],
+      "uncertaintyReasons": []
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "id": "work:architecture-design:808479ce967001e05fd0:part-0001",
+      "category": "architecture-and-technical-design",
+      "title": "Design the technical structure of \u0027make\u0027 (package)",
+      "scope": "make",
+      "evidenceIds": [
+        "cpp:project:make"
+      ],
+      "quantity": 1,
+      "complexity": "moderate",
+      "hours": {
+        "low": 0.75,
+        "expected": 1.50,
+        "high": 2.75
+      },
+      "confidence": 0.70,
+      "reason": "Even with supplied requirements, a competent implementation requires bounded technical design across the observed boundaries. Rule \u0027architecture-design\u0027 uses production-scopes=1; complexity \u0027moderate\u0027 applies factor 1.",
+      "estimator": {
+        "id": "seed-rule:architecture-design",
+        "version": "0.4.0",
+        "kind": "rule"
+      },
+      "profiles": [
+        "implementation",
+        "recreation"
+      ],
+      "dependencyIds": [],
+      "correlationGroup": "scope:cpp:make:design",
+      "assumptions": [
+        "Detailed product and visual design inputs are supplied under the implementation profile."
+      ],
+      "exclusions": [],
+      "uncertaintyReasons": []
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "id": "work:architecture-design:7438977549983efececa:part-0001",
+      "category": "architecture-and-technical-design",
+      "title": "Design the technical structure of \u0027meson\u0027 (application)",
+      "scope": "meson",
+      "evidenceIds": [
+        "cpp:project:meson"
+      ],
+      "quantity": 1,
+      "complexity": "moderate",
+      "hours": {
+        "low": 0.75,
+        "expected": 1.50,
+        "high": 2.75
+      },
+      "confidence": 0.70,
+      "reason": "Even with supplied requirements, a competent implementation requires bounded technical design across the observed boundaries. Rule \u0027architecture-design\u0027 uses production-scopes=1; complexity \u0027moderate\u0027 applies factor 1.",
+      "estimator": {
+        "id": "seed-rule:architecture-design",
+        "version": "0.4.0",
+        "kind": "rule"
+      },
+      "profiles": [
+        "implementation",
+        "recreation"
+      ],
+      "dependencyIds": [],
+      "correlationGroup": "scope:cpp:meson:design",
+      "assumptions": [
+        "Detailed product and visual design inputs are supplied under the implementation profile."
+      ],
+      "exclusions": [],
+      "uncertaintyReasons": []
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "id": "work:architecture-design:365d8d0a241a62f72a01:part-0001",
+      "category": "architecture-and-technical-design",
+      "title": "Design the technical structure of \u0027msbuild\u0027 (library)",
+      "scope": "msbuild",
+      "evidenceIds": [
+        "cpp:project:msbuild"
+      ],
+      "quantity": 1,
+      "complexity": "moderate",
+      "hours": {
+        "low": 0.75,
+        "expected": 1.50,
+        "high": 2.75
+      },
+      "confidence": 0.70,
+      "reason": "Even with supplied requirements, a competent implementation requires bounded technical design across the observed boundaries. Rule \u0027architecture-design\u0027 uses production-scopes=1; complexity \u0027moderate\u0027 applies factor 1.",
+      "estimator": {
+        "id": "seed-rule:architecture-design",
+        "version": "0.4.0",
+        "kind": "rule"
+      },
+      "profiles": [
+        "implementation",
+        "recreation"
+      ],
+      "dependencyIds": [],
+      "correlationGroup": "scope:cpp:msbuild:design",
+      "assumptions": [
+        "Detailed product and visual design inputs are supplied under the implementation profile."
+      ],
+      "exclusions": [],
+      "uncertaintyReasons": []
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "id": "work:application-entry-point:51a15f791d4cf81a6ba9:part-0001",
+      "category": "production-implementation",
+      "title": "Implement application entry points for \u0027.\u0027 (cli)",
+      "scope": ".",
+      "evidenceIds": [
+        "cpp:entry:main.cpp"
+      ],
+      "quantity": 1,
+      "complexity": "routine",
+      "hours": {
+        "low": 0.50,
+        "expected": 0.75,
+        "high": 1.25
+      },
+      "confidence": 0.59,
+      "reason": "Application startup and command entry points require explicit wiring and usable startup behavior. Rule \u0027application-entry-point\u0027 uses entry-points=1; complexity \u0027routine\u0027 applies factor 0.85.",
+      "estimator": {
+        "id": "seed-rule:application-entry-point",
+        "version": "0.4.0",
+        "kind": "rule"
+      },
+      "profiles": [
+        "implementation",
+        "recreation"
+      ],
+      "dependencyIds": [],
+      "correlationGroup": "scope:cpp:.:implementation",
+      "assumptions": [
+        "The specialized prior values boundary-specific design, configuration, adaptation, and validation rather than a second full price for source syntax."
+      ],
+      "exclusions": [],
+      "uncertaintyReasons": [
+        "Some TypeScript or fallback structure is token-backed rather than parser-backed.",
+        "Some supporting evidence is inferred rather than directly observed."
+      ]
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "id": "work:polyglot-source-backbone:f3c5b374dad645f23f7c:part-0001",
+      "category": "production-implementation",
+      "title": "Implement maintained internal logic for \u0027.\u0027 (cli)",
+      "scope": ".",
+      "evidenceIds": [
+        "cpp:source:."
+      ],
+      "quantity": 6,
+      "complexity": "routine",
+      "hours": {
+        "low": 0.25,
+        "expected": 0.75,
+        "high": 1.50
+      },
+      "confidence": 0.64,
+      "reason": "Parser or token structure represents maintained internal logic that routine semantic classifiers cannot name. Rule \u0027polyglot-source-backbone\u0027 uses files=2, functions=2, public-symbols=2; complexity \u0027routine\u0027 applies factor 0.85.",
+      "estimator": {
+        "id": "seed-rule:polyglot-source-backbone",
+        "version": "0.4.0",
+        "kind": "rule"
+      },
+      "profiles": [
+        "implementation",
+        "recreation"
+      ],
+      "dependencyIds": [],
+      "correlationGroup": "scope:cpp:.:implementation",
+      "assumptions": [
+        "Backbone priors value residual internal code construction at lower rates than complete feature delivery."
+      ],
+      "exclusions": [],
+      "uncertaintyReasons": [
+        "Some TypeScript or fallback structure is token-backed rather than parser-backed."
+      ]
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "id": "work:polyglot-source-backbone:936f010c87c5ae217be4:part-0001",
+      "category": "production-implementation",
+      "title": "Implement maintained internal logic for \u0027make\u0027 (package)",
+      "scope": "make",
+      "evidenceIds": [
+        "cpp:source:make"
+      ],
+      "quantity": 3,
+      "complexity": "routine",
+      "hours": {
+        "low": 0.25,
+        "expected": 0.50,
+        "high": 1.00
+      },
+      "confidence": 0.64,
+      "reason": "Parser or token structure represents maintained internal logic that routine semantic classifiers cannot name. Rule \u0027polyglot-source-backbone\u0027 uses files=1, functions=1, public-symbols=1; complexity \u0027routine\u0027 applies factor 0.85.",
+      "estimator": {
+        "id": "seed-rule:polyglot-source-backbone",
+        "version": "0.4.0",
+        "kind": "rule"
+      },
+      "profiles": [
+        "implementation",
+        "recreation"
+      ],
+      "dependencyIds": [],
+      "correlationGroup": "scope:cpp:make:implementation",
+      "assumptions": [
+        "Backbone priors value residual internal code construction at lower rates than complete feature delivery."
+      ],
+      "exclusions": [],
+      "uncertaintyReasons": [
+        "Some TypeScript or fallback structure is token-backed rather than parser-backed."
+      ]
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "id": "work:polyglot-source-backbone:d2174c0b63e9bf1632a1:part-0001",
+      "category": "production-implementation",
+      "title": "Implement maintained internal logic for \u0027meson\u0027 (application)",
+      "scope": "meson",
+      "evidenceIds": [
+        "cpp:source:meson"
+      ],
+      "quantity": 3,
+      "complexity": "routine",
+      "hours": {
+        "low": 0.25,
+        "expected": 0.50,
+        "high": 1.00
+      },
+      "confidence": 0.64,
+      "reason": "Parser or token structure represents maintained internal logic that routine semantic classifiers cannot name. Rule \u0027polyglot-source-backbone\u0027 uses files=1, functions=1, public-symbols=1; complexity \u0027routine\u0027 applies factor 0.85.",
+      "estimator": {
+        "id": "seed-rule:polyglot-source-backbone",
+        "version": "0.4.0",
+        "kind": "rule"
+      },
+      "profiles": [
+        "implementation",
+        "recreation"
+      ],
+      "dependencyIds": [],
+      "correlationGroup": "scope:cpp:meson:implementation",
+      "assumptions": [
+        "Backbone priors value residual internal code construction at lower rates than complete feature delivery."
+      ],
+      "exclusions": [],
+      "uncertaintyReasons": [
+        "Some TypeScript or fallback structure is token-backed rather than parser-backed."
+      ]
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "id": "work:polyglot-source-backbone:143068dad1c8d8207a23:part-0001",
+      "category": "production-implementation",
+      "title": "Implement maintained internal logic for \u0027msbuild\u0027 (library)",
+      "scope": "msbuild",
+      "evidenceIds": [
+        "cpp:source:msbuild"
+      ],
+      "quantity": 3,
+      "complexity": "routine",
+      "hours": {
+        "low": 0.25,
+        "expected": 0.50,
+        "high": 1.00
+      },
+      "confidence": 0.64,
+      "reason": "Parser or token structure represents maintained internal logic that routine semantic classifiers cannot name. Rule \u0027polyglot-source-backbone\u0027 uses files=1, functions=1, public-symbols=1; complexity \u0027routine\u0027 applies factor 0.85.",
+      "estimator": {
+        "id": "seed-rule:polyglot-source-backbone",
+        "version": "0.4.0",
+        "kind": "rule"
+      },
+      "profiles": [
+        "implementation",
+        "recreation"
+      ],
+      "dependencyIds": [],
+      "correlationGroup": "scope:cpp:msbuild:implementation",
+      "assumptions": [
+        "Backbone priors value residual internal code construction at lower rates than complete feature delivery."
+      ],
+      "exclusions": [],
+      "uncertaintyReasons": [
+        "Some TypeScript or fallback structure is token-backed rather than parser-backed."
+      ]
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "id": "work:unit-tests:f2baf970974bfbddfb35:part-0001",
+      "category": "unit-testing",
+      "title": "Create represented unit tests for \u0027meson\u0027 (application)",
+      "scope": "meson",
+      "evidenceIds": [
+        "cpp:test:meson~status_test.cpp"
+      ],
+      "quantity": 1,
+      "complexity": "routine",
+      "hours": {
+        "low": 0.75,
+        "expected": 1.25,
+        "high": 2.00
+      },
+      "confidence": 0.71,
+      "reason": "Test priors value the represented test type, cases, parameterization, assertions, fixtures, and isolation at the level statically observed. Rule \u0027unit-tests\u0027 uses test-files=1, test-cases=1; complexity \u0027routine\u0027 applies factor 0.85.",
+      "estimator": {
+        "id": "seed-rule:unit-tests",
+        "version": "0.4.0",
+        "kind": "rule"
+      },
+      "profiles": [
+        "implementation",
+        "recreation"
+      ],
+      "dependencyIds": [],
+      "correlationGroup": "scope:cpp:meson:tests",
+      "assumptions": [
+        "Discovered tests are assumed to pass on the default static path.",
+        "Repeated assertions and parameterized cases receive diminishing marginal effort."
+      ],
+      "exclusions": [],
+      "uncertaintyReasons": [
+        "Some TypeScript or fallback structure is token-backed rather than parser-backed."
+      ]
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "id": "work:manual-validation:bb7dfd919fd29a5ec96e:part-0001",
+      "category": "manual-validation-debugging-and-hardening",
+      "title": "Manually validate, debug, and harden \u0027.\u0027 (cli)",
+      "scope": ".",
+      "evidenceIds": [
+        "cpp:entry:main.cpp",
+        "cpp:project:."
+      ],
+      "quantity": 1,
+      "complexity": "moderate",
+      "hours": {
+        "low": 0.75,
+        "expected": 1.75,
+        "high": 3.50
+      },
+      "confidence": 0.50,
+      "reason": "Working behavior requires explicit manual validation, debugging, and hardening based on the observed runtime and external boundaries rather than a fixed percentage. Rule \u0027manual-validation\u0027 uses runnable-scopes=1, runtime-surfaces=1; complexity \u0027moderate\u0027 applies factor 1.",
+      "estimator": {
+        "id": "seed-rule:manual-validation",
+        "version": "0.4.0",
+        "kind": "rule"
+      },
+      "profiles": [
+        "implementation",
+        "recreation"
+      ],
+      "dependencyIds": [],
+      "correlationGroup": "scope:cpp:.:validation",
+      "assumptions": [
+        "Automated-test authoring is valued separately."
+      ],
+      "exclusions": [],
+      "uncertaintyReasons": [
+        "Some TypeScript or fallback structure is token-backed rather than parser-backed.",
+        "Some supporting evidence is inferred rather than directly observed.",
+        "The target checkout was not executed on the default static path."
+      ]
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "id": "work:manual-validation:9ad84f73f5f23cf6fde8:part-0001",
+      "category": "manual-validation-debugging-and-hardening",
+      "title": "Manually validate, debug, and harden \u0027make\u0027 (package)",
+      "scope": "make",
+      "evidenceIds": [
+        "cpp:project:make"
+      ],
+      "quantity": 1,
+      "complexity": "moderate",
+      "hours": {
+        "low": 0.25,
+        "expected": 0.50,
+        "high": 1.00
+      },
+      "confidence": 0.64,
+      "reason": "Working behavior requires explicit manual validation, debugging, and hardening based on the observed runtime and external boundaries rather than a fixed percentage. Rule \u0027manual-validation\u0027 uses setup-only; complexity \u0027moderate\u0027 applies factor 1.",
+      "estimator": {
+        "id": "seed-rule:manual-validation",
+        "version": "0.4.0",
+        "kind": "rule"
+      },
+      "profiles": [
+        "implementation",
+        "recreation"
+      ],
+      "dependencyIds": [],
+      "correlationGroup": "scope:cpp:make:validation",
+      "assumptions": [
+        "Automated-test authoring is valued separately."
+      ],
+      "exclusions": [],
+      "uncertaintyReasons": [
+        "The target checkout was not executed on the default static path."
+      ]
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "id": "work:manual-validation:22fb0c045ea3accc0bd6:part-0001",
+      "category": "manual-validation-debugging-and-hardening",
+      "title": "Manually validate, debug, and harden \u0027meson\u0027 (application)",
+      "scope": "meson",
+      "evidenceIds": [
+        "cpp:project:meson"
+      ],
+      "quantity": 1,
+      "complexity": "moderate",
+      "hours": {
+        "low": 0.50,
+        "expected": 1.25,
+        "high": 2.50
+      },
+      "confidence": 0.64,
+      "reason": "Working behavior requires explicit manual validation, debugging, and hardening based on the observed runtime and external boundaries rather than a fixed percentage. Rule \u0027manual-validation\u0027 uses runnable-scopes=1; complexity \u0027moderate\u0027 applies factor 1.",
+      "estimator": {
+        "id": "seed-rule:manual-validation",
+        "version": "0.4.0",
+        "kind": "rule"
+      },
+      "profiles": [
+        "implementation",
+        "recreation"
+      ],
+      "dependencyIds": [],
+      "correlationGroup": "scope:cpp:meson:validation",
+      "assumptions": [
+        "Automated-test authoring is valued separately."
+      ],
+      "exclusions": [],
+      "uncertaintyReasons": [
+        "The target checkout was not executed on the default static path."
+      ]
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "id": "work:manual-validation:e6e195b34652f9d3a49d:part-0001",
+      "category": "manual-validation-debugging-and-hardening",
+      "title": "Manually validate, debug, and harden \u0027msbuild\u0027 (library)",
+      "scope": "msbuild",
+      "evidenceIds": [
+        "cpp:project:msbuild"
+      ],
+      "quantity": 1,
+      "complexity": "moderate",
+      "hours": {
+        "low": 0.25,
+        "expected": 0.50,
+        "high": 1.00
+      },
+      "confidence": 0.64,
+      "reason": "Working behavior requires explicit manual validation, debugging, and hardening based on the observed runtime and external boundaries rather than a fixed percentage. Rule \u0027manual-validation\u0027 uses setup-only; complexity \u0027moderate\u0027 applies factor 1.",
+      "estimator": {
+        "id": "seed-rule:manual-validation",
+        "version": "0.4.0",
+        "kind": "rule"
+      },
+      "profiles": [
+        "implementation",
+        "recreation"
+      ],
+      "dependencyIds": [],
+      "correlationGroup": "scope:cpp:msbuild:validation",
+      "assumptions": [
+        "Automated-test authoring is valued separately."
+      ],
+      "exclusions": [],
+      "uncertaintyReasons": [
+        "The target checkout was not executed on the default static path."
+      ]
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "id": "work:build-tooling:c2c91d07e063088d401a:part-0001",
+      "category": "build-configuration-and-developer-tooling",
+      "title": "Configure build behavior and developer tooling",
+      "scope": ".",
+      "evidenceIds": [
+        "cpp:build:.",
+        "cpp:build:make",
+        "cpp:build:meson",
+        "cpp:build:msbuild",
+        "file:CMakeLists.txt",
+        "file:make/Makefile",
+        "file:meson/meson.build"
+      ],
+      "quantity": 7,
+      "complexity": "routine",
+      "hours": {
+        "low": 2.25,
+        "expected": 3.75,
+        "high": 6.25
+      },
+      "confidence": 0.81,
+      "reason": "Maintained build, compiler, dependency-lock, and script configuration represents setup, integration, and validation work beyond individual project manifests. Rule \u0027build-tooling\u0027 uses configuration-files=7; complexity \u0027routine\u0027 applies factor 0.85.",
+      "estimator": {
+        "id": "seed-rule:build-tooling",
+        "version": "0.4.0",
+        "kind": "rule"
+      },
+      "profiles": [
+        "implementation",
+        "recreation"
+      ],
+      "dependencyIds": [],
+      "correlationGroup": "repository:setup",
+      "assumptions": [],
+      "exclusions": [],
+      "uncertaintyReasons": []
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "id": "work:packaging-release:58eb8ae7efef939a19b5:part-0001",
+      "category": "packaging-deployment-and-release-artifacts",
+      "title": "Prepare represented packages and release surfaces",
+      "scope": ".",
+      "evidenceIds": [
+        "cpp:delivery:.",
+        "cpp:delivery:make",
+        "cpp:delivery:meson",
+        "cpp:delivery:msbuild"
+      ],
+      "quantity": 4,
+      "complexity": "moderate",
+      "hours": {
+        "low": 1.75,
+        "expected": 3.50,
+        "high": 6.25
+      },
+      "confidence": 0.74,
+      "reason": "Packable projects, CLI bins, library exports, SQL deployment scripts, and static release automation require packaging metadata, compatibility checks, release configuration, and preparation. Rule \u0027packaging-release\u0027 uses release-configurations=4; complexity \u0027moderate\u0027 applies factor 1.",
+      "estimator": {
+        "id": "seed-rule:packaging-release",
+        "version": "0.4.0",
+        "kind": "rule"
+      },
+      "profiles": [
+        "implementation",
+        "recreation"
+      ],
+      "dependencyIds": [],
+      "correlationGroup": "repository:delivery",
+      "assumptions": [],
+      "exclusions": [],
+      "uncertaintyReasons": []
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "id": "work:self-review:e943a6db2e8c464b145a:part-0001",
+      "category": "self-review-and-system-integration",
+      "title": "Self-review and integrate the completed system",
+      "scope": ".",
+      "evidenceIds": [
+        "cpp:project:.",
+        "cpp:project:make",
+        "cpp:project:meson",
+        "cpp:project:msbuild",
+        "dotnet:repository",
+        "inventory:repository"
+      ],
+      "quantity": 4,
+      "complexity": "moderate",
+      "hours": {
+        "low": 2.00,
+        "expected": 3.50,
+        "high": 6.00
+      },
+      "confidence": 0.72,
+      "reason": "A solo senior contractor must review cross-scope behavior and integrate the completed artifact as explicit work. Rule \u0027self-review\u0027 uses production-scopes=4; complexity \u0027moderate\u0027 applies factor 1.",
+      "estimator": {
+        "id": "seed-rule:self-review",
+        "version": "0.4.0",
+        "kind": "rule"
+      },
+      "profiles": [
+        "implementation",
+        "recreation"
+      ],
+      "dependencyIds": [],
+      "correlationGroup": "repository:system-integration",
+      "assumptions": [],
+      "exclusions": [],
+      "uncertaintyReasons": []
+    }
+  ],
+  "professionalizationGap": [
+    {
+      "schemaVersion": "1.0.0",
+      "id": "work:gap-documentation:5d607e4bb449aa64a329:part-0001",
+      "category": "documentation",
+      "title": "Add basic repository onboarding documentation",
+      "scope": ".",
+      "evidenceIds": [
+        "cpp:project:.",
+        "cpp:project:make",
+        "cpp:project:meson",
+        "cpp:project:msbuild",
+        "dotnet:repository",
+        "inventory:repository"
+      ],
+      "quantity": 1,
+      "complexity": "routine",
+      "hours": {
+        "low": 1.00,
+        "expected": 1.75,
+        "high": 3.25
+      },
+      "confidence": 0.61,
+      "reason": "No maintained documentation was detected; a conservative onboarding document is reported only as missing professionalization work. Rule \u0027gap-documentation\u0027 uses setup-only; complexity \u0027routine\u0027 applies factor 0.85.",
+      "estimator": {
+        "id": "seed-rule:gap-documentation",
+        "version": "0.4.0",
+        "kind": "rule"
+      },
+      "profiles": [
+        "implementation",
+        "recreation"
+      ],
+      "dependencyIds": [],
+      "correlationGroup": "gap:repository:documentation",
+      "assumptions": [],
+      "exclusions": [],
+      "uncertaintyReasons": [
+        "The intended audience and required documentation depth are unknown."
+      ]
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "id": "work:gap-ci:15c5bc61d8acc4767929:part-0001",
+      "category": "ci-cd-and-infrastructure-as-code",
+      "title": "Add a basic continuous-integration workflow",
+      "scope": ".",
+      "evidenceIds": [
+        "cpp:project:.",
+        "cpp:project:make",
+        "cpp:project:meson",
+        "cpp:project:msbuild",
+        "dotnet:repository",
+        "inventory:repository"
+      ],
+      "quantity": 1,
+      "complexity": "routine",
+      "hours": {
+        "low": 1.25,
+        "expected": 3.00,
+        "high": 6.25
+      },
+      "confidence": 0.56,
+      "reason": "A multi-scope or runnable repository has no detected CI configuration; a basic workflow is reported only as missing professionalization work. Rule \u0027gap-ci\u0027 uses production-scopes=4; complexity \u0027routine\u0027 applies factor 0.85.",
+      "estimator": {
+        "id": "seed-rule:gap-ci",
+        "version": "0.4.0",
+        "kind": "rule"
+      },
+      "profiles": [
+        "implementation",
+        "recreation"
+      ],
+      "dependencyIds": [],
+      "correlationGroup": "gap:repository:delivery",
+      "assumptions": [],
+      "exclusions": [],
+      "uncertaintyReasons": [
+        "Organizational delivery requirements are outside repository evidence."
+      ]
+    }
+  ],
+  "diagnostics": [
+    {
+      "code": "FB1000",
+      "severity": "warning",
+      "message": "This estimate uses transparent but uncalibrated seed priors. It is experimental and requires review before consequential use.",
+      "evidenceIds": [],
+      "locations": []
+    },
+    {
+      "code": "FB1004",
+      "severity": "information",
+      "message": "2 conservative professionalization-gap item(s) are reported separately and excluded from represented EHE and replacement cost.",
+      "evidenceIds": [
+        "cpp:project:.",
+        "cpp:project:make",
+        "cpp:project:meson",
+        "cpp:project:msbuild",
+        "dotnet:repository",
+        "inventory:repository"
+      ],
+      "locations": []
+    },
+    {
+      "code": "FB1005",
+      "severity": "information",
+      "message": "Seed model \u0027seed-rules/0.4.0\u0027 (experimental-uncalibrated, sha256:7cc0cd517ccf096470b98ef72993312263a4e60a2396967f5a07a1104a8c3a01) was loaded from the bundled offline artifact.",
+      "evidenceIds": [],
+      "locations": []
+    },
+    {
+      "code": "FB3000",
+      "severity": "information",
+      "message": "The .NET analyzer parsed project XML and source syntax statically; it did not evaluate MSBuild, restore packages, compile, or execute target code.",
+      "evidenceIds": [],
+      "locations": []
+    },
+    {
+      "code": "FB8900",
+      "severity": "information",
+      "message": "The C/C\u002B\u002B analyzer used bounded static build metadata, managed tokenization, declaration recognition, include resolution, and non-expanding preprocessor analysis only; it invoked no compiler, preprocessor, linker, generator, build system, package manager, tests, sanitizer, or target code, resolved no system headers, and emitted no source excerpts, literals, macro bodies, compiler commands, or recipe bodies.",
+      "evidenceIds": [],
+      "locations": []
+    }
+  ],
+  "assumptions": [
+    "The estimate values a clean, competent recreation of current functional and quality state, not historical labor or rework.",
+    "A clear specification exists at the level promised by the selected profile.",
+    "Discovered tests are assumed to pass on the default static path.",
+    "The described system is estimated as working even when the checkout was not executed.",
+    "Generated, vendored, minified, binary, copied, and duplicate bodies do not create hand-written implementation value.",
+    "Low and high values are preliminary planning bounds formed from item priors and evidence confidence; they are not calibrated probability intervals.",
+    "Professionalization-gap work is excluded from represented effort and replacement cost.",
+    "Seed productivity priors are experimental and uncalibrated."
+  ],
+  "verification": {
+    "mode": "static-assumed",
+    "workingState": "assumed-working",
+    "testsAssumedPassing": true,
+    "note": "The repository was not built or executed."
+  }
+}

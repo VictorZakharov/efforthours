@@ -443,7 +443,7 @@ rubric-1.0.0 labels are not rewritten; the separate Stage A logical audit maps a
 eligible parent targets into rubric-1.1.0 tasks while preserving their exact
 expected totals and uncertainty provenance.
 
-The current `change-seed/0.17.0` rules retain the 0.3.0 correction that keeps
+The current `change-seed/0.18.0` rules retain the 0.3.0 correction that keeps
 repository seed capabilities as context for a final delta but does not infer a
 capability modification from path overlap alone. Existing capabilities require
 changed normalized non-file evidence;
@@ -567,14 +567,15 @@ through existing category rules. No fitted Change prior was added. The admitted
 0.6.0 Stage A records contain no Jupyter changes, so this extension is explicitly
 unadmitted.
 
-The approved C/C++ design reserves `change-seed/0.18.0` for the implementation
-checkpoint; it is not part of the current source identity. That extension will
-use a bounded managed token signature that can ignore ordinary formatting and
+Version 0.18.0 adds C and C++ source/header/module final-delta support. It uses a
+bounded managed token signature that can ignore ordinary formatting and
 non-documentation comments while preserving documentation, preprocessor
 directives/replacement tokens, identifiers, operators, delimiters, literals, raw
 strings, attributes, declarations, and meaningful ordering. Unsafe or ambiguous
-lexical/preprocessor structure will fail closed. It will add no fitted prior and
-will not expand the 0.6.0 Stage A admission boundary.
+lexical/preprocessor structure fails closed. Analyzer-backed production, API, UI,
+data, integration, security, validation, concurrency, FFI, test, build, and
+delivery roles route through existing categories. It adds no fitted prior and
+does not expand the 0.6.0 Stage A admission boundary.
 
 Version 0.4.0 also distinguishes only exact, balanced, EffortHours-specific
 `<custom-code>` regions inside otherwise generated files; it does not infer other
@@ -603,13 +604,13 @@ allocation keeps every component nonnegative while reconciling to the normalized
 total.
 
 The current composite source identity is
-`change-seed/0.17.0+seed-rules/0.4.0`; every frozen Change report retains its
+`change-seed/0.18.0+seed-rules/0.4.0`; every frozen Change report retains its
 original identity and numbers. `change-model-admission/0.2.0` admitted version
 0.6.0 only for experimental 4-to-32-hour Stage A changes after model-authored
-logical agreement and performance gates. Versions 0.7.0 through 0.17.0 preserve
+logical agreement and performance gates. Versions 0.7.0 through 0.18.0 preserve
 those admitted rules but are not separately admitted, and SQL, Python, Go, Java,
 Kotlin, Shell, PowerShell, Terraform, HCL, PHP, Composer, Rust, Cargo, Docker,
-Compose, or Jupyter have no
+Compose, Jupyter, C, or C++ have no
 reviewed Change labels.
 Larger size bands and empirical production accuracy remain separate decisions.
 
@@ -762,19 +763,18 @@ Docker/Compose/BuildKit/runtime execution, image inspection, context expansion,
 interpolation, includes, secrets, and configured-value disclosure do not occur.
 `DOCKER_ANALYSIS.md` defines the exact boundary.
 
-The approved but not-yet-implemented C/C++ analyzer will reuse the unchanged
-generic source rule. A bounded managed lexer and conservative declaration parser
-will supply C/C++ files, functions/methods, types, public symbols, templates,
-async/concurrency units, and branches. Static target/build ownership and qualified
-semantic facts will reuse existing setup, API, UI, data, integration, security,
+The implemented C/C++ analyzer reuses the unchanged generic source rule. A bounded
+managed lexer and conservative declaration parser supply C/C++ files, functions/
+methods, types, public symbols, templates, async/concurrency units, and branches.
+Static target/build ownership and qualified semantic facts reuse existing setup,
+API, UI, data, integration, security,
 validation, background/concurrency, FFI, test, build, delivery, manual-validation, and
 review rules. Header bodies count once; include fan-out and template-instantiation
 potential do not multiply effort. Conditional alternatives normalize identical
 declarations once, retain distinct external surfaces, use a maximum envelope for
 residual sibling-branch structure, and add only capped build/preprocessor
-uncertainty. No C/C++ prior or parser dependency is approved. `CPP_ANALYSIS.md`
-defines the complete design boundary and makes clear that current releases remain
-inventory-only for C/C++.
+uncertainty. No C/C++ prior or parser dependency was added. `CPP_ANALYSIS.md`
+defines the complete implemented boundary.
 
 Public mutation suite `0.8.0` combines 77 unchanged `seed-rules/0.3.0` candidates
 with 11 Python `seed-rules/0.4.0` candidates. All 339 relational assertions pass.
@@ -795,6 +795,8 @@ The standalone Rust suite adds 14 `seed-rules/0.4.0` candidates and passes 62/62
 relations without altering any earlier aggregate or standalone suite.
 The standalone Docker suite adds 13 `seed-rules/0.4.0` candidates and passes
 38/38 relations without altering any earlier aggregate or standalone suite.
+The standalone C/C++ suite adds 21 `seed-rules/0.4.0` candidates and passes 71/71
+relations without altering any earlier aggregate or standalone suite.
 
 ## 14. Professionalization gap
 

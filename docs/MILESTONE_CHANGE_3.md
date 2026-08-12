@@ -108,6 +108,13 @@ shell-escape normalization plus analyzer-backed code/documentation/data/
 visualization/integration/test routing, and changes no frozen Change label or
 admission decision. No Stage A record contains Jupyter.
 
+The C/C++ follow-on advances current source identity to
+`change-seed/0.18.0+seed-rules/0.4.0`, adds bounded managed-token formatting
+normalization plus analyzer-backed production, API, UI, data, integration,
+security, validation, concurrency, FFI, test, build, and delivery routing, and
+changes no frozen Change label or admission decision. No Stage A record contains
+C or C++.
+
 ## Reproducible source boundary
 
 `change-fixture-generator/0.1.0` analyzes synthetic base/head states through

@@ -18,6 +18,7 @@
   <ItemGroup>
     <ProjectReference Include="../../src/EffortHours.Analysis/EffortHours.Analysis.csproj" />
     <ProjectReference Include="../../src/EffortHours.Analyzers.Docker/EffortHours.Analyzers.Docker.csproj" />
+    <ProjectReference Include="../../src/EffortHours.Analyzers.Cpp/EffortHours.Analyzers.Cpp.csproj" />
     <ProjectReference Include="../../src/EffortHours.Analyzers.Terraform/EffortHours.Analyzers.Terraform.csproj" />
     <ProjectReference Include="../../src/EffortHours.Analyzers.Php/EffortHours.Analyzers.Php.csproj" />
     <ProjectReference Include="../../src/EffortHours.Analyzers.Rust/EffortHours.Analyzers.Rust.csproj" />

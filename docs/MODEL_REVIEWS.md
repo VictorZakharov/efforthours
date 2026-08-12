@@ -33,6 +33,39 @@ Because EffortHours's own anchor informed the seed-model and calibration design,
 a development diagnostic rather than an eligible held-out test record unless a
 future independent snapshot and review policy explicitly establishes otherwise.
 
+## 2026-08-12: C and C++ source-boundary review
+
+Status: **qualitative analyzer and prior-reuse checkpoint; no numerical calibration or Change admission**
+
+C/C++ analyzer `0.1.0` was reviewed as bounded token-backed static analysis, not a
+compiler, preprocessor, linker, native parser, type system, build evaluator, ABI
+checker, or test runner. It decomposes maintained C and C++ source, headers, and
+modules into declarations, public symbols, templates/concepts, concurrency, FFI,
+tests, qualified semantics, literal local include ownership, and static CMake,
+Make, Meson, and Visual C++/MSBuild structure. The unchanged
+`seed-rules/0.4.0` generic and specialized priors consume analogous facts without
+a fitted-prior or model-artifact change.
+
+Reads are scanner-admitted, root-contained, digest-verified, strict UTF-8, and
+byte/token/depth bounded. Headers count once; include fan-out, macro expansion,
+template instantiation, and mutually exclusive branches are not raw multipliers.
+No compiler/build/package/test process runs, system headers are not read, and
+source excerpts, macro/literal values, compiler commands, and recipes are not
+emitted.
+
+The standalone public qualitative gate has 21 C/C++ repository states and 71
+relations. All pass across invariance/exclusion, C and modern C++ structure,
+conditional non-stacking, header fan-out, build ownership, qualified semantics,
+tests, concurrency, FFI, and namesake rejection. Earlier aggregate and standalone
+candidates remain unchanged; this suite is not accuracy evidence.
+
+Change `0.18.0` adds conservative C/C++ token normalization and analyzer-backed
+category routing but no fitted prior. The Stage A admission contains no C/C++
+changes and remains limited to the previously admitted `0.6.0` families. Absolute
+C/C++ EHE accuracy, native parser/toolchain parity, independent review,
+representative real repositories, and decomposed public C/C++ Change labels remain
+unresolved.
+
 ## 2026-08-12: Jupyter notebook source-boundary review
 
 Status: **qualitative analyzer and prior-reuse checkpoint; no numerical calibration, scientific validation, or Change admission**

@@ -2,6 +2,7 @@
   <Project Path="benchmarks/EffortHours.ChangeBenchmarks/EffortHours.ChangeBenchmarks.csproj" />
   <Project Path="benchmarks/EffortHours.ScannerBenchmarks/EffortHours.ScannerBenchmarks.csproj" />
   <Project Path="src/EffortHours.Analysis/EffortHours.Analysis.csproj" />
+  <Project Path="src/EffortHours.Analyzers.Cpp/EffortHours.Analyzers.Cpp.csproj" />
   <Project Path="src/EffortHours.Analyzers.DotNet/EffortHours.Analyzers.DotNet.csproj" />
   <Project Path="src/EffortHours.Analyzers.Docker/EffortHours.Analyzers.Docker.csproj" />
   <Project Path="src/EffortHours.Analyzers.Go/EffortHours.Analyzers.Go.csproj" />

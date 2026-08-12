@@ -339,16 +339,16 @@ counts, widget/attachment payloads, checkpoints, and generated bodies receive no
 guessed effort. This is transparent prior reuse, not fitted calibration or a
 scientific-validity claim.
 
-The approved C/C++ design checkpoint reserves reuse of the same unchanged
-`seed-rules/0.4.0` language-neutral backbone after implementation. Maintained
-C/C++ declarations and structure will be normalized by exact body, source/header
+The C/C++ analyzer `0.1.0` reuses the same unchanged `seed-rules/0.4.0`
+language-neutral backbone. Maintained C/C++ declarations and structure are
+normalized by exact body, source/header
 ownership, and preprocessor alternative groups before valuation. Header include
 fan-out, macro-expansion potential, and template-instantiation potential are not
 quantities. Qualified API, UI, data, integration, security, validation,
-concurrency, FFI, test, build, and delivery evidence will use existing rules;
+concurrency, FFI, test, build, and delivery evidence uses existing rules;
 preprocessor/build variability is capped uncertainty rather than a source-volume
-multiplier. No C/C++-specific prior or semantic support exists until the separate
-implementation checkpoint described by `CPP_ANALYSIS.md` is complete.
+multiplier. No C/C++-specific prior was added; `CPP_ANALYSIS.md` defines the
+implemented token-backed boundary.
 
 ## Testing requirements
 

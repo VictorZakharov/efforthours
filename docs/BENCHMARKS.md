@@ -154,24 +154,25 @@ dotnet benchmarks/EffortHours.ScannerBenchmarks/bin/Release/net10.0/EffortHours.
 ```
 
 The mixed fixture divides its 10,000 source files deterministically among C#,
-JavaScript, and TypeScript and includes both project and package manifests.
+JavaScript, TypeScript, C, and C++ and includes project, package, and CMake
+manifests.
 
 | Full-scan mode | Text lines | Scan | Lines/s | Managed allocation | Sampled peak working set | Evidence JSON |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
 | Static .NET | 1,000,001 | 7.083 s | 141,179 | 619.32 MiB | 272.52 MiB | 9.94 MiB |
 | Static JavaScript/TypeScript | 1,000,001 | 12.088 s | 82,728 | 1,723.34 MiB | 185.69 MiB | 10.03 MiB |
-| Static mixed | 1,000,002 | 10.876 s | 91,947 | 1,361.23 MiB | 234.20 MiB | 10.01 MiB |
+| Static mixed | 996,004 | 13.214 s | 75,375 | 1,368.67 MiB | 205.70 MiB | 9.99 MiB |
 
-The mixed run's measured warm-cache pass took 4.581 seconds, cumulatively allocated
-1,266.78 MiB, and reached a sampled 431.68 MiB process working set. That absolute
+The mixed run's measured warm-cache pass took 6.197 seconds, cumulatively allocated
+1,315.00 MiB, and reached a sampled 416.21 MiB process working set. That absolute
 warm peak is not comparable to a fresh process: it follows the full scan and an
-untimed cache-population pass, so its starting working set was already 384.33 MiB.
+untimed cache-population pass, so its starting working set was already 340.62 MiB.
 The cache avoids unchanged common-file inspection; ecosystem analyzers still parse
 their retained source evidence.
 
 Fresh-process mixed samples at 250,000, 500,000, and 1,000,000 requested lines
-recorded sampled scan peaks of 121.95, 127.65, and 234.20 MiB respectively. The
-corresponding cumulative managed allocations were 343.27, 682.66, and 1,361.23 MiB.
+recorded sampled scan peaks of 98.61, 136.61, and 205.70 MiB respectively. The
+corresponding cumulative managed allocations were 345.79, 686.34, and 1,368.67 MiB.
 These points demonstrate bounded resident behavior for this fixture while also
 showing why cumulative allocation is not a peak-memory proxy. They are too few and
 too uniform to establish an asymptotic guarantee.
@@ -606,6 +607,44 @@ a realistic scientific workload, or a claim about notebook correctness.
 Process-level benchmark coverage also runs a smaller `--jupyter` shape and asserts
 static safety signals, positive line/memory measurements, and unchanged target
 metadata.
+
+## Static C and C++ analyzer v0.1.0 checkpoint
+
+Measured on August 12, 2026 with the same Windows/.NET workstation, fresh
+processes, common scanner `0.2.13`, and C/C++ analyzer `0.1.0`.
+
+```text
+dotnet benchmarks/EffortHours.ScannerBenchmarks/bin/Release/net10.0/EffortHours.ScannerBenchmarks.dll --files 10000 --lines-per-file 100 --c
+dotnet benchmarks/EffortHours.ScannerBenchmarks/bin/Release/net10.0/EffortHours.ScannerBenchmarks.dll --files 10000 --lines-per-file 100 --cpp
+```
+
+| Measure | C | C++ |
+| --- | ---: | ---: |
+| Requested/analyzed lines | 1,000,000 / 990,002 | 1,000,000 / 990,002 |
+| Included files | 10,001 | 10,001 |
+| Included bytes | 20,118,974 | 20,070,084 |
+| Fixture generation | 1.566 s | 1.587 s |
+| Full static scan | 8.197 s | 9.716 s |
+| Evidence serialization | 0.110 s | 0.135 s |
+| Full-scan throughput | 120,781 lines/s | 101,891 lines/s |
+| Managed allocation | 1,351.13 MiB | 1,357.17 MiB |
+| Sampled peak working set | 127.65 MiB | 128.84 MiB |
+| Evidence JSON | 9.79 MiB | 9.98 MiB |
+| Evidence facts | 10,008 | 10,008 |
+
+The fixtures use one static CMake descriptor and 10,000 maintained C or C++
+source files with bounded declarations, branches, and qualified standard-library
+structure. Target metadata retained the same digest before and after each
+analysis. The benchmark invoked no compiler, preprocessor, linker, build system,
+package manager, generator, native parser, tests, or target code; read no system
+headers; installed no dependencies; accessed no network; and wrote nothing into
+the target. These two single-workstation synthetic measurements are reproducible
+checkpoints, not frozen cross-platform thresholds or claims about native compiler
+or build performance.
+
+Process-level benchmark coverage also runs smaller `--c` and `--cpp` shapes and
+asserts static safety signals, positive line/memory measurements, and unchanged
+target metadata.
 
 ## Change EHE scale-and-safety v1.0.0 checkpoint
 
