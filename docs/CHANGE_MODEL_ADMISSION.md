@@ -6,10 +6,10 @@ Metric identity, decision order, and the first small-change logical gate are fro
 as `change-model-admission/0.2.0`. The admitted source baseline is
 `change-seed/0.6.0+seed-rules/0.3.0`; it is the transparent Stage A logical
 baseline for experimental one-to-several-day Change estimates. The current source
-has advanced to `change-seed/0.11.0+seed-rules/0.4.0` for static SQL, Python, Go, Java, and Kotlin
-support. Those extensions preserve admitted rules but are not separately admitted,
-and no Stage A record contains SQL, Python, Go, Java, or Kotlin. This is weak-supervision
-admission, not empirical accuracy,
+has advanced to `change-seed/0.12.0+seed-rules/0.4.0` for static SQL, Python, Go,
+Java, Kotlin, Shell, and PowerShell support. Those extensions preserve admitted
+rules but are not separately admitted, and no Stage A record contains any of those
+ecosystems. This is weak-supervision admission, not empirical accuracy,
 formal interval calibration, or production readiness.
 
 Rubric `change-ehe-work-item/1.1.0` permits a disclosed host-AI teacher to author
@@ -480,3 +480,23 @@ admitted successor; `0.6.0` remains the last admitted source baseline. Kotlin
 admission requires licensed public final changes in the declared size band, exact
 small-task logical decomposition, repository-isolated partitions, and the normal
 development/validation/test decision order.
+
+## `change-seed/0.12.0` static Shell and PowerShell extension
+
+Version 0.12.0 adds maintained Shell and PowerShell final-delta support. Its
+literal-aware formatting comparison normalizes ordinary layout and non-directive
+comments while preserving shebangs, PowerShell `#requires`, strings, identifiers,
+operators, and delimiters. Shell here-documents and PowerShell here-strings fail
+closed so uncertain content changes remain represented. Repository analyzer
+evidence routes product/module, test, build, CI, delivery, infrastructure,
+integration, security, and validation changes through existing rules without
+adding a fitted Change prior.
+
+The standalone public scripting mutation suite adds 13 source states and passes
+46/46 relations. That is qualitative safeguard evidence, not reviewed Change
+labeling. The Stage A corpus and its exact logical decomposition contain no Shell
+or PowerShell changes. Version 0.12.0 is therefore an experimental source
+revision, not an admitted successor; `0.6.0` remains the last admitted source
+baseline. Scripting admission requires licensed public final changes in the
+declared size band, exact small-task logical decomposition, repository-isolated
+partitions, and the normal development/validation/test decision order.

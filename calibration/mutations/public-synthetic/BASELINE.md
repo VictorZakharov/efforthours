@@ -28,6 +28,9 @@ effort-label corpora, accuracy claims, or model-training data.
   and 56 assertions evaluated with unchanged `seed-rules/0.4.0`.
 - Standalone suite `kotlin-0.1.0` records the Kotlin/JVM expansion checkpoint: 14
   cases and 63 assertions evaluated with unchanged `seed-rules/0.4.0`.
+- Standalone suite `scripting-0.1.0` records the Shell and PowerShell expansion
+  checkpoint: 13 cases and 46 assertions evaluated with unchanged
+  `seed-rules/0.4.0`.
 
 The August 8, 2026 analyzer-precision reevaluation with `.NET` analyzer `0.3.2`
 and JavaScript analyzer `0.4.1` reproduced identical low, expected, and high
@@ -105,6 +108,14 @@ directionality; category isolation; build, coroutine, and Android/Compose eviden
 and framework-namesake rejection. It reuses `seed-rules/0.4.0` without changing the
 model artifact or fitting a Kotlin rate. Passing this suite does not calibrate
 Kotlin or establish absolute-hour accuracy.
+
+Standalone scripting suite 0.1.0 adds 13 Shell/PowerShell states and 46 relations
+specified around formatting/comment, exact-copy, generated/completion and copied-
+launcher invariance; test, integration, security, validation, build, CI, delivery,
+and infrastructure directionality/category isolation; and local remote-command
+namesake rejection. It reuses `seed-rules/0.4.0` without changing the model
+artifact or fitting a scripting rate. Passing this suite does not calibrate Shell
+or PowerShell or establish absolute-hour accuracy.
 
 ## What suite 0.4.0 measures
 
@@ -193,6 +204,24 @@ their production-category invariants are not artifacts of aggregate rounding.
 | Kotlin build semantics | 9.00 h | +0.75 h build/tooling; production unchanged |
 | Kotlin coroutines | 13.00 h | Positive bounded production movement |
 | Kotlin framework namesakes | 10.00 h | No API, UI, data, integration, security, or background category |
+
+### Shell and PowerShell expansion additions
+
+| Variant | Expected total | Intended category result |
+| --- | ---: | --- |
+| Scripting base | 13.50 h | Shell CLI plus PowerShell module production backbone |
+| Scripting formatting | 13.50 h | Total and production unchanged at every range point |
+| Scripting exact copy | 13.50 h | Total and production unchanged at every range point |
+| Scripting generated/copied bodies | 13.50 h | Total and production unchanged at every range point |
+| Scripting tests | 14.75 h | +1.25 h unit testing; production unchanged |
+| Scripting integration | 17.75 h | +3.25 h external integration |
+| Scripting security | 20.25 h | +5.75 h security/accessibility |
+| Scripting validation | 15.50 h | +1.25 h existing validation/security rule |
+| Scripting build | 14.25 h | +0.75 h build/tooling; production unchanged |
+| Scripting CI | 15.50 h | +2.00 h CI/infrastructure; production unchanged |
+| Scripting delivery | 14.75 h | +1.25 h packaging/delivery after scanner/semantic normalization; production unchanged |
+| Scripting infrastructure | 15.25 h | +1.75 h CI/infrastructure; production unchanged |
+| Scripting command namesakes | 14.00 h | No integration or security category |
 
 ### Frontend semantic additions
 
@@ -345,6 +374,11 @@ retain all earlier assertions unchanged.
 - `kotlin-0.1.0.suite.json` defines the standalone 14-case Kotlin suite.
 - `baseline-seed-rules-0.4.0-kotlin-0.1.0.json` records all 63 passing Kotlin assertions.
 - `estimates/seed-rules-0.4.0/kotlin-*.estimate.json` contains its candidates.
+- `scripting-0.1.0.suite.json` defines the standalone 13-case Shell/PowerShell
+  suite.
+- `baseline-seed-rules-0.4.0-scripting-0.1.0.json` records all 46 passing
+  scripting assertions.
+- `estimates/seed-rules-0.4.0/scripting-*.estimate.json` contains its candidates.
 - `fixtures/` contains every complete synthetic source state.
 
 Every case has a distinct repository source digest. Assertions select canonical
@@ -451,6 +485,16 @@ candidate estimator version, 14 cases, 63 assertions, and zero failures. The sui
 is standalone so the frozen aggregate and its mixed estimator identities remain
 untouched.
 
+## Reproduce standalone scripting suite 0.1.0
+
+Generate each of the 13 `scripting-*` fixtures with repository estimator
+`seed-rules/0.4.0` into `estimates/seed-rules-0.4.0/`. Then evaluate the 13 exact
+candidate paths against `scripting-0.1.0.suite.json`, writing
+`baseline-seed-rules-0.4.0-scripting-0.1.0.json`. The result must disclose one
+candidate estimator version, 13 cases, 46 assertions, and zero failures. The suite
+is standalone so the frozen aggregate and all earlier standalone suites remain
+untouched.
+
 ## Limitations and next expansion
 
 The suite uses deliberately small archetypes. Near-copy and the two new
@@ -492,6 +536,12 @@ compiler plugins, Gradle execution, KSP/kapt generation, Android resources,
 multiplatform expect/actual bindings, reflection, or runtime reachability. Build,
 platform, and semantic labels are static confidence signals, not proof that a
 Kotlin project compiles or runs.
+
+The Shell and PowerShell scanner is token-backed rather than interpreter-backed.
+It does not start a shell, resolve commands/modules, follow sourced content,
+evaluate expansions, prove quoting/pipeline semantics, or observe filesystem,
+process, network, permission, or platform effects. Static role and semantic labels
+are confidence signals, not proof that a script runs correctly or portably.
 
 Passing these relations prevents known perverse movements. It does not establish
 that any absolute hour or delta is numerically correct, and it does not make the

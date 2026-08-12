@@ -87,6 +87,7 @@ internal static partial class ChangeWorkItemBuilder
             "ci-configuration" or "infrastructure" =>
                 EffortCategory.CiCdAndInfrastructureAsCode,
             "container-configuration" => EffortCategory.PackagingDeploymentAndReleaseArtifacts,
+            "delivery" => EffortCategory.PackagingDeploymentAndReleaseArtifacts,
             "project" or "solution" or "package-manifest" or "build-configuration" or "configuration" =>
                 EffortCategory.BuildConfigurationAndDeveloperTooling,
             _ => null,

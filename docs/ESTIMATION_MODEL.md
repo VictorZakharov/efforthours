@@ -443,7 +443,7 @@ rubric-1.0.0 labels are not rewritten; the separate Stage A logical audit maps a
 eligible parent targets into rubric-1.1.0 tasks while preserving their exact
 expected totals and uncertainty provenance.
 
-The current `change-seed/0.11.0` rules retain the 0.3.0 correction that keeps
+The current `change-seed/0.12.0` rules retain the 0.3.0 correction that keeps
 repository seed capabilities as context for a final delta but does not infer a
 capability modification from path overlap alone. Existing capabilities require
 changed normalized non-file evidence;
@@ -499,6 +499,16 @@ coroutine/Flow, build, and test deltas through existing category rules. No fitte
 Change prior was added. The admitted 0.6.0 Stage A records contain no Kotlin, so
 this extension is explicitly unadmitted.
 
+Version 0.12.0 adds Shell and PowerShell final-delta support with conservative
+literal-aware signatures. Ordinary formatting and non-directive comments can
+normalize to zero while shebangs, PowerShell `#requires`, identifiers, operators,
+delimiters, and literal contents remain significant. Shell here-documents and
+PowerShell here-strings fail closed. Analyzer-backed product/module, test, build,
+CI, delivery, infrastructure, integration, security, and validation roles route
+through existing category rules. No fitted Change prior was added. The admitted
+0.6.0 Stage A records contain no Shell or PowerShell, so this extension is
+explicitly unadmitted.
+
 Version 0.4.0 also distinguishes only exact, balanced, EffortHours-specific
 `<custom-code>` regions inside otherwise generated files; it does not infer other
 generator-specific protected-region syntax. Only the extracted maintained
@@ -526,12 +536,12 @@ allocation keeps every component nonnegative while reconciling to the normalized
 total.
 
 The current composite source identity is
-`change-seed/0.11.0+seed-rules/0.4.0`; every frozen Change report retains its
+`change-seed/0.12.0+seed-rules/0.4.0`; every frozen Change report retains its
 original identity and numbers. `change-model-admission/0.2.0` admitted version
 0.6.0 only for experimental 4-to-32-hour Stage A changes after model-authored
-logical agreement and performance gates. Versions 0.7.0 through 0.11.0 preserve
+logical agreement and performance gates. Versions 0.7.0 through 0.12.0 preserve
 those admitted rules but are not separately admitted, and SQL, Python, Go, Java,
-and Kotlin have no reviewed Change labels.
+Kotlin, Shell, and PowerShell have no reviewed Change labels.
 Larger size bands and empirical production accuracy remain separate decisions.
 
 ## 11. Uncertainty
@@ -627,6 +637,17 @@ category rules. Static Maven/Gradle ownership and explicit compiler-plugin,
 generation, Android, multiplatform, and runtime uncertainty do not invoke a JVM,
 compiler, plugin, or build tool. `KOTLIN_ANALYSIS.md` defines the exact boundary.
 
+Scripting analyzer `0.1.0` reuses that same generic rule separately for Shell and
+PowerShell production/module scopes. Its bounded managed tokenizers supply files,
+functions, methods/types, public symbols, parameters, branches, pipelines,
+external commands, file/network/process/module operations, and dynamic-
+uncertainty tags; path and exact invocation context separate tests, build, CI,
+delivery, and infrastructure automation. Integration, security, validation,
+testing, build, delivery, and infrastructure facts continue through existing
+category rules. No shell, command/module resolver, sourced content, expansion, or
+platform effect is executed. `SHELL_POWERSHELL_ANALYSIS.md` defines the exact
+boundary.
+
 Public mutation suite `0.8.0` combines 77 unchanged `seed-rules/0.3.0` candidates
 with 11 Python `seed-rules/0.4.0` candidates. All 339 relational assertions pass.
 This protects directionality and invariance; it does not calibrate absolute hours.
@@ -636,6 +657,8 @@ The separate standalone Java suite likewise adds 13 `seed-rules/0.4.0` candidate
 and passes 56/56 relations without altering the frozen aggregate or Go suites.
 The standalone Kotlin suite adds 14 `seed-rules/0.4.0` candidates and passes 63/63
 relations without altering any earlier aggregate or standalone suite.
+The standalone scripting suite adds 13 `seed-rules/0.4.0` candidates and passes
+46/46 relations without altering any earlier aggregate or standalone suite.
 
 ## 14. Professionalization gap
 

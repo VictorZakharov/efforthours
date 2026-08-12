@@ -114,6 +114,15 @@ orchestration, and Kotlin Change formatting normalization. Every new source and
 test file remains below the ordinary 500-line ceiling, the Kotlin CLI E2E file
 remains below 400 lines, and no override was added or increased.
 
+The August 11, 2026 Shell and PowerShell checkpoint separates common file and
+automation-role classification, bounded text admission, invocation-context
+matching, Shell/PowerShell tokenization and syntax measurement, evidence
+construction, repository orchestration, and the two Change formatting
+normalizers. Static binary/language catalogs moved out of `FileClassifier.cs` so
+the new script classifications did not turn it into a mixed-responsibility file.
+Every new source and test file remains below its ordinary ceiling, and no override
+was added or increased.
+
 Line count is deliberately simple, deterministic, cross-platform, and difficult
 to game accidentally. The useful outcome is earlier decomposition into cohesive
 contracts, commands, analyzers, and renderers—not compressed formatting.

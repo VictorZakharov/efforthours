@@ -1,68 +1,9 @@
-using System.Collections.Frozen;
-
 namespace EffortHours.Analysis;
 
 internal static class FileClassifier
 {
-    private static readonly FrozenSet<string> BinaryExtensions = new[]
-    {
-        ".7z", ".a", ".avi", ".bin", ".bmp", ".class", ".dat", ".db", ".dll", ".dylib",
-        ".eot", ".exe", ".gif", ".gz", ".ico", ".jar", ".jpeg", ".jpg", ".lockb", ".mov",
-        ".mp3", ".mp4", ".o", ".otf", ".pdf", ".pdb", ".png", ".pyc", ".so", ".sqlite",
-        ".tar", ".tiff", ".ttf", ".wav", ".webm", ".webp", ".woff", ".woff2", ".zip",
-    }.ToFrozenSet(StringComparer.OrdinalIgnoreCase);
-
-    private static readonly FrozenDictionary<string, string> Languages =
-        new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
-        {
-            [".cs"] = "csharp",
-            [".cshtml"] = "razor",
-            [".razor"] = "razor",
-            [".fs"] = "fsharp",
-            [".fsx"] = "fsharp",
-            [".vb"] = "visual-basic",
-            [".js"] = "javascript",
-            [".jsx"] = "javascript",
-            [".mjs"] = "javascript",
-            [".cjs"] = "javascript",
-            [".ts"] = "typescript",
-            [".tsx"] = "typescript",
-            [".mts"] = "typescript",
-            [".cts"] = "typescript",
-            [".css"] = "css",
-            [".scss"] = "scss",
-            [".sass"] = "sass",
-            [".less"] = "less",
-            [".html"] = "html",
-            [".htm"] = "html",
-            [".vue"] = "vue",
-            [".svelte"] = "svelte",
-            [".sql"] = "sql",
-            [".graphql"] = "graphql",
-            [".gql"] = "graphql",
-            [".sh"] = "shell",
-            [".bash"] = "shell",
-            [".ps1"] = "powershell",
-            [".py"] = "python",
-            [".pyi"] = "python",
-            [".java"] = "java",
-            [".kt"] = "kotlin",
-            [".kts"] = "kotlin",
-            [".go"] = "go",
-            [".rs"] = "rust",
-            [".rb"] = "ruby",
-            [".php"] = "php",
-            [".swift"] = "swift",
-            [".c"] = "c",
-            [".h"] = "c",
-            [".cc"] = "cpp",
-            [".cpp"] = "cpp",
-            [".cxx"] = "cpp",
-            [".hpp"] = "cpp",
-        }.ToFrozenDictionary(StringComparer.OrdinalIgnoreCase);
-
     public static bool HasKnownBinaryExtension(string path) =>
-        BinaryExtensions.Contains(Path.GetExtension(path));
+        FileClassificationCatalog.IsBinaryExtension(Path.GetExtension(path));
 
     public static FileClassification Classify(string normalizedPath, FileInspection inspection)
     {
@@ -73,7 +14,11 @@ internal static class FileClassifier
         string lowerName = fileName.ToLowerInvariant();
         string lowerPath = normalizedPath.ToLowerInvariant();
         string extension = Path.GetExtension(fileName);
-        Languages.TryGetValue(extension, out string? language);
+        string? language = FileClassificationCatalog.LanguageFor(extension);
+        language ??= ScriptingFileClassification.DetectLanguage(
+            lowerName,
+            extension,
+            inspection.SampleText);
 
         bool isTest = IsTestPath(lowerPath, fileName, lowerName, language);
         bool isGenerated = IsGeneratedPath(
@@ -165,6 +110,11 @@ internal static class FileClassifier
             return "ci-configuration";
         }
 
+        if (ScriptingFileClassification.IsCiAutomation(lowerPath, lowerName, language))
+        {
+            return "ci-configuration";
+        }
+
         if (IsContainerConfiguration(lowerName))
         {
             return "container-configuration";
@@ -173,6 +123,21 @@ internal static class FileClassifier
         if (IsInfrastructure(lowerPath, lowerName, extension))
         {
             return "infrastructure";
+        }
+
+        if (ScriptingFileClassification.IsInfrastructureAutomation(lowerPath, lowerName, language))
+        {
+            return "infrastructure";
+        }
+
+        if (ScriptingFileClassification.IsDeliveryAutomation(lowerPath, lowerName, language))
+        {
+            return "delivery";
+        }
+
+        if (ScriptingFileClassification.IsBuildAutomation(lowerPath, lowerName, language))
+        {
+            return "build-configuration";
         }
 
         if (isBinary)
@@ -234,6 +199,11 @@ internal static class FileClassifier
         string lowerName,
         string? language)
     {
+        if (ScriptingFileClassification.IsTest(lowerPath, lowerName, language))
+        {
+            return true;
+        }
+
         if (HasAnySegment(lowerPath, "test", "tests", "__tests__", "spec", "specs", "e2e"))
         {
             return true;
@@ -293,6 +263,15 @@ internal static class FileClassifier
         }
 
         if (IsSqlDump(lowerPath, lowerName, language, sampleText))
+        {
+            return true;
+        }
+
+        if (ScriptingFileClassification.IsExcludedMaintainedBody(
+            lowerPath,
+            lowerName,
+            language,
+            sampleText))
         {
             return true;
         }

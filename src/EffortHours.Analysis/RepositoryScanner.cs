@@ -8,7 +8,7 @@ namespace EffortHours.Analysis;
 public sealed class RepositoryScanner : IRepositoryScanner
 {
     public const string AnalyzerName = "efforthours.common-scanner";
-    public const string AnalyzerVersion = "0.2.6";
+    public const string AnalyzerVersion = "0.2.7";
 
     private const int AggregateLocationLimit = 50;
 
@@ -582,6 +582,13 @@ public sealed class RepositoryScanner : IRepositoryScanner
             EvidenceKinds.Infrastructure,
             "Infrastructure-as-code artifacts.",
             ["classification:infrastructure"]);
+        AddAggregateFact(
+            facts,
+            files.Where(file => file.Classification.Role == "delivery"),
+            "delivery:repository",
+            EvidenceKinds.DeliveryAutomation,
+            "Packaging, release, and installation automation.",
+            ["classification:delivery"]);
         AddAggregateFact(
             facts,
             files.Where(file => file.Classification.Role == "coverage"),

@@ -174,6 +174,18 @@ resolver, or target code; `KOTLIN_ANALYSIS.md` defines the exact scope. Kotlin
 reuses the unchanged language-neutral source backbone and analogous specialized
 priors without a fitted Kotlin-specific rate.
 
+The fifth polyglot expansion is maintained Shell and PowerShell. Scanner-admitted
+POSIX-family shell/Bash and PowerShell scripts receive bounded token-backed
+function, parameter, branch, loop, pipeline, error-handling, command, file,
+network, process, module, test, and credential-surface evidence. Common path facts
+and bounded exact references from manifests and automation files separate product
+commands and reusable modules from test, build, CI, delivery, and infrastructure
+roles. The analyzer never starts a shell, resolves commands or modules, sources
+files, evaluates expansions, accesses the network, observes platform effects, or
+emits source values or excerpts; `SHELL_POWERSHELL_ANALYSIS.md` defines the exact
+scope. Shell and PowerShell reuse the unchanged language-neutral source backbone
+and analogous specialized priors without a fitted script-specific rate.
+
 ## Non-goals
 
 - Reconstructing actual hours worked.

@@ -44,7 +44,8 @@ internal static class ContentChangeAnalyzer
             return new ContentChangeResult(false, 1);
         }
 
-        if (SupportsFormattingComparison(path) &&
+        if ((SupportsFormattingComparison(path) ||
+            SupportsShebangScriptFormatting(path, baseText, headText)) &&
             FormattingEquivalent(baseText, headText, path))
         {
             return new ContentChangeResult(true, 0);
@@ -60,6 +61,23 @@ internal static class ContentChangeAnalyzer
 
     private static bool FormattingEquivalent(string left, string right, string path)
     {
+        string extension = Path.GetExtension(path).ToLowerInvariant();
+        if (extension is ".sh" or ".bash" or ".ksh" or ".bats" || IsShellProfile(path) ||
+            (extension is "" or ".command") && BothUseShellShebang(left, right))
+        {
+            return ShellFormattingNormalizer.TryCreateSignature(left, out string leftSignature) &&
+                ShellFormattingNormalizer.TryCreateSignature(right, out string rightSignature) &&
+                leftSignature == rightSignature;
+        }
+
+        if (extension is ".ps1" or ".psm1" or ".psd1" ||
+            (extension is "" or ".command") && BothUsePowerShellShebang(left, right))
+        {
+            return PowerShellFormattingNormalizer.TryCreateSignature(left, out string leftSignature) &&
+                PowerShellFormattingNormalizer.TryCreateSignature(right, out string rightSignature) &&
+                leftSignature == rightSignature;
+        }
+
         if (Path.GetExtension(path).Equals(".sql", StringComparison.OrdinalIgnoreCase))
         {
             return SqlFormattingNormalizer.TryCreateSignature(left, out string leftSignature) &&
@@ -204,7 +222,44 @@ internal static class ContentChangeAnalyzer
         Path.GetExtension(path).ToLowerInvariant() is
             ".cs" or ".js" or ".jsx" or ".mjs" or ".cjs" or
             ".ts" or ".tsx" or ".mts" or ".cts" or ".py" or ".pyi" or
-            ".go" or ".java" or ".kt" or ".kts" or ".sql";
+            ".go" or ".java" or ".kt" or ".kts" or ".sql" or
+            ".sh" or ".bash" or ".ksh" or ".bats" or ".ps1" or ".psm1" or ".psd1" ||
+        IsShellProfile(path);
+
+    private static bool IsShellProfile(string path) =>
+        Path.GetFileName(path).ToLowerInvariant() is
+            ".profile" or ".bash_profile" or ".bash_login" or ".bashrc";
+
+    private static bool SupportsShebangScriptFormatting(
+        string path,
+        string left,
+        string right)
+    {
+        string extension = Path.GetExtension(path).ToLowerInvariant();
+        return (extension is "" or ".command") &&
+            (BothUseShellShebang(left, right) || BothUsePowerShellShebang(left, right));
+    }
+
+    private static bool BothUseShellShebang(string left, string right) =>
+        UsesShebang(left, "sh", "ash", "bash", "dash", "ksh") &&
+        UsesShebang(right, "sh", "ash", "bash", "dash", "ksh");
+
+    private static bool BothUsePowerShellShebang(string left, string right) =>
+        UsesShebang(left, "pwsh", "powershell") &&
+        UsesShebang(right, "pwsh", "powershell");
+
+    private static bool UsesShebang(string value, params string[] interpreters)
+    {
+        int newline = value.IndexOfAny(['\r', '\n']);
+        string firstLine = (newline < 0 ? value : value[..newline]).TrimStart('\uFEFF').Trim();
+        if (!firstLine.StartsWith("#!", StringComparison.Ordinal)) return false;
+        string[] parts = firstLine[2..].Split(
+            [' ', '\t'],
+            StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+        return parts.Any(part => interpreters.Contains(
+            Path.GetFileName(part),
+            StringComparer.OrdinalIgnoreCase));
+    }
 
     private static string[] NormalizeLines(string value) =>
     [

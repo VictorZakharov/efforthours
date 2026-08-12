@@ -4,6 +4,7 @@ using EffortHours.Analyzers.Go;
 using EffortHours.Analyzers.Java;
 using EffortHours.Analyzers.JavaScript;
 using EffortHours.Analyzers.Python;
+using EffortHours.Analyzers.Scripting;
 using EffortHours.Analyzers.Sql;
 using EffortHours.Contracts.V1;
 
@@ -24,6 +25,7 @@ public sealed class RepositoryAnalysisPipeline : IRepositoryScanner
                 new KotlinRepositoryAnalyzer(),
                 new JavaScriptRepositoryAnalyzer(),
                 new PythonRepositoryAnalyzer(),
+                new ScriptingRepositoryAnalyzer(),
                 new SqlRepositoryAnalyzer(),
                 new CoverageReportAnalyzer(),
             ])
@@ -42,6 +44,7 @@ public sealed class RepositoryAnalysisPipeline : IRepositoryScanner
                 new KotlinRepositoryAnalyzer(fileSystem),
                 new JavaScriptRepositoryAnalyzer(fileSystem),
                 new PythonRepositoryAnalyzer(fileSystem),
+                new ScriptingRepositoryAnalyzer(fileSystem),
                 new SqlRepositoryAnalyzer(fileSystem),
                 new CoverageReportAnalyzer(fileSystem),
             ])

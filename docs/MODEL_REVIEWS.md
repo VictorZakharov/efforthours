@@ -33,6 +33,47 @@ Because EffortHours's own anchor informed the seed-model and calibration design,
 a development diagnostic rather than an eligible held-out test record unless a
 future independent snapshot and review policy explicitly establishes otherwise.
 
+## 2026-08-11: Shell and PowerShell source-boundary review
+
+Status: **qualitative analyzer and prior-reuse checkpoint; no numerical calibration or Change admission**
+
+Scripting analyzer `0.1.0` was reviewed as bounded token-backed static analysis,
+not a POSIX/Bash parser, PowerShell parser, shell, command/module resolver, or
+platform emulator. It decomposes maintained product scripts and reusable modules
+into functions, methods/types, parameters, branches, loops, pipelines, error
+handling, external command/cmdlet boundaries, file/network/process/module
+operations, and dynamic uncertainty. Path and exact bounded invocation context
+separate product/module, test, build, CI, delivery, and infrastructure roles. The
+existing `seed-rules/0.4.0` language-neutral source backbone and specialized rules
+consume those analogous facts without a model-artifact or numerical-prior change.
+No fitted dataset, source-volume regression, private evidence, or external
+reviewer value was used.
+
+Reads are scanner-admitted, root-contained, digest-verified, strict-text, and
+size/token bounded. The analyzer never starts a shell, resolves commands or
+modules, follows sourced content, evaluates expansions, observes platform effects,
+accesses the network, or emits source values/excerpts. Local functions named like
+recognized remote commands remain ordinary source structure. Generated and
+vendored bodies, completions, and copied installers or launchers retain common
+exclusions; byte-identical maintained scripts remain traceable but are normalized.
+Dynamic invocation/sourcing, tokenizer limits, role conflicts, and runtime effects
+remain explicit uncertainty.
+
+The standalone public qualitative gate has 13 Shell/PowerShell repository states
+and 46 relations. It covers formatting/comments, exact copies, generated/copied
+content, tests, integration, security, validation, build, CI, delivery,
+infrastructure, and remote-command namesake rejection. All 46 assertions pass.
+Earlier aggregate and standalone candidates remain unchanged; this suite isolates
+the scripting boundary without presenting version-only regeneration as accuracy
+evidence.
+
+Change `0.12.0` adds Shell/PowerShell-aware normalization and semantic routing but
+no fitted prior. The existing Stage A admission contains no Shell, PowerShell,
+Kotlin, Java, Go, Python, or SQL cases and remains limited to the previously
+admitted `0.6.0` families. Absolute scripting EHE accuracy, independent review,
+real-repository family coverage, and decomposed public scripting Change labels
+remain unresolved.
+
 ## 2026-08-11: Kotlin/JVM source-boundary review
 
 Status: **qualitative analyzer and prior-reuse checkpoint; no numerical calibration or Change admission**

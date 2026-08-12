@@ -178,11 +178,11 @@ record those source estimators.
 
 Version 0.4.0 became effective on August 11, 2026. It retains all 30 version-0.3.0
 rules unchanged and adds one transparent language-neutral source backbone, first
-used by the token-backed Python analyzer and now reused unchanged by Go, Java, and
-Kotlin analyzers `0.1.0`. Its analogous construction rates use wider uncertainty and are
-not fitted calibration. The earlier 77 synthetic candidates remain frozen at
-0.3.0; the 11 Python, 13 standalone Go, 13 standalone Java, and 14 standalone
-Kotlin states use 0.4.0.
+used by the token-backed Python analyzer and now reused unchanged by Go, Java,
+Kotlin, and scripting analyzers `0.1.0`. Its analogous construction rates use
+wider uncertainty and are not fitted calibration. The earlier 77 synthetic
+candidates remain frozen at 0.3.0; the 11 Python, 13 standalone Go, 13 standalone
+Java, 14 standalone Kotlin, and 13 standalone scripting states use 0.4.0.
 Its artifact digest remains
 `sha256:7cc0cd517ccf096470b98ef72993312263a4e60a2396967f5a07a1104a8c3a01`.
 

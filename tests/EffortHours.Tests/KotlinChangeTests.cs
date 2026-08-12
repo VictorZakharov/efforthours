@@ -58,7 +58,7 @@ public sealed class KotlinChangeTests
 
         Assert.Contains(report.Categories, candidate =>
             candidate.Category == category && candidate.Hours.Expected > 0m);
-        Assert.Equal("change-seed/0.11.0+seed-rules/0.4.0", report.EstimatorVersion);
+        Assert.Equal("change-seed/0.12.0+seed-rules/0.4.0", report.EstimatorVersion);
     }
 
     [Fact]

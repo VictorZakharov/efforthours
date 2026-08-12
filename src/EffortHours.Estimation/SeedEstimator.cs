@@ -18,6 +18,7 @@ public sealed class SeedEstimator : IEstimator
         EvidenceKinds.ContainerConfiguration,
         EvidenceKinds.Coverage,
         EvidenceKinds.DataAccess,
+        EvidenceKinds.DeliveryAutomation,
         EvidenceKinds.Documentation,
         EvidenceKinds.DotNetProject,
         EvidenceKinds.DotNetSolution,
@@ -57,6 +58,8 @@ public sealed class SeedEstimator : IEstimator
             "javascript",
             "kotlin",
             "python",
+            "powershell",
+            "shell",
             "sql",
             "typescript",
         };

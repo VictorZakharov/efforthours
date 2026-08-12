@@ -244,7 +244,7 @@ internal sealed partial class SeedCapabilityBuilder(
                 continue;
             }
 
-            StructureNormalization normalization = _index.GetStructureNormalization(scope);
+            StructureNormalization normalization = _index.GetStructureNormalization(scope, fact);
             if (normalization.Factor <= 0m)
             {
                 continue;
@@ -760,11 +760,14 @@ internal sealed partial class SeedCapabilityBuilder(
             .Where(fact => fact.Provenance.Analyzer is
                 "efforthours.go-analyzer" or "efforthours.java-analyzer" or
                 "efforthours.kotlin-analyzer")];
+        EvidenceFact[] scriptConfigurations = [.. _index.FactsOfKind(EvidenceKinds.BuildConfiguration)
+            .Where(fact => fact.Provenance.Analyzer == "efforthours.scripting-analyzer")];
         EvidenceFact[] packages = [.. _index.FactsOfKind(EvidenceKinds.JavaScriptPackage)];
         EvidenceFact[] evidence = Evidence(
             files.Select(file => file.Fact),
             configurations,
             ecosystemConfigurations,
+            scriptConfigurations,
             packages);
         if (evidence.Length == 0)
         {
@@ -776,7 +779,8 @@ internal sealed partial class SeedCapabilityBuilder(
         decimal lockfiles = canonical.Count(file => file.Role == "dependency-lock");
         decimal compilerOptions = configurations.Sum(fact =>
             SeedEvidenceIndex.Measurement(fact, "compiler-options"));
-        decimal scripts = packages.Sum(fact => SeedEvidenceIndex.Measurement(fact, "scripts"));
+        decimal scripts = packages.Sum(fact => SeedEvidenceIndex.Measurement(fact, "scripts")) +
+            scriptConfigurations.Sum(fact => SeedEvidenceIndex.Measurement(fact, "files"));
         capabilities.Add(new CapabilityUnit
         {
             Id = "repository:build-tooling",
@@ -888,14 +892,24 @@ internal sealed partial class SeedCapabilityBuilder(
                 "packable:declared-true" or "package:cli-bin" or "package:library-exports"))];
         NormalizedEvidenceFact[] sqlDelivery =
             [.. _index.NormalizedFactsOfKind(EvidenceKinds.SqlDelivery)];
-        if (packagingScopes.Length == 0 && sqlDelivery.Length == 0)
+        NormalizedEvidenceFact[] scriptDelivery =
+            [.. _index.NormalizedFactsOfKind(EvidenceKinds.DeliveryAutomation)];
+        if (packagingScopes.Length == 0 && sqlDelivery.Length == 0 && scriptDelivery.Length == 0)
         {
             return;
         }
 
         EvidenceFact[] evidence = Evidence(
             packagingScopes.Select(scope => scope.Fact),
-            sqlDelivery.SelectMany(fact => fact.Facts));
+            sqlDelivery.SelectMany(fact => fact.Facts),
+            scriptDelivery.SelectMany(fact => fact.Facts));
+        decimal scriptDeliveryConfigurations = scriptDelivery
+            .SelectMany(fact => fact.Facts)
+            .Where(fact => fact.Provenance.Analyzer == "efforthours.scripting-analyzer")
+            .Sum(fact => SeedEvidenceIndex.Measurement(fact, "files"));
+        if (scriptDeliveryConfigurations == 0m)
+            scriptDeliveryConfigurations = scriptDelivery.Length;
+        decimal releaseConfigurations = sqlDelivery.Length + scriptDeliveryConfigurations;
 
         capabilities.Add(new CapabilityUnit
         {
@@ -903,14 +917,14 @@ internal sealed partial class SeedCapabilityBuilder(
             RuleId = "packaging-release",
             Title = "Prepare represented packages and release surfaces",
             Scope = ".",
-            Quantity = packagingScopes.Length + sqlDelivery.Length,
+            Quantity = packagingScopes.Length + releaseConfigurations,
             Drivers = Drivers(
                 ("packaging-surfaces", packagingScopes.Length),
-                ("release-configurations", sqlDelivery.Length)),
-            Complexity = packagingScopes.Length + sqlDelivery.Length > 4
+                ("release-configurations", releaseConfigurations)),
+            Complexity = packagingScopes.Length + releaseConfigurations > 4
                 ? ComplexityLevel.High
                 : ComplexityLevel.Moderate,
-            Reason = "Packable projects, CLI bins, library exports, and explicit SQL deployment scripts require packaging metadata, compatibility checks, release configuration, and preparation.",
+            Reason = "Packable projects, CLI bins, library exports, SQL deployment scripts, and static release automation require packaging metadata, compatibility checks, release configuration, and preparation.",
             Evidence = evidence,
             Profiles = BothProfiles,
             CorrelationGroup = "repository:delivery",

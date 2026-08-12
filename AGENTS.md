@@ -184,6 +184,7 @@ bounded static Python package and token/indentation analyzer,
 bounded static Go module/workspace and token analyzer,
 bounded static Java Maven/Gradle and token analyzer,
 bounded static Kotlin/JVM source and token analyzer,
+bounded static Shell and PowerShell token/invocation-context analyzer,
 mixed-repository evidence pipeline, published v1 schemas, optional external scan
 cache, installable global-tool package, memory-only unit fixtures, automated
 process-level CLI tests, reproducible million-line benchmarks, and a granular
@@ -294,8 +295,18 @@ no JDK, Kotlin compiler, Gradle, Android tooling, KSP, kapt, or tests. The uncha
 reused. The standalone Kotlin mutation suite has 14 states and 63 passing
 relations. The Kotlin model is experimental and uncalibrated.
 
+The fifth polyglot expansion adds common scanner `0.2.7` and scripting analyzer
+`0.1.0`. Scanner-admitted maintained Shell/Bash and PowerShell files receive
+bounded token structure, product/module/test/build/CI/delivery/infrastructure role
+classification, and conservative integration, security, and validation evidence.
+EffortHours starts no shell, resolves no commands/modules, sources no content,
+evaluates no expansions, and emits no source values/excerpts. The unchanged
+`seed-rules/0.4.0` generic polyglot backbone and existing specialized priors are
+reused. The standalone scripting mutation suite has 13 states and 46 passing
+relations. The scripting model is experimental and uncalibrated.
+
 The scanner benchmark now measures fresh-process .NET, JavaScript/TypeScript,
-Python, Go, Java, Kotlin, and mixed million-line shapes, samples peak resident memory, labels explicit external
+Python, Go, Java, Kotlin, Shell, PowerShell, and mixed million-line shapes, samples peak resident memory, labels explicit external
 cache passes separately, and fingerprints caller-supplied target trees before and
 after analysis. The recorded mixed full scan completes in 10.876 seconds with a
 234.20 MiB sampled peak on the documented workstation; three exact MIT release
@@ -310,6 +321,10 @@ The Java shape completes in 13.954 seconds with a 167.31 MiB sampled peak and al
 retains unchanged target metadata.
 The Kotlin shape completes in 9.393 seconds with a 166.83 MiB sampled peak and also
 retains unchanged target metadata.
+The Shell shape completes in 14.525 seconds with a 119.66 MiB sampled peak and also
+retains unchanged target metadata.
+The PowerShell shape completes in 13.689 seconds with a 130.76 MiB sampled peak and
+also retains unchanged target metadata.
 
 The first Change Estimation MVP adds provider-neutral immutable snapshot analysis,
 local Git base/head, commit, and range selectors, one optional identity-only `gh`
@@ -320,7 +335,7 @@ meaningful code/tests/docs, migrations, integrations, CI, container delivery,
 simplification, additivity, overlap, reverts, category isolation, all three range
 points, and cooperative cancellation. The first Ctrl+C returns 130 after a
 stderr-only diagnostic; a second retains immediate termination. Current
-`change-seed/0.11.0+seed-rules/0.4.0` rules retain the bounded 0.3.0 logical-
+`change-seed/0.12.0+seed-rules/0.4.0` rules retain the bounded 0.3.0 logical-
 marginality correction
 and can isolate exact, balanced, EffortHours-specific `<custom-code>` regions
 inside otherwise generated source. Only those regions can contribute;
@@ -335,15 +350,17 @@ implicit-semicolon, cgo, and category routing without changing previously admitt
 rules. Version 0.10.0 adds Java token-aware formatting and documentation-comment
 handling and category routing without changing previously admitted rules. Version
 0.11.0 adds Kotlin token-aware formatting and category routing without changing
-previously admitted rules. They remain experimental; only version 0.6.0 on the
-pre-SQL/Python/Go/Java/Kotlin
+previously admitted rules. Version 0.12.0 adds Shell and PowerShell conservative
+formatting and analyzer-backed category routing without changing previously
+admitted rules. They remain experimental; only version 0.6.0 on the
+pre-SQL/Python/Go/Java/Kotlin/Shell/PowerShell
 4-to-32-hour Stage A logical band is admitted, and no empirical production
 validation is claimed. Non-Git Change mode now accepts
 two statically scanned, content-pinned directories or two digest-checked saved
 repository-evidence bundles;
 bodyless evidence modifications that otherwise qualify as represented remain
 conservative with an explicit warning. Experimental
-`change-portfolio/0.1.0+change-seed/0.11.0+seed-rules/0.4.0` now composes repeated
+`change-portfolio/0.1.0+change-seed/0.12.0+seed-rules/0.4.0` now composes repeated
 PRs, versioned cross-repository PR manifests, and bounded author-period commits.
 It normalizes repositories independently, suppresses exact same-repository PR
 patches, follows exact chronological author object chains, exposes immutable base
@@ -471,6 +488,9 @@ dotnet benchmarks/EffortHours.ScannerBenchmarks/bin/Release/net10.0/EffortHours.
 dotnet benchmarks/EffortHours.ScannerBenchmarks/bin/Release/net10.0/EffortHours.ScannerBenchmarks.dll --files 10000 --lines-per-file 100 --python
 dotnet benchmarks/EffortHours.ScannerBenchmarks/bin/Release/net10.0/EffortHours.ScannerBenchmarks.dll --files 10000 --lines-per-file 100 --go
 dotnet benchmarks/EffortHours.ScannerBenchmarks/bin/Release/net10.0/EffortHours.ScannerBenchmarks.dll --files 10000 --lines-per-file 100 --java
+dotnet benchmarks/EffortHours.ScannerBenchmarks/bin/Release/net10.0/EffortHours.ScannerBenchmarks.dll --files 10000 --lines-per-file 100 --kotlin
+dotnet benchmarks/EffortHours.ScannerBenchmarks/bin/Release/net10.0/EffortHours.ScannerBenchmarks.dll --files 10000 --lines-per-file 100 --shell
+dotnet benchmarks/EffortHours.ScannerBenchmarks/bin/Release/net10.0/EffortHours.ScannerBenchmarks.dll --files 10000 --lines-per-file 100 --powershell
 dotnet benchmarks/EffortHours.ScannerBenchmarks/bin/Release/net10.0/EffortHours.ScannerBenchmarks.dll --files 10000 --lines-per-file 100 --mixed --warm-cache
 dotnet benchmarks/EffortHours.ScannerBenchmarks/bin/Release/net10.0/EffortHours.ScannerBenchmarks.dll --repository . --warm-cache
 dotnet benchmarks/EffortHours.ChangeBenchmarks/bin/Release/net10.0/EffortHours.ChangeBenchmarks.dll --tree --files 10000 --lines-per-file 100 --max-seconds 30 --max-peak-mib 512

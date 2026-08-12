@@ -32,6 +32,7 @@ src/
   EffortHours.Analyzers.DotNet/     .NET/MSBuild/Roslyn evidence
   EffortHours.Analyzers.JavaScript/ JavaScript/TypeScript evidence
   EffortHours.Analyzers.Java/       Java and Kotlin/JVM evidence plus static Maven/Gradle ownership
+  EffortHours.Analyzers.Scripting/  bounded static Shell and PowerShell evidence
   EffortHours.Analyzers.Sql/        bounded static SQL evidence
   EffortHours.Change/               final-delta evidence, Git/PR selectors, reconciliation
   EffortHours.Estimation/           rules, work items, aggregation
@@ -542,7 +543,7 @@ review.
 
 ### Milestone 9: Expansion
 
-The first four expansion slices are complete. Issue #63 adds language-neutral analyzed/
+The first five expansion slices are complete. Issue #63 adds language-neutral analyzed/
 inventory-only status, generic package and fine-test evidence, generic source
 normalization/backbone routing, and the token-backed Python 3 analyzer. Python
 repository and Change estimates now cover static package ownership, local import
@@ -586,6 +587,18 @@ compiler, build tool, Android tooling, KSP, or kapt. Kotlin reuses
 checkpoint completes in 9.393 seconds with a 166.83 MiB sampled peak. This remains
 experimental, uncalibrated, and outside Change admission.
 
+Issue #64 adds common scanner `0.2.7` and scripting analyzer `0.1.0`. Shell and
+PowerShell repository and Change estimates cover maintained product scripts,
+reusable modules, tests, build/CI/delivery/infrastructure roles, token-backed
+command structure, and bounded integration/security/validation semantics without
+starting a shell, resolving commands/modules, sourcing content, evaluating
+expansions, or emitting source values. Shell and PowerShell reuse
+`seed-rules/0.4.0` unchanged; Change advances to `change-seed/0.12.0`. A standalone
+13-state scripting mutation slice passes all 46 relations. Fresh-process million-
+line checkpoints complete in 14.525 seconds for Shell and 13.689 seconds for
+PowerShell, with 119.66 MiB and 130.76 MiB sampled peaks respectively. This remains
+experimental, uncalibrated, and outside Change admission.
+
 - Add feature-oriented reporting.
 - Maintain the implemented provider-neutral directory/evidence selectors and
   measure their large-tree performance before broadening their scope.
@@ -601,9 +614,9 @@ experimental, uncalibrated, and outside Change admission.
   4-to-32-hour final changes before freezing a larger size band. Record host-model
   context, tokens, wall time, and cost when available, and keep empirical
   production validation separate from logical labels.
-- Evaluate the current `change-seed/0.11.0` SQL, Python, Go, Java, and Kotlin extensions on
-  decomposed public changes before considering any of them part of an admitted
-  size band.
+- Evaluate the current `change-seed/0.12.0` SQL, Python, Go, Java, Kotlin, Shell,
+  and PowerShell extensions on decomposed public changes before considering any
+  of them part of an admitted size band.
 - Follow the remaining deferred semantics and safeguards in
   `CHANGE_ESTIMATION.md` before expanding any history-backed command.
 - Publish analyzer extension contracts.

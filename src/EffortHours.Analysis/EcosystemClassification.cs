@@ -30,6 +30,10 @@ internal static class EcosystemClassification
             ecosystems.Add("java");
         if (language == "kotlin")
             ecosystems.Add("kotlin");
+        if (language == "shell")
+            ecosystems.Add("shell");
+        if (language == "powershell")
+            ecosystems.Add("powershell");
         return ecosystems;
     }
 

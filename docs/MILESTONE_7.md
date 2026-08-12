@@ -551,7 +551,8 @@ A candidate must, at minimum:
 - improve or preserve interval coverage without achieving it through unjustifiably
   wide ranges;
 - retain acceptable results across .NET, JavaScript/TypeScript, SQL, Python, Go,
-  Java, and mixed repositories rather than only the aggregate;
+  Java/Kotlin, Shell/PowerShell, and mixed repositories rather than only the
+  aggregate;
 - pass the existing formatting, duplication, generated-content, near-copy and
   specified equivalent-purpose, compiler-disabled and bounded reachability, data,
   security/accessibility, declared/measured-coverage precedence, representative
@@ -912,4 +913,21 @@ reviewed work-item labels, held-out accuracy evidence, interval calibration, or 
 production-admission decision. No existing corpus, aggregate suite, Go/Java
 suite, partition, reviewer identity, teacher target, estimator artifact, or
 frozen report changes. Kotlin has no independent correction or real-repository
+calibration family yet.
+
+## Shell and PowerShell mutation extension
+
+The fifth polyglot expansion adds a standalone `scripting-0.1.0` mutation suite
+rather than regenerating the frozen 88-state aggregate or any earlier standalone
+suite. Its 13 project-authored MIT synthetic states use unchanged
+`seed-rules/0.4.0` and cover formatting/comments, exact copies, generated/copied
+content, tests, integrations, security, validation, build, CI, delivery,
+infrastructure, and local remote-command namesakes across Shell and PowerShell.
+
+All 46 relations pass. These are qualitative directionality, range-point
+invariance, category-isolation, and false-positive guardrails. They are not
+reviewed work-item labels, held-out accuracy evidence, interval calibration, or a
+production-admission decision. No existing corpus, aggregate/standalone suite,
+partition, reviewer identity, teacher target, estimator artifact, or frozen report
+changes. Shell and PowerShell have no independent correction or real-repository
 calibration family yet.

@@ -7,11 +7,11 @@ implemented after Milestone 7B5. They include provider-neutral immutable
 base/head analysis, two statically scanned directories, two saved repository
 evidence bundles, one commit, one final revision range, and one GitHub pull
 request through an optional `gh` adapter. The current
-`change-seed/0.11.0` rules remain experimental and are not empirically calibrated,
+`change-seed/0.12.0` rules remain experimental and are not empirically calibrated,
 production-ready, or separately model-admitted. They preserve the valuation
-behavior of the Stage A logically admitted 0.6.0 baseline; the SQL, Python, Go, Java, and Kotlin
-paths were not present in that gate.
-Version 0.11.0 retains the 0.3.0 logical-marginality correction and the 0.4.0
+behavior of the Stage A logically admitted 0.6.0 baseline; the SQL, Python, Go,
+Java, Kotlin, Shell, and PowerShell paths were not present in that gate.
+Version 0.12.0 retains the 0.3.0 logical-marginality correction and the 0.4.0
 fail-closed boundary for explicitly delimited customization inside otherwise
 generated files. It adds an expected-point gross-to-final normalization diagnostic
 for explicit multi-commit ranges, disjoint mixed-role category partitions,
@@ -19,8 +19,9 @@ roughly-one-hour logical work-item decomposition, unique-snapshot analysis reuse
 bounded component audits, SQL-aware formatting/category routing, Python
 indentation-aware formatting/category routing, and Go-aware formatting/directive/
 implicit-semicolon/category routing, Java token-aware formatting/category routing,
-and Kotlin token-aware formatting/category routing without changing any existing Change EHE prior
-or previously supported final-delta total. The current
+Kotlin token-aware formatting/category routing, and Shell/PowerShell literal-aware
+formatting and semantic role routing without changing any existing Change EHE
+prior or previously supported final-delta total. The current
 source composes repository
 `seed-rules/0.4.0`.
 The first calibration-infrastructure checkpoint, a preliminary 24-record synthetic
@@ -38,7 +39,7 @@ migration, integration, CI, container-delivery, and simplification mutations in
 addition to the initial normalization and Git boundaries. The first Change
 portfolio checkpoint adds repeated PRs, a versioned cross-repository PR manifest,
 and bounded author-and-period selection. Its separate
-`change-portfolio/0.1.0+change-seed/0.11.0+seed-rules/0.4.0` reconciler changes no
+`change-portfolio/0.1.0+change-seed/0.12.0+seed-rules/0.4.0` reconciler changes no
 Change prior, frozen report, label, or admission decision and remains experimental.
 
 ## Purpose
@@ -184,12 +185,14 @@ The MVP compares immutable base and head trees directly. It derives added,
 modified, removed, exact-move, excluded, and unchanged-context evidence without
 checking out either tree. Formatting-only classification uses conservative,
 literal-aware whitespace normalization for the initial .NET and JavaScript/
-TypeScript source extensions plus token-aware SQL normalization. SQL whitespace
-between tokens can normalize to zero, while string, quoted-identifier, dollar-
-quoted, and comment content remains significant. Unsupported or uncertain rewrites
-remain represented and visible rather than being silently discarded. Exact blob
-moves are excluded from body implementation effort. Path-sensitive integration
-work is included only when separate analyzer evidence supports it.
+TypeScript source extensions plus bounded language-aware normalizers for SQL,
+Python, Go, Java, Kotlin, Shell, and PowerShell. Shell and PowerShell ordinary
+formatting and non-directive comments can normalize to zero while shebangs,
+PowerShell `#requires`, literals, identifiers, operators, and delimiters remain
+significant. Here-documents and here-strings fail closed. Unsupported or uncertain
+rewrites remain represented and visible rather than being silently discarded.
+Exact blob moves are excluded from body implementation effort. Path-sensitive
+integration work is included only when separate analyzer evidence supports it.
 
 SQL schema, migration, stored-program, and query deltas use the data category;
 test fixtures use integration/component testing; explicit deployment/install
@@ -372,12 +375,12 @@ adjustments, exact allocations, attribution uncertainty, verification, and
 post-EHE pricing. They emit neither local repository paths nor source excerpts.
 
 The current source Change estimator identity is
-`change-seed/0.11.0+seed-rules/0.4.0`; the portfolio reconciler identity is
-`change-portfolio/0.1.0+change-seed/0.11.0+seed-rules/0.4.0`. The earlier 0.6.0
+`change-seed/0.12.0+seed-rules/0.4.0`; the portfolio reconciler identity is
+`change-portfolio/0.1.0+change-seed/0.12.0+seed-rules/0.4.0`. The earlier 0.6.0
 Change identity alone passed the experimental Stage A logical gate, and that
-record contains no SQL, Python, Go, Java, or Kotlin. Portfolio aggregation does not broaden that
-admission. Neither 0.11.0 nor portfolio 0.1.0 may be described as empirically calibrated,
-generally admitted, or production-ready. Frozen calibration source reports retain
+record contains no SQL, Python, Go, Java, Kotlin, Shell, or PowerShell. Portfolio
+aggregation does not broaden that admission. Neither 0.12.0 nor portfolio 0.1.0
+may be described as empirically calibrated, generally admitted, or production-ready. Frozen calibration source reports retain
 the exact earlier estimator identity they were created from.
 
 ## Implemented CLI behavior
@@ -442,6 +445,15 @@ the exact earlier estimator identity they were created from.
   comments can normalize to zero, while KDoc, regular/raw strings, characters,
   numbers, identifiers, backtick names, operators, delimiters, and semantic
   newlines after jump expressions remain meaningful.
+- Source-readable `.sh`, `.bash`, `.ksh`, `.bats`, `.ps1`, `.psm1`, and `.psd1`
+  paths, plus `.command` or extensionless paths with matching shebangs, use
+  conservative Shell/PowerShell signatures: ordinary formatting and non-directive
+  comments can normalize to zero while directives, literals, identifiers,
+  operators, and delimiters remain meaningful. Here-documents and here-strings
+  fail closed.
+- Analyzer-backed script roles route product/module, test, build, CI, delivery,
+  infrastructure, integration, security, and validation deltas through existing
+  categories without also charging generic product/CI work.
 - When one logical capability cites explicit production, test, documentation,
   build, or delivery roles, its existing low/expected/high budget is partitioned
   across disjoint category evidence rather than duplicated or left in one category.
