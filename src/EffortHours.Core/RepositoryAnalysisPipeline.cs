@@ -6,6 +6,7 @@ using EffortHours.Analyzers.JavaScript;
 using EffortHours.Analyzers.Python;
 using EffortHours.Analyzers.Scripting;
 using EffortHours.Analyzers.Sql;
+using EffortHours.Analyzers.Terraform;
 using EffortHours.Contracts.V1;
 
 namespace EffortHours.Core;
@@ -27,6 +28,7 @@ public sealed class RepositoryAnalysisPipeline : IRepositoryScanner
                 new PythonRepositoryAnalyzer(),
                 new ScriptingRepositoryAnalyzer(),
                 new SqlRepositoryAnalyzer(),
+                new TerraformRepositoryAnalyzer(),
                 new CoverageReportAnalyzer(),
             ])
     {
@@ -46,6 +48,7 @@ public sealed class RepositoryAnalysisPipeline : IRepositoryScanner
                 new PythonRepositoryAnalyzer(fileSystem),
                 new ScriptingRepositoryAnalyzer(fileSystem),
                 new SqlRepositoryAnalyzer(fileSystem),
+                new TerraformRepositoryAnalyzer(fileSystem),
                 new CoverageReportAnalyzer(fileSystem),
             ])
     {

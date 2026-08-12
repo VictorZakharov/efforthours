@@ -8,6 +8,21 @@ may still change public contracts with explicit documentation.
 
 ### Added
 
+- Terraform/HCL analyzer `0.1.0` adds offline, digest-verified bounded analysis
+  for maintained `.tf`, `.tfvars`, Terraform tests, CLI configuration, and
+  relevant HCL. It records resources, data sources, modules, interfaces, locals,
+  providers, backends, lifecycle/dependency/expression structure, tests,
+  security-sensitive configuration, documentation, and delivery evidence while
+  resolving repository-local module ownership only. It never runs Terraform,
+  loads providers/schemas, fetches modules, contacts backends, evaluates plans,
+  interpolation, or policy, or emits configured values/source excerpts.
+- A standalone public Terraform mutation suite adds 14 project-authored states
+  and 48 passing relations for formatting, exact-copy, state/cache/lock/generated
+  exclusion, semantic/category directionality, repeated-resource marginality,
+  local/external modules, and generic-HCL conservatism.
+- Scanner benchmark mode `terraform-hcl-static` records a fresh-process million-
+  line checkpoint with target metadata unchanged and no target execution,
+  dependency installation, or network access.
 - Scripting analyzer `0.1.0` adds offline, digest-verified token analysis for
   maintained POSIX-family Shell/Bash and PowerShell product scripts, reusable
   modules, tests, and build/CI/delivery/infrastructure automation. It records
@@ -111,6 +126,17 @@ may still change public contracts with explicit documentation.
 
 ### Changed
 
+- Common scanner `0.2.8` classifies maintained Terraform/HCL source, values,
+  tests, CLI configuration, and inventory-only Terraform JSON while excluding
+  state, plans, `.terraform/` caches, lock mechanics, generated/vendor bodies,
+  and exact duplicates from semantic effort. The unchanged experimental
+  `seed-rules/0.4.0` maps bounded Terraform semantic units through existing
+  infrastructure and quality priors; no fitted Terraform rate or calibration
+  claim was added.
+- Change source identity advances to
+  `change-seed/0.13.0+seed-rules/0.4.0` for conservative HCL-aware formatting and
+  Terraform semantic/category routing. The admitted Stage A boundary remains
+  `change-seed/0.6.0`; Terraform and HCL are not included in that admission.
 - Common scanner `0.2.7` classifies maintained Shell and PowerShell sources,
   modules, tests, build, CI, delivery, and infrastructure roles while excluding
   conventional completions and copied launchers/installers. The unchanged

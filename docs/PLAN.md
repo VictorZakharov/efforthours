@@ -34,6 +34,7 @@ src/
   EffortHours.Analyzers.Java/       Java and Kotlin/JVM evidence plus static Maven/Gradle ownership
   EffortHours.Analyzers.Scripting/  bounded static Shell and PowerShell evidence
   EffortHours.Analyzers.Sql/        bounded static SQL evidence
+  EffortHours.Analyzers.Terraform/  bounded static Terraform and HCL evidence
   EffortHours.Change/               final-delta evidence, Git/PR selectors, reconciliation
   EffortHours.Estimation/           rules, work items, aggregation
   EffortHours.Calibration/          reviewed labels and offline evaluation
@@ -599,6 +600,19 @@ line checkpoints complete in 14.525 seconds for Shell and 13.689 seconds for
 PowerShell, with 119.66 MiB and 130.76 MiB sampled peaks respectively. This remains
 experimental, uncalibrated, and outside Change admission.
 
+Issue #67 adds common scanner `0.2.8` and Terraform/HCL analyzer `0.1.0`.
+Repository and Change estimates cover scanner-admitted maintained Terraform/HCL,
+bounded resources/data/modules/interfaces/providers/backends/lifecycle/dependency/
+expression structure, repository-local module edges, external boundary classes,
+tests, security-sensitive configuration, validation, documentation, and delivery
+without running Terraform, fetching providers/modules, contacting backends,
+evaluating plans/interpolation/policy, or emitting configured values. Terraform
+reuses `seed-rules/0.4.0` unchanged; Change advances to
+`change-seed/0.13.0`. A standalone 14-state Terraform mutation slice passes all 48
+relations, and its million-line checkpoint completes in 8.239 seconds with a
+303.72 MiB sampled peak. This remains experimental, uncalibrated, and outside
+Change admission.
+
 - Add feature-oriented reporting.
 - Maintain the implemented provider-neutral directory/evidence selectors and
   measure their large-tree performance before broadening their scope.
@@ -614,8 +628,8 @@ experimental, uncalibrated, and outside Change admission.
   4-to-32-hour final changes before freezing a larger size band. Record host-model
   context, tokens, wall time, and cost when available, and keep empirical
   production validation separate from logical labels.
-- Evaluate the current `change-seed/0.12.0` SQL, Python, Go, Java, Kotlin, Shell,
-  and PowerShell extensions on decomposed public changes before considering any
+- Evaluate the current `change-seed/0.13.0` SQL, Python, Go, Java, Kotlin, Shell,
+  PowerShell, Terraform, and HCL extensions on decomposed public changes before considering any
   of them part of an admitted size band.
 - Follow the remaining deferred semantics and safeguards in
   `CHANGE_ESTIMATION.md` before expanding any history-backed command.

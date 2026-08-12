@@ -123,6 +123,13 @@ the new script classifications did not turn it into a mixed-responsibility file.
 Every new source and test file remains below its ordinary ceiling, and no override
 was added or increased.
 
+The August 12, 2026 Terraform/HCL checkpoint separates common classification,
+digest-checked text admission, bounded tokenization, structural parsing, semantic
+measurement, module ownership/reference resolution, evidence construction,
+repository orchestration, and Change formatting normalization. Fact construction
+is split between core and category-specific partials. Every new source and test
+file remains below its ordinary ceiling, and no override was added or increased.
+
 Line count is deliberately simple, deterministic, cross-platform, and difficult
 to game accidentally. The useful outcome is earlier decomposition into cohesive
 contracts, commands, analyzers, and renderers—not compressed formatting.

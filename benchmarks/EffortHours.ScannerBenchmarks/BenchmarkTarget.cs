@@ -172,6 +172,10 @@ internal static class BenchmarkFixtureGenerator
             Enumerable.Range(1, Math.Max(0, options.LinesPerFile - 5))
                 .Select(line =>
                     $"  $value{line:D4} = {line.ToString(CultureInfo.InvariantCulture)}\n"));
+        string terraformLines = string.Concat(
+            Enumerable.Range(1, Math.Max(0, options.LinesPerFile - 2))
+                .Select(line =>
+                    $"  value_{line:D4} = {line.ToString(CultureInfo.InvariantCulture)}\n"));
 
         Parallel.For(0, options.Files, index =>
         {
@@ -187,6 +191,7 @@ internal static class BenchmarkFixtureGenerator
                     BenchmarkSourceKind.Kotlin => Path.Combine("src", "main", "kotlin", "benchmark"),
                     BenchmarkSourceKind.Shell => "scripts",
                     BenchmarkSourceKind.PowerShell => "powershell",
+                    BenchmarkSourceKind.Terraform => "infrastructure",
                     _ => "web",
                 },
                 $"group-{index / 100:D5}");
@@ -236,6 +241,10 @@ internal static class BenchmarkFixtureGenerator
                     $"function Invoke-File{index:D7} {{\n  param([string] $Value)\n" +
                     powerShellLines +
                     "  if ($Value) { Write-Output $Value }\n}\n"),
+                BenchmarkSourceKind.Terraform => (
+                    $"file{index:D7}.tf",
+                    $"resource \"benchmark_item\" \"item_{index:D7}\" {{\n" +
+                    terraformLines + "}\n"),
                 _ => throw new InvalidOperationException($"Unsupported benchmark source kind '{kind}'."),
             };
             File.WriteAllText(Path.Combine(directory, fileName), content);
@@ -254,6 +263,7 @@ internal static class BenchmarkFixtureGenerator
         BenchmarkShape.Kotlin => BenchmarkSourceKind.Kotlin,
         BenchmarkShape.Shell => BenchmarkSourceKind.Shell,
         BenchmarkShape.PowerShell => BenchmarkSourceKind.PowerShell,
+        BenchmarkShape.Terraform => BenchmarkSourceKind.Terraform,
         BenchmarkShape.Mixed => (index % 3) switch
         {
             0 => BenchmarkSourceKind.CSharp,
@@ -274,5 +284,6 @@ internal static class BenchmarkFixtureGenerator
         Kotlin,
         Shell,
         PowerShell,
+        Terraform,
     }
 }

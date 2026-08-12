@@ -14,7 +14,11 @@ internal static class FileClassifier
         string lowerName = fileName.ToLowerInvariant();
         string lowerPath = normalizedPath.ToLowerInvariant();
         string extension = Path.GetExtension(fileName);
-        string? language = FileClassificationCatalog.LanguageFor(extension);
+        string? language = TerraformFileClassification.IsDependencyLock(lowerName) ||
+            TerraformFileClassification.IsStateOrPlan(lowerName, extension)
+                ? null
+                : TerraformFileClassification.DetectLanguage(lowerName, extension) ??
+                    FileClassificationCatalog.LanguageFor(extension);
         language ??= ScriptingFileClassification.DetectLanguage(
             lowerName,
             extension,
@@ -120,7 +124,7 @@ internal static class FileClassifier
             return "container-configuration";
         }
 
-        if (IsInfrastructure(lowerPath, lowerName, extension))
+        if (IsInfrastructure(lowerPath, lowerName, extension, language))
         {
             return "infrastructure";
         }
@@ -204,6 +208,11 @@ internal static class FileClassifier
             return true;
         }
 
+        if (TerraformFileClassification.IsTest(lowerName, language))
+        {
+            return true;
+        }
+
         if (HasAnySegment(lowerPath, "test", "tests", "__tests__", "spec", "specs", "e2e"))
         {
             return true;
@@ -263,6 +272,11 @@ internal static class FileClassifier
         }
 
         if (IsSqlDump(lowerPath, lowerName, language, sampleText))
+        {
+            return true;
+        }
+
+        if (TerraformFileClassification.IsStateOrPlan(lowerName, Path.GetExtension(lowerName)))
         {
             return true;
         }
@@ -379,7 +393,12 @@ internal static class FileClassifier
         lowerName.StartsWith("compose.", StringComparison.Ordinal) ||
         lowerName == ".dockerignore";
 
-    private static bool IsInfrastructure(string lowerPath, string lowerName, string extension) =>
+    private static bool IsInfrastructure(
+        string lowerPath,
+        string lowerName,
+        string extension,
+        string? language) =>
+        language is "terraform" or "terraform-json" or "hcl" ||
         extension is ".tf" or ".tfvars" or ".bicep" ||
         HasAnySegment(lowerPath, "terraform", "k8s", "kubernetes", "helm") ||
         lowerName == "chart.yaml";
@@ -397,7 +416,7 @@ internal static class FileClassifier
             "pnpm-lock.yaml" or "bun.lock" or "bun.lockb" or "packages.lock.json" or
             "paket.lock" or "composer.lock" or "gemfile.lock" or
             "poetry.lock" or "pdm.lock" or "uv.lock" or "pipfile.lock" or
-            "cargo.lock" or "go.sum" or "gradle.lockfile";
+            "cargo.lock" or "go.sum" or "gradle.lockfile" or ".terraform.lock.hcl";
 
     private static bool IsComponentManifest(string lowerName, string extension) =>
         lowerName == "package.json" || PythonFileClassification.IsProjectManifest(lowerName) ||

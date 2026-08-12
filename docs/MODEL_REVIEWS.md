@@ -33,6 +33,41 @@ Because EffortHours's own anchor informed the seed-model and calibration design,
 a development diagnostic rather than an eligible held-out test record unless a
 future independent snapshot and review policy explicitly establishes otherwise.
 
+## 2026-08-12: Terraform/HCL source-boundary review
+
+Status: **qualitative analyzer and prior-reuse checkpoint; no numerical calibration or Change admission**
+
+Terraform/HCL analyzer `0.1.0` was reviewed as bounded token-backed static
+analysis, not HashiCorp's native HCL parser, Terraform/OpenTofu, a provider/schema
+loader, module resolver, backend client, plan evaluator, policy engine, or runtime
+validator. It decomposes Terraform into resources/data types, module/interface
+boundaries, locals, providers/backends, lifecycle/dependency/expression structure,
+tests, integrations, security-sensitive configuration, validation, documentation,
+and delivery evidence. Literal local modules resolve only inside the repository;
+external and dynamic sources remain boundary classes without emitted addresses.
+The existing `seed-rules/0.4.0` infrastructure and specialized rules consume
+bounded analogous facts without a model-artifact or fitted-prior change.
+
+Reads are scanner-admitted, root-contained, digest-verified, strict UTF-8, and
+size/token/depth bounded. State, plans, caches, locks, generated/vendor bodies,
+exact duplicates, and raw Terraform lines do not add semantic units. Generic HCL
+remains visible without guessed Terraform semantics. No provider/module/backend/
+network operation, interpolation, policy, plan, state, or target execution occurs,
+and source values/excerpts are not emitted.
+
+The standalone public qualitative gate has 14 Terraform/HCL repository states and
+48 relations. All assertions pass across invariance, exclusion, semantic
+directionality, repetition marginality, category isolation, local/external module
+boundaries, and generic-HCL conservatism. Earlier aggregate and standalone
+candidates remain unchanged; this suite is not accuracy evidence.
+
+Change `0.13.0` adds HCL-aware normalization and analyzer-backed semantic routing
+but no fitted prior. The existing Stage A admission contains no Terraform/HCL,
+Shell/PowerShell, Kotlin, Java, Go, Python, or SQL cases and remains limited to the
+previously admitted `0.6.0` families. Absolute Terraform EHE accuracy, native-
+parser parity, independent review, real-repository family coverage, and decomposed
+public Terraform Change labels remain unresolved.
+
 ## 2026-08-11: Shell and PowerShell source-boundary review
 
 Status: **qualitative analyzer and prior-reuse checkpoint; no numerical calibration or Change admission**

@@ -71,11 +71,17 @@ The Kotlin follow-on advances current source identity to
 normalization and semantic routing, and changes no frozen Change label or
 admission decision. No Stage A record contains Kotlin.
 
-The Shell and PowerShell follow-on advances current source identity to
+The Shell and PowerShell follow-on advanced source identity at that checkpoint to
 `change-seed/0.12.0+seed-rules/0.4.0`, adds conservative script formatting and
 analyzer-backed product/module, test, build, CI, delivery, infrastructure,
 integration, security, and validation routing, and changes no frozen Change label
 or admission decision. No Stage A record contains Shell or PowerShell.
+
+The Terraform/HCL follow-on advances current source identity to
+`change-seed/0.13.0+seed-rules/0.4.0`, adds conservative HCL-aware formatting and
+analyzer-backed infrastructure, integration, security, validation, test,
+documentation, build, and delivery routing, and changes no frozen Change label or
+admission decision. No Stage A record contains Terraform or HCL.
 
 ## Reproducible source boundary
 

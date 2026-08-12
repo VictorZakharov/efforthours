@@ -75,7 +75,7 @@ invocation from Git history.
 
 ## Change EHE
 
-Change source identity `change-seed/0.12.0+seed-rules/0.4.0` adds conservative
+Change version 0.12.0 added conservative
 Shell and PowerShell formatting signatures and routes analyzer-backed script roles
 and semantic facts. Ordinary whitespace and non-directive comments may normalize
 to zero. Shebangs, PowerShell `#requires`, identifiers, operators, delimiters, and
@@ -84,9 +84,10 @@ strings deliberately fail closed: a change containing one remains represented
 rather than being discarded as formatting.
 
 Exact moves, exact copies, generated output, vendored content, and copied launchers
-retain the normal Change exclusions. The existing logically admitted Change Stage
-A boundary remains `change-seed/0.6.0`; Shell and PowerShell were not represented
-in that gate, so `0.12.0` remains experimental and unadmitted.
+retain the normal Change exclusions. The current composite identity is
+`change-seed/0.13.0+seed-rules/0.4.0`; the logically admitted Stage A boundary
+remains `change-seed/0.6.0`. Shell and PowerShell were not represented in that
+gate, so the 0.12.0 scripting extension remains experimental and unadmitted.
 
 ## Explicit limitations
 

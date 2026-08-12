@@ -8,7 +8,7 @@ namespace EffortHours.Analysis;
 public sealed class RepositoryScanner : IRepositoryScanner
 {
     public const string AnalyzerName = "efforthours.common-scanner";
-    public const string AnalyzerVersion = "0.2.7";
+    public const string AnalyzerVersion = "0.2.8";
 
     private const int AggregateLocationLimit = 50;
 
@@ -43,6 +43,7 @@ public sealed class RepositoryScanner : IRepositoryScanner
             [".svelte-kit"] = "framework-output",
             [".packages"] = "tool-cache",
             [".efforthours"] = "tool-cache",
+            [".terraform"] = "tool-cache",
             [".pnpm-store"] = "tool-cache",
             [".vs"] = "tool-state",
         }.ToFrozenDictionary(StringComparer.OrdinalIgnoreCase);

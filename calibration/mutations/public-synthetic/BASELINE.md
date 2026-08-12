@@ -31,6 +31,9 @@ effort-label corpora, accuracy claims, or model-training data.
 - Standalone suite `scripting-0.1.0` records the Shell and PowerShell expansion
   checkpoint: 13 cases and 46 assertions evaluated with unchanged
   `seed-rules/0.4.0`.
+- Standalone suite `terraform-0.1.0` records the Terraform/HCL expansion
+  checkpoint: 14 cases and 48 assertions evaluated with unchanged
+  `seed-rules/0.4.0`.
 
 The August 8, 2026 analyzer-precision reevaluation with `.NET` analyzer `0.3.2`
 and JavaScript analyzer `0.4.1` reproduced identical low, expected, and high
@@ -379,6 +382,10 @@ retain all earlier assertions unchanged.
 - `baseline-seed-rules-0.4.0-scripting-0.1.0.json` records all 46 passing
   scripting assertions.
 - `estimates/seed-rules-0.4.0/scripting-*.estimate.json` contains its candidates.
+- `terraform-0.1.0.suite.json` defines the standalone 14-case Terraform/HCL suite.
+- `baseline-seed-rules-0.4.0-terraform-0.1.0.json` records all 48 passing
+  Terraform/HCL assertions.
+- `estimates/seed-rules-0.4.0/terraform-*.estimate.json` contains its candidates.
 - `fixtures/` contains every complete synthetic source state.
 
 Every case has a distinct repository source digest. Assertions select canonical
@@ -492,6 +499,16 @@ Generate each of the 13 `scripting-*` fixtures with repository estimator
 candidate paths against `scripting-0.1.0.suite.json`, writing
 `baseline-seed-rules-0.4.0-scripting-0.1.0.json`. The result must disclose one
 candidate estimator version, 13 cases, 46 assertions, and zero failures. The suite
+is standalone so the frozen aggregate and all earlier standalone suites remain
+untouched.
+
+## Reproduce standalone Terraform/HCL suite 0.1.0
+
+Generate each of the 14 `terraform-*` fixtures with repository estimator
+`seed-rules/0.4.0` into `estimates/seed-rules-0.4.0/`. Then evaluate the 14 exact
+candidate paths against `terraform-0.1.0.suite.json`, writing
+`baseline-seed-rules-0.4.0-terraform-0.1.0.json`. The result must disclose one
+candidate estimator version, 14 cases, 48 assertions, and zero failures. The suite
 is standalone so the frozen aggregate and all earlier standalone suites remain
 untouched.
 

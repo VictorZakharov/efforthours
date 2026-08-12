@@ -291,6 +291,15 @@ not invent security, accessibility, operations, or deployment gaps without enoug
 context. Gap items are serialized separately and never included in represented EHE,
 category totals, or replacement cost.
 
+Terraform/HCL analyzer `0.1.0` replaces the common scanner's coarse Terraform
+file/line contribution with bounded semantic infrastructure units while preserving
+the unchanged `seed-rules/0.4.0` artifact. Distinct types and boundaries receive
+more weight than conventional repetition; exact bodies are valued once. Existing
+integration, security, validation, test, documentation, build, and delivery rules
+consume separate facts. Generic HCL, lock/state/plan/cache/generated/vendor bodies,
+and raw Terraform line volume do not receive guessed Terraform effort. This is
+transparent prior reuse, not fitted calibration.
+
 ## Testing requirements
 
 Ordinary unit tests remain entirely memory-backed. Milestone 5 tests must cover:

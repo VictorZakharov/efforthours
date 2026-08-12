@@ -21,8 +21,8 @@ productivity score, invoice, or reconstruction of repository history.
 > repository estimator is not numerically calibrated or admitted. The Change
 > estimator has passed its first model-authored logical gate for changes estimated at 4 to 32
 > hours on the previously admitted non-SQL families, but it is not empirically
-> production-validated and the newer SQL, Python, Go, Java, Kotlin, Shell, and
-> PowerShell paths are outside that gate.
+> production-validated and the newer SQL, Python, Go, Java, Kotlin, Shell,
+> PowerShell, Terraform, and HCL paths are outside that gate.
 > Review the evidence and ranges before using any estimate for a consequential
 > decision.
 
@@ -157,6 +157,10 @@ For Shell and PowerShell, ordinary formatting and non-directive comments can
 normalize to zero while shebangs, PowerShell `#requires`, literals, identifiers,
 operators, and delimiters remain meaningful. Here-documents and here-strings fail
 closed so uncertain content changes remain represented.
+For Terraform and HCL, horizontal layout and blank-line count can normalize to
+zero while semantic newlines, comments, identifiers, operators, literals,
+templates, delimiters, and heredoc bodies remain meaningful. Incomplete HCL fails
+closed.
 The current source build can retain bounded customization inside generated files
 only when exact, EffortHours-specific `<custom-code>` regions isolate it safely;
 the generated body still contributes zero. Generator-specific protected-region
@@ -242,8 +246,14 @@ The current static analyzers support:
   tests, build/CI/delivery/infrastructure automation, command structure, file/
   network/process boundaries, security surfaces, and error handling through
   bounded static token and invocation-context analysis;
+- maintained Terraform/HCL resources, data sources, modules, variables, outputs,
+  locals, providers, backends, lifecycle/dynamic/dependency and expression
+  structure, tests, security-sensitive configuration, interface documentation,
+  and delivery configuration through bounded static token analysis;
+- repository-local Terraform module ownership plus unresolved registry, Git,
+  HTTP, object-storage, and dynamic module boundaries without fetching them;
 - mixed .NET, JavaScript/TypeScript, Python, Go, Java/Kotlin, Shell/PowerShell,
-  and SQL repositories;
+  Terraform/HCL, and SQL repositories;
 - documentation, build configuration, CI, containers, infrastructure, package
   metadata, and checked-in LCOV or Cobertura coverage reports; and
 - generated, vendored, minified, binary, duplicate, test, and documentation
@@ -291,6 +301,13 @@ bounded manifest/automation invocation context. It does not start a shell, resol
 commands or modules, source files, evaluate expansions, observe platform effects,
 or emit source values or excerpts. Dynamic behavior remains explicit uncertainty.
 See the [static Shell and PowerShell boundary](docs/SHELL_POWERSHELL_ANALYSIS.md).
+Terraform/HCL analysis reads only scanner-admitted, digest-matched static text. It
+does not run Terraform or related tools, fetch modules/providers, contact
+backends, load provider schemas, read state/plan semantics, evaluate interpolation
+or policy, or prove runtime correctness. State, plans, caches, lock mechanics,
+generated/vendor bodies, exact duplicates, and raw Terraform line volume do not
+inflate semantic effort. See the
+[static Terraform and HCL boundary](docs/TERRAFORM_HCL_ANALYSIS.md).
 
 ## Offline and safe by default
 
@@ -331,7 +348,7 @@ in this alpha. See the [host-review protocol](docs/MILESTONE_8.md).
   prove that a checkout builds or runs.
 - Unsupported languages still receive common inventory evidence but not the same
   semantic depth as .NET, JavaScript/TypeScript, Python, Go, Java/Kotlin,
-  Shell/PowerShell, SQL, and the supported frontend forms.
+  Shell/PowerShell, Terraform/HCL, SQL, and the supported frontend forms.
 - Checked-in coverage can be stale even when its bytes match the analyzed tree;
   EffortHours does not regenerate it.
 - Change portfolio reconciliation is experimental. Exact patch/object-chain

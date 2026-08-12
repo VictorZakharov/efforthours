@@ -931,3 +931,21 @@ production-admission decision. No existing corpus, aggregate/standalone suite,
 partition, reviewer identity, teacher target, estimator artifact, or frozen report
 changes. Shell and PowerShell have no independent correction or real-repository
 calibration family yet.
+
+## Terraform and HCL mutation extension
+
+The sixth polyglot expansion adds a standalone `terraform-0.1.0` mutation suite
+rather than regenerating the frozen 88-state aggregate or any earlier standalone
+suite. Its 14 project-authored MIT synthetic states use unchanged
+`seed-rules/0.4.0` and cover formatting/comments, exact copies, state/cache/lock/
+generated exclusion, distinct and repeated resources, data sources, local and
+external modules, tests, security-sensitive configuration, validation,
+documentation, delivery configuration, and generic-HCL conservatism.
+
+All 48 relations pass. These are qualitative directionality, range-point
+invariance, marginality, category-isolation, and false-positive guardrails. They
+are not reviewed work-item labels, held-out accuracy evidence, interval
+calibration, or a production-admission decision. No existing corpus, aggregate/
+standalone suite, partition, reviewer identity, teacher target, estimator artifact,
+or frozen report changes. Terraform/HCL has no independent correction or real-
+repository calibration family yet.

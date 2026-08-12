@@ -151,7 +151,24 @@ internal static partial class ChangeWorkItemBuilder
             .FirstOrDefault(tag => tag.StartsWith("sql-role:", StringComparison.Ordinal))?[9..] ?? string.Empty;
         string scriptRole = path.Tags
             .FirstOrDefault(tag => tag.StartsWith("script-role:", StringComparison.Ordinal))?[12..] ?? string.Empty;
+        string hclRole = path.Tags
+            .FirstOrDefault(tag => tag.StartsWith("hcl-role:", StringComparison.Ordinal))?[9..] ?? string.Empty;
         string lowerPath = path.Path.ToLowerInvariant();
+        if (hclRole == "test")
+        {
+            return EffortCategory.IntegrationContractAndComponentTesting;
+        }
+
+        if (hclRole == "cli-configuration")
+        {
+            return EffortCategory.BuildConfigurationAndDeveloperTooling;
+        }
+
+        if (hclRole.Length > 0)
+        {
+            return EffortCategory.CiCdAndInfrastructureAsCode;
+        }
+
         if (sqlRole == "test-fixture")
         {
             return EffortCategory.IntegrationContractAndComponentTesting;

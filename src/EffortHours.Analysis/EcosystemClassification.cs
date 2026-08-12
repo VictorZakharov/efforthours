@@ -34,6 +34,9 @@ internal static class EcosystemClassification
             ecosystems.Add("shell");
         if (language == "powershell")
             ecosystems.Add("powershell");
+        if (language is "terraform" or "terraform-json" or "hcl" ||
+            TerraformFileClassification.IsProjectArtifact(lowerName, extension))
+            ecosystems.Add("terraform");
         return ecosystems;
     }
 

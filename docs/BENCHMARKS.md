@@ -430,6 +430,40 @@ invocation graphs. They are not cross-platform regression gates. Process-level E
 coverage runs smaller fresh-process Shell and PowerShell shapes and verifies the
 same read-only/offline signals.
 
+## Static Terraform/HCL analyzer v0.1.0 checkpoint
+
+Measured on August 12, 2026 with the same Windows/.NET workstation, a fresh
+process, common scanner `0.2.8`, and Terraform/HCL analyzer `0.1.0`.
+
+```text
+dotnet benchmarks/EffortHours.ScannerBenchmarks/bin/Release/net10.0/EffortHours.ScannerBenchmarks.dll --files 10000 --lines-per-file 100 --terraform
+```
+
+| Measure | Terraform/HCL |
+| --- | ---: |
+| Requested/analyzed lines | 1,000,000 |
+| Included files | 10,000 |
+| Included bytes | 18,000,000 |
+| Fixture generation | 1.439 s |
+| Full static scan | 8.239 s |
+| Evidence serialization | 0.259 s |
+| Full-scan throughput | 121,371 lines/s |
+| Managed allocation | 3,867.00 MiB |
+| Sampled peak working set | 303.72 MiB |
+| Evidence JSON | 34.32 MiB |
+| Evidence facts | 20,304 |
+
+The fixture uses maintained `.tf` resource blocks with bounded attributes. Target
+metadata retained the same digest before and after analysis. The benchmark did not
+execute Terraform or target code, install dependencies/providers/modules, contact
+a backend or network, or write into the target. This single synthetic workstation
+measurement is a reproducible checkpoint, not a frozen cross-platform threshold
+or a claim about native-parser/provider performance.
+
+Process-level benchmark coverage also runs a smaller `--terraform` shape and
+asserts static safety signals, positive line/memory measurements, and unchanged
+target metadata.
+
 ## Change EHE scale-and-safety v1.0.0 checkpoint
 
 Measured on August 10, 2026 with:

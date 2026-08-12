@@ -64,7 +64,7 @@ public sealed class GoChangeTests
             candidate => candidate.Category == category);
         Assert.True(estimate.Hours.Expected > 0m);
         Assert.Contains(report.WorkItems, item => item.Category == category);
-        Assert.Equal("change-seed/0.12.0+seed-rules/0.4.0", report.EstimatorVersion);
+        Assert.Equal("change-seed/0.13.0+seed-rules/0.4.0", report.EstimatorVersion);
     }
 
     [Fact]

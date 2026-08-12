@@ -6,8 +6,8 @@ Metric identity, decision order, and the first small-change logical gate are fro
 as `change-model-admission/0.2.0`. The admitted source baseline is
 `change-seed/0.6.0+seed-rules/0.3.0`; it is the transparent Stage A logical
 baseline for experimental one-to-several-day Change estimates. The current source
-has advanced to `change-seed/0.12.0+seed-rules/0.4.0` for static SQL, Python, Go,
-Java, Kotlin, Shell, and PowerShell support. Those extensions preserve admitted
+has advanced to `change-seed/0.13.0+seed-rules/0.4.0` for static SQL, Python, Go,
+Java, Kotlin, Shell, PowerShell, Terraform, and HCL support. Those extensions preserve admitted
 rules but are not separately admitted, and no Stage A record contains any of those
 ecosystems. This is weak-supervision admission, not empirical accuracy,
 formal interval calibration, or production readiness.
@@ -500,3 +500,23 @@ revision, not an admitted successor; `0.6.0` remains the last admitted source
 baseline. Scripting admission requires licensed public final changes in the
 declared size band, exact small-task logical decomposition, repository-isolated
 partitions, and the normal development/validation/test decision order.
+
+## `change-seed/0.13.0` static Terraform and HCL extension
+
+Version 0.13.0 adds maintained Terraform/HCL final-delta support. Its formatting
+comparison normalizes horizontal layout and blank-line count while preserving
+semantic newlines, comments, strings, heredoc bodies, templates, identifiers,
+operators, and delimiters; incomplete structures fail closed. Repository analyzer
+evidence routes infrastructure, integration, security, validation, test,
+documentation, build, and delivery changes through existing rules without adding
+a fitted Change prior. State, plan, cache, lock, generated, vendor, duplicate, and
+formatting-only bodies retain zero implementation value.
+
+The standalone public Terraform mutation suite adds 14 states and passes 48/48
+relations. That is qualitative safeguard evidence, not reviewed Change labeling.
+The Stage A corpus and its exact logical decomposition contain no Terraform or HCL
+changes. Version 0.13.0 is therefore an experimental source revision, not an
+admitted successor; `0.6.0` remains the last admitted source baseline. Terraform/
+HCL admission requires licensed public final changes in the declared size band,
+exact small-task logical decomposition, repository-isolated partitions, and the
+normal development/validation/test decision order.

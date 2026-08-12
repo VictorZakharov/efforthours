@@ -62,6 +62,13 @@ internal static class ContentChangeAnalyzer
     private static bool FormattingEquivalent(string left, string right, string path)
     {
         string extension = Path.GetExtension(path).ToLowerInvariant();
+        if (IsHcl(path))
+        {
+            return HclFormattingNormalizer.TryCreateSignature(left, out string leftSignature) &&
+                HclFormattingNormalizer.TryCreateSignature(right, out string rightSignature) &&
+                leftSignature == rightSignature;
+        }
+
         if (extension is ".sh" or ".bash" or ".ksh" or ".bats" || IsShellProfile(path) ||
             (extension is "" or ".command") && BothUseShellShebang(left, right))
         {
@@ -223,8 +230,17 @@ internal static class ContentChangeAnalyzer
             ".cs" or ".js" or ".jsx" or ".mjs" or ".cjs" or
             ".ts" or ".tsx" or ".mts" or ".cts" or ".py" or ".pyi" or
             ".go" or ".java" or ".kt" or ".kts" or ".sql" or
+            ".tf" or ".tfvars" or ".tfbackend" or ".hcl" or
             ".sh" or ".bash" or ".ksh" or ".bats" or ".ps1" or ".psm1" or ".psd1" ||
-        IsShellProfile(path);
+        IsShellProfile(path) || IsHcl(path);
+
+    private static bool IsHcl(string path)
+    {
+        string name = Path.GetFileName(path).ToLowerInvariant();
+        return Path.GetExtension(path).ToLowerInvariant() is
+            ".tf" or ".tfvars" or ".tfbackend" or ".hcl" ||
+            name is ".terraformrc" or "terraform.rc";
+    }
 
     private static bool IsShellProfile(string path) =>
         Path.GetFileName(path).ToLowerInvariant() is

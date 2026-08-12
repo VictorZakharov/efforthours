@@ -23,7 +23,7 @@ internal static partial class ChangeWorkItemBuilder
         }
 
         IGrouping<EffortCategory, ChangePathEvidence>[] groups = [.. paths
-            .GroupBy(path => ExplicitRoleCategory(path) ?? primaryCategory)
+            .GroupBy(path => ExplicitRoleCategory(path, primaryCategory) ?? primaryCategory)
             .OrderBy(group => group.Key)];
         if (groups.Length == 1)
         {
@@ -76,8 +76,29 @@ internal static partial class ChangeWorkItemBuilder
         return [.. partitions];
     }
 
-    private static EffortCategory? ExplicitRoleCategory(ChangePathEvidence path)
+    private static EffortCategory? ExplicitRoleCategory(
+        ChangePathEvidence path,
+        EffortCategory primaryCategory)
     {
+        string hclRole = path.Tags
+            .FirstOrDefault(tag => tag.StartsWith("hcl-role:", StringComparison.Ordinal))?[9..] ?? string.Empty;
+        if (hclRole == "test") return EffortCategory.IntegrationContractAndComponentTesting;
+        if (hclRole == "cli-configuration")
+        {
+            return primaryCategory is EffortCategory.ProductionImplementation or
+                EffortCategory.CiCdAndInfrastructureAsCode
+                    ? EffortCategory.BuildConfigurationAndDeveloperTooling
+                    : null;
+        }
+
+        if (hclRole.Length > 0)
+        {
+            return primaryCategory is EffortCategory.ProductionImplementation or
+                EffortCategory.BuildConfigurationAndDeveloperTooling
+                    ? EffortCategory.CiCdAndInfrastructureAsCode
+                    : null;
+        }
+
         string role = path.Tags
             .FirstOrDefault(tag => tag.StartsWith("role:", StringComparison.Ordinal))?[5..] ?? string.Empty;
         return role switch

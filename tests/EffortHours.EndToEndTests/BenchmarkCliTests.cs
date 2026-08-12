@@ -161,7 +161,8 @@ public sealed class BenchmarkCliTests
     [Theory]
     [InlineData("--shell", "shell-static")]
     [InlineData("--powershell", "powershell-static")]
-    public async Task ScriptingBenchmarksRunInFreshProcessesWithStaticSafetySignals(
+    [InlineData("--terraform", "terraform-hcl-static")]
+    public async Task StaticEcosystemBenchmarksRunInFreshProcessesWithSafetySignals(
         string option,
         string expectedMode)
     {

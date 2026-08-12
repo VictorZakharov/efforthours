@@ -55,7 +55,7 @@ public sealed class RepositoryScannerTests
             SchemaNames.RepositoryEvidence,
             firstJson);
         Assert.True(schema.IsValid, string.Join(Environment.NewLine, schema.Errors));
-        Assert.Equal(["dotnet", "javascript", "typescript"], first.Repository.Ecosystems);
+        Assert.Equal(["dotnet", "javascript", "terraform", "typescript"], first.Repository.Ecosystems);
         Assert.StartsWith("sha256:", first.Repository.SourceDigest, StringComparison.Ordinal);
         Assert.DoesNotContain(repository.RootPath, firstJson, StringComparison.OrdinalIgnoreCase);
         Assert.DoesNotContain("source-only-marker", firstJson, StringComparison.Ordinal);
@@ -64,6 +64,7 @@ public sealed class RepositoryScannerTests
         AssertFileHasTag(first, "src/web/app.min.js", "classification:minified");
         AssertFileHasTag(first, "assets/logo.png", "content:binary");
         AssertFileHasTag(first, "tests/Server.Tests/CalculatorTests.cs", "classification:test");
+        AssertFileHasTag(first, "infra/main.tf", "language:terraform");
         Assert.Contains(first.Facts, fact => fact.Id == "file:keep.tmp");
         Assert.Contains(first.Facts, fact => fact.Id == "tests:repository");
         Assert.Contains(first.Facts, fact => fact.Id == "documentation:repository");
