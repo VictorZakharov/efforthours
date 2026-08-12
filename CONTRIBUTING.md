@@ -34,6 +34,12 @@ the physical CLI/process boundary and is primarily a release check. It also
 enforces the source-file ratchets in `eng/file-budgets.json`; follow
 `docs/CODE_BUDGETS.md` and split responsibilities near 80% of a ceiling.
 
+Pull-request CI runs formatting once on Linux and runs build/unit and end-to-end
+matrices independently on Windows, Linux, and macOS. End-to-end jobs rebuild their
+project graph on each operating system instead of transferring compiled output.
+Package compilation runs in parallel, but the final preview artifact is promoted
+only after every formatting, quality, and end-to-end gate succeeds.
+
 Run the synthetic one-million-line scanner checkpoint with:
 
 ```text

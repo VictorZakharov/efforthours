@@ -16,6 +16,10 @@
     <Using Include="Xunit" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="../../benchmarks/EffortHours.ChangeBenchmarks/EffortHours.ChangeBenchmarks.csproj"
+                      ReferenceOutputAssembly="false" />
+    <ProjectReference Include="../../benchmarks/EffortHours.ScannerBenchmarks/EffortHours.ScannerBenchmarks.csproj"
+                      ReferenceOutputAssembly="false" />
     <ProjectReference Include="../../src/EffortHours.Cli/EffortHours.Cli.csproj" ReferenceOutputAssembly="false" />
     <ProjectReference Include="../../src/EffortHours.Calibration/EffortHours.Calibration.csproj" />
     <ProjectReference Include="../../src/EffortHours.Change/EffortHours.Change.csproj" />

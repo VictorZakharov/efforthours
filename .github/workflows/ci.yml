@@ -43,6 +43,25 @@ jobs:
             exit 1
           fi
 
+  formatting:
+    name: Formatting
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+        with:
+          global-json-file: global.json
+
+      - name: Restore
+        run: dotnet restore EffortHours.slnx --configfile NuGet.Config --locked-mode
+
+      - name: Verify formatting
+        run: dotnet format EffortHours.slnx --no-restore --verify-no-changes --severity info
+
   quality:
     name: Quality (${{ matrix.os }})
     runs-on: ${{ matrix.os }}
@@ -64,10 +83,7 @@ jobs:
           global-json-file: global.json
 
       - name: Restore
-        run: dotnet restore EffortHours.slnx --configfile NuGet.Config --force-evaluate
-
-      - name: Verify formatting
-        run: dotnet format EffortHours.slnx --no-restore --verify-no-changes --severity info
+        run: dotnet restore EffortHours.slnx --configfile NuGet.Config --locked-mode
 
       - name: Build
         run: dotnet build EffortHours.slnx --no-restore --configuration Release
@@ -75,12 +91,37 @@ jobs:
       - name: Run storage-independent unit tests
         run: dotnet test tests/EffortHours.Tests/EffortHours.Tests.csproj --no-build --no-restore --configuration Release
 
+  end-to-end:
+    name: End-to-end (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-latest
+          - windows-latest
+          - macos-latest
+
+    steps:
+      - name: Check out source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+        with:
+          global-json-file: global.json
+
+      - name: Restore end-to-end project graph
+        run: dotnet restore tests/EffortHours.EndToEndTests/EffortHours.EndToEndTests.csproj --configfile NuGet.Config --locked-mode
+
+      - name: Build end-to-end project graph
+        run: dotnet build tests/EffortHours.EndToEndTests/EffortHours.EndToEndTests.csproj --no-restore --configuration Release
+
       - name: Run process-level end-to-end tests
         run: dotnet test tests/EffortHours.EndToEndTests/EffortHours.EndToEndTests.csproj --no-build --no-restore --configuration Release
 
-  package:
-    name: Pack preview artifact
-    needs: quality
+  package-candidate:
+    name: Build preview package candidate
     runs-on: ubuntu-latest
 
     steps:
@@ -93,13 +134,35 @@ jobs:
           global-json-file: global.json
 
       - name: Restore
-        run: dotnet restore EffortHours.slnx --configfile NuGet.Config --force-evaluate
-
-      - name: Build
-        run: dotnet build EffortHours.slnx --no-restore --configuration Release
+        run: dotnet restore src/EffortHours.Cli/EffortHours.Cli.csproj --configfile NuGet.Config --locked-mode
 
       - name: Pack
-        run: dotnet pack src/EffortHours.Cli/EffortHours.Cli.csproj --configuration Release --no-build --no-restore --output artifacts/packages
+        run: dotnet pack src/EffortHours.Cli/EffortHours.Cli.csproj --configuration Release --no-restore --output artifacts/package-candidate
+
+      - name: Upload run-scoped package candidate
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: efforthours-tool-candidate-${{ github.run_id }}-${{ github.sha }}
+          path: artifacts/package-candidate/EffortHours.Tool.*.nupkg
+          if-no-files-found: error
+          retention-days: 1
+          compression-level: 0
+
+  package:
+    name: Pack preview artifact
+    needs:
+      - formatting
+      - quality
+      - end-to-end
+      - package-candidate
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download exact-run package candidate
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: efforthours-tool-candidate-${{ github.run_id }}-${{ github.sha }}
+          path: artifacts/packages
 
       - name: Upload package artifact
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
@@ -108,3 +171,4 @@ jobs:
           path: artifacts/packages/EffortHours.Tool.*.nupkg
           if-no-files-found: error
           retention-days: 14
+          compression-level: 0
