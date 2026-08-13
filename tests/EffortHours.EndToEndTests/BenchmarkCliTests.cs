@@ -168,6 +168,8 @@ public sealed class BenchmarkCliTests
     [InlineData("--terraform", "terraform-hcl-static")]
     [InlineData("--docker", "docker-compose-static")]
     [InlineData("--jupyter", "jupyter-notebook-static")]
+    [InlineData("--frontend", "frontend-assets-static")]
+    [InlineData("--sql", "sql-static")]
     public async Task StaticEcosystemBenchmarksRunInFreshProcessesWithSafetySignals(
         string option,
         string expectedMode)

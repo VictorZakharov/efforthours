@@ -13,7 +13,7 @@ specification.
 ## Install
 
 ```text
-dotnet tool install --global EffortHours.Tool --version 0.10.0-alpha.1
+dotnet tool install --global EffortHours.Tool --version 0.10.0-alpha.2
 eh version
 eh --help
 ```
@@ -24,79 +24,112 @@ eh --help
 eh estimate ./my-repository --profile implementation --format markdown
 ```
 
-EffortHours statically analyzes .NET, JavaScript, TypeScript, Python/Jupyter, Go,
-Java, Kotlin/JVM, Shell, PowerShell, Terraform/HCL, PHP/Composer, Rust/Cargo,
-Docker/Compose, C/C++, HTML/CSS-family frontends, SQL, and mixed repositories.
-Frontend support includes bounded template and stylesheet semantics
-plus static Angular component metadata. SQL support includes bounded schema,
-migration, stored-program, query, test, deployment, and cross-database evidence
-for common PostgreSQL, SQL Server, MySQL/MariaDB, and SQLite syntax. It does not
-render, compile frameworks, execute preprocessors, connect to a database, or
-execute SQL.
-Python support includes `.py`/`.pyi`, static package metadata, bounded token and
-indentation structure, tests, and conservative import-qualified framework
-evidence. It does not invoke Python, import modules, resolve environments, install
-packages, or execute `setup.py`.
-Jupyter support admits bounded, digest-verified `.ipynb` JSON, analyzes only
-unambiguous Python cells through the Python tokenizer, and represents Markdown,
-qualified data analysis, visualization, integrations, and tests separately. It
-never launches Jupyter or a kernel and excludes outputs, execution counts, widget
-state, attachments, embedded payloads, magics, shell escapes, and unsupported
-language cells from EHE.
-Go support includes modules, workspaces, packages, local replacements, bounded
-token structure, import-qualified semantic evidence, concurrency, build
-directives, and `_test.go` tests. It does not invoke the Go toolchain, resolve
-build constraints, expand embedded assets, run generators, compile cgo, or prove
-runtime registration.
-Java support includes bounded package/module/type/method structure, public APIs,
-concurrency, JUnit/TestNG tests, import-qualified Spring/Jakarta and integration
-evidence, static Maven reactors/POMs, and conservative Gradle multi-project
-metadata. It does not invoke a JVM, Maven, Gradle, wrappers, compilers, annotation
-processors, or tests, and it does not evaluate build DSL or prove runtime behavior.
-Kotlin/JVM support includes maintained `.kt` and non-Gradle `.kts` source,
-Kotlin declarations, coroutines/Flow, tests, import-qualified server,
-Android/Compose, data, integration, security, and background evidence, and shared
-static Maven/Gradle JVM ownership. It does not invoke a JVM, Kotlin compiler,
-Gradle, Android tooling, KSP, kapt, compiler plugins, or tests.
-Shell and PowerShell support includes maintained product scripts, reusable
-modules, tests, and build/CI/delivery/infrastructure automation with bounded
-token-backed structure and exact invocation-context evidence. It never starts a
-shell, resolves commands or modules, sources files, evaluates expansions, or emits
-source values or excerpts.
-Terraform/HCL support includes bounded resources, data sources, modules, inputs,
-outputs, locals, providers, backends, lifecycle/dependency/expression structure,
-tests, security-sensitive configuration, documentation, and delivery evidence.
-It resolves repository-local module ownership only and never runs Terraform,
-fetches modules/providers, contacts backends, evaluates plans/interpolation, or
-emits configured values or source excerpts.
-PHP/Composer support includes static package ownership, dependencies, autoload
-mappings, scripts, binary entry points, literal local path repositories, bounded
-token-backed declarations and public APIs, import-qualified framework semantics,
-tests, and PHP/Blade template structure. It never invokes PHP, Composer,
-autoloaders, package scripts, framework bootstraps, containers, routes, reflection,
-dependency resolution, or tests.
-Rust/Cargo support includes static packages and workspaces, dependencies, features,
-build scripts, local edges, targets, bounded token-backed declarations and public
-APIs, async/concurrency, unsafe/error paths, import-qualified semantics, FFI,
-tests, benchmarks, and examples. It never invokes Cargo, rustc, build scripts,
-procedural macros, generators, tests, examples, or benchmarks, and it does not
-resolve dependencies, active features, target triples, or generated bodies.
-Docker/Compose support includes bounded Dockerfile instructions and stages,
-filename-qualified Compose services and orchestration structure, literal local
-Compose-to-Dockerfile references, and `.dockerignore` rules. It never invokes
-Docker, Compose, BuildKit, a shell, or target code; pulls images; expands build
-contexts; loads includes or environment files; resolves interpolation or secrets;
-or treats arbitrary YAML as Compose.
-C/C++ support includes maintained C99/C11/C17/C23 and C++11 through C++23 source,
-headers and modules; bounded declarations, public APIs, templates/concepts,
-concurrency, FFI, tests, and qualified semantics; plus static CMake, Make, Meson,
-and Visual C++/MSBuild ownership. It invokes no compiler, preprocessor, linker,
-build system, generator, package manager, tests, or native parser; expands no
-headers or macros; and does not prove compilation, ABI, memory safety, or runtime
-behavior.
-It reports evidence-backed work items across implementation, testing,
-documentation, integration, delivery, validation, and review, then optionally
-applies a dated contractor rate without changing the effort estimate.
+## Supported analyzers
+
+EffortHours combines 13 analyzer families in one report, including mixed
+repositories. Each family uses bounded static evidence; the table shows the
+maintained artifacts and the kind of work it can represent.
+
+| Analyzer family | Maintained artifacts | Evidence represented |
+| --- | --- | --- |
+| **.NET** | C# source, projects, solutions, and Razor/UI assets | Project ownership, APIs, behavior, data and migrations, integrations, security, UI, and tests |
+| **JavaScript/TypeScript + frontend** | JavaScript, JSX, TypeScript, TSX, HTML/templates, CSS-family styles, Vue/Svelte components, and static Angular metadata | Packages and workspaces, APIs, behavior, UI/template/style semantics, data, integrations, security, background work, and tests |
+| **SQL** | PostgreSQL, SQL Server, MySQL/MariaDB, and SQLite-oriented SQL | Schema, migrations, stored programs, queries, tests, deployment, and cross-database evidence |
+| **Python + Jupyter** | `.py`, `.pyi`, package metadata, and bounded `.ipynb` notebooks | Package ownership, structure, APIs, qualified frameworks, tests, Markdown, data analysis, visualization, and integrations |
+| **Go** | Modules, workspaces, `.go` source, and `_test.go` tests | Packages, local replacements, declarations, APIs, qualified semantics, concurrency, build directives, and tests |
+| **Java** | `.java`, Maven reactors/POMs, and Gradle multi-project metadata | Packages/modules, types, methods, APIs, concurrency, Spring/Jakarta and integration semantics, and JUnit/TestNG tests |
+| **Kotlin/JVM** | `.kt`, non-Gradle `.kts`, and shared Maven/Gradle JVM metadata | Declarations, APIs, coroutines/Flow, server, Android/Compose, data, integrations, security, background work, and tests |
+| **Shell + PowerShell** | Maintained scripts, modules, and tests | Product logic plus build, CI, delivery, infrastructure, integration, security, validation, and invocation-context evidence |
+| **Terraform/HCL** | Terraform configuration, tests, and relevant HCL | Resources, data sources, modules, interfaces, providers, backends, lifecycle/dependency structure, security, documentation, and delivery |
+| **PHP/Composer** | PHP, Blade templates, Composer packages, and tests | Package ownership, dependencies, autoloading, entry points, declarations, APIs, qualified frameworks, templates, and tests |
+| **Rust/Cargo** | Rust source, Cargo packages/workspaces, targets, tests, benchmarks, and examples | Declarations, APIs, generics/lifetimes, async/concurrency, unsafe/error paths, qualified semantics, FFI, and tests |
+| **Docker/Compose** | Dockerfile variants, filename-qualified Compose files, and `.dockerignore` | Build stages and instructions, services, orchestration, literal local Dockerfile references, and ignore rules |
+| **C/C++** | C99 through C23, C++11 through C++23, headers, modules, and static build metadata | Declarations, APIs, templates/concepts, concurrency, FFI, tests, qualified semantics, and CMake/Make/Meson/MSBuild ownership |
+
+Evidence becomes traceable work items across implementation, UI, data,
+integrations, security, testing, documentation, delivery, validation, and review.
+A dated contractor rate can be applied afterward without changing the effort
+estimate.
+
+See the
+[per-language million-line performance checkpoints](https://github.com/VictorZakharov/efforthours#one-million-line-performance-checkpoints)
+and their
+[full benchmark protocol](https://github.com/VictorZakharov/efforthours/blob/main/docs/BENCHMARKS.md).
+
+### Shared static-analysis boundary
+
+- EffortHours reads scanner-admitted, digest-verified files inside the selected
+  repository scope. It does not follow repository links outside that scope.
+- It does not run target code, runtimes, compilers, tests, build systems, package
+  managers, deployment tools, or generators, and it does not install or fetch
+  target dependencies.
+- It does not prove compilation or runtime behavior, evaluate dynamic
+  configuration, or treat mechanical source volume as effort. Generated,
+  vendored, minified, binary, and exact-duplicate content is conservatively
+  excluded or bounded.
+- Ordinary reports avoid source excerpts, configured values, secrets, and embedded
+  notebook payloads.
+
+### Ecosystem-specific boundaries
+
+- **.NET:** C# structure is Roslyn-backed, but EffortHours does not build projects,
+  restore packages, execute source generators, run tests, or prove runtime
+  registration.
+- **JavaScript/TypeScript + frontend:** JavaScript and JSX are parser-backed;
+  TypeScript and TSX are token-backed. React/Preact/Next-style JSX, Vue, Svelte,
+  maintained HTML, CSS/SCSS/Sass/Less, and import-qualified static Angular
+  component metadata receive bounded evidence. EffortHours does not render a UI,
+  execute a preprocessor, compile a framework, or evaluate executable
+  configuration; Angular assets must be unambiguous scanner-admitted relative
+  files.
+- **SQL:** Analysis is token/statement-backed rather than a full grammar, schema
+  diff engine, query optimizer, or database validator. It does not connect to a
+  database, execute SQL, or prove dialect validity or performance.
+- **Python + Jupyter:** Python evidence is token/indentation-backed. EffortHours
+  does not invoke Python, import modules, resolve environments, install packages,
+  or execute `setup.py`. It analyzes only unambiguous Python notebook cells and
+  never launches Jupyter or a kernel; outputs, execution counts, widget state,
+  attachments, embedded payloads, magics, shell escapes, and unsupported-language
+  cells do not add EHE. Execution state, data provenance, reproducibility, output
+  correctness, runtime dependencies, and scientific validity are not verified.
+- **Go:** EffortHours does not invoke the Go toolchain, resolve build constraints,
+  expand embedded assets, run generators, compile cgo, or prove runtime
+  registration.
+- **Java:** Evidence is token-backed. EffortHours does not invoke a JVM, compiler,
+  Maven, Gradle, wrappers, annotation processors, or tests; evaluate build DSL; or
+  prove bytecode or runtime behavior.
+- **Kotlin/JVM:** Evidence is token-backed. EffortHours does not invoke a JVM,
+  Kotlin compiler, Gradle, Android tooling, KSP, kapt, compiler plugins, or tests.
+  Android resources, generated output, and multiplatform binding are not resolved.
+- **Shell + PowerShell:** EffortHours never starts a shell, resolves commands or
+  modules, sources files, evaluates expansions, or proves platform/runtime
+  effects.
+- **Terraform/HCL:** Evidence is token-backed and local module ownership is
+  resolved only inside the repository. EffortHours does not run Terraform, fetch
+  modules/providers, contact backends, load provider schemas, evaluate state,
+  plans, interpolation, or policy, or prove runtime correctness. Terraform JSON is
+  not analyzed as HCL.
+- **PHP/Composer:** Evidence is token-backed. EffortHours does not invoke PHP,
+  Composer, autoloaders, package scripts, framework bootstraps, containers,
+  routes, reflection, dependency resolution, or tests; dynamic includes and
+  runtime behavior are not resolved.
+- **Rust/Cargo:** Evidence is token-backed. EffortHours does not invoke Cargo,
+  rustc, build scripts, procedural macros, generators, tests, examples, or
+  benchmarks. It does not resolve dependencies, active features, target triples,
+  macro expansion, generated bindings, borrow checking, trait selection, or
+  runtime behavior.
+- **Docker/Compose:** Analysis is bounded structure, not general YAML or complete
+  Docker/BuildKit/Compose parsing. EffortHours does not invoke container tooling,
+  a shell, or target code; pull or inspect images; expand build contexts; load
+  includes or environment files; resolve interpolation or secrets; validate a
+  Compose schema; or prove deployment behavior. Arbitrary YAML is not treated as
+  Compose.
+- **C/C++:** Evidence is token-backed rather than compiler-, preprocessor-, or
+  native-parser-backed. EffortHours does not invoke a compiler, preprocessor,
+  linker, build system, generator, package manager, or tests; expand headers or
+  macros; resolve active configurations, system headers, types, links, or template
+  instantiations; or prove compilation, ABI behavior, memory safety, or runtime
+  correctness.
 
 ## Estimate a final change
 
@@ -145,40 +178,7 @@ treated as untrusted input, and reports avoid source excerpts by default.
 ## Current limitations
 
 - `seed-rules/0.4.0` and `change-seed/0.18.0` remain experimental and uncalibrated.
-- SQL uses bounded token/statement evidence mapped to existing priors; it is not a
-  full grammar, schema diff engine, query optimizer, or database validator.
 - Public calibration labels have not completed genuinely independent correction.
-- TypeScript and TSX evidence is token-backed rather than compiler-backed.
-- Python evidence is token/indentation-backed rather than compiler- or runtime-backed.
-- Jupyter evidence does not verify execution state, data provenance,
-  reproducibility, output correctness, runtime dependencies, or scientific validity.
-- Go evidence is token-backed rather than compiler- or toolchain-backed.
-- Java evidence is token-backed rather than compiler-, bytecode-, or JVM-backed;
-  Maven/Gradle evidence is a conservative static build-model projection.
-- Kotlin evidence is token-backed rather than compiler-, bytecode-, or JVM-backed;
-  Maven/Gradle evidence is a conservative shared JVM build-model projection, and
-  Android resources, KSP/kapt output, and multiplatform binding are not resolved.
-- Shell and PowerShell evidence is token-backed rather than interpreter-backed;
-  sourced content, dynamic expansion, command/module resolution, and platform or
-  runtime effects are not resolved.
-- Terraform/HCL evidence is token-backed rather than native-parser/provider-
-  backed; Terraform JSON, provider schemas, plans, policy validation,
-  interpolation results, and runtime correctness are not evaluated.
-- PHP evidence is token-backed rather than native-parser/runtime-backed; Composer
-  dependency resolution, autoload execution, dynamic includes, framework
-  compilation, container/route registration, reflection, and runtime behavior are
-  not resolved.
-- Rust evidence is token-backed rather than rustc-backed; Cargo dependency and
-  feature resolution, macro expansion, build-script output, generated bindings,
-  borrow checking, trait selection, and runtime behavior are not resolved.
-- Dockerfile and Compose evidence is bounded structural analysis rather than
-  Docker/BuildKit parsing, general YAML parsing, Compose schema validation, or
-  runtime planning; image contents, build contexts, interpolation, includes,
-  secrets, and deploy behavior are not resolved.
-- C/C++ evidence is token-backed rather than compiler- or preprocessor-backed;
-  macro expansion, active configurations, system headers, type/link resolution,
-  template instantiation, ABI behavior, and native runtime correctness are not
-  resolved.
 - Host-review token use, cost, and estimate improvement have not yet been measured
   across representative repositories; no automatic review budget is selected.
 

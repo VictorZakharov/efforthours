@@ -753,14 +753,15 @@ The first useful release should:
   legally accompany the chosen open-source distribution, with recorded provenance.
 
 The latest scanner checkpoint analyzes one million lines in 7.083 seconds for
-static .NET, 12.088 seconds for static JavaScript/TypeScript, and 13.214 seconds for
-a mixed C#/JavaScript/TypeScript/C/C++ tree on the environment recorded in
+static .NET, 12.088 seconds for static JavaScript/TypeScript, 8.187 seconds for
+HTML/CSS/SCSS frontend assets, 8.421 seconds for SQL, and 13.214 seconds for a
+mixed C#/JavaScript/TypeScript/C/C++ tree on the environment recorded in
 `BENCHMARKS.md`. The static Python shape completes in 13.354 seconds with a
 109.63 MiB sampled peak; the static Go shape completes in 6.577 seconds with a
 119.95 MiB sampled peak; and the static Java shape completes in 13.954 seconds
-with a 167.31 MiB sampled peak. An explicit mixed warm-cache pass takes 6.197 seconds. Three verified
-MIT releases and the EffortHours tree provide initial real-source measurements,
-with unchanged before/after target metadata.
+with a 167.31 MiB sampled peak. An explicit mixed warm-cache pass takes 6.197
+seconds. Three verified MIT releases and the EffortHours tree provide initial
+real-source measurements, with unchanged before/after target metadata.
 
 Numerical accuracy and performance thresholds will be added only after repeated
 cross-platform measurements and a more representative benchmark corpus exist.

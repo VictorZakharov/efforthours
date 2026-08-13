@@ -1,86 +1,94 @@
 # EffortHours
 
-Turn a software repository or completed code change into a traceable estimate of
-the senior-contractor effort it represents.
+[![NuGet prerelease](https://img.shields.io/nuget/vpre/EffortHours.Tool?label=NuGet)](https://www.nuget.org/packages/EffortHours.Tool/)
+[![CI](https://github.com/VictorZakharov/efforthours/actions/workflows/ci.yml/badge.svg)](https://github.com/VictorZakharov/efforthours/actions/workflows/ci.yml)
+[![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-EffortHours is an offline-first .NET 10 command-line tool. It statically analyzes
-the code, tests, documentation, configuration, and delivery artifacts that exist
-today, decomposes them into evidence-backed work items, and reports **Equivalent
-Human Effort (EHE)**.
+**Evidence-first, offline effort estimates for software repositories and completed
+code changes.**
 
-EHE answers this counterfactual question:
+EffortHours is a .NET 10 command-line tool that turns source, tests,
+documentation, configuration, and delivery artifacts into traceable
+**Equivalent Human Effort (EHE)**.
 
 > How long would one competent senior contractor, unfamiliar with the business
 > domain and not using AI, need to recreate this functional and quality state from
 > a clear specification?
 
-It does **not** claim how long anyone actually worked. It is not a timesheet,
-productivity score, invoice, or reconstruction of repository history.
+| EffortHours is | EffortHours is not |
+| --- | --- |
+| A replacement-effort estimate of the software that exists now | A reconstruction of hours historically worked |
+| A low/expected/high range built from evidence-backed work items | A timesheet, productivity score, or authorship detector |
+| An offline static analysis with transparent rules | A build, runtime, security, accessibility, or quality audit |
+| An effort model with optional pricing applied afterward | An invoice or compensation recommendation |
 
-> **Experimental public alpha:** the CLI and reporting pipeline work. The bundled
-> repository estimator is not numerically calibrated or admitted. The Change
-> estimator has passed its first model-authored logical gate for changes estimated at 4 to 32
-> hours on the previously admitted non-SQL families, but it is not empirically
-> production-validated and the newer SQL, Python, Go, Java, Kotlin, Shell,
-> PowerShell, Terraform/HCL, PHP/Composer, Rust/Cargo, Docker/Compose, Jupyter,
-> and C/C++ paths are outside that
-> gate.
-> Review the evidence and ranges before using any estimate for a consequential
-> decision.
+> [!WARNING]
+> **Experimental public alpha.** The CLI and reporting pipeline work, but the
+> repository estimator remains uncalibrated. Change EHE has passed only its
+> documented model-authored logical gate for 4-to-32-hour changes on the previously
+> admitted language set. It is not empirically production-validated. Review the
+> evidence and ranges before using an estimate for a consequential decision.
 
-## Install
+[Product page](https://wellscoped.dev/products/efforthours) |
+[NuGet](https://www.nuget.org/packages/EffortHours.Tool/) |
+[Documentation](docs/README.md) |
+[Changelog](CHANGELOG.md)
 
-EffortHours is published as the `EffortHours.Tool` .NET global tool. The installed
-command is `eh`.
+## Quick start
+
+Install the explicit preview version:
 
 ```text
-dotnet tool install --global EffortHours.Tool --version 0.10.0-alpha.1
+dotnet tool install --global EffortHours.Tool --version 0.10.0-alpha.2
 eh version
-eh --help
 ```
 
-Preview versions are opt-in. Update an existing installation with:
+Run an effort-only repository estimate:
 
 ```text
-dotnet tool update --global EffortHours.Tool --version 0.10.0-alpha.1
+cd my-repository
+eh estimate . --profile implementation --format markdown --no-rate
 ```
 
-See the [NuGet package](https://www.nuget.org/packages/EffortHours.Tool/) and the
-[latest GitHub prerelease](https://github.com/VictorZakharov/efforthours/releases/tag/v0.10.0-alpha.1).
+The report gives you:
 
-## Estimate a repository
+- low, expected, and high EHE;
+- work items grouped by implementation, UI, data, integrations, security, tests,
+  documentation, delivery, validation, and review;
+- stable evidence IDs and reasoning for every material item; and
+- optional replacement-cost output applied only after hours are estimated.
 
-Run this from the repository you want to estimate:
+For a compact review or machine-readable output:
+
+```text
+eh estimate . --view review --format markdown --no-rate
+eh estimate . --format json --compact --output effort-hours.json --no-rate
+eh explain . --item <capability-or-work-item-id> --format markdown
+```
+
+Update an existing preview installation with:
+
+```text
+dotnet tool update --global EffortHours.Tool --version 0.10.0-alpha.2
+```
+
+See the
+[`0.10.0-alpha.2` GitHub prerelease](https://github.com/VictorZakharov/efforthours/releases/tag/v0.10.0-alpha.2)
+for release notes and artifacts.
+
+## Main workflows
+
+### Estimate a repository
 
 ```text
 eh estimate . --profile implementation --format markdown --no-rate
 ```
 
-EffortHours reports a low, expected, and high EHE range, with work items grouped
-into categories such as implementation, UI, data, integrations, security, tests,
-documentation, delivery, validation, and review.
+Repository EHE values the current functional and quality state. Ordinary
+repository estimates ignore commits, authors, timestamps, churn, and abandoned
+approaches.
 
-Use `--view review` for a compact result or JSON for automation:
-
-```text
-eh estimate . --view review --format markdown --no-rate
-eh estimate . --format json --compact --output effort-hours.json --no-rate
-```
-
-To understand a material capability or work item, copy its ID from the report:
-
-```text
-eh explain . --item <capability-or-work-item-id> --format markdown
-```
-
-Every represented hour is linked back to observed evidence and a transparent rule.
-EffortHours does not emit source excerpts in ordinary evidence or estimate output.
-
-## Estimate a completed change
-
-Change EHE values the final functional and quality delta between immutable base and
-head states. Commit count, authors, timestamps, intermediate churn, and abandoned
-approaches do not multiply the result.
+### Estimate a completed change
 
 ```text
 eh change . --base main --head feature/my-change --format markdown --no-rate
@@ -89,130 +97,49 @@ eh change . --range main..HEAD --format markdown --no-rate
 eh change . --pr 123 --format markdown --no-rate
 ```
 
-Combine completed changes without summing overlapping work twice:
+Change EHE values the normalized final delta between immutable base and head
+states. The number of commits, contributors, or intermediate edits never
+multiplies the result.
+
+### Reconcile a change portfolio
 
 ```text
 eh change portfolio . --pr 123 --pr 127 --format markdown --no-rate
 eh change portfolio --manifest portfolio.json --format markdown --no-rate
-eh change portfolio . --author "Contributor <contributor@example.com>" --since 2026-07-01 --until 2026-08-01 --timezone America/Toronto --format markdown --no-rate
 ```
 
-Portfolio reports show the isolated sum, repository-normalized EHE, one row per
-selected change, named duplicate/overlap/revert/shared-context adjustments, and
-allocations that sum exactly to normalized expected hours. Repeated PRs are
-order-independent; author periods use explicit chronological commit selection.
-Cross-repository manifests normalize each repository independently and then add
-the results. Identity and time select immutable changes only and never multiply
-effort.
+Portfolio mode normalizes each repository independently, removes exact repeated
+PR patches, keeps overlap/revert/shared-context adjustments visible, and allocates
+the final expected EHE exactly. It reports repository-attributed change effort,
+not individual productivity or sole authorship.
 
-This output is repository-attributed Change EHE, not actual labor, sole-authorship
-proof, individual productivity, a performance grade, or compensation advice.
-Co-authored, interleaved, merge, and overlapping changes retain visible attribution
-uncertainty. Portfolio aggregation does not widen the experimental Change model's
-existing per-item admission boundary.
+## What the model counts
 
-For an explicit range containing at least two commits, the report also compares
-gross isolated commit EHE with authoritative normalized final-delta EHE. It shows
-the gross-to-final normalization share and a narrower rework-like share containing
-only explicit overlap/revert attribution. These are structural diagnostics—not
-historical rework, actual hours, productivity scores, or multipliers. Copy the
-normalization ID into `eh change explain <report.json> --item <id>` to inspect its
-signed-adjustment lineage.
+| Principle | Treatment |
+| --- | --- |
+| Current artifact | Value the working system materially represented now |
+| Functional equivalence | Recreate behavior and quality with sensible modern 2026-equivalent technology |
+| Evidence before hours | Observe facts, infer capabilities, create work items, then estimate |
+| Small logical tasks | Material totals decompose into named evidence-backed tasks, normally about 0.5 to 8 hours |
+| Quality actually present | Represent tests, documentation, integrations, delivery, validation, and review at their observed depth |
+| Mechanical volume | Do not reward generated, vendored, minified, duplicate, dead, or accidental complexity |
+| History | Ignore churn, commit count, contributors, and timestamps as effort signals |
+| Pricing | Estimate EHE first; apply a dated rate only afterward |
 
-The current Change model is intended first for one-to-several-day changes. Its
-calibration totals are built from distinct evidence-backed tasks normally about an
-hour each, and its own larger work items are split into named phases capped at 1.5
-expected hours rather than one unsupported aggregate guess. Larger deliverables
-remain outside that admitted size band. For long ranges, EffortHours bounds the
-optional per-commit audit while retaining the complete base-to-head estimate as
-authoritative.
-
-You can also compare two directories or two saved evidence bundles without Git:
-
-```text
-eh change --base-path ../before --head-path ../after --no-rate
-eh change --base-evidence before.json --head-evidence after.json --no-rate
-```
-
-Git selectors read local immutable objects without checking them out. PR mode uses
-an installed, authenticated `gh` CLI only to resolve the PR's immutable base/head
-identities; those objects must already exist locally. The normal repository
-estimate does not inspect Git history.
-
-Formatting-only changes, exact moves, conventional generated output, vendored or
-minified bodies, lockfiles, build output, and exact copies do not create body
-implementation effort. Deletion is never negative or valued by deleted volume.
-For `.sql`, formatting comparison is token-aware while preserving literal,
-quoted-identifier, and comment content. For `.py` and `.pyi`, it is token- and
-indentation-aware: formatting and ordinary comments can normalize to zero, while
-dedentation, literals, and docstrings remain meaningful. For `.go`, ordinary
-formatting and comments can normalize to zero while compiler directives, implicit
-semicolon boundaries, identifiers, operators, and literals remain meaningful.
-For `.java`, ordinary formatting and non-documentation comments can normalize to
-zero while Javadoc/Markdown documentation comments, literals, identifiers,
-operators, delimiters, and ambiguous Unicode escapes remain meaningful.
-For `.kt` and `.kts`, ordinary formatting, optional semicolons/trailing commas,
-and non-documentation comments can normalize to zero while KDoc, literals,
-backtick identifiers, operators, delimiters, and semantic newlines after jump
-expressions remain meaningful.
-For Shell and PowerShell, ordinary formatting and non-directive comments can
-normalize to zero while shebangs, PowerShell `#requires`, literals, identifiers,
-operators, and delimiters remain meaningful. Here-documents and here-strings fail
-closed so uncertain content changes remain represented.
-For Terraform and HCL, horizontal layout and blank-line count can normalize to
-zero while semantic newlines, comments, identifiers, operators, literals,
-templates, delimiters, and heredoc bodies remain meaningful. Incomplete HCL fails
-closed.
-For PHP, ordinary formatting and non-documentation comments can normalize to zero
-while PHPDoc, literals, identifiers, operators, delimiters, heredoc/nowdoc bodies,
-and inline template content remain meaningful. Incomplete PHP fails closed.
-For Rust, ordinary formatting and non-documentation comments can normalize to zero
-while Rustdoc, raw identifiers, literals, lifetimes, attributes, operators, and
-delimiters remain meaningful. Incomplete Rust fails closed.
-For Dockerfiles, instruction keyword case, ordinary comments, blank lines, and
-continuation layout can normalize to zero while directives, arguments, stages,
-and commands remain meaningful; heredocs fail closed. For filename-qualified
-Compose YAML, comments, blank lines, indentation width, and mapping-colon spacing
-can normalize to zero while keys, values, sequences, and document markers remain
-meaningful; tabs, malformed flow syntax, and block scalars fail closed.
-`.dockerignore` comments and surrounding layout can normalize to zero while
-ordered patterns and negations remain meaningful.
-For `.ipynb`, JSON layout, source string/array representation, outputs, execution
-state, widgets, attachments, raw/non-Python cells, magics, and shell escapes can
-normalize to zero. Maintained Python tokens, Markdown, declared language, cell
-tags, and meaningful cell ordering remain significant; unsafe inputs fail closed.
-For C and C++ source, headers, and module interfaces, ordinary layout and non-
-documentation comments can normalize to zero while documentation, preprocessor
-directives and replacement tokens, identifiers, operators, delimiters, literals,
-raw strings, attributes, declarations, and ordering remain meaningful. Unsafe or
-ambiguous lexical/preprocessor structure fails closed.
-The current source build can retain bounded customization inside generated files
-only when exact, EffortHours-specific `<custom-code>` regions isolate it safely;
-the generated body still contributes zero. Generator-specific protected-region
-syntax is not inferred automatically.
-
-See the [Change EHE contract](docs/CHANGE_ESTIMATION.md) for selector,
-normalization, reconciliation, and limitation details.
-
-## Choose a profile
+### Estimation profiles
 
 | Profile | Assumption |
 | --- | --- |
-| `implementation` | Detailed requirements, acceptance criteria, designs, and contracts are supplied. Technical design and implementation decisions remain included. |
-| `recreation` | A clear behavioral specification is supplied, but more architecture, data-model, interface, and UX decisions must be recovered or made. |
+| `implementation` | Detailed requirements, acceptance criteria, designs, and contracts are supplied; technical implementation decisions remain included |
+| `recreation` | A clear behavioral specification is supplied; more architecture, interface, data-model, and UX decisions must be recovered or made |
 
-Both profiles estimate a sensible modern 2026-equivalent implementation while
-preserving meaningful compatibility and external constraints. Neither includes
-open-ended product discovery.
+Neither profile includes open-ended product discovery.
 
-## Pricing is separate from effort
+### Optional pricing
 
-EffortHours estimates hours first. Pricing is an optional, auditable projection
-applied afterward and never changes EHE.
-
-The published preview applies the dated
-`us-senior-software-contractor/2026.1` rate by default. Use effort-only output or
-provide your own rate:
+The preview rate card is
+`us-senior-software-contractor/2026.1`. Use effort-only output or supply your own
+rate without changing EHE:
 
 ```text
 eh estimate . --no-rate
@@ -223,181 +150,104 @@ eh rate info
 Cost output is **Equivalent Replacement Cost**, not historical pay or a billing
 determination.
 
-## What EffortHours analyzes
+## Supported analyzers
 
-The current static analyzers support:
+EffortHours combines 13 bounded static-analyzer families in one report, including
+mixed repositories.
 
-- .NET and C# projects, solutions, APIs, data access, migrations, integrations,
-  security, Razor/UI surfaces, and tests;
-- JavaScript, JSX, TypeScript, and TSX package/workspace structure, APIs, UI,
-  data access, integrations, security, background work, and tests;
-- React/Preact/Next-style JSX plus Vue and Svelte components;
-- static Angular `@Component` metadata, including literal inline and relative
-  external templates and styles when ownership is unambiguous;
-- maintained HTML template structure, forms, bindings, and directives through a
-  bounded tolerant scanner;
-- CSS, SCSS/Sass, and Less rules/selectors, responsive surfaces, design tokens,
-  animation, and theme signals through bounded tolerant scanners;
-- standalone or project/package-owned `.sql` schemas, migrations, indexes,
-  constraints, stored programs, queries, test fixtures, deployment scripts, and
-  explicit cross-database boundaries through bounded static token analysis;
-- Python 3 `.py` and `.pyi` package/module/import structure, functions, classes,
-  async and branching structure, tests, and conservative import-qualified API,
-  CLI, data, integration, security, validation, and background-work evidence;
-- static Python package metadata from `pyproject.toml`, `setup.cfg`, literal-only
-  `setup.py`, requirements, Pipfile, and common Poetry/PDM/uv surfaces without
-  invoking Python or resolving an environment;
-- maintained Jupyter `.ipynb` Python code cells and Markdown narrative through a
-  digest-verified bounded JSON projection, including qualified data-analysis,
-  visualization, integration, and test evidence while excluding outputs,
-  execution state, widgets, attachments, magics, shell escapes, and unsupported
-  language cells;
-- Go modules, workspaces, packages, local replacements, internal references,
-  commands, libraries, exported APIs, generics, concurrency, build constraints,
-  embedded-asset declarations, and `_test.go` structure through bounded static
-  token analysis;
-- conservative import-qualified Go API, CLI, data, integration, security,
-  validation, background-work, synchronization, and test evidence;
-- Java packages, modules, classes, records, interfaces, enums, methods,
-  annotations, generics, exceptions, concurrency, public APIs, and JUnit/TestNG
-  tests through bounded static token analysis;
-- static Maven POM/reactor and conservative Gradle multi-project metadata,
-  including local edges and explicit dynamic-build uncertainty, without invoking
-  a JVM, Maven, Gradle, wrappers, compilers, or annotation processors;
-- import- and annotation-qualified Spring/Jakarta API, persistence, security,
-  messaging, scheduling, validation, CLI, and integration evidence;
-- Kotlin/JVM `.kt` and maintained `.kts` package, class/object/data/sealed type,
-  function, extension, nullability, coroutine, Flow, public API, and test
-  structure through bounded static token analysis;
-- import-qualified Ktor/Spring server, Android/Compose, Room/Exposed/JPA,
-  integration, security, validation, scheduling, coroutine, Flow, and test
-  evidence, with Gradle Kotlin DSL kept separate from maintained scripts;
-- maintained POSIX-family Shell/Bash and PowerShell product scripts, modules,
-  tests, build/CI/delivery/infrastructure automation, command structure, file/
-  network/process boundaries, security surfaces, and error handling through
-  bounded static token and invocation-context analysis;
-- maintained Terraform/HCL resources, data sources, modules, variables, outputs,
-  locals, providers, backends, lifecycle/dynamic/dependency and expression
-  structure, tests, security-sensitive configuration, interface documentation,
-  and delivery configuration through bounded static token analysis;
-- repository-local Terraform module ownership plus unresolved registry, Git,
-  HTTP, object-storage, and dynamic module boundaries without fetching them;
-- Composer packages, dependencies, autoload namespaces and roots, scripts, binary
-  entry points, literal repository-local path repositories, and maintained PHP
-  package ownership without invoking PHP or Composer;
-- PHP namespaces, imports, declarations, public APIs, attributes, branches,
-  exceptions, tests, conservative import-qualified framework semantics, and
-  bounded PHP/Blade template structure through static token analysis;
-- Cargo packages and virtual workspaces, dependencies, features, build scripts,
-  conventional and explicit targets, literal repository-local edges, and
-  maintained Rust ownership without invoking Cargo or rustc;
-- Rust modules, uses, structs, enums, traits, implementations, functions, public
-  APIs, generics, lifetimes, async/concurrency, unsafe and error paths, tests,
-  benchmarks, examples, FFI boundaries, and import-qualified semantic evidence
-  through bounded static token analysis;
-- Dockerfile logical instructions, stages, build/runtime boundaries, multi-stage
-  copies, health/user/volume/port configuration, and BuildKit mount uncertainty;
-- filename-qualified Docker Compose services, builds, commands, ports,
-  environment boundaries, volumes, networks, dependencies, health checks,
-  profiles, secrets/configs, deploy/security structure, and literal local
-  Compose-to-Dockerfile references, plus bounded `.dockerignore` rules;
-- maintained C99/C11/C17/C23 and C++11 through C++23 source, headers, modules,
-  declarations, public symbols, templates/concepts, concurrency, FFI, tests, and
-  qualified API, UI, data, integration, security, and validation evidence;
-- static CMake, Make, Meson, Visual C++/MSBuild, `compile_commands.json`, vcpkg,
-  and Conan metadata with literal repository-local source/header ownership;
-- mixed .NET, JavaScript/TypeScript, Python/Jupyter, Go, Java/Kotlin,
-  Shell/PowerShell, Terraform/HCL, PHP/Composer, Rust/Cargo, Docker/Compose,
-  C/C++, and SQL repositories;
-- documentation, build configuration, CI, containers, infrastructure, package
-  metadata, and checked-in LCOV or Cobertura coverage reports; and
-- generated, vendored, minified, binary, duplicate, test, and documentation
-  classification used to prevent mechanical volume from inflating effort.
+| Analyzer family | Maintained artifacts | Evidence represented |
+| --- | --- | --- |
+| **.NET** | C# source, projects, solutions, and Razor/UI assets | Project ownership, APIs, behavior, data and migrations, integrations, security, UI, and tests |
+| **JavaScript/TypeScript + frontend** | JavaScript, JSX, TypeScript, TSX, HTML/templates, CSS-family styles, Vue/Svelte components, and static Angular metadata | Packages and workspaces, APIs, behavior, UI/template/style semantics, data, integrations, security, background work, and tests |
+| **SQL** | PostgreSQL, SQL Server, MySQL/MariaDB, and SQLite-oriented SQL | Schema, migrations, stored programs, queries, tests, deployment, and cross-database evidence |
+| **Python + Jupyter** | `.py`, `.pyi`, package metadata, and bounded `.ipynb` notebooks | Package ownership, structure, APIs, qualified frameworks, tests, Markdown, data analysis, visualization, and integrations |
+| **Go** | Modules, workspaces, `.go` source, and `_test.go` tests | Packages, local replacements, declarations, APIs, qualified semantics, concurrency, build directives, and tests |
+| **Java** | `.java`, Maven reactors/POMs, and Gradle multi-project metadata | Packages/modules, types, methods, APIs, concurrency, Spring/Jakarta and integration semantics, and JUnit/TestNG tests |
+| **Kotlin/JVM** | `.kt`, non-Gradle `.kts`, and shared Maven/Gradle JVM metadata | Declarations, APIs, coroutines/Flow, server, Android/Compose, data, integrations, security, background work, and tests |
+| **Shell + PowerShell** | Maintained scripts, modules, and tests | Product logic plus build, CI, delivery, infrastructure, integration, security, validation, and invocation-context evidence |
+| **Terraform/HCL** | Terraform configuration, tests, and relevant HCL | Resources, data sources, modules, interfaces, providers, backends, lifecycle/dependency structure, security, documentation, and delivery |
+| **PHP/Composer** | PHP, Blade templates, Composer packages, and tests | Package ownership, dependencies, autoloading, entry points, declarations, APIs, qualified frameworks, templates, and tests |
+| **Rust/Cargo** | Rust source, Cargo packages/workspaces, targets, tests, benchmarks, and examples | Declarations, APIs, generics/lifetimes, async/concurrency, unsafe/error paths, qualified semantics, FFI, and tests |
+| **Docker/Compose** | Dockerfile variants, filename-qualified Compose files, and `.dockerignore` | Build stages and instructions, services, orchestration, literal local Dockerfile references, and ignore rules |
+| **C/C++** | C99 through C23, C++11 through C++23, headers, modules, and static build metadata | Declarations, APIs, templates/concepts, concurrency, FFI, tests, qualified semantics, and CMake/Make/Meson/MSBuild ownership |
 
-JavaScript and JSX structure is parser-backed. TypeScript and TSX are explicitly
-token-backed in this release. Angular metadata analysis requires a named
-`Component` import from `@angular/core` (including a local alias), accepts only
-static literals and arrays, and never evaluates TypeScript or executable
-configuration; external assets must resolve to scanner-admitted files inside the
-repository.
-HTML and CSS-family analysis is tolerant and structural: it does not render a UI,
-compile a framework, run a preprocessor, or prove runtime behavior. Explicit static
-roles, labels, alternative text, live regions, and keyboard/focus signals in HTML
-and Angular templates contribute bounded accessibility evidence, clearly labeled
-as not proving conformance. This is not an accessibility audit. Physical
-markup/style line count is retained as evidence but is not an EHE driver.
-SQL analysis recognizes conservative PostgreSQL, SQL Server, MySQL/MariaDB, and
-SQLite syntax signals without choosing or connecting to a database. It does not
-compile SQL, prove name/type correctness, execute migrations, inspect query plans,
-or infer effort from rows, dumps, timestamps, or migration versions. See the
-[static SQL boundary](docs/SQL_ANALYSIS.md).
-Python analysis uses a bounded managed tokenizer and indentation-aware structural
-pass. Framework evidence requires matching import context; local namesakes do not
-qualify. It does not execute `setup.py`, import modules, install dependencies,
-type-check, or discover runtime routes. See the
-[static Python boundary](docs/PYTHON_ANALYSIS.md).
-Jupyter analysis never starts a kernel or reads output payloads. It admits only
-bounded Python cells through the Python tokenizer, represents Markdown separately,
-and treats execution state, data provenance, reproducibility, output correctness,
-runtime dependencies, mixed languages, and scientific validity as unverified. See
-the [static Jupyter boundary](docs/JUPYTER_ANALYSIS.md).
-Go analysis statically reads scanner-admitted `go.mod`, `go.work`, and `.go`
-files. It does not invoke the Go toolchain, resolve build constraints, expand
-`go:embed` patterns, run `go:generate`, compile cgo, prove reflection or runtime
-registration, or emit source excerpts. See the
-[static Go boundary](docs/GO_ANALYSIS.md).
-Java analysis statically reads scanner-admitted Maven/Gradle descriptors and
-maintained `.java` files. It does not evaluate build DSL, resolve dependencies,
-compile source, run annotation processors/tests, inspect bytecode, or prove
-reflection/runtime behavior. See the
-[static Java boundary](docs/JAVA_ANALYSIS.md).
-Kotlin analysis reuses static JVM module ownership while reading maintained `.kt`
-and non-Gradle `.kts` files. It does not evaluate Gradle Kotlin DSL, resolve
-dependencies or source sets, compile source, run KSP/kapt/compiler plugins/tests,
-inspect bytecode, or prove Android, multiplatform, reflection, or runtime DSL
-behavior. See the [static Kotlin/JVM boundary](docs/KOTLIN_ANALYSIS.md).
-Shell and PowerShell analysis reads only scanner-admitted maintained scripts and
-bounded manifest/automation invocation context. It does not start a shell, resolve
-commands or modules, source files, evaluate expansions, observe platform effects,
-or emit source values or excerpts. Dynamic behavior remains explicit uncertainty.
-See the [static Shell and PowerShell boundary](docs/SHELL_POWERSHELL_ANALYSIS.md).
-Terraform/HCL analysis reads only scanner-admitted, digest-matched static text. It
-does not run Terraform or related tools, fetch modules/providers, contact
-backends, load provider schemas, read state/plan semantics, evaluate interpolation
-or policy, or prove runtime correctness. State, plans, caches, lock mechanics,
-generated/vendor bodies, exact duplicates, and raw Terraform line volume do not
-inflate semantic effort. See the
-[static Terraform and HCL boundary](docs/TERRAFORM_HCL_ANALYSIS.md).
-PHP/Composer analysis reads only scanner-admitted, digest-matched static text and
-strict JSON. It does not run PHP, Composer, autoloaders, package scripts, framework
-bootstraps, containers, routes, reflection, dependency resolution, or tests.
-Dynamic includes, magic methods, runtime registration, and linked frontend assets
-remain explicit uncertainty. See the
-[static PHP and Composer boundary](docs/PHP_COMPOSER_ANALYSIS.md).
-Rust/Cargo analysis reads only scanner-admitted, digest-matched static text. It
-does not run Cargo, rustc, build scripts, procedural macros, generators, tests,
-examples, or benchmarks; resolve dependencies, features, or target triples; or
-infer macro-expanded and generated bodies. See the
-[static Rust and Cargo boundary](docs/RUST_CARGO_ANALYSIS.md).
-Docker/Compose analysis reads only scanner-admitted, digest-matched Dockerfile
-variants, filename-qualified Compose YAML, and `.dockerignore`. It does not invoke
-Docker, Compose, BuildKit, a shell, or target code; pull or inspect images; expand
-build contexts; load includes/environment files; resolve interpolation or
-secrets; or treat arbitrary YAML as Compose. See the
-[static Docker and Compose boundary](docs/DOCKER_ANALYSIS.md).
-C/C++ analysis uses a project-authored bounded managed tokenizer and conservative
-declaration/build projection. It does not invoke a compiler, preprocessor,
-linker, build system, package manager, generator, test runner, or native parser;
-expand macros or includes; select conditional branches; instantiate templates;
-read system headers; or prove compilation, ABI, memory/thread safety, and runtime
-behavior. Header bodies count once and include fan-out is not an effort
-multiplier. See the [static C and C++ boundary](docs/CPP_ANALYSIS.md).
+Unsupported languages still receive common inventory evidence, but not the same
+semantic depth. Exact ecosystem boundaries are linked from the
+[documentation index](docs/README.md).
+
+### One-million-line performance checkpoints
+
+Every recorded dedicated analyzer shape completed in under 15 seconds on the
+checkpoint workstation.
+
+Measurements use fresh processes and generated many-small-file repositories on
+Windows x64, an AMD Ryzen 9 5900X, 24 logical processors, and .NET 10. Fixture
+generation and evidence serialization are excluded. These are reproducible
+engineering checkpoints, not universal latency guarantees or representative
+framework workloads.
+
+| Language/analyzer shape | Analyzed text lines | Static analysis | Lines/s | Sampled peak |
+| --- | ---: | ---: | ---: | ---: |
+| .NET / C# | 1,000,001 | 7.083 s | 141,179 | 272.52 MiB |
+| JavaScript / TypeScript | 1,000,001 | 12.088 s | 82,728 | 185.69 MiB |
+| HTML/CSS/SCSS frontend assets | 1,000,001 | 8.187 s | 122,151 | 270.67 MiB |
+| SQL | 1,000,000 | 8.421 s | 118,754 | 156.46 MiB |
+| Python | 1,000,003 | 13.354 s | 74,883 | 109.63 MiB |
+| Jupyter | 1,120,003 | 7.561 s | 148,131 | 159.33 MiB |
+| Go | 1,000,003 | 6.577 s | 152,057 | 119.95 MiB |
+| Java | 1,010,001 | 13.954 s | 72,379 | 167.31 MiB |
+| Kotlin/JVM | 1,000,001 | 9.393 s | 106,459 | 166.83 MiB |
+| Shell | 990,000 | 14.525 s | 68,161 | 119.66 MiB |
+| PowerShell | 990,000 | 13.689 s | 72,321 | 130.76 MiB |
+| Terraform/HCL | 1,000,000 | 8.239 s | 121,371 | 303.72 MiB |
+| PHP/Composer | 1,000,001 | 7.920 s | 126,270 | 441.57 MiB |
+| Rust/Cargo | 1,000,004 | 7.540 s | 132,627 | 139.88 MiB |
+| Docker/Compose | 1,000,000 | 8.097 s | 123,502 | 203.00 MiB |
+| C | 990,002 | 8.197 s | 120,781 | 127.65 MiB |
+| C++ | 990,002 | 9.716 s | 101,891 | 128.84 MiB |
+| Mixed .NET/JS/TS/C/C++ | 996,004 | 13.214 s | 75,375 | 205.70 MiB |
+
+Read the [benchmark protocol and full results](docs/BENCHMARKS.md) for fixture
+definitions, analyzer versions, allocation data, safety checks, and limitations.
+
+## How Change EHE works
+
+Change analysis is deliberately about the final represented delta, not activity.
+
+| Change signal | Treatment |
+| --- | --- |
+| Formatting-only edits, exact moves, lockfiles, build output, and exact copies | No body implementation effort |
+| Conventional generated, vendored, or minified bodies | Excluded |
+| Safely isolated `<custom-code>` regions in generated files | Bounded customization only |
+| Added capabilities | Preserved as distinct additive work |
+| Modified existing capabilities | One bounded, diminishing evidence-derived budget |
+| Deletion | Never negative and never valued by deleted volume |
+| Multi-commit range | Final base-to-head delta remains authoritative |
+| Overlap and reverts | Separate structural diagnostics; never effort multipliers |
+
+Language-aware normalizers preserve meaningful tokens, documentation, directives,
+indentation, literals, ordered configuration, and other semantic structure while
+allowing ordinary formatting to normalize to zero. Ambiguous or unsafe inputs fail
+closed.
+
+The current logical admission starts with one-to-several-day changes. Eligible
+4-to-32-hour cases are decomposed into distinct evidence-backed tasks, normally
+0.5 to 1.5 expected hours each. Larger deliverables and newer ecosystem paths
+remain outside that admitted band.
+
+Git selectors read immutable local objects without checking them out. PR mode uses
+an installed, authenticated `gh` CLI only to resolve base/head identities; those
+objects must already exist locally. Non-Git mode can compare two directories or
+two digest-checked evidence bundles.
+
+See the [Change EHE contract](docs/CHANGE_ESTIMATION.md) for exact selector,
+normalization, reconciliation, rework-diagnostic, and portfolio semantics.
 
 ## Offline and safe by default
 
 For normal `scan` and `estimate` commands, EffortHours:
 
-- does not execute target code or build scripts;
+- does not execute target code, build scripts, tests, compilers, or runtimes;
 - does not install dependencies or invoke package managers;
 - does not access the network;
 - does not inspect Git history, contributors, churn, or timestamps;
@@ -406,46 +256,52 @@ For normal `scan` and `estimate` commands, EffortHours:
 - does not send repository content to an AI provider.
 
 Source trees are treated as untrusted input. Analysis is bounded and
-deterministic, structured data stays on stdout, and diagnostics stay on stderr.
-An optional external scan cache can speed repeated scans; it is never an effort
-signal.
+deterministic. Structured data stays on stdout, diagnostics stay on stderr, and
+ordinary reports avoid source excerpts. An optional external cache can speed
+unchanged scans, but it is never an effort signal.
 
-## Optional host-AI review
+## Model status
 
-The local estimate is complete without AI. If a surrounding AI session is useful,
-`eh review packet` produces a compact, rate-free, provider-neutral uncertainty
-packet. Follow-up queries can request bounded evidence or explicitly admitted
-source windows, and `review validate` checks an adjustment ledger without applying
-it.
+| Area | Current status |
+| --- | --- |
+| Repository EHE | Experimental and uncalibrated; not numerically admitted |
+| Change EHE, documented Stage A band | Model-authored logical gate passed for eligible 4-to-32-hour changes on the previously admitted language set |
+| Newer analyzer ecosystems | Experimental and outside the existing Change admission boundary |
+| Production validation | No empirical production-accuracy claim |
+| Host-AI review | Optional, provider-neutral, and non-applying; no automatic review budget selected |
 
-EffortHours does not choose or call a provider. The caller controls disclosure,
-privacy, retention, model choice, and cost. No automatic review budget is selected
-in this alpha. See the [host-review protocol](docs/MILESTONE_8.md).
+The logical gate uses evidence-backed task decomposition as weak supervision.
+Independent replication can corroborate it, while later production observations
+remain a separate evidence track.
 
-## Important limitations
+Important limits:
 
-- The bundled estimators are experimental. The repository model remains
-  uncalibrated; Change has only first-band logical calibration, not empirical
-  production validation. Ranges are planning bounds, not formal confidence
-  intervals.
-- Static analysis assumes discovered tests pass on the fastest path and does not
-  prove that a checkout builds or runs.
-- Unsupported languages still receive common inventory evidence but not the same
-  semantic depth as .NET, JavaScript/TypeScript, Python/Jupyter, Go, Java/Kotlin,
-  Shell/PowerShell, Terraform/HCL, PHP/Composer, Rust/Cargo, Docker/Compose,
-  C/C++, SQL, and the supported frontend forms.
-- Checked-in coverage can be stale even when its bytes match the analyzed tree;
-  EffortHours does not regenerate it.
-- Change portfolio reconciliation is experimental. Exact patch/object-chain
-  normalization does not recover general rebases, squashes, semantic clones, or
-  shared human credit.
-- A repository estimate is not a security, accessibility, architecture, or code-
-  quality audit.
+- ranges are planning bounds, not formal confidence intervals;
+- the fastest repository path assumes discovered tests pass and does not prove a
+  checkout builds or runs;
+- checked-in coverage can be stale because EffortHours does not regenerate it;
+- exact portfolio normalization cannot recover every rebase, squash, semantic
+  clone, or shared-human-credit ambiguity; and
+- an estimate is not a security, accessibility, architecture, or code-quality
+  audit.
 
 The [product charter](docs/PRODUCT.md) and
 [estimation model](docs/ESTIMATION_MODEL.md) define the precise semantics.
 
-## Common commands
+## Optional host-AI review
+
+The local baseline is complete without AI. A surrounding AI session can use
+`eh review packet` to inspect a compact, rate-free, provider-neutral uncertainty
+packet and request bounded evidence or explicitly selected admitted-source detail.
+
+EffortHours does not choose or call a provider, transmit material itself, or apply
+proposed adjustments. The caller controls disclosure, privacy, retention, model
+choice, and cost. See the [host-review protocol](docs/MILESTONE_8.md).
+
+## Command reference
+
+<details>
+<summary>Show common commands</summary>
 
 ```text
 eh scan <repository> [--output evidence.json]
@@ -456,17 +312,31 @@ eh change <repository> --base <revision> --head <revision>
 eh change <repository> --commit <revision> [--parent <revision>]
 eh change <repository> --range <base>..<head>
 eh change <repository> --pr <number-or-url> [--repo <owner/name>]
+eh change --base-path <before> --head-path <after>
 eh change portfolio <repository> --pr <pr> --pr <pr>
 eh change portfolio --manifest <portfolio.json>
-eh change portfolio <repository> --author <alias> --since <instant> --until <instant>
 eh change explain <change-estimate.json> --item <id>
+eh review packet <repository> --compact
 eh model info
 eh rate info
 eh schema list
 ```
 
-Run `eh --help` or a subcommand's help for the complete option surface. Calibration
-and review researchers can start from the [documentation index](docs/README.md).
+</details>
+
+Run `eh --help` or a subcommand's help for the complete option surface.
+
+## Documentation
+
+| Topic | Reference |
+| --- | --- |
+| Product boundary | [Product charter](docs/PRODUCT.md) |
+| Estimation semantics | [Estimation model](docs/ESTIMATION_MODEL.md) |
+| Change and portfolio semantics | [Change EHE contract](docs/CHANGE_ESTIMATION.md) |
+| Analyzer-specific boundaries | [Documentation index](docs/README.md) |
+| Performance | [Benchmark protocol and results](docs/BENCHMARKS.md) |
+| Versioned schemas | [Schemas](schemas/) |
+| Release process | [Releasing](docs/RELEASING.md) |
 
 ## Build and contribute
 
@@ -480,7 +350,5 @@ dotnet test tests/EffortHours.EndToEndTests/EffortHours.EndToEndTests.csproj --n
 ```
 
 Read [CONTRIBUTING.md](CONTRIBUTING.md) before opening a change. Security reports
-should follow [SECURITY.md](SECURITY.md). Package maintainers should use the exact
-[release procedure](docs/RELEASING.md).
-
-EffortHours is licensed under the [MIT License](LICENSE).
+follow [SECURITY.md](SECURITY.md). EffortHours is licensed under the
+[MIT License](LICENSE).
