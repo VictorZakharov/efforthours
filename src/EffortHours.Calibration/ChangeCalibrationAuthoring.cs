@@ -5,7 +5,7 @@ namespace EffortHours.Calibration;
 
 public static class ChangeCalibrationAuthoring
 {
-    public const string AuthoringVersion = "change-calibration-authoring/0.2.0";
+    public const string AuthoringVersion = "change-calibration-authoring/0.3.0";
     public const string RubricId = "change-ehe-work-item";
     public const string RubricVersion = "1.1.0";
     public const string LegacyAuthoringVersion = "change-calibration-authoring/0.1.0";
@@ -83,6 +83,7 @@ public static class ChangeCalibrationAuthoring
         CalibrationCandidateVisibility visibility = blind
             ? CalibrationCandidateVisibility.Blind
             : CalibrationCandidateVisibility.Reference;
+        bool strictBlind = blind && authoringVersion == AuthoringVersion;
         CalibrationAuthoringPacket packet = new()
         {
             AuthoringVersion = authoringVersion,
@@ -112,10 +113,12 @@ public static class ChangeCalibrationAuthoring
             },
             Targets = [.. estimate.WorkItems
                 .OrderBy(item => item.Id, StringComparer.Ordinal)
-                .Select(item => CreateTarget(item, blind))],
-            ProfessionalizationGapWorkItemIds = [.. estimate.ProfessionalizationGap
-                .Select(item => item.Id)
-                .Order(StringComparer.Ordinal)],
+                .Select(item => CreateTarget(item, blind, strictBlind))],
+            ProfessionalizationGapWorkItemIds = strictBlind
+                ? []
+                : [.. estimate.ProfessionalizationGap
+                    .Select(item => item.Id)
+                    .Order(StringComparer.Ordinal)],
             Instructions = instructions,
         };
 
@@ -129,26 +132,29 @@ public static class ChangeCalibrationAuthoring
         return packet;
     }
 
-    private static CalibrationAuthoringTarget CreateTarget(WorkItem item, bool blind) => new()
-    {
-        Id = $"target:{item.Id}",
-        SourceCapabilityId = CalibrationAuthoring.GetSourceCapabilityId(item.Id),
-        Category = item.Category,
-        Title = item.Title,
-        Scope = item.Scope,
-        SourceWorkItemIds = [item.Id],
-        EvidenceIds = item.EvidenceIds,
-        Candidate = new CalibrationAuthoringSuggestion
+    private static CalibrationAuthoringTarget CreateTarget(
+        WorkItem item,
+        bool blind,
+        bool strictBlind) => new()
         {
-            Hours = blind ? null : item.Hours,
-            Confidence = blind ? null : item.Confidence,
-            Reason = item.Reason,
-        },
-        Review = new CalibrationAuthoringReviewFields(),
-        Assumptions = item.Assumptions,
-        Exclusions = item.Exclusions,
-        UncertaintyReasons = item.UncertaintyReasons,
-    };
+            Id = $"target:{item.Id}",
+            SourceCapabilityId = CalibrationAuthoring.GetSourceCapabilityId(item.Id),
+            Category = item.Category,
+            Title = item.Title,
+            Scope = item.Scope,
+            SourceWorkItemIds = strictBlind ? [] : [item.Id],
+            EvidenceIds = item.EvidenceIds,
+            Candidate = new CalibrationAuthoringSuggestion
+            {
+                Hours = blind ? null : item.Hours,
+                Confidence = blind ? null : item.Confidence,
+                Reason = strictBlind ? null : item.Reason,
+            },
+            Review = new CalibrationAuthoringReviewFields(),
+            Assumptions = item.Assumptions,
+            Exclusions = item.Exclusions,
+            UncertaintyReasons = item.UncertaintyReasons,
+        };
 
     private static string[] CurrentInstructions { get; } =
     [

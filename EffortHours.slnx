@@ -26,4 +26,5 @@
   <Project Path="tests/EffortHours.EndToEndTests/EffortHours.EndToEndTests.csproj" />
   <Project Path="tests/EffortHours.Tests/EffortHours.Tests.csproj" />
   <Project Path="tools/EffortHours.ChangeCalibration/EffortHours.ChangeCalibration.csproj" />
+  <Project Path="tools/EffortHours.RepositoryCalibration/EffortHours.RepositoryCalibration.csproj" />
 </Solution>

@@ -7,15 +7,18 @@ The frozen
 [`repository-model-admission/1.0.0`](../docs/MODEL_ADMISSION.md) policy defines
 the minimum family matrix, blind validation and sealed-test boundary, numerical
 agreement and range-sharpness gates, candidate selection, resource limits, and
-seed fallback. The existing six-family labeled corpora do not yet open that gate.
+seed fallback. The existing labeled corpora do not yet open that gate.
 
 The
 [`efforthours-public-readiness/0.1.0`](corpora/public-readiness/README.md)
 sampling checkpoint freezes 33 additional licensed source families across the
 complete .NET, JavaScript/TypeScript, and mixed matrix before candidate totals.
-It records source trees, license checksums, shapes, sizes, and partition ownership
-but deliberately contains no estimates, labels, or metrics. It is the input to a
-future blind-labeling pass, not an expansion of the labeled-family count.
+The [`0.2.0 reproduction checkpoint`](corpora/public-readiness/0.2.0/README.md)
+verifies every pinned tree, publishes strict-blind capability packets for all 15
+development families, leaves all 18 holdouts unanalyzed and unlabeled, and adds a
+first balanced three-family development teacher slice. The public repository now
+contains nine labeled repository families and 401 teacher targets in total, still
+without independent correction or a model-admission result.
 
 The current checkpoint contains the original
 [`ehe-work-item/1.0.0`](rubrics/ehe-work-item/1.0.0.md) review rubric and the
@@ -71,9 +74,12 @@ Change candidates remain canonical `ChangeEstimateReport` files and match by a
 content-derived base/head final-delta digest plus profile and baseline.
 
 `scaffold` output is explicitly `unreviewed` and cannot be consumed as a corpus.
-`compile` accepts only completed capability decisions, requires every represented
-capability, verifies the exact source-estimate digest, and restores source
-work-item/evidence lineage deterministically.
+Authoring version `0.2.0` presents one target per capability. Strict-blind mode
+also removes candidate explanations, source work-item IDs/partition counts, and
+professionalization-gap IDs. `compile` accepts only completed capability
+decisions, requires every represented capability, verifies the exact
+source-estimate digest, and restores source work-item/evidence lineage
+deterministically.
 
 `review-scaffold` creates a second-pass packet from an existing corpus. Blind mode
 hides prior target ranges, rationale, uncertainty, and totals. `review-compile`

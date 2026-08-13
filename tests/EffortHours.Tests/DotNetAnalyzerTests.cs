@@ -288,6 +288,32 @@ public sealed class DotNetAnalyzerTests
         Assert.Equal(ContractJson.Serialize(first), ContractJson.Serialize(second));
     }
 
+    [Fact]
+    public async Task TemplateMigrationWithPlaceholderIdentifierProducesValidEvidence()
+    {
+        DotNetFixtureRepository repository = new();
+        repository.WriteText(
+            "src/App/App.csproj",
+            "<Project Sdk=\"Microsoft.NET.Sdk\" />\n");
+        repository.WriteText(
+            "src/App/Migrations/01000000_[Module]Initialize.cs",
+            "public class [Module]Initialize : Migration { }\n");
+
+        RepositoryEvidence evidence = await new RepositoryAnalysisPipeline(repository)
+            .ScanAsync(repository.RootPath);
+
+        EvidenceFact migration = Fact(
+            evidence,
+            "dotnet:data:src/App/Migrations/01000000_[Module]Initialize.cs");
+        Assert.Single(migration.Locations);
+        Assert.Null(migration.Locations[0].Symbol);
+        Assert.Empty(ContractValidation.Validate(evidence));
+        SchemaValidationResult schema = ContractSchemaValidator.Validate(
+            SchemaNames.RepositoryEvidence,
+            ContractJson.Serialize(evidence));
+        Assert.True(schema.IsValid, string.Join(Environment.NewLine, schema.Errors));
+    }
+
     private static EvidenceFact Fact(RepositoryEvidence evidence, string id) =>
         Assert.Single(evidence.Facts, fact => fact.Id == id);
 

@@ -1,0 +1,2994 @@
+{
+  "schemaVersion": "1.0.0",
+  "compilerVersion": "calibration-review-compiler/0.2.0",
+  "id": "efforthours-public-readiness-development",
+  "version": "0.2.0",
+  "description": "First balanced development-only host-AI teacher slice from the frozen public-readiness cohort. These logical weak-supervision labels were authored from strict-blind capability packets, verified static evidence, and pinned public source; they are not independent or production accuracy evidence.",
+  "rubric": {
+    "id": "ehe-work-item",
+    "version": "1.1.0"
+  },
+  "records": [
+    {
+      "id": "record:cartercommunity-carter:implementation",
+      "repository": {
+        "id": "repository:github.com/cartercommunity/carter",
+        "name": "CarterCommunity/Carter",
+        "sourceDigest": "sha256:00b6577c4f3d9f42a32e69804b37d3e8e94b6eff6b5b294fe7e5f78f90b33087"
+      },
+      "profile": "implementation",
+      "baselineId": "senior-contractor-2026-no-ai",
+      "partition": "development",
+      "sourceEstimatorVersion": "seed-rules/0.4.0",
+      "sourceEstimateDigest": "sha256:2b77dcc65299239d8284306bea179025873e91b2776e531da9dcb3ac5bbbdfdd",
+      "source": {
+        "dataClassification": "public-redistributable",
+        "sourceReference": "https://github.com/CarterCommunity/Carter",
+        "revision": "42055e5df5a6c0080e359366def009857cf276d1",
+        "licenseExpression": "MIT",
+        "redistributionAllowed": true,
+        "notes": "Exact tree 4947420e832af7acb3551b873601d6f18735e6a6; archive sha256:bc1377cabd654cb86d5d26f80e38912df9c811c997942d6555ef647382235bd3; license blob da6a6f92cf27abf08be16ac563783a605a1bfc7d and content sha256:584b1c0af75ef3ec124fa06511b326600db7713b540c2ab9d93d8cb858feb100. Source was reproduced outside the repository and was not committed."
+      },
+      "review": {
+        "status": "teacher-estimate",
+        "completedOn": "2026-08-13",
+        "reviewers": [
+          {
+            "id": "teacher:openai-codex-gpt-5-2026-08",
+            "kind": "host-ai",
+            "role": "teacher",
+            "modelId": "openai-codex",
+            "modelVersion": "gpt-5"
+          }
+        ],
+        "notes": "Single host-AI teacher; no independent correction or adjudication. Candidate totals, category totals, hours, confidence, explanations, source work-item IDs, and partition counts were hidden. The teacher inspected pinned public source and digest-verified static evidence, then applied the disclosed bounded logical-review scale. Tests were not executed and are assumed passing under the default policy."
+      },
+      "capabilities": [
+        {
+          "sourceCapabilityId": "work:api-surface:42dbaf96aea04a10a0dc",
+          "rationale": "Blind review of CarterCommunity/Carter treats \u0027Implement API and route behavior for \u0027src/Carter/Carter.csproj\u0027 (web)\u0027 as maintained behavior and public compatibility, with repeated declarations and test-only bodies discounted; source inspection and 2 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 4.75,
+                "expected": 6,
+                "high": 7.75
+              },
+              "uncertaintyReasons": []
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:api-surface:5153b904b6904a27d97a",
+          "rationale": "Blind review of CarterCommunity/Carter treats \u0027Implement API and route behavior for \u0027samples/CarterAndMVC/CarterAndMVC.csproj\u0027 (executable)\u0027 as maintained behavior and public compatibility, with repeated declarations and test-only bodies discounted; source inspection and 2 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 1.5,
+                "expected": 2,
+                "high": 2.5
+              },
+              "uncertaintyReasons": []
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:api-surface:71e8e32f5c48894e9de7",
+          "rationale": "The \u0027test/Carter.Tests/Carter.Tests.csproj\u0027 evidence describes fixtures already represented by the test-authoring capability; retaining a separate ProductionImplementation block would double count the same work.",
+          "targets": [
+            {
+              "hours": {
+                "low": 0,
+                "expected": 0,
+                "high": 0
+              },
+              "uncertaintyReasons": [],
+              "sizeException": "Explicit rubric-qualified exclusion: this evidence is already represented by the test-authoring capability and must not be priced again."
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:api-surface:7394d69e5e54551ac740",
+          "rationale": "Blind review of CarterCommunity/Carter treats \u0027Implement API and route behavior for \u0027samples/CarterSample/CarterSample.csproj\u0027 (web)\u0027 as maintained behavior and public compatibility, with repeated declarations and test-only bodies discounted; source inspection and 8 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 14,
+                "expected": 18,
+                "high": 23.5
+              },
+              "uncertaintyReasons": [
+                "This first strict-blind slice retains a large cohesive capability instead of using candidate-derived partitions."
+              ],
+              "sizeException": "The strict-blind review keeps this cohesive capability as one target because candidate-derived partition counts were hidden; a later independent review should decompose it."
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:api-surface:7fbbcf38f90c990f4034",
+          "rationale": "Blind review of CarterCommunity/Carter treats \u0027Implement API and route behavior for \u0027template/content/CarterTemplate.csproj\u0027 (executable)\u0027 as maintained behavior and public compatibility, with repeated declarations and test-only bodies discounted; source inspection and 1 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.75,
+                "expected": 1,
+                "high": 1.25
+              },
+              "uncertaintyReasons": []
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:api-surface:89e69b96df93f38ab313",
+          "rationale": "The \u0027test/Carter.ResponseNegotiators.Newtonsoft.Tests/Carter.ResponseNegotiators.Newtonsoft.Tests.csproj\u0027 evidence describes fixtures already represented by the test-authoring capability; retaining a separate ProductionImplementation block would double count the same work.",
+          "targets": [
+            {
+              "hours": {
+                "low": 0,
+                "expected": 0,
+                "high": 0
+              },
+              "uncertaintyReasons": [],
+              "sizeException": "Explicit rubric-qualified exclusion: this evidence is already represented by the test-authoring capability and must not be priced again."
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:api-surface:ee975d6daf4aef2c1bbd",
+          "rationale": "Blind review of CarterCommunity/Carter treats \u0027Implement API and route behavior for \u0027samples/EntityFwk/EntityFwk.csproj\u0027 (web)\u0027 as maintained behavior and public compatibility, with repeated declarations and test-only bodies discounted; source inspection and 1 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.75,
+                "expected": 1,
+                "high": 1.25
+              },
+              "uncertaintyReasons": []
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:application-entry-point:37cd7d6af0044befe845",
+          "rationale": "Blind review of CarterCommunity/Carter treats \u0027Implement application entry points for \u0027samples/CarterSample/CarterSample.csproj\u0027 (web)\u0027 as maintained behavior and public compatibility, with repeated declarations and test-only bodies discounted; source inspection and 1 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.75,
+                "expected": 1,
+                "high": 1.25
+              },
+              "uncertaintyReasons": [
+                "Some supporting evidence is inferred rather than directly observed."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:application-entry-point:45b57afc8b639f165de6",
+          "rationale": "Blind review of CarterCommunity/Carter treats \u0027Implement application entry points for \u0027samples/EntityFwk/EntityFwk.csproj\u0027 (web)\u0027 as maintained behavior and public compatibility, with repeated declarations and test-only bodies discounted; source inspection and 1 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.75,
+                "expected": 1,
+                "high": 1.25
+              },
+              "uncertaintyReasons": [
+                "Some supporting evidence is inferred rather than directly observed."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:application-entry-point:6c425ebf04d805b90c06",
+          "rationale": "Blind review of CarterCommunity/Carter treats \u0027Implement application entry points for \u0027samples/CarterAndMVC/CarterAndMVC.csproj\u0027 (executable)\u0027 as maintained behavior and public compatibility, with repeated declarations and test-only bodies discounted; source inspection and 1 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.75,
+                "expected": 1,
+                "high": 1.25
+              },
+              "uncertaintyReasons": [
+                "Some supporting evidence is inferred rather than directly observed."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:application-entry-point:7728708d2b826de02263",
+          "rationale": "Blind review of CarterCommunity/Carter treats \u0027Implement application entry points for \u0027template/content/CarterTemplate.csproj\u0027 (executable)\u0027 as maintained behavior and public compatibility, with repeated declarations and test-only bodies discounted; source inspection and 1 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.75,
+                "expected": 1,
+                "high": 1.25
+              },
+              "uncertaintyReasons": [
+                "Some supporting evidence is inferred rather than directly observed."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:architecture-design:14e316227e28f69eb4fa",
+          "rationale": "Blind review of CarterCommunity/Carter treats \u0027Design the technical structure of \u0027samples/CarterAndMVC/CarterAndMVC.csproj\u0027 (executable)\u0027 as coherent boundaries, dependency structure, and cross-surface design decisions; source inspection and 4 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 2,
+                "expected": 2.5,
+                "high": 3.25
+              },
+              "uncertaintyReasons": [
+                "Some supporting evidence is inferred rather than directly observed."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:architecture-design:330c77372c0a2b32661b",
+          "rationale": "Blind review of CarterCommunity/Carter treats \u0027Design the technical structure of \u0027template/content/CarterTemplate.csproj\u0027 (executable)\u0027 as coherent boundaries, dependency structure, and cross-surface design decisions; source inspection and 3 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 1.75,
+                "expected": 2.25,
+                "high": 3
+              },
+              "uncertaintyReasons": [
+                "Some supporting evidence is inferred rather than directly observed."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:architecture-design:3bc13044f09f2e2d63f1",
+          "rationale": "Blind review of CarterCommunity/Carter treats \u0027Design the technical structure of \u0027src/Carter.ResponseNegotiators.Newtonsoft/Carter.ResponseNegotiators.Newtonsoft.csproj\u0027 (library)\u0027 as coherent boundaries, dependency structure, and cross-surface design decisions; source inspection and 1 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 1.25,
+                "expected": 1.5,
+                "high": 2
+              },
+              "uncertaintyReasons": [
+                "Some supporting evidence is inferred rather than directly observed."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:architecture-design:3d15b3ef6907521a11a2",
+          "rationale": "Blind review of CarterCommunity/Carter treats \u0027Design the technical structure of \u0027src/Carter/Carter.csproj\u0027 (web)\u0027 as coherent boundaries, dependency structure, and cross-surface design decisions; source inspection and 5 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 6.25,
+                "expected": 8,
+                "high": 10.5
+              },
+              "uncertaintyReasons": [
+                "Some supporting evidence is inferred rather than directly observed."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:architecture-design:701e65bac71a4c3302f3",
+          "rationale": "Blind review of CarterCommunity/Carter treats \u0027Design the technical structure of \u0027samples/ValidatorOnlyProject/ValidatorOnlyProject.csproj\u0027 (library)\u0027 as coherent boundaries, dependency structure, and cross-surface design decisions; source inspection and 2 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 1.25,
+                "expected": 1.75,
+                "high": 2.25
+              },
+              "uncertaintyReasons": [
+                "Some supporting evidence is inferred rather than directly observed."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:architecture-design:74cf0bdf6822ef272489",
+          "rationale": "Blind review of CarterCommunity/Carter treats \u0027Design the technical structure of \u0027template/Template.csproj\u0027 (library)\u0027 as coherent boundaries, dependency structure, and cross-surface design decisions; source inspection and 1 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 1.25,
+                "expected": 1.5,
+                "high": 2
+              },
+              "uncertaintyReasons": [
+                "Some supporting evidence is inferred rather than directly observed."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:architecture-design:a1cf8e15f6438d5b0ff6",
+          "rationale": "Blind review of CarterCommunity/Carter treats \u0027Design the technical structure of \u0027src/Carter.Analyzers/Carter.Analyzers.csproj\u0027 (library)\u0027 as coherent boundaries, dependency structure, and cross-surface design decisions; source inspection and 1 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 1.25,
+                "expected": 1.5,
+                "high": 2
+              },
+              "uncertaintyReasons": [
+                "Some supporting evidence is inferred rather than directly observed."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:architecture-design:c6cbc1ea641047c6c99f",
+          "rationale": "Blind review of CarterCommunity/Carter treats \u0027Design the technical structure of \u0027samples/CarterSample/CarterSample.csproj\u0027 (web)\u0027 as coherent boundaries, dependency structure, and cross-surface design decisions; source inspection and 14 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 4.75,
+                "expected": 6,
+                "high": 7.75
+              },
+              "uncertaintyReasons": [
+                "Some supporting evidence is inferred rather than directly observed."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:architecture-design:dcd53228cf89403cf47f",
+          "rationale": "Blind review of CarterCommunity/Carter treats \u0027Design the technical structure of \u0027samples/EntityFwk/EntityFwk.csproj\u0027 (web)\u0027 as coherent boundaries, dependency structure, and cross-surface design decisions; source inspection and 7 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 4,
+                "expected": 5,
+                "high": 6.5
+              },
+              "uncertaintyReasons": [
+                "Some supporting evidence is inferred rather than directly observed."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:build-tooling:c2c91d07e063088d401a",
+          "rationale": "Blind review of CarterCommunity/Carter treats \u0027Configure build behavior and developer tooling\u0027 as the distinct functional or quality responsibility evidenced by the frozen source; source inspection and 3 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 2.25,
+                "expected": 3,
+                "high": 4
+              },
+              "uncertaintyReasons": []
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:ci-infrastructure:bee22f5b9a094661eb75",
+          "rationale": "Blind review of CarterCommunity/Carter treats \u0027Implement represented CI/CD and infrastructure configuration\u0027 as the distinct functional or quality responsibility evidenced by the frozen source; source inspection and 6 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 4,
+                "expected": 5,
+                "high": 6.5
+              },
+              "uncertaintyReasons": [
+                "Some TypeScript or fallback structure is token-backed rather than parser-backed."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:data-persistence:f4b1e0c68dd5d3f98430",
+          "rationale": "Blind review of CarterCommunity/Carter treats \u0027Implement data modeling and persistence for \u0027samples/EntityFwk/EntityFwk.csproj\u0027 (web)\u0027 as schema, migration, repository, and persistence behavior with patterned migrations discounted; source inspection and 3 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 4,
+                "expected": 5,
+                "high": 6.5
+              },
+              "uncertaintyReasons": [
+                "Some supporting evidence is inferred rather than directly observed."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:documentation:bebbc838ff439c1b4e49",
+          "rationale": "Blind review of CarterCommunity/Carter treats \u0027Author and verify maintained repository documentation\u0027 as maintained explanatory coverage and examples rather than physical line count; source inspection and 4 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 4,
+                "expected": 5,
+                "high": 6.5
+              },
+              "uncertaintyReasons": []
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:dotnet-source-backbone:2fb311b6d0a3632c6d88",
+          "rationale": "Blind review of CarterCommunity/Carter treats \u0027Implement maintained internal logic for \u0027src/Carter.Analyzers/Carter.Analyzers.csproj\u0027 (library)\u0027 as maintained behavior and public compatibility, with repeated declarations and test-only bodies discounted; source inspection and 1 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 6.25,
+                "expected": 8,
+                "high": 10.5
+              },
+              "uncertaintyReasons": []
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:dotnet-source-backbone:491f7176b1e708a061dc",
+          "rationale": "Blind review of CarterCommunity/Carter treats \u0027Implement maintained internal logic for \u0027samples/ValidatorOnlyProject/ValidatorOnlyProject.csproj\u0027 (library)\u0027 as maintained behavior and public compatibility, with repeated declarations and test-only bodies discounted; source inspection and 1 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 1.25,
+                "expected": 1.5,
+                "high": 2
+              },
+              "uncertaintyReasons": []
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:dotnet-source-backbone:66fe6e1b616fc17a81aa",
+          "rationale": "Blind review of CarterCommunity/Carter treats \u0027Implement maintained internal logic for \u0027samples/CarterAndMVC/CarterAndMVC.csproj\u0027 (executable)\u0027 as maintained behavior and public compatibility, with repeated declarations and test-only bodies discounted; source inspection and 1 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 1.5,
+                "expected": 2,
+                "high": 2.5
+              },
+              "uncertaintyReasons": []
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:dotnet-source-backbone:81d3972d6a38ef94db0a",
+          "rationale": "Blind review of CarterCommunity/Carter treats \u0027Implement maintained internal logic for \u0027samples/CarterSample/CarterSample.csproj\u0027 (web)\u0027 as maintained behavior and public compatibility, with repeated declarations and test-only bodies discounted; source inspection and 1 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 21.75,
+                "expected": 28,
+                "high": 36.5
+              },
+              "uncertaintyReasons": [
+                "This first strict-blind slice retains a large cohesive capability instead of using candidate-derived partitions."
+              ],
+              "sizeException": "The strict-blind review keeps this cohesive capability as one target because candidate-derived partition counts were hidden; a later independent review should decompose it."
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:dotnet-source-backbone:846e6d3cd2fda78e8276",
+          "rationale": "Blind review of CarterCommunity/Carter treats \u0027Implement maintained internal logic for \u0027src/Carter/Carter.csproj\u0027 (web)\u0027 as maintained behavior and public compatibility, with repeated declarations and test-only bodies discounted; source inspection and 1 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 46.75,
+                "expected": 60,
+                "high": 78
+              },
+              "uncertaintyReasons": [
+                "This first strict-blind slice retains a large cohesive capability instead of using candidate-derived partitions."
+              ],
+              "sizeException": "The strict-blind review keeps this cohesive capability as one target because candidate-derived partition counts were hidden; a later independent review should decompose it."
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:dotnet-source-backbone:8849906d80cff9f0ae28",
+          "rationale": "Blind review of CarterCommunity/Carter treats \u0027Implement maintained internal logic for \u0027samples/EntityFwk/EntityFwk.csproj\u0027 (web)\u0027 as maintained behavior and public compatibility, with repeated declarations and test-only bodies discounted; source inspection and 1 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 2.25,
+                "expected": 3,
+                "high": 4
+              },
+              "uncertaintyReasons": []
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:dotnet-source-backbone:e7953575c7a70c9cb2b2",
+          "rationale": "Blind review of CarterCommunity/Carter treats \u0027Implement maintained internal logic for \u0027template/content/CarterTemplate.csproj\u0027 (executable)\u0027 as maintained behavior and public compatibility, with repeated declarations and test-only bodies discounted; source inspection and 1 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 1.5,
+                "expected": 2,
+                "high": 2.5
+              },
+              "uncertaintyReasons": []
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:dotnet-source-backbone:f33100801384c00b33b1",
+          "rationale": "Blind review of CarterCommunity/Carter treats \u0027Implement maintained internal logic for \u0027src/Carter.ResponseNegotiators.Newtonsoft/Carter.ResponseNegotiators.Newtonsoft.csproj\u0027 (library)\u0027 as maintained behavior and public compatibility, with repeated declarations and test-only bodies discounted; source inspection and 1 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 1.25,
+                "expected": 1.5,
+                "high": 2
+              },
+              "uncertaintyReasons": []
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:external-integration:cc43ace35d3acb98c61b",
+          "rationale": "The \u0027test/Carter.Samples.Tests/Carter.Samples.Tests.csproj\u0027 evidence describes fixtures already represented by the test-authoring capability; retaining a separate ExternalIntegrationsAndProtocols block would double count the same work.",
+          "targets": [
+            {
+              "hours": {
+                "low": 0,
+                "expected": 0,
+                "high": 0
+              },
+              "uncertaintyReasons": [
+                "Some supporting evidence is inferred rather than directly observed.",
+                "Static analysis detected an integration shape but could not identify a distinct technology family."
+              ],
+              "sizeException": "Explicit rubric-qualified exclusion: this evidence is already represented by the test-authoring capability and must not be priced again."
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:external-integration:d08ff1e4910999f032df",
+          "rationale": "The \u0027test/Carter.Tests/Carter.Tests.csproj\u0027 evidence describes fixtures already represented by the test-authoring capability; retaining a separate ExternalIntegrationsAndProtocols block would double count the same work.",
+          "targets": [
+            {
+              "hours": {
+                "low": 0,
+                "expected": 0,
+                "high": 0
+              },
+              "uncertaintyReasons": [
+                "Some supporting evidence is inferred rather than directly observed."
+              ],
+              "sizeException": "Explicit rubric-qualified exclusion: this evidence is already represented by the test-authoring capability and must not be priced again."
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:integration-tests:b2ce37b06713d03027ae",
+          "rationale": "Blind review of CarterCommunity/Carter treats \u0027Create represented integration tests for \u0027test/Carter.Tests/Carter.Tests.csproj\u0027 (test)\u0027 as distinct test behavior, parameterization, fixtures, and assertions with repeated cases discounted; source inspection and 1 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 1.5,
+                "expected": 2,
+                "high": 2.5
+              },
+              "uncertaintyReasons": [
+                "Some supporting evidence is inferred rather than directly observed.",
+                "The represented tests were not executed and are assumed passing."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:integration-tests:f0b14d3bf82af0c33096",
+          "rationale": "Blind review of CarterCommunity/Carter treats \u0027Create represented integration tests for \u0027test/Carter.Samples.Tests/Carter.Samples.Tests.csproj\u0027 (test)\u0027 as distinct test behavior, parameterization, fixtures, and assertions with repeated cases discounted; source inspection and 1 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 6.25,
+                "expected": 8,
+                "high": 10.5
+              },
+              "uncertaintyReasons": [
+                "Some supporting evidence is inferred rather than directly observed.",
+                "The represented tests were not executed and are assumed passing."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:manual-validation:0277c66cb8990903fb27",
+          "rationale": "Blind review of CarterCommunity/Carter treats \u0027Manually validate, debug, and harden \u0027src/Carter.Analyzers/Carter.Analyzers.csproj\u0027 (library)\u0027 as bounded validation of the represented surface after automated-test creation; source inspection and 1 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.75,
+                "expected": 1,
+                "high": 1.25
+              },
+              "uncertaintyReasons": [
+                "Some supporting evidence is inferred rather than directly observed.",
+                "The target checkout was not executed on the default static path."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:manual-validation:3c3d9a602e44c8db218d",
+          "rationale": "Blind review of CarterCommunity/Carter treats \u0027Manually validate, debug, and harden \u0027samples/ValidatorOnlyProject/ValidatorOnlyProject.csproj\u0027 (library)\u0027 as bounded validation of the represented surface after automated-test creation; source inspection and 2 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 1.25,
+                "expected": 1.5,
+                "high": 2
+              },
+              "uncertaintyReasons": [
+                "Some supporting evidence is inferred rather than directly observed.",
+                "The target checkout was not executed on the default static path."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:manual-validation:6cbae3c7ee9151f827dc",
+          "rationale": "Blind review of CarterCommunity/Carter treats \u0027Manually validate, debug, and harden \u0027template/Template.csproj\u0027 (library)\u0027 as bounded validation of the represented surface after automated-test creation; source inspection and 1 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.75,
+                "expected": 1,
+                "high": 1.25
+              },
+              "uncertaintyReasons": [
+                "Some supporting evidence is inferred rather than directly observed.",
+                "The target checkout was not executed on the default static path."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:manual-validation:6fd5b747f984942a846e",
+          "rationale": "Blind review of CarterCommunity/Carter treats \u0027Manually validate, debug, and harden \u0027template/content/CarterTemplate.csproj\u0027 (executable)\u0027 as bounded validation of the represented surface after automated-test creation; source inspection and 4 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 1.75,
+                "expected": 2.25,
+                "high": 3
+              },
+              "uncertaintyReasons": [
+                "Some supporting evidence is inferred rather than directly observed.",
+                "The target checkout was not executed on the default static path."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:manual-validation:74ccd39e8cb6bcab2642",
+          "rationale": "Blind review of CarterCommunity/Carter treats \u0027Manually validate, debug, and harden \u0027samples/CarterAndMVC/CarterAndMVC.csproj\u0027 (executable)\u0027 as bounded validation of the represented surface after automated-test creation; source inspection and 5 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 2,
+                "expected": 2.5,
+                "high": 3.25
+              },
+              "uncertaintyReasons": [
+                "Some supporting evidence is inferred rather than directly observed.",
+                "The target checkout was not executed on the default static path."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:manual-validation:8c9a0bdf7362741e3177",
+          "rationale": "Blind review of CarterCommunity/Carter treats \u0027Manually validate, debug, and harden \u0027src/Carter/Carter.csproj\u0027 (web)\u0027 as bounded validation of the represented surface after automated-test creation; source inspection and 5 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 4.75,
+                "expected": 6,
+                "high": 7.75
+              },
+              "uncertaintyReasons": [
+                "Some supporting evidence is inferred rather than directly observed.",
+                "The target checkout was not executed on the default static path."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:manual-validation:993ad438c55ce0b12619",
+          "rationale": "Blind review of CarterCommunity/Carter treats \u0027Manually validate, debug, and harden \u0027src/Carter.ResponseNegotiators.Newtonsoft/Carter.ResponseNegotiators.Newtonsoft.csproj\u0027 (library)\u0027 as bounded validation of the represented surface after automated-test creation; source inspection and 1 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.75,
+                "expected": 1,
+                "high": 1.25
+              },
+              "uncertaintyReasons": [
+                "Some supporting evidence is inferred rather than directly observed.",
+                "The target checkout was not executed on the default static path."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:manual-validation:a9ddcf01f13dd284f175",
+          "rationale": "Blind review of CarterCommunity/Carter treats \u0027Manually validate, debug, and harden \u0027samples/EntityFwk/EntityFwk.csproj\u0027 (web)\u0027 as bounded validation of the represented surface after automated-test creation; source inspection and 8 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 3,
+                "expected": 4,
+                "high": 5.25
+              },
+              "uncertaintyReasons": [
+                "Some supporting evidence is inferred rather than directly observed.",
+                "The target checkout was not executed on the default static path."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:manual-validation:aa0ac06c0bcc5d508115",
+          "rationale": "Blind review of CarterCommunity/Carter treats \u0027Manually validate, debug, and harden \u0027samples/CarterSample/CarterSample.csproj\u0027 (web)\u0027 as bounded validation of the represented surface after automated-test creation; source inspection and 15 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 5.5,
+                "expected": 7,
+                "high": 9
+              },
+              "uncertaintyReasons": [
+                "Some supporting evidence is inferred rather than directly observed.",
+                "The target checkout was not executed on the default static path."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:project-setup:047c02357aae9cb3e0b0",
+          "rationale": "Blind review of CarterCommunity/Carter treats \u0027Set up \u0027samples/ValidatorOnlyProject/ValidatorOnlyProject.csproj\u0027 (library)\u0027 as the distinct functional or quality responsibility evidenced by the frozen source; source inspection and 2 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 1.25,
+                "expected": 1.75,
+                "high": 2.25
+              },
+              "uncertaintyReasons": [
+                "Some supporting evidence is inferred rather than directly observed."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:project-setup:2366ccdff6cf9505e66e",
+          "rationale": "Blind review of CarterCommunity/Carter treats \u0027Set up \u0027test/Carter.Samples.Tests/Carter.Samples.Tests.csproj\u0027 (test)\u0027 as the distinct functional or quality responsibility evidenced by the frozen source; source inspection and 3 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 1.75,
+                "expected": 2.25,
+                "high": 3
+              },
+              "uncertaintyReasons": [
+                "Some supporting evidence is inferred rather than directly observed."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:project-setup:5e756eb58509581f6650",
+          "rationale": "Blind review of CarterCommunity/Carter treats \u0027Set up \u0027template/content/CarterTemplate.csproj\u0027 (executable)\u0027 as the distinct functional or quality responsibility evidenced by the frozen source; source inspection and 1 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 1.25,
+                "expected": 1.5,
+                "high": 2
+              },
+              "uncertaintyReasons": [
+                "Some supporting evidence is inferred rather than directly observed."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:project-setup:6747a61ef1dc941bbae2",
+          "rationale": "Blind review of CarterCommunity/Carter treats \u0027Set up \u0027samples/CarterAndMVC/CarterAndMVC.csproj\u0027 (executable)\u0027 as the distinct functional or quality responsibility evidenced by the frozen source; source inspection and 1 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 1.25,
+                "expected": 1.5,
+                "high": 2
+              },
+              "uncertaintyReasons": [
+                "Some supporting evidence is inferred rather than directly observed."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:project-setup:6f9fbc39911c3a2122d8",
+          "rationale": "Blind review of CarterCommunity/Carter treats \u0027Set up \u0027samples/CarterSample/CarterSample.csproj\u0027 (web)\u0027 as the distinct functional or quality responsibility evidenced by the frozen source; source inspection and 2 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 1.25,
+                "expected": 1.75,
+                "high": 2.25
+              },
+              "uncertaintyReasons": [
+                "Some supporting evidence is inferred rather than directly observed."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:project-setup:84789575f4b4fc1aa156",
+          "rationale": "Blind review of CarterCommunity/Carter treats \u0027Set up \u0027test/Carter.Tests/Carter.Tests.csproj\u0027 (test)\u0027 as the distinct functional or quality responsibility evidenced by the frozen source; source inspection and 3 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 1.75,
+                "expected": 2.25,
+                "high": 3
+              },
+              "uncertaintyReasons": [
+                "Some supporting evidence is inferred rather than directly observed."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:project-setup:8aa9617b10c48466761e",
+          "rationale": "Blind review of CarterCommunity/Carter treats \u0027Set up \u0027template/Template.csproj\u0027 (library)\u0027 as the distinct functional or quality responsibility evidenced by the frozen source; source inspection and 2 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 1.25,
+                "expected": 1.75,
+                "high": 2.25
+              },
+              "uncertaintyReasons": [
+                "Some supporting evidence is inferred rather than directly observed."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:project-setup:9aa4c5cff96e6a56f0f1",
+          "rationale": "Blind review of CarterCommunity/Carter treats \u0027Set up \u0027src/Carter.Analyzers/Carter.Analyzers.csproj\u0027 (library)\u0027 as the distinct functional or quality responsibility evidenced by the frozen source; source inspection and 3 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 1.75,
+                "expected": 2.25,
+                "high": 3
+              },
+              "uncertaintyReasons": [
+                "Some supporting evidence is inferred rather than directly observed."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:project-setup:a546c99b570a073b00be",
+          "rationale": "Blind review of CarterCommunity/Carter treats \u0027Set up \u0027samples/EntityFwk/EntityFwk.csproj\u0027 (web)\u0027 as the distinct functional or quality responsibility evidenced by the frozen source; source inspection and 4 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 2,
+                "expected": 2.5,
+                "high": 3.25
+              },
+              "uncertaintyReasons": [
+                "Some supporting evidence is inferred rather than directly observed."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:project-setup:a64e1fdb8a34ceb873fa",
+          "rationale": "Blind review of CarterCommunity/Carter treats \u0027Set up \u0027src/Carter.ResponseNegotiators.Newtonsoft/Carter.ResponseNegotiators.Newtonsoft.csproj\u0027 (library)\u0027 as the distinct functional or quality responsibility evidenced by the frozen source; source inspection and 4 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 2,
+                "expected": 2.5,
+                "high": 3.25
+              },
+              "uncertaintyReasons": [
+                "Some supporting evidence is inferred rather than directly observed."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:project-setup:d59d83833277b75bf857",
+          "rationale": "Blind review of CarterCommunity/Carter treats \u0027Set up \u0027test/Carter.ResponseNegotiators.Newtonsoft.Tests/Carter.ResponseNegotiators.Newtonsoft.Tests.csproj\u0027 (test)\u0027 as the distinct functional or quality responsibility evidenced by the frozen source; source inspection and 2 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 1.25,
+                "expected": 1.75,
+                "high": 2.25
+              },
+              "uncertaintyReasons": [
+                "Some supporting evidence is inferred rather than directly observed."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:project-setup:d9b63811d3ed2803e1c5",
+          "rationale": "Blind review of CarterCommunity/Carter treats \u0027Set up \u0027src/Carter/Carter.csproj\u0027 (web)\u0027 as the distinct functional or quality responsibility evidenced by the frozen source; source inspection and 5 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 2.25,
+                "expected": 3,
+                "high": 4
+              },
+              "uncertaintyReasons": [
+                "Some supporting evidence is inferred rather than directly observed."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:security-surface:1c11926a59915b3d7fe4",
+          "rationale": "The \u0027test/Carter.Tests/Carter.Tests.csproj\u0027 evidence describes fixtures already represented by the test-authoring capability; retaining a separate SecurityAndAccessibility block would double count the same work.",
+          "targets": [
+            {
+              "hours": {
+                "low": 0,
+                "expected": 0,
+                "high": 0
+              },
+              "uncertaintyReasons": [],
+              "sizeException": "Explicit rubric-qualified exclusion: this evidence is already represented by the test-authoring capability and must not be priced again."
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:security-surface:9bc7ba6ca8af50ceae2d",
+          "rationale": "Blind review of CarterCommunity/Carter treats \u0027Implement represented authentication and security behavior for \u0027src/Carter/Carter.csproj\u0027 (web)\u0027 as the distinct functional or quality responsibility evidenced by the frozen source; source inspection and 1 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 1.5,
+                "expected": 2,
+                "high": 2.5
+              },
+              "uncertaintyReasons": []
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:self-review:e943a6db2e8c464b145a",
+          "rationale": "Blind review of CarterCommunity/Carter treats \u0027Self-review and integrate the completed system\u0027 as the distinct functional or quality responsibility evidenced by the frozen source; source inspection and 60 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 7.75,
+                "expected": 10,
+                "high": 13
+              },
+              "uncertaintyReasons": [
+                "Some supporting evidence is inferred rather than directly observed.",
+                "This first strict-blind slice retains a large cohesive capability instead of using candidate-derived partitions."
+              ],
+              "sizeException": "The strict-blind review keeps this cohesive capability as one target because candidate-derived partition counts were hidden; a later independent review should decompose it."
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:solution-coordination:c6246e076bb47f8310ce",
+          "rationale": "Blind review of CarterCommunity/Carter treats \u0027Coordinate solution, workspace, and local dependency boundaries\u0027 as the distinct functional or quality responsibility evidenced by the frozen source; source inspection and 11 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 4,
+                "expected": 5,
+                "high": 6.5
+              },
+              "uncertaintyReasons": []
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:specification-comprehension:49aec33b6a46fb626dad",
+          "rationale": "Blind review of CarterCommunity/Carter treats \u0027Comprehend the supplied specification and bounded business domain\u0027 as the distinct functional or quality responsibility evidenced by the frozen source; source inspection and 50 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 6.25,
+                "expected": 8,
+                "high": 10.5
+              },
+              "uncertaintyReasons": [
+                "No external specification artifact is represented in the current estimator request contract.",
+                "Some supporting evidence is inferred rather than directly observed."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:unit-tests:1f634e1fcf0c1d008cc5",
+          "rationale": "Blind review of CarterCommunity/Carter treats \u0027Create represented unit tests for \u0027test/Carter.Tests/Carter.Tests.csproj\u0027 (test)\u0027 as distinct test behavior, parameterization, fixtures, and assertions with repeated cases discounted; source inspection and 26 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 66.25,
+                "expected": 85,
+                "high": 110.5
+              },
+              "uncertaintyReasons": [
+                "Some supporting evidence is inferred rather than directly observed.",
+                "The represented tests were not executed and are assumed passing.",
+                "This first strict-blind slice retains a large cohesive capability instead of using candidate-derived partitions."
+              ],
+              "sizeException": "The strict-blind review keeps this cohesive capability as one target because candidate-derived partition counts were hidden; a later independent review should decompose it."
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:unit-tests:216fc716dcdb8e1744bc",
+          "rationale": "Blind review of CarterCommunity/Carter treats \u0027Create represented unit tests for \u0027test/Carter.ResponseNegotiators.Newtonsoft.Tests/Carter.ResponseNegotiators.Newtonsoft.Tests.csproj\u0027 (test)\u0027 as distinct test behavior, parameterization, fixtures, and assertions with repeated cases discounted; source inspection and 2 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 3,
+                "expected": 4,
+                "high": 5.25
+              },
+              "uncertaintyReasons": [
+                "Some supporting evidence is inferred rather than directly observed.",
+                "The represented tests were not executed and are assumed passing."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:validation-surface:0ec014c8c610288cb8cf",
+          "rationale": "Blind review of CarterCommunity/Carter treats \u0027Implement represented validation behavior for \u0027samples/EntityFwk/EntityFwk.csproj\u0027 (web)\u0027 as the distinct functional or quality responsibility evidenced by the frozen source; source inspection and 1 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.75,
+                "expected": 1,
+                "high": 1.25
+              },
+              "uncertaintyReasons": []
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:validation-surface:acd70ac1664d4a23dce3",
+          "rationale": "Blind review of CarterCommunity/Carter treats \u0027Implement represented validation behavior for \u0027samples/CarterSample/CarterSample.csproj\u0027 (web)\u0027 as the distinct functional or quality responsibility evidenced by the frozen source; source inspection and 3 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 1.75,
+                "expected": 2.25,
+                "high": 3
+              },
+              "uncertaintyReasons": []
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:validation-surface:b4c687fe306bbf4844a8",
+          "rationale": "The \u0027test/Carter.Tests/Carter.Tests.csproj\u0027 evidence describes fixtures already represented by the test-authoring capability; retaining a separate SecurityAndAccessibility block would double count the same work.",
+          "targets": [
+            {
+              "hours": {
+                "low": 0,
+                "expected": 0,
+                "high": 0
+              },
+              "uncertaintyReasons": [],
+              "sizeException": "Explicit rubric-qualified exclusion: this evidence is already represented by the test-authoring capability and must not be priced again."
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:validation-surface:eefd9e9336231725e5d0",
+          "rationale": "Blind review of CarterCommunity/Carter treats \u0027Implement represented validation behavior for \u0027samples/ValidatorOnlyProject/ValidatorOnlyProject.csproj\u0027 (library)\u0027 as the distinct functional or quality responsibility evidenced by the frozen source; source inspection and 1 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.75,
+                "expected": 1,
+                "high": 1.25
+              },
+              "uncertaintyReasons": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "record:tj-commander-js:implementation",
+      "repository": {
+        "id": "repository:github.com/tj/commander.js",
+        "name": "tj/commander.js",
+        "sourceDigest": "sha256:fe18ceb689a5b6ee31de0b198448bd03a2b0b56f4c25bf0d71a2e276f6a70d57"
+      },
+      "profile": "implementation",
+      "baselineId": "senior-contractor-2026-no-ai",
+      "partition": "development",
+      "sourceEstimatorVersion": "seed-rules/0.4.0",
+      "sourceEstimateDigest": "sha256:bc89cbc0df1ad3b63a37f2e0c82f84eca465866ee8f1d90824d5eb8541ec9725",
+      "source": {
+        "dataClassification": "public-redistributable",
+        "sourceReference": "https://github.com/tj/commander.js",
+        "revision": "ba6d13ddb4243e5913367734f8c159089ffe7834",
+        "licenseExpression": "MIT",
+        "redistributionAllowed": true,
+        "notes": "Exact tree ea7f757f861aba3926265ffc2b0955dd73a9684b; archive sha256:9a65e815ea7451d7248b21e10ef921e1b0ef15d5fb7e287e842f57caf877dfb7; license blob 10f997ab104594695189c3fca8fa6c65ae9ccdd6 and content sha256:04512a63dce4d2d506ad612dc0bd7681ccf6e3655f7b6eaef7dfac8323d1ec0b. Source was reproduced outside the repository and was not committed."
+      },
+      "review": {
+        "status": "teacher-estimate",
+        "completedOn": "2026-08-13",
+        "reviewers": [
+          {
+            "id": "teacher:openai-codex-gpt-5-2026-08",
+            "kind": "host-ai",
+            "role": "teacher",
+            "modelId": "openai-codex",
+            "modelVersion": "gpt-5"
+          }
+        ],
+        "notes": "Single host-AI teacher; no independent correction or adjudication. Candidate totals, category totals, hours, confidence, explanations, source work-item IDs, and partition counts were hidden. The teacher inspected pinned public source and digest-verified static evidence, then applied the disclosed bounded logical-review scale. Tests were not executed and are assumed passing under the default policy."
+      },
+      "capabilities": [
+        {
+          "sourceCapabilityId": "work:application-entry-point:9b21971dcc7b3a4ca5f0",
+          "rationale": "Blind review of tj/commander.js treats \u0027Implement application entry points for \u0027.\u0027 (library)\u0027 as maintained behavior and public compatibility, with repeated declarations and test-only bodies discounted; source inspection and 27 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 11.75,
+                "expected": 15,
+                "high": 19.5
+              },
+              "uncertaintyReasons": [
+                "Some supporting evidence is inferred rather than directly observed.",
+                "This first strict-blind slice retains a large cohesive capability instead of using candidate-derived partitions."
+              ],
+              "sizeException": "The strict-blind review keeps this cohesive capability as one target because candidate-derived partition counts were hidden; a later independent review should decompose it."
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:architecture-design:1301c834bf26665d0695",
+          "rationale": "Blind review of tj/commander.js treats \u0027Design the technical structure of \u0027.\u0027 (library)\u0027 as coherent boundaries, dependency structure, and cross-surface design decisions; source inspection and 3 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 9.25,
+                "expected": 12,
+                "high": 15.5
+              },
+              "uncertaintyReasons": [
+                "Some supporting evidence is inferred rather than directly observed.",
+                "This first strict-blind slice retains a large cohesive capability instead of using candidate-derived partitions."
+              ],
+              "sizeException": "The strict-blind review keeps this cohesive capability as one target because candidate-derived partition counts were hidden; a later independent review should decompose it."
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:build-tooling:c2c91d07e063088d401a",
+          "rationale": "Blind review of tj/commander.js treats \u0027Configure build behavior and developer tooling\u0027 as the distinct functional or quality responsibility evidenced by the frozen source; source inspection and 11 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 6.25,
+                "expected": 8,
+                "high": 10.5
+              },
+              "uncertaintyReasons": [
+                "Some supporting evidence is inferred rather than directly observed."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:ci-infrastructure:bee22f5b9a094661eb75",
+          "rationale": "Blind review of tj/commander.js treats \u0027Implement represented CI/CD and infrastructure configuration\u0027 as the distinct functional or quality responsibility evidenced by the frozen source; source inspection and 3 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 2.25,
+                "expected": 3,
+                "high": 4
+              },
+              "uncertaintyReasons": []
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:documentation:bebbc838ff439c1b4e49",
+          "rationale": "Blind review of tj/commander.js treats \u0027Author and verify maintained repository documentation\u0027 as maintained explanatory coverage and examples rather than physical line count; source inspection and 17 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 18.75,
+                "expected": 24,
+                "high": 31.25
+              },
+              "uncertaintyReasons": [
+                "This first strict-blind slice retains a large cohesive capability instead of using candidate-derived partitions."
+              ],
+              "sizeException": "The strict-blind review keeps this cohesive capability as one target because candidate-derived partition counts were hidden; a later independent review should decompose it."
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:javascript-source-backbone:2f5795bda39a0bae4a33",
+          "rationale": "Blind review of tj/commander.js treats \u0027Implement maintained internal logic for \u0027.\u0027 (library)\u0027 as maintained behavior and public compatibility, with repeated declarations and test-only bodies discounted; source inspection and 1 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 124.75,
+                "expected": 160,
+                "high": 208
+              },
+              "uncertaintyReasons": [
+                "A small TypeScript surface is token-backed; the dominant JavaScript surface is parser-backed.",
+                "Aggregate source structure was proportionally adjusted using production/test file classification.",
+                "Some TypeScript or fallback structure is token-backed rather than parser-backed.",
+                "This first strict-blind slice retains a large cohesive capability instead of using candidate-derived partitions."
+              ],
+              "sizeException": "The strict-blind review keeps this cohesive capability as one target because candidate-derived partition counts were hidden; a later independent review should decompose it."
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:manual-validation:a0df1126ba2f8dbcb19b",
+          "rationale": "Blind review of tj/commander.js treats \u0027Manually validate, debug, and harden \u0027.\u0027 (library)\u0027 as bounded validation of the represented surface after automated-test creation; source inspection and 30 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 15.5,
+                "expected": 20,
+                "high": 26
+              },
+              "uncertaintyReasons": [
+                "Some supporting evidence is inferred rather than directly observed.",
+                "The target checkout was not executed on the default static path.",
+                "This first strict-blind slice retains a large cohesive capability instead of using candidate-derived partitions."
+              ],
+              "sizeException": "The strict-blind review keeps this cohesive capability as one target because candidate-derived partition counts were hidden; a later independent review should decompose it."
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:packaging-release:58eb8ae7efef939a19b5",
+          "rationale": "Blind review of tj/commander.js treats \u0027Prepare represented packages and release surfaces\u0027 as the distinct functional or quality responsibility evidenced by the frozen source; source inspection and 1 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 3,
+                "expected": 4,
+                "high": 5.25
+              },
+              "uncertaintyReasons": [
+                "Some supporting evidence is inferred rather than directly observed."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:project-setup:e56be8fd4646c76f7cdd",
+          "rationale": "Blind review of tj/commander.js treats \u0027Set up \u0027.\u0027 (library)\u0027 as the distinct functional or quality responsibility evidenced by the frozen source; source inspection and 13 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 2.25,
+                "expected": 3,
+                "high": 4
+              },
+              "uncertaintyReasons": [
+                "Some supporting evidence is inferred rather than directly observed."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:self-review:e943a6db2e8c464b145a",
+          "rationale": "Blind review of tj/commander.js treats \u0027Self-review and integrate the completed system\u0027 as the distinct functional or quality responsibility evidenced by the frozen source; source inspection and 4 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 9.25,
+                "expected": 12,
+                "high": 15.5
+              },
+              "uncertaintyReasons": [
+                "Some supporting evidence is inferred rather than directly observed.",
+                "This first strict-blind slice retains a large cohesive capability instead of using candidate-derived partitions."
+              ],
+              "sizeException": "The strict-blind review keeps this cohesive capability as one target because candidate-derived partition counts were hidden; a later independent review should decompose it."
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:solution-coordination:c6246e076bb47f8310ce",
+          "rationale": "Blind review of tj/commander.js treats \u0027Coordinate solution, workspace, and local dependency boundaries\u0027 as the distinct functional or quality responsibility evidenced by the frozen source; source inspection and 2 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 1.25,
+                "expected": 1.5,
+                "high": 2
+              },
+              "uncertaintyReasons": [
+                "Some supporting evidence is inferred rather than directly observed."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:specification-comprehension:49aec33b6a46fb626dad",
+          "rationale": "Blind review of tj/commander.js treats \u0027Comprehend the supplied specification and bounded business domain\u0027 as the distinct functional or quality responsibility evidenced by the frozen source; source inspection and 2 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 9.25,
+                "expected": 12,
+                "high": 15.5
+              },
+              "uncertaintyReasons": [
+                "No external specification artifact is represented in the current estimator request contract.",
+                "Some supporting evidence is inferred rather than directly observed.",
+                "This first strict-blind slice retains a large cohesive capability instead of using candidate-derived partitions."
+              ],
+              "sizeException": "The strict-blind review keeps this cohesive capability as one target because candidate-derived partition counts were hidden; a later independent review should decompose it."
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:unit-tests:875ec9f8d2f4b23af140",
+          "rationale": "Blind review of tj/commander.js treats \u0027Create represented unit tests for \u0027.\u0027 (library)\u0027 as distinct test behavior, parameterization, fixtures, and assertions with repeated cases discounted; source inspection and 126 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 171.5,
+                "expected": 220,
+                "high": 286
+              },
+              "uncertaintyReasons": [
+                "Some supporting evidence is inferred rather than directly observed.",
+                "The represented tests were not executed and are assumed passing.",
+                "This first strict-blind slice retains a large cohesive capability instead of using candidate-derived partitions."
+              ],
+              "sizeException": "The strict-blind review keeps this cohesive capability as one target because candidate-derived partition counts were hidden; a later independent review should decompose it."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "record:oqtane-oqtane-framework:implementation",
+      "repository": {
+        "id": "repository:github.com/oqtane/oqtane.framework",
+        "name": "oqtane/oqtane.framework",
+        "sourceDigest": "sha256:a82445a988d9aedca9fe495980240285f82f2989a3b9a6e7dc8bb72d71accfbc"
+      },
+      "profile": "implementation",
+      "baselineId": "senior-contractor-2026-no-ai",
+      "partition": "development",
+      "sourceEstimatorVersion": "seed-rules/0.4.0",
+      "sourceEstimateDigest": "sha256:2fb61cb7a75010c9e693548a222cfadce3d5f132f206c369af50ca9e1da3025f",
+      "source": {
+        "dataClassification": "public-redistributable",
+        "sourceReference": "https://github.com/oqtane/oqtane.framework",
+        "revision": "27023bf90ad725d02d8fa13cff314d883f385ec6",
+        "licenseExpression": "MIT",
+        "redistributionAllowed": true,
+        "notes": "Exact tree 44bf493681b904f22f5f49863abb70b0fe96a106; archive sha256:8285aa5781e8d15cacdd2e9abe53dac2ad345dce2a969bf7f08f318bb15e4853; license blob b6c6f1c86849066e817aa58894a9c0b87f5f0b00 and content sha256:9d468ada3d406acab515a438ad2248c6a5fc371da8a4be3ffa1f277bbe032809. Source was reproduced outside the repository and was not committed."
+      },
+      "review": {
+        "status": "teacher-estimate",
+        "completedOn": "2026-08-13",
+        "reviewers": [
+          {
+            "id": "teacher:openai-codex-gpt-5-2026-08",
+            "kind": "host-ai",
+            "role": "teacher",
+            "modelId": "openai-codex",
+            "modelVersion": "gpt-5"
+          }
+        ],
+        "notes": "Single host-AI teacher; no independent correction or adjudication. Candidate totals, category totals, hours, confidence, explanations, source work-item IDs, and partition counts were hidden. The teacher inspected pinned public source and digest-verified static evidence, then applied the disclosed bounded logical-review scale. Tests were not executed and are assumed passing under the default policy."
+      },
+      "capabilities": [
+        {
+          "sourceCapabilityId": "work:api-surface:9471a7b3e5aa05f509c0",
+          "rationale": "Blind review of oqtane/oqtane.framework treats \u0027Implement API and route behavior for \u0027Oqtane.Server/Oqtane.Server.csproj\u0027 (web)\u0027 as maintained behavior and public compatibility, with repeated declarations and test-only bodies discounted; source inspection and 42 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 201.5,
+                "expected": 280,
+                "high": 392
+              },
+              "uncertaintyReasons": [
+                "Dynamic framework composition, runtime configuration, and generated template expansion were not executed.",
+                "This first strict-blind slice retains a large cohesive capability instead of using candidate-derived partitions."
+              ],
+              "sizeException": "The strict-blind review keeps this cohesive capability as one target because candidate-derived partition counts were hidden; a later independent review should decompose it."
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:application-entry-point:4dfc4f534843f9a7e18d",
+          "rationale": "Blind review of oqtane/oqtane.framework treats \u0027Implement application entry points for \u0027Oqtane.Application/Server/Oqtane.Application.Server.csproj\u0027 (web)\u0027 as maintained behavior and public compatibility, with repeated declarations and test-only bodies discounted; source inspection and 8 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 4.25,
+                "expected": 6,
+                "high": 8.5
+              },
+              "uncertaintyReasons": [
+                "Dynamic framework composition, runtime configuration, and generated template expansion were not executed.",
+                "Some supporting evidence is inferred rather than directly observed."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:application-entry-point:7a9768d78b07245d0a12",
+          "rationale": "Blind review of oqtane/oqtane.framework treats \u0027Implement application entry points for \u0027Oqtane.Updater/Oqtane.Updater.csproj\u0027 (executable)\u0027 as maintained behavior and public compatibility, with repeated declarations and test-only bodies discounted; source inspection and 1 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.75,
+                "expected": 1,
+                "high": 1.5
+              },
+              "uncertaintyReasons": [
+                "Dynamic framework composition, runtime configuration, and generated template expansion were not executed.",
+                "Some supporting evidence is inferred rather than directly observed."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:application-entry-point:a219fba108a0f96ef574",
+          "rationale": "Blind review of oqtane/oqtane.framework treats \u0027Implement application entry points for \u0027Oqtane.Server/Oqtane.Server.csproj\u0027 (web)\u0027 as maintained behavior and public compatibility, with repeated declarations and test-only bodies discounted; source inspection and 1 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 2.25,
+                "expected": 3,
+                "high": 4.25
+              },
+              "uncertaintyReasons": [
+                "Dynamic framework composition, runtime configuration, and generated template expansion were not executed.",
+                "Some supporting evidence is inferred rather than directly observed."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:application-entry-point:bb45c9c819378588f8c8",
+          "rationale": "Blind review of oqtane/oqtane.framework treats \u0027Implement application entry points for \u0027.\u0027 (cli)\u0027 as maintained behavior and public compatibility, with repeated declarations and test-only bodies discounted; source inspection and 1 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.75,
+                "expected": 1,
+                "high": 1.5
+              },
+              "uncertaintyReasons": [
+                "Dynamic framework composition, runtime configuration, and generated template expansion were not executed.",
+                "Some TypeScript or fallback structure is token-backed rather than parser-backed.",
+                "Some supporting evidence is inferred rather than directly observed."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:application-entry-point:ced95df6c9e470ea82e4",
+          "rationale": "Blind review of oqtane/oqtane.framework treats \u0027Implement application entry points for \u0027Oqtane.Maui/Oqtane.Maui.csproj\u0027 (executable)\u0027 as maintained behavior and public compatibility, with repeated declarations and test-only bodies discounted; source inspection and 4 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 3,
+                "expected": 4,
+                "high": 5.5
+              },
+              "uncertaintyReasons": [
+                "Dynamic framework composition, runtime configuration, and generated template expansion were not executed.",
+                "Some supporting evidence is inferred rather than directly observed."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:application-entry-point:f3a4ef0fd87f66f31768",
+          "rationale": "Blind review of oqtane/oqtane.framework treats \u0027Implement application entry points for \u0027Oqtane.Application/Client/Oqtane.Application.Client.csproj\u0027 (library)\u0027 as maintained behavior and public compatibility, with repeated declarations and test-only bodies discounted; source inspection and 1 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.75,
+                "expected": 1,
+                "high": 1.5
+              },
+              "uncertaintyReasons": [
+                "Dynamic framework composition, runtime configuration, and generated template expansion were not executed.",
+                "Some supporting evidence is inferred rather than directly observed."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:application-entry-point:f56a89ee290f81976c98",
+          "rationale": "Blind review of oqtane/oqtane.framework treats \u0027Implement application entry points for \u0027Oqtane.Client/Oqtane.Client.csproj\u0027 (library)\u0027 as maintained behavior and public compatibility, with repeated declarations and test-only bodies discounted; source inspection and 1 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.75,
+                "expected": 1,
+                "high": 1.5
+              },
+              "uncertaintyReasons": [
+                "Dynamic framework composition, runtime configuration, and generated template expansion were not executed.",
+                "Some supporting evidence is inferred rather than directly observed."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:architecture-design:0a95bcfb2c4ac064d041",
+          "rationale": "Blind review of oqtane/oqtane.framework treats \u0027Design the technical structure of \u0027Oqtane.Maui/Oqtane.Maui.csproj\u0027 (executable)\u0027 as coherent boundaries, dependency structure, and cross-surface design decisions; source inspection and 5 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 4.25,
+                "expected": 6,
+                "high": 8.5
+              },
+              "uncertaintyReasons": [
+                "Dynamic framework composition, runtime configuration, and generated template expansion were not executed.",
+                "Some supporting evidence is inferred rather than directly observed."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:architecture-design:0c0a61a4853dff0a6cdc",
+          "rationale": "Blind review of oqtane/oqtane.framework treats \u0027Design the technical structure of \u0027Oqtane.Shared/Oqtane.Shared.csproj\u0027 (library)\u0027 as coherent boundaries, dependency structure, and cross-surface design decisions; source inspection and 1 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 3,
+                "expected": 4,
+                "high": 5.5
+              },
+              "uncertaintyReasons": [
+                "Dynamic framework composition, runtime configuration, and generated template expansion were not executed.",
+                "Some supporting evidence is inferred rather than directly observed."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:architecture-design:1301c834bf26665d0695",
+          "rationale": "Blind review of oqtane/oqtane.framework treats \u0027Design the technical structure of \u0027.\u0027 (web-ui)\u0027 as coherent boundaries, dependency structure, and cross-surface design decisions; source inspection and 19 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 14.5,
+                "expected": 20,
+                "high": 28
+              },
+              "uncertaintyReasons": [
+                "Dynamic framework composition, runtime configuration, and generated template expansion were not executed.",
+                "Some supporting evidence is inferred rather than directly observed.",
+                "This first strict-blind slice retains a large cohesive capability instead of using candidate-derived partitions."
+              ],
+              "sizeException": "The strict-blind review keeps this cohesive capability as one target because candidate-derived partition counts were hidden; a later independent review should decompose it."
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:architecture-design:1ef73259b49d43231483",
+          "rationale": "Blind review of oqtane/oqtane.framework treats \u0027Design the technical structure of \u0027Oqtane.Server/wwwroot/Modules/Templates/External/Package/[Owner].Module.[Module].Package.csproj\u0027 (library)\u0027 as coherent boundaries, dependency structure, and cross-surface design decisions; source inspection and 4 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 1.5,
+                "expected": 2,
+                "high": 2.75
+              },
+              "uncertaintyReasons": [
+                "Dynamic framework composition, runtime configuration, and generated template expansion were not executed.",
+                "Some supporting evidence is inferred rather than directly observed."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:architecture-design:4375bc02c75de7beb232",
+          "rationale": "Blind review of oqtane/oqtane.framework treats \u0027Design the technical structure of \u0027Oqtane.Server/wwwroot/Modules/Templates/External/Client/[Owner].Module.[Module].Client.csproj\u0027 (library)\u0027 as coherent boundaries, dependency structure, and cross-surface design decisions; source inspection and 2 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 1.5,
+                "expected": 2,
+                "high": 2.75
+              },
+              "uncertaintyReasons": [
+                "Dynamic framework composition, runtime configuration, and generated template expansion were not executed.",
+                "Some supporting evidence is inferred rather than directly observed."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:architecture-design:48fa7e701d5e0476ebb0",
+          "rationale": "Blind review of oqtane/oqtane.framework treats \u0027Design the technical structure of \u0027Oqtane.Client/Oqtane.Client.csproj\u0027 (library)\u0027 as coherent boundaries, dependency structure, and cross-surface design decisions; source inspection and 181 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 36,
+                "expected": 50,
+                "high": 70
+              },
+              "uncertaintyReasons": [
+                "Dynamic framework composition, runtime configuration, and generated template expansion were not executed.",
+                "Some supporting evidence is inferred rather than directly observed.",
+                "This first strict-blind slice retains a large cohesive capability instead of using candidate-derived partitions."
+              ],
+              "sizeException": "The strict-blind review keeps this cohesive capability as one target because candidate-derived partition counts were hidden; a later independent review should decompose it."
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:architecture-design:664ebe7e153bf8253846",
+          "rationale": "Blind review of oqtane/oqtane.framework treats \u0027Design the technical structure of \u0027Oqtane.Application/Client/Oqtane.Application.Client.csproj\u0027 (library)\u0027 as coherent boundaries, dependency structure, and cross-surface design decisions; source inspection and 3 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 1.75,
+                "expected": 2.5,
+                "high": 3.5
+              },
+              "uncertaintyReasons": [
+                "Dynamic framework composition, runtime configuration, and generated template expansion were not executed.",
+                "Some supporting evidence is inferred rather than directly observed."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:architecture-design:709f5f271606f8261834",
+          "rationale": "Blind review of oqtane/oqtane.framework treats \u0027Design the technical structure of \u0027Oqtane.Updater/Oqtane.Updater.csproj\u0027 (executable)\u0027 as coherent boundaries, dependency structure, and cross-surface design decisions; source inspection and 2 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 1.75,
+                "expected": 2.5,
+                "high": 3.5
+              },
+              "uncertaintyReasons": [
+                "Dynamic framework composition, runtime configuration, and generated template expansion were not executed.",
+                "Some supporting evidence is inferred rather than directly observed."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:architecture-design:88df925e4d5f423f0857",
+          "rationale": "Blind review of oqtane/oqtane.framework treats \u0027Design the technical structure of \u0027Oqtane.Server/wwwroot/Modules/Templates/External/Shared/[Owner].Module.[Module].Shared.csproj\u0027 (library)\u0027 as coherent boundaries, dependency structure, and cross-surface design decisions; source inspection and 1 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 1.5,
+                "expected": 2,
+                "high": 2.75
+              },
+              "uncertaintyReasons": [
+                "Dynamic framework composition, runtime configuration, and generated template expansion were not executed.",
+                "Some supporting evidence is inferred rather than directly observed."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:architecture-design:9e588fb162d93cb96202",
+          "rationale": "Blind review of oqtane/oqtane.framework treats \u0027Design the technical structure of \u0027Oqtane.Application/Server/Oqtane.Application.Server.csproj\u0027 (web)\u0027 as coherent boundaries, dependency structure, and cross-surface design decisions; source inspection and 15 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 5.75,
+                "expected": 8,
+                "high": 11.25
+              },
+              "uncertaintyReasons": [
+                "Dynamic framework composition, runtime configuration, and generated template expansion were not executed.",
+                "Some supporting evidence is inferred rather than directly observed."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:architecture-design:9fe7e9cb36837cb0d90f",
+          "rationale": "Blind review of oqtane/oqtane.framework treats \u0027Design the technical structure of \u0027Oqtane.Server/wwwroot/Themes/Templates/External/Client/[Owner].Theme.[Theme].Client.csproj\u0027 (library)\u0027 as coherent boundaries, dependency structure, and cross-surface design decisions; source inspection and 1 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 1.5,
+                "expected": 2,
+                "high": 2.75
+              },
+              "uncertaintyReasons": [
+                "Dynamic framework composition, runtime configuration, and generated template expansion were not executed.",
+                "Some supporting evidence is inferred rather than directly observed."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:architecture-design:b588f06006c1340198f3",
+          "rationale": "Blind review of oqtane/oqtane.framework treats \u0027Design the technical structure of \u0027Oqtane.Server/wwwroot/Themes/Templates/External/Package/[Owner].Theme.[Theme].Package.csproj\u0027 (library)\u0027 as coherent boundaries, dependency structure, and cross-surface design decisions; source inspection and 2 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 1.5,
+                "expected": 2,
+                "high": 2.75
+              },
+              "uncertaintyReasons": [
+                "Dynamic framework composition, runtime configuration, and generated template expansion were not executed.",
+                "Some supporting evidence is inferred rather than directly observed."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:architecture-design:ccd872fabd50c1365fef",
+          "rationale": "Blind review of oqtane/oqtane.framework treats \u0027Design the technical structure of \u0027Oqtane.Server/wwwroot/Modules/Templates/External/Server/[Owner].Module.[Module].Server.csproj\u0027 (library)\u0027 as coherent boundaries, dependency structure, and cross-surface design decisions; source inspection and 2 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 1.5,
+                "expected": 2,
+                "high": 2.75
+              },
+              "uncertaintyReasons": [
+                "Dynamic framework composition, runtime configuration, and generated template expansion were not executed.",
+                "Some supporting evidence is inferred rather than directly observed."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:architecture-design:fb2ae723f1faa4cb80b4",
+          "rationale": "Blind review of oqtane/oqtane.framework treats \u0027Design the technical structure of \u0027Oqtane.Application/Shared/Oqtane.Application.Shared.csproj\u0027 (library)\u0027 as coherent boundaries, dependency structure, and cross-surface design decisions; source inspection and 1 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 1.75,
+                "expected": 2.5,
+                "high": 3.5
+              },
+              "uncertaintyReasons": [
+                "Dynamic framework composition, runtime configuration, and generated template expansion were not executed.",
+                "Some supporting evidence is inferred rather than directly observed."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:architecture-design:fcad68e7f41e5015c3d9",
+          "rationale": "Blind review of oqtane/oqtane.framework treats \u0027Design the technical structure of \u0027.\u0027 (cli)\u0027 as coherent boundaries, dependency structure, and cross-surface design decisions; source inspection and 1 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 14.5,
+                "expected": 20,
+                "high": 28
+              },
+              "uncertaintyReasons": [
+                "Dynamic framework composition, runtime configuration, and generated template expansion were not executed.",
+                "Some supporting evidence is inferred rather than directly observed.",
+                "This first strict-blind slice retains a large cohesive capability instead of using candidate-derived partitions."
+              ],
+              "sizeException": "The strict-blind review keeps this cohesive capability as one target because candidate-derived partition counts were hidden; a later independent review should decompose it."
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:architecture-design:fd8c5ecd2918749a6ffa",
+          "rationale": "Blind review of oqtane/oqtane.framework treats \u0027Design the technical structure of \u0027Oqtane.Server/Oqtane.Server.csproj\u0027 (web)\u0027 as coherent boundaries, dependency structure, and cross-surface design decisions; source inspection and 280 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 57.5,
+                "expected": 80,
+                "high": 112
+              },
+              "uncertaintyReasons": [
+                "Dynamic framework composition, runtime configuration, and generated template expansion were not executed.",
+                "Some SQL structure is token-backed rather than grammar-parser-backed.",
+                "Some supporting evidence is inferred rather than directly observed.",
+                "This first strict-blind slice retains a large cohesive capability instead of using candidate-derived partitions."
+              ],
+              "sizeException": "The strict-blind review keeps this cohesive capability as one target because candidate-derived partition counts were hidden; a later independent review should decompose it."
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:background-work:4ce1de8a1c2926f03654",
+          "rationale": "Blind review of oqtane/oqtane.framework treats \u0027Implement background, queue, and handler behavior for \u0027Oqtane.Server/Oqtane.Server.csproj\u0027 (web)\u0027 as maintained behavior and public compatibility, with repeated declarations and test-only bodies discounted; source inspection and 2 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 5.75,
+                "expected": 8,
+                "high": 11.25
+              },
+              "uncertaintyReasons": [
+                "Dynamic framework composition, runtime configuration, and generated template expansion were not executed.",
+                "Some supporting evidence is inferred rather than directly observed."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:build-tooling:c2c91d07e063088d401a",
+          "rationale": "Blind review of oqtane/oqtane.framework treats \u0027Configure build behavior and developer tooling\u0027 as the distinct functional or quality responsibility evidenced by the frozen source; source inspection and 6 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 3.5,
+                "expected": 5,
+                "high": 7
+              },
+              "uncertaintyReasons": [
+                "Dynamic framework composition, runtime configuration, and generated template expansion were not executed."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:container-deployment:6f462b8bc29b08cb2f42",
+          "rationale": "Blind review of oqtane/oqtane.framework treats \u0027Create represented container build and orchestration behavior\u0027 as the distinct functional or quality responsibility evidenced by the frozen source; source inspection and 4 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 3,
+                "expected": 4,
+                "high": 5.5
+              },
+              "uncertaintyReasons": [
+                "Dynamic framework composition, runtime configuration, and generated template expansion were not executed."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:data-persistence:58f194caefce9433a90b",
+          "rationale": "Blind review of oqtane/oqtane.framework treats \u0027Implement data modeling and persistence for \u0027Oqtane.Server/Oqtane.Server.csproj\u0027 (web)\u0027 as schema, migration, repository, and persistence behavior with patterned migrations discounted; source inspection and 164 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 158.5,
+                "expected": 220,
+                "high": 308
+              },
+              "uncertaintyReasons": [
+                "Dynamic framework composition, runtime configuration, and generated template expansion were not executed.",
+                "Some SQL structure is token-backed rather than grammar-parser-backed.",
+                "Some supporting evidence is inferred rather than directly observed.",
+                "This first strict-blind slice retains a large cohesive capability instead of using candidate-derived partitions."
+              ],
+              "sizeException": "The strict-blind review keeps this cohesive capability as one target because candidate-derived partition counts were hidden; a later independent review should decompose it."
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:data-persistence:7beaa29dbc183836a073",
+          "rationale": "Blind review of oqtane/oqtane.framework treats \u0027Implement data modeling and persistence for \u0027Oqtane.Application/Server/Oqtane.Application.Server.csproj\u0027 (web)\u0027 as schema, migration, repository, and persistence behavior with patterned migrations discounted; source inspection and 3 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 3,
+                "expected": 4,
+                "high": 5.5
+              },
+              "uncertaintyReasons": [
+                "Dynamic framework composition, runtime configuration, and generated template expansion were not executed.",
+                "Some supporting evidence is inferred rather than directly observed."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:documentation:bebbc838ff439c1b4e49",
+          "rationale": "Blind review of oqtane/oqtane.framework treats \u0027Author and verify maintained repository documentation\u0027 as maintained explanatory coverage and examples rather than physical line count; source inspection and 17 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 11.5,
+                "expected": 16,
+                "high": 22.5
+              },
+              "uncertaintyReasons": [
+                "Dynamic framework composition, runtime configuration, and generated template expansion were not executed.",
+                "This first strict-blind slice retains a large cohesive capability instead of using candidate-derived partitions."
+              ],
+              "sizeException": "The strict-blind review keeps this cohesive capability as one target because candidate-derived partition counts were hidden; a later independent review should decompose it."
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:dotnet-source-backbone:23bb7f743586b8f97dba",
+          "rationale": "Blind review of oqtane/oqtane.framework treats \u0027Implement maintained internal logic for \u0027Oqtane.Application/Client/Oqtane.Application.Client.csproj\u0027 (library)\u0027 as maintained behavior and public compatibility, with repeated declarations and test-only bodies discounted; source inspection and 1 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 1.5,
+                "expected": 2,
+                "high": 2.75
+              },
+              "uncertaintyReasons": [
+                "Dynamic framework composition, runtime configuration, and generated template expansion were not executed."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:dotnet-source-backbone:d75c198d07b8f452fa80",
+          "rationale": "Blind review of oqtane/oqtane.framework treats \u0027Implement maintained internal logic for \u0027Oqtane.Client/Oqtane.Client.csproj\u0027 (library)\u0027 as maintained behavior and public compatibility, with repeated declarations and test-only bodies discounted; source inspection and 1 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 345.5,
+                "expected": 480,
+                "high": 672
+              },
+              "uncertaintyReasons": [
+                "Dynamic framework composition, runtime configuration, and generated template expansion were not executed.",
+                "This first strict-blind slice retains a large cohesive capability instead of using candidate-derived partitions."
+              ],
+              "sizeException": "The strict-blind review keeps this cohesive capability as one target because candidate-derived partition counts were hidden; a later independent review should decompose it."
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:dotnet-source-backbone:de9384fe945b33fe9517",
+          "rationale": "Blind review of oqtane/oqtane.framework treats \u0027Implement maintained internal logic for \u0027Oqtane.Updater/Oqtane.Updater.csproj\u0027 (executable)\u0027 as maintained behavior and public compatibility, with repeated declarations and test-only bodies discounted; source inspection and 1 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 8.75,
+                "expected": 12,
+                "high": 16.75
+              },
+              "uncertaintyReasons": [
+                "Dynamic framework composition, runtime configuration, and generated template expansion were not executed.",
+                "This first strict-blind slice retains a large cohesive capability instead of using candidate-derived partitions."
+              ],
+              "sizeException": "The strict-blind review keeps this cohesive capability as one target because candidate-derived partition counts were hidden; a later independent review should decompose it."
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:dotnet-source-backbone:e2a13373a873378c03ad",
+          "rationale": "Blind review of oqtane/oqtane.framework treats \u0027Implement maintained internal logic for \u0027Oqtane.Server/Oqtane.Server.csproj\u0027 (web)\u0027 as maintained behavior and public compatibility, with repeated declarations and test-only bodies discounted; source inspection and 1 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 828,
+                "expected": 1150,
+                "high": 1610
+              },
+              "uncertaintyReasons": [
+                "Dynamic framework composition, runtime configuration, and generated template expansion were not executed.",
+                "This first strict-blind slice retains a large cohesive capability instead of using candidate-derived partitions."
+              ],
+              "sizeException": "The strict-blind review keeps this cohesive capability as one target because candidate-derived partition counts were hidden; a later independent review should decompose it."
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:dotnet-source-backbone:e2a985391f3bb977fdec",
+          "rationale": "Blind review of oqtane/oqtane.framework treats \u0027Implement maintained internal logic for \u0027Oqtane.Application/Server/Oqtane.Application.Server.csproj\u0027 (web)\u0027 as maintained behavior and public compatibility, with repeated declarations and test-only bodies discounted; source inspection and 1 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 25.25,
+                "expected": 35,
+                "high": 49
+              },
+              "uncertaintyReasons": [
+                "Dynamic framework composition, runtime configuration, and generated template expansion were not executed.",
+                "This first strict-blind slice retains a large cohesive capability instead of using candidate-derived partitions."
+              ],
+              "sizeException": "The strict-blind review keeps this cohesive capability as one target because candidate-derived partition counts were hidden; a later independent review should decompose it."
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:dotnet-source-backbone:e5a48063f379d59e240f",
+          "rationale": "Blind review of oqtane/oqtane.framework treats \u0027Implement maintained internal logic for \u0027Oqtane.Shared/Oqtane.Shared.csproj\u0027 (library)\u0027 as maintained behavior and public compatibility, with repeated declarations and test-only bodies discounted; source inspection and 1 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 115.25,
+                "expected": 160,
+                "high": 224
+              },
+              "uncertaintyReasons": [
+                "Dynamic framework composition, runtime configuration, and generated template expansion were not executed.",
+                "This first strict-blind slice retains a large cohesive capability instead of using candidate-derived partitions."
+              ],
+              "sizeException": "The strict-blind review keeps this cohesive capability as one target because candidate-derived partition counts were hidden; a later independent review should decompose it."
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:dotnet-source-backbone:f65376228e3964691351",
+          "rationale": "Blind review of oqtane/oqtane.framework treats \u0027Implement maintained internal logic for \u0027Oqtane.Maui/Oqtane.Maui.csproj\u0027 (executable)\u0027 as maintained behavior and public compatibility, with repeated declarations and test-only bodies discounted; source inspection and 3 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 21.5,
+                "expected": 30,
+                "high": 42
+              },
+              "uncertaintyReasons": [
+                "Aggregate parser structure was proportionally normalized because per-file structure is not serialized.",
+                "Dynamic framework composition, runtime configuration, and generated template expansion were not executed.",
+                "This first strict-blind slice retains a large cohesive capability instead of using candidate-derived partitions."
+              ],
+              "sizeException": "The strict-blind review keeps this cohesive capability as one target because candidate-derived partition counts were hidden; a later independent review should decompose it."
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:external-integration:4d71c0ef68eb3b609183",
+          "rationale": "Blind review of oqtane/oqtane.framework treats \u0027Integrate external services and protocols for \u0027Oqtane.Client/Oqtane.Client.csproj\u0027 (library)\u0027 as the distinct functional or quality responsibility evidenced by the frozen source; source inspection and 44 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 43.25,
+                "expected": 60,
+                "high": 84
+              },
+              "uncertaintyReasons": [
+                "Dynamic framework composition, runtime configuration, and generated template expansion were not executed.",
+                "Some supporting evidence is inferred rather than directly observed.",
+                "This first strict-blind slice retains a large cohesive capability instead of using candidate-derived partitions."
+              ],
+              "sizeException": "The strict-blind review keeps this cohesive capability as one target because candidate-derived partition counts were hidden; a later independent review should decompose it."
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:external-integration:6a1e94ec21e4c2451a36",
+          "rationale": "Blind review of oqtane/oqtane.framework treats \u0027Integrate external services and protocols for \u0027Oqtane.Application/Server/Oqtane.Application.Server.csproj\u0027 (web)\u0027 as the distinct functional or quality responsibility evidenced by the frozen source; source inspection and 1 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.75,
+                "expected": 1,
+                "high": 1.5
+              },
+              "uncertaintyReasons": [
+                "Dynamic framework composition, runtime configuration, and generated template expansion were not executed.",
+                "Some supporting evidence is inferred rather than directly observed."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:external-integration:81a8e7b987299f5c8892",
+          "rationale": "Blind review of oqtane/oqtane.framework treats \u0027Integrate external services and protocols for \u0027Oqtane.Maui/Oqtane.Maui.csproj\u0027 (executable)\u0027 as the distinct functional or quality responsibility evidenced by the frozen source; source inspection and 1 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 1.5,
+                "expected": 2,
+                "high": 2.75
+              },
+              "uncertaintyReasons": [
+                "Dynamic framework composition, runtime configuration, and generated template expansion were not executed.",
+                "Some supporting evidence is inferred rather than directly observed."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:external-integration:d28a4f1662f6abe92644",
+          "rationale": "Blind review of oqtane/oqtane.framework treats \u0027Integrate external services and protocols for \u0027.\u0027 (web-ui)\u0027 as the distinct functional or quality responsibility evidenced by the frozen source; source inspection and 2 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 4.25,
+                "expected": 6,
+                "high": 8.5
+              },
+              "uncertaintyReasons": [
+                "Dynamic framework composition, runtime configuration, and generated template expansion were not executed.",
+                "Exact duplicate semantic facts were collapsed by maintained-file content digest.",
+                "Some supporting evidence is inferred rather than directly observed.",
+                "Static analysis detected an integration shape but could not identify a distinct technology family."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:external-integration:f9c4d7d63cf054924148",
+          "rationale": "Blind review of oqtane/oqtane.framework treats \u0027Integrate external services and protocols for \u0027Oqtane.Server/Oqtane.Server.csproj\u0027 (web)\u0027 as the distinct functional or quality responsibility evidenced by the frozen source; source inspection and 9 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 14.5,
+                "expected": 20,
+                "high": 28
+              },
+              "uncertaintyReasons": [
+                "Dynamic framework composition, runtime configuration, and generated template expansion were not executed.",
+                "Some supporting evidence is inferred rather than directly observed.",
+                "This first strict-blind slice retains a large cohesive capability instead of using candidate-derived partitions."
+              ],
+              "sizeException": "The strict-blind review keeps this cohesive capability as one target because candidate-derived partition counts were hidden; a later independent review should decompose it."
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:javascript-source-backbone:2f5795bda39a0bae4a33",
+          "rationale": "Blind review of oqtane/oqtane.framework treats \u0027Implement maintained internal logic for \u0027.\u0027 (web-ui)\u0027 as maintained behavior and public compatibility, with repeated declarations and test-only bodies discounted; source inspection and 20 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 72,
+                "expected": 100,
+                "high": 140
+              },
+              "uncertaintyReasons": [
+                "Aggregate parser structure was proportionally normalized because per-file structure is not serialized.",
+                "Dynamic framework composition, runtime configuration, and generated template expansion were not executed.",
+                "Some TypeScript or fallback structure is token-backed rather than parser-backed.",
+                "This first strict-blind slice retains a large cohesive capability instead of using candidate-derived partitions."
+              ],
+              "sizeException": "The strict-blind review keeps this cohesive capability as one target because candidate-derived partition counts were hidden; a later independent review should decompose it."
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:manual-validation:05a16b4a827d71dae77b",
+          "rationale": "Blind review of oqtane/oqtane.framework treats \u0027Manually validate, debug, and harden \u0027Oqtane.Application/Shared/Oqtane.Application.Shared.csproj\u0027 (library)\u0027 as bounded validation of the represented surface after automated-test creation; source inspection and 1 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 1.5,
+                "expected": 2,
+                "high": 2.75
+              },
+              "uncertaintyReasons": [
+                "Dynamic framework composition, runtime configuration, and generated template expansion were not executed.",
+                "Some supporting evidence is inferred rather than directly observed.",
+                "The target checkout was not executed on the default static path."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:manual-validation:141f8e10e404d9bc2d42",
+          "rationale": "Blind review of oqtane/oqtane.framework treats \u0027Manually validate, debug, and harden \u0027Oqtane.Server/wwwroot/Themes/Templates/External/Package/[Owner].Theme.[Theme].Package.csproj\u0027 (library)\u0027 as bounded validation of the represented surface after automated-test creation; source inspection and 2 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 1,
+                "expected": 1.5,
+                "high": 2
+              },
+              "uncertaintyReasons": [
+                "Dynamic framework composition, runtime configuration, and generated template expansion were not executed.",
+                "Some supporting evidence is inferred rather than directly observed.",
+                "The target checkout was not executed on the default static path."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:manual-validation:1ac4c27fe732e685bc2c",
+          "rationale": "Blind review of oqtane/oqtane.framework treats \u0027Manually validate, debug, and harden \u0027Oqtane.Server/wwwroot/Themes/Templates/External/Client/[Owner].Theme.[Theme].Client.csproj\u0027 (library)\u0027 as bounded validation of the represented surface after automated-test creation; source inspection and 1 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 1,
+                "expected": 1.5,
+                "high": 2
+              },
+              "uncertaintyReasons": [
+                "Dynamic framework composition, runtime configuration, and generated template expansion were not executed.",
+                "Some supporting evidence is inferred rather than directly observed.",
+                "The target checkout was not executed on the default static path."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:manual-validation:325613c5d7f607bc7175",
+          "rationale": "Blind review of oqtane/oqtane.framework treats \u0027Manually validate, debug, and harden \u0027Oqtane.Maui/Oqtane.Maui.csproj\u0027 (executable)\u0027 as bounded validation of the represented surface after automated-test creation; source inspection and 9 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 4.25,
+                "expected": 6,
+                "high": 8.5
+              },
+              "uncertaintyReasons": [
+                "Dynamic framework composition, runtime configuration, and generated template expansion were not executed.",
+                "Some supporting evidence is inferred rather than directly observed.",
+                "The target checkout was not executed on the default static path."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:manual-validation:45bddf388983e8b08c0f",
+          "rationale": "Blind review of oqtane/oqtane.framework treats \u0027Manually validate, debug, and harden \u0027Oqtane.Server/wwwroot/Modules/Templates/External/Shared/[Owner].Module.[Module].Shared.csproj\u0027 (library)\u0027 as bounded validation of the represented surface after automated-test creation; source inspection and 1 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 1,
+                "expected": 1.5,
+                "high": 2
+              },
+              "uncertaintyReasons": [
+                "Dynamic framework composition, runtime configuration, and generated template expansion were not executed.",
+                "Some supporting evidence is inferred rather than directly observed.",
+                "The target checkout was not executed on the default static path."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:manual-validation:4edfbd72db3831e6b980",
+          "rationale": "Blind review of oqtane/oqtane.framework treats \u0027Manually validate, debug, and harden \u0027Oqtane.Application/Server/Oqtane.Application.Server.csproj\u0027 (web)\u0027 as bounded validation of the represented surface after automated-test creation; source inspection and 23 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 7.25,
+                "expected": 10,
+                "high": 14
+              },
+              "uncertaintyReasons": [
+                "Dynamic framework composition, runtime configuration, and generated template expansion were not executed.",
+                "Some supporting evidence is inferred rather than directly observed.",
+                "The target checkout was not executed on the default static path.",
+                "This first strict-blind slice retains a large cohesive capability instead of using candidate-derived partitions."
+              ],
+              "sizeException": "The strict-blind review keeps this cohesive capability as one target because candidate-derived partition counts were hidden; a later independent review should decompose it."
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:manual-validation:4f7c98131dbefa178e87",
+          "rationale": "Blind review of oqtane/oqtane.framework treats \u0027Manually validate, debug, and harden \u0027Oqtane.Updater/Oqtane.Updater.csproj\u0027 (executable)\u0027 as bounded validation of the represented surface after automated-test creation; source inspection and 3 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 1.5,
+                "expected": 2,
+                "high": 2.75
+              },
+              "uncertaintyReasons": [
+                "Dynamic framework composition, runtime configuration, and generated template expansion were not executed.",
+                "Some supporting evidence is inferred rather than directly observed.",
+                "The target checkout was not executed on the default static path."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:manual-validation:6eeae82739163d169115",
+          "rationale": "Blind review of oqtane/oqtane.framework treats \u0027Manually validate, debug, and harden \u0027Oqtane.Server/wwwroot/Modules/Templates/External/Package/[Owner].Module.[Module].Package.csproj\u0027 (library)\u0027 as bounded validation of the represented surface after automated-test creation; source inspection and 4 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 1,
+                "expected": 1.5,
+                "high": 2
+              },
+              "uncertaintyReasons": [
+                "Dynamic framework composition, runtime configuration, and generated template expansion were not executed.",
+                "Some supporting evidence is inferred rather than directly observed.",
+                "The target checkout was not executed on the default static path."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:manual-validation:a0d19e8e973f54263794",
+          "rationale": "Blind review of oqtane/oqtane.framework treats \u0027Manually validate, debug, and harden \u0027.\u0027 (cli)\u0027 as bounded validation of the represented surface after automated-test creation; source inspection and 2 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 14.5,
+                "expected": 20,
+                "high": 28
+              },
+              "uncertaintyReasons": [
+                "Dynamic framework composition, runtime configuration, and generated template expansion were not executed.",
+                "Some TypeScript or fallback structure is token-backed rather than parser-backed.",
+                "Some supporting evidence is inferred rather than directly observed.",
+                "The target checkout was not executed on the default static path.",
+                "This first strict-blind slice retains a large cohesive capability instead of using candidate-derived partitions."
+              ],
+              "sizeException": "The strict-blind review keeps this cohesive capability as one target because candidate-derived partition counts were hidden; a later independent review should decompose it."
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:manual-validation:a0df1126ba2f8dbcb19b",
+          "rationale": "Blind review of oqtane/oqtane.framework treats \u0027Manually validate, debug, and harden \u0027.\u0027 (web-ui)\u0027 as bounded validation of the represented surface after automated-test creation; source inspection and 19 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 14.5,
+                "expected": 20,
+                "high": 28
+              },
+              "uncertaintyReasons": [
+                "Dynamic framework composition, runtime configuration, and generated template expansion were not executed.",
+                "Some supporting evidence is inferred rather than directly observed.",
+                "The target checkout was not executed on the default static path.",
+                "This first strict-blind slice retains a large cohesive capability instead of using candidate-derived partitions."
+              ],
+              "sizeException": "The strict-blind review keeps this cohesive capability as one target because candidate-derived partition counts were hidden; a later independent review should decompose it."
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:manual-validation:a64ae9545986c69855ad",
+          "rationale": "Blind review of oqtane/oqtane.framework treats \u0027Manually validate, debug, and harden \u0027Oqtane.Shared/Oqtane.Shared.csproj\u0027 (library)\u0027 as bounded validation of the represented surface after automated-test creation; source inspection and 1 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 1.5,
+                "expected": 2,
+                "high": 2.75
+              },
+              "uncertaintyReasons": [
+                "Dynamic framework composition, runtime configuration, and generated template expansion were not executed.",
+                "Some supporting evidence is inferred rather than directly observed.",
+                "The target checkout was not executed on the default static path."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:manual-validation:c10e29b20a0582d85d2d",
+          "rationale": "Blind review of oqtane/oqtane.framework treats \u0027Manually validate, debug, and harden \u0027Oqtane.Client/Oqtane.Client.csproj\u0027 (library)\u0027 as bounded validation of the represented surface after automated-test creation; source inspection and 182 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 43.25,
+                "expected": 60,
+                "high": 84
+              },
+              "uncertaintyReasons": [
+                "Dynamic framework composition, runtime configuration, and generated template expansion were not executed.",
+                "Some supporting evidence is inferred rather than directly observed.",
+                "The target checkout was not executed on the default static path.",
+                "This first strict-blind slice retains a large cohesive capability instead of using candidate-derived partitions."
+              ],
+              "sizeException": "The strict-blind review keeps this cohesive capability as one target because candidate-derived partition counts were hidden; a later independent review should decompose it."
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:manual-validation:cb5bafc43270285a4e8c",
+          "rationale": "Blind review of oqtane/oqtane.framework treats \u0027Manually validate, debug, and harden \u0027Oqtane.Application/Client/Oqtane.Application.Client.csproj\u0027 (library)\u0027 as bounded validation of the represented surface after automated-test creation; source inspection and 4 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 1.5,
+                "expected": 2,
+                "high": 2.75
+              },
+              "uncertaintyReasons": [
+                "Dynamic framework composition, runtime configuration, and generated template expansion were not executed.",
+                "Some supporting evidence is inferred rather than directly observed.",
+                "The target checkout was not executed on the default static path."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:manual-validation:cdada1cd98055eefbc9e",
+          "rationale": "Blind review of oqtane/oqtane.framework treats \u0027Manually validate, debug, and harden \u0027Oqtane.Server/wwwroot/Modules/Templates/External/Client/[Owner].Module.[Module].Client.csproj\u0027 (library)\u0027 as bounded validation of the represented surface after automated-test creation; source inspection and 2 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 1,
+                "expected": 1.5,
+                "high": 2
+              },
+              "uncertaintyReasons": [
+                "Dynamic framework composition, runtime configuration, and generated template expansion were not executed.",
+                "Some supporting evidence is inferred rather than directly observed.",
+                "The target checkout was not executed on the default static path."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:manual-validation:d0a7411b93d327b5b21d",
+          "rationale": "Blind review of oqtane/oqtane.framework treats \u0027Manually validate, debug, and harden \u0027Oqtane.Server/Oqtane.Server.csproj\u0027 (web)\u0027 as bounded validation of the represented surface after automated-test creation; source inspection and 281 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 72,
+                "expected": 100,
+                "high": 140
+              },
+              "uncertaintyReasons": [
+                "Dynamic framework composition, runtime configuration, and generated template expansion were not executed.",
+                "Some SQL structure is token-backed rather than grammar-parser-backed.",
+                "Some supporting evidence is inferred rather than directly observed.",
+                "The target checkout was not executed on the default static path.",
+                "This first strict-blind slice retains a large cohesive capability instead of using candidate-derived partitions."
+              ],
+              "sizeException": "The strict-blind review keeps this cohesive capability as one target because candidate-derived partition counts were hidden; a later independent review should decompose it."
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:manual-validation:d23c46f6a5e5c1336169",
+          "rationale": "Blind review of oqtane/oqtane.framework treats \u0027Manually validate, debug, and harden \u0027Oqtane.Server/wwwroot/Modules/Templates/External/Server/[Owner].Module.[Module].Server.csproj\u0027 (library)\u0027 as bounded validation of the represented surface after automated-test creation; source inspection and 2 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 1,
+                "expected": 1.5,
+                "high": 2
+              },
+              "uncertaintyReasons": [
+                "Dynamic framework composition, runtime configuration, and generated template expansion were not executed.",
+                "Some supporting evidence is inferred rather than directly observed.",
+                "The target checkout was not executed on the default static path."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:packaging-release:58eb8ae7efef939a19b5",
+          "rationale": "Blind review of oqtane/oqtane.framework treats \u0027Prepare represented packages and release surfaces\u0027 as the distinct functional or quality responsibility evidenced by the frozen source; source inspection and 3 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 3.5,
+                "expected": 5,
+                "high": 7
+              },
+              "uncertaintyReasons": [
+                "Dynamic framework composition, runtime configuration, and generated template expansion were not executed.",
+                "Some TypeScript or fallback structure is token-backed rather than parser-backed.",
+                "Some supporting evidence is inferred rather than directly observed."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:polyglot-source-backbone:5cdc4fb842dd42e84afc",
+          "rationale": "Blind review of oqtane/oqtane.framework treats \u0027Implement maintained internal logic for \u0027.\u0027 (cli)\u0027 as maintained behavior and public compatibility, with repeated declarations and test-only bodies discounted; source inspection and 1 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 0.75,
+                "expected": 1,
+                "high": 1.5
+              },
+              "uncertaintyReasons": [
+                "Dynamic framework composition, runtime configuration, and generated template expansion were not executed.",
+                "Some TypeScript or fallback structure is token-backed rather than parser-backed."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:project-setup:0ce538344315b132efb1",
+          "rationale": "Blind review of oqtane/oqtane.framework treats \u0027Set up \u0027Oqtane.Maui/Oqtane.Maui.csproj\u0027 (executable)\u0027 as the distinct functional or quality responsibility evidenced by the frozen source; source inspection and 9 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 3.5,
+                "expected": 5,
+                "high": 7
+              },
+              "uncertaintyReasons": [
+                "Dynamic framework composition, runtime configuration, and generated template expansion were not executed.",
+                "Some declared configuration values could not be resolved by static analysis.",
+                "Some supporting evidence is inferred rather than directly observed."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:project-setup:0da4de28b963b1dc4140",
+          "rationale": "Blind review of oqtane/oqtane.framework treats \u0027Set up \u0027Oqtane.Client/Oqtane.Client.csproj\u0027 (library)\u0027 as the distinct functional or quality responsibility evidenced by the frozen source; source inspection and 6 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 3,
+                "expected": 4,
+                "high": 5.5
+              },
+              "uncertaintyReasons": [
+                "Dynamic framework composition, runtime configuration, and generated template expansion were not executed.",
+                "Some supporting evidence is inferred rather than directly observed."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:project-setup:1907f0e1d81597210948",
+          "rationale": "Blind review of oqtane/oqtane.framework treats \u0027Set up \u0027Oqtane.Server/wwwroot/Themes/Templates/External/Client/[Owner].Theme.[Theme].Client.csproj\u0027 (library)\u0027 as the distinct functional or quality responsibility evidenced by the frozen source; source inspection and 4 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 1.75,
+                "expected": 2.5,
+                "high": 3.5
+              },
+              "uncertaintyReasons": [
+                "Dynamic framework composition, runtime configuration, and generated template expansion were not executed.",
+                "Some supporting evidence is inferred rather than directly observed."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:project-setup:2473189ee73122b98c2a",
+          "rationale": "Blind review of oqtane/oqtane.framework treats \u0027Set up \u0027Oqtane.Server/wwwroot/Modules/Templates/External/Client/[Owner].Module.[Module].Client.csproj\u0027 (library)\u0027 as the distinct functional or quality responsibility evidenced by the frozen source; source inspection and 5 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 2,
+                "expected": 2.75,
+                "high": 3.75
+              },
+              "uncertaintyReasons": [
+                "Dynamic framework composition, runtime configuration, and generated template expansion were not executed.",
+                "Some supporting evidence is inferred rather than directly observed."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:project-setup:2b746b406ec8be390647",
+          "rationale": "Blind review of oqtane/oqtane.framework treats \u0027Set up \u0027Oqtane.Server/wwwroot/Themes/Templates/External/Package/[Owner].Theme.[Theme].Package.csproj\u0027 (library)\u0027 as the distinct functional or quality responsibility evidenced by the frozen source; source inspection and 1 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 1,
+                "expected": 1.5,
+                "high": 2
+              },
+              "uncertaintyReasons": [
+                "Dynamic framework composition, runtime configuration, and generated template expansion were not executed.",
+                "Some supporting evidence is inferred rather than directly observed."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:project-setup:2b9628ec8049a1338481",
+          "rationale": "Blind review of oqtane/oqtane.framework treats \u0027Set up \u0027Oqtane.Server/wwwroot/Modules/Templates/External/Shared/[Owner].Module.[Module].Shared.csproj\u0027 (library)\u0027 as the distinct functional or quality responsibility evidenced by the frozen source; source inspection and 1 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 1,
+                "expected": 1.5,
+                "high": 2
+              },
+              "uncertaintyReasons": [
+                "Dynamic framework composition, runtime configuration, and generated template expansion were not executed.",
+                "Some supporting evidence is inferred rather than directly observed."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:project-setup:52f684d786978d225a07",
+          "rationale": "Blind review of oqtane/oqtane.framework treats \u0027Set up \u0027Oqtane.Server/wwwroot/Modules/Templates/External/Package/[Owner].Module.[Module].Package.csproj\u0027 (library)\u0027 as the distinct functional or quality responsibility evidenced by the frozen source; source inspection and 1 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 1,
+                "expected": 1.5,
+                "high": 2
+              },
+              "uncertaintyReasons": [
+                "Dynamic framework composition, runtime configuration, and generated template expansion were not executed.",
+                "Some supporting evidence is inferred rather than directly observed."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:project-setup:5c11717572bbc8a9a7ab",
+          "rationale": "Blind review of oqtane/oqtane.framework treats \u0027Set up \u0027Oqtane.Updater/Oqtane.Updater.csproj\u0027 (executable)\u0027 as the distinct functional or quality responsibility evidenced by the frozen source; source inspection and 1 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 1,
+                "expected": 1.5,
+                "high": 2
+              },
+              "uncertaintyReasons": [
+                "Dynamic framework composition, runtime configuration, and generated template expansion were not executed.",
+                "Some supporting evidence is inferred rather than directly observed."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:project-setup:7c70f4df573705707ac8",
+          "rationale": "Blind review of oqtane/oqtane.framework treats \u0027Set up \u0027Oqtane.Server/Oqtane.Server.csproj\u0027 (web)\u0027 as the distinct functional or quality responsibility evidenced by the frozen source; source inspection and 21 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 4.25,
+                "expected": 6,
+                "high": 8.5
+              },
+              "uncertaintyReasons": [
+                "Dynamic framework composition, runtime configuration, and generated template expansion were not executed.",
+                "Some supporting evidence is inferred rather than directly observed."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:project-setup:8e4c072f7bd58833740a",
+          "rationale": "Blind review of oqtane/oqtane.framework treats \u0027Set up \u0027Oqtane.Server/wwwroot/Modules/Templates/External/Server/[Owner].Module.[Module].Server.csproj\u0027 (library)\u0027 as the distinct functional or quality responsibility evidenced by the frozen source; source inspection and 5 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 2,
+                "expected": 2.75,
+                "high": 3.75
+              },
+              "uncertaintyReasons": [
+                "Dynamic framework composition, runtime configuration, and generated template expansion were not executed.",
+                "Some supporting evidence is inferred rather than directly observed."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:project-setup:91ea0b09c6587305b738",
+          "rationale": "Blind review of oqtane/oqtane.framework treats \u0027Set up \u0027Oqtane.Application/Shared/Oqtane.Application.Shared.csproj\u0027 (library)\u0027 as the distinct functional or quality responsibility evidenced by the frozen source; source inspection and 2 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 1.25,
+                "expected": 1.75,
+                "high": 2.5
+              },
+              "uncertaintyReasons": [
+                "Dynamic framework composition, runtime configuration, and generated template expansion were not executed.",
+                "Some supporting evidence is inferred rather than directly observed."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:project-setup:9bec36c8e8a7bc445607",
+          "rationale": "Blind review of oqtane/oqtane.framework treats \u0027Set up \u0027Oqtane.Application/Client/Oqtane.Application.Client.csproj\u0027 (library)\u0027 as the distinct functional or quality responsibility evidenced by the frozen source; source inspection and 6 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 2.25,
+                "expected": 3,
+                "high": 4.25
+              },
+              "uncertaintyReasons": [
+                "Dynamic framework composition, runtime configuration, and generated template expansion were not executed.",
+                "Some supporting evidence is inferred rather than directly observed."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:project-setup:d033a12ddc27ff53bb69",
+          "rationale": "Blind review of oqtane/oqtane.framework treats \u0027Set up \u0027.\u0027 (cli)\u0027 as the distinct functional or quality responsibility evidenced by the frozen source; source inspection and 1 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 1,
+                "expected": 1.5,
+                "high": 2
+              },
+              "uncertaintyReasons": [
+                "Dynamic framework composition, runtime configuration, and generated template expansion were not executed.",
+                "Some supporting evidence is inferred rather than directly observed."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:project-setup:d40d4b6dcfd9bfb4bab7",
+          "rationale": "Blind review of oqtane/oqtane.framework treats \u0027Set up \u0027Oqtane.Application/Server/Oqtane.Application.Server.csproj\u0027 (web)\u0027 as the distinct functional or quality responsibility evidenced by the frozen source; source inspection and 5 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 3,
+                "expected": 4,
+                "high": 5.5
+              },
+              "uncertaintyReasons": [
+                "Dynamic framework composition, runtime configuration, and generated template expansion were not executed.",
+                "Some supporting evidence is inferred rather than directly observed."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:project-setup:de16af9ae760f1707606",
+          "rationale": "Blind review of oqtane/oqtane.framework treats \u0027Set up \u0027Oqtane.Shared/Oqtane.Shared.csproj\u0027 (library)\u0027 as the distinct functional or quality responsibility evidenced by the frozen source; source inspection and 4 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 1.75,
+                "expected": 2.5,
+                "high": 3.5
+              },
+              "uncertaintyReasons": [
+                "Dynamic framework composition, runtime configuration, and generated template expansion were not executed.",
+                "Some supporting evidence is inferred rather than directly observed."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:project-setup:e56be8fd4646c76f7cdd",
+          "rationale": "Blind review of oqtane/oqtane.framework treats \u0027Set up \u0027.\u0027 (web-ui)\u0027 as the distinct functional or quality responsibility evidenced by the frozen source; source inspection and 1 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 1,
+                "expected": 1.5,
+                "high": 2
+              },
+              "uncertaintyReasons": [
+                "Dynamic framework composition, runtime configuration, and generated template expansion were not executed."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:security-surface:0023f875ac2936b0987c",
+          "rationale": "Blind review of oqtane/oqtane.framework treats \u0027Implement represented authentication and security behavior for \u0027Oqtane.Application/Server/Oqtane.Application.Server.csproj\u0027 (web)\u0027 as the distinct functional or quality responsibility evidenced by the frozen source; source inspection and 1 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 1.5,
+                "expected": 2,
+                "high": 2.75
+              },
+              "uncertaintyReasons": [
+                "Dynamic framework composition, runtime configuration, and generated template expansion were not executed."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:security-surface:66da3058ad53ac1aa63a",
+          "rationale": "Blind review of oqtane/oqtane.framework treats \u0027Implement represented authentication and security behavior for \u0027Oqtane.Server/Oqtane.Server.csproj\u0027 (web)\u0027 as the distinct functional or quality responsibility evidenced by the frozen source; source inspection and 42 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 50.5,
+                "expected": 70,
+                "high": 98
+              },
+              "uncertaintyReasons": [
+                "Dynamic framework composition, runtime configuration, and generated template expansion were not executed.",
+                "This first strict-blind slice retains a large cohesive capability instead of using candidate-derived partitions."
+              ],
+              "sizeException": "The strict-blind review keeps this cohesive capability as one target because candidate-derived partition counts were hidden; a later independent review should decompose it."
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:self-review:e943a6db2e8c464b145a",
+          "rationale": "Blind review of oqtane/oqtane.framework treats \u0027Self-review and integrate the completed system\u0027 as the distinct functional or quality responsibility evidenced by the frozen source; source inspection and 522 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 36,
+                "expected": 50,
+                "high": 70
+              },
+              "uncertaintyReasons": [
+                "Dynamic framework composition, runtime configuration, and generated template expansion were not executed.",
+                "Some SQL structure is token-backed rather than grammar-parser-backed.",
+                "Some supporting evidence is inferred rather than directly observed.",
+                "This first strict-blind slice retains a large cohesive capability instead of using candidate-derived partitions."
+              ],
+              "sizeException": "The strict-blind review keeps this cohesive capability as one target because candidate-derived partition counts were hidden; a later independent review should decompose it."
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:solution-coordination:c6246e076bb47f8310ce",
+          "rationale": "Blind review of oqtane/oqtane.framework treats \u0027Coordinate solution, workspace, and local dependency boundaries\u0027 as the distinct functional or quality responsibility evidenced by the frozen source; source inspection and 19 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 17.25,
+                "expected": 24,
+                "high": 33.5
+              },
+              "uncertaintyReasons": [
+                "Dynamic framework composition, runtime configuration, and generated template expansion were not executed.",
+                "This first strict-blind slice retains a large cohesive capability instead of using candidate-derived partitions."
+              ],
+              "sizeException": "The strict-blind review keeps this cohesive capability as one target because candidate-derived partition counts were hidden; a later independent review should decompose it."
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:specification-comprehension:49aec33b6a46fb626dad",
+          "rationale": "Blind review of oqtane/oqtane.framework treats \u0027Comprehend the supplied specification and bounded business domain\u0027 as the distinct functional or quality responsibility evidenced by the frozen source; source inspection and 509 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 28.75,
+                "expected": 40,
+                "high": 56
+              },
+              "uncertaintyReasons": [
+                "Dynamic framework composition, runtime configuration, and generated template expansion were not executed.",
+                "No external specification artifact is represented in the current estimator request contract.",
+                "Some SQL structure is token-backed rather than grammar-parser-backed.",
+                "Some supporting evidence is inferred rather than directly observed.",
+                "This first strict-blind slice retains a large cohesive capability instead of using candidate-derived partitions."
+              ],
+              "sizeException": "The strict-blind review keeps this cohesive capability as one target because candidate-derived partition counts were hidden; a later independent review should decompose it."
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:ui-surface:0f4a32e42cd8d217ba46",
+          "rationale": "Blind review of oqtane/oqtane.framework treats \u0027Implement represented UI and UX behavior for \u0027Oqtane.Server/Oqtane.Server.csproj\u0027 (web)\u0027 as represented component, form, template, and style semantics rather than raw asset volume; source inspection and 18 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 10.75,
+                "expected": 15,
+                "high": 21
+              },
+              "uncertaintyReasons": [
+                "Dynamic framework composition, runtime configuration, and generated template expansion were not executed.",
+                "Some supporting evidence is inferred rather than directly observed.",
+                "This first strict-blind slice retains a large cohesive capability instead of using candidate-derived partitions."
+              ],
+              "sizeException": "The strict-blind review keeps this cohesive capability as one target because candidate-derived partition counts were hidden; a later independent review should decompose it."
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:ui-surface:4b7a11c35e8f4b7520d1",
+          "rationale": "Blind review of oqtane/oqtane.framework treats \u0027Implement represented UI and UX behavior for \u0027Oqtane.Maui/Oqtane.Maui.csproj\u0027 (executable)\u0027 as represented component, form, template, and style semantics rather than raw asset volume; source inspection and 3 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 3,
+                "expected": 4,
+                "high": 5.5
+              },
+              "uncertaintyReasons": [
+                "Dynamic framework composition, runtime configuration, and generated template expansion were not executed.",
+                "Some supporting evidence is inferred rather than directly observed."
+              ]
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:ui-surface:5638d871c5b1c056f698",
+          "rationale": "Blind review of oqtane/oqtane.framework treats \u0027Implement represented UI and UX behavior for \u0027Oqtane.Client/Oqtane.Client.csproj\u0027 (library)\u0027 as represented component, form, template, and style semantics rather than raw asset volume; source inspection and 135 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 360,
+                "expected": 500,
+                "high": 700
+              },
+              "uncertaintyReasons": [
+                "Dynamic framework composition, runtime configuration, and generated template expansion were not executed.",
+                "Some supporting evidence is inferred rather than directly observed.",
+                "This first strict-blind slice retains a large cohesive capability instead of using candidate-derived partitions."
+              ],
+              "sizeException": "The strict-blind review keeps this cohesive capability as one target because candidate-derived partition counts were hidden; a later independent review should decompose it."
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:ui-surface:918438cc13339fb696f4",
+          "rationale": "Blind review of oqtane/oqtane.framework treats \u0027Implement represented UI and UX behavior for \u0027.\u0027 (web-ui)\u0027 as represented component, form, template, and style semantics rather than raw asset volume; source inspection and 16 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 64.75,
+                "expected": 90,
+                "high": 126
+              },
+              "uncertaintyReasons": [
+                "Dynamic framework composition, runtime configuration, and generated template expansion were not executed.",
+                "Exact duplicate semantic facts were collapsed by maintained-file content digest.",
+                "This first strict-blind slice retains a large cohesive capability instead of using candidate-derived partitions."
+              ],
+              "sizeException": "The strict-blind review keeps this cohesive capability as one target because candidate-derived partition counts were hidden; a later independent review should decompose it."
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:ui-surface:caed6bc152423f9bd73f",
+          "rationale": "The static evidence for \u0027Oqtane.Application/Client/Oqtane.Application.Client.csproj\u0027 contains no represented behavior beyond another retained capability, so the rubric requires an explicit exclusion.",
+          "targets": [
+            {
+              "hours": {
+                "low": 0,
+                "expected": 0,
+                "high": 0
+              },
+              "uncertaintyReasons": [
+                "Dynamic framework composition, runtime configuration, and generated template expansion were not executed.",
+                "Some supporting evidence is inferred rather than directly observed."
+              ],
+              "sizeException": "Explicit rubric-qualified exclusion: this evidence is already represented by the test-authoring capability and must not be priced again."
+            }
+          ]
+        },
+        {
+          "sourceCapabilityId": "work:ui-surface:da9b9a276f4ee7d6ba7d",
+          "rationale": "Blind review of oqtane/oqtane.framework treats \u0027Implement represented UI and UX behavior for \u0027Oqtane.Application/Server/Oqtane.Application.Server.csproj\u0027 (web)\u0027 as represented component, form, template, and style semantics rather than raw asset volume; source inspection and 7 traceable evidence fact(s) support the bounded logical estimate.",
+          "targets": [
+            {
+              "hours": {
+                "low": 17.25,
+                "expected": 24,
+                "high": 33.5
+              },
+              "uncertaintyReasons": [
+                "Dynamic framework composition, runtime configuration, and generated template expansion were not executed.",
+                "Some supporting evidence is inferred rather than directly observed.",
+                "This first strict-blind slice retains a large cohesive capability instead of using candidate-derived partitions."
+              ],
+              "sizeException": "The strict-blind review keeps this cohesive capability as one target because candidate-derived partition counts were hidden; a later independent review should decompose it."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

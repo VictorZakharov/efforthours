@@ -33,7 +33,7 @@ public sealed class CSharpReachabilityTests
             evidence,
             "dotnet:excluded-unreferenced-private:Status.cs");
 
-        Assert.Equal("0.3.3", exclusion.Provenance.AnalyzerVersion);
+        Assert.Equal("0.3.4", exclusion.Provenance.AnalyzerVersion);
         Assert.Equal(1m, Measurement(structure, "methods"));
         Assert.Equal(0m, Measurement(structure, "branch-points"));
         Assert.Equal(1m, Measurement(exclusion, "excluded-private-methods"));

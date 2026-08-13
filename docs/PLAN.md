@@ -145,9 +145,11 @@ count, and intermediate churn do not value effort. `CHANGE_ESTIMATION.md` and
 
 ### 1. Broaden calibration evidence before changing priors
 
-- Reproduce and label the frozen `efforthours-public-readiness/0.1.0` source
-  cohort. Its 33 licensed families fill the planned ecosystem, partition, shape,
-  and source-size cells, but currently contain no EffortHours evidence or labels.
+- Complete development labeling for the reproduced
+  `efforthours-public-readiness/0.2.0` cohort. All 33 licensed source identities are
+  verified, all 15 development families have strict-blind packets, and the first
+  balanced three-family teacher slice is compiled; 12 development families remain
+  unlabeled, while all validation/test labels remain unopened.
 - Keep all revisions and profiles from one repository family in one frozen
   development, validation, or test partition.
 - Expand decomposed teacher review with honest model/input provenance. Optional

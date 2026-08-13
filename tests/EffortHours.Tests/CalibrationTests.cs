@@ -4,7 +4,7 @@ using EffortHours.Contracts.V1;
 
 namespace EffortHours.Tests;
 
-public sealed class CalibrationTests
+public sealed partial class CalibrationTests
 {
     [Fact]
     public void AuthoringScaffoldIsDeterministicSchemaValidAndExplicitlyUnreviewedInMemory()
@@ -23,6 +23,8 @@ public sealed class CalibrationTests
         Assert.Equal(json, ContractJson.Serialize(second));
         Assert.Equal(CalibrationAuthoringStatus.Unreviewed, first.Status);
         Assert.Contains("UNREVIEWED", first.Warning, StringComparison.Ordinal);
+        Assert.Equal("calibration-authoring/0.2.0", first.AuthoringVersion);
+        Assert.Equal("1.1.0", first.Rubric.Version);
         Assert.Equal(CalibrationCandidateVisibility.Reference, first.CandidateVisibility);
         Assert.Equal(estimate.TotalEffort, first.Candidate.TotalHours);
         Assert.Equal(CalibrationDigest.Compute(estimate), first.Candidate.EstimateDigest);
@@ -32,30 +34,6 @@ public sealed class CalibrationTests
         Assert.NotNull(target.Candidate.Confidence);
         Assert.Null(target.Review.Hours);
         Assert.Null(target.Review.Rationale);
-    }
-
-    [Fact]
-    public void BlindAuthoringScaffoldHidesNumericCandidateGuidanceInMemory()
-    {
-        CalibrationAuthoringPacket packet = CalibrationAuthoring.Scaffold(
-            CreateCandidate(),
-            blind: true);
-        string json = ContractJson.SerializeCompact(packet);
-        CalibrationAuthoringPacket roundTrip =
-            ContractJson.Deserialize<CalibrationAuthoringPacket>(json);
-
-        Assert.Empty(ContractValidation.Validate(packet));
-        Assert.Equal(CalibrationCandidateVisibility.Blind, packet.CandidateVisibility);
-        Assert.Null(packet.Candidate.TotalHours);
-        Assert.Empty(packet.Candidate.Categories);
-        Assert.All(packet.Targets, target =>
-        {
-            Assert.Null(target.Candidate.Hours);
-            Assert.Null(target.Candidate.Confidence);
-            Assert.False(string.IsNullOrWhiteSpace(target.Candidate.Reason));
-        });
-        Assert.Equal(json, ContractJson.SerializeCompact(roundTrip));
-        Assert.Contains("\"hours\":null", json, StringComparison.Ordinal);
     }
 
     [Fact]

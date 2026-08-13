@@ -29,6 +29,8 @@ public sealed partial class EffortHoursApplication
         string estimatePath = arguments[0];
         bool blind = false;
         bool compact = false;
+        string? repositoryFamilyId = null;
+        string? repositoryName = null;
         string? outputPath = null;
         for (int index = 1; index < arguments.Length; index++)
         {
@@ -40,6 +42,26 @@ public sealed partial class EffortHoursApplication
                     break;
                 case "--compact":
                     compact = true;
+                    break;
+                case "--repository-family":
+                    if (index + 1 >= arguments.Length)
+                    {
+                        return await UsageErrorAsync(
+                            standardError,
+                            "Option '--repository-family' requires a value.").ConfigureAwait(false);
+                    }
+
+                    repositoryFamilyId = arguments[++index];
+                    break;
+                case "--repository-name":
+                    if (index + 1 >= arguments.Length)
+                    {
+                        return await UsageErrorAsync(
+                            standardError,
+                            "Option '--repository-name' requires a value.").ConfigureAwait(false);
+                    }
+
+                    repositoryName = arguments[++index];
                     break;
                 case "--output":
                     if (index + 1 >= arguments.Length)
@@ -75,7 +97,11 @@ public sealed partial class EffortHoursApplication
         CalibrationAuthoringPacket packet;
         try
         {
-            packet = CalibrationAuthoring.Scaffold(estimate, blind);
+            packet = CalibrationAuthoring.Scaffold(
+                estimate,
+                blind,
+                repositoryFamilyId,
+                repositoryName);
         }
         catch (CalibrationEvaluationException exception)
         {
@@ -213,10 +239,12 @@ public sealed partial class EffortHoursApplication
         values are reference material and cannot be consumed as calibration labels.
 
         Options:
-          --blind          Hide candidate hours, category totals, and confidence while reviewing
-          --compact        Emit compact JSON
-          --output <path>  Write the packet to an explicit path instead of stdout
-          -h, --help       Show this help
+          --blind                    Hide candidate hours, totals, confidence, and explanations
+          --repository-family <id>   Override the suggested stable repository-family ID
+          --repository-name <name>   Override the snapshot-directory repository name
+          --compact                  Emit compact JSON
+          --output <path>            Write the packet to an explicit path instead of stdout
+          -h, --help                 Show this help
         """;
 
     private const string CalibrationValidateHelpText = """

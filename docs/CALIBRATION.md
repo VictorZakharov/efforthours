@@ -6,19 +6,28 @@ EffortHours has versioned corpus, authoring, review, mutation, and evaluation
 infrastructure. The repository estimator remains `experimental-uncalibrated`, and
 no local ML training or inference dependency has been selected.
 
-The public repository corpora contain six MIT-licensed repository families and
-232 blind targets. They share one disclosed host-AI teacher and have no completed
-independent correction, so their maturity remains `teacher-estimate`. They are
-logical weak supervision, not historical labor, literal ground truth, or empirical
-production validation.
+The public repository corpora contain nine repository families and 401 teacher
+targets. They share one disclosed host-AI teacher and have no completed independent
+correction, so their maturity remains `teacher-estimate`. They are logical weak
+supervision, not historical labor, literal ground truth, or empirical production
+validation.
 
 The separate `efforthours-public-readiness/0.1.0` sampling plan freezes 33
 additional public MIT, Apache-2.0, and BSD-3-Clause source families across the
 complete .NET, JavaScript/TypeScript, and mixed development/validation/test
-matrix. It was frozen before candidate totals and contains source and license
-provenance only: no evidence bundles, estimates, labels, targets, or metrics. It
-therefore improves sampling readiness without increasing the six-family labeled
-corpus or opening model admission.
+matrix. It was frozen before candidate totals. Reproduction checkpoint `0.2.0`
+now verifies all 33 exact trees, emits strict-blind capability packets for all 15
+development families, and records nine validation plus nine test families as
+source-verified but `withheld-not-run` and `not-authored`. A first balanced
+three-family development slice adds 169 of the 401 public teacher targets. It is
+development-only diagnostic evidence and does not open model admission.
+
+In that first slice, `seed-rules/0.4.0` expected totals are 352.25 versus 365.25
+reviewed hours for Carter, 393.00 versus 494.50 for Commander, and 2,098.25 versus
+3,920.75 for Oqtane. Aggregate expected bias is `-0.4052`; two of three candidate
+ranges cover the reviewed range. The mixed application is a material
+underestimation signal, but the three single-teacher records are too few and too
+immature to justify a correction.
 
 Change EHE has a separate limited Stage A logical-admission decision. Its exact
 size, ecosystem, metric, and performance boundary is defined in
@@ -98,8 +107,10 @@ disagreements.
 ### First review
 
 `calibration scaffold` projects a canonical estimate into an explicitly
-`unreviewed` packet. Reference mode exposes candidate values only as suggestions;
-blind mode removes candidate hours, category totals, and confidence.
+`unreviewed` packet. Authoring version `0.2.0` groups candidate partitions into one
+capability summary. Reference mode exposes candidate values only as suggestions;
+strict-blind mode removes candidate hours, totals, confidence, explanations,
+source work-item IDs and partition counts, plus professionalization-gap IDs.
 
 A separately authored completed plan provides a decision for every represented
 capability. `calibration compile` verifies the exact source-estimate digest,
@@ -242,15 +253,18 @@ reviewed-point coverage while materially reducing normalized width relative to
 the seed baseline. Ranges remain empirical planning bounds rather than formal
 probability intervals.
 
-Current public repository records do not satisfy the family matrix, blind
-validation boundary, or sealed-test boundary, so no candidate comparison is
-authorized. `seed-rules/0.4.0` remains the shipped estimator and required fallback.
+Current public repository records do not satisfy the complete development-label,
+blind-validation, or sealed-test boundary. The three newly reviewed development
+families may be compared diagnostically, but no validation/test comparison,
+candidate selection, or admission decision is authorized. `seed-rules/0.4.0`
+remains the shipped estimator and required fallback.
 
-The source-only public-readiness cohort now satisfies the planned family, shape,
-and size allocation on paper. Admission still requires exact source reproduction,
-valid rubric labels, blind validation custody, sealed test custody, and every
-remaining numerical and operational gate. Source selection must not be reported
-as labeled calibration evidence.
+The public-readiness cohort satisfies the planned family, shape, and size
+allocation and exact source reproduction. Three development families have valid
+rubric labels; the other 12 development families, all nine validation families,
+and all nine test families remain unlabeled. Admission still requires those label
+and custody boundaries plus every numerical and operational gate. Source
+verification must not be reported as labeled calibration evidence.
 
 Transparent per-category corrections and simple statistical baselines come before
 an ML runtime. ML.NET or ONNX is selected only from measured runtime, package,
@@ -262,7 +276,8 @@ final-delta policy in `CHANGE_MODEL_ADMISSION.md`.
 
 ## Next evidence required
 
-- rubric-complete development labels for the frozen public-readiness families;
+- rubric-complete development labels for the remaining 12 public-readiness
+  development families;
 - blind validation labels that remain unavailable until candidate freeze;
 - sealed test labels with a precommitted digest and custody record;
 - more exact small-task teacher decompositions with honest context provenance;
