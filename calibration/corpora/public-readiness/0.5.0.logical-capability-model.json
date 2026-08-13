@@ -1,0 +1,2485 @@
+{
+  "modelVersion": "repository-logical-capability-model/0.1.0",
+  "id": "efforthours-public-readiness-logical-capability",
+  "candidateId": "logical-capability/0.1.0",
+  "estimatorVersion": "candidate-logical-capability/0.1.0\u002Bseed-rules/0.4.0",
+  "baselineEstimatorVersion": "seed-rules/0.4.0",
+  "featureContractVersion": "logical-capability-features/1.0.0",
+  "effectiveDate": "2026-08-13",
+  "licenseExpression": "MIT",
+  "training": {
+    "corpusId": "efforthours-public-readiness-development",
+    "corpusVersion": "0.3.0",
+    "corpusDigest": "sha256:2b240804c70f11caf0978f19e6e22eda7de3f7a2e314a48f2def7d232ad1bdd7",
+    "implementationCommit": "e12765cb0312622a256de4d81798cd50884f9b49",
+    "repositoryCount": 15,
+    "targetCount": 2030,
+    "sources": [
+      {
+        "recordId": "record:app-vnext-polly:implementation",
+        "repositoryId": "repository:github.com/app-vnext/polly",
+        "sourceDigest": "sha256:edff155be72775b8b7de15cb2bc816299affd03f557a4cf7fda737c783dd0c58",
+        "estimateDigest": "sha256:3ff734d1b865b89b09d9b2f97bb7e6df8b8df2c41aabcca4fe3632142d1454cf",
+        "evidenceDigest": "sha256:f44b835e459f443b01dca754b502b22b7be5840d9624419b1204941c09a9733a"
+      },
+      {
+        "recordId": "record:btcpayserver-btcpayserver:implementation",
+        "repositoryId": "repository:github.com/btcpayserver/btcpayserver",
+        "sourceDigest": "sha256:cf0a196516fdfa1b271c1a82d71b171f77921567940d64892c91600c057896f3",
+        "estimateDigest": "sha256:f40163ccf60566dfc5194e8727988dcce148560a1a3d848e50ac18cdab3dda85",
+        "evidenceDigest": "sha256:f042c7ab6c9007195b4acf73d176f6b73aa819e81d198a71ce8f3d233dbe47da"
+      },
+      {
+        "recordId": "record:cartercommunity-carter:implementation",
+        "repositoryId": "repository:github.com/cartercommunity/carter",
+        "sourceDigest": "sha256:00b6577c4f3d9f42a32e69804b37d3e8e94b6eff6b5b294fe7e5f78f90b33087",
+        "estimateDigest": "sha256:2b77dcc65299239d8284306bea179025873e91b2776e531da9dcb3ac5bbbdfdd",
+        "evidenceDigest": "sha256:b4830383587235ccdb141af31ba72b42077699e1e6ec8189db67d994170ce156"
+      },
+      {
+        "recordId": "record:colinhacks-zod:implementation",
+        "repositoryId": "repository:github.com/colinhacks/zod",
+        "sourceDigest": "sha256:250432548197e4e8228d26209db94cff75d05ac1e2c34896ff2d2823f7e39fc5",
+        "estimateDigest": "sha256:d29fa4af40fc05bbef05cf10b99c98e79cac493d9734d2dfb5e15b6172a4f2f9",
+        "evidenceDigest": "sha256:8341fae4a32443a0fe58aa189adedee78584654921c41df95532e005ba806924"
+      },
+      {
+        "recordId": "record:dotnet-command-line-api:implementation",
+        "repositoryId": "repository:github.com/dotnet/command-line-api",
+        "sourceDigest": "sha256:298e7732de1f2da4c37185ae0acc2ccf9f3f25486af306e019856a6ca7c83f9b",
+        "estimateDigest": "sha256:5022b4ee41736c31d798f1cae8903e93fc07cd140188068d3dad5a3dcc1aaaea",
+        "evidenceDigest": "sha256:3af5dae517a7e675d875c1adda1a6d4643e0731812ee0e19ed1fe6d805c4bd8f"
+      },
+      {
+        "recordId": "record:fastendpoints-fastendpoints:implementation",
+        "repositoryId": "repository:github.com/fastendpoints/fastendpoints",
+        "sourceDigest": "sha256:1681a0743529e68c815e971d1fc336a251dfed17b91dd703ef88c7783547a297",
+        "estimateDigest": "sha256:b9956f36da42035e75835c18e97bb652570b9075483124f2cb218a37a1a386b6",
+        "evidenceDigest": "sha256:940d8203a893e85f8ef83917387f642d3a6efdd6b4efa5940310f9142abe3949"
+      },
+      {
+        "recordId": "record:fastify-fastify:implementation",
+        "repositoryId": "repository:github.com/fastify/fastify",
+        "sourceDigest": "sha256:fb9e91d171d70b386838d4481cf6ffa8fe8614b87af3b734cb1e53dbde2e38b8",
+        "estimateDigest": "sha256:2dddb0803b90621bb726c3b5459c4211525a1abc0b276a9047c0fec623f23b42",
+        "evidenceDigest": "sha256:4e498bf257d0ad5f7f39ebfd5d15b0163ea5234a80363d0e74365554dda42c52"
+      },
+      {
+        "recordId": "record:fluentvalidation-fluentvalidation:implementation",
+        "repositoryId": "repository:github.com/fluentvalidation/fluentvalidation",
+        "sourceDigest": "sha256:019c5b15a97a678f22d8d0269b94822e0b69bb640498c6100397a388958e95a7",
+        "estimateDigest": "sha256:cb27a31fa89330632afca93d3b1cccece76a89b45c7955585183c1b0a60d26e5",
+        "evidenceDigest": "sha256:78328656fb852a1c19b2ebf51e0c2084d78687e62ca6288d9b7e8fce14115c41"
+      },
+      {
+        "recordId": "record:lit-lit:implementation",
+        "repositoryId": "repository:github.com/lit/lit",
+        "sourceDigest": "sha256:580127cac2ce4795a48e3ebb446a8ae74d8eb1baf7f1e6d85c6ac9baecdd0b4b",
+        "estimateDigest": "sha256:405a160d7bdc307f32b95e2558bd40212941c8ae9efb7d21ebeadac9cf0c2957",
+        "evidenceDigest": "sha256:6ce26499d1c3c7067ed1e77f8477bcc2aa3de36f00dd20ae69af682ec46ae73c"
+      },
+      {
+        "recordId": "record:mudblazor-mudblazor:implementation",
+        "repositoryId": "repository:github.com/mudblazor/mudblazor",
+        "sourceDigest": "sha256:cf22bb7f911d01a433552f828193ca5a383f653606b62c9aabf80db86bcffd88",
+        "estimateDigest": "sha256:2f7deeb14bebe6f1625190afbd459cb3edd0f616ed29eaaf0ce772b1902450f5",
+        "evidenceDigest": "sha256:09fa39cf188444eec7cabc1c503c853b7f9b81055f82ae81c4cd11bd1c60902e"
+      },
+      {
+        "recordId": "record:oqtane-oqtane-framework:implementation",
+        "repositoryId": "repository:github.com/oqtane/oqtane.framework",
+        "sourceDigest": "sha256:a82445a988d9aedca9fe495980240285f82f2989a3b9a6e7dc8bb72d71accfbc",
+        "estimateDigest": "sha256:2fb61cb7a75010c9e693548a222cfadce3d5f132f206c369af50ca9e1da3025f",
+        "evidenceDigest": "sha256:f302ca6acea52b450ef37c4a55d6100dce430997d3302f8bb8889740ff272bb5"
+      },
+      {
+        "recordId": "record:simplcommerce-simplcommerce:implementation",
+        "repositoryId": "repository:github.com/simplcommerce/simplcommerce",
+        "sourceDigest": "sha256:3a67cfbe2132f34faa1e6016dc8a69f2384c6f28a36cc4b423ad4b151e187b2c",
+        "estimateDigest": "sha256:fbf89af7d619d3141e57ec0271b637cb444c6e107cd3bda687e9636aba495435",
+        "evidenceDigest": "sha256:57561b3d7f4654d6103a2065f887baa0646007bdfa9845d420c412278e555573"
+      },
+      {
+        "recordId": "record:sindresorhus-execa:implementation",
+        "repositoryId": "repository:github.com/sindresorhus/execa",
+        "sourceDigest": "sha256:251c4d17f2a7a5893a18c245ce9289a866f120085fe7dce9b4fd46d27662a827",
+        "estimateDigest": "sha256:9eb14d142b13d1b9a5263ea4810c2bd4452dff0581b110d43234c75f1895debc",
+        "evidenceDigest": "sha256:82b436d9214a50ed180a292a9c19fd5740bfcc5737cd1f73fbfabb236eacd089"
+      },
+      {
+        "recordId": "record:squidex-squidex:implementation",
+        "repositoryId": "repository:github.com/squidex/squidex",
+        "sourceDigest": "sha256:7ba94792039d81ca71367da9be0a1f993cf8a31c630532c9fdf20ab944c474d9",
+        "estimateDigest": "sha256:d5feefc4a4d71a32caf39844b12307579cde0ef70185a13e4e4d0d9f39a357b6",
+        "evidenceDigest": "sha256:226d373ae2dd3886c041e039b116e706c739206a8b7a24fd0537f47109f52926"
+      },
+      {
+        "recordId": "record:tj-commander-js:implementation",
+        "repositoryId": "repository:github.com/tj/commander.js",
+        "sourceDigest": "sha256:fe18ceb689a5b6ee31de0b198448bd03a2b0b56f4c25bf0d71a2e276f6a70d57",
+        "estimateDigest": "sha256:bc89cbc0df1ad3b63a37f2e0c82f84eca465866ee8f1d90824d5eb8541ec9725",
+        "evidenceDigest": "sha256:4b14f6e59e365f444495c33ff3b133f50f4a564f4e41b9cce41f5683e95c4c84"
+      }
+    ]
+  },
+  "point": {
+    "scorerVersion": "evidence-logical-units/0.1.0",
+    "features": [
+      "work-item-kind",
+      "logical-expected-size-band"
+    ],
+    "sizeBands": [
+      "xs:\u003C=1",
+      "s:\u003C=2",
+      "m:\u003C=4",
+      "l:\u003C=8",
+      "xl:\u003C=16",
+      "2xl:\u003C=32",
+      "3xl:\u003C=64",
+      "4xl:\u003E64"
+    ],
+    "minimumFactor": 0.25,
+    "maximumFactor": 3,
+    "unknownGroupBehavior": "use the complete seed capability without candidate adjustment",
+    "factors": [
+      {
+        "workItemKind": "api-surface",
+        "logicalSizeBand": "xs",
+        "sampleCount": 9,
+        "logicalExpectedHours": 2.4375,
+        "reviewedExpectedHours": 0.75,
+        "factor": 0.30769231
+      },
+      {
+        "workItemKind": "api-surface",
+        "logicalSizeBand": "s",
+        "sampleCount": 7,
+        "logicalExpectedHours": 13.50,
+        "reviewedExpectedHours": 10.5,
+        "factor": 0.77777778
+      },
+      {
+        "workItemKind": "api-surface",
+        "logicalSizeBand": "m",
+        "sampleCount": 19,
+        "logicalExpectedHours": 62.00,
+        "reviewedExpectedHours": 54.25,
+        "factor": 0.875
+      },
+      {
+        "workItemKind": "api-surface",
+        "logicalSizeBand": "l",
+        "sampleCount": 15,
+        "logicalExpectedHours": 75.50,
+        "reviewedExpectedHours": 82.75,
+        "factor": 1.09602649
+      },
+      {
+        "workItemKind": "api-surface",
+        "logicalSizeBand": "xl",
+        "sampleCount": 6,
+        "logicalExpectedHours": 61.50,
+        "reviewedExpectedHours": 67.50,
+        "factor": 1.09756098
+      },
+      {
+        "workItemKind": "api-surface",
+        "logicalSizeBand": "2xl",
+        "sampleCount": 1,
+        "logicalExpectedHours": 19.25,
+        "reviewedExpectedHours": 21.25,
+        "factor": 1.10389610
+      },
+      {
+        "workItemKind": "api-surface",
+        "logicalSizeBand": "3xl",
+        "sampleCount": 3,
+        "logicalExpectedHours": 149.25,
+        "reviewedExpectedHours": 138.75,
+        "factor": 0.92964824
+      },
+      {
+        "workItemKind": "api-surface",
+        "logicalSizeBand": "4xl",
+        "sampleCount": 4,
+        "logicalExpectedHours": 877.75,
+        "reviewedExpectedHours": 1086.25,
+        "factor": 1.23753916
+      },
+      {
+        "workItemKind": "application-entry-point",
+        "logicalSizeBand": "xs",
+        "sampleCount": 45,
+        "logicalExpectedHours": 19.5625,
+        "reviewedExpectedHours": 39.50,
+        "factor": 2.01916933
+      },
+      {
+        "workItemKind": "application-entry-point",
+        "logicalSizeBand": "s",
+        "sampleCount": 25,
+        "logicalExpectedHours": 44.875,
+        "reviewedExpectedHours": 44.00,
+        "factor": 0.98050139
+      },
+      {
+        "workItemKind": "application-entry-point",
+        "logicalSizeBand": "m",
+        "sampleCount": 11,
+        "logicalExpectedHours": 31.50,
+        "reviewedExpectedHours": 27.25,
+        "factor": 0.86507937
+      },
+      {
+        "workItemKind": "application-entry-point",
+        "logicalSizeBand": "l",
+        "sampleCount": 9,
+        "logicalExpectedHours": 57.00,
+        "reviewedExpectedHours": 56.50,
+        "factor": 0.99122807
+      },
+      {
+        "workItemKind": "architecture-design",
+        "logicalSizeBand": "xs",
+        "sampleCount": 59,
+        "logicalExpectedHours": 48.00,
+        "reviewedExpectedHours": 151.5,
+        "factor": 3
+      },
+      {
+        "workItemKind": "architecture-design",
+        "logicalSizeBand": "s",
+        "sampleCount": 199,
+        "logicalExpectedHours": 283.00,
+        "reviewedExpectedHours": 480.50,
+        "factor": 1.69787986
+      },
+      {
+        "workItemKind": "architecture-design",
+        "logicalSizeBand": "m",
+        "sampleCount": 38,
+        "logicalExpectedHours": 106.50,
+        "reviewedExpectedHours": 292.50,
+        "factor": 2.74647887
+      },
+      {
+        "workItemKind": "architecture-design",
+        "logicalSizeBand": "l",
+        "sampleCount": 7,
+        "logicalExpectedHours": 35.25,
+        "reviewedExpectedHours": 67.75,
+        "factor": 1.92198582
+      },
+      {
+        "workItemKind": "architecture-design",
+        "logicalSizeBand": "xl",
+        "sampleCount": 17,
+        "logicalExpectedHours": 196.25,
+        "reviewedExpectedHours": 630.25,
+        "factor": 3
+      },
+      {
+        "workItemKind": "background-work",
+        "logicalSizeBand": "m",
+        "sampleCount": 4,
+        "logicalExpectedHours": 11.75,
+        "reviewedExpectedHours": 32,
+        "factor": 2.72340426
+      },
+      {
+        "workItemKind": "background-work",
+        "logicalSizeBand": "l",
+        "sampleCount": 1,
+        "logicalExpectedHours": 5.25,
+        "reviewedExpectedHours": 8,
+        "factor": 1.52380952
+      },
+      {
+        "workItemKind": "background-work",
+        "logicalSizeBand": "xl",
+        "sampleCount": 3,
+        "logicalExpectedHours": 24.75,
+        "reviewedExpectedHours": 51,
+        "factor": 2.06060606
+      },
+      {
+        "workItemKind": "background-work",
+        "logicalSizeBand": "3xl",
+        "sampleCount": 1,
+        "logicalExpectedHours": 51.50,
+        "reviewedExpectedHours": 80,
+        "factor": 1.55339806
+      },
+      {
+        "workItemKind": "build-tooling",
+        "logicalSizeBand": "s",
+        "sampleCount": 1,
+        "logicalExpectedHours": 1.75,
+        "reviewedExpectedHours": 3,
+        "factor": 1.71428571
+      },
+      {
+        "workItemKind": "build-tooling",
+        "logicalSizeBand": "m",
+        "sampleCount": 4,
+        "logicalExpectedHours": 13.00,
+        "reviewedExpectedHours": 28,
+        "factor": 2.15384615
+      },
+      {
+        "workItemKind": "build-tooling",
+        "logicalSizeBand": "l",
+        "sampleCount": 5,
+        "logicalExpectedHours": 31.50,
+        "reviewedExpectedHours": 52,
+        "factor": 1.65079365
+      },
+      {
+        "workItemKind": "build-tooling",
+        "logicalSizeBand": "xl",
+        "sampleCount": 1,
+        "logicalExpectedHours": 10.25,
+        "reviewedExpectedHours": 16,
+        "factor": 1.56097561
+      },
+      {
+        "workItemKind": "build-tooling",
+        "logicalSizeBand": "2xl",
+        "sampleCount": 3,
+        "logicalExpectedHours": 78.75,
+        "reviewedExpectedHours": 85,
+        "factor": 1.07936508
+      },
+      {
+        "workItemKind": "build-tooling",
+        "logicalSizeBand": "4xl",
+        "sampleCount": 1,
+        "logicalExpectedHours": 167.25,
+        "reviewedExpectedHours": 64,
+        "factor": 0.38266069
+      },
+      {
+        "workItemKind": "ci-infrastructure",
+        "logicalSizeBand": "m",
+        "sampleCount": 5,
+        "logicalExpectedHours": 15.50,
+        "reviewedExpectedHours": 17,
+        "factor": 1.09677419
+      },
+      {
+        "workItemKind": "ci-infrastructure",
+        "logicalSizeBand": "l",
+        "sampleCount": 2,
+        "logicalExpectedHours": 9.75,
+        "reviewedExpectedHours": 10,
+        "factor": 1.02564103
+      },
+      {
+        "workItemKind": "ci-infrastructure",
+        "logicalSizeBand": "xl",
+        "sampleCount": 3,
+        "logicalExpectedHours": 41.00,
+        "reviewedExpectedHours": 33,
+        "factor": 0.80487805
+      },
+      {
+        "workItemKind": "ci-infrastructure",
+        "logicalSizeBand": "2xl",
+        "sampleCount": 3,
+        "logicalExpectedHours": 66.50,
+        "reviewedExpectedHours": 53,
+        "factor": 0.79699248
+      },
+      {
+        "workItemKind": "ci-infrastructure",
+        "logicalSizeBand": "3xl",
+        "sampleCount": 1,
+        "logicalExpectedHours": 37.50,
+        "reviewedExpectedHours": 25,
+        "factor": 0.66666667
+      },
+      {
+        "workItemKind": "container-deployment",
+        "logicalSizeBand": "s",
+        "sampleCount": 1,
+        "logicalExpectedHours": 1.75,
+        "reviewedExpectedHours": 4,
+        "factor": 2.28571429
+      },
+      {
+        "workItemKind": "container-deployment",
+        "logicalSizeBand": "l",
+        "sampleCount": 1,
+        "logicalExpectedHours": 7.25,
+        "reviewedExpectedHours": 6,
+        "factor": 0.82758621
+      },
+      {
+        "workItemKind": "container-deployment",
+        "logicalSizeBand": "3xl",
+        "sampleCount": 1,
+        "logicalExpectedHours": 37.25,
+        "reviewedExpectedHours": 30,
+        "factor": 0.80536913
+      },
+      {
+        "workItemKind": "container-deployment",
+        "logicalSizeBand": "4xl",
+        "sampleCount": 1,
+        "logicalExpectedHours": 67.50,
+        "reviewedExpectedHours": 45,
+        "factor": 0.66666667
+      },
+      {
+        "workItemKind": "data-persistence",
+        "logicalSizeBand": "xs",
+        "sampleCount": 13,
+        "logicalExpectedHours": 4.25,
+        "reviewedExpectedHours": 4.25,
+        "factor": 1
+      },
+      {
+        "workItemKind": "data-persistence",
+        "logicalSizeBand": "s",
+        "sampleCount": 14,
+        "logicalExpectedHours": 21.25,
+        "reviewedExpectedHours": 19.50,
+        "factor": 0.91764706
+      },
+      {
+        "workItemKind": "data-persistence",
+        "logicalSizeBand": "m",
+        "sampleCount": 10,
+        "logicalExpectedHours": 29.50,
+        "reviewedExpectedHours": 26.75,
+        "factor": 0.90677966
+      },
+      {
+        "workItemKind": "data-persistence",
+        "logicalSizeBand": "l",
+        "sampleCount": 6,
+        "logicalExpectedHours": 31.50,
+        "reviewedExpectedHours": 28.50,
+        "factor": 0.90476190
+      },
+      {
+        "workItemKind": "data-persistence",
+        "logicalSizeBand": "xl",
+        "sampleCount": 4,
+        "logicalExpectedHours": 49.00,
+        "reviewedExpectedHours": 42.25,
+        "factor": 0.86224490
+      },
+      {
+        "workItemKind": "data-persistence",
+        "logicalSizeBand": "2xl",
+        "sampleCount": 2,
+        "logicalExpectedHours": 55.25,
+        "reviewedExpectedHours": 58.50,
+        "factor": 1.05882353
+      },
+      {
+        "workItemKind": "data-persistence",
+        "logicalSizeBand": "3xl",
+        "sampleCount": 1,
+        "logicalExpectedHours": 38.25,
+        "reviewedExpectedHours": 34.5,
+        "factor": 0.90196078
+      },
+      {
+        "workItemKind": "data-persistence",
+        "logicalSizeBand": "4xl",
+        "sampleCount": 5,
+        "logicalExpectedHours": 1627.75,
+        "reviewedExpectedHours": 1214.50,
+        "factor": 0.74612195
+      },
+      {
+        "workItemKind": "documentation",
+        "logicalSizeBand": "m",
+        "sampleCount": 1,
+        "logicalExpectedHours": 3.50,
+        "reviewedExpectedHours": 5,
+        "factor": 1.42857143
+      },
+      {
+        "workItemKind": "documentation",
+        "logicalSizeBand": "xl",
+        "sampleCount": 4,
+        "logicalExpectedHours": 46.25,
+        "reviewedExpectedHours": 68,
+        "factor": 1.47027027
+      },
+      {
+        "workItemKind": "documentation",
+        "logicalSizeBand": "2xl",
+        "sampleCount": 6,
+        "logicalExpectedHours": 139.25,
+        "reviewedExpectedHours": 234,
+        "factor": 1.68043088
+      },
+      {
+        "workItemKind": "documentation",
+        "logicalSizeBand": "4xl",
+        "sampleCount": 4,
+        "logicalExpectedHours": 367.75,
+        "reviewedExpectedHours": 520,
+        "factor": 1.41400408
+      },
+      {
+        "workItemKind": "dotnet-source-backbone",
+        "logicalSizeBand": "xs",
+        "sampleCount": 28,
+        "logicalExpectedHours": 10.9375,
+        "reviewedExpectedHours": 16.25,
+        "factor": 1.48571429
+      },
+      {
+        "workItemKind": "dotnet-source-backbone",
+        "logicalSizeBand": "s",
+        "sampleCount": 18,
+        "logicalExpectedHours": 28.75,
+        "reviewedExpectedHours": 47.75,
+        "factor": 1.66086957
+      },
+      {
+        "workItemKind": "dotnet-source-backbone",
+        "logicalSizeBand": "m",
+        "sampleCount": 10,
+        "logicalExpectedHours": 28.5625,
+        "reviewedExpectedHours": 30.00,
+        "factor": 1.05032823
+      },
+      {
+        "workItemKind": "dotnet-source-backbone",
+        "logicalSizeBand": "l",
+        "sampleCount": 28,
+        "logicalExpectedHours": 167.375,
+        "reviewedExpectedHours": 191.25,
+        "factor": 1.14264376
+      },
+      {
+        "workItemKind": "dotnet-source-backbone",
+        "logicalSizeBand": "xl",
+        "sampleCount": 28,
+        "logicalExpectedHours": 327.6875,
+        "reviewedExpectedHours": 385.25,
+        "factor": 1.17566279
+      },
+      {
+        "workItemKind": "dotnet-source-backbone",
+        "logicalSizeBand": "2xl",
+        "sampleCount": 15,
+        "logicalExpectedHours": 332.00,
+        "reviewedExpectedHours": 408.50,
+        "factor": 1.23042169
+      },
+      {
+        "workItemKind": "dotnet-source-backbone",
+        "logicalSizeBand": "3xl",
+        "sampleCount": 8,
+        "logicalExpectedHours": 356.9375,
+        "reviewedExpectedHours": 400.75,
+        "factor": 1.12274558
+      },
+      {
+        "workItemKind": "dotnet-source-backbone",
+        "logicalSizeBand": "4xl",
+        "sampleCount": 24,
+        "logicalExpectedHours": 5485.50,
+        "reviewedExpectedHours": 8171.00,
+        "factor": 1.48956339
+      },
+      {
+        "workItemKind": "end-to-end-tests",
+        "logicalSizeBand": "xs",
+        "sampleCount": 4,
+        "logicalExpectedHours": 3.50,
+        "reviewedExpectedHours": 4.00,
+        "factor": 1.14285714
+      },
+      {
+        "workItemKind": "end-to-end-tests",
+        "logicalSizeBand": "3xl",
+        "sampleCount": 1,
+        "logicalExpectedHours": 39.75,
+        "reviewedExpectedHours": 55.5,
+        "factor": 1.39622642
+      },
+      {
+        "workItemKind": "end-to-end-tests",
+        "logicalSizeBand": "4xl",
+        "sampleCount": 1,
+        "logicalExpectedHours": 74.75,
+        "reviewedExpectedHours": 104.75,
+        "factor": 1.40133779
+      },
+      {
+        "workItemKind": "external-integration",
+        "logicalSizeBand": "xs",
+        "sampleCount": 34,
+        "logicalExpectedHours": 12.6875,
+        "reviewedExpectedHours": 12.25,
+        "factor": 0.96551724
+      },
+      {
+        "workItemKind": "external-integration",
+        "logicalSizeBand": "s",
+        "sampleCount": 11,
+        "logicalExpectedHours": 18.50,
+        "reviewedExpectedHours": 24.50,
+        "factor": 1.32432432
+      },
+      {
+        "workItemKind": "external-integration",
+        "logicalSizeBand": "m",
+        "sampleCount": 12,
+        "logicalExpectedHours": 34.8125,
+        "reviewedExpectedHours": 37.75,
+        "factor": 1.08438061
+      },
+      {
+        "workItemKind": "external-integration",
+        "logicalSizeBand": "l",
+        "sampleCount": 3,
+        "logicalExpectedHours": 16.5,
+        "reviewedExpectedHours": 20.75,
+        "factor": 1.25757576
+      },
+      {
+        "workItemKind": "external-integration",
+        "logicalSizeBand": "xl",
+        "sampleCount": 5,
+        "logicalExpectedHours": 60.5,
+        "reviewedExpectedHours": 81.00,
+        "factor": 1.33884298
+      },
+      {
+        "workItemKind": "external-integration",
+        "logicalSizeBand": "2xl",
+        "sampleCount": 6,
+        "logicalExpectedHours": 127.25,
+        "reviewedExpectedHours": 174.00,
+        "factor": 1.36738703
+      },
+      {
+        "workItemKind": "external-integration",
+        "logicalSizeBand": "3xl",
+        "sampleCount": 1,
+        "logicalExpectedHours": 45.25,
+        "reviewedExpectedHours": 68,
+        "factor": 1.50276243
+      },
+      {
+        "workItemKind": "external-integration",
+        "logicalSizeBand": "4xl",
+        "sampleCount": 1,
+        "logicalExpectedHours": 70.25,
+        "reviewedExpectedHours": 84.25,
+        "factor": 1.19928826
+      },
+      {
+        "workItemKind": "integration-tests",
+        "logicalSizeBand": "s",
+        "sampleCount": 2,
+        "logicalExpectedHours": 3.25,
+        "reviewedExpectedHours": 3.75,
+        "factor": 1.15384615
+      },
+      {
+        "workItemKind": "integration-tests",
+        "logicalSizeBand": "l",
+        "sampleCount": 2,
+        "logicalExpectedHours": 12.75,
+        "reviewedExpectedHours": 16.25,
+        "factor": 1.27450980
+      },
+      {
+        "workItemKind": "integration-tests",
+        "logicalSizeBand": "4xl",
+        "sampleCount": 1,
+        "logicalExpectedHours": 287,
+        "reviewedExpectedHours": 430.5,
+        "factor": 1.5
+      },
+      {
+        "workItemKind": "javascript-source-backbone",
+        "logicalSizeBand": "xs",
+        "sampleCount": 35,
+        "logicalExpectedHours": 16.00,
+        "reviewedExpectedHours": 16.75,
+        "factor": 1.046875
+      },
+      {
+        "workItemKind": "javascript-source-backbone",
+        "logicalSizeBand": "s",
+        "sampleCount": 25,
+        "logicalExpectedHours": 39.00,
+        "reviewedExpectedHours": 35.00,
+        "factor": 0.89743590
+      },
+      {
+        "workItemKind": "javascript-source-backbone",
+        "logicalSizeBand": "m",
+        "sampleCount": 16,
+        "logicalExpectedHours": 45.50,
+        "reviewedExpectedHours": 38.75,
+        "factor": 0.85164835
+      },
+      {
+        "workItemKind": "javascript-source-backbone",
+        "logicalSizeBand": "l",
+        "sampleCount": 13,
+        "logicalExpectedHours": 77.00,
+        "reviewedExpectedHours": 76.50,
+        "factor": 0.99350649
+      },
+      {
+        "workItemKind": "javascript-source-backbone",
+        "logicalSizeBand": "xl",
+        "sampleCount": 12,
+        "logicalExpectedHours": 147.25,
+        "reviewedExpectedHours": 243.00,
+        "factor": 1.65025467
+      },
+      {
+        "workItemKind": "javascript-source-backbone",
+        "logicalSizeBand": "2xl",
+        "sampleCount": 8,
+        "logicalExpectedHours": 165.50,
+        "reviewedExpectedHours": 178.50,
+        "factor": 1.07854985
+      },
+      {
+        "workItemKind": "javascript-source-backbone",
+        "logicalSizeBand": "3xl",
+        "sampleCount": 3,
+        "logicalExpectedHours": 154.75,
+        "reviewedExpectedHours": 165.25,
+        "factor": 1.06785137
+      },
+      {
+        "workItemKind": "javascript-source-backbone",
+        "logicalSizeBand": "4xl",
+        "sampleCount": 11,
+        "logicalExpectedHours": 3663.50,
+        "reviewedExpectedHours": 3942.50,
+        "factor": 1.07615668
+      },
+      {
+        "workItemKind": "manual-validation",
+        "logicalSizeBand": "xs",
+        "sampleCount": 207,
+        "logicalExpectedHours": 188.00,
+        "reviewedExpectedHours": 424.50,
+        "factor": 2.25797872
+      },
+      {
+        "workItemKind": "manual-validation",
+        "logicalSizeBand": "s",
+        "sampleCount": 78,
+        "logicalExpectedHours": 118.00,
+        "reviewedExpectedHours": 294.75,
+        "factor": 2.49788136
+      },
+      {
+        "workItemKind": "manual-validation",
+        "logicalSizeBand": "m",
+        "sampleCount": 17,
+        "logicalExpectedHours": 47.25,
+        "reviewedExpectedHours": 190.00,
+        "factor": 3
+      },
+      {
+        "workItemKind": "manual-validation",
+        "logicalSizeBand": "l",
+        "sampleCount": 4,
+        "logicalExpectedHours": 25.25,
+        "reviewedExpectedHours": 57.00,
+        "factor": 2.25742574
+      },
+      {
+        "workItemKind": "manual-validation",
+        "logicalSizeBand": "xl",
+        "sampleCount": 14,
+        "logicalExpectedHours": 157.25,
+        "reviewedExpectedHours": 725.5,
+        "factor": 3
+      },
+      {
+        "workItemKind": "packaging-release",
+        "logicalSizeBand": "s",
+        "sampleCount": 4,
+        "logicalExpectedHours": 8.00,
+        "reviewedExpectedHours": 26,
+        "factor": 3
+      },
+      {
+        "workItemKind": "packaging-release",
+        "logicalSizeBand": "m",
+        "sampleCount": 2,
+        "logicalExpectedHours": 6.25,
+        "reviewedExpectedHours": 13,
+        "factor": 2.08
+      },
+      {
+        "workItemKind": "packaging-release",
+        "logicalSizeBand": "l",
+        "sampleCount": 1,
+        "logicalExpectedHours": 5.00,
+        "reviewedExpectedHours": 6,
+        "factor": 1.2
+      },
+      {
+        "workItemKind": "packaging-release",
+        "logicalSizeBand": "3xl",
+        "sampleCount": 1,
+        "logicalExpectedHours": 57.75,
+        "reviewedExpectedHours": 25,
+        "factor": 0.43290043
+      },
+      {
+        "workItemKind": "polyglot-source-backbone",
+        "logicalSizeBand": "xs",
+        "sampleCount": 4,
+        "logicalExpectedHours": 2.25,
+        "reviewedExpectedHours": 2.5,
+        "factor": 1.11111111
+      },
+      {
+        "workItemKind": "polyglot-source-backbone",
+        "logicalSizeBand": "s",
+        "sampleCount": 3,
+        "logicalExpectedHours": 4.50,
+        "reviewedExpectedHours": 3.00,
+        "factor": 0.66666667
+      },
+      {
+        "workItemKind": "polyglot-source-backbone",
+        "logicalSizeBand": "l",
+        "sampleCount": 3,
+        "logicalExpectedHours": 19.00,
+        "reviewedExpectedHours": 14.50,
+        "factor": 0.76315789
+      },
+      {
+        "workItemKind": "polyglot-source-backbone",
+        "logicalSizeBand": "xl",
+        "sampleCount": 3,
+        "logicalExpectedHours": 37.00,
+        "reviewedExpectedHours": 33.00,
+        "factor": 0.89189189
+      },
+      {
+        "workItemKind": "polyglot-source-backbone",
+        "logicalSizeBand": "2xl",
+        "sampleCount": 2,
+        "logicalExpectedHours": 45.25,
+        "reviewedExpectedHours": 36.25,
+        "factor": 0.80110497
+      },
+      {
+        "workItemKind": "project-setup",
+        "logicalSizeBand": "xs",
+        "sampleCount": 230,
+        "logicalExpectedHours": 190.50,
+        "reviewedExpectedHours": 194.75,
+        "factor": 1.02230971
+      },
+      {
+        "workItemKind": "project-setup",
+        "logicalSizeBand": "s",
+        "sampleCount": 107,
+        "logicalExpectedHours": 160.50,
+        "reviewedExpectedHours": 160.50,
+        "factor": 1
+      },
+      {
+        "workItemKind": "project-setup",
+        "logicalSizeBand": "m",
+        "sampleCount": 30,
+        "logicalExpectedHours": 84.75,
+        "reviewedExpectedHours": 78.00,
+        "factor": 0.92035398
+      },
+      {
+        "workItemKind": "project-setup",
+        "logicalSizeBand": "l",
+        "sampleCount": 10,
+        "logicalExpectedHours": 55.25,
+        "reviewedExpectedHours": 55.25,
+        "factor": 1
+      },
+      {
+        "workItemKind": "security-surface",
+        "logicalSizeBand": "xs",
+        "sampleCount": 26,
+        "logicalExpectedHours": 17.6875,
+        "reviewedExpectedHours": 21.75,
+        "factor": 1.22968198
+      },
+      {
+        "workItemKind": "security-surface",
+        "logicalSizeBand": "s",
+        "sampleCount": 10,
+        "logicalExpectedHours": 17.375,
+        "reviewedExpectedHours": 16.25,
+        "factor": 0.93525180
+      },
+      {
+        "workItemKind": "security-surface",
+        "logicalSizeBand": "m",
+        "sampleCount": 5,
+        "logicalExpectedHours": 13.75,
+        "reviewedExpectedHours": 15.00,
+        "factor": 1.09090909
+      },
+      {
+        "workItemKind": "security-surface",
+        "logicalSizeBand": "l",
+        "sampleCount": 2,
+        "logicalExpectedHours": 13.0,
+        "reviewedExpectedHours": 14.50,
+        "factor": 1.11538462
+      },
+      {
+        "workItemKind": "security-surface",
+        "logicalSizeBand": "xl",
+        "sampleCount": 3,
+        "logicalExpectedHours": 35.25,
+        "reviewedExpectedHours": 40.00,
+        "factor": 1.13475177
+      },
+      {
+        "workItemKind": "security-surface",
+        "logicalSizeBand": "3xl",
+        "sampleCount": 2,
+        "logicalExpectedHours": 115.00,
+        "reviewedExpectedHours": 138.25,
+        "factor": 1.20217391
+      },
+      {
+        "workItemKind": "security-surface",
+        "logicalSizeBand": "4xl",
+        "sampleCount": 2,
+        "logicalExpectedHours": 300.50,
+        "reviewedExpectedHours": 389.50,
+        "factor": 1.29617304
+      },
+      {
+        "workItemKind": "self-review",
+        "logicalSizeBand": "s",
+        "sampleCount": 3,
+        "logicalExpectedHours": 4.75,
+        "reviewedExpectedHours": 66,
+        "factor": 3
+      },
+      {
+        "workItemKind": "self-review",
+        "logicalSizeBand": "l",
+        "sampleCount": 1,
+        "logicalExpectedHours": 4.50,
+        "reviewedExpectedHours": 22,
+        "factor": 3
+      },
+      {
+        "workItemKind": "self-review",
+        "logicalSizeBand": "xl",
+        "sampleCount": 5,
+        "logicalExpectedHours": 55.50,
+        "reviewedExpectedHours": 172,
+        "factor": 3
+      },
+      {
+        "workItemKind": "self-review",
+        "logicalSizeBand": "2xl",
+        "sampleCount": 4,
+        "logicalExpectedHours": 87.75,
+        "reviewedExpectedHours": 220,
+        "factor": 2.50712251
+      },
+      {
+        "workItemKind": "self-review",
+        "logicalSizeBand": "3xl",
+        "sampleCount": 1,
+        "logicalExpectedHours": 45.00,
+        "reviewedExpectedHours": 55,
+        "factor": 1.22222222
+      },
+      {
+        "workItemKind": "self-review",
+        "logicalSizeBand": "4xl",
+        "sampleCount": 1,
+        "logicalExpectedHours": 78.25,
+        "reviewedExpectedHours": 50,
+        "factor": 0.63897764
+      },
+      {
+        "workItemKind": "solution-coordination",
+        "logicalSizeBand": "xs",
+        "sampleCount": 1,
+        "logicalExpectedHours": 0.75,
+        "reviewedExpectedHours": 1.5,
+        "factor": 2
+      },
+      {
+        "workItemKind": "solution-coordination",
+        "logicalSizeBand": "s",
+        "sampleCount": 1,
+        "logicalExpectedHours": 2.00,
+        "reviewedExpectedHours": 5,
+        "factor": 2.5
+      },
+      {
+        "workItemKind": "solution-coordination",
+        "logicalSizeBand": "m",
+        "sampleCount": 3,
+        "logicalExpectedHours": 10.75,
+        "reviewedExpectedHours": 33,
+        "factor": 3
+      },
+      {
+        "workItemKind": "solution-coordination",
+        "logicalSizeBand": "l",
+        "sampleCount": 3,
+        "logicalExpectedHours": 15.25,
+        "reviewedExpectedHours": 46,
+        "factor": 3
+      },
+      {
+        "workItemKind": "solution-coordination",
+        "logicalSizeBand": "xl",
+        "sampleCount": 3,
+        "logicalExpectedHours": 34.25,
+        "reviewedExpectedHours": 84,
+        "factor": 2.45255474
+      },
+      {
+        "workItemKind": "solution-coordination",
+        "logicalSizeBand": "2xl",
+        "sampleCount": 2,
+        "logicalExpectedHours": 39.75,
+        "reviewedExpectedHours": 75,
+        "factor": 1.88679245
+      },
+      {
+        "workItemKind": "specification-comprehension",
+        "logicalSizeBand": "s",
+        "sampleCount": 3,
+        "logicalExpectedHours": 4.75,
+        "reviewedExpectedHours": 56,
+        "factor": 3
+      },
+      {
+        "workItemKind": "specification-comprehension",
+        "logicalSizeBand": "l",
+        "sampleCount": 4,
+        "logicalExpectedHours": 23.25,
+        "reviewedExpectedHours": 64,
+        "factor": 2.75268817
+      },
+      {
+        "workItemKind": "specification-comprehension",
+        "logicalSizeBand": "xl",
+        "sampleCount": 5,
+        "logicalExpectedHours": 55.25,
+        "reviewedExpectedHours": 244,
+        "factor": 3
+      },
+      {
+        "workItemKind": "specification-comprehension",
+        "logicalSizeBand": "2xl",
+        "sampleCount": 2,
+        "logicalExpectedHours": 41.75,
+        "reviewedExpectedHours": 75,
+        "factor": 1.79640719
+      },
+      {
+        "workItemKind": "specification-comprehension",
+        "logicalSizeBand": "3xl",
+        "sampleCount": 1,
+        "logicalExpectedHours": 32.50,
+        "reviewedExpectedHours": 40,
+        "factor": 1.23076923
+      },
+      {
+        "workItemKind": "ui-surface",
+        "logicalSizeBand": "xs",
+        "sampleCount": 21,
+        "logicalExpectedHours": 5.00,
+        "reviewedExpectedHours": 7.5,
+        "factor": 1.5
+      },
+      {
+        "workItemKind": "ui-surface",
+        "logicalSizeBand": "s",
+        "sampleCount": 11,
+        "logicalExpectedHours": 20.75,
+        "reviewedExpectedHours": 23.50,
+        "factor": 1.13253012
+      },
+      {
+        "workItemKind": "ui-surface",
+        "logicalSizeBand": "m",
+        "sampleCount": 20,
+        "logicalExpectedHours": 65.50,
+        "reviewedExpectedHours": 58.75,
+        "factor": 0.89694656
+      },
+      {
+        "workItemKind": "ui-surface",
+        "logicalSizeBand": "l",
+        "sampleCount": 15,
+        "logicalExpectedHours": 85.75,
+        "reviewedExpectedHours": 110.75,
+        "factor": 1.29154519
+      },
+      {
+        "workItemKind": "ui-surface",
+        "logicalSizeBand": "xl",
+        "sampleCount": 2,
+        "logicalExpectedHours": 21.75,
+        "reviewedExpectedHours": 17.5,
+        "factor": 0.80459770
+      },
+      {
+        "workItemKind": "ui-surface",
+        "logicalSizeBand": "2xl",
+        "sampleCount": 6,
+        "logicalExpectedHours": 143.00,
+        "reviewedExpectedHours": 121.25,
+        "factor": 0.84790210
+      },
+      {
+        "workItemKind": "ui-surface",
+        "logicalSizeBand": "3xl",
+        "sampleCount": 3,
+        "logicalExpectedHours": 129.25,
+        "reviewedExpectedHours": 134.50,
+        "factor": 1.04061896
+      },
+      {
+        "workItemKind": "ui-surface",
+        "logicalSizeBand": "4xl",
+        "sampleCount": 9,
+        "logicalExpectedHours": 5872.25,
+        "reviewedExpectedHours": 6928.75,
+        "factor": 1.17991400
+      },
+      {
+        "workItemKind": "unit-tests",
+        "logicalSizeBand": "xs",
+        "sampleCount": 24,
+        "logicalExpectedHours": 21.50,
+        "reviewedExpectedHours": 24.25,
+        "factor": 1.12790698
+      },
+      {
+        "workItemKind": "unit-tests",
+        "logicalSizeBand": "s",
+        "sampleCount": 7,
+        "logicalExpectedHours": 11.50,
+        "reviewedExpectedHours": 13.75,
+        "factor": 1.19565217
+      },
+      {
+        "workItemKind": "unit-tests",
+        "logicalSizeBand": "m",
+        "sampleCount": 19,
+        "logicalExpectedHours": 48.50,
+        "reviewedExpectedHours": 57.75,
+        "factor": 1.19072165
+      },
+      {
+        "workItemKind": "unit-tests",
+        "logicalSizeBand": "l",
+        "sampleCount": 10,
+        "logicalExpectedHours": 53.75,
+        "reviewedExpectedHours": 64.25,
+        "factor": 1.19534884
+      },
+      {
+        "workItemKind": "unit-tests",
+        "logicalSizeBand": "xl",
+        "sampleCount": 14,
+        "logicalExpectedHours": 158.00,
+        "reviewedExpectedHours": 195.75,
+        "factor": 1.23892405
+      },
+      {
+        "workItemKind": "unit-tests",
+        "logicalSizeBand": "2xl",
+        "sampleCount": 12,
+        "logicalExpectedHours": 274.75,
+        "reviewedExpectedHours": 331.50,
+        "factor": 1.20655141
+      },
+      {
+        "workItemKind": "unit-tests",
+        "logicalSizeBand": "3xl",
+        "sampleCount": 7,
+        "logicalExpectedHours": 321.75,
+        "reviewedExpectedHours": 429.50,
+        "factor": 1.33488733
+      },
+      {
+        "workItemKind": "unit-tests",
+        "logicalSizeBand": "4xl",
+        "sampleCount": 23,
+        "logicalExpectedHours": 4502.75,
+        "reviewedExpectedHours": 5961.25,
+        "factor": 1.32391316
+      },
+      {
+        "workItemKind": "validation-surface",
+        "logicalSizeBand": "xs",
+        "sampleCount": 27,
+        "logicalExpectedHours": 13.750,
+        "reviewedExpectedHours": 11.50,
+        "factor": 0.83636364
+      },
+      {
+        "workItemKind": "validation-surface",
+        "logicalSizeBand": "s",
+        "sampleCount": 15,
+        "logicalExpectedHours": 24.5625,
+        "reviewedExpectedHours": 21.25,
+        "factor": 0.86513995
+      },
+      {
+        "workItemKind": "validation-surface",
+        "logicalSizeBand": "m",
+        "sampleCount": 11,
+        "logicalExpectedHours": 31.625,
+        "reviewedExpectedHours": 22.50,
+        "factor": 0.71146245
+      },
+      {
+        "workItemKind": "validation-surface",
+        "logicalSizeBand": "l",
+        "sampleCount": 4,
+        "logicalExpectedHours": 20.50,
+        "reviewedExpectedHours": 21.00,
+        "factor": 1.02439024
+      },
+      {
+        "workItemKind": "validation-surface",
+        "logicalSizeBand": "xl",
+        "sampleCount": 1,
+        "logicalExpectedHours": 10,
+        "reviewedExpectedHours": 10,
+        "factor": 1
+      },
+      {
+        "workItemKind": "validation-surface",
+        "logicalSizeBand": "2xl",
+        "sampleCount": 2,
+        "logicalExpectedHours": 47.25,
+        "reviewedExpectedHours": 51.25,
+        "factor": 1.08465608
+      },
+      {
+        "workItemKind": "validation-surface",
+        "logicalSizeBand": "3xl",
+        "sampleCount": 1,
+        "logicalExpectedHours": 40.75,
+        "reviewedExpectedHours": 49,
+        "factor": 1.20245399
+      },
+      {
+        "workItemKind": "validation-surface",
+        "logicalSizeBand": "4xl",
+        "sampleCount": 1,
+        "logicalExpectedHours": 400.5,
+        "reviewedExpectedHours": 0,
+        "factor": 0.25
+      }
+    ]
+  },
+  "range": {
+    "features": [
+      "work-item-kind",
+      "candidate-expected-size-band"
+    ],
+    "lowerQuantile": 0.15,
+    "upperQuantile": 0.8,
+    "minimumExactGroupSamples": 3,
+    "sparseGroupFallback": "same-kind residuals, then all positive development residuals",
+    "unknownGroupBehavior": "use the complete seed capability range",
+    "factors": [
+      {
+        "workItemKind": "api-surface",
+        "expectedSizeBand": "xs",
+        "sampleSource": "same-kind",
+        "sampleCount": 54,
+        "lowFactor": 0.9123867,
+        "highFactor": 1.23809524
+      },
+      {
+        "workItemKind": "api-surface",
+        "expectedSizeBand": "s",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 9,
+        "lowFactor": 0.64285714,
+        "highFactor": 1.46938776
+      },
+      {
+        "workItemKind": "api-surface",
+        "expectedSizeBand": "m",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 15,
+        "lowFactor": 0.89795918,
+        "highFactor": 1.25714286
+      },
+      {
+        "workItemKind": "api-surface",
+        "expectedSizeBand": "l",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 15,
+        "lowFactor": 0.96307485,
+        "highFactor": 1.02187312
+      },
+      {
+        "workItemKind": "api-surface",
+        "expectedSizeBand": "xl",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 6,
+        "lowFactor": 0.98703703,
+        "highFactor": 1.00222222
+      },
+      {
+        "workItemKind": "api-surface",
+        "expectedSizeBand": "2xl",
+        "sampleSource": "same-kind",
+        "sampleCount": 54,
+        "lowFactor": 0.9123867,
+        "highFactor": 1.23809524
+      },
+      {
+        "workItemKind": "api-surface",
+        "expectedSizeBand": "3xl",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 3,
+        "lowFactor": 0.49018132,
+        "highFactor": 1.18438759
+      },
+      {
+        "workItemKind": "api-surface",
+        "expectedSizeBand": "4xl",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 4,
+        "lowFactor": 0.36330163,
+        "highFactor": 1.59897857
+      },
+      {
+        "workItemKind": "application-entry-point",
+        "expectedSizeBand": "xs",
+        "sampleSource": "same-kind",
+        "sampleCount": 72,
+        "lowFactor": 0.49525316,
+        "highFactor": 1.1559633
+      },
+      {
+        "workItemKind": "application-entry-point",
+        "expectedSizeBand": "s",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 48,
+        "lowFactor": 0.49525316,
+        "highFactor": 1.23813292
+      },
+      {
+        "workItemKind": "application-entry-point",
+        "expectedSizeBand": "m",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 13,
+        "lowFactor": 0.46238531,
+        "highFactor": 1.1559633
+      },
+      {
+        "workItemKind": "application-entry-point",
+        "expectedSizeBand": "l",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 9,
+        "lowFactor": 1,
+        "highFactor": 1.00884956
+      },
+      {
+        "workItemKind": "architecture-design",
+        "expectedSizeBand": "xs",
+        "sampleSource": "same-kind",
+        "sampleCount": 309,
+        "lowFactor": 0.34686346,
+        "highFactor": 1
+      },
+      {
+        "workItemKind": "architecture-design",
+        "expectedSizeBand": "m",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 247,
+        "lowFactor": 0.33333333,
+        "highFactor": 1
+      },
+      {
+        "workItemKind": "architecture-design",
+        "expectedSizeBand": "l",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 24,
+        "lowFactor": 0.36410256,
+        "highFactor": 1
+      },
+      {
+        "workItemKind": "architecture-design",
+        "expectedSizeBand": "xl",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 21,
+        "lowFactor": 0.36410256,
+        "highFactor": 2.08118081
+      },
+      {
+        "workItemKind": "architecture-design",
+        "expectedSizeBand": "2xl",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 3,
+        "lowFactor": 0.33333333,
+        "highFactor": 1
+      },
+      {
+        "workItemKind": "architecture-design",
+        "expectedSizeBand": "3xl",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 14,
+        "lowFactor": 0.44444444,
+        "highFactor": 2.22222223
+      },
+      {
+        "workItemKind": "background-work",
+        "expectedSizeBand": "l",
+        "sampleSource": "same-kind",
+        "sampleCount": 9,
+        "lowFactor": 0.88235294,
+        "highFactor": 1.05882353
+      },
+      {
+        "workItemKind": "background-work",
+        "expectedSizeBand": "xl",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 3,
+        "lowFactor": 0.90384615,
+        "highFactor": 1.35576923
+      },
+      {
+        "workItemKind": "background-work",
+        "expectedSizeBand": "2xl",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 3,
+        "lowFactor": 0.88235294,
+        "highFactor": 1.05882353
+      },
+      {
+        "workItemKind": "background-work",
+        "expectedSizeBand": "4xl",
+        "sampleSource": "same-kind",
+        "sampleCount": 9,
+        "lowFactor": 0.88235294,
+        "highFactor": 1.05882353
+      },
+      {
+        "workItemKind": "build-tooling",
+        "expectedSizeBand": "m",
+        "sampleSource": "same-kind",
+        "sampleCount": 15,
+        "lowFactor": 0.72692307,
+        "highFactor": 1.15808824
+      },
+      {
+        "workItemKind": "build-tooling",
+        "expectedSizeBand": "l",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 3,
+        "lowFactor": 0.71428571,
+        "highFactor": 1.54761906
+      },
+      {
+        "workItemKind": "build-tooling",
+        "expectedSizeBand": "xl",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 6,
+        "lowFactor": 0.72692307,
+        "highFactor": 1.15384616
+      },
+      {
+        "workItemKind": "build-tooling",
+        "expectedSizeBand": "2xl",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 3,
+        "lowFactor": 0.99999999,
+        "highFactor": 1.40984655
+      },
+      {
+        "workItemKind": "build-tooling",
+        "expectedSizeBand": "3xl",
+        "sampleSource": "same-kind",
+        "sampleCount": 15,
+        "lowFactor": 0.72692307,
+        "highFactor": 1.15808824
+      },
+      {
+        "workItemKind": "build-tooling",
+        "expectedSizeBand": "4xl",
+        "sampleSource": "same-kind",
+        "sampleCount": 15,
+        "lowFactor": 0.72692307,
+        "highFactor": 1.15808824
+      },
+      {
+        "workItemKind": "ci-infrastructure",
+        "expectedSizeBand": "m",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 3,
+        "lowFactor": 0.7815126,
+        "highFactor": 1.62091504
+      },
+      {
+        "workItemKind": "ci-infrastructure",
+        "expectedSizeBand": "l",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 5,
+        "lowFactor": 0.72941176,
+        "highFactor": 1
+      },
+      {
+        "workItemKind": "ci-infrastructure",
+        "expectedSizeBand": "xl",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 3,
+        "lowFactor": 0.93181818,
+        "highFactor": 1.16477273
+      },
+      {
+        "workItemKind": "ci-infrastructure",
+        "expectedSizeBand": "2xl",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 3,
+        "lowFactor": 0.95597484,
+        "highFactor": 1.0628191
+      },
+      {
+        "workItemKind": "container-deployment",
+        "expectedSizeBand": "l",
+        "sampleSource": "same-kind",
+        "sampleCount": 4,
+        "lowFactor": 0.99999999,
+        "highFactor": 1
+      },
+      {
+        "workItemKind": "container-deployment",
+        "expectedSizeBand": "2xl",
+        "sampleSource": "same-kind",
+        "sampleCount": 4,
+        "lowFactor": 0.99999999,
+        "highFactor": 1
+      },
+      {
+        "workItemKind": "container-deployment",
+        "expectedSizeBand": "3xl",
+        "sampleSource": "same-kind",
+        "sampleCount": 4,
+        "lowFactor": 0.99999999,
+        "highFactor": 1
+      },
+      {
+        "workItemKind": "data-persistence",
+        "expectedSizeBand": "xs",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 6,
+        "lowFactor": 1,
+        "highFactor": 1
+      },
+      {
+        "workItemKind": "data-persistence",
+        "expectedSizeBand": "s",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 14,
+        "lowFactor": 0.90811965,
+        "highFactor": 1.08974359
+      },
+      {
+        "workItemKind": "data-persistence",
+        "expectedSizeBand": "m",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 11,
+        "lowFactor": 0.98026999,
+        "highFactor": 1.02403205
+      },
+      {
+        "workItemKind": "data-persistence",
+        "expectedSizeBand": "l",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 6,
+        "lowFactor": 0.66272189,
+        "highFactor": 1.00000001
+      },
+      {
+        "workItemKind": "data-persistence",
+        "expectedSizeBand": "xl",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 3,
+        "lowFactor": 1,
+        "highFactor": 1.15976332
+      },
+      {
+        "workItemKind": "data-persistence",
+        "expectedSizeBand": "2xl",
+        "sampleSource": "same-kind",
+        "sampleCount": 48,
+        "lowFactor": 0.93406593,
+        "highFactor": 1.08974359
+      },
+      {
+        "workItemKind": "data-persistence",
+        "expectedSizeBand": "3xl",
+        "sampleSource": "same-kind",
+        "sampleCount": 48,
+        "lowFactor": 0.93406593,
+        "highFactor": 1.08974359
+      },
+      {
+        "workItemKind": "data-persistence",
+        "expectedSizeBand": "4xl",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 5,
+        "lowFactor": 0.06642503,
+        "highFactor": 1.47323658
+      },
+      {
+        "workItemKind": "documentation",
+        "expectedSizeBand": "l",
+        "sampleSource": "same-kind",
+        "sampleCount": 15,
+        "lowFactor": 0.90686274,
+        "highFactor": 1.08197359
+      },
+      {
+        "workItemKind": "documentation",
+        "expectedSizeBand": "xl",
+        "sampleSource": "same-kind",
+        "sampleCount": 15,
+        "lowFactor": 0.90686274,
+        "highFactor": 1.08197359
+      },
+      {
+        "workItemKind": "documentation",
+        "expectedSizeBand": "2xl",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 5,
+        "lowFactor": 0.90686274,
+        "highFactor": 1.08197359
+      },
+      {
+        "workItemKind": "documentation",
+        "expectedSizeBand": "3xl",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 4,
+        "lowFactor": 0.60134952,
+        "highFactor": 1.17065995
+      },
+      {
+        "workItemKind": "documentation",
+        "expectedSizeBand": "4xl",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 4,
+        "lowFactor": 0.71435508,
+        "highFactor": 1.30813695
+      },
+      {
+        "workItemKind": "dotnet-source-backbone",
+        "expectedSizeBand": "xs",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 9,
+        "lowFactor": 0.67307692,
+        "highFactor": 1.79487179
+      },
+      {
+        "workItemKind": "dotnet-source-backbone",
+        "expectedSizeBand": "s",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 9,
+        "lowFactor": 0.67307692,
+        "highFactor": 1.34615385
+      },
+      {
+        "workItemKind": "dotnet-source-backbone",
+        "expectedSizeBand": "m",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 26,
+        "lowFactor": 0.60209423,
+        "highFactor": 1
+      },
+      {
+        "workItemKind": "dotnet-source-backbone",
+        "expectedSizeBand": "l",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 23,
+        "lowFactor": 0.8751634,
+        "highFactor": 1
+      },
+      {
+        "workItemKind": "dotnet-source-backbone",
+        "expectedSizeBand": "xl",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 26,
+        "lowFactor": 0.85058403,
+        "highFactor": 1
+      },
+      {
+        "workItemKind": "dotnet-source-backbone",
+        "expectedSizeBand": "2xl",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 20,
+        "lowFactor": 0.81272949,
+        "highFactor": 1.05435178
+      },
+      {
+        "workItemKind": "dotnet-source-backbone",
+        "expectedSizeBand": "3xl",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 10,
+        "lowFactor": 0.89067373,
+        "highFactor": 1.07018938
+      },
+      {
+        "workItemKind": "dotnet-source-backbone",
+        "expectedSizeBand": "4xl",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 25,
+        "lowFactor": 0.77167994,
+        "highFactor": 1.00700649
+      },
+      {
+        "workItemKind": "end-to-end-tests",
+        "expectedSizeBand": "xs",
+        "sampleSource": "same-kind",
+        "sampleCount": 6,
+        "lowFactor": 0.875,
+        "highFactor": 1.09375001
+      },
+      {
+        "workItemKind": "end-to-end-tests",
+        "expectedSizeBand": "s",
+        "sampleSource": "same-kind",
+        "sampleCount": 6,
+        "lowFactor": 0.875,
+        "highFactor": 1.09375001
+      },
+      {
+        "workItemKind": "end-to-end-tests",
+        "expectedSizeBand": "3xl",
+        "sampleSource": "same-kind",
+        "sampleCount": 6,
+        "lowFactor": 0.875,
+        "highFactor": 1.09375001
+      },
+      {
+        "workItemKind": "end-to-end-tests",
+        "expectedSizeBand": "4xl",
+        "sampleSource": "same-kind",
+        "sampleCount": 6,
+        "lowFactor": 0.875,
+        "highFactor": 1.09375001
+      },
+      {
+        "workItemKind": "external-integration",
+        "expectedSizeBand": "xs",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 11,
+        "lowFactor": 0.77678571,
+        "highFactor": 1.29464286
+      },
+      {
+        "workItemKind": "external-integration",
+        "expectedSizeBand": "s",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 6,
+        "lowFactor": 0.6292517,
+        "highFactor": 1
+      },
+      {
+        "workItemKind": "external-integration",
+        "expectedSizeBand": "m",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 15,
+        "lowFactor": 0.94387755,
+        "highFactor": 1.22958058
+      },
+      {
+        "workItemKind": "external-integration",
+        "expectedSizeBand": "l",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 3,
+        "lowFactor": 0.72289156,
+        "highFactor": 1.15273179
+      },
+      {
+        "workItemKind": "external-integration",
+        "expectedSizeBand": "xl",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 3,
+        "lowFactor": 0.97810111,
+        "highFactor": 1.19277109
+      },
+      {
+        "workItemKind": "external-integration",
+        "expectedSizeBand": "2xl",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 7,
+        "lowFactor": 0.87922962,
+        "highFactor": 1.09305093
+      },
+      {
+        "workItemKind": "external-integration",
+        "expectedSizeBand": "3xl",
+        "sampleSource": "same-kind",
+        "sampleCount": 48,
+        "lowFactor": 0.82996688,
+        "highFactor": 1.22958058
+      },
+      {
+        "workItemKind": "external-integration",
+        "expectedSizeBand": "4xl",
+        "sampleSource": "same-kind",
+        "sampleCount": 48,
+        "lowFactor": 0.82996688,
+        "highFactor": 1.22958058
+      },
+      {
+        "workItemKind": "integration-tests",
+        "expectedSizeBand": "s",
+        "sampleSource": "same-kind",
+        "sampleCount": 5,
+        "lowFactor": 0.86666666,
+        "highFactor": 1.0043077
+      },
+      {
+        "workItemKind": "integration-tests",
+        "expectedSizeBand": "m",
+        "sampleSource": "same-kind",
+        "sampleCount": 5,
+        "lowFactor": 0.86666666,
+        "highFactor": 1.0043077
+      },
+      {
+        "workItemKind": "integration-tests",
+        "expectedSizeBand": "l",
+        "sampleSource": "same-kind",
+        "sampleCount": 5,
+        "lowFactor": 0.86666666,
+        "highFactor": 1.0043077
+      },
+      {
+        "workItemKind": "integration-tests",
+        "expectedSizeBand": "xl",
+        "sampleSource": "same-kind",
+        "sampleCount": 5,
+        "lowFactor": 0.86666666,
+        "highFactor": 1.0043077
+      },
+      {
+        "workItemKind": "integration-tests",
+        "expectedSizeBand": "4xl",
+        "sampleSource": "same-kind",
+        "sampleCount": 5,
+        "lowFactor": 0.86666666,
+        "highFactor": 1.0043077
+      },
+      {
+        "workItemKind": "javascript-source-backbone",
+        "expectedSizeBand": "xs",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 15,
+        "lowFactor": 0.95522388,
+        "highFactor": 1.43283583
+      },
+      {
+        "workItemKind": "javascript-source-backbone",
+        "expectedSizeBand": "s",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 36,
+        "lowFactor": 0.63673469,
+        "highFactor": 1.3
+      },
+      {
+        "workItemKind": "javascript-source-backbone",
+        "expectedSizeBand": "m",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 10,
+        "lowFactor": 0.88064516,
+        "highFactor": 1.28093842
+      },
+      {
+        "workItemKind": "javascript-source-backbone",
+        "expectedSizeBand": "l",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 12,
+        "lowFactor": 0.91901108,
+        "highFactor": 1.12495195
+      },
+      {
+        "workItemKind": "javascript-source-backbone",
+        "expectedSizeBand": "xl",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 3,
+        "lowFactor": 0.60596707,
+        "highFactor": 1
+      },
+      {
+        "workItemKind": "javascript-source-backbone",
+        "expectedSizeBand": "2xl",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 17,
+        "lowFactor": 0.66007128,
+        "highFactor": 1.02226532
+      },
+      {
+        "workItemKind": "javascript-source-backbone",
+        "expectedSizeBand": "3xl",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 3,
+        "lowFactor": 0.93645991,
+        "highFactor": 1.03228372
+      },
+      {
+        "workItemKind": "javascript-source-backbone",
+        "expectedSizeBand": "4xl",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 11,
+        "lowFactor": 0.74338617,
+        "highFactor": 1.30092581
+      },
+      {
+        "workItemKind": "manual-validation",
+        "expectedSizeBand": "xs",
+        "sampleSource": "same-kind",
+        "sampleCount": 309,
+        "lowFactor": 0.40033926,
+        "highFactor": 1
+      },
+      {
+        "workItemKind": "manual-validation",
+        "expectedSizeBand": "s",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 32,
+        "lowFactor": 0.44287397,
+        "highFactor": 1
+      },
+      {
+        "workItemKind": "manual-validation",
+        "expectedSizeBand": "m",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 215,
+        "lowFactor": 0.40033926,
+        "highFactor": 1
+      },
+      {
+        "workItemKind": "manual-validation",
+        "expectedSizeBand": "l",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 34,
+        "lowFactor": 0.33333333,
+        "highFactor": 1
+      },
+      {
+        "workItemKind": "manual-validation",
+        "expectedSizeBand": "xl",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 13,
+        "lowFactor": 0.33333333,
+        "highFactor": 1.84615385
+      },
+      {
+        "workItemKind": "manual-validation",
+        "expectedSizeBand": "2xl",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 4,
+        "lowFactor": 0.8080808,
+        "highFactor": 4.32432433
+      },
+      {
+        "workItemKind": "manual-validation",
+        "expectedSizeBand": "3xl",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 11,
+        "lowFactor": 0.44444444,
+        "highFactor": 2.5
+      },
+      {
+        "workItemKind": "packaging-release",
+        "expectedSizeBand": "l",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 7,
+        "lowFactor": 0.87412587,
+        "highFactor": 1.33333334
+      },
+      {
+        "workItemKind": "packaging-release",
+        "expectedSizeBand": "2xl",
+        "sampleSource": "same-kind",
+        "sampleCount": 8,
+        "lowFactor": 0.87412587,
+        "highFactor": 1.33333334
+      },
+      {
+        "workItemKind": "polyglot-source-backbone",
+        "expectedSizeBand": "xs",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 6,
+        "lowFactor": 0.6,
+        "highFactor": 1.2
+      },
+      {
+        "workItemKind": "polyglot-source-backbone",
+        "expectedSizeBand": "s",
+        "sampleSource": "same-kind",
+        "sampleCount": 15,
+        "lowFactor": 0.89999999,
+        "highFactor": 1.01128937
+      },
+      {
+        "workItemKind": "polyglot-source-backbone",
+        "expectedSizeBand": "m",
+        "sampleSource": "same-kind",
+        "sampleCount": 15,
+        "lowFactor": 0.89999999,
+        "highFactor": 1.01128937
+      },
+      {
+        "workItemKind": "polyglot-source-backbone",
+        "expectedSizeBand": "l",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 3,
+        "lowFactor": 0.92209451,
+        "highFactor": 1.18353728
+      },
+      {
+        "workItemKind": "polyglot-source-backbone",
+        "expectedSizeBand": "xl",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 3,
+        "lowFactor": 0.99462365,
+        "highFactor": 1.01128937
+      },
+      {
+        "workItemKind": "polyglot-source-backbone",
+        "expectedSizeBand": "2xl",
+        "sampleSource": "same-kind",
+        "sampleCount": 15,
+        "lowFactor": 0.89999999,
+        "highFactor": 1.01128937
+      },
+      {
+        "workItemKind": "project-setup",
+        "expectedSizeBand": "xs",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 114,
+        "lowFactor": 0.97817715,
+        "highFactor": 1
+      },
+      {
+        "workItemKind": "project-setup",
+        "expectedSizeBand": "s",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 212,
+        "lowFactor": 0.71428571,
+        "highFactor": 1
+      },
+      {
+        "workItemKind": "project-setup",
+        "expectedSizeBand": "m",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 30,
+        "lowFactor": 0.65192307,
+        "highFactor": 1.08653847
+      },
+      {
+        "workItemKind": "project-setup",
+        "expectedSizeBand": "l",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 10,
+        "lowFactor": 1,
+        "highFactor": 1
+      },
+      {
+        "workItemKind": "security-surface",
+        "expectedSizeBand": "xs",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 13,
+        "lowFactor": 1,
+        "highFactor": 1.08429119
+      },
+      {
+        "workItemKind": "security-surface",
+        "expectedSizeBand": "s",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 16,
+        "lowFactor": 1,
+        "highFactor": 1.06923077
+      },
+      {
+        "workItemKind": "security-surface",
+        "expectedSizeBand": "m",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 4,
+        "lowFactor": 0.73333333,
+        "highFactor": 1.10000001
+      },
+      {
+        "workItemKind": "security-surface",
+        "expectedSizeBand": "l",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 3,
+        "lowFactor": 0.99999999,
+        "highFactor": 1.08854167
+      },
+      {
+        "workItemKind": "security-surface",
+        "expectedSizeBand": "xl",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 3,
+        "lowFactor": 0.969375,
+        "highFactor": 1.05404413
+      },
+      {
+        "workItemKind": "security-surface",
+        "expectedSizeBand": "3xl",
+        "sampleSource": "same-kind",
+        "sampleCount": 43,
+        "lowFactor": 0.99999999,
+        "highFactor": 1.08429119
+      },
+      {
+        "workItemKind": "security-surface",
+        "expectedSizeBand": "4xl",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 3,
+        "lowFactor": 0.84927935,
+        "highFactor": 1.15791005
+      },
+      {
+        "workItemKind": "self-review",
+        "expectedSizeBand": "l",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 3,
+        "lowFactor": 1,
+        "highFactor": 5.77777778
+      },
+      {
+        "workItemKind": "self-review",
+        "expectedSizeBand": "xl",
+        "sampleSource": "same-kind",
+        "sampleCount": 15,
+        "lowFactor": 0.72520661,
+        "highFactor": 1.71818182
+      },
+      {
+        "workItemKind": "self-review",
+        "expectedSizeBand": "2xl",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 3,
+        "lowFactor": 0.34188034,
+        "highFactor": 1
+      },
+      {
+        "workItemKind": "self-review",
+        "expectedSizeBand": "3xl",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 7,
+        "lowFactor": 0.99999999,
+        "highFactor": 1.53846154
+      },
+      {
+        "workItemKind": "self-review",
+        "expectedSizeBand": "4xl",
+        "sampleSource": "same-kind",
+        "sampleCount": 15,
+        "lowFactor": 0.72520661,
+        "highFactor": 1.71818182
+      },
+      {
+        "workItemKind": "solution-coordination",
+        "expectedSizeBand": "s",
+        "sampleSource": "same-kind",
+        "sampleCount": 13,
+        "lowFactor": 0.62745098,
+        "highFactor": 1.15126051
+      },
+      {
+        "workItemKind": "solution-coordination",
+        "expectedSizeBand": "l",
+        "sampleSource": "same-kind",
+        "sampleCount": 13,
+        "lowFactor": 0.62745098,
+        "highFactor": 1.15126051
+      },
+      {
+        "workItemKind": "solution-coordination",
+        "expectedSizeBand": "xl",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 5,
+        "lowFactor": 0.51282051,
+        "highFactor": 1.33333334
+      },
+      {
+        "workItemKind": "solution-coordination",
+        "expectedSizeBand": "2xl",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 3,
+        "lowFactor": 1,
+        "highFactor": 1.15126051
+      },
+      {
+        "workItemKind": "solution-coordination",
+        "expectedSizeBand": "3xl",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 3,
+        "lowFactor": 0.82929782,
+        "highFactor": 1.01643836
+      },
+      {
+        "workItemKind": "specification-comprehension",
+        "expectedSizeBand": "m",
+        "sampleSource": "same-kind",
+        "sampleCount": 15,
+        "lowFactor": 0.87894736,
+        "highFactor": 1.86046512
+      },
+      {
+        "workItemKind": "specification-comprehension",
+        "expectedSizeBand": "l",
+        "sampleSource": "same-kind",
+        "sampleCount": 15,
+        "lowFactor": 0.87894736,
+        "highFactor": 1.86046512
+      },
+      {
+        "workItemKind": "specification-comprehension",
+        "expectedSizeBand": "xl",
+        "sampleSource": "same-kind",
+        "sampleCount": 15,
+        "lowFactor": 0.87894736,
+        "highFactor": 1.86046512
+      },
+      {
+        "workItemKind": "specification-comprehension",
+        "expectedSizeBand": "2xl",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 5,
+        "lowFactor": 0.43055555,
+        "highFactor": 1.45312501
+      },
+      {
+        "workItemKind": "specification-comprehension",
+        "expectedSizeBand": "3xl",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 6,
+        "lowFactor": 0.87894736,
+        "highFactor": 1.63742691
+      },
+      {
+        "workItemKind": "ui-surface",
+        "expectedSizeBand": "xs",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 4,
+        "lowFactor": 0.66666666,
+        "highFactor": 4
+      },
+      {
+        "workItemKind": "ui-surface",
+        "expectedSizeBand": "s",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 6,
+        "lowFactor": 0.63069908,
+        "highFactor": 1
+      },
+      {
+        "workItemKind": "ui-surface",
+        "expectedSizeBand": "m",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 27,
+        "lowFactor": 0.74326241,
+        "highFactor": 1.11489363
+      },
+      {
+        "workItemKind": "ui-surface",
+        "expectedSizeBand": "l",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 11,
+        "lowFactor": 0.77426636,
+        "highFactor": 1
+      },
+      {
+        "workItemKind": "ui-surface",
+        "expectedSizeBand": "xl",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 8,
+        "lowFactor": 0.76312916,
+        "highFactor": 1.11603499
+      },
+      {
+        "workItemKind": "ui-surface",
+        "expectedSizeBand": "2xl",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 4,
+        "lowFactor": 0.76475515,
+        "highFactor": 1.17938145
+      },
+      {
+        "workItemKind": "ui-surface",
+        "expectedSizeBand": "3xl",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 3,
+        "lowFactor": 0.96096653,
+        "highFactor": 1.05615663
+      },
+      {
+        "workItemKind": "ui-surface",
+        "expectedSizeBand": "4xl",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 9,
+        "lowFactor": 0.84751939,
+        "highFactor": 1.6950388
+      },
+      {
+        "workItemKind": "unit-tests",
+        "expectedSizeBand": "xs",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 10,
+        "lowFactor": 0.88659793,
+        "highFactor": 1
+      },
+      {
+        "workItemKind": "unit-tests",
+        "expectedSizeBand": "s",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 18,
+        "lowFactor": 0.88659793,
+        "highFactor": 1.10824742
+      },
+      {
+        "workItemKind": "unit-tests",
+        "expectedSizeBand": "m",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 21,
+        "lowFactor": 0.83982683,
+        "highFactor": 1.06887053
+      },
+      {
+        "workItemKind": "unit-tests",
+        "expectedSizeBand": "l",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 9,
+        "lowFactor": 0.83657587,
+        "highFactor": 1.10227273
+      },
+      {
+        "workItemKind": "unit-tests",
+        "expectedSizeBand": "xl",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 12,
+        "lowFactor": 0.97333032,
+        "highFactor": 1.0170115
+      },
+      {
+        "workItemKind": "unit-tests",
+        "expectedSizeBand": "2xl",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 14,
+        "lowFactor": 0.89520492,
+        "highFactor": 1.03850697
+      },
+      {
+        "workItemKind": "unit-tests",
+        "expectedSizeBand": "3xl",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 6,
+        "lowFactor": 0.82126503,
+        "highFactor": 1.03601056
+      },
+      {
+        "workItemKind": "unit-tests",
+        "expectedSizeBand": "4xl",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 26,
+        "lowFactor": 0.90567052,
+        "highFactor": 1
+      },
+      {
+        "workItemKind": "validation-surface",
+        "expectedSizeBand": "xs",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 13,
+        "lowFactor": 1,
+        "highFactor": 1.19565217
+      },
+      {
+        "workItemKind": "validation-surface",
+        "expectedSizeBand": "s",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 17,
+        "lowFactor": 1,
+        "highFactor": 1.40555556
+      },
+      {
+        "workItemKind": "validation-surface",
+        "expectedSizeBand": "m",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 4,
+        "lowFactor": 1,
+        "highFactor": 1.40555556
+      },
+      {
+        "workItemKind": "validation-surface",
+        "expectedSizeBand": "l",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 4,
+        "lowFactor": 0.97619047,
+        "highFactor": 1.06493507
+      },
+      {
+        "workItemKind": "validation-surface",
+        "expectedSizeBand": "xl",
+        "sampleSource": "same-kind",
+        "sampleCount": 42,
+        "lowFactor": 0.99999999,
+        "highFactor": 1.40555556
+      },
+      {
+        "workItemKind": "validation-surface",
+        "expectedSizeBand": "2xl",
+        "sampleSource": "same-kind",
+        "sampleCount": 42,
+        "lowFactor": 0.99999999,
+        "highFactor": 1.40555556
+      },
+      {
+        "workItemKind": "validation-surface",
+        "expectedSizeBand": "3xl",
+        "sampleSource": "same-kind",
+        "sampleCount": 42,
+        "lowFactor": 0.99999999,
+        "highFactor": 1.40555556
+      },
+      {
+        "workItemKind": "validation-surface",
+        "expectedSizeBand": "4xl",
+        "sampleSource": "same-kind",
+        "sampleCount": 42,
+        "lowFactor": 0.99999999,
+        "highFactor": 1.40555556
+      }
+    ]
+  },
+  "limitations": [
+    "Development-only logical weak supervision from one disclosed host-AI teacher.",
+    "No validation or test labels, empirical production observations, or independent correction were used.",
+    "The table is not admitted for product use and must fall back to seed-rules/0.4.0 outside its exact groups."
+  ]
+}
