@@ -88,3 +88,7 @@ including exact model/configuration identities, resource budgets, and the
 precommitted validation selection rule. Validation labels remain unavailable until
 that freeze. Test labels remain externally sealed for a one-time decision after
 validation selects one candidate.
+
+The subsequent [`0.4.0 development preflight`](../0.4.0/README.md) rejected its
+strongest bounded transparent design before candidate freeze. It opened neither
+holdout and supersedes this paragraph as the current project boundary.

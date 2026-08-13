@@ -82,7 +82,9 @@ when semantics, schemas, assumptions, or unresolved decisions change.
 Repository EHE remains experimental and uncalibrated. The frozen 33-family public
 readiness cohort has exact source reproduction, strict-blind packets for all 15
 development families, and rubric-complete teacher records for the full development
-partition. Validation and test labels remain unopened, no repository candidate is
-admitted, and the next boundary is a finite candidate freeze before validation.
+partition. Development preflight `0.4.0` rejected the strongest bounded transparent
+candidate on bias, per-family consistency, and target coverage; no candidate was
+frozen. Validation and test labels remain unopened, and another development-only
+design must pass the frozen gates before validation can begin.
 Change EHE has only the limited Stage A logical admission described in
 `docs/CHANGE_MODEL_ADMISSION.md`; later ecosystem extensions remain experimental.

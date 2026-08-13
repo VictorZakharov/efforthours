@@ -20,8 +20,10 @@ commit/tree/blob/license identities, publishes strict-blind packets for all 15
 development families, and records source custody without analysis for all 18
 holdouts. The [`0.3.0 development checkpoint`](0.3.0/README.md) freezes complete
 rubric judgments for all 2,030 development capabilities before unlocking their
-candidate reports. Source, archives, evidence bundles, and estimate bodies remain
-uncommitted.
+candidate reports. The [`0.4.0 candidate preflight`](0.4.0/README.md) records a
+development-only no-go: the strongest bounded transparent design fails bias,
+per-family consistency, and matched-target coverage, so no candidate manifest is
+frozen. Source, archives, evidence bundles, and estimate bodies remain uncommitted.
 
 The development labels do not open model admission: validation/test labels are not
 authored, the finite candidate set is not frozen, and no independent correction
@@ -128,8 +130,9 @@ contain an unsealed test label before the one-time decision.
 
 ## Next checkpoint
 
-The complete development labels may now inform a finite candidate design without
-changing the frozen partitions. Validation labels must remain unavailable until
-that exact candidate manifest and selection rule are frozen. Test labels require
-an externally held body and precommitted digest before authoring and remain sealed
-until the one-time selection boundary.
+Improve semantic marginality and capability allocation using development evidence
+only, then pass a new fail-closed preflight before freezing any finite candidate
+manifest. Validation labels must remain unavailable until that exact manifest and
+selection rule are frozen. Test labels require an externally held body and
+precommitted digest before authoring and remain sealed until the one-time selection
+boundary.

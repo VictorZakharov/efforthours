@@ -18,9 +18,12 @@ verifies every pinned tree, publishes strict-blind capability packets for all 15
 development families, and leaves all 18 holdouts unanalyzed and unlabeled. The
 [`0.3.0 development checkpoint`](corpora/public-readiness/0.3.0/README.md) freezes
 rubric-complete judgments for all 2,030 development capabilities before candidate
-evaluation. The public repository now contains 21 labeled repository families and
-2,262 teacher targets in total, still without independent correction or a
-model-admission result.
+evaluation. The [`0.4.0 candidate preflight`](corpora/public-readiness/0.4.0/README.md)
+rejects the strongest bounded transparent design on development bias, per-family
+consistency, and target coverage. It freezes no candidate and opens no holdout.
+The public repository now contains 21 labeled repository families and 2,262
+teacher targets in total, still without independent correction or a model-
+admission result.
 
 The current checkpoint contains the original
 [`ehe-work-item/1.0.0`](rubrics/ehe-work-item/1.0.0.md) review rubric and the
