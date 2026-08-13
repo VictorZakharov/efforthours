@@ -125,7 +125,7 @@ internal static class Program
             --output <review-plan.json>
 
         The review command accepts no estimate input. It verifies the selected
-        evidence and blind-packet digests before writing three development-only
-        host-AI teacher records, one per frozen primary stratum.
+        evidence and blind-packet digests before writing the complete 15-family
+        development-only host-AI teacher cohort.
         """);
 }

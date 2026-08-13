@@ -137,6 +137,100 @@ public sealed partial class CalibrationReproductionArtifactTests
                 .GetProperty("reviewedExpectedCoverage").GetDecimal());
     }
 
+    [Fact]
+    public void PublicReadinessCompleteDevelopmentCohortIsTraceableWeakSupervisionOnly()
+    {
+        string root = FindRepositoryRoot();
+        string cohortPath = Path.Combine(root, CohortDirectory);
+        string planJson = File.ReadAllText(
+            Path.Combine(cohortPath, "0.3.0.development-review-plan.json"));
+        string corpusJson = File.ReadAllText(
+            Path.Combine(cohortPath, "0.3.0.development-corpus.json"));
+        string evaluationJson = File.ReadAllText(
+            Path.Combine(cohortPath, "0.3.0.development-evaluation.json"));
+        CalibrationReviewPlan plan = ContractJson.Deserialize<CalibrationReviewPlan>(planJson);
+        CalibrationCorpus corpus = ContractJson.Deserialize<CalibrationCorpus>(corpusJson);
+        CalibrationCorpus priorCorpus = ContractJson.Deserialize<CalibrationCorpus>(File.ReadAllText(
+            Path.Combine(cohortPath, "0.2.0.development-corpus.json")));
+        using JsonDocument evaluation = JsonDocument.Parse(evaluationJson);
+        using JsonDocument manifest = JsonDocument.Parse(File.ReadAllText(
+            Path.Combine(cohortPath, "0.2.0.reproduction-manifest.json")));
+        using JsonDocument custody = JsonDocument.Parse(File.ReadAllText(
+            Path.Combine(cohortPath, "0.2.0.holdout-custody.json")));
+
+        Assert.Empty(ContractValidation.Validate(plan));
+        Assert.Empty(ContractValidation.Validate(corpus));
+        Assert.True(ContractSchemaValidator.Validate(SchemaNames.CalibrationReviewPlan, planJson).IsValid);
+        Assert.True(ContractSchemaValidator.Validate(SchemaNames.CalibrationCorpus, corpusJson).IsValid);
+        Assert.True(ContractSchemaValidator.Validate(SchemaNames.CalibrationEvaluation, evaluationJson).IsValid);
+        Assert.Equal(15, plan.Records.Count);
+        Assert.Equal(15, corpus.Records.Count);
+        foreach (CalibrationRecord priorRecord in priorCorpus.Records)
+        {
+            CalibrationRecord current = corpus.Records.Single(record => record.Id == priorRecord.Id);
+            Assert.Equal(
+                priorRecord.Targets.OrderBy(target => target.Id, StringComparer.Ordinal)
+                    .Select(TargetHours),
+                current.Targets.OrderBy(target => target.Id, StringComparer.Ordinal)
+                    .Select(TargetHours));
+        }
+
+        JsonElement[] reproduced =
+        [
+            .. manifest.RootElement.GetProperty("families").EnumerateArray(),
+        ];
+        JsonElement[] development = [.. reproduced.Where(IsDevelopment)];
+        Assert.Equal(
+            development.Select(Id).Order(StringComparer.Ordinal),
+            corpus.Records.Select(record => record.Repository.Id).Order(StringComparer.Ordinal));
+        foreach (CalibrationRecord record in corpus.Records)
+        {
+            Assert.Equal(CalibrationPartition.Development, record.Partition);
+            Assert.Equal(CalibrationReviewStatus.TeacherEstimate, record.Review.Status);
+            CalibrationReviewer reviewer = Assert.Single(record.Review.Reviewers);
+            Assert.Equal(CalibrationReviewerKind.HostAi, reviewer.Kind);
+            Assert.Equal(CalibrationReviewerRole.Teacher, reviewer.Role);
+            JsonElement family = development.Single(item => Id(item) == record.Repository.Id);
+            Assert.Equal(
+                family.GetProperty("analysis").GetProperty("estimateDigest").GetString(),
+                record.SourceEstimateDigest);
+        }
+
+        CalibrationTarget[] targets = [.. corpus.Records.SelectMany(record => record.Targets)];
+        Assert.Equal(2030, targets.Length);
+        Assert.Equal(162, targets.Count(target => target.Hours.Expected == 0m));
+        Assert.Equal(402, targets.Count(target => target.Hours.Expected > 8m));
+        Assert.All(targets, target => Assert.NotEmpty(target.EvidenceIds));
+        Assert.All(targets.Where(target => target.Hours.Expected == 0m), target =>
+            Assert.False(string.IsNullOrWhiteSpace(target.SizeException)));
+        Assert.All(targets.Where(target => target.Hours.Expected > 8m), target =>
+            Assert.False(string.IsNullOrWhiteSpace(target.SizeException)));
+
+        JsonElement rootElement = evaluation.RootElement;
+        Assert.Equal("development", rootElement.GetProperty("partition").GetString());
+        Assert.Equal(15, rootElement.GetProperty("recordCount").GetInt32());
+        Assert.Equal(0, rootElement.GetProperty("ignoredCandidateCount").GetInt32());
+        JsonElement match = rootElement.GetProperty("match");
+        Assert.Equal(2030, match.GetProperty("targetCount").GetInt32());
+        Assert.Equal(11161, match.GetProperty("candidateWorkItemCount").GetInt32());
+        Assert.Equal(1m, match.GetProperty("targetMatchRate").GetDecimal());
+        Assert.Equal(1m, match.GetProperty("candidateWorkItemMatchRate").GetDecimal());
+        JsonElement expected = rootElement.GetProperty("repositoryTotals").GetProperty("expected");
+        Assert.Equal(40564.00m, expected.GetProperty("reviewedHours").GetDecimal());
+        Assert.Equal(40076.50m, expected.GetProperty("candidateHours").GetDecimal());
+        Assert.Equal(0.2365m, expected.GetProperty("weightedAbsolutePercentageError").GetDecimal());
+        Assert.Equal(-0.0120m, expected.GetProperty("aggregateBiasRate").GetDecimal());
+        JsonElement interval = rootElement.GetProperty("repositoryTotals").GetProperty("interval");
+        Assert.Equal(0.9333m, interval.GetProperty("reviewedExpectedCoverage").GetDecimal());
+        Assert.Equal(0.8667m, interval.GetProperty("reviewedRangeFullyCoveredRate").GetDecimal());
+
+        JsonElement[] holdouts = [.. reproduced.Where(item => !IsDevelopment(item))];
+        AssertCustody(
+            custody.RootElement,
+            holdouts,
+            Path.Combine(cohortPath, "0.2.0.reproduction-manifest.json"));
+    }
+
     private static void AssertDevelopmentPacket(JsonElement family, string packetDirectory)
     {
         Assert.Equal("generated-blind-development", family.GetProperty("analysisStatus").GetString());
@@ -204,6 +298,10 @@ public sealed partial class CalibrationReproductionArtifactTests
         string.Equals(family.GetProperty("partition").GetString(), "development", StringComparison.Ordinal);
 
     private static string Id(JsonElement family) => family.GetProperty("id").GetString()!;
+
+    private static (string Id, decimal Low, decimal Expected, decimal High) TargetHours(
+        CalibrationTarget target) =>
+        (target.Id, target.Hours.Low, target.Hours.Expected, target.Hours.High);
 
     private static string Sha256JsonArtifact(string path)
     {

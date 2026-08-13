@@ -33,6 +33,57 @@ Because EffortHours's own anchor informed the seed-model and calibration design,
 a development diagnostic rather than an eligible held-out test record unless a
 future independent snapshot and review policy explicitly establishes otherwise.
 
+## 2026-08-13: complete public-readiness development review
+
+Status: **15-family development diagnostic; single host-AI teacher; no prior
+change, independent correction, holdout comparison, or admission**
+
+`efforthours-public-readiness/0.3.0` completes rubric `ehe-work-item/1.1.0`
+judgments for all 2,030 strict-blind development capabilities reproduced in the
+33-family public-readiness matrix. The checked-in teacher policy uses packet
+identity, verified evidence measurements, pinned public source, and explicit
+repository-specific exclusion boundaries. It accepts no candidate estimate path.
+The complete review plan was frozen in commit `6bda0b3` before the 15 matching
+candidate reports were unlocked for compilation and evaluation.
+
+All 2,030 targets and 11,161 source work-item references map exactly. The review
+contains 162 explicit `0/0/0` exclusions for double-counted, test-only, benchmark,
+generated-fixture, or false semantic signals. All 402 cohesive targets above the
+ordinary eight-hour review size carry explicit size exceptions. Validation and
+test families retain `withheld-not-run` / `not-authored` custody.
+
+| Family | Candidate expected | Reviewed expected | Point covered | Range covered |
+| --- | ---: | ---: | :---: | :---: |
+| App-vNext/Polly | 1,532.75 h | 1,385.00 h | yes | yes |
+| FastEndpoints/FastEndpoints | 2,552.50 h | 1,532.50 h | yes | no |
+| FluentValidation/FluentValidation | 770.00 h | 674.50 h | yes | yes |
+| CarterCommunity/Carter | 352.25 h | 365.25 h | yes | yes |
+| dotnet/command-line-api | 1,015.00 h | 626.00 h | yes | yes |
+| colinhacks/zod | 1,768.25 h | 1,586.25 h | yes | yes |
+| fastify/fastify | 1,729.50 h | 1,338.50 h | yes | yes |
+| lit/lit | 3,450.75 h | 2,886.00 h | yes | yes |
+| sindresorhus/execa | 1,159.50 h | 1,384.25 h | yes | yes |
+| tj/commander.js | 393.00 h | 494.50 h | yes | yes |
+| btcpayserver/btcpayserver | 4,797.75 h | 5,366.00 h | yes | yes |
+| MudBlazor/MudBlazor | 5,619.75 h | 4,949.25 h | yes | yes |
+| oqtane/oqtane.framework | 2,098.25 h | 3,920.75 h | no | no |
+| SimplCommerce/SimplCommerce | 5,000.50 h | 3,909.00 h | yes | yes |
+| Squidex/squidex | 7,836.75 h | 10,146.25 h | yes | yes |
+
+At repository expected points, reviewed EHE is 40,564.00 hours and the unchanged
+`seed-rules/0.4.0` candidate is 40,076.50 hours. WAPE is `0.2365`, aggregate bias
+is `-0.0120`, expected-point coverage is `0.9333`, and full reviewed-range coverage
+is `0.8667`. Mean candidate width is 3,569.98 hours versus 1,126.67 reviewed hours.
+Near-zero aggregate bias hides material family and category errors: Oqtane and
+Squidex remain underestimation signals, while FastEndpoints and SimplCommerce are
+overestimation signals. The complete development evidence is suitable for finite
+candidate design, not for claiming that the current seed is calibrated.
+
+The next boundary is to freeze exact candidate identities, configuration, resource
+budgets, and a selection rule using development evidence only. Validation labels
+must remain unavailable until that freeze; test labels remain externally sealed
+for a one-time decision after validation selects one candidate.
+
 ## 2026-08-13: public-readiness development reproduction and first balanced review
 
 Status: **three-family development diagnostic; single host-AI teacher; no prior
@@ -71,9 +122,9 @@ architecture, UI, manual validation, and the large maintained source backbones.
 The labels are transparent logical weak supervision from the same disclosed
 host-AI teacher used by the earlier public corpora. They have no independent
 correction and are not empirical production observations. The result is too small
-and immature to choose a correction. The remaining 12 development labels, blind
-validation custody after finite candidate freeze, externally sealed test labels,
-and the full operational gate remain unresolved.
+and immature to choose a correction. At this checkpoint, the remaining 12
+development labels, blind validation custody after finite candidate freeze,
+externally sealed test labels, and the full operational gate remained unresolved.
 
 ## 2026-08-12: C and C++ source-boundary review
 

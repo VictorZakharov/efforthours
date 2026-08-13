@@ -17,12 +17,14 @@ not copied into EffortHours.
 That `0.1.0` artifact remains the immutable **source-only sampling checkpoint**.
 The follow-up [`0.2.0 reproduction checkpoint`](0.2.0/README.md) verifies all 33
 commit/tree/blob/license identities, publishes strict-blind packets for all 15
-development families, records source custody without analysis for all 18 holdouts,
-and compiles the first balanced three-family development teacher slice. Source,
-archives, evidence bundles, and estimate bodies remain uncommitted.
+development families, and records source custody without analysis for all 18
+holdouts. The [`0.3.0 development checkpoint`](0.3.0/README.md) freezes complete
+rubric judgments for all 2,030 development capabilities before unlocking their
+candidate reports. Source, archives, evidence bundles, and estimate bodies remain
+uncommitted.
 
-The new labels do not open model admission: only three development families are
-reviewed, validation/test labels are not authored, and no independent correction
+The development labels do not open model admission: validation/test labels are not
+authored, the finite candidate set is not frozen, and no independent correction
 exists. Development comparison is diagnostic only.
 
 ## Frozen matrix
@@ -126,8 +128,8 @@ contain an unsealed test label before the one-time decision.
 
 ## Next checkpoint
 
-Complete rubric labels for the remaining 12 development families without changing
-the frozen partitions. Only then may development diagnostics inform a finite
-candidate design. Validation labels must remain unavailable until that candidate
-manifest is frozen. Test labels require an externally held body and precommitted
-digest before authoring and remain sealed until the one-time selection boundary.
+The complete development labels may now inform a finite candidate design without
+changing the frozen partitions. Validation labels must remain unavailable until
+that exact candidate manifest and selection rule are frozen. Test labels require
+an externally held body and precommitted digest before authoring and remain sealed
+until the one-time selection boundary.

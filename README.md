@@ -264,7 +264,7 @@ unchanged scans, but it is never an effort signal.
 
 | Area | Current status |
 | --- | --- |
-| Repository EHE | Experimental and uncalibrated; all 33 frozen source families are verified, three development families have weak-supervision labels, and no candidate is numerically admitted |
+| Repository EHE | Experimental and uncalibrated; all 15 frozen development families have rubric-complete weak-supervision labels, all 18 validation/test families remain unopened, and no candidate is admitted |
 | Change EHE, documented Stage A band | Model-authored logical gate passed for eligible 4-to-32-hour changes on the previously admitted language set |
 | Newer analyzer ecosystems | Experimental and outside the existing Change admission boundary |
 | Production validation | No empirical production-accuracy claim |

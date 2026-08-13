@@ -114,8 +114,9 @@ decision. No seed prior changes in this checkpoint.
 
 ## Next boundary
 
-The remaining 12 development families need rubric-complete labels before fitting
-or candidate design. Validation labels must stay blind and unavailable until a
-finite candidate manifest is frozen. Test labels have not been authored; before
-authoring, their bodies and digests require genuine external custody, and they may
-be revealed only after validation selects one frozen candidate.
+The historical next step—rubric-complete labels for the remaining 12 development
+families—is completed by the [`0.3.0 development checkpoint`](../0.3.0/README.md).
+Validation labels must stay blind and unavailable until a finite candidate manifest
+is frozen. Test labels have not been authored; before authoring, their bodies and
+digests require genuine external custody, and they may be revealed only after
+validation selects one frozen candidate.
