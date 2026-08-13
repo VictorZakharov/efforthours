@@ -7,11 +7,11 @@
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>eh</ToolCommandName>
     <PackageId>EffortHours.Tool</PackageId>
-    <Version>0.9.0-alpha.3</Version>
+    <Version>0.10.0-alpha.1</Version>
     <Title>EffortHours CLI</Title>
     <PackageReadmeFile>PACKAGE_README.md</PackageReadmeFile>
     <PackageTags>estimation;effort-estimation;developer-tools;cli;repository-analysis;static-analysis;dotnet-tool</PackageTags>
-    <PackageReleaseNotes>Bug-fix alpha: Change EHE 0.3.0 consolidates repeated repository work-item partitions for one existing or modified capability into a bounded logical budget while preserving distinct capabilities. Bundled seed estimators remain experimental and uncalibrated.</PackageReleaseNotes>
+    <PackageReleaseNotes>Polyglot alpha: adds bounded offline analysis for HTML/CSS-family frontends, SQL, Python/Jupyter, Go, Java, Kotlin, Shell/PowerShell, Terraform/HCL, PHP/Composer, Rust/Cargo, Docker/Compose, and C/C++, expanded Change EHE routing, and faster CI. Only the documented Change Stage A band is logically admitted; the repository and newer ecosystem estimators remain experimental and uncalibrated.</PackageReleaseNotes>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="../EffortHours.Analysis/EffortHours.Analysis.csproj" />

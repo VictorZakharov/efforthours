@@ -80,10 +80,26 @@ public sealed partial class PublicReleaseHygieneTests
         Assert.Contains("id-token: write", preview, StringComparison.Ordinal);
         Assert.Contains("refs/tags/v", preview, StringComparison.Ordinal);
         Assert.Contains("NuGet/login@", preview, StringComparison.Ordinal);
+        Assert.Contains("--locked-mode", preview, StringComparison.Ordinal);
+        Assert.DoesNotContain("--force-evaluate", preview, StringComparison.Ordinal);
+        Assert.Contains("models/seed-rules/0.4.0.json", preview, StringComparison.Ordinal);
         Assert.Contains("efforthours.deps.json", preview, StringComparison.Ordinal);
         Assert.Contains("efforthours.runtimeconfig.json", preview, StringComparison.Ordinal);
         Assert.DoesNotContain("secrets.", preview, StringComparison.Ordinal);
         Assert.DoesNotContain("--skip-duplicate", preview, StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public void RuntimeDependencyNoticesMatchAuditedLicensePins()
+    {
+        string root = FindRepositoryRoot();
+        XDocument packages = XDocument.Load(Path.Combine(root, "Directory.Packages.props"));
+        string notices = File.ReadAllText(Path.Combine(root, "THIRD-PARTY-NOTICES.md"));
+
+        Assert.Equal("8.0.5", PackageVersion(packages, "JsonSchema.Net"));
+        Assert.Contains("| JsonSchema.Net | 8.0.5 | MIT |", notices, StringComparison.Ordinal);
+        Assert.Equal("1.7.0", PackageVersion(packages, "Acornima"));
+        Assert.Contains("| Acornima | 1.7.0 | BSD-3-Clause |", notices, StringComparison.Ordinal);
     }
 
     [Fact]
@@ -170,6 +186,15 @@ public sealed partial class PublicReleaseHygieneTests
 
     private static string Property(XDocument document, string name) =>
         document.Descendants(name).Single().Value.Trim();
+
+    private static string PackageVersion(XDocument document, string name) =>
+        document.Descendants("PackageVersion")
+            .Single(element => string.Equals(
+                (string?)element.Attribute("Include"),
+                name,
+                StringComparison.Ordinal))
+            .Attribute("Version")?.Value
+        ?? throw new InvalidOperationException($"Package '{name}' has no central version.");
 
     private static string FindRepositoryRoot()
     {

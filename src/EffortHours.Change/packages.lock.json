@@ -4,21 +4,21 @@
     "net10.0": {
       "Humanizer.Core": {
         "type": "Transitive",
-        "resolved": "3.0.10",
-        "contentHash": "yZIhtw8sYuvsONzQbZxWpR60tMWYHXoo0DL6nyOqSFiU5POjBTSEyWFpTQtJEZuy+oqiYTXKXY/Mjx7KnqIQFw=="
+        "resolved": "3.0.1",
+        "contentHash": "scB3+KcxNmEjZK5V8rKCW2gIiL8m8KH91w14FuuExyhi9xTyAJ+jr+DDxGdy12mHmioe2uvjxTfMgM7WmSUFlw=="
       },
       "Json.More.Net": {
         "type": "Transitive",
-        "resolved": "3.0.1",
-        "contentHash": "fRctF2J2SILYG6wqP21drmeEODmCVkVQ/b3MndDu2fT1swfySyUgq7ePCk+aENGlDcIm05fyfjh9vcuqDEfv3w=="
+        "resolved": "2.2.0",
+        "contentHash": "fiyEZJNgiCzDa7/N9bZ+CnM5qnawyJ54+CkHNZ2svwxWBWNNFzydJ7RlroqMdOjokGBiLcKIxdajNvOklzlYqQ=="
       },
       "JsonPointer.Net": {
         "type": "Transitive",
-        "resolved": "7.0.2",
-        "contentHash": "oClYHv2ooeRrtPZyC9sb/Za/ie5pGhjTbNHlAyFg4XOCyU+606FdoZKS7UdaWvtsPlrF+U2w0Ja3TRvn5+spyA==",
+        "resolved": "6.0.1",
+        "contentHash": "EbSJkd/1y9r0WBIptjUctA6BzjgKh1aNU/g6QGgdMZVZ8wc0S/ysQhfiQerP9/VFTeENFHFdCQaoOk9fZqwnFQ==",
         "dependencies": {
-          "Humanizer.Core": "3.0.10",
-          "Json.More.Net": "3.0.1"
+          "Humanizer.Core": "3.0.1",
+          "Json.More.Net": "2.2.0"
         }
       },
       "Microsoft.CodeAnalysis.Analyzers": {
@@ -130,7 +130,7 @@
       "efforthours.contracts": {
         "type": "Project",
         "dependencies": {
-          "JsonSchema.Net": "[9.4.0, )"
+          "JsonSchema.Net": "[8.0.5, )"
         }
       },
       "efforthours.core": {
@@ -175,11 +175,11 @@
       },
       "JsonSchema.Net": {
         "type": "CentralTransitive",
-        "requested": "[9.4.0, )",
-        "resolved": "9.4.0",
-        "contentHash": "muE4nPuzbD9x5XA1mkXJNqX4mhz47oF3EY8qFLY1pyUY7lhXFKq65t/dSKIHeNSLBV17zwZuq24MD1em90rMNg==",
+        "requested": "[8.0.5, )",
+        "resolved": "8.0.5",
+        "contentHash": "QoEqdoAUgAkbzuFAiHySjGuh8lJs8L8DxkEDGJLEebtlZ6+EbEr0wmYlidErSS2ASNFOModueb83DLNIRLqshg==",
         "dependencies": {
-          "JsonPointer.Net": "7.0.2"
+          "JsonPointer.Net": "6.0.1"
         }
       },
       "Microsoft.CodeAnalysis.CSharp": {

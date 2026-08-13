@@ -415,7 +415,7 @@ produce reviewed evidence with stable IDs.
 Exit condition: representative Node, React-family, frontend, backend, library, and
   test fixtures produce reviewed evidence equivalent in quality to .NET analysis.
 
-Implementation note: Acornima 1.6.2 supplies standards-oriented JavaScript and JSX
+Implementation note: Acornima 1.7.0 supplies standards-oriented JavaScript and JSX
 ASTs. It does not parse TypeScript grammar, so the initial TS/TSX path uses a
 bounded deterministic token analyzer and labels that provenance explicitly. No
 Node process, package manager, transpiler, target dependency, or executable config

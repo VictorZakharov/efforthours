@@ -34,7 +34,7 @@ EffortHours is published as the `EffortHours.Tool` .NET global tool. The install
 command is `eh`.
 
 ```text
-dotnet tool install --global EffortHours.Tool --version 0.9.0-alpha.3
+dotnet tool install --global EffortHours.Tool --version 0.10.0-alpha.1
 eh version
 eh --help
 ```
@@ -42,11 +42,11 @@ eh --help
 Preview versions are opt-in. Update an existing installation with:
 
 ```text
-dotnet tool update --global EffortHours.Tool --version 0.9.0-alpha.3
+dotnet tool update --global EffortHours.Tool --version 0.10.0-alpha.1
 ```
 
 See the [NuGet package](https://www.nuget.org/packages/EffortHours.Tool/) and the
-[latest GitHub prerelease](https://github.com/VictorZakharov/efforthours/releases/tag/v0.9.0-alpha.3).
+[latest GitHub prerelease](https://github.com/VictorZakharov/efforthours/releases/tag/v0.10.0-alpha.1).
 
 ## Estimate a repository
 
@@ -473,7 +473,7 @@ and review researchers can start from the [documentation index](docs/README.md).
 The repository uses the .NET 10 SDK selected by `global.json`.
 
 ```text
-dotnet restore EffortHours.slnx --configfile NuGet.Config --force-evaluate
+dotnet restore EffortHours.slnx --configfile NuGet.Config --locked-mode
 dotnet build EffortHours.slnx --no-restore --configuration Release
 dotnet test tests/EffortHours.Tests/EffortHours.Tests.csproj --no-build --no-restore --configuration Release
 dotnet test tests/EffortHours.EndToEndTests/EffortHours.EndToEndTests.csproj --no-build --no-restore --configuration Release
