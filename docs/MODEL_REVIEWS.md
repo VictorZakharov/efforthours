@@ -7,7 +7,7 @@ the model until one repository looks desirable.
 
 Each record must identify the analyzed source revision, evidence digest, estimator
 artifact, profiles, review method, and unresolved concerns. Repository-level
-partition isolation is now defined by `MILESTONE_7.md` and enforced by the v1
+partition isolation is now defined by `CALIBRATION.md` and enforced by the v1
 calibration-corpus contract. Existing prose anchors do not become calibration
 records automatically: they must be transcribed at work-item granularity, reviewed
 under a versioned rubric, assigned to a repository-owned partition, and supplied

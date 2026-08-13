@@ -1,94 +1,94 @@
 # EffortHours documentation
 
-Start with the repository [README](../README.md) for installation, current
-capabilities, limitations, and CLI examples. This directory keeps the deeper
-product contracts, engineering records, and reproducible checkpoints out of the
-repository root without discarding their decision history.
+Start with the repository [README](../README.md) for installation, main workflows,
+supported analyzers, safety boundaries, model status, and current performance.
 
-## Current product and engineering contracts
+This directory contains living contracts and reproducible engineering records.
+Release history belongs in the [changelog](../CHANGELOG.md), not in the roadmap or
+agent instructions.
 
-- [Product charter](PRODUCT.md) defines Equivalent Human Effort, the modeled
-  worker, profiles, goals, and non-goals.
-- [Estimation model](ESTIMATION_MODEL.md) defines how evidence becomes effort and
-  Equivalent Replacement Cost.
-- [Implementation plan](PLAN.md) records current architecture and roadmap status.
-- [Change estimation](CHANGE_ESTIMATION.md) defines repository, commit, range,
-  pull-request, portfolio, and contributor-period semantics.
-- [Change portfolio checkpoint](MILESTONE_CHANGE_PORTFOLIOS.md) records the
-  multiple-PR/manifest/author-period reconciliation policy and fixture matrix.
-- [Static SQL analysis](SQL_ANALYSIS.md) defines supported SQL evidence, dialect
-  confidence, effort mapping, safety bounds, Change behavior, and limitations.
-- [Static Python analysis](PYTHON_ANALYSIS.md) defines package discovery, bounded
-  token/indentation evidence, framework qualification, exclusions, Change
-  behavior, benchmark results, and non-goals.
-- [Static Jupyter analysis](JUPYTER_ANALYSIS.md) defines the bounded maintained-
-  cell projection, output/execution-state exclusions, Python and Markdown scope,
-  Change behavior, privacy limits, and non-goals.
-- [Static Go analysis](GO_ANALYSIS.md) defines module/workspace discovery, bounded
-  token and import-qualified evidence, build uncertainty, exclusions, Change
-  behavior, benchmark results, and non-goals.
-- [Static Java analysis](JAVA_ANALYSIS.md) defines Maven/Gradle project discovery,
-  bounded token and import-qualified evidence, build/runtime uncertainty,
-  exclusions, Change behavior, benchmark results, and non-goals.
-- [Static C and C++ analysis](CPP_ANALYSIS.md) defines the bounded managed
-  tokenizer/declaration parser, preprocessing, build-system ownership, semantic,
-  safety, licensing, Change, benchmark, and non-goal boundary.
-- [Static Kotlin/JVM analysis](KOTLIN_ANALYSIS.md) defines shared JVM project
-  ownership, Kotlin source/script boundaries, server and Android semantics,
-  compiler-plugin uncertainty, exclusions, Change behavior, benchmarks, and
-  non-goals.
-- [Static Shell and PowerShell analysis](SHELL_POWERSHELL_ANALYSIS.md) defines
-  maintained-script roles, token and invocation-context evidence, dynamic-command
-  uncertainty, Change behavior, benchmarks, and non-goals.
-- [Static Terraform and HCL analysis](TERRAFORM_HCL_ANALYSIS.md) defines admitted
-  artifacts, bounded semantics, local module ownership, exclusions, effort
-  mapping, Change behavior, benchmarks, and non-goals.
-- [Static PHP and Composer analysis](PHP_COMPOSER_ANALYSIS.md) defines package and
-  autoload ownership, token/template evidence, framework qualification, Change
-  behavior, benchmarks, and non-goals.
-- [Static Rust and Cargo analysis](RUST_CARGO_ANALYSIS.md) defines package/workspace
-  ownership, token-backed Rust evidence, macro/build uncertainty, Change behavior,
-  benchmarks, and non-goals.
-- [Static Docker and Compose analysis](DOCKER_ANALYSIS.md) defines Dockerfile,
-  filename-qualified Compose, `.dockerignore`, local build-reference, Change,
-  benchmark, safety, and non-goal boundaries.
-- [Source-file budgets](CODE_BUDGETS.md) documents the enforced early-refactoring
-  policy.
-- [Release procedure](RELEASING.md) defines the source-visibility and NuGet
-  publication boundary.
+## Product and estimation
 
-## Calibration and review records
+- [Product charter](PRODUCT.md) defines EHE, the modeled worker, profiles, goals,
+  product surfaces, and non-goals.
+- [Estimation model](ESTIMATION_MODEL.md) defines how repository evidence becomes
+  work items, planning ranges, uncertainty, gaps, and replacement cost.
+- [Engineering plan](PLAN.md) records the implemented architecture, current
+  baseline, delivery guardrails, and active priorities.
+- [Reporting](REPORTING.md) defines canonical reports, compact projections,
+  capability grouping, explanation, and output compatibility.
+- [Pricing](PRICING.md) keeps the dated default rate and its public-data derivation
+  separate from effort.
 
-- [Milestone 7](MILESTONE_7.md) defines reviewed labels, repository-held-out
-  evaluation, mutation guardrails, and model-admission requirements.
-- [Seed-model review records](MODEL_REVIEWS.md) disclose provisional realism and
-  contamination checks without presenting them as independent calibration.
-- [Change model-admission policy](CHANGE_MODEL_ADMISSION.md) freezes the admission
-  order and metrics for future Change estimators.
-- [Milestone 8](MILESTONE_8.md) and its
-  [measurement checkpoint](MILESTONE_8_MEASUREMENT.md) define provider-neutral
-  host review and sanitized cost/usefulness measurement.
+## Change EHE
 
-## Reproducible engineering checkpoints
+- [Change estimation](CHANGE_ESTIMATION.md) governs immutable Git and non-Git
+  selectors, final-delta normalization, range reconciliation, work items, and
+  limitations.
+- [Change portfolios](CHANGE_PORTFOLIOS.md) governs repeated PRs, cross-repository
+  manifests, author-period selection, exact allocation, attribution uncertainty,
+  and no-ranking safeguards.
+- [Change model admission](CHANGE_MODEL_ADMISSION.md) freezes the progressive size,
+  metric, performance, and evidence gates for Change estimators.
 
-- [Scanner benchmarks](BENCHMARKS.md) records performance, memory, and read-only
-  safety measurements.
+## Calibration and host review
+
+- [Calibration](CALIBRATION.md) defines corpus identity, repository-isolated
+  partitions, review maturity, reviewed exclusions, mutation guardrails, offline
+  metrics, and repository-model admission.
+- [Seed-model review records](MODEL_REVIEWS.md) retain dated diagnostic and
+  contamination findings without presenting them as independent or empirical
+  validation.
+- [Host-review protocol](HOST_REVIEW.md) defines optional provider-neutral packets,
+  digest-bound queries, selected-source disclosure, and non-applying adjustments.
+- [Host-review measurement](HOST_REVIEW_MEASUREMENT.md) defines sanitized session
+  telemetry, paired comparison, privacy, and budget-admission requirements.
+- [Public calibration artifacts](../calibration/README.md) route to the exact
+  corpora, rubrics, blind handoffs, mutation suites, and reproduction records.
+
+## Analyzer boundaries
+
+Each document states admitted inputs, static evidence, exclusions, Change behavior,
+privacy/safety limits, model maturity, and non-goals for its ecosystem.
+
+- [SQL](SQL_ANALYSIS.md)
+- [Python](PYTHON_ANALYSIS.md)
+- [Jupyter notebooks](JUPYTER_ANALYSIS.md)
+- [Go](GO_ANALYSIS.md)
+- [Java](JAVA_ANALYSIS.md)
+- [Kotlin/JVM](KOTLIN_ANALYSIS.md)
+- [Shell and PowerShell](SHELL_POWERSHELL_ANALYSIS.md)
+- [Terraform and HCL](TERRAFORM_HCL_ANALYSIS.md)
+- [PHP and Composer](PHP_COMPOSER_ANALYSIS.md)
+- [Rust and Cargo](RUST_CARGO_ANALYSIS.md)
+- [Docker and Compose](DOCKER_ANALYSIS.md)
+- [C and C++](CPP_ANALYSIS.md)
+
+The .NET and JavaScript/TypeScript/frontend boundaries are described in the
+[README support matrix](../README.md#supported-analyzers), the product and model
+contracts, and their implementation tests. A future extraction into dedicated
+boundary documents should preserve those current semantics rather than duplicate
+release history.
+
+## Engineering records and procedures
+
+- [Scanner benchmarks](BENCHMARKS.md) records reproducible performance, memory,
+  allocation, and read-only safety measurements.
 - [Reporting benchmarks](REPORT_BENCHMARKS.md) records compact-output size and
-  usefulness checks.
-- [Milestone 5](MILESTONE_5.md) and [Milestone 6](MILESTONE_6.md) record the seed
-  estimator and reporting decisions.
-- [Change Milestones 1](MILESTONE_CHANGE_1.md),
-  [2](MILESTONE_CHANGE_2.md), and [3](MILESTONE_CHANGE_3.md) record the initial
-  Change implementation, calibration infrastructure, and synthetic teacher corpus.
+  usefulness measurements.
+- [Source-file budgets](CODE_BUDGETS.md) documents the enforced early-refactoring
+  policy and ratchets.
+- [Release procedure](RELEASING.md) defines visibility, tagging, trusted NuGet
+  publication, verification, and separately authorized release actions.
+- [Host-review benchmark artifacts](../benchmarks/host-review/public-expansion/0.1.0/README.md)
+  record the first sanitized paired comparison.
 
-These checkpoint documents remain intentionally available because they explain
-why current schemas and semantics exist. They are historical evidence, not a claim
-that every limitation described there has since been resolved.
+Completed milestone implementation playbooks are intentionally not part of the
+living documentation set. Their durable decisions are consolidated above; exact
+historical text remains available in Git, while immutable measurement and
+calibration evidence remains checked in at its source.
 
-## Project policies
-
-Contribution, conduct, governance, security, licensing, notices, and release notes
-remain at the repository root for normal GitHub discovery:
+## Repository policies
 
 - [Contributing](../CONTRIBUTING.md)
 - [Code of Conduct](../CODE_OF_CONDUCT.md)

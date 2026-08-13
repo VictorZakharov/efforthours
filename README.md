@@ -296,7 +296,7 @@ packet and request bounded evidence or explicitly selected admitted-source detai
 
 EffortHours does not choose or call a provider, transmit material itself, or apply
 proposed adjustments. The caller controls disclosure, privacy, retention, model
-choice, and cost. See the [host-review protocol](docs/MILESTONE_8.md).
+choice, and cost. See the [host-review protocol](docs/HOST_REVIEW.md).
 
 ## Command reference
 

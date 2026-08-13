@@ -6,6 +6,13 @@ may still change public contracts with explicit documentation.
 
 ## Unreleased
 
+### Changed
+
+- Consolidated the living product, roadmap, reporting, pricing, calibration,
+  host-review, and Change-portfolio documentation; removed completed milestone
+  playbooks whose durable decisions now live in those contracts; and reduced
+  `AGENTS.md` to current operating guidance instead of release history.
+
 ## 0.10.0-alpha.2 - 2026-08-13
 
 ### Added

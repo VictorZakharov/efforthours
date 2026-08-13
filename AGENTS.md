@@ -6,620 +6,209 @@ These instructions apply to the entire EffortHours repository.
 
 ## Mission
 
-Build an offline-first .NET 10 CLI that estimates **Equivalent Human Effort**: the
-counterfactual time one competent senior contractor, unfamiliar with the business
-domain and not using AI, would need to recreate a repository's current functional
-and quality state from a clear specification.
+Build and maintain an offline-first .NET 10 CLI that estimates **Equivalent Human
+Effort (EHE)**: the counterfactual time one competent senior contractor,
+unfamiliar with the business domain and not using AI, would need to recreate a
+repository's current functional and quality state from a clear specification.
 
-This is replacement-effort estimation, not reconstruction of actual hours worked.
+EHE is replacement effort. It is not actual labor, a timesheet, an authorship
+claim, a productivity score, or an invoice.
 
 ## Read before changing the repository
 
-Read these documents completely:
+Read these documents completely before making changes:
 
 1. `docs/PRODUCT.md`
 2. `docs/ESTIMATION_MODEL.md`
 3. `docs/PLAN.md`
 4. `README.md`
-5. `docs/MILESTONE_5.md` when changing evidence-to-effort behavior
-6. `docs/MILESTONE_6.md` when changing reporting, explanation, or default pricing
-7. `docs/MILESTONE_7.md` and `docs/MODEL_REVIEWS.md` when changing priors,
-   calibration labels, evaluation, mutation guardrails, or review policy
-8. `docs/MILESTONE_8.md` when changing host-review packets, queries, adjustment
-   validation, source disclosure, provider boundaries, or review budgets
-9. `docs/MILESTONE_8_MEASUREMENT.md` when changing host-review telemetry,
-   comparison metrics, benchmark privacy, or model-budget admission
-10. `docs/CHANGE_ESTIMATION.md` when changing diff, PR, commit, range, or
-    contribution semantics
-11. `docs/MILESTONE_CHANGE_1.md` when changing the implemented Change EHE boundary
-12. `docs/MILESTONE_CHANGE_2.md`, `docs/MILESTONE_CHANGE_3.md`, and
-    `docs/CHANGE_MODEL_ADMISSION.md` when changing Change
-    calibration identity, labels, metrics, review maturity, or admission policy
-13. `docs/MILESTONE_CHANGE_PORTFOLIOS.md` when changing multi-PR manifests,
-    author-period selection, portfolio reconciliation, attribution, or ranking
-    safeguards
-14. `docs/RELEASING.md` when changing package metadata, public-release automation,
-    repository visibility procedure, or NuGet publication
 
-If an implementation request conflicts with those documents, surface the conflict
-and update the relevant decision explicitly. Do not silently change estimation
-semantics.
+Then read the documents that govern the area being changed:
 
-## Settled product constraints
+- reporting or explanation: `docs/REPORTING.md`;
+- pricing or default rates: `docs/PRICING.md`;
+- repository calibration, labels, evaluation, mutation guardrails, or model
+  admission: `docs/CALIBRATION.md` and `docs/MODEL_REVIEWS.md`;
+- Change EHE selectors, normalization, ranges, or contributions:
+  `docs/CHANGE_ESTIMATION.md`;
+- Change portfolios or attribution safeguards: `docs/CHANGE_PORTFOLIOS.md`;
+- Change labels, metrics, or admission: `docs/CHANGE_MODEL_ADMISSION.md` plus the
+  applicable rubric under `calibration/rubrics/`;
+- host-review packets, queries, adjustments, disclosure, or budgets:
+  `docs/HOST_REVIEW.md` and `docs/HOST_REVIEW_MEASUREMENT.md`;
+- analyzer behavior: the applicable `docs/*_ANALYSIS.md` boundary;
+- packaging, release automation, visibility, or NuGet publication:
+  `docs/RELEASING.md`; and
+- C# responsibility moves or file-size changes: `docs/CODE_BUDGETS.md` and
+  `eng/file-budgets.json`.
 
-- Target any common software repository eventually.
-- Implement .NET and JavaScript/TypeScript analysis first.
-- Implement the tool and reusable libraries on .NET 10.
-- Ignore Git history, churn, contributors, and timestamps as effort signals.
-- The explicit change-estimation command may use revisions, and future portfolio
-  selectors may use author identity and time, only to select final changes.
-  Ordinary repository estimates remain history-free, and selection metadata must
-  never become an effort multiplier.
-- Estimate the current artifact, not historical rework or abandoned approaches.
+Use `docs/README.md` as the complete documentation index. If an implementation
+request conflicts with a documented decision, surface the conflict and update the
+decision explicitly. Never change estimation semantics silently.
+
+## Current implementation baseline
+
+- The primary distribution is the `EffortHours.Tool` .NET global tool and its
+  installed command is `eh`.
+- The common scanner and mixed-repository pipeline are implemented with versioned
+  evidence, report, model, diagnostic, rate, review, calibration, and Change
+  contracts.
+- Static analyzer families cover .NET; JavaScript/TypeScript and frontend assets;
+  SQL; Python and Jupyter; Go; Java; Kotlin/JVM; Shell and PowerShell;
+  Terraform/HCL; PHP/Composer; Rust/Cargo; Docker/Compose; and C/C++.
+- JavaScript and JSX use Acornima ASTs. TypeScript and TSX remain explicitly
+  token-backed. The other ecosystem documents state their exact parser/token and
+  uncertainty boundaries.
+- Repository estimation uses transparent `seed-rules/0.4.0` priors. It remains
+  experimental and numerically uncalibrated; do not describe it as production-
+  ready.
+- Current Change source reports use
+  `change-seed/0.18.0+seed-rules/0.4.0`. Only the documented 0.6.0 Stage A subset
+  has passed a model-authored logical gate for eligible 4-to-32-hour changes. That
+  is not empirical production validation and does not admit later ecosystem
+  extensions.
+- `change-portfolio/0.1.0` provides experimental repeated-PR, manifest, and
+  author-period reconciliation. Identity and time are selectors only.
+- Calibration and review infrastructure is implemented, but no local ML model has
+  been selected or added. Public labels remain disclosed weak supervision with
+  the maturity recorded in their artifacts.
+- Host-AI review is optional, provider-neutral, and non-applying. The local
+  baseline remains complete without it, and no automatic review budget is
+  selected.
+- Reproducible fresh-process scanner benchmarks, memory-only unit fixtures,
+  process-level CLI tests, optional external caching, and source-file budget gates
+  are in place.
+
+Refer to `CHANGELOG.md` for release history. Do not turn this file into a milestone
+or per-release log.
+
+## Non-negotiable product semantics
+
+- Estimate the current artifact, not historical rework, abandoned approaches, or
+  elapsed development time.
+- Ignore commits, churn, contributors, timestamps, and branch activity as effort
+  signals. Explicit Change and portfolio commands may read revisions, identity,
+  and time only to select immutable final changes.
 - Prefer functional and quality equivalence over line-for-line reproduction.
-- Recreate with sensible modern 2026-equivalent technology while preserving
-  meaningful compatibility and external constraints.
-- Do not reward duplication, dead code, generated code, vendored code, or accidental
-  complexity.
-- Value meaningful customization in generated artifacts when it can be distinguished
-  from conventional generated output; otherwise exclude the generated body and
-  explain the exclusion.
-- Reflect tests and documentation at the level actually present.
-- On the fastest default path, assume discovered tests pass. Label configured
-  coverage as declared-and-assumed and measured coverage as measured.
-- Include reasonable manual validation and debugging separately from automated-test
+- Assume a sensible modern 2026-equivalent implementation while preserving
+  meaningful compatibility, protocols, formats, and external constraints.
+- Do not reward duplication, dead code, generated code, vendored code, accidental
+  complexity, or mechanical volume.
+- Value generated artifacts only through supported evidence for configuration,
+  templates, integration, validation, or safely isolated maintained
+  customization. Otherwise exclude the generated body and explain why.
+- Reflect tests and documentation at the level represented. On the fast static
+  path, label configured coverage `declared-assumed` and parsed supported reports
+  `measured`; measured coverage takes precedence within the same scope.
+- Keep reasonable manual validation and debugging separate from automated-test
   creation.
-- Estimate incomplete or broken repositories as the working system materially
-  described, but prominently note that the checkout was not verified as working.
-- Keep professionalization or remediation gaps separate from represented effort.
-- Support `implementation` and `recreation` estimation profiles.
-- Accept an optional specification input.
-- Produce repository-level breakdowns before feature-oriented breakdowns.
-- Decompose large totals into evidence-backed work items, normally about 0.5 to 8
-  expected hours each.
-- Keep effort independent from pricing. Apply a dated, configurable market rate
-  only after hours are estimated.
-- Make every material estimate traceable to evidence and reasoning.
-- Require no embedded or remote AI provider for the local baseline estimate.
-- Use local ML where it improves agreement with reviewed logical estimates.
-- Design compact uncertainty packets and follow-up queries for the surrounding AI
-  session; choose budgets only after measuring real implementations.
-- Treat provider and privacy choices as the responsibility of the client running
-  the AI session.
+- Warn when a checkout was not verified as working. Do not add hypothetical repair
+  work to represented EHE.
+- Keep professionalization or remediation gaps separate from represented effort
+  and pricing.
+- Support both `implementation` and `recreation` profiles, plus an optional
+  specification input.
+- Build repository-first, evidence-backed work items, normally about 0.5 to 8
+  expected hours each. Change admission may impose a smaller decomposition
+  boundary.
+- Estimate hours before pricing. A rate card or override must never change EHE.
+- Preserve stable evidence IDs, explicit uncertainty, and calculation lineage for
+  every material estimate.
 
-## Architecture and implementation guidance
+## Architecture and implementation rules
 
-- Prefer one `eh` executable with composable subcommands and reusable
-  libraries.
-- Keep language-neutral contracts separate from ecosystem analyzers.
-- Treat repository evidence, work items, estimates, diagnostics, models, and rate
-  cards as explicitly versioned contracts.
-- Favor compiler/parser evidence over textual guesses where practical.
-- Do not make lines of code the principal effort model.
-- Separate observed evidence, inferred classification, estimated work, AI/human
-  adjustments, and pricing in code and serialized output.
-- Give facts stable IDs and preserve calculation lineage through reports.
-- Keep output deterministic for identical inputs, configuration, and model versions.
+- Prefer one `eh` executable with composable commands and reusable libraries.
+- Keep language-neutral contracts and pipeline behavior separate from ecosystem
+  analyzers.
+- Separate observed evidence, inferred classification, estimated work, review
+  adjustments, and pricing in both code and serialized output.
+- Favor compiler or parser evidence over textual guesses when practical. Lines of
+  code may be supporting evidence but never the principal effort model.
+- Keep identical inputs deterministic across scans, estimates, projections, and
+  explanations for the same configuration and versions.
 - Put structured data on stdout and diagnostics on stderr.
 - Make long-running analysis cancellable and bounded in memory.
-- Do not execute target code, install its dependencies, access the network, or write
-  into the target repository in default static-analysis mode.
-- Treat source trees as untrusted input. Avoid following links outside the selected
-  scope and avoid emitting secrets or source excerpts by default.
-- Do not inspect Git history. Reading ignore configuration solely for scope handling
-  is acceptable.
-- Preserve cross-platform behavior across Windows, Linux, and macOS.
-- Follow the enforced C# file budgets in `eng/file-budgets.json`. Start splitting
-  responsibilities near 80% of a hard ceiling. Do not add or increase a ratchet
-  override without recording an explicit architectural rationale.
-
-## Open-source requirements
-
-- Treat every committed file, comment, fixture, test name, and generated artifact as
-  material that may become public.
-- Never commit credentials, private client code, proprietary repository evidence,
-  machine-specific personal data, or copied examples without redistribution rights.
-- Record the source, version, and license of third-party dependencies, datasets,
-  benchmark repositories, model files, generated templates, and substantial copied
-  assets.
-- Prefer dependencies and assets compatible with the project's MIT-licensed
-  distribution. Surface uncertain or restrictive terms before
-  adoption.
-- Keep private calibration data separable from the public schemas, tooling, and
-  distributable model artifacts.
-- Design public extension contracts and serialized schemas conservatively because
-  downstream users may depend on them.
-- Add and maintain contribution, security, governance, and third-party-notice files
-  as the project approaches publication.
-- Set package license metadata to the SPDX expression `MIT` and keep the root
-  `LICENSE` file intact unless the user explicitly changes the license.
+- Treat source trees as untrusted input. Do not follow links outside selected
+  scope or emit secrets, configured values, absolute target paths, or source
+  excerpts by default.
+- In ordinary static mode, do not execute target code, build scripts, tests,
+  compilers, package managers, or generators; do not install dependencies, access
+  the network, inspect Git history, or write into the target repository.
+- Preserve Windows, Linux, and macOS behavior.
+- Follow `eng/file-budgets.json`. Start splitting responsibilities near 80% of a
+  ceiling, and never add or raise a ratchet override without an explicit
+  architectural rationale.
 
 ## Testing expectations
 
-- Add tests with every behavioral change.
-- Keep ordinary unit tests storage-independent. `tests/EffortHours.Tests` must use
-  in-memory repository/cache abstractions rather than temporary physical files;
-  reserve physical filesystem and subprocess checks for the separate end-to-end
-  suite and explicitly invoked benchmarks.
-- Use small synthetic fixtures for precise analyzer behavior and curated fixtures
-  for realistic integration behavior.
-- Validate JSON output against checked-in versioned schemas.
-- Use golden files only when their diffs remain reviewable and semantically useful.
-- Test that formatting-only changes, generated content, duplication, and Git history
-  do not improperly increase effort.
-- Test that meaningful behavior, tests, documentation, integrations, and complexity
-  do affect the appropriate categories.
-- Keep calibration train/test splits isolated by repository.
-- Add end-to-end tests for CLI exit codes, stdout/stderr separation, deterministic
-  output, and offline safety.
-- Benchmark toward approximately one million source lines in a few minutes on
-  documented commodity hardware.
+- Add tests for every behavioral change.
+- Keep `tests/EffortHours.Tests` storage-independent. Use in-memory repository and
+  cache abstractions; reserve physical files, Git repositories, subprocesses, and
+  installed-tool checks for `tests/EffortHours.EndToEndTests` or explicitly
+  invoked benchmarks.
+- Use small synthetic fixtures for precise behavior and curated, redistributable
+  fixtures for realistic integration coverage.
+- Validate serialized JSON against checked-in versioned schemas.
+- Use golden files only when their diffs are reviewable and semantically useful.
+- Guard formatting, generation, duplication, excluded content, and history from
+  inflating effort. Also test that meaningful behavior, tests, documentation,
+  integrations, security, delivery, and complexity affect the intended category.
+- Keep calibration partitions isolated by repository family.
+- Cover CLI exit codes, stdout/stderr separation, deterministic output,
+  cancellation, and offline/read-only safety at the process boundary.
+- Keep performance claims tied to reproducible benchmark commands, recorded
+  hardware, and explicit limitations.
 
-## Documentation and decision discipline
-
-- Update the root documents when a change alters product semantics, schemas,
-  milestones, assumptions, or unresolved decisions.
-- Label experimental heuristics and models as experimental.
-- Record the provenance and effective date of default rate cards and model files.
-- Do not describe EHE as actual labor, a timesheet, or hours historically worked.
-- Prefer explicit uncertainty over unsupported precision.
-- Keep `docs/CODE_BUDGETS.md` and the enforced manifest aligned when responsibilities
-  move between files.
-
-## Pull-request handoff
-
-- Agents may create commits, push topic branches, and open or update pull requests.
-- Agents must never merge a pull request or enable auto-merge. The maintainer
-  manually reviews and merges every pull request.
-
-## Current project stage
-
-Milestones 1 through 6, Milestone 7A, the Milestone 7B1 through 7B6 checkpoints,
-the post-7B5 analyzer-precision checkpoint, and the scanner performance-and-safety
-checkpoint are complete. The repository has a
-working common scanner, static .NET
-project/Roslyn analyzer, static JavaScript/TypeScript package and source analyzer,
-bounded static SQL analyzer,
-bounded static Python package and token/indentation analyzer,
-bounded static Go module/workspace and token analyzer,
-bounded static Java Maven/Gradle and token analyzer,
-bounded static Kotlin/JVM source and token analyzer,
-bounded static Shell and PowerShell token/invocation-context analyzer,
-bounded static Terraform/HCL token and module-boundary analyzer,
-bounded static PHP/Composer package, source, and template analyzer,
-bounded static Rust/Cargo package, workspace, source, and token analyzer,
-bounded static Dockerfile, Compose, and `.dockerignore` analyzer,
-bounded static C/C++ source, header, module, and native-build analyzer,
-mixed-repository evidence pipeline, published v1 schemas, optional external scan
-cache, installable global-tool package, memory-only unit fixtures, automated
-process-level CLI tests, reproducible million-line benchmarks, and a granular
-evidence-to-work-item estimator. The JavaScript path uses Acornima ASTs; TypeScript
-is explicitly token-backed. The bundled `seed-rules/0.4.0` model uses transparent
-marginal priors, exact-content normalization, two explicit profiles, approximately
-four-hour work-item partitions, confidence drivers, and a separate
-professionalization-gap ledger. Version 0.3.0 retains every non-UI 0.2.1 prior and
-replaces UI physical-line pricing with bounded template/style semantic units. It remains
-explicitly uncalibrated and must not be described as production-ready. Milestone 6
-adds schema-versioned compact projections, capability and evidence explanation,
-saved-report reprojection, and the auditable
-`us-senior-software-contractor/2026.1` default rate. Its EffortHours review projection
-is 7.4% of compact full JSON in the recorded checkpoint.
-Milestone 7A adds reviewed-label and evaluation contracts, the
-`ehe-work-item/1.0.0` rubric, repository-isolated partitions, deterministic offline
-metrics, and `calibration validate/evaluate`. Milestone 7B1 adds explicitly
-unreviewed authoring packets, blind review, completed review-plan compilation,
-explicit output paths, and the provenance-checked `efforthours-public-pilot/0.1.0`
-corpus with frozen seed reports. The pilot has three MIT-licensed repositories, 99
-teacher targets, one host-AI teacher, and no independent correction. Milestone 7B2
-adds exact-digest subsequent-review packets/compilation, explicit accept/replace
-decisions, reviewer-identity independence checks, versioned relational mutation
-contracts, and an 8-case/14-assertion synthetic .NET guardrail baseline. A compact
-blind handoff exists, but no independent reviewer has completed it. Milestone 7B3
-expands the public synthetic baseline to 30 cases and 84 passing assertions across
-.NET, parser-backed JavaScript, token-backed TypeScript, and mixed repositories,
-including all three range points, generated customization, and category isolation.
-Milestone 7B4 expands that unchanged seed baseline to 48 cases and 156 passing
-assertions with bounded renamed near-copies, compiler-disabled C# syntax, data,
-migrations, security, declared coverage levels, workspace reuse, CI, and container
-delivery. Milestone 7B5 adds `efforthours-public-expansion/0.1.0`: three immutable
-MIT-licensed releases, 133 lineage-complete teacher targets, frozen
-`seed-rules/0.2.1` baselines, the `ehe-work-item/1.1.0` explicit-exclusion policy,
-review compilers `0.2.0`, and a combined blind independent-review handoff. Across
-both public corpora there are six repository families and 232 blind targets, still
-with one host-AI teacher and no independent correction. `.NET` analyzer `0.3.2`
-now qualifies ambiguous execute/query calls with persistence context; JavaScript
-analyzer `0.4.1` requires UI-framework context for state/effect/form-only UI
-evidence and excludes development benchmark hashbangs from product entry points.
-The unchanged 48-case seed mutation baseline retains identical numeric estimates
-and 156 passing relations. Frozen-corpus reevaluations disclose mapping changes and
-are contamination diagnostics, not held-out accuracy evidence. The first
-measured-coverage checkpoint adds bounded, digest-verified LCOV and Cobertura
-parsing plus measured-over-declared precedence without changing the
-`seed-rules/0.2.1` catalog; public suite `0.4.0` has 51 cases and 170 passing
-relations. The frontend semantic-evidence checkpoint advances JavaScript analyzer
-to `0.5.0` with static Angular component metadata, bounded HTML/template and
-CSS-family semantics, digest-verified relative asset ownership, and no framework
-or preprocessor execution. `seed-rules/0.3.0` removes UI asset-line pricing;
-public suite `0.5.0` has 56 cases and 192 passing relations, while all 51 prior
-cases retain identical numeric ranges. The static SQL checkpoint adds common
-scanner `0.2.2` and SQL analyzer `0.1.0` for bounded schema, migration,
-stored-program, query, test, delivery, and cross-database evidence with explicit
-parser/dialect confidence and no database execution. Existing `seed-rules/0.3.0`
-priors are reused; public suite `0.6.0` has 67 cases and 247 passing relations,
-including 11 SQL states, while prior reports remain frozen. Milestone 7B6 advances
-.NET analyzer to `0.3.3` with conservative exclusion of explicit private methods
-that have no bounded intra-file reference and JavaScript analyzer to `0.5.1` with
-explicit static HTML/Angular accessibility evidence plus accessibility-test
-provenance. Public suite `0.7.0` has 77 cases and 309 passing relations covering
-bounded reachability, specified semantic-clone marginality, accessibility depth,
-and representative package/mixed graphs; all 67 earlier reports and 247 relations
-remain frozen. General semantic-clone/liveness analysis, broader JSX accessibility,
-larger real monorepository boundaries, and multiple observations per ecosystem/
-partition cell are next. Decomposed host-AI teacher judgment is accepted as
-logical weak supervision with `teacher-estimate` provenance; independent
-replication is optional corroboration, and empirical production observations
-remain separate. Local ML has not been selected or added.
-
-The first polyglot expansion adds common scanner `0.2.3`, Python analyzer `0.1.0`,
-and `seed-rules/0.4.0`. Scanner-admitted `.py`/`.pyi` files receive bounded managed
-tokenization, indentation-aware structure, static package ownership, local import
-edges, fine-grained test evidence, and conservative import-qualified framework
-semantics without invoking Python, resolving an environment, installing packages,
-or executing `setup.py`. Existing `0.3.0` priors remain unchanged; the generic
-polyglot backbone transparently reuses analogous marginal construction rates with
-wider uncertainty. Public mutation suite `0.8.0` has 88 states and 339 passing
-relations; the earlier 77 reports remain frozen at `0.3.0`. Jupyter uses the later
-separate safety boundary described below. The Python model is experimental and
-uncalibrated.
-
-The second polyglot expansion adds common scanner `0.2.4` and Go analyzer `0.1.0`.
-Scanner-admitted `go.mod`, `go.work`, and `.go` files receive static module,
-workspace, package, local replacement/reference, token structure, concurrency,
-test, import-qualified semantic, and explicit build/runtime uncertainty evidence
-without invoking the Go toolchain. The unchanged `seed-rules/0.4.0` generic
-polyglot backbone and existing specialized priors are reused. The standalone Go
-mutation suite has 13 states and 56 passing relations. The Go model is experimental
-and uncalibrated.
-
-The third polyglot expansion adds common scanner `0.2.5` and Java analyzer
-`0.1.0`. Scanner-admitted Maven and Gradle build artifacts plus `.java` files
-receive static project ownership, local project/reference edges, bounded token
-structure, import/annotation-qualified framework semantics, test evidence, and
-explicit build/runtime uncertainty without invoking a JDK, Maven, or Gradle. The
-unchanged `seed-rules/0.4.0` generic polyglot backbone and existing specialized
-priors are reused. The standalone Java mutation suite has 13 states and 56 passing
-relations. The Java model is experimental and uncalibrated.
-
-The fourth polyglot expansion adds common scanner `0.2.6` and Kotlin analyzer
-`0.1.0`. Scanner-admitted `.kt` and non-Gradle `.kts` files share Maven/Gradle JVM
-project ownership with Java and receive bounded token structure, Kotlin declaration
-and API evidence, coroutine/Flow evidence, tests, import-qualified server,
-Android/Compose, data, integration, security, validation, and background semantics,
-plus explicit compiler-plugin and multiplatform uncertainty. EffortHours invokes
-no JDK, Kotlin compiler, Gradle, Android tooling, KSP, kapt, or tests. The unchanged
-`seed-rules/0.4.0` generic polyglot backbone and existing specialized priors are
-reused. The standalone Kotlin mutation suite has 14 states and 63 passing
-relations. The Kotlin model is experimental and uncalibrated.
-
-The fifth polyglot expansion adds common scanner `0.2.7` and scripting analyzer
-`0.1.0`. Scanner-admitted maintained Shell/Bash and PowerShell files receive
-bounded token structure, product/module/test/build/CI/delivery/infrastructure role
-classification, and conservative integration, security, and validation evidence.
-EffortHours starts no shell, resolves no commands/modules, sources no content,
-evaluates no expansions, and emits no source values/excerpts. The unchanged
-`seed-rules/0.4.0` generic polyglot backbone and existing specialized priors are
-reused. The standalone scripting mutation suite has 13 states and 46 passing
-relations. The scripting model is experimental and uncalibrated.
-
-The sixth polyglot expansion adds common scanner `0.2.8` and Terraform/HCL
-analyzer `0.1.0`. Scanner-admitted maintained `.tf`, `.tfvars`, Terraform tests,
-CLI configuration, and relevant HCL receive bounded token/structural analysis,
-semantic infrastructure units, repository-local module ownership, external
-boundary classes, and separate integration, security, validation, test,
-documentation, build, and delivery evidence. EffortHours runs no Terraform or
-related tool, loads no schemas, fetches no provider/module, contacts no backend or
-network, evaluates no plan/interpolation/policy, and emits no configured values or
-source excerpts. State, plans, caches, locks, generated/vendor content, raw line
-volume, and exact duplicates do not inflate semantic effort. The unchanged
-`seed-rules/0.4.0` existing priors are reused. The standalone Terraform mutation
-suite has 14 states and 48 passing relations. The Terraform model is experimental
-and uncalibrated.
-
-The seventh polyglot expansion adds common scanner `0.2.9` and PHP analyzer
-`0.1.0`. Scanner-admitted `composer.json`, maintained `.php` source, Blade
-templates, and PHP tests receive static package ownership, dependency/autoload/
-script/binary metadata, literal repository-local path edges, bounded token
-structure, namespace/import/declaration/public-API evidence, template evidence,
-tests, import-qualified framework semantics, and explicit dynamic/runtime
-uncertainty. EffortHours invokes no PHP, Composer, autoloader, package script,
-framework bootstrap, container, route compiler, reflection, dependency resolver,
-or tests. The unchanged `seed-rules/0.4.0` generic polyglot backbone and existing
-specialized priors are reused. The standalone PHP mutation suite has 14 states and
-59 passing relations. The PHP model is experimental and uncalibrated.
-
-The eighth polyglot expansion adds common scanner `0.2.10` and Rust analyzer
-`0.1.0`. Scanner-admitted `Cargo.toml`, maintained `.rs` source, Rust tests,
-benchmarks, examples, build scripts, and configuration receive static package and
-workspace ownership, dependency/feature/target metadata, repository-local edges,
-bounded token structure, declaration/public-API/generic/lifetime/async/unsafe/error
-evidence, tests, import-qualified semantics, FFI, and explicit macro/build/
-generated-binding uncertainty. EffortHours invokes no Cargo, rustc, build script,
-procedural macro, generator, test, example, or benchmark and resolves no active
-feature set, dependency graph, target triple, borrow checking, or generated body.
-The unchanged `seed-rules/0.4.0` generic polyglot backbone and existing specialized
-priors are reused. The standalone Rust mutation suite has 14 states and 62 passing
-relations. The Rust model is experimental and uncalibrated.
-
-The ninth ecosystem expansion adds common scanner `0.2.11` and Docker analyzer
-`0.1.0`. Scanner-admitted Dockerfile variants, filename-qualified Compose YAML,
-and `.dockerignore` receive bounded static instruction/stage/build/runtime,
-service/topology/security/deploy/dynamic-YAML, build-context-rule, exact-duplicate,
-and literal repository-local build-reference evidence. Arbitrary YAML is not
-Compose. EffortHours invokes no Docker, Compose, BuildKit, shell, container
-runtime, or target code; pulls no image; expands no build context; loads no
-include/environment file; resolves no interpolation/secret; and emits no
-configured value or source excerpt. The unchanged `seed-rules/0.4.0` container
-prior is reused. The standalone Docker mutation suite has 13 states and 38 passing
-relations. The Docker model is experimental and uncalibrated.
-
-The tenth ecosystem expansion adds common scanner `0.2.12` and Python analyzer
-`0.2.0` with a separate safe Jupyter projection. Scanner-admitted `.ipynb` JSON
-receives bounded digest-verified maintained-cell analysis; unambiguous Python cells
-reuse the managed tokenizer, and Markdown plus qualified data, visualization,
-integration, and test evidence remain separate. Outputs, execution counts, widget
-state, attachments, embedded payloads, transient metadata, raw/unsupported cells,
-magics, shell escapes, checkpoints, generated bodies, exact duplicate cells, and
-duplicate notebook projections do not add semantic effort. EffortHours launches no
-Jupyter process or kernel and does not verify data provenance, reproducibility,
-output correctness, runtime dependencies, or scientific validity. The unchanged
-`seed-rules/0.4.0` priors are reused. The standalone Jupyter mutation suite has 14
-states and 52 passing relations. The Jupyter model is experimental and
-uncalibrated.
-
-The eleventh ecosystem expansion adds common scanner `0.2.13` and C/C++ analyzer
-`0.1.0`. Scanner-admitted C99/C11/C17/C23 and C++11 through C++23 source, headers,
-and modules receive bounded managed tokenization, declaration/public-symbol
-structure, componentwise preprocessor-alternative normalization, literal local
-include/build ownership, qualified semantics, tests, and static CMake, Make,
-Meson, Visual C++/MSBuild, and supplementary metadata. EffortHours invokes no
-compiler, preprocessor, linker, build system, package manager, generator, native
-parser, tests, or target code; reads no system headers; expands no macros/includes;
-and emits no source excerpts, literal/macro values, compiler commands, or recipes.
-The unchanged `seed-rules/0.4.0` priors are reused. The standalone C/C++ mutation
-suite has 21 states and 71 passing relations. The C/C++ model is experimental and
-uncalibrated.
-
-The scanner benchmark now measures fresh-process .NET, JavaScript/TypeScript,
-HTML/CSS/SCSS frontend assets, SQL, Python, Jupyter, Go, Java, Kotlin, Shell,
-PowerShell, Terraform/HCL, PHP/Composer,
-Rust/Cargo, Docker/Compose, C, C++, and mixed million-line shapes, samples peak resident memory, labels explicit external
-cache passes separately, and fingerprints caller-supplied target trees before and
-after analysis. The recorded five-language mixed full scan completes in 13.214 seconds with a
-205.70 MiB sampled peak on the documented workstation; three exact MIT release
-trees and the EffortHours tree also retain unchanged target metadata. The benchmark
-is explicitly disk-backed, while ordinary unit tests remain memory-only. No
-cross-platform regression threshold has been frozen from the single-machine data.
-The Python shape completes in 13.354 seconds with a 109.63 MiB sampled peak on the
-same workstation and retains unchanged target metadata.
-The Go shape completes in 6.577 seconds with a 119.95 MiB sampled peak and also
-retains unchanged target metadata.
-The Java shape completes in 13.954 seconds with a 167.31 MiB sampled peak and also
-retains unchanged target metadata.
-The Kotlin shape completes in 9.393 seconds with a 166.83 MiB sampled peak and also
-retains unchanged target metadata.
-The Shell shape completes in 14.525 seconds with a 119.66 MiB sampled peak and also
-retains unchanged target metadata.
-The PowerShell shape completes in 13.689 seconds with a 130.76 MiB sampled peak and
-also retains unchanged target metadata.
-The Terraform/HCL shape completes in 8.239 seconds with a 303.72 MiB sampled peak
-and also retains unchanged target metadata.
-The PHP/Composer shape completes in 7.920 seconds with a 441.57 MiB sampled peak
-and also retains unchanged target metadata.
-The Rust/Cargo shape completes in 7.540 seconds with a 139.88 MiB sampled peak and
-also retains unchanged target metadata.
-The Docker/Compose shape completes in 8.097 seconds with a 203.00 MiB sampled peak
-and also retains unchanged target metadata.
-The Jupyter shape completes in 7.561 seconds with a 159.33 MiB sampled peak and
-also retains unchanged target metadata.
-The frontend-assets shape completes in 8.187 seconds with a 270.67 MiB sampled
-peak and also retains unchanged target metadata.
-The SQL shape completes in 8.421 seconds with a 156.46 MiB sampled peak and also
-retains unchanged target metadata.
-The C shape completes in 8.197 seconds with a 127.65 MiB sampled peak and also
-retains unchanged target metadata.
-The C++ shape completes in 9.716 seconds with a 128.84 MiB sampled peak and also
-retains unchanged target metadata.
-
-The first Change Estimation MVP adds provider-neutral immutable snapshot analysis,
-local Git base/head, commit, and range selectors, one optional identity-only `gh`
-PR selector, v1 change schemas, initial `change-seed/0.1.0` work items, final-delta
-normalization, component reconciliation, saved-report explanation, and
-process-level Git tests. Its completed safeguard matrix covers normalization,
-meaningful code/tests/docs, migrations, integrations, CI, container delivery,
-simplification, additivity, overlap, reverts, category isolation, all three range
-points, and cooperative cancellation. The first Ctrl+C returns 130 after a
-stderr-only diagnostic; a second retains immediate termination. Current
-`change-seed/0.18.0+seed-rules/0.4.0` rules retain the bounded 0.3.0 logical-
-marginality correction
-and can isolate exact, balanced, EffortHours-specific `<custom-code>` regions
-inside otherwise generated source. Only those regions can contribute;
-conventional generated bodies,
-unchanged/formatting-only regions, ambiguous markers, oversized blobs, and
-bodyless generated evidence remain excluded. The rules preserve distinct added
-capabilities and emit bounded change-level comprehension, validation, and review
-once. Version 0.7.0 adds SQL-aware formatting/category routing, and 0.8.0 adds
-Python indentation-aware formatting/category routing without changing previously
-admitted rules. Version 0.9.0 adds Go-aware formatting, compiler-directive,
-implicit-semicolon, cgo, and category routing without changing previously admitted
-rules. Version 0.10.0 adds Java token-aware formatting and documentation-comment
-handling and category routing without changing previously admitted rules. Version
-0.11.0 adds Kotlin token-aware formatting and category routing without changing
-previously admitted rules. Version 0.12.0 adds Shell and PowerShell conservative
-formatting and analyzer-backed category routing without changing previously
-admitted rules. Version 0.13.0 adds conservative HCL formatting and Terraform
-semantic/category routing without changing previously admitted rules. Version
-0.14.0 adds conservative PHP formatting and analyzer-backed semantic/category
-routing without changing previously admitted rules. Version 0.15.0 adds
-conservative Rust formatting and analyzer-backed semantic/category routing without
-changing previously admitted rules. Version 0.16.0 adds conservative Dockerfile,
-Compose, and `.dockerignore` formatting plus analyzer-backed packaging/deployment
-routing without changing previously admitted rules. Version 0.17.0 adds bounded
-Jupyter container/output normalization and analyzer-backed semantic/category
-routing without changing previously admitted rules. Version 0.18.0 adds
-conservative C/C++ formatting and analyzer-backed semantic/category routing
-without changing previously admitted rules. They remain
-experimental; only version 0.6.0 on the
-pre-SQL/Python/Jupyter/Go/Java/Kotlin/Shell/PowerShell/Terraform/HCL/PHP/Composer/Rust/Cargo/Docker/Compose/C/C++
-4-to-32-hour Stage A logical band is admitted, and no empirical production
-validation is claimed. Non-Git Change mode now accepts
-two statically scanned, content-pinned directories or two digest-checked saved
-repository-evidence bundles;
-bodyless evidence modifications that otherwise qualify as represented remain
-conservative with an explicit warning. Experimental
-`change-portfolio/0.1.0+change-seed/0.18.0+seed-rules/0.4.0` now composes repeated
-PRs, versioned cross-repository PR manifests, and bounded author-period commits.
-It normalizes repositories independently, suppresses exact same-repository PR
-patches, follows exact chronological author object chains, exposes immutable base
-contexts and signed adjustments, and allocates normalized expected EHE exactly.
-Identity and time remain selectors only; source paths and messages are not emitted,
-shared-credit ambiguity stays visible, and ranking/grading/compensation workflows
-are unsupported. The portfolio reconciler changes no source Change prior, label,
-frozen report, or admission decision and has no empirical production validation.
-Explicit multi-commit ranges report deterministic expected-point
-gross-to-final normalization plus a bounded overlap/revert-only rework-like subset
-with stable explanation lineage. These diagnostics do not change final-delta EHE
-and are absent from base/head-only and PR selections. The former
-large CLI application class is split into focused partial modules, and
-`eng/file-budgets.json` enforces early
-refactoring through the end-to-end suite.
-
-The first Change calibration checkpoint adds `change-ehe-work-item/1.0.0`,
-content-derived final-delta identity, backward-compatible Change provenance in the
-existing corpus/review contracts, Change scaffold/compile/evaluate CLI paths, and
-a 24-case eight-family matrix frozen before labels. Its in-memory fixture generator
-reproduces 24 source reports and blind authoring packets, including exact-zero
-formatting, move, generation, and revert cases. Change review plans may explicitly
-reject duplicate or false-positive capabilities with lineage-preserving `0/0/0`
-targets. The preliminary public synthetic corpus has
-24 records, 121 teacher targets, 22 exact-zero exclusions, and one disclosed
-host-AI teacher. Development and validation diagnostics are recorded; test
-comparison remains withheld. No independent Change review is complete. The corpus
-changes no estimator prior and adds no ML dependency; its frozen source reports
-retain `change-seed/0.1.0` provenance. The source baseline subsequently advances
-through the historical 0.2.0 and 0.3.0 corrections, the 0.4.0 structural boundary,
-and the 0.5.0 reporting revision; frozen source reports retain their original
-estimator identities.
-
-The first real public Change follow-on adds one immutable MIT-licensed
-GuardClauses pull-request record in that repository family's existing development
-partition. Released alpha.2 `change-seed/0.2.0` reports 4.25 expected
-hours; one disclosed host-AI teacher separately reports 4.00 across five targets.
-Exact commits, trees, license and report digests, a compiled corpus, a development
-diagnostic, and a blind follow-up packet are checked in without source excerpts.
-There is no independent correction, prior change, threshold, or accuracy claim.
-
-The blind public real Change expansion adds six new immutable MIT-licensed
-repository families across .NET, JavaScript, and TypeScript, split 3/2/1 across
-development, validation, and test. Released alpha.2 reports were written without
-displaying candidate values; one disclosed host-AI teacher then froze 34 logical
-targets before compilation or evaluation. Development compares 19.00 teacher
-expected hours with 55.75 candidate hours, and validation compares 16.00 with
-34.75. Repeated category slices materially overcount Zod security/tests, Axios
-tests, and p-limit production, while BenchmarkDotNet's near-equal total masks
-category cancellation. The ofetch test comparison remains withheld. The corpus
-changes no prior, rule, threshold, maturity, or dependency and has no independent
-correction.
-
-The `change-seed/0.3.0` structural-correction checkpoint freezes subject-neutral
-in-memory regressions before candidate analysis. Existing or modified logical
-capabilities no longer inherit the sum of repository work-item partitions; capped
-edit-region bands feed one diminishing evidence-derived budget, while distinct
-added capabilities remain additive. Separate visible-only reports compare 20.75
-candidate with 19.00 teacher expected hours in development and 15.75 with 16.00 in
-validation. Item mapping and interval/category behavior remain explicitly mixed.
-Frozen alpha.2 artifacts are unchanged, the ofetch comparison remains withheld,
-and no threshold, independent maturity, calibration, or accuracy claim advances.
-
-The Stage A Change admission checkpoint adds rubric
-`change-ehe-work-item/1.1.0` and policy `change-model-admission/0.2.0`. A disclosed
-host-AI teacher remains `teacher-estimate` maturity but can provide logical weak
-supervision when each total reconciles exactly from distinct evidence-backed tasks
-normally about 0.5 to 1.5 expected hours. Five eligible public 4-to-32-hour changes
-total 38.00 teacher hours and 38.50 candidate hours under
-`change-seed/0.6.0+seed-rules/0.3.0`, with 0.0526 WAPE and +0.0132 bias; all frozen
-total, per-case, category, decomposition, interval, semantic, and local performance
-gates pass without opening the expansion test comparison. The stricter logical
-audit decomposes all 28 eligible frozen parent targets into 45 distinct
-0.5-to-1.5-hour tasks; all 41 version-0.6.0 candidate items meet the same ceiling.
-Mixed-role capability budgets now split across disjoint native categories without
-changing totals. Repository
-analysis is reused once per immutable snapshot, optional range audits default to a
-256-component cap, and exact nonnegative allocation replaces cent-rounding drift.
-Recorded local gates are 30 seconds/512 MiB for a million-line base/head and 45
-seconds/192 MiB for 128 commits. This is not human or independent review, formal
-interval calibration, empirical accuracy, or production readiness. Larger change
-bands advance only through new frozen gates; model context/token/time/cost should
-be recorded when available, and later production observations remain separate.
-
-The first Milestone 8 host-review checkpoint adds the provider-neutral
-`host-review/1.0.0` protocol: rate-free compact packets, canonical estimate-plus-
-evidence input digests, bounded capability/evidence/scope/selected-source queries,
-explicit model-identity availability, evidence-backed affirm/replace ledgers, and
-non-applying validation. Selected source is opt-in, restricted to scanner-admitted
-files, link-safe, size/encoding bounded, and digest checked. The local baseline
-remains complete without AI; EffortHours calls no provider and chooses no model.
-The measurement checkpoint adds `host-review-measurement/1.0.0`,
-`host-review-comparison-metrics/1.0.0`, sanitized `review measure`, paired
-`review benchmark`, explicit incomplete-context accounting, and a reproducible
-three-repository/six-session public diagnostic. Compact review improves the frozen
-reference agreement at item/category levels but worsens repository-total
-agreement. Exact provider token/time/cost and complete surrounding-context
-telemetry for both paired sessions were unavailable, so no savings claim,
-host-review budget, or automatic default is selected. Blind multi-model repetition
-remains next.
-
-The first public alpha includes project-authored governance and conduct
-policies, issue and pull-request templates, full-SHA-pinned Windows/Linux/macOS CI,
-weekly dependency update configuration, a dedicated NuGet README, and a manually
-dispatched `EffortHours.Tool` preview workflow. Package publication uses a protected
-`nuget.org` GitHub environment and short-lived NuGet trusted-publishing/OIDC
-credentials; long-lived publishing keys must not be committed or stored. The
-audited repository is public, and version `0.9.0-alpha.3` has a matching immutable
-tag, NuGet package, and GitHub prerelease. Future visibility, tagging, GitHub
-release, and package-publication actions remain separately authorized. Follow
-`docs/RELEASING.md` for the exact boundary.
-
-The following commands have been run successfully from the repository root:
+Use the normal validation sequence from the repository root:
 
 ```text
-dotnet restore EffortHours.slnx --configfile NuGet.Config --force-evaluate
+dotnet restore EffortHours.slnx --configfile NuGet.Config --locked-mode
 dotnet format EffortHours.slnx --no-restore --verify-no-changes --severity info
 dotnet build EffortHours.slnx --no-restore --configuration Release
 dotnet test tests/EffortHours.Tests/EffortHours.Tests.csproj --no-build --no-restore --configuration Release
 dotnet test tests/EffortHours.EndToEndTests/EffortHours.EndToEndTests.csproj --no-build --no-restore --configuration Release
-dotnet pack src/EffortHours.Cli/EffortHours.Cli.csproj --configuration Release --no-build --no-restore --output artifacts/packages
-dotnet benchmarks/EffortHours.ScannerBenchmarks/bin/Release/net10.0/EffortHours.ScannerBenchmarks.dll --files 10000 --lines-per-file 100 --warm-cache
-dotnet benchmarks/EffortHours.ScannerBenchmarks/bin/Release/net10.0/EffortHours.ScannerBenchmarks.dll --files 10000 --lines-per-file 100 --dotnet
-dotnet benchmarks/EffortHours.ScannerBenchmarks/bin/Release/net10.0/EffortHours.ScannerBenchmarks.dll --files 10000 --lines-per-file 100 --javascript
-dotnet benchmarks/EffortHours.ScannerBenchmarks/bin/Release/net10.0/EffortHours.ScannerBenchmarks.dll --files 10000 --lines-per-file 100 --python
-dotnet benchmarks/EffortHours.ScannerBenchmarks/bin/Release/net10.0/EffortHours.ScannerBenchmarks.dll --files 10000 --lines-per-file 100 --go
-dotnet benchmarks/EffortHours.ScannerBenchmarks/bin/Release/net10.0/EffortHours.ScannerBenchmarks.dll --files 10000 --lines-per-file 100 --java
-dotnet benchmarks/EffortHours.ScannerBenchmarks/bin/Release/net10.0/EffortHours.ScannerBenchmarks.dll --files 10000 --lines-per-file 100 --kotlin
-dotnet benchmarks/EffortHours.ScannerBenchmarks/bin/Release/net10.0/EffortHours.ScannerBenchmarks.dll --files 10000 --lines-per-file 100 --shell
-dotnet benchmarks/EffortHours.ScannerBenchmarks/bin/Release/net10.0/EffortHours.ScannerBenchmarks.dll --files 10000 --lines-per-file 100 --powershell
-dotnet benchmarks/EffortHours.ScannerBenchmarks/bin/Release/net10.0/EffortHours.ScannerBenchmarks.dll --files 10000 --lines-per-file 100 --terraform
-dotnet benchmarks/EffortHours.ScannerBenchmarks/bin/Release/net10.0/EffortHours.ScannerBenchmarks.dll --files 10000 --lines-per-file 100 --php
-dotnet benchmarks/EffortHours.ScannerBenchmarks/bin/Release/net10.0/EffortHours.ScannerBenchmarks.dll --files 10000 --lines-per-file 100 --rust
-dotnet benchmarks/EffortHours.ScannerBenchmarks/bin/Release/net10.0/EffortHours.ScannerBenchmarks.dll --files 10000 --lines-per-file 100 --docker
-dotnet benchmarks/EffortHours.ScannerBenchmarks/bin/Release/net10.0/EffortHours.ScannerBenchmarks.dll --files 10000 --lines-per-file 100 --jupyter
-dotnet benchmarks/EffortHours.ScannerBenchmarks/bin/Release/net10.0/EffortHours.ScannerBenchmarks.dll --files 10000 --lines-per-file 100 --c
-dotnet benchmarks/EffortHours.ScannerBenchmarks/bin/Release/net10.0/EffortHours.ScannerBenchmarks.dll --files 10000 --lines-per-file 100 --cpp
-dotnet benchmarks/EffortHours.ScannerBenchmarks/bin/Release/net10.0/EffortHours.ScannerBenchmarks.dll --files 10000 --lines-per-file 100 --mixed --warm-cache
-dotnet benchmarks/EffortHours.ScannerBenchmarks/bin/Release/net10.0/EffortHours.ScannerBenchmarks.dll --repository . --warm-cache
-dotnet benchmarks/EffortHours.ChangeBenchmarks/bin/Release/net10.0/EffortHours.ChangeBenchmarks.dll --tree --files 10000 --lines-per-file 100 --max-seconds 30 --max-peak-mib 512
-dotnet benchmarks/EffortHours.ChangeBenchmarks/bin/Release/net10.0/EffortHours.ChangeBenchmarks.dll --range --files 32 --lines-per-file 20 --commits 128 --max-seconds 45 --max-peak-mib 192
 ```
 
-The primary distribution is the `EffortHours.Tool` .NET global-tool package with the
-command name `eh`. Self-contained executables may be added later if they
-materially improve distribution.
+Run narrower tests first when appropriate, but complete validation should remain
+proportional to the risk and affected contracts.
+
+## Tooling and worktree discipline
+
+- Use ripgrep (`rg`) for text and file searches. It is installed in the
+  development environment. If a restricted shell cannot resolve it, treat that as
+  a sandbox or `PATH` visibility issue and use the approved installation rather
+  than concluding that ripgrep is absent.
+- Preserve unrelated user changes in a dirty worktree. Do not stage, rewrite, or
+  discard them.
+- Prefer non-interactive Git commands. Never use destructive resets or checkouts
+  unless the user explicitly requests them.
+- Use focused topic branches. Keep generated packages, temporary worktrees, and
+  other local artifacts out of commits.
+
+## Open-source and documentation requirements
+
+- Treat every committed file, comment, fixture, test name, and generated artifact
+  as public material.
+- Never commit credentials, private client code, proprietary evidence,
+  machine-specific personal data, or copied material without redistribution
+  rights.
+- Record the source, version, and license of dependencies, datasets, benchmark
+  repositories, models, templates, and substantial copied assets. Prefer terms
+  compatible with the MIT-licensed distribution.
+- Keep private calibration data separate from public schemas, tooling, and model
+  artifacts.
+- Preserve conservative compatibility for public contracts and schemas.
+- Keep package license metadata at SPDX `MIT` and preserve the root `LICENSE`
+  unless the user explicitly changes the license.
+- Update living contracts when semantics, schemas, assumptions, or unresolved
+  decisions change. Put release history in `CHANGELOG.md`, measurements in their
+  benchmark/model-review records, and completed work in Git history—not in
+  `AGENTS.md` or the living roadmap.
+- Label experimental heuristics and models honestly. Prefer explicit uncertainty
+  over unsupported precision.
+
+## Pull-request handoff
+
+Agents may create commits, push topic branches, and open or update pull requests.
+Never merge a pull request or enable auto-merge; the maintainer performs the final
+review and merge.

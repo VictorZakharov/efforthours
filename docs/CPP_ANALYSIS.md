@@ -1,13 +1,9 @@
-# C and C++ analysis design checkpoint
+# Static C and C++ analysis boundary
 
 ## Status
 
-This document freezes the design and implemented analysis boundary for issue #65.
-The design was approved and the implementation checkpoint completed on August 12,
-2026.
-
-The analyzer described here is implemented in source. It provides bounded static
-C and C++ repository evidence plus C/C++ final-delta Change EHE. It remains
+C/C++ analyzer `0.1.0` provides bounded static C and C++ repository evidence plus
+C/C++ final-delta Change EHE. It remains
 experimental, token-backed, uncalibrated, and outside the admitted Change Stage A
 families until separate public Change evidence passes that policy.
 
@@ -433,9 +429,9 @@ Language and build shapes were checked against these primary references:
 These sources inform the independently authored bounded projection; their text or
 grammars are not redistributed.
 
-## Implementation verification checkpoint
+## Verification coverage
 
-The implementation checkpoint includes:
+The implemented boundary is covered by:
 
 - memory-only scanner, tokenizer, preprocessor, build-reader, ownership,
   semantics, estimator, privacy, and negative-namesake tests;
@@ -460,9 +456,9 @@ Ordinary unit tests remain storage-independent. Disk-backed source trees and
 subprocesses remain confined to the end-to-end and explicitly invoked benchmark
 suites.
 
-## Implementation decomposition
+## Responsibility boundaries
 
-The implementation preserves focused responsibilities:
+The implementation preserves these focused responsibilities:
 
 1. common file/ecosystem classification and scanner metadata;
 2. digest-checked text admission;
@@ -477,8 +473,8 @@ The implementation preserves focused responsibilities:
     implementation documentation.
 
 Every new C# source file uses the ordinary 500-line ceiling and should be split
-near 400 lines. CLI files remain below 400 lines. No new ratchet override is
-approved by this checkpoint.
+near 400 lines. CLI files remain below 400 lines. No analyzer boundary justifies a
+new file-budget ratchet by itself.
 
 ## Explicit non-goals
 

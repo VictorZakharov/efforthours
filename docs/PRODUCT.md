@@ -1,365 +1,223 @@
-# EffortHours Product Charter
+# EffortHours product charter
 
 ## Product identity
 
 The product is **EffortHours**, maintained under the **WellScoped** publishing
-identity. Its primary distribution and command identities are:
+identity.
 
-- NuGet package: `EffortHours.Tool`;
-- installed command: `eh`;
-- repository and durable file/URI stem: `efforthours`; and
-- primary metric: Equivalent Human Effort (EHE).
+- NuGet package: `EffortHours.Tool`
+- Installed command: `eh`
+- Durable repository and file stem: `efforthours`
+- Primary metric: Equivalent Human Effort (EHE)
 
-The deliberately short `eh` command is the product's Canadian mnemonic as well as
-an abbreviation of Equivalent Human. Documentation uses the full EffortHours name
-for discovery and `eh` for executable examples. Because a two-letter executable
-can collide with unrelated local tools, installation guidance must always identify
-the `EffortHours.Tool` package explicitly.
+Documentation uses the full product name for discovery and `eh` in command
+examples. Installation guidance must identify `EffortHours.Tool` explicitly
+because a two-letter executable can collide with unrelated tools.
 
 ## Problem
 
-A capable AI can often form a reasonable software-effort estimate by inspecting a
-repository and logically decomposing it. On a large repository, however, giving a
-strong remote model enough source context can take a long time and cost hundreds
-of dollars per estimate.
+Repository-level software estimates are often opaque, volume-driven, expensive to
+review, or incorrectly presented as reconstructed labor. Sending an entire large
+repository to a remote model also creates cost, latency, privacy, and provenance
+problems.
 
-EffortHours should compress the repository into the facts and small work units that
-matter for estimation. Its normal path must be fast, local, explainable, and much
-less expensive than asking a model to read the complete source tree.
+EffortHours compresses a repository into the facts and small logical work units
+that matter for estimation. Its normal path is local, deterministic, explainable,
+and complete without a remote AI provider.
 
 ## Core metric
 
-**Equivalent Human Effort (EHE)** is the estimated number of human-hours required
-for one competent senior contractor to recreate the current repository from a
-clear specification under the selected estimation profile.
+**Equivalent Human Effort** is the estimated number of human-hours required for
+one competent senior contractor to recreate the current functional and quality
+state from a clear specification under the selected profile.
 
 The modeled contractor:
 
 - is technically competent and productive;
-- is familiar with the relevant software ecosystem;
-- is initially unfamiliar with the product's business domain;
-- works alone, so the result measures human-hours rather than team elapsed time;
-- uses ordinary 2026 development tools, documentation, search, templates,
-  generators, and third-party libraries; and
+- knows the relevant implementation ecosystem but begins unfamiliar with the
+  product's business domain;
+- works alone, so EHE measures human-hours rather than team elapsed time;
+- uses ordinary 2026 tools, documentation, search, generators, templates, and
+  third-party libraries; and
 - does not use AI while performing the modeled work.
 
-The last point applies to the counterfactual worker. EffortHours itself may use local
-ML, and the AI session orchestrating EffortHours may use any tools available to it.
+The no-AI condition applies to the counterfactual worker. EffortHours may use
+deterministic analysis, an admitted local model in the future, or an optional
+surrounding host-AI review workflow without redefining EHE.
+
+EHE is not actual labor, a timesheet, an invoice, an authorship claim, a
+productivity score, or compensation advice.
 
 ## Recreation target
 
-The primary target is functional and quality equivalence, not line-for-line source
-reproduction. The recreated system should provide the same meaningful behavior,
-interfaces, integrations, tests, documentation, infrastructure, and observable
-quality represented by the repository.
+The target is functional and quality equivalence, not line-for-line source
+reproduction. A competent recreation should preserve the meaningful behavior,
+interfaces, integrations, data contracts, tests, documentation, infrastructure,
+delivery surfaces, and observable quality represented by the artifact.
 
-A clean and competent implementation is assumed. Duplicate code, dead code,
-accidental complexity, abandoned approaches, and repeated historical rework must
-not increase EHE merely because they increase repository size.
+The estimate assumes a clean modern 2026-equivalent implementation. Duplicate or
+dead code, generated or vendored bodies, accidental complexity, abandoned
+approaches, and historical rework do not add EHE merely because they add volume.
+Externally meaningful protocols, compatibility requirements, formats, framework
+constraints, and behavior remain in scope.
 
-Meaningful constraints remain in scope. Compatibility requirements, protocols,
-framework choices, data formats, and externally visible behavior cannot be erased
-just because a different greenfield design might be easier.
-
-Recreation assumes a sensible modern 2026-equivalent implementation. It is not a
-legacy-restoration exercise. Compatibility behavior and externally meaningful
-constraints remain, while obsolete implementation mechanics need not be reproduced
-when current technology provides an equivalent result.
+An incomplete or broken checkout is estimated as the working system materially
+described by its specification and repository, with a prominent warning that the
+checkout was not verified as working. Hypothetical repair and professionalization
+work stays outside represented EHE.
 
 ## Estimation profiles
 
-EffortHours will support two profiles.
+| Profile | Supplied inputs and included decisions |
+| --- | --- |
+| `implementation` | Detailed requirements, acceptance criteria, designs, and contracts are supplied. Technical design and implementation decisions remain included. |
+| `recreation` | A clear behavioral specification is supplied. More architecture, data-model, interface, and UX decisions must be recovered or made. |
 
-### Implementation profile
+Both profiles exclude open-ended stakeholder discovery. A specification input is
+optional; when it is absent, EffortHours infers the represented product surface
+and reports the resulting uncertainty.
 
-The contractor receives detailed requirements, acceptance criteria, UI designs,
-API contracts, and other implementation inputs that exist for the product. The
-estimate includes technical design and implementation decisions but excludes
-product discovery and creation of supplied design artifacts.
+## Product surfaces
 
-### Recreation profile
+### Repository EHE
 
-The contractor receives a clear behavioral specification but must recover or make
-more of the architecture, data-model, interface, and UX decisions needed to
-recreate the artifact. It still excludes open-ended stakeholder discovery unless a
-future profile explicitly adds it.
+Repository estimation values the current artifact. Ordinary `scan` and `estimate`
+commands do not inspect Git history, contributors, churn, timestamps, or abandoned
+versions. Evidence is repository-first and every material hour traces through a
+small work item to observed facts and a versioned rule or model.
 
-Both profiles should be reportable from the same repository evidence. A supplied
-specification is optional; without one, EffortHours infers the product surface and
-reports lower confidence where appropriate.
+### Change EHE
+
+Explicit Change estimation values the normalized final functional and quality
+delta between immutable base and head states. Revisions, commits, ranges, and a
+GitHub pull request may select snapshots; commit count, identity, timing, messages,
+and intermediate churn never multiply effort. Non-Git directory and saved-evidence
+pairs use the same final-delta boundary. `CHANGE_ESTIMATION.md` is the governing
+contract.
+
+### Change portfolios
+
+Portfolio mode reconciles selected completed changes without summing exact repeats,
+overlap, reversals, or shared context mechanically. Author identity and time may
+select rows but never value them. Output is repository-attributed Change EHE, not
+individual credit or performance. `CHANGE_PORTFOLIOS.md` defines the safeguards.
+
+### Reporting and pricing
+
+Canonical reports keep evidence, inferred capabilities, estimated work,
+uncertainty, review adjustments, and pricing distinct. Compact views remain
+projections of the same estimate and retain stable explanation paths.
+
+Pricing is applied only after hours are estimated. The bundled dated market rate
+is replaceable and can be disabled; it never changes EHE. See `REPORTING.md` and
+`PRICING.md`.
+
+### Optional host-AI review
+
+The local estimate is complete without AI. A surrounding AI session may inspect a
+compact provider-neutral packet, make digest-bound follow-up queries, and propose
+an evidence-backed adjustment ledger. EffortHours does not select or call a
+provider, and the current protocol validates but does not apply adjustments. The
+caller owns disclosure, privacy, retention, model choice, and cost. See
+`HOST_REVIEW.md`.
 
 ## Goals
 
-- Estimate the current repository state without using Git history or inferred
-  historical churn.
-- Produce low, expected, and high hours with an explicit confidence assessment.
-- Break effort down by category and small, inspectable work items.
-- Attach repository evidence and reasoning to every material estimate.
-- Reflect the actual level of automated tests and documentation present.
-- Separate represented effort from a professionalization or remediation gap.
-- Supply a reasonable, dated 2026 US senior-contractor rate and allow overrides.
-- Work without network access or remote AI by default.
-- Give AI agents compact output designed for inexpensive final adjudication.
-- Mark coverage and other claims as measured, declared-and-assumed, or inferred.
-- Scale from small repositories to large mixed-language repositories.
-- Support .NET and JavaScript/TypeScript first, then become polyglot through
-  analyzer extensions.
-- Estimate the Equivalent Human Effort represented by a completed base-to-head
-  change, one commit, a revision range, or one GitHub pull request without treating
-  commit activity or elapsed history as effort evidence.
-- Be suitable for public open-source development and redistribution.
+- Estimate current repository and final-change state without historical activity
+  signals.
+- Produce low, expected, and high planning bounds with explicit confidence and
+  uncertainty.
+- Decompose material totals into evidence-backed work items, normally about 0.5
+  to 8 expected hours each.
+- Reflect the tests, documentation, security/accessibility implementation,
+  integrations, operations, and delivery quality actually represented.
+- Keep represented effort separate from professionalization or remediation gaps.
+- Mark coverage and similar claims as measured, declared-and-assumed, inferred, or
+  unverified as appropriate.
+- Keep effort independent from a dated, configurable market-rate projection.
+- Remain deterministic, offline, read-only, and safe by default.
+- Scale across common mixed-language repositories through bounded analyzer
+  extensions.
+- Give human and AI reviewers compact output with stable drill-down lineage.
+- Remain suitable for public MIT-licensed development and redistribution.
 
-The implemented JavaScript/frontend boundary includes parser-backed JavaScript/
-JSX, token-backed TypeScript/TSX, explicit JSX/Vue/Svelte structure, conservative
-static Angular component metadata, bounded HTML/template semantics, and bounded
-CSS/SCSS/Sass/Less semantics. Angular components require a named `Component`
-import from `@angular/core` (a local alias is accepted), and static metadata values
-must be literals or arrays; external assets must resolve inside the scanner-
-admitted repository scope. This evidence does not claim rendering, framework
-compilation, preprocessor execution, runtime reachability, visual correctness, or
-accessibility conformance.
-
-The implemented SQL boundary admits scanner-owned `.sql` files to a bounded,
-comment/string/quoted-identifier-aware token analyzer. It records schema,
-migration, stored-program, query, test, delivery, and explicit cross-database
-evidence with separate parser and dialect confidence for common PostgreSQL, SQL
-Server, MySQL/MariaDB, and SQLite syntax. It does not choose or connect to a
-database, execute SQL, prove semantic validity or performance, or value dump/row/
-timestamp volume. Supported semantics map to existing category priors and remain
-experimental; [SQL_ANALYSIS.md](SQL_ANALYSIS.md) defines the exact boundary.
-
-The first implemented polyglot expansion is Python 3. Scanner-admitted `.py` and
-`.pyi` files receive bounded managed tokenization and indentation-aware structure,
-static package ownership, local import edges, test evidence, and conservative
-import-qualified framework evidence. Static metadata includes `pyproject.toml`,
-`setup.cfg`, literal-only `setup.py`, requirements, Pipfile, and common Poetry,
-PDM, and uv surfaces. The analyzer never invokes Python, imports modules, resolves
-an environment, installs dependencies, or executes `setup.py`.
-`PYTHON_ANALYSIS.md` defines the exact source/package scope. The
-language-neutral package/test contracts and source-backbone routing are intended
-to keep later ecosystem extensions additive rather than one-off estimator forks.
-
-The second polyglot expansion is Go. Scanner-admitted `go.mod`, `go.work`, and
-`.go` files receive static module/workspace/package ownership, local replacement
-and internal-reference edges, bounded token structure, `_test.go` evidence, and
-conservative import-qualified framework semantics. The analyzer records build
-constraints, platform filenames, `go:embed`, `go:generate`, cgo, and blank-import
-registration as explicit static evidence or uncertainty; it never invokes the Go
-toolchain, resolves target selection, expands assets, runs generators, compiles
-native code, loads plugins, or proves runtime registration. `GO_ANALYSIS.md`
-defines the exact scope. Go reuses the existing language-neutral source backbone
-and analogous specialized priors without a fitted Go-specific rate.
-
-The third polyglot expansion is Java. Scanner-admitted `.java` files receive
-bounded token-backed package/module/type/method/public-API/concurrency structure,
-test evidence, and conservative import- and annotation-qualified framework
-semantics. Scanner-admitted Maven POM/reactor and Gradle multi-project descriptors
-receive bounded static ownership and local-edge analysis with unresolved dynamic
-values disclosed explicitly. The analyzer never invokes a JVM, compiler, Maven,
-Gradle, wrapper, annotation processor, test runner, dependency resolver, or target
-code; `JAVA_ANALYSIS.md` defines the exact scope. Java reuses the unchanged
-language-neutral source backbone and analogous specialized priors without a fitted
-Java-specific rate.
-
-The fourth polyglot expansion is Kotlin/JVM. Scanner-admitted maintained `.kt`
-and non-Gradle `.kts` files receive bounded token-backed package/type/function/
-extension/public-API/nullability/coroutine/Flow structure, test evidence, and
-conservative import-qualified server, Android/Compose, persistence, integration,
-security, validation, and background semantics. Kotlin reuses static Maven/Gradle
-JVM module ownership and avoids duplicate project/build evidence in mixed
-Java/Kotlin modules; Gradle Kotlin DSL remains build configuration rather than
-product script effort. The analyzer never invokes a JVM, Kotlin compiler, Maven,
-Gradle, Android tooling, KSP, kapt, compiler plugins, test runner, dependency
-resolver, or target code; `KOTLIN_ANALYSIS.md` defines the exact scope. Kotlin
-reuses the unchanged language-neutral source backbone and analogous specialized
-priors without a fitted Kotlin-specific rate.
-
-The fifth polyglot expansion is maintained Shell and PowerShell. Scanner-admitted
-POSIX-family shell/Bash and PowerShell scripts receive bounded token-backed
-function, parameter, branch, loop, pipeline, error-handling, command, file,
-network, process, module, test, and credential-surface evidence. Common path facts
-and bounded exact references from manifests and automation files separate product
-commands and reusable modules from test, build, CI, delivery, and infrastructure
-roles. The analyzer never starts a shell, resolves commands or modules, sources
-files, evaluates expansions, accesses the network, observes platform effects, or
-emits source values or excerpts; `SHELL_POWERSHELL_ANALYSIS.md` defines the exact
-scope. Shell and PowerShell reuse the unchanged language-neutral source backbone
-and analogous specialized priors without a fitted script-specific rate.
-
-The sixth polyglot expansion is Terraform and relevant HCL. Scanner-admitted
-maintained `.tf`, `.tfvars`, Terraform tests, CLI configuration, and HCL receive
-bounded comment/string/heredoc-aware token and structural analysis. Terraform
-evidence separates resources, data sources, modules, inputs/outputs/locals,
-providers/backends, lifecycle/dependency/expression structure, integrations,
-security-sensitive configuration, validation, tests, documentation, and delivery.
-Only literal repository-local module ownership is resolved; external or dynamic
-sources remain classified unresolved boundaries. The analyzer never invokes
-Terraform or related tools, loads schemas, fetches providers/modules, contacts a
-backend, reads plan/state semantics, evaluates interpolation/policy, or emits
-configured values/source excerpts; `TERRAFORM_HCL_ANALYSIS.md` defines the exact
-scope. Terraform reuses unchanged existing priors without a fitted ecosystem-
-specific rate.
-
-The seventh polyglot expansion is PHP and Composer. Scanner-admitted maintained
-`.php` files, including Blade templates and tests, receive bounded token-backed
-namespace/import/declaration/public-API/control-flow structure, template evidence,
-and conservative import-qualified framework semantics. Strict static
-`composer.json` analysis supplies package ownership, dependencies, autoload
-mappings, scripts, binary entry points, and literal repository-local path edges.
-The analyzer never invokes PHP, Composer, autoloaders, package scripts, framework
-bootstraps, containers, routes, reflection, dependency resolution, tests, or target
-code; `PHP_COMPOSER_ANALYSIS.md` defines the exact scope. PHP reuses the unchanged
-language-neutral source backbone and analogous specialized priors without a fitted
-PHP-specific rate.
-
-The eighth polyglot expansion is Rust and Cargo. Scanner-admitted maintained `.rs`
-files, tests, benchmarks, examples, and build scripts receive bounded token-backed
-module/use/declaration/public-API/generic/lifetime/async/unsafe/error structure,
-test evidence, FFI boundaries, and conservative import-qualified semantics.
-Static `Cargo.toml` analysis supplies package and workspace ownership,
-dependencies, features, build scripts, conventional and explicit targets, and
-literal repository-local edges. The analyzer never invokes Cargo, rustc, rustdoc,
-rustfmt, Clippy, build scripts, procedural macros, generators, tests, examples,
-benchmarks, or target code; `RUST_CARGO_ANALYSIS.md` defines the exact scope. Rust
-reuses the unchanged language-neutral source backbone and analogous specialized
-priors without a fitted Rust-specific rate.
-
-The ninth ecosystem expansion is Docker build and local orchestration
-configuration. Scanner-admitted Dockerfile variants receive bounded logical-
-instruction, stage, build, runtime, health, mount, and unresolved-boundary
-analysis. Filename-qualified Compose YAML receives bounded service, build, image,
-command, port, environment, storage, network, dependency, health, profile,
-secret/config, deploy, security, extension, include, and dynamic-YAML structure;
-literal repository-contained builds can reference admitted Dockerfiles.
-`.dockerignore` receives bounded rule inventory. Arbitrary YAML is not Compose.
-The analyzer never invokes Docker, Compose, BuildKit, a shell, container runtime,
-or target code; pulls images; expands build contexts; loads includes/environment
-files; resolves interpolation/secrets; or emits configured values/source excerpts.
-`DOCKER_ANALYSIS.md` defines the exact scope. Docker reuses the unchanged existing
-container prior without a fitted ecosystem-specific rate.
-
-The tenth ecosystem expansion is safe Jupyter notebook analysis. Scanner-admitted
-`.ipynb` JSON receives bounded, digest-verified maintained-cell projection through
-the Python analyzer. Only unambiguous Python cells enter the existing token and
-indentation pass; Markdown narrative is represented separately. Outputs,
-execution counts, widget state, attachments, embedded payloads, magics, shell
-escapes, raw/unsupported cells, checkpoints, and generated notebooks do not add
-EHE. EffortHours launches no Jupyter process or kernel and does not verify data
-provenance, reproducibility, output correctness, runtime dependencies, or
-scientific validity. `JUPYTER_ANALYSIS.md` defines the exact scope. The unchanged
-`seed-rules/0.4.0` priors are reused without a fitted notebook rate.
-
-The eleventh ecosystem expansion is C and C++. Scanner-admitted C99/C11/C17/C23
-and C++11 through C++23 source, headers, and modules receive bounded managed
-tokenization, conservative declaration/public-symbol structure, componentwise
-conditional-alternative normalization, literal repository-local include and
-ownership edges, qualified semantic evidence, and static CMake, Make, Meson, and
-Visual C++/MSBuild metadata. Header fan-out, macro expansion, and template
-instantiation do not multiply effort. The analyzer invokes no compiler,
-preprocessor, linker, build system, package manager, generator, test runner, or
-native parser; reads no system headers; and does not prove compilation, ABI,
-memory/thread safety, or runtime behavior. `CPP_ANALYSIS.md` defines the exact
-scope. C/C++ reuses unchanged `seed-rules/0.4.0` priors and remains experimental
-and uncalibrated.
+The current analyzer families and their exact static boundaries are listed in the
+repository `README.md` and routed through `docs/README.md`. Analyzer support does
+not imply building, running, rendering, compiling, or proving the target system.
 
 ## Non-goals
 
-- Reconstructing actual hours worked.
-- Treating commit counts, author activity, file timestamps, or code churn as labor
+- Reconstructing actual hours worked or historical rework.
+- Treating commit count, author activity, timestamps, or code churn as labor
   evidence.
-- Rewarding verbosity, generated code, copied code, or poor architecture.
-- Predicting schedules for a multi-person team.
-- Performing full project management, staffing, or delivery-date forecasting.
-- Claiming that an estimate is an invoice or a record of historical labor.
-- Requiring source code to be uploaded to an external service.
-- Replacing a security audit, accessibility audit, legal review, or accounting
-  opinion.
+- Rewarding verbosity, duplication, copied code, generated output, or poor
+  architecture.
+- Predicting a multi-person schedule or providing staffing and delivery dates.
+- Serving as an invoice, employment record, performance grade, ranking, or
+  compensation recommendation.
+- Replacing security, accessibility, legal, accounting, architecture, or code-
+  quality review.
+- Requiring repository source to be uploaded to an external service.
 
 ## Primary outputs
 
-A completed estimate should contain:
+A repository estimate contains:
 
 - repository identity and analyzed scope;
-- estimator, schema, model, and rate versions;
-- estimation profile and assumptions;
+- schema, analyzer, estimator, model, baseline, profile, and optional rate identity;
 - low, expected, and high EHE totals;
-- equivalent replacement-cost totals;
-- category breakdowns;
-- a repository-first work-item ledger;
-- evidence references for each work item;
-- confidence and unresolved uncertainties;
-- detected generated, vendored, excluded, or unsupported content;
-- represented test and documentation effort;
-- a separate professionalization gap; and
-- warnings about incomplete, unbuildable, or out-of-distribution repositories.
+- optional Equivalent Replacement Cost totals;
+- category, scope, capability, and work-item breakdowns;
+- stable evidence and calculation lineage;
+- confidence, assumptions, exclusions, diagnostics, and unresolved uncertainty;
+- generated, vendored, duplicate, unsupported, and otherwise excluded content;
+- represented test and documentation effort; and
+- a separate professionalization-gap ledger.
 
-Feature-oriented reporting is intentionally deferred until repository-level
-analysis is trustworthy.
-
-The experimental incremental-change mode estimates the functional and quality
-delta for two statically scanned directories, two saved repository-evidence
-bundles, immutable Git base/head snapshots, one commit, a revision range, or one
-GitHub pull request. The optional `gh` adapter resolves only the PR number or URL
-and immutable base/head object IDs; analysis then remains local. Evidence-only
-modified maintained paths that otherwise qualify as represented are retained
-conservatively because saved evidence has no source bodies. The explicit portfolio
-command can combine repeated PRs, schema-valid multi-repository PR manifests, or
-bounded commits selected by exact author/co-author alias and time interval. It
-normalizes each repository independently, exposes isolated rows and exact
-allocations, and labels the result repository-attributed Change EHE. Commit count,
-activity, timestamps, review duration, identity, and discarded intermediate
-revisions remain excluded as effort signals; portfolio identity/time values select
-rows only. The result is still EHE, not actual hours worked, proof of sole
-authorship, or a standalone measure of an employee's performance. Change
-calibration advances through explicit size
-bands, beginning with 4-to-32-hour final deltas decomposed into small,
-evidence-backed tasks. Model-authored logical labels and later production
-observations retain separate provenance; neither logged time nor AI review cost is
-an effort multiplier. See `CHANGE_ESTIMATION.md`.
+Change and portfolio reports additionally preserve immutable selection identity,
+normalization evidence, reconciliation adjustments, allocations, and attribution
+uncertainty without copying source excerpts or treating history as value.
 
 ## Product principles
 
-### Open-source from the start
-
-The repository is maintained as public open source. Dependencies, model files,
-calibration data, fixtures, and copied assets need clear provenance and
-redistribution terms compatible with the MIT License. Client
-repositories, proprietary source, credentials, and private estimation inputs must
-never become project fixtures or committed calibration data.
-
 ### Evidence before inference
 
-Objective facts must remain distinguishable from inferred work and estimated
-hours. Reports must make that boundary visible.
+Observed facts, inferred classification, estimated work, review decisions, and
+pricing stay distinguishable in code and output.
 
 ### Small estimates compose better
 
-EffortHours should prefer work items that normally represent roughly 0.5 to 8 hours.
-A large item should be decomposed further or explicitly explain why it cannot be.
-For a logical calibration or admission gate, a disclosed host-AI teacher's total
-must reconcile exactly from distinct evidence-backed tasks small enough to audit;
-the current one-to-several-day band normally uses 0.5-to-1.5-hour tasks.
-Independent replication is optional corroboration and does not silently upgrade
-`teacher-estimate` maturity. Later production observations retain separate
-empirical provenance and never become effort multipliers.
-
-### Current state, not historical struggle
-
-If a feature was rewritten ten times, EffortHours estimates a competent recreation of
-the current result once.
+Large unsupported totals are decomposed into inspectable work. Logical calibration
+uses separately reasoned evidence-backed tasks and preserves their provenance;
+later empirical observations remain a different evidence track.
 
 ### Artifact value is not artifact volume
 
-Lines of code may be an input signal but never the principal value measure.
-Behavior, complexity, quality, constraints, and supporting artifacts matter more.
+Lines and file counts can support classification, but meaningful behavior,
+constraints, complexity, quality, and maintained supporting artifacts drive the
+estimate.
 
 ### Offline first
 
-The core CLI path should be deterministic and local. The host AI session can use
-the evidence and any other tools it has, but EffortHours should not require an embedded
-AI provider or full-source model ingestion.
+The baseline CLI does not require a network, embedded provider, target build, or
+dependency installation. Source trees are untrusted input and remain read-only.
 
 ### Honest uncertainty
 
-Unknowns should widen ranges or be surfaced for review. They must not be silently
-converted into false precision.
+Unknowns widen ranges or become explicit review questions. Planning bounds are not
+formal probability intervals until a versioned calibration decision establishes
+that interpretation.
+
+### Open source from the start
+
+Dependencies, datasets, models, fixtures, benchmark repositories, and copied
+assets require recorded provenance and redistribution terms compatible with the
+MIT-licensed project. Private client source, credentials, and private calibration
+material remain outside the public repository.
+
+## Model maturity
+
+The repository estimator is experimental and uncalibrated. Change EHE has only the
+limited logical admission described in `CHANGE_MODEL_ADMISSION.md`; it has no
+empirical production-accuracy claim. No local ML model is currently admitted.
+These limitations must remain visible anywhere estimates are presented.
