@@ -14,6 +14,8 @@ internal sealed record ReproductionManifest
 
     public string ToolVersion { get; init; } = RepositoryCalibrationReproducer.ToolVersion;
 
+    public string JsonArtifactDigestPolicy { get; init; } = JsonArtifactDigest.Policy;
+
     public required string Profile { get; init; }
 
     public string HoldoutBoundary { get; init; } =

@@ -8,6 +8,7 @@
     "digest": "sha256:c4c5f0026112b0d495e79e9ca7a5b3d03a763710db75360d02fd333afd282aa1"
   },
   "toolVersion": "repository-calibration-reproducer/0.1.0",
+  "jsonArtifactDigestPolicy": "sha256:utf8-lf-normalized-text",
   "profile": "implementation",
   "holdoutBoundary": "Validation and test snapshots are provenance-verified only. They are not scanned, estimated, or projected by this checkpoint.",
   "families": [
@@ -29,14 +30,14 @@
       "analysisStatus": "generated-blind-development",
       "analysis": {
         "evidenceSourceDigest": "sha256:edff155be72775b8b7de15cb2bc816299affd03f557a4cf7fda737c783dd0c58",
-        "evidenceArtifactSha256": "sha256:0b243a1f6dea577658eba0dca594aecfebf9a9b6cff925c6088468fe37b63f90",
+        "evidenceArtifactSha256": "sha256:f44b835e459f443b01dca754b502b22b7be5840d9624419b1204941c09a9733a",
         "estimatorVersion": "seed-rules/0.4.0",
         "estimateDigest": "sha256:3ff734d1b865b89b09d9b2f97bb7e6df8b8df2c41aabcca4fe3632142d1454cf",
-        "estimateArtifactSha256": "sha256:02f323301c8a994b34a91d62e1082023f43415d45106f177ab9b1bda98c59172",
+        "estimateArtifactSha256": "sha256:5c752889b77f22a99b991171fe44c2c308cf9d15fc948b333a2fc58aab180993",
         "authoringVersion": "calibration-authoring/0.2.0",
         "rubric": "ehe-work-item/1.1.0",
         "packetFile": "app-vnext-polly.blind-authoring.json",
-        "packetSha256": "sha256:dbb19a9d03acb66b9d0c11e839b4edbdf46ca32e303ece53facbd95b30b7b6fe",
+        "packetSha256": "sha256:512e478583e8025379e782859ea3dc049f7b144fcac44f7fefa36b8c1cbd2f72",
         "packetTargetCount": 119
       }
     },
@@ -58,14 +59,14 @@
       "analysisStatus": "generated-blind-development",
       "analysis": {
         "evidenceSourceDigest": "sha256:1681a0743529e68c815e971d1fc336a251dfed17b91dd703ef88c7783547a297",
-        "evidenceArtifactSha256": "sha256:4d0c1fe18db3d228f85f3f5706e76ac2bcaa52cb299fa6122484adabb3176160",
+        "evidenceArtifactSha256": "sha256:940d8203a893e85f8ef83917387f642d3a6efdd6b4efa5940310f9142abe3949",
         "estimatorVersion": "seed-rules/0.4.0",
         "estimateDigest": "sha256:b9956f36da42035e75835c18e97bb652570b9075483124f2cb218a37a1a386b6",
-        "estimateArtifactSha256": "sha256:401a4605fac3f8abd7dafd712f5091067b45e75b653bb55a8080581c4451eb4c",
+        "estimateArtifactSha256": "sha256:6ac277433bf662c36fcdaddc00ed5cf7a7d6d70bb75ca4650dec44123bedb445",
         "authoringVersion": "calibration-authoring/0.2.0",
         "rubric": "ehe-work-item/1.1.0",
         "packetFile": "fastendpoints-fastendpoints.blind-authoring.json",
-        "packetSha256": "sha256:368ac277bfc72b35d2681d980f76593fe49d4830f8445dfac976d80c94b86e9e",
+        "packetSha256": "sha256:5c37d443eaea8074e3b949184be630482d571a6f9be098841f4e1b0668f6ed82",
         "packetTargetCount": 242
       }
     },
@@ -87,14 +88,14 @@
       "analysisStatus": "generated-blind-development",
       "analysis": {
         "evidenceSourceDigest": "sha256:00b6577c4f3d9f42a32e69804b37d3e8e94b6eff6b5b294fe7e5f78f90b33087",
-        "evidenceArtifactSha256": "sha256:bc21369fb5d5a6fbc7d82ebf8dd7e3a0632e6d38cf6764e790a8730d855209ae",
+        "evidenceArtifactSha256": "sha256:b4830383587235ccdb141af31ba72b42077699e1e6ec8189db67d994170ce156",
         "estimatorVersion": "seed-rules/0.4.0",
         "estimateDigest": "sha256:2b77dcc65299239d8284306bea179025873e91b2776e531da9dcb3ac5bbbdfdd",
-        "estimateArtifactSha256": "sha256:2ffe740c94fe3eba250dc3649b65f8aa44663532747250d2a4bf55ffd4a4dbba",
+        "estimateArtifactSha256": "sha256:14306d9be2ea533f843059d554a7dedb586347459ae53f251b378502edde0636",
         "authoringVersion": "calibration-authoring/0.2.0",
         "rubric": "ehe-work-item/1.1.0",
         "packetFile": "cartercommunity-carter.blind-authoring.json",
-        "packetSha256": "sha256:320f7b065a8dad819cbf709bcb6523a45f3513325ae8b5046f6dbbbd63ac3a06",
+        "packetSha256": "sha256:2b83b8a5577d4b1b13a3e3cc71c436ac6e0903b90cde1d4c6334a0db72fd7d0a",
         "packetTargetCount": 68
       }
     },
@@ -116,14 +117,14 @@
       "analysisStatus": "generated-blind-development",
       "analysis": {
         "evidenceSourceDigest": "sha256:019c5b15a97a678f22d8d0269b94822e0b69bb640498c6100397a388958e95a7",
-        "evidenceArtifactSha256": "sha256:913c6528c5e94b4e800d2410f5183b8f735070a673a0536fddd5e9a743eb7cba",
+        "evidenceArtifactSha256": "sha256:78328656fb852a1c19b2ebf51e0c2084d78687e62ca6288d9b7e8fce14115c41",
         "estimatorVersion": "seed-rules/0.4.0",
         "estimateDigest": "sha256:cb27a31fa89330632afca93d3b1cccece76a89b45c7955585183c1b0a60d26e5",
-        "estimateArtifactSha256": "sha256:d2bd7e421d682b6600b8db097074a5fa42f55730060a96d3a3f23f8dbc7bd517",
+        "estimateArtifactSha256": "sha256:94efed89d124f45f8c655bf711ab779df6f45d0df50e1a1f2616975c514c557f",
         "authoringVersion": "calibration-authoring/0.2.0",
         "rubric": "ehe-work-item/1.1.0",
         "packetFile": "fluentvalidation-fluentvalidation.blind-authoring.json",
-        "packetSha256": "sha256:2c0c0ca5fe67b5a71c8d77c6383e0af46c1afce618fdc1384ab8f62d43c3db21",
+        "packetSha256": "sha256:a3d088ef9aa13ff269fdf60545d724ef1a7e380f7d91d2a3ab09214130859b5a",
         "packetTargetCount": 30
       }
     },
@@ -145,14 +146,14 @@
       "analysisStatus": "generated-blind-development",
       "analysis": {
         "evidenceSourceDigest": "sha256:298e7732de1f2da4c37185ae0acc2ccf9f3f25486af306e019856a6ca7c83f9b",
-        "evidenceArtifactSha256": "sha256:b9ad3447befbc98131bfc54bedd83ce71e2ff463aae85cbd0034073c72e5fbbb",
+        "evidenceArtifactSha256": "sha256:3af5dae517a7e675d875c1adda1a6d4643e0731812ee0e19ed1fe6d805c4bd8f",
         "estimatorVersion": "seed-rules/0.4.0",
         "estimateDigest": "sha256:5022b4ee41736c31d798f1cae8903e93fc07cd140188068d3dad5a3dcc1aaaea",
-        "estimateArtifactSha256": "sha256:9cf12536aa04a62375d0b25491287e4686b0897bfbae503bdcf59b72ccfea9cb",
+        "estimateArtifactSha256": "sha256:dc5244ddb44005fd49674c4e8f856d7aba853b2b9b3eab3f962d453f2a19518a",
         "authoringVersion": "calibration-authoring/0.2.0",
         "rubric": "ehe-work-item/1.1.0",
         "packetFile": "dotnet-command-line-api.blind-authoring.json",
-        "packetSha256": "sha256:3e376f3d6d10bb81c5f3a7137dd62806502aec2824e9c9429c5c099e4846de55",
+        "packetSha256": "sha256:1cc1b56bc26c4d49a60a61b5d593ac5d4acc43471389876f7fa19b0738a892ed",
         "packetTargetCount": 80
       }
     },
@@ -276,14 +277,14 @@
       "analysisStatus": "generated-blind-development",
       "analysis": {
         "evidenceSourceDigest": "sha256:251c4d17f2a7a5893a18c245ce9289a866f120085fe7dce9b4fd46d27662a827",
-        "evidenceArtifactSha256": "sha256:f9faf29f1697e45fc6379ec6849e252e5337c59112b531f6f29d5c770d265bea",
+        "evidenceArtifactSha256": "sha256:82b436d9214a50ed180a292a9c19fd5740bfcc5737cd1f73fbfabb236eacd089",
         "estimatorVersion": "seed-rules/0.4.0",
         "estimateDigest": "sha256:9eb14d142b13d1b9a5263ea4810c2bd4452dff0581b110d43234c75f1895debc",
-        "estimateArtifactSha256": "sha256:85b90b1aa8aa0f93202be5f73349953130159cb7fdb645a0d46d696b25140deb",
+        "estimateArtifactSha256": "sha256:7d99ed21fc6c8cf26d71b201cd2a2ce90abed6c5aaffac757dadbfaa773af431",
         "authoringVersion": "calibration-authoring/0.2.0",
         "rubric": "ehe-work-item/1.1.0",
         "packetFile": "sindresorhus-execa.blind-authoring.json",
-        "packetSha256": "sha256:1da0819553d27b0c997263dc2fc81a7555da6e48f95fdff4591f879cd290f448",
+        "packetSha256": "sha256:131243e23d6933481d5c7edcb682ab57ebc854dbeada8f7bbf8609bd78586bfa",
         "packetTargetCount": 12
       }
     },
@@ -305,14 +306,14 @@
       "analysisStatus": "generated-blind-development",
       "analysis": {
         "evidenceSourceDigest": "sha256:fb9e91d171d70b386838d4481cf6ffa8fe8614b87af3b734cb1e53dbde2e38b8",
-        "evidenceArtifactSha256": "sha256:a2a183c29a15782117b7d99f9811237d601147eb851f43ee4af428894210f776",
+        "evidenceArtifactSha256": "sha256:4e498bf257d0ad5f7f39ebfd5d15b0163ea5234a80363d0e74365554dda42c52",
         "estimatorVersion": "seed-rules/0.4.0",
         "estimateDigest": "sha256:2dddb0803b90621bb726c3b5459c4211525a1abc0b276a9047c0fec623f23b42",
-        "estimateArtifactSha256": "sha256:e13d39e3de0050fdffde543e2b8d81787a66d718deaff6c1b77e56022db02efd",
+        "estimateArtifactSha256": "sha256:156cf41b960e876e82688bbf18e6bc8aa2af0151e9f3fef4260d44d609cb343e",
         "authoringVersion": "calibration-authoring/0.2.0",
         "rubric": "ehe-work-item/1.1.0",
         "packetFile": "fastify-fastify.blind-authoring.json",
-        "packetSha256": "sha256:5ac255a5612d01c1951525df019f60fae0aeb5c5d7a29a3453ebdf75e850b024",
+        "packetSha256": "sha256:86e1314541522b82112dd90a6724fb3cbba4d552e5eab2d99d739a04754cd188",
         "packetTargetCount": 21
       }
     },
@@ -334,14 +335,14 @@
       "analysisStatus": "generated-blind-development",
       "analysis": {
         "evidenceSourceDigest": "sha256:580127cac2ce4795a48e3ebb446a8ae74d8eb1baf7f1e6d85c6ac9baecdd0b4b",
-        "evidenceArtifactSha256": "sha256:c249cfb7c9b130e065c6743ae848ff1512427c60de40664786a44875aba01cde",
+        "evidenceArtifactSha256": "sha256:6ce26499d1c3c7067ed1e77f8477bcc2aa3de36f00dd20ae69af682ec46ae73c",
         "estimatorVersion": "seed-rules/0.4.0",
         "estimateDigest": "sha256:405a160d7bdc307f32b95e2558bd40212941c8ae9efb7d21ebeadac9cf0c2957",
-        "estimateArtifactSha256": "sha256:54eefb659462995e47830d16b6437bb5506d8242a64b4497af6506e6a3c11482",
+        "estimateArtifactSha256": "sha256:9d29e5cd6bca083c3a4cdc1e42cc9e5cfdac86eb30ab7b0d26799ebb5ff7350a",
         "authoringVersion": "calibration-authoring/0.2.0",
         "rubric": "ehe-work-item/1.1.0",
         "packetFile": "lit-lit.blind-authoring.json",
-        "packetSha256": "sha256:af68a16b1168bbb7c372f72cdce3d22afe5509425af6b1e1471ed2ce52bfb876",
+        "packetSha256": "sha256:2bccadfcbfcdb1f780385d6212ebe94af36e4cfd75ce1769aeb0477d86326c16",
         "packetTargetCount": 537
       }
     },
@@ -363,14 +364,14 @@
       "analysisStatus": "generated-blind-development",
       "analysis": {
         "evidenceSourceDigest": "sha256:fe18ceb689a5b6ee31de0b198448bd03a2b0b56f4c25bf0d71a2e276f6a70d57",
-        "evidenceArtifactSha256": "sha256:60949a894326a0bb249f674968d0015b6b64eab31ab7a09352f81e20bd41f01a",
+        "evidenceArtifactSha256": "sha256:4b14f6e59e365f444495c33ff3b133f50f4a564f4e41b9cce41f5683e95c4c84",
         "estimatorVersion": "seed-rules/0.4.0",
         "estimateDigest": "sha256:bc89cbc0df1ad3b63a37f2e0c82f84eca465866ee8f1d90824d5eb8541ec9725",
-        "estimateArtifactSha256": "sha256:8b63a07c8a6905e14ff440bbfe1fa44315e074fea05669233cf6c1d8d9ea8aec",
+        "estimateArtifactSha256": "sha256:a55b86dce5a593c280a586770b98e0a9f18766516447f90c140f523ec0b4d49f",
         "authoringVersion": "calibration-authoring/0.2.0",
         "rubric": "ehe-work-item/1.1.0",
         "packetFile": "tj-commander-js.blind-authoring.json",
-        "packetSha256": "sha256:520a334ed16d0e813ab7960621cd0eccfddea29706173601d60ee95c334bba53",
+        "packetSha256": "sha256:884ff28480abef448641110776c1372340af1d104a4cc4f3131bd9b8a0f96614",
         "packetTargetCount": 13
       }
     },
@@ -392,14 +393,14 @@
       "analysisStatus": "generated-blind-development",
       "analysis": {
         "evidenceSourceDigest": "sha256:250432548197e4e8228d26209db94cff75d05ac1e2c34896ff2d2823f7e39fc5",
-        "evidenceArtifactSha256": "sha256:05f1fe96169738066936fd3affaaa2a6a87a29b98c73e8872ce1d0732e3d0deb",
+        "evidenceArtifactSha256": "sha256:8341fae4a32443a0fe58aa189adedee78584654921c41df95532e005ba806924",
         "estimatorVersion": "seed-rules/0.4.0",
         "estimateDigest": "sha256:d29fa4af40fc05bbef05cf10b99c98e79cac493d9734d2dfb5e15b6172a4f2f9",
-        "estimateArtifactSha256": "sha256:c45ed3e8feb8712a9208896ac9bfb28ad5d14155988f46ca0ed91471ae1f8c18",
+        "estimateArtifactSha256": "sha256:5fe62b94082660b9f9a321a7e5b1e329b9ff9acfaf274a85942e33c9f9f69a09",
         "authoringVersion": "calibration-authoring/0.2.0",
         "rubric": "ehe-work-item/1.1.0",
         "packetFile": "colinhacks-zod.blind-authoring.json",
-        "packetSha256": "sha256:94c2d082c3c19268906892f99d05cd48ba8bccb23d070a1b0d2207ffdf7786df",
+        "packetSha256": "sha256:873dc45c2c3bb7277ce55a6f0ad2d393f582c32e1fd72834d56b4d64f7cc90e6",
         "packetTargetCount": 55
       }
     },
@@ -523,14 +524,14 @@
       "analysisStatus": "generated-blind-development",
       "analysis": {
         "evidenceSourceDigest": "sha256:cf22bb7f911d01a433552f828193ca5a383f653606b62c9aabf80db86bcffd88",
-        "evidenceArtifactSha256": "sha256:6a650d5a752ab943a7a9bd7489bc71cbcfab4726f3c095ce7d9e45c924ae325a",
+        "evidenceArtifactSha256": "sha256:09fa39cf188444eec7cabc1c503c853b7f9b81055f82ae81c4cd11bd1c60902e",
         "estimatorVersion": "seed-rules/0.4.0",
         "estimateDigest": "sha256:2f7deeb14bebe6f1625190afbd459cb3edd0f616ed29eaaf0ce772b1902450f5",
-        "estimateArtifactSha256": "sha256:b8eaa59c0f99d97a8b9470f94d242ac86c6ddbe52660512f473e5f2c27afce4c",
+        "estimateArtifactSha256": "sha256:739e90076806a00dcd8eaff362ec7b873c2200193a35397ab24602b7e28a2636",
         "authoringVersion": "calibration-authoring/0.2.0",
         "rubric": "ehe-work-item/1.1.0",
         "packetFile": "mudblazor-mudblazor.blind-authoring.json",
-        "packetSha256": "sha256:b29783fa81cf313558a04e62dff343c8de316ac4318c6b68510c0144c14b11d7",
+        "packetSha256": "sha256:1777f68df3a38bd261643d6356a8f2c33fe7427dc010aec534fd5fc6f238ebbc",
         "packetTargetCount": 111
       }
     },
@@ -552,14 +553,14 @@
       "analysisStatus": "generated-blind-development",
       "analysis": {
         "evidenceSourceDigest": "sha256:a82445a988d9aedca9fe495980240285f82f2989a3b9a6e7dc8bb72d71accfbc",
-        "evidenceArtifactSha256": "sha256:d158046fb6c7897694026676302946a85b78a227a17bbad287073376dacc1abb",
+        "evidenceArtifactSha256": "sha256:f302ca6acea52b450ef37c4a55d6100dce430997d3302f8bb8889740ff272bb5",
         "estimatorVersion": "seed-rules/0.4.0",
         "estimateDigest": "sha256:2fb61cb7a75010c9e693548a222cfadce3d5f132f206c369af50ca9e1da3025f",
-        "estimateArtifactSha256": "sha256:6301570331f216180e6aa4b0f14ec9ac9f51f590852454714aaedef3802e9a6e",
+        "estimateArtifactSha256": "sha256:a640a846a1022f0fcc9e4ecf0f139da796c6b62e1e2df0403a1512d7b4719eb8",
         "authoringVersion": "calibration-authoring/0.2.0",
         "rubric": "ehe-work-item/1.1.0",
         "packetFile": "oqtane-oqtane-framework.blind-authoring.json",
-        "packetSha256": "sha256:79867eda4f291cb2908355d9b125c38b80c3b4e3a101d3f8fba915df5eef8f0b",
+        "packetSha256": "sha256:eabfd89f79d310aa62cf04978e5903691939b673ca659c699d6621568fd6e432",
         "packetTargetCount": 88
       }
     },
@@ -581,14 +582,14 @@
       "analysisStatus": "generated-blind-development",
       "analysis": {
         "evidenceSourceDigest": "sha256:3a67cfbe2132f34faa1e6016dc8a69f2384c6f28a36cc4b423ad4b151e187b2c",
-        "evidenceArtifactSha256": "sha256:48ccb4c740b34ab8b98237dc9b385d8ed92d16f758aba287ba98bb5a809c4f66",
+        "evidenceArtifactSha256": "sha256:57561b3d7f4654d6103a2065f887baa0646007bdfa9845d420c412278e555573",
         "estimatorVersion": "seed-rules/0.4.0",
         "estimateDigest": "sha256:fbf89af7d619d3141e57ec0271b637cb444c6e107cd3bda687e9636aba495435",
-        "estimateArtifactSha256": "sha256:96078bda9fc2c5a1c1c646a1eb3b1e001337275f6fa8932996155125516eb2ea",
+        "estimateArtifactSha256": "sha256:fa965b7e0060d863ef9d2aef6a44519d527bd4b65c5e7a786d47089272572a06",
         "authoringVersion": "calibration-authoring/0.2.0",
         "rubric": "ehe-work-item/1.1.0",
         "packetFile": "simplcommerce-simplcommerce.blind-authoring.json",
-        "packetSha256": "sha256:daae72e28fa1440c882acd6d8160356a1bb2d3bbaf7781f2c349e914f984c8f5",
+        "packetSha256": "sha256:0dd0a6c791003da628c52f4c0518fbafe7a6122b7753678687efaf613a38761b",
         "packetTargetCount": 399
       }
     },
@@ -610,14 +611,14 @@
       "analysisStatus": "generated-blind-development",
       "analysis": {
         "evidenceSourceDigest": "sha256:cf0a196516fdfa1b271c1a82d71b171f77921567940d64892c91600c057896f3",
-        "evidenceArtifactSha256": "sha256:f2e94161237edc544143e9cfc2918434d716809c2062320a01e668966f474705",
+        "evidenceArtifactSha256": "sha256:f042c7ab6c9007195b4acf73d176f6b73aa819e81d198a71ce8f3d233dbe47da",
         "estimatorVersion": "seed-rules/0.4.0",
         "estimateDigest": "sha256:f40163ccf60566dfc5194e8727988dcce148560a1a3d848e50ac18cdab3dda85",
-        "estimateArtifactSha256": "sha256:87252546219feb8b60a6032c4f045d82b758d933345a1ffc931cc14e87b49d49",
+        "estimateArtifactSha256": "sha256:4a7f0ee5652e9a989cda4c2c9a620a7a186b5f320164d3503237167b9cff8c48",
         "authoringVersion": "calibration-authoring/0.2.0",
         "rubric": "ehe-work-item/1.1.0",
         "packetFile": "btcpayserver-btcpayserver.blind-authoring.json",
-        "packetSha256": "sha256:3095516b3e3e5d1674313e9f75f5e4bb98b2b0903a801705371b42ebae39de6a",
+        "packetSha256": "sha256:e66bf555fdf25eed0d294306e79bc4e4594d5c8b952578f08d6e2e3e1551d2f7",
         "packetTargetCount": 83
       }
     },
@@ -639,14 +640,14 @@
       "analysisStatus": "generated-blind-development",
       "analysis": {
         "evidenceSourceDigest": "sha256:7ba94792039d81ca71367da9be0a1f993cf8a31c630532c9fdf20ab944c474d9",
-        "evidenceArtifactSha256": "sha256:b8dbed12ef2a3d2ba2a68f4cb4b1dd746613124c7c8bd5005182201392acaf16",
+        "evidenceArtifactSha256": "sha256:226d373ae2dd3886c041e039b116e706c739206a8b7a24fd0537f47109f52926",
         "estimatorVersion": "seed-rules/0.4.0",
         "estimateDigest": "sha256:d5feefc4a4d71a32caf39844b12307579cde0ef70185a13e4e4d0d9f39a357b6",
-        "estimateArtifactSha256": "sha256:6c1fe3a9a89af41858c26b04d8587c68e1f177f52761e910d6172d3abfc57d7a",
+        "estimateArtifactSha256": "sha256:b27878b1c445283b0374099501a8c83eba496c818d45d341e926486ae3a6e429",
         "authoringVersion": "calibration-authoring/0.2.0",
         "rubric": "ehe-work-item/1.1.0",
         "packetFile": "squidex-squidex.blind-authoring.json",
-        "packetSha256": "sha256:811088f134dbd8828a99030b74d77c0675dcc1206dd332c84563a26e3bd1ad69",
+        "packetSha256": "sha256:1b5295b8eef1fc6144aac28e8a79fd4bf8fddcc1f33d43b5bbb5447a857e2f51",
         "packetTargetCount": 172
       }
     },

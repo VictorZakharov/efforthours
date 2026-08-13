@@ -1,4 +1,3 @@
-using System.Security.Cryptography;
 using System.Text.Json;
 using EffortHours.Calibration;
 using EffortHours.Contracts;
@@ -175,9 +174,8 @@ internal static class DevelopmentReviewPlanBuilder
         string expected,
         CancellationToken cancellationToken)
     {
-        await using FileStream stream = File.OpenRead(path);
-        byte[] digest = await SHA256.HashDataAsync(stream, cancellationToken).ConfigureAwait(false);
-        string actual = $"sha256:{Convert.ToHexString(digest).ToLowerInvariant()}";
+        string actual = await JsonArtifactDigest.ComputeFileAsync(path, cancellationToken)
+            .ConfigureAwait(false);
         if (!string.Equals(actual, expected, StringComparison.Ordinal))
         {
             throw new InvalidDataException($"Artifact digest mismatch for '{path}'.");

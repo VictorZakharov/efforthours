@@ -1,4 +1,4 @@
-using System.Security.Cryptography;
+using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using EffortHours.Contracts;
@@ -28,6 +28,12 @@ public sealed partial class CalibrationReproductionArtifactTests
         Assert.Equal("repository-calibration-reproduction/1.0.0",
             manifest.RootElement.GetProperty("schemaVersion").GetString());
         Assert.Equal("0.2.0", manifest.RootElement.GetProperty("version").GetString());
+        Assert.Equal(
+            "sha256:utf8-lf-normalized-text",
+            manifest.RootElement.GetProperty("jsonArtifactDigestPolicy").GetString());
+        Assert.Equal(
+            Sha256JsonArtifact(Path.Combine(cohortPath, "0.1.0.sampling-plan.json")),
+            manifest.RootElement.GetProperty("samplingPlan").GetProperty("digest").GetString());
         Assert.Equal(33, reproduced.Length);
         Assert.Equal(
             plannedFamilies.Select(Id).Order(StringComparer.Ordinal),
@@ -136,7 +142,7 @@ public sealed partial class CalibrationReproductionArtifactTests
         Assert.Equal("generated-blind-development", family.GetProperty("analysisStatus").GetString());
         JsonElement analysis = family.GetProperty("analysis");
         string packetPath = Path.Combine(packetDirectory, analysis.GetProperty("packetFile").GetString()!);
-        Assert.Equal(analysis.GetProperty("packetSha256").GetString(), Sha256File(packetPath));
+        Assert.Equal(analysis.GetProperty("packetSha256").GetString(), Sha256JsonArtifact(packetPath));
         string json = File.ReadAllText(packetPath);
         CalibrationAuthoringPacket packet = ContractJson.Deserialize<CalibrationAuthoringPacket>(json);
         SchemaValidationResult schema = ContractSchemaValidator.Validate(
@@ -178,7 +184,7 @@ public sealed partial class CalibrationReproductionArtifactTests
         Assert.Equal("source-custody-only-labels-not-authored",
             custody.GetProperty("status").GetString());
         Assert.Equal(
-            Sha256File(manifestPath),
+            Sha256JsonArtifact(manifestPath),
             custody.GetProperty("reproductionManifest").GetProperty("digest").GetString());
         JsonElement[] custodyFamilies = [.. custody.GetProperty("families").EnumerateArray()];
         Assert.Equal(18, custodyFamilies.Length);
@@ -199,10 +205,14 @@ public sealed partial class CalibrationReproductionArtifactTests
 
     private static string Id(JsonElement family) => family.GetProperty("id").GetString()!;
 
-    private static string Sha256File(string path)
+    private static string Sha256JsonArtifact(string path)
     {
-        using FileStream stream = File.OpenRead(path);
-        return $"sha256:{Convert.ToHexString(SHA256.HashData(stream)).ToLowerInvariant()}";
+        string normalized = File.ReadAllText(path)
+            .Replace("\r\n", "\n", StringComparison.Ordinal)
+            .Replace('\r', '\n');
+        return $"sha256:{Convert.ToHexString(
+            System.Security.Cryptography.SHA256.HashData(Encoding.UTF8.GetBytes(normalized)))
+            .ToLowerInvariant()}";
     }
 
     private static string FindRepositoryRoot()

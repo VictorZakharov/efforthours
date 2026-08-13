@@ -68,14 +68,19 @@ internal static partial class RepositoryCalibrationReproducer
         return new DevelopmentAnalysis
         {
             EvidenceSourceDigest = sourceDigest,
-            EvidenceArtifactSha256 = await Sha256FileAsync(evidencePath, cancellationToken).ConfigureAwait(false),
+            EvidenceArtifactSha256 = await JsonArtifactDigest.ComputeFileAsync(
+                evidencePath,
+                cancellationToken).ConfigureAwait(false),
             EstimatorVersion = estimate.RootElement.GetProperty("estimatorVersion").GetString()!,
             EstimateDigest = packetCandidate.GetProperty("estimateDigest").GetString()!,
-            EstimateArtifactSha256 = await Sha256FileAsync(estimatePath, cancellationToken).ConfigureAwait(false),
+            EstimateArtifactSha256 = await JsonArtifactDigest.ComputeFileAsync(
+                estimatePath,
+                cancellationToken).ConfigureAwait(false),
             AuthoringVersion = packet.RootElement.GetProperty("authoringVersion").GetString()!,
             Rubric = $"{rubric.GetProperty("id").GetString()}/{rubric.GetProperty("version").GetString()}",
             PacketFile = Path.GetFileName(packetPath),
-            PacketSha256 = await Sha256FileAsync(packetPath, cancellationToken).ConfigureAwait(false),
+            PacketSha256 = await JsonArtifactDigest.ComputeFileAsync(packetPath, cancellationToken)
+                .ConfigureAwait(false),
             PacketTargetCount = packet.RootElement.GetProperty("targets").GetArrayLength(),
         };
     }

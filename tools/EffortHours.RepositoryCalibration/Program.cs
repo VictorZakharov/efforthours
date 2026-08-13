@@ -5,12 +5,13 @@ internal static class Program
     public static async Task<int> Main(string[] arguments)
     {
         using CancellationTokenSource cancellation = new();
-        ConsoleCancelEventHandler cancelHandler = (_, eventArgs) =>
+        void CancelHandler(object? _, ConsoleCancelEventArgs eventArgs)
         {
             eventArgs.Cancel = true;
             cancellation.Cancel();
-        };
-        Console.CancelKeyPress += cancelHandler;
+        }
+
+        Console.CancelKeyPress += CancelHandler;
         try
         {
             return await RunAsync(arguments, cancellation.Token).ConfigureAwait(false);
@@ -22,7 +23,7 @@ internal static class Program
         }
         finally
         {
-            Console.CancelKeyPress -= cancelHandler;
+            Console.CancelKeyPress -= CancelHandler;
         }
     }
 

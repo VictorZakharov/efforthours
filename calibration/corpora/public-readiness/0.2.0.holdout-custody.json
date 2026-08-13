@@ -10,7 +10,7 @@
   },
   "reproductionManifest": {
     "version": "0.2.0",
-    "digest": "sha256:ffaf5de02a34df2edd86105172db184672c8523149cb0bbcc9af8ebad245fd08"
+    "digest": "sha256:0d36e4178a65a523fd4705e6bc353ec5365f565b3b27f52692d7bed2e47b5159"
   },
   "policy": {
     "validation": "Labels are not authored. Author blind only after the complete finite candidate manifest is frozen; do not publish or inspect candidate guidance during authoring.",

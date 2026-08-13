@@ -156,9 +156,6 @@ internal static partial class RepositoryCalibrationReproducer
         return $"sha256:{Convert.ToHexString(digest).ToLowerInvariant()}";
     }
 
-    private static string Sha256(ReadOnlySpan<byte> value) =>
-        $"sha256:{Convert.ToHexString(SHA256.HashData(value)).ToLowerInvariant()}";
-
     private static HttpClient CreateHttpClient()
     {
         HttpClient client = new()

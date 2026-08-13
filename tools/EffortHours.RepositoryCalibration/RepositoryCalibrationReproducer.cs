@@ -16,9 +16,9 @@ internal static partial class RepositoryCalibrationReproducer
         CancellationToken cancellationToken)
     {
         ValidateInputPaths(options);
-        byte[] planBytes = await File.ReadAllBytesAsync(options.PlanPath, cancellationToken)
+        string planJson = await File.ReadAllTextAsync(options.PlanPath, cancellationToken)
             .ConfigureAwait(false);
-        SamplingPlan plan = JsonSerializer.Deserialize<SamplingPlan>(planBytes, JsonOptions)
+        SamplingPlan plan = JsonSerializer.Deserialize<SamplingPlan>(planJson, JsonOptions)
             ?? throw new InvalidDataException("Sampling plan is empty.");
         ValidatePlan(plan);
 
@@ -46,7 +46,7 @@ internal static partial class RepositoryCalibrationReproducer
             {
                 Id = plan.Id,
                 Version = plan.Version,
-                Digest = Sha256(planBytes),
+                Digest = JsonArtifactDigest.Compute(planJson),
             },
             Profile = plan.Profile,
             Families = reproduced,
@@ -56,7 +56,7 @@ internal static partial class RepositoryCalibrationReproducer
         await File.WriteAllTextAsync(options.OutputPath, json, cancellationToken).ConfigureAwait(false);
         await HoldoutCustodyWriter.WriteAsync(
             manifest,
-            Sha256(System.Text.Encoding.UTF8.GetBytes(json)),
+            JsonArtifactDigest.Compute(json),
             options.CustodyPath,
             cancellationToken).ConfigureAwait(false);
         await diagnostics.WriteLineAsync(

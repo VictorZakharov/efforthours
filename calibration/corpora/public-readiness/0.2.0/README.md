@@ -51,7 +51,9 @@ dotnet tools/EffortHours.RepositoryCalibration/bin/Release/net10.0/EffortHours.R
 
 The digest manifest records 112,451 verified blobs and 1,578,210,924 verified
 blob bytes across the 33 trees. Archive SHA-256s are audit metadata; Git tree and
-blob identities remain the authoritative source boundary.
+blob identities remain the authoritative source boundary. SHA-256 values for JSON
+artifacts use UTF-8 text with line endings normalized to LF so Git checkout policy
+cannot change their identities across operating systems.
 
 ## Strict-blind authoring
 
