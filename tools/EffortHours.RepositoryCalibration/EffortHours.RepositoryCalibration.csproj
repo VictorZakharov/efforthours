@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <IsPackable>false</IsPackable>
+    <Description>Reproduces and verifies public repository calibration snapshots without retaining source in the repository.</Description>
+    <RootNamespace>EffortHours.RepositoryCalibration</RootNamespace>
+    <AssemblyName>EffortHours.RepositoryCalibration</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <InternalsVisibleTo Include="EffortHours.EndToEndTests" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="../../src/EffortHours.Calibration/EffortHours.Calibration.csproj" />
+    <ProjectReference Include="../../src/EffortHours.Contracts/EffortHours.Contracts.csproj" />
+  </ItemGroup>
+</Project>

@@ -8,6 +8,15 @@ may still change public contracts with explicit documentation.
 
 ### Added
 
+- Added a maintainer-only public-repository reproducer that verifies pinned
+  commit/tree/blob/license identities, repairs codeload transformations only from
+  exact pinned Git blobs, keeps all source/evidence/estimates under ignored
+  `artifacts/`, and never analyzes validation or test families.
+- Published `efforthours-public-readiness/0.2.0`: 15 strict-blind development
+  capability packets, source-custody status for 18 unanalyzed/unlabeled holdouts,
+  and a first balanced three-family development teacher corpus with diagnostic
+  evaluation. The three-record expected bias is `-0.4052`; no model is admitted or
+  changed.
 - Froze `efforthours-public-readiness/0.1.0`, a source-only 33-family sampling
   cohort spanning the complete .NET, JavaScript/TypeScript, and mixed
   development/validation/test matrix. The plan pins Git trees, license checksums,
@@ -16,6 +25,14 @@ may still change public contracts with explicit documentation.
 
 ### Changed
 
+- Advanced repository authoring to `calibration-authoring/0.2.0` and Change
+  authoring to `change-calibration-authoring/0.3.0`. Strict-blind packets now hide
+  candidate explanations, source work-item IDs/partition counts, and
+  professionalization-gap IDs; repository packets group repeated candidate
+  partitions into one capability summary.
+- Advanced the .NET analyzer to `0.3.4` by normalizing Roslyn missing/blank symbol
+  names to absent values, keeping malformed public templates schema-valid without
+  changing represented facts or estimator priors.
 - Froze `repository-model-admission/1.0.0` before candidate fitting, including a
   33-family ecosystem/partition matrix, blind validation and sealed one-time test
   boundaries, point and category accuracy gates, explicit range-sharpness gates,

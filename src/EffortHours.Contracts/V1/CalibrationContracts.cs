@@ -140,7 +140,8 @@ public sealed record CalibrationAuthoringSuggestion
     [JsonIgnore(Condition = JsonIgnoreCondition.Never)]
     public decimal? Confidence { get; init; }
 
-    public required string Reason { get; init; }
+    [JsonIgnore(Condition = JsonIgnoreCondition.Never)]
+    public string? Reason { get; init; }
 }
 
 public sealed record CalibrationAuthoringReviewFields

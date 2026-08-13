@@ -11,17 +11,33 @@ public static class CalibrationAuthoring
     private static readonly Regex PartSuffix = new(
         @":part-\d+$",
         RegexOptions.CultureInvariant | RegexOptions.NonBacktracking);
+    private static readonly Regex TitlePartSuffix = new(
+        @" \(part \d+ of \d+\)$",
+        RegexOptions.CultureInvariant | RegexOptions.NonBacktracking);
 
-    public const string AuthoringVersion = "calibration-authoring/0.1.0";
+    public const string AuthoringVersion = "calibration-authoring/0.2.0";
+    public const string RubricId = "ehe-work-item";
+    public const string RubricVersion = "1.1.0";
     public const string Warning =
         "UNREVIEWED: candidate values are reference material, not calibration labels. " +
         "Estimate each target from evidence under the referenced rubric before copying it into a corpus.";
 
     public static CalibrationAuthoringPacket Scaffold(
         EstimateReport estimate,
-        bool blind = false)
+        bool blind = false,
+        string? repositoryFamilyId = null,
+        string? repositoryName = null)
     {
         ArgumentNullException.ThrowIfNull(estimate);
+        if (repositoryFamilyId is not null)
+        {
+            ArgumentException.ThrowIfNullOrWhiteSpace(repositoryFamilyId);
+        }
+
+        if (repositoryName is not null)
+        {
+            ArgumentException.ThrowIfNullOrWhiteSpace(repositoryName);
+        }
 
         List<string> estimateErrors = [.. ContractValidation.Validate(estimate)];
         if (string.IsNullOrWhiteSpace(estimate.Repository.SourceDigest))
@@ -46,13 +62,13 @@ public static class CalibrationAuthoring
             Warning = Warning,
             Rubric = new CalibrationRubricReference
             {
-                Id = "ehe-work-item",
-                Version = "1.0.0",
+                Id = RubricId,
+                Version = RubricVersion,
             },
             Repository = new CalibrationRepositoryReference
             {
-                Id = SuggestRepositoryId(estimate.Repository.Name),
-                Name = estimate.Repository.Name,
+                Id = repositoryFamilyId ?? SuggestRepositoryId(estimate.Repository.Name),
+                Name = repositoryName ?? estimate.Repository.Name,
                 SourceDigest = estimate.Repository.SourceDigest!,
             },
             Profile = estimate.Profile,
@@ -66,16 +82,19 @@ public static class CalibrationAuthoring
                 Categories = blind ? [] : estimate.Categories,
             },
             Targets = [.. estimate.WorkItems
-                .OrderBy(item => item.Id, StringComparer.Ordinal)
-                .Select(item => CreateTarget(item, blind))],
-            ProfessionalizationGapWorkItemIds = [.. estimate.ProfessionalizationGap
-                .Select(item => item.Id)
-                .OrderBy(id => id, StringComparer.Ordinal)],
+                .GroupBy(item => GetSourceCapabilityId(item.Id), StringComparer.Ordinal)
+                .OrderBy(group => group.Key, StringComparer.Ordinal)
+                .Select(group => CreateTarget(group.Key, group, blind))],
+            ProfessionalizationGapWorkItemIds = blind
+                ? []
+                : [.. estimate.ProfessionalizationGap
+                    .Select(item => item.Id)
+                    .OrderBy(id => id, StringComparer.Ordinal)],
             Instructions =
             [
                 "Confirm repository identity, profile, baseline, source provenance, license, and partition outside this packet.",
                 "Review represented behavior and evidence; exclude duplication, dead, generated, vendored, and accidental volume.",
-                "Fill review.hours and review.rationale independently for every retained target; regroup targets when needed.",
+                "Review each capability independently; split review targets when needed and use exact 0/0/0 only for a rubric-qualified exclusion.",
                 "Keep expected effort near 0.5 to 8 hours or fill review.sizeException with a concrete reason.",
                 "Reconcile category and repository totals only after target review; do not force a preferred total.",
                 "Create a calibration corpus record only after review is complete and reviewer provenance is recorded.",
@@ -92,26 +111,63 @@ public static class CalibrationAuthoring
         return packet;
     }
 
-    private static CalibrationAuthoringTarget CreateTarget(WorkItem item, bool blind) => new()
+    private static CalibrationAuthoringTarget CreateTarget(
+        string capabilityId,
+        IEnumerable<WorkItem> sourceItems,
+        bool blind)
     {
-        Id = $"target:{item.Id}",
-        SourceCapabilityId = GetSourceCapabilityId(item.Id),
-        Category = item.Category,
-        Title = item.Title,
-        Scope = item.Scope,
-        SourceWorkItemIds = [item.Id],
-        EvidenceIds = item.EvidenceIds,
-        Candidate = new CalibrationAuthoringSuggestion
+        WorkItem[] items = [.. sourceItems.OrderBy(item => item.Id, StringComparer.Ordinal)];
+        WorkItem first = items[0];
+        if (items.Any(item => item.Category != first.Category ||
+                              !string.Equals(item.Scope, first.Scope, StringComparison.Ordinal)))
         {
-            Hours = blind ? null : item.Hours,
-            Confidence = blind ? null : item.Confidence,
-            Reason = item.Reason,
-        },
-        Review = new CalibrationAuthoringReviewFields(),
-        Assumptions = item.Assumptions,
-        Exclusions = item.Exclusions,
-        UncertaintyReasons = item.UncertaintyReasons,
-    };
+            throw new InvalidOperationException(
+                $"Source capability '{capabilityId}' contains mixed categories or scopes.");
+        }
+
+        return new CalibrationAuthoringTarget
+        {
+            Id = $"target:{capabilityId}",
+            SourceCapabilityId = capabilityId,
+            Category = first.Category,
+            Title = TitlePartSuffix.Replace(first.Title, string.Empty),
+            Scope = first.Scope,
+            SourceWorkItemIds = blind ? [] : [.. items.Select(item => item.Id)],
+            EvidenceIds = DistinctSorted(items.SelectMany(item => item.EvidenceIds)),
+            Candidate = new CalibrationAuthoringSuggestion
+            {
+                Hours = blind ? null : ContractValidation.Sum(items.Select(item => item.Hours)),
+                Confidence = blind ? null : WeightedConfidence(items),
+                Reason = blind ? null : SummarizeCandidateReason(items),
+            },
+            Review = new CalibrationAuthoringReviewFields(),
+            Assumptions = DistinctSorted(items.SelectMany(item => item.Assumptions)),
+            Exclusions = DistinctSorted(items.SelectMany(item => item.Exclusions)),
+            UncertaintyReasons = DistinctSorted(items.SelectMany(item => item.UncertaintyReasons)),
+        };
+    }
+
+    private static decimal WeightedConfidence(WorkItem[] items)
+    {
+        decimal total = items.Sum(item => item.Hours.Expected);
+        return total == 0m
+            ? items.Average(item => item.Confidence)
+            : items.Sum(item => item.Hours.Expected * item.Confidence) / total;
+    }
+
+    private static string SummarizeCandidateReason(WorkItem[] items)
+    {
+        string[] reasons = DistinctSorted(items.Select(item => item.Reason));
+        return reasons.Length == 1
+            ? reasons[0]
+            : $"Aggregated candidate guidance from {items.Length} source work items; " +
+              "inspect the source estimate for partition-level reasons.";
+    }
+
+    private static string[] DistinctSorted(IEnumerable<string> values) =>
+        [.. values.Where(value => !string.IsNullOrWhiteSpace(value))
+            .Distinct(StringComparer.Ordinal)
+            .OrderBy(value => value, StringComparer.Ordinal)];
 
     public static string GetSourceCapabilityId(string workItemId)
     {

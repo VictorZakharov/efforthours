@@ -33,6 +33,48 @@ Because EffortHours's own anchor informed the seed-model and calibration design,
 a development diagnostic rather than an eligible held-out test record unless a
 future independent snapshot and review policy explicitly establishes otherwise.
 
+## 2026-08-13: public-readiness development reproduction and first balanced review
+
+Status: **three-family development diagnostic; single host-AI teacher; no prior
+change, independent correction, holdout comparison, or admission**
+
+`efforthours-public-readiness/0.2.0` reproduced all 33 source families frozen before
+candidate inspection. The maintainer tool verified each pinned commit-to-tree link,
+complete recursive tree, Git blob content and length, frozen source-size metric,
+and license blob/content digest. It retained archives, exact source, evidence, and
+estimate bodies only under ignored `artifacts/`. Nine validation and nine test
+families were provenance-verified but never passed to EffortHours; their labels
+remain `not-authored`.
+
+Repository authoring `0.2.0` produced one capability summary per blind target and
+hid totals, ranges, confidence, explanations, source work-item identities and
+partition counts, plus professionalization-gap identities. The 15 development
+packets contain 2,030 strict-blind capabilities. The first review froze 169
+capability decisions across Carter, Commander, and Oqtane before the corresponding
+three candidate estimates were unlocked. Seven targets are explicit `0/0/0`
+double-count or empty-evidence exclusions. Large cohesive targets carry size
+exceptions because candidate-derived partition counts were intentionally hidden.
+
+| Family | Primary stratum | Candidate expected | Reviewed expected | Reviewed range covered |
+| --- | --- | ---: | ---: | --- |
+| CarterCommunity/Carter | .NET | 352.25 h | 365.25 h | yes |
+| tj/commander.js | JavaScript/TypeScript | 393.00 h | 494.50 h | yes |
+| oqtane/oqtane.framework | mixed | 2,098.25 h | 3,920.75 h | no |
+
+At repository-total expected points, reviewed EHE is 4,780.50 hours and the
+`seed-rules/0.4.0` candidate is 2,843.50 hours. Weighted absolute percentage error
+is `0.4052`, aggregate bias is `-0.4052`, and expected-point interval coverage is
+`0.6667`. Work-item mapping is complete for all 169 reviewed targets and all 808
+candidate work items. Oqtane is the dominant underestimation signal, especially in
+architecture, UI, manual validation, and the large maintained source backbones.
+
+The labels are transparent logical weak supervision from the same disclosed
+host-AI teacher used by the earlier public corpora. They have no independent
+correction and are not empirical production observations. The result is too small
+and immature to choose a correction. The remaining 12 development labels, blind
+validation custody after finite candidate freeze, externally sealed test labels,
+and the full operational gate remain unresolved.
+
 ## 2026-08-12: C and C++ source-boundary review
 
 Status: **qualitative analyzer and prior-reuse checkpoint; no numerical calibration or Change admission**

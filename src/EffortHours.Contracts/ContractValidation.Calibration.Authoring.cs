@@ -26,6 +26,8 @@ public static partial class ContractValidation
         RequireText(packet.BaselineId, "baselineId", errors);
         RequireText(packet.Candidate.EstimatorVersion, "candidate.estimatorVersion", errors);
         RequireDigest(packet.Candidate.EstimateDigest, "candidate.estimateDigest", errors);
+        bool strictBlind = packet.CandidateVisibility == CalibrationCandidateVisibility.Blind &&
+            !UsesLegacyBlindAuthoringBoundary(packet.AuthoringVersion);
 
         if (packet.CandidateVisibility == CalibrationCandidateVisibility.Reference)
         {
@@ -46,6 +48,11 @@ public static partial class ContractValidation
             if (packet.Candidate.TotalHours is not null || packet.Candidate.Categories.Count > 0)
             {
                 errors.Add("Blind authoring packets must hide candidate totals and categories.");
+            }
+
+            if (strictBlind && packet.ProfessionalizationGapWorkItemIds.Count > 0)
+            {
+                errors.Add("Blind authoring packets must hide professionalization-gap work-item IDs.");
             }
         }
 
@@ -79,16 +86,18 @@ public static partial class ContractValidation
             RequireText(target.SourceCapabilityId, $"{path}.sourceCapabilityId", errors);
             RequireText(target.Title, $"{path}.title", errors);
             RequireText(target.Scope, $"{path}.scope", errors);
-            RequireText(target.Candidate.Reason, $"{path}.candidate.reason", errors);
-
             if (!targetIds.Add(target.Id))
             {
                 errors.Add($"Calibration authoring target ID '{target.Id}' is duplicated.");
             }
 
-            if (target.SourceWorkItemIds.Count == 0)
+            if (!strictBlind && target.SourceWorkItemIds.Count == 0)
             {
                 errors.Add($"{path}.sourceWorkItemIds must contain at least one ID.");
+            }
+            else if (strictBlind && target.SourceWorkItemIds.Count > 0)
+            {
+                errors.Add($"{path}.sourceWorkItemIds must be hidden in blind mode.");
             }
 
             RequireUniqueText(target.SourceWorkItemIds, $"{path}.sourceWorkItemIds", errors);
@@ -117,10 +126,24 @@ public static partial class ContractValidation
                 {
                     errors.Add($"{path} requires candidate hours and confidence in reference mode.");
                 }
+
+                RequireText(target.Candidate.Reason, $"{path}.candidate.reason", errors);
             }
-            else if (target.Candidate.Hours is not null || target.Candidate.Confidence is not null)
+            else if (strictBlind &&
+                     (target.Candidate.Hours is not null ||
+                      target.Candidate.Confidence is not null ||
+                      target.Candidate.Reason is not null))
             {
-                errors.Add($"{path} must hide candidate hours and confidence in blind mode.");
+                errors.Add($"{path} must hide candidate hours, confidence, and reason in blind mode.");
+            }
+            else if (!strictBlind)
+            {
+                if (target.Candidate.Hours is not null || target.Candidate.Confidence is not null)
+                {
+                    errors.Add($"{path} must hide candidate hours and confidence in blind mode.");
+                }
+
+                RequireText(target.Candidate.Reason, $"{path}.candidate.reason", errors);
             }
 
             if (target.Candidate.Hours is not null)
@@ -165,6 +188,12 @@ public static partial class ContractValidation
 
         return errors;
     }
+
+    private static bool UsesLegacyBlindAuthoringBoundary(string authoringVersion) =>
+        authoringVersion is
+            "calibration-authoring/0.1.0" or
+            "change-calibration-authoring/0.1.0" or
+            "change-calibration-authoring/0.2.0";
 
     public static IReadOnlyList<string> Validate(CalibrationReviewPlan plan)
     {

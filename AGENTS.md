@@ -76,3 +76,12 @@ when semantics, schemas, assumptions, or unresolved decisions change.
   explicitly requested.
 - Use the validation sequence in `CONTRIBUTING.md`, scaled to risk. Agents may
   commit, push, and open/update PRs, but must never merge or enable auto-merge.
+
+## Current model boundary
+
+Repository EHE remains experimental and uncalibrated. The frozen 33-family public
+readiness cohort has exact source reproduction, strict-blind packets for all 15
+development families, and three development-only teacher records; validation and
+test labels are not authored, and no repository candidate is admitted. Change EHE
+has only the limited Stage A logical admission described in
+`docs/CHANGE_MODEL_ADMISSION.md`; later ecosystem extensions remain experimental.

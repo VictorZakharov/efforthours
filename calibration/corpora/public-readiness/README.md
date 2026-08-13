@@ -14,11 +14,16 @@ identities, license blob and SHA-256 checksums, partition ownership, product-sha
 tags, and a source-only size measurement. Source archives and source bodies are
 not copied into EffortHours.
 
-This is a **source-only sampling checkpoint**, not a calibration corpus. It has no
-EffortHours evidence bundles, estimate reports, candidate totals, teacher hours,
-reviewed targets, evaluation metrics, or model-admission result. All 33 rows have
-an explicit `not-authored` label status. The six previously labeled repository
-families remain the only public repository-EHE weak-supervision records.
+That `0.1.0` artifact remains the immutable **source-only sampling checkpoint**.
+The follow-up [`0.2.0 reproduction checkpoint`](0.2.0/README.md) verifies all 33
+commit/tree/blob/license identities, publishes strict-blind packets for all 15
+development families, records source custody without analysis for all 18 holdouts,
+and compiles the first balanced three-family development teacher slice. Source,
+archives, evidence bundles, and estimate bodies remain uncommitted.
+
+The new labels do not open model admission: only three development families are
+reviewed, validation/test labels are not authored, and no independent correction
+exists. Development comparison is diagnostic only.
 
 ## Frozen matrix
 
@@ -121,9 +126,8 @@ contain an unsealed test label before the one-time decision.
 
 ## Next checkpoint
 
-The next safe step is to reproduce each pinned snapshot, verify its tree and
-license identity, generate source evidence and blind authoring packets without
-displaying candidate values, and complete the development-label pass. Blind
-validation and sealed-test custody must be implemented before those labels are
-opened. No estimator fitting or candidate comparison is authorized by this
-sampling checkpoint.
+Complete rubric labels for the remaining 12 development families without changing
+the frozen partitions. Only then may development diagnostics inform a finite
+candidate design. Validation labels must remain unavailable until that candidate
+manifest is frozen. Test labels require an externally held body and precommitted
+digest before authoring and remain sealed until the one-time selection boundary.

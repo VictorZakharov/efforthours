@@ -5,7 +5,7 @@ namespace EffortHours.Analyzers.DotNet;
 internal static class DotNetEvidence
 {
     public const string AnalyzerName = "efforthours.dotnet-analyzer";
-    public const string AnalyzerVersion = "0.3.3";
+    public const string AnalyzerVersion = "0.3.4";
 
     public static EvidenceFact Fact(
         string id,
@@ -49,7 +49,7 @@ internal static class DotNetEvidence
     {
         Path = path,
         Line = line,
-        Symbol = symbol,
+        Symbol = string.IsNullOrWhiteSpace(symbol) ? null : symbol,
     };
 
     public static Diagnostic Diagnostic(

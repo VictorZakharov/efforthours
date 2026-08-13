@@ -319,19 +319,21 @@ limitations. The seed fallback remains available in every admitted release.
 
 ## Current readiness
 
-The two public repository corpora contain six implementation-profile families:
+The two legacy public repository corpora plus the first public-readiness
+development slice contain nine implementation-profile families:
 
 | Primary stratum | Development | Validation | Test |
 | --- | ---: | ---: | ---: |
-| `.net` | 1 | 1 | 0 |
-| `javascript-typescript` | 1 | 1 | 1 |
-| `mixed-dotnet-javascript-typescript` | 0 | 0 | 1 |
+| `.net` | 2 | 1 | 0 |
+| `javascript-typescript` | 2 | 1 | 1 |
+| `mixed-dotnet-javascript-typescript` | 1 | 0 | 1 |
 
-They share one host-AI teacher, and their test labels are already public. Some
-validation and test findings also informed analyzer corrections. These records
-remain useful development and contamination diagnostics, but the 33-family gate,
-shape/size coverage, blind validation boundary, and sealed nine-family test set
-are not met. No candidate comparison is authorized yet.
+They share one host-AI teacher. The legacy test labels are already public, and some
+legacy validation/test findings informed analyzer corrections. These records
+remain useful development and contamination diagnostics, but the 33-family label
+gate, blind validation boundary, and sealed nine-family test set are not met. Only
+the three newly frozen development records may be compared diagnostically; no
+holdout comparison or candidate selection is authorized.
 
 `efforthours-public-readiness/0.1.0` now freezes a separate implementation-profile
 source cohort with exactly 5/3/3 development/validation/test families in each
@@ -341,12 +343,20 @@ and prior real-Change family assignments are inherited. The plan pins complete
 Git trees and license checksums without copying source or inspecting candidate
 totals.
 
-That cohort is not yet calibration evidence. It contains no EffortHours evidence
-bundle, source estimate, target label, teacher range, validation custody artifact,
-sealed test digest, or metric. The next admissible step is to reproduce and scan
-the pinned snapshots, author rubric-complete development labels, and establish
-blind-validation and sealed-test custody without opening holdout values. No
-candidate comparison is authorized yet.
+Reproduction checkpoint `0.2.0` now verifies all 33 commit/tree/blob/license
+identities. It publishes strict-blind packets for the 15 development families and
+source-custody status for the 18 holdouts; no validation or test snapshot was
+scanned or estimated. The first balanced development slice contributes three
+single-teacher records and a development-only comparison: aggregate expected bias
+is `-0.4052`, two of three repository ranges cover the reviewed ranges, and the
+mixed Oqtane family is materially underestimated. These diagnostics authorize no
+correction or candidate selection.
+
+The other 12 development families remain unlabeled. Validation labels are not
+authored and must remain unavailable until a finite candidate manifest is frozen.
+Test labels are not authored and require external body/digest custody before the
+one-time reveal boundary. The complete matrix, numerical thresholds, and sealed
+test decision therefore remain unopened.
 
 ## Policy changes
 

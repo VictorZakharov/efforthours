@@ -1,4 +1,5 @@
 using EffortHours.Calibration;
+using EffortHours.Contracts;
 using EffortHours.Contracts.V1;
 
 namespace EffortHours.Tests;
@@ -22,8 +23,14 @@ public sealed partial class ChangeCalibrationTests
             "repository:logical-model-label",
             "change:logical-model-label",
             ["typescript", "production"]);
+        CalibrationAuthoringPacket legacyBlind = ChangeCalibrationAuthoring.ScaffoldLegacy100(
+            estimate,
+            "repository:logical-model-label",
+            "change:logical-model-label",
+            ["typescript", "production"],
+            blind: true);
 
-        Assert.Equal("change-calibration-authoring/0.2.0", current.AuthoringVersion);
+        Assert.Equal("change-calibration-authoring/0.3.0", current.AuthoringVersion);
         Assert.Equal("1.1.0", current.Rubric.Version);
         Assert.Contains(current.Instructions, instruction =>
             instruction.Contains("host-AI teacher", StringComparison.Ordinal));
@@ -31,6 +38,33 @@ public sealed partial class ChangeCalibrationTests
             instruction.Contains("0.5 to 1.5", StringComparison.Ordinal));
         Assert.Equal("change-calibration-authoring/0.1.0", legacy.AuthoringVersion);
         Assert.Equal("1.0.0", legacy.Rubric.Version);
+        Assert.Empty(ContractValidation.Validate(legacyBlind));
+        Assert.All(legacyBlind.Targets, target =>
+        {
+            Assert.NotEmpty(target.SourceWorkItemIds);
+            Assert.False(string.IsNullOrWhiteSpace(target.Candidate.Reason));
+        });
+    }
+
+    [Fact]
+    public async Task BlindChangeScaffoldHidesCandidateExplanations()
+    {
+        ChangeEstimateReport estimate = await EstimateAsync(
+            State(),
+            State(("src/status.ts", "export const status = 'ready';\n")));
+
+        CalibrationAuthoringPacket packet = ChangeCalibrationAuthoring.Scaffold(
+            estimate,
+            "repository:blind-change",
+            "change:blind-change",
+            ["typescript", "production"],
+            blind: true);
+
+        Assert.All(packet.Targets, target =>
+        {
+            Assert.Empty(target.SourceWorkItemIds);
+            Assert.Null(target.Candidate.Reason);
+        });
     }
 
     [Fact]

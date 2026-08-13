@@ -26,6 +26,7 @@
     <ProjectReference Include="../../src/EffortHours.Contracts/EffortHours.Contracts.csproj" />
     <ProjectReference Include="../../tools/EffortHours.ChangeCalibration/EffortHours.ChangeCalibration.csproj"
                       ReferenceOutputAssembly="false" />
+    <ProjectReference Include="../../tools/EffortHours.RepositoryCalibration/EffortHours.RepositoryCalibration.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Include="../fixtures/**/*.json" Link="fixtures/%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
