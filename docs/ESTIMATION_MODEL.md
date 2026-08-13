@@ -428,6 +428,13 @@ validation, a sealed one-time test, and materially sharper ranges before any
 candidate can be admitted. Independent replication remains optional
 corroboration, and later production observations are a separate empirical track.
 
+`efforthours-public-readiness/0.1.0` separately freezes the complete 33-family
+implementation-profile source matrix before candidate totals. It records immutable
+Git trees, license checksums, product shapes, source-only size bands, and inherited
+partition ownership. It contains no source estimates or labels and therefore does
+not expand the six-family weak-supervision total or authorize fitting. Development
+labeling and blind holdout custody remain subsequent checkpoints.
+
 Change EHE reuses this corpus and metric boundary with additional immutable
 final-delta provenance. A Change calibration source digest is derived from the
 base and head repository-evidence digests, while selector kind, object IDs, and

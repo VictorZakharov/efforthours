@@ -7,7 +7,15 @@ The frozen
 [`repository-model-admission/1.0.0`](../docs/MODEL_ADMISSION.md) policy defines
 the minimum family matrix, blind validation and sealed-test boundary, numerical
 agreement and range-sharpness gates, candidate selection, resource limits, and
-seed fallback. The existing six-family corpora do not yet open that gate.
+seed fallback. The existing six-family labeled corpora do not yet open that gate.
+
+The
+[`efforthours-public-readiness/0.1.0`](corpora/public-readiness/README.md)
+sampling checkpoint freezes 33 additional licensed source families across the
+complete .NET, JavaScript/TypeScript, and mixed matrix before candidate totals.
+It records source trees, license checksums, shapes, sizes, and partition ownership
+but deliberately contains no estimates, labels, or metrics. It is the input to a
+future blind-labeling pass, not an expansion of the labeled-family count.
 
 The current checkpoint contains the original
 [`ehe-work-item/1.0.0`](rubrics/ehe-work-item/1.0.0.md) review rubric and the

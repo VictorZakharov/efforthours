@@ -1,0 +1,956 @@
+{
+  "samplingPlanVersion": "repository-sampling-plan/1.0.0",
+  "id": "efforthours-public-readiness",
+  "version": "0.1.0",
+  "policy": "repository-model-admission/1.0.0",
+  "frozenOn": "2026-08-13",
+  "status": "source-cohort-frozen-before-candidate-totals",
+  "profile": "implementation",
+  "methodology": {
+    "sourceBoundary": "Public immutable Git trees and license files only; source archives and source bodies are not redistributed.",
+    "candidateBoundary": "No EffortHours evidence bundle, estimate report, candidate total, work-item range, or evaluation was generated or inspected while selecting this cohort.",
+    "developmentBoundary": "Development labels may be authored after this freeze and are the only labels available for feature design or fitting.",
+    "validationBoundary": "Validation labels must be authored blind and remain unavailable until a finite candidate manifest is frozen.",
+    "testBoundary": "Test labels must be authored blind, sealed with a precommitted digest and custody record, and revealed only for the one-time selected-candidate decision.",
+    "reviewBoundary": "Any future labels start as teacher-estimate weak supervision under ehe-work-item/1.1.0 until a genuinely distinct review changes their maturity.",
+    "forbiddenSignals": [
+      "candidate hours, ranges, confidence, categories, explanations, or totals during source selection",
+      "actual labor, elapsed time, contributor identity, activity, commit count, churn, or repository age",
+      "pricing, popularity, stars, forks, issue volume, or a preferred aggregate result"
+    ]
+  },
+  "sizeMetric": {
+    "id": "repository-source-shape-file-count/1.0.0",
+    "basis": "Blob count in the complete recursive Git tree for the pinned commit after extension and path filtering. Eligible bytes are diagnostic and do not choose the band.",
+    "eligibleExtensions": [
+      ".cjs",
+      ".cs",
+      ".cshtml",
+      ".css",
+      ".cts",
+      ".fs",
+      ".htm",
+      ".html",
+      ".js",
+      ".jsx",
+      ".less",
+      ".mjs",
+      ".mts",
+      ".razor",
+      ".sass",
+      ".scss",
+      ".svelte",
+      ".ts",
+      ".tsx",
+      ".vb",
+      ".vue",
+      ".xaml"
+    ],
+    "excludedPathSegments": [
+      ".yarn",
+      "artifacts",
+      "bin",
+      "coverage",
+      "dist",
+      "external",
+      "externals",
+      "generated",
+      "node_modules",
+      "obj",
+      "out",
+      "third-party",
+      "third_party",
+      "vendor",
+      "vendors"
+    ],
+    "excludedPathSequences": [
+      "wwwroot/lib",
+      "wwwroot/vendor"
+    ],
+    "bands": [
+      {
+        "id": "small",
+        "minimumFiles": 0,
+        "maximumFiles": 249
+      },
+      {
+        "id": "medium",
+        "minimumFiles": 250,
+        "maximumFiles": 1999
+      },
+      {
+        "id": "large",
+        "minimumFiles": 2000,
+        "maximumFiles": null
+      }
+    ]
+  },
+  "requiredShapeTags": [
+    "library-sdk",
+    "cli-desktop",
+    "backend-service",
+    "frontend-ui",
+    "multi-package-monorepository",
+    "integration-heavy"
+  ],
+  "families": [
+    {
+      "id": "repository:github.com/app-vnext/polly",
+      "repositoryName": "App-vNext/Polly",
+      "repositoryUrl": "https://github.com/App-vNext/Polly",
+      "primaryStratum": "dotnet",
+      "partition": "development",
+      "productShape": "resilience and fault-handling SDK",
+      "shapeTags": ["library-sdk", "integration-heavy"],
+      "sourceSnapshot": {
+        "defaultBranchAtFreeze": "main",
+        "commitSha": "d0e46bdb1ee11ea50d0e4b6846d2633d6bc09bac",
+        "gitTreeSha1": "cdd8bf9f800ded3543c796d41c1671eb40be4ed0",
+        "treeListingComplete": true,
+        "archiveUrl": "https://codeload.github.com/App-vNext/Polly/zip/d0e46bdb1ee11ea50d0e4b6846d2633d6bc09bac"
+      },
+      "license": {
+        "expression": "BSD-3-Clause",
+        "path": "LICENSE",
+        "gitBlobSha1": "620c5f1faddf428efafc8049e3e3aee5dbaadcea",
+        "contentSha256": "sha256:1a99e4b057fa759e4c45c45d4e2f6c3051b460723067143c70fe3ba5621d2b63",
+        "redistributionAllowed": true
+      },
+      "size": {"metric": "repository-source-shape-file-count/1.0.0", "eligibleFiles": 800, "eligibleBytes": 4414062, "band": "medium"},
+      "partitionAssignment": {"kind": "frozen-new"},
+      "labelStatus": "not-authored-development"
+    },
+    {
+      "id": "repository:github.com/fastendpoints/fastendpoints",
+      "repositoryName": "FastEndpoints/FastEndpoints",
+      "repositoryUrl": "https://github.com/FastEndpoints/FastEndpoints",
+      "primaryStratum": "dotnet",
+      "partition": "development",
+      "productShape": "backend endpoint framework and SDK",
+      "shapeTags": ["library-sdk", "backend-service"],
+      "sourceSnapshot": {
+        "defaultBranchAtFreeze": "main",
+        "commitSha": "cc3962b915c75ef76bb64de3552bcdd0351dfd2a",
+        "gitTreeSha1": "b7323c3a19a670f75c71f30a237ee98dc5f7ef7f",
+        "treeListingComplete": true,
+        "archiveUrl": "https://codeload.github.com/FastEndpoints/FastEndpoints/zip/cc3962b915c75ef76bb64de3552bcdd0351dfd2a"
+      },
+      "license": {
+        "expression": "MIT",
+        "path": "LICENSE.md",
+        "gitBlobSha1": "efb3a5b0a34043b043eacecbae4b0c9477ea6841",
+        "contentSha256": "sha256:4efd291deab66207861d197c5bb7da2d86c0449738ff8586fd3c44cac950d656",
+        "redistributionAllowed": true
+      },
+      "size": {"metric": "repository-source-shape-file-count/1.0.0", "eligibleFiles": 895, "eligibleBytes": 3316122, "band": "medium"},
+      "partitionAssignment": {"kind": "frozen-new"},
+      "labelStatus": "not-authored-development"
+    },
+    {
+      "id": "repository:github.com/cartercommunity/carter",
+      "repositoryName": "CarterCommunity/Carter",
+      "repositoryUrl": "https://github.com/CarterCommunity/Carter",
+      "primaryStratum": "dotnet",
+      "partition": "development",
+      "productShape": "minimal-API backend framework",
+      "shapeTags": ["library-sdk", "backend-service"],
+      "sourceSnapshot": {
+        "defaultBranchAtFreeze": "main",
+        "commitSha": "42055e5df5a6c0080e359366def009857cf276d1",
+        "gitTreeSha1": "4947420e832af7acb3551b873601d6f18735e6a6",
+        "treeListingComplete": true,
+        "archiveUrl": "https://codeload.github.com/CarterCommunity/Carter/zip/42055e5df5a6c0080e359366def009857cf276d1"
+      },
+      "license": {
+        "expression": "MIT",
+        "path": "LICENSE",
+        "gitBlobSha1": "da6a6f92cf27abf08be16ac563783a605a1bfc7d",
+        "contentSha256": "sha256:584b1c0af75ef3ec124fa06511b326600db7713b540c2ab9d93d8cb858feb100",
+        "redistributionAllowed": true
+      },
+      "size": {"metric": "repository-source-shape-file-count/1.0.0", "eligibleFiles": 96, "eligibleBytes": 199547, "band": "small"},
+      "partitionAssignment": {"kind": "frozen-new"},
+      "labelStatus": "not-authored-development"
+    },
+    {
+      "id": "repository:github.com/fluentvalidation/fluentvalidation",
+      "repositoryName": "FluentValidation/FluentValidation",
+      "repositoryUrl": "https://github.com/FluentValidation/FluentValidation",
+      "primaryStratum": "dotnet",
+      "partition": "development",
+      "productShape": "validation SDK and test suite",
+      "shapeTags": ["library-sdk"],
+      "sourceSnapshot": {
+        "defaultBranchAtFreeze": "main",
+        "commitSha": "daa00b795450881c233253488e3ddeb362f59f56",
+        "gitTreeSha1": "a85f9f2d50d5b3884e359e2f1e5e9aa3d1d48b5f",
+        "treeListingComplete": true,
+        "archiveUrl": "https://codeload.github.com/FluentValidation/FluentValidation/zip/daa00b795450881c233253488e3ddeb362f59f56"
+      },
+      "license": {
+        "expression": "Apache-2.0",
+        "path": "License.txt",
+        "gitBlobSha1": "7cd40e552f41493c9a4ac5934ac471285e7ae871",
+        "contentSha256": "sha256:6d1d968fb225eca367cb7f0b8831ab012a35d92b547e945e17ef8e7b05c3e5cc",
+        "redistributionAllowed": true
+      },
+      "size": {"metric": "repository-source-shape-file-count/1.0.0", "eligibleFiles": 219, "eligibleBytes": 1131588, "band": "small"},
+      "partitionAssignment": {"kind": "frozen-new"},
+      "labelStatus": "not-authored-development"
+    },
+    {
+      "id": "repository:github.com/dotnet/command-line-api",
+      "repositoryName": "dotnet/command-line-api",
+      "repositoryUrl": "https://github.com/dotnet/command-line-api",
+      "primaryStratum": "dotnet",
+      "partition": "development",
+      "productShape": "command-line parser SDK and tooling",
+      "shapeTags": ["library-sdk", "cli-desktop", "multi-package-monorepository"],
+      "sourceSnapshot": {
+        "defaultBranchAtFreeze": "main",
+        "commitSha": "bc16495bebe4b70aa2a0f76167544597ddd8b330",
+        "gitTreeSha1": "3095963223b29d073a9dfc320695c97012f5ae8e",
+        "treeListingComplete": true,
+        "archiveUrl": "https://codeload.github.com/dotnet/command-line-api/zip/bc16495bebe4b70aa2a0f76167544597ddd8b330"
+      },
+      "license": {
+        "expression": "MIT",
+        "path": "LICENSE.md",
+        "gitBlobSha1": "85ec96543da0d904a0830a6845ed5d3342f3ec52",
+        "contentSha256": "sha256:58fd5ebf25d75b5bb5f4cd407a9fef3befd3641e1af90a1d0716618e6430fc19",
+        "redistributionAllowed": true
+      },
+      "size": {"metric": "repository-source-shape-file-count/1.0.0", "eligibleFiles": 200, "eligibleBytes": 1060524, "band": "small"},
+      "partitionAssignment": {"kind": "frozen-new"},
+      "labelStatus": "not-authored-development"
+    },
+    {
+      "id": "repository:github.com/dotnet/efcore",
+      "repositoryName": "dotnet/efcore",
+      "repositoryUrl": "https://github.com/dotnet/efcore",
+      "primaryStratum": "dotnet",
+      "partition": "validation",
+      "productShape": "large data-access SDK and provider integration suite",
+      "shapeTags": ["library-sdk", "multi-package-monorepository", "integration-heavy"],
+      "sourceSnapshot": {
+        "defaultBranchAtFreeze": "main",
+        "commitSha": "5e8896500ed9c91f53481e6825ddc42528180184",
+        "gitTreeSha1": "528fa5d455b17c7fde8c0a520adc8d6e89e3bc01",
+        "treeListingComplete": true,
+        "archiveUrl": "https://codeload.github.com/dotnet/efcore/zip/5e8896500ed9c91f53481e6825ddc42528180184"
+      },
+      "license": {
+        "expression": "MIT",
+        "path": "LICENSE.txt",
+        "gitBlobSha1": "a616ed188dfce68ee308f674350ad242d8588c2b",
+        "contentSha256": "sha256:ae48df11a335dc1a615f4f938b69cba73bcf4485c4f97af49b38efb0f216353b",
+        "redistributionAllowed": true
+      },
+      "size": {"metric": "repository-source-shape-file-count/1.0.0", "eligibleFiles": 5766, "eligibleBytes": 81074821, "band": "large"},
+      "partitionAssignment": {"kind": "frozen-new"},
+      "labelStatus": "not-authored-blind-validation"
+    },
+    {
+      "id": "repository:github.com/spectreconsole/spectre.console",
+      "repositoryName": "spectreconsole/spectre.console",
+      "repositoryUrl": "https://github.com/spectreconsole/spectre.console",
+      "primaryStratum": "dotnet",
+      "partition": "validation",
+      "productShape": "console-rendering SDK and command-line examples",
+      "shapeTags": ["library-sdk", "cli-desktop", "frontend-ui"],
+      "sourceSnapshot": {
+        "defaultBranchAtFreeze": "main",
+        "commitSha": "0acc92fada6c42f13984e79c2b5f3d993bdfb099",
+        "gitTreeSha1": "474ae980ba91fdf843ad8418737e8995296af1a5",
+        "treeListingComplete": true,
+        "archiveUrl": "https://codeload.github.com/spectreconsole/spectre.console/zip/0acc92fada6c42f13984e79c2b5f3d993bdfb099"
+      },
+      "license": {
+        "expression": "MIT",
+        "path": "LICENSE.md",
+        "gitBlobSha1": "a8373c40dfe39d28621ea162b52280bf0592bbfd",
+        "contentSha256": "sha256:3b7331fb6deae7edd8e09f16173b9c61de0358c86cccd69de894ed3643d0ca91",
+        "redistributionAllowed": true
+      },
+      "size": {"metric": "repository-source-shape-file-count/1.0.0", "eligibleFiles": 450, "eligibleBytes": 1902435, "band": "medium"},
+      "partitionAssignment": {"kind": "inherited", "source": "calibration/changes/public-real-expansion/0.1.0.selection.json"},
+      "labelStatus": "not-authored-blind-validation"
+    },
+    {
+      "id": "repository:github.com/cysharp/consoleappframework",
+      "repositoryName": "Cysharp/ConsoleAppFramework",
+      "repositoryUrl": "https://github.com/Cysharp/ConsoleAppFramework",
+      "primaryStratum": "dotnet",
+      "partition": "validation",
+      "productShape": "source-generated command-line application framework",
+      "shapeTags": ["library-sdk", "cli-desktop"],
+      "sourceSnapshot": {
+        "defaultBranchAtFreeze": "master",
+        "commitSha": "6f40d3e520bbd81b86ee9bf1f4cb193b0b2b88be",
+        "gitTreeSha1": "191d2a0956c365c0f5d8f6ab18e4ff226d8b56d5",
+        "treeListingComplete": true,
+        "archiveUrl": "https://codeload.github.com/Cysharp/ConsoleAppFramework/zip/6f40d3e520bbd81b86ee9bf1f4cb193b0b2b88be"
+      },
+      "license": {
+        "expression": "MIT",
+        "path": "LICENSE",
+        "gitBlobSha1": "e847bcde0c6fa2b536c826a97a4419e844dc64c4",
+        "contentSha256": "sha256:f3e6cffb78d6d94fa37fd26ada7294c3284b6b89940b5645f93ed24cdd5b36b0",
+        "redistributionAllowed": true
+      },
+      "size": {"metric": "repository-source-shape-file-count/1.0.0", "eligibleFiles": 53, "eligibleBytes": 346532, "band": "small"},
+      "partitionAssignment": {"kind": "frozen-new"},
+      "labelStatus": "not-authored-blind-validation"
+    },
+    {
+      "id": "repository:github.com/dotnet/roslyn",
+      "repositoryName": "dotnet/roslyn",
+      "repositoryUrl": "https://github.com/dotnet/roslyn",
+      "primaryStratum": "dotnet",
+      "partition": "test",
+      "productShape": "large compiler, language-service, and SDK monorepository",
+      "shapeTags": ["library-sdk", "cli-desktop", "multi-package-monorepository"],
+      "sourceSnapshot": {
+        "defaultBranchAtFreeze": "main",
+        "commitSha": "29167183fcbdf496333f86c082cb812c23701850",
+        "gitTreeSha1": "eca7e3c8799d9d16b46a22c37fe752878dd1fa9b",
+        "treeListingComplete": true,
+        "archiveUrl": "https://codeload.github.com/dotnet/roslyn/zip/29167183fcbdf496333f86c082cb812c23701850"
+      },
+      "license": {
+        "expression": "MIT",
+        "path": "License.txt",
+        "gitBlobSha1": "a616ed188dfce68ee308f674350ad242d8588c2b",
+        "contentSha256": "sha256:ae48df11a335dc1a615f4f938b69cba73bcf4485c4f97af49b38efb0f216353b",
+        "redistributionAllowed": true
+      },
+      "size": {"metric": "repository-source-shape-file-count/1.0.0", "eligibleFiles": 21122, "eligibleBytes": 321849398, "band": "large"},
+      "partitionAssignment": {"kind": "frozen-new"},
+      "labelStatus": "not-authored-sealed-test"
+    },
+    {
+      "id": "repository:github.com/tui-cs/terminal.gui",
+      "repositoryName": "tui-cs/Terminal.Gui",
+      "repositoryUrl": "https://github.com/tui-cs/Terminal.Gui",
+      "primaryStratum": "dotnet",
+      "partition": "test",
+      "productShape": "terminal desktop UI framework and showcase applications",
+      "shapeTags": ["library-sdk", "cli-desktop", "frontend-ui"],
+      "sourceSnapshot": {
+        "defaultBranchAtFreeze": "develop",
+        "commitSha": "2e47b11478db083499917f2ad27c34d30efb0df1",
+        "gitTreeSha1": "154def37243b2faa386e51ac8cc274ece5510b02",
+        "treeListingComplete": true,
+        "archiveUrl": "https://codeload.github.com/tui-cs/Terminal.Gui/zip/2e47b11478db083499917f2ad27c34d30efb0df1"
+      },
+      "license": {
+        "expression": "MIT",
+        "path": "LICENSE",
+        "gitBlobSha1": "3fe6dedd422557b4c86ef1b78898b9a6fa0c27b6",
+        "contentSha256": "sha256:2a7331c273b7c121f5e1f6f10e13d279a739ac310c49b56f2fb251d0490988d0",
+        "redistributionAllowed": true
+      },
+      "size": {"metric": "repository-source-shape-file-count/1.0.0", "eligibleFiles": 1487, "eligibleBytes": 20751877, "band": "medium"},
+      "partitionAssignment": {"kind": "frozen-new"},
+      "labelStatus": "not-authored-sealed-test"
+    },
+    {
+      "id": "repository:github.com/commandlineparser/commandline",
+      "repositoryName": "commandlineparser/commandline",
+      "repositoryUrl": "https://github.com/commandlineparser/commandline",
+      "primaryStratum": "dotnet",
+      "partition": "test",
+      "productShape": "compact command-line parser SDK",
+      "shapeTags": ["library-sdk", "cli-desktop"],
+      "sourceSnapshot": {
+        "defaultBranchAtFreeze": "master",
+        "commitSha": "1e3607b97af6141743edb3c434c06d5b492f6fb3",
+        "gitTreeSha1": "e4a047461b0bfb910a9cdfff6643791f906b3eb4",
+        "treeListingComplete": true,
+        "archiveUrl": "https://codeload.github.com/commandlineparser/commandline/zip/1e3607b97af6141743edb3c434c06d5b492f6fb3"
+      },
+      "license": {
+        "expression": "MIT",
+        "path": "License.md",
+        "gitBlobSha1": "ef77a61cb0e3997c0591f2382efc66b407586f61",
+        "contentSha256": "sha256:87a1efc79d6ee27ee9dcc01534e2be6f26839e4a6b8e53b6d91458aae08831fa",
+        "redistributionAllowed": true
+      },
+      "size": {"metric": "repository-source-shape-file-count/1.0.0", "eligibleFiles": 197, "eligibleBytes": 908430, "band": "small"},
+      "partitionAssignment": {"kind": "frozen-new"},
+      "labelStatus": "not-authored-sealed-test"
+    },
+    {
+      "id": "repository:github.com/sindresorhus/execa",
+      "repositoryName": "sindresorhus/execa",
+      "repositoryUrl": "https://github.com/sindresorhus/execa",
+      "primaryStratum": "javascript-typescript",
+      "partition": "development",
+      "productShape": "process-execution SDK with cross-platform integrations",
+      "shapeTags": ["library-sdk", "integration-heavy"],
+      "sourceSnapshot": {
+        "defaultBranchAtFreeze": "main",
+        "commitSha": "8017b279e19347efaf2587711c2d57dbd4330740",
+        "gitTreeSha1": "f8ab67228ee0a417058f9bc2282945f915f64f39",
+        "treeListingComplete": true,
+        "archiveUrl": "https://codeload.github.com/sindresorhus/execa/zip/8017b279e19347efaf2587711c2d57dbd4330740"
+      },
+      "license": {
+        "expression": "MIT",
+        "path": "license",
+        "gitBlobSha1": "fa7ceba3eb4a9657a9db7f3ffca4e4e97a9019de",
+        "contentSha256": "sha256:5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3",
+        "redistributionAllowed": true
+      },
+      "size": {"metric": "repository-source-shape-file-count/1.0.0", "eligibleFiles": 598, "eligibleBytes": 1741820, "band": "medium"},
+      "partitionAssignment": {"kind": "frozen-new"},
+      "labelStatus": "not-authored-development"
+    },
+    {
+      "id": "repository:github.com/fastify/fastify",
+      "repositoryName": "fastify/fastify",
+      "repositoryUrl": "https://github.com/fastify/fastify",
+      "primaryStratum": "javascript-typescript",
+      "partition": "development",
+      "productShape": "backend web framework with plugin integrations",
+      "shapeTags": ["library-sdk", "backend-service", "integration-heavy"],
+      "sourceSnapshot": {
+        "defaultBranchAtFreeze": "main",
+        "commitSha": "e4ffc205328db294d550c5855d2573b33f5e9d62",
+        "gitTreeSha1": "083656a596061a86a792214c455e95810dce97e0",
+        "treeListingComplete": true,
+        "archiveUrl": "https://codeload.github.com/fastify/fastify/zip/e4ffc205328db294d550c5855d2573b33f5e9d62"
+      },
+      "license": {
+        "expression": "MIT",
+        "path": "LICENSE",
+        "gitBlobSha1": "266e719722c4d45a9d6282e5ca9e8a77b2b67f8c",
+        "contentSha256": "sha256:23c91863859171455a536380991b4160fee4e19e2d8dc353ecf7143cc4e53ca2",
+        "redistributionAllowed": true
+      },
+      "size": {"metric": "repository-source-shape-file-count/1.0.0", "eligibleFiles": 300, "eligibleBytes": 2183469, "band": "medium"},
+      "partitionAssignment": {"kind": "frozen-new"},
+      "labelStatus": "not-authored-development"
+    },
+    {
+      "id": "repository:github.com/lit/lit",
+      "repositoryName": "lit/lit",
+      "repositoryUrl": "https://github.com/lit/lit",
+      "primaryStratum": "javascript-typescript",
+      "partition": "development",
+      "productShape": "frontend component SDK monorepository",
+      "shapeTags": ["library-sdk", "frontend-ui", "multi-package-monorepository"],
+      "sourceSnapshot": {
+        "defaultBranchAtFreeze": "main",
+        "commitSha": "c42ee1e96b8fd61f7256f61d715daef572e76e52",
+        "gitTreeSha1": "c1e55096b5480d711cd1c1b15afbf891d5f47bde",
+        "treeListingComplete": true,
+        "archiveUrl": "https://codeload.github.com/lit/lit/zip/c42ee1e96b8fd61f7256f61d715daef572e76e52"
+      },
+      "license": {
+        "expression": "BSD-3-Clause",
+        "path": "LICENSE",
+        "gitBlobSha1": "be7a97b60d79f596f8394b52148f9bbb5da50323",
+        "contentSha256": "sha256:45d31799d0db956cc3eb5469346abbd9b7025babc5ff29fab10d7095da992ef1",
+        "redistributionAllowed": true
+      },
+      "size": {"metric": "repository-source-shape-file-count/1.0.0", "eligibleFiles": 1182, "eligibleBytes": 6117545, "band": "medium"},
+      "partitionAssignment": {"kind": "frozen-new"},
+      "labelStatus": "not-authored-development"
+    },
+    {
+      "id": "repository:github.com/tj/commander.js",
+      "repositoryName": "tj/commander.js",
+      "repositoryUrl": "https://github.com/tj/commander.js",
+      "primaryStratum": "javascript-typescript",
+      "partition": "development",
+      "productShape": "command-line parser library and executable examples",
+      "shapeTags": ["library-sdk", "cli-desktop"],
+      "sourceSnapshot": {
+        "defaultBranchAtFreeze": "master",
+        "commitSha": "ba6d13ddb4243e5913367734f8c159089ffe7834",
+        "gitTreeSha1": "ea7f757f861aba3926265ffc2b0955dd73a9684b",
+        "treeListingComplete": true,
+        "archiveUrl": "https://codeload.github.com/tj/commander.js/zip/ba6d13ddb4243e5913367734f8c159089ffe7834"
+      },
+      "license": {
+        "expression": "MIT",
+        "path": "LICENSE",
+        "gitBlobSha1": "10f997ab104594695189c3fca8fa6c65ae9ccdd6",
+        "contentSha256": "sha256:04512a63dce4d2d506ad612dc0bd7681ccf6e3655f7b6eaef7dfac8323d1ec0b",
+        "redistributionAllowed": true
+      },
+      "size": {"metric": "repository-source-shape-file-count/1.0.0", "eligibleFiles": 171, "eligibleBytes": 693242, "band": "small"},
+      "partitionAssignment": {"kind": "frozen-new"},
+      "labelStatus": "not-authored-development"
+    },
+    {
+      "id": "repository:github.com/colinhacks/zod",
+      "repositoryName": "colinhacks/zod",
+      "repositoryUrl": "https://github.com/colinhacks/zod",
+      "primaryStratum": "javascript-typescript",
+      "partition": "development",
+      "productShape": "schema-validation SDK workspace",
+      "shapeTags": ["library-sdk", "multi-package-monorepository"],
+      "sourceSnapshot": {
+        "defaultBranchAtFreeze": "main",
+        "commitSha": "3063993a3317ac8af7a244691b837fce3e53aa96",
+        "gitTreeSha1": "75cdc1b54489c4de0957493616c3e4a358ab328c",
+        "treeListingComplete": true,
+        "archiveUrl": "https://codeload.github.com/colinhacks/zod/zip/3063993a3317ac8af7a244691b837fce3e53aa96"
+      },
+      "license": {
+        "expression": "MIT",
+        "path": "LICENSE",
+        "gitBlobSha1": "c06579627b432d09779094cd0166b7f37fe51db8",
+        "contentSha256": "sha256:3f1189b28e3866e0d979968d466b78f813f76827cfdca1fbb124cc0a5c8841f8",
+        "redistributionAllowed": true
+      },
+      "size": {"metric": "repository-source-shape-file-count/1.0.0", "eligibleFiles": 432, "eligibleBytes": 2544025, "band": "medium"},
+      "partitionAssignment": {"kind": "inherited", "source": "calibration/changes/public-real-expansion/0.1.0.selection.json"},
+      "labelStatus": "not-authored-development"
+    },
+    {
+      "id": "repository:github.com/nrwl/nx",
+      "repositoryName": "nrwl/nx",
+      "repositoryUrl": "https://github.com/nrwl/nx",
+      "primaryStratum": "javascript-typescript",
+      "partition": "validation",
+      "productShape": "large build-system CLI and plugin monorepository",
+      "shapeTags": ["library-sdk", "cli-desktop", "multi-package-monorepository", "integration-heavy"],
+      "sourceSnapshot": {
+        "defaultBranchAtFreeze": "master",
+        "commitSha": "7e5b452eb771d66097a1aae4192b31d9a2158789",
+        "gitTreeSha1": "2f7dd7fe42df9b9e7d31416be2b35d90ce4a1ff8",
+        "treeListingComplete": true,
+        "archiveUrl": "https://codeload.github.com/nrwl/nx/zip/7e5b452eb771d66097a1aae4192b31d9a2158789"
+      },
+      "license": {
+        "expression": "MIT",
+        "path": "LICENSE",
+        "gitBlobSha1": "00fa6062439cf3d8b94d7d651332ae58b8248aa6",
+        "contentSha256": "sha256:50bb7bf81374073606d3c3f277762d5222d82c918b2088f3789ed7e5f9f8b496",
+        "redistributionAllowed": true
+      },
+      "size": {"metric": "repository-source-shape-file-count/1.0.0", "eligibleFiles": 5354, "eligibleBytes": 34289689, "band": "large"},
+      "partitionAssignment": {"kind": "frozen-new"},
+      "labelStatus": "not-authored-blind-validation"
+    },
+    {
+      "id": "repository:github.com/axios/axios",
+      "repositoryName": "axios/axios",
+      "repositoryUrl": "https://github.com/axios/axios",
+      "primaryStratum": "javascript-typescript",
+      "partition": "validation",
+      "productShape": "HTTP client SDK with browser and server integrations",
+      "shapeTags": ["library-sdk", "integration-heavy"],
+      "sourceSnapshot": {
+        "defaultBranchAtFreeze": "v1.x",
+        "commitSha": "d19040bda7a8be2f82c3c6e1a5bc03917daee39a",
+        "gitTreeSha1": "0aac6e7a7c7aa39b006f2b40d1910f9105f4eb05",
+        "treeListingComplete": true,
+        "archiveUrl": "https://codeload.github.com/axios/axios/zip/d19040bda7a8be2f82c3c6e1a5bc03917daee39a"
+      },
+      "license": {
+        "expression": "MIT",
+        "path": "LICENSE",
+        "gitBlobSha1": "05006a51eb888282323883df740cd90ad72d0700",
+        "contentSha256": "sha256:82761059eaedacb3356803aea8a170d8298609f91b14fc32ee1bfb40d690183c",
+        "redistributionAllowed": true
+      },
+      "size": {"metric": "repository-source-shape-file-count/1.0.0", "eligibleFiles": 250, "eligibleBytes": 1271137, "band": "medium"},
+      "partitionAssignment": {"kind": "inherited", "source": "calibration/changes/public-real-expansion/0.1.0.selection.json"},
+      "labelStatus": "not-authored-blind-validation"
+    },
+    {
+      "id": "repository:github.com/sindresorhus/ky",
+      "repositoryName": "sindresorhus/ky",
+      "repositoryUrl": "https://github.com/sindresorhus/ky",
+      "primaryStratum": "javascript-typescript",
+      "partition": "validation",
+      "productShape": "compact browser HTTP client SDK",
+      "shapeTags": ["library-sdk", "integration-heavy"],
+      "sourceSnapshot": {
+        "defaultBranchAtFreeze": "main",
+        "commitSha": "3419113b48e034fdcf8fa6bd3be3da7b3d0d758f",
+        "gitTreeSha1": "8dd81b1fa05d3df829c03b0170d13edca8d1ff11",
+        "treeListingComplete": true,
+        "archiveUrl": "https://codeload.github.com/sindresorhus/ky/zip/3419113b48e034fdcf8fa6bd3be3da7b3d0d758f"
+      },
+      "license": {
+        "expression": "MIT",
+        "path": "license",
+        "gitBlobSha1": "fa7ceba3eb4a9657a9db7f3ffca4e4e97a9019de",
+        "contentSha256": "sha256:5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3",
+        "redistributionAllowed": true
+      },
+      "size": {"metric": "repository-source-shape-file-count/1.0.0", "eligibleFiles": 53, "eligibleBytes": 496698, "band": "small"},
+      "partitionAssignment": {"kind": "frozen-new"},
+      "labelStatus": "not-authored-blind-validation"
+    },
+    {
+      "id": "repository:github.com/sveltejs/svelte",
+      "repositoryName": "sveltejs/svelte",
+      "repositoryUrl": "https://github.com/sveltejs/svelte",
+      "primaryStratum": "javascript-typescript",
+      "partition": "test",
+      "productShape": "large frontend compiler and UI framework monorepository",
+      "shapeTags": ["library-sdk", "frontend-ui", "multi-package-monorepository"],
+      "sourceSnapshot": {
+        "defaultBranchAtFreeze": "main",
+        "commitSha": "20b341f10048cf1016a2028ac7eee5595cfef6a5",
+        "gitTreeSha1": "010e30e2b740741d89b2970bab00296cb0640e60",
+        "treeListingComplete": true,
+        "archiveUrl": "https://codeload.github.com/sveltejs/svelte/zip/20b341f10048cf1016a2028ac7eee5595cfef6a5"
+      },
+      "license": {
+        "expression": "MIT",
+        "path": "LICENSE.md",
+        "gitBlobSha1": "f872adf738de278e2345516eb1cea30d5451914e",
+        "contentSha256": "sha256:06257f4847b13a49a039efb17b944c141e71b12fd8d231b362d86919067d77a3",
+        "redistributionAllowed": true
+      },
+      "size": {"metric": "repository-source-shape-file-count/1.0.0", "eligibleFiles": 8367, "eligibleBytes": 5141725, "band": "large"},
+      "partitionAssignment": {"kind": "frozen-new"},
+      "labelStatus": "not-authored-sealed-test"
+    },
+    {
+      "id": "repository:github.com/honojs/hono",
+      "repositoryName": "honojs/hono",
+      "repositoryUrl": "https://github.com/honojs/hono",
+      "primaryStratum": "javascript-typescript",
+      "partition": "test",
+      "productShape": "multi-runtime backend web framework",
+      "shapeTags": ["library-sdk", "backend-service", "multi-package-monorepository", "integration-heavy"],
+      "sourceSnapshot": {
+        "defaultBranchAtFreeze": "main",
+        "commitSha": "41bdc4288ed7023c24d35f32bd065bd963435e3e",
+        "gitTreeSha1": "18c90fc6c3c127af2548c223756fade6bbf790bf",
+        "treeListingComplete": true,
+        "archiveUrl": "https://codeload.github.com/honojs/hono/zip/41bdc4288ed7023c24d35f32bd065bd963435e3e"
+      },
+      "license": {
+        "expression": "MIT",
+        "path": "LICENSE",
+        "gitBlobSha1": "bd174facca69a827a3a5410fa09361da5493e024",
+        "contentSha256": "sha256:a6ab98e5c77b9070c443eaff2ff81034a6f8cc05a7524d5098eb0f24defa0115",
+        "redistributionAllowed": true
+      },
+      "size": {"metric": "repository-source-shape-file-count/1.0.0", "eligibleFiles": 392, "eligibleBytes": 2611061, "band": "medium"},
+      "partitionAssignment": {"kind": "frozen-new"},
+      "labelStatus": "not-authored-sealed-test"
+    },
+    {
+      "id": "repository:github.com/ai/nanoid",
+      "repositoryName": "ai/nanoid",
+      "repositoryUrl": "https://github.com/ai/nanoid",
+      "primaryStratum": "javascript-typescript",
+      "partition": "test",
+      "productShape": "compact identifier SDK and CLI",
+      "shapeTags": ["library-sdk", "cli-desktop"],
+      "sourceSnapshot": {
+        "defaultBranchAtFreeze": "main",
+        "commitSha": "07a39d62d84c21af5046fe6b2ef7b3e36ee557db",
+        "gitTreeSha1": "af0e8fd86d8404c75e26ce41bf68b4134dbf4919",
+        "treeListingComplete": true,
+        "archiveUrl": "https://codeload.github.com/ai/nanoid/zip/07a39d62d84c21af5046fe6b2ef7b3e36ee557db"
+      },
+      "license": {
+        "expression": "MIT",
+        "path": "LICENSE",
+        "gitBlobSha1": "b2e78ae87460b8ffaa39286084e2dddc9261ca21",
+        "contentSha256": "sha256:4383cb2c3608397ce7a4159502614ed66890f8999c2a9c056dd3b1024d6721f0",
+        "redistributionAllowed": true
+      },
+      "size": {"metric": "repository-source-shape-file-count/1.0.0", "eligibleFiles": 21, "eligibleBytes": 37406, "band": "small"},
+      "partitionAssignment": {"kind": "frozen-new"},
+      "labelStatus": "not-authored-sealed-test"
+    },
+    {
+      "id": "repository:github.com/mudblazor/mudblazor",
+      "repositoryName": "MudBlazor/MudBlazor",
+      "repositoryUrl": "https://github.com/MudBlazor/MudBlazor",
+      "primaryStratum": "mixed-dotnet-javascript-typescript",
+      "partition": "development",
+      "productShape": "Blazor component library with JavaScript UI interop",
+      "shapeTags": ["library-sdk", "frontend-ui", "multi-package-monorepository"],
+      "sourceSnapshot": {
+        "defaultBranchAtFreeze": "dev",
+        "commitSha": "8acf84e9b5435d11907eb8362b04236dc28d8c01",
+        "gitTreeSha1": "1ff8e1439a09be8a59c25301e5855cd16a033261",
+        "treeListingComplete": true,
+        "archiveUrl": "https://codeload.github.com/MudBlazor/MudBlazor/zip/8acf84e9b5435d11907eb8362b04236dc28d8c01"
+      },
+      "license": {
+        "expression": "MIT",
+        "path": "LICENSE",
+        "gitBlobSha1": "b42f9e95acc46da742dc5da1ca1a8864d2dbfae0",
+        "contentSha256": "sha256:d2a06829106f57d7ca6fbd42ae501328d1dbc4d2f67b437a25a1eb5d6c2f0d4b",
+        "redistributionAllowed": true
+      },
+      "size": {"metric": "repository-source-shape-file-count/1.0.0", "eligibleFiles": 3310, "eligibleBytes": 17356524, "ecosystemFiles": {"dotnet": 3139, "javascriptTypescript": 171}, "band": "large"},
+      "partitionAssignment": {"kind": "frozen-new"},
+      "labelStatus": "not-authored-development"
+    },
+    {
+      "id": "repository:github.com/oqtane/oqtane.framework",
+      "repositoryName": "oqtane/oqtane.framework",
+      "repositoryUrl": "https://github.com/oqtane/oqtane.framework",
+      "primaryStratum": "mixed-dotnet-javascript-typescript",
+      "partition": "development",
+      "productShape": "modular web application framework and portal",
+      "shapeTags": ["backend-service", "frontend-ui", "multi-package-monorepository", "integration-heavy"],
+      "sourceSnapshot": {
+        "defaultBranchAtFreeze": "dev",
+        "commitSha": "27023bf90ad725d02d8fa13cff314d883f385ec6",
+        "gitTreeSha1": "44bf493681b904f22f5f49863abb70b0fe96a106",
+        "treeListingComplete": true,
+        "archiveUrl": "https://codeload.github.com/oqtane/oqtane.framework/zip/27023bf90ad725d02d8fa13cff314d883f385ec6"
+      },
+      "license": {
+        "expression": "MIT",
+        "path": "LICENSE",
+        "gitBlobSha1": "b6c6f1c86849066e817aa58894a9c0b87f5f0b00",
+        "contentSha256": "sha256:9d468ada3d406acab515a438ad2248c6a5fc371da8a4be3ffa1f277bbe032809",
+        "redistributionAllowed": true
+      },
+      "size": {"metric": "repository-source-shape-file-count/1.0.0", "eligibleFiles": 749, "eligibleBytes": 4014877, "ecosystemFiles": {"dotnet": 713, "javascriptTypescript": 36}, "band": "medium"},
+      "partitionAssignment": {"kind": "frozen-new"},
+      "labelStatus": "not-authored-development"
+    },
+    {
+      "id": "repository:github.com/simplcommerce/simplcommerce",
+      "repositoryName": "simplcommerce/SimplCommerce",
+      "repositoryUrl": "https://github.com/simplcommerce/SimplCommerce",
+      "primaryStratum": "mixed-dotnet-javascript-typescript",
+      "partition": "development",
+      "productShape": "modular commerce backend and browser application",
+      "shapeTags": ["backend-service", "frontend-ui", "multi-package-monorepository", "integration-heavy"],
+      "sourceSnapshot": {
+        "defaultBranchAtFreeze": "master",
+        "commitSha": "3472ba02a6f2d9b6bdca7f7fb84957176aa799dc",
+        "gitTreeSha1": "1386650d68ccbc4a606fcd12a6d4e36149ada8de",
+        "treeListingComplete": true,
+        "archiveUrl": "https://codeload.github.com/simplcommerce/SimplCommerce/zip/3472ba02a6f2d9b6bdca7f7fb84957176aa799dc"
+      },
+      "license": {
+        "expression": "Apache-2.0",
+        "path": "License.txt",
+        "gitBlobSha1": "caf51ee8791e47421724b85ca4cf3eddea05d0e8",
+        "contentSha256": "sha256:5ff78340c1fa8009a50bc3911e8052bebe06eae437be6a43541fe58826bbf734",
+        "redistributionAllowed": true
+      },
+      "size": {"metric": "repository-source-shape-file-count/1.0.0", "eligibleFiles": 1341, "eligibleBytes": 4612926, "ecosystemFiles": {"dotnet": 992, "javascriptTypescript": 349}, "band": "medium"},
+      "partitionAssignment": {"kind": "frozen-new"},
+      "labelStatus": "not-authored-development"
+    },
+    {
+      "id": "repository:github.com/btcpayserver/btcpayserver",
+      "repositoryName": "btcpayserver/btcpayserver",
+      "repositoryUrl": "https://github.com/btcpayserver/btcpayserver",
+      "primaryStratum": "mixed-dotnet-javascript-typescript",
+      "partition": "development",
+      "productShape": "payment backend and operator-facing web application",
+      "shapeTags": ["backend-service", "frontend-ui", "multi-package-monorepository", "integration-heavy"],
+      "sourceSnapshot": {
+        "defaultBranchAtFreeze": "master",
+        "commitSha": "fbf761f36a015b76c197889f174f124c348cd097",
+        "gitTreeSha1": "f674b9eebe71a220b74a76199c9634dfea56a6a9",
+        "treeListingComplete": true,
+        "archiveUrl": "https://codeload.github.com/btcpayserver/btcpayserver/zip/fbf761f36a015b76c197889f174f124c348cd097"
+      },
+      "license": {
+        "expression": "MIT",
+        "path": "LICENSE",
+        "gitBlobSha1": "d03fbac07b67917d9e19061ec0c447a75cd2bacf",
+        "contentSha256": "sha256:0261dc8ba1fd5d3db3a4ff6d4ff3778700d470b0d2a2042c3f72a9b71166da70",
+        "redistributionAllowed": true
+      },
+      "size": {"metric": "repository-source-shape-file-count/1.0.0", "eligibleFiles": 1726, "eligibleBytes": 9117158, "ecosystemFiles": {"dotnet": 1664, "javascriptTypescript": 62}, "band": "medium"},
+      "partitionAssignment": {"kind": "frozen-new"},
+      "labelStatus": "not-authored-development"
+    },
+    {
+      "id": "repository:github.com/squidex/squidex",
+      "repositoryName": "Squidex/squidex",
+      "repositoryUrl": "https://github.com/Squidex/squidex",
+      "primaryStratum": "mixed-dotnet-javascript-typescript",
+      "partition": "development",
+      "productShape": "headless CMS backend and administration frontend",
+      "shapeTags": ["backend-service", "frontend-ui", "multi-package-monorepository", "integration-heavy"],
+      "sourceSnapshot": {
+        "defaultBranchAtFreeze": "master",
+        "commitSha": "0ecfe2fc6807a59f0cf67fdcb41bfa037b4fd60e",
+        "gitTreeSha1": "a0bd64d3ace748fb13438fea5018a5ed5fc94ee1",
+        "treeListingComplete": true,
+        "archiveUrl": "https://codeload.github.com/Squidex/squidex/zip/0ecfe2fc6807a59f0cf67fdcb41bfa037b4fd60e"
+      },
+      "license": {
+        "expression": "MIT",
+        "path": "LICENSE",
+        "gitBlobSha1": "306b9eced63a5967f7863cd87baa433ad99d8590",
+        "contentSha256": "sha256:93b5ff766b2df011892d4ed661805fca4f967955e415b4572416bc9af5a7d6b1",
+        "redistributionAllowed": true
+      },
+      "size": {"metric": "repository-source-shape-file-count/1.0.0", "eligibleFiles": 4110, "eligibleBytes": 17005608, "ecosystemFiles": {"dotnet": 2715, "javascriptTypescript": 1395}, "band": "large"},
+      "partitionAssignment": {"kind": "frozen-new"},
+      "labelStatus": "not-authored-development"
+    },
+    {
+      "id": "repository:github.com/orchardcms/orchardcore",
+      "repositoryName": "OrchardCMS/OrchardCore",
+      "repositoryUrl": "https://github.com/OrchardCMS/OrchardCore",
+      "primaryStratum": "mixed-dotnet-javascript-typescript",
+      "partition": "validation",
+      "productShape": "large modular CMS and application-framework monorepository",
+      "shapeTags": ["backend-service", "frontend-ui", "multi-package-monorepository", "integration-heavy"],
+      "sourceSnapshot": {
+        "defaultBranchAtFreeze": "main",
+        "commitSha": "1da359f83ac75c105a67d30fbc8edc5fd6025764",
+        "gitTreeSha1": "043a18922e6de100e361f8d3c8098f442c766109",
+        "treeListingComplete": true,
+        "archiveUrl": "https://codeload.github.com/OrchardCMS/OrchardCore/zip/1da359f83ac75c105a67d30fbc8edc5fd6025764"
+      },
+      "license": {
+        "expression": "BSD-3-Clause",
+        "path": "LICENSE",
+        "gitBlobSha1": "183936c000fa2cc5969ba724afc1bdc5bfae5080",
+        "contentSha256": "sha256:b2f723d71235a17397c49e4ac31468eafbc460ba423fc1e76d70207f255e878e",
+        "redistributionAllowed": true
+      },
+      "size": {"metric": "repository-source-shape-file-count/1.0.0", "eligibleFiles": 8058, "eligibleBytes": 54321971, "ecosystemFiles": {"dotnet": 7111, "javascriptTypescript": 947}, "band": "large"},
+      "partitionAssignment": {"kind": "frozen-new"},
+      "labelStatus": "not-authored-blind-validation"
+    },
+    {
+      "id": "repository:github.com/electronnet/electron.net",
+      "repositoryName": "ElectronNET/Electron.NET",
+      "repositoryUrl": "https://github.com/ElectronNET/Electron.NET",
+      "primaryStratum": "mixed-dotnet-javascript-typescript",
+      "partition": "validation",
+      "productShape": "desktop bridge, CLI, and TypeScript runtime integration",
+      "shapeTags": ["library-sdk", "cli-desktop", "frontend-ui", "multi-package-monorepository", "integration-heavy"],
+      "sourceSnapshot": {
+        "defaultBranchAtFreeze": "main",
+        "commitSha": "7fe3f9b5b64134c07bee70a8cc97cbcdc4f6ed04",
+        "gitTreeSha1": "4e00d23bdbf29af7162923b9f673a4c0e88bae26",
+        "treeListingComplete": true,
+        "archiveUrl": "https://codeload.github.com/ElectronNET/Electron.NET/zip/7fe3f9b5b64134c07bee70a8cc97cbcdc4f6ed04"
+      },
+      "license": {
+        "expression": "MIT",
+        "path": "LICENSE",
+        "gitBlobSha1": "9e719470bf7fd56843aa9b666e6fbd81e40ea725",
+        "contentSha256": "sha256:08a8c809014e5fcd4776f70313b92268d900953183dce6f2dc05edb4f106f18c",
+        "redistributionAllowed": true
+      },
+      "size": {"metric": "repository-source-shape-file-count/1.0.0", "eligibleFiles": 364, "eligibleBytes": 1405184, "ecosystemFiles": {"dotnet": 286, "javascriptTypescript": 78}, "band": "medium"},
+      "partitionAssignment": {"kind": "frozen-new"},
+      "labelStatus": "not-authored-blind-validation"
+    },
+    {
+      "id": "repository:github.com/jasontaylordev/cleanarchitecture",
+      "repositoryName": "jasontaylordev/CleanArchitecture",
+      "repositoryUrl": "https://github.com/jasontaylordev/CleanArchitecture",
+      "primaryStratum": "mixed-dotnet-javascript-typescript",
+      "partition": "validation",
+      "productShape": "compact backend and browser-application template",
+      "shapeTags": ["backend-service", "frontend-ui", "multi-package-monorepository"],
+      "sourceSnapshot": {
+        "defaultBranchAtFreeze": "main",
+        "commitSha": "68c026833f73f3eca5aaab4bccc83d01593b637d",
+        "gitTreeSha1": "b44b1628125acd5df62d8e9f9292b798bd645dbd",
+        "treeListingComplete": true,
+        "archiveUrl": "https://codeload.github.com/jasontaylordev/CleanArchitecture/zip/68c026833f73f3eca5aaab4bccc83d01593b637d"
+      },
+      "license": {
+        "expression": "MIT",
+        "path": "LICENSE",
+        "gitBlobSha1": "20e161181137c75ff743500b197414ff88f11eba",
+        "contentSha256": "sha256:24d99e81249eb4150b3baf49b00fd8eeb6c19e8f583bb7792ad451f4472532fa",
+        "redistributionAllowed": true
+      },
+      "size": {"metric": "repository-source-shape-file-count/1.0.0", "eligibleFiles": 169, "eligibleBytes": 218114, "ecosystemFiles": {"dotnet": 110, "javascriptTypescript": 59}, "band": "small"},
+      "partitionAssignment": {"kind": "frozen-new"},
+      "labelStatus": "not-authored-blind-validation"
+    },
+    {
+      "id": "repository:github.com/umbraco/umbraco-cms",
+      "repositoryName": "umbraco/Umbraco-CMS",
+      "repositoryUrl": "https://github.com/umbraco/Umbraco-CMS",
+      "primaryStratum": "mixed-dotnet-javascript-typescript",
+      "partition": "test",
+      "productShape": "large CMS backend and administration frontend monorepository",
+      "shapeTags": ["backend-service", "frontend-ui", "multi-package-monorepository", "integration-heavy"],
+      "sourceSnapshot": {
+        "defaultBranchAtFreeze": "main",
+        "commitSha": "95499a7ba14063fe61a50e9a8e44cf3de02a3d91",
+        "gitTreeSha1": "ec59c1b0ecd737e53544e6f9d4d3d27512d70416",
+        "treeListingComplete": true,
+        "archiveUrl": "https://codeload.github.com/umbraco/Umbraco-CMS/zip/95499a7ba14063fe61a50e9a8e44cf3de02a3d91"
+      },
+      "license": {
+        "expression": "MIT",
+        "path": "LICENSE.md",
+        "gitBlobSha1": "b8bda9d7a3879244bf75305a60b2729b3941a6a4",
+        "contentSha256": "sha256:e15305002597b35d0afa0ca3a218f2ee7ba171b98be06649d1a2a2fb4069c5f4",
+        "redistributionAllowed": true
+      },
+      "size": {"metric": "repository-source-shape-file-count/1.0.0", "eligibleFiles": 16812, "eligibleBytes": 51408526, "ecosystemFiles": {"dotnet": 7653, "javascriptTypescript": 9159}, "band": "large"},
+      "partitionAssignment": {"kind": "frozen-new"},
+      "labelStatus": "not-authored-sealed-test"
+    },
+    {
+      "id": "repository:github.com/dotnet/eshop",
+      "repositoryName": "dotnet/eShop",
+      "repositoryUrl": "https://github.com/dotnet/eShop",
+      "primaryStratum": "mixed-dotnet-javascript-typescript",
+      "partition": "test",
+      "productShape": "distributed commerce backend and browser application",
+      "shapeTags": ["backend-service", "frontend-ui", "multi-package-monorepository", "integration-heavy"],
+      "sourceSnapshot": {
+        "defaultBranchAtFreeze": "main",
+        "commitSha": "9b4f9434f46fdc5c1a6e9e936af2868340cdbc48",
+        "gitTreeSha1": "e3b688ebdc7f7908d1a41b74c7d0ec337ea94349",
+        "treeListingComplete": true,
+        "archiveUrl": "https://codeload.github.com/dotnet/eShop/zip/9b4f9434f46fdc5c1a6e9e936af2868340cdbc48"
+      },
+      "license": {
+        "expression": "MIT",
+        "path": "LICENSE",
+        "gitBlobSha1": "94286c941a5f8fd43e591f2d07693e3355175e8e",
+        "contentSha256": "sha256:baebca0309090f4eca1b7a82c836cc91e48b2b92139c2280fb0ff69af922c2ae",
+        "redistributionAllowed": true
+      },
+      "size": {"metric": "repository-source-shape-file-count/1.0.0", "eligibleFiles": 652, "eligibleBytes": 1151482, "ecosystemFiles": {"dotnet": 610, "javascriptTypescript": 42}, "band": "medium"},
+      "partitionAssignment": {"kind": "frozen-new"},
+      "labelStatus": "not-authored-sealed-test"
+    },
+    {
+      "id": "repository:github.com/azure-samples/azure-search-openai-demo-csharp",
+      "repositoryName": "Azure-Samples/azure-search-openai-demo-csharp",
+      "repositoryUrl": "https://github.com/Azure-Samples/azure-search-openai-demo-csharp",
+      "primaryStratum": "mixed-dotnet-javascript-typescript",
+      "partition": "test",
+      "productShape": "compact AI-search backend and browser application",
+      "shapeTags": ["backend-service", "frontend-ui", "integration-heavy"],
+      "sourceSnapshot": {
+        "defaultBranchAtFreeze": "main",
+        "commitSha": "7d702a68d37f8c93d902acf8a35088979a2e3fa3",
+        "gitTreeSha1": "cd456dcfcb373c957da07d84ab803c29b3cb2df7",
+        "treeListingComplete": true,
+        "archiveUrl": "https://codeload.github.com/Azure-Samples/azure-search-openai-demo-csharp/zip/7d702a68d37f8c93d902acf8a35088979a2e3fa3"
+      },
+      "license": {
+        "expression": "MIT",
+        "path": "LICENSE",
+        "gitBlobSha1": "9e841e7a26e4eb057b24511e7b92d42b257a80e5",
+        "contentSha256": "sha256:c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383",
+        "redistributionAllowed": true
+      },
+      "size": {"metric": "repository-source-shape-file-count/1.0.0", "eligibleFiles": 148, "eligibleBytes": 289182, "ecosystemFiles": {"dotnet": 139, "javascriptTypescript": 9}, "band": "small"},
+      "partitionAssignment": {"kind": "frozen-new"},
+      "labelStatus": "not-authored-sealed-test"
+    }
+  ]
+}

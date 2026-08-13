@@ -6,6 +6,14 @@ may still change public contracts with explicit documentation.
 
 ## Unreleased
 
+### Added
+
+- Froze `efforthours-public-readiness/0.1.0`, a source-only 33-family sampling
+  cohort spanning the complete .NET, JavaScript/TypeScript, and mixed
+  development/validation/test matrix. The plan pins Git trees, license checksums,
+  product shapes, and source-size bands before candidate totals; it includes no
+  estimates, labels, metrics, or model-admission claim.
+
 ### Changed
 
 - Froze `repository-model-admission/1.0.0` before candidate fitting, including a

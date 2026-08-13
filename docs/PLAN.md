@@ -145,16 +145,18 @@ count, and intermediate churn do not value effort. `CHANGE_ESTIMATION.md` and
 
 ### 1. Broaden calibration evidence before changing priors
 
-- Add redistributable repository families until relevant ecosystem and partition
-  cells contain multiple observations.
+- Reproduce and label the frozen `efforthours-public-readiness/0.1.0` source
+  cohort. Its 33 licensed families fill the planned ecosystem, partition, shape,
+  and source-size cells, but currently contain no EffortHours evidence or labels.
 - Keep all revisions and profiles from one repository family in one frozen
   development, validation, or test partition.
 - Expand decomposed teacher review with honest model/input provenance. Optional
   independent review must remain explicit corroboration, not an implied maturity
   upgrade.
 - Use the frozen `repository-model-admission/1.0.0` gates before fitting a
-  correction or local model. Keep the new test labels sealed until one validation
-  candidate and release decision are frozen.
+  correction or local model. Author development first, keep validation blind until
+  candidate freeze, and keep test labels sealed until one validation candidate and
+  release decision are frozen.
 - Retain mutation relations as qualitative invariance, directionality,
   marginality, and category-isolation guards—not numerical labels.
 
