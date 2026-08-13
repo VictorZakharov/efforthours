@@ -201,13 +201,63 @@ public sealed class CandidatePreflightTests
             });
 
         EstimateReport candidate = LogicalCandidateTransformer.Transform(source, evidence, model);
+        LogicalCandidateProjectionResult outside = LogicalCandidateProjectionRunner.Project(
+            source,
+            evidence,
+            model,
+            "python");
+        using CancellationTokenSource cancelled = new();
+        cancelled.Cancel();
 
         Assert.Equal(source.TotalEffort, candidate.TotalEffort);
         Assert.Contains("fallback", candidate.WorkItems[0].Reason, StringComparison.Ordinal);
+        Assert.Equal(ContractJson.Serialize(source), ContractJson.Serialize(outside.Estimate));
+        Assert.Contains("seed-rules/0.4.0", outside.Diagnostic, StringComparison.Ordinal);
         Assert.Throws<InvalidDataException>(() => LogicalCandidateTransformer.Transform(
             source,
             evidence,
             model with { LicenseExpression = "Apache-2.0" }));
+        Assert.Throws<OperationCanceledException>(() => LogicalCandidateProjectionRunner.Project(
+            source,
+            evidence,
+            model,
+            "dotnet",
+            cancelled.Token));
+        Assert.Throws<InvalidDataException>(() => LogicalCandidateProjectionRunner.Project(
+            source,
+            evidence,
+            model with { LicenseExpression = "Apache-2.0" },
+            "outside-policy"));
+    }
+
+    [Fact]
+    public void LogicalCandidateProjectionOptionsPinTheModelDigestAndStratum()
+    {
+        string digest = $"sha256:{new string('a', 64)}";
+        string[] valid =
+        [
+            "--estimate", "estimate.json",
+            "--evidence", "evidence.json",
+            "--model", "model.json",
+            "--expected-model-digest", digest,
+            "--primary-stratum", "dotnet",
+        ];
+
+        bool parsed = LogicalCandidateProjectionOptions.TryParse(
+            valid,
+            out LogicalCandidateProjectionOptions? options,
+            out string? error);
+        bool invalid = LogicalCandidateProjectionOptions.TryParse(
+            [.. valid[..^3], "not-a-digest", "--primary-stratum", "dotnet"],
+            out _,
+            out string? invalidError);
+
+        Assert.True(parsed, error);
+        Assert.NotNull(options);
+        Assert.Equal(digest, options.ExpectedModelDigest);
+        Assert.Equal("dotnet", options.PrimaryStratum);
+        Assert.False(invalid);
+        Assert.Contains("sha256", invalidError, StringComparison.Ordinal);
     }
 
     [Fact]

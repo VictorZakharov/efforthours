@@ -8,7 +8,8 @@ internal static class LogicalCandidateTransformer
     public static EstimateReport Transform(
         EstimateReport source,
         RepositoryEvidence evidence,
-        LogicalCandidateModel model)
+        LogicalCandidateModel model,
+        CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(source);
         ArgumentNullException.ThrowIfNull(evidence);
@@ -28,8 +29,12 @@ internal static class LogicalCandidateTransformer
             factor => new RangeKey(factor.WorkItemKind, factor.ExpectedSizeBand));
         Dictionary<string, WorkItem> transformed = new(StringComparer.Ordinal);
         int fallbackCount = 0;
-        foreach (LogicalCapabilityGroup capability in LogicalCandidateScorer.Build(source, evidence))
+        foreach (LogicalCapabilityGroup capability in LogicalCandidateScorer.Build(
+                     source,
+                     evidence,
+                     cancellationToken))
         {
+            cancellationToken.ThrowIfCancellationRequested();
             PointKey pointKey = new(capability.Kind, capability.LogicalSizeBand);
             if (!points.TryGetValue(pointKey, out LogicalCandidatePointFactor? point))
             {

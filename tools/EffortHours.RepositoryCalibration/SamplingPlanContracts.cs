@@ -14,6 +14,8 @@ internal sealed record SamplingPlan
 
     public required SamplingSizeMetric SizeMetric { get; init; }
 
+    public IReadOnlyList<string> RequiredShapeTags { get; init; } = [];
+
     public IReadOnlyList<SamplingFamily> Families { get; init; } = [];
 }
 
@@ -39,6 +41,10 @@ internal sealed record SamplingFamily
     public required string PrimaryStratum { get; init; }
 
     public required string Partition { get; init; }
+
+    public required string ProductShape { get; init; }
+
+    public IReadOnlyList<string> ShapeTags { get; init; } = [];
 
     public required SamplingSourceSnapshot SourceSnapshot { get; init; }
 
