@@ -20,7 +20,7 @@ estimated effort, and pricing.
 Run these commands from the repository root:
 
 ```text
-dotnet restore EffortHours.slnx --configfile NuGet.Config --force-evaluate
+dotnet restore EffortHours.slnx --configfile NuGet.Config --locked-mode
 dotnet format EffortHours.slnx --no-restore --verify-no-changes --severity info
 dotnet build EffortHours.slnx --no-restore --configuration Release
 dotnet test tests/EffortHours.Tests/EffortHours.Tests.csproj --no-build --no-restore --configuration Release

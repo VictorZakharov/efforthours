@@ -2,64 +2,37 @@
 
 ## Status
 
-The first Change Estimation MVP and its first non-Git selector follow-on are
-implemented after Milestone 7B5. They include provider-neutral immutable
-base/head analysis, two statically scanned directories, two saved repository
-evidence bundles, one commit, one final revision range, and one GitHub pull
-request through an optional `gh` adapter. The current
-`change-seed/0.18.0` rules remain experimental and are not empirically calibrated,
-production-ready, or separately model-admitted. They preserve the valuation
-behavior of the Stage A logically admitted 0.6.0 baseline; the SQL, Python, Go,
-Java, Kotlin, Shell, PowerShell, Terraform/HCL, PHP/Composer, Rust/Cargo,
-Docker/Compose, Jupyter, and C/C++ paths were not present in that gate. Version 0.18.0
-retains the 0.3.0 logical-marginality
-correction and the 0.4.0 fail-closed boundary for explicitly delimited
-customization inside otherwise generated files. It adds an expected-point gross-
-to-final normalization diagnostic
-for explicit multi-commit ranges, disjoint mixed-role category partitions,
-roughly-one-hour logical work-item decomposition, unique-snapshot analysis reuse,
-bounded component audits, SQL-aware formatting/category routing, Python
-indentation-aware formatting/category routing, and Go-aware formatting/directive/
-implicit-semicolon/category routing, Java token-aware formatting/category routing,
-Kotlin token-aware formatting/category routing, Shell/PowerShell literal-aware
-formatting/semantic role routing, and HCL-aware formatting/Terraform semantic
-routing, PHP-aware formatting and analyzer-backed semantic/category routing, plus
-Rust-aware formatting and analyzer-backed semantic/category routing, plus
-Dockerfile, Compose, and `.dockerignore` formatting normalization with analyzer-
-backed packaging/deployment routing, plus bounded Jupyter container/output
-normalization and analyzer-backed semantic routing, plus C/C++ token-aware
-formatting and analyzer-backed semantic/category routing, without
-changing any existing Change EHE prior or previously supported final-delta total.
-The current source composes repository `seed-rules/0.4.0`.
-The first calibration-infrastructure checkpoint, a preliminary 24-record synthetic
-host-AI teacher corpus, a one-record real public pilot, a blind six-family
-real-source expansion, and a released-alpha.3 public validation follow-on are
-implemented. No independent correction exists, but disclosed, decomposed host-AI
-teacher labels are now sufficient for Stage A logical admission. The visible expansion
-diagnostics exposed repeated category-slice overcounting. A subject-neutral 0.3.0
-correctness revision and separate development/validation diagnostics now exist;
-the alpha.3 follow-on exercises that revision on a new family, the expansion test
-comparison remains withheld, and no repository prior, threshold, or review
-maturity changed.
-The behavioral safeguard suite now covers cancellation and category-isolated
-migration, integration, CI, container-delivery, and simplification mutations in
-addition to the initial normalization and Git boundaries. The first Change
-portfolio checkpoint adds repeated PRs, a versioned cross-repository PR manifest,
-and bounded author-and-period selection. Its separate
-`change-portfolio/0.1.0+change-seed/0.18.0+seed-rules/0.4.0` reconciler changes no
-Change prior, frozen report, label, or admission decision and remains experimental.
+EffortHours implements provider-neutral final-delta analysis for immutable local
+Git revisions, commits, ranges, and one pull request; two statically scanned
+directories; and two saved repository-evidence bundles. Portfolio reconciliation
+supports repeated PRs, multi-repository manifests, and bounded author-period
+selection under the separate `CHANGE_PORTFOLIOS.md` contract.
+
+Current source reports use `change-seed/0.18.0+seed-rules/0.4.0`. The model remains
+experimental and is not empirically production-validated. Only the documented
+0.6.0 Stage A subset has passed a model-authored logical gate for eligible
+4-to-32-hour changes; later ecosystem extensions preserve those admitted rules but
+were not present in that evidence and are not separately admitted.
+
+The current rules retain bounded logical marginality, fail-closed generated-file
+customization, language-aware formatting normalization, mixed-role category
+partitioning, roughly-one-hour Change tasks, immutable snapshot reuse, bounded
+range audits, final-delta reconciliation, and stable explanation lineage. Exact
+versions and historical diagnostics remain in `CHANGELOG.md`,
+`CHANGE_MODEL_ADMISSION.md`, and the immutable artifacts under
+`calibration/changes/`.
 
 ## Purpose
 
-Repository-wide recreation is only one billing context. EffortHours should eventually
-estimate the Equivalent Human Effort embodied in a completed incremental change,
+Repository-wide recreation is only one estimation context. EffortHours also
+estimates the Equivalent Human Effort embodied in a completed incremental change
 while retaining the same current-artifact, no-churn valuation principles.
 
 The output is **Change EHE**: the conventional senior-contractor effort represented
 by the final functional and quality delta. It is not elapsed time, historical labor,
 or a reconstruction of what a contributor actually did.
 
-## Selector roadmap
+## Supported selectors
 
 The implemented provider-neutral engine and Git adapter support:
 
@@ -79,7 +52,7 @@ The engine accepts storage-independent snapshot factories, which keeps selector
 adapters separate from valuation. Portfolio selection composes canonical immutable
 Change reports and applies pricing only after repository-level normalization.
 
-The initial CLI shape is:
+The CLI surface is:
 
 ```text
 eh change <repository> --base <revision> --head <revision>
@@ -124,12 +97,12 @@ co-author trailer inclusion, and merge exclusion versus first-parent valuation a
 explicit report policies. Git returns only valid `Co-authored-by` trailer values;
 commit bodies are not returned to EffortHours or retained.
 
-The first PR adapter analyzes objects already available in the selected local Git
+The PR adapter analyzes objects already available in the selected local Git
 object database. It does not fetch, check out, or modify the repository. When a PR
 head or base object is absent locally, the command fails with an explicit
-instruction to fetch that object before retrying. Automatic external object
-materialization can be considered later, but it must not silently mutate the
-target repository.
+instruction to fetch that object before retrying. Any future external object
+materialization must be explicit and must not silently mutate the target
+repository.
 
 Directory selection runs the ordinary non-executing repository pipeline against
 each caller-selected root with no implicit cache and writes nothing into either
@@ -545,9 +518,9 @@ process-level Git and non-Git directory/evidence tests. The mutation matrix
 includes formatting, movement,
 generation, lockfiles, exact duplication, code, tests, documentation, migration,
 integration, CI, container delivery, simplification, additivity, overlap, and
-revert behavior while preserving range-point and category isolation. See
-`MILESTONE_CHANGE_1.md` for the original boundary and
-`MILESTONE_CHANGE_PORTFOLIOS.md` for the portfolio policy and fixture matrix.
+revert behavior while preserving range-point and category isolation. Portfolio
+policy and its additional fixture boundary are documented in
+`CHANGE_PORTFOLIOS.md`.
 
 ## Calibration boundary
 
@@ -613,7 +586,8 @@ to 20.75 candidate versus 19.00 teacher expected hours (WAPE 0.1447, bias
 Consolidated item identities reduce exact mapping, some categories undershoot, and
 candidate high totals remain above reviewed high totals. These one-teacher results
 diagnose the correction; they do not establish calibration or accuracy. See
-`MILESTONE_CHANGE_2.md` and `MILESTONE_CHANGE_3.md`.
+`CALIBRATION.md`, `calibration/changes/README.md`, and
+`CHANGE_MODEL_ADMISSION.md`.
 
 `calibration/changes/public-real-alpha3` adds one new MIT-licensed .NET validation
 family selected before candidate analysis. Released alpha.3 reports 7.00 expected

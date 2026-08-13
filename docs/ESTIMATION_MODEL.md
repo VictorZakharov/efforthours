@@ -2,7 +2,7 @@
 
 ## 1. Purpose
 
-This document defines the planned semantics of a EffortHours estimate. It is the
+This document defines the semantics of an EffortHours estimate. It is the
 contract between repository analyzers, estimation engines, reports, calibration
 data, and reviewers in a host AI session.
 
@@ -143,7 +143,7 @@ multiplier whenever practical.
 
 ## 6. Effort categories
 
-The initial taxonomy is:
+The version 1 taxonomy is:
 
 1. Specification comprehension and bounded domain learning
 2. Repository and solution setup
@@ -191,7 +191,7 @@ normally represent 0.5 to 8 expected hours and contain at least:
 }
 ```
 
-The final schema will additionally need:
+The versioned work-item contract also preserves:
 
 - profile applicability;
 - parent/child relationships;
@@ -207,8 +207,8 @@ are a fallback that must be visible and justified.
 
 ## 8. Repository evidence
 
-Evidence is a versioned, language-neutral intermediate representation. Initial
-evidence families should include:
+Evidence is a versioned, language-neutral intermediate representation. Evidence
+families include:
 
 - repository scope, files, languages, and sizes;
 - project/package graph and architectural boundaries;
@@ -311,7 +311,7 @@ evidence, scope, and explicitly selected-source queries must repeat that digest.
 The adjustment ledger records affirm/replace intent, the exact original range,
 supporting evidence, rationale, and available model identity. Validation checks
 identity and lineage but does not apply the ledger or establish correctness,
-calibration, or independence. `MILESTONE_8.md` defines the exact boundary.
+calibration, or independence. `HOST_REVIEW.md` defines the exact boundary.
 
 ## 10. Calibration
 
@@ -359,7 +359,7 @@ Metric semantics are versioned as `calibration-metrics/1.0.0`. WAPE is defined a
 `sum(abs(candidate - reviewed)) / sum(reviewed)` and is used instead of ordinary
 MAPE because category observations may legitimately be zero. Interval results are
 agreement diagnostics against weak reviewed labels; they do not yet make low/high
-ranges formal probability intervals. `MILESTONE_7.md` and the
+ranges formal probability intervals. `CALIBRATION.md` and the
 published schemas define the full metric boundary.
 
 Milestone 7B1 adds a low-cost authoring boundary. A canonical estimate can be
@@ -420,7 +420,7 @@ across development, validation, and test partitions and measure
 `seed-rules/0.2.0` or `seed-rules/0.2.1` against the source estimate each teacher
 reviewed. Those labels share one host-AI teacher and have no independent
 correction. They are preliminary weak supervision and do not make the seed model
-calibrated or production-ready. `MILESTONE_7.md`, the versioned rubrics, and the
+calibrated or production-ready. `CALIBRATION.md`, the versioned rubrics, and the
 blind packets under `calibration/corpora` define the implemented policy. Their
 decomposed host-AI judgments may support a future logical admission decision with
 explicit gates; independent replication remains available as optional
@@ -433,8 +433,8 @@ coverage tags remain non-valuing provenance. Every change from one repository
 family stays in one partition. Empty targets explicitly represent a normalized
 zero final delta without inventing effort; exact `0/0/0` targets preserve lineage
 for reviewed false-positive exclusions. `change-ehe-work-item/1.1.0`,
-`MILESTONE_CHANGE_2.md`, `MILESTONE_CHANGE_3.md`, and
-`CHANGE_MODEL_ADMISSION.md` define the current checkpoints. A disclosed host-AI
+`CALIBRATION.md`, `calibration/changes/README.md`, and
+`CHANGE_MODEL_ADMISSION.md` define the current boundary. A disclosed host-AI
 teacher may supply logical weak supervision when the estimate reconciles exactly
 from evidence-backed tasks normally about one hour each. The maturity remains
 `teacher-estimate`; logical admission does not imply human review, empirical
@@ -639,7 +639,7 @@ probability intervals until they have been calibrated as such.
 Pricing is a final, replaceable layer:
 
 ```text
-Equivalent Replacement Cost = Equivalent Human Effort × hourly market rate
+Equivalent Replacement Cost = Equivalent Human Effort x hourly market rate
 ```
 
 The bundled `us-senior-software-contractor/2026.1` rate card contains:
@@ -661,7 +661,7 @@ wage anchors rather than contractor-rate measurements.
 
 The complete inputs, series IDs, source release dates, formula, assumptions, and
 public-domain provenance are stored under `rates/us-senior-contractor/` and
-described in `MILESTONE_6.md`. Callers can provide an exact override or request
+described in `PRICING.md`. Callers can provide an exact override or request
 effort-only output. Future regional profiles must not change the underlying effort
 estimate.
 
