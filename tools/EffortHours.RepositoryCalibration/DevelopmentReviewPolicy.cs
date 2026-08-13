@@ -2,24 +2,38 @@ using EffortHours.Contracts.V1;
 
 namespace EffortHours.RepositoryCalibration;
 
-internal static class DevelopmentReviewPolicy
+internal static partial class DevelopmentReviewPolicy
 {
     public static CalibrationCapabilityReviewDecision Review(
         string repositoryName,
-        CalibrationAuthoringTarget target)
+        CalibrationAuthoringTarget target,
+        DevelopmentReviewEvidence evidence)
     {
-        decimal expected = repositoryName switch
+        ReviewJudgment judgment = repositoryName switch
         {
-            "CarterCommunity/Carter" => CarterExpected(target),
-            "tj/commander.js" => CommanderExpected(target),
-            "oqtane/oqtane.framework" => OqtaneExpected(target),
+            "CarterCommunity/Carter" => Existing(target, CarterExpected(target)),
+            "tj/commander.js" => Keep(CommanderExpected(target)),
+            "oqtane/oqtane.framework" => Existing(target, OqtaneExpected(target)),
+            "App-vNext/Polly" => PollyExpected(target, evidence),
+            "FastEndpoints/FastEndpoints" => FastEndpointsExpected(target, evidence),
+            "FluentValidation/FluentValidation" => FluentValidationExpected(target, evidence),
+            "dotnet/command-line-api" => CommandLineExpected(target, evidence),
+            "colinhacks/zod" => ZodExpected(target, evidence),
+            "fastify/fastify" => FastifyExpected(target, evidence),
+            "lit/lit" => LitExpected(target, evidence),
+            "sindresorhus/execa" => ExecaExpected(target, evidence),
+            "btcpayserver/btcpayserver" => BtcPayExpected(target, evidence),
+            "MudBlazor/MudBlazor" => MudBlazorExpected(target, evidence),
+            "simplcommerce/SimplCommerce" => SimplCommerceExpected(target, evidence),
+            "Squidex/squidex" => SquidexExpected(target, evidence),
             _ => throw new InvalidDataException($"No teacher policy exists for '{repositoryName}'."),
         };
+        decimal expected = judgment.Expected;
         bool excluded = expected == 0m;
         return new CalibrationCapabilityReviewDecision
         {
             SourceCapabilityId = target.SourceCapabilityId,
-            Rationale = Rationale(repositoryName, target, excluded),
+            Rationale = Rationale(repositoryName, target, evidence, judgment.ExclusionReason),
             Targets =
             [
                 new CalibrationReviewTargetDecision
@@ -27,14 +41,27 @@ internal static class DevelopmentReviewPolicy
                     Hours = Range(repositoryName, expected),
                     UncertaintyReasons = Uncertainty(repositoryName, target, expected),
                     SizeException = excluded
-                        ? "Explicit rubric-qualified exclusion: this evidence is already represented by the test-authoring capability and must not be priced again."
+                        ? $"Explicit rubric-qualified exclusion: {judgment.ExclusionReason}"
                         : expected > 8m
-                            ? "The strict-blind review keeps this cohesive capability as one target because candidate-derived partition counts were hidden; a later independent review should decompose it."
+                            ? "The strict-blind review keeps this cohesive capability as one target because candidate-derived partition counts were hidden; a later review may decompose it without changing the logical total."
                             : null,
                 },
             ],
         };
     }
+
+    private sealed record ReviewJudgment(decimal Expected, string? ExclusionReason = null);
+
+    private static ReviewJudgment Keep(decimal expected) => new(expected);
+
+    private static ReviewJudgment Exclude(string reason) => new(0m, reason);
+
+    private static ReviewJudgment Existing(CalibrationAuthoringTarget target, decimal expected) =>
+        expected == 0m
+            ? Exclude(IsTestScope(target.Scope)
+                ? "the evidence belongs to test fixtures already represented by test authoring, so retaining a separate capability would double count the same work."
+                : "the static evidence contains no represented behavior beyond another retained capability, so it must not receive a second effort allocation.")
+            : Keep(expected);
 
     private static decimal CarterExpected(CalibrationAuthoringTarget target)
     {
@@ -239,13 +266,45 @@ internal static class DevelopmentReviewPolicy
             return new EffortRange { Low = 0m, Expected = 0m, High = 0m };
         }
 
-        decimal lowFactor = repositoryName == "oqtane/oqtane.framework" ? 0.72m : 0.78m;
-        decimal highFactor = repositoryName == "oqtane/oqtane.framework" ? 1.4m : 1.3m;
+        bool frozenSlice = repositoryName is
+            "CarterCommunity/Carter" or
+            "tj/commander.js" or
+            "oqtane/oqtane.framework";
+        decimal lowFactor = repositoryName == "oqtane/oqtane.framework"
+            ? 0.72m
+            : frozenSlice
+                ? 0.78m
+                : repositoryName is
+                    "btcpayserver/btcpayserver" or
+                    "MudBlazor/MudBlazor" or
+                    "simplcommerce/SimplCommerce" or
+                    "Squidex/squidex" or
+                    "lit/lit"
+                        ? 0.82m
+                        : 0.85m;
+        decimal highFactor = repositoryName == "oqtane/oqtane.framework"
+            ? 1.4m
+            : frozenSlice
+                ? 1.3m
+                : repositoryName is
+                    "btcpayserver/btcpayserver" or
+                    "MudBlazor/MudBlazor" or
+                    "simplcommerce/SimplCommerce" or
+                    "Squidex/squidex" or
+                    "lit/lit"
+                        ? 1.22m
+                        : 1.18m;
+        decimal high = Math.Max(expected, RoundQuarter(expected * highFactor));
+        if (!frozenSlice && high == expected)
+        {
+            high += 0.25m;
+        }
+
         return new EffortRange
         {
             Low = Math.Min(expected, Math.Max(0.5m, RoundQuarter(expected * lowFactor))),
             Expected = expected,
-            High = Math.Max(expected, RoundQuarter(expected * highFactor)),
+            High = high,
         };
     }
 
@@ -274,7 +333,7 @@ internal static class DevelopmentReviewPolicy
 
         if (expected > 8m)
         {
-            reasons.Add("This first strict-blind slice retains a large cohesive capability instead of using candidate-derived partitions.");
+            reasons.Add("Strict-blind review retains this large cohesive capability instead of using candidate-derived partitions.");
         }
 
         return [.. reasons.Distinct(StringComparer.Ordinal).Order(StringComparer.Ordinal)];
@@ -283,13 +342,12 @@ internal static class DevelopmentReviewPolicy
     private static string Rationale(
         string repositoryName,
         CalibrationAuthoringTarget target,
-        bool excluded)
+        DevelopmentReviewEvidence evidence,
+        string? exclusionReason)
     {
-        if (excluded)
+        if (exclusionReason is not null)
         {
-            return target.Scope.StartsWith("test/", StringComparison.Ordinal)
-                ? $"The '{target.Scope}' evidence describes fixtures already represented by the test-authoring capability; retaining a separate {target.Category} block would double count the same work."
-                : $"The static evidence for '{target.Scope}' contains no represented behavior beyond another retained capability, so the rubric requires an explicit exclusion.";
+            return $"Blind review excludes '{target.Title}' under ehe-work-item/1.1.0: {exclusionReason}";
         }
 
         string basis = target.Category switch
@@ -310,8 +368,8 @@ internal static class DevelopmentReviewPolicy
                 "bounded validation of the represented surface after automated-test creation",
             _ => "the distinct functional or quality responsibility evidenced by the frozen source",
         };
-        return $"Blind review of {repositoryName} treats '{target.Title}' as {basis}; source inspection and " +
-               $"{target.EvidenceIds.Count} traceable evidence fact(s) support the bounded logical estimate.";
+        return $"Blind review of {repositoryName} treats '{target.Title}' as {basis}; pinned source inspection " +
+               $"and digest-verified evidence ({evidence.Summarize(target)}) support the bounded logical estimate.";
     }
 
     private static string Kind(CalibrationAuthoringTarget target)

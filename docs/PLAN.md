@@ -145,11 +145,13 @@ count, and intermediate churn do not value effort. `CHANGE_ESTIMATION.md` and
 
 ### 1. Broaden calibration evidence before changing priors
 
-- Complete development labeling for the reproduced
-  `efforthours-public-readiness/0.2.0` cohort. All 33 licensed source identities are
-  verified, all 15 development families have strict-blind packets, and the first
-  balanced three-family teacher slice is compiled; 12 development families remain
-  unlabeled, while all validation/test labels remain unopened.
+- Freeze a finite repository-candidate manifest before opening validation labels.
+  The reproduced `efforthours-public-readiness/0.3.0` checkpoint now has
+  rubric-complete labels for all 15 development families and a diagnostic
+  `seed-rules/0.4.0` comparison; all 18 validation/test families remain unopened.
+- Use only development evidence to define a bounded candidate set, exact model and
+  configuration identities, resource budgets, and the precommitted selection rule.
+  Do not tune against validation after its labels are opened.
 - Keep all revisions and profiles from one repository family in one frozen
   development, validation, or test partition.
 - Expand decomposed teacher review with honest model/input provenance. Optional

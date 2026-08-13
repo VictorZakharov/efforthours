@@ -11,9 +11,21 @@ internal static class DevelopmentReviewPlanBuilder
 
     private static readonly string[] SelectedRepositories =
     [
+        "App-vNext/Polly",
+        "FastEndpoints/FastEndpoints",
+        "FluentValidation/FluentValidation",
         "CarterCommunity/Carter",
+        "dotnet/command-line-api",
+        "colinhacks/zod",
+        "fastify/fastify",
+        "lit/lit",
+        "sindresorhus/execa",
         "tj/commander.js",
+        "btcpayserver/btcpayserver",
+        "MudBlazor/MudBlazor",
         "oqtane/oqtane.framework",
+        "simplcommerce/SimplCommerce",
+        "Squidex/squidex",
     ];
 
     public static async Task RunAsync(
@@ -57,19 +69,24 @@ internal static class DevelopmentReviewPlanBuilder
 
             CalibrationAuthoringPacket packet = ContractJson.Deserialize<CalibrationAuthoringPacket>(
                 await File.ReadAllTextAsync(packetPath, cancellationToken).ConfigureAwait(false));
+            RepositoryEvidence evidence = ContractJson.Deserialize<RepositoryEvidence>(
+                await File.ReadAllTextAsync(evidencePath, cancellationToken).ConfigureAwait(false));
             ValidateBlindPacket(packet, family, reproduction);
-            records.Add(CreateRecord(family, reproduction, packet));
+            DevelopmentReviewEvidence reviewEvidence = new(evidence);
+            reviewEvidence.RequireCompleteLineage(packet);
+            records.Add(CreateRecord(family, reproduction, packet, reviewEvidence));
         }
 
         CalibrationReviewPlan reviewPlan = new()
         {
             CompilerVersion = CalibrationReviewCompiler.CompilerVersion,
             Id = "efforthours-public-readiness-development",
-            Version = "0.2.0",
+            Version = "0.3.0",
             Description =
-                "First balanced development-only host-AI teacher slice from the frozen public-readiness cohort. " +
-                "These logical weak-supervision labels were authored from strict-blind capability packets, " +
-                "verified static evidence, and pinned public source; they are not independent or production accuracy evidence.",
+                "Complete 15-family development-only host-AI teacher cohort from the frozen public-readiness matrix. " +
+                "These logical weak-supervision labels were authored from strict-blind capability packets, verified " +
+                "static evidence, and pinned public source; validation and test remain unopened, and the labels are " +
+                "not independent or production accuracy evidence.",
             Rubric = new CalibrationRubricReference
             {
                 Id = CalibrationAuthoring.RubricId,
@@ -99,7 +116,8 @@ internal static class DevelopmentReviewPlanBuilder
     private static CalibrationReviewPlanRecord CreateRecord(
         SamplingFamily family,
         ReproductionFamily reproduction,
-        CalibrationAuthoringPacket packet) => new()
+        CalibrationAuthoringPacket packet,
+        DevelopmentReviewEvidence evidence) => new()
         {
             Id = $"record:{Slug(family.RepositoryName)}:implementation",
             Repository = packet.Repository,
@@ -142,7 +160,7 @@ internal static class DevelopmentReviewPlanBuilder
                     "logical-review scale. Tests were not executed and are assumed passing under the default policy.",
             },
             Capabilities = [.. packet.Targets.Select(target =>
-                DevelopmentReviewPolicy.Review(family.RepositoryName, target))],
+                DevelopmentReviewPolicy.Review(family.RepositoryName, target, evidence))],
         };
 
     private static void ValidateBlindPacket(

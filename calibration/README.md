@@ -15,10 +15,12 @@ sampling checkpoint freezes 33 additional licensed source families across the
 complete .NET, JavaScript/TypeScript, and mixed matrix before candidate totals.
 The [`0.2.0 reproduction checkpoint`](corpora/public-readiness/0.2.0/README.md)
 verifies every pinned tree, publishes strict-blind capability packets for all 15
-development families, leaves all 18 holdouts unanalyzed and unlabeled, and adds a
-first balanced three-family development teacher slice. The public repository now
-contains nine labeled repository families and 401 teacher targets in total, still
-without independent correction or a model-admission result.
+development families, and leaves all 18 holdouts unanalyzed and unlabeled. The
+[`0.3.0 development checkpoint`](corpora/public-readiness/0.3.0/README.md) freezes
+rubric-complete judgments for all 2,030 development capabilities before candidate
+evaluation. The public repository now contains 21 labeled repository families and
+2,262 teacher targets in total, still without independent correction or a
+model-admission result.
 
 The current checkpoint contains the original
 [`ehe-work-item/1.0.0`](rubrics/ehe-work-item/1.0.0.md) review rubric and the
