@@ -359,6 +359,14 @@ aggregate-bias, ordinary-family-error, and matched-target-coverage gates. It is
 recorded as `rejected-before-candidate-freeze`; no finite candidate manifest or
 selection rule was frozen.
 
+Development preflight `0.5.0` freezes `logical-capability/0.1.0` and its complete
+development-fitted table. It passes all 16 numerical gates: expected WAPE
+`0.1141`, absolute aggregate bias `0.0108`, ordinary-family pass rate `0.9333`,
+repository expected coverage `0.8667`, and matched-target coverage/normalized
+width `0.8202/0.7407`. Twelve operational gates remain `not-evaluated` and
+non-passing. The candidate is numerically eligible only; no manifest or selection
+rule is frozen, and no validation or test access is authorized.
+
 Validation labels are not authored and must remain unavailable until a finite
 candidate manifest is frozen from development evidence. Test labels are not
 authored and require external body/digest custody before the one-time reveal

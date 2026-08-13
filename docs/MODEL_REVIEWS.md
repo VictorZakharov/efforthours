@@ -33,6 +33,38 @@ Because EffortHours's own anchor informed the seed-model and calibration design,
 a development diagnostic rather than an eligible held-out test record unless a
 future independent snapshot and review policy explicitly establishes otherwise.
 
+## 2026-08-13: logical-capability numerical preflight
+
+Status: **all numerical development gates pass; operational preflight pending;
+validation and test remain unopened; no candidate freeze or admission**
+
+`efforthours-public-readiness/0.5.0` freezes
+`logical-capability/0.1.0`, a transparent evidence-unit projection fitted only to
+the 15 development families and all 2,030 reviewed capabilities. Canonical
+evidence measurements, work-item kind, normalized scope role, and bounded size
+bands determine logical points. Frozen point and residual-range tables use no
+repository identity, source-path value, history, activity, opaque repository-wide
+multiplier, or holdout input. Unknown groups retain the complete
+`seed-rules/0.4.0` capability.
+
+The candidate improves repository expected WAPE from `0.2365` to `0.1141`, keeps
+absolute aggregate bias at `0.0108` versus seed `0.0120`, and places `0.9333` of
+families inside the ordinary error boundary. Repository expected coverage is
+`0.8667` at mean/P90 normalized width `0.4403/0.6817`. Matched-target expected
+coverage rises from `0.6335` to `0.8202` at normalized width `0.7407`. All 16
+numerical gates pass.
+
+The model and preflight record exact development source, estimate, evidence,
+corpus, implementation, and artifact digests. Fitted residual boundaries are
+rounded outward so inclusive coverage survives serialization. Model reproduction
+from the frozen inputs is checked before evaluation.
+
+Twelve required operational gates remain deliberately unrun and non-passing. No
+finite candidate manifest or validation-selection rule is frozen; no validation
+or test candidate output or label exists. The next boundary is to run those gates
+against this exact candidate without changing its features, tables, ranges, or
+fallbacks.
+
 ## 2026-08-13: repository-candidate development preflight
 
 Status: **candidate rejected before freeze; validation and test remain unopened;

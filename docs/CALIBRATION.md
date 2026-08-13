@@ -38,6 +38,15 @@ seed's `0.0120`), ordinary per-family consistency (`0.7333`), and matched-target
 expected coverage (`0.2611`). No candidate manifest was frozen, and no validation
 or test labels or candidate outputs were opened.
 
+Development preflight `0.5.0` freezes the next exact candidate,
+`logical-capability/0.1.0`. Its transparent evidence-unit and fitted-table design
+passes all 16 numerical gates: repository expected WAPE is `0.1141`, absolute
+aggregate bias is `0.0108`, repository expected coverage is `0.8667`, and
+matched-target coverage/normalized width are `0.8202/0.7407`. All 12 operational
+gates remain deliberately unrun and non-passing. The finite candidate manifest is
+therefore not frozen, and validation/test labels and candidate outputs remain
+unopened.
+
 Change EHE has a separate limited Stage A logical-admission decision. Its exact
 size, ecosystem, metric, and performance boundary is defined in
 `CHANGE_MODEL_ADMISSION.md`; it does not calibrate repository EHE or later Change
@@ -263,10 +272,11 @@ the seed baseline. Ranges remain empirical planning bounds rather than formal
 probability intervals.
 
 Current public repository records satisfy the complete development-label boundary
-but not the candidate-freeze, blind-validation, or sealed-test boundary. The 15
-development families may be compared diagnostically, but no validation/test
-comparison or admission decision is authorized. `seed-rules/0.4.0` remains the
-shipped estimator and required fallback.
+and numerical development-preflight boundary, but not the operational preflight,
+candidate-freeze, blind-validation, or sealed-test boundary. The 15 development
+families may be compared diagnostically, but no validation/test comparison or
+admission decision is authorized. `seed-rules/0.4.0` remains the shipped estimator
+and required fallback.
 
 The public-readiness cohort satisfies the planned family, shape, and size
 allocation, exact source reproduction, and complete development-label boundary.
@@ -285,9 +295,9 @@ final-delta policy in `CHANGE_MODEL_ADMISSION.md`.
 
 ## Next evidence required
 
-- a development-only design that passes bias, family-consistency, capability-level
-  coverage, sharpness, and all remaining operational preflight gates;
-- only then, a finite candidate manifest with exact model/configuration identities,
+- all 12 operational preflight gates for the exact `logical-capability/0.1.0`
+  implementation and model artifact, without retuning its numerical design;
+- only if they pass, a finite candidate manifest with exact model/configuration identities,
   resource measurements, and a frozen selection rule;
 - blind validation labels that remain unavailable until candidate freeze;
 - sealed test labels with a precommitted digest and custody record;

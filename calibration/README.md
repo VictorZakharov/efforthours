@@ -21,6 +21,9 @@ rubric-complete judgments for all 2,030 development capabilities before candidat
 evaluation. The [`0.4.0 candidate preflight`](corpora/public-readiness/0.4.0/README.md)
 rejects the strongest bounded transparent design on development bias, per-family
 consistency, and target coverage. It freezes no candidate and opens no holdout.
+The [`0.5.0 logical-capability preflight`](corpora/public-readiness/0.5.0/README.md)
+passes all 16 numerical development gates; 12 operational gates remain unrun and
+non-passing, so it still freezes no manifest and opens no holdout.
 The public repository now contains 21 labeled repository families and 2,262
 teacher targets in total, still without independent correction or a model-
 admission result.

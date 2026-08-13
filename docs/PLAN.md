@@ -143,16 +143,19 @@ count, and intermediate churn do not value effort. `CHANGE_ESTIMATION.md` and
 
 ## Current priorities
 
-### 1. Improve development agreement before opening holdouts
+### 1. Complete logical-candidate operational preflight before opening holdouts
 
-- Use development evidence only to improve general semantic marginality and
-  capability allocation. Public-readiness preflight `0.4.0` improved repository
-  WAPE and interval sharpness, but failed aggregate-bias, per-family-consistency,
-  and matched-target-coverage gates; it froze no candidate.
-- Require a new design to pass the deterministic development preflight before
-  freezing a finite candidate manifest with exact model/configuration identities,
-  resource budgets, and the precommitted selection rule. Do not tune against
-  validation after its labels are opened.
+- Preserve exact `logical-capability/0.1.0` identity from public-readiness
+  preflight `0.5.0`. It passes all 16 numerical development gates with repository
+  WAPE `0.1141`, absolute bias `0.0108`, repository coverage `0.8667`, and
+  matched-target coverage/width `0.8202/0.7407`.
+- Run the 12 pending ecosystem/category/shape, mutation, determinism,
+  explanation, safety, out-of-distribution, tamper, resource, and scanner gates
+  against the exact model and implementation. Do not change features, factors,
+  ranges, or fallbacks under the same candidate identity.
+- Freeze a finite candidate manifest with exact model/configuration identities,
+  resource budgets, and the precommitted selection rule only if every operational
+  gate passes. Do not tune against validation after its labels are opened.
 - Keep all revisions and profiles from one repository family in one frozen
   development, validation, or test partition.
 - Expand decomposed teacher review with honest model/input provenance. Optional
