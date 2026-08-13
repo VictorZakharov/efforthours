@@ -53,6 +53,18 @@ internal static class Program
                 .ConfigureAwait(false);
         }
 
+        if (arguments.Length > 0 && arguments[0] == "candidate-project")
+        {
+            return await RunLogicalCandidateProjectionAsync(arguments[1..], cancellationToken)
+                .ConfigureAwait(false);
+        }
+
+        if (arguments.Length > 0 && arguments[0] == "candidate-operational-preflight")
+        {
+            return await RunLogicalCandidateOperationalAsync(arguments[1..], cancellationToken)
+                .ConfigureAwait(false);
+        }
+
         if (arguments.Length == 1 && arguments[0] is "--help" or "-h")
         {
             WriteUsage(Console.Out);
@@ -210,6 +222,72 @@ internal static class Program
         }
     }
 
+    private static async Task<int> RunLogicalCandidateProjectionAsync(
+        string[] arguments,
+        CancellationToken cancellationToken)
+    {
+        if (!LogicalCandidateProjectionOptions.TryParse(
+                arguments,
+                out LogicalCandidateProjectionOptions? options,
+                out string? error))
+        {
+            await Console.Error.WriteLineAsync(error).ConfigureAwait(false);
+            WriteUsage(Console.Error);
+            return 2;
+        }
+
+        try
+        {
+            await LogicalCandidateProjectionRunner.RunAsync(
+                    options!,
+                    Console.Out,
+                    Console.Error,
+                    cancellationToken)
+                .ConfigureAwait(false);
+            return 0;
+        }
+        catch (Exception exception) when (
+            exception is IOException or
+            UnauthorizedAccessException or
+            InvalidDataException or
+            System.Text.Json.JsonException)
+        {
+            await Console.Error.WriteLineAsync(exception.Message).ConfigureAwait(false);
+            return 2;
+        }
+    }
+
+    private static async Task<int> RunLogicalCandidateOperationalAsync(
+        string[] arguments,
+        CancellationToken cancellationToken)
+    {
+        if (!LogicalCandidateOperationalOptions.TryParse(
+                arguments,
+                out LogicalCandidateOperationalOptions? options,
+                out string? error))
+        {
+            await Console.Error.WriteLineAsync(error).ConfigureAwait(false);
+            WriteUsage(Console.Error);
+            return 2;
+        }
+
+        try
+        {
+            await LogicalCandidateOperationalBuilder.RunAsync(options!, cancellationToken)
+                .ConfigureAwait(false);
+            return 0;
+        }
+        catch (Exception exception) when (
+            exception is IOException or
+            UnauthorizedAccessException or
+            InvalidDataException or
+            System.Text.Json.JsonException)
+        {
+            await Console.Error.WriteLineAsync(exception.Message).ConfigureAwait(false);
+            return 2;
+        }
+    }
+
     private static void WriteUsage(TextWriter writer) => writer.WriteLine("""
         Usage:
           dotnet EffortHours.RepositoryCalibration.dll
@@ -269,5 +347,32 @@ internal static class Program
 
         These commands fit and evaluate only the complete development partition.
         They cannot scan, label, or evaluate validation or test repositories.
+
+        Logical-capability saved-evidence projection:
+          dotnet EffortHours.RepositoryCalibration.dll candidate-project
+            --estimate <seed-estimate.json>
+            --evidence <repository-evidence.json>
+            --model <logical-capability-model.json>
+            --expected-model-digest <sha256:digest>
+            --primary-stratum <stratum>
+
+        Projects one bounded, digest-matched saved estimate/evidence pair. Supported
+        repository-model-admission/1.0.0 strata use the candidate; every other
+        stratum retains the complete named seed fallback with a stderr diagnostic.
+
+        Logical-capability operational preflight:
+          dotnet EffortHours.RepositoryCalibration.dll candidate-operational-preflight
+            --plan <sampling-plan.json>
+            --corpus <development-corpus.json>
+            --seed-evaluation <development-evaluation.json>
+            --outputs <ignored-development-output-directory>
+            --model <logical-capability-model.json>
+            --numerical-preflight <frozen-numerical-preflight.json>
+            --source-commit <40-hex-commit>
+            --output <operational-preflight.json>
+
+        Evaluates development-only stratum, material-category, shape/size,
+        saved-explanation, and safety gates. It stops later measured gates after
+        any failure and never reads validation or test source, outputs, or labels.
         """);
 }

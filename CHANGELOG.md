@@ -8,6 +8,9 @@ may still change public contracts with explicit documentation.
 
 ### Added
 
+- Added a maintainer-only, digest-pinned repository-candidate projector and
+  operational-preflight runner with bounded saved-artifact inputs, cancellation,
+  visible out-of-policy seed fallback, tamper rejection, and stdout/stderr tests.
 - Added a maintainer-only public-repository reproducer that verifies pinned
   commit/tree/blob/license identities, repairs codeload transformations only from
   exact pinned Git blobs, keeps all source/evidence/estimates under ignored
@@ -25,6 +28,11 @@ may still change public contracts with explicit documentation.
 
 ### Changed
 
+- Recorded `efforthours-public-readiness/0.6.0`: exact candidate
+  `logical-capability/0.1.0` passes four development operational gates but fails
+  the material specification-comprehension category's frozen absolute-bias limit
+  at `-0.2505`. The candidate is retired; no holdout was opened and no model was
+  frozen or admitted.
 - Advanced repository authoring to `calibration-authoring/0.2.0` and Change
   authoring to `change-calibration-authoring/0.3.0`. Strict-blind packets now hide
   candidate explanations, source work-item IDs/partition counts, and

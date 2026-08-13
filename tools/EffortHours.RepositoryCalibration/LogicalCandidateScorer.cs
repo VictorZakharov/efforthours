@@ -36,7 +36,8 @@ internal static class LogicalCandidateScorer
 
     public static IReadOnlyList<LogicalCapabilityGroup> Build(
         EstimateReport report,
-        RepositoryEvidence evidence)
+        RepositoryEvidence evidence,
+        CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(report);
         ArgumentNullException.ThrowIfNull(evidence);
@@ -51,12 +52,16 @@ internal static class LogicalCandidateScorer
         Dictionary<string, EvidenceFact> facts = evidence.Facts.ToDictionary(
             fact => fact.Id,
             StringComparer.Ordinal);
-        return
-        [
-            .. report.WorkItems
-                .GroupBy(item => CapabilityId(item.Id), StringComparer.Ordinal)
-                .Select(group => BuildGroup(group.Key, [.. group], facts)),
-        ];
+        List<LogicalCapabilityGroup> groups = [];
+        foreach (IGrouping<string, WorkItem> group in report.WorkItems.GroupBy(
+                     item => CapabilityId(item.Id),
+                     StringComparer.Ordinal))
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            groups.Add(BuildGroup(group.Key, [.. group], facts, cancellationToken));
+        }
+
+        return groups;
     }
 
     public static string SizeBand(decimal value) => value switch
@@ -74,7 +79,8 @@ internal static class LogicalCandidateScorer
     private static LogicalCapabilityGroup BuildGroup(
         string id,
         IReadOnlyList<WorkItem> items,
-        Dictionary<string, EvidenceFact> facts)
+        Dictionary<string, EvidenceFact> facts,
+        CancellationToken cancellationToken)
     {
         string kind = Kind(id);
         string scope = Single(items.Select(item => item.Scope), id, "scope");
@@ -88,6 +94,7 @@ internal static class LogicalCandidateScorer
         Dictionary<string, decimal> measurements = [];
         foreach (string evidenceId in evidenceIds)
         {
+            cancellationToken.ThrowIfCancellationRequested();
             if (!facts.TryGetValue(evidenceId, out EvidenceFact? fact))
             {
                 throw new InvalidDataException(

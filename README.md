@@ -264,7 +264,7 @@ unchanged scans, but it is never an effort signal.
 
 | Area | Current status |
 | --- | --- |
-| Repository EHE | Experimental and uncalibrated; logical-capability preflight `0.5.0` passes all 16 numerical development gates, 12 operational gates remain pending, all 18 validation/test families remain unopened, and no candidate is frozen or admitted |
+| Repository EHE | Experimental and uncalibrated; logical-capability candidate `0.1.0` passes 16 numerical development gates but fails the `0.6.0` material-category operational gate, all 18 validation/test families remain unopened, and no candidate is frozen or admitted |
 | Change EHE, documented Stage A band | Model-authored logical gate passed for eligible 4-to-32-hour changes on the previously admitted language set |
 | Newer analyzer ecosystems | Experimental and outside the existing Change admission boundary |
 | Production validation | No empirical production-accuracy claim |

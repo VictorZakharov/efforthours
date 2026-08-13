@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace EffortHours.RepositoryCalibration;
 
 internal sealed record CandidatePreflightArtifactReference
@@ -31,6 +33,9 @@ internal sealed record CandidatePreflightInputs
     public required CandidatePreflightArtifactReference SeedEvaluation { get; init; }
 
     public CandidatePreflightArtifactReference? CandidateModel { get; init; }
+
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public CandidatePreflightArtifactReference? NumericalPreflight { get; init; }
 
     public IReadOnlyList<CandidatePreflightSourceEstimate> DevelopmentEstimates { get; init; } = [];
 }

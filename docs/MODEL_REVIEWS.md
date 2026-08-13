@@ -33,6 +33,42 @@ Because EffortHours's own anchor informed the seed-model and calibration design,
 a development diagnostic rather than an eligible held-out test record unless a
 future independent snapshot and review policy explicitly establishes otherwise.
 
+## 2026-08-13: logical-capability operational rejection
+
+Status: **candidate rejected on a development material-category gate; validation
+and test remain unopened; no candidate freeze or admission**
+
+`efforthours-public-readiness/0.6.0` applies the frozen
+`repository-model-admission/1.0.0` operational policy to exact candidate
+`logical-capability/0.1.0`. It pins the prior numerical preflight, model artifact,
+all 15 development estimate/evidence pairs, and operational implementation commit
+without changing a feature, factor, range, fallback, label, or threshold.
+
+Four operational gates pass. Candidate/seed expected WAPE and candidate bias are
+`0.1175/0.3633/+0.0924` for .NET, `0.1116/0.1904/+0.0578` for
+JavaScript/TypeScript, and `0.1142/0.2284/-0.0462` for mixed repositories. Every
+product-shape and size slice containing at least three families remains within
+`0.05` WAPE of seed. All 15 candidate reports validate, reconcile, round-trip,
+preserve stable work/evidence IDs, and explain 11,161 adjusted items. The bounded,
+cancellable saved-artifact projector rejects a changed model digest and visibly
+retains the complete seed outside the three policy strata.
+
+The material-category gate fails. Across 15 material categories, pooled expected
+WAPE improves from `0.4331` to `0.2082`; nevertheless,
+`SpecificationComprehensionAndDomainLearning` has WAPE `0.3326` versus seed
+`0.6712` and aggregate bias `-0.2505`, exceeding the frozen `0.20` absolute-bias
+limit. A large aggregate improvement cannot override a category regression gate.
+
+Public-mutation, cross-platform determinism, latency, peak-working-set, installed
+package, and scanner/fingerprint gates were not run after rejection and remain
+explicitly non-passing. Artifact
+`0.6.0.candidate-operational-preflight.json` has normalized digest
+`sha256:50dc6d37ad707121d7137c5d031d60aa3eda7f9ac1ddcbeb2f58dbfc3ae3f47c`
+and pins implementation commit `c58f5eb45244aa3f8fd509d4c91c5059f1647440`.
+No validation/test source, candidate output, or label was read or generated.
+Candidate `logical-capability/0.1.0` is retired; any changed challenger requires a
+new identity and a complete development-only preflight.
+
 ## 2026-08-13: logical-capability numerical preflight
 
 Status: **all numerical development gates pass; operational preflight pending;

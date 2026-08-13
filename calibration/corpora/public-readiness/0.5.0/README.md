@@ -7,6 +7,10 @@ operational preflight pending**. It does not freeze a candidate manifest,
 authorize validation, select or admit a model, or change the shipped
 `seed-rules/0.4.0` estimator.
 
+The later [`0.6.0 operational checkpoint`](../0.6.0/README.md) completes this
+boundary and rejects the exact candidate on material-category bias. This document
+retains the state and decision that existed at the numerical checkpoint.
+
 The exact 15 development families and 2,030 reviewed capabilities from checkpoint
 `0.3.0` were used. All nine validation and nine test families remain unestimated
 and unlabeled. The records still have one disclosed host-AI teacher and no
@@ -109,8 +113,7 @@ partition.
 
 ## Next boundary
 
-Run all 12 operational gates against this exact implementation and model artifact.
-Only if every gate passes may a later checkpoint freeze the finite candidate
-manifest and precommitted validation-selection rule. Validation labels remain
-unavailable until that decision; test labels still require external sealed
-body/digest custody before authoring.
+Checkpoint `0.6.0` ran the development-computable operational gates against this
+exact model without retuning it. The material-category gate failed, so
+`logical-capability/0.1.0` is retired and the later measured gates were not run.
+Validation and test labels remain unavailable.
