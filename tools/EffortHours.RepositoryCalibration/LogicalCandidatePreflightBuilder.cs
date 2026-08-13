@@ -208,6 +208,7 @@ internal static class LogicalCandidatePreflightBuilder
                 "normalized-scope-role",
                 "logical-expected-size-band",
                 "candidate-expected-size-band",
+                "bounded-work-item-kind-factor-ceiling",
             ],
             ExactZeroRules =
             [
@@ -238,8 +239,9 @@ internal static class LogicalCandidatePreflightBuilder
             FallbackEstimatorVersion = model.BaselineEstimatorVersion,
             ExplanationForm =
                 "Every work item retains its stable ID and records the logical capability point, " +
-                "scope-role factor, frozen point group/factor, frozen range group/factors, and " +
-                "proportional allocation; unknown groups retain the complete seed capability.",
+                "scope-role factor, frozen point group/factor (including any work-item-kind ceiling), " +
+                "frozen range group/factors, and proportional allocation; unknown groups retain " +
+                "the complete seed capability.",
         };
 
     private static IReadOnlyList<CandidatePreflightSourceEstimate> BuildSourceReferences(

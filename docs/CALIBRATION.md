@@ -43,9 +43,19 @@ Development preflight `0.5.0` freezes the next exact candidate,
 passes all 16 numerical gates: repository expected WAPE is `0.1141`, absolute
 aggregate bias is `0.0108`, repository expected coverage is `0.8667`, and
 matched-target coverage/normalized width are `0.8202/0.7407`. All 12 operational
-gates remain deliberately unrun and non-passing. The finite candidate manifest is
-therefore not frozen, and validation/test labels and candidate outputs remain
-unopened.
+gates were initially unrun. Operational checkpoint `0.6.0` later retired that
+identity after specification-comprehension bias reached `-0.2505` against the
+frozen `0.20` limit; seven measured gates were not run after rejection.
+
+Successor preflight `0.7.0` gives the bounded correction a new
+`logical-capability/0.2.0` identity and again passes all 16 numerical gates:
+repository expected WAPE is `0.1137`, absolute aggregate bias is `0.0094`,
+repository expected coverage is `0.8667`, and matched-target coverage/normalized
+width are `0.8217/0.7406`. Operational checkpoint `0.8.0` passes all five
+development-computable gates, including material-category agreement with
+specification-comprehension bias `-0.1253`. Seven measured gates remain unrun and
+non-passing. No candidate manifest is frozen, and validation/test labels and
+candidate outputs remain unopened.
 
 Change EHE has a separate limited Stage A logical-admission decision. Its exact
 size, ecosystem, metric, and performance boundary is defined in
@@ -271,12 +281,12 @@ reviewed-point coverage while materially reducing normalized width relative to
 the seed baseline. Ranges remain empirical planning bounds rather than formal
 probability intervals.
 
-Current public repository records satisfy the complete development-label boundary
-and numerical development-preflight boundary, but not the operational preflight,
-candidate-freeze, blind-validation, or sealed-test boundary. The 15 development
-families may be compared diagnostically, but no validation/test comparison or
-admission decision is authorized. `seed-rules/0.4.0` remains the shipped estimator
-and required fallback.
+Current public repository records satisfy the complete development-label,
+numerical-preflight, and development-computable operational boundaries. Seven
+measured operational gates, candidate freeze, blind validation, and sealed test
+remain incomplete. The 15 development families may be compared diagnostically,
+but no validation/test comparison or admission decision is authorized.
+`seed-rules/0.4.0` remains the shipped estimator and required fallback.
 
 The public-readiness cohort satisfies the planned family, shape, and size
 allocation, exact source reproduction, and complete development-label boundary.
@@ -295,10 +305,11 @@ final-delta policy in `CHANGE_MODEL_ADMISSION.md`.
 
 ## Next evidence required
 
-- all 12 operational preflight gates for the exact `logical-capability/0.1.0`
-  implementation and model artifact, without retuning its numerical design;
-- only if they pass, a finite candidate manifest with exact model/configuration identities,
-  resource measurements, and a frozen selection rule;
+- the seven mutation, cross-platform, resource, package, and scanner measurements
+  for exact `logical-capability/0.2.0`, without retuning its features, factors,
+  ranges, or fallback;
+- only if they pass, a finite candidate manifest with exact model/configuration
+  identities, resource measurements, and a frozen selection rule;
 - blind validation labels that remain unavailable until candidate freeze;
 - sealed test labels with a precommitted digest and custody record;
 - more exact small-task teacher decompositions with honest context provenance;

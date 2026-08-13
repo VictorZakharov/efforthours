@@ -123,7 +123,7 @@ internal static class LogicalCandidateOperationalBuilder
                     : "Every evaluated development operational gate passed, but later measured " +
                       "gates remain, so candidate freeze and holdout access stay blocked.",
                 NextBoundary = rejected
-                    ? "Retire logical-capability/0.1.0. Any changed challenger requires a new " +
+                    ? $"Retire {model.CandidateId}. Any changed challenger requires a new " +
                       "candidate identity and a complete development-only preflight before holdout access."
                     : "Run every remaining measured operational gate against this exact candidate.",
             },

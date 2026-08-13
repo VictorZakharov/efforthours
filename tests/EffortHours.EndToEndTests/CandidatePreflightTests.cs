@@ -4,7 +4,7 @@ using EffortHours.RepositoryCalibration;
 
 namespace EffortHours.EndToEndTests;
 
-public sealed class CandidatePreflightTests
+public sealed partial class CandidatePreflightTests
 {
     [Fact]
     public void ScopeMarginalityCandidateUsesBoundedGeneralRolesAndPreservesLineage()
@@ -374,6 +374,15 @@ public sealed class CandidatePreflightTests
                 SizeBands = LogicalCandidateScorer.SizeBands,
                 MinimumFactor = LogicalCandidateModelFitter.MinimumFactor,
                 MaximumFactor = LogicalCandidateModelFitter.MaximumFactor,
+                MaximumFactorOverrides =
+                [
+                    new LogicalCandidatePointFactorCeiling
+                    {
+                        WorkItemKind = "specification-comprehension",
+                        MaximumFactor =
+                            LogicalCandidateModelFitter.SpecificationComprehensionMaximumFactor,
+                    },
+                ],
                 UnknownGroupBehavior = "seed fallback",
                 Factors = [point],
             },

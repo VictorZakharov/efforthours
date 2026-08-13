@@ -363,9 +363,21 @@ Development preflight `0.5.0` freezes `logical-capability/0.1.0` and its complet
 development-fitted table. It passes all 16 numerical gates: expected WAPE
 `0.1141`, absolute aggregate bias `0.0108`, ordinary-family pass rate `0.9333`,
 repository expected coverage `0.8667`, and matched-target coverage/normalized
-width `0.8202/0.7407`. Twelve operational gates remain `not-evaluated` and
-non-passing. The candidate is numerically eligible only; no manifest or selection
-rule is frozen, and no validation or test access is authorized.
+width `0.8202/0.7407`. Operational checkpoint `0.6.0` rejects that exact identity
+because specification-comprehension aggregate bias is `-0.2505` against the
+frozen `0.20` limit. Seven later measured gates were not run, and the candidate is
+retired without a manifest or holdout access.
+
+Development preflight `0.7.0` freezes successor `logical-capability/0.2.0`. It
+raises only the specification-comprehension factor ceiling from `3.00` to `4.00`
+under a new feature, model, candidate, and estimator identity. All 16 numerical
+gates pass: expected WAPE is `0.1137`, absolute aggregate bias is `0.0094`,
+ordinary-family pass rate is `0.9333`, repository expected coverage is `0.8667`,
+and matched-target coverage/normalized width are `0.8217/0.7406`. Operational
+checkpoint `0.8.0` passes the five development-computable gates, including
+material-category agreement with specification-comprehension bias `-0.1253`.
+Seven measured gates remain `not-evaluated` and non-passing. No manifest or
+selection rule is frozen, and no validation or test access is authorized.
 
 Validation labels are not authored and must remain unavailable until a finite
 candidate manifest is frozen from development evidence. Test labels are not
