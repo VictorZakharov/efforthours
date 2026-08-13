@@ -16,9 +16,11 @@ may still change public contracts with explicit documentation.
 
 ### Changed
 
-- Reworked the GitHub and NuGet package READMEs into scannable support matrices
-  for all 13 analyzer families, with detailed evidence and boundary material kept
-  available without dominating the customer-facing overview.
+- Rewrote the GitHub README as a customer-facing guide with a quick start, main
+  workflows, model principles, status, safety boundary, compact Change semantics,
+  support and performance tables, and links to deep reference documentation.
+- Reworked the NuGet package README into a scannable support matrix for all 13
+  analyzer families, with shared and ecosystem-specific boundaries.
 - Added the recorded per-language/analyzer-shape one-million-line analysis times,
   throughput, peak working set, hardware, and measurement caveats to the GitHub
   README.

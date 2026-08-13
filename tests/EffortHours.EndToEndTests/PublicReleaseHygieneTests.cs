@@ -82,16 +82,26 @@ public sealed partial class PublicReleaseHygieneTests
         string root = FindRepositoryRoot();
         string readme = File.ReadAllText(Path.Combine(root, "README.md"));
 
+        Assert.Contains("## Quick start", readme, StringComparison.Ordinal);
+        Assert.Contains("## Main workflows", readme, StringComparison.Ordinal);
+        Assert.Contains("## What the model counts", readme, StringComparison.Ordinal);
         Assert.Contains("## Supported analyzers", readme, StringComparison.Ordinal);
         Assert.Contains("### One-million-line performance checkpoints", readme, StringComparison.Ordinal);
+        Assert.Contains("## How Change EHE works", readme, StringComparison.Ordinal);
+        Assert.Contains("## Model status", readme, StringComparison.Ordinal);
         Assert.Contains("docs/BENCHMARKS.md", readme, StringComparison.Ordinal);
         Assert.Contains("| .NET / C# | 1,000,001 |", readme, StringComparison.Ordinal);
         Assert.Contains("| JavaScript / TypeScript | 1,000,001 |", readme, StringComparison.Ordinal);
-        Assert.Contains("| HTML/CSS-family frontend assets | 1,000,001 | 8.187 s |", readme, StringComparison.Ordinal);
+        Assert.Contains("| HTML/CSS/SCSS frontend assets | 1,000,001 | 8.187 s |", readme, StringComparison.Ordinal);
         Assert.Contains("| SQL | 1,000,000 | 8.421 s |", readme, StringComparison.Ordinal);
         Assert.Contains("| Go | 1,000,003 |", readme, StringComparison.Ordinal);
         Assert.Contains("| C++ | 990,002 |", readme, StringComparison.Ordinal);
         Assert.Contains("<details>", readme, StringComparison.Ordinal);
+        Assert.DoesNotContain("The current static analyzers support:", readme, StringComparison.Ordinal);
+        Assert.DoesNotContain("For `.sql`, formatting comparison", readme, StringComparison.Ordinal);
+        Assert.True(
+            readme.Split('\n').Length < 400,
+            "The customer-facing README should stay scannable; move deep reference material into docs/.");
     }
 
     [Fact]
