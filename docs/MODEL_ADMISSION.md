@@ -333,8 +333,20 @@ remain useful development and contamination diagnostics, but the 33-family gate,
 shape/size coverage, blind validation boundary, and sealed nine-family test set
 are not met. No candidate comparison is authorized yet.
 
-The next admissible step is to freeze the sampling matrix and expand the licensed
-corpus without opening candidate totals.
+`efforthours-public-readiness/0.1.0` now freezes a separate implementation-profile
+source cohort with exactly 5/3/3 development/validation/test families in each
+primary stratum. Every validation and test cell has one small, medium, and large
+tree, all required product-shape tags cross at least three families and a holdout,
+and prior real-Change family assignments are inherited. The plan pins complete
+Git trees and license checksums without copying source or inspecting candidate
+totals.
+
+That cohort is not yet calibration evidence. It contains no EffortHours evidence
+bundle, source estimate, target label, teacher range, validation custody artifact,
+sealed test digest, or metric. The next admissible step is to reproduce and scan
+the pinned snapshots, author rubric-complete development labels, and establish
+blind-validation and sealed-test custody without opening holdout values. No
+candidate comparison is authorized yet.
 
 ## Policy changes
 

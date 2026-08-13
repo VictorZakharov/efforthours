@@ -47,6 +47,21 @@ and EffortHours source digests are recorded in
 derived labels, and evaluation reports are distributed under EffortHours's MIT
 License; the upstream projects remain under their own MIT licenses.
 
+## Public repositories in the repository-admission source cohort
+
+`calibration/corpora/public-readiness/0.1.0.sampling-plan.json` records immutable
+source and license provenance for 33 additional public repositories under MIT,
+Apache-2.0, or BSD-3-Clause terms. The plan includes exact commit and Git-tree
+objects, license paths and blobs, license-content SHA-256 checksums, and public
+source references. It is a source-only sampling artifact: EffortHours does not
+redistribute these repositories' source archives, source bodies, images,
+documentation, or license text, and it has not published labels or candidate
+reports for the cohort.
+
+The upstream repositories and their licenses remain authoritative. The complete
+per-family list and version pins live in the sampling plan rather than being
+duplicated here.
+
 ## Runtime dependencies
 
 | Package | Version | License | Project |

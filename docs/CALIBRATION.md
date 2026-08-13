@@ -12,6 +12,14 @@ independent correction, so their maturity remains `teacher-estimate`. They are
 logical weak supervision, not historical labor, literal ground truth, or empirical
 production validation.
 
+The separate `efforthours-public-readiness/0.1.0` sampling plan freezes 33
+additional public MIT, Apache-2.0, and BSD-3-Clause source families across the
+complete .NET, JavaScript/TypeScript, and mixed development/validation/test
+matrix. It was frozen before candidate totals and contains source and license
+provenance only: no evidence bundles, estimates, labels, targets, or metrics. It
+therefore improves sampling readiness without increasing the six-family labeled
+corpus or opening model admission.
+
 Change EHE has a separate limited Stage A logical-admission decision. Its exact
 size, ecosystem, metric, and performance boundary is defined in
 `CHANGE_MODEL_ADMISSION.md`; it does not calibrate repository EHE or later Change
@@ -238,6 +246,12 @@ Current public repository records do not satisfy the family matrix, blind
 validation boundary, or sealed-test boundary, so no candidate comparison is
 authorized. `seed-rules/0.4.0` remains the shipped estimator and required fallback.
 
+The source-only public-readiness cohort now satisfies the planned family, shape,
+and size allocation on paper. Admission still requires exact source reproduction,
+valid rubric labels, blind validation custody, sealed test custody, and every
+remaining numerical and operational gate. Source selection must not be reported
+as labeled calibration evidence.
+
 Transparent per-category corrections and simple statistical baselines come before
 an ML runtime. ML.NET or ONNX is selected only from measured runtime, package,
 license, training/export, and determinism needs. Any admitted model must retain an
@@ -248,7 +262,9 @@ final-delta policy in `CHANGE_MODEL_ADMISSION.md`.
 
 ## Next evidence required
 
-- multiple redistributable observations in each relevant ecosystem/partition cell;
+- rubric-complete development labels for the frozen public-readiness families;
+- blind validation labels that remain unavailable until candidate freeze;
+- sealed test labels with a precommitted digest and custody record;
 - more exact small-task teacher decompositions with honest context provenance;
 - optional independent replication where available;
 - the already-frozen family matrix and held-out thresholds in
