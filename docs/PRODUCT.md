@@ -217,7 +217,8 @@ material remain outside the public repository.
 
 ## Model maturity
 
-The repository estimator is experimental and uncalibrated. Change EHE has only the
-limited logical admission described in `CHANGE_MODEL_ADMISSION.md`; it has no
-empirical production-accuracy claim. No local ML model is currently admitted.
-These limitations must remain visible anywhere estimates are presented.
+The repository estimator is experimental and uncalibrated; no candidate has met
+the frozen `MODEL_ADMISSION.md` gate. Change EHE has only the limited logical
+admission described in `CHANGE_MODEL_ADMISSION.md`; it has no empirical
+production-accuracy claim. No local ML model is currently admitted. These
+limitations must remain visible anywhere estimates are presented.

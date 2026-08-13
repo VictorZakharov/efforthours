@@ -222,36 +222,37 @@ unmatched IDs, and category mismatches.
 
 ## Model-admission policy
 
-`seed-rules/0.4.0` is the repository baseline a candidate correction or learned
-model must beat. Admission requires a sufficiently diverse redistributable corpus,
-frozen repository-level partitions, a finite candidate set, and thresholds fixed
-without looking at test results.
+The exact repository gate is frozen as
+`repository-model-admission/1.0.0` in `MODEL_ADMISSION.md`. It requires at least
+33 repository families across explicit .NET, JavaScript/TypeScript, and mixed
+development/validation/sealed-test cells; a finite predeclared candidate set;
+point, category, mapping, bias, and range-sharpness thresholds; and complete
+mutation, explanation, safety, determinism, latency, memory, and package gates.
 
-At minimum, a candidate must:
+Coverage alone cannot admit an unhelpfully broad range. A candidate must retain
+reviewed-point coverage while materially reducing normalized width relative to
+the seed baseline. Ranges remain empirical planning bounds rather than formal
+probability intervals.
 
-- improve held-out expected-hour WAPE at repository-total and category levels;
-- avoid material regression in median absolute error or bias;
-- improve or preserve interval behavior without unjustifiably widening ranges;
-- retain acceptable behavior across the applicable ecosystem and repository-
-  shape slices, not only in aggregate;
-- pass all relevant mutation, safety, schema, determinism, and performance gates;
-  and
-- preserve evidence, model/rule identity, uncertainty, and adjustment lineage.
+Current public repository records do not satisfy the family matrix, blind
+validation boundary, or sealed-test boundary, so no candidate comparison is
+authorized. `seed-rules/0.4.0` remains the shipped estimator and required fallback.
 
 Transparent per-category corrections and simple statistical baselines come before
 an ML runtime. ML.NET or ONNX is selected only from measured runtime, package,
 license, training/export, and determinism needs. Any admitted model must retain an
 offline seed fallback and out-of-distribution behavior.
 
-Change model admission follows the additional progressive size-band and final-
-delta policy in `CHANGE_MODEL_ADMISSION.md`.
+Change model admission remains separate and follows the progressive size-band and
+final-delta policy in `CHANGE_MODEL_ADMISSION.md`.
 
 ## Next evidence required
 
 - multiple redistributable observations in each relevant ecosystem/partition cell;
 - more exact small-task teacher decompositions with honest context provenance;
 - optional independent replication where available;
-- frozen held-out thresholds before candidate fitting;
+- the already-frozen family matrix and held-out thresholds in
+  `MODEL_ADMISSION.md`;
 - separately governed empirical production observations that are never used as
   activity multipliers; and
 - calibrated range semantics before any probability interpretation.

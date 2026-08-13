@@ -420,10 +420,12 @@ across development, validation, and test partitions and measure
 `seed-rules/0.2.0` or `seed-rules/0.2.1` against the source estimate each teacher
 reviewed. Those labels share one host-AI teacher and have no independent
 correction. They are preliminary weak supervision and do not make the seed model
-calibrated or production-ready. `CALIBRATION.md`, the versioned rubrics, and the
-blind packets under `calibration/corpora` define the implemented policy. Their
-decomposed host-AI judgments may support a future logical admission decision with
-explicit gates; independent replication remains available as optional
+calibrated or production-ready. `CALIBRATION.md`, `MODEL_ADMISSION.md`, the
+versioned rubrics, and the blind packets under `calibration/corpora` define the
+implemented boundary. The frozen repository gate accepts decomposed host-AI
+judgment as logical weak supervision but requires a larger family matrix, blind
+validation, a sealed one-time test, and materially sharper ranges before any
+candidate can be admitted. Independent replication remains optional
 corroboration, and later production observations are a separate empirical track.
 
 Change EHE reuses this corpus and metric boundary with additional immutable

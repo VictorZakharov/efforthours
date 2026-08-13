@@ -8,7 +8,9 @@ estimated effort, and pricing.
 
 - Read `docs/PRODUCT.md`, `docs/ESTIMATION_MODEL.md`, `docs/PLAN.md`, and
   `AGENTS.md`. Read `docs/CHANGE_ESTIMATION.md` before changing explicit
-  revision/PR behavior.
+  revision/PR behavior. Read `docs/CALIBRATION.md` and
+  `docs/MODEL_ADMISSION.md` before changing calibration or repository-model
+  admission.
 - Use the .NET 10 SDK selected by `global.json`.
 - Do not use Git history, churn, author activity, or timestamps as effort signals.
 - Do not commit client source, private calibration data, credentials, or fixtures
