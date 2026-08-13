@@ -35,7 +35,10 @@ agent instructions.
 
 - [Calibration](CALIBRATION.md) defines corpus identity, repository-isolated
   partitions, review maturity, reviewed exclusions, mutation guardrails, offline
-  metrics, and repository-model admission.
+  metrics, and authoring/review workflows.
+- [Repository model admission](MODEL_ADMISSION.md) freezes the evidence counts,
+  point-accuracy, range-sharpness, mapping, safety, performance, selection, and
+  one-time test gates for any local repository estimator candidate.
 - [Seed-model review records](MODEL_REVIEWS.md) retain dated diagnostic and
   contamination findings without presenting them as independent or empirical
   validation.

@@ -19,8 +19,9 @@ applicable contracts, but read those contracts completely:
   `docs/ESTIMATION_MODEL.md`;
 - architecture or roadmap: `docs/PLAN.md`;
 - reporting or pricing: `docs/REPORTING.md` or `docs/PRICING.md`;
-- calibration or model review: `docs/CALIBRATION.md` and
-  `docs/MODEL_REVIEWS.md`;
+- calibration, repository-model admission, or model review:
+  `docs/CALIBRATION.md`, `docs/MODEL_ADMISSION.md`, and
+  `docs/MODEL_REVIEWS.md` as relevant;
 - Change EHE, portfolios, or admission: `docs/CHANGE_ESTIMATION.md`,
   `docs/CHANGE_PORTFOLIOS.md`, and `docs/CHANGE_MODEL_ADMISSION.md` as relevant;
 - host review: `docs/HOST_REVIEW.md` and

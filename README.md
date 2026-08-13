@@ -332,6 +332,7 @@ Run `eh --help` or a subcommand's help for the complete option surface.
 | --- | --- |
 | Product boundary | [Product charter](docs/PRODUCT.md) |
 | Estimation semantics | [Estimation model](docs/ESTIMATION_MODEL.md) |
+| Calibration and repository-model admission | [Calibration](docs/CALIBRATION.md) and [frozen admission policy](docs/MODEL_ADMISSION.md) |
 | Change and portfolio semantics | [Change EHE contract](docs/CHANGE_ESTIMATION.md) |
 | Analyzer-specific boundaries | [Documentation index](docs/README.md) |
 | Performance | [Benchmark protocol and results](docs/BENCHMARKS.md) |

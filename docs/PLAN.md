@@ -152,8 +152,9 @@ count, and intermediate churn do not value effort. `CHANGE_ESTIMATION.md` and
 - Expand decomposed teacher review with honest model/input provenance. Optional
   independent review must remain explicit corroboration, not an implied maturity
   upgrade.
-- Freeze repository-model admission gates before fitting a correction or local
-  model. Keep test data closed until a release decision.
+- Use the frozen `repository-model-admission/1.0.0` gates before fitting a
+  correction or local model. Keep the new test labels sealed until one validation
+  candidate and release decision are frozen.
 - Retain mutation relations as qualitative invariance, directionality,
   marginality, and category-isolation guards—not numerical labels.
 

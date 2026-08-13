@@ -8,6 +8,11 @@ may still change public contracts with explicit documentation.
 
 ### Changed
 
+- Froze `repository-model-admission/1.0.0` before candidate fitting, including a
+  33-family ecosystem/partition matrix, blind validation and sealed one-time test
+  boundaries, point and category accuracy gates, explicit range-sharpness gates,
+  qualitative/safety/explanation checks, resource limits, and deterministic seed
+  fallback. No repository model is admitted by this policy-only change.
 - Consolidated the living product, roadmap, reporting, pricing, calibration,
   host-review, and Change-portfolio documentation; removed completed milestone
   playbooks whose durable decisions now live in those contracts; and reduced

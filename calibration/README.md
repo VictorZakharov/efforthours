@@ -3,6 +3,12 @@
 This directory is the public home for EffortHours calibration policy,
 redistributable corpus manifests, and reviewed labels.
 
+The frozen
+[`repository-model-admission/1.0.0`](../docs/MODEL_ADMISSION.md) policy defines
+the minimum family matrix, blind validation and sealed-test boundary, numerical
+agreement and range-sharpness gates, candidate selection, resource limits, and
+seed fallback. The existing six-family corpora do not yet open that gate.
+
 The current checkpoint contains the original
 [`ehe-work-item/1.0.0`](rubrics/ehe-work-item/1.0.0.md) review rubric and the
 [`ehe-work-item/1.1.0`](rubrics/ehe-work-item/1.1.0.md) revision for explicit
