@@ -6,6 +6,25 @@ may still change public contracts with explicit documentation.
 
 ## Unreleased
 
+## 0.10.0-alpha.2 - 2026-08-13
+
+### Added
+
+- Added fresh-process million-line benchmark shapes for unique HTML/CSS/SCSS
+  frontend assets and SQL schema migrations, including target-integrity and
+  offline-safety checks in the process-level suite.
+
+### Changed
+
+- Reworked the GitHub and NuGet package READMEs into scannable support matrices
+  for all 13 analyzer families, with detailed evidence and boundary material kept
+  available without dominating the customer-facing overview.
+- Added the recorded per-language/analyzer-shape one-million-line analysis times,
+  throughput, peak working set, hardware, and measurement caveats to the GitHub
+  README.
+- Updated the package summary and release references for the documentation-only
+  alpha. Analyzer behavior, model identities, and admission status are unchanged.
+
 ## 0.10.0-alpha.1 - 2026-08-12
 
 ### Added

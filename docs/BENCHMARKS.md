@@ -646,6 +646,77 @@ Process-level benchmark coverage also runs smaller `--c` and `--cpp` shapes and
 asserts static safety signals, positive line/memory measurements, and unchanged
 target metadata.
 
+## Static frontend-assets analyzer v0.5.1 checkpoint
+
+Measured on August 13, 2026 with the same Windows/.NET workstation, a fresh
+process, common scanner `0.2.13`, and JavaScript/frontend analyzer `0.5.1`.
+
+```text
+dotnet benchmarks/EffortHours.ScannerBenchmarks/bin/Release/net10.0/EffortHours.ScannerBenchmarks.dll --files 10000 --lines-per-file 100 --frontend
+```
+
+| Measure | HTML/CSS/SCSS frontend assets |
+| --- | ---: |
+| Requested/analyzed lines | 1,000,000 / 1,000,001 |
+| Included files | 10,001 |
+| Included bytes | 87,848,408 |
+| Fixture generation | 1.566 s |
+| Full static scan | 8.187 s |
+| Evidence serialization | 0.451 s |
+| Full-scan throughput | 122,151 lines/s |
+| Managed allocation | 2,113.33 MiB |
+| Sampled peak working set | 270.67 MiB |
+| Evidence JSON | 55.65 MiB |
+| Evidence facts | 23,344 |
+
+The fixture uses one static `package.json` and 10,000 content-distinct maintained
+files distributed deterministically across HTML, CSS, and SCSS. It exercises
+digest verification, bounded template/style structure, accessibility-relevant
+HTML, responsive-style inputs, and evidence construction without rendering a UI
+or running a framework or preprocessor. Target metadata retained the same digest
+before and after analysis.
+
+This is a many-small-files scaling checkpoint, not a representative React,
+Angular, Vue, Svelte, design-system, or browser workload and not a cross-platform
+regression gate. Process-level coverage runs a smaller `--frontend` shape and
+asserts positive measurements, offline safety signals, and unchanged target
+metadata.
+
+## Static SQL analyzer v0.1.0 checkpoint
+
+Measured on August 13, 2026 with the same Windows/.NET workstation, a fresh
+process, common scanner `0.2.13`, and SQL analyzer `0.1.0`.
+
+```text
+dotnet benchmarks/EffortHours.ScannerBenchmarks/bin/Release/net10.0/EffortHours.ScannerBenchmarks.dll --files 10000 --lines-per-file 100 --sql
+```
+
+| Measure | SQL schema migrations |
+| --- | ---: |
+| Requested/analyzed lines | 1,000,000 |
+| Included files | 10,000 |
+| Included bytes | 24,140,000 |
+| Fixture generation | 1.404 s |
+| Full static scan | 8.421 s |
+| Evidence serialization | 0.682 s |
+| Full-scan throughput | 118,754 lines/s |
+| Managed allocation | 907.83 MiB |
+| Sampled peak working set | 156.46 MiB |
+| Evidence JSON | 77.34 MiB |
+| Evidence facts | 30,004 |
+
+The fixture uses 10,000 content-distinct `.sql` schema migrations, each with one
+bounded table definition and deterministic columns. It exercises scanning, digest
+verification, token/statement analysis, schema evidence, and serialization without
+connecting to a database or executing SQL. Target metadata retained the same
+digest before and after analysis.
+
+This is a many-small-files scaling checkpoint, not a representative database,
+dialect, migration history, stored-program, or query workload and not a
+cross-platform regression gate. Process-level coverage runs a smaller `--sql`
+shape and asserts positive measurements, offline safety signals, and unchanged
+target metadata.
+
 ## Change EHE scale-and-safety v1.0.0 checkpoint
 
 Measured on August 10, 2026 with:

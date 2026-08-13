@@ -43,6 +43,58 @@ public sealed partial class PublicReleaseHygieneTests
     }
 
     [Fact]
+    public void PackageReadmePresentsEveryAnalyzerFamilyAsAScannableMatrix()
+    {
+        string root = FindRepositoryRoot();
+        string readme = File.ReadAllText(Path.Combine(root, "PACKAGE_README.md"));
+
+        Assert.Contains("## Supported analyzers", readme, StringComparison.Ordinal);
+        Assert.Contains("### Shared static-analysis boundary", readme, StringComparison.Ordinal);
+        Assert.Contains("### Ecosystem-specific boundaries", readme, StringComparison.Ordinal);
+
+        string[] familyRows = [.. readme.Split('\n').Where(line => line.StartsWith("| **", StringComparison.Ordinal))];
+        Assert.Equal(13, familyRows.Length);
+
+        foreach (string family in new[]
+                 {
+                     ".NET",
+                     "JavaScript/TypeScript + frontend",
+                     "SQL",
+                     "Python + Jupyter",
+                     "Go",
+                     "Java",
+                     "Kotlin/JVM",
+                     "Shell + PowerShell",
+                     "Terraform/HCL",
+                     "PHP/Composer",
+                     "Rust/Cargo",
+                     "Docker/Compose",
+                     "C/C++",
+                 })
+        {
+            Assert.Contains($"| **{family}** |", readme, StringComparison.Ordinal);
+        }
+    }
+
+    [Fact]
+    public void RepositoryReadmePublishesPerLanguagePerformanceCheckpoints()
+    {
+        string root = FindRepositoryRoot();
+        string readme = File.ReadAllText(Path.Combine(root, "README.md"));
+
+        Assert.Contains("## Supported analyzers", readme, StringComparison.Ordinal);
+        Assert.Contains("### One-million-line performance checkpoints", readme, StringComparison.Ordinal);
+        Assert.Contains("docs/BENCHMARKS.md", readme, StringComparison.Ordinal);
+        Assert.Contains("| .NET / C# | 1,000,001 |", readme, StringComparison.Ordinal);
+        Assert.Contains("| JavaScript / TypeScript | 1,000,001 |", readme, StringComparison.Ordinal);
+        Assert.Contains("| HTML/CSS-family frontend assets | 1,000,001 | 8.187 s |", readme, StringComparison.Ordinal);
+        Assert.Contains("| SQL | 1,000,000 | 8.421 s |", readme, StringComparison.Ordinal);
+        Assert.Contains("| Go | 1,000,003 |", readme, StringComparison.Ordinal);
+        Assert.Contains("| C++ | 990,002 |", readme, StringComparison.Ordinal);
+        Assert.Contains("<details>", readme, StringComparison.Ordinal);
+    }
+
+    [Fact]
     public void WorkflowsPinActionsAndKeepNuGetPublishingManual()
     {
         string root = FindRepositoryRoot();

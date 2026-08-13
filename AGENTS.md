@@ -390,7 +390,8 @@ suite has 21 states and 71 passing relations. The C/C++ model is experimental an
 uncalibrated.
 
 The scanner benchmark now measures fresh-process .NET, JavaScript/TypeScript,
-Python, Jupyter, Go, Java, Kotlin, Shell, PowerShell, Terraform/HCL, PHP/Composer,
+HTML/CSS/SCSS frontend assets, SQL, Python, Jupyter, Go, Java, Kotlin, Shell,
+PowerShell, Terraform/HCL, PHP/Composer,
 Rust/Cargo, Docker/Compose, C, C++, and mixed million-line shapes, samples peak resident memory, labels explicit external
 cache passes separately, and fingerprints caller-supplied target trees before and
 after analysis. The recorded five-language mixed full scan completes in 13.214 seconds with a
@@ -420,6 +421,10 @@ The Docker/Compose shape completes in 8.097 seconds with a 203.00 MiB sampled pe
 and also retains unchanged target metadata.
 The Jupyter shape completes in 7.561 seconds with a 159.33 MiB sampled peak and
 also retains unchanged target metadata.
+The frontend-assets shape completes in 8.187 seconds with a 270.67 MiB sampled
+peak and also retains unchanged target metadata.
+The SQL shape completes in 8.421 seconds with a 156.46 MiB sampled peak and also
+retains unchanged target metadata.
 The C shape completes in 8.197 seconds with a 127.65 MiB sampled peak and also
 retains unchanged target metadata.
 The C++ shape completes in 9.716 seconds with a 128.84 MiB sampled peak and also

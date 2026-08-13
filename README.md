@@ -34,7 +34,7 @@ EffortHours is published as the `EffortHours.Tool` .NET global tool. The install
 command is `eh`.
 
 ```text
-dotnet tool install --global EffortHours.Tool --version 0.10.0-alpha.1
+dotnet tool install --global EffortHours.Tool --version 0.10.0-alpha.2
 eh version
 eh --help
 ```
@@ -42,11 +42,11 @@ eh --help
 Preview versions are opt-in. Update an existing installation with:
 
 ```text
-dotnet tool update --global EffortHours.Tool --version 0.10.0-alpha.1
+dotnet tool update --global EffortHours.Tool --version 0.10.0-alpha.2
 ```
 
 See the [NuGet package](https://www.nuget.org/packages/EffortHours.Tool/) and the
-[latest GitHub prerelease](https://github.com/VictorZakharov/efforthours/releases/tag/v0.10.0-alpha.1).
+[latest GitHub prerelease](https://github.com/VictorZakharov/efforthours/releases/tag/v0.10.0-alpha.2).
 
 ## Estimate a repository
 
@@ -223,7 +223,68 @@ eh rate info
 Cost output is **Equivalent Replacement Cost**, not historical pay or a billing
 determination.
 
-## What EffortHours analyzes
+## Supported analyzers
+
+EffortHours combines 13 bounded static-analyzer families in one report, including
+mixed repositories.
+
+| Analyzer family | Maintained artifacts | Evidence represented |
+| --- | --- | --- |
+| **.NET** | C# source, projects, solutions, and Razor/UI assets | Project ownership, APIs, behavior, data and migrations, integrations, security, UI, and tests |
+| **JavaScript/TypeScript + frontend** | JavaScript, JSX, TypeScript, TSX, HTML/templates, CSS-family styles, Vue/Svelte components, and static Angular metadata | Packages and workspaces, APIs, behavior, UI/template/style semantics, data, integrations, security, background work, and tests |
+| **SQL** | PostgreSQL, SQL Server, MySQL/MariaDB, and SQLite-oriented SQL | Schema, migrations, stored programs, queries, tests, deployment, and cross-database evidence |
+| **Python + Jupyter** | `.py`, `.pyi`, package metadata, and bounded `.ipynb` notebooks | Package ownership, structure, APIs, qualified frameworks, tests, Markdown, data analysis, visualization, and integrations |
+| **Go** | Modules, workspaces, `.go` source, and `_test.go` tests | Packages, local replacements, declarations, APIs, qualified semantics, concurrency, build directives, and tests |
+| **Java** | `.java`, Maven reactors/POMs, and Gradle multi-project metadata | Packages/modules, types, methods, APIs, concurrency, Spring/Jakarta and integration semantics, and JUnit/TestNG tests |
+| **Kotlin/JVM** | `.kt`, non-Gradle `.kts`, and shared Maven/Gradle JVM metadata | Declarations, APIs, coroutines/Flow, server, Android/Compose, data, integrations, security, background work, and tests |
+| **Shell + PowerShell** | Maintained scripts, modules, and tests | Product logic plus build, CI, delivery, infrastructure, integration, security, validation, and invocation-context evidence |
+| **Terraform/HCL** | Terraform configuration, tests, and relevant HCL | Resources, data sources, modules, interfaces, providers, backends, lifecycle/dependency structure, security, documentation, and delivery |
+| **PHP/Composer** | PHP, Blade templates, Composer packages, and tests | Package ownership, dependencies, autoloading, entry points, declarations, APIs, qualified frameworks, templates, and tests |
+| **Rust/Cargo** | Rust source, Cargo packages/workspaces, targets, tests, benchmarks, and examples | Declarations, APIs, generics/lifetimes, async/concurrency, unsafe/error paths, qualified semantics, FFI, and tests |
+| **Docker/Compose** | Dockerfile variants, filename-qualified Compose files, and `.dockerignore` | Build stages and instructions, services, orchestration, literal local Dockerfile references, and ignore rules |
+| **C/C++** | C99 through C23, C++11 through C++23, headers, modules, and static build metadata | Declarations, APIs, templates/concepts, concurrency, FFI, tests, qualified semantics, and CMake/Make/Meson/MSBuild ownership |
+
+### One-million-line performance checkpoints
+
+The engineering target is to analyze approximately one million source lines in a
+few minutes on documented hardware. Every recorded dedicated shape below finished
+in under 15 seconds on the checkpoint workstation.
+
+These are fresh-process, generated many-small-file measurements on Windows x64,
+an AMD Ryzen 9 5900X, 24 logical processors, and .NET 10. Fixture generation and
+evidence serialization are excluded from analysis time. They are reproducible
+engineering checkpoints—not universal latency guarantees or representative
+framework workloads.
+
+| Language/framework shape | Analyzed text lines | Static analysis | Lines/s | Sampled peak working set |
+| --- | ---: | ---: | ---: | ---: |
+| .NET / C# | 1,000,001 | 7.083 s | 141,179 | 272.52 MiB |
+| JavaScript / TypeScript | 1,000,001 | 12.088 s | 82,728 | 185.69 MiB |
+| HTML/CSS-family frontend assets | 1,000,001 | 8.187 s | 122,151 | 270.67 MiB |
+| SQL | 1,000,000 | 8.421 s | 118,754 | 156.46 MiB |
+| Python | 1,000,003 | 13.354 s | 74,883 | 109.63 MiB |
+| Jupyter | 1,120,003 | 7.561 s | 148,131 | 159.33 MiB |
+| Go | 1,000,003 | 6.577 s | 152,057 | 119.95 MiB |
+| Java | 1,010,001 | 13.954 s | 72,379 | 167.31 MiB |
+| Kotlin/JVM | 1,000,001 | 9.393 s | 106,459 | 166.83 MiB |
+| Shell | 990,000 | 14.525 s | 68,161 | 119.66 MiB |
+| PowerShell | 990,000 | 13.689 s | 72,321 | 130.76 MiB |
+| Terraform/HCL | 1,000,000 | 8.239 s | 121,371 | 303.72 MiB |
+| PHP/Composer | 1,000,001 | 7.920 s | 126,270 | 441.57 MiB |
+| Rust/Cargo | 1,000,004 | 7.540 s | 132,627 | 139.88 MiB |
+| Docker/Compose | 1,000,000 | 8.097 s | 123,502 | 203.00 MiB |
+| C | 990,002 | 8.197 s | 120,781 | 127.65 MiB |
+| C++ | 990,002 | 9.716 s | 101,891 | 128.84 MiB |
+| Mixed .NET/JS/TS/C/C++ | 996,004 | 13.214 s | 75,375 | 205.70 MiB |
+
+The frontend fixture mixes unique HTML, CSS, and SCSS files; the SQL fixture uses
+unique bounded schema migrations. See
+[the full benchmark protocol and results](docs/BENCHMARKS.md), including fixture
+definitions, versions, safety checks, limitations, and Change EHE scale
+measurements.
+
+<details>
+<summary><strong>Detailed analyzer evidence and boundaries</strong></summary>
 
 The current static analyzers support:
 
@@ -392,6 +453,8 @@ expand macros or includes; select conditional branches; instantiate templates;
 read system headers; or prove compilation, ABI, memory/thread safety, and runtime
 behavior. Header bodies count once and include fan-out is not an effort
 multiplier. See the [static C and C++ boundary](docs/CPP_ANALYSIS.md).
+
+</details>
 
 ## Offline and safe by default
 
