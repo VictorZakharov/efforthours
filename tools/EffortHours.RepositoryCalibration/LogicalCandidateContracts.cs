@@ -69,9 +69,18 @@ internal sealed record LogicalCandidatePointModel
 
     public required decimal MaximumFactor { get; init; }
 
+    public IReadOnlyList<LogicalCandidatePointFactorCeiling> MaximumFactorOverrides { get; init; } = [];
+
     public required string UnknownGroupBehavior { get; init; }
 
     public IReadOnlyList<LogicalCandidatePointFactor> Factors { get; init; } = [];
+}
+
+internal sealed record LogicalCandidatePointFactorCeiling
+{
+    public required string WorkItemKind { get; init; }
+
+    public required decimal MaximumFactor { get; init; }
 }
 
 internal sealed record LogicalCandidatePointFactor

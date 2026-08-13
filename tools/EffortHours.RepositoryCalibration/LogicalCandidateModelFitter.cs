@@ -5,14 +5,15 @@ namespace EffortHours.RepositoryCalibration;
 
 internal static class LogicalCandidateModelFitter
 {
-    public const string ModelVersion = "repository-logical-capability-model/0.1.0";
+    public const string ModelVersion = "repository-logical-capability-model/0.2.0";
     public const string ModelId = "efforthours-public-readiness-logical-capability";
-    public const string CandidateId = "logical-capability/0.1.0";
-    public const string EstimatorVersion = "candidate-logical-capability/0.1.0+seed-rules/0.4.0";
-    public const string FeatureContractVersion = "logical-capability-features/1.0.0";
+    public const string CandidateId = "logical-capability/0.2.0";
+    public const string EstimatorVersion = "candidate-logical-capability/0.2.0+seed-rules/0.4.0";
+    public const string FeatureContractVersion = "logical-capability-features/1.1.0";
     public const string BaselineEstimatorVersion = "seed-rules/0.4.0";
     public const decimal MinimumFactor = 0.25m;
     public const decimal MaximumFactor = 3m;
+    public const decimal SpecificationComprehensionMaximumFactor = 4m;
     public const decimal LowerQuantile = 0.15m;
     public const decimal UpperQuantile = 0.8m;
     public const int MinimumRangeSamples = 3;
@@ -139,6 +140,14 @@ internal static class LogicalCandidateModelFitter
                 SizeBands = LogicalCandidateScorer.SizeBands,
                 MinimumFactor = MinimumFactor,
                 MaximumFactor = MaximumFactor,
+                MaximumFactorOverrides =
+                [
+                    new LogicalCandidatePointFactorCeiling
+                    {
+                        WorkItemKind = "specification-comprehension",
+                        MaximumFactor = SpecificationComprehensionMaximumFactor,
+                    },
+                ],
                 UnknownGroupBehavior = "use the complete seed capability without candidate adjustment",
                 Factors = pointFactors,
             },
@@ -156,6 +165,7 @@ internal static class LogicalCandidateModelFitter
             [
                 "Development-only logical weak supervision from one disclosed host-AI teacher.",
                 "No validation or test labels, empirical production observations, or independent correction were used.",
+                "Specification-comprehension groups use a bounded 4.00 factor ceiling; every other group retains the 3.00 ceiling.",
                 "The table is not admitted for product use and must fall back to seed-rules/0.4.0 outside its exact groups.",
             ],
         };
@@ -179,10 +189,18 @@ internal static class LogicalCandidateModelFitter
                     SampleCount = group.Count(),
                     LogicalExpectedHours = logical,
                     ReviewedExpectedHours = reviewed,
-                    Factor = Round8(decimal.Clamp(factor, MinimumFactor, MaximumFactor)),
+                    Factor = Round8(decimal.Clamp(
+                        factor,
+                        MinimumFactor,
+                        MaximumFactorFor(group.Key.Kind))),
                 };
             }),
     ];
+
+    private static decimal MaximumFactorFor(string workItemKind) =>
+        workItemKind == "specification-comprehension"
+            ? SpecificationComprehensionMaximumFactor
+            : MaximumFactor;
 
     private static IReadOnlyList<LogicalCandidateRangeFactor> FitRangeFactors(
         IReadOnlyList<TrainingPrediction> rows)

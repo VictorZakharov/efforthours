@@ -5,6 +5,12 @@ namespace EffortHours.RepositoryCalibration;
 
 internal static class LogicalCandidateTransformer
 {
+    private const string LegacyModelVersion = "repository-logical-capability-model/0.1.0";
+    private const string LegacyCandidateId = "logical-capability/0.1.0";
+    private const string LegacyEstimatorVersion =
+        "candidate-logical-capability/0.1.0+seed-rules/0.4.0";
+    private const string LegacyFeatureContractVersion = "logical-capability-features/1.0.0";
+
     public static EstimateReport Transform(
         EstimateReport source,
         RepositoryEvidence evidence,
@@ -39,7 +45,11 @@ internal static class LogicalCandidateTransformer
             if (!points.TryGetValue(pointKey, out LogicalCandidatePointFactor? point))
             {
                 fallbackCount++;
-                AddFallback(transformed, capability, "point group is outside the frozen table");
+                AddFallback(
+                    transformed,
+                    capability,
+                    model,
+                    "point group is outside the frozen table");
                 continue;
             }
 
@@ -48,7 +58,11 @@ internal static class LogicalCandidateTransformer
             if (!ranges.TryGetValue(rangeKey, out LogicalCandidateRangeFactor? range))
             {
                 fallbackCount++;
-                AddFallback(transformed, capability, "range group is outside the frozen table");
+                AddFallback(
+                    transformed,
+                    capability,
+                    model,
+                    "range group is outside the frozen table");
                 continue;
             }
 
@@ -77,7 +91,7 @@ internal static class LogicalCandidateTransformer
                     Estimator = new EstimatorReference
                     {
                         Id = "candidate-logical-capability",
-                        Version = "0.1.0",
+                        Version = CandidateVersion(model.CandidateId),
                         Kind = EstimatorKind.Rule,
                     },
                 });
@@ -104,12 +118,9 @@ internal static class LogicalCandidateTransformer
 
     internal static void ValidateModel(LogicalCandidateModel model)
     {
-        if (model.ModelVersion != LogicalCandidateModelFitter.ModelVersion ||
-            model.Id != LogicalCandidateModelFitter.ModelId ||
-            model.CandidateId != LogicalCandidateModelFitter.CandidateId ||
-            model.EstimatorVersion != LogicalCandidateModelFitter.EstimatorVersion ||
-            model.BaselineEstimatorVersion != LogicalCandidateModelFitter.BaselineEstimatorVersion ||
-            model.FeatureContractVersion != LogicalCandidateModelFitter.FeatureContractVersion ||
+        bool legacy = HasLegacyIdentity(model);
+        bool current = HasCurrentIdentity(model);
+        if ((!legacy && !current) ||
             model.Point.ScorerVersion != LogicalCandidateScorer.Version ||
             model.Point.MinimumFactor != LogicalCandidateModelFitter.MinimumFactor ||
             model.Point.MaximumFactor != LogicalCandidateModelFitter.MaximumFactor ||
@@ -121,10 +132,27 @@ internal static class LogicalCandidateTransformer
             throw new InvalidDataException("Logical-candidate model identity or frozen configuration differs.");
         }
 
+        bool validOverrides = legacy
+            ? model.Point.MaximumFactorOverrides.Count == 0
+            : model.Point.MaximumFactorOverrides.Count == 1 &&
+              model.Point.MaximumFactorOverrides[0].WorkItemKind ==
+                  "specification-comprehension" &&
+              model.Point.MaximumFactorOverrides[0].MaximumFactor ==
+                  LogicalCandidateModelFitter.SpecificationComprehensionMaximumFactor;
+        if (!validOverrides)
+        {
+            throw new InvalidDataException(
+                "Logical-candidate point-factor ceilings differ from the frozen configuration.");
+        }
+
+        Dictionary<string, decimal> maximumFactors = model.Point.MaximumFactorOverrides
+            .ToDictionary(item => item.WorkItemKind, item => item.MaximumFactor, StringComparer.Ordinal);
         if (model.Point.Factors.Count == 0 ||
             model.Point.Factors.Any(factor =>
                 factor.Factor < model.Point.MinimumFactor ||
-                factor.Factor > model.Point.MaximumFactor) ||
+                factor.Factor > maximumFactors.GetValueOrDefault(
+                    factor.WorkItemKind,
+                    model.Point.MaximumFactor)) ||
             model.Point.Factors.Select(factor => new PointKey(
                     factor.WorkItemKind,
                     factor.LogicalSizeBand))
@@ -143,9 +171,26 @@ internal static class LogicalCandidateTransformer
         }
     }
 
+    private static bool HasLegacyIdentity(LogicalCandidateModel model) =>
+        model.ModelVersion == LegacyModelVersion &&
+        model.Id == LogicalCandidateModelFitter.ModelId &&
+        model.CandidateId == LegacyCandidateId &&
+        model.EstimatorVersion == LegacyEstimatorVersion &&
+        model.BaselineEstimatorVersion == LogicalCandidateModelFitter.BaselineEstimatorVersion &&
+        model.FeatureContractVersion == LegacyFeatureContractVersion;
+
+    private static bool HasCurrentIdentity(LogicalCandidateModel model) =>
+        model.ModelVersion == LogicalCandidateModelFitter.ModelVersion &&
+        model.Id == LogicalCandidateModelFitter.ModelId &&
+        model.CandidateId == LogicalCandidateModelFitter.CandidateId &&
+        model.EstimatorVersion == LogicalCandidateModelFitter.EstimatorVersion &&
+        model.BaselineEstimatorVersion == LogicalCandidateModelFitter.BaselineEstimatorVersion &&
+        model.FeatureContractVersion == LogicalCandidateModelFitter.FeatureContractVersion;
+
     private static void AddFallback(
         Dictionary<string, WorkItem> output,
         LogicalCapabilityGroup capability,
+        LogicalCandidateModel model,
         string reason)
     {
         foreach (WorkItem item in capability.Items)
@@ -153,12 +198,15 @@ internal static class LogicalCandidateTransformer
             output.Add(item.Id, item with
             {
                 Reason =
-                    $"Candidate '{LogicalCandidateModelFitter.CandidateId}' used the complete " +
-                    $"'{LogicalCandidateModelFitter.BaselineEstimatorVersion}' fallback for " +
+                    $"Candidate '{model.CandidateId}' used the complete " +
+                    $"'{model.BaselineEstimatorVersion}' fallback for " +
                     $"capability '{capability.Id}' because its {reason}; {item.Reason}",
             });
         }
     }
+
+    private static string CandidateVersion(string candidateId) =>
+        candidateId[(candidateId.IndexOf('/', StringComparison.Ordinal) + 1)..];
 
     private static decimal[] Allocate(decimal total, IReadOnlyList<WorkItem> items)
     {
