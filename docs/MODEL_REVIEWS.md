@@ -33,6 +33,33 @@ Because EffortHours's own anchor informed the seed-model and calibration design,
 a development diagnostic rather than an eligible held-out test record unless a
 future independent snapshot and review policy explicitly establishes otherwise.
 
+## 2026-08-13: repository-candidate development preflight
+
+Status: **candidate rejected before freeze; validation and test remain unopened;
+no prior change or admission**
+
+`efforthours-public-readiness/0.4.0` evaluates a bounded transparent
+scope-marginality design against the 15 frozen development families and all 2,030
+reviewed capabilities. The design removes duplicated semantic work in test,
+benchmark, and generated-fixture scopes; discounts supporting test and benchmark
+implementation to 25%; and applies fixed `0.77/1.00/1.26` ranges. It uses no
+repository identity, source-path value, history, popularity, activity, or opaque
+repository-wide multiplier.
+
+The design improves repository expected WAPE from `0.2365` to `0.1963` and mean
+normalized width to `0.4808`. It nevertheless fails three computed admission
+gates: absolute aggregate bias is `0.0672` versus seed `0.0120`, only `0.7333` of
+families meet the ordinary error boundary, and matched-target expected coverage is
+`0.2611`. Expanding the intervals enough to recover target coverage would violate
+the sharpness boundary. Operational gates deliberately not run are also
+non-passing.
+
+The deterministic artifact records all inputs, rules, metrics, and gate outcomes
+as `no-candidate-frozen`. It has no validation/test option; neither holdout was
+estimated or labeled. The next attempt must improve semantic marginality and
+capability allocation using development evidence only before a finite candidate
+manifest can be frozen.
+
 ## 2026-08-13: complete public-readiness development review
 
 Status: **15-family development diagnostic; single host-AI teacher; no prior

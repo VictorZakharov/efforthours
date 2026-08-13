@@ -143,15 +143,16 @@ count, and intermediate churn do not value effort. `CHANGE_ESTIMATION.md` and
 
 ## Current priorities
 
-### 1. Broaden calibration evidence before changing priors
+### 1. Improve development agreement before opening holdouts
 
-- Freeze a finite repository-candidate manifest before opening validation labels.
-  The reproduced `efforthours-public-readiness/0.3.0` checkpoint now has
-  rubric-complete labels for all 15 development families and a diagnostic
-  `seed-rules/0.4.0` comparison; all 18 validation/test families remain unopened.
-- Use only development evidence to define a bounded candidate set, exact model and
-  configuration identities, resource budgets, and the precommitted selection rule.
-  Do not tune against validation after its labels are opened.
+- Use development evidence only to improve general semantic marginality and
+  capability allocation. Public-readiness preflight `0.4.0` improved repository
+  WAPE and interval sharpness, but failed aggregate-bias, per-family-consistency,
+  and matched-target-coverage gates; it froze no candidate.
+- Require a new design to pass the deterministic development preflight before
+  freezing a finite candidate manifest with exact model/configuration identities,
+  resource budgets, and the precommitted selection rule. Do not tune against
+  validation after its labels are opened.
 - Keep all revisions and profiles from one repository family in one frozen
   development, validation, or test partition.
 - Expand decomposed teacher review with honest model/input provenance. Optional

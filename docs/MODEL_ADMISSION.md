@@ -352,6 +352,13 @@ records have expected WAPE `0.2365`, aggregate bias `-0.0120`, expected-point
 coverage `0.9333`, and full-range coverage `0.8667`. These single-teacher
 development diagnostics authorize no fitted correction or candidate selection.
 
+Development preflight `0.4.0` serializes every gate and fails missing or unrun
+checks closed. Its strongest bounded transparent scope-marginality design improves
+expected WAPE to `0.1963` and mean normalized width to `0.4808`, but fails the
+aggregate-bias, ordinary-family-error, and matched-target-coverage gates. It is
+recorded as `rejected-before-candidate-freeze`; no finite candidate manifest or
+selection rule was frozen.
+
 Validation labels are not authored and must remain unavailable until a finite
 candidate manifest is frozen from development evidence. Test labels are not
 authored and require external body/digest custody before the one-time reveal

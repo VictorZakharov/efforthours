@@ -31,6 +31,13 @@ lineage matches all 2,030 targets and 11,161 candidate work items. These are
 development diagnostics from one teacher, not a fitted correction, blind
 validation result, admission decision, or production-accuracy claim.
 
+Development preflight `0.4.0` tested a bounded transparent scope-marginality
+design and failed closed. It improved repository expected WAPE to `0.1963` and
+mean normalized width to `0.4808`, but failed aggregate bias (`0.0672` versus the
+seed's `0.0120`), ordinary per-family consistency (`0.7333`), and matched-target
+expected coverage (`0.2611`). No candidate manifest was frozen, and no validation
+or test labels or candidate outputs were opened.
+
 Change EHE has a separate limited Stage A logical-admission decision. Its exact
 size, ecosystem, metric, and performance boundary is defined in
 `CHANGE_MODEL_ADMISSION.md`; it does not calibrate repository EHE or later Change
@@ -278,8 +285,10 @@ final-delta policy in `CHANGE_MODEL_ADMISSION.md`.
 
 ## Next evidence required
 
-- a finite development-only candidate manifest with exact model/configuration
-  identities, resource measurements, and a frozen selection rule;
+- a development-only design that passes bias, family-consistency, capability-level
+  coverage, sharpness, and all remaining operational preflight gates;
+- only then, a finite candidate manifest with exact model/configuration identities,
+  resource measurements, and a frozen selection rule;
 - blind validation labels that remain unavailable until candidate freeze;
 - sealed test labels with a precommitted digest and custody record;
 - more exact small-task teacher decompositions with honest context provenance;
