@@ -36,6 +36,11 @@ internal static class Program
             return await RunDevelopmentReviewAsync(arguments[1..], cancellationToken).ConfigureAwait(false);
         }
 
+        if (arguments.Length > 0 && arguments[0] == "candidate-preflight")
+        {
+            return await RunCandidatePreflightAsync(arguments[1..], cancellationToken).ConfigureAwait(false);
+        }
+
         if (arguments.Length == 1 && arguments[0] is "--help" or "-h")
         {
             WriteUsage(Console.Out);
@@ -101,6 +106,36 @@ internal static class Program
         }
     }
 
+    private static async Task<int> RunCandidatePreflightAsync(
+        string[] arguments,
+        CancellationToken cancellationToken)
+    {
+        if (!CandidatePreflightOptions.TryParse(
+                arguments,
+                out CandidatePreflightOptions? options,
+                out string? error))
+        {
+            await Console.Error.WriteLineAsync(error).ConfigureAwait(false);
+            WriteUsage(Console.Error);
+            return 2;
+        }
+
+        try
+        {
+            await CandidatePreflightBuilder.RunAsync(options!, cancellationToken).ConfigureAwait(false);
+            return 0;
+        }
+        catch (Exception exception) when (
+            exception is IOException or
+            UnauthorizedAccessException or
+            InvalidDataException or
+            System.Text.Json.JsonException)
+        {
+            await Console.Error.WriteLineAsync(exception.Message).ConfigureAwait(false);
+            return 2;
+        }
+    }
+
     private static void WriteUsage(TextWriter writer) => writer.WriteLine("""
         Usage:
           dotnet EffortHours.RepositoryCalibration.dll
@@ -127,5 +162,18 @@ internal static class Program
         The review command accepts no estimate input. It verifies the selected
         evidence and blind-packet digests before writing the complete 15-family
         development-only host-AI teacher cohort.
+
+        Candidate preflight:
+          dotnet EffortHours.RepositoryCalibration.dll candidate-preflight
+            --plan <sampling-plan.json>
+            --corpus <development-corpus.json>
+            --seed-evaluation <development-evaluation.json>
+            --outputs <ignored-development-output-directory>
+            --source-commit <40-hex-commit>
+            --output <candidate-preflight.json>
+
+        Reproduces the seed development evaluation, applies the bounded transparent
+        challenger in memory, serializes every computed or deliberately unrun gate,
+        and fails closed without reading validation or test source, outputs, or labels.
         """);
 }
