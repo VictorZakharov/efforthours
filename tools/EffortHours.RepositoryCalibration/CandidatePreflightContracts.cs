@@ -18,6 +18,8 @@ internal sealed record CandidatePreflightSourceEstimate
     public required string SourceDigest { get; init; }
 
     public required string EstimateDigest { get; init; }
+
+    public string? EvidenceDigest { get; init; }
 }
 
 internal sealed record CandidatePreflightInputs
@@ -28,14 +30,26 @@ internal sealed record CandidatePreflightInputs
 
     public required CandidatePreflightArtifactReference SeedEvaluation { get; init; }
 
+    public CandidatePreflightArtifactReference? CandidateModel { get; init; }
+
     public IReadOnlyList<CandidatePreflightSourceEstimate> DevelopmentEstimates { get; init; } = [];
 }
 
 internal sealed record CandidatePreflightRangeConfiguration
 {
-    public required decimal LowFactor { get; init; }
+    public decimal? LowFactor { get; init; }
 
-    public required decimal HighFactor { get; init; }
+    public decimal? HighFactor { get; init; }
+
+    public IReadOnlyList<string>? Features { get; init; }
+
+    public decimal? LowerQuantile { get; init; }
+
+    public decimal? UpperQuantile { get; init; }
+
+    public int? MinimumExactGroupSamples { get; init; }
+
+    public string? SparseGroupFallback { get; init; }
 }
 
 internal sealed record CandidatePreflightConfiguration

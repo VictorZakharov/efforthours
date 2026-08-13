@@ -91,6 +91,132 @@ public sealed class CandidatePreflightTests
         Assert.Contains("40-character", invalidError, StringComparison.Ordinal);
     }
 
+    [Fact]
+    public void LogicalCapabilityCandidateUsesEvidenceUnitsAndPreservesStableParts()
+    {
+        const string evidenceId = "dotnet:validation:src/Example/Input.cs";
+        WorkItem first = Item(
+            "work:validation-surface:logical:part-0001",
+            "src/Example/Example.csproj",
+            3m) with
+        {
+            EvidenceIds = [evidenceId],
+        };
+        WorkItem second = Item(
+            "work:validation-surface:logical:part-0002",
+            "src/Example/Example.csproj",
+            1m) with
+        {
+            EvidenceIds = [evidenceId],
+        };
+        EstimateReport source = Report(first, second);
+        RepositoryEvidence evidence = Evidence(
+            source,
+            new EvidenceFact
+            {
+                Id = evidenceId,
+                Kind = "validation",
+                Scope = "src/Example/Example.csproj",
+                Summary = "Synthetic validation evidence.",
+                Provenance = Provenance(),
+                Measurements =
+                [
+                    new EvidenceMeasurement { Name = "validation-rules", Value = 4m },
+                    new EvidenceMeasurement { Name = "validator-types", Value = 1m },
+                ],
+            });
+        LogicalCandidateModel model = Model(
+            new LogicalCandidatePointFactor
+            {
+                WorkItemKind = "validation-surface",
+                LogicalSizeBand = "l",
+                SampleCount = 5,
+                LogicalExpectedHours = 22.5m,
+                ReviewedExpectedHours = 45m,
+                Factor = 2m,
+            },
+            new LogicalCandidateRangeFactor
+            {
+                WorkItemKind = "validation-surface",
+                ExpectedSizeBand = "xl",
+                SampleSource = "exact-kind-and-size",
+                SampleCount = 5,
+                LowFactor = 0.8m,
+                HighFactor = 1.2m,
+            });
+
+        EstimateReport candidate = LogicalCandidateTransformer.Transform(source, evidence, model);
+
+        Assert.Equal(new EffortRange { Low = 7.2m, Expected = 9m, High = 10.8m }, candidate.TotalEffort);
+        Assert.Equal([6.75m, 2.25m], candidate.WorkItems.Select(item => item.Hours.Expected));
+        Assert.Equal(source.WorkItems.Select(item => item.Id), candidate.WorkItems.Select(item => item.Id));
+        Assert.All(candidate.WorkItems, item =>
+        {
+            Assert.Equal([evidenceId], item.EvidenceIds);
+            Assert.Contains("evidence-logical-units/0.1.0", item.Reason, StringComparison.Ordinal);
+            Assert.Equal(EstimatorKind.Rule, item.Estimator.Kind);
+        });
+        Assert.Empty(ContractValidation.Validate(candidate));
+    }
+
+    [Fact]
+    public void LogicalCapabilityCandidateFailsClosedForTamperedModelAndFallsBackForUnknownGroup()
+    {
+        WorkItem item = Item(
+            "work:unmodeled-capability:logical:part-0001",
+            "src/Example/Example.csproj",
+            4m) with
+        {
+            EvidenceIds = ["common:fact:src/Example/value.txt"],
+        };
+        EstimateReport source = Report(item);
+        RepositoryEvidence evidence = Evidence(
+            source,
+            new EvidenceFact
+            {
+                Id = item.EvidenceIds[0],
+                Kind = "synthetic",
+                Scope = item.Scope,
+                Summary = "Synthetic evidence.",
+                Provenance = Provenance(),
+            });
+        LogicalCandidateModel model = Model(
+            new LogicalCandidatePointFactor
+            {
+                WorkItemKind = "validation-surface",
+                LogicalSizeBand = "l",
+                SampleCount = 3,
+                LogicalExpectedHours = 12m,
+                ReviewedExpectedHours = 12m,
+                Factor = 1m,
+            },
+            new LogicalCandidateRangeFactor
+            {
+                WorkItemKind = "validation-surface",
+                ExpectedSizeBand = "l",
+                SampleSource = "exact-kind-and-size",
+                SampleCount = 3,
+                LowFactor = 0.8m,
+                HighFactor = 1.2m,
+            });
+
+        EstimateReport candidate = LogicalCandidateTransformer.Transform(source, evidence, model);
+
+        Assert.Equal(source.TotalEffort, candidate.TotalEffort);
+        Assert.Contains("fallback", candidate.WorkItems[0].Reason, StringComparison.Ordinal);
+        Assert.Throws<InvalidDataException>(() => LogicalCandidateTransformer.Transform(
+            source,
+            evidence,
+            model with { LicenseExpression = "Apache-2.0" }));
+    }
+
+    [Fact]
+    public void LogicalCapabilityRangeFactorsRoundOutward()
+    {
+        Assert.Equal(0.12345678m, LogicalCandidateModelFitter.RoundDown8(0.123456789m));
+        Assert.Equal(1.12345679m, LogicalCandidateModelFitter.RoundUp8(1.123456781m));
+    }
+
     private static EstimateReport Report(params WorkItem[] workItems)
     {
         EffortRange total = ContractValidation.Sum(workItems.Select(item => item.Hours));
@@ -155,4 +281,61 @@ public sealed class CandidatePreflightTests
         },
         Profiles = [EstimationProfile.Implementation],
     };
+
+    private static RepositoryEvidence Evidence(EstimateReport report, params EvidenceFact[] facts) => new()
+    {
+        Repository = report.Repository,
+        Facts = facts,
+    };
+
+    private static EvidenceProvenance Provenance() => new()
+    {
+        SourceKind = EvidenceSourceKind.Observed,
+        Analyzer = "synthetic",
+        AnalyzerVersion = "1.0.0",
+        Method = "synthetic test evidence",
+    };
+
+    private static LogicalCandidateModel Model(
+        LogicalCandidatePointFactor point,
+        LogicalCandidateRangeFactor range) => new()
+        {
+            ModelVersion = LogicalCandidateModelFitter.ModelVersion,
+            Id = LogicalCandidateModelFitter.ModelId,
+            CandidateId = LogicalCandidateModelFitter.CandidateId,
+            EstimatorVersion = LogicalCandidateModelFitter.EstimatorVersion,
+            BaselineEstimatorVersion = LogicalCandidateModelFitter.BaselineEstimatorVersion,
+            FeatureContractVersion = LogicalCandidateModelFitter.FeatureContractVersion,
+            EffectiveDate = "2026-08-13",
+            LicenseExpression = "MIT",
+            Training = new LogicalCandidateTraining
+            {
+                CorpusId = "synthetic",
+                CorpusVersion = "1.0.0",
+                CorpusDigest = $"sha256:{new string('0', 64)}",
+                ImplementationCommit = new string('0', 40),
+                RepositoryCount = 1,
+                TargetCount = 1,
+            },
+            Point = new LogicalCandidatePointModel
+            {
+                ScorerVersion = LogicalCandidateScorer.Version,
+                Features = ["work-item-kind", "logical-expected-size-band"],
+                SizeBands = LogicalCandidateScorer.SizeBands,
+                MinimumFactor = LogicalCandidateModelFitter.MinimumFactor,
+                MaximumFactor = LogicalCandidateModelFitter.MaximumFactor,
+                UnknownGroupBehavior = "seed fallback",
+                Factors = [point],
+            },
+            Range = new LogicalCandidateRangeModel
+            {
+                Features = ["work-item-kind", "candidate-expected-size-band"],
+                LowerQuantile = LogicalCandidateModelFitter.LowerQuantile,
+                UpperQuantile = LogicalCandidateModelFitter.UpperQuantile,
+                MinimumExactGroupSamples = LogicalCandidateModelFitter.MinimumRangeSamples,
+                SparseGroupFallback = "same kind then global",
+                UnknownGroupBehavior = "seed fallback",
+                Factors = [range],
+            },
+        };
 }

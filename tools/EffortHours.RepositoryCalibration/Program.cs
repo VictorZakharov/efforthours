@@ -41,6 +41,18 @@ internal static class Program
             return await RunCandidatePreflightAsync(arguments[1..], cancellationToken).ConfigureAwait(false);
         }
 
+        if (arguments.Length > 0 && arguments[0] == "candidate-fit")
+        {
+            return await RunLogicalCandidateFitAsync(arguments[1..], cancellationToken)
+                .ConfigureAwait(false);
+        }
+
+        if (arguments.Length > 0 && arguments[0] == "candidate-numerical-preflight")
+        {
+            return await RunLogicalCandidatePreflightAsync(arguments[1..], cancellationToken)
+                .ConfigureAwait(false);
+        }
+
         if (arguments.Length == 1 && arguments[0] is "--help" or "-h")
         {
             WriteUsage(Console.Out);
@@ -136,6 +148,68 @@ internal static class Program
         }
     }
 
+    private static async Task<int> RunLogicalCandidateFitAsync(
+        string[] arguments,
+        CancellationToken cancellationToken)
+    {
+        if (!LogicalCandidateModelOptions.TryParse(
+                arguments,
+                out LogicalCandidateModelOptions? options,
+                out string? error))
+        {
+            await Console.Error.WriteLineAsync(error).ConfigureAwait(false);
+            WriteUsage(Console.Error);
+            return 2;
+        }
+
+        try
+        {
+            await LogicalCandidateModelFitter.RunAsync(options!, cancellationToken)
+                .ConfigureAwait(false);
+            return 0;
+        }
+        catch (Exception exception) when (
+            exception is IOException or
+            UnauthorizedAccessException or
+            InvalidDataException or
+            System.Text.Json.JsonException)
+        {
+            await Console.Error.WriteLineAsync(exception.Message).ConfigureAwait(false);
+            return 2;
+        }
+    }
+
+    private static async Task<int> RunLogicalCandidatePreflightAsync(
+        string[] arguments,
+        CancellationToken cancellationToken)
+    {
+        if (!LogicalCandidatePreflightOptions.TryParse(
+                arguments,
+                out LogicalCandidatePreflightOptions? options,
+                out string? error))
+        {
+            await Console.Error.WriteLineAsync(error).ConfigureAwait(false);
+            WriteUsage(Console.Error);
+            return 2;
+        }
+
+        try
+        {
+            await LogicalCandidatePreflightBuilder.RunAsync(options!, cancellationToken)
+                .ConfigureAwait(false);
+            return 0;
+        }
+        catch (Exception exception) when (
+            exception is IOException or
+            UnauthorizedAccessException or
+            InvalidDataException or
+            System.Text.Json.JsonException)
+        {
+            await Console.Error.WriteLineAsync(exception.Message).ConfigureAwait(false);
+            return 2;
+        }
+    }
+
     private static void WriteUsage(TextWriter writer) => writer.WriteLine("""
         Usage:
           dotnet EffortHours.RepositoryCalibration.dll
@@ -175,5 +249,25 @@ internal static class Program
         Reproduces the seed development evaluation, applies the bounded transparent
         challenger in memory, serializes every computed or deliberately unrun gate,
         and fails closed without reading validation or test source, outputs, or labels.
+
+        Logical-capability fitting:
+          dotnet EffortHours.RepositoryCalibration.dll candidate-fit
+            --corpus <development-corpus.json>
+            --outputs <ignored-development-output-directory>
+            --source-commit <40-hex-commit>
+            --output <logical-capability-model.json>
+
+        Logical-capability numerical preflight:
+          dotnet EffortHours.RepositoryCalibration.dll candidate-numerical-preflight
+            --plan <sampling-plan.json>
+            --corpus <development-corpus.json>
+            --seed-evaluation <development-evaluation.json>
+            --outputs <ignored-development-output-directory>
+            --model <logical-capability-model.json>
+            --source-commit <40-hex-commit>
+            --output <candidate-preflight.json>
+
+        These commands fit and evaluate only the complete development partition.
+        They cannot scan, label, or evaluate validation or test repositories.
         """);
 }
