@@ -29,8 +29,13 @@ next development-only model and passes all 16 numerical gates. The
 ecosystem, shape/size, explanation, and safety gates pass, but the material
 specification-comprehension category has `-0.2505` aggregate bias against the
 frozen `0.20` limit. Seven later measured gates are not run. No manifest is frozen
-and no holdout is opened. Source, archives, evidence bundles, and estimate bodies
-remain uncommitted.
+and no holdout is opened. The
+[`0.7.0 successor preflight`](0.7.0/README.md) gives the bounded correction a new
+`logical-capability/0.2.0` identity and passes all 16 numerical gates. Its
+[`0.8.0 operational checkpoint`](0.8.0/README.md) passes the five
+development-computable operational gates; seven measured gates remain. No
+manifest is frozen and no holdout is opened. Source, archives, evidence bundles,
+and estimate bodies remain uncommitted.
 
 The development labels do not open model admission: validation/test labels are not
 authored, the finite candidate set is not frozen, and no independent correction
@@ -137,9 +142,9 @@ contain an unsealed test label before the one-time decision.
 
 ## Next checkpoint
 
-Retire `logical-capability/0.1.0`. Design any successor from development evidence
-only under a new candidate identity, then repeat every numerical and operational
-gate without opening holdouts. Freeze the finite candidate manifest and selection
-rule only if all gates pass. Validation labels must remain unavailable until that
-freeze; test labels require an externally held body and precommitted digest before
-authoring and remain sealed until the one-time selection boundary.
+Run the seven measured gates against exact `logical-capability/0.2.0` without
+retuning its features, factors, ranges, or fallback. Freeze the finite candidate
+manifest and selection rule only if every gate passes. Validation labels must
+remain unavailable until that freeze; test labels require an externally held body
+and precommitted digest before authoring and remain sealed until the one-time
+selection boundary.

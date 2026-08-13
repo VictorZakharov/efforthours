@@ -143,20 +143,18 @@ count, and intermediate churn do not value effort. `CHANGE_ESTIMATION.md` and
 
 ## Current priorities
 
-### 1. Design a new development-only repository challenger
+### 1. Complete the repository-candidate measured preflight
 
-- Retire `logical-capability/0.1.0`. Public-readiness operational preflight `0.6.0`
-  passes ecosystem, shape/size, explanation, and safety gates but fails the frozen
-  material-category gate: specification-comprehension aggregate bias is `-0.2505`
-  against the `0.20` limit. Do not spend the later cross-platform measurement
-  budget or retune that candidate identity.
-- Diagnose the category under-allocation from development evidence only. Do not
-  weaken the category threshold, use repository identity, or hide the failure
-  behind repository-total WAPE.
-- Give any changed model a new candidate and estimator identity. Reproduce all 16
-  numerical gates and all 12 operational gates from the beginning against its
-  exact finite features, factors, ranges, fallbacks, implementation, and model
-  artifact.
+- Exact `logical-capability/0.2.0` passes all 16 numerical development gates and
+  the five development-computable operational gates. Its model, features, factor
+  ceilings, ranges, fallback, implementation, and development inputs are frozen by
+  checkpoints `0.7.0` and `0.8.0` for the remaining preflight.
+- Run the public mutation suites, byte-identical Windows/Linux/macOS projection,
+  paired median/slowest latency, sampled peak working set, installed-package
+  increase, and scanner/fingerprint gates without retuning the candidate.
+- Retire v0.2 if any measured gate fails. Do not weaken a threshold, substitute an
+  implementation or model artifact, or hide a failure behind repository-total
+  agreement.
 - Freeze a finite candidate manifest, resource budgets, and the precommitted
   selection rule only if every gate passes. Do not open or tune against validation
   before that freeze.
@@ -165,10 +163,8 @@ count, and intermediate churn do not value effort. `CHANGE_ESTIMATION.md` and
 - Expand decomposed teacher review with honest model/input provenance. Optional
   independent review must remain explicit corroboration, not an implied maturity
   upgrade.
-- Use the frozen `repository-model-admission/1.0.0` gates before fitting a
-  correction or local model. Author development first, keep validation blind until
-  candidate freeze, and keep test labels sealed until one validation candidate and
-  release decision are frozen.
+- Keep validation blind until candidate freeze and keep test labels sealed until
+  one validation candidate and release decision are frozen.
 - Retain mutation relations as qualitative invariance, directionality,
   marginality, and category-isolation guards—not numerical labels.
 

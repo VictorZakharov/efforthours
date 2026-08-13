@@ -33,6 +33,51 @@ Because EffortHours's own anchor informed the seed-model and calibration design,
 a development diagnostic rather than an eligible held-out test record unless a
 future independent snapshot and review policy explicitly establishes otherwise.
 
+## 2026-08-13: logical-capability v0.2 development preflight
+
+Status: **all 16 numerical and five development-computable operational gates pass;
+seven measured gates remain; validation and test remain unopened; no candidate
+freeze or admission**
+
+The v0.1 operational failure was traced to its factor ceiling rather than a hidden
+repository-total interaction. Specification-comprehension groups `s` and `xl`
+contained 4.75/55.25 logical hours against 56/244 reviewed hours. Clipping both at
+the general `3.00` ceiling produced the full 120-hour aggregate category deficit.
+
+`logical-capability/0.2.0` retains the same evidence-unit scorer, scope roles, size
+bands, 15-family development set, factor-fitting formula, range quantiles, and seed
+fallback. Under new model `repository-logical-capability-model/0.2.0`, feature
+contract `logical-capability-features/1.1.0`, and estimator
+`candidate-logical-capability/0.2.0+seed-rules/0.4.0`, only
+specification-comprehension receives an explicit `4.00` factor ceiling; every
+other kind remains capped at `3.00`. The projector continues to accept frozen v0.1
+artifacts under their original identities.
+
+Numerical checkpoint `0.7.0` passes all 16 gates. Repository expected WAPE is
+`0.1137` versus seed `0.2365`, absolute aggregate bias is `0.0094`, ordinary-family
+pass rate is `0.9333`, repository expected coverage is `0.8667`, and matched-target
+coverage/normalized width are `0.8217/0.7406`. Specification-comprehension is
+419.00 candidate expected hours against 479.00 reviewed hours, with WAPE `0.2752`
+and bias `-0.1253`.
+
+Operational checkpoint `0.8.0` passes all five development-computable gates.
+Pooled material-category WAPE is `0.2075` versus seed `0.4331`, with no category
+violation. Every ecosystem, qualifying product-shape, and source-size slice passes;
+all 15 reports validate, reconcile, round-trip, preserve stable lineage, and
+explain 11,161 adjusted items; bounded replay, cancellation, tamper rejection, and
+visible out-of-distribution seed fallback pass. Public mutations, cross-platform
+determinism, median/slowest latency, peak working set, installed-package increase,
+and scanner/fingerprint gates remain deliberately unrun and non-passing.
+
+The model, numerical preflight, and operational preflight have normalized digests
+`sha256:f53b5af09b5adf0d3efed5339e9309156f026b3378c6b69e979467b92524ae93`,
+`sha256:4a12b35e7088d54e8fee6240c5a478f007d6a714bdc1b089398591de1c52c333`,
+and `sha256:609307d5a366b52c18118db2ef9f79e46d86565b5419aa767e0cbbf7f1fe8ec8`.
+All pin implementation commit `6962a3a49911ae230f2df13b5b05f8aded5c7e12`.
+No validation/test source, candidate output, or label was read or generated. The
+next boundary is the seven measured gates against this exact candidate without
+retuning.
+
 ## 2026-08-13: logical-capability operational rejection
 
 Status: **candidate rejected on a development material-category gate; validation

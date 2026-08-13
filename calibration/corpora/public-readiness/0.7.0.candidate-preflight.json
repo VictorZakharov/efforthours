@@ -1,0 +1,431 @@
+{
+  "preflightVersion": "repository-candidate-preflight/0.2.0",
+  "policyVersion": "repository-model-admission/1.0.0",
+  "status": "development-numerical-gates-passed-operational-preflight-pending",
+  "partition": "development",
+  "inputs": {
+    "samplingPlan": {
+      "id": "efforthours-public-readiness",
+      "version": "0.1.0",
+      "digest": "sha256:c4c5f0026112b0d495e79e9ca7a5b3d03a763710db75360d02fd333afd282aa1"
+    },
+    "corpus": {
+      "id": "efforthours-public-readiness-development",
+      "version": "0.3.0",
+      "digest": "sha256:2b240804c70f11caf0978f19e6e22eda7de3f7a2e314a48f2def7d232ad1bdd7"
+    },
+    "seedEvaluation": {
+      "id": "efforthours-public-readiness-development",
+      "version": "0.3.0",
+      "digest": "sha256:5ec0366136587d4d2cba1c2ddba9fe6fce0b3fe9a9fd2bf770afcf6e616ed412"
+    },
+    "candidateModel": {
+      "id": "efforthours-public-readiness-logical-capability",
+      "version": "repository-logical-capability-model/0.2.0",
+      "digest": "sha256:f53b5af09b5adf0d3efed5339e9309156f026b3378c6b69e979467b92524ae93"
+    },
+    "developmentEstimates": [
+      {
+        "recordId": "record:app-vnext-polly:implementation",
+        "repositoryId": "repository:github.com/app-vnext/polly",
+        "sourceDigest": "sha256:edff155be72775b8b7de15cb2bc816299affd03f557a4cf7fda737c783dd0c58",
+        "estimateDigest": "sha256:3ff734d1b865b89b09d9b2f97bb7e6df8b8df2c41aabcca4fe3632142d1454cf",
+        "evidenceDigest": "sha256:f44b835e459f443b01dca754b502b22b7be5840d9624419b1204941c09a9733a"
+      },
+      {
+        "recordId": "record:btcpayserver-btcpayserver:implementation",
+        "repositoryId": "repository:github.com/btcpayserver/btcpayserver",
+        "sourceDigest": "sha256:cf0a196516fdfa1b271c1a82d71b171f77921567940d64892c91600c057896f3",
+        "estimateDigest": "sha256:f40163ccf60566dfc5194e8727988dcce148560a1a3d848e50ac18cdab3dda85",
+        "evidenceDigest": "sha256:f042c7ab6c9007195b4acf73d176f6b73aa819e81d198a71ce8f3d233dbe47da"
+      },
+      {
+        "recordId": "record:cartercommunity-carter:implementation",
+        "repositoryId": "repository:github.com/cartercommunity/carter",
+        "sourceDigest": "sha256:00b6577c4f3d9f42a32e69804b37d3e8e94b6eff6b5b294fe7e5f78f90b33087",
+        "estimateDigest": "sha256:2b77dcc65299239d8284306bea179025873e91b2776e531da9dcb3ac5bbbdfdd",
+        "evidenceDigest": "sha256:b4830383587235ccdb141af31ba72b42077699e1e6ec8189db67d994170ce156"
+      },
+      {
+        "recordId": "record:colinhacks-zod:implementation",
+        "repositoryId": "repository:github.com/colinhacks/zod",
+        "sourceDigest": "sha256:250432548197e4e8228d26209db94cff75d05ac1e2c34896ff2d2823f7e39fc5",
+        "estimateDigest": "sha256:d29fa4af40fc05bbef05cf10b99c98e79cac493d9734d2dfb5e15b6172a4f2f9",
+        "evidenceDigest": "sha256:8341fae4a32443a0fe58aa189adedee78584654921c41df95532e005ba806924"
+      },
+      {
+        "recordId": "record:dotnet-command-line-api:implementation",
+        "repositoryId": "repository:github.com/dotnet/command-line-api",
+        "sourceDigest": "sha256:298e7732de1f2da4c37185ae0acc2ccf9f3f25486af306e019856a6ca7c83f9b",
+        "estimateDigest": "sha256:5022b4ee41736c31d798f1cae8903e93fc07cd140188068d3dad5a3dcc1aaaea",
+        "evidenceDigest": "sha256:3af5dae517a7e675d875c1adda1a6d4643e0731812ee0e19ed1fe6d805c4bd8f"
+      },
+      {
+        "recordId": "record:fastendpoints-fastendpoints:implementation",
+        "repositoryId": "repository:github.com/fastendpoints/fastendpoints",
+        "sourceDigest": "sha256:1681a0743529e68c815e971d1fc336a251dfed17b91dd703ef88c7783547a297",
+        "estimateDigest": "sha256:b9956f36da42035e75835c18e97bb652570b9075483124f2cb218a37a1a386b6",
+        "evidenceDigest": "sha256:940d8203a893e85f8ef83917387f642d3a6efdd6b4efa5940310f9142abe3949"
+      },
+      {
+        "recordId": "record:fastify-fastify:implementation",
+        "repositoryId": "repository:github.com/fastify/fastify",
+        "sourceDigest": "sha256:fb9e91d171d70b386838d4481cf6ffa8fe8614b87af3b734cb1e53dbde2e38b8",
+        "estimateDigest": "sha256:2dddb0803b90621bb726c3b5459c4211525a1abc0b276a9047c0fec623f23b42",
+        "evidenceDigest": "sha256:4e498bf257d0ad5f7f39ebfd5d15b0163ea5234a80363d0e74365554dda42c52"
+      },
+      {
+        "recordId": "record:fluentvalidation-fluentvalidation:implementation",
+        "repositoryId": "repository:github.com/fluentvalidation/fluentvalidation",
+        "sourceDigest": "sha256:019c5b15a97a678f22d8d0269b94822e0b69bb640498c6100397a388958e95a7",
+        "estimateDigest": "sha256:cb27a31fa89330632afca93d3b1cccece76a89b45c7955585183c1b0a60d26e5",
+        "evidenceDigest": "sha256:78328656fb852a1c19b2ebf51e0c2084d78687e62ca6288d9b7e8fce14115c41"
+      },
+      {
+        "recordId": "record:lit-lit:implementation",
+        "repositoryId": "repository:github.com/lit/lit",
+        "sourceDigest": "sha256:580127cac2ce4795a48e3ebb446a8ae74d8eb1baf7f1e6d85c6ac9baecdd0b4b",
+        "estimateDigest": "sha256:405a160d7bdc307f32b95e2558bd40212941c8ae9efb7d21ebeadac9cf0c2957",
+        "evidenceDigest": "sha256:6ce26499d1c3c7067ed1e77f8477bcc2aa3de36f00dd20ae69af682ec46ae73c"
+      },
+      {
+        "recordId": "record:mudblazor-mudblazor:implementation",
+        "repositoryId": "repository:github.com/mudblazor/mudblazor",
+        "sourceDigest": "sha256:cf22bb7f911d01a433552f828193ca5a383f653606b62c9aabf80db86bcffd88",
+        "estimateDigest": "sha256:2f7deeb14bebe6f1625190afbd459cb3edd0f616ed29eaaf0ce772b1902450f5",
+        "evidenceDigest": "sha256:09fa39cf188444eec7cabc1c503c853b7f9b81055f82ae81c4cd11bd1c60902e"
+      },
+      {
+        "recordId": "record:oqtane-oqtane-framework:implementation",
+        "repositoryId": "repository:github.com/oqtane/oqtane.framework",
+        "sourceDigest": "sha256:a82445a988d9aedca9fe495980240285f82f2989a3b9a6e7dc8bb72d71accfbc",
+        "estimateDigest": "sha256:2fb61cb7a75010c9e693548a222cfadce3d5f132f206c369af50ca9e1da3025f",
+        "evidenceDigest": "sha256:f302ca6acea52b450ef37c4a55d6100dce430997d3302f8bb8889740ff272bb5"
+      },
+      {
+        "recordId": "record:simplcommerce-simplcommerce:implementation",
+        "repositoryId": "repository:github.com/simplcommerce/simplcommerce",
+        "sourceDigest": "sha256:3a67cfbe2132f34faa1e6016dc8a69f2384c6f28a36cc4b423ad4b151e187b2c",
+        "estimateDigest": "sha256:fbf89af7d619d3141e57ec0271b637cb444c6e107cd3bda687e9636aba495435",
+        "evidenceDigest": "sha256:57561b3d7f4654d6103a2065f887baa0646007bdfa9845d420c412278e555573"
+      },
+      {
+        "recordId": "record:sindresorhus-execa:implementation",
+        "repositoryId": "repository:github.com/sindresorhus/execa",
+        "sourceDigest": "sha256:251c4d17f2a7a5893a18c245ce9289a866f120085fe7dce9b4fd46d27662a827",
+        "estimateDigest": "sha256:9eb14d142b13d1b9a5263ea4810c2bd4452dff0581b110d43234c75f1895debc",
+        "evidenceDigest": "sha256:82b436d9214a50ed180a292a9c19fd5740bfcc5737cd1f73fbfabb236eacd089"
+      },
+      {
+        "recordId": "record:squidex-squidex:implementation",
+        "repositoryId": "repository:github.com/squidex/squidex",
+        "sourceDigest": "sha256:7ba94792039d81ca71367da9be0a1f993cf8a31c630532c9fdf20ab944c474d9",
+        "estimateDigest": "sha256:d5feefc4a4d71a32caf39844b12307579cde0ef70185a13e4e4d0d9f39a357b6",
+        "evidenceDigest": "sha256:226d373ae2dd3886c041e039b116e706c739206a8b7a24fd0537f47109f52926"
+      },
+      {
+        "recordId": "record:tj-commander-js:implementation",
+        "repositoryId": "repository:github.com/tj/commander.js",
+        "sourceDigest": "sha256:fe18ceb689a5b6ee31de0b198448bd03a2b0b56f4c25bf0d71a2e276f6a70d57",
+        "estimateDigest": "sha256:bc89cbc0df1ad3b63a37f2e0c82f84eca465866ee8f1d90824d5eb8541ec9725",
+        "evidenceDigest": "sha256:4b14f6e59e365f444495c33ff3b133f50f4a564f4e41b9cce41f5683e95c4c84"
+      }
+    ]
+  },
+  "candidate": {
+    "id": "logical-capability/0.2.0",
+    "status": "numerically-eligible-operational-preflight-pending",
+    "configuration": {
+      "kind": "transparent-fitted-table",
+      "implementationCommit": "6962a3a49911ae230f2df13b5b05f8aded5c7e12",
+      "baselineEstimatorVersion": "seed-rules/0.4.0",
+      "featureContractVersion": "logical-capability-features/1.1.0",
+      "features": [
+        "canonical-evidence-measurements",
+        "work-item-kind",
+        "normalized-scope-role",
+        "logical-expected-size-band",
+        "candidate-expected-size-band",
+        "bounded-work-item-kind-factor-ceiling"
+      ],
+      "exactZeroRules": [
+        "test semantic surfaces",
+        "benchmark application entry points and source backbones",
+        "generated/golden source backbones and support work"
+      ],
+      "discountRules": [
+        "test source backbones and application entry points",
+        "benchmark semantic surfaces"
+      ],
+      "discountFactor": 0.25,
+      "range": {
+        "features": [
+          "work-item-kind",
+          "candidate-expected-size-band"
+        ],
+        "lowerQuantile": 0.15,
+        "upperQuantile": 0.8,
+        "minimumExactGroupSamples": 3,
+        "sparseGroupFallback": "same-kind residuals, then all positive development residuals"
+      },
+      "dependencies": [
+        ".NET 10",
+        "EffortHours.Contracts",
+        "EffortHours.Calibration"
+      ],
+      "licenseExpression": "MIT",
+      "runtimeBoundary": "Offline deterministic projection of a saved implementation-profile seed estimate and its digest-matched canonical evidence bundle; no source body, repository read, target execution, network, Git history, provider, or external process.",
+      "fallbackEstimatorVersion": "seed-rules/0.4.0",
+      "explanationForm": "Every work item retains its stable ID and records the logical capability point, scope-role factor, frozen point group/factor (including any work-item-kind ceiling), frozen range group/factors, and proportional allocation; unknown groups retain the complete seed capability."
+    },
+    "developmentMetrics": {
+      "repositoryExpectedWape": 0.1137,
+      "relativeWapeImprovement": 0.5192,
+      "absoluteAggregateBias": 0.0094,
+      "medianRepositoryAbsoluteErrorHours": 191.0279,
+      "familyMaximumErrorPassRate": 1,
+      "familyOrdinaryErrorPassRate": 0.9333,
+      "lowWape": 0.1129,
+      "highWape": 0.1494,
+      "repositoryExpectedCoverage": 0.8667,
+      "meanRepositoryNormalizedWidth": 0.4405,
+      "p90RepositoryNormalizedWidth": 0.6912,
+      "meanWidthRelativeToSeed": 0.3805,
+      "meanWidthRelativeToReviewed": 1.2056,
+      "matchedTargetExpectedCoverage": 0.8217,
+      "matchedTargetMeanNormalizedWidth": 0.7406,
+      "targetMatchRate": 1,
+      "sourceReferenceMatchRate": 1,
+      "candidateItemMatchRate": 1,
+      "categoryMismatchRate": 0
+    },
+    "gates": [
+      {
+        "id": "repository-expected-wape",
+        "status": "passed",
+        "passed": true,
+        "requirement": "WAPE \u003C= 0.20 and at least 15% lower than seed",
+        "observed": "wape=0.1137; relative-improvement=0.5192",
+        "rationale": "The development preflight satisfies this numerical gate."
+      },
+      {
+        "id": "aggregate-bias",
+        "status": "passed",
+        "passed": true,
+        "requirement": "absolute bias \u003C= 0.10 and no worse than seed",
+        "observed": "candidate=0.0094; seed=0.012",
+        "rationale": "The development preflight satisfies this numerical gate."
+      },
+      {
+        "id": "median-repository-error",
+        "status": "passed",
+        "passed": true,
+        "requirement": "median expected absolute error no greater than seed",
+        "observed": "candidate=191.0279h; seed=391h",
+        "rationale": "The development preflight satisfies this numerical gate."
+      },
+      {
+        "id": "per-family-maximum-error",
+        "status": "passed",
+        "passed": true,
+        "requirement": "every family \u003C= max(16h, 50%) error",
+        "observed": "1",
+        "rationale": "The development preflight satisfies this numerical gate."
+      },
+      {
+        "id": "per-family-ordinary-error",
+        "status": "passed",
+        "passed": true,
+        "requirement": "at least 90% of families \u003C= max(8h, 25%) error",
+        "observed": "0.9333",
+        "rationale": "The development preflight satisfies this numerical gate."
+      },
+      {
+        "id": "low-wape",
+        "status": "passed",
+        "passed": true,
+        "requirement": "low WAPE \u003C= 0.30 and no more than 0.03 worse than seed",
+        "observed": "0.1129",
+        "rationale": "The development preflight satisfies this numerical gate."
+      },
+      {
+        "id": "high-wape",
+        "status": "passed",
+        "passed": true,
+        "requirement": "high WAPE \u003C= 0.30 and no more than 0.03 worse than seed",
+        "observed": "0.1494",
+        "rationale": "The development preflight satisfies this numerical gate."
+      },
+      {
+        "id": "mapping",
+        "status": "passed",
+        "passed": true,
+        "requirement": "target, source-reference, and candidate-item match rates each \u003E= 0.95",
+        "observed": "1/1/1",
+        "rationale": "The development preflight satisfies this numerical gate."
+      },
+      {
+        "id": "category-mismatch",
+        "status": "passed",
+        "passed": true,
+        "requirement": "category mismatch \u003C= 0.02 of reviewed targets",
+        "observed": "0",
+        "rationale": "The development preflight satisfies this numerical gate."
+      },
+      {
+        "id": "repository-expected-coverage",
+        "status": "passed",
+        "passed": true,
+        "requirement": "coverage \u003E= 0.80 and no more than 0.15 below seed",
+        "observed": "0.8667",
+        "rationale": "The development preflight satisfies this numerical gate."
+      },
+      {
+        "id": "mean-repository-normalized-width",
+        "status": "passed",
+        "passed": true,
+        "requirement": "mean repository normalized width \u003C= 0.50",
+        "observed": "0.4405",
+        "rationale": "The development preflight satisfies this numerical gate."
+      },
+      {
+        "id": "p90-repository-normalized-width",
+        "status": "passed",
+        "passed": true,
+        "requirement": "p90 repository normalized width \u003C= 0.80",
+        "observed": "0.6912",
+        "rationale": "The development preflight satisfies this numerical gate."
+      },
+      {
+        "id": "mean-width-relative-to-seed",
+        "status": "passed",
+        "passed": true,
+        "requirement": "mean width relative to seed \u003C= 0.75",
+        "observed": "0.3805",
+        "rationale": "The development preflight satisfies this numerical gate."
+      },
+      {
+        "id": "mean-width-relative-to-reviewed",
+        "status": "passed",
+        "passed": true,
+        "requirement": "mean width relative to reviewed ranges \u003C= 1.25",
+        "observed": "1.2056",
+        "rationale": "The development preflight satisfies this numerical gate."
+      },
+      {
+        "id": "matched-target-expected-coverage",
+        "status": "passed",
+        "passed": true,
+        "requirement": "matched-target expected coverage \u003E= 0.75",
+        "observed": "0.8217",
+        "rationale": "The development preflight satisfies this numerical gate."
+      },
+      {
+        "id": "matched-target-normalized-width",
+        "status": "passed",
+        "passed": true,
+        "requirement": "matched-target mean normalized width \u003C= 0.75",
+        "observed": "0.7406",
+        "rationale": "The development preflight satisfies this numerical gate."
+      },
+      {
+        "id": "ecosystem-stratum-agreement",
+        "status": "not-evaluated",
+        "passed": false,
+        "requirement": "Required by repository-model-admission/1.0.0 before validation selection.",
+        "rationale": "This required operational preflight gate has not yet been run, so candidate freeze and holdout access remain blocked."
+      },
+      {
+        "id": "material-category-agreement",
+        "status": "not-evaluated",
+        "passed": false,
+        "requirement": "Required by repository-model-admission/1.0.0 before validation selection.",
+        "rationale": "This required operational preflight gate has not yet been run, so candidate freeze and holdout access remain blocked."
+      },
+      {
+        "id": "shape-and-size-slice-regression",
+        "status": "not-evaluated",
+        "passed": false,
+        "requirement": "Required by repository-model-admission/1.0.0 before validation selection.",
+        "rationale": "This required operational preflight gate has not yet been run, so candidate freeze and holdout access remain blocked."
+      },
+      {
+        "id": "public-mutation-suite",
+        "status": "not-evaluated",
+        "passed": false,
+        "requirement": "Required by repository-model-admission/1.0.0 before validation selection.",
+        "rationale": "This required operational preflight gate has not yet been run, so candidate freeze and holdout access remain blocked."
+      },
+      {
+        "id": "cross-platform-determinism",
+        "status": "not-evaluated",
+        "passed": false,
+        "requirement": "Required by repository-model-admission/1.0.0 before validation selection.",
+        "rationale": "This required operational preflight gate has not yet been run, so candidate freeze and holdout access remain blocked."
+      },
+      {
+        "id": "schema-lineage-and-saved-explanation",
+        "status": "not-evaluated",
+        "passed": false,
+        "requirement": "Required by repository-model-admission/1.0.0 before validation selection.",
+        "rationale": "This required operational preflight gate has not yet been run, so candidate freeze and holdout access remain blocked."
+      },
+      {
+        "id": "offline-safety-ood-and-tamper",
+        "status": "not-evaluated",
+        "passed": false,
+        "requirement": "Required by repository-model-admission/1.0.0 before validation selection.",
+        "rationale": "This required operational preflight gate has not yet been run, so candidate freeze and holdout access remain blocked."
+      },
+      {
+        "id": "median-latency-overhead",
+        "status": "not-evaluated",
+        "passed": false,
+        "requirement": "Required by repository-model-admission/1.0.0 before validation selection.",
+        "rationale": "This required operational preflight gate has not yet been run, so candidate freeze and holdout access remain blocked."
+      },
+      {
+        "id": "slowest-latency-overhead",
+        "status": "not-evaluated",
+        "passed": false,
+        "requirement": "Required by repository-model-admission/1.0.0 before validation selection.",
+        "rationale": "This required operational preflight gate has not yet been run, so candidate freeze and holdout access remain blocked."
+      },
+      {
+        "id": "peak-working-set-overhead",
+        "status": "not-evaluated",
+        "passed": false,
+        "requirement": "Required by repository-model-admission/1.0.0 before validation selection.",
+        "rationale": "This required operational preflight gate has not yet been run, so candidate freeze and holdout access remain blocked."
+      },
+      {
+        "id": "installed-package-increase",
+        "status": "not-evaluated",
+        "passed": false,
+        "requirement": "Required by repository-model-admission/1.0.0 before validation selection.",
+        "rationale": "This required operational preflight gate has not yet been run, so candidate freeze and holdout access remain blocked."
+      },
+      {
+        "id": "scanner-thresholds-and-target-fingerprints",
+        "status": "not-evaluated",
+        "passed": false,
+        "requirement": "Required by repository-model-admission/1.0.0 before validation selection.",
+        "rationale": "This required operational preflight gate has not yet been run, so candidate freeze and holdout access remain blocked."
+      }
+    ],
+    "rejectionReasons": []
+  },
+  "holdouts": {
+    "validation": "withheld-not-run; labels not-authored",
+    "test": "withheld-not-run; labels not-authored and body not present",
+    "candidateOutputsGenerated": false,
+    "labelsAuthored": false
+  },
+  "decision": {
+    "status": "no-candidate-frozen",
+    "candidateManifestFrozen": false,
+    "validationAuthorized": false,
+    "rationale": "The fitted logical-capability table clears every development numerical gate. Operational, safety, determinism, resource, mutation, and explanation gates remain deliberately unrun, so candidate freeze and holdout access still fail closed.",
+    "nextBoundary": "Run every remaining operational preflight gate against this exact model and implementation. Freeze the finite candidate manifest only if all pass; do not author or inspect validation or test labels before that decision."
+  }
+}
