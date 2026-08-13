@@ -143,19 +143,23 @@ count, and intermediate churn do not value effort. `CHANGE_ESTIMATION.md` and
 
 ## Current priorities
 
-### 1. Complete logical-candidate operational preflight before opening holdouts
+### 1. Design a new development-only repository challenger
 
-- Preserve exact `logical-capability/0.1.0` identity from public-readiness
-  preflight `0.5.0`. It passes all 16 numerical development gates with repository
-  WAPE `0.1141`, absolute bias `0.0108`, repository coverage `0.8667`, and
-  matched-target coverage/width `0.8202/0.7407`.
-- Run the 12 pending ecosystem/category/shape, mutation, determinism,
-  explanation, safety, out-of-distribution, tamper, resource, and scanner gates
-  against the exact model and implementation. Do not change features, factors,
-  ranges, or fallbacks under the same candidate identity.
-- Freeze a finite candidate manifest with exact model/configuration identities,
-  resource budgets, and the precommitted selection rule only if every operational
-  gate passes. Do not tune against validation after its labels are opened.
+- Retire `logical-capability/0.1.0`. Public-readiness operational preflight `0.6.0`
+  passes ecosystem, shape/size, explanation, and safety gates but fails the frozen
+  material-category gate: specification-comprehension aggregate bias is `-0.2505`
+  against the `0.20` limit. Do not spend the later cross-platform measurement
+  budget or retune that candidate identity.
+- Diagnose the category under-allocation from development evidence only. Do not
+  weaken the category threshold, use repository identity, or hide the failure
+  behind repository-total WAPE.
+- Give any changed model a new candidate and estimator identity. Reproduce all 16
+  numerical gates and all 12 operational gates from the beginning against its
+  exact finite features, factors, ranges, fallbacks, implementation, and model
+  artifact.
+- Freeze a finite candidate manifest, resource budgets, and the precommitted
+  selection rule only if every gate passes. Do not open or tune against validation
+  before that freeze.
 - Keep all revisions and profiles from one repository family in one frozen
   development, validation, or test partition.
 - Expand decomposed teacher review with honest model/input provenance. Optional

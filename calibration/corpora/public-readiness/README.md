@@ -24,9 +24,13 @@ candidate reports. The [`0.4.0 candidate preflight`](0.4.0/README.md) records a
 development-only no-go: the strongest bounded transparent design fails bias,
 per-family consistency, and matched-target coverage, so no candidate manifest is
 frozen. The [`0.5.0 logical-capability preflight`](0.5.0/README.md) freezes the
-next development-only model and passes all 16 numerical gates. Its 12 operational
-gates remain unrun and non-passing, so no manifest is frozen and no holdout is
-opened. Source, archives, evidence bundles, and estimate bodies remain uncommitted.
+next development-only model and passes all 16 numerical gates. The
+[`0.6.0 operational preflight`](0.6.0/README.md) then rejects that exact candidate:
+ecosystem, shape/size, explanation, and safety gates pass, but the material
+specification-comprehension category has `-0.2505` aggregate bias against the
+frozen `0.20` limit. Seven later measured gates are not run. No manifest is frozen
+and no holdout is opened. Source, archives, evidence bundles, and estimate bodies
+remain uncommitted.
 
 The development labels do not open model admission: validation/test labels are not
 authored, the finite candidate set is not frozen, and no independent correction
@@ -133,9 +137,9 @@ contain an unsealed test label before the one-time decision.
 
 ## Next checkpoint
 
-Run every remaining operational gate against exact candidate
-`logical-capability/0.1.0` without retuning it. Freeze the finite candidate
-manifest and selection rule only if all gates pass. Validation labels must remain
-unavailable until that freeze; test labels require an externally held body and
-precommitted digest before authoring and remain sealed until the one-time
-selection boundary.
+Retire `logical-capability/0.1.0`. Design any successor from development evidence
+only under a new candidate identity, then repeat every numerical and operational
+gate without opening holdouts. Freeze the finite candidate manifest and selection
+rule only if all gates pass. Validation labels must remain unavailable until that
+freeze; test labels require an externally held body and precommitted digest before
+authoring and remain sealed until the one-time selection boundary.

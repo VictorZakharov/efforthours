@@ -83,7 +83,9 @@ Repository EHE remains experimental and uncalibrated. The frozen 33-family publi
 readiness cohort has exact source reproduction, strict-blind packets for all 15
 development families, and rubric-complete teacher records for the full development
 partition. Logical-capability candidate `0.1.0` passes all 16 numerical development
-gates in preflight `0.5.0`; its 12 operational gates remain unrun, so no candidate
-manifest is frozen or admitted. Validation and test labels remain unopened.
+gates in preflight `0.5.0` but is rejected by operational preflight `0.6.0`: its
+material specification-comprehension category has `-0.2505` aggregate bias
+against the frozen `0.20` limit. No candidate manifest is frozen or admitted;
+validation and test labels remain unopened.
 Change EHE has only the limited Stage A logical admission described in
 `docs/CHANGE_MODEL_ADMISSION.md`; later ecosystem extensions remain experimental.
