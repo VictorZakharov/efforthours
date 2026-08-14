@@ -53,6 +53,10 @@ Some manifests, the CI fixture, and the Dockerfile contain inert public package,
 action, or image identifiers solely to exercise static classification. EffortHours
 does not install or redistribute that software and analyzed every fixture without
 building, running, restoring, pulling images, or accessing the network.
+The five advisory-affected declarations retained by immutable fixture identities
+have a narrow, auditable `not_used` disposition in
+[`DEPENDENCY_ALERTS.md`](DEPENDENCY_ALERTS.md); the advisories remain valid for
+any consumer that installs or executes those declared versions.
 
 `seed-rules/0.2.1` retains every 0.2.0 numerical prior. It corrects TypeScript file
 ownership in the shared JavaScript/TypeScript estimation scope so byte-identical

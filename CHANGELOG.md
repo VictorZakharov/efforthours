@@ -28,6 +28,10 @@ may still change public contracts with explicit documentation.
 
 ### Changed
 
+- Recorded and regression-locked narrow `not_used` dispositions for five
+  advisory-affected dependency declarations in immutable, non-executed synthetic
+  calibration fixtures. No fixture, source digest, estimate, mutation report,
+  analyzer behavior, or EffortHours runtime dependency changed.
 - Defined `canonical-json-document/1.0.0`: canonical JSON now uses LF for
   indentation and its single document terminator on every operating system,
   while explicit files remain UTF-8 without a byte-order mark. Schemas, values,
