@@ -83,10 +83,11 @@ Repository EHE remains experimental and uncalibrated. The frozen 33-family publi
 readiness cohort has exact source reproduction, strict-blind packets for all 15
 development families, and rubric-complete teacher records for the full development
 partition. Retired candidate `logical-capability/0.1.0` failed material-category
-bias. Successor `logical-capability/0.2.0` passes all 16 numerical development gates
-in checkpoint `0.7.0` and the five development-computable operational gates in
-checkpoint `0.8.0`; seven mutation, cross-platform, resource, package, and scanner
-measurements remain. No candidate manifest is frozen or admitted, and validation
-and test labels remain unopened.
+bias. Successor `logical-capability/0.2.0` passed all 16 numerical development
+gates and five development-computable operational gates, then failed checkpoint
+`0.9.0` on the public mutation suite (`314/339`) and raw cross-platform byte
+determinism (CRLF versus LF); its resource, package, and scanner gates passed. It
+is retired. No candidate manifest is frozen or admitted, and validation and test
+labels remain unopened.
 Change EHE has only the limited Stage A logical admission described in
 `docs/CHANGE_MODEL_ADMISSION.md`; later ecosystem extensions remain experimental.
