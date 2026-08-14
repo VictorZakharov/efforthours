@@ -63,6 +63,10 @@ when semantics, schemas, assumptions, or unresolved decisions change.
 - Add proportionate tests for behavior changes. Unit repositories/caches stay in
   memory; physical files, Git, subprocesses, and installed-tool checks belong in
   end-to-end tests or explicit benchmarks.
+- Do not make ordinary CI pass or fail on benchmark wall-clock or sampled-memory
+  thresholds. Record those measurements in explicit benchmark checkpoints; gate
+  CI on deterministic semantics, operation/reuse counts, safety, and bounded
+  configuration instead.
 - Validate serialized output against checked-in schemas. Follow
   `eng/file-budgets.json`; never raise a ratchet without architectural rationale.
 - Treat committed material as public. Exclude credentials, private/proprietary

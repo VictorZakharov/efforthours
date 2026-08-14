@@ -13,11 +13,7 @@ public sealed class ChangeBenchmarkCliTests
             "--files",
             "8",
             "--lines-per-file",
-            "8",
-            "--max-seconds",
-            "30",
-            "--max-peak-mib",
-            "1024");
+            "8");
 
         Assert.Equal(0, result.ExitCode);
         Assert.Equal(string.Empty, result.StandardError);
@@ -25,7 +21,7 @@ public sealed class ChangeBenchmarkCliTests
         Assert.Equal("large-tree", values["mode"]);
         Assert.Equal("2", values["repository-estimator-invocations"]);
         Assert.Equal("false", values["range-audit-bounded"]);
-        AssertReadOnlyAndBounded(values);
+        AssertReadOnlyAndMeasured(values);
     }
 
     [Fact]
@@ -40,11 +36,7 @@ public sealed class ChangeBenchmarkCliTests
             "--commits",
             "3",
             "--maximum-range-components",
-            "2",
-            "--max-seconds",
-            "30",
-            "--max-peak-mib",
-            "1024");
+            "2");
 
         Assert.Equal(0, result.ExitCode);
         Assert.Equal(string.Empty, result.StandardError);
@@ -53,7 +45,7 @@ public sealed class ChangeBenchmarkCliTests
         Assert.Equal("1", values["planned-components"]);
         Assert.Equal("true", values["range-audit-bounded"]);
         Assert.Equal("2", values["repository-estimator-invocations"]);
-        AssertReadOnlyAndBounded(values);
+        AssertReadOnlyAndMeasured(values);
     }
 
     [Fact]
@@ -67,11 +59,7 @@ public sealed class ChangeBenchmarkCliTests
             "8",
             "--commits",
             "3",
-            "--compare-independent",
-            "--max-seconds",
-            "30",
-            "--max-peak-mib",
-            "1024");
+            "--compare-independent");
 
         Assert.Equal(0, result.ExitCode);
         Assert.Equal(string.Empty, result.StandardError);
@@ -90,7 +78,7 @@ public sealed class ChangeBenchmarkCliTests
             int.Parse(values["blob-cache-hits"], CultureInfo.InvariantCulture) > 0);
         Assert.Equal("6", values["independent-snapshot-analyses"]);
         Assert.Equal("true", values["independent-reports-equivalent"]);
-        Assert.Equal("true", values["combined-faster-than-independent"]);
+        Assert.True(bool.TryParse(values["combined-faster-than-independent"], out _));
         AssertPositive(values, "combined-estimate-seconds");
         AssertPositive(values, "independent-estimate-seconds");
         Assert.Equal("false", values["range-audit-bounded"]);
@@ -102,10 +90,10 @@ public sealed class ChangeBenchmarkCliTests
             long.Parse(
                 values["estimated-legacy-entry-comparisons-per-snapshot"],
                 CultureInfo.InvariantCulture) > 0);
-        AssertReadOnlyAndBounded(values);
+        AssertReadOnlyAndMeasured(values);
     }
 
-    private static void AssertReadOnlyAndBounded(Dictionary<string, string> values)
+    private static void AssertReadOnlyAndMeasured(Dictionary<string, string> values)
     {
         Assert.Equal("change/1.2.0", values["benchmark"]);
         Assert.Equal("true", values["worktree-unchanged"]);
@@ -113,8 +101,8 @@ public sealed class ChangeBenchmarkCliTests
         Assert.Equal("not-performed", values["target-execution"]);
         Assert.Equal("not-performed", values["dependency-installation"]);
         Assert.Equal("not-performed", values["network-access"]);
-        Assert.Equal("true", values["seconds-threshold-passed"]);
-        Assert.Equal("true", values["peak-mib-threshold-passed"]);
+        Assert.Equal("not-set", values["seconds-threshold"]);
+        Assert.Equal("not-set", values["peak-mib-threshold"]);
         Assert.StartsWith("sha256:", values["worktree-digest"], StringComparison.Ordinal);
         Assert.StartsWith("sha256:", values["git-state-digest"], StringComparison.Ordinal);
         AssertPositive(values, "change-seconds");

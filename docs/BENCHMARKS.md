@@ -883,3 +883,8 @@ warmth, making the comparison conservative for the combined path. It does not
 model several repositories or concurrent processes. The full multi-repository,
 multi-head correctness/performance matrix, controlled concurrency measurements,
 and any universal threshold remain the separate next checkpoint.
+
+Ordinary CI runs the benchmark harness without wall-clock or sampled-memory
+thresholds. It gates deterministic report equivalence, analysis/reuse counts,
+cache bounds, and read-only/offline safety; machine-dependent performance numbers
+are recorded only by explicit benchmark checkpoints such as the command above.
