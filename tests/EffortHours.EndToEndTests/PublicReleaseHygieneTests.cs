@@ -152,6 +152,29 @@ public sealed partial class PublicReleaseHygieneTests
     }
 
     [Fact]
+    public void CiShortCircuitsMarkdownOnlyPullRequestsWithSuccessfulJobSkips()
+    {
+        string root = FindRepositoryRoot();
+        string ci = File.ReadAllText(Path.Combine(root, ".github", "workflows", "ci.yml"));
+        const string fullCiCondition =
+            "if: needs.pull-request-history.outputs.full_ci == 'true'";
+
+        Assert.Contains(
+            "git diff --quiet --no-renames \"$BASE_SHA...$HEAD_SHA\"",
+            ci,
+            StringComparison.Ordinal);
+        Assert.Contains(":(exclude,icase,glob)**/*.md", ci, StringComparison.Ordinal);
+        Assert.DoesNotContain("paths-ignore:", ci, StringComparison.Ordinal);
+        Assert.Equal(13, ci.Split(fullCiCondition, StringSplitOptions.None).Length - 1);
+        Assert.Equal(
+            2,
+            ci.Split(
+                "if: needs.pull-request-history.outputs.full_ci != 'true'",
+                StringSplitOptions.None).Length - 1);
+        Assert.Contains("name: Pack preview artifact", ci, StringComparison.Ordinal);
+    }
+
+    [Fact]
     public void RuntimeDependencyNoticesMatchAuditedLicensePins()
     {
         string root = FindRepositoryRoot();

@@ -42,6 +42,13 @@ project graph on each operating system instead of transferring compiled output.
 Package compilation runs in parallel, but the final preview artifact is promoted
 only after every formatting, quality, and end-to-end gate succeeds.
 
+An exact pull-request diff check short-circuits those expensive jobs when every
+changed path ends in `.md`. Required single jobs report successful conditional
+skips, while the OS-matrix checks run only a no-op step, so every protected check
+name resolves without checkout, .NET setup, restore, compilation, tests, or
+packaging. The linear-history check still runs. Any other path, every push to
+`main`, and every manual dispatch runs the complete matrix.
+
 Run the synthetic one-million-line scanner checkpoint with:
 
 ```text
