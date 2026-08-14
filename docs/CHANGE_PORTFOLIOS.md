@@ -36,6 +36,85 @@ the manifest directory and remain execution-only; they are never copied into the
 report. Repository IDs and resolved Git roots map one-to-one so caller labels
 cannot combine unrelated repositories or bypass same-repository overlap.
 
+The separate `change-author-period-manifest` v1 contract freezes the input and
+privacy boundary for a future multi-repository, multi-head author-period selector:
+
+```text
+eh change portfolio --author-period-manifest <manifest.json> [options]
+```
+
+That spelling is reserved but is not exposed by the executable until the
+repository-scoped union planner is implemented. Publishing the contract first
+prevents `--help` from advertising a selector that would otherwise produce a
+partial or mechanically summed result.
+
+The manifest contains one shared interval, timezone, date field, merge policy,
+and co-author policy; stable contributor IDs with execution-only aliases; and
+stable repository/head IDs with execution-only local paths and pinned immutable
+objects. Profile and optional pricing remain invocation-wide CLI options, so they
+cannot vary by contributor, repository, or head. A representative public-safe
+shape is:
+
+```json
+{
+  "schemaVersion": "1.0.0",
+  "selection": {
+    "sinceInclusive": "2026-08-03T00:00:00-04:00",
+    "untilExclusive": "2026-08-10T00:00:00-04:00",
+    "timeZone": "America/Toronto",
+    "dateField": "author",
+    "mergePolicy": "exclude",
+    "coauthorPolicy": "include",
+    "intervalSemantics": "since-inclusive-until-exclusive"
+  },
+  "contributors": [
+    {
+      "id": "contributor-a",
+      "aliases": ["Contributor A", "contributor-a@example.invalid"]
+    }
+  ],
+  "repositories": [
+    {
+      "id": "repository-a",
+      "repositoryPath": "repositories/repository-a",
+      "heads": [
+        {
+          "id": "default",
+          "objectId": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        }
+      ]
+    }
+  ]
+}
+```
+
+Public IDs use only letters, digits, `.`, `_`, and `-`, start with a letter or
+digit, and are limited to 128 characters. The v1 execution budgets are 32
+repositories, 32 heads per repository and 128 heads overall, 64 contributors, 16
+aliases per contributor and 128 aliases overall, and 128 selected commits. An
+immutable head object may appear only once within one repository; equal object-ID
+text in different repositories remains repository-scoped.
+
+Semantic validation rejects duplicate IDs, aliases assigned to several
+contributors, empty alias/head sets, repeated repository-local head objects,
+non-canonical text, invalid object IDs, unsupported versions, reversed intervals,
+and over-budget input. The execution adapter must additionally resolve paths
+relative to the manifest, enforce a one-to-one repository-ID/root mapping, verify
+every pinned commit locally, and reject missing or unsafe inputs before analysis.
+It must not fetch, execute target code, or write into a target repository.
+
+The canonical semantic manifest digest sorts repositories, heads, contributors,
+and aliases before hashing, so equivalent array reorderings retain one identity.
+It binds identity aliases, stable IDs, immutable objects, and shared policy while
+deliberately excluding local repository paths, so relocating the same object
+databases does not change report identity. Only the digest crosses into the
+report. A manifest-based report selection keeps the digest, shared policy,
+contributor IDs, repository IDs, head IDs, and immutable object IDs. Per-item
+attribution can retain contributor match kind and reachable head IDs; raw aliases
+and local paths are excluded. The existing direct single-repository `--author`
+report remains backward compatible and continues to retain its explicitly
+supplied aliases.
+
 Author-period selection is bounded to 10,000 Git-prefiltered identity candidates
 and 128 selected rows. Git may traverse a larger reachable graph without returning
 its unrelated identity records to EffortHours. The exact selector then validates
@@ -89,6 +168,7 @@ reconstructed work hours.
 
 The v1 schema catalog includes:
 
+- `change-author-period-manifest`;
 - `change-portfolio-manifest`; and
 - `change-portfolio-report`.
 
@@ -96,6 +176,10 @@ Contracts keep selection, immutable base contexts, source Change identity,
 observed patch/evidence digests, isolated estimates, normalized categories,
 attribution metadata, signed adjustments, exact allocations, diagnostics,
 verification, and pricing separate.
+
+The portfolio report schema adds optional manifest-safe author-period selection,
+contributor-match, and head-reachability members. Existing PR and direct
+author-period documents omit them and retain their prior serialization.
 
 JSON and Markdown output omit source excerpts and local repository paths. Markdown
 shows every selected row, repository group, adjustment, uncertainty, and safety

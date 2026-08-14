@@ -74,9 +74,78 @@
         "schemaVersion": { "const": "1.0.0" },
         "kind": { "enum": ["pull-requests", "author-period"] },
         "manifestBased": { "type": "boolean" },
-        "authorPeriod": { "$ref": "#/$defs/authorPeriod" }
+        "authorPeriod": { "$ref": "#/$defs/authorPeriod" },
+        "authorPeriodManifest": { "$ref": "#/$defs/authorPeriodManifest" }
       },
       "additionalProperties": false
+    },
+    "authorPeriodManifest": {
+      "type": "object",
+      "required": [
+        "manifestDigest",
+        "sinceInclusive",
+        "untilExclusive",
+        "timeZone",
+        "dateField",
+        "mergePolicy",
+        "coauthorPolicy",
+        "contributorIds",
+        "repositories",
+        "intervalSemantics"
+      ],
+      "properties": {
+        "manifestDigest": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+        "sinceInclusive": { "type": "string", "format": "date-time" },
+        "untilExclusive": { "type": "string", "format": "date-time" },
+        "timeZone": { "type": "string", "minLength": 1, "maxLength": 256 },
+        "dateField": { "enum": ["author", "committer"] },
+        "mergePolicy": { "enum": ["exclude", "first-parent"] },
+        "coauthorPolicy": { "enum": ["include", "exclude"] },
+        "contributorIds": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 64,
+          "items": { "$ref": "#/$defs/publicId" },
+          "uniqueItems": true
+        },
+        "repositories": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 32,
+          "items": { "$ref": "#/$defs/authorPeriodManifestRepository" }
+        },
+        "intervalSemantics": { "const": "since-inclusive-until-exclusive" }
+      },
+      "additionalProperties": false
+    },
+    "authorPeriodManifestRepository": {
+      "type": "object",
+      "required": ["id", "heads"],
+      "properties": {
+        "id": { "$ref": "#/$defs/publicId" },
+        "heads": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 32,
+          "items": { "$ref": "#/$defs/authorPeriodManifestHead" }
+        }
+      },
+      "additionalProperties": false
+    },
+    "authorPeriodManifestHead": {
+      "type": "object",
+      "required": ["id", "objectId"],
+      "properties": {
+        "id": { "$ref": "#/$defs/publicId" },
+        "objectId": { "type": "string", "pattern": "^[0-9a-f]{40}([0-9a-f]{24})?$" }
+      },
+      "additionalProperties": false
+    },
+    "publicId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
     },
     "authorPeriod": {
       "type": "object",
@@ -120,11 +189,33 @@
         "selectedTimestamp": { "type": "string", "format": "date-time" },
         "mergeCommit": { "type": "boolean" },
         "parentCount": { "type": "integer", "minimum": 0 },
+        "contributorMatches": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 64,
+          "items": { "$ref": "#/$defs/contributorMatch" }
+        },
+        "headIds": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 32,
+          "items": { "$ref": "#/$defs/publicId" },
+          "uniqueItems": true
+        },
         "ambiguityReasons": {
           "type": "array",
           "items": { "type": "string", "minLength": 1 },
           "uniqueItems": true
         }
+      },
+      "additionalProperties": false
+    },
+    "contributorMatch": {
+      "type": "object",
+      "required": ["contributorId", "kind"],
+      "properties": {
+        "contributorId": { "$ref": "#/$defs/publicId" },
+        "kind": { "enum": ["direct-author", "coauthor"] }
       },
       "additionalProperties": false
     },

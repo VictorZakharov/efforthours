@@ -211,7 +211,7 @@ public static partial class ContractValidation
 
         if (selection.Kind == ChangePortfolioSelectionKind.PullRequests)
         {
-            if (selection.AuthorPeriod is not null)
+            if (selection.AuthorPeriod is not null || selection.AuthorPeriodManifest is not null)
             {
                 errors.Add("A pull-request portfolio cannot contain author-period selection metadata.");
             }
@@ -221,7 +221,24 @@ public static partial class ContractValidation
 
         if (selection.ManifestBased)
         {
-            errors.Add("An author-period portfolio cannot be manifest-based.");
+            if (selection.AuthorPeriod is not null)
+            {
+                errors.Add("A manifest-based author-period portfolio cannot contain execution alias metadata.");
+            }
+
+            if (selection.AuthorPeriodManifest is null)
+            {
+                errors.Add("A manifest-based author-period portfolio requires privacy-safe manifest metadata.");
+                return;
+            }
+
+            ValidateAuthorPeriodManifestReportSelection(selection.AuthorPeriodManifest, errors);
+            return;
+        }
+
+        if (selection.AuthorPeriodManifest is not null)
+        {
+            errors.Add("A direct author-period portfolio cannot contain manifest selection metadata.");
         }
 
         if (selection.AuthorPeriod is null)
@@ -282,11 +299,19 @@ public static partial class ContractValidation
         {
             if (item.Selection.Kind != ChangeSelectionKind.PullRequest ||
                 attribution.Kind != ChangePortfolioAttributionKind.PullRequest ||
-                attribution.SelectedTimestamp is not null)
+                attribution.SelectedTimestamp is not null ||
+                attribution.ContributorMatches is not null ||
+                attribution.HeadIds is not null)
             {
                 errors.Add($"Portfolio item '{item.Id}' does not match pull-request attribution semantics.");
             }
 
+            return;
+        }
+
+        if (selection.ManifestBased)
+        {
+            ValidateManifestAttribution(selection, item, errors);
             return;
         }
 
@@ -296,7 +321,9 @@ public static partial class ContractValidation
                 ChangePortfolioAttributionKind.Coauthor) ||
             attribution.SelectedTimestamp is null || author is null ||
             attribution.SelectedTimestamp < author.SinceInclusive ||
-            attribution.SelectedTimestamp >= author.UntilExclusive)
+            attribution.SelectedTimestamp >= author.UntilExclusive ||
+            attribution.ContributorMatches is not null ||
+            attribution.HeadIds is not null)
         {
             errors.Add($"Portfolio item '{item.Id}' does not match author-period attribution semantics.");
         }

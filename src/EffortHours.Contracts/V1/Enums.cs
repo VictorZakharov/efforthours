@@ -112,6 +112,12 @@ public enum ChangePortfolioAttributionKind
     Coauthor,
 }
 
+public enum ChangePortfolioContributorMatchKind
+{
+    DirectAuthor,
+    Coauthor,
+}
+
 public enum ChangePortfolioOrderPolicy
 {
     OrderIndependent,
