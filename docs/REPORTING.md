@@ -117,6 +117,13 @@ reopening the target repository.
 
 ## Output and compatibility rules
 
+Canonical machine-readable documents use `canonical-json-document/1.0.0`.
+Indented serialization uses LF regardless of the host operating system. JSON
+written by the CLI to stdout or an explicit output path ends with exactly one
+LF; files use UTF-8 without a byte-order mark. This boundary changes only
+insignificant transport whitespace: schemas, property order, values, IDs,
+reconciliation, and renderer projections remain unchanged.
+
 - Machine-readable output goes to stdout unless `--output` is explicit.
 - Diagnostics go to stderr.
 - Output ordering and IDs are deterministic for identical inputs and versions.

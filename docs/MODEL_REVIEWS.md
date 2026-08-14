@@ -33,6 +33,31 @@ Because EffortHours's own anchor informed the seed-model and calibration design,
 a development diagnostic rather than an eligible held-out test record unless a
 future independent snapshot and review policy explicitly establishes otherwise.
 
+## 2026-08-14: canonical repository JSON implementation boundary
+
+Status: **forward implementation correction; retired v0.2 result unchanged;
+validation and test remain unopened; no candidate freeze or admission**
+
+`canonical-json-document/1.0.0` removes host-operating-system line endings from
+canonical repository JSON. Indented contract serialization normalizes to LF;
+CLI JSON written to stdout or an explicit file has exactly one final LF; files
+remain UTF-8 without a byte-order mark. Direct estimates, saved estimates,
+saved-report reprojection, explanations, scanner evidence, and repository-
+candidate projection share that boundary. Schemas, property order, values, IDs,
+reconciliation, estimator behavior, and human-readable Markdown are unchanged.
+
+Process-level regressions run repeated fresh seed and candidate projections for
+the deterministic small, medium, and large measurement shapes. Their six raw
+SHA-256 values are pinned in the three-operating-system end-to-end test matrix,
+along with exact equality among direct stdout, explicit saved files, and full
+saved-report reprojection.
+
+This correction does not alter the recorded 0.9.0 bytes, convert its failed gate
+to a pass, or revive `logical-capability/0.2.0`. Any successor must retain the
+new canonical-document identity, pin a new implementation commit, pass all
+development and measured operational gates under its own identity, and keep
+validation/test unopened until the frozen policy authorizes them.
+
 ## 2026-08-13: logical-capability v0.2 measured operational rejection
 
 Status: **candidate retired after public-mutation and raw cross-platform

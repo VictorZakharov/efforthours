@@ -47,7 +47,7 @@ internal static class LogicalCandidateProjectionRunner
             await standardError.WriteLineAsync(result.Diagnostic).ConfigureAwait(false);
         }
 
-        await standardOutput.WriteLineAsync(ContractJson.Serialize(result.Estimate))
+        await standardOutput.WriteAsync(ContractJson.SerializeDocument(result.Estimate))
             .ConfigureAwait(false);
     }
 

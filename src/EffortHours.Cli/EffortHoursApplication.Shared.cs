@@ -20,11 +20,15 @@ public sealed partial class EffortHoursApplication
         string artifactName,
         TextWriter standardOutput,
         TextWriter standardError,
-        CancellationToken cancellationToken)
+        CancellationToken cancellationToken,
+        bool canonicalJson = true)
     {
+        string document = canonicalJson
+            ? ContractJson.ToCanonicalDocument(content)
+            : content.TrimEnd() + Environment.NewLine;
         if (outputPath is null)
         {
-            await standardOutput.WriteLineAsync(content.TrimEnd()).ConfigureAwait(false);
+            await standardOutput.WriteAsync(document).ConfigureAwait(false);
             return CliExitCodes.Success;
         }
 
@@ -39,7 +43,7 @@ public sealed partial class EffortHoursApplication
 
             await File.WriteAllTextAsync(
                 fullOutputPath,
-                content.TrimEnd() + Environment.NewLine,
+                document,
                 new UTF8Encoding(encoderShouldEmitUTF8Identifier: false),
                 cancellationToken).ConfigureAwait(false);
         }

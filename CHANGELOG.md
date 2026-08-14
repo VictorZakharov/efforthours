@@ -28,6 +28,10 @@ may still change public contracts with explicit documentation.
 
 ### Changed
 
+- Defined `canonical-json-document/1.0.0`: canonical JSON now uses LF for
+  indentation and its single document terminator on every operating system,
+  while explicit files remain UTF-8 without a byte-order mark. Schemas, values,
+  IDs, estimate semantics, and the retired v0.2 decision are unchanged.
 - Recorded `efforthours-public-readiness/0.6.0`: exact candidate
   `logical-capability/0.1.0` passes four development operational gates but fails
   the material specification-comprehension category's frozen absolute-bias limit

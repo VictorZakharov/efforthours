@@ -37,7 +37,7 @@ internal static class LogicalCandidateModelFitter
         Directory.CreateDirectory(Path.GetDirectoryName(options.ModelPath)!);
         await File.WriteAllTextAsync(
             options.ModelPath,
-            ContractJson.Serialize(model) + Environment.NewLine,
+            ContractJson.SerializeDocument(model),
             cancellationToken).ConfigureAwait(false);
     }
 

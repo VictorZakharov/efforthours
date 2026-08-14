@@ -109,7 +109,7 @@ internal static class DevelopmentReviewPlanBuilder
         Directory.CreateDirectory(Path.GetDirectoryName(options.ReviewPlanPath)!);
         await File.WriteAllTextAsync(
             options.ReviewPlanPath,
-            json + Environment.NewLine,
+            ContractJson.ToCanonicalDocument(json),
             cancellationToken).ConfigureAwait(false);
     }
 

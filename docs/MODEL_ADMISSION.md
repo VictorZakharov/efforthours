@@ -254,6 +254,13 @@ new policy based on separately governed empirical evidence.
 
 ## Qualitative, safety, and explanation gates
 
+For the cross-platform byte gate, canonical structured output uses
+`canonical-json-document/1.0.0`: UTF-8 without a byte-order mark, LF-only
+indentation, and exactly one final LF. This is transport whitespace only; it
+does not change schemas, property order, values, stable IDs, or reconciliation.
+Any future candidate measured with this boundary must pin a new implementation
+commit rather than reuse the retired `logical-capability/0.2.0` identity.
+
 A candidate must also:
 
 - pass every versioned public mutation assertion applicable to its scope without
@@ -383,6 +390,11 @@ determinism: all repeated outputs are stable within an OS, while Windows CRLF
 bytes differ from Linux/macOS LF bytes; LF-normalized digests match. The policy
 does not waive either failure. Candidate v0.2 is retired, no manifest or selection
 rule is frozen, and no validation or test access is authorized.
+
+Forward implementation boundary `canonical-json-document/1.0.0` removes the
+operating-system newline difference for future candidates. It does not alter the
+recorded `0.9.0` bytes, convert that gate to a pass, or change any candidate,
+manifest, validation, or test decision.
 
 Validation labels are not authored and must remain unavailable until a finite
 candidate manifest is frozen from development evidence. Test labels are not

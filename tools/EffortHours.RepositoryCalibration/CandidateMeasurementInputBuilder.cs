@@ -37,7 +37,7 @@ internal static class CandidateMeasurementInputBuilder
         {
             cancellationToken.ThrowIfCancellationRequested();
             RepositoryEvidence evidence = Build(template, templateDigest, id, copies);
-            string json = ContractJson.Serialize(evidence) + Environment.NewLine;
+            string json = ContractJson.SerializeDocument(evidence);
             string path = Path.Combine(inputDirectory, $"{id}.repository-evidence.json");
             await File.WriteAllTextAsync(path, json, cancellationToken).ConfigureAwait(false);
             inputs.Add(new CandidateMeasurementInput(

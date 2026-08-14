@@ -85,7 +85,7 @@ internal static class CandidateMeasurementAggregator
                 "No cross-platform scanner latency or memory threshold is frozen; the scanner gate checks its applicable process, offline, and unchanged-target boundaries.",
             ],
         };
-        string measurementJson = ContractJson.Serialize(measurement) + Environment.NewLine;
+        string measurementJson = ContractJson.SerializeDocument(measurement);
         Directory.CreateDirectory(Path.GetDirectoryName(options.MeasurementReportPath)!);
         await File.WriteAllTextAsync(
             options.MeasurementReportPath,
@@ -136,7 +136,7 @@ internal static class CandidateMeasurementAggregator
         Directory.CreateDirectory(Path.GetDirectoryName(options.PreflightReportPath)!);
         await File.WriteAllTextAsync(
             options.PreflightReportPath,
-            ContractJson.Serialize(preflight) + Environment.NewLine,
+            ContractJson.SerializeDocument(preflight),
             cancellationToken).ConfigureAwait(false);
         return passed;
     }
