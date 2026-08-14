@@ -118,20 +118,25 @@ internal sealed class ChangePortfolioCommand
         ChangePortfolioCommandOptions options,
         CancellationToken cancellationToken)
     {
-        List<ChangePortfolioCandidate> candidates = [];
-        Dictionary<int, int> occurrences = [];
+        List<GitChangePlan> plans = [];
         foreach (string input in options.PullRequests)
         {
-            GitChangePlan plan = await _planPullRequest(
+            plans.Add(await _planPullRequest(
                 options.RepositoryPath!,
                 input,
                 options.GitHubRepository,
-                cancellationToken).ConfigureAwait(false);
-            ChangeEstimateReport report = await _changeEstimator.EstimateAsync(
-                plan,
+                cancellationToken).ConfigureAwait(false));
+        }
+
+        IReadOnlyList<ChangeEstimateReport> reports =
+            await _changeEstimator.EstimatePortfolioCandidatesAsync(
+                plans,
                 options.Profile,
-                rateCard: null,
                 cancellationToken).ConfigureAwait(false);
+        List<ChangePortfolioCandidate> candidates = [];
+        Dictionary<int, int> occurrences = [];
+        foreach (ChangeEstimateReport report in reports)
+        {
             int number = report.Selection.PullRequest!.Number;
             int occurrence = occurrences.GetValueOrDefault(number) + 1;
             occurrences[number] = occurrence;
@@ -157,7 +162,7 @@ internal sealed class ChangePortfolioCommand
         IReadOnlyList<ResolvedChangePortfolioManifestItem> manifest =
             await _loadManifest(options.ManifestPath!, cancellationToken)
                 .ConfigureAwait(false);
-        List<ChangePortfolioCandidate> candidates = [];
+        List<(ChangePortfolioManifestItem Item, GitChangePlan Plan)> planned = [];
         ChangePortfolioRepositoryMap repositories = new();
         foreach (ResolvedChangePortfolioManifestItem resolved in manifest)
         {
@@ -169,11 +174,19 @@ internal sealed class ChangePortfolioCommand
                 item.GitHubRepository,
                 cancellationToken).ConfigureAwait(false);
             repositories.Add(item.RepositoryId, plan.RepositoryPath);
-            ChangeEstimateReport report = await _changeEstimator.EstimateAsync(
-                plan,
+            planned.Add((item, plan));
+        }
+
+        IReadOnlyList<ChangeEstimateReport> reports =
+            await _changeEstimator.EstimatePortfolioCandidatesAsync(
+                [.. planned.Select(entry => entry.Plan)],
                 options.Profile,
-                rateCard: null,
                 cancellationToken).ConfigureAwait(false);
+        List<ChangePortfolioCandidate> candidates = [];
+        for (int index = 0; index < planned.Count; index++)
+        {
+            ChangePortfolioManifestItem item = planned[index].Item;
+            ChangeEstimateReport report = reports[index];
             candidates.Add(new ChangePortfolioCandidate
             {
                 RepositoryId = item.RepositoryId,
@@ -218,19 +231,20 @@ internal sealed class ChangePortfolioCommand
                 HeadRevision = options.HeadRevision,
             },
             cancellationToken).ConfigureAwait(false);
-        List<ChangePortfolioCandidate> candidates = [];
-        foreach (GitAuthorPeriodPortfolioItem item in plan.Items)
-        {
-            ChangeEstimateReport report = await _changeEstimator.EstimateAsync(
-                item.Plan,
+        IReadOnlyList<ChangeEstimateReport> reports =
+            await _changeEstimator.EstimatePortfolioCandidatesAsync(
+                [.. plan.Items.Select(item => item.Plan)],
                 options.Profile,
-                rateCard: null,
                 cancellationToken).ConfigureAwait(false);
+        List<ChangePortfolioCandidate> candidates = [];
+        for (int index = 0; index < plan.Items.Count; index++)
+        {
+            GitAuthorPeriodPortfolioItem item = plan.Items[index];
             candidates.Add(new ChangePortfolioCandidate
             {
                 RepositoryId = plan.RepositoryId,
                 SelectorId = item.SelectorId,
-                Report = report,
+                Report = reports[index],
                 Attribution = item.Attribution,
             });
         }

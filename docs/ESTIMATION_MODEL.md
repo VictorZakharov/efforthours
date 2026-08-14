@@ -613,14 +613,16 @@ allocation keeps every component nonnegative while reconciling to the normalized
 total.
 
 The current composite source identity is
-`change-seed/0.18.0+seed-rules/0.4.0`; every frozen Change report retains its
+`change-seed/0.18.1+seed-rules/0.4.0`; every frozen Change report retains its
 original identity and numbers. `change-model-admission/0.2.0` admitted version
 0.6.0 only for experimental 4-to-32-hour Stage A changes after model-authored
-logical agreement and performance gates. Versions 0.7.0 through 0.18.0 preserve
+logical agreement and performance gates. Versions 0.7.0 through 0.18.1 preserve
 those admitted rules but are not separately admitted, and SQL, Python, Go, Java,
 Kotlin, Shell, PowerShell, Terraform, HCL, PHP, Composer, Rust, Cargo, Docker,
 Compose, Jupyter, C, or C++ have no
 reviewed Change labels.
+Version 0.18.1 retains the 0.18.0 priors while adding the bounded changed-scope
+projection and immutable Git-inventory reuse for large snapshots.
 Larger size bands and empirical production accuracy remain separate decisions.
 
 ## 11. Uncertainty

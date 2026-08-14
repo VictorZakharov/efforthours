@@ -1,7 +1,9 @@
 using System.Text.Json;
 using EffortHours.Change;
 using EffortHours.Cli;
+using EffortHours.Contracts;
 using EffortHours.Contracts.V1;
+using EffortHours.Estimation;
 
 namespace EffortHours.Tests;
 
@@ -208,6 +210,48 @@ public sealed class ChangePortfolioCommandTests
         Assert.Contains("same local Git repository", stderr.ToString(), StringComparison.Ordinal);
     }
 
+    [Fact]
+    public async Task PortfolioCandidateBatchReusesAdjacentSnapshotsWithoutChangingReports()
+    {
+        SnapshotState initial = State(("Demo.csproj", ProjectFile));
+        SnapshotState first = State(
+            ("Demo.csproj", ProjectFile),
+            ("Alpha.cs", "namespace Demo; public sealed class Alpha { }\n"));
+        SnapshotState second = State(
+            ("Demo.csproj", ProjectFile),
+            ("Alpha.cs", "namespace Demo; public sealed class Alpha { }\n"),
+            ("Beta.cs", "namespace Demo; public sealed class Beta { }\n"));
+        GitChangePlan[] plans =
+        [
+            CommitPlan("first", initial, first),
+            CommitPlan("second", first, second),
+        ];
+        CountingEstimator repositoryEstimator = new();
+        ChangeEstimator estimator = new(repositoryEstimator);
+
+        IReadOnlyList<ChangeEstimateReport> actual =
+            await estimator.EstimatePortfolioCandidatesAsync(
+                plans,
+                EstimationProfile.Implementation);
+        ChangeEstimateReport[] expected =
+        [
+            await new ChangeEstimator().EstimateAsync(
+                plans[0],
+                EstimationProfile.Implementation),
+            await new ChangeEstimator().EstimateAsync(
+                plans[1],
+                EstimationProfile.Implementation),
+        ];
+
+        Assert.Equal(3, repositoryEstimator.InvocationCount);
+        Assert.Equal(
+            ContractJson.Serialize(expected[0]),
+            ContractJson.Serialize(actual[0]));
+        Assert.Equal(
+            ContractJson.Serialize(expected[1]),
+            ContractJson.Serialize(actual[1]));
+    }
+
     private static GitChangePlan Plan(int number, SnapshotState before, SnapshotState after) => new()
     {
         RepositoryPath = "virtual-repository",
@@ -225,6 +269,23 @@ public sealed class ChangePortfolioCommandTests
         OpenBaseAsync = before.OpenAsync,
         OpenHeadAsync = after.OpenAsync,
     };
+
+    private static GitChangePlan CommitPlan(
+        string selector,
+        SnapshotState before,
+        SnapshotState after) => new()
+        {
+            RepositoryPath = "virtual-repository",
+            Selection = new ChangeSelection
+            {
+                Kind = ChangeSelectionKind.Commit,
+                Base = Reference("base", before.ObjectId),
+                Head = Reference(selector, after.ObjectId),
+                Commit = selector,
+            },
+            OpenBaseAsync = before.OpenAsync,
+            OpenHeadAsync = after.OpenAsync,
+        };
 
     private static ResolvedChangePortfolioManifestItem Resolved(
         string id,
@@ -258,4 +319,20 @@ public sealed class ChangePortfolioCommandTests
     private sealed record SnapshotState(
         string ObjectId,
         Func<CancellationToken, Task<IChangeSnapshot>> OpenAsync);
+
+    private sealed class CountingEstimator : IEstimator
+    {
+        private readonly SeedEstimator _inner = new();
+
+        public int InvocationCount { get; private set; }
+
+        public EstimateReport Estimate(
+            RepositoryEvidence evidence,
+            EstimationProfile profile,
+            RateCard? rateCard = null)
+        {
+            InvocationCount++;
+            return _inner.Estimate(evidence, profile, rateCard);
+        }
+    }
 }

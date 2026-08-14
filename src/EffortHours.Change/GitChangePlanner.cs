@@ -25,7 +25,7 @@ public sealed record GitChangePlannerOptions
     public int MaximumRangeComponents { get; init; } = DefaultMaximumRangeComponents;
 }
 
-public sealed class GitChangePlanner
+public sealed partial class GitChangePlanner
 {
     private readonly GitClient _git;
     private readonly IPullRequestResolver _pullRequests;

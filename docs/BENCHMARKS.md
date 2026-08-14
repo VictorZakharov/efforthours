@@ -787,3 +787,58 @@ code, install dependencies, or access the network. Process-level smoke tests cov
 both shapes, threshold output, the 256-component omission path at a smaller test
 limit, unique-snapshot counts, and exact read-only digests. Ordinary unit tests
 remain memory-only.
+
+## Change author-period nested-monorepository v1.1.0 checkpoint
+
+Measured on August 14, 2026 with benchmark protocol `change/1.1.0`, .NET runtime
+`10.0.7`, Windows `10.0.26200` x64, 24 visible logical processors, and Change
+estimator `change-seed/0.18.1+seed-rules/0.4.0`.
+
+The `author-period` fixture contains 29,225 nested C# source files, one project
+file, eight synthetic fan-out files, an eight-branch octopus merge, and eight
+consecutive qualifying non-merge commits by the selected identity. Each selected
+commit modifies the same maintained path, so the fixture exercises exact
+chronological snapshot reuse while retaining a merge-heavy reachable graph. The
+head contains 29,234 files and 29,328 virtual directories.
+
+```text
+dotnet benchmarks/EffortHours.ChangeBenchmarks/bin/Release/net10.0/EffortHours.ChangeBenchmarks.dll
+  --author-period --files 29225 --lines-per-file 8 --commits 8
+  --max-seconds 30 --max-peak-mib 256
+```
+
+One fresh Release process produced:
+
+| Selected changes | Repository-estimator calls | Analysis seconds | Sampled peak MiB | Cumulative allocation MiB | Result |
+| ---: | ---: | ---: | ---: | ---: | --- |
+| 8 | 9 | 12.681 | 130.40 | 301.68 | report completed; thresholds passed |
+
+Fixture creation and complete before/after hashing are outside the 12.681-second
+timer. They dominate total harness wall time because the benchmark deliberately
+creates and deletes tens of thousands of physical directories and loose Git
+objects. The measured interval includes author selection, immutable inventory
+loading/derivation, changed-scope static analysis, Change estimation, and portfolio
+reconciliation. The worktree and complete `.git` digest were unchanged; no target
+code, dependency installation, or network access occurred.
+
+### Before/after interpretation
+
+The former virtual-filesystem traversal tested every known directory and file for
+every visited directory. On this exact head shape, that is an estimated
+`29,328 * (29,328 + 29,234) = 1,717,506,336` entry comparisons per snapshot, or
+`15,457,557,024` across nine unique snapshots. This is a deterministic operation-
+count estimate from the removed algorithm, not an hours-long wall-time rerun.
+
+An anonymized field report on a different 29,225-file monorepository supplied the
+external lower-bound context: three isolated author-period commands produced no
+report after approximately ten minutes, and each process reached 1.10-1.24 GiB
+working set. The synthetic after result is at least 47 times shorter than that
+reported time floor and roughly 8-10 times smaller than the reported per-process
+memory range. Because the repositories, processor visibility, and concurrency
+differ, these ratios establish order of magnitude only; they are not a controlled
+same-input speedup claim.
+
+The local regression ceilings for this exact fixture are 30 seconds and 256 MiB.
+They are not universal or cross-platform guarantees. Short-lived Git child memory
+is not included in the sampled process peak, and concurrent independent processes
+against one object database remain a separate measurement boundary.

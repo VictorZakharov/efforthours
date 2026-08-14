@@ -7,6 +7,7 @@ internal enum ChangeBenchmarkMode
 {
     LargeTree,
     LongRange,
+    AuthorPeriod,
 }
 
 internal sealed record ChangeBenchmarkOptions(
@@ -20,12 +21,18 @@ internal sealed record ChangeBenchmarkOptions(
     decimal? MaximumPeakMib)
 {
     public const string Usage =
-        "Usage: change-benchmark [--tree|--range] [--files <count>] " +
+        "Usage: change-benchmark [--tree|--range|--author-period] [--files <count>] " +
         "[--lines-per-file <count>] [--commits <count>] " +
         "[--maximum-range-components <count>] [--max-seconds <value>] " +
         "[--max-peak-mib <value>] [--keep]";
 
-    public string Name => Mode == ChangeBenchmarkMode.LargeTree ? "large-tree" : "long-range";
+    public string Name => Mode switch
+    {
+        ChangeBenchmarkMode.LargeTree => "large-tree",
+        ChangeBenchmarkMode.LongRange => "long-range",
+        ChangeBenchmarkMode.AuthorPeriod => "author-period",
+        _ => throw new InvalidOperationException($"Unsupported benchmark mode '{Mode}'."),
+    };
 
     public static ChangeBenchmarkOptions Parse(string[] arguments)
     {
@@ -47,6 +54,9 @@ internal sealed record ChangeBenchmarkOptions(
                     break;
                 case "--range":
                     mode = SelectMode(mode, ChangeBenchmarkMode.LongRange);
+                    break;
+                case "--author-period":
+                    mode = SelectMode(mode, ChangeBenchmarkMode.AuthorPeriod);
                     break;
                 case "--files":
                     files = ReadPositiveInteger(arguments, ref index, "--files");
@@ -78,10 +88,22 @@ internal sealed record ChangeBenchmarkOptions(
         }
 
         ChangeBenchmarkMode selected = mode ?? ChangeBenchmarkMode.LargeTree;
-        int selectedCommits = commits ?? (selected == ChangeBenchmarkMode.LargeTree ? 1 : 128);
+        int selectedCommits = commits ?? selected switch
+        {
+            ChangeBenchmarkMode.LargeTree => 1,
+            ChangeBenchmarkMode.LongRange => 128,
+            ChangeBenchmarkMode.AuthorPeriod => 8,
+            _ => throw new InvalidOperationException($"Unsupported benchmark mode '{selected}'."),
+        };
         if (selected == ChangeBenchmarkMode.LargeTree && selectedCommits != 1)
         {
             throw new ArgumentException("Large-tree mode requires exactly one final change commit.");
+        }
+
+        if (selected == ChangeBenchmarkMode.AuthorPeriod && selectedCommits > 9)
+        {
+            throw new ArgumentException(
+                "Author-period mode permits at most nine qualifying commits so the fixture retains a narrow selection.");
         }
 
         if (maximumRangeComponents > GitChangePlannerOptions.MaximumSupportedRangeComponents)
@@ -93,8 +115,20 @@ internal sealed record ChangeBenchmarkOptions(
 
         return new ChangeBenchmarkOptions(
             selected,
-            files ?? (selected == ChangeBenchmarkMode.LargeTree ? 10_000 : 32),
-            linesPerFile ?? (selected == ChangeBenchmarkMode.LargeTree ? 100 : 20),
+            files ?? selected switch
+            {
+                ChangeBenchmarkMode.LargeTree => 10_000,
+                ChangeBenchmarkMode.LongRange => 32,
+                ChangeBenchmarkMode.AuthorPeriod => 29_225,
+                _ => throw new InvalidOperationException($"Unsupported benchmark mode '{selected}'."),
+            },
+            linesPerFile ?? selected switch
+            {
+                ChangeBenchmarkMode.LargeTree => 100,
+                ChangeBenchmarkMode.LongRange => 20,
+                ChangeBenchmarkMode.AuthorPeriod => 8,
+                _ => throw new InvalidOperationException($"Unsupported benchmark mode '{selected}'."),
+            },
             selectedCommits,
             maximumRangeComponents,
             keep,
@@ -108,7 +142,8 @@ internal sealed record ChangeBenchmarkOptions(
     {
         if (current is not null)
         {
-            throw new ArgumentException("Options '--tree' and '--range' are mutually exclusive.");
+            throw new ArgumentException(
+                "Options '--tree', '--range', and '--author-period' are mutually exclusive.");
         }
 
         return selected;

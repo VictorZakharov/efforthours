@@ -28,6 +28,12 @@ may still change public contracts with explicit documentation.
 
 ### Changed
 
+- Advanced the Change estimator identity to `change-seed/0.18.1` and bounded
+  large Git author-period portfolios with identity-first candidate selection,
+  indexed and incrementally reused snapshot inventories, adjacent-snapshot
+  evidence reuse, and changed-scope static analysis above 1,024 files. The
+  optimized path preserves full immutable inventories and final-delta semantics;
+  it changes no Change priors or admission decision.
 - Recorded and regression-locked narrow `not_used` dispositions for five
   advisory-affected dependency declarations in immutable, non-executed synthetic
   calibration fixtures. No fixture, source digest, estimate, mutation report,

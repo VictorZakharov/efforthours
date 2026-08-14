@@ -6,17 +6,25 @@ namespace EffortHours.ChangeBenchmarks;
 
 internal sealed class GitBenchmarkRepository : IDisposable
 {
+    public const string SelectedAuthorName = "Selected Benchmark Author";
+    public const string SelectedAuthorEmail = "selected-author@example.invalid";
+
+    private const int AuthorPeriodFanoutBranches = 8;
     private readonly bool _keep;
 
     private GitBenchmarkRepository(
         string rootPath,
         string baseObjectId,
         string headObjectId,
+        int headFileCount,
+        int headDirectoryCount,
         bool keep)
     {
         RootPath = rootPath;
         BaseObjectId = baseObjectId;
         HeadObjectId = headObjectId;
+        HeadFileCount = headFileCount;
+        HeadDirectoryCount = headDirectoryCount;
         _keep = keep;
     }
 
@@ -25,6 +33,13 @@ internal sealed class GitBenchmarkRepository : IDisposable
     public string BaseObjectId { get; }
 
     public string HeadObjectId { get; }
+
+    public int HeadFileCount { get; }
+
+    public int HeadDirectoryCount { get; }
+
+    public long EstimatedLegacyEntryComparisonsPerSnapshot =>
+        (long)HeadDirectoryCount * (HeadDirectoryCount + HeadFileCount);
 
     public static async Task<GitBenchmarkRepository> CreateAsync(
         ChangeBenchmarkOptions options,
@@ -59,7 +74,10 @@ internal sealed class GitBenchmarkRepository : IDisposable
             for (int index = 0; index < options.Files; index++)
             {
                 cancellationToken.ThrowIfCancellationRequested();
-                WriteText(root, $"src/Type{index:D6}.cs", SourceFile(index, options.LinesPerFile));
+                WriteText(
+                    root,
+                    SourcePath(index, options.Mode == ChangeBenchmarkMode.AuthorPeriod),
+                    SourceFile(index, options.LinesPerFile));
             }
 
             string baseObjectId = await CommitAsync(root, "base tree", cancellationToken)
@@ -74,7 +92,7 @@ internal sealed class GitBenchmarkRepository : IDisposable
                 headObjectId = await CommitAsync(root, "final tree delta", cancellationToken)
                     .ConfigureAwait(false);
             }
-            else
+            else if (options.Mode == ChangeBenchmarkMode.LongRange)
             {
                 headObjectId = baseObjectId;
                 for (int index = 1; index <= options.Commits; index++)
@@ -90,8 +108,74 @@ internal sealed class GitBenchmarkRepository : IDisposable
                         cancellationToken).ConfigureAwait(false);
                 }
             }
+            else
+            {
+                List<string> branches = [];
+                for (int index = 0; index < AuthorPeriodFanoutBranches; index++)
+                {
+                    cancellationToken.ThrowIfCancellationRequested();
+                    string branch = $"fanout-{index:D2}";
+                    branches.Add(branch);
+                    await GitAsync(
+                        root,
+                        cancellationToken,
+                        "switch",
+                        "--quiet",
+                        "--create",
+                        branch,
+                        baseObjectId).ConfigureAwait(false);
+                    WriteText(
+                        root,
+                        $"fanout/branch-{index:D2}.txt",
+                        $"synthetic merge-fanout branch {index:D2}\n");
+                    _ = await CommitAsync(root, $"fanout branch {index:D2}", cancellationToken)
+                        .ConfigureAwait(false);
+                }
 
-            return new GitBenchmarkRepository(root, baseObjectId, headObjectId, options.KeepRepository);
+                await GitAsync(root, cancellationToken, "switch", "--quiet", "main")
+                    .ConfigureAwait(false);
+                await GitAsync(
+                    root,
+                    cancellationToken,
+                    [
+                        "merge",
+                        "--quiet",
+                        "--no-ff",
+                        "-m",
+                        "merge synthetic fanout",
+                        .. branches,
+                    ]).ConfigureAwait(false);
+                headObjectId = await GitAsync(root, cancellationToken, "rev-parse", "HEAD")
+                    .ConfigureAwait(false);
+                for (int index = 1; index <= options.Commits; index++)
+                {
+                    cancellationToken.ThrowIfCancellationRequested();
+                    const int sourceIndex = 0;
+                    WriteText(
+                        root,
+                        SourcePath(sourceIndex, nested: true),
+                        SourceFile(sourceIndex, options.LinesPerFile, finalValue: index));
+                    headObjectId = await CommitAsync(
+                        root,
+                        $"selected author change {index:D2}",
+                        cancellationToken,
+                        SelectedAuthorName,
+                        SelectedAuthorEmail,
+                        $"2026-08-14T{index:D2}:00:00+00:00").ConfigureAwait(false);
+                }
+            }
+
+            (int headFiles, int headDirectories) = await CountHeadTreeAsync(
+                root,
+                headObjectId,
+                cancellationToken).ConfigureAwait(false);
+            return new GitBenchmarkRepository(
+                root,
+                baseObjectId,
+                headObjectId,
+                headFiles,
+                headDirectories,
+                options.KeepRepository);
         }
         catch
         {
@@ -111,12 +195,57 @@ internal sealed class GitBenchmarkRepository : IDisposable
     private static async Task<string> CommitAsync(
         string root,
         string message,
-        CancellationToken cancellationToken)
+        CancellationToken cancellationToken,
+        string? authorName = null,
+        string? authorEmail = null,
+        string? authorDate = null)
     {
         await GitAsync(root, cancellationToken, "add", "--all").ConfigureAwait(false);
-        await GitAsync(root, cancellationToken, "commit", "--quiet", "-m", message)
-            .ConfigureAwait(false);
+        List<string> arguments = [];
+        if (authorName is not null && authorEmail is not null)
+        {
+            arguments.AddRange(["-c", $"user.name={authorName}", "-c", $"user.email={authorEmail}"]);
+        }
+
+        arguments.AddRange(["commit", "--quiet"]);
+        if (authorDate is not null)
+        {
+            arguments.Add($"--date={authorDate}");
+        }
+
+        arguments.AddRange(["-m", message]);
+        await GitAsync(root, cancellationToken, [.. arguments]).ConfigureAwait(false);
         return await GitAsync(root, cancellationToken, "rev-parse", "HEAD").ConfigureAwait(false);
+    }
+
+    private static async Task<(int Files, int Directories)> CountHeadTreeAsync(
+        string root,
+        string headObjectId,
+        CancellationToken cancellationToken)
+    {
+        string output = await GitAsync(
+            root,
+            cancellationToken,
+            "ls-tree",
+            "-r",
+            "--name-only",
+            headObjectId).ConfigureAwait(false);
+        string[] files = output.Split('\n', StringSplitOptions.RemoveEmptyEntries);
+        HashSet<string> directories = new(StringComparer.Ordinal) { string.Empty };
+        foreach (string file in files)
+        {
+            string[] segments = file.Split('/');
+            string directory = string.Empty;
+            for (int index = 0; index < segments.Length - 1; index++)
+            {
+                directory = directory.Length == 0
+                    ? segments[index]
+                    : $"{directory}/{segments[index]}";
+                directories.Add(directory);
+            }
+        }
+
+        return (files.Length, directories.Count);
     }
 
     private static async Task<string> GitAsync(
@@ -174,6 +303,10 @@ internal sealed class GitBenchmarkRepository : IDisposable
         content.AppendLine("}");
         return content.ToString();
     }
+
+    private static string SourcePath(int index, bool nested) => nested
+        ? $"src/area-{index % 100:D2}/component-{index:D6}/Type{index:D6}.cs"
+        : $"src/Type{index:D6}.cs";
 
     private static string RangeSourceFile(int revision, int lines)
     {

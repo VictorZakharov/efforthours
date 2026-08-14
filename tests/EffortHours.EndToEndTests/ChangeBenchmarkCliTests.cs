@@ -56,9 +56,43 @@ public sealed class ChangeBenchmarkCliTests
         AssertReadOnlyAndBounded(values);
     }
 
+    [Fact]
+    public async Task AuthorPeriodBenchmarkUsesNestedMergeHeavyTreeAndBoundedSnapshotReuse()
+    {
+        ProcessResult result = await RunBenchmarkAsync(
+            "--author-period",
+            "--files",
+            "1025",
+            "--lines-per-file",
+            "8",
+            "--commits",
+            "3",
+            "--max-seconds",
+            "30",
+            "--max-peak-mib",
+            "1024");
+
+        Assert.Equal(0, result.ExitCode);
+        Assert.Equal(string.Empty, result.StandardError);
+        Dictionary<string, string> values = Parse(result.StandardOutput);
+        Assert.Equal("author-period", values["mode"]);
+        Assert.Equal("3", values["selected-changes"]);
+        Assert.Equal("4", values["repository-estimator-invocations"]);
+        Assert.Equal("false", values["range-audit-bounded"]);
+        Assert.Equal("true", values["changed-scope-analysis"]);
+        Assert.True(
+            long.Parse(values["head-directories"], CultureInfo.InvariantCulture) >
+            long.Parse(values["head-files"], CultureInfo.InvariantCulture));
+        Assert.True(
+            long.Parse(
+                values["estimated-legacy-entry-comparisons-per-snapshot"],
+                CultureInfo.InvariantCulture) > 0);
+        AssertReadOnlyAndBounded(values);
+    }
+
     private static void AssertReadOnlyAndBounded(Dictionary<string, string> values)
     {
-        Assert.Equal("change/1.0.0", values["benchmark"]);
+        Assert.Equal("change/1.1.0", values["benchmark"]);
         Assert.Equal("true", values["worktree-unchanged"]);
         Assert.Equal("true", values["git-state-unchanged"]);
         Assert.Equal("not-performed", values["target-execution"]);

@@ -1,3 +1,4 @@
+using EffortHours.Analysis;
 using EffortHours.Contracts;
 using EffortHours.Contracts.V1;
 using EffortHours.Core;
@@ -13,16 +14,20 @@ public sealed partial class ChangeEstimator
         IChangeSnapshot headSnapshot,
         IReadOnlyList<Diagnostic> selectorDiagnostics,
         EstimationProfile profile,
-        Dictionary<string, SnapshotAnalysis> snapshotAnalyses,
+        SnapshotAnalysisCache snapshotAnalyses,
+        string cacheNamespace,
         CancellationToken cancellationToken)
     {
         ValidateSnapshotReference("base", selection.Base, baseSnapshot);
         ValidateSnapshotReference("head", selection.Head, headSnapshot);
+        ChangeAnalysisScope? analysisScope = ChangeAnalysisScope.Create(baseSnapshot, headSnapshot);
         SnapshotAnalysis baseAnalysis = await AnalyzeSnapshotAsync(
             repositoryName,
             baseSnapshot,
             profile,
             snapshotAnalyses,
+            cacheNamespace,
+            analysisScope,
             cancellationToken)
             .ConfigureAwait(false);
         SnapshotAnalysis headAnalysis = await AnalyzeSnapshotAsync(
@@ -30,6 +35,8 @@ public sealed partial class ChangeEstimator
             headSnapshot,
             profile,
             snapshotAnalyses,
+            cacheNamespace,
+            analysisScope,
             cancellationToken)
             .ConfigureAwait(false);
         RepositoryEvidence baseEvidence = baseAnalysis.Evidence;
@@ -157,26 +164,34 @@ public sealed partial class ChangeEstimator
         string repositoryName,
         IChangeSnapshot snapshot,
         EstimationProfile profile,
-        Dictionary<string, SnapshotAnalysis> snapshotAnalyses,
+        SnapshotAnalysisCache snapshotAnalyses,
+        string cacheNamespace,
+        ChangeAnalysisScope? analysisScope,
         CancellationToken cancellationToken)
     {
-        if (snapshotAnalyses.TryGetValue(snapshot.ObjectId, out SnapshotAnalysis? cached))
+        string analysisScopeId = analysisScope?.Id ?? "full-snapshot";
+        if (snapshotAnalyses.TryGet(
+            cacheNamespace,
+            snapshot.ObjectId,
+            analysisScopeId,
+            out SnapshotAnalysis cached))
         {
             return cached;
         }
 
-        RepositoryEvidence evidence = await ReadEvidenceAsync(snapshot, cancellationToken)
+        RepositoryEvidence evidence = await ReadEvidenceAsync(snapshot, analysisScope, cancellationToken)
             .ConfigureAwait(false);
         evidence = RenameRepository(evidence, repositoryName);
         SnapshotAnalysis analysis = new(
             evidence,
             _repositoryEstimator.Estimate(evidence, profile));
-        snapshotAnalyses.Add(snapshot.ObjectId, analysis);
+        snapshotAnalyses.Add(cacheNamespace, snapshot.ObjectId, analysisScopeId, analysis);
         return analysis;
     }
 
     private static async Task<RepositoryEvidence> ReadEvidenceAsync(
         IChangeSnapshot snapshot,
+        ChangeAnalysisScope? analysisScope,
         CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
@@ -185,9 +200,40 @@ public sealed partial class ChangeEstimator
             return analyzedSnapshot.Evidence;
         }
 
-        return await new RepositoryAnalysisPipeline(snapshot.FileSystem)
+        IRepositoryFileSystem fileSystem = analysisScope is null
+            ? snapshot.FileSystem
+            : new ScopedRepositoryFileSystem(
+                snapshot.FileSystem,
+                snapshot.RootPath,
+                analysisScope.Paths);
+        RepositoryEvidence evidence = await new RepositoryAnalysisPipeline(fileSystem)
             .ScanAsync(snapshot.RootPath, cancellationToken: cancellationToken)
             .ConfigureAwait(false);
+        if (analysisScope is null)
+        {
+            return evidence;
+        }
+
+        Diagnostic scopeDiagnostic = new()
+        {
+            Code = "FB5205",
+            Severity = DiagnosticSeverity.Information,
+            Message = $"Large immutable Git snapshot analysis parsed {analysisScope.ChangedPathCount} changed " +
+                $"path(s) plus {analysisScope.ContextPathCount} static context artifact(s), while retaining " +
+                $"the content-addressed identity of all {analysisScope.FullPathCount} paths.",
+        };
+        return evidence with
+        {
+            Repository = evidence.Repository with
+            {
+                SourceDigest = ChangeAnalysisScope.ComputeInventoryDigest(snapshot.Files),
+            },
+            Diagnostics = [.. evidence.Diagnostics
+                .Append(scopeDiagnostic)
+                .Distinct()
+                .OrderBy(diagnostic => diagnostic.Code, StringComparer.Ordinal)
+                .ThenBy(diagnostic => diagnostic.Message, StringComparer.Ordinal)],
+        };
     }
 
     private static void ValidateSnapshotReference(

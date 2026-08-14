@@ -36,8 +36,10 @@ the manifest directory and remain execution-only; they are never copied into the
 report. Repository IDs and resolved Git roots map one-to-one so caller labels
 cannot combine unrelated repositories or bypass same-repository overlap.
 
-Author-period selection is bounded to 10,000 reachable commits and 128 selected
-rows. It provides:
+Author-period selection is bounded to 10,000 Git-prefiltered identity candidates
+and 128 selected rows. Git may traverse a larger reachable graph without returning
+its unrelated identity records to EffortHours. The exact selector then validates
+structured author/co-author identities and the requested time policy. It provides:
 
 - exact case-insensitive aliases matching author name, email, or
   `Name <email>`;
@@ -121,6 +123,11 @@ The process-level suite verifies an offline author-period command on a temporary
 Git repository, immutable selected objects, deterministic stdout, exact
 allocation, no source/host paths, and an unchanged worktree.
 
+Large Git portfolios additionally use the bounded changed-scope and immutable-
+inventory reuse rules in `CHANGE_ESTIMATION.md`. Identity and time still select
+rows only; neither the candidate count nor the size of the reachable graph enters
+an effort rule.
+
 ## Safety and limitations
 
 - Ordinary `scan` and repository `estimate` remain history-free. Only an explicit
@@ -142,6 +149,6 @@ allocation, no source/host paths, and an unchanged worktree.
   deliberately unsupported.
 
 Future evidence may justify reviewed public portfolio examples, broader semantic
-equivalence, and large-history/monorepository performance measurements. Any
-extension must preserve the selector-only identity boundary and explicit
-uncertainty.
+equivalence, cross-platform/concurrent monorepository measurements, and universal
+regression thresholds. Any extension must preserve the selector-only identity
+boundary and explicit uncertainty.
