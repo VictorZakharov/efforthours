@@ -48,7 +48,9 @@ The implemented provider-neutral engine and Git adapter support:
 - one pull request, with GitHub available through an optional `gh` CLI adapter;
 - repeated pull requests from one local repository;
 - a v1 manifest selecting pull requests from multiple local repositories; and
-- commits selected by exact author/co-author alias and an explicit time interval.
+- commits selected by exact author/co-author alias and an explicit time interval; or
+- a v1 author-period manifest spanning multiple local repositories and pinned
+  heads.
 
 The engine accepts storage-independent snapshot factories, which keeps selector
 adapters separate from valuation. Portfolio selection composes canonical immutable
@@ -66,6 +68,7 @@ eh change --base-evidence <repository-evidence.json>
 eh change <repository> --pr <number-or-url> [--repo <owner/name>]
 eh change portfolio <repository> --pr <pr> --pr <pr>
 eh change portfolio --manifest <portfolio.json>
+eh change portfolio --author-period-manifest <manifest.json>
 eh change portfolio <repository> --author <identity> --since <instant> --until <instant>
   [--date-field <author|committer>] [--timezone <iana-or-host-zone>]
   [--merge-policy <exclude|first-parent>] [--coauthors <include|exclude>]
@@ -75,7 +78,8 @@ The implemented forms share the repository-estimate profile, format, rate,
 compact, and explicit-output options. Directory pairs and evidence pairs are
 deliberately separate selector families; incomplete or mixed pairs fail before
 analysis. Portfolio commands likewise require exactly one repeated-PR, manifest,
-or author-period family. Local snapshot and Git-ref inputs do not depend on GitHub.
+direct-author-period, or author-period-manifest family. Local snapshot and Git-ref
+inputs do not depend on GitHub.
 Pull-request resolution
 uses `gh pr view` only when the caller explicitly selects `--pr`; `gh` must be
 installed and authenticated. The adapter retains only the requested PR number or
@@ -102,6 +106,21 @@ times fail unless the caller supplies an offset. Author versus committer time,
 co-author trailer inclusion, and merge exclusion versus first-parent valuation are
 explicit report policies. Git returns only valid `Co-authored-by` trailer values;
 commit bodies are not returned to EffortHours or retained.
+
+The author-period manifest applies that exact selector across stable contributor
+IDs, repository IDs, and pinned repository-local heads. Relative paths resolve
+from the manifest directory. Before Change analysis starts, every path must resolve
+to one readable local Git root, repository IDs and roots must map one-to-one, and
+every pinned commit must exist locally. EffortHours never fetches a missing object.
+For each repository, all pinned heads enter one union query per required identity
+filter, so shared ancestry and fully overlapping heads cannot duplicate a commit.
+A bounded-memory topological pass then propagates head reachability until every
+selected object is mapped. Reports retain the canonical manifest digest, shared
+policy, stable contributor/repository/head IDs, immutable objects, exact match
+kinds, and reachable head IDs; raw aliases and local paths remain execution-only.
+Repositories and heads with no unique selected commit remain visible in selection
+metadata. Matching several contributors or heads never multiplies the commit or
+its EHE.
 
 The PR adapter analyzes objects already available in the selected local Git
 object database. It does not fetch, check out, or modify the repository. When a PR

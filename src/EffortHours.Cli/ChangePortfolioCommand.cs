@@ -7,7 +7,7 @@ using EffortHours.Reporting;
 
 namespace EffortHours.Cli;
 
-internal sealed class ChangePortfolioCommand
+internal sealed partial class ChangePortfolioCommand
 {
     private readonly ChangeEstimator _changeEstimator;
     private readonly Func<string, string, string?, CancellationToken, Task<GitChangePlan>>
@@ -16,50 +16,8 @@ internal sealed class ChangePortfolioCommand
         Task<GitAuthorPeriodPortfolioPlan>> _planAuthorPeriod;
     private readonly Func<string, CancellationToken,
         Task<IReadOnlyList<ResolvedChangePortfolioManifestItem>>> _loadManifest;
-
-    public ChangePortfolioCommand()
-        : this(new ChangeEstimator(), new GitChangePlanner(), new GitPortfolioPlanner())
-    {
-    }
-
-    internal ChangePortfolioCommand(
-        ChangeEstimator changeEstimator,
-        GitChangePlanner gitPlanner,
-        GitPortfolioPlanner portfolioPlanner)
-        : this(
-            changeEstimator,
-            gitPlanner.PlanPullRequestAsync,
-            portfolioPlanner.PlanAuthorPeriodAsync,
-            ChangePortfolioManifestLoader.LoadAsync)
-    {
-    }
-
-    internal ChangePortfolioCommand(
-        ChangeEstimator changeEstimator,
-        Func<string, string, string?, CancellationToken, Task<GitChangePlan>> planPullRequest,
-        Func<string, GitAuthorPeriodPortfolioOptions, CancellationToken,
-            Task<GitAuthorPeriodPortfolioPlan>> planAuthorPeriod)
-        : this(
-            changeEstimator,
-            planPullRequest,
-            planAuthorPeriod,
-            ChangePortfolioManifestLoader.LoadAsync)
-    {
-    }
-
-    internal ChangePortfolioCommand(
-        ChangeEstimator changeEstimator,
-        Func<string, string, string?, CancellationToken, Task<GitChangePlan>> planPullRequest,
-        Func<string, GitAuthorPeriodPortfolioOptions, CancellationToken,
-            Task<GitAuthorPeriodPortfolioPlan>> planAuthorPeriod,
-        Func<string, CancellationToken,
-            Task<IReadOnlyList<ResolvedChangePortfolioManifestItem>>> loadManifest)
-    {
-        _changeEstimator = changeEstimator ?? throw new ArgumentNullException(nameof(changeEstimator));
-        _planPullRequest = planPullRequest ?? throw new ArgumentNullException(nameof(planPullRequest));
-        _planAuthorPeriod = planAuthorPeriod ?? throw new ArgumentNullException(nameof(planAuthorPeriod));
-        _loadManifest = loadManifest ?? throw new ArgumentNullException(nameof(loadManifest));
-    }
+    private readonly Func<string, CancellationToken, Task<GitAuthorPeriodManifestPortfolioPlan>>
+        _planAuthorPeriodManifest;
 
     public async Task<int> ExecuteAsync(
         string[] arguments,
@@ -83,11 +41,13 @@ internal sealed class ChangePortfolioCommand
         RateCard? rateCard = Rate(options);
         try
         {
-            PortfolioCandidates planned = options.IsManifest
-                ? await PlanManifestAsync(options, cancellationToken).ConfigureAwait(false)
-                : options.IsAuthorPeriod
-                    ? await PlanAuthorPeriodAsync(options, cancellationToken).ConfigureAwait(false)
-                    : await PlanPullRequestsAsync(options, cancellationToken).ConfigureAwait(false);
+            PortfolioCandidates planned = options.IsAuthorPeriodManifest
+                ? await PlanAuthorPeriodManifestAsync(options, cancellationToken).ConfigureAwait(false)
+                : options.IsManifest
+                    ? await PlanManifestAsync(options, cancellationToken).ConfigureAwait(false)
+                    : options.IsAuthorPeriod
+                        ? await PlanAuthorPeriodAsync(options, cancellationToken).ConfigureAwait(false)
+                        : await PlanPullRequestsAsync(options, cancellationToken).ConfigureAwait(false);
             ChangePortfolioReport report = ChangePortfolioReconciler.Reconcile(
                 planned.Selection,
                 planned.Candidates,

@@ -185,11 +185,11 @@ count, and intermediate churn do not value effort. `CHANGE_ESTIMATION.md` and
   Never turn logged time into a multiplier or relabel it as counterfactual EHE.
 - Measure portfolio reconciliation on public multi-change examples without
   weakening attribution and no-ranking safeguards.
-- Compose author-period work across multiple local repositories and pinned heads
-  through the versioned host-independent manifest. Freeze its privacy-safe
-  contracts first, then implement repository-scoped commit union, non-duplicating
-  contributor attribution, shared immutable-evidence reuse, and a reviewed
-  correctness/performance matrix without turning identity or time into value.
+- Extend the host-independent multi-repository, multi-head author-period selector
+  with contributor/repository zero rows and aggregate totals, shared immutable-
+  evidence reuse, and a reviewed correctness/performance matrix. Preserve its
+  repository-scoped commit union, non-multiplying contributor matches, privacy-
+  safe report boundary, and rule that identity and time never become value.
 
 ### 3. Measure host review before selecting defaults
 

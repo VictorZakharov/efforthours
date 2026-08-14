@@ -11,10 +11,13 @@ internal static partial class ChangePortfolioCommandOptionsParser
     {
         int selectors = (options.PullRequests.Count > 0 ? 1 : 0) +
             (options.ManifestPath is null ? 0 : 1) +
+            (options.AuthorPeriodManifestPath is null ? 0 : 1) +
             (options.AuthorAliases.Count > 0 ? 1 : 0);
         if (selectors != 1)
         {
-            return Error("Select exactly one repeated --pr set, one --manifest, or one author-period selector.");
+            return Error(
+                "Select exactly one repeated --pr set, one --manifest, one " +
+                "--author-period-manifest, or one direct author-period selector.");
         }
 
         if (options.PullRequests.Count > 128)
@@ -28,10 +31,11 @@ internal static partial class ChangePortfolioCommandOptionsParser
         }
 
         bool authorSelection = options.AuthorAliases.Count > 0;
-        if (options.ManifestPath is not null &&
+        if ((options.ManifestPath is not null || options.AuthorPeriodManifestPath is not null) &&
             (options.RepositoryPath is not null || options.GitHubRepository is not null))
         {
-            return Error("A manifest supplies each repository path and GitHub repository; omit positional and --repo values.");
+            return Error(
+                "A manifest supplies its repository paths; omit positional repository and --repo values.");
         }
 
         if ((options.PullRequests.Count > 0 || authorSelection) && options.RepositoryPath is null)

@@ -99,6 +99,56 @@ public sealed class ChangePortfolioReconcilerTests
     }
 
     [Fact]
+    public async Task ManifestAuthorPeriodMarkdownUsesOnlyPublicSelectionMetadata()
+    {
+        ChangeState initial = State(("Demo.csproj", ProjectFile));
+        ChangeState added = State(
+            ("Demo.csproj", ProjectFile),
+            ("Feature.cs", "namespace Demo; public sealed class Feature { public int Value => 1; }\n"));
+        ChangeEstimateReport source = await ReportAsync(
+            ChangeSelectionKind.Commit,
+            0,
+            initial,
+            added);
+        DateTimeOffset selectedAt = new(2026, 6, 1, 12, 0, 0, TimeSpan.Zero);
+        ChangePortfolioCandidate candidate = Candidate(
+            "repository-a",
+            $"repository-a:commit:{source.Selection.Head.ObjectId}",
+            source,
+            selectedAt) with
+        {
+            Attribution = new ChangePortfolioAttribution
+            {
+                Kind = ChangePortfolioAttributionKind.DirectAuthor,
+                SelectedTimestamp = selectedAt,
+                MergeCommit = false,
+                ParentCount = 1,
+                ContributorMatches =
+                [
+                    new ChangePortfolioContributorMatch
+                    {
+                        ContributorId = "contributor-a",
+                        Kind = ChangePortfolioContributorMatchKind.DirectAuthor,
+                    },
+                ],
+                HeadIds = ["default"],
+            },
+        };
+
+        ChangePortfolioReport report = Reconcile(
+            ManifestAuthorPeriod(source.Selection.Head.ObjectId),
+            [candidate]);
+        string markdown = ChangePortfolioMarkdownRenderer.Render(report);
+
+        Assert.Contains("Manifest digest", markdown, StringComparison.Ordinal);
+        Assert.Contains("contributor-a", markdown, StringComparison.Ordinal);
+        Assert.Contains("repository-a/default", markdown, StringComparison.Ordinal);
+        Assert.Contains("contributor-a/direct-author; heads: default", markdown, StringComparison.Ordinal);
+        Assert.DoesNotContain("private@example.test", markdown, StringComparison.Ordinal);
+        Assert.DoesNotContain("C:\\private\\repository", markdown, StringComparison.OrdinalIgnoreCase);
+    }
+
+    [Fact]
     public async Task OverlappingPullRequestsNormalizeSharedPathsAndExposeAmbiguity()
     {
         ChangeState initial = State(("Demo.csproj", ProjectFile));
@@ -273,6 +323,38 @@ public sealed class ChangePortfolioReconcilerTests
             CoauthorPolicy = ChangePortfolioCoauthorPolicy.Include,
             HeadSelector = "HEAD",
             HeadObjectId = headObjectId,
+        },
+    };
+
+    private static ChangePortfolioSelection ManifestAuthorPeriod(string headObjectId) => new()
+    {
+        Kind = ChangePortfolioSelectionKind.AuthorPeriod,
+        ManifestBased = true,
+        AuthorPeriodManifest = new ChangePortfolioAuthorPeriodManifestSelection
+        {
+            ManifestDigest = "sha256:" + new string('a', 64),
+            SinceInclusive = new DateTimeOffset(2026, 1, 1, 0, 0, 0, TimeSpan.Zero),
+            UntilExclusive = new DateTimeOffset(2027, 1, 1, 0, 0, 0, TimeSpan.Zero),
+            TimeZone = "UTC",
+            DateField = ChangePortfolioDateField.Author,
+            MergePolicy = ChangePortfolioMergePolicy.Exclude,
+            CoauthorPolicy = ChangePortfolioCoauthorPolicy.Include,
+            ContributorIds = ["contributor-a"],
+            Repositories =
+            [
+                new ChangePortfolioAuthorPeriodManifestRepository
+                {
+                    Id = "repository-a",
+                    Heads =
+                    [
+                        new ChangePortfolioAuthorPeriodManifestHead
+                        {
+                            Id = "default",
+                            ObjectId = headObjectId,
+                        },
+                    ],
+                },
+            ],
         },
     };
 

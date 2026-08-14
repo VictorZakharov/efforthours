@@ -53,14 +53,25 @@ public sealed record GitAuthorPeriodPortfolioPlan
     public IReadOnlyList<Diagnostic> Diagnostics { get; init; } = [];
 }
 
-public sealed class GitPortfolioPlanner
+public sealed partial class GitPortfolioPlanner
 {
     private readonly GitClient _git;
     private readonly GitChangePlanner _changes;
     private readonly GitPortfolioPlannerOptions _options;
+    private readonly IGitHeadReachabilityResolver _headReachability;
 
     public GitPortfolioPlanner()
-        : this(new GitClient(), new GitChangePlanner(), new GitPortfolioPlannerOptions())
+        : this(new GitClient(), new GitPortfolioPlannerOptions())
+    {
+    }
+
+    private GitPortfolioPlanner(
+        GitClient git,
+        GitPortfolioPlannerOptions options)
+        : this(
+            git,
+            new GitChangePlanner(git, new GitHubPullRequestResolver()),
+            options)
     {
     }
 
@@ -68,10 +79,20 @@ public sealed class GitPortfolioPlanner
         GitClient git,
         GitChangePlanner changes,
         GitPortfolioPlannerOptions options)
+        : this(git, changes, options, new GitHeadReachabilityResolver())
+    {
+    }
+
+    internal GitPortfolioPlanner(
+        GitClient git,
+        GitChangePlanner changes,
+        GitPortfolioPlannerOptions options,
+        IGitHeadReachabilityResolver headReachability)
     {
         _git = git ?? throw new ArgumentNullException(nameof(git));
         _changes = changes ?? throw new ArgumentNullException(nameof(changes));
         _options = options ?? throw new ArgumentNullException(nameof(options));
+        _headReachability = headReachability ?? throw new ArgumentNullException(nameof(headReachability));
         if (_options.MaximumHistoryCommits is < 1 or >
                 GitPortfolioPlannerOptions.MaximumSupportedHistoryCommits ||
             _options.MaximumSelectedItems is < 1 or > 128)
@@ -252,10 +273,10 @@ internal static class AuthorPeriodCommitSelector
                 continue;
             }
 
-            ChangePortfolioAttributionKind? kind = Matches(commit.Author, aliases)
+            ChangePortfolioAttributionKind? kind = AuthorIdentityMatcher.Matches(commit.Author, aliases)
                 ? ChangePortfolioAttributionKind.DirectAuthor
                 : options.CoauthorPolicy == ChangePortfolioCoauthorPolicy.Include &&
-                    commit.Coauthors.Any(identity => Matches(identity, aliases))
+                    commit.Coauthors.Any(identity => AuthorIdentityMatcher.Matches(identity, aliases))
                     ? ChangePortfolioAttributionKind.Coauthor
                     : null;
             if (kind is null)
@@ -327,14 +348,5 @@ internal static class AuthorPeriodCommitSelector
         }
 
         return new AuthorPeriodSelectionResult(selected, diagnostics);
-    }
-
-    private static bool Matches(GitCommitIdentity identity, IReadOnlyList<string> aliases)
-    {
-        string display = $"{identity.Name} <{identity.Email}>";
-        return aliases.Any(alias =>
-            string.Equals(alias, identity.Name, StringComparison.OrdinalIgnoreCase) ||
-            string.Equals(alias, identity.Email, StringComparison.OrdinalIgnoreCase) ||
-            string.Equals(alias, display, StringComparison.OrdinalIgnoreCase));
     }
 }

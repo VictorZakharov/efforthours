@@ -31,6 +31,10 @@ public static class ChangePortfolioMarkdownRenderer
         {
             AppendAuthorSelection(markdown, report.Selection.AuthorPeriod);
         }
+        else if (report.Selection.AuthorPeriodManifest is not null)
+        {
+            AppendAuthorPeriodManifestSelection(markdown, report.Selection.AuthorPeriodManifest);
+        }
 
         markdown.AppendLine();
         markdown.AppendLine("## Summary");
@@ -59,7 +63,7 @@ public static class ChangePortfolioMarkdownRenderer
                 .Append(ReportFormatting.Escape(item.RepositoryId)).Append(" | `")
                 .Append(ReportFormatting.Escape(Short(item.BaseContextId))).Append("` | ")
                 .Append(ReportFormatting.Escape(Selector(item.Selection))).Append(" | ")
-                .Append(ReportFormatting.Kebab(item.Attribution.Kind)).Append(" | ")
+                .Append(ReportFormatting.Escape(Attribution(item.Attribution))).Append(" | ")
                 .Append(ReportFormatting.Hours(item.IsolatedEffort.Expected)).Append(" | ")
                 .Append(ReportFormatting.Hours(item.AllocatedExpectedHours)).Append(" | ")
                 .Append(item.UncertaintyReasons.Count).AppendLine(" |");
@@ -129,6 +133,33 @@ public static class ChangePortfolioMarkdownRenderer
             .Append(ReportFormatting.Kebab(selection.DateField)).Append("`; merges: `")
             .Append(ReportFormatting.Kebab(selection.MergePolicy)).Append("`; co-authors: `")
             .Append(ReportFormatting.Kebab(selection.CoauthorPolicy)).AppendLine("`");
+    }
+
+    private static void AppendAuthorPeriodManifestSelection(
+        StringBuilder markdown,
+        ChangePortfolioAuthorPeriodManifestSelection selection)
+    {
+        markdown.AppendLine("  ");
+        markdown.Append("Manifest digest: `")
+            .Append(ReportFormatting.Escape(selection.ManifestDigest)).AppendLine("`  ");
+        markdown.Append("Contributor IDs: ")
+            .AppendLine(string.Join(", ", selection.ContributorIds.Select(
+                contributorId => $"`{ReportFormatting.Escape(contributorId)}`")) + "  ");
+        markdown.Append("Interval: `")
+            .Append(selection.SinceInclusive.ToString("O", CultureInfo.InvariantCulture)).Append("` through `")
+            .Append(selection.UntilExclusive.ToString("O", CultureInfo.InvariantCulture))
+            .AppendLine("` (start inclusive, end exclusive)  ");
+        markdown.Append("Timezone: `").Append(ReportFormatting.Escape(selection.TimeZone)).Append("`; date field: `")
+            .Append(ReportFormatting.Kebab(selection.DateField)).Append("`; merges: `")
+            .Append(ReportFormatting.Kebab(selection.MergePolicy)).Append("`; co-authors: `")
+            .Append(ReportFormatting.Kebab(selection.CoauthorPolicy)).AppendLine("`  ");
+        markdown.Append("Pinned repositories: ")
+            .AppendLine(string.Join(", ", selection.Repositories.Select(repository =>
+                $"`{ReportFormatting.Escape(repository.Id)}` ({repository.Heads.Count} head(s))")) + "  ");
+        markdown.Append("Pinned heads: ").AppendLine(string.Join(", ", selection.Repositories
+            .SelectMany(repository => repository.Heads.Select(head =>
+                $"`{ReportFormatting.Escape(repository.Id)}/{ReportFormatting.Escape(head.Id)}` " +
+                $"(`{ReportFormatting.Escape(ShortObject(head.ObjectId))}`)"))));
     }
 
     private static void AppendCategories(
@@ -213,6 +244,19 @@ public static class ChangePortfolioMarkdownRenderer
         ChangeSelectionKind.Commit => $"commit {ShortObject(selection.Head.ObjectId)}",
         _ => ReportFormatting.Kebab(selection.Kind),
     };
+
+    private static string Attribution(ChangePortfolioAttribution attribution)
+    {
+        string kind = ReportFormatting.Kebab(attribution.Kind);
+        if (attribution.ContributorMatches is null || attribution.HeadIds is null)
+        {
+            return kind;
+        }
+
+        string contributors = string.Join(", ", attribution.ContributorMatches.Select(match =>
+            $"{match.ContributorId}/{ReportFormatting.Kebab(match.Kind)}"));
+        return $"{kind}; {contributors}; heads: {string.Join(", ", attribution.HeadIds)}";
+    }
 
     private static string Short(string value) => value.Length <= 12 ? value : value[^12..];
 

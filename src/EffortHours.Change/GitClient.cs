@@ -100,15 +100,36 @@ public sealed partial class GitClient
         return parents;
     }
 
-    internal async Task<IReadOnlyList<GitCommitMetadata>> ListAuthorPeriodCandidatesAsync(
+    internal Task<IReadOnlyList<GitCommitMetadata>> ListAuthorPeriodCandidatesAsync(
         string repositoryPath,
         string headObjectId,
         IReadOnlyList<string> aliases,
         bool includeCoauthors,
         int maximumCount,
+        CancellationToken cancellationToken = default) =>
+        ListAuthorPeriodCandidatesAsync(
+            repositoryPath,
+            [headObjectId],
+            aliases,
+            includeCoauthors,
+            maximumCount,
+            cancellationToken);
+
+    internal async Task<IReadOnlyList<GitCommitMetadata>> ListAuthorPeriodCandidatesAsync(
+        string repositoryPath,
+        IReadOnlyList<string> headObjectIds,
+        IReadOnlyList<string> aliases,
+        bool includeCoauthors,
+        int maximumCount,
         CancellationToken cancellationToken = default)
     {
+        ArgumentNullException.ThrowIfNull(headObjectIds);
         ArgumentNullException.ThrowIfNull(aliases);
+        if (headObjectIds.Count == 0 || headObjectIds.Any(string.IsNullOrWhiteSpace))
+        {
+            throw new ArgumentException("At least one non-empty history head is required.", nameof(headObjectIds));
+        }
+
         if (aliases.Count == 0 || aliases.Any(string.IsNullOrWhiteSpace))
         {
             throw new ArgumentException("At least one non-empty author alias is required.", nameof(aliases));
@@ -117,7 +138,7 @@ public sealed partial class GitClient
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(maximumCount);
         IReadOnlyList<GitCommitMetadata> direct = await ListFilteredCommitMetadataAsync(
             repositoryPath,
-            headObjectId,
+            headObjectIds,
             aliases,
             "--author",
             maximumCount,
@@ -129,7 +150,7 @@ public sealed partial class GitClient
 
         IReadOnlyList<GitCommitMetadata> coauthored = await ListFilteredCommitMetadataAsync(
             repositoryPath,
-            headObjectId,
+            headObjectIds,
             aliases,
             "--grep",
             maximumCount,
@@ -146,7 +167,7 @@ public sealed partial class GitClient
 
     private async Task<IReadOnlyList<GitCommitMetadata>> ListFilteredCommitMetadataAsync(
         string repositoryPath,
-        string headObjectId,
+        IReadOnlyList<string> headObjectIds,
         IReadOnlyList<string> aliases,
         string filter,
         int maximumCount,
@@ -163,7 +184,9 @@ public sealed partial class GitClient
             "--format=%H%x00%P%x00%an%x00%ae%x00%aI%x00%cn%x00%ce%x00%cI%x00%(trailers:key=Co-authored-by,valueonly,separator=%x1f)%x00",
         ];
         arguments.AddRange(aliases.Select(alias => $"{filter}={alias}"));
-        arguments.Add(headObjectId);
+        arguments.AddRange(headObjectIds
+            .Distinct(StringComparer.Ordinal)
+            .Order(StringComparer.Ordinal));
         ExternalCommandResult result = await _commands.RunAsync(
             "git",
             repositoryPath,
