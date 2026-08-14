@@ -6,6 +6,8 @@ namespace EffortHours.Contracts;
 
 public static class ContractJson
 {
+    public const string CanonicalDocumentId = "canonical-json-document/1.0.0";
+
     public static JsonSerializerOptions Options { get; } = CreateOptions(writeIndented: true);
 
     public static JsonSerializerOptions CompactOptions { get; } = CreateOptions(writeIndented: false);
@@ -13,13 +15,22 @@ public static class ContractJson
     public static string Serialize<T>(T value)
     {
         ArgumentNullException.ThrowIfNull(value);
-        return JsonSerializer.Serialize(value, Options);
+        return NormalizeLineEndings(JsonSerializer.Serialize(value, Options));
     }
 
     public static string SerializeCompact<T>(T value)
     {
         ArgumentNullException.ThrowIfNull(value);
-        return JsonSerializer.Serialize(value, CompactOptions);
+        return NormalizeLineEndings(JsonSerializer.Serialize(value, CompactOptions));
+    }
+
+    public static string SerializeDocument<T>(T value, bool compact = false) =>
+        ToCanonicalDocument(compact ? SerializeCompact(value) : Serialize(value));
+
+    public static string ToCanonicalDocument(string json)
+    {
+        ArgumentNullException.ThrowIfNull(json);
+        return NormalizeLineEndings(json).TrimEnd() + '\n';
     }
 
     public static T Deserialize<T>(string json)
@@ -50,4 +61,7 @@ public static class ContractJson
         options.MakeReadOnly();
         return options;
     }
+
+    private static string NormalizeLineEndings(string value) =>
+        value.Replace("\r\n", "\n", StringComparison.Ordinal).Replace('\r', '\n');
 }

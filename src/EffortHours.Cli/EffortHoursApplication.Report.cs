@@ -109,8 +109,14 @@ public sealed partial class EffortHoursApplication
         }
 
         string output = RenderEstimate(report, view, format, compact);
-        await standardOutput.WriteLineAsync(output.TrimEnd()).ConfigureAwait(false);
-        return CliExitCodes.Success;
+        return await WriteCliOutputAsync(
+            output,
+            outputPath: null,
+            "estimate report",
+            standardOutput,
+            standardError,
+            cancellationToken,
+            canonicalJson: format == "json").ConfigureAwait(false);
     }
 
     private static async Task<EstimateReport?> LoadEstimateAsync(

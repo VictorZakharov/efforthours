@@ -197,7 +197,8 @@ public sealed partial class EffortHoursApplication
             "estimate",
             standardOutput,
             standardError,
-            cancellationToken).ConfigureAwait(false);
+            cancellationToken,
+            canonicalJson: format == "json").ConfigureAwait(false);
     }
 
     private async Task<RepositoryEvidence?> LoadEvidenceAsync(

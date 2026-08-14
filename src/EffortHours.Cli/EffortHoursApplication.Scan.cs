@@ -113,42 +113,20 @@ public sealed partial class EffortHoursApplication
             return CliExitCodes.InternalError;
         }
 
-        if (outputPath is null)
-        {
-            await standardOutput.WriteLineAsync(json).ConfigureAwait(false);
-            return CliExitCodes.Success;
-        }
-
-        if (Directory.Exists(outputPath))
+        if (outputPath is not null && Directory.Exists(outputPath))
         {
             await standardError.WriteLineAsync($"Output path is a directory: {outputPath}")
                 .ConfigureAwait(false);
             return CliExitCodes.InvalidInput;
         }
 
-        try
-        {
-            string fullOutputPath = Path.GetFullPath(outputPath);
-            string? outputDirectory = Path.GetDirectoryName(fullOutputPath);
-            if (!string.IsNullOrEmpty(outputDirectory))
-            {
-                Directory.CreateDirectory(outputDirectory);
-            }
-
-            await File.WriteAllTextAsync(
-                fullOutputPath,
-                json + Environment.NewLine,
-                new UTF8Encoding(encoderShouldEmitUTF8Identifier: false),
-                cancellationToken).ConfigureAwait(false);
-        }
-        catch (Exception exception) when (exception is IOException or UnauthorizedAccessException)
-        {
-            await standardError.WriteLineAsync($"Could not write evidence: {exception.Message}")
-                .ConfigureAwait(false);
-            return CliExitCodes.InvalidInput;
-        }
-
-        return CliExitCodes.Success;
+        return await WriteCliOutputAsync(
+            json,
+            outputPath,
+            "evidence",
+            standardOutput,
+            standardError,
+            cancellationToken).ConfigureAwait(false);
     }
 
     private const string ScanHelpText = """

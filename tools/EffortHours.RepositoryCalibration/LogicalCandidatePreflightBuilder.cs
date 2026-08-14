@@ -117,7 +117,7 @@ internal static class LogicalCandidatePreflightBuilder
         Directory.CreateDirectory(Path.GetDirectoryName(options.ReportPath)!);
         await File.WriteAllTextAsync(
             options.ReportPath,
-            ContractJson.Serialize(report) + Environment.NewLine,
+            ContractJson.SerializeDocument(report),
             cancellationToken).ConfigureAwait(false);
     }
 

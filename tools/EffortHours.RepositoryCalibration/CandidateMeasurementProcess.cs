@@ -39,6 +39,7 @@ internal static class CandidateMeasurementProcess
                 "Fresh-process peak working set could not be sampled.");
         }
 
+        ValidateCanonicalJsonDocument(process.OutputBytes);
         EstimateReport report = ContractJson.Deserialize<EstimateReport>(process.Output);
         IReadOnlyList<string> errors = ContractValidation.Validate(report);
         if (errors.Count > 0)
@@ -48,7 +49,7 @@ internal static class CandidateMeasurementProcess
         }
 
         string digest = "sha256:" + Convert.ToHexString(
-            SHA256.HashData(Encoding.UTF8.GetBytes(process.Output))).ToLowerInvariant();
+            SHA256.HashData(process.OutputBytes)).ToLowerInvariant();
         string normalizedDigest = "sha256:" + Convert.ToHexString(
             SHA256.HashData(Encoding.UTF8.GetBytes(NormalizeLineEndings(process.Output))))
             .ToLowerInvariant();
@@ -90,8 +91,8 @@ internal static class CandidateMeasurementProcess
             throw new IOException($"Could not start '{fileName}'.");
         }
 
-        Task<string> outputTask = process.StandardOutput.ReadToEndAsync(cancellationToken);
-        Task<string> errorTask = process.StandardError.ReadToEndAsync(cancellationToken);
+        Task<byte[]> outputTask = ReadToEndAsync(process.StandardOutput.BaseStream, cancellationToken);
+        Task<byte[]> errorTask = ReadToEndAsync(process.StandardError.BaseStream, cancellationToken);
         long peak = SampleWorkingSet(process, 0);
         try
         {
@@ -118,15 +119,45 @@ internal static class CandidateMeasurementProcess
             timer.Stop();
         }
 
-        string output = await outputTask.ConfigureAwait(false);
-        string error = await errorTask.ConfigureAwait(false);
+        byte[] outputBytes = await outputTask.ConfigureAwait(false);
+        byte[] errorBytes = await errorTask.ConfigureAwait(false);
+        UTF8Encoding utf8 = new(encoderShouldEmitUTF8Identifier: false, throwOnInvalidBytes: true);
+        string output = utf8.GetString(outputBytes);
+        string error = utf8.GetString(errorBytes);
         if (process.ExitCode != 0)
         {
             throw new InvalidDataException(
                 $"'{fileName}' exited with code {process.ExitCode}: {error.Trim()}");
         }
 
-        return new MeasuredProcessResult(output, error, timer.Elapsed, peak);
+        return new MeasuredProcessResult(
+            output,
+            error,
+            outputBytes,
+            timer.Elapsed,
+            peak);
+    }
+
+    private static async Task<byte[]> ReadToEndAsync(
+        Stream stream,
+        CancellationToken cancellationToken)
+    {
+        using MemoryStream buffer = new();
+        await stream.CopyToAsync(buffer, cancellationToken).ConfigureAwait(false);
+        return buffer.ToArray();
+    }
+
+    private static void ValidateCanonicalJsonDocument(ReadOnlySpan<byte> output)
+    {
+        if (output.IsEmpty ||
+            output.StartsWith(Encoding.UTF8.Preamble) ||
+            output.Contains((byte)'\r') ||
+            output[^1] != (byte)'\n' ||
+            (output.Length > 1 && output[^2] == (byte)'\n'))
+        {
+            throw new InvalidDataException(
+                $"Candidate projection does not use {ContractJson.CanonicalDocumentId}.");
+        }
     }
 
     internal static string NormalizeLineEndings(string value) =>
@@ -157,5 +188,6 @@ internal sealed record CandidateProjectionProcessResult(
 internal sealed record MeasuredProcessResult(
     string Output,
     string Error,
+    byte[] OutputBytes,
     TimeSpan Elapsed,
     long PeakWorkingSetBytes);

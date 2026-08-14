@@ -150,9 +150,12 @@ count, and intermediate churn do not value effort. `CHANGE_ESTIMATION.md` and
   assertions and raw Windows JSON bytes differ from Linux/macOS by CRLF versus LF.
 - Treat v0.2 as final. Do not weaken a mutation assertion, normalize the recorded
   raw-byte result into a pass, relax a threshold, or reuse its identity.
-- Define and test an OS-independent canonical structured-output newline boundary
-  under a new implementation identity. Preserve human-readable formatting and
-  existing schema semantics while making raw canonical bytes deterministic.
+- `canonical-json-document/1.0.0` defines the forward OS-independent structured-
+  output boundary: indented JSON and the single document terminator use LF, and
+  explicit files use UTF-8 without a byte-order mark. Exact-byte process tests
+  pin seed and candidate outputs for the small, medium, and large measurement
+  shapes across the ordinary Windows, Linux, and macOS CI matrix. This does not
+  reinterpret the failed 0.9.0 measurement or reuse its implementation identity.
 - Diagnose the 25 public mutation failures using only public guardrails and frozen
   development records. Any changed scorer, factor, range, fallback, or projection
   becomes a new model, candidate, and estimator identity.

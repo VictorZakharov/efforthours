@@ -46,6 +46,6 @@ internal static class CandidateBenchmarkProjectionRunner
                 cancellationToken).Estimate;
         }
 
-        await standardOutput.WriteAsync(ContractJson.Serialize(output)).ConfigureAwait(false);
+        await standardOutput.WriteAsync(ContractJson.SerializeDocument(output)).ConfigureAwait(false);
     }
 }

@@ -69,7 +69,9 @@ public sealed class CandidateMeasurementArtifactTests
                 CancellationToken.None);
 
             Assert.Equal(firstOutput.ToString(), secondOutput.ToString());
-            Assert.False(firstOutput.ToString().EndsWith('\n'));
+            Assert.DoesNotContain('\r', firstOutput.ToString());
+            Assert.EndsWith("\n", firstOutput.ToString(), StringComparison.Ordinal);
+            Assert.False(firstOutput.ToString().EndsWith("\n\n", StringComparison.Ordinal));
             EstimateReport estimate = ContractJson.Deserialize<EstimateReport>(
                 firstOutput.ToString());
             Assert.Equal(

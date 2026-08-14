@@ -87,7 +87,7 @@ internal static class CandidateMutationMeasurementRunner
         }
 
         CalibrationMutationReport report = CalibrationMutationEvaluator.Evaluate(suite, candidates);
-        string reportJson = ContractJson.Serialize(report) + Environment.NewLine;
+        string reportJson = ContractJson.SerializeDocument(report);
         Directory.CreateDirectory(Path.GetDirectoryName(options.MutationReportPath!)!);
         await File.WriteAllTextAsync(
             options.MutationReportPath!,

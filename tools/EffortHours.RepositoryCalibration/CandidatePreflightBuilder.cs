@@ -68,7 +68,7 @@ internal static class CandidatePreflightBuilder
             candidates,
             candidateEvaluation,
             options.SourceCommit);
-        string output = ContractJson.Serialize(report) + Environment.NewLine;
+        string output = ContractJson.SerializeDocument(report);
         Directory.CreateDirectory(Path.GetDirectoryName(options.ReportPath)!);
         await File.WriteAllTextAsync(options.ReportPath, output, cancellationToken).ConfigureAwait(false);
     }

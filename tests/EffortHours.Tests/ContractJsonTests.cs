@@ -21,6 +21,21 @@ public sealed class ContractJsonTests
         Assert.Equal(evidence.Facts.Select(fact => fact.Id), roundTrip.Facts.Select(fact => fact.Id));
         Assert.Contains("\"schemaVersion\": \"1.0.0\"", first, StringComparison.Ordinal);
         Assert.Contains("\"sourceKind\": \"observed\"", first, StringComparison.Ordinal);
+        Assert.DoesNotContain('\r', first);
+    }
+
+    [Fact]
+    public void CanonicalDocumentUsesLfAndOneTrailingTerminator()
+    {
+        const string platformText = "{\r\n  \"value\": 1\r\n}\r\n\r\n";
+
+        string document = ContractJson.ToCanonicalDocument(platformText);
+
+        Assert.Equal("canonical-json-document/1.0.0", ContractJson.CanonicalDocumentId);
+        Assert.Equal("{\n  \"value\": 1\n}\n", document);
+        Assert.DoesNotContain('\r', document);
+        Assert.EndsWith("\n", ContractJson.SerializeDocument(TestRepositoryEvidence.Create()),
+            StringComparison.Ordinal);
     }
 
     [Fact]

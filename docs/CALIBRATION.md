@@ -311,8 +311,10 @@ final-delta policy in `CHANGE_MODEL_ADMISSION.md`.
 ## Next evidence required
 
 - a new development-only challenger that addresses the 25 public mutation
-  failures and raw cross-platform canonical-output mismatch without weakening a
-  guardrail or reusing the retired v0.2 identity;
+  failures without weakening a guardrail or reusing the retired v0.2 identity;
+- use of forward implementation boundary `canonical-json-document/1.0.0`, which
+  fixes OS-dependent transport whitespace without revising the failed 0.9.0
+  artifact or authorizing holdout access;
 - the complete numerical and operational preflight for that exact new model,
   estimator, implementation, fallback, and finite candidate set;
 - only if every development gate passes, a finite candidate manifest with exact

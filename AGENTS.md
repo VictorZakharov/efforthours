@@ -87,7 +87,9 @@ bias. Successor `logical-capability/0.2.0` passed all 16 numerical development
 gates and five development-computable operational gates, then failed checkpoint
 `0.9.0` on the public mutation suite (`314/339`) and raw cross-platform byte
 determinism (CRLF versus LF); its resource, package, and scanner gates passed. It
-is retired. No candidate manifest is frozen or admitted, and validation and test
+is retired. Forward boundary `canonical-json-document/1.0.0` removes the OS-
+specific transport whitespace for future candidates without revising that
+rejection. No candidate manifest is frozen or admitted, and validation and test
 labels remain unopened.
 Change EHE has only the limited Stage A logical admission described in
 `docs/CHANGE_MODEL_ADMISSION.md`; later ecosystem extensions remain experimental.

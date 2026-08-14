@@ -131,8 +131,14 @@ public sealed partial class EffortHoursApplication
         string output = format == "markdown"
             ? EstimateExplanationMarkdownRenderer.Render(explanation)
             : new EstimateExplanationJsonRenderer(compact).Render(explanation);
-        await standardOutput.WriteLineAsync(output.TrimEnd()).ConfigureAwait(false);
-        return CliExitCodes.Success;
+        return await WriteCliOutputAsync(
+            output,
+            outputPath: null,
+            "estimate explanation",
+            standardOutput,
+            standardError,
+            cancellationToken,
+            canonicalJson: format == "json").ConfigureAwait(false);
     }
 
     private const string ExplainHelpText = """
