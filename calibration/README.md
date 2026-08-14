@@ -44,7 +44,10 @@ maturity; empirical production observations remain separate.
 The [`public-synthetic/0.7.0`](mutations/public-synthetic/BASELINE.md) mutation
 suite adds cross-ecosystem relational guardrails for exclusions, behavior,
 reachability, accessibility, dependency graphs, quality, delivery, and category
-isolation but is not effort-label data.
+isolation but is not effort-label data. Its
+[`dependency alert dispositions`](mutations/public-synthetic/DEPENDENCY_ALERTS.md)
+record five vulnerable version declarations retained solely inside immutable,
+non-executed static fixtures; they are not EffortHours runtime dependencies.
 The [`changes`](changes) area adds the `change-ehe-work-item/1.0.0` rubric,
 immutable final-delta review tooling, and a 24-case matrix frozen before labels.
 It now contains a preliminary 121-target host-AI teacher corpus and blind handoff,
