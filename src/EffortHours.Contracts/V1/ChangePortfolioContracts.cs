@@ -225,6 +225,8 @@ public sealed record ChangePortfolioReport
 
     public IReadOnlyList<ChangePortfolioRepositoryGroup> RepositoryGroups { get; init; } = [];
 
+    public ChangePortfolioAggregation? Aggregation { get; init; }
+
     public IReadOnlyList<ChangePortfolioItemEstimate> Items { get; init; } = [];
 
     public IReadOnlyList<ChangePortfolioAdjustment> Adjustments { get; init; } = [];

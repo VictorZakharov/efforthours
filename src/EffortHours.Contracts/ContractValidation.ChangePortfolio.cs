@@ -145,6 +145,7 @@ public static partial class ContractValidation
         }
 
         ValidatePortfolioGroups(report, itemIds, errors);
+        ValidatePortfolioAggregation(report, itemIds, errors);
         HashSet<string> adjustmentIds = new(StringComparer.Ordinal);
         foreach (ChangePortfolioAdjustment adjustment in report.Adjustments)
         {

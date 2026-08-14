@@ -118,6 +118,18 @@ public enum ChangePortfolioContributorMatchKind
     Coauthor,
 }
 
+public enum ChangePortfolioContributorGroupKind
+{
+    SingleContributor,
+    SharedContributors,
+}
+
+public enum ChangePortfolioHeadGroupKind
+{
+    SingleHead,
+    SharedHeads,
+}
+
 public enum ChangePortfolioOrderPolicy
 {
     OrderIndependent,

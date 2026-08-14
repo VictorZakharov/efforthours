@@ -56,6 +56,25 @@ internal static class ChangePortfolioIdentity
     public static string RepositoryGroupId(string repositoryId) =>
         StableId("change-portfolio-repository", repositoryId);
 
+    public static string ContributorGroupId(IReadOnlyList<string> contributorIds) =>
+        StableId(
+            "change-portfolio-contributor-group",
+            string.Join('\n', contributorIds.Order(StringComparer.Ordinal)));
+
+    public static string ContributorRepositoryAllocationId(
+        IReadOnlyList<string> contributorIds,
+        string repositoryId) => StableId(
+            "change-portfolio-contributor-repository",
+            repositoryId,
+            string.Join('\n', contributorIds.Order(StringComparer.Ordinal)));
+
+    public static string HeadGroupId(
+        string repositoryId,
+        IReadOnlyList<string> headIds) => StableId(
+            "change-portfolio-head-group",
+            repositoryId,
+            string.Join('\n', headIds.Order(StringComparer.Ordinal)));
+
     public static string AdjustmentId(
         string repositoryId,
         ChangePortfolioAdjustmentKind kind,

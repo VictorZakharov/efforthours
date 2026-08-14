@@ -112,9 +112,12 @@ eh change portfolio --author-period-manifest author-period.json --format markdow
 Portfolio mode normalizes each repository independently, removes exact repeated
 PR patches, unions pinned author-period heads without repeating shared commits,
 keeps overlap/revert/shared-context adjustments visible, and allocates the final
-expected EHE exactly. Manifest author aliases and local paths remain execution-only.
-The result is repository-attributed change effort, not individual productivity or
-sole authorship.
+EHE exactly. Manifest reports add contributor match-set and head-reachability
+ledgers whose low/expected/high totals reconcile to the same portfolio total.
+Shared groups are counted once, and requested contributors, repositories, and
+heads with no unique match remain visible as zero rows. Manifest author aliases
+and local paths remain execution-only. The result is repository-attributed change
+effort, not individual productivity, personal labor shares, or sole authorship.
 
 ## What the model counts
 

@@ -28,7 +28,12 @@ accepted only as execution selectors. The portfolio report retains their
 order-independent manifest digest plus stable contributor, repository, and head
 IDs, immutable head objects, contributor match kinds, and head reachability. The
 older direct `--author` form remains backward compatible and continues to retain
-its caller-supplied aliases.
+its caller-supplied aliases. Manifest reports also retain exclusive contributor-
+match and per-repository head-reachability groups, deterministic zero summaries,
+low/expected/high allocation arithmetic, signed reconciliation deltas, and stable
+item/adjustment lineage. Contributor and head groups are alternative views of one
+authoritative portfolio total; shared EHE is never copied into several additive
+personal rows.
 
 ## Repository views
 
