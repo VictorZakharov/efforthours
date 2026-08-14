@@ -262,7 +262,8 @@
         "type": "Project",
         "dependencies": {
           "EffortHours.Calibration": "[1.0.0, )",
-          "EffortHours.Contracts": "[1.0.0, )"
+          "EffortHours.Contracts": "[1.0.0, )",
+          "EffortHours.Estimation": "[1.0.0, )"
         }
       },
       "Acornima": {

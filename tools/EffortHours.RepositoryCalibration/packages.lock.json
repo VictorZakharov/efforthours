@@ -33,6 +33,12 @@
           "JsonSchema.Net": "[8.0.5, )"
         }
       },
+      "efforthours.estimation": {
+        "type": "Project",
+        "dependencies": {
+          "EffortHours.Contracts": "[1.0.0, )"
+        }
+      },
       "JsonSchema.Net": {
         "type": "CentralTransitive",
         "requested": "[8.0.5, )",
