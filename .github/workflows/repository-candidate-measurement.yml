@@ -1,0 +1,205 @@
+name: Repository candidate measurement
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - .github/workflows/repository-candidate-measurement.yml
+      - calibration/corpora/public-readiness/**
+      - src/EffortHours.Cli/EffortHours.Cli.csproj
+      - tools/EffortHours.RepositoryCalibration/**
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: repository-candidate-measurement-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  DOTNET_NOLOGO: "1"
+  DOTNET_CLI_TELEMETRY_OPTOUT: "1"
+  NUGET_XMLDOC_MODE: skip
+
+jobs:
+  platform:
+    name: Measure (${{ matrix.platform }})
+    if: github.event_name == 'workflow_dispatch' || github.head_ref == 'calibration/measure-logical-capability-v2'
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: linux
+            os: ubuntu-latest
+          - platform: macos
+            os: macos-latest
+          - platform: windows
+            os: windows-latest
+
+    steps:
+      - name: Check out source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+        with:
+          global-json-file: global.json
+
+      - name: Restore
+        run: dotnet restore EffortHours.slnx --configfile NuGet.Config --locked-mode
+
+      - name: Build
+        run: dotnet build EffortHours.slnx --no-restore --configuration Release
+
+      - name: Stage installed seed and candidate packages
+        if: matrix.platform == 'linux'
+        shell: pwsh
+        run: |
+          $version = dotnet msbuild src/EffortHours.Cli/EffortHours.Cli.csproj -getProperty:Version -nologo
+          if ($LASTEXITCODE -ne 0 -or [string]::IsNullOrWhiteSpace($version)) { exit 1 }
+          dotnet pack src/EffortHours.Cli/EffortHours.Cli.csproj `
+            --configuration Release --no-build --no-restore `
+            --output artifacts/candidate-packages/seed
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          dotnet pack src/EffortHours.Cli/EffortHours.Cli.csproj `
+            --configuration Release --no-build --no-restore `
+            --output artifacts/candidate-packages/candidate `
+            -p:RepositoryCandidateMeasurement=true
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          dotnet tool install EffortHours.Tool --version $version `
+            --tool-path artifacts/candidate-installs/seed `
+            --source "$PWD/artifacts/candidate-packages/seed" `
+            --configfile NuGet.Config
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          dotnet tool install EffortHours.Tool --version $version `
+            --tool-path artifacts/candidate-installs/candidate `
+            --source "$PWD/artifacts/candidate-packages/candidate" `
+            --configfile NuGet.Config
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+      - name: Run frozen operational measurements
+        shell: pwsh
+        env:
+          MEASUREMENT_COMMIT: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          $arguments = @(
+            "tools/EffortHours.RepositoryCalibration/bin/Release/net10.0/EffortHours.RepositoryCalibration.dll",
+            "candidate-measure",
+            "--model", "calibration/corpora/public-readiness/0.7.0.logical-capability-model.json",
+            "--operational-preflight", "calibration/corpora/public-readiness/0.8.0.candidate-operational-preflight.json",
+            "--evidence-template", "tests/fixtures/evidence/minimal-dotnet.repository-evidence.json",
+            "--scanner-benchmark", "benchmarks/EffortHours.ScannerBenchmarks/bin/Release/net10.0/EffortHours.ScannerBenchmarks.dll",
+            "--workspace", "artifacts/candidate-work/${{ matrix.platform }}",
+            "--platform", "${{ matrix.platform }}",
+            "--source-commit", $env:MEASUREMENT_COMMIT,
+            "--run-id", "${{ github.run_id }}",
+            "--run-attempt", "${{ github.run_attempt }}",
+            "--runs", "5",
+            "--output", "artifacts/candidate-platform/${{ matrix.platform }}.json"
+          )
+          if ("${{ matrix.platform }}" -eq "linux") {
+            $arguments += @(
+              "--mutation-suite", "calibration/mutations/public-synthetic/0.8.0.suite.json",
+              "--mutation-fixtures", "calibration/mutations/public-synthetic/fixtures",
+              "--cli", "src/EffortHours.Cli/bin/Release/net10.0/efforthours.dll",
+              "--mutation-output", "artifacts/candidate-mutation/0.8.0.report.json",
+              "--seed-install", "artifacts/candidate-installs/seed",
+              "--candidate-install", "artifacts/candidate-installs/candidate"
+            )
+          }
+          dotnet @arguments
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+      - name: Upload platform measurement
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: repository-candidate-platform-${{ matrix.platform }}
+          path: artifacts/candidate-platform/${{ matrix.platform }}.json
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Upload mutation report
+        if: matrix.platform == 'linux'
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: repository-candidate-mutation
+          path: artifacts/candidate-mutation/0.8.0.report.json
+          if-no-files-found: error
+          retention-days: 30
+
+  aggregate:
+    name: Aggregate measured gates
+    needs: platform
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+        with:
+          global-json-file: global.json
+
+      - name: Restore measurement tool
+        run: dotnet restore tools/EffortHours.RepositoryCalibration/EffortHours.RepositoryCalibration.csproj --configfile NuGet.Config --locked-mode
+
+      - name: Build measurement tool
+        run: dotnet build tools/EffortHours.RepositoryCalibration/EffortHours.RepositoryCalibration.csproj --no-restore --configuration Release
+
+      - name: Download platform measurements
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          pattern: repository-candidate-platform-*
+          path: artifacts/candidate-platform
+          merge-multiple: true
+
+      - name: Download mutation report
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: repository-candidate-mutation
+          path: artifacts/candidate-mutation
+
+      - name: Aggregate and validate outcome
+        shell: pwsh
+        run: |
+          dotnet tools/EffortHours.RepositoryCalibration/bin/Release/net10.0/EffortHours.RepositoryCalibration.dll `
+            candidate-measurement-aggregate `
+            --operational-preflight calibration/corpora/public-readiness/0.8.0.candidate-operational-preflight.json `
+            --model calibration/corpora/public-readiness/0.7.0.logical-capability-model.json `
+            --mutation-suite calibration/mutations/public-synthetic/0.8.0.suite.json `
+            --mutation-report artifacts/candidate-mutation/0.8.0.report.json `
+            --measurements artifacts/candidate-platform `
+            --measurement-output artifacts/candidate-aggregate/0.9.0.measured-operational-report.json `
+            --output artifacts/candidate-aggregate/0.9.0.candidate-operational-preflight.json
+          $aggregateExit = $LASTEXITCODE
+          if ($aggregateExit -notin @(0, 3)) { exit $aggregateExit }
+          $measurement = Get-Content `
+            artifacts/candidate-aggregate/0.9.0.measured-operational-report.json -Raw | ConvertFrom-Json
+          $preflight = Get-Content `
+            artifacts/candidate-aggregate/0.9.0.candidate-operational-preflight.json -Raw | ConvertFrom-Json
+          if ($aggregateExit -eq 0) {
+            if ($measurement.status -ne "all-measured-gates-passed" -or
+                $preflight.status -ne "development-all-operational-gates-passed-candidate-freeze-pending") {
+              throw "Successful aggregate exit did not produce a passing measured preflight."
+            }
+          } elseif ($measurement.status -ne "measured-gate-failure" -or
+                    $preflight.status -ne "rejected-measured-operational-preflight") {
+            throw "Policy rejection exit did not produce a measured rejection preflight."
+          }
+          exit 0
+
+      - name: Upload combined measurement
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: repository-candidate-measured-operational-${{ github.sha }}
+          path: artifacts/candidate-aggregate/*.json
+          if-no-files-found: error
+          retention-days: 30

@@ -31,4 +31,12 @@
     <None Include="../../PACKAGE_README.md" Pack="true" PackagePath="/" />
     <None Include="../../THIRD-PARTY-NOTICES.md" Pack="true" PackagePath="/" />
   </ItemGroup>
+  <ItemGroup Condition="'$(RepositoryCandidateMeasurement)' == 'true'">
+    <None Include="../../calibration/corpora/public-readiness/0.7.0.logical-capability-model.json"
+          Pack="true"
+          PackagePath="models/repository-candidates/" />
+    <None Include="../../tools/EffortHours.RepositoryCalibration/bin/$(Configuration)/net10.0/EffortHours.RepositoryCalibration.dll"
+          Pack="true"
+          PackagePath="tools/net10.0/any/candidate-runtime/" />
+  </ItemGroup>
 </Project>

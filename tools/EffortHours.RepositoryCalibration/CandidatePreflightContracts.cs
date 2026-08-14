@@ -37,6 +37,9 @@ internal sealed record CandidatePreflightInputs
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public CandidatePreflightArtifactReference? NumericalPreflight { get; init; }
 
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public CandidatePreflightArtifactReference? MeasuredOperationalPreflight { get; init; }
+
     public IReadOnlyList<CandidatePreflightSourceEstimate> DevelopmentEstimates { get; init; } = [];
 }
 
