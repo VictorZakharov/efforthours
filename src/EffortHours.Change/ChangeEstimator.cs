@@ -22,7 +22,8 @@ public sealed record ChangeEstimateInput
 
 public sealed partial class ChangeEstimator
 {
-    public const string Version = "change-seed/0.18.0+seed-rules/0.4.0";
+    public const string Version = "change-seed/0.18.1+seed-rules/0.4.0";
+    public const int FullSnapshotAnalysisFileLimit = 1_024;
 
     private readonly IEstimator _repositoryEstimator;
 
@@ -43,29 +44,33 @@ public sealed partial class ChangeEstimator
         CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(plan);
-        string repositoryName = Path.GetFileName(Path.TrimEndingDirectorySeparator(plan.RepositoryPath));
         return EstimateAsync(
-            new ChangeEstimateInput
-            {
-                RepositoryName = string.IsNullOrWhiteSpace(repositoryName)
-                    ? plan.RepositoryPath
-                    : repositoryName,
-                Selection = plan.Selection,
-                OpenBaseAsync = plan.OpenBaseAsync,
-                OpenHeadAsync = plan.OpenHeadAsync,
-                Components = plan.Components,
-                Diagnostics = plan.Diagnostics,
-            },
+            CreateInput(plan),
             profile,
             rateCard,
             cancellationToken);
     }
 
-    public async Task<ChangeEstimateReport> EstimateAsync(
+    public Task<ChangeEstimateReport> EstimateAsync(
         ChangeEstimateInput input,
         EstimationProfile profile,
         RateCard? rateCard = null,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default) =>
+        EstimateCoreAsync(
+            input,
+            profile,
+            rateCard,
+            new SnapshotAnalysisCache(),
+            "single-estimate",
+            cancellationToken);
+
+    private async Task<ChangeEstimateReport> EstimateCoreAsync(
+        ChangeEstimateInput input,
+        EstimationProfile profile,
+        RateCard? rateCard,
+        SnapshotAnalysisCache snapshotAnalyses,
+        string cacheNamespace,
+        CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(input);
         ArgumentException.ThrowIfNullOrWhiteSpace(input.RepositoryName);
@@ -78,7 +83,6 @@ public sealed partial class ChangeEstimator
                 nameof(input));
         }
 
-        Dictionary<string, SnapshotAnalysis> snapshotAnalyses = new(StringComparer.Ordinal);
         PairEstimate normalized;
         await using (IChangeSnapshot baseSnapshot = await input.OpenBaseAsync(cancellationToken)
             .ConfigureAwait(false))
@@ -93,6 +97,7 @@ public sealed partial class ChangeEstimator
                 input.Diagnostics,
                 profile,
                 snapshotAnalyses,
+                cacheNamespace,
                 cancellationToken).ConfigureAwait(false);
         }
 
@@ -159,6 +164,7 @@ public sealed partial class ChangeEstimator
                     [],
                     profile,
                     snapshotAnalyses,
+                    cacheNamespace,
                     cancellationToken).ConfigureAwait(false);
             }
 
@@ -260,5 +266,21 @@ public sealed partial class ChangeEstimator
         }
 
         return report;
+    }
+
+    private static ChangeEstimateInput CreateInput(GitChangePlan plan)
+    {
+        string repositoryName = Path.GetFileName(Path.TrimEndingDirectorySeparator(plan.RepositoryPath));
+        return new ChangeEstimateInput
+        {
+            RepositoryName = string.IsNullOrWhiteSpace(repositoryName)
+                ? plan.RepositoryPath
+                : repositoryName,
+            Selection = plan.Selection,
+            OpenBaseAsync = plan.OpenBaseAsync,
+            OpenHeadAsync = plan.OpenHeadAsync,
+            Components = plan.Components,
+            Diagnostics = plan.Diagnostics,
+        };
     }
 }

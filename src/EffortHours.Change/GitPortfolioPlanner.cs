@@ -120,17 +120,14 @@ public sealed class GitPortfolioPlanner
             .ConfigureAwait(false);
         string headObjectId = await _git.ResolveCommitAsync(root, options.HeadRevision, cancellationToken)
             .ConfigureAwait(false);
-        IReadOnlyList<GitCommitMetadata> history = await _git.ListCommitMetadataAsync(
+        IReadOnlyList<GitCommitMetadata> history = await _git.ListAuthorPeriodCandidatesAsync(
             root,
             headObjectId,
+            aliases,
+            options.CoauthorPolicy == ChangePortfolioCoauthorPolicy.Include,
             _options.MaximumHistoryCommits + 1,
             cancellationToken).ConfigureAwait(false);
-        if (history.Count > _options.MaximumHistoryCommits)
-        {
-            throw new InvalidOperationException(
-                $"Author-period selection inspected more than {_options.MaximumHistoryCommits} reachable commits. " +
-                "Use a narrower repository/history boundary; EffortHours will not load an unbounded identity ledger.");
-        }
+        EnsureCandidateLimit(history.Count, _options.MaximumHistoryCommits);
 
         AuthorPeriodSelectionResult selected = AuthorPeriodCommitSelector.Select(history, options, aliases);
         if (selected.Commits.Count == 0)
@@ -150,14 +147,7 @@ public sealed class GitPortfolioPlanner
         foreach (SelectedAuthorCommit commit in selected.Commits)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            string? parent = commit.Metadata.ParentObjectIds.Count > 1
-                ? commit.Metadata.ParentObjectIds[0]
-                : null;
-            GitChangePlan plan = await _changes.PlanCommitAsync(
-                root,
-                commit.Metadata.ObjectId,
-                parent,
-                cancellationToken).ConfigureAwait(false);
+            GitChangePlan plan = _changes.PlanPinnedCommit(root, commit.Metadata);
             items.Add(new GitAuthorPeriodPortfolioItem
             {
                 SelectorId = $"commit:{commit.Metadata.ObjectId}",
@@ -219,6 +209,17 @@ public sealed class GitPortfolioPlanner
         }
 
         return values;
+    }
+
+    internal static void EnsureCandidateLimit(int candidateCount, int maximumCount)
+    {
+        if (candidateCount > maximumCount)
+        {
+            throw new InvalidOperationException(
+                $"Author-period selection matched more than {maximumCount} " +
+                "identity-prefiltered commit candidates. Use narrower aliases or a history boundary; " +
+                "EffortHours will not load an unbounded identity ledger.");
+        }
     }
 }
 

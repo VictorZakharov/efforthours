@@ -10,7 +10,7 @@ Safe Jupyter notebook analysis begins with:
 - Change estimator `change-seed/0.17.0+seed-rules/0.4.0`.
 
 Later additive C/C++ support advances the current composite source identity to
-`change-seed/0.18.0+seed-rules/0.4.0` without changing Jupyter normalization or
+`change-seed/0.18.1+seed-rules/0.4.0` without changing Jupyter normalization or
 valuation behavior.
 
 The boundary is experimental and uncalibrated. It represents maintained Python

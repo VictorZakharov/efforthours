@@ -177,7 +177,7 @@ treated as untrusted input, and reports avoid source excerpts by default.
 
 ## Current limitations
 
-- `seed-rules/0.4.0` and `change-seed/0.18.0` remain experimental and uncalibrated.
+- `seed-rules/0.4.0` and `change-seed/0.18.1` remain experimental and uncalibrated.
 - Public calibration labels have not completed genuinely independent correction.
 - Host-review token use, cost, and estimate improvement have not yet been measured
   across representative repositories; no automatic review budget is selected.

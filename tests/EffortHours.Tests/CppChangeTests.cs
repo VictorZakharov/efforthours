@@ -155,7 +155,7 @@ public sealed class CppChangeTests
             item.Category == EffortCategory.UnitTesting && item.Hours.Expected > 0m);
         Assert.Contains(report.Categories, item =>
             item.Category == EffortCategory.BuildConfigurationAndDeveloperTooling && item.Hours.Expected > 0m);
-        Assert.Equal("change-seed/0.18.0+seed-rules/0.4.0", report.EstimatorVersion);
+        Assert.Equal("change-seed/0.18.1+seed-rules/0.4.0", report.EstimatorVersion);
     }
 
     [Fact]

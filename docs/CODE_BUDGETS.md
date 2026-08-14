@@ -169,6 +169,14 @@ source/header ownership, fact construction, repository orchestration, and Change
 formatting normalization. The largest new source file is 377 lines, the C/C++ CLI
 test remains below 400 lines, and no ratchet override was added or increased.
 
+The August 14, 2026 Change portfolio performance checkpoint separates Git command
+selection from bounded snapshot-inventory reuse, virtual filesystem traversal from
+binary inventory parsing, and single-change estimation from scope-aware cache and
+portfolio orchestration. Benchmark execution, counting, option parsing, and
+fixture generation also remain separate. All affected files stay below the 80%
+split threshold or were split when they reached it; no ratchet override was added
+or increased.
+
 Line count is deliberately simple, deterministic, cross-platform, and difficult
 to game accidentally. The useful outcome is earlier decomposition into cohesive
 contracts, commands, analyzers, and renderers—not compressed formatting.

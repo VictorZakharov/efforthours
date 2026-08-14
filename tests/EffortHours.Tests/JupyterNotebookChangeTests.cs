@@ -39,7 +39,7 @@ public sealed class JupyterNotebookChangeTests
         Assert.True(Assert.Single(report.Evidence.Paths).Represented);
         Assert.Contains(report.Categories, category =>
             category.Category == EffortCategory.ProductionImplementation && category.Hours.Expected > 0m);
-        Assert.Equal("change-seed/0.18.0+seed-rules/0.4.0", report.EstimatorVersion);
+        Assert.Equal("change-seed/0.18.1+seed-rules/0.4.0", report.EstimatorVersion);
     }
 
     [Fact]

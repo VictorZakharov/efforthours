@@ -2,18 +2,16 @@ using EffortHours.Contracts.V1;
 
 namespace EffortHours.Change;
 
-public sealed class GitClient
+public sealed partial class GitClient
 {
     private readonly IExternalCommandRunner _commands;
-    private readonly Func<string, string, CancellationToken, Task<IChangeSnapshot>> _snapshotFactory;
+    private readonly Func<string, string, CancellationToken, Task<IChangeSnapshot>>? _snapshotFactory;
 
     public const string EmptyTreeObjectId = "4b825dc642cb6eb9a060e54bf8d69288fbee4904";
 
     public GitClient()
-        : this(
-            new ExternalCommandRunner(),
-            OpenGitSnapshotAsync)
     {
+        _commands = new ExternalCommandRunner();
     }
 
     internal GitClient(
@@ -94,27 +92,82 @@ public sealed class GitClient
             throw new ExternalCommandException("git", result.ExitCode, "Git returned invalid commit-parent data.");
         }
 
-        return [.. values.Skip(1).Select(value => value.ToLowerInvariant())];
+        string[] parents = [.. values.Skip(1).Select(value => value.ToLowerInvariant())];
+        RememberFirstParent(
+            repositoryPath,
+            commitObjectId,
+            parents.Length == 0 ? null : parents[0]);
+        return parents;
     }
 
-    internal async Task<IReadOnlyList<GitCommitMetadata>> ListCommitMetadataAsync(
+    internal async Task<IReadOnlyList<GitCommitMetadata>> ListAuthorPeriodCandidatesAsync(
         string repositoryPath,
         string headObjectId,
+        IReadOnlyList<string> aliases,
+        bool includeCoauthors,
         int maximumCount,
         CancellationToken cancellationToken = default)
     {
+        ArgumentNullException.ThrowIfNull(aliases);
+        if (aliases.Count == 0 || aliases.Any(string.IsNullOrWhiteSpace))
+        {
+            throw new ArgumentException("At least one non-empty author alias is required.", nameof(aliases));
+        }
+
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(maximumCount);
+        IReadOnlyList<GitCommitMetadata> direct = await ListFilteredCommitMetadataAsync(
+            repositoryPath,
+            headObjectId,
+            aliases,
+            "--author",
+            maximumCount,
+            cancellationToken).ConfigureAwait(false);
+        if (!includeCoauthors || direct.Count >= maximumCount)
+        {
+            return direct;
+        }
+
+        IReadOnlyList<GitCommitMetadata> coauthored = await ListFilteredCommitMetadataAsync(
+            repositoryPath,
+            headObjectId,
+            aliases,
+            "--grep",
+            maximumCount,
+            cancellationToken).ConfigureAwait(false);
+        return
+        [
+            .. direct.Concat(coauthored)
+                .GroupBy(commit => commit.ObjectId, StringComparer.Ordinal)
+                .Select(group => group.First())
+                .OrderBy(commit => commit.ObjectId, StringComparer.Ordinal)
+                .Take(maximumCount),
+        ];
+    }
+
+    private async Task<IReadOnlyList<GitCommitMetadata>> ListFilteredCommitMetadataAsync(
+        string repositoryPath,
+        string headObjectId,
+        IReadOnlyList<string> aliases,
+        string filter,
+        int maximumCount,
+        CancellationToken cancellationToken)
+    {
+        List<string> arguments =
+        [
+            "log",
+            "--reverse",
+            "--topo-order",
+            $"--max-count={maximumCount}",
+            "--fixed-strings",
+            "--regexp-ignore-case",
+            "--format=%H%x00%P%x00%an%x00%ae%x00%aI%x00%cn%x00%ce%x00%cI%x00%(trailers:key=Co-authored-by,valueonly,separator=%x1f)%x00",
+        ];
+        arguments.AddRange(aliases.Select(alias => $"{filter}={alias}"));
+        arguments.Add(headObjectId);
         ExternalCommandResult result = await _commands.RunAsync(
             "git",
             repositoryPath,
-            [
-                "log",
-                "--reverse",
-                "--topo-order",
-                $"--max-count={maximumCount}",
-                "--format=%H%x00%P%x00%an%x00%ae%x00%aI%x00%cn%x00%ce%x00%cI%x00%(trailers:key=Co-authored-by,valueonly,separator=%x1f)%x00",
-                headObjectId,
-            ],
+            arguments,
             cancellationToken).ConfigureAwait(false);
         return GitCommitMetadataParser.Parse(result.StandardOutput);
     }
@@ -203,12 +256,6 @@ public sealed class GitClient
             .Select(value => value.ToLowerInvariant())];
     }
 
-    public async Task<IChangeSnapshot> OpenSnapshotAsync(
-        string repositoryPath,
-        string objectId,
-        CancellationToken cancellationToken = default) =>
-        await _snapshotFactory(repositoryPath, objectId, cancellationToken).ConfigureAwait(false);
-
     public static ChangeSnapshotReference Reference(
         string selector,
         string objectId,
@@ -231,12 +278,4 @@ public sealed class GitClient
         return objectId;
     }
 
-    private static async Task<IChangeSnapshot> OpenGitSnapshotAsync(
-        string repositoryPath,
-        string objectId,
-        CancellationToken cancellationToken) =>
-        await GitSnapshotFileSystem.CreateAsync(
-            repositoryPath,
-            objectId,
-            cancellationToken).ConfigureAwait(false);
 }

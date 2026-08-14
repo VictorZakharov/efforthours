@@ -1,50 +1,29 @@
-using System.Globalization;
-using System.Text;
 using EffortHours.Analysis;
 
 namespace EffortHours.Change;
 
-internal sealed class GitSnapshotFileSystem : IRepositoryFileSystem, IChangeSnapshot
+internal sealed partial class GitSnapshotFileSystem : IRepositoryFileSystem, IChangeSnapshot
 {
-    private static readonly UTF8Encoding StrictUtf8 = new(
-        encoderShouldEmitUTF8Identifier: false,
-        throwOnInvalidBytes: true);
-
     private readonly Dictionary<string, ChangeSnapshotFile> _files;
-    private readonly HashSet<string> _directories;
-    private readonly GitBatchObjectReader _objectReader;
+    private readonly Lock _directoryGate = new();
+    private readonly string _repositoryPath;
+    private HashSet<string>? _directories;
+    private Dictionary<string, string[]>? _entriesByDirectory;
+    private GitBatchObjectReader? _objectReader;
 
     private GitSnapshotFileSystem(
         string repositoryPath,
         string objectId,
         IReadOnlyList<ChangeSnapshotFile> files)
     {
+        _repositoryPath = repositoryPath;
         ObjectId = objectId;
         RootPath = Path.GetFullPath(Path.Combine(
             repositoryPath,
             ".efforthours-virtual-snapshot",
             objectId));
-        _files = new Dictionary<string, ChangeSnapshotFile>(StringComparer.Ordinal);
-        _directories = new HashSet<string>(StringComparer.Ordinal) { RootPath };
-        foreach (ChangeSnapshotFile file in files)
-        {
-            string fullPath = ResolveRelativePath(file.Path);
-            _files.Add(fullPath, file);
-            string? directory = Path.GetDirectoryName(fullPath);
-            while (directory is not null && IsWithinRoot(directory))
-            {
-                _directories.Add(directory);
-                if (string.Equals(directory, RootPath, StringComparison.Ordinal))
-                {
-                    break;
-                }
-
-                directory = Path.GetDirectoryName(directory);
-            }
-        }
-
+        _files = files.ToDictionary(file => file.Path, StringComparer.Ordinal);
         Files = [.. files.OrderBy(file => file.Path, StringComparer.Ordinal)];
-        _objectReader = new GitBatchObjectReader(repositoryPath);
     }
 
     public string ObjectId { get; }
@@ -60,30 +39,57 @@ internal sealed class GitSnapshotFileSystem : IRepositoryFileSystem, IChangeSnap
         string objectId,
         CancellationToken cancellationToken)
     {
-        byte[] output = await ExternalCommand.RunBinaryAsync(
-            "git",
+        IReadOnlyList<ChangeSnapshotFile> files = await ReadFilesAsync(
             repositoryPath,
-            ["ls-tree", "-r", "-z", "--full-tree", "--long", objectId],
+            objectId,
             cancellationToken).ConfigureAwait(false);
-        IReadOnlyList<ChangeSnapshotFile> files = ParseTree(output);
         return new GitSnapshotFileSystem(repositoryPath, objectId, files);
     }
 
+    internal static GitSnapshotFileSystem Create(
+        string repositoryPath,
+        string objectId,
+        IReadOnlyList<ChangeSnapshotFile> files) =>
+        new(repositoryPath, objectId, files);
+
     public string GetFullPath(string path) => Path.GetFullPath(path);
 
-    public bool DirectoryExists(string path) => _directories.Contains(Path.GetFullPath(path));
+    public bool DirectoryExists(string path)
+    {
+        string fullPath = Path.GetFullPath(path);
+        if (string.Equals(fullPath, RootPath, StringComparison.Ordinal))
+        {
+            return true;
+        }
 
-    public bool FileExists(string path) => _files.ContainsKey(Path.GetFullPath(path));
+        EnsureDirectoryIndex();
+        return _directories!.Contains(fullPath);
+    }
+
+    public bool FileExists(string path) => TryGetFile(path, out _);
 
     public FileAttributes GetAttributes(string path)
     {
         string fullPath = Path.GetFullPath(path);
-        if (_directories.Contains(fullPath))
+        if (string.Equals(fullPath, RootPath, StringComparison.Ordinal))
         {
             return FileAttributes.Directory;
         }
 
-        ChangeSnapshotFile file = GetFile(fullPath);
+        if (TryGetFile(fullPath, out ChangeSnapshotFile file))
+        {
+            return file.IsLink || file.IsSubmodule
+                ? FileAttributes.ReparsePoint
+                : FileAttributes.Normal;
+        }
+
+        EnsureDirectoryIndex();
+        if (_directories!.Contains(fullPath))
+        {
+            return FileAttributes.Directory;
+        }
+
+        file = GetFile(fullPath);
         return file.IsLink || file.IsSubmodule
             ? FileAttributes.ReparsePoint
             : FileAttributes.Normal;
@@ -92,19 +98,13 @@ internal sealed class GitSnapshotFileSystem : IRepositoryFileSystem, IChangeSnap
     public string[] GetFileSystemEntries(string directoryPath)
     {
         string fullDirectory = Path.GetFullPath(directoryPath);
-        if (!_directories.Contains(fullDirectory))
+        EnsureDirectoryIndex();
+        if (!_entriesByDirectory!.TryGetValue(fullDirectory, out string[]? entries))
         {
             throw new DirectoryNotFoundException($"Git snapshot directory was not found: {directoryPath}");
         }
 
-        return
-        [
-            .. _directories
-                .Where(path => !string.Equals(path, fullDirectory, StringComparison.Ordinal) &&
-                    string.Equals(Path.GetDirectoryName(path), fullDirectory, StringComparison.Ordinal))
-                .Concat(_files.Keys.Where(path =>
-                    string.Equals(Path.GetDirectoryName(path), fullDirectory, StringComparison.Ordinal))),
-        ];
+        return [.. entries];
     }
 
     public RepositoryFileMetadata GetFileMetadata(string path)
@@ -117,7 +117,7 @@ internal sealed class GitSnapshotFileSystem : IRepositoryFileSystem, IChangeSnap
     {
         _ = bufferSize;
         ChangeSnapshotFile file = GetFile(Path.GetFullPath(path));
-        return _objectReader.OpenBlob(file.ObjectId);
+        return ObjectReader.OpenBlob(file.ObjectId);
     }
 
     public async ValueTask<byte[]> ReadAllBytesAsync(
@@ -125,7 +125,7 @@ internal sealed class GitSnapshotFileSystem : IRepositoryFileSystem, IChangeSnap
         CancellationToken cancellationToken = default)
     {
         ChangeSnapshotFile file = GetFile(Path.GetFullPath(path));
-        byte[] content = await _objectReader.ReadBlobAsync(
+        byte[] content = await ObjectReader.ReadBlobAsync(
             file.ObjectId,
             cancellationToken).ConfigureAwait(false);
         return [.. content];
@@ -152,81 +152,93 @@ internal sealed class GitSnapshotFileSystem : IRepositoryFileSystem, IChangeSnap
         CancellationToken cancellationToken) =>
         ReadAllBytesAsync(ResolveRelativePath(relativePath), cancellationToken);
 
-    public async ValueTask DisposeAsync() => await _objectReader.DisposeAsync().ConfigureAwait(false);
-
-    private static List<ChangeSnapshotFile> ParseTree(byte[] output)
+    public async ValueTask DisposeAsync()
     {
-        List<ChangeSnapshotFile> files = [];
-        int start = 0;
-        while (start < output.Length)
+        if (_objectReader is not null)
         {
-            int end = Array.IndexOf(output, (byte)0, start);
-            if (end < 0)
-            {
-                throw new InvalidOperationException("Git tree output was not NUL terminated.");
-            }
-
-            ReadOnlySpan<byte> entry = output.AsSpan(start, end - start);
-            int tab = entry.IndexOf((byte)'\t');
-            if (tab <= 0 || tab == entry.Length - 1)
-            {
-                throw new InvalidOperationException("Git returned a malformed tree entry.");
-            }
-
-            string header;
-            string path;
-            try
-            {
-                header = StrictUtf8.GetString(entry[..tab]);
-                path = StrictUtf8.GetString(entry[(tab + 1)..]);
-            }
-            catch (DecoderFallbackException exception)
-            {
-                throw new InvalidOperationException(
-                    "The Git tree contains a path that is not valid UTF-8 and cannot be analyzed safely.",
-                    exception);
-            }
-
-            ValidateGitPath(path);
-            string[] fields = header.Split(
-                ' ',
-                StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
-            if (fields.Length != 4)
-            {
-                throw new InvalidOperationException("Git returned a malformed long tree header.");
-            }
-
-            long length = fields[3] == "-"
-                ? 0L
-                : long.Parse(fields[3], NumberStyles.None, CultureInfo.InvariantCulture);
-            files.Add(new ChangeSnapshotFile
-            {
-                Mode = fields[0],
-                ObjectId = fields[2].ToLowerInvariant(),
-                Length = length,
-                Path = path,
-            });
-            start = end + 1;
-        }
-
-        return files;
-    }
-
-    private static void ValidateGitPath(string path)
-    {
-        if (string.IsNullOrWhiteSpace(path) ||
-            Path.IsPathRooted(path) ||
-            path.Split('/').Any(segment => segment is "" or "." or "..") ||
-            (OperatingSystem.IsWindows() && path.Contains('\\')))
-        {
-            throw new InvalidOperationException($"Git returned an unsafe snapshot path: '{path}'.");
+            await _objectReader.DisposeAsync().ConfigureAwait(false);
         }
     }
 
-    private ChangeSnapshotFile GetFile(string fullPath) =>
-        _files.TryGetValue(fullPath, out ChangeSnapshotFile? file)
+    private GitBatchObjectReader ObjectReader =>
+        _objectReader ??= new GitBatchObjectReader(_repositoryPath);
+
+    private ChangeSnapshotFile GetFile(string path) =>
+        TryGetFile(path, out ChangeSnapshotFile file)
             ? file
-            : throw new FileNotFoundException("Git snapshot file was not found.", fullPath);
+            : throw new FileNotFoundException("Git snapshot file was not found.", path);
+
+    private bool TryGetFile(string path, out ChangeSnapshotFile file)
+    {
+        string fullPath = Path.GetFullPath(path);
+        if (!IsWithinRoot(fullPath))
+        {
+            file = null!;
+            return false;
+        }
+
+        string relativePath = Path.GetRelativePath(RootPath, fullPath)
+            .Replace('\\', '/');
+        return _files.TryGetValue(relativePath, out file!);
+    }
+
+    private void EnsureDirectoryIndex()
+    {
+        if (_entriesByDirectory is not null)
+        {
+            return;
+        }
+
+        lock (_directoryGate)
+        {
+            if (_entriesByDirectory is not null)
+            {
+                return;
+            }
+
+            HashSet<string> directories = new(StringComparer.Ordinal) { RootPath };
+            Dictionary<string, string> fullFiles = new(StringComparer.Ordinal);
+            foreach (ChangeSnapshotFile file in Files)
+            {
+                string fullPath = ResolveRelativePath(file.Path);
+                fullFiles.Add(file.Path, fullPath);
+                string? directory = Path.GetDirectoryName(fullPath);
+                while (directory is not null && IsWithinRoot(directory))
+                {
+                    directories.Add(directory);
+                    if (string.Equals(directory, RootPath, StringComparison.Ordinal))
+                    {
+                        break;
+                    }
+
+                    directory = Path.GetDirectoryName(directory);
+                }
+            }
+
+            Dictionary<string, List<string>> entries = directories.ToDictionary(
+                directory => directory,
+                _ => new List<string>(),
+                StringComparer.Ordinal);
+            foreach (string directory in directories)
+            {
+                if (!string.Equals(directory, RootPath, StringComparison.Ordinal))
+                {
+                    entries[Path.GetDirectoryName(directory)!].Add(directory);
+                }
+            }
+
+            foreach (string file in fullFiles.Values)
+            {
+                entries[Path.GetDirectoryName(file)!].Add(file);
+            }
+
+            _directories = directories;
+            _entriesByDirectory = entries.ToDictionary(
+                pair => pair.Key,
+                pair => pair.Value.Order(StringComparer.Ordinal).ToArray(),
+                StringComparer.Ordinal);
+        }
+    }
 
     private string ResolveRelativePath(string relativePath)
     {

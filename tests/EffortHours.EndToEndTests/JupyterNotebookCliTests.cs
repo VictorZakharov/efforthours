@@ -89,7 +89,7 @@ public sealed class JupyterNotebookCliTests
         Assert.DoesNotContain("private-new-output", change.StandardOutput, StringComparison.Ordinal);
         using JsonDocument report = JsonDocument.Parse(change.StandardOutput);
         Assert.Equal(
-            "change-seed/0.18.0+seed-rules/0.4.0",
+            "change-seed/0.18.1+seed-rules/0.4.0",
             report.RootElement.GetProperty("estimatorVersion").GetString());
         Assert.Equal(0m, report.RootElement.GetProperty("totalEffort").GetProperty("expected").GetDecimal());
         Assert.Empty(report.RootElement.GetProperty("workItems").EnumerateArray());

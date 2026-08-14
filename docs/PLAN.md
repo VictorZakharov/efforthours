@@ -46,7 +46,7 @@ The repository already provides:
 
 This is an experimental public alpha. Repository `seed-rules/0.4.0` remains
 uncalibrated. Current Change reports use
-`change-seed/0.18.0+seed-rules/0.4.0`, while only the documented 0.6.0 Stage A
+`change-seed/0.18.1+seed-rules/0.4.0`, while only the documented 0.6.0 Stage A
 subset has limited logical admission. No local ML model and no automatic host-
 review budget is admitted.
 
@@ -130,7 +130,7 @@ external storage. Structured output stays on stdout and diagnostics on stderr.
 ```text
 explicit selector
   -> immutable base/head snapshots
-  -> ordinary static evidence for each snapshot
+  -> bounded static evidence for each snapshot (full or changed-scope Git projection)
   -> normalized final artifact delta
   -> Change work items
   -> optional component/range or portfolio reconciliation
@@ -214,8 +214,9 @@ runtimes merely for architectural symmetry.
   Linux, and macOS hosts.
 - Add larger redistributable monorepository shapes before freezing universal
   regression thresholds.
-- Measure directory/evidence Change selectors and portfolio history bounds on
-  realistic large trees.
+- Extend the recorded nested author-period checkpoint to concurrent processes,
+  directory/evidence selectors, other ecosystems, and realistic public large
+  trees.
 - Keep caller-supplied target fingerprints and offline-safety checks in every
   performance claim.
 
