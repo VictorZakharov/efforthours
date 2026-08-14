@@ -22,6 +22,14 @@ Change and portfolio commands have their own canonical v1 reports under the same
 general rules: observed selection evidence, inferred normalization, estimated
 work, reconciliation, diagnostics, and pricing stay distinct.
 
+The multi-repository author-period manifest contract has a deliberately asymmetric
+execution/report boundary. Local repository paths and raw identity aliases are
+accepted only as execution selectors. The portfolio report retains their
+order-independent manifest digest plus stable contributor, repository, and head
+IDs, immutable head objects, contributor match kinds, and head reachability. The
+older direct `--author` form remains backward compatible and continues to retain
+its caller-supplied aliases.
+
 ## Repository views
 
 Repository estimates support these presentations:

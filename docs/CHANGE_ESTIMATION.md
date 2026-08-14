@@ -404,14 +404,15 @@ is represented by counts and snapshot evidence rather than by repeating every
 unchanged path.
 
 The v1 public schemas are `change-evidence`, `change-estimate-report`,
-`change-estimate-explanation`, `change-portfolio-manifest`, and
-`change-portfolio-report`. The Change report schema adds an optional normalization
-summary, so frozen v1 reports remain valid; explanation queries accept its stable
-calculation ID and return exact adjustment lineage. Portfolio contracts separately
-record selection policy, source estimator identity, immutable base contexts,
-patch/evidence digests, isolated rows, repository-normalized categories, signed
-adjustments, exact allocations, attribution uncertainty, verification, and
-post-EHE pricing. They emit neither local repository paths nor source excerpts.
+`change-estimate-explanation`, `change-portfolio-manifest`,
+`change-author-period-manifest`, and `change-portfolio-report`. The Change report
+schema adds an optional normalization summary, so frozen v1 reports remain valid;
+explanation queries accept its stable calculation ID and return exact adjustment
+lineage. Portfolio contracts separately record selection policy, source estimator
+identity, immutable base contexts, patch/evidence digests, isolated rows,
+repository-normalized categories, signed adjustments, exact allocations,
+attribution uncertainty, verification, and post-EHE pricing. They emit neither
+local repository paths nor source excerpts.
 
 The current source Change estimator identity is
 `change-seed/0.18.1+seed-rules/0.4.0`; the portfolio reconciler identity is
@@ -667,10 +668,13 @@ The default offline engine invokes local Git only for an explicitly requested
 change operation. The optional `gh` adapter may access network data and credentials;
 the CLI announces that boundary and does not retain PR bodies, discussions,
 reviews, activity, or private diff bodies. Author-period reports intentionally
-retain the exact caller-supplied aliases and selection policy for auditability, so
-callers must treat reports containing real identities according to their own
-privacy and retention requirements. Commit messages and local repository paths are
-not retained.
+retain selection policy for auditability. The direct single-repository command
+also retains its exact caller-supplied aliases for backward compatibility, so
+callers must treat those reports according to their own privacy and retention
+requirements. The separate multi-repository author-period manifest keeps aliases
+and local paths execution-only: reports retain a canonical manifest digest,
+caller-approved contributor/repository/head IDs, and immutable object IDs instead.
+Commit messages and local repository paths are not retained.
 
 Public fixtures must use synthetic identities and repositories. Private company
 contribution data must never enter EffortHours's public calibration corpus by default.

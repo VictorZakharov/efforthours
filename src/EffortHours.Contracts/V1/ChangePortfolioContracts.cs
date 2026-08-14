@@ -52,6 +52,45 @@ public sealed record ChangePortfolioSelection
     public bool ManifestBased { get; init; }
 
     public ChangePortfolioAuthorPeriodSelection? AuthorPeriod { get; init; }
+
+    public ChangePortfolioAuthorPeriodManifestSelection? AuthorPeriodManifest { get; init; }
+}
+
+public sealed record ChangePortfolioAuthorPeriodManifestSelection
+{
+    public required string ManifestDigest { get; init; }
+
+    public required DateTimeOffset SinceInclusive { get; init; }
+
+    public required DateTimeOffset UntilExclusive { get; init; }
+
+    public required string TimeZone { get; init; }
+
+    public required ChangePortfolioDateField DateField { get; init; }
+
+    public required ChangePortfolioMergePolicy MergePolicy { get; init; }
+
+    public required ChangePortfolioCoauthorPolicy CoauthorPolicy { get; init; }
+
+    public IReadOnlyList<string> ContributorIds { get; init; } = [];
+
+    public IReadOnlyList<ChangePortfolioAuthorPeriodManifestRepository> Repositories { get; init; } = [];
+
+    public string IntervalSemantics { get; init; } = "since-inclusive-until-exclusive";
+}
+
+public sealed record ChangePortfolioAuthorPeriodManifestRepository
+{
+    public required string Id { get; init; }
+
+    public IReadOnlyList<ChangePortfolioAuthorPeriodManifestHead> Heads { get; init; } = [];
+}
+
+public sealed record ChangePortfolioAuthorPeriodManifestHead
+{
+    public required string Id { get; init; }
+
+    public required string ObjectId { get; init; }
 }
 
 public sealed record ChangePortfolioAttribution
@@ -64,7 +103,18 @@ public sealed record ChangePortfolioAttribution
 
     public int ParentCount { get; init; }
 
+    public IReadOnlyList<ChangePortfolioContributorMatch>? ContributorMatches { get; init; }
+
+    public IReadOnlyList<string>? HeadIds { get; init; }
+
     public IReadOnlyList<string> AmbiguityReasons { get; init; } = [];
+}
+
+public sealed record ChangePortfolioContributorMatch
+{
+    public required string ContributorId { get; init; }
+
+    public required ChangePortfolioContributorMatchKind Kind { get; init; }
 }
 
 public sealed record ChangePortfolioItemEstimate

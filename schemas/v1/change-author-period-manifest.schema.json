@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:eh:schema:v1:change-author-period-manifest",
+  "title": "EffortHours author-period portfolio manifest v1",
+  "type": "object",
+  "required": ["schemaVersion", "selection", "contributors", "repositories"],
+  "properties": {
+    "schemaVersion": { "const": "1.0.0" },
+    "selection": { "$ref": "#/$defs/selection" },
+    "contributors": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 64,
+      "items": { "$ref": "#/$defs/contributor" }
+    },
+    "repositories": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 32,
+      "items": { "$ref": "#/$defs/repository" }
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "publicId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
+    },
+    "selection": {
+      "type": "object",
+      "required": [
+        "sinceInclusive",
+        "untilExclusive",
+        "timeZone",
+        "dateField",
+        "mergePolicy",
+        "coauthorPolicy",
+        "intervalSemantics"
+      ],
+      "properties": {
+        "sinceInclusive": { "type": "string", "format": "date-time" },
+        "untilExclusive": { "type": "string", "format": "date-time" },
+        "timeZone": { "type": "string", "minLength": 1, "maxLength": 256 },
+        "dateField": { "enum": ["author", "committer"] },
+        "mergePolicy": { "enum": ["exclude", "first-parent"] },
+        "coauthorPolicy": { "enum": ["include", "exclude"] },
+        "intervalSemantics": { "const": "since-inclusive-until-exclusive" }
+      },
+      "additionalProperties": false
+    },
+    "contributor": {
+      "type": "object",
+      "required": ["id", "aliases"],
+      "properties": {
+        "id": { "$ref": "#/$defs/publicId" },
+        "aliases": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 16,
+          "items": { "type": "string", "minLength": 1, "maxLength": 320 },
+          "uniqueItems": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "repository": {
+      "type": "object",
+      "required": ["id", "repositoryPath", "heads"],
+      "properties": {
+        "id": { "$ref": "#/$defs/publicId" },
+        "repositoryPath": { "type": "string", "minLength": 1, "maxLength": 4096 },
+        "heads": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 32,
+          "items": { "$ref": "#/$defs/head" }
+        }
+      },
+      "additionalProperties": false
+    },
+    "head": {
+      "type": "object",
+      "required": ["id", "objectId"],
+      "properties": {
+        "id": { "$ref": "#/$defs/publicId" },
+        "objectId": { "type": "string", "pattern": "^[0-9a-f]{40}([0-9a-f]{24})?$" }
+      },
+      "additionalProperties": false
+    }
+  }
+}

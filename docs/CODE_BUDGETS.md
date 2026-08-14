@@ -23,6 +23,9 @@ memory-only unit suite.
   relevant design or milestone document.
 - Generated files may receive a narrowly documented exception when generation is
   reproducible and hand-maintained responsibilities are not being hidden.
+- Portfolio execution-manifest validation, manifest-safe report validation, and
+  canonical identity stay in focused files instead of expanding the general
+  portfolio contract validator. New selector families follow the same split.
 
 The August 8, 2026 analyzer-precision change extracted `.NET` data classification
 plus application and service-boundary classification from `CSharpFileAnalyzer.cs`
