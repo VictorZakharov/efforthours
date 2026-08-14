@@ -254,7 +254,7 @@ internal static class SnapshotArchiveVerifier
 
     private static async Task<string> CopyAndHashGitBlobAsync(
         Stream input,
-        Stream output,
+        FileStream output,
         long length,
         CancellationToken cancellationToken)
     {

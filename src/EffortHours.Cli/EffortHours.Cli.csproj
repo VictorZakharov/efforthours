@@ -7,11 +7,11 @@
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>eh</ToolCommandName>
     <PackageId>EffortHours.Tool</PackageId>
-    <Version>0.10.0-alpha.2</Version>
+    <Version>0.10.0-alpha.3</Version>
     <Title>EffortHours CLI</Title>
     <PackageReadmeFile>PACKAGE_README.md</PackageReadmeFile>
     <PackageTags>estimation;effort-estimation;developer-tools;cli;repository-analysis;static-analysis;dotnet-tool</PackageTags>
-    <PackageReleaseNotes>Documentation alpha: restructures the GitHub and packaged guides into scannable 13-family matrices with explicit static-analysis boundaries, and surfaces recorded per-language million-line performance checkpoints. Analyzer behavior and estimator identities are unchanged; bundled estimators remain experimental and uncalibrated.</PackageReleaseNotes>
+    <PackageReleaseNotes>Performance and calibration-governance alpha: bounds large author-period Change portfolios with identity-first selection, indexed and incrementally reused snapshot inventories, changed-scope analysis, and adjacent evidence reuse; makes canonical JSON cross-platform deterministic; and adds digest-pinned public-candidate and stricter blind-review tooling. No repository model is admitted; bundled estimators remain experimental and uncalibrated.</PackageReleaseNotes>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="../EffortHours.Analysis/EffortHours.Analysis.csproj" />

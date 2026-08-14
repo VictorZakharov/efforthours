@@ -304,7 +304,7 @@ public sealed class CoverageReportAnalyzer : IRepositoryEvidenceAnalyzer
         return true;
     }
 
-    private static async Task DrainAsync(Stream stream, CancellationToken cancellationToken)
+    private static async Task DrainAsync(CryptoStream stream, CancellationToken cancellationToken)
     {
         byte[] buffer = new byte[16 * 1024];
         while (await stream.ReadAsync(buffer, cancellationToken).ConfigureAwait(false) > 0)

@@ -6,6 +6,8 @@ may still change public contracts with explicit documentation.
 
 ## Unreleased
 
+## 0.10.0-alpha.3 - 2026-08-14
+
 ### Added
 
 - Added a maintainer-only, digest-pinned repository-candidate projector and
