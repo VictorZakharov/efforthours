@@ -13,7 +13,7 @@ specification.
 ## Install
 
 ```text
-dotnet tool install --global EffortHours.Tool --version 0.10.0-alpha.2
+dotnet tool install --global EffortHours.Tool --version 0.10.0-alpha.3
 eh version
 eh --help
 ```

@@ -257,20 +257,20 @@ internal static class CargoTomlParser
         out string kind,
         out string name)
     {
-        foreach ((string Marker, string Kind) candidate in new[]
+        foreach ((string markerText, string dependencyKind) in new[]
         {
             (".dev-dependencies.", "development"),
             (".build-dependencies.", "build"),
             (".dependencies.", "runtime"),
         })
         {
-            int marker = ("." + section).LastIndexOf(candidate.Marker, StringComparison.Ordinal);
+            int marker = ("." + section).LastIndexOf(markerText, StringComparison.Ordinal);
             if (marker < 0) continue;
             string prefix = ("." + section)[..marker];
             if (prefix.Length > 0 && prefix != ".workspace" &&
                 !prefix.StartsWith(".target.", StringComparison.Ordinal)) continue;
-            name = section[(marker + candidate.Marker.Length - 1)..].Trim().Trim('\'', '"');
-            kind = candidate.Kind;
+            name = section[(marker + markerText.Length - 1)..].Trim().Trim('\'', '"');
+            kind = dependencyKind;
             return name.Length > 0;
         }
 
