@@ -106,12 +106,15 @@ multiplies the result.
 ```text
 eh change portfolio . --pr 123 --pr 127 --format markdown --no-rate
 eh change portfolio --manifest portfolio.json --format markdown --no-rate
+eh change portfolio --author-period-manifest author-period.json --format markdown --no-rate
 ```
 
 Portfolio mode normalizes each repository independently, removes exact repeated
-PR patches, keeps overlap/revert/shared-context adjustments visible, and allocates
-the final expected EHE exactly. It reports repository-attributed change effort,
-not individual productivity or sole authorship.
+PR patches, unions pinned author-period heads without repeating shared commits,
+keeps overlap/revert/shared-context adjustments visible, and allocates the final
+expected EHE exactly. Manifest author aliases and local paths remain execution-only.
+The result is repository-attributed change effort, not individual productivity or
+sole authorship.
 
 ## What the model counts
 
@@ -315,6 +318,7 @@ eh change <repository> --pr <number-or-url> [--repo <owner/name>]
 eh change --base-path <before> --head-path <after>
 eh change portfolio <repository> --pr <pr> --pr <pr>
 eh change portfolio --manifest <portfolio.json>
+eh change portfolio --author-period-manifest <manifest.json>
 eh change explain <change-estimate.json> --item <id>
 eh review packet <repository> --compact
 eh model info

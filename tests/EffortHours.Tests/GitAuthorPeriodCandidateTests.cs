@@ -60,6 +60,32 @@ public sealed class GitAuthorPeriodCandidateTests
         Assert.Contains("unbounded identity ledger", exception.Message, StringComparison.Ordinal);
     }
 
+    [Fact]
+    public async Task CandidateQueryPassesAllHeadsToOneRepositoryScopedUnion()
+    {
+        string firstHead = new('c', 40);
+        string secondHead = new('b', 40);
+        RecordingRunner runner = new(
+            Metadata(new string('a', 40), "Target", "target@example.test", string.Empty));
+        GitClient client = new(
+            runner,
+            (_, _, _) => throw new NotSupportedException());
+
+        IReadOnlyList<GitCommitMetadata> candidates = await client.ListAuthorPeriodCandidatesAsync(
+            "virtual-repository",
+            [firstHead, secondHead],
+            ["Target"],
+            includeCoauthors: false,
+            maximumCount: 100);
+
+        _ = Assert.Single(candidates);
+        IReadOnlyList<string> call = Assert.Single(runner.Calls);
+        Assert.Equal(secondHead, call[^2]);
+        Assert.Equal(firstHead, call[^1]);
+        Assert.Equal(1, call.Count(argument => argument == firstHead));
+        Assert.Equal(1, call.Count(argument => argument == secondHead));
+    }
+
     private static string Metadata(
         string objectId,
         string authorName,

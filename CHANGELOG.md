@@ -6,6 +6,14 @@ may still change public contracts with explicit documentation.
 
 ## Unreleased
 
+### Added
+
+- Added the v1 multi-repository, multi-head author-period manifest and the
+  `--author-period-manifest` portfolio selector. It preflights local repositories
+  and pinned objects, unions shared reachable history per repository, records
+  contributor matches and head reachability without multiplying effort, and keeps
+  execution-only aliases and local paths out of reports.
+
 ## 0.10.0-alpha.3 - 2026-08-14
 
 ### Added

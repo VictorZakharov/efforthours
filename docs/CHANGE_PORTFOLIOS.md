@@ -3,7 +3,8 @@
 ## Current boundary
 
 `change-portfolio/0.1.0` composes canonical Change estimates selected as repeated
-pull requests, a versioned multi-repository manifest, or a bounded author-period.
+pull requests, a versioned multi-repository PR manifest, a bounded direct
+author-period, or a versioned multi-repository/multi-head author-period manifest.
 It remains experimental and has no empirical production validation.
 
 The result is **repository-attributed Change EHE**: counterfactual replacement
@@ -22,6 +23,7 @@ One command accepts exactly one selector family:
 ```text
 eh change portfolio <repository> --pr <number-or-url> --pr <number-or-url>
 eh change portfolio --manifest <portfolio.json>
+eh change portfolio --author-period-manifest <manifest.json>
 eh change portfolio <repository> --author <alias> [--author <alias> ...]
   --since <instant> --until <instant>
 ```
@@ -36,17 +38,16 @@ the manifest directory and remain execution-only; they are never copied into the
 report. Repository IDs and resolved Git roots map one-to-one so caller labels
 cannot combine unrelated repositories or bypass same-repository overlap.
 
-The separate `change-author-period-manifest` v1 contract freezes the input and
-privacy boundary for a future multi-repository, multi-head author-period selector:
+The separate `change-author-period-manifest` v1 contract supplies the input and
+privacy boundary for the multi-repository, multi-head author-period selector:
 
 ```text
 eh change portfolio --author-period-manifest <manifest.json> [options]
 ```
 
-That spelling is reserved but is not exposed by the executable until the
-repository-scoped union planner is implemented. Publishing the contract first
-prevents `--help` from advertising a selector that would otherwise produce a
-partial or mechanically summed result.
+The executable exposes that spelling together with the complete loader and
+repository-scoped union planner. Profile, output, and optional pricing remain
+invocation-wide.
 
 The manifest contains one shared interval, timezone, date field, merge policy,
 and co-author policy; stable contributor IDs with execution-only aliases; and
@@ -93,7 +94,8 @@ digit, and are limited to 128 characters. The v1 execution budgets are 32
 repositories, 32 heads per repository and 128 heads overall, 64 contributors, 16
 aliases per contributor and 128 aliases overall, and 128 selected commits. An
 immutable head object may appear only once within one repository; equal object-ID
-text in different repositories remains repository-scoped.
+text in different repositories remains repository-scoped. The CLI reads at most
+one MiB of strict UTF-8 manifest JSON.
 
 Semantic validation rejects duplicate IDs, aliases assigned to several
 contributors, empty alias/head sets, repeated repository-local head objects,
@@ -102,6 +104,17 @@ and over-budget input. The execution adapter must additionally resolve paths
 relative to the manifest, enforce a one-to-one repository-ID/root mapping, verify
 every pinned commit locally, and reject missing or unsafe inputs before analysis.
 It must not fetch, execute target code, or write into a target repository.
+
+Execution preflights every repository and pinned commit before Change analysis.
+Each repository's pinned heads are passed together into Git's identity-prefiltered
+walk, which forms a repository-scoped reachable union and returns each commit
+object once. The exact structured identity/time selector runs after that prefilter.
+A separate topological walk propagates a compact head bitset through shared history
+and stops once all selected commits have their complete head reachability. Its
+frontier is bounded independently from the 10,000-record identity ledger, and the
+walk has one-million-visited-commit and 100,000-frontier-entry hard stops.
+Contributor, alias, repository, and head input order is canonicalized before
+report construction.
 
 The canonical semantic manifest digest sorts repositories, heads, contributors,
 and aliases before hashing, so equivalent array reorderings retain one identity.
@@ -116,8 +129,9 @@ report remains backward compatible and continues to retain its explicitly
 supplied aliases.
 
 Author-period selection is bounded to 10,000 Git-prefiltered identity candidates
-and 128 selected rows. Git may traverse a larger reachable graph without returning
-its unrelated identity records to EffortHours. The exact selector then validates
+per repository and 128 selected rows across the manifest. Git may traverse a
+larger reachable graph without returning its unrelated identity records to
+EffortHours. The exact selector then validates
 structured author/co-author identities and the requested time policy. It provides:
 
 - exact case-insensitive aliases matching author name, email, or

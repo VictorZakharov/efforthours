@@ -13,6 +13,8 @@ internal sealed record ChangePortfolioCommandOptions
 
     public string? ManifestPath { get; init; }
 
+    public string? AuthorPeriodManifestPath { get; init; }
+
     public IReadOnlyList<string> AuthorAliases { get; init; } = [];
 
     public DateTimeOffset? SinceInclusive { get; init; }
@@ -46,6 +48,8 @@ internal sealed record ChangePortfolioCommandOptions
 
     public bool IsManifest => ManifestPath is not null;
 
+    public bool IsAuthorPeriodManifest => AuthorPeriodManifestPath is not null;
+
     public bool IsAuthorPeriod => AuthorAliases.Count > 0;
 }
 
@@ -67,6 +71,7 @@ internal static partial class ChangePortfolioCommandOptionsParser
         List<string> authors = [];
         string? githubRepository = null;
         string? manifest = null;
+        string? authorPeriodManifest = null;
         string? since = null;
         string? until = null;
         string timeZone = "UTC";
@@ -119,6 +124,9 @@ internal static partial class ChangePortfolioCommandOptionsParser
                     break;
                 case "--manifest":
                     manifest = value;
+                    break;
+                case "--author-period-manifest":
+                    authorPeriodManifest = value;
                     break;
                 case "--author":
                     authors.Add(value);
@@ -220,6 +228,7 @@ internal static partial class ChangePortfolioCommandOptionsParser
             PullRequests = pullRequests,
             GitHubRepository = githubRepository,
             ManifestPath = manifest,
+            AuthorPeriodManifestPath = authorPeriodManifest,
             AuthorAliases = authors,
             TimeZone = timeZone,
             DateField = dateField,

@@ -6,6 +6,7 @@ internal static class ChangePortfolioHelp
         Usage:
           eh change portfolio <repository> --pr <number-or-url> --pr <number-or-url> [options]
           eh change portfolio --manifest <portfolio.json> [options]
+          eh change portfolio --author-period-manifest <manifest.json> [options]
           eh change portfolio <repository> --author <alias> [--author <alias> ...]
             --since <instant> --until <instant> [options]
 
@@ -13,6 +14,8 @@ internal static class ChangePortfolioHelp
           --pr <number-or-url>       Repeat for each PR in one local repository
           --repo <owner/name>        Explicit GitHub repository for repeated --pr selectors
           --manifest <path>          Versioned multi-repository PR manifest
+          --author-period-manifest <path>
+                                    Versioned multi-repository/multi-head author manifest
           --author <identity>        Exact author name/email/display alias; repeat for aliases
           --since <instant>          Inclusive interval start
           --until <instant>          Exclusive interval end
@@ -36,9 +39,10 @@ internal static class ChangePortfolioHelp
           -h, --help                              Show this help
 
         PR selectors resolve only immutable base/head identities through optional gh support;
-        all objects must already exist locally. Manifest paths are execution-only and are not
-        copied into reports. Author/time/co-author data selects immutable commits and never
-        multiplies effort. Results are repository-attributed Change EHE, not actual labor,
-        productivity, employee rankings, performance grades, or compensation advice.
+        all objects must already exist locally. Manifest repository paths and author aliases are
+        execution-only and are not copied into reports. Author/time/co-author data selects
+        immutable commits and never multiplies effort. Results are repository-attributed Change
+        EHE, not actual labor, productivity, employee rankings, performance grades, or
+        compensation advice.
         """;
 }

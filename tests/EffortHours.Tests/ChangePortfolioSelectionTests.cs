@@ -222,6 +222,33 @@ public sealed class ChangePortfolioSelectionTests
     }
 
     [Fact]
+    public void CommandParserAcceptsOnlyTheAuthorPeriodManifestSelectorFamily()
+    {
+        ChangePortfolioCommandParseResult parsed = ChangePortfolioCommandOptionsParser.Parse(
+        [
+            "--author-period-manifest", "portfolio.json",
+            "--profile", "recreation",
+            "--no-rate",
+        ]);
+        ChangePortfolioCommandParseResult positional = ChangePortfolioCommandOptionsParser.Parse(
+            [".", "--author-period-manifest", "portfolio.json"]);
+        ChangePortfolioCommandParseResult policy = ChangePortfolioCommandOptionsParser.Parse(
+            ["--author-period-manifest", "portfolio.json", "--since", "2026-03-01T00:00:00Z"]);
+        ChangePortfolioCommandParseResult mixed = ChangePortfolioCommandOptionsParser.Parse(
+            ["--author-period-manifest", "portfolio.json", "--manifest", "prs.json"]);
+
+        ChangePortfolioCommandOptions options = Assert.IsType<ChangePortfolioCommandOptions>(parsed.Options);
+        Assert.Null(parsed.Error);
+        Assert.True(options.IsAuthorPeriodManifest);
+        Assert.Equal("portfolio.json", options.AuthorPeriodManifestPath);
+        Assert.Equal(EstimationProfile.Recreation, options.Profile);
+        Assert.Contains("omit positional", positional.Error, StringComparison.Ordinal);
+        Assert.Contains("valid only with --author", policy.Error, StringComparison.Ordinal);
+        Assert.Contains("Select exactly one", mixed.Error, StringComparison.Ordinal);
+        Assert.Contains("--author-period-manifest <path>", ChangePortfolioHelp.Text, StringComparison.Ordinal);
+    }
+
+    [Fact]
     public void OffsetFreeDaylightSavingGapsAndAmbiguitiesRequireExplicitOffsets()
     {
         TimeZoneInfo zone = TimeZoneInfo.CreateCustomTimeZone(
