@@ -254,28 +254,49 @@ internal static class CandidateMeasurementAggregator
         bool repeated = platforms.SelectMany(platform => platform.Shapes).All(shape =>
             shape.SeedRuns.Select(run => run.OutputDigest).Distinct(StringComparer.Ordinal).Count() == 1 &&
             shape.CandidateRuns.Select(run => run.OutputDigest).Distinct(StringComparer.Ordinal).Count() == 1);
+        bool seed = Shapes.All(shape => platforms
+            .Select(platform => platform.Shapes.Single(item => item.Id == shape)
+                .SeedRuns[0].OutputDigest)
+            .Distinct(StringComparer.Ordinal).Count() == 1);
         bool candidate = Shapes.All(shape => platforms
             .Select(platform => platform.Shapes.Single(item => item.Id == shape)
                 .CandidateRuns[0].OutputDigest)
+            .Distinct(StringComparer.Ordinal).Count() == 1);
+        bool normalizedSeed = Shapes.All(shape => platforms
+            .Select(platform => platform.Shapes.Single(item => item.Id == shape)
+                .SeedRuns[0].LfNormalizedOutputDigest)
+            .Distinct(StringComparer.Ordinal).Count() == 1);
+        bool normalizedCandidate = Shapes.All(shape => platforms
+            .Select(platform => platform.Shapes.Single(item => item.Id == shape)
+                .CandidateRuns[0].LfNormalizedOutputDigest)
             .Distinct(StringComparer.Ordinal).Count() == 1);
         return new CandidateCrossPlatformMeasurement
         {
             PlatformCount = platforms.Count,
             ShapeCount = Shapes.Length,
             EvidenceDigestsIdentical = evidence,
+            SeedOutputsIdentical = seed,
             CandidateOutputsIdentical = candidate,
+            LfNormalizedSeedOutputsIdentical = normalizedSeed,
+            LfNormalizedCandidateOutputsIdentical = normalizedCandidate,
             RepeatedOutputsIdentical = repeated,
             Passed = evidence && candidate && repeated,
         };
     }
 
-    private static IReadOnlyList<CandidatePreflightGate> MergeGates(
+    internal static IReadOnlyList<CandidatePreflightGate> MergeGates(
         IReadOnlyList<CandidatePreflightGate> operational,
         IReadOnlyList<CandidatePreflightGate> measured)
     {
-        Dictionary<string, CandidatePreflightGate> index = operational
-            .Concat(measured)
-            .ToDictionary(gate => gate.Id, gate => gate, StringComparer.Ordinal);
+        Dictionary<string, CandidatePreflightGate> index = operational.ToDictionary(
+            gate => gate.Id,
+            gate => gate,
+            StringComparer.Ordinal);
+        foreach (CandidatePreflightGate gate in measured)
+        {
+            index[gate.Id] = gate;
+        }
+
         string[] ids =
         [
             "ecosystem-stratum-agreement", "material-category-agreement",

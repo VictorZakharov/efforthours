@@ -90,7 +90,10 @@ public sealed class CandidateResourceMeasurementTests
             PlatformCount = 3,
             ShapeCount = 3,
             EvidenceDigestsIdentical = true,
+            SeedOutputsIdentical = true,
             CandidateOutputsIdentical = true,
+            LfNormalizedSeedOutputsIdentical = true,
+            LfNormalizedCandidateOutputsIdentical = true,
             RepeatedOutputsIdentical = true,
             Passed = true,
         };
@@ -118,6 +121,29 @@ public sealed class CandidateResourceMeasurementTests
         Assert.Contains("314/339", gate.Observed, StringComparison.Ordinal);
     }
 
+    [Fact]
+    public void MeasuredGatesReplaceTheirNotEvaluatedPlaceholders()
+    {
+        CandidatePreflightGate placeholder = Gate("public-mutation-suite", "not-evaluated");
+        CandidatePreflightGate measured = Gate("public-mutation-suite", "failed");
+        string[] remainingIds =
+        [
+            "ecosystem-stratum-agreement", "material-category-agreement",
+            "shape-and-size-slice-regression", "cross-platform-determinism",
+            "schema-lineage-and-saved-explanation", "offline-safety-ood-and-tamper",
+            "median-latency-overhead", "slowest-latency-overhead",
+            "peak-working-set-overhead", "installed-package-increase",
+            "scanner-thresholds-and-target-fingerprints",
+        ];
+
+        IReadOnlyList<CandidatePreflightGate> merged = CandidateMeasurementAggregator.MergeGates(
+            [placeholder, .. remainingIds.Select(id => Gate(id, "passed"))],
+            [measured]);
+
+        Assert.Equal(12, merged.Count);
+        Assert.Same(measured, merged.Single(gate => gate.Id == "public-mutation-suite"));
+    }
+
     private static CandidateMeasurementRun Run(
         int sequence,
         decimal elapsedMilliseconds,
@@ -127,5 +153,16 @@ public sealed class CandidateResourceMeasurementTests
             ElapsedMilliseconds = elapsedMilliseconds,
             PeakWorkingSetMib = peakWorkingSetMib,
             OutputDigest = "sha256:stable-output",
+            LfNormalizedOutputDigest = "sha256:stable-output",
         };
+
+    private static CandidatePreflightGate Gate(string id, string status) => new()
+    {
+        Id = id,
+        Status = status,
+        Passed = status == "passed",
+        Requirement = "test requirement",
+        Observed = "test observation",
+        Rationale = "test rationale",
+    };
 }

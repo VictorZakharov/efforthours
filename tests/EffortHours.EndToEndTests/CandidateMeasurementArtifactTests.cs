@@ -156,6 +156,16 @@ public sealed class CandidateMeasurementArtifactTests
         Assert.Contains("installed-package", packageError, StringComparison.Ordinal);
     }
 
+    [Fact]
+    public void CanonicalOutputDiagnosticNormalizesOperatingSystemLineEndingsOnly()
+    {
+        const string windows = "{\r\n  \"status\": \"stable\"\r\n}\r\n";
+
+        string normalized = CandidateMeasurementProcess.NormalizeLineEndings(windows);
+
+        Assert.Equal("{\n  \"status\": \"stable\"\n}\n", normalized);
+    }
+
     private static string FindRepositoryRoot()
     {
         DirectoryInfo? current = new(AppContext.BaseDirectory);

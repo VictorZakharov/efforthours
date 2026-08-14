@@ -33,12 +33,16 @@ internal static class CandidateMeasuredGateAssessment
                 crossPlatform.Passed,
                 "Canonical candidate estimates must be byte-identical in fresh Windows, Linux, and macOS processes.",
                 $"{crossPlatform.PlatformCount} platforms x {crossPlatform.ShapeCount} saved-evidence shapes; " +
-                $"evidence identical={crossPlatform.EvidenceDigestsIdentical}; candidate outputs identical=" +
-                $"{crossPlatform.CandidateOutputsIdentical}; repeated outputs identical=" +
+                $"evidence identical={crossPlatform.EvidenceDigestsIdentical}; seed bytes identical=" +
+                $"{crossPlatform.SeedOutputsIdentical}; candidate bytes identical=" +
+                $"{crossPlatform.CandidateOutputsIdentical}; LF-normalized candidate bytes identical=" +
+                $"{crossPlatform.LfNormalizedCandidateOutputsIdentical}; repeated outputs identical=" +
                 $"{crossPlatform.RepeatedOutputsIdentical}.",
                 crossPlatform.Passed
                     ? "All repeated and cross-platform canonical projection bytes matched."
-                    : "At least one saved input or canonical projection digest differed."),
+                    : crossPlatform.LfNormalizedCandidateOutputsIdentical
+                        ? "Raw canonical bytes differed by operating-system line endings; LF-normalized candidate bytes matched, but the frozen byte-identical gate still fails."
+                        : "At least one saved input or canonical projection digest differed beyond line-ending normalization."),
             ResourceGate(
                 "median-latency-overhead",
                 median,

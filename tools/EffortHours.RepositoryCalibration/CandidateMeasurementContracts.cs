@@ -24,6 +24,8 @@ internal sealed record CandidateMeasurementRun
     public required decimal PeakWorkingSetMib { get; init; }
 
     public required string OutputDigest { get; init; }
+
+    public required string LfNormalizedOutputDigest { get; init; }
 }
 
 internal sealed record CandidateShapeSummary
@@ -189,6 +191,12 @@ internal sealed record CandidateCrossPlatformMeasurement
     public required bool EvidenceDigestsIdentical { get; init; }
 
     public required bool CandidateOutputsIdentical { get; init; }
+
+    public required bool SeedOutputsIdentical { get; init; }
+
+    public required bool LfNormalizedCandidateOutputsIdentical { get; init; }
+
+    public required bool LfNormalizedSeedOutputsIdentical { get; init; }
 
     public required bool RepeatedOutputsIdentical { get; init; }
 

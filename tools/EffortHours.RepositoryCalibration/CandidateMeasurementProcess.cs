@@ -49,12 +49,16 @@ internal static class CandidateMeasurementProcess
 
         string digest = "sha256:" + Convert.ToHexString(
             SHA256.HashData(Encoding.UTF8.GetBytes(process.Output))).ToLowerInvariant();
+        string normalizedDigest = "sha256:" + Convert.ToHexString(
+            SHA256.HashData(Encoding.UTF8.GetBytes(NormalizeLineEndings(process.Output))))
+            .ToLowerInvariant();
         CandidateMeasurementRun run = new()
         {
             Sequence = sequence,
             ElapsedMilliseconds = Round((decimal)process.Elapsed.TotalMilliseconds),
             PeakWorkingSetMib = Round(process.PeakWorkingSetBytes / 1024m / 1024m),
             OutputDigest = digest,
+            LfNormalizedOutputDigest = normalizedDigest,
         };
         return new CandidateProjectionProcessResult(run, report.WorkItems.Count);
     }
@@ -124,6 +128,10 @@ internal static class CandidateMeasurementProcess
 
         return new MeasuredProcessResult(output, error, timer.Elapsed, peak);
     }
+
+    internal static string NormalizeLineEndings(string value) =>
+        value.Replace("\r\n", "\n", StringComparison.Ordinal)
+            .Replace('\r', '\n');
 
     private static long SampleWorkingSet(Process process, long currentPeak)
     {
