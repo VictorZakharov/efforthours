@@ -80,6 +80,17 @@ Before the first preview:
    private-repository bootstrap policy may remain temporarily active for only seven
    days until its first successful token exchange.
 
+Before every publish or retry, verify that the GitHub environment still names the
+trusted-publishing policy creator:
+
+```text
+gh api repos/VictorZakharov/efforthours/environments/nuget.org/variables/NUGET_USER --jq .value
+```
+
+Require the exact output `VictorZakharov` and stop before dispatch on a mismatch.
+The `WellScoped` package owner is a separate identity and must not replace this
+value.
+
 See the official [NuGet trusted-publishing documentation](https://learn.microsoft.com/nuget/nuget-org/trusted-publishing).
 
 ## Make the source public
