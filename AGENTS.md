@@ -77,6 +77,20 @@ when semantics, schemas, assumptions, or unresolved decisions change.
 - Use the validation sequence in `CONTRIBUTING.md`, scaled to risk. Agents may
   commit, push, and open/update PRs, but must never merge or enable auto-merge.
 
+## Release preflight
+
+- Before dispatching or retrying a NuGet publication, read `docs/RELEASING.md`
+  completely and run
+  `gh api repos/VictorZakharov/efforthours/environments/nuget.org/variables/NUGET_USER --jq .value`.
+  Require the documented value `VictorZakharov`; stop before dispatch on a
+  mismatch.
+- `NUGET_USER` identifies the NuGet trusted-publishing policy creator. It is not
+  the package/organization owner (`WellScoped`), and package metadata must never be
+  used to infer or overwrite it.
+- Publish only the exact verified prerelease tag and artifact. After approval,
+  require a successful publish job, NuGet indexing, and a clean public-feed
+  install before creating the matching GitHub prerelease.
+
 ## Current model boundary
 
 Repository EHE remains experimental and uncalibrated. The frozen 33-family public
