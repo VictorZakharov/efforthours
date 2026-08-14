@@ -16,11 +16,16 @@ public sealed partial class ChangeEstimator
         EstimationProfile profile,
         SnapshotAnalysisCache snapshotAnalyses,
         string cacheNamespace,
+        ChangePortfolioExecutionTelemetry? executionTelemetry,
         CancellationToken cancellationToken)
     {
         ValidateSnapshotReference("base", selection.Base, baseSnapshot);
         ValidateSnapshotReference("head", selection.Head, headSnapshot);
-        ChangeAnalysisScope? analysisScope = ChangeAnalysisScope.Create(baseSnapshot, headSnapshot);
+        ChangeAnalysisScope? analysisScope;
+        using (executionTelemetry?.Measure(ChangePortfolioExecutionPhases.SnapshotAndDiffConstruction))
+        {
+            analysisScope = ChangeAnalysisScope.Create(baseSnapshot, headSnapshot);
+        }
         SnapshotAnalysis baseAnalysis = await AnalyzeSnapshotAsync(
             repositoryName,
             baseSnapshot,
@@ -28,6 +33,7 @@ public sealed partial class ChangeEstimator
             snapshotAnalyses,
             cacheNamespace,
             analysisScope,
+            executionTelemetry,
             cancellationToken)
             .ConfigureAwait(false);
         SnapshotAnalysis headAnalysis = await AnalyzeSnapshotAsync(
@@ -37,6 +43,7 @@ public sealed partial class ChangeEstimator
             snapshotAnalyses,
             cacheNamespace,
             analysisScope,
+            executionTelemetry,
             cancellationToken)
             .ConfigureAwait(false);
         RepositoryEvidence baseEvidence = baseAnalysis.Evidence;
@@ -46,14 +53,18 @@ public sealed partial class ChangeEstimator
         List<Diagnostic> evidenceDiagnostics = [.. selectorDiagnostics];
         evidenceDiagnostics.AddRange(baseEvidence.Diagnostics);
         evidenceDiagnostics.AddRange(headEvidence.Diagnostics);
-        ChangeEvidence evidence = await ChangeEvidenceBuilder.BuildAsync(
-            selection,
-            baseSnapshot,
-            headSnapshot,
-            baseEvidence,
-            headEvidence,
-            evidenceDiagnostics,
-            cancellationToken).ConfigureAwait(false);
+        ChangeEvidence evidence;
+        using (executionTelemetry?.Measure(ChangePortfolioExecutionPhases.SnapshotAndDiffConstruction))
+        {
+            evidence = await ChangeEvidenceBuilder.BuildAsync(
+                selection,
+                baseSnapshot,
+                headSnapshot,
+                baseEvidence,
+                headEvidence,
+                evidenceDiagnostics,
+                cancellationToken).ConfigureAwait(false);
+        }
         int excludedCount = evidence.Paths.Count(path => !path.Represented);
         List<Diagnostic> normalizedDiagnostics = [.. evidence.Diagnostics];
         if (excludedCount > 0)
@@ -143,14 +154,18 @@ public sealed partial class ChangeEstimator
                 "The change analyzer produced invalid evidence: " + string.Join(" ", evidenceErrors));
         }
 
-        ChangeWorkItemResult workItems = ChangeWorkItemBuilder.Build(
-            selection,
-            evidence,
-            baseEvidence,
-            headEvidence,
-            baseEstimate,
-            headEstimate,
-            profile);
+        ChangeWorkItemResult workItems;
+        using (executionTelemetry?.Measure(ChangePortfolioExecutionPhases.Reconciliation))
+        {
+            workItems = ChangeWorkItemBuilder.Build(
+                selection,
+                evidence,
+                baseEvidence,
+                headEvidence,
+                baseEstimate,
+                headEstimate,
+                profile);
+        }
         return new PairEstimate(
             evidence,
             workItems,
@@ -167,6 +182,7 @@ public sealed partial class ChangeEstimator
         SnapshotAnalysisCache snapshotAnalyses,
         string cacheNamespace,
         ChangeAnalysisScope? analysisScope,
+        ChangePortfolioExecutionTelemetry? executionTelemetry,
         CancellationToken cancellationToken)
     {
         string analysisScopeId = analysisScope?.Id ?? "full-snapshot";
@@ -179,12 +195,16 @@ public sealed partial class ChangeEstimator
             return cached;
         }
 
-        RepositoryEvidence evidence = await ReadEvidenceAsync(snapshot, analysisScope, cancellationToken)
-            .ConfigureAwait(false);
-        evidence = RenameRepository(evidence, repositoryName);
-        SnapshotAnalysis analysis = new(
-            evidence,
-            _repositoryEstimator.Estimate(evidence, profile));
+        SnapshotAnalysis analysis;
+        using (executionTelemetry?.Measure(ChangePortfolioExecutionPhases.StaticAnalysis))
+        {
+            RepositoryEvidence evidence = await ReadEvidenceAsync(snapshot, analysisScope, cancellationToken)
+                .ConfigureAwait(false);
+            evidence = RenameRepository(evidence, repositoryName);
+            analysis = new(
+                evidence,
+                _repositoryEstimator.Estimate(evidence, profile));
+        }
         snapshotAnalyses.Add(cacheNamespace, snapshot.ObjectId, analysisScopeId, analysis);
         return analysis;
     }

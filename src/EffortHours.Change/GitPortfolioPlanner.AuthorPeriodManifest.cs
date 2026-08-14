@@ -21,23 +21,47 @@ public sealed record GitAuthorPeriodManifestPortfolioPlan
     public IReadOnlyList<GitAuthorPeriodManifestPortfolioItem> Items { get; init; } = [];
 
     public IReadOnlyList<Diagnostic> Diagnostics { get; init; } = [];
+
+    public required ChangePortfolioExecutionTelemetry ExecutionTelemetry { get; init; }
 }
 
 public sealed partial class GitPortfolioPlanner
 {
+    public Task<GitAuthorPeriodManifestPortfolioPlan> PlanAuthorPeriodManifestAsync(
+        ChangeAuthorPeriodManifest manifest,
+        string manifestDigest,
+        IReadOnlyDictionary<string, string> repositoryPaths,
+        CancellationToken cancellationToken = default) =>
+        PlanAuthorPeriodManifestAsync(
+            manifest,
+            manifestDigest,
+            repositoryPaths,
+            new ChangePortfolioExecutionTelemetry(),
+            cancellationToken);
+
     public async Task<GitAuthorPeriodManifestPortfolioPlan> PlanAuthorPeriodManifestAsync(
         ChangeAuthorPeriodManifest manifest,
         string manifestDigest,
         IReadOnlyDictionary<string, string> repositoryPaths,
+        ChangePortfolioExecutionTelemetry executionTelemetry,
         CancellationToken cancellationToken = default)
     {
-        ValidateManifestInputs(manifest, manifestDigest, repositoryPaths);
+        ArgumentNullException.ThrowIfNull(executionTelemetry);
+        using (executionTelemetry.Measure(ChangePortfolioExecutionPhases.ManifestValidation))
+        {
+            ValidateManifestInputs(manifest, manifestDigest, repositoryPaths);
+        }
+
         string[] aliases = CanonicalAliases(
             [.. manifest.Contributors.SelectMany(contributor => contributor.Aliases)]);
-        PreparedManifestRepository[] repositories = await PreflightRepositoriesAsync(
-            manifest,
-            repositoryPaths,
-            cancellationToken).ConfigureAwait(false);
+        PreparedManifestRepository[] repositories;
+        using (executionTelemetry.Measure(ChangePortfolioExecutionPhases.HeadValidation))
+        {
+            repositories = await PreflightRepositoriesAsync(
+                manifest,
+                repositoryPaths,
+                cancellationToken).ConfigureAwait(false);
+        }
         List<GitAuthorPeriodManifestPortfolioItem> items = [];
         List<Diagnostic> diagnostics =
         [
@@ -60,13 +84,16 @@ public sealed partial class GitPortfolioPlanner
             IReadOnlyList<GitCommitMetadata> history;
             try
             {
-                history = await _git.ListAuthorPeriodCandidatesAsync(
-                    repository.RootPath,
-                    [.. repository.Manifest.Heads.Select(head => head.ObjectId)],
-                    aliases,
-                    manifest.Selection.CoauthorPolicy == ChangePortfolioCoauthorPolicy.Include,
-                    _options.MaximumHistoryCommits + 1,
-                    cancellationToken).ConfigureAwait(false);
+                using (executionTelemetry.Measure(ChangePortfolioExecutionPhases.HistoryUnion))
+                {
+                    history = await _git.ListAuthorPeriodCandidatesAsync(
+                        repository.RootPath,
+                        [.. repository.Manifest.Heads.Select(head => head.ObjectId)],
+                        aliases,
+                        manifest.Selection.CoauthorPolicy == ChangePortfolioCoauthorPolicy.Include,
+                        _options.MaximumHistoryCommits + 1,
+                        cancellationToken).ConfigureAwait(false);
+                }
             }
             catch (ExternalCommandException exception)
             {
@@ -76,10 +103,14 @@ public sealed partial class GitPortfolioPlanner
             }
 
             EnsureCandidateLimit(history.Count, _options.MaximumHistoryCommits);
-            AuthorPeriodManifestSelectionResult selected = AuthorPeriodManifestCommitSelector.Select(
-                history,
-                manifest.Selection,
-                manifest.Contributors);
+            AuthorPeriodManifestSelectionResult selected;
+            using (executionTelemetry.Measure(ChangePortfolioExecutionPhases.Selection))
+            {
+                selected = AuthorPeriodManifestCommitSelector.Select(
+                    history,
+                    manifest.Selection,
+                    manifest.Contributors);
+            }
             diagnostics.AddRange(selected.Diagnostics);
             if (selected.Commits.Count == 0)
             {
@@ -96,11 +127,14 @@ public sealed partial class GitPortfolioPlanner
             IReadOnlyDictionary<string, IReadOnlyList<string>> reachableHeads;
             try
             {
-                reachableHeads = await _headReachability.ResolveAsync(
-                    repository.RootPath,
-                    repository.Manifest.Heads,
-                    [.. selected.Commits.Select(commit => commit.Metadata.ObjectId)],
-                    cancellationToken).ConfigureAwait(false);
+                using (executionTelemetry.Measure(ChangePortfolioExecutionPhases.HistoryUnion))
+                {
+                    reachableHeads = await _headReachability.ResolveAsync(
+                        repository.RootPath,
+                        repository.Manifest.Heads,
+                        [.. selected.Commits.Select(commit => commit.Metadata.ObjectId)],
+                        cancellationToken).ConfigureAwait(false);
+                }
             }
             catch (Exception exception) when (
                 exception is ExternalCommandException or InvalidOperationException)
@@ -147,6 +181,7 @@ public sealed partial class GitPortfolioPlanner
             Selection = ReportSelection(manifest, manifestDigest),
             Items = items,
             Diagnostics = diagnostics,
+            ExecutionTelemetry = executionTelemetry,
         };
     }
 

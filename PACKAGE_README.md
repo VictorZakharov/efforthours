@@ -137,6 +137,7 @@ and their
 eh change ./my-repository --commit <revision> --format markdown
 eh change ./my-repository --range <base>..<head> --format markdown
 eh change ./my-repository --pr <number> --format markdown
+eh change portfolio --author-period-manifest <manifest.json> --format markdown --no-rate
 ```
 
 Change EHE estimates the normalized final functional and quality delta. Commit
@@ -146,6 +147,13 @@ the selected Git objects must already exist locally. The current change rules
 require changed capability evidence for existing-capability modifications and
 consolidate repository work-item partitions for one capability into a bounded
 logical budget while preserving distinct capabilities.
+
+The author-period manifest can union pinned heads across local repositories and
+contributors without counting shared commits or shared-credit groups repeatedly.
+Aliases and local paths remain execution-only. One invocation processes
+repositories sequentially and reuses bounded immutable inventories, snapshot
+analysis, and Git blobs; privacy-safe reuse counters stay in the report while
+non-semantic phase timings are written to stderr.
 
 ## Review consequential uncertainty
 

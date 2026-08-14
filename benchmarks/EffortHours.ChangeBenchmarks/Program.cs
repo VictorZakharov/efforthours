@@ -135,7 +135,7 @@ public static class Program
         bool secondsPassed,
         bool memoryPassed)
     {
-        Console.WriteLine("benchmark=change/1.1.0");
+        Console.WriteLine("benchmark=change/1.2.0");
         Console.WriteLine($"estimator={ChangeEstimator.Version}");
         Console.WriteLine($"mode={options.Name}");
         Console.WriteLine($"runtime={RuntimeInformation.FrameworkDescription}");
@@ -153,6 +153,30 @@ public static class Program
         Console.WriteLine(
             $"full-snapshot-file-limit={ChangeEstimator.FullSnapshotAnalysisFileLimit.ToString(CultureInfo.InvariantCulture)}");
         Console.WriteLine($"repository-estimator-invocations={snapshotAnalyses.ToString(CultureInfo.InvariantCulture)}");
+        ChangePortfolioExecutionStatistics? reuse = execution.PortfolioStatistics;
+        Console.WriteLine($"portfolio-repositories={(reuse?.RepositoryCount ?? 0).ToString(CultureInfo.InvariantCulture)}");
+        Console.WriteLine($"maximum-active-repositories={(reuse?.MaximumActiveRepositories ?? 0).ToString(CultureInfo.InvariantCulture)}");
+        Console.WriteLine($"snapshot-analysis-requests={(reuse?.SnapshotAnalysisRequests ?? 0).ToString(CultureInfo.InvariantCulture)}");
+        Console.WriteLine($"snapshot-analysis-hits={(reuse?.SnapshotAnalysisHits ?? 0).ToString(CultureInfo.InvariantCulture)}");
+        Console.WriteLine($"snapshot-inventory-requests={(reuse?.SnapshotInventoryRequests ?? 0).ToString(CultureInfo.InvariantCulture)}");
+        Console.WriteLine($"snapshot-inventory-hits={(reuse?.SnapshotInventoryHits ?? 0).ToString(CultureInfo.InvariantCulture)}");
+        Console.WriteLine($"full-snapshot-inventory-loads={(reuse?.FullSnapshotInventoryLoads ?? 0).ToString(CultureInfo.InvariantCulture)}");
+        Console.WriteLine($"incremental-snapshot-inventory-loads={(reuse?.IncrementalSnapshotInventoryLoads ?? 0).ToString(CultureInfo.InvariantCulture)}");
+        Console.WriteLine($"git-object-readers={(reuse?.ObjectDatabaseReaders ?? 0).ToString(CultureInfo.InvariantCulture)}");
+        Console.WriteLine($"blob-requests={(reuse?.BlobRequests ?? 0).ToString(CultureInfo.InvariantCulture)}");
+        Console.WriteLine($"blob-cache-hits={(reuse?.BlobCacheHits ?? 0).ToString(CultureInfo.InvariantCulture)}");
+        Console.WriteLine($"peak-cached-blob-mib={ToMebibytes(reuse?.PeakCachedBlobBytesPerRepository ?? 0)}");
+        Console.WriteLine($"combined-estimate-seconds={Duration(execution.CombinedElapsed)}");
+        Console.WriteLine($"independent-estimate-seconds={Duration(execution.IndependentElapsed)}");
+        Console.WriteLine(
+            $"independent-snapshot-analyses=" +
+            $"{execution.IndependentSnapshotAnalyses?.ToString(CultureInfo.InvariantCulture) ?? "not-measured"}");
+        Console.WriteLine(
+            $"independent-reports-equivalent=" +
+            $"{(execution.IndependentReportsEquivalent.HasValue ? Lower(execution.IndependentReportsEquivalent.Value) : "not-measured")}");
+        Console.WriteLine(
+            $"combined-faster-than-independent=" +
+            $"{Comparison(execution.CombinedElapsed, execution.IndependentElapsed)}");
         Console.WriteLine($"head-files={repository.HeadFileCount.ToString(CultureInfo.InvariantCulture)}");
         Console.WriteLine($"head-directories={repository.HeadDirectoryCount.ToString(CultureInfo.InvariantCulture)}");
         Console.WriteLine(
@@ -186,6 +210,14 @@ public static class Program
     }
 
     private static string Threshold(decimal? value) => value?.ToString("F2", CultureInfo.InvariantCulture) ?? "not-set";
+
+    private static string Duration(TimeSpan? value) =>
+        value?.TotalSeconds.ToString("F3", CultureInfo.InvariantCulture) ?? "not-measured";
+
+    private static string Comparison(TimeSpan? combined, TimeSpan? independent) =>
+        combined.HasValue && independent.HasValue
+            ? Lower(combined.Value < independent.Value)
+            : "not-measured";
 
     private static string Lower(bool value) => value.ToString().ToLowerInvariant();
 

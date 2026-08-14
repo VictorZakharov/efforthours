@@ -10,7 +10,8 @@ public sealed partial class GitChangePlanner
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(repositoryPath);
         ArgumentNullException.ThrowIfNull(commit);
-        _git.PrimeCommitMetadata(repositoryPath, commit);
+        GitSnapshotSession snapshotSession = _git.GetSnapshotSession(repositoryPath);
+        snapshotSession.PrimeCommitMetadata(commit);
         List<Diagnostic> diagnostics = [PinnedReferenceDiagnostic()];
         string baseObjectId;
         string baseSelector;
@@ -59,7 +60,13 @@ public sealed partial class GitChangePlanner
             repositoryPath,
             commit.ObjectId,
             baseObjectId,
-            commit.ObjectId);
-        return CreatePlan(repositoryPath, selection, [component], diagnostics);
+            commit.ObjectId,
+            snapshotSession: snapshotSession);
+        return CreatePlan(
+            repositoryPath,
+            selection,
+            [component],
+            diagnostics,
+            snapshotSession);
     }
 }

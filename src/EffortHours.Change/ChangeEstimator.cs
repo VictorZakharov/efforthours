@@ -37,18 +37,21 @@ public sealed partial class ChangeEstimator
         _repositoryEstimator = repositoryEstimator ?? throw new ArgumentNullException(nameof(repositoryEstimator));
     }
 
-    public Task<ChangeEstimateReport> EstimateAsync(
+    public async Task<ChangeEstimateReport> EstimateAsync(
         GitChangePlan plan,
         EstimationProfile profile,
         RateCard? rateCard = null,
         CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(plan);
-        return EstimateAsync(
-            CreateInput(plan),
+        ChangeEstimateInput input = plan.SnapshotSession is null
+            ? CreateInput(plan)
+            : CreateStandaloneInput(plan, plan.SnapshotSession);
+        return await EstimateAsync(
+            input,
             profile,
             rateCard,
-            cancellationToken);
+            cancellationToken).ConfigureAwait(false);
     }
 
     public Task<ChangeEstimateReport> EstimateAsync(
@@ -62,6 +65,7 @@ public sealed partial class ChangeEstimator
             rateCard,
             new SnapshotAnalysisCache(),
             "single-estimate",
+            executionTelemetry: null,
             cancellationToken);
 
     private async Task<ChangeEstimateReport> EstimateCoreAsync(
@@ -70,6 +74,7 @@ public sealed partial class ChangeEstimator
         RateCard? rateCard,
         SnapshotAnalysisCache snapshotAnalyses,
         string cacheNamespace,
+        ChangePortfolioExecutionTelemetry? executionTelemetry,
         CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(input);
@@ -84,10 +89,13 @@ public sealed partial class ChangeEstimator
         }
 
         PairEstimate normalized;
-        await using (IChangeSnapshot baseSnapshot = await input.OpenBaseAsync(cancellationToken)
-            .ConfigureAwait(false))
-        await using (IChangeSnapshot headSnapshot = await input.OpenHeadAsync(cancellationToken)
-            .ConfigureAwait(false))
+        (IChangeSnapshot baseSnapshot, IChangeSnapshot headSnapshot) = await OpenSnapshotsAsync(
+            input.OpenBaseAsync,
+            input.OpenHeadAsync,
+            executionTelemetry,
+            cancellationToken).ConfigureAwait(false);
+        await using (baseSnapshot)
+        await using (headSnapshot)
         {
             normalized = await AnalyzePairAsync(
                 input.RepositoryName,
@@ -98,6 +106,7 @@ public sealed partial class ChangeEstimator
                 profile,
                 snapshotAnalyses,
                 cacheNamespace,
+                executionTelemetry,
                 cancellationToken).ConfigureAwait(false);
         }
 
@@ -152,20 +161,26 @@ public sealed partial class ChangeEstimator
                     },
                     Commit = component.Selector,
                 };
-                await using IChangeSnapshot componentBase = await component.OpenBaseAsync(cancellationToken)
-                    .ConfigureAwait(false);
-                await using IChangeSnapshot componentHead = await component.OpenHeadAsync(cancellationToken)
-                    .ConfigureAwait(false);
-                isolated = await AnalyzePairAsync(
-                    input.RepositoryName,
-                    componentSelection,
-                    componentBase,
-                    componentHead,
-                    [],
-                    profile,
-                    snapshotAnalyses,
-                    cacheNamespace,
+                (IChangeSnapshot componentBase, IChangeSnapshot componentHead) = await OpenSnapshotsAsync(
+                    component.OpenBaseAsync,
+                    component.OpenHeadAsync,
+                    executionTelemetry,
                     cancellationToken).ConfigureAwait(false);
+                await using (componentBase)
+                await using (componentHead)
+                {
+                    isolated = await AnalyzePairAsync(
+                        input.RepositoryName,
+                        componentSelection,
+                        componentBase,
+                        componentHead,
+                        [],
+                        profile,
+                        snapshotAnalyses,
+                        cacheNamespace,
+                        executionTelemetry,
+                        cancellationToken).ConfigureAwait(false);
+                }
             }
 
             components.Add(new ChangeComponentDraft(
@@ -175,12 +190,16 @@ public sealed partial class ChangeEstimator
                 isolated.Evidence.Paths));
         }
 
-        ChangeReconciliation reconciliation = ChangeReconciler.Reconcile(
-            input.Selection,
-            normalized.WorkItems.TotalEffort,
-            normalized.WorkItems.Categories,
-            normalized.Evidence.Paths,
-            components);
+        ChangeReconciliation reconciliation;
+        using (executionTelemetry?.Measure(ChangePortfolioExecutionPhases.Reconciliation))
+        {
+            reconciliation = ChangeReconciler.Reconcile(
+                input.Selection,
+                normalized.WorkItems.TotalEffort,
+                normalized.WorkItems.Categories,
+                normalized.Evidence.Paths,
+                components);
+        }
         List<Diagnostic> diagnostics = [.. normalized.Evidence.Diagnostics];
         diagnostics.Add(new Diagnostic
         {
@@ -268,6 +287,27 @@ public sealed partial class ChangeEstimator
         return report;
     }
 
+    private static async Task<(IChangeSnapshot Base, IChangeSnapshot Head)> OpenSnapshotsAsync(
+        Func<CancellationToken, Task<IChangeSnapshot>> openBaseAsync,
+        Func<CancellationToken, Task<IChangeSnapshot>> openHeadAsync,
+        ChangePortfolioExecutionTelemetry? executionTelemetry,
+        CancellationToken cancellationToken)
+    {
+        using IDisposable? measurement = executionTelemetry?.Measure(
+            ChangePortfolioExecutionPhases.SnapshotAndDiffConstruction);
+        IChangeSnapshot baseSnapshot = await openBaseAsync(cancellationToken).ConfigureAwait(false);
+        try
+        {
+            IChangeSnapshot headSnapshot = await openHeadAsync(cancellationToken).ConfigureAwait(false);
+            return (baseSnapshot, headSnapshot);
+        }
+        catch
+        {
+            await baseSnapshot.DisposeAsync().ConfigureAwait(false);
+            throw;
+        }
+    }
+
     private static ChangeEstimateInput CreateInput(GitChangePlan plan)
     {
         string repositoryName = Path.GetFileName(Path.TrimEndingDirectorySeparator(plan.RepositoryPath));
@@ -281,6 +321,31 @@ public sealed partial class ChangeEstimator
             OpenHeadAsync = plan.OpenHeadAsync,
             Components = plan.Components,
             Diagnostics = plan.Diagnostics,
+        };
+    }
+
+    private static ChangeEstimateInput CreateStandaloneInput(
+        GitChangePlan plan,
+        GitSnapshotSession snapshotSession)
+    {
+        ChangeEstimateInput input = CreateInput(plan);
+        return input with
+        {
+            OpenBaseAsync = cancellationToken => snapshotSession.OpenStandaloneSnapshotAsync(
+                plan.Selection.Base.ObjectId,
+                cancellationToken),
+            OpenHeadAsync = cancellationToken => snapshotSession.OpenStandaloneSnapshotAsync(
+                plan.Selection.Head.ObjectId,
+                cancellationToken),
+            Components = [.. plan.Components.Select(component => component with
+            {
+                OpenBaseAsync = cancellationToken => snapshotSession.OpenStandaloneSnapshotAsync(
+                    component.BaseObjectId,
+                    cancellationToken),
+                OpenHeadAsync = cancellationToken => snapshotSession.OpenStandaloneSnapshotAsync(
+                    component.HeadObjectId,
+                    cancellationToken),
+            })],
         };
     }
 }

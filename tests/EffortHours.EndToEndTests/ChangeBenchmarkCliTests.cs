@@ -67,6 +67,7 @@ public sealed class ChangeBenchmarkCliTests
             "8",
             "--commits",
             "3",
+            "--compare-independent",
             "--max-seconds",
             "30",
             "--max-peak-mib",
@@ -78,6 +79,20 @@ public sealed class ChangeBenchmarkCliTests
         Assert.Equal("author-period", values["mode"]);
         Assert.Equal("3", values["selected-changes"]);
         Assert.Equal("4", values["repository-estimator-invocations"]);
+        Assert.Equal("1", values["portfolio-repositories"]);
+        Assert.Equal("1", values["maximum-active-repositories"]);
+        Assert.Equal("6", values["snapshot-analysis-requests"]);
+        Assert.Equal("2", values["snapshot-analysis-hits"]);
+        Assert.Equal("6", values["snapshot-inventory-requests"]);
+        Assert.Equal("2", values["snapshot-inventory-hits"]);
+        Assert.Equal("1", values["git-object-readers"]);
+        Assert.True(
+            int.Parse(values["blob-cache-hits"], CultureInfo.InvariantCulture) > 0);
+        Assert.Equal("6", values["independent-snapshot-analyses"]);
+        Assert.Equal("true", values["independent-reports-equivalent"]);
+        Assert.Equal("true", values["combined-faster-than-independent"]);
+        AssertPositive(values, "combined-estimate-seconds");
+        AssertPositive(values, "independent-estimate-seconds");
         Assert.Equal("false", values["range-audit-bounded"]);
         Assert.Equal("true", values["changed-scope-analysis"]);
         Assert.True(
@@ -92,7 +107,7 @@ public sealed class ChangeBenchmarkCliTests
 
     private static void AssertReadOnlyAndBounded(Dictionary<string, string> values)
     {
-        Assert.Equal("change/1.1.0", values["benchmark"]);
+        Assert.Equal("change/1.2.0", values["benchmark"]);
         Assert.Equal("true", values["worktree-unchanged"]);
         Assert.Equal("true", values["git-state-unchanged"]);
         Assert.Equal("not-performed", values["target-execution"]);

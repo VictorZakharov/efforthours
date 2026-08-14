@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using EffortHours.Contracts;
 using EffortHours.Contracts.V1;
 
@@ -5,15 +6,18 @@ namespace EffortHours.Change;
 
 public sealed class ChangePortfolioReconciler
 {
-    public const string Version = "change-portfolio/0.2.0+change-seed/0.18.1+seed-rules/0.4.0";
+    public const string Version = "change-portfolio/0.2.1+change-seed/0.18.1+seed-rules/0.4.0";
 
     public static ChangePortfolioReport Reconcile(
         ChangePortfolioSelection selection,
         IReadOnlyList<ChangePortfolioCandidate> candidates,
         EstimationProfile profile,
         RateCard? rateCard = null,
-        IReadOnlyList<Diagnostic>? planningDiagnostics = null)
+        IReadOnlyList<Diagnostic>? planningDiagnostics = null,
+        ChangePortfolioExecutionTelemetry? executionTelemetry = null)
     {
+        long reconciliationStarted = Stopwatch.GetTimestamp();
+        TimeSpan allocationElapsed = TimeSpan.Zero;
         ArgumentNullException.ThrowIfNull(selection);
         ArgumentNullException.ThrowIfNull(candidates);
         ValidateInputs(selection, candidates, profile);
@@ -39,14 +43,17 @@ public sealed class ChangePortfolioReconciler
             .ThenBy(draft => draft.Candidate.Attribution.SelectedTimestamp)
             .ThenBy(draft => draft.Id, StringComparer.Ordinal)
             .Select(draft => Item(draft, rateCard))];
-        ChangePortfolioAggregation? aggregation = selection.ManifestBased &&
-            selection.AuthorPeriodManifest is not null
-                ? ChangePortfolioAggregationBuilder.Build(
-                    selection,
-                    items,
-                    [.. results.Select(result => result.Group)],
-                    adjustments)
-                : null;
+        ChangePortfolioAggregation? aggregation = null;
+        if (selection.ManifestBased && selection.AuthorPeriodManifest is not null)
+        {
+            long allocationStarted = Stopwatch.GetTimestamp();
+            aggregation = ChangePortfolioAggregationBuilder.Build(
+                selection,
+                items,
+                [.. results.Select(result => result.Group)],
+                adjustments);
+            allocationElapsed = Stopwatch.GetElapsedTime(allocationStarted);
+        }
         bool hasAmbiguity = results.Any(result => result.Group.UncertaintyReasons.Count > 0) ||
             items.Any(item => item.UncertaintyReasons.Count > 0) ||
             aggregation?.ContributorGroups.Any(group => group.UncertaintyReasons.Count > 0) == true ||
@@ -151,6 +158,18 @@ public sealed class ChangePortfolioReconciler
         {
             throw new InvalidOperationException(
                 "The change portfolio reconciler produced an invalid report: " + string.Join(" ", errors));
+        }
+
+        if (executionTelemetry is not null)
+        {
+            TimeSpan reconciliationElapsed = Stopwatch.GetElapsedTime(reconciliationStarted) -
+                allocationElapsed;
+            executionTelemetry.Add(
+                ChangePortfolioExecutionPhases.Reconciliation,
+                reconciliationElapsed);
+            executionTelemetry.Add(
+                ChangePortfolioExecutionPhases.Allocation,
+                allocationElapsed);
         }
 
         return report;
