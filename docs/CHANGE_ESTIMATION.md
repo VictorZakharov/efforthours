@@ -385,7 +385,29 @@ represented with visible attribution uncertainty. Shared specification, setup,
 design, validation, and review context is represented once only inside an
 overlapping connected component; disjoint work does not lose those categories.
 Each repository exposes signed adjustments and exact expected-hour allocations,
-and cross-repository totals add only after independent normalization.
+and cross-repository totals add only after independent normalization. Manifest
+author-period reports additionally group every selected item once by its exact
+requested-contributor match set and, independently within each repository, once by
+its exact reachable-head set. Singleton and shared groups each expose normalized
+low/expected/high totals. Shared groups retain the full repository-attributed item
+without copying it into several contributor or head totals and without inventing
+personal-credit percentages.
+
+Every requested contributor has a singleton group, every requested repository has
+a repository summary, and every pinned head has a singleton reachability group,
+including deterministic zero rows when another part of the manifest supplies the
+selected portfolio. Non-additive contributor/head summaries report direct-author,
+co-author, reachable, unique, and shared counts and reference the additive groups.
+The contributor and head ledgers are alternative decompositions of one
+authoritative total and must never be added together.
+
+Expected group totals are the exact sum of their item allocations. Low and high
+are allocated inside each repository with the same deterministic expected-weight
+and largest-remainder policy; an expected-zero/high-positive repository uses
+isolated high only as a bound-allocation fallback. Each group records isolated and
+normalized ranges, their signed difference, item IDs, repository-group lineage,
+and influencing adjustment IDs. These are structural audit allocations, not
+personal labor shares.
 
 The regression matrix includes sequential same-path mechanical splitting,
 implementation/tests/documentation delivered in separate rows, and test or
@@ -430,16 +452,17 @@ explanation queries accept its stable calculation ID and return exact adjustment
 lineage. Portfolio contracts separately record selection policy, source estimator
 identity, immutable base contexts, patch/evidence digests, isolated rows,
 repository-normalized categories, signed adjustments, exact allocations,
-attribution uncertainty, verification, and post-EHE pricing. They emit neither
-local repository paths nor source excerpts.
+attribution uncertainty, contributor/repository/head aggregate ledgers,
+verification, and post-EHE pricing. They emit neither local repository paths nor
+source excerpts.
 
 The current source Change estimator identity is
 `change-seed/0.18.1+seed-rules/0.4.0`; the portfolio reconciler identity is
-`change-portfolio/0.1.0+change-seed/0.18.1+seed-rules/0.4.0`. The earlier 0.6.0
+`change-portfolio/0.2.0+change-seed/0.18.1+seed-rules/0.4.0`. The earlier 0.6.0
 Change identity alone passed the experimental Stage A logical gate, and that
 record contains no SQL, Python, Go, Java, Kotlin, Shell, PowerShell, Terraform,
 HCL, PHP, Composer, Rust, Cargo, Docker, Compose, Jupyter, C, or C++. Portfolio
-aggregation does not broaden that admission. Neither 0.18.1 nor portfolio 0.1.0 may be
+aggregation does not broaden that admission. Neither 0.18.1 nor portfolio 0.2.0 may be
 described as empirically calibrated,
 generally admitted, or production-ready. Frozen calibration source reports retain
 the exact earlier estimator identity they were created from.

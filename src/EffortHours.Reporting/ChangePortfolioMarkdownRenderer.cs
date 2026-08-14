@@ -5,7 +5,7 @@ using EffortHours.Contracts.V1;
 
 namespace EffortHours.Reporting;
 
-public static class ChangePortfolioMarkdownRenderer
+public static partial class ChangePortfolioMarkdownRenderer
 {
     public static string Render(ChangePortfolioReport report)
     {
@@ -50,6 +50,11 @@ public static class ChangePortfolioMarkdownRenderer
                 .Append(ReportFormatting.Money(report.TotalCost.Low)).Append(" | ")
                 .Append(ReportFormatting.Money(report.TotalCost.Expected)).Append(" | ")
                 .Append(ReportFormatting.Money(report.TotalCost.High)).AppendLine(" |");
+        }
+
+        if (report.Aggregation is not null)
+        {
+            AppendAggregation(markdown, report.Aggregation);
         }
 
         markdown.AppendLine();
@@ -204,9 +209,20 @@ public static class ChangePortfolioMarkdownRenderer
 
     private static void AppendUncertainty(StringBuilder markdown, ChangePortfolioReport report)
     {
-        string[] uncertainty = [.. report.RepositoryGroups
+        IEnumerable<string> values = report.RepositoryGroups
             .SelectMany(group => group.UncertaintyReasons)
-            .Concat(report.Items.SelectMany(item => item.UncertaintyReasons))
+            .Concat(report.Items.SelectMany(item => item.UncertaintyReasons));
+        if (report.Aggregation is not null)
+        {
+            values = values
+                .Concat(report.Aggregation.ContributorGroups.SelectMany(group => group.UncertaintyReasons))
+                .Concat(report.Aggregation.Repositories.SelectMany(repository => repository.UncertaintyReasons))
+                .Concat(report.Aggregation.Repositories
+                    .SelectMany(repository => repository.HeadGroups)
+                    .SelectMany(group => group.UncertaintyReasons));
+        }
+
+        string[] uncertainty = [.. values
             .Distinct(StringComparer.Ordinal)
             .Order(StringComparer.Ordinal)];
         AppendList(markdown, "Attribution uncertainty", uncertainty);

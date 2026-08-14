@@ -40,6 +40,7 @@
       "minItems": 1,
       "items": { "$ref": "#/$defs/repositoryGroup" }
     },
+    "aggregation": { "$ref": "#/$defs/aggregation" },
     "items": {
       "type": "array",
       "minItems": 1,
@@ -65,6 +66,38 @@
     "rateCard": ["totalCost"],
     "totalCost": ["rateCard"]
   },
+  "allOf": [
+    {
+      "if": {
+        "required": ["estimatorVersion", "selection"],
+        "properties": {
+          "estimatorVersion": { "pattern": "^change-portfolio/0\\.2\\.0\\+" },
+          "selection": {
+            "required": ["kind", "manifestBased"],
+            "properties": {
+              "kind": { "const": "author-period" },
+              "manifestBased": { "const": true }
+            }
+          }
+        }
+      },
+      "then": { "required": ["aggregation"] }
+    },
+    {
+      "if": { "required": ["aggregation"] },
+      "then": {
+        "properties": {
+          "selection": {
+            "required": ["kind", "manifestBased", "authorPeriodManifest"],
+            "properties": {
+              "kind": { "const": "author-period" },
+              "manifestBased": { "const": true }
+            }
+          }
+        }
+      }
+    }
+  ],
   "additionalProperties": false,
   "$defs": {
     "portfolioSelection": {
@@ -314,6 +347,279 @@
           "items": { "$ref": "urn:eh:schema:v1:change-estimate-report#/$defs/categoryEstimate" }
         },
         "assessment": { "type": "string", "minLength": 1 },
+        "adjustmentIds": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        },
+        "uncertaintyReasons": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "aggregation": {
+      "type": "object",
+      "required": ["policy", "contributors", "contributorGroups", "repositories"],
+      "properties": {
+        "policy": { "const": "exclusive-contributor-and-head-match-sets/1.0.0" },
+        "contributors": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 64,
+          "items": { "$ref": "#/$defs/contributorSummary" }
+        },
+        "contributorGroups": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 192,
+          "items": { "$ref": "#/$defs/contributorGroup" }
+        },
+        "repositories": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 32,
+          "items": { "$ref": "#/$defs/repositorySummary" }
+        }
+      },
+      "additionalProperties": false
+    },
+    "contributorSummary": {
+      "type": "object",
+      "required": [
+        "contributorId",
+        "selectedCommitCount",
+        "directAuthorMatchCount",
+        "coauthorMatchCount",
+        "singleContributorSelectedCommitCount",
+        "sharedContributorSelectedCommitCount",
+        "noSelectedCommits",
+        "singleContributorGroupId",
+        "sharedContributorGroupIds",
+        "uncertaintyReasons"
+      ],
+      "properties": {
+        "contributorId": { "$ref": "#/$defs/publicId" },
+        "selectedCommitCount": { "type": "integer", "minimum": 0 },
+        "directAuthorMatchCount": { "type": "integer", "minimum": 0 },
+        "coauthorMatchCount": { "type": "integer", "minimum": 0 },
+        "singleContributorSelectedCommitCount": { "type": "integer", "minimum": 0 },
+        "sharedContributorSelectedCommitCount": { "type": "integer", "minimum": 0 },
+        "noSelectedCommits": { "type": "boolean" },
+        "singleContributorGroupId": { "type": "string", "minLength": 1 },
+        "sharedContributorGroupIds": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        },
+        "uncertaintyReasons": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "contributorGroup": {
+      "type": "object",
+      "required": [
+        "id",
+        "kind",
+        "contributorIds",
+        "itemIds",
+        "selectedCommitCount",
+        "directAuthorMatchCount",
+        "coauthorMatchCount",
+        "isolatedEffort",
+        "normalizedEffort",
+        "reconciliationDelta",
+        "repositoryAllocations",
+        "uncertaintyReasons"
+      ],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "kind": { "enum": ["single-contributor", "shared-contributors"] },
+        "contributorIds": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 64,
+          "items": { "$ref": "#/$defs/publicId" },
+          "uniqueItems": true
+        },
+        "itemIds": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        },
+        "selectedCommitCount": { "type": "integer", "minimum": 0 },
+        "directAuthorMatchCount": { "type": "integer", "minimum": 0 },
+        "coauthorMatchCount": { "type": "integer", "minimum": 0 },
+        "isolatedEffort": { "$ref": "urn:eh:schema:v1:change-estimate-report#/$defs/effortRange" },
+        "normalizedEffort": { "$ref": "urn:eh:schema:v1:change-estimate-report#/$defs/effortRange" },
+        "reconciliationDelta": { "$ref": "urn:eh:schema:v1:change-estimate-report#/$defs/signedEffortRange" },
+        "repositoryAllocations": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/contributorRepositoryAllocation" }
+        },
+        "uncertaintyReasons": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "contributorRepositoryAllocation": {
+      "type": "object",
+      "required": [
+        "id",
+        "repositoryId",
+        "repositoryGroupId",
+        "itemIds",
+        "isolatedEffort",
+        "normalizedEffort",
+        "reconciliationDelta",
+        "adjustmentIds",
+        "uncertaintyReasons"
+      ],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "repositoryId": { "$ref": "#/$defs/publicId" },
+        "repositoryGroupId": { "type": "string", "minLength": 1 },
+        "itemIds": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        },
+        "isolatedEffort": { "$ref": "urn:eh:schema:v1:change-estimate-report#/$defs/effortRange" },
+        "normalizedEffort": { "$ref": "urn:eh:schema:v1:change-estimate-report#/$defs/effortRange" },
+        "reconciliationDelta": { "$ref": "urn:eh:schema:v1:change-estimate-report#/$defs/signedEffortRange" },
+        "adjustmentIds": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        },
+        "uncertaintyReasons": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "repositorySummary": {
+      "type": "object",
+      "required": [
+        "repositoryId",
+        "selectedCommitCount",
+        "directAuthorMatchCount",
+        "coauthorMatchCount",
+        "sharedContributorSelectedCommitCount",
+        "sharedHeadSelectedCommitCount",
+        "noSelectedCommits",
+        "isolatedEffort",
+        "normalizedEffort",
+        "adjustmentIds",
+        "heads",
+        "headGroups",
+        "uncertaintyReasons"
+      ],
+      "properties": {
+        "repositoryId": { "$ref": "#/$defs/publicId" },
+        "selectedCommitCount": { "type": "integer", "minimum": 0 },
+        "directAuthorMatchCount": { "type": "integer", "minimum": 0 },
+        "coauthorMatchCount": { "type": "integer", "minimum": 0 },
+        "sharedContributorSelectedCommitCount": { "type": "integer", "minimum": 0 },
+        "sharedHeadSelectedCommitCount": { "type": "integer", "minimum": 0 },
+        "noSelectedCommits": { "type": "boolean" },
+        "isolatedEffort": { "$ref": "urn:eh:schema:v1:change-estimate-report#/$defs/effortRange" },
+        "normalizedEffort": { "$ref": "urn:eh:schema:v1:change-estimate-report#/$defs/effortRange" },
+        "adjustmentIds": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        },
+        "heads": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 32,
+          "items": { "$ref": "#/$defs/headSummary" }
+        },
+        "headGroups": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/headGroup" }
+        },
+        "uncertaintyReasons": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "headSummary": {
+      "type": "object",
+      "required": [
+        "headId",
+        "reachableSelectedCommitCount",
+        "uniqueSelectedCommitCount",
+        "sharedSelectedCommitCount",
+        "noUniqueSelectedCommits",
+        "singleHeadGroupId",
+        "sharedHeadGroupIds"
+      ],
+      "properties": {
+        "headId": { "$ref": "#/$defs/publicId" },
+        "reachableSelectedCommitCount": { "type": "integer", "minimum": 0 },
+        "uniqueSelectedCommitCount": { "type": "integer", "minimum": 0 },
+        "sharedSelectedCommitCount": { "type": "integer", "minimum": 0 },
+        "noUniqueSelectedCommits": { "type": "boolean" },
+        "singleHeadGroupId": { "type": "string", "minLength": 1 },
+        "sharedHeadGroupIds": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "headGroup": {
+      "type": "object",
+      "required": [
+        "id",
+        "kind",
+        "headIds",
+        "itemIds",
+        "selectedCommitCount",
+        "isolatedEffort",
+        "normalizedEffort",
+        "reconciliationDelta",
+        "adjustmentIds",
+        "uncertaintyReasons"
+      ],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "kind": { "enum": ["single-head", "shared-heads"] },
+        "headIds": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 32,
+          "items": { "$ref": "#/$defs/publicId" },
+          "uniqueItems": true
+        },
+        "itemIds": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        },
+        "selectedCommitCount": { "type": "integer", "minimum": 0 },
+        "isolatedEffort": { "$ref": "urn:eh:schema:v1:change-estimate-report#/$defs/effortRange" },
+        "normalizedEffort": { "$ref": "urn:eh:schema:v1:change-estimate-report#/$defs/effortRange" },
+        "reconciliationDelta": { "$ref": "urn:eh:schema:v1:change-estimate-report#/$defs/signedEffortRange" },
         "adjustmentIds": {
           "type": "array",
           "items": { "type": "string", "minLength": 1 },

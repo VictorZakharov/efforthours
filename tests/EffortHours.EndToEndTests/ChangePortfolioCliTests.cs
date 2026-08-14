@@ -1,16 +1,9 @@
-using System.Diagnostics;
 using System.Text.Json;
 
 namespace EffortHours.EndToEndTests;
 
 public sealed partial class ChangeCliTests
 {
-    private static readonly string[] ContributorAAliases =
-        ["Contributor A", "selected-a@example.invalid"];
-
-    private static readonly string[] ContributorBAliases =
-        ["selected-b@example.invalid", "Contributor B"];
-
     [Fact]
     public async Task AuthorPeriodManifestUnionsHeadsScopesObjectsAndKeepsAliasesPrivate()
     {
@@ -156,6 +149,43 @@ public sealed partial class ChangeCliTests
             Assert.Contains(
                 report.RootElement.GetProperty("diagnostics").EnumerateArray(),
                 diagnostic => diagnostic.GetProperty("code").GetString() == "FB5322");
+            JsonElement aggregation = report.RootElement.GetProperty("aggregation");
+            JsonElement[] contributorGroups =
+                [.. aggregation.GetProperty("contributorGroups").EnumerateArray()];
+            foreach (string point in new[] { "low", "expected", "high" })
+            {
+                Assert.Equal(
+                    report.RootElement.GetProperty("totalEffort").GetProperty(point).GetDecimal(),
+                    contributorGroups.Sum(group =>
+                        group.GetProperty("normalizedEffort").GetProperty(point).GetDecimal()));
+            }
+
+            JsonElement sharedContributors = Assert.Single(contributorGroups, group =>
+                group.GetProperty("kind").GetString() == "shared-contributors");
+            Assert.Equal(2, sharedContributors.GetProperty("selectedCommitCount").GetInt32());
+            Assert.Equal(
+                ["contributor-a", "contributor-b"],
+                sharedContributors.GetProperty("contributorIds").EnumerateArray()
+                    .Select(value => value.GetString()));
+            JsonElement repositoryASummary = Assert.Single(
+                aggregation.GetProperty("repositories").EnumerateArray(),
+                repositoryValue => repositoryValue.GetProperty("repositoryId").GetString() == "repository-a");
+            JsonElement noUniqueHeadSummary = Assert.Single(
+                repositoryASummary.GetProperty("heads").EnumerateArray(),
+                head => head.GetProperty("headId").GetString() == "no-selected");
+            Assert.True(noUniqueHeadSummary.GetProperty("noUniqueSelectedCommits").GetBoolean());
+            Assert.Equal(0, noUniqueHeadSummary.GetProperty("uniqueSelectedCommitCount").GetInt32());
+            Assert.Equal(1, noUniqueHeadSummary.GetProperty("sharedSelectedCommitCount").GetInt32());
+            Assert.Equal(
+                repositoryASummary.GetProperty("normalizedEffort").GetProperty("expected").GetDecimal(),
+                repositoryASummary.GetProperty("headGroups").EnumerateArray().Sum(group =>
+                    group.GetProperty("normalizedEffort").GetProperty("expected").GetDecimal()));
+            Assert.Contains(
+                report.RootElement.GetProperty("diagnostics").EnumerateArray(),
+                diagnostic => diagnostic.GetProperty("code").GetString() == "FB5323");
+            Assert.Contains(
+                report.RootElement.GetProperty("diagnostics").EnumerateArray(),
+                diagnostic => diagnostic.GetProperty("code").GetString() == "FB5324");
         }
         finally
         {
@@ -348,56 +378,4 @@ public sealed partial class ChangeCliTests
         }
     }
 
-    private static async Task CloneAsync(string sourcePath, string targetPath)
-    {
-        string workingDirectory = Path.GetDirectoryName(targetPath)!;
-        ProcessStartInfo startInfo = StartInfo("git", workingDirectory);
-        startInfo.ArgumentList.Add("clone");
-        startInfo.ArgumentList.Add("--quiet");
-        startInfo.ArgumentList.Add("--no-hardlinks");
-        startInfo.ArgumentList.Add(sourcePath);
-        startInfo.ArgumentList.Add(targetPath);
-        ProcessResult result = await RunAsync(startInfo);
-        Assert.True(result.ExitCode == 0, $"git clone failed: {result.StandardError}");
-    }
-
-    private static void WriteManifest(string path, params object[] repositories)
-    {
-        File.WriteAllText(
-            path,
-            JsonSerializer.Serialize(new
-            {
-                schemaVersion = "1.0.0",
-                selection = new
-                {
-                    sinceInclusive = "2020-01-01T00:00:00Z",
-                    untilExclusive = "2030-01-01T00:00:00Z",
-                    timeZone = "UTC",
-                    dateField = "author",
-                    mergePolicy = "exclude",
-                    coauthorPolicy = "include",
-                    intervalSemantics = "since-inclusive-until-exclusive",
-                },
-                contributors = new[]
-                {
-                    new { id = "contributor-a", aliases = ContributorAAliases },
-                },
-                repositories,
-            }));
-    }
-
-    private static void DeleteDirectory(string path)
-    {
-        if (!Directory.Exists(path))
-        {
-            return;
-        }
-
-        foreach (string file in Directory.EnumerateFiles(path, "*", SearchOption.AllDirectories))
-        {
-            File.SetAttributes(file, FileAttributes.Normal);
-        }
-
-        Directory.Delete(path, recursive: true);
-    }
 }

@@ -5,7 +5,7 @@ namespace EffortHours.Change;
 
 public sealed class ChangePortfolioReconciler
 {
-    public const string Version = "change-portfolio/0.1.0+change-seed/0.18.1+seed-rules/0.4.0";
+    public const string Version = "change-portfolio/0.2.0+change-seed/0.18.1+seed-rules/0.4.0";
 
     public static ChangePortfolioReport Reconcile(
         ChangePortfolioSelection selection,
@@ -39,8 +39,19 @@ public sealed class ChangePortfolioReconciler
             .ThenBy(draft => draft.Candidate.Attribution.SelectedTimestamp)
             .ThenBy(draft => draft.Id, StringComparer.Ordinal)
             .Select(draft => Item(draft, rateCard))];
+        ChangePortfolioAggregation? aggregation = selection.ManifestBased &&
+            selection.AuthorPeriodManifest is not null
+                ? ChangePortfolioAggregationBuilder.Build(
+                    selection,
+                    items,
+                    [.. results.Select(result => result.Group)],
+                    adjustments)
+                : null;
         bool hasAmbiguity = results.Any(result => result.Group.UncertaintyReasons.Count > 0) ||
-            items.Any(item => item.UncertaintyReasons.Count > 0);
+            items.Any(item => item.UncertaintyReasons.Count > 0) ||
+            aggregation?.ContributorGroups.Any(group => group.UncertaintyReasons.Count > 0) == true ||
+            aggregation?.Repositories.SelectMany(repository => repository.HeadGroups)
+                .Any(group => group.UncertaintyReasons.Count > 0) == true;
         bool hasKnownIssues = candidates.Any(candidate =>
             candidate.Report.Verification.WorkingState == WorkingState.KnownIssues ||
             candidate.Report.Diagnostics.Any(diagnostic => diagnostic.Severity == DiagnosticSeverity.Error));
@@ -80,6 +91,30 @@ public sealed class ChangePortfolioReconciler
             });
         }
 
+        if (aggregation is not null)
+        {
+            int sharedContributorGroups = aggregation.ContributorGroups.Count(group =>
+                group.Kind == ChangePortfolioContributorGroupKind.SharedContributors &&
+                group.SelectedCommitCount > 0);
+            diagnostics.Add(new Diagnostic
+            {
+                Code = "FB5323",
+                Severity = DiagnosticSeverity.Information,
+                Message = $"Exclusive contributor match-set groups count each selected commit once; {sharedContributorGroups} shared contributor group(s) retain unsplit repository-attributed EHE.",
+            });
+            int headsWithoutUniqueWork = aggregation.Repositories
+                .SelectMany(repository => repository.Heads)
+                .Count(head => head.NoUniqueSelectedCommits);
+            diagnostics.Add(new Diagnostic
+            {
+                Code = "FB5324",
+                Severity = DiagnosticSeverity.Information,
+                Message = $"Exclusive head-reachability groups count each selected commit once; {headsWithoutUniqueWork} pinned head(s) contain no uniquely reachable selected commit.",
+            });
+        }
+
+        List<string> assumptions = Assumptions(aggregation is not null);
+
         ChangePortfolioReport report = new()
         {
             EstimatorVersion = Version,
@@ -93,23 +128,14 @@ public sealed class ChangePortfolioReconciler
             TotalCost = rateCard is null ? null : Cost(normalized, rateCard),
             Categories = categories,
             RepositoryGroups = [.. results.Select(result => result.Group)],
+            Aggregation = aggregation,
             Items = items,
             Adjustments = adjustments,
             Diagnostics = [.. diagnostics
                 .Distinct()
                 .OrderBy(diagnostic => diagnostic.Code, StringComparer.Ordinal)
                 .ThenBy(diagnostic => diagnostic.Message, StringComparer.Ordinal)],
-            Assumptions =
-            [
-                "Portfolio Change EHE is repository-attributed counterfactual replacement effort, not actual labor, productivity, personal value, or proof of sole authorship.",
-                "Each isolated row is a canonical immutable Change estimate; portfolio normalization never uses churn, duration, contributor count, message size, or activity as effort signals.",
-                "Exact represented patch duplicates are counted once within one repository and never deduplicated across different repositories.",
-                "Independent disjoint changes remain additive. Overlapping path/category contributions use a deterministic order-independent maximum unless an author-period selection supplies an exact chronological object chain.",
-                "Author periods use inclusive start and exclusive end instants. Identity aliases and author/committer timestamps select commits only.",
-                "Co-authorship and first-parent merge inclusion are explicit policies; pair work, requirements, design, reviews, mentoring, incidents, debugging, coordination, and uncommitted work are not recoverable from repository history.",
-                "Allocations sum exactly to normalized expected EHE but are structural attribution, not timesheet entries, performance grades, compensation advice, or causal credit.",
-                "Low and high values remain dependent planning bounds rather than calibrated probabilities.",
-            ],
+            Assumptions = assumptions,
             Verification = new VerificationSummary
             {
                 Mode = VerificationMode.StaticAssumed,
@@ -244,4 +270,26 @@ public sealed class ChangePortfolioReconciler
 
     private static decimal RoundMoney(decimal value) =>
         decimal.Round(value, 2, MidpointRounding.AwayFromZero);
+
+    private static List<string> Assumptions(bool hasManifestAggregation)
+    {
+        List<string> assumptions =
+        [
+            "Portfolio Change EHE is repository-attributed counterfactual replacement effort, not actual labor, productivity, personal value, or proof of sole authorship.",
+            "Each isolated row is a canonical immutable Change estimate; portfolio normalization never uses churn, duration, contributor count, message size, or activity as effort signals.",
+            "Exact represented patch duplicates are counted once within one repository and never deduplicated across different repositories.",
+            "Independent disjoint changes remain additive. Overlapping path/category contributions use a deterministic order-independent maximum unless an author-period selection supplies an exact chronological object chain.",
+            "Author periods use inclusive start and exclusive end instants. Identity aliases and author/committer timestamps select commits only.",
+            "Co-authorship and first-parent merge inclusion are explicit policies; pair work, requirements, design, reviews, mentoring, incidents, debugging, coordination, and uncommitted work are not recoverable from repository history.",
+            "Allocations sum exactly to normalized expected EHE but are structural attribution, not timesheet entries, performance grades, compensation advice, or causal credit.",
+            "Low and high values remain dependent planning bounds rather than calibrated probabilities.",
+        ];
+        if (hasManifestAggregation)
+        {
+            assumptions.Add(
+                "Contributor and head views are separate exclusive match-set decompositions of the same authoritative portfolio total. Shared groups are not split, and the two views must not be added together.");
+        }
+
+        return assumptions;
+    }
 }

@@ -13,6 +13,11 @@ may still change public contracts with explicit documentation.
   and pinned objects, unions shared reachable history per repository, records
   contributor matches and head reachability without multiplying effort, and keeps
   execution-only aliases and local paths out of reports.
+- Added deterministic contributor, repository, and head/workstream aggregation to
+  manifest author-period reports. Exact contributor-match and head-reachability
+  groups preserve shared work once, retain zero rows, reconcile low/expected/high
+  totals and signed adjustments, and render consistently in full/compact JSON and
+  Markdown without assigning personal labor shares.
 
 ## 0.10.0-alpha.3 - 2026-08-14
 

@@ -2,7 +2,7 @@
 
 ## Current boundary
 
-`change-portfolio/0.1.0` composes canonical Change estimates selected as repeated
+`change-portfolio/0.2.0` composes canonical Change estimates selected as repeated
 pull requests, a versioned multi-repository PR manifest, a bounded direct
 author-period, or a versioned multi-repository/multi-head author-period manifest.
 It remains experimental and has no empirical production validation.
@@ -178,6 +178,36 @@ hour allocation per row. Deterministic largest-remainder rounding makes allocati
 sum exactly to normalized expected EHE. Allocations are audit values, not
 reconstructed work hours.
 
+Manifest author-period reports add two exclusive match-set ledgers:
+
+- the contributor ledger groups an item by the exact set of requested contributor
+  IDs that matched it; and
+- each repository's head ledger groups an item by the exact set of pinned heads
+  from which it is reachable.
+
+A singleton group is emitted for every requested contributor and head even when
+it is a zero row. A repository summary is likewise emitted for every requested
+repository. Exact multi-contributor and multi-head sets become shared groups, so a
+direct-author match for one contributor plus a co-author match for another remains
+one item and one additive EHE row. The report does not copy the full value into
+several contributor totals, infer a percentage split, or treat a singleton match
+as proof of sole authorship.
+
+Both ledgers expose low/expected/high normalized effort and reconcile independently
+to the same repository and portfolio totals. Expected group effort sums the
+existing exact per-item allocation. Low and high use the same expected weights and
+deterministic largest-remainder arithmetic inside the repository; only an
+expected-zero/high-positive bound uses isolated high as a fallback weight. Every
+group retains item IDs, signed isolated-to-normalized delta, repository-group
+identity, influencing adjustment IDs, and uncertainty. Contributor and head views
+are alternative decompositions and must not be added together.
+
+Non-additive summary rows expose direct-author/co-author counts, shared-match
+counts, head reachability, uniquely reachable counts, and heads with no unique
+selected commit. Zero rows are available when the overall manifest still selects
+at least one commit; an entirely empty selection continues to return the existing
+clear no-match error rather than inventing estimator metadata.
+
 ## Contracts and output
 
 The v1 schema catalog includes:
@@ -188,12 +218,13 @@ The v1 schema catalog includes:
 
 Contracts keep selection, immutable base contexts, source Change identity,
 observed patch/evidence digests, isolated estimates, normalized categories,
-attribution metadata, signed adjustments, exact allocations, diagnostics,
-verification, and pricing separate.
+attribution metadata, signed adjustments, exact allocations, aggregate match-set
+ledgers, diagnostics, verification, and pricing separate.
 
 The portfolio report schema adds optional manifest-safe author-period selection,
-contributor-match, and head-reachability members. Existing PR and direct
-author-period documents omit them and retain their prior serialization.
+contributor-match, head-reachability, and aggregation members. Existing PR and
+direct author-period documents omit them and retain their prior serialization;
+saved `change-portfolio/0.1.0` manifest reports without aggregation remain valid.
 
 JSON and Markdown output omit source excerpts and local repository paths. Markdown
 shows every selected row, repository group, adjustment, uncertainty, and safety
@@ -213,6 +244,10 @@ Storage-independent fixtures cover:
 - standalone deletion remaining represented;
 - cross-repository patches remaining additive;
 - exact allocation reconciliation and deterministic output;
+- direct/co-author multi-match commits represented once in a shared contributor
+  group;
+- zero contributor/repository/head rows and no-unique-work head diagnostics;
+- contributor-group and repository head-group low/expected/high reconciliation;
 - author/committer date, interval, alias, co-authorship, merge, and interleaving
   policy; and
 - manifest/report schema and customer-safety wording.

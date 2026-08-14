@@ -41,8 +41,9 @@ internal static class ChangePortfolioHelp
         PR selectors resolve only immutable base/head identities through optional gh support;
         all objects must already exist locally. Manifest repository paths and author aliases are
         execution-only and are not copied into reports. Author/time/co-author data selects
-        immutable commits and never multiplies effort. Results are repository-attributed Change
-        EHE, not actual labor, productivity, employee rankings, performance grades, or
-        compensation advice.
+        immutable commits and never multiplies effort. Manifest author reports use exclusive
+        contributor-match and head-reachability groups, retain zero rows, and count shared groups
+        once without personal-share splits. Results are repository-attributed Change EHE, not
+        actual labor, productivity, employee rankings, performance grades, or compensation advice.
         """;
 }
