@@ -22,8 +22,9 @@ env:
 jobs:
   pull-request-history:
     name: Pull request commits are linear
-    if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
+    outputs:
+      full_ci: ${{ steps.change_scope.outputs.full_ci }}
 
     steps:
       - name: Check out source history
@@ -31,7 +32,38 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Classify changed files
+        id: change_scope
+        shell: bash
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          if [ "$EVENT_NAME" != "pull_request" ]; then
+            echo "full_ci=true" >> "$GITHUB_OUTPUT"
+            echo "Non-pull-request run; full CI is required."
+            exit 0
+          fi
+
+          if git diff --quiet --no-renames "$BASE_SHA...$HEAD_SHA" -- . \
+            ':(exclude,icase,glob)**/*.md'; then
+            full_ci=false
+            echo "Markdown-only pull request; expensive CI jobs will be skipped."
+          else
+            diff_status=$?
+            if [ "$diff_status" -ne 1 ]; then
+              echo "::error::Unable to classify the pull request diff."
+              exit "$diff_status"
+            fi
+
+            full_ci=true
+            echo "A non-Markdown path changed; full CI is required."
+          fi
+          echo "full_ci=$full_ci" >> "$GITHUB_OUTPUT"
+
       - name: Reject merge commits in the pull request
+        if: github.event_name == 'pull_request'
         shell: bash
         env:
           BASE_SHA: ${{ github.event.pull_request.base.sha }}
@@ -45,6 +77,8 @@ jobs:
 
   formatting:
     name: Formatting
+    needs: pull-request-history
+    if: needs.pull-request-history.outputs.full_ci == 'true'
     runs-on: ubuntu-latest
 
     steps:
@@ -64,6 +98,7 @@ jobs:
 
   quality:
     name: Quality (${{ matrix.os }})
+    needs: pull-request-history
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -74,25 +109,35 @@ jobs:
           - macos-latest
 
     steps:
+      - name: Skip build and tests for Markdown-only changes
+        if: needs.pull-request-history.outputs.full_ci != 'true'
+        run: echo "Markdown-only pull request; build and unit tests are not required."
+
       - name: Check out source
+        if: needs.pull-request-history.outputs.full_ci == 'true'
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Set up .NET
+        if: needs.pull-request-history.outputs.full_ci == 'true'
         uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
         with:
           global-json-file: global.json
 
       - name: Restore
+        if: needs.pull-request-history.outputs.full_ci == 'true'
         run: dotnet restore EffortHours.slnx --configfile NuGet.Config --locked-mode
 
       - name: Build
+        if: needs.pull-request-history.outputs.full_ci == 'true'
         run: dotnet build EffortHours.slnx --no-restore --configuration Release
 
       - name: Run storage-independent unit tests
+        if: needs.pull-request-history.outputs.full_ci == 'true'
         run: dotnet test tests/EffortHours.Tests/EffortHours.Tests.csproj --no-build --no-restore --configuration Release
 
   end-to-end:
     name: End-to-end (${{ matrix.os }})
+    needs: pull-request-history
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -103,25 +148,36 @@ jobs:
           - macos-latest
 
     steps:
+      - name: Skip process tests for Markdown-only changes
+        if: needs.pull-request-history.outputs.full_ci != 'true'
+        run: echo "Markdown-only pull request; process-level tests are not required."
+
       - name: Check out source
+        if: needs.pull-request-history.outputs.full_ci == 'true'
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Set up .NET
+        if: needs.pull-request-history.outputs.full_ci == 'true'
         uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
         with:
           global-json-file: global.json
 
       - name: Restore end-to-end project graph
+        if: needs.pull-request-history.outputs.full_ci == 'true'
         run: dotnet restore tests/EffortHours.EndToEndTests/EffortHours.EndToEndTests.csproj --configfile NuGet.Config --locked-mode
 
       - name: Build end-to-end project graph
+        if: needs.pull-request-history.outputs.full_ci == 'true'
         run: dotnet build tests/EffortHours.EndToEndTests/EffortHours.EndToEndTests.csproj --no-restore --configuration Release
 
       - name: Run process-level end-to-end tests
+        if: needs.pull-request-history.outputs.full_ci == 'true'
         run: dotnet test tests/EffortHours.EndToEndTests/EffortHours.EndToEndTests.csproj --no-build --no-restore --configuration Release
 
   package-candidate:
     name: Build preview package candidate
+    needs: pull-request-history
+    if: needs.pull-request-history.outputs.full_ci == 'true'
     runs-on: ubuntu-latest
 
     steps:
@@ -151,10 +207,12 @@ jobs:
   package:
     name: Pack preview artifact
     needs:
+      - pull-request-history
       - formatting
       - quality
       - end-to-end
       - package-candidate
+    if: needs.pull-request-history.outputs.full_ci == 'true'
     runs-on: ubuntu-latest
 
     steps:
