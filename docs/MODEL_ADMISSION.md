@@ -376,8 +376,13 @@ ordinary-family pass rate is `0.9333`, repository expected coverage is `0.8667`,
 and matched-target coverage/normalized width are `0.8217/0.7406`. Operational
 checkpoint `0.8.0` passes the five development-computable gates, including
 material-category agreement with specification-comprehension bias `-0.1253`.
-Seven measured gates remain `not-evaluated` and non-passing. No manifest or
-selection rule is frozen, and no validation or test access is authorized.
+Measured checkpoint `0.9.0` passes median latency, slowest latency, sampled peak
+working set, installed-package increase, and scanner/fingerprint gates. It fails
+the public mutation suite at `314/339` assertions and raw cross-platform byte
+determinism: all repeated outputs are stable within an OS, while Windows CRLF
+bytes differ from Linux/macOS LF bytes; LF-normalized digests match. The policy
+does not waive either failure. Candidate v0.2 is retired, no manifest or selection
+rule is frozen, and no validation or test access is authorized.
 
 Validation labels are not authored and must remain unavailable until a finite
 candidate manifest is frozen from development evidence. Test labels are not

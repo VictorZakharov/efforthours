@@ -143,21 +143,23 @@ count, and intermediate churn do not value effort. `CHANGE_ESTIMATION.md` and
 
 ## Current priorities
 
-### 1. Complete the repository-candidate measured preflight
+### 1. Replace the retired repository candidate without opening holdouts
 
-- Exact `logical-capability/0.2.0` passes all 16 numerical development gates and
-  the five development-computable operational gates. Its model, features, factor
-  ceilings, ranges, fallback, implementation, and development inputs are frozen by
-  checkpoints `0.7.0` and `0.8.0` for the remaining preflight.
-- Run the public mutation suites, byte-identical Windows/Linux/macOS projection,
-  paired median/slowest latency, sampled peak working set, installed-package
-  increase, and scanner/fingerprint gates without retuning the candidate.
-- Retire v0.2 if any measured gate fails. Do not weaken a threshold, substitute an
-  implementation or model artifact, or hide a failure behind repository-total
-  agreement.
-- Freeze a finite candidate manifest, resource budgets, and the precommitted
-  selection rule only if every gate passes. Do not open or tune against validation
-  before that freeze.
+- Measured checkpoint `0.9.0` retires exact `logical-capability/0.2.0`. Five
+  resource/package/scanner gates pass, but the public suite passes only `314/339`
+  assertions and raw Windows JSON bytes differ from Linux/macOS by CRLF versus LF.
+- Treat v0.2 as final. Do not weaken a mutation assertion, normalize the recorded
+  raw-byte result into a pass, relax a threshold, or reuse its identity.
+- Define and test an OS-independent canonical structured-output newline boundary
+  under a new implementation identity. Preserve human-readable formatting and
+  existing schema semantics while making raw canonical bytes deterministic.
+- Diagnose the 25 public mutation failures using only public guardrails and frozen
+  development records. Any changed scorer, factor, range, fallback, or projection
+  becomes a new model, candidate, and estimator identity.
+- Run the complete numerical, development-computable operational, and measured
+  operational preflight for the new finite candidate set. Freeze a candidate
+  manifest, resource budgets, and selection rule only if every gate passes; do not
+  open or tune against validation before that freeze.
 - Keep all revisions and profiles from one repository family in one frozen
   development, validation, or test partition.
 - Expand decomposed teacher review with honest model/input provenance. Optional

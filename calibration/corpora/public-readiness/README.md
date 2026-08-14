@@ -33,9 +33,12 @@ and no holdout is opened. The
 [`0.7.0 successor preflight`](0.7.0/README.md) gives the bounded correction a new
 `logical-capability/0.2.0` identity and passes all 16 numerical gates. Its
 [`0.8.0 operational checkpoint`](0.8.0/README.md) passes the five
-development-computable operational gates; seven measured gates remain. No
-manifest is frozen and no holdout is opened. Source, archives, evidence bundles,
-and estimate bodies remain uncommitted.
+development-computable operational gates. The
+[`0.9.0 measured checkpoint`](0.9.0/README.md) then retires the exact candidate:
+the public mutation suite passes `314/339`, and raw Windows projection bytes
+differ from matching Linux/macOS bytes by CRLF versus LF. Five resource, package,
+and scanner gates pass. No manifest is frozen and no holdout is opened. Source,
+archives, evidence bundles, and development estimate bodies remain uncommitted.
 
 The development labels do not open model admission: validation/test labels are not
 authored, the finite candidate set is not frozen, and no independent correction
@@ -142,9 +145,11 @@ contain an unsealed test label before the one-time decision.
 
 ## Next checkpoint
 
-Run the seven measured gates against exact `logical-capability/0.2.0` without
-retuning its features, factors, ranges, or fallback. Freeze the finite candidate
-manifest and selection rule only if every gate passes. Validation labels must
-remain unavailable until that freeze; test labels require an externally held body
-and precommitted digest before authoring and remain sealed until the one-time
-selection boundary.
+Retire `logical-capability/0.2.0`. Address raw cross-platform canonical output and
+the 25 public mutation failures using development-visible evidence only, without
+weakening the suite or opening holdouts. Any challenger requires new model,
+candidate, estimator, and implementation identities plus the complete numerical
+and operational preflight. Validation labels must remain unavailable until a
+later finite candidate manifest and selection rule are frozen; test labels require
+an externally held body and precommitted digest before authoring and remain sealed
+until the one-time selection boundary.

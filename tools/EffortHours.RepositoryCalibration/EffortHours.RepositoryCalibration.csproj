@@ -12,5 +12,6 @@
   <ItemGroup>
     <ProjectReference Include="../../src/EffortHours.Calibration/EffortHours.Calibration.csproj" />
     <ProjectReference Include="../../src/EffortHours.Contracts/EffortHours.Contracts.csproj" />
+    <ProjectReference Include="../../src/EffortHours.Estimation/EffortHours.Estimation.csproj" />
   </ItemGroup>
 </Project>

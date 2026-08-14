@@ -1,6 +1,6 @@
 namespace EffortHours.RepositoryCalibration;
 
-internal static class Program
+internal static partial class Program
 {
     public static async Task<int> Main(string[] arguments)
     {
@@ -62,6 +62,24 @@ internal static class Program
         if (arguments.Length > 0 && arguments[0] == "candidate-operational-preflight")
         {
             return await RunLogicalCandidateOperationalAsync(arguments[1..], cancellationToken)
+                .ConfigureAwait(false);
+        }
+
+        if (arguments.Length > 0 && arguments[0] == "candidate-benchmark-project")
+        {
+            return await RunCandidateBenchmarkProjectionAsync(arguments[1..], cancellationToken)
+                .ConfigureAwait(false);
+        }
+
+        if (arguments.Length > 0 && arguments[0] == "candidate-measure")
+        {
+            return await RunCandidateMeasurementAsync(arguments[1..], cancellationToken)
+                .ConfigureAwait(false);
+        }
+
+        if (arguments.Length > 0 && arguments[0] == "candidate-measurement-aggregate")
+        {
+            return await RunCandidateMeasurementAggregateAsync(arguments[1..], cancellationToken)
                 .ConfigureAwait(false);
         }
 
@@ -374,5 +392,15 @@ internal static class Program
         Evaluates development-only stratum, material-category, shape/size,
         saved-explanation, and safety gates. It stops later measured gates after
         any failure and never reads validation or test source, outputs, or labels.
+
+        Measured operational gates:
+          dotnet EffortHours.RepositoryCalibration.dll candidate-measure [options]
+          dotnet EffortHours.RepositoryCalibration.dll candidate-measurement-aggregate [options]
+
+        The platform command runs five or more paired fresh-process projections for
+        deterministic small/medium/large saved evidence plus scanner, optional
+        mutation, and optional installed-package measurements. The aggregate command
+        requires exact Windows, Linux, and macOS records and writes the fail-closed
+        measured checkpoint. Neither command accepts holdout inputs.
         """);
 }

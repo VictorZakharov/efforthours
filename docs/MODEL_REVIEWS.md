@@ -33,11 +33,58 @@ Because EffortHours's own anchor informed the seed-model and calibration design,
 a development diagnostic rather than an eligible held-out test record unless a
 future independent snapshot and review policy explicitly establishes otherwise.
 
+## 2026-08-13: logical-capability v0.2 measured operational rejection
+
+Status: **candidate retired after public-mutation and raw cross-platform
+byte-determinism failures; validation and test remain unopened; no candidate
+freeze or admission**
+
+`efforthours-public-readiness/0.9.0` runs all seven previously pending measured
+gates against exact `logical-capability/0.2.0` without changing its model,
+features, factors, ranges, fallback, implementation, public suite, or policy
+thresholds. Five fresh seed and candidate processes ran for each deterministic
+small, medium, and large saved-evidence shape on GitHub-hosted Windows, Linux, and
+macOS runners.
+
+Five gates pass. All 27 paired median-latency, slowest-latency, and sampled
+peak-working-set comparisons remain within their frozen limits. The conservative
+installed layout adds `0.9106 MiB` against a `25 MiB` ceiling. All three 99,604-
+line mixed static scans retain unchanged target fingerprints plus offline,
+non-executing, and no-install signals; their recorded scan times are 1.634 seconds
+on Linux, 3.474 seconds on macOS, and 2.185 seconds on Windows. No frozen
+cross-platform scanner latency or memory threshold applies.
+
+Two gates fail. Public mutation suite `0.8.0` passes `314/339` assertions across
+66 candidate-applied and 22 seed-fallback cases. Its 25 failures cover exact and
+frontend duplication, API and integration marginality, generated customization,
+bounded semantic clones, and one multi-package review boundary. Raw projection
+bytes are stable across all five repetitions within each OS, but Windows seed and
+candidate digests differ from Linux/macOS for every shape. LF-normalized digests
+match exactly, isolating the mismatch to CRLF versus LF serialization. The frozen
+policy requires raw byte identity, so normalization is diagnostic and cannot turn
+the failure into a pass.
+
+The measured report, final preflight, and mutation report have normalized digests
+`sha256:47c9d916ac8a728a549086f8118d40ed785a797fb975f7570d39e46ae1163275`,
+`sha256:a958aed00f2a0836d813590ec7eb09fd6d88ba6d7159219131c4c977a285e841`,
+and `sha256:9943f4826ddcdb7536d2759db61e1b1d8d5e55dbb64425020b4e5f3aafe3e383`.
+Workflow run `31758839188` pins measurement implementation commit
+`f783fa2df25054e7969d53805e77e0e5d66b92c5`; the candidate model remains pinned
+to digest
+`sha256:f53b5af09b5adf0d3efed5339e9309156f026b3378c6b69e979467b92524ae93`
+and implementation commit `6962a3a49911ae230f2df13b5b05f8aded5c7e12`.
+
+The final status is `rejected-measured-operational-preflight`. Candidate manifest
+freeze and validation authorization remain false. No validation/test source,
+candidate output, or label was read or generated. Candidate v0.2 is retired; any
+changed challenger requires a new identity and complete development-only
+preflight.
+
 ## 2026-08-13: logical-capability v0.2 development preflight
 
-Status: **all 16 numerical and five development-computable operational gates pass;
-seven measured gates remain; validation and test remain unopened; no candidate
-freeze or admission**
+Status at this checkpoint: **all 16 numerical and five development-computable
+operational gates pass; seven measured gates remain; later checkpoint 0.9.0
+retires the candidate without validation/test access, freeze, or admission**
 
 The v0.1 operational failure was traced to its factor ceiling rather than a hidden
 repository-total interaction. Specification-comprehension groups `s` and `xl`
@@ -76,7 +123,8 @@ and `sha256:609307d5a366b52c18118db2ef9f79e46d86565b5419aa767e0cbbf7f1fe8ec8`.
 All pin implementation commit `6962a3a49911ae230f2df13b5b05f8aded5c7e12`.
 No validation/test source, candidate output, or label was read or generated. The
 next boundary is the seven measured gates against this exact candidate without
-retuning.
+retuning. The later 0.9.0 record above completes that boundary and retires the
+candidate.
 
 ## 2026-08-13: logical-capability operational rejection
 

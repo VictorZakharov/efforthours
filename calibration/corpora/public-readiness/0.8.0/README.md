@@ -75,3 +75,9 @@ The command has no validation or test option.
 Run the seven measured gates against this exact candidate, implementation, and
 model artifact. Freeze a finite manifest and selection rule only if all seven pass;
 otherwise retire v0.2 without opening holdouts.
+
+## Subsequent result
+
+Checkpoint [`0.9.0`](../0.9.0/README.md) ran all seven gates and retired v0.2
+after public-mutation and raw cross-platform byte-determinism failures. This file
+retains the state and decision boundary at the earlier 0.8.0 checkpoint.

@@ -53,9 +53,12 @@ repository expected WAPE is `0.1137`, absolute aggregate bias is `0.0094`,
 repository expected coverage is `0.8667`, and matched-target coverage/normalized
 width are `0.8217/0.7406`. Operational checkpoint `0.8.0` passes all five
 development-computable gates, including material-category agreement with
-specification-comprehension bias `-0.1253`. Seven measured gates remain unrun and
-non-passing. No candidate manifest is frozen, and validation/test labels and
-candidate outputs remain unopened.
+specification-comprehension bias `-0.1253`. Measured checkpoint `0.9.0` then
+retires the exact candidate. Public mutation suite `0.8.0` passes `314/339`
+assertions, and raw Windows candidate JSON differs from matching Linux/macOS
+bytes by CRLF versus LF. All latency, peak-memory, installed-package, and
+scanner/fingerprint gates pass. No candidate manifest is frozen, and
+validation/test source, candidate outputs, and labels remain unopened.
 
 Change EHE has a separate limited Stage A logical-admission decision. Its exact
 size, ecosystem, metric, and performance boundary is defined in
@@ -281,12 +284,14 @@ reviewed-point coverage while materially reducing normalized width relative to
 the seed baseline. Ranges remain empirical planning bounds rather than formal
 probability intervals.
 
-Current public repository records satisfy the complete development-label,
-numerical-preflight, and development-computable operational boundaries. Seven
-measured operational gates, candidate freeze, blind validation, and sealed test
-remain incomplete. The 15 development families may be compared diagnostically,
-but no validation/test comparison or admission decision is authorized.
-`seed-rules/0.4.0` remains the shipped estimator and required fallback.
+Current public repository records satisfy the complete development-label
+boundary. Exact candidate `logical-capability/0.2.0` passed its numerical and
+development-computable operational gates, then failed the public-mutation and raw
+cross-platform byte-determinism gates in measured checkpoint `0.9.0`; it is
+retired. Candidate freeze, blind validation, and sealed test remain incomplete.
+The 15 development families may be compared diagnostically, but no
+validation/test comparison or admission decision is authorized. `seed-rules/0.4.0`
+remains the shipped estimator and required fallback.
 
 The public-readiness cohort satisfies the planned family, shape, and size
 allocation, exact source reproduction, and complete development-label boundary.
@@ -305,11 +310,14 @@ final-delta policy in `CHANGE_MODEL_ADMISSION.md`.
 
 ## Next evidence required
 
-- the seven mutation, cross-platform, resource, package, and scanner measurements
-  for exact `logical-capability/0.2.0`, without retuning its features, factors,
-  ranges, or fallback;
-- only if they pass, a finite candidate manifest with exact model/configuration
-  identities, resource measurements, and a frozen selection rule;
+- a new development-only challenger that addresses the 25 public mutation
+  failures and raw cross-platform canonical-output mismatch without weakening a
+  guardrail or reusing the retired v0.2 identity;
+- the complete numerical and operational preflight for that exact new model,
+  estimator, implementation, fallback, and finite candidate set;
+- only if every development gate passes, a finite candidate manifest with exact
+  model/configuration identities, resource measurements, and a frozen selection
+  rule;
 - blind validation labels that remain unavailable until candidate freeze;
 - sealed test labels with a precommitted digest and custody record;
 - more exact small-task teacher decompositions with honest context provenance;
