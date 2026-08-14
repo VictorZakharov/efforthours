@@ -71,6 +71,12 @@ internal sealed record LogicalCandidatePointModel
 
     public IReadOnlyList<LogicalCandidatePointFactorCeiling> MaximumFactorOverrides { get; init; } = [];
 
+    public decimal SeedAnchorFactor { get; init; }
+
+    public decimal SeedAnchorMaximumLogicalHours { get; init; }
+
+    public IReadOnlyList<string> SeedAnchorWorkItemKinds { get; init; } = [];
+
     public required string UnknownGroupBehavior { get; init; }
 
     public IReadOnlyList<LogicalCandidatePointFactor> Factors { get; init; } = [];
@@ -93,9 +99,13 @@ internal sealed record LogicalCandidatePointFactor
 
     public required decimal LogicalExpectedHours { get; init; }
 
+    public decimal SeedExpectedHours { get; init; }
+
     public required decimal ReviewedExpectedHours { get; init; }
 
     public required decimal Factor { get; init; }
+
+    public string? SampleSource { get; init; }
 }
 
 internal sealed record LogicalCandidateRangeModel

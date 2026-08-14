@@ -4,7 +4,9 @@ namespace EffortHours.RepositoryCalibration;
 
 internal static class LogicalCandidateScorer
 {
-    public const string Version = "evidence-logical-units/0.1.0";
+    public const string Version = "normalized-evidence-seed-anchor/0.1.0";
+
+    public const string LegacyVersion = "evidence-logical-units/0.1.0";
 
     public static readonly string[] SizeBands =
         ["xs:<=1", "s:<=2", "m:<=4", "l:<=8", "xl:<=16", "2xl:<=32", "3xl:<=64", "4xl:>64"];
@@ -37,6 +39,7 @@ internal static class LogicalCandidateScorer
     public static IReadOnlyList<LogicalCapabilityGroup> Build(
         EstimateReport report,
         RepositoryEvidence evidence,
+        string scorerVersion = Version,
         CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(report);
@@ -52,13 +55,21 @@ internal static class LogicalCandidateScorer
         Dictionary<string, EvidenceFact> facts = evidence.Facts.ToDictionary(
             fact => fact.Id,
             StringComparer.Ordinal);
+        LogicalCandidateEvidenceNormalizer normalizer =
+            LogicalCandidateEvidenceNormalizer.Create(evidence.Facts);
         List<LogicalCapabilityGroup> groups = [];
         foreach (IGrouping<string, WorkItem> group in report.WorkItems.GroupBy(
                      item => CapabilityId(item.Id),
                      StringComparer.Ordinal))
         {
             cancellationToken.ThrowIfCancellationRequested();
-            groups.Add(BuildGroup(group.Key, [.. group], facts, cancellationToken));
+            groups.Add(BuildGroup(
+                group.Key,
+                [.. group],
+                facts,
+                normalizer,
+                scorerVersion,
+                cancellationToken));
         }
 
         return groups;
@@ -80,6 +91,8 @@ internal static class LogicalCandidateScorer
         string id,
         IReadOnlyList<WorkItem> items,
         Dictionary<string, EvidenceFact> facts,
+        LogicalCandidateEvidenceNormalizer normalizer,
+        string scorerVersion,
         CancellationToken cancellationToken)
     {
         string kind = Kind(id);
@@ -91,27 +104,37 @@ internal static class LogicalCandidateScorer
                 .Distinct(StringComparer.Ordinal)
                 .Order(StringComparer.Ordinal),
         ];
-        Dictionary<string, decimal> measurements = [];
-        foreach (string evidenceId in evidenceIds)
+        decimal seedExpected = items.Sum(item => item.Hours.Expected);
+        bool legacy = scorerVersion == LegacyVersion;
+        if (!legacy && scorerVersion != Version)
         {
-            cancellationToken.ThrowIfCancellationRequested();
-            if (!facts.TryGetValue(evidenceId, out EvidenceFact? fact))
-            {
-                throw new InvalidDataException(
-                    $"Logical capability '{id}' references missing evidence '{evidenceId}'.");
-            }
-
-            foreach (EvidenceMeasurement measurement in fact.Measurements)
-            {
-                measurements[measurement.Name] =
-                    measurements.GetValueOrDefault(measurement.Name) + measurement.Value;
-            }
+            throw new InvalidDataException($"Unsupported logical-capability scorer '{scorerVersion}'.");
         }
 
-        decimal seedExpected = items.Sum(item => item.Hours.Expected);
+        LogicalCandidateNormalizedEvidence normalized = normalizer.Accumulate(
+            evidenceIds,
+            facts,
+            kind,
+            scope,
+            normalize: !legacy,
+            cancellationToken);
         decimal roleFactor = ScopeFactor(kind, scope);
-        decimal raw = RawPoint(kind, measurements, evidenceIds.Length, seedExpected);
-        decimal logicalExpected = raw * roleFactor;
+        decimal evidencePoint = RawPoint(
+            kind,
+            normalized.Measurements,
+            normalized.EvidenceCount,
+            seedExpected);
+        if (!legacy)
+        {
+            evidencePoint = kind switch
+            {
+                "api-surface" => decimal.Max(1.25m, evidencePoint),
+                "external-integration" => decimal.Max(1.5m, evidencePoint),
+                _ => evidencePoint,
+            };
+        }
+        decimal logicalExpected = evidencePoint * roleFactor;
+        decimal normalizedSeedExpected = seedExpected * roleFactor;
         return new LogicalCapabilityGroup(
             id,
             kind,
@@ -120,6 +143,7 @@ internal static class LogicalCandidateScorer
             items,
             evidenceIds,
             logicalExpected,
+            normalizedSeedExpected,
             roleFactor,
             SizeBand(logicalExpected));
     }
@@ -357,5 +381,6 @@ internal sealed record LogicalCapabilityGroup(
     IReadOnlyList<WorkItem> Items,
     IReadOnlyList<string> EvidenceIds,
     decimal LogicalExpected,
+    decimal SeedExpected,
     decimal ScopeRoleFactor,
     string LogicalSizeBand);

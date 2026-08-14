@@ -153,7 +153,7 @@ public sealed partial class CandidatePreflightTests
         Assert.All(candidate.WorkItems, item =>
         {
             Assert.Equal([evidenceId], item.EvidenceIds);
-            Assert.Contains("evidence-logical-units/0.1.0", item.Reason, StringComparison.Ordinal);
+            Assert.Contains("normalized-evidence-seed-anchor/0.1.0", item.Reason, StringComparison.Ordinal);
             Assert.Equal(EstimatorKind.Rule, item.Estimator.Kind);
         });
         Assert.Empty(ContractValidation.Validate(candidate));
@@ -383,8 +383,19 @@ public sealed partial class CandidatePreflightTests
                             LogicalCandidateModelFitter.SpecificationComprehensionMaximumFactor,
                     },
                 ],
+                SeedAnchorFactor = LogicalCandidateModelFitter.SeedAnchorFactor,
+                SeedAnchorMaximumLogicalHours =
+                    LogicalCandidateModelFitter.SeedAnchorMaximumLogicalHours,
+                SeedAnchorWorkItemKinds = LogicalCandidateModelFitter.SeedAnchorWorkItemKinds,
                 UnknownGroupBehavior = "seed fallback",
-                Factors = [point],
+                Factors =
+                [
+                    .. LogicalCandidateScorer.SizeBands.Select(band => point with
+                    {
+                        LogicalSizeBand = band.Split(':', 2)[0],
+                        SampleSource = "synthetic",
+                    }),
+                ],
             },
             Range = new LogicalCandidateRangeModel
             {
