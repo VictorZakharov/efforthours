@@ -15,6 +15,8 @@ public sealed record GitChangePlan
     public IReadOnlyList<ChangeComponentInput> Components { get; init; } = [];
 
     public IReadOnlyList<Diagnostic> Diagnostics { get; init; } = [];
+
+    internal GitSnapshotSession? SnapshotSession { get; init; }
 }
 
 public sealed record GitChangePlannerOptions
@@ -326,22 +328,26 @@ public sealed partial class GitChangePlanner
         string repositoryPath,
         ChangeSelection selection,
         IReadOnlyList<ChangeComponentInput> components,
-        IReadOnlyList<Diagnostic> diagnostics) => new()
+        IReadOnlyList<Diagnostic> diagnostics,
+        GitSnapshotSession? snapshotSession = null) => new()
         {
             RepositoryPath = repositoryPath,
             Selection = selection,
-            OpenBaseAsync = cancellationToken => _git.OpenSnapshotAsync(
+            OpenBaseAsync = cancellationToken => OpenSnapshotAsync(
                 repositoryPath,
                 selection.Base.ObjectId,
+                snapshotSession,
                 cancellationToken),
-            OpenHeadAsync = cancellationToken => _git.OpenSnapshotAsync(
+            OpenHeadAsync = cancellationToken => OpenSnapshotAsync(
                 repositoryPath,
                 selection.Head.ObjectId,
+                snapshotSession,
                 cancellationToken),
             Components = components,
             Diagnostics = [.. diagnostics
                 .Distinct()
                 .OrderBy(diagnostic => diagnostic.Code, StringComparer.Ordinal)],
+            SnapshotSession = snapshotSession,
         };
 
     private ChangeComponentInput Component(
@@ -349,46 +355,23 @@ public sealed partial class GitChangePlanner
         string selector,
         string baseObjectId,
         string headObjectId,
-        ChangeComponentKind kind = ChangeComponentKind.Commit) => new()
+        ChangeComponentKind kind = ChangeComponentKind.Commit,
+        GitSnapshotSession? snapshotSession = null) => new()
         {
             Kind = kind,
             Selector = selector,
             BaseObjectId = baseObjectId,
             HeadObjectId = headObjectId,
-            OpenBaseAsync = cancellationToken => _git.OpenSnapshotAsync(
+            OpenBaseAsync = cancellationToken => OpenSnapshotAsync(
                 repositoryPath,
                 baseObjectId,
+                snapshotSession,
                 cancellationToken),
-            OpenHeadAsync = cancellationToken => _git.OpenSnapshotAsync(
+            OpenHeadAsync = cancellationToken => OpenSnapshotAsync(
                 repositoryPath,
                 headObjectId,
+                snapshotSession,
                 cancellationToken),
         };
 
-    private static Diagnostic PinnedReferenceDiagnostic() => new()
-    {
-        Code = "FB5100",
-        Severity = DiagnosticSeverity.Information,
-        Message = "Moving selectors were resolved to immutable object IDs before analysis; selector metadata does not multiply effort.",
-    };
-
-    private static (string Base, string Head) ParseRange(string range)
-    {
-        ArgumentException.ThrowIfNullOrWhiteSpace(range);
-        if (range.Contains("...", StringComparison.Ordinal))
-        {
-            throw new ArgumentException(
-                "Three-dot ranges are ambiguous for final-change estimation. Use an explicit <base>..<head> range.",
-                nameof(range));
-        }
-
-        int separator = range.IndexOf("..", StringComparison.Ordinal);
-        if (separator <= 0 || separator != range.LastIndexOf("..", StringComparison.Ordinal) ||
-            separator + 2 >= range.Length)
-        {
-            throw new ArgumentException("Range must have the exact form <base>..<head>.", nameof(range));
-        }
-
-        return (range[..separator], range[(separator + 2)..]);
-    }
 }

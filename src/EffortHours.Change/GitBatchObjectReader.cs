@@ -8,7 +8,7 @@ namespace EffortHours.Change;
 internal sealed class GitBatchObjectReader : IAsyncDisposable
 {
     internal const int MaximumCachedBlobBytes = 1024 * 1024;
-    private const long MaximumCacheBytes = 64L * 1024 * 1024;
+    internal const long MaximumCacheBytes = 64L * 1024 * 1024;
 
     private readonly Dictionary<string, byte[]> _cache = new(StringComparer.Ordinal);
     private readonly Queue<string> _cacheOrder = new();
@@ -16,6 +16,10 @@ internal sealed class GitBatchObjectReader : IAsyncDisposable
     private readonly Process _process;
     private readonly Task<string> _stderr;
     private long _cacheBytes;
+    private long _requests;
+    private long _cacheHits;
+    private long _cacheEvictions;
+    private long _peakCacheBytes;
     private bool _faulted;
     private bool _disposed;
 
@@ -51,8 +55,10 @@ internal sealed class GitBatchObjectReader : IAsyncDisposable
         try
         {
             EnsureUsable();
+            _requests++;
             if (_cache.TryGetValue(objectId, out byte[]? cached))
             {
+                _cacheHits++;
                 _gate.Release();
                 return new MemoryStream(cached, writable: false);
             }
@@ -79,8 +85,10 @@ internal sealed class GitBatchObjectReader : IAsyncDisposable
         try
         {
             EnsureUsable();
+            _requests++;
             if (_cache.TryGetValue(objectId, out byte[]? cached))
             {
+                _cacheHits++;
                 return cached;
             }
 
@@ -168,6 +176,25 @@ internal sealed class GitBatchObjectReader : IAsyncDisposable
         }
 
         _gate.Release();
+    }
+
+    internal GitObjectReaderStatistics GetStatistics()
+    {
+        _gate.Wait();
+        try
+        {
+            return new GitObjectReaderStatistics
+            {
+                Requests = _requests,
+                CacheHits = _cacheHits,
+                CacheEvictions = _cacheEvictions,
+                PeakCachedBytes = _peakCacheBytes,
+            };
+        }
+        finally
+        {
+            _gate.Release();
+        }
     }
 
     private static long ParseBlobLength(string header, string requestedObjectId)
@@ -294,11 +321,13 @@ internal sealed class GitBatchObjectReader : IAsyncDisposable
             if (_cache.Remove(evicted, out byte[]? value))
             {
                 _cacheBytes -= value.Length;
+                _cacheEvictions++;
             }
         }
 
         _cache.Add(objectId, content);
         _cacheOrder.Enqueue(objectId);
         _cacheBytes += content.Length;
+        _peakCacheBytes = Math.Max(_peakCacheBytes, _cacheBytes);
     }
 }

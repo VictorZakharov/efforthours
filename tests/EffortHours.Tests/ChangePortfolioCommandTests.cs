@@ -7,7 +7,7 @@ using EffortHours.Estimation;
 
 namespace EffortHours.Tests;
 
-public sealed class ChangePortfolioCommandTests
+public sealed partial class ChangePortfolioCommandTests
 {
     private const string ProjectFile =
         "<Project Sdk=\"Microsoft.NET.Sdk\"><PropertyGroup>" +
@@ -229,10 +229,11 @@ public sealed class ChangePortfolioCommandTests
         CountingEstimator repositoryEstimator = new();
         ChangeEstimator estimator = new(repositoryEstimator);
 
-        IReadOnlyList<ChangeEstimateReport> actual =
-            await estimator.EstimatePortfolioCandidatesAsync(
+        ChangePortfolioEstimateBatch batch =
+            await estimator.EstimatePortfolioCandidatesWithStatisticsAsync(
                 plans,
                 EstimationProfile.Implementation);
+        IReadOnlyList<ChangeEstimateReport> actual = batch.Reports;
         ChangeEstimateReport[] expected =
         [
             await new ChangeEstimator().EstimateAsync(
@@ -244,6 +245,9 @@ public sealed class ChangePortfolioCommandTests
         ];
 
         Assert.Equal(3, repositoryEstimator.InvocationCount);
+        Assert.Equal(4, batch.Statistics.SnapshotAnalysisRequests);
+        Assert.Equal(1, batch.Statistics.SnapshotAnalysisHits);
+        Assert.Equal(3, batch.Statistics.PeakRetainedSnapshotAnalyses);
         Assert.Equal(
             ContractJson.Serialize(expected[0]),
             ContractJson.Serialize(actual[0]));

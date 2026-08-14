@@ -71,7 +71,7 @@
       "if": {
         "required": ["estimatorVersion", "selection"],
         "properties": {
-          "estimatorVersion": { "pattern": "^change-portfolio/0\\.2\\.0\\+" },
+          "estimatorVersion": { "pattern": "^change-portfolio/0\\.2\\.[0-9]+\\+" },
           "selection": {
             "required": ["kind", "manifestBased"],
             "properties": {

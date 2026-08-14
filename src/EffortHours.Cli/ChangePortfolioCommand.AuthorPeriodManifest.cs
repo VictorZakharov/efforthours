@@ -12,11 +12,13 @@ internal sealed partial class ChangePortfolioCommand
         GitAuthorPeriodManifestPortfolioPlan plan = await _planAuthorPeriodManifest(
             options.AuthorPeriodManifestPath!,
             cancellationToken).ConfigureAwait(false);
-        IReadOnlyList<ChangeEstimateReport> reports =
-            await _changeEstimator.EstimatePortfolioCandidatesAsync(
+        ChangePortfolioEstimateBatch estimate =
+            await _changeEstimator.EstimatePortfolioCandidatesWithStatisticsAsync(
                 [.. plan.Items.Select(item => item.Plan)],
                 options.Profile,
+                plan.ExecutionTelemetry,
                 cancellationToken).ConfigureAwait(false);
+        IReadOnlyList<ChangeEstimateReport> reports = estimate.Reports;
         List<ChangePortfolioCandidate> candidates = [];
         for (int index = 0; index < plan.Items.Count; index++)
         {
@@ -30,6 +32,10 @@ internal sealed partial class ChangePortfolioCommand
             });
         }
 
-        return new PortfolioCandidates(plan.Selection, candidates, plan.Diagnostics);
+        return new PortfolioCandidates(
+            plan.Selection,
+            candidates,
+            [.. plan.Diagnostics, estimate.Statistics.CreateDiagnostic()],
+            plan.ExecutionTelemetry);
     }
 }

@@ -18,6 +18,13 @@ may still change public contracts with explicit documentation.
   groups preserve shared work once, retain zero rows, reconcile low/expected/high
   totals and signed adjustments, and render consistently in full/compact JSON and
   Markdown without assigning personal labor shares.
+- Added repository-scoped portfolio execution reuse and diagnostics. One manifest
+  invocation now keeps one bounded Git object reader, immutable-inventory cache,
+  blob cache, and 16-entry snapshot-analysis LRU per active repository; processes
+  repositories sequentially; reports privacy-safe deterministic reuse counters;
+  and writes nine non-semantic phase timings to stderr. A focused `change/1.2.0`
+  comparison produced byte-equivalent rows in 1.189 seconds combined versus 1.639
+  seconds across three isolated estimates.
 
 ## 0.10.0-alpha.3 - 2026-08-14
 

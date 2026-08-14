@@ -35,6 +35,13 @@ item/adjustment lineage. Contributor and head groups are alternative views of on
 authoritative portfolio total; shared EHE is never copied into several additive
 personal rows.
 
+Manifest author-period report diagnostic `FB5325` contains deterministic,
+privacy-safe cache request/hit counts and declared retention limits. It contains no
+local paths, raw aliases, source excerpts, or wall-clock values. The CLI writes
+nine measured execution-phase durations to stderr after a successful manifest run;
+those non-semantic timings are deliberately excluded from JSON/Markdown contracts,
+digests, saved-report rendering, and EHE calculations.
+
 ## Repository views
 
 Repository estimates support these presentations:

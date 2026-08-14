@@ -53,17 +53,31 @@ internal sealed partial class ChangePortfolioCommand
                 planned.Candidates,
                 options.Profile,
                 rateCard,
-                planned.Diagnostics);
+                planned.Diagnostics,
+                planned.ExecutionTelemetry);
             cancellationToken.ThrowIfCancellationRequested();
-            string output = options.Format == "markdown"
-                ? ChangePortfolioMarkdownRenderer.Render(report)
-                : new ChangePortfolioJsonRenderer(options.Compact).Render(report);
-            return await WriteOutputAsync(
+            string output;
+            using (planned.ExecutionTelemetry?.Measure(ChangePortfolioExecutionPhases.Rendering))
+            {
+                output = options.Format == "markdown"
+                    ? ChangePortfolioMarkdownRenderer.Render(report)
+                    : new ChangePortfolioJsonRenderer(options.Compact).Render(report);
+            }
+
+            int exitCode = await WriteOutputAsync(
                 output,
                 options.OutputPath,
                 standardOutput,
                 standardError,
                 cancellationToken).ConfigureAwait(false);
+            if (exitCode == CliExitCodes.Success && planned.ExecutionTelemetry is not null)
+            {
+                await WriteExecutionTimingsAsync(
+                    planned.ExecutionTelemetry,
+                    standardError).ConfigureAwait(false);
+            }
+
+            return exitCode;
         }
         catch (Exception exception) when (
             exception is ArgumentException or DirectoryNotFoundException or ExternalCommandException or
@@ -88,11 +102,12 @@ internal sealed partial class ChangePortfolioCommand
                 cancellationToken).ConfigureAwait(false));
         }
 
-        IReadOnlyList<ChangeEstimateReport> reports =
-            await _changeEstimator.EstimatePortfolioCandidatesAsync(
+        ChangePortfolioEstimateBatch estimate =
+            await _changeEstimator.EstimatePortfolioCandidatesWithStatisticsAsync(
                 plans,
                 options.Profile,
                 cancellationToken).ConfigureAwait(false);
+        IReadOnlyList<ChangeEstimateReport> reports = estimate.Reports;
         List<ChangePortfolioCandidate> candidates = [];
         Dictionary<int, int> occurrences = [];
         foreach (ChangeEstimateReport report in reports)
@@ -137,11 +152,12 @@ internal sealed partial class ChangePortfolioCommand
             planned.Add((item, plan));
         }
 
-        IReadOnlyList<ChangeEstimateReport> reports =
-            await _changeEstimator.EstimatePortfolioCandidatesAsync(
+        ChangePortfolioEstimateBatch estimate =
+            await _changeEstimator.EstimatePortfolioCandidatesWithStatisticsAsync(
                 [.. planned.Select(entry => entry.Plan)],
                 options.Profile,
                 cancellationToken).ConfigureAwait(false);
+        IReadOnlyList<ChangeEstimateReport> reports = estimate.Reports;
         List<ChangePortfolioCandidate> candidates = [];
         for (int index = 0; index < planned.Count; index++)
         {
@@ -191,11 +207,12 @@ internal sealed partial class ChangePortfolioCommand
                 HeadRevision = options.HeadRevision,
             },
             cancellationToken).ConfigureAwait(false);
-        IReadOnlyList<ChangeEstimateReport> reports =
-            await _changeEstimator.EstimatePortfolioCandidatesAsync(
+        ChangePortfolioEstimateBatch estimate =
+            await _changeEstimator.EstimatePortfolioCandidatesWithStatisticsAsync(
                 [.. plan.Items.Select(item => item.Plan)],
                 options.Profile,
                 cancellationToken).ConfigureAwait(false);
+        IReadOnlyList<ChangeEstimateReport> reports = estimate.Reports;
         List<ChangePortfolioCandidate> candidates = [];
         for (int index = 0; index < plan.Items.Count; index++)
         {
@@ -209,7 +226,10 @@ internal sealed partial class ChangePortfolioCommand
             });
         }
 
-        return new PortfolioCandidates(plan.Selection, candidates, plan.Diagnostics);
+        return new PortfolioCandidates(
+            plan.Selection,
+            candidates,
+            [.. plan.Diagnostics, estimate.Statistics.CreateDiagnostic()]);
     }
 
     private static ChangePortfolioAttribution PullRequestAttribution() => new()
@@ -280,6 +300,7 @@ internal sealed partial class ChangePortfolioCommand
     private sealed record PortfolioCandidates(
         ChangePortfolioSelection Selection,
         IReadOnlyList<ChangePortfolioCandidate> Candidates,
-        IReadOnlyList<Diagnostic> Diagnostics);
+        IReadOnlyList<Diagnostic> Diagnostics,
+        ChangePortfolioExecutionTelemetry? ExecutionTelemetry = null);
 
 }

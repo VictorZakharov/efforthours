@@ -11,13 +11,19 @@ internal sealed class ChangeAuthorPeriodManifestCommandPlanner(GitPortfolioPlann
         string manifestPath,
         CancellationToken cancellationToken)
     {
-        ResolvedChangeAuthorPeriodManifest resolved =
-            await ChangeAuthorPeriodManifestLoader.LoadAsync(manifestPath, cancellationToken)
+        ChangePortfolioExecutionTelemetry executionTelemetry = new();
+        ResolvedChangeAuthorPeriodManifest resolved;
+        using (executionTelemetry.Measure(ChangePortfolioExecutionPhases.ManifestValidation))
+        {
+            resolved = await ChangeAuthorPeriodManifestLoader.LoadAsync(manifestPath, cancellationToken)
                 .ConfigureAwait(false);
+        }
+
         return await _planner.PlanAuthorPeriodManifestAsync(
             resolved.Manifest,
             resolved.ManifestDigest,
             resolved.RepositoryPaths,
+            executionTelemetry,
             cancellationToken).ConfigureAwait(false);
     }
 }

@@ -16,6 +16,7 @@ internal sealed record ChangeBenchmarkOptions(
     int LinesPerFile,
     int Commits,
     int MaximumRangeComponents,
+    bool CompareIndependent,
     bool KeepRepository,
     decimal? MaximumSeconds,
     decimal? MaximumPeakMib)
@@ -24,7 +25,7 @@ internal sealed record ChangeBenchmarkOptions(
         "Usage: change-benchmark [--tree|--range|--author-period] [--files <count>] " +
         "[--lines-per-file <count>] [--commits <count>] " +
         "[--maximum-range-components <count>] [--max-seconds <value>] " +
-        "[--max-peak-mib <value>] [--keep]";
+        "[--max-peak-mib <value>] [--compare-independent] [--keep]";
 
     public string Name => Mode switch
     {
@@ -41,6 +42,7 @@ internal sealed record ChangeBenchmarkOptions(
         int? linesPerFile = null;
         int? commits = null;
         int maximumRangeComponents = GitChangePlannerOptions.DefaultMaximumRangeComponents;
+        bool compareIndependent = false;
         bool keep = false;
         decimal? maximumSeconds = null;
         decimal? maximumPeakMib = null;
@@ -82,6 +84,9 @@ internal sealed record ChangeBenchmarkOptions(
                 case "--keep":
                     keep = true;
                     break;
+                case "--compare-independent":
+                    compareIndependent = true;
+                    break;
                 default:
                     throw new ArgumentException($"Unknown option '{arguments[index]}'.");
             }
@@ -104,6 +109,12 @@ internal sealed record ChangeBenchmarkOptions(
         {
             throw new ArgumentException(
                 "Author-period mode permits at most nine qualifying commits so the fixture retains a narrow selection.");
+        }
+
+        if (compareIndependent && selected != ChangeBenchmarkMode.AuthorPeriod)
+        {
+            throw new ArgumentException(
+                "Option '--compare-independent' is valid only with '--author-period'.");
         }
 
         if (maximumRangeComponents > GitChangePlannerOptions.MaximumSupportedRangeComponents)
@@ -131,6 +142,7 @@ internal sealed record ChangeBenchmarkOptions(
             },
             selectedCommits,
             maximumRangeComponents,
+            compareIndependent,
             keep,
             maximumSeconds,
             maximumPeakMib);

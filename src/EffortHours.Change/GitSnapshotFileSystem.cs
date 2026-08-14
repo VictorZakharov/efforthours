@@ -7,16 +7,19 @@ internal sealed partial class GitSnapshotFileSystem : IRepositoryFileSystem, ICh
     private readonly Dictionary<string, ChangeSnapshotFile> _files;
     private readonly Lock _directoryGate = new();
     private readonly string _repositoryPath;
+    private readonly Func<GitBatchObjectReader>? _sharedObjectReader;
     private HashSet<string>? _directories;
     private Dictionary<string, string[]>? _entriesByDirectory;
-    private GitBatchObjectReader? _objectReader;
+    private GitBatchObjectReader? _ownedObjectReader;
 
     private GitSnapshotFileSystem(
         string repositoryPath,
         string objectId,
-        IReadOnlyList<ChangeSnapshotFile> files)
+        IReadOnlyList<ChangeSnapshotFile> files,
+        Func<GitBatchObjectReader>? sharedObjectReader = null)
     {
         _repositoryPath = repositoryPath;
+        _sharedObjectReader = sharedObjectReader;
         ObjectId = objectId;
         RootPath = Path.GetFullPath(Path.Combine(
             repositoryPath,
@@ -49,8 +52,9 @@ internal sealed partial class GitSnapshotFileSystem : IRepositoryFileSystem, ICh
     internal static GitSnapshotFileSystem Create(
         string repositoryPath,
         string objectId,
-        IReadOnlyList<ChangeSnapshotFile> files) =>
-        new(repositoryPath, objectId, files);
+        IReadOnlyList<ChangeSnapshotFile> files,
+        Func<GitBatchObjectReader>? sharedObjectReader = null) =>
+        new(repositoryPath, objectId, files, sharedObjectReader);
 
     public string GetFullPath(string path) => Path.GetFullPath(path);
 
@@ -154,14 +158,15 @@ internal sealed partial class GitSnapshotFileSystem : IRepositoryFileSystem, ICh
 
     public async ValueTask DisposeAsync()
     {
-        if (_objectReader is not null)
+        if (_ownedObjectReader is not null)
         {
-            await _objectReader.DisposeAsync().ConfigureAwait(false);
+            await _ownedObjectReader.DisposeAsync().ConfigureAwait(false);
         }
     }
 
     private GitBatchObjectReader ObjectReader =>
-        _objectReader ??= new GitBatchObjectReader(_repositoryPath);
+        _sharedObjectReader?.Invoke() ??
+        (_ownedObjectReader ??= new GitBatchObjectReader(_repositoryPath));
 
     private ChangeSnapshotFile GetFile(string path) =>
         TryGetFile(path, out ChangeSnapshotFile file)

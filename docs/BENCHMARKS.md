@@ -842,3 +842,49 @@ The local regression ceilings for this exact fixture are 30 seconds and 256 MiB.
 They are not universal or cross-platform guarantees. Short-lived Git child memory
 is not included in the sampled process peak, and concurrent independent processes
 against one object database remain a separate measurement boundary.
+
+## Change portfolio repository-reuse v1.2.0 checkpoint
+
+Measured on August 14, 2026 with benchmark protocol `change/1.2.0`, the same .NET,
+Windows, x64, 24-logical-processor environment, and unchanged
+`change-seed/0.18.1+seed-rules/0.4.0` source estimator. This focused mechanism
+check uses 1,025 requested nested source files, merge fan-out, and three qualifying
+chronological commits. It is deliberately smaller than the v1.1.0 scale fixture so
+the equivalent independent baseline can be measured rather than extrapolated.
+
+```text
+dotnet benchmarks/EffortHours.ChangeBenchmarks/bin/Release/net10.0/EffortHours.ChangeBenchmarks.dll
+  --author-period --files 1025 --lines-per-file 8 --commits 3
+  --compare-independent --max-seconds 30 --max-peak-mib 256
+```
+
+One fresh Release process measured the combined candidate batch first and then the
+three equivalent isolated estimates against the same local object database:
+
+| Measure | Combined | Equivalent isolated sum |
+| --- | ---: | ---: |
+| Candidate-analysis wall time | 1.189 s | 1.639 s |
+| Repository-estimator calls | 4 | 6 |
+| Git object readers | 1 | 6 by standalone snapshot ownership |
+| Output semantics | baseline | byte-equivalent per-change reports |
+
+Immutable commit planning was completed before both timed analysis paths. The
+combined estimate was 1.38 times faster in this run. Its repository session
+served two of six immutable-inventory requests and two of six exact snapshot-
+analysis requests from cache, derived three inventories incrementally after one
+full load, and served 17 of 22 blob requests from its bounded object cache. The
+whole measured comparison interval was 3.671 seconds, allocated 41.68 MiB of
+managed memory cumulatively, and sampled a 104.59-MiB peak working set. Worktree
+and complete `.git` fingerprints were unchanged; target execution, dependency
+installation, and network access were not performed.
+
+The independent baseline runs second and can benefit from operating-system/Git
+warmth, making the comparison conservative for the combined path. It does not
+model several repositories or concurrent processes. The full multi-repository,
+multi-head correctness/performance matrix, controlled concurrency measurements,
+and any universal threshold remain the separate next checkpoint.
+
+Ordinary CI runs the benchmark harness without wall-clock or sampled-memory
+thresholds. It gates deterministic report equivalence, analysis/reuse counts,
+cache bounds, and read-only/offline safety; machine-dependent performance numbers
+are recorded only by explicit benchmark checkpoints such as the command above.

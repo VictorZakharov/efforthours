@@ -1,4 +1,6 @@
+using System.Diagnostics;
 using EffortHours.Change;
+using EffortHours.Contracts;
 using EffortHours.Contracts.V1;
 
 namespace EffortHours.ChangeBenchmarks;
@@ -9,7 +11,12 @@ internal sealed record ChangeBenchmarkExecution(
     int ExpectedSnapshotAnalyses,
     bool AuditBounded,
     bool ChangedScopeAnalysis,
-    decimal ExpectedEffort);
+    decimal ExpectedEffort,
+    ChangePortfolioExecutionStatistics? PortfolioStatistics = null,
+    TimeSpan? CombinedElapsed = null,
+    TimeSpan? IndependentElapsed = null,
+    int? IndependentSnapshotAnalyses = null,
+    bool? IndependentReportsEquivalent = null);
 
 internal static class ChangeBenchmarkRunner
 {
@@ -79,11 +86,46 @@ internal static class ChangeBenchmarkRunner
             },
             cancellationToken).ConfigureAwait(false);
         ChangeEstimator estimator = new(repositoryEstimator);
-        IReadOnlyList<ChangeEstimateReport> reports =
-            await estimator.EstimatePortfolioCandidatesAsync(
+        Stopwatch combinedTimer = Stopwatch.StartNew();
+        ChangePortfolioEstimateBatch estimate =
+            await estimator.EstimatePortfolioCandidatesWithStatisticsAsync(
                 [.. plan.Items.Select(item => item.Plan)],
                 EstimationProfile.Implementation,
                 cancellationToken).ConfigureAwait(false);
+        combinedTimer.Stop();
+        IReadOnlyList<ChangeEstimateReport> reports = estimate.Reports;
+        TimeSpan? independentElapsed = null;
+        int? independentSnapshotAnalyses = null;
+        bool? independentReportsEquivalent = null;
+        if (options.CompareIndependent)
+        {
+            CountingEstimator independentEstimator = new();
+            List<ChangeEstimateReport> independentReports = [];
+            List<GitChangePlan> independentPlans = [];
+            foreach (GitAuthorPeriodPortfolioItem item in plan.Items)
+            {
+                independentPlans.Add(await new GitChangePlanner().PlanCommitAsync(
+                    repository.RootPath,
+                    item.Plan.Selection.Head.ObjectId,
+                    parentRevision: null,
+                    cancellationToken).ConfigureAwait(false));
+            }
+
+            Stopwatch independentTimer = Stopwatch.StartNew();
+            foreach (GitChangePlan independentPlan in independentPlans)
+            {
+                independentReports.Add(await new ChangeEstimator(independentEstimator).EstimateAsync(
+                    independentPlan,
+                    EstimationProfile.Implementation,
+                    cancellationToken: cancellationToken).ConfigureAwait(false));
+            }
+
+            independentTimer.Stop();
+            independentElapsed = independentTimer.Elapsed;
+            independentSnapshotAnalyses = independentEstimator.InvocationCount;
+            independentReportsEquivalent = reports.Select(ContractJson.Serialize)
+                .SequenceEqual(independentReports.Select(ContractJson.Serialize), StringComparer.Ordinal);
+        }
         ChangePortfolioCandidate[] candidates = [.. plan.Items.Select((item, index) =>
             new ChangePortfolioCandidate
             {
@@ -104,7 +146,12 @@ internal static class ChangeBenchmarkRunner
             AuditBounded: false,
             ChangedScopeAnalysis: reports.Any(report =>
                 report.Diagnostics.Any(diagnostic => diagnostic.Code == "FB5205")),
-            report.TotalEffort.Expected);
+            report.TotalEffort.Expected,
+            estimate.Statistics,
+            combinedTimer.Elapsed,
+            independentElapsed,
+            independentSnapshotAnalyses,
+            independentReportsEquivalent);
     }
 
     private sealed class UnsupportedPullRequestResolver : IPullRequestResolver

@@ -2,23 +2,26 @@ namespace EffortHours.Change;
 
 public sealed partial class GitClient
 {
-    private const int MaximumSnapshotInventories = 16;
-    private const int MaximumRememberedFirstParents = 1_024;
-    private const int MaximumIncrementalSnapshotPaths = 1_024;
-    private const int MaximumIncrementalPathCharacters = 16_000;
-
     private readonly Dictionary<string, IReadOnlyList<ChangeSnapshotFile>> _snapshotInventories =
         new(PathComparer);
     private readonly Queue<string> _snapshotInventoryOrder = new();
     private readonly Dictionary<string, string?> _firstParents = new(PathComparer);
     private readonly Queue<string> _firstParentOrder = new();
+    private readonly Dictionary<string, GitSnapshotSession> _snapshotSessions =
+        new(PathComparer);
     private readonly Lock _firstParentGate = new();
     private readonly Lock _snapshotInventoryGate = new();
+    private readonly Lock _snapshotSessionGate = new();
 
     private static StringComparer PathComparer { get; } = OperatingSystem.IsWindows()
         ? StringComparer.OrdinalIgnoreCase
         : StringComparer.Ordinal;
 
+    /// <summary>
+    /// Opens one standalone immutable snapshot. Portfolio planners use an explicit
+    /// repository-scoped session so several snapshots can additionally share one
+    /// bounded object reader with a deterministic disposal boundary.
+    /// </summary>
     public async Task<IChangeSnapshot> OpenSnapshotAsync(
         string repositoryPath,
         string objectId,
@@ -60,13 +63,20 @@ public sealed partial class GitClient
         }
     }
 
-    internal void PrimeCommitMetadata(string repositoryPath, GitCommitMetadata metadata)
+    internal GitSnapshotSession GetSnapshotSession(string repositoryPath)
     {
-        ArgumentNullException.ThrowIfNull(metadata);
-        RememberFirstParent(
-            repositoryPath,
-            metadata.ObjectId,
-            metadata.ParentObjectIds.Count == 0 ? null : metadata.ParentObjectIds[0]);
+        string root = Path.GetFullPath(repositoryPath);
+        lock (_snapshotSessionGate)
+        {
+            if (!_snapshotSessions.TryGetValue(root, out GitSnapshotSession? session) ||
+                session.IsDisposed)
+            {
+                session = new GitSnapshotSession(root, _snapshotFactory);
+                _snapshotSessions[root] = session;
+            }
+
+            return session;
+        }
     }
 
     private void AddSnapshotInventory(
@@ -78,7 +88,7 @@ public sealed partial class GitClient
             return;
         }
 
-        while (_snapshotInventories.Count >= MaximumSnapshotInventories)
+        while (_snapshotInventories.Count >= GitSnapshotSession.MaximumSnapshotInventories)
         {
             string oldest = _snapshotInventoryOrder.Dequeue();
             _snapshotInventories.Remove(oldest);
@@ -118,8 +128,9 @@ public sealed partial class GitClient
                 parentObjectId,
                 objectId,
                 cancellationToken).ConfigureAwait(false);
-            if (changedPaths.Count <= MaximumIncrementalSnapshotPaths &&
-                changedPaths.Sum(path => path.Length) <= MaximumIncrementalPathCharacters)
+            if (changedPaths.Count <= GitSnapshotSession.MaximumIncrementalSnapshotPaths &&
+                changedPaths.Sum(path => path.Length) <=
+                    GitSnapshotSession.MaximumIncrementalPathCharacters)
             {
                 IReadOnlyList<ChangeSnapshotFile> changedFiles = changedPaths.Count == 0
                     ? []
@@ -155,7 +166,7 @@ public sealed partial class GitClient
                 return;
             }
 
-            while (_firstParents.Count >= MaximumRememberedFirstParents)
+            while (_firstParents.Count >= GitSnapshotSession.MaximumRememberedFirstParents)
             {
                 _firstParents.Remove(_firstParentOrder.Dequeue());
             }

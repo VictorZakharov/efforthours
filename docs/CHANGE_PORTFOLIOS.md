@@ -2,7 +2,7 @@
 
 ## Current boundary
 
-`change-portfolio/0.2.0` composes canonical Change estimates selected as repeated
+`change-portfolio/0.2.1` composes canonical Change estimates selected as repeated
 pull requests, a versioned multi-repository PR manifest, a bounded direct
 author-period, or a versioned multi-repository/multi-head author-period manifest.
 It remains experimental and has no empirical production validation.
@@ -260,6 +260,30 @@ Large Git portfolios additionally use the bounded changed-scope and immutable-
 inventory reuse rules in `CHANGE_ESTIMATION.md`. Identity and time still select
 rows only; neither the candidate count nor the size of the reachable graph enters
 an effort rule.
+
+`change-portfolio/0.2.1` adds one invocation-scoped execution context per local
+repository. Candidate plans are grouped by canonical repository root and processed
+one repository at a time, so cross-repository and per-repository analysis
+concurrency are both explicitly one in this checkpoint. The repository context
+owns one lazy `git cat-file --batch` reader, a 64-MiB blob cache that admits no
+single blob above 1 MiB, 16 immutable snapshot inventories, 1,024 remembered first
+parents, and a 16-entry snapshot-analysis LRU. Inventory derivation retains the
+existing 1,024-changed-path and 16,000-path-character fallback boundaries. Each
+context is disposed after its repository, including cancellation and failures.
+
+Snapshot analysis remains keyed by repository, immutable object, and exact
+analysis-scope digest. A broader portfolio scope is never substituted merely to
+increase cache hits, so a row remains byte-equivalent to its independent canonical
+Change estimate. Exact same-scope snapshots can be analyzed once even when other
+workstreams intervene; different scopes remain separate where correctness
+requires. Shared blob reads and immutable inventories still benefit those rows.
+
+Report diagnostic `FB5325` records deterministic, privacy-safe request/hit counts
+and retention bounds without paths, aliases, source, or timings. Manifest runs also
+write nine wall-clock phases to stderr: manifest validation, head validation,
+history union, selection, snapshot/diff construction, static analysis,
+reconciliation, allocation, and rendering. Durations are operational telemetry,
+not report-contract fields, deterministic identity, or effort inputs.
 
 ## Safety and limitations
 

@@ -43,7 +43,8 @@ internal static class ChangePortfolioHelp
         execution-only and are not copied into reports. Author/time/co-author data selects
         immutable commits and never multiplies effort. Manifest author reports use exclusive
         contributor-match and head-reachability groups, retain zero rows, and count shared groups
-        once without personal-share splits. Results are repository-attributed Change EHE, not
+        once without personal-share splits. Manifest runs emit privacy-safe reuse diagnostics in
+        the report and non-semantic phase timings on stderr. Results are repository-attributed Change EHE, not
         actual labor, productivity, employee rankings, performance grades, or compensation advice.
         """;
 }

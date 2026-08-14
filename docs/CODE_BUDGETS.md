@@ -180,6 +180,13 @@ fixture generation also remain separate. All affected files stay below the 80%
 split threshold or were split when they reached it; no ratchet override was added
 or increased.
 
+The August 14, 2026 multi-repository reuse checkpoint keeps repository-session
+ownership, Git object-reader statistics, public reuse statistics, phase telemetry,
+portfolio orchestration, and CLI timing rendering in separate files. New execution
+tests were split from the existing command tests when that file crossed the 80%
+refactoring threshold. Every file remains below its ordinary ceiling, and no
+ratchet override was added or increased.
+
 Line count is deliberately simple, deterministic, cross-platform, and difficult
 to game accidentally. The useful outcome is earlier decomposition into cohesive
 contracts, commands, analyzers, and renderers—not compressed formatting.

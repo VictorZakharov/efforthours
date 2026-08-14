@@ -458,13 +458,13 @@ source excerpts.
 
 The current source Change estimator identity is
 `change-seed/0.18.1+seed-rules/0.4.0`; the portfolio reconciler identity is
-`change-portfolio/0.2.0+change-seed/0.18.1+seed-rules/0.4.0`. The earlier 0.6.0
+`change-portfolio/0.2.1+change-seed/0.18.1+seed-rules/0.4.0`. The earlier 0.6.0
 Change identity alone passed the experimental Stage A logical gate, and that
 record contains no SQL, Python, Go, Java, Kotlin, Shell, PowerShell, Terraform,
 HCL, PHP, Composer, Rust, Cargo, Docker, Compose, Jupyter, C, or C++. Portfolio
-aggregation does not broaden that admission. Neither 0.18.1 nor portfolio 0.2.0 may be
-described as empirically calibrated,
-generally admitted, or production-ready. Frozen calibration source reports retain
+aggregation does not broaden that admission. Neither 0.18.1 nor portfolio 0.2.1
+may be described as empirically calibrated, generally admitted, or production-
+ready. Frozen calibration source reports retain
 the exact earlier estimator identity they were created from.
 
 ## Implemented CLI behavior
@@ -487,6 +487,12 @@ the exact earlier estimator identity they were created from.
   snapshot and analysis-scope identity. An exact object chain over one scope
   requires `N + 1` repository estimates instead of `2N`; differing changed scopes
   remain independent canonical estimates.
+- Portfolio 0.2.1 retains up to 16 exact snapshot/scope analyses per active
+  repository and processes repositories sequentially. Author-period plans from one
+  repository share one lazy Git object reader, a bounded 64-MiB/1-MiB-per-blob
+  content cache, and 16 immutable inventories. Cancellation disposes the repository
+  context; cache keys remain repository-scoped and never merge equal-looking
+  objects across repositories.
 - The optional per-commit reconciliation audit is capped at 256 components by
   default. Larger ranges emit `FB5105` and retain the complete final base-to-head
   estimate while omitting the oversized component ledger.

@@ -100,13 +100,15 @@ public sealed partial class ChangeCliTests
                 "--compact");
 
             Assert.Equal(0, result.ExitCode);
-            Assert.Equal(string.Empty, result.StandardError);
+            AssertManifestTimings(result.StandardError);
             Assert.Equal(sourceStatus, await repository.GitAsync("status", "--porcelain=v1"));
             Assert.DoesNotContain(repository.RootPath, result.StandardOutput, StringComparison.OrdinalIgnoreCase);
             Assert.DoesNotContain(clonedRepository, result.StandardOutput, StringComparison.OrdinalIgnoreCase);
             Assert.DoesNotContain(repositoryARelativePath, result.StandardOutput, StringComparison.OrdinalIgnoreCase);
             Assert.DoesNotContain("selected-a@example.invalid", result.StandardOutput, StringComparison.OrdinalIgnoreCase);
             Assert.DoesNotContain("selected-b@example.invalid", result.StandardOutput, StringComparison.OrdinalIgnoreCase);
+            Assert.DoesNotContain(repository.RootPath, result.StandardError, StringComparison.OrdinalIgnoreCase);
+            Assert.DoesNotContain("selected-a@example.invalid", result.StandardError, StringComparison.OrdinalIgnoreCase);
             using JsonDocument report = JsonDocument.Parse(result.StandardOutput);
             JsonElement selection = report.RootElement.GetProperty("selection");
             Assert.Equal("author-period", selection.GetProperty("kind").GetString());
@@ -149,6 +151,9 @@ public sealed partial class ChangeCliTests
             Assert.Contains(
                 report.RootElement.GetProperty("diagnostics").EnumerateArray(),
                 diagnostic => diagnostic.GetProperty("code").GetString() == "FB5322");
+            Assert.Contains(
+                report.RootElement.GetProperty("diagnostics").EnumerateArray(),
+                diagnostic => diagnostic.GetProperty("code").GetString() == "FB5325");
             JsonElement aggregation = report.RootElement.GetProperty("aggregation");
             JsonElement[] contributorGroups =
                 [.. aggregation.GetProperty("contributorGroups").EnumerateArray()];
