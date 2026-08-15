@@ -5,6 +5,13 @@ namespace EffortHours.Cli;
 
 internal sealed partial class ChangePortfolioCommand
 {
+    private static ChangePortfolioExecutionTelemetry CreateExecutionTelemetry(
+        TextWriter standardError) => new(phase =>
+        {
+            standardError.WriteLine($"eh: portfolio phase {phase} started");
+            standardError.Flush();
+        });
+
     private static async Task WriteExecutionTimingsAsync(
         ChangePortfolioExecutionTelemetry executionTelemetry,
         TextWriter standardError)

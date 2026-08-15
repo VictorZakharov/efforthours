@@ -881,8 +881,8 @@ installation, and network access were not performed.
 The independent baseline runs second and can benefit from operating-system/Git
 warmth, making the comparison conservative for the combined path. It does not
 model several repositories or concurrent processes. The full multi-repository,
-multi-head correctness/performance matrix, controlled concurrency measurements,
-and any universal threshold remain the separate next checkpoint.
+multi-head correctness/performance matrix and controlled concurrency measurements
+are recorded below. Any universal threshold remains a separate future decision.
 
 Ordinary CI runs the benchmark harness without wall-clock or sampled-memory
 thresholds. It gates deterministic report equivalence, analysis/reuse counts,
@@ -959,5 +959,87 @@ universal guarantees. The isolated path runs second and therefore receives the
 warmer operating-system and Git caches. Parent-process CPU and sampled working set
 exclude short-lived Git children. Ordinary CI uses an eight-file form of this
 fixture and gates only deterministic semantics, exact equivalence, reuse counts,
-privacy, cache bounds, and read-only/offline safety. Concurrent-process contention
-and larger public repository shapes remain separate measurements.
+privacy, cache bounds, and read-only/offline safety. Cross-platform repetition and
+larger public repository shapes remain separate measurements.
+
+## Author-period concurrency and public-tree v1.4.0 checkpoint
+
+Measured on August 14, 2026 with benchmark protocol `change/1.4.0`, .NET runtime
+`10.0.7`, Windows `10.0.26200` x64, and unchanged estimator
+`change-seed/0.18.1+seed-rules/0.4.0`. The machine is the same AMD Ryzen 9 5900X
+workstation with 24 visible logical processors and 127.9 GiB installed memory.
+
+The controlled fixture uses the existing `Squidex/squidex` public-readiness
+development snapshot. It is an MIT-licensed mixed .NET/JavaScript/TypeScript
+multi-package monorepository pinned at commit
+`0ecfe2fc6807a59f0cf67fdcb41bfa037b4fd60e` and Git tree
+`a0bd64d3ace748fb13438fea5018a5ed5fc94ee1`. The cached source archive measured
+SHA-256 `0e3dc1a69a9d5b0904749ad95261240fc5de9b9cc380c5618bc7dc2d3f3aae7d`.
+These identities already belong to the frozen public-readiness provenance ledger;
+the benchmark adds no calibration label and opens no validation or test holdout.
+
+The harness copies the caller-supplied snapshot into a generated local Git
+repository, skips links rather than following them, adds an isolated synthetic
+benchmark path, creates eight merge-fanout branches, and selects three consecutive
+non-merge commits. The source snapshot has 4,779 files and 36,609,446 bytes; the
+generated head has 4,784 files and 689 virtual directories.
+
+```text
+dotnet benchmarks/EffortHours.ChangeBenchmarks/bin/Release/net10.0/EffortHours.ChangeBenchmarks.dll
+  --author-period --source-tree <pinned-snapshot> --lines-per-file 8 --commits 3
+  --process-matrix
+```
+
+One invocation ran fresh-process groups of one, two, and three independent
+estimators against the same local object database. A start gate synchronized each
+group. The groups ran in that fixed order, so later groups may benefit from warmer
+operating-system and Git caches. Each worker measured its own analyzer interval
+and peak working set:
+
+| Concurrent processes | Group wall time | Slowest worker | Total worker CPU | Maximum per-worker peak | Peak vs. isolated |
+| ---: | ---: | ---: | ---: | ---: | ---: |
+| 1 | 3.184 s | 3.040 s | 2.203 s | 145.32 MiB | 1.00x |
+| 2 | 3.265 s | 3.108 s | 3.813 s | 145.86 MiB | 1.00x |
+| 3 | 3.516 s | 3.362 s | 8.593 s | 146.13 MiB | 1.01x |
+
+All six workers selected the same three immutable changes, produced the same exact
+EHE and byte-equivalent deterministic report, and left the caller source,
+generated worktree, and complete shared `.git` state unchanged. Three concurrent
+workers increased the slowest-worker interval by 10.6% and maximum per-worker peak
+by less than 1% in this observation. The group completed three reports in 1.10x
+the isolated group wall time, so shared-object access neither serialized the runs
+nor unexpectedly multiplied each process's memory on this fixture.
+
+### Incident before/after context
+
+The anonymized field observation remains a lower bound from a different private
+repository: no report after approximately 600 seconds and 1.10-1.24 GiB working
+set per process. A same-input rerun is unavailable, so it would be misleading to
+claim a controlled speedup. The two public-safe after checkpoints establish the
+order of magnitude without an hours-long reproduction:
+
+| Evidence | Tree shape | Selected changes | Analyzer wall time | Peak working set | Result |
+| --- | ---: | ---: | ---: | ---: | --- |
+| Field lower bound before the traversal fix | approximately 29,225 files | narrow recent interval | more than 600 s | 1.10-1.24 GiB per process | no report |
+| v1.1 synthetic after the traversal fix | 29,234 head files | 8 | 12.681 s | 130.40 MiB | report produced |
+| v1.4 pinned public tree, isolated | 4,784 head files | 3 | 3.040 s | 145.32 MiB | report produced |
+
+The v1.1 row remains the like-sized synthetic scale check; v1.4 supplies the
+previously missing real-tree and controlled concurrency evidence. Neither row is a
+same-input comparison with the private field workload.
+
+### CI and safety boundary
+
+Ordinary CI uses an eight-file form of the 1/2/3 matrix. It verifies exactly six
+workers, byte-equivalent reports, exact selected-change/EHE preservation, one
+shared object database, and unchanged/offline targets. A separate tiny fixture
+verifies read-only caller-source copying. CI does not assert elapsed time, CPU,
+working set, ratios, or a faster-than relation; `--process-matrix` rejects
+`--max-seconds` and `--max-peak-mib` so machine-dependent observations cannot
+become accidental gates.
+
+The benchmark does not execute target code, install dependencies, or access the
+network. Fixture generation and complete pre/post fingerprinting remain outside
+worker intervals. Link targets are not followed, caller source paths are never
+printed, `--keep` discloses only the generated repository path, and the public
+source tree is unchanged.

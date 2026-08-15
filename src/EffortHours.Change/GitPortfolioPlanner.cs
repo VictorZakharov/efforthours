@@ -101,67 +101,95 @@ public sealed partial class GitPortfolioPlanner
         }
     }
 
+    public Task<GitAuthorPeriodPortfolioPlan> PlanAuthorPeriodAsync(
+        string repositoryPath,
+        GitAuthorPeriodPortfolioOptions options,
+        CancellationToken cancellationToken = default) =>
+        PlanAuthorPeriodAsync(
+            repositoryPath,
+            options,
+            executionTelemetry: null,
+            cancellationToken);
+
     public async Task<GitAuthorPeriodPortfolioPlan> PlanAuthorPeriodAsync(
         string repositoryPath,
         GitAuthorPeriodPortfolioOptions options,
+        ChangePortfolioExecutionTelemetry? executionTelemetry,
         CancellationToken cancellationToken = default)
     {
-        ArgumentNullException.ThrowIfNull(options);
-        ArgumentNullException.ThrowIfNull(options.Aliases);
-        string[] aliases = CanonicalAliases(options.Aliases);
-        if (options.SinceInclusive >= options.UntilExclusive)
+        string[] aliases;
+        string root;
+        string headObjectId;
+        using (executionTelemetry?.Measure(ChangePortfolioExecutionPhases.HeadValidation))
         {
-            throw new ArgumentException("The inclusive start must be earlier than the exclusive end.", nameof(options));
+            ArgumentNullException.ThrowIfNull(options);
+            ArgumentNullException.ThrowIfNull(options.Aliases);
+            aliases = CanonicalAliases(options.Aliases);
+            if (options.SinceInclusive >= options.UntilExclusive)
+            {
+                throw new ArgumentException(
+                    "The inclusive start must be earlier than the exclusive end.",
+                    nameof(options));
+            }
+
+            ArgumentException.ThrowIfNullOrWhiteSpace(options.TimeZone);
+            ArgumentException.ThrowIfNullOrWhiteSpace(options.HeadRevision);
+            if (!Enum.IsDefined(options.DateField) || !Enum.IsDefined(options.MergePolicy) ||
+                !Enum.IsDefined(options.CoauthorPolicy))
+            {
+                throw new ArgumentException(
+                    "Author-period date, merge, and co-author policies must be recognized values.",
+                    nameof(options));
+            }
+
+            try
+            {
+                _ = TimeZoneInfo.FindSystemTimeZoneById(options.TimeZone);
+            }
+            catch (Exception exception) when (
+                exception is TimeZoneNotFoundException or InvalidTimeZoneException)
+            {
+                throw new ArgumentException(
+                    $"Timezone '{options.TimeZone}' was not found on this host.",
+                    nameof(options),
+                    exception);
+            }
+
+            root = await _git.ResolveRepositoryRootAsync(repositoryPath, cancellationToken)
+                .ConfigureAwait(false);
+            headObjectId = await _git.ResolveCommitAsync(root, options.HeadRevision, cancellationToken)
+                .ConfigureAwait(false);
         }
 
-        ArgumentException.ThrowIfNullOrWhiteSpace(options.TimeZone);
-        ArgumentException.ThrowIfNullOrWhiteSpace(options.HeadRevision);
-        if (!Enum.IsDefined(options.DateField) || !Enum.IsDefined(options.MergePolicy) ||
-            !Enum.IsDefined(options.CoauthorPolicy))
+        IReadOnlyList<GitCommitMetadata> history;
+        using (executionTelemetry?.Measure(ChangePortfolioExecutionPhases.HistoryUnion))
         {
-            throw new ArgumentException(
-                "Author-period date, merge, and co-author policies must be recognized values.",
-                nameof(options));
+            history = await _git.ListAuthorPeriodCandidatesAsync(
+                root,
+                headObjectId,
+                aliases,
+                options.CoauthorPolicy == ChangePortfolioCoauthorPolicy.Include,
+                _options.MaximumHistoryCommits + 1,
+                cancellationToken).ConfigureAwait(false);
+            EnsureCandidateLimit(history.Count, _options.MaximumHistoryCommits);
         }
 
-        try
+        AuthorPeriodSelectionResult selected;
+        using (executionTelemetry?.Measure(ChangePortfolioExecutionPhases.Selection))
         {
-            _ = TimeZoneInfo.FindSystemTimeZoneById(options.TimeZone);
-        }
-        catch (Exception exception) when (
-            exception is TimeZoneNotFoundException or InvalidTimeZoneException)
-        {
-            throw new ArgumentException(
-                $"Timezone '{options.TimeZone}' was not found on this host.",
-                nameof(options),
-                exception);
-        }
+            selected = AuthorPeriodCommitSelector.Select(history, options, aliases);
+            if (selected.Commits.Count == 0)
+            {
+                throw new InvalidOperationException(
+                    "No commits matched the exact aliases, selected timestamp field, and inclusive/exclusive interval.");
+            }
 
-        string root = await _git.ResolveRepositoryRootAsync(repositoryPath, cancellationToken)
-            .ConfigureAwait(false);
-        string headObjectId = await _git.ResolveCommitAsync(root, options.HeadRevision, cancellationToken)
-            .ConfigureAwait(false);
-        IReadOnlyList<GitCommitMetadata> history = await _git.ListAuthorPeriodCandidatesAsync(
-            root,
-            headObjectId,
-            aliases,
-            options.CoauthorPolicy == ChangePortfolioCoauthorPolicy.Include,
-            _options.MaximumHistoryCommits + 1,
-            cancellationToken).ConfigureAwait(false);
-        EnsureCandidateLimit(history.Count, _options.MaximumHistoryCommits);
-
-        AuthorPeriodSelectionResult selected = AuthorPeriodCommitSelector.Select(history, options, aliases);
-        if (selected.Commits.Count == 0)
-        {
-            throw new InvalidOperationException(
-                "No commits matched the exact aliases, selected timestamp field, and inclusive/exclusive interval.");
-        }
-
-        if (selected.Commits.Count > _options.MaximumSelectedItems)
-        {
-            throw new InvalidOperationException(
-                $"Author-period selection matched more than {_options.MaximumSelectedItems} changes. " +
-                "Use a narrower interval so each row and allocation remain reviewable.");
+            if (selected.Commits.Count > _options.MaximumSelectedItems)
+            {
+                throw new InvalidOperationException(
+                    $"Author-period selection matched more than {_options.MaximumSelectedItems} changes. " +
+                    "Use a narrower interval so each row and allocation remain reviewable.");
+            }
         }
 
         List<GitAuthorPeriodPortfolioItem> items = [];

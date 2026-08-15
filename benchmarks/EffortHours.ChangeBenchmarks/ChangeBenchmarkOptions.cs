@@ -18,6 +18,8 @@ internal sealed record ChangeBenchmarkOptions(
     int Commits,
     int MaximumRangeComponents,
     bool CompareIndependent,
+    bool ProcessMatrix,
+    string? SourceTreePath,
     bool KeepRepository,
     decimal? MaximumSeconds,
     decimal? MaximumPeakMib)
@@ -27,7 +29,8 @@ internal sealed record ChangeBenchmarkOptions(
         "[--files <count>] " +
         "[--lines-per-file <count>] [--commits <count>] " +
         "[--maximum-range-components <count>] [--max-seconds <value>] " +
-        "[--max-peak-mib <value>] [--compare-independent] [--keep]";
+        "[--max-peak-mib <value>] [--compare-independent] [--process-matrix] " +
+        "[--source-tree <path>] [--keep]";
 
     public string Name => Mode switch
     {
@@ -46,6 +49,8 @@ internal sealed record ChangeBenchmarkOptions(
         int? commits = null;
         int maximumRangeComponents = GitChangePlannerOptions.DefaultMaximumRangeComponents;
         bool compareIndependent = false;
+        bool processMatrix = false;
+        string? sourceTreePath = null;
         bool keep = false;
         decimal? maximumSeconds = null;
         decimal? maximumPeakMib = null;
@@ -93,6 +98,12 @@ internal sealed record ChangeBenchmarkOptions(
                 case "--compare-independent":
                     compareIndependent = true;
                     break;
+                case "--process-matrix":
+                    processMatrix = true;
+                    break;
+                case "--source-tree":
+                    sourceTreePath = ReadValue(arguments, ref index, "--source-tree");
+                    break;
                 default:
                     throw new ArgumentException($"Unknown option '{arguments[index]}'.");
             }
@@ -137,6 +148,36 @@ internal sealed record ChangeBenchmarkOptions(
                 "Option '--compare-independent' is valid only with an author-period mode.");
         }
 
+        if (processMatrix && selected != ChangeBenchmarkMode.AuthorPeriod)
+        {
+            throw new ArgumentException(
+                "Option '--process-matrix' is valid only with '--author-period'.");
+        }
+
+        if (processMatrix && compareIndependent)
+        {
+            throw new ArgumentException(
+                "Options '--process-matrix' and '--compare-independent' measure separate baselines and cannot be combined.");
+        }
+
+        if (processMatrix && (maximumSeconds is not null || maximumPeakMib is not null))
+        {
+            throw new ArgumentException(
+                "Process-matrix wall time and memory are observations and cannot be threshold gates.");
+        }
+
+        if (sourceTreePath is not null && selected != ChangeBenchmarkMode.AuthorPeriod)
+        {
+            throw new ArgumentException(
+                "Option '--source-tree' is valid only with '--author-period'.");
+        }
+
+        if (sourceTreePath is not null && files is not null)
+        {
+            throw new ArgumentException(
+                "Options '--source-tree' and '--files' cannot be combined.");
+        }
+
         if (maximumRangeComponents > GitChangePlannerOptions.MaximumSupportedRangeComponents)
         {
             throw new ArgumentException(
@@ -165,6 +206,8 @@ internal sealed record ChangeBenchmarkOptions(
             selectedCommits,
             maximumRangeComponents,
             compareIndependent,
+            processMatrix,
+            sourceTreePath is null ? null : Path.GetFullPath(sourceTreePath),
             keep,
             maximumSeconds,
             maximumPeakMib);
@@ -193,6 +236,16 @@ internal sealed record ChangeBenchmarkOptions(
         }
 
         return value;
+    }
+
+    private static string ReadValue(string[] arguments, ref int index, string option)
+    {
+        if (index + 1 >= arguments.Length || string.IsNullOrWhiteSpace(arguments[++index]))
+        {
+            throw new ArgumentException($"Option '{option}' requires a value.");
+        }
+
+        return arguments[index];
     }
 
     private static decimal ReadPositiveDecimal(string[] arguments, ref int index, string option)

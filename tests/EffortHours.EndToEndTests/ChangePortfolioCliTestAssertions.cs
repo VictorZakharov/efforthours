@@ -2,27 +2,48 @@ namespace EffortHours.EndToEndTests;
 
 public sealed partial class ChangeCliTests
 {
-    private static void AssertManifestTimings(string standardError)
+    private static void AssertPortfolioTelemetry(
+        string standardError,
+        bool includesManifestPhases)
     {
-        string[] timingLines = standardError.Split(
+        string[] lines = standardError.Split(
             '\n',
             StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
-        Assert.Equal(9, timingLines.Length);
-        Assert.All(timingLines, line => Assert.StartsWith("eh: portfolio phase ", line));
-        foreach (string phase in new[]
+        string[] phases = includesManifestPhases
+            ?
+            [
+                "manifest-validation",
+                "head-validation",
+                "history-union",
+                "selection",
+                "snapshot-diff-construction",
+                "static-analysis",
+                "reconciliation",
+                "allocation",
+                "rendering",
+            ]
+            :
+            [
+                "head-validation",
+                "history-union",
+                "selection",
+                "snapshot-diff-construction",
+                "static-analysis",
+                "reconciliation",
+                "rendering",
+            ];
+        Assert.Equal(phases.Length * 2, lines.Length);
+        Assert.All(lines, line => Assert.StartsWith("eh: portfolio phase ", line));
+        foreach (string phase in phases)
         {
-            "manifest-validation",
-            "head-validation",
-            "history-union",
-            "selection",
-            "snapshot-diff-construction",
-            "static-analysis",
-            "reconciliation",
-            "allocation",
-            "rendering",
-        })
-        {
-            Assert.Contains(timingLines, line => line.Contains(phase, StringComparison.Ordinal));
+            string started = Assert.Single(lines, line => string.Equals(
+                line,
+                $"eh: portfolio phase {phase} started",
+                StringComparison.Ordinal));
+            string completed = Assert.Single(lines, line =>
+                line.StartsWith($"eh: portfolio phase {phase} ", StringComparison.Ordinal) &&
+                line.EndsWith(" ms", StringComparison.Ordinal));
+            Assert.True(Array.IndexOf(lines, started) < Array.IndexOf(lines, completed));
         }
     }
 }

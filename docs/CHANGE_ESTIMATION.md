@@ -99,8 +99,10 @@ case-insensitive identity aliases, materializes at most 10,000 candidate identit
 records, and emits at most 128 selected rows. The exact in-process selector then
 validates structured author/co-author identities, the chosen timestamp field, and
 the requested interval. This preserves non-monotonic author-date correctness
-without loading an unbounded identity ledger. Exact case-insensitive aliases match author
-name, email, or `Name <email>`. The interval is start-inclusive and end-exclusive;
+without loading an unbounded identity ledger; Git's committer-date traversal
+cutoffs are not applied to author-date selection. Exact case-insensitive aliases
+match author name, email, or `Name <email>`. The interval is start-inclusive and
+end-exclusive;
 offset-free timestamps use the declared timezone, and skipped or ambiguous local
 times fail unless the caller supplies an offset. Author versus committer time,
 co-author trailer inclusion, and merge exclusion versus first-parent valuation are
@@ -732,8 +734,8 @@ contribution data must never enter EffortHours's public calibration corpus by de
 - General semantic patch equivalence across rebases, squashes, conflict
   resolutions, and non-exact clones.
 - Shared-credit allocation beyond transparent repository attribution.
-- More public reviewed multi-PR and author-period examples plus measured
-  large-history and realistic monorepository performance.
+- More public reviewed multi-PR and author-period examples plus larger,
+  cross-platform large-history and realistic monorepository measurements.
 
 Performance rankings, grades, and compensation decisions are deliberately
 unsupported, not future portfolio features. Portfolio aggregation remains

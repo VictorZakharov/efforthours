@@ -5,29 +5,40 @@ namespace EffortHours.Cli;
 
 internal sealed partial class ChangePortfolioCommand
 {
-    private async Task<PortfolioCandidates> PlanAuthorPeriodManifestAsync(
+    private async Task<PortfolioCandidates> PlanAuthorPeriodAsync(
         ChangePortfolioCommandOptions options,
         ChangePortfolioExecutionTelemetry executionTelemetry,
         CancellationToken cancellationToken)
     {
-        GitAuthorPeriodManifestPortfolioPlan plan = await _planAuthorPeriodManifest(
-            options.AuthorPeriodManifestPath!,
+        GitAuthorPeriodPortfolioPlan plan = await _planAuthorPeriod(
+            options.RepositoryPath!,
+            new GitAuthorPeriodPortfolioOptions
+            {
+                Aliases = options.AuthorAliases,
+                SinceInclusive = options.SinceInclusive!.Value,
+                UntilExclusive = options.UntilExclusive!.Value,
+                TimeZone = options.TimeZone,
+                DateField = options.DateField,
+                MergePolicy = options.MergePolicy,
+                CoauthorPolicy = options.CoauthorPolicy,
+                HeadRevision = options.HeadRevision,
+            },
             executionTelemetry,
             cancellationToken).ConfigureAwait(false);
         ChangePortfolioEstimateBatch estimate =
             await _changeEstimator.EstimatePortfolioCandidatesWithStatisticsAsync(
                 [.. plan.Items.Select(item => item.Plan)],
                 options.Profile,
-                plan.ExecutionTelemetry,
+                executionTelemetry,
                 cancellationToken).ConfigureAwait(false);
         IReadOnlyList<ChangeEstimateReport> reports = estimate.Reports;
         List<ChangePortfolioCandidate> candidates = [];
         for (int index = 0; index < plan.Items.Count; index++)
         {
-            GitAuthorPeriodManifestPortfolioItem item = plan.Items[index];
+            GitAuthorPeriodPortfolioItem item = plan.Items[index];
             candidates.Add(new ChangePortfolioCandidate
             {
-                RepositoryId = item.RepositoryId,
+                RepositoryId = plan.RepositoryId,
                 SelectorId = item.SelectorId,
                 Report = reports[index],
                 Attribution = item.Attribution,
@@ -38,6 +49,6 @@ internal sealed partial class ChangePortfolioCommand
             plan.Selection,
             candidates,
             [.. plan.Diagnostics, estimate.Statistics.CreateDiagnostic()],
-            plan.ExecutionTelemetry);
+            executionTelemetry);
     }
 }

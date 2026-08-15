@@ -120,10 +120,10 @@ and local paths remain execution-only. The result is repository-attributed chang
 effort, not individual productivity, personal labor shares, or sole authorship.
 Manifest execution processes one repository at a time and shares bounded immutable
 inventories, parsed snapshot analyses, and Git blob reads across its selected
-commits. Deterministic reuse counts remain in report diagnostic `FB5325`; wall-clock
-timings for manifest validation, head validation, history union, selection,
-snapshot/diff construction, static analysis, reconciliation, allocation, and
-rendering go to stderr and never affect report bytes or EHE.
+commits. Deterministic reuse counts remain in report diagnostic `FB5325`; live
+phase starts and wall-clock completion timings go to stderr and never affect report
+bytes or EHE. Direct author-period runs expose seven active phases; manifest runs
+add manifest validation and contributor/head allocation.
 
 ## What the model counts
 
