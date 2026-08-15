@@ -47,13 +47,17 @@ development-computable gates and the unchanged public mutation suite at
 `339/339`. The [`1.2.0 measured checkpoint`](1.2.0/README.md) then passes all
 seven measured and all 12 total operational gates on Windows, Linux, and macOS.
 It freezes the seed plus sole challenger, exact resource budgets, and validation
-selection rule. Blind validation is authorized but remains unopened; test remains
-sealed, and no candidate is admitted or shipped.
+selection rule. The [`1.3.0 blind validation`](1.3.0/README.md) subsequently
+rejects that challenger on six frozen gates without opening test. The
+[`1.4.0 uncertainty measurement`](1.4.0/README.md) then evaluates 11 frozen scalar
+features on development only: none improves coverage, normalized width, and miss
+together over the repository-held-out symmetric baseline, so no interval model is
+selected.
 
-The development labels alone did not open model admission. The finite set is now
-frozen only after its complete operational pass, but validation/test labels remain
-unauthored and no independent correction exists. Development comparison remains
-diagnostic; no held-out result or admission decision exists.
+The completed blind validation rejects the sole challenger and leaves test sealed.
+The later development uncertainty comparison is diagnostic only and cannot turn
+the opened validation cohort back into a holdout. No independent correction,
+admitted successor, or production uncertainty model exists.
 
 ## Frozen matrix
 
@@ -156,8 +160,7 @@ contain an unsealed test label before the one-time decision.
 
 ## Next checkpoint
 
-Run issue #107's strict-blind validation against the exact `1.2.0` manifest.
-Author validation labels without candidate guidance, generate seed and challenger
-outputs once, and apply the frozen selection rule without retuning. Test labels
-require an externally held body and precommitted digest before authoring and
-remain sealed until validation selects exactly one frozen candidate.
+Continue issue #137 from the `1.4.0` development measurement. Add deferred
+structural, sample-support, and out-of-distribution evidence in bounded groups and
+measure incremental value before fitting any successor. Any finite candidate
+requires a new identity and fresh blind validation boundary; test remains sealed.

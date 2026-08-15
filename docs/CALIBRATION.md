@@ -235,6 +235,10 @@ eh calibration evaluate <corpus.json> <estimate.json>...
   --partition <development|validation|test> [--output <path>]
 eh calibration diagnose <corpus.json> <estimate.json>...
   --partition <development|validation|test> [--output <path>]
+eh calibration uncertainty-features <estimate.json> <evidence.json>
+  [--output <path>]
+eh calibration uncertainty-evaluate <development-corpus.json> <features.json>...
+  [--output <path>]
 eh calibration mutations <suite.json> <estimate.json>... [--output <path>]
 
 eh calibration change-scaffold <change-estimate.json> [--blind]
@@ -363,6 +367,57 @@ not appear in v1 work-item feature vectors and require a new feature identity
 before use. The source report's existing range and a symmetry-compliance flag are
 diagnostic only; this checkpoint does not change `seed-rules/0.4.0` or fit a
 successor.
+
+### Development-only uncertainty feature measurement
+
+`uncertainty-feature-evaluation/1.0.0` provides the pre-fit measurement path for
+the frozen feature vectors:
+
+```text
+eh calibration uncertainty-evaluate <development-corpus.json> \
+  <features.json>... --compact --output <evaluation.json>
+```
+
+The evaluator refuses any corpus containing a validation or test record. Every
+development record must match exactly one feature report by immutable repository
+source digest, profile, and baseline; every report must use the same canonical
+feature-contract digest and interval policy. The result validates against
+`calibration-uncertainty-evaluation.schema.json` and pins the corpus, source
+estimate, feature report, contract, projector, and estimator identities.
+
+Reviewed targets are the measurement unit because a reviewed target may combine
+several source work items. Counts sum across those items, ordinals take the worst
+value, and ratios or rates use candidate-expected-hour weighting. A target is
+unavailable if any contributing item lacks the feature; not-applicable items are
+ignored when another contributing item is applicable. The target residual is the
+absolute difference between candidate and reviewed expected EHE, normalized by
+`max(candidate expected, 0.5 hours)` so exact or near-zero candidates remain
+bounded without changing either estimate.
+
+Each development repository is held out in turn. The baseline half-width is the
+nearest-rank 80th percentile of normalized residuals from all other repositories.
+For one feature at a time, the same percentile is calculated from a fixed,
+label-independent value bucket only when at least three training targets from at
+least two repositories support that bucket; otherwise the prediction falls back
+to the repository-held-out baseline. Count and ordinal buckets are `0`, `1`,
+`2-3`, `4-7`, and `8+`; ratios use quarter bands; rates use fixed bands through
+`0.25`, `0.5`, `1`, `2`, `4`, and above `4`.
+
+The report includes current-range and cross-validated coverage, normalized
+sharpness, interval miss, feature availability, conditioned/fallback counts,
+fixed-bucket monotonic violations, per-repository fold performance, and Spearman
+association with candidate size, raw residual, and normalized residual. Category,
+ecosystem, and expected-size slices remain explicit. These are development
+weak-label diagnostics, not causal feature importance, an automatic retain/reject
+decision, a fitted production model, a probability interval, or admission
+evidence. `seed-rules/0.4.0` and all estimate hours remain unchanged.
+
+The first complete public-development run is recorded in
+[`calibration/corpora/public-readiness/1.4.0/README.md`](../calibration/corpora/public-readiness/1.4.0/README.md).
+It matches all 2,030 targets across 15 repositories. The repository-held-out
+symmetric baseline reaches `0.8463` reviewed-expected coverage, but none of the 11
+available scalar features improves coverage, normalized width, and interval miss
+together. No interval model is selected from that result.
 
 ## Determinism and safety
 

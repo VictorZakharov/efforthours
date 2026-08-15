@@ -83,6 +83,11 @@ public sealed partial class EffortHoursApplication
                 standardOutput,
                 standardError,
                 cancellationToken).ConfigureAwait(false),
+            "uncertainty-evaluate" => await EvaluateUncertaintyFeaturesAsync(
+                [.. arguments.Skip(1)],
+                standardOutput,
+                standardError,
+                cancellationToken).ConfigureAwait(false),
             "change-evaluate" => await EvaluateChangeCalibrationAsync(
                 [.. arguments.Skip(1)],
                 standardOutput,
@@ -95,6 +100,7 @@ public sealed partial class EffortHoursApplication
                 "'calibration review-scaffold', 'calibration review-compile', " +
                 "'calibration mutations', 'calibration validate', 'calibration evaluate', " +
                 "'calibration diagnose', 'calibration uncertainty-features', " +
+                "'calibration uncertainty-evaluate', " +
                 "or 'calibration change-evaluate'.")
                 .ConfigureAwait(false),
         };
@@ -334,6 +340,7 @@ public sealed partial class EffortHoursApplication
           eh calibration evaluate <corpus.json> <estimate.json>... --partition <name> [--compact] [--output <path>]
           eh calibration diagnose <corpus.json> <estimate.json>... --partition <name> [--compact] [--output <path>]
           eh calibration uncertainty-features <estimate.json> <evidence.json> [--compact] [--output <path>]
+          eh calibration uncertainty-evaluate <corpus.json> <features.json>... [--compact] [--output <path>]
           eh calibration change-evaluate <corpus.json> <change-estimate.json>... --partition <name> [--compact] [--output <path>]
 
         Calibration is offline and effort-only. Reviewed labels are weak supervision,

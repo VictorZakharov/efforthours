@@ -262,6 +262,13 @@ widen it, and directional contingencies stay outside the primary symmetric range
 The current `0.80` reviewed-expected gate is the intended operational coverage
 target, not a probability claim.
 
+The pre-fit `uncertainty-feature-evaluation/1.0.0` diagnostic is restricted to a
+development-only corpus and leave-one-repository-out folds. Its fixed-bucket
+comparisons may justify retaining, revising, or rejecting candidate features, but
+they do not fit a production model, satisfy a candidate gate, reopen validation,
+or authorize test access. Any feature selected from these results still requires
+a new finite candidate identity and fresh blind boundary.
+
 ## Qualitative, safety, and explanation gates
 
 For the cross-platform byte gate, canonical structured output uses

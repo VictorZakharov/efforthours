@@ -43,6 +43,13 @@ internal sealed record LogicalCandidateModelOptions
 
     internal static bool TryRead(
         IReadOnlyList<string> arguments,
+        IReadOnlyList<string> required,
+        out Dictionary<string, string>? values,
+        out string? error) => TryRead(arguments, required, required, out values, out error);
+
+    internal static bool TryRead(
+        IReadOnlyList<string> arguments,
+        IReadOnlyList<string> required,
         IReadOnlyList<string> allowed,
         out Dictionary<string, string>? values,
         out string? error)
@@ -67,7 +74,7 @@ internal sealed record LogicalCandidateModelOptions
         }
 
         string? missing = null;
-        foreach (string option in allowed)
+        foreach (string option in required)
         {
             if (!values.ContainsKey(option))
             {

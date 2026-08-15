@@ -16,6 +16,10 @@ public static partial class ContractValidation
             errors.Add($"Unsupported uncertainty feature projector '{report.ProjectorVersion}'.");
         }
         RequireDigest(report.FeatureContractDigest, "featureContractDigest", errors);
+        if (report.FeatureContractDigest != CalibrationUncertaintyVersions.FeatureContractDigestV1)
+        {
+            errors.Add("The uncertainty feature report does not pin the canonical v1 feature contract.");
+        }
         RequireDigest(report.EstimateDigest, "estimateDigest", errors);
         RequireDigest(report.EvidenceDigest, "evidenceDigest", errors);
         RequireDigest(report.RepositorySourceDigest, "repositorySourceDigest", errors);

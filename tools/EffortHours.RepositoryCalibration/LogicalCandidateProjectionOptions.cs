@@ -12,6 +12,8 @@ internal sealed record LogicalCandidateProjectionOptions
 
     public required string PrimaryStratum { get; init; }
 
+    public string? OutputPath { get; init; }
+
     public static bool TryParse(
         IReadOnlyList<string> arguments,
         out LogicalCandidateProjectionOptions? options,
@@ -25,9 +27,11 @@ internal sealed record LogicalCandidateProjectionOptions
             "--expected-model-digest",
             "--primary-stratum",
         ];
+        string[] allowed = [.. required, "--output"];
         if (!LogicalCandidateModelOptions.TryRead(
                 arguments,
                 required,
+                allowed,
                 out Dictionary<string, string>? values,
                 out error))
         {
@@ -58,6 +62,9 @@ internal sealed record LogicalCandidateProjectionOptions
             ModelPath = Path.GetFullPath(values["--model"]),
             ExpectedModelDigest = digest,
             PrimaryStratum = stratum,
+            OutputPath = values.TryGetValue("--output", out string? output)
+                ? Path.GetFullPath(output)
+                : null,
         };
         error = null;
         return true;

@@ -410,6 +410,7 @@ internal static partial class Program
             --model <logical-capability-model.json>
             --expected-model-digest <sha256:digest>
             --primary-stratum <stratum>
+            [--output <candidate-estimate.json>]
 
         Projects one bounded, digest-matched saved estimate/evidence pair. Supported
         repository-model-admission/1.0.0 strata use the candidate; every other

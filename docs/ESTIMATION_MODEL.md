@@ -667,6 +667,14 @@ reading labels, scanning source, or changing hours. The projection also records
 whether each source-model range already satisfies the successor symmetry policy;
 `seed-rules/0.4.0` is unchanged by this diagnostic contract.
 
+`uncertainty-feature-evaluation/1.0.0` measures those vectors only against a
+development-only corpus. It uses leave-one-repository-out folds, an unconditional
+nearest-rank 80th-percentile normalized-residual baseline, and fixed scalar-feature
+buckets with explicit sparse fallback. It reports size, raw-residual, and
+normalized-residual associations plus coverage and sharpness by feature and
+category/ecosystem/size slice. It refuses validation/test records and does not
+produce a deployable interval model or change expected EHE.
+
 How item-level uncertainty is aggregated, including correlated uncertainty,
 remains an implementation research item. Reports must not imply that ranges are
 formal probability intervals until separately governed empirical calibration

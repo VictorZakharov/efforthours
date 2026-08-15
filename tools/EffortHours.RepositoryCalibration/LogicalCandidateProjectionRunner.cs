@@ -47,7 +47,15 @@ internal static class LogicalCandidateProjectionRunner
             await standardError.WriteLineAsync(result.Diagnostic).ConfigureAwait(false);
         }
 
-        await standardOutput.WriteAsync(ContractJson.SerializeDocument(result.Estimate))
+        string document = ContractJson.SerializeDocument(result.Estimate);
+        if (options.OutputPath is null)
+        {
+            await standardOutput.WriteAsync(document).ConfigureAwait(false);
+            return;
+        }
+
+        Directory.CreateDirectory(Path.GetDirectoryName(options.OutputPath)!);
+        await File.WriteAllTextAsync(options.OutputPath, document, cancellationToken)
             .ConfigureAwait(false);
     }
 

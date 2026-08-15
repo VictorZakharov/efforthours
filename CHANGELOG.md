@@ -8,6 +8,15 @@ may still change public contracts with explicit documentation.
 
 ### Added
 
+- Added `uncertainty-feature-evaluation/1.0.0`, its v1 schema, and the
+  development-only `calibration uncertainty-evaluate` command. It aggregates
+  reviewed targets, measures fixed scalar-feature buckets with repository-held-out
+  q80 folds and sparse fallback, reports coverage/sharpness/miss, correlations,
+  slices, and complete audit rows, and rejects validation/test corpora without
+  fitting a model. The first 15-repository checkpoint finds no current scalar
+  feature that improves coverage, normalized width, and interval miss together.
+  The maintainer candidate projector also accepts an explicit artifact output path
+  for reproducible batch measurement.
 - Added the label-independent `repository-uncertainty-features/1.0.0` contract,
   `symmetric-planning-interval/1.0.0` policy, v1 report schema, and offline
   `calibration uncertainty-features` projector. It fixes the operational `0.80`

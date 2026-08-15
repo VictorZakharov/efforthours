@@ -97,6 +97,54 @@ public sealed class LogicalCandidateProjectionCliTests
         }
     }
 
+    [Fact]
+    public async Task CandidateProjectCanWriteAnExplicitOutputArtifact()
+    {
+        string root = FindRepositoryRoot();
+        string evidence = Path.Combine(
+            AppContext.BaseDirectory,
+            "fixtures",
+            "evidence",
+            "minimal-dotnet.repository-evidence.json");
+        ProcessResult seed = await RunCliAsync(root, "estimate", evidence, "--no-rate");
+        string estimate = Path.Combine(Path.GetTempPath(), $"eh-candidate-source-{Guid.NewGuid():N}.json");
+        string output = Path.Combine(Path.GetTempPath(), $"eh-candidate-output-{Guid.NewGuid():N}.json");
+        try
+        {
+            await File.WriteAllTextAsync(estimate, seed.StandardOutput);
+            string model = Path.Combine(root, ModelRelativePath);
+            string modelDigest = Digest(await File.ReadAllTextAsync(model));
+            ProcessResult expected = await RunCalibrationAsync(
+                root,
+                "candidate-project",
+                "--estimate", estimate,
+                "--evidence", evidence,
+                "--model", model,
+                "--expected-model-digest", modelDigest,
+                "--primary-stratum", "dotnet");
+            ProcessResult result = await RunCalibrationAsync(
+                root,
+                "candidate-project",
+                "--estimate", estimate,
+                "--evidence", evidence,
+                "--model", model,
+                "--expected-model-digest", modelDigest,
+                "--primary-stratum", "dotnet",
+                "--output", output);
+
+            Assert.Equal(0, result.ExitCode);
+            Assert.Equal(string.Empty, result.StandardOutput);
+            Assert.Equal(string.Empty, result.StandardError);
+            Assert.Equal(0, expected.ExitCode);
+            Assert.Equal(expected.StandardOutput, Normalize(await File.ReadAllTextAsync(output)));
+        }
+        finally
+        {
+            File.Delete(estimate);
+            File.Delete(output);
+        }
+    }
+
     private static Task<ProcessResult> RunCliAsync(string root, params string[] arguments) =>
         RunAsync(root, "src/EffortHours.Cli", "efforthours.dll", arguments);
 
