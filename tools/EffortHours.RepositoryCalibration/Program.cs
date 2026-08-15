@@ -41,6 +41,11 @@ internal static partial class Program
             return await RunValidationOpenAsync(arguments[1..], cancellationToken).ConfigureAwait(false);
         }
 
+        if (arguments.Length > 0 && arguments[0] == "review-validation")
+        {
+            return await RunValidationReviewAsync(arguments[1..], cancellationToken).ConfigureAwait(false);
+        }
+
         if (arguments.Length > 0 && arguments[0] == "candidate-preflight")
         {
             return await RunCandidatePreflightAsync(arguments[1..], cancellationToken).ConfigureAwait(false);
@@ -181,6 +186,37 @@ internal static partial class Program
             UnauthorizedAccessException or
             InvalidDataException or
             HttpRequestException or
+            System.Text.Json.JsonException)
+        {
+            await Console.Error.WriteLineAsync(exception.Message).ConfigureAwait(false);
+            return 2;
+        }
+    }
+
+    private static async Task<int> RunValidationReviewAsync(
+        string[] arguments,
+        CancellationToken cancellationToken)
+    {
+        if (!ValidationReviewOptions.TryParse(
+                arguments,
+                out ValidationReviewOptions? options,
+                out string? error))
+        {
+            await Console.Error.WriteLineAsync(error).ConfigureAwait(false);
+            WriteUsage(Console.Error);
+            return 2;
+        }
+
+        try
+        {
+            await ValidationReviewPlanBuilder.RunAsync(options!, cancellationToken)
+                .ConfigureAwait(false);
+            return 0;
+        }
+        catch (Exception exception) when (
+            exception is IOException or
+            UnauthorizedAccessException or
+            InvalidDataException or
             System.Text.Json.JsonException)
         {
             await Console.Error.WriteLineAsync(exception.Message).ConfigureAwait(false);
@@ -392,6 +428,18 @@ internal static partial class Program
         or output access. It then verifies and scans validation only, emits strict-
         blind packets, and structurally excludes frozen-challenger output and every
         test family.
+
+        Validation review:
+          dotnet EffortHours.RepositoryCalibration.dll review-validation
+            --plan <sampling-plan.json>
+            --opening <validation-opening.json>
+            --packets <blind-validation-packet-directory>
+            --outputs <ignored-validation-output-directory>
+            --output <validation-review-plan.json>
+
+        Accepts no estimate or model input. It verifies the frozen opening, packet,
+        evidence, source, and lineage identities before writing the complete
+        nine-family strict-blind teacher plan. Test remains inaccessible.
 
         Candidate preflight:
           dotnet EffortHours.RepositoryCalibration.dll candidate-preflight

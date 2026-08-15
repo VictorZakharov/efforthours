@@ -2,10 +2,10 @@
 
 ## Status
 
-**The complete nine-family validation partition is open for strict-blind label
-authoring.** The opening succeeded with no failure or contamination record. No
-validation label or frozen-challenger output exists, and the test partition
-remains sealed.
+**The complete nine-family strict-blind validation review is frozen.** The opening
+and label compilation succeeded with no failure or contamination record. No seed
+total or frozen-challenger output was inspected or supplied to the review compiler,
+and the test partition remains sealed.
 
 This checkpoint adds a dedicated one-shot `validation-open` path. Before any
 network request or output creation, it verifies the exact candidate freeze, its
@@ -87,11 +87,43 @@ A privacy scan found no local Windows or Unix home path, source excerpt field, o
 secret value. Path tokens containing `home`, `password`, or `secrets` are public
 repository-relative evidence identities, not machine paths or configured values.
 
+## Frozen blind review
+
+`../1.3.0.validation-review-plan.json` contains all 2,747 capability judgments
+across the nine validation families. The byte-identical ignored draft and final
+artifact have normalized SHA-256
+`sha256:f68e1e590d60547e657f551a883291f153b45d31022187e7dd064ceef55b9cd1`.
+
+The single disclosed host-AI teacher assigned `46,045.50` expected EHE with
+`37,809.00/56,110.25` low/high bounds. There are 111 explicit `0/0/0`
+rubric-qualified exclusions for test/benchmark/build double counting or false
+semantic signals. There are 538 cohesive targets above the ordinary eight-hour
+review size, each with an explicit size exception; this is 19.6% of the cohort,
+consistent with the packet's repository/package-level decomposition rather than a
+candidate-derived partition.
+
+| Repository | Targets | Exclusions | Reviewed expected |
+| --- | ---: | ---: | ---: |
+| `sindresorhus/ky` | 15 | 1 | 536.75 h |
+| `axios/axios` | 37 | 10 | 966.75 h |
+| `nrwl/nx` | 715 | 7 | 14,644.75 h |
+| `Cysharp/ConsoleAppFramework` | 44 | 3 | 274.00 h |
+| `spectreconsole/spectre.console` | 51 | 6 | 1,009.25 h |
+| `dotnet/efcore` | 275 | 61 | 13,535.00 h |
+| `jasontaylordev/CleanArchitecture` | 82 | 3 | 440.50 h |
+| `ElectronNET/Electron.NET` | 94 | 6 | 699.25 h |
+| `OrchardCMS/OrchardCore` | 1,434 | 14 | 13,939.25 h |
+
+The checked-in review policy records repository-specific judgments from the blind
+packets, verified evidence, and pinned public source. It accepts no estimate,
+model, or candidate-report argument. The review plan records `partition:
+validation`, `teacher-estimate` maturity, the public revision/license lineage, and
+the same disclosed teacher identity used for development.
+
 ## Next boundary
 
-After the opening is committed, author and compile all nine validation records
-from the blind packets and verified source. Freeze those labels and their
-provenance before generating either estimator's validation outputs. Generate seed
-and sole-challenger outputs once, apply every frozen eligibility and selection
-gate, then select exactly one candidate or reject all. Freeze that decision before
-any test access.
+Commit the blind review plan before opening the ignored seed totals or generating
+the sole challenger's validation projections. Then compile the exact corpus, reuse
+the already-created immutable seed reports, generate the challenger outputs once,
+apply every frozen eligibility and selection gate, and select exactly one candidate
+or reject all. Freeze that decision before any test access.
