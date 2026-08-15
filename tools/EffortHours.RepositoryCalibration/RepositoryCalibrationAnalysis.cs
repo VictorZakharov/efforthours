@@ -4,7 +4,7 @@ namespace EffortHours.RepositoryCalibration;
 
 internal static partial class RepositoryCalibrationReproducer
 {
-    private static async Task<DevelopmentAnalysis> AnalyzeDevelopmentAsync(
+    private static async Task<DevelopmentAnalysis> AnalyzeBlindAsync(
         ReproductionOptions options,
         SamplingFamily family,
         string snapshotPath,

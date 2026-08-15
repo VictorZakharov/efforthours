@@ -100,13 +100,12 @@ when semantics, schemas, assumptions, or unresolved decisions change.
 Repository EHE remains experimental and uncalibrated. The frozen 33-family public
 readiness cohort has exact source reproduction, strict-blind packets for all 15
 development families, and rubric-complete teacher records for the full development
-partition. Candidate `logical-capability/0.3.0` uses
-`canonical-json-document/1.0.0` and passes all 16 numerical gates, all five
-development-computable operational gates, and the unchanged public mutation suite
-at `339/339`. Checkpoint `1.2.0` also passes all seven measured gates on Windows,
-Linux, and macOS and freezes the sole challenger, resource budgets, and validation
-selection rule. Blind validation is authorized but remains unopened; test remains
-sealed, no candidate is admitted or shipped, and `seed-rules/0.4.0` remains the
-product estimator and required fallback.
+partition. Its nine-family strict-blind validation is complete. Candidate
+`logical-capability/0.3.0` improves repository expected WAPE from `0.2279` to
+`0.0940` but fails six frozen gates covering median/family error, repository and
+target coverage, target width, and individual material-category agreement. The
+candidate is retired without test disclosure. Test remains sealed, no candidate
+is admitted or shipped, and `seed-rules/0.4.0` remains the product estimator and
+required fallback.
 Change EHE has only the limited Stage A logical admission described in
 `docs/CHANGE_MODEL_ADMISSION.md`; later ecosystem extensions remain experimental.

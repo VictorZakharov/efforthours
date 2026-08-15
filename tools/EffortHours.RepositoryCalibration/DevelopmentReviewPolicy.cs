@@ -26,6 +26,15 @@ internal static partial class DevelopmentReviewPolicy
             "MudBlazor/MudBlazor" => MudBlazorExpected(target, evidence),
             "simplcommerce/SimplCommerce" => SimplCommerceExpected(target, evidence),
             "Squidex/squidex" => SquidexExpected(target, evidence),
+            "sindresorhus/ky" => KyExpected(target, evidence),
+            "axios/axios" => AxiosExpected(target, evidence),
+            "nrwl/nx" => NxExpected(target, evidence),
+            "Cysharp/ConsoleAppFramework" => ConsoleAppFrameworkExpected(target, evidence),
+            "spectreconsole/spectre.console" => SpectreConsoleExpected(target, evidence),
+            "dotnet/efcore" => EfCoreExpected(target, evidence),
+            "jasontaylordev/CleanArchitecture" => CleanArchitectureExpected(target, evidence),
+            "ElectronNET/Electron.NET" => ElectronNetExpected(target, evidence),
+            "OrchardCMS/OrchardCore" => OrchardCoreExpected(target, evidence),
             _ => throw new InvalidDataException($"No teacher policy exists for '{repositoryName}'."),
         };
         decimal expected = judgment.Expected;
@@ -279,7 +288,11 @@ internal static partial class DevelopmentReviewPolicy
                     "MudBlazor/MudBlazor" or
                     "simplcommerce/SimplCommerce" or
                     "Squidex/squidex" or
-                    "lit/lit"
+                    "lit/lit" or
+                    "dotnet/efcore" or
+                    "nrwl/nx" or
+                    "OrchardCMS/OrchardCore" or
+                    "ElectronNET/Electron.NET"
                         ? 0.82m
                         : 0.85m;
         decimal highFactor = repositoryName == "oqtane/oqtane.framework"
@@ -291,7 +304,11 @@ internal static partial class DevelopmentReviewPolicy
                     "MudBlazor/MudBlazor" or
                     "simplcommerce/SimplCommerce" or
                     "Squidex/squidex" or
-                    "lit/lit"
+                    "lit/lit" or
+                    "dotnet/efcore" or
+                    "nrwl/nx" or
+                    "OrchardCMS/OrchardCore" or
+                    "ElectronNET/Electron.NET"
                         ? 1.22m
                         : 1.18m;
         decimal high = Math.Max(expected, RoundQuarter(expected * highFactor));
@@ -322,6 +339,12 @@ internal static partial class DevelopmentReviewPolicy
         if (repositoryName == "tj/commander.js" && Kind(target) == "javascript-source-backbone")
         {
             reasons.Add("A small TypeScript surface is token-backed; the dominant JavaScript surface is parser-backed.");
+        }
+
+        if (repositoryName is "dotnet/efcore" or "nrwl/nx" or "OrchardCMS/OrchardCore")
+        {
+            reasons.Add(
+                "The large modular repository contains dynamic build, generation, plugin, or runtime composition that static review did not execute.");
         }
 
         if (target.Category is EffortCategory.UnitTesting or

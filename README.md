@@ -276,7 +276,7 @@ unchanged scans, but it is never an effort signal.
 
 | Area | Current status |
 | --- | --- |
-| Repository EHE | Experimental and uncalibrated; `logical-capability/0.3.0` passes all 16 numerical, five development-computable, and seven measured gates plus the public mutation suite (`339/339`); its finite manifest and validation rule are frozen, blind validation is authorized but unopened, test remains sealed, and no candidate is admitted or shipped |
+| Repository EHE | Experimental and uncalibrated; `logical-capability/0.3.0` improves blind-validation expected WAPE from `0.2279` to `0.0940` but fails six frozen error, coverage, width, and material-category gates; it is retired without test disclosure, and `seed-rules/0.4.0` remains shipped |
 | Change EHE, documented Stage A band | Model-authored logical gate passed for eligible 4-to-32-hour changes on the previously admitted language set |
 | Newer analyzer ecosystems | Experimental and outside the existing Change admission boundary |
 | Production validation | No empirical production-accuracy claim |

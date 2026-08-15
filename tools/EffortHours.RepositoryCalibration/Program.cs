@@ -36,6 +36,22 @@ internal static partial class Program
             return await RunDevelopmentReviewAsync(arguments[1..], cancellationToken).ConfigureAwait(false);
         }
 
+        if (arguments.Length > 0 && arguments[0] == "validation-open")
+        {
+            return await RunValidationOpenAsync(arguments[1..], cancellationToken).ConfigureAwait(false);
+        }
+
+        if (arguments.Length > 0 && arguments[0] == "review-validation")
+        {
+            return await RunValidationReviewAsync(arguments[1..], cancellationToken).ConfigureAwait(false);
+        }
+
+        if (arguments.Length > 0 && arguments[0] == "validation-select")
+        {
+            return await RunValidationSelectionAsync(arguments[1..], cancellationToken)
+                .ConfigureAwait(false);
+        }
+
         if (arguments.Length > 0 && arguments[0] == "candidate-preflight")
         {
             return await RunCandidatePreflightAsync(arguments[1..], cancellationToken).ConfigureAwait(false);
@@ -110,37 +126,6 @@ internal static partial class Program
             UnauthorizedAccessException or
             InvalidDataException or
             HttpRequestException or
-            System.Text.Json.JsonException)
-        {
-            await Console.Error.WriteLineAsync(exception.Message).ConfigureAwait(false);
-            return 2;
-        }
-    }
-
-    private static async Task<int> RunDevelopmentReviewAsync(
-        string[] arguments,
-        CancellationToken cancellationToken)
-    {
-        if (!DevelopmentReviewOptions.TryParse(
-                arguments,
-                out DevelopmentReviewOptions? options,
-                out string? error))
-        {
-            await Console.Error.WriteLineAsync(error).ConfigureAwait(false);
-            WriteUsage(Console.Error);
-            return 2;
-        }
-
-        try
-        {
-            await DevelopmentReviewPlanBuilder.RunAsync(options!, cancellationToken)
-                .ConfigureAwait(false);
-            return 0;
-        }
-        catch (Exception exception) when (
-            exception is IOException or
-            UnauthorizedAccessException or
-            InvalidDataException or
             System.Text.Json.JsonException)
         {
             await Console.Error.WriteLineAsync(exception.Message).ConfigureAwait(false);
@@ -332,6 +317,58 @@ internal static partial class Program
         The review command accepts no estimate input. It verifies the selected
         evidence and blind-packet digests before writing the complete 15-family
         development-only host-AI teacher cohort.
+
+        Validation opening:
+          dotnet EffortHours.RepositoryCalibration.dll validation-open
+            --repository-root <efforthours-checkout>
+            --plan <sampling-plan.json>
+            --reproduction-manifest <reproduction-manifest.json>
+            --custody <holdout-custody.json>
+            --candidate-manifest <candidate-manifest.json>
+            --source-commit <40-hex-commit>
+            --workspace <ignored-directory>
+            --cli <efforthours.dll>
+            --packets <published-validation-packet-directory>
+            --output <validation-opening.json>
+            [--gh <gh-executable>]
+
+        Verifies the exact finite candidate, selection rule, complete artifact
+        chain, source custody, and nine-family validation matrix before any network
+        or output access. It then verifies and scans validation only, emits strict-
+        blind packets, and structurally excludes frozen-challenger output and every
+        test family.
+
+        Validation review:
+          dotnet EffortHours.RepositoryCalibration.dll review-validation
+            --plan <sampling-plan.json>
+            --opening <validation-opening.json>
+            --packets <blind-validation-packet-directory>
+            --outputs <ignored-validation-output-directory>
+            --output <validation-review-plan.json>
+
+        Accepts no estimate or model input. It verifies the frozen opening, packet,
+        evidence, source, and lineage identities before writing the complete
+        nine-family strict-blind teacher plan. Test remains inaccessible.
+
+        One-shot validation selection:
+          dotnet EffortHours.RepositoryCalibration.dll validation-select
+            --repository-root <efforthours-checkout>
+            --plan <sampling-plan.json>
+            --opening <validation-opening.json>
+            --corpus <validation-corpus.json>
+            --candidate-manifest <candidate-manifest.json>
+            --model <logical-capability-model.json>
+            --seed-outputs <ignored-validation-seed-output-directory>
+            --candidate-outputs <fresh-ignored-candidate-output-directory>
+            --seed-evaluation <fresh-seed-evaluation.json>
+            --candidate-evaluation <fresh-candidate-evaluation.json>
+            --decision <fresh-validation-selection.json>
+            --source-commit <40-hex-commit>
+
+        Verifies the committed evaluator and exact blind validation boundary,
+        projects the sole frozen challenger once, evaluates seed and challenger,
+        serializes every admission gate, and selects exactly one challenger or
+        rejects all. The command accepts no test input and leaves test sealed.
 
         Candidate preflight:
           dotnet EffortHours.RepositoryCalibration.dll candidate-preflight

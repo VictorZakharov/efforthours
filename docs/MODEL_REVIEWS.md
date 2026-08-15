@@ -33,6 +33,68 @@ Because EffortHours's own anchor informed the seed-model and calibration design,
 a development diagnostic rather than an eligible held-out test record unless a
 future independent snapshot and review policy explicitly establishes otherwise.
 
+## 2026-08-15: logical-capability v0.3 blind validation rejection
+
+Status: **validation improves repository expected WAPE by 58.75% but fails six
+required gates; challenger retired; test sealed; no admission**
+
+The complete nine-family validation cohort was opened only after the finite
+candidate manifest and selection rule were frozen. All 2,747 teacher targets were
+authored from strict-blind packets, verified static evidence, and pinned public
+source before seed totals or challenger values were made available. The review
+contains 111 explicit zero exclusions, reconciles exactly, and records no failed
+or contaminated family. It retains disclosed single-host-AI
+`teacher-estimate` maturity and makes no independent-validation claim.
+
+The validation review plan and compiled corpus have normalized digests
+`sha256:f68e1e590d60547e657f551a883291f153b45d31022187e7dd064ceef55b9cd1`
+and
+`sha256:dad8ba8c4af5162522bc6fbfc7ee1733eb0ace0f6cdd3b185de98ebb531c3be7`.
+The one-shot evaluator was committed and pushed as
+`96d9d37e62348fb259c92ebffcb43c8b6ff2e155` before generating any challenger
+validation output. It accepts no test input and fails if candidate, evaluation,
+or decision paths already exist.
+
+Against validation, seed repository expected WAPE is `0.2279` and candidate WAPE
+is `0.0940`, a `0.5875` relative improvement. Absolute aggregate bias improves
+from `0.2235` to `0.0634`; low/high WAPE are `0.0337/0.1108`; all mapping rates
+are `1.0000`; mean/P90 repository normalized widths are `0.4110/0.6044`; and the
+maximum-family boundary passes for every family. These aggregate gains are real
+logical-agreement evidence, but they are insufficient for admission.
+
+Six frozen gates fail:
+
+- median repository absolute error is `134.2769 h`, worse than the seed's
+  `127.7500 h`;
+- the ordinary-family pass rate is `0.8889`, below `0.90`, with the small mixed
+  application outside the boundary;
+- repository expected-point coverage is `0.6667`, below `0.80`;
+- matched-target expected coverage is `0.7150`, below `0.75`;
+- matched-target normalized width is `0.8452`, above `0.75`; and
+- pooled material-category WAPE improves from `0.3358` to `0.1577`, but eight
+  individual material categories exceed the frozen regression or bias limits.
+
+Fifteen validation gates pass and six fail. All four opening/lineage/test-seal
+boundary gates and all 12 previously frozen mutation, determinism, explanation,
+safety, latency, memory, package, and scanner gates pass. The policy requires
+every gate, so the selection outcome is `rejected-all`; it does not fall through
+to test.
+
+The seed and candidate evaluation digests are
+`sha256:83d30549c5b0bd86f7246b36a052fe97b36d558ec80e8d2374652f5e463d4678`
+and
+`sha256:39a148e912be0c19e9ba565eeb6e1f7a43e3fec8026159d889d5f1451e43d86a`.
+The selection record digest is
+`sha256:fff040cdb13aba610c410d8e101e7770a99e0365d4d0ccf3b915f7de99ab5c56`,
+frozen by commit `07880cf84a9dfbe84a407875a60abbeea81f9afd`.
+
+`logical-capability/0.3.0` is retired. Test authorization remains false; no test
+source body, label, seed estimate, challenger output, or metric was opened. The
+candidate is neither admitted nor shipped, and `seed-rules/0.4.0` remains the
+product estimator and fallback. Any successor that uses these validation
+diagnostics needs a new identity and a fresh blind validation boundary rather
+than reclassifying this cohort as held out.
+
 ## 2026-08-15: logical-capability v0.3 measured pass and candidate freeze
 
 Status: **all 16 numerical and 12 operational gates pass; public mutation passes
