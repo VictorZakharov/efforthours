@@ -138,11 +138,23 @@ public sealed partial class PublicReleaseHygieneTests
             Path.Combine(workflowDirectory, "nuget-preview.yml"));
         Assert.Contains("workflow_dispatch:", preview, StringComparison.Ordinal);
         Assert.DoesNotContain("\n  push:\n", preview, StringComparison.Ordinal);
+        Assert.DoesNotContain("inputs.publish", preview, StringComparison.Ordinal);
         Assert.Contains("environment: nuget.org", preview, StringComparison.Ordinal);
+        Assert.Contains("checks: read", preview, StringComparison.Ordinal);
+        Assert.Contains("pull-requests: read", preview, StringComparison.Ordinal);
         Assert.Contains("id-token: write", preview, StringComparison.Ordinal);
         Assert.Contains("refs/tags/v", preview, StringComparison.Ordinal);
         Assert.Contains("NuGet/login@", preview, StringComparison.Ordinal);
+        Assert.Contains("eng/verify-tested-merge.ps1", preview, StringComparison.Ordinal);
+        Assert.Contains("Verify merged pull request", preview, StringComparison.Ordinal);
+        Assert.Contains("Verify aggregate validation gate", preview, StringComparison.Ordinal);
+        Assert.Contains("Verify approved package digest", preview, StringComparison.Ordinal);
+        Assert.Contains("fetch-depth: 0", preview, StringComparison.Ordinal);
+        Assert.Contains("Pack preview artifact", preview, StringComparison.Ordinal);
         Assert.Contains("--locked-mode", preview, StringComparison.Ordinal);
+        Assert.DoesNotContain("dotnet format", preview, StringComparison.Ordinal);
+        Assert.DoesNotContain("dotnet test", preview, StringComparison.Ordinal);
+        Assert.DoesNotContain("dotnet build", preview, StringComparison.Ordinal);
         Assert.DoesNotContain("--force-evaluate", preview, StringComparison.Ordinal);
         Assert.Contains("models/seed-rules/0.4.0.json", preview, StringComparison.Ordinal);
         Assert.Contains("efforthours.deps.json", preview, StringComparison.Ordinal);
@@ -152,13 +164,14 @@ public sealed partial class PublicReleaseHygieneTests
     }
 
     [Fact]
-    public void CiShortCircuitsMarkdownOnlyPullRequestsWithSuccessfulJobSkips()
+    public void CiReusesValidatedTreesForMarkdownOnlyPullRequestsAndCleanMerges()
     {
         string root = FindRepositoryRoot();
         string ci = File.ReadAllText(Path.Combine(root, ".github", "workflows", "ci.yml"));
         const string fullCiCondition =
             "if: needs.pull-request-history.outputs.full_ci == 'true'";
 
+        Assert.Contains("pull-requests: read", ci, StringComparison.Ordinal);
         Assert.Contains(
             "git diff --quiet --no-renames \"$BASE_SHA...$HEAD_SHA\"",
             ci,
@@ -172,6 +185,20 @@ public sealed partial class PublicReleaseHygieneTests
                 "if: needs.pull-request-history.outputs.full_ci != 'true'",
                 StringSplitOptions.None).Length - 1);
         Assert.Contains("name: Pack preview artifact", ci, StringComparison.Ordinal);
+        Assert.Contains("eng/verify-tested-merge.ps1", ci, StringComparison.Ordinal);
+        Assert.Contains("provenance_status", ci, StringComparison.Ordinal);
+        Assert.Contains(
+            "cancel-in-progress: ${{ github.event_name == 'pull_request' }}",
+            ci,
+            StringComparison.Ordinal);
+        Assert.Contains(
+            "Merged tree is identical to its GitHub-verified required-check PR head",
+            ci,
+            StringComparison.Ordinal);
+        Assert.Contains(
+            "GitHub did not identify exactly one matching merged main PR",
+            ci,
+            StringComparison.Ordinal);
     }
 
     [Fact]

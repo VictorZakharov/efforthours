@@ -884,10 +884,12 @@ model several repositories or concurrent processes. The full multi-repository,
 multi-head correctness/performance matrix and controlled concurrency measurements
 are recorded below. Any universal threshold remains a separate future decision.
 
-Ordinary CI runs the benchmark harness without wall-clock or sampled-memory
-thresholds. It gates deterministic report equivalence, analysis/reuse counts,
-cache bounds, and read-only/offline safety; machine-dependent performance numbers
-are recorded only by explicit benchmark checkpoints such as the command above.
+Ordinary CI uses an eight-file smoke form of this fixture and no wall-clock or
+sampled-memory threshold. It gates deterministic report equivalence,
+analysis/reuse counts, cache bounds, nested-tree behavior, and read-only/offline
+safety. The in-memory unit suite covers the 1,024-file changed-scope boundary. The
+1,025-file disk-backed comparison and its machine-dependent performance numbers
+remain explicitly invoked benchmark checkpoints such as the command above.
 
 ## Multi-repository author-period matrix v1.3.0 checkpoint
 

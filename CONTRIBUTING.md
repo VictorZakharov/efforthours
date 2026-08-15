@@ -46,8 +46,14 @@ An exact pull-request diff check short-circuits those expensive jobs when every
 changed path ends in `.md`. Required single jobs report successful conditional
 skips, while the OS-matrix checks run only a no-op step, so every protected check
 name resolves without checkout, .NET setup, restore, compilation, tests, or
-packaging. The linear-history check still runs. Any other path, every push to
-`main`, and every manual dispatch runs the complete matrix.
+packaging. The linear-history check still runs. After merge, a push to `main`
+reuses those required checks when GitHub identifies exactly one matching merged
+PR and the merge tree is identical to its PR-head second parent. Direct pushes,
+manual dispatches, non-merge commits, unverified merges, and merges that combine
+parallel first-parent changes run the complete matrix. A later `main` push does
+not cancel that fallback validation. Tagged publication then requires the
+successful aggregate package gate on whichever commit supplied the final tree and
+does not repeat formatting, unit, or end-to-end validation.
 
 Run the synthetic one-million-line scanner checkpoint with:
 

@@ -6,6 +6,18 @@ may still change public contracts with explicit documentation.
 
 ## Unreleased
 
+### Changed
+
+- Removed redundant post-merge and NuGet-release validation when GitHub identifies
+  the merge and its tree is identical to the already-gated PR head. CI falls back
+  to the exact merged `main` commit when provenance is missing or parallel changes
+  alter the tree; tagged publication verifies the aggregate CI package gate,
+  builds and smoke-tests one package, records its SHA-256 digest, and publishes
+  those same approved bytes without a dry run or another formatting, unit-test, or
+  end-to-end suite. The author-period repository-reuse smoke fixture now uses its
+  documented eight-file CI shape; the 1,025-file disk-backed comparison remains an
+  explicitly invoked benchmark instead of an implicit runner-speed gate.
+
 ## 0.10.0-alpha.4 - 2026-08-15
 
 ### Added

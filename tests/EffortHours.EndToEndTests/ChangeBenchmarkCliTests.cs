@@ -49,12 +49,12 @@ public sealed class ChangeBenchmarkCliTests
     }
 
     [Fact]
-    public async Task AuthorPeriodBenchmarkUsesNestedMergeHeavyTreeAndBoundedSnapshotReuse()
+    public async Task AuthorPeriodBenchmarkPreservesReuseAndEquivalenceInCiFixture()
     {
         ProcessResult result = await RunBenchmarkAsync(
             "--author-period",
             "--files",
-            "1025",
+            "8",
             "--lines-per-file",
             "8",
             "--commits",
@@ -82,7 +82,7 @@ public sealed class ChangeBenchmarkCliTests
         AssertPositive(values, "combined-estimate-seconds");
         AssertPositive(values, "independent-estimate-seconds");
         Assert.Equal("false", values["range-audit-bounded"]);
-        Assert.Equal("true", values["changed-scope-analysis"]);
+        Assert.Equal("false", values["changed-scope-analysis"]);
         Assert.True(
             long.Parse(values["head-directories"], CultureInfo.InvariantCulture) >
             long.Parse(values["head-files"], CultureInfo.InvariantCulture));
