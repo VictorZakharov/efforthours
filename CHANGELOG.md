@@ -14,7 +14,9 @@ may still change public contracts with explicit documentation.
   alter the tree; tagged publication verifies the aggregate CI package gate,
   builds and smoke-tests one package, records its SHA-256 digest, and publishes
   those same approved bytes without a dry run or another formatting, unit-test, or
-  end-to-end suite.
+  end-to-end suite. The author-period repository-reuse smoke fixture now uses its
+  documented eight-file CI shape; the 1,025-file disk-backed comparison remains an
+  explicitly invoked benchmark instead of an implicit runner-speed gate.
 
 ## 0.10.0-alpha.4 - 2026-08-15
 
