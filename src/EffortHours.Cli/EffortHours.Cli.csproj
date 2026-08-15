@@ -7,11 +7,11 @@
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>eh</ToolCommandName>
     <PackageId>EffortHours.Tool</PackageId>
-    <Version>0.10.0-alpha.3</Version>
+    <Version>0.10.0-alpha.4</Version>
     <Title>EffortHours CLI</Title>
     <PackageReadmeFile>PACKAGE_README.md</PackageReadmeFile>
     <PackageTags>estimation;effort-estimation;developer-tools;cli;repository-analysis;static-analysis;dotnet-tool</PackageTags>
-    <PackageReleaseNotes>Performance and calibration-governance alpha: bounds large author-period Change portfolios with identity-first selection, indexed and incrementally reused snapshot inventories, changed-scope analysis, and adjacent evidence reuse; makes canonical JSON cross-platform deterministic; and adds digest-pinned public-candidate and stricter blind-review tooling. No repository model is admitted; bundled estimators remain experimental and uncalibrated.</PackageReleaseNotes>
+    <PackageReleaseNotes>Multi-repository author-period portfolio alpha: adds a versioned multi-repository, multi-head manifest selector with deterministic non-duplicating contributor, repository, and head aggregation; reuses repository evidence across heads and contributors; emits phase and reuse diagnostics; and adds public-safe performance and regression matrices. Identity and time remain selectors only; bundled estimators remain experimental and uncalibrated.</PackageReleaseNotes>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="../EffortHours.Analysis/EffortHours.Analysis.csproj" />
