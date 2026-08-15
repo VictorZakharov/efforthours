@@ -16,6 +16,7 @@ public static class ContractSchemaCatalog
         SchemaNames.CalibrationCorpusReviewPlan,
         SchemaNames.CalibrationDiagnostic,
         SchemaNames.CalibrationEvaluation,
+        SchemaNames.CalibrationUncertaintyEvaluation,
         SchemaNames.CalibrationUncertaintyFeatures,
         SchemaNames.CalibrationMutationReport,
         SchemaNames.CalibrationMutationSuite,

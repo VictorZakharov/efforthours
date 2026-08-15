@@ -106,6 +106,9 @@ partition. Its nine-family strict-blind validation is complete. Candidate
 target coverage, target width, and individual material-category agreement. The
 candidate is retired without test disclosure. Test remains sealed, no candidate
 is admitted or shipped, and `seed-rules/0.4.0` remains the product estimator and
-required fallback.
+required fallback. The development-only uncertainty evaluator has measured the 11
+frozen scalar features with repository-held-out folds; none yet beats the symmetric
+baseline on coverage, normalized width, and interval miss together, so no interval
+model is frozen.
 Change EHE has only the limited Stage A logical admission described in
 `docs/CHANGE_MODEL_ADMISSION.md`; later ecosystem extensions remain experimental.

@@ -331,6 +331,7 @@ eh change portfolio --author-period-manifest <manifest.json>
 eh change explain <change-estimate.json> --item <id>
 eh review packet <repository> --compact
 eh calibration uncertainty-features <estimate.json> <evidence.json> --compact
+eh calibration uncertainty-evaluate <development-corpus.json> <features.json>... --compact
 eh model info
 eh rate info
 eh schema list

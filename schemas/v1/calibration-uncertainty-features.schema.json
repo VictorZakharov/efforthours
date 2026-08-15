@@ -22,7 +22,9 @@
     "schemaVersion": { "const": "1.0.0" },
     "projectorVersion": { "const": "uncertainty-feature-projector/1.0.0" },
     "featureContract": { "$ref": "#/$defs/featureContract" },
-    "featureContractDigest": { "$ref": "#/$defs/digest" },
+    "featureContractDigest": {
+      "const": "sha256:a2fea34b25d0c963bb9e96d8c538e130f6b2b23d4d98d851584a7fbe69916077"
+    },
     "estimateDigest": { "$ref": "#/$defs/digest" },
     "evidenceDigest": { "$ref": "#/$defs/digest" },
     "repositorySourceDigest": { "$ref": "#/$defs/digest" },

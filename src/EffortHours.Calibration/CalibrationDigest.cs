@@ -42,6 +42,13 @@ public static class CalibrationDigest
         return ComputeCanonical(contract);
     }
 
+    public static string Compute(CalibrationUncertaintyFeatureReport report)
+    {
+        ArgumentNullException.ThrowIfNull(report);
+
+        return ComputeCanonical(report);
+    }
+
     internal static string ComputeStringSet(IEnumerable<string> values) =>
         ComputeCanonical(values.Distinct(StringComparer.Ordinal).Order(StringComparer.Ordinal).ToArray());
 

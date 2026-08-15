@@ -170,9 +170,15 @@ count, and intermediate churn do not value effort. `CHANGE_ESTIMATION.md` and
   The offline projector exposes current confidence, provenance, parser, explicit-
   uncertainty, and material-access signals while marking unavailable function
   distributions, coupling/cycles, sample support, and out-of-distribution evidence
-  as deferred. Next, add those evidence contracts deliberately, measure incremental
-  development value, choose hierarchical fallbacks and correlated aggregation,
-  then freeze a new candidate and fresh blind validation boundary.
+  as deferred. `uncertainty-feature-evaluation/1.0.0` now supplies a deterministic
+  development-only, leave-one-repository-out baseline and fixed-bucket incremental
+  measurement path without fitting a production model. The first 15-repository,
+  2,030-target checkpoint finds no scalar feature that improves coverage,
+  normalized width, and interval miss together. Next, add deferred structural,
+  reviewed-sample-support, and out-of-distribution evidence one deliberate group at
+  a time and measure each through that path before choosing hierarchical fallbacks
+  and correlated aggregation. Only then freeze a new candidate and fresh blind
+  validation boundary.
 - Preserve repository-family partition isolation and honest teacher/model/input
   provenance. Optional independent review remains explicit corroboration, not an
   implied maturity upgrade.

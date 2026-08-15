@@ -101,6 +101,79 @@ public sealed class CalibrationDiagnosticCliTests
         Assert.Equal(0m, report.Summary.RepositoryReconciliationDelta.Expected);
     }
 
+    [Fact]
+    public async Task UncertaintyEvaluateWritesDevelopmentOnlyRepositoryHeldOutReport()
+    {
+        string root = FindRepositoryRoot();
+        string fixturePath = Path.Combine(
+            AppContext.BaseDirectory,
+            "fixtures",
+            "evidence",
+            "minimal.repository-evidence.json");
+        RepositoryEvidence source = ContractJson.Deserialize<RepositoryEvidence>(
+            await File.ReadAllTextAsync(fixturePath));
+        using TemporaryDirectory temporary = new();
+        List<string> featurePaths = [];
+        List<CalibrationUncertaintyFeatureReport> featureReports = [];
+        for (int index = 0; index < 3; index++)
+        {
+            RepositoryEvidence evidence = source with
+            {
+                Repository = source.Repository with
+                {
+                    SourceDigest = "sha256:" + new string((char)('d' + index), 64),
+                },
+            };
+            string evidencePath = temporary.Write(
+                $"evidence-{index}.json",
+                ContractJson.Serialize(evidence));
+            ProcessResult estimate = await RunCliAsync(
+                root,
+                "estimate",
+                evidencePath,
+                "--no-rate",
+                "--compact");
+            Assert.Equal(0, estimate.ExitCode);
+            string estimatePath = temporary.Write($"estimate-{index}.json", estimate.StandardOutput);
+            ProcessResult projection = await RunCliAsync(
+                root,
+                "calibration",
+                "uncertainty-features",
+                estimatePath,
+                evidencePath,
+                "--compact");
+            Assert.Equal(0, projection.ExitCode);
+            string featurePath = temporary.Write($"features-{index}.json", projection.StandardOutput);
+            featurePaths.Add(featurePath);
+            featureReports.Add(
+                ContractJson.Deserialize<CalibrationUncertaintyFeatureReport>(
+                    projection.StandardOutput));
+        }
+
+        CalibrationCorpus corpus = CreateUncertaintyCorpus(featureReports);
+        string corpusPath = temporary.Write("corpus.json", ContractJson.Serialize(corpus));
+        List<string> arguments = ["calibration", "uncertainty-evaluate", corpusPath];
+        arguments.AddRange(featurePaths);
+        arguments.Add("--compact");
+
+        ProcessResult result = await RunCliAsync(root, [.. arguments]);
+
+        Assert.Equal(0, result.ExitCode);
+        Assert.Equal(string.Empty, result.StandardError);
+        CalibrationUncertaintyEvaluationReport report =
+            ContractJson.Deserialize<CalibrationUncertaintyEvaluationReport>(
+                result.StandardOutput);
+        SchemaValidationResult schema = ContractSchemaValidator.Validate(
+            SchemaNames.CalibrationUncertaintyEvaluation,
+            result.StandardOutput);
+        Assert.True(schema.IsValid, string.Join(Environment.NewLine, schema.Errors));
+        Assert.Empty(ContractValidation.Validate(report));
+        Assert.Equal(3, report.Summary.RepositoryCount);
+        Assert.Equal(CalibrationPartition.Development, report.Partition);
+        Assert.True(report.Protocol.RepositoryIsolated);
+        Assert.False(report.Protocol.FitsProductionModel);
+    }
+
     private static CalibrationCorpus CreateCorpus(EstimateReport estimate) => new()
     {
         Id = "diagnostic-cli-fixture",
@@ -168,6 +241,72 @@ public sealed class CalibrationDiagnosticCliTests
             },
         ],
     };
+
+    private static CalibrationCorpus CreateUncertaintyCorpus(
+        IReadOnlyList<CalibrationUncertaintyFeatureReport> reports) => new()
+        {
+            Id = "uncertainty-evaluation-cli-fixture",
+            Version = "1.0.0",
+            Description = "Process-level uncertainty feature evaluation fixture.",
+            Rubric = new CalibrationRubricReference
+            {
+                Id = "ehe-work-item",
+                Version = "1.1.0",
+            },
+            Records = [.. reports.Select((report, index) => new CalibrationRecord
+        {
+            Id = $"record:uncertainty-cli-{index}",
+            Repository = new CalibrationRepositoryReference
+            {
+                Id = $"repository:uncertainty-cli-{index}",
+                Name = $"Synthetic uncertainty CLI repository {index}",
+                SourceDigest = report.RepositorySourceDigest,
+            },
+            Profile = report.Profile,
+            BaselineId = report.BaselineId,
+            Partition = CalibrationPartition.Development,
+            SourceEstimatorVersion = report.EstimatorVersion,
+            SourceEstimateDigest = report.EstimateDigest,
+            Source = new CalibrationSourceProvenance
+            {
+                DataClassification = CalibrationDataClassification.Synthetic,
+                SourceReference = $"eh://e2e/uncertainty-evaluation/{index}",
+                Revision = "1",
+                LicenseExpression = "MIT",
+                RedistributionAllowed = true,
+            },
+            Review = new CalibrationReviewProvenance
+            {
+                Status = CalibrationReviewStatus.TeacherEstimate,
+                CompletedOn = new DateOnly(2026, 8, 15),
+                Reviewers =
+                [
+                    new CalibrationReviewer
+                    {
+                        Id = "host-ai:e2e-uncertainty-teacher",
+                        Kind = CalibrationReviewerKind.HostAi,
+                        Role = CalibrationReviewerRole.Teacher,
+                        ModelId = "test-model",
+                        ModelVersion = "test-version",
+                    },
+                ],
+            },
+            Targets = [.. report.WorkItems.Select(item => new CalibrationTarget
+            {
+                Id = $"target:{item.WorkItemId}",
+                Category = item.Category,
+                Title = "Synthetic uncertainty CLI target",
+                Scope = "synthetic-cli-fixture",
+                SourceWorkItemIds = [item.WorkItemId],
+                EvidenceIds = item.ResolvedEvidenceIds.Count > 0
+                    ? item.ResolvedEvidenceIds
+                    : ["evidence:synthetic"],
+                Hours = item.SourceRange,
+                Rationale = "The process fixture accepts the projected source range.",
+                SizeException = "Synthetic fixture retains the projected source partition.",
+            })],
+        })],
+        };
 
     private static async Task<ProcessResult> RunCliAsync(
         string root,
