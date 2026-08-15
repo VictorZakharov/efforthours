@@ -1,0 +1,346 @@
+{
+  "measurementVersion": "repository-candidate-platform-measurement/1.0.0",
+  "policyVersion": "repository-model-admission/1.0.0",
+  "candidateId": "logical-capability/0.3.0",
+  "modelVersion": "repository-logical-capability-model/0.3.0",
+  "modelDigest": "sha256:492e10b2f427a471a8edcf4f7e3f19d65b098e4822e25c552956c9ce992fa1ea",
+  "candidateImplementationCommit": "7e5451c807cef3ce22bedd1bc374ab519882b21c",
+  "measurementImplementationCommit": "40ad39c6dda9029c90aed60a37a2e93c0ecb1ce9",
+  "operationalPreflightDigest": "sha256:eb091d5de07399a169dcef4bc9a08f9feb129563dd61d4101eed6c40cab7ddc8",
+  "runId": "31892555353",
+  "runAttempt": 1,
+  "environment": {
+    "platform": "linux",
+    "operatingSystem": "Ubuntu 24.04.4 LTS",
+    "architecture": "x64",
+    "framework": ".NET 10.0.11",
+    "logicalProcessors": 4
+  },
+  "freshProcessRunsPerShape": 5,
+  "shapes": [
+    {
+      "id": "small",
+      "moduleCopies": 1,
+      "evidenceFactCount": 6,
+      "evidenceDigest": "sha256:4f73f249b542ca6178fff58c4306035b3278c6c84a35b0f429a5ae51fa51bb1e",
+      "seedWorkItemCount": 6,
+      "candidateWorkItemCount": 6,
+      "seedRuns": [
+        {
+          "sequence": 1,
+          "elapsedMilliseconds": 483.3695,
+          "peakWorkingSetMib": 71.6875,
+          "outputDigest": "sha256:40a1a711323772b3f4856c33ff62a4a646e6d01898097802bdd05a9ec247f6c5",
+          "lfNormalizedOutputDigest": "sha256:40a1a711323772b3f4856c33ff62a4a646e6d01898097802bdd05a9ec247f6c5"
+        },
+        {
+          "sequence": 2,
+          "elapsedMilliseconds": 623.6791,
+          "peakWorkingSetMib": 71.9648,
+          "outputDigest": "sha256:40a1a711323772b3f4856c33ff62a4a646e6d01898097802bdd05a9ec247f6c5",
+          "lfNormalizedOutputDigest": "sha256:40a1a711323772b3f4856c33ff62a4a646e6d01898097802bdd05a9ec247f6c5"
+        },
+        {
+          "sequence": 3,
+          "elapsedMilliseconds": 500.464,
+          "peakWorkingSetMib": 71.5508,
+          "outputDigest": "sha256:40a1a711323772b3f4856c33ff62a4a646e6d01898097802bdd05a9ec247f6c5",
+          "lfNormalizedOutputDigest": "sha256:40a1a711323772b3f4856c33ff62a4a646e6d01898097802bdd05a9ec247f6c5"
+        },
+        {
+          "sequence": 4,
+          "elapsedMilliseconds": 493.0746,
+          "peakWorkingSetMib": 71.8711,
+          "outputDigest": "sha256:40a1a711323772b3f4856c33ff62a4a646e6d01898097802bdd05a9ec247f6c5",
+          "lfNormalizedOutputDigest": "sha256:40a1a711323772b3f4856c33ff62a4a646e6d01898097802bdd05a9ec247f6c5"
+        },
+        {
+          "sequence": 5,
+          "elapsedMilliseconds": 475.3966,
+          "peakWorkingSetMib": 71.4258,
+          "outputDigest": "sha256:40a1a711323772b3f4856c33ff62a4a646e6d01898097802bdd05a9ec247f6c5",
+          "lfNormalizedOutputDigest": "sha256:40a1a711323772b3f4856c33ff62a4a646e6d01898097802bdd05a9ec247f6c5"
+        }
+      ],
+      "candidateRuns": [
+        {
+          "sequence": 1,
+          "elapsedMilliseconds": 541.0618,
+          "peakWorkingSetMib": 74.0859,
+          "outputDigest": "sha256:f83d3e2624db5f0ead32aed29ed097b1a2abcbd676ba1f123e5fda3b369ce164",
+          "lfNormalizedOutputDigest": "sha256:f83d3e2624db5f0ead32aed29ed097b1a2abcbd676ba1f123e5fda3b369ce164"
+        },
+        {
+          "sequence": 2,
+          "elapsedMilliseconds": 526.2965,
+          "peakWorkingSetMib": 74.0156,
+          "outputDigest": "sha256:f83d3e2624db5f0ead32aed29ed097b1a2abcbd676ba1f123e5fda3b369ce164",
+          "lfNormalizedOutputDigest": "sha256:f83d3e2624db5f0ead32aed29ed097b1a2abcbd676ba1f123e5fda3b369ce164"
+        },
+        {
+          "sequence": 3,
+          "elapsedMilliseconds": 545.0722,
+          "peakWorkingSetMib": 74.0313,
+          "outputDigest": "sha256:f83d3e2624db5f0ead32aed29ed097b1a2abcbd676ba1f123e5fda3b369ce164",
+          "lfNormalizedOutputDigest": "sha256:f83d3e2624db5f0ead32aed29ed097b1a2abcbd676ba1f123e5fda3b369ce164"
+        },
+        {
+          "sequence": 4,
+          "elapsedMilliseconds": 538.3047,
+          "peakWorkingSetMib": 73.7734,
+          "outputDigest": "sha256:f83d3e2624db5f0ead32aed29ed097b1a2abcbd676ba1f123e5fda3b369ce164",
+          "lfNormalizedOutputDigest": "sha256:f83d3e2624db5f0ead32aed29ed097b1a2abcbd676ba1f123e5fda3b369ce164"
+        },
+        {
+          "sequence": 5,
+          "elapsedMilliseconds": 528.9626,
+          "peakWorkingSetMib": 74.1367,
+          "outputDigest": "sha256:f83d3e2624db5f0ead32aed29ed097b1a2abcbd676ba1f123e5fda3b369ce164",
+          "lfNormalizedOutputDigest": "sha256:f83d3e2624db5f0ead32aed29ed097b1a2abcbd676ba1f123e5fda3b369ce164"
+        }
+      ],
+      "summary": {
+        "seedMedianMilliseconds": 493.0746,
+        "candidateMedianMilliseconds": 538.3047,
+        "medianLimitMilliseconds": 743.0746,
+        "medianPassed": true,
+        "seedSlowestMilliseconds": 623.6791,
+        "candidateSlowestMilliseconds": 545.0722,
+        "slowestLimitMilliseconds": 1123.6791,
+        "slowestPassed": true,
+        "seedPeakWorkingSetMib": 71.9648,
+        "candidatePeakWorkingSetMib": 74.1367,
+        "peakWorkingSetLimitMib": 135.9648,
+        "peakWorkingSetPassed": true
+      }
+    },
+    {
+      "id": "medium",
+      "moduleCopies": 16,
+      "evidenceFactCount": 96,
+      "evidenceDigest": "sha256:24d6ca34ccd52707fad0b76724ca1a447c483d6852c8f01c039dbd14cd4f7094",
+      "seedWorkItemCount": 9,
+      "candidateWorkItemCount": 9,
+      "seedRuns": [
+        {
+          "sequence": 1,
+          "elapsedMilliseconds": 469.5689,
+          "peakWorkingSetMib": 72.8008,
+          "outputDigest": "sha256:f3e86e2aa9706b3f852d53c1e8b0dfa0614b943959bb3b93a51d603d5fe4e291",
+          "lfNormalizedOutputDigest": "sha256:f3e86e2aa9706b3f852d53c1e8b0dfa0614b943959bb3b93a51d603d5fe4e291"
+        },
+        {
+          "sequence": 2,
+          "elapsedMilliseconds": 472.1914,
+          "peakWorkingSetMib": 72.8711,
+          "outputDigest": "sha256:f3e86e2aa9706b3f852d53c1e8b0dfa0614b943959bb3b93a51d603d5fe4e291",
+          "lfNormalizedOutputDigest": "sha256:f3e86e2aa9706b3f852d53c1e8b0dfa0614b943959bb3b93a51d603d5fe4e291"
+        },
+        {
+          "sequence": 3,
+          "elapsedMilliseconds": 462.3933,
+          "peakWorkingSetMib": 72.625,
+          "outputDigest": "sha256:f3e86e2aa9706b3f852d53c1e8b0dfa0614b943959bb3b93a51d603d5fe4e291",
+          "lfNormalizedOutputDigest": "sha256:f3e86e2aa9706b3f852d53c1e8b0dfa0614b943959bb3b93a51d603d5fe4e291"
+        },
+        {
+          "sequence": 4,
+          "elapsedMilliseconds": 460.8562,
+          "peakWorkingSetMib": 72.8633,
+          "outputDigest": "sha256:f3e86e2aa9706b3f852d53c1e8b0dfa0614b943959bb3b93a51d603d5fe4e291",
+          "lfNormalizedOutputDigest": "sha256:f3e86e2aa9706b3f852d53c1e8b0dfa0614b943959bb3b93a51d603d5fe4e291"
+        },
+        {
+          "sequence": 5,
+          "elapsedMilliseconds": 447.3916,
+          "peakWorkingSetMib": 72.7109,
+          "outputDigest": "sha256:f3e86e2aa9706b3f852d53c1e8b0dfa0614b943959bb3b93a51d603d5fe4e291",
+          "lfNormalizedOutputDigest": "sha256:f3e86e2aa9706b3f852d53c1e8b0dfa0614b943959bb3b93a51d603d5fe4e291"
+        }
+      ],
+      "candidateRuns": [
+        {
+          "sequence": 1,
+          "elapsedMilliseconds": 514.0241,
+          "peakWorkingSetMib": 75.1875,
+          "outputDigest": "sha256:4bd20451fba03de86834a19763361372116cdc4fdd09af0fd32b5a9621e3bad4",
+          "lfNormalizedOutputDigest": "sha256:4bd20451fba03de86834a19763361372116cdc4fdd09af0fd32b5a9621e3bad4"
+        },
+        {
+          "sequence": 2,
+          "elapsedMilliseconds": 524.4896,
+          "peakWorkingSetMib": 74.9688,
+          "outputDigest": "sha256:4bd20451fba03de86834a19763361372116cdc4fdd09af0fd32b5a9621e3bad4",
+          "lfNormalizedOutputDigest": "sha256:4bd20451fba03de86834a19763361372116cdc4fdd09af0fd32b5a9621e3bad4"
+        },
+        {
+          "sequence": 3,
+          "elapsedMilliseconds": 554.6599,
+          "peakWorkingSetMib": 75.0781,
+          "outputDigest": "sha256:4bd20451fba03de86834a19763361372116cdc4fdd09af0fd32b5a9621e3bad4",
+          "lfNormalizedOutputDigest": "sha256:4bd20451fba03de86834a19763361372116cdc4fdd09af0fd32b5a9621e3bad4"
+        },
+        {
+          "sequence": 4,
+          "elapsedMilliseconds": 513.0746,
+          "peakWorkingSetMib": 75.0742,
+          "outputDigest": "sha256:4bd20451fba03de86834a19763361372116cdc4fdd09af0fd32b5a9621e3bad4",
+          "lfNormalizedOutputDigest": "sha256:4bd20451fba03de86834a19763361372116cdc4fdd09af0fd32b5a9621e3bad4"
+        },
+        {
+          "sequence": 5,
+          "elapsedMilliseconds": 487.9694,
+          "peakWorkingSetMib": 75.2539,
+          "outputDigest": "sha256:4bd20451fba03de86834a19763361372116cdc4fdd09af0fd32b5a9621e3bad4",
+          "lfNormalizedOutputDigest": "sha256:4bd20451fba03de86834a19763361372116cdc4fdd09af0fd32b5a9621e3bad4"
+        }
+      ],
+      "summary": {
+        "seedMedianMilliseconds": 462.3933,
+        "candidateMedianMilliseconds": 514.0241,
+        "medianLimitMilliseconds": 712.3933,
+        "medianPassed": true,
+        "seedSlowestMilliseconds": 472.1914,
+        "candidateSlowestMilliseconds": 554.6599,
+        "slowestLimitMilliseconds": 972.1914,
+        "slowestPassed": true,
+        "seedPeakWorkingSetMib": 72.8711,
+        "candidatePeakWorkingSetMib": 75.2539,
+        "peakWorkingSetLimitMib": 136.8711,
+        "peakWorkingSetPassed": true
+      }
+    },
+    {
+      "id": "large",
+      "moduleCopies": 128,
+      "evidenceFactCount": 768,
+      "evidenceDigest": "sha256:00c69fe5a33209d5f5723d5cb48f40a8b15cd873f07ec3c6c621bf6e9bfb8c5c",
+      "seedWorkItemCount": 24,
+      "candidateWorkItemCount": 24,
+      "seedRuns": [
+        {
+          "sequence": 1,
+          "elapsedMilliseconds": 488.32,
+          "peakWorkingSetMib": 82.5586,
+          "outputDigest": "sha256:76cfe5844cc462a98bcad1d54b19890e6ee3478de7e469f54ebf3989275d4c3c",
+          "lfNormalizedOutputDigest": "sha256:76cfe5844cc462a98bcad1d54b19890e6ee3478de7e469f54ebf3989275d4c3c"
+        },
+        {
+          "sequence": 2,
+          "elapsedMilliseconds": 476.1152,
+          "peakWorkingSetMib": 82.6992,
+          "outputDigest": "sha256:76cfe5844cc462a98bcad1d54b19890e6ee3478de7e469f54ebf3989275d4c3c",
+          "lfNormalizedOutputDigest": "sha256:76cfe5844cc462a98bcad1d54b19890e6ee3478de7e469f54ebf3989275d4c3c"
+        },
+        {
+          "sequence": 3,
+          "elapsedMilliseconds": 468.9496,
+          "peakWorkingSetMib": 83.5039,
+          "outputDigest": "sha256:76cfe5844cc462a98bcad1d54b19890e6ee3478de7e469f54ebf3989275d4c3c",
+          "lfNormalizedOutputDigest": "sha256:76cfe5844cc462a98bcad1d54b19890e6ee3478de7e469f54ebf3989275d4c3c"
+        },
+        {
+          "sequence": 4,
+          "elapsedMilliseconds": 467.9893,
+          "peakWorkingSetMib": 83.6055,
+          "outputDigest": "sha256:76cfe5844cc462a98bcad1d54b19890e6ee3478de7e469f54ebf3989275d4c3c",
+          "lfNormalizedOutputDigest": "sha256:76cfe5844cc462a98bcad1d54b19890e6ee3478de7e469f54ebf3989275d4c3c"
+        },
+        {
+          "sequence": 5,
+          "elapsedMilliseconds": 470.9126,
+          "peakWorkingSetMib": 83.4336,
+          "outputDigest": "sha256:76cfe5844cc462a98bcad1d54b19890e6ee3478de7e469f54ebf3989275d4c3c",
+          "lfNormalizedOutputDigest": "sha256:76cfe5844cc462a98bcad1d54b19890e6ee3478de7e469f54ebf3989275d4c3c"
+        }
+      ],
+      "candidateRuns": [
+        {
+          "sequence": 1,
+          "elapsedMilliseconds": 531.479,
+          "peakWorkingSetMib": 84.9453,
+          "outputDigest": "sha256:45fed31b114557eed61e5ac215974f60b766fcd1b0c0f9ac8744668d046129df",
+          "lfNormalizedOutputDigest": "sha256:45fed31b114557eed61e5ac215974f60b766fcd1b0c0f9ac8744668d046129df"
+        },
+        {
+          "sequence": 2,
+          "elapsedMilliseconds": 511.589,
+          "peakWorkingSetMib": 84.6680,
+          "outputDigest": "sha256:45fed31b114557eed61e5ac215974f60b766fcd1b0c0f9ac8744668d046129df",
+          "lfNormalizedOutputDigest": "sha256:45fed31b114557eed61e5ac215974f60b766fcd1b0c0f9ac8744668d046129df"
+        },
+        {
+          "sequence": 3,
+          "elapsedMilliseconds": 515.7966,
+          "peakWorkingSetMib": 84.7734,
+          "outputDigest": "sha256:45fed31b114557eed61e5ac215974f60b766fcd1b0c0f9ac8744668d046129df",
+          "lfNormalizedOutputDigest": "sha256:45fed31b114557eed61e5ac215974f60b766fcd1b0c0f9ac8744668d046129df"
+        },
+        {
+          "sequence": 4,
+          "elapsedMilliseconds": 530.6856,
+          "peakWorkingSetMib": 84.7656,
+          "outputDigest": "sha256:45fed31b114557eed61e5ac215974f60b766fcd1b0c0f9ac8744668d046129df",
+          "lfNormalizedOutputDigest": "sha256:45fed31b114557eed61e5ac215974f60b766fcd1b0c0f9ac8744668d046129df"
+        },
+        {
+          "sequence": 5,
+          "elapsedMilliseconds": 525.8756,
+          "peakWorkingSetMib": 84.7930,
+          "outputDigest": "sha256:45fed31b114557eed61e5ac215974f60b766fcd1b0c0f9ac8744668d046129df",
+          "lfNormalizedOutputDigest": "sha256:45fed31b114557eed61e5ac215974f60b766fcd1b0c0f9ac8744668d046129df"
+        }
+      ],
+      "summary": {
+        "seedMedianMilliseconds": 470.9126,
+        "candidateMedianMilliseconds": 525.8756,
+        "medianLimitMilliseconds": 720.9126,
+        "medianPassed": true,
+        "seedSlowestMilliseconds": 488.32,
+        "candidateSlowestMilliseconds": 531.479,
+        "slowestLimitMilliseconds": 988.32,
+        "slowestPassed": true,
+        "seedPeakWorkingSetMib": 83.6055,
+        "candidatePeakWorkingSetMib": 84.9453,
+        "peakWorkingSetLimitMib": 147.6055,
+        "peakWorkingSetPassed": true
+      }
+    }
+  ],
+  "mutations": {
+    "suiteId": "efforthours-public-synthetic-mutations",
+    "suiteVersion": "0.8.0",
+    "suiteDigest": "sha256:ab7d3ad79a33cba14d3837211433f94965cd98d7def64e08434a4820f77386c7",
+    "reportDigest": "sha256:59fb04a4e677795198a2b4c81d5aacf871eef0fdbd67c0bbc577f7992b5f79c0",
+    "caseCount": 88,
+    "candidateAppliedCaseCount": 66,
+    "seedFallbackCaseCount": 22,
+    "assertionCount": 339,
+    "passedCount": 339,
+    "failedCount": 0,
+    "passed": true
+  },
+  "scanner": {
+    "mode": "mixed-static",
+    "requestedLines": 100000,
+    "analyzedTextLines": 99604,
+    "scanSeconds": 1.859,
+    "peakWorkingSetMib": 105.77,
+    "sourceDigest": "sha256:89f04d9796c7bfc771f98f5deff20de42194fb0d0143f42915e455ab02339be4",
+    "targetMetadataDigest": "sha256:125dda7d9292eac40bf765b84cdb7f2d886d38953df8561a074faeccd94f528e",
+    "targetMetadataUnchanged": true,
+    "targetExecutionNotPerformed": true,
+    "dependencyInstallationNotPerformed": true,
+    "networkAccessNotPerformed": true,
+    "thresholdStatus": "not-applicable-no-frozen-cross-platform-scanner-threshold",
+    "passed": true
+  },
+  "package": {
+    "seedInstalledBytes": 39655495,
+    "candidateInstalledBytes": 40690538,
+    "increaseBytes": 1035043,
+    "increaseMib": 0.9871,
+    "maximumIncreaseMib": 25,
+    "passed": true
+  }
+}

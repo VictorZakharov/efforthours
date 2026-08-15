@@ -81,8 +81,8 @@ jobs:
           $arguments = @(
             "tools/EffortHours.RepositoryCalibration/bin/Release/net10.0/EffortHours.RepositoryCalibration.dll",
             "candidate-measure",
-            "--model", "calibration/corpora/public-readiness/0.7.0.logical-capability-model.json",
-            "--operational-preflight", "calibration/corpora/public-readiness/0.8.0.candidate-operational-preflight.json",
+            "--model", "calibration/corpora/public-readiness/1.0.0.logical-capability-model.json",
+            "--operational-preflight", "calibration/corpora/public-readiness/1.1.0.candidate-operational-preflight.json",
             "--evidence-template", "tests/fixtures/evidence/minimal-dotnet.repository-evidence.json",
             "--scanner-benchmark", "benchmarks/EffortHours.ScannerBenchmarks/bin/Release/net10.0/EffortHours.ScannerBenchmarks.dll",
             "--workspace", "artifacts/candidate-work/${{ matrix.platform }}",
@@ -163,19 +163,19 @@ jobs:
         run: |
           dotnet tools/EffortHours.RepositoryCalibration/bin/Release/net10.0/EffortHours.RepositoryCalibration.dll `
             candidate-measurement-aggregate `
-            --operational-preflight calibration/corpora/public-readiness/0.8.0.candidate-operational-preflight.json `
-            --model calibration/corpora/public-readiness/0.7.0.logical-capability-model.json `
+            --operational-preflight calibration/corpora/public-readiness/1.1.0.candidate-operational-preflight.json `
+            --model calibration/corpora/public-readiness/1.0.0.logical-capability-model.json `
             --mutation-suite calibration/mutations/public-synthetic/0.8.0.suite.json `
             --mutation-report artifacts/candidate-mutation/0.8.0.report.json `
             --measurements artifacts/candidate-platform `
-            --measurement-output artifacts/candidate-aggregate/0.9.0.measured-operational-report.json `
-            --output artifacts/candidate-aggregate/0.9.0.candidate-operational-preflight.json
+            --measurement-output artifacts/candidate-aggregate/1.2.0.measured-operational-report.json `
+            --output artifacts/candidate-aggregate/1.2.0.candidate-operational-preflight.json
           $aggregateExit = $LASTEXITCODE
           if ($aggregateExit -notin @(0, 3)) { exit $aggregateExit }
           $measurement = Get-Content `
-            artifacts/candidate-aggregate/0.9.0.measured-operational-report.json -Raw | ConvertFrom-Json
+            artifacts/candidate-aggregate/1.2.0.measured-operational-report.json -Raw | ConvertFrom-Json
           $preflight = Get-Content `
-            artifacts/candidate-aggregate/0.9.0.candidate-operational-preflight.json -Raw | ConvertFrom-Json
+            artifacts/candidate-aggregate/1.2.0.candidate-operational-preflight.json -Raw | ConvertFrom-Json
           if ($aggregateExit -eq 0) {
             if ($measurement.status -ne "all-measured-gates-passed" -or
                 $preflight.status -ne "development-all-operational-gates-passed-candidate-freeze-pending") {

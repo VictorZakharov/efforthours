@@ -9,7 +9,7 @@ namespace EffortHours.EndToEndTests;
 public sealed class CanonicalJsonOutputTests
 {
     private const string ModelRelativePath =
-        "calibration/corpora/public-readiness/0.7.0.logical-capability-model.json";
+        "calibration/corpora/public-readiness/1.0.0.logical-capability-model.json";
 
     [Fact]
     public async Task RepositoryJsonUsesSameBytesForStdoutSavedReportAndReprojection()
@@ -108,11 +108,11 @@ public sealed class CanonicalJsonOutputTests
             Assert.Equal(
                 [
                     "small:seed=sha256:40a1a711323772b3f4856c33ff62a4a646e6d01898097802bdd05a9ec247f6c5",
-                    "small:candidate=sha256:5e2af841f5c255501f4a516f563a3b6a386245b164fd99e5396ea93874a90aa4",
+                    "small:candidate=sha256:f83d3e2624db5f0ead32aed29ed097b1a2abcbd676ba1f123e5fda3b369ce164",
                     "medium:seed=sha256:f3e86e2aa9706b3f852d53c1e8b0dfa0614b943959bb3b93a51d603d5fe4e291",
-                    "medium:candidate=sha256:b43f0943c43b2ddcf8524fc0e9f48a2da90a70f3dde47bc18ba5a627cea33c6b",
+                    "medium:candidate=sha256:4bd20451fba03de86834a19763361372116cdc4fdd09af0fd32b5a9621e3bad4",
                     "large:seed=sha256:76cfe5844cc462a98bcad1d54b19890e6ee3478de7e469f54ebf3989275d4c3c",
-                    "large:candidate=sha256:a0385b34400575c356f107e38650719528728a8e860fcb8c586e7fa394ef91a8",
+                    "large:candidate=sha256:45fed31b114557eed61e5ac215974f60b766fcd1b0c0f9ac8744668d046129df",
                 ],
                 actual);
         }

@@ -171,6 +171,7 @@ internal static class CandidateMeasurementAggregator
             operational.Decision.CandidateManifestFrozen ||
             operational.Decision.ValidationAuthorized ||
             modelDigest != CandidateMeasurementRunner.ExpectedModelDigest ||
+            suiteDigest != CandidateMeasurementRunner.ExpectedMutationSuiteDigest ||
             suite.Id != "efforthours-public-synthetic-mutations" ||
             suite.Version != "0.8.0" ||
             mutationReport.SuiteId != suite.Id ||

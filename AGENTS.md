@@ -103,7 +103,10 @@ development families, and rubric-complete teacher records for the full developme
 partition. Candidate `logical-capability/0.3.0` uses
 `canonical-json-document/1.0.0` and passes all 16 numerical gates, all five
 development-computable operational gates, and the unchanged public mutation suite
-at `339/339`. Its formal cross-platform measured preflight is pending. No candidate
-manifest is frozen or admitted, and validation and test labels remain unopened.
+at `339/339`. Checkpoint `1.2.0` also passes all seven measured gates on Windows,
+Linux, and macOS and freezes the sole challenger, resource budgets, and validation
+selection rule. Blind validation is authorized but remains unopened; test remains
+sealed, no candidate is admitted or shipped, and `seed-rules/0.4.0` remains the
+product estimator and required fallback.
 Change EHE has only the limited Stage A logical admission described in
 `docs/CHANGE_MODEL_ADMISSION.md`; later ecosystem extensions remain experimental.

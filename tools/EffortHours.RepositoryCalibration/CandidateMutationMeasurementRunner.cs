@@ -28,7 +28,10 @@ internal static class CandidateMutationMeasurementRunner
                 cancellationToken)
             .ConfigureAwait(false);
         CalibrationMutationSuite suite = ContractJson.Deserialize<CalibrationMutationSuite>(suiteJson);
-        if (suite.Id != "efforthours-public-synthetic-mutations" || suite.Version != "0.8.0")
+        string suiteDigest = JsonArtifactDigest.Compute(suiteJson);
+        if (suite.Id != "efforthours-public-synthetic-mutations" ||
+            suite.Version != "0.8.0" ||
+            suiteDigest != CandidateMeasurementRunner.ExpectedMutationSuiteDigest)
         {
             throw new InvalidDataException(
                 "Candidate measurement requires exact public aggregate mutation suite 0.8.0.");
@@ -97,7 +100,7 @@ internal static class CandidateMutationMeasurementRunner
         {
             SuiteId = suite.Id,
             SuiteVersion = suite.Version,
-            SuiteDigest = JsonArtifactDigest.Compute(suiteJson),
+            SuiteDigest = suiteDigest,
             ReportDigest = JsonArtifactDigest.Compute(reportJson),
             CaseCount = report.CaseCount,
             CandidateAppliedCaseCount = applied,

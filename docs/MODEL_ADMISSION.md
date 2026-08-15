@@ -338,9 +338,9 @@ development partition contain 21 implementation-profile families:
 They share one host-AI teacher. The legacy test labels are already public, and some
 legacy validation/test findings informed analyzer corrections. These records
 remain useful development and contamination diagnostics. The separate 33-family
-cohort now meets its 15-family development-label boundary, but its finite-candidate
-freeze, blind validation boundary, and sealed nine-family test set are not met. No
-holdout comparison or admission decision is authorized.
+cohort now meets its 15-family development-label boundary and finite-candidate
+freeze. Blind validation is authorized but unopened; the sealed nine-family test
+boundary and admission decision are not met.
 
 `efforthours-public-readiness/0.1.0` now freezes a separate implementation-profile
 source cohort with exactly 5/3/3 development/validation/test families in each
@@ -403,15 +403,18 @@ passes all 16 numerical gates with expected WAPE `0.1009`, absolute aggregate bi
 `0.8000`, and matched-target coverage/normalized width `0.7601/0.7321`.
 Checkpoint `1.1.0` passes all five development-computable operational gates; its
 standalone unchanged public-suite evaluation passes `339/339`, up from v0.2's
-`314/339`. The formal measured aggregate and remaining platform, resource,
-package, and scanner measurements are not yet evaluated. No manifest or selection
-rule is frozen, and no validation or test access is authorized.
+`314/339`. Measured checkpoint `1.2.0` reproduces `339/339` and passes raw
+cross-platform determinism, median latency, slowest latency, sampled peak working
+set, installed-package increase, and scanner/fingerprint safety on Windows, Linux,
+and macOS. All seven measured and all 12 total operational gates pass under the
+unchanged policy. The finite manifest freezes the seed plus sole challenger,
+resource record, and validation-selection rule.
 
-Validation labels are not authored and must remain unavailable until a finite
-candidate manifest is frozen from development evidence. Test labels are not
-authored and require external body/digest custody before the one-time reveal
-boundary. The numerical validation/test gates and sealed test decision therefore
-remain unopened.
+Validation is authorized but remains unopened: no validation candidate output or
+label was generated before the freeze. Test labels are not authored and require
+external body/digest custody before the one-time reveal boundary. The numerical
+validation/test gates and sealed test decision therefore remain unopened; no
+candidate is admitted or shipped and `seed-rules/0.4.0` remains the fallback.
 
 ## Policy changes
 

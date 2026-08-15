@@ -7,10 +7,21 @@ namespace EffortHours.RepositoryCalibration;
 internal static class CandidateMeasurementRunner
 {
     public const string MeasurementVersion = "repository-candidate-platform-measurement/1.0.0";
+    public const string ExpectedCandidateId = "logical-capability/0.3.0";
+    public const string ExpectedModelVersion = "repository-logical-capability-model/0.3.0";
+    public const string ExpectedEstimatorVersion =
+        "candidate-logical-capability/0.3.0+seed-rules/0.4.0";
+    public const string ExpectedFeatureContractVersion = "logical-capability-features/1.3.0";
+    public const string ExpectedCandidateImplementationCommit =
+        "7e5451c807cef3ce22bedd1bc374ab519882b21c";
     public const string ExpectedModelDigest =
-        "sha256:f53b5af09b5adf0d3efed5339e9309156f026b3378c6b69e979467b92524ae93";
+        "sha256:492e10b2f427a471a8edcf4f7e3f19d65b098e4822e25c552956c9ce992fa1ea";
+    public const string ExpectedNumericalDigest =
+        "sha256:c5614f11513619b7293f454d58cda87efdc192e181ef3551270b1d3bc2a9ba97";
     public const string ExpectedOperationalDigest =
-        "sha256:609307d5a366b52c18118db2ef9f79e46d86565b5419aa767e0cbbf7f1fe8ec8";
+        "sha256:eb091d5de07399a169dcef4bc9a08f9feb129563dd61d4101eed6c40cab7ddc8";
+    public const string ExpectedMutationSuiteDigest =
+        "sha256:ab7d3ad79a33cba14d3837211433f94965cd98d7def64e08434a4820f77386c7";
 
     public static async Task RunAsync(
         CandidateMeasurementOptions options,
@@ -149,16 +160,23 @@ internal static class CandidateMeasurementRunner
         LogicalCandidateTransformer.ValidateModel(model);
         if (modelDigest != ExpectedModelDigest ||
             operationalDigest != ExpectedOperationalDigest ||
+            model.CandidateId != ExpectedCandidateId ||
+            model.ModelVersion != ExpectedModelVersion ||
+            model.EstimatorVersion != ExpectedEstimatorVersion ||
+            model.FeatureContractVersion != ExpectedFeatureContractVersion ||
+            model.Training.ImplementationCommit != ExpectedCandidateImplementationCommit ||
             operational.PreflightVersion != LogicalCandidateOperationalBuilder.PreflightVersion ||
             operational.Status != "development-operational-gates-passed-measured-preflight-pending" ||
             operational.Candidate.Id != model.CandidateId ||
+            operational.Inputs.CandidateModel?.Digest != ExpectedModelDigest ||
+            operational.Inputs.NumericalPreflight?.Digest != ExpectedNumericalDigest ||
             operational.Candidate.Gates.Count(gate => gate.Status == "passed") != 5 ||
             operational.Candidate.Gates.Count(gate => gate.Status == "not-evaluated") != 7 ||
             operational.Decision.CandidateManifestFrozen ||
             operational.Decision.ValidationAuthorized)
         {
             throw new InvalidDataException(
-                "Measured preflight inputs differ from the exact frozen logical-capability v0.2 boundary.");
+                "Measured preflight inputs differ from the exact frozen logical-capability v0.3 boundary.");
         }
     }
 
