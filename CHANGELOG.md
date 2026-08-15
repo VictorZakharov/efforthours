@@ -6,6 +6,8 @@ may still change public contracts with explicit documentation.
 
 ## Unreleased
 
+## 0.10.0-alpha.4 - 2026-08-15
+
 ### Added
 
 - Added the v1 multi-repository, multi-head author-period manifest and the
