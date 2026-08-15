@@ -14,14 +14,32 @@ internal sealed record CandidatePreflightAssessment
         CalibrationCorpus corpus,
         IReadOnlyList<EstimateReport> candidates,
         CalibrationEvaluationReport seed,
-        CalibrationEvaluationReport candidate)
+        CalibrationEvaluationReport candidate) => Build(
+            corpus,
+            candidates,
+            seed,
+            candidate,
+            CalibrationPartition.Development);
+
+    public static CandidatePreflightAssessment Build(
+        CalibrationCorpus corpus,
+        IReadOnlyList<EstimateReport> candidates,
+        CalibrationEvaluationReport seed,
+        CalibrationEvaluationReport candidate,
+        CalibrationPartition partition)
     {
-        DerivedIntervals intervals = BuildIntervals(corpus, candidates, candidate);
+        if (seed.Partition != partition || candidate.Partition != partition)
+        {
+            throw new InvalidDataException(
+                $"Candidate assessment expected the '{partition}' partition.");
+        }
+
+        DerivedIntervals intervals = BuildIntervals(corpus, candidates, candidate, partition);
         CandidatePreflightMetrics metrics = BuildMetrics(seed, candidate, intervals);
         return new CandidatePreflightAssessment
         {
             Metrics = metrics,
-            Gates = BuildGates(seed, metrics, intervals),
+            Gates = BuildGates(seed, metrics, intervals, partition),
         };
     }
 
@@ -67,7 +85,8 @@ internal sealed record CandidatePreflightAssessment
     private static List<CandidatePreflightGate> BuildGates(
         CalibrationEvaluationReport seed,
         CandidatePreflightMetrics metrics,
-        DerivedIntervals intervals)
+        DerivedIntervals intervals,
+        CalibrationPartition partition)
     {
         decimal seedBias = decimal.Abs(Require(seed.RepositoryTotals.Expected.AggregateBiasRate));
         decimal seedLowWape = Require(seed.RepositoryTotals.Low.WeightedAbsolutePercentageError);
@@ -79,40 +98,47 @@ internal sealed record CandidatePreflightAssessment
                 "repository-expected-wape",
                 metrics.RepositoryExpectedWape <= 0.20m && metrics.RelativeWapeImprovement >= 0.15m,
                 "WAPE <= 0.20 and at least 15% lower than seed",
-                $"wape={Format(metrics.RepositoryExpectedWape)}; relative-improvement={Format(metrics.RelativeWapeImprovement)}"),
+                $"wape={Format(metrics.RepositoryExpectedWape)}; relative-improvement={Format(metrics.RelativeWapeImprovement)}",
+                partition),
             Gate(
                 "aggregate-bias",
                 metrics.AbsoluteAggregateBias <= 0.10m && metrics.AbsoluteAggregateBias <= seedBias,
                 "absolute bias <= 0.10 and no worse than seed",
-                $"candidate={Format(metrics.AbsoluteAggregateBias)}; seed={Format(seedBias)}"),
+                $"candidate={Format(metrics.AbsoluteAggregateBias)}; seed={Format(seedBias)}",
+                partition),
             Gate(
                 "median-repository-error",
                 metrics.MedianRepositoryAbsoluteErrorHours <=
                     seed.RepositoryTotals.Expected.MedianAbsoluteErrorHours,
                 "median expected absolute error no greater than seed",
                 $"candidate={Format(metrics.MedianRepositoryAbsoluteErrorHours)}h; " +
-                $"seed={Format(seed.RepositoryTotals.Expected.MedianAbsoluteErrorHours)}h"),
+                $"seed={Format(seed.RepositoryTotals.Expected.MedianAbsoluteErrorHours)}h",
+                partition),
             Gate(
                 "per-family-maximum-error",
                 metrics.FamilyMaximumErrorPassRate == 1m,
                 "every family <= max(16h, 50%) error",
-                Format(metrics.FamilyMaximumErrorPassRate)),
+                Format(metrics.FamilyMaximumErrorPassRate),
+                partition),
             Gate(
                 "per-family-ordinary-error",
                 metrics.FamilyOrdinaryErrorPassRate >= 0.90m,
                 "at least 90% of families <= max(8h, 25%) error",
                 $"{Format(metrics.FamilyOrdinaryErrorPassRate)}; " +
-                $"outside-boundary={string.Join(',', intervals.OrdinaryFailureRecordIds)}"),
+                $"outside-boundary={string.Join(',', intervals.OrdinaryFailureRecordIds)}",
+                partition),
             Gate(
                 "low-wape",
                 metrics.LowWape <= 0.30m && metrics.LowWape <= seedLowWape + 0.03m,
                 "low WAPE <= 0.30 and no more than 0.03 worse than seed",
-                Format(metrics.LowWape)),
+                Format(metrics.LowWape),
+                partition),
             Gate(
                 "high-wape",
                 metrics.HighWape <= 0.30m && metrics.HighWape <= seedHighWape + 0.03m,
                 "high WAPE <= 0.30 and no more than 0.03 worse than seed",
-                Format(metrics.HighWape)),
+                Format(metrics.HighWape),
+                partition),
             Gate(
                 "mapping",
                 metrics.TargetMatchRate >= 0.95m &&
@@ -120,48 +146,57 @@ internal sealed record CandidatePreflightAssessment
                 metrics.CandidateItemMatchRate >= 0.95m,
                 "target, source-reference, and candidate-item match rates each >= 0.95",
                 $"{Format(metrics.TargetMatchRate)}/{Format(metrics.SourceReferenceMatchRate)}/" +
-                Format(metrics.CandidateItemMatchRate)),
+                Format(metrics.CandidateItemMatchRate),
+                partition),
             Gate(
                 "category-mismatch",
                 metrics.CategoryMismatchRate <= 0.02m,
                 "category mismatch <= 0.02 of reviewed targets",
-                Format(metrics.CategoryMismatchRate)),
+                Format(metrics.CategoryMismatchRate),
+                partition),
             Gate(
                 "repository-expected-coverage",
                 metrics.RepositoryExpectedCoverage >= 0.80m &&
                 metrics.RepositoryExpectedCoverage >= seedCoverage - 0.15m,
                 "coverage >= 0.80 and no more than 0.15 below seed",
-                Format(metrics.RepositoryExpectedCoverage)),
+                Format(metrics.RepositoryExpectedCoverage),
+                partition),
             Gate(
                 "mean-repository-normalized-width",
                 metrics.MeanRepositoryNormalizedWidth <= 0.50m,
                 "mean repository normalized width <= 0.50",
-                Format(metrics.MeanRepositoryNormalizedWidth)),
+                Format(metrics.MeanRepositoryNormalizedWidth),
+                partition),
             Gate(
                 "p90-repository-normalized-width",
                 metrics.P90RepositoryNormalizedWidth <= 0.80m,
                 "p90 repository normalized width <= 0.80",
-                Format(metrics.P90RepositoryNormalizedWidth)),
+                Format(metrics.P90RepositoryNormalizedWidth),
+                partition),
             Gate(
                 "mean-width-relative-to-seed",
                 metrics.MeanWidthRelativeToSeed <= 0.75m,
                 "mean width relative to seed <= 0.75",
-                Format(metrics.MeanWidthRelativeToSeed)),
+                Format(metrics.MeanWidthRelativeToSeed),
+                partition),
             Gate(
                 "mean-width-relative-to-reviewed",
                 metrics.MeanWidthRelativeToReviewed <= 1.25m,
                 "mean width relative to reviewed ranges <= 1.25",
-                Format(metrics.MeanWidthRelativeToReviewed)),
+                Format(metrics.MeanWidthRelativeToReviewed),
+                partition),
             Gate(
                 "matched-target-expected-coverage",
                 metrics.MatchedTargetExpectedCoverage >= 0.75m,
                 "matched-target expected coverage >= 0.75",
-                Format(metrics.MatchedTargetExpectedCoverage)),
+                Format(metrics.MatchedTargetExpectedCoverage),
+                partition),
             Gate(
                 "matched-target-normalized-width",
                 metrics.MatchedTargetMeanNormalizedWidth <= 0.75m,
                 "matched-target mean normalized width <= 0.75",
-                Format(metrics.MatchedTargetMeanNormalizedWidth)),
+                Format(metrics.MatchedTargetMeanNormalizedWidth),
+                partition),
         ];
         string[] notEvaluated =
         [
@@ -185,7 +220,8 @@ internal sealed record CandidatePreflightAssessment
     private static DerivedIntervals BuildIntervals(
         CalibrationCorpus corpus,
         IReadOnlyList<EstimateReport> candidates,
-        CalibrationEvaluationReport evaluation)
+        CalibrationEvaluationReport evaluation,
+        CalibrationPartition partition)
     {
         Dictionary<CandidateKey, EstimateReport> index = candidates.ToDictionary(
             candidate => new CandidateKey(
@@ -197,7 +233,7 @@ internal sealed record CandidatePreflightAssessment
         int targetCount = 0;
         int targetCovered = 0;
         foreach (CalibrationRecord record in corpus.Records.Where(record =>
-                     record.Partition == CalibrationPartition.Development))
+                     record.Partition == partition))
         {
             EstimateReport candidate = index[new CandidateKey(
                 record.Repository.SourceDigest,
@@ -259,7 +295,13 @@ internal sealed record CandidatePreflightAssessment
         string id,
         bool passed,
         string requirement,
-        string observed) => new()
+        string observed,
+        CalibrationPartition partition)
+    {
+        string assessment = partition == CalibrationPartition.Development
+            ? "development preflight"
+            : $"{PartitionName(partition)} assessment";
+        return new CandidatePreflightGate
         {
             Id = id,
             Status = passed ? "passed" : "failed",
@@ -267,9 +309,10 @@ internal sealed record CandidatePreflightAssessment
             Requirement = requirement,
             Observed = observed,
             Rationale = passed
-                ? "The development preflight satisfies this numerical gate."
-                : "The development preflight does not satisfy this gate; the candidate cannot advance.",
+                ? $"The {assessment} satisfies this numerical gate."
+                : $"The {assessment} does not satisfy this gate; the candidate cannot advance.",
         };
+    }
 
     private static CandidatePreflightGate NotEvaluated(string id) => new()
     {
@@ -291,6 +334,9 @@ internal sealed record CandidatePreflightAssessment
 
     private static string Format(decimal value) =>
         value.ToString("0.####", CultureInfo.InvariantCulture);
+
+    private static string PartitionName(CalibrationPartition partition) =>
+        partition.ToString().ToLowerInvariant();
 
     private static decimal Round4(decimal value) =>
         decimal.Round(value, 4, MidpointRounding.AwayFromZero);

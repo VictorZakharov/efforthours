@@ -46,6 +46,12 @@ internal static partial class Program
             return await RunValidationReviewAsync(arguments[1..], cancellationToken).ConfigureAwait(false);
         }
 
+        if (arguments.Length > 0 && arguments[0] == "validation-select")
+        {
+            return await RunValidationSelectionAsync(arguments[1..], cancellationToken)
+                .ConfigureAwait(false);
+        }
+
         if (arguments.Length > 0 && arguments[0] == "candidate-preflight")
         {
             return await RunCandidatePreflightAsync(arguments[1..], cancellationToken).ConfigureAwait(false);
@@ -120,103 +126,6 @@ internal static partial class Program
             UnauthorizedAccessException or
             InvalidDataException or
             HttpRequestException or
-            System.Text.Json.JsonException)
-        {
-            await Console.Error.WriteLineAsync(exception.Message).ConfigureAwait(false);
-            return 2;
-        }
-    }
-
-    private static async Task<int> RunDevelopmentReviewAsync(
-        string[] arguments,
-        CancellationToken cancellationToken)
-    {
-        if (!DevelopmentReviewOptions.TryParse(
-                arguments,
-                out DevelopmentReviewOptions? options,
-                out string? error))
-        {
-            await Console.Error.WriteLineAsync(error).ConfigureAwait(false);
-            WriteUsage(Console.Error);
-            return 2;
-        }
-
-        try
-        {
-            await DevelopmentReviewPlanBuilder.RunAsync(options!, cancellationToken)
-                .ConfigureAwait(false);
-            return 0;
-        }
-        catch (Exception exception) when (
-            exception is IOException or
-            UnauthorizedAccessException or
-            InvalidDataException or
-            System.Text.Json.JsonException)
-        {
-            await Console.Error.WriteLineAsync(exception.Message).ConfigureAwait(false);
-            return 2;
-        }
-    }
-
-    private static async Task<int> RunValidationOpenAsync(
-        string[] arguments,
-        CancellationToken cancellationToken)
-    {
-        if (!ValidationOpenOptions.TryParse(
-                arguments,
-                out ValidationOpenOptions? options,
-                out string? error))
-        {
-            await Console.Error.WriteLineAsync(error).ConfigureAwait(false);
-            WriteUsage(Console.Error);
-            return 2;
-        }
-
-        try
-        {
-            await ValidationOpeningRunner.RunAsync(
-                    options!,
-                    Console.Error,
-                    cancellationToken)
-                .ConfigureAwait(false);
-            return 0;
-        }
-        catch (Exception exception) when (
-            exception is IOException or
-            UnauthorizedAccessException or
-            InvalidDataException or
-            HttpRequestException or
-            System.Text.Json.JsonException)
-        {
-            await Console.Error.WriteLineAsync(exception.Message).ConfigureAwait(false);
-            return 2;
-        }
-    }
-
-    private static async Task<int> RunValidationReviewAsync(
-        string[] arguments,
-        CancellationToken cancellationToken)
-    {
-        if (!ValidationReviewOptions.TryParse(
-                arguments,
-                out ValidationReviewOptions? options,
-                out string? error))
-        {
-            await Console.Error.WriteLineAsync(error).ConfigureAwait(false);
-            WriteUsage(Console.Error);
-            return 2;
-        }
-
-        try
-        {
-            await ValidationReviewPlanBuilder.RunAsync(options!, cancellationToken)
-                .ConfigureAwait(false);
-            return 0;
-        }
-        catch (Exception exception) when (
-            exception is IOException or
-            UnauthorizedAccessException or
-            InvalidDataException or
             System.Text.Json.JsonException)
         {
             await Console.Error.WriteLineAsync(exception.Message).ConfigureAwait(false);
@@ -440,6 +349,26 @@ internal static partial class Program
         Accepts no estimate or model input. It verifies the frozen opening, packet,
         evidence, source, and lineage identities before writing the complete
         nine-family strict-blind teacher plan. Test remains inaccessible.
+
+        One-shot validation selection:
+          dotnet EffortHours.RepositoryCalibration.dll validation-select
+            --repository-root <efforthours-checkout>
+            --plan <sampling-plan.json>
+            --opening <validation-opening.json>
+            --corpus <validation-corpus.json>
+            --candidate-manifest <candidate-manifest.json>
+            --model <logical-capability-model.json>
+            --seed-outputs <ignored-validation-seed-output-directory>
+            --candidate-outputs <fresh-ignored-candidate-output-directory>
+            --seed-evaluation <fresh-seed-evaluation.json>
+            --candidate-evaluation <fresh-candidate-evaluation.json>
+            --decision <fresh-validation-selection.json>
+            --source-commit <40-hex-commit>
+
+        Verifies the committed evaluator and exact blind validation boundary,
+        projects the sole frozen challenger once, evaluates seed and challenger,
+        serializes every admission gate, and selects exactly one challenger or
+        rejects all. The command accepts no test input and leaves test sealed.
 
         Candidate preflight:
           dotnet EffortHours.RepositoryCalibration.dll candidate-preflight
