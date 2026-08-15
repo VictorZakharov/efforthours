@@ -233,6 +233,8 @@ eh calibration review-compile <plan.json> <corpus.json> [--output <path>]
 eh calibration validate <corpus.json> [--output <path>]
 eh calibration evaluate <corpus.json> <estimate.json>...
   --partition <development|validation|test> [--output <path>]
+eh calibration diagnose <corpus.json> <estimate.json>...
+  --partition <development|validation|test> [--output <path>]
 eh calibration mutations <suite.json> <estimate.json>... [--output <path>]
 
 eh calibration change-scaffold <change-estimate.json> [--blind]
@@ -273,6 +275,39 @@ labels and do not make planning bounds formal probability intervals.
 Metrics are emitted for repository-profile totals, active categories, and fully
 matched targets. Per-record diagnostics retain candidate digests, mapping counts,
 unmatched IDs, and category mismatches.
+
+### Residual diagnosis
+
+`eh calibration diagnose` emits the versioned
+`calibration-residual-diagnostic/1.0.0` report for an explicitly selected corpus
+partition. It is a development/review tool, not a model fit or admission result.
+Opened validation labels may be diagnosed after a frozen decision, but they cease
+to be a fresh holdout for any successor informed by the result. A sealed test
+partition remains off limits until its separate authorization boundary is met.
+
+The diagnostic records candidate-minus-reviewed low, expected, and high deltas;
+reviewed-expected interval miss direction and distance; candidate range symmetry;
+and raw versus expected-normalized candidate-to-reviewed repository-width
+correlation. It ranks repositories, categories, and matched-target or
+unmatched-candidate components by absolute expected residual.
+`materialContributor` marks the smallest largest-first set whose gross residual
+share reaches the fixed `0.8` threshold; all remaining components are retained.
+
+Category and component signed residuals reconcile to their repository total at
+the diagnostic's `0.0001`-hour reconciliation precision. Incomplete mappings,
+category mismatches, unmatched candidate work items, cancellation between positive
+and negative residuals, reviewed size exceptions, and reviewed targets above the
+ordinary eight-hour boundary remain explicit. Each component retains reviewed and
+candidate evidence IDs and a compact ordered leaf projection. A leaf carries its
+stable ID, scope, category, range, complexity, confidence, evidence count/digest,
+and uncertainty count; the candidate report digest remains the authority for its
+full explanation. This avoids copying an entire large candidate report while
+still letting a reviewer expand a multi-thousand-hour aggregate into the normally
+small work items that produced it.
+
+The diagnostic does not change `seed-rules/0.4.0`, revive a rejected candidate,
+select uncertainty features, or claim that teacher ranges are empirical delivery
+distributions.
 
 ## Determinism and safety
 

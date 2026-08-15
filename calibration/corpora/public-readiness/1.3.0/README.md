@@ -159,6 +159,43 @@ the seed by more than `0.05` WAPE or exceed the absolute-bias limit. Overall, 15
 validation gates pass and six fail. All four boundary gates and all 12 previously
 frozen operational gates pass.
 
+## Post-decision residual diagnostic
+
+After rejection, the opened validation labels were used only as development
+diagnostics. `eh calibration diagnose` compared the same nine immutable challenger
+reports with the frozen corpus. It changed no report, candidate, prior, gate, or
+decision and did not access test.
+
+| Diagnostic | Result |
+| --- | ---: |
+| Reviewed / candidate expected | `46,045.5000 / 48,964.8599 h` |
+| Net candidate-minus-reviewed expected | `+2,919.3599 h` |
+| Gross repository / category / component disagreement | `4,328.0045 / 7,803.2480 / 9,771.0281 h` |
+| Reviewed expected covered / candidate too high / candidate too low | `6 / 1 / 2` repositories |
+| Symmetric challenger repository ranges | `0 / 9` |
+| Raw candidate-to-reviewed repository-width correlation | `0.9327` |
+| Expected-normalized candidate-to-reviewed width correlation | `-0.1291` |
+| Reviewed components / candidate leaves | `2,747 / 15,609` |
+| Explicit size exceptions / reviewed targets above eight hours | `649 / 538` |
+| Low / expected / high reconciliation delta | `0.0000 / 0.0000 / 0.0000 h` |
+
+The largest repository net residual is `+1,888.8888 h`, while its component-level
+gross disagreement is `2,720.5070 h`; `831.6182 h` cancels between over- and
+underestimated components. Its largest reviewed target is `2,868.7500 h` versus
+`3,087.2245 h` candidate and maps to 1,202 normally small candidate leaves. The
+reviewed target's existing size exception already says candidate-hidden blind
+review preserved a cohesive aggregate that later review may decompose. This is
+why issue #137 requires both largest-first residual ranking and leaf expansion:
+aggregate agreement alone cannot reveal which evidence-backed pieces are off.
+
+The full compact diagnostic is generated under ignored `artifacts/` because it
+contains all 15,609 leaf projections and is intentionally not added as a large
+derived repository artifact. The versioned command, schema, semantic validation,
+memory-only reconciliation fixture, process-level CLI fixture, and this frozen
+summary are checked in. The diagnostic is reproducible from the same ignored
+candidate outputs used by the already-frozen selection, and those outputs remain
+bound by their checked-in candidate evaluation digest.
+
 The seed and candidate evaluation digests are
 `sha256:83d30549c5b0bd86f7246b36a052fe97b36d558ec80e8d2374652f5e463d4678`
 and

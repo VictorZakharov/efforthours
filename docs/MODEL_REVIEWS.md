@@ -74,6 +74,21 @@ Six frozen gates fail:
 - pooled material-category WAPE improves from `0.3358` to `0.1577`, but eight
   individual material categories exceed the frozen regression or bias limits.
 
+The post-decision `calibration-residual-diagnostic/1.0.0` run keeps this opened
+validation cohort diagnostic-only and leaves test sealed. Across nine records it
+reconciles 2,747 reviewed components and 15,609 candidate leaves to `0.0000 h` at
+low, expected, and high report precision. Raw candidate-to-reviewed
+repository-width correlation is `0.9327`, while width normalized by each expected
+total correlates at `-0.1291`; none of the nine challenger repository ranges is
+symmetric. Candidate expected EHE is `48,964.8599 h` versus `46,045.5000 h`
+reviewed. Net aggregate error is
+`+2,919.3599 h`, but gross repository, category, and component disagreement is
+`4,328.0045 h`, `7,803.2480 h`, and `9,771.0281 h`, respectively, exposing
+substantial cancellation hidden by the net total. The diagnostic also identifies
+538 reviewed targets above eight expected hours and preserves their compact
+candidate-leaf expansion; these opened-label findings motivate issue #137 but are
+not reusable holdout evidence.
+
 Fifteen validation gates pass and six fail. All four opening/lineage/test-seal
 boundary gates and all 12 previously frozen mutation, determinism, explanation,
 safety, latency, memory, package, and scanner gates pass. The policy requires

@@ -23,6 +23,7 @@ public static class SchemaNames
     public const string CalibrationCorpus = "calibration-corpus.schema.json";
     public const string CalibrationCorpusReviewPacket = "calibration-corpus-review-packet.schema.json";
     public const string CalibrationCorpusReviewPlan = "calibration-corpus-review-plan.schema.json";
+    public const string CalibrationDiagnostic = "calibration-diagnostic.schema.json";
     public const string CalibrationEvaluation = "calibration-evaluation.schema.json";
     public const string CalibrationMutationReport = "calibration-mutation-report.schema.json";
     public const string CalibrationMutationSuite = "calibration-mutation-suite.schema.json";
@@ -58,6 +59,7 @@ public static class SchemaIds
     public const string CalibrationCorpus = "urn:eh:schema:v1:calibration-corpus";
     public const string CalibrationCorpusReviewPacket = "urn:eh:schema:v1:calibration-corpus-review-packet";
     public const string CalibrationCorpusReviewPlan = "urn:eh:schema:v1:calibration-corpus-review-plan";
+    public const string CalibrationDiagnostic = "urn:eh:schema:v1:calibration-diagnostic";
     public const string CalibrationEvaluation = "urn:eh:schema:v1:calibration-evaluation";
     public const string CalibrationMutationReport = "urn:eh:schema:v1:calibration-mutation-report";
     public const string CalibrationMutationSuite = "urn:eh:schema:v1:calibration-mutation-suite";

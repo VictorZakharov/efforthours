@@ -73,6 +73,11 @@ public sealed partial class EffortHoursApplication
                 standardOutput,
                 standardError,
                 cancellationToken).ConfigureAwait(false),
+            "diagnose" => await DiagnoseCalibrationAsync(
+                [.. arguments.Skip(1)],
+                standardOutput,
+                standardError,
+                cancellationToken).ConfigureAwait(false),
             "change-evaluate" => await EvaluateChangeCalibrationAsync(
                 [.. arguments.Skip(1)],
                 standardOutput,
@@ -84,6 +89,7 @@ public sealed partial class EffortHoursApplication
                 "'calibration compile', 'calibration change-compile', " +
                 "'calibration review-scaffold', 'calibration review-compile', " +
                 "'calibration mutations', 'calibration validate', 'calibration evaluate', " +
+                "'calibration diagnose', " +
                 "or 'calibration change-evaluate'.")
                 .ConfigureAwait(false),
         };
@@ -321,6 +327,7 @@ public sealed partial class EffortHoursApplication
           eh calibration mutations <suite.json> <estimate.json>... [--compact] [--output <path>]
           eh calibration validate <corpus.json> [--compact] [--output <path>]
           eh calibration evaluate <corpus.json> <estimate.json>... --partition <name> [--compact] [--output <path>]
+          eh calibration diagnose <corpus.json> <estimate.json>... --partition <name> [--compact] [--output <path>]
           eh calibration change-evaluate <corpus.json> <change-estimate.json>... --partition <name> [--compact] [--output <path>]
 
         Calibration is offline and effort-only. Reviewed labels are weak supervision,
