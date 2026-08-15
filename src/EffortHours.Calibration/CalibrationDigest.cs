@@ -28,6 +28,9 @@ public static class CalibrationDigest
         return ComputeCanonical(corpus);
     }
 
+    internal static string ComputeStringSet(IEnumerable<string> values) =>
+        ComputeCanonical(values.Distinct(StringComparer.Ordinal).Order(StringComparer.Ordinal).ToArray());
+
     private static string ComputeCanonical<T>(T value)
     {
         byte[] bytes = Encoding.UTF8.GetBytes(ContractJson.SerializeCompact(value));

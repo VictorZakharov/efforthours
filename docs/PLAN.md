@@ -160,6 +160,11 @@ count, and intermediate churn do not value effort. `CHANGE_ESTIMATION.md` and
   fresh held-out selection set. Any successor that uses these findings needs a
   new candidate identity, new finite manifest, and fresh blind validation
   boundary before another selection.
+- Use `calibration diagnose` to localize the opened cohort's point and interval
+  failures before proposing a successor. Its stable category/component residuals,
+  80% largest-first material set, compact leaf expansion, symmetry checks, and
+  raw/normalized width correlations must reconcile without changing the rejected
+  candidate or opening test. Issue #137 owns the uncertainty-model follow-through.
 - Preserve repository-family partition isolation and honest teacher/model/input
   provenance. Optional independent review remains explicit corroboration, not an
   implied maturity upgrade.

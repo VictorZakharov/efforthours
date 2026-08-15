@@ -56,6 +56,22 @@ public static class CalibrationEvaluator
         ArgumentNullException.ThrowIfNull(candidates);
         ThrowIfInvalid(corpus);
 
+        IReadOnlyList<CalibrationCandidateView> views = CreateCandidateViews(candidates);
+
+        return CalibrationEvaluationEngine.Evaluate(
+            corpus,
+            views,
+            partition,
+            expectChangeRecords: false,
+            EvaluatorVersion,
+            MetricVersion);
+    }
+
+    internal static IReadOnlyList<CalibrationCandidateView> CreateCandidateViews(
+        IReadOnlyList<EstimateReport> candidates)
+    {
+        ArgumentNullException.ThrowIfNull(candidates);
+
         List<string> errors = [];
         List<CalibrationCandidateView> views = [];
         foreach (EstimateReport candidate in candidates)
@@ -88,13 +104,7 @@ public static class CalibrationEvaluator
             throw new CalibrationEvaluationException(errors);
         }
 
-        return CalibrationEvaluationEngine.Evaluate(
-            corpus,
-            views,
-            partition,
-            expectChangeRecords: false,
-            EvaluatorVersion,
-            MetricVersion);
+        return views;
     }
 
     internal static void ThrowIfInvalid(CalibrationCorpus corpus)

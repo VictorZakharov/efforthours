@@ -6,6 +6,16 @@ may still change public contracts with explicit documentation.
 
 ## Unreleased
 
+### Added
+
+- Added the offline `calibration diagnose` command and v1 residual-diagnostic
+  schema. It ranks repository, category, and matched-target residuals; preserves
+  incomplete and unmatched mappings; reports interval miss direction, symmetry,
+  raw and normalized width correlation, and cancellation; expands oversized
+  reviewed targets through compact evidence-bound candidate leaves; and proves
+  low/expected/high reconciliation at `0.0001`-hour report precision. It changes
+  no shipped estimate, candidate decision, or holdout boundary.
+
 ### Changed
 
 - Added development-only `logical-capability/0.3.0` repository-candidate
@@ -14,9 +24,10 @@ may still change public contracts with explicit documentation.
   unchanged public mutation suite at `339/339`. Its frozen three-platform
   checkpoint also passes all seven measured gates and all 12 total operational
   gates, records the exact raw/resource artifacts, and freezes the sole challenger,
-  resource budgets, and validation-selection rule. Blind validation is authorized
-  but remains unopened; test remains sealed, no candidate is admitted or shipped,
-  and `seed-rules/0.4.0` remains the product estimator and fallback.
+  resource budgets, and validation-selection rule. Its later strict-blind
+  validation improves expected WAPE by 58.75% but fails six frozen gates, so the
+  challenger is retired without test disclosure; no candidate is admitted or
+  shipped, and `seed-rules/0.4.0` remains the product estimator and fallback.
 - Removed redundant post-merge and NuGet-release validation when GitHub identifies
   the merge and its tree is identical to the already-gated PR head. CI falls back
   to the exact merged `main` commit when provenance is missing or parallel changes
