@@ -153,7 +153,7 @@ public sealed partial class CandidatePreflightTests
         Assert.All(candidate.WorkItems, item =>
         {
             Assert.Equal([evidenceId], item.EvidenceIds);
-            Assert.Contains("normalized-evidence-seed-anchor/0.1.0", item.Reason, StringComparison.Ordinal);
+            Assert.Contains("normalized-evidence-intent-bounds/0.2.0", item.Reason, StringComparison.Ordinal);
             Assert.Equal(EstimatorKind.Rule, item.Estimator.Kind);
         });
         Assert.Empty(ContractValidation.Validate(candidate));
@@ -402,9 +402,23 @@ public sealed partial class CandidatePreflightTests
                 Features = ["work-item-kind", "candidate-expected-size-band"],
                 LowerQuantile = LogicalCandidateModelFitter.LowerQuantile,
                 UpperQuantile = LogicalCandidateModelFitter.UpperQuantile,
+                MinimumHighFactor = LogicalCandidateModelFitter.MinimumHighFactor,
                 MinimumExactGroupSamples = LogicalCandidateModelFitter.MinimumRangeSamples,
                 SparseGroupFallback = "same kind then global",
                 UnknownGroupBehavior = "seed fallback",
+                MinimumLowHours =
+                [
+                    new LogicalCandidateRangeMinimum
+                    {
+                        WorkItemKind = "data-persistence",
+                        Hours = LogicalCandidateModelFitter.DataPersistenceMinimumLowHours,
+                    },
+                    new LogicalCandidateRangeMinimum
+                    {
+                        WorkItemKind = "external-integration",
+                        Hours = LogicalCandidateModelFitter.ExternalIntegrationMinimumLowHours,
+                    },
+                ],
                 Factors = [range],
             },
         };

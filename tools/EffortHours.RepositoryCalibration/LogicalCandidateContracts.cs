@@ -116,13 +116,24 @@ internal sealed record LogicalCandidateRangeModel
 
     public required decimal UpperQuantile { get; init; }
 
+    public decimal MinimumHighFactor { get; init; }
+
     public required int MinimumExactGroupSamples { get; init; }
 
     public required string SparseGroupFallback { get; init; }
 
     public required string UnknownGroupBehavior { get; init; }
 
+    public IReadOnlyList<LogicalCandidateRangeMinimum> MinimumLowHours { get; init; } = [];
+
     public IReadOnlyList<LogicalCandidateRangeFactor> Factors { get; init; } = [];
+}
+
+internal sealed record LogicalCandidateRangeMinimum
+{
+    public required string WorkItemKind { get; init; }
+
+    public required decimal Hours { get; init; }
 }
 
 internal sealed record LogicalCandidateRangeFactor

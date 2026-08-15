@@ -55,9 +55,13 @@ internal sealed record CandidatePreflightRangeConfiguration
 
     public decimal? UpperQuantile { get; init; }
 
+    public decimal? MinimumHighFactor { get; init; }
+
     public int? MinimumExactGroupSamples { get; init; }
 
     public string? SparseGroupFallback { get; init; }
+
+    public IReadOnlyList<LogicalCandidateRangeMinimum> MinimumLowHours { get; init; } = [];
 }
 
 internal sealed record CandidatePreflightConfiguration

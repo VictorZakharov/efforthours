@@ -26,6 +26,7 @@ internal static class LogicalCandidateTransformer
         ArgumentNullException.ThrowIfNull(evidence);
         ArgumentNullException.ThrowIfNull(model);
         ValidateModel(model);
+        bool current = HasCurrentIdentity(model);
         if (source.EstimatorVersion != model.BaselineEstimatorVersion ||
             source.Profile != EstimationProfile.Implementation)
         {
@@ -80,9 +81,13 @@ internal static class LogicalCandidateTransformer
                 continue;
             }
 
-            decimal[] lows = Allocate(
-                seedAnchor + residualExpected * range.LowFactor,
-                capability.Items);
+            decimal fittedLow = seedAnchor + residualExpected * range.LowFactor;
+            decimal configuredLow = model.Range.MinimumLowHours
+                .Where(item => item.WorkItemKind == capability.Kind)
+                .Select(item => item.Hours * capability.ScopeRoleFactor)
+                .SingleOrDefault();
+            decimal low = decimal.Min(expected, decimal.Max(fittedLow, configuredLow));
+            decimal[] lows = Allocate(low, capability.Items);
             decimal[] expecteds = Allocate(expected, capability.Items);
             decimal[] highs = Allocate(
                 seedAnchor + residualExpected * range.HighFactor,
@@ -98,15 +103,22 @@ internal static class LogicalCandidateTransformer
                         Expected = expecteds[index],
                         High = highs[index],
                     },
-                    Reason =
-                        $"Candidate '{model.CandidateId}' derived {capability.LogicalExpected} logical hours " +
-                        $"for capability '{capability.Id}' using scorer '{model.Point.ScorerVersion}', " +
-                        $"scope-role factor {capability.ScopeRoleFactor}, seed anchor {seedAnchor}, frozen " +
-                        $"point group '{capability.Kind}/{capability.LogicalSizeBand}' factor {point.Factor} " +
-                        $"from '{point.SampleSource ?? "legacy exact group"}', and frozen " +
-                        $"range group '{capability.Kind}/{range.ExpectedSizeBand}' factors " +
-                        $"{range.LowFactor}/1/{range.HighFactor}. The stable seed part '{item.Id}' receives " +
-                        "its proportional share.",
+                    Reason = current
+                        ? $"Candidate '{model.CandidateId}' derived {capability.LogicalExpected} logical hours " +
+                          $"for capability '{capability.Id}' using scorer '{model.Point.ScorerVersion}', " +
+                          $"scope-role factor {capability.ScopeRoleFactor}, seed anchor {seedAnchor}, frozen " +
+                          $"point group '{capability.Kind}/{capability.LogicalSizeBand}' factor {point.Factor} " +
+                          $"from '{point.SampleSource}', low floor {configuredLow}, and frozen range group " +
+                          $"'{capability.Kind}/{range.ExpectedSizeBand}' factors " +
+                          $"{range.LowFactor}/1/{range.HighFactor}. The stable seed part '{item.Id}' receives " +
+                          "its proportional share."
+                        : $"Candidate '{model.CandidateId}' derived {capability.LogicalExpected} logical hours " +
+                          $"for capability '{capability.Id}' using scorer '{model.Point.ScorerVersion}', " +
+                          $"scope-role factor {capability.ScopeRoleFactor}, frozen point group " +
+                          $"'{capability.Kind}/{capability.LogicalSizeBand}' factor {point.Factor}, and frozen " +
+                          $"range group '{capability.Kind}/{range.ExpectedSizeBand}' factors " +
+                          $"{range.LowFactor}/1/{range.HighFactor}. The stable seed part '{item.Id}' receives " +
+                          "its proportional share.",
                     Estimator = new EstimatorReference
                     {
                         Id = "candidate-logical-capability",
@@ -151,6 +163,9 @@ internal static class LogicalCandidateTransformer
             model.Range.UpperQuantile != (current
                 ? LogicalCandidateModelFitter.UpperQuantile
                 : LogicalCandidateModelFitter.RetiredUpperQuantile) ||
+            model.Range.MinimumHighFactor != (current
+                ? LogicalCandidateModelFitter.MinimumHighFactor
+                : 0m) ||
             model.Range.MinimumExactGroupSamples != LogicalCandidateModelFitter.MinimumRangeSamples ||
             model.LicenseExpression != "MIT")
         {
@@ -186,6 +201,21 @@ internal static class LogicalCandidateTransformer
                 "Logical-candidate seed-anchor configuration differs from the frozen version.");
         }
 
+        bool validLowMinimums = current
+            ? model.Range.MinimumLowHours.Count == 2 &&
+              model.Range.MinimumLowHours.Any(item =>
+                  item.WorkItemKind == "data-persistence" &&
+                  item.Hours == LogicalCandidateModelFitter.DataPersistenceMinimumLowHours) &&
+              model.Range.MinimumLowHours.Any(item =>
+                  item.WorkItemKind == "external-integration" &&
+                  item.Hours == LogicalCandidateModelFitter.ExternalIntegrationMinimumLowHours)
+            : model.Range.MinimumLowHours.Count == 0;
+        if (!validLowMinimums)
+        {
+            throw new InvalidDataException(
+                "Logical-candidate range minimums differ from the frozen version.");
+        }
+
         Dictionary<string, decimal> maximumFactors = model.Point.MaximumFactorOverrides
             .ToDictionary(item => item.WorkItemKind, item => item.MaximumFactor, StringComparer.Ordinal);
         if (model.Point.Factors.Count == 0 ||
@@ -203,6 +233,9 @@ internal static class LogicalCandidateTransformer
                     StringComparer.Ordinal)
                 .Any(group => group.Count() != LogicalCandidateScorer.SizeBands.Length)) ||
             model.Range.Factors.Count == 0 ||
+            model.Range.MinimumLowHours.Any(item => item.Hours < 0m) ||
+            model.Range.MinimumLowHours.Select(item => item.WorkItemKind)
+                .Distinct(StringComparer.Ordinal).Count() != model.Range.MinimumLowHours.Count ||
             model.Range.Factors.Any(factor =>
                 factor.LowFactor < 0m ||
                 factor.LowFactor > 1m ||

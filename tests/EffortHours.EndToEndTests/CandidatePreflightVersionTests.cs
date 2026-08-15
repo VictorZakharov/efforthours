@@ -66,6 +66,8 @@ public sealed partial class CandidatePreflightTests
             Range = current.Range with
             {
                 UpperQuantile = LogicalCandidateModelFitter.RetiredUpperQuantile,
+                MinimumHighFactor = 0m,
+                MinimumLowHours = [],
             },
         };
         EstimateReport legacyCandidate = LogicalCandidateTransformer.Transform(source, evidence, legacy);
