@@ -2,9 +2,10 @@
 
 ## Status
 
-**The validation-opening implementation and boundary are frozen; validation has
-not yet been opened.** No validation label or frozen-challenger output exists, and
-the test partition remains sealed.
+**The complete nine-family validation partition is open for strict-blind label
+authoring.** The opening succeeded with no failure or contamination record. No
+validation label or frozen-challenger output exists, and the test partition
+remains sealed.
 
 This checkpoint adds a dedicated one-shot `validation-open` path. Before any
 network request or output creation, it verifies the exact candidate freeze, its
@@ -49,8 +50,8 @@ opening record retains digests and provenance without local paths or source text
 
 ## One-shot execution
 
-Run from the clean commit that contains this boundary, substituting its exact
-40-character object ID for `<opening-tool-commit>`:
+The one-shot opening ran from implementation commit
+`efad050c3b0985ec4d8fdf9de7673222103a12fd`:
 
 ```powershell
 dotnet tools/EffortHours.RepositoryCalibration/bin/Release/net10.0/EffortHours.RepositoryCalibration.dll validation-open `
@@ -59,7 +60,7 @@ dotnet tools/EffortHours.RepositoryCalibration/bin/Release/net10.0/EffortHours.R
   --reproduction-manifest calibration/corpora/public-readiness/0.2.0.reproduction-manifest.json `
   --custody calibration/corpora/public-readiness/0.2.0.holdout-custody.json `
   --candidate-manifest calibration/corpora/public-readiness/1.2.0/1.2.0.candidate-manifest.json `
-  --source-commit <opening-tool-commit> `
+  --source-commit efad050c3b0985ec4d8fdf9de7673222103a12fd `
   --workspace artifacts/calibration/public-readiness-v03-validation `
   --cli src/EffortHours.Cli/bin/Release/net10.0/efforthours.dll `
   --packets calibration/corpora/public-readiness/1.3.0/authoring-packets `
@@ -70,6 +71,21 @@ The opening implementation does not accept a test-family selector or a challenge
 output path. A family failure writes an explicit failed-closed opening record and
 stops. A successful opening must contain exactly nine verified validation records
 and nine blind packets.
+
+## Opening result
+
+The opening completed in approximately 177 seconds on the recorded workstation.
+It reproduced all nine prior archive, tree, blob, size, and license custody
+records; generated 2,747 blind review targets; and wrote exactly nine packets.
+Every packet reports `candidateVisibility: blind`, a null candidate total, empty
+candidate categories, and null candidate guidance on every target. The opening
+manifest records zero failures, zero contaminated families, no test access, and no
+validation or test candidate output.
+
+The packet digests in `1.3.0.validation-opening.json` reproduce byte-for-byte.
+A privacy scan found no local Windows or Unix home path, source excerpt field, or
+secret value. Path tokens containing `home`, `password`, or `secrets` are public
+repository-relative evidence identities, not machine paths or configured values.
 
 ## Next boundary
 
