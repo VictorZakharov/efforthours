@@ -93,9 +93,66 @@ public sealed class ChangeBenchmarkCliTests
         AssertReadOnlyAndMeasured(values);
     }
 
+    [Fact]
+    public async Task AuthorPeriodManifestBenchmarkFreezesRegressionAndReuseMatrix()
+    {
+        ProcessResult result = await RunBenchmarkAsync(
+            "--author-period-manifest",
+            "--files",
+            "8",
+            "--lines-per-file",
+            "8",
+            "--commits",
+            "3",
+            "--compare-independent");
+
+        Assert.Equal(0, result.ExitCode);
+        Assert.Equal(string.Empty, result.StandardError);
+        Dictionary<string, string> values = Parse(result.StandardOutput);
+        Assert.Equal("author-period-manifest", values["mode"]);
+        Assert.Equal("2", values["portfolio-repositories"]);
+        Assert.Equal("8", values["portfolio-heads"]);
+        Assert.Equal("3", values["portfolio-contributors"]);
+        Assert.Equal("6", values["selected-changes"]);
+        Assert.Equal("24", values["independent-invocations"]);
+        Assert.Equal("8", values["independent-empty-invocations"]);
+        Assert.Equal("6", values["independent-unique-changes"]);
+        Assert.Equal("2", values["combined-git-object-readers"]);
+        Assert.True(
+            int.Parse(values["combined-snapshot-analyses"], CultureInfo.InvariantCulture) <
+            int.Parse(values["independent-snapshot-analyses"], CultureInfo.InvariantCulture));
+        Assert.True(
+            int.Parse(values["combined-git-object-readers"], CultureInfo.InvariantCulture) <
+            int.Parse(values["independent-git-object-readers"], CultureInfo.InvariantCulture));
+        Assert.Equal("true", values["less-repeated-analysis"]);
+        Assert.Equal("true", values["independent-reports-equivalent"]);
+        Assert.Equal("true", values["manual-baseline-equivalent"]);
+        Assert.Equal("true", values["reordered-report-bytes-equivalent"]);
+        Assert.Equal("true", values["repository-scoped-shared-object"]);
+        Assert.Equal("true", values["fully-overlapping-heads-preserved"]);
+        Assert.Equal("true", values["empty-contributor-preserved"]);
+        Assert.Equal("true", values["privacy-boundary-preserved"]);
+        Assert.True(bool.TryParse(values["combined-faster-than-independent"], out _));
+        AssertPositive(values, "combined-estimate-seconds");
+        AssertPositive(values, "independent-estimate-seconds");
+        AssertReadOnlyAndMeasured(values);
+    }
+
+    [Fact]
+    public async Task AuthorPeriodManifestBenchmarkRequiresAnIndependentBaseline()
+    {
+        ProcessResult result = await RunBenchmarkAsync("--author-period-manifest");
+
+        Assert.Equal(2, result.ExitCode);
+        Assert.Contains(
+            "requires '--compare-independent'",
+            result.StandardError,
+            StringComparison.Ordinal);
+    }
+
     private static void AssertReadOnlyAndMeasured(Dictionary<string, string> values)
     {
-        Assert.Equal("change/1.2.0", values["benchmark"]);
+        Assert.Equal("change/1.3.0", values["benchmark"]);
         Assert.Equal("true", values["worktree-unchanged"]);
         Assert.Equal("true", values["git-state-unchanged"]);
         Assert.Equal("not-performed", values["target-execution"]);

@@ -192,7 +192,7 @@ internal sealed class GitBenchmarkRepository : IDisposable
         }
     }
 
-    private static async Task<string> CommitAsync(
+    internal static async Task<string> CommitAsync(
         string root,
         string message,
         CancellationToken cancellationToken,
@@ -218,7 +218,7 @@ internal sealed class GitBenchmarkRepository : IDisposable
         return await GitAsync(root, cancellationToken, "rev-parse", "HEAD").ConfigureAwait(false);
     }
 
-    private static async Task<(int Files, int Directories)> CountHeadTreeAsync(
+    internal static async Task<(int Files, int Directories)> CountHeadTreeAsync(
         string root,
         string headObjectId,
         CancellationToken cancellationToken)
@@ -248,7 +248,7 @@ internal sealed class GitBenchmarkRepository : IDisposable
         return (files.Length, directories.Count);
     }
 
-    private static async Task<string> GitAsync(
+    internal static async Task<string> GitAsync(
         string root,
         CancellationToken cancellationToken,
         params string[] arguments)
@@ -283,7 +283,7 @@ internal sealed class GitBenchmarkRepository : IDisposable
         return output;
     }
 
-    private static string SourceFile(int index, int lines, int finalValue = 0)
+    internal static string SourceFile(int index, int lines, int finalValue = 0)
     {
         StringBuilder content = new();
         content.AppendLine("namespace EffortHours.Benchmark;");
@@ -304,7 +304,7 @@ internal sealed class GitBenchmarkRepository : IDisposable
         return content.ToString();
     }
 
-    private static string SourcePath(int index, bool nested) => nested
+    internal static string SourcePath(int index, bool nested) => nested
         ? $"src/area-{index % 100:D2}/component-{index:D6}/Type{index:D6}.cs"
         : $"src/Type{index:D6}.cs";
 
@@ -328,14 +328,14 @@ internal sealed class GitBenchmarkRepository : IDisposable
         return content.ToString();
     }
 
-    private static void WriteText(string root, string relativePath, string content)
+    internal static void WriteText(string root, string relativePath, string content)
     {
         string path = Path.Combine(root, relativePath.Replace('/', Path.DirectorySeparatorChar));
         Directory.CreateDirectory(Path.GetDirectoryName(path)!);
         File.WriteAllText(path, content, new UTF8Encoding(false));
     }
 
-    private static void DeleteRepository(string root)
+    internal static void DeleteRepository(string root)
     {
         if (!Directory.Exists(root))
         {

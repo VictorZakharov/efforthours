@@ -187,6 +187,13 @@ tests were split from the existing command tests when that file crossed the 80%
 refactoring threshold. Every file remains below its ordinary ceiling, and no
 ratchet override was added or increased.
 
+The August 14, 2026 multi-repository regression checkpoint separates manifest
+fixture construction, Git graph construction, combined/isolated comparison, and
+result rendering into focused benchmark files. The process test extends the
+existing benchmark boundary without mixing fixture policy into CLI tests. Every
+new file remains below the ordinary 500-line ceiling, and no ratchet override was
+added or increased.
+
 Line count is deliberately simple, deterministic, cross-platform, and difficult
 to game accidentally. The useful outcome is earlier decomposition into cohesive
 contracts, commands, analyzers, and renderers—not compressed formatting.

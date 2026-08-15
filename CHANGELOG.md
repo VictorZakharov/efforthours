@@ -25,6 +25,13 @@ may still change public contracts with explicit documentation.
   and writes nine non-semantic phase timings to stderr. A focused `change/1.2.0`
   comparison produced byte-equivalent rows in 1.189 seconds combined versus 1.639
   seconds across three isolated estimates.
+- Added the public-safe `change/1.3.0` two-repository, eight-head author-period
+  regression and benchmark matrix. Its controlled checkpoint preserved exact
+  report bytes, privacy, zero/shared rows, and unchanged repositories while
+  reducing 24 isolated invocations to one, snapshot analyses from 36 to 8, Git
+  readers from 16 to 2, and measured wall time from 12.360 to 2.878 seconds.
+  Ordinary CI gates deterministic behavior and reuse counts, not machine-dependent
+  time or memory observations.
 
 ## 0.10.0-alpha.3 - 2026-08-14
 

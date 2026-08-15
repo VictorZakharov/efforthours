@@ -185,11 +185,12 @@ count, and intermediate churn do not value effort. `CHANGE_ESTIMATION.md` and
   Never turn logged time into a multiplier or relabel it as counterfactual EHE.
 - Measure portfolio reconciliation on public multi-change examples without
   weakening attribution and no-ranking safeguards.
-- The host-independent multi-repository, multi-head author-period selector now
-  shares bounded repository-scoped Git readers, blobs, immutable inventories, and
-  exact-scope snapshot analyses and emits phase/reuse diagnostics. Next freeze the
-  reviewed correctness/performance matrix and controlled multi-repository
-  measurements. Preserve its repository-scoped commit union,
+- The host-independent multi-repository, multi-head author-period selector shares
+  bounded repository-scoped Git readers, blobs, immutable inventories, and exact-
+  scope snapshot analyses and emits phase/reuse diagnostics. Its public-safe
+  correctness/privacy matrix and controlled combined-versus-isolated checkpoint
+  are frozen in `CHANGE_PORTFOLIOS.md` and `BENCHMARKS.md`. Preserve its repository-
+  scoped commit union,
   exact contributor/repository/head aggregation and zero rows, non-multiplying
   shared groups, privacy-safe report boundary, and rule that identity and time
   never become value.
