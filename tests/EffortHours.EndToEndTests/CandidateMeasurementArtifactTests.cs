@@ -6,6 +6,13 @@ namespace EffortHours.EndToEndTests;
 
 public sealed class CandidateMeasurementArtifactTests
 {
+    private const string ModelRelativePath =
+        "calibration/corpora/public-readiness/1.0.0.logical-capability-model.json";
+    private const string OperationalRelativePath =
+        "calibration/corpora/public-readiness/1.1.0.candidate-operational-preflight.json";
+    private const string MutationSuiteRelativePath =
+        "calibration/mutations/public-synthetic/0.8.0.suite.json";
+
     [Fact]
     public async Task SavedEvidenceShapesAndCandidateProjectionAreDeterministic()
     {
@@ -49,12 +56,7 @@ public sealed class CandidateMeasurementArtifactTests
             {
                 EvidencePath = first[0].Path,
                 ApplyCandidate = true,
-                ModelPath = Path.Combine(
-                    root,
-                    "calibration",
-                    "corpora",
-                    "public-readiness",
-                    "0.7.0.logical-capability-model.json"),
+                ModelPath = Path.Combine(root, ModelRelativePath),
                 ExpectedModelDigest = CandidateMeasurementRunner.ExpectedModelDigest,
             };
             using StringWriter firstOutput = new();
@@ -75,7 +77,7 @@ public sealed class CandidateMeasurementArtifactTests
             EstimateReport estimate = ContractJson.Deserialize<EstimateReport>(
                 firstOutput.ToString());
             Assert.Equal(
-                "candidate-logical-capability/0.2.0+seed-rules/0.4.0",
+                CandidateMeasurementRunner.ExpectedEstimatorVersion,
                 estimate.EstimatorVersion);
             Assert.Empty(ContractValidation.Validate(estimate));
         }
@@ -86,6 +88,46 @@ public sealed class CandidateMeasurementArtifactTests
                 Directory.Delete(temporary, recursive: true);
             }
         }
+    }
+
+    [Fact]
+    public void FrozenMeasurementBoundaryPinsTheCompleteV3PredecessorChain()
+    {
+        string root = FindRepositoryRoot();
+        string modelJson = File.ReadAllText(Path.Combine(root, ModelRelativePath));
+        string operationalJson = File.ReadAllText(Path.Combine(root, OperationalRelativePath));
+        string suiteJson = File.ReadAllText(Path.Combine(root, MutationSuiteRelativePath));
+        LogicalCandidateModel model = ContractJson.Deserialize<LogicalCandidateModel>(modelJson);
+        CandidatePreflightReport operational =
+            ContractJson.Deserialize<CandidatePreflightReport>(operationalJson);
+
+        Assert.Equal(
+            CandidateMeasurementRunner.ExpectedModelDigest,
+            JsonArtifactDigest.Compute(modelJson));
+        Assert.Equal(
+            CandidateMeasurementRunner.ExpectedOperationalDigest,
+            JsonArtifactDigest.Compute(operationalJson));
+        Assert.Equal(
+            CandidateMeasurementRunner.ExpectedMutationSuiteDigest,
+            JsonArtifactDigest.Compute(suiteJson));
+        Assert.Equal(CandidateMeasurementRunner.ExpectedCandidateId, model.CandidateId);
+        Assert.Equal(CandidateMeasurementRunner.ExpectedModelVersion, model.ModelVersion);
+        Assert.Equal(CandidateMeasurementRunner.ExpectedEstimatorVersion, model.EstimatorVersion);
+        Assert.Equal(
+            CandidateMeasurementRunner.ExpectedFeatureContractVersion,
+            model.FeatureContractVersion);
+        Assert.Equal(
+            CandidateMeasurementRunner.ExpectedCandidateImplementationCommit,
+            model.Training.ImplementationCommit);
+        Assert.Equal(model.CandidateId, operational.Candidate.Id);
+        Assert.Equal(
+            CandidateMeasurementRunner.ExpectedModelDigest,
+            operational.Inputs.CandidateModel?.Digest);
+        Assert.Equal(
+            CandidateMeasurementRunner.ExpectedNumericalDigest,
+            operational.Inputs.NumericalPreflight?.Digest);
+        Assert.False(operational.Decision.CandidateManifestFrozen);
+        Assert.False(operational.Decision.ValidationAuthorized);
     }
 
     [Fact]
@@ -103,7 +145,7 @@ public sealed class CandidateMeasurementArtifactTests
             File.WriteAllBytes(Path.Combine(seed, "efforthours.dll"), new byte[100]);
             File.WriteAllBytes(Path.Combine(candidate, "efforthours.dll"), new byte[100]);
             File.WriteAllBytes(
-                Path.Combine(candidate, "0.7.0.logical-capability-model.json"),
+                Path.Combine(candidate, "1.0.0.logical-capability-model.json"),
                 new byte[25]);
             File.WriteAllBytes(
                 Path.Combine(candidate, "EffortHours.RepositoryCalibration.dll"),

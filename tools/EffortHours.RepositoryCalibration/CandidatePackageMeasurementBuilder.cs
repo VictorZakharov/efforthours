@@ -21,11 +21,11 @@ internal static class CandidatePackageMeasurementBuilder
             "*",
             SearchOption.AllDirectories)];
         bool hasModel = candidateFiles.Any(file =>
-            file.Name == "0.7.0.logical-capability-model.json");
+            file.Name == "1.0.0.logical-capability-model.json");
         bool hasRuntime = candidateFiles.Any(file =>
             file.Name == "EffortHours.RepositoryCalibration.dll");
         bool seedHasCandidate = seedFiles.Any(file =>
-            file.Name is "0.7.0.logical-capability-model.json" or
+            file.Name is "1.0.0.logical-capability-model.json" or
                 "EffortHours.RepositoryCalibration.dll");
         if (!hasModel || !hasRuntime || seedHasCandidate)
         {
