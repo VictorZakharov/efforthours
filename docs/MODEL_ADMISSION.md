@@ -339,8 +339,9 @@ They share one host-AI teacher. The legacy test labels are already public, and s
 legacy validation/test findings informed analyzer corrections. These records
 remain useful development and contamination diagnostics. The separate 33-family
 cohort now meets its 15-family development-label boundary and finite-candidate
-freeze. Blind validation is authorized but unopened; the sealed nine-family test
-boundary and admission decision are not met.
+freeze. Its separate nine-family blind validation is complete and rejects the
+sole challenger; the sealed nine-family test remains unopened and no repository
+candidate is admitted.
 
 `efforthours-public-readiness/0.1.0` now freezes a separate implementation-profile
 source cohort with exactly 5/3/3 development/validation/test families in each
@@ -410,11 +411,16 @@ and macOS. All seven measured and all 12 total operational gates pass under the
 unchanged policy. The finite manifest freezes the seed plus sole challenger,
 resource record, and validation-selection rule.
 
-Validation is authorized but remains unopened: no validation candidate output or
-label was generated before the freeze. Test labels are not authored and require
-external body/digest custody before the one-time reveal boundary. The numerical
-validation/test gates and sealed test decision therefore remain unopened; no
-candidate is admitted or shipped and `seed-rules/0.4.0` remains the fallback.
+Validation checkpoint `1.3.0` freezes all 2,747 blind teacher targets before the
+sole challenger is projected. Candidate repository expected WAPE improves from
+seed `0.2279` to `0.0940`, and mean normalized width improves from `1.4832` to
+`0.4110`, but six required gates fail: median repository error, ordinary-family
+error, repository expected-point coverage, matched-target expected coverage,
+matched-target normalized width, and individual material-category agreement.
+The exact candidate is therefore rejected and retired. Test authorization remains
+false; no test source body, label, seed estimate, challenger output, or metric was
+opened. No candidate is admitted or shipped and `seed-rules/0.4.0` remains the
+product estimator and mandatory fallback.
 
 ## Policy changes
 

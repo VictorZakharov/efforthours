@@ -69,9 +69,12 @@ development-computable operational gates and a standalone evaluation of the
 unchanged public mutation suite at `339/339`. Measured checkpoint `1.2.0` passes
 all seven remaining gates and all 12 total operational gates on Windows, Linux,
 and macOS. It freezes the seed plus sole challenger, exact resource budgets, and
-validation-selection rule. Blind validation is authorized but remains unopened;
-test remains sealed, no candidate is admitted or shipped, and
-`seed-rules/0.4.0` remains the product estimator and fallback.
+validation-selection rule. Checkpoint `1.3.0` freezes 2,747 strict-blind
+validation targets before projecting the challenger. Expected WAPE improves from
+seed `0.2279` to `0.0940`, but six frozen median/family-error, coverage, width,
+and material-category gates fail. The candidate is retired without test
+disclosure; no candidate is admitted or shipped, and `seed-rules/0.4.0` remains
+the product estimator and fallback.
 
 Change EHE has a separate limited Stage A logical-admission decision. Its exact
 size, ecosystem, metric, and performance boundary is defined in
@@ -303,17 +306,21 @@ measured checkpoint `0.9.0`. Successor `logical-capability/0.3.0` passes all 16
 numerical gates, all five development-computable operational gates, and the
 public mutation suite at `339/339`. Checkpoint `1.2.0` passes all seven measured
 gates and freezes the finite candidate manifest and validation rule. Blind
-validation is authorized but has not begun; sealed test and admission remain
-incomplete. The 15 development families may be compared diagnostically, but no
-held-out comparison or admission decision has occurred. `seed-rules/0.4.0`
-remains the shipped estimator and required fallback.
+validation checkpoint `1.3.0` then rejects the sole candidate after six required
+gates fail despite a 58.75% expected-WAPE improvement. Test remains sealed and
+admission is not attempted. The development and opened validation families are
+diagnostic for future work; neither may be presented as a fresh held-out cohort
+for a successor informed by these results. `seed-rules/0.4.0` remains the shipped
+estimator and required fallback.
 
 The public-readiness cohort satisfies the planned family, shape, and size
 allocation, exact source reproduction, and complete development-label boundary.
-All nine validation and nine test families remain unlabeled. Admission still
-requires blind validation, selection of exactly one frozen candidate, a sealed
-one-time test reveal, and every held-out numerical and operational gate. Source
-verification must not be reported as labeled calibration evidence.
+All nine validation families now have frozen strict-blind teacher labels and a
+completed selection result; all nine test families remain unlabeled and sealed.
+This attempt ends without selecting a candidate, so test reveal is not authorized.
+A successor requires a new identity and fresh blind validation boundary before it
+can select exactly one candidate for a sealed one-time test. Source verification
+must not be reported as labeled calibration evidence.
 
 Transparent per-category corrections and simple statistical baselines come before
 an ML runtime. ML.NET or ONNX is selected only from measured runtime, package,

@@ -2,10 +2,12 @@
 
 ## Status
 
-**The complete nine-family strict-blind validation review is frozen.** The opening
-and label compilation succeeded with no failure or contamination record. No seed
-total or frozen-challenger output was inspected or supplied to the review compiler,
-and the test partition remains sealed.
+**The complete nine-family strict-blind validation is frozen and the sole
+challenger is rejected.** The opening and label compilation succeeded with no
+failure or contamination record. Labels were committed before candidate values
+were generated. The one-shot selection then evaluated the seed and exact
+`logical-capability/0.3.0` challenger, applied every precommitted gate, rejected
+the challenger, and left the test partition sealed.
 
 This checkpoint adds a dedicated one-shot `validation-open` path. Before any
 network request or output creation, it verifies the exact candidate freeze, its
@@ -127,10 +129,50 @@ normalized SHA-256 is
 The compact corpus contains exactly nine validation records and 2,747 targets,
 retains all 111 zero decisions, and contains no local path or source excerpt.
 
+## Frozen validation selection
+
+The one-shot evaluator was committed and pushed at
+`96d9d37e62348fb259c92ebffcb43c8b6ff2e155` before any challenger validation
+value was generated. It reverified the exact manifest, model, opening, corpus,
+seed evidence, and estimate lineage; required fresh output paths; accepted no test
+input; projected all nine validation records in memory; and wrote the candidate
+outputs, two evaluation reports, and decision exactly once.
+
+The challenger substantially improves aggregate point agreement, but it does not
+pass the complete policy:
+
+| Metric | Seed | Challenger | Gate |
+| --- | ---: | ---: | --- |
+| Repository expected WAPE | 0.2279 | 0.0940 | pass; 58.75% improvement |
+| Absolute aggregate bias | 0.2235 | 0.0634 | pass |
+| Median repository absolute error | 127.7500 h | 134.2769 h | **fail**; worse than seed |
+| Repository expected-point coverage | 1.0000 | 0.6667 | **fail**; below 0.80 |
+| Mean repository normalized width | 1.4832 | 0.4110 | pass |
+| P90 repository normalized width | 1.8232 | 0.6044 | pass |
+| Ordinary-family error pass rate | n/a | 0.8889 | **fail**; below 0.90 |
+| Matched-target expected coverage | n/a | 0.7150 | **fail**; below 0.75 |
+| Matched-target normalized width | n/a | 0.8452 | **fail**; above 0.75 |
+
+The pooled material-category WAPE improves from `0.3358` to `0.1577`, but the
+material-category gate still fails because eight individual categories regress
+the seed by more than `0.05` WAPE or exceed the absolute-bias limit. Overall, 15
+validation gates pass and six fail. All four boundary gates and all 12 previously
+frozen operational gates pass.
+
+The seed and candidate evaluation digests are
+`sha256:83d30549c5b0bd86f7246b36a052fe97b36d558ec80e8d2374652f5e463d4678`
+and
+`sha256:39a148e912be0c19e9ba565eeb6e1f7a43e3fec8026159d889d5f1451e43d86a`.
+The selection record digest is
+`sha256:fff040cdb13aba610c410d8e101e7770a99e0365d4d0ccf3b915f7de99ab5c56`;
+commit `07880cf84a9dfbe84a407875a60abbeea81f9afd` freezes it unchanged.
+
 ## Next boundary
 
-Commit the blind review plan before opening the ignored seed totals or generating
-the sole challenger's validation projections. Then compile the exact corpus, reuse
-the already-created immutable seed reports, generate the challenger outputs once,
-apply every frozen eligibility and selection gate, and select exactly one candidate
-or reject all. Freeze that decision before any test access.
+`logical-capability/0.3.0` is retired without test disclosure. It must not be
+retuned and reevaluated against these validation labels as though they remained
+held out. Any successor requires a new candidate identity, a fresh blind
+validation boundary, and a new finite manifest and selection decision. The
+existing test partition remains sealed; no test source body, label, seed output, or
+challenger output was accessed, and `seed-rules/0.4.0` remains the shipped
+estimator and mandatory fallback.

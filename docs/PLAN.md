@@ -143,30 +143,26 @@ count, and intermediate churn do not value effort. `CHANGE_ESTIMATION.md` and
 
 ## Current priorities
 
-### 1. Run blind validation for frozen repository candidate v0.3
+### 1. Retire repository candidate v0.3 and preserve the sealed-test boundary
 
-- Treat retired `logical-capability/0.2.0` and its `0.9.0` failures as final. Do
-  not weaken a mutation assertion, reinterpret raw bytes, relax a threshold, or
-  reuse its identities.
-- Successor `logical-capability/0.3.0` uses the forward
-  `canonical-json-document/1.0.0` boundary and repository-neutral normalization,
-  intent-bound, seed-anchor, sparse-range, and low-floor corrections. Checkpoints
-  `1.0.0` and `1.1.0` pass all 16 numerical gates, all five
-  development-computable operational gates, and the unchanged public mutation
-  suite at `339/339`.
-- Checkpoint `1.2.0` passes all seven measured gates and all 12 total operational
-  gates on Windows, Linux, and macOS. It freezes the seed plus sole challenger,
-  exact resource budgets, and the precommitted validation-selection rule.
-- Run issue #107's strict-blind validation exactly once against the frozen finite
-  set. Author labels without candidate guidance, preserve exact provenance, reject
-  any missing gate, and apply the frozen WAPE/tie-break ordering without retuning.
-- Keep all revisions and profiles from one repository family in one frozen
-  development, validation, or test partition.
-- Expand decomposed teacher review with honest model/input provenance. Optional
-  independent review must remain explicit corroboration, not an implied maturity
-  upgrade.
-- Keep validation blind during authoring and keep test labels sealed until one
-  validation candidate and release decision are frozen.
+- Treat `logical-capability/0.3.0` and its `1.3.0` validation rejection as final.
+  Its repository expected WAPE improves from `0.2279` to `0.0940`, but six frozen
+  gates fail across median/family error, repository and target coverage, target
+  width, and material-category agreement. Do not relax a threshold, alter its
+  uncertainty after seeing validation, or reuse its identity.
+- Keep `seed-rules/0.4.0` as the shipped estimator and mandatory fallback. The
+  rejected challenger never reaches the one-time test, and no admission or
+  production-readiness claim follows from its aggregate improvement.
+- Keep the current test source bodies, labels, seed estimates, challenger outputs,
+  and metrics sealed. A rejected validation candidate does not justify test
+  disclosure.
+- Treat the opened validation cohort as diagnostic for future design, not as a
+  fresh held-out selection set. Any successor that uses these findings needs a
+  new candidate identity, new finite manifest, and fresh blind validation
+  boundary before another selection.
+- Preserve repository-family partition isolation and honest teacher/model/input
+  provenance. Optional independent review remains explicit corroboration, not an
+  implied maturity upgrade.
 - Retain mutation relations as qualitative invariance, directionality,
   marginality, and category-isolation guards—not numerical labels.
 
