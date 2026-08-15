@@ -143,26 +143,24 @@ count, and intermediate churn do not value effort. `CHANGE_ESTIMATION.md` and
 
 ## Current priorities
 
-### 1. Replace the retired repository candidate without opening holdouts
+### 1. Complete measured preflight for repository candidate v0.3
 
-- Measured checkpoint `0.9.0` retires exact `logical-capability/0.2.0`. Five
-  resource/package/scanner gates pass, but the public suite passes only `314/339`
-  assertions and raw Windows JSON bytes differ from Linux/macOS by CRLF versus LF.
-- Treat v0.2 as final. Do not weaken a mutation assertion, normalize the recorded
-  raw-byte result into a pass, relax a threshold, or reuse its identity.
-- `canonical-json-document/1.0.0` defines the forward OS-independent structured-
-  output boundary: indented JSON and the single document terminator use LF, and
-  explicit files use UTF-8 without a byte-order mark. Exact-byte process tests
-  pin seed and candidate outputs for the small, medium, and large measurement
-  shapes across the ordinary Windows, Linux, and macOS CI matrix. This does not
-  reinterpret the failed 0.9.0 measurement or reuse its implementation identity.
-- Diagnose the 25 public mutation failures using only public guardrails and frozen
-  development records. Any changed scorer, factor, range, fallback, or projection
-  becomes a new model, candidate, and estimator identity.
-- Run the complete numerical, development-computable operational, and measured
-  operational preflight for the new finite candidate set. Freeze a candidate
-  manifest, resource budgets, and selection rule only if every gate passes; do not
-  open or tune against validation before that freeze.
+- Treat retired `logical-capability/0.2.0` and its `0.9.0` failures as final. Do
+  not weaken a mutation assertion, reinterpret raw bytes, relax a threshold, or
+  reuse its identities.
+- Successor `logical-capability/0.3.0` uses the forward
+  `canonical-json-document/1.0.0` boundary and repository-neutral normalization,
+  intent-bound, seed-anchor, sparse-range, and low-floor corrections. Checkpoints
+  `1.0.0` and `1.1.0` pass all 16 numerical gates, all five
+  development-computable operational gates, and the unchanged public mutation
+  suite at `339/339`.
+- Run issue #106's formal measured workflow against the exact v0.3 model,
+  implementation, and operational-preflight digests on Windows, Linux, and macOS.
+  Reproduce the public mutation result and evaluate canonical bytes, latency,
+  sampled memory, installed-package increase, and scanner/fingerprint boundaries.
+- Freeze a candidate manifest, resource budgets, and selection rule only if every
+  formal measured gate passes; do not open or tune against validation before that
+  freeze.
 - Keep all revisions and profiles from one repository family in one frozen
   development, validation, or test partition.
 - Expand decomposed teacher review with honest model/input provenance. Optional

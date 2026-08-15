@@ -39,6 +39,14 @@ the public mutation suite passes `314/339`, and raw Windows projection bytes
 differ from matching Linux/macOS bytes by CRLF versus LF. Five resource, package,
 and scanner gates pass. No manifest is frozen and no holdout is opened. Source,
 archives, evidence bundles, and development estimate bodies remain uncommitted.
+The [`1.0.0 successor preflight`](1.0.0/README.md) gives the corrected design a
+new `logical-capability/0.3.0` identity and passes all 16 numerical gates with
+repository WAPE `0.1009`. Its
+[`1.1.0 development operational checkpoint`](1.1.0/README.md) passes all five
+development-computable gates and the unchanged public mutation suite at
+`339/339`. The formal measured aggregate and remaining platform, resource,
+package, and scanner measurements are pending. No manifest is frozen and no
+holdout is opened.
 
 The development labels do not open model admission: validation/test labels are not
 authored, the finite candidate set is not frozen, and no independent correction
@@ -145,11 +153,10 @@ contain an unsealed test label before the one-time decision.
 
 ## Next checkpoint
 
-Retire `logical-capability/0.2.0`. Address raw cross-platform canonical output and
-the 25 public mutation failures using development-visible evidence only, without
-weakening the suite or opening holdouts. Any challenger requires new model,
-candidate, estimator, and implementation identities plus the complete numerical
-and operational preflight. Validation labels must remain unavailable until a
-later finite candidate manifest and selection rule are frozen; test labels require
-an externally held body and precommitted digest before authoring and remain sealed
-until the one-time selection boundary.
+Run issue #106's formal Windows/Linux/macOS measured workflow against exact
+`logical-capability/0.3.0`. Reproduce its `339/339` public mutation result and
+measure canonical bytes, paired latency and memory, installed-package increase,
+and scanner/fingerprint boundaries. Validation labels must remain unavailable
+until a later finite candidate manifest and selection rule are frozen; test labels
+require an externally held body and precommitted digest before authoring and
+remain sealed until the one-time selection boundary.
