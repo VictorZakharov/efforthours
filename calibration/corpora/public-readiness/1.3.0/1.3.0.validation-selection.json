@@ -1,0 +1,499 @@
+{
+  "selectionVersion": "repository-validation-selection/1.0.0",
+  "policyVersion": "repository-model-admission/1.0.0",
+  "status": "validation-rejected-all-challengers-test-sealed",
+  "evaluationImplementationCommit": "96d9d37e62348fb259c92ebffcb43c8b6ff2e155",
+  "inputs": {
+    "samplingPlan": {
+      "id": "efforthours-public-readiness",
+      "version": "0.1.0",
+      "digest": "sha256:c4c5f0026112b0d495e79e9ca7a5b3d03a763710db75360d02fd333afd282aa1"
+    },
+    "opening": {
+      "id": "efforthours-public-readiness-validation",
+      "version": "1.3.0",
+      "digest": "sha256:ff7ff99ff97104b01f6306751f60d05b399bbc334c9d436537f2d23e267a12b5"
+    },
+    "corpus": {
+      "id": "efforthours-public-readiness-validation",
+      "version": "1.3.0",
+      "digest": "sha256:dad8ba8c4af5162522bc6fbfc7ee1733eb0ace0f6cdd3b185de98ebb531c3be7"
+    },
+    "candidateManifest": {
+      "id": "efforthours-public-readiness-candidate-freeze",
+      "version": "1.2.0",
+      "digest": "sha256:206b3955d53af9902996b588e9255ab9396e7b7624731a6d6e09896ce5026f23"
+    },
+    "candidateModel": {
+      "id": "efforthours-public-readiness-logical-capability",
+      "version": "repository-logical-capability-model/0.3.0",
+      "digest": "sha256:492e10b2f427a471a8edcf4f7e3f19d65b098e4822e25c552956c9ce992fa1ea"
+    },
+    "seedEvaluation": {
+      "id": "efforthours-public-readiness-validation-seed",
+      "version": "calibration-evaluator/0.1.0",
+      "digest": "sha256:83d30549c5b0bd86f7246b36a052fe97b36d558ec80e8d2374652f5e463d4678"
+    },
+    "candidateEvaluation": {
+      "id": "efforthours-public-readiness-validation-logical-capability-0.3.0",
+      "version": "calibration-evaluator/0.1.0",
+      "digest": "sha256:39a148e912be0c19e9ba565eeb6e1f7a43e3fec8026159d889d5f1451e43d86a"
+    },
+    "projections": [
+      {
+        "recordId": "record:axios-axios:implementation",
+        "repositoryId": "repository:github.com/axios/axios",
+        "sourceDigest": "sha256:c7ce0a47620cc1f6f3b4ac89b31eab4d008d28148c78f21a4443ee2555be1968",
+        "seedEstimateDigest": "sha256:691dee68cca0f4aa55f273e7e33b79d9c8ac411adb4940bd39c9a36f587e576e",
+        "candidateEstimateDigest": "sha256:9c1da69a4344869874b89ebc558ab51f4fad2c85a6be995b1456e3bdf969483f",
+        "candidateArtifactDigest": "sha256:74b27301be0a05ca1a0ac63d7208867dd9ea79062f2cdcf45bba98e06f9f90e5"
+      },
+      {
+        "recordId": "record:cysharp-consoleappframework:implementation",
+        "repositoryId": "repository:github.com/cysharp/consoleappframework",
+        "sourceDigest": "sha256:90a3a3733a58e7e84b259ef707821f59fb33bb425fc47e84ee8e84e590463923",
+        "seedEstimateDigest": "sha256:49902c3616d74038b5bce35184a2cdc2aa295d4868bee8b4a6002fba3f392c25",
+        "candidateEstimateDigest": "sha256:9678b0534d00feba8e37ebde37bdc154365fb07ce725039cf85c616e1ef2470c",
+        "candidateArtifactDigest": "sha256:3c0f7b44cb3033f499cf2512d5e1d2f155157b3cbed82da191888029b9091659"
+      },
+      {
+        "recordId": "record:dotnet-efcore:implementation",
+        "repositoryId": "repository:github.com/dotnet/efcore",
+        "sourceDigest": "sha256:2d57d550d72e98bd6bb314e52b176fd71241bf4fbf95295396ae7d03d6c51099",
+        "seedEstimateDigest": "sha256:ab9cf3a34f6e72011d564e94cb8ee68bea024822404cf9863c6ecf2344a2c0e2",
+        "candidateEstimateDigest": "sha256:3bb4e4e4118def4329b82440dbf2c704afe63d9f534a19cba0db39c8744fe7cc",
+        "candidateArtifactDigest": "sha256:8e9f2860655139e2e052bdbe4ff5d918da3a21eb5c5934c6d8608766090cb1d9"
+      },
+      {
+        "recordId": "record:electronnet-electron-net:implementation",
+        "repositoryId": "repository:github.com/electronnet/electron.net",
+        "sourceDigest": "sha256:a056abc3f859bec141882e8fa9b899f30da305724997e39c62fe0c2c56982bbe",
+        "seedEstimateDigest": "sha256:b47d199862067ab9576cf5a6ea9b7b3b5e69fcbb8b26b392af8f2a6bd9d5a211",
+        "candidateEstimateDigest": "sha256:476f328acdded991bf40c9a6887ec7364e2b6109ac1045e34540e02aa33ba8e6",
+        "candidateArtifactDigest": "sha256:12010ba342357f33022858774021b99a4d37f1b2f5a8f79bcef8720ee401c9e7"
+      },
+      {
+        "recordId": "record:jasontaylordev-cleanarchitecture:implementation",
+        "repositoryId": "repository:github.com/jasontaylordev/cleanarchitecture",
+        "sourceDigest": "sha256:cdedab56693e5f46bc576dca242ac35d74067a90ec8de42f9da4f4938517dadb",
+        "seedEstimateDigest": "sha256:6d80795730f89f2a77fffe103b97d8e4ea1aa36df16a3805ecf3a6dcbed0d651",
+        "candidateEstimateDigest": "sha256:5f2a430781c80e26f6245f550e5e83f4a4e98587e31f565399d9d2e688a55d8b",
+        "candidateArtifactDigest": "sha256:74307883f55b16bd936f093baaa77b366fdd2f84081f862fec058cbdbf63313b"
+      },
+      {
+        "recordId": "record:nrwl-nx:implementation",
+        "repositoryId": "repository:github.com/nrwl/nx",
+        "sourceDigest": "sha256:97d55cbe738b895d284e7445d2448a15cc9196cca53f4556096a7f77b257cbd8",
+        "seedEstimateDigest": "sha256:1dcaf82947c4a5f45bc6f4ab3632649af0398cb43469d195781ef6fb87b0ffb9",
+        "candidateEstimateDigest": "sha256:95dd12fd03da40266c4be515a88d9a7a8485816c777b9f46e57ac5d88e70a658",
+        "candidateArtifactDigest": "sha256:c8fcaab2f7486779c21c17e7793c793e9ff35632f35dc920a9de9eb3fa268cba"
+      },
+      {
+        "recordId": "record:orchardcms-orchardcore:implementation",
+        "repositoryId": "repository:github.com/orchardcms/orchardcore",
+        "sourceDigest": "sha256:007619253fd851bf4d2c24042b3922ae48f62259bb9132464daa7490d1fc317b",
+        "seedEstimateDigest": "sha256:74d2309dfd9b644c22b2a28e5e1c77e2fdfd049a9a21434e086355410839f302",
+        "candidateEstimateDigest": "sha256:e7efdf823199eb5df869271a8de0f2fc532c2f7261a5db831c1539714770fdf8",
+        "candidateArtifactDigest": "sha256:bd87097da5bc156988cdfb1cb74be7dcb116096e885742032d68f01e95b1781f"
+      },
+      {
+        "recordId": "record:sindresorhus-ky:implementation",
+        "repositoryId": "repository:github.com/sindresorhus/ky",
+        "sourceDigest": "sha256:6ab8c2f2ea2543ac2b0993b14856cf4460db3ba2a2e320b23bd0dc08c433c760",
+        "seedEstimateDigest": "sha256:f368ed2e98e08e29559ef9b8909472754b3328b8103e92e3215c001c1e50f934",
+        "candidateEstimateDigest": "sha256:e9b55e702b3e1c8d1999c8deb38ce079ac67ab81433aa8af7c31718a11be78ef",
+        "candidateArtifactDigest": "sha256:fa9b7e3751d217ae2104f3802ffdf9966a422b42c6708f619f8142bda367d7ae"
+      },
+      {
+        "recordId": "record:spectreconsole-spectre-console:implementation",
+        "repositoryId": "repository:github.com/spectreconsole/spectre.console",
+        "sourceDigest": "sha256:e534994a9c3a158e125243a813fb9b125053edaf58dc0ff735bd7fef50abb35b",
+        "seedEstimateDigest": "sha256:e6643575a589a2ac5508d70252f090521a2dd9de6c89c636ac9c0469e70b8bb7",
+        "candidateEstimateDigest": "sha256:c5784e84f4bdc05336b114201401756f13ee9336cd0ebbd1f79686229b5b0127",
+        "candidateArtifactDigest": "sha256:b04f78e7ef6d114e8f4b46d9b457f4cdd456dae6b0d2d045bc62f83c961a3988"
+      }
+    ]
+  },
+  "boundary": {
+    "validationAccess": "exact seed and sole frozen-challenger outputs generated and evaluated once",
+    "validationFamilyCount": 9,
+    "validationTargetCount": 2747,
+    "testAccess": "sealed; no source, label, seed, or challenger output accessed",
+    "testSourceAccessed": false,
+    "testLabelsAuthored": false,
+    "testCandidateOutputsGenerated": false
+  },
+  "baseline": {
+    "estimatorVersion": "seed-rules/0.4.0",
+    "evaluation": {
+      "id": "efforthours-public-readiness-validation-seed",
+      "version": "calibration-evaluator/0.1.0",
+      "digest": "sha256:83d30549c5b0bd86f7246b36a052fe97b36d558ec80e8d2374652f5e463d4678"
+    },
+    "repositoryExpectedWape": 0.2279,
+    "absoluteAggregateBias": 0.2235,
+    "medianRepositoryAbsoluteErrorHours": 127.75,
+    "repositoryExpectedCoverage": 1,
+    "meanRepositoryNormalizedWidth": 1.4832,
+    "p90RepositoryNormalizedWidth": 1.8232
+  },
+  "challengers": [
+    {
+      "ordinal": 1,
+      "id": "logical-capability/0.3.0",
+      "candidateKind": "transparent-rule",
+      "estimatorVersion": "candidate-logical-capability/0.3.0\u002Bseed-rules/0.4.0",
+      "eligible": false,
+      "metrics": {
+        "repositoryExpectedWape": 0.0940,
+        "relativeWapeImprovement": 0.5875,
+        "absoluteAggregateBias": 0.0634,
+        "medianRepositoryAbsoluteErrorHours": 134.2769,
+        "familyMaximumErrorPassRate": 1,
+        "familyOrdinaryErrorPassRate": 0.8889,
+        "lowWape": 0.0337,
+        "highWape": 0.1108,
+        "repositoryExpectedCoverage": 0.6667,
+        "meanRepositoryNormalizedWidth": 0.4110,
+        "p90RepositoryNormalizedWidth": 0.6044,
+        "meanWidthRelativeToSeed": 0.2533,
+        "meanWidthRelativeToReviewed": 1.0136,
+        "matchedTargetExpectedCoverage": 0.7150,
+        "matchedTargetMeanNormalizedWidth": 0.8452,
+        "targetMatchRate": 1,
+        "sourceReferenceMatchRate": 1,
+        "candidateItemMatchRate": 1,
+        "categoryMismatchRate": 0
+      },
+      "boundaryGates": [
+        {
+          "id": "candidate-and-selection-freeze",
+          "status": "passed",
+          "passed": true,
+          "requirement": "The exact finite candidate set, artifact chain, and validation selection rule must match the pre-opening manifest.",
+          "observed": "manifest=sha256:206b3955d53af9902996b588e9255ab9396e7b7624731a6d6e09896ce5026f23; candidates=1; primary=repository-total-expected-wape; tolerance=0.01",
+          "rationale": "The one-shot validation evaluator verified this boundary before projection."
+        },
+        {
+          "id": "validation-family-and-review-boundary",
+          "status": "passed",
+          "passed": true,
+          "requirement": "Validation must contain the frozen 3-stratum x 3-size matrix, complete blind teacher labels, immutable public lineage, and no contamination.",
+          "observed": "families=9; targets=2747; zero-exclusions=111; opening=sha256:ff7ff99ff97104b01f6306751f60d05b399bbc334c9d436537f2d23e267a12b5; corpus=sha256:dad8ba8c4af5162522bc6fbfc7ee1733eb0ace0f6cdd3b185de98ebb531c3be7",
+          "rationale": "The one-shot validation evaluator verified this boundary before projection."
+        },
+        {
+          "id": "seed-evidence-and-estimate-lineage",
+          "status": "passed",
+          "passed": true,
+          "requirement": "Every validation record must reproduce the opening\u0027s exact seed estimate and evidence identities before candidate projection.",
+          "observed": "matched-seed-inputs=9/9",
+          "rationale": "The one-shot validation evaluator verified this boundary before projection."
+        },
+        {
+          "id": "one-shot-output-and-test-seal",
+          "status": "passed",
+          "passed": true,
+          "requirement": "All validation candidate/evaluation outputs must be fresh and the test partition must remain inaccessible until a committed selection authorizes it.",
+          "observed": "fresh-validation-outputs=verified; test-source=not-accessed; test-labels=not-authored; test-candidate-output=not-generated",
+          "rationale": "The one-shot validation evaluator verified this boundary before projection."
+        }
+      ],
+      "validationGates": [
+        {
+          "id": "repository-expected-wape",
+          "status": "passed",
+          "passed": true,
+          "requirement": "WAPE \u003C= 0.20 and at least 15% lower than seed",
+          "observed": "wape=0.094; relative-improvement=0.5875",
+          "rationale": "The validation assessment satisfies this numerical gate."
+        },
+        {
+          "id": "aggregate-bias",
+          "status": "passed",
+          "passed": true,
+          "requirement": "absolute bias \u003C= 0.10 and no worse than seed",
+          "observed": "candidate=0.0634; seed=0.2235",
+          "rationale": "The validation assessment satisfies this numerical gate."
+        },
+        {
+          "id": "median-repository-error",
+          "status": "failed",
+          "passed": false,
+          "requirement": "median expected absolute error no greater than seed",
+          "observed": "candidate=134.2769h; seed=127.75h",
+          "rationale": "The validation assessment does not satisfy this gate; the candidate cannot advance."
+        },
+        {
+          "id": "per-family-maximum-error",
+          "status": "passed",
+          "passed": true,
+          "requirement": "every family \u003C= max(16h, 50%) error",
+          "observed": "1",
+          "rationale": "The validation assessment satisfies this numerical gate."
+        },
+        {
+          "id": "per-family-ordinary-error",
+          "status": "failed",
+          "passed": false,
+          "requirement": "at least 90% of families \u003C= max(8h, 25%) error",
+          "observed": "0.8889; outside-boundary=record:jasontaylordev-cleanarchitecture:implementation",
+          "rationale": "The validation assessment does not satisfy this gate; the candidate cannot advance."
+        },
+        {
+          "id": "low-wape",
+          "status": "passed",
+          "passed": true,
+          "requirement": "low WAPE \u003C= 0.30 and no more than 0.03 worse than seed",
+          "observed": "0.0337",
+          "rationale": "The validation assessment satisfies this numerical gate."
+        },
+        {
+          "id": "high-wape",
+          "status": "passed",
+          "passed": true,
+          "requirement": "high WAPE \u003C= 0.30 and no more than 0.03 worse than seed",
+          "observed": "0.1108",
+          "rationale": "The validation assessment satisfies this numerical gate."
+        },
+        {
+          "id": "mapping",
+          "status": "passed",
+          "passed": true,
+          "requirement": "target, source-reference, and candidate-item match rates each \u003E= 0.95",
+          "observed": "1/1/1",
+          "rationale": "The validation assessment satisfies this numerical gate."
+        },
+        {
+          "id": "category-mismatch",
+          "status": "passed",
+          "passed": true,
+          "requirement": "category mismatch \u003C= 0.02 of reviewed targets",
+          "observed": "0",
+          "rationale": "The validation assessment satisfies this numerical gate."
+        },
+        {
+          "id": "repository-expected-coverage",
+          "status": "failed",
+          "passed": false,
+          "requirement": "coverage \u003E= 0.80 and no more than 0.15 below seed",
+          "observed": "0.6667",
+          "rationale": "The validation assessment does not satisfy this gate; the candidate cannot advance."
+        },
+        {
+          "id": "mean-repository-normalized-width",
+          "status": "passed",
+          "passed": true,
+          "requirement": "mean repository normalized width \u003C= 0.50",
+          "observed": "0.411",
+          "rationale": "The validation assessment satisfies this numerical gate."
+        },
+        {
+          "id": "p90-repository-normalized-width",
+          "status": "passed",
+          "passed": true,
+          "requirement": "p90 repository normalized width \u003C= 0.80",
+          "observed": "0.6044",
+          "rationale": "The validation assessment satisfies this numerical gate."
+        },
+        {
+          "id": "mean-width-relative-to-seed",
+          "status": "passed",
+          "passed": true,
+          "requirement": "mean width relative to seed \u003C= 0.75",
+          "observed": "0.2533",
+          "rationale": "The validation assessment satisfies this numerical gate."
+        },
+        {
+          "id": "mean-width-relative-to-reviewed",
+          "status": "passed",
+          "passed": true,
+          "requirement": "mean width relative to reviewed ranges \u003C= 1.25",
+          "observed": "1.0136",
+          "rationale": "The validation assessment satisfies this numerical gate."
+        },
+        {
+          "id": "matched-target-expected-coverage",
+          "status": "failed",
+          "passed": false,
+          "requirement": "matched-target expected coverage \u003E= 0.75",
+          "observed": "0.715",
+          "rationale": "The validation assessment does not satisfy this gate; the candidate cannot advance."
+        },
+        {
+          "id": "matched-target-normalized-width",
+          "status": "failed",
+          "passed": false,
+          "requirement": "matched-target mean normalized width \u003C= 0.75",
+          "observed": "0.8452",
+          "rationale": "The validation assessment does not satisfy this gate; the candidate cannot advance."
+        },
+        {
+          "id": "ecosystem-stratum-agreement",
+          "status": "passed",
+          "passed": true,
+          "requirement": "Every 3-family validation stratum has expected WAPE \u003C= 0.30, no more than 0.03 worse than seed, and absolute bias \u003C= 0.15.",
+          "observed": "dotnet[n=3]:wape=0.0434,seed=0.1688,bias=-0.0434; javascript-typescript[n=3]:wape=0.0937,seed=0.1423,bias=0.0861; mixed-dotnet-javascript-typescript[n=3]:wape=0.144,seed=0.3778,bias=0.144",
+          "rationale": "The exact validation candidate satisfies this operational gate."
+        },
+        {
+          "id": "material-category-agreement",
+          "status": "failed",
+          "passed": false,
+          "requirement": "Pooled material-category WAPE \u003C= 0.35 and at least 10% below seed; no material category regresses seed by \u003E 0.05 or exceeds 0.20 absolute bias.",
+          "observed": "material=14[SpecificationComprehensionAndDomainLearning:9/485h,RepositoryAndSolutionSetup:9/1032.5h,ArchitectureAndTechnicalDesign:9/1227.75h,ProductionImplementation:9/22444.25h,UiImplementationAndRepresentedUxDecisions:7/2964.5h,ExternalIntegrationsAndProtocols:7/169h,UnitTesting:9/13166h,ManualValidationDebuggingAndHardening:9/898.5h,Documentation:9/1274h,BuildConfigurationAndDeveloperTooling:9/320h,CiCdAndInfrastructureAsCode:9/115h,SecurityAndAccessibility:7/154.25h,PackagingDeploymentAndReleaseArtifacts:8/154h,SelfReviewAndSystemIntegration:9/610h]; pooled-wape=0.1577; seed=0.3358; violations=8[ArchitectureAndTechnicalDesign[wape=0.8607,seed=0.0782,bias=0.8582],BuildConfigurationAndDeveloperTooling[wape=0.4311,seed=0.9477,bias=-0.2098],CiCdAndInfrastructureAsCode[wape=0.346,seed=0.2783,bias=-0.1565],Documentation[wape=0.8564,seed=0.5889,bias=0.3043],ManualValidationDebuggingAndHardening[wape=1.1142,seed=0.7179,bias=1.0953],RepositoryAndSolutionSetup[wape=0.1758,seed=0.1041,bias=0.0945],SelfReviewAndSystemIntegration[wape=0.3582,seed=0.6328,bias=-0.2648],SpecificationComprehensionAndDomainLearning[wape=0.4232,seed=0.6242,bias=-0.3366]]",
+          "rationale": "The validation operational gate failed or was not computable, so candidate selection is blocked."
+        },
+        {
+          "id": "shape-and-size-slice-regression",
+          "status": "passed",
+          "passed": true,
+          "requirement": "Every validation shape or size slice with at least three families has candidate expected WAPE no more than 0.05 worse than seed.",
+          "observed": "shape:cli-desktop[n=4]:wape=0.0936,seed=0.1451,bias=0.0803; shape:frontend-ui[n=4]:wape=0.1391,seed=0.3569,bias=0.1308; shape:integration-heavy[n=6]:wape=0.0917,seed=0.2322,bias=0.0649; shape:library-sdk[n=7]:wape=0.0721,seed=0.1566,bias=0.0277; shape:multi-package-monorepository[n=5]:wape=0.093,seed=0.2381,bias=0.0684; size:large[n=3]:wape=0.0888,seed=0.2377,bias=0.0635; size:medium[n=3]:wape=0.1229,seed=0.0861,bias=0.0732; size:small[n=3]:wape=0.2082,seed=0.2014,bias=0.039",
+          "rationale": "The exact validation candidate satisfies this operational gate."
+        },
+        {
+          "id": "schema-lineage-and-saved-explanation",
+          "status": "passed",
+          "passed": true,
+          "requirement": "All projections validate and round-trip, preserve stable work/evidence IDs, reconcile exactly, and explain every adjusted item without host paths.",
+          "observed": "reports=9; adjusted-items=15123; canonical-round-trip=passed",
+          "rationale": "The exact validation candidate satisfies this operational gate."
+        },
+        {
+          "id": "offline-safety-ood-and-tamper",
+          "status": "passed",
+          "passed": true,
+          "requirement": "The bounded saved-artifact projector is cancellable, fails closed on model tamper, and visibly retains the complete seed for unsupported strata without target execution, history, network, or external processes.",
+          "observed": "validation-replays=9; ood=seed-fallback; model-digest=sha256:492e10b2f427a471a8edcf4f7e3f19d65b098e4822e25c552956c9ce992fa1ea; limits=250000/1000000/4000000",
+          "rationale": "The exact validation candidate satisfies this operational gate."
+        }
+      ],
+      "frozenOperationalGates": [
+        {
+          "id": "ecosystem-stratum-agreement",
+          "status": "passed",
+          "passed": true,
+          "requirement": "Every 5-family development stratum has expected WAPE \u003C= 0.30, no more than 0.03 worse than seed, and absolute bias \u003C= 0.15.",
+          "observed": "dotnet[n=5]:wape=0.1252,seed=0.3633,bias=0.1021; javascript-typescript[n=5]:wape=0.1106,seed=0.1904,bias=0.0568; mixed-dotnet-javascript-typescript[n=5]:wape=0.0943,seed=0.2284,bias=-0.0468",
+          "rationale": "The exact development candidate satisfies this operational gate."
+        },
+        {
+          "id": "material-category-agreement",
+          "status": "passed",
+          "passed": true,
+          "requirement": "Pooled material-category WAPE \u003C= 0.35 and at least 10% below seed; no material category regresses seed by \u003E 0.05 or exceeds 0.20 absolute bias.",
+          "observed": "material=15[SpecificationComprehensionAndDomainLearning:15/479h,RepositoryAndSolutionSetup:15/733h,ArchitectureAndTechnicalDesign:15/1622.5h,ProductionImplementation:15/16236.5h,UiImplementationAndRepresentedUxDecisions:9/7402.5h,DataModelingPersistenceAndMigrations:6/1428.75h,ExternalIntegrationsAndProtocols:10/502.5h,UnitTesting:14/7078h,ManualValidationDebuggingAndHardening:15/1691.75h,Documentation:15/827h,BuildConfigurationAndDeveloperTooling:15/248h,CiCdAndInfrastructureAsCode:14/138h,SecurityAndAccessibility:10/821.75h,PackagingDeploymentAndReleaseArtifacts:10/155h,SelfReviewAndSystemIntegration:15/585h]; pooled-wape=0.1883; seed=0.4331; violations=0[]",
+          "rationale": "The exact development candidate satisfies this operational gate."
+        },
+        {
+          "id": "shape-and-size-slice-regression",
+          "status": "passed",
+          "passed": true,
+          "requirement": "Every development shape or size slice with at least three families has candidate expected WAPE no more than 0.05 worse than seed.",
+          "observed": "shape:backend-service[n=7]:wape=0.1176,seed=0.2715,bias=-0.029; shape:frontend-ui[n=6]:wape=0.0948,seed=0.2254,bias=-0.0332; shape:integration-heavy[n=7]:wape=0.1174,seed=0.2388,bias=-0.0375; shape:library-sdk[n=11]:wape=0.0871,seed=0.2206,bias=0.0481; shape:multi-package-monorepository[n=8]:wape=0.092,seed=0.2276,bias=-0.0276; size:medium[n=9]:wape=0.1616,seed=0.258,bias=-0.0118; size:small[n=4]:wape=0.0665,seed=0.2773,bias=0.0175",
+          "rationale": "The exact development candidate satisfies this operational gate."
+        },
+        {
+          "id": "public-mutation-suite",
+          "status": "passed",
+          "passed": true,
+          "requirement": "Every applicable versioned public mutation assertion must pass without changing the frozen suite.",
+          "observed": "339/339 assertions passed across 66 candidate and 22 fallback cases.",
+          "rationale": "The exact aggregate suite passed; out-of-policy SQL and Python cases retained the named seed fallback."
+        },
+        {
+          "id": "cross-platform-determinism",
+          "status": "passed",
+          "passed": true,
+          "requirement": "Canonical candidate estimates must be byte-identical in fresh Windows, Linux, and macOS processes.",
+          "observed": "3 platforms x 3 saved-evidence shapes; evidence identical=True; seed bytes identical=True; candidate bytes identical=True; LF-normalized candidate bytes identical=True; repeated outputs identical=True.",
+          "rationale": "All repeated and cross-platform canonical projection bytes matched."
+        },
+        {
+          "id": "schema-lineage-and-saved-explanation",
+          "status": "passed",
+          "passed": true,
+          "requirement": "All projections validate and round-trip, preserve stable work/evidence IDs, reconcile exactly, and explain every adjusted item without host paths.",
+          "observed": "reports=15; adjusted-items=11161; canonical-round-trip=passed",
+          "rationale": "The exact development candidate satisfies this operational gate."
+        },
+        {
+          "id": "offline-safety-ood-and-tamper",
+          "status": "passed",
+          "passed": true,
+          "requirement": "The bounded saved-artifact projector is cancellable, fails closed on model tamper, and visibly retains the complete seed for unsupported strata without target execution, history, network, or external processes.",
+          "observed": "development-replays=15; ood=seed-fallback; model-digest=sha256:492e10b2f427a471a8edcf4f7e3f19d65b098e4822e25c552956c9ce992fa1ea; limits=250000/1000000/4000000",
+          "rationale": "The exact development candidate satisfies this operational gate."
+        },
+        {
+          "id": "median-latency-overhead",
+          "status": "passed",
+          "passed": true,
+          "requirement": "Each shape/platform candidate median must be at most max(seed x 1.15, seed \u002B 250 ms).",
+          "observed": "seed/candidate/limit by platform-shape: linux/small=493.0746/538.3047/743.0746; linux/medium=462.3933/514.0241/712.3933; linux/large=470.9126/525.8756/720.9126; macos/small=386.0629/417.9008/636.0629; macos/medium=425.3499/483.5392/675.3499; macos/large=429.0655/467.1086/679.0655; windows/small=548.2148/602.5696/798.2148; windows/medium=534.4508/596.9531/784.4508; windows/large=569.2369/631.8582/819.2369",
+          "rationale": "Every platform-shape pair remains within the frozen overhead boundary."
+        },
+        {
+          "id": "slowest-latency-overhead",
+          "status": "passed",
+          "passed": true,
+          "requirement": "Each shape/platform candidate slowest run must be at most max(seed x 1.25, seed \u002B 500 ms).",
+          "observed": "seed/candidate/limit by platform-shape: linux/small=623.6791/545.0722/1123.6791; linux/medium=472.1914/554.6599/972.1914; linux/large=488.32/531.479/988.32; macos/small=412.4711/554.7257/912.4711; macos/medium=470.3154/534.0556/970.3154; macos/large=488.2363/516.8569/988.2363; windows/small=566.889/676.6005/1066.889; windows/medium=544.1217/622.5098/1044.1217; windows/large=581.3689/648.2943/1081.3689",
+          "rationale": "Every platform-shape pair remains within the frozen overhead boundary."
+        },
+        {
+          "id": "peak-working-set-overhead",
+          "status": "passed",
+          "passed": true,
+          "requirement": "Each shape/platform candidate peak must be at most max(seed x 1.15, seed \u002B 64 MiB).",
+          "observed": "seed/candidate/limit by platform-shape: linux/small=71.9648/74.1367/135.9648; linux/medium=72.8711/75.2539/136.8711; linux/large=83.6055/84.9453/147.6055; macos/small=72.9219/75.5469/136.9219; macos/medium=73.5781/76.5625/137.5781; macos/large=78.0625/81.1875/142.0625; windows/small=49.8672/52.4922/113.8672; windows/medium=50.9688/53.4570/114.9688; windows/large=61.8516/63.9648/125.8516",
+          "rationale": "Every platform-shape pair remains within the frozen overhead boundary."
+        },
+        {
+          "id": "installed-package-increase",
+          "status": "passed",
+          "passed": true,
+          "requirement": "The staged installed candidate tool may add at most 25 MiB over the seed tool.",
+          "observed": "Seed 39655495 bytes; candidate 40690538 bytes; increase 0.9871 MiB; limit 25 MiB.",
+          "rationale": "The installed candidate model/runtime overlay remains within the frozen package limit."
+        },
+        {
+          "id": "scanner-thresholds-and-target-fingerprints",
+          "status": "passed",
+          "passed": true,
+          "requirement": "Whole-command scanner checks must retain applicable thresholds and unchanged target fingerprints.",
+          "observed": "linux=99604 lines/1.859s/105.77MiB/unchanged:True; macos=99604 lines/1.477s/101.88MiB/unchanged:True; windows=99604 lines/2.255s/79.47MiB/unchanged:True",
+          "rationale": "All three static mixed scans retained target fingerprints and offline/non-executing signals; no frozen cross-platform scanner threshold applies."
+        }
+      ],
+      "rejectionReasons": [
+        "median-repository-error: The validation assessment does not satisfy this gate; the candidate cannot advance.",
+        "per-family-ordinary-error: The validation assessment does not satisfy this gate; the candidate cannot advance.",
+        "repository-expected-coverage: The validation assessment does not satisfy this gate; the candidate cannot advance.",
+        "matched-target-expected-coverage: The validation assessment does not satisfy this gate; the candidate cannot advance.",
+        "matched-target-normalized-width: The validation assessment does not satisfy this gate; the candidate cannot advance.",
+        "material-category-agreement: The validation operational gate failed or was not computable, so candidate selection is blocked."
+      ]
+    }
+  ],
+  "selectionRule": {
+    "primaryMetric": "repository-total expected WAPE",
+    "direction": "lowest",
+    "absoluteWapeTieTolerance": 0.01,
+    "tieBreakers": [
+      "candidate-kind-complexity",
+      "qualifying-range-sharpness",
+      "runtime-overhead",
+      "candidate-id"
+    ]
+  },
+  "decision": {
+    "status": "rejected-all",
+    "testAuthorized": false,
+    "candidateAdmitted": false,
+    "shippedEstimatorVersion": "seed-rules/0.4.0",
+    "rationale": "The sole frozen challenger failed at least one required gate. No challenger is selected, test remains sealed, and the seed remains shipped.",
+    "nextBoundary": "Close this attempt without test disclosure. Any successor requires a new candidate identity, manifest, and fresh sealed holdout boundary."
+  }
+}
