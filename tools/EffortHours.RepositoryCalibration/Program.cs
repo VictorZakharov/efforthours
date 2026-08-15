@@ -36,6 +36,11 @@ internal static partial class Program
             return await RunDevelopmentReviewAsync(arguments[1..], cancellationToken).ConfigureAwait(false);
         }
 
+        if (arguments.Length > 0 && arguments[0] == "validation-open")
+        {
+            return await RunValidationOpenAsync(arguments[1..], cancellationToken).ConfigureAwait(false);
+        }
+
         if (arguments.Length > 0 && arguments[0] == "candidate-preflight")
         {
             return await RunCandidatePreflightAsync(arguments[1..], cancellationToken).ConfigureAwait(false);
@@ -141,6 +146,41 @@ internal static partial class Program
             exception is IOException or
             UnauthorizedAccessException or
             InvalidDataException or
+            System.Text.Json.JsonException)
+        {
+            await Console.Error.WriteLineAsync(exception.Message).ConfigureAwait(false);
+            return 2;
+        }
+    }
+
+    private static async Task<int> RunValidationOpenAsync(
+        string[] arguments,
+        CancellationToken cancellationToken)
+    {
+        if (!ValidationOpenOptions.TryParse(
+                arguments,
+                out ValidationOpenOptions? options,
+                out string? error))
+        {
+            await Console.Error.WriteLineAsync(error).ConfigureAwait(false);
+            WriteUsage(Console.Error);
+            return 2;
+        }
+
+        try
+        {
+            await ValidationOpeningRunner.RunAsync(
+                    options!,
+                    Console.Error,
+                    cancellationToken)
+                .ConfigureAwait(false);
+            return 0;
+        }
+        catch (Exception exception) when (
+            exception is IOException or
+            UnauthorizedAccessException or
+            InvalidDataException or
+            HttpRequestException or
             System.Text.Json.JsonException)
         {
             await Console.Error.WriteLineAsync(exception.Message).ConfigureAwait(false);
@@ -332,6 +372,26 @@ internal static partial class Program
         The review command accepts no estimate input. It verifies the selected
         evidence and blind-packet digests before writing the complete 15-family
         development-only host-AI teacher cohort.
+
+        Validation opening:
+          dotnet EffortHours.RepositoryCalibration.dll validation-open
+            --repository-root <efforthours-checkout>
+            --plan <sampling-plan.json>
+            --reproduction-manifest <reproduction-manifest.json>
+            --custody <holdout-custody.json>
+            --candidate-manifest <candidate-manifest.json>
+            --source-commit <40-hex-commit>
+            --workspace <ignored-directory>
+            --cli <efforthours.dll>
+            --packets <published-validation-packet-directory>
+            --output <validation-opening.json>
+            [--gh <gh-executable>]
+
+        Verifies the exact finite candidate, selection rule, complete artifact
+        chain, source custody, and nine-family validation matrix before any network
+        or output access. It then verifies and scans validation only, emits strict-
+        blind packets, and structurally excludes frozen-challenger output and every
+        test family.
 
         Candidate preflight:
           dotnet EffortHours.RepositoryCalibration.dll candidate-preflight

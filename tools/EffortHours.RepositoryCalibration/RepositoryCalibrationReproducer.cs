@@ -34,6 +34,7 @@ internal static partial class RepositoryCalibrationReproducer
                 options,
                 plan.SizeMetric,
                 family,
+                "development",
                 diagnostics,
                 cancellationToken).ConfigureAwait(false));
         }
@@ -66,10 +67,11 @@ internal static partial class RepositoryCalibrationReproducer
             .ConfigureAwait(false);
     }
 
-    private static async Task<ReproductionFamily> ReproduceFamilyAsync(
+    internal static async Task<ReproductionFamily> ReproduceFamilyAsync(
         ReproductionOptions options,
         SamplingSizeMetric metric,
         SamplingFamily family,
+        string analysisPartition,
         TextWriter diagnostics,
         CancellationToken cancellationToken)
     {
@@ -105,17 +107,18 @@ internal static partial class RepositoryCalibrationReproducer
 
         DevelopmentAnalysis? analysis = null;
         string analysisStatus = "withheld-not-run";
-        if (string.Equals(family.Partition, "development", StringComparison.Ordinal))
+        if (string.Equals(family.Partition, analysisPartition, StringComparison.Ordinal))
         {
-            await diagnostics.WriteLineAsync($"Generating blind development packet for {family.RepositoryName}.")
+            await diagnostics.WriteLineAsync(
+                    $"Generating blind {analysisPartition} packet for {family.RepositoryName}.")
                 .ConfigureAwait(false);
-            analysis = await AnalyzeDevelopmentAsync(
+            analysis = await AnalyzeBlindAsync(
                 options,
                 family,
                 snapshotPath,
                 slug,
                 cancellationToken).ConfigureAwait(false);
-            analysisStatus = "generated-blind-development";
+            analysisStatus = $"generated-blind-{analysisPartition}";
         }
 
         GitTreeEntry[] blobs = [.. tree.Tree.Where(item => item.Type == "blob")];
