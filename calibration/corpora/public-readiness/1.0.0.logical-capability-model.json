@@ -1,0 +1,3350 @@
+{
+  "modelVersion": "repository-logical-capability-model/0.3.0",
+  "id": "efforthours-public-readiness-logical-capability",
+  "candidateId": "logical-capability/0.3.0",
+  "estimatorVersion": "candidate-logical-capability/0.3.0\u002Bseed-rules/0.4.0",
+  "baselineEstimatorVersion": "seed-rules/0.4.0",
+  "featureContractVersion": "logical-capability-features/1.3.0",
+  "effectiveDate": "2026-08-15",
+  "licenseExpression": "MIT",
+  "training": {
+    "corpusId": "efforthours-public-readiness-development",
+    "corpusVersion": "0.3.0",
+    "corpusDigest": "sha256:2b240804c70f11caf0978f19e6e22eda7de3f7a2e314a48f2def7d232ad1bdd7",
+    "implementationCommit": "7e5451c807cef3ce22bedd1bc374ab519882b21c",
+    "repositoryCount": 15,
+    "targetCount": 2030,
+    "sources": [
+      {
+        "recordId": "record:app-vnext-polly:implementation",
+        "repositoryId": "repository:github.com/app-vnext/polly",
+        "sourceDigest": "sha256:edff155be72775b8b7de15cb2bc816299affd03f557a4cf7fda737c783dd0c58",
+        "estimateDigest": "sha256:3ff734d1b865b89b09d9b2f97bb7e6df8b8df2c41aabcca4fe3632142d1454cf",
+        "evidenceDigest": "sha256:f44b835e459f443b01dca754b502b22b7be5840d9624419b1204941c09a9733a"
+      },
+      {
+        "recordId": "record:btcpayserver-btcpayserver:implementation",
+        "repositoryId": "repository:github.com/btcpayserver/btcpayserver",
+        "sourceDigest": "sha256:cf0a196516fdfa1b271c1a82d71b171f77921567940d64892c91600c057896f3",
+        "estimateDigest": "sha256:f40163ccf60566dfc5194e8727988dcce148560a1a3d848e50ac18cdab3dda85",
+        "evidenceDigest": "sha256:f042c7ab6c9007195b4acf73d176f6b73aa819e81d198a71ce8f3d233dbe47da"
+      },
+      {
+        "recordId": "record:cartercommunity-carter:implementation",
+        "repositoryId": "repository:github.com/cartercommunity/carter",
+        "sourceDigest": "sha256:00b6577c4f3d9f42a32e69804b37d3e8e94b6eff6b5b294fe7e5f78f90b33087",
+        "estimateDigest": "sha256:2b77dcc65299239d8284306bea179025873e91b2776e531da9dcb3ac5bbbdfdd",
+        "evidenceDigest": "sha256:b4830383587235ccdb141af31ba72b42077699e1e6ec8189db67d994170ce156"
+      },
+      {
+        "recordId": "record:colinhacks-zod:implementation",
+        "repositoryId": "repository:github.com/colinhacks/zod",
+        "sourceDigest": "sha256:250432548197e4e8228d26209db94cff75d05ac1e2c34896ff2d2823f7e39fc5",
+        "estimateDigest": "sha256:d29fa4af40fc05bbef05cf10b99c98e79cac493d9734d2dfb5e15b6172a4f2f9",
+        "evidenceDigest": "sha256:8341fae4a32443a0fe58aa189adedee78584654921c41df95532e005ba806924"
+      },
+      {
+        "recordId": "record:dotnet-command-line-api:implementation",
+        "repositoryId": "repository:github.com/dotnet/command-line-api",
+        "sourceDigest": "sha256:298e7732de1f2da4c37185ae0acc2ccf9f3f25486af306e019856a6ca7c83f9b",
+        "estimateDigest": "sha256:5022b4ee41736c31d798f1cae8903e93fc07cd140188068d3dad5a3dcc1aaaea",
+        "evidenceDigest": "sha256:3af5dae517a7e675d875c1adda1a6d4643e0731812ee0e19ed1fe6d805c4bd8f"
+      },
+      {
+        "recordId": "record:fastendpoints-fastendpoints:implementation",
+        "repositoryId": "repository:github.com/fastendpoints/fastendpoints",
+        "sourceDigest": "sha256:1681a0743529e68c815e971d1fc336a251dfed17b91dd703ef88c7783547a297",
+        "estimateDigest": "sha256:b9956f36da42035e75835c18e97bb652570b9075483124f2cb218a37a1a386b6",
+        "evidenceDigest": "sha256:940d8203a893e85f8ef83917387f642d3a6efdd6b4efa5940310f9142abe3949"
+      },
+      {
+        "recordId": "record:fastify-fastify:implementation",
+        "repositoryId": "repository:github.com/fastify/fastify",
+        "sourceDigest": "sha256:fb9e91d171d70b386838d4481cf6ffa8fe8614b87af3b734cb1e53dbde2e38b8",
+        "estimateDigest": "sha256:2dddb0803b90621bb726c3b5459c4211525a1abc0b276a9047c0fec623f23b42",
+        "evidenceDigest": "sha256:4e498bf257d0ad5f7f39ebfd5d15b0163ea5234a80363d0e74365554dda42c52"
+      },
+      {
+        "recordId": "record:fluentvalidation-fluentvalidation:implementation",
+        "repositoryId": "repository:github.com/fluentvalidation/fluentvalidation",
+        "sourceDigest": "sha256:019c5b15a97a678f22d8d0269b94822e0b69bb640498c6100397a388958e95a7",
+        "estimateDigest": "sha256:cb27a31fa89330632afca93d3b1cccece76a89b45c7955585183c1b0a60d26e5",
+        "evidenceDigest": "sha256:78328656fb852a1c19b2ebf51e0c2084d78687e62ca6288d9b7e8fce14115c41"
+      },
+      {
+        "recordId": "record:lit-lit:implementation",
+        "repositoryId": "repository:github.com/lit/lit",
+        "sourceDigest": "sha256:580127cac2ce4795a48e3ebb446a8ae74d8eb1baf7f1e6d85c6ac9baecdd0b4b",
+        "estimateDigest": "sha256:405a160d7bdc307f32b95e2558bd40212941c8ae9efb7d21ebeadac9cf0c2957",
+        "evidenceDigest": "sha256:6ce26499d1c3c7067ed1e77f8477bcc2aa3de36f00dd20ae69af682ec46ae73c"
+      },
+      {
+        "recordId": "record:mudblazor-mudblazor:implementation",
+        "repositoryId": "repository:github.com/mudblazor/mudblazor",
+        "sourceDigest": "sha256:cf22bb7f911d01a433552f828193ca5a383f653606b62c9aabf80db86bcffd88",
+        "estimateDigest": "sha256:2f7deeb14bebe6f1625190afbd459cb3edd0f616ed29eaaf0ce772b1902450f5",
+        "evidenceDigest": "sha256:09fa39cf188444eec7cabc1c503c853b7f9b81055f82ae81c4cd11bd1c60902e"
+      },
+      {
+        "recordId": "record:oqtane-oqtane-framework:implementation",
+        "repositoryId": "repository:github.com/oqtane/oqtane.framework",
+        "sourceDigest": "sha256:a82445a988d9aedca9fe495980240285f82f2989a3b9a6e7dc8bb72d71accfbc",
+        "estimateDigest": "sha256:2fb61cb7a75010c9e693548a222cfadce3d5f132f206c369af50ca9e1da3025f",
+        "evidenceDigest": "sha256:f302ca6acea52b450ef37c4a55d6100dce430997d3302f8bb8889740ff272bb5"
+      },
+      {
+        "recordId": "record:simplcommerce-simplcommerce:implementation",
+        "repositoryId": "repository:github.com/simplcommerce/simplcommerce",
+        "sourceDigest": "sha256:3a67cfbe2132f34faa1e6016dc8a69f2384c6f28a36cc4b423ad4b151e187b2c",
+        "estimateDigest": "sha256:fbf89af7d619d3141e57ec0271b637cb444c6e107cd3bda687e9636aba495435",
+        "evidenceDigest": "sha256:57561b3d7f4654d6103a2065f887baa0646007bdfa9845d420c412278e555573"
+      },
+      {
+        "recordId": "record:sindresorhus-execa:implementation",
+        "repositoryId": "repository:github.com/sindresorhus/execa",
+        "sourceDigest": "sha256:251c4d17f2a7a5893a18c245ce9289a866f120085fe7dce9b4fd46d27662a827",
+        "estimateDigest": "sha256:9eb14d142b13d1b9a5263ea4810c2bd4452dff0581b110d43234c75f1895debc",
+        "evidenceDigest": "sha256:82b436d9214a50ed180a292a9c19fd5740bfcc5737cd1f73fbfabb236eacd089"
+      },
+      {
+        "recordId": "record:squidex-squidex:implementation",
+        "repositoryId": "repository:github.com/squidex/squidex",
+        "sourceDigest": "sha256:7ba94792039d81ca71367da9be0a1f993cf8a31c630532c9fdf20ab944c474d9",
+        "estimateDigest": "sha256:d5feefc4a4d71a32caf39844b12307579cde0ef70185a13e4e4d0d9f39a357b6",
+        "evidenceDigest": "sha256:226d373ae2dd3886c041e039b116e706c739206a8b7a24fd0537f47109f52926"
+      },
+      {
+        "recordId": "record:tj-commander-js:implementation",
+        "repositoryId": "repository:github.com/tj/commander.js",
+        "sourceDigest": "sha256:fe18ceb689a5b6ee31de0b198448bd03a2b0b56f4c25bf0d71a2e276f6a70d57",
+        "estimateDigest": "sha256:bc89cbc0df1ad3b63a37f2e0c82f84eca465866ee8f1d90824d5eb8541ec9725",
+        "evidenceDigest": "sha256:4b14f6e59e365f444495c33ff3b133f50f4a564f4e41b9cce41f5683e95c4c84"
+      }
+    ]
+  },
+  "point": {
+    "scorerVersion": "normalized-evidence-intent-bounds/0.2.0",
+    "features": [
+      "work-item-kind",
+      "exact-content-normalized-evidence-size-band",
+      "operation-only-data-evidence-count",
+      "semantic-boundary-minimums",
+      "seed-normalized-capability-anchor"
+    ],
+    "sizeBands": [
+      "xs:\u003C=1",
+      "s:\u003C=2",
+      "m:\u003C=4",
+      "l:\u003C=8",
+      "xl:\u003C=16",
+      "2xl:\u003C=32",
+      "3xl:\u003C=64",
+      "4xl:\u003E64"
+    ],
+    "minimumFactor": 0.25,
+    "maximumFactor": 3,
+    "maximumFactorOverrides": [
+      {
+        "workItemKind": "specification-comprehension",
+        "maximumFactor": 4
+      }
+    ],
+    "seedAnchorFactor": 0.5,
+    "seedAnchorMaximumLogicalHours": 1,
+    "seedAnchorWorkItemKinds": [
+      "dotnet-source-backbone",
+      "javascript-source-backbone"
+    ],
+    "unknownGroupBehavior": "use the complete seed capability without candidate adjustment",
+    "factors": [
+      {
+        "workItemKind": "api-surface",
+        "logicalSizeBand": "xs",
+        "sampleCount": 8,
+        "logicalExpectedHours": 1.4375,
+        "seedExpectedHours": 1.3750,
+        "reviewedExpectedHours": 0,
+        "factor": 0.25,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "api-surface",
+        "logicalSizeBand": "s",
+        "sampleCount": 8,
+        "logicalExpectedHours": 14.75,
+        "seedExpectedHours": 10.50,
+        "reviewedExpectedHours": 11.25,
+        "factor": 0.76271186,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "api-surface",
+        "logicalSizeBand": "m",
+        "sampleCount": 19,
+        "logicalExpectedHours": 62.00,
+        "seedExpectedHours": 68.00,
+        "reviewedExpectedHours": 54.25,
+        "factor": 0.875,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "api-surface",
+        "logicalSizeBand": "l",
+        "sampleCount": 15,
+        "logicalExpectedHours": 75.50,
+        "seedExpectedHours": 95.50,
+        "reviewedExpectedHours": 82.75,
+        "factor": 1.09602649,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "api-surface",
+        "logicalSizeBand": "xl",
+        "sampleCount": 6,
+        "logicalExpectedHours": 61.50,
+        "seedExpectedHours": 85.25,
+        "reviewedExpectedHours": 67.50,
+        "factor": 1.09756098,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "api-surface",
+        "logicalSizeBand": "2xl",
+        "sampleCount": 1,
+        "logicalExpectedHours": 19.25,
+        "seedExpectedHours": 26.25,
+        "reviewedExpectedHours": 21.25,
+        "factor": 1.10389610,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "api-surface",
+        "logicalSizeBand": "3xl",
+        "sampleCount": 3,
+        "logicalExpectedHours": 149.25,
+        "seedExpectedHours": 181.50,
+        "reviewedExpectedHours": 138.75,
+        "factor": 0.92964824,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "api-surface",
+        "logicalSizeBand": "4xl",
+        "sampleCount": 4,
+        "logicalExpectedHours": 877.75,
+        "seedExpectedHours": 1355.50,
+        "reviewedExpectedHours": 1086.25,
+        "factor": 1.23753916,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "application-entry-point",
+        "logicalSizeBand": "xs",
+        "sampleCount": 45,
+        "logicalExpectedHours": 19.5625,
+        "seedExpectedHours": 33.1250,
+        "reviewedExpectedHours": 39.50,
+        "factor": 2.01916933,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "application-entry-point",
+        "logicalSizeBand": "s",
+        "sampleCount": 25,
+        "logicalExpectedHours": 44.875,
+        "seedExpectedHours": 21.4375,
+        "reviewedExpectedHours": 44.00,
+        "factor": 0.98050139,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "application-entry-point",
+        "logicalSizeBand": "m",
+        "sampleCount": 11,
+        "logicalExpectedHours": 31.50,
+        "seedExpectedHours": 9.00,
+        "reviewedExpectedHours": 27.25,
+        "factor": 0.86507937,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "application-entry-point",
+        "logicalSizeBand": "l",
+        "sampleCount": 9,
+        "logicalExpectedHours": 57.00,
+        "seedExpectedHours": 12.50,
+        "reviewedExpectedHours": 56.50,
+        "factor": 0.99122807,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "application-entry-point",
+        "logicalSizeBand": "xl",
+        "sampleCount": 0,
+        "logicalExpectedHours": 0,
+        "seedExpectedHours": 0,
+        "reviewedExpectedHours": 0,
+        "factor": 0.99122807,
+        "sampleSource": "nearest-same-kind:l"
+      },
+      {
+        "workItemKind": "application-entry-point",
+        "logicalSizeBand": "2xl",
+        "sampleCount": 0,
+        "logicalExpectedHours": 0,
+        "seedExpectedHours": 0,
+        "reviewedExpectedHours": 0,
+        "factor": 0.99122807,
+        "sampleSource": "nearest-same-kind:l"
+      },
+      {
+        "workItemKind": "application-entry-point",
+        "logicalSizeBand": "3xl",
+        "sampleCount": 0,
+        "logicalExpectedHours": 0,
+        "seedExpectedHours": 0,
+        "reviewedExpectedHours": 0,
+        "factor": 0.99122807,
+        "sampleSource": "nearest-same-kind:l"
+      },
+      {
+        "workItemKind": "application-entry-point",
+        "logicalSizeBand": "4xl",
+        "sampleCount": 0,
+        "logicalExpectedHours": 0,
+        "seedExpectedHours": 0,
+        "reviewedExpectedHours": 0,
+        "factor": 0.99122807,
+        "sampleSource": "nearest-same-kind:l"
+      },
+      {
+        "workItemKind": "architecture-design",
+        "logicalSizeBand": "xs",
+        "sampleCount": 59,
+        "logicalExpectedHours": 48.00,
+        "seedExpectedHours": 72.00,
+        "reviewedExpectedHours": 151.5,
+        "factor": 3,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "architecture-design",
+        "logicalSizeBand": "s",
+        "sampleCount": 203,
+        "logicalExpectedHours": 279.00,
+        "seedExpectedHours": 403.50,
+        "reviewedExpectedHours": 490.00,
+        "factor": 1.75627240,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "architecture-design",
+        "logicalSizeBand": "m",
+        "sampleCount": 35,
+        "logicalExpectedHours": 95.00,
+        "seedExpectedHours": 108.00,
+        "reviewedExpectedHours": 287.50,
+        "factor": 3,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "architecture-design",
+        "logicalSizeBand": "l",
+        "sampleCount": 8,
+        "logicalExpectedHours": 44.00,
+        "seedExpectedHours": 28.00,
+        "reviewedExpectedHours": 91.50,
+        "factor": 2.07954545,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "architecture-design",
+        "logicalSizeBand": "xl",
+        "sampleCount": 15,
+        "logicalExpectedHours": 177.5,
+        "seedExpectedHours": 46.25,
+        "reviewedExpectedHours": 602,
+        "factor": 3,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "architecture-design",
+        "logicalSizeBand": "2xl",
+        "sampleCount": 0,
+        "logicalExpectedHours": 0,
+        "seedExpectedHours": 0,
+        "reviewedExpectedHours": 0,
+        "factor": 3,
+        "sampleSource": "nearest-same-kind:xl"
+      },
+      {
+        "workItemKind": "architecture-design",
+        "logicalSizeBand": "3xl",
+        "sampleCount": 0,
+        "logicalExpectedHours": 0,
+        "seedExpectedHours": 0,
+        "reviewedExpectedHours": 0,
+        "factor": 3,
+        "sampleSource": "nearest-same-kind:xl"
+      },
+      {
+        "workItemKind": "architecture-design",
+        "logicalSizeBand": "4xl",
+        "sampleCount": 0,
+        "logicalExpectedHours": 0,
+        "seedExpectedHours": 0,
+        "reviewedExpectedHours": 0,
+        "factor": 3,
+        "sampleSource": "nearest-same-kind:xl"
+      },
+      {
+        "workItemKind": "background-work",
+        "logicalSizeBand": "xs",
+        "sampleCount": 0,
+        "logicalExpectedHours": 0,
+        "seedExpectedHours": 0,
+        "reviewedExpectedHours": 0,
+        "factor": 2.72340426,
+        "sampleSource": "nearest-same-kind:m"
+      },
+      {
+        "workItemKind": "background-work",
+        "logicalSizeBand": "s",
+        "sampleCount": 0,
+        "logicalExpectedHours": 0,
+        "seedExpectedHours": 0,
+        "reviewedExpectedHours": 0,
+        "factor": 2.72340426,
+        "sampleSource": "nearest-same-kind:m"
+      },
+      {
+        "workItemKind": "background-work",
+        "logicalSizeBand": "m",
+        "sampleCount": 4,
+        "logicalExpectedHours": 11.75,
+        "seedExpectedHours": 11.75,
+        "reviewedExpectedHours": 32,
+        "factor": 2.72340426,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "background-work",
+        "logicalSizeBand": "l",
+        "sampleCount": 1,
+        "logicalExpectedHours": 5.25,
+        "seedExpectedHours": 5.25,
+        "reviewedExpectedHours": 8,
+        "factor": 1.52380952,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "background-work",
+        "logicalSizeBand": "xl",
+        "sampleCount": 3,
+        "logicalExpectedHours": 24.75,
+        "seedExpectedHours": 24.75,
+        "reviewedExpectedHours": 51,
+        "factor": 2.06060606,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "background-work",
+        "logicalSizeBand": "2xl",
+        "sampleCount": 0,
+        "logicalExpectedHours": 0,
+        "seedExpectedHours": 0,
+        "reviewedExpectedHours": 0,
+        "factor": 2.06060606,
+        "sampleSource": "nearest-same-kind:xl"
+      },
+      {
+        "workItemKind": "background-work",
+        "logicalSizeBand": "3xl",
+        "sampleCount": 1,
+        "logicalExpectedHours": 51.50,
+        "seedExpectedHours": 51.50,
+        "reviewedExpectedHours": 80,
+        "factor": 1.55339806,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "background-work",
+        "logicalSizeBand": "4xl",
+        "sampleCount": 0,
+        "logicalExpectedHours": 0,
+        "seedExpectedHours": 0,
+        "reviewedExpectedHours": 0,
+        "factor": 1.55339806,
+        "sampleSource": "nearest-same-kind:3xl"
+      },
+      {
+        "workItemKind": "build-tooling",
+        "logicalSizeBand": "xs",
+        "sampleCount": 0,
+        "logicalExpectedHours": 0,
+        "seedExpectedHours": 0,
+        "reviewedExpectedHours": 0,
+        "factor": 1.71428571,
+        "sampleSource": "nearest-same-kind:s"
+      },
+      {
+        "workItemKind": "build-tooling",
+        "logicalSizeBand": "s",
+        "sampleCount": 1,
+        "logicalExpectedHours": 1.75,
+        "seedExpectedHours": 1.75,
+        "reviewedExpectedHours": 3,
+        "factor": 1.71428571,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "build-tooling",
+        "logicalSizeBand": "m",
+        "sampleCount": 4,
+        "logicalExpectedHours": 13.00,
+        "seedExpectedHours": 13.00,
+        "reviewedExpectedHours": 28,
+        "factor": 2.15384615,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "build-tooling",
+        "logicalSizeBand": "l",
+        "sampleCount": 5,
+        "logicalExpectedHours": 31.50,
+        "seedExpectedHours": 31.50,
+        "reviewedExpectedHours": 52,
+        "factor": 1.65079365,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "build-tooling",
+        "logicalSizeBand": "xl",
+        "sampleCount": 1,
+        "logicalExpectedHours": 10.25,
+        "seedExpectedHours": 10.25,
+        "reviewedExpectedHours": 16,
+        "factor": 1.56097561,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "build-tooling",
+        "logicalSizeBand": "2xl",
+        "sampleCount": 3,
+        "logicalExpectedHours": 78.75,
+        "seedExpectedHours": 78.75,
+        "reviewedExpectedHours": 85,
+        "factor": 1.07936508,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "build-tooling",
+        "logicalSizeBand": "3xl",
+        "sampleCount": 0,
+        "logicalExpectedHours": 0,
+        "seedExpectedHours": 0,
+        "reviewedExpectedHours": 0,
+        "factor": 1.07936508,
+        "sampleSource": "nearest-same-kind:2xl"
+      },
+      {
+        "workItemKind": "build-tooling",
+        "logicalSizeBand": "4xl",
+        "sampleCount": 1,
+        "logicalExpectedHours": 167.25,
+        "seedExpectedHours": 167.25,
+        "reviewedExpectedHours": 64,
+        "factor": 0.38266069,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "ci-infrastructure",
+        "logicalSizeBand": "xs",
+        "sampleCount": 0,
+        "logicalExpectedHours": 0,
+        "seedExpectedHours": 0,
+        "reviewedExpectedHours": 0,
+        "factor": 1.09677419,
+        "sampleSource": "nearest-same-kind:m"
+      },
+      {
+        "workItemKind": "ci-infrastructure",
+        "logicalSizeBand": "s",
+        "sampleCount": 0,
+        "logicalExpectedHours": 0,
+        "seedExpectedHours": 0,
+        "reviewedExpectedHours": 0,
+        "factor": 1.09677419,
+        "sampleSource": "nearest-same-kind:m"
+      },
+      {
+        "workItemKind": "ci-infrastructure",
+        "logicalSizeBand": "m",
+        "sampleCount": 5,
+        "logicalExpectedHours": 15.50,
+        "seedExpectedHours": 15.50,
+        "reviewedExpectedHours": 17,
+        "factor": 1.09677419,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "ci-infrastructure",
+        "logicalSizeBand": "l",
+        "sampleCount": 2,
+        "logicalExpectedHours": 9.75,
+        "seedExpectedHours": 9.75,
+        "reviewedExpectedHours": 10,
+        "factor": 1.02564103,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "ci-infrastructure",
+        "logicalSizeBand": "xl",
+        "sampleCount": 3,
+        "logicalExpectedHours": 41.00,
+        "seedExpectedHours": 41.00,
+        "reviewedExpectedHours": 33,
+        "factor": 0.80487805,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "ci-infrastructure",
+        "logicalSizeBand": "2xl",
+        "sampleCount": 3,
+        "logicalExpectedHours": 66.50,
+        "seedExpectedHours": 66.50,
+        "reviewedExpectedHours": 53,
+        "factor": 0.79699248,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "ci-infrastructure",
+        "logicalSizeBand": "3xl",
+        "sampleCount": 1,
+        "logicalExpectedHours": 37.50,
+        "seedExpectedHours": 37.50,
+        "reviewedExpectedHours": 25,
+        "factor": 0.66666667,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "ci-infrastructure",
+        "logicalSizeBand": "4xl",
+        "sampleCount": 0,
+        "logicalExpectedHours": 0,
+        "seedExpectedHours": 0,
+        "reviewedExpectedHours": 0,
+        "factor": 0.66666667,
+        "sampleSource": "nearest-same-kind:3xl"
+      },
+      {
+        "workItemKind": "container-deployment",
+        "logicalSizeBand": "xs",
+        "sampleCount": 0,
+        "logicalExpectedHours": 0,
+        "seedExpectedHours": 0,
+        "reviewedExpectedHours": 0,
+        "factor": 2.28571429,
+        "sampleSource": "nearest-same-kind:s"
+      },
+      {
+        "workItemKind": "container-deployment",
+        "logicalSizeBand": "s",
+        "sampleCount": 1,
+        "logicalExpectedHours": 1.75,
+        "seedExpectedHours": 1.75,
+        "reviewedExpectedHours": 4,
+        "factor": 2.28571429,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "container-deployment",
+        "logicalSizeBand": "m",
+        "sampleCount": 0,
+        "logicalExpectedHours": 0,
+        "seedExpectedHours": 0,
+        "reviewedExpectedHours": 0,
+        "factor": 2.28571429,
+        "sampleSource": "nearest-same-kind:s"
+      },
+      {
+        "workItemKind": "container-deployment",
+        "logicalSizeBand": "l",
+        "sampleCount": 1,
+        "logicalExpectedHours": 7.25,
+        "seedExpectedHours": 7.25,
+        "reviewedExpectedHours": 6,
+        "factor": 0.82758621,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "container-deployment",
+        "logicalSizeBand": "xl",
+        "sampleCount": 0,
+        "logicalExpectedHours": 0,
+        "seedExpectedHours": 0,
+        "reviewedExpectedHours": 0,
+        "factor": 0.82758621,
+        "sampleSource": "nearest-same-kind:l"
+      },
+      {
+        "workItemKind": "container-deployment",
+        "logicalSizeBand": "2xl",
+        "sampleCount": 0,
+        "logicalExpectedHours": 0,
+        "seedExpectedHours": 0,
+        "reviewedExpectedHours": 0,
+        "factor": 0.80536913,
+        "sampleSource": "nearest-same-kind:3xl"
+      },
+      {
+        "workItemKind": "container-deployment",
+        "logicalSizeBand": "3xl",
+        "sampleCount": 1,
+        "logicalExpectedHours": 37.25,
+        "seedExpectedHours": 37.25,
+        "reviewedExpectedHours": 30,
+        "factor": 0.80536913,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "container-deployment",
+        "logicalSizeBand": "4xl",
+        "sampleCount": 1,
+        "logicalExpectedHours": 67.50,
+        "seedExpectedHours": 67.50,
+        "reviewedExpectedHours": 45,
+        "factor": 0.66666667,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "data-persistence",
+        "logicalSizeBand": "xs",
+        "sampleCount": 7,
+        "logicalExpectedHours": 0.0,
+        "seedExpectedHours": 0.00,
+        "reviewedExpectedHours": 0,
+        "factor": 1,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "data-persistence",
+        "logicalSizeBand": "s",
+        "sampleCount": 5,
+        "logicalExpectedHours": 7.5,
+        "seedExpectedHours": 7.00,
+        "reviewedExpectedHours": 4.25,
+        "factor": 0.56666667,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "data-persistence",
+        "logicalSizeBand": "m",
+        "sampleCount": 20,
+        "logicalExpectedHours": 63.5,
+        "seedExpectedHours": 47.25,
+        "reviewedExpectedHours": 34.25,
+        "factor": 0.53937008,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "data-persistence",
+        "logicalSizeBand": "l",
+        "sampleCount": 9,
+        "logicalExpectedHours": 49.50,
+        "seedExpectedHours": 35.50,
+        "reviewedExpectedHours": 31.75,
+        "factor": 0.64141414,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "data-persistence",
+        "logicalSizeBand": "xl",
+        "sampleCount": 6,
+        "logicalExpectedHours": 70.00,
+        "seedExpectedHours": 45.50,
+        "reviewedExpectedHours": 51.00,
+        "factor": 0.72857143,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "data-persistence",
+        "logicalSizeBand": "2xl",
+        "sampleCount": 3,
+        "logicalExpectedHours": 73.75,
+        "seedExpectedHours": 211.50,
+        "reviewedExpectedHours": 82.50,
+        "factor": 1.11864407,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "data-persistence",
+        "logicalSizeBand": "3xl",
+        "sampleCount": 1,
+        "logicalExpectedHours": 38.25,
+        "seedExpectedHours": 32.75,
+        "reviewedExpectedHours": 34.5,
+        "factor": 0.90196078,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "data-persistence",
+        "logicalSizeBand": "4xl",
+        "sampleCount": 4,
+        "logicalExpectedHours": 1143.5,
+        "seedExpectedHours": 609.25,
+        "reviewedExpectedHours": 1190.50,
+        "factor": 1.04110188,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "documentation",
+        "logicalSizeBand": "xs",
+        "sampleCount": 0,
+        "logicalExpectedHours": 0,
+        "seedExpectedHours": 0,
+        "reviewedExpectedHours": 0,
+        "factor": 1.42857143,
+        "sampleSource": "nearest-same-kind:m"
+      },
+      {
+        "workItemKind": "documentation",
+        "logicalSizeBand": "s",
+        "sampleCount": 0,
+        "logicalExpectedHours": 0,
+        "seedExpectedHours": 0,
+        "reviewedExpectedHours": 0,
+        "factor": 1.42857143,
+        "sampleSource": "nearest-same-kind:m"
+      },
+      {
+        "workItemKind": "documentation",
+        "logicalSizeBand": "m",
+        "sampleCount": 1,
+        "logicalExpectedHours": 3.50,
+        "seedExpectedHours": 3.50,
+        "reviewedExpectedHours": 5,
+        "factor": 1.42857143,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "documentation",
+        "logicalSizeBand": "l",
+        "sampleCount": 0,
+        "logicalExpectedHours": 0,
+        "seedExpectedHours": 0,
+        "reviewedExpectedHours": 0,
+        "factor": 1.42857143,
+        "sampleSource": "nearest-same-kind:m"
+      },
+      {
+        "workItemKind": "documentation",
+        "logicalSizeBand": "xl",
+        "sampleCount": 4,
+        "logicalExpectedHours": 46.25,
+        "seedExpectedHours": 46.25,
+        "reviewedExpectedHours": 68,
+        "factor": 1.47027027,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "documentation",
+        "logicalSizeBand": "2xl",
+        "sampleCount": 6,
+        "logicalExpectedHours": 139.25,
+        "seedExpectedHours": 139.25,
+        "reviewedExpectedHours": 234,
+        "factor": 1.68043088,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "documentation",
+        "logicalSizeBand": "3xl",
+        "sampleCount": 0,
+        "logicalExpectedHours": 0,
+        "seedExpectedHours": 0,
+        "reviewedExpectedHours": 0,
+        "factor": 1.68043088,
+        "sampleSource": "nearest-same-kind:2xl"
+      },
+      {
+        "workItemKind": "documentation",
+        "logicalSizeBand": "4xl",
+        "sampleCount": 4,
+        "logicalExpectedHours": 367.75,
+        "seedExpectedHours": 367.75,
+        "reviewedExpectedHours": 520,
+        "factor": 1.41400408,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "dotnet-source-backbone",
+        "logicalSizeBand": "xs",
+        "sampleCount": 28,
+        "logicalExpectedHours": 10.9375,
+        "seedExpectedHours": 17.7500,
+        "reviewedExpectedHours": 16.25,
+        "factor": 0.67428571,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "dotnet-source-backbone",
+        "logicalSizeBand": "s",
+        "sampleCount": 18,
+        "logicalExpectedHours": 28.75,
+        "seedExpectedHours": 67.25,
+        "reviewedExpectedHours": 47.75,
+        "factor": 1.66086957,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "dotnet-source-backbone",
+        "logicalSizeBand": "m",
+        "sampleCount": 10,
+        "logicalExpectedHours": 28.5625,
+        "seedExpectedHours": 59.1875,
+        "reviewedExpectedHours": 30.00,
+        "factor": 1.05032823,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "dotnet-source-backbone",
+        "logicalSizeBand": "l",
+        "sampleCount": 28,
+        "logicalExpectedHours": 166.875,
+        "seedExpectedHours": 352.6250,
+        "reviewedExpectedHours": 191.25,
+        "factor": 1.14606742,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "dotnet-source-backbone",
+        "logicalSizeBand": "xl",
+        "sampleCount": 28,
+        "logicalExpectedHours": 327.6875,
+        "seedExpectedHours": 738.7500,
+        "reviewedExpectedHours": 385.25,
+        "factor": 1.17566279,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "dotnet-source-backbone",
+        "logicalSizeBand": "2xl",
+        "sampleCount": 15,
+        "logicalExpectedHours": 332.00,
+        "seedExpectedHours": 841.50,
+        "reviewedExpectedHours": 408.50,
+        "factor": 1.23042169,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "dotnet-source-backbone",
+        "logicalSizeBand": "3xl",
+        "sampleCount": 8,
+        "logicalExpectedHours": 356.9375,
+        "seedExpectedHours": 723.2500,
+        "reviewedExpectedHours": 400.75,
+        "factor": 1.12274558,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "dotnet-source-backbone",
+        "logicalSizeBand": "4xl",
+        "sampleCount": 24,
+        "logicalExpectedHours": 5485.50,
+        "seedExpectedHours": 8504.00,
+        "reviewedExpectedHours": 8171.00,
+        "factor": 1.48956339,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "end-to-end-tests",
+        "logicalSizeBand": "xs",
+        "sampleCount": 4,
+        "logicalExpectedHours": 3.50,
+        "seedExpectedHours": 38.25,
+        "reviewedExpectedHours": 4.00,
+        "factor": 1.14285714,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "end-to-end-tests",
+        "logicalSizeBand": "s",
+        "sampleCount": 0,
+        "logicalExpectedHours": 0,
+        "seedExpectedHours": 0,
+        "reviewedExpectedHours": 0,
+        "factor": 1.14285714,
+        "sampleSource": "nearest-same-kind:xs"
+      },
+      {
+        "workItemKind": "end-to-end-tests",
+        "logicalSizeBand": "m",
+        "sampleCount": 0,
+        "logicalExpectedHours": 0,
+        "seedExpectedHours": 0,
+        "reviewedExpectedHours": 0,
+        "factor": 1.14285714,
+        "sampleSource": "nearest-same-kind:xs"
+      },
+      {
+        "workItemKind": "end-to-end-tests",
+        "logicalSizeBand": "l",
+        "sampleCount": 0,
+        "logicalExpectedHours": 0,
+        "seedExpectedHours": 0,
+        "reviewedExpectedHours": 0,
+        "factor": 1.14285714,
+        "sampleSource": "nearest-same-kind:xs"
+      },
+      {
+        "workItemKind": "end-to-end-tests",
+        "logicalSizeBand": "xl",
+        "sampleCount": 0,
+        "logicalExpectedHours": 0,
+        "seedExpectedHours": 0,
+        "reviewedExpectedHours": 0,
+        "factor": 1.39622642,
+        "sampleSource": "nearest-same-kind:3xl"
+      },
+      {
+        "workItemKind": "end-to-end-tests",
+        "logicalSizeBand": "2xl",
+        "sampleCount": 0,
+        "logicalExpectedHours": 0,
+        "seedExpectedHours": 0,
+        "reviewedExpectedHours": 0,
+        "factor": 1.39622642,
+        "sampleSource": "nearest-same-kind:3xl"
+      },
+      {
+        "workItemKind": "end-to-end-tests",
+        "logicalSizeBand": "3xl",
+        "sampleCount": 1,
+        "logicalExpectedHours": 39.75,
+        "seedExpectedHours": 137.75,
+        "reviewedExpectedHours": 55.5,
+        "factor": 1.39622642,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "end-to-end-tests",
+        "logicalSizeBand": "4xl",
+        "sampleCount": 1,
+        "logicalExpectedHours": 74.75,
+        "seedExpectedHours": 331.25,
+        "reviewedExpectedHours": 104.75,
+        "factor": 1.40133779,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "external-integration",
+        "logicalSizeBand": "xs",
+        "sampleCount": 22,
+        "logicalExpectedHours": 0.8125,
+        "seedExpectedHours": 1.8125,
+        "reviewedExpectedHours": 0,
+        "factor": 0.25,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "external-integration",
+        "logicalSizeBand": "s",
+        "sampleCount": 23,
+        "logicalExpectedHours": 36.25,
+        "seedExpectedHours": 88.75,
+        "reviewedExpectedHours": 36.75,
+        "factor": 1.01379310,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "external-integration",
+        "logicalSizeBand": "m",
+        "sampleCount": 12,
+        "logicalExpectedHours": 34.8125,
+        "seedExpectedHours": 53.1875,
+        "reviewedExpectedHours": 37.75,
+        "factor": 1.08438061,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "external-integration",
+        "logicalSizeBand": "l",
+        "sampleCount": 3,
+        "logicalExpectedHours": 16.5,
+        "seedExpectedHours": 20.25,
+        "reviewedExpectedHours": 20.75,
+        "factor": 1.25757576,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "external-integration",
+        "logicalSizeBand": "xl",
+        "sampleCount": 5,
+        "logicalExpectedHours": 60.5,
+        "seedExpectedHours": 62.50,
+        "reviewedExpectedHours": 81.00,
+        "factor": 1.33884298,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "external-integration",
+        "logicalSizeBand": "2xl",
+        "sampleCount": 6,
+        "logicalExpectedHours": 127.25,
+        "seedExpectedHours": 121.75,
+        "reviewedExpectedHours": 174.00,
+        "factor": 1.36738703,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "external-integration",
+        "logicalSizeBand": "3xl",
+        "sampleCount": 1,
+        "logicalExpectedHours": 45.25,
+        "seedExpectedHours": 35.25,
+        "reviewedExpectedHours": 68,
+        "factor": 1.50276243,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "external-integration",
+        "logicalSizeBand": "4xl",
+        "sampleCount": 1,
+        "logicalExpectedHours": 70.25,
+        "seedExpectedHours": 18.25,
+        "reviewedExpectedHours": 84.25,
+        "factor": 1.19928826,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "integration-tests",
+        "logicalSizeBand": "xs",
+        "sampleCount": 0,
+        "logicalExpectedHours": 0,
+        "seedExpectedHours": 0,
+        "reviewedExpectedHours": 0,
+        "factor": 1.15384615,
+        "sampleSource": "nearest-same-kind:s"
+      },
+      {
+        "workItemKind": "integration-tests",
+        "logicalSizeBand": "s",
+        "sampleCount": 2,
+        "logicalExpectedHours": 3.25,
+        "seedExpectedHours": 16.50,
+        "reviewedExpectedHours": 3.75,
+        "factor": 1.15384615,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "integration-tests",
+        "logicalSizeBand": "m",
+        "sampleCount": 0,
+        "logicalExpectedHours": 0,
+        "seedExpectedHours": 0,
+        "reviewedExpectedHours": 0,
+        "factor": 1.15384615,
+        "sampleSource": "nearest-same-kind:s"
+      },
+      {
+        "workItemKind": "integration-tests",
+        "logicalSizeBand": "l",
+        "sampleCount": 2,
+        "logicalExpectedHours": 12.75,
+        "seedExpectedHours": 26.25,
+        "reviewedExpectedHours": 16.25,
+        "factor": 1.27450980,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "integration-tests",
+        "logicalSizeBand": "xl",
+        "sampleCount": 0,
+        "logicalExpectedHours": 0,
+        "seedExpectedHours": 0,
+        "reviewedExpectedHours": 0,
+        "factor": 1.27450980,
+        "sampleSource": "nearest-same-kind:l"
+      },
+      {
+        "workItemKind": "integration-tests",
+        "logicalSizeBand": "2xl",
+        "sampleCount": 0,
+        "logicalExpectedHours": 0,
+        "seedExpectedHours": 0,
+        "reviewedExpectedHours": 0,
+        "factor": 1.27450980,
+        "sampleSource": "nearest-same-kind:l"
+      },
+      {
+        "workItemKind": "integration-tests",
+        "logicalSizeBand": "3xl",
+        "sampleCount": 0,
+        "logicalExpectedHours": 0,
+        "seedExpectedHours": 0,
+        "reviewedExpectedHours": 0,
+        "factor": 1.5,
+        "sampleSource": "nearest-same-kind:4xl"
+      },
+      {
+        "workItemKind": "integration-tests",
+        "logicalSizeBand": "4xl",
+        "sampleCount": 1,
+        "logicalExpectedHours": 287,
+        "seedExpectedHours": 635.75,
+        "reviewedExpectedHours": 430.5,
+        "factor": 1.5,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "javascript-source-backbone",
+        "logicalSizeBand": "xs",
+        "sampleCount": 35,
+        "logicalExpectedHours": 16.00,
+        "seedExpectedHours": 34.00,
+        "reviewedExpectedHours": 16.75,
+        "factor": 0.25,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "javascript-source-backbone",
+        "logicalSizeBand": "s",
+        "sampleCount": 25,
+        "logicalExpectedHours": 39.00,
+        "seedExpectedHours": 79.00,
+        "reviewedExpectedHours": 35.00,
+        "factor": 0.89743590,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "javascript-source-backbone",
+        "logicalSizeBand": "m",
+        "sampleCount": 16,
+        "logicalExpectedHours": 45.50,
+        "seedExpectedHours": 103.50,
+        "reviewedExpectedHours": 38.75,
+        "factor": 0.85164835,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "javascript-source-backbone",
+        "logicalSizeBand": "l",
+        "sampleCount": 13,
+        "logicalExpectedHours": 77.00,
+        "seedExpectedHours": 198.50,
+        "reviewedExpectedHours": 76.50,
+        "factor": 0.99350649,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "javascript-source-backbone",
+        "logicalSizeBand": "xl",
+        "sampleCount": 12,
+        "logicalExpectedHours": 142.00,
+        "seedExpectedHours": 260.75,
+        "reviewedExpectedHours": 243.00,
+        "factor": 1.71126761,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "javascript-source-backbone",
+        "logicalSizeBand": "2xl",
+        "sampleCount": 8,
+        "logicalExpectedHours": 165.50,
+        "seedExpectedHours": 315.25,
+        "reviewedExpectedHours": 178.50,
+        "factor": 1.07854985,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "javascript-source-backbone",
+        "logicalSizeBand": "3xl",
+        "sampleCount": 3,
+        "logicalExpectedHours": 154.75,
+        "seedExpectedHours": 351.00,
+        "reviewedExpectedHours": 165.25,
+        "factor": 1.06785137,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "javascript-source-backbone",
+        "logicalSizeBand": "4xl",
+        "sampleCount": 11,
+        "logicalExpectedHours": 3663.50,
+        "seedExpectedHours": 4411.75,
+        "reviewedExpectedHours": 3942.50,
+        "factor": 1.07615668,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "manual-validation",
+        "logicalSizeBand": "xs",
+        "sampleCount": 216,
+        "logicalExpectedHours": 197.00,
+        "seedExpectedHours": 197.00,
+        "reviewedExpectedHours": 478.75,
+        "factor": 2.43020305,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "manual-validation",
+        "logicalSizeBand": "s",
+        "sampleCount": 71,
+        "logicalExpectedHours": 104.50,
+        "seedExpectedHours": 257.00,
+        "reviewedExpectedHours": 245.00,
+        "factor": 2.34449761,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "manual-validation",
+        "logicalSizeBand": "m",
+        "sampleCount": 15,
+        "logicalExpectedHours": 41.75,
+        "seedExpectedHours": 109.00,
+        "reviewedExpectedHours": 185.50,
+        "factor": 3,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "manual-validation",
+        "logicalSizeBand": "l",
+        "sampleCount": 4,
+        "logicalExpectedHours": 22.25,
+        "seedExpectedHours": 46.00,
+        "reviewedExpectedHours": 57.00,
+        "factor": 2.56179775,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "manual-validation",
+        "logicalSizeBand": "xl",
+        "sampleCount": 14,
+        "logicalExpectedHours": 156.50,
+        "seedExpectedHours": 993.00,
+        "reviewedExpectedHours": 725.5,
+        "factor": 3,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "manual-validation",
+        "logicalSizeBand": "2xl",
+        "sampleCount": 0,
+        "logicalExpectedHours": 0,
+        "seedExpectedHours": 0,
+        "reviewedExpectedHours": 0,
+        "factor": 3,
+        "sampleSource": "nearest-same-kind:xl"
+      },
+      {
+        "workItemKind": "manual-validation",
+        "logicalSizeBand": "3xl",
+        "sampleCount": 0,
+        "logicalExpectedHours": 0,
+        "seedExpectedHours": 0,
+        "reviewedExpectedHours": 0,
+        "factor": 3,
+        "sampleSource": "nearest-same-kind:xl"
+      },
+      {
+        "workItemKind": "manual-validation",
+        "logicalSizeBand": "4xl",
+        "sampleCount": 0,
+        "logicalExpectedHours": 0,
+        "seedExpectedHours": 0,
+        "reviewedExpectedHours": 0,
+        "factor": 3,
+        "sampleSource": "nearest-same-kind:xl"
+      },
+      {
+        "workItemKind": "packaging-release",
+        "logicalSizeBand": "xs",
+        "sampleCount": 0,
+        "logicalExpectedHours": 0,
+        "seedExpectedHours": 0,
+        "reviewedExpectedHours": 0,
+        "factor": 3,
+        "sampleSource": "nearest-same-kind:s"
+      },
+      {
+        "workItemKind": "packaging-release",
+        "logicalSizeBand": "s",
+        "sampleCount": 4,
+        "logicalExpectedHours": 8.00,
+        "seedExpectedHours": 8.00,
+        "reviewedExpectedHours": 26,
+        "factor": 3,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "packaging-release",
+        "logicalSizeBand": "m",
+        "sampleCount": 2,
+        "logicalExpectedHours": 6.25,
+        "seedExpectedHours": 6.25,
+        "reviewedExpectedHours": 13,
+        "factor": 2.08,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "packaging-release",
+        "logicalSizeBand": "l",
+        "sampleCount": 1,
+        "logicalExpectedHours": 5.00,
+        "seedExpectedHours": 5.00,
+        "reviewedExpectedHours": 6,
+        "factor": 1.2,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "packaging-release",
+        "logicalSizeBand": "xl",
+        "sampleCount": 0,
+        "logicalExpectedHours": 0,
+        "seedExpectedHours": 0,
+        "reviewedExpectedHours": 0,
+        "factor": 1.2,
+        "sampleSource": "nearest-same-kind:l"
+      },
+      {
+        "workItemKind": "packaging-release",
+        "logicalSizeBand": "2xl",
+        "sampleCount": 0,
+        "logicalExpectedHours": 0,
+        "seedExpectedHours": 0,
+        "reviewedExpectedHours": 0,
+        "factor": 0.43290043,
+        "sampleSource": "nearest-same-kind:3xl"
+      },
+      {
+        "workItemKind": "packaging-release",
+        "logicalSizeBand": "3xl",
+        "sampleCount": 1,
+        "logicalExpectedHours": 57.75,
+        "seedExpectedHours": 57.75,
+        "reviewedExpectedHours": 25,
+        "factor": 0.43290043,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "packaging-release",
+        "logicalSizeBand": "4xl",
+        "sampleCount": 0,
+        "logicalExpectedHours": 0,
+        "seedExpectedHours": 0,
+        "reviewedExpectedHours": 0,
+        "factor": 0.43290043,
+        "sampleSource": "nearest-same-kind:3xl"
+      },
+      {
+        "workItemKind": "polyglot-source-backbone",
+        "logicalSizeBand": "xs",
+        "sampleCount": 4,
+        "logicalExpectedHours": 2.25,
+        "seedExpectedHours": 2.00,
+        "reviewedExpectedHours": 2.5,
+        "factor": 1.11111111,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "polyglot-source-backbone",
+        "logicalSizeBand": "s",
+        "sampleCount": 3,
+        "logicalExpectedHours": 4.50,
+        "seedExpectedHours": 1.50,
+        "reviewedExpectedHours": 3.00,
+        "factor": 0.66666667,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "polyglot-source-backbone",
+        "logicalSizeBand": "m",
+        "sampleCount": 0,
+        "logicalExpectedHours": 0,
+        "seedExpectedHours": 0,
+        "reviewedExpectedHours": 0,
+        "factor": 0.66666667,
+        "sampleSource": "nearest-same-kind:s"
+      },
+      {
+        "workItemKind": "polyglot-source-backbone",
+        "logicalSizeBand": "l",
+        "sampleCount": 3,
+        "logicalExpectedHours": 19.00,
+        "seedExpectedHours": 7.50,
+        "reviewedExpectedHours": 14.50,
+        "factor": 0.76315789,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "polyglot-source-backbone",
+        "logicalSizeBand": "xl",
+        "sampleCount": 3,
+        "logicalExpectedHours": 37.00,
+        "seedExpectedHours": 23.25,
+        "reviewedExpectedHours": 33.00,
+        "factor": 0.89189189,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "polyglot-source-backbone",
+        "logicalSizeBand": "2xl",
+        "sampleCount": 2,
+        "logicalExpectedHours": 45.25,
+        "seedExpectedHours": 9.25,
+        "reviewedExpectedHours": 36.25,
+        "factor": 0.80110497,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "polyglot-source-backbone",
+        "logicalSizeBand": "3xl",
+        "sampleCount": 0,
+        "logicalExpectedHours": 0,
+        "seedExpectedHours": 0,
+        "reviewedExpectedHours": 0,
+        "factor": 0.80110497,
+        "sampleSource": "nearest-same-kind:2xl"
+      },
+      {
+        "workItemKind": "polyglot-source-backbone",
+        "logicalSizeBand": "4xl",
+        "sampleCount": 0,
+        "logicalExpectedHours": 0,
+        "seedExpectedHours": 0,
+        "reviewedExpectedHours": 0,
+        "factor": 0.80110497,
+        "sampleSource": "nearest-same-kind:2xl"
+      },
+      {
+        "workItemKind": "project-setup",
+        "logicalSizeBand": "xs",
+        "sampleCount": 362,
+        "logicalExpectedHours": 322.50,
+        "seedExpectedHours": 501.50,
+        "reviewedExpectedHours": 455.00,
+        "factor": 1.41085271,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "project-setup",
+        "logicalSizeBand": "s",
+        "sampleCount": 15,
+        "logicalExpectedHours": 19.00,
+        "seedExpectedHours": 26.00,
+        "reviewedExpectedHours": 33.50,
+        "factor": 1.76315789,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "project-setup",
+        "logicalSizeBand": "m",
+        "sampleCount": 0,
+        "logicalExpectedHours": 0,
+        "seedExpectedHours": 0,
+        "reviewedExpectedHours": 0,
+        "factor": 1.76315789,
+        "sampleSource": "nearest-same-kind:s"
+      },
+      {
+        "workItemKind": "project-setup",
+        "logicalSizeBand": "l",
+        "sampleCount": 0,
+        "logicalExpectedHours": 0,
+        "seedExpectedHours": 0,
+        "reviewedExpectedHours": 0,
+        "factor": 1.76315789,
+        "sampleSource": "nearest-same-kind:s"
+      },
+      {
+        "workItemKind": "project-setup",
+        "logicalSizeBand": "xl",
+        "sampleCount": 0,
+        "logicalExpectedHours": 0,
+        "seedExpectedHours": 0,
+        "reviewedExpectedHours": 0,
+        "factor": 1.76315789,
+        "sampleSource": "nearest-same-kind:s"
+      },
+      {
+        "workItemKind": "project-setup",
+        "logicalSizeBand": "2xl",
+        "sampleCount": 0,
+        "logicalExpectedHours": 0,
+        "seedExpectedHours": 0,
+        "reviewedExpectedHours": 0,
+        "factor": 1.76315789,
+        "sampleSource": "nearest-same-kind:s"
+      },
+      {
+        "workItemKind": "project-setup",
+        "logicalSizeBand": "3xl",
+        "sampleCount": 0,
+        "logicalExpectedHours": 0,
+        "seedExpectedHours": 0,
+        "reviewedExpectedHours": 0,
+        "factor": 1.76315789,
+        "sampleSource": "nearest-same-kind:s"
+      },
+      {
+        "workItemKind": "project-setup",
+        "logicalSizeBand": "4xl",
+        "sampleCount": 0,
+        "logicalExpectedHours": 0,
+        "seedExpectedHours": 0,
+        "reviewedExpectedHours": 0,
+        "factor": 1.76315789,
+        "sampleSource": "nearest-same-kind:s"
+      },
+      {
+        "workItemKind": "security-surface",
+        "logicalSizeBand": "xs",
+        "sampleCount": 26,
+        "logicalExpectedHours": 17.6875,
+        "seedExpectedHours": 96.1875,
+        "reviewedExpectedHours": 21.75,
+        "factor": 1.22968198,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "security-surface",
+        "logicalSizeBand": "s",
+        "sampleCount": 10,
+        "logicalExpectedHours": 17.375,
+        "seedExpectedHours": 69.3750,
+        "reviewedExpectedHours": 16.25,
+        "factor": 0.93525180,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "security-surface",
+        "logicalSizeBand": "m",
+        "sampleCount": 5,
+        "logicalExpectedHours": 13.75,
+        "seedExpectedHours": 37.00,
+        "reviewedExpectedHours": 15.00,
+        "factor": 1.09090909,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "security-surface",
+        "logicalSizeBand": "l",
+        "sampleCount": 2,
+        "logicalExpectedHours": 13.0,
+        "seedExpectedHours": 17.00,
+        "reviewedExpectedHours": 14.50,
+        "factor": 1.11538462,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "security-surface",
+        "logicalSizeBand": "xl",
+        "sampleCount": 3,
+        "logicalExpectedHours": 35.25,
+        "seedExpectedHours": 111.00,
+        "reviewedExpectedHours": 40.00,
+        "factor": 1.13475177,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "security-surface",
+        "logicalSizeBand": "2xl",
+        "sampleCount": 0,
+        "logicalExpectedHours": 0,
+        "seedExpectedHours": 0,
+        "reviewedExpectedHours": 0,
+        "factor": 1.13475177,
+        "sampleSource": "nearest-same-kind:xl"
+      },
+      {
+        "workItemKind": "security-surface",
+        "logicalSizeBand": "3xl",
+        "sampleCount": 2,
+        "logicalExpectedHours": 115.00,
+        "seedExpectedHours": 227.00,
+        "reviewedExpectedHours": 138.25,
+        "factor": 1.20217391,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "security-surface",
+        "logicalSizeBand": "4xl",
+        "sampleCount": 2,
+        "logicalExpectedHours": 300.50,
+        "seedExpectedHours": 535.75,
+        "reviewedExpectedHours": 389.50,
+        "factor": 1.29617304,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "self-review",
+        "logicalSizeBand": "xs",
+        "sampleCount": 0,
+        "logicalExpectedHours": 0,
+        "seedExpectedHours": 0,
+        "reviewedExpectedHours": 0,
+        "factor": 3,
+        "sampleSource": "nearest-same-kind:s"
+      },
+      {
+        "workItemKind": "self-review",
+        "logicalSizeBand": "s",
+        "sampleCount": 3,
+        "logicalExpectedHours": 4.75,
+        "seedExpectedHours": 4.75,
+        "reviewedExpectedHours": 66,
+        "factor": 3,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "self-review",
+        "logicalSizeBand": "m",
+        "sampleCount": 0,
+        "logicalExpectedHours": 0,
+        "seedExpectedHours": 0,
+        "reviewedExpectedHours": 0,
+        "factor": 3,
+        "sampleSource": "nearest-same-kind:s"
+      },
+      {
+        "workItemKind": "self-review",
+        "logicalSizeBand": "l",
+        "sampleCount": 1,
+        "logicalExpectedHours": 4.50,
+        "seedExpectedHours": 4.50,
+        "reviewedExpectedHours": 22,
+        "factor": 3,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "self-review",
+        "logicalSizeBand": "xl",
+        "sampleCount": 5,
+        "logicalExpectedHours": 55.50,
+        "seedExpectedHours": 55.50,
+        "reviewedExpectedHours": 172,
+        "factor": 3,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "self-review",
+        "logicalSizeBand": "2xl",
+        "sampleCount": 4,
+        "logicalExpectedHours": 87.75,
+        "seedExpectedHours": 87.75,
+        "reviewedExpectedHours": 220,
+        "factor": 2.50712251,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "self-review",
+        "logicalSizeBand": "3xl",
+        "sampleCount": 1,
+        "logicalExpectedHours": 45.00,
+        "seedExpectedHours": 45.00,
+        "reviewedExpectedHours": 55,
+        "factor": 1.22222222,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "self-review",
+        "logicalSizeBand": "4xl",
+        "sampleCount": 1,
+        "logicalExpectedHours": 78.25,
+        "seedExpectedHours": 78.25,
+        "reviewedExpectedHours": 50,
+        "factor": 0.63897764,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "solution-coordination",
+        "logicalSizeBand": "xs",
+        "sampleCount": 1,
+        "logicalExpectedHours": 0.75,
+        "seedExpectedHours": 0.75,
+        "reviewedExpectedHours": 1.5,
+        "factor": 2,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "solution-coordination",
+        "logicalSizeBand": "s",
+        "sampleCount": 1,
+        "logicalExpectedHours": 2.00,
+        "seedExpectedHours": 2.00,
+        "reviewedExpectedHours": 5,
+        "factor": 2.5,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "solution-coordination",
+        "logicalSizeBand": "m",
+        "sampleCount": 3,
+        "logicalExpectedHours": 10.75,
+        "seedExpectedHours": 10.75,
+        "reviewedExpectedHours": 33,
+        "factor": 3,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "solution-coordination",
+        "logicalSizeBand": "l",
+        "sampleCount": 3,
+        "logicalExpectedHours": 15.25,
+        "seedExpectedHours": 15.25,
+        "reviewedExpectedHours": 46,
+        "factor": 3,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "solution-coordination",
+        "logicalSizeBand": "xl",
+        "sampleCount": 3,
+        "logicalExpectedHours": 34.25,
+        "seedExpectedHours": 34.25,
+        "reviewedExpectedHours": 84,
+        "factor": 2.45255474,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "solution-coordination",
+        "logicalSizeBand": "2xl",
+        "sampleCount": 2,
+        "logicalExpectedHours": 39.75,
+        "seedExpectedHours": 39.75,
+        "reviewedExpectedHours": 75,
+        "factor": 1.88679245,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "solution-coordination",
+        "logicalSizeBand": "3xl",
+        "sampleCount": 0,
+        "logicalExpectedHours": 0,
+        "seedExpectedHours": 0,
+        "reviewedExpectedHours": 0,
+        "factor": 1.88679245,
+        "sampleSource": "nearest-same-kind:2xl"
+      },
+      {
+        "workItemKind": "solution-coordination",
+        "logicalSizeBand": "4xl",
+        "sampleCount": 0,
+        "logicalExpectedHours": 0,
+        "seedExpectedHours": 0,
+        "reviewedExpectedHours": 0,
+        "factor": 1.88679245,
+        "sampleSource": "nearest-same-kind:2xl"
+      },
+      {
+        "workItemKind": "specification-comprehension",
+        "logicalSizeBand": "xs",
+        "sampleCount": 0,
+        "logicalExpectedHours": 0,
+        "seedExpectedHours": 0,
+        "reviewedExpectedHours": 0,
+        "factor": 4,
+        "sampleSource": "nearest-same-kind:s"
+      },
+      {
+        "workItemKind": "specification-comprehension",
+        "logicalSizeBand": "s",
+        "sampleCount": 3,
+        "logicalExpectedHours": 4.75,
+        "seedExpectedHours": 4.75,
+        "reviewedExpectedHours": 56,
+        "factor": 4,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "specification-comprehension",
+        "logicalSizeBand": "m",
+        "sampleCount": 0,
+        "logicalExpectedHours": 0,
+        "seedExpectedHours": 0,
+        "reviewedExpectedHours": 0,
+        "factor": 4,
+        "sampleSource": "nearest-same-kind:s"
+      },
+      {
+        "workItemKind": "specification-comprehension",
+        "logicalSizeBand": "l",
+        "sampleCount": 4,
+        "logicalExpectedHours": 23.25,
+        "seedExpectedHours": 23.25,
+        "reviewedExpectedHours": 64,
+        "factor": 2.75268817,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "specification-comprehension",
+        "logicalSizeBand": "xl",
+        "sampleCount": 5,
+        "logicalExpectedHours": 55.25,
+        "seedExpectedHours": 55.25,
+        "reviewedExpectedHours": 244,
+        "factor": 4,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "specification-comprehension",
+        "logicalSizeBand": "2xl",
+        "sampleCount": 2,
+        "logicalExpectedHours": 41.75,
+        "seedExpectedHours": 41.75,
+        "reviewedExpectedHours": 75,
+        "factor": 1.79640719,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "specification-comprehension",
+        "logicalSizeBand": "3xl",
+        "sampleCount": 1,
+        "logicalExpectedHours": 32.50,
+        "seedExpectedHours": 32.50,
+        "reviewedExpectedHours": 40,
+        "factor": 1.23076923,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "specification-comprehension",
+        "logicalSizeBand": "4xl",
+        "sampleCount": 0,
+        "logicalExpectedHours": 0,
+        "seedExpectedHours": 0,
+        "reviewedExpectedHours": 0,
+        "factor": 1.23076923,
+        "sampleSource": "nearest-same-kind:3xl"
+      },
+      {
+        "workItemKind": "ui-surface",
+        "logicalSizeBand": "xs",
+        "sampleCount": 21,
+        "logicalExpectedHours": 5.00,
+        "seedExpectedHours": 14.75,
+        "reviewedExpectedHours": 7.5,
+        "factor": 1.5,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "ui-surface",
+        "logicalSizeBand": "s",
+        "sampleCount": 11,
+        "logicalExpectedHours": 20.3125,
+        "seedExpectedHours": 15.0625,
+        "reviewedExpectedHours": 23.50,
+        "factor": 1.15692308,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "ui-surface",
+        "logicalSizeBand": "m",
+        "sampleCount": 23,
+        "logicalExpectedHours": 75.50,
+        "seedExpectedHours": 52.75,
+        "reviewedExpectedHours": 77.25,
+        "factor": 1.02317881,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "ui-surface",
+        "logicalSizeBand": "l",
+        "sampleCount": 13,
+        "logicalExpectedHours": 75.25,
+        "seedExpectedHours": 102.00,
+        "reviewedExpectedHours": 103.25,
+        "factor": 1.37209302,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "ui-surface",
+        "logicalSizeBand": "xl",
+        "sampleCount": 3,
+        "logicalExpectedHours": 31.00,
+        "seedExpectedHours": 30.00,
+        "reviewedExpectedHours": 38.25,
+        "factor": 1.23387097,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "ui-surface",
+        "logicalSizeBand": "2xl",
+        "sampleCount": 4,
+        "logicalExpectedHours": 94.00,
+        "seedExpectedHours": 54.25,
+        "reviewedExpectedHours": 89.50,
+        "factor": 0.95212766,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "ui-surface",
+        "logicalSizeBand": "3xl",
+        "sampleCount": 4,
+        "logicalExpectedHours": 174.25,
+        "seedExpectedHours": 114.25,
+        "reviewedExpectedHours": 224.50,
+        "factor": 1.28837877,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "ui-surface",
+        "logicalSizeBand": "4xl",
+        "sampleCount": 8,
+        "logicalExpectedHours": 5497.50,
+        "seedExpectedHours": 3396.25,
+        "reviewedExpectedHours": 6838.75,
+        "factor": 1.24397453,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "unit-tests",
+        "logicalSizeBand": "xs",
+        "sampleCount": 24,
+        "logicalExpectedHours": 21.50,
+        "seedExpectedHours": 38.25,
+        "reviewedExpectedHours": 24.25,
+        "factor": 1.12790698,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "unit-tests",
+        "logicalSizeBand": "s",
+        "sampleCount": 8,
+        "logicalExpectedHours": 13.00,
+        "seedExpectedHours": 17.25,
+        "reviewedExpectedHours": 15.50,
+        "factor": 1.19230769,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "unit-tests",
+        "logicalSizeBand": "m",
+        "sampleCount": 18,
+        "logicalExpectedHours": 46.25,
+        "seedExpectedHours": 75.00,
+        "reviewedExpectedHours": 56.00,
+        "factor": 1.21081081,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "unit-tests",
+        "logicalSizeBand": "l",
+        "sampleCount": 10,
+        "logicalExpectedHours": 53.75,
+        "seedExpectedHours": 76.00,
+        "reviewedExpectedHours": 64.25,
+        "factor": 1.19534884,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "unit-tests",
+        "logicalSizeBand": "xl",
+        "sampleCount": 14,
+        "logicalExpectedHours": 158.00,
+        "seedExpectedHours": 163.25,
+        "reviewedExpectedHours": 195.75,
+        "factor": 1.23892405,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "unit-tests",
+        "logicalSizeBand": "2xl",
+        "sampleCount": 12,
+        "logicalExpectedHours": 274.75,
+        "seedExpectedHours": 225.75,
+        "reviewedExpectedHours": 331.50,
+        "factor": 1.20655141,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "unit-tests",
+        "logicalSizeBand": "3xl",
+        "sampleCount": 8,
+        "logicalExpectedHours": 385.25,
+        "seedExpectedHours": 356.50,
+        "reviewedExpectedHours": 510.00,
+        "factor": 1.32381570,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "unit-tests",
+        "logicalSizeBand": "4xl",
+        "sampleCount": 22,
+        "logicalExpectedHours": 4438.25,
+        "seedExpectedHours": 5295.00,
+        "reviewedExpectedHours": 5880.75,
+        "factor": 1.32501549,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "validation-surface",
+        "logicalSizeBand": "xs",
+        "sampleCount": 27,
+        "logicalExpectedHours": 13.750,
+        "seedExpectedHours": 13.3750,
+        "reviewedExpectedHours": 11.50,
+        "factor": 0.83636364,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "validation-surface",
+        "logicalSizeBand": "s",
+        "sampleCount": 15,
+        "logicalExpectedHours": 24.5625,
+        "seedExpectedHours": 21.1875,
+        "reviewedExpectedHours": 21.25,
+        "factor": 0.86513995,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "validation-surface",
+        "logicalSizeBand": "m",
+        "sampleCount": 11,
+        "logicalExpectedHours": 31.625,
+        "seedExpectedHours": 25.6250,
+        "reviewedExpectedHours": 22.50,
+        "factor": 0.71146245,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "validation-surface",
+        "logicalSizeBand": "l",
+        "sampleCount": 4,
+        "logicalExpectedHours": 20.50,
+        "seedExpectedHours": 7.75,
+        "reviewedExpectedHours": 21.00,
+        "factor": 1.02439024,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "validation-surface",
+        "logicalSizeBand": "xl",
+        "sampleCount": 1,
+        "logicalExpectedHours": 10,
+        "seedExpectedHours": 3.50,
+        "reviewedExpectedHours": 10,
+        "factor": 1,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "validation-surface",
+        "logicalSizeBand": "2xl",
+        "sampleCount": 2,
+        "logicalExpectedHours": 47.25,
+        "seedExpectedHours": 15.75,
+        "reviewedExpectedHours": 51.25,
+        "factor": 1.08465608,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "validation-surface",
+        "logicalSizeBand": "3xl",
+        "sampleCount": 1,
+        "logicalExpectedHours": 40.75,
+        "seedExpectedHours": 10.25,
+        "reviewedExpectedHours": 49,
+        "factor": 1.20245399,
+        "sampleSource": "exact-kind-and-size"
+      },
+      {
+        "workItemKind": "validation-surface",
+        "logicalSizeBand": "4xl",
+        "sampleCount": 1,
+        "logicalExpectedHours": 400.5,
+        "seedExpectedHours": 408.00,
+        "reviewedExpectedHours": 0,
+        "factor": 0.25,
+        "sampleSource": "exact-kind-and-size"
+      }
+    ]
+  },
+  "range": {
+    "features": [
+      "work-item-kind",
+      "candidate-expected-size-band",
+      "bounded-kind-low-minimum",
+      "minimum-high-factor"
+    ],
+    "lowerQuantile": 0.15,
+    "upperQuantile": 0.75,
+    "minimumHighFactor": 1.01,
+    "minimumExactGroupSamples": 3,
+    "sparseGroupFallback": "same-kind residuals, then all positive development residuals",
+    "unknownGroupBehavior": "use the complete seed capability range",
+    "minimumLowHours": [
+      {
+        "workItemKind": "data-persistence",
+        "hours": 0.5
+      },
+      {
+        "workItemKind": "external-integration",
+        "hours": 1
+      }
+    ],
+    "factors": [
+      {
+        "workItemKind": "api-surface",
+        "expectedSizeBand": "xs",
+        "sampleSource": "same-kind",
+        "sampleCount": 54,
+        "lowFactor": 0.89795918,
+        "highFactor": 1.18438759
+      },
+      {
+        "workItemKind": "api-surface",
+        "expectedSizeBand": "s",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 9,
+        "lowFactor": 0.65555555,
+        "highFactor": 1.14285715
+      },
+      {
+        "workItemKind": "api-surface",
+        "expectedSizeBand": "m",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 15,
+        "lowFactor": 0.89795918,
+        "highFactor": 1.25714286
+      },
+      {
+        "workItemKind": "api-surface",
+        "expectedSizeBand": "l",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 15,
+        "lowFactor": 0.96307485,
+        "highFactor": 1.02187312
+      },
+      {
+        "workItemKind": "api-surface",
+        "expectedSizeBand": "xl",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 6,
+        "lowFactor": 0.98703703,
+        "highFactor": 1.01
+      },
+      {
+        "workItemKind": "api-surface",
+        "expectedSizeBand": "2xl",
+        "sampleSource": "same-kind",
+        "sampleCount": 54,
+        "lowFactor": 0.89795918,
+        "highFactor": 1.18438759
+      },
+      {
+        "workItemKind": "api-surface",
+        "expectedSizeBand": "3xl",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 3,
+        "lowFactor": 0.49018132,
+        "highFactor": 1.18438759
+      },
+      {
+        "workItemKind": "api-surface",
+        "expectedSizeBand": "4xl",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 4,
+        "lowFactor": 0.36330163,
+        "highFactor": 1.05012027
+      },
+      {
+        "workItemKind": "application-entry-point",
+        "expectedSizeBand": "xs",
+        "sampleSource": "same-kind",
+        "sampleCount": 72,
+        "lowFactor": 0.49525316,
+        "highFactor": 1.1559633
+      },
+      {
+        "workItemKind": "application-entry-point",
+        "expectedSizeBand": "s",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 48,
+        "lowFactor": 0.49525316,
+        "highFactor": 1.01988637
+      },
+      {
+        "workItemKind": "application-entry-point",
+        "expectedSizeBand": "m",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 13,
+        "lowFactor": 0.46238531,
+        "highFactor": 1.1559633
+      },
+      {
+        "workItemKind": "application-entry-point",
+        "expectedSizeBand": "l",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 9,
+        "lowFactor": 1,
+        "highFactor": 1.01
+      },
+      {
+        "workItemKind": "architecture-design",
+        "expectedSizeBand": "xs",
+        "sampleSource": "same-kind",
+        "sampleCount": 309,
+        "lowFactor": 0.33333333,
+        "highFactor": 1.01
+      },
+      {
+        "workItemKind": "architecture-design",
+        "expectedSizeBand": "m",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 251,
+        "lowFactor": 0.33333333,
+        "highFactor": 1.01
+      },
+      {
+        "workItemKind": "architecture-design",
+        "expectedSizeBand": "l",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 22,
+        "lowFactor": 0.33333333,
+        "highFactor": 1.01
+      },
+      {
+        "workItemKind": "architecture-design",
+        "expectedSizeBand": "xl",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 20,
+        "lowFactor": 0.33333333,
+        "highFactor": 1.53879782
+      },
+      {
+        "workItemKind": "architecture-design",
+        "expectedSizeBand": "2xl",
+        "sampleSource": "same-kind",
+        "sampleCount": 309,
+        "lowFactor": 0.33333333,
+        "highFactor": 1.01
+      },
+      {
+        "workItemKind": "architecture-design",
+        "expectedSizeBand": "3xl",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 14,
+        "lowFactor": 0.44444444,
+        "highFactor": 1.94444445
+      },
+      {
+        "workItemKind": "background-work",
+        "expectedSizeBand": "l",
+        "sampleSource": "same-kind",
+        "sampleCount": 9,
+        "lowFactor": 0.88235294,
+        "highFactor": 1.05882353
+      },
+      {
+        "workItemKind": "background-work",
+        "expectedSizeBand": "xl",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 3,
+        "lowFactor": 0.90384615,
+        "highFactor": 1.35576923
+      },
+      {
+        "workItemKind": "background-work",
+        "expectedSizeBand": "2xl",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 3,
+        "lowFactor": 0.88235294,
+        "highFactor": 1.05882353
+      },
+      {
+        "workItemKind": "background-work",
+        "expectedSizeBand": "4xl",
+        "sampleSource": "same-kind",
+        "sampleCount": 9,
+        "lowFactor": 0.88235294,
+        "highFactor": 1.05882353
+      },
+      {
+        "workItemKind": "build-tooling",
+        "expectedSizeBand": "m",
+        "sampleSource": "same-kind",
+        "sampleCount": 15,
+        "lowFactor": 0.72692307,
+        "highFactor": 1.15808824
+      },
+      {
+        "workItemKind": "build-tooling",
+        "expectedSizeBand": "l",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 3,
+        "lowFactor": 0.71428571,
+        "highFactor": 1.54761906
+      },
+      {
+        "workItemKind": "build-tooling",
+        "expectedSizeBand": "xl",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 6,
+        "lowFactor": 0.72692307,
+        "highFactor": 1.15384616
+      },
+      {
+        "workItemKind": "build-tooling",
+        "expectedSizeBand": "2xl",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 3,
+        "lowFactor": 0.99999999,
+        "highFactor": 1.40984655
+      },
+      {
+        "workItemKind": "build-tooling",
+        "expectedSizeBand": "3xl",
+        "sampleSource": "same-kind",
+        "sampleCount": 15,
+        "lowFactor": 0.72692307,
+        "highFactor": 1.15808824
+      },
+      {
+        "workItemKind": "build-tooling",
+        "expectedSizeBand": "4xl",
+        "sampleSource": "same-kind",
+        "sampleCount": 15,
+        "lowFactor": 0.72692307,
+        "highFactor": 1.15808824
+      },
+      {
+        "workItemKind": "ci-infrastructure",
+        "expectedSizeBand": "m",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 3,
+        "lowFactor": 0.7815126,
+        "highFactor": 1.62091504
+      },
+      {
+        "workItemKind": "ci-infrastructure",
+        "expectedSizeBand": "l",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 5,
+        "lowFactor": 0.72941176,
+        "highFactor": 1.01
+      },
+      {
+        "workItemKind": "ci-infrastructure",
+        "expectedSizeBand": "xl",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 3,
+        "lowFactor": 0.93181818,
+        "highFactor": 1.16477273
+      },
+      {
+        "workItemKind": "ci-infrastructure",
+        "expectedSizeBand": "2xl",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 3,
+        "lowFactor": 0.95597484,
+        "highFactor": 1.0628191
+      },
+      {
+        "workItemKind": "container-deployment",
+        "expectedSizeBand": "l",
+        "sampleSource": "same-kind",
+        "sampleCount": 4,
+        "lowFactor": 0.99999999,
+        "highFactor": 1.01
+      },
+      {
+        "workItemKind": "container-deployment",
+        "expectedSizeBand": "2xl",
+        "sampleSource": "same-kind",
+        "sampleCount": 4,
+        "lowFactor": 0.99999999,
+        "highFactor": 1.01
+      },
+      {
+        "workItemKind": "container-deployment",
+        "expectedSizeBand": "3xl",
+        "sampleSource": "same-kind",
+        "sampleCount": 4,
+        "lowFactor": 0.99999999,
+        "highFactor": 1.01
+      },
+      {
+        "workItemKind": "data-persistence",
+        "expectedSizeBand": "xs",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 5,
+        "lowFactor": 0.58823529,
+        "highFactor": 1.01
+      },
+      {
+        "workItemKind": "data-persistence",
+        "expectedSizeBand": "s",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 20,
+        "lowFactor": 0.66214806,
+        "highFactor": 1.29781022
+      },
+      {
+        "workItemKind": "data-persistence",
+        "expectedSizeBand": "m",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 6,
+        "lowFactor": 0.34645669,
+        "highFactor": 1.39494406
+      },
+      {
+        "workItemKind": "data-persistence",
+        "expectedSizeBand": "l",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 6,
+        "lowFactor": 0.4197456,
+        "highFactor": 1.01
+      },
+      {
+        "workItemKind": "data-persistence",
+        "expectedSizeBand": "xl",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 3,
+        "lowFactor": 1,
+        "highFactor": 1.37254902
+      },
+      {
+        "workItemKind": "data-persistence",
+        "expectedSizeBand": "2xl",
+        "sampleSource": "same-kind",
+        "sampleCount": 48,
+        "lowFactor": 0.62091503,
+        "highFactor": 1.23529412
+      },
+      {
+        "workItemKind": "data-persistence",
+        "expectedSizeBand": "3xl",
+        "sampleSource": "same-kind",
+        "sampleCount": 48,
+        "lowFactor": 0.62091503,
+        "highFactor": 1.23529412
+      },
+      {
+        "workItemKind": "data-persistence",
+        "expectedSizeBand": "4xl",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 4,
+        "lowFactor": 0.77546632,
+        "highFactor": 1.05581804
+      },
+      {
+        "workItemKind": "documentation",
+        "expectedSizeBand": "l",
+        "sampleSource": "same-kind",
+        "sampleCount": 15,
+        "lowFactor": 0.90686274,
+        "highFactor": 1.08197359
+      },
+      {
+        "workItemKind": "documentation",
+        "expectedSizeBand": "xl",
+        "sampleSource": "same-kind",
+        "sampleCount": 15,
+        "lowFactor": 0.90686274,
+        "highFactor": 1.08197359
+      },
+      {
+        "workItemKind": "documentation",
+        "expectedSizeBand": "2xl",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 5,
+        "lowFactor": 0.90686274,
+        "highFactor": 1.08197359
+      },
+      {
+        "workItemKind": "documentation",
+        "expectedSizeBand": "3xl",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 4,
+        "lowFactor": 0.60134952,
+        "highFactor": 1.06981658
+      },
+      {
+        "workItemKind": "documentation",
+        "expectedSizeBand": "4xl",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 4,
+        "lowFactor": 0.71435508,
+        "highFactor": 1.02867133
+      },
+      {
+        "workItemKind": "dotnet-source-backbone",
+        "expectedSizeBand": "xs",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 9,
+        "lowFactor": 0.85158151,
+        "highFactor": 2.27088404
+      },
+      {
+        "workItemKind": "dotnet-source-backbone",
+        "expectedSizeBand": "s",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 8,
+        "lowFactor": 0.66329753,
+        "highFactor": 1.32659508
+      },
+      {
+        "workItemKind": "dotnet-source-backbone",
+        "expectedSizeBand": "m",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 27,
+        "lowFactor": 0.60209423,
+        "highFactor": 1.01
+      },
+      {
+        "workItemKind": "dotnet-source-backbone",
+        "expectedSizeBand": "l",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 22,
+        "lowFactor": 0.87254901,
+        "highFactor": 1.01
+      },
+      {
+        "workItemKind": "dotnet-source-backbone",
+        "expectedSizeBand": "xl",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 27,
+        "lowFactor": 0.87254901,
+        "highFactor": 1.01
+      },
+      {
+        "workItemKind": "dotnet-source-backbone",
+        "expectedSizeBand": "2xl",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 20,
+        "lowFactor": 0.81272949,
+        "highFactor": 1.01
+      },
+      {
+        "workItemKind": "dotnet-source-backbone",
+        "expectedSizeBand": "3xl",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 10,
+        "lowFactor": 0.89067373,
+        "highFactor": 1.07018938
+      },
+      {
+        "workItemKind": "dotnet-source-backbone",
+        "expectedSizeBand": "4xl",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 25,
+        "lowFactor": 0.77167994,
+        "highFactor": 1.01
+      },
+      {
+        "workItemKind": "end-to-end-tests",
+        "expectedSizeBand": "xs",
+        "sampleSource": "same-kind",
+        "sampleCount": 6,
+        "lowFactor": 0.875,
+        "highFactor": 1.09375001
+      },
+      {
+        "workItemKind": "end-to-end-tests",
+        "expectedSizeBand": "s",
+        "sampleSource": "same-kind",
+        "sampleCount": 6,
+        "lowFactor": 0.875,
+        "highFactor": 1.09375001
+      },
+      {
+        "workItemKind": "end-to-end-tests",
+        "expectedSizeBand": "3xl",
+        "sampleSource": "same-kind",
+        "sampleCount": 6,
+        "lowFactor": 0.875,
+        "highFactor": 1.09375001
+      },
+      {
+        "workItemKind": "end-to-end-tests",
+        "expectedSizeBand": "4xl",
+        "sampleSource": "same-kind",
+        "sampleCount": 6,
+        "lowFactor": 0.875,
+        "highFactor": 1.09375001
+      },
+      {
+        "workItemKind": "external-integration",
+        "expectedSizeBand": "xs",
+        "sampleSource": "same-kind",
+        "sampleCount": 48,
+        "lowFactor": 0.82199546,
+        "highFactor": 1.19277109
+      },
+      {
+        "workItemKind": "external-integration",
+        "expectedSizeBand": "s",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 19,
+        "lowFactor": 0.65759637,
+        "highFactor": 1.01
+      },
+      {
+        "workItemKind": "external-integration",
+        "expectedSizeBand": "m",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 13,
+        "lowFactor": 0.85631504,
+        "highFactor": 1.22958058
+      },
+      {
+        "workItemKind": "external-integration",
+        "expectedSizeBand": "l",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 3,
+        "lowFactor": 0.72289156,
+        "highFactor": 1.15273179
+      },
+      {
+        "workItemKind": "external-integration",
+        "expectedSizeBand": "xl",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 3,
+        "lowFactor": 0.97810111,
+        "highFactor": 1.19277109
+      },
+      {
+        "workItemKind": "external-integration",
+        "expectedSizeBand": "2xl",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 7,
+        "lowFactor": 0.87922962,
+        "highFactor": 1.09305093
+      },
+      {
+        "workItemKind": "external-integration",
+        "expectedSizeBand": "3xl",
+        "sampleSource": "same-kind",
+        "sampleCount": 48,
+        "lowFactor": 0.82199546,
+        "highFactor": 1.19277109
+      },
+      {
+        "workItemKind": "external-integration",
+        "expectedSizeBand": "4xl",
+        "sampleSource": "same-kind",
+        "sampleCount": 48,
+        "lowFactor": 0.82199546,
+        "highFactor": 1.19277109
+      },
+      {
+        "workItemKind": "integration-tests",
+        "expectedSizeBand": "s",
+        "sampleSource": "same-kind",
+        "sampleCount": 5,
+        "lowFactor": 0.86666666,
+        "highFactor": 1.01
+      },
+      {
+        "workItemKind": "integration-tests",
+        "expectedSizeBand": "m",
+        "sampleSource": "same-kind",
+        "sampleCount": 5,
+        "lowFactor": 0.86666666,
+        "highFactor": 1.01
+      },
+      {
+        "workItemKind": "integration-tests",
+        "expectedSizeBand": "l",
+        "sampleSource": "same-kind",
+        "sampleCount": 5,
+        "lowFactor": 0.86666666,
+        "highFactor": 1.01
+      },
+      {
+        "workItemKind": "integration-tests",
+        "expectedSizeBand": "xl",
+        "sampleSource": "same-kind",
+        "sampleCount": 5,
+        "lowFactor": 0.86666666,
+        "highFactor": 1.01
+      },
+      {
+        "workItemKind": "integration-tests",
+        "expectedSizeBand": "4xl",
+        "sampleSource": "same-kind",
+        "sampleCount": 5,
+        "lowFactor": 0.86666666,
+        "highFactor": 1.01
+      },
+      {
+        "workItemKind": "javascript-source-backbone",
+        "expectedSizeBand": "xs",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 15,
+        "lowFactor": 0.8,
+        "highFactor": 1.33333334
+      },
+      {
+        "workItemKind": "javascript-source-backbone",
+        "expectedSizeBand": "s",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 35,
+        "lowFactor": 0.63673469,
+        "highFactor": 1.3
+      },
+      {
+        "workItemKind": "javascript-source-backbone",
+        "expectedSizeBand": "m",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 11,
+        "lowFactor": 0.85395894,
+        "highFactor": 1.28093842
+      },
+      {
+        "workItemKind": "javascript-source-backbone",
+        "expectedSizeBand": "l",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 12,
+        "lowFactor": 0.91901108,
+        "highFactor": 1.11437909
+      },
+      {
+        "workItemKind": "javascript-source-backbone",
+        "expectedSizeBand": "xl",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 3,
+        "lowFactor": 0.58436213,
+        "highFactor": 1.01
+      },
+      {
+        "workItemKind": "javascript-source-backbone",
+        "expectedSizeBand": "2xl",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 17,
+        "lowFactor": 0.63653732,
+        "highFactor": 1.01988796
+      },
+      {
+        "workItemKind": "javascript-source-backbone",
+        "expectedSizeBand": "3xl",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 3,
+        "lowFactor": 0.93645991,
+        "highFactor": 1.03228372
+      },
+      {
+        "workItemKind": "javascript-source-backbone",
+        "expectedSizeBand": "4xl",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 11,
+        "lowFactor": 0.74338617,
+        "highFactor": 1.30092581
+      },
+      {
+        "workItemKind": "manual-validation",
+        "expectedSizeBand": "xs",
+        "sampleSource": "same-kind",
+        "sampleCount": 309,
+        "lowFactor": 0.41148824,
+        "highFactor": 1.01
+      },
+      {
+        "workItemKind": "manual-validation",
+        "expectedSizeBand": "s",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 32,
+        "lowFactor": 0.41148824,
+        "highFactor": 1.01
+      },
+      {
+        "workItemKind": "manual-validation",
+        "expectedSizeBand": "m",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 221,
+        "lowFactor": 0.41148824,
+        "highFactor": 1.01
+      },
+      {
+        "workItemKind": "manual-validation",
+        "expectedSizeBand": "l",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 29,
+        "lowFactor": 0.33333333,
+        "highFactor": 1.01
+      },
+      {
+        "workItemKind": "manual-validation",
+        "expectedSizeBand": "xl",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 12,
+        "lowFactor": 0.33333333,
+        "highFactor": 1.45454546
+      },
+      {
+        "workItemKind": "manual-validation",
+        "expectedSizeBand": "2xl",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 4,
+        "lowFactor": 0.8080808,
+        "highFactor": 1.22681705
+      },
+      {
+        "workItemKind": "manual-validation",
+        "expectedSizeBand": "3xl",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 11,
+        "lowFactor": 0.44444444,
+        "highFactor": 2.5
+      },
+      {
+        "workItemKind": "packaging-release",
+        "expectedSizeBand": "l",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 7,
+        "lowFactor": 0.87412587,
+        "highFactor": 1.33333334
+      },
+      {
+        "workItemKind": "packaging-release",
+        "expectedSizeBand": "2xl",
+        "sampleSource": "same-kind",
+        "sampleCount": 8,
+        "lowFactor": 0.87412587,
+        "highFactor": 1.0989011
+      },
+      {
+        "workItemKind": "polyglot-source-backbone",
+        "expectedSizeBand": "xs",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 6,
+        "lowFactor": 0.6,
+        "highFactor": 1.2
+      },
+      {
+        "workItemKind": "polyglot-source-backbone",
+        "expectedSizeBand": "s",
+        "sampleSource": "same-kind",
+        "sampleCount": 15,
+        "lowFactor": 0.89999999,
+        "highFactor": 1.01128937
+      },
+      {
+        "workItemKind": "polyglot-source-backbone",
+        "expectedSizeBand": "m",
+        "sampleSource": "same-kind",
+        "sampleCount": 15,
+        "lowFactor": 0.89999999,
+        "highFactor": 1.01128937
+      },
+      {
+        "workItemKind": "polyglot-source-backbone",
+        "expectedSizeBand": "l",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 3,
+        "lowFactor": 0.92209451,
+        "highFactor": 1.18353728
+      },
+      {
+        "workItemKind": "polyglot-source-backbone",
+        "expectedSizeBand": "xl",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 3,
+        "lowFactor": 0.99462365,
+        "highFactor": 1.01128937
+      },
+      {
+        "workItemKind": "polyglot-source-backbone",
+        "expectedSizeBand": "2xl",
+        "sampleSource": "same-kind",
+        "sampleCount": 15,
+        "lowFactor": 0.89999999,
+        "highFactor": 1.01128937
+      },
+      {
+        "workItemKind": "project-setup",
+        "expectedSizeBand": "xs",
+        "sampleSource": "same-kind",
+        "sampleCount": 366,
+        "lowFactor": 0.70879121,
+        "highFactor": 1.01
+      },
+      {
+        "workItemKind": "project-setup",
+        "expectedSizeBand": "s",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 351,
+        "lowFactor": 0.70879121,
+        "highFactor": 1.01
+      },
+      {
+        "workItemKind": "project-setup",
+        "expectedSizeBand": "m",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 15,
+        "lowFactor": 0.56716418,
+        "highFactor": 1.2477612
+      },
+      {
+        "workItemKind": "security-surface",
+        "expectedSizeBand": "xs",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 13,
+        "lowFactor": 1,
+        "highFactor": 1.08429119
+      },
+      {
+        "workItemKind": "security-surface",
+        "expectedSizeBand": "s",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 16,
+        "lowFactor": 1,
+        "highFactor": 1.06923077
+      },
+      {
+        "workItemKind": "security-surface",
+        "expectedSizeBand": "m",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 4,
+        "lowFactor": 0.73333333,
+        "highFactor": 1.01851852
+      },
+      {
+        "workItemKind": "security-surface",
+        "expectedSizeBand": "l",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 3,
+        "lowFactor": 0.99999999,
+        "highFactor": 1.08854167
+      },
+      {
+        "workItemKind": "security-surface",
+        "expectedSizeBand": "xl",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 3,
+        "lowFactor": 0.969375,
+        "highFactor": 1.05404413
+      },
+      {
+        "workItemKind": "security-surface",
+        "expectedSizeBand": "3xl",
+        "sampleSource": "same-kind",
+        "sampleCount": 43,
+        "lowFactor": 0.99999999,
+        "highFactor": 1.08429119
+      },
+      {
+        "workItemKind": "security-surface",
+        "expectedSizeBand": "4xl",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 3,
+        "lowFactor": 0.84927935,
+        "highFactor": 1.15791005
+      },
+      {
+        "workItemKind": "self-review",
+        "expectedSizeBand": "l",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 3,
+        "lowFactor": 1,
+        "highFactor": 5.77777778
+      },
+      {
+        "workItemKind": "self-review",
+        "expectedSizeBand": "xl",
+        "sampleSource": "same-kind",
+        "sampleCount": 15,
+        "lowFactor": 0.72520661,
+        "highFactor": 1.71818182
+      },
+      {
+        "workItemKind": "self-review",
+        "expectedSizeBand": "2xl",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 3,
+        "lowFactor": 0.34188034,
+        "highFactor": 1.01
+      },
+      {
+        "workItemKind": "self-review",
+        "expectedSizeBand": "3xl",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 7,
+        "lowFactor": 0.99999999,
+        "highFactor": 1.53846154
+      },
+      {
+        "workItemKind": "self-review",
+        "expectedSizeBand": "4xl",
+        "sampleSource": "same-kind",
+        "sampleCount": 15,
+        "lowFactor": 0.72520661,
+        "highFactor": 1.71818182
+      },
+      {
+        "workItemKind": "solution-coordination",
+        "expectedSizeBand": "s",
+        "sampleSource": "same-kind",
+        "sampleCount": 13,
+        "lowFactor": 0.62745098,
+        "highFactor": 1.11201299
+      },
+      {
+        "workItemKind": "solution-coordination",
+        "expectedSizeBand": "l",
+        "sampleSource": "same-kind",
+        "sampleCount": 13,
+        "lowFactor": 0.62745098,
+        "highFactor": 1.11201299
+      },
+      {
+        "workItemKind": "solution-coordination",
+        "expectedSizeBand": "xl",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 5,
+        "lowFactor": 0.51282051,
+        "highFactor": 1.33333334
+      },
+      {
+        "workItemKind": "solution-coordination",
+        "expectedSizeBand": "2xl",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 3,
+        "lowFactor": 1,
+        "highFactor": 1.15126051
+      },
+      {
+        "workItemKind": "solution-coordination",
+        "expectedSizeBand": "3xl",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 3,
+        "lowFactor": 0.82929782,
+        "highFactor": 1.01643836
+      },
+      {
+        "workItemKind": "specification-comprehension",
+        "expectedSizeBand": "l",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 3,
+        "lowFactor": 1,
+        "highFactor": 3.33333334
+      },
+      {
+        "workItemKind": "specification-comprehension",
+        "expectedSizeBand": "xl",
+        "sampleSource": "same-kind",
+        "sampleCount": 15,
+        "lowFactor": 0.85106382,
+        "highFactor": 1.45312501
+      },
+      {
+        "workItemKind": "specification-comprehension",
+        "expectedSizeBand": "2xl",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 3,
+        "lowFactor": 0.43055555,
+        "highFactor": 1.45312501
+      },
+      {
+        "workItemKind": "specification-comprehension",
+        "expectedSizeBand": "3xl",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 8,
+        "lowFactor": 0.85106382,
+        "highFactor": 1.22807018
+      },
+      {
+        "workItemKind": "ui-surface",
+        "expectedSizeBand": "xs",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 4,
+        "lowFactor": 0.66666666,
+        "highFactor": 1.33333334
+      },
+      {
+        "workItemKind": "ui-surface",
+        "expectedSizeBand": "s",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 3,
+        "lowFactor": 0.66666666,
+        "highFactor": 2.64392991
+      },
+      {
+        "workItemKind": "ui-surface",
+        "expectedSizeBand": "m",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 31,
+        "lowFactor": 0.62829403,
+        "highFactor": 1.01
+      },
+      {
+        "workItemKind": "ui-surface",
+        "expectedSizeBand": "l",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 10,
+        "lowFactor": 0.72881356,
+        "highFactor": 1.01
+      },
+      {
+        "workItemKind": "ui-surface",
+        "expectedSizeBand": "xl",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 8,
+        "lowFactor": 0.55452356,
+        "highFactor": 1.01
+      },
+      {
+        "workItemKind": "ui-surface",
+        "expectedSizeBand": "2xl",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 4,
+        "lowFactor": 0.94310796,
+        "highFactor": 1.05027933
+      },
+      {
+        "workItemKind": "ui-surface",
+        "expectedSizeBand": "3xl",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 3,
+        "lowFactor": 0.77616926,
+        "highFactor": 1.50226309
+      },
+      {
+        "workItemKind": "ui-surface",
+        "expectedSizeBand": "4xl",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 9,
+        "lowFactor": 0.87790018,
+        "highFactor": 1.28619997
+      },
+      {
+        "workItemKind": "unit-tests",
+        "expectedSizeBand": "xs",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 10,
+        "lowFactor": 0.88659793,
+        "highFactor": 1.01
+      },
+      {
+        "workItemKind": "unit-tests",
+        "expectedSizeBand": "s",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 19,
+        "lowFactor": 0.88659793,
+        "highFactor": 1.10824742
+      },
+      {
+        "workItemKind": "unit-tests",
+        "expectedSizeBand": "m",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 20,
+        "lowFactor": 0.82589285,
+        "highFactor": 1.05113637
+      },
+      {
+        "workItemKind": "unit-tests",
+        "expectedSizeBand": "l",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 9,
+        "lowFactor": 0.83657587,
+        "highFactor": 1.06895807
+      },
+      {
+        "workItemKind": "unit-tests",
+        "expectedSizeBand": "xl",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 12,
+        "lowFactor": 0.97333032,
+        "highFactor": 1.01411403
+      },
+      {
+        "workItemKind": "unit-tests",
+        "expectedSizeBand": "2xl",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 14,
+        "lowFactor": 0.89520492,
+        "highFactor": 1.0383922
+      },
+      {
+        "workItemKind": "unit-tests",
+        "expectedSizeBand": "3xl",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 6,
+        "lowFactor": 0.82813362,
+        "highFactor": 1.03601056
+      },
+      {
+        "workItemKind": "unit-tests",
+        "expectedSizeBand": "4xl",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 26,
+        "lowFactor": 0.90491706,
+        "highFactor": 1.01
+      },
+      {
+        "workItemKind": "validation-surface",
+        "expectedSizeBand": "xs",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 13,
+        "lowFactor": 1,
+        "highFactor": 1.19565217
+      },
+      {
+        "workItemKind": "validation-surface",
+        "expectedSizeBand": "s",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 17,
+        "lowFactor": 1,
+        "highFactor": 1.38705883
+      },
+      {
+        "workItemKind": "validation-surface",
+        "expectedSizeBand": "m",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 4,
+        "lowFactor": 1,
+        "highFactor": 1.40555556
+      },
+      {
+        "workItemKind": "validation-surface",
+        "expectedSizeBand": "l",
+        "sampleSource": "exact-kind-and-size",
+        "sampleCount": 4,
+        "lowFactor": 0.97619047,
+        "highFactor": 1.01
+      },
+      {
+        "workItemKind": "validation-surface",
+        "expectedSizeBand": "xl",
+        "sampleSource": "same-kind",
+        "sampleCount": 42,
+        "lowFactor": 0.99999999,
+        "highFactor": 1.19565217
+      },
+      {
+        "workItemKind": "validation-surface",
+        "expectedSizeBand": "2xl",
+        "sampleSource": "same-kind",
+        "sampleCount": 42,
+        "lowFactor": 0.99999999,
+        "highFactor": 1.19565217
+      },
+      {
+        "workItemKind": "validation-surface",
+        "expectedSizeBand": "3xl",
+        "sampleSource": "same-kind",
+        "sampleCount": 42,
+        "lowFactor": 0.99999999,
+        "highFactor": 1.19565217
+      },
+      {
+        "workItemKind": "validation-surface",
+        "expectedSizeBand": "4xl",
+        "sampleSource": "same-kind",
+        "sampleCount": 42,
+        "lowFactor": 0.99999999,
+        "highFactor": 1.19565217
+      }
+    ]
+  },
+  "limitations": [
+    "Development-only logical weak supervision from one disclosed host-AI teacher.",
+    "No validation or test labels, empirical production observations, or independent correction were used.",
+    "Exact-content evidence is normalized before scoring; operation-only data evidence is bounded by distinct maintained facts rather than raw operation volume; API and integration boundaries have explicit minimum logical points; source backbones at or below one logical hour retain a fixed 0.50 seed contribution before residual fitting.",
+    "Represented data-persistence and external-integration capabilities retain 0.50-hour and one-hour low bounds respectively, capped at the expected point and scaled by the scope-role factor.",
+    "Fitted high ranges retain at least a 1.01 factor so a planning high bound does not collapse to the expected point.",
+    "Development-empty size bands use the nearest same-kind point factor; unknown work-item kinds retain the complete seed capability.",
+    "Specification-comprehension groups use a bounded 4.00 factor ceiling; every other group retains the 3.00 ceiling.",
+    "The table is not admitted for product use and must fall back to seed-rules/0.4.0 outside its exact groups."
+  ]
+}

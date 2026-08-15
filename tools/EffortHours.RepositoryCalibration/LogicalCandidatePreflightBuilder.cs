@@ -204,11 +204,16 @@ internal static class LogicalCandidatePreflightBuilder
             Features =
             [
                 "canonical-evidence-measurements",
+                "exact-content-normalized-evidence",
                 "work-item-kind",
                 "normalized-scope-role",
+                "operation-only-data-intent-bound",
+                "seed-normalized-capability-anchor",
                 "logical-expected-size-band",
                 "candidate-expected-size-band",
                 "bounded-work-item-kind-factor-ceiling",
+                "bounded-kind-low-minimum",
+                "minimum-high-factor",
             ],
             ExactZeroRules =
             [
@@ -227,8 +232,10 @@ internal static class LogicalCandidatePreflightBuilder
                 Features = model.Range.Features,
                 LowerQuantile = model.Range.LowerQuantile,
                 UpperQuantile = model.Range.UpperQuantile,
+                MinimumHighFactor = model.Range.MinimumHighFactor,
                 MinimumExactGroupSamples = model.Range.MinimumExactGroupSamples,
                 SparseGroupFallback = model.Range.SparseGroupFallback,
+                MinimumLowHours = model.Range.MinimumLowHours,
             },
             Dependencies = [".NET 10", "EffortHours.Contracts", "EffortHours.Calibration"],
             LicenseExpression = model.LicenseExpression,
@@ -239,8 +246,9 @@ internal static class LogicalCandidatePreflightBuilder
             FallbackEstimatorVersion = model.BaselineEstimatorVersion,
             ExplanationForm =
                 "Every work item retains its stable ID and records the logical capability point, " +
-                "scope-role factor, frozen point group/factor (including any work-item-kind ceiling), " +
-                "frozen range group/factors, and proportional allocation; unknown groups retain " +
+                "scope-role factor, seed anchor, frozen point group/factor and provenance " +
+                "(including any work-item-kind ceiling), configured low floor, frozen range " +
+                "group/factors, and proportional allocation; unknown groups retain " +
                 "the complete seed capability.",
         };
 

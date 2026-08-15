@@ -33,6 +33,49 @@ Because EffortHours's own anchor informed the seed-model and calibration design,
 a development diagnostic rather than an eligible held-out test record unless a
 future independent snapshot and review policy explicitly establishes otherwise.
 
+## 2026-08-15: logical-capability v0.3 development preflight
+
+Status: **all 16 numerical and five development-computable operational gates
+pass; public mutation passes 339/339; formal measured aggregate pending;
+validation and test remain unopened; no candidate freeze or admission**
+
+`logical-capability/0.3.0` replaces retired v0.2 under new model, estimator,
+feature-contract, scorer, and implementation identities. The development-visible
+corrections normalize exact-content and repeated-source evidence, retain bounded
+API/integration intent, anchor small maintained-source capabilities, expand empty
+point bands from nearest same-kind evidence, bound operation-only persistence by
+distinct facts, and keep represented persistence/integration low bounds from
+collapsing. Focused memory-only regressions cover every mechanism. No repository
+identity, source-path value, history, activity, source body, or holdout informed
+the correction.
+
+Checkpoint `1.0.0` passes all 16 numerical gates. Repository expected WAPE moves
+from seed `0.2365` and retired v0.2 `0.1137` to `0.1009`; absolute aggregate bias
+is `0.0103`; ordinary-family and maximum-family pass rates are `0.9333/1.0000`;
+repository coverage/mean width are `0.8000/0.3662`; and matched-target
+coverage/width are `0.7601/0.7321`. All mapping rates are `1.0000` with no category
+mismatch.
+
+Checkpoint `1.1.0` passes all five development-computable operational gates.
+Pooled material-category WAPE is `0.1883` versus seed `0.4331`; all 15 reports and
+11,161 adjusted items validate and round-trip; out-of-policy inputs preserve the
+seed; and tampered or oversized inputs fail closed. The unchanged public mutation
+suite passes all `339/339` assertions across 88 cases, versus v0.2's `314/339`.
+
+The normalized model, numerical-preflight, operational-preflight, and mutation
+report digests are respectively
+`sha256:492e10b2f427a471a8edcf4f7e3f19d65b098e4822e25c552956c9ce992fa1ea`,
+`sha256:c5614f11513619b7293f454d58cda87efdc192e181ef3551270b1d3bc2a9ba97`,
+`sha256:eb091d5de07399a169dcef4bc9a08f9feb129563dd61d4101eed6c40cab7ddc8`,
+and `sha256:59fb04a4e677795198a2b4c81d5aacf871eef0fdbd67c0bbc577f7992b5f79c0`.
+They pin implementation commit `7e5451c807cef3ce22bedd1bc374ab519882b21c`.
+
+The standalone mutation result does not replace the formal measured aggregate.
+Issue #106 must reproduce it and complete cross-platform determinism, latency,
+memory, installed-package, and scanner/fingerprint measurements. No finite
+candidate manifest is frozen, and no validation/test source, output, or label was
+read or generated.
+
 ## 2026-08-14: canonical repository JSON implementation boundary
 
 Status: **forward implementation correction; retired v0.2 result unchanged;

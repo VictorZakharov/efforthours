@@ -6,7 +6,7 @@ namespace EffortHours.EndToEndTests;
 public sealed partial class CandidatePreflightTests
 {
     [Fact]
-    public void LogicalCapabilityV2BoundsSpecificationSeparatelyAndRetainsV1Projection()
+    public void LogicalCapabilityV3BoundsSpecificationSeparatelyAndRetainsV1Projection()
     {
         const string evidenceId = "common:repository";
         WorkItem item = Item(
@@ -56,8 +56,18 @@ public sealed partial class CandidatePreflightTests
             FeatureContractVersion = "logical-capability-features/1.0.0",
             Point = current.Point with
             {
+                ScorerVersion = LogicalCandidateScorer.LegacyVersion,
                 MaximumFactorOverrides = [],
+                SeedAnchorFactor = 0m,
+                SeedAnchorMaximumLogicalHours = 0m,
+                SeedAnchorWorkItemKinds = [],
                 Factors = [point with { Factor = 3m }],
+            },
+            Range = current.Range with
+            {
+                UpperQuantile = LogicalCandidateModelFitter.RetiredUpperQuantile,
+                MinimumHighFactor = 0m,
+                MinimumLowHours = [],
             },
         };
         EstimateReport legacyCandidate = LogicalCandidateTransformer.Transform(source, evidence, legacy);
@@ -70,7 +80,7 @@ public sealed partial class CandidatePreflightTests
         };
 
         Assert.Equal(8m, candidate.TotalEffort.Expected);
-        Assert.Equal("0.2.0", candidate.WorkItems[0].Estimator.Version);
+        Assert.Equal("0.3.0", candidate.WorkItems[0].Estimator.Version);
         Assert.Equal(6m, legacyCandidate.TotalEffort.Expected);
         Assert.Equal("0.1.0", legacyCandidate.WorkItems[0].Estimator.Version);
         Assert.Throws<InvalidDataException>(() => LogicalCandidateTransformer.Transform(

@@ -5,18 +5,27 @@ namespace EffortHours.RepositoryCalibration;
 
 internal static class LogicalCandidateModelFitter
 {
-    public const string ModelVersion = "repository-logical-capability-model/0.2.0";
+    public const string ModelVersion = "repository-logical-capability-model/0.3.0";
     public const string ModelId = "efforthours-public-readiness-logical-capability";
-    public const string CandidateId = "logical-capability/0.2.0";
-    public const string EstimatorVersion = "candidate-logical-capability/0.2.0+seed-rules/0.4.0";
-    public const string FeatureContractVersion = "logical-capability-features/1.1.0";
+    public const string CandidateId = "logical-capability/0.3.0";
+    public const string EstimatorVersion = "candidate-logical-capability/0.3.0+seed-rules/0.4.0";
+    public const string FeatureContractVersion = "logical-capability-features/1.3.0";
     public const string BaselineEstimatorVersion = "seed-rules/0.4.0";
     public const decimal MinimumFactor = 0.25m;
     public const decimal MaximumFactor = 3m;
     public const decimal SpecificationComprehensionMaximumFactor = 4m;
+    public const decimal SeedAnchorFactor = 0.5m;
+    public const decimal SeedAnchorMaximumLogicalHours = 1m;
     public const decimal LowerQuantile = 0.15m;
-    public const decimal UpperQuantile = 0.8m;
+    public const decimal UpperQuantile = 0.75m;
+    public const decimal RetiredUpperQuantile = 0.8m;
+    public const decimal MinimumHighFactor = 1.01m;
     public const int MinimumRangeSamples = 3;
+    public const decimal DataPersistenceMinimumLowHours = 0.5m;
+    public const decimal ExternalIntegrationMinimumLowHours = 1m;
+
+    public static readonly string[] SeedAnchorWorkItemKinds =
+        ["dotnet-source-backbone", "javascript-source-backbone"];
 
     public static async Task RunAsync(
         LogicalCandidateModelOptions options,
@@ -88,6 +97,7 @@ internal static class LogicalCandidateModelFitter
                     capability.Kind,
                     capability.LogicalSizeBand,
                     capability.LogicalExpected,
+                    capability.SeedExpected,
                     target.Hours.Expected));
             }
 
@@ -109,6 +119,7 @@ internal static class LogicalCandidateModelFitter
         [
             .. rows.Select(row => new TrainingPrediction(
                 row.Kind,
+                AnchoredExpected(row) +
                 row.LogicalExpected * pointIndex[new PointKey(row.Kind, row.LogicalSizeBand)],
                 row.ReviewedExpected)),
         ];
@@ -121,7 +132,7 @@ internal static class LogicalCandidateModelFitter
             EstimatorVersion = EstimatorVersion,
             BaselineEstimatorVersion = BaselineEstimatorVersion,
             FeatureContractVersion = FeatureContractVersion,
-            EffectiveDate = "2026-08-13",
+            EffectiveDate = "2026-08-15",
             LicenseExpression = "MIT",
             Training = new LogicalCandidateTraining
             {
@@ -136,7 +147,14 @@ internal static class LogicalCandidateModelFitter
             Point = new LogicalCandidatePointModel
             {
                 ScorerVersion = LogicalCandidateScorer.Version,
-                Features = ["work-item-kind", "logical-expected-size-band"],
+                Features =
+                [
+                    "work-item-kind",
+                    "exact-content-normalized-evidence-size-band",
+                    "operation-only-data-evidence-count",
+                    "semantic-boundary-minimums",
+                    "seed-normalized-capability-anchor",
+                ],
                 SizeBands = LogicalCandidateScorer.SizeBands,
                 MinimumFactor = MinimumFactor,
                 MaximumFactor = MaximumFactor,
@@ -148,23 +166,50 @@ internal static class LogicalCandidateModelFitter
                         MaximumFactor = SpecificationComprehensionMaximumFactor,
                     },
                 ],
+                SeedAnchorFactor = SeedAnchorFactor,
+                SeedAnchorMaximumLogicalHours = SeedAnchorMaximumLogicalHours,
+                SeedAnchorWorkItemKinds = SeedAnchorWorkItemKinds,
                 UnknownGroupBehavior = "use the complete seed capability without candidate adjustment",
                 Factors = pointFactors,
             },
             Range = new LogicalCandidateRangeModel
             {
-                Features = ["work-item-kind", "candidate-expected-size-band"],
+                Features =
+                [
+                    "work-item-kind",
+                    "candidate-expected-size-band",
+                    "bounded-kind-low-minimum",
+                    "minimum-high-factor",
+                ],
                 LowerQuantile = LowerQuantile,
                 UpperQuantile = UpperQuantile,
+                MinimumHighFactor = MinimumHighFactor,
                 MinimumExactGroupSamples = MinimumRangeSamples,
                 SparseGroupFallback = "same-kind residuals, then all positive development residuals",
                 UnknownGroupBehavior = "use the complete seed capability range",
+                MinimumLowHours =
+                [
+                    new LogicalCandidateRangeMinimum
+                    {
+                        WorkItemKind = "data-persistence",
+                        Hours = DataPersistenceMinimumLowHours,
+                    },
+                    new LogicalCandidateRangeMinimum
+                    {
+                        WorkItemKind = "external-integration",
+                        Hours = ExternalIntegrationMinimumLowHours,
+                    },
+                ],
                 Factors = rangeFactors,
             },
             Limitations =
             [
                 "Development-only logical weak supervision from one disclosed host-AI teacher.",
                 "No validation or test labels, empirical production observations, or independent correction were used.",
+                "Exact-content evidence is normalized before scoring; operation-only data evidence is bounded by distinct maintained facts rather than raw operation volume; API and integration boundaries have explicit minimum logical points; source backbones at or below one logical hour retain a fixed 0.50 seed contribution before residual fitting.",
+                "Represented data-persistence and external-integration capabilities retain 0.50-hour and one-hour low bounds respectively, capped at the expected point and scaled by the scope-role factor.",
+                "Fitted high ranges retain at least a 1.01 factor so a planning high bound does not collapse to the expected point.",
+                "Development-empty size bands use the nearest same-kind point factor; unknown work-item kinds retain the complete seed capability.",
                 "Specification-comprehension groups use a bounded 4.00 factor ceiling; every other group retains the 3.00 ceiling.",
                 "The table is not admitted for product use and must fall back to seed-rules/0.4.0 outside its exact groups.",
             ],
@@ -172,35 +217,85 @@ internal static class LogicalCandidateModelFitter
     }
 
     private static IReadOnlyList<LogicalCandidatePointFactor> FitPointFactors(
-        IReadOnlyList<TrainingRow> rows) =>
-    [
-        .. rows.GroupBy(row => new PointKey(row.Kind, row.LogicalSizeBand))
+        IReadOnlyList<TrainingRow> rows)
+    {
+        LogicalCandidatePointFactor[] exact =
+        [
+            .. rows.GroupBy(row => new PointKey(row.Kind, row.LogicalSizeBand))
             .OrderBy(group => group.Key.Kind, StringComparer.Ordinal)
             .ThenBy(group => BandOrder(group.Key.SizeBand))
             .Select(group =>
             {
                 decimal logical = group.Sum(row => row.LogicalExpected);
                 decimal reviewed = group.Sum(row => row.ReviewedExpected);
-                decimal factor = logical == 0m ? 1m : reviewed / logical;
+                decimal seed = group.Sum(row => row.SeedExpected);
+                decimal residual = decimal.Max(
+                    0m,
+                    reviewed - group.Sum(AnchoredExpected));
+                decimal factor = logical == 0m ? 1m : residual / logical;
                 return new LogicalCandidatePointFactor
                 {
                     WorkItemKind = group.Key.Kind,
                     LogicalSizeBand = group.Key.SizeBand,
                     SampleCount = group.Count(),
                     LogicalExpectedHours = logical,
+                    SeedExpectedHours = seed,
                     ReviewedExpectedHours = reviewed,
                     Factor = Round8(decimal.Clamp(
                         factor,
                         MinimumFactor,
                         MaximumFactorFor(group.Key.Kind))),
+                    SampleSource = "exact-kind-and-size",
                 };
             }),
-    ];
+        ];
+        return
+        [
+            .. exact.GroupBy(factor => factor.WorkItemKind, StringComparer.Ordinal)
+                .OrderBy(group => group.Key, StringComparer.Ordinal)
+                .SelectMany(group => ExpandPointBands([.. group])),
+        ];
+    }
+
+    internal static IEnumerable<LogicalCandidatePointFactor> ExpandPointBands(
+        IReadOnlyList<LogicalCandidatePointFactor> exact)
+    {
+        foreach (string band in SizeBandNames())
+        {
+            LogicalCandidatePointFactor? observed = exact.FirstOrDefault(factor =>
+                factor.LogicalSizeBand == band);
+            if (observed is not null)
+            {
+                yield return observed;
+                continue;
+            }
+
+            LogicalCandidatePointFactor nearest = exact
+                .OrderBy(factor => Math.Abs(BandOrder(factor.LogicalSizeBand) - BandOrder(band)))
+                .ThenBy(factor => BandOrder(factor.LogicalSizeBand))
+                .First();
+            yield return nearest with
+            {
+                LogicalSizeBand = band,
+                SampleCount = 0,
+                LogicalExpectedHours = 0m,
+                SeedExpectedHours = 0m,
+                ReviewedExpectedHours = 0m,
+                SampleSource = $"nearest-same-kind:{nearest.LogicalSizeBand}",
+            };
+        }
+    }
 
     private static decimal MaximumFactorFor(string workItemKind) =>
         workItemKind == "specification-comprehension"
             ? SpecificationComprehensionMaximumFactor
             : MaximumFactor;
+
+    private static decimal AnchoredExpected(TrainingRow row) =>
+        row.LogicalExpected <= SeedAnchorMaximumLogicalHours &&
+        SeedAnchorWorkItemKinds.Contains(row.Kind, StringComparer.Ordinal)
+            ? row.SeedExpected * SeedAnchorFactor
+            : 0m;
 
     private static IReadOnlyList<LogicalCandidateRangeFactor> FitRangeFactors(
         IReadOnlyList<TrainingPrediction> rows)
@@ -252,7 +347,9 @@ internal static class LogicalCandidateModelFitter
                         SampleCount = samples.Length,
                         LowFactor = RoundDown8(
                             decimal.Max(0m, decimal.Min(1m, Quantile(samples, LowerQuantile)))),
-                        HighFactor = RoundUp8(decimal.Max(1m, Quantile(samples, UpperQuantile))),
+                        HighFactor = RoundUp8(decimal.Max(
+                            MinimumHighFactor,
+                            Quantile(samples, UpperQuantile))),
                     };
                 }),
         ];
@@ -304,6 +401,9 @@ internal static class LogicalCandidateModelFitter
         _ => 8,
     };
 
+    private static IEnumerable<string> SizeBandNames() =>
+        LogicalCandidateScorer.SizeBands.Select(band => band.Split(':', 2)[0]);
+
     private static decimal Round8(decimal value) =>
         decimal.Round(value, 8, MidpointRounding.AwayFromZero);
 
@@ -326,6 +426,7 @@ internal static class LogicalCandidateModelFitter
         string Kind,
         string LogicalSizeBand,
         decimal LogicalExpected,
+        decimal SeedExpected,
         decimal ReviewedExpected);
 
     private sealed record TrainingPrediction(

@@ -396,6 +396,17 @@ operating-system newline difference for future candidates. It does not alter the
 recorded `0.9.0` bytes, convert that gate to a pass, or change any candidate,
 manifest, validation, or test decision.
 
+Development checkpoint `1.0.0` gives successor `logical-capability/0.3.0` new
+model, estimator, feature-contract, scorer, and implementation identities. It
+passes all 16 numerical gates with expected WAPE `0.1009`, absolute aggregate bias
+`0.0103`, ordinary-family pass rate `0.9333`, repository expected coverage
+`0.8000`, and matched-target coverage/normalized width `0.7601/0.7321`.
+Checkpoint `1.1.0` passes all five development-computable operational gates; its
+standalone unchanged public-suite evaluation passes `339/339`, up from v0.2's
+`314/339`. The formal measured aggregate and remaining platform, resource,
+package, and scanner measurements are not yet evaluated. No manifest or selection
+rule is frozen, and no validation or test access is authorized.
+
 Validation labels are not authored and must remain unavailable until a finite
 candidate manifest is frozen from development evidence. Test labels are not
 authored and require external body/digest custody before the one-time reveal

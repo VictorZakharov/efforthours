@@ -21,7 +21,7 @@ internal sealed record CandidatePreflightAssessment
         return new CandidatePreflightAssessment
         {
             Metrics = metrics,
-            Gates = BuildGates(seed, metrics),
+            Gates = BuildGates(seed, metrics, intervals),
         };
     }
 
@@ -66,7 +66,8 @@ internal sealed record CandidatePreflightAssessment
 
     private static List<CandidatePreflightGate> BuildGates(
         CalibrationEvaluationReport seed,
-        CandidatePreflightMetrics metrics)
+        CandidatePreflightMetrics metrics,
+        DerivedIntervals intervals)
     {
         decimal seedBias = decimal.Abs(Require(seed.RepositoryTotals.Expected.AggregateBiasRate));
         decimal seedLowWape = Require(seed.RepositoryTotals.Low.WeightedAbsolutePercentageError);
@@ -100,7 +101,8 @@ internal sealed record CandidatePreflightAssessment
                 "per-family-ordinary-error",
                 metrics.FamilyOrdinaryErrorPassRate >= 0.90m,
                 "at least 90% of families <= max(8h, 25%) error",
-                Format(metrics.FamilyOrdinaryErrorPassRate)),
+                $"{Format(metrics.FamilyOrdinaryErrorPassRate)}; " +
+                $"outside-boundary={string.Join(',', intervals.OrdinaryFailureRecordIds)}"),
             Gate(
                 "low-wape",
                 metrics.LowWape <= 0.30m && metrics.LowWape <= seedLowWape + 0.03m,
@@ -230,6 +232,15 @@ internal sealed record CandidatePreflightAssessment
             repository.ExpectedAbsoluteErrorHours <= decimal.Max(
                 8m,
                 repository.ReviewedTotal.Expected * 0.25m));
+        string[] ordinaryFailures =
+        [
+            .. evaluation.Repositories.Where(repository =>
+                    repository.ExpectedAbsoluteErrorHours > decimal.Max(
+                        8m,
+                        repository.ReviewedTotal.Expected * 0.25m))
+                .Select(repository => repository.RecordId)
+                .Order(StringComparer.Ordinal),
+        ];
         int mismatchCount = evaluation.Repositories.Sum(repository =>
             repository.CategoryMismatchTargetIds.Count);
         decimal[] orderedWidths = [.. repositoryWidths.Order()];
@@ -240,6 +251,7 @@ internal sealed record CandidatePreflightAssessment
             Round4(targetWidths.Average()),
             Round4((decimal)maximumPass / evaluation.RepositoryCount),
             Round4((decimal)ordinaryPass / evaluation.RepositoryCount),
+            ordinaryFailures,
             Round4((decimal)mismatchCount / evaluation.Match.TargetCount));
     }
 
@@ -295,5 +307,6 @@ internal sealed record CandidatePreflightAssessment
         decimal TargetMeanNormalizedWidth,
         decimal FamilyMaximumErrorPassRate,
         decimal FamilyOrdinaryErrorPassRate,
+        IReadOnlyList<string> OrdinaryFailureRecordIds,
         decimal CategoryMismatchRate);
 }

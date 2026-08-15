@@ -100,14 +100,10 @@ when semantics, schemas, assumptions, or unresolved decisions change.
 Repository EHE remains experimental and uncalibrated. The frozen 33-family public
 readiness cohort has exact source reproduction, strict-blind packets for all 15
 development families, and rubric-complete teacher records for the full development
-partition. Retired candidate `logical-capability/0.1.0` failed material-category
-bias. Successor `logical-capability/0.2.0` passed all 16 numerical development
-gates and five development-computable operational gates, then failed checkpoint
-`0.9.0` on the public mutation suite (`314/339`) and raw cross-platform byte
-determinism (CRLF versus LF); its resource, package, and scanner gates passed. It
-is retired. Forward boundary `canonical-json-document/1.0.0` removes the OS-
-specific transport whitespace for future candidates without revising that
-rejection. No candidate manifest is frozen or admitted, and validation and test
-labels remain unopened.
+partition. Candidate `logical-capability/0.3.0` uses
+`canonical-json-document/1.0.0` and passes all 16 numerical gates, all five
+development-computable operational gates, and the unchanged public mutation suite
+at `339/339`. Its formal cross-platform measured preflight is pending. No candidate
+manifest is frozen or admitted, and validation and test labels remain unopened.
 Change EHE has only the limited Stage A logical admission described in
 `docs/CHANGE_MODEL_ADMISSION.md`; later ecosystem extensions remain experimental.
