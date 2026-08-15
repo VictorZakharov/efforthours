@@ -359,14 +359,15 @@ concentration are diagnostic candidates. In particular, tags such as
 the product is offline-first. Dynamic and aggregate code-shape features must earn
 held-out value rather than proxy repository size or reward accidental complexity.
 
-Per-function complexity, function-size, and nesting distributions; local fan-in,
-fan-out, and dependency cycles; analyzer-ambiguity concentration; per-cell sample
-support; and out-of-distribution scoring are explicitly deferred because no
-versioned cross-ecosystem offline evidence contract currently emits them. They do
-not appear in v1 work-item feature vectors and require a new feature identity
-before use. The source report's existing range and a symmetry-compliance flag are
-diagnostic only; this checkpoint does not change `seed-rules/0.4.0` or fit a
-successor.
+At the v1 feature-contract freeze, per-function complexity, function-size, and
+nesting distributions; local fan-in, fan-out, and dependency cycles;
+analyzer-ambiguity concentration; per-cell sample support; and OOD scoring were
+explicitly deferred. They do not appear in v1 work-item feature vectors. The later
+support profiler emits the final two as a separate pre-fit artifact rather than
+rewriting this frozen contract or silently adding a fitted feature. Structural
+distributions and graph evidence remain unavailable. The source report's existing
+range and a symmetry-compliance flag are diagnostic only; this checkpoint does not
+change `seed-rules/0.4.0` or fit a successor.
 
 ### Development-only uncertainty feature measurement
 
@@ -418,6 +419,45 @@ It matches all 2,030 targets across 15 repositories. The repository-held-out
 symmetric baseline reaches `0.8463` reviewed-expected coverage, but none of the 11
 available scalar features improves coverage, normalized width, and interval miss
 together. No interval model is selected from that result.
+
+### Label-independent support and OOD profiling
+
+`uncertainty-support-profiler/1.0.0` measures population support without accepting
+a review corpus or labels:
+
+```text
+eh calibration uncertainty-support <population.json> \
+  <features.json>... --compact --output <support-profile.json>
+```
+
+The versioned population manifest maps immutable feature-report source digests to
+stable repository-family and record IDs. It is development-only, pins one profile,
+baseline, and feature contract, and contains no reviewed targets or hours. The
+profiler excludes the complete repository family from every item's training
+support and nearest-neighbor candidates, including another revision of that same
+family.
+
+Support selects the first cell containing at least three observations from at
+least two other families: category/size/ecosystem/complexity, then
+category/size/ecosystem, category/size, category, and global. Insufficient global
+support stays explicit. Only resolved work-item ecosystem tags participate; a
+repository-wide ecosystem inventory is not imputed onto generic work items.
+
+`gower-bucket-distance/1.0.0` compares four structural dimensions and all 11
+frozen scalar-feature dimensions at equal per-dimension weight. Scalar values use
+the already frozen evaluation buckets. Matching non-available states have zero
+distance, while availability mismatches have distance one. The report preserves
+the nearest cross-repository identity, exact-profile support, component distances,
+profile digest, fallback lineage, population digest, and bounded operation counts.
+It remains a label-independent population diagnostic, not an interval feature,
+accuracy result, fitted model, or probability claim.
+
+The first complete run is recorded in
+[`calibration/corpora/public-readiness/1.5.0/README.md`](../calibration/corpora/public-readiness/1.5.0/README.md).
+All 11,161 work items have sufficient cross-family support; 8,322 use the exact
+structural cell and 2,839 use a broader fallback. The mean nearest-neighbor OOD
+score is `0.011802`, but that value has not yet been tested against reviewed
+residuals and changes no estimate.
 
 ## Determinism and safety
 

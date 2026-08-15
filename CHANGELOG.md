@@ -8,6 +8,13 @@ may still change public contracts with explicit documentation.
 
 ### Added
 
+- Added `uncertainty-support-profiler/1.0.0`, its development population and v1
+  schemas, and the offline `calibration uncertainty-support` command. It excludes
+  complete repository families from hierarchical sample support and bucketed OOD
+  references, accepts no reviewed corpus or hours, caches repeated profiles, and
+  reports bounded deterministic lineage without changing estimates. The first
+  15-repository run covers 11,161 work items: 8,322 use exact structural support,
+  2,839 use a broader sufficient fallback, and none falls back globally.
 - Added `uncertainty-feature-evaluation/1.0.0`, its v1 schema, and the
   development-only `calibration uncertainty-evaluate` command. It aggregates
   reviewed targets, measures fixed scalar-feature buckets with repository-held-out

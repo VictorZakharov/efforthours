@@ -15,18 +15,8 @@ internal static class CalibrationUncertaintyEvaluationMath
     public static decimal NormalizationDenominator(decimal expectedHours) =>
         decimal.Max(NormalizationFloorHours, expectedHours);
 
-    public static string SizeBand(decimal expectedHours) => expectedHours switch
-    {
-        <= 0m => "zero",
-        <= 1m => "xs",
-        <= 2m => "s",
-        <= 4m => "m",
-        <= 8m => "l",
-        <= 16m => "xl",
-        <= 32m => "2xl",
-        <= 64m => "3xl",
-        _ => "4xl",
-    };
+    public static string SizeBand(decimal expectedHours) =>
+        CalibrationUncertaintyBucketing.SizeBand(expectedHours);
 
     public static EffortRange PredictRange(decimal expectedHours, decimal normalizedHalfWidth)
     {
@@ -128,15 +118,7 @@ internal static class CalibrationUncertaintyEvaluationMath
 
     public static CalibrationUncertaintyBucket Bucket(
         CalibrationUncertaintyFeatureValueKind kind,
-        decimal value) => kind switch
-        {
-            CalibrationUncertaintyFeatureValueKind.Count or
-            CalibrationUncertaintyFeatureValueKind.Ordinal => CountBucket(value),
-            CalibrationUncertaintyFeatureValueKind.Ratio => RatioBucket(value),
-            CalibrationUncertaintyFeatureValueKind.Rate => RateBucket(value),
-            _ => throw new InvalidOperationException(
-                $"Feature value kind '{kind}' cannot be bucketed by evaluation protocol v1."),
-        };
+        decimal value) => CalibrationUncertaintyBucketing.FeatureBucket(kind, value);
 
     public static decimal Mean(IEnumerable<decimal> values)
     {
@@ -152,35 +134,6 @@ internal static class CalibrationUncertaintyEvaluationMath
 
     public static decimal Round6(decimal value) =>
         decimal.Round(value, 6, MidpointRounding.AwayFromZero);
-
-    private static CalibrationUncertaintyBucket CountBucket(decimal value) => value switch
-    {
-        <= 0m => new("zero", 0),
-        <= 1m => new("one", 1),
-        <= 3m => new("two-to-three", 2),
-        <= 7m => new("four-to-seven", 3),
-        _ => new("eight-plus", 4),
-    };
-
-    private static CalibrationUncertaintyBucket RatioBucket(decimal value) => value switch
-    {
-        <= 0m => new("zero", 0),
-        <= 0.25m => new("up-to-0.25", 1),
-        <= 0.50m => new("0.25-to-0.50", 2),
-        <= 0.75m => new("0.50-to-0.75", 3),
-        _ => new("above-0.75", 4),
-    };
-
-    private static CalibrationUncertaintyBucket RateBucket(decimal value) => value switch
-    {
-        <= 0m => new("zero", 0),
-        <= 0.25m => new("up-to-0.25", 1),
-        <= 0.50m => new("0.25-to-0.50", 2),
-        <= 1m => new("0.50-to-1", 3),
-        <= 2m => new("1-to-2", 4),
-        <= 4m => new("2-to-4", 5),
-        _ => new("above-4", 6),
-    };
 
     private static decimal[] Rank(decimal[] values)
     {

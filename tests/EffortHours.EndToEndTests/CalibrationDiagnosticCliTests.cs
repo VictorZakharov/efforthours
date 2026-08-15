@@ -172,6 +172,50 @@ public sealed class CalibrationDiagnosticCliTests
         Assert.Equal(CalibrationPartition.Development, report.Partition);
         Assert.True(report.Protocol.RepositoryIsolated);
         Assert.False(report.Protocol.FitsProductionModel);
+
+        CalibrationUncertaintySupportPopulation population = new()
+        {
+            Id = "uncertainty-support-cli-fixture",
+            Version = "1.0.0",
+            Description = "Process-level label-independent support fixture.",
+            Partition = CalibrationPartition.Development,
+            FeatureContractVersion = CalibrationUncertaintyFeatureCatalog.Version,
+            FeatureContractDigest = CalibrationUncertaintyVersions.FeatureContractDigestV1,
+            Profile = featureReports[0].Profile,
+            BaselineId = featureReports[0].BaselineId,
+            Repositories = [.. featureReports.Select((featureReport, index) =>
+                new CalibrationUncertaintySupportPopulationRepository
+                {
+                    RecordId = $"record:uncertainty-cli-{index}",
+                    RepositoryId = $"repository:uncertainty-cli-{index}",
+                    SourceDigest = featureReport.RepositorySourceDigest,
+                })],
+        };
+        string populationPath = temporary.Write(
+            "support-population.json",
+            ContractJson.Serialize(population));
+        List<string> supportArguments =
+            ["calibration", "uncertainty-support", populationPath];
+        supportArguments.AddRange(featurePaths);
+        supportArguments.Add("--compact");
+
+        ProcessResult supportResult = await RunCliAsync(root, [.. supportArguments]);
+
+        Assert.Equal(0, supportResult.ExitCode);
+        Assert.Equal(string.Empty, supportResult.StandardError);
+        CalibrationUncertaintySupportProfile support =
+            ContractJson.Deserialize<CalibrationUncertaintySupportProfile>(
+                supportResult.StandardOutput);
+        SchemaValidationResult supportSchema = ContractSchemaValidator.Validate(
+            SchemaNames.CalibrationUncertaintySupportProfile,
+            supportResult.StandardOutput);
+        Assert.True(
+            supportSchema.IsValid,
+            string.Join(Environment.NewLine, supportSchema.Errors));
+        Assert.Empty(ContractValidation.Validate(support));
+        Assert.Equal(3, support.Summary.RepositoryCount);
+        Assert.True(support.Policy.LabelIndependent);
+        Assert.False(support.Policy.UsesReviewedValues);
     }
 
     private static CalibrationCorpus CreateCorpus(EstimateReport estimate) => new()

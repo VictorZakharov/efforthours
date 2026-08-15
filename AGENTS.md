@@ -109,6 +109,9 @@ is admitted or shipped, and `seed-rules/0.4.0` remains the product estimator and
 required fallback. The development-only uncertainty evaluator has measured the 11
 frozen scalar features with repository-held-out folds; none yet beats the symmetric
 baseline on coverage, normalized width, and interval miss together, so no interval
-model is frozen.
+model is frozen. A separate label-independent support profiler now covers all
+11,161 development work items with repository-family-held-out hierarchical support
+and bucketed OOD distance; those values have not yet been measured against reviewed
+residuals and do not change estimates.
 Change EHE has only the limited Stage A logical admission described in
 `docs/CHANGE_MODEL_ADMISSION.md`; later ecosystem extensions remain experimental.

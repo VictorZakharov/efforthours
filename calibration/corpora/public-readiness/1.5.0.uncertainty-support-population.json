@@ -1,0 +1,89 @@
+{
+  "schemaVersion": "1.0.0",
+  "manifestVersion": "uncertainty-support-population/1.0.0",
+  "id": "efforthours-public-readiness-uncertainty-support",
+  "version": "1.0.0",
+  "description": "Label-independent support population for the 15 public development repository families.",
+  "partition": "development",
+  "featureContractVersion": "repository-uncertainty-features/1.0.0",
+  "featureContractDigest": "sha256:a2fea34b25d0c963bb9e96d8c538e130f6b2b23d4d98d851584a7fbe69916077",
+  "profile": "implementation",
+  "baselineId": "senior-contractor-2026-no-ai",
+  "repositories": [
+    {
+      "recordId": "record:app-vnext-polly:implementation",
+      "repositoryId": "repository:github.com/app-vnext/polly",
+      "sourceDigest": "sha256:edff155be72775b8b7de15cb2bc816299affd03f557a4cf7fda737c783dd0c58"
+    },
+    {
+      "recordId": "record:btcpayserver-btcpayserver:implementation",
+      "repositoryId": "repository:github.com/btcpayserver/btcpayserver",
+      "sourceDigest": "sha256:cf0a196516fdfa1b271c1a82d71b171f77921567940d64892c91600c057896f3"
+    },
+    {
+      "recordId": "record:cartercommunity-carter:implementation",
+      "repositoryId": "repository:github.com/cartercommunity/carter",
+      "sourceDigest": "sha256:00b6577c4f3d9f42a32e69804b37d3e8e94b6eff6b5b294fe7e5f78f90b33087"
+    },
+    {
+      "recordId": "record:colinhacks-zod:implementation",
+      "repositoryId": "repository:github.com/colinhacks/zod",
+      "sourceDigest": "sha256:250432548197e4e8228d26209db94cff75d05ac1e2c34896ff2d2823f7e39fc5"
+    },
+    {
+      "recordId": "record:dotnet-command-line-api:implementation",
+      "repositoryId": "repository:github.com/dotnet/command-line-api",
+      "sourceDigest": "sha256:298e7732de1f2da4c37185ae0acc2ccf9f3f25486af306e019856a6ca7c83f9b"
+    },
+    {
+      "recordId": "record:fastendpoints-fastendpoints:implementation",
+      "repositoryId": "repository:github.com/fastendpoints/fastendpoints",
+      "sourceDigest": "sha256:1681a0743529e68c815e971d1fc336a251dfed17b91dd703ef88c7783547a297"
+    },
+    {
+      "recordId": "record:fastify-fastify:implementation",
+      "repositoryId": "repository:github.com/fastify/fastify",
+      "sourceDigest": "sha256:fb9e91d171d70b386838d4481cf6ffa8fe8614b87af3b734cb1e53dbde2e38b8"
+    },
+    {
+      "recordId": "record:fluentvalidation-fluentvalidation:implementation",
+      "repositoryId": "repository:github.com/fluentvalidation/fluentvalidation",
+      "sourceDigest": "sha256:019c5b15a97a678f22d8d0269b94822e0b69bb640498c6100397a388958e95a7"
+    },
+    {
+      "recordId": "record:lit-lit:implementation",
+      "repositoryId": "repository:github.com/lit/lit",
+      "sourceDigest": "sha256:580127cac2ce4795a48e3ebb446a8ae74d8eb1baf7f1e6d85c6ac9baecdd0b4b"
+    },
+    {
+      "recordId": "record:mudblazor-mudblazor:implementation",
+      "repositoryId": "repository:github.com/mudblazor/mudblazor",
+      "sourceDigest": "sha256:cf22bb7f911d01a433552f828193ca5a383f653606b62c9aabf80db86bcffd88"
+    },
+    {
+      "recordId": "record:oqtane-oqtane-framework:implementation",
+      "repositoryId": "repository:github.com/oqtane/oqtane.framework",
+      "sourceDigest": "sha256:a82445a988d9aedca9fe495980240285f82f2989a3b9a6e7dc8bb72d71accfbc"
+    },
+    {
+      "recordId": "record:simplcommerce-simplcommerce:implementation",
+      "repositoryId": "repository:github.com/simplcommerce/simplcommerce",
+      "sourceDigest": "sha256:3a67cfbe2132f34faa1e6016dc8a69f2384c6f28a36cc4b423ad4b151e187b2c"
+    },
+    {
+      "recordId": "record:sindresorhus-execa:implementation",
+      "repositoryId": "repository:github.com/sindresorhus/execa",
+      "sourceDigest": "sha256:251c4d17f2a7a5893a18c245ce9289a866f120085fe7dce9b4fd46d27662a827"
+    },
+    {
+      "recordId": "record:squidex-squidex:implementation",
+      "repositoryId": "repository:github.com/squidex/squidex",
+      "sourceDigest": "sha256:7ba94792039d81ca71367da9be0a1f993cf8a31c630532c9fdf20ab944c474d9"
+    },
+    {
+      "recordId": "record:tj-commander-js:implementation",
+      "repositoryId": "repository:github.com/tj/commander.js",
+      "sourceDigest": "sha256:fe18ceb689a5b6ee31de0b198448bd03a2b0b56f4c25bf0d71a2e276f6a70d57"
+    }
+  ]
+}

@@ -269,6 +269,13 @@ they do not fit a production model, satisfy a candidate gate, reopen validation,
 or authorize test access. Any feature selected from these results still requires
 a new finite candidate identity and fresh blind boundary.
 
+`uncertainty-support-profiler/1.0.0` has the same pre-fit status. Its manifest and
+feature reports contain no reviewed values; support and OOD references exclude the
+complete repository family. Population coverage or a low nearest-neighbor distance
+does not satisfy an accuracy or range gate. The values must first demonstrate
+incremental development-fold coverage, sharpness, and miss performance, then be
+frozen into a new finite candidate before fresh blind validation.
+
 ## Qualitative, safety, and explanation gates
 
 For the cross-platform byte gate, canonical structured output uses
