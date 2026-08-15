@@ -10,6 +10,8 @@ public sealed class ValidationReviewArtifactTests
         "calibration/corpora/public-readiness/1.3.0.validation-review-plan.json";
     private const string OpeningPath =
         "calibration/corpora/public-readiness/1.3.0/1.3.0.validation-opening.json";
+    private const string CorpusPath =
+        "calibration/corpora/public-readiness/1.3.0.validation-corpus.json";
     private const string ReviewDigest =
         "sha256:f68e1e590d60547e657f551a883291f153b45d31022187e7dd064ceef55b9cd1";
 
@@ -92,6 +94,44 @@ public sealed class ValidationReviewArtifactTests
         Assert.Equal("not-performed", String(boundary, "testSourceAccess"));
         Assert.False(boundary.GetProperty("testCandidateOutputsGenerated").GetBoolean());
         Assert.False(boundary.GetProperty("testLabelsAuthored").GetBoolean());
+    }
+
+    [Fact]
+    public void ValidationCorpusCompilesEveryFrozenJudgmentWithoutChangingThePartition()
+    {
+        string root = FindRepositoryRoot();
+        string json = File.ReadAllText(Path.Combine(root, CorpusPath));
+        using JsonDocument document = JsonDocument.Parse(json);
+        JsonElement corpus = document.RootElement;
+
+        Assert.Equal(
+            "sha256:dad8ba8c4af5162522bc6fbfc7ee1733eb0ace0f6cdd3b185de98ebb531c3be7",
+            Digest(json));
+        Assert.Equal("efforthours-public-readiness-validation", String(corpus, "id"));
+        Assert.Equal("1.3.0", String(corpus, "version"));
+        JsonElement[] records = [.. corpus.GetProperty("records").EnumerateArray()];
+        Assert.Equal(9, records.Length);
+        Assert.All(records, record =>
+        {
+            Assert.Equal("validation", String(record, "partition"));
+            Assert.Equal("seed-rules/0.4.0", String(record, "sourceEstimatorVersion"));
+            Assert.Equal("teacher-estimate", String(record.GetProperty("review"), "status"));
+        });
+
+        JsonElement[] targets = [.. records.SelectMany(record =>
+            record.GetProperty("targets").EnumerateArray())];
+        Assert.Equal(2747, targets.Length);
+        Assert.Equal(111, targets.Count(target =>
+            target.GetProperty("hours").GetProperty("expected").GetDecimal() == 0m));
+        Assert.Equal(
+            46045.50m,
+            targets.Sum(target =>
+                target.GetProperty("hours").GetProperty("expected").GetDecimal()));
+        Assert.All(targets, target => Assert.NotEmpty(
+            target.GetProperty("sourceWorkItemIds").EnumerateArray()));
+        Assert.DoesNotContain("G:\\\\", json, StringComparison.OrdinalIgnoreCase);
+        Assert.DoesNotContain("C:\\\\Users\\\\", json, StringComparison.OrdinalIgnoreCase);
+        Assert.DoesNotContain("sourceExcerpt", json, StringComparison.OrdinalIgnoreCase);
     }
 
     private static (decimal Low, decimal Expected, decimal High, int Excluded, int AboveEight, int Count)

@@ -120,6 +120,13 @@ model, or candidate-report argument. The review plan records `partition:
 validation`, `teacher-estimate` maturity, the public revision/license lineage, and
 the same disclosed teacher identity used for development.
 
+After the review plan was frozen, `../1.3.0.validation-corpus.json` compiled all
+nine matching immutable seed-report lineages without changing any judgment. Its
+normalized SHA-256 is
+`sha256:dad8ba8c4af5162522bc6fbfc7ee1733eb0ace0f6cdd3b185de98ebb531c3be7`.
+The compact corpus contains exactly nine validation records and 2,747 targets,
+retains all 111 zero decisions, and contains no local path or source excerpt.
+
 ## Next boundary
 
 Commit the blind review plan before opening the ignored seed totals or generating
