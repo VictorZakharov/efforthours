@@ -265,9 +265,10 @@ Storage-independent fixtures cover:
   policy; and
 - manifest/report schema and customer-safety wording.
 
-The process-level suite verifies an offline author-period command on a temporary
-Git repository, immutable selected objects, deterministic stdout, exact
-allocation, no source/host paths, and an unchanged worktree.
+The process-level suite verifies offline direct and manifest author-period
+commands on temporary Git repositories, immutable selected objects, deterministic
+stdout, exact allocation, live phase progress, no source/host paths, and unchanged
+worktrees.
 
 The first multi-repository author-period release freezes the following regression
 matrix. The focused `change/1.3.0` process test covers the composed path; smaller
@@ -316,11 +317,22 @@ workstreams intervene; different scopes remain separate where correctness
 requires. Shared blob reads and immutable inventories still benefit those rows.
 
 Report diagnostic `FB5325` records deterministic, privacy-safe request/hit counts
-and retention bounds without paths, aliases, source, or timings. Manifest runs also
-write nine wall-clock phases to stderr: manifest validation, head validation,
-history union, selection, snapshot/diff construction, static analysis,
-reconciliation, allocation, and rendering. Durations are operational telemetry,
-not report-contract fields, deterministic identity, or effort inputs.
+and retention bounds without paths, aliases, source, or timings. Direct and
+manifest author-period runs announce each active phase on stderr before it begins,
+then write elapsed phase summaries after successful output. Direct runs report
+head validation, history union, selection, snapshot/diff construction, static
+analysis, reconciliation, and rendering. Manifest runs additionally report
+manifest validation and contributor/head allocation. Durations are operational
+telemetry, not report-contract fields, deterministic identity, or effort inputs.
+
+Author-date selection intentionally does not pass a date cutoff to Git history
+traversal. Git revision date pruning uses the commit/committer timestamp, while an
+author timestamp may differ arbitrarily and need not be monotonic through the
+graph. Applying that cutoff to `--date-field author` could silently omit valid
+commits. EffortHours instead uses Git's bounded identity prefilter and applies the
+exact selected timestamp, timezone, merge, and co-author rules locally. A separate
+committer-only traversal shortcut remains deferred until measurements justify the
+extra policy path.
 
 ## Safety and limitations
 
@@ -343,6 +355,6 @@ not report-contract fields, deterministic identity, or effort inputs.
   deliberately unsupported.
 
 Future evidence may justify reviewed public portfolio examples, broader semantic
-equivalence, cross-platform/concurrent monorepository measurements, and universal
-regression thresholds. Any extension must preserve the selector-only identity
-boundary and explicit uncertainty.
+equivalence, cross-platform concurrency repetition, larger public monorepository
+shapes, and universal regression thresholds. Any extension must preserve the
+selector-only identity boundary and explicit uncertainty.

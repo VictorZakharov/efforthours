@@ -32,6 +32,13 @@ may still change public contracts with explicit documentation.
   readers from 16 to 2, and measured wall time from 12.360 to 2.878 seconds.
   Ordinary CI gates deterministic behavior and reuse counts, not machine-dependent
   time or memory observations.
+- Added live stderr phase starts and completion timings to direct and manifest
+  author-period portfolios. Added the non-gating `change/1.4.0` 1/2/3-process
+  shared-object-database matrix and read-only caller-source fixture support. The
+  pinned public monorepository checkpoint produced six byte-equivalent reports;
+  three concurrent workers completed in 3.516 seconds with a 146.13-MiB maximum
+  per-worker peak, versus 3.184 seconds and 145.32 MiB isolated. CI gates only
+  deterministic equivalence, bounded coordination, and unchanged/offline inputs.
 
 ## 0.10.0-alpha.3 - 2026-08-14
 

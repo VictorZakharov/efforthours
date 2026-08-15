@@ -6,6 +6,40 @@ namespace EffortHours.Tests;
 public sealed partial class ChangePortfolioCommandTests
 {
     [Fact]
+    public void ExecutionTelemetryReportsEachStartedPhaseOnceAndOnlyReturnsActivePhases()
+    {
+        List<string> started = [];
+        ChangePortfolioExecutionTelemetry telemetry = new(started.Add);
+
+        using (telemetry.Measure(ChangePortfolioExecutionPhases.StaticAnalysis))
+        {
+        }
+        using (telemetry.Measure(ChangePortfolioExecutionPhases.StaticAnalysis))
+        {
+        }
+        telemetry.Start(ChangePortfolioExecutionPhases.Selection);
+        telemetry.Add(ChangePortfolioExecutionPhases.Allocation, TimeSpan.FromMilliseconds(2));
+
+        Assert.Equal(
+            [
+                ChangePortfolioExecutionPhases.StaticAnalysis,
+                ChangePortfolioExecutionPhases.Selection,
+                ChangePortfolioExecutionPhases.Allocation,
+            ],
+            started);
+        Assert.Equal(
+            [
+                ChangePortfolioExecutionPhases.Selection,
+                ChangePortfolioExecutionPhases.StaticAnalysis,
+                ChangePortfolioExecutionPhases.Allocation,
+            ],
+            telemetry.GetTimings().Select(timing => timing.Phase));
+        Assert.DoesNotContain(
+            telemetry.GetTimings(),
+            timing => timing.Phase == ChangePortfolioExecutionPhases.ManifestValidation);
+    }
+
+    [Fact]
     public async Task PortfolioCandidateBatchReusesNonAdjacentSnapshotsWithinBound()
     {
         SnapshotState shared = State(("Demo.csproj", ProjectFile));

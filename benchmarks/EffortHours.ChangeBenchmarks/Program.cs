@@ -9,6 +9,11 @@ public static partial class Program
 {
     public static async Task<int> Main(string[] arguments)
     {
+        if (AuthorPeriodBenchmarkWorker.IsWorker(arguments))
+        {
+            return await RunAuthorPeriodWorkerAsync(arguments).ConfigureAwait(false);
+        }
+
         ChangeBenchmarkOptions options;
         try
         {
@@ -38,6 +43,9 @@ public static partial class Program
                     cancellation.Token).ConfigureAwait(false);
             }
 
+            RepositoryStateSnapshot? sourceTreeBefore = options.SourceTreePath is null
+                ? null
+                : RepositoryStateSnapshot.Capture(options.SourceTreePath, ".git");
             using GitBenchmarkRepository repository = await GitBenchmarkRepository.CreateAsync(
                 options,
                 cancellation.Token).ConfigureAwait(false);
@@ -46,6 +54,17 @@ public static partial class Program
                 ".git");
             RepositoryStateSnapshot gitBefore = RepositoryStateSnapshot.Capture(
                 Path.Combine(repository.RootPath, ".git"));
+            if (options.ProcessMatrix)
+            {
+                return await RunAuthorPeriodProcessMatrixAsync(
+                    options,
+                    repository,
+                    worktreeBefore,
+                    gitBefore,
+                    sourceTreeBefore,
+                    cancellation.Token).ConfigureAwait(false);
+            }
+
             CountingEstimator repositoryEstimator = new();
 
             long allocationsBefore = GC.GetTotalAllocatedBytes(precise: true);
@@ -69,7 +88,11 @@ public static partial class Program
                 Path.Combine(repository.RootPath, ".git"));
             bool worktreeUnchanged = worktreeBefore == worktreeAfter;
             bool gitUnchanged = gitBefore == gitAfter;
-            if (!worktreeUnchanged || !gitUnchanged)
+            RepositoryStateSnapshot? sourceTreeAfter = options.SourceTreePath is null
+                ? null
+                : RepositoryStateSnapshot.Capture(options.SourceTreePath, ".git");
+            bool sourceTreeUnchanged = sourceTreeBefore == sourceTreeAfter;
+            if (!worktreeUnchanged || !gitUnchanged || !sourceTreeUnchanged)
             {
                 throw new InvalidOperationException(
                     "The worktree or Git database changed during Change analysis; the benchmark refuses " +
@@ -107,6 +130,8 @@ public static partial class Program
                 workingSetAfter,
                 worktreeBefore,
                 gitBefore,
+                sourceTreeBefore,
+                sourceTreeUnchanged,
                 secondsPassed,
                 memoryPassed);
             return secondsPassed && memoryPassed ? 0 : 3;
@@ -139,17 +164,22 @@ public static partial class Program
         long workingSetAfter,
         RepositoryStateSnapshot worktree,
         RepositoryStateSnapshot git,
+        RepositoryStateSnapshot? sourceTree,
+        bool sourceTreeUnchanged,
         bool secondsPassed,
         bool memoryPassed)
     {
-        Console.WriteLine("benchmark=change/1.3.0");
+        Console.WriteLine("benchmark=change/1.4.0");
         Console.WriteLine($"estimator={ChangeEstimator.Version}");
         Console.WriteLine($"mode={options.Name}");
         Console.WriteLine($"runtime={RuntimeInformation.FrameworkDescription}");
         Console.WriteLine($"os={RuntimeInformation.OSDescription}");
         Console.WriteLine($"architecture={RuntimeInformation.OSArchitecture}");
         Console.WriteLine($"logical-processors={Environment.ProcessorCount.ToString(CultureInfo.InvariantCulture)}");
-        Console.WriteLine($"requested-files={options.Files.ToString(CultureInfo.InvariantCulture)}");
+        Console.WriteLine(
+            $"fixture-source={(options.SourceTreePath is null ? "synthetic" : "caller-supplied")}");
+        Console.WriteLine(
+            $"requested-files={(options.SourceTreePath is null ? options.Files.ToString(CultureInfo.InvariantCulture) : "caller-supplied")}");
         Console.WriteLine($"requested-lines-per-file={options.LinesPerFile.ToString(CultureInfo.InvariantCulture)}");
         Console.WriteLine($"requested-commits={options.Commits.ToString(CultureInfo.InvariantCulture)}");
         Console.WriteLine($"maximum-range-components={options.MaximumRangeComponents.ToString(CultureInfo.InvariantCulture)}");
@@ -201,6 +231,7 @@ public static partial class Program
         Console.WriteLine($"git-state-files={git.FileCount.ToString(CultureInfo.InvariantCulture)}");
         Console.WriteLine($"git-state-bytes={git.TotalBytes.ToString(CultureInfo.InvariantCulture)}");
         Console.WriteLine($"git-state-digest={git.Digest}");
+        WriteSourceTreeResults(repository, sourceTree, sourceTreeUnchanged);
         Console.WriteLine("worktree-unchanged=true");
         Console.WriteLine("git-state-unchanged=true");
         Console.WriteLine("target-execution=not-performed");

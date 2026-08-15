@@ -18,6 +18,7 @@ internal sealed class GitBenchmarkRepository : IDisposable
         string headObjectId,
         int headFileCount,
         int headDirectoryCount,
+        BenchmarkSourceTreeCopy? sourceTree,
         bool keep)
     {
         RootPath = rootPath;
@@ -25,6 +26,7 @@ internal sealed class GitBenchmarkRepository : IDisposable
         HeadObjectId = headObjectId;
         HeadFileCount = headFileCount;
         HeadDirectoryCount = headDirectoryCount;
+        SourceTree = sourceTree;
         _keep = keep;
     }
 
@@ -37,6 +39,8 @@ internal sealed class GitBenchmarkRepository : IDisposable
     public int HeadFileCount { get; }
 
     public int HeadDirectoryCount { get; }
+
+    public BenchmarkSourceTreeCopy? SourceTree { get; }
 
     public long EstimatedLegacyEntryComparisonsPerSnapshot =>
         (long)HeadDirectoryCount * (HeadDirectoryCount + HeadFileCount);
@@ -66,18 +70,41 @@ internal sealed class GitBenchmarkRepository : IDisposable
             await GitAsync(root, cancellationToken, "config", "maintenance.auto", "false")
                 .ConfigureAwait(false);
 
-            WriteText(
-                root,
-                "Benchmark.csproj",
-                "<Project Sdk=\"Microsoft.NET.Sdk\"><PropertyGroup>" +
-                "<TargetFramework>net10.0</TargetFramework></PropertyGroup></Project>\n");
-            for (int index = 0; index < options.Files; index++)
+            BenchmarkSourceTreeCopy? sourceTree = null;
+            if (options.SourceTreePath is not null)
             {
-                cancellationToken.ThrowIfCancellationRequested();
+                sourceTree = BenchmarkSourceTree.CopyTo(options.SourceTreePath, root);
+                if (Directory.Exists(Path.Combine(root, ".efforthours-benchmark")))
+                {
+                    throw new InvalidOperationException(
+                        "The source tree already contains the reserved '.efforthours-benchmark' directory.");
+                }
+
                 WriteText(
                     root,
-                    SourcePath(index, options.Mode == ChangeBenchmarkMode.AuthorPeriod),
-                    SourceFile(index, options.LinesPerFile));
+                    ".efforthours-benchmark/Benchmark.csproj",
+                    "<Project Sdk=\"Microsoft.NET.Sdk\"><PropertyGroup>" +
+                    "<TargetFramework>net10.0</TargetFramework></PropertyGroup></Project>\n");
+                WriteText(
+                    root,
+                    ".efforthours-benchmark/SelectedChange.cs",
+                    SourceFile(0, options.LinesPerFile));
+            }
+            else
+            {
+                WriteText(
+                    root,
+                    "Benchmark.csproj",
+                    "<Project Sdk=\"Microsoft.NET.Sdk\"><PropertyGroup>" +
+                    "<TargetFramework>net10.0</TargetFramework></PropertyGroup></Project>\n");
+                for (int index = 0; index < options.Files; index++)
+                {
+                    cancellationToken.ThrowIfCancellationRequested();
+                    WriteText(
+                        root,
+                        SourcePath(index, options.Mode == ChangeBenchmarkMode.AuthorPeriod),
+                        SourceFile(index, options.LinesPerFile));
+                }
             }
 
             string baseObjectId = await CommitAsync(root, "base tree", cancellationToken)
@@ -126,7 +153,9 @@ internal sealed class GitBenchmarkRepository : IDisposable
                         baseObjectId).ConfigureAwait(false);
                     WriteText(
                         root,
-                        $"fanout/branch-{index:D2}.txt",
+                        options.SourceTreePath is null
+                            ? $"fanout/branch-{index:D2}.txt"
+                            : $".efforthours-benchmark/fanout/branch-{index:D2}.txt",
                         $"synthetic merge-fanout branch {index:D2}\n");
                     _ = await CommitAsync(root, $"fanout branch {index:D2}", cancellationToken)
                         .ConfigureAwait(false);
@@ -153,7 +182,9 @@ internal sealed class GitBenchmarkRepository : IDisposable
                     const int sourceIndex = 0;
                     WriteText(
                         root,
-                        SourcePath(sourceIndex, nested: true),
+                        options.SourceTreePath is null
+                            ? SourcePath(sourceIndex, nested: true)
+                            : ".efforthours-benchmark/SelectedChange.cs",
                         SourceFile(sourceIndex, options.LinesPerFile, finalValue: index));
                     headObjectId = await CommitAsync(
                         root,
@@ -175,6 +206,7 @@ internal sealed class GitBenchmarkRepository : IDisposable
                 headObjectId,
                 headFiles,
                 headDirectories,
+                sourceTree,
                 options.KeepRepository);
         }
         catch

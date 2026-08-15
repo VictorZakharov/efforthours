@@ -16,6 +16,7 @@ public sealed class ChangePortfolioReconciler
         IReadOnlyList<Diagnostic>? planningDiagnostics = null,
         ChangePortfolioExecutionTelemetry? executionTelemetry = null)
     {
+        executionTelemetry?.Start(ChangePortfolioExecutionPhases.Reconciliation);
         long reconciliationStarted = Stopwatch.GetTimestamp();
         TimeSpan allocationElapsed = TimeSpan.Zero;
         ArgumentNullException.ThrowIfNull(selection);
@@ -46,6 +47,7 @@ public sealed class ChangePortfolioReconciler
         ChangePortfolioAggregation? aggregation = null;
         if (selection.ManifestBased && selection.AuthorPeriodManifest is not null)
         {
+            executionTelemetry?.Start(ChangePortfolioExecutionPhases.Allocation);
             long allocationStarted = Stopwatch.GetTimestamp();
             aggregation = ChangePortfolioAggregationBuilder.Build(
                 selection,
@@ -167,9 +169,12 @@ public sealed class ChangePortfolioReconciler
             executionTelemetry.Add(
                 ChangePortfolioExecutionPhases.Reconciliation,
                 reconciliationElapsed);
-            executionTelemetry.Add(
-                ChangePortfolioExecutionPhases.Allocation,
-                allocationElapsed);
+            if (selection.ManifestBased && selection.AuthorPeriodManifest is not null)
+            {
+                executionTelemetry.Add(
+                    ChangePortfolioExecutionPhases.Allocation,
+                    allocationElapsed);
+            }
         }
 
         return report;

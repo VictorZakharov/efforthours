@@ -100,7 +100,7 @@ public sealed partial class ChangeCliTests
                 "--compact");
 
             Assert.Equal(0, result.ExitCode);
-            AssertManifestTimings(result.StandardError);
+            AssertPortfolioTelemetry(result.StandardError, includesManifestPhases: true);
             Assert.Equal(sourceStatus, await repository.GitAsync("status", "--porcelain=v1"));
             Assert.DoesNotContain(repository.RootPath, result.StandardOutput, StringComparison.OrdinalIgnoreCase);
             Assert.DoesNotContain(clonedRepository, result.StandardOutput, StringComparison.OrdinalIgnoreCase);
@@ -235,7 +235,8 @@ public sealed partial class ChangeCliTests
         ProcessResult second = await RunCliAsync(arguments);
 
         Assert.Equal(0, first.ExitCode);
-        Assert.Equal(string.Empty, first.StandardError);
+        AssertPortfolioTelemetry(first.StandardError, includesManifestPhases: false);
+        AssertPortfolioTelemetry(second.StandardError, includesManifestPhases: false);
         Assert.Equal(first.StandardOutput, second.StandardOutput);
         Assert.Equal(statusBefore, await repository.GitAsync("status", "--porcelain=v1"));
         Assert.DoesNotContain(repository.RootPath, first.StandardOutput, StringComparison.OrdinalIgnoreCase);
@@ -287,7 +288,7 @@ public sealed partial class ChangeCliTests
             "--compact");
 
         Assert.Equal(0, result.ExitCode);
-        Assert.Equal(string.Empty, result.StandardError);
+        AssertPortfolioTelemetry(result.StandardError, includesManifestPhases: false);
         Assert.DoesNotContain("coauthored feature", result.StandardOutput, StringComparison.Ordinal);
         using JsonDocument report = JsonDocument.Parse(result.StandardOutput);
         JsonElement item = Assert.Single(report.RootElement.GetProperty("items").EnumerateArray());

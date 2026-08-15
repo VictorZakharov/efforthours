@@ -194,6 +194,12 @@ count, and intermediate churn do not value effort. `CHANGE_ESTIMATION.md` and
   exact contributor/repository/head aggregation and zero rows, non-multiplying
   shared groups, privacy-safe report boundary, and rule that identity and time
   never become value.
+- Direct and manifest author-period commands now announce live phase starts and
+  summarize non-semantic timings on stderr. The `change/1.4.0` checkpoint adds a
+  controlled 1/2/3-process shared-object-database matrix plus a pinned MIT public
+  monorepository shape; all workers preserve exact reports and per-worker memory
+  stays effectively flat in the recorded run. CI gates equivalence, read-only
+  safety, and bounded coordination rather than machine-dependent performance.
 - The optional host-assisted scaffolding boundary is now frozen in
   `AUTHOR_PERIOD_SCAFFOLDING.md`: a separate companion adapter may eventually emit
   a reviewed v1 manifest and local-only provenance, but the estimator stays
@@ -226,11 +232,10 @@ runtimes merely for architectural symmetry.
 
 - Repeat peak-memory and read-only benchmark protocols on constrained Windows,
   Linux, and macOS hosts.
-- Add larger redistributable monorepository shapes before freezing universal
+- Add still larger redistributable monorepository shapes before freezing universal
   regression thresholds.
-- Extend the recorded nested author-period checkpoint to concurrent processes,
-  directory/evidence selectors, other ecosystems, and realistic public large
-  trees.
+- Extend the recorded nested author-period checkpoint to directory/evidence
+  selectors, other ecosystems, and additional constrained-host concurrency runs.
 - Keep caller-supplied target fingerprints and offline-safety checks in every
   performance claim.
 

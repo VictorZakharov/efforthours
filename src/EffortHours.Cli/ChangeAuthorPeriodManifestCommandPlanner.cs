@@ -9,9 +9,10 @@ internal sealed class ChangeAuthorPeriodManifestCommandPlanner(GitPortfolioPlann
 
     public async Task<GitAuthorPeriodManifestPortfolioPlan> PlanAsync(
         string manifestPath,
+        ChangePortfolioExecutionTelemetry executionTelemetry,
         CancellationToken cancellationToken)
     {
-        ChangePortfolioExecutionTelemetry executionTelemetry = new();
+        ArgumentNullException.ThrowIfNull(executionTelemetry);
         ResolvedChangeAuthorPeriodManifest resolved;
         using (executionTelemetry.Measure(ChangePortfolioExecutionPhases.ManifestValidation))
         {

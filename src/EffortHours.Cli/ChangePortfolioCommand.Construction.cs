@@ -31,7 +31,8 @@ internal sealed partial class ChangePortfolioCommand
         : this(
             changeEstimator,
             planPullRequest,
-            planAuthorPeriod,
+            (path, options, _, cancellationToken) =>
+                planAuthorPeriod(path, options, cancellationToken),
             ChangePortfolioManifestLoader.LoadAsync,
             new ChangeAuthorPeriodManifestCommandPlanner(new GitPortfolioPlanner()).PlanAsync)
     {
@@ -47,7 +48,8 @@ internal sealed partial class ChangePortfolioCommand
         : this(
             changeEstimator,
             planPullRequest,
-            planAuthorPeriod,
+            (path, options, _, cancellationToken) =>
+                planAuthorPeriod(path, options, cancellationToken),
             loadManifest,
             new ChangeAuthorPeriodManifestCommandPlanner(new GitPortfolioPlanner()).PlanAsync)
     {
@@ -56,11 +58,12 @@ internal sealed partial class ChangePortfolioCommand
     internal ChangePortfolioCommand(
         ChangeEstimator changeEstimator,
         Func<string, string, string?, CancellationToken, Task<GitChangePlan>> planPullRequest,
-        Func<string, GitAuthorPeriodPortfolioOptions, CancellationToken,
+        Func<string, GitAuthorPeriodPortfolioOptions, ChangePortfolioExecutionTelemetry?, CancellationToken,
             Task<GitAuthorPeriodPortfolioPlan>> planAuthorPeriod,
         Func<string, CancellationToken,
             Task<IReadOnlyList<ResolvedChangePortfolioManifestItem>>> loadManifest,
-        Func<string, CancellationToken, Task<GitAuthorPeriodManifestPortfolioPlan>>
+        Func<string, ChangePortfolioExecutionTelemetry, CancellationToken,
+            Task<GitAuthorPeriodManifestPortfolioPlan>>
             planAuthorPeriodManifest)
     {
         _changeEstimator = changeEstimator ?? throw new ArgumentNullException(nameof(changeEstimator));

@@ -150,9 +150,102 @@ public sealed class ChangeBenchmarkCliTests
             StringComparison.Ordinal);
     }
 
-    private static void AssertReadOnlyAndMeasured(Dictionary<string, string> values)
+    [Fact]
+    public async Task AuthorPeriodProcessMatrixSharesObjectDatabaseWithoutTimingGates()
     {
-        Assert.Equal("change/1.3.0", values["benchmark"]);
+        ProcessResult result = await RunBenchmarkAsync(
+            "--author-period",
+            "--files",
+            "8",
+            "--lines-per-file",
+            "8",
+            "--commits",
+            "1",
+            "--process-matrix");
+
+        Assert.Equal(0, result.ExitCode);
+        Assert.Equal(string.Empty, result.StandardError);
+        Dictionary<string, string> values = Parse(result.StandardOutput);
+        Assert.Equal("author-period-process-matrix", values["mode"]);
+        Assert.Equal("1,2,3", values["process-matrix"]);
+        Assert.Equal("6", values["process-matrix-workers"]);
+        Assert.Equal("true", values["process-matrix-reports-equivalent"]);
+        Assert.Equal("true", values["shared-object-database"]);
+        Assert.Equal("1", values["process-1-workers"]);
+        Assert.Equal("2", values["process-2-workers"]);
+        Assert.Equal("3", values["process-3-workers"]);
+        AssertPositive(values, "process-1-group-wall-seconds");
+        AssertPositive(values, "process-2-group-wall-seconds");
+        AssertPositive(values, "process-3-group-wall-seconds");
+        AssertPositive(values, "process-3-max-worker-peak-working-set-mib");
+        AssertReadOnlyAndMeasured(values, requireOverallMeasurements: false);
+    }
+
+    [Fact]
+    public async Task AuthorPeriodBenchmarkCopiesCallerSourceTreeWithoutMutatingIt()
+    {
+        string sourceTree = Path.Combine(
+            Path.GetTempPath(),
+            "efforthours-change-source-tree",
+            Guid.NewGuid().ToString("N"));
+        Directory.CreateDirectory(Path.Combine(sourceTree, "src"));
+        try
+        {
+            await File.WriteAllTextAsync(
+                Path.Combine(sourceTree, "Demo.csproj"),
+                "<Project Sdk=\"Microsoft.NET.Sdk\" />\n");
+            await File.WriteAllTextAsync(
+                Path.Combine(sourceTree, "src", "Demo.cs"),
+                "namespace Demo; public sealed class Example { }\n");
+
+            ProcessResult result = await RunBenchmarkAsync(
+                "--author-period",
+                "--source-tree",
+                sourceTree,
+                "--lines-per-file",
+                "8",
+                "--commits",
+                "1");
+
+            Assert.Equal(0, result.ExitCode);
+            Assert.Equal(string.Empty, result.StandardError);
+            Dictionary<string, string> values = Parse(result.StandardOutput);
+            Assert.Equal("caller-supplied", values["fixture-source"]);
+            Assert.Equal("2", values["source-tree-files"]);
+            Assert.Equal("2", values["source-tree-directories"]);
+            Assert.Equal("0", values["source-tree-skipped-links"]);
+            Assert.Equal("true", values["source-tree-unchanged"]);
+            Assert.StartsWith("sha256:", values["source-tree-digest"], StringComparison.Ordinal);
+            Assert.DoesNotContain(sourceTree, result.StandardOutput, StringComparison.OrdinalIgnoreCase);
+            AssertReadOnlyAndMeasured(values);
+        }
+        finally
+        {
+            Directory.Delete(sourceTree, recursive: true);
+        }
+    }
+
+    [Fact]
+    public async Task AuthorPeriodProcessMatrixRejectsMachineDependentThresholds()
+    {
+        ProcessResult result = await RunBenchmarkAsync(
+            "--author-period",
+            "--process-matrix",
+            "--max-seconds",
+            "1");
+
+        Assert.Equal(2, result.ExitCode);
+        Assert.Contains(
+            "observations and cannot be threshold gates",
+            result.StandardError,
+            StringComparison.Ordinal);
+    }
+
+    private static void AssertReadOnlyAndMeasured(
+        Dictionary<string, string> values,
+        bool requireOverallMeasurements = true)
+    {
+        Assert.Equal("change/1.4.0", values["benchmark"]);
         Assert.Equal("true", values["worktree-unchanged"]);
         Assert.Equal("true", values["git-state-unchanged"]);
         Assert.Equal("not-performed", values["target-execution"]);
@@ -162,8 +255,11 @@ public sealed class ChangeBenchmarkCliTests
         Assert.Equal("not-set", values["peak-mib-threshold"]);
         Assert.StartsWith("sha256:", values["worktree-digest"], StringComparison.Ordinal);
         Assert.StartsWith("sha256:", values["git-state-digest"], StringComparison.Ordinal);
-        AssertPositive(values, "change-seconds");
-        AssertPositive(values, "change-peak-working-set-mib");
+        if (requireOverallMeasurements)
+        {
+            AssertPositive(values, "change-seconds");
+            AssertPositive(values, "change-peak-working-set-mib");
+        }
     }
 
     private static void AssertPositive(Dictionary<string, string> values, string name)

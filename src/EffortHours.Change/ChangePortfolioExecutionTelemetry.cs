@@ -42,12 +42,35 @@ public sealed record ChangePortfolioPhaseTiming
 public sealed class ChangePortfolioExecutionTelemetry
 {
     private readonly Dictionary<string, TimeSpan> _elapsed = new(StringComparer.Ordinal);
+    private readonly HashSet<string> _started = new(StringComparer.Ordinal);
     private readonly Lock _gate = new();
+    private readonly Action<string>? _phaseStarted;
+
+    public ChangePortfolioExecutionTelemetry(Action<string>? phaseStarted = null)
+    {
+        _phaseStarted = phaseStarted;
+    }
 
     public IDisposable Measure(string phase)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(phase);
+        Start(phase);
         return new PhaseMeasurement(this, phase, Stopwatch.GetTimestamp());
+    }
+
+    public void Start(string phase)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(phase);
+        bool notify;
+        lock (_gate)
+        {
+            notify = _started.Add(phase);
+        }
+
+        if (notify)
+        {
+            _phaseStarted?.Invoke(phase);
+        }
     }
 
     public IReadOnlyList<ChangePortfolioPhaseTiming> GetTimings()
@@ -56,7 +79,9 @@ public sealed class ChangePortfolioExecutionTelemetry
         {
             return
             [
-                .. ChangePortfolioExecutionPhases.Ordered.Select(phase =>
+                .. ChangePortfolioExecutionPhases.Ordered
+                    .Where(_started.Contains)
+                    .Select(phase =>
                     new ChangePortfolioPhaseTiming
                     {
                         Phase = phase,
@@ -68,6 +93,7 @@ public sealed class ChangePortfolioExecutionTelemetry
 
     internal void Add(string phase, TimeSpan elapsed)
     {
+        Start(phase);
         lock (_gate)
         {
             _elapsed[phase] = _elapsed.GetValueOrDefault(phase) + elapsed;

@@ -13,10 +13,7 @@ internal sealed record RepositoryStateSnapshot(
     public static RepositoryStateSnapshot Capture(string rootPath, string? excludedRootName = null)
     {
         string root = Path.GetFullPath(rootPath);
-        string[] files = [.. Directory
-            .EnumerateFiles(root, "*", SearchOption.AllDirectories)
-            .Where(path => excludedRootName is null || !IsUnderExcludedRoot(root, path, excludedRootName))
-            .Order(StringComparer.Ordinal)];
+        string[] files = [.. EnumerateFiles(root, excludedRootName).Order(StringComparer.Ordinal)];
         using IncrementalHash hash = IncrementalHash.CreateHash(HashAlgorithmName.SHA256);
         long totalBytes = 0;
         foreach (string path in files)
@@ -68,6 +65,37 @@ internal sealed record RepositoryStateSnapshot(
         string relative = Path.GetRelativePath(root, path).Replace('\\', '/');
         return relative.Equals(excludedRootName, StringComparison.OrdinalIgnoreCase) ||
             relative.StartsWith(excludedRootName + "/", StringComparison.OrdinalIgnoreCase);
+    }
+
+    private static IEnumerable<string> EnumerateFiles(
+        string root,
+        string? excludedRootName)
+    {
+        Stack<string> pending = new();
+        pending.Push(root);
+        while (pending.Count > 0)
+        {
+            string directory = pending.Pop();
+            foreach (string path in Directory.EnumerateFiles(directory))
+            {
+                if ((File.GetAttributes(path) & FileAttributes.ReparsePoint) == 0 &&
+                    (excludedRootName is null ||
+                        !IsUnderExcludedRoot(root, path, excludedRootName)))
+                {
+                    yield return path;
+                }
+            }
+
+            foreach (string path in Directory.EnumerateDirectories(directory))
+            {
+                if ((File.GetAttributes(path) & FileAttributes.ReparsePoint) == 0 &&
+                    (excludedRootName is null ||
+                        !IsUnderExcludedRoot(root, path, excludedRootName)))
+                {
+                    pending.Push(path);
+                }
+            }
+        }
     }
 
     private static void Append(IncrementalHash hash, string value)

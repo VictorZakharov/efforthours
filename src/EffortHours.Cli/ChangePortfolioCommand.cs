@@ -12,11 +12,12 @@ internal sealed partial class ChangePortfolioCommand
     private readonly ChangeEstimator _changeEstimator;
     private readonly Func<string, string, string?, CancellationToken, Task<GitChangePlan>>
         _planPullRequest;
-    private readonly Func<string, GitAuthorPeriodPortfolioOptions, CancellationToken,
+    private readonly Func<string, GitAuthorPeriodPortfolioOptions, ChangePortfolioExecutionTelemetry?, CancellationToken,
         Task<GitAuthorPeriodPortfolioPlan>> _planAuthorPeriod;
     private readonly Func<string, CancellationToken,
         Task<IReadOnlyList<ResolvedChangePortfolioManifestItem>>> _loadManifest;
-    private readonly Func<string, CancellationToken, Task<GitAuthorPeriodManifestPortfolioPlan>>
+    private readonly Func<string, ChangePortfolioExecutionTelemetry, CancellationToken,
+        Task<GitAuthorPeriodManifestPortfolioPlan>>
         _planAuthorPeriodManifest;
 
     public async Task<int> ExecuteAsync(
@@ -41,12 +42,22 @@ internal sealed partial class ChangePortfolioCommand
         RateCard? rateCard = Rate(options);
         try
         {
+            ChangePortfolioExecutionTelemetry? executionTelemetry =
+                options.IsAuthorPeriod || options.IsAuthorPeriodManifest
+                    ? CreateExecutionTelemetry(standardError)
+                    : null;
             PortfolioCandidates planned = options.IsAuthorPeriodManifest
-                ? await PlanAuthorPeriodManifestAsync(options, cancellationToken).ConfigureAwait(false)
+                ? await PlanAuthorPeriodManifestAsync(
+                    options,
+                    executionTelemetry!,
+                    cancellationToken).ConfigureAwait(false)
                 : options.IsManifest
                     ? await PlanManifestAsync(options, cancellationToken).ConfigureAwait(false)
                     : options.IsAuthorPeriod
-                        ? await PlanAuthorPeriodAsync(options, cancellationToken).ConfigureAwait(false)
+                        ? await PlanAuthorPeriodAsync(
+                            options,
+                            executionTelemetry!,
+                            cancellationToken).ConfigureAwait(false)
                         : await PlanPullRequestsAsync(options, cancellationToken).ConfigureAwait(false);
             ChangePortfolioReport report = ChangePortfolioReconciler.Reconcile(
                 planned.Selection,
@@ -187,49 +198,6 @@ internal sealed partial class ChangePortfolioCommand
                     Message = "The manifest supplied execution-only local repository paths. Reports retain caller repository IDs and immutable PR identities, not host paths.",
                 },
             ]);
-    }
-
-    private async Task<PortfolioCandidates> PlanAuthorPeriodAsync(
-        ChangePortfolioCommandOptions options,
-        CancellationToken cancellationToken)
-    {
-        GitAuthorPeriodPortfolioPlan plan = await _planAuthorPeriod(
-            options.RepositoryPath!,
-            new GitAuthorPeriodPortfolioOptions
-            {
-                Aliases = options.AuthorAliases,
-                SinceInclusive = options.SinceInclusive!.Value,
-                UntilExclusive = options.UntilExclusive!.Value,
-                TimeZone = options.TimeZone,
-                DateField = options.DateField,
-                MergePolicy = options.MergePolicy,
-                CoauthorPolicy = options.CoauthorPolicy,
-                HeadRevision = options.HeadRevision,
-            },
-            cancellationToken).ConfigureAwait(false);
-        ChangePortfolioEstimateBatch estimate =
-            await _changeEstimator.EstimatePortfolioCandidatesWithStatisticsAsync(
-                [.. plan.Items.Select(item => item.Plan)],
-                options.Profile,
-                cancellationToken).ConfigureAwait(false);
-        IReadOnlyList<ChangeEstimateReport> reports = estimate.Reports;
-        List<ChangePortfolioCandidate> candidates = [];
-        for (int index = 0; index < plan.Items.Count; index++)
-        {
-            GitAuthorPeriodPortfolioItem item = plan.Items[index];
-            candidates.Add(new ChangePortfolioCandidate
-            {
-                RepositoryId = plan.RepositoryId,
-                SelectorId = item.SelectorId,
-                Report = reports[index],
-                Attribution = item.Attribution,
-            });
-        }
-
-        return new PortfolioCandidates(
-            plan.Selection,
-            candidates,
-            [.. plan.Diagnostics, estimate.Statistics.CreateDiagnostic()]);
     }
 
     private static ChangePortfolioAttribution PullRequestAttribution() => new()

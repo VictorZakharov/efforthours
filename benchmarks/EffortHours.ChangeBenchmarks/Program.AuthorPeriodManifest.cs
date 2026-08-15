@@ -116,7 +116,7 @@ public static partial class Program
         bool memoryPassed)
     {
         ChangePortfolioExecutionStatistics reuse = execution.Statistics;
-        Console.WriteLine("benchmark=change/1.3.0");
+        Console.WriteLine("benchmark=change/1.4.0");
         Console.WriteLine($"estimator={ChangeEstimator.Version}");
         Console.WriteLine($"mode={options.Name}");
         Console.WriteLine($"runtime={RuntimeInformation.FrameworkDescription}");
