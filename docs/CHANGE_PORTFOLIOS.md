@@ -148,6 +148,19 @@ Identity and time select rows only. They do not enter an effort rule or multipli
 Git returns only structurally extracted co-author values; commit messages are not
 retained in contracts or reports.
 
+### Optional host-assisted scaffolding
+
+Broad provider discovery remains outside the estimator. The accepted design in
+[`AUTHOR_PERIOD_SCAFFOLDING.md`](AUTHOR_PERIOD_SCAFFOLDING.md) recommends an
+optional companion adapter that emits the unchanged v1 manifest plus a separate,
+local-only provenance sidecar. A caller must review and pin that manifest before a
+distinct offline estimation invocation. Discovery may never fetch, expand scope
+silently, translate provider accounts into Git aliases, or turn provider activity
+into effort.
+
+No such adapter is implemented or required. The local manifest and estimator remain
+the complete provider-independent product boundary.
+
 ## Reconciliation policy
 
 Every row is first estimated independently through the canonical Change engine

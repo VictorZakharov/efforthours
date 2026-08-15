@@ -194,6 +194,11 @@ count, and intermediate churn do not value effort. `CHANGE_ESTIMATION.md` and
   exact contributor/repository/head aggregation and zero rows, non-multiplying
   shared groups, privacy-safe report boundary, and rule that identity and time
   never become value.
+- The optional host-assisted scaffolding boundary is now frozen in
+  `AUTHOR_PERIOD_SCAFFOLDING.md`: a separate companion adapter may eventually emit
+  a reviewed v1 manifest and local-only provenance, but the estimator stays
+  provider-independent and offline. Defer implementation until a concrete workflow
+  justifies the authentication, privacy, and maintenance surface.
 
 ### 3. Measure host review before selecting defaults
 

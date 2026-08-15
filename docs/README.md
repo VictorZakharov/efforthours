@@ -28,6 +28,9 @@ agent instructions.
 - [Change portfolios](CHANGE_PORTFOLIOS.md) governs repeated PRs, cross-repository
   manifests, author-period selection, exact allocation, attribution uncertainty,
   and no-ranking safeguards.
+- [Host-assisted author-period scaffolding](AUTHOR_PERIOD_SCAFFOLDING.md) records
+  the accepted boundary for an optional provider adapter, reviewable discovery
+  provenance, failure handling, privacy, and implementation tests.
 - [Change model admission](CHANGE_MODEL_ADMISSION.md) freezes the progressive size,
   metric, performance, and evidence gates for Change estimators.
 
