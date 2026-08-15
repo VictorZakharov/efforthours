@@ -9,6 +9,57 @@ namespace EffortHours.EndToEndTests;
 public sealed class CalibrationDiagnosticCliTests
 {
     [Fact]
+    public async Task UncertaintyFeaturesProjectsDigestMatchedSavedArtifactsOffline()
+    {
+        string root = FindRepositoryRoot();
+        string fixturePath = Path.Combine(
+            AppContext.BaseDirectory,
+            "fixtures",
+            "evidence",
+            "minimal.repository-evidence.json");
+        RepositoryEvidence source = ContractJson.Deserialize<RepositoryEvidence>(
+            await File.ReadAllTextAsync(fixturePath));
+        RepositoryEvidence evidence = source with
+        {
+            Repository = source.Repository with
+            {
+                SourceDigest = "sha256:" + new string('b', 64),
+            },
+        };
+        using TemporaryDirectory temporary = new();
+        string evidencePath = temporary.Write("evidence.json", ContractJson.Serialize(evidence));
+        ProcessResult estimateResult = await RunCliAsync(
+            root,
+            "estimate",
+            evidencePath,
+            "--no-rate",
+            "--compact");
+        Assert.Equal(0, estimateResult.ExitCode);
+        string estimatePath = temporary.Write("estimate.json", estimateResult.StandardOutput);
+
+        ProcessResult result = await RunCliAsync(
+            root,
+            "calibration",
+            "uncertainty-features",
+            estimatePath,
+            evidencePath,
+            "--compact");
+
+        Assert.Equal(0, result.ExitCode);
+        Assert.Equal(string.Empty, result.StandardError);
+        CalibrationUncertaintyFeatureReport report =
+            ContractJson.Deserialize<CalibrationUncertaintyFeatureReport>(result.StandardOutput);
+        SchemaValidationResult schema = ContractSchemaValidator.Validate(
+            SchemaNames.CalibrationUncertaintyFeatures,
+            result.StandardOutput);
+        Assert.True(schema.IsValid, string.Join(Environment.NewLine, schema.Errors));
+        Assert.Empty(ContractValidation.Validate(report));
+        Assert.Equal(evidence.Repository.SourceDigest, report.RepositorySourceDigest);
+        Assert.Equal("repository-uncertainty-features/1.0.0", report.FeatureContract.Version);
+        Assert.NotEmpty(report.WorkItems);
+    }
+
+    [Fact]
     public async Task DiagnoseWritesSchemaValidExactlyReconciledJsonOffline()
     {
         string root = FindRepositoryRoot();

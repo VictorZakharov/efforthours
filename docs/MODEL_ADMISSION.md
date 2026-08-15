@@ -252,6 +252,16 @@ These are empirical planning-bound gates, not nominal 80%, 90%, or 95%
 probability intervals. A later quantile or confidence interpretation requires a
 new policy based on separately governed empirical evidence.
 
+Any successor interval candidate must also pin
+`repository-uncertainty-features/1.0.0` and
+`symmetric-planning-interval/1.0.0` (or explicitly versioned successors) before
+label access. Every fitted feature must be deterministically available offline;
+deferred feature candidates cannot silently enter the fit. Comparable weaker
+evidence may not narrow normalized width, material unresolved access must strictly
+widen it, and directional contingencies stay outside the primary symmetric range.
+The current `0.80` reviewed-expected gate is the intended operational coverage
+target, not a probability claim.
+
 ## Qualitative, safety, and explanation gates
 
 For the cross-platform byte gate, canonical structured output uses

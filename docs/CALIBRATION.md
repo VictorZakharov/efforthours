@@ -305,9 +305,64 @@ full explanation. This avoids copying an entire large candidate report while
 still letting a reviewer expand a multi-thousand-hour aggregate into the normally
 small work items that produced it.
 
-The diagnostic does not change `seed-rules/0.4.0`, revive a rejected candidate,
-select uncertainty features, or claim that teacher ranges are empirical delivery
-distributions.
+The residual diagnostic does not change `seed-rules/0.4.0`, revive a rejected
+candidate, fit uncertainty widths, or claim that teacher ranges are empirical
+delivery distributions.
+
+### Uncertainty feature contract
+
+`repository-uncertainty-features/1.0.0` freezes the first label-independent
+repository uncertainty vocabulary. It can be projected with:
+
+```text
+eh calibration uncertainty-features <estimate.json> <evidence.json> \
+  --compact --output <features.json>
+```
+
+Both inputs must be saved schema-valid documents with the same immutable source
+digest. The command is offline and reads no corpus or labels, performs no source
+scan, fits no model, and changes no expected value or source range. Its report uses
+`calibration-uncertainty-features.schema.json`, pins canonical estimate, evidence,
+and feature-contract digests, and emits stable feature availability and evidence
+IDs without summaries, source excerpts, or host paths.
+
+The embedded `symmetric-planning-interval/1.0.0` policy fixes these semantics
+before a successor fit:
+
+- intended coverage is `0.80` for reviewed expected points on a held-out cohort;
+- this is an operational weak-label metric, not a formal probability interval;
+- low/high are symmetric around expected except for the zero-hour floor;
+- directional contingencies remain separate from the primary interval;
+- a material unresolved fact must strictly widen a comparable interval;
+- weaker confidence, inferred provenance, parser evidence, or explicit ambiguity
+  must not narrow a comparable interval; and
+- a missing feature value is explicit and does not widen by itself.
+
+Each vector also preserves its source category, expected size, current work-item
+complexity, resolved ecosystem tags, parent, and correlation group as grouping
+context. The width-constrained offline features
+are source confidence, inferred supporting-fact share, worst parser-risk level,
+explicit uncertainty-reason count, and material unresolved count. A missing
+supporting evidence reference or an evidence-less represented work item is
+material. An analyzer can also explicitly mark a fact with
+`uncertainty:material-access-gap` or a namespaced suffix.
+
+Non-execution/non-verification tags, dynamic and unsupported boundary counts,
+resolved-fact count, aggregate branch density, and aggregate public-interface
+concentration are diagnostic candidates. In particular, tags such as
+`target-code:not-executed`, `terraform-execution:not-performed`, and
+`runtime-correctness:not-verified` do not change interval width merely because
+the product is offline-first. Dynamic and aggregate code-shape features must earn
+held-out value rather than proxy repository size or reward accidental complexity.
+
+Per-function complexity, function-size, and nesting distributions; local fan-in,
+fan-out, and dependency cycles; analyzer-ambiguity concentration; per-cell sample
+support; and out-of-distribution scoring are explicitly deferred because no
+versioned cross-ecosystem offline evidence contract currently emits them. They do
+not appear in v1 work-item feature vectors and require a new feature identity
+before use. The source report's existing range and a symmetry-compliance flag are
+diagnostic only; this checkpoint does not change `seed-rules/0.4.0` or fit a
+successor.
 
 ## Determinism and safety
 

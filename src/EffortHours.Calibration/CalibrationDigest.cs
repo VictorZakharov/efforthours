@@ -28,6 +28,20 @@ public static class CalibrationDigest
         return ComputeCanonical(corpus);
     }
 
+    public static string Compute(RepositoryEvidence evidence)
+    {
+        ArgumentNullException.ThrowIfNull(evidence);
+
+        return ComputeCanonical(evidence);
+    }
+
+    public static string Compute(CalibrationUncertaintyFeatureContract contract)
+    {
+        ArgumentNullException.ThrowIfNull(contract);
+
+        return ComputeCanonical(contract);
+    }
+
     internal static string ComputeStringSet(IEnumerable<string> values) =>
         ComputeCanonical(values.Distinct(StringComparer.Ordinal).Order(StringComparer.Ordinal).ToArray());
 

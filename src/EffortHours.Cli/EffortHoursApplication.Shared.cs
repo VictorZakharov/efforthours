@@ -239,6 +239,7 @@ public sealed partial class EffortHoursApplication
           eh calibration mutations <suite.json> <estimate.json>... [--compact] [--output <path>]
           eh calibration validate <corpus.json> [--compact] [--output <path>]
           eh calibration evaluate <corpus.json> <estimate.json>... --partition <name> [--compact] [--output <path>]
+          eh calibration uncertainty-features <estimate.json> <evidence.json> [--compact] [--output <path>]
           eh schema list
           eh schema show <name>
           eh model info

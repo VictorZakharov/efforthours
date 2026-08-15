@@ -641,9 +641,36 @@ Uncertainty output should distinguish:
 - absent specification; and
 - model uncertainty.
 
-How item-level uncertainty is aggregated, including correlated uncertainty, remains
-an implementation research item. Reports must not imply that ranges are formal
-probability intervals until they have been calibrated as such.
+The first successor interval policy is frozen as
+`symmetric-planning-interval/1.0.0`. It targets at least `0.80` held-out coverage
+of reviewed expected points as an operational admission metric. This is agreement
+with reviewed logical weak supervision, not an 80% probability statement. The
+primary low/high interval must be centered arithmetically on expected EHE; only
+the zero-hour floor may truncate its low side. Ordinary discovery, domain
+learning, and implementation risk belong in expected EHE. Exceptional one-way
+risks remain separately named contingencies or scenarios and do not make the
+primary interval asymmetric.
+
+A material fact that cannot be inspected must be an explicit assumption and
+strict width-widening driver. Static analysis not executing target code, resolving
+an environment, or contacting an external system is diagnostic-only unless that
+limitation leaves such a material estimation fact unresolved. Within comparable
+cells, lower confidence or greater ambiguity must not produce a narrower interval.
+An unavailable feature value is explicit but does not automatically widen the
+interval; the model must use an available material-gap or conservative-fallback
+feature when widening is required.
+
+`repository-uncertainty-features/1.0.0` freezes the label-independent offline
+feature vocabulary before fitting. `eh calibration uncertainty-features` projects
+it from a digest-matched saved estimate and repository-evidence document without
+reading labels, scanning source, or changing hours. The projection also records
+whether each source-model range already satisfies the successor symmetry policy;
+`seed-rules/0.4.0` is unchanged by this diagnostic contract.
+
+How item-level uncertainty is aggregated, including correlated uncertainty,
+remains an implementation research item. Reports must not imply that ranges are
+formal probability intervals until separately governed empirical calibration
+supports that interpretation.
 
 ## 12. Pricing
 

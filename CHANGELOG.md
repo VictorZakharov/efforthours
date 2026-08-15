@@ -8,6 +8,14 @@ may still change public contracts with explicit documentation.
 
 ### Added
 
+- Added the label-independent `repository-uncertainty-features/1.0.0` contract,
+  `symmetric-planning-interval/1.0.0` policy, v1 report schema, and offline
+  `calibration uncertainty-features` projector. It fixes the operational `0.80`
+  reviewed-expected coverage target without making a probability claim, requires
+  symmetric primary intervals subject only to the zero-hour floor, separates
+  directional contingencies, distinguishes material access gaps from harmless
+  non-execution limits, and freezes monotonic width constraints before any
+  successor fit. It changes no shipped estimate or seed prior.
 - Added the offline `calibration diagnose` command and v1 residual-diagnostic
   schema. It ranks repository, category, and matched-target residuals; preserves
   incomplete and unmatched mappings; reports interval miss direction, symmetry,
