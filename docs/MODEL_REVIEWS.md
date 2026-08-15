@@ -33,11 +33,11 @@ Because EffortHours's own anchor informed the seed-model and calibration design,
 a development diagnostic rather than an eligible held-out test record unless a
 future independent snapshot and review policy explicitly establishes otherwise.
 
-## 2026-08-15: logical-capability v0.3 development preflight
+## 2026-08-15: logical-capability v0.3 measured pass and candidate freeze
 
-Status: **all 16 numerical and five development-computable operational gates
-pass; public mutation passes 339/339; formal measured aggregate pending;
-validation and test remain unopened; no candidate freeze or admission**
+Status: **all 16 numerical and 12 operational gates pass; public mutation passes
+339/339; finite candidate manifest and validation rule frozen; validation
+authorized but unopened; test sealed; no admission**
 
 `logical-capability/0.3.0` replaces retired v0.2 under new model, estimator,
 feature-contract, scorer, and implementation identities. The development-visible
@@ -62,6 +62,15 @@ Pooled material-category WAPE is `0.1883` versus seed `0.4331`; all 15 reports a
 seed; and tampered or oversized inputs fail closed. The unchanged public mutation
 suite passes all `339/339` assertions across 88 cases, versus v0.2's `314/339`.
 
+Checkpoint `1.2.0` runs five paired fresh processes for the small, medium, and
+large saved-evidence shapes on GitHub-hosted Windows, Linux, and macOS. Raw seed
+and candidate bytes match across all platforms and repeats. Every median-latency,
+slowest-latency, and peak-working-set comparison passes; the staged candidate adds
+`0.9871 MiB` against the frozen `25 MiB` limit; and all three 99,604-line scanner
+runs preserve fingerprints plus offline/non-executing/no-install signals. The
+public suite reproduces `339/339`, so all seven measured and all 12 total
+operational gates pass without changing a threshold.
+
 The normalized model, numerical-preflight, operational-preflight, and mutation
 report digests are respectively
 `sha256:492e10b2f427a471a8edcf4f7e3f19d65b098e4822e25c552956c9ce992fa1ea`,
@@ -70,11 +79,18 @@ report digests are respectively
 and `sha256:59fb04a4e677795198a2b4c81d5aacf871eef0fdbd67c0bbc577f7992b5f79c0`.
 They pin implementation commit `7e5451c807cef3ce22bedd1bc374ab519882b21c`.
 
-The standalone mutation result does not replace the formal measured aggregate.
-Issue #106 must reproduce it and complete cross-platform determinism, latency,
-memory, installed-package, and scanner/fingerprint measurements. No finite
-candidate manifest is frozen, and no validation/test source, output, or label was
-read or generated.
+The normalized measured report, aggregate preflight, and finite manifest digests
+are `sha256:f3d25627394e8efb3faa3c51399e4da16312c31aa9aa3eeaa2f90d436957cabc`,
+`sha256:01db86e772e6cc2582441d82404845fdc4b73d1e6b5a2e7d77169b3315448b17`,
+and `sha256:206b3955d53af9902996b588e9255ab9396e7b7624731a6d6e09896ce5026f23`.
+GitHub Actions run `31892555353`, attempt 1, measured commit
+`40ad39c6dda9029c90aed60a37a2e93c0ecb1ce9`.
+
+The manifest freezes the seed plus sole challenger, complete development and
+excluded-family boundary, resources, and precommitted selection rule. Validation
+is authorized but no validation/test source, output, or label was read or
+generated for this checkpoint. Test remains sealed; no candidate is admitted or
+shipped and `seed-rules/0.4.0` remains the product estimator and fallback.
 
 ## 2026-08-14: canonical repository JSON implementation boundary
 

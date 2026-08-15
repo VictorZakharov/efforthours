@@ -11,8 +11,12 @@ may still change public contracts with explicit documentation.
 - Added development-only `logical-capability/0.3.0` repository-candidate
   normalization and marginality guardrails. The new identity passes all 16
   numerical gates, all five development-computable operational gates, and the
-  unchanged public mutation suite at `339/339`; formal cross-platform measured
-  preflight, candidate freeze, holdout access, and admission remain pending.
+  unchanged public mutation suite at `339/339`. Its frozen three-platform
+  checkpoint also passes all seven measured gates and all 12 total operational
+  gates, records the exact raw/resource artifacts, and freezes the sole challenger,
+  resource budgets, and validation-selection rule. Blind validation is authorized
+  but remains unopened; test remains sealed, no candidate is admitted or shipped,
+  and `seed-rules/0.4.0` remains the product estimator and fallback.
 - Removed redundant post-merge and NuGet-release validation when GitHub identifies
   the merge and its tree is identical to the already-gated PR head. CI falls back
   to the exact merged `main` commit when provenance is missing or parallel changes

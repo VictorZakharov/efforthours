@@ -1,0 +1,354 @@
+{
+  "manifestVersion": "repository-candidate-manifest/1.0.0",
+  "id": "efforthours-public-readiness-candidate-freeze",
+  "version": "1.2.0",
+  "policyVersion": "repository-model-admission/1.0.0",
+  "status": "frozen-before-validation",
+  "frozenOn": "2026-08-15",
+  "attempt": {
+    "baselineEstimatorVersion": "seed-rules/0.4.0",
+    "challengerCount": 1,
+    "maximumChallengerCount": 4,
+    "orderedCandidateIds": [
+      "logical-capability/0.3.0"
+    ]
+  },
+  "challengers": [
+    {
+      "ordinal": 1,
+      "id": "logical-capability/0.3.0",
+      "candidateKind": "transparent-rule",
+      "implementationKind": "transparent-fitted-table",
+      "estimatorVersion": "candidate-logical-capability/0.3.0+seed-rules/0.4.0",
+      "sourceCommit": "7e5451c807cef3ce22bedd1bc374ab519882b21c",
+      "buildInputs": [
+        {
+          "id": "efforthours-public-readiness",
+          "version": "0.1.0",
+          "path": "calibration/corpora/public-readiness/0.1.0.sampling-plan.json",
+          "digest": "sha256:c4c5f0026112b0d495e79e9ca7a5b3d03a763710db75360d02fd333afd282aa1"
+        },
+        {
+          "id": "efforthours-public-readiness-development",
+          "version": "0.3.0",
+          "path": "calibration/corpora/public-readiness/0.3.0.development-corpus.json",
+          "digest": "sha256:2b240804c70f11caf0978f19e6e22eda7de3f7a2e314a48f2def7d232ad1bdd7"
+        },
+        {
+          "id": "efforthours-public-readiness-development",
+          "version": "0.3.0",
+          "path": "calibration/corpora/public-readiness/0.3.0.development-evaluation.json",
+          "digest": "sha256:5ec0366136587d4d2cba1c2ddba9fe6fce0b3fe9a9fd2bf770afcf6e616ed412"
+        }
+      ],
+      "featureContractVersion": "logical-capability-features/1.3.0",
+      "features": [
+        "canonical-evidence-measurements",
+        "exact-content-normalized-evidence",
+        "work-item-kind",
+        "normalized-scope-role",
+        "operation-only-data-intent-bound",
+        "seed-normalized-capability-anchor",
+        "logical-expected-size-band",
+        "candidate-expected-size-band",
+        "bounded-work-item-kind-factor-ceiling",
+        "bounded-kind-low-minimum",
+        "minimum-high-factor"
+      ],
+      "hyperparameters": {
+        "exactZeroRules": [
+          "test semantic surfaces",
+          "benchmark application entry points and source backbones",
+          "generated/golden source backbones and support work"
+        ],
+        "discountRules": [
+          "test source backbones and application entry points",
+          "benchmark semantic surfaces"
+        ],
+        "discountFactor": 0.25,
+        "point": {
+          "scorerVersion": "normalized-evidence-intent-bounds/0.2.0",
+          "features": [
+            "work-item-kind",
+            "exact-content-normalized-evidence-size-band",
+            "operation-only-data-evidence-count",
+            "semantic-boundary-minimums",
+            "seed-normalized-capability-anchor"
+          ],
+          "sizeBands": [
+            "xs:<=1",
+            "s:<=2",
+            "m:<=4",
+            "l:<=8",
+            "xl:<=16",
+            "2xl:<=32",
+            "3xl:<=64",
+            "4xl:>64"
+          ],
+          "minimumFactor": 0.25,
+          "maximumFactor": 3,
+          "maximumFactorOverrides": [
+            {
+              "workItemKind": "specification-comprehension",
+              "maximumFactor": 4
+            }
+          ],
+          "seedAnchorFactor": 0.5,
+          "seedAnchorMaximumLogicalHours": 1,
+          "seedAnchorWorkItemKinds": [
+            "dotnet-source-backbone",
+            "javascript-source-backbone"
+          ],
+          "unknownGroupBehavior": "use the complete seed capability without candidate adjustment"
+        },
+        "range": {
+          "features": [
+            "work-item-kind",
+            "candidate-expected-size-band",
+            "bounded-kind-low-minimum",
+            "minimum-high-factor"
+          ],
+          "lowerQuantile": 0.15,
+          "upperQuantile": 0.75,
+          "minimumHighFactor": 1.01,
+          "minimumExactGroupSamples": 3,
+          "sparseGroupFallback": "same-kind residuals, then all positive development residuals",
+          "minimumLowHours": [
+            {
+              "workItemKind": "data-persistence",
+              "hours": 0.5
+            },
+            {
+              "workItemKind": "external-integration",
+              "hours": 1
+            }
+          ],
+          "unknownGroupBehavior": "use the complete seed capability range"
+        },
+        "trainingSeed": null,
+        "trainingSeedReason": "not applicable; deterministic closed-form table fit"
+      },
+      "artifact": {
+        "id": "efforthours-public-readiness-logical-capability",
+        "version": "repository-logical-capability-model/0.3.0",
+        "path": "calibration/corpora/public-readiness/1.0.0.logical-capability-model.json",
+        "digest": "sha256:492e10b2f427a471a8edcf4f7e3f19d65b098e4822e25c552956c9ce992fa1ea"
+      },
+      "applicability": {
+        "profile": "implementation",
+        "primaryStrata": [
+          "dotnet",
+          "javascript-typescript",
+          "mixed-dotnet-javascript-typescript"
+        ],
+        "requiredInputs": [
+          "digest-matched canonical seed estimate",
+          "digest-matched canonical repository-evidence bundle"
+        ],
+        "outOfDistributionBoundary": "Unsupported profiles, primary strata, work-item groups, missing or incompatible artifacts, and digest mismatches retain the complete named seed fallback with a visible diagnostic."
+      },
+      "dependencies": [
+        ".NET 10",
+        "EffortHours.Contracts",
+        "EffortHours.Calibration"
+      ],
+      "licenseExpression": "MIT",
+      "runtimeBoundary": "Offline deterministic projection of a saved implementation-profile seed estimate and its digest-matched canonical evidence bundle; no source body, repository read, target execution, network, Git history, provider, or external process.",
+      "fallbackEstimatorVersion": "seed-rules/0.4.0",
+      "explanationForm": "Every work item retains its stable ID and records the logical capability point, scope-role factor, seed anchor, frozen point group/factor and provenance, configured low floor, frozen range group/factors, and proportional allocation; unknown groups retain the complete seed capability."
+    }
+  ],
+  "developmentBoundary": {
+    "recordIds": [
+      "record:app-vnext-polly:implementation",
+      "record:btcpayserver-btcpayserver:implementation",
+      "record:cartercommunity-carter:implementation",
+      "record:colinhacks-zod:implementation",
+      "record:dotnet-command-line-api:implementation",
+      "record:fastendpoints-fastendpoints:implementation",
+      "record:fastify-fastify:implementation",
+      "record:fluentvalidation-fluentvalidation:implementation",
+      "record:lit-lit:implementation",
+      "record:mudblazor-mudblazor:implementation",
+      "record:oqtane-oqtane-framework:implementation",
+      "record:simplcommerce-simplcommerce:implementation",
+      "record:sindresorhus-execa:implementation",
+      "record:squidex-squidex:implementation",
+      "record:tj-commander-js:implementation"
+    ],
+    "excludedFamilies": {
+      "validation": [
+        "repository:github.com/axios/axios",
+        "repository:github.com/cysharp/consoleappframework",
+        "repository:github.com/dotnet/efcore",
+        "repository:github.com/electronnet/electron.net",
+        "repository:github.com/jasontaylordev/cleanarchitecture",
+        "repository:github.com/nrwl/nx",
+        "repository:github.com/orchardcms/orchardcore",
+        "repository:github.com/sindresorhus/ky",
+        "repository:github.com/spectreconsole/spectre.console"
+      ],
+      "test": [
+        "repository:github.com/ai/nanoid",
+        "repository:github.com/azure-samples/azure-search-openai-demo-csharp",
+        "repository:github.com/commandlineparser/commandline",
+        "repository:github.com/dotnet/eshop",
+        "repository:github.com/dotnet/roslyn",
+        "repository:github.com/honojs/hono",
+        "repository:github.com/sveltejs/svelte",
+        "repository:github.com/tui-cs/terminal.gui",
+        "repository:github.com/umbraco/umbraco-cms"
+      ]
+    },
+    "contaminatedRecords": [],
+    "numericalPreflight": {
+      "path": "calibration/corpora/public-readiness/1.0.0.candidate-preflight.json",
+      "digest": "sha256:c5614f11513619b7293f454d58cda87efdc192e181ef3551270b1d3bc2a9ba97"
+    },
+    "developmentOperationalPreflight": {
+      "path": "calibration/corpora/public-readiness/1.1.0.candidate-operational-preflight.json",
+      "digest": "sha256:eb091d5de07399a169dcef4bc9a08f9feb129563dd61d4101eed6c40cab7ddc8"
+    },
+    "measuredOperationalReport": {
+      "path": "calibration/corpora/public-readiness/1.2.0/1.2.0.measured-operational-report.json",
+      "digest": "sha256:f3d25627394e8efb3faa3c51399e4da16312c31aa9aa3eeaa2f90d436957cabc"
+    },
+    "aggregateOperationalPreflight": {
+      "path": "calibration/corpora/public-readiness/1.2.0/1.2.0.candidate-operational-preflight.json",
+      "digest": "sha256:01db86e772e6cc2582441d82404845fdc4b73d1e6b5a2e7d77169b3315448b17"
+    },
+    "publicMutationSuite": {
+      "path": "calibration/mutations/public-synthetic/0.8.0.suite.json",
+      "digest": "sha256:ab7d3ad79a33cba14d3837211433f94965cd98d7def64e08434a4820f77386c7"
+    },
+    "publicMutationReport": {
+      "path": "calibration/corpora/public-readiness/1.2.0/0.8.0.candidate-mutation-report.json",
+      "digest": "sha256:59fb04a4e677795198a2b4c81d5aacf871eef0fdbd67c0bbc577f7992b5f79c0"
+    }
+  },
+  "resourceBudget": {
+    "runsPerShape": 5,
+    "shapes": [
+      "small",
+      "medium",
+      "large"
+    ],
+    "platforms": [
+      "linux",
+      "macos",
+      "windows"
+    ],
+    "limits": {
+      "medianWallTime": "candidate <= max(seed * 1.15, seed + 250 ms) for every platform and shape",
+      "slowestWallTime": "candidate <= max(seed * 1.25, seed + 500 ms) for every platform and shape",
+      "sampledPeakWorkingSet": "candidate <= max(seed * 1.15, seed + 64 MiB) for every platform and shape",
+      "installedPackageIncreaseMib": 25,
+      "scanner": "retain applicable scanner thresholds, unchanged target fingerprints, offline operation, no dependency installation, and no target execution"
+    },
+    "measurement": {
+      "workflow": ".github/workflows/repository-candidate-measurement.yml",
+      "measurementImplementationCommit": "40ad39c6dda9029c90aed60a37a2e93c0ecb1ce9",
+      "runId": "31892555353",
+      "runAttempt": 1,
+      "runUrl": "https://github.com/VictorZakharov/efforthours/actions/runs/31892555353",
+      "platformArtifacts": [
+        {
+          "platform": "linux",
+          "environment": "Ubuntu 24.04.4 LTS; x64; .NET 10.0.11; 4 logical processors",
+          "path": "calibration/corpora/public-readiness/1.2.0/platforms/linux.json",
+          "digest": "sha256:e99d99666b9a3eb6915078b56d3f5451518de7e6a646bc612f8bf459b614b3e3"
+        },
+        {
+          "platform": "macos",
+          "environment": "macOS 26.5.2; arm64; .NET 10.0.11; 3 logical processors",
+          "path": "calibration/corpora/public-readiness/1.2.0/platforms/macos.json",
+          "digest": "sha256:46fa9fc697b9d977d4fceeb9e8e31b8c6b85ff1054ff5450b2899f3c026586a3"
+        },
+        {
+          "platform": "windows",
+          "environment": "Microsoft Windows 10.0.26100; x64; .NET 10.0.11; 4 logical processors",
+          "path": "calibration/corpora/public-readiness/1.2.0/platforms/windows.json",
+          "digest": "sha256:3bd4b0d9fd1bd58aa82cfd50a4b6f141da4533f06e5db3db534f870f94ac673b"
+        }
+      ],
+      "observed": {
+        "measuredGatesPassed": 7,
+        "measuredGatesFailed": 0,
+        "totalOperationalGatesPassed": 12,
+        "totalOperationalGatesFailed": 0,
+        "publicMutationAssertions": "339/339",
+        "rawCanonicalBytesIdentical": true,
+        "installedPackageIncreaseMib": 0.9871,
+        "scannerTargetFingerprintsUnchanged": true,
+        "scannerOfflineAndNonExecuting": true
+      }
+    }
+  },
+  "commandsAndEnvironments": {
+    "validationEvaluation": {
+      "environment": "clean .NET 10 environment; offline canonical document evaluation",
+      "command": "eh calibration evaluate <frozen-validation-corpus.json> <seed-and-candidate-estimates.json> --partition validation --output <validation-evaluation.json>"
+    },
+    "determinismAndPerformance": {
+      "environment": "GitHub-hosted ubuntu-latest, macos-latest, and windows-latest resolved by run 31892555353; exact resolved environments are frozen in the platform artifacts",
+      "command": "dispatch .github/workflows/repository-candidate-measurement.yml at commit 40ad39c6dda9029c90aed60a37a2e93c0ecb1ce9"
+    },
+    "measurementAggregation": {
+      "environment": "GitHub-hosted ubuntu-latest with .NET selected by global.json",
+      "command": "dotnet EffortHours.RepositoryCalibration.dll candidate-measurement-aggregate --operational-preflight calibration/corpora/public-readiness/1.1.0.candidate-operational-preflight.json --model calibration/corpora/public-readiness/1.0.0.logical-capability-model.json --mutation-suite calibration/mutations/public-synthetic/0.8.0.suite.json --mutation-report <mutation-report.json> --measurements <platform-artifact-directory> --measurement-output <measured-report.json> --output <aggregate-preflight.json>"
+    }
+  },
+  "validationSelectionRule": {
+    "eligibility": "A challenger is eligible only if every evidence, numerical, range-sharpness, qualitative, safety, lineage, mutation, determinism, latency, memory, package, and applicable scanner gate in repository-model-admission/1.0.0 passes. A missing, malformed, or not-computable gate fails closed.",
+    "primaryMetric": "repository-total expected WAPE",
+    "direction": "lowest",
+    "absoluteWapeTieTolerance": 0.01,
+    "tieBreakers": [
+      {
+        "ordinal": 1,
+        "criterion": "candidate-kind-complexity",
+        "preference": [
+          "transparent-rule",
+          "statistical-baseline",
+          "learned-model"
+        ]
+      },
+      {
+        "ordinal": 2,
+        "criterion": "qualifying-range-sharpness",
+        "preference": "lower mean repository normalized width among candidates passing every range gate"
+      },
+      {
+        "ordinal": 3,
+        "criterion": "runtime-overhead",
+        "preference": "lower paired median wall-time overhead across the frozen platform/shape matrix"
+      },
+      {
+        "ordinal": 4,
+        "criterion": "candidate-id",
+        "preference": "ordinal string order"
+      }
+    ],
+    "learnedModelMinimumImprovement": {
+      "comparison": "best eligible transparent rule or statistical baseline",
+      "absoluteRepositoryExpectedWape": 0.02,
+      "relativeRepositoryExpectedWape": 0.1,
+      "failureBehavior": "select the simpler eligible candidate"
+    },
+    "outcome": "Select exactly one eligible challenger. If no challenger is eligible, reject all challengers and retain seed-rules/0.4.0."
+  },
+  "holdouts": {
+    "validation": "authorized-but-unopened; labels not-authored; candidate outputs not-generated",
+    "test": "withheld-not-run; labels not-authored; label body not present; reveal forbidden until validation selects exactly one frozen candidate",
+    "candidateOutputsGenerated": false,
+    "labelsAuthored": false
+  },
+  "decision": {
+    "candidateManifestFrozen": true,
+    "validationAuthorized": true,
+    "testAuthorized": false,
+    "candidateAdmitted": false,
+    "shippedEstimatorVersion": "seed-rules/0.4.0",
+    "nextBoundary": "Author and compile blind validation labels without candidate guidance, generate seed and logical-capability/0.3.0 validation outputs exactly once, apply the frozen selection rule, and keep test sealed."
+  }
+}

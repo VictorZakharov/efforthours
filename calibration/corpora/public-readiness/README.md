@@ -44,13 +44,16 @@ new `logical-capability/0.3.0` identity and passes all 16 numerical gates with
 repository WAPE `0.1009`. Its
 [`1.1.0 development operational checkpoint`](1.1.0/README.md) passes all five
 development-computable gates and the unchanged public mutation suite at
-`339/339`. The formal measured aggregate and remaining platform, resource,
-package, and scanner measurements are pending. No manifest is frozen and no
-holdout is opened.
+`339/339`. The [`1.2.0 measured checkpoint`](1.2.0/README.md) then passes all
+seven measured and all 12 total operational gates on Windows, Linux, and macOS.
+It freezes the seed plus sole challenger, exact resource budgets, and validation
+selection rule. Blind validation is authorized but remains unopened; test remains
+sealed, and no candidate is admitted or shipped.
 
-The development labels do not open model admission: validation/test labels are not
-authored, the finite candidate set is not frozen, and no independent correction
-exists. Development comparison is diagnostic only.
+The development labels alone did not open model admission. The finite set is now
+frozen only after its complete operational pass, but validation/test labels remain
+unauthored and no independent correction exists. Development comparison remains
+diagnostic; no held-out result or admission decision exists.
 
 ## Frozen matrix
 
@@ -141,8 +144,8 @@ their maturity.
 
 - Development labels may support diagnosis, feature design, or fitting after this
   source freeze.
-- Validation labels must be authored without candidate values and remain
-  unavailable until the complete finite candidate manifest is frozen.
+- Validation labels may now be authored after the complete finite manifest freeze,
+  but candidate values must remain unavailable throughout blind authoring.
 - Test labels must be authored blind, sealed with a precommitted digest and
   custody record, and revealed only after validation selects one frozen candidate.
 
@@ -153,10 +156,8 @@ contain an unsealed test label before the one-time decision.
 
 ## Next checkpoint
 
-Run issue #106's formal Windows/Linux/macOS measured workflow against exact
-`logical-capability/0.3.0`. Reproduce its `339/339` public mutation result and
-measure canonical bytes, paired latency and memory, installed-package increase,
-and scanner/fingerprint boundaries. Validation labels must remain unavailable
-until a later finite candidate manifest and selection rule are frozen; test labels
+Run issue #107's strict-blind validation against the exact `1.2.0` manifest.
+Author validation labels without candidate guidance, generate seed and challenger
+outputs once, and apply the frozen selection rule without retuning. Test labels
 require an externally held body and precommitted digest before authoring and
-remain sealed until the one-time selection boundary.
+remain sealed until validation selects exactly one frozen candidate.

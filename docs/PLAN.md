@@ -143,7 +143,7 @@ count, and intermediate churn do not value effort. `CHANGE_ESTIMATION.md` and
 
 ## Current priorities
 
-### 1. Complete measured preflight for repository candidate v0.3
+### 1. Run blind validation for frozen repository candidate v0.3
 
 - Treat retired `logical-capability/0.2.0` and its `0.9.0` failures as final. Do
   not weaken a mutation assertion, reinterpret raw bytes, relax a threshold, or
@@ -154,20 +154,19 @@ count, and intermediate churn do not value effort. `CHANGE_ESTIMATION.md` and
   `1.0.0` and `1.1.0` pass all 16 numerical gates, all five
   development-computable operational gates, and the unchanged public mutation
   suite at `339/339`.
-- Run issue #106's formal measured workflow against the exact v0.3 model,
-  implementation, and operational-preflight digests on Windows, Linux, and macOS.
-  Reproduce the public mutation result and evaluate canonical bytes, latency,
-  sampled memory, installed-package increase, and scanner/fingerprint boundaries.
-- Freeze a candidate manifest, resource budgets, and selection rule only if every
-  formal measured gate passes; do not open or tune against validation before that
-  freeze.
+- Checkpoint `1.2.0` passes all seven measured gates and all 12 total operational
+  gates on Windows, Linux, and macOS. It freezes the seed plus sole challenger,
+  exact resource budgets, and the precommitted validation-selection rule.
+- Run issue #107's strict-blind validation exactly once against the frozen finite
+  set. Author labels without candidate guidance, preserve exact provenance, reject
+  any missing gate, and apply the frozen WAPE/tie-break ordering without retuning.
 - Keep all revisions and profiles from one repository family in one frozen
   development, validation, or test partition.
 - Expand decomposed teacher review with honest model/input provenance. Optional
   independent review must remain explicit corroboration, not an implied maturity
   upgrade.
-- Keep validation blind until candidate freeze and keep test labels sealed until
-  one validation candidate and release decision are frozen.
+- Keep validation blind during authoring and keep test labels sealed until one
+  validation candidate and release decision are frozen.
 - Retain mutation relations as qualitative invariance, directionality,
   marginality, and category-isolation guards—not numerical labels.
 

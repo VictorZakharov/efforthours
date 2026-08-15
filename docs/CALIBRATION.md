@@ -66,9 +66,12 @@ scorer, and implementation identities. Development checkpoint `1.0.0` passes all
 bias `0.0103`, repository coverage `0.8000`, and matched-target
 coverage/normalized width `0.7601/0.7321`. Checkpoint `1.1.0` passes all five
 development-computable operational gates and a standalone evaluation of the
-unchanged public mutation suite at `339/339`. The formal measured aggregate and
-remaining cross-platform resource, package, and scanner measurements are pending;
-no candidate manifest is frozen and no holdout is opened.
+unchanged public mutation suite at `339/339`. Measured checkpoint `1.2.0` passes
+all seven remaining gates and all 12 total operational gates on Windows, Linux,
+and macOS. It freezes the seed plus sole challenger, exact resource budgets, and
+validation-selection rule. Blind validation is authorized but remains unopened;
+test remains sealed, no candidate is admitted or shipped, and
+`seed-rules/0.4.0` remains the product estimator and fallback.
 
 Change EHE has a separate limited Stage A logical-admission decision. Its exact
 size, ecosystem, metric, and performance boundary is defined in
@@ -298,18 +301,19 @@ Current public repository records satisfy the complete development-label
 boundary. Retired candidate `logical-capability/0.2.0` remains rejected by
 measured checkpoint `0.9.0`. Successor `logical-capability/0.3.0` passes all 16
 numerical gates, all five development-computable operational gates, and the
-standalone public mutation suite at `339/339`; its formal measured aggregate is
-pending. Candidate freeze, blind validation, and sealed test remain incomplete.
-The 15 development families may be compared diagnostically, but no
-validation/test comparison or admission decision is authorized. `seed-rules/0.4.0`
+public mutation suite at `339/339`. Checkpoint `1.2.0` passes all seven measured
+gates and freezes the finite candidate manifest and validation rule. Blind
+validation is authorized but has not begun; sealed test and admission remain
+incomplete. The 15 development families may be compared diagnostically, but no
+held-out comparison or admission decision has occurred. `seed-rules/0.4.0`
 remains the shipped estimator and required fallback.
 
 The public-readiness cohort satisfies the planned family, shape, and size
 allocation, exact source reproduction, and complete development-label boundary.
 All nine validation and nine test families remain unlabeled. Admission still
-requires a finite candidate freeze, blind validation, sealed one-time test reveal,
-and every numerical and operational gate. Source verification must not be reported
-as labeled calibration evidence.
+requires blind validation, selection of exactly one frozen candidate, a sealed
+one-time test reveal, and every held-out numerical and operational gate. Source
+verification must not be reported as labeled calibration evidence.
 
 Transparent per-category corrections and simple statistical baselines come before
 an ML runtime. ML.NET or ONNX is selected only from measured runtime, package,
@@ -321,14 +325,10 @@ final-delta policy in `CHANGE_MODEL_ADMISSION.md`.
 
 ## Next evidence required
 
-- issue #106's formal Windows/Linux/macOS measured workflow for exact
-  `logical-capability/0.3.0`, including a reproduced public mutation result,
-  canonical byte determinism, paired latency and sampled-memory comparisons,
-  installed-package increase, and scanner/fingerprint checks;
-- only if every measured gate passes, a finite candidate manifest with exact
-  model/configuration identities, resource measurements, and a frozen selection
-  rule;
-- blind validation labels that remain unavailable until candidate freeze;
+- issue #107's strict-blind validation labels, authored without candidate
+  guidance only after the `1.2.0` finite manifest freeze;
+- one exact seed/challenger validation evaluation applying the frozen eligibility,
+  WAPE ordering, tie, simplicity, sharpness, runtime, and candidate-ID rule;
 - sealed test labels with a precommitted digest and custody record;
 - more exact small-task teacher decompositions with honest context provenance;
 - optional independent replication where available;
