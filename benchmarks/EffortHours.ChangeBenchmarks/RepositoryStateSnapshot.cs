@@ -43,6 +43,26 @@ internal sealed record RepositoryStateSnapshot(
             totalBytes);
     }
 
+    public static RepositoryStateSnapshot Combine(
+        IEnumerable<(string Id, RepositoryStateSnapshot Snapshot)> snapshots)
+    {
+        (string Id, RepositoryStateSnapshot Snapshot)[] ordered = [.. snapshots
+            .OrderBy(value => value.Id, StringComparer.Ordinal)];
+        using IncrementalHash hash = IncrementalHash.CreateHash(HashAlgorithmName.SHA256);
+        foreach ((string id, RepositoryStateSnapshot snapshot) in ordered)
+        {
+            Append(hash, id);
+            Append(hash, snapshot.Digest);
+            Append(hash, snapshot.FileCount.ToString(CultureInfo.InvariantCulture));
+            Append(hash, snapshot.TotalBytes.ToString(CultureInfo.InvariantCulture));
+        }
+
+        return new RepositoryStateSnapshot(
+            "sha256:" + Convert.ToHexString(hash.GetHashAndReset()).ToLowerInvariant(),
+            ordered.Sum(value => value.Snapshot.FileCount),
+            ordered.Sum(value => value.Snapshot.TotalBytes));
+    }
+
     private static bool IsUnderExcludedRoot(string root, string path, string excludedRootName)
     {
         string relative = Path.GetRelativePath(root, path).Replace('\\', '/');

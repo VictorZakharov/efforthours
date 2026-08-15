@@ -8,6 +8,7 @@ internal enum ChangeBenchmarkMode
     LargeTree,
     LongRange,
     AuthorPeriod,
+    AuthorPeriodManifest,
 }
 
 internal sealed record ChangeBenchmarkOptions(
@@ -22,7 +23,8 @@ internal sealed record ChangeBenchmarkOptions(
     decimal? MaximumPeakMib)
 {
     public const string Usage =
-        "Usage: change-benchmark [--tree|--range|--author-period] [--files <count>] " +
+        "Usage: change-benchmark [--tree|--range|--author-period|--author-period-manifest] " +
+        "[--files <count>] " +
         "[--lines-per-file <count>] [--commits <count>] " +
         "[--maximum-range-components <count>] [--max-seconds <value>] " +
         "[--max-peak-mib <value>] [--compare-independent] [--keep]";
@@ -32,6 +34,7 @@ internal sealed record ChangeBenchmarkOptions(
         ChangeBenchmarkMode.LargeTree => "large-tree",
         ChangeBenchmarkMode.LongRange => "long-range",
         ChangeBenchmarkMode.AuthorPeriod => "author-period",
+        ChangeBenchmarkMode.AuthorPeriodManifest => "author-period-manifest",
         _ => throw new InvalidOperationException($"Unsupported benchmark mode '{Mode}'."),
     };
 
@@ -59,6 +62,9 @@ internal sealed record ChangeBenchmarkOptions(
                     break;
                 case "--author-period":
                     mode = SelectMode(mode, ChangeBenchmarkMode.AuthorPeriod);
+                    break;
+                case "--author-period-manifest":
+                    mode = SelectMode(mode, ChangeBenchmarkMode.AuthorPeriodManifest);
                     break;
                 case "--files":
                     files = ReadPositiveInteger(arguments, ref index, "--files");
@@ -98,6 +104,7 @@ internal sealed record ChangeBenchmarkOptions(
             ChangeBenchmarkMode.LargeTree => 1,
             ChangeBenchmarkMode.LongRange => 128,
             ChangeBenchmarkMode.AuthorPeriod => 8,
+            ChangeBenchmarkMode.AuthorPeriodManifest => 3,
             _ => throw new InvalidOperationException($"Unsupported benchmark mode '{selected}'."),
         };
         if (selected == ChangeBenchmarkMode.LargeTree && selectedCommits != 1)
@@ -111,10 +118,23 @@ internal sealed record ChangeBenchmarkOptions(
                 "Author-period mode permits at most nine qualifying commits so the fixture retains a narrow selection.");
         }
 
-        if (compareIndependent && selected != ChangeBenchmarkMode.AuthorPeriod)
+        if (selected == ChangeBenchmarkMode.AuthorPeriodManifest && selectedCommits != 3)
         {
             throw new ArgumentException(
-                "Option '--compare-independent' is valid only with '--author-period'.");
+                "Author-period-manifest mode uses exactly three qualifying commits per repository.");
+        }
+
+        if (selected == ChangeBenchmarkMode.AuthorPeriodManifest && !compareIndependent)
+        {
+            throw new ArgumentException(
+                "Author-period-manifest mode requires '--compare-independent'.");
+        }
+
+        if (compareIndependent && selected is not (
+            ChangeBenchmarkMode.AuthorPeriod or ChangeBenchmarkMode.AuthorPeriodManifest))
+        {
+            throw new ArgumentException(
+                "Option '--compare-independent' is valid only with an author-period mode.");
         }
 
         if (maximumRangeComponents > GitChangePlannerOptions.MaximumSupportedRangeComponents)
@@ -131,6 +151,7 @@ internal sealed record ChangeBenchmarkOptions(
                 ChangeBenchmarkMode.LargeTree => 10_000,
                 ChangeBenchmarkMode.LongRange => 32,
                 ChangeBenchmarkMode.AuthorPeriod => 29_225,
+                ChangeBenchmarkMode.AuthorPeriodManifest => 1_025,
                 _ => throw new InvalidOperationException($"Unsupported benchmark mode '{selected}'."),
             },
             linesPerFile ?? selected switch
@@ -138,6 +159,7 @@ internal sealed record ChangeBenchmarkOptions(
                 ChangeBenchmarkMode.LargeTree => 100,
                 ChangeBenchmarkMode.LongRange => 20,
                 ChangeBenchmarkMode.AuthorPeriod => 8,
+                ChangeBenchmarkMode.AuthorPeriodManifest => 8,
                 _ => throw new InvalidOperationException($"Unsupported benchmark mode '{selected}'."),
             },
             selectedCommits,
@@ -155,7 +177,7 @@ internal sealed record ChangeBenchmarkOptions(
         if (current is not null)
         {
             throw new ArgumentException(
-                "Options '--tree', '--range', and '--author-period' are mutually exclusive.");
+                "Benchmark mode options are mutually exclusive.");
         }
 
         return selected;

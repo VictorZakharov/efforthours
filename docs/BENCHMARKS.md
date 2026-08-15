@@ -888,3 +888,76 @@ Ordinary CI runs the benchmark harness without wall-clock or sampled-memory
 thresholds. It gates deterministic report equivalence, analysis/reuse counts,
 cache bounds, and read-only/offline safety; machine-dependent performance numbers
 are recorded only by explicit benchmark checkpoints such as the command above.
+
+## Multi-repository author-period matrix v1.3.0 checkpoint
+
+Measured on August 14, 2026 with benchmark protocol `change/1.3.0`, .NET runtime
+`10.0.7`, Windows `10.0.26200` x64, and unchanged estimator
+`change-seed/0.18.1+seed-rules/0.4.0`. The machine is the documented AMD Ryzen 9
+5900X workstation with 24 visible logical processors and 127.9 GiB installed
+memory.
+
+The public-safe synthetic fixture contains two local repositories cloned from one
+shared history, 1,025 requested nested C# files per repository, four merge-fanout
+branches, four pinned heads per repository, three contributor selectors, and
+three qualifying commits per repository. The repositories intentionally contain
+the same selected object ID, then diverge through default and open heads. One
+contributor matches that shared object directly, a second matches its co-author
+trailer, and a third selects nothing. The resulting portfolio has six unique
+repository-scoped changes; the equivalent single-repository/single-head/
+contributor workflow makes 24 invocations, eight of which are empty, and observes
+20 repeated selected rows before external deduplication.
+
+```text
+dotnet benchmarks/EffortHours.ChangeBenchmarks/bin/Release/net10.0/EffortHours.ChangeBenchmarks.dll
+  --author-period-manifest --files 1025 --lines-per-file 8 --commits 3
+  --compare-independent
+```
+
+One fresh Release process measured the combined path first, the equivalent
+isolated paths second against warm local object databases, and a reordered
+combined manifest third. The combined interval includes manifest planning,
+analysis, reconciliation, and serialization. The isolated interval includes each
+head/contributor selection and analysis plus unique-report collection; exact
+manual reconciliation is verified afterward, so this slightly favors the
+baseline:
+
+| Measure | Before: equivalent isolated invocations | After: one combined manifest | Change |
+| --- | ---: | ---: | ---: |
+| Invocation count | 24 | 1 | 95.8% fewer |
+| Measured core wall time | 12.360 s | 2.878 s | 4.30x faster in this run |
+| Parent-process CPU | 5.875 s | 3.500 s | 40.4% lower |
+| Snapshot analyses | 36 | 8 | 77.8% fewer |
+| Git object readers | 16 | 2 | 87.5% fewer |
+| Selected rows before/after deduplication | 20 | 6 | six identical repository-scoped changes |
+
+The complete measured comparison, including the reordered determinism run but
+excluding fixture construction and before/after hashing, took 17.338 seconds,
+allocated 150.72 MiB cumulatively, and sampled a 114.93-MiB process peak. The two
+representative default heads contained 2,060 files and 2,256 virtual directories
+in aggregate. The combined path served four of 12 snapshot-analysis requests and
+four of 12 inventory requests from cache, loaded two full inventories, derived six
+incrementally, and served 34 of 44 blob requests from its bounded caches.
+
+The pre/post target fingerprints were:
+
+| Scope | Files | Bytes | SHA-256 composite digest |
+| --- | ---: | ---: | --- |
+| Two worktrees | 2,060 | 467,907 | `ba21145f299555bfa643467c34317ea37f146c688f3a41bf3de2fd764964012e` |
+| Two complete `.git` states | 4,476 | 856,946 | `ddf724db040a2c16b13d7c4e82061895570d3afcba91e2d039aa25387485c117` |
+
+The combined report was byte-identical after repository, head, contributor, and
+alias reordering and matched both every isolated per-change report and an exact
+manual disjoint reconciliation at low, expected, and high range points. Shared
+objects remained repository-scoped, overlapping heads and zero contributors were
+preserved, local paths and raw aliases were absent, and both worktree and complete
+`.git` fingerprints were unchanged. Target execution, dependency installation,
+and network access were not performed.
+
+The 4.30x timing and sampled memory are one-machine observations, not CI gates or
+universal guarantees. The isolated path runs second and therefore receives the
+warmer operating-system and Git caches. Parent-process CPU and sampled working set
+exclude short-lived Git children. Ordinary CI uses an eight-file form of this
+fixture and gates only deterministic semantics, exact equivalence, reuse counts,
+privacy, cache bounds, and read-only/offline safety. Concurrent-process contention
+and larger public repository shapes remain separate measurements.

@@ -256,6 +256,30 @@ The process-level suite verifies an offline author-period command on a temporary
 Git repository, immutable selected objects, deterministic stdout, exact
 allocation, no source/host paths, and an unchanged worktree.
 
+The first multi-repository author-period release freezes the following regression
+matrix. The focused `change/1.3.0` process test covers the composed path; smaller
+storage-independent tests retain precise policy and failure boundaries.
+
+| Case | Frozen coverage |
+| --- | --- |
+| Fully overlapping heads | `AuthorPeriodManifestBenchmarkFreezesRegressionAndReuseMatrix` |
+| Shared ancestry plus unique commits | `OneTopologicalWalkMapsSharedAndUniqueCommitsToEveryHead` and the process matrix |
+| Default/open-head overlap | `AuthorPeriodManifestBenchmarkFreezesRegressionAndReuseMatrix` |
+| Equal object-ID text in two repositories | `PortfolioCandidateBatchScopesEqualObjectsByRepositoryAndRunsOneAtATime` and the process matrix |
+| Direct-author plus co-author multi-match | `OneCommitRetainsEveryContributorMatchWithoutMultiplication` and the process matrix |
+| Zero contributor/repository/head rows | `MatchSetGroupsKeepSharedEffortOnceAndPreserveZeroRows` and the process matrix |
+| Offset and daylight-saving boundaries | `OffsetFreeDaylightSavingGapsAndAmbiguitiesRequireExplicitOffsets` |
+| Merge inclusion/exclusion parity | `CommitterDateMergeAndCoauthorPoliciesAreExplicit` |
+| Repository/head/contributor/alias reorder invariance | `DigestIsInvariantToContributorRepositoryHeadAndAliasOrder` and the process matrix |
+| Exact disjoint manual baseline at all range points | `MatchSetGroupsKeepSharedEffortOnceAndPreserveZeroRows` and the process matrix |
+| No local paths, raw aliases, or source excerpts | `ReportSelectionContainsStableIdsAndObjectsButNoPathsOrAliases` and the process matrix |
+| Missing object, cancellation, input limits, and safety caps | `AuthorPeriodManifestPreflightFailuresDoNotLeakPathsOrAliases`, `PortfolioCandidateCancellationDisposesRepositorySessionBeforeOpeningSnapshots`, `ManifestContractIsVersionedBoundedAndRejectsDuplicateIds`, and `CandidateLedgerRetainsTheTenThousandRecordSafetyBoundary` |
+
+Timing and sampled-memory fields from the process matrix are observations. CI does
+not pass or fail on them; it gates the semantic, privacy, reuse, boundedness, and
+unchanged-target assertions above. The exact measurement protocol and controlled
+before/after table live in `BENCHMARKS.md`.
+
 Large Git portfolios additionally use the bounded changed-scope and immutable-
 inventory reuse rules in `CHANGE_ESTIMATION.md`. Identity and time still select
 rows only; neither the candidate count nor the size of the reachable graph enters

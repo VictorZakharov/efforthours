@@ -5,7 +5,7 @@ using EffortHours.Change;
 
 namespace EffortHours.ChangeBenchmarks;
 
-public static class Program
+public static partial class Program
 {
     public static async Task<int> Main(string[] arguments)
     {
@@ -31,6 +31,13 @@ public static class Program
         Console.CancelKeyPress += CancelHandler;
         try
         {
+            if (options.Mode == ChangeBenchmarkMode.AuthorPeriodManifest)
+            {
+                return await RunAuthorPeriodManifestBenchmarkAsync(
+                    options,
+                    cancellation.Token).ConfigureAwait(false);
+            }
+
             using GitBenchmarkRepository repository = await GitBenchmarkRepository.CreateAsync(
                 options,
                 cancellation.Token).ConfigureAwait(false);
@@ -135,7 +142,7 @@ public static class Program
         bool secondsPassed,
         bool memoryPassed)
     {
-        Console.WriteLine("benchmark=change/1.2.0");
+        Console.WriteLine("benchmark=change/1.3.0");
         Console.WriteLine($"estimator={ChangeEstimator.Version}");
         Console.WriteLine($"mode={options.Name}");
         Console.WriteLine($"runtime={RuntimeInformation.FrameworkDescription}");
