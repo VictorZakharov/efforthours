@@ -49,8 +49,27 @@ Package compilation runs concurrently from the exact workflow commit and uploads
 a run-scoped one-day candidate. `Pack preview artifact` promotes those exact bytes
 to the 14-day artifact only after every formatting, quality, and end-to-end job has
 passed. A failed or cancelled validation lane therefore cannot produce a successful
-package gate. Run `NuGet preview` manually with `publish` left false. Download and
-inspect the resulting package artifact before creating a tag.
+package gate. Review that PR-scoped artifact before merging. Do not dispatch a
+second dry-run workflow after the same required checks pass.
+
+After the release PR merges, verify that the merge has exactly two parents and
+that its tree is identical to the tested PR head (the second parent):
+
+```text
+git rev-parse HEAD^2
+git diff --quiet HEAD^2 HEAD
+```
+
+When the second command exits successfully with no output and GitHub identifies
+exactly one matching merged `main` PR, the merge added only commit metadata and CI
+reuses the successful aggregate package gate from the second-parent PR head. If it
+reports a difference, or if merge provenance cannot be verified, review the added
+`main` changes and wait for the full push-to-`main` CI run on the merge commit
+before tagging. The release workflow resolves the correct validation commit in
+either tree case and waits for the aggregate gate there. That gate depends on
+formatting, all quality and end-to-end lanes, history validation, and candidate
+packaging. The workflow independently requires the merged PR match; direct,
+non-merge, and manually constructed release commits are rejected.
 
 ## Configure trusted NuGet publishing
 
@@ -109,10 +128,19 @@ documented security emergency.
 
 ## Publish the NuGet preview
 
-1. Dispatch `NuGet preview` from the exact release tag with `publish` true.
-2. Review the protected `nuget.org` environment deployment and approve only the
-   expected tag, version, and package digest.
-3. Wait for NuGet.org validation and indexing, then install from a clean location:
+1. Dispatch `NuGet release` once from the exact release tag. There is no
+   non-publishing input or separate dry run.
+2. Let the package job verify merge provenance and the aggregate CI gate on either
+   the identical PR head or, when parallel changes were combined, the exact merged
+   `main` commit. It then restores/builds the CLI graph, packs, inspects,
+   smoke-tests, digests, and uploads the tag-built package. It intentionally does
+   not repeat formatting, unit tests, or end-to-end tests already covered by that
+   successful validation commit.
+3. Review the uploaded artifact and SHA-256 digest, then approve the protected
+   `nuget.org` environment deployment only for the expected tag and version. The
+   publish job rechecks the downloaded bytes against that approved digest before
+   requesting its short-lived credential.
+4. Wait for NuGet.org validation and indexing, then install from a clean location:
 
 ```text
 dotnet tool install --global EffortHours.Tool --version <prerelease-version>
@@ -121,9 +149,9 @@ eh --help
 eh schema list
 ```
 
-4. Confirm the NuGet page renders the packaged README, MIT license, repository URL,
+5. Confirm the NuGet page renders the packaged README, MIT license, repository URL,
    dependencies, and prerelease warning correctly.
-5. Create a GitHub prerelease from the same tag and copy the relevant changelog
+6. Create a GitHub prerelease from the same tag and copy the relevant changelog
    section. An announcement is optional and separate.
 
 NuGet package versions are immutable and cannot be deleted. If a preview is wrong,

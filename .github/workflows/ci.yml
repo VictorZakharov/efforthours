@@ -9,10 +9,11 @@ on:
 
 permissions:
   contents: read
+  pull-requests: read
 
 concurrency:
   group: ci-${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 env:
   DOTNET_NOLOGO: "1"
@@ -25,6 +26,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       full_ci: ${{ steps.change_scope.outputs.full_ci }}
+      skip_reason: ${{ steps.change_scope.outputs.skip_reason }}
 
     steps:
       - name: Check out source history
@@ -32,16 +34,73 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Classify changed files
+      - name: Classify validation scope
         id: change_scope
         shell: bash
         env:
           EVENT_NAME: ${{ github.event_name }}
           BASE_SHA: ${{ github.event.pull_request.base.sha }}
           HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          GH_TOKEN: ${{ github.token }}
         run: |
+          skip_reason=""
+
+          if [ "$EVENT_NAME" = "push" ]; then
+            set +e
+            provenance="$(pwsh -NoLogo -NoProfile -File eng/verify-tested-merge.ps1 -Commit HEAD 2>&1)"
+            provenance_status=$?
+            set -e
+
+            case "$provenance_status" in
+              0)
+                echo "$provenance"
+                if grep -Fxq "tree_matches_pr_head=true" <<< "$provenance"; then
+                  merge_commit="$(sed -n 's/^merge_commit=//p' <<< "$provenance")"
+                  pr_head="$(sed -n 's/^pr_head=//p' <<< "$provenance")"
+                  merged_pr_count=0
+                  while IFS=$'\t' read -r api_merge api_head api_base api_merged_at; do
+                    if [ "$api_merge" = "$merge_commit" ] && \
+                       [ "$api_head" = "$pr_head" ] && \
+                       [ "$api_base" = "main" ] && \
+                       [ -n "$api_merged_at" ]; then
+                      merged_pr_count=$((merged_pr_count + 1))
+                    fi
+                  done <<< "$(
+                    gh api "repos/$GITHUB_REPOSITORY/commits/$merge_commit/pulls?per_page=100" \
+                      --jq '.[]|[.merge_commit_sha,.head.sha,.base.ref,.merged_at]|@tsv'
+                  )"
+                  if [ "$merged_pr_count" -eq 1 ]; then
+                    full_ci=false
+                    skip_reason="Merged tree is identical to its GitHub-verified required-check PR head; duplicate post-merge validation is not required."
+                  else
+                    full_ci=true
+                    echo "GitHub did not identify exactly one matching merged main PR; full post-merge CI is required."
+                  fi
+                else
+                  full_ci=true
+                  echo "Merged tree includes parallel main changes; full post-merge CI is required."
+                fi
+                ;;
+              2)
+                full_ci=true
+                echo "$provenance"
+                echo "Push is not an unchanged tested-PR merge; full CI is required."
+                ;;
+              *)
+                echo "::error::Unable to verify post-merge provenance."
+                echo "$provenance"
+                exit "$provenance_status"
+                ;;
+            esac
+
+            echo "full_ci=$full_ci" >> "$GITHUB_OUTPUT"
+            echo "skip_reason=$skip_reason" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
           if [ "$EVENT_NAME" != "pull_request" ]; then
             echo "full_ci=true" >> "$GITHUB_OUTPUT"
+            echo "skip_reason=" >> "$GITHUB_OUTPUT"
             echo "Non-pull-request run; full CI is required."
             exit 0
           fi
@@ -49,7 +108,8 @@ jobs:
           if git diff --quiet --no-renames "$BASE_SHA...$HEAD_SHA" -- . \
             ':(exclude,icase,glob)**/*.md'; then
             full_ci=false
-            echo "Markdown-only pull request; expensive CI jobs will be skipped."
+            skip_reason="Markdown-only pull request; expensive CI jobs are not required."
+            echo "$skip_reason"
           else
             diff_status=$?
             if [ "$diff_status" -ne 1 ]; then
@@ -61,6 +121,7 @@ jobs:
             echo "A non-Markdown path changed; full CI is required."
           fi
           echo "full_ci=$full_ci" >> "$GITHUB_OUTPUT"
+          echo "skip_reason=$skip_reason" >> "$GITHUB_OUTPUT"
 
       - name: Reject merge commits in the pull request
         if: github.event_name == 'pull_request'
@@ -109,9 +170,11 @@ jobs:
           - macos-latest
 
     steps:
-      - name: Skip build and tests for Markdown-only changes
+      - name: Reuse completed validation
         if: needs.pull-request-history.outputs.full_ci != 'true'
-        run: echo "Markdown-only pull request; build and unit tests are not required."
+        env:
+          SKIP_REASON: ${{ needs.pull-request-history.outputs.skip_reason }}
+        run: echo "$SKIP_REASON"
 
       - name: Check out source
         if: needs.pull-request-history.outputs.full_ci == 'true'
@@ -148,9 +211,11 @@ jobs:
           - macos-latest
 
     steps:
-      - name: Skip process tests for Markdown-only changes
+      - name: Reuse completed validation
         if: needs.pull-request-history.outputs.full_ci != 'true'
-        run: echo "Markdown-only pull request; process-level tests are not required."
+        env:
+          SKIP_REASON: ${{ needs.pull-request-history.outputs.skip_reason }}
+        run: echo "$SKIP_REASON"
 
       - name: Check out source
         if: needs.pull-request-history.outputs.full_ci == 'true'

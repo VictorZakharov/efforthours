@@ -1,16 +1,12 @@
-name: NuGet preview
+name: NuGet release
 
 on:
   workflow_dispatch:
-    inputs:
-      publish:
-        description: Publish the verified prerelease package to NuGet.org
-        required: true
-        default: false
-        type: boolean
 
 permissions:
+  checks: read
   contents: read
+  pull-requests: read
 
 env:
   DOTNET_NOLOGO: "1"
@@ -19,14 +15,123 @@ env:
 
 jobs:
   package:
-    name: Build and verify preview
+    name: Build release package
     runs-on: ubuntu-latest
     outputs:
+      digest: ${{ steps.package_digest.outputs.value }}
       version: ${{ steps.package_version.outputs.value }}
 
     steps:
       - name: Check out source
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+
+      - name: Require a release tag
+        shell: bash
+        run: |
+          if [[ "$GITHUB_REF" != refs/tags/v* ]]; then
+            echo "NuGet release must run from a version tag; received '$GITHUB_REF'." >&2
+            exit 1
+          fi
+
+      - name: Verify tested release merge
+        id: provenance
+        shell: pwsh
+        run: |
+          $provenance = @(& ./eng/verify-tested-merge.ps1 -Commit HEAD)
+          if ($LASTEXITCODE -ne 0) {
+            exit $LASTEXITCODE
+          }
+
+          foreach ($line in $provenance) {
+            $line | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
+          }
+
+          $values = @{}
+          foreach ($line in $provenance) {
+            $key, $value = $line -split "=", 2
+            $values[$key] = $value
+          }
+
+          @(
+            "### Release provenance",
+            "- Merge commit: ``$($values.merge_commit)``",
+            "- Tested PR head: ``$($values.pr_head)``",
+            "- Merge tree: ``$($values.tree)``",
+            "- Tree matches PR head: ``$($values.tree_matches_pr_head)``",
+            "- Required-check commit: ``$($values.validation_commit)``"
+          ) | Out-File -FilePath $env:GITHUB_STEP_SUMMARY -Encoding utf8 -Append
+
+      - name: Verify merged pull request
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+          MERGE_COMMIT: ${{ steps.provenance.outputs.merge_commit }}
+          PR_HEAD: ${{ steps.provenance.outputs.pr_head }}
+        run: |
+          $json = gh api "repos/$env:GITHUB_REPOSITORY/commits/$env:MERGE_COMMIT/pulls"
+          if ($LASTEXITCODE -ne 0) {
+            exit $LASTEXITCODE
+          }
+
+          $pullRequests = @(($json | ConvertFrom-Json) | Where-Object {
+            $_.merged_at -and
+            $_.merge_commit_sha -eq $env:MERGE_COMMIT -and
+            $_.head.sha -eq $env:PR_HEAD -and
+            $_.base.ref -eq "main"
+          })
+          if ($pullRequests.Count -ne 1) {
+            throw "Expected one merged main PR for $env:MERGE_COMMIT with head $env:PR_HEAD; found $($pullRequests.Count)."
+          }
+
+          "- Merged PR: #$($pullRequests[0].number)" |
+            Out-File -FilePath $env:GITHUB_STEP_SUMMARY -Encoding utf8 -Append
+
+      - name: Verify aggregate validation gate
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VALIDATION_COMMIT: ${{ steps.provenance.outputs.validation_commit }}
+        run: |
+          $requiredGate = "Pack preview artifact"
+          $deadline = [DateTimeOffset]::UtcNow.AddMinutes(10)
+          while ($true) {
+            $json = gh api "repos/$env:GITHUB_REPOSITORY/commits/$env:VALIDATION_COMMIT/check-runs?per_page=100"
+            if ($LASTEXITCODE -ne 0) {
+              exit $LASTEXITCODE
+            }
+
+            $checkRuns = @(($json | ConvertFrom-Json).check_runs)
+            $latest = $checkRuns |
+              Where-Object {
+                $_.name -eq $requiredGate -and
+                $_.app.slug -eq "github-actions"
+              } |
+              Sort-Object id -Descending |
+              Select-Object -First 1
+
+            if ($null -ne $latest -and
+                $latest.status -eq "completed" -and
+                $latest.conclusion -eq "success") {
+              break
+            }
+
+            if ($null -ne $latest -and $latest.status -eq "completed") {
+              throw "Required gate '$requiredGate' concluded '$($latest.conclusion)'."
+            }
+
+            $gateState = if ($null -eq $latest) { "missing" } else { $latest.status }
+            if ([DateTimeOffset]::UtcNow -ge $deadline) {
+              throw "Timed out waiting for required gate '$requiredGate' ($gateState)."
+            }
+
+            Write-Host "Waiting for '$requiredGate' on $env:VALIDATION_COMMIT ($gateState)."
+            Start-Sleep -Seconds 10
+          }
+
+          "- Aggregate CI gate: ``$requiredGate`` passed on ``$env:VALIDATION_COMMIT``" |
+            Out-File -FilePath $env:GITHUB_STEP_SUMMARY -Encoding utf8 -Append
 
       - name: Set up .NET
         uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
@@ -39,32 +144,20 @@ jobs:
         run: |
           version="$(dotnet msbuild src/EffortHours.Cli/EffortHours.Cli.csproj -getProperty:Version -nologo)"
           if [[ -z "$version" || "$version" != *-* ]]; then
-            echo "NuGet preview requires an explicit prerelease version; received '$version'." >&2
+            echo "NuGet release requires an explicit prerelease version; received '$version'." >&2
             exit 1
           fi
-          if [[ "${{ inputs.publish }}" == "true" && "$GITHUB_REF" != "refs/tags/v$version" ]]; then
-            echo "Publishing requires the exact tag 'v$version'; received '$GITHUB_REF'." >&2
+          if [[ "$GITHUB_REF" != "refs/tags/v$version" ]]; then
+            echo "NuGet release requires the exact tag 'v$version'; received '$GITHUB_REF'." >&2
             exit 1
           fi
           echo "value=$version" >> "$GITHUB_OUTPUT"
 
       - name: Restore
-        run: dotnet restore EffortHours.slnx --configfile NuGet.Config --locked-mode
-
-      - name: Verify formatting
-        run: dotnet format EffortHours.slnx --no-restore --verify-no-changes --severity info
-
-      - name: Build
-        run: dotnet build EffortHours.slnx --no-restore --configuration Release
-
-      - name: Run unit tests
-        run: dotnet test tests/EffortHours.Tests/EffortHours.Tests.csproj --no-build --no-restore --configuration Release
-
-      - name: Run end-to-end tests
-        run: dotnet test tests/EffortHours.EndToEndTests/EffortHours.EndToEndTests.csproj --no-build --no-restore --configuration Release
+        run: dotnet restore src/EffortHours.Cli/EffortHours.Cli.csproj --configfile NuGet.Config --locked-mode
 
       - name: Pack
-        run: dotnet pack src/EffortHours.Cli/EffortHours.Cli.csproj --configuration Release --no-build --no-restore --output artifacts/packages
+        run: dotnet pack src/EffortHours.Cli/EffortHours.Cli.csproj --configuration Release --no-restore --output artifacts/packages
 
       - name: Inspect package payload
         shell: bash
@@ -87,6 +180,19 @@ jobs:
           test "$(grep -Ec '^tools/net10.0/any/[^/]+\.deps\.json$' <<< "$entries")" -eq 1
           test "$(grep -Ec '^tools/net10.0/any/[^/]+\.runtimeconfig\.json$' <<< "$entries")" -eq 1
 
+      - name: Record package digest
+        id: package_digest
+        shell: bash
+        run: |
+          package="artifacts/packages/EffortHours.Tool.${{ steps.package_version.outputs.value }}.nupkg"
+          digest="$(sha256sum "$package" | cut -d ' ' -f 1)"
+          echo "value=$digest" >> "$GITHUB_OUTPUT"
+          {
+            echo "### Release package"
+            echo "- Version: \`${{ steps.package_version.outputs.value }}\`"
+            echo "- SHA-256: \`$digest\`"
+          } >> "$GITHUB_STEP_SUMMARY"
+
       - name: Install and run packed tool
         shell: bash
         run: |
@@ -106,10 +212,10 @@ jobs:
           path: artifacts/packages/EffortHours.Tool.${{ steps.package_version.outputs.value }}.nupkg
           if-no-files-found: error
           retention-days: 30
+          compression-level: 0
 
   publish:
     name: Publish to NuGet.org
-    if: ${{ inputs.publish && startsWith(github.ref, 'refs/tags/v') }}
     needs: package
     runs-on: ubuntu-latest
     environment: nuget.org
@@ -123,6 +229,17 @@ jobs:
         with:
           name: efforthours-tool-${{ needs.package.outputs.version }}
           path: artifacts/packages
+
+      - name: Verify approved package digest
+        shell: bash
+        run: |
+          package="artifacts/packages/EffortHours.Tool.${{ needs.package.outputs.version }}.nupkg"
+          actual="$(sha256sum "$package" | cut -d ' ' -f 1)"
+          expected="${{ needs.package.outputs.digest }}"
+          if [[ "$actual" != "$expected" ]]; then
+            echo "Downloaded package digest '$actual' does not match approved digest '$expected'." >&2
+            exit 1
+          fi
 
       - name: Request short-lived NuGet credential
         id: nuget_login
