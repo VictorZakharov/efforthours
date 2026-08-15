@@ -17,6 +17,15 @@ public static class HostReviewMeasurementVersions
     public const string MetricsV1 = "host-review-comparison-metrics/1.0.0";
 }
 
+public static class CalibrationUncertaintyVersions
+{
+    public const string FeatureContractV1 = "repository-uncertainty-features/1.0.0";
+
+    public const string ProjectorV1 = "uncertainty-feature-projector/1.0.0";
+
+    public const string IntervalPolicyV1 = "symmetric-planning-interval/1.0.0";
+}
+
 public static class SchemaNames
 {
     public const string CalibrationAuthoringPacket = "calibration-authoring-packet.schema.json";
@@ -25,6 +34,8 @@ public static class SchemaNames
     public const string CalibrationCorpusReviewPlan = "calibration-corpus-review-plan.schema.json";
     public const string CalibrationDiagnostic = "calibration-diagnostic.schema.json";
     public const string CalibrationEvaluation = "calibration-evaluation.schema.json";
+    public const string CalibrationUncertaintyFeatures =
+        "calibration-uncertainty-features.schema.json";
     public const string CalibrationMutationReport = "calibration-mutation-report.schema.json";
     public const string CalibrationMutationSuite = "calibration-mutation-suite.schema.json";
     public const string CalibrationReviewPlan = "calibration-review-plan.schema.json";
@@ -61,6 +72,8 @@ public static class SchemaIds
     public const string CalibrationCorpusReviewPlan = "urn:eh:schema:v1:calibration-corpus-review-plan";
     public const string CalibrationDiagnostic = "urn:eh:schema:v1:calibration-diagnostic";
     public const string CalibrationEvaluation = "urn:eh:schema:v1:calibration-evaluation";
+    public const string CalibrationUncertaintyFeatures =
+        "urn:eh:schema:v1:calibration-uncertainty-features";
     public const string CalibrationMutationReport = "urn:eh:schema:v1:calibration-mutation-report";
     public const string CalibrationMutationSuite = "urn:eh:schema:v1:calibration-mutation-suite";
     public const string CalibrationReviewPlan = "urn:eh:schema:v1:calibration-review-plan";

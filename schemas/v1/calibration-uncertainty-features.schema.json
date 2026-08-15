@@ -1,0 +1,207 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:eh:schema:v1:calibration-uncertainty-features",
+  "title": "EffortHours calibration uncertainty feature report v1",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "projectorVersion",
+    "featureContract",
+    "featureContractDigest",
+    "estimateDigest",
+    "evidenceDigest",
+    "repositorySourceDigest",
+    "ecosystems",
+    "estimatorVersion",
+    "profile",
+    "baselineId",
+    "summary",
+    "workItems"
+  ],
+  "properties": {
+    "schemaVersion": { "const": "1.0.0" },
+    "projectorVersion": { "const": "uncertainty-feature-projector/1.0.0" },
+    "featureContract": { "$ref": "#/$defs/featureContract" },
+    "featureContractDigest": { "$ref": "#/$defs/digest" },
+    "estimateDigest": { "$ref": "#/$defs/digest" },
+    "evidenceDigest": { "$ref": "#/$defs/digest" },
+    "repositorySourceDigest": { "$ref": "#/$defs/digest" },
+    "ecosystems": { "$ref": "#/$defs/stringList" },
+    "estimatorVersion": { "type": "string", "minLength": 1 },
+    "profile": { "enum": ["implementation", "recreation"] },
+    "baselineId": { "type": "string", "minLength": 1 },
+    "summary": { "$ref": "#/$defs/summary" },
+    "workItems": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/workItem" }
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "stringList": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "intervalPolicy": {
+      "type": "object",
+      "required": [
+        "version",
+        "intendedCoverageMetric",
+        "intendedCoverageTarget",
+        "formalProbabilityInterval",
+        "symmetricAroundExpected",
+        "zeroHourFloor",
+        "directionalContingenciesSeparate",
+        "materialUnresolvedFactsMustWiden",
+        "comparableWeakerEvidenceMustNotNarrow",
+        "missingValuesWidenAutomatically"
+      ],
+      "properties": {
+        "version": { "const": "symmetric-planning-interval/1.0.0" },
+        "intendedCoverageMetric": { "const": "reviewed-expected-point" },
+        "intendedCoverageTarget": { "const": 0.8 },
+        "formalProbabilityInterval": { "const": false },
+        "symmetricAroundExpected": { "const": true },
+        "zeroHourFloor": { "const": true },
+        "directionalContingenciesSeparate": { "const": true },
+        "materialUnresolvedFactsMustWiden": { "const": true },
+        "comparableWeakerEvidenceMustNotNarrow": { "const": true },
+        "missingValuesWidenAutomatically": { "const": false }
+      },
+      "additionalProperties": false
+    },
+    "featureDefinition": {
+      "type": "object",
+      "required": [
+        "id",
+        "stage",
+        "valueKind",
+        "monotonicity",
+        "offlineSource",
+        "description"
+      ],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z0-9]+(?:[.-][a-z0-9]+)*$" },
+        "stage": { "enum": ["available-offline", "deferred-evidence"] },
+        "valueKind": { "enum": ["count", "ratio", "rate", "ordinal", "distribution"] },
+        "monotonicity": {
+          "enum": [
+            "diagnostic-only",
+            "higher-must-not-narrow",
+            "lower-must-not-narrow",
+            "higher-must-widen"
+          ]
+        },
+        "offlineSource": { "type": "string", "minLength": 1 },
+        "description": { "type": "string", "minLength": 1 }
+      },
+      "additionalProperties": false
+    },
+    "featureContract": {
+      "type": "object",
+      "required": [
+        "version",
+        "effectiveDate",
+        "labelIndependent",
+        "intervalPolicy",
+        "features",
+        "deferredCandidates"
+      ],
+      "properties": {
+        "version": { "const": "repository-uncertainty-features/1.0.0" },
+        "effectiveDate": { "type": "string", "format": "date" },
+        "labelIndependent": { "const": true },
+        "intervalPolicy": { "$ref": "#/$defs/intervalPolicy" },
+        "features": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/featureDefinition" }
+        },
+        "deferredCandidates": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/featureDefinition" }
+        }
+      },
+      "additionalProperties": false
+    },
+    "featureValue": {
+      "type": "object",
+      "required": ["featureId", "availability", "evidenceIds"],
+      "properties": {
+        "featureId": { "type": "string", "minLength": 1 },
+        "availability": { "enum": ["available", "not-applicable", "unavailable"] },
+        "value": { "type": "number", "minimum": 0 },
+        "reasonCode": { "type": "string", "minLength": 1 },
+        "evidenceIds": { "$ref": "#/$defs/stringList" }
+      },
+      "additionalProperties": false
+    },
+    "workItem": {
+      "type": "object",
+      "required": [
+        "workItemId",
+        "category",
+        "sourceComplexity",
+        "ecosystems",
+        "expectedHours",
+        "sourceRange",
+        "sourceRangePolicyCompliant",
+        "resolvedEvidenceIds",
+        "unresolvedEvidenceIds",
+        "features"
+      ],
+      "properties": {
+        "workItemId": { "type": "string", "minLength": 1 },
+        "category": { "$ref": "urn:eh:schema:v1:estimate-report#/$defs/category" },
+        "sourceComplexity": { "enum": ["routine", "moderate", "high", "exceptional"] },
+        "ecosystems": { "$ref": "#/$defs/stringList" },
+        "expectedHours": { "type": "number", "minimum": 0 },
+        "sourceRange": { "$ref": "urn:eh:schema:v1:estimate-report#/$defs/effortRange" },
+        "sourceRangePolicyCompliant": { "type": "boolean" },
+        "parentId": { "type": "string", "minLength": 1 },
+        "correlationGroup": { "type": "string", "minLength": 1 },
+        "resolvedEvidenceIds": { "$ref": "#/$defs/stringList" },
+        "unresolvedEvidenceIds": { "$ref": "#/$defs/stringList" },
+        "features": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/featureValue" }
+        }
+      },
+      "additionalProperties": false
+    },
+    "summary": {
+      "type": "object",
+      "required": [
+        "workItemCount",
+        "featureCount",
+        "widthDriverFeatureCount",
+        "deferredCandidateCount",
+        "resolvedEvidenceReferenceCount",
+        "unresolvedEvidenceReferenceCount",
+        "widthDriverUnavailableWorkItemCount",
+        "materialAccessGapWorkItemCount",
+        "nonMaterialOfflineLimitationWorkItemCount",
+        "sourcePolicyCompliantWorkItemCount"
+      ],
+      "properties": {
+        "workItemCount": { "type": "integer", "minimum": 0 },
+        "featureCount": { "type": "integer", "minimum": 1 },
+        "widthDriverFeatureCount": { "type": "integer", "minimum": 1 },
+        "deferredCandidateCount": { "type": "integer", "minimum": 0 },
+        "resolvedEvidenceReferenceCount": { "type": "integer", "minimum": 0 },
+        "unresolvedEvidenceReferenceCount": { "type": "integer", "minimum": 0 },
+        "widthDriverUnavailableWorkItemCount": { "type": "integer", "minimum": 0 },
+        "materialAccessGapWorkItemCount": { "type": "integer", "minimum": 0 },
+        "nonMaterialOfflineLimitationWorkItemCount": { "type": "integer", "minimum": 0 },
+        "sourcePolicyCompliantWorkItemCount": { "type": "integer", "minimum": 0 }
+      },
+      "additionalProperties": false
+    }
+  }
+}

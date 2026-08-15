@@ -165,6 +165,14 @@ count, and intermediate churn do not value effort. `CHANGE_ESTIMATION.md` and
   80% largest-first material set, compact leaf expansion, symmetry checks, and
   raw/normalized width correlations must reconcile without changing the rejected
   candidate or opening test. Issue #137 owns the uncertainty-model follow-through.
+- Keep `repository-uncertainty-features/1.0.0` and
+  `symmetric-planning-interval/1.0.0` frozen as the pre-label successor boundary.
+  The offline projector exposes current confidence, provenance, parser, explicit-
+  uncertainty, and material-access signals while marking unavailable function
+  distributions, coupling/cycles, sample support, and out-of-distribution evidence
+  as deferred. Next, add those evidence contracts deliberately, measure incremental
+  development value, choose hierarchical fallbacks and correlated aggregation,
+  then freeze a new candidate and fresh blind validation boundary.
 - Preserve repository-family partition isolation and honest teacher/model/input
   provenance. Optional independent review remains explicit corroboration, not an
   implied maturity upgrade.

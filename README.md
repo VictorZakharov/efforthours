@@ -330,6 +330,7 @@ eh change portfolio --manifest <portfolio.json>
 eh change portfolio --author-period-manifest <manifest.json>
 eh change explain <change-estimate.json> --item <id>
 eh review packet <repository> --compact
+eh calibration uncertainty-features <estimate.json> <evidence.json> --compact
 eh model info
 eh rate info
 eh schema list
