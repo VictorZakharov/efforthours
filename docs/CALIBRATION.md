@@ -431,8 +431,11 @@ at least one conditioned prediction, no coverage loss, no normalized-width growt
 and no interval-miss growth. Correlation direction, bucket-direction violations,
 and repository coverage regressions remain separately visible. The evaluator
 refuses validation/test records, fits no production model, and cannot alter labels,
-seed estimates, or intervals. Public development measurement remains a later
-checkpoint after this policy freeze.
+seed estimates, or intervals. The subsequent 15-repository, 2,030-target checkpoint
+rejects all 14 fields as direct width drivers: every variant narrows the baseline
+but loses coverage and increases interval miss. Median decision complexity and
+median nesting retain the cleanest expected ordering, so the measurements remain
+useful diagnostics without admission.
 
 ### Development-only uncertainty feature measurement
 

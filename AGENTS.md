@@ -118,8 +118,9 @@ only, no interval model is frozen, and estimates do not change. A separate froze
 structural diagnostic contract now exposes local callable size, decision-
 complexity, nesting, parser coverage, and analyzer ambiguity for parser-backed C#
 and JavaScript/JSX. Its separate target aggregation, fixed buckets, expected
-residual directions, and repository-held-out evaluation gate are frozen before
-public labels are joined; the public development measurement is still pending and
-no field is admitted as an interval driver.
+residual directions, and repository-held-out evaluation gate were frozen before
+public labels were joined. All 14 fields have now been measured against the 2,030
+development targets; every conditioned interval loses coverage and increases miss,
+so all remain diagnostic-only and no interval model is frozen.
 Change EHE has only the limited Stage A logical admission described in
 `docs/CHANGE_MODEL_ADMISSION.md`; later ecosystem extensions remain experimental.
