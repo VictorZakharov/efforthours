@@ -23,9 +23,11 @@ internal sealed record ManualQaDecisionTemplateOptions
         out ManualQaDecisionTemplateOptions? options,
         out string? error)
     {
-        string[] required = ManualQaDecisionOptionParser.BoundaryOptions
-            .Append("--output")
-            .ToArray();
+        string[] required =
+        [
+            .. ManualQaDecisionOptionParser.BoundaryOptions,
+            "--output",
+        ];
         if (!ManualQaDecisionOptionParser.TryRead(arguments, required, out var values, out error))
         {
             options = null;
