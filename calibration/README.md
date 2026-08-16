@@ -24,6 +24,10 @@ consistency, and target coverage. It freezes no candidate and opens no holdout.
 The [`0.5.0 logical-capability preflight`](corpora/public-readiness/0.5.0/README.md)
 passes all 16 numerical development gates; 12 operational gates remain unrun and
 non-passing, so it still freezes no manifest and opens no holdout.
+The later [`2.0.0 manual-QA review freeze`](corpora/public-readiness/2.0.0/README.md)
+projects all 955 eligible development responsibilities into 15 candidate-blind
+packets under `manual-qa-work-item/1.0.0`. It freezes the review input before any
+replacement QA judgment, compiler, candidate evaluation, or holdout access.
 The public repository now contains 21 labeled repository families and 2,262
 teacher targets in total, still without independent correction or a model-
 admission result.

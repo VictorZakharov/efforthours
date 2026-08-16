@@ -112,7 +112,10 @@ documentation, QA itself, self-review, gaps, and pricing. It replaces rather tha
 stacks on seed QA, emits one dependency-linked QA item per coding item, and applies
 all three ratios to expected coding so source range width is not compounded. The
 candidate is development-only and does not change the shipped estimator; it
-requires category re-review and fresh blind validation before admission.
+requires category re-review and fresh blind validation before admission. The
+`efforthours-public-readiness/2.0.0` checkpoint freezes 955 candidate-blind
+development review inputs before any replacement QA judgment or evaluation; it
+does not validate the prior.
 
 ### 4.5 Documentation
 

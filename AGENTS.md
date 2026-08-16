@@ -138,10 +138,12 @@ Development candidate `manual-qa-coding-ratio/0.1.0` now replaces seed manual-QA
 items with dependency-linked 30/40/50 percent items over eligible expected coding
 effort. It is an experience-based, unvalidated correction candidate only:
 `seed-rules/0.4.0` remains shipped, existing labels are unchanged, the manual-QA
-development category needs blind re-review, and any admission attempt needs a new
-finite manifest and fresh validation boundary. Its anonymized real-case midpoint
-improves materially while its inherited total high bound worsens, so overall
-interval research remains separate.
+development re-review now has 15 frozen candidate-blind packets covering 955
+eligible responsibilities, and no replacement answers or evaluation yet exist.
+Freeze its decision/compiler contract before authoring answers. Any admission
+attempt needs a new finite manifest and fresh validation boundary. Its anonymized
+real-case midpoint improves materially while its inherited total high bound
+worsens, so overall interval research remains separate.
 
 Change EHE has only the limited Stage A logical admission described in
 `docs/CHANGE_MODEL_ADMISSION.md`; later ecosystem extensions remain experimental.

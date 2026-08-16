@@ -1,0 +1,165 @@
+{
+  "schemaVersion": "1.0.0",
+  "manifestVersion": "manual-qa-development-review-manifest/1.0.0",
+  "authoringVersion": "manual-qa-development-review-authoring/1.0.0",
+  "policy": {
+    "id": "efforthours-manual-qa-development-review",
+    "version": "manual-qa-development-review-policy/1.0.0",
+    "digest": "sha256:bc4d9a29aac4fd80a917219c77a02dd0c8d1b71ecfb91d4f2b1ad287ecb231e0"
+  },
+  "sourceCorpus": {
+    "id": "efforthours-public-readiness-development",
+    "version": "0.3.0",
+    "digest": "sha256:6ef79b8b950de013263258107c8c19cdd7187e66ab3be84107f63e282a76d385"
+  },
+  "rubric": {
+    "id": "manual-qa-work-item",
+    "version": "1.0.0"
+  },
+  "candidateVisibility": "blind",
+  "partition": "development",
+  "recordCount": 15,
+  "targetCount": 955,
+  "packets": [
+    {
+      "sourceRecordId": "record:app-vnext-polly:implementation",
+      "repositoryId": "repository:github.com/app-vnext/polly",
+      "repositorySourceDigest": "sha256:edff155be72775b8b7de15cb2bc816299affd03f557a4cf7fda737c783dd0c58",
+      "fileName": "app-vnext-polly.manual-qa-review.json",
+      "packetDigest": "sha256:1feb11a23447f6c2b970c8ba158ec2c9c8a1d594193b2e10ddaaa388ccdf9e72",
+      "lineageDigest": "sha256:fdcaf78b88a6b009f4f1c9dcbe8d525bcf4d056f7c9ba623c1383ceae7bc3390",
+      "targetCount": 53
+    },
+    {
+      "sourceRecordId": "record:btcpayserver-btcpayserver:implementation",
+      "repositoryId": "repository:github.com/btcpayserver/btcpayserver",
+      "repositorySourceDigest": "sha256:cf0a196516fdfa1b271c1a82d71b171f77921567940d64892c91600c057896f3",
+      "fileName": "btcpayserver-btcpayserver.manual-qa-review.json",
+      "packetDigest": "sha256:157ad5d0f263a57d58eb7928deff10fbf7ea5bac64bba11f19c51529601bf49a",
+      "lineageDigest": "sha256:edee06d36986275ab3142f434572b565b5ff0391db25ee1f82049d87a7c5dbc1",
+      "targetCount": 42
+    },
+    {
+      "sourceRecordId": "record:cartercommunity-carter:implementation",
+      "repositoryId": "repository:github.com/cartercommunity/carter",
+      "repositorySourceDigest": "sha256:00b6577c4f3d9f42a32e69804b37d3e8e94b6eff6b5b294fe7e5f78f90b33087",
+      "fileName": "cartercommunity-carter.manual-qa-review.json",
+      "packetDigest": "sha256:695e285e988b7343d189fbcdc067fca21c949047ae3e4cd2aa0797779015fc1d",
+      "lineageDigest": "sha256:c66ef5b13acf167601d9fde9dbd35822f027a77a48e074135c6f09fb4dfe68a4",
+      "targetCount": 34
+    },
+    {
+      "sourceRecordId": "record:colinhacks-zod:implementation",
+      "repositoryId": "repository:github.com/colinhacks/zod",
+      "repositorySourceDigest": "sha256:250432548197e4e8228d26209db94cff75d05ac1e2c34896ff2d2823f7e39fc5",
+      "fileName": "colinhacks-zod.manual-qa-review.json",
+      "packetDigest": "sha256:ab521c62961915654ab089803bcf525e5024cb9f7284029f35a7fd48d907c15a",
+      "lineageDigest": "sha256:7379fa802138113a05a9cd640b5b8cbc14f79d3a87837659beab73d3fb9fbb24",
+      "targetCount": 27
+    },
+    {
+      "sourceRecordId": "record:dotnet-command-line-api:implementation",
+      "repositoryId": "repository:github.com/dotnet/command-line-api",
+      "repositorySourceDigest": "sha256:298e7732de1f2da4c37185ae0acc2ccf9f3f25486af306e019856a6ca7c83f9b",
+      "fileName": "dotnet-command-line-api.manual-qa-review.json",
+      "packetDigest": "sha256:0f93aba5112f17b1b790bd6c661dfcc7e9e694f3045a874dbf03c90e0b1a68d1",
+      "lineageDigest": "sha256:c167ce2f3479ae935bb55bc7d2caa131e5d397ef258eb3baa1c38c91f298ded5",
+      "targetCount": 41
+    },
+    {
+      "sourceRecordId": "record:fastendpoints-fastendpoints:implementation",
+      "repositoryId": "repository:github.com/fastendpoints/fastendpoints",
+      "repositorySourceDigest": "sha256:1681a0743529e68c815e971d1fc336a251dfed17b91dd703ef88c7783547a297",
+      "fileName": "fastendpoints-fastendpoints.manual-qa-review.json",
+      "packetDigest": "sha256:eb20c1e51df76e06f93d37d5b36ad7c7467ca8a7360533555d1e91506021a2be",
+      "lineageDigest": "sha256:c72bbc5f566b404be5202f660a8241f6d1c1d3dbf63018d40f7ef3eca7002483",
+      "targetCount": 110
+    },
+    {
+      "sourceRecordId": "record:fastify-fastify:implementation",
+      "repositoryId": "repository:github.com/fastify/fastify",
+      "repositorySourceDigest": "sha256:fb9e91d171d70b386838d4481cf6ffa8fe8614b87af3b734cb1e53dbde2e38b8",
+      "fileName": "fastify-fastify.manual-qa-review.json",
+      "packetDigest": "sha256:f440d855a5de911b25665df40e7f23e7c1c7548eda40b71a941009459fd09bb9",
+      "lineageDigest": "sha256:933a6c932e065622d795e5486632f6b1eed9ad59857439a4ca75122ab7998711",
+      "targetCount": 13
+    },
+    {
+      "sourceRecordId": "record:fluentvalidation-fluentvalidation:implementation",
+      "repositoryId": "repository:github.com/fluentvalidation/fluentvalidation",
+      "repositorySourceDigest": "sha256:019c5b15a97a678f22d8d0269b94822e0b69bb640498c6100397a388958e95a7",
+      "fileName": "fluentvalidation-fluentvalidation.manual-qa-review.json",
+      "packetDigest": "sha256:43cfe8ec3eb2be2f75b086084ead508a49fb0b638c49acc00636f08c966fb620",
+      "lineageDigest": "sha256:00eba320074901d02a0a70181ad0b697ef0f421e437b89b95039f7a8d59b24e0",
+      "targetCount": 10
+    },
+    {
+      "sourceRecordId": "record:lit-lit:implementation",
+      "repositoryId": "repository:github.com/lit/lit",
+      "repositorySourceDigest": "sha256:580127cac2ce4795a48e3ebb446a8ae74d8eb1baf7f1e6d85c6ac9baecdd0b4b",
+      "fileName": "lit-lit.manual-qa-review.json",
+      "packetDigest": "sha256:ce11038dafa7655847060cb49c0b6753217061d2e30cf8ee9482e0aad86e3cea",
+      "lineageDigest": "sha256:5868b4049f0c5ee795ac1f3bd351479d52595d9c89418e51eb0043a622ab60c0",
+      "targetCount": 199
+    },
+    {
+      "sourceRecordId": "record:mudblazor-mudblazor:implementation",
+      "repositoryId": "repository:github.com/mudblazor/mudblazor",
+      "repositorySourceDigest": "sha256:cf22bb7f911d01a433552f828193ca5a383f653606b62c9aabf80db86bcffd88",
+      "fileName": "mudblazor-mudblazor.manual-qa-review.json",
+      "packetDigest": "sha256:06c8d5d0cde0debb8a1d485e4ad7dc397b500d007dffbb5f454abab898d5cde8",
+      "lineageDigest": "sha256:2808b8156bac9fd76a0b955fad91b65c10f1fc2a85716c0f98376d158f3701c9",
+      "targetCount": 52
+    },
+    {
+      "sourceRecordId": "record:oqtane-oqtane-framework:implementation",
+      "repositoryId": "repository:github.com/oqtane/oqtane.framework",
+      "repositorySourceDigest": "sha256:a82445a988d9aedca9fe495980240285f82f2989a3b9a6e7dc8bb72d71accfbc",
+      "fileName": "oqtane-oqtane-framework.manual-qa-review.json",
+      "packetDigest": "sha256:64d92c5bda3f0ae0e9b1b143c04d45997e7c64a2cffb04c80dd3fa63e10c2493",
+      "lineageDigest": "sha256:b268d563d4cec802bada9ccd8cd0d108b6ac4ec9ddb5295892471576ab33fff4",
+      "targetCount": 36
+    },
+    {
+      "sourceRecordId": "record:simplcommerce-simplcommerce:implementation",
+      "repositoryId": "repository:github.com/simplcommerce/simplcommerce",
+      "repositorySourceDigest": "sha256:3a67cfbe2132f34faa1e6016dc8a69f2384c6f28a36cc4b423ad4b151e187b2c",
+      "fileName": "simplcommerce-simplcommerce.manual-qa-review.json",
+      "packetDigest": "sha256:f42c3e88ef69a82628cc80df14342c1bd999bb9c04bf13181dbd0d195cbced3c",
+      "lineageDigest": "sha256:a27fcd663d9c08caae432c14e6ccd09ac036912ec9ed0ee314bb3823907cc4ad",
+      "targetCount": 237
+    },
+    {
+      "sourceRecordId": "record:sindresorhus-execa:implementation",
+      "repositoryId": "repository:github.com/sindresorhus/execa",
+      "repositorySourceDigest": "sha256:251c4d17f2a7a5893a18c245ce9289a866f120085fe7dce9b4fd46d27662a827",
+      "fileName": "sindresorhus-execa.manual-qa-review.json",
+      "packetDigest": "sha256:3b8a2f4c6f8ba3598ea427038fcf04e556f2ebde9d3bdcca00e1ccc9a8f08234",
+      "lineageDigest": "sha256:d4322c2ea06de9dafd85529f9f572ed9843fd7b233e3ae0ab70e12d7ec8e0fa5",
+      "targetCount": 6
+    },
+    {
+      "sourceRecordId": "record:squidex-squidex:implementation",
+      "repositoryId": "repository:github.com/squidex/squidex",
+      "repositorySourceDigest": "sha256:7ba94792039d81ca71367da9be0a1f993cf8a31c630532c9fdf20ab944c474d9",
+      "fileName": "squidex-squidex.manual-qa-review.json",
+      "packetDigest": "sha256:33deef4e7241add2cf9357c787d2616f29cae46e712604ec4384ad3860579d28",
+      "lineageDigest": "sha256:8d01fd226d652428acc77eb50baabfc0529ef0348a7e81cfd54ddd8c6c784a78",
+      "targetCount": 89
+    },
+    {
+      "sourceRecordId": "record:tj-commander-js:implementation",
+      "repositoryId": "repository:github.com/tj/commander.js",
+      "repositorySourceDigest": "sha256:fe18ceb689a5b6ee31de0b198448bd03a2b0b56f4c25bf0d71a2e276f6a70d57",
+      "fileName": "tj-commander-js.manual-qa-review.json",
+      "packetDigest": "sha256:aaaeaf13a80fb8ff25695e4719d3a4d0c30ce67e4f7ad643479c20d4cb6c3532",
+      "lineageDigest": "sha256:e915bed59afc4a7d4a0fbfc0eda5aee1738017e381babf7fc46041469744b415",
+      "targetCount": 6
+    }
+  ],
+  "instructions": [
+    "Verify every packet digest before review and keep the complete packet set immutable.",
+    "Freeze a separate complete decision/compiler contract before authoring any target hours.",
+    "Do not treat packet generation as reviewed labels, model evaluation, or admission evidence."
+  ]
+}

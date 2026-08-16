@@ -69,6 +69,12 @@ repository-held-out baseline. The
 real-case midpoint improves materially, but the candidate is unvalidated, the
 inherited high bound worsens, and existing development QA labels encode the
 earlier semantics. The seed remains shipped and test remains sealed.
+The [`2.0.0 candidate-blind QA packet freeze`](2.0.0/README.md) now projects all
+955 eligible coding responsibilities from the 15 development families under
+`manual-qa-work-item/1.0.0`. The packets expose evidence and immutable lineage but
+no prior QA judgment, source coding value, candidate ratio/value, repository total,
+or candidate identity. No replacement answer, compiled label, or evaluation is
+part of this checkpoint.
 
 The completed blind validation rejects the sole challenger and leaves test sealed.
 The later development uncertainty measurements are diagnostic only and cannot turn
@@ -176,9 +182,11 @@ contain an unsealed test label before the one-time decision.
 
 ## Next checkpoint
 
-Continue issue #149 from the `1.9.0` policy freeze: re-review manual-QA development
-targets under the explicit eligible-coding boundary, then evaluate and run
-operational gates against the exact candidate without changing its ratios or
-category set. If it survives, freeze a new finite manifest and fresh blind
-validation boundary; test remains sealed. Issue #137's small, mechanistically
-justified correlated-uncertainty combinations remain separate follow-up work.
+Continue issue #151 from the `2.0.0` packet freeze. Before any of the 955 answers
+are authored, freeze the complete decision-plan schema and compiler, including
+completeness, lineage, duplicate/zero, size-exception, and corpus-rebasing rules.
+Then author the candidate-blind development decisions, compile a new label identity,
+and evaluate the exact `manual-qa-coding-ratio/0.1.0` candidate without changing
+its ratios or category set. A survivor still needs a new finite manifest and fresh
+blind validation boundary; test remains sealed. Issue #137's small,
+mechanistically justified correlated-uncertainty combinations remain separate.

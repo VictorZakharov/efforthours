@@ -1,0 +1,290 @@
+{
+  "schemaVersion": "1.0.0",
+  "authoringVersion": "manual-qa-development-review-authoring/1.0.0",
+  "status": "unreviewed",
+  "warning": "UNREVIEWED CANDIDATE-BLIND MANUAL-QA PACKET: estimate manual validation, debugging, and hardening independently. Do not consult seed or candidate hours, category totals, repository totals, ratio formulas, or prior QA judgments.",
+  "policy": {
+    "id": "efforthours-manual-qa-development-review",
+    "version": "manual-qa-development-review-policy/1.0.0",
+    "digest": "sha256:bc4d9a29aac4fd80a917219c77a02dd0c8d1b71ecfb91d4f2b1ad287ecb231e0"
+  },
+  "sourceCorpus": {
+    "id": "efforthours-public-readiness-development",
+    "version": "0.3.0",
+    "digest": "sha256:6ef79b8b950de013263258107c8c19cdd7187e66ab3be84107f63e282a76d385"
+  },
+  "rubric": {
+    "id": "manual-qa-work-item",
+    "version": "1.0.0"
+  },
+  "candidateVisibility": "blind",
+  "sourceRecordId": "record:fluentvalidation-fluentvalidation:implementation",
+  "repository": {
+    "id": "repository:github.com/fluentvalidation/fluentvalidation",
+    "name": "FluentValidation/FluentValidation",
+    "sourceDigest": "sha256:019c5b15a97a678f22d8d0269b94822e0b69bb640498c6100397a388958e95a7"
+  },
+  "source": {
+    "dataClassification": "public-redistributable",
+    "sourceReference": "https://github.com/FluentValidation/FluentValidation",
+    "revision": "daa00b795450881c233253488e3ddeb362f59f56",
+    "licenseExpression": "Apache-2.0",
+    "redistributionAllowed": true
+  },
+  "profile": "implementation",
+  "baselineId": "senior-contractor-2026-no-ai",
+  "partition": "development",
+  "targets": [
+    {
+      "sourceTargetId": "target:work:dotnet-source-backbone:9fdd7dba3745005a185d:review-0001",
+      "sourceLineageDigest": "sha256:8d4dd3ebb573d7746916a8adf37c7fda25f33c3f7e2d7b1c3f583d30f408ac7c",
+      "sourceCategory": "production-implementation",
+      "title": "Implement maintained internal logic for \u0027.\u0027 (component)",
+      "scope": ".",
+      "overlapGroupId": "manual-qa-overlap:abb8724ee39424b25f1d",
+      "evidenceIds": [
+        "dotnet:source-structure:."
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:build-tooling:c2c91d07e063088d401a:review-0001",
+      "sourceLineageDigest": "sha256:acaf3d965ad56f5a89fda6240f0a0751a522aa784d048f4f3ee4cbdebc7b0263",
+      "sourceCategory": "build-configuration-and-developer-tooling",
+      "title": "Configure build behavior and developer tooling",
+      "scope": ".",
+      "overlapGroupId": "manual-qa-overlap:abb8724ee39424b25f1d",
+      "evidenceIds": [
+        "file:.editorconfig",
+        "file:.gitattributes",
+        "file:.gitignore",
+        "file:after.FluentValidation.sln.targets",
+        "file:build.ps1",
+        "file:build.sh",
+        "file:global.json",
+        "file:nuget.config",
+        "file:src/Directory.Build.props",
+        "script:build:powershell:repository",
+        "script:build:shell:repository"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:ci-infrastructure:bee22f5b9a094661eb75:review-0001",
+      "sourceLineageDigest": "sha256:024441011359dd15f8f959e2c4a9523480f99805b5a501055b4641d80d6914ca",
+      "sourceCategory": "ci-cd-and-infrastructure-as-code",
+      "title": "Implement represented CI/CD and infrastructure configuration",
+      "scope": ".",
+      "overlapGroupId": "manual-qa-overlap:abb8724ee39424b25f1d",
+      "evidenceIds": [
+        "ci:repository",
+        "file:.github/workflows/ci.yml",
+        "file:.github/workflows/lock.yml"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:dotnet-source-backbone:24cefa758fa0c8a948ef:review-0001",
+      "sourceLineageDigest": "sha256:d763c8d2b371b260908697d91e1984b2c3417bccfc0d59a9a6965d6355b2f62c",
+      "sourceCategory": "production-implementation",
+      "title": "Implement maintained internal logic for \u0027src/FluentValidation.DependencyInjectionExtensions/FluentValidation.DependencyInjectionExtensions.csproj\u0027 (library)",
+      "scope": "src/FluentValidation.DependencyInjectionExtensions/FluentValidation.DependencyInjectionExtensions.csproj",
+      "overlapGroupId": "manual-qa-overlap:adaf70dc091b47933eb5",
+      "evidenceIds": [
+        "dotnet:source-structure:src/FluentValidation.DependencyInjectionExtensions/FluentValidation.DependencyInjectionExtensions.csproj"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:application-entry-point:dd294ec652691411906c:review-0001",
+      "sourceLineageDigest": "sha256:d2b88b7302eb80e9fb7619d654317553d9db4f273ccf485d0f75aa78292f0a1e",
+      "sourceCategory": "production-implementation",
+      "title": "Implement application entry points for \u0027src/FluentValidation.Tests.Benchmarks/FluentValidation.Tests.Benchmarks.csproj\u0027 (executable)",
+      "scope": "src/FluentValidation.Tests.Benchmarks/FluentValidation.Tests.Benchmarks.csproj",
+      "overlapGroupId": "manual-qa-overlap:a974e32ba101fa7d24c3",
+      "evidenceIds": [
+        "dotnet:entry-point:src/FluentValidation.Tests.Benchmarks/Program.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:dotnet-source-backbone:9ffc4d587cb6b3cb4dc3:review-0001",
+      "sourceLineageDigest": "sha256:9de7ce131791d1a7b9b2eaaa6fbf10d64cafb0b751ca974ae9fb0171eefa747d",
+      "sourceCategory": "production-implementation",
+      "title": "Implement maintained internal logic for \u0027src/FluentValidation.Tests.Benchmarks/FluentValidation.Tests.Benchmarks.csproj\u0027 (executable)",
+      "scope": "src/FluentValidation.Tests.Benchmarks/FluentValidation.Tests.Benchmarks.csproj",
+      "overlapGroupId": "manual-qa-overlap:a974e32ba101fa7d24c3",
+      "evidenceIds": [
+        "dotnet:source-structure:src/FluentValidation.Tests.Benchmarks/FluentValidation.Tests.Benchmarks.csproj"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:validation-surface:f91d930589c489764a14:review-0001",
+      "sourceLineageDigest": "sha256:3fa30a7a7d15cb0f5730148ab4a5ed8209a4e506c6aabb62a7612de16e10efef",
+      "sourceCategory": "security-and-accessibility",
+      "title": "Implement represented validation behavior for \u0027src/FluentValidation.Tests.Benchmarks/FluentValidation.Tests.Benchmarks.csproj\u0027 (executable)",
+      "scope": "src/FluentValidation.Tests.Benchmarks/FluentValidation.Tests.Benchmarks.csproj",
+      "overlapGroupId": "manual-qa-overlap:a974e32ba101fa7d24c3",
+      "evidenceIds": [
+        "dotnet:validation:src/FluentValidation.Tests.Benchmarks/DataSet.cs",
+        "dotnet:validation:src/FluentValidation.Tests.Benchmarks/EngineOnlyBenchmark.cs",
+        "dotnet:validation:src/FluentValidation.Tests.Benchmarks/Models.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:unit-tests:28bd96ae7f911f8f29a0:review-0001",
+      "sourceLineageDigest": "sha256:56a743693eddf008b92d382fb63b95e44b2db885ab8971129425d4c14117adac",
+      "sourceCategory": "unit-testing",
+      "title": "Create represented unit tests for \u0027src/FluentValidation.Tests/FluentValidation.Tests.csproj\u0027 (test)",
+      "scope": "src/FluentValidation.Tests/FluentValidation.Tests.csproj",
+      "overlapGroupId": "manual-qa-overlap:f98b5eef247cbf9bec98",
+      "evidenceIds": [
+        "dotnet:test:src/FluentValidation.Tests/AbstractValidatorTester.cs",
+        "dotnet:test:src/FluentValidation.Tests/AccessorCacheTests.cs",
+        "dotnet:test:src/FluentValidation.Tests/AssemblyScannerTester.cs",
+        "dotnet:test:src/FluentValidation.Tests/CascadingFailuresTester.cs",
+        "dotnet:test:src/FluentValidation.Tests/ChainedValidationTester.cs",
+        "dotnet:test:src/FluentValidation.Tests/ChainingValidatorsTester.cs",
+        "dotnet:test:src/FluentValidation.Tests/ChildRulesTests.cs",
+        "dotnet:test:src/FluentValidation.Tests/CollectionValidatorWithParentTests.cs",
+        "dotnet:test:src/FluentValidation.Tests/ComplexValidationTester.cs",
+        "dotnet:test:src/FluentValidation.Tests/ConditionTests.cs",
+        "dotnet:test:src/FluentValidation.Tests/CreditCardValidatorTests.cs",
+        "dotnet:test:src/FluentValidation.Tests/CultureScope.cs",
+        "dotnet:test:src/FluentValidation.Tests/CustomMessageFormatTester.cs",
+        "dotnet:test:src/FluentValidation.Tests/CustomValidatorTester.cs",
+        "dotnet:test:src/FluentValidation.Tests/DefaultValidatorExtensionTester.cs",
+        "dotnet:test:src/FluentValidation.Tests/DependencyInjectionExtensions/ServiceCollectionExtensionsTests.cs",
+        "dotnet:test:src/FluentValidation.Tests/EmailValidatorTests.cs",
+        "dotnet:test:src/FluentValidation.Tests/EmptyTester.cs",
+        "dotnet:test:src/FluentValidation.Tests/EnumValidatorTests.cs",
+        "dotnet:test:src/FluentValidation.Tests/EqualValidatorTests.cs",
+        "dotnet:test:src/FluentValidation.Tests/ExactLengthValidatorTester.cs",
+        "dotnet:test:src/FluentValidation.Tests/ExclusiveBetweenValidatorTests.cs",
+        "dotnet:test:src/FluentValidation.Tests/ExtensionTester.cs",
+        "dotnet:test:src/FluentValidation.Tests/ForEachRuleTests.cs",
+        "dotnet:test:src/FluentValidation.Tests/GreaterThanOrEqualToValidatorTester.cs",
+        "dotnet:test:src/FluentValidation.Tests/GreaterThanValidatorTester.cs",
+        "dotnet:test:src/FluentValidation.Tests/InclusiveBetweenValidatorTests.cs",
+        "dotnet:test:src/FluentValidation.Tests/InheritanceValidatorTest.cs",
+        "dotnet:test:src/FluentValidation.Tests/InlineValidatorTester.cs",
+        "dotnet:test:src/FluentValidation.Tests/JsonSerializationTests.cs",
+        "dotnet:test:src/FluentValidation.Tests/LanguageManagerTests.cs",
+        "dotnet:test:src/FluentValidation.Tests/LengthValidatorTests.cs",
+        "dotnet:test:src/FluentValidation.Tests/LessThanOrEqualToValidatorTester.cs",
+        "dotnet:test:src/FluentValidation.Tests/LessThanValidatorTester.cs",
+        "dotnet:test:src/FluentValidation.Tests/LocalisedMessagesTester.cs",
+        "dotnet:test:src/FluentValidation.Tests/LocalisedNameTester.cs",
+        "dotnet:test:src/FluentValidation.Tests/MessageFormatterTests.cs",
+        "dotnet:test:src/FluentValidation.Tests/ModelLevelValidatorTests.cs",
+        "dotnet:test:src/FluentValidation.Tests/NameResolutionPluggabilityTester.cs",
+        "dotnet:test:src/FluentValidation.Tests/NotEmptyTester.cs",
+        "dotnet:test:src/FluentValidation.Tests/NotEqualValidatorTests.cs",
+        "dotnet:test:src/FluentValidation.Tests/NotNullTester.cs",
+        "dotnet:test:src/FluentValidation.Tests/NullTester.cs",
+        "dotnet:test:src/FluentValidation.Tests/OnFailureHookTester.cs",
+        "dotnet:test:src/FluentValidation.Tests/Person.cs",
+        "dotnet:test:src/FluentValidation.Tests/PrecisionScaleValidatorTests.cs",
+        "dotnet:test:src/FluentValidation.Tests/PredicateValidatorTester.cs",
+        "dotnet:test:src/FluentValidation.Tests/PropertyChainTests.cs",
+        "dotnet:test:src/FluentValidation.Tests/RegularExpressionValidatorTests.cs",
+        "dotnet:test:src/FluentValidation.Tests/RuleBuilderTests.cs",
+        "dotnet:test:src/FluentValidation.Tests/RuleDependencyTests.cs",
+        "dotnet:test:src/FluentValidation.Tests/RulesetTests.cs",
+        "dotnet:test:src/FluentValidation.Tests/SharedConditionTests.cs",
+        "dotnet:test:src/FluentValidation.Tests/StreetNumberComparer.cs",
+        "dotnet:test:src/FluentValidation.Tests/StringEnumValidatorTests.cs",
+        "dotnet:test:src/FluentValidation.Tests/SyncAsyncParityTests.cs",
+        "dotnet:test:src/FluentValidation.Tests/TestExtensions.cs",
+        "dotnet:test:src/FluentValidation.Tests/TestValidator.cs",
+        "dotnet:test:src/FluentValidation.Tests/TestValidatorWithPreValidate.cs",
+        "dotnet:test:src/FluentValidation.Tests/TrackingCollectionTests.cs",
+        "dotnet:test:src/FluentValidation.Tests/UserSeverityTester.cs",
+        "dotnet:test:src/FluentValidation.Tests/UserStateTester.cs",
+        "dotnet:test:src/FluentValidation.Tests/ValidateAndThrowTester.cs",
+        "dotnet:test:src/FluentValidation.Tests/ValidationResultTests.cs",
+        "dotnet:test:src/FluentValidation.Tests/ValidatorDescriptorTester.cs",
+        "dotnet:test:src/FluentValidation.Tests/ValidatorSelectorTests.cs",
+        "dotnet:test:src/FluentValidation.Tests/ValidatorTesterTester.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:validation-surface:abaf2fcf564f45567ef7:review-0001",
+      "sourceLineageDigest": "sha256:8d78ef6f7831e38e8580364fd369b9b53197f3ad0907df97a3e7b1499019b371",
+      "sourceCategory": "security-and-accessibility",
+      "title": "Implement represented validation behavior for \u0027src/FluentValidation.Tests/FluentValidation.Tests.csproj\u0027 (test)",
+      "scope": "src/FluentValidation.Tests/FluentValidation.Tests.csproj",
+      "overlapGroupId": "manual-qa-overlap:f98b5eef247cbf9bec98",
+      "evidenceIds": [
+        "dotnet:validation:src/FluentValidation.Tests/AbstractValidatorTester.cs",
+        "dotnet:validation:src/FluentValidation.Tests/AccessorCacheTests.cs",
+        "dotnet:validation:src/FluentValidation.Tests/CascadingFailuresTester.cs",
+        "dotnet:validation:src/FluentValidation.Tests/ChainedValidationTester.cs",
+        "dotnet:validation:src/FluentValidation.Tests/ChainingValidatorsTester.cs",
+        "dotnet:validation:src/FluentValidation.Tests/ChildRulesTests.cs",
+        "dotnet:validation:src/FluentValidation.Tests/CollectionValidatorWithParentTests.cs",
+        "dotnet:validation:src/FluentValidation.Tests/ComplexValidationTester.cs",
+        "dotnet:validation:src/FluentValidation.Tests/ConditionTests.cs",
+        "dotnet:validation:src/FluentValidation.Tests/CreditCardValidatorTests.cs",
+        "dotnet:validation:src/FluentValidation.Tests/CustomMessageFormatTester.cs",
+        "dotnet:validation:src/FluentValidation.Tests/CustomValidatorTester.cs",
+        "dotnet:validation:src/FluentValidation.Tests/DefaultValidatorExtensionTester.cs",
+        "dotnet:validation:src/FluentValidation.Tests/EmailValidatorTests.cs",
+        "dotnet:validation:src/FluentValidation.Tests/EmptyTester.cs",
+        "dotnet:validation:src/FluentValidation.Tests/EnumValidatorTests.cs",
+        "dotnet:validation:src/FluentValidation.Tests/EqualValidatorTests.cs",
+        "dotnet:validation:src/FluentValidation.Tests/ExactLengthValidatorTester.cs",
+        "dotnet:validation:src/FluentValidation.Tests/ExclusiveBetweenValidatorTests.cs",
+        "dotnet:validation:src/FluentValidation.Tests/ForEachRuleTests.cs",
+        "dotnet:validation:src/FluentValidation.Tests/GreaterThanOrEqualToValidatorTester.cs",
+        "dotnet:validation:src/FluentValidation.Tests/GreaterThanValidatorTester.cs",
+        "dotnet:validation:src/FluentValidation.Tests/InclusiveBetweenValidatorTests.cs",
+        "dotnet:validation:src/FluentValidation.Tests/InheritanceValidatorTest.cs",
+        "dotnet:validation:src/FluentValidation.Tests/InlineValidatorTester.cs",
+        "dotnet:validation:src/FluentValidation.Tests/LanguageManagerTests.cs",
+        "dotnet:validation:src/FluentValidation.Tests/LengthValidatorTests.cs",
+        "dotnet:validation:src/FluentValidation.Tests/LessThanOrEqualToValidatorTester.cs",
+        "dotnet:validation:src/FluentValidation.Tests/LessThanValidatorTester.cs",
+        "dotnet:validation:src/FluentValidation.Tests/LocalisedMessagesTester.cs",
+        "dotnet:validation:src/FluentValidation.Tests/LocalisedNameTester.cs",
+        "dotnet:validation:src/FluentValidation.Tests/ModelLevelValidatorTests.cs",
+        "dotnet:validation:src/FluentValidation.Tests/NameResolutionPluggabilityTester.cs",
+        "dotnet:validation:src/FluentValidation.Tests/NotEmptyTester.cs",
+        "dotnet:validation:src/FluentValidation.Tests/NotEqualValidatorTests.cs",
+        "dotnet:validation:src/FluentValidation.Tests/NotNullTester.cs",
+        "dotnet:validation:src/FluentValidation.Tests/NullTester.cs",
+        "dotnet:validation:src/FluentValidation.Tests/OnFailureHookTester.cs",
+        "dotnet:validation:src/FluentValidation.Tests/PrecisionScaleValidatorTests.cs",
+        "dotnet:validation:src/FluentValidation.Tests/PredicateValidatorTester.cs",
+        "dotnet:validation:src/FluentValidation.Tests/RegularExpressionValidatorTests.cs",
+        "dotnet:validation:src/FluentValidation.Tests/RuleBuilderTests.cs",
+        "dotnet:validation:src/FluentValidation.Tests/RuleDependencyTests.cs",
+        "dotnet:validation:src/FluentValidation.Tests/RulesetTests.cs",
+        "dotnet:validation:src/FluentValidation.Tests/SharedConditionTests.cs",
+        "dotnet:validation:src/FluentValidation.Tests/StringEnumValidatorTests.cs",
+        "dotnet:validation:src/FluentValidation.Tests/SyncAsyncParityTests.cs",
+        "dotnet:validation:src/FluentValidation.Tests/UserSeverityTester.cs",
+        "dotnet:validation:src/FluentValidation.Tests/UserStateTester.cs",
+        "dotnet:validation:src/FluentValidation.Tests/ValidateAndThrowTester.cs",
+        "dotnet:validation:src/FluentValidation.Tests/ValidatorDescriptorTester.cs",
+        "dotnet:validation:src/FluentValidation.Tests/ValidatorSelectorTests.cs",
+        "dotnet:validation:src/FluentValidation.Tests/ValidatorTesterTester.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:dotnet-source-backbone:9826058060d4adcffdbd:review-0001",
+      "sourceLineageDigest": "sha256:c9ec054f5a4d7f3292da2aa28149ad7849cf0866bb321c96c2e3cb44df1a307e",
+      "sourceCategory": "production-implementation",
+      "title": "Implement maintained internal logic for \u0027src/FluentValidation/FluentValidation.csproj\u0027 (library)",
+      "scope": "src/FluentValidation/FluentValidation.csproj",
+      "overlapGroupId": "manual-qa-overlap:ce4bd09939300bbf1189",
+      "evidenceIds": [
+        "dotnet:source-structure:src/FluentValidation/FluentValidation.csproj"
+      ]
+    }
+  ],
+  "instructions": [
+    "Use the manual-qa-work-item/1.0.0 rubric and the immutable public source only.",
+    "Estimate the manual validation, debugging, and hardening needed after recreating each represented coding responsibility.",
+    "Review all targets sharing overlapGroupId together; assign shared validation once and make exclusions explicit.",
+    "Keep automated-test authoring separate, while including the bounded work needed to run, inspect, and debug represented tests.",
+    "Do not infer actual labor, use Git history or activity, or force a percentage or preferred repository total.",
+    "Use exact 0/0/0 only for a wholly excluded or duplicate responsibility and explain the exclusion.",
+    "Keep expected targets normally between 0.5 and 8 hours; explain any cohesive size exception."
+  ]
+}

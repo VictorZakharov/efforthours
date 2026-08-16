@@ -81,6 +81,12 @@ internal static partial class Program
                 .ConfigureAwait(false);
         }
 
+        if (arguments.Length > 0 && arguments[0] == "manual-qa-review-freeze")
+        {
+            return await RunManualQaReviewFreezeAsync(arguments[1..], cancellationToken)
+                .ConfigureAwait(false);
+        }
+
         if (arguments.Length > 0 && arguments[0] == "candidate-operational-preflight")
         {
             return await RunLogicalCandidateOperationalAsync(arguments[1..], cancellationToken)
@@ -274,6 +280,18 @@ internal static partial class Program
         Replaces seed manual-validation items with dependency-linked 30/40/50
         percent items derived only from eligible expected coding effort. This is a
         development-only candidate, not an admitted product estimator.
+
+        Candidate-blind manual-QA review packet freeze:
+          dotnet EffortHours.RepositoryCalibration.dll manual-qa-review-freeze
+            --corpus <development-corpus.json>
+            --policy <manual-qa-review-policy.json>
+            --expected-policy-digest <sha256:digest>
+            --packets <packet-directory>
+            --manifest <packet-manifest.json>
+
+        Projects only eligible coding responsibilities from the exact development
+        corpus. It emits no source hours, old QA judgments, candidate values,
+        formulas, totals, or review answers and cannot read validation or test data.
 
         Logical-capability operational preflight:
           dotnet EffortHours.RepositoryCalibration.dll candidate-operational-preflight
