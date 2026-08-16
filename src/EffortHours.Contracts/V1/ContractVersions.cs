@@ -17,6 +17,40 @@ public static class HostReviewMeasurementVersions
     public const string MetricsV1 = "host-review-comparison-metrics/1.0.0";
 }
 
+public static class EligibleCodingEffortVersions
+{
+    public const string V1 = "eligible-coding-effort/1.0.0";
+
+    public static IReadOnlyList<EffortCategory> Categories { get; } =
+        Array.AsReadOnly<EffortCategory>(
+        [
+        EffortCategory.ProductionImplementation,
+        EffortCategory.UiImplementationAndRepresentedUxDecisions,
+        EffortCategory.DataModelingPersistenceAndMigrations,
+        EffortCategory.ExternalIntegrationsAndProtocols,
+        EffortCategory.UnitTesting,
+        EffortCategory.IntegrationContractAndComponentTesting,
+        EffortCategory.EndToEndAndUiTesting,
+        EffortCategory.BuildConfigurationAndDeveloperTooling,
+        EffortCategory.CiCdAndInfrastructureAsCode,
+        EffortCategory.SecurityAndAccessibility,
+        EffortCategory.PackagingDeploymentAndReleaseArtifacts,
+        ]);
+}
+
+public static class ManualQaReviewVersions
+{
+    public const string PolicyV1 = "manual-qa-development-review-policy/1.0.0";
+
+    public const string AuthoringV1 = "manual-qa-development-review-authoring/1.0.0";
+
+    public const string ManifestV1 = "manual-qa-development-review-manifest/1.0.0";
+
+    public const string RubricId = "manual-qa-work-item";
+
+    public const string RubricV1 = "1.0.0";
+}
+
 public static class CalibrationUncertaintyVersions
 {
     public const string FeatureContractV1 = "repository-uncertainty-features/1.0.0";
@@ -116,6 +150,12 @@ public static class SchemaNames
         "calibration-uncertainty-support-evaluation.schema.json";
     public const string CalibrationMutationReport = "calibration-mutation-report.schema.json";
     public const string CalibrationMutationSuite = "calibration-mutation-suite.schema.json";
+    public const string CalibrationManualQaReviewManifest =
+        "calibration-manual-qa-review-manifest.schema.json";
+    public const string CalibrationManualQaReviewPacket =
+        "calibration-manual-qa-review-packet.schema.json";
+    public const string CalibrationManualQaReviewPolicy =
+        "calibration-manual-qa-review-policy.schema.json";
     public const string CalibrationReviewPlan = "calibration-review-plan.schema.json";
     public const string CalibrationValidation = "calibration-validation.schema.json";
     public const string ChangeEstimateExplanation = "change-estimate-explanation.schema.json";
@@ -170,6 +210,12 @@ public static class SchemaIds
         "urn:eh:schema:v1:calibration-uncertainty-support-evaluation";
     public const string CalibrationMutationReport = "urn:eh:schema:v1:calibration-mutation-report";
     public const string CalibrationMutationSuite = "urn:eh:schema:v1:calibration-mutation-suite";
+    public const string CalibrationManualQaReviewManifest =
+        "urn:eh:schema:v1:calibration-manual-qa-review-manifest";
+    public const string CalibrationManualQaReviewPacket =
+        "urn:eh:schema:v1:calibration-manual-qa-review-packet";
+    public const string CalibrationManualQaReviewPolicy =
+        "urn:eh:schema:v1:calibration-manual-qa-review-policy";
     public const string CalibrationReviewPlan = "urn:eh:schema:v1:calibration-review-plan";
     public const string CalibrationValidation = "urn:eh:schema:v1:calibration-validation";
     public const string ChangeEstimateExplanation = "urn:eh:schema:v1:change-estimate-explanation";

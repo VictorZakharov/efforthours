@@ -153,10 +153,14 @@ count, and intermediate churn do not value effort. `CHANGE_ESTIMATION.md` and
   evidence: expected total improves from `161.50` to `218.10` hours against a
   separate `240.00`-hour assessment. Do not hide that the inherited high bound
   worsens or claim that one case calibrates the prior.
-- Re-review the manual-QA development category with candidate values hidden. The
-  current teacher labels allocate `4.89%` of eligible coding to QA and therefore
-  encode the old missing-QA assumption. Do not rewrite them in place or use them
-  as independent validation of the new semantics.
+- Keep the frozen `2.0.0` manual-QA review input immutable: 15 candidate-blind
+  packets cover all 955 eligible development responsibilities while hiding old
+  QA judgments, coding values, candidate ratios/values, totals, and candidate
+  identity. Before authoring answers, freeze the complete decision-plan schema and
+  compiler; then review every target without rewriting the `0.3.0` corpus.
+- The current teacher labels allocate `4.89%` of eligible coding to QA and encode
+  the old missing-QA assumption. Do not use them as independent validation of the
+  new semantics.
 - Run development and operational gates only after that re-review. A surviving
   candidate requires a new finite manifest and fresh blind validation boundary;
   the current test partition remains sealed.

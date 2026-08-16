@@ -1,0 +1,58 @@
+{
+  "schemaVersion": "1.0.0",
+  "policyVersion": "manual-qa-development-review-policy/1.0.0",
+  "id": "efforthours-manual-qa-development-review",
+  "authoringVersion": "manual-qa-development-review-authoring/1.0.0",
+  "licenseExpression": "MIT",
+  "maturity": "development-only-candidate-blind-label-correction",
+  "rubric": {
+    "id": "manual-qa-work-item",
+    "version": "1.0.0"
+  },
+  "sourceCorpus": {
+    "id": "efforthours-public-readiness-development",
+    "version": "0.3.0",
+    "digest": "sha256:6ef79b8b950de013263258107c8c19cdd7187e66ab3be84107f63e282a76d385"
+  },
+  "partition": "development",
+  "profile": "implementation",
+  "baselineId": "senior-contractor-2026-no-ai",
+  "candidateVisibility": "blind",
+  "eligibleCategories": [
+    "production-implementation",
+    "ui-implementation-and-represented-ux-decisions",
+    "data-modeling-persistence-and-migrations",
+    "external-integrations-and-protocols",
+    "unit-testing",
+    "integration-contract-and-component-testing",
+    "end-to-end-and-ui-testing",
+    "build-configuration-and-developer-tooling",
+    "ci-cd-and-infrastructure-as-code",
+    "security-and-accessibility",
+    "packaging-deployment-and-release-artifacts"
+  ],
+  "expectedRecordCount": 15,
+  "expectedTargetCount": 955,
+  "hiddenInputs": [
+    "candidate-policy-formula",
+    "candidate-qa-hours",
+    "candidate-repository-and-category-totals",
+    "prior-manual-qa-targets-and-judgments",
+    "seed-qa-hours",
+    "source-coding-hours-confidence-and-rationale",
+    "source-work-item-partition-counts"
+  ],
+  "requiredReviewPractices": [
+    "Estimate each responsibility from immutable public source and evidence under manual-qa-work-item/1.0.0.",
+    "Review exact-scope overlap groups together and allocate shared validation once.",
+    "Keep automated-test authoring separate from manual validation of the represented tests.",
+    "Use explicit justified zero decisions for wholly excluded or duplicate responsibilities.",
+    "Reason low, expected, and high without applying a percentage or forcing a preferred total."
+  ],
+  "limitations": [
+    "The source targets are disclosed single-host-AI development weak supervision, not empirical labor observations.",
+    "This packet freeze creates no reviewed QA hours and performs no candidate evaluation.",
+    "A separate decision/compiler contract must be frozen before any answers are authored.",
+    "A successful development comparison would still require a fresh candidate identity and fresh blind validation boundary before admission."
+  ]
+}

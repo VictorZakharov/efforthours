@@ -28,6 +28,20 @@ public static class CalibrationDigest
         return ComputeCanonical(corpus);
     }
 
+    public static string Compute(ManualQaReviewPacket packet)
+    {
+        ArgumentNullException.ThrowIfNull(packet);
+
+        return ComputeCanonical(packet);
+    }
+
+    public static string Compute(ManualQaReviewManifest manifest)
+    {
+        ArgumentNullException.ThrowIfNull(manifest);
+
+        return ComputeCanonical(manifest);
+    }
+
     public static string Compute(RepositoryEvidence evidence)
     {
         ArgumentNullException.ThrowIfNull(evidence);

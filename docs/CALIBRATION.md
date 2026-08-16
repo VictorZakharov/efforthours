@@ -747,10 +747,20 @@ cannot independently validate the new prior. They remain immutable and require a
 category-specific blind re-review before candidate evaluation. The shipped
 `seed-rules/0.4.0`, opened validation cohort, and sealed test are unchanged.
 
+Checkpoint `efforthours-public-readiness/2.0.0` freezes that re-review's inputs
+before any replacement judgment. It projects all 955 eligible responsibilities
+from the 15 development families into candidate-blind packets under
+`manual-qa-work-item/1.0.0`. Packets disclose public source/evidence identity and
+digest-bound lineage while hiding old QA judgments, source coding values and
+partitions, candidate formulas and values, totals, and candidate identity. The
+checkpoint contains no completed decisions, compiler, new corpus, evaluation, or
+holdout access.
+
 ## Next evidence required
 
-- manual-QA development-label re-review under the explicit eligible-coding
-  boundary, with candidate values hidden;
+- a decision-plan schema and compiler frozen before answers, followed by complete
+  candidate-blind review of all 955 manual-QA development targets under the
+  explicit eligible-coding boundary;
 - a complete development evaluation and operational preflight for the exact
   `manual-qa-coding-ratio/0.1.0` policy;
 - a new finite manifest and genuinely fresh blind validation boundary if the

@@ -1,0 +1,719 @@
+{
+  "schemaVersion": "1.0.0",
+  "authoringVersion": "manual-qa-development-review-authoring/1.0.0",
+  "status": "unreviewed",
+  "warning": "UNREVIEWED CANDIDATE-BLIND MANUAL-QA PACKET: estimate manual validation, debugging, and hardening independently. Do not consult seed or candidate hours, category totals, repository totals, ratio formulas, or prior QA judgments.",
+  "policy": {
+    "id": "efforthours-manual-qa-development-review",
+    "version": "manual-qa-development-review-policy/1.0.0",
+    "digest": "sha256:bc4d9a29aac4fd80a917219c77a02dd0c8d1b71ecfb91d4f2b1ad287ecb231e0"
+  },
+  "sourceCorpus": {
+    "id": "efforthours-public-readiness-development",
+    "version": "0.3.0",
+    "digest": "sha256:6ef79b8b950de013263258107c8c19cdd7187e66ab3be84107f63e282a76d385"
+  },
+  "rubric": {
+    "id": "manual-qa-work-item",
+    "version": "1.0.0"
+  },
+  "candidateVisibility": "blind",
+  "sourceRecordId": "record:dotnet-command-line-api:implementation",
+  "repository": {
+    "id": "repository:github.com/dotnet/command-line-api",
+    "name": "dotnet/command-line-api",
+    "sourceDigest": "sha256:298e7732de1f2da4c37185ae0acc2ccf9f3f25486af306e019856a6ca7c83f9b"
+  },
+  "source": {
+    "dataClassification": "public-redistributable",
+    "sourceReference": "https://github.com/dotnet/command-line-api",
+    "revision": "bc16495bebe4b70aa2a0f76167544597ddd8b330",
+    "licenseExpression": "MIT",
+    "redistributionAllowed": true
+  },
+  "profile": "implementation",
+  "baselineId": "senior-contractor-2026-no-ai",
+  "partition": "development",
+  "targets": [
+    {
+      "sourceTargetId": "target:work:application-entry-point:bb45c9c819378588f8c8:review-0001",
+      "sourceLineageDigest": "sha256:0e532253aabff359c42ab5bfa4e63466fabbab69a055a4ecfb49410f41e3334a",
+      "sourceCategory": "production-implementation",
+      "title": "Implement application entry points for \u0027.\u0027 (cli)",
+      "scope": ".",
+      "overlapGroupId": "manual-qa-overlap:9d9f0afe406a42c2ded2",
+      "evidenceIds": [
+        "script:entry:powershell:repository"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:application-entry-point:f25ddfcd30b1297bb331:review-0001",
+      "sourceLineageDigest": "sha256:85b7fc5577afc98457523d59b4dfd8c57834ca097a8147b01c6ba285624bfae9",
+      "sourceCategory": "production-implementation",
+      "title": "Implement application entry points for \u0027.\u0027 (cli)",
+      "scope": ".",
+      "overlapGroupId": "manual-qa-overlap:9d9f0afe406a42c2ded2",
+      "evidenceIds": [
+        "script:entry:shell:repository"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:application-entry-point:47842420e00e9b861204:review-0001",
+      "sourceLineageDigest": "sha256:aaf584c3af38affd1f837b9787ce4f27185f21de80ab3c3d8d4739dc7eaba405",
+      "sourceCategory": "production-implementation",
+      "title": "Implement application entry points for \u0027.\u0027 (library)",
+      "scope": ".",
+      "overlapGroupId": "manual-qa-overlap:9d9f0afe406a42c2ded2",
+      "evidenceIds": [
+        "python:entry:eng~common~cross~install-debs.py"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:polyglot-source-backbone:5cdc4fb842dd42e84afc:review-0001",
+      "sourceLineageDigest": "sha256:063dfabf3be66640cc2308f68ce095d882e30f15080c8effaea4eda51a171138",
+      "sourceCategory": "production-implementation",
+      "title": "Implement maintained internal logic for \u0027.\u0027 (cli)",
+      "scope": ".",
+      "overlapGroupId": "manual-qa-overlap:9d9f0afe406a42c2ded2",
+      "evidenceIds": [
+        "script:source:powershell:repository"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:polyglot-source-backbone:9be033057a8e4093f293:review-0001",
+      "sourceLineageDigest": "sha256:cf7eb1c7132877c34442821a443a46bef1c70b832595f98e0a782f4f32d229e4",
+      "sourceCategory": "production-implementation",
+      "title": "Implement maintained internal logic for \u0027.\u0027 (cli)",
+      "scope": ".",
+      "overlapGroupId": "manual-qa-overlap:9d9f0afe406a42c2ded2",
+      "evidenceIds": [
+        "script:source:shell:repository"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:dotnet-source-backbone:9fdd7dba3745005a185d:review-0001",
+      "sourceLineageDigest": "sha256:a6a26d7f62a3d09fd82edb3ceefba2b6d47d11231538a7aef951e725fe1a729e",
+      "sourceCategory": "production-implementation",
+      "title": "Implement maintained internal logic for \u0027.\u0027 (component)",
+      "scope": ".",
+      "overlapGroupId": "manual-qa-overlap:9d9f0afe406a42c2ded2",
+      "evidenceIds": [
+        "dotnet:source-structure:."
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:polyglot-source-backbone:27ab0a18c823f52e1fb6:review-0001",
+      "sourceLineageDigest": "sha256:5c4d8716056da3ed6b7f0eaa17fb0f8fe4e55f315b8363ea0cfa627b6d98ccb8",
+      "sourceCategory": "production-implementation",
+      "title": "Implement maintained internal logic for \u0027.\u0027 (library)",
+      "scope": ".",
+      "overlapGroupId": "manual-qa-overlap:9d9f0afe406a42c2ded2",
+      "evidenceIds": [
+        "python:source:."
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:unit-tests:447bba4780577c781aa0:review-0001",
+      "sourceLineageDigest": "sha256:eb01c43e39350fa517227eaf613e7bad99f69f344a86832897695f53e5bf811e",
+      "sourceCategory": "unit-testing",
+      "title": "Create represented unit tests for \u0027.\u0027 (cli)",
+      "scope": ".",
+      "overlapGroupId": "manual-qa-overlap:9d9f0afe406a42c2ded2",
+      "evidenceIds": [
+        "script:test:shell:unit"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:build-tooling:c2c91d07e063088d401a:review-0001",
+      "sourceLineageDigest": "sha256:ee0c51d851142fa25642b4dff3fceae3376184a661064e33d682d7beb3367c45",
+      "sourceCategory": "build-configuration-and-developer-tooling",
+      "title": "Configure build behavior and developer tooling",
+      "scope": ".",
+      "overlapGroupId": "manual-qa-overlap:9d9f0afe406a42c2ded2",
+      "evidenceIds": [
+        "file:.editorconfig",
+        "file:.gitattributes",
+        "file:.gitignore",
+        "file:Directory.Build.props",
+        "file:Directory.Build.targets",
+        "file:Directory.Packages.props",
+        "file:NuGet.config",
+        "file:build.sh",
+        "file:eng/Publishing.props",
+        "file:eng/Signing.props",
+        "file:eng/Versions.props",
+        "file:eng/common/PSScriptAnalyzerSettings.psd1",
+        "file:eng/common/SetupNugetSources.ps1",
+        "file:eng/common/SetupNugetSources.sh",
+        "file:eng/common/build.ps1",
+        "file:eng/common/build.sh",
+        "file:eng/common/cibuild.sh",
+        "file:eng/common/cross/build-android-rootfs.sh",
+        "file:eng/common/cross/build-rootfs.sh",
+        "file:eng/common/cross/tizen-build-rootfs.sh",
+        "file:eng/common/cross/tizen-fetch.sh",
+        "file:eng/common/cross/toolchain.cmake",
+        "file:eng/common/darc-init.ps1",
+        "file:eng/common/darc-init.sh",
+        "file:eng/common/dotnet-install.ps1",
+        "file:eng/common/dotnet.ps1",
+        "file:eng/common/dotnet.sh",
+        "file:eng/common/enable-cross-org-publishing.ps1",
+        "file:eng/common/generate-locproject.ps1",
+        "file:eng/common/init-tools-native.ps1",
+        "file:eng/common/init-tools-native.sh",
+        "file:eng/common/internal-feed-operations.ps1",
+        "file:eng/common/internal-feed-operations.sh",
+        "file:eng/common/internal/Directory.Build.props",
+        "file:eng/common/internal/NuGet.config",
+        "file:eng/common/msbuild.ps1",
+        "file:eng/common/msbuild.sh",
+        "file:eng/common/native/CommonLibrary.psm1",
+        "file:eng/common/native/LocateNativeCompiler.targets",
+        "file:eng/common/native/NativeAotSupported.props",
+        "file:eng/common/native/common-library.sh",
+        "file:eng/common/native/init-compiler.sh",
+        "file:eng/common/native/init-distro-rid.sh",
+        "file:eng/common/native/init-os-and-arch.sh",
+        "file:eng/common/native/install-cmake.sh",
+        "file:eng/common/native/install-dependencies.sh",
+        "file:eng/common/native/install-tool.ps1",
+        "file:eng/common/pipeline-logging-functions.ps1",
+        "file:eng/common/pipeline-logging-functions.sh",
+        "file:eng/common/post-build/check-channel-consistency.ps1",
+        "file:eng/common/post-build/nuget-validation.ps1",
+        "file:eng/common/post-build/nuget-verification.ps1",
+        "file:eng/common/post-build/publish-using-darc.ps1",
+        "file:eng/common/post-build/redact-logs.ps1",
+        "file:eng/common/post-build/symbols-validation.ps1",
+        "file:eng/common/retain-build.ps1",
+        "file:eng/common/sdk-task.ps1",
+        "file:eng/common/sdk-task.sh",
+        "file:eng/common/tools.ps1",
+        "file:eng/common/tools.sh",
+        "file:eng/common/vmr-sync.ps1",
+        "file:eng/common/vmr-sync.sh",
+        "file:global.json",
+        "file:src/System.CommandLine/build/System.CommandLine.targets",
+        "script:build:powershell:repository",
+        "script:build:shell:repository"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:ci-infrastructure:bee22f5b9a094661eb75:review-0001",
+      "sourceLineageDigest": "sha256:4016ce2cb4c2ff4a6743742d1428884a4356751586376a80f94118ee5f4622e6",
+      "sourceCategory": "ci-cd-and-infrastructure-as-code",
+      "title": "Implement represented CI/CD and infrastructure configuration",
+      "scope": ".",
+      "overlapGroupId": "manual-qa-overlap:9d9f0afe406a42c2ded2",
+      "evidenceIds": [
+        "ci:repository",
+        "file:.github/workflows/backport.yml",
+        "file:.github/workflows/inter-branch-merge-flow.yml"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:validation-surface:bfe89b5694798c09462c:review-0001",
+      "sourceLineageDigest": "sha256:8df74acb671c8a6584c9d8b4a326e44ce570f3fdf665e43bef81cafb977a05f9",
+      "sourceCategory": "security-and-accessibility",
+      "title": "Implement represented validation behavior for \u0027.\u0027 (cli)",
+      "scope": ".",
+      "overlapGroupId": "manual-qa-overlap:9d9f0afe406a42c2ded2",
+      "evidenceIds": [
+        "script:validation:shell:repository"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:validation-surface:cf2e75d0a145866d5c6a:review-0001",
+      "sourceLineageDigest": "sha256:dfd1a2d2682ce20e862cccb197c1450c23203bdcae3465e4597fc1ef72338be0",
+      "sourceCategory": "security-and-accessibility",
+      "title": "Implement represented validation behavior for \u0027.\u0027 (cli)",
+      "scope": ".",
+      "overlapGroupId": "manual-qa-overlap:9d9f0afe406a42c2ded2",
+      "evidenceIds": [
+        "script:validation:powershell:repository"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:packaging-release:58eb8ae7efef939a19b5:review-0001",
+      "sourceLineageDigest": "sha256:cbc367bfcb1b9070e1df9d55609bf27b2fbec2b91a17ceb99a81678c30a7df6b",
+      "sourceCategory": "packaging-deployment-and-release-artifacts",
+      "title": "Prepare represented packages and release surfaces",
+      "scope": ".",
+      "overlapGroupId": "manual-qa-overlap:9d9f0afe406a42c2ded2",
+      "evidenceIds": [
+        "dotnet:project:src/System.CommandLine.StaticCompletions/System.CommandLine.StaticCompletions.csproj",
+        "dotnet:project:src/System.CommandLine.Suggest/dotnet-suggest.csproj",
+        "dotnet:project:src/System.CommandLine/System.CommandLine.csproj"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:unit-tests:8eb0fedc8262d440ee55:review-0001",
+      "sourceLineageDigest": "sha256:8a0a011d8208c5097efd13b5aafe6712b0c45d03b0a9f3d8019458412ff6083a",
+      "sourceCategory": "unit-testing",
+      "title": "Create represented unit tests for \u0027src/System.CommandLine.ApiCompatibility.Tests/System.CommandLine.ApiCompatibility.Tests.csproj\u0027 (test)",
+      "scope": "src/System.CommandLine.ApiCompatibility.Tests/System.CommandLine.ApiCompatibility.Tests.csproj",
+      "overlapGroupId": "manual-qa-overlap:bf68fd848f12d0a3fd3d",
+      "evidenceIds": [
+        "dotnet:test:src/System.CommandLine.ApiCompatibility.Tests/ApiCompatibilityApprovalTests.cs",
+        "dotnet:test:src/System.CommandLine.ApiCompatibility.Tests/ApiContract.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:application-entry-point:47a6b08f852b98aca7db:review-0001",
+      "sourceLineageDigest": "sha256:e702e2c1ceb810615fa3454180eca9e4e1c948eee9bf404924bf7cf64a7d25c7",
+      "sourceCategory": "production-implementation",
+      "title": "Implement application entry points for \u0027src/System.CommandLine.Benchmarks/System.CommandLine.Benchmarks.csproj\u0027 (executable)",
+      "scope": "src/System.CommandLine.Benchmarks/System.CommandLine.Benchmarks.csproj",
+      "overlapGroupId": "manual-qa-overlap:bade93e83d3901d40d38",
+      "evidenceIds": [
+        "dotnet:entry-point:src/System.CommandLine.Benchmarks/Input/Sample1.Main.cs",
+        "dotnet:entry-point:src/System.CommandLine.Benchmarks/Program.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:dotnet-source-backbone:094de34e791416040716:review-0001",
+      "sourceLineageDigest": "sha256:4bf0c1f6a0fb574520f2a927ab981f751efe0c4d8768e3af95db6d4da23286b6",
+      "sourceCategory": "production-implementation",
+      "title": "Implement maintained internal logic for \u0027src/System.CommandLine.Benchmarks/System.CommandLine.Benchmarks.csproj\u0027 (executable)",
+      "scope": "src/System.CommandLine.Benchmarks/System.CommandLine.Benchmarks.csproj",
+      "overlapGroupId": "manual-qa-overlap:bade93e83d3901d40d38",
+      "evidenceIds": [
+        "dotnet:source-structure:src/System.CommandLine.Benchmarks/System.CommandLine.Benchmarks.csproj"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:application-entry-point:11734a07d59d0dde30ca:review-0001",
+      "sourceLineageDigest": "sha256:89fb1f4c636761fec56d133f386e3bf5d58b80123b9fbd91f9910e6acab6b53e",
+      "sourceCategory": "production-implementation",
+      "title": "Implement application entry points for \u0027src/System.CommandLine.StaticCompletions.Tests/System.CommandLine.StaticCompletions.Tests.csproj\u0027 (test)",
+      "scope": "src/System.CommandLine.StaticCompletions.Tests/System.CommandLine.StaticCompletions.Tests.csproj",
+      "overlapGroupId": "manual-qa-overlap:009f40195842f6e04ad8",
+      "evidenceIds": [
+        "dotnet:entry-point:src/System.CommandLine.StaticCompletions.Tests/CompletionsCommandParserTests.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:ui-surface:c1c961affeef1f29f070:review-0001",
+      "sourceLineageDigest": "sha256:79d351e40ceb8e8a8039e430b7f8f5c3a8b5e7f83f2f7d23f18e0617aa63a1d5",
+      "sourceCategory": "ui-implementation-and-represented-ux-decisions",
+      "title": "Implement represented UI and UX behavior for \u0027src/System.CommandLine.StaticCompletions.Tests/System.CommandLine.StaticCompletions.Tests.csproj\u0027 (test)",
+      "scope": "src/System.CommandLine.StaticCompletions.Tests/System.CommandLine.StaticCompletions.Tests.csproj",
+      "overlapGroupId": "manual-qa-overlap:009f40195842f6e04ad8",
+      "evidenceIds": [
+        "dotnet:ui:src/System.CommandLine.StaticCompletions.Tests/BashShellProviderTests.cs",
+        "dotnet:ui:src/System.CommandLine.StaticCompletions.Tests/CompletionsCommandParserTests.cs",
+        "dotnet:ui:src/System.CommandLine.StaticCompletions.Tests/FishShellProviderTests.cs",
+        "dotnet:ui:src/System.CommandLine.StaticCompletions.Tests/HelpExtensionsTests.cs",
+        "dotnet:ui:src/System.CommandLine.StaticCompletions.Tests/PowershellProviderTests.cs",
+        "dotnet:ui:src/System.CommandLine.StaticCompletions.Tests/ZshShellProviderTests.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:unit-tests:bc7fbc275484582025b4:review-0001",
+      "sourceLineageDigest": "sha256:d388b8df4443f2fc36d4d67366838bcdd6cb5c40104947c205465c4d4b83e962",
+      "sourceCategory": "unit-testing",
+      "title": "Create represented unit tests for \u0027src/System.CommandLine.StaticCompletions.Tests/System.CommandLine.StaticCompletions.Tests.csproj\u0027 (test)",
+      "scope": "src/System.CommandLine.StaticCompletions.Tests/System.CommandLine.StaticCompletions.Tests.csproj",
+      "overlapGroupId": "manual-qa-overlap:009f40195842f6e04ad8",
+      "evidenceIds": [
+        "dotnet:test:src/System.CommandLine.StaticCompletions.Tests/BashShellProviderTests.cs",
+        "dotnet:test:src/System.CommandLine.StaticCompletions.Tests/CompletionsCommandParserTests.cs",
+        "dotnet:test:src/System.CommandLine.StaticCompletions.Tests/FishShellProviderTests.cs",
+        "dotnet:test:src/System.CommandLine.StaticCompletions.Tests/GlobalUsings.cs",
+        "dotnet:test:src/System.CommandLine.StaticCompletions.Tests/HelpExtensionsTests.cs",
+        "dotnet:test:src/System.CommandLine.StaticCompletions.Tests/NushellShellProviderTests.cs",
+        "dotnet:test:src/System.CommandLine.StaticCompletions.Tests/PowershellProviderTests.cs",
+        "dotnet:test:src/System.CommandLine.StaticCompletions.Tests/VerifyConfiguration.cs",
+        "dotnet:test:src/System.CommandLine.StaticCompletions.Tests/VerifyExtensions.cs",
+        "dotnet:test:src/System.CommandLine.StaticCompletions.Tests/ZshShellProviderTests.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:dotnet-source-backbone:b166b1b43ff0116c4962:review-0001",
+      "sourceLineageDigest": "sha256:b7c68c70b1a6e8b0904620b04c9bcd01c4d0ab09021cf4efa85b314e00ecbfa8",
+      "sourceCategory": "production-implementation",
+      "title": "Implement maintained internal logic for \u0027src/System.CommandLine.StaticCompletions/System.CommandLine.StaticCompletions.csproj\u0027 (library)",
+      "scope": "src/System.CommandLine.StaticCompletions/System.CommandLine.StaticCompletions.csproj",
+      "overlapGroupId": "manual-qa-overlap:dd869900d912bbc1543d",
+      "evidenceIds": [
+        "dotnet:source-structure:src/System.CommandLine.StaticCompletions/System.CommandLine.StaticCompletions.csproj"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:ui-surface:44ac7b3a67df40fc5772:review-0001",
+      "sourceLineageDigest": "sha256:370486b0420934511b01a75087f6f86a891ffe28291c4f903237eab626658538",
+      "sourceCategory": "ui-implementation-and-represented-ux-decisions",
+      "title": "Implement represented UI and UX behavior for \u0027src/System.CommandLine.StaticCompletions/System.CommandLine.StaticCompletions.csproj\u0027 (library)",
+      "scope": "src/System.CommandLine.StaticCompletions/System.CommandLine.StaticCompletions.csproj",
+      "overlapGroupId": "manual-qa-overlap:dd869900d912bbc1543d",
+      "evidenceIds": [
+        "dotnet:ui:src/System.CommandLine.StaticCompletions/shells/FishShellProvider.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:application-entry-point:d5ba5ab6751da26a039e:review-0001",
+      "sourceLineageDigest": "sha256:4c1e85adec55e389639614d29b9260d64a14823ef7adc6eaa6c4b7b865ac12fb",
+      "sourceCategory": "production-implementation",
+      "title": "Implement application entry points for \u0027src/System.CommandLine.Suggest.Tests/EndToEndTestApp/EndToEndTestApp.csproj\u0027 (test)",
+      "scope": "src/System.CommandLine.Suggest.Tests/EndToEndTestApp/EndToEndTestApp.csproj",
+      "overlapGroupId": "manual-qa-overlap:9e5321e935e5baa04434",
+      "evidenceIds": [
+        "dotnet:entry-point:src/System.CommandLine.Suggest.Tests/EndToEndTestApp/Program.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:end-to-end-tests:ff7bd776d9c18c673864:review-0001",
+      "sourceLineageDigest": "sha256:66916f447591f174a06c56ba151d4fbbaa9ca421ff0c3adcc8390f62d9d141c7",
+      "sourceCategory": "end-to-end-and-ui-testing",
+      "title": "Create represented end to end tests for \u0027src/System.CommandLine.Suggest.Tests/EndToEndTestApp/EndToEndTestApp.csproj\u0027 (test)",
+      "scope": "src/System.CommandLine.Suggest.Tests/EndToEndTestApp/EndToEndTestApp.csproj",
+      "overlapGroupId": "manual-qa-overlap:9e5321e935e5baa04434",
+      "evidenceIds": [
+        "dotnet:test:src/System.CommandLine.Suggest.Tests/EndToEndTestApp/Program.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:unit-tests:0948ae9828785de900b7:review-0001",
+      "sourceLineageDigest": "sha256:ca1bd0733ffb76a1dba8c180f0967661e6b3b986815874db97f04a2a3404eddf",
+      "sourceCategory": "unit-testing",
+      "title": "Create represented unit tests for \u0027src/System.CommandLine.Suggest.Tests/dotnet-suggest.Tests.csproj\u0027 (test)",
+      "scope": "src/System.CommandLine.Suggest.Tests/dotnet-suggest.Tests.csproj",
+      "overlapGroupId": "manual-qa-overlap:ecf276aa7ccbfe043b55",
+      "evidenceIds": [
+        "dotnet:test:src/System.CommandLine.Suggest.Tests/FileEnumeratorTests.cs",
+        "dotnet:test:src/System.CommandLine.Suggest.Tests/FileSuggestionProviderTests.cs",
+        "dotnet:test:src/System.CommandLine.Suggest.Tests/GlobalToolsSuggestionRegistrationTests.cs",
+        "dotnet:test:src/System.CommandLine.Suggest.Tests/SuggestionDispatcherTests.cs",
+        "dotnet:test:src/System.CommandLine.Suggest.Tests/SuggestionRegistrationTest.cs",
+        "dotnet:test:src/System.CommandLine.Suggest.Tests/SuggestionShellScriptHandlerTest.cs",
+        "dotnet:test:src/System.CommandLine.Suggest.Tests/TestSuggestionRegistration.cs",
+        "dotnet:test:src/System.CommandLine.Suggest.Tests/TestSuggestionRegistrationTests.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:end-to-end-tests:8752cd33b677ee40d7b6:review-0001",
+      "sourceLineageDigest": "sha256:33c36ec8ba521bfe8c70468ed6b1b847bf902ed4f7b98ca86f86fd25f0561b52",
+      "sourceCategory": "end-to-end-and-ui-testing",
+      "title": "Create represented end to end tests for \u0027src/System.CommandLine.Suggest.Tests/dotnet-suggest.Tests.csproj\u0027 (test)",
+      "scope": "src/System.CommandLine.Suggest.Tests/dotnet-suggest.Tests.csproj",
+      "overlapGroupId": "manual-qa-overlap:ecf276aa7ccbfe043b55",
+      "evidenceIds": [
+        "dotnet:test:src/System.CommandLine.Suggest.Tests/DotnetSuggestEndToEndTests.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:application-entry-point:2749dacd9c875c4b25fd:review-0001",
+      "sourceLineageDigest": "sha256:94b1dedb04226f3dbb8f5cdfb903a4fd282c4d564846cbfe9b3b646937b299b6",
+      "sourceCategory": "production-implementation",
+      "title": "Implement application entry points for \u0027src/System.CommandLine.Suggest/dotnet-suggest.csproj\u0027 (executable)",
+      "scope": "src/System.CommandLine.Suggest/dotnet-suggest.csproj",
+      "overlapGroupId": "manual-qa-overlap:8160600e35d7492a534f",
+      "evidenceIds": [
+        "dotnet:entry-point:src/System.CommandLine.Suggest/Program.cs",
+        "dotnet:entry-point:src/System.CommandLine.Suggest/SuggestionDispatcher.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:dotnet-source-backbone:e7b8706e91178018b188:review-0001",
+      "sourceLineageDigest": "sha256:48923dffb15604d5cfff4de9409414ce21697dbff3ce564ea5c1b3225fa47bf1",
+      "sourceCategory": "production-implementation",
+      "title": "Implement maintained internal logic for \u0027src/System.CommandLine.Suggest/dotnet-suggest.csproj\u0027 (executable)",
+      "scope": "src/System.CommandLine.Suggest/dotnet-suggest.csproj",
+      "overlapGroupId": "manual-qa-overlap:8160600e35d7492a534f",
+      "evidenceIds": [
+        "dotnet:source-structure:src/System.CommandLine.Suggest/dotnet-suggest.csproj"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:ui-surface:937971fea25faee120d5:review-0001",
+      "sourceLineageDigest": "sha256:d84fd84f6913f756d44ff14111754612a8ba7e87ae17b5025a06844fdd3ad549",
+      "sourceCategory": "ui-implementation-and-represented-ux-decisions",
+      "title": "Implement represented UI and UX behavior for \u0027src/System.CommandLine.Suggest/dotnet-suggest.csproj\u0027 (executable)",
+      "scope": "src/System.CommandLine.Suggest/dotnet-suggest.csproj",
+      "overlapGroupId": "manual-qa-overlap:8160600e35d7492a534f",
+      "evidenceIds": [
+        "dotnet:ui:src/System.CommandLine.Suggest/SuggestionDispatcher.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:application-entry-point:a91359f1ab46f81e086b:review-0001",
+      "sourceLineageDigest": "sha256:4202b8ed08f0a2be6869cea36f7838656b66e41d822580e68401f736c26fbc96",
+      "sourceCategory": "production-implementation",
+      "title": "Implement application entry points for \u0027src/System.CommandLine.Tests/System.CommandLine.Tests.csproj\u0027 (test)",
+      "scope": "src/System.CommandLine.Tests/System.CommandLine.Tests.csproj",
+      "overlapGroupId": "manual-qa-overlap:3a465264c4677849ea8d",
+      "evidenceIds": [
+        "dotnet:entry-point:src/System.CommandLine.Tests/ArgumentTests.cs",
+        "dotnet:entry-point:src/System.CommandLine.Tests/Binding/TypeConversionTests.cs",
+        "dotnet:entry-point:src/System.CommandLine.Tests/CommandTests.cs",
+        "dotnet:entry-point:src/System.CommandLine.Tests/CompletionContextTests.cs",
+        "dotnet:entry-point:src/System.CommandLine.Tests/CompletionTests.cs",
+        "dotnet:entry-point:src/System.CommandLine.Tests/CustomParsingTests.cs",
+        "dotnet:entry-point:src/System.CommandLine.Tests/DirectiveTests.cs",
+        "dotnet:entry-point:src/System.CommandLine.Tests/EnvironmentVariableDirectiveTests.cs",
+        "dotnet:entry-point:src/System.CommandLine.Tests/GetValueByNameParserTests.cs",
+        "dotnet:entry-point:src/System.CommandLine.Tests/GlobalOptionTests.cs",
+        "dotnet:entry-point:src/System.CommandLine.Tests/Help/HelpBuilderTests.Customization.cs",
+        "dotnet:entry-point:src/System.CommandLine.Tests/Help/HelpBuilderTests.cs",
+        "dotnet:entry-point:src/System.CommandLine.Tests/HelpOptionTests.cs",
+        "dotnet:entry-point:src/System.CommandLine.Tests/Invocation/InvocationTests.cs",
+        "dotnet:entry-point:src/System.CommandLine.Tests/Invocation/TypoCorrectionTests.cs",
+        "dotnet:entry-point:src/System.CommandLine.Tests/InvocationConfigurationTests.cs",
+        "dotnet:entry-point:src/System.CommandLine.Tests/OptionTests.MultipleArgumentsPerToken.cs",
+        "dotnet:entry-point:src/System.CommandLine.Tests/OptionTests.cs",
+        "dotnet:entry-point:src/System.CommandLine.Tests/ParseDiagramTests.cs",
+        "dotnet:entry-point:src/System.CommandLine.Tests/ParseDirectiveTests.cs",
+        "dotnet:entry-point:src/System.CommandLine.Tests/ParseErrorReportingTests.cs",
+        "dotnet:entry-point:src/System.CommandLine.Tests/ParseResultTests.cs",
+        "dotnet:entry-point:src/System.CommandLine.Tests/ParserTests.CaptureRemainingTokens.cs",
+        "dotnet:entry-point:src/System.CommandLine.Tests/ParserTests.DoubleDash.cs",
+        "dotnet:entry-point:src/System.CommandLine.Tests/ParserTests.MultipleArguments.cs",
+        "dotnet:entry-point:src/System.CommandLine.Tests/ParserTests.MultiplePositions.cs",
+        "dotnet:entry-point:src/System.CommandLine.Tests/ParserTests.RootCommandAndArg0.cs",
+        "dotnet:entry-point:src/System.CommandLine.Tests/ParserTests.SetupErrors.cs",
+        "dotnet:entry-point:src/System.CommandLine.Tests/ParserTests.cs",
+        "dotnet:entry-point:src/System.CommandLine.Tests/ParsingValidationTests.cs",
+        "dotnet:entry-point:src/System.CommandLine.Tests/ResponseFileTests.cs",
+        "dotnet:entry-point:src/System.CommandLine.Tests/RootCommandTests.cs",
+        "dotnet:entry-point:src/System.CommandLine.Tests/SuggestDirectiveTests.cs",
+        "dotnet:entry-point:src/System.CommandLine.Tests/TokenReplacementTests.cs",
+        "dotnet:entry-point:src/System.CommandLine.Tests/Utility/RemoteExecutor.cs",
+        "dotnet:entry-point:src/System.CommandLine.Tests/VersionOptionTests.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:ui-surface:949e22b703f84f02edc6:review-0001",
+      "sourceLineageDigest": "sha256:89f16d0d61bfa51acb7ef19cd0c827826f4c0f5d257c8ac8458c6e33c490e213",
+      "sourceCategory": "ui-implementation-and-represented-ux-decisions",
+      "title": "Implement represented UI and UX behavior for \u0027src/System.CommandLine.Tests/System.CommandLine.Tests.csproj\u0027 (test)",
+      "scope": "src/System.CommandLine.Tests/System.CommandLine.Tests.csproj",
+      "overlapGroupId": "manual-qa-overlap:3a465264c4677849ea8d",
+      "evidenceIds": [
+        "dotnet:ui:src/System.CommandLine.Tests/ArgumentTests.cs",
+        "dotnet:ui:src/System.CommandLine.Tests/Binding/TypeConversionTests.cs",
+        "dotnet:ui:src/System.CommandLine.Tests/CommandTests.cs",
+        "dotnet:ui:src/System.CommandLine.Tests/CompletionContextTests.cs",
+        "dotnet:ui:src/System.CommandLine.Tests/CompletionTests.cs",
+        "dotnet:ui:src/System.CommandLine.Tests/CustomParsingTests.cs",
+        "dotnet:ui:src/System.CommandLine.Tests/DirectiveTests.cs",
+        "dotnet:ui:src/System.CommandLine.Tests/EnvironmentVariableDirectiveTests.cs",
+        "dotnet:ui:src/System.CommandLine.Tests/GetValueByNameParserTests.cs",
+        "dotnet:ui:src/System.CommandLine.Tests/GlobalOptionTests.cs",
+        "dotnet:ui:src/System.CommandLine.Tests/Help/HelpBuilderTests.Approval.cs",
+        "dotnet:ui:src/System.CommandLine.Tests/Help/HelpBuilderTests.Customization.cs",
+        "dotnet:ui:src/System.CommandLine.Tests/Help/HelpBuilderTests.cs",
+        "dotnet:ui:src/System.CommandLine.Tests/HelpOptionTests.cs",
+        "dotnet:ui:src/System.CommandLine.Tests/Invocation/InvocationTests.cs",
+        "dotnet:ui:src/System.CommandLine.Tests/Invocation/TypoCorrectionTests.cs",
+        "dotnet:ui:src/System.CommandLine.Tests/InvocationConfigurationTests.cs",
+        "dotnet:ui:src/System.CommandLine.Tests/OptionTests.MultipleArgumentsPerToken.cs",
+        "dotnet:ui:src/System.CommandLine.Tests/OptionTests.cs",
+        "dotnet:ui:src/System.CommandLine.Tests/ParseDiagramTests.cs",
+        "dotnet:ui:src/System.CommandLine.Tests/ParseDirectiveTests.cs",
+        "dotnet:ui:src/System.CommandLine.Tests/ParseErrorReportingTests.cs",
+        "dotnet:ui:src/System.CommandLine.Tests/ParseResultTests.cs",
+        "dotnet:ui:src/System.CommandLine.Tests/ParserTests.CaptureRemainingTokens.cs",
+        "dotnet:ui:src/System.CommandLine.Tests/ParserTests.DoubleDash.cs",
+        "dotnet:ui:src/System.CommandLine.Tests/ParserTests.MultipleArguments.cs",
+        "dotnet:ui:src/System.CommandLine.Tests/ParserTests.MultiplePositions.cs",
+        "dotnet:ui:src/System.CommandLine.Tests/ParserTests.RootCommandAndArg0.cs",
+        "dotnet:ui:src/System.CommandLine.Tests/ParserTests.SetupErrors.cs",
+        "dotnet:ui:src/System.CommandLine.Tests/ParserTests.cs",
+        "dotnet:ui:src/System.CommandLine.Tests/ParsingValidationTests.cs",
+        "dotnet:ui:src/System.CommandLine.Tests/ResponseFileTests.cs",
+        "dotnet:ui:src/System.CommandLine.Tests/RootCommandTests.cs",
+        "dotnet:ui:src/System.CommandLine.Tests/SuggestDirectiveTests.cs",
+        "dotnet:ui:src/System.CommandLine.Tests/TokenReplacementTests.cs",
+        "dotnet:ui:src/System.CommandLine.Tests/UseExceptionHandlerTests.cs",
+        "dotnet:ui:src/System.CommandLine.Tests/VersionOptionTests.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:unit-tests:27614cdc6820d8b358cb:review-0001",
+      "sourceLineageDigest": "sha256:b4c30fbdd55bae43db8fbf1269be9e2eb5e40130cc3ca4839af20dba4012d36e",
+      "sourceCategory": "unit-testing",
+      "title": "Create represented unit tests for \u0027src/System.CommandLine.Tests/System.CommandLine.Tests.csproj\u0027 (test)",
+      "scope": "src/System.CommandLine.Tests/System.CommandLine.Tests.csproj",
+      "overlapGroupId": "manual-qa-overlap:3a465264c4677849ea8d",
+      "evidenceIds": [
+        "dotnet:test:src/System.CommandLine.Tests/ArgumentTests.cs",
+        "dotnet:test:src/System.CommandLine.Tests/Binding/TestModels.cs",
+        "dotnet:test:src/System.CommandLine.Tests/Binding/TypeConversionTests.cs",
+        "dotnet:test:src/System.CommandLine.Tests/CommandTests.cs",
+        "dotnet:test:src/System.CommandLine.Tests/CompilationTests.cs",
+        "dotnet:test:src/System.CommandLine.Tests/CompletionContextTests.cs",
+        "dotnet:test:src/System.CommandLine.Tests/CompletionTests.cs",
+        "dotnet:test:src/System.CommandLine.Tests/CustomParsingTests.cs",
+        "dotnet:test:src/System.CommandLine.Tests/DirectiveTests.cs",
+        "dotnet:test:src/System.CommandLine.Tests/EnvironmentVariableDirectiveTests.cs",
+        "dotnet:test:src/System.CommandLine.Tests/GetValueByNameParserTests.cs",
+        "dotnet:test:src/System.CommandLine.Tests/GlobalOptionTests.cs",
+        "dotnet:test:src/System.CommandLine.Tests/Help/ApprovalTests.Config.cs",
+        "dotnet:test:src/System.CommandLine.Tests/Help/CustomHelpAction.cs",
+        "dotnet:test:src/System.CommandLine.Tests/Help/HelpBuilderExtensions.cs",
+        "dotnet:test:src/System.CommandLine.Tests/Help/HelpBuilderTests.Approval.cs",
+        "dotnet:test:src/System.CommandLine.Tests/Help/HelpBuilderTests.Customization.cs",
+        "dotnet:test:src/System.CommandLine.Tests/Help/HelpBuilderTests.cs",
+        "dotnet:test:src/System.CommandLine.Tests/HelpOptionTests.cs",
+        "dotnet:test:src/System.CommandLine.Tests/Invocation/CancelOnProcessTerminationTests.cs",
+        "dotnet:test:src/System.CommandLine.Tests/Invocation/InvocationTests.cs",
+        "dotnet:test:src/System.CommandLine.Tests/Invocation/TypoCorrectionTests.cs",
+        "dotnet:test:src/System.CommandLine.Tests/InvocationConfigurationTests.cs",
+        "dotnet:test:src/System.CommandLine.Tests/LocalizationTests.cs",
+        "dotnet:test:src/System.CommandLine.Tests/OptionTests.MultipleArgumentsPerToken.cs",
+        "dotnet:test:src/System.CommandLine.Tests/OptionTests.cs",
+        "dotnet:test:src/System.CommandLine.Tests/ParseDiagramTests.cs",
+        "dotnet:test:src/System.CommandLine.Tests/ParseDirectiveTests.cs",
+        "dotnet:test:src/System.CommandLine.Tests/ParseErrorReportingTests.cs",
+        "dotnet:test:src/System.CommandLine.Tests/ParseResultTests.cs",
+        "dotnet:test:src/System.CommandLine.Tests/ParserTests.CaptureRemainingTokens.cs",
+        "dotnet:test:src/System.CommandLine.Tests/ParserTests.DoubleDash.cs",
+        "dotnet:test:src/System.CommandLine.Tests/ParserTests.MultipleArguments.cs",
+        "dotnet:test:src/System.CommandLine.Tests/ParserTests.MultiplePositions.cs",
+        "dotnet:test:src/System.CommandLine.Tests/ParserTests.RootCommandAndArg0.cs",
+        "dotnet:test:src/System.CommandLine.Tests/ParserTests.SetupErrors.cs",
+        "dotnet:test:src/System.CommandLine.Tests/ParserTests.cs",
+        "dotnet:test:src/System.CommandLine.Tests/Parsing/CommandLineStringSplitterTests.cs",
+        "dotnet:test:src/System.CommandLine.Tests/ParsingValidationTests.cs",
+        "dotnet:test:src/System.CommandLine.Tests/ResponseFileTests.cs",
+        "dotnet:test:src/System.CommandLine.Tests/RootCommandTests.cs",
+        "dotnet:test:src/System.CommandLine.Tests/SplitCommandLineTests.cs",
+        "dotnet:test:src/System.CommandLine.Tests/SuggestDirectiveTests.cs",
+        "dotnet:test:src/System.CommandLine.Tests/TestActions.cs",
+        "dotnet:test:src/System.CommandLine.Tests/TokenReplacementTests.cs",
+        "dotnet:test:src/System.CommandLine.Tests/UseExceptionHandlerTests.cs",
+        "dotnet:test:src/System.CommandLine.Tests/Utility/AssertionExtensions.cs",
+        "dotnet:test:src/System.CommandLine.Tests/Utility/LinuxOnlyTheory.cs",
+        "dotnet:test:src/System.CommandLine.Tests/Utility/NonWindowsOnlyFactAttribute.cs",
+        "dotnet:test:src/System.CommandLine.Tests/Utility/ParseResultExtensions.cs",
+        "dotnet:test:src/System.CommandLine.Tests/Utility/Process.cs",
+        "dotnet:test:src/System.CommandLine.Tests/Utility/ReleaseBuildOnlyFactAttribute.cs",
+        "dotnet:test:src/System.CommandLine.Tests/Utility/ReleaseBuildOnlyTheoryAttribute.cs",
+        "dotnet:test:src/System.CommandLine.Tests/Utility/RemoteExecution.cs",
+        "dotnet:test:src/System.CommandLine.Tests/Utility/RemoteExecutor.cs",
+        "dotnet:test:src/System.CommandLine.Tests/Utility/WindowsOnlyFactAttribute.cs",
+        "dotnet:test:src/System.CommandLine.Tests/VersionOptionTests.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:application-entry-point:1a8ced7494e488395078:review-0001",
+      "sourceLineageDigest": "sha256:d691922ddf1240b6b78fd4351bf6f2225e93eec31dbacb44fcccfd659206b730",
+      "sourceCategory": "production-implementation",
+      "title": "Implement application entry points for \u0027src/System.CommandLine.Tests/TestApps/NativeAOT/NativeAOT.csproj\u0027 (test)",
+      "scope": "src/System.CommandLine.Tests/TestApps/NativeAOT/NativeAOT.csproj",
+      "overlapGroupId": "manual-qa-overlap:8af2d1d913eec53a6180",
+      "evidenceIds": [
+        "dotnet:entry-point:src/System.CommandLine.Tests/TestApps/NativeAOT/Program.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:unit-tests:872e93c07cb848c6561d:review-0001",
+      "sourceLineageDigest": "sha256:c30f0303e0e6103f1b8042c19a1dec255eb11b11c64a416877974c5871e124f1",
+      "sourceCategory": "unit-testing",
+      "title": "Create represented unit tests for \u0027src/System.CommandLine.Tests/TestApps/NativeAOT/NativeAOT.csproj\u0027 (test)",
+      "scope": "src/System.CommandLine.Tests/TestApps/NativeAOT/NativeAOT.csproj",
+      "overlapGroupId": "manual-qa-overlap:8af2d1d913eec53a6180",
+      "evidenceIds": [
+        "dotnet:test:src/System.CommandLine.Tests/TestApps/NativeAOT/Program.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:application-entry-point:d85f78f88b94a2334535:review-0001",
+      "sourceLineageDigest": "sha256:76f0f15dab2fee4a86d330d1990a5269a113193d2ea40c2bccd93e1f02a44c92",
+      "sourceCategory": "production-implementation",
+      "title": "Implement application entry points for \u0027src/System.CommandLine.Tests/TestApps/NativeLibrary/NativeLibrary.csproj\u0027 (test)",
+      "scope": "src/System.CommandLine.Tests/TestApps/NativeLibrary/NativeLibrary.csproj",
+      "overlapGroupId": "manual-qa-overlap:a86a2f08a5ee6f1ffe92",
+      "evidenceIds": [
+        "dotnet:entry-point:src/System.CommandLine.Tests/TestApps/NativeLibrary/Program.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:ui-surface:4a047bb707bf83bf43a5:review-0001",
+      "sourceLineageDigest": "sha256:5b65d4846257572dc5626160019555c8551c0061d1cdef5af066260de0ef6932",
+      "sourceCategory": "ui-implementation-and-represented-ux-decisions",
+      "title": "Implement represented UI and UX behavior for \u0027src/System.CommandLine.Tests/TestApps/NativeLibrary/NativeLibrary.csproj\u0027 (test)",
+      "scope": "src/System.CommandLine.Tests/TestApps/NativeLibrary/NativeLibrary.csproj",
+      "overlapGroupId": "manual-qa-overlap:a86a2f08a5ee6f1ffe92",
+      "evidenceIds": [
+        "dotnet:ui:src/System.CommandLine.Tests/TestApps/NativeLibrary/Program.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:unit-tests:b8eb597c86d9aeb69bc8:review-0001",
+      "sourceLineageDigest": "sha256:8a326768778c1fe967569eccccfc2dce805b238ed2e3c375fc52a54020d58cd3",
+      "sourceCategory": "unit-testing",
+      "title": "Create represented unit tests for \u0027src/System.CommandLine.Tests/TestApps/NativeLibrary/NativeLibrary.csproj\u0027 (test)",
+      "scope": "src/System.CommandLine.Tests/TestApps/NativeLibrary/NativeLibrary.csproj",
+      "overlapGroupId": "manual-qa-overlap:a86a2f08a5ee6f1ffe92",
+      "evidenceIds": [
+        "dotnet:test:src/System.CommandLine.Tests/TestApps/NativeLibrary/Program.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:application-entry-point:bb61a72b9a3107efa19c:review-0001",
+      "sourceLineageDigest": "sha256:55ce3ac9c5707e13d70f32bff4c55ab945e5ccf8fab49acbb0323bc44c9b55cf",
+      "sourceCategory": "production-implementation",
+      "title": "Implement application entry points for \u0027src/System.CommandLine.Tests/TestApps/Trimming/Trimming.csproj\u0027 (test)",
+      "scope": "src/System.CommandLine.Tests/TestApps/Trimming/Trimming.csproj",
+      "overlapGroupId": "manual-qa-overlap:cef301a9f094842d013f",
+      "evidenceIds": [
+        "dotnet:entry-point:src/System.CommandLine.Tests/TestApps/Trimming/Program.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:unit-tests:0f6eb55eabb5d772fc15:review-0001",
+      "sourceLineageDigest": "sha256:cc479424e83f4b923c9b2aabd0e8dbe244585142673f809a5ff3d76edb69f0e1",
+      "sourceCategory": "unit-testing",
+      "title": "Create represented unit tests for \u0027src/System.CommandLine.Tests/TestApps/Trimming/Trimming.csproj\u0027 (test)",
+      "scope": "src/System.CommandLine.Tests/TestApps/Trimming/Trimming.csproj",
+      "overlapGroupId": "manual-qa-overlap:cef301a9f094842d013f",
+      "evidenceIds": [
+        "dotnet:test:src/System.CommandLine.Tests/TestApps/Trimming/Program.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:application-entry-point:4a01fc7d9c5a1cf2d6e7:review-0001",
+      "sourceLineageDigest": "sha256:cf92e1814c9d4d22e2e6e4276b95af98129d39d63c42e41bd30c6fafbaf06bc3",
+      "sourceCategory": "production-implementation",
+      "title": "Implement application entry points for \u0027src/System.CommandLine/System.CommandLine.csproj\u0027 (library)",
+      "scope": "src/System.CommandLine/System.CommandLine.csproj",
+      "overlapGroupId": "manual-qa-overlap:a3b45116e0e1849e78b8",
+      "evidenceIds": [
+        "dotnet:entry-point:src/System.CommandLine/ParseResult.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:dotnet-source-backbone:92910d650aa0e535c556:review-0001",
+      "sourceLineageDigest": "sha256:d267c1c6541bb9620f2cbd09ed3c9821a67266228e054481d575901ec5bc6567",
+      "sourceCategory": "production-implementation",
+      "title": "Implement maintained internal logic for \u0027src/System.CommandLine/System.CommandLine.csproj\u0027 (library)",
+      "scope": "src/System.CommandLine/System.CommandLine.csproj",
+      "overlapGroupId": "manual-qa-overlap:a3b45116e0e1849e78b8",
+      "evidenceIds": [
+        "dotnet:source-structure:src/System.CommandLine/System.CommandLine.csproj"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:ui-surface:58c91452dd4a154b72f2:review-0001",
+      "sourceLineageDigest": "sha256:24b8cf5281f7ce9b915db5e63571f9b9c1e559be3c055023b46286c722e50d6f",
+      "sourceCategory": "ui-implementation-and-represented-ux-decisions",
+      "title": "Implement represented UI and UX behavior for \u0027src/System.CommandLine/System.CommandLine.csproj\u0027 (library)",
+      "scope": "src/System.CommandLine/System.CommandLine.csproj",
+      "overlapGroupId": "manual-qa-overlap:a3b45116e0e1849e78b8",
+      "evidenceIds": [
+        "dotnet:ui:src/System.CommandLine/ParseResult.cs"
+      ]
+    }
+  ],
+  "instructions": [
+    "Use the manual-qa-work-item/1.0.0 rubric and the immutable public source only.",
+    "Estimate the manual validation, debugging, and hardening needed after recreating each represented coding responsibility.",
+    "Review all targets sharing overlapGroupId together; assign shared validation once and make exclusions explicit.",
+    "Keep automated-test authoring separate, while including the bounded work needed to run, inspect, and debug represented tests.",
+    "Do not infer actual labor, use Git history or activity, or force a percentage or preferred repository total.",
+    "Use exact 0/0/0 only for a wholly excluded or duplicate responsibility and explain the exclusion.",
+    "Keep expected targets normally between 0.5 and 8 hours; explain any cohesive size exception."
+  ]
+}

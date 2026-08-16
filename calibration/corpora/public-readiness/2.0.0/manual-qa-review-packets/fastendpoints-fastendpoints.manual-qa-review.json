@@ -1,0 +1,1527 @@
+{
+  "schemaVersion": "1.0.0",
+  "authoringVersion": "manual-qa-development-review-authoring/1.0.0",
+  "status": "unreviewed",
+  "warning": "UNREVIEWED CANDIDATE-BLIND MANUAL-QA PACKET: estimate manual validation, debugging, and hardening independently. Do not consult seed or candidate hours, category totals, repository totals, ratio formulas, or prior QA judgments.",
+  "policy": {
+    "id": "efforthours-manual-qa-development-review",
+    "version": "manual-qa-development-review-policy/1.0.0",
+    "digest": "sha256:bc4d9a29aac4fd80a917219c77a02dd0c8d1b71ecfb91d4f2b1ad287ecb231e0"
+  },
+  "sourceCorpus": {
+    "id": "efforthours-public-readiness-development",
+    "version": "0.3.0",
+    "digest": "sha256:6ef79b8b950de013263258107c8c19cdd7187e66ab3be84107f63e282a76d385"
+  },
+  "rubric": {
+    "id": "manual-qa-work-item",
+    "version": "1.0.0"
+  },
+  "candidateVisibility": "blind",
+  "sourceRecordId": "record:fastendpoints-fastendpoints:implementation",
+  "repository": {
+    "id": "repository:github.com/fastendpoints/fastendpoints",
+    "name": "FastEndpoints/FastEndpoints",
+    "sourceDigest": "sha256:1681a0743529e68c815e971d1fc336a251dfed17b91dd703ef88c7783547a297"
+  },
+  "source": {
+    "dataClassification": "public-redistributable",
+    "sourceReference": "https://github.com/FastEndpoints/FastEndpoints",
+    "revision": "cc3962b915c75ef76bb64de3552bcdd0351dfd2a",
+    "licenseExpression": "MIT",
+    "redistributionAllowed": true
+  },
+  "profile": "implementation",
+  "baselineId": "senior-contractor-2026-no-ai",
+  "partition": "development",
+  "targets": [
+    {
+      "sourceTargetId": "target:work:application-entry-point:f25ddfcd30b1297bb331:review-0001",
+      "sourceLineageDigest": "sha256:31e96f0697b5bdf61b916c0437b3839c7808073797aaf8d98dd2b1ca85a4ee65",
+      "sourceCategory": "production-implementation",
+      "title": "Implement application entry points for \u0027.\u0027 (cli)",
+      "scope": ".",
+      "overlapGroupId": "manual-qa-overlap:990aa0842cd97ab630c9",
+      "evidenceIds": [
+        "script:entry:shell:repository"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:polyglot-source-backbone:9be033057a8e4093f293:review-0001",
+      "sourceLineageDigest": "sha256:f5d5b00caeb0a35f6541b13f74ea41e747c4ef54e79acfe53d0ffa50bc2d0e3a",
+      "sourceCategory": "production-implementation",
+      "title": "Implement maintained internal logic for \u0027.\u0027 (cli)",
+      "scope": ".",
+      "overlapGroupId": "manual-qa-overlap:990aa0842cd97ab630c9",
+      "evidenceIds": [
+        "script:source:shell:repository"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:dotnet-source-backbone:9fdd7dba3745005a185d:review-0001",
+      "sourceLineageDigest": "sha256:9ff21ce064550ce83b86be30f1ef723854d7f81c75aa1a0bb456628c3dc12fac",
+      "sourceCategory": "production-implementation",
+      "title": "Implement maintained internal logic for \u0027.\u0027 (component)",
+      "scope": ".",
+      "overlapGroupId": "manual-qa-overlap:990aa0842cd97ab630c9",
+      "evidenceIds": [
+        "dotnet:source-structure:."
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:ui-surface:918438cc13339fb696f4:review-0001",
+      "sourceLineageDigest": "sha256:ce33106faaaad26cde92d696264fb61ebd75949801c08224eeb1247b92b77fd0",
+      "sourceCategory": "ui-implementation-and-represented-ux-decisions",
+      "title": "Implement represented UI and UX behavior for \u0027.\u0027 (web-ui)",
+      "scope": ".",
+      "overlapGroupId": "manual-qa-overlap:990aa0842cd97ab630c9",
+      "evidenceIds": [
+        "javascript:ui-asset:TestHarness/Sandbox/Source/wwwroot/index.html"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:build-tooling:c2c91d07e063088d401a:review-0001",
+      "sourceLineageDigest": "sha256:33abe2b07409bc72f4cea154613e7f02a260d4e82084a667c7de83bdf8c62f72",
+      "sourceCategory": "build-configuration-and-developer-tooling",
+      "title": "Configure build behavior and developer tooling",
+      "scope": ".",
+      "overlapGroupId": "manual-qa-overlap:990aa0842cd97ab630c9",
+      "evidenceIds": [
+        "file:.editorconfig",
+        "file:.gitattributes",
+        "file:.gitignore",
+        "file:.idea/.idea.FastEndpoints/.idea/.gitignore",
+        "file:Benchmark/Directory.Build.props",
+        "file:Directory.Packages.props",
+        "file:Src/Agents/Directory.Build.props",
+        "file:Src/Directory.Build.props",
+        "file:Src/Generator/FastEndpoints.Generator.targets",
+        "file:Src/OpenApi/FastEndpoints.OpenApi.targets",
+        "file:Src/Swagger/FastEndpoints.Swagger.targets",
+        "file:TestHarness/Directory.Build.props",
+        "file:clean.sh",
+        "javascript:repository",
+        "script:build:shell:repository"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:ci-infrastructure:bee22f5b9a094661eb75:review-0001",
+      "sourceLineageDigest": "sha256:c3f70699f3728a1ad7ef9907c0aa91eb4580f3059db44a4500c382f2113bb5e5",
+      "sourceCategory": "ci-cd-and-infrastructure-as-code",
+      "title": "Implement represented CI/CD and infrastructure configuration",
+      "scope": ".",
+      "overlapGroupId": "manual-qa-overlap:990aa0842cd97ab630c9",
+      "evidenceIds": [
+        "ci:repository",
+        "file:.github/workflows/publish-to-nuget.yml"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:application-entry-point:6f660c92e71e8604f905:review-0001",
+      "sourceLineageDigest": "sha256:7ea4cbb25922a27fb760dc3a725bd69e52e9ef64b2f3de551840aa154c54e4de",
+      "sourceCategory": "production-implementation",
+      "title": "Implement application entry points for \u0027Benchmark/FastEndpointsBench/FEBench.csproj\u0027 (web)",
+      "scope": "Benchmark/FastEndpointsBench/FEBench.csproj",
+      "overlapGroupId": "manual-qa-overlap:ea5e19c236c1c1bd5583",
+      "evidenceIds": [
+        "dotnet:entry-point:Benchmark/FastEndpointsBench/Program.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:dotnet-source-backbone:02e6dcbcfbe8ffabb7d5:review-0001",
+      "sourceLineageDigest": "sha256:6ea20984e15a415f330981aaeabb4969d217fb34a20dd6f6303251ef5b720105",
+      "sourceCategory": "production-implementation",
+      "title": "Implement maintained internal logic for \u0027Benchmark/FastEndpointsBench/FEBench.csproj\u0027 (web)",
+      "scope": "Benchmark/FastEndpointsBench/FEBench.csproj",
+      "overlapGroupId": "manual-qa-overlap:ea5e19c236c1c1bd5583",
+      "evidenceIds": [
+        "dotnet:source-structure:Benchmark/FastEndpointsBench/FEBench.csproj"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:validation-surface:f6a9c4656e6567d5a7e9:review-0001",
+      "sourceLineageDigest": "sha256:4d10880644c7eb804c41e709d0a24aa6415f94496cba930bb3fbdbf616cf2992",
+      "sourceCategory": "security-and-accessibility",
+      "title": "Implement represented validation behavior for \u0027Benchmark/FastEndpointsBench/FEBench.csproj\u0027 (web)",
+      "scope": "Benchmark/FastEndpointsBench/FEBench.csproj",
+      "overlapGroupId": "manual-qa-overlap:ea5e19c236c1c1bd5583",
+      "evidenceIds": [
+        "dotnet:validation:Benchmark/FastEndpointsBench/CodeGenEndpoint.cs",
+        "dotnet:validation:Benchmark/FastEndpointsBench/Endpoint.cs",
+        "dotnet:validation:Benchmark/FastEndpointsBench/ScopedValidatorEndpoint.cs",
+        "dotnet:validation:Benchmark/FastEndpointsBench/StructEndpoint.cs",
+        "dotnet:validation:Benchmark/FastEndpointsBench/ThrottleEndpoint.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:application-entry-point:791872b570561b66d067:review-0001",
+      "sourceLineageDigest": "sha256:ec04d05d2255dfb4d696d1a0d3f37ea2d962cf0e6641e392a19a7d44a77d7949",
+      "sourceCategory": "production-implementation",
+      "title": "Implement application entry points for \u0027Benchmark/LoadTests/LoadTests.csproj\u0027 (library)",
+      "scope": "Benchmark/LoadTests/LoadTests.csproj",
+      "overlapGroupId": "manual-qa-overlap:344eaa741bdb60cdad2f",
+      "evidenceIds": [
+        "dotnet:entry-point:Benchmark/LoadTests/Program.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:dotnet-source-backbone:b30df2c5169a2501a2eb:review-0001",
+      "sourceLineageDigest": "sha256:cd0b6a5b8d4eed60c083fdfe4f6f3603ce82645dc4ae1ede1d1a260c893865c9",
+      "sourceCategory": "production-implementation",
+      "title": "Implement maintained internal logic for \u0027Benchmark/LoadTests/LoadTests.csproj\u0027 (library)",
+      "scope": "Benchmark/LoadTests/LoadTests.csproj",
+      "overlapGroupId": "manual-qa-overlap:344eaa741bdb60cdad2f",
+      "evidenceIds": [
+        "dotnet:source-structure:Benchmark/LoadTests/LoadTests.csproj"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:external-integration:af2f9f9416ed4cec05b1:review-0001",
+      "sourceLineageDigest": "sha256:2dfda2e6d031e22393affba89afccb320d584708c92ceba86aa7574224676244",
+      "sourceCategory": "external-integrations-and-protocols",
+      "title": "Integrate external services and protocols for \u0027Benchmark/LoadTests/LoadTests.csproj\u0027 (library)",
+      "scope": "Benchmark/LoadTests/LoadTests.csproj",
+      "overlapGroupId": "manual-qa-overlap:344eaa741bdb60cdad2f",
+      "evidenceIds": [
+        "dotnet:integration:Benchmark/LoadTests/Program.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:api-surface:d0c84a0c4cf8bed34cfe:review-0001",
+      "sourceLineageDigest": "sha256:81a7d3789743a0f666d1df01ffa3c1d939135a522f52439a9b3bedaf98b50a3b",
+      "sourceCategory": "production-implementation",
+      "title": "Implement API and route behavior for \u0027Benchmark/MinimalApi/MinimalApi.csproj\u0027 (web)",
+      "scope": "Benchmark/MinimalApi/MinimalApi.csproj",
+      "overlapGroupId": "manual-qa-overlap:58830426b7c72efabfbc",
+      "evidenceIds": [
+        "dotnet:api:Benchmark/MinimalApi/Program.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:application-entry-point:e1b37373626b183f2934:review-0001",
+      "sourceLineageDigest": "sha256:564d721e709a77c5f59cc731f814b9860560f04d019f4e3f0d345d45d21d1577",
+      "sourceCategory": "production-implementation",
+      "title": "Implement application entry points for \u0027Benchmark/MinimalApi/MinimalApi.csproj\u0027 (web)",
+      "scope": "Benchmark/MinimalApi/MinimalApi.csproj",
+      "overlapGroupId": "manual-qa-overlap:58830426b7c72efabfbc",
+      "evidenceIds": [
+        "dotnet:entry-point:Benchmark/MinimalApi/Program.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:dotnet-source-backbone:4ec72076c17f33793ee8:review-0001",
+      "sourceLineageDigest": "sha256:a425d28fca699f9ee4d5e1aaaa9197b7eb5b517ba9663f18131e3aec3bb46619",
+      "sourceCategory": "production-implementation",
+      "title": "Implement maintained internal logic for \u0027Benchmark/MinimalApi/MinimalApi.csproj\u0027 (web)",
+      "scope": "Benchmark/MinimalApi/MinimalApi.csproj",
+      "overlapGroupId": "manual-qa-overlap:58830426b7c72efabfbc",
+      "evidenceIds": [
+        "dotnet:source-structure:Benchmark/MinimalApi/MinimalApi.csproj"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:security-surface:938be6d065a8db799ed9:review-0001",
+      "sourceLineageDigest": "sha256:6febcfdfc8b570536021a7c4f8ed35d65968facbaf90eb5ed5f98f28d14dc6da",
+      "sourceCategory": "security-and-accessibility",
+      "title": "Implement represented authentication and security behavior for \u0027Benchmark/MinimalApi/MinimalApi.csproj\u0027 (web)",
+      "scope": "Benchmark/MinimalApi/MinimalApi.csproj",
+      "overlapGroupId": "manual-qa-overlap:58830426b7c72efabfbc",
+      "evidenceIds": [
+        "dotnet:security:Benchmark/MinimalApi/Program.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:validation-surface:1dc3bfe2333ae2c5fd94:review-0001",
+      "sourceLineageDigest": "sha256:df4cbbe9280326dd55d072c0249795a1acb0e4465c3bc68acb1a81343c65f581",
+      "sourceCategory": "security-and-accessibility",
+      "title": "Implement represented validation behavior for \u0027Benchmark/MinimalApi/MinimalApi.csproj\u0027 (web)",
+      "scope": "Benchmark/MinimalApi/MinimalApi.csproj",
+      "overlapGroupId": "manual-qa-overlap:58830426b7c72efabfbc",
+      "evidenceIds": [
+        "dotnet:validation:Benchmark/MinimalApi/Program.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:api-surface:9d4c2508b3f61c14fc96:review-0001",
+      "sourceLineageDigest": "sha256:9bff130fc42fde64a436472ac6bf9c25da321e493bf35ae0a86b94d638ba6827",
+      "sourceCategory": "production-implementation",
+      "title": "Implement API and route behavior for \u0027Benchmark/MvcControllers/MvcControllers.csproj\u0027 (web)",
+      "scope": "Benchmark/MvcControllers/MvcControllers.csproj",
+      "overlapGroupId": "manual-qa-overlap:cd89f4c6406449a8c421",
+      "evidenceIds": [
+        "dotnet:api:Benchmark/MvcControllers/Controller.cs",
+        "dotnet:api:Benchmark/MvcControllers/QueryBindingController.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:application-entry-point:29b772d5a01042b949d3:review-0001",
+      "sourceLineageDigest": "sha256:e6647e5919816987c096e32fdc9a02b354d95ff395d732c7f6e6a413182732fa",
+      "sourceCategory": "production-implementation",
+      "title": "Implement application entry points for \u0027Benchmark/MvcControllers/MvcControllers.csproj\u0027 (web)",
+      "scope": "Benchmark/MvcControllers/MvcControllers.csproj",
+      "overlapGroupId": "manual-qa-overlap:cd89f4c6406449a8c421",
+      "evidenceIds": [
+        "dotnet:entry-point:Benchmark/MvcControllers/Program.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:dotnet-source-backbone:e5d4d03a8e6e4f6d963b:review-0001",
+      "sourceLineageDigest": "sha256:bdfa5ccfed0043e58d52840239525f2be2cdd7b8a48d67f71364cda38f4b14b6",
+      "sourceCategory": "production-implementation",
+      "title": "Implement maintained internal logic for \u0027Benchmark/MvcControllers/MvcControllers.csproj\u0027 (web)",
+      "scope": "Benchmark/MvcControllers/MvcControllers.csproj",
+      "overlapGroupId": "manual-qa-overlap:cd89f4c6406449a8c421",
+      "evidenceIds": [
+        "dotnet:source-structure:Benchmark/MvcControllers/MvcControllers.csproj"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:security-surface:b161f0c53f705a9bc5c4:review-0001",
+      "sourceLineageDigest": "sha256:c3b533c11540b050045ea34336571a1c5a460fda6d549e331c419b50a7ca48d4",
+      "sourceCategory": "security-and-accessibility",
+      "title": "Implement represented authentication and security behavior for \u0027Benchmark/MvcControllers/MvcControllers.csproj\u0027 (web)",
+      "scope": "Benchmark/MvcControllers/MvcControllers.csproj",
+      "overlapGroupId": "manual-qa-overlap:cd89f4c6406449a8c421",
+      "evidenceIds": [
+        "dotnet:security:Benchmark/MvcControllers/Controller.cs",
+        "dotnet:security:Benchmark/MvcControllers/Program.cs",
+        "dotnet:security:Benchmark/MvcControllers/QueryBindingController.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:validation-surface:319d72d5e48892afbd20:review-0001",
+      "sourceLineageDigest": "sha256:10a1cd5638ff7bf53518fd329dba0c75ca59a2e4ce2c7bbe640a1cc60ff820aa",
+      "sourceCategory": "security-and-accessibility",
+      "title": "Implement represented validation behavior for \u0027Benchmark/MvcControllers/MvcControllers.csproj\u0027 (web)",
+      "scope": "Benchmark/MvcControllers/MvcControllers.csproj",
+      "overlapGroupId": "manual-qa-overlap:cd89f4c6406449a8c421",
+      "evidenceIds": [
+        "dotnet:validation:Benchmark/MvcControllers/Controller.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:application-entry-point:cc93a27cb0af8326dc4d:review-0001",
+      "sourceLineageDigest": "sha256:f37cc4f38be6291d93c10c467e3ebc54e488282ed1b46918fae979a86e0e1f4d",
+      "sourceCategory": "production-implementation",
+      "title": "Implement application entry points for \u0027Benchmark/Runner/Runner.csproj\u0027 (library)",
+      "scope": "Benchmark/Runner/Runner.csproj",
+      "overlapGroupId": "manual-qa-overlap:ef0aad099df7463c51e9",
+      "evidenceIds": [
+        "dotnet:entry-point:Benchmark/Runner/Program.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:dotnet-source-backbone:e493823be20d48fb9702:review-0001",
+      "sourceLineageDigest": "sha256:9b090a7bc5ed681c75bb35750ab0d51b779a609bc7a55810002f642955f9b4ce",
+      "sourceCategory": "production-implementation",
+      "title": "Implement maintained internal logic for \u0027Benchmark/Runner/Runner.csproj\u0027 (library)",
+      "scope": "Benchmark/Runner/Runner.csproj",
+      "overlapGroupId": "manual-qa-overlap:ef0aad099df7463c51e9",
+      "evidenceIds": [
+        "dotnet:source-structure:Benchmark/Runner/Runner.csproj"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:external-integration:bf59406316bb4bd22f3e:review-0001",
+      "sourceLineageDigest": "sha256:7cf701a470d646642e7689aad544a8d8eb06f4dc49acb5bb93fb31bd77fec747",
+      "sourceCategory": "external-integrations-and-protocols",
+      "title": "Integrate external services and protocols for \u0027Benchmark/Runner/Runner.csproj\u0027 (library)",
+      "scope": "Benchmark/Runner/Runner.csproj",
+      "overlapGroupId": "manual-qa-overlap:ef0aad099df7463c51e9",
+      "evidenceIds": [
+        "dotnet:integration:Benchmark/Runner/Benchmarks.cs",
+        "dotnet:integration:Benchmark/Runner/CommandHandlerBenchmarks.cs",
+        "dotnet:integration:Benchmark/Runner/EmptyRequestBenchmarks.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:api-surface:f4e6f38635f6b91e3246:review-0001",
+      "sourceLineageDigest": "sha256:1bbf90b0f430b31b870302749610325150ef54ac5435c7ca13eb2d4737febf0e",
+      "sourceCategory": "production-implementation",
+      "title": "Implement API and route behavior for \u0027Src/Agents/A2A/FastEndpoints.A2A.csproj\u0027 (web)",
+      "scope": "Src/Agents/A2A/FastEndpoints.A2A.csproj",
+      "overlapGroupId": "manual-qa-overlap:fd16f2be3e87ec694c98",
+      "evidenceIds": [
+        "dotnet:api:Src/Agents/A2A/Extensions.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:dotnet-source-backbone:5ccd1d2c2f88239a94e2:review-0001",
+      "sourceLineageDigest": "sha256:03ec5d7ded7acbf2d0153e47fdcdd33d3f7087d8fcbff81660331bcd1c2d69c5",
+      "sourceCategory": "production-implementation",
+      "title": "Implement maintained internal logic for \u0027Src/Agents/A2A/FastEndpoints.A2A.csproj\u0027 (web)",
+      "scope": "Src/Agents/A2A/FastEndpoints.A2A.csproj",
+      "overlapGroupId": "manual-qa-overlap:fd16f2be3e87ec694c98",
+      "evidenceIds": [
+        "dotnet:source-structure:Src/Agents/A2A/FastEndpoints.A2A.csproj"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:dotnet-source-backbone:97825a170436af08ae4f:review-0001",
+      "sourceLineageDigest": "sha256:e110b23b22c9e635287fa9095b8325e77c01ef525ee1b789e54ff5d00baf5924",
+      "sourceCategory": "production-implementation",
+      "title": "Implement maintained internal logic for \u0027Src/Agents/Mcp/FastEndpoints.Mcp.csproj\u0027 (web)",
+      "scope": "Src/Agents/Mcp/FastEndpoints.Mcp.csproj",
+      "overlapGroupId": "manual-qa-overlap:7fbff1b2c0aaf0f7bc1b",
+      "evidenceIds": [
+        "dotnet:source-structure:Src/Agents/Mcp/FastEndpoints.Mcp.csproj"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:dotnet-source-backbone:76b2f35e5040691ea561:review-0001",
+      "sourceLineageDigest": "sha256:30b611ee7b417d32b08adc43a6607a991be30b74160483fa445491fbc83f172b",
+      "sourceCategory": "production-implementation",
+      "title": "Implement maintained internal logic for \u0027Src/AspVersioning/FastEndpoints.AspVersioning.csproj\u0027 (library)",
+      "scope": "Src/AspVersioning/FastEndpoints.AspVersioning.csproj",
+      "overlapGroupId": "manual-qa-overlap:00a460c889e3f2b211f6",
+      "evidenceIds": [
+        "dotnet:source-structure:Src/AspVersioning/FastEndpoints.AspVersioning.csproj"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:dotnet-source-backbone:5b707ef80a34bf08c58c:review-0001",
+      "sourceLineageDigest": "sha256:1c8decc0e218ee4875f43247f9dcf35c48c44f9d7313273170b12933f6a198f0",
+      "sourceCategory": "production-implementation",
+      "title": "Implement maintained internal logic for \u0027Src/Attributes/FastEndpoints.Attributes.csproj\u0027 (library)",
+      "scope": "Src/Attributes/FastEndpoints.Attributes.csproj",
+      "overlapGroupId": "manual-qa-overlap:52ecf1c3150730067b26",
+      "evidenceIds": [
+        "dotnet:source-structure:Src/Attributes/FastEndpoints.Attributes.csproj"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:api-surface:0a529f5c7cfafd41c6ba:review-0001",
+      "sourceLineageDigest": "sha256:87c3330a06c38ed1c703ada7c2b0dc0f6306b82efd84465c7e6d8aa2dc8f5147",
+      "sourceCategory": "production-implementation",
+      "title": "Implement API and route behavior for \u0027Src/ClientGen.Kiota/FastEndpoints.ClientGen.Kiota.csproj\u0027 (library)",
+      "scope": "Src/ClientGen.Kiota/FastEndpoints.ClientGen.Kiota.csproj",
+      "overlapGroupId": "manual-qa-overlap:c31c208f19318915e0b3",
+      "evidenceIds": [
+        "dotnet:api:Src/ClientGen.Kiota/Extensions.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:dotnet-source-backbone:091b19a82aab800d0703:review-0001",
+      "sourceLineageDigest": "sha256:50ab823327e532d96cc94cc527d4e430385037f1328737c84871737f73dd6ae4",
+      "sourceCategory": "production-implementation",
+      "title": "Implement maintained internal logic for \u0027Src/ClientGen.Kiota/FastEndpoints.ClientGen.Kiota.csproj\u0027 (library)",
+      "scope": "Src/ClientGen.Kiota/FastEndpoints.ClientGen.Kiota.csproj",
+      "overlapGroupId": "manual-qa-overlap:c31c208f19318915e0b3",
+      "evidenceIds": [
+        "dotnet:source-structure:Src/ClientGen.Kiota/FastEndpoints.ClientGen.Kiota.csproj"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:api-surface:34053b8e42dad9050d73:review-0001",
+      "sourceLineageDigest": "sha256:663b5a665e4b658dccb7e13ab26bb151319167a7521bb5315570203ec5c434ee",
+      "sourceCategory": "production-implementation",
+      "title": "Implement API and route behavior for \u0027Src/ClientGen/FastEndpoints.ClientGen.csproj\u0027 (web)",
+      "scope": "Src/ClientGen/FastEndpoints.ClientGen.csproj",
+      "overlapGroupId": "manual-qa-overlap:3069bb7becaf285465bf",
+      "evidenceIds": [
+        "dotnet:api:Src/ClientGen/Extensions.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:dotnet-source-backbone:a577c40109b3b1b676f6:review-0001",
+      "sourceLineageDigest": "sha256:3f88e086457d6bf3e3dc267424a5e30a7905d2ea84bcc6079d275b432bdef576",
+      "sourceCategory": "production-implementation",
+      "title": "Implement maintained internal logic for \u0027Src/ClientGen/FastEndpoints.ClientGen.csproj\u0027 (web)",
+      "scope": "Src/ClientGen/FastEndpoints.ClientGen.csproj",
+      "overlapGroupId": "manual-qa-overlap:3069bb7becaf285465bf",
+      "evidenceIds": [
+        "dotnet:source-structure:Src/ClientGen/FastEndpoints.ClientGen.csproj"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:dotnet-source-backbone:600895b81c74e544d808:review-0001",
+      "sourceLineageDigest": "sha256:86a56dab59cf5efe82e84ee94aa735e08c1e98991b524db744d2e2d01929ab93",
+      "sourceCategory": "production-implementation",
+      "title": "Implement maintained internal logic for \u0027Src/CommandRules/FastEndpoints.CommandRules.csproj\u0027 (library)",
+      "scope": "Src/CommandRules/FastEndpoints.CommandRules.csproj",
+      "overlapGroupId": "manual-qa-overlap:83a2fe8f024694d36570",
+      "evidenceIds": [
+        "dotnet:source-structure:Src/CommandRules/FastEndpoints.CommandRules.csproj"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:dotnet-source-backbone:776588293eeb80be7f6a:review-0001",
+      "sourceLineageDigest": "sha256:50e7dfdc78702c51cd2abdb076e77ce6dfe8b32e0e79e9e1b86a498a29bdeb7e",
+      "sourceCategory": "production-implementation",
+      "title": "Implement maintained internal logic for \u0027Src/Core/FastEndpoints.Core.csproj\u0027 (web)",
+      "scope": "Src/Core/FastEndpoints.Core.csproj",
+      "overlapGroupId": "manual-qa-overlap:2684731e34a2d29fbf13",
+      "evidenceIds": [
+        "dotnet:source-structure:Src/Core/FastEndpoints.Core.csproj"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:application-entry-point:1361cac1ea5e528988da:review-0001",
+      "sourceLineageDigest": "sha256:4269e772b84f51e7d484cc45e942f505046e70f2e59e0668b03341211b59bc39",
+      "sourceCategory": "production-implementation",
+      "title": "Implement application entry points for \u0027Src/Generator.Cli/FastEndpoints.Generator.Cli.csproj\u0027 (executable)",
+      "scope": "Src/Generator.Cli/FastEndpoints.Generator.Cli.csproj",
+      "overlapGroupId": "manual-qa-overlap:c57645219e6639d616fc",
+      "evidenceIds": [
+        "dotnet:entry-point:Src/Generator.Cli/Program.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:dotnet-source-backbone:85adfbd3fd1cf34b4df9:review-0001",
+      "sourceLineageDigest": "sha256:77e08d83f69d27020bca8e55b29cc1d7725cc161f3654188bea2ffbea3a39ed8",
+      "sourceCategory": "production-implementation",
+      "title": "Implement maintained internal logic for \u0027Src/Generator.Cli/FastEndpoints.Generator.Cli.csproj\u0027 (executable)",
+      "scope": "Src/Generator.Cli/FastEndpoints.Generator.Cli.csproj",
+      "overlapGroupId": "manual-qa-overlap:c57645219e6639d616fc",
+      "evidenceIds": [
+        "dotnet:source-structure:Src/Generator.Cli/FastEndpoints.Generator.Cli.csproj"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:dotnet-source-backbone:73e3cea7768c4bf73b78:review-0001",
+      "sourceLineageDigest": "sha256:3f29ea10b5441dbe1de159977d902445121d6e8782546367474014516dcf6746",
+      "sourceCategory": "production-implementation",
+      "title": "Implement maintained internal logic for \u0027Src/Generator/FastEndpoints.Generator.csproj\u0027 (library)",
+      "scope": "Src/Generator/FastEndpoints.Generator.csproj",
+      "overlapGroupId": "manual-qa-overlap:bbcde99febc56c2c1d82",
+      "evidenceIds": [
+        "dotnet:source-structure:Src/Generator/FastEndpoints.Generator.csproj"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:dotnet-source-backbone:3a0df55e94483dbbfd3c:review-0001",
+      "sourceLineageDigest": "sha256:7089900bd20daad09d60f36f3e826d3a3276c92f4d7292d70588c116653e3909",
+      "sourceCategory": "production-implementation",
+      "title": "Implement maintained internal logic for \u0027Src/HealthChecks/FastEndpoints.HealthChecks.csproj\u0027 (web)",
+      "scope": "Src/HealthChecks/FastEndpoints.HealthChecks.csproj",
+      "overlapGroupId": "manual-qa-overlap:5dc58ae5dadfbdb443fb",
+      "evidenceIds": [
+        "dotnet:source-structure:Src/HealthChecks/FastEndpoints.HealthChecks.csproj"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:dotnet-source-backbone:ed981260eba1181d6e37:review-0001",
+      "sourceLineageDigest": "sha256:83509c5685181130ca636a30564e6474c2459e2f1c1360eb926e63af9a4628d1",
+      "sourceCategory": "production-implementation",
+      "title": "Implement maintained internal logic for \u0027Src/JobQueues/FastEndpoints.JobQueues.csproj\u0027 (library)",
+      "scope": "Src/JobQueues/FastEndpoints.JobQueues.csproj",
+      "overlapGroupId": "manual-qa-overlap:b8448eb5f942c2cea8e0",
+      "evidenceIds": [
+        "dotnet:source-structure:Src/JobQueues/FastEndpoints.JobQueues.csproj"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:api-surface:608e95d1dd590ff026ab:review-0001",
+      "sourceLineageDigest": "sha256:c17d584e35c54d0b1ff88b0b4f21fabf94b6124a8ddf03739724114b87e8e507",
+      "sourceCategory": "production-implementation",
+      "title": "Implement API and route behavior for \u0027Src/Library/FastEndpoints.csproj\u0027 (web)",
+      "scope": "Src/Library/FastEndpoints.csproj",
+      "overlapGroupId": "manual-qa-overlap:f77dfda62e0bbe12e1c6",
+      "evidenceIds": [
+        "dotnet:api:Src/Library/Main/EndpointRouteMapper.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:dotnet-source-backbone:18b7f3adb40eeb157e9c:review-0001",
+      "sourceLineageDigest": "sha256:04723c06ec826eb8c3b9760b364d0ee05f51ab77e2dce36ad179c576586f96b3",
+      "sourceCategory": "production-implementation",
+      "title": "Implement maintained internal logic for \u0027Src/Library/FastEndpoints.csproj\u0027 (web)",
+      "scope": "Src/Library/FastEndpoints.csproj",
+      "overlapGroupId": "manual-qa-overlap:f77dfda62e0bbe12e1c6",
+      "evidenceIds": [
+        "dotnet:source-structure:Src/Library/FastEndpoints.csproj"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:external-integration:f50165e55991fcbda733:review-0001",
+      "sourceLineageDigest": "sha256:03a737ecaa2ef009acdcd23bc3babb6fba2b68f3b484362cc51665bbaf219c5e",
+      "sourceCategory": "external-integrations-and-protocols",
+      "title": "Integrate external services and protocols for \u0027Src/Library/FastEndpoints.csproj\u0027 (web)",
+      "scope": "Src/Library/FastEndpoints.csproj",
+      "overlapGroupId": "manual-qa-overlap:f77dfda62e0bbe12e1c6",
+      "evidenceIds": [
+        "dotnet:integration:Src/Library/DTOs/ErrorResponse.cs",
+        "dotnet:integration:Src/Library/DTOs/ProblemDetails.cs",
+        "dotnet:integration:Src/Library/Endpoint/Endpoint.Send.cs",
+        "dotnet:integration:Src/Library/Endpoint/Endpoint.Static.cs",
+        "dotnet:integration:Src/Library/Endpoint/Endpoint.cs",
+        "dotnet:integration:Src/Library/Extensions/HttpResponseExtensions.cs",
+        "dotnet:integration:Src/Library/Testing/HttpClientExtensions.cs",
+        "dotnet:integration:Src/Library/X402/X402FacilitatorClient.cs",
+        "dotnet:integration:Src/Library/X402/X402RegistrationExtensions.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:security-surface:de3b5f5e0fe275f0c8da:review-0001",
+      "sourceLineageDigest": "sha256:171afe6f478e65f081ba530cb3d1eca41b13c6d07cf2b77ceca42785e4869b49",
+      "sourceCategory": "security-and-accessibility",
+      "title": "Implement represented authentication and security behavior for \u0027Src/Library/FastEndpoints.csproj\u0027 (web)",
+      "scope": "Src/Library/FastEndpoints.csproj",
+      "overlapGroupId": "manual-qa-overlap:f77dfda62e0bbe12e1c6",
+      "evidenceIds": [
+        "dotnet:security:Src/Library/Main/EndpointRouteMapper.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:dotnet-source-backbone:f2248e8e753b67a4deca:review-0001",
+      "sourceLineageDigest": "sha256:6bd350cfb0d4f6644c7a150bfc4784907aaa60b64ecdf43fe6b3f7a942a8cd7b",
+      "sourceCategory": "production-implementation",
+      "title": "Implement maintained internal logic for \u0027Src/Messaging/Messaging.Core/FastEndpoints.Messaging.Core.csproj\u0027 (library)",
+      "scope": "Src/Messaging/Messaging.Core/FastEndpoints.Messaging.Core.csproj",
+      "overlapGroupId": "manual-qa-overlap:baf1e209d28fd3129b49",
+      "evidenceIds": [
+        "dotnet:source-structure:Src/Messaging/Messaging.Core/FastEndpoints.Messaging.Core.csproj"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:dotnet-source-backbone:f0906ef8d1fc98e02d70:review-0001",
+      "sourceLineageDigest": "sha256:0793f245f67167693eb66d1d7c66e25d0758ec8b171ffb226433a4f3d015d66c",
+      "sourceCategory": "production-implementation",
+      "title": "Implement maintained internal logic for \u0027Src/Messaging/Messaging.Remote.Core/FastEndpoints.Messaging.Remote.Core.csproj\u0027 (library)",
+      "scope": "Src/Messaging/Messaging.Remote.Core/FastEndpoints.Messaging.Remote.Core.csproj",
+      "overlapGroupId": "manual-qa-overlap:3c6f1543963bc747aba7",
+      "evidenceIds": [
+        "dotnet:source-structure:Src/Messaging/Messaging.Remote.Core/FastEndpoints.Messaging.Remote.Core.csproj"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:external-integration:f9054ebcd5b94549b6b2:review-0001",
+      "sourceLineageDigest": "sha256:a1ad32bb2142e40ec00e3ef8b8af8e977fb6ef861b0ca10cd89ba4fcd1828f44",
+      "sourceCategory": "external-integrations-and-protocols",
+      "title": "Integrate external services and protocols for \u0027Src/Messaging/Messaging.Remote.Core/FastEndpoints.Messaging.Remote.Core.csproj\u0027 (library)",
+      "scope": "Src/Messaging/Messaging.Remote.Core/FastEndpoints.Messaging.Remote.Core.csproj",
+      "overlapGroupId": "manual-qa-overlap:3c6f1543963bc747aba7",
+      "evidenceIds": [
+        "dotnet:integration:Src/Messaging/Messaging.Remote.Core/Client/Events/EventExecutorWorker.cs",
+        "dotnet:integration:Src/Messaging/Messaging.Remote.Core/Client/Events/EventReceiverWorker.cs",
+        "dotnet:integration:Src/Messaging/Messaging.Remote.Core/Client/Events/EventSubscriber.cs",
+        "dotnet:integration:Src/Messaging/Messaging.Remote.Core/Client/RemoteConnectionCore.cs",
+        "dotnet:integration:Src/Messaging/Messaging.Remote.Core/Client/RemoteConnectionCoreExtensions.cs",
+        "dotnet:integration:Src/Messaging/Messaging.Remote.Core/Executors/BaseCommandExecutor.cs",
+        "dotnet:integration:Src/Messaging/Messaging.Remote.Core/Executors/ClientStreamCommandExecutor.cs",
+        "dotnet:integration:Src/Messaging/Messaging.Remote.Core/Executors/ServerStreamCommandExecutor.cs",
+        "dotnet:integration:Src/Messaging/Messaging.Remote.Core/Executors/UnaryCommandExecutor.cs",
+        "dotnet:integration:Src/Messaging/Messaging.Remote.Core/Executors/VoidCommandExecutor.cs",
+        "dotnet:integration:Src/Messaging/Messaging.Remote.Core/IRpcMarshallerFactory.cs",
+        "dotnet:integration:Src/Messaging/Messaging.Remote.Core/MsgPackMarshaller.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:dotnet-source-backbone:1c561379c1f7bd1e19aa:review-0001",
+      "sourceLineageDigest": "sha256:3f6fab007ce2bf2f023c7b4bf5a56b8ed90cf5cc3b56a5b438b71f17c8ef6997",
+      "sourceCategory": "production-implementation",
+      "title": "Implement maintained internal logic for \u0027Src/Messaging/Messaging.Remote.Reflection/FastEndpoints.Messaging.Remote.Reflection.csproj\u0027 (library)",
+      "scope": "Src/Messaging/Messaging.Remote.Reflection/FastEndpoints.Messaging.Remote.Reflection.csproj",
+      "overlapGroupId": "manual-qa-overlap:088cd52892d19f61892e",
+      "evidenceIds": [
+        "dotnet:source-structure:Src/Messaging/Messaging.Remote.Reflection/FastEndpoints.Messaging.Remote.Reflection.csproj"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:external-integration:78ca6387aafbafafdeb6:review-0001",
+      "sourceLineageDigest": "sha256:d67c2f9df0eba8533fdbab7e13f4775bf77f4a43119d1cbb4f1ed606571cecf5",
+      "sourceCategory": "external-integrations-and-protocols",
+      "title": "Integrate external services and protocols for \u0027Src/Messaging/Messaging.Remote.Reflection/FastEndpoints.Messaging.Remote.Reflection.csproj\u0027 (library)",
+      "scope": "Src/Messaging/Messaging.Remote.Reflection/FastEndpoints.Messaging.Remote.Reflection.csproj",
+      "overlapGroupId": "manual-qa-overlap:088cd52892d19f61892e",
+      "evidenceIds": [
+        "dotnet:integration:Src/Messaging/Messaging.Remote.Reflection/ProtobufMarshaller.cs",
+        "dotnet:integration:Src/Messaging/Messaging.Remote.Reflection/Server/Reflection/CommandDescriptorFactory.cs",
+        "dotnet:integration:Src/Messaging/Messaging.Remote.Reflection/Server/Reflection/HandlerReflectionExtensions.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:dotnet-source-backbone:526c7dbff0554344ad91:review-0001",
+      "sourceLineageDigest": "sha256:a8ac78d0fe282768f73c551a62b104b4437cb75f9e127447f0e6166eb2f66e2e",
+      "sourceCategory": "production-implementation",
+      "title": "Implement maintained internal logic for \u0027Src/Messaging/Messaging.Remote.Testing/FastEndpoints.Messaging.Remote.Testing.csproj\u0027 (library)",
+      "scope": "Src/Messaging/Messaging.Remote.Testing/FastEndpoints.Messaging.Remote.Testing.csproj",
+      "overlapGroupId": "manual-qa-overlap:198b542481ae9a478e58",
+      "evidenceIds": [
+        "dotnet:source-structure:Src/Messaging/Messaging.Remote.Testing/FastEndpoints.Messaging.Remote.Testing.csproj"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:background-work:4a5b33f23e1ae9b3e262:review-0001",
+      "sourceLineageDigest": "sha256:d0c35db829638ffbc8a523d3ee23b061f92c29d933c905858511e22d7fee06a0",
+      "sourceCategory": "production-implementation",
+      "title": "Implement background, queue, and handler behavior for \u0027Src/Messaging/Messaging.Remote/FastEndpoints.Messaging.Remote.csproj\u0027 (library)",
+      "scope": "Src/Messaging/Messaging.Remote/FastEndpoints.Messaging.Remote.csproj",
+      "overlapGroupId": "manual-qa-overlap:c3a20a8417e5d50ca304",
+      "evidenceIds": [
+        "dotnet:background:Src/Messaging/Messaging.Remote/Server/Events/EventHubInitializer.cs",
+        "dotnet:background:Src/Messaging/Messaging.Remote/Server/HandlerServerExtensions.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:dotnet-source-backbone:581ed2a8a8c262d20748:review-0001",
+      "sourceLineageDigest": "sha256:18233e9588704e1d2ddceb7cb5ff249ec7627b8545a2dce143b481926a728339",
+      "sourceCategory": "production-implementation",
+      "title": "Implement maintained internal logic for \u0027Src/Messaging/Messaging.Remote/FastEndpoints.Messaging.Remote.csproj\u0027 (library)",
+      "scope": "Src/Messaging/Messaging.Remote/FastEndpoints.Messaging.Remote.csproj",
+      "overlapGroupId": "manual-qa-overlap:c3a20a8417e5d50ca304",
+      "evidenceIds": [
+        "dotnet:source-structure:Src/Messaging/Messaging.Remote/FastEndpoints.Messaging.Remote.csproj"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:external-integration:47fc1c05a1132c7e23b3:review-0001",
+      "sourceLineageDigest": "sha256:8a1ece5290bea4f476e4e0dad5fbe94b805bcaeee91a89ff7c162bfb7e703939",
+      "sourceCategory": "external-integrations-and-protocols",
+      "title": "Integrate external services and protocols for \u0027Src/Messaging/Messaging.Remote/FastEndpoints.Messaging.Remote.csproj\u0027 (library)",
+      "scope": "Src/Messaging/Messaging.Remote/FastEndpoints.Messaging.Remote.csproj",
+      "overlapGroupId": "manual-qa-overlap:c3a20a8417e5d50ca304",
+      "evidenceIds": [
+        "dotnet:integration:Src/Messaging/Messaging.Remote/Client/EventPublisher.cs",
+        "dotnet:integration:Src/Messaging/Messaging.Remote/Client/RemoteConnection.cs",
+        "dotnet:integration:Src/Messaging/Messaging.Remote/Client/RemoteConnectionExtensions.cs",
+        "dotnet:integration:Src/Messaging/Messaging.Remote/Server/Commands/BaseHandlerExecutor.cs",
+        "dotnet:integration:Src/Messaging/Messaging.Remote/Server/Commands/ClientStreamHandlerExecutor.cs",
+        "dotnet:integration:Src/Messaging/Messaging.Remote/Server/Commands/IHasServerCallContext.cs",
+        "dotnet:integration:Src/Messaging/Messaging.Remote/Server/Commands/ServerStreamHandlerExecutor.cs",
+        "dotnet:integration:Src/Messaging/Messaging.Remote/Server/Commands/UnaryHandlerExecutor.cs",
+        "dotnet:integration:Src/Messaging/Messaging.Remote/Server/Commands/VoidHandlerExecutor.cs",
+        "dotnet:integration:Src/Messaging/Messaging.Remote/Server/Events/EventDispatcherWorker.cs",
+        "dotnet:integration:Src/Messaging/Messaging.Remote/Server/Events/EventHub.cs",
+        "dotnet:integration:Src/Messaging/Messaging.Remote/Server/HandlerServerExtensions.cs",
+        "dotnet:integration:Src/Messaging/Messaging.Remote/Server/IMethodBinder.cs",
+        "dotnet:integration:Src/Messaging/Messaging.Remote/Server/RpcSchemaRegistry.cs",
+        "dotnet:integration:Src/Messaging/Messaging.Remote/Server/ServiceMethodProvider.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:dotnet-source-backbone:a8dc26f0eeba36e45b36:review-0001",
+      "sourceLineageDigest": "sha256:2d855253e2224d467acf6a15dc83da076b9a6f0aaeb2567bc1367d24102f44ca",
+      "sourceCategory": "production-implementation",
+      "title": "Implement maintained internal logic for \u0027Src/Messaging/Messaging/FastEndpoints.Messaging.csproj\u0027 (library)",
+      "scope": "Src/Messaging/Messaging/FastEndpoints.Messaging.csproj",
+      "overlapGroupId": "manual-qa-overlap:e400a609881d4dc7dfae",
+      "evidenceIds": [
+        "dotnet:source-structure:Src/Messaging/Messaging/FastEndpoints.Messaging.csproj"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:external-integration:92a1134ed3c904a0a5f8:review-0001",
+      "sourceLineageDigest": "sha256:899d1e763d0cf905b677212b8c374317b8675e3eba3cf6ad5a3aaed2c4239b78",
+      "sourceCategory": "external-integrations-and-protocols",
+      "title": "Integrate external services and protocols for \u0027Src/Messaging/Messaging/FastEndpoints.Messaging.csproj\u0027 (library)",
+      "scope": "Src/Messaging/Messaging/FastEndpoints.Messaging.csproj",
+      "overlapGroupId": "manual-qa-overlap:e400a609881d4dc7dfae",
+      "evidenceIds": [
+        "dotnet:integration:Src/Messaging/Messaging/Events/EventExtensions.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:dotnet-source-backbone:48539cd5b1bfb73dadb7:review-0001",
+      "sourceLineageDigest": "sha256:0692a5af14a4d210ddf63694e55dad4603907e869e0f03ef9bae20266b1e956e",
+      "sourceCategory": "production-implementation",
+      "title": "Implement maintained internal logic for \u0027Src/OData/FastEndpoints.OData.csproj\u0027 (library)",
+      "scope": "Src/OData/FastEndpoints.OData.csproj",
+      "overlapGroupId": "manual-qa-overlap:63c6e9eb2522067e23b8",
+      "evidenceIds": [
+        "dotnet:source-structure:Src/OData/FastEndpoints.OData.csproj"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:data-persistence:5413decc23d5022ac9d7:review-0001",
+      "sourceLineageDigest": "sha256:cb85687a085484370034623ff0d57e1d1113eb25082d5286f3b0526f7d0ba109",
+      "sourceCategory": "data-modeling-persistence-and-migrations",
+      "title": "Implement data modeling and persistence for \u0027Src/OData/FastEndpoints.OData.csproj\u0027 (library)",
+      "scope": "Src/OData/FastEndpoints.OData.csproj",
+      "overlapGroupId": "manual-qa-overlap:63c6e9eb2522067e23b8",
+      "evidenceIds": [
+        "dotnet:data:Src/OData/ODataEndpoint.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:api-surface:ed1dfef2ae84fe5728b3:review-0001",
+      "sourceLineageDigest": "sha256:61ba72c4232b41a3ce825fa7e2e23571b67db309089b63d24d84cc64e10a584b",
+      "sourceCategory": "production-implementation",
+      "title": "Implement API and route behavior for \u0027Src/OpenApi.Kiota/FastEndpoints.OpenApi.Kiota.csproj\u0027 (library)",
+      "scope": "Src/OpenApi.Kiota/FastEndpoints.OpenApi.Kiota.csproj",
+      "overlapGroupId": "manual-qa-overlap:ec6785d377e0e540fa10",
+      "evidenceIds": [
+        "dotnet:api:Src/OpenApi.Kiota/Extensions.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:dotnet-source-backbone:c4295a119c45bd0a26ec:review-0001",
+      "sourceLineageDigest": "sha256:fa96beda6c877a2650b7a763acddcb696b3307c29613f3091ffb63102d29fdcb",
+      "sourceCategory": "production-implementation",
+      "title": "Implement maintained internal logic for \u0027Src/OpenApi.Kiota/FastEndpoints.OpenApi.Kiota.csproj\u0027 (library)",
+      "scope": "Src/OpenApi.Kiota/FastEndpoints.OpenApi.Kiota.csproj",
+      "overlapGroupId": "manual-qa-overlap:ec6785d377e0e540fa10",
+      "evidenceIds": [
+        "dotnet:source-structure:Src/OpenApi.Kiota/FastEndpoints.OpenApi.Kiota.csproj"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:dotnet-source-backbone:a871ac8d7ecda56b40f3:review-0001",
+      "sourceLineageDigest": "sha256:1db0f6479be5277fe4945a67c3168f461e7d2ebea903037de83ee1724f8a0b0f",
+      "sourceCategory": "production-implementation",
+      "title": "Implement maintained internal logic for \u0027Src/OpenApi/FastEndpoints.OpenApi.csproj\u0027 (web)",
+      "scope": "Src/OpenApi/FastEndpoints.OpenApi.csproj",
+      "overlapGroupId": "manual-qa-overlap:688a9e00e381e5040eac",
+      "evidenceIds": [
+        "dotnet:source-structure:Src/OpenApi/FastEndpoints.OpenApi.csproj"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:dotnet-source-backbone:6757c60170ab93b58459:review-0001",
+      "sourceLineageDigest": "sha256:3278cad062b1a0e2bfb0ed0e15c78f4ece6c3fad567852213d04f0db199708de",
+      "sourceCategory": "production-implementation",
+      "title": "Implement maintained internal logic for \u0027Src/Security/FastEndpoints.Security.csproj\u0027 (library)",
+      "scope": "Src/Security/FastEndpoints.Security.csproj",
+      "overlapGroupId": "manual-qa-overlap:f7f07b91b6cd8d567d35",
+      "evidenceIds": [
+        "dotnet:source-structure:Src/Security/FastEndpoints.Security.csproj"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:security-surface:701b5e60f464dd62aab5:review-0001",
+      "sourceLineageDigest": "sha256:c43324938bd10a5352b42e758f785ce689553589d60e8091563a501277f69b5e",
+      "sourceCategory": "security-and-accessibility",
+      "title": "Implement represented authentication and security behavior for \u0027Src/Security/FastEndpoints.Security.csproj\u0027 (library)",
+      "scope": "Src/Security/FastEndpoints.Security.csproj",
+      "overlapGroupId": "manual-qa-overlap:f7f07b91b6cd8d567d35",
+      "evidenceIds": [
+        "dotnet:security:Src/Security/AuthExtensions.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:dotnet-source-backbone:29425b0fe41421a976a6:review-0001",
+      "sourceLineageDigest": "sha256:3ba7875120b5d175a59e1c4d14ce89c36f352c3206f55db37a657bdc7b67ec0e",
+      "sourceCategory": "production-implementation",
+      "title": "Implement maintained internal logic for \u0027Src/Swagger/FastEndpoints.Swagger.csproj\u0027 (library)",
+      "scope": "Src/Swagger/FastEndpoints.Swagger.csproj",
+      "overlapGroupId": "manual-qa-overlap:fc28a3598d8e3920e726",
+      "evidenceIds": [
+        "dotnet:source-structure:Src/Swagger/FastEndpoints.Swagger.csproj"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:dotnet-source-backbone:c05c2ef9c866f7d62219:review-0001",
+      "sourceLineageDigest": "sha256:e0aae3326a97129457cbf36daca01acc5cc9a1bfb10c9b682cd5d9426db199f5",
+      "sourceCategory": "production-implementation",
+      "title": "Implement maintained internal logic for \u0027Src/Testing/FastEndpoints.Testing.csproj\u0027 (library)",
+      "scope": "Src/Testing/FastEndpoints.Testing.csproj",
+      "overlapGroupId": "manual-qa-overlap:c13465029a6a78739325",
+      "evidenceIds": [
+        "dotnet:source-structure:Src/Testing/FastEndpoints.Testing.csproj"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:external-integration:1298998c69c165b4749d:review-0001",
+      "sourceLineageDigest": "sha256:fbf799ee98de2fb6e700a565187bf2e2544c6463e61077933456526314761cda",
+      "sourceCategory": "external-integrations-and-protocols",
+      "title": "Integrate external services and protocols for \u0027Src/Testing/FastEndpoints.Testing.csproj\u0027 (library)",
+      "scope": "Src/Testing/FastEndpoints.Testing.csproj",
+      "overlapGroupId": "manual-qa-overlap:c13465029a6a78739325",
+      "evidenceIds": [
+        "dotnet:integration:Src/Testing/AppFixture.Aot.cs",
+        "dotnet:integration:Src/Testing/AppFixture.Waf.cs",
+        "dotnet:integration:Src/Testing/ClientOptions.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:api-surface:d77f10fa607e5cb146d1:review-0001",
+      "sourceLineageDigest": "sha256:d457d1c3871478fde176b316271c3348d1de5db581bda9a9b81c28508c961453",
+      "sourceCategory": "production-implementation",
+      "title": "Implement API and route behavior for \u0027TestHarness/NativeAotChecker/NativeAotChecker.csproj\u0027 (web)",
+      "scope": "TestHarness/NativeAotChecker/NativeAotChecker.csproj",
+      "overlapGroupId": "manual-qa-overlap:3430c59d034a4f928e71",
+      "evidenceIds": [
+        "dotnet:api:TestHarness/NativeAotChecker/Program.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:application-entry-point:b20540da5e0134afc39b:review-0001",
+      "sourceLineageDigest": "sha256:fceb86103950f27fd467616d8664c5d2fb31afec73968cd3011af3a289710f4b",
+      "sourceCategory": "production-implementation",
+      "title": "Implement application entry points for \u0027TestHarness/NativeAotChecker/NativeAotChecker.csproj\u0027 (web)",
+      "scope": "TestHarness/NativeAotChecker/NativeAotChecker.csproj",
+      "overlapGroupId": "manual-qa-overlap:3430c59d034a4f928e71",
+      "evidenceIds": [
+        "dotnet:entry-point:TestHarness/NativeAotChecker/Program.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:dotnet-source-backbone:7bef5107b95e22407ce3:review-0001",
+      "sourceLineageDigest": "sha256:40fb73154f26e3afe2e782d090f696bf067b5c1b4633293b431fa31238a6af83",
+      "sourceCategory": "production-implementation",
+      "title": "Implement maintained internal logic for \u0027TestHarness/NativeAotChecker/NativeAotChecker.csproj\u0027 (web)",
+      "scope": "TestHarness/NativeAotChecker/NativeAotChecker.csproj",
+      "overlapGroupId": "manual-qa-overlap:3430c59d034a4f928e71",
+      "evidenceIds": [
+        "dotnet:source-structure:TestHarness/NativeAotChecker/NativeAotChecker.csproj"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:external-integration:55afd6e77a4e3b3ee30e:review-0001",
+      "sourceLineageDigest": "sha256:e909ba744de57a4d72e588938981c04d909eaa919067e03c53605a542b1abc26",
+      "sourceCategory": "external-integrations-and-protocols",
+      "title": "Integrate external services and protocols for \u0027TestHarness/NativeAotChecker/NativeAotChecker.csproj\u0027 (web)",
+      "scope": "TestHarness/NativeAotChecker/NativeAotChecker.csproj",
+      "overlapGroupId": "manual-qa-overlap:3430c59d034a4f928e71",
+      "evidenceIds": [
+        "dotnet:integration:TestHarness/NativeAotChecker/Endpoints/Events/EventPublishEndpoints.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:security-surface:a19ff64d747737f3730d:review-0001",
+      "sourceLineageDigest": "sha256:0b30df4e49c7b72774e744bfc6b27ea6f8ca0a10fef2eda0077f6bf881bd34ed",
+      "sourceCategory": "security-and-accessibility",
+      "title": "Implement represented authentication and security behavior for \u0027TestHarness/NativeAotChecker/NativeAotChecker.csproj\u0027 (web)",
+      "scope": "TestHarness/NativeAotChecker/NativeAotChecker.csproj",
+      "overlapGroupId": "manual-qa-overlap:3430c59d034a4f928e71",
+      "evidenceIds": [
+        "dotnet:security:TestHarness/NativeAotChecker/Program.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:validation-surface:44dad5dc8e5ede6b82f5:review-0001",
+      "sourceLineageDigest": "sha256:d0aa2d6beacba6db29058860cea622f27e2d97fc177710af51eb5fe5701ed9c7",
+      "sourceCategory": "security-and-accessibility",
+      "title": "Implement represented validation behavior for \u0027TestHarness/NativeAotChecker/NativeAotChecker.csproj\u0027 (web)",
+      "scope": "TestHarness/NativeAotChecker/NativeAotChecker.csproj",
+      "overlapGroupId": "manual-qa-overlap:3430c59d034a4f928e71",
+      "evidenceIds": [
+        "dotnet:validation:TestHarness/NativeAotChecker/Endpoints/Validation/FluentValidationEndpoint.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:application-entry-point:259adfb761950802e106:review-0001",
+      "sourceLineageDigest": "sha256:577ad3a1fa2f174f7637fa872b1f074582ed4576fe8969dc6184fa2a64d6a5cb",
+      "sourceCategory": "production-implementation",
+      "title": "Implement application entry points for \u0027TestHarness/OData/OData.csproj\u0027 (web)",
+      "scope": "TestHarness/OData/OData.csproj",
+      "overlapGroupId": "manual-qa-overlap:b18e3325a4bbade81dde",
+      "evidenceIds": [
+        "dotnet:entry-point:TestHarness/OData/Program.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:dotnet-source-backbone:643a5fb43e2c283a29c3:review-0001",
+      "sourceLineageDigest": "sha256:ed09aab27a1537e6fe687a88fcafd971f789f578e9b40d217cc17fc0fae0bf49",
+      "sourceCategory": "production-implementation",
+      "title": "Implement maintained internal logic for \u0027TestHarness/OData/OData.csproj\u0027 (web)",
+      "scope": "TestHarness/OData/OData.csproj",
+      "overlapGroupId": "manual-qa-overlap:b18e3325a4bbade81dde",
+      "evidenceIds": [
+        "dotnet:source-structure:TestHarness/OData/OData.csproj"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:data-persistence:6d6d95f04061f6801791:review-0001",
+      "sourceLineageDigest": "sha256:db98ac259a4e90092cd13a980853eb8f7710d5af01d2c94e5d2bc747f72e4604",
+      "sourceCategory": "data-modeling-persistence-and-migrations",
+      "title": "Implement data modeling and persistence for \u0027TestHarness/OData/OData.csproj\u0027 (web)",
+      "scope": "TestHarness/OData/OData.csproj",
+      "overlapGroupId": "manual-qa-overlap:b18e3325a4bbade81dde",
+      "evidenceIds": [
+        "dotnet:data:TestHarness/OData/Model/AppDbContext.cs",
+        "dotnet:data:TestHarness/OData/Model/AppDbContextExtensions.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:application-entry-point:5b7cdb86c792d23c1b6d:review-0001",
+      "sourceLineageDigest": "sha256:c523d3fc3feeac90927013745d0a58ea831c91cc654bfbffb04f5ddb90e4b515",
+      "sourceCategory": "production-implementation",
+      "title": "Implement application entry points for \u0027TestHarness/OpenApi.Kiota/OpenApi.Kiota.csproj\u0027 (web)",
+      "scope": "TestHarness/OpenApi.Kiota/OpenApi.Kiota.csproj",
+      "overlapGroupId": "manual-qa-overlap:b30fb9f24850e0b1490d",
+      "evidenceIds": [
+        "dotnet:entry-point:TestHarness/OpenApi.Kiota/Program.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:dotnet-source-backbone:7673b2ac7601150ed908:review-0001",
+      "sourceLineageDigest": "sha256:919e85bfc95b2837fbda3f849b064c3a6f4ccdb16fb6f67c5934225c11833739",
+      "sourceCategory": "production-implementation",
+      "title": "Implement maintained internal logic for \u0027TestHarness/OpenApi.Kiota/OpenApi.Kiota.csproj\u0027 (web)",
+      "scope": "TestHarness/OpenApi.Kiota/OpenApi.Kiota.csproj",
+      "overlapGroupId": "manual-qa-overlap:b30fb9f24850e0b1490d",
+      "evidenceIds": [
+        "dotnet:source-structure:TestHarness/OpenApi.Kiota/OpenApi.Kiota.csproj"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:dotnet-source-backbone:70e7ca0d3927e8f81015:review-0001",
+      "sourceLineageDigest": "sha256:69005841790af4c3762b7d2b3c7480954eb9df96d69390b72041bd0341185b3c",
+      "sourceCategory": "production-implementation",
+      "title": "Implement maintained internal logic for \u0027TestHarness/Sandbox/Contracts/Contracts.csproj\u0027 (library)",
+      "scope": "TestHarness/Sandbox/Contracts/Contracts.csproj",
+      "overlapGroupId": "manual-qa-overlap:b99b4b00c9e9fd11d800",
+      "evidenceIds": [
+        "dotnet:source-structure:TestHarness/Sandbox/Contracts/Contracts.csproj"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:application-entry-point:68c4d136b500ae573113:review-0001",
+      "sourceLineageDigest": "sha256:afecf4fca7b3a87051a84cb8a093d97213b1541611b388817c933a6a2f467352",
+      "sourceCategory": "production-implementation",
+      "title": "Implement application entry points for \u0027TestHarness/Sandbox/Source/Sandbox.csproj\u0027 (web)",
+      "scope": "TestHarness/Sandbox/Source/Sandbox.csproj",
+      "overlapGroupId": "manual-qa-overlap:cd7e5c874172b6d4f893",
+      "evidenceIds": [
+        "dotnet:entry-point:TestHarness/Sandbox/Source/Program.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:dotnet-source-backbone:023fef48f08681059bae:review-0001",
+      "sourceLineageDigest": "sha256:08a89f68a2447a4db0c667f46ad087778db9ed243aeb481ba6099adf5ac7237f",
+      "sourceCategory": "production-implementation",
+      "title": "Implement maintained internal logic for \u0027TestHarness/Sandbox/Source/Sandbox.csproj\u0027 (web)",
+      "scope": "TestHarness/Sandbox/Source/Sandbox.csproj",
+      "overlapGroupId": "manual-qa-overlap:cd7e5c874172b6d4f893",
+      "evidenceIds": [
+        "dotnet:source-structure:TestHarness/Sandbox/Source/Sandbox.csproj"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:unit-tests:8e720be2d2c5f69ff5e8:review-0001",
+      "sourceLineageDigest": "sha256:8a250dd291990fe2417357ed43e24d249b97a22b14a4ad4723d5079b72bf5a9b",
+      "sourceCategory": "unit-testing",
+      "title": "Create represented unit tests for \u0027TestHarness/Sandbox/Tests/Tests.csproj\u0027 (test)",
+      "scope": "TestHarness/Sandbox/Tests/Tests.csproj",
+      "overlapGroupId": "manual-qa-overlap:8da41776993ac5f25ce6",
+      "evidenceIds": [
+        "dotnet:test:TestHarness/Sandbox/Tests/EndpointTests/EndpointTests.cs",
+        "dotnet:test:TestHarness/Sandbox/Tests/Fixtures/AppFixture.cs",
+        "dotnet:test:TestHarness/Sandbox/Tests/Metadata.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:api-surface:bcd35388a140e385ecf1:review-0001",
+      "sourceLineageDigest": "sha256:698e36bb0a874447c1a06861c0b938f9cf3136e823a8d1b9f01f5e4b0cbbd5d5",
+      "sourceCategory": "production-implementation",
+      "title": "Implement API and route behavior for \u0027TestHarness/Web/Web.csproj\u0027 (web)",
+      "scope": "TestHarness/Web/Web.csproj",
+      "overlapGroupId": "manual-qa-overlap:e1c5fee16ff1863b08ee",
+      "evidenceIds": [
+        "dotnet:api:TestHarness/Web/Program.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:application-entry-point:7e9db5fe9a95574b871c:review-0001",
+      "sourceLineageDigest": "sha256:2a5b4f67d0c9e86d6babfc8b5d258550e1277eba7f0b21ce0197ae56abdeddf2",
+      "sourceCategory": "production-implementation",
+      "title": "Implement application entry points for \u0027TestHarness/Web/Web.csproj\u0027 (web)",
+      "scope": "TestHarness/Web/Web.csproj",
+      "overlapGroupId": "manual-qa-overlap:e1c5fee16ff1863b08ee",
+      "evidenceIds": [
+        "dotnet:entry-point:TestHarness/Web/Program.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:dotnet-source-backbone:355780cda7b975e86a72:review-0001",
+      "sourceLineageDigest": "sha256:d377f2d70e6883dd9b034b73cf832aa862069e0ad4154fb598984603e8454353",
+      "sourceCategory": "production-implementation",
+      "title": "Implement maintained internal logic for \u0027TestHarness/Web/Web.csproj\u0027 (web)",
+      "scope": "TestHarness/Web/Web.csproj",
+      "overlapGroupId": "manual-qa-overlap:e1c5fee16ff1863b08ee",
+      "evidenceIds": [
+        "dotnet:source-structure:TestHarness/Web/Web.csproj"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:external-integration:0d3beb9e373da21a48cb:review-0001",
+      "sourceLineageDigest": "sha256:7dc3bcbad7d09def50771d924cb2e93f5109369be81bff739e9021bf7e44f8db",
+      "sourceCategory": "external-integrations-and-protocols",
+      "title": "Integrate external services and protocols for \u0027TestHarness/Web/Web.csproj\u0027 (web)",
+      "scope": "TestHarness/Web/Web.csproj",
+      "overlapGroupId": "manual-qa-overlap:e1c5fee16ff1863b08ee",
+      "evidenceIds": [
+        "dotnet:integration:TestHarness/Web/[Features]/Inventory/Manage/Create/Endpoint.cs",
+        "dotnet:integration:TestHarness/Web/[Features]/Sales/Orders/Create/Endpoint.cs",
+        "dotnet:integration:TestHarness/Web/[Features]/TestCases/Messaging/EventBusTest/Endpoint.cs",
+        "dotnet:integration:TestHarness/Web/[Features]/TestCases/Processors/GlobalGenericProcessorTest/Endpoint.cs",
+        "dotnet:integration:TestHarness/Web/[Features]/TestCases/Processors/PostProcessorTest/Endpoint.cs",
+        "dotnet:integration:TestHarness/Web/[Features]/TestCases/Processors/ProcessorAttributesTest/Endpoint.cs",
+        "dotnet:integration:TestHarness/Web/[Features]/TestCases/Validation/PrecessorShortWhileValidatorFails/Endpoint.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:unit-tests:d3e48490a863a476516a:review-0001",
+      "sourceLineageDigest": "sha256:284eb07a9f8c48fe17f4dab79771dccaf85862b599b73c66fb795acf056ca710",
+      "sourceCategory": "unit-testing",
+      "title": "Create represented unit tests for \u0027TestHarness/Web/Web.csproj\u0027 (web)",
+      "scope": "TestHarness/Web/Web.csproj",
+      "overlapGroupId": "manual-qa-overlap:e1c5fee16ff1863b08ee",
+      "evidenceIds": [
+        "dotnet:test:TestHarness/Web/[Features]/TestCases/Binding/QueryParamBindingInEpWithoutReq/EpWithoutReqQueryParamBindingTest.cs",
+        "dotnet:test:TestHarness/Web/[Features]/TestCases/Binding/RouteBindingInEpWithoutReq/EpWithoutReqRouteBindingTest.cs",
+        "dotnet:test:TestHarness/Web/[Features]/TestCases/Messaging/CommandBusTest/CommandBusTest.cs",
+        "dotnet:test:TestHarness/Web/[Features]/TestCases/Messaging/StreamCommandBusTest/StreamCommandBusTest.cs",
+        "dotnet:test:TestHarness/Web/[Features]/TestCases/Routing/CatchAllRouteParamTest.cs",
+        "dotnet:test:TestHarness/Web/[Features]/TestCases/Routing/ConstrainedRouteParamTest.cs",
+        "dotnet:test:TestHarness/Web/[Features]/TestCases/Routing/DefaultValueRouteParamTest.cs",
+        "dotnet:test:TestHarness/Web/[Features]/TestCases/Routing/MultiRouteDifferingParamsTest.cs",
+        "dotnet:test:TestHarness/Web/[Features]/TestCases/Routing/NonOptionalRouteParamTest.cs",
+        "dotnet:test:TestHarness/Web/[Features]/TestCases/Routing/OptionalRouteParamTest.cs",
+        "dotnet:test:TestHarness/Web/[Features]/TestCases/Routing/RegexConstraintWithEscapedBracesTest.cs",
+        "dotnet:test:TestHarness/Web/[Features]/TestCases/Security/ComparerSemanticsTest/ComparerSemanticsTests.cs",
+        "dotnet:test:TestHarness/Web/[Features]/TestCases/Security/RateLimitTests/GlobalErrorResponseTest.cs",
+        "dotnet:test:TestHarness/Web/[Features]/TestCases/Security/ScopesTest/ScopeTests.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:security-surface:f99322788f56cdad333f:review-0001",
+      "sourceLineageDigest": "sha256:d108c94f31ae71faf86b82a9c165cebd9cbb6c2375e39a66b0a97681e08f7376",
+      "sourceCategory": "security-and-accessibility",
+      "title": "Implement represented authentication and security behavior for \u0027TestHarness/Web/Web.csproj\u0027 (web)",
+      "scope": "TestHarness/Web/Web.csproj",
+      "overlapGroupId": "manual-qa-overlap:e1c5fee16ff1863b08ee",
+      "evidenceIds": [
+        "dotnet:security:TestHarness/Web/Program.cs",
+        "dotnet:security:TestHarness/Web/[Features]/Customers/Login/Endpoint.cs",
+        "dotnet:security:TestHarness/Web/[Features]/Inventory/List/Recent/Endpoint.cs",
+        "dotnet:security:TestHarness/Web/[Features]/TestCases/Endpoints/EmptyRequestTest/EmptyRequestEndpoint.cs",
+        "dotnet:security:TestHarness/Web/[Features]/TestCases/Endpoints/QueryMethodTest/Endpoint.cs",
+        "dotnet:security:TestHarness/Web/[Features]/TestCases/Endpoints/TypedResultTest/MultiResultEndpoint.cs",
+        "dotnet:security:TestHarness/Web/[Features]/TestCases/Messaging/CommandBusTest/CommandBusTest.cs",
+        "dotnet:security:TestHarness/Web/[Features]/TestCases/Processors/ProcessorAttributesTest/Endpoint.cs",
+        "dotnet:security:TestHarness/Web/[Features]/TestCases/Security/RefreshTokensTest/UnionLoginEndpoint.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:validation-surface:36e119bbb158c7a8b9f6:review-0001",
+      "sourceLineageDigest": "sha256:96711f434715ec728000b661e07652758b9758732b54ee14d735a447db4cd94d",
+      "sourceCategory": "security-and-accessibility",
+      "title": "Implement represented validation behavior for \u0027TestHarness/Web/Web.csproj\u0027 (web)",
+      "scope": "TestHarness/Web/Web.csproj",
+      "overlapGroupId": "manual-qa-overlap:e1c5fee16ff1863b08ee",
+      "evidenceIds": [
+        "dotnet:validation:TestHarness/Web/[Features]/Admin/Login/Models.cs",
+        "dotnet:validation:TestHarness/Web/[Features]/Inventory/Manage/Create/Models.cs",
+        "dotnet:validation:TestHarness/Web/[Features]/Inventory/Manage/Update/Models.cs",
+        "dotnet:validation:TestHarness/Web/[Features]/TestCases/Binding/FromBodyBindingTest/Endpoint.cs",
+        "dotnet:validation:TestHarness/Web/[Features]/TestCases/Binding/RouteBindingTest/Models.cs",
+        "dotnet:validation:TestHarness/Web/[Features]/TestCases/Endpoints/IncludedValidator/Endpoint.cs",
+        "dotnet:validation:TestHarness/Web/[Features]/TestCases/Endpoints/OnBeforOnAfterTest/Models.cs",
+        "dotnet:validation:TestHarness/Web/[Features]/TestCases/Swagger/Review/Endpoints.cs",
+        "dotnet:validation:TestHarness/Web/[Features]/TestCases/Validation/DataAnnotationCompliant/Endpoint.cs",
+        "dotnet:validation:TestHarness/Web/[Features]/TestCases/Validation/PreProcessorIsRunOnValidationFailure/Models.cs",
+        "dotnet:validation:TestHarness/Web/[Features]/TestCases/Validation/PrecessorShortWhileValidatorFails/Endpoint.cs",
+        "dotnet:validation:TestHarness/Web/[Features]/Uploads/Image/Save/Models.cs",
+        "dotnet:validation:TestHarness/Web/[Features]/Uploads/Image/SaveTyped/Models.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:application-entry-point:c4ae73f78b41f7e0ed62:review-0001",
+      "sourceLineageDigest": "sha256:21ee1deb734442d751e2500454a6bc8b72e2cf9cdc93a394b0b064a91a9297ce",
+      "sourceCategory": "production-implementation",
+      "title": "Implement application entry points for \u0027Tests/IntegrationTests/FastEndpoints.Agents/Int.Agents.csproj\u0027 (test)",
+      "scope": "Tests/IntegrationTests/FastEndpoints.Agents/Int.Agents.csproj",
+      "overlapGroupId": "manual-qa-overlap:e5303227a56b11c501ba",
+      "evidenceIds": [
+        "dotnet:entry-point:Tests/IntegrationTests/FastEndpoints.Agents/A2ASkillVisibilityTests.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:external-integration:ebb0939d712edcfeb1c4:review-0001",
+      "sourceLineageDigest": "sha256:74843c9198e5a287d91f4409cf984f5a6c219765d95136d0fd4cffac4b946abc",
+      "sourceCategory": "external-integrations-and-protocols",
+      "title": "Integrate external services and protocols for \u0027Tests/IntegrationTests/FastEndpoints.Agents/Int.Agents.csproj\u0027 (test)",
+      "scope": "Tests/IntegrationTests/FastEndpoints.Agents/Int.Agents.csproj",
+      "overlapGroupId": "manual-qa-overlap:e5303227a56b11c501ba",
+      "evidenceIds": [
+        "dotnet:integration:Tests/IntegrationTests/FastEndpoints.Agents/A2ASkillVisibilityTests.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:unit-tests:e137b00247271aeea3dc:review-0001",
+      "sourceLineageDigest": "sha256:428283e47bf08bbccfd93244143c5ecdfec6216657eb506cdeacc0aee26f7f9a",
+      "sourceCategory": "unit-testing",
+      "title": "Create represented unit tests for \u0027Tests/IntegrationTests/FastEndpoints.Agents/Int.Agents.csproj\u0027 (test)",
+      "scope": "Tests/IntegrationTests/FastEndpoints.Agents/Int.Agents.csproj",
+      "overlapGroupId": "manual-qa-overlap:e5303227a56b11c501ba",
+      "evidenceIds": [
+        "dotnet:test:Tests/IntegrationTests/FastEndpoints.Agents/A2ASkillVisibilityTests.cs",
+        "dotnet:test:Tests/IntegrationTests/FastEndpoints.Agents/EndpointInvokerBindingTests.cs",
+        "dotnet:test:Tests/IntegrationTests/FastEndpoints.Agents/EndpointInvokerExecutionSemanticsTests.cs",
+        "dotnet:test:Tests/IntegrationTests/FastEndpoints.Agents/FluentValidationSchemaEnricherTests.cs",
+        "dotnet:test:Tests/IntegrationTests/FastEndpoints.Agents/JsonSchemaBuilderTests.cs",
+        "dotnet:test:Tests/IntegrationTests/FastEndpoints.Agents/McpToolDescriptorTests.cs",
+        "dotnet:test:Tests/IntegrationTests/FastEndpoints.Agents/McpToolDuplicateNameTests.cs",
+        "dotnet:test:Tests/IntegrationTests/FastEndpoints.Agents/McpToolNameValidationTests.cs",
+        "dotnet:test:Tests/IntegrationTests/FastEndpoints.Agents/McpToolSchemaRootTests.cs",
+        "dotnet:test:Tests/IntegrationTests/FastEndpoints.Agents/McpToolVisibilityTests.cs",
+        "dotnet:test:Tests/IntegrationTests/FastEndpoints.Agents/NamingHelpersTests.cs",
+        "dotnet:test:Tests/IntegrationTests/FastEndpoints.Agents/Usings.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:validation-surface:9d39cd488fd0ed67e3d0:review-0001",
+      "sourceLineageDigest": "sha256:0ed1fb3973bfb1fe7ff79b06f548a6cd668de7c98c0a08028b7b05cd9ae38fb1",
+      "sourceCategory": "security-and-accessibility",
+      "title": "Implement represented validation behavior for \u0027Tests/IntegrationTests/FastEndpoints.Agents/Int.Agents.csproj\u0027 (test)",
+      "scope": "Tests/IntegrationTests/FastEndpoints.Agents/Int.Agents.csproj",
+      "overlapGroupId": "manual-qa-overlap:e5303227a56b11c501ba",
+      "evidenceIds": [
+        "dotnet:validation:Tests/IntegrationTests/FastEndpoints.Agents/A2ASkillVisibilityTests.cs",
+        "dotnet:validation:Tests/IntegrationTests/FastEndpoints.Agents/EndpointInvokerBindingTests.cs",
+        "dotnet:validation:Tests/IntegrationTests/FastEndpoints.Agents/FluentValidationSchemaEnricherTests.cs",
+        "dotnet:validation:Tests/IntegrationTests/FastEndpoints.Agents/McpToolDescriptorTests.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:unit-tests:774fe26e351a48e2f3d6:review-0001",
+      "sourceLineageDigest": "sha256:ae04e3a3cd5a2c62d1288659800635cbb402afd1e864e95b0de993b76bd8b259",
+      "sourceCategory": "unit-testing",
+      "title": "Create represented unit tests for \u0027Tests/IntegrationTests/FastEndpoints.OData/Int.OData.csproj\u0027 (test)",
+      "scope": "Tests/IntegrationTests/FastEndpoints.OData/Int.OData.csproj",
+      "overlapGroupId": "manual-qa-overlap:da67f23a48a9910a4963",
+      "evidenceIds": [
+        "dotnet:test:Tests/IntegrationTests/FastEndpoints.OData/ODataTests.cs",
+        "dotnet:test:Tests/IntegrationTests/FastEndpoints.OData/Sut.cs",
+        "dotnet:test:Tests/IntegrationTests/FastEndpoints.OData/Usings.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:external-integration:9255222945b562a00bb5:review-0001",
+      "sourceLineageDigest": "sha256:f65180a5d9614c69c2f732f0f8334e130451280290b376b71a5b80ce43298a48",
+      "sourceCategory": "external-integrations-and-protocols",
+      "title": "Integrate external services and protocols for \u0027Tests/IntegrationTests/FastEndpoints.OpenApi.Kiota/Int.OpenApi.Kiota.csproj\u0027 (test)",
+      "scope": "Tests/IntegrationTests/FastEndpoints.OpenApi.Kiota/Int.OpenApi.Kiota.csproj",
+      "overlapGroupId": "manual-qa-overlap:e07b0e22cdb2b8d8958e",
+      "evidenceIds": [
+        "dotnet:integration:Tests/IntegrationTests/FastEndpoints.OpenApi.Kiota/Fixture.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:unit-tests:8f6041e0956af91e4087:review-0001",
+      "sourceLineageDigest": "sha256:7ca428fe663d5974a1e07eb4ac8c720989909a2d4f910af5bf2b041a5c39a476",
+      "sourceCategory": "unit-testing",
+      "title": "Create represented unit tests for \u0027Tests/IntegrationTests/FastEndpoints.OpenApi.Kiota/Int.OpenApi.Kiota.csproj\u0027 (test)",
+      "scope": "Tests/IntegrationTests/FastEndpoints.OpenApi.Kiota/Int.OpenApi.Kiota.csproj",
+      "overlapGroupId": "manual-qa-overlap:e07b0e22cdb2b8d8958e",
+      "evidenceIds": [
+        "dotnet:test:Tests/IntegrationTests/FastEndpoints.OpenApi.Kiota/CommandModeTests.cs",
+        "dotnet:test:Tests/IntegrationTests/FastEndpoints.OpenApi.Kiota/EndpointTests.cs",
+        "dotnet:test:Tests/IntegrationTests/FastEndpoints.OpenApi.Kiota/Fixture.cs",
+        "dotnet:test:Tests/IntegrationTests/FastEndpoints.OpenApi.Kiota/Usings.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:application-entry-point:0ec0755ba44b436d28e7:review-0001",
+      "sourceLineageDigest": "sha256:3ad0be77537b433b3e91a0aec92078b9bf4995b4ca7f93055d1e875a56b1dc18",
+      "sourceCategory": "production-implementation",
+      "title": "Implement application entry points for \u0027Tests/IntegrationTests/FastEndpoints.OpenApi/Int.OpenApi.csproj\u0027 (test)",
+      "scope": "Tests/IntegrationTests/FastEndpoints.OpenApi/Int.OpenApi.csproj",
+      "overlapGroupId": "manual-qa-overlap:ce730bf45885a76d05a8",
+      "evidenceIds": [
+        "dotnet:entry-point:Tests/IntegrationTests/FastEndpoints.OpenApi/OpenApiExporterTests.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:external-integration:624f413840b0f3f2d911:review-0001",
+      "sourceLineageDigest": "sha256:97a77f834f94e30bcca470c1b79b260d441982794532d7e4518cd501780639c6",
+      "sourceCategory": "external-integrations-and-protocols",
+      "title": "Integrate external services and protocols for \u0027Tests/IntegrationTests/FastEndpoints.OpenApi/Int.OpenApi.csproj\u0027 (test)",
+      "scope": "Tests/IntegrationTests/FastEndpoints.OpenApi/Int.OpenApi.csproj",
+      "overlapGroupId": "manual-qa-overlap:ce730bf45885a76d05a8",
+      "evidenceIds": [
+        "dotnet:integration:Tests/IntegrationTests/FastEndpoints.OpenApi/Fixture.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:unit-tests:191b6795e9d060686da1:review-0001",
+      "sourceLineageDigest": "sha256:3bea441e666e08e6b573d4bcc1e382419cfea9b6ecce3ff5892fdddd02311476",
+      "sourceCategory": "unit-testing",
+      "title": "Create represented unit tests for \u0027Tests/IntegrationTests/FastEndpoints.OpenApi/Int.OpenApi.csproj\u0027 (test)",
+      "scope": "Tests/IntegrationTests/FastEndpoints.OpenApi/Int.OpenApi.csproj",
+      "overlapGroupId": "manual-qa-overlap:ce730bf45885a76d05a8",
+      "evidenceIds": [
+        "dotnet:test:Tests/IntegrationTests/FastEndpoints.OpenApi/DocumentPathNormalizerTests.cs",
+        "dotnet:test:Tests/IntegrationTests/FastEndpoints.OpenApi/DocumentTagTransformerTests.cs",
+        "dotnet:test:Tests/IntegrationTests/FastEndpoints.OpenApi/DocumentVersionFilterTests.cs",
+        "dotnet:test:Tests/IntegrationTests/FastEndpoints.OpenApi/Fixture.cs",
+        "dotnet:test:Tests/IntegrationTests/FastEndpoints.OpenApi/GlobalConfigTests.cs",
+        "dotnet:test:Tests/IntegrationTests/FastEndpoints.OpenApi/HttpFileExporterTests.cs",
+        "dotnet:test:Tests/IntegrationTests/FastEndpoints.OpenApi/HttpSnapshotTests.cs",
+        "dotnet:test:Tests/IntegrationTests/FastEndpoints.OpenApi/JsonSnapshotComparer.cs",
+        "dotnet:test:Tests/IntegrationTests/FastEndpoints.OpenApi/NullableCollectionSchemaTests.cs",
+        "dotnet:test:Tests/IntegrationTests/FastEndpoints.OpenApi/OpenApiExporterTests.cs",
+        "dotnet:test:Tests/IntegrationTests/FastEndpoints.OpenApi/OperationSchemaHelpersTests.cs",
+        "dotnet:test:Tests/IntegrationTests/FastEndpoints.OpenApi/OperationTransformerEdgeCaseTests.cs",
+        "dotnet:test:Tests/IntegrationTests/FastEndpoints.OpenApi/SchemaNameGeneratorTests.cs",
+        "dotnet:test:Tests/IntegrationTests/FastEndpoints.OpenApi/ShortSchemaNameCollisionTests.cs",
+        "dotnet:test:Tests/IntegrationTests/FastEndpoints.OpenApi/SnapshotTests.cs",
+        "dotnet:test:Tests/IntegrationTests/FastEndpoints.OpenApi/Usings.cs",
+        "dotnet:test:Tests/IntegrationTests/FastEndpoints.OpenApi/ValidationRuleMappingTests.cs",
+        "dotnet:test:Tests/IntegrationTests/FastEndpoints.OpenApi/ValidationSchemaTransformerTests.cs",
+        "dotnet:test:Tests/IntegrationTests/FastEndpoints.OpenApi/VersioningStrategyTests.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:validation-surface:f553069fb9bfe0ccfe85:review-0001",
+      "sourceLineageDigest": "sha256:5b357db563ccd96e9df1d78757457c1392c4acb4cfb24bfd25b94cd0e4b524e3",
+      "sourceCategory": "security-and-accessibility",
+      "title": "Implement represented validation behavior for \u0027Tests/IntegrationTests/FastEndpoints.OpenApi/Int.OpenApi.csproj\u0027 (test)",
+      "scope": "Tests/IntegrationTests/FastEndpoints.OpenApi/Int.OpenApi.csproj",
+      "overlapGroupId": "manual-qa-overlap:ce730bf45885a76d05a8",
+      "evidenceIds": [
+        "dotnet:validation:Tests/IntegrationTests/FastEndpoints.OpenApi/ValidationRuleMappingTests.cs",
+        "dotnet:validation:Tests/IntegrationTests/FastEndpoints.OpenApi/ValidationSchemaTransformerTests.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:unit-tests:0cd832f7d82046d40c9b:review-0001",
+      "sourceLineageDigest": "sha256:b8636c93086e4abed65025b9c1e5cefae851ec2f522aa400f52c7f0fdc5ac0df",
+      "sourceCategory": "unit-testing",
+      "title": "Create represented unit tests for \u0027Tests/IntegrationTests/FastEndpoints.Swagger/Int.Swagger.csproj\u0027 (test)",
+      "scope": "Tests/IntegrationTests/FastEndpoints.Swagger/Int.Swagger.csproj",
+      "overlapGroupId": "manual-qa-overlap:fc056c6df2e8aebbd680",
+      "evidenceIds": [
+        "dotnet:test:Tests/IntegrationTests/FastEndpoints.Swagger/Fixture.cs",
+        "dotnet:test:Tests/IntegrationTests/FastEndpoints.Swagger/OperationProcessorEdgeCaseTests.cs",
+        "dotnet:test:Tests/IntegrationTests/FastEndpoints.Swagger/SwaggerDocTests.cs",
+        "dotnet:test:Tests/IntegrationTests/FastEndpoints.Swagger/Usings.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:application-entry-point:c8686e1fd9e749909c04:review-0001",
+      "sourceLineageDigest": "sha256:87f33f70b3ca7fca84d1e8c40967c8421c2c9fc3c0e521fb39dd57dc6a211813",
+      "sourceCategory": "production-implementation",
+      "title": "Implement application entry points for \u0027Tests/IntegrationTests/FastEndpoints/Int.FastEndpoints.csproj\u0027 (test)",
+      "scope": "Tests/IntegrationTests/FastEndpoints/Int.FastEndpoints.csproj",
+      "overlapGroupId": "manual-qa-overlap:bff4919150c8464b916f",
+      "evidenceIds": [
+        "dotnet:entry-point:Tests/IntegrationTests/FastEndpoints/BindingTests/MalformedMultipartTests.cs",
+        "dotnet:entry-point:Tests/IntegrationTests/FastEndpoints/BindingTests/MaxRequestBodyLimitTests.cs",
+        "dotnet:entry-point:Tests/IntegrationTests/FastEndpoints/MiscTests/SerializerConfigurationTests.cs",
+        "dotnet:entry-point:Tests/IntegrationTests/FastEndpoints/RPCTests/GrpcReflection.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:external-integration:046f6adabb9ceeb20a7a:review-0001",
+      "sourceLineageDigest": "sha256:c232f7695338bf1887943c84e605c3fda55dfb26681e73a4d6521e3aead639ec",
+      "sourceCategory": "external-integrations-and-protocols",
+      "title": "Integrate external services and protocols for \u0027Tests/IntegrationTests/FastEndpoints/Int.FastEndpoints.csproj\u0027 (test)",
+      "scope": "Tests/IntegrationTests/FastEndpoints/Int.FastEndpoints.csproj",
+      "overlapGroupId": "manual-qa-overlap:bff4919150c8464b916f",
+      "evidenceIds": [
+        "dotnet:integration:Tests/IntegrationTests/FastEndpoints/BindingTests/BindingTests.cs",
+        "dotnet:integration:Tests/IntegrationTests/FastEndpoints/BindingTests/MalformedMultipartTests.cs",
+        "dotnet:integration:Tests/IntegrationTests/FastEndpoints/BindingTests/MaxRequestBodyLimitTests.cs",
+        "dotnet:integration:Tests/IntegrationTests/FastEndpoints/EndpointTests/EndpointTests.cs",
+        "dotnet:integration:Tests/IntegrationTests/FastEndpoints/EndpointTests/QueryMethodTests.cs",
+        "dotnet:integration:Tests/IntegrationTests/FastEndpoints/IdempotencyTests/IdempotencyTests.cs",
+        "dotnet:integration:Tests/IntegrationTests/FastEndpoints/MessagingTests/EventBusTests.cs",
+        "dotnet:integration:Tests/IntegrationTests/FastEndpoints/MiscTests/MiscTestCases.cs",
+        "dotnet:integration:Tests/IntegrationTests/FastEndpoints/MiscTests/SerializerConfigurationTests.cs",
+        "dotnet:integration:Tests/IntegrationTests/FastEndpoints/RPCTests/GrpcReflection.cs",
+        "dotnet:integration:Tests/IntegrationTests/FastEndpoints/RPCTests/ServerStreamCommand.cs",
+        "dotnet:integration:Tests/IntegrationTests/FastEndpoints/SecurityTests/SecurityTests.cs",
+        "dotnet:integration:Tests/IntegrationTests/FastEndpoints/SecurityTests/X402Tests.cs",
+        "dotnet:integration:Tests/IntegrationTests/FastEndpoints/Sut.cs",
+        "dotnet:integration:Tests/IntegrationTests/FastEndpoints/WebTests/AdminTests.cs",
+        "dotnet:integration:Tests/IntegrationTests/FastEndpoints/WebTests/AntiforgeryTest.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:unit-tests:8cdc81cff63ebfed2cd1:review-0001",
+      "sourceLineageDigest": "sha256:0499499a928c01086b8c17f7b21df651fe28615b70ac59fe619bb7b0c5e39dd6",
+      "sourceCategory": "unit-testing",
+      "title": "Create represented unit tests for \u0027Tests/IntegrationTests/FastEndpoints/Int.FastEndpoints.csproj\u0027 (test)",
+      "scope": "Tests/IntegrationTests/FastEndpoints/Int.FastEndpoints.csproj",
+      "overlapGroupId": "manual-qa-overlap:bff4919150c8464b916f",
+      "evidenceIds": [
+        "dotnet:test:Tests/IntegrationTests/FastEndpoints/BindingTests/BindingTests.cs",
+        "dotnet:test:Tests/IntegrationTests/FastEndpoints/BindingTests/MalformedMultipartTests.cs",
+        "dotnet:test:Tests/IntegrationTests/FastEndpoints/BindingTests/MaxRequestBodyLimitTests.cs",
+        "dotnet:test:Tests/IntegrationTests/FastEndpoints/DependencyInjectionTests/DependencyInjectionTests.cs",
+        "dotnet:test:Tests/IntegrationTests/FastEndpoints/EndpointTests/EndpointTests.cs",
+        "dotnet:test:Tests/IntegrationTests/FastEndpoints/EndpointTests/QueryMethodTests.cs",
+        "dotnet:test:Tests/IntegrationTests/FastEndpoints/FixtureTests/AssemblyFixtureTests.cs",
+        "dotnet:test:Tests/IntegrationTests/FastEndpoints/FixtureTests/CollectionFixtureTests.cs",
+        "dotnet:test:Tests/IntegrationTests/FastEndpoints/FixtureTests/FixtureATests.cs",
+        "dotnet:test:Tests/IntegrationTests/FastEndpoints/FixtureTests/FixtureBTests.cs",
+        "dotnet:test:Tests/IntegrationTests/FastEndpoints/FixtureTests/FixtureWithConfigureAppHostTests.cs",
+        "dotnet:test:Tests/IntegrationTests/FastEndpoints/FixtureTests/Fixtures.cs",
+        "dotnet:test:Tests/IntegrationTests/FastEndpoints/FixtureTests/StateFixtureTests.cs",
+        "dotnet:test:Tests/IntegrationTests/FastEndpoints/FixtureTests/TestServerTests.cs",
+        "dotnet:test:Tests/IntegrationTests/FastEndpoints/IdempotencyTests/IdempotencyTests.cs",
+        "dotnet:test:Tests/IntegrationTests/FastEndpoints/MessagingTests/CommandBusTests.cs",
+        "dotnet:test:Tests/IntegrationTests/FastEndpoints/MessagingTests/EventBusTests.cs",
+        "dotnet:test:Tests/IntegrationTests/FastEndpoints/MessagingTests/JobQueueTests.cs",
+        "dotnet:test:Tests/IntegrationTests/FastEndpoints/MiscTests/MiscTestCases.cs",
+        "dotnet:test:Tests/IntegrationTests/FastEndpoints/MiscTests/SerializerConfigurationTests.cs",
+        "dotnet:test:Tests/IntegrationTests/FastEndpoints/ProcessorTests/ProcessorTests.cs",
+        "dotnet:test:Tests/IntegrationTests/FastEndpoints/RPCTests/ClientStreamCommand.cs",
+        "dotnet:test:Tests/IntegrationTests/FastEndpoints/RPCTests/EventQueue.cs",
+        "dotnet:test:Tests/IntegrationTests/FastEndpoints/RPCTests/GrpcReflection.Fixtures.cs",
+        "dotnet:test:Tests/IntegrationTests/FastEndpoints/RPCTests/GrpcReflection.cs",
+        "dotnet:test:Tests/IntegrationTests/FastEndpoints/RPCTests/RpcTestBase.cs",
+        "dotnet:test:Tests/IntegrationTests/FastEndpoints/RPCTests/ServerStreamCommand.cs",
+        "dotnet:test:Tests/IntegrationTests/FastEndpoints/RPCTests/UnaryCommand.cs",
+        "dotnet:test:Tests/IntegrationTests/FastEndpoints/RPCTests/VoidCommand.cs",
+        "dotnet:test:Tests/IntegrationTests/FastEndpoints/SecurityTests/SecurityTests.cs",
+        "dotnet:test:Tests/IntegrationTests/FastEndpoints/SecurityTests/X402Tests.cs",
+        "dotnet:test:Tests/IntegrationTests/FastEndpoints/Sut.cs",
+        "dotnet:test:Tests/IntegrationTests/FastEndpoints/Usings.cs",
+        "dotnet:test:Tests/IntegrationTests/FastEndpoints/ValidationTests/ValidationTests.cs",
+        "dotnet:test:Tests/IntegrationTests/FastEndpoints/WebTests/AdminTests.cs",
+        "dotnet:test:Tests/IntegrationTests/FastEndpoints/WebTests/AntiforgeryTest.cs",
+        "dotnet:test:Tests/IntegrationTests/FastEndpoints/WebTests/CustomersTests.cs",
+        "dotnet:test:Tests/IntegrationTests/FastEndpoints/WebTests/DataAnnotationsTest.cs",
+        "dotnet:test:Tests/IntegrationTests/FastEndpoints/WebTests/InventoryTests.cs",
+        "dotnet:test:Tests/IntegrationTests/FastEndpoints/WebTests/MockEmailService.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:unit-tests:361003a30301cf146430:review-0001",
+      "sourceLineageDigest": "sha256:f842296ac2f6610daffc2f929d40a37fb1045e3a10a89afb0efecae625c6d082",
+      "sourceCategory": "unit-testing",
+      "title": "Create represented unit tests for \u0027Tests/NativeAotTests/NativeAotCheckerTests/NativeAotCheckerTests.csproj\u0027 (test)",
+      "scope": "Tests/NativeAotTests/NativeAotCheckerTests/NativeAotCheckerTests.csproj",
+      "overlapGroupId": "manual-qa-overlap:4202d1e85d96c0d80121",
+      "evidenceIds": [
+        "dotnet:test:Tests/NativeAotTests/NativeAotCheckerTests/App.cs",
+        "dotnet:test:Tests/NativeAotTests/NativeAotCheckerTests/Binding/BindingTests.cs",
+        "dotnet:test:Tests/NativeAotTests/NativeAotCheckerTests/CommandRules/CommandRulesTests.cs",
+        "dotnet:test:Tests/NativeAotTests/NativeAotCheckerTests/Commands/CommandsTests.cs",
+        "dotnet:test:Tests/NativeAotTests/NativeAotCheckerTests/Events/EventsTests.cs",
+        "dotnet:test:Tests/NativeAotTests/NativeAotCheckerTests/Jobs/JobQueueIdempotencyTests.cs",
+        "dotnet:test:Tests/NativeAotTests/NativeAotCheckerTests/Jobs/JobsTests.cs",
+        "dotnet:test:Tests/NativeAotTests/NativeAotCheckerTests/Json/JsonTests.cs",
+        "dotnet:test:Tests/NativeAotTests/NativeAotCheckerTests/Mapping/MappingTests.cs",
+        "dotnet:test:Tests/NativeAotTests/NativeAotCheckerTests/Meta.cs",
+        "dotnet:test:Tests/NativeAotTests/NativeAotCheckerTests/Processors/ProcessorsTests.cs",
+        "dotnet:test:Tests/NativeAotTests/NativeAotCheckerTests/Results/ResultsTests.cs",
+        "dotnet:test:Tests/NativeAotTests/NativeAotCheckerTests/SerializerContext/SerializerContextTests.cs",
+        "dotnet:test:Tests/NativeAotTests/NativeAotCheckerTests/Validation/ValidationTests.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:unit-tests:d67244ef33031a6de5fb:review-0001",
+      "sourceLineageDigest": "sha256:f314dada104b33956921ff9d014c2e05a5a086c9e112f1b3b67db02b64f2eb3d",
+      "sourceCategory": "unit-testing",
+      "title": "Create represented unit tests for \u0027Tests/UnitTests/FastEndpoints.Swagger/Unit.Swagger.csproj\u0027 (test)",
+      "scope": "Tests/UnitTests/FastEndpoints.Swagger/Unit.Swagger.csproj",
+      "overlapGroupId": "manual-qa-overlap:9cbbd903890b52685b1b",
+      "evidenceIds": [
+        "dotnet:test:Tests/UnitTests/FastEndpoints.Swagger/GlobalConfigTests.cs",
+        "dotnet:test:Tests/UnitTests/FastEndpoints.Swagger/ParamCreationContextTests.cs",
+        "dotnet:test:Tests/UnitTests/FastEndpoints.Swagger/SchemaNameGeneratorTests.cs",
+        "dotnet:test:Tests/UnitTests/FastEndpoints.Swagger/Usings.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:unit-tests:257be498f5941dd1c4fa:review-0001",
+      "sourceLineageDigest": "sha256:174d181417a6c8bef2a7155d5b8f07759aa1ccb6cd664be02b0bdf09662a3745",
+      "sourceCategory": "unit-testing",
+      "title": "Create represented unit tests for \u0027Tests/UnitTests/FastEndpoints.Testing/Unit.Testing.csproj\u0027 (test)",
+      "scope": "Tests/UnitTests/FastEndpoints.Testing/Unit.Testing.csproj",
+      "overlapGroupId": "manual-qa-overlap:7866e49e5e229b74d9e9",
+      "evidenceIds": [
+        "dotnet:test:Tests/UnitTests/FastEndpoints.Testing/ClassLevelPriorityOrderingTests.cs",
+        "dotnet:test:Tests/UnitTests/FastEndpoints.Testing/PriorityTestHelpers.cs",
+        "dotnet:test:Tests/UnitTests/FastEndpoints.Testing/TestCaseOrdererTests.cs",
+        "dotnet:test:Tests/UnitTests/FastEndpoints.Testing/TestCollectionOrdererTests.cs",
+        "dotnet:test:Tests/UnitTests/FastEndpoints.Testing/Usings.cs",
+        "dotnet:test:Tests/UnitTests/FastEndpoints.Testing/WafCacheDisposalTests.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:application-entry-point:ffad632af8a129c95862:review-0001",
+      "sourceLineageDigest": "sha256:e3601c4fc0a2795c6febc65415df680989e6154282267a2a4a11392909eb6085",
+      "sourceCategory": "production-implementation",
+      "title": "Implement application entry points for \u0027Tests/UnitTests/FastEndpoints/Unit.FastEndpoints.csproj\u0027 (test)",
+      "scope": "Tests/UnitTests/FastEndpoints/Unit.FastEndpoints.csproj",
+      "overlapGroupId": "manual-qa-overlap:53dcc7f55198c6f969a4",
+      "evidenceIds": [
+        "dotnet:entry-point:Tests/UnitTests/FastEndpoints/WarmupTests.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:external-integration:655f565c1d3928362bcd:review-0001",
+      "sourceLineageDigest": "sha256:58cc6afd72c87a846a5d5a62d97cb4c9d5855c38c03141d9cfc1be241d0e9a25",
+      "sourceCategory": "external-integrations-and-protocols",
+      "title": "Integrate external services and protocols for \u0027Tests/UnitTests/FastEndpoints/Unit.FastEndpoints.csproj\u0027 (test)",
+      "scope": "Tests/UnitTests/FastEndpoints/Unit.FastEndpoints.csproj",
+      "overlapGroupId": "manual-qa-overlap:53dcc7f55198c6f969a4",
+      "evidenceIds": [
+        "dotnet:integration:Tests/UnitTests/FastEndpoints/EventBusTests.cs",
+        "dotnet:integration:Tests/UnitTests/FastEndpoints/EventQueueTests.Fixtures.cs",
+        "dotnet:integration:Tests/UnitTests/FastEndpoints/EventQueueTests.Shared.cs",
+        "dotnet:integration:Tests/UnitTests/FastEndpoints/EventQueueTests.SubscriberLifecycle.cs",
+        "dotnet:integration:Tests/UnitTests/FastEndpoints/HttpClientExtensionsTests.cs",
+        "dotnet:integration:Tests/UnitTests/FastEndpoints/QueueTestSupport.cs",
+        "dotnet:integration:Tests/UnitTests/FastEndpoints/X402FacilitatorClientTests.cs",
+        "dotnet:integration:Tests/UnitTests/FastEndpoints/X402RegistrationExtensionsTests.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:unit-tests:843d62414bcd2d157760:review-0001",
+      "sourceLineageDigest": "sha256:9112a02f4a1ad75e99892a5b2e66ecb01406651beabf399a9c5ba236022610a6",
+      "sourceCategory": "unit-testing",
+      "title": "Create represented unit tests for \u0027Tests/UnitTests/FastEndpoints/Unit.FastEndpoints.csproj\u0027 (test)",
+      "scope": "Tests/UnitTests/FastEndpoints/Unit.FastEndpoints.csproj",
+      "overlapGroupId": "manual-qa-overlap:53dcc7f55198c6f969a4",
+      "evidenceIds": [
+        "dotnet:test:Tests/UnitTests/FastEndpoints/AccessControlGeneratorTests.cs",
+        "dotnet:test:Tests/UnitTests/FastEndpoints/CommandBusTests.cs",
+        "dotnet:test:Tests/UnitTests/FastEndpoints/CommandRulesTests.cs",
+        "dotnet:test:Tests/UnitTests/FastEndpoints/ComplexSourceBinderTests.cs",
+        "dotnet:test:Tests/UnitTests/FastEndpoints/EndpointDataTests.cs",
+        "dotnet:test:Tests/UnitTests/FastEndpoints/EndpointTests.cs",
+        "dotnet:test:Tests/UnitTests/FastEndpoints/EventBusTests.cs",
+        "dotnet:test:Tests/UnitTests/FastEndpoints/EventQueueTests.Executor.cs",
+        "dotnet:test:Tests/UnitTests/FastEndpoints/EventQueueTests.Fixtures.cs",
+        "dotnet:test:Tests/UnitTests/FastEndpoints/EventQueueTests.Hub.cs",
+        "dotnet:test:Tests/UnitTests/FastEndpoints/EventQueueTests.Shared.cs",
+        "dotnet:test:Tests/UnitTests/FastEndpoints/EventQueueTests.Storage.cs",
+        "dotnet:test:Tests/UnitTests/FastEndpoints/EventQueueTests.SubscriberLifecycle.cs",
+        "dotnet:test:Tests/UnitTests/FastEndpoints/HttpClientExtensionsTests.cs",
+        "dotnet:test:Tests/UnitTests/FastEndpoints/JobQueueTests.CoreBehavior.cs",
+        "dotnet:test:Tests/UnitTests/FastEndpoints/JobQueueTests.DistributedStorage.cs",
+        "dotnet:test:Tests/UnitTests/FastEndpoints/JobQueueTests.Executor.cs",
+        "dotnet:test:Tests/UnitTests/FastEndpoints/JobQueueTests.Fixtures.cs",
+        "dotnet:test:Tests/UnitTests/FastEndpoints/JobQueueTests.Idempotency.cs",
+        "dotnet:test:Tests/UnitTests/FastEndpoints/JobQueueTests.Shared.cs",
+        "dotnet:test:Tests/UnitTests/FastEndpoints/JobQueueWarmupTests.cs",
+        "dotnet:test:Tests/UnitTests/FastEndpoints/MessagingWarmupTests.cs",
+        "dotnet:test:Tests/UnitTests/FastEndpoints/ParentPrefixIndexTests.cs",
+        "dotnet:test:Tests/UnitTests/FastEndpoints/QueueTestSupport.cs",
+        "dotnet:test:Tests/UnitTests/FastEndpoints/ReflectionExtensionsTests.cs",
+        "dotnet:test:Tests/UnitTests/FastEndpoints/ReflectionGeneratorTests.cs",
+        "dotnet:test:Tests/UnitTests/FastEndpoints/RequestBinderTests.cs",
+        "dotnet:test:Tests/UnitTests/FastEndpoints/RoundRobinEventQueueTests.Behavior.cs",
+        "dotnet:test:Tests/UnitTests/FastEndpoints/RoundRobinEventQueueTests.Fixtures.cs",
+        "dotnet:test:Tests/UnitTests/FastEndpoints/RoundRobinEventQueueTests.Shared.cs",
+        "dotnet:test:Tests/UnitTests/FastEndpoints/RoutePrefixTests.cs",
+        "dotnet:test:Tests/UnitTests/FastEndpoints/ServiceBoundEpPropsTests.cs",
+        "dotnet:test:Tests/UnitTests/FastEndpoints/ServiceResolverTests.cs",
+        "dotnet:test:Tests/UnitTests/FastEndpoints/ServiceScopeExtensionsTests.cs",
+        "dotnet:test:Tests/UnitTests/FastEndpoints/Usings.cs",
+        "dotnet:test:Tests/UnitTests/FastEndpoints/WarmupTests.cs",
+        "dotnet:test:Tests/UnitTests/FastEndpoints/WebTests.cs",
+        "dotnet:test:Tests/UnitTests/FastEndpoints/X402EndpointDefinitionTests.cs",
+        "dotnet:test:Tests/UnitTests/FastEndpoints/X402FacilitatorClientTests.cs",
+        "dotnet:test:Tests/UnitTests/FastEndpoints/X402RegistrationExtensionsTests.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:validation-surface:58793e159403b05a76d2:review-0001",
+      "sourceLineageDigest": "sha256:b94e2b9daf67f515fb798b2294c9de335163e123aa8a2b26f6ac7f7bada7ff44",
+      "sourceCategory": "security-and-accessibility",
+      "title": "Implement represented validation behavior for \u0027Tests/UnitTests/FastEndpoints/Unit.FastEndpoints.csproj\u0027 (test)",
+      "scope": "Tests/UnitTests/FastEndpoints/Unit.FastEndpoints.csproj",
+      "overlapGroupId": "manual-qa-overlap:53dcc7f55198c6f969a4",
+      "evidenceIds": [
+        "dotnet:validation:Tests/UnitTests/FastEndpoints/WarmupTests.cs"
+      ]
+    }
+  ],
+  "instructions": [
+    "Use the manual-qa-work-item/1.0.0 rubric and the immutable public source only.",
+    "Estimate the manual validation, debugging, and hardening needed after recreating each represented coding responsibility.",
+    "Review all targets sharing overlapGroupId together; assign shared validation once and make exclusions explicit.",
+    "Keep automated-test authoring separate, while including the bounded work needed to run, inspect, and debug represented tests.",
+    "Do not infer actual labor, use Git history or activity, or force a percentage or preferred repository total.",
+    "Use exact 0/0/0 only for a wholly excluded or duplicate responsibility and explain the exclusion.",
+    "Keep expected targets normally between 0.5 and 8 hours; explain any cohesive size exception."
+  ]
+}

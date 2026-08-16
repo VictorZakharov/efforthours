@@ -202,6 +202,61 @@ public sealed class LogicalCandidateProjectionCliTests
         }
     }
 
+    [Fact]
+    public async Task ManualQaReviewFreezeCliReproducesTheFrozenPacketSet()
+    {
+        string root = FindRepositoryRoot();
+        string checkpoint = Path.Combine(
+            root,
+            "calibration",
+            "corpora",
+            "public-readiness",
+            "2.0.0");
+        string temporary = Path.Combine(
+            Path.GetTempPath(),
+            $"eh-manual-qa-review-cli-{Guid.NewGuid():N}");
+        string packets = Path.Combine(temporary, "packets");
+        string manifest = Path.Combine(temporary, "manifest.json");
+        try
+        {
+            string policy = Path.Combine(checkpoint, "manual-qa-review-policy.json");
+            ProcessResult result = await RunCalibrationAsync(
+                root,
+                "manual-qa-review-freeze",
+                "--corpus", Path.Combine(
+                    root,
+                    "calibration",
+                    "corpora",
+                    "public-readiness",
+                    "0.3.0.development-corpus.json"),
+                "--policy", policy,
+                "--expected-policy-digest", Digest(await File.ReadAllTextAsync(policy)),
+                "--packets", packets,
+                "--manifest", manifest);
+
+            Assert.Equal(0, result.ExitCode);
+            Assert.Equal(string.Empty, result.StandardOutput);
+            Assert.Equal(string.Empty, result.StandardError);
+            ManualQaReviewManifest frozen = ContractJson.Deserialize<ManualQaReviewManifest>(
+                await File.ReadAllTextAsync(manifest));
+            Assert.Equal(15, frozen.RecordCount);
+            Assert.Equal(955, frozen.TargetCount);
+            Assert.Equal(15, Directory.GetFiles(packets, "*.json").Length);
+            Assert.Equal(
+                await File.ReadAllTextAsync(Path.Combine(
+                    checkpoint,
+                    "manual-qa-review-manifest.json")),
+                await File.ReadAllTextAsync(manifest));
+        }
+        finally
+        {
+            if (Directory.Exists(temporary))
+            {
+                Directory.Delete(temporary, recursive: true);
+            }
+        }
+    }
+
     private static Task<ProcessResult> RunCliAsync(string root, params string[] arguments) =>
         RunAsync(root, "src/EffortHours.Cli", "efforthours.dll", arguments);
 

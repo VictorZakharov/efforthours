@@ -33,6 +33,40 @@ Because EffortHours's own anchor informed the seed-model and calibration design,
 a development diagnostic rather than an eligible held-out test record unless a
 future independent snapshot and review policy explicitly establishes otherwise.
 
+## 2026-08-16: candidate-blind manual-QA review packet freeze
+
+Status: **15 development packets and 955 eligible responsibilities frozen before
+answers; no replacement label, evaluation, or holdout access**
+
+Checkpoint `efforthours-public-readiness/2.0.0` projects every target in the 11
+categories governed by `eligible-coding-effort/1.0.0` from immutable development
+corpus `efforthours-public-readiness-development/0.3.0`. Policy
+`manual-qa-development-review-policy/1.0.0` has normalized-text digest
+`sha256:bc4d9a29aac4fd80a917219c77a02dd0c8d1b71ecfb91d4f2b1ad287ecb231e0`;
+the 15-packet manifest has canonical digest
+`sha256:556fb26e096aece4c01bcaeb26118ae807d5f0d36102321a81087ce009816f9a`.
+
+Rubric `manual-qa-work-item/1.0.0` asks independently for the hands-on validation,
+diagnosis, correction, and hardening needed after recreating each represented
+coding responsibility. It excludes implementation, automated-test authoring,
+discovery/design/setup/docs/self-review, historical rework, unrepresented
+certification, professionalization gaps, and duplicate validation. Exact zero
+requires an explicit exclusion or duplicate decision.
+
+Packets expose public source identity, evidence IDs, exact-scope overlap grouping,
+and digest-bound hidden lineage. Their contracts cannot contain old QA judgments,
+source coding hours or work-item counts, candidate ratios or values, totals,
+candidate identity, or suggested answers. All eligible targets are included even
+when an earlier teacher excluded the coding signal, preventing the old judgment
+from silently selecting the new review set.
+
+This is an input freeze, not positive evidence for the candidate. Before any of
+the 955 answers are authored, the next checkpoint must freeze a complete decision
+schema and compiler with exact completeness, lineage, zero/duplicate,
+size-exception, and corpus-rebasing rules. Only a later development comparison may
+decide whether the exact candidate deserves a fresh blind validation boundary;
+test remains sealed.
+
 ## 2026-08-16: manual-QA coding-ratio candidate freeze
 
 Status: **30/40/50 percent eligible-coding prior implemented as a development-only

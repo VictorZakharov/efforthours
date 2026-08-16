@@ -13,7 +13,7 @@ internal static class ManualQaCandidateTransformer
     public const string EstimatorVersion =
         "candidate-manual-qa-coding-ratio/0.1.0+seed-rules/0.4.0";
     public const string BaselineEstimatorVersion = "seed-rules/0.4.0";
-    public const string FeatureContractVersion = "eligible-coding-effort/1.0.0";
+    public const string FeatureContractVersion = EligibleCodingEffortVersions.V1;
     public const string EffectiveDate = "2026-08-16";
     public const string Maturity = "development-only-unvalidated";
     public const string Basis = "eligible-source-work-item-expected-hours";
@@ -24,19 +24,7 @@ internal static class ManualQaCandidateTransformer
     public const decimal MaximumConfidence = 0.50m;
 
     public static readonly EffortCategory[] EligibleCategories =
-    [
-        EffortCategory.ProductionImplementation,
-        EffortCategory.UiImplementationAndRepresentedUxDecisions,
-        EffortCategory.DataModelingPersistenceAndMigrations,
-        EffortCategory.ExternalIntegrationsAndProtocols,
-        EffortCategory.UnitTesting,
-        EffortCategory.IntegrationContractAndComponentTesting,
-        EffortCategory.EndToEndAndUiTesting,
-        EffortCategory.BuildConfigurationAndDeveloperTooling,
-        EffortCategory.CiCdAndInfrastructureAsCode,
-        EffortCategory.SecurityAndAccessibility,
-        EffortCategory.PackagingDeploymentAndReleaseArtifacts,
-    ];
+        [.. EligibleCodingEffortVersions.Categories];
 
     private static readonly HashSet<EffortCategory> EligibleCategorySet =
         [.. EligibleCategories];

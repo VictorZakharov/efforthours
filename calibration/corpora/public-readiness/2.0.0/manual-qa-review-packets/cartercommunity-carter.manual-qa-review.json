@@ -1,0 +1,475 @@
+{
+  "schemaVersion": "1.0.0",
+  "authoringVersion": "manual-qa-development-review-authoring/1.0.0",
+  "status": "unreviewed",
+  "warning": "UNREVIEWED CANDIDATE-BLIND MANUAL-QA PACKET: estimate manual validation, debugging, and hardening independently. Do not consult seed or candidate hours, category totals, repository totals, ratio formulas, or prior QA judgments.",
+  "policy": {
+    "id": "efforthours-manual-qa-development-review",
+    "version": "manual-qa-development-review-policy/1.0.0",
+    "digest": "sha256:bc4d9a29aac4fd80a917219c77a02dd0c8d1b71ecfb91d4f2b1ad287ecb231e0"
+  },
+  "sourceCorpus": {
+    "id": "efforthours-public-readiness-development",
+    "version": "0.3.0",
+    "digest": "sha256:6ef79b8b950de013263258107c8c19cdd7187e66ab3be84107f63e282a76d385"
+  },
+  "rubric": {
+    "id": "manual-qa-work-item",
+    "version": "1.0.0"
+  },
+  "candidateVisibility": "blind",
+  "sourceRecordId": "record:cartercommunity-carter:implementation",
+  "repository": {
+    "id": "repository:github.com/cartercommunity/carter",
+    "name": "CarterCommunity/Carter",
+    "sourceDigest": "sha256:00b6577c4f3d9f42a32e69804b37d3e8e94b6eff6b5b294fe7e5f78f90b33087"
+  },
+  "source": {
+    "dataClassification": "public-redistributable",
+    "sourceReference": "https://github.com/CarterCommunity/Carter",
+    "revision": "42055e5df5a6c0080e359366def009857cf276d1",
+    "licenseExpression": "MIT",
+    "redistributionAllowed": true
+  },
+  "profile": "implementation",
+  "baselineId": "senior-contractor-2026-no-ai",
+  "partition": "development",
+  "targets": [
+    {
+      "sourceTargetId": "target:work:build-tooling:c2c91d07e063088d401a:review-0001",
+      "sourceLineageDigest": "sha256:47aabc22b75c6ef16e61b34885941c6994ec7e8d0d05ac2542cdd40bb693d62e",
+      "sourceCategory": "build-configuration-and-developer-tooling",
+      "title": "Configure build behavior and developer tooling",
+      "scope": ".",
+      "overlapGroupId": "manual-qa-overlap:44fa3ed9304dff5bcc2a",
+      "evidenceIds": [
+        "file:.gitignore",
+        "file:NuGet.config",
+        "file:template/Template.targets"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:ci-infrastructure:bee22f5b9a094661eb75:review-0001",
+      "sourceLineageDigest": "sha256:b54708968a81677323fbf4bc763843f36d9f4e0f991437537832893fc26f57ef",
+      "sourceCategory": "ci-cd-and-infrastructure-as-code",
+      "title": "Implement represented CI/CD and infrastructure configuration",
+      "scope": ".",
+      "overlapGroupId": "manual-qa-overlap:44fa3ed9304dff5bcc2a",
+      "evidenceIds": [
+        "ci:repository",
+        "file:.github/workflows/dotnetcore.yml",
+        "file:.github/workflows/test-results.yml",
+        "file:.github/workflows/update-carter-package-references.yml",
+        "script:ci:powershell:repository",
+        "script:ci:shell:repository"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:api-surface:5153b904b6904a27d97a:review-0001",
+      "sourceLineageDigest": "sha256:0b24d04d849fbbe12fc786973bcc274b5035b4c1ea2e3f4378e7203dc93a0f9b",
+      "sourceCategory": "production-implementation",
+      "title": "Implement API and route behavior for \u0027samples/CarterAndMVC/CarterAndMVC.csproj\u0027 (executable)",
+      "scope": "samples/CarterAndMVC/CarterAndMVC.csproj",
+      "overlapGroupId": "manual-qa-overlap:051a8d52a32cd088aa1f",
+      "evidenceIds": [
+        "dotnet:api:samples/CarterAndMVC/HomeController.cs",
+        "dotnet:api:samples/CarterAndMVC/HomeModule.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:application-entry-point:6c425ebf04d805b90c06:review-0001",
+      "sourceLineageDigest": "sha256:05a53679bbb8bf1f0e391ce8b89dbe50bee12e50e7f5d49513b463f959a781d2",
+      "sourceCategory": "production-implementation",
+      "title": "Implement application entry points for \u0027samples/CarterAndMVC/CarterAndMVC.csproj\u0027 (executable)",
+      "scope": "samples/CarterAndMVC/CarterAndMVC.csproj",
+      "overlapGroupId": "manual-qa-overlap:051a8d52a32cd088aa1f",
+      "evidenceIds": [
+        "dotnet:entry-point:samples/CarterAndMVC/Program.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:dotnet-source-backbone:66fe6e1b616fc17a81aa:review-0001",
+      "sourceLineageDigest": "sha256:b020f40ed57cbbd045abf0be39fe6100113e86200e4be1464036f5f84822a297",
+      "sourceCategory": "production-implementation",
+      "title": "Implement maintained internal logic for \u0027samples/CarterAndMVC/CarterAndMVC.csproj\u0027 (executable)",
+      "scope": "samples/CarterAndMVC/CarterAndMVC.csproj",
+      "overlapGroupId": "manual-qa-overlap:051a8d52a32cd088aa1f",
+      "evidenceIds": [
+        "dotnet:source-structure:samples/CarterAndMVC/CarterAndMVC.csproj"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:api-surface:7394d69e5e54551ac740:review-0001",
+      "sourceLineageDigest": "sha256:601985051e3067f266d11ffde13f45e564bbff23b45ccacdef8731ff9ba42cd6",
+      "sourceCategory": "production-implementation",
+      "title": "Implement API and route behavior for \u0027samples/CarterSample/CarterSample.csproj\u0027 (web)",
+      "scope": "samples/CarterSample/CarterSample.csproj",
+      "overlapGroupId": "manual-qa-overlap:63b82e0c94a3948de899",
+      "evidenceIds": [
+        "dotnet:api:samples/CarterSample/Features/Actors/ActorsModule.cs",
+        "dotnet:api:samples/CarterSample/Features/CastMembers/CastMemberModule.cs",
+        "dotnet:api:samples/CarterSample/Features/Directors/DirectorsModule.cs",
+        "dotnet:api:samples/CarterSample/Features/Errors/ErrorModule.cs",
+        "dotnet:api:samples/CarterSample/Features/FunctionalProgramming/FunctionalProgrammingModule.cs",
+        "dotnet:api:samples/CarterSample/Features/Graph/GraphModule.cs",
+        "dotnet:api:samples/CarterSample/Features/Home/HomeModule.cs",
+        "dotnet:api:samples/CarterSample/Features/Home/NestedHomeModule.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:application-entry-point:37cd7d6af0044befe845:review-0001",
+      "sourceLineageDigest": "sha256:e6a886f68d8d432714b128870ed6c0c0cbdfae9f4e180c7a0650588e72cb2713",
+      "sourceCategory": "production-implementation",
+      "title": "Implement application entry points for \u0027samples/CarterSample/CarterSample.csproj\u0027 (web)",
+      "scope": "samples/CarterSample/CarterSample.csproj",
+      "overlapGroupId": "manual-qa-overlap:63b82e0c94a3948de899",
+      "evidenceIds": [
+        "dotnet:entry-point:samples/CarterSample/Program.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:dotnet-source-backbone:81d3972d6a38ef94db0a:review-0001",
+      "sourceLineageDigest": "sha256:d649bc13a31653410ada4f38ea45e5289000d71c18dca4909ad7e42ce6fec001",
+      "sourceCategory": "production-implementation",
+      "title": "Implement maintained internal logic for \u0027samples/CarterSample/CarterSample.csproj\u0027 (web)",
+      "scope": "samples/CarterSample/CarterSample.csproj",
+      "overlapGroupId": "manual-qa-overlap:63b82e0c94a3948de899",
+      "evidenceIds": [
+        "dotnet:source-structure:samples/CarterSample/CarterSample.csproj"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:validation-surface:acd70ac1664d4a23dce3:review-0001",
+      "sourceLineageDigest": "sha256:01923a28d341b134f94eb692853468a5139509abec37b5905b67b47bbf38a9e1",
+      "sourceCategory": "security-and-accessibility",
+      "title": "Implement represented validation behavior for \u0027samples/CarterSample/CarterSample.csproj\u0027 (web)",
+      "scope": "samples/CarterSample/CarterSample.csproj",
+      "overlapGroupId": "manual-qa-overlap:63b82e0c94a3948de899",
+      "evidenceIds": [
+        "dotnet:validation:samples/CarterSample/Features/Actors/ActorValidator.cs",
+        "dotnet:validation:samples/CarterSample/Features/Directors/DirectorsModule.cs",
+        "dotnet:validation:samples/CarterSample/Features/FunctionalProgramming/DirectorValidator.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:api-surface:ee975d6daf4aef2c1bbd:review-0001",
+      "sourceLineageDigest": "sha256:6cc258095d150a865d9f509c209a28b8ca11bc90e8ced7ca32416a7e4ac5f437",
+      "sourceCategory": "production-implementation",
+      "title": "Implement API and route behavior for \u0027samples/EntityFwk/EntityFwk.csproj\u0027 (web)",
+      "scope": "samples/EntityFwk/EntityFwk.csproj",
+      "overlapGroupId": "manual-qa-overlap:5512956bdac9551335ff",
+      "evidenceIds": [
+        "dotnet:api:samples/EntityFwk/MyModule.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:application-entry-point:45b57afc8b639f165de6:review-0001",
+      "sourceLineageDigest": "sha256:f70dcf0ab3094342bd482ee86ef460cbb62e156f5decb5cc05c8b6cf60e9d9aa",
+      "sourceCategory": "production-implementation",
+      "title": "Implement application entry points for \u0027samples/EntityFwk/EntityFwk.csproj\u0027 (web)",
+      "scope": "samples/EntityFwk/EntityFwk.csproj",
+      "overlapGroupId": "manual-qa-overlap:5512956bdac9551335ff",
+      "evidenceIds": [
+        "dotnet:entry-point:samples/EntityFwk/Program.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:dotnet-source-backbone:8849906d80cff9f0ae28:review-0001",
+      "sourceLineageDigest": "sha256:d13eb1625669230aecd1a53ff758a67654551739e27acb0b653eef70df4f6cac",
+      "sourceCategory": "production-implementation",
+      "title": "Implement maintained internal logic for \u0027samples/EntityFwk/EntityFwk.csproj\u0027 (web)",
+      "scope": "samples/EntityFwk/EntityFwk.csproj",
+      "overlapGroupId": "manual-qa-overlap:5512956bdac9551335ff",
+      "evidenceIds": [
+        "dotnet:source-structure:samples/EntityFwk/EntityFwk.csproj"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:data-persistence:f4b1e0c68dd5d3f98430:review-0001",
+      "sourceLineageDigest": "sha256:1981668be5a48718c9fc591a704d0868c97d0e023b4de1f662ad1188198ee646",
+      "sourceCategory": "data-modeling-persistence-and-migrations",
+      "title": "Implement data modeling and persistence for \u0027samples/EntityFwk/EntityFwk.csproj\u0027 (web)",
+      "scope": "samples/EntityFwk/EntityFwk.csproj",
+      "overlapGroupId": "manual-qa-overlap:5512956bdac9551335ff",
+      "evidenceIds": [
+        "dotnet:data:samples/EntityFwk/Migrations/20251008114112_InitialCreate.cs",
+        "dotnet:data:samples/EntityFwk/MyModule.cs",
+        "dotnet:data:samples/EntityFwk/Program.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:validation-surface:0ec014c8c610288cb8cf:review-0001",
+      "sourceLineageDigest": "sha256:f7ca5e69c2ca911a006978c40e688feb4c37cb6f291542271aa7c077dd29f5b2",
+      "sourceCategory": "security-and-accessibility",
+      "title": "Implement represented validation behavior for \u0027samples/EntityFwk/EntityFwk.csproj\u0027 (web)",
+      "scope": "samples/EntityFwk/EntityFwk.csproj",
+      "overlapGroupId": "manual-qa-overlap:5512956bdac9551335ff",
+      "evidenceIds": [
+        "dotnet:validation:samples/EntityFwk/Program.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:dotnet-source-backbone:491f7176b1e708a061dc:review-0001",
+      "sourceLineageDigest": "sha256:3651407ef1f061dd2acf098e01bf3947e27abb46507e198a1b21e4aeff1e92d5",
+      "sourceCategory": "production-implementation",
+      "title": "Implement maintained internal logic for \u0027samples/ValidatorOnlyProject/ValidatorOnlyProject.csproj\u0027 (library)",
+      "scope": "samples/ValidatorOnlyProject/ValidatorOnlyProject.csproj",
+      "overlapGroupId": "manual-qa-overlap:de454624e21436d91de0",
+      "evidenceIds": [
+        "dotnet:source-structure:samples/ValidatorOnlyProject/ValidatorOnlyProject.csproj"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:validation-surface:eefd9e9336231725e5d0:review-0001",
+      "sourceLineageDigest": "sha256:dd839a4166cb12a577cc9c2de32423e244963b8f4f5a3534891dfabd786dc4ea",
+      "sourceCategory": "security-and-accessibility",
+      "title": "Implement represented validation behavior for \u0027samples/ValidatorOnlyProject/ValidatorOnlyProject.csproj\u0027 (library)",
+      "scope": "samples/ValidatorOnlyProject/ValidatorOnlyProject.csproj",
+      "overlapGroupId": "manual-qa-overlap:de454624e21436d91de0",
+      "evidenceIds": [
+        "dotnet:validation:samples/ValidatorOnlyProject/CastMemberValidator.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:dotnet-source-backbone:2fb311b6d0a3632c6d88:review-0001",
+      "sourceLineageDigest": "sha256:ddf61734757df1cff4e48d6e29d177a3220b19350a1297c478e7735c2b3ae550",
+      "sourceCategory": "production-implementation",
+      "title": "Implement maintained internal logic for \u0027src/Carter.Analyzers/Carter.Analyzers.csproj\u0027 (library)",
+      "scope": "src/Carter.Analyzers/Carter.Analyzers.csproj",
+      "overlapGroupId": "manual-qa-overlap:506bc93a012ee97c9c30",
+      "evidenceIds": [
+        "dotnet:source-structure:src/Carter.Analyzers/Carter.Analyzers.csproj"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:dotnet-source-backbone:f33100801384c00b33b1:review-0001",
+      "sourceLineageDigest": "sha256:5613956130382752e3a43936c58305e9fa0dd8a88dfdbc27058fa61c3dcaee08",
+      "sourceCategory": "production-implementation",
+      "title": "Implement maintained internal logic for \u0027src/Carter.ResponseNegotiators.Newtonsoft/Carter.ResponseNegotiators.Newtonsoft.csproj\u0027 (library)",
+      "scope": "src/Carter.ResponseNegotiators.Newtonsoft/Carter.ResponseNegotiators.Newtonsoft.csproj",
+      "overlapGroupId": "manual-qa-overlap:fa8c8e62e3af83fd9598",
+      "evidenceIds": [
+        "dotnet:source-structure:src/Carter.ResponseNegotiators.Newtonsoft/Carter.ResponseNegotiators.Newtonsoft.csproj"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:api-surface:42dbaf96aea04a10a0dc:review-0001",
+      "sourceLineageDigest": "sha256:d96898625d86157e633ed4f669ca5efe5b1b0815d866f4a193268d1c20e02982",
+      "sourceCategory": "production-implementation",
+      "title": "Implement API and route behavior for \u0027src/Carter/Carter.csproj\u0027 (web)",
+      "scope": "src/Carter/Carter.csproj",
+      "overlapGroupId": "manual-qa-overlap:29b9d10d1da271df5aac",
+      "evidenceIds": [
+        "dotnet:api:src/Carter/CarterExtensions.cs",
+        "dotnet:api:src/Carter/RouteExtensions.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:dotnet-source-backbone:846e6d3cd2fda78e8276:review-0001",
+      "sourceLineageDigest": "sha256:e8a6a93dcc49c6dcc5031412d81fefb426c5368ca6510b1f88fc31a8c7722f8b",
+      "sourceCategory": "production-implementation",
+      "title": "Implement maintained internal logic for \u0027src/Carter/Carter.csproj\u0027 (web)",
+      "scope": "src/Carter/Carter.csproj",
+      "overlapGroupId": "manual-qa-overlap:29b9d10d1da271df5aac",
+      "evidenceIds": [
+        "dotnet:source-structure:src/Carter/Carter.csproj"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:security-surface:9bc7ba6ca8af50ceae2d:review-0001",
+      "sourceLineageDigest": "sha256:2236439dfc1423f9f72e2a95a9a8297f6a7735fdcacfb6240b17d30888d74415",
+      "sourceCategory": "security-and-accessibility",
+      "title": "Implement represented authentication and security behavior for \u0027src/Carter/Carter.csproj\u0027 (web)",
+      "scope": "src/Carter/Carter.csproj",
+      "overlapGroupId": "manual-qa-overlap:29b9d10d1da271df5aac",
+      "evidenceIds": [
+        "dotnet:security:src/Carter/CarterExtensions.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:api-surface:7fbbcf38f90c990f4034:review-0001",
+      "sourceLineageDigest": "sha256:14879b4547dbc203191adf84a505ca99ea9f7c152bc7f54da11df48dff6aa721",
+      "sourceCategory": "production-implementation",
+      "title": "Implement API and route behavior for \u0027template/content/CarterTemplate.csproj\u0027 (executable)",
+      "scope": "template/content/CarterTemplate.csproj",
+      "overlapGroupId": "manual-qa-overlap:c067016155dbdb953d0a",
+      "evidenceIds": [
+        "dotnet:api:template/content/HomeModule.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:application-entry-point:7728708d2b826de02263:review-0001",
+      "sourceLineageDigest": "sha256:ab35c6e2ffbb1d3d8e987cfb1df62034ee006e4c6e62985654efe2879888b851",
+      "sourceCategory": "production-implementation",
+      "title": "Implement application entry points for \u0027template/content/CarterTemplate.csproj\u0027 (executable)",
+      "scope": "template/content/CarterTemplate.csproj",
+      "overlapGroupId": "manual-qa-overlap:c067016155dbdb953d0a",
+      "evidenceIds": [
+        "dotnet:entry-point:template/content/Program.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:dotnet-source-backbone:e7953575c7a70c9cb2b2:review-0001",
+      "sourceLineageDigest": "sha256:961bd5b67e5021d49b92a85a293e20026b0eeb9d29775a805ce526e1a94df15c",
+      "sourceCategory": "production-implementation",
+      "title": "Implement maintained internal logic for \u0027template/content/CarterTemplate.csproj\u0027 (executable)",
+      "scope": "template/content/CarterTemplate.csproj",
+      "overlapGroupId": "manual-qa-overlap:c067016155dbdb953d0a",
+      "evidenceIds": [
+        "dotnet:source-structure:template/content/CarterTemplate.csproj"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:api-surface:89e69b96df93f38ab313:review-0001",
+      "sourceLineageDigest": "sha256:ebd7416c5dff25346ba5e7d78b8de5c03c3ed761acffa74158053739da676ad1",
+      "sourceCategory": "production-implementation",
+      "title": "Implement API and route behavior for \u0027test/Carter.ResponseNegotiators.Newtonsoft.Tests/Carter.ResponseNegotiators.Newtonsoft.Tests.csproj\u0027 (test)",
+      "scope": "test/Carter.ResponseNegotiators.Newtonsoft.Tests/Carter.ResponseNegotiators.Newtonsoft.Tests.csproj",
+      "overlapGroupId": "manual-qa-overlap:56d991772a2dcc196ce8",
+      "evidenceIds": [
+        "dotnet:api:test/Carter.ResponseNegotiators.Newtonsoft.Tests/NewtonsoftJsonResponseNegotiatorModule.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:unit-tests:216fc716dcdb8e1744bc:review-0001",
+      "sourceLineageDigest": "sha256:de8a054768df61dc275bcb702ad5c12c27a8c8e5ebf61b6a688eb5413f15df49",
+      "sourceCategory": "unit-testing",
+      "title": "Create represented unit tests for \u0027test/Carter.ResponseNegotiators.Newtonsoft.Tests/Carter.ResponseNegotiators.Newtonsoft.Tests.csproj\u0027 (test)",
+      "scope": "test/Carter.ResponseNegotiators.Newtonsoft.Tests/Carter.ResponseNegotiators.Newtonsoft.Tests.csproj",
+      "overlapGroupId": "manual-qa-overlap:56d991772a2dcc196ce8",
+      "evidenceIds": [
+        "dotnet:test:test/Carter.ResponseNegotiators.Newtonsoft.Tests/NewtonsoftJsonResponseNegotiatorModule.cs",
+        "dotnet:test:test/Carter.ResponseNegotiators.Newtonsoft.Tests/NewtonsoftJsonResponseNegotiatorTests.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:external-integration:cc43ace35d3acb98c61b:review-0001",
+      "sourceLineageDigest": "sha256:be3954eaa86380951b5c77017ccd0c866b6fe8cc789bb4f88907c0a3d995787a",
+      "sourceCategory": "external-integrations-and-protocols",
+      "title": "Integrate external services and protocols for \u0027test/Carter.Samples.Tests/Carter.Samples.Tests.csproj\u0027 (test)",
+      "scope": "test/Carter.Samples.Tests/Carter.Samples.Tests.csproj",
+      "overlapGroupId": "manual-qa-overlap:96ca7366ab2f915437b5",
+      "evidenceIds": [
+        "dotnet:integration:test/Carter.Samples.Tests/FunctionalTests.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:integration-tests:f0b14d3bf82af0c33096:review-0001",
+      "sourceLineageDigest": "sha256:cf5ff72bf6efdd999db2ed52e6857bff968f5fb5ce15eed869fc1c8bb1b6bf7e",
+      "sourceCategory": "integration-contract-and-component-testing",
+      "title": "Create represented integration tests for \u0027test/Carter.Samples.Tests/Carter.Samples.Tests.csproj\u0027 (test)",
+      "scope": "test/Carter.Samples.Tests/Carter.Samples.Tests.csproj",
+      "overlapGroupId": "manual-qa-overlap:96ca7366ab2f915437b5",
+      "evidenceIds": [
+        "dotnet:test:test/Carter.Samples.Tests/FunctionalTests.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:api-surface:71e8e32f5c48894e9de7:review-0001",
+      "sourceLineageDigest": "sha256:f1d335aad4d8c7809ea68413a4de962b5f2b2e1fb13cd4bf0c66a85231598c5d",
+      "sourceCategory": "production-implementation",
+      "title": "Implement API and route behavior for \u0027test/Carter.Tests/Carter.Tests.csproj\u0027 (test)",
+      "scope": "test/Carter.Tests/Carter.Tests.csproj",
+      "overlapGroupId": "manual-qa-overlap:a9d8762072f6e3932462",
+      "evidenceIds": [
+        "dotnet:api:test/Carter.Tests/AuthorizationTestModule.cs",
+        "dotnet:api:test/Carter.Tests/ContentNegotiation/NegotiatorModule.cs",
+        "dotnet:api:test/Carter.Tests/InternalRooms/InternalRoomModule.cs",
+        "dotnet:api:test/Carter.Tests/InternalRooms/NestedInternalRoomModule.cs",
+        "dotnet:api:test/Carter.Tests/StreamTests/StreamModule.cs",
+        "dotnet:api:test/Carter.Tests/TestModule.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:external-integration:d08ff1e4910999f032df:review-0001",
+      "sourceLineageDigest": "sha256:e7808aed62a554e409808aacdac7f453e82c71c1f22304ba10f308ab706c8e6d",
+      "sourceCategory": "external-integrations-and-protocols",
+      "title": "Integrate external services and protocols for \u0027test/Carter.Tests/Carter.Tests.csproj\u0027 (test)",
+      "scope": "test/Carter.Tests/Carter.Tests.csproj",
+      "overlapGroupId": "manual-qa-overlap:a9d8762072f6e3932462",
+      "evidenceIds": [
+        "dotnet:integration:test/Carter.Tests/RouteExtensionsTests.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:unit-tests:1f634e1fcf0c1d008cc5:review-0001",
+      "sourceLineageDigest": "sha256:33b348b5b4ff9c562c57a10702abe681a72e26bf207d75d7cf3c0f8d3960e323",
+      "sourceCategory": "unit-testing",
+      "title": "Create represented unit tests for \u0027test/Carter.Tests/Carter.Tests.csproj\u0027 (test)",
+      "scope": "test/Carter.Tests/Carter.Tests.csproj",
+      "overlapGroupId": "manual-qa-overlap:a9d8762072f6e3932462",
+      "evidenceIds": [
+        "dotnet:test:test/Carter.Tests/Analyzers/CSharpPreviewAnalyzerTest.cs",
+        "dotnet:test:test/Carter.Tests/Analyzers/CarterDerivedModuleShouldNotHaveDependenciesTests.cs",
+        "dotnet:test:test/Carter.Tests/Analyzers/CarterModuleShouldNotHaveDependenciesTests.cs",
+        "dotnet:test:test/Carter.Tests/AuthorizationTestModule.cs",
+        "dotnet:test:test/Carter.Tests/CarterConfiguratorTests.cs",
+        "dotnet:test:test/Carter.Tests/CarterExtensionTests.cs",
+        "dotnet:test:test/Carter.Tests/ContentNegotiation/HttpJsonOptionsResponseNegotiatorTests.cs",
+        "dotnet:test:test/Carter.Tests/ContentNegotiation/NegotiatorModule.cs",
+        "dotnet:test:test/Carter.Tests/ContentNegotiation/ResponseNegotiatorTests.cs",
+        "dotnet:test:test/Carter.Tests/ExtensionTests.cs",
+        "dotnet:test:test/Carter.Tests/InternalRooms/InternalResponseNegotiator.cs",
+        "dotnet:test:test/Carter.Tests/InternalRooms/InternalRoomModel.cs",
+        "dotnet:test:test/Carter.Tests/InternalRooms/InternalRoomModelValidator.cs",
+        "dotnet:test:test/Carter.Tests/InternalRooms/InternalRoomModule.cs",
+        "dotnet:test:test/Carter.Tests/InternalRooms/NestedInternalResponseNegotiator.cs",
+        "dotnet:test:test/Carter.Tests/InternalRooms/NestedInternalRoomModelValidator.cs",
+        "dotnet:test:test/Carter.Tests/InternalRooms/NestedInternalRoomModule.cs",
+        "dotnet:test:test/Carter.Tests/ModelBinding/DuplicateTestModelOne.cs",
+        "dotnet:test:test/Carter.Tests/ModelBinding/TestModel.cs",
+        "dotnet:test:test/Carter.Tests/ModelBinding/TestModelValidator.cs",
+        "dotnet:test:test/Carter.Tests/RouteExtensionsTests.cs",
+        "dotnet:test:test/Carter.Tests/StreamTests/ResponseFromStreamTests.cs",
+        "dotnet:test:test/Carter.Tests/StreamTests/StreamModule.cs",
+        "dotnet:test:test/Carter.Tests/TestModule.cs",
+        "dotnet:test:test/Carter.Tests/TypeExtensionTests.cs",
+        "dotnet:test:test/Carter.Tests/XunitLogger.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:integration-tests:b2ce37b06713d03027ae:review-0001",
+      "sourceLineageDigest": "sha256:f2daa6ab9463f1215da232b50cff300071668ffea9e8a4f898ad8c4e752863e4",
+      "sourceCategory": "integration-contract-and-component-testing",
+      "title": "Create represented integration tests for \u0027test/Carter.Tests/Carter.Tests.csproj\u0027 (test)",
+      "scope": "test/Carter.Tests/Carter.Tests.csproj",
+      "overlapGroupId": "manual-qa-overlap:a9d8762072f6e3932462",
+      "evidenceIds": [
+        "dotnet:test:test/Carter.Tests/AuthorizationTests.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:security-surface:1c11926a59915b3d7fe4:review-0001",
+      "sourceLineageDigest": "sha256:5409094df2222bb641c14c28cad7107af6e79f30ab41beb7049daa03676cb930",
+      "sourceCategory": "security-and-accessibility",
+      "title": "Implement represented authentication and security behavior for \u0027test/Carter.Tests/Carter.Tests.csproj\u0027 (test)",
+      "scope": "test/Carter.Tests/Carter.Tests.csproj",
+      "overlapGroupId": "manual-qa-overlap:a9d8762072f6e3932462",
+      "evidenceIds": [
+        "dotnet:security:test/Carter.Tests/AuthorizationTestModule.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:validation-surface:b4c687fe306bbf4844a8:review-0001",
+      "sourceLineageDigest": "sha256:2fa6763a21d783aefcfddb7d55139a08e540cb0c8b4fc420aa4c8464f3bbf32e",
+      "sourceCategory": "security-and-accessibility",
+      "title": "Implement represented validation behavior for \u0027test/Carter.Tests/Carter.Tests.csproj\u0027 (test)",
+      "scope": "test/Carter.Tests/Carter.Tests.csproj",
+      "overlapGroupId": "manual-qa-overlap:a9d8762072f6e3932462",
+      "evidenceIds": [
+        "dotnet:validation:test/Carter.Tests/InternalRooms/InternalRoomModelValidator.cs",
+        "dotnet:validation:test/Carter.Tests/InternalRooms/NestedInternalRoomModelValidator.cs",
+        "dotnet:validation:test/Carter.Tests/ModelBinding/TestModelValidator.cs"
+      ]
+    }
+  ],
+  "instructions": [
+    "Use the manual-qa-work-item/1.0.0 rubric and the immutable public source only.",
+    "Estimate the manual validation, debugging, and hardening needed after recreating each represented coding responsibility.",
+    "Review all targets sharing overlapGroupId together; assign shared validation once and make exclusions explicit.",
+    "Keep automated-test authoring separate, while including the bounded work needed to run, inspect, and debug represented tests.",
+    "Do not infer actual labor, use Git history or activity, or force a percentage or preferred repository total.",
+    "Use exact 0/0/0 only for a wholly excluded or duplicate responsibility and explain the exclusion.",
+    "Keep expected targets normally between 0.5 and 8 hours; explain any cohesive size exception."
+  ]
+}

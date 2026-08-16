@@ -1,0 +1,1041 @@
+{
+  "schemaVersion": "1.0.0",
+  "authoringVersion": "manual-qa-development-review-authoring/1.0.0",
+  "status": "unreviewed",
+  "warning": "UNREVIEWED CANDIDATE-BLIND MANUAL-QA PACKET: estimate manual validation, debugging, and hardening independently. Do not consult seed or candidate hours, category totals, repository totals, ratio formulas, or prior QA judgments.",
+  "policy": {
+    "id": "efforthours-manual-qa-development-review",
+    "version": "manual-qa-development-review-policy/1.0.0",
+    "digest": "sha256:bc4d9a29aac4fd80a917219c77a02dd0c8d1b71ecfb91d4f2b1ad287ecb231e0"
+  },
+  "sourceCorpus": {
+    "id": "efforthours-public-readiness-development",
+    "version": "0.3.0",
+    "digest": "sha256:6ef79b8b950de013263258107c8c19cdd7187e66ab3be84107f63e282a76d385"
+  },
+  "rubric": {
+    "id": "manual-qa-work-item",
+    "version": "1.0.0"
+  },
+  "candidateVisibility": "blind",
+  "sourceRecordId": "record:app-vnext-polly:implementation",
+  "repository": {
+    "id": "repository:github.com/app-vnext/polly",
+    "name": "App-vNext/Polly",
+    "sourceDigest": "sha256:edff155be72775b8b7de15cb2bc816299affd03f557a4cf7fda737c783dd0c58"
+  },
+  "source": {
+    "dataClassification": "public-redistributable",
+    "sourceReference": "https://github.com/App-vNext/Polly",
+    "revision": "d0e46bdb1ee11ea50d0e4b6846d2633d6bc09bac",
+    "licenseExpression": "BSD-3-Clause",
+    "redistributionAllowed": true
+  },
+  "profile": "implementation",
+  "baselineId": "senior-contractor-2026-no-ai",
+  "partition": "development",
+  "targets": [
+    {
+      "sourceTargetId": "target:work:application-entry-point:bb45c9c819378588f8c8:review-0001",
+      "sourceLineageDigest": "sha256:35a859786b89b9586f4e647a6e700134115f99404c86f774e4552ef6558c7a06",
+      "sourceCategory": "production-implementation",
+      "title": "Implement application entry points for \u0027.\u0027 (cli)",
+      "scope": ".",
+      "overlapGroupId": "manual-qa-overlap:8fd387f01f416d411937",
+      "evidenceIds": [
+        "script:entry:powershell:repository"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:application-entry-point:dc5e003bd7fbc881bbc4:review-0001",
+      "sourceLineageDigest": "sha256:c7ef8801bc784d23e9ff7092974247b32af35c053345dd3508a24e3255b8cddf",
+      "sourceCategory": "production-implementation",
+      "title": "Implement application entry points for \u0027.\u0027 (component)",
+      "scope": ".",
+      "overlapGroupId": "manual-qa-overlap:8fd387f01f416d411937",
+      "evidenceIds": [
+        "dotnet:entry-point:cake.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:polyglot-source-backbone:5cdc4fb842dd42e84afc:review-0001",
+      "sourceLineageDigest": "sha256:cff5267741fec37c7f95485bc3611cd935bd5b4273268e07c6d7eb2a20a46682",
+      "sourceCategory": "production-implementation",
+      "title": "Implement maintained internal logic for \u0027.\u0027 (cli)",
+      "scope": ".",
+      "overlapGroupId": "manual-qa-overlap:8fd387f01f416d411937",
+      "evidenceIds": [
+        "script:source:powershell:repository"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:dotnet-source-backbone:9fdd7dba3745005a185d:review-0001",
+      "sourceLineageDigest": "sha256:be9b4c463fa71c5e2d3dcdbb3352ab0b0eefc4a5b0a38ce2791c58e1f5d76a66",
+      "sourceCategory": "production-implementation",
+      "title": "Implement maintained internal logic for \u0027.\u0027 (component)",
+      "scope": ".",
+      "overlapGroupId": "manual-qa-overlap:8fd387f01f416d411937",
+      "evidenceIds": [
+        "dotnet:source-structure:."
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:javascript-source-backbone:2f5795bda39a0bae4a33:review-0001",
+      "sourceLineageDigest": "sha256:ebf6772aa1d5316ef33c9e42632700b539b26582741a7b125ee59ef730437e6d",
+      "sourceCategory": "production-implementation",
+      "title": "Implement maintained internal logic for \u0027.\u0027 (component)",
+      "scope": ".",
+      "overlapGroupId": "manual-qa-overlap:8fd387f01f416d411937",
+      "evidenceIds": [
+        "javascript:source-structure:."
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:unit-tests:70333b4be7e8fafd3650:review-0001",
+      "sourceLineageDigest": "sha256:ac0c21018ed2ea4a47e674fc452b07bd103e0158cbb80d99bc85728935de9f26",
+      "sourceCategory": "unit-testing",
+      "title": "Create represented unit tests for \u0027.\u0027 (component)",
+      "scope": ".",
+      "overlapGroupId": "manual-qa-overlap:8fd387f01f416d411937",
+      "evidenceIds": [
+        "dotnet:test:test/Shared/StrongNameTests.cs",
+        "dotnet:test:test/Shared/TestCancellation.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:build-tooling:c2c91d07e063088d401a:review-0001",
+      "sourceLineageDigest": "sha256:11777ff729069ca282f1d101ecaae4771fab97b1754e40020f9a1a1163a41603",
+      "sourceCategory": "build-configuration-and-developer-tooling",
+      "title": "Configure build behavior and developer tooling",
+      "scope": ".",
+      "overlapGroupId": "manual-qa-overlap:8fd387f01f416d411937",
+      "evidenceIds": [
+        "file:.editorconfig",
+        "file:.gitattributes",
+        "file:Directory.Build.props",
+        "file:Directory.Build.targets",
+        "file:Directory.Packages.props",
+        "file:NuGet.config",
+        "file:build.ps1",
+        "file:eng/Analyzers.targets",
+        "file:eng/Benchmark.targets",
+        "file:eng/Common.props",
+        "file:eng/Common.targets",
+        "file:eng/Library.targets",
+        "file:eng/Test.targets",
+        "file:eng/bump-version.ps1",
+        "file:eng/update-baselines.ps1",
+        "file:eng/update-changelog.ps1",
+        "file:global.json",
+        "file:samples/Directory.Build.props",
+        "file:samples/Directory.Build.targets",
+        "javascript:repository",
+        "script:build:powershell:repository"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:ci-infrastructure:bee22f5b9a094661eb75:review-0001",
+      "sourceLineageDigest": "sha256:cebbe8f385b28e3e1b20ff56f06674960bef01597371d7a8549885dadd681446",
+      "sourceCategory": "ci-cd-and-infrastructure-as-code",
+      "title": "Implement represented CI/CD and infrastructure configuration",
+      "scope": ".",
+      "overlapGroupId": "manual-qa-overlap:8fd387f01f416d411937",
+      "evidenceIds": [
+        "ci:repository",
+        "file:.github/workflows/build.yml",
+        "file:.github/workflows/code-ql.yml",
+        "file:.github/workflows/dependabot-approve.yml",
+        "file:.github/workflows/dependency-review.yml",
+        "file:.github/workflows/gh-pages.yml",
+        "file:.github/workflows/lint.yml",
+        "file:.github/workflows/mutation-tests.yml",
+        "file:.github/workflows/nuget-packages-published.yml",
+        "file:.github/workflows/ossf-scorecard.yml",
+        "file:.github/workflows/release.yml",
+        "file:.github/workflows/stale.yml",
+        "file:.github/workflows/update-dotnet-sdk.yml",
+        "file:.github/workflows/updater-approve.yml"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:application-entry-point:a0529c330e8f9d2a41c8:review-0001",
+      "sourceLineageDigest": "sha256:7310e5c100c6c99f243a5fe7ff4c99ad0097748a9967f424592d6b1e8b2435b7",
+      "sourceCategory": "production-implementation",
+      "title": "Implement application entry points for \u0027bench/Polly.Benchmarks/Polly.Benchmarks.csproj\u0027 (executable)",
+      "scope": "bench/Polly.Benchmarks/Polly.Benchmarks.csproj",
+      "overlapGroupId": "manual-qa-overlap:370e8c15f499136d1d9c",
+      "evidenceIds": [
+        "dotnet:entry-point:bench/Polly.Benchmarks/Program.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:dotnet-source-backbone:0b5db30c6c8dc52f8663:review-0001",
+      "sourceLineageDigest": "sha256:a75f49a6b6d5ea58eeea9eadc68f40d96cfe6b704599ce1daa526109ed866d4b",
+      "sourceCategory": "production-implementation",
+      "title": "Implement maintained internal logic for \u0027bench/Polly.Benchmarks/Polly.Benchmarks.csproj\u0027 (executable)",
+      "scope": "bench/Polly.Benchmarks/Polly.Benchmarks.csproj",
+      "overlapGroupId": "manual-qa-overlap:370e8c15f499136d1d9c",
+      "evidenceIds": [
+        "dotnet:source-structure:bench/Polly.Benchmarks/Polly.Benchmarks.csproj"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:application-entry-point:199ee691e12710562844:review-0001",
+      "sourceLineageDigest": "sha256:85f14a5a27f612eef3f053c97043806d9b4eab374c7030dcbdabaac8e1dbbeae",
+      "sourceCategory": "production-implementation",
+      "title": "Implement application entry points for \u0027bench/Polly.Core.Benchmarks/Polly.Core.Benchmarks.csproj\u0027 (executable)",
+      "scope": "bench/Polly.Core.Benchmarks/Polly.Core.Benchmarks.csproj",
+      "overlapGroupId": "manual-qa-overlap:54c8d89bdd09064fba98",
+      "evidenceIds": [
+        "dotnet:entry-point:bench/Polly.Core.Benchmarks/Program.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:dotnet-source-backbone:1d37f032ab95b45eddd0:review-0001",
+      "sourceLineageDigest": "sha256:d7138fad2023f9c4c50b5ab8452e7a06ea1468009f7a6e39949db662fcd66087",
+      "sourceCategory": "production-implementation",
+      "title": "Implement maintained internal logic for \u0027bench/Polly.Core.Benchmarks/Polly.Core.Benchmarks.csproj\u0027 (executable)",
+      "scope": "bench/Polly.Core.Benchmarks/Polly.Core.Benchmarks.csproj",
+      "overlapGroupId": "manual-qa-overlap:54c8d89bdd09064fba98",
+      "evidenceIds": [
+        "dotnet:source-structure:bench/Polly.Core.Benchmarks/Polly.Core.Benchmarks.csproj"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:external-integration:718bd6d7695a25809bf6:review-0001",
+      "sourceLineageDigest": "sha256:fa4e3f8845c4e602afa0d4cc1955f4bf7bdd700f5fd88e8fb76368b835003d8e",
+      "sourceCategory": "external-integrations-and-protocols",
+      "title": "Integrate external services and protocols for \u0027bench/Polly.Core.Benchmarks/Polly.Core.Benchmarks.csproj\u0027 (executable)",
+      "scope": "bench/Polly.Core.Benchmarks/Polly.Core.Benchmarks.csproj",
+      "overlapGroupId": "manual-qa-overlap:54c8d89bdd09064fba98",
+      "evidenceIds": [
+        "dotnet:integration:bench/Polly.Core.Benchmarks/PredicateBenchmark.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:api-surface:f5d221b6125f1c9a9a0e:review-0001",
+      "sourceLineageDigest": "sha256:94a790ac9458f6416fe861c86eeb74d6c0f9c444f85df5675fe1e6e12cf887b6",
+      "sourceCategory": "production-implementation",
+      "title": "Implement API and route behavior for \u0027samples/Chaos/Chaos.csproj\u0027 (web)",
+      "scope": "samples/Chaos/Chaos.csproj",
+      "overlapGroupId": "manual-qa-overlap:908d18f185cef0f2ba83",
+      "evidenceIds": [
+        "dotnet:api:samples/Chaos/Program.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:application-entry-point:bacffa2e7b1b58f6a331:review-0001",
+      "sourceLineageDigest": "sha256:ba1384217b33aaf2707748fcce74f49560a046e5f5f870163c03579004d792bb",
+      "sourceCategory": "production-implementation",
+      "title": "Implement application entry points for \u0027samples/Chaos/Chaos.csproj\u0027 (web)",
+      "scope": "samples/Chaos/Chaos.csproj",
+      "overlapGroupId": "manual-qa-overlap:908d18f185cef0f2ba83",
+      "evidenceIds": [
+        "dotnet:entry-point:samples/Chaos/Program.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:dotnet-source-backbone:6759dd9914307f0befa8:review-0001",
+      "sourceLineageDigest": "sha256:695dc38049e32f1b58ca91e91b9ff987034ff9ace59bec25a6660530e202396c",
+      "sourceCategory": "production-implementation",
+      "title": "Implement maintained internal logic for \u0027samples/Chaos/Chaos.csproj\u0027 (web)",
+      "scope": "samples/Chaos/Chaos.csproj",
+      "overlapGroupId": "manual-qa-overlap:908d18f185cef0f2ba83",
+      "evidenceIds": [
+        "dotnet:source-structure:samples/Chaos/Chaos.csproj"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:external-integration:eaaa7a3b64691decfbda:review-0001",
+      "sourceLineageDigest": "sha256:f7f4c6fba2b01ada1c4689e694f4cdc87a0afe480441422210bd613631b23e6c",
+      "sourceCategory": "external-integrations-and-protocols",
+      "title": "Integrate external services and protocols for \u0027samples/Chaos/Chaos.csproj\u0027 (web)",
+      "scope": "samples/Chaos/Chaos.csproj",
+      "overlapGroupId": "manual-qa-overlap:908d18f185cef0f2ba83",
+      "evidenceIds": [
+        "dotnet:integration:samples/Chaos/Program.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:application-entry-point:3cb1542b7d9c62f9dffe:review-0001",
+      "sourceLineageDigest": "sha256:b877d1b861f558a7344a412acde0ef8ebb635a86243b1ffa9c3f0d4bda23cb87",
+      "sourceCategory": "production-implementation",
+      "title": "Implement application entry points for \u0027samples/DependencyInjection/DependencyInjection.csproj\u0027 (executable)",
+      "scope": "samples/DependencyInjection/DependencyInjection.csproj",
+      "overlapGroupId": "manual-qa-overlap:fd391e36fb7e8b08d816",
+      "evidenceIds": [
+        "dotnet:entry-point:samples/DependencyInjection/Program.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:dotnet-source-backbone:3eb90924d5d0870b65e0:review-0001",
+      "sourceLineageDigest": "sha256:ecb9020f2bbaa9e8527e4a70222d0fdd21adede98130bc1ae5e91fc56e1b3b42",
+      "sourceCategory": "production-implementation",
+      "title": "Implement maintained internal logic for \u0027samples/DependencyInjection/DependencyInjection.csproj\u0027 (executable)",
+      "scope": "samples/DependencyInjection/DependencyInjection.csproj",
+      "overlapGroupId": "manual-qa-overlap:fd391e36fb7e8b08d816",
+      "evidenceIds": [
+        "dotnet:source-structure:samples/DependencyInjection/DependencyInjection.csproj"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:application-entry-point:8c5ce4e94acc71d123f4:review-0001",
+      "sourceLineageDigest": "sha256:995d1c9a7558d81d9a58be4912c5ef2dd7a0b41fe8dd117bfa9b978ae3844336",
+      "sourceCategory": "production-implementation",
+      "title": "Implement application entry points for \u0027samples/Extensibility/Extensibility.csproj\u0027 (executable)",
+      "scope": "samples/Extensibility/Extensibility.csproj",
+      "overlapGroupId": "manual-qa-overlap:654ec15c8505be07a271",
+      "evidenceIds": [
+        "dotnet:entry-point:samples/Extensibility/Program.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:dotnet-source-backbone:609304fcf8b3611d0a7d:review-0001",
+      "sourceLineageDigest": "sha256:c468260ed24290b880f2d9d74794490bd8cce3ba9f3900a6a919ac0423e7d649",
+      "sourceCategory": "production-implementation",
+      "title": "Implement maintained internal logic for \u0027samples/Extensibility/Extensibility.csproj\u0027 (executable)",
+      "scope": "samples/Extensibility/Extensibility.csproj",
+      "overlapGroupId": "manual-qa-overlap:654ec15c8505be07a271",
+      "evidenceIds": [
+        "dotnet:source-structure:samples/Extensibility/Extensibility.csproj"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:validation-surface:7cad4ed06071eaa937a9:review-0001",
+      "sourceLineageDigest": "sha256:6ade8b7591dfbebac7cb988f3f51117698467e2897236d1b4fe635d79c61965d",
+      "sourceCategory": "security-and-accessibility",
+      "title": "Implement represented validation behavior for \u0027samples/Extensibility/Extensibility.csproj\u0027 (executable)",
+      "scope": "samples/Extensibility/Extensibility.csproj",
+      "overlapGroupId": "manual-qa-overlap:654ec15c8505be07a271",
+      "evidenceIds": [
+        "dotnet:validation:samples/Extensibility/Proactive/TimingStrategyOptions.cs",
+        "dotnet:validation:samples/Extensibility/Reactive/ResultReportingStrategyOptions.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:application-entry-point:9cbf0a6e443d82459f73:review-0001",
+      "sourceLineageDigest": "sha256:504ca7ef940bf3c784db0c8a5e409ea7a1d2d44cc6b57d1f4ed5228ca226f9a0",
+      "sourceCategory": "production-implementation",
+      "title": "Implement application entry points for \u0027samples/GenericPipelines/GenericPipelines.csproj\u0027 (executable)",
+      "scope": "samples/GenericPipelines/GenericPipelines.csproj",
+      "overlapGroupId": "manual-qa-overlap:2690b01c3512f473d009",
+      "evidenceIds": [
+        "dotnet:entry-point:samples/GenericPipelines/Program.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:dotnet-source-backbone:7152d1203b62f010f34f:review-0001",
+      "sourceLineageDigest": "sha256:35483584335ca4962ddc4172977a0893e06678f1c33ce7f3e1f01ea77a4e642e",
+      "sourceCategory": "production-implementation",
+      "title": "Implement maintained internal logic for \u0027samples/GenericPipelines/GenericPipelines.csproj\u0027 (executable)",
+      "scope": "samples/GenericPipelines/GenericPipelines.csproj",
+      "overlapGroupId": "manual-qa-overlap:2690b01c3512f473d009",
+      "evidenceIds": [
+        "dotnet:source-structure:samples/GenericPipelines/GenericPipelines.csproj"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:application-entry-point:a76eec72d9c321ae79a6:review-0001",
+      "sourceLineageDigest": "sha256:d69f1580020eaf8edab516b80779968977fb4e784d516fd1e07aadb283e7671f",
+      "sourceCategory": "production-implementation",
+      "title": "Implement application entry points for \u0027samples/Intro/Intro.csproj\u0027 (executable)",
+      "scope": "samples/Intro/Intro.csproj",
+      "overlapGroupId": "manual-qa-overlap:0db671a232afc39e18cd",
+      "evidenceIds": [
+        "dotnet:entry-point:samples/Intro/Program.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:dotnet-source-backbone:e86186d4a0729242b4d1:review-0001",
+      "sourceLineageDigest": "sha256:83ae86b011c6194cdfb59ef3c41b920cff4e22de0ea74a290016b3dd50a717f7",
+      "sourceCategory": "production-implementation",
+      "title": "Implement maintained internal logic for \u0027samples/Intro/Intro.csproj\u0027 (executable)",
+      "scope": "samples/Intro/Intro.csproj",
+      "overlapGroupId": "manual-qa-overlap:0db671a232afc39e18cd",
+      "evidenceIds": [
+        "dotnet:source-structure:samples/Intro/Intro.csproj"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:application-entry-point:347561b5138dd976bdc8:review-0001",
+      "sourceLineageDigest": "sha256:1ab3019daea4ec6279a816b8d8c90c1545ee15092b8d56819bac4e1b438e7f35",
+      "sourceCategory": "production-implementation",
+      "title": "Implement application entry points for \u0027samples/Retries/Retries.csproj\u0027 (executable)",
+      "scope": "samples/Retries/Retries.csproj",
+      "overlapGroupId": "manual-qa-overlap:1edc4cb82a435c250f26",
+      "evidenceIds": [
+        "dotnet:entry-point:samples/Retries/Program.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:dotnet-source-backbone:35a344394c5ca25ae0f3:review-0001",
+      "sourceLineageDigest": "sha256:b3c26d78158531898a970e34a7f127a1a02897f1d99ff214f44cc4302a99db49",
+      "sourceCategory": "production-implementation",
+      "title": "Implement maintained internal logic for \u0027samples/Retries/Retries.csproj\u0027 (executable)",
+      "scope": "samples/Retries/Retries.csproj",
+      "overlapGroupId": "manual-qa-overlap:1edc4cb82a435c250f26",
+      "evidenceIds": [
+        "dotnet:source-structure:samples/Retries/Retries.csproj"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:api-surface:aaa308f0ce0a1b52ef87:review-0001",
+      "sourceLineageDigest": "sha256:0886be79faa83bee05f23c63db1d18aabc1fef08a0811c56c50f595125dc8f60",
+      "sourceCategory": "production-implementation",
+      "title": "Implement API and route behavior for \u0027src/Polly.Core/Polly.Core.csproj\u0027 (library)",
+      "scope": "src/Polly.Core/Polly.Core.csproj",
+      "overlapGroupId": "manual-qa-overlap:f2f9097035539e3403ea",
+      "evidenceIds": [
+        "dotnet:api:src/Polly.Core/CircuitBreaker/Controller/CircuitStateController.cs",
+        "dotnet:api:src/Polly.Core/Hedging/Controller/HedgingController.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:application-entry-point:ce7328f9f1d64e12c251:review-0001",
+      "sourceLineageDigest": "sha256:34a36cba967c82e289774773e352f9edb0b09bf7e4bd790ee3bae15984b0bcb2",
+      "sourceCategory": "production-implementation",
+      "title": "Implement application entry points for \u0027src/Polly.Core/Polly.Core.csproj\u0027 (library)",
+      "scope": "src/Polly.Core/Polly.Core.csproj",
+      "overlapGroupId": "manual-qa-overlap:f2f9097035539e3403ea",
+      "evidenceIds": [
+        "dotnet:entry-point:src/Polly.Core/Registry/RegistryPipelineComponentBuilder.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:dotnet-source-backbone:86bc67a44f32cc79592d:review-0001",
+      "sourceLineageDigest": "sha256:cce340a654d24be2b34681b5ae4a09585ffc613ccffe37df131d0044ec9d157c",
+      "sourceCategory": "production-implementation",
+      "title": "Implement maintained internal logic for \u0027src/Polly.Core/Polly.Core.csproj\u0027 (library)",
+      "scope": "src/Polly.Core/Polly.Core.csproj",
+      "overlapGroupId": "manual-qa-overlap:f2f9097035539e3403ea",
+      "evidenceIds": [
+        "dotnet:source-structure:src/Polly.Core/Polly.Core.csproj"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:validation-surface:e557511ea7e7d7c1002b:review-0001",
+      "sourceLineageDigest": "sha256:f897f02cb8642ede828cc9a76695172d4116801919dc6df1a50c4ba1231d3521",
+      "sourceCategory": "security-and-accessibility",
+      "title": "Implement represented validation behavior for \u0027src/Polly.Core/Polly.Core.csproj\u0027 (library)",
+      "scope": "src/Polly.Core/Polly.Core.csproj",
+      "overlapGroupId": "manual-qa-overlap:f2f9097035539e3403ea",
+      "evidenceIds": [
+        "dotnet:validation:src/Polly.Core/CircuitBreaker/CircuitBreakerStrategyOptions.TResult.cs",
+        "dotnet:validation:src/Polly.Core/Fallback/FallbackStrategyOptions.TResult.cs",
+        "dotnet:validation:src/Polly.Core/Hedging/HedgingStrategyOptions.TResult.cs",
+        "dotnet:validation:src/Polly.Core/Registry/ResiliencePipelineRegistryOptions.cs",
+        "dotnet:validation:src/Polly.Core/Simmy/Behavior/ChaosBehaviorStrategyOptions.cs",
+        "dotnet:validation:src/Polly.Core/Simmy/ChaosStrategyOptions.cs",
+        "dotnet:validation:src/Polly.Core/Simmy/Fault/ChaosFaultStrategyOptions.cs",
+        "dotnet:validation:src/Polly.Core/Simmy/Outcomes/ChaosOutcomeStrategyOptions.cs",
+        "dotnet:validation:src/Polly.Core/Timeout/TimeoutStrategyOptions.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:dotnet-source-backbone:3cf4f54ad50a230e1631:review-0001",
+      "sourceLineageDigest": "sha256:1bd7b11dcce5fca986514f6182d4a1c9a6bb23edd4365ec9ebf061e1cac7e2ff",
+      "sourceCategory": "production-implementation",
+      "title": "Implement maintained internal logic for \u0027src/Polly.Extensions/Polly.Extensions.csproj\u0027 (library)",
+      "scope": "src/Polly.Extensions/Polly.Extensions.csproj",
+      "overlapGroupId": "manual-qa-overlap:924f9ad7f2df3cb51ccf",
+      "evidenceIds": [
+        "dotnet:source-structure:src/Polly.Extensions/Polly.Extensions.csproj"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:external-integration:a31e9e45679892841302:review-0001",
+      "sourceLineageDigest": "sha256:7dd217d136acb3488fb6ae5d60d5e908e79ccd3a90fc3b2040c31f652566c272",
+      "sourceCategory": "external-integrations-and-protocols",
+      "title": "Integrate external services and protocols for \u0027src/Polly.Extensions/Polly.Extensions.csproj\u0027 (library)",
+      "scope": "src/Polly.Extensions/Polly.Extensions.csproj",
+      "overlapGroupId": "manual-qa-overlap:924f9ad7f2df3cb51ccf",
+      "evidenceIds": [
+        "dotnet:integration:src/Polly.Extensions/Telemetry/TelemetryOptions.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:validation-surface:ec20385470dc0526ed7a:review-0001",
+      "sourceLineageDigest": "sha256:80891933237f1cc436f9cb86481b4e530320c434d51ba9aecbe513d83d323ac4",
+      "sourceCategory": "security-and-accessibility",
+      "title": "Implement represented validation behavior for \u0027src/Polly.Extensions/Polly.Extensions.csproj\u0027 (library)",
+      "scope": "src/Polly.Extensions/Polly.Extensions.csproj",
+      "overlapGroupId": "manual-qa-overlap:924f9ad7f2df3cb51ccf",
+      "evidenceIds": [
+        "dotnet:validation:src/Polly.Extensions/Telemetry/TelemetryOptions.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:dotnet-source-backbone:fd71eb7b1ee6d1eb2811:review-0001",
+      "sourceLineageDigest": "sha256:fc1dfdc7c74c04dd0663d943bb01c2447ee13fab015f369c922c3a0a02cb2f60",
+      "sourceCategory": "production-implementation",
+      "title": "Implement maintained internal logic for \u0027src/Polly.RateLimiting/Polly.RateLimiting.csproj\u0027 (library)",
+      "scope": "src/Polly.RateLimiting/Polly.RateLimiting.csproj",
+      "overlapGroupId": "manual-qa-overlap:6e7d7eca69d953f5d954",
+      "evidenceIds": [
+        "dotnet:source-structure:src/Polly.RateLimiting/Polly.RateLimiting.csproj"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:validation-surface:dd02054ebe1ceccf359a:review-0001",
+      "sourceLineageDigest": "sha256:5ce009de8dcc009331ba3beba7d0ba586664def49f230663484c70db4f4ab46c",
+      "sourceCategory": "security-and-accessibility",
+      "title": "Implement represented validation behavior for \u0027src/Polly.RateLimiting/Polly.RateLimiting.csproj\u0027 (library)",
+      "scope": "src/Polly.RateLimiting/Polly.RateLimiting.csproj",
+      "overlapGroupId": "manual-qa-overlap:6e7d7eca69d953f5d954",
+      "evidenceIds": [
+        "dotnet:validation:src/Polly.RateLimiting/RateLimiterStrategyOptions.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:dotnet-source-backbone:b5765895f66c8abef997:review-0001",
+      "sourceLineageDigest": "sha256:c8a54e6bd9c52ec528568e37e2249062bc4414cd6cb374916167ce2a2a66bbb9",
+      "sourceCategory": "production-implementation",
+      "title": "Implement maintained internal logic for \u0027src/Polly.Testing/Polly.Testing.csproj\u0027 (library)",
+      "scope": "src/Polly.Testing/Polly.Testing.csproj",
+      "overlapGroupId": "manual-qa-overlap:4d346089695ae6b5290b",
+      "evidenceIds": [
+        "dotnet:source-structure:src/Polly.Testing/Polly.Testing.csproj"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:api-surface:a5eeaf4c7cbbec8dbf25:review-0001",
+      "sourceLineageDigest": "sha256:ff850657efafb51e401085938462c4563760ecceb2a849bf6b7ba8a2ba3a25f1",
+      "sourceCategory": "production-implementation",
+      "title": "Implement API and route behavior for \u0027src/Polly/Polly.csproj\u0027 (library)",
+      "scope": "src/Polly/Polly.csproj",
+      "overlapGroupId": "manual-qa-overlap:3948cbba1fe6b41cfb10",
+      "evidenceIds": [
+        "dotnet:api:src/Polly/CircuitBreaker/AdvancedCircuitController.cs",
+        "dotnet:api:src/Polly/CircuitBreaker/CircuitStateController.cs",
+        "dotnet:api:src/Polly/CircuitBreaker/ConsecutiveCountCircuitController.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:dotnet-source-backbone:f62aaca160cac3c28adf:review-0001",
+      "sourceLineageDigest": "sha256:9be508af0dbb340328bd7a723c95cfa622169090c6c0aca20a8e35680aea8c93",
+      "sourceCategory": "production-implementation",
+      "title": "Implement maintained internal logic for \u0027src/Polly/Polly.csproj\u0027 (library)",
+      "scope": "src/Polly/Polly.csproj",
+      "overlapGroupId": "manual-qa-overlap:3948cbba1fe6b41cfb10",
+      "evidenceIds": [
+        "dotnet:source-structure:src/Polly/Polly.csproj"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:application-entry-point:c02ad58cb3c9dd1d4b03:review-0001",
+      "sourceLineageDigest": "sha256:d857bb23215ff57a639626272d35e9942320b3122bf5aad79396cfa84764d906",
+      "sourceCategory": "production-implementation",
+      "title": "Implement application entry points for \u0027src/Snippets/Snippets.csproj\u0027 (test)",
+      "scope": "src/Snippets/Snippets.csproj",
+      "overlapGroupId": "manual-qa-overlap:6e56b782423a6d9bf5eb",
+      "evidenceIds": [
+        "dotnet:entry-point:src/Snippets/Docs/ResiliencePipelineRegistry.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:external-integration:4b044eec7cc1541d1d8a:review-0001",
+      "sourceLineageDigest": "sha256:f7a6e394ced13810995bd88484408786ddc438b693ce5d4af322838c17c0703a",
+      "sourceCategory": "external-integrations-and-protocols",
+      "title": "Integrate external services and protocols for \u0027src/Snippets/Snippets.csproj\u0027 (test)",
+      "scope": "src/Snippets/Snippets.csproj",
+      "overlapGroupId": "manual-qa-overlap:6e56b782423a6d9bf5eb",
+      "evidenceIds": [
+        "dotnet:integration:src/Snippets/Docs/Chaos.Behavior.cs",
+        "dotnet:integration:src/Snippets/Docs/Chaos.Fault.cs",
+        "dotnet:integration:src/Snippets/Docs/Chaos.Index.cs",
+        "dotnet:integration:src/Snippets/Docs/Chaos.Outcome.cs",
+        "dotnet:integration:src/Snippets/Docs/CircuitBreaker.cs",
+        "dotnet:integration:src/Snippets/Docs/DependencyInjection.cs",
+        "dotnet:integration:src/Snippets/Docs/Fallback.cs",
+        "dotnet:integration:src/Snippets/Docs/Hedging.cs",
+        "dotnet:integration:src/Snippets/Docs/HttpClientIntegrations.cs",
+        "dotnet:integration:src/Snippets/Docs/Migration.Bulkhead.cs",
+        "dotnet:integration:src/Snippets/Docs/Migration.CircuitBreaker.cs",
+        "dotnet:integration:src/Snippets/Docs/Migration.Policies.cs",
+        "dotnet:integration:src/Snippets/Docs/Migration.RateLimiter.cs",
+        "dotnet:integration:src/Snippets/Docs/Migration.Retry.cs",
+        "dotnet:integration:src/Snippets/Docs/Migration.Timeout.cs",
+        "dotnet:integration:src/Snippets/Docs/Performance.cs",
+        "dotnet:integration:src/Snippets/Docs/ResiliencePipelineRegistry.cs",
+        "dotnet:integration:src/Snippets/Docs/ResiliencePipelines.cs",
+        "dotnet:integration:src/Snippets/Docs/ResilienceStrategies.cs",
+        "dotnet:integration:src/Snippets/Docs/Retry.cs",
+        "dotnet:integration:src/Snippets/Docs/Timeout.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:unit-tests:af79f92397cb93071ec3:review-0001",
+      "sourceLineageDigest": "sha256:347e21c41cd469b3dc2b28f5c3e013a383ac418742603fd558b81194ccf202c5",
+      "sourceCategory": "unit-testing",
+      "title": "Create represented unit tests for \u0027src/Snippets/Snippets.csproj\u0027 (test)",
+      "scope": "src/Snippets/Snippets.csproj",
+      "overlapGroupId": "manual-qa-overlap:6e56b782423a6d9bf5eb",
+      "evidenceIds": [
+        "dotnet:test:src/Snippets/Docs/Chaos.Behavior.cs",
+        "dotnet:test:src/Snippets/Docs/Chaos.Fault.cs",
+        "dotnet:test:src/Snippets/Docs/Chaos.Index.cs",
+        "dotnet:test:src/Snippets/Docs/Chaos.Latency.cs",
+        "dotnet:test:src/Snippets/Docs/Chaos.Outcome.cs",
+        "dotnet:test:src/Snippets/Docs/CircuitBreaker.cs",
+        "dotnet:test:src/Snippets/Docs/DependencyInjection.cs",
+        "dotnet:test:src/Snippets/Docs/Extensibility.cs",
+        "dotnet:test:src/Snippets/Docs/Fallback.cs",
+        "dotnet:test:src/Snippets/Docs/General.cs",
+        "dotnet:test:src/Snippets/Docs/Hedging.cs",
+        "dotnet:test:src/Snippets/Docs/HttpClientIntegrations.cs",
+        "dotnet:test:src/Snippets/Docs/Migration.Bulkhead.cs",
+        "dotnet:test:src/Snippets/Docs/Migration.CircuitBreaker.cs",
+        "dotnet:test:src/Snippets/Docs/Migration.Context.cs",
+        "dotnet:test:src/Snippets/Docs/Migration.Execute.cs",
+        "dotnet:test:src/Snippets/Docs/Migration.Interoperability.cs",
+        "dotnet:test:src/Snippets/Docs/Migration.Policies.cs",
+        "dotnet:test:src/Snippets/Docs/Migration.RateLimiter.cs",
+        "dotnet:test:src/Snippets/Docs/Migration.Registry.cs",
+        "dotnet:test:src/Snippets/Docs/Migration.Retry.cs",
+        "dotnet:test:src/Snippets/Docs/Migration.Timeout.cs",
+        "dotnet:test:src/Snippets/Docs/Migration.Wrap.cs",
+        "dotnet:test:src/Snippets/Docs/Performance.cs",
+        "dotnet:test:src/Snippets/Docs/RateLimiter.cs",
+        "dotnet:test:src/Snippets/Docs/Readme.cs",
+        "dotnet:test:src/Snippets/Docs/ResilienceContextUsage.cs",
+        "dotnet:test:src/Snippets/Docs/ResiliencePipelineRegistry.cs",
+        "dotnet:test:src/Snippets/Docs/ResiliencePipelines.cs",
+        "dotnet:test:src/Snippets/Docs/ResilienceStrategies.cs",
+        "dotnet:test:src/Snippets/Docs/Retry.cs",
+        "dotnet:test:src/Snippets/Docs/Telemetry.cs",
+        "dotnet:test:src/Snippets/Docs/Testing.cs",
+        "dotnet:test:src/Snippets/Docs/Timeout.cs",
+        "dotnet:test:src/Snippets/Docs/Utils/SomeExceptionType.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:application-entry-point:a107d12c27809bd6d227:review-0001",
+      "sourceLineageDigest": "sha256:e315e20d3fae370ae83837fb5dc1f0e827155b5712204e81c9410d2d4088cbe3",
+      "sourceCategory": "production-implementation",
+      "title": "Implement application entry points for \u0027test/Polly.AotTest/Polly.AotTest.csproj\u0027 (test)",
+      "scope": "test/Polly.AotTest/Polly.AotTest.csproj",
+      "overlapGroupId": "manual-qa-overlap:9bb0d3058756d678a201",
+      "evidenceIds": [
+        "dotnet:entry-point:test/Polly.AotTest/Program.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:unit-tests:5873d05b9268a204393c:review-0001",
+      "sourceLineageDigest": "sha256:087c6972dde8e0531d26ecbc4f79e1277fdbb08cc561203485e5ecfb3f3435cc",
+      "sourceCategory": "unit-testing",
+      "title": "Create represented unit tests for \u0027test/Polly.AotTest/Polly.AotTest.csproj\u0027 (test)",
+      "scope": "test/Polly.AotTest/Polly.AotTest.csproj",
+      "overlapGroupId": "manual-qa-overlap:9bb0d3058756d678a201",
+      "evidenceIds": [
+        "dotnet:test:test/Polly.AotTest/Program.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:unit-tests:f22978b955d3bfd7713e:review-0001",
+      "sourceLineageDigest": "sha256:ba80b495fa77f234b6eb7f45453de4db03d2737110ffa7bcd8e2997bf08963b6",
+      "sourceCategory": "unit-testing",
+      "title": "Create represented unit tests for \u0027test/Polly.Core.Tests/Polly.Core.Tests.csproj\u0027 (test)",
+      "scope": "test/Polly.Core.Tests/Polly.Core.Tests.csproj",
+      "overlapGroupId": "manual-qa-overlap:d00695500783d0803a6d",
+      "evidenceIds": [
+        "dotnet:test:test/Polly.Core.Tests/CircuitBreaker/BreakDurationGeneratorArgumentsTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/CircuitBreaker/BrokenCircuitExceptionTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/CircuitBreaker/CircuitBreakerManualControlTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/CircuitBreaker/CircuitBreakerOptionsTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/CircuitBreaker/CircuitBreakerPredicateArgumentsTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/CircuitBreaker/CircuitBreakerResiliencePipelineBuilderTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/CircuitBreaker/CircuitBreakerResilienceStrategyTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/CircuitBreaker/CircuitBreakerStateProviderTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/CircuitBreaker/Controller/AdvancedCircuitBehaviorTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/CircuitBreaker/Controller/CircuitStateControllerTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/CircuitBreaker/Controller/ScheduledTaskExecutorTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/CircuitBreaker/Health/HealthMetricsTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/CircuitBreaker/Health/RollingHealthMetricsTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/CircuitBreaker/Health/SingleHealthMetricsTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/CircuitBreaker/IsolatedCircuitExceptionTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/CircuitBreaker/OnCircuitClosedArgumentsTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/CircuitBreaker/OnCircuitHalfOpenedArgumentsTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/CircuitBreaker/OnCircuitOpenedArgumentsTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/ExecutionRejectedExceptionTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/Fallback/FallbackHandlerTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/Fallback/FallbackHelper.cs",
+        "dotnet:test:test/Polly.Core.Tests/Fallback/FallbackResiliencePipelineBuilderExtensionsTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/Fallback/FallbackResilienceStrategyTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/Fallback/FallbackStrategyOptionsTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/GenericResiliencePipelineBuilderTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/Hedging/Controller/HedgingControllerTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/Hedging/Controller/HedgingExecutionContextTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/Hedging/Controller/TaskExecutionTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/Hedging/HedgingActionGeneratorArgumentsTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/Hedging/HedgingActions.cs",
+        "dotnet:test:test/Polly.Core.Tests/Hedging/HedgingDelayGeneratorArgumentsTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/Hedging/HedgingHelper.cs",
+        "dotnet:test:test/Polly.Core.Tests/Hedging/HedgingPredicateArgumentsTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/Hedging/HedgingResiliencePipelineBuilderExtensionsTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/Hedging/HedgingResilienceStrategyTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/Hedging/HedgingStrategyOptionsTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/Hedging/HedgingTimeProvider.cs",
+        "dotnet:test:test/Polly.Core.Tests/Hedging/OnHedgingArgumentsTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/Hedging/PrimaryStringTasks.cs",
+        "dotnet:test:test/Polly.Core.Tests/Helpers/DisposableResult.cs",
+        "dotnet:test:test/Polly.Core.Tests/Issues/IssuesTests .OnRetryContext_2597.cs",
+        "dotnet:test:test/Polly.Core.Tests/Issues/IssuesTests.CancellationTokenPropagation_3086.cs",
+        "dotnet:test:test/Polly.Core.Tests/Issues/IssuesTests.CircuitBreakerStateRegistry_1828.cs",
+        "dotnet:test:test/Polly.Core.Tests/Issues/IssuesTests.CircuitBreakerStateSharing_959.cs",
+        "dotnet:test:test/Polly.Core.Tests/Issues/IssuesTests.FlowingContext_849.cs",
+        "dotnet:test:test/Polly.Core.Tests/Issues/IssuesTests.HandleMultipleResults_898.cs",
+        "dotnet:test:test/Polly.Core.Tests/Issues/IssuesTests.InfiniteRetry_2163.cs",
+        "dotnet:test:test/Polly.Core.Tests/Issues/IssuesTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/OutcomeTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/PredicateBuilderTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/PredicateResultTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/Registry/ConfigureBuilderContextTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/Registry/ResiliencePipelineProviderTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/Registry/ResiliencePipelineRegistryOptionsTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/Registry/ResiliencePipelineRegistryTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/Registry/StrategyId.cs",
+        "dotnet:test:test/Polly.Core.Tests/ResilienceContextPoolTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/ResilienceContextTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/ResiliencePipelineBuilderTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/ResiliencePipelineTTests.Async.cs",
+        "dotnet:test:test/Polly.Core.Tests/ResiliencePipelineTTests.Sync.cs",
+        "dotnet:test:test/Polly.Core.Tests/ResiliencePipelineTests.Async.cs",
+        "dotnet:test:test/Polly.Core.Tests/ResiliencePipelineTests.AsyncT.cs",
+        "dotnet:test:test/Polly.Core.Tests/ResiliencePipelineTests.Sync.cs",
+        "dotnet:test:test/Polly.Core.Tests/ResiliencePipelineTests.SyncT.cs",
+        "dotnet:test:test/Polly.Core.Tests/ResiliencePipelineTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/ResiliencePropertiesTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/ResiliencePropertyKeyTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/ResilienceStrategyOptionsTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/Retry/OnRetryArgumentsTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/Retry/RetryConstantsTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/Retry/RetryDelayGeneratorArgumentsTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/Retry/RetryHelperTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/Retry/RetryResiliencePipelineBuilderExtensionsTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/Retry/RetryResilienceStrategyTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/Retry/RetryStrategyOptionsTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/Retry/ShouldRetryArgumentsTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/Simmy/Behavior/BehaviorGeneratorArgumentsTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/Simmy/Behavior/ChaosBehaviorConstantsTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/Simmy/Behavior/ChaosBehaviorPipelineBuilderExtensionsTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/Simmy/Behavior/ChaosBehaviorStrategyOptionsTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/Simmy/Behavior/ChaosBehaviorStrategyTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/Simmy/Behavior/OnBehaviorInjectedArgumentsTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/Simmy/ChaosStrategyConstantsTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/Simmy/ChaosStrategyOptionsTTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/Simmy/ChaosStrategyOptionsTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/Simmy/ChaosStrategyTTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/Simmy/ChaosStrategyTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/Simmy/EnabledGeneratorArgumentsTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/Simmy/Fault/ChaosFaultConstantsTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/Simmy/Fault/ChaosFaultPipelineBuilderExtensionsTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/Simmy/Fault/ChaosFaultStrategyOptionsTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/Simmy/Fault/ChaosFaultStrategyTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/Simmy/Fault/FaultGeneratorArgumentsTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/Simmy/Fault/FaultGeneratorTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/Simmy/Fault/OnFaultInjectedArgumentsTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/Simmy/InjectionRateGeneratorArgumentsTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/Simmy/Latency/ChaosLatencyConstantsTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/Simmy/Latency/ChaosLatencyPipelineBuilderExtensionsTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/Simmy/Latency/ChaosLatencyStrategyOptionsTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/Simmy/Latency/ChaosLatencyStrategyTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/Simmy/Latency/LatencyGeneratorArgumentsTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/Simmy/Latency/OnLatencyInjectedArgumentsTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/Simmy/Outcomes/ChaosOutcomeConstantsTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/Simmy/Outcomes/ChaosOutcomePipelineBuilderExtensionsTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/Simmy/Outcomes/ChaosOutcomeStrategyOptionsTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/Simmy/Outcomes/ChaosOutcomeStrategyTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/Simmy/Outcomes/OnOutcomeInjectedArgumentsTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/Simmy/Outcomes/OutcomeGeneratorArgumentsTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/Simmy/Outcomes/OutcomeGeneratorTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/Simmy/TestChaosStrategy.TResult.cs",
+        "dotnet:test:test/Polly.Core.Tests/Simmy/TestChaosStrategy.cs",
+        "dotnet:test:test/Polly.Core.Tests/Simmy/TestChaosStrategyOptions.TResult.cs",
+        "dotnet:test:test/Polly.Core.Tests/Simmy/TestChaosStrategyOptions.cs",
+        "dotnet:test:test/Polly.Core.Tests/Simmy/Utils/GeneratorHelperTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/StrategyBuilderContextTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/Telemetry/ExecutionAttemptArgumentsTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/Telemetry/PipelineExecutedArgumentsTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/Telemetry/ResilienceEventTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/Telemetry/ResilienceStrategyTelemetryTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/Telemetry/TelemetryEventArgumentsTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/Telemetry/TelemetryUtilTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/Timeout/TimeoutConstantsTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/Timeout/TimeoutRejectedExceptionTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/Timeout/TimeoutResiliencePipelineBuilderExtensionsTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/Timeout/TimeoutResilienceStrategyTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/Timeout/TimeoutStrategyOptionsTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/Timeout/TimeoutTestUtils.cs",
+        "dotnet:test:test/Polly.Core.Tests/Timeout/TimeoutUtilTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/Utils/CancellationTokenSourcePoolTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/Utils/DisposeHelperTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/Utils/ExceptionUtilitiesTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/Utils/LegacySupportTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/Utils/ObjectPoolTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/Utils/OutcomeUtilitiesTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/Utils/Pipeline/BridgePipelineComponentTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/Utils/Pipeline/ComponentWithDisposeCallbacksTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/Utils/Pipeline/CompositePipelineComponentTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/Utils/Pipeline/DelegatingComponentTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/Utils/Pipeline/ExecutionTrackingComponentTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/Utils/Pipeline/PipelineComponentFactoryTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/Utils/Pipeline/PipelineComponentTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/Utils/Pipeline/ReloadablePipelineComponentTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/Utils/RandomUtilTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/Utils/TaskHelperTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/Utils/TimeProviderExtensionsTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/Utils/TypeNameFormatterTests.cs",
+        "dotnet:test:test/Polly.Core.Tests/Utils/ValidationHelperTests.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:validation-surface:c4a4a3b13aa5e85882bd:review-0001",
+      "sourceLineageDigest": "sha256:f0fd5f368ebea08f933352d2894e28873f09da101c8a9319e317bb43e0ec3c4a",
+      "sourceCategory": "security-and-accessibility",
+      "title": "Implement represented validation behavior for \u0027test/Polly.Core.Tests/Polly.Core.Tests.csproj\u0027 (test)",
+      "scope": "test/Polly.Core.Tests/Polly.Core.Tests.csproj",
+      "overlapGroupId": "manual-qa-overlap:d00695500783d0803a6d",
+      "evidenceIds": [
+        "dotnet:validation:test/Polly.Core.Tests/ResiliencePipelineBuilderTests.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:external-integration:a8cb7b4050dce78718b3:review-0001",
+      "sourceLineageDigest": "sha256:2e053c6e3b1a4d55c142ee1b06abb3fd97ec049ceadfe85796da208bfab56803",
+      "sourceCategory": "external-integrations-and-protocols",
+      "title": "Integrate external services and protocols for \u0027test/Polly.Extensions.Tests/Polly.Extensions.Tests.csproj\u0027 (test)",
+      "scope": "test/Polly.Extensions.Tests/Polly.Extensions.Tests.csproj",
+      "overlapGroupId": "manual-qa-overlap:cce684ef6e354e00498b",
+      "evidenceIds": [
+        "dotnet:integration:test/Polly.Extensions.Tests/Telemetry/TelemetryListenerImplTests.cs",
+        "dotnet:integration:test/Polly.Extensions.Tests/Telemetry/TelemetryOptionsTests.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:unit-tests:607e01555c391b7f56d0:review-0001",
+      "sourceLineageDigest": "sha256:99b3d789266f3ea89d92528dad1e8bee120b526a1628321655527f0578307cdd",
+      "sourceCategory": "unit-testing",
+      "title": "Create represented unit tests for \u0027test/Polly.Extensions.Tests/Polly.Extensions.Tests.csproj\u0027 (test)",
+      "scope": "test/Polly.Extensions.Tests/Polly.Extensions.Tests.csproj",
+      "overlapGroupId": "manual-qa-overlap:cce684ef6e354e00498b",
+      "evidenceIds": [
+        "dotnet:test:test/Polly.Extensions.Tests/DependencyInjection/PollyServiceCollectionExtensionTests.cs",
+        "dotnet:test:test/Polly.Extensions.Tests/DisposablePipelineTests.cs",
+        "dotnet:test:test/Polly.Extensions.Tests/Issues/IssuesTests.DynamicContextPool_1687.cs",
+        "dotnet:test:test/Polly.Extensions.Tests/Issues/IssuesTests.OnCircuitBreakWithServiceProvider_796.cs",
+        "dotnet:test:test/Polly.Extensions.Tests/Issues/IssuesTests.OverrideLibraryStrategies_1072.cs",
+        "dotnet:test:test/Polly.Extensions.Tests/Issues/IssuesTests.OverrideLoggerFactory_1783.cs",
+        "dotnet:test:test/Polly.Extensions.Tests/Issues/IssuesTests.PartitionedRateLimiter_1365.cs",
+        "dotnet:test:test/Polly.Extensions.Tests/Issues/IssuesTests.StrategiesPerEndpoint_1365.cs",
+        "dotnet:test:test/Polly.Extensions.Tests/Issues/IssuesTests.cs",
+        "dotnet:test:test/Polly.Extensions.Tests/NonParallelizableCollection.cs",
+        "dotnet:test:test/Polly.Extensions.Tests/Registry/ConfigureBuilderContextExtensionsTests.cs",
+        "dotnet:test:test/Polly.Extensions.Tests/ReloadableResiliencePipelineTests.cs",
+        "dotnet:test:test/Polly.Extensions.Tests/Telemetry/TagsListTests.cs",
+        "dotnet:test:test/Polly.Extensions.Tests/Telemetry/TelemetryListenerImplTests.cs",
+        "dotnet:test:test/Polly.Extensions.Tests/Telemetry/TelemetryOptionsTests.cs",
+        "dotnet:test:test/Polly.Extensions.Tests/Telemetry/TelemetryResiliencePipelineBuilderExtensionsTests.cs",
+        "dotnet:test:test/Polly.Extensions.Tests/Telemetry/TelemetrySourceTests.cs",
+        "dotnet:test:test/Polly.Extensions.Tests/Utils/TelemetryUtilTests.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:unit-tests:d7d361e6b5566b0ff333:review-0001",
+      "sourceLineageDigest": "sha256:398ca8bc3f7947d90446d21f452b8f70178fc713938dcb062cbd812b9e6f4c8a",
+      "sourceCategory": "unit-testing",
+      "title": "Create represented unit tests for \u0027test/Polly.RateLimiting.Tests/Polly.RateLimiting.Tests.csproj\u0027 (test)",
+      "scope": "test/Polly.RateLimiting.Tests/Polly.RateLimiting.Tests.csproj",
+      "overlapGroupId": "manual-qa-overlap:de8bb31920d28b95a089",
+      "evidenceIds": [
+        "dotnet:test:test/Polly.RateLimiting.Tests/OnRateLimiterRejectedArgumentsTests.cs",
+        "dotnet:test:test/Polly.RateLimiting.Tests/RateLimiterConstantsTests.cs",
+        "dotnet:test:test/Polly.RateLimiting.Tests/RateLimiterRejectedExceptionTests.cs",
+        "dotnet:test:test/Polly.RateLimiting.Tests/RateLimiterResiliencePipelineBuilderExtensionsTests.cs",
+        "dotnet:test:test/Polly.RateLimiting.Tests/RateLimiterResilienceStrategyTests.cs",
+        "dotnet:test:test/Polly.RateLimiting.Tests/RateLimiterStrategyOptionsTests.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:unit-tests:cdc17b0c2e79d8290924:review-0001",
+      "sourceLineageDigest": "sha256:d67b4aaabc1b9c51d7bd1f4dc3b2a2ebc6e078c1d3f6c7a3d919610711a96c5d",
+      "sourceCategory": "unit-testing",
+      "title": "Create represented unit tests for \u0027test/Polly.Specs/Polly.Specs.csproj\u0027 (test)",
+      "scope": "test/Polly.Specs/Polly.Specs.csproj",
+      "overlapGroupId": "manual-qa-overlap:de4ddd1015c5f0495a6f",
+      "evidenceIds": [
+        "dotnet:test:test/Polly.Specs/Bulkhead/BulkheadAsyncSpecs.cs",
+        "dotnet:test:test/Polly.Specs/Bulkhead/BulkheadScenario.cs",
+        "dotnet:test:test/Polly.Specs/Bulkhead/BulkheadScenarios.cs",
+        "dotnet:test:test/Polly.Specs/Bulkhead/BulkheadSpecs.cs",
+        "dotnet:test:test/Polly.Specs/Bulkhead/BulkheadSpecsBase.cs",
+        "dotnet:test:test/Polly.Specs/Bulkhead/BulkheadTResultAsyncSpecs.cs",
+        "dotnet:test:test/Polly.Specs/Bulkhead/BulkheadTResultSpecs.cs",
+        "dotnet:test:test/Polly.Specs/Bulkhead/IBulkheadPolicySpecs.cs",
+        "dotnet:test:test/Polly.Specs/Caching/AbsoluteTtlSpecs.cs",
+        "dotnet:test:test/Polly.Specs/Caching/AsyncSerializingCacheProviderSpecs.cs",
+        "dotnet:test:test/Polly.Specs/Caching/CacheAsyncSpecs.cs",
+        "dotnet:test:test/Polly.Specs/Caching/CacheSpecs.cs",
+        "dotnet:test:test/Polly.Specs/Caching/CacheTResultAsyncSpecs.cs",
+        "dotnet:test:test/Polly.Specs/Caching/CacheTResultSpecs.cs",
+        "dotnet:test:test/Polly.Specs/Caching/ContextualTtlSpecs.cs",
+        "dotnet:test:test/Polly.Specs/Caching/DefaultCacheKeyStrategySpecs.cs",
+        "dotnet:test:test/Polly.Specs/Caching/GenericCacheProviderAsyncSpecs.cs",
+        "dotnet:test:test/Polly.Specs/Caching/GenericCacheProviderSpecs.cs",
+        "dotnet:test:test/Polly.Specs/Caching/RelativeTtlSpecs.cs",
+        "dotnet:test:test/Polly.Specs/Caching/ResultTtlSpecs.cs",
+        "dotnet:test:test/Polly.Specs/Caching/SerializingCacheProviderSpecs.cs",
+        "dotnet:test:test/Polly.Specs/Caching/SlidingTtlSpecs.cs",
+        "dotnet:test:test/Polly.Specs/CircuitBreaker/AdvancedCircuitBreakerAsyncSpecs.cs",
+        "dotnet:test:test/Polly.Specs/CircuitBreaker/AdvancedCircuitBreakerSpecs.cs",
+        "dotnet:test:test/Polly.Specs/CircuitBreaker/CircuitBreakerAsyncSpecs.cs",
+        "dotnet:test:test/Polly.Specs/CircuitBreaker/CircuitBreakerSpecs.cs",
+        "dotnet:test:test/Polly.Specs/CircuitBreaker/CircuitBreakerTResultAsyncSpecs.cs",
+        "dotnet:test:test/Polly.Specs/CircuitBreaker/CircuitBreakerTResultMixedResultExceptionSpecs.cs",
+        "dotnet:test:test/Polly.Specs/CircuitBreaker/CircuitBreakerTResultSpecs.cs",
+        "dotnet:test:test/Polly.Specs/CircuitBreaker/ICircuitBreakerPolicySpecs.cs",
+        "dotnet:test:test/Polly.Specs/CircuitBreaker/ICircuitBreakerTResultPolicySpecs.cs",
+        "dotnet:test:test/Polly.Specs/CircuitBreaker/RollingHealthMetricsTests.cs",
+        "dotnet:test:test/Polly.Specs/ContextSpecs.cs",
+        "dotnet:test:test/Polly.Specs/Custom/CustomAsyncSpecs.cs",
+        "dotnet:test:test/Polly.Specs/Custom/CustomSpecs.cs",
+        "dotnet:test:test/Polly.Specs/Custom/CustomTResultAsyncSpecs.cs",
+        "dotnet:test:test/Polly.Specs/Custom/CustomTResultSpecs.cs",
+        "dotnet:test:test/Polly.Specs/DictionaryHelpers.cs",
+        "dotnet:test:test/Polly.Specs/Fallback/FallbackAsyncSpecs.cs",
+        "dotnet:test:test/Polly.Specs/Fallback/FallbackSpecs.cs",
+        "dotnet:test:test/Polly.Specs/Fallback/FallbackTResultAsyncSpecs.cs",
+        "dotnet:test:test/Polly.Specs/Fallback/FallbackTResultSpecs.cs",
+        "dotnet:test:test/Polly.Specs/Helpers/Bulkhead/AnnotatedOutputHelper.cs",
+        "dotnet:test:test/Polly.Specs/Helpers/Bulkhead/AssertionFailure.cs",
+        "dotnet:test:test/Polly.Specs/Helpers/Bulkhead/SilentOutputHelper.cs",
+        "dotnet:test:test/Polly.Specs/Helpers/Bulkhead/TraceableAction.cs",
+        "dotnet:test:test/Polly.Specs/Helpers/Bulkhead/TraceableActionStatus.cs",
+        "dotnet:test:test/Polly.Specs/Helpers/Caching/StubCacheKeyStrategy.cs",
+        "dotnet:test:test/Polly.Specs/Helpers/Caching/StubCacheProvider.cs",
+        "dotnet:test:test/Polly.Specs/Helpers/Caching/StubErroringCacheProvider.cs",
+        "dotnet:test:test/Polly.Specs/Helpers/Caching/StubSerialized.cs",
+        "dotnet:test:test/Polly.Specs/Helpers/Caching/StubSerializer.cs",
+        "dotnet:test:test/Polly.Specs/Helpers/Constants.cs",
+        "dotnet:test:test/Polly.Specs/Helpers/ContextualPolicyExtensions.cs",
+        "dotnet:test:test/Polly.Specs/Helpers/ContextualPolicyExtensionsAsync.cs",
+        "dotnet:test:test/Polly.Specs/Helpers/ContextualPolicyTResultExtensions.cs",
+        "dotnet:test:test/Polly.Specs/Helpers/ContextualPolicyTResultExtensionsAsync.cs",
+        "dotnet:test:test/Polly.Specs/Helpers/Custom/AddBehaviourIfHandle/AddBehaviourIfHandleEngine.cs",
+        "dotnet:test:test/Polly.Specs/Helpers/Custom/AddBehaviourIfHandle/AddBehaviourIfHandlePolicy.cs",
+        "dotnet:test:test/Polly.Specs/Helpers/Custom/AddBehaviourIfHandle/AddBehaviourIfHandleSyntax.cs",
+        "dotnet:test:test/Polly.Specs/Helpers/Custom/AddBehaviourIfHandle/AsyncAddBehaviourIfHandleEngine.cs",
+        "dotnet:test:test/Polly.Specs/Helpers/Custom/AddBehaviourIfHandle/AsyncAddBehaviourIfHandlePolicy.cs",
+        "dotnet:test:test/Polly.Specs/Helpers/Custom/AddBehaviourIfHandle/AsyncAddBehaviourIfHandleSyntax.cs",
+        "dotnet:test:test/Polly.Specs/Helpers/Custom/PreExecute/AsyncPreExecuteEngine.cs",
+        "dotnet:test:test/Polly.Specs/Helpers/Custom/PreExecute/AsyncPreExecutePolicy.cs",
+        "dotnet:test:test/Polly.Specs/Helpers/Custom/PreExecute/PreExecuteEngine.cs",
+        "dotnet:test:test/Polly.Specs/Helpers/Custom/PreExecute/PreExecutePolicy.cs",
+        "dotnet:test:test/Polly.Specs/Helpers/PolicyExtensions.cs",
+        "dotnet:test:test/Polly.Specs/Helpers/PolicyExtensionsAsync.cs",
+        "dotnet:test:test/Polly.Specs/Helpers/PolicyTResultExtensions.cs",
+        "dotnet:test:test/Polly.Specs/Helpers/PolicyTResultExtensionsAsync.cs",
+        "dotnet:test:test/Polly.Specs/Helpers/RateLimit/IRateLimiterExtensions.cs",
+        "dotnet:test:test/Polly.Specs/Helpers/RateLimit/ResultClassWithRetryAfter.cs",
+        "dotnet:test:test/Polly.Specs/Helpers/ResultClass.cs",
+        "dotnet:test:test/Polly.Specs/Helpers/ResultPrimitive.cs",
+        "dotnet:test:test/Polly.Specs/IAsyncPolicyExtensionsSpecs.cs",
+        "dotnet:test:test/Polly.Specs/ISyncPolicyExtensionsSpecs.cs",
+        "dotnet:test:test/Polly.Specs/NoOp/NoOpAsyncSpecs.cs",
+        "dotnet:test:test/Polly.Specs/NoOp/NoOpSpecs.cs",
+        "dotnet:test:test/Polly.Specs/NoOp/NoOpTResultAsyncSpecs.cs",
+        "dotnet:test:test/Polly.Specs/NoOp/NoOpTResultSpecs.cs",
+        "dotnet:test:test/Polly.Specs/PolicyAsyncSpecs.cs",
+        "dotnet:test:test/Polly.Specs/PolicyKeyAsyncSpecs.cs",
+        "dotnet:test:test/Polly.Specs/PolicyKeySpecs.cs",
+        "dotnet:test:test/Polly.Specs/PolicySpecs.cs",
+        "dotnet:test:test/Polly.Specs/PolicyTResultAsyncSpecs.cs",
+        "dotnet:test:test/Polly.Specs/PolicyTResultKeyAsyncSpecs.cs",
+        "dotnet:test:test/Polly.Specs/PolicyTResultKeySpecs.cs",
+        "dotnet:test:test/Polly.Specs/PolicyTResultSpecs.cs",
+        "dotnet:test:test/Polly.Specs/RateLimit/AsyncRateLimitPolicySpecs.cs",
+        "dotnet:test:test/Polly.Specs/RateLimit/AsyncRateLimitPolicyTResultSpecs.cs",
+        "dotnet:test:test/Polly.Specs/RateLimit/LockFreeTokenBucketRateLimiterTests.cs",
+        "dotnet:test:test/Polly.Specs/RateLimit/RateLimitPolicySpecs.cs",
+        "dotnet:test:test/Polly.Specs/RateLimit/RateLimitPolicySpecsBase.cs",
+        "dotnet:test:test/Polly.Specs/RateLimit/RateLimitPolicyTResultSpecs.cs",
+        "dotnet:test:test/Polly.Specs/RateLimit/RateLimitPolicyTResultSpecsBase.cs",
+        "dotnet:test:test/Polly.Specs/RateLimit/RateLimitRejectedExceptionTests.cs",
+        "dotnet:test:test/Polly.Specs/RateLimit/RateLimitSpecsBase.cs",
+        "dotnet:test:test/Polly.Specs/RateLimit/TokenBucketRateLimiterTestsBase.cs",
+        "dotnet:test:test/Polly.Specs/Registry/ConcurrentPolicyRegistrySpecs.cs",
+        "dotnet:test:test/Polly.Specs/Registry/PolicyRegistrySpecs.cs",
+        "dotnet:test:test/Polly.Specs/Registry/ReadOnlyPolicyRegistrySpecs.cs",
+        "dotnet:test:test/Polly.Specs/ResiliencePipelineConversionExtensionsTests.cs",
+        "dotnet:test:test/Polly.Specs/Retry/RetryAsyncSpecs.cs",
+        "dotnet:test:test/Polly.Specs/Retry/RetryForeverAsyncSpecs.cs",
+        "dotnet:test:test/Polly.Specs/Retry/RetryForeverSpecs.cs",
+        "dotnet:test:test/Polly.Specs/Retry/RetrySpecs.cs",
+        "dotnet:test:test/Polly.Specs/Retry/RetryTResultAsyncSpecs.cs",
+        "dotnet:test:test/Polly.Specs/Retry/RetryTResultMixedResultExceptionSpecs.cs",
+        "dotnet:test:test/Polly.Specs/Retry/RetryTResultSpecs.cs",
+        "dotnet:test:test/Polly.Specs/Retry/WaitAndRetryAsyncSpecs.cs",
+        "dotnet:test:test/Polly.Specs/Retry/WaitAndRetryForeverAsyncSpecs.cs",
+        "dotnet:test:test/Polly.Specs/Retry/WaitAndRetryForeverSpecs.cs",
+        "dotnet:test:test/Polly.Specs/Retry/WaitAndRetryForeverTResultAsyncSpecs.cs",
+        "dotnet:test:test/Polly.Specs/Retry/WaitAndRetryForeverTResultSpecs.cs",
+        "dotnet:test:test/Polly.Specs/Retry/WaitAndRetrySpecs.cs",
+        "dotnet:test:test/Polly.Specs/Retry/WaitAndRetryTResultAsyncSpecs.cs",
+        "dotnet:test:test/Polly.Specs/Retry/WaitAndRetryTResultSpecs.cs",
+        "dotnet:test:test/Polly.Specs/Timeout/TimeoutAsyncSpecs.cs",
+        "dotnet:test:test/Polly.Specs/Timeout/TimeoutSpecs.cs",
+        "dotnet:test:test/Polly.Specs/Timeout/TimeoutSpecsBase.cs",
+        "dotnet:test:test/Polly.Specs/Timeout/TimeoutTResultAsyncSpecs.cs",
+        "dotnet:test:test/Polly.Specs/Timeout/TimeoutTResultSpecs.cs",
+        "dotnet:test:test/Polly.Specs/Utilities/LockTimeoutExceptionTests.cs",
+        "dotnet:test:test/Polly.Specs/Utilities/SystemClockSpecs.cs",
+        "dotnet:test:test/Polly.Specs/Wrap/IPolicyWrapExtensionSpecs.cs",
+        "dotnet:test:test/Polly.Specs/Wrap/PolicyWrapAsyncSpecs.cs",
+        "dotnet:test:test/Polly.Specs/Wrap/PolicyWrapContextAndKeyAsyncSpecs.cs",
+        "dotnet:test:test/Polly.Specs/Wrap/PolicyWrapContextAndKeySpecs.cs",
+        "dotnet:test:test/Polly.Specs/Wrap/PolicyWrapSpecs.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:unit-tests:dc14276905fe3b4b2ab9:review-0001",
+      "sourceLineageDigest": "sha256:24e84a41cfa8317fbf3684426dc4476a2928bcd9091741f948c74860d2628e34",
+      "sourceCategory": "unit-testing",
+      "title": "Create represented unit tests for \u0027test/Polly.TestUtils/Polly.TestUtils.csproj\u0027 (test)",
+      "scope": "test/Polly.TestUtils/Polly.TestUtils.csproj",
+      "overlapGroupId": "manual-qa-overlap:f62430a9032f41e9d8f8",
+      "evidenceIds": [
+        "dotnet:test:test/Polly.TestUtils/BinarySerializationUtil.cs",
+        "dotnet:test:test/Polly.TestUtils/FakeLogger.cs",
+        "dotnet:test:test/Polly.TestUtils/FakeLoggerFactory.cs",
+        "dotnet:test:test/Polly.TestUtils/FakeTelemetryListener.cs",
+        "dotnet:test:test/Polly.TestUtils/LogRecord.cs",
+        "dotnet:test:test/Polly.TestUtils/MeteringEvent.cs",
+        "dotnet:test:test/Polly.TestUtils/OutcomeExtensions.cs",
+        "dotnet:test:test/Polly.TestUtils/ResilienceStrategyExtensions.cs",
+        "dotnet:test:test/Polly.TestUtils/TestArguments.cs",
+        "dotnet:test:test/Polly.TestUtils/TestResilienceStrategy.cs",
+        "dotnet:test:test/Polly.TestUtils/TestResilienceStrategyOptions.cs",
+        "dotnet:test:test/Polly.TestUtils/TestUtilities.cs"
+      ]
+    },
+    {
+      "sourceTargetId": "target:work:unit-tests:42be019aed1e4e280a55:review-0001",
+      "sourceLineageDigest": "sha256:d258936f43331ef72bd62bde9a5144e8339e2030d656d294478c1f6038615d0f",
+      "sourceCategory": "unit-testing",
+      "title": "Create represented unit tests for \u0027test/Polly.Testing.Tests/Polly.Testing.Tests.csproj\u0027 (test)",
+      "scope": "test/Polly.Testing.Tests/Polly.Testing.Tests.csproj",
+      "overlapGroupId": "manual-qa-overlap:16b0adb0f7872a3ffbb7",
+      "evidenceIds": [
+        "dotnet:test:test/Polly.Testing.Tests/ResiliencePipelineExtensionsTests.cs"
+      ]
+    }
+  ],
+  "instructions": [
+    "Use the manual-qa-work-item/1.0.0 rubric and the immutable public source only.",
+    "Estimate the manual validation, debugging, and hardening needed after recreating each represented coding responsibility.",
+    "Review all targets sharing overlapGroupId together; assign shared validation once and make exclusions explicit.",
+    "Keep automated-test authoring separate, while including the bounded work needed to run, inspect, and debug represented tests.",
+    "Do not infer actual labor, use Git history or activity, or force a percentage or preferred repository total.",
+    "Use exact 0/0/0 only for a wholly excluded or duplicate responsibility and explain the exclusion.",
+    "Keep expected targets normally between 0.5 and 8 hours; explain any cohesive size exception."
+  ]
+}
