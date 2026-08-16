@@ -191,10 +191,15 @@ count, and intermediate churn do not value effort. `CHANGE_ESTIMATION.md` and
   gate before public labels are joined. Its 15-repository, 2,030-target run rejects
   all 14 direct drivers: every conditioned interval loses coverage and increases
   miss, although median decision complexity and nesting retain useful diagnostic
-  ordering. Add coupling/cycle/interface
-  distributions under a separate graph contract before choosing correlated
-  aggregation. Only then freeze a new candidate and fresh blind validation
-  boundary.
+  ordering. The separate label-independent
+  `repository-uncertainty-graph-features/1.0.0` contract now freezes 14 .NET and
+  JavaScript local fan-in/fan-out, cycle-concentration, and public-interface
+  distribution diagnostics with node/edge/work-item lineage. Its evidence-only
+  preflight consulted no labels or residuals, and all fields remain diagnostic.
+  Next freeze graph target aggregation, directions, fixed buckets, and a
+  repository-held-out development gate before joining labels. Evaluate bounded
+  correlated combinations only after that result; any selected successor still
+  needs a new candidate identity and fresh blind validation boundary.
 - Preserve repository-family partition isolation and honest teacher/model/input
   provenance. Optional independent review remains explicit corroboration, not an
   implied maturity upgrade.

@@ -33,6 +33,45 @@ Because EffortHours's own anchor informed the seed-model and calibration design,
 a development diagnostic rather than an eligible held-out test record unless a
 future independent snapshot and review policy explicitly establishes otherwise.
 
+## 2026-08-16: graph uncertainty feature freeze
+
+Status: **label-independent .NET/JavaScript graph contract frozen; diagnostic
+only; no residual evaluation, fit, estimate change, or admission**
+
+`repository-uncertainty-graph-features/1.0.0` freezes 14 repository graph and
+public-interface distribution fields before measuring them against reviewed
+residuals. Its canonical contract digest is
+`sha256:3b41238130578b02e3c1b3426103cbbc5f1b6656efafe50fe53c336b94570200`.
+The projector reads only a digest-matched saved estimate and repository-evidence
+document and changes neither input nor `seed-rules/0.4.0` output.
+
+The graph includes every declared .NET project and JavaScript package, including
+zero-degree nodes. Resolved same-ecosystem local references become directed edges
+and duplicate source/target facts collapse to one edge with retained evidence
+lineage. The frozen fields are nearest-rank p50, p90, maximum, and share strictly
+above `3` for local fan-in and fan-out; cyclic-node and largest-cyclic-component
+shares from directed strongly connected components; and nearest-rank p50, p90,
+maximum, and share strictly above `0.5` for local public-interface concentration.
+Missing and incompatible structure evidence remain explicit rather than appearing
+as low interface concentration. Raw node and edge totals are audit context only,
+not repository-size features or interval drivers.
+
+An evidence-only preflight over the 15 public development snapshots produced 347
+supported nodes and 657 deduplicated edges. One repository contained six cyclic
+nodes. Public-interface measurement was usable for 316 nodes; 15 had no
+source-structure evidence and 16 had no declaration denominator. The projector
+mapped 10,048 of 11,161 source work items to at least one same-ecosystem graph node
+and retained 1,113 explicit unmapped rows. This preflight inspected no reviewed
+target hours, residuals, feature correlations, or interval outcomes; it establishes
+only that the frozen boundary is populated, variable, and auditable.
+
+Every graph field is marked `diagnostic-only`, and reports retain the complete
+node/edge/evidence inventory plus source-work-item-to-node mappings. The next
+checkpoint must freeze target aggregation, expected directions, buckets, sparse
+fallback, and a repository-held-out development gate before labels are joined.
+Only a later evaluation may decide whether graph fields help bounded correlated
+combinations; this record authorizes no model or interval change.
+
 ## 2026-08-16: structural uncertainty development evaluation
 
 Status: **all 14 direct structural width drivers rejected on development; useful

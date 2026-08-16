@@ -239,6 +239,8 @@ eh calibration uncertainty-features <estimate.json> <evidence.json>
   [--output <path>]
 eh calibration uncertainty-structure <estimate.json> <evidence.json>
   [--output <path>]
+eh calibration uncertainty-graph <estimate.json> <evidence.json>
+  [--output <path>]
 eh calibration uncertainty-evaluate <development-corpus.json> <features.json>...
   [--output <path>]
 eh calibration mutations <suite.json> <estimate.json>... [--output <path>]
@@ -364,10 +366,10 @@ held-out value rather than proxy repository size or reward accidental complexity
 At the v1 feature-contract freeze, per-callable complexity, size, and nesting
 distributions; local fan-in, fan-out, and dependency cycles; analyzer-ambiguity
 concentration; per-cell sample support; and OOD scoring were explicitly deferred.
-They remain absent from that frozen work-item vector. Later support and structural
-artifacts extend the pre-fit diagnostic evidence without rewriting v1 or silently
-adding a fitted feature. The source report's existing range and a symmetry-
-compliance flag remain diagnostic only; none of these checkpoints changes
+They remain absent from that frozen work-item vector. Later support, structural,
+and graph artifacts extend the pre-fit diagnostic evidence without rewriting v1
+or silently adding a fitted feature. The source report's existing range and a
+symmetry-compliance flag remain diagnostic only; none of these checkpoints changes
 `seed-rules/0.4.0` or fits a successor.
 
 ### Structural uncertainty diagnostics
@@ -409,8 +411,8 @@ Work-item projection takes the maximum shape/ambiguity value across contributing
 local scopes and the minimum callable-coverage value. It does not sum repository
 totals. All 14 fields are `diagnostic-only`: they do not reward complexity, change
 expected EHE, widen an interval, alter a reviewed label, or fit a model. Local
-fan-in/fan-out, dependency cycles, and interface concentration remain deferred to
-a separate graph contract.
+fan-in/fan-out, dependency cycles, and interface concentration are frozen in the
+separate graph contract below.
 
 The label-independent evaluation boundary is separately frozen as
 `uncertainty-structural-evaluation-policy/1.0.0`, digest
@@ -436,6 +438,60 @@ rejects all 14 fields as direct width drivers: every variant narrows the baselin
 but loses coverage and increases interval miss. Median decision complexity and
 median nesting retain the cleanest expected ordering, so the measurements remain
 useful diagnostics without admission.
+
+### Graph uncertainty diagnostics
+
+`repository-uncertainty-graph-features/1.0.0` freezes 14 label-independent
+repository graph and interface-distribution fields for .NET and JavaScript. It can
+be projected with:
+
+```text
+eh calibration uncertainty-graph <estimate.json> <evidence.json> \
+  --compact --output <graph-features.json>
+```
+
+The projector applies the same immutable source-digest match, offline operation,
+privacy boundary, and no-label rule as the other uncertainty projectors. The
+report validates against `calibration-uncertainty-graph-features.schema.json` and
+pins canonical contract digest
+`sha256:3b41238130578b02e3c1b3426103cbbc5f1b6656efafe50fe53c336b94570200`.
+
+The frozen graph population and measurements are:
+
+- one node for every declared .NET project or JavaScript package, including
+  zero-degree nodes;
+- one directed edge for each resolved same-ecosystem local project/package
+  reference, deduplicated by source and target; configuration references and
+  unresolved or outside-scope targets are not edges;
+- nearest-rank p50, p90, maximum, and the share strictly above `3` for local
+  fan-in and fan-out;
+- the share of nodes in a directed strongly connected component with more than
+  one node or a self-edge, plus the largest cyclic component's share of all nodes;
+- nearest-rank p50, p90, maximum, and the share strictly above `0.5` for local
+  public-interface concentration; .NET uses public types plus public methods over
+  all types plus methods, while JavaScript uses exports over functions, methods,
+  classes, interfaces, type aliases, and enums, with each ratio capped at `1`; and
+- explicit unavailable/not-applicable interface states, so missing or
+  incompatible structure evidence cannot look like a private interface; any
+  incompatible supported scope makes the repository interface distribution
+  unavailable instead of silently using a partial sample.
+
+Raw node, edge, and reference counts are audit context only. They are never
+interval drivers or repository-size proxies. The report retains every node,
+deduplicated edge and evidence ID, and each source work item's resolved node IDs so
+a later target aggregation can be reviewed without reconstructing graph identity.
+All 14 fields are `diagnostic-only`; no field changes expected EHE, source ranges,
+labels, or `seed-rules/0.4.0`.
+
+An evidence-only preflight across the 15 public development snapshots found 347
+supported nodes and 657 deduplicated local edges. Of those nodes, 316 supplied a
+usable public-interface measurement, 15 had no source-structure evidence, and 16
+had no declaration denominator. One repository contained six cyclic nodes. Of
+11,161 source work items, 10,048 mapped to at least one same-ecosystem graph node
+and 1,113 remained explicitly unmapped. This verifies coverage and variation only:
+no reviewed hours, residuals, or feature outcomes were consulted. Target
+aggregation, fixed buckets, expected directions, and a development-only evaluation
+gate must be frozen separately before any reviewed residual is joined.
 
 ### Development-only uncertainty feature measurement
 

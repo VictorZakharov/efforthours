@@ -277,6 +277,7 @@ unchanged scans, but it is never an effort signal.
 | Area | Current status |
 | --- | --- |
 | Repository EHE | Experimental and uncalibrated; `logical-capability/0.3.0` improves blind-validation expected WAPE from `0.2279` to `0.0940` but fails six frozen error, coverage, width, and material-category gates; it is retired without test disclosure, and `seed-rules/0.4.0` remains shipped |
+| Repository uncertainty | Scalar, support/OOD, and direct structural width drivers are rejected on development; a separate 14-field .NET/JavaScript graph contract is frozen but remains diagnostic-only and unevaluated against labels |
 | Change EHE, documented Stage A band | Model-authored logical gate passed for eligible 4-to-32-hour changes on the previously admitted language set |
 | Newer analyzer ecosystems | Experimental and outside the existing Change admission boundary |
 | Production validation | No empirical production-accuracy claim |
@@ -332,6 +333,7 @@ eh change explain <change-estimate.json> --item <id>
 eh review packet <repository> --compact
 eh calibration uncertainty-features <estimate.json> <evidence.json> --compact
 eh calibration uncertainty-structure <estimate.json> <evidence.json> --compact
+eh calibration uncertainty-graph <estimate.json> <evidence.json> --compact
 eh calibration uncertainty-evaluate <development-corpus.json> <features.json>... --compact
 eh calibration uncertainty-structure-evaluate <development-corpus.json> <structural-features.json>... --compact
 eh calibration uncertainty-support <population.json> <features.json>... --compact

@@ -35,6 +35,15 @@ public static class CalibrationUncertaintyVersions
     public const string StructuralProjectorV1 =
         "uncertainty-structural-feature-projector/1.0.0";
 
+    public const string GraphFeatureContractV1 =
+        "repository-uncertainty-graph-features/1.0.0";
+
+    public const string GraphFeatureContractDigestV1 =
+        "sha256:3b41238130578b02e3c1b3426103cbbc5f1b6656efafe50fe53c336b94570200";
+
+    public const string GraphProjectorV1 =
+        "uncertainty-graph-feature-projector/1.0.0";
+
     public const string StructuralEvaluatorV1 =
         "uncertainty-structural-feature-evaluator/1.0.0";
 
@@ -79,6 +88,8 @@ public static class SchemaNames
         "calibration-uncertainty-features.schema.json";
     public const string CalibrationUncertaintyStructuralFeatures =
         "calibration-uncertainty-structural-features.schema.json";
+    public const string CalibrationUncertaintyGraphFeatures =
+        "calibration-uncertainty-graph-features.schema.json";
     public const string CalibrationUncertaintyStructuralEvaluation =
         "calibration-uncertainty-structural-evaluation.schema.json";
     public const string CalibrationUncertaintyEvaluation =
@@ -129,6 +140,8 @@ public static class SchemaIds
         "urn:eh:schema:v1:calibration-uncertainty-features";
     public const string CalibrationUncertaintyStructuralFeatures =
         "urn:eh:schema:v1:calibration-uncertainty-structural-features";
+    public const string CalibrationUncertaintyGraphFeatures =
+        "urn:eh:schema:v1:calibration-uncertainty-graph-features";
     public const string CalibrationUncertaintyStructuralEvaluation =
         "urn:eh:schema:v1:calibration-uncertainty-structural-evaluation";
     public const string CalibrationUncertaintyEvaluation =
