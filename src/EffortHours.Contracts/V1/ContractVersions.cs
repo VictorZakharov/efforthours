@@ -37,6 +37,13 @@ public static class CalibrationUncertaintyVersions
     public const string SupportPolicyV1 = "uncertainty-support-policy/1.0.0";
 
     public const string SupportProfilerV1 = "uncertainty-support-profiler/1.0.0";
+
+    public const string SupportEvaluationV1 = "uncertainty-support-evaluation/1.0.0";
+
+    public const string SupportEvaluationMetricV1 = "uncertainty-support-metrics/1.0.0";
+
+    public const string SupportTargetAggregationV1 =
+        "uncertainty-support-target-aggregation/1.0.0";
 }
 
 public static class SchemaNames
@@ -55,6 +62,8 @@ public static class SchemaNames
         "calibration-uncertainty-support-population.schema.json";
     public const string CalibrationUncertaintySupportProfile =
         "calibration-uncertainty-support-profile.schema.json";
+    public const string CalibrationUncertaintySupportEvaluation =
+        "calibration-uncertainty-support-evaluation.schema.json";
     public const string CalibrationMutationReport = "calibration-mutation-report.schema.json";
     public const string CalibrationMutationSuite = "calibration-mutation-suite.schema.json";
     public const string CalibrationReviewPlan = "calibration-review-plan.schema.json";
@@ -99,6 +108,8 @@ public static class SchemaIds
         "urn:eh:schema:v1:calibration-uncertainty-support-population";
     public const string CalibrationUncertaintySupportProfile =
         "urn:eh:schema:v1:calibration-uncertainty-support-profile";
+    public const string CalibrationUncertaintySupportEvaluation =
+        "urn:eh:schema:v1:calibration-uncertainty-support-evaluation";
     public const string CalibrationMutationReport = "urn:eh:schema:v1:calibration-mutation-report";
     public const string CalibrationMutationSuite = "urn:eh:schema:v1:calibration-mutation-suite";
     public const string CalibrationReviewPlan = "urn:eh:schema:v1:calibration-review-plan";

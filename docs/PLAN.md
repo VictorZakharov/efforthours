@@ -178,10 +178,11 @@ count, and intermediate churn do not value effort. `CHANGE_ESTIMATION.md` and
   normalized width, and interval miss together. The label-independent
   `uncertainty-support-profiler/1.0.0` now computes repository-family-held-out
   hierarchical support and bucketed OOD distance for all 11,161 development work
-  items; every item has sufficient cross-family support, but those values have not
-  yet been tested against reviewed residuals. Next, aggregate them to reviewed
-  targets and measure incremental value through the same development-fold path,
-  then add deferred structural distributions deliberately before choosing
+  items. `uncertainty-support-evaluator/1.0.0` aggregates four predeclared signals
+  to all 2,030 targets and rejects each as a direct width driver: all reduce
+  coverage, increase miss, and show non-monotonic or contrary residual ordering.
+  Retain them as diagnostics. Next, add deferred function/complexity/nesting and
+  coupling/cycle/interface distributions in bounded groups before choosing
   correlated aggregation. Only then freeze a new candidate and fresh blind
   validation boundary.
 - Preserve repository-family partition isolation and honest teacher/model/input

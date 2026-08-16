@@ -216,6 +216,34 @@ public sealed class CalibrationDiagnosticCliTests
         Assert.Equal(3, support.Summary.RepositoryCount);
         Assert.True(support.Policy.LabelIndependent);
         Assert.False(support.Policy.UsesReviewedValues);
+
+        string supportPath = temporary.Write(
+            "support-profile.json",
+            supportResult.StandardOutput);
+        List<string> supportEvaluationArguments =
+            ["calibration", "uncertainty-support-evaluate", corpusPath, supportPath];
+        supportEvaluationArguments.AddRange(featurePaths);
+        supportEvaluationArguments.Add("--compact");
+
+        ProcessResult supportEvaluationResult = await RunCliAsync(
+            root,
+            [.. supportEvaluationArguments]);
+
+        Assert.Equal(0, supportEvaluationResult.ExitCode);
+        Assert.Equal(string.Empty, supportEvaluationResult.StandardError);
+        CalibrationUncertaintySupportEvaluationReport supportEvaluation =
+            ContractJson.Deserialize<CalibrationUncertaintySupportEvaluationReport>(
+                supportEvaluationResult.StandardOutput);
+        SchemaValidationResult supportEvaluationSchema = ContractSchemaValidator.Validate(
+            SchemaNames.CalibrationUncertaintySupportEvaluation,
+            supportEvaluationResult.StandardOutput);
+        Assert.True(
+            supportEvaluationSchema.IsValid,
+            string.Join(Environment.NewLine, supportEvaluationSchema.Errors));
+        Assert.Empty(ContractValidation.Validate(supportEvaluation));
+        Assert.Equal(4, supportEvaluation.Signals.Count);
+        Assert.True(supportEvaluation.Protocol.SupportProfileLabelIndependent);
+        Assert.False(supportEvaluation.Protocol.FitsProductionModel);
     }
 
     private static CalibrationCorpus CreateCorpus(EstimateReport estimate) => new()

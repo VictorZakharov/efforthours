@@ -272,9 +272,14 @@ a new finite candidate identity and fresh blind boundary.
 `uncertainty-support-profiler/1.0.0` has the same pre-fit status. Its manifest and
 feature reports contain no reviewed values; support and OOD references exclude the
 complete repository family. Population coverage or a low nearest-neighbor distance
-does not satisfy an accuracy or range gate. The values must first demonstrate
-incremental development-fold coverage, sharpness, and miss performance, then be
-frozen into a new finite candidate before fresh blind validation.
+does not satisfy an accuracy or range gate. The frozen four-signal
+`uncertainty-support-evaluator/1.0.0` development measurement has now rejected
+fallback depth, minimum support-family count, and mean/maximum OOD as direct width
+drivers: all four lose coverage and increase interval miss versus the held-out
+baseline, with non-monotonic or contrary residual ordering. They remain diagnostic
+applicability evidence. Any revised hypothesis requires a new pre-label contract;
+any retained feature must still enter a new finite candidate before fresh blind
+validation.
 
 ## Qualitative, safety, and explanation gates
 

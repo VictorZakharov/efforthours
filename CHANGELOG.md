@@ -8,6 +8,15 @@ may still change public contracts with explicit documentation.
 
 ### Added
 
+- Added `uncertainty-support-evaluator/1.0.0`, its v1 schema, and the offline
+  `calibration uncertainty-support-evaluate` command. It aggregates four
+  predeclared label-independent support/OOD signals to reviewed development
+  targets and measures repository-held-out coverage, sharpness, miss, monotonicity,
+  correlations, buckets, and folds without fitting a model. The complete
+  15-repository result rejects all four as direct interval-width drivers because
+  they reduce coverage, increase miss, and order residuals non-monotonically or
+  contrary to their hypotheses; the signals remain diagnostics and estimates are
+  unchanged.
 - Added `uncertainty-support-profiler/1.0.0`, its development population and v1
   schemas, and the offline `calibration uncertainty-support` command. It excludes
   complete repository families from hierarchical sample support and bucketed OOD

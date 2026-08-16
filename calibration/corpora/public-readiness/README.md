@@ -164,7 +164,10 @@ contain an unsealed test label before the one-time decision.
 
 ## Next checkpoint
 
-Continue issue #137 from the `1.4.0` development measurement. Add deferred
-structural, sample-support, and out-of-distribution evidence in bounded groups and
-measure incremental value before fitting any successor. Any finite candidate
-requires a new identity and fresh blind validation boundary; test remains sealed.
+Continue issue #137 from the `1.6.0` development measurement. Sample support and
+OOD have been measured and rejected as direct interval-width drivers for the
+current corpus; retain them as diagnostics. Add deferred function-size,
+complexity, nesting, coupling/cycle, interface-concentration, and analyzer-
+ambiguity evidence in bounded groups and measure incremental value before fitting
+any successor. Any finite candidate requires a new identity and fresh blind
+validation boundary; test remains sealed.

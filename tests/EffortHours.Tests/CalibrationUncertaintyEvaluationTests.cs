@@ -177,12 +177,12 @@ public sealed class CalibrationUncertaintyEvaluationTests
             StringComparison.Ordinal));
     }
 
-    private static (CalibrationCorpus Corpus, CalibrationUncertaintyFeatureReport[] Features)
+    internal static (CalibrationCorpus Corpus, CalibrationUncertaintyFeatureReport[] Features)
         CreateFixture()
     {
         List<CalibrationUncertaintyFeatureReport> reports = [];
         List<CalibrationRecord> records = [];
-        decimal[] adjustments = [0.25m, 0.75m, 1.5m, 3m];
+        decimal[] adjustments = [0.250037m, 0.75m, 1.5m, 3m];
         for (int index = 0; index < adjustments.Length; index++)
         {
             char digestCharacter = (char)('a' + index);

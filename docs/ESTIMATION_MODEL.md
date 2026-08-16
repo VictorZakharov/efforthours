@@ -682,8 +682,14 @@ targets or hours. The complete family is held out, so another revision from the
 same repository cannot inflate support or serve as a nearest reference. Support
 falls back through fixed category/size/ecosystem/complexity cells, and OOD uses
 four structural plus 11 frozen feature dimensions. These values remain population
-diagnostics until repository-held-out residual measurement shows incremental
-value; they do not alter expected EHE or interval width by themselves.
+diagnostics and do not alter expected EHE or interval width by themselves.
+`uncertainty-support-evaluator/1.0.0` has now aggregated four frozen support/OOD
+signals to the 2,030 development targets and measured them through repository-held-
+out residual folds. Every signal worsened coverage and interval miss relative to
+the unconditional baseline, and the bucket directions were non-monotonic or
+opposite their width hypotheses. The current signals are therefore rejected as
+direct width drivers; this is a measured non-selection, not permission to retune
+the label-independent contract after observing labels.
 
 How item-level uncertainty is aggregated, including correlated uncertainty,
 remains an implementation research item. Reports must not imply that ranges are
