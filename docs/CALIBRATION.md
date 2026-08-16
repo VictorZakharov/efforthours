@@ -76,6 +76,13 @@ and material-category gates fail. The candidate is retired without test
 disclosure; no candidate is admitted or shipped, and `seed-rules/0.4.0` remains
 the product estimator and fallback.
 
+That completed `repository-model-admission/1.0.0` attempt is retained as historical
+evidence, not the template for future candidates. Development strategy
+`repository-total-materiality/1.0.0` now makes source-backed repository totals
+primary, bounds immaterial work as a residual, and uses item/category disagreement
+only to diagnose a material total miss. Any future admission attempt requires a
+new policy identity and fresh holdout boundary.
+
 Change EHE has a separate limited Stage A logical-admission decision. Its exact
 size, ecosystem, metric, and performance boundary is defined in
 `CHANGE_MODEL_ADMISSION.md`; it does not calibrate repository EHE or later Change
@@ -87,11 +94,12 @@ Calibration turns consistent logical review into measurable weak supervision
 without obscuring provenance or confusing the labels with actual work history.
 The system must:
 
-- record evidence-backed target work units;
+- record source-backed repository totals and evidence-backed material work areas;
 - keep public and private material separable;
 - isolate development, validation, and test partitions by repository family;
 - compare canonical candidate estimates with frozen labels offline;
-- report item, category, repository-total, mapping, bias, and interval behavior;
+- report repository-total and interval behavior first, with item, category,
+  mapping, and bias detail available for conditional diagnosis;
 - preserve disagreement and unmatched decomposition rather than treating it as
   zero; and
 - admit a correction or local model only when it improves frozen held-out results
@@ -287,6 +295,43 @@ labels and do not make planning bounds formal probability intervals.
 Metrics are emitted for repository-profile totals, active categories, and fully
 matched targets. Per-record diagnostics retain candidate digests, mapping counts,
 unmatched IDs, and category mismatches.
+
+### Materiality-first repository calibration
+
+Development strategy `repository-total-materiality/1.0.0` changes what receives
+numerical authority. A source-backed repository total is primary. Category and
+work-item values are supporting explanations only where the reviewer can estimate
+them reliably; producing more rows does not create more independent evidence.
+
+Each new aggregate assessment must state a credible low/expected/high total, its
+source boundary, assumptions, reviewer provenance, and confidence limitations. It
+should use only a few material work areas that improve the total judgment. Small
+or poorly estimable areas are combined into one explicit residual and bounded
+collectively rather than assigned false precision. If the reviewed range is too
+broad to distinguish useful candidate totals, the case is diagnostic-only and
+cannot drive a decision.
+
+The comparison proceeds in this order:
+
+1. Compare repository totals at low, expected, and high, with expected as the
+   primary point diagnostic.
+2. If the candidate expected point lies inside the credible reviewed range and no
+   systematic aggregate regression is visible, stop. No target-level agreement is
+   required to manufacture additional confidence.
+3. If the total is outside that range, use the existing residual diagnostic to
+   rank signed contributors largest first.
+4. Inspect only contributors capable of materially changing the total. Stop when
+   the correction enters the credible range, the reviewed contributors explain
+   at least 80% of gross residual, or the remainder cannot change the decision.
+5. Fix or reject the responsible evidence, prior, duplicate, or multiplier; do
+   not re-review components already shown immaterial to the miss.
+
+Unweighted target accuracy, tiny-category error, and target-count coverage are not
+independent evidence of repository accuracy under this strategy. They may reveal
+mapping or explanation defects, but they cannot outweigh a credible total merely
+because many small rows exist. A future admission policy that adopts this strategy
+requires a new identity and fresh holdout boundary; it cannot rewrite the frozen
+`repository-model-admission/1.0.0` attempt.
 
 ### Residual diagnosis
 
@@ -683,12 +728,16 @@ direct interval-width drivers for this corpus and retained only as diagnostics.
 
 ## Model-admission policy
 
-The exact repository gate is frozen as
-`repository-model-admission/1.0.0` in `MODEL_ADMISSION.md`. It requires at least
+The historical repository gate is frozen as
+`repository-model-admission/1.0.0` in `MODEL_ADMISSION.md`. It required at least
 33 repository families across explicit .NET, JavaScript/TypeScript, and mixed
 development/validation/sealed-test cells; a finite predeclared candidate set;
 point, category, mapping, bias, and range-sharpness thresholds; and complete
 mutation, explanation, safety, determinism, latency, memory, and package gates.
+Its only blind-validation attempt is complete and rejected. It remains immutable
+evidence, not the template for a future attempt. Any successor must use a new
+policy identity and decide explicitly how `repository-total-materiality/1.0.0`
+governs numerical authority before new labels or candidate outputs are opened.
 
 Coverage alone cannot admit an unhelpfully broad range. A candidate must retain
 reviewed-point coverage while materially reducing normalized width relative to
@@ -765,17 +814,45 @@ estimate/exclude/duplicate semantics. The resulting 2,665-target corpus does not
 exist yet; the blank plan is rejected by compilation, and validation/test remain
 unavailable.
 
+A later local candidate-blind authoring preflight completed the template but was
+not accepted or published. Its row-level completeness primarily repeated a small
+set of category-shaped judgments and did not provide stronger numerical evidence
+than a reliable aggregate assessment. No compiled replacement corpus or
+seed-versus-candidate result from that preflight is part of the repository.
+Accordingly, exhaustive 955-target relabeling is no longer a prerequisite. The
+`2.0.0` packets and `2.1.0` compiler remain immutable optional diagnostic tools.
+
+Under `repository-total-materiality/1.0.0`, the existing real-case comparison is
+the first aggregate diagnostic:
+
+| Estimate | Low | Expected | High | Expected error versus 240 h |
+| --- | ---: | ---: | ---: | ---: |
+| Shipped seed | 78.00 | 161.50 | 306.75 | -78.50 h (-32.7%) |
+| Manual-QA candidate | 121.45 | 218.10 | 375.25 | -21.90 h (-9.1%) |
+| Separate manual assessment | 182.00 | 240.00 | 302.00 | - |
+
+The simple QA correction removes 72.1% of absolute midpoint error and brings the
+candidate midpoint inside the reviewed range. The high endpoint still worsens;
+that remains visible interval evidence rather than a reason to manufacture
+micro-labels for the point estimate.
+
 ## Next evidence required
 
-- complete candidate-blind review of all 955 manual-QA development targets under
-  the now-frozen `2.1.0` decision/compiler boundary;
-- a complete development evaluation and operational preflight for the exact
-  `manual-qa-coding-ratio/0.1.0` policy;
+- add at least two materially different, source-backed repository assessments
+  with credible aggregate ranges, only a few reliably estimated work areas, and
+  an explicit residual where needed;
+- precommit each new assessment before opening its seed or exact
+  `manual-qa-coding-ratio/0.1.0` comparison;
+- stop at repository totals when they are credible; for a material miss, publish
+  only the largest-first diagnosis needed to explain the decision;
+- record advance, revise, or reject for the manual-QA candidate under a new
+  development decision identity;
 - a new finite manifest and genuinely fresh blind validation boundary if the
   development candidate survives;
 - sealed test labels with a precommitted digest and custody record only after a
   future candidate passes that new validation boundary;
-- more exact small-task teacher decompositions with honest context provenance;
+- honest reviewer context, source boundaries, assumptions, and confidence without
+  equating row count with accuracy;
 - optional independent replication where available;
 - the already-frozen family matrix and held-out thresholds in
   `MODEL_ADMISSION.md`;

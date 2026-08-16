@@ -6,19 +6,31 @@ Policy identity: **`repository-model-admission/1.0.0`**
 
 Frozen: **2026-08-13**
 
-This policy governs any transparent correction, statistical model, or local
+Current status: **historical completed attempt; retained unchanged for audit, not
+the template for a future candidate**
+
+This policy governed the completed `logical-capability/0.3.0` attempt for any
+transparent correction, statistical model, or local
 learned model that would replace or adjust repository `seed-rules/0.4.0` EHE. It
 was frozen before an eligible corpus or candidate set existed. Change EHE follows
 the separate progressive policy in `CHANGE_MODEL_ADMISSION.md`.
 
-No repository candidate is currently admitted. Passing this policy would support
-an **experimental logical-admission** claim against disclosed weak supervision.
+The 2026-08-16 `repository-total-materiality/1.0.0` development strategy in
+`CALIBRATION.md` makes credible repository totals primary and uses granular
+comparison only to diagnose material misses. It does not retroactively change a
+gate or result below. Any future repository admission attempt must freeze a new
+policy identity and fresh holdout boundary that explicitly incorporates or rejects
+that strategy before candidate outputs are opened.
+
+No repository candidate is currently admitted. Passing this policy would have
+supported an **experimental logical-admission** claim against disclosed weak
+supervision.
 It would not establish historical truth, calibrated probability intervals,
 empirical production accuracy, or production readiness.
 
-The seed estimator remains the shipped default and mandatory offline fallback
-unless one frozen candidate passes every applicable validation and one-time test
-gate below.
+The seed estimator remains the shipped default and mandatory offline fallback.
+This policy's attempt selected no candidate for one-time test; a future replacement
+requires a separately frozen successor policy.
 
 ## Admission scope
 
