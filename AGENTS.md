@@ -121,6 +121,11 @@ and JavaScript/JSX. Its separate target aggregation, fixed buckets, expected
 residual directions, and repository-held-out evaluation gate were frozen before
 public labels were joined. All 14 fields have now been measured against the 2,030
 development targets; every conditioned interval loses coverage and increases miss,
-so all remain diagnostic-only and no interval model is frozen.
+so all remain diagnostic-only and no interval model is frozen. The separate
+`repository-uncertainty-graph-features/1.0.0` contract now freezes 14
+.NET/JavaScript fan-in/fan-out, cycle, and public-interface diagnostics with
+node/edge/work-item lineage. Its evidence-only preflight used no labels or
+residuals; graph target aggregation and evaluation policy remain unfrozen, every
+field is diagnostic-only, and estimates remain unchanged.
 Change EHE has only the limited Stage A logical admission described in
 `docs/CHANGE_MODEL_ADMISSION.md`; later ecosystem extensions remain experimental.

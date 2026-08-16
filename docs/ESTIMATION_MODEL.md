@@ -692,6 +692,20 @@ and per-repository results without fitting or admitting an interval rule. The fi
 conditioned variant loses coverage and increases miss despite becoming narrower.
 The structural fields remain diagnostic-only.
 
+`repository-uncertainty-graph-features/1.0.0` is the next separate,
+label-independent freeze. `eh calibration uncertainty-graph` derives 14
+repository-level diagnostics from digest-matched saved evidence: local .NET
+project and JavaScript package fan-in/fan-out distributions, cyclic strongly
+connected-component concentration, and local public-interface concentration.
+Nodes include supported zero-degree projects/packages; resolved local edges are
+deduplicated by source and target. Nearest-rank p50/p90/maximum values, fan degree
+strictly above `3`, and public-interface concentration strictly above `0.5` were
+fixed before labels. Raw graph size is retained only as audit context. The report
+also preserves node, edge, evidence, and source-work-item lineage. Every field is
+diagnostic-only: no label, residual, model fit, expected EHE, or interval changes
+in this checkpoint. Target aggregation and evaluation policy remain a subsequent
+pre-label decision.
+
 `uncertainty-feature-evaluation/1.0.0` measures those vectors only against a
 development-only corpus. It uses leave-one-repository-out folds, an unconditional
 nearest-rank 80th-percentile normalized-residual baseline, and fixed scalar-feature
