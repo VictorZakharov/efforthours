@@ -28,6 +28,10 @@ The later [`2.0.0 manual-QA review freeze`](corpora/public-readiness/2.0.0/READM
 projects all 955 eligible development responsibilities into 15 candidate-blind
 packets under `manual-qa-work-item/1.0.0`. It freezes the review input before any
 replacement QA judgment, compiler, candidate evaluation, or holdout access.
+The [`2.1.0 decision compiler freeze`](corpora/public-readiness/2.1.0/README.md)
+then fixes the blank 955-decision template, exact completeness and provenance
+rules, `0/0/0` exclusion/duplicate semantics, candidate work-item lineage mapping,
+and deterministic corpus rebasing before any answers are authored.
 The public repository now contains 21 labeled repository families and 2,262
 teacher targets in total, still without independent correction or a model-
 admission result.

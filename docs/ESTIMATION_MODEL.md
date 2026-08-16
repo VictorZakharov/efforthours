@@ -115,7 +115,9 @@ candidate is development-only and does not change the shipped estimator; it
 requires category re-review and fresh blind validation before admission. The
 `efforthours-public-readiness/2.0.0` checkpoint freezes 955 candidate-blind
 development review inputs before any replacement QA judgment or evaluation; it
-does not validate the prior.
+does not validate the prior. Checkpoint `2.1.0` freezes the blank decision plan,
+zero/duplicate semantics, exact candidate work-item mapping, and deterministic
+corpus compiler before answers; it likewise provides no validation result.
 
 ### 4.5 Documentation
 

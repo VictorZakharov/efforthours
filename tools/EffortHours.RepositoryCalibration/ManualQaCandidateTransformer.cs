@@ -1,6 +1,7 @@
 using System.Globalization;
 using System.Security.Cryptography;
 using System.Text;
+using EffortHours.Calibration;
 using EffortHours.Contracts.V1;
 
 namespace EffortHours.RepositoryCalibration;
@@ -115,7 +116,7 @@ internal static class ManualQaCandidateTransformer
         WorkItem source,
         ManualQaCandidatePolicy policy) => new()
         {
-            Id = $"work:manual-qa-coding-ratio:{StableToken(source.Id)}:part-0001",
+            Id = ManualQaSourceWorkItemLineage.CreateCandidateWorkItemId(source.Id),
             Category = EffortCategory.ManualValidationDebuggingAndHardening,
             Title = $"Manually validate, debug, and harden: {source.Title}",
             Scope = source.Scope,

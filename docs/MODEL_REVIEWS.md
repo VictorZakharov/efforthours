@@ -33,6 +33,36 @@ Because EffortHours's own anchor informed the seed-model and calibration design,
 a development diagnostic rather than an eligible held-out test record unless a
 future independent snapshot and review policy explicitly establishes otherwise.
 
+## 2026-08-16: manual-QA decision compiler freeze
+
+Status: **blank 955-decision plan and exact development compiler frozen before
+answers; no replacement labels, evaluation, or holdout access**
+
+Checkpoint `efforthours-public-readiness/2.1.0` closes the methodological gap left
+by the packet freeze. Policy `manual-qa-development-decision-policy/1.0.0` has
+normalized-text digest
+`sha256:92c0b73259773cb3e4bec6e570043ea41ff8a83d4448ce2e2ea292be05455f60`.
+The 540,223-byte blank template has normalized-text digest
+`sha256:d71c51ef4f9b7f71d295a6b3fa5cc42f56e35c2a148d89c7db1954fd63e56ff8`.
+All 15 review fields and all 955 dispositions, ranges, rationales, overlap
+allocations, duplicate owners, and size exceptions are null; evidence and
+uncertainty answer arrays are empty. It contains no seed/candidate identity,
+formula, value, total, or comparison.
+
+Compiler `manual-qa-development-review-compiler/1.0.0` requires exact packet,
+lineage, record, target, evidence, and completed-plan digests. It preserves all
+1,710 non-QA source targets, removes 320 legacy QA targets, and maps 955 completed
+decisions to exact candidate QA work-item IDs, yielding 2,665 targets. Explicit
+exclusions and duplicates remain mapped `0/0/0` targets so false positives are
+measurable. Input order cannot change semantic output, and the compiler cannot
+read validation, test, candidate values, repository source, or the network.
+
+No completed plan or output corpus exists in this checkpoint. The next permitted
+step is to copy the template and author every decision under the already-frozen
+rubric with candidate values unavailable. Only after exact compilation may a
+later development checkpoint compare seed and candidate and record advance,
+revise, or reject. Test remains sealed.
+
 ## 2026-08-16: candidate-blind manual-QA review packet freeze
 
 Status: **15 development packets and 955 eligible responsibilities frozen before

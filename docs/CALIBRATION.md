@@ -756,11 +756,19 @@ partitions, candidate formulas and values, totals, and candidate identity. The
 checkpoint contains no completed decisions, compiler, new corpus, evaluation, or
 holdout access.
 
+Checkpoint `efforthours-public-readiness/2.1.0` freezes the missing pre-answer
+compiler boundary. Its blank plan binds all 15 records and 955 decisions to the
+exact packets while containing no answers. Compiler
+`manual-qa-development-review-compiler/1.0.0` will preserve 1,710 non-QA targets,
+remove 320 legacy QA targets, and add 955 digest-bound QA targets under explicit
+estimate/exclude/duplicate semantics. The resulting 2,665-target corpus does not
+exist yet; the blank plan is rejected by compilation, and validation/test remain
+unavailable.
+
 ## Next evidence required
 
-- a decision-plan schema and compiler frozen before answers, followed by complete
-  candidate-blind review of all 955 manual-QA development targets under the
-  explicit eligible-coding boundary;
+- complete candidate-blind review of all 955 manual-QA development targets under
+  the now-frozen `2.1.0` decision/compiler boundary;
 - a complete development evaluation and operational preflight for the exact
   `manual-qa-coding-ratio/0.1.0` policy;
 - a new finite manifest and genuinely fresh blind validation boundary if the

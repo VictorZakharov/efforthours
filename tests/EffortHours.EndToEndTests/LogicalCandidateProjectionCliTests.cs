@@ -257,6 +257,88 @@ public sealed class LogicalCandidateProjectionCliTests
         }
     }
 
+    [Fact]
+    public async Task ManualQaDecisionCliReproducesTemplateAndRejectsUnreviewedCompilation()
+    {
+        string root = FindRepositoryRoot();
+        string reviewCheckpoint = Path.Combine(
+            root,
+            "calibration",
+            "corpora",
+            "public-readiness",
+            "2.0.0");
+        string decisionCheckpoint = Path.Combine(
+            root,
+            "calibration",
+            "corpora",
+            "public-readiness",
+            "2.1.0");
+        string temporary = Path.Combine(
+            Path.GetTempPath(),
+            $"eh-manual-qa-decision-cli-{Guid.NewGuid():N}");
+        string output = Path.Combine(temporary, "template.json");
+        string compiled = Path.Combine(temporary, "corpus.json");
+        string corpus = Path.Combine(
+            root,
+            "calibration",
+            "corpora",
+            "public-readiness",
+            "0.3.0.development-corpus.json");
+        string reviewPolicy = Path.Combine(reviewCheckpoint, "manual-qa-review-policy.json");
+        string compilerPolicy = Path.Combine(
+            decisionCheckpoint,
+            "manual-qa-decision-compiler-policy.json");
+        string template = Path.Combine(
+            decisionCheckpoint,
+            "manual-qa-decision-plan.template.json");
+        try
+        {
+            string[] boundary =
+            [
+                "--corpus", corpus,
+                "--review-policy", reviewPolicy,
+                "--expected-review-policy-digest", Digest(await File.ReadAllTextAsync(reviewPolicy)),
+                "--review-manifest", Path.Combine(reviewCheckpoint, "manual-qa-review-manifest.json"),
+                "--packets", Path.Combine(reviewCheckpoint, "manual-qa-review-packets"),
+                "--compiler-policy", compilerPolicy,
+                "--expected-compiler-policy-digest", Digest(await File.ReadAllTextAsync(compilerPolicy)),
+            ];
+            string[] freezeArguments =
+            [
+                "manual-qa-decision-template-freeze",
+                .. boundary,
+                "--output", output,
+            ];
+            ProcessResult freeze = await RunCalibrationAsync(root, freezeArguments);
+
+            Assert.Equal(0, freeze.ExitCode);
+            Assert.Equal(string.Empty, freeze.StandardOutput);
+            Assert.Equal(string.Empty, freeze.StandardError);
+            Assert.Equal(await File.ReadAllTextAsync(template), await File.ReadAllTextAsync(output));
+
+            string[] compileArguments =
+            [
+                "manual-qa-decision-compile",
+                .. boundary,
+                "--plan", template,
+                "--expected-plan-digest", Digest(await File.ReadAllTextAsync(template)),
+                "--output", compiled,
+            ];
+            ProcessResult rejected = await RunCalibrationAsync(root, compileArguments);
+            Assert.Equal(2, rejected.ExitCode);
+            Assert.Equal(string.Empty, rejected.StandardOutput);
+            Assert.Contains("completed plans only", rejected.StandardError, StringComparison.Ordinal);
+            Assert.False(File.Exists(compiled));
+        }
+        finally
+        {
+            if (Directory.Exists(temporary))
+            {
+                Directory.Delete(temporary, recursive: true);
+            }
+        }
+    }
+
     private static Task<ProcessResult> RunCliAsync(string root, params string[] arguments) =>
         RunAsync(root, "src/EffortHours.Cli", "efforthours.dll", arguments);
 

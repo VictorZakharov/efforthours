@@ -1,0 +1,64 @@
+{
+  "schemaVersion": "1.0.0",
+  "policyVersion": "manual-qa-development-decision-policy/1.0.0",
+  "id": "efforthours-manual-qa-development-decision",
+  "compilerVersion": "manual-qa-development-review-compiler/1.0.0",
+  "authoringVersion": "manual-qa-development-decision-authoring/1.0.0",
+  "licenseExpression": "MIT",
+  "maturity": "development-only-pre-answer-compiler-freeze",
+  "planId": "efforthours-public-readiness-development-manual-qa-decisions",
+  "planVersion": "1.0.0",
+  "planDescription": "Candidate-blind manual-QA development decisions for every eligible coding responsibility in the frozen public-readiness packet set. This plan is weak supervision, not empirical labor or held-out validation.",
+  "sourceCorpus": {
+    "id": "efforthours-public-readiness-development",
+    "version": "0.3.0",
+    "digest": "sha256:6ef79b8b950de013263258107c8c19cdd7187e66ab3be84107f63e282a76d385"
+  },
+  "reviewPolicy": {
+    "id": "efforthours-manual-qa-development-review",
+    "version": "manual-qa-development-review-policy/1.0.0",
+    "digest": "sha256:bc4d9a29aac4fd80a917219c77a02dd0c8d1b71ecfb91d4f2b1ad287ecb231e0"
+  },
+  "reviewManifest": {
+    "version": "manual-qa-development-review-manifest/1.0.0",
+    "digest": "sha256:556fb26e096aece4c01bcaeb26118ae807d5f0d36102321a81087ce009816f9a"
+  },
+  "reviewRubric": {
+    "id": "manual-qa-work-item",
+    "version": "1.0.0"
+  },
+  "outputCorpus": {
+    "id": "efforthours-public-readiness-development-manual-qa",
+    "version": "1.0.0",
+    "description": "Development-only public-readiness weak supervision with all non-QA targets preserved from 0.3.0 and legacy manual-QA targets replaced by candidate-blind decisions under manual-qa-work-item/1.0.0. Validation and test remain unopened.",
+    "rubric": {
+      "id": "ehe-work-item-with-manual-qa",
+      "version": "1.0.0"
+    }
+  },
+  "partition": "development",
+  "profile": "implementation",
+  "baselineId": "senior-contractor-2026-no-ai",
+  "replacedCategory": "manual-validation-debugging-and-hardening",
+  "sourceWorkItemLineageVersion": "manual-qa-source-work-item-lineage/1.0.0",
+  "expectedRecordCount": 15,
+  "expectedDecisionCount": 955,
+  "expectedRemovedTargetCount": 320,
+  "expectedPreservedTargetCount": 1710,
+  "expectedOutputTargetCount": 2665,
+  "requiredDecisionPractices": [
+    "Complete every frozen source target exactly once without changing packet or lineage identity.",
+    "Use estimate only for distinct represented manual validation, debugging, and hardening work.",
+    "Use explicit 0/0/0 exclusion or duplicate decisions with rationale and size exception.",
+    "Point duplicate decisions directly to an estimated owner and record overlap allocation for every decision.",
+    "Cite only evidence IDs exposed by the corresponding candidate-blind packet.",
+    "Keep candidate values, formulas, totals, comparisons, validation, and test unavailable until every answer is complete."
+  ],
+  "limitations": [
+    "The completed result remains disclosed teacher-estimate weak supervision rather than empirical labor observation.",
+    "This policy freezes compilation semantics but contains no manual-QA review answers or candidate evaluation.",
+    "The compiler preserves non-QA labels verbatim and replaces only legacy manual-QA targets.",
+    "A favorable development result still requires a fresh candidate identity and blind validation boundary before admission.",
+    "The sealed test partition remains unavailable."
+  ]
+}
