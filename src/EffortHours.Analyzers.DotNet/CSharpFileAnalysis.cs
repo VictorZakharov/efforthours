@@ -1,3 +1,4 @@
+using EffortHours.Analysis;
 using EffortHours.Contracts.V1;
 
 namespace EffortHours.Analyzers.DotNet;
@@ -14,4 +15,7 @@ internal sealed record CSharpStructureMetrics(
     int Methods,
     int PublicMethods,
     int AsyncMethods,
-    int BranchPoints);
+    int BranchPoints,
+    int StructuralParserBackedFiles,
+    int StructuralDetectedCallables,
+    IReadOnlyList<CallableStructuralMetric> CallableStructuralMetrics);

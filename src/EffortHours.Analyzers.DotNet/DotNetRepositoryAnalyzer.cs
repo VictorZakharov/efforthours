@@ -270,33 +270,33 @@ public sealed class DotNetRepositoryAnalyzer : IRepositoryEvidenceAnalyzer
         string scope,
         IEnumerable<CSharpStructureMetrics> structures)
     {
-        CSharpStructureMetrics total = structures.Aggregate(
-            new CSharpStructureMetrics(0, 0, 0, 0, 0, 0, 0),
-            (current, next) => new CSharpStructureMetrics(
-                current.Files + next.Files,
-                current.Types + next.Types,
-                current.PublicTypes + next.PublicTypes,
-                current.Methods + next.Methods,
-                current.PublicMethods + next.PublicMethods,
-                current.AsyncMethods + next.AsyncMethods,
-                current.BranchPoints + next.BranchPoints));
+        CSharpStructureMetrics[] values = [.. structures];
+        int files = values.Sum(value => value.Files);
+        IReadOnlyList<EvidenceMeasurement> structuralMeasurements =
+            CallableStructuralMeasurements.Build(
+                values.SelectMany(value => value.CallableStructuralMetrics),
+                values.Sum(value => value.StructuralDetectedCallables),
+                files,
+                values.Sum(value => value.StructuralParserBackedFiles));
         return DotNetEvidence.Fact(
             $"dotnet:source-structure:{scope}",
             EvidenceKinds.SourceStructure,
             scope,
             $"Roslyn C# syntax inventory for '{scope}'.",
             EvidenceSourceKind.Measured,
-            "Roslyn syntax-tree declaration and control-flow-node counts",
+            "Roslyn syntax-tree declaration, control-flow-node, and callable-distribution counts",
             measurements:
             [
-                DotNetEvidence.Measurement("files", total.Files, "files"),
-                DotNetEvidence.Measurement("types", total.Types, "types"),
-                DotNetEvidence.Measurement("public-types", total.PublicTypes, "types"),
-                DotNetEvidence.Measurement("methods", total.Methods, "methods"),
-                DotNetEvidence.Measurement("public-methods", total.PublicMethods, "methods"),
-                DotNetEvidence.Measurement("async-methods", total.AsyncMethods, "methods"),
-                DotNetEvidence.Measurement("branch-points", total.BranchPoints, "nodes"),
-            ]);
+                DotNetEvidence.Measurement("files", files, "files"),
+                DotNetEvidence.Measurement("types", values.Sum(value => value.Types), "types"),
+                DotNetEvidence.Measurement("public-types", values.Sum(value => value.PublicTypes), "types"),
+                DotNetEvidence.Measurement("methods", values.Sum(value => value.Methods), "methods"),
+                DotNetEvidence.Measurement("public-methods", values.Sum(value => value.PublicMethods), "methods"),
+                DotNetEvidence.Measurement("async-methods", values.Sum(value => value.AsyncMethods), "methods"),
+                DotNetEvidence.Measurement("branch-points", values.Sum(value => value.BranchPoints), "nodes"),
+                .. structuralMeasurements,
+            ],
+            tags: [StructuralEvidenceVersions.CallableMetricsV1Tag]);
     }
 
     private static DotNetProjectModel? FindOwningProject(

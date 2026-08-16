@@ -181,10 +181,15 @@ count, and intermediate churn do not value effort. `CHANGE_ESTIMATION.md` and
   items. `uncertainty-support-evaluator/1.0.0` aggregates four predeclared signals
   to all 2,030 targets and rejects each as a direct width driver: all reduce
   coverage, increase miss, and show non-monotonic or contrary residual ordering.
-  Retain them as diagnostics. Next, add deferred function/complexity/nesting and
-  coupling/cycle/interface distributions in bounded groups before choosing
-  correlated aggregation. Only then freeze a new candidate and fresh blind
-  validation boundary.
+  Retain them as diagnostics. The separate label-independent
+  `repository-uncertainty-structural-features/1.0.0` contract now freezes local
+  callable size, bounded decision-complexity, nesting, measurement-coverage, and
+  parser-ambiguity diagnostics from .NET `0.3.5` and JavaScript `0.5.2`, without
+  changing the original vector, labels, seed rules, or estimates. Evaluate this
+  group against development residuals next. Then add coupling/cycle/interface
+  distributions under a separate graph contract before choosing correlated
+  aggregation. Only then freeze a new candidate and fresh blind validation
+  boundary.
 - Preserve repository-family partition isolation and honest teacher/model/input
   provenance. Optional independent review remains explicit corroboration, not an
   implied maturity upgrade.

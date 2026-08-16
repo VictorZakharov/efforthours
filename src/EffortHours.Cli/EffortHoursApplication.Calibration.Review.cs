@@ -83,6 +83,11 @@ public sealed partial class EffortHoursApplication
                 standardOutput,
                 standardError,
                 cancellationToken).ConfigureAwait(false),
+            "uncertainty-structure" => await ProjectUncertaintyStructureAsync(
+                [.. arguments.Skip(1)],
+                standardOutput,
+                standardError,
+                cancellationToken).ConfigureAwait(false),
             "uncertainty-evaluate" => await EvaluateUncertaintyFeaturesAsync(
                 [.. arguments.Skip(1)],
                 standardOutput,
@@ -110,6 +115,7 @@ public sealed partial class EffortHoursApplication
                 "'calibration review-scaffold', 'calibration review-compile', " +
                 "'calibration mutations', 'calibration validate', 'calibration evaluate', " +
                 "'calibration diagnose', 'calibration uncertainty-features', " +
+                "'calibration uncertainty-structure', " +
                 "'calibration uncertainty-evaluate', 'calibration uncertainty-support', " +
                 "'calibration uncertainty-support-evaluate', or " +
                 "'calibration change-evaluate'.")

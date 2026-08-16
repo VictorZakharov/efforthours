@@ -114,6 +114,10 @@ model is frozen. A separate label-independent support profiler now covers all
 and bucketed OOD distance. Its four predeclared target-level signals have now been
 measured against all 2,030 development targets; each worsens coverage and interval
 miss and has non-monotonic or contrary residual ordering. They remain diagnostic-
-only, no interval model is frozen, and estimates do not change.
+only, no interval model is frozen, and estimates do not change. A separate frozen
+structural diagnostic contract now exposes local callable size, decision-
+complexity, nesting, parser coverage, and analyzer ambiguity for parser-backed C#
+and JavaScript/JSX; it has not yet been evaluated or admitted as an interval
+driver.
 Change EHE has only the limited Stage A logical admission described in
 `docs/CHANGE_MODEL_ADMISSION.md`; later ecosystem extensions remain experimental.

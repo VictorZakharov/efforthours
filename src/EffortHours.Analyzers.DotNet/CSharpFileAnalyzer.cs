@@ -128,7 +128,12 @@ internal sealed class CSharpFileAnalyzer(
             Methods: methods.Length,
             PublicMethods: methods.Count(IsPublic),
             AsyncMethods: methods.Count(method => method.Modifiers.Any(SyntaxKind.AsyncKeyword)),
-            BranchPoints: nodes.Count(IsBranchPoint));
+            BranchPoints: nodes.Count(IsBranchPoint),
+            StructuralParserBackedFiles: syntaxErrors == 0 ? 1 : 0,
+            StructuralDetectedCallables: CSharpCallableStructuralAnalyzer.CountDetected(methods),
+            CallableStructuralMetrics: syntaxErrors == 0
+                ? CSharpCallableStructuralAnalyzer.Analyze(methods)
+                : []);
 
         List<EvidenceFact> facts = [];
         if (reachability.ExclusionFact is not null)
@@ -356,7 +361,7 @@ internal sealed class CSharpFileAnalyzer(
             .Take(50)];
 
     private static CSharpFileAnalysis Failure(string code, string path, string message) => new(
-        new CSharpStructureMetrics(0, 0, 0, 0, 0, 0, 0),
+        new CSharpStructureMetrics(0, 0, 0, 0, 0, 0, 0, 0, 0, []),
         [],
         [DotNetEvidence.Diagnostic(code, ContractDiagnosticSeverity.Warning, message, path)]);
 

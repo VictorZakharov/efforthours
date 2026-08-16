@@ -1,3 +1,5 @@
+using EffortHours.Analysis;
+
 namespace EffortHours.Analyzers.JavaScript;
 
 internal sealed class JavaScriptSourceMetrics
@@ -29,6 +31,12 @@ internal sealed class JavaScriptSourceMetrics
     public int Enums { get; set; }
 
     public int BranchPoints { get; set; }
+
+    public int StructuralParserBackedFiles { get; set; }
+
+    public int StructuralDetectedCallables { get; set; }
+
+    public List<CallableStructuralMetric> CallableStructuralMetrics { get; } = [];
 
     public int Calls { get; set; }
 
@@ -127,6 +135,9 @@ internal sealed class JavaScriptSourceMetrics
         TypeAliases += other.TypeAliases;
         Enums += other.Enums;
         BranchPoints += other.BranchPoints;
+        StructuralParserBackedFiles += other.StructuralParserBackedFiles;
+        StructuralDetectedCallables += other.StructuralDetectedCallables;
+        CallableStructuralMetrics.AddRange(other.CallableStructuralMetrics);
         Calls += other.Calls;
         Decorators += other.Decorators;
         ApiEndpoints += other.ApiEndpoints;

@@ -18,6 +18,7 @@ public static class ContractSchemaCatalog
         SchemaNames.CalibrationEvaluation,
         SchemaNames.CalibrationUncertaintyEvaluation,
         SchemaNames.CalibrationUncertaintyFeatures,
+        SchemaNames.CalibrationUncertaintyStructuralFeatures,
         SchemaNames.CalibrationUncertaintySupportPopulation,
         SchemaNames.CalibrationUncertaintySupportProfile,
         SchemaNames.CalibrationUncertaintySupportEvaluation,

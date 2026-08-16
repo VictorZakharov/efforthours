@@ -33,6 +33,42 @@ Because EffortHours's own anchor informed the seed-model and calibration design,
 a development diagnostic rather than an eligible held-out test record unless a
 future independent snapshot and review policy explicitly establishes otherwise.
 
+## 2026-08-16: structural uncertainty feature freeze
+
+Status: **label-independent callable evidence and feature contract frozen;
+diagnostic only; no residual evaluation, fit, estimate change, or admission**
+
+`repository-uncertainty-structural-features/1.0.0` freezes a separate 14-field
+work-item diagnostic before measuring this group against reviewed residuals. It
+does not modify the earlier `repository-uncertainty-features/1.0.0` vector. Its
+canonical contract digest is
+`sha256:a186c6e61ef7fcbd294ca4de27ed8504b313599e96246d8bcc7321eda04204ab`.
+
+The paired analyzer evidence contract `callable-structural-metrics/1.0.0` records
+nearest-rank p50, p90, maximum, and threshold share for three per-callable
+distributions: non-comment syntax-token size, bounded decision-complexity, and
+control-nesting depth. The frozen thresholds are strictly above `200` tokens,
+`10` complexity points, and `4` nesting levels. It also records measured/detected
+callable coverage and source-file parser ambiguity. Work-item projection uses the
+worst local project/package value for shape and ambiguity and the weakest local
+coverage, avoiding raw repository totals as a proxy.
+
+.NET analyzer `0.3.5` supplies Roslyn-backed C# executable-method samples;
+JavaScript analyzer `0.5.2` supplies Acornima-backed JavaScript/JSX function and
+arrow-function samples. TypeScript/TSX, syntax-error fallbacks, constructors,
+accessors, and other unsupported callable forms are not guessed. Their absence is
+visible through detected/measured coverage, parser ambiguity, or the documented
+callable boundary. Local fan-in/fan-out, dependency cycles, and public-interface
+concentration remain deferred.
+
+The projector reads only digest-matched saved estimates and evidence. Every field
+is marked `diagnostic-only`; `seed-rules/0.4.0` ignores the new measurements and
+produces byte-identical estimate JSON with or without them. No structural-feature
+residual, bucket direction, threshold comparison, width rule, or candidate model
+was computed in this checkpoint. The next checkpoint may evaluate these frozen
+features on development records only; a useful result would still require a new
+candidate identity and fresh blind validation boundary before admission.
+
 ## 2026-08-15: logical-capability v0.3 blind validation rejection
 
 Status: **validation improves repository expected WAPE by 58.75% but fails six

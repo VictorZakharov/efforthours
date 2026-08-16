@@ -1,0 +1,169 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:eh:schema:v1:calibration-uncertainty-structural-features",
+  "title": "EffortHours calibration uncertainty structural feature report v1",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "projectorVersion",
+    "featureContract",
+    "featureContractDigest",
+    "estimateDigest",
+    "evidenceDigest",
+    "repositorySourceDigest",
+    "ecosystems",
+    "estimatorVersion",
+    "profile",
+    "baselineId",
+    "summary",
+    "workItems"
+  ],
+  "properties": {
+    "schemaVersion": { "const": "1.0.0" },
+    "projectorVersion": {
+      "const": "uncertainty-structural-feature-projector/1.0.0"
+    },
+    "featureContract": { "$ref": "#/$defs/featureContract" },
+    "featureContractDigest": {
+      "const": "sha256:a186c6e61ef7fcbd294ca4de27ed8504b313599e96246d8bcc7321eda04204ab"
+    },
+    "estimateDigest": { "$ref": "#/$defs/digest" },
+    "evidenceDigest": { "$ref": "#/$defs/digest" },
+    "repositorySourceDigest": { "$ref": "#/$defs/digest" },
+    "ecosystems": { "$ref": "#/$defs/stringList" },
+    "estimatorVersion": { "type": "string", "minLength": 1 },
+    "profile": { "enum": ["implementation", "recreation"] },
+    "baselineId": { "type": "string", "minLength": 1 },
+    "summary": { "$ref": "#/$defs/summary" },
+    "workItems": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/workItem" }
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "stringList": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "featureContract": {
+      "type": "object",
+      "required": [
+        "version",
+        "effectiveDate",
+        "labelIndependent",
+        "intervalPolicy",
+        "features",
+        "deferredCandidates"
+      ],
+      "properties": {
+        "version": {
+          "const": "repository-uncertainty-structural-features/1.0.0"
+        },
+        "effectiveDate": { "type": "string", "format": "date" },
+        "labelIndependent": { "const": true },
+        "intervalPolicy": {
+          "$ref": "urn:eh:schema:v1:calibration-uncertainty-features#/$defs/intervalPolicy"
+        },
+        "features": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "urn:eh:schema:v1:calibration-uncertainty-features#/$defs/featureDefinition"
+          }
+        },
+        "deferredCandidates": {
+          "type": "array",
+          "items": {
+            "$ref": "urn:eh:schema:v1:calibration-uncertainty-features#/$defs/featureDefinition"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "workItem": {
+      "type": "object",
+      "required": [
+        "workItemId",
+        "category",
+        "sourceComplexity",
+        "ecosystems",
+        "expectedHours",
+        "sourceRange",
+        "coverageStatus",
+        "resolvedEvidenceIds",
+        "unresolvedEvidenceIds",
+        "structuralEvidenceIds",
+        "incompatibleStructuralEvidenceIds",
+        "features"
+      ],
+      "properties": {
+        "workItemId": { "type": "string", "minLength": 1 },
+        "category": {
+          "$ref": "urn:eh:schema:v1:estimate-report#/$defs/category"
+        },
+        "sourceComplexity": {
+          "enum": ["routine", "moderate", "high", "exceptional"]
+        },
+        "ecosystems": { "$ref": "#/$defs/stringList" },
+        "expectedHours": { "type": "number", "minimum": 0 },
+        "sourceRange": {
+          "$ref": "urn:eh:schema:v1:estimate-report#/$defs/effortRange"
+        },
+        "parentId": { "type": "string", "minLength": 1 },
+        "correlationGroup": { "type": "string", "minLength": 1 },
+        "coverageStatus": {
+          "enum": ["complete", "partial", "not-applicable", "unavailable"]
+        },
+        "resolvedEvidenceIds": { "$ref": "#/$defs/stringList" },
+        "unresolvedEvidenceIds": { "$ref": "#/$defs/stringList" },
+        "structuralEvidenceIds": { "$ref": "#/$defs/stringList" },
+        "incompatibleStructuralEvidenceIds": { "$ref": "#/$defs/stringList" },
+        "features": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "urn:eh:schema:v1:calibration-uncertainty-features#/$defs/featureValue"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "summary": {
+      "type": "object",
+      "required": [
+        "workItemCount",
+        "featureCount",
+        "completeWorkItemCount",
+        "partialWorkItemCount",
+        "notApplicableWorkItemCount",
+        "unavailableWorkItemCount",
+        "resolvedEvidenceReferenceCount",
+        "unresolvedEvidenceReferenceCount",
+        "structuralEvidenceReferenceCount",
+        "incompatibleStructuralEvidenceReferenceCount"
+      ],
+      "properties": {
+        "workItemCount": { "type": "integer", "minimum": 0 },
+        "featureCount": { "type": "integer", "minimum": 1 },
+        "completeWorkItemCount": { "type": "integer", "minimum": 0 },
+        "partialWorkItemCount": { "type": "integer", "minimum": 0 },
+        "notApplicableWorkItemCount": { "type": "integer", "minimum": 0 },
+        "unavailableWorkItemCount": { "type": "integer", "minimum": 0 },
+        "resolvedEvidenceReferenceCount": { "type": "integer", "minimum": 0 },
+        "unresolvedEvidenceReferenceCount": { "type": "integer", "minimum": 0 },
+        "structuralEvidenceReferenceCount": { "type": "integer", "minimum": 0 },
+        "incompatibleStructuralEvidenceReferenceCount": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}
