@@ -49,6 +49,23 @@ public static class CalibrationDigest
         return ComputeCanonical(report);
     }
 
+    public static string Compute(CalibrationUncertaintySupportPopulation population)
+    {
+        ArgumentNullException.ThrowIfNull(population);
+
+        return ComputeCanonical(population);
+    }
+
+    public static string Compute(CalibrationUncertaintySupportProfile profile)
+    {
+        ArgumentNullException.ThrowIfNull(profile);
+
+        return ComputeCanonical(profile);
+    }
+
+    internal static string ComputeSequence(IEnumerable<string> values) =>
+        ComputeCanonical(values.ToArray());
+
     internal static string ComputeStringSet(IEnumerable<string> values) =>
         ComputeCanonical(values.Distinct(StringComparer.Ordinal).Order(StringComparer.Ordinal).ToArray());
 

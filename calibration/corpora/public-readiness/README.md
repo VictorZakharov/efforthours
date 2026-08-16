@@ -52,10 +52,14 @@ rejects that challenger on six frozen gates without opening test. The
 [`1.4.0 uncertainty measurement`](1.4.0/README.md) then evaluates 11 frozen scalar
 features on development only: none improves coverage, normalized width, and miss
 together over the repository-held-out symmetric baseline, so no interval model is
-selected.
+selected. The [`1.5.0 support profile`](1.5.0/README.md) next measures
+label-independent repository-family-held-out sample support and OOD distance for
+all 11,161 development work items. Every item has sufficient cross-family support,
+but the new values have not yet been tested against reviewed residuals or selected
+for an interval model.
 
 The completed blind validation rejects the sole challenger and leaves test sealed.
-The later development uncertainty comparison is diagnostic only and cannot turn
+The later development uncertainty measurements are diagnostic only and cannot turn
 the opened validation cohort back into a holdout. No independent correction,
 admitted successor, or production uncertainty model exists.
 

@@ -675,6 +675,16 @@ normalized-residual associations plus coverage and sharpness by feature and
 category/ecosystem/size slice. It refuses validation/test records and does not
 produce a deployable interval model or change expected EHE.
 
+`uncertainty-support-profiler/1.0.0` separately derives label-independent sample
+support and bucketed OOD distance from immutable feature reports. A versioned
+development population supplies repository-family identity without reviewed
+targets or hours. The complete family is held out, so another revision from the
+same repository cannot inflate support or serve as a nearest reference. Support
+falls back through fixed category/size/ecosystem/complexity cells, and OOD uses
+four structural plus 11 frozen feature dimensions. These values remain population
+diagnostics until repository-held-out residual measurement shows incremental
+value; they do not alter expected EHE or interval width by themselves.
+
 How item-level uncertainty is aggregated, including correlated uncertainty,
 remains an implementation research item. Reports must not imply that ranges are
 formal probability intervals until separately governed empirical calibration

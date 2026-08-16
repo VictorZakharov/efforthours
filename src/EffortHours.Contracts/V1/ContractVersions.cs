@@ -31,6 +31,12 @@ public static class CalibrationUncertaintyVersions
     public const string EvaluationProtocolV1 = "uncertainty-feature-evaluation/1.0.0";
 
     public const string EvaluationMetricV1 = "uncertainty-feature-metrics/1.0.0";
+
+    public const string SupportPopulationV1 = "uncertainty-support-population/1.0.0";
+
+    public const string SupportPolicyV1 = "uncertainty-support-policy/1.0.0";
+
+    public const string SupportProfilerV1 = "uncertainty-support-profiler/1.0.0";
 }
 
 public static class SchemaNames
@@ -45,6 +51,10 @@ public static class SchemaNames
         "calibration-uncertainty-features.schema.json";
     public const string CalibrationUncertaintyEvaluation =
         "calibration-uncertainty-evaluation.schema.json";
+    public const string CalibrationUncertaintySupportPopulation =
+        "calibration-uncertainty-support-population.schema.json";
+    public const string CalibrationUncertaintySupportProfile =
+        "calibration-uncertainty-support-profile.schema.json";
     public const string CalibrationMutationReport = "calibration-mutation-report.schema.json";
     public const string CalibrationMutationSuite = "calibration-mutation-suite.schema.json";
     public const string CalibrationReviewPlan = "calibration-review-plan.schema.json";
@@ -85,6 +95,10 @@ public static class SchemaIds
         "urn:eh:schema:v1:calibration-uncertainty-features";
     public const string CalibrationUncertaintyEvaluation =
         "urn:eh:schema:v1:calibration-uncertainty-evaluation";
+    public const string CalibrationUncertaintySupportPopulation =
+        "urn:eh:schema:v1:calibration-uncertainty-support-population";
+    public const string CalibrationUncertaintySupportProfile =
+        "urn:eh:schema:v1:calibration-uncertainty-support-profile";
     public const string CalibrationMutationReport = "urn:eh:schema:v1:calibration-mutation-report";
     public const string CalibrationMutationSuite = "urn:eh:schema:v1:calibration-mutation-suite";
     public const string CalibrationReviewPlan = "urn:eh:schema:v1:calibration-review-plan";

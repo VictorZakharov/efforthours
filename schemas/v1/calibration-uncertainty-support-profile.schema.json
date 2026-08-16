@@ -1,0 +1,286 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:eh:schema:v1:calibration-uncertainty-support-profile",
+  "title": "EffortHours calibration uncertainty support profile v1",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "profilerVersion",
+    "populationId",
+    "populationVersion",
+    "populationDigest",
+    "partition",
+    "featureContractVersion",
+    "featureContractDigest",
+    "projectorVersions",
+    "estimatorVersions",
+    "profile",
+    "baselineId",
+    "policy",
+    "summary",
+    "repositories",
+    "workItems"
+  ],
+  "properties": {
+    "schemaVersion": { "const": "1.0.0" },
+    "profilerVersion": { "const": "uncertainty-support-profiler/1.0.0" },
+    "populationId": { "type": "string", "minLength": 1 },
+    "populationVersion": { "type": "string", "minLength": 1 },
+    "populationDigest": { "$ref": "#/$defs/digest" },
+    "partition": { "const": "development" },
+    "featureContractVersion": { "const": "repository-uncertainty-features/1.0.0" },
+    "featureContractDigest": {
+      "const": "sha256:a2fea34b25d0c963bb9e96d8c538e130f6b2b23d4d98d851584a7fbe69916077"
+    },
+    "projectorVersions": { "$ref": "#/$defs/stringList" },
+    "estimatorVersions": { "$ref": "#/$defs/stringList" },
+    "profile": { "enum": ["implementation", "recreation"] },
+    "baselineId": { "type": "string", "minLength": 1 },
+    "policy": { "$ref": "#/$defs/policy" },
+    "summary": { "$ref": "#/$defs/summary" },
+    "repositories": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/repositorySummary" }
+    },
+    "workItems": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/workItem" }
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "stringList": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "supportLevel": {
+      "enum": ["exact", "category-size-ecosystem", "category-size", "category", "global"]
+    },
+    "policy": {
+      "type": "object",
+      "required": [
+        "version",
+        "foldUnit",
+        "cellHierarchy",
+        "minimumCellObservationCount",
+        "minimumCellRepositoryCount",
+        "distanceMetric",
+        "structuralDimensionCount",
+        "featureDimensionCount",
+        "availabilityMismatchDistance",
+        "sameRepositoryExcluded",
+        "labelIndependent",
+        "usesReviewedValues",
+        "maximumWorkItemCount",
+        "maximumProfileComparisonCount"
+      ],
+      "properties": {
+        "version": { "const": "uncertainty-support-policy/1.0.0" },
+        "foldUnit": { "const": "repository-family" },
+        "cellHierarchy": {
+          "type": "array",
+          "prefixItems": [
+            { "const": "exact" },
+            { "const": "category-size-ecosystem" },
+            { "const": "category-size" },
+            { "const": "category" },
+            { "const": "global" }
+          ],
+          "minItems": 5,
+          "maxItems": 5
+        },
+        "minimumCellObservationCount": { "const": 3 },
+        "minimumCellRepositoryCount": { "const": 2 },
+        "distanceMetric": { "const": "gower-bucket-distance/1.0.0" },
+        "structuralDimensionCount": { "const": 4 },
+        "featureDimensionCount": { "const": 11 },
+        "availabilityMismatchDistance": { "const": 1 },
+        "sameRepositoryExcluded": { "const": true },
+        "labelIndependent": { "const": true },
+        "usesReviewedValues": { "const": false },
+        "maximumWorkItemCount": { "const": 250000 },
+        "maximumProfileComparisonCount": { "const": 50000000 }
+      },
+      "additionalProperties": false
+    },
+    "supportCell": {
+      "type": "object",
+      "required": [
+        "level",
+        "trainingObservationCount",
+        "trainingRepositoryCount",
+        "sufficient",
+        "selected"
+      ],
+      "properties": {
+        "level": { "$ref": "#/$defs/supportLevel" },
+        "trainingObservationCount": { "type": "integer", "minimum": 0 },
+        "trainingRepositoryCount": { "type": "integer", "minimum": 0 },
+        "sufficient": { "type": "boolean" },
+        "selected": { "type": "boolean" }
+      },
+      "additionalProperties": false
+    },
+    "outOfDistribution": {
+      "type": "object",
+      "required": [
+        "profileDigest",
+        "score",
+        "structuralDistance",
+        "featureDistance",
+        "comparedFeatureCount",
+        "exactProfileTrainingObservationCount",
+        "exactProfileTrainingRepositoryCount",
+        "nearestRecordId",
+        "nearestRepositoryId",
+        "nearestWorkItemId",
+        "nearestProfileTrainingObservationCount",
+        "nearestProfileTrainingRepositoryCount"
+      ],
+      "properties": {
+        "profileDigest": { "$ref": "#/$defs/digest" },
+        "score": { "type": "number", "minimum": 0, "maximum": 1 },
+        "structuralDistance": { "type": "number", "minimum": 0, "maximum": 1 },
+        "featureDistance": { "type": "number", "minimum": 0, "maximum": 1 },
+        "comparedFeatureCount": { "const": 11 },
+        "exactProfileTrainingObservationCount": { "type": "integer", "minimum": 0 },
+        "exactProfileTrainingRepositoryCount": { "type": "integer", "minimum": 0 },
+        "nearestRecordId": { "type": "string", "minLength": 1 },
+        "nearestRepositoryId": { "type": "string", "minLength": 1 },
+        "nearestWorkItemId": { "type": "string", "minLength": 1 },
+        "nearestProfileTrainingObservationCount": { "type": "integer", "minimum": 1 },
+        "nearestProfileTrainingRepositoryCount": { "type": "integer", "minimum": 1 }
+      },
+      "additionalProperties": false
+    },
+    "workItem": {
+      "type": "object",
+      "required": [
+        "recordId",
+        "repositoryId",
+        "workItemId",
+        "category",
+        "expectedSizeBand",
+        "sourceComplexity",
+        "ecosystems",
+        "selectedSupportLevel",
+        "supportSufficient",
+        "supportCells",
+        "outOfDistribution"
+      ],
+      "properties": {
+        "recordId": { "type": "string", "minLength": 1 },
+        "repositoryId": { "type": "string", "minLength": 1 },
+        "workItemId": { "type": "string", "minLength": 1 },
+        "category": { "$ref": "urn:eh:schema:v1:estimate-report#/$defs/category" },
+        "expectedSizeBand": {
+          "enum": ["zero", "xs", "s", "m", "l", "xl", "2xl", "3xl", "4xl"]
+        },
+        "sourceComplexity": { "enum": ["routine", "moderate", "high", "exceptional"] },
+        "ecosystems": { "$ref": "#/$defs/stringList" },
+        "selectedSupportLevel": { "$ref": "#/$defs/supportLevel" },
+        "supportSufficient": { "type": "boolean" },
+        "supportCells": {
+          "type": "array",
+          "minItems": 5,
+          "maxItems": 5,
+          "items": { "$ref": "#/$defs/supportCell" }
+        },
+        "outOfDistribution": { "$ref": "#/$defs/outOfDistribution" }
+      },
+      "additionalProperties": false
+    },
+    "supportLevelSummary": {
+      "type": "object",
+      "required": ["level", "workItemCount"],
+      "properties": {
+        "level": { "$ref": "#/$defs/supportLevel" },
+        "workItemCount": { "type": "integer", "minimum": 0 }
+      },
+      "additionalProperties": false
+    },
+    "repositorySummary": {
+      "type": "object",
+      "required": [
+        "recordId",
+        "repositoryId",
+        "sourceDigest",
+        "featureReportDigest",
+        "estimateDigest",
+        "evidenceDigest",
+        "workItemCount",
+        "uniqueProfileCount",
+        "exactProfileMatchWorkItemCount",
+        "insufficientSupportWorkItemCount",
+        "meanOutOfDistributionScore",
+        "p90OutOfDistributionScore",
+        "maximumOutOfDistributionScore",
+        "supportLevels"
+      ],
+      "properties": {
+        "recordId": { "type": "string", "minLength": 1 },
+        "repositoryId": { "type": "string", "minLength": 1 },
+        "sourceDigest": { "$ref": "#/$defs/digest" },
+        "featureReportDigest": { "$ref": "#/$defs/digest" },
+        "estimateDigest": { "$ref": "#/$defs/digest" },
+        "evidenceDigest": { "$ref": "#/$defs/digest" },
+        "workItemCount": { "type": "integer", "minimum": 0 },
+        "uniqueProfileCount": { "type": "integer", "minimum": 0 },
+        "exactProfileMatchWorkItemCount": { "type": "integer", "minimum": 0 },
+        "insufficientSupportWorkItemCount": { "type": "integer", "minimum": 0 },
+        "meanOutOfDistributionScore": { "type": "number", "minimum": 0, "maximum": 1 },
+        "p90OutOfDistributionScore": { "type": "number", "minimum": 0, "maximum": 1 },
+        "maximumOutOfDistributionScore": { "type": "number", "minimum": 0, "maximum": 1 },
+        "supportLevels": {
+          "type": "array",
+          "minItems": 5,
+          "maxItems": 5,
+          "items": { "$ref": "#/$defs/supportLevelSummary" }
+        }
+      },
+      "additionalProperties": false
+    },
+    "summary": {
+      "type": "object",
+      "required": [
+        "repositoryCount",
+        "featureReportCount",
+        "workItemCount",
+        "uniqueProfileCount",
+        "profileEvaluationCount",
+        "profileComparisonCount",
+        "exactProfileMatchWorkItemCount",
+        "insufficientSupportWorkItemCount",
+        "meanOutOfDistributionScore",
+        "p90OutOfDistributionScore",
+        "maximumOutOfDistributionScore",
+        "supportLevels"
+      ],
+      "properties": {
+        "repositoryCount": { "type": "integer", "minimum": 3 },
+        "featureReportCount": { "type": "integer", "minimum": 3 },
+        "workItemCount": { "type": "integer", "minimum": 1 },
+        "uniqueProfileCount": { "type": "integer", "minimum": 1 },
+        "profileEvaluationCount": { "type": "integer", "minimum": 1 },
+        "profileComparisonCount": { "type": "integer", "minimum": 1 },
+        "exactProfileMatchWorkItemCount": { "type": "integer", "minimum": 0 },
+        "insufficientSupportWorkItemCount": { "type": "integer", "minimum": 0 },
+        "meanOutOfDistributionScore": { "type": "number", "minimum": 0, "maximum": 1 },
+        "p90OutOfDistributionScore": { "type": "number", "minimum": 0, "maximum": 1 },
+        "maximumOutOfDistributionScore": { "type": "number", "minimum": 0, "maximum": 1 },
+        "supportLevels": {
+          "type": "array",
+          "minItems": 5,
+          "maxItems": 5,
+          "items": { "$ref": "#/$defs/supportLevelSummary" }
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

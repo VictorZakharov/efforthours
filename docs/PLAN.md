@@ -170,14 +170,19 @@ count, and intermediate churn do not value effort. `CHANGE_ESTIMATION.md` and
   The offline projector exposes current confidence, provenance, parser, explicit-
   uncertainty, and material-access signals while marking unavailable function
   distributions, coupling/cycles, sample support, and out-of-distribution evidence
-  as deferred. `uncertainty-feature-evaluation/1.0.0` now supplies a deterministic
+  as deferred within that frozen vector. `uncertainty-feature-evaluation/1.0.0`
+  now supplies a deterministic
   development-only, leave-one-repository-out baseline and fixed-bucket incremental
   measurement path without fitting a production model. The first 15-repository,
   2,030-target checkpoint finds no scalar feature that improves coverage,
-  normalized width, and interval miss together. Next, add deferred structural,
-  reviewed-sample-support, and out-of-distribution evidence one deliberate group at
-  a time and measure each through that path before choosing hierarchical fallbacks
-  and correlated aggregation. Only then freeze a new candidate and fresh blind
+  normalized width, and interval miss together. The label-independent
+  `uncertainty-support-profiler/1.0.0` now computes repository-family-held-out
+  hierarchical support and bucketed OOD distance for all 11,161 development work
+  items; every item has sufficient cross-family support, but those values have not
+  yet been tested against reviewed residuals. Next, aggregate them to reviewed
+  targets and measure incremental value through the same development-fold path,
+  then add deferred structural distributions deliberately before choosing
+  correlated aggregation. Only then freeze a new candidate and fresh blind
   validation boundary.
 - Preserve repository-family partition isolation and honest teacher/model/input
   provenance. Optional independent review remains explicit corroboration, not an
