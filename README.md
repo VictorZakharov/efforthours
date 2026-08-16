@@ -336,6 +336,7 @@ eh calibration uncertainty-structure <estimate.json> <evidence.json> --compact
 eh calibration uncertainty-graph <estimate.json> <evidence.json> --compact
 eh calibration uncertainty-evaluate <development-corpus.json> <features.json>... --compact
 eh calibration uncertainty-structure-evaluate <development-corpus.json> <structural-features.json>... --compact
+eh calibration uncertainty-graph-evaluate <development-corpus.json> <graph-features.json>... --compact
 eh calibration uncertainty-support <population.json> <features.json>... --compact
 eh calibration uncertainty-support-evaluate <development-corpus.json> <support-profile.json> <features.json>... --compact
 eh model info

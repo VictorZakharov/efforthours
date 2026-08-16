@@ -74,8 +74,40 @@ public static partial class ContractValidation
                 CalibrationUncertaintyFeatureValueKind.Ratio),
         ];
 
+    private static readonly (string Id, CalibrationUncertaintyFeatureValueKind ValueKind,
+        CalibrationUncertaintyFeatureMonotonicity Monotonicity)[]
+        GraphEvaluationFeatureBoundary =
+        [
+            Graph("graph.local-fan-in-p50", CalibrationUncertaintyFeatureValueKind.Count),
+            Graph("graph.local-fan-in-p90", CalibrationUncertaintyFeatureValueKind.Count),
+            Graph("graph.local-fan-in-maximum", CalibrationUncertaintyFeatureValueKind.Count),
+            Graph("graph.local-high-fan-in-share", CalibrationUncertaintyFeatureValueKind.Ratio),
+            Graph("graph.local-fan-out-p50", CalibrationUncertaintyFeatureValueKind.Count),
+            Graph("graph.local-fan-out-p90", CalibrationUncertaintyFeatureValueKind.Count),
+            Graph("graph.local-fan-out-maximum", CalibrationUncertaintyFeatureValueKind.Count),
+            Graph("graph.local-high-fan-out-share", CalibrationUncertaintyFeatureValueKind.Ratio),
+            Graph("graph.local-cyclic-node-share", CalibrationUncertaintyFeatureValueKind.Ratio),
+            Graph(
+                "graph.local-largest-cyclic-component-share",
+                CalibrationUncertaintyFeatureValueKind.Ratio),
+            Graph("shape.local-public-interface-p50", CalibrationUncertaintyFeatureValueKind.Ratio),
+            Graph("shape.local-public-interface-p90", CalibrationUncertaintyFeatureValueKind.Ratio),
+            Graph(
+                "shape.local-public-interface-maximum",
+                CalibrationUncertaintyFeatureValueKind.Ratio),
+            Graph(
+                "shape.local-high-public-interface-share",
+                CalibrationUncertaintyFeatureValueKind.Ratio),
+        ];
+
     private static (string Id, CalibrationUncertaintyFeatureValueKind ValueKind,
         CalibrationUncertaintyFeatureMonotonicity Monotonicity) Structural(
+            string id,
+            CalibrationUncertaintyFeatureValueKind kind) =>
+        (id, kind, CalibrationUncertaintyFeatureMonotonicity.DiagnosticOnly);
+
+    private static (string Id, CalibrationUncertaintyFeatureValueKind ValueKind,
+        CalibrationUncertaintyFeatureMonotonicity Monotonicity) Graph(
             string id,
             CalibrationUncertaintyFeatureValueKind kind) =>
         (id, kind, CalibrationUncertaintyFeatureMonotonicity.DiagnosticOnly);
