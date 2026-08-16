@@ -1,0 +1,36 @@
+{
+  "policyVersion": "manual-qa-coding-ratio-policy/1.0.0",
+  "id": "efforthours-manual-qa-coding-ratio",
+  "candidateId": "manual-qa-coding-ratio/0.1.0",
+  "estimatorVersion": "candidate-manual-qa-coding-ratio/0.1.0+seed-rules/0.4.0",
+  "baselineEstimatorVersion": "seed-rules/0.4.0",
+  "featureContractVersion": "eligible-coding-effort/1.0.0",
+  "effectiveDate": "2026-08-16",
+  "licenseExpression": "MIT",
+  "maturity": "development-only-unvalidated",
+  "basis": "eligible-source-work-item-expected-hours",
+  "projection": "one-manual-qa-item-per-eligible-source-work-item",
+  "lowRatio": 0.30,
+  "expectedRatio": 0.40,
+  "highRatio": 0.50,
+  "maximumConfidence": 0.50,
+  "eligibleCategories": [
+    "production-implementation",
+    "ui-implementation-and-represented-ux-decisions",
+    "data-modeling-persistence-and-migrations",
+    "external-integrations-and-protocols",
+    "unit-testing",
+    "integration-contract-and-component-testing",
+    "end-to-end-and-ui-testing",
+    "build-configuration-and-developer-tooling",
+    "ci-cd-and-infrastructure-as-code",
+    "security-and-accessibility",
+    "packaging-deployment-and-release-artifacts"
+  ],
+  "limitations": [
+    "The ratios are a maintainer-experience prior, not an empirical production observation or calibrated probability interval.",
+    "Existing public development labels used materially smaller manual-validation allocations and require category-specific re-review before they can evaluate this candidate.",
+    "The candidate changes only manual validation; it does not repair the seed model's other point estimates or overall interval asymmetry.",
+    "A new finite candidate identity and fresh blind validation boundary are required before product admission."
+  ]
+}

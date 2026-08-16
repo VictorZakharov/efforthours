@@ -725,13 +725,38 @@ offline seed fallback and out-of-distribution behavior.
 Change model admission remains separate and follows the progressive size-band and
 final-delta policy in `CHANGE_MODEL_ADMISSION.md`.
 
+## Manual-QA coding-ratio candidate
+
+Checkpoint `efforthours-public-readiness/1.9.0` freezes development-only
+`manual-qa-coding-ratio/0.1.0`. It replaces seed manual-validation items with
+traceable 30/40/50 percent items derived from eligible expected coding effort.
+The rule is a disclosed maintainer-experience prior, not a production observation
+or fitted result. Each QA item depends on one source coding item; design,
+discovery, setup, documentation, QA, self-review, gaps, and pricing cannot enter
+the basis, and source low/high values are not compounded.
+
+An anonymized real-case diagnostic moves the expected estimate from `161.50` to
+`218.10` hours against a separate `240.00`-hour assessment, reducing absolute
+midpoint error by `72.1%`. Its inherited high bound worsens, so this is a focused
+point correction rather than a solution to overall interval asymmetry.
+
+The existing 15-family development labels allocate only `1,691.75` expected QA
+hours over `34,625.75` eligible coding hours (`4.89%`); reproduced seed reports
+allocate `4.50%`. Those weak labels were authored under the earlier semantics and
+cannot independently validate the new prior. They remain immutable and require a
+category-specific blind re-review before candidate evaluation. The shipped
+`seed-rules/0.4.0`, opened validation cohort, and sealed test are unchanged.
+
 ## Next evidence required
 
-- issue #107's strict-blind validation labels, authored without candidate
-  guidance only after the `1.2.0` finite manifest freeze;
-- one exact seed/challenger validation evaluation applying the frozen eligibility,
-  WAPE ordering, tie, simplicity, sharpness, runtime, and candidate-ID rule;
-- sealed test labels with a precommitted digest and custody record;
+- manual-QA development-label re-review under the explicit eligible-coding
+  boundary, with candidate values hidden;
+- a complete development evaluation and operational preflight for the exact
+  `manual-qa-coding-ratio/0.1.0` policy;
+- a new finite manifest and genuinely fresh blind validation boundary if the
+  development candidate survives;
+- sealed test labels with a precommitted digest and custody record only after a
+  future candidate passes that new validation boundary;
 - more exact small-task teacher decompositions with honest context provenance;
 - optional independent replication where available;
 - the already-frozen family matrix and held-out thresholds in

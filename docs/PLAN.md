@@ -143,7 +143,23 @@ count, and intermediate churn do not value effort. `CHANGE_ESTIMATION.md` and
 
 ## Current priorities
 
-### 1. Retire repository candidate v0.3 and preserve the sealed-test boundary
+### 1. Correct manual QA and preserve the sealed-test boundary
+
+- Keep `manual-qa-coding-ratio/0.1.0` development-only. It replaces seed QA with
+  dependency-linked 30/40/50 percent items over eligible expected coding effort;
+  it does not multiply total repository effort, compound source ranges, or admit
+  design, discovery, setup, docs, review, gaps, or pricing into the coding basis.
+- Treat the anonymized `149.00`-hour coding diagnostic as useful development
+  evidence: expected total improves from `161.50` to `218.10` hours against a
+  separate `240.00`-hour assessment. Do not hide that the inherited high bound
+  worsens or claim that one case calibrates the prior.
+- Re-review the manual-QA development category with candidate values hidden. The
+  current teacher labels allocate `4.89%` of eligible coding to QA and therefore
+  encode the old missing-QA assumption. Do not rewrite them in place or use them
+  as independent validation of the new semantics.
+- Run development and operational gates only after that re-review. A surviving
+  candidate requires a new finite manifest and fresh blind validation boundary;
+  the current test partition remains sealed.
 
 - Treat `logical-capability/0.3.0` and its `1.3.0` validation rejection as final.
   Its repository expected WAPE improves from `0.2279` to `0.0940`, but six frozen

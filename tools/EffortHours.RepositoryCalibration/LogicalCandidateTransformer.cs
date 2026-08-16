@@ -1,4 +1,3 @@
-using EffortHours.Contracts;
 using EffortHours.Contracts.V1;
 
 namespace EffortHours.RepositoryCalibration;
@@ -130,21 +129,14 @@ internal static class LogicalCandidateTransformer
         }
 
         WorkItem[] workItems = [.. source.WorkItems.Select(item => transformed[item.Id])];
-        EffortRange total = ContractValidation.Sum(workItems.Select(item => item.Hours));
-        return source with
-        {
-            EstimatorVersion = model.EstimatorVersion,
-            TotalEffort = total,
-            TotalCost = ProjectCost(source.RateCard, total),
-            Categories = BuildCategories(workItems, total),
-            WorkItems = workItems,
-            Assumptions =
+        return CandidateEstimateProjection.Create(
+            source,
+            model.EstimatorVersion,
+            workItems,
             [
-                .. source.Assumptions,
                 "Development-only fitted logical-capability candidate; this estimate is not admitted for product use.",
                 $"{fallbackCount} capability group(s) used the complete seed fallback.",
-            ],
-        };
+            ]);
     }
 
     internal static void ValidateModel(LogicalCandidateModel model)
@@ -315,53 +307,6 @@ internal static class LogicalCandidateTransformer
         result[^1] = total - assigned;
         return result;
     }
-
-    private static CategoryEstimate[] BuildCategories(
-        IReadOnlyList<WorkItem> workItems,
-        EffortRange total)
-    {
-        CategoryEstimate[] categories =
-        [
-            .. workItems.GroupBy(item => item.Category)
-                .OrderBy(group => group.Key)
-                .Select(group => new CategoryEstimate
-                {
-                    Category = group.Key,
-                    Hours = ContractValidation.Sum(group.Select(item => item.Hours)),
-                }),
-        ];
-        if (categories.Length == 0)
-        {
-            return categories;
-        }
-
-        EffortRange beforeLast = ContractValidation.Sum(
-            categories[..^1].Select(category => category.Hours));
-        categories[^1] = categories[^1] with
-        {
-            Hours = new EffortRange
-            {
-                Low = total.Low - beforeLast.Low,
-                Expected = total.Expected - beforeLast.Expected,
-                High = total.High - beforeLast.High,
-            },
-        };
-        return categories;
-    }
-
-    private static CostRange? ProjectCost(RateCard? rateCard, EffortRange hours) =>
-        rateCard is null
-            ? null
-            : new CostRange
-            {
-                Low = RoundMoney(hours.Low * rateCard.HourlyRate),
-                Expected = RoundMoney(hours.Expected * rateCard.HourlyRate),
-                High = RoundMoney(hours.High * rateCard.HourlyRate),
-                Currency = rateCard.Currency,
-            };
-
-    private static decimal RoundMoney(decimal value) =>
-        decimal.Round(value, 2, MidpointRounding.AwayFromZero);
 
     private readonly record struct PointKey(string Kind, string SizeBand);
 
