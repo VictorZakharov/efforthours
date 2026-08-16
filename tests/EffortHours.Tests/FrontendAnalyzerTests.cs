@@ -16,7 +16,7 @@ public sealed class FrontendAnalyzerTests
         string json = ContractJson.Serialize(evidence);
 
         EvidenceFact component = SingleFact(evidence, "javascript:angular-component:");
-        Assert.Equal("0.5.1", component.Provenance.AnalyzerVersion);
+        Assert.Equal("0.5.2", component.Provenance.AnalyzerVersion);
         Assert.Equal(1m, Measurement(component, "components"));
         Assert.True(Measurement(component, "template-structure-units") > 0m);
         Assert.True(Measurement(component, "template-binding-units") > 0m);
@@ -196,7 +196,7 @@ public sealed class FrontendAnalyzerTests
         EvidenceFact accessibility = Fact(evidence, "javascript:accessibility:index.html");
         string json = ContractJson.Serialize(evidence);
 
-        Assert.Equal("0.5.1", accessibility.Provenance.AnalyzerVersion);
+        Assert.Equal("0.5.2", accessibility.Provenance.AnalyzerVersion);
         Assert.True(Measurement(accessibility, "accessibility-attributes") >= 3m);
         Assert.True(Measurement(accessibility, "labels") >= 2m);
         Assert.Equal(1m, Measurement(accessibility, "alternative-texts"));

@@ -237,6 +237,8 @@ eh calibration diagnose <corpus.json> <estimate.json>...
   --partition <development|validation|test> [--output <path>]
 eh calibration uncertainty-features <estimate.json> <evidence.json>
   [--output <path>]
+eh calibration uncertainty-structure <estimate.json> <evidence.json>
+  [--output <path>]
 eh calibration uncertainty-evaluate <development-corpus.json> <features.json>...
   [--output <path>]
 eh calibration mutations <suite.json> <estimate.json>... [--output <path>]
@@ -359,15 +361,57 @@ concentration are diagnostic candidates. In particular, tags such as
 the product is offline-first. Dynamic and aggregate code-shape features must earn
 held-out value rather than proxy repository size or reward accidental complexity.
 
-At the v1 feature-contract freeze, per-function complexity, function-size, and
-nesting distributions; local fan-in, fan-out, and dependency cycles;
-analyzer-ambiguity concentration; per-cell sample support; and OOD scoring were
-explicitly deferred. They do not appear in v1 work-item feature vectors. The later
-support profiler emits the final two as a separate pre-fit artifact rather than
-rewriting this frozen contract or silently adding a fitted feature. Structural
-distributions and graph evidence remain unavailable. The source report's existing
-range and a symmetry-compliance flag are diagnostic only; this checkpoint does not
-change `seed-rules/0.4.0` or fit a successor.
+At the v1 feature-contract freeze, per-callable complexity, size, and nesting
+distributions; local fan-in, fan-out, and dependency cycles; analyzer-ambiguity
+concentration; per-cell sample support; and OOD scoring were explicitly deferred.
+They remain absent from that frozen work-item vector. Later support and structural
+artifacts extend the pre-fit diagnostic evidence without rewriting v1 or silently
+adding a fitted feature. The source report's existing range and a symmetry-
+compliance flag remain diagnostic only; none of these checkpoints changes
+`seed-rules/0.4.0` or fits a successor.
+
+### Structural uncertainty diagnostics
+
+`repository-uncertainty-structural-features/1.0.0` separately freezes the first
+label-independent callable-shape artifact. It can be projected with:
+
+```text
+eh calibration uncertainty-structure <estimate.json> <evidence.json> \
+  --compact --output <structural-features.json>
+```
+
+The same digest-match, offline, privacy, and no-label rules apply as for
+`uncertainty-features`. The report validates against
+`calibration-uncertainty-structural-features.schema.json` and pins the canonical
+contract digest
+`sha256:a186c6e61ef7fcbd294ca4de27ed8504b313599e96246d8bcc7321eda04204ab`.
+
+Analyzer evidence contract `callable-structural-metrics/1.0.0` fixes these local
+project/package measurements before any reviewed residual is consulted:
+
+- callable non-comment syntax-token count, bounded decision-complexity points,
+  and control-nesting depth each emit nearest-rank p50, p90, and maximum;
+- threshold shares use strictly more than `200` tokens, `10` complexity points,
+  and `4` nesting levels;
+- decision complexity starts at one and adds bounded control decisions and logical
+  AND/OR expressions; nesting excludes logical expressions and nested callable
+  bodies; and
+- callable measurement coverage and source-file parser ambiguity remain separate
+  so an unsupported parser path cannot masquerade as a low-complexity sample.
+
+.NET analyzer `0.3.5` measures Roslyn C# method declarations with executable
+bodies. JavaScript analyzer `0.5.2` measures Acornima JavaScript/JSX function and
+arrow-function ASTs. TypeScript/TSX and parser fallbacks retain detected-callable
+counts but emit no guessed distributions, producing explicit partial or
+unavailable coverage.
+
+Work-item projection takes the maximum shape/ambiguity value across contributing
+local scopes and the minimum callable-coverage value. It does not sum repository
+totals. All 14 fields are `diagnostic-only`: they do not reward complexity, change
+expected EHE, widen an interval, alter a reviewed label, or fit a model. Local
+fan-in/fan-out, dependency cycles, and interface concentration remain deferred to
+a separate graph contract. Development-only residual evaluation is the next
+decision and must occur in a separate checkpoint after this feature freeze.
 
 ### Development-only uncertainty feature measurement
 

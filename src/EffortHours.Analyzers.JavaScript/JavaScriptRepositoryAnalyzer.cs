@@ -514,7 +514,15 @@ public sealed class JavaScriptRepositoryAnalyzer : IRepositoryEvidenceAnalyzer
     private static EvidenceFact CreateSourceStructureFact(
         string scope,
         JavaScriptSourceMetrics metrics,
-        IReadOnlyList<EvidenceLocation> locations) => JavaScriptEvidence.Fact(
+        IReadOnlyList<EvidenceLocation> locations)
+    {
+        IReadOnlyList<EvidenceMeasurement> structuralMeasurements =
+            CallableStructuralMeasurements.Build(
+                metrics.CallableStructuralMetrics,
+                metrics.StructuralDetectedCallables,
+                metrics.Files,
+                metrics.StructuralParserBackedFiles);
+        return JavaScriptEvidence.Fact(
             $"javascript:source-structure:{scope}",
             EvidenceKinds.SourceStructure,
             scope,
@@ -539,12 +547,15 @@ public sealed class JavaScriptRepositoryAnalyzer : IRepositoryEvidenceAnalyzer
                 JavaScriptEvidence.Measurement("branch-points", metrics.BranchPoints, "branches"),
                 JavaScriptEvidence.Measurement("calls", metrics.Calls, "calls"),
                 JavaScriptEvidence.Measurement("decorators", metrics.Decorators, "decorators"),
+                .. structuralMeasurements,
             ],
             [
                 metrics.ParserBackedFiles > 0 ? "syntax:parser-backed" : "syntax:no-parser-backed-files",
                 metrics.LexerBackedFiles > 0 ? "syntax:token-backed" : "syntax:no-token-backed-files",
+                StructuralEvidenceVersions.CallableMetricsV1Tag,
                 .. metrics.Technologies.Select(technology => $"technology:{technology}"),
             ]);
+    }
 
     private static JavaScriptPackageModel? FindOwningPackage(
         string path,

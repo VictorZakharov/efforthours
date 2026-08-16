@@ -4,7 +4,7 @@ using Acornima.Jsx;
 
 namespace EffortHours.Analyzers.JavaScript;
 
-internal static class JavaScriptSyntaxAnalyzer
+internal static partial class JavaScriptSyntaxAnalyzer
 {
     public static JavaScriptSyntaxResult Analyze(
         string source,
@@ -17,18 +17,20 @@ internal static class JavaScriptSyntaxAnalyzer
         if (useTypeScriptLexer)
         {
             metrics.LexerBackedFiles = 1;
+            metrics.StructuralDetectedCallables = metrics.Functions + metrics.Methods;
             return new JavaScriptSyntaxResult(metrics, "typescript-token-stream", null);
         }
 
         if (TryParse(source, path, hasJsx, out Node? root, out int? errorLine, out string parserKind) ||
             (!hasJsx && TryParse(source, path, true, out root, out errorLine, out parserKind)))
         {
-            ApplyAstMetrics(root!, metrics);
+            ApplyAstMetrics(root!, metrics, tokens);
             metrics.ParserBackedFiles = 1;
             return new JavaScriptSyntaxResult(metrics, parserKind, null);
         }
 
         metrics.LexerBackedFiles = 1;
+        metrics.StructuralDetectedCallables = metrics.Functions + metrics.Methods;
         return new JavaScriptSyntaxResult(metrics, "token-stream-fallback", errorLine);
     }
 
@@ -345,7 +347,10 @@ internal static class JavaScriptSyntaxAnalyzer
         return false;
     }
 
-    private static void ApplyAstMetrics(Node root, JavaScriptSourceMetrics metrics)
+    private static void ApplyAstMetrics(
+        Node root,
+        JavaScriptSourceMetrics metrics,
+        JavaScriptTokenization tokens)
     {
         int imports = 0;
         int dynamicImports = 0;
@@ -434,6 +439,8 @@ internal static class JavaScriptSyntaxAnalyzer
         {
             metrics.UiComponents = Math.Max(metrics.UiComponents, 1);
         }
+
+        ApplyCallableStructuralMetrics(root, tokens, metrics);
     }
 
     private static void AddImportedTechnology(

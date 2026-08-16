@@ -49,6 +49,13 @@ public static class CalibrationDigest
         return ComputeCanonical(report);
     }
 
+    public static string Compute(CalibrationUncertaintyStructuralFeatureReport report)
+    {
+        ArgumentNullException.ThrowIfNull(report);
+
+        return ComputeCanonical(report);
+    }
+
     public static string Compute(CalibrationUncertaintySupportPopulation population)
     {
         ArgumentNullException.ThrowIfNull(population);

@@ -169,8 +169,8 @@ mixed repositories.
 
 | Analyzer family | Maintained artifacts | Evidence represented |
 | --- | --- | --- |
-| **.NET** | C# source, projects, solutions, and Razor/UI assets | Project ownership, APIs, behavior, data and migrations, integrations, security, UI, and tests |
-| **JavaScript/TypeScript + frontend** | JavaScript, JSX, TypeScript, TSX, HTML/templates, CSS-family styles, Vue/Svelte components, and static Angular metadata | Packages and workspaces, APIs, behavior, UI/template/style semantics, data, integrations, security, background work, and tests |
+| **.NET** | C# source, projects, solutions, and Razor/UI assets | Project ownership, APIs, behavior, data and migrations, integrations, security, UI, tests, and parser-backed callable-structure diagnostics |
+| **JavaScript/TypeScript + frontend** | JavaScript, JSX, TypeScript, TSX, HTML/templates, CSS-family styles, Vue/Svelte components, and static Angular metadata | Packages and workspaces, APIs, behavior, UI/template/style semantics, data, integrations, security, background work, tests, and parser-backed JS/JSX callable diagnostics with explicit TS/TSX coverage gaps |
 | **SQL** | PostgreSQL, SQL Server, MySQL/MariaDB, and SQLite-oriented SQL | Schema, migrations, stored programs, queries, tests, deployment, and cross-database evidence |
 | **Python + Jupyter** | `.py`, `.pyi`, package metadata, and bounded `.ipynb` notebooks | Package ownership, structure, APIs, qualified frameworks, tests, Markdown, data analysis, visualization, and integrations |
 | **Go** | Modules, workspaces, `.go` source, and `_test.go` tests | Packages, local replacements, declarations, APIs, qualified semantics, concurrency, build directives, and tests |
@@ -331,6 +331,7 @@ eh change portfolio --author-period-manifest <manifest.json>
 eh change explain <change-estimate.json> --item <id>
 eh review packet <repository> --compact
 eh calibration uncertainty-features <estimate.json> <evidence.json> --compact
+eh calibration uncertainty-structure <estimate.json> <evidence.json> --compact
 eh calibration uncertainty-evaluate <development-corpus.json> <features.json>... --compact
 eh calibration uncertainty-support <population.json> <features.json>... --compact
 eh calibration uncertainty-support-evaluate <development-corpus.json> <support-profile.json> <features.json>... --compact

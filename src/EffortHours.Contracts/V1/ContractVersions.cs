@@ -26,6 +26,15 @@ public static class CalibrationUncertaintyVersions
 
     public const string ProjectorV1 = "uncertainty-feature-projector/1.0.0";
 
+    public const string StructuralFeatureContractV1 =
+        "repository-uncertainty-structural-features/1.0.0";
+
+    public const string StructuralFeatureContractDigestV1 =
+        "sha256:a186c6e61ef7fcbd294ca4de27ed8504b313599e96246d8bcc7321eda04204ab";
+
+    public const string StructuralProjectorV1 =
+        "uncertainty-structural-feature-projector/1.0.0";
+
     public const string IntervalPolicyV1 = "symmetric-planning-interval/1.0.0";
 
     public const string EvaluationProtocolV1 = "uncertainty-feature-evaluation/1.0.0";
@@ -56,6 +65,8 @@ public static class SchemaNames
     public const string CalibrationEvaluation = "calibration-evaluation.schema.json";
     public const string CalibrationUncertaintyFeatures =
         "calibration-uncertainty-features.schema.json";
+    public const string CalibrationUncertaintyStructuralFeatures =
+        "calibration-uncertainty-structural-features.schema.json";
     public const string CalibrationUncertaintyEvaluation =
         "calibration-uncertainty-evaluation.schema.json";
     public const string CalibrationUncertaintySupportPopulation =
@@ -102,6 +113,8 @@ public static class SchemaIds
     public const string CalibrationEvaluation = "urn:eh:schema:v1:calibration-evaluation";
     public const string CalibrationUncertaintyFeatures =
         "urn:eh:schema:v1:calibration-uncertainty-features";
+    public const string CalibrationUncertaintyStructuralFeatures =
+        "urn:eh:schema:v1:calibration-uncertainty-structural-features";
     public const string CalibrationUncertaintyEvaluation =
         "urn:eh:schema:v1:calibration-uncertainty-evaluation";
     public const string CalibrationUncertaintySupportPopulation =

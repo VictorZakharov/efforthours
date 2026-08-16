@@ -256,12 +256,20 @@ Angular metadata requires a named `Component` import from `@angular/core`
 external assets must resolve to digest-verified scanner-admitted files.
 HTML/template and CSS-family scanners count bounded structural constructs rather
 than raw text volume. They do not render, compile frameworks, execute
-preprocessors, or establish runtime reachability. JavaScript analyzer `0.5.1`
-records explicit static roles, labels, alternative text, live regions, and
+preprocessors, or establish runtime reachability. JavaScript analyzer `0.5.2`
+retains the `0.5.1` explicit static roles, labels, alternative text, live regions, and
 keyboard/focus signals from maintained HTML and Angular templates as represented
 accessibility work under the existing combined security/accessibility prior. This
 is bounded implementation evidence with `accessibility-conformance:not-proven`;
 it is not an accessibility audit or runtime conformance result.
+
+.NET analyzer `0.3.5` and JavaScript analyzer `0.5.2` also emit the separate
+`callable-structural-metrics/1.0.0` diagnostic evidence contract. Parser-backed C#
+methods and JavaScript/JSX functions report local size, bounded decision-
+complexity, and nesting distributions plus measurement coverage and parser
+ambiguity. TypeScript/TSX and parser fallbacks expose the missing coverage instead
+of fabricating distributions. These measurements are not seed-rule inputs: they
+do not add work, reward accidental complexity, or change any current EHE range.
 
 SQL analyzer `0.1.0` uses a bounded token/statement stream rather than raw lines or
 row volume. Recognized schema, migration, stored-program, query, seed, test,
@@ -666,6 +674,15 @@ it from a digest-matched saved estimate and repository-evidence document without
 reading labels, scanning source, or changing hours. The projection also records
 whether each source-model range already satisfies the successor symmetry policy;
 `seed-rules/0.4.0` is unchanged by this diagnostic contract.
+
+`repository-uncertainty-structural-features/1.0.0` is a separate, later
+label-independent freeze for local callable size, decision-complexity, nesting,
+measurement-coverage, and parser-ambiguity diagnostics. `eh calibration
+uncertainty-structure` projects it from the same digest-matched estimate/evidence
+pair. Local scope maxima preserve concentrated difficult shapes without summing
+raw repository volume; coverage uses the local minimum. Every field remains
+diagnostic-only until a separately governed development evaluation demonstrates
+useful residual ordering, and no current expected EHE or interval consumes it.
 
 `uncertainty-feature-evaluation/1.0.0` measures those vectors only against a
 development-only corpus. It uses leave-one-repository-out folds, an unconditional
