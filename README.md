@@ -333,6 +333,7 @@ eh review packet <repository> --compact
 eh calibration uncertainty-features <estimate.json> <evidence.json> --compact
 eh calibration uncertainty-structure <estimate.json> <evidence.json> --compact
 eh calibration uncertainty-evaluate <development-corpus.json> <features.json>... --compact
+eh calibration uncertainty-structure-evaluate <development-corpus.json> <structural-features.json>... --compact
 eh calibration uncertainty-support <population.json> <features.json>... --compact
 eh calibration uncertainty-support-evaluate <development-corpus.json> <support-profile.json> <features.json>... --compact
 eh model info

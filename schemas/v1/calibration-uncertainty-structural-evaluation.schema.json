@@ -1,0 +1,240 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:eh:schema:v1:calibration-uncertainty-structural-evaluation",
+  "title": "EffortHours calibration uncertainty structural evaluation report v1",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "evaluatorVersion",
+    "metricVersion",
+    "corpusId",
+    "corpusVersion",
+    "corpusDigest",
+    "partition",
+    "featureContractVersion",
+    "featureContractDigest",
+    "intervalPolicyVersion",
+    "evaluationPolicy",
+    "evaluationPolicyDigest",
+    "projectorVersions",
+    "estimatorVersions",
+    "protocol",
+    "summary",
+    "currentIntervals",
+    "crossValidatedBaseline",
+    "features",
+    "slices",
+    "repositories",
+    "targets"
+  ],
+  "properties": {
+    "schemaVersion": { "const": "1.0.0" },
+    "evaluatorVersion": {
+      "const": "uncertainty-structural-feature-evaluator/1.0.0"
+    },
+    "metricVersion": { "const": "uncertainty-feature-metrics/1.0.0" },
+    "corpusId": { "type": "string", "minLength": 1 },
+    "corpusVersion": { "type": "string", "minLength": 1 },
+    "corpusDigest": { "$ref": "#/$defs/digest" },
+    "partition": { "const": "development" },
+    "featureContractVersion": {
+      "const": "repository-uncertainty-structural-features/1.0.0"
+    },
+    "featureContractDigest": {
+      "const": "sha256:a186c6e61ef7fcbd294ca4de27ed8504b313599e96246d8bcc7321eda04204ab"
+    },
+    "intervalPolicyVersion": { "const": "symmetric-planning-interval/1.0.0" },
+    "evaluationPolicy": { "$ref": "#/$defs/evaluationPolicy" },
+    "evaluationPolicyDigest": {
+      "const": "sha256:2f3dc2417747ac8557744eb2d59c3b2e816158620eb26086f383d3809610f610"
+    },
+    "projectorVersions": { "$ref": "#/$defs/stringList" },
+    "estimatorVersions": { "$ref": "#/$defs/stringList" },
+    "protocol": { "$ref": "#/$defs/protocol" },
+    "summary": {
+      "$ref": "urn:eh:schema:v1:calibration-uncertainty-evaluation#/$defs/summary"
+    },
+    "currentIntervals": {
+      "$ref": "urn:eh:schema:v1:calibration-uncertainty-evaluation#/$defs/performance"
+    },
+    "crossValidatedBaseline": {
+      "$ref": "urn:eh:schema:v1:calibration-uncertainty-evaluation#/$defs/performance"
+    },
+    "features": {
+      "type": "array",
+      "minItems": 14,
+      "maxItems": 14,
+      "items": { "$ref": "#/$defs/structuralFeature" }
+    },
+    "slices": {
+      "type": "array",
+      "items": {
+        "$ref": "urn:eh:schema:v1:calibration-uncertainty-evaluation#/$defs/slice"
+      }
+    },
+    "repositories": {
+      "type": "array",
+      "minItems": 3,
+      "items": {
+        "$ref": "urn:eh:schema:v1:calibration-uncertainty-evaluation#/$defs/repository"
+      }
+    },
+    "targets": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/structuralTarget" }
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "stringList": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "protocol": {
+      "type": "object",
+      "required": [
+        "version",
+        "partition",
+        "foldUnit",
+        "targetMetric",
+        "normalization",
+        "normalizationFloorHours",
+        "intendedCoverageTarget",
+        "quantileMethod",
+        "minimumBucketObservationCount",
+        "minimumBucketRepositoryCount",
+        "evaluationPolicyVersion",
+        "bucketAssignment",
+        "repositoryIsolated",
+        "developmentOnly",
+        "fitsProductionModel",
+        "formalProbabilityInterval"
+      ],
+      "properties": {
+        "version": { "const": "uncertainty-structural-feature-evaluation/1.0.0" },
+        "partition": { "const": "development" },
+        "foldUnit": { "const": "repository" },
+        "targetMetric": { "const": "absolute-reviewed-expected-residual" },
+        "normalization": { "const": "candidate-expected-with-0.5-hour-floor" },
+        "normalizationFloorHours": { "const": 0.5 },
+        "intendedCoverageTarget": { "const": 0.8 },
+        "quantileMethod": { "const": "nearest-rank" },
+        "minimumBucketObservationCount": { "const": 3 },
+        "minimumBucketRepositoryCount": { "const": 2 },
+        "evaluationPolicyVersion": {
+          "const": "uncertainty-structural-evaluation-policy/1.0.0"
+        },
+        "bucketAssignment": {
+          "const": "fixed-feature-specific-inclusive-maximum"
+        },
+        "repositoryIsolated": { "const": true },
+        "developmentOnly": { "const": true },
+        "fitsProductionModel": { "const": false },
+        "formalProbabilityInterval": { "const": false }
+      },
+      "additionalProperties": false
+    },
+    "evaluationPolicy": {
+      "type": "object",
+      "required": ["version", "effectiveDate", "labelIndependent", "rules"],
+      "properties": {
+        "version": { "const": "uncertainty-structural-evaluation-policy/1.0.0" },
+        "effectiveDate": { "const": "2026-08-16" },
+        "labelIndependent": { "const": true },
+        "rules": {
+          "type": "array",
+          "minItems": 14,
+          "maxItems": 14,
+          "items": { "$ref": "#/$defs/evaluationRule" }
+        }
+      },
+      "additionalProperties": false
+    },
+    "evaluationRule": {
+      "type": "object",
+      "required": [
+        "featureId",
+        "valueKind",
+        "targetAggregation",
+        "expectedResidualDirection",
+        "buckets"
+      ],
+      "properties": {
+        "featureId": { "type": "string", "minLength": 1 },
+        "valueKind": { "enum": ["count", "ratio"] },
+        "targetAggregation": { "enum": ["maximum", "minimum"] },
+        "expectedResidualDirection": {
+          "enum": ["higher-value-higher-residual", "higher-value-lower-residual"]
+        },
+        "buckets": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/policyBucket" }
+        }
+      },
+      "additionalProperties": false
+    },
+    "policyBucket": {
+      "type": "object",
+      "required": ["id", "order"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "order": { "type": "integer", "minimum": 0 },
+        "inclusiveMaximum": { "type": "number", "minimum": 0 }
+      },
+      "additionalProperties": false
+    },
+    "structuralFeature": {
+      "type": "object",
+      "required": [
+        "featureId",
+        "targetAggregation",
+        "expectedResidualDirection",
+        "evaluation",
+        "expectedDirectionCorrelationMatches",
+        "expectedDirectionBucketViolationCount",
+        "repositoryCoverageRegressionCount",
+        "meetsPooledIncrementalGate"
+      ],
+      "properties": {
+        "featureId": { "type": "string", "minLength": 1 },
+        "targetAggregation": { "enum": ["maximum", "minimum"] },
+        "expectedResidualDirection": {
+          "enum": ["higher-value-higher-residual", "higher-value-lower-residual"]
+        },
+        "evaluation": {
+          "$ref": "urn:eh:schema:v1:calibration-uncertainty-evaluation#/$defs/feature"
+        },
+        "expectedDirectionCorrelationMatches": { "type": "boolean" },
+        "expectedDirectionBucketViolationCount": { "type": "integer", "minimum": 0 },
+        "repositoryCoverageRegressionCount": { "type": "integer", "minimum": 0 },
+        "meetsPooledIncrementalGate": { "type": "boolean" }
+      },
+      "additionalProperties": false
+    },
+    "structuralTarget": {
+      "type": "object",
+      "required": ["source", "features"],
+      "properties": {
+        "source": {
+          "$ref": "urn:eh:schema:v1:calibration-uncertainty-evaluation#/$defs/target"
+        },
+        "features": {
+          "type": "array",
+          "minItems": 14,
+          "maxItems": 14,
+          "items": {
+            "$ref": "urn:eh:schema:v1:calibration-uncertainty-features#/$defs/featureValue"
+          }
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

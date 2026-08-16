@@ -49,7 +49,11 @@ public static partial class ContractValidation
         ValidateUncertaintyEvaluationProtocol(report.Protocol, errors);
         ValidateUncertaintyEvaluationRepositories(report, errors);
         ValidateUncertaintyEvaluationTargets(report, errors);
-        ValidateUncertaintyEvaluationFeatures(report, errors);
+        ValidateUncertaintyEvaluationFeatures(
+            report,
+            UncertaintyEvaluationFeatureBoundary,
+            "The frozen v1 uncertainty evaluation",
+            errors);
         ValidateUncertaintyEvaluationSlices(report, errors);
         ValidateUncertaintyEvaluationSummary(report, errors);
 
@@ -72,11 +76,14 @@ public static partial class ContractValidation
 
     private static void ValidateUncertaintyEvaluationFeatures(
         CalibrationUncertaintyEvaluationReport report,
+        (string Id, CalibrationUncertaintyFeatureValueKind ValueKind,
+            CalibrationUncertaintyFeatureMonotonicity Monotonicity)[] boundary,
+        string boundaryName,
         List<string> errors)
     {
-        if (report.Features.Count != 11)
+        if (report.Features.Count != boundary.Length)
         {
-            errors.Add("The frozen v1 uncertainty evaluation must contain all 11 scalar features.");
+            errors.Add($"{boundaryName} must contain all {boundary.Length} scalar features.");
         }
 
         HashSet<string> ids = new(StringComparer.Ordinal);
@@ -90,9 +97,9 @@ public static partial class ContractValidation
                 errors.Add($"Uncertainty evaluation feature '{feature.FeatureId}' is duplicated.");
             }
 
-            if (index >= UncertaintyEvaluationFeatureBoundary.Length ||
+            if (index >= boundary.Length ||
                 (feature.FeatureId, feature.ValueKind, feature.Monotonicity) !=
-                UncertaintyEvaluationFeatureBoundary[index])
+                boundary[index])
             {
                 errors.Add($"{path} does not match the frozen v1 feature order and semantics.");
             }
@@ -345,33 +352,4 @@ public static partial class ContractValidation
     private static decimal RoundUncertaintyEvaluation(decimal value) =>
         decimal.Round(value, 4, MidpointRounding.AwayFromZero);
 
-    private static readonly (string Id, CalibrationUncertaintyFeatureValueKind ValueKind,
-        CalibrationUncertaintyFeatureMonotonicity Monotonicity)[]
-        UncertaintyEvaluationFeatureBoundary =
-        [
-            ("model.source-confidence", CalibrationUncertaintyFeatureValueKind.Ratio,
-                CalibrationUncertaintyFeatureMonotonicity.LowerMustNotNarrow),
-            ("evidence.inferred-fact-share", CalibrationUncertaintyFeatureValueKind.Ratio,
-                CalibrationUncertaintyFeatureMonotonicity.HigherMustNotNarrow),
-            ("analysis.parser-risk", CalibrationUncertaintyFeatureValueKind.Ordinal,
-                CalibrationUncertaintyFeatureMonotonicity.HigherMustNotNarrow),
-            ("analysis.explicit-uncertainty-count", CalibrationUncertaintyFeatureValueKind.Count,
-                CalibrationUncertaintyFeatureMonotonicity.HigherMustNotNarrow),
-            ("access.material-unresolved-count", CalibrationUncertaintyFeatureValueKind.Count,
-                CalibrationUncertaintyFeatureMonotonicity.HigherMustWiden),
-            ("analysis.non-material-offline-limitation-count",
-                CalibrationUncertaintyFeatureValueKind.Count,
-                CalibrationUncertaintyFeatureMonotonicity.DiagnosticOnly),
-            ("analysis.dynamic-boundary-count", CalibrationUncertaintyFeatureValueKind.Count,
-                CalibrationUncertaintyFeatureMonotonicity.DiagnosticOnly),
-            ("analysis.unsupported-boundary-count", CalibrationUncertaintyFeatureValueKind.Count,
-                CalibrationUncertaintyFeatureMonotonicity.DiagnosticOnly),
-            ("evidence.resolved-fact-count", CalibrationUncertaintyFeatureValueKind.Count,
-                CalibrationUncertaintyFeatureMonotonicity.DiagnosticOnly),
-            ("shape.aggregate-branch-density", CalibrationUncertaintyFeatureValueKind.Rate,
-                CalibrationUncertaintyFeatureMonotonicity.DiagnosticOnly),
-            ("shape.aggregate-public-interface-concentration",
-                CalibrationUncertaintyFeatureValueKind.Ratio,
-                CalibrationUncertaintyFeatureMonotonicity.DiagnosticOnly),
-        ];
 }

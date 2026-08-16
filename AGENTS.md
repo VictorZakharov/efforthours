@@ -117,7 +117,9 @@ miss and has non-monotonic or contrary residual ordering. They remain diagnostic
 only, no interval model is frozen, and estimates do not change. A separate frozen
 structural diagnostic contract now exposes local callable size, decision-
 complexity, nesting, parser coverage, and analyzer ambiguity for parser-backed C#
-and JavaScript/JSX; it has not yet been evaluated or admitted as an interval
-driver.
+and JavaScript/JSX. Its separate target aggregation, fixed buckets, expected
+residual directions, and repository-held-out evaluation gate are frozen before
+public labels are joined; the public development measurement is still pending and
+no field is admitted as an interval driver.
 Change EHE has only the limited Stage A logical admission described in
 `docs/CHANGE_MODEL_ADMISSION.md`; later ecosystem extensions remain experimental.

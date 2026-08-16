@@ -245,6 +245,15 @@ public sealed class CalibrationUncertaintyStructuralFeatureTests
             CalibrationDigest.Compute(CalibrationUncertaintyStructuralFeatureCatalog.Current));
     }
 
+    [Fact]
+    public void CanonicalStructuralEvaluationPolicyDigestIsPinned()
+    {
+        Assert.Equal(
+            CalibrationUncertaintyVersions.StructuralEvaluationPolicyDigestV1,
+            CalibrationDigest.Compute(
+                CalibrationUncertaintyStructuralEvaluationPolicyCatalog.Current));
+    }
+
     private static async Task<(EstimateReport Estimate, RepositoryEvidence Evidence)>
         CreateDotNetInputsAsync()
     {
