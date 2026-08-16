@@ -48,6 +48,10 @@ when semantics, schemas, assumptions, or unresolved decisions change.
 - Preserve versioned contracts, stable evidence IDs, explicit uncertainty, and
   calculation lineage. Never overstate calibration, accuracy, or production
   readiness.
+- Calibrate at the coarsest level that can be estimated reliably. Treat repository
+  totals as primary, group immaterial uncertainty into a bounded residual, and use
+  granular disagreement analysis only to diagnose a materially wrong total. Row
+  count and repeated micro-judgments are not independent accuracy evidence.
 - Keep ordinary analysis deterministic, offline, read-only, and safe for untrusted
   source trees. Do not execute target code or tools, install target dependencies,
   access the network, inspect Git history, follow links outside scope, or emit
@@ -137,15 +141,16 @@ estimates remain unchanged.
 Development candidate `manual-qa-coding-ratio/0.1.0` now replaces seed manual-QA
 items with dependency-linked 30/40/50 percent items over eligible expected coding
 effort. It is an experience-based, unvalidated correction candidate only:
-`seed-rules/0.4.0` remains shipped, existing labels are unchanged, the manual-QA
-development re-review now has 15 frozen candidate-blind packets covering 955
-eligible responsibilities plus a frozen blank decision template and compiler.
-The compiler preserves 1,710 non-QA targets, replaces 320 legacy QA targets with
-955 reviewed targets, and rejects the unanswered template. No replacement answers,
-compiled corpus, or evaluation yet exists. Any admission attempt needs a new
-finite manifest and fresh validation boundary. Its anonymized real-case midpoint
-improves materially while its inherited total high bound worsens, so overall
-interval research remains separate.
+`seed-rules/0.4.0` remains shipped and existing labels are unchanged. Its
+anonymized real-case midpoint improves from 161.50 to 218.10 hours against a
+240.00-hour assessment, reducing absolute point error by 72.1%, while its inherited
+high bound worsens. The 15 candidate-blind packets and blank 955-decision compiler
+remain immutable optional diagnostic infrastructure; exhaustive micro-labeling was
+stopped before any completed plan or corpus was published because completeness did
+not establish reliable numerical judgment. `repository-total-materiality/1.0.0`
+now makes credible repository totals primary and drills down only on material
+misses. Any admission attempt still needs a new policy/candidate identity and fresh
+validation boundary; interval research remains separate.
 
 Change EHE has only the limited Stage A logical admission described in
 `docs/CHANGE_MODEL_ADMISSION.md`; later ecosystem extensions remain experimental.

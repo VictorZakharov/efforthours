@@ -33,6 +33,50 @@ Because EffortHours's own anchor informed the seed-model and calibration design,
 a development diagnostic rather than an eligible held-out test record unless a
 future independent snapshot and review policy explicitly establishes otherwise.
 
+## 2026-08-16: materiality-first calibration strategy
+
+Status: **repository totals made primary; exhaustive manual-QA micro-labeling
+stopped before publication; historical admission and holdout results unchanged**
+
+Strategy `repository-total-materiality/1.0.0` records a methodological correction:
+numerical authority belongs at the coarsest source-backed level that can be judged
+reliably. Work-item rows remain necessary for report traceability, reconciliation,
+and diagnosis, but row count does not make repeated micro-judgments independent
+accuracy evidence.
+
+A local candidate-blind preflight completed the frozen 955-decision template from
+packet inputs. Review of that unpublished draft found that formal completeness did
+not solve estimability: many decisions still expressed repeated category-shaped
+judgments without source-backed activity arithmetic. The draft was not accepted,
+committed, compiled into a public corpus, or compared with either estimator. The
+`2.0.0` packet and `2.1.0` compiler freezes remain valid optional diagnostic
+infrastructure; their historical provenance is unchanged.
+
+The first aggregate case already demonstrates why total-first diagnosis is more
+useful:
+
+| Estimate | Low | Expected | High | Expected error versus 240 h |
+| --- | ---: | ---: | ---: | ---: |
+| Shipped seed | 78.00 | 161.50 | 306.75 | -78.50 h (-32.7%) |
+| Manual-QA candidate | 121.45 | 218.10 | 375.25 | -21.90 h (-9.1%) |
+| Separate manual assessment | 182.00 | 240.00 | 302.00 | - |
+
+The simple manual-QA correction removes 72.1% of absolute midpoint error and puts
+the candidate midpoint inside the credible reviewed range. Its high endpoint still
+worsens. The expected-point result supports further aggregate validation; it does
+not solve interval calibration or by itself admit the candidate.
+
+Future development cases compare repository totals first. A credible in-range
+total stops component review. A material miss triggers the existing largest-first
+residual diagnostic only until a correction enters the credible range, at least
+80% of gross residual is explained, or the remainder cannot change the decision.
+Individually immaterial or poorly estimable work is one bounded residual. Issue
+#154 owns two additional source-backed aggregate cases and the candidate decision.
+
+The frozen `repository-model-admission/1.0.0` attempt, rejected validation result,
+and sealed test remain unchanged. A future admission attempt requires a new policy
+and candidate identity plus a fresh holdout boundary.
+
 ## 2026-08-16: manual-QA decision compiler freeze
 
 Status: **blank 955-decision plan and exact development compiler frozen before
@@ -57,11 +101,11 @@ exclusions and duplicates remain mapped `0/0/0` targets so false positives are
 measurable. Input order cannot change semantic output, and the compiler cannot
 read validation, test, candidate values, repository source, or the network.
 
-No completed plan or output corpus exists in this checkpoint. The next permitted
-step is to copy the template and author every decision under the already-frozen
-rubric with candidate values unavailable. Only after exact compilation may a
-later development checkpoint compare seed and candidate and record advance,
-revise, or reject. Test remains sealed.
+No completed plan or output corpus exists in this checkpoint. At the time of this
+freeze, the permitted continuation was to copy the template and author every
+decision with candidate values unavailable. The later materiality-first decision
+recorded above supersedes that continuation without changing this artifact or
+opening test.
 
 ## 2026-08-16: candidate-blind manual-QA review packet freeze
 

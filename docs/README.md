@@ -36,12 +36,13 @@ agent instructions.
 
 ## Calibration and host review
 
-- [Calibration](CALIBRATION.md) defines corpus identity, repository-isolated
-  partitions, review maturity, reviewed exclusions, mutation guardrails, offline
-  metrics, and authoring/review workflows.
-- [Repository model admission](MODEL_ADMISSION.md) freezes the evidence counts,
-  point-accuracy, range-sharpness, mapping, safety, performance, selection, and
-  one-time test gates for any local repository estimator candidate.
+- [Calibration](CALIBRATION.md) defines materiality-first repository comparison,
+  corpus identity, repository-isolated partitions, review maturity, reviewed
+  exclusions, mutation guardrails, offline metrics, and review workflows.
+- [Repository model admission](MODEL_ADMISSION.md) preserves the historical frozen
+  v1 evidence, accuracy, sharpness, safety, performance, selection, and one-time
+  test gates for the completed rejected attempt. A future attempt needs a new
+  policy.
 - [Seed-model review records](MODEL_REVIEWS.md) retain dated diagnostic and
   contamination findings without presenting them as independent or empirical
   validation.

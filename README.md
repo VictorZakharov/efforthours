@@ -278,7 +278,7 @@ unchanged scans, but it is never an effort signal.
 | --- | --- |
 | Repository EHE | Experimental and uncalibrated; `logical-capability/0.3.0` improves blind-validation expected WAPE from `0.2279` to `0.0940` but fails six frozen error, coverage, width, and material-category gates; it is retired without test disclosure, and `seed-rules/0.4.0` remains shipped |
 | Repository uncertainty | Scalar, support/OOD, structural, and graph width drivers are rejected on development; all remain diagnostic-only and estimates are unchanged |
-| Manual QA research | `manual-qa-coding-ratio/0.1.0` is development-only; 15 candidate-blind packets and a blank 955-decision compiler template are frozen before answers, compilation, or evaluation |
+| Manual QA research | `manual-qa-coding-ratio/0.1.0` is development-only; its real-case midpoint removes 72.1% of absolute error, and materiality-first follow-up now validates repository totals rather than requiring 955 speculative micro-labels |
 | Change EHE, documented Stage A band | Model-authored logical gate passed for eligible 4-to-32-hour changes on the previously admitted language set |
 | Newer analyzer ecosystems | Experimental and outside the existing Change admission boundary |
 | Production validation | No empirical production-accuracy claim |
@@ -355,7 +355,7 @@ Run `eh --help` or a subcommand's help for the complete option surface.
 | --- | --- |
 | Product boundary | [Product charter](docs/PRODUCT.md) |
 | Estimation semantics | [Estimation model](docs/ESTIMATION_MODEL.md) |
-| Calibration and repository-model admission | [Calibration](docs/CALIBRATION.md) and [frozen admission policy](docs/MODEL_ADMISSION.md) |
+| Calibration and repository-model admission | [Calibration](docs/CALIBRATION.md) and [historical frozen v1 policy](docs/MODEL_ADMISSION.md) |
 | Change and portfolio semantics | [Change EHE contract](docs/CHANGE_ESTIMATION.md) |
 | Analyzer-specific boundaries | [Documentation index](docs/README.md) |
 | Performance | [Benchmark protocol and results](docs/BENCHMARKS.md) |

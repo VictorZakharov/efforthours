@@ -3,11 +3,14 @@
 This directory is the public home for EffortHours calibration policy,
 redistributable corpus manifests, and reviewed labels.
 
-The frozen
+The historical frozen
 [`repository-model-admission/1.0.0`](../docs/MODEL_ADMISSION.md) policy defines
 the minimum family matrix, blind validation and sealed-test boundary, numerical
 agreement and range-sharpness gates, candidate selection, resource limits, and
-seed fallback. The existing labeled corpora do not yet open that gate.
+seed fallback. Its sole blind-validation attempt is complete and rejected. Future
+candidate research follows `repository-total-materiality/1.0.0`: credible
+repository totals are primary, while granular review is conditional diagnosis for
+a material miss. A future admission attempt requires a new policy identity.
 
 The
 [`efforthours-public-readiness/0.1.0`](corpora/public-readiness/README.md)
@@ -32,6 +35,10 @@ The [`2.1.0 decision compiler freeze`](corpora/public-readiness/2.1.0/README.md)
 then fixes the blank 955-decision template, exact completeness and provenance
 rules, `0/0/0` exclusion/duplicate semantics, candidate work-item lineage mapping,
 and deterministic corpus rebasing before any answers are authored.
+An unpublished local authoring preflight showed that complete micro-label rows can
+still repeat a small set of weak category judgments. Exhaustive completion was
+therefore stopped; these artifacts remain optional diagnostic infrastructure, not
+a prerequisite or completed corpus.
 The public repository now contains 21 labeled repository families and 2,262
 teacher targets in total, still without independent correction or a model-
 admission result.
@@ -46,9 +53,10 @@ teacher-estimate corpora provide six public repository families. They remain
 small, share one host-AI teacher, have not received independent correction, and do
 not justify a production accuracy claim or distributable learned model. See the
 optional [`independent-review handoff`](INDEPENDENT_REVIEW.md) for both blind
-packets. Exact, evidence-backed small-task decomposition permits host-AI teacher
-labels to support an explicitly logical gate without claiming higher review
-maturity; empirical production observations remain separate.
+packets. Source-backed aggregate judgment can support explicitly logical research
+without claiming higher review maturity. Work-item detail supports traceability
+and conditional diagnosis but is not assumed independently accurate merely because
+it is granular; empirical production observations remain separate.
 The [`public-synthetic/0.7.0`](mutations/public-synthetic/BASELINE.md) mutation
 suite adds cross-ecosystem relational guardrails for exclusions, behavior,
 reachability, accessibility, dependency graphs, quality, delivery, and category

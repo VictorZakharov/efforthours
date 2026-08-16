@@ -338,36 +338,44 @@ calibration, or independence. `HOST_REVIEW.md` defines the exact boundary.
 
 ## 10. Calibration
 
-Strong AI estimates can serve as teacher labels even when historical labor data is
-unavailable. They are weak supervision rather than literal ground truth. A
-disclosed host-AI teacher can satisfy a logical calibration or admission gate when
-the total reconciles exactly from distinct evidence-backed tasks small enough to
-audit, normally about 0.5 to 1.5 expected hours for the current one-to-several-day
-band. Independent replication is useful optional corroboration, not a prerequisite
-for that logical judgment. It does not change `teacher-estimate` maturity or imply
-human review, empirical accuracy, or production validation.
+Strong AI estimates can serve as teacher labels when historical labor data is
+unavailable. They are weak supervision rather than literal ground truth. Numerical
+authority belongs at the coarsest source-backed level the reviewer can estimate
+reliably, normally a repository total plus only a few material work areas. A large
+number of small allocations may improve traceability without becoming independent
+accuracy evidence. Independent replication is useful optional corroboration, not
+a prerequisite for logical judgment. It does not change `teacher-estimate`
+maturity or imply human review, empirical accuracy, or production validation.
 
 The calibration process should:
 
 1. Analyze representative repositories into normalized evidence.
-2. Decompose them into small work items.
-3. Ask a consistent strong-AI rubric to estimate item categories and ranges.
-4. Audit and correct disputed, unsupported, or non-reconciling labels.
-5. Train candidate local category and quantile models only after their applicable
+2. Obtain a source-backed repository range and a small material-area breakdown;
+   combine individually immaterial or poorly estimable work into a bounded
+   residual.
+3. Compare repository totals before inspecting component disagreements.
+4. When a total materially misses, rank signed contributors largest first and
+   inspect only enough to explain the decision.
+5. Audit and correct the responsible evidence, prior, duplicate, or multiplier.
+6. Train candidate local category and quantile models only after their applicable
    admission policy is frozen.
-6. Split training and evaluation by repository, never randomly by file.
-7. Measure category error, total error, interval coverage, and calibration.
-8. Retain the teacher rationale and evidence for diagnosis.
-9. Add voluntary reviewed corrections over time.
+7. Split training and evaluation by repository, never randomly by file.
+8. Measure repository-total error first; use material categories and work items as
+   conditional diagnostics rather than equally weighted truth.
+9. Retain the teacher rationale and evidence for diagnosis.
+10. Add voluntary reviewed corrections over time.
 
 Every distributable calibration record, benchmark repository, model, and derived
 artifact needs recorded provenance and terms compatible with EffortHours's MIT
 License. Private client evidence may be used only in its authorized environment and
 must not be added to the public corpus by default.
 
-The guiding premise is that small logical work items can be judged and audited more
-reliably than one unsupported large total. Production observations collected later
-retain separate empirical provenance and never become effort multipliers.
+The guiding premise is that detail is useful only where it is estimable. A total
+must be source-backed rather than unsupported, but splitting it into hundreds of
+weak judgments does not make it more accurate. Granular work items remain valuable
+for explanation and for diagnosing a materially wrong total. Production
+observations collected later retain separate empirical provenance and never
+become effort multipliers.
 
 Milestone 7A implements the first calibration boundary. A versioned corpus stores
 reviewed target work units separately from candidate `EstimateReport` documents.

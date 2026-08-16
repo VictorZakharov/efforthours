@@ -153,19 +153,21 @@ count, and intermediate churn do not value effort. `CHANGE_ESTIMATION.md` and
   evidence: expected total improves from `161.50` to `218.10` hours against a
   separate `240.00`-hour assessment. Do not hide that the inherited high bound
   worsens or claim that one case calibrates the prior.
-- Keep the frozen `2.0.0` manual-QA review input immutable: 15 candidate-blind
-  packets cover all 955 eligible development responsibilities while hiding old
-  QA judgments, coding values, candidate ratios/values, totals, and candidate
-  identity. The `2.1.0` checkpoint now freezes the complete decision-plan schema,
-  blank 955-decision template, and compiler: 1,710 non-QA targets are preserved,
-  320 legacy QA targets are removed, and 955 reviewed QA targets will be added.
-  Copy that template and review every target without rewriting the `0.3.0` corpus.
+- Keep the frozen `2.0.0` packets and `2.1.0` blank-plan/compiler boundary
+  immutable as optional diagnostic infrastructure. A local complete-plan preflight
+  was not published because hundreds of rows still repeated weak category-shaped
+  judgments; exhaustive micro-labeling is no longer a prerequisite.
 - The current teacher labels allocate `4.89%` of eligible coding to QA and encode
   the old missing-QA assumption. Do not use them as independent validation of the
   new semantics.
-- Run development and operational gates only after that re-review. A surviving
-  candidate requires a new finite manifest and fresh blind validation boundary;
-  the current test partition remains sealed.
+- Follow `repository-total-materiality/1.0.0` and issue #154. Add at least two
+  materially different source-backed aggregate assessments, compare repository
+  totals before components, and stop when the total is credible. When a total
+  materially misses, use largest-first residual diagnosis only until the decision
+  is explained; do not re-review correct or immaterial components.
+- Record advance, revise, or reject for the exact manual-QA candidate. A survivor
+  requires a new admission-policy and candidate identity plus a fresh blind
+  validation boundary; the current test partition remains sealed.
 
 - Treat `logical-capability/0.3.0` and its `1.3.0` validation rejection as final.
   Its repository expected WAPE improves from `0.2279` to `0.0940`, but six frozen
