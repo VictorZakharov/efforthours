@@ -33,6 +33,68 @@ Because EffortHours's own anchor informed the seed-model and calibration design,
 a development diagnostic rather than an eligible held-out test record unless a
 future independent snapshot and review policy explicitly establishes otherwise.
 
+## 2026-08-16: structural uncertainty development evaluation
+
+Status: **all 14 direct structural width drivers rejected on development; useful
+ordering retained as diagnostics; validation and test remain sealed**
+
+After the policy freeze in `4c11c63`, all 15 exact public development snapshots
+were rescanned and projected through
+`repository-uncertainty-structural-features/1.0.0`. Every source digest matched its
+frozen `candidate-logical-capability/0.3.0+seed-rules/0.4.0` estimate. The evaluator
+matched all 2,030 reviewed targets and 11,161 source work-item references without
+an ignored feature report.
+
+The unconditional repository-held-out q80 baseline covers `0.8463` of reviewed
+expected points with mean normalized width `1.1393` and mean interval miss
+`1.0946` hours. Every structural variant narrows mean normalized width, by `0.0192`
+to `0.0524`, but coverage falls by `0.0113` to `0.0143` and mean miss rises by
+`0.0880` to `0.2320` hours. Each loses 23 to 29 covered targets and regresses 7 to
+10 repository folds. No field passes the predeclared pooled gate.
+
+Median decision complexity (`rho = +0.1358`) and median nesting depth
+(`rho = +0.1465`) have the expected residual sign and zero adjacent-bucket
+direction violations. Callable coverage (`rho = -0.1285`) and analyzer ambiguity
+(`rho = +0.1215`) also have their expected signs but retain bucket and fold
+regressions. These observations preserve diagnostic hypotheses; they do not
+override the simultaneous coverage/width/miss gate or authorize post-label bucket
+retuning.
+
+The complete before/after table, ordering diagnostics, frozen identities, raw
+artifact digest, and reproduction commands are recorded in
+`calibration/corpora/public-readiness/1.7.0/README.md`. No production interval is
+fitted, no estimate changes, and `seed-rules/0.4.0` remains the shipped fallback.
+Local coupling, cycles, and interface concentration require a new pre-label graph
+contract before bounded correlated combinations are evaluated.
+
+## 2026-08-16: structural uncertainty evaluation-policy freeze
+
+Status: **label-independent evaluation policy and implementation frozen; public
+development residuals not yet measured; no fit, estimate change, or admission**
+
+`uncertainty-structural-evaluation-policy/1.0.0` freezes the join and measurement
+choices for the 14 structural fields before reproducing their public development
+reports. Its canonical digest is
+`sha256:2f3dc2417747ac8557744eb2d59c3b2e816158620eb26086f383d3809610f610`.
+
+At target level, callable size, decision complexity, nesting, threshold shares,
+and analyzer ambiguity use the maximum across contributing source work items;
+callable measurement coverage uses the minimum. Counts are not summed, avoiding a
+repository-size proxy. Fixed inclusive buckets are declared by feature family,
+and the expected direction is higher feature value/higher residual except for
+measurement coverage, where higher coverage is expected to mean lower residual.
+
+`uncertainty-structural-feature-evaluation/1.0.0` uses development records only,
+leave-one-repository-out nearest-rank q80 normalized-residual factors, a minimum of
+three training observations from two repositories per bucket, and unconditional
+held-out fallback when a bucket is sparse. The pooled incremental gate requires a
+conditioned prediction and simultaneous non-degradation in coverage, normalized
+width, and interval miss. Correlation sign, adjacent-bucket direction violations,
+and repository coverage regressions are reported separately rather than silently
+folded into admission. The policy cannot rewrite features, thresholds, labels,
+seed estimates, or intervals; the public measurement is intentionally deferred to
+the next commit so Git history preserves pre-label ordering.
+
 ## 2026-08-16: structural uncertainty feature freeze
 
 Status: **label-independent callable evidence and feature contract frozen;

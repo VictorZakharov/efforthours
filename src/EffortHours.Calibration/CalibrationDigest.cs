@@ -56,6 +56,20 @@ public static class CalibrationDigest
         return ComputeCanonical(report);
     }
 
+    public static string Compute(CalibrationUncertaintyStructuralEvaluationPolicy policy)
+    {
+        ArgumentNullException.ThrowIfNull(policy);
+
+        return ComputeCanonical(policy);
+    }
+
+    public static string Compute(CalibrationUncertaintyStructuralEvaluationReport report)
+    {
+        ArgumentNullException.ThrowIfNull(report);
+
+        return ComputeCanonical(report);
+    }
+
     public static string Compute(CalibrationUncertaintySupportPopulation population)
     {
         ArgumentNullException.ThrowIfNull(population);

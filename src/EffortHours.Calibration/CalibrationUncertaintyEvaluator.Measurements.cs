@@ -10,32 +10,51 @@ public static partial class CalibrationUncertaintyEvaluator
             IReadOnlyList<CalibrationUncertaintyObservation> observations,
             IReadOnlyList<CalibrationUncertaintyFeatureDefinition> definitions,
             CalibrationUncertaintyIntervalPerformance baseline) =>
+        BuildFeatureEvaluations(
+            observations,
+            definitions,
+            baseline,
+            (definition, value) => CalibrationUncertaintyEvaluationMath.Bucket(
+                definition.ValueKind,
+                value));
+
+    private static IReadOnlyList<CalibrationUncertaintyFeatureEvaluation>
+        BuildFeatureEvaluations(
+            IReadOnlyList<CalibrationUncertaintyObservation> observations,
+            IReadOnlyList<CalibrationUncertaintyFeatureDefinition> definitions,
+            CalibrationUncertaintyIntervalPerformance baseline,
+            Func<CalibrationUncertaintyFeatureDefinition, decimal,
+                CalibrationUncertaintyBucket> bucketSelector) =>
     [
         .. definitions.Select(definition => BuildFeatureEvaluation(
             observations,
             definition,
-            baseline)),
+            baseline,
+            bucketSelector)),
     ];
 
     private static CalibrationUncertaintyFeatureEvaluation BuildFeatureEvaluation(
         IReadOnlyList<CalibrationUncertaintyObservation> observations,
         CalibrationUncertaintyFeatureDefinition definition,
-        CalibrationUncertaintyIntervalPerformance baseline)
+        CalibrationUncertaintyIntervalPerformance baseline,
+        Func<CalibrationUncertaintyFeatureDefinition, decimal,
+            CalibrationUncertaintyBucket> bucketSelector)
     {
         CalibrationUncertaintyObservation[] available = [.. observations.Where(observation =>
             observation.Features[definition.Id].Availability ==
                 CalibrationUncertaintyFeatureAvailability.Available)];
         Dictionary<(string RepositoryId, CalibrationUncertaintyBucket Bucket), decimal>
-            supportedFactors = BuildSupportedFeatureFactors(available, definition);
+            supportedFactors = BuildSupportedFeatureFactors(
+                available,
+                definition,
+                bucketSelector);
         Dictionary<ObservationKey, CalibrationUncertaintyPrediction> predictions = [];
         foreach (CalibrationUncertaintyObservation observation in observations)
         {
             CalibrationUncertaintyAggregatedFeature value = observation.Features[definition.Id];
             CalibrationUncertaintyBucket? bucket = value.Availability ==
                 CalibrationUncertaintyFeatureAvailability.Available
-                    ? CalibrationUncertaintyEvaluationMath.Bucket(
-                        definition.ValueKind,
-                        value.Value!.Value)
+                    ? bucketSelector(definition, value.Value!.Value)
                     : null;
             decimal factor = 0m;
             bool supported = bucket is not null && supportedFactors.TryGetValue(
@@ -58,7 +77,7 @@ public static partial class CalibrationUncertaintyEvaluator
                 observations,
                 observation => predictions[Key(observation)].Range);
         CalibrationUncertaintyFeatureBucketEvaluation[] buckets =
-            BuildBuckets(available, definition);
+            BuildBuckets(available, definition, bucketSelector);
         int conditioned = predictions.Values.Count(prediction => prediction.FeatureConditioned);
         return new CalibrationUncertaintyFeatureEvaluation
         {
@@ -142,12 +161,14 @@ public static partial class CalibrationUncertaintyEvaluator
     private static Dictionary<(string RepositoryId, CalibrationUncertaintyBucket Bucket), decimal>
         BuildSupportedFeatureFactors(
             IReadOnlyList<CalibrationUncertaintyObservation> available,
-            CalibrationUncertaintyFeatureDefinition definition)
+            CalibrationUncertaintyFeatureDefinition definition,
+            Func<CalibrationUncertaintyFeatureDefinition, decimal,
+                CalibrationUncertaintyBucket> bucketSelector)
     {
         Dictionary<(string RepositoryId, CalibrationUncertaintyBucket Bucket), decimal> result = [];
         foreach (IGrouping<CalibrationUncertaintyBucket, CalibrationUncertaintyObservation> group in
-                 available.GroupBy(observation => CalibrationUncertaintyEvaluationMath.Bucket(
-                     definition.ValueKind,
+                 available.GroupBy(observation => bucketSelector(
+                     definition,
                      observation.Features[definition.Id].Value!.Value)))
         {
             CalibrationUncertaintyObservation[] members = [.. group];
@@ -179,10 +200,12 @@ public static partial class CalibrationUncertaintyEvaluator
 
     private static CalibrationUncertaintyFeatureBucketEvaluation[] BuildBuckets(
         IReadOnlyList<CalibrationUncertaintyObservation> available,
-        CalibrationUncertaintyFeatureDefinition definition) =>
+        CalibrationUncertaintyFeatureDefinition definition,
+        Func<CalibrationUncertaintyFeatureDefinition, decimal,
+            CalibrationUncertaintyBucket> bucketSelector) =>
     [
-        .. available.GroupBy(observation => CalibrationUncertaintyEvaluationMath.Bucket(
-                definition.ValueKind,
+        .. available.GroupBy(observation => bucketSelector(
+                definition,
                 observation.Features[definition.Id].Value!.Value))
             .OrderBy(group => group.Key.Order)
             .Select(group =>

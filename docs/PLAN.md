@@ -185,8 +185,13 @@ count, and intermediate churn do not value effort. `CHANGE_ESTIMATION.md` and
   `repository-uncertainty-structural-features/1.0.0` contract now freezes local
   callable size, bounded decision-complexity, nesting, measurement-coverage, and
   parser-ambiguity diagnostics from .NET `0.3.5` and JavaScript `0.5.2`, without
-  changing the original vector, labels, seed rules, or estimates. Evaluate this
-  group against development residuals next. Then add coupling/cycle/interface
+  changing the original vector, labels, seed rules, or estimates. Its separate
+  `uncertainty-structural-evaluation-policy/1.0.0` now freezes target aggregation,
+  expected residual direction, fixed buckets, and a repository-held-out pooled
+  gate before public labels are joined. Its 15-repository, 2,030-target run rejects
+  all 14 direct drivers: every conditioned interval loses coverage and increases
+  miss, although median decision complexity and nesting retain useful diagnostic
+  ordering. Add coupling/cycle/interface
   distributions under a separate graph contract before choosing correlated
   aggregation. Only then freeze a new candidate and fresh blind validation
   boundary.

@@ -410,8 +410,32 @@ local scopes and the minimum callable-coverage value. It does not sum repository
 totals. All 14 fields are `diagnostic-only`: they do not reward complexity, change
 expected EHE, widen an interval, alter a reviewed label, or fit a model. Local
 fan-in/fan-out, dependency cycles, and interface concentration remain deferred to
-a separate graph contract. Development-only residual evaluation is the next
-decision and must occur in a separate checkpoint after this feature freeze.
+a separate graph contract.
+
+The label-independent evaluation boundary is separately frozen as
+`uncertainty-structural-evaluation-policy/1.0.0`, digest
+`sha256:2f3dc2417747ac8557744eb2d59c3b2e816158620eb26086f383d3809610f610`.
+Before any public reviewed residual is loaded, it fixes target aggregation, expected
+residual direction, and inclusive bucket boundaries for all 14 fields. Shape and
+ambiguity use the maximum across a reviewed target's source work items; callable
+coverage uses the minimum. The command is:
+
+```text
+eh calibration uncertainty-structure-evaluate <development-corpus.json> \
+  <structural-features.json>... --compact --output <evaluation.json>
+```
+
+`uncertainty-structural-feature-evaluation/1.0.0` reuses the repository-held-out
+nearest-rank q80 protocol below. It predeclares a pooled incremental gate requiring
+at least one conditioned prediction, no coverage loss, no normalized-width growth,
+and no interval-miss growth. Correlation direction, bucket-direction violations,
+and repository coverage regressions remain separately visible. The evaluator
+refuses validation/test records, fits no production model, and cannot alter labels,
+seed estimates, or intervals. The subsequent 15-repository, 2,030-target checkpoint
+rejects all 14 fields as direct width drivers: every variant narrows the baseline
+but loses coverage and increases interval miss. Median decision complexity and
+median nesting retain the cleanest expected ordering, so the measurements remain
+useful diagnostics without admission.
 
 ### Development-only uncertainty feature measurement
 

@@ -683,6 +683,14 @@ pair. Local scope maxima preserve concentrated difficult shapes without summing
 raw repository volume; coverage uses the local minimum. Every field remains
 diagnostic-only until a separately governed development evaluation demonstrates
 useful residual ordering, and no current expected EHE or interval consumes it.
+`uncertainty-structural-evaluation-policy/1.0.0` now freezes the target-level
+maximum/minimum aggregation, expected residual directions, and feature-specific
+bucket boundaries before public labels are joined. Its development-only evaluator
+uses the existing repository-held-out q80 protocol and reports pooled, directional,
+and per-repository results without fitting or admitting an interval rule. The first
+15-repository, 2,030-target run rejects all 14 direct drivers because every
+conditioned variant loses coverage and increases miss despite becoming narrower.
+The structural fields remain diagnostic-only.
 
 `uncertainty-feature-evaluation/1.0.0` measures those vectors only against a
 development-only corpus. It uses leave-one-repository-out folds, an unconditional
