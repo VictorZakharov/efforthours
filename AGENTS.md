@@ -128,7 +128,10 @@ node/edge/work-item lineage. The separate
 `uncertainty-graph-evaluation-policy/1.0.0` freezes unique-node target aggregation,
 all-higher residual hypotheses, fixed buckets, explicit missing/interface states,
 sparse baseline fallback, and a development-only repository-held-out gate without
-reading public residuals. Every field remains diagnostic-only, no graph result has
-yet been selected or rejected, and estimates remain unchanged.
+reading public residuals. The subsequent 15-repository, 2,030-target development
+run selects no graph field: 12 variants regress coverage and miss, and both cycle
+variants are exact baseline no-ops with opposite-direction correlations and only
+one repository of positive support. Every field remains diagnostic-only and
+estimates remain unchanged.
 Change EHE has only the limited Stage A logical admission described in
 `docs/CHANGE_MODEL_ADMISSION.md`; later ecosystem extensions remain experimental.
