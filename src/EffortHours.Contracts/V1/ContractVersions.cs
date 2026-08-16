@@ -51,6 +51,23 @@ public static class ManualQaReviewVersions
     public const string RubricV1 = "1.0.0";
 }
 
+public static class ManualQaDecisionVersions
+{
+    public const string PolicyV1 = "manual-qa-development-decision-policy/1.0.0";
+
+    public const string AuthoringV1 = "manual-qa-development-decision-authoring/1.0.0";
+
+    public const string PlanV1 = "manual-qa-development-decision-plan/1.0.0";
+
+    public const string CompilerV1 = "manual-qa-development-review-compiler/1.0.0";
+
+    public const string SourceWorkItemLineageV1 = "manual-qa-source-work-item-lineage/1.0.0";
+
+    public const string OutputRubricId = "ehe-work-item-with-manual-qa";
+
+    public const string OutputRubricV1 = "1.0.0";
+}
+
 public static class CalibrationUncertaintyVersions
 {
     public const string FeatureContractV1 = "repository-uncertainty-features/1.0.0";
@@ -156,6 +173,10 @@ public static class SchemaNames
         "calibration-manual-qa-review-packet.schema.json";
     public const string CalibrationManualQaReviewPolicy =
         "calibration-manual-qa-review-policy.schema.json";
+    public const string CalibrationManualQaDecisionPlan =
+        "calibration-manual-qa-decision-plan.schema.json";
+    public const string CalibrationManualQaDecisionPolicy =
+        "calibration-manual-qa-decision-policy.schema.json";
     public const string CalibrationReviewPlan = "calibration-review-plan.schema.json";
     public const string CalibrationValidation = "calibration-validation.schema.json";
     public const string ChangeEstimateExplanation = "change-estimate-explanation.schema.json";
@@ -216,6 +237,10 @@ public static class SchemaIds
         "urn:eh:schema:v1:calibration-manual-qa-review-packet";
     public const string CalibrationManualQaReviewPolicy =
         "urn:eh:schema:v1:calibration-manual-qa-review-policy";
+    public const string CalibrationManualQaDecisionPlan =
+        "urn:eh:schema:v1:calibration-manual-qa-decision-plan";
+    public const string CalibrationManualQaDecisionPolicy =
+        "urn:eh:schema:v1:calibration-manual-qa-decision-policy";
     public const string CalibrationReviewPlan = "urn:eh:schema:v1:calibration-review-plan";
     public const string CalibrationValidation = "urn:eh:schema:v1:calibration-validation";
     public const string ChangeEstimateExplanation = "urn:eh:schema:v1:change-estimate-explanation";

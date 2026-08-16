@@ -30,6 +30,8 @@ public static class ContractSchemaCatalog
         SchemaNames.CalibrationManualQaReviewManifest,
         SchemaNames.CalibrationManualQaReviewPacket,
         SchemaNames.CalibrationManualQaReviewPolicy,
+        SchemaNames.CalibrationManualQaDecisionPlan,
+        SchemaNames.CalibrationManualQaDecisionPolicy,
         SchemaNames.CalibrationReviewPlan,
         SchemaNames.CalibrationValidation,
         SchemaNames.ChangeEstimateExplanation,

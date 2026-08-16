@@ -75,6 +75,12 @@ The [`2.0.0 candidate-blind QA packet freeze`](2.0.0/README.md) now projects all
 no prior QA judgment, source coding value, candidate ratio/value, repository total,
 or candidate identity. No replacement answer, compiled label, or evaluation is
 part of this checkpoint.
+The [`2.1.0 decision compiler freeze`](2.1.0/README.md) fixes the completed-plan
+contract and a blank 15-record/955-decision template before answers. Its compiler
+preserves 1,710 non-QA targets, removes 320 legacy QA targets, and will add 955
+reviewed QA targets under exact candidate work-item lineage, producing 2,665
+targets only after a complete digest-pinned plan exists. The blank template has
+no answers or candidate values and is rejected by the compiler.
 
 The completed blind validation rejects the sole challenger and leaves test sealed.
 The later development uncertainty measurements are diagnostic only and cannot turn
@@ -182,11 +188,10 @@ contain an unsealed test label before the one-time decision.
 
 ## Next checkpoint
 
-Continue issue #151 from the `2.0.0` packet freeze. Before any of the 955 answers
-are authored, freeze the complete decision-plan schema and compiler, including
-completeness, lineage, duplicate/zero, size-exception, and corpus-rebasing rules.
-Then author the candidate-blind development decisions, compile a new label identity,
-and evaluate the exact `manual-qa-coding-ratio/0.1.0` candidate without changing
-its ratios or category set. A survivor still needs a new finite manifest and fresh
-blind validation boundary; test remains sealed. Issue #137's small,
-mechanistically justified correlated-uncertainty combinations remain separate.
+Continue issue #151 from the frozen `2.1.0` compiler boundary: copy the immutable
+template, author all 955 candidate-blind decisions, and compile the new
+development-only label identity. Then evaluate the exact
+`manual-qa-coding-ratio/0.1.0` candidate without changing its ratios or category
+set. A survivor still needs a new finite manifest and fresh blind validation
+boundary; test remains sealed. Issue #137's small, mechanistically justified
+correlated-uncertainty combinations remain separate.

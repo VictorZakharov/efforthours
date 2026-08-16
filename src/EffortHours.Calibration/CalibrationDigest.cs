@@ -42,6 +42,13 @@ public static class CalibrationDigest
         return ComputeCanonical(manifest);
     }
 
+    public static string Compute(ManualQaDecisionPlan plan)
+    {
+        ArgumentNullException.ThrowIfNull(plan);
+
+        return ComputeCanonical(plan);
+    }
+
     public static string Compute(RepositoryEvidence evidence)
     {
         ArgumentNullException.ThrowIfNull(evidence);

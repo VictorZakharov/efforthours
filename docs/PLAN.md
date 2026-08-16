@@ -156,8 +156,10 @@ count, and intermediate churn do not value effort. `CHANGE_ESTIMATION.md` and
 - Keep the frozen `2.0.0` manual-QA review input immutable: 15 candidate-blind
   packets cover all 955 eligible development responsibilities while hiding old
   QA judgments, coding values, candidate ratios/values, totals, and candidate
-  identity. Before authoring answers, freeze the complete decision-plan schema and
-  compiler; then review every target without rewriting the `0.3.0` corpus.
+  identity. The `2.1.0` checkpoint now freezes the complete decision-plan schema,
+  blank 955-decision template, and compiler: 1,710 non-QA targets are preserved,
+  320 legacy QA targets are removed, and 955 reviewed QA targets will be added.
+  Copy that template and review every target without rewriting the `0.3.0` corpus.
 - The current teacher labels allocate `4.89%` of eligible coding to QA and encode
   the old missing-QA assumption. Do not use them as independent validation of the
   new semantics.

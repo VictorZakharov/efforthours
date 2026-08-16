@@ -1,3 +1,4 @@
+using EffortHours.Calibration;
 using EffortHours.Contracts;
 using EffortHours.Contracts.V1;
 using EffortHours.RepositoryCalibration;
@@ -54,6 +55,9 @@ public sealed partial class CandidatePreflightTests
         Assert.All(qaItems, item =>
         {
             string dependency = Assert.Single(item.DependencyIds);
+            Assert.Equal(
+                ManualQaSourceWorkItemLineage.CreateCandidateWorkItemId(dependency),
+                item.Id);
             WorkItem sourceItem = Assert.Single(eligible, entry => entry.Id == dependency);
             Assert.Equal(sourceItem.EvidenceIds, item.EvidenceIds);
             Assert.Equal(sourceItem.Scope, item.Scope);

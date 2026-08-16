@@ -9,7 +9,7 @@ public sealed class ContractSchemaTests
     [Fact]
     public void CatalogContainsAllV1SchemasWithUniqueIds()
     {
-        Assert.Equal(44, ContractSchemaCatalog.Names.Count);
+        Assert.Equal(46, ContractSchemaCatalog.Names.Count);
         Assert.Contains(SchemaNames.CalibrationAuthoringPacket, ContractSchemaCatalog.Names);
         Assert.Contains(SchemaNames.CalibrationCorpus, ContractSchemaCatalog.Names);
         Assert.Contains(SchemaNames.CalibrationDiagnostic, ContractSchemaCatalog.Names);
@@ -22,6 +22,12 @@ public sealed class ContractSchemaTests
             ContractSchemaCatalog.Names);
         Assert.Contains(
             SchemaNames.CalibrationManualQaReviewPolicy,
+            ContractSchemaCatalog.Names);
+        Assert.Contains(
+            SchemaNames.CalibrationManualQaDecisionPlan,
+            ContractSchemaCatalog.Names);
+        Assert.Contains(
+            SchemaNames.CalibrationManualQaDecisionPolicy,
             ContractSchemaCatalog.Names);
         Assert.Contains(SchemaNames.CalibrationUncertaintyFeatures, ContractSchemaCatalog.Names);
         Assert.Contains(SchemaNames.CalibrationUncertaintyGraphFeatures, ContractSchemaCatalog.Names);

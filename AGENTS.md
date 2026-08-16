@@ -139,11 +139,13 @@ items with dependency-linked 30/40/50 percent items over eligible expected codin
 effort. It is an experience-based, unvalidated correction candidate only:
 `seed-rules/0.4.0` remains shipped, existing labels are unchanged, the manual-QA
 development re-review now has 15 frozen candidate-blind packets covering 955
-eligible responsibilities, and no replacement answers or evaluation yet exist.
-Freeze its decision/compiler contract before authoring answers. Any admission
-attempt needs a new finite manifest and fresh validation boundary. Its anonymized
-real-case midpoint improves materially while its inherited total high bound
-worsens, so overall interval research remains separate.
+eligible responsibilities plus a frozen blank decision template and compiler.
+The compiler preserves 1,710 non-QA targets, replaces 320 legacy QA targets with
+955 reviewed targets, and rejects the unanswered template. No replacement answers,
+compiled corpus, or evaluation yet exists. Any admission attempt needs a new
+finite manifest and fresh validation boundary. Its anonymized real-case midpoint
+improves materially while its inherited total high bound worsens, so overall
+interval research remains separate.
 
 Change EHE has only the limited Stage A logical admission described in
 `docs/CHANGE_MODEL_ADMISSION.md`; later ecosystem extensions remain experimental.

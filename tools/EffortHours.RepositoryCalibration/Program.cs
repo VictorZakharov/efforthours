@@ -87,6 +87,18 @@ internal static partial class Program
                 .ConfigureAwait(false);
         }
 
+        if (arguments.Length > 0 && arguments[0] == "manual-qa-decision-template-freeze")
+        {
+            return await RunManualQaDecisionTemplateAsync(arguments[1..], cancellationToken)
+                .ConfigureAwait(false);
+        }
+
+        if (arguments.Length > 0 && arguments[0] == "manual-qa-decision-compile")
+        {
+            return await RunManualQaDecisionCompileAsync(arguments[1..], cancellationToken)
+                .ConfigureAwait(false);
+        }
+
         if (arguments.Length > 0 && arguments[0] == "candidate-operational-preflight")
         {
             return await RunLogicalCandidateOperationalAsync(arguments[1..], cancellationToken)
@@ -292,6 +304,28 @@ internal static partial class Program
         Projects only eligible coding responsibilities from the exact development
         corpus. It emits no source hours, old QA judgments, candidate values,
         formulas, totals, or review answers and cannot read validation or test data.
+
+        Candidate-blind manual-QA decision template freeze:
+          dotnet EffortHours.RepositoryCalibration.dll manual-qa-decision-template-freeze
+            --corpus <development-corpus.json>
+            --review-policy <manual-qa-review-policy.json>
+            --expected-review-policy-digest <sha256:digest>
+            --review-manifest <manual-qa-review-manifest.json>
+            --packets <review-packet-directory>
+            --compiler-policy <manual-qa-decision-policy.json>
+            --expected-compiler-policy-digest <sha256:digest>
+            --output <blank-decision-plan.json>
+
+        Completed manual-QA decision compilation:
+          dotnet EffortHours.RepositoryCalibration.dll manual-qa-decision-compile
+            <the same frozen boundary options>
+            --plan <completed-decision-plan.json>
+            --expected-plan-digest <sha256:digest>
+            --output <compiled-development-corpus.json>
+
+        The template contains no answers. The compiler requires exact 955-target
+        completeness, immutable packet lineage, evidence-bounded decisions, and a
+        completed-plan digest; it never reads validation, test, or candidate values.
 
         Logical-capability operational preflight:
           dotnet EffortHours.RepositoryCalibration.dll candidate-operational-preflight

@@ -254,6 +254,19 @@ public enum CalibrationCorpusReviewAction
     Replace,
 }
 
+public enum ManualQaDecisionPlanStatus
+{
+    Unreviewed,
+    Completed,
+}
+
+public enum ManualQaDecisionDisposition
+{
+    Estimate,
+    Exclude,
+    Duplicate,
+}
+
 public enum CalibrationMutationPoint
 {
     Low,
