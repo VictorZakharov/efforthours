@@ -709,8 +709,12 @@ unique mapped nodes, all-higher residual hypotheses, fixed count/ratio buckets,
 explicit partial/unmapped and interface-availability behavior, sparse baseline
 fallback, and the same repository-held-out pooled gate used by the structural
 checkpoint. Its evaluator is development-only and non-fitting. The policy was
-frozen without joining public residuals; no graph field has yet been evaluated,
-selected, or admitted.
+frozen without joining public residuals. The later 15-repository, 2,030-target
+development run selects no graph field: 12 variants lose coverage and increase
+miss, while both cycle variants exactly reproduce the baseline and are
+non-selected no-ops. Every marginal residual correlation opposes the frozen
+all-higher hypothesis. Graph values remain diagnostics; no model fit, expected
+EHE, or interval consumes them.
 
 `uncertainty-feature-evaluation/1.0.0` measures those vectors only against a
 development-only corpus. It uses leave-one-repository-out folds, an unconditional

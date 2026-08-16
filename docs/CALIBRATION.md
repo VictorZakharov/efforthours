@@ -540,8 +540,19 @@ width growth, and no interval-miss growth. Directional correlation, adjacent-
 bucket violations, and repository coverage regressions remain separate
 diagnostics. The evaluator rejects validation/test records, fits no production
 model, and cannot change labels, seed estimates, or intervals. This checkpoint
-freezes and tests the machinery only; public reviewed residuals have not yet been
-joined and no graph feature has been accepted or rejected.
+froze and tested the machinery before public reviewed residuals were joined.
+
+The subsequent 15-repository, 2,030-target development run rejects every graph
+field as a direct interval-width driver. Twelve variants lose coverage and
+increase interval miss. Both cycle variants reproduce the baseline exactly and
+therefore satisfy the literal non-regression gate, but they improve nothing,
+their residual correlations oppose the frozen direction, and positive-cycle
+targets come from only one repository. They are recorded as non-selected no-op
+passes. All 14 marginal correlations are negative against the all-higher
+hypothesis; directions and buckets are not reversed after seeing labels. Exact
+tables and reproduction metadata are in
+`calibration/corpora/public-readiness/1.8.0/README.md`. Graph evidence remains
+diagnostic-only and no estimate or interval changes.
 
 ### Development-only uncertainty feature measurement
 

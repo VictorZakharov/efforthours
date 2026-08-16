@@ -55,8 +55,15 @@ together over the repository-held-out symmetric baseline, so no interval model i
 selected. The [`1.5.0 support profile`](1.5.0/README.md) next measures
 label-independent repository-family-held-out sample support and OOD distance for
 all 11,161 development work items. Every item has sufficient cross-family support,
-but the new values have not yet been tested against reviewed residuals or selected
-for an interval model.
+and the [`1.6.0 support evaluation`](1.6.0/README.md) rejects all four aggregated
+support/OOD signals as direct width drivers. The
+[`1.7.0 structural evaluation`](1.7.0/README.md) then rejects all 14 callable-
+shape, parser-coverage, and ambiguity variants as direct drivers while retaining
+some useful diagnostic ordering. The
+[`1.8.0 graph evaluation`](1.8.0/README.md) rejects 12 fan/interface variants and
+records both cycle variants as non-selected no-op gate passes: every graph
+correlation opposes its predeclared direction and no interval improves over the
+repository-held-out baseline.
 
 The completed blind validation rejects the sole challenger and leaves test sealed.
 The later development uncertainty measurements are diagnostic only and cannot turn
@@ -164,10 +171,9 @@ contain an unsealed test label before the one-time decision.
 
 ## Next checkpoint
 
-Continue issue #137 from the `1.6.0` development measurement. Sample support and
-OOD have been measured and rejected as direct interval-width drivers for the
-current corpus; retain them as diagnostics. Add deferred function-size,
-complexity, nesting, coupling/cycle, interface-concentration, and analyzer-
-ambiguity evidence in bounded groups and measure incremental value before fitting
-any successor. Any finite candidate requires a new identity and fresh blind
-validation boundary; test remains sealed.
+Continue issue #137 from the `1.8.0` development measurement. Scalar, support/OOD,
+structural, and graph marginal variants have now been measured; none is admitted
+as a direct interval-width driver. Freeze a small, mechanistically justified set
+of correlated combinations before calculating it, without reversing failed
+directions or mining arbitrary interactions. Any finite candidate requires a new
+identity and fresh blind validation boundary; test remains sealed.

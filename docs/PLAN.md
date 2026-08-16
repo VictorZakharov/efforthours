@@ -199,11 +199,14 @@ count, and intermediate churn do not value effort. `CHANGE_ESTIMATION.md` and
   Its separate `uncertainty-graph-evaluation-policy/1.0.0` now freezes unique-node
   target aggregation, all-higher residual hypotheses, fixed buckets, explicit
   unmapped/interface availability behavior, sparse fallback, and the repository-
-  held-out pooled gate before public residuals are joined. Next run the frozen
-  evaluator once on development and record every outcome without retuning.
-  Evaluate bounded correlated combinations only after that result; any selected
-  successor still needs a new candidate identity and fresh blind validation
-  boundary.
+  held-out pooled gate before public residuals are joined. Its 15-repository,
+  2,030-target run selects no graph field: 12 regress coverage and miss, while
+  both cycle variants are exact baseline no-ops with insufficient cross-repository
+  positive support. All 14 correlations oppose the predeclared direction. Next
+  freeze a small, mechanistically justified correlated-combination manifest before
+  calculating it; do not reverse failed directions or mine arbitrary interactions.
+  Any selected successor still needs a new candidate identity and fresh blind
+  validation boundary.
 - Preserve repository-family partition isolation and honest teacher/model/input
   provenance. Optional independent review remains explicit corroboration, not an
   implied maturity upgrade.

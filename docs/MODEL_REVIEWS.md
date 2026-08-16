@@ -33,6 +33,41 @@ Because EffortHours's own anchor informed the seed-model and calibration design,
 a development diagnostic rather than an eligible held-out test record unless a
 future independent snapshot and review policy explicitly establishes otherwise.
 
+## 2026-08-16: graph uncertainty development evaluation
+
+Status: **no graph field selected as a direct width driver; 12 regressions and
+two non-selected no-op gate passes; validation and test remain sealed**
+
+After the policy freeze in `e4499e5`, all 15 exact development graph reports were
+projected and joined once to
+`efforthours-public-readiness-development/0.3.0`. All 2,030 targets and 11,161
+source work-item references matched; no report was ignored. Topology diagnostics
+were available for 1,840 targets and interface diagnostics for 1,731.
+
+The unconditional repository-held-out q80 baseline covers `0.8463` with mean
+normalized width `1.1393` and mean miss `1.0946` hours. Each of the eight fan
+variants narrows slightly but loses 21 to 44 covered targets and increases miss.
+Each of the four interface variants loses 23 to 37 covered targets, widens the
+interval, and increases miss. All 12 fail the frozen pooled gate. Every one of the
+14 marginal residual correlations is negative, opposite the predeclared
+all-higher direction.
+
+Cyclic-node share and largest cyclic-component share report a literal pooled gate
+pass because their predicted intervals equal the baseline on every metric. This
+is not selection evidence: the variants improve nothing, both have opposite-sign
+correlations and a bucket violation, and all 39 positive-cycle targets belong to
+one repository, so positive buckets cannot train when that family is held out.
+They are explicitly recorded as non-selected no-ops rather than accepted drivers.
+
+No direction or bucket is retuned after label access, and no graph field changes a
+model, estimate, or interval. The exact before/after, ordering, fold, artifact, and
+reproduction tables are frozen in
+`calibration/corpora/public-readiness/1.8.0/README.md`. The next permitted research
+step is a small correlated-combination manifest fixed before calculation. It may
+use development for design, but must not mine arbitrary interactions or turn this
+opened cohort into fresh validation; any selected successor still needs a new
+candidate identity and blind validation boundary.
+
 ## 2026-08-16: graph uncertainty evaluation policy freeze
 
 Status: **label-independent target aggregation and development gate frozen;
