@@ -1,6 +1,8 @@
 using System.Diagnostics;
 using System.Security.Cryptography;
 using System.Text;
+using EffortHours.Contracts;
+using EffortHours.Contracts.V1;
 
 namespace EffortHours.EndToEndTests;
 
@@ -142,6 +144,61 @@ public sealed class LogicalCandidateProjectionCliTests
         {
             File.Delete(estimate);
             File.Delete(output);
+        }
+    }
+
+    [Fact]
+    public async Task ManualQaCandidateProjectIsDeterministicAndDependencyLinked()
+    {
+        string root = FindRepositoryRoot();
+        string evidence = Path.Combine(
+            AppContext.BaseDirectory,
+            "fixtures",
+            "evidence",
+            "minimal-dotnet.repository-evidence.json");
+        ProcessResult seed = await RunCliAsync(root, "estimate", evidence, "--no-rate");
+        Assert.Equal(0, seed.ExitCode);
+        string estimate = Path.Combine(Path.GetTempPath(), $"eh-manual-qa-{Guid.NewGuid():N}.json");
+        try
+        {
+            await File.WriteAllTextAsync(estimate, seed.StandardOutput);
+            string policy = Path.Combine(
+                root,
+                "calibration",
+                "corpora",
+                "public-readiness",
+                "1.9.0",
+                "manual-qa-coding-ratio-policy.json");
+            string digest = Digest(await File.ReadAllTextAsync(policy));
+            ProcessResult first = await RunCalibrationAsync(
+                root,
+                "manual-qa-candidate-project",
+                "--estimate", estimate,
+                "--policy", policy,
+                "--expected-policy-digest", digest);
+            ProcessResult second = await RunCalibrationAsync(
+                root,
+                "manual-qa-candidate-project",
+                "--estimate", estimate,
+                "--policy", policy,
+                "--expected-policy-digest", digest);
+
+            Assert.Equal(0, first.ExitCode);
+            Assert.Equal(string.Empty, first.StandardError);
+            Assert.Equal(first.StandardOutput, second.StandardOutput);
+            EstimateReport candidate = ContractJson.Deserialize<EstimateReport>(first.StandardOutput);
+            WorkItem[] manualQa =
+            [
+                .. candidate.WorkItems.Where(item =>
+                    item.Category == EffortCategory.ManualValidationDebuggingAndHardening),
+            ];
+            Assert.NotEmpty(manualQa);
+            Assert.All(manualQa, item => Assert.Single(item.DependencyIds));
+            Assert.Empty(ContractValidation.Validate(candidate));
+        }
+        finally
+        {
+            File.Delete(estimate);
         }
     }
 

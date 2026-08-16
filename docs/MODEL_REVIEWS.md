@@ -33,6 +33,42 @@ Because EffortHours's own anchor informed the seed-model and calibration design,
 a development diagnostic rather than an eligible held-out test record unless a
 future independent snapshot and review policy explicitly establishes otherwise.
 
+## 2026-08-16: manual-QA coding-ratio candidate freeze
+
+Status: **30/40/50 percent eligible-coding prior implemented as a development-only
+candidate; seed unchanged; category re-review and fresh validation required**
+
+An anonymized interactive-graphics diagnostic exposed a categorical failure that
+interval-only research could not fix: `149.00` expected hours of implementation,
+test, build, CI, integration, and quality-related coding produced only `3.00`
+expected hours of seed manual QA. A separate manual engineering assessment placed
+the repository at `182/240/302` hours versus the saved seed's
+`78/161.50/306.75`.
+
+Policy `manual-qa-coding-ratio-policy/1.0.0`, canonical digest
+`sha256:31afc595a033c0e2dc96e3116ebd72d7105520392828ae146c6cf91c66123571`,
+freezes 30/40/50 percent of eligible expected coding effort. It excludes
+specification/domain learning, setup, architecture/design, documentation, QA
+itself, self-review, gaps, and pricing. One replacement QA item is emitted per
+eligible source item with exact dependency and evidence lineage. Using expected
+coding for every range point keeps the QA component symmetric and avoids
+compounding source low/high width.
+
+The diagnostic QA category becomes `44.70/59.60/74.50`; total EHE becomes
+`121.45/218.10/375.25`. Expected absolute error falls from `78.50` to `21.90`
+hours, or `72.1%`, while the inherited high error worsens from `+4.75` to
+`+73.25`. The result supports the QA point correction and simultaneously shows
+that legacy total-range asymmetry remains unsolved.
+
+An exact development-label audit finds reviewed QA at only `4.89%` of reviewed
+eligible coding and seed QA at `4.50%`. Those disclosed single-teacher labels
+encode the earlier semantics; treating them as independent truth would
+mechanically reject the new definition. They are not rewritten. Manual-QA targets
+need a candidate-blind category review before any development evaluation, and any
+surviving successor needs a new finite identity and fresh blind validation. The
+full policy, tables, limitations, and reproduction command are recorded in
+`calibration/corpora/public-readiness/1.9.0/README.md`.
+
 ## 2026-08-16: graph uncertainty development evaluation
 
 Status: **no graph field selected as a direct width driver; 12 regressions and

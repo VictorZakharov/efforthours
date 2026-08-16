@@ -63,7 +63,12 @@ some useful diagnostic ordering. The
 [`1.8.0 graph evaluation`](1.8.0/README.md) rejects 12 fan/interface variants and
 records both cycle variants as non-selected no-op gate passes: every graph
 correlation opposes its predeclared direction and no interval improves over the
-repository-held-out baseline.
+repository-held-out baseline. The
+[`1.9.0 manual-QA candidate freeze`](1.9.0/README.md) then implements a separate
+30/40/50 percent eligible-coding prior with exact work-item lineage. An anonymized
+real-case midpoint improves materially, but the candidate is unvalidated, the
+inherited high bound worsens, and existing development QA labels encode the
+earlier semantics. The seed remains shipped and test remains sealed.
 
 The completed blind validation rejects the sole challenger and leaves test sealed.
 The later development uncertainty measurements are diagnostic only and cannot turn
@@ -171,9 +176,9 @@ contain an unsealed test label before the one-time decision.
 
 ## Next checkpoint
 
-Continue issue #137 from the `1.8.0` development measurement. Scalar, support/OOD,
-structural, and graph marginal variants have now been measured; none is admitted
-as a direct interval-width driver. Freeze a small, mechanistically justified set
-of correlated combinations before calculating it, without reversing failed
-directions or mining arbitrary interactions. Any finite candidate requires a new
-identity and fresh blind validation boundary; test remains sealed.
+Continue issue #149 from the `1.9.0` policy freeze: re-review manual-QA development
+targets under the explicit eligible-coding boundary, then evaluate and run
+operational gates against the exact candidate without changing its ratios or
+category set. If it survives, freeze a new finite manifest and fresh blind
+validation boundary; test remains sealed. Issue #137's small, mechanistically
+justified correlated-uncertainty combinations remain separate follow-up work.

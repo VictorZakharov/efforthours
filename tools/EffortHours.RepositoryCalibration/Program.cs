@@ -75,6 +75,12 @@ internal static partial class Program
                 .ConfigureAwait(false);
         }
 
+        if (arguments.Length > 0 && arguments[0] == "manual-qa-candidate-project")
+        {
+            return await RunManualQaCandidateProjectionAsync(arguments[1..], cancellationToken)
+                .ConfigureAwait(false);
+        }
+
         if (arguments.Length > 0 && arguments[0] == "candidate-operational-preflight")
         {
             return await RunLogicalCandidateOperationalAsync(arguments[1..], cancellationToken)
@@ -126,164 +132,6 @@ internal static partial class Program
             UnauthorizedAccessException or
             InvalidDataException or
             HttpRequestException or
-            System.Text.Json.JsonException)
-        {
-            await Console.Error.WriteLineAsync(exception.Message).ConfigureAwait(false);
-            return 2;
-        }
-    }
-
-    private static async Task<int> RunCandidatePreflightAsync(
-        string[] arguments,
-        CancellationToken cancellationToken)
-    {
-        if (!CandidatePreflightOptions.TryParse(
-                arguments,
-                out CandidatePreflightOptions? options,
-                out string? error))
-        {
-            await Console.Error.WriteLineAsync(error).ConfigureAwait(false);
-            WriteUsage(Console.Error);
-            return 2;
-        }
-
-        try
-        {
-            await CandidatePreflightBuilder.RunAsync(options!, cancellationToken).ConfigureAwait(false);
-            return 0;
-        }
-        catch (Exception exception) when (
-            exception is IOException or
-            UnauthorizedAccessException or
-            InvalidDataException or
-            System.Text.Json.JsonException)
-        {
-            await Console.Error.WriteLineAsync(exception.Message).ConfigureAwait(false);
-            return 2;
-        }
-    }
-
-    private static async Task<int> RunLogicalCandidateFitAsync(
-        string[] arguments,
-        CancellationToken cancellationToken)
-    {
-        if (!LogicalCandidateModelOptions.TryParse(
-                arguments,
-                out LogicalCandidateModelOptions? options,
-                out string? error))
-        {
-            await Console.Error.WriteLineAsync(error).ConfigureAwait(false);
-            WriteUsage(Console.Error);
-            return 2;
-        }
-
-        try
-        {
-            await LogicalCandidateModelFitter.RunAsync(options!, cancellationToken)
-                .ConfigureAwait(false);
-            return 0;
-        }
-        catch (Exception exception) when (
-            exception is IOException or
-            UnauthorizedAccessException or
-            InvalidDataException or
-            System.Text.Json.JsonException)
-        {
-            await Console.Error.WriteLineAsync(exception.Message).ConfigureAwait(false);
-            return 2;
-        }
-    }
-
-    private static async Task<int> RunLogicalCandidatePreflightAsync(
-        string[] arguments,
-        CancellationToken cancellationToken)
-    {
-        if (!LogicalCandidatePreflightOptions.TryParse(
-                arguments,
-                out LogicalCandidatePreflightOptions? options,
-                out string? error))
-        {
-            await Console.Error.WriteLineAsync(error).ConfigureAwait(false);
-            WriteUsage(Console.Error);
-            return 2;
-        }
-
-        try
-        {
-            await LogicalCandidatePreflightBuilder.RunAsync(options!, cancellationToken)
-                .ConfigureAwait(false);
-            return 0;
-        }
-        catch (Exception exception) when (
-            exception is IOException or
-            UnauthorizedAccessException or
-            InvalidDataException or
-            System.Text.Json.JsonException)
-        {
-            await Console.Error.WriteLineAsync(exception.Message).ConfigureAwait(false);
-            return 2;
-        }
-    }
-
-    private static async Task<int> RunLogicalCandidateProjectionAsync(
-        string[] arguments,
-        CancellationToken cancellationToken)
-    {
-        if (!LogicalCandidateProjectionOptions.TryParse(
-                arguments,
-                out LogicalCandidateProjectionOptions? options,
-                out string? error))
-        {
-            await Console.Error.WriteLineAsync(error).ConfigureAwait(false);
-            WriteUsage(Console.Error);
-            return 2;
-        }
-
-        try
-        {
-            await LogicalCandidateProjectionRunner.RunAsync(
-                    options!,
-                    Console.Out,
-                    Console.Error,
-                    cancellationToken)
-                .ConfigureAwait(false);
-            return 0;
-        }
-        catch (Exception exception) when (
-            exception is IOException or
-            UnauthorizedAccessException or
-            InvalidDataException or
-            System.Text.Json.JsonException)
-        {
-            await Console.Error.WriteLineAsync(exception.Message).ConfigureAwait(false);
-            return 2;
-        }
-    }
-
-    private static async Task<int> RunLogicalCandidateOperationalAsync(
-        string[] arguments,
-        CancellationToken cancellationToken)
-    {
-        if (!LogicalCandidateOperationalOptions.TryParse(
-                arguments,
-                out LogicalCandidateOperationalOptions? options,
-                out string? error))
-        {
-            await Console.Error.WriteLineAsync(error).ConfigureAwait(false);
-            WriteUsage(Console.Error);
-            return 2;
-        }
-
-        try
-        {
-            await LogicalCandidateOperationalBuilder.RunAsync(options!, cancellationToken)
-                .ConfigureAwait(false);
-            return 0;
-        }
-        catch (Exception exception) when (
-            exception is IOException or
-            UnauthorizedAccessException or
-            InvalidDataException or
             System.Text.Json.JsonException)
         {
             await Console.Error.WriteLineAsync(exception.Message).ConfigureAwait(false);
@@ -415,6 +263,17 @@ internal static partial class Program
         Projects one bounded, digest-matched saved estimate/evidence pair. Supported
         repository-model-admission/1.0.0 strata use the candidate; every other
         stratum retains the complete named seed fallback with a stderr diagnostic.
+
+        Manual-QA ratio candidate projection:
+          dotnet EffortHours.RepositoryCalibration.dll manual-qa-candidate-project
+            --estimate <seed-estimate.json>
+            --policy <manual-qa-policy.json>
+            --expected-policy-digest <sha256:digest>
+            [--output <candidate-estimate.json>]
+
+        Replaces seed manual-validation items with dependency-linked 30/40/50
+        percent items derived only from eligible expected coding effort. This is a
+        development-only candidate, not an admitted product estimator.
 
         Logical-capability operational preflight:
           dotnet EffortHours.RepositoryCalibration.dll candidate-operational-preflight

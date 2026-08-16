@@ -101,8 +101,18 @@ Raw test counts must be moderated for generated tests, repetition, triviality, d
 driven cases, and complexity.
 
 Reasonable manual validation and debugging required to create working behavior are
-included and remain distinct from automated-test creation. The amount should use
-engineering judgment and the observed complexity rather than a fixed percentage.
+included and remain distinct from automated-test creation. Shipped
+`seed-rules/0.4.0` derives that work from observed runtime and specialized
+boundaries. Development candidate `manual-qa-coding-ratio/0.1.0` tests a more
+explicit experience prior: manual QA is 30/40/50 percent of eligible expected
+coding effort. Its coding basis includes implementation, UI, data, integrations,
+automated-test creation, build/CI/infrastructure, security/accessibility, and
+packaging, while excluding specification, discovery, architecture, setup,
+documentation, QA itself, self-review, gaps, and pricing. It replaces rather than
+stacks on seed QA, emits one dependency-linked QA item per coding item, and applies
+all three ratios to expected coding so source range width is not compounded. The
+candidate is development-only and does not change the shipped estimator; it
+requires category re-review and fresh blind validation before admission.
 
 ### 4.5 Documentation
 

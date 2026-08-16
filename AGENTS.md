@@ -133,5 +133,15 @@ run selects no graph field: 12 variants regress coverage and miss, and both cycl
 variants are exact baseline no-ops with opposite-direction correlations and only
 one repository of positive support. Every field remains diagnostic-only and
 estimates remain unchanged.
+
+Development candidate `manual-qa-coding-ratio/0.1.0` now replaces seed manual-QA
+items with dependency-linked 30/40/50 percent items over eligible expected coding
+effort. It is an experience-based, unvalidated correction candidate only:
+`seed-rules/0.4.0` remains shipped, existing labels are unchanged, the manual-QA
+development category needs blind re-review, and any admission attempt needs a new
+finite manifest and fresh validation boundary. Its anonymized real-case midpoint
+improves materially while its inherited total high bound worsens, so overall
+interval research remains separate.
+
 Change EHE has only the limited Stage A logical admission described in
 `docs/CHANGE_MODEL_ADMISSION.md`; later ecosystem extensions remain experimental.
