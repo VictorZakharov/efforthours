@@ -111,7 +111,9 @@ frozen scalar features with repository-held-out folds; none yet beats the symmet
 baseline on coverage, normalized width, and interval miss together, so no interval
 model is frozen. A separate label-independent support profiler now covers all
 11,161 development work items with repository-family-held-out hierarchical support
-and bucketed OOD distance; those values have not yet been measured against reviewed
-residuals and do not change estimates.
+and bucketed OOD distance. Its four predeclared target-level signals have now been
+measured against all 2,030 development targets; each worsens coverage and interval
+miss and has non-monotonic or contrary residual ordering. They remain diagnostic-
+only, no interval model is frozen, and estimates do not change.
 Change EHE has only the limited Stage A logical admission described in
 `docs/CHANGE_MODEL_ADMISSION.md`; later ecosystem extensions remain experimental.

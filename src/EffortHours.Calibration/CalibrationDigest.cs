@@ -63,6 +63,20 @@ public static class CalibrationDigest
         return ComputeCanonical(profile);
     }
 
+    public static string Compute(CalibrationUncertaintyEvaluationReport evaluation)
+    {
+        ArgumentNullException.ThrowIfNull(evaluation);
+
+        return ComputeCanonical(evaluation);
+    }
+
+    public static string Compute(CalibrationUncertaintySupportEvaluationReport evaluation)
+    {
+        ArgumentNullException.ThrowIfNull(evaluation);
+
+        return ComputeCanonical(evaluation);
+    }
+
     internal static string ComputeSequence(IEnumerable<string> values) =>
         ComputeCanonical(values.ToArray());
 

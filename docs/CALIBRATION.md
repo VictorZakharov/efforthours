@@ -456,8 +456,33 @@ The first complete run is recorded in
 [`calibration/corpora/public-readiness/1.5.0/README.md`](../calibration/corpora/public-readiness/1.5.0/README.md).
 All 11,161 work items have sufficient cross-family support; 8,322 use the exact
 structural cell and 2,839 use a broader fallback. The mean nearest-neighbor OOD
-score is `0.011802`, but that value has not yet been tested against reviewed
-residuals and changes no estimate.
+score is `0.011802`. These values change no estimate.
+
+### Support/OOD residual evaluation
+
+`uncertainty-support-evaluator/1.0.0` joins the label-independent work-item profile
+to reviewed development targets only after the support features are frozen:
+
+```text
+eh calibration uncertainty-support-evaluate <development-corpus.json> \
+  <support-profile.json> <features.json>... --compact \
+  --output <support-evaluation.json>
+```
+
+The target aggregation reports worst fallback depth, minimum selected-cell
+repository count, expected-hour-weighted mean OOD, and maximum OOD. Each signal
+uses fixed buckets and repository-held-out q80 conditioning with the same sparse
+fallback as the scalar evaluator. The support profile itself remains label-free;
+reviewed values are used only to score residual association, coverage, sharpness,
+and miss. The command fits no production model and changes no estimate.
+
+The complete result is recorded in
+[`calibration/corpora/public-readiness/1.6.0/README.md`](../calibration/corpora/public-readiness/1.6.0/README.md).
+All four signals reduce pooled coverage by `0.0103-0.0118` and increase mean
+interval miss by `0.0189-0.0413` hours relative to the unconditional held-out
+baseline. Their fixed buckets are non-monotonic, and the observed residual
+directions oppose the predeclared support/OOD hypotheses. They are rejected as
+direct interval-width drivers for this corpus and retained only as diagnostics.
 
 ## Determinism and safety
 
