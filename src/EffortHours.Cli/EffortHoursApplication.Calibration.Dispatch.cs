@@ -47,6 +47,8 @@ public sealed partial class EffortHoursApplication
                 remaining, standardOutput, standardError, cancellationToken).ConfigureAwait(false),
             "uncertainty-structure-evaluate" => await EvaluateUncertaintyStructureAsync(
                 remaining, standardOutput, standardError, cancellationToken).ConfigureAwait(false),
+            "uncertainty-graph-evaluate" => await EvaluateUncertaintyGraphAsync(
+                remaining, standardOutput, standardError, cancellationToken).ConfigureAwait(false),
             "uncertainty-support" => await ProfileUncertaintySupportAsync(
                 remaining, standardOutput, standardError, cancellationToken).ConfigureAwait(false),
             "uncertainty-support-evaluate" => await EvaluateUncertaintySupportAsync(
@@ -67,6 +69,7 @@ public sealed partial class EffortHoursApplication
         "'calibration uncertainty-structure', 'calibration uncertainty-graph', " +
         "'calibration uncertainty-evaluate', " +
         "'calibration uncertainty-structure-evaluate', " +
+        "'calibration uncertainty-graph-evaluate', " +
         "'calibration uncertainty-support', " +
         "'calibration uncertainty-support-evaluate', or " +
         "'calibration change-evaluate'.";

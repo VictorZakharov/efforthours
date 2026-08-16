@@ -230,6 +230,14 @@ public sealed class CalibrationUncertaintyGraphFeatureTests
             CalibrationDigest.Compute(CalibrationUncertaintyGraphFeatureCatalog.Current));
     }
 
+    [Fact]
+    public void CanonicalGraphEvaluationPolicyDigestIsPinned()
+    {
+        Assert.Equal(
+            CalibrationUncertaintyVersions.GraphEvaluationPolicyDigestV1,
+            CalibrationDigest.Compute(CalibrationUncertaintyGraphEvaluationPolicyCatalog.Current));
+    }
+
     private static async Task<(EstimateReport Estimate, RepositoryEvidence Evidence)>
         CreateDotNetGraphAsync()
     {

@@ -196,10 +196,14 @@ count, and intermediate churn do not value effort. `CHANGE_ESTIMATION.md` and
   JavaScript local fan-in/fan-out, cycle-concentration, and public-interface
   distribution diagnostics with node/edge/work-item lineage. Its evidence-only
   preflight consulted no labels or residuals, and all fields remain diagnostic.
-  Next freeze graph target aggregation, directions, fixed buckets, and a
-  repository-held-out development gate before joining labels. Evaluate bounded
-  correlated combinations only after that result; any selected successor still
-  needs a new candidate identity and fresh blind validation boundary.
+  Its separate `uncertainty-graph-evaluation-policy/1.0.0` now freezes unique-node
+  target aggregation, all-higher residual hypotheses, fixed buckets, explicit
+  unmapped/interface availability behavior, sparse fallback, and the repository-
+  held-out pooled gate before public residuals are joined. Next run the frozen
+  evaluator once on development and record every outcome without retuning.
+  Evaluate bounded correlated combinations only after that result; any selected
+  successor still needs a new candidate identity and fresh blind validation
+  boundary.
 - Preserve repository-family partition isolation and honest teacher/model/input
   provenance. Optional independent review remains explicit corroboration, not an
   implied maturity upgrade.

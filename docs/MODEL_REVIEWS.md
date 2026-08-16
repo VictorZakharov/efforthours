@@ -33,6 +33,48 @@ Because EffortHours's own anchor informed the seed-model and calibration design,
 a development diagnostic rather than an eligible held-out test record unless a
 future independent snapshot and review policy explicitly establishes otherwise.
 
+## 2026-08-16: graph uncertainty evaluation policy freeze
+
+Status: **label-independent target aggregation and development gate frozen;
+public residual evaluation not run; no fit, estimate change, or admission**
+
+`uncertainty-graph-evaluation-policy/1.0.0`, canonical digest
+`sha256:f742039c129f02e6e423c31cf486f0c33e4b2e20b329da27294786cc9385c0db`,
+freezes the graph checkpoint's target-level interpretation before any public
+reviewed residual is joined. Each reviewed target unions the unique graph nodes
+mapped from its source work items. Candidate EHE still includes every complete
+category-matched source item; unmapped items do not erase a target, and repeated
+or overlapping mappings cannot multiply graph evidence.
+
+Fan-in/fan-out distributions are recomputed across the selected unique nodes.
+Cyclic-node share uses the selected population, while largest cyclic component is
+the largest repository-relative component touched by that population. Interface
+distributions use selected nodes with available measurements; not-applicable nodes
+are excluded, no usable node yields not-applicable, and any incompatible selected
+node makes all four interface diagnostics unavailable. All 14 predeclared
+direction hypotheses are higher value to higher absolute normalized residual.
+That direction is deliberately testable and does not claim that coupling,
+cyclicity, or public surface should increase expected effort.
+
+Count buckets are frozen at `0`, `1`, `2-3`, `4-7`, and `8+`; ratio buckets are
+`0`, `(0, 0.25]`, `(0.25, 0.50]`, `(0.50, 0.75]`, and `(0.75, 1]`. The unlabeled
+347-node preflight populated all five fan-in buckets (`192/62/44/32/17`), fan-out
+buckets (`79/110/107/48/3`), and all five interface buckets across 316 usable
+nodes (`8/63/56/52/137`). Only six nodes were cyclic. Those distributions support
+the fixed generic bands while showing why sparse fallback must remain explicit;
+they contain no target hours, residuals, correlations, or interval outcomes.
+
+`uncertainty-graph-feature-evaluation/1.0.0` is development-only and uses
+leave-one-repository-out nearest-rank q80 residual factors. A held-out bucket needs
+at least three training observations from two repositories; otherwise it uses the
+unconditional fold baseline. The frozen pooled gate requires a conditioned
+prediction, nonnegative coverage delta, nonpositive normalized-width delta, and
+nonpositive interval-miss delta. Correlation direction, adjacent bucket violations,
+and repository coverage regressions are retained separately. Synthetic unit and
+process tests exercise this machinery, but this checkpoint does not invoke it on
+the public reviewed corpus. The next checkpoint must run the frozen evaluator once
+on development and record all outcomes without changing this policy.
+
 ## 2026-08-16: graph uncertainty feature freeze
 
 Status: **label-independent .NET/JavaScript graph contract frozen; diagnostic
@@ -66,11 +108,12 @@ target hours, residuals, feature correlations, or interval outcomes; it establis
 only that the frozen boundary is populated, variable, and auditable.
 
 Every graph field is marked `diagnostic-only`, and reports retain the complete
-node/edge/evidence inventory plus source-work-item-to-node mappings. The next
-checkpoint must freeze target aggregation, expected directions, buckets, sparse
-fallback, and a repository-held-out development gate before labels are joined.
-Only a later evaluation may decide whether graph fields help bounded correlated
-combinations; this record authorizes no model or interval change.
+node/edge/evidence inventory plus source-work-item-to-node mappings. The separate
+evaluation-policy record above now freezes target aggregation, directions,
+buckets, sparse fallback, and the repository-held-out development gate without
+joining labels. Only the next development evaluation may decide whether graph
+fields warrant bounded correlated-combination research; this record authorizes no
+model or interval change.
 
 ## 2026-08-16: structural uncertainty development evaluation
 

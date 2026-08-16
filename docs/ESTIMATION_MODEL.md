@@ -703,8 +703,14 @@ strictly above `3`, and public-interface concentration strictly above `0.5` were
 fixed before labels. Raw graph size is retained only as audit context. The report
 also preserves node, edge, evidence, and source-work-item lineage. Every field is
 diagnostic-only: no label, residual, model fit, expected EHE, or interval changes
-in this checkpoint. Target aggregation and evaluation policy remain a subsequent
-pre-label decision.
+in this checkpoint. The separate
+`uncertainty-graph-evaluation-policy/1.0.0` now freezes target aggregation over
+unique mapped nodes, all-higher residual hypotheses, fixed count/ratio buckets,
+explicit partial/unmapped and interface-availability behavior, sparse baseline
+fallback, and the same repository-held-out pooled gate used by the structural
+checkpoint. Its evaluator is development-only and non-fitting. The policy was
+frozen without joining public residuals; no graph field has yet been evaluated,
+selected, or admitted.
 
 `uncertainty-feature-evaluation/1.0.0` measures those vectors only against a
 development-only corpus. It uses leave-one-repository-out folds, an unconditional

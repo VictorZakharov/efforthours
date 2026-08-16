@@ -63,6 +63,20 @@ public static class CalibrationDigest
         return ComputeCanonical(report);
     }
 
+    public static string Compute(CalibrationUncertaintyGraphEvaluationPolicy policy)
+    {
+        ArgumentNullException.ThrowIfNull(policy);
+
+        return ComputeCanonical(policy);
+    }
+
+    public static string Compute(CalibrationUncertaintyGraphEvaluationReport report)
+    {
+        ArgumentNullException.ThrowIfNull(report);
+
+        return ComputeCanonical(report);
+    }
+
     public static string Compute(CalibrationUncertaintyStructuralEvaluationPolicy policy)
     {
         ArgumentNullException.ThrowIfNull(policy);

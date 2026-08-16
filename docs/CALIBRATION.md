@@ -243,6 +243,10 @@ eh calibration uncertainty-graph <estimate.json> <evidence.json>
   [--output <path>]
 eh calibration uncertainty-evaluate <development-corpus.json> <features.json>...
   [--output <path>]
+eh calibration uncertainty-structure-evaluate <development-corpus.json>
+  <structural-features.json>... [--output <path>]
+eh calibration uncertainty-graph-evaluate <development-corpus.json>
+  <graph-features.json>... [--output <path>]
 eh calibration mutations <suite.json> <estimate.json>... [--output <path>]
 
 eh calibration change-scaffold <change-estimate.json> [--blind]
@@ -489,9 +493,55 @@ usable public-interface measurement, 15 had no source-structure evidence, and 16
 had no declaration denominator. One repository contained six cyclic nodes. Of
 11,161 source work items, 10,048 mapped to at least one same-ecosystem graph node
 and 1,113 remained explicitly unmapped. This verifies coverage and variation only:
-no reviewed hours, residuals, or feature outcomes were consulted. Target
-aggregation, fixed buckets, expected directions, and a development-only evaluation
-gate must be frozen separately before any reviewed residual is joined.
+no reviewed hours, residuals, or feature outcomes were consulted.
+
+The separate label-independent evaluation boundary is frozen as
+`uncertainty-graph-evaluation-policy/1.0.0`, digest
+`sha256:f742039c129f02e6e423c31cf486f0c33e4b2e20b329da27294786cc9385c0db`.
+Before any reviewed residual is loaded, it fixes these target semantics:
+
+- union the unique node IDs mapped from all source work items in a reviewed target;
+  repeated work items and overlapping mappings cannot multiply a node;
+- retain every complete category-matched target and its full source range when
+  some or all work items are unmapped; graph features use the mapped-node subset,
+  and a target with no mapped nodes is explicitly not applicable;
+- recompute fan-in/fan-out p50, p90, maximum, and high-degree shares across the
+  selected nodes, using each node's repository-local degree;
+- compute cyclic-node share across selected nodes and use the largest
+  repository-relative cyclic-component share touched by those nodes;
+- compute interface distributions across selected nodes with available
+  measurements, excluding not-applicable nodes; any selected node with
+  incompatible evidence makes all four target interface fields unavailable; and
+- hypothesize, for all 14 diagnostics, that higher values correspond to higher
+  absolute normalized residual. This is a predeclared direction to test, not a
+  claim that graph complexity creates effort or uncertainty.
+
+Count fields use fixed inclusive buckets `0`, `1`, `2-3`, `4-7`, and `8+`.
+Ratio fields use `0`, `(0, 0.25]`, `(0.25, 0.50]`, `(0.50, 0.75]`, and
+`(0.75, 1]`. The unlabeled node population fills all five fan-in, fan-out, and
+interface bands: fan-in counts are `192/62/44/32/17`, fan-out counts are
+`79/110/107/48/3`, and the 316 usable interface nodes are
+`8/63/56/52/137` in bucket order. Only six cyclic nodes occur, so the frozen
+sparse rule is material rather than cosmetic.
+
+The command is:
+
+```text
+eh calibration uncertainty-graph-evaluate <development-corpus.json> \
+  <graph-features.json>... --compact --output <evaluation.json>
+```
+
+`uncertainty-graph-feature-evaluation/1.0.0` uses leave-one-repository-out
+nearest-rank q80 residual factors. A bucket is usable only with at least three
+training observations from at least two repositories; otherwise that prediction
+falls back to the unconditional held-out baseline. The predeclared pooled gate
+requires at least one conditioned prediction, no coverage loss, no normalized-
+width growth, and no interval-miss growth. Directional correlation, adjacent-
+bucket violations, and repository coverage regressions remain separate
+diagnostics. The evaluator rejects validation/test records, fits no production
+model, and cannot change labels, seed estimates, or intervals. This checkpoint
+freezes and tests the machinery only; public reviewed residuals have not yet been
+joined and no graph feature has been accepted or rejected.
 
 ### Development-only uncertainty feature measurement
 

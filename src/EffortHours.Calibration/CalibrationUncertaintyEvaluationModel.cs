@@ -34,6 +34,8 @@ internal sealed record CalibrationUncertaintyObservation
     public IReadOnlyDictionary<string, CalibrationUncertaintyAggregatedFeature> Features
     { get; init; } = new Dictionary<string, CalibrationUncertaintyAggregatedFeature>();
 
+    public IReadOnlyList<string> GraphNodeIds { get; init; } = [];
+
     public EffortRange? BaselineRange { get; init; }
 }
 
