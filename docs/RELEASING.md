@@ -166,3 +166,6 @@ eh schema list
 NuGet package versions are immutable and cannot be deleted. If a preview is wrong,
 unlist it when appropriate, fix the problem, increment the prerelease version, and
 publish a new package. Never rebuild different bytes under an existing version.
+A pushed public tag is likewise immutable even when its workflow stops before
+packing or publication. Do not delete or move it: record the skipped release, fix
+the release path, increment the prerelease version, and tag the corrected merge.

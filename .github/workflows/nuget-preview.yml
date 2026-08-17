@@ -44,14 +44,39 @@ jobs:
             exit $LASTEXITCODE
           }
 
-          foreach ($line in $provenance) {
-            $line | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
+          $requiredKeys = @(
+            "merge_commit",
+            "pr_head",
+            "tree",
+            "tree_matches_pr_head",
+            "validation_commit"
+          )
+          if ($provenance.Count -ne $requiredKeys.Count) {
+            throw "Expected $($requiredKeys.Count) provenance outputs; found $($provenance.Count)."
           }
 
           $values = @{}
           foreach ($line in $provenance) {
-            $key, $value = $line -split "=", 2
+            $parts = $line -split "=", 2
+            if ($parts.Count -ne 2 -or [string]::IsNullOrWhiteSpace($parts[1])) {
+              throw "Malformed provenance output '$line'."
+            }
+
+            $key, $value = $parts
+            if ($values.ContainsKey($key)) {
+              throw "Duplicate provenance output '$key'."
+            }
+
             $values[$key] = $value
+          }
+
+          foreach ($key in $requiredKeys) {
+            if (-not $values.ContainsKey($key)) {
+              throw "Provenance output is missing required key '$key'."
+            }
+
+            "$key=$($values[$key])" |
+              Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
           }
 
           @(

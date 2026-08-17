@@ -104,6 +104,9 @@ when semantics, schemas, assumptions, or unresolved decisions change.
 - Publish only the exact verified prerelease tag and artifact. After approval,
   require a successful publish job, NuGet indexing, and a clean public-feed
   install before creating the matching GitHub prerelease.
+- Never delete or move a pushed release tag after a failed workflow. If no package
+  was published, record the skipped tag, fix the release path in a new PR,
+  increment the prerelease version, and tag the corrected merge.
 
 ## Current model boundary
 
