@@ -21,6 +21,11 @@ may still change public contracts with explicit documentation.
 
 ### Changed
 
+- Updated the Roslyn C# parser to 5.9.0 and the test toolchain to Microsoft.NET.Test.Sdk
+  18.9.0 plus xunit.runner.visualstudio 4.0.0, regenerating every affected central
+  transitive lock. JsonSchema.Net remains at the final MIT-declared 8.0.5 binary;
+  Dependabot now suppresses incompatible major-version proposals until their binary
+  license is reviewed explicitly.
 - Reuse immutable common-scanner, C#, and JavaScript per-file analysis across
   contributor and head scopes within one repository invocation. Snapshot
   inventories retain persistent content indexes, canonical Merkle digests, and
