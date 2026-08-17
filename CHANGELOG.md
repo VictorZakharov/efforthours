@@ -6,6 +6,16 @@ may still change public contracts with explicit documentation.
 
 ## Unreleased
 
+## 0.10.0-alpha.6 - 2026-08-17
+
+### Fixed
+
+- Fixed tagged NuGet release provenance so PowerShell callers capture the verified
+  merge, tested PR head, tree, and required-check commit before package creation.
+  The public `v0.10.0-alpha.5` tag remains immutable after its workflow stopped
+  before packing or publishing; no alpha.5 NuGet package or GitHub prerelease was
+  created, and alpha.6 supersedes that unused package version.
+
 ## 0.10.0-alpha.5 - 2026-08-17
 
 ### Added

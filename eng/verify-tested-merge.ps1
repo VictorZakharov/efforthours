@@ -59,9 +59,9 @@ else {
     $mergeCommit
 }
 
-[Console]::Out.WriteLine("merge_commit=$mergeCommit")
-[Console]::Out.WriteLine("pr_head=$pullRequestHead")
-[Console]::Out.WriteLine("tree=$mergeTree")
-[Console]::Out.WriteLine(
+Write-Output "merge_commit=$mergeCommit"
+Write-Output "pr_head=$pullRequestHead"
+Write-Output "tree=$mergeTree"
+Write-Output (
     "tree_matches_pr_head=$($treeMatchesPullRequestHead.ToString().ToLowerInvariant())")
-[Console]::Out.WriteLine("validation_commit=$validationCommit")
+Write-Output "validation_commit=$validationCommit"

@@ -155,6 +155,8 @@ public sealed partial class PublicReleaseHygieneTests
         Assert.Contains("refs/tags/v", preview, StringComparison.Ordinal);
         Assert.Contains("NuGet/login@", preview, StringComparison.Ordinal);
         Assert.Contains("eng/verify-tested-merge.ps1", preview, StringComparison.Ordinal);
+        Assert.Contains("$provenance.Count -ne $requiredKeys.Count", preview, StringComparison.Ordinal);
+        Assert.Contains("Provenance output is missing required key", preview, StringComparison.Ordinal);
         Assert.Contains("Verify merged pull request", preview, StringComparison.Ordinal);
         Assert.Contains("Verify aggregate validation gate", preview, StringComparison.Ordinal);
         Assert.Contains("Verify approved package digest", preview, StringComparison.Ordinal);

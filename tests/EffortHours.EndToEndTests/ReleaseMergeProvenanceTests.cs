@@ -29,6 +29,25 @@ public sealed class ReleaseMergeProvenanceTests
     }
 
     [Fact]
+    public void GuardOutputCanBeCapturedByAPowerShellCaller()
+    {
+        using GitFixture fixture = new();
+        fixture.Commit("base.txt", "base\n", "Base");
+        fixture.Git("switch", "-c", "release");
+        fixture.Commit("release.txt", "release\n", "Prepare release");
+        fixture.Git("switch", "main");
+        fixture.Git("merge", "--no-ff", "release", "-m", "Merge release");
+
+        ProcessResult result = RunGuardThroughPipelineCapture(fixture.RootPath);
+
+        Assert.Equal(0, result.ExitCode);
+        Assert.Contains("captured_count=5", result.StandardOutput, StringComparison.Ordinal);
+        Assert.Contains("merge_commit=", result.StandardOutput, StringComparison.Ordinal);
+        Assert.Contains("validation_commit=", result.StandardOutput, StringComparison.Ordinal);
+        Assert.Empty(result.StandardError);
+    }
+
+    [Fact]
     public void GuardSelectsMergedCommitWhenFirstParentAddsParallelChanges()
     {
         using GitFixture fixture = new();
@@ -82,6 +101,27 @@ public sealed class ReleaseMergeProvenanceTests
         arguments.Add(script);
         arguments.Add("-Commit");
         arguments.Add("HEAD");
+        return Run(executable, workingDirectory, [.. arguments]);
+    }
+
+    private static ProcessResult RunGuardThroughPipelineCapture(string workingDirectory)
+    {
+        string root = FindRepositoryRoot();
+        string script = Path.Combine(root, "eng", "verify-tested-merge.ps1");
+        string escapedScript = script.Replace("'", "''", StringComparison.Ordinal);
+        string command =
+            $"$captured = @(& '{escapedScript}' -Commit HEAD); " +
+            "Write-Output \"captured_count=$($captured.Count)\"; $captured";
+        string executable = OperatingSystem.IsWindows() ? "powershell.exe" : "pwsh";
+        List<string> arguments = ["-NoLogo", "-NoProfile", "-NonInteractive"];
+        if (OperatingSystem.IsWindows())
+        {
+            arguments.Add("-ExecutionPolicy");
+            arguments.Add("Bypass");
+        }
+
+        arguments.Add("-Command");
+        arguments.Add(command);
         return Run(executable, workingDirectory, [.. arguments]);
     }
 
