@@ -179,6 +179,15 @@ jobs:
           done
           test "$(grep -Ec '^tools/net10.0/any/[^/]+\.deps\.json$' <<< "$entries")" -eq 1
           test "$(grep -Ec '^tools/net10.0/any/[^/]+\.runtimeconfig\.json$' <<< "$entries")" -eq 1
+          nuspec="$(unzip -p "$package" EffortHours.Tool.nuspec)"
+          if ! grep -Fq "<releaseNotes>${{ steps.package_version.outputs.value }}:" <<< "$nuspec"; then
+            echo "NuGet release notes do not begin with the exact package version." >&2
+            exit 1
+          fi
+          if ! grep -Fq "blob/v${{ steps.package_version.outputs.value }}/CHANGELOG.md" <<< "$nuspec"; then
+            echo "NuGet release notes do not link to the tag-specific changelog." >&2
+            exit 1
+          fi
 
       - name: Record package digest
         id: package_digest

@@ -6,6 +6,8 @@ may still change public contracts with explicit documentation.
 
 ## Unreleased
 
+## 0.10.0-alpha.5 - 2026-08-17
+
 ### Added
 
 - Added privacy-safe author-period progress and cancellation diagnostics with
@@ -54,6 +56,37 @@ may still change public contracts with explicit documentation.
   reviewed targets through compact evidence-bound candidate leaves; and proves
   low/expected/high reconciliation at `0.0001`-hour report precision. It changes
   no shipped estimate, candidate decision, or holdout boundary.
+- Added `repository-uncertainty-structural-features/1.0.0`, its separately frozen
+  evaluation policy, v1 schemas, and the offline structural projector/evaluator.
+  Fourteen parser-backed .NET and JavaScript callable-size, decision-complexity,
+  nesting, coverage, and ambiguity fields were measured across all 2,030
+  development targets. Every conditioned interval lost coverage and increased
+  miss, so the fields remain diagnostic-only and estimates are unchanged.
+- Added `repository-uncertainty-graph-features/1.0.0`, its separately frozen
+  evaluation policy, v1 schemas, and the offline graph projector/evaluator. The
+  14 .NET and JavaScript fan-in/fan-out, cycle, and public-interface fields retain
+  repository, node, edge, and work-item lineage. The 15-repository development
+  run selected none: 12 variants regressed coverage and miss, while both cycle
+  variants were baseline no-ops with insufficient positive support.
+- Added development-only `manual-qa-coding-ratio/0.1.0` and its disclosed
+  30/40/50-percent policy over eligible expected coding effort. In the anonymized
+  real-case diagnostic it moved expected EHE from `161.50` to `218.10` hours
+  against a separate `240.00`-hour assessment, reducing absolute midpoint error
+  by `72.1%`; the inherited high bound worsened, so the candidate remains an
+  unvalidated correction and `seed-rules/0.4.0` remains shipped.
+- Added 15 immutable candidate-blind manual-QA packets, the blank 955-decision
+  plan, and `manual-qa-development-review-compiler/1.0.0`. A local unpublished
+  preflight showed that exhaustive formal completeness did not provide reliable
+  numerical judgment, so the micro-labeling path stopped before any completed
+  plan or replacement corpus was published. The packets and compiler remain
+  optional diagnostics without changing labels or estimates.
+- Added `repository-total-materiality/1.0.0` and a six-case aggregate assessment
+  boundary that makes credible repository totals primary and uses granular
+  residuals only to diagnose material misses. The frozen
+  `repository-total-assessment-cohort/1.0.0` and corrected
+  `repository-total-source-review/1.1.0` span expected assessments from 155 to
+  1,600 hours with case-specific symmetric half-widths from 22.6% to 33.3%; the
+  seed/candidate total-first comparison remains future work.
 
 ### Changed
 
