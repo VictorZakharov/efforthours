@@ -8,6 +8,12 @@ may still change public contracts with explicit documentation.
 
 ### Added
 
+- Added privacy-safe author-period progress and cancellation diagnostics with
+  phase, processed/remaining units, cache reuse, elapsed time, current working
+  set, and highest observed working set. Added the explicit non-gating
+  `change/1.5.0` closed-month benchmark
+  shape with large nested project context, combined-versus-independent timings,
+  reuse counters, and deterministic safety checks.
 - Added `uncertainty-support-evaluator/1.0.0`, its v1 schema, and the offline
   `calibration uncertainty-support-evaluate` command. It aggregates four
   predeclared label-independent support/OOD signals to reviewed development
@@ -51,6 +57,17 @@ may still change public contracts with explicit documentation.
 
 ### Changed
 
+- Removed the 128-selected-change calculation ceiling from author-period
+  portfolios. Exact matches now fill the existing 32-repository by 10,000-candidate
+  safety envelope, so a 1,700-change month remains one calculation while PR
+  manifests retain their separate 128-row input bound. Large-tree analysis prunes
+  unrelated nested context, reconciliation constructs overlap components in
+  linear space, first-parent reuse spans the full default identity ledger, and at
+  most two repositories run concurrently as a bounded memory-for-latency tradeoff.
+  Readable sibling repositories are regression-covered; sandbox or process access
+  failures remain sanitized rather than being mistaken for containment policy.
+- Advanced the Change identities to `change-seed/0.18.2` and
+  `change-portfolio/0.2.2` without changing estimator priors or admission status.
 - Added development-only `logical-capability/0.3.0` repository-candidate
   normalization and marginality guardrails. The new identity passes all 16
   numerical gates, all five development-computable operational gates, and the

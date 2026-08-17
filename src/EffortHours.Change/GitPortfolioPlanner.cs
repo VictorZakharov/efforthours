@@ -24,9 +24,10 @@ public sealed record GitAuthorPeriodPortfolioOptions
 
 public sealed record GitPortfolioPlannerOptions
 {
-    public const int DefaultMaximumHistoryCommits = 10_000;
+    public const int DefaultMaximumHistoryCommits =
+        ChangeAuthorPeriodManifestLimits.MaximumIdentityCandidatesPerRepository;
     public const int MaximumSupportedHistoryCommits = 100_000;
-    public const int DefaultMaximumSelectedItems = 128;
+    public const int DefaultMaximumSelectedItems = ChangeAuthorPeriodManifestLimits.MaximumSelectedCommits;
 
     public int MaximumHistoryCommits { get; init; } = DefaultMaximumHistoryCommits;
 
@@ -95,7 +96,8 @@ public sealed partial class GitPortfolioPlanner
         _headReachability = headReachability ?? throw new ArgumentNullException(nameof(headReachability));
         if (_options.MaximumHistoryCommits is < 1 or >
                 GitPortfolioPlannerOptions.MaximumSupportedHistoryCommits ||
-            _options.MaximumSelectedItems is < 1 or > 128)
+            _options.MaximumSelectedItems is < 1 or >
+                ChangeAuthorPeriodManifestLimits.MaximumSelectedCommits)
         {
             throw new ArgumentOutOfRangeException(nameof(options));
         }
@@ -188,7 +190,7 @@ public sealed partial class GitPortfolioPlanner
             {
                 throw new InvalidOperationException(
                     $"Author-period selection matched more than {_options.MaximumSelectedItems} changes. " +
-                    "Use a narrower interval so each row and allocation remain reviewable.");
+                    "This bounded safety limit protects memory while normal closed-month intervals remain one calculation.");
             }
         }
 

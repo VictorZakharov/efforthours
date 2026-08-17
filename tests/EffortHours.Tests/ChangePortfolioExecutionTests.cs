@@ -1,4 +1,5 @@
 using EffortHours.Change;
+using EffortHours.Cli;
 using EffortHours.Contracts.V1;
 
 namespace EffortHours.Tests;
@@ -9,7 +10,8 @@ public sealed partial class ChangePortfolioCommandTests
     public void ExecutionTelemetryReportsEachStartedPhaseOnceAndOnlyReturnsActivePhases()
     {
         List<string> started = [];
-        ChangePortfolioExecutionTelemetry telemetry = new(started.Add);
+        List<ChangePortfolioProgress> progress = [];
+        ChangePortfolioExecutionTelemetry telemetry = new(started.Add, progress.Add);
 
         using (telemetry.Measure(ChangePortfolioExecutionPhases.StaticAnalysis))
         {
@@ -19,6 +21,12 @@ public sealed partial class ChangePortfolioCommandTests
         }
         telemetry.Start(ChangePortfolioExecutionPhases.Selection);
         telemetry.Add(ChangePortfolioExecutionPhases.Allocation, TimeSpan.FromMilliseconds(2));
+        telemetry.ReportProgress(
+            ChangePortfolioExecutionPhases.StaticAnalysis,
+            processedUnits: 16,
+            totalUnits: 32,
+            analysisCacheRequests: 20,
+            analysisCacheHits: 4);
 
         Assert.Equal(
             [
@@ -37,6 +45,25 @@ public sealed partial class ChangePortfolioCommandTests
         Assert.DoesNotContain(
             telemetry.GetTimings(),
             timing => timing.Phase == ChangePortfolioExecutionPhases.ManifestValidation);
+        ChangePortfolioProgress reported = Assert.Single(progress);
+        Assert.Equal(16, reported.ProcessedUnits);
+        Assert.Equal(32, reported.TotalUnits);
+        Assert.Equal(4, reported.AnalysisCacheHits);
+        Assert.Equal(ChangePortfolioExecutionPhases.StaticAnalysis, telemetry.GetLastProgress()!.Phase);
+    }
+
+    [Fact]
+    public void PortfolioSessionRetainsParentMetadataForTheDefaultHistoryBoundary()
+    {
+        Assert.Equal(
+            GitPortfolioPlannerOptions.DefaultMaximumHistoryCommits,
+            GitSnapshotSession.MaximumRememberedFirstParents);
+        Assert.Equal(
+            ChangeAuthorPeriodManifestLimits.MaximumRepositories *
+                GitPortfolioPlannerOptions.DefaultMaximumHistoryCommits,
+            GitPortfolioPlannerOptions.DefaultMaximumSelectedItems);
+        Assert.True(GitSnapshotSession.MaximumRememberedFirstParents > 1_700);
+        Assert.True(GitPortfolioPlannerOptions.DefaultMaximumSelectedItems > 1_700);
     }
 
     [Fact]
@@ -140,6 +167,44 @@ public sealed partial class ChangePortfolioCommandTests
     }
 
     [Fact]
+    public async Task CancelledManifestCommandEmitsPrivacySafeLastPhaseProgress()
+    {
+        ChangePortfolioCommand command = new(
+            new ChangeEstimator(),
+            (_, _, _, _) => throw new InvalidOperationException("Pull-request planning was not expected."),
+            (_, _, _, _) => throw new InvalidOperationException("Author planning was not expected."),
+            (_, _) => throw new InvalidOperationException("PR manifest loading was not expected."),
+            (_, telemetry, cancellationToken) =>
+            {
+                telemetry.Start(ChangePortfolioExecutionPhases.StaticAnalysis);
+                telemetry.ReportProgress(
+                    ChangePortfolioExecutionPhases.StaticAnalysis,
+                    processedUnits: 16,
+                    totalUnits: 32,
+                    analysisCacheRequests: 20,
+                    analysisCacheHits: 4);
+                cancellationToken.ThrowIfCancellationRequested();
+                throw new InvalidOperationException("Cancellation was not observed.");
+            });
+        using CancellationTokenSource cancellation = new();
+        cancellation.Cancel();
+        StringWriter stderr = new();
+
+        await Assert.ThrowsAnyAsync<OperationCanceledException>(() => command.ExecuteAsync(
+            ["--author-period-manifest", "portfolio.json", "--no-rate"],
+            new StringWriter(),
+            stderr,
+            cancellation.Token));
+
+        Assert.Contains("phase=static-analysis", stderr.ToString(), StringComparison.Ordinal);
+        Assert.Contains("processed=16/32", stderr.ToString(), StringComparison.Ordinal);
+        Assert.Contains("remaining=16", stderr.ToString(), StringComparison.Ordinal);
+        Assert.Contains("analysis-cache=4/20", stderr.ToString(), StringComparison.Ordinal);
+        Assert.Contains("observed-peak-working-set=", stderr.ToString(), StringComparison.Ordinal);
+        Assert.DoesNotContain("portfolio.json", stderr.ToString(), StringComparison.Ordinal);
+    }
+
+    [Fact]
     public async Task IndividualPortfolioItemEstimateDoesNotConsumeSiblingSession()
     {
         SnapshotState shared = State(("Demo.csproj", ProjectFile));
@@ -182,7 +247,7 @@ public sealed partial class ChangePortfolioCommandTests
     }
 
     [Fact]
-    public async Task PortfolioCandidateBatchScopesEqualObjectsByRepositoryAndRunsOneAtATime()
+    public async Task PortfolioCandidateBatchScopesEqualObjectsAndBoundsRepositoryConcurrency()
     {
         SnapshotState before = State(("Demo.csproj", ProjectFile));
         SnapshotState after = State(
@@ -197,16 +262,23 @@ public sealed partial class ChangePortfolioCommandTests
             RepositoryPath = "repository-b",
         };
         CountingEstimator repositoryEstimator = new();
+        List<ChangePortfolioProgress> progress = [];
+        ChangePortfolioExecutionTelemetry telemetry = new(progressReported: progress.Add);
 
         ChangePortfolioEstimateBatch batch =
             await new ChangeEstimator(repositoryEstimator)
                 .EstimatePortfolioCandidatesWithStatisticsAsync(
                     [first, second],
-                    EstimationProfile.Implementation);
+                    EstimationProfile.Implementation,
+                    telemetry);
 
         Assert.Equal(4, repositoryEstimator.InvocationCount);
         Assert.Equal(2, batch.Statistics.RepositoryCount);
-        Assert.Equal(1, batch.Statistics.MaximumActiveRepositories);
+        Assert.Equal(2, batch.Statistics.MaximumActiveRepositories);
         Assert.Equal(0, batch.Statistics.SnapshotAnalysisHits);
+        Assert.Equal([1, 2], progress.Select(item => item.ProcessedUnits));
+        Assert.Equal(4, progress[^1].AnalysisCacheRequests);
+        Assert.All(progress, item =>
+            Assert.InRange(item.AnalysisCacheHits, 0, item.AnalysisCacheRequests));
     }
 }

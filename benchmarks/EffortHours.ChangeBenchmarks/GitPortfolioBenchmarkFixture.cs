@@ -88,7 +88,7 @@ internal sealed partial class GitPortfolioBenchmarkFixture : IDisposable
                     $"Co-authored-by: {ContributorBName} <{ContributorBEmail}>",
                 ContributorAName,
                 ContributorAEmail,
-                "2026-08-14T01:00:00+00:00",
+                "2026-08-10T00:00:00+00:00",
                 cancellationToken).ConfigureAwait(false);
             string overlap = await UnselectedHeadAsync(
                 repositoryAPath,
@@ -101,14 +101,17 @@ internal sealed partial class GitPortfolioBenchmarkFixture : IDisposable
                 "switch",
                 "--quiet",
                 "main").ConfigureAwait(false);
-            string defaultA = await SelectedCommitAsync(
+            int defaultAdditional = options.Commits / 2;
+            int openAdditional = options.Commits - 1 - defaultAdditional;
+            string defaultA = await SelectedSeriesAsync(
                 repositoryAPath,
                 options,
-                finalValue: 2,
-                "default selected change",
+                defaultAdditional,
+                firstValue: 2,
+                firstMinute: 10,
+                "repository a default selected change",
                 ContributorBName,
                 ContributorBEmail,
-                "2026-08-14T02:00:00+00:00",
                 cancellationToken).ConfigureAwait(false);
             await GitBenchmarkRepository.GitAsync(
                 repositoryAPath,
@@ -118,14 +121,15 @@ internal sealed partial class GitPortfolioBenchmarkFixture : IDisposable
                 "--create",
                 "open-head",
                 shared).ConfigureAwait(false);
-            string openA = await SelectedCommitAsync(
+            string openA = await SelectedSeriesAsync(
                 repositoryAPath,
                 options,
-                finalValue: 3,
-                "open selected change",
+                openAdditional,
+                firstValue: 10_000,
+                firstMinute: 1_000,
+                "repository a open selected change",
                 ContributorAName,
                 ContributorAEmail,
-                "2026-08-14T03:00:00+00:00",
                 cancellationToken).ConfigureAwait(false);
 
             await CloneRepositoryAsync(repositoryAPath, repositoryBPath, cancellationToken)
@@ -139,14 +143,15 @@ internal sealed partial class GitPortfolioBenchmarkFixture : IDisposable
                 "--create",
                 "repository-b-default",
                 shared).ConfigureAwait(false);
-            string defaultB = await SelectedCommitAsync(
+            string defaultB = await SelectedSeriesAsync(
                 repositoryBPath,
                 options,
-                finalValue: 4,
+                defaultAdditional,
+                firstValue: 20_000,
+                firstMinute: 2_000,
                 "repository b default selected change",
                 ContributorBName,
                 ContributorBEmail,
-                "2026-08-14T04:00:00+00:00",
                 cancellationToken).ConfigureAwait(false);
             await GitBenchmarkRepository.GitAsync(
                 repositoryBPath,
@@ -156,14 +161,15 @@ internal sealed partial class GitPortfolioBenchmarkFixture : IDisposable
                 "--create",
                 "repository-b-open",
                 shared).ConfigureAwait(false);
-            string openB = await SelectedCommitAsync(
+            string openB = await SelectedSeriesAsync(
                 repositoryBPath,
                 options,
-                finalValue: 5,
+                openAdditional,
+                firstValue: 30_000,
+                firstMinute: 3_000,
                 "repository b open selected change",
                 ContributorAName,
                 ContributorAEmail,
-                "2026-08-14T05:00:00+00:00",
                 cancellationToken).ConfigureAwait(false);
 
             PortfolioBenchmarkRepository[] repositories =
@@ -247,8 +253,8 @@ internal sealed partial class GitPortfolioBenchmarkFixture : IDisposable
         {
             Selection = new ChangeAuthorPeriodManifestSelection
             {
-                SinceInclusive = new DateTimeOffset(2026, 8, 14, 0, 0, 0, TimeSpan.Zero),
-                UntilExclusive = new DateTimeOffset(2026, 8, 15, 0, 0, 0, TimeSpan.Zero),
+                SinceInclusive = new DateTimeOffset(2026, 8, 1, 0, 0, 0, TimeSpan.Zero),
+                UntilExclusive = new DateTimeOffset(2026, 9, 1, 0, 0, 0, TimeSpan.Zero),
                 TimeZone = "UTC",
                 DateField = ChangePortfolioDateField.Author,
                 MergePolicy = ChangePortfolioMergePolicy.Exclude,

@@ -8,6 +8,8 @@ internal sealed record ChangeAnalysisScope(
     IReadOnlySet<string> Paths,
     int ChangedPathCount,
     int ContextPathCount,
+    int RepresentativePathCount,
+    int AvailableContextPathCount,
     int FullPathCount)
 {
     private static readonly HashSet<string> ContextExtensions = new(
@@ -69,10 +71,9 @@ internal sealed record ChangeAnalysisScope(
             file => file.Path,
             StringComparer.Ordinal);
         HashSet<string> changedPaths = new(StringComparer.Ordinal);
-        foreach (string path in baseFiles.Keys.Union(headFiles.Keys, StringComparer.Ordinal))
+        foreach ((string path, ChangeSnapshotFile after) in headFiles)
         {
             if (!baseFiles.TryGetValue(path, out ChangeSnapshotFile? before) ||
-                !headFiles.TryGetValue(path, out ChangeSnapshotFile? after) ||
                 !string.Equals(before.ObjectId, after.ObjectId, StringComparison.Ordinal) ||
                 !string.Equals(before.Mode, after.Mode, StringComparison.Ordinal))
             {
@@ -80,26 +81,41 @@ internal sealed record ChangeAnalysisScope(
             }
         }
 
-        ChangeSnapshotFile[] inventory = [.. baseSnapshotFiles
-            .Concat(headSnapshotFiles)
-            .GroupBy(file => file.Path, StringComparer.Ordinal)
-            .Select(group => group.First())
-            .OrderBy(file => file.Path, StringComparer.Ordinal)];
-        HashSet<string> paths = new(changedPaths, StringComparer.Ordinal);
-        foreach (ChangeSnapshotFile file in inventory.Where(file => IsContextPath(file.Path)))
+        foreach (string path in baseFiles.Keys)
         {
-            paths.Add(file.Path);
+            if (!headFiles.ContainsKey(path))
+            {
+                changedPaths.Add(path);
+            }
         }
 
+        Dictionary<string, ChangeSnapshotFile> inventory = new(baseFiles, StringComparer.Ordinal);
+        foreach ((string path, ChangeSnapshotFile file) in headFiles)
+        {
+            inventory[path] = file;
+        }
+
+        HashSet<string> paths = new(changedPaths, StringComparer.Ordinal);
+        string[] contextPaths = [.. inventory.Keys.Where(IsContextPath)];
+        foreach (string path in contextPaths.Where(path => IsRelevantContextPath(path, changedPaths)))
+        {
+            paths.Add(path);
+        }
+
+        int contextPathCount = paths.Count - changedPaths.Count;
+        int beforeRepresentatives = paths.Count;
         AddRepresentatives(paths, baseSnapshotFiles);
         AddRepresentatives(paths, headSnapshotFiles);
+        int representativePathCount = paths.Count - beforeRepresentatives;
 
         string id = ComputeScopeId(paths);
         return new ChangeAnalysisScope(
             id,
             paths,
             changedPaths.Count,
-            paths.Count - changedPaths.Count,
+            contextPathCount,
+            representativePathCount,
+            contextPaths.Length,
             Math.Max(baseSnapshotFiles.Count, headSnapshotFiles.Count));
     }
 
@@ -135,6 +151,20 @@ internal sealed record ChangeAnalysisScope(
             fileName.StartsWith("compose.", StringComparison.OrdinalIgnoreCase) &&
                 (extension.Equals(".yml", StringComparison.OrdinalIgnoreCase) ||
                     extension.Equals(".yaml", StringComparison.OrdinalIgnoreCase));
+    }
+
+    private static bool IsRelevantContextPath(
+        string contextPath,
+        IReadOnlySet<string> changedPaths)
+    {
+        int separator = contextPath.LastIndexOf('/');
+        if (separator < 0)
+        {
+            return true;
+        }
+
+        string directoryPrefix = contextPath[..(separator + 1)];
+        return changedPaths.Any(path => path.StartsWith(directoryPrefix, StringComparison.Ordinal));
     }
 
     private static void AddRepresentatives(

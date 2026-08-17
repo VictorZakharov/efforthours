@@ -121,7 +121,7 @@ public sealed partial class GitPortfolioPlanner
             {
                 throw new InvalidOperationException(
                     $"Manifest author-period selection matched more than {_options.MaximumSelectedItems} changes. " +
-                    "Use a narrower interval so each row and allocation remain reviewable.");
+                    "This bounded safety limit protects memory while normal closed-month intervals remain one calculation.");
             }
 
             IReadOnlyDictionary<string, IReadOnlyList<string>> reachableHeads;

@@ -73,7 +73,7 @@ public sealed class JavaChangeTests
 
         Assert.Contains(report.Categories, candidate =>
             candidate.Category == category && candidate.Hours.Expected > 0m);
-        Assert.Equal("change-seed/0.18.1+seed-rules/0.4.0", report.EstimatorVersion);
+        Assert.Equal("change-seed/0.18.2+seed-rules/0.4.0", report.EstimatorVersion);
     }
 
     [Fact]

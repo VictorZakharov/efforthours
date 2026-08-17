@@ -5,6 +5,7 @@ namespace EffortHours.Change;
 public sealed partial class ChangeEstimator
 {
     public const int PortfolioSnapshotAnalysisRetentionLimit = 16;
+    public const int MaximumConcurrentPortfolioRepositories = 2;
 
     public async Task<IReadOnlyList<ChangeEstimateReport>> EstimatePortfolioCandidatesAsync(
         IReadOnlyList<GitChangePlan> plans,
@@ -55,47 +56,92 @@ public sealed partial class ChangeEstimator
         HashSet<GitSnapshotSession> undisposedSessions = [.. indexed
             .Select(plan => plan.Plan.SnapshotSession)
             .OfType<GitSnapshotSession>()];
+        Lock sessionGate = new();
         ExecutionStatisticsAccumulator statistics = new(repositories.Length);
+        int completedPlans = 0;
+        int progressAnalysisRequests = 0;
+        int progressAnalysisHits = 0;
         try
         {
-            foreach (IndexedPortfolioPlan[] repository in repositories)
-            {
-                cancellationToken.ThrowIfCancellationRequested();
-                SnapshotAnalysisCache snapshotAnalyses = new(
-                    PortfolioSnapshotAnalysisRetentionLimit);
-                try
+            await Parallel.ForEachAsync(
+                repositories,
+                new ParallelOptions
                 {
-                    foreach (IndexedPortfolioPlan entry in repository)
-                    {
-                        cancellationToken.ThrowIfCancellationRequested();
-                        reports[entry.Index] = await EstimateCoreAsync(
-                            CreateInput(entry.Plan),
-                            profile,
-                            rateCard: null,
-                            snapshotAnalyses,
-                            entry.CacheNamespace,
-                            executionTelemetry,
-                            cancellationToken).ConfigureAwait(false);
-                    }
-                }
-                finally
+                    CancellationToken = cancellationToken,
+                    MaxDegreeOfParallelism = MaximumConcurrentPortfolioRepositories,
+                },
+                async (repository, repositoryCancellationToken) =>
                 {
-                    statistics.Add(snapshotAnalyses.GetStatistics());
-                    foreach (GitSnapshotSession session in repository
-                        .Select(entry => entry.Plan.SnapshotSession)
-                        .OfType<GitSnapshotSession>()
-                        .Distinct())
+                    SnapshotAnalysisCache snapshotAnalyses = new(
+                        PortfolioSnapshotAnalysisRetentionLimit);
+                    int previousAnalysisRequests = 0;
+                    int previousAnalysisHits = 0;
+                    try
                     {
-                        statistics.Add(session.GetStatistics());
-                        await session.DisposeAsync().ConfigureAwait(false);
-                        undisposedSessions.Remove(session);
+                        foreach (IndexedPortfolioPlan entry in repository)
+                        {
+                            repositoryCancellationToken.ThrowIfCancellationRequested();
+                            reports[entry.Index] = await EstimateCoreAsync(
+                                CreateInput(entry.Plan),
+                                profile,
+                                rateCard: null,
+                                snapshotAnalyses,
+                                entry.CacheNamespace,
+                                executionTelemetry,
+                                repositoryCancellationToken).ConfigureAwait(false);
+                            SnapshotAnalysisCache.SnapshotAnalysisCacheStatistics cacheStatistics =
+                                snapshotAnalyses.GetStatistics();
+                            _ = Interlocked.Add(
+                                ref progressAnalysisRequests,
+                                cacheStatistics.Requests - previousAnalysisRequests);
+                            _ = Interlocked.Add(
+                                ref progressAnalysisHits,
+                                cacheStatistics.Hits - previousAnalysisHits);
+                            previousAnalysisRequests = cacheStatistics.Requests;
+                            previousAnalysisHits = cacheStatistics.Hits;
+                            int completed = Interlocked.Increment(ref completedPlans);
+                            if (executionTelemetry is not null &&
+                                (completed == 1 || completed % 16 == 0 ||
+                                    completed == indexed.Length))
+                            {
+                                executionTelemetry.ReportProgress(
+                                    ChangePortfolioExecutionPhases.StaticAnalysis,
+                                    completed,
+                                    indexed.Length,
+                                    Volatile.Read(ref progressAnalysisRequests),
+                                    Volatile.Read(ref progressAnalysisHits));
+                            }
+                        }
                     }
-                }
-            }
+                    finally
+                    {
+                        statistics.Add(snapshotAnalyses.GetStatistics());
+                        foreach (GitSnapshotSession session in repository
+                            .Select(entry => entry.Plan.SnapshotSession)
+                            .OfType<GitSnapshotSession>()
+                            .Distinct())
+                        {
+                            statistics.Add(session.GetStatistics());
+                            await session.DisposeAsync().ConfigureAwait(false);
+                            lock (sessionGate)
+                            {
+                                undisposedSessions.Remove(session);
+                            }
+                        }
+                    }
+
+                    return;
+                }).ConfigureAwait(false);
         }
         finally
         {
-            foreach (GitSnapshotSession session in undisposedSessions)
+            GitSnapshotSession[] remaining;
+            lock (sessionGate)
+            {
+                remaining = [.. undisposedSessions];
+            }
+
+            foreach (GitSnapshotSession session in remaining)
             {
                 await session.DisposeAsync().ConfigureAwait(false);
             }
@@ -135,6 +181,7 @@ public sealed partial class ChangeEstimator
 
     private sealed class ExecutionStatisticsAccumulator(int repositoryCount)
     {
+        private readonly Lock _gate = new();
         private int _analysisRequests;
         private int _analysisHits;
         private int _analysisEvictions;
@@ -153,31 +200,39 @@ public sealed partial class ChangeEstimator
 
         public void Add(SnapshotAnalysisCache.SnapshotAnalysisCacheStatistics value)
         {
-            _analysisRequests += value.Requests;
-            _analysisHits += value.Hits;
-            _analysisEvictions += value.Evictions;
-            _peakAnalyses = Math.Max(_peakAnalyses, value.PeakEntries);
+            lock (_gate)
+            {
+                _analysisRequests += value.Requests;
+                _analysisHits += value.Hits;
+                _analysisEvictions += value.Evictions;
+                _peakAnalyses = Math.Max(_peakAnalyses, value.PeakEntries);
+            }
         }
 
         public void Add(GitSnapshotSessionStatistics value)
         {
-            _inventoryRequests += value.InventoryRequests;
-            _inventoryHits += value.InventoryHits;
-            _fullInventories += value.FullInventoryLoads;
-            _incrementalInventories += value.IncrementalInventoryLoads;
-            _inventoryEvictions += value.InventoryEvictions;
-            _peakInventories = Math.Max(_peakInventories, value.PeakRetainedInventories);
-            _objectReaders += value.ObjectReaderStarts;
-            _blobRequests += value.BlobRequests;
-            _blobHits += value.BlobCacheHits;
-            _blobEvictions += value.BlobCacheEvictions;
-            _peakBlobBytes = Math.Max(_peakBlobBytes, value.PeakCachedBlobBytes);
+            lock (_gate)
+            {
+                _inventoryRequests += value.InventoryRequests;
+                _inventoryHits += value.InventoryHits;
+                _fullInventories += value.FullInventoryLoads;
+                _incrementalInventories += value.IncrementalInventoryLoads;
+                _inventoryEvictions += value.InventoryEvictions;
+                _peakInventories = Math.Max(_peakInventories, value.PeakRetainedInventories);
+                _objectReaders += value.ObjectReaderStarts;
+                _blobRequests += value.BlobRequests;
+                _blobHits += value.BlobCacheHits;
+                _blobEvictions += value.BlobCacheEvictions;
+                _peakBlobBytes = Math.Max(_peakBlobBytes, value.PeakCachedBlobBytes);
+            }
         }
 
         public ChangePortfolioExecutionStatistics Build() => new()
         {
             RepositoryCount = repositoryCount,
-            MaximumActiveRepositories = repositoryCount == 0 ? 0 : 1,
+            MaximumActiveRepositories = Math.Min(
+                repositoryCount,
+                MaximumConcurrentPortfolioRepositories),
             SnapshotAnalysisRequests = _analysisRequests,
             SnapshotAnalysisHits = _analysisHits,
             SnapshotAnalysisEvictions = _analysisEvictions,

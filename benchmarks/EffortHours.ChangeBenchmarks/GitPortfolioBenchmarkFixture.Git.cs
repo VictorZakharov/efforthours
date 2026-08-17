@@ -1,3 +1,5 @@
+using System.Globalization;
+
 namespace EffortHours.ChangeBenchmarks;
 
 internal sealed partial class GitPortfolioBenchmarkFixture
@@ -51,6 +53,19 @@ internal sealed partial class GitPortfolioBenchmarkFixture
             "Benchmark.csproj",
             "<Project Sdk=\"Microsoft.NET.Sdk\"><PropertyGroup>" +
                 "<TargetFramework>net10.0</TargetFramework></PropertyGroup></Project>\n");
+        for (int index = 0; index < options.ContextProjects; index++)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            string projectPath = index == 0
+                ? "src/area-00/component-000000/Active.csproj"
+                : $"projects/unrelated-{index:D4}/Unrelated.csproj";
+            GitBenchmarkRepository.WriteText(
+                path,
+                projectPath,
+                "<Project Sdk=\"Microsoft.NET.Sdk\"><PropertyGroup>" +
+                    "<TargetFramework>net10.0</TargetFramework></PropertyGroup></Project>\n");
+        }
+
         for (int index = 0; index < options.Files; index++)
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -131,6 +146,41 @@ internal sealed partial class GitPortfolioBenchmarkFixture
             authorName,
             authorEmail,
             authorDate).ConfigureAwait(false);
+    }
+
+    private static async Task<string> SelectedSeriesAsync(
+        string path,
+        ChangeBenchmarkOptions options,
+        int count,
+        int firstValue,
+        int firstMinute,
+        string messagePrefix,
+        string authorName,
+        string authorEmail,
+        CancellationToken cancellationToken)
+    {
+        string head = await GitBenchmarkRepository.GitAsync(
+            path,
+            cancellationToken,
+            "rev-parse",
+            "HEAD").ConfigureAwait(false);
+        DateTimeOffset firstTimestamp = new DateTimeOffset(2026, 8, 10, 0, 0, 0, TimeSpan.Zero)
+            .AddMinutes(firstMinute);
+        for (int index = 0; index < count; index++)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            head = await SelectedCommitAsync(
+                path,
+                options,
+                firstValue + index,
+                $"{messagePrefix} {index + 1:D3}",
+                authorName,
+                authorEmail,
+                firstTimestamp.AddSeconds(index).ToString("O", CultureInfo.InvariantCulture),
+                cancellationToken).ConfigureAwait(false);
+        }
+
+        return head;
     }
 
     private static async Task<string> UnselectedHeadAsync(

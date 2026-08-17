@@ -81,6 +81,40 @@ public sealed class ChangeAnalysisScopeTests
     }
 
     [Fact]
+    public void ScopeKeepsOnlyRootAndChangedPathAncestorContext()
+    {
+        ChangeSnapshotFile[] before =
+        [
+            File("global.json", "global"),
+            File("src/Directory.Build.props", "directory-build"),
+            File("src/active/Active.csproj", "active-project"),
+            File("src/active/Feature.cs", "feature-before"),
+            .. Enumerable.Range(0, 256).Select(index =>
+                File($"src/unrelated-{index:D3}/Unrelated.csproj", $"project-{index:D3}")),
+        ];
+        ChangeSnapshotFile[] after = [.. before.Select(file =>
+            file.Path == "src/active/Feature.cs"
+                ? file with { ObjectId = "feature-after" }
+                : file)];
+
+        ChangeAnalysisScope scope = ChangeAnalysisScope.CreateForFiles(before, after);
+
+        Assert.Equal(1, scope.ChangedPathCount);
+        Assert.Equal(3, scope.ContextPathCount);
+        Assert.Equal(0, scope.RepresentativePathCount);
+        Assert.Equal(259, scope.AvailableContextPathCount);
+        Assert.Equal(
+            [
+                "global.json",
+                "src/Directory.Build.props",
+                "src/active/Active.csproj",
+                "src/active/Feature.cs",
+            ],
+            [.. scope.Paths.Order(StringComparer.Ordinal)]);
+        Assert.DoesNotContain(scope.Paths, path => path.Contains("unrelated", StringComparison.Ordinal));
+    }
+
+    [Fact]
     public void IncrementalGitInventoryAppliesAddsModificationsAndDeletesDeterministically()
     {
         ChangeSnapshotFile[] parent =

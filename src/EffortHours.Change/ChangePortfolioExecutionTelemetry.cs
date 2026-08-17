@@ -35,6 +35,25 @@ public sealed record ChangePortfolioPhaseTiming
     public required TimeSpan Elapsed { get; init; }
 }
 
+public sealed record ChangePortfolioProgress
+{
+    public required string Phase { get; init; }
+
+    public int ProcessedUnits { get; init; }
+
+    public int TotalUnits { get; init; }
+
+    public int AnalysisCacheRequests { get; init; }
+
+    public int AnalysisCacheHits { get; init; }
+
+    public required TimeSpan Elapsed { get; init; }
+
+    public long WorkingSetBytes { get; init; }
+
+    public long PeakWorkingSetBytes { get; init; }
+}
+
 /// <summary>
 /// Collects non-semantic wall-clock phase measurements for stderr diagnostics.
 /// Timings never enter report contracts, estimator rules, or deterministic JSON.
@@ -42,13 +61,25 @@ public sealed record ChangePortfolioPhaseTiming
 public sealed class ChangePortfolioExecutionTelemetry
 {
     private readonly Dictionary<string, TimeSpan> _elapsed = new(StringComparer.Ordinal);
+    private readonly Dictionary<string, long> _firstStartedAt = new(StringComparer.Ordinal);
     private readonly HashSet<string> _started = new(StringComparer.Ordinal);
     private readonly Lock _gate = new();
+    private readonly Lock _progressNotificationGate = new();
     private readonly Action<string>? _phaseStarted;
+    private readonly Action<ChangePortfolioProgress>? _progressReported;
+    private string? _lastPhase;
+    private long _lastPhaseStarted;
+    private long _peakWorkingSetBytes;
+    private ChangePortfolioProgress? _lastProgress;
+    private string? _lastNotifiedProgressPhase;
+    private int _lastNotifiedProcessedUnits;
 
-    public ChangePortfolioExecutionTelemetry(Action<string>? phaseStarted = null)
+    public ChangePortfolioExecutionTelemetry(
+        Action<string>? phaseStarted = null,
+        Action<ChangePortfolioProgress>? progressReported = null)
     {
         _phaseStarted = phaseStarted;
+        _progressReported = progressReported;
     }
 
     public IDisposable Measure(string phase)
@@ -62,14 +93,114 @@ public sealed class ChangePortfolioExecutionTelemetry
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(phase);
         bool notify;
+        long now = Stopwatch.GetTimestamp();
+        long workingSet = Environment.WorkingSet;
         lock (_gate)
         {
             notify = _started.Add(phase);
+            if (notify)
+            {
+                _firstStartedAt.Add(phase, now);
+            }
+
+            _lastPhase = phase;
+            _lastPhaseStarted = now;
+            _peakWorkingSetBytes = Math.Max(_peakWorkingSetBytes, workingSet);
         }
 
         if (notify)
         {
             _phaseStarted?.Invoke(phase);
+        }
+    }
+
+    public void ReportProgress(
+        string phase,
+        int processedUnits,
+        int totalUnits,
+        int analysisCacheRequests,
+        int analysisCacheHits)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(phase);
+        if (processedUnits < 0 || totalUnits < 1 || processedUnits > totalUnits ||
+            analysisCacheRequests < 0 || analysisCacheHits < 0 ||
+            analysisCacheHits > analysisCacheRequests)
+        {
+            throw new ArgumentOutOfRangeException(nameof(processedUnits));
+        }
+
+        long workingSet = Environment.WorkingSet;
+        ChangePortfolioProgress progress;
+        lock (_gate)
+        {
+            if (_lastProgress is not null &&
+                string.Equals(_lastProgress.Phase, phase, StringComparison.Ordinal) &&
+                processedUnits < _lastProgress.ProcessedUnits)
+            {
+                return;
+            }
+
+            _peakWorkingSetBytes = Math.Max(_peakWorkingSetBytes, workingSet);
+            long started = _firstStartedAt.GetValueOrDefault(phase, Stopwatch.GetTimestamp());
+            progress = new ChangePortfolioProgress
+            {
+                Phase = phase,
+                ProcessedUnits = processedUnits,
+                TotalUnits = totalUnits,
+                AnalysisCacheRequests = analysisCacheRequests,
+                AnalysisCacheHits = analysisCacheHits,
+                Elapsed = Stopwatch.GetElapsedTime(started),
+                WorkingSetBytes = workingSet,
+                PeakWorkingSetBytes = _peakWorkingSetBytes,
+            };
+            _lastProgress = progress;
+            _lastPhase = phase;
+            _lastPhaseStarted = started;
+        }
+
+        lock (_progressNotificationGate)
+        {
+            if (string.Equals(_lastNotifiedProgressPhase, phase, StringComparison.Ordinal) &&
+                processedUnits <= _lastNotifiedProcessedUnits)
+            {
+                return;
+            }
+
+            _lastNotifiedProgressPhase = phase;
+            _lastNotifiedProcessedUnits = processedUnits;
+            _progressReported?.Invoke(progress);
+        }
+    }
+
+    public ChangePortfolioProgress? GetLastProgress()
+    {
+        lock (_gate)
+        {
+            if (_lastPhase is null)
+            {
+                return null;
+            }
+
+            long workingSet = Environment.WorkingSet;
+            _peakWorkingSetBytes = Math.Max(_peakWorkingSetBytes, workingSet);
+            ChangePortfolioProgress? progress =
+                string.Equals(_lastProgress?.Phase, _lastPhase, StringComparison.Ordinal)
+                    ? _lastProgress
+                    : null;
+            long phaseStarted = _firstStartedAt.GetValueOrDefault(
+                _lastPhase,
+                _lastPhaseStarted);
+            return new ChangePortfolioProgress
+            {
+                Phase = _lastPhase,
+                ProcessedUnits = progress?.ProcessedUnits ?? 0,
+                TotalUnits = progress?.TotalUnits ?? 0,
+                AnalysisCacheRequests = progress?.AnalysisCacheRequests ?? 0,
+                AnalysisCacheHits = progress?.AnalysisCacheHits ?? 0,
+                Elapsed = Stopwatch.GetElapsedTime(phaseStarted),
+                WorkingSetBytes = workingSet,
+                PeakWorkingSetBytes = _peakWorkingSetBytes,
+            };
         }
     }
 

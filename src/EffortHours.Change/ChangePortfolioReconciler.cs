@@ -6,7 +6,7 @@ namespace EffortHours.Change;
 
 public sealed class ChangePortfolioReconciler
 {
-    public const string Version = "change-portfolio/0.2.1+change-seed/0.18.1+seed-rules/0.4.0";
+    public const string Version = "change-portfolio/0.2.2+change-seed/0.18.2+seed-rules/0.4.0";
 
     public static ChangePortfolioReport Reconcile(
         ChangePortfolioSelection selection,
@@ -185,9 +185,12 @@ public sealed class ChangePortfolioReconciler
         IReadOnlyList<ChangePortfolioCandidate> candidates,
         EstimationProfile profile)
     {
-        if (candidates.Count is < 1 or > 128)
+        if (candidates.Count is < 1 or > ChangePortfolioLimits.MaximumReportItems)
         {
-            throw new ArgumentException("A change portfolio requires between 1 and 128 selected changes.", nameof(candidates));
+            throw new ArgumentException(
+                $"A change portfolio requires between 1 and " +
+                $"{ChangePortfolioLimits.MaximumReportItems} selected changes.",
+                nameof(candidates));
         }
 
         IReadOnlyList<string> selectionErrors = ContractValidation.Validate(selection);

@@ -40,9 +40,10 @@ internal sealed partial class ChangePortfolioCommand
 
         ChangePortfolioCommandOptions options = parsed.Options!;
         RateCard? rateCard = Rate(options);
+        ChangePortfolioExecutionTelemetry? executionTelemetry = null;
         try
         {
-            ChangePortfolioExecutionTelemetry? executionTelemetry =
+            executionTelemetry =
                 options.IsAuthorPeriod || options.IsAuthorPeriodManifest
                     ? CreateExecutionTelemetry(standardError)
                     : null;
@@ -89,6 +90,16 @@ internal sealed partial class ChangePortfolioCommand
             }
 
             return exitCode;
+        }
+        catch (OperationCanceledException)
+        {
+            if (executionTelemetry is not null)
+            {
+                await WriteInterruptedExecutionAsync(executionTelemetry, standardError)
+                    .ConfigureAwait(false);
+            }
+
+            throw;
         }
         catch (Exception exception) when (
             exception is ArgumentException or DirectoryNotFoundException or ExternalCommandException or
