@@ -95,6 +95,12 @@ when semantics, schemas, assumptions, or unresolved decisions change.
 - `NUGET_USER` identifies the NuGet trusted-publishing policy creator. It is not
   the package/organization owner (`WellScoped`), and package metadata must never be
   used to infer or overwrite it.
+- Every release PR must update `Version` and `PackageReleaseNotes` together in the
+  CLI project. NuGet release notes must begin with the exact prerelease version,
+  summarize the material user-visible changes, retain the experimental/
+  uncalibrated boundary, and link to the tag-specific changelog. Inspect the
+  packed `EffortHours.Tool.nuspec`; missing, mismatched, or stale release notes
+  block merge and protected-environment approval.
 - Publish only the exact verified prerelease tag and artifact. After approval,
   require a successful publish job, NuGet indexing, and a clean public-feed
   install before creating the matching GitHub prerelease.

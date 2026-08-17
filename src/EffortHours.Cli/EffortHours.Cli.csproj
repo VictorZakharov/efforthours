@@ -7,11 +7,11 @@
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>eh</ToolCommandName>
     <PackageId>EffortHours.Tool</PackageId>
-    <Version>0.10.0-alpha.4</Version>
+    <Version>0.10.0-alpha.5</Version>
     <Title>EffortHours CLI</Title>
     <PackageReadmeFile>PACKAGE_README.md</PackageReadmeFile>
     <PackageTags>estimation;effort-estimation;developer-tools;cli;repository-analysis;static-analysis;dotnet-tool</PackageTags>
-    <PackageReleaseNotes>Multi-repository author-period portfolio alpha: adds a versioned multi-repository, multi-head manifest selector with deterministic non-duplicating contributor, repository, and head aggregation; reuses repository evidence across heads and contributors; emits phase and reuse diagnostics; and adds public-safe performance and regression matrices. Identity and time remain selectors only; bundled estimators remain experimental and uncalibrated.</PackageReleaseNotes>
+    <PackageReleaseNotes>0.10.0-alpha.5: Closed-month author-period manifests now support more than 128 selected changes, reuse large-tree evidence more efficiently, reconcile overlap in linear space, schedule two repositories concurrently, and emit privacy-safe progress and cancellation diagnostics. This release also adds development-only uncertainty, manual-QA, and total-first calibration tooling; none changes shipped seed-rules/0.4.0. Repository EHE remains experimental and uncalibrated. Full notes: https://github.com/VictorZakharov/efforthours/blob/v0.10.0-alpha.5/CHANGELOG.md</PackageReleaseNotes>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="../EffortHours.Analysis/EffortHours.Analysis.csproj" />

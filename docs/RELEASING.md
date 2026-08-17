@@ -16,8 +16,11 @@ production-ready estimate.
 ## Prepare the candidate
 
 1. Start from a clean `main` branch synchronized with `origin/main`.
-2. Choose an unused prerelease version in `src/EffortHours.Cli/EffortHours.Cli.csproj` and
-   update `CHANGELOG.md` and user-facing installation examples together.
+2. Choose an unused prerelease version in `src/EffortHours.Cli/EffortHours.Cli.csproj`.
+   Update `Version`, `PackageReleaseNotes`, `CHANGELOG.md`, and user-facing
+   installation examples together. Package release notes must begin with the exact
+   version, summarize the material user-visible changes, retain the experimental/
+   uncalibrated boundary, and link to that tag's changelog.
 3. Complete GitHub issue #28 against the entire reachable Git history, not only the
    working tree. Resolve any public author-email, credential, private evidence,
    proprietary material, or redistribution concern before changing visibility.
@@ -37,6 +40,12 @@ dotnet test tests/EffortHours.Tests/EffortHours.Tests.csproj --no-build --no-res
 dotnet test tests/EffortHours.EndToEndTests/EffortHours.EndToEndTests.csproj --no-build --no-restore --configuration Release
 dotnet pack src/EffortHours.Cli/EffortHours.Cli.csproj --configuration Release --no-build --no-restore --output artifacts/packages
 ```
+
+Inspect `EffortHours.Tool.nuspec` inside the packed artifact and require its
+`releaseNotes` value to match the current version and tag-specific changelog. A
+non-empty but stale prior-release value is a release blocker. The hygiene test and
+tagged publication workflow enforce the version/link relationship, but the release
+reviewer remains responsible for the accuracy of the summary.
 
 Push the candidate normally and require the `Formatting`, all three `Quality`, all
 three `End-to-end`, `Pull request commits are linear`, and `Pack preview artifact`
@@ -136,10 +145,10 @@ documented security emergency.
    smoke-tests, digests, and uploads the tag-built package. It intentionally does
    not repeat formatting, unit tests, or end-to-end tests already covered by that
    successful validation commit.
-3. Review the uploaded artifact and SHA-256 digest, then approve the protected
-   `nuget.org` environment deployment only for the expected tag and version. The
-   publish job rechecks the downloaded bytes against that approved digest before
-   requesting its short-lived credential.
+3. Review the uploaded artifact, SHA-256 digest, and packaged NuGet release notes,
+   then approve the protected `nuget.org` environment deployment only for the
+   expected tag and version. The publish job rechecks the downloaded bytes against
+   that approved digest before requesting its short-lived credential.
 4. Wait for NuGet.org validation and indexing, then install from a clean location:
 
 ```text

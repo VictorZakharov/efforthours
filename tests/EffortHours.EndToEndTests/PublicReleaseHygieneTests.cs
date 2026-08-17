@@ -24,22 +24,31 @@ public sealed partial class PublicReleaseHygieneTests
         Assert.Equal("EffortHours.Tool", Property(cli, "PackageId"));
         Assert.Equal("eh", Property(cli, "ToolCommandName"));
         Assert.Equal("PACKAGE_README.md", Property(cli, "PackageReadmeFile"));
-        Assert.Contains('-', Property(cli, "Version"));
+        string version = Property(cli, "Version");
+        string releaseNotes = Property(cli, "PackageReleaseNotes");
+        Assert.Contains('-', version);
+        Assert.StartsWith($"{version}: ", releaseNotes, StringComparison.Ordinal);
         Assert.Contains(
             "uncalibrated",
-            Property(cli, "PackageReleaseNotes"),
+            releaseNotes,
             StringComparison.OrdinalIgnoreCase);
+        Assert.Contains(
+            $"https://github.com/VictorZakharov/efforthours/blob/v{version}/CHANGELOG.md",
+            releaseNotes,
+            StringComparison.Ordinal);
 
         string readme = File.ReadAllText(Path.Combine(root, "README.md"));
         Assert.Contains(
-            $"EffortHours.Tool --version {Property(cli, "Version")}",
+            $"EffortHours.Tool --version {version}",
             readme,
             StringComparison.Ordinal);
         string packageReadme = File.ReadAllText(Path.Combine(root, "PACKAGE_README.md"));
         Assert.Contains(
-            $"EffortHours.Tool --version {Property(cli, "Version")}",
+            $"EffortHours.Tool --version {version}",
             packageReadme,
             StringComparison.Ordinal);
+        string changelog = File.ReadAllText(Path.Combine(root, "CHANGELOG.md"));
+        Assert.Contains($"## {version} - ", changelog, StringComparison.Ordinal);
     }
 
     [Fact]
