@@ -43,18 +43,18 @@ Checkpoint `efforthours-public-readiness/2.2.0` freezes
 public MIT sources and two private sources represented publicly only by anonymous
 case IDs. Exact private identities, object IDs, paths, and evidence remain outside
 the repository. Checkpoint `2.3.0` then freezes
-`repository-total-source-review/1.0.0` after static source review but before any
+`repository-total-source-review/1.1.0` after static source review but before any
 seed estimate, manual-QA candidate estimate, or saved EffortHours report for a
 cohort source is opened.
 
 | Case | Confidence | Low | Expected | High | Relative half-width |
 | --- | --- | ---: | ---: | ---: | ---: |
-| `codex-usage` | Moderate-high | 410 h | 535 h | 660 h | 23.4% |
-| `dotnet-image-viewer` | Moderate | 1,900 h | 2,750 h | 3,600 h | 30.9% |
-| `nebreck` | Moderate-high | 4,380 h | 5,730 h | 7,080 h | 23.6% |
-| `void-harvest-game` | Moderate-low | 1,540 h | 2,420 h | 3,300 h | 36.4% |
-| `private-product-site-a` | High | 400 h | 500 h | 600 h | 20.0% |
-| `private-desktop-utility-a` | Moderate-high | 1,465 h | 1,965 h | 2,465 h | 25.4% |
+| `codex-usage` | Moderate-high | 160 h | 210 h | 260 h | 23.8% |
+| `dotnet-image-viewer` | Moderate | 800 h | 1,100 h | 1,400 h | 27.3% |
+| `nebreck` | Moderate | 1,200 h | 1,600 h | 2,000 h | 25.0% |
+| `void-harvest-game` | Moderate-low | 500 h | 750 h | 1,000 h | 33.3% |
+| `private-product-site-a` | High | 120 h | 155 h | 190 h | 22.6% |
+| `private-desktop-utility-a` | Moderate-high | 420 h | 550 h | 680 h | 23.6% |
 
 The ranges are symmetric around expected but deliberately non-uniform in relative
 width. Each total reconciles exactly through four to seven material work areas and
@@ -62,6 +62,14 @@ one residual. Manual validation is an explicit material area reasoned from the
 source's runtime and integration surfaces, not copied from a preferred candidate
 ratio. The records retain `teacher-estimate` maturity and make no production-
 accuracy or independent-review claim.
+
+This final `1.1.0` review records a pre-comparison correction to the rejected
+`1.0.0` draft. The first draft repeatedly priced setup and contingency inside
+each material work area, as though one repository were several independent
+engagements. The corrected totals use coherent whole-project throughput, shared
+setup and sensible library reuse, separate source-specific manual validation, and
+one repository-level uncertainty interval. Historical AI-assisted delivery was a
+plausibility falsifier only, never an EHE label or effort multiplier.
 
 The next authorized step is total-first seed/candidate comparison. An in-range
 case stops immediately; a miss may open only the largest-first discrepancy needed

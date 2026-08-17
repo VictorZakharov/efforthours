@@ -88,11 +88,13 @@ The [`2.2.0 repository-total cohort freeze`](2.2.0/README.md) separately
 precommits four public MIT sources and two anonymized private cases under
 `repository-total-assessment-cohort/1.0.0` before source review or estimator
 output. The [`2.3.0 candidate-blind source review`](2.3.0/README.md) freezes all
-six aggregate assessments under `repository-total-source-review/1.0.0`. Their
-expected values span `500` to `5,730` hours, and their symmetric relative
-half-widths vary from `20.0%` to `36.4%` based on source-specific uncertainty.
+six aggregate assessments under `repository-total-source-review/1.1.0`. Their
+expected values span `155` to `1,600` hours, and their symmetric relative
+half-widths vary from `22.6%` to `33.3%` based on source-specific uncertainty.
 Each total reconciles exactly through four to seven material work areas and one
-residual. No seed or candidate report has been opened for a cohort source.
+residual. The checkpoint also records why its inflated `1.0.0` draft was rejected
+before comparison. No seed or candidate report has been opened for a cohort
+source.
 
 The completed blind validation rejects the sole challenger and leaves test sealed.
 The later development uncertainty measurements are diagnostic only and cannot turn

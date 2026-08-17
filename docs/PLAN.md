@@ -160,10 +160,10 @@ count, and intermediate churn do not value effort. `CHANGE_ESTIMATION.md` and
 - The current teacher labels allocate `4.89%` of eligible coding to QA and encode
   the old missing-QA assumption. Do not use them as independent validation of the
   new semantics.
-- Keep the six candidate-blind aggregate assessments in checkpoints `2.2.0` and
-  `2.3.0` immutable. Their expected values span `500` to `5,730` hours and their
-  case-specific symmetric relative half-widths span `20.0%` to `36.4%`; no cohort
-  estimator output has been opened. Next, compare shipped-seed and exact-candidate
+- Keep the six corrected candidate-blind aggregate assessments in checkpoints
+  `2.2.0` and `2.3.0` immutable. Their expected values span `155` to `1,600` hours
+  and their case-specific symmetric relative half-widths span `22.6%` to `33.3%`;
+  no cohort estimator output has been opened. Next, compare shipped-seed and exact-candidate
   repository totals before components and stop when the total is credible. When a
   total materially misses, use largest-first residual diagnosis only until the
   decision is explained; do not re-review correct or immaterial components.

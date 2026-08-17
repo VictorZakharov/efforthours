@@ -151,8 +151,8 @@ not establish reliable numerical judgment. `repository-total-materiality/1.0.0`
 now makes credible repository totals primary and drills down only on material
 misses. Its six-case follow-up cohort and source-backed assessments are frozen
 before estimator output under `repository-total-assessment-cohort/1.0.0` and
-`repository-total-source-review/1.0.0`. Expected assessments span 500 to 5,730
-hours, with symmetric case-specific relative half-widths from 20.0% to 36.4%; the
+`repository-total-source-review/1.1.0`. Expected assessments span 155 to 1,600
+hours, with symmetric case-specific relative half-widths from 22.6% to 33.3%; the
 two private cases remain anonymous and their source evidence stays outside the
 repository. Total-first seed/candidate comparison is next. Any admission attempt
 still needs a new policy/candidate identity and fresh validation boundary;

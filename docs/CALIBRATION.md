@@ -843,12 +843,12 @@ EffortHours output:
 
 | Case | Confidence | Low | Expected | High | Relative half-width |
 | --- | --- | ---: | ---: | ---: | ---: |
-| `codex-usage` | Moderate-high | 410 h | 535 h | 660 h | 23.4% |
-| `dotnet-image-viewer` | Moderate | 1,900 h | 2,750 h | 3,600 h | 30.9% |
-| `nebreck` | Moderate-high | 4,380 h | 5,730 h | 7,080 h | 23.6% |
-| `void-harvest-game` | Moderate-low | 1,540 h | 2,420 h | 3,300 h | 36.4% |
-| `private-product-site-a` | High | 400 h | 500 h | 600 h | 20.0% |
-| `private-desktop-utility-a` | Moderate-high | 1,465 h | 1,965 h | 2,465 h | 25.4% |
+| `codex-usage` | Moderate-high | 160 h | 210 h | 260 h | 23.8% |
+| `dotnet-image-viewer` | Moderate | 800 h | 1,100 h | 1,400 h | 27.3% |
+| `nebreck` | Moderate | 1,200 h | 1,600 h | 2,000 h | 25.0% |
+| `void-harvest-game` | Moderate-low | 500 h | 750 h | 1,000 h | 33.3% |
+| `private-product-site-a` | High | 120 h | 155 h | 190 h | 22.6% |
+| `private-desktop-utility-a` | Moderate-high | 420 h | 550 h | 680 h | 23.6% |
 
 Every range is symmetric around its expected point, but width varies with the
 actual source, runtime, platform, test, and integration uncertainty. Each range
@@ -857,9 +857,17 @@ The two private identities and source evidence remain outside the public
 repository. These are single-teacher logical assessments, not empirical
 production observations or independent review.
 
+The final `repository-total-source-review/1.1.0` supersedes an inflated `1.0.0`
+draft before any estimator output was opened. The rejected draft treated material
+work areas as separate engagements and repeated setup and contingency. The
+corrected review prices one coherent recreation, shares setup and sensible library
+reuse, and applies uncertainty once at repository level. A maintainer-reported
+AI-assisted delivery time was used only as a plausibility challenge; it was not
+converted to EHE, used as a multiplier, or accepted as a replacement-effort label.
+
 ## Next evidence required
 
-- keep the six `2.3.0` assessments immutable and reproduce the shipped seed plus
+- keep the six corrected `2.3.0` assessments immutable and reproduce the shipped seed plus
   exact `manual-qa-coding-ratio/0.1.0` outputs for their pinned sources;
 - compare repository low/expected/high before inspecting any category or item;
 - stop at repository totals when they are credible; for a material miss, publish
