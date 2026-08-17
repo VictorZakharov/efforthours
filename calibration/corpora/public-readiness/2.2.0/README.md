@@ -22,11 +22,20 @@ shapes:
 - two locally reviewed private sources represented publicly only as
   `private-product-site-a` and `private-desktop-utility-a`.
 
-The exact public repository identities and object IDs are frozen in
-[`repository-total-cohort.json`](repository-total-cohort.json). Exact private
-repository identities, paths, source object IDs, and source evidence remain in an
-ignored local ledger and must never enter a commit, issue, pull request, test,
-fixture, log, or generated artifact.
+The public source identities are frozen here:
+
+| Case | Source | Object ID | License | Product shape |
+| --- | --- | --- | --- | --- |
+| `codex-usage` | [`VictorZakharov/codex-usage`](https://github.com/VictorZakharov/codex-usage) | `1424b4ec835da5df3f75e3728a5a501b102ee77b` | MIT | Native desktop utility |
+| `dotnet-image-viewer` | [`VictorZakharov/dotnet-image-viewer`](https://github.com/VictorZakharov/dotnet-image-viewer) | `46bb27912dada8d64ab278ad4cd6c116bf39a3c5` | MIT | Cross-platform desktop application |
+| `nebreck` | [`VictorZakharov/NebReck`](https://github.com/VictorZakharov/NebReck) | `eef84fac668ffab5474cc1968893ecad938758f3` | MIT | Graphics-heavy TypeScript browser game |
+| `void-harvest-game` | [`VictorZakharov/void-harvest-game`](https://github.com/VictorZakharov/void-harvest-game) | `8d9109d7d65cb84d7bd87e4df95bc4d019eded1e` | MIT | JavaScript browser game with gameplay and rendering systems |
+| `private-product-site-a` | Withheld private source | Withheld | Withheld | Private web product |
+| `private-desktop-utility-a` | Withheld private source | Withheld | Withheld | Private .NET desktop utility |
+
+Exact private repository identities, paths, source object IDs, and source evidence
+remain in an ignored local ledger and must never enter a commit, issue, pull
+request, test, fixture, log, or generated artifact.
 
 ## Assessment contract
 

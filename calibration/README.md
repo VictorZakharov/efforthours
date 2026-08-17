@@ -39,6 +39,14 @@ An unpublished local authoring preflight showed that complete micro-label rows c
 still repeat a small set of weak category judgments. Exhaustive completion was
 therefore stopped; these artifacts remain optional diagnostic infrastructure, not
 a prerequisite or completed corpus.
+The [`2.2.0 repository-total cohort freeze`](corpora/public-readiness/2.2.0/README.md)
+precommits six materially different public and anonymized-private cases plus their
+aggregate review rules before source review. The
+[`2.3.0 source review`](corpora/public-readiness/2.3.0/README.md) then freezes all
+six candidate-blind low/expected/high assessments, each with only four to seven
+material work areas and one residual. Relative half-width varies from `20.0%` to
+`36.4%` according to case-specific uncertainty; no EffortHours output has been
+opened for the cohort.
 The public repository now contains 21 labeled repository families and 2,262
 teacher targets in total, still without independent correction or a model-
 admission result.

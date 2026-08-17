@@ -118,6 +118,12 @@ development review inputs before any replacement QA judgment or evaluation; it
 does not validate the prior. Checkpoint `2.1.0` freezes the blank decision plan,
 zero/duplicate semantics, exact candidate work-item mapping, and deterministic
 corpus compiler before answers; it likewise provides no validation result.
+Exhaustive micro-label completion was later superseded by
+`repository-total-materiality/1.0.0`. Checkpoint `2.2.0` freezes a six-case
+repository-total cohort and review contract before source review; checkpoint
+`2.3.0` freezes candidate-blind source-backed aggregate assessments before any
+cohort seed or candidate output. These development records do not validate or
+ship the candidate.
 
 ### 4.5 Documentation
 

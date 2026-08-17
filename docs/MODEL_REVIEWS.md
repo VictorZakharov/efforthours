@@ -33,6 +33,41 @@ Because EffortHours's own anchor informed the seed-model and calibration design,
 a development diagnostic rather than an eligible held-out test record unless a
 future independent snapshot and review policy explicitly establishes otherwise.
 
+## 2026-08-16: candidate-blind repository-total source review
+
+Status: **six aggregate assessments frozen before estimator output; candidate
+comparison, validation, and test remain unopened**
+
+Checkpoint `efforthours-public-readiness/2.2.0` freezes
+`repository-total-assessment-cohort/1.0.0` before source review: four immutable
+public MIT sources and two private sources represented publicly only by anonymous
+case IDs. Exact private identities, object IDs, paths, and evidence remain outside
+the repository. Checkpoint `2.3.0` then freezes
+`repository-total-source-review/1.0.0` after static source review but before any
+seed estimate, manual-QA candidate estimate, or saved EffortHours report for a
+cohort source is opened.
+
+| Case | Confidence | Low | Expected | High | Relative half-width |
+| --- | --- | ---: | ---: | ---: | ---: |
+| `codex-usage` | Moderate-high | 410 h | 535 h | 660 h | 23.4% |
+| `dotnet-image-viewer` | Moderate | 1,900 h | 2,750 h | 3,600 h | 30.9% |
+| `nebreck` | Moderate-high | 4,380 h | 5,730 h | 7,080 h | 23.6% |
+| `void-harvest-game` | Moderate-low | 1,540 h | 2,420 h | 3,300 h | 36.4% |
+| `private-product-site-a` | High | 400 h | 500 h | 600 h | 20.0% |
+| `private-desktop-utility-a` | Moderate-high | 1,465 h | 1,965 h | 2,465 h | 25.4% |
+
+The ranges are symmetric around expected but deliberately non-uniform in relative
+width. Each total reconciles exactly through four to seven material work areas and
+one residual. Manual validation is an explicit material area reasoned from the
+source's runtime and integration surfaces, not copied from a preferred candidate
+ratio. The records retain `teacher-estimate` maturity and make no production-
+accuracy or independent-review claim.
+
+The next authorized step is total-first seed/candidate comparison. An in-range
+case stops immediately; a miss may open only the largest-first discrepancy needed
+to explain the decision. Test remains sealed, and no development result can admit
+a model without a new policy, candidate identity, and fresh blind validation.
+
 ## 2026-08-16: materiality-first calibration strategy
 
 Status: **repository totals made primary; exhaustive manual-QA micro-labeling
@@ -71,7 +106,7 @@ total stops component review. A material miss triggers the existing largest-firs
 residual diagnostic only until a correction enters the credible range, at least
 80% of gross residual is explained, or the remainder cannot change the decision.
 Individually immaterial or poorly estimable work is one bounded residual. Issue
-#154 owns two additional source-backed aggregate cases and the candidate decision.
+#154 owns the six frozen source-backed aggregate cases and the candidate decision.
 
 The frozen `repository-model-admission/1.0.0` attempt, rejected validation result,
 and sealed test remain unchanged. A future admission attempt requires a new policy

@@ -836,13 +836,32 @@ candidate midpoint inside the reviewed range. The high endpoint still worsens;
 that remains visible interval evidence rather than a reason to manufacture
 micro-labels for the point estimate.
 
+Checkpoints `efforthours-public-readiness/2.2.0` and `2.3.0` now add a second,
+candidate-blind aggregate boundary. The first freezes six cases before source
+review; the second freezes every source-backed assessment before opening any
+EffortHours output:
+
+| Case | Confidence | Low | Expected | High | Relative half-width |
+| --- | --- | ---: | ---: | ---: | ---: |
+| `codex-usage` | Moderate-high | 410 h | 535 h | 660 h | 23.4% |
+| `dotnet-image-viewer` | Moderate | 1,900 h | 2,750 h | 3,600 h | 30.9% |
+| `nebreck` | Moderate-high | 4,380 h | 5,730 h | 7,080 h | 23.6% |
+| `void-harvest-game` | Moderate-low | 1,540 h | 2,420 h | 3,300 h | 36.4% |
+| `private-product-site-a` | High | 400 h | 500 h | 600 h | 20.0% |
+| `private-desktop-utility-a` | Moderate-high | 1,465 h | 1,965 h | 2,465 h | 25.4% |
+
+Every range is symmetric around its expected point, but width varies with the
+actual source, runtime, platform, test, and integration uncertainty. Each range
+reconciles through four to seven material work areas and one bounded residual.
+The two private identities and source evidence remain outside the public
+repository. These are single-teacher logical assessments, not empirical
+production observations or independent review.
+
 ## Next evidence required
 
-- add at least two materially different, source-backed repository assessments
-  with credible aggregate ranges, only a few reliably estimated work areas, and
-  an explicit residual where needed;
-- precommit each new assessment before opening its seed or exact
-  `manual-qa-coding-ratio/0.1.0` comparison;
+- keep the six `2.3.0` assessments immutable and reproduce the shipped seed plus
+  exact `manual-qa-coding-ratio/0.1.0` outputs for their pinned sources;
+- compare repository low/expected/high before inspecting any category or item;
 - stop at repository totals when they are credible; for a material miss, publish
   only the largest-first diagnosis needed to explain the decision;
 - record advance, revise, or reject for the manual-QA candidate under a new
