@@ -1,30 +1,39 @@
-using System.Text;
-using System.Text.RegularExpressions;
-
 namespace EffortHours.Analysis;
 
 internal sealed class IgnoreRule
 {
     private readonly string _basePath;
     private readonly bool _directoryOnly;
-    private readonly Regex _regex;
+    private readonly IgnoreGlobPattern _pattern;
 
-    private IgnoreRule(string basePath, bool negated, bool directoryOnly, Regex regex)
+    private IgnoreRule(
+        string basePath,
+        bool negated,
+        bool directoryOnly,
+        IgnoreGlobPattern pattern)
     {
         _basePath = basePath;
         IsNegated = negated;
         _directoryOnly = directoryOnly;
-        _regex = regex;
+        _pattern = pattern;
     }
 
     public bool IsNegated { get; }
 
-    public static bool TryCreate(string line, string basePath, out IgnoreRule? rule)
+    public static bool TryCreate(string line, string basePath, out IgnoreRule? rule) =>
+        TryCreate(line, basePath, out rule, out _);
+
+    public static bool TryCreate(
+        string line,
+        string basePath,
+        out IgnoreRule? rule,
+        out IgnoreRuleCreationFailure failure)
     {
         ArgumentNullException.ThrowIfNull(line);
         ArgumentNullException.ThrowIfNull(basePath);
 
         rule = null;
+        failure = IgnoreRuleCreationFailure.None;
         string pattern = line.TrimEnd();
         if (pattern.Length == 0 || pattern[0] == '#')
         {
@@ -69,16 +78,11 @@ internal sealed class IgnoreRule
         }
 
         bool containsSlash = pattern.Contains('/', StringComparison.Ordinal);
-        string globRegex = ConvertGlobToRegex(pattern);
-        string expression = anchored || containsSlash
-            ? $"^{globRegex}$"
-            : $"(?:^|/){globRegex}$";
-        Regex regex;
-        try
-        {
-            regex = new Regex(expression, RegexOptions.CultureInvariant | RegexOptions.NonBacktracking);
-        }
-        catch (ArgumentException)
+        if (!IgnoreGlobPattern.TryCreate(
+            pattern,
+            matchFromSegmentBoundary: !anchored && !containsSlash,
+            out IgnoreGlobPattern? matcher,
+            out failure))
         {
             return false;
         }
@@ -87,7 +91,7 @@ internal sealed class IgnoreRule
             basePath,
             negated,
             directoryOnly,
-            regex);
+            matcher!);
         return true;
     }
 
@@ -114,7 +118,7 @@ internal sealed class IgnoreRule
             pathWithinBase = normalizedPath[prefix.Length..];
         }
 
-        return _regex.IsMatch(pathWithinBase);
+        return _pattern.IsMatch(pathWithinBase);
     }
 
     public static bool IsIgnored(
@@ -132,94 +136,5 @@ internal sealed class IgnoreRule
         }
 
         return ignored;
-    }
-
-    private static string ConvertGlobToRegex(string pattern)
-    {
-        StringBuilder builder = new();
-        for (int index = 0; index < pattern.Length; index++)
-        {
-            char character = pattern[index];
-            switch (character)
-            {
-                case '*':
-                    if (index + 1 < pattern.Length && pattern[index + 1] == '*')
-                    {
-                        index++;
-                        if (index + 1 < pattern.Length && pattern[index + 1] == '/')
-                        {
-                            index++;
-                            builder.Append("(?:.*/)?");
-                        }
-                        else
-                        {
-                            builder.Append(".*");
-                        }
-                    }
-                    else
-                    {
-                        builder.Append("[^/]*");
-                    }
-
-                    break;
-
-                case '?':
-                    builder.Append("[^/]");
-                    break;
-
-                case '[':
-                    int closingBracket = pattern.IndexOf(']', index + 1);
-                    if (closingBracket <= index + 1)
-                    {
-                        builder.Append("\\[");
-                        break;
-                    }
-
-                    string characterClass = pattern[(index + 1)..closingBracket];
-                    bool negatedClass = characterClass[0] is '!' or '^';
-                    if (negatedClass)
-                    {
-                        characterClass = characterClass[1..];
-                    }
-
-                    if (characterClass.Length == 0)
-                    {
-                        builder.Append(Regex.Escape(pattern[index..(closingBracket + 1)]));
-                        index = closingBracket;
-                        break;
-                    }
-
-                    builder.Append('[');
-                    if (negatedClass)
-                    {
-                        builder.Append('^');
-                    }
-
-                    foreach (char classCharacter in characterClass)
-                    {
-                        if (classCharacter is '\\' or ']' or '^')
-                        {
-                            builder.Append('\\');
-                        }
-
-                        builder.Append(classCharacter);
-                    }
-
-                    builder.Append(']');
-                    index = closingBracket;
-                    break;
-
-                case '\\' when index + 1 < pattern.Length:
-                    index++;
-                    builder.Append(Regex.Escape(pattern[index].ToString()));
-                    break;
-
-                default:
-                    builder.Append(Regex.Escape(character.ToString()));
-                    break;
-            }
-        }
-
-        return builder.ToString();
     }
 }

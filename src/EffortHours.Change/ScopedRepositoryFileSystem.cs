@@ -2,7 +2,9 @@ using EffortHours.Analysis;
 
 namespace EffortHours.Change;
 
-internal sealed class ScopedRepositoryFileSystem : IRepositoryFileSystem
+internal sealed class ScopedRepositoryFileSystem :
+    IRepositoryFileSystem,
+    IRepositoryAnalysisArtifactCacheProvider
 {
     private readonly IRepositoryFileSystem _inner;
     private readonly string _rootPath;
@@ -64,6 +66,9 @@ internal sealed class ScopedRepositoryFileSystem : IRepositoryFileSystem
     }
 
     public string GetFullPath(string path) => _inner.GetFullPath(path);
+
+    public RepositoryAnalysisArtifactCache? AnalysisArtifactCache =>
+        (_inner as IRepositoryAnalysisArtifactCacheProvider)?.AnalysisArtifactCache;
 
     public bool DirectoryExists(string path) =>
         _entriesByDirectory.ContainsKey(_inner.GetFullPath(path));

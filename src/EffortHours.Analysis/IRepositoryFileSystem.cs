@@ -29,10 +29,16 @@ public interface IRepositoryFileSystem
         CancellationToken cancellationToken = default);
 }
 
+/// <summary>
+/// Describes one immutable read boundary. <c>ContentId</c>, when supplied, must
+/// change whenever the file bytes change; analyzers may use it only with an
+/// invocation-scoped artifact cache.
+/// </summary>
 public readonly record struct RepositoryFileMetadata(
     long Length,
     long LastWriteTimeUtcTicks,
-    bool Exists);
+    bool Exists,
+    string? ContentId = null);
 
 public sealed class PhysicalRepositoryFileSystem : IRepositoryFileSystem
 {

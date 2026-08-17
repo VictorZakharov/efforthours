@@ -4,6 +4,8 @@ namespace EffortHours.ChangeBenchmarks;
 
 internal sealed partial class GitPortfolioBenchmarkFixture
 {
+    internal const int MaximumActiveContextProjects = 80;
+
     private static async Task InitializeRepositoryAsync(
         string path,
         CancellationToken cancellationToken)
@@ -56,14 +58,16 @@ internal sealed partial class GitPortfolioBenchmarkFixture
         for (int index = 0; index < options.ContextProjects; index++)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            string projectPath = index == 0
-                ? "src/area-00/component-000000/Active.csproj"
+            string projectPath = index < MaximumActiveContextProjects
+                ? $"src/area-00/component-000000/Context-{index:D4}.csproj"
                 : $"projects/unrelated-{index:D4}/Unrelated.csproj";
             GitBenchmarkRepository.WriteText(
                 path,
                 projectPath,
                 "<Project Sdk=\"Microsoft.NET.Sdk\"><PropertyGroup>" +
-                    "<TargetFramework>net10.0</TargetFramework></PropertyGroup></Project>\n");
+                    "<TargetFramework>net10.0</TargetFramework>" +
+                    $"<AssemblyName>Context{index:D4}</AssemblyName>" +
+                    "</PropertyGroup></Project>\n");
         }
 
         for (int index = 0; index < options.Files; index++)

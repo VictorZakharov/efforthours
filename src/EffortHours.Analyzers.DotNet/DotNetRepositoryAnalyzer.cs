@@ -51,68 +51,30 @@ public sealed class DotNetRepositoryAnalyzer : IRepositoryEvidenceAnalyzer
             AddProjectDiagnostics(project, diagnostics);
         }
 
-        CSharpFileAnalyzer csharpAnalyzer = new(_fileSystem, rootPath);
-        RazorFileAnalyzer razorAnalyzer = new(_fileSystem, rootPath);
         Dictionary<string, List<CSharpStructureMetrics>> structureByScope =
             new(StringComparer.Ordinal);
-        foreach (EvidenceFact fileFact in evidence.Facts
-            .Where(fact => fact.Kind == EvidenceKinds.File)
-            .OrderBy(fact => fact.Scope, StringComparer.Ordinal))
+        IReadOnlyList<DotNetFileAnalysisEntry> fileAnalyses =
+            await DotNetFileAnalysisBatch.AnalyzeAsync(
+                _fileSystem,
+                rootPath,
+                evidence,
+                projectResult.Projects,
+                cancellationToken).ConfigureAwait(false);
+        foreach (DotNetFileAnalysisEntry analysis in fileAnalyses)
         {
-            cancellationToken.ThrowIfCancellationRequested();
-            string? language = FindTagValue(fileFact.Tags, "language:");
-            if (language is not ("csharp" or "razor") ||
-                fileFact.Tags.Contains("classification:generated", StringComparer.Ordinal) ||
-                fileFact.Tags.Contains("classification:minified", StringComparer.Ordinal) ||
-                fileFact.Tags.Contains("classification:vendored", StringComparer.Ordinal) ||
-                fileFact.Tags.Contains("content:binary", StringComparer.Ordinal))
+            facts.AddRange(analysis.Facts);
+            diagnostics.AddRange(analysis.Diagnostics);
+            if (analysis.Structure is { } structure)
             {
-                continue;
-            }
-
-            string? expectedSha256 = FindTagValue(fileFact.Tags, "sha256:");
-            if (expectedSha256 is null)
-            {
-                diagnostics.Add(DotNetEvidence.Diagnostic(
-                    "FB3104",
-                    DiagnosticSeverity.Warning,
-                    $"File '{fileFact.Scope}' has no common-scanner content digest and was skipped.",
-                    fileFact.Scope));
-                continue;
-            }
-
-            DotNetProjectModel? project = FindOwningProject(fileFact.Scope, projectResult.Projects);
-            string projectScope = project?.Path ?? ".";
-            if (language == "csharp")
-            {
-                CSharpFileAnalysis analysis = await csharpAnalyzer.AnalyzeAsync(
-                    fileFact.Scope,
-                    expectedSha256,
-                    projectScope,
-                    project?.Role == "test" || fileFact.Tags.Contains("classification:test", StringComparer.Ordinal),
-                    cancellationToken).ConfigureAwait(false);
-                facts.AddRange(analysis.Facts);
-                diagnostics.AddRange(analysis.Diagnostics);
-                if (analysis.Structure.Files > 0)
+                if (!structureByScope.TryGetValue(
+                    analysis.ProjectScope,
+                    out List<CSharpStructureMetrics>? structures))
                 {
-                    if (!structureByScope.TryGetValue(projectScope, out List<CSharpStructureMetrics>? structures))
-                    {
-                        structures = [];
-                        structureByScope.Add(projectScope, structures);
-                    }
-
-                    structures.Add(analysis.Structure);
+                    structures = [];
+                    structureByScope.Add(analysis.ProjectScope, structures);
                 }
-            }
-            else
-            {
-                RepositoryAnalysisContribution razor = await razorAnalyzer.AnalyzeAsync(
-                    fileFact.Scope,
-                    expectedSha256,
-                    projectScope,
-                    cancellationToken).ConfigureAwait(false);
-                facts.AddRange(razor.Facts);
-                diagnostics.AddRange(razor.Diagnostics);
+
+                structures.Add(structure);
             }
         }
 
@@ -299,7 +261,7 @@ public sealed class DotNetRepositoryAnalyzer : IRepositoryEvidenceAnalyzer
             tags: [StructuralEvidenceVersions.CallableMetricsV1Tag]);
     }
 
-    private static DotNetProjectModel? FindOwningProject(
+    internal static DotNetProjectModel? FindOwningProject(
         string filePath,
         IReadOnlyList<DotNetProjectModel> projects) =>
         projects

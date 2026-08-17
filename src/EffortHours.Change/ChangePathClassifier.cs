@@ -32,8 +32,8 @@ internal static class ChangePathClassifier
         ChangeSnapshotFile? baseFile,
         ChangeSnapshotFile? headFile,
         IReadOnlyCollection<string> tags,
-        IReadOnlySet<string> baseObjectIds,
-        IReadOnlySet<string> headObjectIds)
+        IReadOnlyDictionary<string, int> baseObjectIds,
+        IReadOnlyDictionary<string, int> headObjectIds)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(path);
         ArgumentNullException.ThrowIfNull(tags);
@@ -84,8 +84,8 @@ internal static class ChangePathClassifier
             return ChangePathClassification.BuildOutput;
         }
 
-        if ((status == ChangePathStatus.Added && baseObjectIds.Contains(file.ObjectId)) ||
-            (status == ChangePathStatus.Removed && headObjectIds.Contains(file.ObjectId)))
+        if ((status == ChangePathStatus.Added && baseObjectIds.ContainsKey(file.ObjectId)) ||
+            (status == ChangePathStatus.Removed && headObjectIds.ContainsKey(file.ObjectId)))
         {
             return ChangePathClassification.ExactDuplicate;
         }

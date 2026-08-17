@@ -13,6 +13,9 @@ internal sealed class RepositoryTextReader(
     private readonly string _rootPath = Path.TrimEndingDirectorySeparator(
         fileSystem.GetFullPath(rootPath));
 
+    public RepositoryAnalysisArtifactCache? AnalysisArtifactCache =>
+        (_fileSystem as IRepositoryAnalysisArtifactCacheProvider)?.AnalysisArtifactCache;
+
     public async Task<RepositoryTextReadResult> ReadAsync(
         EvidenceFact fileFact,
         long maximumBytes,

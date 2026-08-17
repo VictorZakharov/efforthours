@@ -43,7 +43,7 @@ public sealed class CppScannerClassificationTests
         AssertFileTag(evidence, "tests/api_test.cc", "classification:test");
         Assert.DoesNotContain(evidence.Facts, fact => fact.Id == "language:objective-c");
         Assert.DoesNotContain(evidence.Facts, fact => fact.Id == "language:cuda");
-        Assert.Equal("0.2.13", RepositoryScanner.AnalyzerVersion);
+        Assert.Equal("0.2.14", RepositoryScanner.AnalyzerVersion);
     }
 
     private static void AssertFileTag(RepositoryEvidence evidence, string path, string tag)

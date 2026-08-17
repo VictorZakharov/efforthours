@@ -2,31 +2,42 @@ using EffortHours.Analysis;
 
 namespace EffortHours.Change;
 
-internal sealed partial class GitSnapshotFileSystem : IRepositoryFileSystem, IChangeSnapshot
+internal sealed partial class GitSnapshotFileSystem :
+    IRepositoryFileSystem,
+    IRepositoryAnalysisArtifactCacheProvider,
+    IChangeSnapshot
 {
-    private readonly Dictionary<string, ChangeSnapshotFile> _files;
     private readonly Lock _directoryGate = new();
+    private readonly GitSnapshotInventory _inventory;
+    private readonly Lazy<IReadOnlyList<ChangeSnapshotFile>> _resolvedFiles;
+    private readonly RepositoryAnalysisArtifactCache? _analysisArtifactCache;
     private readonly string _repositoryPath;
+    private readonly Func<GitBatchObjectMetadataReader>? _sharedMetadataReader;
     private readonly Func<GitBatchObjectReader>? _sharedObjectReader;
     private HashSet<string>? _directories;
     private Dictionary<string, string[]>? _entriesByDirectory;
     private GitBatchObjectReader? _ownedObjectReader;
+    private GitBatchObjectMetadataReader? _ownedMetadataReader;
 
     private GitSnapshotFileSystem(
         string repositoryPath,
         string objectId,
-        IReadOnlyList<ChangeSnapshotFile> files,
-        Func<GitBatchObjectReader>? sharedObjectReader = null)
+        GitSnapshotInventory inventory,
+        Func<GitBatchObjectReader>? sharedObjectReader = null,
+        Func<GitBatchObjectMetadataReader>? sharedMetadataReader = null,
+        RepositoryAnalysisArtifactCache? analysisArtifactCache = null)
     {
         _repositoryPath = repositoryPath;
+        _inventory = inventory;
+        _analysisArtifactCache = analysisArtifactCache;
         _sharedObjectReader = sharedObjectReader;
+        _sharedMetadataReader = sharedMetadataReader;
         ObjectId = objectId;
         RootPath = Path.GetFullPath(Path.Combine(
             repositoryPath,
             ".efforthours-virtual-snapshot",
             objectId));
-        _files = files.ToDictionary(file => file.Path, StringComparer.Ordinal);
-        Files = [.. files.OrderBy(file => file.Path, StringComparer.Ordinal)];
+        _resolvedFiles = new(() => [.. _inventory.Files.Select(ResolveLength)]);
     }
 
     public string ObjectId { get; }
@@ -35,7 +46,22 @@ internal sealed partial class GitSnapshotFileSystem : IRepositoryFileSystem, ICh
 
     public IRepositoryFileSystem FileSystem => this;
 
-    public IReadOnlyList<ChangeSnapshotFile> Files { get; }
+    public RepositoryAnalysisArtifactCache? AnalysisArtifactCache =>
+        _analysisArtifactCache;
+
+    public IReadOnlyList<ChangeSnapshotFile> Files => _resolvedFiles.Value;
+
+    internal IReadOnlyDictionary<string, ChangeSnapshotFile> FilesByPath =>
+        _inventory.FilesByPath;
+
+    internal IReadOnlyDictionary<string, int> ContentObjectCounts =>
+        _inventory.ContentObjectCounts;
+
+    internal ChangeAnalysisInventoryIndex AnalysisIndex => _inventory.AnalysisIndex;
+
+    internal int FileCount => _inventory.FileCount;
+
+    internal string InventoryDigest => _inventory.SourceDigest;
 
     public static async Task<GitSnapshotFileSystem> CreateAsync(
         string repositoryPath,
@@ -46,7 +72,10 @@ internal sealed partial class GitSnapshotFileSystem : IRepositoryFileSystem, ICh
             repositoryPath,
             objectId,
             cancellationToken).ConfigureAwait(false);
-        return new GitSnapshotFileSystem(repositoryPath, objectId, files);
+        return new GitSnapshotFileSystem(
+            repositoryPath,
+            objectId,
+            new GitSnapshotInventory(objectId, files));
     }
 
     internal static GitSnapshotFileSystem Create(
@@ -54,7 +83,44 @@ internal sealed partial class GitSnapshotFileSystem : IRepositoryFileSystem, ICh
         string objectId,
         IReadOnlyList<ChangeSnapshotFile> files,
         Func<GitBatchObjectReader>? sharedObjectReader = null) =>
-        new(repositoryPath, objectId, files, sharedObjectReader);
+        new(
+            repositoryPath,
+            objectId,
+            new GitSnapshotInventory(objectId, files),
+            sharedObjectReader);
+
+    internal static GitSnapshotFileSystem Create(
+        string repositoryPath,
+        string objectId,
+        GitSnapshotInventory inventory,
+        Func<GitBatchObjectReader>? sharedObjectReader = null,
+        Func<GitBatchObjectMetadataReader>? sharedMetadataReader = null,
+        RepositoryAnalysisArtifactCache? analysisArtifactCache = null) =>
+        new(
+            repositoryPath,
+            objectId,
+            inventory,
+            sharedObjectReader,
+            sharedMetadataReader,
+            analysisArtifactCache);
+
+    internal bool TryGetChangedPathsFrom(
+        string baseObjectId,
+        out IReadOnlyList<string> changedPaths)
+    {
+        if (string.Equals(
+                _inventory.FirstParentObjectId,
+                baseObjectId,
+                StringComparison.OrdinalIgnoreCase) &&
+            _inventory.ChangedPathsFromFirstParent is { } knownPaths)
+        {
+            changedPaths = knownPaths;
+            return true;
+        }
+
+        changedPaths = [];
+        return false;
+    }
 
     public string GetFullPath(string path) => Path.GetFullPath(path);
 
@@ -114,7 +180,8 @@ internal sealed partial class GitSnapshotFileSystem : IRepositoryFileSystem, ICh
     public RepositoryFileMetadata GetFileMetadata(string path)
     {
         ChangeSnapshotFile file = GetFile(Path.GetFullPath(path));
-        return new RepositoryFileMetadata(file.Length, 0L, true);
+        ChangeSnapshotFile resolved = ResolveLength(file);
+        return new RepositoryFileMetadata(resolved.Length, 0L, true, file.ObjectId);
     }
 
     public Stream OpenRead(string path, int bufferSize)
@@ -162,16 +229,27 @@ internal sealed partial class GitSnapshotFileSystem : IRepositoryFileSystem, ICh
         {
             await _ownedObjectReader.DisposeAsync().ConfigureAwait(false);
         }
+
+        _ownedMetadataReader?.Dispose();
     }
 
     private GitBatchObjectReader ObjectReader =>
         _sharedObjectReader?.Invoke() ??
         (_ownedObjectReader ??= new GitBatchObjectReader(_repositoryPath));
 
+    private GitBatchObjectMetadataReader MetadataReader =>
+        _sharedMetadataReader?.Invoke() ??
+        (_ownedMetadataReader ??= new GitBatchObjectMetadataReader(_repositoryPath));
+
     private ChangeSnapshotFile GetFile(string path) =>
         TryGetFile(path, out ChangeSnapshotFile file)
             ? file
             : throw new FileNotFoundException("Git snapshot file was not found.", path);
+
+    private ChangeSnapshotFile ResolveLength(ChangeSnapshotFile file) =>
+        file.Length >= 0 || file.IsSubmodule
+            ? file
+            : file with { Length = MetadataReader.GetBlobLength(file.ObjectId) };
 
     private bool TryGetFile(string path, out ChangeSnapshotFile file)
     {
@@ -184,7 +262,7 @@ internal sealed partial class GitSnapshotFileSystem : IRepositoryFileSystem, ICh
 
         string relativePath = Path.GetRelativePath(RootPath, fullPath)
             .Replace('\\', '/');
-        return _files.TryGetValue(relativePath, out file!);
+        return _inventory.FilesByPath.TryGetValue(relativePath, out file!);
     }
 
     private void EnsureDirectoryIndex()
@@ -203,7 +281,7 @@ internal sealed partial class GitSnapshotFileSystem : IRepositoryFileSystem, ICh
 
             HashSet<string> directories = new(StringComparer.Ordinal) { RootPath };
             Dictionary<string, string> fullFiles = new(StringComparer.Ordinal);
-            foreach (ChangeSnapshotFile file in Files)
+            foreach (ChangeSnapshotFile file in _inventory.FilesByPath.Values)
             {
                 string fullPath = ResolveRelativePath(file.Path);
                 fullFiles.Add(file.Path, fullPath);

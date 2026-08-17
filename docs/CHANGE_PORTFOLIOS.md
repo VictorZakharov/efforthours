@@ -2,7 +2,7 @@
 
 ## Current boundary
 
-`change-portfolio/0.2.2` composes canonical Change estimates selected as repeated
+`change-portfolio/0.2.3` composes canonical Change estimates selected as repeated
 pull requests, a versioned multi-repository PR manifest, a bounded direct
 author-period, or a versioned multi-repository/multi-head author-period manifest.
 It remains experimental and has no empirical production validation.
@@ -220,6 +220,16 @@ group retains item IDs, signed isolated-to-normalized delta, repository-group
 identity, influencing adjustment IDs, and uncertainty. Contributor and head views
 are alternative decompositions and must not be added together.
 
+Normalized contributor values are allocations from the jointly reconciled
+repository portfolio, not membership-invariant personal estimates. Adding an
+otherwise exclusive contributor can change those normalized allocations when the
+new rows change path/category overlap or shared repository context. A zero shared-
+contributor-group count means only that no commit matched several requested
+identities; it does not mean repository reconciliation was independent. Each
+group's `isolatedEffort` remains the stable sum of its canonical row estimates,
+while `normalizedEffort`, `reconciliationDelta`, and `adjustmentIds` expose the
+context-dependent allocation explicitly.
+
 Non-additive summary rows expose direct-author/co-author counts, shared-match
 counts, head reachability, uniquely reachable counts, and heads with no unique
 selected commit. Zero rows are available when the overall manifest still selects
@@ -306,28 +316,53 @@ inventory reuse rules in `CHANGE_ESTIMATION.md`. Identity and time still select
 rows only; neither the candidate count nor the size of the reachable graph enters
 an effort rule.
 
-`change-portfolio/0.2.2` keeps one invocation-scoped execution context per local
+`change-portfolio/0.2.3` keeps one invocation-scoped execution context per local
 repository. Candidate plans are grouped by canonical repository root, processed
 serially within each repository, and scheduled with at most two repository
-sessions active at once. The repository context
-owns one lazy `git cat-file --batch` reader, a 64-MiB blob cache that admits no
-single blob above 1 MiB, 16 immutable snapshot inventories, 10,000 remembered
-first parents, and a 16-entry snapshot-analysis LRU. Inventory derivation retains the
-existing 1,024-changed-path and 16,000-path-character fallback boundaries. Each
-context is disposed after its repository, including cancellation and failures.
+sessions active at once. Within one snapshot, independent .NET and JavaScript
+files use at most four analysis workers; results are restored to canonical path
+order before aggregation. The repository context owns one lazy
+`git cat-file --batch` content reader, one lazy `git cat-file --batch-check`
+metadata reader, a 64-MiB blob cache that admits no single blob above 1 MiB,
+16,384 retained object lengths, 10,000 structurally shared immutable snapshot
+inventories across at most 16 full-tree root lineages, 10,000 remembered first
+parents, a 16-entry snapshot-analysis LRU, and an 8,192-entry immutable file-
+analysis artifact cache with deterministic key-ranked retention. The artifact
+cache retains only analyzer-versioned,
+content-addressed inspections and .NET/JavaScript per-file results; source text,
+keys, and local paths never enter a report. Its entry bound permits an intentional
+memory-for-latency tradeoff without making memory unbounded. Inventory derivation
+retains the existing 1,024-changed-path and 16,000-path-character fallback
+boundaries. Before row analysis, eligible non-merge first-parent deltas and changed
+blob sizes are read with one `diff-tree --stdin` and one `cat-file --batch-check`
+process per repository rather than two Git processes per selected change. Each
+batch output is capped at 64 MiB; exceeding it uses the existing row fallback.
+Roots, merges, custom snapshot providers, oversized deltas, and missing cached
+parents retain the exact existing fallback. Full-tree enumeration asks `ls-tree`
+only for path, mode, and immutable object identity; unchanged blob lengths are
+resolved only when admitted analysis requests them. Cached inventories retain
+their persistent content index, canonical Merkle source digest, object-ID set,
+and already-read first-parent diff so repeated scopes and Change evidence do not
+rebuild complete tree maps. Each context is disposed after its repository,
+including cancellation and failures.
 The two-session maximum deliberately spends bounded additional memory to overlap
 independent Git/tree work and reduce wall time; it does not make caches or
 repository concurrency unbounded.
 
-Snapshot analysis remains keyed by repository, immutable object, and exact
-analysis-scope digest. A broader portfolio scope is never substituted merely to
-increase cache hits, so a row remains byte-equivalent to its independent canonical
-Change estimate. Exact same-scope snapshots can be analyzed once even when other
-workstreams intervene; different scopes remain separate where correctness
-requires. Shared blob reads and immutable inventories still benefit those rows.
+Snapshot analysis is keyed by repository, canonical immutable-inventory digest,
+and exact analysis-scope digest. Inventory identity is a versioned SHA-256 Merkle
+tree over path, mode, and blob object identity, independent of delta application
+order. A broader portfolio scope is never substituted merely to increase cache
+hits, so a row remains byte-equivalent to its independent canonical Change
+estimate. Equal trees with the same scope can be analyzed once even when reached
+through different commits or intervening workstreams; different scopes remain
+separate where correctness requires. Shared blob reads and structurally shared
+inventories still benefit those rows.
 
-Report diagnostic `FB5325` records deterministic, privacy-safe request/hit counts
-and retention bounds without paths, aliases, source, or timings. Direct and
+Report diagnostic `FB5325` records deterministic, privacy-safe request/hit,
+unique-key, revisit-miss, byte, eviction, retention, and batched-inventory counts
+for snapshot, inventory, file-analysis-artifact, Git-blob, and object-metadata
+reuse without paths, aliases, source, or timings. Direct and
 manifest author-period runs announce each active phase on stderr before it begins,
 emit processed/total and cache counters every 16 estimated rows, then write
 elapsed phase summaries after successful output. Cancellation emits the last
@@ -343,8 +378,13 @@ when two repository sessions overlap.
 Manifest paths resolve against the manifest directory and may point to any local
 Git repository the process can read, including a sibling. Validation opens the
 specified repository rather than imposing containment beneath another worktree.
-Unreadable-path failures remain sanitized, so an operating-system, sandbox, or
-process-permission denial does not disclose the rejected local path or Git stderr.
+Unknown unreadable-path failures remain sanitized, so an operating-system,
+sandbox, or process-permission denial does not disclose the rejected local path or
+raw Git stderr. Known Git categories retain a privacy-safe actionable cause. In
+particular, dubious ownership reports identify Git's `safe.directory` rejection
+without copying the path; automation can admit only the intended repositories for
+one process with `GIT_CONFIG_COUNT`, `GIT_CONFIG_KEY_n=safe.directory`, and matching
+`GIT_CONFIG_VALUE_n` variables instead of changing global Git configuration.
 
 Author-date selection intentionally does not pass a date cutoff to Git history
 traversal. Git revision date pruning uses the commit/committer timestamp, while an

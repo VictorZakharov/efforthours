@@ -88,7 +88,8 @@ public sealed partial class GitClient
             return;
         }
 
-        while (_snapshotInventories.Count >= GitSnapshotSession.MaximumSnapshotInventories)
+        while (_snapshotInventories.Count >=
+            GitSnapshotSession.MaximumStandaloneSnapshotInventories)
         {
             string oldest = _snapshotInventoryOrder.Dequeue();
             _snapshotInventories.Remove(oldest);

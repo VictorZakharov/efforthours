@@ -1,3 +1,4 @@
+using EffortHours.Analysis;
 using EffortHours.Contracts.V1;
 
 namespace EffortHours.Change;
@@ -57,6 +58,7 @@ public sealed partial class ChangeEstimator
             .Select(plan => plan.Plan.SnapshotSession)
             .OfType<GitSnapshotSession>()];
         Lock sessionGate = new();
+        Lock progressGate = new();
         ExecutionStatisticsAccumulator statistics = new(repositories.Length);
         int completedPlans = 0;
         int progressAnalysisRequests = 0;
@@ -78,6 +80,20 @@ public sealed partial class ChangeEstimator
                     int previousAnalysisHits = 0;
                     try
                     {
+                        using (executionTelemetry?.Measure(
+                            ChangePortfolioExecutionPhases.SnapshotAndDiffConstruction))
+                        {
+                            foreach (GitSnapshotSession session in repository
+                                .Select(entry => entry.Plan.SnapshotSession)
+                                .OfType<GitSnapshotSession>()
+                                .Distinct())
+                            {
+                                await session.PrimeIncrementalDeltasAsync(
+                                    repository.Select(entry => entry.Plan.Selection.Head.ObjectId),
+                                    repositoryCancellationToken).ConfigureAwait(false);
+                            }
+                        }
+
                         foreach (IndexedPortfolioPlan entry in repository)
                         {
                             repositoryCancellationToken.ThrowIfCancellationRequested();
@@ -91,25 +107,26 @@ public sealed partial class ChangeEstimator
                                 repositoryCancellationToken).ConfigureAwait(false);
                             SnapshotAnalysisCache.SnapshotAnalysisCacheStatistics cacheStatistics =
                                 snapshotAnalyses.GetStatistics();
-                            _ = Interlocked.Add(
-                                ref progressAnalysisRequests,
-                                cacheStatistics.Requests - previousAnalysisRequests);
-                            _ = Interlocked.Add(
-                                ref progressAnalysisHits,
-                                cacheStatistics.Hits - previousAnalysisHits);
+                            int requestDelta = cacheStatistics.Requests - previousAnalysisRequests;
+                            int hitDelta = cacheStatistics.Hits - previousAnalysisHits;
                             previousAnalysisRequests = cacheStatistics.Requests;
                             previousAnalysisHits = cacheStatistics.Hits;
-                            int completed = Interlocked.Increment(ref completedPlans);
-                            if (executionTelemetry is not null &&
-                                (completed == 1 || completed % 16 == 0 ||
-                                    completed == indexed.Length))
+                            lock (progressGate)
                             {
-                                executionTelemetry.ReportProgress(
-                                    ChangePortfolioExecutionPhases.StaticAnalysis,
-                                    completed,
-                                    indexed.Length,
-                                    Volatile.Read(ref progressAnalysisRequests),
-                                    Volatile.Read(ref progressAnalysisHits));
+                                progressAnalysisRequests += requestDelta;
+                                progressAnalysisHits += hitDelta;
+                                completedPlans++;
+                                if (executionTelemetry is not null &&
+                                    (completedPlans == 1 || completedPlans % 16 == 0 ||
+                                        completedPlans == indexed.Length))
+                                {
+                                    executionTelemetry.ReportProgress(
+                                        ChangePortfolioExecutionPhases.StaticAnalysis,
+                                        completedPlans,
+                                        indexed.Length,
+                                        progressAnalysisRequests,
+                                        progressAnalysisHits);
+                                }
                             }
                         }
                     }
@@ -184,18 +201,42 @@ public sealed partial class ChangeEstimator
         private readonly Lock _gate = new();
         private int _analysisRequests;
         private int _analysisHits;
+        private int _analysisUniqueKeys;
+        private int _analysisRevisitMisses;
         private int _analysisEvictions;
         private int _peakAnalyses;
+        private int _artifactRequests;
+        private int _artifactHits;
+        private int _artifactUniqueKeys;
+        private int _artifactRevisitMisses;
+        private int _artifactEvictions;
+        private int _peakArtifacts;
         private int _inventoryRequests;
         private int _inventoryHits;
+        private int _inventoryUniqueObjects;
+        private int _inventoryRevisitMisses;
         private int _fullInventories;
         private int _incrementalInventories;
+        private int _batchedIncrementalInventories;
         private int _inventoryEvictions;
         private int _peakInventories;
+        private int _peakInventoryRoots;
         private int _objectReaders;
+        private int _metadataReaders;
+        private int _metadataRequests;
+        private int _metadataHits;
+        private int _uniqueMetadataObjects;
+        private int _metadataEvictions;
+        private int _peakMetadataLengths;
         private long _blobRequests;
         private long _blobHits;
         private long _blobEvictions;
+        private long _uniqueBlobObjects;
+        private long _blobRequestedBytes;
+        private long _blobCacheHitBytes;
+        private long _blobReadBytes;
+        private long _uniqueBlobBytes;
+        private long _retainedBlobBytes;
         private long _peakBlobBytes;
 
         public void Add(SnapshotAnalysisCache.SnapshotAnalysisCacheStatistics value)
@@ -204,6 +245,8 @@ public sealed partial class ChangeEstimator
             {
                 _analysisRequests += value.Requests;
                 _analysisHits += value.Hits;
+                _analysisUniqueKeys += value.UniqueKeys;
+                _analysisRevisitMisses += value.RevisitMisses;
                 _analysisEvictions += value.Evictions;
                 _peakAnalyses = Math.Max(_peakAnalyses, value.PeakEntries);
             }
@@ -213,16 +256,44 @@ public sealed partial class ChangeEstimator
         {
             lock (_gate)
             {
+                _artifactRequests += value.AnalysisArtifactRequests;
+                _artifactHits += value.AnalysisArtifactHits;
+                _artifactUniqueKeys += value.UniqueAnalysisArtifactKeys;
+                _artifactRevisitMisses += value.AnalysisArtifactRevisitMisses;
+                _artifactEvictions += value.AnalysisArtifactEvictions;
+                _peakArtifacts = Math.Max(
+                    _peakArtifacts,
+                    value.PeakRetainedAnalysisArtifacts);
                 _inventoryRequests += value.InventoryRequests;
                 _inventoryHits += value.InventoryHits;
+                _inventoryUniqueObjects += value.UniqueInventoryObjects;
+                _inventoryRevisitMisses += value.InventoryRevisitMisses;
                 _fullInventories += value.FullInventoryLoads;
                 _incrementalInventories += value.IncrementalInventoryLoads;
+                _batchedIncrementalInventories += value.BatchedIncrementalInventoryLoads;
                 _inventoryEvictions += value.InventoryEvictions;
                 _peakInventories = Math.Max(_peakInventories, value.PeakRetainedInventories);
+                _peakInventoryRoots = Math.Max(
+                    _peakInventoryRoots,
+                    value.PeakRetainedInventoryRoots);
                 _objectReaders += value.ObjectReaderStarts;
+                _metadataReaders += value.ObjectMetadataReaderStarts;
+                _metadataRequests += value.ObjectMetadataRequests;
+                _metadataHits += value.ObjectMetadataCacheHits;
+                _uniqueMetadataObjects += value.UniqueObjectMetadataObjects;
+                _metadataEvictions += value.ObjectMetadataCacheEvictions;
+                _peakMetadataLengths = Math.Max(
+                    _peakMetadataLengths,
+                    value.PeakCachedObjectMetadataLengths);
                 _blobRequests += value.BlobRequests;
                 _blobHits += value.BlobCacheHits;
                 _blobEvictions += value.BlobCacheEvictions;
+                _uniqueBlobObjects += value.UniqueBlobObjects;
+                _blobRequestedBytes += value.BlobRequestedBytes;
+                _blobCacheHitBytes += value.BlobCacheHitBytes;
+                _blobReadBytes += value.BlobReadBytes;
+                _uniqueBlobBytes += value.UniqueBlobBytes;
+                _retainedBlobBytes = Math.Max(_retainedBlobBytes, value.RetainedBlobBytes);
                 _peakBlobBytes = Math.Max(_peakBlobBytes, value.PeakCachedBlobBytes);
             }
         }
@@ -233,24 +304,57 @@ public sealed partial class ChangeEstimator
             MaximumActiveRepositories = Math.Min(
                 repositoryCount,
                 MaximumConcurrentPortfolioRepositories),
+            MaximumConcurrentFileAnalysesPerRepository =
+                RepositoryAnalysisConcurrency.MaximumFileAnalyses,
             SnapshotAnalysisRequests = _analysisRequests,
             SnapshotAnalysisHits = _analysisHits,
+            UniqueSnapshotAnalysisKeys = _analysisUniqueKeys,
+            SnapshotAnalysisRevisitMisses = _analysisRevisitMisses,
             SnapshotAnalysisEvictions = _analysisEvictions,
             PeakRetainedSnapshotAnalyses = _peakAnalyses,
+            AnalysisArtifactRequests = _artifactRequests,
+            AnalysisArtifactHits = _artifactHits,
+            UniqueAnalysisArtifactKeys = _artifactUniqueKeys,
+            AnalysisArtifactRevisitMisses = _artifactRevisitMisses,
+            AnalysisArtifactEvictions = _artifactEvictions,
+            PeakRetainedAnalysisArtifacts = _peakArtifacts,
             SnapshotInventoryRequests = _inventoryRequests,
             SnapshotInventoryHits = _inventoryHits,
+            UniqueSnapshotInventoryObjects = _inventoryUniqueObjects,
+            SnapshotInventoryRevisitMisses = _inventoryRevisitMisses,
             FullSnapshotInventoryLoads = _fullInventories,
             IncrementalSnapshotInventoryLoads = _incrementalInventories,
+            BatchedIncrementalSnapshotInventoryLoads = _batchedIncrementalInventories,
             SnapshotInventoryEvictions = _inventoryEvictions,
             PeakRetainedSnapshotInventories = _peakInventories,
+            PeakRetainedSnapshotInventoryRoots = _peakInventoryRoots,
             ObjectDatabaseReaders = _objectReaders,
+            ObjectMetadataReaders = _metadataReaders,
+            ObjectMetadataRequests = _metadataRequests,
+            ObjectMetadataCacheHits = _metadataHits,
+            UniqueObjectMetadataObjects = _uniqueMetadataObjects,
+            ObjectMetadataCacheEvictions = _metadataEvictions,
+            PeakCachedObjectMetadataLengthsPerRepository = _peakMetadataLengths,
             BlobRequests = _blobRequests,
             BlobCacheHits = _blobHits,
             BlobCacheEvictions = _blobEvictions,
+            UniqueBlobObjects = _uniqueBlobObjects,
+            BlobRequestedBytes = _blobRequestedBytes,
+            BlobCacheHitBytes = _blobCacheHitBytes,
+            BlobReadBytes = _blobReadBytes,
+            UniqueBlobBytes = _uniqueBlobBytes,
+            RetainedBlobBytesPerRepository = _retainedBlobBytes,
             PeakCachedBlobBytesPerRepository = _peakBlobBytes,
             SnapshotAnalysisRetentionLimit = PortfolioSnapshotAnalysisRetentionLimit,
+            AnalysisArtifactRetentionLimit =
+                RepositoryAnalysisArtifactCache.DefaultMaximumEntries,
             SnapshotInventoryRetentionLimit = GitSnapshotSession.MaximumSnapshotInventories,
+            SnapshotInventoryRootRetentionLimit =
+                GitSnapshotSession.MaximumSnapshotInventoryRoots,
+            SnapshotDeltaBatchOutputByteLimit = GitSnapshotDeltaBatch.MaximumBatchOutputBytes,
             BlobCacheByteLimitPerRepository = GitBatchObjectReader.MaximumCacheBytes,
+            ObjectMetadataCacheEntryLimitPerRepository =
+                GitBatchObjectMetadataReader.MaximumCachedLengths,
         };
     }
 }

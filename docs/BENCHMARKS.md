@@ -1048,6 +1048,13 @@ source tree is unchanged.
 
 ## Change author-period closed-month v1.5.0 checkpoint
 
+> Historical comparison correction: the v1.5 "equivalent independent" path
+> expanded repository, head, and contributor combinations instead of running one
+> manifest per contributor over the identical repository/head scope. Its `0.372`
+> ratio measures the benefit over that older operator workflow, not combined-
+> contributor reuse. Do not use it as the isolated-manifest speedup baseline. The
+> corrected comparison and retained v1.5 history are documented in v1.6 below.
+
 Measured on August 17, 2026 with benchmark protocol `change/1.5.0`, .NET runtime
 `10.0.7`, Windows `10.0.26200` x64, 24 visible logical processors, source estimator
 `change-seed/0.18.2+seed-rules/0.4.0`, and portfolio reconciler
@@ -1128,3 +1135,151 @@ the 1,701-row contract, bounded two-repository coordination, linear-space
 component construction, relevant-context selection, exact reuse counts,
 progress/cancellation privacy, sibling-path acceptance, determinism, and
 unchanged/offline targets.
+
+## Change author-period hardening v1.6.0 checkpoint
+
+Measured on August 17, 2026 with benchmark protocol `change/1.6.0`, .NET runtime
+`10.0.7`, Windows `10.0.26200` x64, 24 visible logical processors, common scanner
+`0.2.14`, source estimator `change-seed/0.18.2+seed-rules/0.4.0`, and portfolio
+reconciler `change-portfolio/0.2.3`. The workstation is the same AMD Ryzen 9 5900X
+host used by the earlier Change checkpoints.
+
+The corrected fixture uses two repositories, eight pinned heads, two exclusive
+matching contributors plus one zero row, and 65 qualifying commits per repository.
+Each base requests 1,025 nested C# files and 512 distinct nested project-context
+files; 80 projects per repository are relevant to the changed component. The two
+representative heads contain 3,084 files and 3,122 virtual directories in
+aggregate. The closed-month report selects 130 repository-scoped changes.
+
+```text
+dotnet benchmarks/EffortHours.ChangeBenchmarks/bin/Release/net10.0/EffortHours.ChangeBenchmarks.dll
+  --author-period-manifest --files 1025 --context-projects 512
+  --lines-per-file 8 --commits 65 --compare-independent
+```
+
+The timing order is explicit: an initial combined run warms the managed and local
+Git paths and supplies the canonical report; the two isolated contributor
+manifests are measured next; then a semantically equivalent reordered combined
+manifest is measured. This compares both measured paths after the same initial
+warm-up.
+The initial combined time is retained separately because a new CLI process does
+not receive that warm-up. Timing remains observational and non-gating.
+
+### Intermediate repository-batch before/after
+
+Two consecutive development checkpoints used the same deterministic fixture and
+timing protocol. "Before" already includes indexed inventories, immutable
+file-analysis caching, and bounded file concurrency; "after" additionally batches
+eligible first-parent raw diffs and changed-blob sizes once per repository.
+These columns compare two intermediate branch states. They do not compare the
+published alpha.6 package with the final branch, do not represent the private
+field workload, and do not establish a 10x end-to-end improvement.
+
+| Measure | Before repository batching | After repository batching | Change |
+| --- | ---: | ---: | ---: |
+| Initial combined run | 11.066 s | 6.045 s | 45.4% lower |
+| Warm controlled combined run | 9.473 s | 4.087 s | 56.9% lower |
+| Two isolated contributor manifests | 10.405 s | 5.204 s | 50.0% lower |
+| Combined / isolated wall ratio | 0.910 | 0.785 | combined is 21.5% faster after |
+| Aggregate snapshot/diff phase | 14.561 s | 2.773 s | 81.0% lower |
+| Complete comparison suite | 31.016 s | 15.413 s | 50.3% lower |
+| Cumulative managed allocation | 6,714.17 MiB | 6,644.84 MiB | 1.0% lower |
+| Sampled suite peak working set | 191.04 MiB | 201.36 MiB | 5.4% higher |
+
+The suite peak spans the warm-up, both isolated manifests, and reordered combined
+run; it is not the live retained size of one cache. The approximately 10-MiB peak
+increase is the accepted bounded memory-for-latency tradeoff on this fixture, not
+permission for unbounded retention. Cumulative allocation is churn across all
+four estimates and is not simultaneous memory.
+
+The after run derived all 130 eligible incremental inventories from repository-
+level batches. The combined invocation used two Git object readers versus four
+across isolated manifests, computed 426 unique immutable analysis artifacts versus
+592 (28.0% fewer), and missed the blob cache 294 times versus 458 (35.8% fewer).
+It requested the same 260 snapshot analyses and retained the same 126 exact hits;
+the speedup therefore comes from less Git process churn and less immutable file
+work, not from weakening a row's exact analysis-scope key.
+
+Every semantic and safety invariant passed: isolated contributor rows and exact
+manual reconciliation matched, reordered report bytes were identical, shared
+object text remained repository-scoped, overlapping heads and the zero contributor
+were preserved, report output omitted local paths and aliases, both worktrees and
+complete Git states were unchanged, and target execution, dependency installation,
+and network access were not performed.
+
+### Other alpha.6 regressions
+
+Repository-controlled ignore rules no longer construct runtime regular
+expressions. A bounded deterministic glob matcher covers supported ignore syntax,
+rejects oversized or invalid rules with a digest-only diagnostic, and passes a
+50-repetition concurrent stress test. This removes the observed symbolic-regex
+CLR crash path rather than attempting to catch a native access violation after it
+occurs.
+
+Manifest repository validation now distinguishes a privacy-safe Git
+`safe.directory` ownership rejection, non-repository input, and unsupported
+repository format instead of reducing every case to "not readable." Contributor
+tables and diagnostics now label normalized values as joint portfolio allocations:
+exclusive commit matches do not imply allocation invariance when another
+contributor changes repository-level reconciliation. Stable isolated row sums and
+the exact signed allocation adjustments remain visible.
+
+### Field boundary and CI policy
+
+The anonymized alpha.6 field run selected 255 changes from approximately 41,793
+reachable commits and a dominant roughly 29,000-file/663-MiB tree. It took
+219.33 seconds and sampled 693.45 MiB for the combined manifest. That private
+workload is materially larger and structurally different from this generated
+fixture, so applying either the intermediate 56.9% reduction or the representative
+3.01x result to predict a field result would be unsupported. A same-input alpha.7
+retest remains required; it should report
+phase times, batched-inventory coverage, unique artifact/blob counts, and peak
+working set.
+
+Ordinary CI does not assert wall time, memory, or a faster-than ratio. It gates the
+bounded batch parser, exact combined/isolated semantics, deterministic operation
+and reuse counts, canonical reorder invariance, privacy, cancellation, and
+unchanged/offline targets. Explicit benchmark checkpoints retain timing and memory
+so performance can be reviewed without turning normal machine variance into a
+release failure.
+
+## Change author-period structural reuse v1.7.0 checkpoint
+
+Measured on August 17, 2026 with .NET runtime `10.0.7`, Windows `10.0.26200` x64,
+and 24 visible logical processors, this same-input checkpoint compares the
+published alpha.6 executable with the final hardening branch. The deterministic
+local manifest contains two repositories, eight pinned heads, two exclusive
+contributors, 31,010 aggregate tree files, 256 selected changes, and 512
+snapshot-analysis requests. Every generated commit changes 14 distinct small C#
+blobs, creating 3,254 unique blob objects and enough interleaved snapshots to
+exceed the former 16-inventory retention limit. Both executables ran sequentially
+against the same immutable Git objects on the same workstation.
+
+| Measure | Published alpha.6 | Final branch | Change |
+| --- | ---: | ---: | ---: |
+| End-to-end wall time | 31.531 s | 10.490 s | 66.7% lower; 3.01x faster |
+| Aggregate snapshot/diff phase | 49.681 s | 6.082 s | 87.8% lower; 8.17x faster |
+| Git blob requests | 54,816 | 33,696 | 38.5% lower |
+| Full inventories built | 4 | 2 | 50.0% lower |
+| Inventory evictions | 228 | 0 | eliminated |
+| Observed peak working set | 208.39 MiB | 237.18 MiB | 13.8% higher |
+
+Both reports contain the same 256 stable item IDs and the same
+`9.36 / 16.46 / 31.96` low/expected/high EHE. The final run retained 258 unique
+inventory objects as structurally shared states across one full-tree root lineage
+per repository. Its two lazy metadata readers served 42,660 length requests over
+190 unique objects with 42,470 cache hits and no eviction. The approximately
+29-MiB peak increase is an accepted bounded memory-for-latency tradeoff on this
+fixture, not a general memory allowance.
+
+This fixture is useful for exact regression and scaling checks, but its source
+bodies are deliberately tiny and its reachable history is shallow. It does not
+reproduce the private field workload's roughly 663 MiB tree or 41,793 reachable
+commits. The defensible same-fixture result is therefore 3.01x end to end, not
+10x. The snapshot/diff subsystem itself is now in the expected order of magnitude,
+but a 10x claim for the complete field command requires rerunning the same private
+manifest and measuring no more than approximately 21.9 seconds against alpha.6's
+219.33-second result. Protocol v1.7.0 also records the lazy object-metadata reader
+counters and canonical structurally shared inventory behavior. These wall-time
+and sampled-memory observations remain explicit benchmark evidence, never ordinary
+CI gates.

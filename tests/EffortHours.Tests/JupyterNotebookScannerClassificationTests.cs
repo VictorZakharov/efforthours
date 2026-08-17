@@ -23,6 +23,6 @@ public sealed class JupyterNotebookScannerClassificationTests
         Assert.Contains("python", evidence.Repository.Ecosystems);
         Assert.DoesNotContain(evidence.Facts, fact => fact.Kind == EvidenceKinds.File &&
             fact.Id.Contains("checkpoint", StringComparison.Ordinal));
-        Assert.Equal("0.2.13", RepositoryScanner.AnalyzerVersion);
+        Assert.Equal("0.2.14", RepositoryScanner.AnalyzerVersion);
     }
 }

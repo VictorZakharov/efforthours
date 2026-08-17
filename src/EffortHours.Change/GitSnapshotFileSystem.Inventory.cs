@@ -22,9 +22,14 @@ internal sealed partial class GitSnapshotFileSystem
             "-r",
             "-z",
             "--full-tree",
-            "--long",
-            objectId,
         ];
+        bool readLengthsInline = pathspecs is { Count: > 0 };
+        if (readLengthsInline)
+        {
+            arguments.Add("--long");
+        }
+
+        arguments.Add(objectId);
         if (pathspecs is { Count: > 0 })
         {
             arguments.Add("--");
@@ -36,7 +41,12 @@ internal sealed partial class GitSnapshotFileSystem
             repositoryPath,
             arguments,
             cancellationToken).ConfigureAwait(false);
-        return ParseTree(output);
+        if (readLengthsInline)
+        {
+            return ParseTree(output);
+        }
+
+        return ParseTreeWithoutLengths(output);
     }
 
     internal static async Task<IReadOnlyList<string>> ReadChangedPathsAsync(
@@ -160,6 +170,61 @@ internal sealed partial class GitSnapshotFileSystem
                 Mode = fields[0],
                 ObjectId = fields[2].ToLowerInvariant(),
                 Length = length,
+                Path = path,
+            });
+            start = end + 1;
+        }
+
+        return files;
+    }
+
+    internal static List<ChangeSnapshotFile> ParseTreeWithoutLengths(byte[] output)
+    {
+        List<ChangeSnapshotFile> files = [];
+        int start = 0;
+        while (start < output.Length)
+        {
+            int end = Array.IndexOf(output, (byte)0, start);
+            if (end < 0)
+            {
+                throw new InvalidOperationException("Git tree output was not NUL terminated.");
+            }
+
+            ReadOnlySpan<byte> entry = output.AsSpan(start, end - start);
+            int tab = entry.IndexOf((byte)'\t');
+            if (tab <= 0 || tab == entry.Length - 1)
+            {
+                throw new InvalidOperationException("Git returned a malformed tree entry.");
+            }
+
+            string header;
+            string path;
+            try
+            {
+                header = StrictUtf8.GetString(entry[..tab]);
+                path = StrictUtf8.GetString(entry[(tab + 1)..]);
+            }
+            catch (DecoderFallbackException exception)
+            {
+                throw new InvalidOperationException(
+                    "The Git tree contains a path that is not valid UTF-8 and cannot be analyzed safely.",
+                    exception);
+            }
+
+            ValidateGitPath(path);
+            string[] fields = header.Split(
+                ' ',
+                StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+            if (fields.Length != 3 || fields[1] is not ("blob" or "commit"))
+            {
+                throw new InvalidOperationException("Git returned malformed tree identity metadata.");
+            }
+
+            files.Add(new ChangeSnapshotFile
+            {
+                Mode = fields[0],
+                ObjectId = fields[2].ToLowerInvariant(),
+                Length = fields[1] == "commit" ? 0L : -1L,
                 Path = path,
             });
             start = end + 1;

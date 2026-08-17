@@ -1,4 +1,7 @@
+using System.Collections.Concurrent;
+using System.Security.Cryptography;
 using System.Text;
+using EffortHours.Analysis;
 using EffortHours.Contracts.V1;
 
 namespace EffortHours.Analyzers.JavaScript;
@@ -8,12 +11,27 @@ internal sealed class JavaScriptSourceAnalyzer(RepositoryTextReader textReader)
     private const long MaximumSourceBytes = 8 * 1024 * 1024;
 
     private readonly RepositoryTextReader _textReader = textReader;
+    private readonly ConcurrentDictionary<string, string> _packageIdentities =
+        new(StringComparer.Ordinal);
 
     public async Task<JavaScriptFileAnalysis> AnalyzeAsync(
         EvidenceFact fileFact,
         JavaScriptPackageModel? package,
         CancellationToken cancellationToken)
     {
+        string path = fileFact.Scope;
+        string? expectedSha256 = JavaScriptEvidence.FindTagValue(fileFact.Tags, "sha256:");
+        string? artifactKey = expectedSha256 is null
+            ? null
+            : $"javascript-source/{JavaScriptEvidence.AnalyzerVersion}/{expectedSha256}/" +
+                $"{path}/{PackageIdentity(package)}";
+        RepositoryAnalysisArtifactCache? artifactCache = _textReader.AnalysisArtifactCache;
+        if (artifactKey is not null &&
+            artifactCache?.TryGet(artifactKey, out JavaScriptFileAnalysis cached) == true)
+        {
+            return cached;
+        }
+
         RepositoryTextReadResult read = await _textReader.ReadAsync(
             fileFact,
             MaximumSourceBytes,
@@ -24,7 +42,6 @@ internal sealed class JavaScriptSourceAnalyzer(RepositoryTextReader textReader)
             return new JavaScriptFileAnalysis(new JavaScriptSourceMetrics(), [], [read.Diagnostic], []);
         }
 
-        string path = fileFact.Scope;
         string extension = Path.GetExtension(path).ToLowerInvariant();
         string source = extension is ".vue" or ".svelte"
             ? ExtractScriptBlocks(read.Text!)
@@ -67,7 +84,52 @@ internal sealed class JavaScriptSourceAnalyzer(RepositoryTextReader textReader)
                 syntax.ParseErrorLine));
         }
 
-        return new JavaScriptFileAnalysis(syntax.Metrics, facts, diagnostics, angularComponents);
+        JavaScriptFileAnalysis result = new(
+            syntax.Metrics,
+            facts,
+            diagnostics,
+            angularComponents);
+        if (artifactKey is not null)
+        {
+            artifactCache?.Add(artifactKey, result);
+        }
+
+        return result;
+    }
+
+    private string PackageIdentity(JavaScriptPackageModel? package)
+    {
+        if (package is null)
+        {
+            return "no-package";
+        }
+
+        return _packageIdentities.GetOrAdd(package.ManifestPath, _ =>
+        {
+            IEnumerable<string?> values =
+            [
+                package.ManifestPath,
+                package.Scope,
+                package.Name,
+                package.Version,
+                package.ModuleType,
+                package.PackageManager,
+                package.Role,
+                package.IsPrivate.ToString(),
+                package.HasBin.ToString(),
+                package.HasLibraryExports.ToString(),
+                .. package.Technologies.Order(StringComparer.Ordinal),
+                .. package.ScriptNames.Order(StringComparer.Ordinal),
+                .. package.Dependencies
+                    .OrderBy(dependency => dependency.Name, StringComparer.Ordinal)
+                    .ThenBy(dependency => dependency.Kind, StringComparer.Ordinal)
+                    .Select(dependency =>
+                        $"{dependency.Name}\0{dependency.Specifier}\0{dependency.Kind}"),
+            ];
+            string source = string.Join('\n', values);
+            return Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(source)))
+                .ToLowerInvariant();
+        });
     }
 
     private static List<EvidenceFact> CreateFacts(

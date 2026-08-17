@@ -69,7 +69,7 @@ public static partial class Program
     {
         bool[] invariants =
         [
-            execution.IndependentReportsEquivalent,
+            execution.IsolatedManifestReportsEquivalent,
             execution.ManualBaselineEquivalent,
             execution.ReorderedReportBytesEquivalent,
             execution.RepositoryScopedSharedObject,
@@ -85,19 +85,24 @@ public static partial class Program
 
         int expectedChanges = options.Commits * fixture.Repositories.Count;
         if (execution.SelectedChanges != expectedChanges ||
-            execution.UniqueIndependentChanges != expectedChanges)
+            execution.UniqueIsolatedManifestChanges != expectedChanges)
         {
             throw new InvalidOperationException(
                 $"Expected {expectedChanges} repository-scoped changes, but observed " +
-                $"{execution.SelectedChanges} combined and {execution.UniqueIndependentChanges} independent.");
+                $"{execution.SelectedChanges} combined and " +
+                $"{execution.UniqueIsolatedManifestChanges} across isolated manifests.");
         }
 
         if (execution.Statistics.RepositoryCount != fixture.Repositories.Count ||
             execution.Statistics.ObjectDatabaseReaders != fixture.Repositories.Count ||
-            execution.CombinedSnapshotAnalyses >= execution.IndependentSnapshotAnalyses)
+            execution.IsolatedManifestObjectReaders !=
+                fixture.Repositories.Count * execution.IsolatedManifestInvocations ||
+            execution.Statistics.UniqueAnalysisArtifactKeys >=
+                execution.IsolatedManifestStatistics.UniqueAnalysisArtifactKeys)
         {
             throw new InvalidOperationException(
-                "The combined manifest did not preserve the required repository-session or analysis reuse.");
+                "The combined and isolated manifests did not preserve the required repository " +
+                "sessions or immutable file-analysis reuse.");
         }
     }
 
@@ -116,7 +121,8 @@ public static partial class Program
         bool memoryPassed)
     {
         ChangePortfolioExecutionStatistics reuse = execution.Statistics;
-        Console.WriteLine("benchmark=change/1.5.0");
+        ChangePortfolioExecutionStatistics isolatedReuse = execution.IsolatedManifestStatistics;
+        Console.WriteLine("benchmark=change/1.7.0");
         Console.WriteLine($"estimator={ChangeEstimator.Version}");
         Console.WriteLine($"mode={options.Name}");
         Console.WriteLine($"runtime={RuntimeInformation.FrameworkDescription}");
@@ -125,47 +131,102 @@ public static partial class Program
         Console.WriteLine($"logical-processors={Environment.ProcessorCount.ToString(CultureInfo.InvariantCulture)}");
         Console.WriteLine($"requested-files-per-repository={options.Files.ToString(CultureInfo.InvariantCulture)}");
         Console.WriteLine($"requested-context-projects-per-repository={options.ContextProjects.ToString(CultureInfo.InvariantCulture)}");
+        Console.WriteLine(
+            $"active-context-projects-per-repository=" +
+            $"{Math.Min(options.ContextProjects, GitPortfolioBenchmarkFixture.MaximumActiveContextProjects).ToString(CultureInfo.InvariantCulture)}");
         Console.WriteLine($"requested-lines-per-file={options.LinesPerFile.ToString(CultureInfo.InvariantCulture)}");
         Console.WriteLine($"requested-qualifying-commits-per-repository={options.Commits.ToString(CultureInfo.InvariantCulture)}");
         Console.WriteLine($"portfolio-repositories={fixture.Repositories.Count.ToString(CultureInfo.InvariantCulture)}");
         Console.WriteLine(
             $"maximum-active-repositories=" +
             $"{reuse.MaximumActiveRepositories.ToString(CultureInfo.InvariantCulture)}");
+        Console.WriteLine(
+            $"maximum-file-analyses-per-repository=" +
+            $"{reuse.MaximumConcurrentFileAnalysesPerRepository.ToString(CultureInfo.InvariantCulture)}");
         Console.WriteLine($"portfolio-heads={fixture.HeadCount.ToString(CultureInfo.InvariantCulture)}");
         Console.WriteLine($"portfolio-contributors={fixture.ContributorCount.ToString(CultureInfo.InvariantCulture)}");
         Console.WriteLine($"selected-changes={execution.SelectedChanges.ToString(CultureInfo.InvariantCulture)}");
         Console.WriteLine($"combined-snapshot-analyses={execution.CombinedSnapshotAnalyses.ToString(CultureInfo.InvariantCulture)}");
-        Console.WriteLine($"independent-snapshot-analyses={execution.IndependentSnapshotAnalyses.ToString(CultureInfo.InvariantCulture)}");
-        Console.WriteLine($"independent-invocations={execution.IndependentInvocations.ToString(CultureInfo.InvariantCulture)}");
-        Console.WriteLine($"independent-empty-invocations={execution.EmptyIndependentInvocations.ToString(CultureInfo.InvariantCulture)}");
-        Console.WriteLine($"independent-selected-rows={execution.IndependentSelectedRows.ToString(CultureInfo.InvariantCulture)}");
-        Console.WriteLine($"independent-unique-changes={execution.UniqueIndependentChanges.ToString(CultureInfo.InvariantCulture)}");
+        Console.WriteLine($"isolated-manifest-snapshot-analyses={execution.IsolatedManifestSnapshotAnalyses.ToString(CultureInfo.InvariantCulture)}");
+        Console.WriteLine($"isolated-manifest-invocations={execution.IsolatedManifestInvocations.ToString(CultureInfo.InvariantCulture)}");
+        Console.WriteLine($"isolated-manifest-selected-rows={execution.IsolatedManifestSelectedRows.ToString(CultureInfo.InvariantCulture)}");
+        Console.WriteLine($"isolated-manifest-unique-changes={execution.UniqueIsolatedManifestChanges.ToString(CultureInfo.InvariantCulture)}");
         Console.WriteLine($"combined-git-object-readers={reuse.ObjectDatabaseReaders.ToString(CultureInfo.InvariantCulture)}");
-        Console.WriteLine($"independent-git-object-readers={execution.IndependentObjectReaders.ToString(CultureInfo.InvariantCulture)}");
+        Console.WriteLine($"combined-git-metadata-readers={reuse.ObjectMetadataReaders.ToString(CultureInfo.InvariantCulture)}");
+        Console.WriteLine($"object-metadata-requests={reuse.ObjectMetadataRequests.ToString(CultureInfo.InvariantCulture)}");
+        Console.WriteLine($"object-metadata-cache-hits={reuse.ObjectMetadataCacheHits.ToString(CultureInfo.InvariantCulture)}");
+        Console.WriteLine($"unique-object-metadata-objects={reuse.UniqueObjectMetadataObjects.ToString(CultureInfo.InvariantCulture)}");
+        Console.WriteLine($"object-metadata-cache-evictions={reuse.ObjectMetadataCacheEvictions.ToString(CultureInfo.InvariantCulture)}");
+        Console.WriteLine($"peak-cached-object-metadata-lengths={reuse.PeakCachedObjectMetadataLengthsPerRepository.ToString(CultureInfo.InvariantCulture)}");
+        Console.WriteLine($"object-metadata-cache-entry-limit={reuse.ObjectMetadataCacheEntryLimitPerRepository.ToString(CultureInfo.InvariantCulture)}");
+        Console.WriteLine($"isolated-manifest-git-object-readers={execution.IsolatedManifestObjectReaders.ToString(CultureInfo.InvariantCulture)}");
         Console.WriteLine($"snapshot-analysis-requests={reuse.SnapshotAnalysisRequests.ToString(CultureInfo.InvariantCulture)}");
         Console.WriteLine($"snapshot-analysis-hits={reuse.SnapshotAnalysisHits.ToString(CultureInfo.InvariantCulture)}");
+        Console.WriteLine($"unique-snapshot-analysis-keys={reuse.UniqueSnapshotAnalysisKeys.ToString(CultureInfo.InvariantCulture)}");
+        Console.WriteLine($"snapshot-analysis-revisit-misses={reuse.SnapshotAnalysisRevisitMisses.ToString(CultureInfo.InvariantCulture)}");
+        Console.WriteLine($"analysis-artifact-requests={reuse.AnalysisArtifactRequests.ToString(CultureInfo.InvariantCulture)}");
+        Console.WriteLine($"analysis-artifact-hits={reuse.AnalysisArtifactHits.ToString(CultureInfo.InvariantCulture)}");
+        Console.WriteLine($"unique-analysis-artifact-keys={reuse.UniqueAnalysisArtifactKeys.ToString(CultureInfo.InvariantCulture)}");
+        Console.WriteLine($"analysis-artifact-revisit-misses={reuse.AnalysisArtifactRevisitMisses.ToString(CultureInfo.InvariantCulture)}");
+        Console.WriteLine($"isolated-manifest-analysis-artifact-requests={isolatedReuse.AnalysisArtifactRequests.ToString(CultureInfo.InvariantCulture)}");
+        Console.WriteLine($"isolated-manifest-analysis-artifact-hits={isolatedReuse.AnalysisArtifactHits.ToString(CultureInfo.InvariantCulture)}");
+        Console.WriteLine($"isolated-manifest-unique-analysis-artifact-keys={isolatedReuse.UniqueAnalysisArtifactKeys.ToString(CultureInfo.InvariantCulture)}");
+        Console.WriteLine($"isolated-manifest-snapshot-analysis-requests={isolatedReuse.SnapshotAnalysisRequests.ToString(CultureInfo.InvariantCulture)}");
+        Console.WriteLine($"isolated-manifest-snapshot-analysis-hits={isolatedReuse.SnapshotAnalysisHits.ToString(CultureInfo.InvariantCulture)}");
         Console.WriteLine($"snapshot-inventory-requests={reuse.SnapshotInventoryRequests.ToString(CultureInfo.InvariantCulture)}");
         Console.WriteLine($"snapshot-inventory-hits={reuse.SnapshotInventoryHits.ToString(CultureInfo.InvariantCulture)}");
+        Console.WriteLine($"unique-snapshot-inventory-objects={reuse.UniqueSnapshotInventoryObjects.ToString(CultureInfo.InvariantCulture)}");
+        Console.WriteLine($"snapshot-inventory-revisit-misses={reuse.SnapshotInventoryRevisitMisses.ToString(CultureInfo.InvariantCulture)}");
+        Console.WriteLine($"isolated-manifest-snapshot-inventory-requests={isolatedReuse.SnapshotInventoryRequests.ToString(CultureInfo.InvariantCulture)}");
+        Console.WriteLine($"isolated-manifest-snapshot-inventory-hits={isolatedReuse.SnapshotInventoryHits.ToString(CultureInfo.InvariantCulture)}");
+        Console.WriteLine($"snapshot-inventory-evictions={reuse.SnapshotInventoryEvictions.ToString(CultureInfo.InvariantCulture)}");
+        Console.WriteLine($"peak-retained-snapshot-inventories={reuse.PeakRetainedSnapshotInventories.ToString(CultureInfo.InvariantCulture)}");
+        Console.WriteLine($"peak-retained-snapshot-inventory-roots={reuse.PeakRetainedSnapshotInventoryRoots.ToString(CultureInfo.InvariantCulture)}");
+        Console.WriteLine($"snapshot-inventory-retention-limit={reuse.SnapshotInventoryRetentionLimit.ToString(CultureInfo.InvariantCulture)}");
+        Console.WriteLine($"snapshot-inventory-root-retention-limit={reuse.SnapshotInventoryRootRetentionLimit.ToString(CultureInfo.InvariantCulture)}");
         Console.WriteLine($"full-snapshot-inventory-loads={reuse.FullSnapshotInventoryLoads.ToString(CultureInfo.InvariantCulture)}");
         Console.WriteLine($"incremental-snapshot-inventory-loads={reuse.IncrementalSnapshotInventoryLoads.ToString(CultureInfo.InvariantCulture)}");
+        Console.WriteLine($"batched-incremental-snapshot-inventory-loads={reuse.BatchedIncrementalSnapshotInventoryLoads.ToString(CultureInfo.InvariantCulture)}");
+        Console.WriteLine($"isolated-manifest-full-snapshot-inventory-loads={isolatedReuse.FullSnapshotInventoryLoads.ToString(CultureInfo.InvariantCulture)}");
+        Console.WriteLine($"isolated-manifest-incremental-snapshot-inventory-loads={isolatedReuse.IncrementalSnapshotInventoryLoads.ToString(CultureInfo.InvariantCulture)}");
+        Console.WriteLine($"isolated-manifest-batched-incremental-snapshot-inventory-loads={isolatedReuse.BatchedIncrementalSnapshotInventoryLoads.ToString(CultureInfo.InvariantCulture)}");
+        Console.WriteLine($"snapshot-delta-batch-output-limit-mib={ToMebibytes(reuse.SnapshotDeltaBatchOutputByteLimit)}");
         Console.WriteLine($"blob-requests={reuse.BlobRequests.ToString(CultureInfo.InvariantCulture)}");
         Console.WriteLine($"blob-cache-hits={reuse.BlobCacheHits.ToString(CultureInfo.InvariantCulture)}");
+        Console.WriteLine($"unique-blob-objects={reuse.UniqueBlobObjects.ToString(CultureInfo.InvariantCulture)}");
+        Console.WriteLine($"blob-requested-bytes={reuse.BlobRequestedBytes.ToString(CultureInfo.InvariantCulture)}");
+        Console.WriteLine($"blob-cache-hit-bytes={reuse.BlobCacheHitBytes.ToString(CultureInfo.InvariantCulture)}");
+        Console.WriteLine($"blob-read-bytes={reuse.BlobReadBytes.ToString(CultureInfo.InvariantCulture)}");
+        Console.WriteLine($"unique-blob-bytes={reuse.UniqueBlobBytes.ToString(CultureInfo.InvariantCulture)}");
+        Console.WriteLine($"isolated-manifest-blob-requests={isolatedReuse.BlobRequests.ToString(CultureInfo.InvariantCulture)}");
+        Console.WriteLine($"isolated-manifest-blob-cache-hits={isolatedReuse.BlobCacheHits.ToString(CultureInfo.InvariantCulture)}");
         Console.WriteLine($"peak-cached-blob-mib={ToMebibytes(reuse.PeakCachedBlobBytesPerRepository)}");
+        Console.WriteLine(
+            "timing-order=initial-combined-warmup,isolated-manifests," +
+            "measured-reordered-combined");
+        Console.WriteLine(
+            $"initial-combined-warmup-seconds=" +
+            $"{Duration(execution.InitialCombinedWarmupElapsed)}");
+        Console.WriteLine(
+            $"initial-combined-warmup-cpu-seconds=" +
+            $"{Duration(execution.InitialCombinedWarmupCpu)}");
         Console.WriteLine($"combined-estimate-seconds={Duration(execution.CombinedElapsed)}");
         Console.WriteLine($"combined-estimate-cpu-seconds={Duration(execution.CombinedCpu)}");
-        Console.WriteLine($"independent-estimate-seconds={Duration(execution.IndependentElapsed)}");
-        Console.WriteLine($"independent-estimate-cpu-seconds={Duration(execution.IndependentCpu)}");
+        Console.WriteLine($"isolated-manifest-estimate-seconds={Duration(execution.IsolatedManifestElapsed)}");
+        Console.WriteLine($"isolated-manifest-estimate-cpu-seconds={Duration(execution.IsolatedManifestCpu)}");
         Console.WriteLine(
-            $"combined-to-independent-wall-ratio=" +
-            $"{(execution.CombinedElapsed.TotalSeconds / execution.IndependentElapsed.TotalSeconds).ToString("F3", CultureInfo.InvariantCulture)}");
+            $"combined-to-isolated-manifest-wall-ratio=" +
+            $"{(execution.CombinedElapsed.TotalSeconds / execution.IsolatedManifestElapsed.TotalSeconds).ToString("F3", CultureInfo.InvariantCulture)}");
         foreach (ChangePortfolioPhaseTiming timing in execution.CombinedPhaseTimings)
         {
             Console.WriteLine($"combined-phase-{timing.Phase}-seconds={Duration(timing.Elapsed)}");
         }
 
-        Console.WriteLine($"combined-faster-than-independent={Lower(execution.CombinedElapsed < execution.IndependentElapsed)}");
-        Console.WriteLine($"less-repeated-analysis={Lower(execution.CombinedSnapshotAnalyses < execution.IndependentSnapshotAnalyses)}");
-        Console.WriteLine($"independent-reports-equivalent={Lower(execution.IndependentReportsEquivalent)}");
+        Console.WriteLine($"combined-faster-than-isolated-manifests={Lower(execution.CombinedElapsed < execution.IsolatedManifestElapsed)}");
+        Console.WriteLine($"fewer-snapshot-analyses-than-isolated-manifests={Lower(execution.CombinedSnapshotAnalyses < execution.IsolatedManifestSnapshotAnalyses)}");
+        Console.WriteLine($"fewer-blob-cache-misses-than-isolated-manifests={Lower((reuse.BlobRequests - reuse.BlobCacheHits) < (isolatedReuse.BlobRequests - isolatedReuse.BlobCacheHits))}");
+        Console.WriteLine($"fewer-unique-analysis-artifacts-than-isolated-manifests={Lower(reuse.UniqueAnalysisArtifactKeys < isolatedReuse.UniqueAnalysisArtifactKeys)}");
+        Console.WriteLine($"isolated-manifest-reports-equivalent={Lower(execution.IsolatedManifestReportsEquivalent)}");
         Console.WriteLine($"manual-baseline-equivalent={Lower(execution.ManualBaselineEquivalent)}");
         Console.WriteLine($"reordered-report-bytes-equivalent={Lower(execution.ReorderedReportBytesEquivalent)}");
         Console.WriteLine($"repository-scoped-shared-object={Lower(execution.RepositoryScopedSharedObject)}");

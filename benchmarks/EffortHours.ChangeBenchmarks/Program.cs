@@ -200,6 +200,9 @@ public static partial class Program
         Console.WriteLine($"full-snapshot-inventory-loads={(reuse?.FullSnapshotInventoryLoads ?? 0).ToString(CultureInfo.InvariantCulture)}");
         Console.WriteLine($"incremental-snapshot-inventory-loads={(reuse?.IncrementalSnapshotInventoryLoads ?? 0).ToString(CultureInfo.InvariantCulture)}");
         Console.WriteLine($"git-object-readers={(reuse?.ObjectDatabaseReaders ?? 0).ToString(CultureInfo.InvariantCulture)}");
+        Console.WriteLine($"git-metadata-readers={(reuse?.ObjectMetadataReaders ?? 0).ToString(CultureInfo.InvariantCulture)}");
+        Console.WriteLine($"object-metadata-requests={(reuse?.ObjectMetadataRequests ?? 0).ToString(CultureInfo.InvariantCulture)}");
+        Console.WriteLine($"object-metadata-cache-hits={(reuse?.ObjectMetadataCacheHits ?? 0).ToString(CultureInfo.InvariantCulture)}");
         Console.WriteLine($"blob-requests={(reuse?.BlobRequests ?? 0).ToString(CultureInfo.InvariantCulture)}");
         Console.WriteLine($"blob-cache-hits={(reuse?.BlobCacheHits ?? 0).ToString(CultureInfo.InvariantCulture)}");
         Console.WriteLine($"peak-cached-blob-mib={ToMebibytes(reuse?.PeakCachedBlobBytesPerRepository ?? 0)}");

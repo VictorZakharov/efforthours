@@ -124,6 +124,30 @@ public sealed class RepositoryScannerTests
     }
 
     [Fact]
+    public async Task InvalidIgnoreRulesEmitDigestOnlyBoundedDiagnostics()
+    {
+        InMemoryRepository repository = new();
+        string privatePattern = new('x', IgnoreGlobPattern.MaximumPatternCharacters + 1);
+        repository.WriteText(".gitignore", $"[z-a]\n{privatePattern}\n");
+        repository.WriteText("src/app.cs", "public sealed class App;\n");
+
+        RepositoryEvidence evidence = await new RepositoryScanner(repository)
+            .ScanAsync(repository.RootPath);
+        Diagnostic[] diagnostics = [.. evidence.Diagnostics.Where(diagnostic =>
+            diagnostic.Code == "FB2003")];
+        string json = ContractJson.Serialize(evidence);
+
+        Assert.Equal(2, diagnostics.Length);
+        Assert.All(diagnostics, diagnostic =>
+        {
+            Assert.Contains("sha256:", diagnostic.Message, StringComparison.Ordinal);
+            Assert.Equal(".gitignore", Assert.Single(diagnostic.Locations).Path);
+        });
+        Assert.DoesNotContain("[z-a]", json, StringComparison.Ordinal);
+        Assert.DoesNotContain(privatePattern, json, StringComparison.Ordinal);
+    }
+
+    [Fact]
     public async Task ScanDoesNotWriteToTheTargetRepository()
     {
         InMemoryRepository repository = new();
