@@ -123,6 +123,12 @@ public sealed class ChangeBenchmarkCliTests
         Assert.Equal("6", values["isolated-manifest-selected-rows"]);
         Assert.Equal("6", values["isolated-manifest-unique-changes"]);
         Assert.Equal("2", values["combined-git-object-readers"]);
+        Assert.Equal("2", values["combined-git-metadata-readers"]);
+        AssertPositive(values, "object-metadata-requests");
+        AssertPositive(values, "object-metadata-cache-hits");
+        AssertPositive(values, "unique-object-metadata-objects");
+        Assert.Equal("0", values["object-metadata-cache-evictions"]);
+        Assert.Equal("16384", values["object-metadata-cache-entry-limit"]);
         Assert.True(
             int.Parse(values["combined-snapshot-analyses"], CultureInfo.InvariantCulture) <
             int.Parse(
@@ -134,6 +140,10 @@ public sealed class ChangeBenchmarkCliTests
                 values["isolated-manifest-git-object-readers"],
                 CultureInfo.InvariantCulture));
         Assert.Equal("6", values["batched-incremental-snapshot-inventory-loads"]);
+        Assert.Equal("0", values["snapshot-inventory-evictions"]);
+        Assert.Equal("1", values["peak-retained-snapshot-inventory-roots"]);
+        Assert.Equal("10000", values["snapshot-inventory-retention-limit"]);
+        Assert.Equal("16", values["snapshot-inventory-root-retention-limit"]);
         Assert.Equal("64.00", values["snapshot-delta-batch-output-limit-mib"]);
         Assert.Equal("true", values["fewer-snapshot-analyses-than-isolated-manifests"]);
         Assert.Equal("true", values["fewer-blob-cache-misses-than-isolated-manifests"]);
@@ -263,7 +273,7 @@ public sealed class ChangeBenchmarkCliTests
         bool requireOverallMeasurements = true)
     {
         Assert.Equal(
-            values["mode"] == "author-period-manifest" ? "change/1.6.0" : "change/1.4.0",
+            values["mode"] == "author-period-manifest" ? "change/1.7.0" : "change/1.4.0",
             values["benchmark"]);
         Assert.Equal("true", values["worktree-unchanged"]);
         Assert.Equal("true", values["git-state-unchanged"]);

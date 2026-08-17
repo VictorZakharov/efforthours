@@ -148,16 +148,30 @@ relevant-context, representative, available-context, and full-inventory counts.
 Smaller Git changes and all directory/evidence selectors retain full-snapshot
 analysis.
 
-Within one Git repository session, at most 16 immutable inventories and 16 exact
-snapshot/scope analyses are retained. First-parent links are remembered through
-the public 10,000-candidate identity-ledger boundary. A known first-parent child
-with at most 1,024 changed paths and 16,000 path characters is derived from its
-cached parent plus literal Git path deltas. Eligible non-merge deltas and changed-
-blob sizes are loaded in two 64-MiB-output-bounded repository-level Git batches
-before row analysis; roots, merges, custom snapshot providers, larger deltas, and
-unrelated changes retain the exact per-change or complete-`ls-tree` fallback. Blob readers
-and full virtual-directory indexes start lazily. These fixed retention limits let
-adjacent changes reuse evidence without making cache memory unbounded.
+Within one Git repository session, at most 10,000 structurally shared immutable
+inventories across 16 full-tree root lineages and 16 exact snapshot/scope analyses
+are retained. First-parent links are remembered through the public 10,000-
+candidate identity-ledger boundary. A known first-parent child with at most 1,024
+changed paths and 16,000 path characters is derived from its cached parent plus
+literal Git path deltas. Eligible non-merge deltas and changed-blob sizes are
+loaded in two 64-MiB-output-bounded repository-level Git batches before row
+analysis; roots, merges, custom snapshot providers, larger deltas, and unrelated
+changes retain the exact per-change or complete-`ls-tree` fallback. Full-tree
+enumeration loads path, mode, and immutable object identity without requesting
+every blob length. One repository-scoped `cat-file --batch-check` reader resolves
+lengths lazily and retains at most 16,384 entries; content reads retain their
+separate 64-MiB bounded reader. Full virtual-directory indexes also start lazily.
+These fixed retention limits let adjacent changes reuse evidence without making
+cache memory unbounded.
+
+Git inventory identity uses canonical SHA-256 Merkle nodes over path, mode, and
+blob object identity. The digest is independent of delta application order and can
+be updated with the structurally shared inventory rather than rehashing every
+unchanged path. Blob identity already binds content and byte length, so lazily
+resolved lengths do not alter the digest. Exact snapshot analysis is keyed by this
+content identity plus the analysis-scope digest; two commits with the same
+immutable tree and scope can reuse analysis, while different scopes remain
+separate.
 
 Directory selection runs the ordinary non-executing repository pipeline against
 each caller-selected root with no implicit cache and writes nothing into either
@@ -489,27 +503,32 @@ the exact earlier estimator identity they were created from.
   edit region and an explicit warning because formatting-only normalization is
   unavailable.
 - Moving selectors are resolved to immutable object IDs before analysis.
-- Full Git trees are streamed through `ls-tree`; eligible portfolio first-parent
-  deltas and sizes use 64-MiB-output-bounded `diff-tree --stdin` and
-  `cat-file --batch-check`
-  repository batches; source bodies use bounded `cat-file --batch`. EffortHours
-  does not create temporary checkouts or source trees.
+- Full Git trees stream path, mode, and object identity through `ls-tree` without
+  eagerly requesting every blob length. Eligible portfolio first-parent deltas
+  and changed-blob sizes use 64-MiB-output-bounded `diff-tree --stdin` and
+  `cat-file --batch-check` repository batches; other admitted lengths are resolved
+  lazily through one bounded repository metadata reader, and source bodies use a
+  separate bounded `cat-file --batch` reader. EffortHours does not create
+  temporary checkouts or source trees.
 - Root commits use Git's empty tree. Merge commits require an explicit parent.
 - Ranges expose isolated commit estimates, normalized final effort, named signed
   adjustments, allocations that sum exactly to normalized expected hours, and the
   expected-point normalization diagnostic for explicit multi-commit ranges.
-- Adjacent range or portfolio components reuse repository analysis by immutable
-  snapshot and analysis-scope identity. An exact object chain over one scope
-  requires `N + 1` repository estimates instead of `2N`; differing changed scopes
-  remain independent canonical estimates.
+- Adjacent range or portfolio components reuse repository analysis by canonical
+  immutable inventory digest and analysis-scope identity. An exact tree chain over
+  one scope requires `N + 1` repository estimates instead of `2N`; equal trees
+  reached through different commits also reuse analysis, while differing changed
+  scopes remain independent canonical estimates.
 - Portfolio 0.2.3 retains up to 16 exact snapshot/scope analyses and 8,192
   immutable file-analysis artifacts with deterministic key-ranked retention per
   active repository, processes rows serially within a repository, and permits at
   most two repository sessions to overlap. Each snapshot admits at most four independent
   .NET/JavaScript file-analysis workers and restores canonical path order before
   aggregation. Author-period plans from one repository share
-  one lazy Git object reader, a bounded 64-MiB/1-MiB-per-blob content cache, 16
-  immutable indexed inventories, and 10,000 remembered first-parent links. Cached
+  one lazy Git object reader, one lazy Git metadata reader, a bounded 64-MiB/
+  1-MiB-per-blob content cache, 10,000 structurally shared immutable indexed
+  inventories across at most 16 full-tree roots, 16,384 retained object lengths,
+  and 10,000 remembered first-parent links. Cached
   .NET/JavaScript file results and common inspections are keyed by immutable
   content, analyzer identity, and required path/context inputs; they do not broaden
   a row's canonical analysis scope. The two-session

@@ -38,9 +38,10 @@ personal rows.
 Manifest author-period report diagnostic `FB5325` contains deterministic,
 privacy-safe cache request/hit, unique-key, revisit-miss, byte, eviction, and
 declared retention counts for snapshot, immutable file-analysis, inventory, and
-Git-blob reuse, including how many incremental inventories used repository-level
-batch diffs. It contains no local paths, raw aliases, source excerpts, or
-wall-clock values. The CLI writes
+Git-blob reuse, plus lazy Git object-metadata request/hit/unique/eviction counts,
+including how many incremental inventories used repository-level batch diffs. It
+contains no local paths, raw aliases, source excerpts, or wall-clock values. The
+CLI writes
 nine measured execution-phase durations to stderr after a successful manifest run;
 those non-semantic timings are deliberately excluded from JSON/Markdown contracts,
 digests, saved-report rendering, and EHE calculations.

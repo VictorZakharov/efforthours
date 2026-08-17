@@ -2,68 +2,15 @@ using EffortHours.Analysis;
 
 namespace EffortHours.Change;
 
-internal sealed record GitSnapshotSessionStatistics
-{
-    public int AnalysisArtifactRequests { get; init; }
-
-    public int AnalysisArtifactHits { get; init; }
-
-    public int UniqueAnalysisArtifactKeys { get; init; }
-
-    public int AnalysisArtifactRevisitMisses { get; init; }
-
-    public int AnalysisArtifactEvictions { get; init; }
-
-    public int PeakRetainedAnalysisArtifacts { get; init; }
-
-    public int InventoryRequests { get; init; }
-
-    public int InventoryHits { get; init; }
-
-    public int UniqueInventoryObjects { get; init; }
-
-    public int InventoryRevisitMisses { get; init; }
-
-    public int FullInventoryLoads { get; init; }
-
-    public int IncrementalInventoryLoads { get; init; }
-
-    public int BatchedIncrementalInventoryLoads { get; init; }
-
-    public int InventoryEvictions { get; init; }
-
-    public int PeakRetainedInventories { get; init; }
-
-    public int ObjectReaderStarts { get; init; }
-
-    public long BlobRequests { get; init; }
-
-    public long BlobCacheHits { get; init; }
-
-    public long BlobCacheEvictions { get; init; }
-
-    public long UniqueBlobObjects { get; init; }
-
-    public long BlobRequestedBytes { get; init; }
-
-    public long BlobCacheHitBytes { get; init; }
-
-    public long BlobReadBytes { get; init; }
-
-    public long UniqueBlobBytes { get; init; }
-
-    public long RetainedBlobBytes { get; init; }
-
-    public long PeakCachedBlobBytes { get; init; }
-}
-
 /// <summary>
 /// Owns the bounded immutable-inventory and Git-object caches for one repository
 /// during one portfolio invocation.
 /// </summary>
 internal sealed class GitSnapshotSession : IAsyncDisposable
 {
-    internal const int MaximumSnapshotInventories = 16;
+    internal const int MaximumSnapshotInventories = 10_000;
+    internal const int MaximumSnapshotInventoryRoots = 16;
+    internal const int MaximumStandaloneSnapshotInventories = 16;
     internal const int MaximumRememberedFirstParents =
         GitPortfolioPlannerOptions.DefaultMaximumHistoryCommits;
     internal const int MaximumIncrementalSnapshotPaths = 1_024;
@@ -72,6 +19,9 @@ internal sealed class GitSnapshotSession : IAsyncDisposable
     private readonly Dictionary<string, GitSnapshotInventory> _inventories =
         new(StringComparer.Ordinal);
     private readonly Queue<string> _inventoryOrder = new();
+    private readonly Dictionary<string, int> _inventoryRootCounts =
+        new(StringComparer.Ordinal);
+    private readonly Queue<string> _inventoryRootOrder = new();
     private readonly Dictionary<string, string?> _firstParents = new(StringComparer.Ordinal);
     private readonly Queue<string> _firstParentOrder = new();
     private readonly HashSet<string> _batchEligibleHeads = new(StringComparer.Ordinal);
@@ -82,6 +32,7 @@ internal sealed class GitSnapshotSession : IAsyncDisposable
     private readonly RepositoryAnalysisArtifactCache _analysisArtifactCache = new();
     private readonly Lock _gate = new();
     private GitBatchObjectReader? _objectReader;
+    private GitBatchObjectMetadataReader? _metadataReader;
     private int _inventoryRequests;
     private int _inventoryHits;
     private int _inventoryRevisitMisses;
@@ -90,6 +41,7 @@ internal sealed class GitSnapshotSession : IAsyncDisposable
     private int _batchedIncrementalInventoryLoads;
     private int _inventoryEvictions;
     private int _peakRetainedInventories;
+    private int _peakRetainedInventoryRoots;
     private bool _disposed;
 
     public GitSnapshotSession(
@@ -273,6 +225,8 @@ internal sealed class GitSnapshotSession : IAsyncDisposable
         lock (_gate)
         {
             GitObjectReaderStatistics reader = _objectReader?.GetStatistics() ?? new();
+            GitObjectMetadataReaderStatistics metadata =
+                _metadataReader?.GetStatistics() ?? new(0, 0, 0, 0, 0);
             RepositoryAnalysisArtifactCacheStatistics artifacts =
                 _analysisArtifactCache.GetStatistics();
             return new GitSnapshotSessionStatistics
@@ -292,7 +246,14 @@ internal sealed class GitSnapshotSession : IAsyncDisposable
                 BatchedIncrementalInventoryLoads = _batchedIncrementalInventoryLoads,
                 InventoryEvictions = _inventoryEvictions,
                 PeakRetainedInventories = _peakRetainedInventories,
+                PeakRetainedInventoryRoots = _peakRetainedInventoryRoots,
                 ObjectReaderStarts = _objectReader is null ? 0 : 1,
+                ObjectMetadataReaderStarts = _metadataReader is null ? 0 : 1,
+                ObjectMetadataRequests = metadata.Requests,
+                ObjectMetadataCacheHits = metadata.CacheHits,
+                UniqueObjectMetadataObjects = metadata.UniqueObjects,
+                ObjectMetadataCacheEvictions = metadata.CacheEvictions,
+                PeakCachedObjectMetadataLengths = metadata.PeakCachedLengths,
                 BlobRequests = reader.Requests,
                 BlobCacheHits = reader.CacheHits,
                 BlobCacheEvictions = reader.CacheEvictions,
@@ -310,6 +271,7 @@ internal sealed class GitSnapshotSession : IAsyncDisposable
     public async ValueTask DisposeAsync()
     {
         GitBatchObjectReader? reader;
+        GitBatchObjectMetadataReader? metadataReader;
         lock (_gate)
         {
             if (_disposed)
@@ -319,8 +281,11 @@ internal sealed class GitSnapshotSession : IAsyncDisposable
 
             _disposed = true;
             reader = _objectReader;
+            metadataReader = _metadataReader;
             _inventories.Clear();
             _inventoryOrder.Clear();
+            _inventoryRootCounts.Clear();
+            _inventoryRootOrder.Clear();
             _firstParents.Clear();
             _firstParentOrder.Clear();
             _batchEligibleHeads.Clear();
@@ -332,6 +297,8 @@ internal sealed class GitSnapshotSession : IAsyncDisposable
         {
             await reader.DisposeAsync().ConfigureAwait(false);
         }
+
+        metadataReader?.Dispose();
     }
 
     private GitSnapshotFileSystem CreateSnapshot(
@@ -342,6 +309,7 @@ internal sealed class GitSnapshotSession : IAsyncDisposable
             objectId,
             inventory,
             GetObjectReader,
+            GetMetadataReader,
             _analysisArtifactCache);
 
     private GitBatchObjectReader GetObjectReader()
@@ -350,6 +318,15 @@ internal sealed class GitSnapshotSession : IAsyncDisposable
         {
             ObjectDisposedException.ThrowIf(_disposed, this);
             return _objectReader ??= new GitBatchObjectReader(RepositoryPath);
+        }
+    }
+
+    private GitBatchObjectMetadataReader GetMetadataReader()
+    {
+        lock (_gate)
+        {
+            ObjectDisposedException.ThrowIf(_disposed, this);
+            return _metadataReader ??= new GitBatchObjectMetadataReader(RepositoryPath);
         }
     }
 
@@ -400,8 +377,10 @@ internal sealed class GitSnapshotSession : IAsyncDisposable
                 Interlocked.Increment(ref _batchedIncrementalInventoryLoads);
             }
 
-            files = GitSnapshotFileSystem.ApplyIncrementalChanges(
-                parentInventory.Files,
+            return GitSnapshotInventory.CreateIncremental(
+                objectId,
+                parentObjectId,
+                parentInventory,
                 changedPaths,
                 changedFiles);
         }
@@ -414,19 +393,84 @@ internal sealed class GitSnapshotSession : IAsyncDisposable
                 cancellationToken).ConfigureAwait(false);
         }
 
-        return new GitSnapshotInventory(files, parentObjectId, changedPaths);
+        return new GitSnapshotInventory(objectId, files, parentObjectId, changedPaths);
     }
 
     private void AddInventory(string objectId, GitSnapshotInventory inventory)
     {
+        EnsureInventoryRootCapacity(inventory.RootObjectId);
         while (_inventories.Count >= MaximumSnapshotInventories)
         {
-            _inventories.Remove(_inventoryOrder.Dequeue());
-            _inventoryEvictions++;
+            EvictOldestInventory();
         }
 
         _inventories.Add(objectId, inventory);
         _inventoryOrder.Enqueue(objectId);
+        _inventoryRootCounts[inventory.RootObjectId]++;
         _peakRetainedInventories = Math.Max(_peakRetainedInventories, _inventories.Count);
+        _peakRetainedInventoryRoots = Math.Max(
+            _peakRetainedInventoryRoots,
+            _inventoryRootCounts.Count);
+    }
+
+    private void EnsureInventoryRootCapacity(string rootObjectId)
+    {
+        if (_inventoryRootCounts.ContainsKey(rootObjectId))
+        {
+            return;
+        }
+
+        while (_inventoryRootCounts.Count >= MaximumSnapshotInventoryRoots)
+        {
+            string oldestRoot;
+            do
+            {
+                oldestRoot = _inventoryRootOrder.Dequeue();
+            }
+            while (!_inventoryRootCounts.ContainsKey(oldestRoot));
+
+            string[] rootInventories = [.. _inventories
+                .Where(pair => pair.Value.RootObjectId == oldestRoot)
+                .Select(pair => pair.Key)];
+            foreach (string inventoryObjectId in rootInventories)
+            {
+                RemoveInventory(inventoryObjectId);
+            }
+        }
+
+        _inventoryRootCounts.Add(rootObjectId, 0);
+        _inventoryRootOrder.Enqueue(rootObjectId);
+    }
+
+    private void EvictOldestInventory()
+    {
+        string objectId;
+        do
+        {
+            objectId = _inventoryOrder.Dequeue();
+        }
+        while (!_inventories.ContainsKey(objectId));
+
+        RemoveInventory(objectId);
+    }
+
+    private void RemoveInventory(string objectId)
+    {
+        if (!_inventories.Remove(objectId, out GitSnapshotInventory? inventory))
+        {
+            return;
+        }
+
+        int remaining = _inventoryRootCounts[inventory.RootObjectId] - 1;
+        if (remaining == 0)
+        {
+            _inventoryRootCounts.Remove(inventory.RootObjectId);
+        }
+        else
+        {
+            _inventoryRootCounts[inventory.RootObjectId] = remaining;
+        }
+
+        _inventoryEvictions++;
     }
 }

@@ -52,7 +52,21 @@ public sealed record ChangePortfolioExecutionStatistics
 
     public int PeakRetainedSnapshotInventories { get; init; }
 
+    public int PeakRetainedSnapshotInventoryRoots { get; init; }
+
     public int ObjectDatabaseReaders { get; init; }
+
+    public int ObjectMetadataReaders { get; init; }
+
+    public int ObjectMetadataRequests { get; init; }
+
+    public int ObjectMetadataCacheHits { get; init; }
+
+    public int UniqueObjectMetadataObjects { get; init; }
+
+    public int ObjectMetadataCacheEvictions { get; init; }
+
+    public int PeakCachedObjectMetadataLengthsPerRepository { get; init; }
 
     public long BlobRequests { get; init; }
 
@@ -80,9 +94,13 @@ public sealed record ChangePortfolioExecutionStatistics
 
     public int SnapshotInventoryRetentionLimit { get; init; }
 
+    public int SnapshotInventoryRootRetentionLimit { get; init; }
+
     public int SnapshotDeltaBatchOutputByteLimit { get; init; }
 
     public long BlobCacheByteLimitPerRepository { get; init; }
+
+    public int ObjectMetadataCacheEntryLimitPerRepository { get; init; }
 
     public Diagnostic CreateDiagnostic() => new()
     {
@@ -100,18 +118,25 @@ public sealed record ChangePortfolioExecutionStatistics
             $"{SnapshotInventoryRevisitMisses} revisit miss(es); built " +
             $"{FullSnapshotInventoryLoads} full and {IncrementalSnapshotInventoryLoads} incremental " +
             $"inventories, including {BatchedIncrementalSnapshotInventoryLoads} from repository-level " +
-            $"batch diffs; evicted {SnapshotAnalysisEvictions} analysis entries and " +
+            $"batch diffs, while retaining at most {PeakRetainedSnapshotInventoryRoots} full-tree " +
+            $"root lineage(s); evicted {SnapshotAnalysisEvictions} analysis entries and " +
             $"{SnapshotInventoryEvictions} inventory entries; " +
             $"{ObjectDatabaseReaders} Git object reader(s) served {BlobRequests} blob request(s) over " +
             $"{UniqueBlobObjects} unique object(s) with {BlobCacheHits} cache hit(s), " +
             $"{BlobCacheEvictions} eviction(s), and {BlobReadBytes} byte(s) read from Git. At most " +
+            $"{ObjectMetadataReaders} Git metadata reader(s) served {ObjectMetadataRequests} " +
+            $"length request(s) over {UniqueObjectMetadataObjects} unique object(s), with " +
+            $"{ObjectMetadataCacheHits} cache hit(s) and {ObjectMetadataCacheEvictions} eviction(s). " +
+            "At most " +
             $"{MaximumActiveRepositories} repository session(s) were active concurrently, " +
             $"with at most {MaximumConcurrentFileAnalysesPerRepository} independent file " +
             "analyses per repository and retention limits of " +
             $"{SnapshotAnalysisRetentionLimit} analyses, " +
             $"{AnalysisArtifactRetentionLimit} file-analysis artifacts, " +
-            $"{SnapshotInventoryRetentionLimit} inventories, and " +
-            $"{BlobCacheByteLimitPerRepository / 1024 / 1024} MiB of blobs per repository; " +
+            $"{SnapshotInventoryRetentionLimit} structurally shared inventories across " +
+            $"{SnapshotInventoryRootRetentionLimit} full-tree root lineages, and " +
+            $"{BlobCacheByteLimitPerRepository / 1024 / 1024} MiB of blobs plus " +
+            $"{ObjectMetadataCacheEntryLimitPerRepository} object-length entries per repository; " +
             $"repository batch output is capped at " +
             $"{SnapshotDeltaBatchOutputByteLimit / 1024 / 1024} MiB.",
     };

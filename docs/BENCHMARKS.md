@@ -1165,12 +1165,15 @@ warm-up.
 The initial combined time is retained separately because a new CLI process does
 not receive that warm-up. Timing remains observational and non-gating.
 
-### Repository-batch before/after
+### Intermediate repository-batch before/after
 
 Two consecutive development checkpoints used the same deterministic fixture and
 timing protocol. "Before" already includes indexed inventories, immutable
 file-analysis caching, and bounded file concurrency; "after" additionally batches
 eligible first-parent raw diffs and changed-blob sizes once per repository.
+These columns compare two intermediate branch states. They do not compare the
+published alpha.6 package with the final branch, do not represent the private
+field workload, and do not establish a 10x end-to-end improvement.
 
 | Measure | Before repository batching | After repository batching | Change |
 | --- | ---: | ---: | ---: |
@@ -1227,8 +1230,9 @@ The anonymized alpha.6 field run selected 255 changes from approximately 41,793
 reachable commits and a dominant roughly 29,000-file/663-MiB tree. It took
 219.33 seconds and sampled 693.45 MiB for the combined manifest. That private
 workload is materially larger and structurally different from this generated
-fixture, so applying the 56.9% synthetic reduction to predict a field result would
-be unsupported. A same-input alpha.7 retest remains required; it should report
+fixture, so applying either the intermediate 56.9% reduction or the representative
+3.01x result to predict a field result would be unsupported. A same-input alpha.7
+retest remains required; it should report
 phase times, batched-inventory coverage, unique artifact/blob counts, and peak
 working set.
 
@@ -1238,3 +1242,44 @@ and reuse counts, canonical reorder invariance, privacy, cancellation, and
 unchanged/offline targets. Explicit benchmark checkpoints retain timing and memory
 so performance can be reviewed without turning normal machine variance into a
 release failure.
+
+## Change author-period structural reuse v1.7.0 checkpoint
+
+Measured on August 17, 2026 with .NET runtime `10.0.7`, Windows `10.0.26200` x64,
+and 24 visible logical processors, this same-input checkpoint compares the
+published alpha.6 executable with the final hardening branch. The deterministic
+local manifest contains two repositories, eight pinned heads, two exclusive
+contributors, 31,010 aggregate tree files, 256 selected changes, and 512
+snapshot-analysis requests. Every generated commit changes 14 distinct small C#
+blobs, creating 3,254 unique blob objects and enough interleaved snapshots to
+exceed the former 16-inventory retention limit. Both executables ran sequentially
+against the same immutable Git objects on the same workstation.
+
+| Measure | Published alpha.6 | Final branch | Change |
+| --- | ---: | ---: | ---: |
+| End-to-end wall time | 31.531 s | 10.490 s | 66.7% lower; 3.01x faster |
+| Aggregate snapshot/diff phase | 49.681 s | 6.082 s | 87.8% lower; 8.17x faster |
+| Git blob requests | 54,816 | 33,696 | 38.5% lower |
+| Full inventories built | 4 | 2 | 50.0% lower |
+| Inventory evictions | 228 | 0 | eliminated |
+| Observed peak working set | 208.39 MiB | 237.18 MiB | 13.8% higher |
+
+Both reports contain the same 256 stable item IDs and the same
+`9.36 / 16.46 / 31.96` low/expected/high EHE. The final run retained 258 unique
+inventory objects as structurally shared states across one full-tree root lineage
+per repository. Its two lazy metadata readers served 42,660 length requests over
+190 unique objects with 42,470 cache hits and no eviction. The approximately
+29-MiB peak increase is an accepted bounded memory-for-latency tradeoff on this
+fixture, not a general memory allowance.
+
+This fixture is useful for exact regression and scaling checks, but its source
+bodies are deliberately tiny and its reachable history is shallow. It does not
+reproduce the private field workload's roughly 663 MiB tree or 41,793 reachable
+commits. The defensible same-fixture result is therefore 3.01x end to end, not
+10x. The snapshot/diff subsystem itself is now in the expected order of magnitude,
+but a 10x claim for the complete field command requires rerunning the same private
+manifest and measuring no more than approximately 21.9 seconds against alpha.6's
+219.33-second result. Protocol v1.7.0 also records the lazy object-metadata reader
+counters and canonical structurally shared inventory behavior. These wall-time
+and sampled-memory observations remain explicit benchmark evidence, never ordinary
+CI gates.

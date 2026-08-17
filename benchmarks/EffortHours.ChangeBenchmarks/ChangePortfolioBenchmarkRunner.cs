@@ -316,7 +316,16 @@ internal static class ChangePortfolioBenchmarkRunner
                 value => value.BatchedIncrementalSnapshotInventoryLoads),
             SnapshotInventoryEvictions = statistics.Sum(value => value.SnapshotInventoryEvictions),
             PeakRetainedSnapshotInventories = statistics.Max(value => value.PeakRetainedSnapshotInventories),
+            PeakRetainedSnapshotInventoryRoots = statistics.Max(
+                value => value.PeakRetainedSnapshotInventoryRoots),
             ObjectDatabaseReaders = statistics.Sum(value => value.ObjectDatabaseReaders),
+            ObjectMetadataReaders = statistics.Sum(value => value.ObjectMetadataReaders),
+            ObjectMetadataRequests = statistics.Sum(value => value.ObjectMetadataRequests),
+            ObjectMetadataCacheHits = statistics.Sum(value => value.ObjectMetadataCacheHits),
+            UniqueObjectMetadataObjects = statistics.Sum(value => value.UniqueObjectMetadataObjects),
+            ObjectMetadataCacheEvictions = statistics.Sum(value => value.ObjectMetadataCacheEvictions),
+            PeakCachedObjectMetadataLengthsPerRepository = statistics.Max(
+                value => value.PeakCachedObjectMetadataLengthsPerRepository),
             BlobRequests = statistics.Sum(value => value.BlobRequests),
             BlobCacheHits = statistics.Sum(value => value.BlobCacheHits),
             BlobCacheEvictions = statistics.Sum(value => value.BlobCacheEvictions),
@@ -330,9 +339,13 @@ internal static class ChangePortfolioBenchmarkRunner
             SnapshotAnalysisRetentionLimit = statistics.Max(value => value.SnapshotAnalysisRetentionLimit),
             AnalysisArtifactRetentionLimit = statistics.Max(value => value.AnalysisArtifactRetentionLimit),
             SnapshotInventoryRetentionLimit = statistics.Max(value => value.SnapshotInventoryRetentionLimit),
+            SnapshotInventoryRootRetentionLimit = statistics.Max(
+                value => value.SnapshotInventoryRootRetentionLimit),
             SnapshotDeltaBatchOutputByteLimit = statistics.Max(
                 value => value.SnapshotDeltaBatchOutputByteLimit),
             BlobCacheByteLimitPerRepository = statistics.Max(value => value.BlobCacheByteLimitPerRepository),
+            ObjectMetadataCacheEntryLimitPerRepository = statistics.Max(
+                value => value.ObjectMetadataCacheEntryLimitPerRepository),
         };
 
     private static string Key(string repositoryId, string objectId) => $"{repositoryId}:{objectId}";

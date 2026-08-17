@@ -122,7 +122,7 @@ public static partial class Program
     {
         ChangePortfolioExecutionStatistics reuse = execution.Statistics;
         ChangePortfolioExecutionStatistics isolatedReuse = execution.IsolatedManifestStatistics;
-        Console.WriteLine("benchmark=change/1.6.0");
+        Console.WriteLine("benchmark=change/1.7.0");
         Console.WriteLine($"estimator={ChangeEstimator.Version}");
         Console.WriteLine($"mode={options.Name}");
         Console.WriteLine($"runtime={RuntimeInformation.FrameworkDescription}");
@@ -152,6 +152,13 @@ public static partial class Program
         Console.WriteLine($"isolated-manifest-selected-rows={execution.IsolatedManifestSelectedRows.ToString(CultureInfo.InvariantCulture)}");
         Console.WriteLine($"isolated-manifest-unique-changes={execution.UniqueIsolatedManifestChanges.ToString(CultureInfo.InvariantCulture)}");
         Console.WriteLine($"combined-git-object-readers={reuse.ObjectDatabaseReaders.ToString(CultureInfo.InvariantCulture)}");
+        Console.WriteLine($"combined-git-metadata-readers={reuse.ObjectMetadataReaders.ToString(CultureInfo.InvariantCulture)}");
+        Console.WriteLine($"object-metadata-requests={reuse.ObjectMetadataRequests.ToString(CultureInfo.InvariantCulture)}");
+        Console.WriteLine($"object-metadata-cache-hits={reuse.ObjectMetadataCacheHits.ToString(CultureInfo.InvariantCulture)}");
+        Console.WriteLine($"unique-object-metadata-objects={reuse.UniqueObjectMetadataObjects.ToString(CultureInfo.InvariantCulture)}");
+        Console.WriteLine($"object-metadata-cache-evictions={reuse.ObjectMetadataCacheEvictions.ToString(CultureInfo.InvariantCulture)}");
+        Console.WriteLine($"peak-cached-object-metadata-lengths={reuse.PeakCachedObjectMetadataLengthsPerRepository.ToString(CultureInfo.InvariantCulture)}");
+        Console.WriteLine($"object-metadata-cache-entry-limit={reuse.ObjectMetadataCacheEntryLimitPerRepository.ToString(CultureInfo.InvariantCulture)}");
         Console.WriteLine($"isolated-manifest-git-object-readers={execution.IsolatedManifestObjectReaders.ToString(CultureInfo.InvariantCulture)}");
         Console.WriteLine($"snapshot-analysis-requests={reuse.SnapshotAnalysisRequests.ToString(CultureInfo.InvariantCulture)}");
         Console.WriteLine($"snapshot-analysis-hits={reuse.SnapshotAnalysisHits.ToString(CultureInfo.InvariantCulture)}");
@@ -172,6 +179,11 @@ public static partial class Program
         Console.WriteLine($"snapshot-inventory-revisit-misses={reuse.SnapshotInventoryRevisitMisses.ToString(CultureInfo.InvariantCulture)}");
         Console.WriteLine($"isolated-manifest-snapshot-inventory-requests={isolatedReuse.SnapshotInventoryRequests.ToString(CultureInfo.InvariantCulture)}");
         Console.WriteLine($"isolated-manifest-snapshot-inventory-hits={isolatedReuse.SnapshotInventoryHits.ToString(CultureInfo.InvariantCulture)}");
+        Console.WriteLine($"snapshot-inventory-evictions={reuse.SnapshotInventoryEvictions.ToString(CultureInfo.InvariantCulture)}");
+        Console.WriteLine($"peak-retained-snapshot-inventories={reuse.PeakRetainedSnapshotInventories.ToString(CultureInfo.InvariantCulture)}");
+        Console.WriteLine($"peak-retained-snapshot-inventory-roots={reuse.PeakRetainedSnapshotInventoryRoots.ToString(CultureInfo.InvariantCulture)}");
+        Console.WriteLine($"snapshot-inventory-retention-limit={reuse.SnapshotInventoryRetentionLimit.ToString(CultureInfo.InvariantCulture)}");
+        Console.WriteLine($"snapshot-inventory-root-retention-limit={reuse.SnapshotInventoryRootRetentionLimit.ToString(CultureInfo.InvariantCulture)}");
         Console.WriteLine($"full-snapshot-inventory-loads={reuse.FullSnapshotInventoryLoads.ToString(CultureInfo.InvariantCulture)}");
         Console.WriteLine($"incremental-snapshot-inventory-loads={reuse.IncrementalSnapshotInventoryLoads.ToString(CultureInfo.InvariantCulture)}");
         Console.WriteLine($"batched-incremental-snapshot-inventory-loads={reuse.BatchedIncrementalSnapshotInventoryLoads.ToString(CultureInfo.InvariantCulture)}");

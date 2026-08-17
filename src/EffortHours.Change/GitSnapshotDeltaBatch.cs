@@ -178,7 +178,7 @@ internal static class GitSnapshotDeltaBatch
         return result;
     }
 
-    private static async Task<IReadOnlyDictionary<string, long>> ReadBlobLengthsAsync(
+    internal static async Task<IReadOnlyDictionary<string, long>> ReadBlobLengthsAsync(
         string repositoryPath,
         string[] objectIds,
         CancellationToken cancellationToken)

@@ -201,6 +201,13 @@ files. Linear reconciliation replaces pairwise graph construction without adding
 a new responsibility. Every affected file remains under its existing budget, and
 no override was added or increased.
 
+The August 17, 2026 large-tree follow-up separates persistent inventory state,
+canonical Merkle identity, lazy Git object metadata, repository-session
+statistics, analysis-scope indexing, and benchmark rendering. Full inventories do
+not absorb metadata-reader or digest policy, and the repository session does not
+absorb its statistics record. Every affected file remains under its existing
+budget, and no override was added or increased.
+
 Line count is deliberately simple, deterministic, cross-platform, and difficult
 to game accidentally. The useful outcome is earlier decomposition into cohesive
 contracts, commands, analyzers, and renderers—not compressed formatting.

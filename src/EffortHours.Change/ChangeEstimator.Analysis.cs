@@ -186,9 +186,12 @@ public sealed partial class ChangeEstimator
         CancellationToken cancellationToken)
     {
         string analysisScopeId = analysisScope?.Id ?? "full-snapshot";
+        string snapshotAnalysisIdentity = snapshot is GitSnapshotFileSystem gitSnapshot
+            ? gitSnapshot.InventoryDigest
+            : snapshot.ObjectId;
         if (snapshotAnalyses.TryGet(
             cacheNamespace,
-            snapshot.ObjectId,
+            snapshotAnalysisIdentity,
             analysisScopeId,
             out SnapshotAnalysis cached))
         {
@@ -209,7 +212,7 @@ public sealed partial class ChangeEstimator
 
             analysis = new(evidence, estimate);
         }
-        snapshotAnalyses.Add(cacheNamespace, snapshot.ObjectId, analysisScopeId, analysis);
+        snapshotAnalyses.Add(cacheNamespace, snapshotAnalysisIdentity, analysisScopeId, analysis);
         return analysis;
     }
 

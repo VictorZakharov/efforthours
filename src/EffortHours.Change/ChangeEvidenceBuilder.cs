@@ -33,6 +33,8 @@ internal static class ChangeEvidenceBuilder
         {
             bool hasBase = baseFiles.TryGetValue(path, out ChangeSnapshotFile? before);
             bool hasHead = headFiles.TryGetValue(path, out ChangeSnapshotFile? after);
+            before = ResolveLength(baseSnapshot, before);
+            after = ResolveLength(headSnapshot, after);
             if (hasBase && hasHead)
             {
                 if (!SameObject(before!, after!))
@@ -71,8 +73,12 @@ internal static class ChangeEvidenceBuilder
         int unchanged = baseFiles.Count - modified.Count - removed.Count;
 
         List<PathCandidate> moved = PairExactMoves(removed, added);
-        IReadOnlySet<string> baseObjectIds = ContentObjectIds(baseSnapshot, baseFiles.Values);
-        IReadOnlySet<string> headObjectIds = ContentObjectIds(headSnapshot, headFiles.Values);
+        IReadOnlyDictionary<string, int> baseObjectIds = ContentObjectCounts(
+            baseSnapshot,
+            baseFiles.Values);
+        IReadOnlyDictionary<string, int> headObjectIds = ContentObjectCounts(
+            headSnapshot,
+            headFiles.Values);
 
         List<ChangePathEvidence> paths = [];
         foreach (PathCandidate candidate in moved.Concat(modified).Concat(removed).Concat(added))
@@ -241,14 +247,14 @@ internal static class ChangeEvidenceBuilder
             ? new HashSet<string>(knownChangedPaths, StringComparer.Ordinal)
             : ChangeAnalysisScope.FindChangedPaths(baseFiles, headFiles);
 
-    private static IReadOnlySet<string> ContentObjectIds(
+    private static IReadOnlyDictionary<string, int> ContentObjectCounts(
         IChangeSnapshot snapshot,
         IEnumerable<ChangeSnapshotFile> files) => snapshot is GitSnapshotFileSystem gitSnapshot
-            ? gitSnapshot.ContentObjectIds
+            ? gitSnapshot.ContentObjectCounts
             : files
                 .Where(file => !file.IsLink && !file.IsSubmodule)
-                .Select(file => file.ObjectId)
-                .ToHashSet(StringComparer.Ordinal);
+                .GroupBy(file => file.ObjectId, StringComparer.Ordinal)
+                .ToDictionary(group => group.Key, group => group.Count(), StringComparer.Ordinal);
 
     private static List<PathCandidate> PairExactMoves(
         List<PathCandidate> removed,
@@ -300,6 +306,22 @@ internal static class ChangeEvidenceBuilder
     private static bool SameObject(ChangeSnapshotFile left, ChangeSnapshotFile right) =>
         string.Equals(left.ObjectId, right.ObjectId, StringComparison.Ordinal) &&
         string.Equals(left.Mode, right.Mode, StringComparison.Ordinal);
+
+    private static ChangeSnapshotFile? ResolveLength(
+        IChangeSnapshot snapshot,
+        ChangeSnapshotFile? file)
+    {
+        if (file is null || file.Length >= 0 || file.IsSubmodule)
+        {
+            return file;
+        }
+
+        string fullPath = snapshot.FileSystem.GetFullPath(Path.Combine(
+            snapshot.RootPath,
+            file.Path.Replace('/', Path.DirectorySeparatorChar)));
+        var metadata = snapshot.FileSystem.GetFileMetadata(fullPath);
+        return file with { Length = metadata.Length };
+    }
 
     private static Dictionary<string, EvidenceFact> FileFacts(RepositoryEvidence evidence) =>
         evidence.Facts

@@ -270,16 +270,24 @@ count, and intermediate churn do not value effort. `CHANGE_ESTIMATION.md` and
   existing per-repository identity-ledger boundary instead of imposing a
   presentation-row cap. Large-tree analysis loads only changed-neighborhood
   context, batches eligible first-parent deltas and changed-blob sizes once per
-  repository, reuses immutable file analysis, reconciliation uses linear component
-  construction, and at most two repository sessions overlap as a bounded memory-
-  for-latency tradeoff. Preserve
+  repository, retains structurally shared inventories across 16 root lineages,
+  resolves full-tree blob lengths lazily, and reuses immutable file and equal-tree
+  analysis through a canonical Merkle inventory identity. Reconciliation uses
+  linear component construction, and at most two repository sessions overlap as
+  a bounded memory-for-latency tradeoff. Preserve
   the 1,700-change regression, progress/cancellation diagnostics, sibling-path
   behavior, and the non-gating `change/1.6.0` checkpoint. The current checkpoint
   compares one combined manifest with the same contributors in isolated manifests;
   the earlier repository/head explosion is retained only as historical evidence
   and is not a speedup baseline. Preserve bounded immutable file-analysis reuse,
   non-regex ignore matching, actionable privacy-safe Git ownership diagnostics,
-  and explicit membership-dependent normalized contributor allocation.
+  and explicit membership-dependent normalized contributor allocation. The
+  non-gating `change/1.7.0` alpha.6-versus-final 31,010-file/256-change control is
+  3.01x faster end to end and 8.17x faster in aggregate snapshot/diff work with
+  identical results; it is not evidence of a 10x field improvement. Keep the PR
+  experimental until the same private 219.33-second manifest is retested and
+  meets the approximately 21.9-second target or the remaining phase is identified
+  honestly.
 - The optional host-assisted scaffolding boundary is now frozen in
   `AUTHOR_PERIOD_SCAFFOLDING.md`: a separate companion adapter may eventually emit
   a reviewed v1 manifest and local-only provenance, but the estimator stays

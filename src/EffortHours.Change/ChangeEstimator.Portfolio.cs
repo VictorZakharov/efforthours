@@ -107,8 +107,7 @@ public sealed partial class ChangeEstimator
                                 repositoryCancellationToken).ConfigureAwait(false);
                             SnapshotAnalysisCache.SnapshotAnalysisCacheStatistics cacheStatistics =
                                 snapshotAnalyses.GetStatistics();
-                            int requestDelta =
-                                cacheStatistics.Requests - previousAnalysisRequests;
+                            int requestDelta = cacheStatistics.Requests - previousAnalysisRequests;
                             int hitDelta = cacheStatistics.Hits - previousAnalysisHits;
                             previousAnalysisRequests = cacheStatistics.Requests;
                             previousAnalysisHits = cacheStatistics.Hits;
@@ -221,7 +220,14 @@ public sealed partial class ChangeEstimator
         private int _batchedIncrementalInventories;
         private int _inventoryEvictions;
         private int _peakInventories;
+        private int _peakInventoryRoots;
         private int _objectReaders;
+        private int _metadataReaders;
+        private int _metadataRequests;
+        private int _metadataHits;
+        private int _uniqueMetadataObjects;
+        private int _metadataEvictions;
+        private int _peakMetadataLengths;
         private long _blobRequests;
         private long _blobHits;
         private long _blobEvictions;
@@ -267,7 +273,18 @@ public sealed partial class ChangeEstimator
                 _batchedIncrementalInventories += value.BatchedIncrementalInventoryLoads;
                 _inventoryEvictions += value.InventoryEvictions;
                 _peakInventories = Math.Max(_peakInventories, value.PeakRetainedInventories);
+                _peakInventoryRoots = Math.Max(
+                    _peakInventoryRoots,
+                    value.PeakRetainedInventoryRoots);
                 _objectReaders += value.ObjectReaderStarts;
+                _metadataReaders += value.ObjectMetadataReaderStarts;
+                _metadataRequests += value.ObjectMetadataRequests;
+                _metadataHits += value.ObjectMetadataCacheHits;
+                _uniqueMetadataObjects += value.UniqueObjectMetadataObjects;
+                _metadataEvictions += value.ObjectMetadataCacheEvictions;
+                _peakMetadataLengths = Math.Max(
+                    _peakMetadataLengths,
+                    value.PeakCachedObjectMetadataLengths);
                 _blobRequests += value.BlobRequests;
                 _blobHits += value.BlobCacheHits;
                 _blobEvictions += value.BlobCacheEvictions;
@@ -310,7 +327,14 @@ public sealed partial class ChangeEstimator
             BatchedIncrementalSnapshotInventoryLoads = _batchedIncrementalInventories,
             SnapshotInventoryEvictions = _inventoryEvictions,
             PeakRetainedSnapshotInventories = _peakInventories,
+            PeakRetainedSnapshotInventoryRoots = _peakInventoryRoots,
             ObjectDatabaseReaders = _objectReaders,
+            ObjectMetadataReaders = _metadataReaders,
+            ObjectMetadataRequests = _metadataRequests,
+            ObjectMetadataCacheHits = _metadataHits,
+            UniqueObjectMetadataObjects = _uniqueMetadataObjects,
+            ObjectMetadataCacheEvictions = _metadataEvictions,
+            PeakCachedObjectMetadataLengthsPerRepository = _peakMetadataLengths,
             BlobRequests = _blobRequests,
             BlobCacheHits = _blobHits,
             BlobCacheEvictions = _blobEvictions,
@@ -325,8 +349,12 @@ public sealed partial class ChangeEstimator
             AnalysisArtifactRetentionLimit =
                 RepositoryAnalysisArtifactCache.DefaultMaximumEntries,
             SnapshotInventoryRetentionLimit = GitSnapshotSession.MaximumSnapshotInventories,
+            SnapshotInventoryRootRetentionLimit =
+                GitSnapshotSession.MaximumSnapshotInventoryRoots,
             SnapshotDeltaBatchOutputByteLimit = GitSnapshotDeltaBatch.MaximumBatchOutputBytes,
             BlobCacheByteLimitPerRepository = GitBatchObjectReader.MaximumCacheBytes,
+            ObjectMetadataCacheEntryLimitPerRepository =
+                GitBatchObjectMetadataReader.MaximumCachedLengths,
         };
     }
 }

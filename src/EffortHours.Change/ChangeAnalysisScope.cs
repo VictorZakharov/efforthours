@@ -47,8 +47,13 @@ internal sealed record ChangeAnalysisScope(
         IChangeSnapshot headSnapshot)
     {
         if (baseSnapshot is not GitSnapshotFileSystem baseGitSnapshot ||
-            headSnapshot is not GitSnapshotFileSystem headGitSnapshot ||
-            Math.Max(baseSnapshot.Files.Count, headSnapshot.Files.Count) <= FullSnapshotFileLimit)
+            headSnapshot is not GitSnapshotFileSystem headGitSnapshot)
+        {
+            return null;
+        }
+
+        if (Math.Max(baseGitSnapshot.FileCount, headGitSnapshot.FileCount) <=
+            FullSnapshotFileLimit)
         {
             return null;
         }
@@ -62,8 +67,8 @@ internal sealed record ChangeAnalysisScope(
             changedPaths,
             baseGitSnapshot.AnalysisIndex,
             headGitSnapshot.AnalysisIndex,
-            baseGitSnapshot.Files.Count,
-            headGitSnapshot.Files.Count);
+            baseGitSnapshot.FileCount,
+            headGitSnapshot.FileCount);
     }
 
     private const int FullSnapshotFileLimit = ChangeEstimator.FullSnapshotAnalysisFileLimit;
@@ -91,21 +96,7 @@ internal sealed record ChangeAnalysisScope(
     }
 
     internal static ChangeAnalysisInventoryIndex CreateInventoryIndex(
-        IReadOnlyList<ChangeSnapshotFile> files)
-    {
-        string[] contextPaths = [.. files
-            .Select(file => file.Path)
-            .Where(IsContextPath)
-            .Distinct(StringComparer.Ordinal)
-            .Order(StringComparer.Ordinal)];
-        string[] representativePaths = [.. files
-            .Where(file => RepresentativeExtensions.Contains(Path.GetExtension(file.Path)))
-            .GroupBy(file => Path.GetExtension(file.Path), StringComparer.OrdinalIgnoreCase)
-            .Select(group => group.MinBy(file => file.Path, StringComparer.Ordinal)!.Path)
-            .Distinct(StringComparer.Ordinal)
-            .Order(StringComparer.Ordinal)];
-        return new ChangeAnalysisInventoryIndex(contextPaths, representativePaths);
-    }
+        IEnumerable<ChangeSnapshotFile> files) => ChangeAnalysisInventoryIndex.Create(files);
 
     internal static HashSet<string> FindChangedPaths(
         IReadOnlyDictionary<string, ChangeSnapshotFile> baseFiles,
@@ -166,7 +157,7 @@ internal sealed record ChangeAnalysisScope(
             Math.Max(baseFileCount, headFileCount));
     }
 
-    public static string ComputeInventoryDigest(IReadOnlyList<ChangeSnapshotFile> files)
+    public static string ComputeInventoryDigest(IEnumerable<ChangeSnapshotFile> files)
     {
         using IncrementalHash hash = IncrementalHash.CreateHash(HashAlgorithmName.SHA256);
         hash.AppendData("efforthours:git-snapshot-inventory:1\0"u8);
@@ -183,7 +174,7 @@ internal sealed record ChangeAnalysisScope(
         return $"sha256:{Convert.ToHexString(hash.GetHashAndReset()).ToLowerInvariant()}";
     }
 
-    private static bool IsContextPath(string path)
+    internal static bool IsContextPath(string path)
     {
         string fileName = Path.GetFileName(path);
         string extension = Path.GetExtension(path);
@@ -199,6 +190,9 @@ internal sealed record ChangeAnalysisScope(
                 (extension.Equals(".yml", StringComparison.OrdinalIgnoreCase) ||
                     extension.Equals(".yaml", StringComparison.OrdinalIgnoreCase));
     }
+
+    internal static bool IsRepresentativePath(string path) =>
+        RepresentativeExtensions.Contains(Path.GetExtension(path));
 
     private static bool IsRelevantContextPath(
         string contextPath,

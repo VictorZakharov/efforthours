@@ -177,6 +177,10 @@ portfolio reports use `change-portfolio/0.2.3`. Author-period manifests keep a
 that input rather than imposing a presentation-row cap, and run at most two
 repository sessions concurrently under fixed per-repository cache bounds,
 including 8,192 immutable analyzer-versioned file artifacts with deterministic
-key-ranked retention. Eligible non-merge
-first-parent deltas and changed-blob sizes are batched once per repository before
-row analysis with a 64-MiB output cap and exact per-row fallback.
+key-ranked retention, 10,000 structurally shared inventories across 16 full-tree
+roots, and lazy object-length metadata. Eligible non-merge first-parent deltas and
+changed-blob sizes are batched once per repository before row analysis with a
+64-MiB output cap and exact per-row fallback. The public same-input alpha.6
+control is 3.01x faster end to end and 8.17x faster in snapshot/diff work with
+identical output; a same-input retest of the private 219.33-second workload is
+still required before claiming the targeted 10x field improvement.

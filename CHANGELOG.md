@@ -9,23 +9,33 @@ may still change public contracts with explicit documentation.
 ### Added
 
 - Added deterministic author-period reuse diagnostics for unique snapshot,
-  inventory, analysis-artifact, and Git-blob objects; revisit misses; byte traffic;
-  batched incremental inventories; evictions; and fixed retention bounds. The
-  explicit `change/1.6.0` benchmark now compares a combined manifest with the same
-  isolated contributor manifests and corrects the older repository/head-explosion
-  timing baseline.
+  inventory, analysis-artifact, Git-blob, and lazy object-metadata objects;
+  revisit misses; byte traffic; batched incremental inventories; evictions; and
+  fixed retention bounds. The explicit `change/1.6.0` benchmark now compares a
+  combined manifest with the same isolated contributor manifests and corrects the
+  older repository/head-explosion timing baseline. The `change/1.7.0` protocol
+  adds lazy-metadata and structural-inventory counters; its same-input published-
+  alpha.6 checkpoint records a 31.531-to-10.490-second improvement on a 31,010-
+  file, 256-change fixture without treating wall time as a CI gate or claiming
+  that the private 219-second workload has already improved 10x.
 
 ### Changed
 
 - Reuse immutable common-scanner, C#, and JavaScript per-file analysis across
   contributor and head scopes within one repository invocation. Snapshot
-  inventories retain content indexes, digests, and available first-parent diffs,
-  trading a bounded, deterministic key-ranked 8,192-artifact cache for lower
-  repeated parsing and allocation.
+  inventories retain persistent content indexes, canonical Merkle digests, and
+  available first-parent diffs. Up to 10,000 structurally shared inventories
+  across 16 root lineages replace the former 16 complete inventory states, while
+  the bounded, deterministic key-ranked 8,192-artifact cache lowers repeated
+  parsing and allocation.
 - Load eligible first-parent commit deltas and changed-blob sizes in two bounded
   repository-level Git batches instead of starting `diff-tree` and `ls-tree` for
   every selected change. Large .NET and JavaScript scopes analyze at most four
   independent files concurrently and restore canonical order before aggregation.
+- Enumerate full Git trees by path, mode, and object identity without eagerly
+  loading every blob length. Resolve admitted lengths through one lazy bounded
+  `cat-file --batch-check` reader per repository and reuse identical-tree analysis
+  by canonical inventory digest plus exact scope.
 - Clarified that normalized contributor values are allocations from joint
   repository reconciliation and may depend on manifest membership even when
   contributor commit matches are exclusive; isolated row sums remain explicit.
