@@ -1045,3 +1045,86 @@ network. Fixture generation and complete pre/post fingerprinting remain outside
 worker intervals. Link targets are not followed, caller source paths are never
 printed, `--keep` discloses only the generated repository path, and the public
 source tree is unchanged.
+
+## Change author-period closed-month v1.5.0 checkpoint
+
+Measured on August 17, 2026 with benchmark protocol `change/1.5.0`, .NET runtime
+`10.0.7`, Windows `10.0.26200` x64, 24 visible logical processors, source estimator
+`change-seed/0.18.2+seed-rules/0.4.0`, and portfolio reconciler
+`change-portfolio/0.2.2`. The machine is the same AMD Ryzen 9 5900X workstation
+used by the earlier Change checkpoints.
+
+The generated fixture has two local repositories, eight pinned heads, two matching
+contributors plus one deterministic zero row, and 65 qualifying commits per
+repository. Each base tree requests 1,025 source files, one root project, and 512
+nested project-context files distributed between the changed path's ancestor and
+unrelated directories. The two measured default heads contain 3,084 files
+and 3,280 virtual directories in aggregate. The closed interval is one calendar
+month, and the combined report selects 130 repository-scoped changes.
+
+```text
+dotnet benchmarks/EffortHours.ChangeBenchmarks/bin/Release/net10.0/EffortHours.ChangeBenchmarks.dll
+  --author-period-manifest --files 1025 --context-projects 512
+  --lines-per-file 8 --commits 65 --compare-independent
+```
+
+One invocation measured the combined portfolio, the equivalent contributor/
+repository/head estimates, and a reordered determinism run against the same local
+objects:
+
+| Measure | Combined manifest | Equivalent independent estimates |
+| --- | ---: | ---: |
+| Estimate wall time | 8.908 s | 23.934 s |
+| Combined/independent wall ratio | 0.372 | 1.000 |
+| Snapshot analyses | 134 | 160 |
+| Git object readers | 2 | 16 |
+| Selected unique changes | 130 | 130 |
+| Semantic result | baseline | exact contributor totals and unique changes matched |
+
+The combined path served 126 of 260 snapshot-analysis requests and 126 of 260
+immutable-inventory requests from bounded caches. It loaded four full inventories,
+derived 130 incrementally, and served 930 of 1,064 blob requests from cache. The
+complete estimate comparison, including independent and reordered runs, took
+40.503 seconds, allocated 1,117.64 MiB cumulatively, and sampled a 142.68-MiB
+process peak from a 59.07-MiB start. Cumulative allocation is churn over the full
+suite, not simultaneously retained memory.
+
+The two repository sessions overlap. Aggregate snapshot/diff phase time was
+14.283 seconds and static-analysis time was 1.126 seconds; phase totals may exceed
+combined wall time because concurrent repository work is added. Bounded
+two-repository execution deliberately raised the earlier sequential development
+observation's approximately 132-MiB process peak by about 11 MiB while roughly
+halving its 18.526-second combined interval. That intermediate observation is
+context, not a CI threshold or a separately shipped benchmark identity.
+
+### Field before/after context
+
+The anonymized field workload and generated fixture are not the same repository,
+so the table establishes order of magnitude rather than a controlled speedup:
+
+| Evidence | Selected work | Wall time | Working set | Result |
+| --- | ---: | ---: | ---: | --- |
+| Field contributor A before | more than 128 exact matches | 1.507 s | not material | rejected; no report |
+| Field contributor B before | closed month | more than 300 s | 640.5 MiB sampled | terminated; no report |
+| v1.5 generated after | 130 exact matches | 8.908 s combined | 142.68 MiB suite peak | report completed |
+
+The deterministic suite separately constructs, reconciles, serializes, and
+schema-validates 1,701 report rows so that a high-commit month cannot regress to a
+presentation cap. The public calculation remains bounded by 10,000 identity
+candidates per repository and the 32-repository manifest envelope; this is not a
+calendar-month limit.
+
+Every semantic invariant passed: independent contributor totals, exact manual
+reconciliation, reordered report bytes, repository-scoped object identity,
+overlapping-head deduplication, zero rows, and the privacy boundary. Worktrees and
+complete Git states were unchanged; target execution, dependency installation,
+and network access were not performed. A manifest inside one worktree also opens a
+readable sibling repository in the process suite. An unreadable sibling in a
+restricted caller environment is therefore an operating-system/process-access
+failure, not an EffortHours containment rule.
+
+No wall-time, ratio, allocation, or working-set value gates ordinary CI. CI checks
+the 1,701-row contract, bounded two-repository coordination, linear-space
+component construction, relevant-context selection, exact reuse counts,
+progress/cancellation privacy, sibling-path acceptance, determinism, and
+unchanged/offline targets.

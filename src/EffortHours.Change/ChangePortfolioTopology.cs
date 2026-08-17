@@ -66,43 +66,41 @@ internal static class ChangePortfolioTopology
         IReadOnlyList<ChangePortfolioItemDraft> drafts,
         IReadOnlyDictionary<string, ChangePortfolioItemDraft[]> touches)
     {
-        Dictionary<ChangePortfolioItemDraft, HashSet<ChangePortfolioItemDraft>> edges =
-            drafts.ToDictionary(draft => draft, _ => new HashSet<ChangePortfolioItemDraft>());
+        Dictionary<ChangePortfolioItemDraft, int> indexes = drafts
+            .Select((draft, index) => (draft, index))
+            .ToDictionary(entry => entry.draft, entry => entry.index);
+        int[] parents = [.. Enumerable.Range(0, drafts.Count)];
         foreach (ChangePortfolioItemDraft[] pathDrafts in touches.Values)
         {
-            foreach (ChangePortfolioItemDraft draft in pathDrafts)
-            {
-                edges[draft].UnionWith(pathDrafts.Where(other => other != draft));
-            }
-        }
-
-        HashSet<ChangePortfolioItemDraft> visited = [];
-        List<IReadOnlyList<ChangePortfolioItemDraft>> result = [];
-        foreach (ChangePortfolioItemDraft root in drafts.OrderBy(draft => draft.Id, StringComparer.Ordinal))
-        {
-            if (!visited.Add(root))
+            if (pathDrafts.Length < 2)
             {
                 continue;
             }
 
-            Queue<ChangePortfolioItemDraft> pending = new([root]);
-            List<ChangePortfolioItemDraft> component = [];
-            while (pending.TryDequeue(out ChangePortfolioItemDraft? current))
+            int first = indexes[pathDrafts[0]];
+            foreach (ChangePortfolioItemDraft draft in pathDrafts.Skip(1))
             {
-                component.Add(current);
-                foreach (ChangePortfolioItemDraft neighbor in edges[current].OrderBy(item => item.Id, StringComparer.Ordinal))
-                {
-                    if (visited.Add(neighbor))
-                    {
-                        pending.Enqueue(neighbor);
-                    }
-                }
+                Union(parents, first, indexes[draft]);
             }
-
-            result.Add(component);
         }
 
-        return result;
+        Dictionary<int, List<ChangePortfolioItemDraft>> components = [];
+        foreach (ChangePortfolioItemDraft draft in drafts)
+        {
+            int root = Find(parents, indexes[draft]);
+            if (!components.TryGetValue(root, out List<ChangePortfolioItemDraft>? component))
+            {
+                component = [];
+                components.Add(root, component);
+            }
+
+            component.Add(draft);
+        }
+
+        return [.. components.Values
+            .Select(component => (IReadOnlyList<ChangePortfolioItemDraft>)[.. component
+                .OrderBy(draft => draft.Id, StringComparer.Ordinal)])
+            .OrderBy(component => component[0].Id, StringComparer.Ordinal)];
     }
 
     private static bool IsExactChronologicalRevert(
@@ -126,10 +124,43 @@ internal static class ChangePortfolioTopology
             State(left, path).HeadState == State(right, path).BaseState).All(value => value);
     }
 
-    private static bool OpposingEffects(string path, IReadOnlyList<ChangePortfolioItemDraft> drafts) =>
-        drafts.SelectMany((left, index) => drafts.Skip(index + 1).Select(right => (Left: left, Right: right)))
-            .Any(pair => State(pair.Left, path).BaseState == State(pair.Right, path).HeadState &&
-                State(pair.Left, path).HeadState == State(pair.Right, path).BaseState);
+    private static bool OpposingEffects(string path, IReadOnlyList<ChangePortfolioItemDraft> drafts)
+    {
+        HashSet<(string? Base, string? Head)> seen = [];
+        foreach (ChangePortfolioItemDraft draft in drafts)
+        {
+            ChangePortfolioPathEffect effect = State(draft, path);
+            if (seen.Contains((effect.HeadState, effect.BaseState)))
+            {
+                return true;
+            }
+
+            seen.Add((effect.BaseState, effect.HeadState));
+        }
+
+        return false;
+    }
+
+    private static int Find(int[] parents, int item)
+    {
+        while (parents[item] != item)
+        {
+            parents[item] = parents[parents[item]];
+            item = parents[item];
+        }
+
+        return item;
+    }
+
+    private static void Union(int[] parents, int left, int right)
+    {
+        int leftRoot = Find(parents, left);
+        int rightRoot = Find(parents, right);
+        if (leftRoot != rightRoot)
+        {
+            parents[rightRoot] = leftRoot;
+        }
+    }
 
     private static ChangePortfolioPathEffect State(ChangePortfolioItemDraft draft, string path) =>
         draft.Effects[path];

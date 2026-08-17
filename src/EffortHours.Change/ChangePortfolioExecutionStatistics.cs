@@ -56,7 +56,7 @@ public sealed record ChangePortfolioExecutionStatistics
             $"{SnapshotInventoryEvictions} inventory entries; " +
             $"{ObjectDatabaseReaders} Git object reader(s) served {BlobRequests} blob request(s) with " +
             $"{BlobCacheHits} cache hit(s) and {BlobCacheEvictions} eviction(s). At most " +
-            $"{MaximumActiveRepositories} repository was active, " +
+            $"{MaximumActiveRepositories} repository session(s) were active concurrently, " +
             $"with retention limits of {SnapshotAnalysisRetentionLimit} analyses, " +
             $"{SnapshotInventoryRetentionLimit} inventories, and " +
             $"{BlobCacheByteLimitPerRepository / 1024 / 1024} MiB of blobs per repository.",

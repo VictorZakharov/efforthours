@@ -12,6 +12,8 @@ public sealed class ChangeBenchmarkCliTests
             "--tree",
             "--files",
             "8",
+            "--context-projects",
+            "0",
             "--lines-per-file",
             "8");
 
@@ -100,6 +102,8 @@ public sealed class ChangeBenchmarkCliTests
             "--author-period-manifest",
             "--files",
             "8",
+            "--context-projects",
+            "0",
             "--lines-per-file",
             "8",
             "--commits",
@@ -111,6 +115,7 @@ public sealed class ChangeBenchmarkCliTests
         Dictionary<string, string> values = Parse(result.StandardOutput);
         Assert.Equal("author-period-manifest", values["mode"]);
         Assert.Equal("2", values["portfolio-repositories"]);
+        Assert.Equal("2", values["maximum-active-repositories"]);
         Assert.Equal("8", values["portfolio-heads"]);
         Assert.Equal("3", values["portfolio-contributors"]);
         Assert.Equal("6", values["selected-changes"]);
@@ -245,7 +250,9 @@ public sealed class ChangeBenchmarkCliTests
         Dictionary<string, string> values,
         bool requireOverallMeasurements = true)
     {
-        Assert.Equal("change/1.4.0", values["benchmark"]);
+        Assert.Equal(
+            values["mode"] == "author-period-manifest" ? "change/1.5.0" : "change/1.4.0",
+            values["benchmark"]);
         Assert.Equal("true", values["worktree-unchanged"]);
         Assert.Equal("true", values["git-state-unchanged"]);
         Assert.Equal("not-performed", values["target-execution"]);

@@ -9,6 +9,8 @@ public sealed partial class ChangeCliTests
         string[] lines = standardError.Split(
             '\n',
             StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+        string[] progressLines = [.. lines.Where(line => line.Contains(" progress ", StringComparison.Ordinal))];
+        string[] phaseLines = [.. lines.Except(progressLines, StringComparer.Ordinal)];
         string[] phases = includesManifestPhases
             ?
             [
@@ -32,15 +34,20 @@ public sealed partial class ChangeCliTests
                 "reconciliation",
                 "rendering",
             ];
-        Assert.Equal(phases.Length * 2, lines.Length);
+        Assert.NotEmpty(progressLines);
+        Assert.Contains(progressLines, line => line.Contains("analysis-cache=", StringComparison.Ordinal));
+        Assert.Contains(
+            progressLines,
+            line => line.Contains("observed-peak-working-set=", StringComparison.Ordinal));
+        Assert.Equal(phases.Length * 2, phaseLines.Length);
         Assert.All(lines, line => Assert.StartsWith("eh: portfolio phase ", line));
         foreach (string phase in phases)
         {
-            string started = Assert.Single(lines, line => string.Equals(
+            string started = Assert.Single(phaseLines, line => string.Equals(
                 line,
                 $"eh: portfolio phase {phase} started",
                 StringComparison.Ordinal));
-            string completed = Assert.Single(lines, line =>
+            string completed = Assert.Single(phaseLines, line =>
                 line.StartsWith($"eh: portfolio phase {phase} ", StringComparison.Ordinal) &&
                 line.EndsWith(" ms", StringComparison.Ordinal));
             Assert.True(Array.IndexOf(lines, started) < Array.IndexOf(lines, completed));

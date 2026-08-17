@@ -46,7 +46,7 @@ The repository already provides:
 
 This is an experimental public alpha. Repository `seed-rules/0.4.0` remains
 uncalibrated. Current Change reports use
-`change-seed/0.18.1+seed-rules/0.4.0`, while only the documented 0.6.0 Stage A
+`change-seed/0.18.2+seed-rules/0.4.0`, while only the documented 0.6.0 Stage A
 subset has limited logical admission. No local ML model and no automatic host-
 review budget is admitted.
 
@@ -266,6 +266,13 @@ count, and intermediate churn do not value effort. `CHANGE_ESTIMATION.md` and
   monorepository shape; all workers preserve exact reports and per-worker memory
   stays effectively flat in the recorded run. CI gates equivalence, read-only
   safety, and bounded coordination rather than machine-dependent performance.
+- Closed-month author-period portfolios retain every exact match inside the
+  existing per-repository identity-ledger boundary instead of imposing a
+  presentation-row cap. Large-tree analysis loads only changed-neighborhood
+  context, reconciliation uses linear component construction, and at most two
+  repository sessions overlap as a bounded memory-for-latency tradeoff. Preserve
+  the 1,700-change regression, progress/cancellation diagnostics, sibling-path
+  behavior, and the non-gating `change/1.5.0` checkpoint.
 - The optional host-assisted scaffolding boundary is now frozen in
   `AUTHOR_PERIOD_SCAFFOLDING.md`: a separate companion adapter may eventually emit
   a reviewed v1 manifest and local-only provenance, but the estimator stays

@@ -6,12 +6,12 @@ Metric identity, decision order, and the first small-change logical gate are fro
 as `change-model-admission/0.2.0`. The admitted source baseline is
 `change-seed/0.6.0+seed-rules/0.3.0`; it is the transparent Stage A logical
 baseline for experimental one-to-several-day Change estimates. The current source
-has advanced to `change-seed/0.18.1+seed-rules/0.4.0` for static SQL, Python,
+has advanced to `change-seed/0.18.2+seed-rules/0.4.0` for static SQL, Python,
 Jupyter, Go, Java, Kotlin, Shell, PowerShell, Terraform/HCL, PHP/Composer,
 Rust/Cargo, Docker/Compose, and C/C++ support. Those
 extensions preserve admitted rules but are not separately admitted, and no Stage A
-record contains any of those ecosystems. Version 0.18.1 changes only the bounded
-large-Git evidence projection and snapshot execution path; it adds no prior or
+record contains any of those ecosystems. Version 0.18.2 changes only the bounded
+large-Git evidence projection and portfolio execution path; it adds no prior or
 admission claim. This is weak-supervision admission, not empirical accuracy,
 formal interval calibration, or production readiness.
 

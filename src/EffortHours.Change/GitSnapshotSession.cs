@@ -32,7 +32,8 @@ internal sealed record GitSnapshotSessionStatistics
 internal sealed class GitSnapshotSession : IAsyncDisposable
 {
     internal const int MaximumSnapshotInventories = 16;
-    internal const int MaximumRememberedFirstParents = 1_024;
+    internal const int MaximumRememberedFirstParents =
+        GitPortfolioPlannerOptions.DefaultMaximumHistoryCommits;
     internal const int MaximumIncrementalSnapshotPaths = 1_024;
     internal const int MaximumIncrementalPathCharacters = 16_000;
 

@@ -8,14 +8,16 @@ directories; and two saved repository-evidence bundles. Portfolio reconciliation
 supports repeated PRs, multi-repository manifests, and bounded author-period
 selection under the separate `CHANGE_PORTFOLIOS.md` contract.
 
-Current source reports use `change-seed/0.18.1+seed-rules/0.4.0`. The model remains
+Current source reports use `change-seed/0.18.2+seed-rules/0.4.0`. The model remains
 experimental and is not empirically production-validated. Only the documented
 0.6.0 Stage A subset has passed a model-authored logical gate for eligible
 4-to-32-hour changes; later ecosystem extensions preserve those admitted rules but
 were not present in that evidence and are not separately admitted.
 
-Version 0.18.1 retains the 0.18.0 priors and work-item rules while changing the
-large-Git-snapshot evidence projection and execution strategy described below.
+Version 0.18.2 retains the 0.18.1 priors and work-item rules while narrowing
+large-Git context loading to changed-path neighborhoods, retaining enough parent
+metadata for a complete default identity ledger, and permitting bounded
+multi-repository portfolio execution described below.
 The current rules retain bounded logical marginality, fail-closed generated-file
 customization, language-aware formatting normalization, mixed-role category
 partitioning, roughly-one-hour Change tasks, immutable snapshot reuse, bounded
@@ -95,8 +97,10 @@ repository around normalization. Each repository is normalized independently;
 totals are then added without cross-repository deduplication.
 
 Author-period selection asks Git to prefilter the reachable graph with fixed,
-case-insensitive identity aliases, materializes at most 10,000 candidate identity
-records, and emits at most 128 selected rows. The exact in-process selector then
+case-insensitive identity aliases and materializes at most 10,000 candidate
+identity records per repository. The exact in-process selector emits every match
+inside that bounded input; it has no separate calendar or presentation-row cap.
+It then
 validates structured author/co-author identities, the chosen timestamp field, and
 the requested interval. This preserves non-monotonic author-date correctness
 without loading an unbounded identity ledger; Git's committer-date traversal
@@ -132,22 +136,26 @@ materialization must be explicit and must not silently mutate the target
 repository.
 
 Git changes whose larger snapshot contains more than 1,024 files use a bounded
-changed-scope evidence projection. The analyzer enumerates the immutable changed
-paths, recognized static project/package/build context, and one deterministic
-representative per supported source extension. Full base/head inventories remain
-available for additions, removals, moves, exact duplicates, unchanged-context
-counts, and a content-addressed source identity; unchanged source bodies are not
-routinely parsed. Diagnostic `FB5205` records the changed/context/full-inventory
-counts. Smaller Git changes and all directory/evidence selectors retain full-
-snapshot analysis.
+changed-scope evidence projection. The analyzer enumerates immutable changed
+paths, root context artifacts, recognized static project/package/build context in
+the changed path's directory or ancestors, and one deterministic representative
+per supported source extension. It does not parse every unrelated nested project
+or package descriptor merely because the repository is large. Full base/head
+inventories remain available for additions, removals, moves, exact duplicates,
+unchanged-context counts, and a content-addressed source identity; unchanged
+source bodies are not routinely parsed. Diagnostic `FB5205` records changed,
+relevant-context, representative, available-context, and full-inventory counts.
+Smaller Git changes and all directory/evidence selectors retain full-snapshot
+analysis.
 
-Within one Git client, at most 16 immutable inventories are retained. A known
-first-parent child with at most 1,024 changed paths and 16,000 path characters is
-derived from its cached parent plus literal Git path deltas; larger or unrelated
-changes fall back to a complete `ls-tree`. Blob readers and full virtual-directory
-indexes start lazily. Portfolio estimation separately retains at most two analyzed
-snapshot/scope pairs, so adjacent changes over the same path scope reuse evidence
-without making cache memory unbounded.
+Within one Git repository session, at most 16 immutable inventories and 16 exact
+snapshot/scope analyses are retained. First-parent links are remembered through
+the public 10,000-candidate identity-ledger boundary. A known first-parent child
+with at most 1,024 changed paths and 16,000 path characters is derived from its
+cached parent plus literal Git path deltas; larger or unrelated changes fall back
+to a complete `ls-tree`. Blob readers and full virtual-directory indexes start
+lazily. These fixed retention limits let adjacent changes reuse evidence without
+making cache memory unbounded.
 
 Directory selection runs the ordinary non-executing repository pipeline against
 each caller-selected root with no implicit cache and writes nothing into either
@@ -459,12 +467,12 @@ verification, and post-EHE pricing. They emit neither local repository paths nor
 source excerpts.
 
 The current source Change estimator identity is
-`change-seed/0.18.1+seed-rules/0.4.0`; the portfolio reconciler identity is
-`change-portfolio/0.2.1+change-seed/0.18.1+seed-rules/0.4.0`. The earlier 0.6.0
+`change-seed/0.18.2+seed-rules/0.4.0`; the portfolio reconciler identity is
+`change-portfolio/0.2.2+change-seed/0.18.2+seed-rules/0.4.0`. The earlier 0.6.0
 Change identity alone passed the experimental Stage A logical gate, and that
 record contains no SQL, Python, Go, Java, Kotlin, Shell, PowerShell, Terraform,
 HCL, PHP, Composer, Rust, Cargo, Docker, Compose, Jupyter, C, or C++. Portfolio
-aggregation does not broaden that admission. Neither 0.18.1 nor portfolio 0.2.1
+aggregation does not broaden that admission. Neither 0.18.2 nor portfolio 0.2.2
 may be described as empirically calibrated, generally admitted, or production-
 ready. Frozen calibration source reports retain
 the exact earlier estimator identity they were created from.
@@ -489,11 +497,13 @@ the exact earlier estimator identity they were created from.
   snapshot and analysis-scope identity. An exact object chain over one scope
   requires `N + 1` repository estimates instead of `2N`; differing changed scopes
   remain independent canonical estimates.
-- Portfolio 0.2.1 retains up to 16 exact snapshot/scope analyses per active
-  repository and processes repositories sequentially. Author-period plans from one
-  repository share one lazy Git object reader, a bounded 64-MiB/1-MiB-per-blob
-  content cache, and 16 immutable inventories. Cancellation disposes the repository
-  context; cache keys remain repository-scoped and never merge equal-looking
+- Portfolio 0.2.2 retains up to 16 exact snapshot/scope analyses per active
+  repository, processes rows serially within a repository, and permits at most two
+  repository sessions to overlap. Author-period plans from one repository share
+  one lazy Git object reader, a bounded 64-MiB/1-MiB-per-blob content cache, 16
+  immutable inventories, and 10,000 remembered first-parent links. The two-session
+  ceiling is a deliberate bounded memory-for-latency tradeoff; cancellation
+  disposes every repository context, and cache keys never merge equal-looking
   objects across repositories.
 - The optional per-commit reconciliation audit is capped at 256 components by
   default. Larger ranges emit `FB5105` and retain the complete final base-to-head
@@ -504,12 +514,16 @@ the exact earlier estimator identity they were created from.
   requires both objects to exist locally.
 - Portfolio mode accepts at most 128 repeated PRs or 128 schema-valid manifest
   rows; every source item is estimated without a rate before reconciliation.
-- Manifest repository paths are execution-only. Reports retain caller IDs,
-  immutable PR identities, and stable digests without host paths.
+- Manifest repository paths are execution-only. Relative paths resolve from the
+  manifest directory and may name readable siblings or descendants; there is no
+  worktree-containment rule. Reports retain caller IDs, immutable identities, and
+  stable digests without host paths.
 - Author-period mode materializes at most 10,000 Git-prefiltered identity
-  candidates from a pinned reachable graph, selects at most 128 exact alias
-  matches, and records the inclusive/exclusive
-  interval, timezone, date field, co-author policy, and merge policy.
+  candidates per repository from pinned reachable graphs. It applies no separate
+  calendar-month or presentation-row ceiling to the exact matches; the report
+  remains bounded by the complete 32-repository input envelope. It records the
+  inclusive/exclusive interval, timezone, date field, co-author policy, and merge
+  policy.
 - Portfolio JSON and Markdown show isolated and repository-normalized totals,
   base contexts, every selected row, exact expected allocations, signed
   adjustments, and unresolved attribution without source excerpts.

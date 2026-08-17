@@ -17,9 +17,11 @@ public static partial class ContractValidation
         ArgumentNullException.ThrowIfNull(manifest);
         List<string> errors = [];
         RequireVersion(manifest.SchemaVersion, "change portfolio manifest", errors);
-        if (manifest.Items.Count is < 1 or > 128)
+        if (manifest.Items.Count is < 1 or > ChangePortfolioLimits.MaximumManifestItems)
         {
-            errors.Add("A change portfolio manifest must contain between 1 and 128 items.");
+            errors.Add(
+                $"A change portfolio manifest must contain between 1 and " +
+                $"{ChangePortfolioLimits.MaximumManifestItems} items.");
         }
 
         HashSet<string> ids = new(StringComparer.Ordinal);
@@ -62,9 +64,11 @@ public static partial class ContractValidation
         ValidatePortfolioCategories(report.Categories, report.TotalEffort, "categories", errors);
         RequireUniqueText(report.Assumptions, "assumptions", errors);
 
-        if (report.Items.Count is < 1 or > 128)
+        if (report.Items.Count is < 1 or > ChangePortfolioLimits.MaximumReportItems)
         {
-            errors.Add("A change portfolio report must contain between 1 and 128 item rows.");
+            errors.Add(
+                $"A change portfolio report must contain between 1 and " +
+                $"{ChangePortfolioLimits.MaximumReportItems} item rows.");
         }
 
         HashSet<string> itemIds = new(StringComparer.Ordinal);

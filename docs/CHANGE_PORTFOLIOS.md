@@ -2,7 +2,7 @@
 
 ## Current boundary
 
-`change-portfolio/0.2.1` composes canonical Change estimates selected as repeated
+`change-portfolio/0.2.2` composes canonical Change estimates selected as repeated
 pull requests, a versioned multi-repository PR manifest, a bounded direct
 author-period, or a versioned multi-repository/multi-head author-period manifest.
 It remains experimental and has no empirical production validation.
@@ -92,7 +92,10 @@ shape is:
 Public IDs use only letters, digits, `.`, `_`, and `-`, start with a letter or
 digit, and are limited to 128 characters. The v1 execution budgets are 32
 repositories, 32 heads per repository and 128 heads overall, 64 contributors, 16
-aliases per contributor and 128 aliases overall, and 128 selected commits. An
+aliases per contributor, and 128 aliases overall. Each repository contributes at
+most 10,000 identity-prefiltered candidates. There is no separate calendar-month
+or presentation-row ceiling; the report contract's 320,000-row safety envelope is
+the product of those public repository and candidate bounds. An
 immutable head object may appear only once within one repository; equal object-ID
 text in different repositories remains repository-scoped. The CLI reads at most
 one MiB of strict UTF-8 manifest JSON.
@@ -129,9 +132,11 @@ report remains backward compatible and continues to retain its explicitly
 supplied aliases.
 
 Author-period selection is bounded to 10,000 Git-prefiltered identity candidates
-per repository and 128 selected rows across the manifest. Git may traverse a
-larger reachable graph without returning its unrelated identity records to
-EffortHours. The exact selector then validates
+per repository. Git may traverse a larger reachable graph without returning its
+unrelated identity records to EffortHours. Every exact match inside that bounded
+input is retained, including a high-commit closed month; calculation is not split
+or rejected merely to make the detailed ledger shorter. The exact selector then
+validates
 structured author/co-author identities and the requested time policy. It provides:
 
 - exact case-insensitive aliases matching author name, email, or
@@ -279,7 +284,7 @@ storage-independent tests retain precise policy and failure boundaries.
 | Fully overlapping heads | `AuthorPeriodManifestBenchmarkFreezesRegressionAndReuseMatrix` |
 | Shared ancestry plus unique commits | `OneTopologicalWalkMapsSharedAndUniqueCommitsToEveryHead` and the process matrix |
 | Default/open-head overlap | `AuthorPeriodManifestBenchmarkFreezesRegressionAndReuseMatrix` |
-| Equal object-ID text in two repositories | `PortfolioCandidateBatchScopesEqualObjectsByRepositoryAndRunsOneAtATime` and the process matrix |
+| Equal object-ID text in two repositories | `PortfolioCandidateBatchScopesEqualObjectsAndBoundsRepositoryConcurrency` and the process matrix |
 | Direct-author plus co-author multi-match | `OneCommitRetainsEveryContributorMatchWithoutMultiplication` and the process matrix |
 | Zero contributor/repository/head rows | `MatchSetGroupsKeepSharedEffortOnceAndPreserveZeroRows` and the process matrix |
 | Offset and daylight-saving boundaries | `OffsetFreeDaylightSavingGapsAndAmbiguitiesRequireExplicitOffsets` |
@@ -287,7 +292,9 @@ storage-independent tests retain precise policy and failure boundaries.
 | Repository/head/contributor/alias reorder invariance | `DigestIsInvariantToContributorRepositoryHeadAndAliasOrder` and the process matrix |
 | Exact disjoint manual baseline at all range points | `MatchSetGroupsKeepSharedEffortOnceAndPreserveZeroRows` and the process matrix |
 | No local paths, raw aliases, or source excerpts | `ReportSelectionContainsStableIdsAndObjectsButNoPathsOrAliases` and the process matrix |
-| Missing object, cancellation, input limits, and safety caps | `AuthorPeriodManifestPreflightFailuresDoNotLeakPathsOrAliases`, `PortfolioCandidateCancellationDisposesRepositorySessionBeforeOpeningSnapshots`, `ManifestContractIsVersionedBoundedAndRejectsDuplicateIds`, and `CandidateLedgerRetainsTheTenThousandRecordSafetyBoundary` |
+| High-commit closed month | `HighCommitMonthIsNotRejectedByAPresentationRowLimit` and the explicit v1.5.0 benchmark mode |
+| Sibling repository paths | `AuthorPeriodManifestAcceptsSiblingRepositoryFromManifestInsideWorktree` |
+| Missing object, cancellation, input limits, and safety caps | `AuthorPeriodManifestPreflightFailuresDoNotLeakPathsOrAliases`, `PortfolioCandidateCancellationDisposesRepositorySessionBeforeOpeningSnapshots`, `CancelledManifestCommandEmitsPrivacySafeLastPhaseProgress`, `ManifestContractIsVersionedBoundedAndRejectsDuplicateIds`, and `CandidateLedgerRetainsTheTenThousandRecordSafetyBoundary` |
 
 Timing and sampled-memory fields from the process matrix are observations. CI does
 not pass or fail on them; it gates the semantic, privacy, reuse, boundedness, and
@@ -299,15 +306,18 @@ inventory reuse rules in `CHANGE_ESTIMATION.md`. Identity and time still select
 rows only; neither the candidate count nor the size of the reachable graph enters
 an effort rule.
 
-`change-portfolio/0.2.1` adds one invocation-scoped execution context per local
-repository. Candidate plans are grouped by canonical repository root and processed
-one repository at a time, so cross-repository and per-repository analysis
-concurrency are both explicitly one in this checkpoint. The repository context
+`change-portfolio/0.2.2` keeps one invocation-scoped execution context per local
+repository. Candidate plans are grouped by canonical repository root, processed
+serially within each repository, and scheduled with at most two repository
+sessions active at once. The repository context
 owns one lazy `git cat-file --batch` reader, a 64-MiB blob cache that admits no
-single blob above 1 MiB, 16 immutable snapshot inventories, 1,024 remembered first
-parents, and a 16-entry snapshot-analysis LRU. Inventory derivation retains the
+single blob above 1 MiB, 16 immutable snapshot inventories, 10,000 remembered
+first parents, and a 16-entry snapshot-analysis LRU. Inventory derivation retains the
 existing 1,024-changed-path and 16,000-path-character fallback boundaries. Each
 context is disposed after its repository, including cancellation and failures.
+The two-session maximum deliberately spends bounded additional memory to overlap
+independent Git/tree work and reduce wall time; it does not make caches or
+repository concurrency unbounded.
 
 Snapshot analysis remains keyed by repository, immutable object, and exact
 analysis-scope digest. A broader portfolio scope is never substituted merely to
@@ -319,11 +329,22 @@ requires. Shared blob reads and immutable inventories still benefit those rows.
 Report diagnostic `FB5325` records deterministic, privacy-safe request/hit counts
 and retention bounds without paths, aliases, source, or timings. Direct and
 manifest author-period runs announce each active phase on stderr before it begins,
-then write elapsed phase summaries after successful output. Direct runs report
+emit processed/total and cache counters every 16 estimated rows, then write
+elapsed phase summaries after successful output. Cancellation emits the last
+phase, elapsed time, processed/remaining units, cache counters, current working
+set, and highest observed working set without paths or aliases. Direct runs report
 head validation, history union, selection, snapshot/diff construction, static
 analysis, reconciliation, and rendering. Manifest runs additionally report
-manifest validation and contributor/head allocation. Durations are operational
-telemetry, not report-contract fields, deterministic identity, or effort inputs.
+manifest validation and contributor/head allocation. Durations and sampled memory
+are operational telemetry, not report-contract fields, deterministic identity,
+effort inputs, or ordinary CI gates. Aggregate phase time can exceed wall time
+when two repository sessions overlap.
+
+Manifest paths resolve against the manifest directory and may point to any local
+Git repository the process can read, including a sibling. Validation opens the
+specified repository rather than imposing containment beneath another worktree.
+Unreadable-path failures remain sanitized, so an operating-system, sandbox, or
+process-permission denial does not disclose the rejected local path or Git stderr.
 
 Author-date selection intentionally does not pass a date cutoff to Git history
 traversal. Git revision date pruning uses the commit/committer timestamp, while an

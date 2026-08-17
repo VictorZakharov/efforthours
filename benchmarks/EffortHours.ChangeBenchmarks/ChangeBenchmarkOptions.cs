@@ -1,5 +1,6 @@
 using System.Globalization;
 using EffortHours.Change;
+using EffortHours.Contracts.V1;
 
 namespace EffortHours.ChangeBenchmarks;
 
@@ -14,6 +15,7 @@ internal enum ChangeBenchmarkMode
 internal sealed record ChangeBenchmarkOptions(
     ChangeBenchmarkMode Mode,
     int Files,
+    int ContextProjects,
     int LinesPerFile,
     int Commits,
     int MaximumRangeComponents,
@@ -26,7 +28,7 @@ internal sealed record ChangeBenchmarkOptions(
 {
     public const string Usage =
         "Usage: change-benchmark [--tree|--range|--author-period|--author-period-manifest] " +
-        "[--files <count>] " +
+        "[--files <count>] [--context-projects <count>] " +
         "[--lines-per-file <count>] [--commits <count>] " +
         "[--maximum-range-components <count>] [--max-seconds <value>] " +
         "[--max-peak-mib <value>] [--compare-independent] [--process-matrix] " +
@@ -45,6 +47,7 @@ internal sealed record ChangeBenchmarkOptions(
     {
         ChangeBenchmarkMode? mode = null;
         int? files = null;
+        int? contextProjects = null;
         int? linesPerFile = null;
         int? commits = null;
         int maximumRangeComponents = GitChangePlannerOptions.DefaultMaximumRangeComponents;
@@ -73,6 +76,12 @@ internal sealed record ChangeBenchmarkOptions(
                     break;
                 case "--files":
                     files = ReadPositiveInteger(arguments, ref index, "--files");
+                    break;
+                case "--context-projects":
+                    contextProjects = ReadNonNegativeInteger(
+                        arguments,
+                        ref index,
+                        "--context-projects");
                     break;
                 case "--lines-per-file":
                     linesPerFile = ReadPositiveInteger(arguments, ref index, "--lines-per-file");
@@ -129,10 +138,15 @@ internal sealed record ChangeBenchmarkOptions(
                 "Author-period mode permits at most nine qualifying commits so the fixture retains a narrow selection.");
         }
 
-        if (selected == ChangeBenchmarkMode.AuthorPeriodManifest && selectedCommits != 3)
+        int maximumManifestBenchmarkCommits = Math.Min(
+            GitPortfolioPlannerOptions.MaximumSupportedHistoryCommits,
+            ChangeAuthorPeriodManifestLimits.MaximumSelectedCommits / 2);
+        if (selected == ChangeBenchmarkMode.AuthorPeriodManifest &&
+            (selectedCommits < 3 || selectedCommits > maximumManifestBenchmarkCommits))
         {
             throw new ArgumentException(
-                "Author-period-manifest mode uses exactly three qualifying commits per repository.");
+                "Author-period-manifest mode requires at least three qualifying commits per repository " +
+                $"and at most {maximumManifestBenchmarkCommits}.");
         }
 
         if (selected == ChangeBenchmarkMode.AuthorPeriodManifest && !compareIndependent)
@@ -195,6 +209,7 @@ internal sealed record ChangeBenchmarkOptions(
                 ChangeBenchmarkMode.AuthorPeriodManifest => 1_025,
                 _ => throw new InvalidOperationException($"Unsupported benchmark mode '{selected}'."),
             },
+            contextProjects ?? (selected == ChangeBenchmarkMode.AuthorPeriodManifest ? 512 : 0),
             linesPerFile ?? selected switch
             {
                 ChangeBenchmarkMode.LargeTree => 100,
@@ -233,6 +248,18 @@ internal sealed record ChangeBenchmarkOptions(
             value <= 0)
         {
             throw new ArgumentException($"Option '{option}' requires a positive integer.");
+        }
+
+        return value;
+    }
+
+    private static int ReadNonNegativeInteger(string[] arguments, ref int index, string option)
+    {
+        if (index + 1 >= arguments.Length ||
+            !int.TryParse(arguments[++index], NumberStyles.None, CultureInfo.InvariantCulture, out int value) ||
+            value < 0)
+        {
+            throw new ArgumentException($"Option '{option}' requires a non-negative integer.");
         }
 
         return value;

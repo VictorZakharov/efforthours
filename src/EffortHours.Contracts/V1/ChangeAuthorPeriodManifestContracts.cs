@@ -14,7 +14,12 @@ public static class ChangeAuthorPeriodManifestLimits
 
     public const int MaximumAliases = 128;
 
-    public const int MaximumSelectedCommits = 128;
+    public const int MaximumIdentityCandidatesPerRepository = 10_000;
+
+    // This is the complete public manifest input envelope, not a calendar-
+    // interval or presentation-row limit.
+    public const int MaximumSelectedCommits =
+        MaximumRepositories * MaximumIdentityCandidatesPerRepository;
 
     public const int MaximumIdLength = 128;
 

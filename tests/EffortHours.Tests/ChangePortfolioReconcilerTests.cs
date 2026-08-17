@@ -5,7 +5,7 @@ using EffortHours.Reporting;
 
 namespace EffortHours.Tests;
 
-public sealed class ChangePortfolioReconcilerTests
+public sealed partial class ChangePortfolioReconcilerTests
 {
     private const string ProjectFile =
         "<Project Sdk=\"Microsoft.NET.Sdk\"><PropertyGroup>" +

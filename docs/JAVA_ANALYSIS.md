@@ -8,7 +8,7 @@ Java is a first-class, token-backed EffortHours ecosystem beginning with:
 - Java analyzer `0.1.0`;
 - unchanged repository estimator `seed-rules/0.4.0`; and
 - Change estimator `change-seed/0.10.0+seed-rules/0.4.0`, composed in current
-  source as `change-seed/0.18.1+seed-rules/0.4.0` after later additive ecosystem
+  source as `change-seed/0.18.2+seed-rules/0.4.0` after later additive ecosystem
   slices.
 
 This boundary is experimental and uncalibrated. It adds static Java, Maven, and

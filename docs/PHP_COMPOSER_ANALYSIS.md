@@ -5,7 +5,7 @@
 PHP analyzer `0.1.0` and common scanner `0.2.9` provide an experimental,
 offline-only PHP/Composer evidence path. Repository estimates reuse the unchanged
 `seed-rules/0.4.0` language-neutral source backbone and existing specialized
-priors. Current Change estimates use `change-seed/0.18.1+seed-rules/0.4.0`; later
+priors. Current Change estimates use `change-seed/0.18.2+seed-rules/0.4.0`; later
 additive ecosystem extensions do not change PHP normalization or valuation.
 
 No PHP-specific rate was fitted. The repository and Change paths are uncalibrated,

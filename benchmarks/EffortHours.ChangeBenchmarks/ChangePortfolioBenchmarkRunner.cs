@@ -48,6 +48,8 @@ internal sealed record ChangePortfolioBenchmarkExecution
     public required decimal ExpectedEffort { get; init; }
 
     public required ChangePortfolioExecutionStatistics Statistics { get; init; }
+
+    public IReadOnlyList<ChangePortfolioPhaseTiming> CombinedPhaseTimings { get; init; } = [];
 }
 
 internal static class ChangePortfolioBenchmarkRunner
@@ -126,6 +128,7 @@ internal static class ChangePortfolioBenchmarkRunner
             PrivacyBoundaryPreserved = privacy,
             ExpectedEffort = combined.Report.TotalEffort.Expected,
             Statistics = combined.Estimate.Statistics,
+            CombinedPhaseTimings = combined.Telemetry.GetTimings(),
         };
     }
 
@@ -146,6 +149,7 @@ internal static class ChangePortfolioBenchmarkRunner
             .EstimatePortfolioCandidatesWithStatisticsAsync(
                 [.. plan.Items.Select(item => item.Plan)],
                 EstimationProfile.Implementation,
+                plan.ExecutionTelemetry,
                 cancellationToken).ConfigureAwait(false);
         ChangePortfolioCandidate[] candidates = Candidates(plan, estimate.Reports);
         IReadOnlyList<Diagnostic> diagnostics =
@@ -154,13 +158,15 @@ internal static class ChangePortfolioBenchmarkRunner
             plan.Selection,
             candidates,
             EstimationProfile.Implementation,
-            planningDiagnostics: diagnostics);
+            planningDiagnostics: diagnostics,
+            executionTelemetry: plan.ExecutionTelemetry);
         return new CombinedRun(
             plan,
             estimate,
             report,
             ContractJson.Serialize(report),
-            diagnostics);
+            diagnostics,
+            plan.ExecutionTelemetry);
     }
 
     private static async Task<IndependentRun> RunIndependentAsync(
@@ -302,7 +308,8 @@ internal static class ChangePortfolioBenchmarkRunner
         ChangePortfolioEstimateBatch Estimate,
         ChangePortfolioReport Report,
         string Json,
-        IReadOnlyList<Diagnostic> Diagnostics);
+        IReadOnlyList<Diagnostic> Diagnostics,
+        ChangePortfolioExecutionTelemetry Telemetry);
 
     private sealed record IndependentRun(
         IReadOnlyDictionary<string, ChangeEstimateReport> Reports,

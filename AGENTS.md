@@ -160,3 +160,8 @@ interval research remains separate.
 
 Change EHE has only the limited Stage A logical admission described in
 `docs/CHANGE_MODEL_ADMISSION.md`; later ecosystem extensions remain experimental.
+Current source reports use `change-seed/0.18.2+seed-rules/0.4.0`, and current
+portfolio reports use `change-portfolio/0.2.2`. Author-period manifests keep a
+10,000-candidate identity ledger per repository, retain every exact match inside
+that input rather than imposing a presentation-row cap, and run at most two
+repository sessions concurrently under fixed per-repository cache bounds.

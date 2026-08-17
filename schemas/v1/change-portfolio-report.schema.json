@@ -44,7 +44,7 @@
     "items": {
       "type": "array",
       "minItems": 1,
-      "maxItems": 128,
+      "maxItems": 320000,
       "items": { "$ref": "#/$defs/item" }
     },
     "adjustments": {

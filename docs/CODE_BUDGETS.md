@@ -194,6 +194,13 @@ existing benchmark boundary without mixing fixture policy into CLI tests. Every
 new file remains below the ordinary 500-line ceiling, and no ratchet override was
 added or increased.
 
+The August 17, 2026 closed-month hardening keeps progress telemetry, CLI rendering,
+repository scheduling, topology, changed-scope selection, benchmark options, Git
+fixture construction, and benchmark result rendering in their existing focused
+files. Linear reconciliation replaces pairwise graph construction without adding
+a new responsibility. Every affected file remains under its existing budget, and
+no override was added or increased.
+
 Line count is deliberately simple, deterministic, cross-platform, and difficult
 to game accidentally. The useful outcome is earlier decomposition into cohesive
 contracts, commands, analyzers, and renderers—not compressed formatting.

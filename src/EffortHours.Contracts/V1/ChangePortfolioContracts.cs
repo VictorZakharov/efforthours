@@ -1,5 +1,12 @@
 namespace EffortHours.Contracts.V1;
 
+public static class ChangePortfolioLimits
+{
+    public const int MaximumManifestItems = 128;
+
+    public const int MaximumReportItems = ChangeAuthorPeriodManifestLimits.MaximumSelectedCommits;
+}
+
 public sealed record ChangePortfolioManifest
 {
     public string SchemaVersion { get; init; } = ContractVersions.V1;

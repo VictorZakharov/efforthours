@@ -116,7 +116,7 @@ public static partial class Program
         bool memoryPassed)
     {
         ChangePortfolioExecutionStatistics reuse = execution.Statistics;
-        Console.WriteLine("benchmark=change/1.4.0");
+        Console.WriteLine("benchmark=change/1.5.0");
         Console.WriteLine($"estimator={ChangeEstimator.Version}");
         Console.WriteLine($"mode={options.Name}");
         Console.WriteLine($"runtime={RuntimeInformation.FrameworkDescription}");
@@ -124,9 +124,13 @@ public static partial class Program
         Console.WriteLine($"architecture={RuntimeInformation.OSArchitecture}");
         Console.WriteLine($"logical-processors={Environment.ProcessorCount.ToString(CultureInfo.InvariantCulture)}");
         Console.WriteLine($"requested-files-per-repository={options.Files.ToString(CultureInfo.InvariantCulture)}");
+        Console.WriteLine($"requested-context-projects-per-repository={options.ContextProjects.ToString(CultureInfo.InvariantCulture)}");
         Console.WriteLine($"requested-lines-per-file={options.LinesPerFile.ToString(CultureInfo.InvariantCulture)}");
         Console.WriteLine($"requested-qualifying-commits-per-repository={options.Commits.ToString(CultureInfo.InvariantCulture)}");
         Console.WriteLine($"portfolio-repositories={fixture.Repositories.Count.ToString(CultureInfo.InvariantCulture)}");
+        Console.WriteLine(
+            $"maximum-active-repositories=" +
+            $"{reuse.MaximumActiveRepositories.ToString(CultureInfo.InvariantCulture)}");
         Console.WriteLine($"portfolio-heads={fixture.HeadCount.ToString(CultureInfo.InvariantCulture)}");
         Console.WriteLine($"portfolio-contributors={fixture.ContributorCount.ToString(CultureInfo.InvariantCulture)}");
         Console.WriteLine($"selected-changes={execution.SelectedChanges.ToString(CultureInfo.InvariantCulture)}");
@@ -151,6 +155,14 @@ public static partial class Program
         Console.WriteLine($"combined-estimate-cpu-seconds={Duration(execution.CombinedCpu)}");
         Console.WriteLine($"independent-estimate-seconds={Duration(execution.IndependentElapsed)}");
         Console.WriteLine($"independent-estimate-cpu-seconds={Duration(execution.IndependentCpu)}");
+        Console.WriteLine(
+            $"combined-to-independent-wall-ratio=" +
+            $"{(execution.CombinedElapsed.TotalSeconds / execution.IndependentElapsed.TotalSeconds).ToString("F3", CultureInfo.InvariantCulture)}");
+        foreach (ChangePortfolioPhaseTiming timing in execution.CombinedPhaseTimings)
+        {
+            Console.WriteLine($"combined-phase-{timing.Phase}-seconds={Duration(timing.Elapsed)}");
+        }
+
         Console.WriteLine($"combined-faster-than-independent={Lower(execution.CombinedElapsed < execution.IndependentElapsed)}");
         Console.WriteLine($"less-repeated-analysis={Lower(execution.CombinedSnapshotAnalyses < execution.IndependentSnapshotAnalyses)}");
         Console.WriteLine($"independent-reports-equivalent={Lower(execution.IndependentReportsEquivalent)}");

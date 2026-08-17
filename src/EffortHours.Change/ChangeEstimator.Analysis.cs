@@ -201,9 +201,13 @@ public sealed partial class ChangeEstimator
             RepositoryEvidence evidence = await ReadEvidenceAsync(snapshot, analysisScope, cancellationToken)
                 .ConfigureAwait(false);
             evidence = RenameRepository(evidence, repositoryName);
-            analysis = new(
-                evidence,
-                _repositoryEstimator.Estimate(evidence, profile));
+            EstimateReport estimate;
+            lock (_repositoryEstimatorGate)
+            {
+                estimate = _repositoryEstimator.Estimate(evidence, profile);
+            }
+
+            analysis = new(evidence, estimate);
         }
         snapshotAnalyses.Add(cacheNamespace, snapshot.ObjectId, analysisScopeId, analysis);
         return analysis;
@@ -239,7 +243,10 @@ public sealed partial class ChangeEstimator
             Code = "FB5205",
             Severity = DiagnosticSeverity.Information,
             Message = $"Large immutable Git snapshot analysis parsed {analysisScope.ChangedPathCount} changed " +
-                $"path(s) plus {analysisScope.ContextPathCount} static context artifact(s), while retaining " +
+                $"path(s), {analysisScope.ContextPathCount} relevant unchanged context artifact(s), and " +
+                $"{analysisScope.RepresentativePathCount} ecosystem representative(s). " +
+                $"The snapshot contained {analysisScope.AvailableContextPathCount} context artifact(s); " +
+                "analysis retained " +
                 $"the content-addressed identity of all {analysisScope.FullPathCount} paths.",
         };
         return evidence with
