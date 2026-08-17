@@ -44,9 +44,10 @@ public sealed class RepositoryAnalysisPipeline : IRepositoryScanner
 
     public RepositoryAnalysisPipeline(
         IRepositoryFileSystem fileSystem,
-        IRepositoryScanCacheStore? cacheStore = null)
+        IRepositoryScanCacheStore? cacheStore = null,
+        RepositoryAnalysisArtifactCache? analysisArtifactCache = null)
         : this(
-            new RepositoryScanner(fileSystem, cacheStore),
+            new RepositoryScanner(fileSystem, cacheStore, analysisArtifactCache),
             [
                 new DotNetRepositoryAnalyzer(fileSystem),
                 new CppRepositoryAnalyzer(fileSystem),

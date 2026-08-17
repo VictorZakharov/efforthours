@@ -46,13 +46,24 @@ internal sealed record ChangeAnalysisScope(
         IChangeSnapshot baseSnapshot,
         IChangeSnapshot headSnapshot)
     {
-        if (baseSnapshot is not GitSnapshotFileSystem || headSnapshot is not GitSnapshotFileSystem ||
+        if (baseSnapshot is not GitSnapshotFileSystem baseGitSnapshot ||
+            headSnapshot is not GitSnapshotFileSystem headGitSnapshot ||
             Math.Max(baseSnapshot.Files.Count, headSnapshot.Files.Count) <= FullSnapshotFileLimit)
         {
             return null;
         }
 
-        return CreateForFiles(baseSnapshot.Files, headSnapshot.Files);
+        IReadOnlySet<string> changedPaths = headGitSnapshot.TryGetChangedPathsFrom(
+            baseGitSnapshot.ObjectId,
+            out IReadOnlyList<string> knownChangedPaths)
+            ? new HashSet<string>(knownChangedPaths, StringComparer.Ordinal)
+            : FindChangedPaths(baseGitSnapshot.FilesByPath, headGitSnapshot.FilesByPath);
+        return CreateFromIndexes(
+            changedPaths,
+            baseGitSnapshot.AnalysisIndex,
+            headGitSnapshot.AnalysisIndex,
+            baseGitSnapshot.Files.Count,
+            headGitSnapshot.Files.Count);
     }
 
     private const int FullSnapshotFileLimit = ChangeEstimator.FullSnapshotAnalysisFileLimit;
@@ -64,12 +75,42 @@ internal sealed record ChangeAnalysisScope(
         ArgumentNullException.ThrowIfNull(baseSnapshotFiles);
         ArgumentNullException.ThrowIfNull(headSnapshotFiles);
 
-        Dictionary<string, ChangeSnapshotFile> baseFiles = baseSnapshotFiles.ToDictionary(
+        IReadOnlyDictionary<string, ChangeSnapshotFile> baseFiles = baseSnapshotFiles.ToDictionary(
             file => file.Path,
             StringComparer.Ordinal);
-        Dictionary<string, ChangeSnapshotFile> headFiles = headSnapshotFiles.ToDictionary(
+        IReadOnlyDictionary<string, ChangeSnapshotFile> headFiles = headSnapshotFiles.ToDictionary(
             file => file.Path,
             StringComparer.Ordinal);
+        IReadOnlySet<string> changedPaths = FindChangedPaths(baseFiles, headFiles);
+        return CreateFromIndexes(
+            changedPaths,
+            CreateInventoryIndex(baseSnapshotFiles),
+            CreateInventoryIndex(headSnapshotFiles),
+            baseSnapshotFiles.Count,
+            headSnapshotFiles.Count);
+    }
+
+    internal static ChangeAnalysisInventoryIndex CreateInventoryIndex(
+        IReadOnlyList<ChangeSnapshotFile> files)
+    {
+        string[] contextPaths = [.. files
+            .Select(file => file.Path)
+            .Where(IsContextPath)
+            .Distinct(StringComparer.Ordinal)
+            .Order(StringComparer.Ordinal)];
+        string[] representativePaths = [.. files
+            .Where(file => RepresentativeExtensions.Contains(Path.GetExtension(file.Path)))
+            .GroupBy(file => Path.GetExtension(file.Path), StringComparer.OrdinalIgnoreCase)
+            .Select(group => group.MinBy(file => file.Path, StringComparer.Ordinal)!.Path)
+            .Distinct(StringComparer.Ordinal)
+            .Order(StringComparer.Ordinal)];
+        return new ChangeAnalysisInventoryIndex(contextPaths, representativePaths);
+    }
+
+    internal static HashSet<string> FindChangedPaths(
+        IReadOnlyDictionary<string, ChangeSnapshotFile> baseFiles,
+        IReadOnlyDictionary<string, ChangeSnapshotFile> headFiles)
+    {
         HashSet<string> changedPaths = new(StringComparer.Ordinal);
         foreach ((string path, ChangeSnapshotFile after) in headFiles)
         {
@@ -89,14 +130,20 @@ internal sealed record ChangeAnalysisScope(
             }
         }
 
-        Dictionary<string, ChangeSnapshotFile> inventory = new(baseFiles, StringComparer.Ordinal);
-        foreach ((string path, ChangeSnapshotFile file) in headFiles)
-        {
-            inventory[path] = file;
-        }
+        return changedPaths;
+    }
 
+    private static ChangeAnalysisScope CreateFromIndexes(
+        IReadOnlySet<string> changedPaths,
+        ChangeAnalysisInventoryIndex baseIndex,
+        ChangeAnalysisInventoryIndex headIndex,
+        int baseFileCount,
+        int headFileCount)
+    {
         HashSet<string> paths = new(changedPaths, StringComparer.Ordinal);
-        string[] contextPaths = [.. inventory.Keys.Where(IsContextPath)];
+        string[] contextPaths = [.. baseIndex.ContextPaths
+            .Concat(headIndex.ContextPaths)
+            .Distinct(StringComparer.Ordinal)];
         foreach (string path in contextPaths.Where(path => IsRelevantContextPath(path, changedPaths)))
         {
             paths.Add(path);
@@ -104,8 +151,8 @@ internal sealed record ChangeAnalysisScope(
 
         int contextPathCount = paths.Count - changedPaths.Count;
         int beforeRepresentatives = paths.Count;
-        AddRepresentatives(paths, baseSnapshotFiles);
-        AddRepresentatives(paths, headSnapshotFiles);
+        paths.UnionWith(baseIndex.RepresentativePaths);
+        paths.UnionWith(headIndex.RepresentativePaths);
         int representativePathCount = paths.Count - beforeRepresentatives;
 
         string id = ComputeScopeId(paths);
@@ -116,7 +163,7 @@ internal sealed record ChangeAnalysisScope(
             contextPathCount,
             representativePathCount,
             contextPaths.Length,
-            Math.Max(baseSnapshotFiles.Count, headSnapshotFiles.Count));
+            Math.Max(baseFileCount, headFileCount));
     }
 
     public static string ComputeInventoryDigest(IReadOnlyList<ChangeSnapshotFile> files)
@@ -165,18 +212,6 @@ internal sealed record ChangeAnalysisScope(
 
         string directoryPrefix = contextPath[..(separator + 1)];
         return changedPaths.Any(path => path.StartsWith(directoryPrefix, StringComparison.Ordinal));
-    }
-
-    private static void AddRepresentatives(
-        HashSet<string> paths,
-        IReadOnlyList<ChangeSnapshotFile> files)
-    {
-        foreach (IGrouping<string, ChangeSnapshotFile> group in files
-            .Where(file => RepresentativeExtensions.Contains(Path.GetExtension(file.Path)))
-            .GroupBy(file => Path.GetExtension(file.Path), StringComparer.OrdinalIgnoreCase))
-        {
-            paths.Add(group.MinBy(file => file.Path, StringComparer.Ordinal)!.Path);
-        }
     }
 
     private static string ComputeScopeId(IEnumerable<string> paths)

@@ -15,55 +15,64 @@ internal static class ChangeEvidenceBuilder
         IReadOnlyList<Diagnostic> diagnostics,
         CancellationToken cancellationToken)
     {
-        Dictionary<string, ChangeSnapshotFile> baseFiles = baseSnapshot.Files
-            .ToDictionary(file => file.Path, StringComparer.Ordinal);
-        Dictionary<string, ChangeSnapshotFile> headFiles = headSnapshot.Files
-            .ToDictionary(file => file.Path, StringComparer.Ordinal);
+        IReadOnlyDictionary<string, ChangeSnapshotFile> baseFiles = FilesByPath(baseSnapshot);
+        IReadOnlyDictionary<string, ChangeSnapshotFile> headFiles = FilesByPath(headSnapshot);
         Dictionary<string, EvidenceFact> baseFileFacts = FileFacts(baseEvidence);
         Dictionary<string, EvidenceFact> headFileFacts = FileFacts(headEvidence);
         Dictionary<string, IReadOnlyList<string>> baseSemanticTags = SemanticTagsByPath(baseEvidence);
         Dictionary<string, IReadOnlyList<string>> headSemanticTags = SemanticTagsByPath(headEvidence);
-        int unchanged = baseFiles.Keys.Intersect(headFiles.Keys, StringComparer.Ordinal)
-            .Count(path => SameObject(baseFiles[path], headFiles[path]));
+        HashSet<string> changedPaths = ChangedPaths(
+            baseSnapshot,
+            headSnapshot,
+            baseFiles,
+            headFiles);
+        List<PathCandidate> modified = [];
+        List<PathCandidate> removed = [];
+        List<PathCandidate> added = [];
+        foreach (string path in changedPaths.Order(StringComparer.Ordinal))
+        {
+            bool hasBase = baseFiles.TryGetValue(path, out ChangeSnapshotFile? before);
+            bool hasHead = headFiles.TryGetValue(path, out ChangeSnapshotFile? after);
+            if (hasBase && hasHead)
+            {
+                if (!SameObject(before!, after!))
+                {
+                    modified.Add(new PathCandidate(
+                        ChangePathStatus.Modified,
+                        path,
+                        null,
+                        before,
+                        after));
+                }
 
-        List<PathCandidate> modified = [.. baseFiles.Keys
-            .Intersect(headFiles.Keys, StringComparer.Ordinal)
-            .Where(path => !SameObject(baseFiles[path], headFiles[path]))
-            .Order(StringComparer.Ordinal)
-            .Select(path => new PathCandidate(
-                ChangePathStatus.Modified,
-                path,
-                null,
-                baseFiles[path],
-                headFiles[path]))];
-        List<PathCandidate> removed = [.. baseFiles.Keys
-            .Except(headFiles.Keys, StringComparer.Ordinal)
-            .Order(StringComparer.Ordinal)
-            .Select(path => new PathCandidate(
-                ChangePathStatus.Removed,
-                path,
-                null,
-                baseFiles[path],
-                null))];
-        List<PathCandidate> added = [.. headFiles.Keys
-            .Except(baseFiles.Keys, StringComparer.Ordinal)
-            .Order(StringComparer.Ordinal)
-            .Select(path => new PathCandidate(
-                ChangePathStatus.Added,
-                path,
-                null,
-                null,
-                headFiles[path]))];
+                continue;
+            }
+
+            if (hasBase)
+            {
+                removed.Add(new PathCandidate(
+                    ChangePathStatus.Removed,
+                    path,
+                    null,
+                    before,
+                    null));
+            }
+            else if (hasHead)
+            {
+                added.Add(new PathCandidate(
+                    ChangePathStatus.Added,
+                    path,
+                    null,
+                    null,
+                    after));
+            }
+        }
+
+        int unchanged = baseFiles.Count - modified.Count - removed.Count;
 
         List<PathCandidate> moved = PairExactMoves(removed, added);
-        HashSet<string> baseObjectIds = baseFiles.Values
-            .Where(file => !file.IsLink && !file.IsSubmodule)
-            .Select(file => file.ObjectId)
-            .ToHashSet(StringComparer.Ordinal);
-        HashSet<string> headObjectIds = headFiles.Values
-            .Where(file => !file.IsLink && !file.IsSubmodule)
-            .Select(file => file.ObjectId)
-            .ToHashSet(StringComparer.Ordinal);
+        IReadOnlySet<string> baseObjectIds = ContentObjectIds(baseSnapshot, baseFiles.Values);
+        IReadOnlySet<string> headObjectIds = ContentObjectIds(headSnapshot, headFiles.Values);
 
         List<ChangePathEvidence> paths = [];
         foreach (PathCandidate candidate in moved.Concat(modified).Concat(removed).Concat(added))
@@ -213,6 +222,33 @@ internal static class ChangeEvidenceBuilder
     private static bool SupportsSourceReads(IChangeSnapshot snapshot) =>
         snapshot is not IRepositoryEvidenceChangeSnapshot analyzedSnapshot ||
         analyzedSnapshot.SupportsSourceReads;
+
+    private static IReadOnlyDictionary<string, ChangeSnapshotFile> FilesByPath(
+        IChangeSnapshot snapshot) => snapshot is GitSnapshotFileSystem gitSnapshot
+            ? gitSnapshot.FilesByPath
+            : snapshot.Files.ToDictionary(file => file.Path, StringComparer.Ordinal);
+
+    private static HashSet<string> ChangedPaths(
+        IChangeSnapshot baseSnapshot,
+        IChangeSnapshot headSnapshot,
+        IReadOnlyDictionary<string, ChangeSnapshotFile> baseFiles,
+        IReadOnlyDictionary<string, ChangeSnapshotFile> headFiles) =>
+        baseSnapshot is GitSnapshotFileSystem baseGitSnapshot &&
+            headSnapshot is GitSnapshotFileSystem headGitSnapshot &&
+            headGitSnapshot.TryGetChangedPathsFrom(
+                baseGitSnapshot.ObjectId,
+                out IReadOnlyList<string> knownChangedPaths)
+            ? new HashSet<string>(knownChangedPaths, StringComparer.Ordinal)
+            : ChangeAnalysisScope.FindChangedPaths(baseFiles, headFiles);
+
+    private static IReadOnlySet<string> ContentObjectIds(
+        IChangeSnapshot snapshot,
+        IEnumerable<ChangeSnapshotFile> files) => snapshot is GitSnapshotFileSystem gitSnapshot
+            ? gitSnapshot.ContentObjectIds
+            : files
+                .Where(file => !file.IsLink && !file.IsSubmodule)
+                .Select(file => file.ObjectId)
+                .ToHashSet(StringComparer.Ordinal);
 
     private static List<PathCandidate> PairExactMoves(
         List<PathCandidate> removed,

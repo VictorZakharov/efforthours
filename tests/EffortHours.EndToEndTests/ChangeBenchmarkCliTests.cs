@@ -119,27 +119,39 @@ public sealed class ChangeBenchmarkCliTests
         Assert.Equal("8", values["portfolio-heads"]);
         Assert.Equal("3", values["portfolio-contributors"]);
         Assert.Equal("6", values["selected-changes"]);
-        Assert.Equal("24", values["independent-invocations"]);
-        Assert.Equal("8", values["independent-empty-invocations"]);
-        Assert.Equal("6", values["independent-unique-changes"]);
+        Assert.Equal("2", values["isolated-manifest-invocations"]);
+        Assert.Equal("6", values["isolated-manifest-selected-rows"]);
+        Assert.Equal("6", values["isolated-manifest-unique-changes"]);
         Assert.Equal("2", values["combined-git-object-readers"]);
         Assert.True(
             int.Parse(values["combined-snapshot-analyses"], CultureInfo.InvariantCulture) <
-            int.Parse(values["independent-snapshot-analyses"], CultureInfo.InvariantCulture));
+            int.Parse(
+                values["isolated-manifest-snapshot-analyses"],
+                CultureInfo.InvariantCulture));
         Assert.True(
             int.Parse(values["combined-git-object-readers"], CultureInfo.InvariantCulture) <
-            int.Parse(values["independent-git-object-readers"], CultureInfo.InvariantCulture));
-        Assert.Equal("true", values["less-repeated-analysis"]);
-        Assert.Equal("true", values["independent-reports-equivalent"]);
+            int.Parse(
+                values["isolated-manifest-git-object-readers"],
+                CultureInfo.InvariantCulture));
+        Assert.Equal("6", values["batched-incremental-snapshot-inventory-loads"]);
+        Assert.Equal("64.00", values["snapshot-delta-batch-output-limit-mib"]);
+        Assert.Equal("true", values["fewer-snapshot-analyses-than-isolated-manifests"]);
+        Assert.Equal("true", values["fewer-blob-cache-misses-than-isolated-manifests"]);
+        Assert.Equal("true", values["fewer-unique-analysis-artifacts-than-isolated-manifests"]);
+        Assert.Equal("true", values["isolated-manifest-reports-equivalent"]);
         Assert.Equal("true", values["manual-baseline-equivalent"]);
         Assert.Equal("true", values["reordered-report-bytes-equivalent"]);
         Assert.Equal("true", values["repository-scoped-shared-object"]);
         Assert.Equal("true", values["fully-overlapping-heads-preserved"]);
         Assert.Equal("true", values["empty-contributor-preserved"]);
         Assert.Equal("true", values["privacy-boundary-preserved"]);
-        Assert.True(bool.TryParse(values["combined-faster-than-independent"], out _));
+        Assert.Equal(
+            "initial-combined-warmup,isolated-manifests,measured-reordered-combined",
+            values["timing-order"]);
+        Assert.True(bool.TryParse(values["combined-faster-than-isolated-manifests"], out _));
+        AssertPositive(values, "initial-combined-warmup-seconds");
         AssertPositive(values, "combined-estimate-seconds");
-        AssertPositive(values, "independent-estimate-seconds");
+        AssertPositive(values, "isolated-manifest-estimate-seconds");
         AssertReadOnlyAndMeasured(values);
     }
 
@@ -251,7 +263,7 @@ public sealed class ChangeBenchmarkCliTests
         bool requireOverallMeasurements = true)
     {
         Assert.Equal(
-            values["mode"] == "author-period-manifest" ? "change/1.5.0" : "change/1.4.0",
+            values["mode"] == "author-period-manifest" ? "change/1.6.0" : "change/1.4.0",
             values["benchmark"]);
         Assert.Equal("true", values["worktree-unchanged"]);
         Assert.Equal("true", values["git-state-unchanged"]);

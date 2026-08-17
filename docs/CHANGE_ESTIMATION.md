@@ -152,10 +152,12 @@ Within one Git repository session, at most 16 immutable inventories and 16 exact
 snapshot/scope analyses are retained. First-parent links are remembered through
 the public 10,000-candidate identity-ledger boundary. A known first-parent child
 with at most 1,024 changed paths and 16,000 path characters is derived from its
-cached parent plus literal Git path deltas; larger or unrelated changes fall back
-to a complete `ls-tree`. Blob readers and full virtual-directory indexes start
-lazily. These fixed retention limits let adjacent changes reuse evidence without
-making cache memory unbounded.
+cached parent plus literal Git path deltas. Eligible non-merge deltas and changed-
+blob sizes are loaded in two 64-MiB-output-bounded repository-level Git batches
+before row analysis; roots, merges, custom snapshot providers, larger deltas, and
+unrelated changes retain the exact per-change or complete-`ls-tree` fallback. Blob readers
+and full virtual-directory indexes start lazily. These fixed retention limits let
+adjacent changes reuse evidence without making cache memory unbounded.
 
 Directory selection runs the ordinary non-executing repository pipeline against
 each caller-selected root with no implicit cache and writes nothing into either
@@ -468,11 +470,11 @@ source excerpts.
 
 The current source Change estimator identity is
 `change-seed/0.18.2+seed-rules/0.4.0`; the portfolio reconciler identity is
-`change-portfolio/0.2.2+change-seed/0.18.2+seed-rules/0.4.0`. The earlier 0.6.0
+`change-portfolio/0.2.3+change-seed/0.18.2+seed-rules/0.4.0`. The earlier 0.6.0
 Change identity alone passed the experimental Stage A logical gate, and that
 record contains no SQL, Python, Go, Java, Kotlin, Shell, PowerShell, Terraform,
 HCL, PHP, Composer, Rust, Cargo, Docker, Compose, Jupyter, C, or C++. Portfolio
-aggregation does not broaden that admission. Neither 0.18.2 nor portfolio 0.2.2
+aggregation does not broaden that admission. Neither 0.18.2 nor portfolio 0.2.3
 may be described as empirically calibrated, generally admitted, or production-
 ready. Frozen calibration source reports retain
 the exact earlier estimator identity they were created from.
@@ -487,7 +489,10 @@ the exact earlier estimator identity they were created from.
   edit region and an explicit warning because formatting-only normalization is
   unavailable.
 - Moving selectors are resolved to immutable object IDs before analysis.
-- Git trees are streamed through `ls-tree` and bounded `cat-file --batch`; EffortHours
+- Full Git trees are streamed through `ls-tree`; eligible portfolio first-parent
+  deltas and sizes use 64-MiB-output-bounded `diff-tree --stdin` and
+  `cat-file --batch-check`
+  repository batches; source bodies use bounded `cat-file --batch`. EffortHours
   does not create temporary checkouts or source trees.
 - Root commits use Git's empty tree. Merge commits require an explicit parent.
 - Ranges expose isolated commit estimates, normalized final effort, named signed
@@ -497,11 +502,17 @@ the exact earlier estimator identity they were created from.
   snapshot and analysis-scope identity. An exact object chain over one scope
   requires `N + 1` repository estimates instead of `2N`; differing changed scopes
   remain independent canonical estimates.
-- Portfolio 0.2.2 retains up to 16 exact snapshot/scope analyses per active
-  repository, processes rows serially within a repository, and permits at most two
-  repository sessions to overlap. Author-period plans from one repository share
+- Portfolio 0.2.3 retains up to 16 exact snapshot/scope analyses and 8,192
+  immutable file-analysis artifacts with deterministic key-ranked retention per
+  active repository, processes rows serially within a repository, and permits at
+  most two repository sessions to overlap. Each snapshot admits at most four independent
+  .NET/JavaScript file-analysis workers and restores canonical path order before
+  aggregation. Author-period plans from one repository share
   one lazy Git object reader, a bounded 64-MiB/1-MiB-per-blob content cache, 16
-  immutable inventories, and 10,000 remembered first-parent links. The two-session
+  immutable indexed inventories, and 10,000 remembered first-parent links. Cached
+  .NET/JavaScript file results and common inspections are keyed by immutable
+  content, analyzer identity, and required path/context inputs; they do not broaden
+  a row's canonical analysis scope. The two-session
   ceiling is a deliberate bounded memory-for-latency tradeoff; cancellation
   disposes every repository context, and cache keys never merge equal-looking
   objects across repositories.

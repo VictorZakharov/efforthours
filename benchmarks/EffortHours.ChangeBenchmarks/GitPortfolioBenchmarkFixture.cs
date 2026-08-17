@@ -84,8 +84,7 @@ internal sealed partial class GitPortfolioBenchmarkFixture : IDisposable
                 repositoryAPath,
                 options,
                 finalValue: 1,
-                "shared selected change\n\n" +
-                    $"Co-authored-by: {ContributorBName} <{ContributorBEmail}>",
+                "repository-scoped shared-object change",
                 ContributorAName,
                 ContributorAEmail,
                 "2026-08-10T00:00:00+00:00",

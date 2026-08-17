@@ -211,9 +211,7 @@ public sealed partial class GitPortfolioPlanner
                 exception is ArgumentException or DirectoryNotFoundException or ExternalCommandException or
                     InvalidOperationException or IOException or UnauthorizedAccessException)
             {
-                throw new InvalidOperationException(
-                    $"Repository '{repository.Id}' is not a readable local Git repository.",
-                    exception);
+                throw ManifestRepositoryFailure.Create(repository.Id, exception);
             }
 
             string filesystemRoot = Path.GetPathRoot(root) ?? string.Empty;

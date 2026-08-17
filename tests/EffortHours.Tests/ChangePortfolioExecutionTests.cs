@@ -64,6 +64,7 @@ public sealed partial class ChangePortfolioCommandTests
             GitPortfolioPlannerOptions.DefaultMaximumSelectedItems);
         Assert.True(GitSnapshotSession.MaximumRememberedFirstParents > 1_700);
         Assert.True(GitPortfolioPlannerOptions.DefaultMaximumSelectedItems > 1_700);
+        Assert.Equal(64 * 1024 * 1024, GitSnapshotDeltaBatch.MaximumBatchOutputBytes);
     }
 
     [Fact]

@@ -20,6 +20,10 @@ public sealed class ExternalCommandException : InvalidOperationException
 
 internal readonly record struct ExternalCommandResult(int ExitCode, string StandardOutput, string StandardError);
 
+internal sealed class ExternalCommandOutputLimitException(string command, int maximumBytes)
+    : InvalidOperationException(
+        $"'{command}' produced more than the bounded {maximumBytes} output bytes.");
+
 internal interface IExternalCommandRunner
 {
     public Task<ExternalCommandResult> RunAsync(
@@ -109,8 +113,54 @@ internal static class ExternalCommand
         string executable,
         string workingDirectory,
         IReadOnlyList<string> arguments,
+        CancellationToken cancellationToken) => await RunBinaryCoreAsync(
+            executable,
+            workingDirectory,
+            arguments,
+            standardInputLines: null,
+            maximumOutputBytes: null,
+            cancellationToken).ConfigureAwait(false);
+
+    public static async Task<byte[]> RunBinaryAsync(
+        string executable,
+        string workingDirectory,
+        IReadOnlyList<string> arguments,
+        IReadOnlyList<string> standardInputLines,
+        CancellationToken cancellationToken) => await RunBinaryCoreAsync(
+            executable,
+            workingDirectory,
+            arguments,
+            (IReadOnlyList<string>?)standardInputLines,
+            maximumOutputBytes: null,
+            cancellationToken).ConfigureAwait(false);
+
+    public static async Task<byte[]> RunBinaryAsync(
+        string executable,
+        string workingDirectory,
+        IReadOnlyList<string> arguments,
+        IReadOnlyList<string> standardInputLines,
+        int maximumOutputBytes,
+        CancellationToken cancellationToken) => await RunBinaryCoreAsync(
+            executable,
+            workingDirectory,
+            arguments,
+            standardInputLines,
+            maximumOutputBytes,
+            cancellationToken).ConfigureAwait(false);
+
+    private static async Task<byte[]> RunBinaryCoreAsync(
+        string executable,
+        string workingDirectory,
+        IReadOnlyList<string> arguments,
+        IReadOnlyList<string>? standardInputLines,
+        int? maximumOutputBytes,
         CancellationToken cancellationToken)
     {
+        if (maximumOutputBytes is not null)
+        {
+            ArgumentOutOfRangeException.ThrowIfNegativeOrZero(maximumOutputBytes.Value);
+        }
+
         ProcessStartInfo startInfo = CreateStartInfo(executable, workingDirectory, arguments);
         using Process process = new() { StartInfo = startInfo };
         try
@@ -133,13 +183,30 @@ internal static class ExternalCommand
         }
 
         await using MemoryStream stdout = new();
-        Task copy = process.StandardOutput.BaseStream.CopyToAsync(stdout, cancellationToken);
+        Task copy = maximumOutputBytes is null
+            ? process.StandardOutput.BaseStream.CopyToAsync(stdout, cancellationToken)
+            : CopyBoundedAsync(
+                process,
+                executable,
+                process.StandardOutput.BaseStream,
+                stdout,
+                maximumOutputBytes.Value,
+                cancellationToken);
         Task<string> stderr = process.StandardError.ReadToEndAsync(cancellationToken);
+        Task input = standardInputLines is null
+            ? Task.CompletedTask
+            : WriteStandardInputAsync(process, standardInputLines, cancellationToken);
         try
         {
-            await Task.WhenAll(copy, process.WaitForExitAsync(cancellationToken)).ConfigureAwait(false);
+            await Task.WhenAll(input, copy, process.WaitForExitAsync(cancellationToken))
+                .ConfigureAwait(false);
         }
         catch (OperationCanceledException)
+        {
+            TryKill(process);
+            throw;
+        }
+        catch
         {
             TryKill(process);
             throw;
@@ -157,6 +224,69 @@ internal static class ExternalCommand
         }
 
         return stdout.ToArray();
+    }
+
+    private static async Task CopyBoundedAsync(
+        Process process,
+        string executable,
+        Stream source,
+        Stream destination,
+        int maximumBytes,
+        CancellationToken cancellationToken)
+    {
+        try
+        {
+            byte[] buffer = new byte[81_920];
+            int total = 0;
+            while (true)
+            {
+                int read = await source.ReadAsync(buffer, cancellationToken).ConfigureAwait(false);
+                if (read == 0)
+                {
+                    return;
+                }
+
+                if (total > maximumBytes - read)
+                {
+                    throw new ExternalCommandOutputLimitException(executable, maximumBytes);
+                }
+
+                await destination.WriteAsync(buffer.AsMemory(0, read), cancellationToken)
+                    .ConfigureAwait(false);
+                total += read;
+            }
+        }
+        catch
+        {
+            TryKill(process);
+            throw;
+        }
+    }
+
+    private static async Task WriteStandardInputAsync(
+        Process process,
+        IReadOnlyList<string> lines,
+        CancellationToken cancellationToken)
+    {
+        try
+        {
+            foreach (string line in lines)
+            {
+                await process.StandardInput.WriteLineAsync(line.AsMemory(), cancellationToken)
+                    .ConfigureAwait(false);
+            }
+
+            await process.StandardInput.FlushAsync(cancellationToken).ConfigureAwait(false);
+        }
+        catch
+        {
+            TryKill(process);
+            throw;
+        }
+        finally
+        {
+            process.StandardInput.Dispose();
+        }
     }
 
     public static ProcessStartInfo CreateStartInfo(

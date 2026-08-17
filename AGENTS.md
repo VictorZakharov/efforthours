@@ -78,8 +78,10 @@ when semantics, schemas, assumptions, or unresolved decisions change.
   and the root `LICENSE`.
 - Keep living contracts current. Put releases in `CHANGELOG.md`, measurements in
   their designated records, and completed work in Git history, not this file.
-- Use ripgrep (`rg`) for searches; it is installed. A restricted shell failure is
-  a sandbox/PATH issue, not evidence that `rg` is absent.
+- Use ripgrep (`rg`) for searches; it is installed. If the restricted shell strips
+  it from `PATH`, run plain `rg` in the approved shell. Do not paste a
+  machine-specific executable path, add a repository wrapper, or treat the
+  restricted-shell failure as evidence that `rg` is absent.
 - Preserve unrelated user changes and avoid destructive Git operations unless
   explicitly requested.
 - Use the validation sequence in `CONTRIBUTING.md`, scaled to risk. Agents may
@@ -170,7 +172,11 @@ interval research remains separate.
 Change EHE has only the limited Stage A logical admission described in
 `docs/CHANGE_MODEL_ADMISSION.md`; later ecosystem extensions remain experimental.
 Current source reports use `change-seed/0.18.2+seed-rules/0.4.0`, and current
-portfolio reports use `change-portfolio/0.2.2`. Author-period manifests keep a
+portfolio reports use `change-portfolio/0.2.3`. Author-period manifests keep a
 10,000-candidate identity ledger per repository, retain every exact match inside
 that input rather than imposing a presentation-row cap, and run at most two
-repository sessions concurrently under fixed per-repository cache bounds.
+repository sessions concurrently under fixed per-repository cache bounds,
+including 8,192 immutable analyzer-versioned file artifacts with deterministic
+key-ranked retention. Eligible non-merge
+first-parent deltas and changed-blob sizes are batched once per repository before
+row analysis with a 64-MiB output cap and exact per-row fallback.

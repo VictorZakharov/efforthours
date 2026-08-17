@@ -31,7 +31,13 @@ public static partial class ChangePortfolioMarkdownRenderer
         markdown.AppendLine();
         markdown.AppendLine("## Contributor match-set allocation");
         markdown.AppendLine();
-        markdown.AppendLine("| Group | Contributors | Kind | Commits | Direct | Co-author | Low | Expected | High | Repositories |");
+        markdown.AppendLine(
+            "Normalized values below are joint portfolio allocations. They can change when another " +
+            "exclusive contributor is added because repository reconciliation is allocated across " +
+            "all included groups. This is independent of the shared identity-match count; use the " +
+            "isolated values in the following table to compare the unchanged canonical row sums.");
+        markdown.AppendLine();
+        markdown.AppendLine("| Group | Contributors | Kind | Commits | Direct | Co-author | Allocated low | Allocated expected | Allocated high | Repositories |");
         markdown.AppendLine("| --- | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |");
         foreach (ChangePortfolioContributorGroup group in aggregation.ContributorGroups)
         {
@@ -48,7 +54,9 @@ public static partial class ChangePortfolioMarkdownRenderer
         }
 
         markdown.AppendLine();
-        markdown.AppendLine("Contributor groups sum exactly to the authoritative portfolio low/expected/high range.");
+        markdown.AppendLine(
+            "Allocated contributor groups sum exactly to the authoritative portfolio " +
+            "low/expected/high range; they are not membership-invariant personal totals.");
         markdown.AppendLine();
         markdown.AppendLine("| Group/repository | Items | Isolated expected | Normalized expected | Expected delta | Adjustments | Uncertainty |");
         markdown.AppendLine("| --- | ---: | ---: | ---: | ---: | ---: | ---: |");

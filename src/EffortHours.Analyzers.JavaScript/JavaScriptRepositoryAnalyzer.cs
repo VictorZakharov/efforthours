@@ -74,16 +74,15 @@ public sealed class JavaScriptRepositoryAnalyzer : IRepositoryEvidenceAnalyzer
         Dictionary<string, List<EvidenceLocation>> structureLocations = new(StringComparer.Ordinal);
         List<AngularComponentMetadata> angularComponents = [];
         JavaScriptSourceAnalyzer sourceAnalyzer = new(textReader);
-        foreach (EvidenceFact fileFact in evidence.Facts
-            .Where(IsMaintainedSource)
-            .OrderBy(fact => fact.Scope, StringComparer.Ordinal))
-        {
-            cancellationToken.ThrowIfCancellationRequested();
-            JavaScriptPackageModel? package = FindOwningPackage(fileFact.Scope, packageResult.Packages);
-            JavaScriptFileAnalysis analysis = await sourceAnalyzer.AnalyzeAsync(
-                fileFact,
-                package,
+        IReadOnlyList<JavaScriptSourceAnalysisEntry> sourceAnalyses =
+            await JavaScriptSourceAnalysisBatch.AnalyzeAsync(
+                sourceAnalyzer,
+                evidence,
+                packageResult.Packages,
                 cancellationToken).ConfigureAwait(false);
+        foreach (JavaScriptSourceAnalysisEntry entry in sourceAnalyses)
+        {
+            JavaScriptFileAnalysis analysis = entry.Analysis;
             facts.AddRange(analysis.Facts);
             diagnostics.AddRange(analysis.Diagnostics);
             angularComponents.AddRange(analysis.AngularComponents);
@@ -92,7 +91,7 @@ public sealed class JavaScriptRepositoryAnalyzer : IRepositoryEvidenceAnalyzer
                 continue;
             }
 
-            string scope = package?.Scope ?? ".";
+            string scope = entry.PackageScope;
             if (!structureByScope.TryGetValue(scope, out JavaScriptSourceMetrics? aggregate))
             {
                 aggregate = new JavaScriptSourceMetrics();
@@ -101,7 +100,7 @@ public sealed class JavaScriptRepositoryAnalyzer : IRepositoryEvidenceAnalyzer
             }
 
             aggregate.Merge(analysis.Metrics);
-            structureLocations[scope].Add(JavaScriptEvidence.Location(fileFact.Scope));
+            structureLocations[scope].Add(JavaScriptEvidence.Location(entry.Path));
         }
 
         foreach ((string scope, JavaScriptSourceMetrics metrics) in structureByScope
@@ -557,7 +556,7 @@ public sealed class JavaScriptRepositoryAnalyzer : IRepositoryEvidenceAnalyzer
             ]);
     }
 
-    private static JavaScriptPackageModel? FindOwningPackage(
+    internal static JavaScriptPackageModel? FindOwningPackage(
         string path,
         IReadOnlyList<JavaScriptPackageModel> packages) => packages
             .Where(package => package.Scope == "." ||
@@ -566,7 +565,7 @@ public sealed class JavaScriptRepositoryAnalyzer : IRepositoryEvidenceAnalyzer
             .ThenBy(package => package.Scope, StringComparer.Ordinal)
             .FirstOrDefault();
 
-    private static bool IsMaintainedSource(EvidenceFact fact)
+    internal static bool IsMaintainedSource(EvidenceFact fact)
     {
         if (fact.Kind != EvidenceKinds.File ||
             fact.Tags.Contains("classification:generated", StringComparer.Ordinal) ||

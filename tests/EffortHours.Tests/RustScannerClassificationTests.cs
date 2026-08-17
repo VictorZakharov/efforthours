@@ -26,7 +26,7 @@ public sealed class RustScannerClassificationTests
         AssertFileTag(evidence, "tests/api.rs", "classification:test");
         AssertFileTag(evidence, "build.rs", "role:build-configuration");
         AssertFileTag(evidence, ".cargo/config.toml", "role:build-configuration");
-        Assert.Equal("0.2.13", RepositoryScanner.AnalyzerVersion);
+        Assert.Equal("0.2.14", RepositoryScanner.AnalyzerVersion);
     }
 
     private static void AssertFileTag(RepositoryEvidence evidence, string path, string tag)

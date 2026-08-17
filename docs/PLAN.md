@@ -269,10 +269,17 @@ count, and intermediate churn do not value effort. `CHANGE_ESTIMATION.md` and
 - Closed-month author-period portfolios retain every exact match inside the
   existing per-repository identity-ledger boundary instead of imposing a
   presentation-row cap. Large-tree analysis loads only changed-neighborhood
-  context, reconciliation uses linear component construction, and at most two
-  repository sessions overlap as a bounded memory-for-latency tradeoff. Preserve
+  context, batches eligible first-parent deltas and changed-blob sizes once per
+  repository, reuses immutable file analysis, reconciliation uses linear component
+  construction, and at most two repository sessions overlap as a bounded memory-
+  for-latency tradeoff. Preserve
   the 1,700-change regression, progress/cancellation diagnostics, sibling-path
-  behavior, and the non-gating `change/1.5.0` checkpoint.
+  behavior, and the non-gating `change/1.6.0` checkpoint. The current checkpoint
+  compares one combined manifest with the same contributors in isolated manifests;
+  the earlier repository/head explosion is retained only as historical evidence
+  and is not a speedup baseline. Preserve bounded immutable file-analysis reuse,
+  non-regex ignore matching, actionable privacy-safe Git ownership diagnostics,
+  and explicit membership-dependent normalized contributor allocation.
 - The optional host-assisted scaffolding boundary is now frozen in
   `AUTHOR_PERIOD_SCAFFOLDING.md`: a separate companion adapter may eventually emit
   a reviewed v1 manifest and local-only provenance, but the estimator stays

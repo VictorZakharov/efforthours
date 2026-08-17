@@ -139,7 +139,11 @@ public sealed class ChangePortfolioAggregationTests
         Assert.Contains(aggregation.ContributorGroups
             .SelectMany(group => group.RepositoryAllocations), allocation =>
                 allocation.AdjustmentIds.Count > 0);
-        Assert.Contains(report.Diagnostics, diagnostic => diagnostic.Code == "FB5323");
+        Diagnostic contributorDiagnostic = Assert.Single(
+            report.Diagnostics,
+            diagnostic => diagnostic.Code == "FB5323");
+        Assert.Contains("identity matching only", contributorDiagnostic.Message, StringComparison.Ordinal);
+        Assert.Contains("isolatedEffort", contributorDiagnostic.Message, StringComparison.Ordinal);
         Assert.Contains(report.Diagnostics, diagnostic => diagnostic.Code == "FB5324");
     }
 
@@ -187,6 +191,8 @@ public sealed class ChangePortfolioAggregationTests
             ContractJson.SerializeCompact(ContractJson.Deserialize<ChangePortfolioReport>(full)),
             ContractJson.SerializeCompact(ContractJson.Deserialize<ChangePortfolioReport>(compact)));
         Assert.Contains("Contributor match-set allocation", markdown, StringComparison.Ordinal);
+        Assert.Contains("joint portfolio allocations", markdown, StringComparison.Ordinal);
+        Assert.Contains("not membership-invariant personal totals", markdown, StringComparison.Ordinal);
         Assert.Contains("Head-reachability allocation", markdown, StringComparison.Ordinal);
         Assert.Contains("contributor-c", markdown, StringComparison.Ordinal);
         Assert.Contains("repository-b", markdown, StringComparison.Ordinal);

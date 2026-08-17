@@ -230,7 +230,12 @@ public sealed partial class ChangeEstimator
                 snapshot.FileSystem,
                 snapshot.RootPath,
                 analysisScope.Paths);
-        RepositoryEvidence evidence = await new RepositoryAnalysisPipeline(fileSystem)
+        RepositoryAnalysisArtifactCache? analysisArtifactCache =
+            (fileSystem as IRepositoryAnalysisArtifactCacheProvider)?.AnalysisArtifactCache;
+        RepositoryEvidence evidence = await new RepositoryAnalysisPipeline(
+            fileSystem,
+            cacheStore: null,
+            analysisArtifactCache)
             .ScanAsync(snapshot.RootPath, cancellationToken: cancellationToken)
             .ConfigureAwait(false);
         if (analysisScope is null)
@@ -253,7 +258,9 @@ public sealed partial class ChangeEstimator
         {
             Repository = evidence.Repository with
             {
-                SourceDigest = ChangeAnalysisScope.ComputeInventoryDigest(snapshot.Files),
+                SourceDigest = snapshot is GitSnapshotFileSystem gitSnapshot
+                    ? gitSnapshot.InventoryDigest
+                    : ChangeAnalysisScope.ComputeInventoryDigest(snapshot.Files),
             },
             Diagnostics = [.. evidence.Diagnostics
                 .Append(scopeDiagnostic)

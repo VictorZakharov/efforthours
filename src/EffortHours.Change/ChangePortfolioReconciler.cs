@@ -6,7 +6,7 @@ namespace EffortHours.Change;
 
 public sealed class ChangePortfolioReconciler
 {
-    public const string Version = "change-portfolio/0.2.2+change-seed/0.18.2+seed-rules/0.4.0";
+    public const string Version = "change-portfolio/0.2.3+change-seed/0.18.2+seed-rules/0.4.0";
 
     public static ChangePortfolioReport Reconcile(
         ChangePortfolioSelection selection,
@@ -109,7 +109,12 @@ public sealed class ChangePortfolioReconciler
             {
                 Code = "FB5323",
                 Severity = DiagnosticSeverity.Information,
-                Message = $"Exclusive contributor match-set groups count each selected commit once; {sharedContributorGroups} shared contributor group(s) retain unsplit repository-attributed EHE.",
+                Message = $"Exclusive contributor match-set groups count each selected commit once; " +
+                    $"{sharedContributorGroups} shared contributor group(s) retain unsplit " +
+                    "repository-attributed EHE. This shared-group count describes identity matching " +
+                    "only. Normalized contributor values are allocations from joint repository " +
+                    "reconciliation and can change when other exclusive contributors are included; " +
+                    "isolatedEffort remains the sum of the group's canonical row estimates.",
             });
             int headsWithoutUniqueWork = aggregation.Repositories
                 .SelectMany(repository => repository.Heads)

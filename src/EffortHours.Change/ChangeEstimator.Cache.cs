@@ -7,8 +7,10 @@ public sealed partial class ChangeEstimator
         private readonly int _maximumEntries;
         private readonly Dictionary<SnapshotAnalysisKey, LinkedListNode<SnapshotAnalysisEntry>> _entries = [];
         private readonly LinkedList<SnapshotAnalysisEntry> _leastRecentlyUsed = [];
+        private readonly HashSet<SnapshotAnalysisKey> _seenKeys = [];
         private int _requests;
         private int _hits;
+        private int _revisitMisses;
         private int _evictions;
         private int _peakEntries;
 
@@ -28,6 +30,11 @@ public sealed partial class ChangeEstimator
             SnapshotAnalysisKey key = new(cacheNamespace, objectId, analysisScopeId);
             if (!_entries.TryGetValue(key, out LinkedListNode<SnapshotAnalysisEntry>? node))
             {
+                if (!_seenKeys.Add(key))
+                {
+                    _revisitMisses++;
+                }
+
                 analysis = null!;
                 return false;
             }
@@ -69,6 +76,8 @@ public sealed partial class ChangeEstimator
         public SnapshotAnalysisCacheStatistics GetStatistics() => new(
             _requests,
             _hits,
+            _seenKeys.Count,
+            _revisitMisses,
             _evictions,
             _peakEntries);
 
@@ -84,6 +93,8 @@ public sealed partial class ChangeEstimator
         public readonly record struct SnapshotAnalysisCacheStatistics(
             int Requests,
             int Hits,
+            int UniqueKeys,
+            int RevisitMisses,
             int Evictions,
             int PeakEntries);
     }

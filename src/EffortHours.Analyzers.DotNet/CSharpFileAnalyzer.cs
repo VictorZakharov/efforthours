@@ -50,6 +50,31 @@ internal sealed class CSharpFileAnalyzer(
         CancellationToken cancellationToken)
     {
         string fullPath = ToFullPath(relativePath);
+        RepositoryAnalysisArtifactCache? artifactCache =
+            (_fileSystem as IRepositoryAnalysisArtifactCacheProvider)?.AnalysisArtifactCache;
+        string? contentId = null;
+        try
+        {
+            contentId = _fileSystem.GetFileMetadata(fullPath).ContentId;
+        }
+        catch (Exception exception) when (exception is IOException or UnauthorizedAccessException)
+        {
+        }
+
+        string? artifactKey = contentId is null
+            ? null
+            : AnalysisArtifactKey(
+                contentId,
+                expectedSha256,
+                relativePath,
+                projectScope,
+                isTestFile);
+        if (artifactKey is not null &&
+            artifactCache?.TryGet(artifactKey, out CSharpFileAnalysis cached) == true)
+        {
+            return cached;
+        }
+
         byte[] bytes;
         try
         {
@@ -161,7 +186,32 @@ internal sealed class CSharpFileAnalyzer(
         AddTestFact(facts, relativePath, projectScope, nodes, methods, isTestFile);
         AddUiFact(facts, relativePath, projectScope, nodes, types);
 
-        return new CSharpFileAnalysis(structure, facts, diagnostics);
+        CSharpFileAnalysis result = new(structure, facts, diagnostics);
+        if (artifactKey is not null)
+        {
+            artifactCache?.Add(artifactKey, result);
+        }
+
+        return result;
+    }
+
+    private static string AnalysisArtifactKey(
+        string contentId,
+        string expectedSha256,
+        string relativePath,
+        string projectScope,
+        bool isTestFile)
+    {
+        string identity = string.Join(
+            '\0',
+            contentId,
+            expectedSha256,
+            relativePath,
+            projectScope,
+            isTestFile ? "test" : "source");
+        string digest = Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(identity)))
+            .ToLowerInvariant();
+        return $"dotnet-csharp/{DotNetEvidence.AnalyzerVersion}/{digest}";
     }
 
     private static void AddValidationFact(

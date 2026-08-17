@@ -2,10 +2,14 @@ using EffortHours.Analysis;
 
 namespace EffortHours.Change;
 
-internal sealed partial class GitSnapshotFileSystem : IRepositoryFileSystem, IChangeSnapshot
+internal sealed partial class GitSnapshotFileSystem :
+    IRepositoryFileSystem,
+    IRepositoryAnalysisArtifactCacheProvider,
+    IChangeSnapshot
 {
-    private readonly Dictionary<string, ChangeSnapshotFile> _files;
     private readonly Lock _directoryGate = new();
+    private readonly GitSnapshotInventory _inventory;
+    private readonly RepositoryAnalysisArtifactCache? _analysisArtifactCache;
     private readonly string _repositoryPath;
     private readonly Func<GitBatchObjectReader>? _sharedObjectReader;
     private HashSet<string>? _directories;
@@ -15,18 +19,19 @@ internal sealed partial class GitSnapshotFileSystem : IRepositoryFileSystem, ICh
     private GitSnapshotFileSystem(
         string repositoryPath,
         string objectId,
-        IReadOnlyList<ChangeSnapshotFile> files,
-        Func<GitBatchObjectReader>? sharedObjectReader = null)
+        GitSnapshotInventory inventory,
+        Func<GitBatchObjectReader>? sharedObjectReader = null,
+        RepositoryAnalysisArtifactCache? analysisArtifactCache = null)
     {
         _repositoryPath = repositoryPath;
+        _inventory = inventory;
+        _analysisArtifactCache = analysisArtifactCache;
         _sharedObjectReader = sharedObjectReader;
         ObjectId = objectId;
         RootPath = Path.GetFullPath(Path.Combine(
             repositoryPath,
             ".efforthours-virtual-snapshot",
             objectId));
-        _files = files.ToDictionary(file => file.Path, StringComparer.Ordinal);
-        Files = [.. files.OrderBy(file => file.Path, StringComparer.Ordinal)];
     }
 
     public string ObjectId { get; }
@@ -35,7 +40,19 @@ internal sealed partial class GitSnapshotFileSystem : IRepositoryFileSystem, ICh
 
     public IRepositoryFileSystem FileSystem => this;
 
-    public IReadOnlyList<ChangeSnapshotFile> Files { get; }
+    public RepositoryAnalysisArtifactCache? AnalysisArtifactCache =>
+        _analysisArtifactCache;
+
+    public IReadOnlyList<ChangeSnapshotFile> Files => _inventory.Files;
+
+    internal IReadOnlyDictionary<string, ChangeSnapshotFile> FilesByPath =>
+        _inventory.FilesByPath;
+
+    internal IReadOnlySet<string> ContentObjectIds => _inventory.ContentObjectIds;
+
+    internal ChangeAnalysisInventoryIndex AnalysisIndex => _inventory.AnalysisIndex;
+
+    internal string InventoryDigest => _inventory.SourceDigest;
 
     public static async Task<GitSnapshotFileSystem> CreateAsync(
         string repositoryPath,
@@ -46,7 +63,10 @@ internal sealed partial class GitSnapshotFileSystem : IRepositoryFileSystem, ICh
             repositoryPath,
             objectId,
             cancellationToken).ConfigureAwait(false);
-        return new GitSnapshotFileSystem(repositoryPath, objectId, files);
+        return new GitSnapshotFileSystem(
+            repositoryPath,
+            objectId,
+            new GitSnapshotInventory(files));
     }
 
     internal static GitSnapshotFileSystem Create(
@@ -54,7 +74,42 @@ internal sealed partial class GitSnapshotFileSystem : IRepositoryFileSystem, ICh
         string objectId,
         IReadOnlyList<ChangeSnapshotFile> files,
         Func<GitBatchObjectReader>? sharedObjectReader = null) =>
-        new(repositoryPath, objectId, files, sharedObjectReader);
+        new(
+            repositoryPath,
+            objectId,
+            new GitSnapshotInventory(files),
+            sharedObjectReader);
+
+    internal static GitSnapshotFileSystem Create(
+        string repositoryPath,
+        string objectId,
+        GitSnapshotInventory inventory,
+        Func<GitBatchObjectReader>? sharedObjectReader = null,
+        RepositoryAnalysisArtifactCache? analysisArtifactCache = null) =>
+        new(
+            repositoryPath,
+            objectId,
+            inventory,
+            sharedObjectReader,
+            analysisArtifactCache);
+
+    internal bool TryGetChangedPathsFrom(
+        string baseObjectId,
+        out IReadOnlyList<string> changedPaths)
+    {
+        if (string.Equals(
+                _inventory.FirstParentObjectId,
+                baseObjectId,
+                StringComparison.OrdinalIgnoreCase) &&
+            _inventory.ChangedPathsFromFirstParent is { } knownPaths)
+        {
+            changedPaths = knownPaths;
+            return true;
+        }
+
+        changedPaths = [];
+        return false;
+    }
 
     public string GetFullPath(string path) => Path.GetFullPath(path);
 
@@ -114,7 +169,7 @@ internal sealed partial class GitSnapshotFileSystem : IRepositoryFileSystem, ICh
     public RepositoryFileMetadata GetFileMetadata(string path)
     {
         ChangeSnapshotFile file = GetFile(Path.GetFullPath(path));
-        return new RepositoryFileMetadata(file.Length, 0L, true);
+        return new RepositoryFileMetadata(file.Length, 0L, true, file.ObjectId);
     }
 
     public Stream OpenRead(string path, int bufferSize)
@@ -184,7 +239,7 @@ internal sealed partial class GitSnapshotFileSystem : IRepositoryFileSystem, ICh
 
         string relativePath = Path.GetRelativePath(RootPath, fullPath)
             .Replace('\\', '/');
-        return _files.TryGetValue(relativePath, out file!);
+        return _inventory.FilesByPath.TryGetValue(relativePath, out file!);
     }
 
     private void EnsureDirectoryIndex()

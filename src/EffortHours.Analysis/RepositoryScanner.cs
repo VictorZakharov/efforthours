@@ -8,12 +8,13 @@ namespace EffortHours.Analysis;
 public sealed class RepositoryScanner : IRepositoryScanner
 {
     public const string AnalyzerName = "efforthours.common-scanner";
-    public const string AnalyzerVersion = "0.2.13";
+    public const string AnalyzerVersion = "0.2.14";
 
     private const int AggregateLocationLimit = 50;
 
     private readonly IRepositoryFileSystem _fileSystem;
     private readonly IRepositoryScanCacheStore _cacheStore;
+    private readonly RepositoryAnalysisArtifactCache? _analysisArtifactCache;
 
     private static readonly FrozenDictionary<string, string> DefaultExcludedDirectories =
         new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
@@ -58,10 +59,12 @@ public sealed class RepositoryScanner : IRepositoryScanner
 
     public RepositoryScanner(
         IRepositoryFileSystem fileSystem,
-        IRepositoryScanCacheStore? cacheStore = null)
+        IRepositoryScanCacheStore? cacheStore = null,
+        RepositoryAnalysisArtifactCache? analysisArtifactCache = null)
     {
         _fileSystem = fileSystem ?? throw new ArgumentNullException(nameof(fileSystem));
         _cacheStore = cacheStore ?? PhysicalRepositoryScanCacheStore.Instance;
+        _analysisArtifactCache = analysisArtifactCache;
     }
 
     public async Task<RepositoryEvidence> ScanAsync(
@@ -105,7 +108,12 @@ public sealed class RepositoryScanner : IRepositoryScanner
                 cachePath,
                 repositoryKey,
                 cancellationToken).ConfigureAwait(false);
-        ScanState state = new(rootPath, options, cache, _fileSystem);
+        ScanState state = new(
+            rootPath,
+            options,
+            cache,
+            _fileSystem,
+            _analysisArtifactCache);
         await TraverseAsync(state, cancellationToken).ConfigureAwait(false);
         if (cachePath is not null)
         {
@@ -230,11 +238,31 @@ public sealed class RepositoryScanner : IRepositoryScanner
                         continue;
                     }
 
-                    FileInspection inspection = await FileInspection.CreateAsync(
-                        state.FileSystem,
-                        entry,
-                        state.Options,
-                        cancellationToken).ConfigureAwait(false);
+                    string? artifactKey = metadata.ContentId is null
+                        ? null
+                        : $"common-file/{AnalyzerVersion}/sample-{state.Options.TextSampleSize}/" +
+                            $"{metadata.ContentId}/{relativePath}";
+                    FileInspection? inspection = null;
+                    if (artifactKey is not null &&
+                        state.AnalysisArtifactCache?.TryGet(
+                            artifactKey,
+                            out FileInspection cachedInspection) == true)
+                    {
+                        inspection = cachedInspection;
+                    }
+
+                    if (inspection is null)
+                    {
+                        inspection = await FileInspection.CreateAsync(
+                            state.FileSystem,
+                            entry,
+                            state.Options,
+                            cancellationToken).ConfigureAwait(false);
+                        if (artifactKey is not null)
+                        {
+                            state.AnalysisArtifactCache?.Add(artifactKey, inspection);
+                        }
+                    }
                     RepositoryFileMetadata refreshedMetadata = state.FileSystem.GetFileMetadata(entry);
                     state.Files.Add(new ScannedFile(
                         relativePath,
@@ -308,8 +336,20 @@ public sealed class RepositoryScanner : IRepositoryScanner
                 cancellationToken).ConfigureAwait(false);
             foreach (string line in lines)
             {
-                if (!IgnoreRule.TryCreate(line, frame.RelativePath, out IgnoreRule? rule))
+                if (!IgnoreRule.TryCreate(
+                    line,
+                    frame.RelativePath,
+                    out IgnoreRule? rule,
+                    out IgnoreRuleCreationFailure failure))
                 {
+                    if (failure != IgnoreRuleCreationFailure.None)
+                    {
+                        state.Diagnostics.Add(IgnoreRuleDiagnostic.Create(
+                            NormalizeRelativePath(state.RootPath, ignorePath),
+                            line,
+                            failure));
+                    }
+
                     continue;
                 }
 
@@ -857,7 +897,8 @@ public sealed class RepositoryScanner : IRepositoryScanner
         string rootPath,
         RepositoryScanOptions options,
         RepositoryScanCache? cache,
-        IRepositoryFileSystem fileSystem)
+        IRepositoryFileSystem fileSystem,
+        RepositoryAnalysisArtifactCache? analysisArtifactCache)
     {
         private readonly Dictionary<string, RepositoryScanCacheEntry> _cachedFiles =
             cache?.Files.ToDictionary(entry => entry.Path, StringComparer.Ordinal) ??
@@ -868,6 +909,9 @@ public sealed class RepositoryScanner : IRepositoryScanner
         public RepositoryScanOptions Options { get; } = options;
 
         public IRepositoryFileSystem FileSystem { get; } = fileSystem;
+
+        public RepositoryAnalysisArtifactCache? AnalysisArtifactCache { get; } =
+            analysisArtifactCache;
 
         public List<ScannedFile> Files { get; } = [];
 
