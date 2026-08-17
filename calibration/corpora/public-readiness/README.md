@@ -84,6 +84,17 @@ no answers or candidate values and is rejected by the compiler.
 These remain immutable optional diagnostic artifacts. A later local authoring
 preflight was not accepted or published because complete rows still repeated weak
 category-shaped judgments; no replacement corpus or candidate evaluation exists.
+The [`2.2.0 repository-total cohort freeze`](2.2.0/README.md) separately
+precommits four public MIT sources and two anonymized private cases under
+`repository-total-assessment-cohort/1.0.0` before source review or estimator
+output. The [`2.3.0 candidate-blind source review`](2.3.0/README.md) freezes all
+six aggregate assessments under `repository-total-source-review/1.1.0`. Their
+expected values span `155` to `1,600` hours, and their symmetric relative
+half-widths vary from `22.6%` to `33.3%` based on source-specific uncertainty.
+Each total reconciles exactly through four to seven material work areas and one
+residual. The checkpoint also records why its inflated `1.0.0` draft was rejected
+before comparison. No seed or candidate report has been opened for a cohort
+source.
 
 The completed blind validation rejects the sole challenger and leaves test sealed.
 The later development uncertainty measurements are diagnostic only and cannot turn
@@ -191,11 +202,11 @@ contain an unsealed test label before the one-time decision.
 
 ## Next checkpoint
 
-Continue issue #154 under `repository-total-materiality/1.0.0`: add at least two
-materially different source-backed aggregate assessments, precommit each before
-candidate comparison, and compare repository totals first. Stop when a total is
-credible; if it materially misses, use largest-first residual diagnosis only until
-the decision is explained. Then record advance, revise, or reject for the exact
-`manual-qa-coding-ratio/0.1.0` candidate. A survivor still needs a new policy and
-candidate identity plus fresh blind validation; test remains sealed. Issue #137's
-interval research remains separate.
+Continue issue #154 under `repository-total-materiality/1.0.0`: keep the frozen
+six-case assessments immutable, generate the shipped seed and exact
+`manual-qa-coding-ratio/0.1.0` outputs, and compare repository totals first. Stop
+for every in-range case; if a total materially misses, use largest-first residual
+diagnosis only until the decision is explained. Then record advance, revise, or
+reject for the exact candidate. A survivor still needs a new policy and candidate
+identity plus fresh blind validation; test remains sealed. Issue #137's interval
+research remains separate.

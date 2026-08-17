@@ -149,8 +149,14 @@ remain immutable optional diagnostic infrastructure; exhaustive micro-labeling w
 stopped before any completed plan or corpus was published because completeness did
 not establish reliable numerical judgment. `repository-total-materiality/1.0.0`
 now makes credible repository totals primary and drills down only on material
-misses. Any admission attempt still needs a new policy/candidate identity and fresh
-validation boundary; interval research remains separate.
+misses. Its six-case follow-up cohort and source-backed assessments are frozen
+before estimator output under `repository-total-assessment-cohort/1.0.0` and
+`repository-total-source-review/1.1.0`. Expected assessments span 155 to 1,600
+hours, with symmetric case-specific relative half-widths from 22.6% to 33.3%; the
+two private cases remain anonymous and their source evidence stays outside the
+repository. Total-first seed/candidate comparison is next. Any admission attempt
+still needs a new policy/candidate identity and fresh validation boundary;
+interval research remains separate.
 
 Change EHE has only the limited Stage A logical admission described in
 `docs/CHANGE_MODEL_ADMISSION.md`; later ecosystem extensions remain experimental.
