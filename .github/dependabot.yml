@@ -6,6 +6,12 @@ updates:
       interval: weekly
       day: monday
     open-pull-requests-limit: 5
+    ignore:
+      # 8.0.5 is the final MIT-declared JsonSchema.Net binary release. Review the
+      # binary EULA explicitly before allowing a future major-version update.
+      - dependency-name: JsonSchema.Net
+        update-types:
+          - version-update:semver-major
 
   - package-ecosystem: github-actions
     directory: /
