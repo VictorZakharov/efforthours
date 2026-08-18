@@ -6,6 +6,12 @@ may still change public contracts with explicit documentation.
 
 ## Unreleased
 
+### Fixed
+
+- Compare pull requests from the unique merge base of the provider base tip and PR
+  head so unrelated base-branch drift cannot appear as PR modifications or
+  removals.
+
 ## 0.10.0-alpha.8 - 2026-08-17
 
 ### Fixed

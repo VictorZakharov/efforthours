@@ -254,7 +254,7 @@ internal sealed class ChangeCommand
                                Compare the coherent final range and reconcile isolated commits
           --base <revision>    Explicit final base revision (requires --head)
           --head <revision>    Explicit final head revision (requires --base)
-          --pr <number-or-url> Resolve one PR's immutable base/head through optional gh support
+          --pr <number-or-url> Resolve one PR and compare its unique merge base/head
           --repo <owner/name>  Explicit GitHub repository for --pr
           --base-path <path>   Statically scan one local base directory (requires --head-path)
           --head-path <path>   Statically scan one local head directory (requires --base-path)

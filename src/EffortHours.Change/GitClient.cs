@@ -75,6 +75,49 @@ public sealed partial class GitClient
         return result.ExitCode == 0;
     }
 
+    public async Task<string> ResolveMergeBaseAsync(
+        string repositoryPath,
+        string firstObjectId,
+        string secondObjectId,
+        CancellationToken cancellationToken = default)
+    {
+        ExternalCommandResult result = await _commands.RunAsync(
+            "git",
+            repositoryPath,
+            ["merge-base", "--all", firstObjectId, secondObjectId],
+            cancellationToken,
+            requireSuccess: false).ConfigureAwait(false);
+        if (result.ExitCode == 0)
+        {
+            string[] objectIds =
+            [
+                .. result.StandardOutput
+                    .Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+                    .Select(value => RequireObjectId(value, "merge base"))
+                    .Distinct(StringComparer.Ordinal),
+            ];
+            return objectIds.Length switch
+            {
+                1 => objectIds[0],
+                0 => throw new InvalidOperationException("Git returned no merge base for the selected pull request."),
+                _ => throw new InvalidOperationException(
+                    "The selected pull request has multiple merge bases. Use explicit --base and --head " +
+                    "only after confirming the intended comparison base."),
+            };
+        }
+
+        if (result.ExitCode == 1)
+        {
+            throw new InvalidOperationException(
+                "The selected pull-request base and head have no common ancestor in the local Git database.");
+        }
+
+        throw new ExternalCommandException(
+            "git",
+            result.ExitCode,
+            $"Git could not resolve the pull-request merge base: {result.StandardError.Trim()}");
+    }
+
     public async Task<IReadOnlyList<string>> GetParentsAsync(
         string repositoryPath,
         string commitObjectId,
