@@ -29,8 +29,9 @@ eh change portfolio <repository> --author <alias> [--author <alias> ...]
 ```
 
 Repeated PR selectors use the optional `gh pr view` boundary only to resolve a
-number/URL and immutable base/head object IDs. Every object must already exist in
-the local Git database.
+number/URL and immutable provider base-tip/head object IDs. Every provider object
+must already exist in the local Git database, where Git resolves its unique merge
+base as the reviewed PR comparison base.
 
 A versioned manifest can select PRs from multiple local repositories and assigns
 explicit caller repository and row IDs. Relative repository paths resolve from

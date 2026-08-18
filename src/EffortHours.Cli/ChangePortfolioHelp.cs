@@ -38,8 +38,9 @@ internal static class ChangePortfolioHelp
           --output <path>                         Write output to an explicit path instead of stdout
           -h, --help                              Show this help
 
-        PR selectors resolve only immutable base/head identities through optional gh support;
-        all objects must already exist locally. Manifest repository paths and author aliases are
+        PR selectors resolve immutable provider base-tip/head identities through optional gh
+        support and compare their unique local merge base to the head; all provider objects must
+        already exist locally. Manifest repository paths and author aliases are
         execution-only and are not copied into reports. Author/time/co-author data selects
         immutable commits and never multiplies effort. Manifest author reports use exclusive
         contributor-match and head-reachability groups, retain zero rows, and count shared groups

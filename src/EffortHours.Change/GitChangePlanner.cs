@@ -287,10 +287,16 @@ public sealed partial class GitChangePlanner
                 "EffortHours does not fetch or modify the repository automatically.");
         }
 
+        string comparisonBaseObjectId = await _git.ResolveMergeBaseAsync(
+            root,
+            resolved.BaseObjectId,
+            resolved.HeadObjectId,
+            cancellationToken).ConfigureAwait(false);
+
         ChangeSelection selection = new()
         {
             Kind = ChangeSelectionKind.PullRequest,
-            Base = GitClient.Reference(resolved.BaseObjectId, resolved.BaseObjectId),
+            Base = GitClient.Reference(comparisonBaseObjectId, comparisonBaseObjectId),
             Head = GitClient.Reference(resolved.HeadObjectId, resolved.HeadObjectId),
             PullRequest = resolved.Reference,
         };
@@ -300,7 +306,7 @@ public sealed partial class GitChangePlanner
             {
                 Code = "FB5104",
                 Severity = DiagnosticSeverity.Information,
-                Message = "The optional gh adapter supplied immutable PR base/head identities only; PR activity and metadata are not effort signals.",
+                Message = "The optional gh adapter supplied immutable PR base-tip/head identities; local Git resolved their unique merge base as the comparison base. PR activity and metadata are not effort signals.",
             },
         ]);
     }

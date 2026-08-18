@@ -85,8 +85,10 @@ inputs do not depend on GitHub.
 Pull-request resolution
 uses `gh pr view` only when the caller explicitly selects `--pr`; `gh` must be
 installed and authenticated. The adapter retains only the requested PR number or
-URL and its immutable base/head object identities. It does not retain the PR body,
-discussion, author, reviews, timestamps, or private diff.
+URL and its immutable provider base-tip/head object identities. Local Git resolves
+their unique merge base, and that merge base to head becomes the reviewed PR delta.
+It does not retain the PR body, discussion, author, reviews, timestamps, or private
+diff.
 
 Repeated PR selection accepts at most 128 rows. A manifest gives each row a stable
 caller ID, repository ID, execution-only local repository path, PR selector, and
@@ -130,9 +132,11 @@ its EHE.
 
 The PR adapter analyzes objects already available in the selected local Git
 object database. It does not fetch, check out, or modify the repository. When a PR
-head or base object is absent locally, the command fails with an explicit
-instruction to fetch that object before retrying. Any future external object
-materialization must be explicit and must not silently mutate the target
+head or provider base-tip object is absent locally, the command fails with an
+explicit instruction to fetch that object before retrying. Once both exist, local
+Git must resolve exactly one merge base; no common ancestor or several criss-cross
+merge bases fail rather than selecting an arbitrary boundary. Any future external
+object materialization must be explicit and must not silently mutate the target
 repository.
 
 Git changes whose larger snapshot contains more than 1,024 files use a bounded
@@ -206,7 +210,12 @@ multipliers.
 
 ## Valuation semantics
 
-For a PR or revision range, the preferred estimate compares the final base and head
+For a PR, the preferred estimate compares the unique merge base of the provider's
+base tip and PR head with that head. Advancing the base branch therefore cannot
+turn unrelated base-only work into PR modifications or removals. Open and merged
+PRs retain this reviewed-head delta by default; estimating an integrated merge
+result, including conflict resolution, would require a separate explicit mode.
+For a revision range, the preferred estimate compares the final base and head
 states. Rewriting the same feature ten times inside the range does not increase
 Change EHE. The change analyzer should value additions, modifications, deletions,
 tests, documentation, migrations, configuration, integration effects, and required
@@ -387,9 +396,10 @@ Commit count, churn, timestamps, authors, logged-time records, and individual or
 team identity do not enter either numerator or denominator.
 
 The summary is not emitted for base/head, single-commit, directory, saved-evidence,
-or current PR selections. PR mode currently pins only base/head identities and must
-not invent intermediate work. A future PR form would need explicit opt-in immutable
-commit enumeration before this diagnostic could be available.
+or current PR selections. PR mode pins the provider base-tip/head identities and
+their unique comparison merge base but must not invent intermediate work. A future
+PR form would need explicit opt-in immutable commit enumeration before this
+diagnostic could be available.
 
 A portfolio report uses a separate reconciliation boundary. Every row first
 receives one canonical isolated Change estimate with no rate. Rows are then grouped
@@ -543,8 +553,9 @@ the exact earlier estimator identity they were created from.
   estimate while omitting the oversized component ledger.
 - Component attribution uses nonnegative largest-remainder cents and sums exactly
   even for large component sets.
-- PR mode invokes `gh` only to resolve number/URL and base/head object IDs, then
-  requires both objects to exist locally.
+- PR mode invokes `gh` only to resolve number/URL and provider base-tip/head object
+  IDs, requires both objects to exist locally, and uses their unique local merge
+  base as the comparison base.
 - Portfolio mode accepts at most 128 repeated PRs or 128 schema-valid manifest
   rows; every source item is estimated without a rate before reconciliation.
 - Manifest repository paths are execution-only. Relative paths resolve from the
