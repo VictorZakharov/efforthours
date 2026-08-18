@@ -508,8 +508,11 @@ the exact earlier estimator identity they were created from.
   and changed-blob sizes use 64-MiB-output-bounded `diff-tree --stdin` and
   `cat-file --batch-check` repository batches; other admitted lengths are resolved
   lazily through one bounded repository metadata reader, and source bodies use a
-  separate bounded `cat-file --batch` reader. EffortHours does not create
-  temporary checkouts or source trees.
+  separate bounded `cat-file --batch` reader. Batch diff framing requests an
+  explicit commit header even when a valid one-parent commit changes no paths, so
+  an empty commit becomes a zero-path transition while a genuinely omitted
+  requested object still fails closed. EffortHours does not create temporary
+  checkouts or source trees.
 - Root commits use Git's empty tree. Merge commits require an explicit parent.
 - Ranges expose isolated commit estimates, normalized final effort, named signed
   adjustments, allocations that sum exactly to normalized expected hours, and the

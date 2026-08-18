@@ -335,7 +335,9 @@ memory-for-latency tradeoff without making memory unbounded. Inventory derivatio
 retains the existing 1,024-changed-path and 16,000-path-character fallback
 boundaries. Before row analysis, eligible non-merge first-parent deltas and changed
 blob sizes are read with one `diff-tree --stdin` and one `cat-file --batch-check`
-process per repository rather than two Git processes per selected change. Each
+process per repository rather than two Git processes per selected change. The
+diff batch always emits one explicit commit frame, including a zero-path frame for
+a valid empty commit; absence of that frame remains a missing-object failure. Each
 batch output is capped at 64 MiB; exceeding it uses the existing row fallback.
 Roots, merges, custom snapshot providers, oversized deltas, and missing cached
 parents retain the exact existing fallback. Full-tree enumeration asks `ls-tree`

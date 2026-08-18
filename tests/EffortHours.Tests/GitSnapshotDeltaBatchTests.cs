@@ -8,6 +8,9 @@ public sealed class GitSnapshotDeltaBatchTests
     private const string Commit = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
     private const string Before = "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb";
     private const string After = "cccccccccccccccccccccccccccccccccccccccc";
+    private const string EmptyFirst = "dddddddddddddddddddddddddddddddddddddddd";
+    private const string EmptyMiddle = "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee";
+    private const string EmptyLast = "ffffffffffffffffffffffffffffffffffffffff";
     private const string Zero = "0000000000000000000000000000000000000000";
 
     [Fact]
@@ -42,6 +45,26 @@ public sealed class GitSnapshotDeltaBatchTests
             GitSnapshotDeltaBatch.ParseDiff(output));
 
         Assert.Contains("unsafe snapshot path", exception.Message, StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public void PreservesExplicitEmptyCommitFramesAtEveryBatchPosition()
+    {
+        byte[] output = Encoding.UTF8.GetBytes(
+            $"COMMIT:{EmptyFirst}\0" +
+            $"COMMIT:{Commit}\0" +
+            $":100644 100644 {Before} {After} M\0src/Feature.cs\0" +
+            $"COMMIT:{EmptyMiddle}\0" +
+            $"COMMIT:{EmptyLast}\0");
+
+        IReadOnlyDictionary<string, IReadOnlyList<GitSnapshotDeltaBatch.RawChangedFile>> parsed =
+            GitSnapshotDeltaBatch.ParseDiff(output);
+
+        Assert.Equal(4, parsed.Count);
+        Assert.Empty(parsed[EmptyFirst]);
+        Assert.Single(parsed[Commit]);
+        Assert.Empty(parsed[EmptyMiddle]);
+        Assert.Empty(parsed[EmptyLast]);
     }
 
     [Fact]
