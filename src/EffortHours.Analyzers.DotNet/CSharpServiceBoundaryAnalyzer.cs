@@ -30,40 +30,36 @@ internal static class CSharpServiceBoundaryAnalyzer
         List<EvidenceFact> facts,
         string path,
         string projectScope,
-        IReadOnlyList<SyntaxNode> nodes,
-        IReadOnlyList<BaseTypeDeclarationSyntax> types,
-        IReadOnlyList<MethodDeclarationSyntax> methods,
+        CSharpSyntaxInventory inventory,
         CompilationUnitSyntax root)
     {
-        AddBackgroundFact(facts, path, projectScope, nodes, types, methods);
-        AddIntegrationFact(facts, path, projectScope, nodes, root);
-        AddSecurityFact(facts, path, projectScope, nodes);
+        AddBackgroundFact(facts, path, projectScope, inventory);
+        AddIntegrationFact(facts, path, projectScope, inventory, root);
+        AddSecurityFact(facts, path, projectScope, inventory);
     }
 
     private static void AddBackgroundFact(
         List<EvidenceFact> facts,
         string path,
         string projectScope,
-        IReadOnlyList<SyntaxNode> nodes,
-        IReadOnlyList<BaseTypeDeclarationSyntax> types,
-        IReadOnlyList<MethodDeclarationSyntax> methods)
+        CSharpSyntaxInventory inventory)
     {
         BaseTypeDeclarationSyntax[] hostedServices =
         [
-            .. types.Where(type => BaseTypeNames(type).Any(name =>
+            .. inventory.Types.Where(type => BaseTypeNames(type).Any(name =>
                 name is "BackgroundService" or "IHostedService")),
         ];
         BaseTypeDeclarationSyntax[] handlers =
         [
-            .. types.Where(type => BaseTypeNames(type).Any(name => name is
+            .. inventory.Types.Where(type => BaseTypeNames(type).Any(name => name is
                 "IRequestHandler" or "INotificationHandler" or "IConsumer" or "IHandleMessages")),
         ];
         MethodDeclarationSyntax[] functions =
         [
-            .. methods.Where(method => AttributeNames(method.AttributeLists)
+            .. inventory.Methods.Where(method => AttributeNames(method.AttributeLists)
                 .Any(name => name is "Function" or "FunctionName")),
         ];
-        int registrations = nodes.OfType<InvocationExpressionSyntax>()
+        int registrations = inventory.Invocations
             .Count(invocation => GetInvocationName(invocation) == "AddHostedService");
         if (hostedServices.Length == 0 && handlers.Length == 0 &&
             functions.Length == 0 && registrations == 0)
@@ -97,17 +93,17 @@ internal static class CSharpServiceBoundaryAnalyzer
         List<EvidenceFact> facts,
         string path,
         string projectScope,
-        IReadOnlyList<SyntaxNode> nodes,
+        CSharpSyntaxInventory inventory,
         CompilationUnitSyntax root)
     {
         ObjectCreationExpressionSyntax[] clientCreations =
         [
-            .. nodes.OfType<ObjectCreationExpressionSyntax>().Where(creation =>
+            .. inventory.ObjectCreations.Where(creation =>
                 IntegrationTypeNames.Contains(GetSimpleName(creation.Type))),
         ];
         InvocationExpressionSyntax[] calls =
         [
-            .. nodes.OfType<InvocationExpressionSyntax>().Where(invocation =>
+            .. inventory.Invocations.Where(invocation =>
                 IntegrationInvocationNames.Contains(GetInvocationName(invocation))),
         ];
         string[] integrationNamespaces =
@@ -157,16 +153,16 @@ internal static class CSharpServiceBoundaryAnalyzer
         List<EvidenceFact> facts,
         string path,
         string projectScope,
-        IReadOnlyList<SyntaxNode> nodes)
+        CSharpSyntaxInventory inventory)
     {
         AttributeSyntax[] authorizationAttributes =
         [
-            .. nodes.OfType<AttributeSyntax>().Where(attribute =>
+            .. inventory.Attributes.Where(attribute =>
                 GetAttributeName(attribute) is "Authorize" or "AllowAnonymous"),
         ];
         InvocationExpressionSyntax[] configurationCalls =
         [
-            .. nodes.OfType<InvocationExpressionSyntax>().Where(invocation =>
+            .. inventory.Invocations.Where(invocation =>
                 AuthenticationInvocationNames.Contains(GetInvocationName(invocation))),
         ];
         if (authorizationAttributes.Length == 0 && configurationCalls.Length == 0)

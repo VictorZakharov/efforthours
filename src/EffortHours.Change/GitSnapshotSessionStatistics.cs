@@ -67,4 +67,10 @@ internal sealed record GitSnapshotSessionStatistics
     public long RetainedBlobBytes { get; init; }
 
     public long PeakCachedBlobBytes { get; init; }
+
+    public TimeSpan ObjectReaderCpuTime { get; init; }
+
+    public TimeSpan ObjectReaderOccupiedTime { get; init; }
+
+    public TimeSpan ObjectReaderWaitTime { get; init; }
 }

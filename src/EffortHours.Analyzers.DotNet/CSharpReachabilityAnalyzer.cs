@@ -10,13 +10,12 @@ internal static class CSharpReachabilityAnalyzer
     public static CSharpReachabilityResult Analyze(
         CompilationUnitSyntax root,
         string path,
-        string projectScope)
+        string projectScope,
+        IReadOnlyList<MethodDeclarationSyntax> methods)
     {
         MethodDeclarationSyntax[] candidates =
         [
-            .. root.DescendantNodes()
-                .OfType<MethodDeclarationSyntax>()
-                .Where(IsBoundedCandidate),
+            .. methods.Where(IsBoundedCandidate),
         ];
         if (candidates.Length == 0)
         {
@@ -146,8 +145,11 @@ internal sealed record CSharpReachabilityResult(
         new HashSet<MethodDeclarationSyntax>(),
         null);
 
-    public bool IsExcluded(SyntaxNode node) => node
-        .AncestorsAndSelf()
-        .OfType<MethodDeclarationSyntax>()
-        .Any(ExcludedMethods.Contains);
+    public bool HasExclusions => ExcludedMethods.Count > 0;
+
+    public bool IsExcluded(SyntaxNode node) =>
+        HasExclusions &&
+        node.AncestorsAndSelf()
+            .OfType<MethodDeclarationSyntax>()
+            .Any(ExcludedMethods.Contains);
 }

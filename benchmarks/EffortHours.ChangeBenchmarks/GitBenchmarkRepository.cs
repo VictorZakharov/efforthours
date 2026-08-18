@@ -230,9 +230,14 @@ internal sealed class GitBenchmarkRepository : IDisposable
         CancellationToken cancellationToken,
         string? authorName = null,
         string? authorEmail = null,
-        string? authorDate = null)
+        string? authorDate = null,
+        IReadOnlyList<string>? paths = null)
     {
-        await GitAsync(root, cancellationToken, "add", "--all").ConfigureAwait(false);
+        await GitAsync(
+            root,
+            cancellationToken,
+            paths is null ? ["add", "--all"] : ["add", "--", .. paths])
+            .ConfigureAwait(false);
         List<string> arguments = [];
         if (authorName is not null && authorEmail is not null)
         {

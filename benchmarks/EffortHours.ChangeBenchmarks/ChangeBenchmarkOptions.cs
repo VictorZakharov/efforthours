@@ -20,9 +20,13 @@ internal sealed record ChangeBenchmarkOptions(
     int Commits,
     int MaximumRangeComponents,
     bool CompareIndependent,
+    bool CombinedOnly,
     bool ProcessMatrix,
     string? SourceTreePath,
     bool KeepRepository,
+    bool PrepareOnly,
+    string? PreparedFixturePath,
+    int? FileAnalysisWorkers,
     decimal? MaximumSeconds,
     decimal? MaximumPeakMib)
 {
@@ -32,7 +36,9 @@ internal sealed record ChangeBenchmarkOptions(
         "[--lines-per-file <count>] [--commits <count>] " +
         "[--maximum-range-components <count>] [--max-seconds <value>] " +
         "[--max-peak-mib <value>] [--compare-independent] [--process-matrix] " +
-        "[--source-tree <path>] [--keep]";
+        "[--combined-only] " +
+        "[--source-tree <path>] [--keep] [--prepare-only] " +
+        "[--prepared-fixture <descriptor-path>] [--file-analysis-workers <count>]";
 
     public string Name => Mode switch
     {
@@ -52,9 +58,13 @@ internal sealed record ChangeBenchmarkOptions(
         int? commits = null;
         int maximumRangeComponents = GitChangePlannerOptions.DefaultMaximumRangeComponents;
         bool compareIndependent = false;
+        bool combinedOnly = false;
         bool processMatrix = false;
         string? sourceTreePath = null;
         bool keep = false;
+        bool prepareOnly = false;
+        string? preparedFixturePath = null;
+        int? fileAnalysisWorkers = null;
         decimal? maximumSeconds = null;
         decimal? maximumPeakMib = null;
 
@@ -104,8 +114,23 @@ internal sealed record ChangeBenchmarkOptions(
                 case "--keep":
                     keep = true;
                     break;
+                case "--prepare-only":
+                    prepareOnly = true;
+                    break;
+                case "--prepared-fixture":
+                    preparedFixturePath = ReadValue(arguments, ref index, "--prepared-fixture");
+                    break;
+                case "--file-analysis-workers":
+                    fileAnalysisWorkers = ReadPositiveInteger(
+                        arguments,
+                        ref index,
+                        "--file-analysis-workers");
+                    break;
                 case "--compare-independent":
                     compareIndependent = true;
+                    break;
+                case "--combined-only":
+                    combinedOnly = true;
                     break;
                 case "--process-matrix":
                     processMatrix = true;
@@ -149,10 +174,26 @@ internal sealed record ChangeBenchmarkOptions(
                 $"and at most {maximumManifestBenchmarkCommits}.");
         }
 
-        if (selected == ChangeBenchmarkMode.AuthorPeriodManifest && !compareIndependent)
+        if (selected == ChangeBenchmarkMode.AuthorPeriodManifest &&
+            !compareIndependent &&
+            !combinedOnly &&
+            !prepareOnly)
         {
             throw new ArgumentException(
-                "Author-period-manifest mode requires '--compare-independent'.");
+                "Author-period-manifest mode requires '--compare-independent' or " +
+                "'--combined-only'.");
+        }
+
+        if (compareIndependent && combinedOnly)
+        {
+            throw new ArgumentException(
+                "Options '--compare-independent' and '--combined-only' are mutually exclusive.");
+        }
+
+        if (combinedOnly && selected != ChangeBenchmarkMode.AuthorPeriodManifest)
+        {
+            throw new ArgumentException(
+                "Option '--combined-only' is valid only with '--author-period-manifest'.");
         }
 
         if (compareIndependent && selected is not (
@@ -192,6 +233,60 @@ internal sealed record ChangeBenchmarkOptions(
                 "Options '--source-tree' and '--files' cannot be combined.");
         }
 
+        if (prepareOnly && selected != ChangeBenchmarkMode.AuthorPeriodManifest)
+        {
+            throw new ArgumentException(
+                "Option '--prepare-only' is valid only with '--author-period-manifest'.");
+        }
+
+        if (preparedFixturePath is not null && selected != ChangeBenchmarkMode.AuthorPeriodManifest)
+        {
+            throw new ArgumentException(
+                "Option '--prepared-fixture' is valid only with '--author-period-manifest'.");
+        }
+
+        if (prepareOnly && preparedFixturePath is not null)
+        {
+            throw new ArgumentException(
+                "Options '--prepare-only' and '--prepared-fixture' cannot be combined.");
+        }
+
+        if (preparedFixturePath is not null &&
+            (files is not null || contextProjects is not null || linesPerFile is not null ||
+                commits is not null))
+        {
+            throw new ArgumentException(
+                "A prepared fixture owns its file, context-project, line, and commit shape; " +
+                "do not repeat those options with '--prepared-fixture'.");
+        }
+
+        if (prepareOnly && (maximumSeconds is not null || maximumPeakMib is not null))
+        {
+            throw new ArgumentException(
+                "Fixture preparation is outside the measured benchmark and cannot use " +
+                "analysis time or memory thresholds.");
+        }
+
+        if (fileAnalysisWorkers is not null &&
+            selected != ChangeBenchmarkMode.AuthorPeriodManifest)
+        {
+            throw new ArgumentException(
+                "Option '--file-analysis-workers' is valid only with " +
+                "'--author-period-manifest'.");
+        }
+
+        if (fileAnalysisWorkers > Math.Max(1, Environment.ProcessorCount))
+        {
+            throw new ArgumentException(
+                "Option '--file-analysis-workers' cannot exceed the available logical processors.");
+        }
+
+        if (prepareOnly && fileAnalysisWorkers is not null)
+        {
+            throw new ArgumentException(
+                "Fixture preparation does not run analysis and cannot select analysis workers.");
+        }
+
         if (maximumRangeComponents > GitChangePlannerOptions.MaximumSupportedRangeComponents)
         {
             throw new ArgumentException(
@@ -221,9 +316,13 @@ internal sealed record ChangeBenchmarkOptions(
             selectedCommits,
             maximumRangeComponents,
             compareIndependent,
+            combinedOnly,
             processMatrix,
             sourceTreePath is null ? null : Path.GetFullPath(sourceTreePath),
             keep,
+            prepareOnly,
+            preparedFixturePath is null ? null : Path.GetFullPath(preparedFixturePath),
+            fileAnalysisWorkers,
             maximumSeconds,
             maximumPeakMib);
     }

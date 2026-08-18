@@ -21,6 +21,68 @@ public sealed class RepositoryAnalysisArtifactCacheTests
         AssertStatistics(reverse.GetStatistics());
     }
 
+    [Fact]
+    public async Task ConcurrentRequestsComputeAndRetainOneImmutableArtifact()
+    {
+        RepositoryAnalysisArtifactCache cache = new();
+        TaskCompletionSource started = new(TaskCreationOptions.RunContinuationsAsynchronously);
+        TaskCompletionSource release = new(TaskCreationOptions.RunContinuationsAsynchronously);
+        int factories = 0;
+        Task<string> owner = cache.GetOrCreateAsync(
+            "shared",
+            async cancellationToken =>
+            {
+                Interlocked.Increment(ref factories);
+                started.SetResult();
+                await release.Task.WaitAsync(cancellationToken);
+                return "value";
+            },
+            CancellationToken.None);
+        await started.Task;
+        Task<string>[] followers = [.. Enumerable.Range(0, 7).Select(index =>
+            cache.GetOrCreateAsync<string>(
+                "shared",
+                cancellationToken => throw new InvalidOperationException(
+                    $"Follower {index} became the owner."),
+                CancellationToken.None))];
+
+        release.SetResult();
+        string[] results = await Task.WhenAll([owner, .. followers]);
+
+        Assert.All(results, value => Assert.Equal("value", value));
+        Assert.Equal(1, factories);
+        Assert.True(cache.TryGet("shared", out string retained));
+        Assert.Equal("value", retained);
+        RepositoryAnalysisArtifactCacheStatistics statistics = cache.GetStatistics();
+        Assert.Equal(9, statistics.Requests);
+        Assert.Equal(8, statistics.Hits);
+        Assert.Equal(1, statistics.UniqueKeys);
+        Assert.Equal(0, statistics.RevisitMisses);
+        Assert.Equal(1, statistics.PeakEntries);
+    }
+
+    [Fact]
+    public async Task FailedOwnerReleasesTheKeyForDeterministicRetry()
+    {
+        RepositoryAnalysisArtifactCache cache = new();
+
+        await Assert.ThrowsAsync<InvalidOperationException>(() => cache.GetOrCreateAsync<string>(
+            "retry",
+            _ => throw new InvalidOperationException("expected failure"),
+            CancellationToken.None));
+        string result = await cache.GetOrCreateAsync(
+            "retry",
+            _ => Task.FromResult("recovered"),
+            CancellationToken.None);
+
+        Assert.Equal("recovered", result);
+        RepositoryAnalysisArtifactCacheStatistics statistics = cache.GetStatistics();
+        Assert.Equal(2, statistics.Requests);
+        Assert.Equal(0, statistics.Hits);
+        Assert.Equal(1, statistics.UniqueKeys);
+        Assert.Equal(1, statistics.RevisitMisses);
+    }
+
     private static RepositoryAnalysisArtifactCache Populate(IReadOnlyList<string> keys)
     {
         RepositoryAnalysisArtifactCache cache = new(maximumEntries: 2);

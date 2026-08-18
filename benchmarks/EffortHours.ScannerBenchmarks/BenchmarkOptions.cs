@@ -29,6 +29,7 @@ internal enum BenchmarkShape
 internal sealed record BenchmarkOptions(
     int Files,
     int LinesPerFile,
+    int? FileAnalysisWorkers,
     bool KeepRepository,
     bool MeasureWarmCache,
     BenchmarkShape Shape,
@@ -36,6 +37,7 @@ internal sealed record BenchmarkOptions(
 {
     public const string Usage =
         "Usage: scanner-benchmark [--files <count>] [--lines-per-file <count>] " +
+        "[--file-analysis-workers <count>] " +
         "[--dotnet|--javascript|--frontend|--sql|--python|--jupyter|--go|--java|--kotlin|--shell|--powershell|--php|--rust|--c|--cpp|--terraform|--docker|--mixed] [--warm-cache] [--keep] " +
         "or scanner-benchmark --repository <path> [--warm-cache]";
 
@@ -70,6 +72,7 @@ internal sealed record BenchmarkOptions(
         int linesPerFile = 100;
         bool filesProvided = false;
         bool linesProvided = false;
+        int? fileAnalysisWorkers = null;
         bool keep = false;
         bool warmCache = false;
         BenchmarkShape? shape = null;
@@ -86,6 +89,12 @@ internal sealed record BenchmarkOptions(
                 case "--lines-per-file":
                     linesPerFile = ReadPositiveInteger(arguments, ref index, "--lines-per-file");
                     linesProvided = true;
+                    break;
+                case "--file-analysis-workers":
+                    fileAnalysisWorkers = ReadPositiveInteger(
+                        arguments,
+                        ref index,
+                        "--file-analysis-workers");
                     break;
                 case "--keep":
                     keep = true;
@@ -162,9 +171,16 @@ internal sealed record BenchmarkOptions(
                 "Option '--repository' cannot be combined with generated-fixture shape, size, or keep options.");
         }
 
+        if (fileAnalysisWorkers > Math.Max(1, Environment.ProcessorCount))
+        {
+            throw new ArgumentException(
+                "Option '--file-analysis-workers' cannot exceed the available logical processors.");
+        }
+
         return new BenchmarkOptions(
             files,
             linesPerFile,
+            fileAnalysisWorkers,
             keep,
             warmCache,
             repositoryPath is null ? shape ?? BenchmarkShape.Common : BenchmarkShape.ExistingRepository,

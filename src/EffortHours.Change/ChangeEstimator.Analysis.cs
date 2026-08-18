@@ -2,6 +2,7 @@ using EffortHours.Analysis;
 using EffortHours.Contracts;
 using EffortHours.Contracts.V1;
 using EffortHours.Core;
+using EffortHours.Estimation;
 
 namespace EffortHours.Change;
 
@@ -26,7 +27,7 @@ public sealed partial class ChangeEstimator
         {
             analysisScope = ChangeAnalysisScope.Create(baseSnapshot, headSnapshot);
         }
-        SnapshotAnalysis baseAnalysis = await AnalyzeSnapshotAsync(
+        Task<SnapshotAnalysis> baseAnalysisTask = AnalyzeSnapshotAsync(
             repositoryName,
             baseSnapshot,
             profile,
@@ -34,9 +35,8 @@ public sealed partial class ChangeEstimator
             cacheNamespace,
             analysisScope,
             executionTelemetry,
-            cancellationToken)
-            .ConfigureAwait(false);
-        SnapshotAnalysis headAnalysis = await AnalyzeSnapshotAsync(
+            cancellationToken);
+        Task<SnapshotAnalysis> headAnalysisTask = AnalyzeSnapshotAsync(
             repositoryName,
             headSnapshot,
             profile,
@@ -44,8 +44,10 @@ public sealed partial class ChangeEstimator
             cacheNamespace,
             analysisScope,
             executionTelemetry,
-            cancellationToken)
-            .ConfigureAwait(false);
+            cancellationToken);
+        await Task.WhenAll(baseAnalysisTask, headAnalysisTask).ConfigureAwait(false);
+        SnapshotAnalysis baseAnalysis = await baseAnalysisTask.ConfigureAwait(false);
+        SnapshotAnalysis headAnalysis = await headAnalysisTask.ConfigureAwait(false);
         RepositoryEvidence baseEvidence = baseAnalysis.Evidence;
         RepositoryEvidence headEvidence = headAnalysis.Evidence;
         EstimateReport baseEstimate = baseAnalysis.Estimate;
@@ -199,31 +201,49 @@ public sealed partial class ChangeEstimator
         string snapshotAnalysisIdentity = snapshot is GitSnapshotFileSystem gitSnapshot
             ? gitSnapshot.InventoryDigest
             : snapshot.ObjectId;
-        if (snapshotAnalyses.TryGet(
+        return await snapshotAnalyses.GetOrCreateAsync(
             cacheNamespace,
             snapshotAnalysisIdentity,
             analysisScopeId,
-            out SnapshotAnalysis cached))
-        {
-            return cached;
-        }
-
-        SnapshotAnalysis analysis;
-        using (executionTelemetry?.Measure(ChangePortfolioExecutionPhases.StaticAnalysis))
-        {
-            RepositoryEvidence evidence = await ReadEvidenceAsync(snapshot, analysisScope, cancellationToken)
-                .ConfigureAwait(false);
-            evidence = RenameRepository(evidence, repositoryName);
-            EstimateReport estimate;
-            lock (_repositoryEstimatorGate)
+            async itemCancellationToken =>
             {
-                estimate = _repositoryEstimator.Estimate(evidence, profile);
-            }
+                using (executionTelemetry?.Measure(ChangePortfolioExecutionPhases.StaticAnalysis))
+                {
+                    RepositoryEvidence evidence = await ReadEvidenceAsync(
+                        snapshot,
+                        analysisScope,
+                        itemCancellationToken).ConfigureAwait(false);
+                    evidence = RenameRepository(evidence, repositoryName);
+                    EstimateReport estimate = await EstimateRepositoryAsync(
+                        evidence,
+                        profile,
+                        itemCancellationToken).ConfigureAwait(false);
 
-            analysis = new(evidence, estimate);
+                    return new SnapshotAnalysis(evidence, estimate);
+                }
+            },
+            cancellationToken).ConfigureAwait(false);
+    }
+
+    private async Task<EstimateReport> EstimateRepositoryAsync(
+        RepositoryEvidence evidence,
+        EstimationProfile profile,
+        CancellationToken cancellationToken)
+    {
+        if (_repositoryEstimator is IThreadSafeEstimator)
+        {
+            using IDisposable cpuLease = await RepositoryAnalysisConcurrency
+                .AcquireFileAnalysisAsync(
+                    RepositoryAnalysisWorkKind.RepositoryEstimation,
+                    cancellationToken)
+                .ConfigureAwait(false);
+            return _repositoryEstimator.Estimate(evidence, profile);
         }
-        snapshotAnalyses.Add(cacheNamespace, snapshotAnalysisIdentity, analysisScopeId, analysis);
-        return analysis;
+
+        lock (_repositoryEstimatorGate)
+        {
+            return _repositoryEstimator.Estimate(evidence, profile);
+        }
     }
 
     private static async Task<RepositoryEvidence> ReadEvidenceAsync(

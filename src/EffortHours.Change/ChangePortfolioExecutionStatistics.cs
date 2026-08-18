@@ -10,6 +10,8 @@ public sealed record ChangePortfolioExecutionStatistics
 
     public int MaximumConcurrentFileAnalysesPerRepository { get; init; }
 
+    public int MaximumConcurrentCpuWorkItems { get; init; }
+
     public int SnapshotAnalysisRequests { get; init; }
 
     public int SnapshotAnalysisHits { get; init; }
@@ -88,6 +90,12 @@ public sealed record ChangePortfolioExecutionStatistics
 
     public long PeakCachedBlobBytesPerRepository { get; init; }
 
+    public TimeSpan ObjectReaderCpuTime { get; init; }
+
+    public TimeSpan ObjectReaderOccupiedTime { get; init; }
+
+    public TimeSpan ObjectReaderWaitTime { get; init; }
+
     public int SnapshotAnalysisRetentionLimit { get; init; }
 
     public int AnalysisArtifactRetentionLimit { get; init; }
@@ -129,8 +137,9 @@ public sealed record ChangePortfolioExecutionStatistics
             $"{ObjectMetadataCacheHits} cache hit(s) and {ObjectMetadataCacheEvictions} eviction(s). " +
             "At most " +
             $"{MaximumActiveRepositories} repository session(s) were active concurrently, " +
-            $"with at most {MaximumConcurrentFileAnalysesPerRepository} independent file " +
-            "analyses per repository and retention limits of " +
+            $"with one process-wide budget of {MaximumConcurrentCpuWorkItems} independent " +
+            "common/semantic file-analysis and thread-safe estimation work item(s), and " +
+            "retention limits of " +
             $"{SnapshotAnalysisRetentionLimit} analyses, " +
             $"{AnalysisArtifactRetentionLimit} file-analysis artifacts, " +
             $"{SnapshotInventoryRetentionLimit} structurally shared inventories across " +

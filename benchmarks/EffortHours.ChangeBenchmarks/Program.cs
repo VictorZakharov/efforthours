@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using System.Globalization;
 using System.Runtime.InteropServices;
+using EffortHours.Analysis;
 using EffortHours.Change;
 
 namespace EffortHours.ChangeBenchmarks;
@@ -24,6 +25,12 @@ public static partial class Program
             Console.Error.WriteLine(exception.Message);
             Console.Error.WriteLine(ChangeBenchmarkOptions.Usage);
             return 2;
+        }
+
+        if (options.FileAnalysisWorkers is { } fileAnalysisWorkers)
+        {
+            RepositoryAnalysisConcurrency.ConfigureFileAnalysisLimitForBenchmark(
+                fileAnalysisWorkers);
         }
 
         using CancellationTokenSource cancellation = new();

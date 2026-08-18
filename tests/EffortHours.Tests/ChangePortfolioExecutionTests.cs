@@ -1,6 +1,7 @@
 using EffortHours.Change;
 using EffortHours.Cli;
 using EffortHours.Contracts.V1;
+using EffortHours.Estimation;
 
 namespace EffortHours.Tests;
 
@@ -281,5 +282,203 @@ public sealed partial class ChangePortfolioCommandTests
         Assert.Equal(4, progress[^1].AnalysisCacheRequests);
         Assert.All(progress, item =>
             Assert.InRange(item.AnalysisCacheHits, 0, item.AnalysisCacheRequests));
+    }
+
+    [Fact]
+    public async Task ThreadSafeRepositoryEstimatorRunsIndependentSnapshotsConcurrently()
+    {
+        SnapshotState before = State(("Demo.csproj", ProjectFile));
+        SnapshotState after = State(
+            ("Demo.csproj", ProjectFile),
+            ("Feature.cs", "namespace Demo; public sealed class Feature { }\n"));
+        GitChangePlan[] plans =
+        [
+            CommitPlan("first", before, after) with { RepositoryPath = "repository-a" },
+            CommitPlan("second", before, after) with { RepositoryPath = "repository-b" },
+        ];
+        using ConcurrentProbeEstimator repositoryEstimator = new();
+
+        _ = await new ChangeEstimator(repositoryEstimator)
+            .EstimatePortfolioCandidatesWithStatisticsAsync(
+                plans,
+                EstimationProfile.Implementation);
+
+        Assert.True(repositoryEstimator.MaximumActive >= 2);
+    }
+
+    [Fact]
+    public async Task PortfolioProducerOpensNextPlanWhilePriorPlanIsAnalyzed()
+    {
+        SnapshotState before = State(("Demo.csproj", ProjectFile));
+        SnapshotState firstAfter = State(
+            ("Demo.csproj", ProjectFile),
+            ("First.cs", "namespace Demo; public sealed class First { }\n"));
+        SnapshotState secondAfter = State(
+            ("Demo.csproj", ProjectFile),
+            ("Second.cs", "namespace Demo; public sealed class Second { }\n"));
+        using ManualResetEventSlim analysisStarted = new();
+        using ManualResetEventSlim secondPlanOpened = new();
+        using CancellationTokenSource timeout = new(TimeSpan.FromSeconds(5));
+        GitChangePlan first = CommitPlan("first", before, firstAfter);
+        GitChangePlan second = CommitPlan("second", before, secondAfter) with
+        {
+            OpenBaseAsync = async cancellationToken =>
+            {
+                if (!analysisStarted.Wait(TimeSpan.FromSeconds(5), cancellationToken))
+                {
+                    throw new TimeoutException(
+                        "The prior plan was not analyzed while the next plan was produced.");
+                }
+
+                secondPlanOpened.Set();
+                return await before.OpenAsync(cancellationToken).ConfigureAwait(false);
+            },
+        };
+        ProducerOverlapEstimator repositoryEstimator = new(
+            analysisStarted,
+            secondPlanOpened);
+
+        ChangePortfolioEstimateBatch batch = await new ChangeEstimator(repositoryEstimator)
+            .EstimatePortfolioCandidatesWithStatisticsAsync(
+                [first, second],
+                EstimationProfile.Implementation,
+                cancellationToken: timeout.Token);
+
+        Assert.Equal(2, batch.Reports.Count);
+        Assert.True(analysisStarted.IsSet);
+        Assert.True(secondPlanOpened.IsSet);
+    }
+
+    [Fact]
+    public async Task UnmarkedRepositoryEstimatorRemainsSerialized()
+    {
+        SnapshotState before = State(("Demo.csproj", ProjectFile));
+        SnapshotState after = State(
+            ("Demo.csproj", ProjectFile),
+            ("Feature.cs", "namespace Demo; public sealed class Feature { }\n"));
+        GitChangePlan[] plans =
+        [
+            CommitPlan("first", before, after) with { RepositoryPath = "repository-a" },
+            CommitPlan("second", before, after) with { RepositoryPath = "repository-b" },
+        ];
+        SerializedProbeEstimator repositoryEstimator = new();
+
+        _ = await new ChangeEstimator(repositoryEstimator)
+            .EstimatePortfolioCandidatesWithStatisticsAsync(
+                plans,
+                EstimationProfile.Implementation);
+
+        Assert.Equal(1, repositoryEstimator.MaximumActive);
+    }
+
+    private sealed class ConcurrentProbeEstimator : IThreadSafeEstimator, IDisposable
+    {
+        private readonly SeedEstimator _inner = new();
+        private readonly ManualResetEventSlim _overlap = new();
+        private int _active;
+        private int _maximumActive;
+
+        public int MaximumActive => Volatile.Read(ref _maximumActive);
+
+        public EstimateReport Estimate(
+            RepositoryEvidence evidence,
+            EstimationProfile profile,
+            RateCard? rateCard = null)
+        {
+            int active = Interlocked.Increment(ref _active);
+            UpdateMaximum(active);
+            if (active >= 2)
+            {
+                _overlap.Set();
+            }
+
+            try
+            {
+                if (!_overlap.Wait(TimeSpan.FromSeconds(5)))
+                {
+                    throw new TimeoutException(
+                        "Independent thread-safe estimator calls did not overlap.");
+                }
+
+                return _inner.Estimate(evidence, profile, rateCard);
+            }
+            finally
+            {
+                Interlocked.Decrement(ref _active);
+            }
+        }
+
+        public void Dispose() => _overlap.Dispose();
+
+        private void UpdateMaximum(int active)
+        {
+            int observed;
+            while (active > (observed = Volatile.Read(ref _maximumActive)) &&
+                Interlocked.CompareExchange(ref _maximumActive, active, observed) != observed)
+            {
+            }
+        }
+    }
+
+    private sealed class SerializedProbeEstimator : IEstimator
+    {
+        private readonly SeedEstimator _inner = new();
+        private int _active;
+        private int _maximumActive;
+
+        public int MaximumActive => Volatile.Read(ref _maximumActive);
+
+        public EstimateReport Estimate(
+            RepositoryEvidence evidence,
+            EstimationProfile profile,
+            RateCard? rateCard = null)
+        {
+            int active = Interlocked.Increment(ref _active);
+            UpdateMaximum(active);
+            try
+            {
+                Thread.Sleep(10);
+                return _inner.Estimate(evidence, profile, rateCard);
+            }
+            finally
+            {
+                Interlocked.Decrement(ref _active);
+            }
+        }
+
+        private void UpdateMaximum(int active)
+        {
+            int observed;
+            while (active > (observed = Volatile.Read(ref _maximumActive)) &&
+                Interlocked.CompareExchange(ref _maximumActive, active, observed) != observed)
+            {
+            }
+        }
+    }
+
+    private sealed class ProducerOverlapEstimator(
+        ManualResetEventSlim analysisStarted,
+        ManualResetEventSlim secondPlanOpened) : IThreadSafeEstimator
+    {
+        private readonly SeedEstimator _inner = new();
+        private int _invocations;
+
+        public EstimateReport Estimate(
+            RepositoryEvidence evidence,
+            EstimationProfile profile,
+            RateCard? rateCard = null)
+        {
+            if (Interlocked.Increment(ref _invocations) == 1)
+            {
+                analysisStarted.Set();
+                if (!secondPlanOpened.Wait(TimeSpan.FromSeconds(5)))
+                {
+                    throw new TimeoutException(
+                        "The next plan was not produced while the prior plan was analyzed.");
+                }
+            }
+
+            return _inner.Estimate(evidence, profile, rateCard);
+        }
     }
 }

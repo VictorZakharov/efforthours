@@ -28,6 +28,12 @@ public static class Program
         BenchmarkTarget? target = null;
         try
         {
+            if (options.FileAnalysisWorkers is { } fileAnalysisWorkers)
+            {
+                RepositoryAnalysisConcurrency.ConfigureFileAnalysisLimitForBenchmark(
+                    fileAnalysisWorkers);
+            }
+
             Stopwatch generationTimer = Stopwatch.StartNew();
             target = BenchmarkTarget.Create(options);
             generationTimer.Stop();
@@ -37,11 +43,14 @@ public static class Program
                 ? new RepositoryScanner()
                 : new RepositoryAnalysisPipeline();
             long allocationsBefore = GC.GetTotalAllocatedBytes(precise: true);
+            TimeSpan processorTimeBefore = Process.GetCurrentProcess().TotalProcessorTime;
             long workingSetBefore = Environment.WorkingSet;
             await using WorkingSetSampler workingSet = WorkingSetSampler.Start();
             Stopwatch scanTimer = Stopwatch.StartNew();
             RepositoryEvidence evidence = await scanner.ScanAsync(target.RootPath);
             scanTimer.Stop();
+            TimeSpan processorTime = Process.GetCurrentProcess().TotalProcessorTime -
+                processorTimeBefore;
             long peakWorkingSet = await workingSet.StopAsync().ConfigureAwait(false);
             long workingSetAfter = Environment.WorkingSet;
             long scanAllocations = GC.GetTotalAllocatedBytes(precise: true) - allocationsBefore;
@@ -67,6 +76,7 @@ public static class Program
                 evidence,
                 generationTimer.Elapsed,
                 scanTimer.Elapsed,
+                processorTime,
                 serializationTimer.Elapsed,
                 scanAllocations,
                 workingSetBefore,
@@ -124,6 +134,7 @@ public static class Program
         RepositoryEvidence evidence,
         TimeSpan generation,
         TimeSpan scan,
+        TimeSpan processorTime,
         TimeSpan serialization,
         long allocations,
         long workingSetBefore,
@@ -140,6 +151,9 @@ public static class Program
         Console.WriteLine($"os={RuntimeInformation.OSDescription}");
         Console.WriteLine($"architecture={RuntimeInformation.OSArchitecture}");
         Console.WriteLine($"logical-processors={Environment.ProcessorCount.ToString(CultureInfo.InvariantCulture)}");
+        Console.WriteLine(
+            $"file-analysis-workers=" +
+            $"{(options.FileAnalysisWorkers ?? RepositoryAnalysisConcurrency.MaximumCpuWorkItems).ToString(CultureInfo.InvariantCulture)}");
         Console.WriteLine($"gc-available-memory-mib={ToMebibytes(GC.GetGCMemoryInfo().TotalAvailableMemoryBytes)}");
         Console.WriteLine($"generated-fixture={target.OwnsTarget.ToString().ToLowerInvariant()}");
         Console.WriteLine($"requested-lines={target.RequestedLines.ToString(CultureInfo.InvariantCulture)}");
@@ -150,6 +164,10 @@ public static class Program
         Console.WriteLine($"target-bytes={metadata.TotalBytes.ToString(CultureInfo.InvariantCulture)}");
         Console.WriteLine($"generation-seconds={Seconds(generation)}");
         Console.WriteLine($"scan-seconds={Seconds(scan)}");
+        Console.WriteLine($"scan-cpu-seconds={Seconds(processorTime)}");
+        Console.WriteLine(
+            $"scan-average-processor-equivalents=" +
+            $"{(processorTime.TotalSeconds / scan.TotalSeconds).ToString("F3", CultureInfo.InvariantCulture)}");
         Console.WriteLine($"serialization-seconds={Seconds(serialization)}");
         Console.WriteLine($"scan-lines-per-second={Rate(inventory.TextLines, scan)}");
         Console.WriteLine($"scan-allocated-mib={ToMebibytes(allocations)}");

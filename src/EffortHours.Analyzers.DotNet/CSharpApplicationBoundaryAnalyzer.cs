@@ -22,38 +22,35 @@ internal static class CSharpApplicationBoundaryAnalyzer
         List<EvidenceFact> facts,
         string path,
         string projectScope,
-        IReadOnlyList<SyntaxNode> nodes,
-        IReadOnlyList<BaseTypeDeclarationSyntax> types,
-        IReadOnlyList<MethodDeclarationSyntax> methods)
+        CSharpSyntaxInventory inventory)
     {
-        AddEntryPointFact(facts, path, projectScope, nodes, methods);
-        AddApiFact(facts, path, projectScope, nodes, types);
+        AddEntryPointFact(facts, path, projectScope, inventory);
+        AddApiFact(facts, path, projectScope, inventory);
     }
 
     private static void AddEntryPointFact(
         List<EvidenceFact> facts,
         string path,
         string projectScope,
-        IReadOnlyList<SyntaxNode> nodes,
-        IReadOnlyList<MethodDeclarationSyntax> methods)
+        CSharpSyntaxInventory inventory)
     {
-        GlobalStatementSyntax[] globalStatements = [.. nodes.OfType<GlobalStatementSyntax>()];
+        IReadOnlyList<GlobalStatementSyntax> globalStatements = inventory.GlobalStatements;
         MethodDeclarationSyntax[] mainMethods =
         [
-            .. methods.Where(method => method.Identifier.ValueText == "Main" &&
+            .. inventory.Methods.Where(method => method.Identifier.ValueText == "Main" &&
                 method.Modifiers.Any(SyntaxKind.StaticKeyword)),
         ];
         InvocationExpressionSyntax[] hostBuilders =
         [
-            .. nodes.OfType<InvocationExpressionSyntax>().Where(invocation =>
+            .. inventory.Invocations.Where(invocation =>
                 GetInvocationName(invocation) is "CreateBuilder" or "CreateDefaultBuilder"),
         ];
         ObjectCreationExpressionSyntax[] rootCommands =
         [
-            .. nodes.OfType<ObjectCreationExpressionSyntax>().Where(creation =>
+            .. inventory.ObjectCreations.Where(creation =>
                 GetSimpleName(creation.Type) == "RootCommand"),
         ];
-        if (globalStatements.Length == 0 &&
+        if (globalStatements.Count == 0 &&
             mainMethods.Length == 0 &&
             hostBuilders.Length == 0 &&
             rootCommands.Length == 0)
@@ -62,7 +59,7 @@ internal static class CSharpApplicationBoundaryAnalyzer
         }
 
         List<string> tags = [];
-        if (globalStatements.Length > 0)
+        if (globalStatements.Count > 0)
         {
             tags.Add("entry-point:top-level-statements");
         }
@@ -96,7 +93,7 @@ internal static class CSharpApplicationBoundaryAnalyzer
                 .. rootCommands.Select(command => Location(path, command, "RootCommand")),
             ]),
             [
-                DotNetEvidence.Measurement("top-level-statements", globalStatements.Length, "statements"),
+                DotNetEvidence.Measurement("top-level-statements", globalStatements.Count, "statements"),
                 DotNetEvidence.Measurement("main-methods", mainMethods.Length, "methods"),
                 DotNetEvidence.Measurement("host-builder-calls", hostBuilders.Length, "calls"),
                 DotNetEvidence.Measurement("root-commands", rootCommands.Length, "commands"),
@@ -108,14 +105,13 @@ internal static class CSharpApplicationBoundaryAnalyzer
         List<EvidenceFact> facts,
         string path,
         string projectScope,
-        IReadOnlyList<SyntaxNode> nodes,
-        IReadOnlyList<BaseTypeDeclarationSyntax> types)
+        CSharpSyntaxInventory inventory)
     {
         List<EvidenceLocation> locations = [];
         HashSet<string> verbs = new(StringComparer.Ordinal);
         int controllerCount = 0;
         int attributedEndpoints = 0;
-        foreach (ClassDeclarationSyntax controller in types.OfType<ClassDeclarationSyntax>()
+        foreach (ClassDeclarationSyntax controller in inventory.Types.OfType<ClassDeclarationSyntax>()
             .Where(IsController))
         {
             controllerCount++;
@@ -145,7 +141,7 @@ internal static class CSharpApplicationBoundaryAnalyzer
 
         InvocationExpressionSyntax[] minimalEndpoints =
         [
-            .. nodes.OfType<InvocationExpressionSyntax>()
+            .. inventory.Invocations
                 .Where(invocation => MinimalApiMethods.Contains(GetInvocationName(invocation))),
         ];
         foreach (InvocationExpressionSyntax endpoint in minimalEndpoints)
@@ -155,7 +151,7 @@ internal static class CSharpApplicationBoundaryAnalyzer
             verbs.Add(method[3..].ToLowerInvariant());
         }
 
-        int mapGroups = nodes.OfType<InvocationExpressionSyntax>()
+        int mapGroups = inventory.Invocations
             .Count(invocation => GetInvocationName(invocation) == "MapGroup");
         if (controllerCount == 0 && attributedEndpoints == 0 &&
             minimalEndpoints.Length == 0 && mapGroups == 0)

@@ -548,10 +548,20 @@ the exact earlier estimator identity they were created from.
   scopes remain independent canonical estimates.
 - Portfolio 0.2.3 retains up to 16 exact snapshot/scope analyses and 8,192
   immutable file-analysis artifacts with deterministic key-ranked retention per
-  active repository, processes rows serially within a repository, and permits at
-  most two repository sessions to overlap. Each snapshot admits at most four independent
-  .NET/JavaScript file-analysis workers and restores canonical path order before
-  aggregation. Author-period plans from one repository share
+  active repository and permits at most two repository sessions to overlap.
+  Within each repository, eligible deltas are primed in deterministic chunks of
+  16; one ordered producer opens the next immutable snapshot pair while four
+  consumers analyze earlier pairs. Common file inspection similarly enqueues
+  discovered paths into a bounded producer/consumer pipeline; workers read and
+  inspect earlier files while traversal discovers later work. A process-wide
+  buffered-read budget prevents concurrent snapshots from retaining unbounded
+  file content.
+  Common inspection, .NET/JavaScript semantic parsing, and the thread-safe seed
+  estimator share one process-wide CPU-work budget of at most 24 visible logical
+  processors. Custom estimators remain serialized unless they explicitly declare
+  thread safety. Canonical path and report order is restored before aggregation,
+  and single-flight caches ensure concurrent requests for the same immutable
+  inspection or snapshot analysis compute it once. Author-period plans from one repository share
   one lazy Git object reader, one lazy Git metadata reader, a bounded 64-MiB/
   1-MiB-per-blob content cache, 10,000 structurally shared immutable indexed
   inventories across at most 16 full-tree roots, 16,384 retained object lengths,

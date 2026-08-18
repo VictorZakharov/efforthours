@@ -324,11 +324,18 @@ rows only; neither the candidate count nor the size of the reachable graph enter
 an effort rule.
 
 `change-portfolio/0.2.3` keeps one invocation-scoped execution context per local
-repository. Candidate plans are grouped by canonical repository root, processed
-serially within each repository, and scheduled with at most two repository
-sessions active at once. Within one snapshot, independent .NET and JavaScript
-files use at most four analysis workers; results are restored to canonical path
-order before aggregation. The repository context owns one lazy
+repository. Candidate plans are grouped by canonical repository root and
+scheduled with at most two repository sessions active at once. Within each
+repository, a deterministic 16-row delta-prime chunk feeds one ordered snapshot
+producer and four row consumers, allowing the next immutable snapshot pair to be
+opened while earlier pairs are analyzed. Common scanning also enqueues discovered
+paths while bounded workers read and inspect earlier files; a process-wide read
+budget bounds buffered content across snapshots. All repository sessions share one
+process-wide budget of at most 24 visible logical processors for common file
+inspection, .NET/JavaScript semantic parsing, and thread-safe seed estimation;
+unmarked custom estimators remain serialized. Results are restored to canonical
+path order before aggregation, and immutable file/snapshot requests are
+single-flight. The repository context owns one lazy
 `git cat-file --batch` content reader, one lazy `git cat-file --batch-check`
 metadata reader, a 64-MiB blob cache that admits no single blob above 1 MiB,
 16,384 retained object lengths, 10,000 structurally shared immutable snapshot
@@ -357,6 +364,15 @@ including cancellation and failures.
 The two-session maximum deliberately spends bounded additional memory to overlap
 independent Git/tree work and reduce wall time; it does not make caches or
 repository concurrency unbounded.
+
+This scheduling contract removes avoidable phase barriers; it does not establish
+near-linear core scaling. The non-gating `change/1.8.0` checkpoint records the
+prepared-fixture 1/12/24-worker curve and separates admitted-work occupancy from
+process CPU. Wall time improves materially but remains far below physical-core
+proportionality because fixed Git/history work and allocation-heavy semantic and
+repository aggregation still dominate. Reaching a configured maximum proves only
+that work was admitted, not that the cores performed proportionate useful work;
+performance claims must use measured processor time and wall throughput.
 
 Snapshot analysis is keyed by repository, canonical immutable-inventory digest,
 and exact analysis-scope digest. Inventory identity is a versioned SHA-256 Merkle

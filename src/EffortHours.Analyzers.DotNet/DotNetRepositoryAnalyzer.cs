@@ -36,8 +36,9 @@ public sealed class DotNetRepositoryAnalyzer : IRepositoryEvidenceAnalyzer
         ArgumentNullException.ThrowIfNull(evidence);
 
         string rootPath = _fileSystem.GetFullPath(repositoryPath);
-        DotNetProjectReadResult projectResult = await new DotNetProjectReader(_fileSystem, rootPath)
-            .ReadAsync(evidence, cancellationToken).ConfigureAwait(false);
+        DotNetProjectReadResult projectResult = await new DotNetProjectReader(
+            _fileSystem,
+            rootPath).ReadAsync(evidence, cancellationToken).ConfigureAwait(false);
         List<EvidenceFact> facts = [];
         List<Diagnostic> diagnostics = [.. projectResult.Diagnostics];
         facts.Add(CreateRepositoryFact(projectResult));
