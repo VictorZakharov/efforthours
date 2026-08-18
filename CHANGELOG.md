@@ -6,6 +6,8 @@ may still change public contracts with explicit documentation.
 
 ## Unreleased
 
+## 0.10.0-alpha.8 - 2026-08-17
+
 ### Fixed
 
 - Preserve selected empty one-parent commits in repository-level author-period
