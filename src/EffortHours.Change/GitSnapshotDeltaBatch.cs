@@ -40,6 +40,7 @@ internal static class GitSnapshotDeltaBatch
                 "--raw",
                 "--no-renames",
                 "--full-index",
+                "--always",
                 "--format=format:COMMIT:%H%x00",
             ],
             commits,

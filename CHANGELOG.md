@@ -6,6 +6,12 @@ may still change public contracts with explicit documentation.
 
 ## Unreleased
 
+### Fixed
+
+- Preserve selected empty one-parent commits in repository-level author-period
+  batch diffs as valid zero-path transitions instead of rejecting them as omitted
+  Git objects.
+
 ## 0.10.0-alpha.7 - 2026-08-17
 
 ### Added
