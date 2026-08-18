@@ -30,6 +30,22 @@ internal sealed partial class ChangePortfolioCommand
             Task<GitAuthorPeriodPortfolioPlan>> planAuthorPeriod)
         : this(
             changeEstimator,
+            (path, pullRequest, repository, _, cancellationToken) =>
+                planPullRequest(path, pullRequest, repository, cancellationToken),
+            (path, options, _, cancellationToken) =>
+                planAuthorPeriod(path, options, cancellationToken),
+            ChangePortfolioManifestLoader.LoadAsync,
+            new ChangeAuthorPeriodManifestCommandPlanner(new GitPortfolioPlanner()).PlanAsync)
+    {
+    }
+
+    internal ChangePortfolioCommand(
+        ChangeEstimator changeEstimator,
+        Func<string, string, string?, bool, CancellationToken, Task<GitChangePlan>> planPullRequest,
+        Func<string, GitAuthorPeriodPortfolioOptions, CancellationToken,
+            Task<GitAuthorPeriodPortfolioPlan>> planAuthorPeriod)
+        : this(
+            changeEstimator,
             planPullRequest,
             (path, options, _, cancellationToken) =>
                 planAuthorPeriod(path, options, cancellationToken),
@@ -47,7 +63,8 @@ internal sealed partial class ChangePortfolioCommand
             Task<IReadOnlyList<ResolvedChangePortfolioManifestItem>>> loadManifest)
         : this(
             changeEstimator,
-            planPullRequest,
+            (path, pullRequest, repository, _, cancellationToken) =>
+                planPullRequest(path, pullRequest, repository, cancellationToken),
             (path, options, _, cancellationToken) =>
                 planAuthorPeriod(path, options, cancellationToken),
             loadManifest,
@@ -57,7 +74,7 @@ internal sealed partial class ChangePortfolioCommand
 
     internal ChangePortfolioCommand(
         ChangeEstimator changeEstimator,
-        Func<string, string, string?, CancellationToken, Task<GitChangePlan>> planPullRequest,
+        Func<string, string, string?, bool, CancellationToken, Task<GitChangePlan>> planPullRequest,
         Func<string, GitAuthorPeriodPortfolioOptions, ChangePortfolioExecutionTelemetry?, CancellationToken,
             Task<GitAuthorPeriodPortfolioPlan>> planAuthorPeriod,
         Func<string, CancellationToken,

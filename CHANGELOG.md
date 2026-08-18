@@ -6,6 +6,18 @@ may still change public contracts with explicit documentation.
 
 ## Unreleased
 
+### Added
+
+- Added explicit `--fetch-missing` support for single and portfolio PR selectors.
+  It acquires objects through only the selected provider base and PR head refs,
+  never updates local refs, `FETCH_HEAD`, the index, or the worktree, and remains
+  disabled by default.
+- Added additive PR comparison provenance and verification fields for the provider
+  base tip, merge-base policy, object-acquisition mode, provider changed-file
+  count, analyzed and represented path counts, and count-match status. JSON and
+  Markdown warn on provider/local path-count drift without exposing source or
+  machine paths.
+
 ### Fixed
 
 - Compare pull requests from the unique merge base of the provider base tip and PR

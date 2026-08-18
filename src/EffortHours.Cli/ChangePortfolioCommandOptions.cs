@@ -11,6 +11,8 @@ internal sealed record ChangePortfolioCommandOptions
 
     public string? GitHubRepository { get; init; }
 
+    public bool FetchMissing { get; init; }
+
     public string? ManifestPath { get; init; }
 
     public string? AuthorPeriodManifestPath { get; init; }
@@ -83,6 +85,7 @@ internal static partial class ChangePortfolioCommandOptionsParser
         string format = "json";
         bool compact = false;
         bool noRate = false;
+        bool fetchMissing = false;
         decimal? hourlyRate = null;
         string currency = "USD";
         bool currencyProvided = false;
@@ -105,6 +108,12 @@ internal static partial class ChangePortfolioCommandOptionsParser
             if (option == "--no-rate")
             {
                 noRate = true;
+                continue;
+            }
+
+            if (option == "--fetch-missing")
+            {
+                fetchMissing = true;
                 continue;
             }
 
@@ -227,6 +236,7 @@ internal static partial class ChangePortfolioCommandOptionsParser
             RepositoryPath = repositoryPath,
             PullRequests = pullRequests,
             GitHubRepository = githubRepository,
+            FetchMissing = fetchMissing,
             ManifestPath = manifest,
             AuthorPeriodManifestPath = authorPeriodManifest,
             AuthorAliases = authors,

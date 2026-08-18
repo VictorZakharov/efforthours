@@ -195,7 +195,7 @@ public sealed partial class ChangeEstimator
         using (executionTelemetry?.Measure(ChangePortfolioExecutionPhases.Reconciliation))
         {
             reconciliation = ChangeReconciler.Reconcile(
-                input.Selection,
+                normalized.Evidence.Selection,
                 normalized.WorkItems.TotalEffort,
                 normalized.WorkItems.Categories,
                 normalized.Evidence.Paths,
@@ -240,7 +240,7 @@ public sealed partial class ChangeEstimator
             EstimatorVersion = Version,
             SourceEstimatorVersion = normalized.HeadEstimate.EstimatorVersion,
             Repository = normalized.Evidence.Repository,
-            Selection = input.Selection,
+            Selection = normalized.Evidence.Selection,
             Evidence = normalized.Evidence,
             Profile = profile,
             Baseline = normalized.HeadEstimate.Baseline,

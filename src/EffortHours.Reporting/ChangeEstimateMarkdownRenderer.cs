@@ -29,6 +29,10 @@ public static class ChangeEstimateMarkdownRenderer
         markdown.Append("Head: `").Append(ReportFormatting.Escape(report.Selection.Head.ObjectId)).AppendLine("`  ");
         markdown.Append("Profile: `").Append(ReportFormatting.Kebab(report.Profile)).AppendLine("`  ");
         markdown.Append("Estimator: `").Append(ReportFormatting.Escape(report.EstimatorVersion)).AppendLine("`");
+        if (report.Selection.PullRequest is not null)
+        {
+            AppendPullRequestVerification(markdown, report.Selection);
+        }
 
         markdown.AppendLine();
         markdown.AppendLine("## Summary");
@@ -195,6 +199,39 @@ public static class ChangeEstimateMarkdownRenderer
                 null);
         }
     }
+
+    private static void AppendPullRequestVerification(
+        StringBuilder markdown,
+        ChangeSelection selection)
+    {
+        PullRequestReference pullRequest = selection.PullRequest!;
+        markdown.AppendLine("  ");
+        markdown.Append("PR provider base: `")
+            .Append(ReportFormatting.Escape(pullRequest.ProviderBaseObjectId ?? "unavailable"))
+            .Append("`; comparison base: `")
+            .Append(ReportFormatting.Escape(selection.Base.ObjectId))
+            .Append("`; head: `")
+            .Append(ReportFormatting.Escape(selection.Head.ObjectId)).AppendLine("`  ");
+        markdown.Append("PR comparison policy: `")
+            .Append(pullRequest.ComparisonBasePolicy is null
+                ? "unavailable"
+                : ReportFormatting.Kebab(pullRequest.ComparisonBasePolicy.Value))
+            .Append("`; object acquisition: `")
+            .Append(pullRequest.ObjectAcquisition is null
+                ? "unavailable"
+                : ReportFormatting.Kebab(pullRequest.ObjectAcquisition.Value)).AppendLine("`  ");
+        markdown.Append("PR changed paths: provider `")
+            .Append(Count(pullRequest.ProviderChangedFileCount))
+            .Append("`; analyzed `").Append(Count(pullRequest.AnalyzedChangedPathCount))
+            .Append("`; represented `").Append(Count(pullRequest.RepresentedChangedPathCount))
+            .Append("`; status `")
+            .Append(pullRequest.PathCountStatus is null
+                ? "unavailable"
+                : ReportFormatting.Kebab(pullRequest.PathCountStatus.Value)).AppendLine("`");
+    }
+
+    private static string Count(int? value) => value?.ToString(
+        System.Globalization.CultureInfo.InvariantCulture) ?? "unavailable";
 
     private static void AppendNormalizationRow(
         StringBuilder markdown,

@@ -65,8 +65,18 @@ public sealed partial class ChangeEstimator
                 evidenceDiagnostics,
                 cancellationToken).ConfigureAwait(false);
         }
+        (ChangeSelection verifiedSelection, Diagnostic? pathCountDiagnostic) = VerifyPullRequestPathCounts(
+            selection,
+            evidence.Paths);
+        selection = verifiedSelection;
+        evidence = evidence with { Selection = selection };
         int excludedCount = evidence.Paths.Count(path => !path.Represented);
         List<Diagnostic> normalizedDiagnostics = [.. evidence.Diagnostics];
+        if (pathCountDiagnostic is not null)
+        {
+            normalizedDiagnostics.Add(pathCountDiagnostic);
+        }
+
         if (excludedCount > 0)
         {
             normalizedDiagnostics.Add(new Diagnostic
@@ -301,6 +311,47 @@ public sealed partial class ChangeEstimator
         {
             Repository = evidence.Repository with { Name = repositoryName },
         };
+
+    private static (ChangeSelection Selection, Diagnostic? Diagnostic) VerifyPullRequestPathCounts(
+        ChangeSelection selection,
+        IReadOnlyList<ChangePathEvidence> paths)
+    {
+        if (selection.Kind != ChangeSelectionKind.PullRequest || selection.PullRequest is null)
+        {
+            return (selection, null);
+        }
+
+        int analyzed = paths.Count;
+        int represented = paths.Count(path => path.Represented);
+        int? provider = selection.PullRequest.ProviderChangedFileCount;
+        PullRequestPathCountStatus status = provider is null
+            ? PullRequestPathCountStatus.ProviderUnavailable
+            : provider.Value == analyzed
+                ? PullRequestPathCountStatus.Match
+                : PullRequestPathCountStatus.Mismatch;
+        ChangeSelection verified = selection with
+        {
+            PullRequest = selection.PullRequest with
+            {
+                AnalyzedChangedPathCount = analyzed,
+                RepresentedChangedPathCount = represented,
+                PathCountStatus = status,
+            },
+        };
+        if (status != PullRequestPathCountStatus.Mismatch)
+        {
+            return (verified, null);
+        }
+
+        return (verified, new Diagnostic
+        {
+            Code = "FB5107",
+            Severity = DiagnosticSeverity.Warning,
+            Message = $"The provider reported {provider!.Value} changed file(s), while immutable " +
+                $"merge-base-to-head analysis observed {analyzed} changed path(s), including " +
+                $"{represented} represented path(s). Review provider and local diff-policy differences.",
+        });
+    }
 
     private static string[] ValidateSelection(ChangeSelection selection)
     {

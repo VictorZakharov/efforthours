@@ -251,66 +251,6 @@ public sealed partial class GitChangePlanner
         return CreatePlan(root, selection, components, diagnostics);
     }
 
-    public async Task<GitChangePlan> PlanPullRequestAsync(
-        string repositoryPath,
-        string pullRequest,
-        string? repository,
-        CancellationToken cancellationToken = default)
-    {
-        string root = await _git.ResolveRepositoryRootAsync(repositoryPath, cancellationToken)
-            .ConfigureAwait(false);
-        ResolvedPullRequest resolved = await _pullRequests.ResolveAsync(
-            root,
-            pullRequest,
-            repository,
-            cancellationToken).ConfigureAwait(false);
-        bool hasBase = await _git.CommitExistsAsync(root, resolved.BaseObjectId, cancellationToken)
-            .ConfigureAwait(false);
-        bool hasHead = await _git.CommitExistsAsync(root, resolved.HeadObjectId, cancellationToken)
-            .ConfigureAwait(false);
-        if (!hasBase || !hasHead)
-        {
-            List<string> missing = [];
-            if (!hasBase)
-            {
-                missing.Add($"base {resolved.BaseObjectId}");
-            }
-
-            if (!hasHead)
-            {
-                missing.Add($"head {resolved.HeadObjectId}");
-            }
-
-            throw new InvalidOperationException(
-                "The pull request resolved successfully, but these immutable objects are not in the local Git " +
-                $"database: {string.Join(", ", missing)}. Fetch the PR objects into this clone and retry. " +
-                "EffortHours does not fetch or modify the repository automatically.");
-        }
-
-        string comparisonBaseObjectId = await _git.ResolveMergeBaseAsync(
-            root,
-            resolved.BaseObjectId,
-            resolved.HeadObjectId,
-            cancellationToken).ConfigureAwait(false);
-
-        ChangeSelection selection = new()
-        {
-            Kind = ChangeSelectionKind.PullRequest,
-            Base = GitClient.Reference(comparisonBaseObjectId, comparisonBaseObjectId),
-            Head = GitClient.Reference(resolved.HeadObjectId, resolved.HeadObjectId),
-            PullRequest = resolved.Reference,
-        };
-        return FinalDeltaPlan(root, selection,
-        [
-            new Diagnostic
-            {
-                Code = "FB5104",
-                Severity = DiagnosticSeverity.Information,
-                Message = "The optional gh adapter supplied immutable PR base-tip/head identities; local Git resolved their unique merge base as the comparison base. PR activity and metadata are not effort signals.",
-            },
-        ]);
-    }
-
     private GitChangePlan FinalDeltaPlan(
         string repositoryPath,
         ChangeSelection selection,

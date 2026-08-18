@@ -13,6 +13,7 @@ internal static class ChangePortfolioHelp
         Selectors:
           --pr <number-or-url>       Repeat for each PR in one local repository
           --repo <owner/name>        Explicit GitHub repository for repeated --pr selectors
+          --fetch-missing            Explicitly acquire missing selected PR objects without updating refs
           --manifest <path>          Versioned multi-repository PR manifest
           --author-period-manifest <path>
                                     Versioned multi-repository/multi-head author manifest
@@ -39,8 +40,9 @@ internal static class ChangePortfolioHelp
           -h, --help                              Show this help
 
         PR selectors resolve immutable provider base-tip/head identities through optional gh
-        support and compare their unique local merge base to the head; all provider objects must
-        already exist locally. Manifest repository paths and author aliases are
+        support and compare their unique local merge base to the head. Provider objects must
+        already exist locally unless --fetch-missing acquires objects through only the selected
+        base and PR head refs without updating local refs, FETCH_HEAD, the index, or the worktree. Manifest repository paths and author aliases are
         execution-only and are not copied into reports. Author/time/co-author data selects
         immutable commits and never multiplies effort. Manifest author reports use exclusive
         contributor-match and head-reachability groups, retain zero rows, and count shared groups

@@ -10,7 +10,7 @@ namespace EffortHours.Cli;
 internal sealed partial class ChangePortfolioCommand
 {
     private readonly ChangeEstimator _changeEstimator;
-    private readonly Func<string, string, string?, CancellationToken, Task<GitChangePlan>>
+    private readonly Func<string, string, string?, bool, CancellationToken, Task<GitChangePlan>>
         _planPullRequest;
     private readonly Func<string, GitAuthorPeriodPortfolioOptions, ChangePortfolioExecutionTelemetry?, CancellationToken,
         Task<GitAuthorPeriodPortfolioPlan>> _planAuthorPeriod;
@@ -121,6 +121,7 @@ internal sealed partial class ChangePortfolioCommand
                 options.RepositoryPath!,
                 input,
                 options.GitHubRepository,
+                options.FetchMissing,
                 cancellationToken).ConfigureAwait(false));
         }
 
@@ -169,6 +170,7 @@ internal sealed partial class ChangePortfolioCommand
                 resolved.RepositoryPath,
                 item.PullRequest,
                 item.GitHubRepository,
+                options.FetchMissing,
                 cancellationToken).ConfigureAwait(false);
             repositories.Add(item.RepositoryId, plan.RepositoryPath);
             planned.Add((item, plan));

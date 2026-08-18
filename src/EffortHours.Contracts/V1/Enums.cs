@@ -29,6 +29,24 @@ public enum ChangeSelectionKind
     PullRequest,
 }
 
+public enum PullRequestComparisonBasePolicy
+{
+    ProviderBaseHeadMergeBase,
+}
+
+public enum PullRequestObjectAcquisition
+{
+    LocalReuse,
+    ExplicitFetch,
+}
+
+public enum PullRequestPathCountStatus
+{
+    Match,
+    Mismatch,
+    ProviderUnavailable,
+}
+
 public enum ChangeSnapshotKind
 {
     GitCommit,

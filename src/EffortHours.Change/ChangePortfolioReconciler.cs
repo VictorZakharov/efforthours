@@ -67,6 +67,9 @@ public sealed class ChangePortfolioReconciler
         List<Diagnostic> diagnostics =
         [
             .. (planningDiagnostics ?? []),
+            .. candidates
+                .SelectMany(candidate => candidate.Report.Diagnostics)
+                .Where(diagnostic => diagnostic.Code is "FB5106" or "FB5107"),
             new Diagnostic
             {
                 Code = "FB5300",

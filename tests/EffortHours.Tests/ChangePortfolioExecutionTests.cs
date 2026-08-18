@@ -172,7 +172,7 @@ public sealed partial class ChangePortfolioCommandTests
     {
         ChangePortfolioCommand command = new(
             new ChangeEstimator(),
-            (_, _, _, _) => throw new InvalidOperationException("Pull-request planning was not expected."),
+            (_, _, _, _, _) => throw new InvalidOperationException("Pull-request planning was not expected."),
             (_, _, _, _) => throw new InvalidOperationException("Author planning was not expected."),
             (_, _) => throw new InvalidOperationException("PR manifest loading was not expected."),
             (_, telemetry, cancellationToken) =>

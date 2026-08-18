@@ -29,9 +29,13 @@ eh change portfolio <repository> --author <alias> [--author <alias> ...]
 ```
 
 Repeated PR selectors use the optional `gh pr view` boundary only to resolve a
-number/URL and immutable provider base-tip/head object IDs. Every provider object
-must already exist in the local Git database, where Git resolves its unique merge
-base as the reviewed PR comparison base.
+number/URL, immutable provider base-tip/head object IDs, provider changed-file
+count, and execution-only acquisition coordinates. Objects must already exist in
+the local Git database by default, where Git resolves the unique merge base as the
+reviewed PR comparison base. Invocation-wide `--fetch-missing` explicitly permits
+missing objects for repeated PRs or the PR manifest to be acquired with the same
+source-only, no-ref-update boundary as single-PR mode. It is invalid for either
+author-period selector.
 
 A versioned manifest can select PRs from multiple local repositories and assigns
 explicit caller repository and row IDs. Relative repository paths resolve from
@@ -284,7 +288,9 @@ Storage-independent fixtures cover:
 The process-level suite verifies offline direct and manifest author-period
 commands on temporary Git repositories, immutable selected objects, deterministic
 stdout, exact allocation, live phase progress, no source/host paths, and unchanged
-worktrees.
+worktrees. Separate physical PR acquisition coverage freezes default no-fetch
+failure, narrow explicit acquisition, exact-object verification, and unchanged
+refs, `FETCH_HEAD`, index, and worktree state.
 
 The first multi-repository author-period release freezes the following regression
 matrix. The focused `change/1.3.0` process test covers the composed path; smaller
