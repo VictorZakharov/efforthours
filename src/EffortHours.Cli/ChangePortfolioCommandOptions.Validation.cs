@@ -48,6 +48,11 @@ internal static partial class ChangePortfolioCommandOptionsParser
             return Error("Option --repo is valid only with repeated --pr selectors.");
         }
 
+        if (options.FetchMissing && options.PullRequests.Count == 0 && options.ManifestPath is null)
+        {
+            return Error("Option --fetch-missing is valid only with repeated --pr or --manifest selectors.");
+        }
+
         bool authorOnlyOptions = since is not null || until is not null || authorPolicyProvided;
         if (!authorSelection && authorOnlyOptions)
         {

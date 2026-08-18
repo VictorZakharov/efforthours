@@ -74,6 +74,8 @@ public static partial class ChangePortfolioMarkdownRenderer
                 .Append(item.UncertaintyReasons.Count).AppendLine(" |");
         }
 
+        AppendPullRequestVerification(markdown, report.Items);
+
         markdown.AppendLine();
         markdown.AppendLine("Allocations sum exactly to normalized expected EHE. They are structural attribution, not timesheet or personal-credit entries.");
         markdown.AppendLine();
@@ -139,6 +141,49 @@ public static partial class ChangePortfolioMarkdownRenderer
             .Append(ReportFormatting.Kebab(selection.MergePolicy)).Append("`; co-authors: `")
             .Append(ReportFormatting.Kebab(selection.CoauthorPolicy)).AppendLine("`");
     }
+
+    private static void AppendPullRequestVerification(
+        StringBuilder markdown,
+        IReadOnlyList<ChangePortfolioItemEstimate> items)
+    {
+        ChangePortfolioItemEstimate[] pullRequests =
+        [
+            .. items.Where(item => item.Selection.PullRequest is not null),
+        ];
+        if (pullRequests.Length == 0)
+        {
+            return;
+        }
+
+        markdown.AppendLine();
+        markdown.AppendLine("## Pull-request comparison verification");
+        markdown.AppendLine();
+        markdown.AppendLine("| Change | Provider base | Comparison base | Head | Policy | Acquisition | Provider files | Analyzed paths | Represented paths | Status |");
+        markdown.AppendLine("| --- | --- | --- | --- | --- | --- | ---: | ---: | ---: | --- |");
+        foreach (ChangePortfolioItemEstimate item in pullRequests)
+        {
+            PullRequestReference pullRequest = item.Selection.PullRequest!;
+            markdown.Append("| `").Append(ReportFormatting.Escape(DisplaySelectorId(item.SelectorId)))
+                .Append("` | `").Append(ReportFormatting.Escape(ShortObject(
+                    pullRequest.ProviderBaseObjectId ?? "unavailable")))
+                .Append("` | `").Append(ReportFormatting.Escape(ShortObject(item.Selection.Base.ObjectId)))
+                .Append("` | `").Append(ReportFormatting.Escape(ShortObject(item.Selection.Head.ObjectId)))
+                .Append("` | ").Append(pullRequest.ComparisonBasePolicy is null
+                    ? "unavailable"
+                    : ReportFormatting.Kebab(pullRequest.ComparisonBasePolicy.Value))
+                .Append(" | ").Append(pullRequest.ObjectAcquisition is null
+                    ? "unavailable"
+                    : ReportFormatting.Kebab(pullRequest.ObjectAcquisition.Value))
+                .Append(" | ").Append(Count(pullRequest.ProviderChangedFileCount))
+                .Append(" | ").Append(Count(pullRequest.AnalyzedChangedPathCount))
+                .Append(" | ").Append(Count(pullRequest.RepresentedChangedPathCount))
+                .Append(" | ").Append(pullRequest.PathCountStatus is null
+                    ? "unavailable"
+                    : ReportFormatting.Kebab(pullRequest.PathCountStatus.Value)).AppendLine(" |");
+        }
+    }
+
+    private static string Count(int? value) => value?.ToString(CultureInfo.InvariantCulture) ?? "unavailable";
 
     private static void AppendAuthorPeriodManifestSelection(
         StringBuilder markdown,

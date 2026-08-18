@@ -76,6 +76,8 @@ public static partial class ContractValidation
             }
         }
 
+        ValidatePullRequestVerification(evidence, errors);
+
         return errors;
     }
 
@@ -329,10 +331,33 @@ public static partial class ContractValidation
                 }
                 else
                 {
-                    RequireText(selection.PullRequest.Input, "selection.pullRequest.input", errors);
-                    if (selection.PullRequest.Number <= 0)
+                    PullRequestReference pullRequest = selection.PullRequest;
+                    RequireText(pullRequest.Input, "selection.pullRequest.input", errors);
+                    if (pullRequest.Number <= 0)
                     {
                         errors.Add("selection.pullRequest.number must be positive.");
+                    }
+
+                    if (pullRequest.ProviderChangedFileCount < 0)
+                    {
+                        errors.Add("selection.pullRequest.providerChangedFileCount cannot be negative.");
+                    }
+
+                    bool hasComparisonProvenance = pullRequest.ProviderBaseObjectId is not null ||
+                        pullRequest.ComparisonBasePolicy is not null ||
+                        pullRequest.ObjectAcquisition is not null;
+                    if (hasComparisonProvenance)
+                    {
+                        RequireText(
+                            pullRequest.ProviderBaseObjectId,
+                            "selection.pullRequest.providerBaseObjectId",
+                            errors);
+                        if (pullRequest.ComparisonBasePolicy is null ||
+                            pullRequest.ObjectAcquisition is null)
+                        {
+                            errors.Add(
+                                "Pull-request comparison provenance requires its provider base, policy, and object-acquisition mode together.");
+                        }
                     }
                 }
 
@@ -344,4 +369,5 @@ public static partial class ContractValidation
                 break;
         }
     }
+
 }

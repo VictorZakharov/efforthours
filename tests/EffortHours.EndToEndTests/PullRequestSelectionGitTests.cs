@@ -62,6 +62,17 @@ public sealed class PullRequestSelectionGitTests
 
         Assert.Equal(branchPoint, pullRequest.Selection.Base.ObjectId);
         Assert.Equal(headObjectId, pullRequest.Selection.Head.ObjectId);
+        Assert.Equal(providerBaseTip, pullRequest.Selection.PullRequest!.ProviderBaseObjectId);
+        Assert.Equal(
+            PullRequestComparisonBasePolicy.ProviderBaseHeadMergeBase,
+            pullRequest.Selection.PullRequest.ComparisonBasePolicy);
+        Assert.Equal(
+            PullRequestObjectAcquisition.LocalReuse,
+            pullRequest.Selection.PullRequest.ObjectAcquisition);
+        Assert.Equal(1, pullRequest.Selection.PullRequest.ProviderChangedFileCount);
+        Assert.Equal(1, pullRequest.Selection.PullRequest.AnalyzedChangedPathCount);
+        Assert.Equal(1, pullRequest.Selection.PullRequest.RepresentedChangedPathCount);
+        Assert.Equal(PullRequestPathCountStatus.Match, pullRequest.Selection.PullRequest.PathCountStatus);
         Assert.Equal(explicitDelta.Evidence.BaseEvidenceDigest, pullRequest.Evidence.BaseEvidenceDigest);
         Assert.Equal(explicitDelta.Evidence.HeadEvidenceDigest, pullRequest.Evidence.HeadEvidenceDigest);
         Assert.Equal(explicitDelta.TotalEffort, pullRequest.TotalEffort);
@@ -78,7 +89,70 @@ public sealed class PullRequestSelectionGitTests
         Assert.NotEqual(directProviderTip.TotalEffort, pullRequest.TotalEffort);
     }
 
-    private sealed class FixedPullRequestResolver(string baseObjectId, string headObjectId)
+    [Fact]
+    public async Task ExplicitFetchAcquiresMissingObjectsWithoutChangingCheckoutState()
+    {
+        using GitFixture provider = await GitFixture.CreateAsync();
+        provider.WriteText("Demo.csproj", ProjectFile);
+        string branchPoint = await provider.CommitAsync("base");
+        using GitFixture local = await GitFixture.CloneAsync(provider.RootPath);
+
+        provider.WriteText("BaseOnly.cs", "namespace Demo; public sealed class BaseOnly { }\n");
+        string providerBaseTip = await provider.CommitAsync("base drift");
+        await provider.GitAsync("switch", "--quiet", "-c", "feature", branchPoint);
+        provider.WriteText("Feature.cs", "namespace Demo; public sealed class Feature { }\n");
+        string headObjectId = await provider.CommitAsync("feature");
+        await provider.GitAsync("update-ref", "refs/pull/17/head", headObjectId);
+
+        GitClient git = new();
+        Assert.False(await git.CommitExistsAsync(local.RootPath, providerBaseTip));
+        Assert.False(await git.CommitExistsAsync(local.RootPath, headObjectId));
+        string refsBefore = await local.GitAsync("for-each-ref", "--format=%(refname):%(objectname)");
+        string statusBefore = await local.GitAsync("status", "--porcelain=v1");
+        string indexBefore = await local.GitAsync("write-tree");
+        byte[]? fetchHeadBefore = await local.ReadGitFileAsync("FETCH_HEAD");
+
+        GitChangePlanner planner = new(
+            git,
+            new FixedPullRequestResolver(
+                providerBaseTip,
+                headObjectId,
+                changedFileCount: 1,
+                baseRefName: "main",
+                fetchSource: provider.RootPath));
+        InvalidOperationException defaultFailure = await Assert.ThrowsAsync<InvalidOperationException>(() =>
+            planner.PlanPullRequestAsync(local.RootPath, "17", "acme/demo"));
+        Assert.Contains("--fetch-missing", defaultFailure.Message, StringComparison.Ordinal);
+        Assert.False(await git.CommitExistsAsync(local.RootPath, providerBaseTip));
+        Assert.False(await git.CommitExistsAsync(local.RootPath, headObjectId));
+        GitChangePlan plan = await planner.PlanPullRequestAsync(
+            local.RootPath,
+            "17",
+            "acme/demo",
+            fetchMissing: true);
+        ChangeEstimateReport report = await new ChangeEstimator().EstimateAsync(
+            plan,
+            EstimationProfile.Implementation);
+
+        Assert.True(await git.CommitExistsAsync(local.RootPath, providerBaseTip));
+        Assert.True(await git.CommitExistsAsync(local.RootPath, headObjectId));
+        Assert.Equal(refsBefore, await local.GitAsync("for-each-ref", "--format=%(refname):%(objectname)"));
+        Assert.Equal(statusBefore, await local.GitAsync("status", "--porcelain=v1"));
+        Assert.Equal(indexBefore, await local.GitAsync("write-tree"));
+        Assert.Equal(fetchHeadBefore, await local.ReadGitFileAsync("FETCH_HEAD"));
+        Assert.Equal(branchPoint, report.Selection.Base.ObjectId);
+        Assert.Equal(providerBaseTip, report.Selection.PullRequest!.ProviderBaseObjectId);
+        Assert.Equal(PullRequestObjectAcquisition.ExplicitFetch, report.Selection.PullRequest.ObjectAcquisition);
+        Assert.Equal(PullRequestPathCountStatus.Match, report.Selection.PullRequest.PathCountStatus);
+        Assert.Contains(plan.Diagnostics, diagnostic => diagnostic.Code == "FB5106");
+    }
+
+    private sealed class FixedPullRequestResolver(
+        string baseObjectId,
+        string headObjectId,
+        int? changedFileCount = 1,
+        string? baseRefName = null,
+        string? fetchSource = null)
         : IPullRequestResolver
     {
         public Task<ResolvedPullRequest> ResolveAsync(
@@ -93,6 +167,9 @@ public sealed class PullRequestSelectionGitTests
             {
                 BaseObjectId = baseObjectId,
                 HeadObjectId = headObjectId,
+                BaseRefName = baseRefName,
+                FetchSource = fetchSource,
+                ChangedFileCount = changedFileCount,
                 Reference = new PullRequestReference
                 {
                     Input = input,
@@ -126,6 +203,17 @@ public sealed class PullRequestSelectionGitTests
             return fixture;
         }
 
+        public static async Task<GitFixture> CloneAsync(string sourcePath)
+        {
+            string parentPath = Path.Combine(
+                Path.GetTempPath(),
+                "efforthours-pr-selection-e2e");
+            Directory.CreateDirectory(parentPath);
+            string rootPath = Path.Combine(parentPath, Guid.NewGuid().ToString("N"));
+            await RunGitAsync(parentPath, "clone", "--quiet", sourcePath, rootPath);
+            return new GitFixture(rootPath);
+        }
+
         public void WriteText(string relativePath, string content)
         {
             string path = Path.Combine(RootPath, relativePath.Replace('/', Path.DirectorySeparatorChar));
@@ -142,9 +230,23 @@ public sealed class PullRequestSelectionGitTests
 
         public async Task<string> GitAsync(params string[] arguments)
         {
+            return await RunGitAsync(RootPath, arguments);
+        }
+
+        public async Task<byte[]?> ReadGitFileAsync(string name)
+        {
+            string gitDirectory = await GitAsync("rev-parse", "--git-dir");
+            string path = Path.GetFullPath(Path.Combine(RootPath, gitDirectory, name));
+            return File.Exists(path) ? await File.ReadAllBytesAsync(path) : null;
+        }
+
+        private static async Task<string> RunGitAsync(
+            string workingDirectory,
+            params string[] arguments)
+        {
             ProcessStartInfo startInfo = new("git")
             {
-                WorkingDirectory = RootPath,
+                WorkingDirectory = workingDirectory,
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
                 UseShellExecute = false,

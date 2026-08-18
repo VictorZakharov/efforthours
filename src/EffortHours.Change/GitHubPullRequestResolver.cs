@@ -10,6 +10,12 @@ public sealed record ResolvedPullRequest
     public required string BaseObjectId { get; init; }
 
     public required string HeadObjectId { get; init; }
+
+    public string? BaseRefName { get; init; }
+
+    public string? FetchSource { get; init; }
+
+    public int? ChangedFileCount { get; init; }
 }
 
 public interface IPullRequestResolver
@@ -48,7 +54,7 @@ public sealed class GitHubPullRequestResolver : IPullRequestResolver
             "view",
             input,
             "--json",
-            "number,url,baseRefOid,headRefOid",
+            "number,url,baseRefName,baseRefOid,headRefOid,changedFiles",
         ];
         if (!string.IsNullOrWhiteSpace(repository))
         {
@@ -84,10 +90,20 @@ public sealed class GitHubPullRequestResolver : IPullRequestResolver
             string? url = root.TryGetProperty("url", out JsonElement urlElement)
                 ? urlElement.GetString()
                 : null;
+            string baseRefName = RequireText(root, "baseRefName");
+            int changedFileCount = root.GetProperty("changedFiles").GetInt32();
+            if (changedFileCount < 0)
+            {
+                throw new InvalidOperationException("gh returned a negative changedFiles value.");
+            }
+
             return new ResolvedPullRequest
             {
                 BaseObjectId = baseObjectId,
                 HeadObjectId = headObjectId,
+                BaseRefName = baseRefName,
+                FetchSource = FetchSource(url, number),
+                ChangedFileCount = changedFileCount,
                 Reference = new PullRequestReference
                 {
                     Input = input,
@@ -100,9 +116,46 @@ public sealed class GitHubPullRequestResolver : IPullRequestResolver
         catch (Exception exception) when (exception is JsonException or KeyNotFoundException or InvalidOperationException)
         {
             throw new InvalidOperationException(
-                "gh returned an incomplete pull-request identity. Expected number, baseRefOid, and headRefOid.",
+                "gh returned an incomplete pull-request identity. Expected number, URL, base ref, " +
+                "base/head object IDs, and changed-file count.",
                 exception);
         }
+    }
+
+    private static string RequireText(JsonElement root, string name)
+    {
+        string value = root.GetProperty(name).GetString() ?? string.Empty;
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            throw new InvalidOperationException($"gh returned an invalid {name} value.");
+        }
+
+        return value;
+    }
+
+    private static string FetchSource(string? pullRequestUrl, int number)
+    {
+        if (!Uri.TryCreate(pullRequestUrl, UriKind.Absolute, out Uri? uri) ||
+            uri.Scheme != Uri.UriSchemeHttps ||
+            !string.IsNullOrEmpty(uri.UserInfo))
+        {
+            throw new InvalidOperationException("gh returned an invalid pull-request URL.");
+        }
+
+        string suffix = $"/pull/{number}";
+        string path = uri.AbsolutePath.TrimEnd('/');
+        if (!path.EndsWith(suffix, StringComparison.Ordinal) || path.Length == suffix.Length)
+        {
+            throw new InvalidOperationException("gh returned a pull-request URL with an unexpected path.");
+        }
+
+        UriBuilder source = new(uri)
+        {
+            Path = path[..^suffix.Length] + ".git",
+            Query = string.Empty,
+            Fragment = string.Empty,
+        };
+        return source.Uri.AbsoluteUri;
     }
 
     private static string RequireObjectId(JsonElement root, string name)

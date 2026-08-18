@@ -159,6 +159,13 @@ reconciliation, and renderer projections remain unchanged.
   emitted in ordinary reports.
 - Public schema changes require an explicit compatibility decision.
 
+The additive v1 PR verification fields are optional so saved v1 documents from
+before their introduction remain valid and deserialize unchanged. Newly generated
+PR selections populate comparison provenance, acquisition mode, provider/raw/
+represented counts, and count status together. This is an additive observability
+extension: estimator identity, effort arithmetic, existing field meaning, compact
+JSON compatibility, and non-PR documents are unchanged.
+
 ## Model status
 
 Compact output improves reviewability but does not calibrate the estimator or make

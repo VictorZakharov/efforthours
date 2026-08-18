@@ -36,11 +36,12 @@ public sealed partial class ChangePortfolioCommandTests
         List<string> requested = [];
         ChangePortfolioCommand command = new(
             new ChangeEstimator(),
-            (repository, input, githubRepository, cancellationToken) =>
+            (repository, input, githubRepository, fetchMissing, cancellationToken) =>
             {
                 cancellationToken.ThrowIfCancellationRequested();
                 Assert.Equal("virtual-repository", repository);
                 Assert.Equal("example/project", githubRepository);
+                Assert.True(fetchMissing);
                 requested.Add(input);
                 return Task.FromResult(plans[input]);
             },
@@ -54,6 +55,7 @@ public sealed partial class ChangePortfolioCommandTests
                 "--pr", "11",
                 "--pr", "12",
                 "--repo", "example/project",
+                "--fetch-missing",
                 "--no-rate",
                 "--compact",
             ],

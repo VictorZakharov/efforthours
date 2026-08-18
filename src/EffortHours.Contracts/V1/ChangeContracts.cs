@@ -18,6 +18,20 @@ public sealed record PullRequestReference
     public string? Repository { get; init; }
 
     public string? Url { get; init; }
+
+    public string? ProviderBaseObjectId { get; init; }
+
+    public PullRequestComparisonBasePolicy? ComparisonBasePolicy { get; init; }
+
+    public PullRequestObjectAcquisition? ObjectAcquisition { get; init; }
+
+    public int? ProviderChangedFileCount { get; init; }
+
+    public int? AnalyzedChangedPathCount { get; init; }
+
+    public int? RepresentedChangedPathCount { get; init; }
+
+    public PullRequestPathCountStatus? PathCountStatus { get; init; }
 }
 
 public sealed record ChangeSelection

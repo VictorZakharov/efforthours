@@ -67,7 +67,20 @@
         "input": { "type": "string", "minLength": 1 },
         "number": { "type": "integer", "minimum": 1 },
         "repository": { "type": "string", "minLength": 1 },
-        "url": { "type": "string", "minLength": 1 }
+        "url": { "type": "string", "minLength": 1 },
+        "providerBaseObjectId": { "type": "string", "minLength": 1 },
+        "comparisonBasePolicy": {
+          "enum": ["provider-base-head-merge-base"]
+        },
+        "objectAcquisition": {
+          "enum": ["local-reuse", "explicit-fetch"]
+        },
+        "providerChangedFileCount": { "type": "integer", "minimum": 0 },
+        "analyzedChangedPathCount": { "type": "integer", "minimum": 0 },
+        "representedChangedPathCount": { "type": "integer", "minimum": 0 },
+        "pathCountStatus": {
+          "enum": ["match", "mismatch", "provider-unavailable"]
+        }
       },
       "additionalProperties": false
     },

@@ -21,6 +21,8 @@ internal sealed record ChangeCommandOptions
 
     public string? GitHubRepository { get; init; }
 
+    public bool FetchMissing { get; init; }
+
     public string? BaseDirectory { get; init; }
 
     public string? HeadDirectory { get; init; }
@@ -83,6 +85,7 @@ internal static class ChangeCommandOptionsParser
         string format = "json";
         bool compact = false;
         bool noRate = false;
+        bool fetchMissing = false;
         decimal? hourlyRate = null;
         string currency = "USD";
         bool currencyProvided = false;
@@ -105,6 +108,12 @@ internal static class ChangeCommandOptionsParser
             if (option == "--no-rate")
             {
                 noRate = true;
+                continue;
+            }
+
+            if (option == "--fetch-missing")
+            {
+                fetchMissing = true;
                 continue;
             }
 
@@ -245,6 +254,11 @@ internal static class ChangeCommandOptionsParser
             return Error("Option --repo is valid only with --pr.");
         }
 
+        if (fetchMissing && pullRequest is null)
+        {
+            return Error("Option --fetch-missing is valid only with --pr.");
+        }
+
         if (compact && format != "json")
         {
             return Error("Option --compact can only be used with JSON output.");
@@ -270,6 +284,7 @@ internal static class ChangeCommandOptionsParser
             Range = range,
             PullRequest = pullRequest,
             GitHubRepository = githubRepository,
+            FetchMissing = fetchMissing,
             BaseDirectory = baseDirectory,
             HeadDirectory = headDirectory,
             BaseEvidencePath = baseEvidencePath,

@@ -177,6 +177,7 @@ internal sealed class ChangeCommand
                         options.RepositoryPath!,
                         options.PullRequest,
                         options.GitHubRepository,
+                        options.FetchMissing,
                         cancellationToken).ConfigureAwait(false)
                     : await _gitPlanner.PlanBaseHeadAsync(
                         options.RepositoryPath!,
@@ -256,6 +257,7 @@ internal sealed class ChangeCommand
           --head <revision>    Explicit final head revision (requires --base)
           --pr <number-or-url> Resolve one PR and compare its unique merge base/head
           --repo <owner/name>  Explicit GitHub repository for --pr
+          --fetch-missing      Explicitly acquire missing selected PR objects without updating refs
           --base-path <path>   Statically scan one local base directory (requires --head-path)
           --head-path <path>   Statically scan one local head directory (requires --base-path)
           --base-evidence <path>
@@ -276,8 +278,10 @@ internal sealed class ChangeCommand
         Directory and evidence pairs work without Git or GitHub. Directory inputs are
         statically scanned and content-pinned; saved evidence has no source bodies, so
         modified maintained paths retain conservative normalization. Git mode reads
-        immutable objects directly and does not check out or fetch. No selector executes
-        target code or writes into either target tree. The current change model is
+        immutable objects directly and does not check out. It does not fetch by default;
+        --fetch-missing explicitly allows PR mode to acquire objects through only the
+        selected provider base and PR head refs without updating local refs, FETCH_HEAD,
+        the index, or the worktree. No selector executes target code. The current change model is
         experimental and uncalibrated.
         """;
 }

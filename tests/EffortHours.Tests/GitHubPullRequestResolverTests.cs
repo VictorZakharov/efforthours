@@ -11,7 +11,7 @@ public sealed class GitHubPullRequestResolverTests
         const string headObjectId = "2222222222222222222222222222222222222222";
         RecordingRunner runner = new(new ExternalCommandResult(
             0,
-            $$"""{"number":42,"url":"https://github.com/acme/demo/pull/42","baseRefOid":"{{baseObjectId}}","headRefOid":"{{headObjectId}}"}""",
+            $$"""{"number":42,"url":"https://github.com/acme/demo/pull/42","baseRefName":"main","baseRefOid":"{{baseObjectId}}","headRefOid":"{{headObjectId}}","changedFiles":7}""",
             string.Empty));
         GitHubPullRequestResolver resolver = new(runner);
 
@@ -24,10 +24,13 @@ public sealed class GitHubPullRequestResolverTests
         Assert.Equal(headObjectId, result.HeadObjectId);
         Assert.Equal(42, result.Reference.Number);
         Assert.Equal("acme/demo", result.Reference.Repository);
+        Assert.Equal("main", result.BaseRefName);
+        Assert.Equal("https://github.com/acme/demo.git", result.FetchSource);
+        Assert.Equal(7, result.ChangedFileCount);
         Assert.Equal("gh", runner.Executable);
         Assert.Equal("virtual-repository", runner.WorkingDirectory);
         Assert.Equal(
-            ["pr", "view", "42", "--json", "number,url,baseRefOid,headRefOid", "--repo", "acme/demo"],
+            ["pr", "view", "42", "--json", "number,url,baseRefName,baseRefOid,headRefOid,changedFiles", "--repo", "acme/demo"],
             runner.Arguments);
     }
 
