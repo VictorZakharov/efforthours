@@ -6,6 +6,8 @@ may still change public contracts with explicit documentation.
 
 ## Unreleased
 
+## 0.10.0-alpha.9 - 2026-08-18
+
 ### Added
 
 - Added explicit `--fetch-missing` support for single and portfolio PR selectors.
@@ -18,11 +20,26 @@ may still change public contracts with explicit documentation.
   Markdown warn on provider/local path-count drift without exposing source or
   machine paths.
 
+### Changed
+
+- Pipelined author-period repository, snapshot, file-inspection, semantic-analysis,
+  and thread-safe estimation work through bounded producer/consumer queues. Added
+  single-flight immutable file and snapshot analysis, process-wide CPU and read
+  limits, and deterministic concurrency telemetry without changing estimate
+  semantics.
+- Reduced repeated C# syntax traversal and seed-evidence scope resolution. Prepared
+  checkpoints improved by 2.2% to 62.8% depending on workload, but 12 workers
+  currently provide only 1.34x speedup over one worker on the core-scaling fixture;
+  near-linear physical-core scaling is not claimed.
+
 ### Fixed
 
 - Compare pull requests from the unique merge base of the provider base tip and PR
   head so unrelated base-branch drift cannot appear as PR modifications or
   removals.
+- Serialize concurrent first use and disposal of standalone Git object readers so
+  parallel snapshot analysis cannot leak `git cat-file` processes or leave Windows
+  fixture repositories locked.
 
 ## 0.10.0-alpha.8 - 2026-08-17
 
