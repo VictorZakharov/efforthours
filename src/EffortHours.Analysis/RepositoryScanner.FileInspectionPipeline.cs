@@ -43,21 +43,21 @@ public sealed partial class RepositoryScanner
                     state.Options,
                     cancellationToken);
             }
-            if (work.ArtifactKey is not null)
-            {
-                state.AnalysisArtifactCache?.Add(work.ArtifactKey, inspection);
-            }
-            work.ArtifactRequest?.Complete(inspection);
-
             RepositoryFileMetadata refreshedMetadata =
                 state.FileSystem.GetFileMetadata(work.FullPath);
+            ScannedFile file = CreateScannedFile(
+                work.RelativePath,
+                inspection,
+                refreshedMetadata,
+                work.LastWriteTimeUtcTicks);
+            if (work.ArtifactKey is not null)
+            {
+                state.AnalysisArtifactCache?.Add(work.ArtifactKey, file);
+            }
+            work.ArtifactRequest?.Complete(file);
             return new FileInspectionResult(
                 work.RelativePath,
-                CreateScannedFile(
-                    work.RelativePath,
-                    inspection,
-                    refreshedMetadata,
-                    work.LastWriteTimeUtcTicks),
+                file,
                 Error: null);
         }
         catch (Exception exception) when (exception is IOException or UnauthorizedAccessException)
@@ -76,7 +76,9 @@ public sealed partial class RepositoryScanner
         string relativePath,
         FileInspection inspection,
         RepositoryFileMetadata refreshedMetadata,
-        long lastWriteTimeUtcTicks) => new(
+        long lastWriteTimeUtcTicks)
+    {
+        ScannedFile file = new(
             relativePath,
             inspection,
             FileClassifier.Classify(relativePath, inspection),
@@ -84,6 +86,8 @@ public sealed partial class RepositoryScanner
             refreshedMetadata.Exists
                 ? refreshedMetadata.LastWriteTimeUtcTicks
                 : lastWriteTimeUtcTicks);
+        return file with { FileFact = CreateFileFact(file) };
+    }
 
     private static void ApplyInspectionResult(
         ScanState state,
@@ -164,9 +168,8 @@ public sealed partial class RepositoryScanner
         }
 
         public void TrackPending(
-            ScanState state,
             FileInspectionWork work,
-            Task<FileInspection> inspection)
+            Task<ScannedFile> inspection)
         {
             ObjectDisposedException.ThrowIf(_disposed, this);
             if (_completed)
@@ -176,7 +179,6 @@ public sealed partial class RepositoryScanner
             }
 
             _pendingResults.Enqueue(CreatePendingResultAsync(
-                state,
                 work,
                 inspection,
                 _stop.Token));
@@ -280,25 +282,18 @@ public sealed partial class RepositoryScanner
         }
 
         private static async Task<FileInspectionResult> CreatePendingResultAsync(
-            ScanState state,
             FileInspectionWork work,
-            Task<FileInspection> inspectionTask,
+            Task<ScannedFile> inspectionTask,
             CancellationToken cancellationToken)
         {
             try
             {
-                FileInspection inspection = await inspectionTask
+                ScannedFile file = await inspectionTask
                     .WaitAsync(cancellationToken)
                     .ConfigureAwait(false);
-                RepositoryFileMetadata refreshedMetadata =
-                    state.FileSystem.GetFileMetadata(work.FullPath);
                 return new FileInspectionResult(
                     work.RelativePath,
-                    CreateScannedFile(
-                        work.RelativePath,
-                        inspection,
-                        refreshedMetadata,
-                        work.LastWriteTimeUtcTicks),
+                    file,
                     Error: null);
             }
             catch (Exception exception) when (
@@ -344,7 +339,7 @@ public sealed partial class RepositoryScanner
         string RelativePath,
         string? ArtifactKey,
         long LastWriteTimeUtcTicks,
-        RepositoryAnalysisArtifactCache.RepositoryAnalysisArtifactRequest<FileInspection>?
+        RepositoryAnalysisArtifactCache.RepositoryAnalysisArtifactRequest<ScannedFile>?
             ArtifactRequest);
 
     private sealed record PreparedFileInspectionWork(

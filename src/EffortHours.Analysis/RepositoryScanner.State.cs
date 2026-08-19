@@ -96,7 +96,10 @@ public sealed partial class RepositoryScanner
         FileInspection Inspection,
         FileClassification Classification,
         long MetadataLength,
-        long LastWriteTimeUtcTicks);
+        long LastWriteTimeUtcTicks)
+    {
+        public EvidenceFact? FileFact { get; init; }
+    }
 
     private sealed record ExcludedEntry(string RelativePath, string Reason, bool IsDirectory);
 }

@@ -50,6 +50,12 @@ public sealed record ChangePortfolioExecutionStatistics
 
     public int BatchedIncrementalSnapshotInventoryLoads { get; init; }
 
+    public TimeSpan FullSnapshotInventoryReadTime { get; init; }
+
+    public TimeSpan FullSnapshotInventoryProjectionTime { get; init; }
+
+    public TimeSpan IncrementalSnapshotInventoryProjectionTime { get; init; }
+
     public int SnapshotInventoryEvictions { get; init; }
 
     public int PeakRetainedSnapshotInventories { get; init; }

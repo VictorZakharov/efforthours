@@ -1,5 +1,6 @@
 using System.Globalization;
 using System.Text;
+using EffortHours.Analysis;
 
 namespace EffortHours.Change;
 
@@ -24,6 +25,15 @@ internal sealed partial class GitSnapshotFileSystem
             "--full-tree",
         ];
         bool readLengthsInline = pathspecs is { Count: > 0 };
+        if (!readLengthsInline)
+        {
+            return await GitSnapshotTreeReader.ReadAsync(
+                repositoryPath,
+                objectId,
+                RepositoryAnalysisConcurrency.MaximumFileAnalyses,
+                cancellationToken).ConfigureAwait(false);
+        }
+
         if (readLengthsInline)
         {
             arguments.Add("--long");
@@ -41,12 +51,7 @@ internal sealed partial class GitSnapshotFileSystem
             repositoryPath,
             arguments,
             cancellationToken).ConfigureAwait(false);
-        if (readLengthsInline)
-        {
-            return ParseTree(output);
-        }
-
-        return ParseTreeWithoutLengths(output);
+        return ParseTree(output);
     }
 
     internal static async Task<IReadOnlyList<string>> ReadChangedPathsAsync(
@@ -181,6 +186,29 @@ internal sealed partial class GitSnapshotFileSystem
     internal static List<ChangeSnapshotFile> ParseTreeWithoutLengths(byte[] output)
     {
         List<ChangeSnapshotFile> files = [];
+        foreach (GitSnapshotTreeEntry entry in ParseTreeEntries(output))
+        {
+            if (entry.Type == "tree")
+            {
+                throw new InvalidOperationException(
+                    "Git returned a tree where a recursive inventory expected only leaves.");
+            }
+
+            files.Add(new ChangeSnapshotFile
+            {
+                Mode = entry.Mode,
+                ObjectId = entry.ObjectId,
+                Length = entry.Type == "commit" ? 0L : -1L,
+                Path = entry.Path,
+            });
+        }
+
+        return files;
+    }
+
+    internal static List<GitSnapshotTreeEntry> ParseTreeEntries(byte[] output)
+    {
+        List<GitSnapshotTreeEntry> entries = [];
         int start = 0;
         while (start < output.Length)
         {
@@ -215,22 +243,20 @@ internal sealed partial class GitSnapshotFileSystem
             string[] fields = header.Split(
                 ' ',
                 StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
-            if (fields.Length != 3 || fields[1] is not ("blob" or "commit"))
+            if (fields.Length != 3 || fields[1] is not ("blob" or "commit" or "tree"))
             {
                 throw new InvalidOperationException("Git returned malformed tree identity metadata.");
             }
 
-            files.Add(new ChangeSnapshotFile
-            {
-                Mode = fields[0],
-                ObjectId = fields[2].ToLowerInvariant(),
-                Length = fields[1] == "commit" ? 0L : -1L,
-                Path = path,
-            });
+            entries.Add(new GitSnapshotTreeEntry(
+                fields[0],
+                fields[1],
+                fields[2].ToLowerInvariant(),
+                path));
             start = end + 1;
         }
 
-        return files;
+        return entries;
     }
 
     internal static void ValidateGitPath(string path)

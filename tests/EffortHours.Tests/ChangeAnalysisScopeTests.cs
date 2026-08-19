@@ -5,6 +5,41 @@ namespace EffortHours.Tests;
 public sealed class ChangeAnalysisScopeTests
 {
     [Fact]
+    public void SmallGitSnapshotsUseChangedScopeWithoutAFileCountThreshold()
+    {
+        ChangeSnapshotFile[] before =
+        [
+            File("Demo.csproj", "project"),
+            File("src/Feature.cs", "feature-before"),
+            File("notes/unrelated.md", "notes"),
+        ];
+        ChangeSnapshotFile[] after =
+        [
+            before[0],
+            before[1] with { ObjectId = "feature-after" },
+            before[2],
+        ];
+        GitSnapshotFileSystem baseSnapshot = GitSnapshotFileSystem.Create(
+            Environment.CurrentDirectory,
+            "base",
+            before);
+        GitSnapshotFileSystem headSnapshot = GitSnapshotFileSystem.Create(
+            Environment.CurrentDirectory,
+            "head",
+            after);
+
+        ChangeAnalysisScope scope = Assert.IsType<ChangeAnalysisScope>(
+            ChangeAnalysisScope.Create(baseSnapshot, headSnapshot));
+
+        Assert.Equal(0, ChangeEstimator.FullSnapshotAnalysisFileLimit);
+        Assert.Equal(1, scope.ChangedPathCount);
+        Assert.Equal(3, scope.FullPathCount);
+        Assert.Equal(
+            ["Demo.csproj", "src/Feature.cs"],
+            [.. scope.Paths.Order(StringComparer.Ordinal)]);
+    }
+
+    [Fact]
     public void ScopeKeepsChangedPathsStaticContextAndOneEcosystemRepresentative()
     {
         ChangeSnapshotFile[] before =

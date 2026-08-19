@@ -16,6 +16,7 @@ internal sealed partial class GitBatchObjectReader : IAsyncDisposable
     private readonly Lock _stateGate = new();
     private readonly SemaphoreSlim _processGate = new(1, 1);
     private readonly Process _process;
+    private readonly BufferedStream _output;
     private readonly Task<string> _stderr;
     private long _cacheBytes;
     private long _requests;
@@ -55,6 +56,7 @@ internal sealed partial class GitBatchObjectReader : IAsyncDisposable
         }
 
         _stderr = _process.StandardError.ReadToEndAsync();
+        _output = new BufferedStream(_process.StandardOutput.BaseStream, 81_920);
     }
 
     public Stream OpenBlob(string objectId)
@@ -78,14 +80,14 @@ internal sealed partial class GitBatchObjectReader : IAsyncDisposable
 
             _process.StandardInput.WriteLine(objectId);
             _process.StandardInput.Flush();
-            string header = ReadHeader(_process.StandardOutput.BaseStream);
+            string header = ReadHeader(_output);
             long length = ParseBlobLength(header, objectId);
             RecordBlobLength(objectId, length, cacheHit: false);
             if (length <= MaximumCachedBlobBytes)
             {
                 byte[] content = GC.AllocateUninitializedArray<byte>((int)length);
-                _process.StandardOutput.BaseStream.ReadExactly(content);
-                ReadTerminator(_process.StandardOutput.BaseStream);
+                _output.ReadExactly(content);
+                ReadTerminator(_output);
                 Cache(objectId, content);
                 return new MemoryStream(content, writable: false);
             }
@@ -93,7 +95,7 @@ internal sealed partial class GitBatchObjectReader : IAsyncDisposable
             GitBatchBlobStream stream = new(
                 this,
                 objectId,
-                _process.StandardOutput.BaseStream,
+                _output,
                 length,
                 acquired);
             releaseProcess = false;
@@ -139,7 +141,7 @@ internal sealed partial class GitBatchObjectReader : IAsyncDisposable
                 .ConfigureAwait(false);
             await _process.StandardInput.FlushAsync(cancellationToken).ConfigureAwait(false);
             string header = await ReadHeaderAsync(
-                _process.StandardOutput.BaseStream,
+                _output,
                 cancellationToken).ConfigureAwait(false);
             long length = ParseBlobLength(header, objectId);
             RecordBlobLength(objectId, length, cacheHit: false);
@@ -150,9 +152,9 @@ internal sealed partial class GitBatchObjectReader : IAsyncDisposable
             }
 
             byte[] content = GC.AllocateUninitializedArray<byte>((int)length);
-            await _process.StandardOutput.BaseStream.ReadExactlyAsync(content, cancellationToken)
+            await _output.ReadExactlyAsync(content, cancellationToken)
                 .ConfigureAwait(false);
-            await ReadTerminatorAsync(_process.StandardOutput.BaseStream, cancellationToken)
+            await ReadTerminatorAsync(_output, cancellationToken)
                 .ConfigureAwait(false);
             Cache(objectId, content);
             return content;
@@ -204,6 +206,7 @@ internal sealed partial class GitBatchObjectReader : IAsyncDisposable
             }
 
             _ = await _stderr.ConfigureAwait(false);
+            _output.Dispose();
             _process.Dispose();
         }
         finally

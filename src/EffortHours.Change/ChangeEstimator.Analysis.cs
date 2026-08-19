@@ -280,7 +280,7 @@ public sealed partial class ChangeEstimator
         {
             Code = "FB5205",
             Severity = DiagnosticSeverity.Information,
-            Message = $"Large immutable Git snapshot analysis parsed {analysisScope.ChangedPathCount} changed " +
+            Message = $"Immutable Git snapshot analysis parsed {analysisScope.ChangedPathCount} changed " +
                 $"path(s), {analysisScope.ContextPathCount} relevant unchanged context artifact(s), and " +
                 $"{analysisScope.RepresentativePathCount} ecosystem representative(s). " +
                 $"The snapshot contained {analysisScope.AvailableContextPathCount} context artifact(s); " +

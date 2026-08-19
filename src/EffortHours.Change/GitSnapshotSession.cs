@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using EffortHours.Analysis;
 
 namespace EffortHours.Change;
@@ -6,7 +7,7 @@ namespace EffortHours.Change;
 /// Owns the bounded immutable-inventory and Git-object caches for one repository
 /// during one portfolio invocation.
 /// </summary>
-internal sealed class GitSnapshotSession : IAsyncDisposable
+internal sealed partial class GitSnapshotSession : IAsyncDisposable
 {
     internal const int MaximumSnapshotInventories = 10_000;
     internal const int MaximumSnapshotInventoryRoots = 16;
@@ -39,6 +40,9 @@ internal sealed class GitSnapshotSession : IAsyncDisposable
     private int _fullInventoryLoads;
     private int _incrementalInventoryLoads;
     private int _batchedIncrementalInventoryLoads;
+    private long _fullInventoryReadTimestamp;
+    private long _fullInventoryProjectionTimestamp;
+    private long _incrementalInventoryProjectionTimestamp;
     private int _inventoryEvictions;
     private int _peakRetainedInventories;
     private int _peakRetainedInventoryRoots;
@@ -244,6 +248,12 @@ internal sealed class GitSnapshotSession : IAsyncDisposable
                 FullInventoryLoads = _fullInventoryLoads,
                 IncrementalInventoryLoads = _incrementalInventoryLoads,
                 BatchedIncrementalInventoryLoads = _batchedIncrementalInventoryLoads,
+                FullInventoryReadTime = Duration(
+                    Interlocked.Read(ref _fullInventoryReadTimestamp)),
+                FullInventoryProjectionTime = Duration(
+                    Interlocked.Read(ref _fullInventoryProjectionTimestamp)),
+                IncrementalInventoryProjectionTime = Duration(
+                    Interlocked.Read(ref _incrementalInventoryProjectionTimestamp)),
                 InventoryEvictions = _inventoryEvictions,
                 PeakRetainedInventories = _peakRetainedInventories,
                 PeakRetainedInventoryRoots = _peakRetainedInventoryRoots,
@@ -333,72 +343,6 @@ internal sealed class GitSnapshotSession : IAsyncDisposable
         }
     }
 
-    private async Task<GitSnapshotInventory> ReadInventoryAsync(
-        string objectId,
-        CancellationToken cancellationToken)
-    {
-        string? parentObjectId;
-        GitSnapshotInventory? parentInventory = null;
-        GitSnapshotDelta? primedDelta = null;
-        lock (_gate)
-        {
-            _firstParents.TryGetValue(objectId, out parentObjectId);
-            if (parentObjectId is not null)
-            {
-                _inventories.TryGetValue(parentObjectId, out parentInventory);
-            }
-
-            _primedDeltas.TryGetValue(objectId, out primedDelta);
-        }
-
-        IReadOnlyList<string>? changedPaths = primedDelta?.ChangedPaths;
-        if (changedPaths is null && parentObjectId is not null && parentInventory is not null)
-        {
-            changedPaths = await GitSnapshotFileSystem.ReadChangedPathsAsync(
-                RepositoryPath,
-                parentObjectId,
-                objectId,
-                cancellationToken).ConfigureAwait(false);
-        }
-
-        IReadOnlyList<ChangeSnapshotFile> files;
-        if (parentObjectId is not null && parentInventory is not null && changedPaths is not null &&
-            changedPaths.Count <= MaximumIncrementalSnapshotPaths &&
-                changedPaths.Sum(path => path.Length) <= MaximumIncrementalPathCharacters)
-        {
-            IReadOnlyList<ChangeSnapshotFile> changedFiles = primedDelta?.ChangedFiles ??
-                (changedPaths.Count == 0
-                    ? []
-                    : await GitSnapshotFileSystem.ReadFilesAsync(
-                        RepositoryPath,
-                        objectId,
-                        cancellationToken,
-                        changedPaths).ConfigureAwait(false));
-            Interlocked.Increment(ref _incrementalInventoryLoads);
-            if (primedDelta is not null)
-            {
-                Interlocked.Increment(ref _batchedIncrementalInventoryLoads);
-            }
-
-            return GitSnapshotInventory.CreateIncremental(
-                objectId,
-                parentObjectId,
-                parentInventory,
-                changedPaths,
-                changedFiles);
-        }
-        else
-        {
-            Interlocked.Increment(ref _fullInventoryLoads);
-            files = await GitSnapshotFileSystem.ReadFilesAsync(
-                RepositoryPath,
-                objectId,
-                cancellationToken).ConfigureAwait(false);
-        }
-
-        return new GitSnapshotInventory(objectId, files, parentObjectId, changedPaths);
-    }
-
     private void AddInventory(string objectId, GitSnapshotInventory inventory)
     {
         EnsureInventoryRootCapacity(inventory.RootObjectId);
@@ -476,4 +420,5 @@ internal sealed class GitSnapshotSession : IAsyncDisposable
 
         _inventoryEvictions++;
     }
+
 }

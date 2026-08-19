@@ -63,6 +63,10 @@ internal sealed record ChangePortfolioBenchmarkExecution
 
     public required decimal ExpectedEffort { get; init; }
 
+    public required string ReportSha256 { get; init; }
+
+    public required string EstimateSemanticsSha256 { get; init; }
+
     public required ChangePortfolioExecutionStatistics Statistics { get; init; }
 
     public required ChangePortfolioExecutionStatistics IsolatedManifestStatistics { get; init; }

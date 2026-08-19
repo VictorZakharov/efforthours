@@ -107,11 +107,24 @@ internal sealed record CSharpSyntaxInventory(
             Filter(BranchPointNodes, reachability));
     }
 
-    private static string GetSimpleName(SyntaxNode node) =>
-        node.DescendantNodesAndSelf()
-            .OfType<SimpleNameSyntax>()
-            .LastOrDefault()?
-            .Identifier.ValueText ?? string.Empty;
+    private static string GetSimpleName(TypeSyntax type)
+    {
+        if (type is PredefinedTypeSyntax)
+        {
+            return string.Empty;
+        }
+
+        SimpleNameSyntax? last = null;
+        foreach (SyntaxNode node in type.DescendantNodesAndSelf())
+        {
+            if (node is SimpleNameSyntax simpleName)
+            {
+                last = simpleName;
+            }
+        }
+
+        return last?.Identifier.ValueText ?? string.Empty;
+    }
 
     private static IReadOnlyList<T> Filter<T>(
         IReadOnlyList<T> nodes,

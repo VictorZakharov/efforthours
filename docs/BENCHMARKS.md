@@ -1383,3 +1383,90 @@ gate deterministic semantics, producer/consumer overlap, single-flight reuse,
 bounded configuration, privacy, and unchanged targets only. Wall time, CPU,
 allocation, and sampled memory remain non-gating checkpoints. Near-linear core
 scaling is explicitly unresolved.
+
+## Change author-period work-elimination and tree scaling v1.9.0 checkpoint
+
+Measured on August 19, 2026 on the same Windows, .NET 10.0.7, Ryzen 9 5900X,
+workstation-GC host as v1.8.0, with no competing `eh` process. Both fixtures were
+constructed before measurement and reopened from their immutable descriptors.
+The command shape was:
+
+```text
+dotnet run --project benchmarks/EffortHours.ChangeBenchmarks \
+  --configuration Release --no-build -- \
+  --author-period-manifest --prepared-fixture <descriptor> \
+  --combined-only --file-analysis-workers <1|2|4|6|8|12>
+```
+
+Protocol v1.9.0 adds full-inventory read/projection timings and SHA-256 digests for
+the complete report and its estimate-bearing semantic projection. Report bytes may
+legitimately differ when the explicit worker configuration changes its execution
+diagnostic; the estimate semantic digest stayed exactly
+`04ce6c51699f446ac61feffc1fdc9a43d4dd36073c454cacec680792e6a85e5f`
+throughout the six-point curve.
+
+The implementation applies the exact changed/context/representative analysis
+scope to every immutable Git change instead of analyzing complete small snapshots,
+retains the complete common scanned-file fact in the immutable artifact cache,
+avoids clean-C# diagnostic enumeration and duplicate callable traversal, and
+buffers the repository-scoped Git object stream. This algorithmically removes the
+former CPU-heavy slice rather than attempting to distribute all of it across 12
+cores.
+
+| Measure | v1.8.0, 1 worker | v1.9.0, 1 worker | Change |
+| --- | ---: | ---: | ---: |
+| Combined wall time | 5.515 s | 2.215 s | 59.8% lower |
+| Combined analysis wall time | 4.475 s | 1.185 s | 73.5% lower |
+| Managed process CPU time | 8.672 s | 2.219 s | 74.4% lower |
+| Managed allocation | 1,529.11 MiB | 251.96 MiB | 83.5% lower |
+| Sampled peak working set | 207.94 MiB | 111.97 MiB | 46.2% lower |
+
+| Measure | v1.8.0, 12 workers | v1.9.0, 12 workers | Change |
+| --- | ---: | ---: | ---: |
+| Combined wall time | 4.102 s | 2.266 s | 44.8% lower |
+| Combined analysis wall time | 3.089 s | 1.215 s | 60.7% lower |
+| Managed process CPU time | 19.906 s | 3.812 s | 80.9% lower |
+| Managed allocation | 1,552.18 MiB | 256.37 MiB | 83.5% lower |
+| Sampled peak working set | 227.68 MiB | 121.44 MiB | 46.7% lower |
+
+The final prepared CPU-heavy curve is:
+
+| Workers | Wall | CPU | Avg managed processors | Max active admitted | Allocation | Gen 0/1/2 | Snapshot/diff phase | Static-analysis phase | Peak working set |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 1 | 2.215 s | 2.219 s | 1.002 | 1 | 251.96 MiB | 16/9/2 | 0.713 s | 7.243 s | 111.97 MiB |
+| 2 | 2.157 s | 2.516 s | 1.166 | 2 | 253.13 MiB | 17/10/2 | 0.979 s | 5.996 s | 119.29 MiB |
+| 4 | 2.164 s | 2.859 s | 1.321 | 4 | 253.94 MiB | 17/10/2 | 1.017 s | 6.024 s | 121.23 MiB |
+| 6 | 2.191 s | 3.875 s | 1.769 | 6 | 254.66 MiB | 17/10/2 | 1.080 s | 6.082 s | 120.34 MiB |
+| 8 | 2.168 s | 3.297 s | 1.520 | 8 | 255.36 MiB | 17/10/2 | 1.090 s | 6.112 s | 121.29 MiB |
+| 12 | 2.266 s | 3.812 s | 1.682 | 10 | 256.37 MiB | 17/10/2 | 1.090 s | 6.512 s | 121.44 MiB |
+
+Aggregate phase timings overlap across repository sessions and rows and therefore
+can exceed wall time. The curve is intentionally reported rather than summarized
+as a speedup: after the work elimination, two workers are only 2.6% faster than
+one and 12 workers are 2.3% slower. There is no remaining CPU-heavy slice on this
+fixture for which an 8.4x 12-worker claim would be meaningful.
+
+The separate repository-scale fixture contains 31,034 aggregate files and six
+selected changes. Shallow traversal deterministically partitions a frontier of at
+least 256 disjoint trees across at most 12 recursive `ls-tree` readers. A
+16,000-character argument bound and exact single-reader fallback preserve bounded,
+cross-platform behavior.
+
+| Measure | 1 worker | 12 workers | Change |
+| --- | ---: | ---: | ---: |
+| Combined wall time | 4.431 s | 3.442 s | 22.3% lower (`1.29x`) |
+| Combined analysis wall time | 3.392 s | 2.379 s | 29.9% lower |
+| Aggregate full-inventory read time | 4.414 s | 2.585 s | 41.4% lower (`1.71x`) |
+| Managed process CPU time | 4.031 s | 4.578 s | 13.6% higher |
+| Managed average processor equivalents | 0.910 | 1.330 | 46.2% higher |
+| Managed allocation | 223.89 MiB | 233.59 MiB | 4.3% higher |
+| Sampled peak working set | 140.48 MiB | 147.99 MiB | 5.3% higher |
+
+Both rows produced semantic digest
+`4984e68b05fdacf5b06145c6a160667b9486a4ac0e99ee14c953e913b63c56d2`.
+The bounded memory increase is accepted for the measured latency reduction; it is
+not evidence that other tree shapes scale proportionally. CI covers exact sharded
+tree reconstruction, deterministic partitioning, bounded command construction,
+semantic equivalence, cache reuse, privacy, and read-only behavior. Timing,
+allocation, CPU, GC, and sampled-memory values remain non-gating. Issue #176 still
+owns the unchanged private A/B/A+B retest; no 10x field claim is made here.

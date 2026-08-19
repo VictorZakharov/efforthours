@@ -19,9 +19,6 @@ internal static class CSharpCallableStructuralAnalyzer
         ];
     }
 
-    public static int CountDetected(IEnumerable<MethodDeclarationSyntax> methods) =>
-        methods.Count(HasExecutableBody);
-
     private static CallableStructuralMetric AnalyzeMethod(MethodDeclarationSyntax method)
     {
         SyntaxNode body = (SyntaxNode?)method.Body ?? method.ExpressionBody!.Expression;

@@ -291,14 +291,17 @@ count, and intermediate churn do not value effort. `CHANGE_ESTIMATION.md` and
   the same 219.33-second manifest completes in approximately 21.9 seconds or less;
   if it misses, use the recorded phase and reuse counters to identify the remaining
   bottleneck honestly.
-  The follow-up `change/1.8.0` pipeline overlaps bounded snapshot/file production
-  with row and file processing, single-flights immutable work, admits thread-safe
-  seed estimates concurrently, and indexes repeated seed fact/scope lookups. Its
-  prepared 1/12/24-worker curve is explicitly not near-linear: 12 workers are only
-  1.34x faster than one for the complete command, and a 31,034-file/six-change
-  shape averages 0.91 managed processors. Continue with allocation/GC,
-  full-inventory construction, and unadmitted repository-aggregation profiling;
-  do not treat configured concurrency or maximum observed workers as throughput.
+  The follow-up `change/1.9.0` work removes the dominant unnecessary analyzer work
+  instead of trying to parallelize it: every immutable Git change uses its exact
+  changed/context/representative scope, immutable common scanned-file facts are
+  reused, and clean C# avoids redundant diagnostic/structural traversal. The
+  prepared CPU-heavy fixture falls from 5.515 to 2.215 seconds at one worker and
+  from 1,529.11 to 251.96 MiB allocated; its remaining 1/2/4/6/8/12 curve is flat
+  near 2.2 seconds and must not be called core scaling. A separate deterministic
+  tree partition reduces the 31,034-file fixture from 4.431 to 3.442 seconds at
+  12 workers while preserving the semantic digest. Continue profiling remaining
+  Git/history and repository aggregation work; issue #176 still owns the unchanged
+  private A/B/A+B field retest and the approximately 21.9-second 10x threshold.
 - The optional host-assisted scaffolding boundary is now frozen in
   `AUTHOR_PERIOD_SCAFFOLDING.md`: a separate companion adapter may eventually emit
   a reviewed v1 manifest and local-only provenance, but the estimator stays

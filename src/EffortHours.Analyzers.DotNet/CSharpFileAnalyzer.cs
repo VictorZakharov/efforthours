@@ -161,8 +161,10 @@ internal sealed class CSharpFileAnalyzer(
             cancellationToken);
         CompilationUnitSyntax root = (CompilationUnitSyntax)tree.GetRoot(cancellationToken);
         List<ContractDiagnostic> diagnostics = [];
-        int syntaxErrors = tree.GetDiagnostics(cancellationToken)
-            .Count(diagnostic => diagnostic.Severity == Microsoft.CodeAnalysis.DiagnosticSeverity.Error);
+        int syntaxErrors = root.ContainsDiagnostics
+            ? tree.GetDiagnostics(cancellationToken)
+                .Count(diagnostic => diagnostic.Severity == Microsoft.CodeAnalysis.DiagnosticSeverity.Error)
+            : 0;
         if (syntaxErrors > 0)
         {
             diagnostics.Add(DotNetEvidence.Diagnostic(
@@ -181,6 +183,8 @@ internal sealed class CSharpFileAnalyzer(
                 inventory.Methods)
             : CSharpReachabilityResult.Empty;
         inventory = inventory.WithoutExcluded(reachability);
+        IReadOnlyList<CallableStructuralMetric> detectedCallableMetrics =
+            CSharpCallableStructuralAnalyzer.Analyze(inventory.Methods);
         CSharpStructureMetrics structure = new(
             Files: 1,
             Types: inventory.Types.Count + inventory.Delegates.Count,
@@ -191,11 +195,8 @@ internal sealed class CSharpFileAnalyzer(
                 method.Modifiers.Any(SyntaxKind.AsyncKeyword)),
             BranchPoints: inventory.BranchPoints,
             StructuralParserBackedFiles: syntaxErrors == 0 ? 1 : 0,
-            StructuralDetectedCallables: CSharpCallableStructuralAnalyzer.CountDetected(
-                inventory.Methods),
-            CallableStructuralMetrics: syntaxErrors == 0
-                ? CSharpCallableStructuralAnalyzer.Analyze(inventory.Methods)
-                : []);
+            StructuralDetectedCallables: detectedCallableMetrics.Count,
+            CallableStructuralMetrics: syntaxErrors == 0 ? detectedCallableMetrics : []);
 
         List<EvidenceFact> facts = [];
         if (reachability.ExclusionFact is not null)

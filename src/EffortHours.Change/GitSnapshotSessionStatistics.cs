@@ -28,6 +28,12 @@ internal sealed record GitSnapshotSessionStatistics
 
     public int BatchedIncrementalInventoryLoads { get; init; }
 
+    public TimeSpan FullInventoryReadTime { get; init; }
+
+    public TimeSpan FullInventoryProjectionTime { get; init; }
+
+    public TimeSpan IncrementalInventoryProjectionTime { get; init; }
+
     public int InventoryEvictions { get; init; }
 
     public int PeakRetainedInventories { get; init; }

@@ -6,6 +6,17 @@ may still change public contracts with explicit documentation.
 
 ## Unreleased
 
+### Changed
+
+- Reduced author-period snapshot analysis by applying the exact immutable Git
+  changed/context/representative scope at every repository size, reusing complete
+  common scanned-file facts, and avoiding redundant clean-C# analyzer passes.
+  Added bounded deterministic full-tree partitioning for large Git trees and
+  buffered object reads. The non-gating `change/1.9.0` checkpoint records a 59.8%
+  one-worker wall-time reduction and 83.5% lower allocation on the prepared
+  CPU-heavy fixture, plus a 22.3% wall-time reduction on the 31,034-file fixture,
+  with unchanged semantic digests; it does not claim a private-field 10x result.
+
 ## 0.10.0-alpha.9 - 2026-08-18
 
 ### Added

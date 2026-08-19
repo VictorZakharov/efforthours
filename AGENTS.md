@@ -185,12 +185,16 @@ pairs, and common file inspections now use bounded producer/consumer pipelines;
 common workers read earlier files while traversal discovers later paths, under a
 process-wide buffered-read bound. Common/semantic file work and thread-safe seed
 estimation share a 24-logical-processor ceiling with deterministic single-flight
-reuse. Core scaling is not established: the prepared `change/1.8.0` curve is only
-1.34x at 12 workers versus one, and the 31,034-file diagnostic averages 0.91
-managed processors.
-Treat allocation-heavy semantic analysis, full-inventory construction, and
-repository aggregation as unresolved performance work, not as evidence that a
-larger worker count is a speedup. The public same-input alpha.6
+reuse. Core scaling is not established. Protocol `change/1.9.0` removes the
+dominant unnecessary work instead: every immutable Git change uses its exact
+changed/context/representative scope, common scanned-file facts are reused, clean
+C# avoids redundant passes, and large shallow tree frontiers use at most 12
+deterministic recursive readers. The prepared CPU-heavy fixture is now essentially
+flat near 2.2 seconds across 1/2/4/6/8/12 workers after one-worker time falls 59.8%
+and allocation falls 83.5%; do not present that as core scaling. The separate
+31,034-file fixture improves from 4.431 to 3.442 seconds at 12 workers with an
+unchanged semantic digest. Treat remaining Git/history and repository aggregation
+as unresolved performance work. The public same-input alpha.6
 control is 3.01x faster end to end and 8.17x faster in snapshot/diff work with
 identical output. The engineering defects tracked by #157 are complete, including
 alpha.8 handling of selected empty commits; #176 owns the unchanged private
