@@ -26,12 +26,29 @@ internal sealed class JavaScriptSourceAnalyzer(RepositoryTextReader textReader)
             : $"javascript-source/{JavaScriptEvidence.AnalyzerVersion}/{expectedSha256}/" +
                 $"{path}/{PackageIdentity(package)}";
         RepositoryAnalysisArtifactCache? artifactCache = _textReader.AnalysisArtifactCache;
-        if (artifactKey is not null &&
-            artifactCache?.TryGet(artifactKey, out JavaScriptFileAnalysis cached) == true)
+        if (artifactKey is not null && artifactCache is not null)
         {
-            return cached;
+            return await artifactCache.GetOrCreateAsync(
+                artifactKey,
+                itemCancellationToken => AnalyzeUncachedAsync(
+                    fileFact,
+                    package,
+                    itemCancellationToken),
+                cancellationToken).ConfigureAwait(false);
         }
 
+        return await AnalyzeUncachedAsync(
+            fileFact,
+            package,
+            cancellationToken).ConfigureAwait(false);
+    }
+
+    private async Task<JavaScriptFileAnalysis> AnalyzeUncachedAsync(
+        EvidenceFact fileFact,
+        JavaScriptPackageModel? package,
+        CancellationToken cancellationToken)
+    {
+        string path = fileFact.Scope;
         RepositoryTextReadResult read = await _textReader.ReadAsync(
             fileFact,
             MaximumSourceBytes,
@@ -42,6 +59,11 @@ internal sealed class JavaScriptSourceAnalyzer(RepositoryTextReader textReader)
             return new JavaScriptFileAnalysis(new JavaScriptSourceMetrics(), [], [read.Diagnostic], []);
         }
 
+        using IDisposable cpuLease = await RepositoryAnalysisConcurrency
+            .AcquireFileAnalysisAsync(
+                RepositoryAnalysisWorkKind.SemanticFileAnalysis,
+                cancellationToken)
+            .ConfigureAwait(false);
         string extension = Path.GetExtension(path).ToLowerInvariant();
         string source = extension is ".vue" or ".svelte"
             ? ExtractScriptBlocks(read.Text!)
@@ -84,17 +106,11 @@ internal sealed class JavaScriptSourceAnalyzer(RepositoryTextReader textReader)
                 syntax.ParseErrorLine));
         }
 
-        JavaScriptFileAnalysis result = new(
+        return new JavaScriptFileAnalysis(
             syntax.Metrics,
             facts,
             diagnostics,
             angularComponents);
-        if (artifactKey is not null)
-        {
-            artifactCache?.Add(artifactKey, result);
-        }
-
-        return result;
     }
 
     private string PackageIdentity(JavaScriptPackageModel? package)

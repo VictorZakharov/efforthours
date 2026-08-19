@@ -8,6 +8,7 @@ internal sealed partial class GitSnapshotFileSystem :
     IChangeSnapshot
 {
     private readonly Lock _directoryGate = new();
+    private readonly Lock _readerGate = new();
     private readonly GitSnapshotInventory _inventory;
     private readonly Lazy<IReadOnlyList<ChangeSnapshotFile>> _resolvedFiles;
     private readonly RepositoryAnalysisArtifactCache? _analysisArtifactCache;
@@ -225,21 +226,56 @@ internal sealed partial class GitSnapshotFileSystem :
 
     public async ValueTask DisposeAsync()
     {
-        if (_ownedObjectReader is not null)
+        GitBatchObjectReader? objectReader;
+        GitBatchObjectMetadataReader? metadataReader;
+        lock (_readerGate)
         {
-            await _ownedObjectReader.DisposeAsync().ConfigureAwait(false);
+            objectReader = _ownedObjectReader;
+            metadataReader = _ownedMetadataReader;
+            _ownedObjectReader = null;
+            _ownedMetadataReader = null;
         }
 
-        _ownedMetadataReader?.Dispose();
+        if (objectReader is not null)
+        {
+            await objectReader.DisposeAsync().ConfigureAwait(false);
+        }
+
+        metadataReader?.Dispose();
     }
 
-    private GitBatchObjectReader ObjectReader =>
-        _sharedObjectReader?.Invoke() ??
-        (_ownedObjectReader ??= new GitBatchObjectReader(_repositoryPath));
+    private GitBatchObjectReader ObjectReader
+    {
+        get
+        {
+            if (_sharedObjectReader is not null)
+            {
+                return _sharedObjectReader();
+            }
 
-    private GitBatchObjectMetadataReader MetadataReader =>
-        _sharedMetadataReader?.Invoke() ??
-        (_ownedMetadataReader ??= new GitBatchObjectMetadataReader(_repositoryPath));
+            lock (_readerGate)
+            {
+                return _ownedObjectReader ??= new GitBatchObjectReader(_repositoryPath);
+            }
+        }
+    }
+
+    private GitBatchObjectMetadataReader MetadataReader
+    {
+        get
+        {
+            if (_sharedMetadataReader is not null)
+            {
+                return _sharedMetadataReader();
+            }
+
+            lock (_readerGate)
+            {
+                return _ownedMetadataReader ??= new GitBatchObjectMetadataReader(
+                    _repositoryPath);
+            }
+        }
+    }
 
     private ChangeSnapshotFile GetFile(string path) =>
         TryGetFile(path, out ChangeSnapshotFile file)

@@ -5,7 +5,7 @@ using EffortHours.Contracts.V1;
 
 namespace EffortHours.Analysis;
 
-public sealed class RepositoryScanner : IRepositoryScanner
+public sealed partial class RepositoryScanner : IRepositoryScanner
 {
     public const string AnalyzerName = "efforthours.common-scanner";
     public const string AnalyzerVersion = "0.2.14";
@@ -128,6 +128,9 @@ public sealed class RepositoryScanner : IRepositoryScanner
 
     private static async Task TraverseAsync(ScanState state, CancellationToken cancellationToken)
     {
+        await using FileInspectionPipeline inspectionPipeline = new(
+            state,
+            cancellationToken);
         Stack<DirectoryFrame> pending = new();
         pending.Push(new DirectoryFrame(state.RootPath, string.Empty, []));
 
@@ -180,6 +183,8 @@ public sealed class RepositoryScanner : IRepositoryScanner
                 cancellationToken.ThrowIfCancellationRequested();
                 string relativePath = NormalizeRelativePath(state.RootPath, entry);
                 FileAttributes attributes;
+                RepositoryAnalysisArtifactCache.RepositoryAnalysisArtifactRequest<FileInspection>?
+                    artifactRequest = null;
                 try
                 {
                     attributes = state.FileSystem.GetAttributes(entry);
@@ -242,41 +247,50 @@ public sealed class RepositoryScanner : IRepositoryScanner
                         ? null
                         : $"common-file/{AnalyzerVersion}/sample-{state.Options.TextSampleSize}/" +
                             $"{metadata.ContentId}/{relativePath}";
-                    FileInspection? inspection = null;
-                    if (artifactKey is not null &&
-                        state.AnalysisArtifactCache?.TryGet(
-                            artifactKey,
-                            out FileInspection cachedInspection) == true)
+                    if (artifactKey is not null && state.AnalysisArtifactCache is not null)
                     {
-                        inspection = cachedInspection;
+                        artifactRequest = state.AnalysisArtifactCache.Request<FileInspection>(
+                            artifactKey);
                     }
 
-                    if (inspection is null)
-                    {
-                        inspection = await FileInspection.CreateAsync(
-                            state.FileSystem,
-                            entry,
-                            state.Options,
-                            cancellationToken).ConfigureAwait(false);
-                        if (artifactKey is not null)
-                        {
-                            state.AnalysisArtifactCache?.Add(artifactKey, inspection);
-                        }
-                    }
-                    RepositoryFileMetadata refreshedMetadata = state.FileSystem.GetFileMetadata(entry);
-                    state.Files.Add(new ScannedFile(
+                    FileInspectionWork work = new(
+                        entry,
                         relativePath,
-                        inspection,
-                        FileClassifier.Classify(relativePath, inspection),
-                        inspection.Bytes,
-                        refreshedMetadata.Exists
-                            ? refreshedMetadata.LastWriteTimeUtcTicks
-                            : lastWriteTimeUtcTicks));
+                        artifactKey,
+                        lastWriteTimeUtcTicks,
+                        artifactRequest);
+                    if (artifactRequest is { IsOwner: false })
+                    {
+                        inspectionPipeline.TrackPending(
+                            state,
+                            work,
+                            artifactRequest.Result);
+                        continue;
+                    }
+
+                    if (metadataLength <=
+                        RepositoryAnalysisConcurrency.MaximumBufferedFileBytes)
+                    {
+                        await inspectionPipeline.EnqueueAsync(
+                            work,
+                            bufferContent: true).ConfigureAwait(false);
+                        continue;
+                    }
+
+                    await inspectionPipeline.EnqueueAsync(
+                        work,
+                        bufferContent: false).ConfigureAwait(false);
                 }
                 catch (Exception exception) when (exception is IOException or UnauthorizedAccessException)
                 {
+                    artifactRequest?.Fail(exception);
                     state.Exclusions.Add(new ExcludedEntry(relativePath, "unreadable", false));
                     state.AddUnreadableDiagnostic(relativePath, exception);
+                }
+                catch (Exception exception)
+                {
+                    artifactRequest?.Fail(exception);
+                    throw;
                 }
             }
 
@@ -284,6 +298,12 @@ public sealed class RepositoryScanner : IRepositoryScanner
             {
                 pending.Push(childDirectories[index]);
             }
+        }
+
+        foreach (FileInspectionResult result in
+            await inspectionPipeline.CompleteAsync().ConfigureAwait(false))
+        {
+            ApplyInspectionResult(state, result);
         }
     }
 
@@ -893,99 +913,4 @@ public sealed class RepositoryScanner : IRepositoryScanner
 
     private static string ToDisplayName(string value) => value.Replace('-', ' ');
 
-    private sealed class ScanState(
-        string rootPath,
-        RepositoryScanOptions options,
-        RepositoryScanCache? cache,
-        IRepositoryFileSystem fileSystem,
-        RepositoryAnalysisArtifactCache? analysisArtifactCache)
-    {
-        private readonly Dictionary<string, RepositoryScanCacheEntry> _cachedFiles =
-            cache?.Files.ToDictionary(entry => entry.Path, StringComparer.Ordinal) ??
-            new Dictionary<string, RepositoryScanCacheEntry>(StringComparer.Ordinal);
-
-        public string RootPath { get; } = rootPath;
-
-        public RepositoryScanOptions Options { get; } = options;
-
-        public IRepositoryFileSystem FileSystem { get; } = fileSystem;
-
-        public RepositoryAnalysisArtifactCache? AnalysisArtifactCache { get; } =
-            analysisArtifactCache;
-
-        public List<ScannedFile> Files { get; } = [];
-
-        public List<ExcludedEntry> Exclusions { get; } = [];
-
-        public List<Diagnostic> Diagnostics { get; } = [];
-
-        public bool TryGetCachedFile(
-            string relativePath,
-            long length,
-            long lastWriteTimeUtcTicks,
-            out ScannedFile file)
-        {
-            if (!_cachedFiles.TryGetValue(relativePath, out RepositoryScanCacheEntry? entry) ||
-                entry.Length != length ||
-                entry.LastWriteTimeUtcTicks != lastWriteTimeUtcTicks)
-            {
-                file = null!;
-                return false;
-            }
-
-            file = new ScannedFile(
-                relativePath,
-                new FileInspection(
-                    entry.Bytes,
-                    entry.Lines,
-                    entry.Sha256,
-                    entry.IsBinary,
-                    string.Empty),
-                new FileClassification(
-                    entry.Role,
-                    entry.Language,
-                    entry.Ecosystems,
-                    entry.IsTest,
-                    entry.IsGenerated,
-                    entry.IsMinified,
-                    entry.IsVendored,
-                    entry.IsComponentManifest),
-                entry.Length,
-                entry.LastWriteTimeUtcTicks);
-            return true;
-        }
-
-        public void AddUnreadableDiagnostic(string relativePath, Exception exception)
-        {
-            string displayPath = relativePath.Length == 0 ? "." : relativePath;
-            Diagnostics.Add(new Diagnostic
-            {
-                Code = "FB2001",
-                Severity = DiagnosticSeverity.Warning,
-                Message = $"Could not inspect '{displayPath}': {DescribeReadFailure(exception)}",
-                Locations = [new EvidenceLocation { Path = displayPath }],
-            });
-        }
-
-        private static string DescribeReadFailure(Exception exception) => exception switch
-        {
-            UnauthorizedAccessException => "access was denied.",
-            IOException => "the filesystem entry could not be read.",
-            _ => "the entry could not be inspected.",
-        };
-    }
-
-    private sealed record DirectoryFrame(
-        string FullPath,
-        string RelativePath,
-        IReadOnlyList<IgnoreRule> InheritedRules);
-
-    private sealed record ScannedFile(
-        string RelativePath,
-        FileInspection Inspection,
-        FileClassification Classification,
-        long MetadataLength,
-        long LastWriteTimeUtcTicks);
-
-    private sealed record ExcludedEntry(string RelativePath, string Reason, bool IsDirectory);
 }

@@ -25,7 +25,12 @@ internal sealed partial class GitPortfolioBenchmarkFixture : IDisposable
         int headFileCount,
         int headDirectoryCount,
         string sharedObjectId,
-        bool keep)
+        int filesPerRepository,
+        int contextProjectsPerRepository,
+        int linesPerFile,
+        int qualifyingCommitsPerRepository,
+        bool keep,
+        string? descriptorPath = null)
     {
         RootPath = rootPath;
         Manifest = manifest;
@@ -33,7 +38,12 @@ internal sealed partial class GitPortfolioBenchmarkFixture : IDisposable
         HeadFileCount = headFileCount;
         HeadDirectoryCount = headDirectoryCount;
         SharedObjectId = sharedObjectId;
+        FilesPerRepository = filesPerRepository;
+        ContextProjectsPerRepository = contextProjectsPerRepository;
+        LinesPerFile = linesPerFile;
+        QualifyingCommitsPerRepository = qualifyingCommitsPerRepository;
         _keep = keep;
+        DescriptorPath = descriptorPath;
     }
 
     public string RootPath { get; }
@@ -52,6 +62,18 @@ internal sealed partial class GitPortfolioBenchmarkFixture : IDisposable
     public int HeadDirectoryCount { get; }
 
     public string SharedObjectId { get; }
+
+    public int FilesPerRepository { get; }
+
+    public int ContextProjectsPerRepository { get; }
+
+    public int LinesPerFile { get; }
+
+    public int QualifyingCommitsPerRepository { get; }
+
+    public string? DescriptorPath { get; private set; }
+
+    public bool IsPreparedFixture { get; private init; }
 
     public int HeadCount => Repositories.Sum(repository => repository.Heads.Count);
 
@@ -185,14 +207,25 @@ internal sealed partial class GitPortfolioBenchmarkFixture : IDisposable
                 repositoryBPath,
                 defaultB,
                 cancellationToken).ConfigureAwait(false);
-            return new GitPortfolioBenchmarkFixture(
+            bool keep = options.KeepRepository || options.PrepareOnly;
+            GitPortfolioBenchmarkFixture fixture = new(
                 root,
                 manifest,
                 repositories,
                 filesA + filesB,
                 directoriesA + directoriesB,
                 shared,
-                options.KeepRepository);
+                options.Files,
+                options.ContextProjects,
+                options.LinesPerFile,
+                options.Commits,
+                keep);
+            if (keep)
+            {
+                await fixture.WriteDescriptorAsync(cancellationToken).ConfigureAwait(false);
+            }
+
+            return fixture;
         }
         catch
         {

@@ -32,15 +32,26 @@ internal sealed class SeedEvidenceIndex
     private readonly Dictionary<string, SeedFileEvidence> _filesByPath;
     private readonly Dictionary<string, string> _canonicalPathByDuplicateKey;
     private readonly Dictionary<string, EvidenceFact> _factsById;
+    private readonly Dictionary<string, IReadOnlyList<EvidenceFact>> _factsByKind;
     private readonly Dictionary<string, IReadOnlyList<NormalizedEvidenceFact>> _normalizedByKind;
+    private readonly Dictionary<(string Ecosystem, string Scope), SeedEstimationScope>
+        _scopesByIdentity;
+    private readonly Dictionary<string, IReadOnlyList<SeedEstimationScope>> _scopesByEcosystem;
+    private readonly Dictionary<(string Path, string Ecosystem), SeedEstimationScope?>
+        _scopeByPathAndEcosystem = [];
 
     public SeedEvidenceIndex(RepositoryEvidence evidence)
     {
         Evidence = evidence ?? throw new ArgumentNullException(nameof(evidence));
         Facts = [.. evidence.Facts.OrderBy(fact => fact.Id, StringComparer.Ordinal)];
         _factsById = Facts.ToDictionary(fact => fact.Id, StringComparer.Ordinal);
-        Files = [.. Facts
-            .Where(fact => fact.Kind == EvidenceKinds.File)
+        _factsByKind = Facts
+            .GroupBy(fact => fact.Kind, StringComparer.Ordinal)
+            .ToDictionary(
+                group => group.Key,
+                group => (IReadOnlyList<EvidenceFact>)[.. group],
+                StringComparer.Ordinal);
+        Files = [.. FactsOfKind(EvidenceKinds.File)
             .Select(CreateFileEvidence)
             .OrderBy(file => file.Path, StringComparer.Ordinal)];
         _filesByPath = Files.ToDictionary(file => file.Path, StringComparer.Ordinal);
@@ -52,6 +63,17 @@ internal sealed class SeedEvidenceIndex
                 group => group.Select(file => file.Path).Min(StringComparer.Ordinal)!,
                 StringComparer.Ordinal);
         Scopes = CreateScopes();
+        _scopesByIdentity = Scopes.ToDictionary(
+            scope => (scope.Ecosystem, scope.Scope),
+            scope => scope);
+        _scopesByEcosystem = Scopes
+            .GroupBy(scope => scope.Ecosystem, StringComparer.Ordinal)
+            .ToDictionary(
+                group => group.Key,
+                group => (IReadOnlyList<SeedEstimationScope>)[.. group
+                    .OrderByDescending(scope => scope.Directory.Length)
+                    .ThenBy(scope => scope.Id, StringComparer.Ordinal)],
+                StringComparer.Ordinal);
         _normalizedByKind = SourceSemanticKinds.ToDictionary(
             kind => kind,
             CreateNormalizedFacts,
@@ -67,7 +89,7 @@ internal sealed class SeedEvidenceIndex
     public IReadOnlyList<SeedEstimationScope> Scopes { get; }
 
     public IReadOnlyList<EvidenceFact> FactsOfKind(string kind) =>
-        [.. Facts.Where(fact => fact.Kind == kind)];
+        _factsByKind.GetValueOrDefault(kind) ?? [];
 
     public IReadOnlyList<NormalizedEvidenceFact> NormalizedFactsOfKind(string kind) =>
         _normalizedByKind.TryGetValue(kind, out IReadOnlyList<NormalizedEvidenceFact>? facts)
@@ -83,9 +105,9 @@ internal sealed class SeedEvidenceIndex
     {
         ArgumentNullException.ThrowIfNull(fact);
         string ecosystem = EcosystemFor(fact);
-        SeedEstimationScope? exact = Scopes.FirstOrDefault(scope =>
-            scope.Ecosystem == ecosystem && scope.Scope == fact.Scope);
-        if (exact is not null)
+        if (_scopesByIdentity.TryGetValue(
+            (ecosystem, fact.Scope),
+            out SeedEstimationScope? exact))
         {
             return exact;
         }
@@ -97,11 +119,18 @@ internal sealed class SeedEvidenceIndex
     public SeedEstimationScope? FindScopeForPath(string path, string ecosystem)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(path);
-        return Scopes
-            .Where(scope => scope.Ecosystem == ecosystem && IsWithin(path, scope.Directory))
-            .OrderByDescending(scope => scope.Directory.Length)
-            .ThenBy(scope => scope.Id, StringComparer.Ordinal)
-            .FirstOrDefault();
+        if (_scopeByPathAndEcosystem.TryGetValue(
+            (path, ecosystem),
+            out SeedEstimationScope? cached))
+        {
+            return cached;
+        }
+
+        SeedEstimationScope? resolved = _scopesByEcosystem
+            .GetValueOrDefault(ecosystem)?
+            .FirstOrDefault(scope => IsWithin(path, scope.Directory));
+        _scopeByPathAndEcosystem.Add((path, ecosystem), resolved);
+        return resolved;
     }
 
     public StructureNormalization GetStructureNormalization(
@@ -154,8 +183,7 @@ internal sealed class SeedEvidenceIndex
     {
         ArgumentNullException.ThrowIfNull(scope);
         List<EvidenceFact> evidence = [scope.Fact];
-        evidence.AddRange(Facts.Where(fact =>
-            fact.Kind == EvidenceKinds.ProjectReference &&
+        evidence.AddRange(FactsOfKind(EvidenceKinds.ProjectReference).Where(fact =>
             fact.Scope == scope.Scope));
         return [.. evidence
             .DistinctBy(fact => fact.Id, StringComparer.Ordinal)
@@ -220,8 +248,7 @@ internal sealed class SeedEvidenceIndex
     private IReadOnlyList<SeedEstimationScope> CreateScopes()
     {
         List<SeedEstimationScope> scopes = [];
-        foreach (EvidenceFact fact in Facts.Where(fact =>
-            fact.Kind == EvidenceKinds.DotNetProject &&
+        foreach (EvidenceFact fact in FactsOfKind(EvidenceKinds.DotNetProject).Where(fact =>
             fact.Id.StartsWith("dotnet:project:", StringComparison.Ordinal)))
         {
             scopes.Add(CreateScope(
@@ -231,8 +258,7 @@ internal sealed class SeedEvidenceIndex
                 ProjectDirectory(fact.Scope)));
         }
 
-        foreach (EvidenceFact fact in Facts.Where(fact =>
-            fact.Kind == EvidenceKinds.JavaScriptPackage &&
+        foreach (EvidenceFact fact in FactsOfKind(EvidenceKinds.JavaScriptPackage).Where(fact =>
             fact.Id.StartsWith("javascript:package:", StringComparison.Ordinal)))
         {
             scopes.Add(CreateScope(
@@ -242,8 +268,7 @@ internal sealed class SeedEvidenceIndex
                 NormalizeDirectory(fact.Scope)));
         }
 
-        foreach (EvidenceFact fact in Facts.Where(fact =>
-            fact.Kind == EvidenceKinds.JavaScriptPackage &&
+        foreach (EvidenceFact fact in FactsOfKind(EvidenceKinds.JavaScriptPackage).Where(fact =>
             fact.Id == "javascript:repository" &&
             fact.Tags.Contains("frontend-assets:present", StringComparer.Ordinal) &&
             !scopes.Any(scope => scope.Ecosystem == "javascript" && scope.Scope == ".")))
@@ -255,8 +280,7 @@ internal sealed class SeedEvidenceIndex
                 "."));
         }
 
-        foreach (EvidenceFact fact in Facts.Where(fact =>
-            fact.Kind == EvidenceKinds.EcosystemPackage &&
+        foreach (EvidenceFact fact in FactsOfKind(EvidenceKinds.EcosystemPackage).Where(fact =>
             fact.Tags.Contains("scope:analyzed", StringComparer.Ordinal)))
         {
             string ecosystem = TagValue(fact, "ecosystem:") ?? "common";
@@ -267,8 +291,7 @@ internal sealed class SeedEvidenceIndex
                 NormalizeDirectory(fact.Scope)));
         }
 
-        foreach (EvidenceFact fact in Facts.Where(fact =>
-            fact.Kind == EvidenceKinds.SqlRepository &&
+        foreach (EvidenceFact fact in FactsOfKind(EvidenceKinds.SqlRepository).Where(fact =>
             fact.Tags.Contains("scope:standalone", StringComparer.Ordinal)))
         {
             scopes.Add(CreateScope(
@@ -278,7 +301,7 @@ internal sealed class SeedEvidenceIndex
                 NormalizeDirectory(fact.Scope)));
         }
 
-        foreach (EvidenceFact fact in Facts.Where(fact => fact.Kind == EvidenceKinds.SourceStructure))
+        foreach (EvidenceFact fact in FactsOfKind(EvidenceKinds.SourceStructure))
         {
             string ecosystem = EcosystemFor(fact);
             if (scopes.Any(scope =>
@@ -299,7 +322,7 @@ internal sealed class SeedEvidenceIndex
 
         if (scopes.Count == 0)
         {
-            foreach (EvidenceFact fact in Facts.Where(fact => fact.Kind == EvidenceKinds.Component))
+            foreach (EvidenceFact fact in FactsOfKind(EvidenceKinds.Component))
             {
                 string ecosystem = TagValue(fact, "ecosystem:") ?? "common";
                 scopes.Add(CreateScope(
@@ -354,7 +377,7 @@ internal sealed class SeedEvidenceIndex
     private IReadOnlyList<NormalizedEvidenceFact> CreateNormalizedFacts(string kind)
     {
         List<(string Key, EvidenceFact Fact)> keyed = [];
-        foreach (EvidenceFact fact in Facts.Where(fact => fact.Kind == kind))
+        foreach (EvidenceFact fact in FactsOfKind(kind))
         {
             string key = fact.Id;
             string? path = fact.Locations.Count == 0 ? null : fact.Locations[0].Path;

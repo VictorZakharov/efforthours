@@ -284,10 +284,21 @@ count, and intermediate churn do not value effort. `CHANGE_ESTIMATION.md` and
   and explicit membership-dependent normalized contributor allocation. The
   non-gating `change/1.7.0` alpha.6-versus-final 31,010-file/256-change control is
   3.01x faster end to end and 8.17x faster in aggregate snapshot/diff work with
-  identical results; it is not evidence of a 10x field improvement. Keep the PR
-  experimental until the same private 219.33-second manifest is retested and
-  meets the approximately 21.9-second target or the remaining phase is identified
-  honestly.
+  identical results; it is not evidence of a 10x field improvement. The
+  calculation, correctness, reuse, diagnostic, safety, and boundedness work in
+  #157 is complete, including alpha.8 empty-commit handling. Issue #176 owns the
+  unchanged private A/B/A+B retest. Do not claim a 10x field improvement unless
+  the same 219.33-second manifest completes in approximately 21.9 seconds or less;
+  if it misses, use the recorded phase and reuse counters to identify the remaining
+  bottleneck honestly.
+  The follow-up `change/1.8.0` pipeline overlaps bounded snapshot/file production
+  with row and file processing, single-flights immutable work, admits thread-safe
+  seed estimates concurrently, and indexes repeated seed fact/scope lookups. Its
+  prepared 1/12/24-worker curve is explicitly not near-linear: 12 workers are only
+  1.34x faster than one for the complete command, and a 31,034-file/six-change
+  shape averages 0.91 managed processors. Continue with allocation/GC,
+  full-inventory construction, and unadmitted repository-aggregation profiling;
+  do not treat configured concurrency or maximum observed workers as throughput.
 - The optional host-assisted scaffolding boundary is now frozen in
   `AUTHOR_PERIOD_SCAFFOLDING.md`: a separate companion adapter may eventually emit
   a reviewed v1 manifest and local-only provenance, but the estimator stays

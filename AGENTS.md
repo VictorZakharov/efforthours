@@ -180,7 +180,19 @@ including 8,192 immutable analyzer-versioned file artifacts with deterministic
 key-ranked retention, 10,000 structurally shared inventories across 16 full-tree
 roots, and lazy object-length metadata. Eligible non-merge first-parent deltas and
 changed-blob sizes are batched once per repository before row analysis with a
-64-MiB output cap and exact per-row fallback. The public same-input alpha.6
+64-MiB output cap and exact per-row fallback. Delta chunks, immutable snapshot
+pairs, and common file inspections now use bounded producer/consumer pipelines;
+common workers read earlier files while traversal discovers later paths, under a
+process-wide buffered-read bound. Common/semantic file work and thread-safe seed
+estimation share a 24-logical-processor ceiling with deterministic single-flight
+reuse. Core scaling is not established: the prepared `change/1.8.0` curve is only
+1.34x at 12 workers versus one, and the 31,034-file diagnostic averages 0.91
+managed processors.
+Treat allocation-heavy semantic analysis, full-inventory construction, and
+repository aggregation as unresolved performance work, not as evidence that a
+larger worker count is a speedup. The public same-input alpha.6
 control is 3.01x faster end to end and 8.17x faster in snapshot/diff work with
-identical output; a same-input retest of the private 219.33-second workload is
-still required before claiming the targeted 10x field improvement.
+identical output. The engineering defects tracked by #157 are complete, including
+alpha.8 handling of selected empty commits; #176 owns the unchanged private
+A/B/A+B retest. A same-input result near 21.9 seconds or less is still required
+before claiming the targeted 10x field improvement.

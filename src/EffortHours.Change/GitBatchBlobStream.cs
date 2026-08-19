@@ -7,6 +7,7 @@ internal sealed class GitBatchBlobStream : Stream
     private readonly Stream _source;
     private readonly long _length;
     private readonly MemoryStream? _capture;
+    private readonly long _acquiredTimestamp;
     private long _remaining;
     private bool _finished;
     private bool _disposed;
@@ -15,12 +16,14 @@ internal sealed class GitBatchBlobStream : Stream
         GitBatchObjectReader owner,
         string objectId,
         Stream source,
-        long length)
+        long length,
+        long acquiredTimestamp)
     {
         _owner = owner;
         _objectId = objectId;
         _source = source;
         _length = length;
+        _acquiredTimestamp = acquiredTimestamp;
         _remaining = length;
         _capture = length <= GitBatchObjectReader.MaximumCachedBlobBytes
             ? new MemoryStream((int)length)
@@ -227,7 +230,11 @@ internal sealed class GitBatchBlobStream : Stream
         }
         finally
         {
-            _owner.FinishStream(_objectId, faulted ? null : _capture?.ToArray(), faulted);
+            _owner.FinishStream(
+                _objectId,
+                faulted ? null : _capture?.ToArray(),
+                faulted,
+                _acquiredTimestamp);
         }
     }
 
@@ -247,7 +254,11 @@ internal sealed class GitBatchBlobStream : Stream
         }
         finally
         {
-            _owner.FinishStream(_objectId, faulted ? null : _capture?.ToArray(), faulted);
+            _owner.FinishStream(
+                _objectId,
+                faulted ? null : _capture?.ToArray(),
+                faulted,
+                _acquiredTimestamp);
         }
     }
 
@@ -259,6 +270,10 @@ internal sealed class GitBatchBlobStream : Stream
         }
 
         _finished = true;
-        _owner.FinishStream(_objectId, null, faulted: true);
+        _owner.FinishStream(
+            _objectId,
+            null,
+            faulted: true,
+            acquiredTimestamp: _acquiredTimestamp);
     }
 }

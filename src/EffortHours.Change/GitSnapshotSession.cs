@@ -264,6 +264,9 @@ internal sealed class GitSnapshotSession : IAsyncDisposable
                 UniqueBlobBytes = reader.UniqueObjectBytes,
                 RetainedBlobBytes = reader.RetainedCacheBytes,
                 PeakCachedBlobBytes = reader.PeakCachedBytes,
+                ObjectReaderCpuTime = reader.ProcessCpuTime,
+                ObjectReaderOccupiedTime = reader.ProcessOccupiedTime,
+                ObjectReaderWaitTime = reader.ProcessWaitTime,
             };
         }
     }

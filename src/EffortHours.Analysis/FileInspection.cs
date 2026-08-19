@@ -20,20 +20,7 @@ internal sealed record FileInspection(
         ArgumentNullException.ThrowIfNull(fileSystem);
         ArgumentException.ThrowIfNullOrWhiteSpace(path);
         ArgumentNullException.ThrowIfNull(options);
-
-        if (options.FileReadBufferSize < 4 * 1024)
-        {
-            throw new ArgumentOutOfRangeException(
-                nameof(options),
-                "The file read buffer must be at least 4096 bytes.");
-        }
-
-        if (options.TextSampleSize < 256)
-        {
-            throw new ArgumentOutOfRangeException(
-                nameof(options),
-                "The text sample must be at least 256 bytes.");
-        }
+        ValidateOptions(options);
 
         byte[] readBuffer = ArrayPool<byte>.Shared.Rent(options.FileReadBufferSize);
         byte[] sampleBuffer = ArrayPool<byte>.Shared.Rent(options.TextSampleSize);
@@ -101,6 +88,78 @@ internal sealed record FileInspection(
         {
             ArrayPool<byte>.Shared.Return(readBuffer);
             ArrayPool<byte>.Shared.Return(sampleBuffer);
+        }
+    }
+
+    public static FileInspection Create(
+        string path,
+        byte[] content,
+        RepositoryScanOptions options,
+        CancellationToken cancellationToken)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(path);
+        ArgumentNullException.ThrowIfNull(content);
+        ArgumentNullException.ThrowIfNull(options);
+        ValidateOptions(options);
+        cancellationToken.ThrowIfCancellationRequested();
+
+        long lineFeeds = 0;
+        byte previousByte = 0;
+        byte lastByte = 0;
+        for (int index = 0; index < content.Length; index++)
+        {
+            if ((index & 0x3fff) == 0)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+            }
+
+            byte currentByte = content[index];
+            if (currentByte == (byte)'\n')
+            {
+                lineFeeds++;
+            }
+
+            previousByte = lastByte;
+            lastByte = currentByte;
+        }
+
+        ReadOnlySpan<byte> sample = content.AsSpan(
+            0,
+            Math.Min(content.Length, options.TextSampleSize));
+        TextEncodingKind encoding = DetectEncoding(sample);
+        bool isBinary = IsBinaryContent(path, sample, encoding);
+        bool endsWithLineFeed = EndsWithLineFeed(
+            encoding,
+            previousByte,
+            lastByte,
+            content.LongLength);
+        long lines = isBinary || content.Length == 0
+            ? 0
+            : lineFeeds + (endsWithLineFeed ? 0 : 1);
+        string sampleText = isBinary ? string.Empty : DecodeSample(sample, encoding);
+        string sha256 = Convert.ToHexString(SHA256.HashData(content)).ToLowerInvariant();
+        return new FileInspection(
+            content.LongLength,
+            lines,
+            sha256,
+            isBinary,
+            sampleText);
+    }
+
+    private static void ValidateOptions(RepositoryScanOptions options)
+    {
+        if (options.FileReadBufferSize < 4 * 1024)
+        {
+            throw new ArgumentOutOfRangeException(
+                nameof(options),
+                "The file read buffer must be at least 4096 bytes.");
+        }
+
+        if (options.TextSampleSize < 256)
+        {
+            throw new ArgumentOutOfRangeException(
+                nameof(options),
+                "The text sample must be at least 256 bytes.");
         }
     }
 

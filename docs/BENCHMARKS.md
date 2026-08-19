@@ -1231,10 +1231,35 @@ reachable commits and a dominant roughly 29,000-file/663-MiB tree. It took
 219.33 seconds and sampled 693.45 MiB for the combined manifest. That private
 workload is materially larger and structurally different from this generated
 fixture, so applying either the intermediate 56.9% reduction or the representative
-3.01x result to predict a field result would be unsupported. A same-input alpha.7
-retest remains required; it should report
-phase times, batched-inventory coverage, unique artifact/blob counts, and peak
-working set.
+3.01x result to predict a field result would be unsupported.
+
+The first same-input alpha.7 field retest established one controlled result but
+could not complete the comparison matrix:
+
+| Run | Alpha.6 | Alpha.7 | Result |
+| --- | ---: | ---: | --- |
+| Contributor A wall time | 143.033 s | 29.189 s | 79.6% lower; 4.9x faster |
+| Contributor A expected EHE | 686.17 h | 686.17 h | exact semantic match |
+| Contributor A observed peak | 658.38 MiB | 1,432.46 MiB | 2.18x; field review remains required |
+| Contributor B | 60.233 s success | batch-diff failure | blocked by a selected empty commit |
+| Combined A+B | 219.330 s success | batch-diff failure | blocked by the same empty commit |
+
+Alpha.8 preserves selected empty one-parent commits as valid zero-path
+transitions, closing that deterministic correctness regression. The original
+closed-month engineering work is otherwise covered by the 1,701-row calculation
+regression, exact combined/isolated and reorder semantics, bounded reuse and
+repository concurrency, the 50-repetition ignore-rule stress case, actionable
+Git ownership diagnostics, cancellation diagnostics, and unchanged/offline target
+checks. GitHub issue #157 therefore closes as an engineering implementation
+record. Issue #176 owns the unchanged private alpha.8 A, B, and A+B field retest;
+the private manifests remain outside the repository.
+
+Closing the engineering issue does not establish the desired 10x field result.
+That claim still requires approximately 21.9 seconds or less against the
+219.33-second combined baseline. The field retest must report phase times,
+batched-inventory coverage, unique artifact/blob counts, byte traffic, combined
+versus isolated wall ratio, and peak working set. A miss is a measurement to
+diagnose, not permission to reinterpret the generated fixture as field evidence.
 
 Ordinary CI does not assert wall time, memory, or a faster-than ratio. It gates the
 bounded batch parser, exact combined/isolated semantics, deterministic operation
@@ -1277,9 +1302,84 @@ bodies are deliberately tiny and its reachable history is shallow. It does not
 reproduce the private field workload's roughly 663 MiB tree or 41,793 reachable
 commits. The defensible same-fixture result is therefore 3.01x end to end, not
 10x. The snapshot/diff subsystem itself is now in the expected order of magnitude,
-but a 10x claim for the complete field command requires rerunning the same private
-manifest and measuring no more than approximately 21.9 seconds against alpha.6's
-219.33-second result. Protocol v1.7.0 also records the lazy object-metadata reader
-counters and canonical structurally shared inventory behavior. These wall-time
-and sampled-memory observations remain explicit benchmark evidence, never ordinary
-CI gates.
+but issue #176 must rerun the same private manifest and measure no more than
+approximately 21.9 seconds against alpha.6's 219.33-second result before a 10x
+claim is made. Protocol v1.7.0 also records the lazy object-metadata reader counters
+and canonical structurally shared inventory behavior. These wall-time and sampled-
+memory observations remain explicit benchmark evidence, never ordinary CI gates.
+
+## Change author-period pipelining and CPU scaling v1.8.0 checkpoint
+
+Measured on August 18, 2026 with .NET runtime `10.0.7`, Windows
+`10.0.26200` x64, a 12-core/24-logical-processor Ryzen 9 5900X, workstation GC,
+and no competing `eh` process. Fixture construction completed before measurement;
+the measured command reopened only the prepared immutable objects. The CPU-heavy
+fixture contains two repositories, eight pinned heads, three requested contributor
+rows, 12 selected changes, 14 unique snapshot analyses, 1,290 aggregate head
+files, 1,000 lines per synthetic C# file, 2,338 unique immutable file-analysis
+artifacts, and 41,271,446 Git bytes read.
+
+The benchmark-only worker setting controls the shared admission budget for common
+file inspection, semantic file analysis, and thread-safe repository estimation.
+It does not constrain all process work or child Git processes, so the one-worker
+row is an admitted-work baseline, not a claim that the whole process used exactly
+one core.
+
+| Measure | 1 worker | 12 workers | 24 workers |
+| --- | ---: | ---: | ---: |
+| Combined wall time | 5.515 s | 4.102 s | 3.830 s |
+| Combined analysis wall time | 4.475 s | 3.089 s | 2.820 s |
+| Managed process CPU time | 8.672 s | 19.906 s | 22.828 s |
+| Managed average processor equivalents | 1.572 | 4.853 | 5.961 |
+| Average active admitted work | 0.703 | 6.893 | 10.158 |
+| Maximum active admitted work | 1 | 12 | 24 |
+| Managed allocation | 1,529.11 MiB | 1,552.18 MiB | 1,562.06 MiB |
+| Sampled peak working set | 207.94 MiB | 227.68 MiB | 234.11 MiB |
+
+Twelve workers reduce whole-command wall time by 25.6% (`1.34x`) and analysis
+wall time by 31.0% (`1.45x`) versus one admitted worker. Twenty-four workers
+reduce them by 30.6% (`1.44x`) and 37.0% (`1.59x`). This is not near-linear
+physical-core scaling. The gate reaches its configured maximum, proving that work
+exists and is admitted concurrently, but fixed Git/history work and
+allocation-heavy Roslyn/estimator processing make each concurrent operation more
+expensive. Aggregate lease occupancy is wall time summed across leases, not CPU
+time, and must not be presented as processor consumption.
+
+Indexing evidence facts by kind and memoizing file-to-scope ownership reduced the
+one-worker repository-estimation lease from 1.145 seconds to 0.426 seconds on the
+same fixture (62.8% lower). Filtering irrelevant retained Roslyn identifiers and
+counting only data-relevant properties further reduces unnecessary syntax
+retention without changing evidence. These are algorithmic wins, but parser and
+repository aggregation remain the dominant scaling boundary.
+
+A separate prepared 2,048-file/1,000-line .NET scanner diagnostic excludes its
+0.314-second fixture construction from measurement. Moving small-file reads from
+the traversal producer into its bounded workers lowers one controlled 12-worker
+scan from 1.552 to 1.415 seconds (8.8%) and raises average managed processor use
+from 3.605 to 3.909. Increasing one scan beyond four read workers produced no
+further wall-time benefit, so the local cap remains four while a separate
+process-wide read budget bounds content buffered across concurrent snapshots.
+This isolates a real serial producer cost without presenting a single observation
+as a universal speedup.
+
+A separate prepared 128-change fixture checks phase overlap. Moving from one
+repository-wide delta barrier to deterministic 16-row delta chunks feeding four
+consumers changed wall time from 6.104 to 5.969 seconds (2.2% lower), while
+aggregate diff construction rose from 0.830 to 1.445 seconds because more bounded
+Git batches were opened. This small-diff fixture therefore establishes the
+producer/consumer behavior and exact output, not a broad speedup claim; the field
+retest must decide whether overlap repays batch startup on large deltas.
+
+The prepared repository-scale diagnostic contains 31,034 aggregate files and six
+selected changes. It completes in 4.178 seconds, samples 140.16 MiB, and consumes
+3.812 managed CPU-seconds, or 0.912 average managed processors. Only 186 admitted
+CPU work items exist because changed-scope analysis correctly avoids parsing the
+full tree. Its low CPU use is consequently a real full-inventory/Git/aggregation
+scalability signal, not evidence that more parser workers would help.
+
+Protocol v1.8.0 records per-kind admission counts, occupied and wait time, managed
+CPU and GC observations, and Git-reader CPU/occupied/wait time. CI continues to
+gate deterministic semantics, producer/consumer overlap, single-flight reuse,
+bounded configuration, privacy, and unchanged targets only. Wall time, CPU,
+allocation, and sampled memory remain non-gating checkpoints. Near-linear core
+scaling is explicitly unresolved.

@@ -98,14 +98,16 @@ internal sealed partial class GitPortfolioBenchmarkFixture
                 "--create",
                 branch,
                 baseObjectId).ConfigureAwait(false);
+            string changedPath = $"fanout/branch-{index:D2}.txt";
             GitBenchmarkRepository.WriteText(
                 path,
-                $"fanout/branch-{index:D2}.txt",
+                changedPath,
                 $"synthetic merge-fanout branch {index:D2}\n");
             _ = await GitBenchmarkRepository.CommitAsync(
                 path,
                 $"fanout branch {index:D2}",
-                cancellationToken).ConfigureAwait(false);
+                cancellationToken,
+                paths: [changedPath]).ConfigureAwait(false);
         }
 
         await GitBenchmarkRepository.GitAsync(
@@ -139,9 +141,10 @@ internal sealed partial class GitPortfolioBenchmarkFixture
         string authorDate,
         CancellationToken cancellationToken)
     {
+        string changedPath = GitBenchmarkRepository.SourcePath(0, nested: true);
         GitBenchmarkRepository.WriteText(
             path,
-            GitBenchmarkRepository.SourcePath(0, nested: true),
+            changedPath,
             GitBenchmarkRepository.SourceFile(0, options.LinesPerFile, finalValue));
         return await GitBenchmarkRepository.CommitAsync(
             path,
@@ -149,7 +152,8 @@ internal sealed partial class GitPortfolioBenchmarkFixture
             cancellationToken,
             authorName,
             authorEmail,
-            authorDate).ConfigureAwait(false);
+            authorDate,
+            [changedPath]).ConfigureAwait(false);
     }
 
     private static async Task<string> SelectedSeriesAsync(
@@ -201,11 +205,13 @@ internal sealed partial class GitPortfolioBenchmarkFixture
             "--create",
             branch,
             shared).ConfigureAwait(false);
-        GitBenchmarkRepository.WriteText(path, "notes/unselected.md", "# Unselected head\n");
+        const string changedPath = "notes/unselected.md";
+        GitBenchmarkRepository.WriteText(path, changedPath, "# Unselected head\n");
         return await GitBenchmarkRepository.CommitAsync(
             path,
             "unselected overlap head",
-            cancellationToken).ConfigureAwait(false);
+            cancellationToken,
+            paths: [changedPath]).ConfigureAwait(false);
     }
 
     private static async Task CloneRepositoryAsync(

@@ -3,7 +3,7 @@ using EffortHours.Contracts.V1;
 
 namespace EffortHours.Estimation;
 
-public sealed class SeedEstimator : IEstimator
+public sealed class SeedEstimator : IThreadSafeEstimator
 {
     public const string Version = "seed-rules/0.4.0";
 

@@ -1,63 +1,100 @@
 using System.Diagnostics;
+using EffortHours.Analysis;
 using EffortHours.Change;
 using EffortHours.Contracts;
 using EffortHours.Contracts.V1;
 
 namespace EffortHours.ChangeBenchmarks;
 
-internal sealed record ChangePortfolioBenchmarkExecution
-{
-    public required int SelectedChanges { get; init; }
-
-    public required int CombinedSnapshotAnalyses { get; init; }
-
-    public required int IsolatedManifestSnapshotAnalyses { get; init; }
-
-    public required int IsolatedManifestInvocations { get; init; }
-
-    public required int IsolatedManifestSelectedRows { get; init; }
-
-    public required int UniqueIsolatedManifestChanges { get; init; }
-
-    public required int IsolatedManifestObjectReaders { get; init; }
-
-    public required TimeSpan CombinedElapsed { get; init; }
-
-    public required TimeSpan CombinedCpu { get; init; }
-
-    public required TimeSpan InitialCombinedWarmupElapsed { get; init; }
-
-    public required TimeSpan InitialCombinedWarmupCpu { get; init; }
-
-    public required TimeSpan IsolatedManifestElapsed { get; init; }
-
-    public required TimeSpan IsolatedManifestCpu { get; init; }
-
-    public required bool IsolatedManifestReportsEquivalent { get; init; }
-
-    public required bool ManualBaselineEquivalent { get; init; }
-
-    public required bool ReorderedReportBytesEquivalent { get; init; }
-
-    public required bool RepositoryScopedSharedObject { get; init; }
-
-    public required bool FullyOverlappingHeadsPreserved { get; init; }
-
-    public required bool EmptyContributorPreserved { get; init; }
-
-    public required bool PrivacyBoundaryPreserved { get; init; }
-
-    public required decimal ExpectedEffort { get; init; }
-
-    public required ChangePortfolioExecutionStatistics Statistics { get; init; }
-
-    public required ChangePortfolioExecutionStatistics IsolatedManifestStatistics { get; init; }
-
-    public IReadOnlyList<ChangePortfolioPhaseTiming> CombinedPhaseTimings { get; init; } = [];
-}
-
 internal static class ChangePortfolioBenchmarkRunner
 {
+    public static async Task<ChangePortfolioBenchmarkExecution> RunCombinedOnlyAsync(
+        GitPortfolioBenchmarkFixture fixture,
+        CancellationToken cancellationToken)
+    {
+        CountingEstimator estimator = new();
+        RepositoryAnalysisConcurrencyStatistics concurrencyBefore =
+            RepositoryAnalysisConcurrency.GetStatistics();
+        TimeSpan cpuBefore = Process.GetCurrentProcess().TotalProcessorTime;
+        Stopwatch timer = Stopwatch.StartNew();
+        CombinedRun combined = await RunCombinedAsync(
+            fixture.Manifest,
+            fixture.RepositoryPaths,
+            estimator,
+            cancellationToken).ConfigureAwait(false);
+        timer.Stop();
+        TimeSpan cpu = Process.GetCurrentProcess().TotalProcessorTime - cpuBefore;
+        RepositoryAnalysisConcurrencyStatistics concurrencyAfter =
+            RepositoryAnalysisConcurrency.GetStatistics();
+
+        ChangePortfolioAggregation aggregation = combined.Report.Aggregation ??
+            throw new InvalidOperationException(
+                "Manifest benchmark report omitted aggregate attribution.");
+        bool overlappingHeads = aggregation.Repositories.All(repository =>
+        {
+            ChangePortfolioHeadSummary shared = repository.Heads.Single(
+                head => head.HeadId == "shared");
+            ChangePortfolioHeadSummary overlap = repository.Heads.Single(
+                head => head.HeadId == "fully-overlapping");
+            return shared.ReachableSelectedCommitCount == overlap.ReachableSelectedCommitCount &&
+                shared.SharedSelectedCommitCount == overlap.SharedSelectedCommitCount;
+        });
+        bool emptyContributor = aggregation.Contributors.Single(
+            contributor => contributor.ContributorId == "contributor-empty").NoSelectedCommits;
+        bool privacy = fixture.Repositories.All(repository =>
+                !combined.Json.Contains(repository.Path, StringComparison.OrdinalIgnoreCase)) &&
+            fixture.Manifest.Contributors.SelectMany(contributor => contributor.Aliases).All(alias =>
+                !combined.Json.Contains(alias, StringComparison.OrdinalIgnoreCase));
+
+        return new ChangePortfolioBenchmarkExecution
+        {
+            SelectedChanges = combined.Plan.Items.Count,
+            CombinedSnapshotAnalyses = estimator.InvocationCount,
+            IsolatedManifestSnapshotAnalyses = 0,
+            IsolatedManifestInvocations = 0,
+            IsolatedManifestSelectedRows = 0,
+            UniqueIsolatedManifestChanges = 0,
+            IsolatedManifestObjectReaders = 0,
+            CombinedElapsed = timer.Elapsed,
+            CombinedCpu = cpu,
+            CombinedAnalysisElapsed = combined.EstimateElapsed,
+            CombinedCpuWorkAcquisitions =
+                concurrencyAfter.Acquisitions - concurrencyBefore.Acquisitions,
+            CombinedCpuWorkOccupied =
+                concurrencyAfter.OccupiedTime - concurrencyBefore.OccupiedTime,
+            CombinedCpuWorkWait = concurrencyAfter.WaitTime - concurrencyBefore.WaitTime,
+            CombinedCommonFileInspection = Difference(
+                concurrencyAfter.CommonFileInspection,
+                concurrencyBefore.CommonFileInspection),
+            CombinedSemanticFileAnalysis = Difference(
+                concurrencyAfter.SemanticFileAnalysis,
+                concurrencyBefore.SemanticFileAnalysis),
+            CombinedRepositoryEstimation = Difference(
+                concurrencyAfter.RepositoryEstimation,
+                concurrencyBefore.RepositoryEstimation),
+            ObservedMaximumActiveCpuWork = concurrencyAfter.MaximumActive,
+            InitialCombinedWarmupElapsed = TimeSpan.Zero,
+            InitialCombinedWarmupCpu = TimeSpan.Zero,
+            IsolatedManifestElapsed = TimeSpan.Zero,
+            IsolatedManifestCpu = TimeSpan.Zero,
+            IsolatedManifestReportsEquivalent = false,
+            ManualBaselineEquivalent = false,
+            ReorderedReportBytesEquivalent = false,
+            RepositoryScopedSharedObject = combined.Plan.Items.Count(item =>
+                string.Equals(
+                    item.Plan.Selection.Head.ObjectId,
+                    fixture.SharedObjectId,
+                    StringComparison.Ordinal)) == fixture.Repositories.Count,
+            FullyOverlappingHeadsPreserved = overlappingHeads,
+            EmptyContributorPreserved = emptyContributor,
+            PrivacyBoundaryPreserved = privacy,
+            ExpectedEffort = combined.Report.TotalEffort.Expected,
+            Statistics = combined.Estimate.Statistics,
+            IsolatedManifestStatistics = new ChangePortfolioExecutionStatistics(),
+            CombinedPhaseTimings = combined.Telemetry.GetTimings(),
+        };
+    }
+
     public static async Task<ChangePortfolioBenchmarkExecution> RunAsync(
         GitPortfolioBenchmarkFixture fixture,
         CancellationToken cancellationToken)
@@ -88,6 +125,8 @@ internal static class ChangePortfolioBenchmarkRunner
         bool manualBaselineEquivalent = ManualBaselineEquivalent(combined, isolated.Reports);
 
         CountingEstimator reorderedEstimator = new();
+        RepositoryAnalysisConcurrencyStatistics concurrencyBefore =
+            RepositoryAnalysisConcurrency.GetStatistics();
         TimeSpan combinedCpuBefore = Process.GetCurrentProcess().TotalProcessorTime;
         Stopwatch combinedTimer = Stopwatch.StartNew();
         CombinedRun reordered = await RunCombinedAsync(
@@ -97,6 +136,8 @@ internal static class ChangePortfolioBenchmarkRunner
             cancellationToken).ConfigureAwait(false);
         combinedTimer.Stop();
         TimeSpan combinedCpu = Process.GetCurrentProcess().TotalProcessorTime - combinedCpuBefore;
+        RepositoryAnalysisConcurrencyStatistics concurrencyAfter =
+            RepositoryAnalysisConcurrency.GetStatistics();
         bool overlappingHeads = aggregation.Repositories.All(repository =>
         {
             ChangePortfolioHeadSummary shared = repository.Heads.Single(head => head.HeadId == "shared");
@@ -124,6 +165,22 @@ internal static class ChangePortfolioBenchmarkRunner
             IsolatedManifestObjectReaders = isolated.Statistics.ObjectDatabaseReaders,
             CombinedElapsed = combinedTimer.Elapsed,
             CombinedCpu = combinedCpu,
+            CombinedAnalysisElapsed = reordered.EstimateElapsed,
+            CombinedCpuWorkAcquisitions =
+                concurrencyAfter.Acquisitions - concurrencyBefore.Acquisitions,
+            CombinedCpuWorkOccupied =
+                concurrencyAfter.OccupiedTime - concurrencyBefore.OccupiedTime,
+            CombinedCpuWorkWait = concurrencyAfter.WaitTime - concurrencyBefore.WaitTime,
+            CombinedCommonFileInspection = Difference(
+                concurrencyAfter.CommonFileInspection,
+                concurrencyBefore.CommonFileInspection),
+            CombinedSemanticFileAnalysis = Difference(
+                concurrencyAfter.SemanticFileAnalysis,
+                concurrencyBefore.SemanticFileAnalysis),
+            CombinedRepositoryEstimation = Difference(
+                concurrencyAfter.RepositoryEstimation,
+                concurrencyBefore.RepositoryEstimation),
+            ObservedMaximumActiveCpuWork = concurrencyAfter.MaximumActive,
             InitialCombinedWarmupElapsed = warmupTimer.Elapsed,
             InitialCombinedWarmupCpu = warmupCpu,
             IsolatedManifestElapsed = isolated.Elapsed,
@@ -149,6 +206,13 @@ internal static class ChangePortfolioBenchmarkRunner
         };
     }
 
+    private static RepositoryAnalysisWorkStatistics Difference(
+        RepositoryAnalysisWorkStatistics after,
+        RepositoryAnalysisWorkStatistics before) => new(
+            after.Acquisitions - before.Acquisitions,
+            after.OccupiedTime - before.OccupiedTime,
+            after.WaitTime - before.WaitTime);
+
     private static async Task<CombinedRun> RunCombinedAsync(
         ChangeAuthorPeriodManifest manifest,
         IReadOnlyDictionary<string, string> repositoryPaths,
@@ -162,12 +226,14 @@ internal static class ChangePortfolioBenchmarkRunner
                 digest,
                 repositoryPaths,
                 cancellationToken).ConfigureAwait(false);
+        Stopwatch estimateTimer = Stopwatch.StartNew();
         ChangePortfolioEstimateBatch estimate = await new ChangeEstimator(repositoryEstimator)
             .EstimatePortfolioCandidatesWithStatisticsAsync(
                 [.. plan.Items.Select(item => item.Plan)],
                 EstimationProfile.Implementation,
                 plan.ExecutionTelemetry,
                 cancellationToken).ConfigureAwait(false);
+        estimateTimer.Stop();
         ChangePortfolioCandidate[] candidates = Candidates(plan, estimate.Reports);
         IReadOnlyList<Diagnostic> diagnostics =
             [.. plan.Diagnostics, estimate.Statistics.CreateDiagnostic()];
@@ -183,7 +249,8 @@ internal static class ChangePortfolioBenchmarkRunner
             report,
             ContractJson.Serialize(report),
             diagnostics,
-            plan.ExecutionTelemetry);
+            plan.ExecutionTelemetry,
+            estimateTimer.Elapsed);
     }
 
     private static async Task<IsolatedManifestRun> RunIsolatedManifestsAsync(
@@ -294,6 +361,8 @@ internal static class ChangePortfolioBenchmarkRunner
             MaximumActiveRepositories = statistics.Max(value => value.MaximumActiveRepositories),
             MaximumConcurrentFileAnalysesPerRepository = statistics.Max(
                 value => value.MaximumConcurrentFileAnalysesPerRepository),
+            MaximumConcurrentCpuWorkItems = statistics.Max(
+                value => value.MaximumConcurrentCpuWorkItems),
             SnapshotAnalysisRequests = statistics.Sum(value => value.SnapshotAnalysisRequests),
             SnapshotAnalysisHits = statistics.Sum(value => value.SnapshotAnalysisHits),
             UniqueSnapshotAnalysisKeys = statistics.Sum(value => value.UniqueSnapshotAnalysisKeys),
@@ -336,6 +405,12 @@ internal static class ChangePortfolioBenchmarkRunner
             UniqueBlobBytes = statistics.Sum(value => value.UniqueBlobBytes),
             RetainedBlobBytesPerRepository = statistics.Max(value => value.RetainedBlobBytesPerRepository),
             PeakCachedBlobBytesPerRepository = statistics.Max(value => value.PeakCachedBlobBytesPerRepository),
+            ObjectReaderCpuTime = TimeSpan.FromTicks(
+                statistics.Sum(value => value.ObjectReaderCpuTime.Ticks)),
+            ObjectReaderOccupiedTime = TimeSpan.FromTicks(
+                statistics.Sum(value => value.ObjectReaderOccupiedTime.Ticks)),
+            ObjectReaderWaitTime = TimeSpan.FromTicks(
+                statistics.Sum(value => value.ObjectReaderWaitTime.Ticks)),
             SnapshotAnalysisRetentionLimit = statistics.Max(value => value.SnapshotAnalysisRetentionLimit),
             AnalysisArtifactRetentionLimit = statistics.Max(value => value.AnalysisArtifactRetentionLimit),
             SnapshotInventoryRetentionLimit = statistics.Max(value => value.SnapshotInventoryRetentionLimit),
@@ -356,7 +431,8 @@ internal static class ChangePortfolioBenchmarkRunner
         ChangePortfolioReport Report,
         string Json,
         IReadOnlyList<Diagnostic> Diagnostics,
-        ChangePortfolioExecutionTelemetry Telemetry);
+        ChangePortfolioExecutionTelemetry Telemetry,
+        TimeSpan EstimateElapsed);
 
     private sealed record IsolatedManifestRun(
         IReadOnlyDictionary<string, ChangeEstimateReport> Reports,

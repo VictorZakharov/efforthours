@@ -5,7 +5,7 @@ using System.Text;
 
 namespace EffortHours.Change;
 
-internal sealed class GitBatchObjectReader : IAsyncDisposable
+internal sealed partial class GitBatchObjectReader : IAsyncDisposable
 {
     internal const int MaximumCachedBlobBytes = 1024 * 1024;
     internal const long MaximumCacheBytes = 64L * 1024 * 1024;
@@ -13,7 +13,8 @@ internal sealed class GitBatchObjectReader : IAsyncDisposable
     private readonly Dictionary<string, byte[]> _cache = new(StringComparer.Ordinal);
     private readonly Queue<string> _cacheOrder = new();
     private readonly HashSet<string> _seenObjects = new(StringComparer.Ordinal);
-    private readonly SemaphoreSlim _gate = new(1, 1);
+    private readonly Lock _stateGate = new();
+    private readonly SemaphoreSlim _processGate = new(1, 1);
     private readonly Process _process;
     private readonly Task<string> _stderr;
     private long _cacheBytes;
@@ -25,6 +26,8 @@ internal sealed class GitBatchObjectReader : IAsyncDisposable
     private long _readBytes;
     private long _uniqueObjectBytes;
     private long _peakCacheBytes;
+    private long _processOccupiedTimestamp;
+    private long _processWaitTimestamp;
     private bool _faulted;
     private bool _disposed;
 
@@ -56,16 +59,20 @@ internal sealed class GitBatchObjectReader : IAsyncDisposable
 
     public Stream OpenBlob(string objectId)
     {
-        _gate.Wait();
+        if (TryGetCachedBlob(objectId, recordMiss: false, out byte[] cached))
+        {
+            return new MemoryStream(cached, writable: false);
+        }
+
+        long waitStarted = Stopwatch.GetTimestamp();
+        _processGate.Wait();
+        long acquired = Stopwatch.GetTimestamp();
+        RecordProcessWait(acquired - waitStarted);
+        bool releaseProcess = true;
         try
         {
-            EnsureUsable();
-            _requests++;
-            if (_cache.TryGetValue(objectId, out byte[]? cached))
+            if (TryGetCachedBlob(objectId, recordMiss: true, out cached))
             {
-                _cacheHits++;
-                RecordBlobLength(objectId, cached.Length, cacheHit: true);
-                _gate.Release();
                 return new MemoryStream(cached, writable: false);
             }
 
@@ -74,13 +81,36 @@ internal sealed class GitBatchObjectReader : IAsyncDisposable
             string header = ReadHeader(_process.StandardOutput.BaseStream);
             long length = ParseBlobLength(header, objectId);
             RecordBlobLength(objectId, length, cacheHit: false);
-            return new GitBatchBlobStream(this, objectId, _process.StandardOutput.BaseStream, length);
+            if (length <= MaximumCachedBlobBytes)
+            {
+                byte[] content = GC.AllocateUninitializedArray<byte>((int)length);
+                _process.StandardOutput.BaseStream.ReadExactly(content);
+                ReadTerminator(_process.StandardOutput.BaseStream);
+                Cache(objectId, content);
+                return new MemoryStream(content, writable: false);
+            }
+
+            GitBatchBlobStream stream = new(
+                this,
+                objectId,
+                _process.StandardOutput.BaseStream,
+                length,
+                acquired);
+            releaseProcess = false;
+            return stream;
         }
         catch
         {
             Fault();
-            _gate.Release();
             throw;
+        }
+        finally
+        {
+            if (releaseProcess)
+            {
+                RecordProcessOccupied(Stopwatch.GetTimestamp() - acquired);
+                _processGate.Release();
+            }
         }
     }
 
@@ -88,15 +118,20 @@ internal sealed class GitBatchObjectReader : IAsyncDisposable
         string objectId,
         CancellationToken cancellationToken)
     {
-        await _gate.WaitAsync(cancellationToken).ConfigureAwait(false);
+        cancellationToken.ThrowIfCancellationRequested();
+        if (TryGetCachedBlob(objectId, recordMiss: false, out byte[] cached))
+        {
+            return cached;
+        }
+
+        long waitStarted = Stopwatch.GetTimestamp();
+        await _processGate.WaitAsync(cancellationToken).ConfigureAwait(false);
+        long acquired = Stopwatch.GetTimestamp();
+        RecordProcessWait(acquired - waitStarted);
         try
         {
-            EnsureUsable();
-            _requests++;
-            if (_cache.TryGetValue(objectId, out byte[]? cached))
+            if (TryGetCachedBlob(objectId, recordMiss: true, out cached))
             {
-                _cacheHits++;
-                RecordBlobLength(objectId, cached.Length, cacheHit: true);
                 return cached;
             }
 
@@ -129,21 +164,26 @@ internal sealed class GitBatchObjectReader : IAsyncDisposable
         }
         finally
         {
-            _gate.Release();
+            RecordProcessOccupied(Stopwatch.GetTimestamp() - acquired);
+            _processGate.Release();
         }
     }
 
     public async ValueTask DisposeAsync()
     {
-        if (_disposed)
+        lock (_stateGate)
         {
-            return;
+            if (_disposed)
+            {
+                return;
+            }
+
+            _disposed = true;
         }
 
-        await _gate.WaitAsync().ConfigureAwait(false);
+        await _processGate.WaitAsync().ConfigureAwait(false);
         try
         {
-            _disposed = true;
             try
             {
                 _process.StandardInput.Dispose();
@@ -168,12 +208,15 @@ internal sealed class GitBatchObjectReader : IAsyncDisposable
         }
         finally
         {
-            _gate.Release();
-            _gate.Dispose();
+            _processGate.Release();
         }
     }
 
-    internal void FinishStream(string objectId, byte[]? content, bool faulted)
+    internal void FinishStream(
+        string objectId,
+        byte[]? content,
+        bool faulted,
+        long acquiredTimestamp)
     {
         if (faulted)
         {
@@ -184,33 +227,16 @@ internal sealed class GitBatchObjectReader : IAsyncDisposable
             Cache(objectId, content);
         }
 
-        _gate.Release();
+        RecordProcessOccupied(Stopwatch.GetTimestamp() - acquiredTimestamp);
+        _processGate.Release();
     }
 
-    internal GitObjectReaderStatistics GetStatistics()
-    {
-        _gate.Wait();
-        try
-        {
-            return new GitObjectReaderStatistics
-            {
-                Requests = _requests,
-                CacheHits = _cacheHits,
-                CacheEvictions = _cacheEvictions,
-                UniqueObjects = _seenObjects.Count,
-                RequestedBytes = _requestedBytes,
-                CacheHitBytes = _cacheHitBytes,
-                ReadBytes = _readBytes,
-                UniqueObjectBytes = _uniqueObjectBytes,
-                RetainedCacheBytes = _cacheBytes,
-                PeakCachedBytes = _peakCacheBytes,
-            };
-        }
-        finally
-        {
-            _gate.Release();
-        }
-    }
+    private void RecordProcessOccupied(long timestamp) =>
+        Interlocked.Add(ref _processOccupiedTimestamp, timestamp);
+
+    private void RecordProcessWait(long timestamp) =>
+        Interlocked.Add(ref _processWaitTimestamp, timestamp);
+
 
     private static long ParseBlobLength(string header, string requestedObjectId)
     {
@@ -299,68 +325,11 @@ internal sealed class GitBatchObjectReader : IAsyncDisposable
         }
     }
 
-    private void EnsureUsable()
+    private static void ReadTerminator(Stream stream)
     {
-        ObjectDisposedException.ThrowIf(_disposed, this);
-        if (_faulted)
+        if (stream.ReadByte() != '\n')
         {
-            throw new InvalidOperationException("The Git object reader is no longer usable after a stream failure.");
-        }
-    }
-
-    private void Fault()
-    {
-        _faulted = true;
-        try
-        {
-            if (!_process.HasExited)
-            {
-                _process.Kill(entireProcessTree: true);
-            }
-        }
-        catch (Exception exception) when (exception is InvalidOperationException or Win32Exception)
-        {
-        }
-    }
-
-    private void Cache(string objectId, byte[] content)
-    {
-        if (content.Length > MaximumCachedBlobBytes || _cache.ContainsKey(objectId))
-        {
-            return;
-        }
-
-        while (_cacheBytes + content.Length > MaximumCacheBytes && _cacheOrder.Count > 0)
-        {
-            string evicted = _cacheOrder.Dequeue();
-            if (_cache.Remove(evicted, out byte[]? value))
-            {
-                _cacheBytes -= value.Length;
-                _cacheEvictions++;
-            }
-        }
-
-        _cache.Add(objectId, content);
-        _cacheOrder.Enqueue(objectId);
-        _cacheBytes += content.Length;
-        _peakCacheBytes = Math.Max(_peakCacheBytes, _cacheBytes);
-    }
-
-    private void RecordBlobLength(string objectId, long length, bool cacheHit)
-    {
-        _requestedBytes += length;
-        if (cacheHit)
-        {
-            _cacheHitBytes += length;
-        }
-        else
-        {
-            _readBytes += length;
-        }
-
-        if (_seenObjects.Add(objectId))
-        {
-            _uniqueObjectBytes += length;
+            throw new InvalidOperationException("Git blob output was not newline terminated.");
         }
     }
 }

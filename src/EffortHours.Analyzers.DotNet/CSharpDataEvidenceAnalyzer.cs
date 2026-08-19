@@ -25,37 +25,38 @@ internal static class CSharpDataEvidenceAnalyzer
         "SqlConnection",
     }.ToFrozenSet(StringComparer.Ordinal);
 
+    internal static bool IsDataPrimitiveName(string name) =>
+        DataPrimitiveNames.Contains(name);
+
     public static void AddFact(
         List<EvidenceFact> facts,
         string path,
         string projectScope,
-        IReadOnlyList<SyntaxNode> nodes,
-        IReadOnlyList<BaseTypeDeclarationSyntax> types)
+        CSharpSyntaxInventory inventory)
     {
         BaseTypeDeclarationSyntax[] contexts =
         [
-            .. types.Where(type => BaseTypeNames(type).Contains("DbContext", StringComparer.Ordinal)),
+            .. inventory.Types.Where(type => BaseTypeNames(type).Contains("DbContext", StringComparer.Ordinal)),
         ];
-        int dbSets = nodes.OfType<PropertyDeclarationSyntax>()
-            .Count(property => GetSimpleName(property.Type) == "DbSet");
+        int dbSets = inventory.DbSetProperties;
         BaseTypeDeclarationSyntax[] migrations =
         [
-            .. types.Where(type =>
+            .. inventory.Types.Where(type =>
                 BaseTypeNames(type).Contains("Migration", StringComparer.Ordinal) ||
                 path.Contains("/Migrations/", StringComparison.OrdinalIgnoreCase)),
         ];
-        int entityConfigurations = types.Count(type =>
+        int entityConfigurations = inventory.Types.Count(type =>
             BaseTypeNames(type).Contains("IEntityTypeConfiguration", StringComparer.Ordinal));
-        bool hasDataPrimitives = nodes.OfType<SimpleNameSyntax>()
+        bool hasDataPrimitives = inventory.SimpleNames
             .Select(name => name.Identifier.ValueText)
             .Any(DataPrimitiveNames.Contains);
         InvocationExpressionSyntax[] dataCalls =
         [
-            .. nodes.OfType<InvocationExpressionSyntax>()
+            .. inventory.Invocations
                 .Where(invocation => IsDataCall(invocation, hasDataPrimitives)),
         ];
         int repositoryTypes = hasDataPrimitives
-            ? types.Count(type => GetDeclaredTypeName(type)
+            ? inventory.Types.Count(type => GetDeclaredTypeName(type)
                 .EndsWith("Repository", StringComparison.Ordinal))
             : 0;
         if (contexts.Length == 0 && dbSets == 0 && migrations.Length == 0 &&

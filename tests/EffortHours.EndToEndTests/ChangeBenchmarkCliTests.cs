@@ -115,6 +115,8 @@ public sealed class ChangeBenchmarkCliTests
         Dictionary<string, string> values = Parse(result.StandardOutput);
         Assert.Equal("author-period-manifest", values["mode"]);
         Assert.Equal("2", values["portfolio-repositories"]);
+        Assert.Equal("generated", values["fixture-source"]);
+        AssertPositive(values, "fixture-preparation-seconds");
         Assert.Equal("2", values["maximum-active-repositories"]);
         Assert.Equal("8", values["portfolio-heads"]);
         Assert.Equal("3", values["portfolio-contributors"]);
@@ -161,8 +163,73 @@ public sealed class ChangeBenchmarkCliTests
         Assert.True(bool.TryParse(values["combined-faster-than-isolated-manifests"], out _));
         AssertPositive(values, "initial-combined-warmup-seconds");
         AssertPositive(values, "combined-estimate-seconds");
+        AssertPositive(values, "combined-managed-average-processor-equivalents");
+        AssertPositive(values, "combined-managed-logical-processor-utilization-percent");
         AssertPositive(values, "isolated-manifest-estimate-seconds");
         AssertReadOnlyAndMeasured(values);
+    }
+
+    [Fact]
+    public async Task AuthorPeriodManifestBenchmarkReusesPreparedFixture()
+    {
+        ProcessResult preparation = await RunBenchmarkAsync(
+            "--author-period-manifest",
+            "--files",
+            "8",
+            "--context-projects",
+            "0",
+            "--lines-per-file",
+            "8",
+            "--commits",
+            "3",
+            "--prepare-only");
+
+        Assert.Equal(0, preparation.ExitCode);
+        Assert.Equal(string.Empty, preparation.StandardError);
+        Dictionary<string, string> prepared = Parse(preparation.StandardOutput);
+        Assert.Equal("change-fixture/1.0.0", prepared["benchmark"]);
+        Assert.Equal(
+            "author-period-manifest-fixture-preparation",
+            prepared["mode"]);
+        AssertPositive(prepared, "fixture-preparation-seconds");
+        string root = prepared["repository-container-path"];
+        string descriptor = prepared["fixture-descriptor-path"];
+        try
+        {
+            Assert.True(Directory.Exists(root));
+            Assert.True(File.Exists(descriptor));
+
+            ProcessResult measurement = await RunBenchmarkAsync(
+                "--author-period-manifest",
+                "--prepared-fixture",
+                descriptor,
+                "--compare-independent");
+
+            Assert.Equal(0, measurement.ExitCode);
+            Assert.Equal(string.Empty, measurement.StandardError);
+            Dictionary<string, string> values = Parse(measurement.StandardOutput);
+            Assert.Equal("prepared", values["fixture-source"]);
+            Assert.Equal("6", values["selected-changes"]);
+            AssertPositive(values, "fixture-preparation-seconds");
+            AssertPositive(values, "combined-managed-average-processor-equivalents");
+            AssertPositive(values, "combined-managed-logical-processor-utilization-percent");
+            AssertReadOnlyAndMeasured(values);
+        }
+        finally
+        {
+            if (Directory.Exists(root))
+            {
+                foreach (string file in Directory.EnumerateFiles(
+                    root,
+                    "*",
+                    SearchOption.AllDirectories))
+                {
+                    File.SetAttributes(file, FileAttributes.Normal);
+                }
+
+                Directory.Delete(root, recursive: true);
+            }
+        }
     }
 
     [Fact]
@@ -273,7 +340,7 @@ public sealed class ChangeBenchmarkCliTests
         bool requireOverallMeasurements = true)
     {
         Assert.Equal(
-            values["mode"] == "author-period-manifest" ? "change/1.7.0" : "change/1.4.0",
+            values["mode"] == "author-period-manifest" ? "change/1.8.0" : "change/1.4.0",
             values["benchmark"]);
         Assert.Equal("true", values["worktree-unchanged"]);
         Assert.Equal("true", values["git-state-unchanged"]);

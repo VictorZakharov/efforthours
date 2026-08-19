@@ -33,6 +33,14 @@ internal sealed class CSharpFileAnalyzer(
         "Null", "Same", "Should", "Single", "That", "Throws", "ThrowsAsync", "True",
     }.ToFrozenSet(StringComparer.Ordinal);
 
+    private static readonly FrozenSet<string> TestClassificationIdentifiers = new[]
+    {
+        "A", "ComponentTestFixture", "FakeItEasy", "IPage", "IPlaywright",
+        "IRenderedComponent", "IWebDriver", "Mock", "PageTest", "Playwright",
+        "RenderedFragment", "RenderComponent", "RenderComponentAsync", "Respawner",
+        "Substitute", "TestcontainersBuilder", "TestServer", "WebApplicationFactory",
+    }.ToFrozenSet(StringComparer.Ordinal);
+
     private static readonly FrozenSet<string> ValidationAttributes = new[]
     {
         "Compare", "CreditCard", "EmailAddress", "MaxLength", "MinLength", "Phone", "Range",
@@ -69,12 +77,37 @@ internal sealed class CSharpFileAnalyzer(
                 relativePath,
                 projectScope,
                 isTestFile);
-        if (artifactKey is not null &&
-            artifactCache?.TryGet(artifactKey, out CSharpFileAnalysis cached) == true)
+        if (artifactKey is not null && artifactCache is not null)
         {
-            return cached;
+            return await artifactCache.GetOrCreateAsync(
+                artifactKey,
+                itemCancellationToken => AnalyzeUncachedAsync(
+                    fullPath,
+                    relativePath,
+                    expectedSha256,
+                    projectScope,
+                    isTestFile,
+                    itemCancellationToken),
+                cancellationToken).ConfigureAwait(false);
         }
 
+        return await AnalyzeUncachedAsync(
+            fullPath,
+            relativePath,
+            expectedSha256,
+            projectScope,
+            isTestFile,
+            cancellationToken).ConfigureAwait(false);
+    }
+
+    private async Task<CSharpFileAnalysis> AnalyzeUncachedAsync(
+        string fullPath,
+        string relativePath,
+        string expectedSha256,
+        string projectScope,
+        bool isTestFile,
+        CancellationToken cancellationToken)
+    {
         byte[] bytes;
         try
         {
@@ -90,6 +123,11 @@ internal sealed class CSharpFileAnalyzer(
                 $"Could not parse C# file '{relativePath}': repository content could not be read.");
         }
 
+        using IDisposable cpuLease = await RepositoryAnalysisConcurrency
+            .AcquireFileAnalysisAsync(
+                RepositoryAnalysisWorkKind.SemanticFileAnalysis,
+                cancellationToken)
+            .ConfigureAwait(false);
         string actualSha256 = Convert.ToHexString(SHA256.HashData(bytes)).ToLowerInvariant();
         if (!actualSha256.Equals(expectedSha256, StringComparison.Ordinal))
         {
@@ -106,9 +144,8 @@ internal sealed class CSharpFileAnalyzer(
             new UTF8Encoding(encoderShouldEmitUTF8Identifier: false, throwOnInvalidBytes: false),
             detectEncodingFromByteOrderMarks: true))
         {
-            source = await reader.ReadToEndAsync(cancellationToken).ConfigureAwait(false);
+            source = reader.ReadToEnd();
         }
-
         SourceText sourceText = SourceText.From(
             source,
             Encoding.UTF8,
@@ -122,8 +159,7 @@ internal sealed class CSharpFileAnalyzer(
             parseOptions,
             relativePath,
             cancellationToken);
-        CompilationUnitSyntax root = (CompilationUnitSyntax)await tree.GetRootAsync(cancellationToken)
-            .ConfigureAwait(false);
+        CompilationUnitSyntax root = (CompilationUnitSyntax)tree.GetRoot(cancellationToken);
         List<ContractDiagnostic> diagnostics = [];
         int syntaxErrors = tree.GetDiagnostics(cancellationToken)
             .Count(diagnostic => diagnostic.Severity == Microsoft.CodeAnalysis.DiagnosticSeverity.Error);
@@ -136,28 +172,29 @@ internal sealed class CSharpFileAnalyzer(
                 relativePath));
         }
 
+        CSharpSyntaxInventory inventory = CSharpSyntaxInventory.Create(root);
         CSharpReachabilityResult reachability = syntaxErrors == 0
-            ? CSharpReachabilityAnalyzer.Analyze(root, relativePath, projectScope)
+            ? CSharpReachabilityAnalyzer.Analyze(
+                root,
+                relativePath,
+                projectScope,
+                inventory.Methods)
             : CSharpReachabilityResult.Empty;
-        SyntaxNode[] nodes =
-        [
-            .. root.DescendantNodes().Where(node => !reachability.IsExcluded(node)),
-        ];
-
-        BaseTypeDeclarationSyntax[] types = [.. nodes.OfType<BaseTypeDeclarationSyntax>()];
-        MethodDeclarationSyntax[] methods = [.. nodes.OfType<MethodDeclarationSyntax>()];
+        inventory = inventory.WithoutExcluded(reachability);
         CSharpStructureMetrics structure = new(
             Files: 1,
-            Types: types.Length + nodes.OfType<DelegateDeclarationSyntax>().Count(),
-            PublicTypes: types.Count(IsPublic) + nodes.OfType<DelegateDeclarationSyntax>().Count(IsPublic),
-            Methods: methods.Length,
-            PublicMethods: methods.Count(IsPublic),
-            AsyncMethods: methods.Count(method => method.Modifiers.Any(SyntaxKind.AsyncKeyword)),
-            BranchPoints: nodes.Count(IsBranchPoint),
+            Types: inventory.Types.Count + inventory.Delegates.Count,
+            PublicTypes: inventory.Types.Count(IsPublic) + inventory.Delegates.Count(IsPublic),
+            Methods: inventory.Methods.Count,
+            PublicMethods: inventory.Methods.Count(IsPublic),
+            AsyncMethods: inventory.Methods.Count(method =>
+                method.Modifiers.Any(SyntaxKind.AsyncKeyword)),
+            BranchPoints: inventory.BranchPoints,
             StructuralParserBackedFiles: syntaxErrors == 0 ? 1 : 0,
-            StructuralDetectedCallables: CSharpCallableStructuralAnalyzer.CountDetected(methods),
+            StructuralDetectedCallables: CSharpCallableStructuralAnalyzer.CountDetected(
+                inventory.Methods),
             CallableStructuralMetrics: syntaxErrors == 0
-                ? CSharpCallableStructuralAnalyzer.Analyze(methods)
+                ? CSharpCallableStructuralAnalyzer.Analyze(inventory.Methods)
                 : []);
 
         List<EvidenceFact> facts = [];
@@ -170,29 +207,19 @@ internal sealed class CSharpFileAnalyzer(
             facts,
             relativePath,
             projectScope,
-            nodes,
-            types,
-            methods);
-        CSharpDataEvidenceAnalyzer.AddFact(facts, relativePath, projectScope, nodes, types);
+            inventory);
+        CSharpDataEvidenceAnalyzer.AddFact(facts, relativePath, projectScope, inventory);
         CSharpServiceBoundaryAnalyzer.AddFacts(
             facts,
             relativePath,
             projectScope,
-            nodes,
-            types,
-            methods,
+            inventory,
             root);
-        AddValidationFact(facts, relativePath, projectScope, nodes, types);
-        AddTestFact(facts, relativePath, projectScope, nodes, methods, isTestFile);
-        AddUiFact(facts, relativePath, projectScope, nodes, types);
+        AddValidationFact(facts, relativePath, projectScope, inventory);
+        AddTestFact(facts, relativePath, projectScope, inventory, isTestFile);
+        AddUiFact(facts, relativePath, projectScope, inventory);
 
-        CSharpFileAnalysis result = new(structure, facts, diagnostics);
-        if (artifactKey is not null)
-        {
-            artifactCache?.Add(artifactKey, result);
-        }
-
-        return result;
+        return new CSharpFileAnalysis(structure, facts, diagnostics);
     }
 
     private static string AnalysisArtifactKey(
@@ -218,12 +245,11 @@ internal sealed class CSharpFileAnalyzer(
         List<EvidenceFact> facts,
         string path,
         string projectScope,
-        IReadOnlyList<SyntaxNode> nodes,
-        IReadOnlyList<BaseTypeDeclarationSyntax> types)
+        CSharpSyntaxInventory inventory)
     {
-        AttributeSyntax[] attributes = [.. nodes.OfType<AttributeSyntax>().Where(attribute => ValidationAttributes.Contains(GetAttributeName(attribute)))];
-        BaseTypeDeclarationSyntax[] validators = [.. types.Where(type => BaseTypeNames(type).Contains("AbstractValidator", StringComparer.Ordinal))];
-        InvocationExpressionSyntax[] rules = [.. nodes.OfType<InvocationExpressionSyntax>().Where(invocation => GetInvocationName(invocation) == "RuleFor")];
+        AttributeSyntax[] attributes = [.. inventory.Attributes.Where(attribute => ValidationAttributes.Contains(GetAttributeName(attribute)))];
+        BaseTypeDeclarationSyntax[] validators = [.. inventory.Types.Where(type => BaseTypeNames(type).Contains("AbstractValidator", StringComparer.Ordinal))];
+        InvocationExpressionSyntax[] rules = [.. inventory.Invocations.Where(invocation => GetInvocationName(invocation) == "RuleFor")];
         if (attributes.Length == 0 && validators.Length == 0 && rules.Length == 0)
         {
             return;
@@ -253,22 +279,21 @@ internal sealed class CSharpFileAnalyzer(
         List<EvidenceFact> facts,
         string path,
         string projectScope,
-        IReadOnlyList<SyntaxNode> nodes,
-        IReadOnlyList<MethodDeclarationSyntax> methods,
+        CSharpSyntaxInventory inventory,
         bool isTestFile)
     {
-        MethodDeclarationSyntax[] testMethods = [.. methods.Where(method => AttributeNames(method.AttributeLists).Any(TestAttributes.Contains))];
-        int dataCases = nodes.OfType<AttributeSyntax>()
-            .Count(attribute => ParameterizedTestAttributes.Contains(GetAttributeName(attribute)));
-        InvocationExpressionSyntax[] assertions = [.. nodes.OfType<InvocationExpressionSyntax>().Where(invocation => AssertionMethods.Contains(GetInvocationName(invocation)))];
-        string[] identifiers = [.. nodes.OfType<SimpleNameSyntax>()
-            .Select(name => name.Identifier.ValueText)
-            .Distinct(StringComparer.Ordinal)];
+        MethodDeclarationSyntax[] testMethods = [.. inventory.Methods.Where(method => AttributeNames(method.AttributeLists).Any(TestAttributes.Contains))];
         if (!isTestFile && testMethods.Length == 0)
         {
             return;
         }
 
+        int dataCases = inventory.Attributes
+            .Count(attribute => ParameterizedTestAttributes.Contains(GetAttributeName(attribute)));
+        InvocationExpressionSyntax[] assertions = [.. inventory.Invocations.Where(invocation => AssertionMethods.Contains(GetInvocationName(invocation)))];
+        string[] identifiers = [.. inventory.SimpleNames
+            .Select(name => name.Identifier.ValueText)
+            .Distinct(StringComparer.Ordinal)];
         bool pathIndicatesEndToEnd = path.Contains(
             "endtoend",
             StringComparison.OrdinalIgnoreCase) ||
@@ -313,15 +338,14 @@ internal sealed class CSharpFileAnalyzer(
         List<EvidenceFact> facts,
         string path,
         string projectScope,
-        IReadOnlyList<SyntaxNode> nodes,
-        IReadOnlyList<BaseTypeDeclarationSyntax> types)
+        CSharpSyntaxInventory inventory)
     {
-        BaseTypeDeclarationSyntax[] components = [.. types
+        BaseTypeDeclarationSyntax[] components = [.. inventory.Types
             .Where(type => BaseTypeNames(type).Any(name => name is
                 "ComponentBase" or "PageModel" or "UserControl" or "Window"))];
-        int parameters = nodes.OfType<AttributeSyntax>()
+        int parameters = inventory.Attributes
             .Count(attribute => GetAttributeName(attribute) is "Parameter" or "CascadingParameter");
-        int commands = nodes.OfType<ObjectCreationExpressionSyntax>()
+        int commands = inventory.ObjectCreations
             .Count(creation => GetSimpleName(creation.Type) is "Command" or "RootCommand");
         if (components.Length == 0 && parameters == 0 && commands == 0)
         {
@@ -390,10 +414,14 @@ internal sealed class CSharpFileAnalyzer(
     private static bool IsPublic(MethodDeclarationSyntax declaration) =>
         declaration.Modifiers.Any(SyntaxKind.PublicKeyword);
 
-    private static bool IsBranchPoint(SyntaxNode node) => node is
+    internal static bool IsBranchPoint(SyntaxNode node) => node is
         IfStatementSyntax or ForStatementSyntax or ForEachStatementSyntax or WhileStatementSyntax or
         DoStatementSyntax or CatchClauseSyntax or ConditionalExpressionSyntax or SwitchExpressionArmSyntax or
         SwitchSectionSyntax;
+
+    internal static bool IsRelevantSimpleName(string name) =>
+        CSharpDataEvidenceAnalyzer.IsDataPrimitiveName(name) ||
+        TestClassificationIdentifiers.Contains(name);
 
     private static EvidenceLocation Location(
         string path,

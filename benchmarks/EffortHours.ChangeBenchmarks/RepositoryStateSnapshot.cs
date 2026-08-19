@@ -10,6 +10,16 @@ internal sealed record RepositoryStateSnapshot(
     int FileCount,
     long TotalBytes)
 {
+    public static RepositoryStateSnapshot FromText(string value, int fileCount = 0)
+    {
+        ArgumentNullException.ThrowIfNull(value);
+        byte[] digest = SHA256.HashData(Encoding.UTF8.GetBytes(value));
+        return new RepositoryStateSnapshot(
+            "sha256:" + Convert.ToHexString(digest).ToLowerInvariant(),
+            fileCount,
+            0);
+    }
+
     public static RepositoryStateSnapshot Capture(string rootPath, string? excludedRootName = null)
     {
         string root = Path.GetFullPath(rootPath);

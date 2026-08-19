@@ -21,4 +21,10 @@ internal sealed record GitObjectReaderStatistics
     public long RetainedCacheBytes { get; init; }
 
     public long PeakCachedBytes { get; init; }
+
+    public TimeSpan ProcessCpuTime { get; init; }
+
+    public TimeSpan ProcessOccupiedTime { get; init; }
+
+    public TimeSpan ProcessWaitTime { get; init; }
 }

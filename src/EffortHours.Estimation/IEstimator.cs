@@ -9,3 +9,11 @@ public interface IEstimator
         EstimationProfile profile,
         RateCard? rateCard = null);
 }
+
+/// <summary>
+/// Marks an estimator whose <see cref="IEstimator.Estimate"/> implementation can be
+/// invoked concurrently with independent immutable evidence inputs.
+/// </summary>
+public interface IThreadSafeEstimator : IEstimator
+{
+}

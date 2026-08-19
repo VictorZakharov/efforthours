@@ -8,6 +8,9 @@ public sealed partial class ChangeEstimator
         private readonly Dictionary<SnapshotAnalysisKey, LinkedListNode<SnapshotAnalysisEntry>> _entries = [];
         private readonly LinkedList<SnapshotAnalysisEntry> _leastRecentlyUsed = [];
         private readonly HashSet<SnapshotAnalysisKey> _seenKeys = [];
+        private readonly Dictionary<SnapshotAnalysisKey, TaskCompletionSource<SnapshotAnalysis>>
+            _inflight = [];
+        private readonly Lock _gate = new();
         private int _requests;
         private int _hits;
         private int _revisitMisses;
@@ -26,24 +29,27 @@ public sealed partial class ChangeEstimator
             string analysisScopeId,
             out SnapshotAnalysis analysis)
         {
-            _requests++;
-            SnapshotAnalysisKey key = new(cacheNamespace, objectId, analysisScopeId);
-            if (!_entries.TryGetValue(key, out LinkedListNode<SnapshotAnalysisEntry>? node))
+            lock (_gate)
             {
-                if (!_seenKeys.Add(key))
+                _requests++;
+                SnapshotAnalysisKey key = new(cacheNamespace, objectId, analysisScopeId);
+                if (!_entries.TryGetValue(key, out LinkedListNode<SnapshotAnalysisEntry>? node))
                 {
-                    _revisitMisses++;
+                    if (!_seenKeys.Add(key))
+                    {
+                        _revisitMisses++;
+                    }
+
+                    analysis = null!;
+                    return false;
                 }
 
-                analysis = null!;
-                return false;
+                _leastRecentlyUsed.Remove(node);
+                _leastRecentlyUsed.AddLast(node);
+                _hits++;
+                analysis = node.Value.Analysis;
+                return true;
             }
-
-            _leastRecentlyUsed.Remove(node);
-            _leastRecentlyUsed.AddLast(node);
-            _hits++;
-            analysis = node.Value.Analysis;
-            return true;
         }
 
         public void Add(
@@ -52,7 +58,102 @@ public sealed partial class ChangeEstimator
             string analysisScopeId,
             SnapshotAnalysis analysis)
         {
+            lock (_gate)
+            {
+                SnapshotAnalysisKey key = new(cacheNamespace, objectId, analysisScopeId);
+                AddCore(key, analysis);
+            }
+        }
+
+        public async Task<SnapshotAnalysis> GetOrCreateAsync(
+            string cacheNamespace,
+            string objectId,
+            string analysisScopeId,
+            Func<CancellationToken, Task<SnapshotAnalysis>> factory,
+            CancellationToken cancellationToken)
+        {
+            ArgumentNullException.ThrowIfNull(factory);
             SnapshotAnalysisKey key = new(cacheNamespace, objectId, analysisScopeId);
+            TaskCompletionSource<SnapshotAnalysis> operation;
+            bool owner;
+            lock (_gate)
+            {
+                _requests++;
+                if (_entries.TryGetValue(
+                    key,
+                    out LinkedListNode<SnapshotAnalysisEntry>? cached))
+                {
+                    _leastRecentlyUsed.Remove(cached);
+                    _leastRecentlyUsed.AddLast(cached);
+                    _hits++;
+                    return cached.Value.Analysis;
+                }
+
+                if (_inflight.TryGetValue(key, out operation!))
+                {
+                    _hits++;
+                    owner = false;
+                }
+                else
+                {
+                    if (!_seenKeys.Add(key))
+                    {
+                        _revisitMisses++;
+                    }
+
+                    operation = new TaskCompletionSource<SnapshotAnalysis>(
+                        TaskCreationOptions.RunContinuationsAsynchronously);
+                    _inflight.Add(key, operation);
+                    owner = true;
+                }
+            }
+
+            if (!owner)
+            {
+                return await operation.Task.WaitAsync(cancellationToken).ConfigureAwait(false);
+            }
+
+            try
+            {
+                SnapshotAnalysis analysis = await factory(cancellationToken).ConfigureAwait(false);
+                lock (_gate)
+                {
+                    AddCore(key, analysis);
+                    _inflight.Remove(key);
+                }
+
+                operation.TrySetResult(analysis);
+                return analysis;
+            }
+            catch (Exception exception)
+            {
+                lock (_gate)
+                {
+                    _inflight.Remove(key);
+                }
+
+                operation.TrySetException(exception);
+                _ = operation.Task.Exception;
+                throw;
+            }
+        }
+
+        public SnapshotAnalysisCacheStatistics GetStatistics()
+        {
+            lock (_gate)
+            {
+                return new SnapshotAnalysisCacheStatistics(
+                    _requests,
+                    _hits,
+                    _seenKeys.Count,
+                    _revisitMisses,
+                    _evictions,
+                    _peakEntries);
+            }
+        }
+
+        private void AddCore(SnapshotAnalysisKey key, SnapshotAnalysis analysis)
+        {
             if (_entries.TryGetValue(key, out LinkedListNode<SnapshotAnalysisEntry>? existing))
             {
                 _leastRecentlyUsed.Remove(existing);
@@ -72,14 +173,6 @@ public sealed partial class ChangeEstimator
             _entries.Add(key, node);
             _peakEntries = Math.Max(_peakEntries, _entries.Count);
         }
-
-        public SnapshotAnalysisCacheStatistics GetStatistics() => new(
-            _requests,
-            _hits,
-            _seenKeys.Count,
-            _revisitMisses,
-            _evictions,
-            _peakEntries);
 
         private readonly record struct SnapshotAnalysisKey(
             string CacheNamespace,
