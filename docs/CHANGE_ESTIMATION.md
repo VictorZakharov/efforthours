@@ -147,18 +147,17 @@ acquisition. Once both exact resolved objects exist, local Git must resolve exac
 one merge base; no common ancestor or several criss-cross merge bases fail rather
 than selecting an arbitrary boundary.
 
-Git changes whose larger snapshot contains more than 1,024 files use a bounded
-changed-scope evidence projection. The analyzer enumerates immutable changed
+All immutable Git changes use a bounded changed-scope evidence projection. The
+analyzer enumerates immutable changed
 paths, root context artifacts, recognized static project/package/build context in
 the changed path's directory or ancestors, and one deterministic representative
 per supported source extension. It does not parse every unrelated nested project
-or package descriptor merely because the repository is large. Full base/head
+or package descriptor merely because it exists in the same snapshot. Full base/head
 inventories remain available for additions, removals, moves, exact duplicates,
 unchanged-context counts, and a content-addressed source identity; unchanged
 source bodies are not routinely parsed. Diagnostic `FB5205` records changed,
 relevant-context, representative, available-context, and full-inventory counts.
-Smaller Git changes and all directory/evidence selectors retain full-snapshot
-analysis.
+Directory/evidence selectors retain full-snapshot analysis.
 
 Within one Git repository session, at most 10,000 structurally shared immutable
 inventories across 16 full-tree root lineages and 16 exact snapshot/scope analyses
@@ -170,7 +169,11 @@ loaded in two 64-MiB-output-bounded repository-level Git batches before row
 analysis; roots, merges, custom snapshot providers, larger deltas, and unrelated
 changes retain the exact per-change or complete-`ls-tree` fallback. Full-tree
 enumeration loads path, mode, and immutable object identity without requesting
-every blob length. One repository-scoped `cat-file --batch-check` reader resolves
+every blob length. When shallow traversal exposes at least 256 disjoint tree paths,
+it partitions those paths deterministically across at most 12 recursive `ls-tree`
+reads; smaller trees use one bounded continuation, and excessive path arguments
+fall back to one complete recursive read. One repository-scoped
+`cat-file --batch-check` reader resolves
 lengths lazily and retains at most 16,384 entries; content reads retain their
 separate 64-MiB bounded reader. Full virtual-directory indexes also start lazily.
 These fixed retention limits let adjacent changes reuse evidence without making

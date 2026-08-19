@@ -173,13 +173,23 @@ public sealed partial class ChangeEstimator
 
                                 foreach (IndexedPortfolioPlan entry in chunk)
                                 {
-                                    IChangeSnapshot baseSnapshot = await entry.Plan.OpenBaseAsync(
-                                        pipelineCancellation.Token).ConfigureAwait(false);
+                                    IChangeSnapshot baseSnapshot;
+                                    using (executionTelemetry?.Measure(
+                                        ChangePortfolioExecutionPhases.SnapshotAndDiffConstruction))
+                                    {
+                                        baseSnapshot = await entry.Plan.OpenBaseAsync(
+                                            pipelineCancellation.Token).ConfigureAwait(false);
+                                    }
+
                                     IChangeSnapshot headSnapshot;
                                     try
                                     {
-                                        headSnapshot = await entry.Plan.OpenHeadAsync(
-                                            pipelineCancellation.Token).ConfigureAwait(false);
+                                        using (executionTelemetry?.Measure(
+                                            ChangePortfolioExecutionPhases.SnapshotAndDiffConstruction))
+                                        {
+                                            headSnapshot = await entry.Plan.OpenHeadAsync(
+                                                pipelineCancellation.Token).ConfigureAwait(false);
+                                        }
                                     }
                                     catch
                                     {
@@ -277,37 +287,6 @@ public sealed partial class ChangeEstimator
         };
     }
 
-    private static IndexedPortfolioPlan ValidatePlan(GitChangePlan? plan, int index)
-    {
-        ArgumentNullException.ThrowIfNull(plan);
-        if (plan.Selection.Kind is not (ChangeSelectionKind.Commit or ChangeSelectionKind.PullRequest))
-        {
-            throw new ArgumentException(
-                "Portfolio candidates must be immutable commit or pull-request changes.",
-                nameof(plan));
-        }
-
-        return new IndexedPortfolioPlan(
-            index,
-            plan,
-            Path.GetFullPath(plan.RepositoryPath));
-    }
-
-    private static StringComparer PathComparer => OperatingSystem.IsWindows()
-        ? StringComparer.OrdinalIgnoreCase
-        : StringComparer.Ordinal;
-
-    private sealed record IndexedPortfolioPlan(
-        int Index,
-        GitChangePlan Plan,
-        string CacheNamespace);
-
-    private sealed record PreparedPortfolioPlan(
-        IndexedPortfolioPlan Entry,
-        ChangeEstimateInput Input,
-        IChangeSnapshot BaseSnapshot,
-        IChangeSnapshot HeadSnapshot);
-
     private sealed class ExecutionStatisticsAccumulator(int repositoryCount)
     {
         private readonly Lock _gate = new();
@@ -330,6 +309,9 @@ public sealed partial class ChangeEstimator
         private int _fullInventories;
         private int _incrementalInventories;
         private int _batchedIncrementalInventories;
+        private TimeSpan _fullInventoryReadTime;
+        private TimeSpan _fullInventoryProjectionTime;
+        private TimeSpan _incrementalInventoryProjectionTime;
         private int _inventoryEvictions;
         private int _peakInventories;
         private int _peakInventoryRoots;
@@ -386,6 +368,10 @@ public sealed partial class ChangeEstimator
                 _fullInventories += value.FullInventoryLoads;
                 _incrementalInventories += value.IncrementalInventoryLoads;
                 _batchedIncrementalInventories += value.BatchedIncrementalInventoryLoads;
+                _fullInventoryReadTime += value.FullInventoryReadTime;
+                _fullInventoryProjectionTime += value.FullInventoryProjectionTime;
+                _incrementalInventoryProjectionTime +=
+                    value.IncrementalInventoryProjectionTime;
                 _inventoryEvictions += value.InventoryEvictions;
                 _peakInventories = Math.Max(_peakInventories, value.PeakRetainedInventories);
                 _peakInventoryRoots = Math.Max(
@@ -445,6 +431,9 @@ public sealed partial class ChangeEstimator
             FullSnapshotInventoryLoads = _fullInventories,
             IncrementalSnapshotInventoryLoads = _incrementalInventories,
             BatchedIncrementalSnapshotInventoryLoads = _batchedIncrementalInventories,
+            FullSnapshotInventoryReadTime = _fullInventoryReadTime,
+            FullSnapshotInventoryProjectionTime = _fullInventoryProjectionTime,
+            IncrementalSnapshotInventoryProjectionTime = _incrementalInventoryProjectionTime,
             SnapshotInventoryEvictions = _inventoryEvictions,
             PeakRetainedSnapshotInventories = _peakInventories,
             PeakRetainedSnapshotInventoryRoots = _peakInventoryRoots,

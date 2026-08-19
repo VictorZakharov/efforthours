@@ -87,6 +87,32 @@ public sealed class GitSnapshotInventoryTests
     }
 
     [Fact]
+    public void ShallowTreeParserAndPartitioningKeepDeterministicDisjointWork()
+    {
+        string tree = new('a', 40);
+        string blob = new('b', 40);
+        List<GitSnapshotTreeEntry> entries = GitSnapshotFileSystem.ParseTreeEntries(
+            Encoding.UTF8.GetBytes(
+                $"040000 tree {tree}\tsrc\0" +
+                $"100644 blob {blob}\tREADME.md\0"));
+
+        Assert.Equal("tree", entries[0].Type);
+        Assert.Equal("src", entries[0].Path);
+        Assert.Equal("blob", entries[1].Type);
+        string[][] shards = GitSnapshotTreeReader.Partition(
+            ["zeta", "alpha", "gamma", "beta", "epsilon"],
+            shardCount: 3);
+        Assert.Equal(["alpha", "gamma"], shards[0]);
+        Assert.Equal(["beta", "zeta"], shards[1]);
+        Assert.Equal(["epsilon"], shards[2]);
+        Assert.Equal(5, shards.SelectMany(shard => shard).Distinct(StringComparer.Ordinal).Count());
+        Assert.True(GitSnapshotTreeReader.FitsCommandLine(shards));
+        Assert.False(GitSnapshotTreeReader.FitsCommandLine(
+            [[new string('x', GitSnapshotTreeReader.MaximumShardPathCharacters)]]));
+        Assert.Equal(256, GitSnapshotTreeReader.MinimumParallelTreePaths);
+    }
+
+    [Fact]
     public void IncrementalInventoryRetainsDuplicateObjectCountsAcrossRemovals()
     {
         GitSnapshotInventory parent = new(

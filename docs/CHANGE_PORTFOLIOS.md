@@ -318,7 +318,7 @@ not pass or fail on them; it gates the semantic, privacy, reuse, boundedness, an
 unchanged-target assertions above. The exact measurement protocol and controlled
 before/after table live in `BENCHMARKS.md`.
 
-Large Git portfolios additionally use the bounded changed-scope and immutable-
+Git portfolios additionally use the bounded changed-scope and immutable-
 inventory reuse rules in `CHANGE_ESTIMATION.md`. Identity and time still select
 rows only; neither the candidate count nor the size of the reachable graph enters
 an effort rule.
@@ -342,9 +342,9 @@ metadata reader, a 64-MiB blob cache that admits no single blob above 1 MiB,
 inventories across at most 16 full-tree root lineages, 10,000 remembered first
 parents, a 16-entry snapshot-analysis LRU, and an 8,192-entry immutable file-
 analysis artifact cache with deterministic key-ranked retention. The artifact
-cache retains only analyzer-versioned,
-content-addressed inspections and .NET/JavaScript per-file results; source text,
-keys, and local paths never enter a report. Its entry bound permits an intentional
+cache retains only analyzer-versioned, content-addressed common scanned-file
+facts and .NET/JavaScript per-file results; source text, keys, and local paths
+never enter a report. Its entry bound permits an intentional
 memory-for-latency tradeoff without making memory unbounded. Inventory derivation
 retains the existing 1,024-changed-path and 16,000-path-character fallback
 boundaries. Before row analysis, eligible non-merge first-parent deltas and changed
@@ -356,7 +356,10 @@ batch output is capped at 64 MiB; exceeding it uses the existing row fallback.
 Roots, merges, custom snapshot providers, oversized deltas, and missing cached
 parents retain the exact existing fallback. Full-tree enumeration asks `ls-tree`
 only for path, mode, and immutable object identity; unchanged blob lengths are
-resolved only when admitted analysis requests them. Cached inventories retain
+resolved only when admitted analysis requests them. Full trees with at least 256
+disjoint shallow tree paths are deterministically partitioned across at most 12
+recursive readers per repository; smaller or command-line-oversized shapes retain
+an exact single-reader fallback. Cached inventories retain
 their persistent content index, canonical Merkle source digest, object-ID set,
 and already-read first-parent diff so repeated scopes and Change evidence do not
 rebuild complete tree maps. Each context is disposed after its repository,
@@ -365,14 +368,19 @@ The two-session maximum deliberately spends bounded additional memory to overlap
 independent Git/tree work and reduce wall time; it does not make caches or
 repository concurrency unbounded.
 
-This scheduling contract removes avoidable phase barriers; it does not establish
-near-linear core scaling. The non-gating `change/1.8.0` checkpoint records the
-prepared-fixture 1/12/24-worker curve and separates admitted-work occupancy from
-process CPU. Wall time improves materially but remains far below physical-core
-proportionality because fixed Git/history work and allocation-heavy semantic and
-repository aggregation still dominate. Reaching a configured maximum proves only
-that work was admitted, not that the cores performed proportionate useful work;
-performance claims must use measured processor time and wall throughput.
+This scheduling contract removes avoidable phase barriers; it does not promise
+near-linear core scaling. Protocol `change/1.9.0` applies changed-scope analysis to
+every immutable Git change, reuses complete common scanned-file facts, avoids
+redundant clean-C# diagnostic and structural passes, buffers the Git object stream,
+and measures full-inventory read/projection separately. On its prepared CPU-heavy
+fixture, this removes the former dominant work: one-worker wall time falls from
+5.515 to 2.215 seconds and allocation from 1,529.11 to 251.96 MiB. The resulting
+1/2/4/6/8/12 curve is flat near 2.2 seconds because there is no longer enough
+parallel CPU work to amortize coordination. On the separate 31,034-file shape,
+12-way tree partitioning reduces aggregate full-inventory reads from 4.414 to
+2.585 seconds and wall time from 4.431 to 3.442 seconds. Reaching a configured
+maximum proves only admission; performance claims use measured CPU and wall
+throughput, and CI never gates on those timings.
 
 Snapshot analysis is keyed by repository, canonical immutable-inventory digest,
 and exact analysis-scope digest. Inventory identity is a versioned SHA-256 Merkle

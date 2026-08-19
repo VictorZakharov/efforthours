@@ -172,7 +172,7 @@ public static partial class Program
     {
         ChangePortfolioExecutionStatistics reuse = execution.Statistics;
         ChangePortfolioExecutionStatistics isolatedReuse = execution.IsolatedManifestStatistics;
-        Console.WriteLine("benchmark=change/1.8.0");
+        Console.WriteLine("benchmark=change/1.9.0");
         Console.WriteLine($"estimator={ChangeEstimator.Version}");
         Console.WriteLine($"mode={options.Name}");
         Console.WriteLine(
@@ -252,6 +252,15 @@ public static partial class Program
         Console.WriteLine($"isolated-manifest-incremental-snapshot-inventory-loads={Compared(options, isolatedReuse.IncrementalSnapshotInventoryLoads)}");
         Console.WriteLine($"isolated-manifest-batched-incremental-snapshot-inventory-loads={Compared(options, isolatedReuse.BatchedIncrementalSnapshotInventoryLoads)}");
         Console.WriteLine($"snapshot-delta-batch-output-limit-mib={ToMebibytes(reuse.SnapshotDeltaBatchOutputByteLimit)}");
+        Console.WriteLine(
+            $"full-snapshot-inventory-read-seconds=" +
+            $"{Duration(reuse.FullSnapshotInventoryReadTime)}");
+        Console.WriteLine(
+            $"full-snapshot-inventory-projection-seconds=" +
+            $"{Duration(reuse.FullSnapshotInventoryProjectionTime)}");
+        Console.WriteLine(
+            $"incremental-snapshot-inventory-projection-seconds=" +
+            $"{Duration(reuse.IncrementalSnapshotInventoryProjectionTime)}");
         Console.WriteLine($"blob-requests={reuse.BlobRequests.ToString(CultureInfo.InvariantCulture)}");
         Console.WriteLine($"blob-cache-hits={reuse.BlobCacheHits.ToString(CultureInfo.InvariantCulture)}");
         Console.WriteLine($"unique-blob-objects={reuse.UniqueBlobObjects.ToString(CultureInfo.InvariantCulture)}");
@@ -343,6 +352,8 @@ public static partial class Program
         Console.WriteLine($"change-peak-working-set-mib={ToMebibytes(peakWorkingSet)}");
         Console.WriteLine($"change-working-set-end-mib={ToMebibytes(workingSetAfter)}");
         Console.WriteLine($"expected-ehe={execution.ExpectedEffort.ToString("F2", CultureInfo.InvariantCulture)}");
+        Console.WriteLine($"report-sha256={execution.ReportSha256}");
+        Console.WriteLine($"estimate-semantics-sha256={execution.EstimateSemanticsSha256}");
         WriteRepositoryState(worktree, git, options.CombinedOnly);
         Console.WriteLine($"seconds-threshold={Threshold(options.MaximumSeconds)}");
         Console.WriteLine($"peak-mib-threshold={Threshold(options.MaximumPeakMib)}");

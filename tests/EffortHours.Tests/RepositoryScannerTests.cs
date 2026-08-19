@@ -193,6 +193,27 @@ public sealed class RepositoryScannerTests
     }
 
     [Fact]
+    public async Task ImmutableArtifactCacheReusesClassifiedFileFactsWithoutRereadingContent()
+    {
+        InMemoryRepository repository = new();
+        repository.WriteText("src/index.ts", "export const cached = true;\n");
+        ContentIdentifiedFileSystem fileSystem = new(repository);
+        RepositoryAnalysisArtifactCache artifacts = new();
+        RepositoryScanner scanner = new(fileSystem, analysisArtifactCache: artifacts);
+
+        RepositoryEvidence first = await scanner.ScanAsync(repository.RootPath);
+        int readsAfterFirstScan = fileSystem.ContentReads;
+        RepositoryEvidence second = await scanner.ScanAsync(repository.RootPath);
+
+        Assert.Equal(1, readsAfterFirstScan);
+        Assert.Equal(readsAfterFirstScan, fileSystem.ContentReads);
+        Assert.Equal(ContractJson.Serialize(first), ContractJson.Serialize(second));
+        RepositoryAnalysisArtifactCacheStatistics statistics = artifacts.GetStatistics();
+        Assert.Equal(2, statistics.Requests);
+        Assert.Equal(1, statistics.Hits);
+    }
+
+    [Fact]
     public async Task CacheCannotWriteInsideTargetRepository()
     {
         InMemoryRepository repository = new();
@@ -234,6 +255,46 @@ public sealed class RepositoryScannerTests
     {
         EvidenceFact fact = Assert.Single(evidence.Facts, fact => fact.Id == $"excluded:{path}");
         Assert.Contains(expectedReason, fact.Tags);
+    }
+
+    private sealed class ContentIdentifiedFileSystem(
+        InMemoryRepository inner) : IRepositoryFileSystem
+    {
+        private int _contentReads;
+
+        public int ContentReads => Volatile.Read(ref _contentReads);
+
+        public string GetFullPath(string path) => inner.GetFullPath(path);
+
+        public bool DirectoryExists(string path) => inner.DirectoryExists(path);
+
+        public bool FileExists(string path) => inner.FileExists(path);
+
+        public FileAttributes GetAttributes(string path) => inner.GetAttributes(path);
+
+        public string[] GetFileSystemEntries(string directoryPath) =>
+            inner.GetFileSystemEntries(directoryPath);
+
+        public RepositoryFileMetadata GetFileMetadata(string path)
+        {
+            RepositoryFileMetadata metadata = inner.GetFileMetadata(path);
+            return metadata with { ContentId = Path.GetRelativePath(inner.RootPath, path) };
+        }
+
+        public Stream OpenRead(string path, int bufferSize) => inner.OpenRead(path, bufferSize);
+
+        public async ValueTask<byte[]> ReadAllBytesAsync(
+            string path,
+            CancellationToken cancellationToken = default)
+        {
+            Interlocked.Increment(ref _contentReads);
+            return await inner.ReadAllBytesAsync(path, cancellationToken);
+        }
+
+        public ValueTask<string[]> ReadAllLinesAsync(
+            string path,
+            CancellationToken cancellationToken = default) =>
+            inner.ReadAllLinesAsync(path, cancellationToken);
     }
 
 }

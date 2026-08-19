@@ -109,6 +109,32 @@ public sealed class GitBatchObjectReaderConcurrencyTests
         }
     }
 
+    [Fact]
+    public async Task SnapshotInventoryReadsNestedSubtreesWithoutChangingCanonicalPaths()
+    {
+        using GitFixture repository = await GitFixture.CreateAsync();
+        for (int index = 0; index < 48; index++)
+        {
+            repository.WriteBytes(
+                $"area-{index:D2}/component/file.txt",
+                System.Text.Encoding.UTF8.GetBytes($"content {index}\n"));
+        }
+
+        string objectId = await repository.CommitAsync();
+        IReadOnlyList<ChangeSnapshotFile> files = await GitSnapshotTreeReader.ReadAsync(
+            repository.RootPath,
+            objectId,
+            requestedParallelism: 12,
+            CancellationToken.None,
+            minimumParallelTreePaths: 1);
+
+        Assert.Equal(48, files.Count);
+        Assert.Equal(
+            [.. Enumerable.Range(0, 48).Select(index =>
+                $"area-{index:D2}/component/file.txt")],
+            [.. files.OrderBy(file => file.Path, StringComparer.Ordinal).Select(file => file.Path)]);
+    }
+
     private sealed class GitFixture : IDisposable
     {
         private GitFixture(string rootPath)
@@ -134,7 +160,9 @@ public sealed class GitBatchObjectReaderConcurrencyTests
 
         public void WriteBytes(string relativePath, byte[] content)
         {
-            File.WriteAllBytes(Path.Combine(RootPath, relativePath), content);
+            string path = Path.Combine(RootPath, relativePath);
+            Directory.CreateDirectory(Path.GetDirectoryName(path)!);
+            File.WriteAllBytes(path, content);
         }
 
         public async Task<string> CommitAsync()

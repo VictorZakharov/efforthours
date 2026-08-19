@@ -1,4 +1,7 @@
 using System.Diagnostics;
+using System.Security.Cryptography;
+using System.Text;
+using System.Text.Json;
 using EffortHours.Analysis;
 using EffortHours.Change;
 using EffortHours.Contracts;
@@ -89,6 +92,8 @@ internal static class ChangePortfolioBenchmarkRunner
             EmptyContributorPreserved = emptyContributor,
             PrivacyBoundaryPreserved = privacy,
             ExpectedEffort = combined.Report.TotalEffort.Expected,
+            ReportSha256 = Sha256(combined.Json),
+            EstimateSemanticsSha256 = EstimateSemanticsSha256(combined.Estimate.Reports),
             Statistics = combined.Estimate.Statistics,
             IsolatedManifestStatistics = new ChangePortfolioExecutionStatistics(),
             CombinedPhaseTimings = combined.Telemetry.GetTimings(),
@@ -200,6 +205,8 @@ internal static class ChangePortfolioBenchmarkRunner
             EmptyContributorPreserved = emptyContributor,
             PrivacyBoundaryPreserved = privacy,
             ExpectedEffort = reordered.Report.TotalEffort.Expected,
+            ReportSha256 = Sha256(reordered.Json),
+            EstimateSemanticsSha256 = EstimateSemanticsSha256(reordered.Estimate.Reports),
             Statistics = reordered.Estimate.Statistics,
             IsolatedManifestStatistics = isolated.Statistics,
             CombinedPhaseTimings = reordered.Telemetry.GetTimings(),
@@ -211,7 +218,22 @@ internal static class ChangePortfolioBenchmarkRunner
         RepositoryAnalysisWorkStatistics before) => new(
             after.Acquisitions - before.Acquisitions,
             after.OccupiedTime - before.OccupiedTime,
-            after.WaitTime - before.WaitTime);
+        after.WaitTime - before.WaitTime);
+
+    private static string Sha256(string value) => Convert.ToHexStringLower(
+        SHA256.HashData(Encoding.UTF8.GetBytes(value)));
+
+    private static string EstimateSemanticsSha256(
+        IReadOnlyList<ChangeEstimateReport> reports) => Sha256(JsonSerializer.Serialize(
+            reports.Select(report => new
+            {
+                report.TotalEffort,
+                report.Categories,
+                report.WorkItems,
+                report.ProfessionalizationGap,
+                report.Reconciliation,
+                EvidencePaths = report.Evidence.Paths,
+            })));
 
     private static async Task<CombinedRun> RunCombinedAsync(
         ChangeAuthorPeriodManifest manifest,
@@ -383,6 +405,12 @@ internal static class ChangePortfolioBenchmarkRunner
             IncrementalSnapshotInventoryLoads = statistics.Sum(value => value.IncrementalSnapshotInventoryLoads),
             BatchedIncrementalSnapshotInventoryLoads = statistics.Sum(
                 value => value.BatchedIncrementalSnapshotInventoryLoads),
+            FullSnapshotInventoryReadTime = TimeSpan.FromTicks(
+                statistics.Sum(value => value.FullSnapshotInventoryReadTime.Ticks)),
+            FullSnapshotInventoryProjectionTime = TimeSpan.FromTicks(
+                statistics.Sum(value => value.FullSnapshotInventoryProjectionTime.Ticks)),
+            IncrementalSnapshotInventoryProjectionTime = TimeSpan.FromTicks(
+                statistics.Sum(value => value.IncrementalSnapshotInventoryProjectionTime.Ticks)),
             SnapshotInventoryEvictions = statistics.Sum(value => value.SnapshotInventoryEvictions),
             PeakRetainedSnapshotInventories = statistics.Max(value => value.PeakRetainedSnapshotInventories),
             PeakRetainedSnapshotInventoryRoots = statistics.Max(

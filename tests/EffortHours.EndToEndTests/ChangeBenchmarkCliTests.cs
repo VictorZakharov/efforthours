@@ -84,7 +84,7 @@ public sealed class ChangeBenchmarkCliTests
         AssertPositive(values, "combined-estimate-seconds");
         AssertPositive(values, "independent-estimate-seconds");
         Assert.Equal("false", values["range-audit-bounded"]);
-        Assert.Equal("false", values["changed-scope-analysis"]);
+        Assert.Equal("true", values["changed-scope-analysis"]);
         Assert.True(
             long.Parse(values["head-directories"], CultureInfo.InvariantCulture) >
             long.Parse(values["head-files"], CultureInfo.InvariantCulture));
@@ -114,6 +114,7 @@ public sealed class ChangeBenchmarkCliTests
         Assert.Equal(string.Empty, result.StandardError);
         Dictionary<string, string> values = Parse(result.StandardOutput);
         Assert.Equal("author-period-manifest", values["mode"]);
+        Assert.Equal("change/1.9.0", values["benchmark"]);
         Assert.Equal("2", values["portfolio-repositories"]);
         Assert.Equal("generated", values["fixture-source"]);
         AssertPositive(values, "fixture-preparation-seconds");
@@ -157,6 +158,8 @@ public sealed class ChangeBenchmarkCliTests
         Assert.Equal("true", values["fully-overlapping-heads-preserved"]);
         Assert.Equal("true", values["empty-contributor-preserved"]);
         Assert.Equal("true", values["privacy-boundary-preserved"]);
+        Assert.Equal(64, values["report-sha256"].Length);
+        Assert.Equal(64, values["estimate-semantics-sha256"].Length);
         Assert.Equal(
             "initial-combined-warmup,isolated-manifests,measured-reordered-combined",
             values["timing-order"]);
@@ -340,7 +343,7 @@ public sealed class ChangeBenchmarkCliTests
         bool requireOverallMeasurements = true)
     {
         Assert.Equal(
-            values["mode"] == "author-period-manifest" ? "change/1.8.0" : "change/1.4.0",
+            values["mode"] == "author-period-manifest" ? "change/1.9.0" : "change/1.4.0",
             values["benchmark"]);
         Assert.Equal("true", values["worktree-unchanged"]);
         Assert.Equal("true", values["git-state-unchanged"]);

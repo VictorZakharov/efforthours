@@ -183,7 +183,7 @@ public sealed partial class RepositoryScanner : IRepositoryScanner
                 cancellationToken.ThrowIfCancellationRequested();
                 string relativePath = NormalizeRelativePath(state.RootPath, entry);
                 FileAttributes attributes;
-                RepositoryAnalysisArtifactCache.RepositoryAnalysisArtifactRequest<FileInspection>?
+                RepositoryAnalysisArtifactCache.RepositoryAnalysisArtifactRequest<ScannedFile>?
                     artifactRequest = null;
                 try
                 {
@@ -245,11 +245,11 @@ public sealed partial class RepositoryScanner : IRepositoryScanner
 
                     string? artifactKey = metadata.ContentId is null
                         ? null
-                        : $"common-file/{AnalyzerVersion}/sample-{state.Options.TextSampleSize}/" +
+                        : $"common-scanned-file/{AnalyzerVersion}/sample-{state.Options.TextSampleSize}/" +
                             $"{metadata.ContentId}/{relativePath}";
                     if (artifactKey is not null && state.AnalysisArtifactCache is not null)
                     {
-                        artifactRequest = state.AnalysisArtifactCache.Request<FileInspection>(
+                        artifactRequest = state.AnalysisArtifactCache.Request<ScannedFile>(
                             artifactKey);
                     }
 
@@ -261,8 +261,13 @@ public sealed partial class RepositoryScanner : IRepositoryScanner
                         artifactRequest);
                     if (artifactRequest is { IsOwner: false })
                     {
+                        if (artifactRequest.Result.IsCompletedSuccessfully)
+                        {
+                            state.Files.Add(artifactRequest.Result.GetAwaiter().GetResult());
+                            continue;
+                        }
+
                         inspectionPipeline.TrackPending(
-                            state,
                             work,
                             artifactRequest.Result);
                         continue;
@@ -401,7 +406,7 @@ public sealed partial class RepositoryScanner : IRepositoryScanner
             .OrderBy(ecosystem => ecosystem, StringComparer.Ordinal)];
 
         List<EvidenceFact> facts = [CreateInventoryFact(files, exclusions)];
-        facts.AddRange(files.Select(CreateFileFact));
+        facts.AddRange(files.Select(file => file.FileFact ?? CreateFileFact(file)));
         facts.AddRange(CreateLanguageFacts(files));
         facts.AddRange(CreateComponentFacts(files));
         AddAggregateFacts(files, facts);

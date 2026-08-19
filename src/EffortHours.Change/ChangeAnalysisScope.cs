@@ -52,12 +52,6 @@ internal sealed record ChangeAnalysisScope(
             return null;
         }
 
-        if (Math.Max(baseGitSnapshot.FileCount, headGitSnapshot.FileCount) <=
-            FullSnapshotFileLimit)
-        {
-            return null;
-        }
-
         IReadOnlySet<string> changedPaths = headGitSnapshot.TryGetChangedPathsFrom(
             baseGitSnapshot.ObjectId,
             out IReadOnlyList<string> knownChangedPaths)
@@ -70,8 +64,6 @@ internal sealed record ChangeAnalysisScope(
             baseGitSnapshot.FileCount,
             headGitSnapshot.FileCount);
     }
-
-    private const int FullSnapshotFileLimit = ChangeEstimator.FullSnapshotAnalysisFileLimit;
 
     internal static ChangeAnalysisScope CreateForFiles(
         IReadOnlyList<ChangeSnapshotFile> baseSnapshotFiles,

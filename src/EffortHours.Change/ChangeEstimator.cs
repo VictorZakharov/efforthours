@@ -23,7 +23,7 @@ public sealed record ChangeEstimateInput
 public sealed partial class ChangeEstimator
 {
     public const string Version = "change-seed/0.18.2+seed-rules/0.4.0";
-    public const int FullSnapshotAnalysisFileLimit = 1_024;
+    public const int FullSnapshotAnalysisFileLimit = 0;
 
     private readonly IEstimator _repositoryEstimator;
     private readonly Lock _repositoryEstimatorGate = new();
