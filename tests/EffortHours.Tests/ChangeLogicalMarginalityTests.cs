@@ -117,6 +117,39 @@ public sealed class ChangeLogicalMarginalityTests
         Assert.InRange(production.Expected, 0.5m, 4m);
     }
 
+    [Fact]
+    public void HighPartCountKeepsRangesOrderedAndConservesCapabilityTotals()
+    {
+        CapabilityFixture capability = new(
+            "large-capability",
+            EffortCategory.ProductionImplementation,
+            "src/engine/large-capability.cs",
+            1m,
+            200,
+            LowFactor: 0.405m);
+
+        ChangeWorkItemResult result = Build(
+            [],
+            [capability],
+            [Path(capability.Path, ChangePathStatus.Added)]);
+
+        WorkItem[] parts =
+        [
+            .. result.WorkItems.Where(item =>
+                item.Estimator.Id == "change-rule:capability-marginal"),
+        ];
+        Assert.Equal(200, parts.Length);
+        Assert.All(parts, item =>
+        {
+            Assert.True(item.Hours.Low >= 0m);
+            Assert.True(item.Hours.Low <= item.Hours.Expected);
+            Assert.True(item.Hours.Expected <= item.Hours.High);
+        });
+        Assert.Equal(81m, parts.Sum(item => item.Hours.Low));
+        Assert.Equal(200m, parts.Sum(item => item.Hours.Expected));
+        Assert.Equal(300m, parts.Sum(item => item.Hours.High));
+    }
+
     private static ChangeWorkItemResult BuildExistingCapabilityChange(
         EffortCategory category,
         int headPartitionCount)
@@ -245,7 +278,7 @@ public sealed class ChangeLogicalMarginalityTests
                 Scope = ".",
                 EvidenceIds = [EvidenceId(capability.Id)],
                 Complexity = ComplexityLevel.Moderate,
-                Hours = Range(capability.ExpectedPerPartition),
+                Hours = Range(capability.ExpectedPerPartition, capability.LowFactor),
                 Confidence = 0.75m,
                 Reason = "Synthetic repository capability partition.",
                 Estimator = new EstimatorReference
@@ -290,9 +323,9 @@ public sealed class ChangeLogicalMarginalityTests
         };
     }
 
-    private static EffortRange Range(decimal expected) => new()
+    private static EffortRange Range(decimal expected, decimal lowFactor = 0.5m) => new()
     {
-        Low = expected * 0.5m,
+        Low = expected * lowFactor,
         Expected = expected,
         High = expected * 1.5m,
     };
@@ -336,5 +369,6 @@ public sealed class ChangeLogicalMarginalityTests
         string Path,
         decimal ExpectedPerPartition,
         int PartitionCount,
-        bool MapsPath = true);
+        bool MapsPath = true,
+        decimal LowFactor = 0.5m);
 }

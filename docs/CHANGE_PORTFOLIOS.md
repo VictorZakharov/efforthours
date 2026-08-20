@@ -105,6 +105,15 @@ immutable head object may appear only once within one repository; equal object-I
 text in different repositories remains repository-scoped. The CLI reads at most
 one MiB of strict UTF-8 manifest JSON.
 
+Inputs with more than 32 repositories may be split into manifests only along
+disjoint repository boundaries. Because reconciliation and normalization are
+repository-local, callers may add the exact `low`, `expected`, and `high`
+repository-normalized totals across those shards after verifying that no canonical
+repository occurs in more than one shard. Do not shard heads, contributors, or
+selected commits from the same repository: doing so would move deduplication and
+reconciliation boundaries and need not reproduce the unsharded result. The CLI
+does not silently split or aggregate manifests.
+
 Semantic validation rejects duplicate IDs, aliases assigned to several
 contributors, empty alias/head sets, repeated repository-local head objects,
 non-canonical text, invalid object IDs, unsupported versions, reversed intervals,
@@ -373,6 +382,16 @@ their persistent content index, canonical Merkle source digest, object-ID set,
 and already-read first-parent diff so repeated scopes and Change evidence do not
 rebuild complete tree maps. Each context is disposed after its repository,
 including cancellation and failures.
+Optional parent-derived snapshot and C# evidence is reused only after that parent
+analysis has completed; optional reuse never waits on another in-flight lineage.
+Within each row the base analysis precedes the head analysis, retaining direct
+base-to-head reuse while preventing overlapping row lineages from forming a
+circular wait. A selected row whose base is an earlier queued row's immutable head
+waits for that earlier row to complete, preserving chronological lineage reuse
+without waiting on recursively discovered in-flight ancestors. A producer or
+consumer failure cancels further preparation, drains unclaimed snapshot pairs,
+and reports the first substantive failure rather than a secondary cancellation or
+channel-closure exception.
 The two-session maximum deliberately spends bounded additional memory to overlap
 independent Git/tree work and reduce wall time; it does not make caches or
 repository concurrency unbounded.
@@ -420,14 +439,17 @@ specific lineage optimization, not general repository shapes, field latency, or
 core scaling. Issue #182 therefore remains open.
 
 Snapshot analysis is keyed by repository, canonical immutable-inventory digest,
-and exact analysis-scope digest. Inventory identity is a versioned SHA-256 Merkle
-tree over path, mode, and blob object identity, independent of delta application
-order. A broader portfolio scope is never substituted merely to increase cache
-hits, so a row remains byte-equivalent to its independent canonical Change
-estimate. Equal trees with the same scope can be analyzed once even when reached
-through different commits or intervening workstreams; different scopes remain
-separate where correctness requires. Shared blob reads and structurally shared
-inventories still benefit those rows.
+and exact analysis-scope path-set digest. Reused evidence is rebound to the
+requesting row's changed/context/representative and full-inventory counts before
+the Change report is built, so metadata-distinct rows can reuse the same scan
+without reusing one another's diagnostics. Inventory identity is a versioned
+SHA-256 Merkle tree over path, mode, and blob object identity, independent of delta
+application order. A broader portfolio scope is never substituted merely to
+increase cache hits, so a row remains byte-equivalent to its independent canonical
+Change estimate. Equal trees with the same scope can be analyzed once even when
+reached through different commits or intervening workstreams; different scopes
+remain separate where correctness requires. Shared blob reads and structurally
+shared inventories still benefit those rows.
 
 Report diagnostic `FB5325` records deterministic, privacy-safe request/hit,
 unique-key, revisit-miss, byte, eviction, retention, and batched-inventory counts

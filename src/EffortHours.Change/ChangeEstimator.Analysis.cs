@@ -27,7 +27,7 @@ public sealed partial class ChangeEstimator
         {
             analysisScope = ChangeAnalysisScope.Create(baseSnapshot, headSnapshot);
         }
-        Task<SnapshotAnalysis> baseAnalysisTask = AnalyzeSnapshotAsync(
+        SnapshotAnalysis baseAnalysis = await AnalyzeSnapshotAsync(
             repositoryName,
             baseSnapshot,
             profile,
@@ -35,8 +35,8 @@ public sealed partial class ChangeEstimator
             cacheNamespace,
             analysisScope,
             executionTelemetry,
-            cancellationToken);
-        Task<SnapshotAnalysis> headAnalysisTask = AnalyzeSnapshotAsync(
+            cancellationToken).ConfigureAwait(false);
+        SnapshotAnalysis headAnalysis = await AnalyzeSnapshotAsync(
             repositoryName,
             headSnapshot,
             profile,
@@ -44,10 +44,7 @@ public sealed partial class ChangeEstimator
             cacheNamespace,
             analysisScope,
             executionTelemetry,
-            cancellationToken);
-        await Task.WhenAll(baseAnalysisTask, headAnalysisTask).ConfigureAwait(false);
-        SnapshotAnalysis baseAnalysis = await baseAnalysisTask.ConfigureAwait(false);
-        SnapshotAnalysis headAnalysis = await headAnalysisTask.ConfigureAwait(false);
+            cancellationToken).ConfigureAwait(false);
         RepositoryEvidence baseEvidence = baseAnalysis.Evidence;
         RepositoryEvidence headEvidence = headAnalysis.Evidence;
         EstimateReport baseEstimate = baseAnalysis.Estimate;
@@ -195,15 +192,13 @@ public sealed partial class ChangeEstimator
         string cacheNamespace,
         ChangeAnalysisScope? analysisScope,
         ChangePortfolioExecutionTelemetry? executionTelemetry,
-        CancellationToken cancellationToken,
-        bool ensureParentAnalysis = true,
-        bool recordCacheRequest = true)
+        CancellationToken cancellationToken)
     {
         string analysisScopeId = analysisScope?.Id ?? "full-snapshot";
         string snapshotAnalysisIdentity = snapshot is GitSnapshotFileSystem gitSnapshot
             ? gitSnapshot.InventoryDigest
             : snapshot.ObjectId;
-        return await snapshotAnalyses.GetOrCreateAsync(
+        SnapshotAnalysis cached = await snapshotAnalyses.GetOrCreateAsync(
             cacheNamespace,
             snapshotAnalysisIdentity,
             analysisScopeId,
@@ -214,12 +209,9 @@ public sealed partial class ChangeEstimator
                     SnapshotAnalysis? derived = await TryDeriveSnapshotAnalysisAsync(
                         repositoryName,
                         snapshot,
-                        profile,
                         snapshotAnalyses,
                         cacheNamespace,
                         analysisScope,
-                        executionTelemetry,
-                        ensureParentAnalysis,
                         itemCancellationToken).ConfigureAwait(false);
                     if (derived is not null)
                     {
@@ -239,8 +231,19 @@ public sealed partial class ChangeEstimator
                     return new SnapshotAnalysis(evidence, estimate);
                 }
             },
-            cancellationToken,
-            recordCacheRequest).ConfigureAwait(false);
+            cancellationToken).ConfigureAwait(false);
+        if (analysisScope is null)
+        {
+            return cached;
+        }
+
+        RepositoryEvidence evidence = ApplyAnalysisScope(
+            cached.Evidence,
+            snapshot,
+            analysisScope);
+        return new SnapshotAnalysis(
+            evidence,
+            RefreshDerivedEstimate(cached.Estimate, evidence));
     }
 
     private async Task<EstimateReport> EstimateRepositoryAsync(
@@ -294,7 +297,7 @@ public sealed partial class ChangeEstimator
             : ApplyAnalysisScope(evidence, snapshot, analysisScope);
     }
 
-    private static RepositoryEvidence ApplyAnalysisScope(
+    internal static RepositoryEvidence ApplyAnalysisScope(
         RepositoryEvidence evidence,
         IChangeSnapshot snapshot,
         ChangeAnalysisScope analysisScope)

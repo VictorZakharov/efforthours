@@ -47,7 +47,10 @@ internal static class ChangePortfolioHelp
         immutable commits and never multiplies effort. Manifest author reports use exclusive
         contributor-match and head-reachability groups, retain zero rows, and count shared groups
         once without personal-share splits. Manifest runs emit privacy-safe reuse diagnostics in
-        the report and non-semantic phase timings on stderr. Results are repository-attributed Change EHE, not
+        the report and non-semantic phase timings on stderr. Author manifests accept at most 32
+        repositories. Larger inputs may be sharded only across disjoint repositories; add exact
+        repository-normalized totals after verifying that no repository occurs in multiple shards.
+        Results are repository-attributed Change EHE, not
         actual labor, productivity, employee rankings, performance grades, or compensation advice.
         """;
 }

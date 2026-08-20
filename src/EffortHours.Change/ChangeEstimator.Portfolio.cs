@@ -1,4 +1,3 @@
-using System.Threading.Channels;
 using EffortHours.Analysis;
 using EffortHours.Contracts.V1;
 
@@ -83,168 +82,44 @@ public sealed partial class ChangeEstimator
                     int previousAnalysisHits = 0;
                     try
                     {
-                        using CancellationTokenSource pipelineCancellation =
-                            CancellationTokenSource.CreateLinkedTokenSource(
-                                repositoryCancellationToken);
-                        Channel<PreparedPortfolioPlan> prepared = Channel.CreateBounded<
-                            PreparedPortfolioPlan>(new BoundedChannelOptions(
-                                MaximumConcurrentPortfolioChangesPerRepository)
-                            {
-                                FullMode = BoundedChannelFullMode.Wait,
-                                SingleReader = false,
-                                SingleWriter = true,
-                            });
-                        Task[] consumers =
-                        [
-                            .. Enumerable.Range(
-                                0,
-                                MaximumConcurrentPortfolioChangesPerRepository)
-                                .Select(_ => Task.Run(async () =>
-                                {
-                                    try
-                                    {
-                                        await foreach (PreparedPortfolioPlan entry in prepared.Reader
-                                            .ReadAllAsync(pipelineCancellation.Token)
-                                            .ConfigureAwait(false))
-                                        {
-                                            reports[entry.Entry.Index] = await EstimateCoreAsync(
-                                                entry.Input,
-                                                profile,
-                                                rateCard: null,
-                                                snapshotAnalyses,
-                                                entry.Entry.CacheNamespace,
-                                                executionTelemetry,
-                                                pipelineCancellation.Token).ConfigureAwait(false);
-                                            lock (progressGate)
-                                            {
-                                                SnapshotAnalysisCache.SnapshotAnalysisCacheStatistics
-                                                    cacheStatistics = snapshotAnalyses.GetStatistics();
-                                                int requestDelta = cacheStatistics.Requests -
-                                                    previousAnalysisRequests;
-                                                int hitDelta = cacheStatistics.Hits -
-                                                    previousAnalysisHits;
-                                                previousAnalysisRequests = cacheStatistics.Requests;
-                                                previousAnalysisHits = cacheStatistics.Hits;
-                                                progressAnalysisRequests += requestDelta;
-                                                progressAnalysisHits += hitDelta;
-                                                completedPlans++;
-                                                if (executionTelemetry is not null &&
-                                                    (completedPlans == 1 ||
-                                                        completedPlans % 16 == 0 ||
-                                                        completedPlans == indexed.Length))
-                                                {
-                                                    executionTelemetry.ReportProgress(
-                                                        ChangePortfolioExecutionPhases.StaticAnalysis,
-                                                        completedPlans,
-                                                        indexed.Length,
-                                                        progressAnalysisRequests,
-                                                        progressAnalysisHits);
-                                                }
-                                            }
-                                        }
-                                    }
-                                    catch (Exception exception)
-                                    {
-                                        prepared.Writer.TryComplete(exception);
-                                        await pipelineCancellation.CancelAsync().ConfigureAwait(false);
-                                        throw;
-                                    }
-                                }, pipelineCancellation.Token)),
-                        ];
-                        try
+                        void ReportCompletedPlan()
                         {
-                            foreach (IndexedPortfolioPlan[] chunk in repository.Chunk(
-                                PortfolioDeltaPrimeChunkSize))
+                            lock (progressGate)
                             {
-                                using (executionTelemetry?.Measure(
-                                    ChangePortfolioExecutionPhases.SnapshotAndDiffConstruction))
+                                SnapshotAnalysisCache.SnapshotAnalysisCacheStatistics
+                                    cacheStatistics = snapshotAnalyses.GetStatistics();
+                                int requestDelta = cacheStatistics.Requests -
+                                    previousAnalysisRequests;
+                                int hitDelta = cacheStatistics.Hits - previousAnalysisHits;
+                                previousAnalysisRequests = cacheStatistics.Requests;
+                                previousAnalysisHits = cacheStatistics.Hits;
+                                progressAnalysisRequests += requestDelta;
+                                progressAnalysisHits += hitDelta;
+                                completedPlans++;
+
+                                if (executionTelemetry is not null &&
+                                    (completedPlans == 1 ||
+                                        completedPlans % 16 == 0 ||
+                                        completedPlans == indexed.Length))
                                 {
-                                    foreach (GitSnapshotSession session in chunk
-                                        .Select(entry => entry.Plan.SnapshotSession)
-                                        .OfType<GitSnapshotSession>()
-                                        .Distinct())
-                                    {
-                                        await session.PrimeIncrementalDeltasAsync(
-                                            chunk.Select(entry =>
-                                                entry.Plan.Selection.Head.ObjectId),
-                                            pipelineCancellation.Token).ConfigureAwait(false);
-                                    }
-                                }
-
-                                foreach (IndexedPortfolioPlan entry in chunk)
-                                {
-                                    IChangeSnapshot baseSnapshot;
-                                    using (executionTelemetry?.Measure(
-                                        ChangePortfolioExecutionPhases.SnapshotAndDiffConstruction))
-                                    {
-                                        baseSnapshot = await entry.Plan.OpenBaseAsync(
-                                            pipelineCancellation.Token).ConfigureAwait(false);
-                                    }
-
-                                    IChangeSnapshot headSnapshot;
-                                    try
-                                    {
-                                        using (executionTelemetry?.Measure(
-                                            ChangePortfolioExecutionPhases.SnapshotAndDiffConstruction))
-                                        {
-                                            headSnapshot = await entry.Plan.OpenHeadAsync(
-                                                pipelineCancellation.Token).ConfigureAwait(false);
-                                        }
-                                    }
-                                    catch
-                                    {
-                                        await baseSnapshot.DisposeAsync().ConfigureAwait(false);
-                                        throw;
-                                    }
-
-                                    try
-                                    {
-                                        ChangeEstimateInput input = CreateInput(entry.Plan) with
-                                        {
-                                            OpenBaseAsync = _ => Task.FromResult(baseSnapshot),
-                                            OpenHeadAsync = _ => Task.FromResult(headSnapshot),
-                                        };
-                                        await prepared.Writer.WriteAsync(
-                                            new PreparedPortfolioPlan(
-                                                entry,
-                                                input,
-                                                baseSnapshot,
-                                                headSnapshot),
-                                            pipelineCancellation.Token).ConfigureAwait(false);
-                                    }
-                                    catch
-                                    {
-                                        await baseSnapshot.DisposeAsync().ConfigureAwait(false);
-                                        await headSnapshot.DisposeAsync().ConfigureAwait(false);
-                                        throw;
-                                    }
+                                    executionTelemetry.ReportProgress(
+                                        ChangePortfolioExecutionPhases.StaticAnalysis,
+                                        completedPlans,
+                                        indexed.Length,
+                                        progressAnalysisRequests,
+                                        progressAnalysisHits);
                                 }
                             }
-
-                            prepared.Writer.TryComplete();
-                            await Task.WhenAll(consumers).ConfigureAwait(false);
                         }
-                        catch
-                        {
-                            await pipelineCancellation.CancelAsync().ConfigureAwait(false);
-                            prepared.Writer.TryComplete();
-                            while (prepared.Reader.TryRead(out PreparedPortfolioPlan? abandoned))
-                            {
-                                await abandoned.BaseSnapshot.DisposeAsync().ConfigureAwait(false);
-                                await abandoned.HeadSnapshot.DisposeAsync().ConfigureAwait(false);
-                            }
 
-                            try
-                            {
-                                await Task.WhenAll(consumers).ConfigureAwait(false);
-                            }
-                            catch
-                            {
-                                // Preserve the producer or first consumer failure.
-                            }
-
-                            throw;
-                        }
+                        await EstimateRepositoryCandidatesAsync(
+                            repository,
+                            profile,
+                            reports,
+                            snapshotAnalyses,
+                            executionTelemetry,
+                            ReportCompletedPlan,
+                            repositoryCancellationToken).ConfigureAwait(false);
                     }
                     finally
                     {

@@ -6,6 +6,29 @@ may still change public contracts with explicit documentation.
 
 ## Unreleased
 
+### Fixed
+
+- Prevented closed-month author-period portfolios from waiting indefinitely when
+  concurrent snapshot analyses form overlapping first-parent lineages. Optional
+  snapshot and C# evidence reuse now consumes completed parent evidence only,
+  while each direct base/head pair retains deterministic parent-first reuse and
+  chronologically adjacent selected rows wait for their earlier head to complete.
+- Rebound reused snapshot evidence to each row's exact changed/context/
+  representative counts, so equal canonical path sets still share analysis while
+  row diagnostics and item evidence digests no longer depend on worker scheduling.
+- Preserved the first producer or analyzer exception from the bounded portfolio
+  pipeline instead of replacing it with a secondary cancellation or closed-channel
+  error, and disposed every prepared snapshot pair on failure.
+- Kept high-cardinality logical-capability partitions nonnegative and range-ordered
+  while conserving their exact low, expected, and high totals when cent rounding
+  exhausts a component total before the final part.
+
+### Documentation
+
+- Documented the 32-repository author-period manifest limit and the safe additive
+  sharding procedure for disjoint repository sets in CLI help and the portfolio
+  contract.
+
 ## 0.10.0-alpha.11 - 2026-08-20
 
 ### Changed

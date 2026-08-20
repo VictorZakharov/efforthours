@@ -587,7 +587,10 @@ the exact earlier estimator identity they were created from.
   processors. Custom estimators remain serialized unless they explicitly declare
   thread safety. Canonical path and report order is restored before aggregation,
   and single-flight caches ensure concurrent requests for the same immutable
-  inspection or snapshot analysis compute it once. Author-period plans from one repository share
+  inspection or snapshot analysis compute it once. Snapshot scope identity covers
+  its canonical path set; cached evidence is rebound to each requesting row's
+  output-only changed/context/representative counts before report construction.
+  Author-period plans from one repository share
   one lazy Git object reader, one lazy Git metadata reader, a bounded 64-MiB/
   1-MiB-per-blob content cache, 10,000 structurally shared immutable indexed
   inventories across at most 16 full-tree roots, 16,384 retained object lengths,
@@ -595,8 +598,13 @@ the exact earlier estimator identity they were created from.
   .NET/JavaScript file results and common inspections are keyed by immutable
   content, analyzer identity, and required path/context inputs; they do not broaden
   a row's canonical analysis scope. Repository evidence lineage is scheduled in
-  deterministic first-parent order over already-opened structural inventories;
-  it does not traverse or admit unrelated history. The two-session
+  deterministic first-parent order over already-opened structural inventories.
+  Each row analyzes its base before its head, and optional parent-derived snapshot
+  or C# evidence is consumed only when already complete; optional reuse never waits
+  on an in-flight ancestor. When a selected row's base is an earlier queued row's
+  immutable head, it waits for that row's completion so chronological reuse remains
+  available without recursive in-flight waits. It does not traverse or admit
+  unrelated history. The two-session
   ceiling is a deliberate bounded memory-for-latency tradeoff; cancellation
   disposes every repository context, and cache keys never merge equal-looking
   objects across repositories.
@@ -692,7 +700,8 @@ the exact earlier estimator identity they were created from.
   across disjoint category evidence rather than duplicated or left in one category.
 - Any candidate work item above 1.5 expected hours is partitioned into distinct,
   named logical phases of roughly one hour while preserving its category and exact
-  low/expected/high sum.
+  low/expected/high sum. Cent-rounded parts use a nonnegative bounded remainder,
+  so a high part count cannot overdraw the total or invert the final range.
 - Change comprehension, manual validation, and self-review are emitted once for
   the coherent final delta instead of being inherited repeatedly from repository
   scopes.
