@@ -1488,7 +1488,8 @@ tree. At most eight Git readers run process-wide. Git I/O has a separate bounded
 queue from common/semantic parsing and estimation, allowing heterogeneous work to
 overlap without treating object-store wait as managed CPU occupancy. New
 diagnostics record command count, elapsed/occupied/wait time, maximum command
-time, child-process CPU, output bytes, and maximum active readers.
+time, best-effort child-process CPU where the host retains it, output bytes, and
+maximum active readers.
 
 The same loose fixture before and after the final scheduling branch is:
 

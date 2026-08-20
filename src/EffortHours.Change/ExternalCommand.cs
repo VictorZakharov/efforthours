@@ -239,7 +239,21 @@ internal static class ExternalCommand
                     : $"'{executable}' failed: {error.Trim()}");
         }
 
-        return new ExternalBinaryCommandResult(stdout.ToArray(), process.TotalProcessorTime);
+        return new ExternalBinaryCommandResult(stdout.ToArray(), ReadProcessorTime(process));
+    }
+
+    private static TimeSpan ReadProcessorTime(Process process)
+    {
+        try
+        {
+            return process.TotalProcessorTime;
+        }
+        catch (InvalidOperationException) when (process.HasExited)
+        {
+            // Unix can discard process statistics as soon as the child is reaped.
+            // CPU telemetry is observational and must never fail a successful command.
+            return TimeSpan.Zero;
+        }
     }
 
     private static async Task CopyBoundedAsync(

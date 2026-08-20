@@ -377,7 +377,8 @@ This scheduling contract removes avoidable phase barriers; it does not promise
 near-linear core scaling. Protocol `change/1.10.0` retains the changed-scope and
 work-elimination behavior from 1.9.0, adds the storage-aware heterogeneous
 scheduler, and records Git command count, elapsed/occupied/wait time, maximum
-command time, child-process CPU, output bytes, and maximum active readers. On the
+command time, best-effort child-process CPU where the host retains it, output
+bytes, and maximum active readers. On the
 prepared loose-object fixture, tree-read elapsed improves from 0.697 to 0.368
 seconds and whole-command wall time from 3.305 to 2.907 seconds at 12 requested
 workers, with an unchanged semantic digest. One to eight active tree readers
