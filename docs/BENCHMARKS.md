@@ -1470,3 +1470,61 @@ tree reconstruction, deterministic partitioning, bounded command construction,
 semantic equivalence, cache reuse, privacy, and read-only behavior. Timing,
 allocation, CPU, GC, and sampled-memory values remain non-gating. Issue #176 still
 owns the unchanged private A/B/A+B retest; no 10x field claim is made here.
+
+## Storage-aware heterogeneous tree scheduling v1.10.0 checkpoint
+
+Measured on August 20, 2026 on the same Windows, .NET 10.0.7, Ryzen 9 5900X,
+workstation-GC host, with no competing `eh` process. Fixture construction was
+completed before measurement. The loose fixture contains 4,000 requested source
+files and 128 requested context projects per repository, two repositories, eight
+pinned heads, six selected changes, and 8,326 loose Git objects per repository.
+Each point is the median of three fresh processes in forward/reverse/forward
+order. CI does not gate on any timing or sampled-memory value.
+
+Protocol v1.10.0 reads `git count-objects -v` once per repository session. Packed
+stores and stores below 1,024 loose objects use one recursive `ls-tree`; larger
+loose stores with at least 128 shallow frontier trees use at most four shards per
+tree. At most eight Git readers run process-wide. Git I/O has a separate bounded
+queue from common/semantic parsing and estimation, allowing heterogeneous work to
+overlap without treating object-store wait as managed CPU occupancy. New
+diagnostics record command count, elapsed/occupied/wait time, maximum command
+time, child-process CPU, output bytes, and maximum active readers.
+
+The same loose fixture before and after the final scheduling branch is:
+
+| Measure at 12 requested workers | Before | v1.10.0 | Change |
+| --- | ---: | ---: | ---: |
+| Combined wall time | 3.305 s | 2.907 s | 12.0% lower |
+| Combined analysis wall time | 2.322 s | 1.945 s | 16.2% lower |
+| Snapshot/diff phase | 3.369 s | 2.628 s | 22.0% lower |
+| Git tree-read elapsed | 0.697 s | 0.368 s | 47.2% lower |
+| Managed allocation | 166.69 MiB | 167.75 MiB | 0.6% higher |
+| Sampled peak working set | 120.93 MiB | 120.84 MiB | effectively unchanged |
+
+The final requested-worker curve is:
+
+| Requested workers | Wall | Snapshot/diff | Tree elapsed | Tree speedup | Max active tree readers | Child Git CPU | Allocation | Peak working set |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 1 | 3.200 s | 3.597 s | 1.196 s | 1.00x | 1 | 0.000 s | 164.12 MiB | 115.38 MiB |
+| 2 | 3.291 s | 3.363 s | 0.742 s | 1.61x | 2 | 0.062 s | 165.49 MiB | 116.80 MiB |
+| 4 | 3.212 s | 3.017 s | 0.494 s | 2.42x | 4 | 0.141 s | 166.36 MiB | 115.64 MiB |
+| 6 | 3.042 s | 2.886 s | 0.498 s | 2.40x | 6 | 0.109 s | 167.13 MiB | 120.79 MiB |
+| 8 | 2.933 s | 2.626 s | 0.365 s | 3.28x | 8 | 0.109 s | 167.65 MiB | 120.41 MiB |
+| 12 | 2.907 s | 2.628 s | 0.368 s | 3.25x | 8 | 0.156 s | 167.75 MiB | 120.84 MiB |
+
+All 18 runs produced semantic digest
+`9c61a3e4b2541cbdbe66427fa0fc38e1fa8b89dff2f7efcf74fd46f9f43ddf33`.
+Tree scaling meets the logarithmic floor at eight active readers (`3.28x` versus
+`log2(9) = 3.17`) but not at 12 requested workers (`3.25x` versus
+`log2(13) = 3.70`), and whole-command one-to-twelve speedup is only `1.10x`.
+Issue #182 remains open; these results must not be presented as general
+logarithmic or near-linear core scaling.
+
+The same 31,034-file fixture was then normally packed with `git gc` before a
+separate measurement. Storage-aware selection used two direct readers rather than
+12 discovery/shard commands. Median tree elapsed was 0.135 seconds at one worker
+and 0.078 seconds at 12, while whole-command medians were 2.038 and 2.159 seconds.
+The semantic digest remained
+`4984e68b05fdacf5b06145c6a160667b9486a4ac0e99ee14c953e913b63c56d2`.
+The packed tree path is already immaterial; sharding it would add work rather than
+create useful core scaling.

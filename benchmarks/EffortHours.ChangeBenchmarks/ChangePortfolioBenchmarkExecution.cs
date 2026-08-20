@@ -31,6 +31,8 @@ internal sealed record ChangePortfolioBenchmarkExecution
 
     public required TimeSpan CombinedCpuWorkWait { get; init; }
 
+    public required RepositoryAnalysisWorkStatistics CombinedGitTreeRead { get; init; }
+
     public required RepositoryAnalysisWorkStatistics CombinedCommonFileInspection { get; init; }
 
     public required RepositoryAnalysisWorkStatistics CombinedSemanticFileAnalysis { get; init; }

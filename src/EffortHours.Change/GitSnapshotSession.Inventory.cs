@@ -46,11 +46,14 @@ internal sealed partial class GitSnapshotSession
         }
 
         Interlocked.Increment(ref _fullInventoryLoads);
+        GitObjectStorageLayout storageLayout = await GetObjectStorageLayoutAsync(
+            cancellationToken).ConfigureAwait(false);
         long readStarted = Stopwatch.GetTimestamp();
         IReadOnlyList<ChangeSnapshotFile> files = await GitSnapshotFileSystem.ReadFilesAsync(
             RepositoryPath,
             objectId,
-            cancellationToken).ConfigureAwait(false);
+            cancellationToken,
+            storageLayout: storageLayout).ConfigureAwait(false);
         Interlocked.Add(
             ref _fullInventoryReadTimestamp,
             Stopwatch.GetTimestamp() - readStarted);
@@ -60,6 +63,27 @@ internal sealed partial class GitSnapshotSession
             ref _fullInventoryProjectionTimestamp,
             Stopwatch.GetTimestamp() - projectionStarted);
         return inventory;
+    }
+
+    private async Task<GitObjectStorageLayout> GetObjectStorageLayoutAsync(
+        CancellationToken cancellationToken)
+    {
+        lock (_gate)
+        {
+            if (_objectStorageLayout is { } cached)
+            {
+                return cached;
+            }
+        }
+
+        GitObjectStorageLayout layout = await GitObjectStorageLayout.ReadAsync(
+            RepositoryPath,
+            cancellationToken).ConfigureAwait(false);
+        lock (_gate)
+        {
+            _objectStorageLayout ??= layout;
+            return _objectStorageLayout.Value;
+        }
     }
 
     private async Task<GitSnapshotInventory> CreateIncrementalInventoryAsync(

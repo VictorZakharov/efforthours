@@ -6,6 +6,18 @@ may still change public contracts with explicit documentation.
 
 ## Unreleased
 
+### Changed
+
+- Made author-period full-tree inventory reads storage-aware and process-wide:
+  packed or small loose-object stores use one recursive Git traversal, while
+  large loose-object stores use at most four deterministic shards per tree and
+  eight readers across the process. Git I/O and managed analysis now have
+  separate bounded schedulers so snapshot discovery can overlap parsing and
+  estimation without treating object-store wait as CPU occupancy. Added the
+  non-gating `change/1.10.0` checkpoint with child-process CPU, elapsed, wait,
+  output-byte, maximum-command, and active-reader diagnostics; estimate semantics
+  are unchanged and general logarithmic core scaling is not yet established.
+
 ## 0.10.0-alpha.10 - 2026-08-19
 
 ### Changed

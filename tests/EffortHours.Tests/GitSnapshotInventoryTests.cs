@@ -109,7 +109,24 @@ public sealed class GitSnapshotInventoryTests
         Assert.True(GitSnapshotTreeReader.FitsCommandLine(shards));
         Assert.False(GitSnapshotTreeReader.FitsCommandLine(
             [[new string('x', GitSnapshotTreeReader.MaximumShardPathCharacters)]]));
-        Assert.Equal(256, GitSnapshotTreeReader.MinimumParallelTreePaths);
+        Assert.Equal(128, GitSnapshotTreeReader.MinimumParallelTreePaths);
+        Assert.Equal(4, GitSnapshotTreeReader.MaximumParallelReads);
+    }
+
+    [Fact]
+    public void ObjectStorageLayoutSelectsParallelReadsOnlyForLargeLooseStores()
+    {
+        GitObjectStorageLayout packed = GitObjectStorageLayout.Parse(
+            "count: 0\nin-pack: 20000\npacks: 1\n");
+        GitObjectStorageLayout smallLoose = GitObjectStorageLayout.Parse(
+            "count: 1023\nin-pack: 0\npacks: 0\n");
+        GitObjectStorageLayout largeLoose = GitObjectStorageLayout.Parse(
+            "count: 1024\nin-pack: 0\npacks: 0\n");
+
+        Assert.Equal(1, packed.SelectTreeReadParallelism(12));
+        Assert.Equal(1, smallLoose.SelectTreeReadParallelism(12));
+        Assert.Equal(4, largeLoose.SelectTreeReadParallelism(12));
+        Assert.Equal(20000, packed.PackedObjectCount);
     }
 
     [Fact]

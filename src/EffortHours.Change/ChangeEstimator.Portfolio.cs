@@ -412,6 +412,8 @@ public sealed partial class ChangeEstimator
                 RepositoryAnalysisConcurrency.MaximumFileAnalyses,
             MaximumConcurrentCpuWorkItems =
                 RepositoryAnalysisConcurrency.MaximumCpuWorkItems,
+            MaximumConcurrentGitTreeReads =
+                RepositoryAnalysisConcurrency.MaximumGitTreeReads,
             SnapshotAnalysisRequests = _analysisRequests,
             SnapshotAnalysisHits = _analysisHits,
             UniqueSnapshotAnalysisKeys = _analysisUniqueKeys,

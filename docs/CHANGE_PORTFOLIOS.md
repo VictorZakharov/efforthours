@@ -330,12 +330,14 @@ repository, a deterministic 16-row delta-prime chunk feeds one ordered snapshot
 producer and four row consumers, allowing the next immutable snapshot pair to be
 opened while earlier pairs are analyzed. Common scanning also enqueues discovered
 paths while bounded workers read and inspect earlier files; a process-wide read
-budget bounds buffered content across snapshots. All repository sessions share one
-process-wide budget of at most 24 visible logical processors for common file
-inspection, .NET/JavaScript semantic parsing, and thread-safe seed estimation;
-unmarked custom estimators remain serialized. Results are restored to canonical
-path order before aggregation, and immutable file/snapshot requests are
-single-flight. The repository context owns one lazy
+budget bounds buffered content across snapshots. All repository sessions share
+separate process-wide budgets: at most eight Git tree readers for object-store I/O
+and at most 24 visible logical processors for common file inspection,
+.NET/JavaScript semantic parsing, and thread-safe seed estimation; unmarked custom
+estimators remain serialized. The two work classes may overlap through the bounded
+snapshot pipeline, so an I/O wait does not reserve a managed CPU slot. Results are
+restored to canonical path order before aggregation, and immutable file/snapshot
+requests are single-flight. The repository context owns one lazy
 `git cat-file --batch` content reader, one lazy `git cat-file --batch-check`
 metadata reader, a 64-MiB blob cache that admits no single blob above 1 MiB,
 16,384 retained object lengths, 10,000 structurally shared immutable snapshot
@@ -356,10 +358,13 @@ batch output is capped at 64 MiB; exceeding it uses the existing row fallback.
 Roots, merges, custom snapshot providers, oversized deltas, and missing cached
 parents retain the exact existing fallback. Full-tree enumeration asks `ls-tree`
 only for path, mode, and immutable object identity; unchanged blob lengths are
-resolved only when admitted analysis requests them. Full trees with at least 256
-disjoint shallow tree paths are deterministically partitioned across at most 12
-recursive readers per repository; smaller or command-line-oversized shapes retain
-an exact single-reader fallback. Cached inventories retain
+resolved only when admitted analysis requests them. The object-storage layout is
+read once per repository session. Packed stores and stores with fewer than 1,024
+loose objects use one exact recursive reader. Larger loose stores with at least
+128 disjoint shallow tree paths are deterministically partitioned across at most
+four recursive readers per tree and eight readers process-wide; smaller or
+command-line-oversized shapes retain the exact single-reader fallback. Cached
+inventories retain
 their persistent content index, canonical Merkle source digest, object-ID set,
 and already-read first-parent diff so repeated scopes and Change evidence do not
 rebuild complete tree maps. Each context is disposed after its repository,
@@ -369,18 +374,18 @@ independent Git/tree work and reduce wall time; it does not make caches or
 repository concurrency unbounded.
 
 This scheduling contract removes avoidable phase barriers; it does not promise
-near-linear core scaling. Protocol `change/1.9.0` applies changed-scope analysis to
-every immutable Git change, reuses complete common scanned-file facts, avoids
-redundant clean-C# diagnostic and structural passes, buffers the Git object stream,
-and measures full-inventory read/projection separately. On its prepared CPU-heavy
-fixture, this removes the former dominant work: one-worker wall time falls from
-5.515 to 2.215 seconds and allocation from 1,529.11 to 251.96 MiB. The resulting
-1/2/4/6/8/12 curve is flat near 2.2 seconds because there is no longer enough
-parallel CPU work to amortize coordination. On the separate 31,034-file shape,
-12-way tree partitioning reduces aggregate full-inventory reads from 4.414 to
-2.585 seconds and wall time from 4.431 to 3.442 seconds. Reaching a configured
-maximum proves only admission; performance claims use measured CPU and wall
-throughput, and CI never gates on those timings.
+near-linear core scaling. Protocol `change/1.10.0` retains the changed-scope and
+work-elimination behavior from 1.9.0, adds the storage-aware heterogeneous
+scheduler, and records Git command count, elapsed/occupied/wait time, maximum
+command time, child-process CPU, output bytes, and maximum active readers. On the
+prepared loose-object fixture, tree-read elapsed improves from 0.697 to 0.368
+seconds and whole-command wall time from 3.305 to 2.907 seconds at 12 requested
+workers, with an unchanged semantic digest. One to eight active tree readers
+improves that isolated path by 3.28x; the requested 12-worker result is only 3.25x
+and whole-command one-to-twelve speedup is 1.10x, so general logarithmic core
+scaling remains unresolved. Reaching a configured maximum proves only admission;
+performance claims use repeated CPU and wall observations, and CI never gates on
+those timings.
 
 Snapshot analysis is keyed by repository, canonical immutable-inventory digest,
 and exact analysis-scope digest. Inventory identity is a versioned SHA-256 Merkle

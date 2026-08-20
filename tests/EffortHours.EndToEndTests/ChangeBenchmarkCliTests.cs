@@ -114,7 +114,7 @@ public sealed class ChangeBenchmarkCliTests
         Assert.Equal(string.Empty, result.StandardError);
         Dictionary<string, string> values = Parse(result.StandardOutput);
         Assert.Equal("author-period-manifest", values["mode"]);
-        Assert.Equal("change/1.9.0", values["benchmark"]);
+        Assert.Equal("change/1.10.0", values["benchmark"]);
         Assert.Equal("2", values["portfolio-repositories"]);
         Assert.Equal("generated", values["fixture-source"]);
         AssertPositive(values, "fixture-preparation-seconds");
@@ -168,6 +168,16 @@ public sealed class ChangeBenchmarkCliTests
         AssertPositive(values, "combined-estimate-seconds");
         AssertPositive(values, "combined-managed-average-processor-equivalents");
         AssertPositive(values, "combined-managed-logical-processor-utilization-percent");
+        Assert.Equal("2", values["combined-git-tree-read-acquisitions"]);
+        Assert.InRange(
+            int.Parse(
+                values["combined-git-tree-read-maximum-active"],
+                CultureInfo.InvariantCulture),
+            1,
+            2);
+        AssertPositive(values, "combined-git-tree-read-elapsed-seconds");
+        AssertPositive(values, "combined-git-tree-read-maximum-occupied-seconds");
+        AssertPositive(values, "combined-git-tree-read-output-bytes");
         AssertPositive(values, "isolated-manifest-estimate-seconds");
         AssertReadOnlyAndMeasured(values);
     }
@@ -343,7 +353,7 @@ public sealed class ChangeBenchmarkCliTests
         bool requireOverallMeasurements = true)
     {
         Assert.Equal(
-            values["mode"] == "author-period-manifest" ? "change/1.9.0" : "change/1.4.0",
+            values["mode"] == "author-period-manifest" ? "change/1.10.0" : "change/1.4.0",
             values["benchmark"]);
         Assert.Equal("true", values["worktree-unchanged"]);
         Assert.Equal("true", values["git-state-unchanged"]);

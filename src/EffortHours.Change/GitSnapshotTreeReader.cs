@@ -1,3 +1,5 @@
+using EffortHours.Analysis;
+
 namespace EffortHours.Change;
 
 internal readonly record struct GitSnapshotTreeEntry(
@@ -8,8 +10,9 @@ internal readonly record struct GitSnapshotTreeEntry(
 
 internal static class GitSnapshotTreeReader
 {
-    internal const int MaximumParallelReads = 12;
-    internal const int MinimumParallelTreePaths = 256;
+    internal const int MaximumParallelReads = 4;
+    internal const int MinimumLooseObjectsForParallelRead = 1_024;
+    internal const int MinimumParallelTreePaths = 128;
     private const int MaximumExpansionLevels = 2;
     internal const int MaximumShardPathCharacters = 16_000;
 
@@ -204,10 +207,17 @@ internal static class GitSnapshotTreeReader
             arguments.AddRange(pathspecs.Select(path => $"{path}/"));
         }
 
-        return await ExternalCommand.RunBinaryAsync(
+        using IDisposable lease = await RepositoryAnalysisConcurrency.AcquireGitTreeReadAsync(
+            cancellationToken).ConfigureAwait(false);
+        ExternalBinaryCommandResult result = await ExternalCommand.RunBinaryMeasuredAsync(
             "git",
             repositoryPath,
             arguments,
             cancellationToken).ConfigureAwait(false);
+        RepositoryAnalysisConcurrency.RecordExternalProcessMetrics(
+            RepositoryAnalysisWorkKind.GitTreeRead,
+            result.ProcessCpuTime,
+            result.StandardOutput.LongLength);
+        return result.StandardOutput;
     }
 }
