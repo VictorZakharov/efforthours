@@ -186,19 +186,18 @@ common workers read earlier files while traversal discovers later paths, under a
 process-wide buffered-read bound. Common/semantic file work and thread-safe seed
 estimation share a 24-logical-processor ceiling with deterministic single-flight
 reuse. The CLI and Change benchmark request server GC while all repository,
-cache, queue, and read-buffer bounds remain fixed. Protocol `change/1.10.0`
-retains exact changed/context/representative scope and immutable common-fact reuse,
-then adds a storage-aware heterogeneous scheduler: packed and small loose stores
-use one recursive tree traversal; large loose stores use at most four shards per
-tree and eight Git readers process-wide, independently of the at-most-24 managed
-CPU work items. The longer prepared 512-change/1,024-snapshot checkpoint improves
-from a 16.744-second server-GC one-worker median to 11.399 seconds at eight
-workers (`1.47x`) and plateaus at twelve. At twelve workers, server GC is 33.6%
-faster than workstation GC while median sampled peak working set is 23.9% higher,
-with identical estimate semantics. Global admission wait is already small, and
-widening the fixed four row consumers per repository regresses time and memory.
-Issue #182 remains open for a different decomposition of allocation-heavy
-semantic and repository work; no general logarithmic scaling claim is allowed. The
+cache, queue, and read-buffer bounds remain fixed. Protocol `change/1.11.0`
+retains exact changed/context/representative scope and the storage-aware
+scheduler: packed and small loose stores use one recursive tree traversal; large
+loose stores use at most four shards per tree and
+eight Git readers process-wide, independently of the at-most-24 managed CPU work
+items. It additionally reuses exact first-parent evidence for unchanged scopes
+and proven same-size C# numeric-token edits under an eight-state/16-MiB decoded-
+text cache; every unproven case uses full analysis. On the prepared 512-change/
+1,024-snapshot eight-worker checkpoint, median wall time falls from 11.399 to
+6.279 seconds (`1.82x`), allocation falls 49.8%, sampled peak working set falls
+19.5%, and estimate semantics are unchanged. This is a narrow work-elimination
+result, not general field latency or core scaling. Issue #182 remains open. The
 public alpha.6 control remains 3.01x faster end to end and 8.17x faster in
 snapshot/diff work with identical output. The defects tracked by #157 and the
 private A/B/A+B retest tracked by #176 are complete.

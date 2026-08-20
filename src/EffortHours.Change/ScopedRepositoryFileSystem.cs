@@ -4,7 +4,8 @@ namespace EffortHours.Change;
 
 internal sealed class ScopedRepositoryFileSystem :
     IRepositoryFileSystem,
-    IRepositoryAnalysisArtifactCacheProvider
+    IRepositoryAnalysisArtifactCacheProvider,
+    IRepositoryVersionedAnalysisProvider
 {
     private readonly IRepositoryFileSystem _inner;
     private readonly string _rootPath;
@@ -69,6 +70,22 @@ internal sealed class ScopedRepositoryFileSystem :
 
     public RepositoryAnalysisArtifactCache? AnalysisArtifactCache =>
         (_inner as IRepositoryAnalysisArtifactCacheProvider)?.AnalysisArtifactCache;
+
+    public RepositoryVersionedAnalysisCache? VersionedAnalysisCache =>
+        (_inner as IRepositoryVersionedAnalysisProvider)?.VersionedAnalysisCache;
+
+    public bool TryGetPreviousFileVersion(
+        string path,
+        out RepositoryFileVersion previousVersion)
+    {
+        if (_inner is IRepositoryVersionedAnalysisProvider provider)
+        {
+            return provider.TryGetPreviousFileVersion(path, out previousVersion);
+        }
+
+        previousVersion = default;
+        return false;
+    }
 
     public bool DirectoryExists(string path) =>
         _entriesByDirectory.ContainsKey(_inner.GetFullPath(path));

@@ -68,7 +68,7 @@ public sealed class ChangeBenchmarkCliTests
         Dictionary<string, string> values = Parse(result.StandardOutput);
         Assert.Equal("author-period", values["mode"]);
         Assert.Equal("3", values["selected-changes"]);
-        Assert.Equal("4", values["repository-estimator-invocations"]);
+        Assert.Equal("2", values["repository-estimator-invocations"]);
         Assert.Equal("1", values["portfolio-repositories"]);
         Assert.Equal("1", values["maximum-active-repositories"]);
         Assert.Equal("6", values["snapshot-analysis-requests"]);
@@ -114,7 +114,7 @@ public sealed class ChangeBenchmarkCliTests
         Assert.Equal(string.Empty, result.StandardError);
         Dictionary<string, string> values = Parse(result.StandardOutput);
         Assert.Equal("author-period-manifest", values["mode"]);
-        Assert.Equal("change/1.10.0", values["benchmark"]);
+        Assert.Equal("change/1.11.0", values["benchmark"]);
         Assert.Equal("2", values["portfolio-repositories"]);
         Assert.Equal("generated", values["fixture-source"]);
         AssertPositive(values, "fixture-preparation-seconds");
@@ -352,9 +352,11 @@ public sealed class ChangeBenchmarkCliTests
         Dictionary<string, string> values,
         bool requireOverallMeasurements = true)
     {
-        Assert.Equal(
-            values["mode"] == "author-period-manifest" ? "change/1.10.0" : "change/1.4.0",
-            values["benchmark"]);
+        string expectedBenchmark = values["mode"] is
+            "author-period" or "author-period-manifest" or "author-period-process-matrix"
+                ? "change/1.11.0"
+                : "change/1.4.0";
+        Assert.Equal(expectedBenchmark, values["benchmark"]);
         Assert.Equal("true", values["worktree-unchanged"]);
         Assert.Equal("true", values["git-state-unchanged"]);
         Assert.Equal("not-performed", values["target-execution"]);

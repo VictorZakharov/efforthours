@@ -19,4 +19,8 @@
     <ProjectReference Include="../EffortHours.Analyzers.Terraform/EffortHours.Analyzers.Terraform.csproj" />
     <ProjectReference Include="../EffortHours.Contracts/EffortHours.Contracts.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <InternalsVisibleTo Include="EffortHours.Change" />
+    <InternalsVisibleTo Include="EffortHours.Tests" />
+  </ItemGroup>
 </Project>

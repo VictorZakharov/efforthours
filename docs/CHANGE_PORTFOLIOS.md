@@ -347,7 +347,11 @@ analysis artifact cache with deterministic key-ranked retention. The artifact
 cache retains only analyzer-versioned, content-addressed common scanned-file
 facts and .NET/JavaScript per-file results; source text, keys, and local paths
 never enter a report. Its entry bound permits an intentional
-memory-for-latency tradeoff without making memory unbounded. Inventory derivation
+memory-for-latency tradeoff without making memory unbounded. A separate C#
+first-parent lineage cache retains at most eight states and 16 MiB of decoded
+source text per repository. It can reuse exact evidence when a scope is unchanged
+or when one unique maintained C# body has a syntax-clean, same-size numeric-token
+edit; every structural or ambiguous case uses full analysis. Inventory derivation
 retains the existing 1,024-changed-path and 16,000-path-character fallback
 boundaries. Before row analysis, eligible non-merge first-parent deltas and changed
 blob sizes are read with one `diff-tree --stdin` and one `cat-file --batch-check`
@@ -380,11 +384,9 @@ a bounded memory-for-latency choice, not permission to expand the repository,
 cache, read-buffer, or queue limits above. It does not change report semantics.
 
 This scheduling contract removes avoidable phase barriers; it does not promise
-near-linear core scaling. Protocol `change/1.10.0` retains the changed-scope and
-work-elimination behavior from 1.9.0, adds the storage-aware heterogeneous
-scheduler, and records Git command count, elapsed/occupied/wait time, maximum
-command time, best-effort child-process CPU where the host retains it, output
-bytes, and maximum active readers. On the
+near-linear core scaling. Protocol `change/1.11.0` retains the storage-aware
+heterogeneous scheduler and diagnostics from 1.10.0 and adds the bounded exact
+evidence-lineage optimization above. On the 1.10.0
 prepared loose-object fixture, tree-read elapsed improves from 0.697 to 0.368
 seconds and whole-command wall time from 3.305 to 2.907 seconds at 12 requested
 workers, with an unchanged semantic digest. One to eight active tree readers
@@ -406,6 +408,16 @@ consumers per repository to six made both time and memory worse, so the fixed
 bound remains four. General logarithmic core scaling is unresolved. Reaching a
 configured maximum proves only admission; performance claims use repeated CPU and
 wall observations, and CI never gates on those timings.
+
+On that same longer fixture at eight workers, three fresh 1.11.0 processes have a
+6.279-second median versus the 11.399-second 1.10.0 median (`1.82x` faster).
+Full repository-estimate invocations fall from 516 to 13 and immutable analysis-
+artifact requests from 42,828 to 1,079. Managed allocation falls 49.8% and sampled
+peak working set falls 19.5%. All new runs have identical report bytes, and the
+estimate-semantic digest is unchanged across protocols. The fixture deliberately
+changes one same-size numeric literal per commit; these numbers establish that
+specific lineage optimization, not general repository shapes, field latency, or
+core scaling. Issue #182 therefore remains open.
 
 Snapshot analysis is keyed by repository, canonical immutable-inventory digest,
 and exact analysis-scope digest. Inventory identity is a versioned SHA-256 Merkle

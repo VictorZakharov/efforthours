@@ -1,18 +1,16 @@
 using System.Collections.Frozen;
 using System.Security.Cryptography;
-using System.Text;
 using EffortHours.Analysis;
 using EffortHours.Contracts.V1;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
-using ContractDiagnostic = EffortHours.Contracts.V1.Diagnostic;
 using ContractDiagnosticSeverity = EffortHours.Contracts.V1.DiagnosticSeverity;
 
 namespace EffortHours.Analyzers.DotNet;
 
-internal sealed class CSharpFileAnalyzer(
+internal sealed partial class CSharpFileAnalyzer(
     IRepositoryFileSystem fileSystem,
     string rootPath)
 {
@@ -84,6 +82,7 @@ internal sealed class CSharpFileAnalyzer(
                 itemCancellationToken => AnalyzeUncachedAsync(
                     fullPath,
                     relativePath,
+                    contentId,
                     expectedSha256,
                     projectScope,
                     isTestFile,
@@ -94,6 +93,7 @@ internal sealed class CSharpFileAnalyzer(
         return await AnalyzeUncachedAsync(
             fullPath,
             relativePath,
+            contentId,
             expectedSha256,
             projectScope,
             isTestFile,
@@ -103,6 +103,7 @@ internal sealed class CSharpFileAnalyzer(
     private async Task<CSharpFileAnalysis> AnalyzeUncachedAsync(
         string fullPath,
         string relativePath,
+        string? contentId,
         string expectedSha256,
         string projectScope,
         bool isTestFile,
@@ -123,11 +124,6 @@ internal sealed class CSharpFileAnalyzer(
                 $"Could not parse C# file '{relativePath}': repository content could not be read.");
         }
 
-        using IDisposable cpuLease = await RepositoryAnalysisConcurrency
-            .AcquireFileAnalysisAsync(
-                RepositoryAnalysisWorkKind.SemanticFileAnalysis,
-                cancellationToken)
-            .ConfigureAwait(false);
         string actualSha256 = Convert.ToHexString(SHA256.HashData(bytes)).ToLowerInvariant();
         if (!actualSha256.Equals(expectedSha256, StringComparison.Ordinal))
         {
@@ -137,109 +133,41 @@ internal sealed class CSharpFileAnalyzer(
                 $"C# file '{relativePath}' changed after common scanning; semantic evidence was skipped.");
         }
 
-        string source;
-        using (MemoryStream stream = new(bytes, writable: false))
-        using (StreamReader reader = new(
-            stream,
-            new UTF8Encoding(encoderShouldEmitUTF8Identifier: false, throwOnInvalidBytes: false),
-            detectEncodingFromByteOrderMarks: true))
+        SourceText sourceText;
+        CSharpSyntaxTree tree;
+        int syntaxErrors;
+        CSharpFileAnalysis analysis;
+        using (IDisposable cpuLease = await RepositoryAnalysisConcurrency
+            .AcquireFileAnalysisAsync(
+                RepositoryAnalysisWorkKind.SemanticFileAnalysis,
+                cancellationToken)
+            .ConfigureAwait(false))
         {
-            source = reader.ReadToEnd();
-        }
-        SourceText sourceText = SourceText.From(
-            source,
-            Encoding.UTF8,
-            SourceHashAlgorithm.Sha256);
-        CSharpParseOptions parseOptions = new(
-            LanguageVersion.Preview,
-            DocumentationMode.Parse,
-            SourceCodeKind.Regular);
-        SyntaxTree tree = CSharpSyntaxTree.ParseText(
-            sourceText,
-            parseOptions,
-            relativePath,
-            cancellationToken);
-        CompilationUnitSyntax root = (CompilationUnitSyntax)tree.GetRoot(cancellationToken);
-        List<ContractDiagnostic> diagnostics = [];
-        int syntaxErrors = root.ContainsDiagnostics
-            ? tree.GetDiagnostics(cancellationToken)
-                .Count(diagnostic => diagnostic.Severity == Microsoft.CodeAnalysis.DiagnosticSeverity.Error)
-            : 0;
-        if (syntaxErrors > 0)
-        {
-            diagnostics.Add(DotNetEvidence.Diagnostic(
-                "FB3100",
-                ContractDiagnosticSeverity.Warning,
-                $"Roslyn reported {syntaxErrors} syntax error(s) in '{relativePath}'; partial evidence was retained.",
-                relativePath));
-        }
-
-        CSharpSyntaxInventory inventory = CSharpSyntaxInventory.Create(root);
-        CSharpReachabilityResult reachability = syntaxErrors == 0
-            ? CSharpReachabilityAnalyzer.Analyze(
-                root,
+            sourceText = CSharpEvidenceLineage.CreateSourceText(bytes);
+            tree = CSharpEvidenceLineage.Parse(
+                sourceText,
+                relativePath,
+                cancellationToken);
+            syntaxErrors = CSharpEvidenceLineage.CountSyntaxErrors(tree, cancellationToken);
+            analysis = AnalyzeParsed(
+                tree,
+                syntaxErrors,
                 relativePath,
                 projectScope,
-                inventory.Methods)
-            : CSharpReachabilityResult.Empty;
-        inventory = inventory.WithoutExcluded(reachability);
-        IReadOnlyList<CallableStructuralMetric> detectedCallableMetrics =
-            CSharpCallableStructuralAnalyzer.Analyze(inventory.Methods);
-        CSharpStructureMetrics structure = new(
-            Files: 1,
-            Types: inventory.Types.Count + inventory.Delegates.Count,
-            PublicTypes: inventory.Types.Count(IsPublic) + inventory.Delegates.Count(IsPublic),
-            Methods: inventory.Methods.Count,
-            PublicMethods: inventory.Methods.Count(IsPublic),
-            AsyncMethods: inventory.Methods.Count(method =>
-                method.Modifiers.Any(SyntaxKind.AsyncKeyword)),
-            BranchPoints: inventory.BranchPoints,
-            StructuralParserBackedFiles: syntaxErrors == 0 ? 1 : 0,
-            StructuralDetectedCallables: detectedCallableMetrics.Count,
-            CallableStructuralMetrics: syntaxErrors == 0 ? detectedCallableMetrics : []);
-
-        List<EvidenceFact> facts = [];
-        if (reachability.ExclusionFact is not null)
-        {
-            facts.Add(reachability.ExclusionFact);
+                isTestFile,
+                cancellationToken);
         }
 
-        CSharpApplicationBoundaryAnalyzer.AddFacts(
-            facts,
+        await CSharpEvidenceLineage.StoreAnalyzedVersionAsync(
+            _fileSystem,
+            fullPath,
             relativePath,
-            projectScope,
-            inventory);
-        CSharpDataEvidenceAnalyzer.AddFact(facts, relativePath, projectScope, inventory);
-        CSharpServiceBoundaryAnalyzer.AddFacts(
-            facts,
-            relativePath,
-            projectScope,
-            inventory,
-            root);
-        AddValidationFact(facts, relativePath, projectScope, inventory);
-        AddTestFact(facts, relativePath, projectScope, inventory, isTestFile);
-        AddUiFact(facts, relativePath, projectScope, inventory);
-
-        return new CSharpFileAnalysis(structure, facts, diagnostics);
-    }
-
-    private static string AnalysisArtifactKey(
-        string contentId,
-        string expectedSha256,
-        string relativePath,
-        string projectScope,
-        bool isTestFile)
-    {
-        string identity = string.Join(
-            '\0',
             contentId,
-            expectedSha256,
-            relativePath,
-            projectScope,
-            isTestFile ? "test" : "source");
-        string digest = Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(identity)))
-            .ToLowerInvariant();
-        return $"dotnet-csharp/{DotNetEvidence.AnalyzerVersion}/{digest}";
+            sourceText,
+            tree,
+            syntaxErrors,
+            cancellationToken).ConfigureAwait(false);
+        return analysis;
     }
 
     private static void AddValidationFact(

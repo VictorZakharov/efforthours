@@ -25,6 +25,7 @@ internal sealed class GitSnapshotInventory
         _sourceDigest = GitSnapshotInventoryDigest.Create(_filesByPath.Values);
         AnalysisIndex = ChangeAnalysisScope.CreateInventoryIndex(_filesByPath.Values);
         RootObjectId = objectId.ToLowerInvariant();
+        FirstParentInventory = null;
         FirstParentObjectId = firstParentObjectId?.ToLowerInvariant();
         ChangedPathsFromFirstParent = CanonicalPaths(changedPathsFromFirstParent);
     }
@@ -80,6 +81,7 @@ internal sealed class GitSnapshotInventory
         _sourceDigest = sourceDigest;
         AnalysisIndex = parent.AnalysisIndex.Apply(pathChanges);
         RootObjectId = parent.RootObjectId;
+        FirstParentInventory = parent;
         FirstParentObjectId = parentObjectId.ToLowerInvariant();
         ChangedPathsFromFirstParent = CanonicalPaths(affectedPaths);
     }
@@ -97,6 +99,8 @@ internal sealed class GitSnapshotInventory
     public string SourceDigest => _sourceDigest.Value;
 
     public string RootObjectId { get; }
+
+    public GitSnapshotInventory? FirstParentInventory { get; }
 
     public string? FirstParentObjectId { get; }
 

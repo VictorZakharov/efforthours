@@ -59,7 +59,7 @@ public static partial class Program
                 "Process-matrix workers did not preserve the selected changes and exact total EHE.");
         }
 
-        Console.WriteLine("benchmark=change/1.4.0");
+        Console.WriteLine("benchmark=change/1.11.0");
         Console.WriteLine($"estimator={ChangeEstimator.Version}");
         Console.WriteLine("mode=author-period-process-matrix");
         Console.WriteLine($"runtime={RuntimeInformation.FrameworkDescription}");

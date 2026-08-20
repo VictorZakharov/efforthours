@@ -291,9 +291,9 @@ count, and intermediate churn do not value effort. `CHANGE_ESTIMATION.md` and
   the same 219.33-second manifest completes in approximately 21.9 seconds or less;
   if it misses, use the recorded phase and reuse counters to identify the remaining
   bottleneck honestly.
-  Protocol `change/1.10.0` retains the 1.9.0 work elimination and adds
-  storage-aware full-tree scheduling. Packed and small loose stores use one
-  recursive traversal; large loose stores use at most four shards per tree and
+  Protocol `change/1.11.0` retains the 1.10.0 storage-aware full-tree scheduling.
+  Packed and small loose stores use one recursive traversal; large loose stores
+  use at most four shards per tree and
   eight Git readers process-wide. Git I/O and managed CPU work have separate
   bounded queues so object-store wait can overlap parsing and estimation. The
   repeated loose-object checkpoint improves 12-worker wall time from 3.305 to
@@ -307,7 +307,13 @@ count, and intermediate churn do not value effort. `CHANGE_ESTIMATION.md` and
   workstation-GC 12-worker median, server GC is 33.6% faster while peak working
   set is 23.9% higher; semantics are identical. Global CPU-work wait is already
   small, and widening four row consumers per repository to six regresses both
-  time and memory. Issue #182 therefore remains open for a different decomposition
+  time and memory. Version 1.11.0 instead reuses exact first-parent evidence for
+  unchanged scopes and proven same-size C# numeric-token edits. On the same
+  eight-worker fixture, its fresh-process median is 6.279 seconds (`1.82x` faster
+  than 1.10.0), allocation is 49.8% lower, sampled peak working set is 19.5%
+  lower, and estimate semantics are unchanged. The fixture deliberately exercises
+  the narrow lineage proof; other edits retain full analysis. Issue #182 therefore
+  remains open for a different decomposition
   of allocation-heavy semantic and repository work; do not claim general
   logarithmic core scaling. The private A/B/A+B regression owned by #176 was
   completed before that issue closed; it is no longer pending.

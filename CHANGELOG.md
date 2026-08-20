@@ -8,6 +8,15 @@ may still change public contracts with explicit documentation.
 
 ### Changed
 
+- Reused exact repository evidence across adjacent first-parent snapshots when a
+  changed scope is unchanged or a single maintained C# file has a proven
+  analyzer-neutral, same-size numeric-literal edit. The bounded lineage cache
+  falls back to full analysis for every structural or ambiguous edit. On the
+  prepared 512-change checkpoint, the non-gating `change/1.11.0` median is 6.279
+  seconds versus 11.399 before the change (`1.82x` faster), with 49.8% lower
+  managed allocation, 19.5% lower sampled peak working set, and unchanged
+  estimate semantics. This is a fixture-specific work-elimination result, not a
+  general field-latency or core-scaling claim.
 - Made author-period full-tree inventory reads storage-aware and process-wide:
   packed or small loose-object stores use one recursive Git traversal, while
   large loose-object stores use at most four deterministic shards per tree and

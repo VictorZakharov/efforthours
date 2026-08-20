@@ -65,12 +65,43 @@ public sealed partial class ChangeEstimator
             }
         }
 
+        public bool TryGetExistingAsync(
+            string cacheNamespace,
+            string objectId,
+            string analysisScopeId,
+            out Task<SnapshotAnalysis> result)
+        {
+            lock (_gate)
+            {
+                SnapshotAnalysisKey key = new(cacheNamespace, objectId, analysisScopeId);
+                if (_entries.TryGetValue(
+                    key,
+                    out LinkedListNode<SnapshotAnalysisEntry>? cached))
+                {
+                    _leastRecentlyUsed.Remove(cached);
+                    _leastRecentlyUsed.AddLast(cached);
+                    result = Task.FromResult(cached.Value.Analysis);
+                    return true;
+                }
+
+                if (_inflight.TryGetValue(key, out TaskCompletionSource<SnapshotAnalysis>? pending))
+                {
+                    result = pending.Task;
+                    return true;
+                }
+
+                result = null!;
+                return false;
+            }
+        }
+
         public async Task<SnapshotAnalysis> GetOrCreateAsync(
             string cacheNamespace,
             string objectId,
             string analysisScopeId,
             Func<CancellationToken, Task<SnapshotAnalysis>> factory,
-            CancellationToken cancellationToken)
+            CancellationToken cancellationToken,
+            bool recordRequest = true)
         {
             ArgumentNullException.ThrowIfNull(factory);
             SnapshotAnalysisKey key = new(cacheNamespace, objectId, analysisScopeId);
@@ -78,25 +109,39 @@ public sealed partial class ChangeEstimator
             bool owner;
             lock (_gate)
             {
-                _requests++;
+                bool seenBefore = false;
+                if (recordRequest)
+                {
+                    _requests++;
+                    seenBefore = !_seenKeys.Add(key);
+                }
+
                 if (_entries.TryGetValue(
                     key,
                     out LinkedListNode<SnapshotAnalysisEntry>? cached))
                 {
                     _leastRecentlyUsed.Remove(cached);
                     _leastRecentlyUsed.AddLast(cached);
-                    _hits++;
+                    if (recordRequest && seenBefore)
+                    {
+                        _hits++;
+                    }
+
                     return cached.Value.Analysis;
                 }
 
                 if (_inflight.TryGetValue(key, out operation!))
                 {
-                    _hits++;
+                    if (recordRequest && seenBefore)
+                    {
+                        _hits++;
+                    }
+
                     owner = false;
                 }
                 else
                 {
-                    if (!_seenKeys.Add(key))
+                    if (recordRequest && seenBefore)
                     {
                         _revisitMisses++;
                     }

@@ -142,7 +142,7 @@ internal static class ChangeBenchmarkRunner
         return new ChangeBenchmarkExecution(
             PlannedComponents: plan.Items.Sum(item => item.Plan.Components.Count),
             SelectedChanges: plan.Items.Count,
-            ExpectedSnapshotAnalyses: options.Commits + 1,
+            ExpectedSnapshotAnalyses: Math.Min(options.Commits + 1, 2),
             AuditBounded: false,
             ChangedScopeAnalysis: reports.Any(report =>
                 report.Diagnostics.Any(diagnostic => diagnostic.Code == "FB5205")),

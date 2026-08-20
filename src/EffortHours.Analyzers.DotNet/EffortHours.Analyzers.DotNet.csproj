@@ -10,4 +10,8 @@
     <ProjectReference Include="../EffortHours.Analysis/EffortHours.Analysis.csproj" />
     <ProjectReference Include="../EffortHours.Contracts/EffortHours.Contracts.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <InternalsVisibleTo Include="EffortHours.Core" />
+    <InternalsVisibleTo Include="EffortHours.Tests" />
+  </ItemGroup>
 </Project>
