@@ -36,6 +36,27 @@ public sealed class RepositoryVersionedAnalysisCacheTests
     }
 
     [Fact]
+    public async Task CompletedOnlyLookupNeverWaitsForInflightLineage()
+    {
+        RepositoryVersionedAnalysisCache cache = new();
+        TaskCompletionSource signal = new(TaskCreationOptions.RunContinuationsAsynchronously);
+        Task<string> pending = cache.GetOrCreateAsync(
+            "version-a",
+            async cancellationToken =>
+            {
+                await signal.Task.WaitAsync(cancellationToken);
+                return new RepositoryVersionedAnalysisArtifact<string>("value", 5);
+            },
+            CancellationToken.None);
+
+        Assert.False(cache.TryGetCompleted<string>("version-a", out _));
+        signal.SetResult();
+        Assert.Equal("value", await pending);
+        Assert.True(cache.TryGetCompleted<string>("version-a", out string completed));
+        Assert.Equal("value", completed);
+    }
+
+    [Fact]
     public async Task RetentionEvictsTheLeastRecentlyUsedArtifact()
     {
         RepositoryVersionedAnalysisCache cache = await PopulateAsync(

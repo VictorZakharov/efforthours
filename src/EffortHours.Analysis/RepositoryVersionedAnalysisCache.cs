@@ -159,6 +159,29 @@ public sealed class RepositoryVersionedAnalysisCache
         }
     }
 
+    public bool TryGetCompleted<T>(string key, out T result)
+        where T : class
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(key);
+        lock (_gate)
+        {
+            if (!_entries.TryGetValue(key, out CacheEntry? cached))
+            {
+                result = null!;
+                return false;
+            }
+
+            if (cached.Value is not T typed)
+            {
+                throw TypeMismatch();
+            }
+
+            Touch(cached);
+            result = typed;
+            return true;
+        }
+    }
+
     public RepositoryVersionedAnalysisCacheStatistics GetStatistics()
     {
         lock (_gate)

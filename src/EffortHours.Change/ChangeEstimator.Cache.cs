@@ -65,11 +65,11 @@ public sealed partial class ChangeEstimator
             }
         }
 
-        public bool TryGetExistingAsync(
+        public bool TryGetCompleted(
             string cacheNamespace,
             string objectId,
             string analysisScopeId,
-            out Task<SnapshotAnalysis> result)
+            out SnapshotAnalysis result)
         {
             lock (_gate)
             {
@@ -80,13 +80,7 @@ public sealed partial class ChangeEstimator
                 {
                     _leastRecentlyUsed.Remove(cached);
                     _leastRecentlyUsed.AddLast(cached);
-                    result = Task.FromResult(cached.Value.Analysis);
-                    return true;
-                }
-
-                if (_inflight.TryGetValue(key, out TaskCompletionSource<SnapshotAnalysis>? pending))
-                {
-                    result = pending.Task;
+                    result = cached.Value.Analysis;
                     return true;
                 }
 

@@ -380,9 +380,12 @@ internal static partial class ChangeWorkItemBuilder
 
     private static decimal Part(decimal total, int count, int index, ref decimal used)
     {
+        decimal remaining = Math.Max(0m, total - used);
         decimal value = index == count - 1
-            ? total - used
-            : decimal.Round(total / count, 2, MidpointRounding.AwayFromZero);
+            ? remaining
+            : Math.Min(
+                remaining,
+                decimal.Round(total / count, 2, MidpointRounding.AwayFromZero));
         used += value;
         return value;
     }

@@ -1,4 +1,5 @@
 using EffortHours.Change;
+using EffortHours.Contracts.V1;
 
 namespace EffortHours.Tests;
 
@@ -72,6 +73,64 @@ public sealed class ChangeAnalysisScopeTests
             ChangeAnalysisScope.ComputeInventoryDigest(before),
             ChangeAnalysisScope.ComputeInventoryDigest(
                 [before[0] with { Mode = "100755" }, .. before[1..]]));
+    }
+
+    [Fact]
+    public void ScopeIdentityReusesTheSameCanonicalPathSet()
+    {
+        ChangeSnapshotFile[] before =
+        [
+            File("Demo.csproj", "project-before"),
+            File("src/Feature.cs", "feature-before"),
+        ];
+        ChangeAnalysisScope featureChange = ChangeAnalysisScope.CreateForFiles(
+            before,
+            [before[0], before[1] with { ObjectId = "feature-after" }]);
+        ChangeSnapshotFile[] projectAfter =
+        [
+            before[0] with { ObjectId = "project-after" },
+            before[1],
+        ];
+        ChangeAnalysisScope projectChange = ChangeAnalysisScope.CreateForFiles(
+            before,
+            projectAfter);
+
+        Assert.Equal(
+            [.. featureChange.Paths.Order(StringComparer.Ordinal)],
+            [.. projectChange.Paths.Order(StringComparer.Ordinal)]);
+        Assert.NotEqual(featureChange.ContextPathCount, projectChange.ContextPathCount);
+        Assert.NotEqual(featureChange.RepresentativePathCount, projectChange.RepresentativePathCount);
+        Assert.Equal(featureChange.Id, projectChange.Id);
+
+        RepositoryEvidence cached = new()
+        {
+            Repository = new RepositoryDescriptor
+            {
+                Name = "repository",
+                Ecosystems = ["dotnet"],
+                SourceDigest = "sha256:cached",
+            },
+            Diagnostics =
+            [
+                new Diagnostic
+                {
+                    Code = "FB5205",
+                    Severity = DiagnosticSeverity.Information,
+                    Message = "Cached scope metadata.",
+                },
+            ],
+        };
+        RepositoryEvidence rebound = ChangeEstimator.ApplyAnalysisScope(
+            cached,
+            new MetadataSnapshot("head", projectAfter),
+            projectChange);
+        Diagnostic scopeDiagnostic = Assert.Single(
+            rebound.Diagnostics,
+            diagnostic => diagnostic.Code == "FB5205");
+
+        Assert.DoesNotContain("Cached scope metadata", scopeDiagnostic.Message, StringComparison.Ordinal);
+        Assert.Contains("0 relevant unchanged context artifact(s)", scopeDiagnostic.Message, StringComparison.Ordinal);
+        Assert.Contains("1 ecosystem representative(s)", scopeDiagnostic.Message, StringComparison.Ordinal);
     }
 
     [Fact]
@@ -180,4 +239,24 @@ public sealed class ChangeAnalysisScopeTests
         Length = 1,
         Mode = "100644",
     };
+
+    private sealed class MetadataSnapshot(
+        string objectId,
+        IReadOnlyList<ChangeSnapshotFile> files) : IChangeSnapshot
+    {
+        public string ObjectId { get; } = objectId;
+
+        public string RootPath => ".";
+
+        public EffortHours.Analysis.IRepositoryFileSystem FileSystem =>
+            throw new NotSupportedException();
+
+        public IReadOnlyList<ChangeSnapshotFile> Files { get; } = files;
+
+        public ValueTask<byte[]> ReadAllBytesAsync(
+            string relativePath,
+            CancellationToken cancellationToken = default) => throw new NotSupportedException();
+
+        public ValueTask DisposeAsync() => ValueTask.CompletedTask;
+    }
 }

@@ -246,6 +246,8 @@ public sealed class ChangePortfolioSelectionTests
         Assert.Contains("valid only with --author", policy.Error, StringComparison.Ordinal);
         Assert.Contains("Select exactly one", mixed.Error, StringComparison.Ordinal);
         Assert.Contains("--author-period-manifest <path>", ChangePortfolioHelp.Text, StringComparison.Ordinal);
+        Assert.Contains("Author manifests accept at most 32", ChangePortfolioHelp.Text, StringComparison.Ordinal);
+        Assert.Contains("sharded only across disjoint repositories", ChangePortfolioHelp.Text, StringComparison.Ordinal);
     }
 
     [Fact]

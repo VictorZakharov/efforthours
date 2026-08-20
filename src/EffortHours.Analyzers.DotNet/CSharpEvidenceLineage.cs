@@ -88,16 +88,13 @@ internal static class CSharpEvidenceLineage
             contentId,
             out RepositoryVersionedAnalysisCache? cache,
             out RepositoryFileVersion previousVersion) ||
-            !cache.TryGetExistingAsync(
+            !cache.TryGetCompleted(
                 ArtifactKey(previousVersion.ContentId, relativePath),
-                out Task<CSharpEvidenceState>? previousTask))
+                out CSharpEvidenceState previous))
         {
             return false;
         }
 
-        CSharpEvidenceState previous = await previousTask
-            .WaitAsync(cancellationToken)
-            .ConfigureAwait(false);
         if (previous.SyntaxErrors != 0)
         {
             return false;
