@@ -7,11 +7,11 @@
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>eh</ToolCommandName>
     <PackageId>EffortHours.Tool</PackageId>
-    <Version>0.10.0-alpha.9</Version>
+    <Version>0.10.0-alpha.10</Version>
     <Title>EffortHours CLI</Title>
     <PackageReadmeFile>PACKAGE_README.md</PackageReadmeFile>
     <PackageTags>estimation;effort-estimation;developer-tools;cli;repository-analysis;static-analysis;dotnet-tool</PackageTags>
-    <PackageReleaseNotes>0.10.0-alpha.9: PR selection now uses the unique merge base, supports explicit credential-safe --fetch-missing acquisition for absent provider objects, and reports comparison and path-count verification. Author-period analysis now pipelines bounded repository, snapshot, file-analysis, and estimation work with single-flight caches; gains are workload-dependent and near-linear core scaling is not yet established. Repository EHE remains experimental and uncalibrated, and seed-rules/0.4.0 remains the shipped estimator. Full notes: https://github.com/VictorZakharov/efforthours/blob/v0.10.0-alpha.9/CHANGELOG.md</PackageReleaseNotes>
+    <PackageReleaseNotes>0.10.0-alpha.10: Author-period Git changes now analyze only their exact changed/context/representative scope at every repository size, reuse immutable scanned-file facts, and load large Git trees with bounded deterministic partitioning. Prepared checkpoints record materially lower runtime and allocation with unchanged semantic digests; timing remains workload-dependent and no private-field 10x result is claimed. Repository EHE remains experimental and uncalibrated, and seed-rules/0.4.0 remains the shipped estimator. Full notes: https://github.com/VictorZakharov/efforthours/blob/v0.10.0-alpha.10/CHANGELOG.md</PackageReleaseNotes>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="../EffortHours.Analysis/EffortHours.Analysis.csproj" />

@@ -6,6 +6,8 @@ may still change public contracts with explicit documentation.
 
 ## Unreleased
 
+## 0.10.0-alpha.10 - 2026-08-19
+
 ### Changed
 
 - Reduced author-period snapshot analysis by applying the exact immutable Git
