@@ -14,7 +14,8 @@ internal sealed partial class GitSnapshotFileSystem
         string repositoryPath,
         string objectId,
         CancellationToken cancellationToken,
-        IReadOnlyList<string>? pathspecs = null)
+        IReadOnlyList<string>? pathspecs = null,
+        GitObjectStorageLayout? storageLayout = null)
     {
         List<string> arguments =
         [
@@ -27,10 +28,15 @@ internal sealed partial class GitSnapshotFileSystem
         bool readLengthsInline = pathspecs is { Count: > 0 };
         if (!readLengthsInline)
         {
+            storageLayout ??= await GitObjectStorageLayout.ReadAsync(
+                repositoryPath,
+                cancellationToken).ConfigureAwait(false);
+            int parallelism = storageLayout.Value.SelectTreeReadParallelism(
+                RepositoryAnalysisConcurrency.MaximumGitTreeReads);
             return await GitSnapshotTreeReader.ReadAsync(
                 repositoryPath,
                 objectId,
-                RepositoryAnalysisConcurrency.MaximumFileAnalyses,
+                parallelism,
                 cancellationToken).ConfigureAwait(false);
         }
 
@@ -46,12 +52,18 @@ internal sealed partial class GitSnapshotFileSystem
             arguments.AddRange(pathspecs);
         }
 
-        byte[] output = await ExternalCommand.RunBinaryAsync(
+        using IDisposable lease = await RepositoryAnalysisConcurrency.AcquireGitTreeReadAsync(
+            cancellationToken).ConfigureAwait(false);
+        ExternalBinaryCommandResult result = await ExternalCommand.RunBinaryMeasuredAsync(
             "git",
             repositoryPath,
             arguments,
             cancellationToken).ConfigureAwait(false);
-        return ParseTree(output);
+        RepositoryAnalysisConcurrency.RecordExternalProcessMetrics(
+            RepositoryAnalysisWorkKind.GitTreeRead,
+            result.ProcessCpuTime,
+            result.StandardOutput.LongLength);
+        return ParseTree(result.StandardOutput);
     }
 
     internal static async Task<IReadOnlyList<string>> ReadChangedPathsAsync(

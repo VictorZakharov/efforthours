@@ -172,7 +172,7 @@ public static partial class Program
     {
         ChangePortfolioExecutionStatistics reuse = execution.Statistics;
         ChangePortfolioExecutionStatistics isolatedReuse = execution.IsolatedManifestStatistics;
-        Console.WriteLine("benchmark=change/1.9.0");
+        Console.WriteLine("benchmark=change/1.10.0");
         Console.WriteLine($"estimator={ChangeEstimator.Version}");
         Console.WriteLine($"mode={options.Name}");
         Console.WriteLine(
@@ -204,6 +204,9 @@ public static partial class Program
         Console.WriteLine(
             $"maximum-process-cpu-work-items=" +
             $"{reuse.MaximumConcurrentCpuWorkItems.ToString(CultureInfo.InvariantCulture)}");
+        Console.WriteLine(
+            $"maximum-process-git-tree-reads=" +
+            $"{reuse.MaximumConcurrentGitTreeReads.ToString(CultureInfo.InvariantCulture)}");
         Console.WriteLine($"portfolio-heads={fixture.HeadCount.ToString(CultureInfo.InvariantCulture)}");
         Console.WriteLine($"portfolio-contributors={fixture.ContributorCount.ToString(CultureInfo.InvariantCulture)}");
         Console.WriteLine($"selected-changes={execution.SelectedChanges.ToString(CultureInfo.InvariantCulture)}");
@@ -298,9 +301,10 @@ public static partial class Program
         Console.WriteLine(
             $"combined-cpu-work-wait-seconds=" +
             $"{Duration(execution.CombinedCpuWorkWait)}");
-        WriteCpuWork("common-file-inspection", execution.CombinedCommonFileInspection);
-        WriteCpuWork("semantic-file-analysis", execution.CombinedSemanticFileAnalysis);
-        WriteCpuWork("repository-estimation", execution.CombinedRepositoryEstimation);
+        WriteWork("git-tree-read", execution.CombinedGitTreeRead);
+        WriteWork("common-file-inspection", execution.CombinedCommonFileInspection);
+        WriteWork("semantic-file-analysis", execution.CombinedSemanticFileAnalysis);
+        WriteWork("repository-estimation", execution.CombinedRepositoryEstimation);
         Console.WriteLine(
             $"observed-maximum-active-cpu-work=" +
             $"{execution.ObservedMaximumActiveCpuWork.ToString(CultureInfo.InvariantCulture)}");
@@ -366,7 +370,7 @@ public static partial class Program
         }
     }
 
-    private static void WriteCpuWork(
+    private static void WriteWork(
         string name,
         RepositoryAnalysisWorkStatistics statistics)
     {
@@ -376,6 +380,20 @@ public static partial class Program
         Console.WriteLine(
             $"combined-{name}-occupied-seconds={Duration(statistics.OccupiedTime)}");
         Console.WriteLine($"combined-{name}-wait-seconds={Duration(statistics.WaitTime)}");
+        Console.WriteLine(
+            $"combined-{name}-elapsed-seconds={Duration(statistics.ElapsedTime)}");
+        Console.WriteLine(
+            $"combined-{name}-maximum-occupied-seconds=" +
+            Duration(statistics.MaximumOccupiedTime));
+        Console.WriteLine(
+            $"combined-{name}-external-process-cpu-seconds=" +
+            Duration(statistics.ExternalProcessCpuTime));
+        Console.WriteLine(
+            $"combined-{name}-output-bytes=" +
+            statistics.OutputBytes.ToString(CultureInfo.InvariantCulture));
+        Console.WriteLine(
+            $"combined-{name}-maximum-active=" +
+            statistics.MaximumActive.ToString(CultureInfo.InvariantCulture));
     }
 
     private static void WritePreparedFixtureResults(

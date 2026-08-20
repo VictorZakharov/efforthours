@@ -1,6 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
+    <ServerGarbageCollection>true</ServerGarbageCollection>
     <RootNamespace>EffortHours.Cli</RootNamespace>
     <AssemblyName>efforthours</AssemblyName>
     <Description>Estimate equivalent non-AI human effort in repositories and completed changes with evidence-backed, offline static analysis.</Description>

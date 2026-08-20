@@ -34,6 +34,7 @@ internal sealed partial class GitSnapshotSession : IAsyncDisposable
     private readonly Lock _gate = new();
     private GitBatchObjectReader? _objectReader;
     private GitBatchObjectMetadataReader? _metadataReader;
+    private GitObjectStorageLayout? _objectStorageLayout;
     private int _inventoryRequests;
     private int _inventoryHits;
     private int _inventoryRevisitMisses;

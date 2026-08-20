@@ -12,6 +12,8 @@ public sealed record ChangePortfolioExecutionStatistics
 
     public int MaximumConcurrentCpuWorkItems { get; init; }
 
+    public int MaximumConcurrentGitTreeReads { get; init; }
+
     public int SnapshotAnalysisRequests { get; init; }
 
     public int SnapshotAnalysisHits { get; init; }
@@ -143,8 +145,9 @@ public sealed record ChangePortfolioExecutionStatistics
             $"{ObjectMetadataCacheHits} cache hit(s) and {ObjectMetadataCacheEvictions} eviction(s). " +
             "At most " +
             $"{MaximumActiveRepositories} repository session(s) were active concurrently, " +
-            $"with one process-wide budget of {MaximumConcurrentCpuWorkItems} independent " +
-            "common/semantic file-analysis and thread-safe estimation work item(s), and " +
+            $"with separate process-wide budgets of {MaximumConcurrentGitTreeReads} Git tree " +
+            $"read(s) and {MaximumConcurrentCpuWorkItems} independent common/semantic " +
+            "file-analysis and thread-safe estimation work item(s), and " +
             "retention limits of " +
             $"{SnapshotAnalysisRetentionLimit} analyses, " +
             $"{AnalysisArtifactRetentionLimit} file-analysis artifacts, " +

@@ -20,6 +20,10 @@ public sealed class ExternalCommandException : InvalidOperationException
 
 internal readonly record struct ExternalCommandResult(int ExitCode, string StandardOutput, string StandardError);
 
+internal readonly record struct ExternalBinaryCommandResult(
+    byte[] StandardOutput,
+    TimeSpan ProcessCpuTime);
+
 internal sealed class ExternalCommandOutputLimitException(string command, int maximumBytes)
     : InvalidOperationException(
         $"'{command}' produced more than the bounded {maximumBytes} output bytes.");
@@ -113,26 +117,26 @@ internal static class ExternalCommand
         string executable,
         string workingDirectory,
         IReadOnlyList<string> arguments,
-        CancellationToken cancellationToken) => await RunBinaryCoreAsync(
-            executable,
-            workingDirectory,
-            arguments,
-            standardInputLines: null,
-            maximumOutputBytes: null,
-            cancellationToken).ConfigureAwait(false);
+        CancellationToken cancellationToken) => (await RunBinaryCoreAsync(
+                executable,
+                workingDirectory,
+                arguments,
+                standardInputLines: null,
+                maximumOutputBytes: null,
+                cancellationToken).ConfigureAwait(false)).StandardOutput;
 
     public static async Task<byte[]> RunBinaryAsync(
         string executable,
         string workingDirectory,
         IReadOnlyList<string> arguments,
         IReadOnlyList<string> standardInputLines,
-        CancellationToken cancellationToken) => await RunBinaryCoreAsync(
-            executable,
-            workingDirectory,
-            arguments,
-            (IReadOnlyList<string>?)standardInputLines,
-            maximumOutputBytes: null,
-            cancellationToken).ConfigureAwait(false);
+        CancellationToken cancellationToken) => (await RunBinaryCoreAsync(
+                executable,
+                workingDirectory,
+                arguments,
+                (IReadOnlyList<string>?)standardInputLines,
+                maximumOutputBytes: null,
+                cancellationToken).ConfigureAwait(false)).StandardOutput;
 
     public static async Task<byte[]> RunBinaryAsync(
         string executable,
@@ -140,15 +144,27 @@ internal static class ExternalCommand
         IReadOnlyList<string> arguments,
         IReadOnlyList<string> standardInputLines,
         int maximumOutputBytes,
-        CancellationToken cancellationToken) => await RunBinaryCoreAsync(
+        CancellationToken cancellationToken) => (await RunBinaryCoreAsync(
+                executable,
+                workingDirectory,
+                arguments,
+                standardInputLines,
+                maximumOutputBytes,
+                cancellationToken).ConfigureAwait(false)).StandardOutput;
+
+    public static Task<ExternalBinaryCommandResult> RunBinaryMeasuredAsync(
+        string executable,
+        string workingDirectory,
+        IReadOnlyList<string> arguments,
+        CancellationToken cancellationToken) => RunBinaryCoreAsync(
             executable,
             workingDirectory,
             arguments,
-            standardInputLines,
-            maximumOutputBytes,
-            cancellationToken).ConfigureAwait(false);
+            standardInputLines: null,
+            maximumOutputBytes: null,
+            cancellationToken);
 
-    private static async Task<byte[]> RunBinaryCoreAsync(
+    private static async Task<ExternalBinaryCommandResult> RunBinaryCoreAsync(
         string executable,
         string workingDirectory,
         IReadOnlyList<string> arguments,
@@ -223,7 +239,21 @@ internal static class ExternalCommand
                     : $"'{executable}' failed: {error.Trim()}");
         }
 
-        return stdout.ToArray();
+        return new ExternalBinaryCommandResult(stdout.ToArray(), ReadProcessorTime(process));
+    }
+
+    private static TimeSpan ReadProcessorTime(Process process)
+    {
+        try
+        {
+            return process.TotalProcessorTime;
+        }
+        catch (InvalidOperationException) when (process.HasExited)
+        {
+            // Unix can discard process statistics as soon as the child is reaped.
+            // CPU telemetry is observational and must never fail a successful command.
+            return TimeSpan.Zero;
+        }
     }
 
     private static async Task CopyBoundedAsync(
