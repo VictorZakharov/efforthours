@@ -172,7 +172,7 @@ public static partial class Program
     {
         ChangePortfolioExecutionStatistics reuse = execution.Statistics;
         ChangePortfolioExecutionStatistics isolatedReuse = execution.IsolatedManifestStatistics;
-        Console.WriteLine("benchmark=change/1.10.0");
+        Console.WriteLine("benchmark=change/1.11.0");
         Console.WriteLine($"estimator={ChangeEstimator.Version}");
         Console.WriteLine($"mode={options.Name}");
         Console.WriteLine(

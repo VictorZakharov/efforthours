@@ -176,7 +176,8 @@ public static partial class Program
         bool secondsPassed,
         bool memoryPassed)
     {
-        Console.WriteLine("benchmark=change/1.4.0");
+        Console.WriteLine(
+            $"benchmark={(options.Mode == ChangeBenchmarkMode.AuthorPeriod ? "change/1.11.0" : "change/1.4.0")}");
         Console.WriteLine($"estimator={ChangeEstimator.Version}");
         Console.WriteLine($"mode={options.Name}");
         Console.WriteLine($"runtime={RuntimeInformation.FrameworkDescription}");

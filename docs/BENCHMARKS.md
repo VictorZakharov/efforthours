@@ -1588,3 +1588,46 @@ The semantic digest remained
 `4984e68b05fdacf5b06145c6a160667b9486a4ac0e99ee14c953e913b63c56d2`.
 The packed tree path is already immaterial; sharding it would add work rather than
 create useful core scaling.
+
+## Exact first-parent evidence lineage v1.11.0 checkpoint
+
+Measured on August 20, 2026 on the same Windows, .NET 10.0.7, Ryzen 9 5900X,
+server-GC host, with no competing `eh` process. The prepared 512-change fixture
+from the v1.10.0 checkpoint was reused without reconstruction. The measured point
+uses eight admitted file-analysis workers because that was the best v1.10.0 row.
+Timing, allocation, and sampled memory remain non-gating observations.
+
+Protocol v1.11.0 carries structurally shared first-parent inventory lineage into
+exact-scope analysis. A snapshot whose scope did not change can reuse its prior
+evidence. A scope with one changed maintained C# file can reuse evidence only when
+the old and new bodies are unique, byte length is unchanged, the cached parent is
+syntax-clean, and Roslyn proves the complete textual change remains inside one
+valid numeric literal token. The file digest and current snapshot/scope lineage
+are refreshed. Structural, length-changing, duplicated, classified, ambiguous,
+uncached, and unsupported cases use the existing full analyzer. The per-repository
+lineage cache retains at most eight states and 16 MiB of decoded source text; it is
+invocation-local and never enters reports.
+
+Three fresh final processes measured 6.143, 6.279, and 6.744 seconds. Their report
+SHA-256 was identically
+`e862e9ad358ddf225e15ad8aa773ba157bdad36880e99fe438e9d5b066d153c6`,
+and their estimate-semantic SHA-256 was identically
+`337b1c99e213c10f9389103055efe2e4f5195ddc27ed97eb99447566e809289a`.
+The latter is also the frozen v1.10.0 digest.
+
+| Measure at eight workers | v1.10.0 | v1.11.0 median | Change |
+| --- | ---: | ---: | ---: |
+| Combined wall time | 11.399 s | 6.279 s | 44.9% lower (`1.82x`) |
+| Full repository-estimator invocations | 516 | 13 | 97.5% lower |
+| Immutable analysis-artifact requests | 42,828 | 1,079 | 97.5% lower |
+| Managed allocation | 16,629.78 MiB | 8,343.87 MiB | 49.8% lower |
+| Sampled peak working set | 769.97 MiB | 619.66 MiB | 19.5% lower |
+
+The fixture changes one same-size numeric literal in one C# source file per
+commit, so it intentionally measures the admitted lineage case. The result does
+not establish similar gains for structural edits, mixed languages, sparse
+lineages, different scopes, private workloads, or physical-core scaling. CI
+instead verifies exact cold-analysis equivalence, refreshed scope diagnostics,
+deterministic report bytes, bounded single-flight retention, rejection/fallback
+cases, cancellation, privacy, and read-only behavior. Issue #182 remains open for
+the unresolved large-tree and general-workload scaling objective.

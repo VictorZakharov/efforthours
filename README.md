@@ -118,12 +118,14 @@ Shared groups are counted once, and requested contributors, repositories, and
 heads with no unique match remain visible as zero rows. Manifest author aliases
 and local paths remain execution-only. The result is repository-attributed change
 effort, not individual productivity, personal labor shares, or sole authorship.
-Manifest execution processes one repository at a time and shares bounded immutable
-inventories, parsed snapshot analyses, and Git blob reads across its selected
-commits. Deterministic reuse counts remain in report diagnostic `FB5325`; live
-phase starts and wall-clock completion timings go to stderr and never affect report
-bytes or EHE. Direct author-period runs expose seven active phases; manifest runs
-add manifest validation and contributor/head allocation.
+Manifest execution overlaps at most two repository sessions and shares bounded
+immutable inventories, parsed snapshot analyses, Git blob reads, and exact first-
+parent evidence lineage across selected commits. The lineage fast path is limited
+to unchanged scopes and proven same-size C# numeric-token edits; all other edits
+retain full analysis. Deterministic reuse counts remain in report diagnostic
+`FB5325`; live phase starts and wall-clock completion timings go to stderr and
+never affect report bytes or EHE. Direct author-period runs expose seven active
+phases; manifest runs add manifest validation and contributor/head allocation.
 
 ## What the model counts
 

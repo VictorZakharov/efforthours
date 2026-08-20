@@ -183,6 +183,20 @@ separate 64-MiB bounded reader. Full virtual-directory indexes also start lazily
 These fixed retention limits let adjacent changes reuse evidence without making
 cache memory unbounded.
 
+Adjacent first-parent snapshots may also reuse a prior exact-scope repository
+analysis without rescanning it. Reuse is exact when no path changed inside the
+scope. When exactly one in-scope path changed, reuse is limited to a maintained,
+unique C# body whose byte length is unchanged and whose cached, syntax-clean
+Roslyn lineage proves that the only textual change stays inside one numeric
+literal token. Numeric values are not analyzer evidence, and the fixed-size,
+single-token proof preserves every source location and common/semantic metric;
+only the file SHA-256, repository/scope identity, and matching diagnostic are
+refreshed. Any structural edit, syntax error, length change, duplicate body,
+generated/vendored/minified/binary classification, missing lineage, cache miss,
+or unsupported filesystem uses the ordinary full analyzer. The invocation-local
+lineage cache retains at most eight states and 16 MiB of decoded source text per
+repository; syntax trees are additionally bounded by the same eight-entry limit.
+
 Git inventory identity uses canonical SHA-256 Merkle nodes over path, mode, and
 blob object identity. The digest is independent of delta application order and can
 be updated with the structurally shared inventory rather than rehashing every
@@ -553,9 +567,11 @@ the exact earlier estimator identity they were created from.
   expected-point normalization diagnostic for explicit multi-commit ranges.
 - Adjacent range or portfolio components reuse repository analysis by canonical
   immutable inventory digest and analysis-scope identity. An exact tree chain over
-  one scope requires `N + 1` repository estimates instead of `2N`; equal trees
-  reached through different commits also reuse analysis, while differing changed
-  scopes remain independent canonical estimates.
+  one scope requires at most `N + 1` ordinary repository estimates instead of
+  `2N`; equal trees reached through different commits also reuse analysis. The
+  bounded C# lineage proof above may derive additional adjacent snapshots without
+  another repository estimate. Differing scopes and all unproven edits remain
+  independent canonical estimates.
 - Portfolio 0.2.3 retains up to 16 exact snapshot/scope analyses and 8,192
   immutable file-analysis artifacts with deterministic key-ranked retention per
   active repository and permits at most two repository sessions to overlap.
@@ -578,7 +594,9 @@ the exact earlier estimator identity they were created from.
   and 10,000 remembered first-parent links. Cached
   .NET/JavaScript file results and common inspections are keyed by immutable
   content, analyzer identity, and required path/context inputs; they do not broaden
-  a row's canonical analysis scope. The two-session
+  a row's canonical analysis scope. Repository evidence lineage is scheduled in
+  deterministic first-parent order over already-opened structural inventories;
+  it does not traverse or admit unrelated history. The two-session
   ceiling is a deliberate bounded memory-for-latency tradeoff; cancellation
   disposes every repository context, and cache keys never merge equal-looking
   objects across repositories.

@@ -195,7 +195,9 @@ public sealed partial class ChangeEstimator
         string cacheNamespace,
         ChangeAnalysisScope? analysisScope,
         ChangePortfolioExecutionTelemetry? executionTelemetry,
-        CancellationToken cancellationToken)
+        CancellationToken cancellationToken,
+        bool ensureParentAnalysis = true,
+        bool recordCacheRequest = true)
     {
         string analysisScopeId = analysisScope?.Id ?? "full-snapshot";
         string snapshotAnalysisIdentity = snapshot is GitSnapshotFileSystem gitSnapshot
@@ -209,6 +211,21 @@ public sealed partial class ChangeEstimator
             {
                 using (executionTelemetry?.Measure(ChangePortfolioExecutionPhases.StaticAnalysis))
                 {
+                    SnapshotAnalysis? derived = await TryDeriveSnapshotAnalysisAsync(
+                        repositoryName,
+                        snapshot,
+                        profile,
+                        snapshotAnalyses,
+                        cacheNamespace,
+                        analysisScope,
+                        executionTelemetry,
+                        ensureParentAnalysis,
+                        itemCancellationToken).ConfigureAwait(false);
+                    if (derived is not null)
+                    {
+                        return derived;
+                    }
+
                     RepositoryEvidence evidence = await ReadEvidenceAsync(
                         snapshot,
                         analysisScope,
@@ -222,7 +239,8 @@ public sealed partial class ChangeEstimator
                     return new SnapshotAnalysis(evidence, estimate);
                 }
             },
-            cancellationToken).ConfigureAwait(false);
+            cancellationToken,
+            recordCacheRequest).ConfigureAwait(false);
     }
 
     private async Task<EstimateReport> EstimateRepositoryAsync(
@@ -271,11 +289,16 @@ public sealed partial class ChangeEstimator
             analysisArtifactCache)
             .ScanAsync(snapshot.RootPath, cancellationToken: cancellationToken)
             .ConfigureAwait(false);
-        if (analysisScope is null)
-        {
-            return evidence;
-        }
+        return analysisScope is null
+            ? evidence
+            : ApplyAnalysisScope(evidence, snapshot, analysisScope);
+    }
 
+    private static RepositoryEvidence ApplyAnalysisScope(
+        RepositoryEvidence evidence,
+        IChangeSnapshot snapshot,
+        ChangeAnalysisScope analysisScope)
+    {
         Diagnostic scopeDiagnostic = new()
         {
             Code = "FB5205",
@@ -296,6 +319,7 @@ public sealed partial class ChangeEstimator
                     : ChangeAnalysisScope.ComputeInventoryDigest(snapshot.Files),
             },
             Diagnostics = [.. evidence.Diagnostics
+                .Where(diagnostic => diagnostic.Code != "FB5205")
                 .Append(scopeDiagnostic)
                 .Distinct()
                 .OrderBy(diagnostic => diagnostic.Code, StringComparer.Ordinal)

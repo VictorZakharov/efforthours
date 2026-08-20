@@ -31,6 +31,7 @@ internal sealed partial class GitSnapshotSession : IAsyncDisposable
     private readonly HashSet<string> _seenInventoryObjects = new(StringComparer.Ordinal);
     private readonly Func<string, string, CancellationToken, Task<IChangeSnapshot>>? _snapshotFactory;
     private readonly RepositoryAnalysisArtifactCache _analysisArtifactCache = new();
+    private readonly RepositoryVersionedAnalysisCache _versionedAnalysisCache = new();
     private readonly Lock _gate = new();
     private GitBatchObjectReader? _objectReader;
     private GitBatchObjectMetadataReader? _metadataReader;
@@ -324,7 +325,8 @@ internal sealed partial class GitSnapshotSession : IAsyncDisposable
             inventory,
             GetObjectReader,
             GetMetadataReader,
-            _analysisArtifactCache);
+            _analysisArtifactCache,
+            _versionedAnalysisCache);
 
     private GitBatchObjectReader GetObjectReader()
     {
