@@ -169,10 +169,14 @@ loaded in two 64-MiB-output-bounded repository-level Git batches before row
 analysis; roots, merges, custom snapshot providers, larger deltas, and unrelated
 changes retain the exact per-change or complete-`ls-tree` fallback. Full-tree
 enumeration loads path, mode, and immutable object identity without requesting
-every blob length. When shallow traversal exposes at least 256 disjoint tree paths,
-it partitions those paths deterministically across at most 12 recursive `ls-tree`
-reads; smaller trees use one bounded continuation, and excessive path arguments
-fall back to one complete recursive read. One repository-scoped
+every blob length. The repository object-storage layout is inspected once per
+session. Packed stores and stores below 1,024 loose objects use one recursive
+`ls-tree`; larger loose stores with at least 128 disjoint shallow tree paths use
+at most four deterministic recursive readers per tree and eight readers across
+the process. Smaller frontiers and excessive path arguments retain the exact
+single-reader fallback. Git tree reads use a separate bounded queue from managed
+parsing and estimation, so object-store wait does not consume a CPU-work slot.
+One repository-scoped
 `cat-file --batch-check` reader resolves
 lengths lazily and retains at most 16,384 entries; content reads retain their
 separate 64-MiB bounded reader. Full virtual-directory indexes also start lazily.
@@ -531,8 +535,11 @@ the exact earlier estimator identity they were created from.
   unavailable.
 - Moving selectors are resolved to immutable object IDs before analysis.
 - Full Git trees stream path, mode, and object identity through `ls-tree` without
-  eagerly requesting every blob length. Eligible portfolio first-parent deltas
-  and changed-blob sizes use 64-MiB-output-bounded `diff-tree --stdin` and
+  eagerly requesting every blob length. Packed and small loose-object stores use
+  one recursive reader; large loose-object stores can use at most four
+  deterministic readers per tree and eight readers process-wide through a queue
+  separate from managed CPU work. Eligible portfolio first-parent deltas and
+  changed-blob sizes use 64-MiB-output-bounded `diff-tree --stdin` and
   `cat-file --batch-check` repository batches; other admitted lengths are resolved
   lazily through one bounded repository metadata reader, and source bodies use a
   separate bounded `cat-file --batch` reader. Batch diff framing requests an

@@ -373,6 +373,12 @@ The two-session maximum deliberately spends bounded additional memory to overlap
 independent Git/tree work and reduce wall time; it does not make caches or
 repository concurrency unbounded.
 
+The CLI and Change benchmark executables request .NET server garbage collection.
+Closed-month portfolios retain many immutable analysis artifacts and allocate
+heavily enough that parallel collection materially reduces elapsed time. This is
+a bounded memory-for-latency choice, not permission to expand the repository,
+cache, read-buffer, or queue limits above. It does not change report semantics.
+
 This scheduling contract removes avoidable phase barriers; it does not promise
 near-linear core scaling. Protocol `change/1.10.0` retains the changed-scope and
 work-elimination behavior from 1.9.0, adds the storage-aware heterogeneous
@@ -383,10 +389,23 @@ prepared loose-object fixture, tree-read elapsed improves from 0.697 to 0.368
 seconds and whole-command wall time from 3.305 to 2.907 seconds at 12 requested
 workers, with an unchanged semantic digest. One to eight active tree readers
 improves that isolated path by 3.28x; the requested 12-worker result is only 3.25x
-and whole-command one-to-twelve speedup is 1.10x, so general logarithmic core
-scaling remains unresolved. Reaching a configured maximum proves only admission;
-performance claims use repeated CPU and wall observations, and CI never gates on
-those timings.
+and whole-command one-to-twelve speedup is 1.10x. That approximately three-second
+fixture diagnoses tree scheduling but is too short to establish whole-command
+core scaling.
+
+The longer prepared checkpoint contains two repositories, eight heads, 512
+selected changes, 1,024 snapshot requests, and 210,147,148 unique blob bytes.
+Across three fresh-process measurements per point, server-GC median wall time is
+16.744 seconds at one admitted worker, 12.799 at two, 11.943 at four, 11.464 at
+six, 11.399 at eight, and 11.540 at twelve. The best measured speedup is therefore
+1.47x at eight workers, followed by a plateau. At twelve workers, enabling server
+GC lowers the workstation-GC median from 17.374 to 11.540 seconds while median
+sampled peak working set rises from 608.92 to 754.63 MiB. Every run retains the
+same estimate-semantic digest. A controlled attempt to widen the fixed four row
+consumers per repository to six made both time and memory worse, so the fixed
+bound remains four. General logarithmic core scaling is unresolved. Reaching a
+configured maximum proves only admission; performance claims use repeated CPU and
+wall observations, and CI never gates on those timings.
 
 Snapshot analysis is keyed by repository, canonical immutable-inventory digest,
 and exact analysis-scope digest. Inventory identity is a versioned SHA-256 Merkle

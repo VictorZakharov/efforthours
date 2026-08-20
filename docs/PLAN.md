@@ -299,10 +299,18 @@ count, and intermediate churn do not value effort. `CHANGE_ESTIMATION.md` and
   repeated loose-object checkpoint improves 12-worker wall time from 3.305 to
   2.907 seconds and tree-read elapsed from 0.697 to 0.368 seconds with identical
   semantics. One to eight active tree readers reaches 3.28x, but the requested
-  12-worker path reaches only 3.25x and whole-command scaling only 1.10x. Issue
-  #182 therefore remains open for Git/history and repository-aggregation work;
-  do not claim general logarithmic core scaling. The private A/B/A+B regression
-  owned by #176 was completed before that issue closed; it is no longer pending.
+  12-worker path reaches only 3.25x. Because that approximately three-second
+  fixture is too short for a whole-command core claim, a second prepared fixture
+  now exercises 512 selected changes and 1,024 snapshot analyses. With server GC,
+  its repeated median improves from 16.744 seconds at one admitted worker to
+  11.399 at eight (`1.47x`) and then plateaus at 11.540 at twelve. Against the
+  workstation-GC 12-worker median, server GC is 33.6% faster while peak working
+  set is 23.9% higher; semantics are identical. Global CPU-work wait is already
+  small, and widening four row consumers per repository to six regresses both
+  time and memory. Issue #182 therefore remains open for a different decomposition
+  of allocation-heavy semantic and repository work; do not claim general
+  logarithmic core scaling. The private A/B/A+B regression owned by #176 was
+  completed before that issue closed; it is no longer pending.
 - The optional host-assisted scaffolding boundary is now frozen in
   `AUTHOR_PERIOD_SCAFFOLDING.md`: a separate companion adapter may eventually emit
   a reviewed v1 manifest and local-only provenance, but the estimator stays

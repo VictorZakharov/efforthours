@@ -185,16 +185,20 @@ pairs, and common file inspections now use bounded producer/consumer pipelines;
 common workers read earlier files while traversal discovers later paths, under a
 process-wide buffered-read bound. Common/semantic file work and thread-safe seed
 estimation share a 24-logical-processor ceiling with deterministic single-flight
-reuse. Core scaling is not established. Protocol `change/1.10.0` retains exact
-changed/context/representative scope and immutable common-fact reuse, then adds a
-storage-aware heterogeneous scheduler: packed and small loose stores use one
-recursive tree traversal; large loose stores use at most four shards per tree and
-eight Git readers process-wide, independently of the at-most-24 managed CPU work
-items. The repeated loose-object checkpoint improves 12-worker wall time from
-3.305 to 2.907 seconds and tree-read elapsed from 0.697 to 0.368 seconds with an
-unchanged semantic digest. One to eight active tree readers reaches 3.28x, but the
-requested 12-worker path reaches only 3.25x and whole-command scaling only 1.10x;
-issue #182 remains open and no general logarithmic scaling claim is allowed. The
+reuse. The CLI and Change benchmark request server GC while all repository,
+cache, queue, and read-buffer bounds remain fixed. Protocol `change/1.10.0`
+retains exact changed/context/representative scope and immutable common-fact reuse,
+then adds a storage-aware heterogeneous scheduler: packed and small loose stores
+use one recursive tree traversal; large loose stores use at most four shards per
+tree and eight Git readers process-wide, independently of the at-most-24 managed
+CPU work items. The longer prepared 512-change/1,024-snapshot checkpoint improves
+from a 16.744-second server-GC one-worker median to 11.399 seconds at eight
+workers (`1.47x`) and plateaus at twelve. At twelve workers, server GC is 33.6%
+faster than workstation GC while median sampled peak working set is 23.9% higher,
+with identical estimate semantics. Global admission wait is already small, and
+widening the fixed four row consumers per repository regresses time and memory.
+Issue #182 remains open for a different decomposition of allocation-heavy
+semantic and repository work; no general logarithmic scaling claim is allowed. The
 public alpha.6 control remains 3.01x faster end to end and 8.17x faster in
 snapshot/diff work with identical output. The defects tracked by #157 and the
 private A/B/A+B retest tracked by #176 are complete.

@@ -1521,6 +1521,65 @@ Tree scaling meets the logarithmic floor at eight active readers (`3.28x` versus
 Issue #182 remains open; these results must not be presented as general
 logarithmic or near-linear core scaling.
 
+The preceding approximately three-second fixture is sufficient to isolate tree
+scheduling, but not to assess whole-command scaling on a 12-core host. A second
+fixture was therefore prepared completely before measurement. Preparation took
+114.419 seconds and is excluded from every result. It contains two repositories,
+eight pinned heads, three requested contributor rows, 1,025 files and 512 context
+projects per repository, 80 active context projects per repository, 10,000 lines
+per source file, and 256 qualifying commits per repository. The combined report
+selects 512 changes, requests 1,024 snapshot analyses, and observes 210,147,148
+unique blob bytes. This is an allocation-heavy closed-month-style workload rather
+than a claim that source lines or bytes multiply EHE.
+
+The CLI and benchmark now request .NET server GC. The following curve reports the
+median of three fresh processes per point in forward/reverse/forward order. The
+prepared descriptor and immutable object stores were reused, no competing `eh`
+process ran, and timing, CPU, GC, allocation, and sampled-memory values remain
+non-gating.
+
+| Requested workers | Wall | Speedup | Managed CPU | Avg managed processors | Max active admitted | GC pause | Cumulative allocation | Peak working set |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 1 | 16.744 s | 1.000x | 53.094 s | 3.182 | 1 | 1.804 s | 16,658.80 MiB | 682.51 MiB |
+| 2 | 12.799 s | 1.308x | 60.047 s | 4.562 | 2 | 0.990 s | 16,645.12 MiB | 728.95 MiB |
+| 4 | 11.943 s | 1.402x | 75.438 s | 6.360 | 4 | 1.290 s | 16,634.39 MiB | 728.96 MiB |
+| 6 | 11.464 s | 1.461x | 88.484 s | 7.776 | 6 | 1.129 s | 16,649.70 MiB | 753.96 MiB |
+| 8 | 11.399 s | 1.469x | 92.688 s | 8.178 | 8 | 1.072 s | 16,629.78 MiB | 769.97 MiB |
+| 12 | 11.540 s | 1.451x | 94.141 s | 8.238 | 12 | 1.112 s | 16,642.03 MiB | 754.63 MiB |
+
+An admitted-worker setting of one does not limit the collector itself to one
+processor; that is why the server-GC one-worker row averages more than one managed
+processor. Useful application throughput rises through six to eight workers and
+then plateaus. The final 12-worker server-GC result is 1.45x faster than the
+server-GC one-worker row, below the predeclared `log2(13)` floor.
+
+For a direct collector comparison, the same one- and 12-worker endpoints were
+also measured three times with workstation GC:
+
+| Measure | Workstation GC | Server GC | Change |
+| --- | ---: | ---: | ---: |
+| 1-worker wall | 20.529 s | 16.744 s | 18.4% lower |
+| 1-worker peak working set | 496.55 MiB | 682.51 MiB | 37.5% higher |
+| 12-worker wall | 17.374 s | 11.540 s | 33.6% lower |
+| 12-worker peak working set | 608.92 MiB | 754.63 MiB | 23.9% higher |
+
+The best final row, eight workers with server GC, is 44.5% lower (`1.80x`) than
+the workstation-GC one-worker baseline. The additional resident memory is an
+accepted measured tradeoff for this workload, not a relaxation of cache or
+buffer bounds. All 18 server-GC curve runs and all six workstation-GC endpoint
+runs produced estimate-semantic digest
+`337b1c99e213c10f9389103055efe2e4f5195ddc27ed97eb99447566e809289a`.
+
+One diagnostic eight-worker sample reports 51.461 CPU-work occupied seconds and
+only 1.177 wait seconds, with 45.755 occupied seconds in semantic file analysis;
+Git tree-read wait is zero and tree-read elapsed is 0.322 seconds. Widening the
+fixed per-repository row consumers from four to six raised one 12-worker sample
+from 12.131 to 12.898 seconds and peak working set from 769.48 to 829.92 MiB, so
+that experiment was rejected. The remaining limit is allocation-heavy semantic
+and repository work after tree discovery, not starvation at the global admission
+gate. Issue #182 remains open for a different decomposition rather than a larger
+copy of the same row fan-out.
+
 The same 31,034-file fixture was then normally packed with `git gc` before a
 separate measurement. Storage-aware selection used two direct readers rather than
 12 discovery/shard commands. Median tree elapsed was 0.135 seconds at one worker
