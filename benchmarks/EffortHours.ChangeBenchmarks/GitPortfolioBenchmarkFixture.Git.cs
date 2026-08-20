@@ -145,7 +145,18 @@ internal sealed partial class GitPortfolioBenchmarkFixture
         GitBenchmarkRepository.WriteText(
             path,
             changedPath,
-            GitBenchmarkRepository.SourceFile(0, options.LinesPerFile, finalValue));
+            options.EditShape switch
+            {
+                ChangeBenchmarkEditShape.NumericLiteral =>
+                    GitBenchmarkRepository.SourceFile(0, options.LinesPerFile, finalValue),
+                ChangeBenchmarkEditShape.StructuralIdentifier =>
+                    GitBenchmarkRepository.StructuralIdentifierSourceFile(
+                        0,
+                        options.LinesPerFile,
+                        finalValue),
+                _ => throw new InvalidOperationException(
+                    $"Unsupported benchmark edit shape '{options.EditShape}'."),
+            });
         return await GitBenchmarkRepository.CommitAsync(
             path,
             message,

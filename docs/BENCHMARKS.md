@@ -1700,3 +1700,49 @@ Ordinary CI gates these deterministic semantics, declared limits, schema/privacy
 and output-byte equality only. It does not gate elapsed time, CPU utilization,
 allocation, or sampled working set. The existing alpha.12 field observation and
 issue #182 remain the separate evidence and work boundary for throughput/scaling.
+
+## Draft structural-fallback profiler baseline
+
+Measured on August 20, 2026 on the same .NET 10.0.7, Windows, Ryzen 9 5900X,
+server-GC host as v1.11.0. This is a baseline for unfinished #182 work, not a
+completed optimization checkpoint or release claim.
+
+The benchmark harness now supports a prepared `structural-identifier` edit shape
+in addition to the existing `numeric-literal` shape. The fixture is fully
+constructed before measurement and changes one fixed-width public identifier per
+revision, forcing the general C# analysis path rather than v1.11.0's
+numeric-literal evidence shortcut. The measured fixture contains two
+repositories, eight heads, three requested contributor rows, 256 selected
+changes, 10,000-line C# bodies, 3,084 aggregate head files, and 105,495,486
+unique Git blob bytes.
+
+Two fresh eight-worker processes, one uninstrumented and one under
+sampled-thread-time profiling, produced byte-identical reports and estimate
+semantics:
+
+| Measure | Uninstrumented | Profiled |
+| --- | ---: | ---: |
+| Combined estimate wall time | 11.695 s | 11.783 s |
+| Managed CPU time | 51.141 s | 50.125 s |
+| Average managed processors | 4.373 | 4.254 |
+| Cumulative managed allocation | 8,917.16 MiB | 8,909.07 MiB |
+| Sampled peak working set | 890.90 MiB | 870.33 MiB |
+| Gen 0 / 1 / 2 collections | 117 / 66 / 52 | 117 / 64 / 52 |
+
+Both runs produced report SHA-256
+`fae465b30ab86da37600646b924052b1823043ee0f174973f1d546f946d90d96`
+and estimate-semantic SHA-256
+`914ac8fba9486bc2208521d5d9c2e3eaac514bab2457114f9626996fa0ee1eb2`.
+Worktrees and Git object stores remained unchanged; target execution, dependency
+installation, and network access were not performed.
+
+The profiles identify repeated general-path reconstruction rather than tree
+discovery as the next target. Allocation samples are concentrated under
+`DotNetRepositoryAnalyzer`, project-fact construction, exact-scope path checks,
+and C# file analysis; sampled CPU stacks include Roslyn parse and syntax-inventory
+traversal. Full-inventory reading is about 0.43 seconds and Git tree reading about
+0.23 seconds, so adding more tree readers is not the measured answer. No
+production optimization is implemented yet. The intended follow-up is to remove
+provably redundant immutable repository/project evidence reconstruction while
+retaining exact cold-analysis fallback, deterministic report bytes, and existing
+memory bounds.

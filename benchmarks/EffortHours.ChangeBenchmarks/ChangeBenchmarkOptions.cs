@@ -12,11 +12,18 @@ internal enum ChangeBenchmarkMode
     AuthorPeriodManifest,
 }
 
+internal enum ChangeBenchmarkEditShape
+{
+    NumericLiteral,
+    StructuralIdentifier,
+}
+
 internal sealed record ChangeBenchmarkOptions(
     ChangeBenchmarkMode Mode,
     int Files,
     int ContextProjects,
     int LinesPerFile,
+    ChangeBenchmarkEditShape EditShape,
     int Commits,
     int MaximumRangeComponents,
     bool CompareIndependent,
@@ -34,6 +41,7 @@ internal sealed record ChangeBenchmarkOptions(
         "Usage: change-benchmark [--tree|--range|--author-period|--author-period-manifest] " +
         "[--files <count>] [--context-projects <count>] " +
         "[--lines-per-file <count>] [--commits <count>] " +
+        "[--edit-shape <numeric-literal|structural-identifier>] " +
         "[--maximum-range-components <count>] [--max-seconds <value>] " +
         "[--max-peak-mib <value>] [--compare-independent] [--process-matrix] " +
         "[--combined-only] " +
@@ -55,6 +63,7 @@ internal sealed record ChangeBenchmarkOptions(
         int? files = null;
         int? contextProjects = null;
         int? linesPerFile = null;
+        ChangeBenchmarkEditShape? editShape = null;
         int? commits = null;
         int maximumRangeComponents = GitChangePlannerOptions.DefaultMaximumRangeComponents;
         bool compareIndependent = false;
@@ -95,6 +104,9 @@ internal sealed record ChangeBenchmarkOptions(
                     break;
                 case "--lines-per-file":
                     linesPerFile = ReadPositiveInteger(arguments, ref index, "--lines-per-file");
+                    break;
+                case "--edit-shape":
+                    editShape = ReadEditShape(arguments, ref index);
                     break;
                 case "--commits":
                     commits = ReadPositiveInteger(arguments, ref index, "--commits");
@@ -253,11 +265,17 @@ internal sealed record ChangeBenchmarkOptions(
 
         if (preparedFixturePath is not null &&
             (files is not null || contextProjects is not null || linesPerFile is not null ||
-                commits is not null))
+                commits is not null || editShape is not null))
         {
             throw new ArgumentException(
-                "A prepared fixture owns its file, context-project, line, and commit shape; " +
+                "A prepared fixture owns its file, context-project, line, edit, and commit shape; " +
                 "do not repeat those options with '--prepared-fixture'.");
+        }
+
+        if (editShape is not null && selected != ChangeBenchmarkMode.AuthorPeriodManifest)
+        {
+            throw new ArgumentException(
+                "Option '--edit-shape' is valid only with '--author-period-manifest'.");
         }
 
         if (prepareOnly && (maximumSeconds is not null || maximumPeakMib is not null))
@@ -313,6 +331,7 @@ internal sealed record ChangeBenchmarkOptions(
                 ChangeBenchmarkMode.AuthorPeriodManifest => 8,
                 _ => throw new InvalidOperationException($"Unsupported benchmark mode '{selected}'."),
             },
+            editShape ?? ChangeBenchmarkEditShape.NumericLiteral,
             selectedCommits,
             maximumRangeComponents,
             compareIndependent,
@@ -325,6 +344,21 @@ internal sealed record ChangeBenchmarkOptions(
             fileAnalysisWorkers,
             maximumSeconds,
             maximumPeakMib);
+    }
+
+    private static ChangeBenchmarkEditShape ReadEditShape(
+        string[] arguments,
+        ref int index)
+    {
+        string value = ReadValue(arguments, ref index, "--edit-shape");
+        return value switch
+        {
+            "numeric-literal" => ChangeBenchmarkEditShape.NumericLiteral,
+            "structural-identifier" => ChangeBenchmarkEditShape.StructuralIdentifier,
+            _ => throw new ArgumentException(
+                "Option '--edit-shape' requires 'numeric-literal' or " +
+                "'structural-identifier'."),
+        };
     }
 
     private static ChangeBenchmarkMode SelectMode(

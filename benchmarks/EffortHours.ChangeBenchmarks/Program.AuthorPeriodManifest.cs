@@ -196,6 +196,7 @@ public static partial class Program
             $"active-context-projects-per-repository=" +
             $"{Math.Min(fixture.ContextProjectsPerRepository, GitPortfolioBenchmarkFixture.MaximumActiveContextProjects).ToString(CultureInfo.InvariantCulture)}");
         Console.WriteLine($"requested-lines-per-file={fixture.LinesPerFile.ToString(CultureInfo.InvariantCulture)}");
+        Console.WriteLine($"edit-shape={EditShape(fixture.EditShape)}");
         Console.WriteLine($"requested-qualifying-commits-per-repository={fixture.QualifyingCommitsPerRepository.ToString(CultureInfo.InvariantCulture)}");
         Console.WriteLine($"portfolio-repositories={fixture.Repositories.Count.ToString(CultureInfo.InvariantCulture)}");
         Console.WriteLine(
@@ -406,6 +407,7 @@ public static partial class Program
         Console.WriteLine($"files-per-repository={fixture.FilesPerRepository.ToString(CultureInfo.InvariantCulture)}");
         Console.WriteLine($"context-projects-per-repository={fixture.ContextProjectsPerRepository.ToString(CultureInfo.InvariantCulture)}");
         Console.WriteLine($"lines-per-file={fixture.LinesPerFile.ToString(CultureInfo.InvariantCulture)}");
+        Console.WriteLine($"edit-shape={EditShape(fixture.EditShape)}");
         Console.WriteLine($"qualifying-commits-per-repository={fixture.QualifyingCommitsPerRepository.ToString(CultureInfo.InvariantCulture)}");
         Console.WriteLine($"portfolio-repositories={fixture.Repositories.Count.ToString(CultureInfo.InvariantCulture)}");
         Console.WriteLine($"portfolio-heads={fixture.HeadCount.ToString(CultureInfo.InvariantCulture)}");
@@ -415,6 +417,13 @@ public static partial class Program
         Console.WriteLine("dependency-installation=not-performed");
         Console.WriteLine("network-access=not-performed");
     }
+
+    private static string EditShape(ChangeBenchmarkEditShape shape) => shape switch
+    {
+        ChangeBenchmarkEditShape.NumericLiteral => "numeric-literal",
+        ChangeBenchmarkEditShape.StructuralIdentifier => "structural-identifier",
+        _ => throw new InvalidOperationException($"Unsupported benchmark edit shape '{shape}'."),
+    };
 
     private static string Compared(ChangeBenchmarkOptions options, long value) =>
         options.CombinedOnly
