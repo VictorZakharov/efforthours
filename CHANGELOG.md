@@ -6,6 +6,8 @@ may still change public contracts with explicit documentation.
 
 ## Unreleased
 
+## 0.10.0-alpha.11 - 2026-08-20
+
 ### Changed
 
 - Reused exact repository evidence across adjacent first-parent snapshots when a
