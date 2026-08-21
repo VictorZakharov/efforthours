@@ -69,6 +69,7 @@ public sealed partial class ChangePortfolioComparisonTests
                 .Select(series => series.TotalEffort)));
 
         string markdown = ChangePortfolioComparisonMarkdownRenderer.Render(report);
+        Assert.DoesNotContain('\r', markdown);
         Assert.Contains("# Synthetic portfolio trend", markdown, StringComparison.Ordinal);
         Assert.Contains("```mermaid", markdown, StringComparison.Ordinal);
         Assert.Contains("Numeric fallback:", markdown, StringComparison.Ordinal);
@@ -83,6 +84,7 @@ public sealed partial class ChangePortfolioComparisonTests
             Title = "Synthetic engineering findings",
         };
         string findingsMarkdown = ChangePortfolioComparisonMarkdownRenderer.Render(findings);
+        Assert.DoesNotContain('\r', findingsMarkdown);
         Assert.Contains("# Synthetic engineering findings", findingsMarkdown, StringComparison.Ordinal);
         Assert.Contains("Version and environment boundary", findingsMarkdown, StringComparison.Ordinal);
         Assert.Contains("Repository outcomes", findingsMarkdown, StringComparison.Ordinal);
@@ -94,10 +96,10 @@ public sealed partial class ChangePortfolioComparisonTests
         // Whole-document golden digests freeze every generated heading, table, chart,
         // fallback series, calculation, caveat, and findings section without a bulky fixture.
         Assert.Equal(
-            "sha256:abb8e4d20e8480c2798438ede50a051eec9f5a1b50d3c65a858a24887f2b3f02",
+            "sha256:9a2b2a33dd7d98394458dbf02821b0a18f048e61322d3584721187d6e0a1f977",
             ChangePortfolioComparisonIdentity.ComputeTextDigest(markdown));
         Assert.Equal(
-            "sha256:51112c3457927ab76b5c9897738456e0fa33fa905424c2ee0046a523670b820a",
+            "sha256:b3fcfe4f10c911d6d4c2aeaa2d237844e817794cc3693e011b44e4148d22da7c",
             ChangePortfolioComparisonIdentity.ComputeTextDigest(findingsMarkdown));
     }
 

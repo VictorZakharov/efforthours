@@ -29,7 +29,7 @@ public static partial class ChangePortfolioComparisonMarkdownRenderer
             AppendTrendReport(markdown, report);
         }
 
-        return markdown.ToString().TrimEnd() + "\n";
+        return markdown.ToString().ReplaceLineEndings("\n").TrimEnd() + "\n";
     }
 
     private static void AppendHeader(StringBuilder markdown, ChangePortfolioComparisonReport report)

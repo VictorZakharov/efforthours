@@ -177,19 +177,19 @@ public sealed partial class ChangePortfolioComparisonTests
         AssertSchema(SchemaNames.ChangePortfolioComparisonReport, json);
 
         string findings = ChangePortfolioComparisonMarkdownRenderer.Render(report);
+        Assert.DoesNotContain('\r', findings);
         Assert.Contains("Synthetic incomplete findings", findings, StringComparison.Ordinal);
         Assert.Contains("The immutable repository object was not available locally.", findings, StringComparison.Ordinal);
         Assert.Contains(progress.ObservedAt.ToString("O"), findings, StringComparison.Ordinal);
         Assert.Contains("no aggregate EHE or trend", json, StringComparison.OrdinalIgnoreCase);
         Assert.DoesNotContain("private-repository-path", findings, StringComparison.OrdinalIgnoreCase);
-
         ChangePortfolioComparisonReport trendView = ChangePortfolioComparisonBuilder.BuildIncomplete(
             options with { View = ChangePortfolioComparisonView.Trend });
         Assert.Equal(
             report.Verification.SemanticDigest,
             trendView.Verification.SemanticDigest);
         Assert.Equal(
-            "sha256:313bfa4a8f84ca985da448f3a944202e4937c34eda54519b72d114ed944bec29",
+            "sha256:b7633f9e6f5d85628c101b22d5572ebaeb5534126e3856ded4035e654b750079",
             ChangePortfolioComparisonIdentity.ComputeTextDigest(findings));
     }
 }
