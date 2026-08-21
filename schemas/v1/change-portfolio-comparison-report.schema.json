@@ -1,0 +1,383 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:eh:schema:v1:change-portfolio-comparison-report",
+  "title": "EffortHours time-bucketed change portfolio comparison report v1",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "status",
+    "view",
+    "title",
+    "generatedAt",
+    "cliVersion",
+    "estimatorVersion",
+    "sourceChangeEstimatorVersion",
+    "profile",
+    "selection",
+    "bucketPolicy",
+    "buckets",
+    "series",
+    "execution",
+    "diagnostics",
+    "verification"
+  ],
+  "properties": {
+    "schemaVersion": { "const": "1.0.0" },
+    "status": { "enum": ["complete", "incomplete"] },
+    "view": { "enum": ["trend", "findings"] },
+    "title": { "type": "string", "minLength": 1, "maxLength": 256 },
+    "generatedAt": { "type": "string", "format": "date-time" },
+    "cliVersion": { "type": "string", "minLength": 1 },
+    "estimatorVersion": { "type": "string", "minLength": 1 },
+    "sourceChangeEstimatorVersion": { "type": "string", "minLength": 1 },
+    "profile": { "enum": ["implementation", "recreation"] },
+    "selection": { "$ref": "urn:eh:schema:v1:change-portfolio-report#/$defs/portfolioSelection" },
+    "bucketPolicy": { "$ref": "#/$defs/bucketPolicy" },
+    "sourcePortfolio": { "$ref": "urn:eh:schema:v1:change-portfolio-report" },
+    "buckets": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 512,
+      "items": { "$ref": "#/$defs/bucket" }
+    },
+    "series": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/series" }
+    },
+    "execution": { "$ref": "#/$defs/execution" },
+    "diagnostics": {
+      "type": "array",
+      "items": { "$ref": "urn:eh:schema:v1:diagnostic" }
+    },
+    "verification": { "$ref": "#/$defs/verification" }
+  },
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "if": { "properties": { "status": { "const": "complete" } } },
+      "then": {
+        "required": ["sourcePortfolio"],
+        "properties": {
+          "series": { "minItems": 2 },
+          "execution": {
+            "properties": { "failures": { "maxItems": 0 } }
+          },
+          "verification": {
+            "required": ["sourcePortfolioDigest"],
+            "properties": { "completeAggregates": { "const": true } }
+          }
+        }
+      },
+      "else": {
+        "not": { "required": ["sourcePortfolio"] },
+        "properties": {
+          "series": { "maxItems": 0 },
+          "execution": {
+            "properties": { "failures": { "minItems": 1 } }
+          },
+          "verification": {
+            "not": { "required": ["sourcePortfolioDigest"] },
+            "properties": { "completeAggregates": { "const": false } }
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "publicId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+    },
+    "digest": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+    "bucketPolicy": {
+      "type": "object",
+      "required": ["kind", "policy", "inputDigest", "rollingWindowBucketCount"],
+      "properties": {
+        "kind": { "enum": ["calendar-month", "calendar-week", "custom"] },
+        "policy": { "type": "string", "minLength": 1 },
+        "inputDigest": { "$ref": "#/$defs/digest" },
+        "capacityCalendarPolicy": { "type": "string", "minLength": 1, "maxLength": 512 },
+        "capacityInputDigest": { "$ref": "#/$defs/digest" },
+        "rollingWindowBucketCount": { "const": 3 }
+      },
+      "dependentRequired": {
+        "capacityCalendarPolicy": ["capacityInputDigest"],
+        "capacityInputDigest": ["capacityCalendarPolicy"]
+      },
+      "additionalProperties": false
+    },
+    "bucket": {
+      "type": "object",
+      "required": ["id", "label", "sinceInclusive", "untilExclusive", "partialStart", "partialEnd"],
+      "properties": {
+        "id": { "$ref": "#/$defs/publicId" },
+        "label": { "type": "string", "minLength": 1, "maxLength": 256 },
+        "sinceInclusive": { "type": "string", "format": "date-time" },
+        "untilExclusive": { "type": "string", "format": "date-time" },
+        "partialStart": { "type": "boolean" },
+        "partialEnd": { "type": "boolean" }
+      },
+      "additionalProperties": false
+    },
+    "series": {
+      "type": "object",
+      "required": ["id", "kind", "contributorIds", "additiveToPortfolio", "points", "totalEffort"],
+      "properties": {
+        "id": { "$ref": "#/$defs/publicId" },
+        "kind": { "enum": ["portfolio", "contributor-exclusive", "shared-contributors"] },
+        "contributorIds": {
+          "type": "array",
+          "maxItems": 64,
+          "items": { "$ref": "#/$defs/publicId" },
+          "uniqueItems": true
+        },
+        "additiveToPortfolio": { "type": "boolean" },
+        "points": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 512,
+          "items": { "$ref": "#/$defs/point" }
+        },
+        "totalEffort": { "$ref": "urn:eh:schema:v1:change-estimate-report#/$defs/effortRange" },
+        "totalCapacityHours": { "type": "number", "minimum": 0 },
+        "totalCapacityRatio": { "$ref": "#/$defs/ratio" },
+        "trend": { "$ref": "#/$defs/trend" }
+      },
+      "dependentRequired": {
+        "totalCapacityHours": ["totalCapacityRatio", "trend"],
+        "totalCapacityRatio": ["totalCapacityHours", "trend"],
+        "trend": ["totalCapacityHours", "totalCapacityRatio"]
+      },
+      "additionalProperties": false
+    },
+    "point": {
+      "type": "object",
+      "required": ["bucketId", "selectedChangeCount", "effort"],
+      "properties": {
+        "bucketId": { "$ref": "#/$defs/publicId" },
+        "selectedChangeCount": { "type": "integer", "minimum": 0 },
+        "effort": { "$ref": "urn:eh:schema:v1:change-estimate-report#/$defs/effortRange" },
+        "capacityHours": { "type": "number", "exclusiveMinimum": 0 },
+        "capacityRatio": { "$ref": "#/$defs/ratio" }
+      },
+      "dependentRequired": {
+        "capacityHours": ["capacityRatio"],
+        "capacityRatio": ["capacityHours"]
+      },
+      "additionalProperties": false
+    },
+    "ratio": {
+      "type": "object",
+      "required": ["low", "expected", "high"],
+      "properties": {
+        "low": { "type": "number", "minimum": 0 },
+        "expected": { "type": "number", "minimum": 0 },
+        "high": { "type": "number", "minimum": 0 }
+      },
+      "additionalProperties": false
+    },
+    "trend": {
+      "type": "object",
+      "required": [
+        "observationCount",
+        "firstBucketId",
+        "latestBucketId",
+        "firstExpectedRatio",
+        "latestExpectedRatio",
+        "capacityWeightedRollingWindow"
+      ],
+      "properties": {
+        "observationCount": { "type": "integer", "minimum": 1 },
+        "firstBucketId": { "$ref": "#/$defs/publicId" },
+        "latestBucketId": { "$ref": "#/$defs/publicId" },
+        "firstExpectedRatio": { "type": "number", "minimum": 0 },
+        "latestExpectedRatio": { "type": "number", "minimum": 0 },
+        "percentageChange": { "type": "number" },
+        "ordinaryLeastSquaresSlope": { "type": "number" },
+        "rSquared": { "type": "number", "minimum": 0, "maximum": 1 },
+        "capacityWeightedRollingWindow": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/rollingPoint" }
+        }
+      },
+      "additionalProperties": false
+    },
+    "rollingPoint": {
+      "type": "object",
+      "required": ["bucketId", "windowBucketCount", "expectedRatio"],
+      "properties": {
+        "bucketId": { "$ref": "#/$defs/publicId" },
+        "windowBucketCount": { "const": 3 },
+        "expectedRatio": { "type": "number", "minimum": 0 }
+      },
+      "additionalProperties": false
+    },
+    "execution": {
+      "type": "object",
+      "required": ["runtimeFramework", "operatingSystemFamily", "processArchitecture", "logicalProcessorCount", "shardPolicy", "checkpoint", "repositoryShardCount", "repositories", "phaseTimings", "reuse", "failures"],
+      "properties": {
+        "runtimeFramework": { "type": "string", "minLength": 1 },
+        "operatingSystemFamily": { "enum": ["windows", "linux", "macos", "other"] },
+        "processArchitecture": { "type": "string", "minLength": 1 },
+        "logicalProcessorCount": { "type": "integer", "minimum": 1 },
+        "shardPolicy": { "const": "repository-evidence-shards/1.0.0" },
+        "checkpoint": { "$ref": "#/$defs/checkpoint" },
+        "repositoryShardCount": { "type": "integer", "minimum": 1, "maximum": 64 },
+        "repositories": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 64,
+          "items": { "$ref": "#/$defs/repositoryExecution" }
+        },
+        "phaseTimings": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/phaseTiming" }
+        },
+        "lastProgress": { "$ref": "#/$defs/progress" },
+        "reuse": { "$ref": "#/$defs/reuse" },
+        "failures": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/failure" }
+        }
+      },
+      "additionalProperties": false
+    },
+    "repositoryExecution": {
+      "type": "object",
+      "required": ["repositoryId", "status", "checkpointDisposition", "selectedChangeCount", "elapsedMilliseconds", "inputDigest", "phaseTimings"],
+      "properties": {
+        "repositoryId": { "$ref": "#/$defs/publicId" },
+        "status": { "enum": ["complete", "reused", "failed"] },
+        "checkpointDisposition": { "enum": ["disabled", "hit", "miss-written", "miss-failed"] },
+        "selectedChangeCount": { "type": "integer", "minimum": 0 },
+        "elapsedMilliseconds": { "type": "number", "minimum": 0 },
+        "inputDigest": { "$ref": "#/$defs/digest" },
+        "phaseTimings": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/phaseTiming" }
+        },
+        "lastProgress": { "$ref": "#/$defs/progress" }
+      },
+      "additionalProperties": false
+    },
+    "checkpoint": {
+      "type": "object",
+      "required": ["protocol", "enabled", "hitCount", "missCount", "writeCount", "failureCount"],
+      "properties": {
+        "protocol": { "const": "repository-evidence-checkpoint/1.0.0" },
+        "enabled": { "type": "boolean" },
+        "hitCount": { "type": "integer", "minimum": 0 },
+        "missCount": { "type": "integer", "minimum": 0 },
+        "writeCount": { "type": "integer", "minimum": 0 },
+        "failureCount": { "type": "integer", "minimum": 0 }
+      },
+      "additionalProperties": false
+    },
+    "phaseTiming": {
+      "type": "object",
+      "required": ["phase", "elapsedMilliseconds"],
+      "properties": {
+        "phase": { "type": "string", "minLength": 1 },
+        "elapsedMilliseconds": { "type": "number", "minimum": 0 }
+      },
+      "additionalProperties": false
+    },
+    "progress": {
+      "type": "object",
+      "required": [
+        "observedAt",
+        "phase",
+        "processedUnits",
+        "totalUnits",
+        "analysisCacheRequests",
+        "analysisCacheHits",
+        "elapsedMilliseconds",
+        "workingSetBytes",
+        "peakWorkingSetBytes"
+      ],
+      "properties": {
+        "observedAt": { "type": "string", "format": "date-time" },
+        "phase": { "type": "string", "minLength": 1 },
+        "processedUnits": { "type": "integer", "minimum": 0 },
+        "totalUnits": { "type": "integer", "minimum": 0 },
+        "analysisCacheRequests": { "type": "integer", "minimum": 0 },
+        "analysisCacheHits": { "type": "integer", "minimum": 0 },
+        "elapsedMilliseconds": { "type": "number", "minimum": 0 },
+        "workingSetBytes": { "type": "integer", "minimum": 0 },
+        "peakWorkingSetBytes": { "type": "integer", "minimum": 0 }
+      },
+      "additionalProperties": false
+    },
+    "reuse": {
+      "type": "object",
+      "required": [
+        "snapshotAnalysisRequests",
+        "snapshotAnalysisHits",
+        "uniqueSnapshotAnalysisKeys",
+        "analysisArtifactRequests",
+        "analysisArtifactHits",
+        "uniqueAnalysisArtifactKeys",
+        "snapshotInventoryRequests",
+        "snapshotInventoryHits",
+        "uniqueSnapshotInventoryObjects",
+        "blobRequests",
+        "blobCacheHits",
+        "uniqueBlobObjects",
+        "blobReadBytes",
+        "peakWorkingSetBytes"
+      ],
+      "properties": {
+        "snapshotAnalysisRequests": { "type": "integer", "minimum": 0 },
+        "snapshotAnalysisHits": { "type": "integer", "minimum": 0 },
+        "uniqueSnapshotAnalysisKeys": { "type": "integer", "minimum": 0 },
+        "analysisArtifactRequests": { "type": "integer", "minimum": 0 },
+        "analysisArtifactHits": { "type": "integer", "minimum": 0 },
+        "uniqueAnalysisArtifactKeys": { "type": "integer", "minimum": 0 },
+        "snapshotInventoryRequests": { "type": "integer", "minimum": 0 },
+        "snapshotInventoryHits": { "type": "integer", "minimum": 0 },
+        "uniqueSnapshotInventoryObjects": { "type": "integer", "minimum": 0 },
+        "blobRequests": { "type": "integer", "minimum": 0 },
+        "blobCacheHits": { "type": "integer", "minimum": 0 },
+        "uniqueBlobObjects": { "type": "integer", "minimum": 0 },
+        "blobReadBytes": { "type": "integer", "minimum": 0 },
+        "peakWorkingSetBytes": { "type": "integer", "minimum": 0 }
+      },
+      "additionalProperties": false
+    },
+    "failure": {
+      "type": "object",
+      "required": ["repositoryId", "phase", "category", "message", "messageDigest"],
+      "properties": {
+        "repositoryId": { "$ref": "#/$defs/publicId" },
+        "bucketId": { "$ref": "#/$defs/publicId" },
+        "phase": { "type": "string", "minLength": 1 },
+        "category": { "type": "string", "minLength": 1 },
+        "message": { "type": "string", "minLength": 1 },
+        "messageDigest": { "$ref": "#/$defs/digest" }
+      },
+      "additionalProperties": false
+    },
+    "verification": {
+      "type": "object",
+      "required": [
+        "semanticDigest",
+        "bucketAllocationPolicy",
+        "completeAggregates",
+        "executionOnlyPathsExcluded",
+        "rawAliasesExcluded"
+      ],
+      "properties": {
+        "semanticDigest": { "$ref": "#/$defs/digest" },
+        "sourcePortfolioDigest": { "$ref": "#/$defs/digest" },
+        "bucketAllocationPolicy": { "const": "exclusive-contributor-match-sets-with-shared-groups/1.0.0" },
+        "completeAggregates": { "type": "boolean" },
+        "executionOnlyPathsExcluded": { "type": "boolean" },
+        "rawAliasesExcluded": { "type": "boolean" },
+        "note": { "type": "string", "minLength": 1 }
+      },
+      "additionalProperties": false
+    }
+  }
+}

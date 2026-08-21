@@ -163,6 +163,47 @@ public enum ChangePortfolioAdjustmentKind
     Interaction,
 }
 
+public enum ChangePortfolioComparisonStatus
+{
+    Complete,
+    Incomplete,
+}
+
+public enum ChangePortfolioBucketPolicyKind
+{
+    CalendarMonth,
+    CalendarWeek,
+    Custom,
+}
+
+public enum ChangePortfolioComparisonView
+{
+    Trend,
+    Findings,
+}
+
+public enum ChangePortfolioSeriesKind
+{
+    Portfolio,
+    ContributorExclusive,
+    SharedContributors,
+}
+
+public enum ChangePortfolioRepositoryExecutionStatus
+{
+    Complete,
+    Reused,
+    Failed,
+}
+
+public enum ChangePortfolioCheckpointDisposition
+{
+    Disabled,
+    Hit,
+    MissWritten,
+    MissFailed,
+}
+
 public enum EstimateViewKind
 {
     Repository,

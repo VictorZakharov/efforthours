@@ -28,6 +28,58 @@ eh change portfolio <repository> --author <alias> [--author <alias> ...]
   --since <instant> --until <instant>
 ```
 
+The manifest form can also produce one time-bucketed, multi-contributor comparison
+without rerunning or adding independently rounded reports:
+
+```text
+eh change portfolio --author-period-manifest <manifest.json> \
+  --bucket calendar-month \
+  --capacity-manifest <capacity.json> \
+  --format markdown \
+  --output <trend.md>
+```
+
+`--bucket calendar-month` and `--bucket calendar-week` derive a gap-free partition
+in the manifest timezone. `--bucket-manifest` instead accepts a versioned caller-
+supplied partition whose first and last instants must equal the overall manifest
+interval and whose buckets may neither overlap nor leave gaps. Every selected
+commit follows the existing since-inclusive/until-exclusive timestamp policy and
+is assigned to exactly one bucket. Buckets are an alternative decomposition of
+the one jointly reconciled portfolio; they are not independent estimates and
+never multiply EHE.
+
+An optional `change-portfolio-capacity-manifest` supplies exactly one positive
+reference-capacity value for every requested contributor/bucket cell plus a
+caller-stated calendar policy. Capacity is a denominator only. It does not change
+EHE and is not attendance, actual labor, productivity, authorship, compensation,
+or a schedule prediction. The portfolio denominator is the exact sum of the
+contributor denominators. Full-period ratios divide full-period EHE by full-period
+capacity; they never average bucket ratios.
+
+Comparison output requires an explicit `--output` path. JSON uses the versioned
+`change-portfolio-comparison-report` contract. Markdown can select `--report-view
+trend` for a publishable multi-period report or `--report-view findings` for a
+generic, anonymized engineering run report. Both views come from the same
+structured calculation. `--generated-at` permits a frozen generation instant for
+reproducible artifacts.
+
+Comparison mode enables atomic repository-evidence checkpoints by default at
+`<output>.eh-checkpoint`; `--checkpoint` selects another execution-only directory
+and `--no-checkpoint` disables persistence. Each entry binds one repository's
+pinned heads, the shared selection/contributor policy, profile, and estimator
+identity. A rerun reuses an exact hit without replanning or reanalysis. Changing
+one pinned head invalidates only that repository's evidence; bucket/capacity/view
+changes reuse immutable repository evidence and deterministically recalculate the
+cheap presentation cells.
+
+Repository shards fail independently. Completed evidence is retained for resume,
+the first substantive exception is sanitized and recorded with repository, phase,
+optional bucket, digest, and true last-progress timestamp, and remaining
+repositories continue. Any failure produces a nonzero exit plus an explicitly
+`incomplete` JSON or Markdown artifact at the requested path. Incomplete artifacts
+contain no source portfolio, additive series, aggregate EHE, or trend, so a failed
+cell can never masquerade as zero or a complete comparison.
+
 Repeated PR selectors use the optional `gh pr view` boundary only to resolve a
 number/URL, immutable provider base-tip/head object IDs, provider changed-file
 count, and execution-only acquisition coordinates. Objects must already exist in
@@ -95,24 +147,22 @@ shape is:
 ```
 
 Public IDs use only letters, digits, `.`, `_`, and `-`, start with a letter or
-digit, and are limited to 128 characters. The v1 execution budgets are 32
+digit, and are limited to 128 characters. The v1 execution budgets are 64
 repositories, 32 heads per repository and 128 heads overall, 64 contributors, 16
 aliases per contributor, and 128 aliases overall. Each repository contributes at
 most 10,000 identity-prefiltered candidates. There is no separate calendar-month
-or presentation-row ceiling; the report contract's 320,000-row safety envelope is
+or presentation-row ceiling; the report contract's 640,000-row safety envelope is
 the product of those public repository and candidate bounds. An
 immutable head object may appear only once within one repository; equal object-ID
 text in different repositories remains repository-scoped. The CLI reads at most
 one MiB of strict UTF-8 manifest JSON.
 
-Inputs with more than 32 repositories may be split into manifests only along
-disjoint repository boundaries. Because reconciliation and normalization are
-repository-local, callers may add the exact `low`, `expected`, and `high`
-repository-normalized totals across those shards after verifying that no canonical
-repository occurs in more than one shard. Do not shard heads, contributors, or
-selected commits from the same repository: doing so would move deduplication and
-reconciliation boundaries and need not reproduce the unsharded result. The CLI
-does not silently split or aggregate manifests.
+The comparison report describes each repository session as an internal evidence
+shard under `repository-evidence-shards/1.0.0`, but those shards remain one logical
+portfolio. All candidates are globally composed before one reconciliation and
+bucket allocation. Callers must not partition contributors or heads, join output
+files, or add rounded totals. Inputs above 64 repositories remain outside the v1
+envelope rather than silently changing semantic boundaries.
 
 Semantic validation rejects duplicate IDs, aliases assigned to several
 contributors, empty alias/head sets, repeated repository-local head objects,
@@ -122,10 +172,13 @@ relative to the manifest, enforce a one-to-one repository-ID/root mapping, verif
 every pinned commit locally, and reject missing or unsafe inputs before analysis.
 It must not fetch, execute target code, or write into a target repository.
 
-Execution preflights every repository and pinned commit before Change analysis.
-Each repository's pinned heads are passed together into Git's identity-prefiltered
-walk, which forms a repository-scoped reachable union and returns each commit
-object once. The exact structured identity/time selector runs after that prefilter.
+Canonical non-comparison manifest execution preflights every repository and pinned
+commit before Change analysis. Comparison mode instead validates one internal
+repository shard at a time so an earlier success can be checkpointed and a later
+failure isolated without discarding completed evidence. In both modes, each
+repository's pinned heads are passed together into Git's identity-prefiltered walk,
+which forms a repository-scoped reachable union and returns each commit object
+once. The exact structured identity/time selector runs after that prefilter.
 A separate topological walk propagates a compact head bitset through shared history
 and stops once all selected commits have their complete head reachability. Its
 frontier is bounded independently from the 10,000-record identity ledger, and the
@@ -255,6 +308,9 @@ clear no-match error rather than inventing estimator metadata.
 The v1 schema catalog includes:
 
 - `change-author-period-manifest`;
+- `change-portfolio-bucket-manifest`;
+- `change-portfolio-capacity-manifest`;
+- `change-portfolio-comparison-report`;
 - `change-portfolio-manifest`; and
 - `change-portfolio-report`.
 
@@ -271,6 +327,26 @@ saved `change-portfolio/0.1.0` manifest reports without aggregation remain valid
 JSON and Markdown output omit source excerpts and local repository paths. Markdown
 shows every selected row, repository group, adjustment, uncertainty, and safety
 warning in a visible ledger.
+
+The comparison contract embeds the canonical source portfolio and adds canonical
+bucket definitions, exact additive contributor-match-set series, the one portfolio
+series, optional capacity ratios, and trend statistics. A requested contributor's
+additive series contains only its exclusive exact-match group. Multi-contributor
+matches stay in separate shared series and are counted once; the renderer never
+invents personal percentages. Trend statistics use expected capacity ratios, OLS
+over bucket ordinal, and a fixed three-bucket capacity-weighted rolling ratio.
+Ratios are rounded deterministically to six decimal places and trend coefficients
+to their documented fixed precision after exact EHE/capacity aggregation.
+
+The trend Markdown includes the immutable input snapshot, partial-period notes,
+Mermaid plus a numeric fallback, overall and contributor tables, a comparison
+matrix, shared-credit semantics, calculation validation, and interpretation
+limits. The findings Markdown includes version/environment boundaries, repository
+outcomes, preserved structured failures when available, phase/progress and
+resource observations, reuse/data-volume counters, a sanitized command shape,
+checkpoint dispositions, repository wall-time baselines, confirmed invariants,
+and data-handling notes. It reports only structured facts and does not guess a
+cause the analyzer did not establish.
 
 ## Verification boundary
 
@@ -463,9 +539,12 @@ set, and highest observed working set without paths or aliases. Direct runs repo
 head validation, history union, selection, snapshot/diff construction, static
 analysis, reconciliation, and rendering. Manifest runs additionally report
 manifest validation and contributor/head allocation. Durations and sampled memory
-are operational telemetry, not report-contract fields, deterministic identity,
-effort inputs, or ordinary CI gates. Aggregate phase time can exceed wall time
-when two repository sessions overlap.
+are operational telemetry, not effort inputs or ordinary CI gates. The canonical
+`change-portfolio-report` continues to exclude them. A comparison report
+deliberately includes them in its execution section so a saved findings report can
+identify a stalled phase, while its `verification.semanticDigest` excludes all
+timings and resource samples. Aggregate phase time can exceed wall time when two
+repository sessions overlap.
 
 Manifest paths resolve against the manifest directory and may point to any local
 Git repository the process can read, including a sibling. Validation opens the

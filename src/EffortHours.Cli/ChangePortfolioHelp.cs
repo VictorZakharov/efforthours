@@ -29,6 +29,19 @@ internal static class ChangePortfolioHelp
                                     Explicit merge behavior (default: exclude)
           --head <revision>          Pinned reachable-history boundary (default: HEAD)
 
+        Time-bucketed comparison (author-period manifest only):
+          --bucket <calendar-month|calendar-week>
+                                    Split the selected interval into calendar buckets
+          --bucket-manifest <path>  Use caller-supplied gap-free closed buckets
+          --capacity-manifest <path>
+                                    Optional positive capacity for every contributor/bucket
+          --report-view <trend|findings>
+                                    Markdown report structure (default: trend)
+          --generated-at <instant>  Inject an ISO-8601 report timestamp for reproducibility
+          --title <text>            Override the generated report title
+          --checkpoint <directory>  Override the checkpoint directory (default: <output>.eh-checkpoint)
+          --no-checkpoint           Disable resumable repository-evidence checkpoints
+
         Output:
           --profile <implementation|recreation>  Estimation profile (default: implementation)
           --format <json|markdown>                Output format (default: json)
@@ -47,9 +60,14 @@ internal static class ChangePortfolioHelp
         immutable commits and never multiplies effort. Manifest author reports use exclusive
         contributor-match and head-reachability groups, retain zero rows, and count shared groups
         once without personal-share splits. Manifest runs emit privacy-safe reuse diagnostics in
-        the report and non-semantic phase timings on stderr. Author manifests accept at most 32
-        repositories. Larger inputs may be sharded only across disjoint repositories; add exact
-        repository-normalized totals after verifying that no repository occurs in multiple shards.
+        the report and non-semantic phase timings on stderr. Author manifests accept at most 64
+        repositories. Time-bucketed reports treat repository evidence sessions as internal shards
+        of one jointly reconciled portfolio; callers never join reports or add rounded totals.
+        Comparison output requires --output and can emit either the versioned JSON contract or a
+        self-contained trend/findings Markdown report from the same calculation. Successful
+        repository evidence is checkpointed atomically by immutable input/model digest. A failed
+        shard leaves resumable evidence, writes an explicitly incomplete report, exits nonzero,
+        and never substitutes zero or publishes aggregate EHE/trends.
         Results are repository-attributed Change EHE, not
         actual labor, productivity, employee rankings, performance grades, or compensation advice.
         """;

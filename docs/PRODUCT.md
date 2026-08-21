@@ -102,6 +102,16 @@ overlap, reversals, or shared context mechanically. Author identity and time may
 select rows but never value them. Output is repository-attributed Change EHE, not
 individual credit or performance. `CHANGE_PORTFOLIOS.md` defines the safeguards.
 
+The multi-repository author-period form can partition one reconciled portfolio
+into calendar or caller-defined buckets and emit versioned JSON, a self-contained
+trend report, or a generic engineering-findings report. Optional reference
+capacity is a caller-supplied denominator only; it never changes EHE or becomes a
+labor/productivity signal. Shared contributor matches remain one explicit group
+rather than being copied or divided into invented personal shares. Digest-bound
+repository checkpoints allow interrupted or partially failed runs to resume;
+incomplete reports preserve root failure/progress evidence and omit all aggregate
+EHE and trend claims.
+
 ### Reporting and pricing
 
 Canonical reports keep evidence, inferred capabilities, estimated work,

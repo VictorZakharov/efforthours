@@ -38,6 +38,8 @@ internal sealed partial class ChangePortfolioCommand
             plan.Selection,
             candidates,
             [.. plan.Diagnostics, estimate.Statistics.CreateDiagnostic()],
-            plan.ExecutionTelemetry);
+            plan.ExecutionTelemetry,
+            estimate.Statistics,
+            plan.Manifest);
     }
 }

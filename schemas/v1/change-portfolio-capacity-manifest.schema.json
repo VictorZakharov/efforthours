@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:eh:schema:v1:change-portfolio-capacity-manifest",
+  "title": "EffortHours change portfolio reference-capacity manifest v1",
+  "type": "object",
+  "required": ["schemaVersion", "calendarPolicy", "entries"],
+  "properties": {
+    "schemaVersion": { "const": "1.0.0" },
+    "calendarPolicy": { "type": "string", "minLength": 1, "maxLength": 512 },
+    "entries": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 32768,
+      "items": { "$ref": "#/$defs/entry" }
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "publicId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
+    },
+    "entry": {
+      "type": "object",
+      "required": ["bucketId", "contributorId", "hours"],
+      "properties": {
+        "bucketId": { "$ref": "#/$defs/publicId" },
+        "contributorId": { "$ref": "#/$defs/publicId" },
+        "hours": { "type": "number", "minimum": 0 }
+      },
+      "additionalProperties": false
+    }
+  }
+}

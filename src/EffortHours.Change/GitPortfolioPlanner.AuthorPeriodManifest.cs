@@ -16,6 +16,8 @@ public sealed record GitAuthorPeriodManifestPortfolioItem
 
 public sealed record GitAuthorPeriodManifestPortfolioPlan
 {
+    public required ChangeAuthorPeriodManifest Manifest { get; init; }
+
     public required ChangePortfolioSelection Selection { get; init; }
 
     public IReadOnlyList<GitAuthorPeriodManifestPortfolioItem> Items { get; init; } = [];
@@ -37,13 +39,15 @@ public sealed partial class GitPortfolioPlanner
             manifestDigest,
             repositoryPaths,
             new ChangePortfolioExecutionTelemetry(),
-            cancellationToken);
+            allowEmptySelection: false,
+            cancellationToken: cancellationToken);
 
     public async Task<GitAuthorPeriodManifestPortfolioPlan> PlanAuthorPeriodManifestAsync(
         ChangeAuthorPeriodManifest manifest,
         string manifestDigest,
         IReadOnlyDictionary<string, string> repositoryPaths,
         ChangePortfolioExecutionTelemetry executionTelemetry,
+        bool allowEmptySelection = false,
         CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(executionTelemetry);
@@ -170,7 +174,7 @@ public sealed partial class GitPortfolioPlanner
             }
         }
 
-        if (items.Count == 0)
+        if (items.Count == 0 && !allowEmptySelection)
         {
             throw new InvalidOperationException(
                 "No commits matched the manifest contributors, selected timestamp field, and inclusive/exclusive interval.");
@@ -178,7 +182,10 @@ public sealed partial class GitPortfolioPlanner
 
         return new GitAuthorPeriodManifestPortfolioPlan
         {
-            Selection = ReportSelection(manifest, manifestDigest),
+            Manifest = manifest,
+            Selection = ChangeAuthorPeriodManifestIdentity.CreateReportSelection(
+                manifest,
+                manifestDigest),
             Items = items,
             Diagnostics = diagnostics,
             ExecutionTelemetry = executionTelemetry,
@@ -306,40 +313,6 @@ public sealed partial class GitPortfolioPlanner
                 exception);
         }
     }
-
-    private static ChangePortfolioSelection ReportSelection(
-        ChangeAuthorPeriodManifest manifest,
-        string manifestDigest) => new()
-        {
-            Kind = ChangePortfolioSelectionKind.AuthorPeriod,
-            ManifestBased = true,
-            AuthorPeriodManifest = new ChangePortfolioAuthorPeriodManifestSelection
-            {
-                ManifestDigest = manifestDigest,
-                SinceInclusive = manifest.Selection.SinceInclusive.ToUniversalTime(),
-                UntilExclusive = manifest.Selection.UntilExclusive.ToUniversalTime(),
-                TimeZone = manifest.Selection.TimeZone,
-                DateField = manifest.Selection.DateField,
-                MergePolicy = manifest.Selection.MergePolicy,
-                CoauthorPolicy = manifest.Selection.CoauthorPolicy,
-                ContributorIds = [.. manifest.Contributors
-                    .Select(contributor => contributor.Id)
-                    .Order(StringComparer.Ordinal)],
-                Repositories = [.. manifest.Repositories
-                    .OrderBy(repository => repository.Id, StringComparer.Ordinal)
-                    .Select(repository => new ChangePortfolioAuthorPeriodManifestRepository
-                    {
-                        Id = repository.Id,
-                        Heads = [.. repository.Heads
-                            .OrderBy(head => head.Id, StringComparer.Ordinal)
-                            .Select(head => new ChangePortfolioAuthorPeriodManifestHead
-                            {
-                                Id = head.Id,
-                                ObjectId = head.ObjectId,
-                            })],
-                    })],
-            },
-        };
 
     private static StringComparer PathComparer => OperatingSystem.IsWindows()
         ? StringComparer.OrdinalIgnoreCase

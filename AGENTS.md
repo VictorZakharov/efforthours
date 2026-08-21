@@ -173,7 +173,8 @@ Change EHE has only the limited Stage A logical admission described in
 `docs/CHANGE_MODEL_ADMISSION.md`; later ecosystem extensions remain experimental.
 Current source reports use `change-seed/0.18.2+seed-rules/0.4.0`, and current
 portfolio reports use `change-portfolio/0.2.3`. Author-period manifests keep a
-10,000-candidate identity ledger per repository, retain every exact match inside
+10,000-candidate identity ledger per repository, accept up to 64 repositories,
+retain every exact match inside
 that input rather than imposing a presentation-row cap, and run at most two
 repository sessions concurrently under fixed per-repository cache bounds,
 including 8,192 immutable analyzer-versioned file artifacts with deterministic
@@ -201,3 +202,14 @@ result, not general field latency or core scaling. Issue #182 remains open. The
 public alpha.6 control remains 3.01x faster end to end and 8.17x faster in
 snapshot/diff work with identical output. The defects tracked by #157 and the
 private A/B/A+B retest tracked by #176 are complete.
+
+Time-bucketed author-period comparison uses versioned bucket, capacity, and
+comparison-report contracts. Calendar-month, calendar-week, and exact custom
+partitions are alternative views of one jointly reconciled portfolio; optional
+capacity is only a denominator. JSON, final trend Markdown, and generic
+engineering-findings Markdown share the same semantic result, keep shared-credit
+groups separate, exclude paths/aliases, and exclude operational timings/resources
+from the semantic digest. Repository evidence checkpoints are digest-bound and
+selectively invalidated. Failed shards retain resumable completed evidence and
+emit nonzero incomplete artifacts with root failure/last-progress context but no
+aggregate EHE or trend.

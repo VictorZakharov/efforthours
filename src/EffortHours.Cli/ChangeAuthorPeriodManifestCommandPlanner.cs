@@ -25,6 +25,7 @@ internal sealed class ChangeAuthorPeriodManifestCommandPlanner(GitPortfolioPlann
             resolved.ManifestDigest,
             resolved.RepositoryPaths,
             executionTelemetry,
-            cancellationToken).ConfigureAwait(false);
+            allowEmptySelection: false,
+            cancellationToken: cancellationToken).ConfigureAwait(false);
     }
 }

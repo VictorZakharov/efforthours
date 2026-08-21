@@ -246,8 +246,63 @@ public sealed class ChangePortfolioSelectionTests
         Assert.Contains("valid only with --author", policy.Error, StringComparison.Ordinal);
         Assert.Contains("Select exactly one", mixed.Error, StringComparison.Ordinal);
         Assert.Contains("--author-period-manifest <path>", ChangePortfolioHelp.Text, StringComparison.Ordinal);
-        Assert.Contains("Author manifests accept at most 32", ChangePortfolioHelp.Text, StringComparison.Ordinal);
-        Assert.Contains("sharded only across disjoint repositories", ChangePortfolioHelp.Text, StringComparison.Ordinal);
+        Assert.Contains("Author manifests accept at most 64", ChangePortfolioHelp.Text, StringComparison.Ordinal);
+        Assert.Contains("internal shards", ChangePortfolioHelp.Text, StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public void CommandParserAcceptsTimeBucketedTrendAndFindingsOutputOnlyWithExplicitPath()
+    {
+        ChangePortfolioCommandParseResult parsed = ChangePortfolioCommandOptionsParser.Parse(
+        [
+            "--author-period-manifest", "portfolio.json",
+            "--bucket", "calendar-month",
+            "--capacity-manifest", "capacity.json",
+            "--report-view", "findings",
+            "--format", "markdown",
+            "--generated-at", "2026-08-20T12:00:00.0000000+00:00",
+            "--title", "Anonymized findings",
+            "--checkpoint", "comparison-cache",
+            "--output", "findings.md",
+            "--no-rate",
+        ]);
+        ChangePortfolioCommandParseResult missingOutput = ChangePortfolioCommandOptionsParser.Parse(
+            ["--author-period-manifest", "portfolio.json", "--bucket", "calendar-month"]);
+        ChangePortfolioCommandParseResult mixedBuckets = ChangePortfolioCommandOptionsParser.Parse(
+        [
+            "--author-period-manifest", "portfolio.json",
+            "--bucket", "calendar-month",
+            "--bucket-manifest", "buckets.json",
+            "--output", "report.json",
+        ]);
+        ChangePortfolioCommandParseResult wrongSelector = ChangePortfolioCommandOptionsParser.Parse(
+        [
+            ".", "--author", "person@example.test",
+            "--since", "2026-01-01T00:00:00Z",
+            "--until", "2026-02-01T00:00:00Z",
+            "--bucket", "calendar-month",
+            "--output", "report.json",
+        ]);
+        ChangePortfolioCommandParseResult conflictingCheckpoint =
+            ChangePortfolioCommandOptionsParser.Parse(
+            [
+                "--author-period-manifest", "portfolio.json",
+                "--bucket", "calendar-month",
+                "--checkpoint", "comparison-cache",
+                "--no-checkpoint",
+                "--output", "report.json",
+            ]);
+
+        ChangePortfolioCommandOptions options = Assert.IsType<ChangePortfolioCommandOptions>(parsed.Options);
+        Assert.Null(parsed.Error);
+        Assert.True(options.IsComparison);
+        Assert.Equal(ChangePortfolioComparisonView.Findings, options.ComparisonView);
+        Assert.Equal("comparison-cache", options.CheckpointPath);
+        Assert.Equal("findings.md", options.OutputPath);
+        Assert.Contains("explicit --output", missingOutput.Error, StringComparison.Ordinal);
+        Assert.Contains("not both", mixedBuckets.Error, StringComparison.Ordinal);
+        Assert.Contains("require --author-period-manifest", wrongSelector.Error, StringComparison.Ordinal);
+        Assert.Contains("cannot be combined", conflictingCheckpoint.Error, StringComparison.Ordinal);
     }
 
     [Fact]

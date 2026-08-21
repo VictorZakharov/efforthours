@@ -6,6 +6,45 @@ namespace EffortHours.Contracts;
 
 public static class ChangeAuthorPeriodManifestIdentity
 {
+    public static ChangePortfolioSelection CreateReportSelection(
+        ChangeAuthorPeriodManifest manifest,
+        string? manifestDigest = null)
+    {
+        ArgumentNullException.ThrowIfNull(manifest);
+        string digest = manifestDigest ?? ComputeDigest(manifest);
+        return new ChangePortfolioSelection
+        {
+            Kind = ChangePortfolioSelectionKind.AuthorPeriod,
+            ManifestBased = true,
+            AuthorPeriodManifest = new ChangePortfolioAuthorPeriodManifestSelection
+            {
+                ManifestDigest = digest,
+                SinceInclusive = manifest.Selection.SinceInclusive.ToUniversalTime(),
+                UntilExclusive = manifest.Selection.UntilExclusive.ToUniversalTime(),
+                TimeZone = manifest.Selection.TimeZone,
+                DateField = manifest.Selection.DateField,
+                MergePolicy = manifest.Selection.MergePolicy,
+                CoauthorPolicy = manifest.Selection.CoauthorPolicy,
+                ContributorIds = [.. manifest.Contributors
+                    .Select(contributor => contributor.Id)
+                    .Order(StringComparer.Ordinal)],
+                Repositories = [.. manifest.Repositories
+                    .OrderBy(repository => repository.Id, StringComparer.Ordinal)
+                    .Select(repository => new ChangePortfolioAuthorPeriodManifestRepository
+                    {
+                        Id = repository.Id,
+                        Heads = [.. repository.Heads
+                            .OrderBy(head => head.Id, StringComparer.Ordinal)
+                            .Select(head => new ChangePortfolioAuthorPeriodManifestHead
+                            {
+                                Id = head.Id,
+                                ObjectId = head.ObjectId,
+                            })],
+                    })],
+            },
+        };
+    }
+
     public static string ComputeDigest(ChangeAuthorPeriodManifest manifest)
     {
         ArgumentNullException.ThrowIfNull(manifest);
