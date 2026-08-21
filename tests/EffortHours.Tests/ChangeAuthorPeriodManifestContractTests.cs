@@ -1,3 +1,4 @@
+using System.Globalization;
 using EffortHours.Change;
 using EffortHours.Contracts;
 using EffortHours.Contracts.V1;
@@ -22,6 +23,66 @@ public sealed class ChangeAuthorPeriodManifestContractTests
 
         Assert.True(schema.IsValid, string.Join(Environment.NewLine, schema.Errors));
         Assert.Empty(ContractValidation.Validate(manifest));
+    }
+
+    [Fact]
+    public void ManifestAcceptsRaisedRepositoryAndHeadEnvelopeAndRejectsOverflow()
+    {
+        ChangeAuthorPeriodManifest source = ValidManifest();
+        ChangeAuthorPeriodManifest atLimit = source with
+        {
+            Contributors = [source.Contributors[0]],
+            Repositories = [.. Enumerable
+                .Range(0, ChangeAuthorPeriodManifestLimits.MaximumRepositories)
+                .Select(MaximumEnvelopeRepository)],
+        };
+
+        SchemaValidationResult schema = ContractSchemaValidator.Validate(
+            SchemaNames.ChangeAuthorPeriodManifest,
+            ContractJson.Serialize(atLimit));
+
+        Assert.True(schema.IsValid, string.Join(Environment.NewLine, schema.Errors));
+        Assert.Empty(ContractValidation.Validate(atLimit));
+        Assert.Equal(
+            ChangeAuthorPeriodManifestLimits.MaximumHeads,
+            atLimit.Repositories.Sum(repository => repository.Heads.Count));
+
+        ChangeAuthorPeriodManifest tooManyRepositories = atLimit with
+        {
+            Repositories = [
+                .. atLimit.Repositories,
+                MaximumEnvelopeRepository(ChangeAuthorPeriodManifestLimits.MaximumRepositories),
+            ],
+        };
+        Assert.Contains(ContractValidation.Validate(tooManyRepositories), error =>
+            error.Contains(
+                $"{ChangeAuthorPeriodManifestLimits.MaximumRepositories} repositories",
+                StringComparison.Ordinal));
+        Assert.False(ContractSchemaValidator.Validate(
+            SchemaNames.ChangeAuthorPeriodManifest,
+            ContractJson.Serialize(tooManyRepositories)).IsValid);
+
+        ChangeAuthorPeriodManifest tooManyHeads = atLimit with
+        {
+            Repositories = [
+                atLimit.Repositories[0] with
+                {
+                    Heads = [
+                        .. atLimit.Repositories[0].Heads,
+                        new ChangeAuthorPeriodManifestHead
+                        {
+                            Id = "third",
+                            ObjectId = new string('f', 40),
+                        },
+                    ],
+                },
+                .. atLimit.Repositories.Skip(1),
+            ],
+        };
+        Assert.Contains(ContractValidation.Validate(tooManyHeads), error =>
+            error.Contains(
+                $"{ChangeAuthorPeriodManifestLimits.MaximumHeads} heads",
+                StringComparison.Ordinal));
     }
 
     [Fact]
@@ -261,6 +322,25 @@ public sealed class ChangeAuthorPeriodManifestContractTests
         Selector = selector,
         ObjectId = objectId,
         Kind = ChangeSnapshotKind.GitTree,
+    };
+
+    private static ChangeAuthorPeriodManifestRepository MaximumEnvelopeRepository(int index) => new()
+    {
+        Id = $"repository-{index:000}",
+        RepositoryPath = $"repositories/repository-{index:000}",
+        Heads =
+        [
+            new ChangeAuthorPeriodManifestHead
+            {
+                Id = "default",
+                ObjectId = ((index * 2) + 1).ToString("x40", CultureInfo.InvariantCulture),
+            },
+            new ChangeAuthorPeriodManifestHead
+            {
+                Id = "open-change",
+                ObjectId = ((index * 2) + 2).ToString("x40", CultureInfo.InvariantCulture),
+            },
+        ],
     };
 
     private static ChangeAuthorPeriodManifest ValidManifest() => new()

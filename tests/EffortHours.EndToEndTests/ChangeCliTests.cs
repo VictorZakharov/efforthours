@@ -426,9 +426,9 @@ public sealed partial class ChangeCliTests
 
         public string RootPath { get; }
 
-        public static async Task<GitFixture> CreateAsync()
+        public static async Task<GitFixture> CreateAsync(string? rootPath = null)
         {
-            string rootPath = Path.Combine(
+            rootPath ??= Path.Combine(
                 Path.GetTempPath(),
                 "efforthours-change-e2e",
                 Guid.NewGuid().ToString("N"));

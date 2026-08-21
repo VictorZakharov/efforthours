@@ -55,9 +55,13 @@ workspace for Git worktrees, normalizes GitHub remote identities, and considers
 only unambiguous matches. Directory names are not repository identity.
 
 The workspace scan is bounded, ignores reparse-point traversal, and admits at
-most the v1 repository count. A checkout outside the supplied workspace is
-outside the approved scope. Multiple checkouts claiming the same provider
-identity fail rather than silently choosing one.
+most the v1 repository count. A malformed `.git` marker is not a repository
+boundary: the scan ignores the marker, continues through other descendants, and
+does not traverse the marker's own metadata directory. Git dubious-ownership and
+other unreadable-repository failures remain fail-closed because silently omitting
+one could publish an incomplete result as complete. A checkout outside the
+supplied workspace is outside the approved scope. Multiple checkouts claiming the
+same provider identity fail rather than silently choosing one.
 
 Within each mapped repository the adapter pins the current default head. With
 `--include-open-prs`, it fully paginates current open PRs and each PR commit

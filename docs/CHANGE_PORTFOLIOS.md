@@ -212,8 +212,8 @@ shape is:
 ```
 
 Public IDs use only letters, digits, `.`, `_`, and `-`, start with a letter or
-digit, and are limited to 128 characters. The v1 execution budgets are 64
-repositories, 32 heads per repository and 128 heads overall, 64 contributors, 16
+digit, and are limited to 128 characters. The v1 execution budgets are 256
+repositories, 32 heads per repository and 512 heads overall, 64 contributors, 16
 aliases per contributor, and 128 aliases overall. Each repository has a
 deterministic 128-MiB charged exact-candidate ledger and reports its scope in
 logical 1,024-candidate chunks. Git may stream more lifetime identity-prefiltered metadata,
@@ -237,7 +237,7 @@ The comparison report describes each repository session as an internal evidence
 shard under `repository-evidence-shards/1.0.0`, but those shards remain one logical
 portfolio. All candidates are globally composed before one reconciliation and
 bucket allocation. Callers must not partition contributors or heads, join output
-files, or add rounded totals. Inputs above 64 repositories remain outside the v1
+files, or add rounded totals. Inputs above 256 repositories remain outside the v1
 envelope rather than silently changing semantic boundaries.
 
 Semantic validation rejects duplicate IDs, aliases assigned to several
@@ -681,6 +681,9 @@ repository sessions overlap.
 Manifest paths resolve against the manifest directory and may point to any local
 Git repository the process can read, including a sibling. Validation opens the
 specified repository rather than imposing containment beneath another worktree.
+The bounded `--workspace` catalog treats a malformed `.git` marker as not being a
+repository and continues through its children without traversing the marker
+itself, so unrelated stale markers cannot abort or hide a valid checkout.
 Unknown unreadable-path failures remain sanitized, so an operating-system,
 sandbox, or process-permission denial does not disclose the rejected local path or
 raw Git stderr. Known Git categories retain a privacy-safe actionable cause. In

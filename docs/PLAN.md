@@ -260,8 +260,9 @@ count, and intermediate churn do not value effort. `CHANGE_ESTIMATION.md` and
   exact contributor/repository/head aggregation and zero rows, non-multiplying
   shared groups, privacy-safe report boundary, and rule that identity and time
   never become value.
-- The same author-period calculation now supports up to 64 repositories and one
-  gap-free calendar-month, calendar-week, or custom bucket partition. Versioned
+- The same author-period calculation now supports up to 256 repositories and 512
+  pinned heads overall, plus one gap-free calendar-month, calendar-week, or custom
+  bucket partition. Versioned
   bucket/capacity inputs feed one source portfolio. The default `joint`
   contributor view exposes its exact additive match-set allocation; optional
   `isolated` series sum canonical matched items so an unrelated contributor cannot

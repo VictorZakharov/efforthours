@@ -53,7 +53,7 @@ public sealed partial class ChangePortfolioComparisonTests
     }
 
     [Fact]
-    public async Task CompleteLogicalReportSupportsFortyRepositoryEvidenceShards()
+    public async Task CompleteLogicalReportSupportsMaximumRepositoryEvidenceShards()
     {
         ChangeAuthorPeriodManifest source = Manifest();
         ChangeAuthorPeriodManifest manifest = source with
@@ -61,7 +61,9 @@ public sealed partial class ChangePortfolioComparisonTests
             Repositories =
             [
                 source.Repositories[0],
-                .. Enumerable.Range(1, 39).Select(index =>
+                .. Enumerable.Range(
+                    1,
+                    ChangeAuthorPeriodManifestLimits.MaximumRepositories - 1).Select(index =>
                     new ChangeAuthorPeriodManifestRepository
                     {
                         Id = $"repository-{index:000}",
@@ -86,9 +88,15 @@ public sealed partial class ChangePortfolioComparisonTests
             BuildOptions(manifest));
 
         Assert.Empty(ContractValidation.Validate(report));
-        Assert.Equal(40, report.Execution.RepositoryShardCount);
-        Assert.Equal(40, report.Execution.Repositories.Count);
-        Assert.Equal(40, report.SourcePortfolio!.Aggregation!.Repositories.Count);
+        Assert.Equal(
+            ChangeAuthorPeriodManifestLimits.MaximumRepositories,
+            report.Execution.RepositoryShardCount);
+        Assert.Equal(
+            ChangeAuthorPeriodManifestLimits.MaximumRepositories,
+            report.Execution.Repositories.Count);
+        Assert.Equal(
+            ChangeAuthorPeriodManifestLimits.MaximumRepositories,
+            report.SourcePortfolio!.Aggregation!.Repositories.Count);
         AssertSchema(
             SchemaNames.ChangePortfolioComparisonReport,
             new ChangePortfolioComparisonJsonRenderer().Render(report));

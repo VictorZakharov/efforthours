@@ -72,11 +72,11 @@ internal static class ChangePortfolioHelp
         immutable commits and never multiplies effort. Manifest author reports use exclusive
         contributor-match and head-reachability groups, retain zero rows, and count shared groups
         once without personal-share splits. Manifest runs emit privacy-safe reuse diagnostics in
-        the report and non-semantic phase timings on stderr. Author manifests accept at most 64
-        repositories. Preflight validates pinned heads, measures the exact identity selection when
-        it fits declared budgets, and emits agent-readable execution guidance without estimating
-        EHE. It never recommends adding separately reconciled interval fragments. Time-bucketed
-        reports treat repository evidence sessions as internal shards
+        the report and non-semantic phase timings on stderr. Author manifests accept at most 256
+        repositories and 512 heads overall. Preflight validates pinned heads, measures the exact
+        identity selection when it fits declared budgets, and emits agent-readable execution
+        guidance without estimating EHE. It never recommends adding separately reconciled interval
+        fragments. Time-bucketed reports treat repository evidence sessions as internal shards
         of one jointly reconciled portfolio; callers never join reports or add rounded totals.
         Calendar-month capacity bucket IDs use yyyy-MM (for example 2026-07); calendar-week
         IDs use week-yyyy-MM-dd with the Monday start date. Custom capacity IDs must exactly

@@ -178,8 +178,8 @@ Change EHE has only the limited Stage A logical admission described in
 Current source reports use `change-seed/0.18.2+seed-rules/0.4.0`, and current
 portfolio reports use `change-portfolio/0.2.5`. Author-period manifests charge a
 deterministic 128-MiB exact in-window identity ledger per repository and account
-its scope in logical 1,024-row selection chunks, accept up to 64 repositories,
-stream lifetime identity-
+its scope in logical 1,024-row selection chunks, accept up to 256 repositories
+and 512 pinned heads overall, stream lifetime identity-
 prefiltered metadata so out-of-window matches do not consume the ledger, and
 impose no ordinary calendar or presentation-row cap. Counts of 100,000 candidates
 per repository and 640,000 selected changes overall are last-resort circuit

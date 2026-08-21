@@ -1,3 +1,5 @@
+using EffortHours.Contracts.V1;
+
 namespace EffortHours.Change;
 
 internal sealed record WorkspaceGitHubRepository(
@@ -8,7 +10,7 @@ internal sealed record WorkspaceGitHubRepository(
 internal static class WorkspaceGitHubRepositoryCatalog
 {
     private const int MaximumVisitedDirectories = 4_096;
-    private const int MaximumRepositories = 256;
+    private const int MaximumRepositories = ChangeAuthorPeriodManifestLimits.MaximumRepositories;
     private const int MaximumDepth = 3;
 
     public static async Task<IReadOnlyList<WorkspaceGitHubRepository>> DiscoverAsync(
@@ -38,12 +40,14 @@ internal static class WorkspaceGitHubRepositoryCatalog
                     $"Workspace discovery exceeded {MaximumVisitedDirectories} directories.");
             }
 
+            bool isRepositoryBoundary = false;
             if (IsGitWorktree(path))
             {
-                WorkspaceGitHubRepository? repository = await ReadRepositoryAsync(
+                (bool isRepository, WorkspaceGitHubRepository? repository) = await ReadRepositoryAsync(
                     path,
                     commands,
                     cancellationToken).ConfigureAwait(false);
+                isRepositoryBoundary = isRepository;
                 if (repository is not null)
                 {
                     repositories.Add(repository);
@@ -54,10 +58,9 @@ internal static class WorkspaceGitHubRepositoryCatalog
                     }
                 }
 
-                continue;
             }
 
-            if (depth >= MaximumDepth)
+            if (isRepositoryBoundary || depth >= MaximumDepth)
             {
                 continue;
             }
@@ -73,7 +76,7 @@ internal static class WorkspaceGitHubRepositoryCatalog
             .OrderBy(repository => repository.RootPath, PathComparer)];
     }
 
-    private static async Task<WorkspaceGitHubRepository?> ReadRepositoryAsync(
+    private static async Task<(bool IsRepository, WorkspaceGitHubRepository? Repository)> ReadRepositoryAsync(
         string path,
         IExternalCommandRunner commands,
         CancellationToken cancellationToken)
@@ -91,6 +94,12 @@ internal static class WorkspaceGitHubRepositoryCatalog
                 throw new InvalidOperationException(
                     "A workspace repository was rejected by Git's dubious-ownership safety check. " +
                     "Configure only that checkout as a process-local safe.directory and retry.");
+            }
+
+            if (root.StandardError.Contains("not a git repository", StringComparison.OrdinalIgnoreCase) ||
+                root.StandardError.Contains("invalid gitfile format", StringComparison.OrdinalIgnoreCase))
+            {
+                return (false, null);
             }
 
             throw new InvalidOperationException(
@@ -117,7 +126,7 @@ internal static class WorkspaceGitHubRepositoryCatalog
             : [];
         if (identities.Length == 0)
         {
-            return null;
+            return (true, null);
         }
 
         List<string> aliases = [];
@@ -125,12 +134,14 @@ internal static class WorkspaceGitHubRepositoryCatalog
             .ConfigureAwait(false);
         await AddConfigValueAsync(commands, canonicalRoot, "user.email", aliases, cancellationToken)
             .ConfigureAwait(false);
-        return new WorkspaceGitHubRepository(
-            canonicalRoot,
-            identities,
-            [.. aliases
-                .Distinct(StringComparer.OrdinalIgnoreCase)
-                .Order(StringComparer.OrdinalIgnoreCase)]);
+        return (
+            true,
+            new WorkspaceGitHubRepository(
+                canonicalRoot,
+                identities,
+                [.. aliases
+                    .Distinct(StringComparer.OrdinalIgnoreCase)
+                    .Order(StringComparer.OrdinalIgnoreCase)]));
     }
 
     private static async Task AddConfigValueAsync(
@@ -194,7 +205,9 @@ internal static class WorkspaceGitHubRepositoryCatalog
         try
         {
             return [.. Directory.EnumerateDirectories(path)
-                .Where(directory => !IsReparsePoint(directory))
+                .Where(directory =>
+                    !PathComparer.Equals(Path.GetFileName(directory), ".git") &&
+                    !IsReparsePoint(directory))
                 .Order(PathComparer)];
         }
         catch (Exception exception) when (
