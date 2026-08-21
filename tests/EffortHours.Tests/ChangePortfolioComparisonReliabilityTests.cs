@@ -216,6 +216,9 @@ public sealed partial class ChangePortfolioComparisonTests
             Resources = execution.Resources! with
             {
                 PeakWorkingSetBytes = progress.PeakWorkingSetBytes,
+                MaximumConcurrentCpuWorkItems = 8,
+                MaximumConcurrentGitTreeReads = 8,
+                MaximumPendingFileInspections = 8,
             },
         };
         ChangePortfolioComparisonBuildOptions options = BuildOptions(manifest) with
@@ -252,7 +255,7 @@ public sealed partial class ChangePortfolioComparisonTests
             report.Verification.SemanticDigest,
             trendView.Verification.SemanticDigest);
         Assert.Equal(
-            "sha256:104fcf0ac02623ce41ab695061303b0cbb51082dd6d2da011892568e1acae90f",
+            "sha256:8a313c661b68fe0dabd692beedc668cebf8db14b0f2d2177622afd858f39b0d3",
             ChangePortfolioComparisonIdentity.ComputeTextDigest(findings));
     }
 }
