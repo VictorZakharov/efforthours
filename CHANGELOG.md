@@ -8,6 +8,13 @@ may still change public contracts with explicit documentation.
 
 ### Added
 
+- Added `eh change portfolio --author-period-manifest <manifest> --preflight`.
+  Its versioned JSON or Markdown scope report validates pinned local heads,
+  measures exact identity candidates and selected changes without constructing
+  snapshots or estimating EHE, projects snapshot/chunk volume, reports declared
+  ledger/checkpoint/output bounds, and gives an agent-readable normal,
+  checkpointed-summary, empty-selection, or blocking-resource recommendation.
+  It never recommends adding independently reconciled interval fragments.
 - Added `--normalization isolated` for time-bucketed author-period comparisons.
   It emits membership-stable, non-additive contributor series from canonical
   matched items while retaining the jointly reconciled portfolio as the only
@@ -16,12 +23,22 @@ may still change public contracts with explicit documentation.
 
 ### Fixed
 
-- Applied the 10,000-record author-period safety limit to exact identity matches
-  inside the requested interval instead of lifetime identity-prefiltered history.
-  Commit metadata is streamed so out-of-window matches do not consume the ledger;
-  an over-limit diagnostic reports the observed in-window count and privacy-safe
-  direct/co-author counts by public contributor ID, and successful selection
-  records the same breakdown.
+- Replaced the ordinary 10,000-candidate author-period rejection with a
+  deterministic 128-MiB charged ledger per repository, logical 1,024-candidate
+  selection accounting, and fixed cache/queue/concurrency/output/checkpoint
+  budgets. The
+  100,000-candidate per-repository and 640,000-change manifest counts are now
+  last-resort circuit breakers, not calendar or presentation limits. Commit
+  metadata remains streamed so out-of-window lifetime matches consume no ledger
+  budget; failures name the exhausted resource and never truncate. Comparison
+  reports now record candidates, selected changes, projected snapshots, chunks,
+  actual snapshot-analysis requests, ledger charge, observed peak working set,
+  declared pipeline/concurrency bounds, checkpoint bytes, and exact rendered
+  bytes. Checkpoint protocol
+  `repository-evidence-checkpoint/1.1.0` binds the measured repository scope.
+- Replaced repeated full-row scans in portfolio contract validation with bounded
+  hash indexes. Large globally reconciled summaries retain identical validation
+  semantics without quadratic item-lineage lookup work.
 - Made generated calendar capacity IDs explicit (`yyyy-MM` for months and
   `week-yyyy-MM-dd` for Monday-start weeks) and report the exact missing and
   unexpected public capacity cells. `eh schema show` now accepts either a bare

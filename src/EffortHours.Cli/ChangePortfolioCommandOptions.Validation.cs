@@ -34,6 +34,10 @@ internal static partial class ChangePortfolioCommandOptionsParser
         }
 
         bool authorSelection = options.AuthorAliases.Count > 0;
+        if (options.Preflight && !options.IsAuthorPeriodManifest)
+        {
+            return Error("Option --preflight requires --author-period-manifest.");
+        }
         if ((options.ManifestPath is not null || options.AuthorPeriodManifestPath is not null) &&
             (options.RepositoryPath is not null || options.GitHubRepository is not null))
         {
@@ -88,6 +92,17 @@ internal static partial class ChangePortfolioCommandOptionsParser
             options.CheckpointPath is not null ||
             options.NoCheckpoint ||
             normalizationProvided;
+        if (options.Preflight && comparisonOption)
+        {
+            return Error(
+                "Author-period preflight measures the manifest selection only; omit bucket, " +
+                "capacity, checkpoint, title, generated-time, report-view, and normalization options.");
+        }
+        if (options.Preflight && (options.HourlyRate is not null || currencyProvided))
+        {
+            return Error(
+                "Author-period preflight does not estimate EHE or pricing; omit hourly-rate and currency options.");
+        }
         if (comparisonOption && !options.IsAuthorPeriodManifest)
         {
             return Error(

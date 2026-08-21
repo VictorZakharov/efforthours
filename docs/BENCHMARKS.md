@@ -1115,11 +1115,15 @@ so the table establishes order of magnitude rather than a controlled speedup:
 | Field contributor B before | closed month | more than 300 s | 640.5 MiB sampled | terminated; no report |
 | v1.5 generated after | 130 exact matches | 8.908 s combined | 142.68 MiB suite peak | report completed |
 
-The deterministic suite separately constructs, reconciles, serializes, and
-schema-validates 1,701 report rows so that a high-commit month cannot regress to a
-presentation cap. The public calculation remains bounded by 10,000 identity
-candidates per repository and the 32-repository manifest envelope; this is not a
-calendar-month limit.
+The deterministic suite separately streams 10,001 exact in-window identity
+candidates, reconciles 10,001 report rows twice in opposite input order, compares
+exact totals plus canonical portfolio identity, and renders one full-period
+Markdown summary without exposing the detailed row ledger. A high-commit month
+therefore cannot regress to the former 10,000 rejection or a presentation cap.
+The public calculation is bounded first by a deterministic 128-MiB candidate-
+ledger charge per repository, fixed chunks/caches/queues, and 512-MiB checkpoint/
+output limits. Counts of 100,000 candidates per repository and 640,000 selected
+changes overall remain final circuit breakers, not calendar limits.
 
 Every semantic invariant passed: independent contributor totals, exact manual
 reconciliation, reordered report bytes, repository-scoped object identity,
@@ -1131,7 +1135,7 @@ restricted caller environment is therefore an operating-system/process-access
 failure, not an EffortHours containment rule.
 
 No wall-time, ratio, allocation, or working-set value gates ordinary CI. CI checks
-the 1,701-row contract, bounded two-repository coordination, linear-space
+the 10,001-row contract, bounded two-repository coordination, linear-space
 component construction, relevant-context selection, exact reuse counts,
 progress/cancellation privacy, sibling-path acceptance, determinism, and
 unchanged/offline targets.
@@ -1246,7 +1250,7 @@ could not complete the comparison matrix:
 
 Alpha.8 preserves selected empty one-parent commits as valid zero-path
 transitions, closing that deterministic correctness regression. The original
-closed-month engineering work is otherwise covered by the 1,701-row calculation
+closed-month engineering work is otherwise covered by the 10,001-row calculation
 regression, exact combined/isolated and reorder semantics, bounded reuse and
 repository concurrency, the 50-repetition ignore-rule stress case, actionable
 Git ownership diagnostics, cancellation diagnostics, and unchanged/offline target
@@ -1654,3 +1658,45 @@ new comparison. Until then, the 190.85-second / 2.1-GiB observation remains a
 scalability ceiling for issue #182. Any successor checkpoint must publish phase,
 operation, allocation, retained-cache, and semantic-equivalence evidence; ordinary
 CI continues to avoid wall-clock and sampled-memory gates.
+
+## Bounded author-period selection v1.12.0 checkpoint
+
+The August 21, 2026 `change/1.12.0` checkpoint is a deterministic semantic and
+resource-envelope checkpoint, not a wall-time benchmark. It replaces the ordinary
+10,000 exact-candidate rejection while retaining fixed memory, persistence,
+concurrency, and output boundaries.
+
+| Contract | Bound or assertion |
+| --- | ---: |
+| Candidate ledger | 128 MiB deterministic charge per repository |
+| Logical selection chunk | 1,024 exact candidates |
+| Analysis chunk | 16 selected changes |
+| Repository concurrency | 2 sessions |
+| Buffered change queue per repository | 4 rows |
+| Managed CPU work | 1 to 24 concurrent items, processor-bounded |
+| Git tree reads | 1 to 8 concurrent reads, processor-bounded |
+| Pending file inspections | 2 to 8 items, processor-bounded |
+| Buffered admitted file read | 1 MiB |
+| Emergency repository count | 100,000 candidates |
+| Emergency manifest count | 640,000 selected changes |
+| Repository checkpoint | 512 MiB |
+| Rendered output | 512 MiB |
+| Deterministic scale fixture | 10,001 candidates / 10,001 reconciled rows |
+
+The candidate fixture proves that exact in-window selection crosses 10,000 under
+the default byte budget and reports ten logical selection chunks. The portfolio
+fixture proves identical totals and canonical identity when the same 10,001 rows
+are reversed, then renders one digest-bound full-period Markdown summary that
+omits the detailed ledger. Separate tests retain non-monotonic author dates,
+ensure an exhausted byte/count budget returns only an explicit lower bound and no
+truncated report,
+and validate the versioned preflight JSON contract. The end-to-end preflight
+validates a pinned local head, reports one selected change/two projected snapshot
+requests, excludes paths and raw aliases, and never starts snapshot-diff or static
+analysis. Comparison execution records exact checkpoint read/write bytes and a
+fixed-point rendered byte count that equals the saved file length.
+
+Ordinary CI gates these deterministic semantics, declared limits, schema/privacy,
+and output-byte equality only. It does not gate elapsed time, CPU utilization,
+allocation, or sampled working set. The existing alpha.12 field observation and
+issue #182 remain the separate evidence and work boundary for throughput/scaling.

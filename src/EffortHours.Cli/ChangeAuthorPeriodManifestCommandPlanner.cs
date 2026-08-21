@@ -28,4 +28,25 @@ internal sealed class ChangeAuthorPeriodManifestCommandPlanner(GitPortfolioPlann
             allowEmptySelection: false,
             cancellationToken: cancellationToken).ConfigureAwait(false);
     }
+
+    public async Task<GitAuthorPeriodManifestScopePlan> MeasureAsync(
+        string manifestPath,
+        ChangePortfolioExecutionTelemetry executionTelemetry,
+        CancellationToken cancellationToken)
+    {
+        ArgumentNullException.ThrowIfNull(executionTelemetry);
+        ResolvedChangeAuthorPeriodManifest resolved;
+        using (executionTelemetry.Measure(ChangePortfolioExecutionPhases.ManifestValidation))
+        {
+            resolved = await ChangeAuthorPeriodManifestLoader.LoadAsync(manifestPath, cancellationToken)
+                .ConfigureAwait(false);
+        }
+
+        return await _planner.MeasureAuthorPeriodManifestAsync(
+            resolved.Manifest,
+            resolved.ManifestDigest,
+            resolved.RepositoryPaths,
+            executionTelemetry,
+            cancellationToken).ConfigureAwait(false);
+    }
 }

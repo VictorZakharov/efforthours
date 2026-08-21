@@ -1,0 +1,222 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:eh:schema:v1:change-portfolio-preflight-report",
+  "title": "EffortHours author-period portfolio scope preflight report v1",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "protocol",
+    "cliVersion",
+    "profile",
+    "selection",
+    "status",
+    "totals",
+    "repositories",
+    "resources",
+    "outputPolicy",
+    "recommendation",
+    "verification"
+  ],
+  "properties": {
+    "schemaVersion": { "const": "1.0.0" },
+    "protocol": { "const": "author-period-scope-preflight/1.0.0" },
+    "cliVersion": { "type": "string", "minLength": 1 },
+    "profile": { "enum": ["implementation", "recreation"] },
+    "selection": { "$ref": "urn:eh:schema:v1:change-portfolio-report#/$defs/portfolioSelection" },
+    "status": { "enum": ["ready", "summary-recommended", "blocked"] },
+    "totals": { "$ref": "#/$defs/totals" },
+    "repositories": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 64,
+      "items": { "$ref": "#/$defs/repository" }
+    },
+    "resources": { "$ref": "#/$defs/resources" },
+    "outputPolicy": { "$ref": "#/$defs/outputPolicy" },
+    "recommendation": { "$ref": "#/$defs/recommendation" },
+    "verification": { "$ref": "#/$defs/verification" }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "publicId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
+    },
+    "digest": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+    "totals": {
+      "type": "object",
+      "required": [
+        "repositoryCount",
+        "headCount",
+        "contributorCount",
+        "candidateCount",
+        "candidateCountIsLowerBound"
+      ],
+      "properties": {
+        "repositoryCount": { "type": "integer", "minimum": 1, "maximum": 64 },
+        "headCount": { "type": "integer", "minimum": 1, "maximum": 128 },
+        "contributorCount": { "type": "integer", "minimum": 1, "maximum": 64 },
+        "candidateCount": { "type": "integer", "minimum": 0 },
+        "candidateCountIsLowerBound": { "type": "boolean" },
+        "selectedChangeCount": { "type": "integer", "minimum": 0 },
+        "sharedContributorChangeCount": { "type": "integer", "minimum": 0 },
+        "projectedSnapshotRequests": { "type": "integer", "minimum": 0 }
+      },
+      "additionalProperties": false
+    },
+    "repository": {
+      "type": "object",
+      "required": [
+        "repositoryId",
+        "headCount",
+        "candidateCount",
+        "candidateCountIsLowerBound",
+        "selectionChunkCount",
+        "chargedCandidateLedgerBytes",
+        "maximumCandidateLedgerBytes",
+        "contributors"
+      ],
+      "properties": {
+        "repositoryId": { "$ref": "#/$defs/publicId" },
+        "headCount": { "type": "integer", "minimum": 1, "maximum": 32 },
+        "candidateCount": { "type": "integer", "minimum": 0 },
+        "candidateCountIsLowerBound": { "type": "boolean" },
+        "selectedChangeCount": { "type": "integer", "minimum": 0 },
+        "sharedContributorChangeCount": { "type": "integer", "minimum": 0 },
+        "projectedSnapshotRequests": { "type": "integer", "minimum": 0 },
+        "selectionChunkCount": { "type": "integer", "minimum": 0 },
+        "analysisChunkCount": { "type": "integer", "minimum": 0 },
+        "chargedCandidateLedgerBytes": { "type": "integer", "minimum": 0 },
+        "maximumCandidateLedgerBytes": { "type": "integer", "minimum": 1 },
+        "blockingResource": {
+          "enum": ["candidate-ledger-bytes", "emergency-candidate-count"]
+        },
+        "contributors": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 64,
+          "items": { "$ref": "#/$defs/contributor" }
+        }
+      },
+      "additionalProperties": false
+    },
+    "contributor": {
+      "type": "object",
+      "required": [
+        "contributorId",
+        "candidateCount",
+        "directAuthorCandidateCount",
+        "coauthorCandidateCount"
+      ],
+      "properties": {
+        "contributorId": { "$ref": "#/$defs/publicId" },
+        "candidateCount": { "type": "integer", "minimum": 0 },
+        "directAuthorCandidateCount": { "type": "integer", "minimum": 0 },
+        "coauthorCandidateCount": { "type": "integer", "minimum": 0 },
+        "selectedChangeCount": { "type": "integer", "minimum": 0 }
+      },
+      "additionalProperties": false
+    },
+    "resources": {
+      "type": "object",
+      "required": [
+        "candidateLedgerChargePolicy",
+        "chargedCandidateLedgerBytes",
+        "maximumCandidateLedgerBytesPerRepository",
+        "selectionChunkCount",
+        "selectionChunkSize",
+        "analysisChunkSize",
+        "maximumConcurrentRepositories",
+        "maximumConcurrentChangesPerRepository",
+        "maximumConcurrentCpuWorkItems",
+        "maximumConcurrentGitTreeReads",
+        "maximumPendingFileInspections",
+        "maximumBufferedFileBytes",
+        "emergencyMaximumCandidatesPerRepository",
+        "emergencyMaximumSelectedChanges",
+        "maximumCheckpointBytesPerRepository",
+        "maximumRenderedOutputBytes"
+      ],
+      "properties": {
+        "blockingResource": {
+          "enum": [
+            "candidate-ledger-bytes",
+            "emergency-candidate-count",
+            "emergency-selected-change-count"
+          ]
+        },
+        "candidateLedgerChargePolicy": { "const": "author-period-candidate-ledger-charge/1.0.0" },
+        "chargedCandidateLedgerBytes": { "type": "integer", "minimum": 0 },
+        "maximumCandidateLedgerBytesPerRepository": { "type": "integer", "minimum": 1 },
+        "selectionChunkCount": { "type": "integer", "minimum": 0 },
+        "selectionChunkSize": { "const": 1024 },
+        "analysisChunkCount": { "type": "integer", "minimum": 0 },
+        "analysisChunkSize": { "const": 16 },
+        "maximumConcurrentRepositories": { "const": 2 },
+        "maximumConcurrentChangesPerRepository": { "const": 4 },
+        "maximumConcurrentCpuWorkItems": { "type": "integer", "minimum": 1, "maximum": 24 },
+        "maximumConcurrentGitTreeReads": { "type": "integer", "minimum": 1, "maximum": 8 },
+        "maximumPendingFileInspections": { "type": "integer", "minimum": 2, "maximum": 8 },
+        "maximumBufferedFileBytes": { "const": 1048576 },
+        "emergencyMaximumCandidatesPerRepository": { "const": 100000 },
+        "emergencyMaximumSelectedChanges": { "const": 640000 },
+        "maximumCheckpointBytesPerRepository": { "const": 536870912 },
+        "maximumRenderedOutputBytes": { "const": 536870912 }
+      },
+      "additionalProperties": false
+    },
+    "outputPolicy": {
+      "type": "object",
+      "required": [
+        "detailedReportReviewThreshold",
+        "fullCalculationIncludesEverySelectedChange",
+        "summaryMayOmitDetailRows",
+        "detailContract"
+      ],
+      "properties": {
+        "detailedReportReviewThreshold": { "const": 2000 },
+        "fullCalculationIncludesEverySelectedChange": { "const": true },
+        "summaryMayOmitDetailRows": { "const": true },
+        "detailContract": { "type": "string", "minLength": 1, "maxLength": 512 }
+      },
+      "additionalProperties": false
+    },
+    "recommendation": {
+      "type": "object",
+      "required": ["action", "reason", "steps"],
+      "properties": {
+        "action": {
+          "enum": ["run-normally", "run-checkpointed-summary", "resolve-resource-budget", "review-empty-selection"]
+        },
+        "reason": { "type": "string", "minLength": 1, "maxLength": 1024 },
+        "steps": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 8,
+          "items": { "type": "string", "minLength": 1, "maxLength": 512 }
+        }
+      },
+      "additionalProperties": false
+    },
+    "verification": {
+      "type": "object",
+      "required": [
+        "manifestDigest",
+        "completeScope",
+        "calculationPerformed",
+        "repositoryPathsExcluded",
+        "rawAliasesExcluded"
+      ],
+      "properties": {
+        "manifestDigest": { "$ref": "#/$defs/digest" },
+        "completeScope": { "type": "boolean" },
+        "calculationPerformed": { "const": false },
+        "repositoryPathsExcluded": { "const": true },
+        "rawAliasesExcluded": { "const": true }
+      },
+      "additionalProperties": false
+    }
+  }
+}

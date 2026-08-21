@@ -1,5 +1,6 @@
 using System.Globalization;
 using System.Text.Json;
+using EffortHours.Contracts.V1;
 
 namespace EffortHours.EndToEndTests;
 
@@ -125,12 +126,40 @@ public sealed partial class ChangeCliTests
             Assert.Equal(
                 "2026-08-20T12:00:00+00:00",
                 document.RootElement.GetProperty("generatedAt").GetString());
+            JsonElement execution = document.RootElement.GetProperty("execution");
+            JsonElement resources = execution.GetProperty("resources");
+            Assert.True(resources.GetProperty("selectionScopeComplete").GetBoolean());
+            Assert.Equal(1, resources.GetProperty("selectedChangeCount").GetInt64());
+            Assert.Equal(2, resources.GetProperty("projectedSnapshotRequests").GetInt64());
+            Assert.Equal(
+                execution.GetProperty("reuse").GetProperty("snapshotAnalysisRequests").GetInt32(),
+                resources.GetProperty("snapshotAnalysisRequests").GetInt32());
+            Assert.Equal(
+                execution.GetProperty("reuse").GetProperty("peakWorkingSetBytes").GetInt64(),
+                resources.GetProperty("peakWorkingSetBytes").GetInt64());
+            Assert.Equal(4, resources.GetProperty("maximumBufferedChangesPerRepository").GetInt32());
+            Assert.InRange(
+                resources.GetProperty("maximumConcurrentCpuWorkItems").GetInt32(),
+                1,
+                24);
+            Assert.Equal(
+                new FileInfo(jsonPath).Length,
+                resources.GetProperty("renderedOutputBytes").GetInt64());
+            Assert.InRange(
+                execution.GetProperty("checkpoint").GetProperty("writtenBytes").GetInt64(),
+                1,
+                ChangePortfolioLimits.MaximumCheckpointBytesPerRepository);
             string trendMarkdown = await File.ReadAllTextAsync(trendPath);
             string findingsMarkdown = await File.ReadAllTextAsync(findingsPath);
             Assert.Contains("# Synthetic trend", trendMarkdown, StringComparison.Ordinal);
             Assert.Contains("```mermaid", trendMarkdown, StringComparison.Ordinal);
             Assert.Contains("Numeric fallback:", trendMarkdown, StringComparison.Ordinal);
             Assert.Contains("Partial-period note", trendMarkdown, StringComparison.Ordinal);
+            Assert.Contains("Bounded execution scope", trendMarkdown, StringComparison.Ordinal);
+            Assert.Contains(
+                "summary-only and omits per-change detail rows",
+                trendMarkdown,
+                StringComparison.Ordinal);
             Assert.Contains("# Synthetic findings", findingsMarkdown, StringComparison.Ordinal);
             Assert.Contains("Version and environment boundary", findingsMarkdown, StringComparison.Ordinal);
             Assert.Contains("Sanitized reproduction shape", findingsMarkdown, StringComparison.Ordinal);

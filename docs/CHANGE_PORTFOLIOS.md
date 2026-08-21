@@ -2,7 +2,7 @@
 
 ## Current boundary
 
-`change-portfolio/0.2.3` composes canonical Change estimates selected as repeated
+`change-portfolio/0.2.4` composes canonical Change estimates selected as repeated
 pull requests, a versioned multi-repository PR manifest, a bounded direct
 author-period, or a versioned multi-repository/multi-head author-period manifest.
 It remains experimental and has no empirical production validation.
@@ -24,6 +24,7 @@ One command accepts exactly one selector family:
 eh change portfolio <repository> --pr <number-or-url> --pr <number-or-url>
 eh change portfolio --manifest <portfolio.json>
 eh change portfolio --author-period-manifest <manifest.json>
+eh change portfolio --author-period-manifest <manifest.json> --preflight
 eh change portfolio <repository> --author <alias> [--author <alias> ...]
   --since <instant> --until <instant>
 ```
@@ -38,6 +39,27 @@ eh change portfolio --author-period-manifest <manifest.json> \
   --format markdown \
   --output <trend.md>
 ```
+
+`--preflight` is a read-only selection-only mode. It validates the manifest and
+pinned local objects, performs the exact repository-scoped identity/time
+selection, and stops before diff construction, snapshot loading, static analysis,
+reconciliation, or EHE estimation. Its versioned JSON or Markdown report exposes
+public repository/contributor IDs, exact counts (or an explicit lower bound when
+a resource stops measurement), projected snapshot requests, deterministic
+selection and analysis chunk counts, ledger charge, and fixed checkpoint/output/
+queue/concurrency bounds. It recommends one normal run, one checkpointed time-
+bucketed summary run, no analysis for an empty selection, or a stop on a named resource.
+It never recommends splitting an interval into independently reconciled reports.
+For example:
+
+```text
+eh change portfolio --author-period-manifest manifest.json --preflight \
+  --format markdown --no-rate --output scope.md
+```
+
+Preflight does not predict wall time: repository tree, diff, and analyzer shape
+can still dominate after selection. Its recommendation is a deterministic scope,
+reviewability, and declared-resource decision rather than a machine-specific ETA.
 
 `--bucket calendar-month` and `--bucket calendar-week` derive a gap-free partition
 in the manifest timezone. `--bucket-manifest` instead accepts a versioned caller-
@@ -88,6 +110,15 @@ identity. A rerun reuses an exact hit without replanning or reanalysis. Changing
 one pinned head invalidates only that repository's evidence; bucket/capacity/view
 changes reuse immutable repository evidence and deterministically recalculate the
 cheap presentation cells.
+
+Checkpoint protocol `repository-evidence-checkpoint/1.1.0` additionally binds the
+privacy-safe measured repository scope. Each file is limited to 512 MiB, and
+comparison execution records exact checkpoint bytes read and written. Versioned
+comparison resources also record candidates, deterministic ledger charge,
+selected changes, projected snapshot requests, selection/analysis chunks, and
+actual snapshot-analysis requests, observed peak working set, declared queue/
+concurrency bounds, and exact rendered bytes against the fixed 512-MiB output
+bound. These operational fields do not change EHE or bucket semantics.
 
 Because the default checkpoint name is derived from the exact output path,
 changing the output filename also selects a different checkpoint directory. Use
@@ -171,15 +202,24 @@ shape is:
 Public IDs use only letters, digits, `.`, `_`, and `-`, start with a letter or
 digit, and are limited to 128 characters. The v1 execution budgets are 64
 repositories, 32 heads per repository and 128 heads overall, 64 contributors, 16
-aliases per contributor, and 128 aliases overall. Each repository contributes at
-most 10,000 exact identity-and-time matches inside the requested interval. Git may
-stream more lifetime identity-prefiltered metadata, but out-of-window matches do
-not consume this ledger. There is no separate calendar-month or presentation-row
-ceiling; the report contract's 640,000-row safety envelope is the product of those
-public repository and candidate bounds. An
+aliases per contributor, and 128 aliases overall. Each repository has a
+deterministic 128-MiB charged exact-candidate ledger and reports its scope in
+logical 1,024-candidate chunks. Git may stream more lifetime identity-prefiltered metadata,
+but out-of-window matches do not consume the ledger. A 100,000-candidate
+per-repository count and the report contract's 640,000 selected-change envelope
+remain final circuit breakers after the byte, cache, queue, checkpoint, and output
+bounds; neither is an ordinary calendar or presentation limit. An
 immutable head object may appear only once within one repository; equal object-ID
 text in different repositories remains repository-scoped. The CLI reads at most
 one MiB of strict UTF-8 manifest JSON.
+
+Charge policy `author-period-candidate-ledger-charge/1.0.0` uses a conservative
+512-byte entry charge, 32 bytes per retained string plus two bytes per character,
+32 bytes per retained identity/collection, and eight bytes per collection
+reference. It accounts deterministically for commit IDs, parent IDs, author and
+committer identities, and parsed co-author identities. This is reproducible
+retained-state accounting, not sampled CLR heap usage; the process remains
+separately bounded by the fixed caches, queues, and concurrency ceilings.
 
 The comparison report describes each repository session as an internal evidence
 shard under `repository-evidence-shards/1.0.0`, but those shards remain one logical
@@ -206,7 +246,7 @@ once. EffortHours streams those records, applies the exact structured identity a
 selected timestamp policy record by record, and retains only in-window matches.
 A separate topological walk propagates a compact head bitset through shared history
 and stops once all selected commits have their complete head reachability. Its
-frontier is bounded independently from the 10,000-record identity ledger, and the
+frontier is bounded independently from the charged identity ledger, and the
 walk has one-million-visited-commit and 100,000-frontier-entry hard stops.
 Contributor, alias, repository, and head input order is canonicalized before
 report construction.
@@ -223,16 +263,17 @@ and local paths are excluded. The existing direct single-repository `--author`
 report remains backward compatible and continues to retain its explicitly
 supplied aliases.
 
-Author-period selection is bounded to 10,000 exact in-window identity candidates
-per repository. Git may traverse a larger reachable graph and stream more lifetime
-identity-prefiltered records without their consuming the retained ledger. Every
-exact match inside the requested interval is retained, including a high-commit
-closed month; calculation is not split or rejected merely to make the detailed
-ledger shorter. An over-limit diagnostic reports the observed in-window count,
-the limit, and privacy-safe direct/co-author counts by requested contributor. It
-never emits raw aliases. A separate bounded count-only ceiling can report a lower
-bound for pathological inputs without retaining unbounded metadata. Successful
-selection reports the retained total and the same public contributor breakdown.
+Author-period selection streams exact in-window identity candidates into a
+deterministically charged 128-MiB ledger per repository and records deterministic
+logical 1,024-candidate chunk counts. Git may traverse a larger reachable graph and stream more
+lifetime identity-prefiltered records without their consuming retained bytes.
+Every exact match inside the requested interval is retained, including a
+high-commit closed month; calculation is not split or rejected merely to shorten
+the detailed ledger. A budget failure reports a lower-bound in-window count, the
+observed charge, the exhausted byte or emergency-count resource, and privacy-safe
+direct/co-author counts by requested contributor. It never emits raw aliases or a
+truncated result. Successful selection reports the retained total, byte charge,
+chunk count, and the same public contributor breakdown.
 The exact selector provides:
 
 - exact case-insensitive aliases matching author name, email, or
@@ -349,7 +390,8 @@ The v1 schema catalog includes:
 - `change-portfolio-bucket-manifest`;
 - `change-portfolio-capacity-manifest`;
 - `change-portfolio-comparison-report`;
-- `change-portfolio-manifest`; and
+- `change-portfolio-manifest`;
+- `change-portfolio-preflight-report`; and
 - `change-portfolio-report`.
 
 Contracts keep selection, immutable base contexts, source Change identity,
@@ -366,9 +408,18 @@ JSON and Markdown output omit source excerpts and local repository paths. Markdo
 shows every selected row, repository group, adjustment, uncertainty, and safety
 warning in a visible ledger.
 
+Preflight JSON and Markdown are selection-only operational reports and contain no
+EHE. Their 2,000-row threshold is review guidance only: above it, the recommended
+time-bucketed Markdown summary may omit per-change detail rows, but the underlying
+source portfolio still calculates and globally reconciles every selected change.
+The full JSON contract remains available when downstream processing requires the
+detailed ledger, subject to the declared rendered-output bound.
+
 The comparison contract embeds the canonical source portfolio and adds canonical
 bucket definitions, the selected contributor-normalization view, the one
 authoritative portfolio series, optional capacity ratios, and trend statistics.
+Portfolio validation uses bounded canonical item-ID indexes, so item-lineage
+checks remain linear in row count rather than rescanning a large source ledger.
 In joint mode, a requested contributor's additive series contains only its
 exclusive exact-match group; multi-contributor matches stay in separate shared
 series and are counted once. In isolated mode, each requested contributor gets a
@@ -438,12 +489,13 @@ storage-independent tests retain precise policy and failure boundaries.
 | Repository/head/contributor/alias reorder invariance | `DigestIsInvariantToContributorRepositoryHeadAndAliasOrder` and the process matrix |
 | Exact disjoint manual baseline at all range points | `MatchSetGroupsKeepSharedEffortOnceAndPreserveZeroRows` and the process matrix |
 | No local paths, raw aliases, or source excerpts | `ReportSelectionContainsStableIdsAndObjectsButNoPathsOrAliases` and the process matrix |
-| High-commit closed month | `HighCommitMonthIsNotRejectedByAPresentationRowLimit` and the explicit v1.5.0 benchmark mode |
+| High-commit closed month | `DefaultBudgetRetainsMoreThanTenThousandExactCandidatesInChunks`, `MoreThanTenThousandChangesReconcileAndRenderOneDeterministicSummary`, and the explicit v1.5.0 benchmark mode |
 | Lifetime identity matches outside interval do not consume the ledger | `OutOfWindowLifetimeMatchesDoNotConsumeTheCandidateLimit` |
-| Exact over-limit count and privacy-safe contributor breakdown | `OverLimitDiagnosticReportsObservedCountAndPublicContributorBreakdown` |
+| Exact resource failure and privacy-safe contributor breakdown | `EmergencyCircuitBreakerReportsObservedCountAndPublicContributorBreakdown` and `CandidateLedgerStopsAtTheDeclaredByteBudgetWithoutTruncation` |
+| Agent-readable selection scope without EHE analysis | `ManifestPreflightMeasuresSelectionWithoutSnapshotAnalysis` and `AuthorManifestPreflightRecommendsOneCheckpointedSummaryWithoutAnalyzing` |
 | Stable isolated contributor series and non-additive shared matches | `IsolatedContributorSeriesStayStableAcrossManifestMembership` |
 | Sibling repository paths | `AuthorPeriodManifestAcceptsSiblingRepositoryFromManifestInsideWorktree` |
-| Missing object, cancellation, input limits, and safety caps | `AuthorPeriodManifestPreflightFailuresDoNotLeakPathsOrAliases`, `PortfolioCandidateCancellationDisposesRepositorySessionBeforeOpeningSnapshots`, `CancelledManifestCommandEmitsPrivacySafeLastPhaseProgress`, `ManifestContractIsVersionedBoundedAndRejectsDuplicateIds`, and `OverLimitDiagnosticReportsObservedCountAndPublicContributorBreakdown` |
+| Missing object, cancellation, input limits, and safety caps | `AuthorPeriodManifestPreflightFailuresDoNotLeakPathsOrAliases`, `PortfolioCandidateCancellationDisposesRepositorySessionBeforeOpeningSnapshots`, `CancelledManifestCommandEmitsPrivacySafeLastPhaseProgress`, `ManifestContractIsVersionedBoundedAndRejectsDuplicateIds`, and `CandidateLedgerStopsAtTheDeclaredByteBudgetWithoutTruncation` |
 
 Timing and sampled-memory fields from the process matrix are observations. CI does
 not pass or fail on them; it gates the semantic, privacy, reuse, boundedness, and
@@ -455,7 +507,7 @@ inventory reuse rules in `CHANGE_ESTIMATION.md`. Identity and time still select
 rows only; neither the candidate count nor the size of the reachable graph enters
 an effort rule.
 
-`change-portfolio/0.2.3` keeps one invocation-scoped execution context per local
+`change-portfolio/0.2.4` keeps one invocation-scoped execution context per local
 repository. Candidate plans are grouped by canonical repository root and
 scheduled with at most two repository sessions active at once. Within each
 repository, a deterministic 16-row delta-prime chunk feeds one ordered snapshot

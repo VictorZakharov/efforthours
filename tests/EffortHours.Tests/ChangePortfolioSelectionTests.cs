@@ -136,6 +136,31 @@ public sealed class ChangePortfolioSelectionTests
     }
 
     [Fact]
+    public void NonMonotonicAuthorDatesRemainExactAndAreOrderedAfterSelection()
+    {
+        GitCommitMetadata topologicallyEarlier = Commit(
+            "6",
+            Since.AddHours(20),
+            authorName: "Target",
+            authorEmail: "target@example.test");
+        GitCommitMetadata topologicallyLater = Commit(
+            "7",
+            Since.AddHours(2),
+            parents: [topologicallyEarlier.ObjectId],
+            authorName: "Target",
+            authorEmail: "target@example.test");
+
+        AuthorPeriodSelectionResult result = AuthorPeriodCommitSelector.Select(
+            [topologicallyEarlier, topologicallyLater],
+            Options(),
+            ["Target"]);
+
+        Assert.Equal(
+            [topologicallyLater.ObjectId, topologicallyEarlier.ObjectId],
+            [.. result.Commits.Select(commit => commit.Metadata.ObjectId)]);
+    }
+
+    [Fact]
     public void GitMetadataParserExtractsOnlyStructuredIdentityAndCoauthorFields()
     {
         string objectId = new('a', 40);

@@ -14,9 +14,14 @@ public static partial class ContractValidation
         HashSet<string> groupedItems = new(StringComparer.Ordinal);
         HashSet<string> adjustmentIds = report.Adjustments.Select(item => item.Id)
             .ToHashSet(StringComparer.Ordinal);
+        Dictionary<string, ChangePortfolioAdjustment> adjustmentsById =
+            PortfolioAdjustmentIndex(report.Adjustments);
+        Dictionary<string, ChangePortfolioItemEstimate> itemsById =
+            PortfolioItemIndex(report.Items);
         HashSet<string> groupedAdjustments = new(StringComparer.Ordinal);
         foreach (ChangePortfolioRepositoryGroup group in report.RepositoryGroups)
         {
+            HashSet<string> groupItemIds = group.ItemIds.ToHashSet(StringComparer.Ordinal);
             RequireText(group.Id, "repositoryGroup.id", errors);
             RequireText(group.RepositoryId, $"repositoryGroup[{group.Id}].repositoryId", errors);
             ValidateRange(group.IsolatedEffort, $"repositoryGroup[{group.Id}].isolatedEffort", errors);
@@ -43,8 +48,8 @@ public static partial class ContractValidation
                     errors.Add($"Portfolio repository group '{group.Id}' has an invalid or repeated item reference.");
                 }
 
-                ChangePortfolioItemEstimate? item = report.Items.FirstOrDefault(candidate => candidate.Id == itemId);
-                if (item is not null && item.RepositoryId != group.RepositoryId)
+                if (itemsById.TryGetValue(itemId, out ChangePortfolioItemEstimate? item) &&
+                    item.RepositoryId != group.RepositoryId)
                 {
                     errors.Add($"Portfolio repository group '{group.Id}' contains an item from another repository.");
                 }
@@ -55,11 +60,12 @@ public static partial class ContractValidation
                 errors.Add($"Portfolio repository group '{group.Id}' has an invalid or repeated adjustment reference.");
             }
 
-            foreach (ChangePortfolioAdjustment adjustment in report.Adjustments.Where(adjustment =>
-                group.AdjustmentIds.Contains(adjustment.Id, StringComparer.Ordinal)))
+            foreach (ChangePortfolioAdjustment adjustment in group.AdjustmentIds
+                .Where(adjustmentsById.ContainsKey)
+                .Select(id => adjustmentsById[id]))
             {
                 if (adjustment.ItemIds.Any(itemId =>
-                    !group.ItemIds.Contains(itemId, StringComparer.Ordinal)))
+                    !groupItemIds.Contains(itemId)))
                 {
                     errors.Add($"Portfolio adjustment '{adjustment.Id}' crosses repository groups.");
                 }
@@ -70,9 +76,9 @@ public static partial class ContractValidation
                 group.NormalizedEffort,
                 $"repositoryGroup[{group.Id}].categories",
                 errors);
-            EffortRange groupItems = Sum(report.Items
-                .Where(item => group.ItemIds.Contains(item.Id, StringComparer.Ordinal))
-                .Select(item => item.IsolatedEffort));
+            EffortRange groupItems = Sum(group.ItemIds
+                .Where(itemsById.ContainsKey)
+                .Select(itemId => itemsById[itemId].IsolatedEffort));
             if (groupItems != group.IsolatedEffort)
             {
                 errors.Add($"Portfolio repository group '{group.Id}' isolated effort does not equal its item sum.");
@@ -87,7 +93,7 @@ public static partial class ContractValidation
                 errors.Add($"Portfolio repository group '{group.Id}' has an order policy inconsistent with the selector.");
             }
 
-            ValidateBaseContexts(report, group, errors);
+            ValidateBaseContexts(group, groupItemIds, itemsById, errors);
         }
 
         if (!groupedItems.SetEquals(itemIds))
@@ -121,8 +127,9 @@ public static partial class ContractValidation
     }
 
     private static void ValidateBaseContexts(
-        ChangePortfolioReport report,
         ChangePortfolioRepositoryGroup group,
+        HashSet<string> groupItemIds,
+        Dictionary<string, ChangePortfolioItemEstimate> itemsById,
         List<string> errors)
     {
         HashSet<string> contextItems = [];
@@ -138,13 +145,13 @@ public static partial class ContractValidation
 
             foreach (string itemId in context.ItemIds)
             {
-                if (!group.ItemIds.Contains(itemId, StringComparer.Ordinal) || !contextItems.Add(itemId))
+                if (!groupItemIds.Contains(itemId) || !contextItems.Add(itemId))
                 {
                     errors.Add($"Base context '{context.Id}' has an invalid or repeated item reference.");
                 }
 
-                ChangePortfolioItemEstimate? item = report.Items.FirstOrDefault(candidate => candidate.Id == itemId);
-                if (item is not null && (item.BaseContextId != context.Id ||
+                if (itemsById.TryGetValue(itemId, out ChangePortfolioItemEstimate? item) &&
+                    (item.BaseContextId != context.Id ||
                     item.Selection.Base.ObjectId != context.BaseObjectId))
                 {
                     errors.Add($"Base context '{context.Id}' does not match item '{itemId}' immutable base identity.");

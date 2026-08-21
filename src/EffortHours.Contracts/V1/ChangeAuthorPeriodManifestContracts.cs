@@ -14,12 +14,21 @@ public static class ChangeAuthorPeriodManifestLimits
 
     public const int MaximumAliases = 128;
 
-    public const int MaximumIdentityCandidatesPerRepository = 10_000;
+    public const int SelectionChunkSize = 1_024;
 
-    // This is the complete public manifest input envelope, not a calendar-
-    // interval or presentation-row limit.
-    public const int MaximumSelectedCommits =
-        MaximumRepositories * MaximumIdentityCandidatesPerRepository;
+    public const int AnalysisChunkSize = 16;
+
+    public const long MaximumCandidateLedgerBytesPerRepository = 128L * 1024 * 1024;
+
+    // This ceiling is a final circuit breaker after the byte, output, cache,
+    // queue, and concurrency budgets. It is not a calendar or semantic limit.
+    public const int EmergencyMaximumIdentityCandidatesPerRepository = 100_000;
+
+    // Preserve the former complete manifest envelope as a last-resort global
+    // circuit breaker. Ordinary selection is governed by retained bytes.
+    public const int EmergencyMaximumSelectedCommits = 640_000;
+
+    public const int MaximumSelectedCommits = EmergencyMaximumSelectedCommits;
 
     public const int MaximumIdLength = 128;
 

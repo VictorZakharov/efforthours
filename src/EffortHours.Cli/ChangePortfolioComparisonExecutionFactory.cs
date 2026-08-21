@@ -1,4 +1,5 @@
 using System.Runtime.InteropServices;
+using EffortHours.Analysis;
 using EffortHours.Change;
 using EffortHours.Contracts.V1;
 
@@ -22,6 +23,12 @@ internal sealed record ChangePortfolioRepositoryOutcome
 
     public ChangePortfolioExecutionStatistics? Statistics { get; init; }
 
+    public GitAuthorPeriodManifestRepositoryScope? Scope { get; init; }
+
+    public long CheckpointReadBytes { get; init; }
+
+    public long CheckpointWrittenBytes { get; init; }
+
     public TimeSpan Elapsed { get; init; }
 
     public ChangePortfolioComparisonFailure? Failure { get; init; }
@@ -43,6 +50,11 @@ internal static class ChangePortfolioComparisonExecutionFactory
         ChangePortfolioExecutionStatistics[] statistics =
             [.. outcomes.Where(outcome => outcome.Statistics is not null)
                 .Select(outcome => outcome.Statistics!)];
+        long peakWorkingSetBytes = outcomes
+            .Select(outcome => outcome.Telemetry.GetLastProgress()?.PeakWorkingSetBytes ?? 0)
+            .Append(portfolioTelemetry?.GetLastProgress()?.PeakWorkingSetBytes ?? 0)
+            .DefaultIfEmpty()
+            .Max();
         ChangePortfolioPhaseTiming[] timings =
         [
             .. outcomes.SelectMany(outcome => outcome.Telemetry.GetTimings())
@@ -79,6 +91,8 @@ internal static class ChangePortfolioComparisonExecutionFactory
                     outcome.CheckpointDisposition == ChangePortfolioCheckpointDisposition.MissWritten),
                 FailureCount = outcomes.Count(outcome =>
                     outcome.CheckpointDisposition == ChangePortfolioCheckpointDisposition.MissFailed),
+                ReadBytes = outcomes.Sum(outcome => outcome.CheckpointReadBytes),
+                WrittenBytes = outcomes.Sum(outcome => outcome.CheckpointWrittenBytes),
             },
             RepositoryShardCount = outcomes.Count,
             Repositories = [.. outcomes
@@ -105,10 +119,44 @@ internal static class ChangePortfolioComparisonExecutionFactory
                 BlobCacheHits = statistics.Sum(value => value.BlobCacheHits),
                 UniqueBlobObjects = statistics.Sum(value => value.UniqueBlobObjects),
                 BlobReadBytes = statistics.Sum(value => value.BlobReadBytes),
-                PeakWorkingSetBytes = outcomes
-                    .Select(outcome => outcome.Telemetry.GetLastProgress()?.PeakWorkingSetBytes ?? 0)
-                    .DefaultIfEmpty()
-                    .Max(),
+                PeakWorkingSetBytes = peakWorkingSetBytes,
+            },
+            Resources = new ChangePortfolioComparisonResourceUsage
+            {
+                CandidateLedgerChargePolicy =
+                    ChangePortfolioPreflightPolicies.CandidateLedgerChargeV1,
+                SelectionScopeComplete = outcomes.All(outcome => outcome.Scope is not null),
+                CandidateCount = outcomes.Sum(outcome => (long)(outcome.Scope?.CandidateCount ?? 0)),
+                ChargedCandidateLedgerBytes = outcomes.Sum(outcome =>
+                    outcome.Scope?.ChargedCandidateLedgerBytes ?? 0),
+                SelectionChunkCount = outcomes.Sum(outcome =>
+                    outcome.Scope?.SelectionChunkCount ?? 0),
+                SelectionChunkSize = ChangeAuthorPeriodManifestLimits.SelectionChunkSize,
+                SelectedChangeCount = outcomes.Sum(outcome =>
+                    (long)(outcome.Scope?.SelectedChangeCount ?? outcome.Candidates.Count)),
+                ProjectedSnapshotRequests = outcomes.Sum(outcome =>
+                    outcome.Scope?.ProjectedSnapshotRequests ?? 0),
+                AnalysisChunkCount = outcomes.Sum(outcome => outcome.Scope?.AnalysisChunkCount ?? 0),
+                AnalysisChunkSize = ChangeEstimator.PortfolioDeltaPrimeChunkSize,
+                SnapshotAnalysisRequests = statistics.Sum(value => value.SnapshotAnalysisRequests),
+                PeakWorkingSetBytes = peakWorkingSetBytes,
+                MaximumCandidateLedgerBytesPerRepository =
+                    ChangeAuthorPeriodManifestLimits.MaximumCandidateLedgerBytesPerRepository,
+                MaximumCheckpointBytesPerRepository =
+                    ChangePortfolioLimits.MaximumCheckpointBytesPerRepository,
+                MaximumConcurrentRepositories =
+                    ChangeEstimator.MaximumConcurrentPortfolioRepositories,
+                MaximumBufferedChangesPerRepository =
+                    ChangeEstimator.MaximumConcurrentPortfolioChangesPerRepository,
+                MaximumConcurrentCpuWorkItems =
+                    RepositoryAnalysisConcurrency.MaximumCpuWorkItems,
+                MaximumConcurrentGitTreeReads =
+                    RepositoryAnalysisConcurrency.MaximumGitTreeReads,
+                MaximumPendingFileInspections =
+                    RepositoryAnalysisConcurrency.MaximumPendingFileInspections,
+                MaximumBufferedFileBytes =
+                    RepositoryAnalysisConcurrency.MaximumBufferedFileBytes,
+                MaximumRenderedOutputBytes = ChangePortfolioLimits.MaximumRenderedOutputBytes,
             },
             Failures = [.. outcomes.Where(outcome => outcome.Failure is not null)
                 .Select(outcome => outcome.Failure!)],
@@ -121,7 +169,14 @@ internal static class ChangePortfolioComparisonExecutionFactory
             RepositoryId = outcome.RepositoryId,
             Status = outcome.Status,
             CheckpointDisposition = outcome.CheckpointDisposition,
-            SelectedChangeCount = outcome.Candidates.Count,
+            SelectedChangeCount = outcome.Scope?.SelectedChangeCount ?? outcome.Candidates.Count,
+            CandidateCount = outcome.Scope?.CandidateCount ?? 0,
+            ChargedCandidateLedgerBytes = outcome.Scope?.ChargedCandidateLedgerBytes ?? 0,
+            SelectionChunkCount = outcome.Scope?.SelectionChunkCount ?? 0,
+            AnalysisChunkCount = outcome.Scope?.AnalysisChunkCount ?? 0,
+            ProjectedSnapshotRequests = outcome.Scope?.ProjectedSnapshotRequests ?? 0,
+            CheckpointReadBytes = outcome.CheckpointReadBytes,
+            CheckpointWrittenBytes = outcome.CheckpointWrittenBytes,
             ElapsedMilliseconds = Round((decimal)outcome.Elapsed.TotalMilliseconds),
             InputDigest = outcome.InputDigest,
             PhaseTimings = [.. outcome.Telemetry.GetTimings().Select(timing =>

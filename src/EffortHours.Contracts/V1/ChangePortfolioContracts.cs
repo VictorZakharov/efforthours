@@ -5,6 +5,10 @@ public static class ChangePortfolioLimits
     public const int MaximumManifestItems = 128;
 
     public const int MaximumReportItems = ChangeAuthorPeriodManifestLimits.MaximumSelectedCommits;
+
+    public const long MaximumRenderedOutputBytes = 512L * 1024 * 1024;
+
+    public const long MaximumCheckpointBytesPerRepository = 512L * 1024 * 1024;
 }
 
 public sealed record ChangePortfolioManifest

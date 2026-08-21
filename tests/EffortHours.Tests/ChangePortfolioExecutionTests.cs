@@ -60,9 +60,11 @@ public sealed partial class ChangePortfolioCommandTests
             GitPortfolioPlannerOptions.DefaultMaximumHistoryCommits,
             GitSnapshotSession.MaximumRememberedFirstParents);
         Assert.Equal(
-            ChangeAuthorPeriodManifestLimits.MaximumRepositories *
-                GitPortfolioPlannerOptions.DefaultMaximumHistoryCommits,
+            ChangeAuthorPeriodManifestLimits.EmergencyMaximumSelectedCommits,
             GitPortfolioPlannerOptions.DefaultMaximumSelectedItems);
+        Assert.Equal(
+            ChangeAuthorPeriodManifestLimits.EmergencyMaximumIdentityCandidatesPerRepository,
+            GitPortfolioPlannerOptions.DefaultMaximumHistoryCommits);
         Assert.True(GitSnapshotSession.MaximumRememberedFirstParents > 1_700);
         Assert.True(GitPortfolioPlannerOptions.DefaultMaximumSelectedItems > 1_700);
         Assert.Equal(64 * 1024 * 1024, GitSnapshotDeltaBatch.MaximumBatchOutputBytes);
