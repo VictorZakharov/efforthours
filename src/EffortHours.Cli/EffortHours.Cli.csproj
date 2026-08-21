@@ -8,11 +8,11 @@
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>eh</ToolCommandName>
     <PackageId>EffortHours.Tool</PackageId>
-    <Version>0.10.0-alpha.11</Version>
+    <Version>0.10.0-alpha.12</Version>
     <Title>EffortHours CLI</Title>
     <PackageReadmeFile>PACKAGE_README.md</PackageReadmeFile>
     <PackageTags>estimation;effort-estimation;developer-tools;cli;repository-analysis;static-analysis;dotnet-tool</PackageTags>
-    <PackageReleaseNotes>0.10.0-alpha.11: Author-period portfolios now reuse exact first-parent repository evidence for analyzer-neutral C# lineage edits and use storage-aware Git scheduling with server GC. On the prepared 512-change checkpoint, median runtime fell from 11.399 to 6.279 seconds with identical estimate semantics, lower allocation, and lower sampled peak working set; results are fixture-specific and general core scaling is not established. Git child-process CPU telemetry is now best-effort across platforms. Repository EHE remains experimental and uncalibrated, and seed-rules/0.4.0 remains the shipped estimator. Full notes: https://github.com/VictorZakharov/efforthours/blob/v0.10.0-alpha.11/CHANGELOG.md</PackageReleaseNotes>
+    <PackageReleaseNotes>0.10.0-alpha.12: Author-period manifests now produce one-command calendar-month, calendar-week, or custom multi-contributor comparison reports as versioned JSON, trend Markdown, or anonymized engineering-findings Markdown, with optional capacity ratios, up to 64 repositories, resumable digest-bound checkpoints, and explicit incomplete-failure output. Closed-month portfolio analysis no longer stalls on overlapping first-parent lineages, rebinds reused evidence to exact row scopes, preserves root pipeline errors, and keeps logical-capability ranges ordered. Repository EHE remains experimental and uncalibrated, and seed-rules/0.4.0 remains the shipped estimator. Full notes: https://github.com/VictorZakharov/efforthours/blob/v0.10.0-alpha.12/CHANGELOG.md</PackageReleaseNotes>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="../EffortHours.Analysis/EffortHours.Analysis.csproj" />

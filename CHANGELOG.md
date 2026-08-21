@@ -6,6 +6,8 @@ may still change public contracts with explicit documentation.
 
 ## Unreleased
 
+## 0.10.0-alpha.12 - 2026-08-20
+
 ### Added
 
 - Added one-command calendar-month, calendar-week, and custom time-bucketed
