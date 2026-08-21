@@ -8,11 +8,11 @@
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>eh</ToolCommandName>
     <PackageId>EffortHours.Tool</PackageId>
-    <Version>0.10.0-alpha.13</Version>
+    <Version>0.10.0-alpha.14</Version>
     <Title>EffortHours CLI</Title>
     <PackageReadmeFile>PACKAGE_README.md</PackageReadmeFile>
     <PackageTags>estimation;effort-estimation;developer-tools;cli;repository-analysis;static-analysis;dotnet-tool</PackageTags>
-    <PackageReleaseNotes>0.10.0-alpha.13: Author-period manifests can now preflight exact repository scope as versioned JSON or Markdown before analysis, replace the ordinary 10,000-candidate rejection with deterministic memory and emergency safety budgets, and expose resource accounting for large runs. Time-bucketed comparisons add isolated, membership-stable contributor trends while preserving joint reconciliation as the authoritative portfolio total. Large report validation is now bounded, calendar capacity and schema diagnostics are clearer, and checkpoint scope plus output accounting are exact. Repository EHE remains experimental and uncalibrated, and seed-rules/0.4.0 remains the shipped estimator. Full notes: https://github.com/VictorZakharov/efforthours/blob/v0.10.0-alpha.13/CHANGELOG.md</PackageReleaseNotes>
+    <PackageReleaseNotes>0.10.0-alpha.14: Add a one-command GitHub-assisted today-to-date author portfolio with local-workspace mapping, relevant open-PR discovery, narrow immutable-object acquisition, inline daily capacity, and concise Markdown or versioned JSON output. Complete zero-work days and incomplete discovery remain explicit and privacy-safe. Narrow Change scopes now retain Java/Kotlin fallback ownership, while immutable .NET project-context reuse reduces repeated portfolio analysis under exact identity guards. Repository EHE remains experimental and uncalibrated, and seed-rules/0.4.0 remains the shipped estimator. Full notes: https://github.com/VictorZakharov/efforthours/blob/v0.10.0-alpha.14/CHANGELOG.md</PackageReleaseNotes>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="../EffortHours.Analysis/EffortHours.Analysis.csproj" />
