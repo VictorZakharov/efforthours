@@ -82,6 +82,8 @@ public sealed class SeedEstimator : IThreadSafeEstimator
         Description = "One senior contractor recreating the described working system with modern 2026 tools and no AI.",
     };
 
+    public static EstimationBaseline CreateDefaultBaseline() => Baseline with { };
+
     public EstimateReport Estimate(
         RepositoryEvidence evidence,
         EstimationProfile profile,

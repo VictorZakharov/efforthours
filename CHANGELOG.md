@@ -6,6 +6,23 @@ may still change public contracts with explicit documentation.
 
 ## Unreleased
 
+### Added
+
+- Added a one-command GitHub-assisted today-to-date author portfolio. Explicit
+  `--owner`, `--workspace`, `--author "@me"`, `--today`, and
+  `--capacity-hours` inputs resolve mapped default and relevant open-PR heads,
+  optionally acquire only missing immutable objects, build the existing v1
+  manifest and partial daily bucket in memory, and emit versioned JSON or concise
+  Markdown to stdout. Reports preserve exact EHE/capacity arithmetic, complete
+  zero-work days, privacy-safe discovery coverage, and workflow timing without
+  copying aliases or local paths.
+
+### Fixed
+
+- Give maintained Java or Kotlin source outside every declared JVM subproject a
+  repository-level fallback owner. Narrow Change scopes no longer fail with an
+  empty project-owner sequence while deeper declared projects retain precedence.
+
 ### Changed
 
 - Reuse immutable .NET project, solution, and central-package evidence across

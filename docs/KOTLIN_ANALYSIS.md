@@ -42,9 +42,11 @@ plugins, profiles, processor declarations, and in-repository reactor modules.
 Static Gradle discovery records literal root names, includes, included builds,
 `projectDir` mappings, project dependencies, external coordinates, and plugins.
 Each source file belongs to the deepest containing discovered project. Kotlin
-package imports may establish a local project edge only when they match a package
-owned by another discovered project and no shared JVM build edge already
-represents that relationship.
+source outside every declared subproject uses the repository-level fallback JVM
+scope while deeper declared projects retain precedence. Kotlin package imports
+may establish a local project edge only when they match a package owned by
+another discovered project and no shared JVM build edge already represents that
+relationship.
 
 This is conservative project discovery, not an effective Maven model or Gradle
 evaluator. Dynamic or property-backed values remain explicit uncertainty. The

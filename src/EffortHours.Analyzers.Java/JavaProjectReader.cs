@@ -51,7 +51,14 @@ internal sealed class JavaProjectReader(
         }
 
         AddDiscoveredProjects(projects, fileFacts, sourceLanguage);
-        if (projects.Count == 0 && hasMaintainedSource) Get(projects, ".");
+        if (hasMaintainedSource && HasUnownedMaintainedSource(
+                projects.Keys,
+                fileFacts,
+                sourceLanguage))
+        {
+            Get(projects, ".");
+        }
+
         foreach ((string directory, JavaProjectMetadata metadata) in projects)
         {
             if (metadata.BuildSystems.Count > 1)
@@ -86,6 +93,22 @@ internal sealed class JavaProjectReader(
             if (exists || sourceDirectories.Any(source => JavaPath.IsWithin(source, directory)))
                 Get(projects, directory);
         }
+    }
+
+    private static bool HasUnownedMaintainedSource(
+        IEnumerable<string> projectDirectories,
+        IReadOnlyList<EvidenceFact> facts,
+        string sourceLanguage)
+    {
+        string[] projects = [.. projectDirectories];
+        return facts.Any(fact =>
+            fact.Kind == EvidenceKinds.File &&
+            fact.Tags.Contains($"language:{sourceLanguage}", StringComparer.Ordinal) &&
+            fact.Tags.Any(tag => tag is "role:source" or "role:test") &&
+            !fact.Tags.Any(tag => tag is
+                "classification:generated" or "classification:minified" or
+                "classification:vendored" or "content:binary") &&
+            !projects.Any(project => JavaPath.IsWithin(fact.Scope, project)));
     }
 
     private static JavaProjectMetadata Get(

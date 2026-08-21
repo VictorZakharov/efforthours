@@ -109,6 +109,21 @@ eh change portfolio --manifest portfolio.json --format markdown --no-rate
 eh change portfolio --author-period-manifest author-period.json --format markdown --no-rate
 ```
 
+For an explicit GitHub-assisted today-to-date capacity comparison with no caller-
+authored manifests or arithmetic:
+
+```text
+eh change portfolio --owner my-organization --workspace <checkout-root> --author "@me" \
+  --today --timezone America/Toronto --include-open-prs --fetch-missing \
+  --capacity-hours 8 --format markdown --no-rate
+```
+
+This convenience mode opts into authenticated provider discovery, maps only
+GitHub checkouts inside the supplied workspace, pins current default and relevant
+open-PR heads, and then runs the ordinary local manifest estimator. JSON or
+concise Markdown goes to stdout unless `--output` is supplied. Capacity is only a
+reference denominator; the ratio is not a productivity or labor measure.
+
 Portfolio mode normalizes each repository independently, removes exact repeated
 PR patches, unions pinned author-period heads without repeating shared commits,
 keeps overlap/revert/shared-context adjustments visible, and allocates the final

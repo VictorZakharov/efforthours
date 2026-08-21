@@ -22,6 +22,8 @@ internal sealed partial class ChangePortfolioCommand
     private readonly Func<string, ChangePortfolioExecutionTelemetry, CancellationToken,
         Task<GitAuthorPeriodManifestScopePlan>>
         _measureAuthorPeriodManifest;
+    private readonly Func<GitHubAuthorPeriodDiscoveryRequest, CancellationToken,
+        Task<GitHubAuthorPeriodDiscoveryResult>> _discoverToday;
 
     public async Task<int> ExecuteAsync(
         string[] arguments,

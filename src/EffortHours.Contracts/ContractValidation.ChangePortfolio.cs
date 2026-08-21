@@ -64,11 +64,15 @@ public static partial class ContractValidation
         ValidatePortfolioCategories(report.Categories, report.TotalEffort, "categories", errors);
         RequireUniqueText(report.Assumptions, "assumptions", errors);
 
-        if (report.Items.Count is < 1 or > ChangePortfolioLimits.MaximumReportItems)
+        bool validEmpty = report.Items.Count == 0 && report.Selection.ManifestBased &&
+            report.Selection.AuthorPeriodManifest is not null;
+        if ((!validEmpty && report.Items.Count < 1) ||
+            report.Items.Count > ChangePortfolioLimits.MaximumReportItems)
         {
             errors.Add(
                 $"A change portfolio report must contain between 1 and " +
-                $"{ChangePortfolioLimits.MaximumReportItems} item rows.");
+                $"{ChangePortfolioLimits.MaximumReportItems} item rows, or a manifest-based " +
+                "author-period report may contain a complete zero selection.");
         }
 
         HashSet<string> itemIds = new(StringComparer.Ordinal);

@@ -2,7 +2,7 @@
 
 ## Current boundary
 
-`change-portfolio/0.2.4` composes canonical Change estimates selected as repeated
+`change-portfolio/0.2.5` composes canonical Change estimates selected as repeated
 pull requests, a versioned multi-repository PR manifest, a bounded direct
 author-period, or a versioned multi-repository/multi-head author-period manifest.
 It remains experimental and has no empirical production validation.
@@ -25,6 +25,8 @@ eh change portfolio <repository> --pr <number-or-url> --pr <number-or-url>
 eh change portfolio --manifest <portfolio.json>
 eh change portfolio --author-period-manifest <manifest.json>
 eh change portfolio --author-period-manifest <manifest.json> --preflight
+eh change portfolio --owner <owner> --workspace <root> --author "@me" --today \
+  --timezone <zone> --capacity-hours <hours> [--include-open-prs] [--fetch-missing]
 eh change portfolio <repository> --author <alias> [--author <alias> ...]
   --since <instant> --until <instant>
 ```
@@ -85,12 +87,22 @@ or a schedule prediction. The portfolio denominator is the exact sum of the
 contributor denominators. Full-period ratios divide full-period EHE by full-period
 capacity; they never average bucket ratios.
 
-Comparison output requires an explicit `--output` path. JSON uses the versioned
+Low-level manifest comparison output requires an explicit `--output` path. JSON uses the versioned
 `change-portfolio-comparison-report` contract. Markdown can select `--report-view
 trend` for a publishable multi-period report or `--report-view findings` for a
 generic, anonymized engineering run report. Both views come from the same
 structured calculation. `--generated-at` permits a frozen generation instant for
 reproducible artifacts.
+
+The explicit `--today` selector is a bounded one-command composition of GitHub
+discovery, local immutable selection, one partial daily bucket, and one inline
+capacity cell. It requires `--owner`, `--workspace`, at least one `--author`
+(normally `@me`), a timezone, and positive `--capacity-hours`. It writes JSON or
+concise Markdown to stdout unless `--output` is supplied. The exact interval is
+local midnight inclusive to the next local midnight exclusive; `asOf` records the
+partial-day observation instant. A complete no-match day remains a zero row and
+zero ratio. Discovery or repository failure exits nonzero and never publishes a
+partial aggregate.
 
 `--normalization joint|isolated` chooses the contributor comparison view without
 changing the source portfolio. `joint` is the default: its mutually exclusive
@@ -290,18 +302,23 @@ Identity and time select rows only. They do not enter an effort rule or multipli
 Git returns only structurally extracted co-author values; commit messages are not
 retained in contracts or reports.
 
-### Optional host-assisted scaffolding
+### Explicit GitHub-assisted today workflow
 
-Broad provider discovery remains outside the estimator. The accepted design in
-[`AUTHOR_PERIOD_SCAFFOLDING.md`](AUTHOR_PERIOD_SCAFFOLDING.md) recommends an
-optional companion adapter that emits the unchanged v1 manifest plus a separate,
-local-only provenance sidecar. A caller must review and pin that manifest before a
-distinct offline estimation invocation. Discovery may never fetch, expand scope
-silently, translate provider accounts into Git aliases, or turn provider activity
-into effort.
+Broad provider behavior remains outside estimation rules, but the concrete
+today-to-date workflow now justifies one explicit orchestration adapter. As
+defined in [`AUTHOR_PERIOD_SCAFFOLDING.md`](AUTHOR_PERIOD_SCAFFOLDING.md), it maps
+the requested GitHub owner to repositories already inside the caller-supplied
+workspace, resolves current immutable default heads, filters current open PRs by
+fully paginated commit metadata, optionally acquires only missing discovered
+objects without updating refs or `FETCH_HEAD`, and builds the unchanged v1
+manifest in memory.
 
-No such adapter is implemented or required. The local manifest and estimator remain
-the complete provider-independent product boundary.
+`@me` can combine the active provider login, authorized verified emails, mapped
+local Git identities, and explicit supplemental aliases. Local exact Git author/
+coauthor/date/merge selection remains authoritative. Reports retain only a
+privacy-safe source classification, discovery counts, digests, immutable objects,
+and completeness; provider activity never becomes an effort signal. Ordinary
+manifest estimation remains host-independent and offline.
 
 ## Reconciliation policy
 
@@ -507,7 +524,7 @@ inventory reuse rules in `CHANGE_ESTIMATION.md`. Identity and time still select
 rows only; neither the candidate count nor the size of the reachable graph enters
 an effort rule.
 
-`change-portfolio/0.2.4` keeps one invocation-scoped execution context per local
+`change-portfolio/0.2.5` keeps one invocation-scoped execution context per local
 repository. Candidate plans are grouped by canonical repository root and
 scheduled with at most two repository sessions active at once. Within each
 repository, a deterministic 16-row delta-prime chunk feeds one ordered snapshot

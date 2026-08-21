@@ -61,7 +61,22 @@ vary across identical runs and never affect EHE. `--format markdown --report-vie
 trend` renders a complete generic trend report. `--report-view findings` renders a
 generic anonymized engineering-findings report from the same structured data,
 without agent-authored arithmetic or unsupported causal guesses. Both require the
-caller to choose the exact output path.
+caller to choose the exact output path for low-level manifest comparisons.
+
+The explicit GitHub-assisted `--today` view is the bounded exception: it may write
+JSON or concise Markdown directly to stdout. It wraps the same canonical source
+portfolio and adds paired `asOf` and `discovery` fields. Discovery records only a
+versioned protocol, scope digest, identity-source category, completeness, bounded
+repository/head/query/page/object counts, and elapsed time. It contains no owner,
+repository display name, PR number, alias, or local path. Execution may also
+record the one-command elapsed observation. These operational fields are excluded
+from the semantic digest.
+
+Today Markdown leads with the expected EHE-to-reference-capacity ratio, EHE,
+capacity, low/high range, as-of instant, selected changes, active repositories,
+open heads, and shared-credit groups. A complete no-match selection is an
+explicit zero result. An incomplete run omits every aggregate and ratio rather
+than substituting zero.
 
 Comparison reports record `contributorNormalization`. The default `joint` view
 keeps exclusive and shared contributor-match sets additive to the jointly

@@ -130,7 +130,7 @@ internal static class GitCommitMetadataParser
             ? result
             : throw new InvalidOperationException("Git returned an invalid strict ISO commit timestamp.");
 
-    private static IReadOnlyList<GitCommitIdentity> ParseCoauthors(string values)
+    internal static IReadOnlyList<GitCommitIdentity> ParseCoauthors(string values)
     {
         List<GitCommitIdentity> identities = [];
         foreach (string rawValue in values.Split(

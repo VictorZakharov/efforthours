@@ -52,7 +52,9 @@ The implemented provider-neutral engine and Git adapter support:
 - a v1 manifest selecting pull requests from multiple local repositories; and
 - commits selected by exact author/co-author alias and an explicit time interval; or
 - a v1 author-period manifest spanning multiple local repositories and pinned
-  heads.
+  heads; or
+- an explicit GitHub-assisted today-to-date request that resolves to that same v1
+  manifest before local estimation.
 
 The engine accepts storage-independent snapshot factories, which keeps selector
 adapters separate from valuation. Portfolio selection composes canonical immutable
@@ -71,6 +73,8 @@ eh change <repository> --pr <number-or-url> [--repo <owner/name>]
 eh change portfolio <repository> --pr <pr> --pr <pr>
 eh change portfolio --manifest <portfolio.json>
 eh change portfolio --author-period-manifest <manifest.json>
+eh change portfolio --owner <owner> --workspace <root> --author "@me" --today \
+  --timezone <zone> --capacity-hours <hours> [--include-open-prs] [--fetch-missing]
 eh change portfolio <repository> --author <identity> --since <instant> --until <instant>
   [--date-field <author|committer>] [--timezone <iana-or-host-zone>]
   [--merge-policy <exclude|first-parent>] [--coauthors <include|exclude>]
@@ -80,8 +84,10 @@ The implemented forms share the repository-estimate profile, format, rate,
 compact, and explicit-output options. Directory pairs and evidence pairs are
 deliberately separate selector families; incomplete or mixed pairs fail before
 analysis. Portfolio commands likewise require exactly one repeated-PR, manifest,
-direct-author-period, or author-period-manifest family. Local snapshot and Git-ref
-inputs do not depend on GitHub.
+direct-author-period, author-period-manifest, or today-to-date family. Local
+snapshot and Git-ref inputs do not depend on GitHub. `--today` is a deliberate
+orchestration exception that queries GitHub through `gh`, pins an in-memory v1
+manifest, and then returns to the existing local estimator boundary.
 Pull-request resolution uses `gh pr view` only when the caller explicitly selects
 `--pr`; `gh` must be installed and authenticated. The adapter retains only the
 requested PR number or URL, immutable provider base-tip/head object identities,
@@ -545,11 +551,11 @@ source excerpts.
 
 The current source Change estimator identity is
 `change-seed/0.18.2+seed-rules/0.4.0`; the portfolio reconciler identity is
-`change-portfolio/0.2.4+change-seed/0.18.2+seed-rules/0.4.0`. The earlier 0.6.0
+`change-portfolio/0.2.5+change-seed/0.18.2+seed-rules/0.4.0`. The earlier 0.6.0
 Change identity alone passed the experimental Stage A logical gate, and that
 record contains no SQL, Python, Go, Java, Kotlin, Shell, PowerShell, Terraform,
 HCL, PHP, Composer, Rust, Cargo, Docker, Compose, Jupyter, C, or C++. Portfolio
-aggregation does not broaden that admission. Neither 0.18.2 nor portfolio 0.2.4
+aggregation does not broaden that admission. Neither 0.18.2 nor portfolio 0.2.5
 may be described as empirically calibrated, generally admitted, or production-
 ready. Frozen calibration source reports retain
 the exact earlier estimator identity they were created from.

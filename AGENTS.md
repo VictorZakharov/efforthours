@@ -176,7 +176,7 @@ interval research remains separate.
 Change EHE has only the limited Stage A logical admission described in
 `docs/CHANGE_MODEL_ADMISSION.md`; later ecosystem extensions remain experimental.
 Current source reports use `change-seed/0.18.2+seed-rules/0.4.0`, and current
-portfolio reports use `change-portfolio/0.2.4`. Author-period manifests charge a
+portfolio reports use `change-portfolio/0.2.5`. Author-period manifests charge a
 deterministic 128-MiB exact in-window identity ledger per repository and account
 its scope in logical 1,024-row selection chunks, accept up to 64 repositories,
 stream lifetime identity-
@@ -235,3 +235,13 @@ operational timings/resources from the semantic digest. Repository evidence
 checkpoints are digest-bound and selectively invalidated. Failed shards retain
 resumable completed evidence and emit nonzero incomplete artifacts with root
 failure/last-progress context but no aggregate EHE or trend.
+
+An explicit GitHub-assisted today-to-date selector composes that same manifest
+estimator in one command. `--owner`, `--workspace`, `--author "@me"`, `--today`,
+`--timezone`, and `--capacity-hours` resolve mapped default and relevant open-PR
+heads, optionally acquire only missing immutable objects, create one partial daily
+bucket in memory, and emit JSON or concise Markdown to stdout. Provider access is
+opt-in orchestration only: exact local Git selection remains authoritative, a
+complete no-match day is zero, failures never publish partial aggregates, and
+privacy-safe discovery/timing fields remain outside the semantic digest and EHE
+rules.

@@ -1,5 +1,4 @@
 using System.Diagnostics;
-using System.Reflection;
 using EffortHours.Change;
 using EffortHours.Contracts;
 using EffortHours.Contracts.V1;
@@ -16,26 +15,55 @@ internal sealed partial class ChangePortfolioCommand
         TextWriter standardError,
         CancellationToken cancellationToken)
     {
+        long workflowStarted = Stopwatch.GetTimestamp();
         DateTimeOffset generatedAt = (options.GeneratedAt ?? DateTimeOffset.UtcNow)
             .ToUniversalTime();
         string title = options.ReportTitle ??
-            (options.ComparisonView == ChangePortfolioComparisonView.Findings
+            (options.Today
+                ? "EffortHours today-to-date capacity"
+                : options.ComparisonView == ChangePortfolioComparisonView.Findings
                 ? "EffortHours engineering findings"
                 : "EffortHours portfolio trend");
-        ResolvedChangeAuthorPeriodManifest resolved =
-            await ChangeAuthorPeriodManifestLoader.LoadAsync(
+        GitHubAuthorPeriodDiscoveryResult? today = options.Today
+            ? await _discoverToday(
+                new GitHubAuthorPeriodDiscoveryRequest
+                {
+                    Owner = options.Owner!,
+                    WorkspacePath = options.WorkspacePath!,
+                    AuthorAliases = options.AuthorAliases,
+                    AsOf = generatedAt,
+                    TimeZone = options.TimeZone,
+                    IncludeOpenPullRequests = options.IncludeOpenPullRequests,
+                    FetchMissing = options.FetchMissing,
+                    DateField = options.DateField,
+                    MergePolicy = options.MergePolicy,
+                    CoauthorPolicy = options.CoauthorPolicy,
+                },
+                cancellationToken).ConfigureAwait(false)
+            : null;
+        ResolvedChangeAuthorPeriodManifest resolved = today is null
+            ? await ChangeAuthorPeriodManifestLoader.LoadAsync(
                 options.AuthorPeriodManifestPath!,
-                cancellationToken).ConfigureAwait(false);
+                cancellationToken).ConfigureAwait(false)
+            : new ResolvedChangeAuthorPeriodManifest(
+                today.Manifest,
+                ChangeAuthorPeriodManifestIdentity.ComputeDigest(today.Manifest),
+                today.RepositoryPaths);
         ChangePortfolioSelection selection =
             ChangeAuthorPeriodManifestIdentity.CreateReportSelection(
                 resolved.Manifest,
                 resolved.ManifestDigest);
-        ChangePortfolioComparisonInputs inputs =
-            await ChangePortfolioComparisonInputLoader.LoadAsync(
+        ChangePortfolioComparisonInputs inputs = today is null
+            ? await ChangePortfolioComparisonInputLoader.LoadAsync(
                 options,
                 selection.AuthorPeriodManifest!,
-                cancellationToken).ConfigureAwait(false);
-        ChangePortfolioRepositoryCheckpointStore? checkpoints = options.NoCheckpoint
+                cancellationToken).ConfigureAwait(false)
+            : ChangePortfolioComparisonInputLoader.CreateTodayToDate(
+                selection.AuthorPeriodManifest!,
+                today.AsOf,
+                options.CapacityHours!.Value);
+        ChangePortfolioRepositoryCheckpointStore? checkpoints = options.NoCheckpoint ||
+            options.OutputPath is null && options.CheckpointPath is null
             ? null
             : new ChangePortfolioRepositoryCheckpointStore(
                 options.CheckpointPath ?? Path.GetFullPath(options.OutputPath!) + ".eh-checkpoint");
@@ -57,7 +85,7 @@ internal sealed partial class ChangePortfolioCommand
             outcomes.Add(outcome with { Elapsed = Stopwatch.GetElapsedTime(started) });
         }
 
-        if (outcomes.All(outcome => outcome.Failure is null) &&
+        if (!options.Today && outcomes.All(outcome => outcome.Failure is null) &&
             outcomes.Sum(outcome => outcome.Candidates.Count) == 0)
         {
             ChangePortfolioRepositoryOutcome first = outcomes[0];
@@ -100,6 +128,8 @@ internal sealed partial class ChangePortfolioCommand
             SourceManifest = resolved.Manifest,
             ExecutionTelemetry = portfolioTelemetry,
             ExecutionOverride = execution,
+            AsOf = today?.AsOf,
+            Discovery = today?.Discovery,
         };
         ChangePortfolioComparisonReport comparison;
         if (execution.Failures.Count > 0)
@@ -131,7 +161,10 @@ internal sealed partial class ChangePortfolioCommand
         string output;
         using (portfolioTelemetry.Measure(ChangePortfolioExecutionPhases.Rendering))
         {
-            (comparison, output) = RenderComparisonWithOutputUsage(comparison, options);
+            (comparison, output) = RenderComparisonWithOutputUsage(
+                comparison,
+                options,
+                workflowStarted);
         }
 
         int write = await WriteOutputAsync(
@@ -324,60 +357,4 @@ internal sealed partial class ChangePortfolioCommand
         }
     }
 
-    private static IReadOnlyList<Diagnostic> CanonicalDiagnostics(
-        IReadOnlyList<ChangePortfolioRepositoryOutcome> outcomes,
-        ChangePortfolioComparisonCheckpoint checkpoint)
-    {
-        IEnumerable<Diagnostic> diagnostics = outcomes.SelectMany(outcome => outcome.Diagnostics);
-        if (checkpoint.HitCount > 0)
-        {
-            diagnostics = diagnostics.Append(new Diagnostic
-            {
-                Code = "FB5333",
-                Severity = DiagnosticSeverity.Information,
-                Message = $"Reused {checkpoint.HitCount} immutable repository-evidence checkpoint(s); unchanged repositories were not replanned or reanalyzed.",
-            });
-        }
-
-        return [.. diagnostics
-            .DistinctBy(value => $"{value.Code}\0{value.Severity}\0{value.Message}", StringComparer.Ordinal)
-            .OrderBy(value => value.Code, StringComparer.Ordinal)
-            .ThenBy(value => value.Message, StringComparer.Ordinal)];
-    }
-
-    private static string SafeRepositoryFailure(
-        string message,
-        ChangeAuthorPeriodManifestRepository repository,
-        ResolvedChangeAuthorPeriodManifest resolved)
-    {
-        string safe = message.Replace('\r', ' ').Replace('\n', ' ');
-        safe = safe.Replace(repository.RepositoryPath, "<repository-path>", StringComparison.OrdinalIgnoreCase);
-        safe = safe.Replace(
-            resolved.RepositoryPaths[repository.Id],
-            "<repository-path>",
-            StringComparison.OrdinalIgnoreCase);
-        foreach (string alias in resolved.Manifest.Contributors.SelectMany(value => value.Aliases))
-        {
-            safe = safe.Replace(alias, "<identity-alias>", StringComparison.OrdinalIgnoreCase);
-        }
-
-        return string.IsNullOrWhiteSpace(safe)
-            ? $"Repository '{repository.Id}' failed without an actionable message."
-            : safe;
-    }
-
-    private static Exception RootException(Exception exception)
-    {
-        Exception current = exception;
-        while (current.InnerException is not null)
-        {
-            current = current.InnerException;
-        }
-
-        return current;
-    }
-
-    private static string CliVersion() => typeof(ChangePortfolioCommand).Assembly
-        .GetCustomAttribute<AssemblyInformationalVersionAttribute>()?
-        .InformationalVersion ?? "unknown";
 }

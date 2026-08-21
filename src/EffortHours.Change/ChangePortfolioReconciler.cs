@@ -1,12 +1,13 @@
 using System.Diagnostics;
 using EffortHours.Contracts;
 using EffortHours.Contracts.V1;
+using EffortHours.Estimation;
 
 namespace EffortHours.Change;
 
 public sealed class ChangePortfolioReconciler
 {
-    public const string Version = "change-portfolio/0.2.4+change-seed/0.18.2+seed-rules/0.4.0";
+    public const string Version = "change-portfolio/0.2.5+change-seed/0.18.2+seed-rules/0.4.0";
 
     public static ChangePortfolioReport Reconcile(
         ChangePortfolioSelection selection,
@@ -135,10 +136,14 @@ public sealed class ChangePortfolioReconciler
         ChangePortfolioReport report = new()
         {
             EstimatorVersion = Version,
-            SourceChangeEstimatorVersion = candidates[0].Report.EstimatorVersion,
+            SourceChangeEstimatorVersion = candidates.Count == 0
+                ? ChangeEstimator.Version
+                : candidates[0].Report.EstimatorVersion,
             Selection = selection,
             Profile = profile,
-            Baseline = candidates[0].Report.Baseline,
+            Baseline = candidates.Count == 0
+                ? SeedEstimator.CreateDefaultBaseline()
+                : candidates[0].Report.Baseline,
             IsolatedEffort = isolated,
             TotalEffort = normalized,
             RateCard = rateCard,
@@ -158,7 +163,9 @@ public sealed class ChangePortfolioReconciler
                 Mode = VerificationMode.StaticAssumed,
                 WorkingState = hasKnownIssues ? WorkingState.KnownIssues : WorkingState.AssumedWorking,
                 TestsAssumedPassing = true,
-                Note = hasKnownIssues
+                Note = candidates.Count == 0
+                    ? "Discovery and immutable selection completed with no matching commits; no target code was built or executed."
+                    : hasKnownIssues
                     ? "At least one selected immutable change contains analyzer errors; the portfolio retains its materially described delta and explicit uncertainty."
                     : "Selected immutable snapshots were statically analyzed; target code was not built or executed.",
             },
@@ -193,7 +200,10 @@ public sealed class ChangePortfolioReconciler
         IReadOnlyList<ChangePortfolioCandidate> candidates,
         EstimationProfile profile)
     {
-        if (candidates.Count is < 1 or > ChangePortfolioLimits.MaximumReportItems)
+        bool validEmpty = candidates.Count == 0 && selection.ManifestBased &&
+            selection.AuthorPeriodManifest is not null;
+        if ((!validEmpty && candidates.Count < 1) ||
+            candidates.Count > ChangePortfolioLimits.MaximumReportItems)
         {
             throw new ArgumentException(
                 $"A change portfolio requires between 1 and " +
@@ -210,8 +220,8 @@ public sealed class ChangePortfolioReconciler
         }
 
         HashSet<string> selectorIds = new(StringComparer.Ordinal);
-        string expectedEstimator = candidates[0].Report.EstimatorVersion;
-        EstimationBaseline expectedBaseline = candidates[0].Report.Baseline;
+        string? expectedEstimator = candidates.Count == 0 ? null : candidates[0].Report.EstimatorVersion;
+        EstimationBaseline? expectedBaseline = candidates.Count == 0 ? null : candidates[0].Report.Baseline;
         foreach (ChangePortfolioCandidate candidate in candidates)
         {
             ArgumentException.ThrowIfNullOrWhiteSpace(candidate.RepositoryId);

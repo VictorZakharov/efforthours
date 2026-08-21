@@ -120,6 +120,14 @@ total. Every report is limited to repositories supplied in the manifest and
 objects reachable from the pinned local heads; omitted or unavailable work is not
 inferred.
 
+An explicit `--today` convenience workflow may discover the current GitHub
+default and relevant open-PR heads for owner repositories mapped inside a caller-
+supplied workspace. It creates the same manifest, one partial local-day bucket,
+and one inline reference-capacity cell in memory. Provider access and optional
+narrow object acquisition are orchestration only; exact local Git selection and
+the existing estimator remain authoritative, and discovery metadata never enters
+an effort rule.
+
 ### Reporting and pricing
 
 Canonical reports keep evidence, inferred capabilities, estimated work,

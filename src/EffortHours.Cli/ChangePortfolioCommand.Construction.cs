@@ -20,7 +20,8 @@ internal sealed partial class ChangePortfolioCommand
             portfolioPlanner.PlanAuthorPeriodAsync,
             ChangePortfolioManifestLoader.LoadAsync,
             new ChangeAuthorPeriodManifestCommandPlanner(portfolioPlanner).PlanAsync,
-            new ChangeAuthorPeriodManifestCommandPlanner(portfolioPlanner).MeasureAsync)
+            new ChangeAuthorPeriodManifestCommandPlanner(portfolioPlanner).MeasureAsync,
+            new GitHubAuthorPeriodDiscovery().DiscoverTodayAsync)
     {
     }
 
@@ -85,6 +86,30 @@ internal sealed partial class ChangePortfolioCommand
             planAuthorPeriodManifest,
         Func<string, ChangePortfolioExecutionTelemetry, CancellationToken,
             Task<GitAuthorPeriodManifestScopePlan>>? measureAuthorPeriodManifest = null)
+        : this(
+            changeEstimator,
+            planPullRequest,
+            planAuthorPeriod,
+            loadManifest,
+            planAuthorPeriodManifest,
+            measureAuthorPeriodManifest,
+            new GitHubAuthorPeriodDiscovery().DiscoverTodayAsync)
+    {
+    }
+
+    internal ChangePortfolioCommand(
+        ChangeEstimator changeEstimator,
+        Func<string, string, string?, bool, CancellationToken, Task<GitChangePlan>> planPullRequest,
+        Func<string, GitAuthorPeriodPortfolioOptions, ChangePortfolioExecutionTelemetry?, CancellationToken,
+            Task<GitAuthorPeriodPortfolioPlan>> planAuthorPeriod,
+        Func<string, CancellationToken,
+            Task<IReadOnlyList<ResolvedChangePortfolioManifestItem>>> loadManifest,
+        Func<string, ChangePortfolioExecutionTelemetry, CancellationToken,
+            Task<GitAuthorPeriodManifestPortfolioPlan>> planAuthorPeriodManifest,
+        Func<string, ChangePortfolioExecutionTelemetry, CancellationToken,
+            Task<GitAuthorPeriodManifestScopePlan>>? measureAuthorPeriodManifest,
+        Func<GitHubAuthorPeriodDiscoveryRequest, CancellationToken,
+            Task<GitHubAuthorPeriodDiscoveryResult>> discoverToday)
     {
         _changeEstimator = changeEstimator ?? throw new ArgumentNullException(nameof(changeEstimator));
         _planPullRequest = planPullRequest ?? throw new ArgumentNullException(nameof(planPullRequest));
@@ -95,5 +120,6 @@ internal sealed partial class ChangePortfolioCommand
         _measureAuthorPeriodManifest = measureAuthorPeriodManifest ??
             ((_, _, _) => throw new InvalidOperationException(
                 "Author-period manifest preflight was not configured for this command instance."));
+        _discoverToday = discoverToday ?? throw new ArgumentNullException(nameof(discoverToday));
     }
 }
