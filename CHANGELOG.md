@@ -6,6 +6,8 @@ may still change public contracts with explicit documentation.
 
 ## Unreleased
 
+## 0.10.0-alpha.15 - 2026-08-21
+
 ### Changed
 
 - Raised the v1 author-period envelope from 64 repositories and 128 pinned heads
