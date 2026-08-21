@@ -1,6 +1,4 @@
 using System.Collections.Immutable;
-using System.Security.Cryptography;
-using System.Text;
 
 namespace EffortHours.Change;
 
@@ -9,7 +7,6 @@ internal sealed class GitSnapshotInventory
     private readonly ImmutableDictionary<string, int> _contentObjectCounts;
     private readonly ImmutableSortedDictionary<string, ChangeSnapshotFile> _filesByPath;
     private readonly Lazy<IReadOnlyList<ChangeSnapshotFile>> _files;
-    private readonly Lazy<string> _pathSetIdentity;
     private readonly GitSnapshotInventoryDigest _sourceDigest;
 
     public GitSnapshotInventory(
@@ -25,7 +22,6 @@ internal sealed class GitSnapshotInventory
             StringComparer.Ordinal);
         _contentObjectCounts = CreateContentObjectCounts(_filesByPath.Values);
         _files = CreateFiles(_filesByPath);
-        _pathSetIdentity = CreatePathSetIdentity(_filesByPath.Keys);
         _sourceDigest = GitSnapshotInventoryDigest.Create(_filesByPath.Values);
         AnalysisIndex = ChangeAnalysisScope.CreateInventoryIndex(_filesByPath.Values);
         RootObjectId = objectId.ToLowerInvariant();
@@ -52,7 +48,6 @@ internal sealed class GitSnapshotInventory
         ImmutableDictionary<string, int> contentObjectCounts = parent._contentObjectCounts;
         GitSnapshotInventoryDigest sourceDigest = parent._sourceDigest;
         List<(string Path, bool BeforeExists, bool AfterExists)> pathChanges = [];
-        bool pathSetChanged = false;
         HashSet<string> removedPaths = new(changedPaths, StringComparer.Ordinal);
         foreach (string path in affectedPaths)
         {
@@ -60,7 +55,6 @@ internal sealed class GitSnapshotInventory
             ChangeSnapshotFile? after = replacements.GetValueOrDefault(path);
             bool afterExists = after is not null || beforeExists && !removedPaths.Contains(path);
             after ??= afterExists ? before : null;
-            pathSetChanged |= beforeExists != afterExists;
 
             if (before is not null && !SameContentObject(before, after))
             {
@@ -84,9 +78,6 @@ internal sealed class GitSnapshotInventory
         _filesByPath = filesByPath;
         _contentObjectCounts = contentObjectCounts;
         _files = CreateFiles(_filesByPath);
-        _pathSetIdentity = pathSetChanged
-            ? CreatePathSetIdentity(_filesByPath.Keys)
-            : parent._pathSetIdentity;
         _sourceDigest = sourceDigest;
         AnalysisIndex = parent.AnalysisIndex.Apply(pathChanges);
         RootObjectId = parent.RootObjectId;
@@ -105,7 +96,7 @@ internal sealed class GitSnapshotInventory
 
     public int FileCount => _filesByPath.Count;
 
-    public string PathSetIdentity => _pathSetIdentity.Value;
+    public string PathSetIdentity => _sourceDigest.PathSetValue;
 
     public string SourceDigest => _sourceDigest.Value;
 
@@ -139,23 +130,6 @@ internal sealed class GitSnapshotInventory
     private static Lazy<IReadOnlyList<ChangeSnapshotFile>> CreateFiles(
         ImmutableSortedDictionary<string, ChangeSnapshotFile> filesByPath) =>
         new(() => [.. filesByPath.Values]);
-
-    private static Lazy<string> CreatePathSetIdentity(IEnumerable<string> paths)
-    {
-        string[] canonicalPaths = [.. paths.Order(StringComparer.Ordinal)];
-        return new Lazy<string>(() =>
-        {
-            using IncrementalHash hash = IncrementalHash.CreateHash(HashAlgorithmName.SHA256);
-            hash.AppendData("efforthours:repository-path-set:1\0"u8);
-            foreach (string path in canonicalPaths)
-            {
-                hash.AppendData(Encoding.UTF8.GetBytes(path));
-                hash.AppendData([0]);
-            }
-
-            return $"sha256:{Convert.ToHexString(hash.GetHashAndReset()).ToLowerInvariant()}";
-        });
-    }
 
     private static ImmutableDictionary<string, int> CreateContentObjectCounts(
         IEnumerable<ChangeSnapshotFile> files)

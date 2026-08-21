@@ -45,6 +45,8 @@ public sealed class GitSnapshotInventoryTests
 
         Assert.Equal(reconstructed.SourceDigest, direct.SourceDigest);
         Assert.Equal(reconstructed.SourceDigest, secondStep.SourceDigest);
+        Assert.Equal(reconstructed.PathSetIdentity, direct.PathSetIdentity);
+        Assert.Equal(reconstructed.PathSetIdentity, secondStep.PathSetIdentity);
         Assert.Equal(
             ["src/beta.cs", "src/context.csproj", "src/gamma.cs"],
             [.. direct.Files.Select(file => file.Path)]);

@@ -1720,10 +1720,10 @@ fixture; the table reports medians.
 
 | Measure | Before | After | Change |
 | --- | ---: | ---: | ---: |
-| Combined estimate wall time | 12.261 s | 11.278 s | 8.0% lower |
-| Managed CPU time | 47.188 s | 42.438 s | 10.1% lower |
-| Cumulative managed allocation | 8,889.73 MiB | 6,629.12 MiB | 25.4% lower |
-| Sampled peak working set | 881.44 MiB | 761.32 MiB | 13.6% lower |
+| Combined estimate wall time | 12.261 s | 11.166 s | 8.9% lower |
+| Managed CPU time | 47.188 s | 41.891 s | 11.2% lower |
+| Cumulative managed allocation | 8,889.73 MiB | 6,633.30 MiB | 25.4% lower |
+| Sampled peak working set | 881.44 MiB | 755.51 MiB | 14.3% lower |
 | Git blob requests | 22,504 | 1,606 | 92.9% lower |
 | Git object-metadata requests | 21,230 | 21,230 | unchanged |
 | Analysis-artifact requests / hits | 21,580 / 20,902 | 22,100 / 21,418 | +520 / +516 |

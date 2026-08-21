@@ -343,7 +343,7 @@ count, and intermediate churn do not value effort. `CHANGE_ESTIMATION.md` and
   the narrow lineage proof; other edits retain full analysis. A subsequent
   structural-identifier checkpoint reuses exact immutable .NET project context
   while retaining full C# analysis. Its three-process medians lower wall time
-  8.0%, managed CPU 10.1%, allocation 25.4%, sampled peak working set 13.6%, and
+  8.9%, managed CPU 11.2%, allocation 25.4%, sampled peak working set 14.3%, and
   Git blob requests 92.9%; four bounded context entries receive 516 hits and the
   semantic digest is unchanged. This completes the measured project-context
   reconstruction target, but issue #182 remains open for the remaining unique

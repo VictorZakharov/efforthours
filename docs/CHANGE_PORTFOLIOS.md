@@ -620,10 +620,10 @@ core scaling. Issue #182 therefore remains open.
 A separate prepared structural-identifier checkpoint forces full Roslyn analysis
 while repeating 80 immutable .NET project-context files per repository across 260
 unique snapshot analyses. Across three fresh processes per revision at eight
-workers, exact project-context reuse lowers median wall time from 12.261 to 11.278
-seconds (8.0%), managed CPU from 47.188 to 42.438 seconds (10.1%), allocation from
-8,889.73 to 6,629.12 MiB (25.4%), sampled peak working set from 881.44 to 761.32
-MiB (13.6%), and Git blob requests from 22,504 to 1,606 (92.9%). Four bounded
+workers, exact project-context reuse lowers median wall time from 12.261 to 11.166
+seconds (8.9%), managed CPU from 47.188 to 41.891 seconds (11.2%), allocation from
+8,889.73 to 6,633.30 MiB (25.4%), sampled peak working set from 881.44 to 755.51
+MiB (14.3%), and Git blob requests from 22,504 to 1,606 (92.9%). Four bounded
 project-context artifacts receive 516 exact hits. The estimate-semantic digest is
 unchanged and repeated optimized report bytes are identical. This removes one
 measured allocation-heavy redundancy; unique structural C# bodies still require

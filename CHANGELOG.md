@@ -14,7 +14,7 @@ may still change public contracts with explicit documentation.
   project-reference resolution, and providers without immutable identity retain
   exact cold analysis. On the prepared structural-edit checkpoint this removes
   92.9% of Git blob requests, lowers median allocation 25.4%, peak working set
-  13.6%, managed CPU 10.1%, and wall time 8.0% with unchanged estimate semantics.
+  14.3%, managed CPU 11.2%, and wall time 8.9% with unchanged estimate semantics.
   This is bounded work elimination, not a general core-scaling claim.
 
 ## 0.10.0-alpha.13 - 2026-08-21

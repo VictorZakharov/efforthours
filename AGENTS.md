@@ -217,7 +217,7 @@ text cache; every unproven case uses full analysis. On the prepared 512-change/
 result, not general field latency or core scaling. Exact immutable .NET project-
 context reuse now binds descriptor object IDs plus the complete repository path
 set and otherwise falls back cold. On the structural-identifier checkpoint it
-reduces median wall 8.0%, CPU 10.1%, allocation 25.4%, peak working set 13.6%, and
+reduces median wall 8.9%, CPU 11.2%, allocation 25.4%, peak working set 14.3%, and
 Git blob requests 92.9% with unchanged semantics. Issue #182 remains open. The
 public alpha.6 control remains 3.01x faster end to end and 8.17x faster in
 snapshot/diff work with identical output. The defects tracked by #157 and the

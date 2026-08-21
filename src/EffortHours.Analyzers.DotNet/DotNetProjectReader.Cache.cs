@@ -21,7 +21,8 @@ internal sealed partial class DotNetProjectReader
         string? cacheKey = TryCreateCacheKey(
             projectPaths,
             solutionPaths,
-            centralPackagePaths);
+            centralPackagePaths,
+            cancellationToken);
         RepositoryAnalysisArtifactCache? cache =
             (_fileSystem as IRepositoryAnalysisArtifactCacheProvider)?.AnalysisArtifactCache;
         if (cacheKey is null || cache is null)
@@ -49,7 +50,8 @@ internal sealed partial class DotNetProjectReader
     private string? TryCreateCacheKey(
         IReadOnlyList<string> projectPaths,
         IReadOnlyList<string> solutionPaths,
-        IReadOnlyList<string> centralPackagePaths)
+        IReadOnlyList<string> centralPackagePaths,
+        CancellationToken cancellationToken)
     {
         if (_fileSystem is not IRepositoryImmutableIdentityProvider identityProvider)
         {
@@ -66,9 +68,24 @@ internal sealed partial class DotNetProjectReader
         hash.AppendData("efforthours:dotnet-project-context:1\0"u8);
         Append(hash, DotNetEvidence.AnalyzerVersion);
         Append(hash, pathSetIdentity);
-        return AppendFiles(hash, identityProvider, "project", projectPaths) &&
-            AppendFiles(hash, identityProvider, "solution", solutionPaths) &&
-            AppendFiles(hash, identityProvider, "central-package", centralPackagePaths)
+        return AppendFiles(
+                hash,
+                identityProvider,
+                "project",
+                projectPaths,
+                cancellationToken) &&
+            AppendFiles(
+                hash,
+                identityProvider,
+                "solution",
+                solutionPaths,
+                cancellationToken) &&
+            AppendFiles(
+                hash,
+                identityProvider,
+                "central-package",
+                centralPackagePaths,
+                cancellationToken)
                 ? $"dotnet-project-context/{DotNetEvidence.AnalyzerVersion}/" +
                     Convert.ToHexString(hash.GetHashAndReset()).ToLowerInvariant()
                 : null;
@@ -78,10 +95,12 @@ internal sealed partial class DotNetProjectReader
         IncrementalHash hash,
         IRepositoryImmutableIdentityProvider identityProvider,
         string kind,
-        IEnumerable<string> relativePaths)
+        IEnumerable<string> relativePaths,
+        CancellationToken cancellationToken)
     {
         foreach (string relativePath in relativePaths)
         {
+            cancellationToken.ThrowIfCancellationRequested();
             if (!identityProvider.TryGetFileContentId(
                     ToFullPath(relativePath),
                     out string contentId) ||
