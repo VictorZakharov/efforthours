@@ -8,11 +8,11 @@
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>eh</ToolCommandName>
     <PackageId>EffortHours.Tool</PackageId>
-    <Version>0.10.0-alpha.14</Version>
+    <Version>0.10.0-alpha.15</Version>
     <Title>EffortHours CLI</Title>
     <PackageReadmeFile>PACKAGE_README.md</PackageReadmeFile>
     <PackageTags>estimation;effort-estimation;developer-tools;cli;repository-analysis;static-analysis;dotnet-tool</PackageTags>
-    <PackageReleaseNotes>0.10.0-alpha.14: Add a one-command GitHub-assisted today-to-date author portfolio with local-workspace mapping, relevant open-PR discovery, narrow immutable-object acquisition, inline daily capacity, and concise Markdown or versioned JSON output. Complete zero-work days and incomplete discovery remain explicit and privacy-safe. Narrow Change scopes now retain Java/Kotlin fallback ownership, while immutable .NET project-context reuse reduces repeated portfolio analysis under exact identity guards. Repository EHE remains experimental and uncalibrated, and seed-rules/0.4.0 remains the shipped estimator. Full notes: https://github.com/VictorZakharov/efforthours/blob/v0.10.0-alpha.14/CHANGELOG.md</PackageReleaseNotes>
+    <PackageReleaseNotes>0.10.0-alpha.15: Raise the author-period portfolio envelope from 64 repositories / 128 pinned heads to 256 repositories / 512 pinned heads while retaining bounded repository execution, caches, queues, checkpoints, output, and emergency safety limits. GitHub-assisted workspace discovery now continues past malformed .git markers to find valid descendant checkouts while preserving actionable fail-closed ownership and readability diagnostics. Repository EHE remains experimental and uncalibrated, and seed-rules/0.4.0 remains the shipped estimator. Full notes: https://github.com/VictorZakharov/efforthours/blob/v0.10.0-alpha.15/CHANGELOG.md</PackageReleaseNotes>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="../EffortHours.Analysis/EffortHours.Analysis.csproj" />
