@@ -48,6 +48,13 @@ is assigned to exactly one bucket. Buckets are an alternative decomposition of
 the one jointly reconciled portfolio; they are not independent estimates and
 never multiply EHE.
 
+Derived calendar-month bucket IDs are `yyyy-MM`, for example `2026-07`. Derived
+calendar-week IDs are `week-yyyy-MM-dd`, using the Monday start date in the
+manifest timezone. Custom bucket IDs are copied exactly from the bucket manifest.
+Capacity input must use those exact IDs. A mismatch identifies the missing and
+unexpected public contributor/bucket cells rather than reporting only a generic
+matrix error.
+
 An optional `change-portfolio-capacity-manifest` supplies exactly one positive
 reference-capacity value for every requested contributor/bucket cell plus a
 caller-stated calendar policy. Capacity is a denominator only. It does not change
@@ -63,6 +70,16 @@ generic, anonymized engineering run report. Both views come from the same
 structured calculation. `--generated-at` permits a frozen generation instant for
 reproducible artifacts.
 
+`--normalization joint|isolated` chooses the contributor comparison view without
+changing the source portfolio. `joint` is the default: its mutually exclusive
+contributor-match-set series reconcile additively to the jointly normalized
+portfolio, but allocations can change when manifest membership changes.
+`isolated` instead emits one membership-stable canonical series for every
+requested contributor. A shared commit appears in every contributor series that
+matched it, so isolated contributor series can overlap, are deliberately
+non-additive, and must never be summed into the authoritative jointly reconciled
+portfolio total.
+
 Comparison mode enables atomic repository-evidence checkpoints by default at
 `<output>.eh-checkpoint`; `--checkpoint` selects another execution-only directory
 and `--no-checkpoint` disables persistence. Each entry binds one repository's
@@ -71,6 +88,11 @@ identity. A rerun reuses an exact hit without replanning or reanalysis. Changing
 one pinned head invalidates only that repository's evidence; bucket/capacity/view
 changes reuse immutable repository evidence and deterministically recalculate the
 cheap presentation cells.
+
+Because the default checkpoint name is derived from the exact output path,
+changing the output filename also selects a different checkpoint directory. Use
+an explicit stable `--checkpoint` path when several output filenames should reuse
+the same immutable repository evidence.
 
 Repository shards fail independently. Completed evidence is retained for resume,
 the first substantive exception is sanitized and recorded with repository, phase,
@@ -150,9 +172,11 @@ Public IDs use only letters, digits, `.`, `_`, and `-`, start with a letter or
 digit, and are limited to 128 characters. The v1 execution budgets are 64
 repositories, 32 heads per repository and 128 heads overall, 64 contributors, 16
 aliases per contributor, and 128 aliases overall. Each repository contributes at
-most 10,000 identity-prefiltered candidates. There is no separate calendar-month
-or presentation-row ceiling; the report contract's 640,000-row safety envelope is
-the product of those public repository and candidate bounds. An
+most 10,000 exact identity-and-time matches inside the requested interval. Git may
+stream more lifetime identity-prefiltered metadata, but out-of-window matches do
+not consume this ledger. There is no separate calendar-month or presentation-row
+ceiling; the report contract's 640,000-row safety envelope is the product of those
+public repository and candidate bounds. An
 immutable head object may appear only once within one repository; equal object-ID
 text in different repositories remains repository-scoped. The CLI reads at most
 one MiB of strict UTF-8 manifest JSON.
@@ -178,7 +202,8 @@ repository shard at a time so an earlier success can be checkpointed and a later
 failure isolated without discarding completed evidence. In both modes, each
 repository's pinned heads are passed together into Git's identity-prefiltered walk,
 which forms a repository-scoped reachable union and returns each commit object
-once. The exact structured identity/time selector runs after that prefilter.
+once. EffortHours streams those records, applies the exact structured identity and
+selected timestamp policy record by record, and retains only in-window matches.
 A separate topological walk propagates a compact head bitset through shared history
 and stops once all selected commits have their complete head reachability. Its
 frontier is bounded independently from the 10,000-record identity ledger, and the
@@ -198,13 +223,17 @@ and local paths are excluded. The existing direct single-repository `--author`
 report remains backward compatible and continues to retain its explicitly
 supplied aliases.
 
-Author-period selection is bounded to 10,000 Git-prefiltered identity candidates
-per repository. Git may traverse a larger reachable graph without returning its
-unrelated identity records to EffortHours. Every exact match inside that bounded
-input is retained, including a high-commit closed month; calculation is not split
-or rejected merely to make the detailed ledger shorter. The exact selector then
-validates
-structured author/co-author identities and the requested time policy. It provides:
+Author-period selection is bounded to 10,000 exact in-window identity candidates
+per repository. Git may traverse a larger reachable graph and stream more lifetime
+identity-prefiltered records without their consuming the retained ledger. Every
+exact match inside the requested interval is retained, including a high-commit
+closed month; calculation is not split or rejected merely to make the detailed
+ledger shorter. An over-limit diagnostic reports the observed in-window count,
+the limit, and privacy-safe direct/co-author counts by requested contributor. It
+never emits raw aliases. A separate bounded count-only ceiling can report a lower
+bound for pathological inputs without retaining unbounded metadata. Successful
+selection reports the retained total and the same public contributor breakdown.
+The exact selector provides:
 
 - exact case-insensitive aliases matching author name, email, or
   `Name <email>`;
@@ -287,7 +316,7 @@ group retains item IDs, signed isolated-to-normalized delta, repository-group
 identity, influencing adjustment IDs, and uncertainty. Contributor and head views
 are alternative decompositions and must not be added together.
 
-Normalized contributor values are allocations from the jointly reconciled
+The default joint contributor values are allocations from the jointly reconciled
 repository portfolio, not membership-invariant personal estimates. Adding an
 otherwise exclusive contributor can change those normalized allocations when the
 new rows change path/category overlap or shared repository context. A zero shared-
@@ -296,6 +325,15 @@ identities; it does not mean repository reconciliation was independent. Each
 group's `isolatedEffort` remains the stable sum of its canonical row estimates,
 while `normalizedEffort`, `reconciliationDelta`, and `adjustmentIds` expose the
 context-dependent allocation explicitly.
+
+Comparison mode can project those canonical row estimates with `--normalization
+isolated`. It emits one `contributor-isolated` series per requested contributor,
+including deterministic zero rows. Its total and buckets sum `isolatedEffort` for
+every canonical item that matched that contributor. This makes a contributor's
+series invariant when unrelated contributors are added, but a shared item appears
+in every matching contributor series. These series therefore do not reconcile to
+the portfolio and have `additiveToPortfolio: false`. Joint repository
+reconciliation remains the only portfolio total in both modes.
 
 Non-additive summary rows expose direct-author/co-author counts, shared-match
 counts, head reachability, uniquely reachable counts, and heads with no unique
@@ -329,19 +367,25 @@ shows every selected row, repository group, adjustment, uncertainty, and safety
 warning in a visible ledger.
 
 The comparison contract embeds the canonical source portfolio and adds canonical
-bucket definitions, exact additive contributor-match-set series, the one portfolio
-series, optional capacity ratios, and trend statistics. A requested contributor's
-additive series contains only its exclusive exact-match group. Multi-contributor
-matches stay in separate shared series and are counted once; the renderer never
-invents personal percentages. Trend statistics use expected capacity ratios, OLS
-over bucket ordinal, and a fixed three-bucket capacity-weighted rolling ratio.
+bucket definitions, the selected contributor-normalization view, the one
+authoritative portfolio series, optional capacity ratios, and trend statistics.
+In joint mode, a requested contributor's additive series contains only its
+exclusive exact-match group; multi-contributor matches stay in separate shared
+series and are counted once. In isolated mode, each requested contributor gets a
+membership-stable, non-additive canonical series and shared items may appear in
+several series. The renderer never invents personal percentages. Trend statistics
+use expected capacity ratios, OLS over bucket ordinal, and a fixed three-bucket
+capacity-weighted rolling ratio.
 Ratios are rounded deterministically to six decimal places and trend coefficients
 to their documented fixed precision after exact EHE/capacity aggregation.
 
 The trend Markdown includes the immutable input snapshot, partial-period notes,
-Mermaid plus a numeric fallback, overall and contributor tables, a comparison
-matrix, shared-credit semantics, calculation validation, and interpretation
-limits. The findings Markdown includes version/environment boundaries, repository
+portfolio and per-contributor Mermaid lines plus a labeled numeric fallback,
+overall and contributor tables, a comparison matrix, shared-credit semantics,
+calculation validation, and interpretation limits. Those limits explicitly state
+that coverage includes only manifest repositories and objects reachable from the
+pinned local heads; omitted repositories and unavailable work are invisible. The
+findings Markdown includes version/environment boundaries, repository
 outcomes, preserved structured failures when available, phase/progress and
 resource observations, reuse/data-volume counters, a sanitized command shape,
 checkpoint dispositions, repository wall-time baselines, confirmed invariants,
@@ -395,8 +439,11 @@ storage-independent tests retain precise policy and failure boundaries.
 | Exact disjoint manual baseline at all range points | `MatchSetGroupsKeepSharedEffortOnceAndPreserveZeroRows` and the process matrix |
 | No local paths, raw aliases, or source excerpts | `ReportSelectionContainsStableIdsAndObjectsButNoPathsOrAliases` and the process matrix |
 | High-commit closed month | `HighCommitMonthIsNotRejectedByAPresentationRowLimit` and the explicit v1.5.0 benchmark mode |
+| Lifetime identity matches outside interval do not consume the ledger | `OutOfWindowLifetimeMatchesDoNotConsumeTheCandidateLimit` |
+| Exact over-limit count and privacy-safe contributor breakdown | `OverLimitDiagnosticReportsObservedCountAndPublicContributorBreakdown` |
+| Stable isolated contributor series and non-additive shared matches | `IsolatedContributorSeriesStayStableAcrossManifestMembership` |
 | Sibling repository paths | `AuthorPeriodManifestAcceptsSiblingRepositoryFromManifestInsideWorktree` |
-| Missing object, cancellation, input limits, and safety caps | `AuthorPeriodManifestPreflightFailuresDoNotLeakPathsOrAliases`, `PortfolioCandidateCancellationDisposesRepositorySessionBeforeOpeningSnapshots`, `CancelledManifestCommandEmitsPrivacySafeLastPhaseProgress`, `ManifestContractIsVersionedBoundedAndRejectsDuplicateIds`, and `CandidateLedgerRetainsTheTenThousandRecordSafetyBoundary` |
+| Missing object, cancellation, input limits, and safety caps | `AuthorPeriodManifestPreflightFailuresDoNotLeakPathsOrAliases`, `PortfolioCandidateCancellationDisposesRepositorySessionBeforeOpeningSnapshots`, `CancelledManifestCommandEmitsPrivacySafeLastPhaseProgress`, `ManifestContractIsVersionedBoundedAndRejectsDuplicateIds`, and `OverLimitDiagnosticReportsObservedCountAndPublicContributorBreakdown` |
 
 Timing and sampled-memory fields from the process matrix are observations. CI does
 not pass or fail on them; it gates the semantic, privacy, reuse, boundedness, and
@@ -561,10 +608,10 @@ Author-date selection intentionally does not pass a date cutoff to Git history
 traversal. Git revision date pruning uses the commit/committer timestamp, while an
 author timestamp may differ arbitrarily and need not be monotonic through the
 graph. Applying that cutoff to `--date-field author` could silently omit valid
-commits. EffortHours instead uses Git's bounded identity prefilter and applies the
-exact selected timestamp, timezone, merge, and co-author rules locally. A separate
-committer-only traversal shortcut remains deferred until measurements justify the
-extra policy path.
+commits. EffortHours instead streams Git's identity-prefiltered metadata and
+applies the exact selected timestamp, timezone, merge, and co-author rules locally
+before retaining the bounded in-window ledger. A separate committer-only traversal
+shortcut remains deferred until measurements justify the extra policy path.
 
 ## Safety and limitations
 

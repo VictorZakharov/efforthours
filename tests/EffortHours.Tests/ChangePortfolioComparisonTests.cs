@@ -75,6 +75,8 @@ public sealed partial class ChangePortfolioComparisonTests
         Assert.Contains("Numeric fallback:", markdown, StringComparison.Ordinal);
         Assert.Contains("Contributor comparison matrix", markdown, StringComparison.Ordinal);
         Assert.Contains("Partial-period note", markdown, StringComparison.Ordinal);
+        Assert.Contains("Series order: `portfolio`, `contributor-contributor-a`, `contributor-contributor-b`", markdown, StringComparison.Ordinal);
+        Assert.Contains("repositories explicitly supplied in the manifest", markdown, StringComparison.Ordinal);
         Assert.Contains("association", markdown, StringComparison.OrdinalIgnoreCase);
         Assert.DoesNotContain("person-a@example.test", markdown, StringComparison.OrdinalIgnoreCase);
 
@@ -92,14 +94,15 @@ public sealed partial class ChangePortfolioComparisonTests
         Assert.Contains("Reuse and processing volume", findingsMarkdown, StringComparison.Ordinal);
         Assert.Contains("Sanitized reproduction shape", findingsMarkdown, StringComparison.Ordinal);
         Assert.Contains("Data-handling notes", findingsMarkdown, StringComparison.Ordinal);
+        Assert.Contains("repositories explicitly supplied in the manifest", findingsMarkdown, StringComparison.Ordinal);
         Assert.DoesNotContain("private-repository-path", findingsMarkdown, StringComparison.OrdinalIgnoreCase);
         // Whole-document golden digests freeze every generated heading, table, chart,
         // fallback series, calculation, caveat, and findings section without a bulky fixture.
         Assert.Equal(
-            "sha256:9a2b2a33dd7d98394458dbf02821b0a18f048e61322d3584721187d6e0a1f977",
+            "sha256:787c1f2aadacbb0a06585d5310594c960608819a581919ca2912e2c97bbff622",
             ChangePortfolioComparisonIdentity.ComputeTextDigest(markdown));
         Assert.Equal(
-            "sha256:b3fcfe4f10c911d6d4c2aeaa2d237844e817794cc3693e011b44e4148d22da7c",
+            "sha256:bdac9b27ddfa56abd32e47e1bd8048bcb5b073c37b31445d4e2c739f362f125b",
             ChangePortfolioComparisonIdentity.ComputeTextDigest(findingsMarkdown));
     }
 

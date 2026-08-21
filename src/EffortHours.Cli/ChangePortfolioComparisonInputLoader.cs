@@ -194,7 +194,7 @@ internal static class ChangePortfolioComparisonInputLoader
         }
     }
 
-    private static void ValidateCapacityMatrix(
+    internal static void ValidateCapacityMatrix(
         ChangePortfolioCapacityManifest manifest,
         IReadOnlyList<ChangePortfolioComparisonBucket> buckets,
         IReadOnlyList<string> contributors)
@@ -205,9 +205,34 @@ internal static class ChangePortfolioComparisonInputLoader
             [.. buckets.SelectMany(bucket => contributors.Select(contributor => (bucket.Id, contributor)))];
         if (!actual.SetEquals(expected))
         {
+            (string BucketId, string ContributorId)[] missing =
+            [.. expected.Except(actual).OrderBy(value => value.BucketId, StringComparer.Ordinal)
+                .ThenBy(value => value.ContributorId, StringComparer.Ordinal)];
+            (string BucketId, string ContributorId)[] unexpected =
+            [.. actual.Except(expected).OrderBy(value => value.BucketId, StringComparer.Ordinal)
+                .ThenBy(value => value.ContributorId, StringComparer.Ordinal)];
             throw new JsonException(
-                "The capacity manifest must contain exactly one positive entry for every requested contributor and bucket.");
+                "The capacity manifest must contain exactly one positive entry for every requested " +
+                $"contributor and bucket. Missing cells: {FormatCells(missing)}. " +
+                $"Unexpected cells: {FormatCells(unexpected)}.");
         }
+    }
+
+    private static string FormatCells(
+        (string BucketId, string ContributorId)[] cells)
+    {
+        const int maximumShown = 12;
+        if (cells.Length == 0)
+        {
+            return "none";
+        }
+
+        string shown = string.Join(
+            ", ",
+            cells.Take(maximumShown).Select(cell => $"{cell.BucketId}/{cell.ContributorId}"));
+        return cells.Length <= maximumShown
+            ? shown
+            : $"{shown}, and {cells.Length - maximumShown} more";
     }
 
     private static async Task<T> LoadAsync<T>(

@@ -122,13 +122,14 @@ public static class ChangePortfolioComparisonIdentity
         ArgumentNullException.ThrowIfNull(series);
         object canonical = new
         {
-            Protocol = ChangePortfolioComparisonPolicies.ExclusiveContributorSeriesV1,
+            Protocol = ContributorSeriesPolicy(bucketPolicy.ContributorNormalization),
             SourcePortfolioDigest = ComputePortfolioDigest(source),
             BucketPolicy = new
             {
                 bucketPolicy.Kind,
                 bucketPolicy.Policy,
                 bucketPolicy.InputDigest,
+                bucketPolicy.ContributorNormalization,
                 bucketPolicy.CapacityCalendarPolicy,
                 bucketPolicy.CapacityInputDigest,
                 bucketPolicy.RollingWindowBucketCount,
@@ -138,6 +139,19 @@ public static class ChangePortfolioComparisonIdentity
         };
         return ComputeJsonDigest(canonical);
     }
+
+    public static string ContributorSeriesPolicy(
+        ChangePortfolioContributorNormalization normalization) => normalization switch
+        {
+            ChangePortfolioContributorNormalization.Joint =>
+                ChangePortfolioComparisonPolicies.ExclusiveContributorSeriesV1,
+            ChangePortfolioContributorNormalization.Isolated =>
+                ChangePortfolioComparisonPolicies.IsolatedContributorSeriesV1,
+            _ => throw new ArgumentOutOfRangeException(
+                nameof(normalization),
+                normalization,
+                "Unknown contributor normalization mode."),
+        };
 
     public static string ComputeTextDigest(string value)
     {

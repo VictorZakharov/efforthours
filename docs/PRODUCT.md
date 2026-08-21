@@ -112,6 +112,14 @@ repository checkpoints allow interrupted or partially failed runs to resume;
 incomplete reports preserve root failure/progress evidence and omit all aggregate
 EHE and trend claims.
 
+Contributor comparisons can use the default jointly normalized additive view or
+an isolated membership-stable view. Isolated series sum each contributor's
+canonical matched items and can overlap on shared commits, so they are explicitly
+non-additive and never replace the authoritative jointly reconciled portfolio
+total. Every report is limited to repositories supplied in the manifest and
+objects reachable from the pinned local heads; omitted or unavailable work is not
+inferred.
+
 ### Reporting and pricing
 
 Canonical reports keep evidence, inferred capabilities, estimated work,

@@ -35,6 +35,8 @@ internal static class ChangePortfolioHelp
           --bucket-manifest <path>  Use caller-supplied gap-free closed buckets
           --capacity-manifest <path>
                                     Optional positive capacity for every contributor/bucket
+          --normalization <joint|isolated>
+                                    Joint additive allocations or stable non-additive contributor series
           --report-view <trend|findings>
                                     Markdown report structure (default: trend)
           --generated-at <instant>  Inject an ISO-8601 report timestamp for reproducibility
@@ -63,9 +65,16 @@ internal static class ChangePortfolioHelp
         the report and non-semantic phase timings on stderr. Author manifests accept at most 64
         repositories. Time-bucketed reports treat repository evidence sessions as internal shards
         of one jointly reconciled portfolio; callers never join reports or add rounded totals.
+        Calendar-month capacity bucket IDs use yyyy-MM (for example 2026-07); calendar-week
+        IDs use week-yyyy-MM-dd with the Monday start date. Custom capacity IDs must exactly
+        match the caller-supplied bucket manifest. Joint contributor series are additive but can
+        change with manifest membership. Isolated contributor series are stable canonical sums,
+        can overlap on shared commits, and never replace or add up to the joint portfolio total.
         Comparison output requires --output and can emit either the versioned JSON contract or a
         self-contained trend/findings Markdown report from the same calculation. Successful
-        repository evidence is checkpointed atomically by immutable input/model digest. A failed
+        repository evidence is checkpointed atomically by immutable input/model digest. The
+        default checkpoint directory is derived from the exact output path, so use an explicit
+        --checkpoint path to preserve reuse when output filenames change. A failed
         shard leaves resumable evidence, writes an explicitly incomplete report, exits nonzero,
         and never substitutes zero or publishes aggregate EHE/trends.
         Results are repository-attributed Change EHE, not

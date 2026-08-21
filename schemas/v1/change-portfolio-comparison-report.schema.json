@@ -98,6 +98,10 @@
         "kind": { "enum": ["calendar-month", "calendar-week", "custom"] },
         "policy": { "type": "string", "minLength": 1 },
         "inputDigest": { "$ref": "#/$defs/digest" },
+        "contributorNormalization": {
+          "enum": ["joint", "isolated"],
+          "description": "Joint series are additive allocations from the jointly reconciled portfolio and can depend on manifest membership. Isolated contributor series are membership-stable canonical sums that may overlap and are non-additive."
+        },
         "capacityCalendarPolicy": { "type": "string", "minLength": 1, "maxLength": 512 },
         "capacityInputDigest": { "$ref": "#/$defs/digest" },
         "rollingWindowBucketCount": { "const": 3 }
@@ -126,7 +130,7 @@
       "required": ["id", "kind", "contributorIds", "additiveToPortfolio", "points", "totalEffort"],
       "properties": {
         "id": { "$ref": "#/$defs/publicId" },
-        "kind": { "enum": ["portfolio", "contributor-exclusive", "shared-contributors"] },
+        "kind": { "enum": ["portfolio", "contributor-exclusive", "contributor-isolated", "shared-contributors"] },
         "contributorIds": {
           "type": "array",
           "maxItems": 64,

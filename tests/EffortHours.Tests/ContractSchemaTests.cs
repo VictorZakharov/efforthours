@@ -7,6 +7,17 @@ namespace EffortHours.Tests;
 public sealed class ContractSchemaTests
 {
     [Fact]
+    public void CatalogAcceptsListedFilenameAndBareStem()
+    {
+        string filename = SchemaNames.ChangePortfolioCapacityManifest;
+        string stem = filename[..^".schema.json".Length];
+
+        Assert.Equal(filename, ContractSchemaCatalog.ResolveName(filename));
+        Assert.Equal(filename, ContractSchemaCatalog.ResolveName(stem));
+        Assert.Equal(ContractSchemaCatalog.Read(filename), ContractSchemaCatalog.Read(stem));
+    }
+
+    [Fact]
     public void CatalogContainsAllV1SchemasWithUniqueIds()
     {
         Assert.Equal(49, ContractSchemaCatalog.Names.Count);

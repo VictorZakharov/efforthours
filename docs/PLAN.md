@@ -262,9 +262,15 @@ count, and intermediate churn do not value effort. `CHANGE_ESTIMATION.md` and
   never become value.
 - The same author-period calculation now supports up to 64 repositories and one
   gap-free calendar-month, calendar-week, or custom bucket partition. Versioned
-  bucket/capacity inputs feed a single exact contributor-match-set allocation;
+  bucket/capacity inputs feed one source portfolio. The default `joint`
+  contributor view exposes its exact additive match-set allocation; optional
+  `isolated` series sum canonical matched items so an unrelated contributor cannot
+  change another contributor's series. Isolated series can overlap and are never
+  additive to the authoritative jointly reconciled portfolio.
   JSON, self-contained trend Markdown, and generic engineering-findings Markdown
-  are projections of the same jointly reconciled portfolio. Preserve partial-
+  are projections of the same jointly reconciled portfolio. Trend output includes
+  labeled portfolio and per-contributor chart lines and explicitly limits coverage
+  to manifest repositories and pinned reachable objects. Preserve partial-
   period/DST boundaries, exact weighted totals, zero contributor cells, separate
   shared-credit groups, privacy-safe input digests, injected generation times,
   operational-versus-semantic digest separation, and the rule that optional
@@ -278,9 +284,12 @@ count, and intermediate churn do not value effort. `CHANGE_ESTIMATION.md` and
   monorepository shape; all workers preserve exact reports and per-worker memory
   stays effectively flat in the recorded run. CI gates equivalence, read-only
   safety, and bounded coordination rather than machine-dependent performance.
-- Closed-month author-period portfolios retain every exact match inside the
-  existing per-repository identity-ledger boundary instead of imposing a
-  presentation-row cap. Large-tree analysis loads only changed-neighborhood
+- Closed-month author-period portfolios stream lifetime identity-prefiltered
+  metadata and retain every exact in-window match inside the 10,000-record
+  per-repository ledger instead of charging out-of-window history against the
+  bound or imposing a presentation-row cap. Over-limit diagnostics expose the
+  observed in-window count and privacy-safe contributor/direct/co-author counts.
+  Large-tree analysis loads only changed-neighborhood
   context, batches eligible first-parent deltas and changed-blob sizes once per
   repository, retains structurally shared inventories across 16 root lineages,
   resolves full-tree blob lengths lazily, and reuses immutable file and equal-tree
@@ -298,11 +307,11 @@ count, and intermediate churn do not value effort. `CHANGE_ESTIMATION.md` and
   3.01x faster end to end and 8.17x faster in aggregate snapshot/diff work with
   identical results; it is not evidence of a 10x field improvement. The
   calculation, correctness, reuse, diagnostic, safety, and boundedness work in
-  #157 is complete, including alpha.8 empty-commit handling. Issue #176 owns the
-  unchanged private A/B/A+B retest. Do not claim a 10x field improvement unless
-  the same 219.33-second manifest completes in approximately 21.9 seconds or less;
-  if it misses, use the recorded phase and reuse counters to identify the remaining
-  bottleneck honestly.
+  #157 is complete, including alpha.8 empty-commit handling. The unchanged private
+  A/B/A+B retest in #176 is also complete. Do not claim a 10x field improvement
+  unless the same 219.33-second manifest completes in approximately 21.9 seconds
+  or less; if it misses, use the recorded phase and reuse counters to identify the
+  remaining bottleneck honestly.
   Protocol `change/1.11.0` retains the 1.10.0 storage-aware full-tree scheduling.
   Packed and small loose stores use one recursive traversal; large loose stores
   use at most four shards per tree and
@@ -329,6 +338,13 @@ count, and intermediate churn do not value effort. `CHANGE_ESTIMATION.md` and
   of allocation-heavy semantic and repository work; do not claim general
   logarithmic core scaling. The private A/B/A+B regression owned by #176 was
   completed before that issue closed; it is no longer pending.
+- Treat the anonymized alpha.12 annual workload as a current field ceiling, not a
+  CI gate: 1,515 selected changes / 3,030 snapshot requests took about 190.85
+  seconds and plateaued near 2.1 GiB working set. The selector correctness and
+  report-interpretation defects are fixed independently of that observation.
+  Re-run the immutable field input before making a performance claim; continue
+  #182 with phase, operation, allocation, and retained-cache evidence rather than
+  machine-specific time or memory thresholds.
 - The optional host-assisted scaffolding boundary is now frozen in
   `AUTHOR_PERIOD_SCAFFOLDING.md`: a separate companion adapter may eventually emit
   a reviewed v1 manifest and local-only provenance, but the estimator stays

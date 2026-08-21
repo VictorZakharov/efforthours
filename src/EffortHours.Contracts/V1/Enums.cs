@@ -182,10 +182,17 @@ public enum ChangePortfolioComparisonView
     Findings,
 }
 
+public enum ChangePortfolioContributorNormalization
+{
+    Joint,
+    Isolated,
+}
+
 public enum ChangePortfolioSeriesKind
 {
     Portfolio,
     ContributorExclusive,
+    ContributorIsolated,
     SharedContributors,
 }
 

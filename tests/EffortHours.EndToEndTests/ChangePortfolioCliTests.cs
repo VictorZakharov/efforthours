@@ -188,9 +188,17 @@ public sealed partial class ChangeCliTests
             Assert.Contains(
                 report.RootElement.GetProperty("diagnostics").EnumerateArray(),
                 diagnostic => diagnostic.GetProperty("code").GetString() == "FB5323");
-            Assert.Contains(
+            JsonElement candidateDiagnostic = Assert.Single(
                 report.RootElement.GetProperty("diagnostics").EnumerateArray(),
-                diagnostic => diagnostic.GetProperty("code").GetString() == "FB5324");
+                diagnostic => diagnostic.GetProperty("code").GetString() == "FB5326" &&
+                    diagnostic.GetProperty("message").GetString()!.Contains(
+                        "repository-a",
+                        StringComparison.Ordinal));
+            string candidateMessage = candidateDiagnostic.GetProperty("message").GetString()!;
+            Assert.Contains("Counts by requested contributor", candidateMessage, StringComparison.Ordinal);
+            Assert.Contains("contributor-a=", candidateMessage, StringComparison.Ordinal);
+            Assert.Contains("contributor-b=", candidateMessage, StringComparison.Ordinal);
+            Assert.DoesNotContain("selected-a@example.invalid", candidateMessage, StringComparison.OrdinalIgnoreCase);
         }
         finally
         {

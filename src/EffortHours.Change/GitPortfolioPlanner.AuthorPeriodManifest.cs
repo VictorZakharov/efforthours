@@ -56,8 +56,14 @@ public sealed partial class GitPortfolioPlanner
             ValidateManifestInputs(manifest, manifestDigest, repositoryPaths);
         }
 
-        string[] aliases = CanonicalAliases(
-            [.. manifest.Contributors.SelectMany(contributor => contributor.Aliases)]);
+        GitAuthorPeriodIdentityGroup[] identityGroups =
+        [
+            .. manifest.Contributors
+                .OrderBy(contributor => contributor.Id, StringComparer.Ordinal)
+                .Select(contributor => new GitAuthorPeriodIdentityGroup(
+                    contributor.Id,
+                    CanonicalAliases(contributor.Aliases))),
+        ];
         PreparedManifestRepository[] repositories;
         using (executionTelemetry.Measure(ChangePortfolioExecutionPhases.HeadValidation))
         {
@@ -85,17 +91,24 @@ public sealed partial class GitPortfolioPlanner
         foreach (PreparedManifestRepository repository in repositories)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            IReadOnlyList<GitCommitMetadata> history;
+            GitAuthorPeriodCandidateResult candidateResult;
             try
             {
                 using (executionTelemetry.Measure(ChangePortfolioExecutionPhases.HistoryUnion))
                 {
-                    history = await _git.ListAuthorPeriodCandidatesAsync(
+                    candidateResult = await _git.ListAuthorPeriodCandidatesAsync(
                         repository.RootPath,
-                        [.. repository.Manifest.Heads.Select(head => head.ObjectId)],
-                        aliases,
-                        manifest.Selection.CoauthorPolicy == ChangePortfolioCoauthorPolicy.Include,
-                        _options.MaximumHistoryCommits + 1,
+                        new GitAuthorPeriodCandidateQuery
+                        {
+                            HeadObjectIds = [.. repository.Manifest.Heads.Select(head => head.ObjectId)],
+                            IdentityGroups = identityGroups,
+                            SinceInclusive = manifest.Selection.SinceInclusive,
+                            UntilExclusive = manifest.Selection.UntilExclusive,
+                            DateField = manifest.Selection.DateField,
+                            IncludeCoauthors = manifest.Selection.CoauthorPolicy ==
+                                ChangePortfolioCoauthorPolicy.Include,
+                            MaximumCandidates = _options.MaximumHistoryCommits,
+                        },
                         cancellationToken).ConfigureAwait(false);
                 }
             }
@@ -105,8 +118,7 @@ public sealed partial class GitPortfolioPlanner
                     $"Git could not traverse author-period candidates for repository '{repository.Manifest.Id}'.",
                     exception);
             }
-
-            EnsureCandidateLimit(history.Count, _options.MaximumHistoryCommits);
+            IReadOnlyList<GitCommitMetadata> history = candidateResult.Candidates;
             AuthorPeriodManifestSelectionResult selected;
             using (executionTelemetry.Measure(ChangePortfolioExecutionPhases.Selection))
             {
@@ -116,6 +128,14 @@ public sealed partial class GitPortfolioPlanner
                     manifest.Contributors);
             }
             diagnostics.AddRange(selected.Diagnostics);
+            diagnostics.Add(new Diagnostic
+            {
+                Code = "FB5326",
+                Severity = DiagnosticSeverity.Information,
+                Message = $"Repository '{repository.Manifest.Id}' retained {history.Count} exact in-window " +
+                    $"identity candidate(s) within the {_options.MaximumHistoryCommits}-candidate bound. " +
+                    "Counts by requested contributor: " + FormatCandidateCounts(candidateResult.GroupCounts) + ".",
+            });
             if (selected.Commits.Count == 0)
             {
                 continue;
@@ -191,6 +211,13 @@ public sealed partial class GitPortfolioPlanner
             ExecutionTelemetry = executionTelemetry,
         };
     }
+
+    private static string FormatCandidateCounts(
+        IReadOnlyList<GitAuthorPeriodCandidateGroupCount> counts) => string.Join(
+            ", ",
+            counts.Select(count =>
+                $"{count.Id}={count.TotalCount} " +
+                $"(direct={count.DirectAuthorCount}, coauthor={count.CoauthorCount})"));
 
     private async Task<PreparedManifestRepository[]> PreflightRepositoriesAsync(
         ChangeAuthorPeriodManifest manifest,

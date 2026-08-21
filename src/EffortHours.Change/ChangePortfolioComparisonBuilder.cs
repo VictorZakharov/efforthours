@@ -20,6 +20,9 @@ public sealed record ChangePortfolioComparisonBuildOptions
 
     public required string BucketPolicy { get; init; }
 
+    public ChangePortfolioContributorNormalization ContributorNormalization { get; init; } =
+        ChangePortfolioContributorNormalization.Joint;
+
     public required ChangePortfolioBucketManifest BucketManifest { get; init; }
 
     public IReadOnlyList<ChangePortfolioComparisonBucket> Buckets { get; init; } = [];
@@ -69,16 +72,21 @@ public static partial class ChangePortfolioComparisonBuilder
             source,
             options,
             additive);
+        IReadOnlyList<ChangePortfolioComparisonSeries> contributorSeries =
+            options.ContributorNormalization == ChangePortfolioContributorNormalization.Isolated
+                ? BuildIsolatedContributorSeries(source, options)
+                : additive;
         IReadOnlyList<ChangePortfolioComparisonSeries> series =
         [
             portfolio,
-            .. additive.OrderBy(value => value.Kind).ThenBy(value => value.Id, StringComparer.Ordinal),
+            .. contributorSeries.OrderBy(value => value.Kind).ThenBy(value => value.Id, StringComparer.Ordinal),
         ];
         ChangePortfolioComparisonBucketPolicy bucketPolicy = new()
         {
             Kind = options.BucketKind,
             Policy = options.BucketPolicy,
             InputDigest = ChangePortfolioComparisonIdentity.ComputeBucketDigest(options.BucketManifest),
+            ContributorNormalization = options.ContributorNormalization,
             CapacityCalendarPolicy = options.CapacityManifest?.CalendarPolicy,
             CapacityInputDigest = options.CapacityManifest is null
                 ? null
@@ -110,8 +118,8 @@ public static partial class ChangePortfolioComparisonBuilder
                     options.Buckets,
                     series),
                 SourcePortfolioDigest = sourceDigest,
-                BucketAllocationPolicy =
-                    ChangePortfolioComparisonPolicies.ExclusiveContributorSeriesV1,
+                BucketAllocationPolicy = ChangePortfolioComparisonIdentity.ContributorSeriesPolicy(
+                    options.ContributorNormalization),
                 CompleteAggregates = true,
                 ExecutionOnlyPathsExcluded = true,
                 RawAliasesExcluded = true,
@@ -451,6 +459,14 @@ public static partial class ChangePortfolioComparisonBuilder
             Message = options.CapacityManifest is null
                 ? "No reference capacity was supplied; capacity ratios and trend statistics are omitted."
                 : "Reference capacity is a caller-supplied comparison denominator, not recorded labor, productivity, compensation, or authorship evidence.",
+        },
+        new Diagnostic
+        {
+            Code = "FB5335",
+            Severity = DiagnosticSeverity.Information,
+            Message = options.ContributorNormalization == ChangePortfolioContributorNormalization.Joint
+                ? "Contributor series use jointly normalized exact-match-set allocations and can change when report membership changes."
+                : "Contributor series use membership-stable isolated commit estimates. They can overlap on shared commits, are not additive, and do not replace the jointly normalized portfolio total.",
         },
     ];
 

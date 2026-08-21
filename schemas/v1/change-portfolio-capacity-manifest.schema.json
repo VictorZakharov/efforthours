@@ -26,7 +26,10 @@
       "type": "object",
       "required": ["bucketId", "contributorId", "hours"],
       "properties": {
-        "bucketId": { "$ref": "#/$defs/publicId" },
+        "bucketId": {
+          "$ref": "#/$defs/publicId",
+          "description": "Must match a generated or custom bucket ID exactly. Calendar months use yyyy-MM; calendar weeks use week-yyyy-MM-dd with the Monday start date."
+        },
         "contributorId": { "$ref": "#/$defs/publicId" },
         "hours": { "type": "number", "minimum": 0 }
       },

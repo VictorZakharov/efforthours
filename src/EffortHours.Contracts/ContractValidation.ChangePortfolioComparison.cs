@@ -134,7 +134,8 @@ public static partial class ContractValidation
                 errors);
         }
         if (report.Verification.BucketAllocationPolicy !=
-            ChangePortfolioComparisonPolicies.ExclusiveContributorSeriesV1)
+            ChangePortfolioComparisonIdentity.ContributorSeriesPolicy(
+                report.BucketPolicy.ContributorNormalization))
         {
             errors.Add("The comparison report uses an unsupported bucket-allocation policy.");
         }
@@ -161,9 +162,9 @@ public static partial class ContractValidation
         ChangePortfolioComparisonBucketPolicy policy,
         List<string> errors)
     {
-        if (!Enum.IsDefined(policy.Kind))
+        if (!Enum.IsDefined(policy.Kind) || !Enum.IsDefined(policy.ContributorNormalization))
         {
-            errors.Add("bucketPolicy.kind must use a recognized value.");
+            errors.Add("bucketPolicy kind and contributor normalization must use recognized values.");
         }
 
         RequireText(policy.Policy, "bucketPolicy.policy", errors);
@@ -311,13 +312,19 @@ public static partial class ContractValidation
             errors.Add("The portfolio series total must equal sourcePortfolio.totalEffort.");
         }
 
+        if (report.BucketPolicy.ContributorNormalization ==
+            ChangePortfolioContributorNormalization.Isolated)
+        {
+            ValidateIsolatedContributorSeries(report, errors);
+            return;
+        }
+
         ChangePortfolioComparisonSeries[] additive =
             [.. report.Series.Where(series => series.AdditiveToPortfolio)];
         if (Sum(additive.Select(series => series.TotalEffort)) != portfolio.TotalEffort)
         {
             errors.Add("Additive contributor-match series must sum exactly to the portfolio total.");
         }
-
         foreach (int bucketIndex in Enumerable.Range(0, report.Buckets.Count))
         {
             if (Sum(additive.Select(series => series.Points[bucketIndex].Effort)) !=
@@ -325,6 +332,68 @@ public static partial class ContractValidation
             {
                 errors.Add(
                     $"Additive series do not reconcile in bucket '{report.Buckets[bucketIndex].Id}'.");
+            }
+        }
+    }
+
+    private static void ValidateIsolatedContributorSeries(
+        ChangePortfolioComparisonReport report,
+        List<string> errors)
+    {
+        ChangePortfolioComparisonSeries[] contributors =
+        [.. report.Series.Where(series => series.Kind == ChangePortfolioSeriesKind.ContributorIsolated)];
+        string[] expectedIds =
+        [.. report.Selection.AuthorPeriodManifest!.ContributorIds.Order(StringComparer.Ordinal)];
+        string[] actualIds =
+        [.. contributors
+            .Where(series => series.ContributorIds.Count == 1)
+            .Select(series => series.ContributorIds[0])
+            .Order(StringComparer.Ordinal)];
+        if (!actualIds.SequenceEqual(expectedIds, StringComparer.Ordinal) ||
+            report.Series.Any(series =>
+                series.Kind is not (ChangePortfolioSeriesKind.Portfolio or
+                    ChangePortfolioSeriesKind.ContributorIsolated)))
+        {
+            errors.Add(
+                "Isolated normalization requires exactly one isolated series per requested contributor.");
+            return;
+        }
+
+        foreach (ChangePortfolioComparisonSeries series in contributors)
+        {
+            if (series.AdditiveToPortfolio || series.ContributorIds.Count != 1)
+            {
+                errors.Add(
+                    $"Isolated contributor series '{series.Id}' must be non-additive and name one contributor.");
+                continue;
+            }
+
+            string contributorId = series.ContributorIds[0];
+            ChangePortfolioItemEstimate[] items =
+            [.. report.SourcePortfolio!.Items.Where(item =>
+                item.Attribution.ContributorMatches?.Any(match =>
+                    match.ContributorId == contributorId) == true)];
+            if (Sum(items.Select(item => item.IsolatedEffort)) != series.TotalEffort)
+            {
+                errors.Add(
+                    $"Isolated contributor series '{series.Id}' does not equal its canonical item estimates.");
+            }
+
+            for (int index = 0; index < report.Buckets.Count; index++)
+            {
+                ChangePortfolioComparisonBucket bucket = report.Buckets[index];
+                ChangePortfolioItemEstimate[] bucketItems =
+                [.. items.Where(item =>
+                    item.Attribution.SelectedTimestamp is DateTimeOffset timestamp &&
+                    timestamp >= bucket.SinceInclusive &&
+                    timestamp < bucket.UntilExclusive)];
+                if (Sum(bucketItems.Select(item => item.IsolatedEffort)) !=
+                        series.Points[index].Effort ||
+                    bucketItems.Length != series.Points[index].SelectedChangeCount)
+                {
+                    errors.Add(
+                        $"Isolated contributor series '{series.Id}' does not match bucket '{bucket.Id}'.");
+                }
             }
         }
     }

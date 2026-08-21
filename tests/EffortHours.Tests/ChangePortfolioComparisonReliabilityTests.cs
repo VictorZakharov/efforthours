@@ -189,7 +189,7 @@ public sealed partial class ChangePortfolioComparisonTests
             report.Verification.SemanticDigest,
             trendView.Verification.SemanticDigest);
         Assert.Equal(
-            "sha256:b7633f9e6f5d85628c101b22d5572ebaeb5534126e3856ded4035e654b750079",
+            "sha256:c174e35661d60948ac06a89233c8a96aa3e7701c07261d38cf26ce31a11c8d82",
             ChangePortfolioComparisonIdentity.ComputeTextDigest(findings));
     }
 }

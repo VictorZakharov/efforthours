@@ -338,6 +338,9 @@ public static partial class ChangePortfolioComparisonMarkdownRenderer
             markdown.AppendLine("  --capacity-manifest <capacity.json> \\");
         }
 
+        markdown.Append("  --normalization ")
+            .Append(Kebab(report.BucketPolicy.ContributorNormalization)).AppendLine(" \\");
+
         if (report.Execution.Checkpoint.Enabled)
         {
             markdown.AppendLine("  --checkpoint <checkpoint-directory> \\");
@@ -362,7 +365,12 @@ public static partial class ChangePortfolioComparisonMarkdownRenderer
         markdown.AppendLine();
         markdown.AppendLine("- Completed repository evidence was analyzed offline without executing target source code or fetching network data.");
         markdown.AppendLine("- Within each completed repository, head reachability was unioned before selection; duplicate reachability does not multiply EHE.");
+        markdown.AppendLine("- Coverage is limited to repositories explicitly supplied in the manifest and objects reachable from their pinned local heads; omitted repositories and unavailable work are invisible.");
         markdown.AppendLine("- Shared-contributor groups are counted once and are not divided into invented personal percentages.");
+        markdown.AppendLine(report.BucketPolicy.ContributorNormalization ==
+            ChangePortfolioContributorNormalization.Isolated
+            ? "- Contributor series use canonical isolated item ranges, remain stable when unrelated contributors are added, and are explicitly non-additive; the portfolio remains jointly normalized."
+            : "- Contributor series use additive jointly normalized exact-match-set allocations and can change when manifest membership changes.");
         markdown.AppendLine(report.Verification.CompleteAggregates
             ? "- Each selected change belongs to exactly one time bucket and exact contributor match set; bucket allocations sum exactly to the jointly reconciled source portfolio total."
             : "- No bucket allocation, aggregate EHE, or trend is published because at least one repository shard is incomplete.");

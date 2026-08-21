@@ -36,6 +36,26 @@ internal interface IExternalCommandRunner
         IReadOnlyList<string> arguments,
         CancellationToken cancellationToken,
         bool requireSuccess = true);
+
+    public async Task<ExternalCommandResult> RunStreamingAsync(
+        string executable,
+        string workingDirectory,
+        IReadOnlyList<string> arguments,
+        Func<TextReader, CancellationToken, Task> consumeStandardOutput,
+        CancellationToken cancellationToken,
+        bool requireSuccess = true)
+    {
+        ArgumentNullException.ThrowIfNull(consumeStandardOutput);
+        ExternalCommandResult result = await RunAsync(
+            executable,
+            workingDirectory,
+            arguments,
+            cancellationToken,
+            requireSuccess).ConfigureAwait(false);
+        using StringReader reader = new(result.StandardOutput);
+        await consumeStandardOutput(reader, cancellationToken).ConfigureAwait(false);
+        return result with { StandardOutput = string.Empty };
+    }
 }
 
 internal sealed class ExternalCommandRunner : IExternalCommandRunner
@@ -49,6 +69,20 @@ internal sealed class ExternalCommandRunner : IExternalCommandRunner
             executable,
             workingDirectory,
             arguments,
+            cancellationToken,
+            requireSuccess);
+
+    public Task<ExternalCommandResult> RunStreamingAsync(
+        string executable,
+        string workingDirectory,
+        IReadOnlyList<string> arguments,
+        Func<TextReader, CancellationToken, Task> consumeStandardOutput,
+        CancellationToken cancellationToken,
+        bool requireSuccess = true) => ExternalCommand.RunStreamingAsync(
+            executable,
+            workingDirectory,
+            arguments,
+            consumeStandardOutput,
             cancellationToken,
             requireSuccess);
 }
@@ -98,6 +132,89 @@ internal static class ExternalCommand
         ExternalCommandResult result = new(
             process.ExitCode,
             await stdout.ConfigureAwait(false),
+            await stderr.ConfigureAwait(false));
+        if (requireSuccess && result.ExitCode != 0)
+        {
+            string detail = result.StandardError.Trim();
+            throw new ExternalCommandException(
+                executable,
+                result.ExitCode,
+                detail.Length == 0
+                    ? $"'{executable}' exited with code {result.ExitCode}."
+                    : $"'{executable}' failed: {detail}");
+        }
+
+        return result;
+    }
+
+    public static async Task<ExternalCommandResult> RunStreamingAsync(
+        string executable,
+        string workingDirectory,
+        IReadOnlyList<string> arguments,
+        Func<TextReader, CancellationToken, Task> consumeStandardOutput,
+        CancellationToken cancellationToken,
+        bool requireSuccess = true)
+    {
+        ArgumentNullException.ThrowIfNull(consumeStandardOutput);
+        ProcessStartInfo startInfo = CreateStartInfo(executable, workingDirectory, arguments);
+        using Process process = new() { StartInfo = startInfo };
+        try
+        {
+            if (!process.Start())
+            {
+                throw new ExternalCommandException(
+                    executable,
+                    null,
+                    $"Could not start required executable '{executable}'.");
+            }
+        }
+        catch (Exception exception) when (exception is Win32Exception or InvalidOperationException)
+        {
+            throw new ExternalCommandException(
+                executable,
+                null,
+                $"Could not start required executable '{executable}': {exception.Message}",
+                exception);
+        }
+
+        Task consume = consumeStandardOutput(process.StandardOutput, cancellationToken);
+        Task<string> stderr = process.StandardError.ReadToEndAsync(cancellationToken);
+        Task wait = process.WaitForExitAsync(cancellationToken);
+        try
+        {
+            Task first = await Task.WhenAny(consume, wait).ConfigureAwait(false);
+            if (ReferenceEquals(first, consume))
+            {
+                await consume.ConfigureAwait(false);
+            }
+
+            await Task.WhenAll(consume, wait).ConfigureAwait(false);
+        }
+        catch
+        {
+            TryKill(process);
+            try
+            {
+                await wait.ConfigureAwait(false);
+            }
+            catch
+            {
+            }
+
+            try
+            {
+                _ = await stderr.ConfigureAwait(false);
+            }
+            catch
+            {
+            }
+
+            throw;
+        }
+
+        ExternalCommandResult result = new(
+            process.ExitCode,
+            string.Empty,
             await stderr.ConfigureAwait(false));
         if (requireSuccess && result.ExitCode != 0)
         {

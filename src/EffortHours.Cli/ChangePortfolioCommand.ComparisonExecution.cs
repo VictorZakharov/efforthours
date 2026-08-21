@@ -94,6 +94,7 @@ internal sealed partial class ChangePortfolioCommand
             Profile = options.Profile,
             BucketKind = inputs.BucketKind,
             BucketPolicy = inputs.BucketPolicy,
+            ContributorNormalization = options.ContributorNormalization,
             BucketManifest = inputs.BucketManifest,
             Buckets = inputs.Buckets,
             CapacityManifest = inputs.CapacityManifest,
