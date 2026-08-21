@@ -99,14 +99,19 @@ repository around normalization. Each repository is normalized independently;
 totals are then added without cross-repository deduplication.
 
 Author-period selection asks Git to prefilter the reachable graph with fixed,
-case-insensitive identity aliases and materializes at most 10,000 candidate
-identity records per repository. The exact in-process selector emits every match
-inside that bounded input; it has no separate calendar or presentation-row cap.
-It then
-validates structured author/co-author identities, the chosen timestamp field, and
-the requested interval. This preserves non-monotonic author-date correctness
-without loading an unbounded identity ledger; Git's committer-date traversal
-cutoffs are not applied to author-date selection. Exact case-insensitive aliases
+case-insensitive identity aliases, streams that metadata without a lifetime-sized
+output buffer, and applies the exact timestamp and structured identity checks to
+each record before retaining it. At most 10,000 exact in-window identity
+candidates are retained per repository; lifetime matches outside the requested
+interval do not consume that ledger. The selector emits every match inside that
+bounded input and has no separate calendar or presentation-row cap. This
+preserves non-monotonic author-date correctness without loading an unbounded
+identity ledger; Git's committer-date traversal cutoffs are not applied to
+author-date selection. An over-limit failure reports the observed in-window count,
+the limit, and privacy-safe direct/co-author counts by requested contributor. A
+separate count-only diagnostic ceiling reports a lower bound if even that bounded
+count is exhausted. Successful selection records the same total and per-contributor
+breakdown without raw aliases. Exact case-insensitive aliases
 match author name, email, or `Name <email>`. The interval is start-inclusive and
 end-exclusive;
 offset-free timestamps use the declared timezone, and skipped or ambiguous local
@@ -625,10 +630,12 @@ the exact earlier estimator identity they were created from.
   manifest directory and may name readable siblings or descendants; there is no
   worktree-containment rule. Reports retain caller IDs, immutable identities, and
   stable digests without host paths.
-- Author-period mode materializes at most 10,000 Git-prefiltered identity
-  candidates per repository from pinned reachable graphs. It applies no separate
-  calendar-month or presentation-row ceiling to the exact matches; the report
-  remains bounded by the complete 64-repository input envelope. It records the
+- Author-period mode materializes at most 10,000 exact in-window identity
+  candidates per repository from streamed Git-prefiltered metadata over pinned
+  reachable graphs. Lifetime matches outside the requested interval consume no
+  candidate slots. It applies no separate calendar-month or presentation-row
+  ceiling to the exact matches; the report remains bounded by the complete
+  64-repository input envelope. It records the
   inclusive/exclusive interval, timezone, date field, co-author policy, and merge
   policy.
 - Portfolio JSON and Markdown show isolated and repository-normalized totals,

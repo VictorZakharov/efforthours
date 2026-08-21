@@ -1251,8 +1251,8 @@ regression, exact combined/isolated and reorder semantics, bounded reuse and
 repository concurrency, the 50-repetition ignore-rule stress case, actionable
 Git ownership diagnostics, cancellation diagnostics, and unchanged/offline target
 checks. GitHub issue #157 therefore closes as an engineering implementation
-record. Issue #176 owns the unchanged private alpha.8 A, B, and A+B field retest;
-the private manifests remain outside the repository.
+record. The unchanged private A, B, and A+B field retest later completed under
+#176; the private manifests remain outside the repository.
 
 Closing the engineering issue does not establish the desired 10x field result.
 That claim still requires approximately 21.9 seconds or less against the
@@ -1302,11 +1302,12 @@ bodies are deliberately tiny and its reachable history is shallow. It does not
 reproduce the private field workload's roughly 663 MiB tree or 41,793 reachable
 commits. The defensible same-fixture result is therefore 3.01x end to end, not
 10x. The snapshot/diff subsystem itself is now in the expected order of magnitude,
-but issue #176 must rerun the same private manifest and measure no more than
-approximately 21.9 seconds against alpha.6's 219.33-second result before a 10x
-claim is made. Protocol v1.7.0 also records the lazy object-metadata reader counters
-and canonical structurally shared inventory behavior. These wall-time and sampled-
-memory observations remain explicit benchmark evidence, never ordinary CI gates.
+but a 10x claim still requires the same private manifest to measure no more than
+approximately 21.9 seconds against alpha.6's 219.33-second result. The completed
+#176 retest did not establish that claim. Protocol v1.7.0 also records the lazy
+object-metadata reader counters and canonical structurally shared inventory
+behavior. These wall-time and sampled-memory observations remain explicit
+benchmark evidence, never ordinary CI gates.
 
 ## Change author-period pipelining and CPU scaling v1.8.0 checkpoint
 
@@ -1468,8 +1469,8 @@ The bounded memory increase is accepted for the measured latency reduction; it i
 not evidence that other tree shapes scale proportionally. CI covers exact sharded
 tree reconstruction, deterministic partitioning, bounded command construction,
 semantic equivalence, cache reuse, privacy, and read-only behavior. Timing,
-allocation, CPU, GC, and sampled-memory values remain non-gating. Issue #176 still
-owns the unchanged private A/B/A+B retest; no 10x field claim is made here.
+allocation, CPU, GC, and sampled-memory values remain non-gating. Issue #176 later
+completed the unchanged private A/B/A+B retest; no 10x field claim is made here.
 
 ## Storage-aware heterogeneous tree scheduling v1.10.0 checkpoint
 
@@ -1631,3 +1632,25 @@ instead verifies exact cold-analysis equivalence, refreshed scope diagnostics,
 deterministic report bytes, bounded single-flight retention, rejection/fallback
 cases, cancellation, privacy, and read-only behavior. Issue #182 remains open for
 the unresolved large-tree and general-workload scaling objective.
+
+## Alpha.12 annual author-period field observation
+
+An anonymized August 21, 2026 field run exercised an annual author-period
+comparison on alpha.12. It selected 1,515 changes and requested 3,030 snapshot
+analyses. The observed run took approximately 190.85 seconds and its working set
+plateaued near 2.1 GiB. These are user-reported, machine-specific observations,
+not a controlled before/after checkpoint or CI threshold.
+
+The same investigation found that one repository had about 12,081 lifetime
+identity-prefiltered candidates while only roughly 1,800 belonged to the requested
+interval. Alpha.12 charged the lifetime set against the 10,000-candidate safety
+limit before applying the exact date policy. The corrected selector streams the
+lifetime metadata and retains only exact in-window matches, with semantic tests
+covering the boundary and diagnostic counts. No field-runtime improvement is
+claimed from that correctness change.
+
+The immutable field workload should be rerun after publication before recording a
+new comparison. Until then, the 190.85-second / 2.1-GiB observation remains a
+scalability ceiling for issue #182. Any successor checkpoint must publish phase,
+operation, allocation, retained-cache, and semantic-equivalence evidence; ordinary
+CI continues to avoid wall-clock and sampled-memory gates.

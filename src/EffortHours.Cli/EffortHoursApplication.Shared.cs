@@ -92,7 +92,9 @@ public sealed partial class EffortHoursApplication
                 }
 
             default:
-                return await UsageErrorAsync(standardError, "Expected 'schema list' or 'schema show <name>'.")
+                return await UsageErrorAsync(
+                    standardError,
+                    "Expected 'schema list' or 'schema show <name-or-filename>'.")
                     .ConfigureAwait(false);
         }
     }
@@ -248,7 +250,7 @@ public sealed partial class EffortHoursApplication
           eh calibration uncertainty-graph-evaluate <corpus.json> <graph-features.json>... [--compact] [--output <path>]
           eh calibration uncertainty-support <population.json> <features.json>... [--compact] [--output <path>]
           eh schema list
-          eh schema show <name>
+          eh schema show <name-or-filename>
           eh model info
           eh model show
           eh rate info
@@ -269,7 +271,9 @@ public sealed partial class EffortHoursApplication
     private const string SchemaHelpText = """
         Usage:
           eh schema list
-          eh schema show <name>
+          eh schema show <name-or-filename>
+
+        schema show accepts either the listed *.schema.json filename or its bare stem.
         """;
 
     private const string ModelHelpText = """

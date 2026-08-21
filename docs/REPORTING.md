@@ -35,6 +35,12 @@ item/adjustment lineage. Contributor and head groups are alternative views of on
 authoritative portfolio total; shared EHE is never copied into several additive
 personal rows.
 
+Direct diagnostic `FB5312` and manifest diagnostic `FB5326` record the retained
+exact in-window candidate count, its repository bound, and privacy-safe
+direct/co-author counts by requested public contributor ID. Raw aliases remain
+excluded. An over-limit failure carries the same breakdown and the exact observed
+count, or a stated lower bound only after the separate diagnostic ceiling.
+
 Manifest author-period report diagnostic `FB5325` contains deterministic,
 privacy-safe cache request/hit, unique-key, revisit-miss, byte, eviction, and
 declared retention counts for snapshot, immutable file-analysis, inventory, and
@@ -57,10 +63,29 @@ generic anonymized engineering-findings report from the same structured data,
 without agent-authored arithmetic or unsupported causal guesses. Both require the
 caller to choose the exact output path.
 
+Comparison reports record `contributorNormalization`. The default `joint` view
+keeps exclusive and shared contributor-match sets additive to the jointly
+reconciled portfolio, so allocations can change with manifest membership. The
+optional `isolated` view emits one membership-stable canonical series per
+contributor. Shared commits can then occur in several contributor series, making
+those series explicitly non-additive; they never replace the one authoritative
+joint portfolio total. Trend Markdown charts the portfolio and every contributor
+series, publishes their exact line order and numeric fallback, and states that
+coverage is limited to manifest repositories and objects reachable from pinned
+local heads.
+
+Derived capacity cells use `yyyy-MM` calendar-month bucket IDs and
+`week-yyyy-MM-dd` calendar-week IDs, where the date is the Monday start in the
+manifest timezone. Custom IDs come from the bucket manifest. Validation reports
+the exact missing and unexpected public cells. `eh schema show` accepts either a
+bare schema stem or its full `.schema.json` filename.
+
 Repository evidence is checkpointed by immutable repository/head/selection/model
 digest unless `--no-checkpoint` is explicit. The default directory is
 `<output>.eh-checkpoint`; an exact rerun reuses successful repository evidence and
-a one-head change invalidates only its repository. If any repository fails, the
+a one-head change invalidates only its repository. Changing the output filename
+also changes that default directory, so callers that want reuse across differently
+named output files should supply one stable `--checkpoint` path. If any repository fails, the
 requested JSON or Markdown file is still written with `status: incomplete`, the
 root failure and last-progress context, and checkpoint lineage. It deliberately
 omits the canonical source portfolio, bucket series, aggregate EHE, and trend and

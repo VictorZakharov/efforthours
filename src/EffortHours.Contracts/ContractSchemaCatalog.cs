@@ -63,17 +63,29 @@ public static class ContractSchemaCatalog
 
     public static string Read(string name)
     {
-        ArgumentException.ThrowIfNullOrWhiteSpace(name);
-
-        if (!Names.Contains(name, StringComparer.Ordinal))
-        {
-            throw new ArgumentOutOfRangeException(nameof(name), name, "Unknown EffortHours schema name.");
-        }
+        string resolved = ResolveName(name);
 
         Assembly assembly = typeof(ContractSchemaCatalog).Assembly;
-        using Stream stream = assembly.GetManifestResourceStream(ResourcePrefix + name)
-            ?? throw new InvalidOperationException($"Embedded schema '{name}' was not found.");
+        using Stream stream = assembly.GetManifestResourceStream(ResourcePrefix + resolved)
+            ?? throw new InvalidOperationException($"Embedded schema '{resolved}' was not found.");
         using StreamReader reader = new(stream, Encoding.UTF8, detectEncodingFromByteOrderMarks: true);
         return reader.ReadToEnd();
+    }
+
+    public static string ResolveName(string name)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(name);
+        if (Names.Contains(name, StringComparer.Ordinal))
+        {
+            return name;
+        }
+
+        string filename = name + ".schema.json";
+        if (Names.Contains(filename, StringComparer.Ordinal))
+        {
+            return filename;
+        }
+
+        throw new ArgumentOutOfRangeException(nameof(name), name, "Unknown EffortHours schema name.");
     }
 }

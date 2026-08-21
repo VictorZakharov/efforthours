@@ -32,6 +32,7 @@ public static partial class ChangePortfolioComparisonBuilder
             Policy = options.BucketPolicy,
             InputDigest = ChangePortfolioComparisonIdentity.ComputeBucketDigest(
                 options.BucketManifest),
+            ContributorNormalization = options.ContributorNormalization,
             CapacityCalendarPolicy = options.CapacityManifest?.CalendarPolicy,
             CapacityInputDigest = options.CapacityManifest is null
                 ? null
@@ -45,6 +46,7 @@ public static partial class ChangePortfolioComparisonBuilder
                 manifestDigest,
                 bucketPolicy.InputDigest,
                 bucketPolicy.CapacityInputDigest ?? "no-capacity",
+                bucketPolicy.ContributorNormalization.ToString(),
                 options.SourceManifest.Selection.TimeZone));
         ChangePortfolioComparisonReport report = new()
         {
@@ -75,8 +77,8 @@ public static partial class ChangePortfolioComparisonBuilder
             {
                 SemanticDigest = semanticDigest,
                 SourcePortfolioDigest = null,
-                BucketAllocationPolicy =
-                    ChangePortfolioComparisonPolicies.ExclusiveContributorSeriesV1,
+                BucketAllocationPolicy = ChangePortfolioComparisonIdentity.ContributorSeriesPolicy(
+                    options.ContributorNormalization),
                 CompleteAggregates = false,
                 ExecutionOnlyPathsExcluded = true,
                 RawAliasesExcluded = true,

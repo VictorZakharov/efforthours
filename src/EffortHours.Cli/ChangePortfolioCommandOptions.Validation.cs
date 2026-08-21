@@ -9,6 +9,7 @@ internal static partial class ChangePortfolioCommandOptionsParser
         string? since,
         string? until,
         bool authorPolicyProvided,
+        bool normalizationProvided,
         bool currencyProvided)
     {
         int selectors = (options.PullRequests.Count > 0 ? 1 : 0) +
@@ -85,7 +86,8 @@ internal static partial class ChangePortfolioCommandOptionsParser
             options.GeneratedAt is not null ||
             options.ReportTitle is not null ||
             options.CheckpointPath is not null ||
-            options.NoCheckpoint;
+            options.NoCheckpoint ||
+            normalizationProvided;
         if (comparisonOption && !options.IsAuthorPeriodManifest)
         {
             return Error(

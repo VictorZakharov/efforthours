@@ -26,6 +26,9 @@ internal sealed record ChangePortfolioCommandOptions
     public ChangePortfolioComparisonView ComparisonView { get; init; } =
         ChangePortfolioComparisonView.Trend;
 
+    public ChangePortfolioContributorNormalization ContributorNormalization { get; init; } =
+        ChangePortfolioContributorNormalization.Joint;
+
     public DateTimeOffset? GeneratedAt { get; init; }
 
     public string? ReportTitle { get; init; }
@@ -97,6 +100,8 @@ internal static partial class ChangePortfolioCommandOptionsParser
         string? bucketManifest = null;
         string? capacityManifest = null;
         ChangePortfolioComparisonView comparisonView = ChangePortfolioComparisonView.Trend;
+        ChangePortfolioContributorNormalization contributorNormalization =
+            ChangePortfolioContributorNormalization.Joint;
         DateTimeOffset? generatedAt = null;
         string? reportTitle = null;
         string? checkpointPath = null;
@@ -117,6 +122,7 @@ internal static partial class ChangePortfolioCommandOptionsParser
         string currency = "USD";
         bool currencyProvided = false;
         bool authorPolicyProvided = false;
+        bool normalizationProvided = false;
         string? output = null;
         for (int index = firstOption; index < arguments.Length; index++)
         {
@@ -194,6 +200,17 @@ internal static partial class ChangePortfolioCommandOptionsParser
                     comparisonView = view == "trend"
                         ? ChangePortfolioComparisonView.Trend
                         : ChangePortfolioComparisonView.Findings;
+                    break;
+                case "--normalization":
+                    if (!EnumValue(value, "joint", "isolated", out string normalizationValue))
+                    {
+                        return Error("Normalization must be 'joint' or 'isolated'.");
+                    }
+
+                    contributorNormalization = normalizationValue == "joint"
+                        ? ChangePortfolioContributorNormalization.Joint
+                        : ChangePortfolioContributorNormalization.Isolated;
+                    normalizationProvided = true;
                     break;
                 case "--generated-at":
                     if (!DateTimeOffset.TryParseExact(
@@ -320,6 +337,7 @@ internal static partial class ChangePortfolioCommandOptionsParser
             BucketManifestPath = bucketManifest,
             CapacityManifestPath = capacityManifest,
             ComparisonView = comparisonView,
+            ContributorNormalization = contributorNormalization,
             GeneratedAt = generatedAt,
             ReportTitle = reportTitle,
             CheckpointPath = checkpointPath,
@@ -338,7 +356,13 @@ internal static partial class ChangePortfolioCommandOptionsParser
             Currency = currency,
             OutputPath = output,
         };
-        return Validate(options, since, until, authorPolicyProvided, currencyProvided);
+        return Validate(
+            options,
+            since,
+            until,
+            authorPolicyProvided,
+            normalizationProvided,
+            currencyProvided);
     }
 
     private static bool EnumValue(string value, string first, string second, out string parsed)

@@ -665,6 +665,12 @@ projection and immutable Git-inventory reuse for large snapshots.
 Version 0.18.2 retains those priors while pruning unrelated nested context,
 retaining a full default identity ledger's parent links, and bounding
 multi-repository execution at two active sessions.
+Author-period portfolio selection streams lifetime identity-prefiltered commit
+metadata but retains and bounds only exact matches inside the requested interval;
+the count and identity history outside that interval never value EHE. Time-bucketed
+comparison may expose either jointly normalized additive contributor allocations
+or membership-stable isolated canonical series. The latter can overlap and are
+non-additive; neither view changes the jointly reconciled portfolio estimate.
 Larger size bands and empirical production accuracy remain separate decisions.
 
 ## 11. Uncertainty

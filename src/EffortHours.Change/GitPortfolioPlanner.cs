@@ -163,18 +163,24 @@ public sealed partial class GitPortfolioPlanner
                 .ConfigureAwait(false);
         }
 
-        IReadOnlyList<GitCommitMetadata> history;
+        GitAuthorPeriodCandidateResult candidateResult;
         using (executionTelemetry?.Measure(ChangePortfolioExecutionPhases.HistoryUnion))
         {
-            history = await _git.ListAuthorPeriodCandidatesAsync(
+            candidateResult = await _git.ListAuthorPeriodCandidatesAsync(
                 root,
-                headObjectId,
-                aliases,
-                options.CoauthorPolicy == ChangePortfolioCoauthorPolicy.Include,
-                _options.MaximumHistoryCommits + 1,
+                new GitAuthorPeriodCandidateQuery
+                {
+                    HeadObjectIds = [headObjectId],
+                    IdentityGroups = [new GitAuthorPeriodIdentityGroup("requested-selection", aliases)],
+                    SinceInclusive = options.SinceInclusive,
+                    UntilExclusive = options.UntilExclusive,
+                    DateField = options.DateField,
+                    IncludeCoauthors = options.CoauthorPolicy == ChangePortfolioCoauthorPolicy.Include,
+                    MaximumCandidates = _options.MaximumHistoryCommits,
+                },
                 cancellationToken).ConfigureAwait(false);
-            EnsureCandidateLimit(history.Count, _options.MaximumHistoryCommits);
         }
+        IReadOnlyList<GitCommitMetadata> history = candidateResult.Candidates;
 
         AuthorPeriodSelectionResult selected;
         using (executionTelemetry?.Measure(ChangePortfolioExecutionPhases.Selection))
@@ -235,7 +241,19 @@ public sealed partial class GitPortfolioPlanner
                 },
             },
             Items = items,
-            Diagnostics = selected.Diagnostics,
+            Diagnostics =
+            [
+                .. selected.Diagnostics,
+                new Diagnostic
+                {
+                    Code = "FB5312",
+                    Severity = DiagnosticSeverity.Information,
+                    Message = $"The exact in-window identity ledger retained {history.Count} candidate commit(s) " +
+                        $"within the {_options.MaximumHistoryCommits}-candidate repository bound. " +
+                        "Counts for the requested selection: " +
+                        FormatCandidateCounts(candidateResult.GroupCounts) + ".",
+                },
+            ],
         };
     }
 
@@ -262,16 +280,6 @@ public sealed partial class GitPortfolioPlanner
         return values;
     }
 
-    internal static void EnsureCandidateLimit(int candidateCount, int maximumCount)
-    {
-        if (candidateCount > maximumCount)
-        {
-            throw new InvalidOperationException(
-                $"Author-period selection matched more than {maximumCount} " +
-                "identity-prefiltered commit candidates. Use narrower aliases or a history boundary; " +
-                "EffortHours will not load an unbounded identity ledger.");
-        }
-    }
 }
 
 internal sealed record SelectedAuthorCommit(

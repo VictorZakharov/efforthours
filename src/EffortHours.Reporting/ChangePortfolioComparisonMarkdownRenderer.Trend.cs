@@ -27,17 +27,20 @@ public static partial class ChangePortfolioComparisonMarkdownRenderer
             series => series.Kind == ChangePortfolioSeriesKind.Portfolio);
         AppendCoverage(markdown, report);
         AppendResultSummary(markdown, portfolio);
-        AppendChart(markdown, report.Buckets, portfolio);
-        AppendSeriesSection(markdown, "Overall portfolio", report.Buckets, portfolio);
-
         ChangePortfolioComparisonSeries[] contributors =
             [.. report.Series.Where(series =>
-                series.Kind == ChangePortfolioSeriesKind.ContributorExclusive)];
+                series.Kind is ChangePortfolioSeriesKind.ContributorExclusive or
+                    ChangePortfolioSeriesKind.ContributorIsolated)];
+        AppendChart(markdown, report.Buckets, portfolio, contributors);
+        AppendSeriesSection(markdown, "Overall portfolio", report.Buckets, portfolio);
         foreach (ChangePortfolioComparisonSeries contributor in contributors)
         {
+            string basis = contributor.Kind == ChangePortfolioSeriesKind.ContributorIsolated
+                ? "isolated canonical estimate"
+                : "jointly normalized exclusive match set";
             AppendSeriesSection(
                 markdown,
-                "Contributor " + contributor.ContributorIds[0] + " — exclusive match set",
+                "Contributor " + contributor.ContributorIds[0] + " — " + basis,
                 report.Buckets,
                 contributor);
         }
@@ -63,6 +66,8 @@ public static partial class ChangePortfolioComparisonMarkdownRenderer
             .AppendLine("` (start inclusive, end exclusive)  ");
         markdown.Append("Buckets: ").Append(report.Buckets.Count).Append(" using `")
             .Append(Escape(report.BucketPolicy.Policy)).AppendLine("`  ");
+        markdown.Append("Contributor normalization: `")
+            .Append(Kebab(report.BucketPolicy.ContributorNormalization)).AppendLine("`  ");
         if (first.PartialStart || last.PartialEnd)
         {
             markdown.Append("Partial-period note: ")
@@ -123,13 +128,23 @@ public static partial class ChangePortfolioComparisonMarkdownRenderer
     private static void AppendChart(
         StringBuilder markdown,
         IReadOnlyList<ChangePortfolioComparisonBucket> buckets,
-        ChangePortfolioComparisonSeries portfolio)
+        ChangePortfolioComparisonSeries portfolio,
+        IReadOnlyList<ChangePortfolioComparisonSeries> contributors)
     {
         bool ratios = portfolio.Points.All(point => point.CapacityRatio is not null);
-        decimal[] values = ratios
-            ? [.. portfolio.Points.Select(point => point.CapacityRatio!.Expected)]
-            : [.. portfolio.Points.Select(point => point.Effort.Expected)];
-        decimal maximum = values.Length == 0 ? 1m : Math.Max(1m, values.Max() * 1.1m);
+        ChangePortfolioComparisonSeries[] chartSeries = [portfolio, .. contributors];
+        decimal[][] values = new decimal[chartSeries.Length][];
+        for (int index = 0; index < chartSeries.Length; index++)
+        {
+            ChangePortfolioComparisonSeries series = chartSeries[index];
+            values[index] = ratios
+                ? [.. series.Points.Select(point => point.CapacityRatio!.Expected)]
+                : [.. series.Points.Select(point => point.Effort.Expected)];
+        }
+
+        decimal maximum = values.Length == 0
+            ? 1m
+            : Math.Max(1m, values.SelectMany(value => value).DefaultIfEmpty().Max() * 1.1m);
         markdown.AppendLine();
         markdown.AppendLine("## Trend chart");
         markdown.AppendLine();
@@ -144,14 +159,27 @@ public static partial class ChangePortfolioComparisonMarkdownRenderer
         markdown.Append("    y-axis \"")
             .Append(ratios ? "EHE / capacity" : "EHE hours")
             .Append("\" 0 --> ").AppendLine(maximum.ToString("0.######", CultureInfo.InvariantCulture));
-        markdown.Append("    line [")
-            .Append(string.Join(", ", values.Select(value =>
-                value.ToString("0.######", CultureInfo.InvariantCulture))))
-            .AppendLine("]");
+        foreach (decimal[] seriesValues in values)
+        {
+            markdown.Append("    line [")
+                .Append(string.Join(", ", seriesValues.Select(value =>
+                    value.ToString("0.######", CultureInfo.InvariantCulture))))
+                .AppendLine("]");
+        }
+
         markdown.AppendLine("```");
         markdown.AppendLine();
-        markdown.Append("Numeric fallback: ").AppendLine(string.Join(", ", buckets.Select((bucket, index) =>
-            $"`{Escape(bucket.Id)}`={values[index].ToString("0.######", CultureInfo.InvariantCulture)}")));
+        markdown.Append("Series order: ").AppendLine(string.Join(", ", chartSeries.Select(series =>
+            $"`{Escape(series.Id)}`")));
+        markdown.AppendLine();
+        markdown.AppendLine("Numeric fallback:");
+        foreach ((ChangePortfolioComparisonSeries series, int index) in chartSeries.Select(
+            (series, index) => (series, index)))
+        {
+            markdown.Append("- `").Append(Escape(series.Id)).Append("`: ")
+                .AppendLine(string.Join(", ", buckets.Select((bucket, bucketIndex) =>
+                    $"`{Escape(bucket.Id)}`={values[index][bucketIndex].ToString("0.######", CultureInfo.InvariantCulture)}")));
+        }
     }
 
     private static void AppendSeriesSection(
@@ -192,8 +220,11 @@ public static partial class ChangePortfolioComparisonMarkdownRenderer
         markdown.AppendLine();
         markdown.AppendLine("## Contributor comparison matrix");
         markdown.AppendLine();
-        markdown.AppendLine(
-            "Values below are expected EHE for each contributor's exclusive exact-match set. Shared-contributor groups are shown separately and are not copied into individual columns.");
+        bool isolated = contributors.All(series =>
+            series.Kind == ChangePortfolioSeriesKind.ContributorIsolated);
+        markdown.AppendLine(isolated
+            ? "Values below are membership-stable isolated expected EHE. Shared commits can appear in more than one contributor column, so contributor columns are non-additive and must not be summed into the portfolio."
+            : "Values below are jointly normalized expected EHE for each contributor's exclusive exact-match set. Shared-contributor groups are shown separately and are not copied into individual columns.");
         markdown.AppendLine();
         markdown.Append("| Bucket |");
         foreach (ChangePortfolioComparisonSeries contributor in contributors)
@@ -231,8 +262,38 @@ public static partial class ChangePortfolioComparisonMarkdownRenderer
         markdown.AppendLine();
         markdown.AppendLine("## Shared-credit and joint reconciliation");
         markdown.AppendLine();
-        markdown.AppendLine(
-            "A commit matching more than one requested contributor belongs to one exact shared-contributor group. Its EHE is counted once in the portfolio and is not divided into invented personal percentages. Contributor-exclusive values and jointly normalized allocations can therefore be context-dependent when report membership changes.");
+        markdown.AppendLine(report.BucketPolicy.ContributorNormalization ==
+            ChangePortfolioContributorNormalization.Isolated
+            ? "The canonical source portfolio still keeps every multi-contributor commit in one exact shared group and counts it once. Isolated contributor series intentionally show the full canonical item for every matching contributor, so those personal comparison series can overlap and are never additive."
+            : "A commit matching more than one requested contributor belongs to one exact shared-contributor group. Its EHE is counted once in the portfolio and is not divided into invented personal percentages. Contributor-exclusive values and jointly normalized allocations can therefore be context-dependent when report membership changes.");
+        if (report.BucketPolicy.ContributorNormalization ==
+            ChangePortfolioContributorNormalization.Isolated)
+        {
+            ChangePortfolioContributorGroup[] canonicalShared =
+            [.. report.SourcePortfolio!.Aggregation!.ContributorGroups.Where(group =>
+                group.Kind == ChangePortfolioContributorGroupKind.SharedContributors)];
+            if (canonicalShared.Length == 0)
+            {
+                markdown.AppendLine();
+                markdown.AppendLine("No shared-contributor exact-match group was selected.");
+                return;
+            }
+
+            markdown.AppendLine();
+            markdown.AppendLine("| Contributors | Changes | Joint low | Joint expected | Joint high |");
+            markdown.AppendLine("| --- | ---: | ---: | ---: | ---: |");
+            foreach (ChangePortfolioContributorGroup group in canonicalShared)
+            {
+                markdown.Append("| ").Append(Escape(string.Join(", ", group.ContributorIds)))
+                    .Append(" | ").Append(group.ItemIds.Count)
+                    .Append(" | ").Append(Hours(group.NormalizedEffort.Low))
+                    .Append(" | ").Append(Hours(group.NormalizedEffort.Expected))
+                    .Append(" | ").Append(Hours(group.NormalizedEffort.High)).AppendLine(" |");
+            }
+
+            return;
+        }
+
         if (shared.Length == 0)
         {
             markdown.AppendLine();
@@ -315,6 +376,7 @@ public static partial class ChangePortfolioComparisonMarkdownRenderer
         markdown.AppendLine("- EHE is replacement effort, not actual elapsed or recorded labor.");
         markdown.AppendLine("- Reference capacity is caller-supplied and is not attendance, a timesheet, or a productivity target.");
         markdown.AppendLine("- Selection is retrospective only for commits reachable from the pinned local heads; excluded or absent non-Git work is not inferred.");
+        markdown.AppendLine("- Coverage is limited to repositories explicitly supplied in the manifest and objects present in their pinned local heads; omitted repositories and unavailable work are invisible to this report.");
         markdown.AppendLine("- Partial buckets are labeled explicitly and depend on the caller's capacity calendar policy.");
         markdown.AppendLine("- Identity selects repository-attributed changes; it does not establish sole authorship or personal labor shares.");
         markdown.AppendLine("- The repository and Change EHE models remain experimental and uncalibrated outside their documented admission boundaries.");

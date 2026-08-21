@@ -1,4 +1,5 @@
 using EffortHours.Change;
+using EffortHours.Contracts.V1;
 
 namespace EffortHours.Tests;
 
@@ -20,22 +21,30 @@ public sealed class GitAuthorPeriodCandidateTests
             runner,
             (_, _, _) => throw new NotSupportedException());
 
-        IReadOnlyList<GitCommitMetadata> candidates =
+        GitAuthorPeriodCandidateResult result =
             await client.ListAuthorPeriodCandidatesAsync(
                 "virtual-repository",
-                new string('c', 40),
-                ["Target", "target@example.test"],
-                includeCoauthors: true,
-                maximumCount: 10_001);
+                Query(
+                    [new string('c', 40)],
+                    [new GitAuthorPeriodIdentityGroup(
+                        "contributor-a",
+                        ["Target", "target@example.test"])],
+                    maximumCandidates: 10_000,
+                    includeCoauthors: true));
 
-        Assert.Equal([directId, coauthorId], [.. candidates.Select(candidate => candidate.ObjectId)]);
+        Assert.Equal([directId, coauthorId], [.. result.Candidates.Select(candidate => candidate.ObjectId)]);
+        GitAuthorPeriodCandidateGroupCount group = Assert.Single(result.GroupCounts);
+        Assert.Equal(1, group.DirectAuthorCount);
+        Assert.Equal(1, group.CoauthorCount);
+        Assert.Equal(2, group.TotalCount);
         Assert.Collection(
             runner.Calls,
             direct =>
             {
                 Assert.Contains("--fixed-strings", direct);
                 Assert.Contains("--regexp-ignore-case", direct);
-                Assert.Contains("--max-count=10001", direct);
+                Assert.DoesNotContain(direct, argument =>
+                    argument.StartsWith("--max-count=", StringComparison.Ordinal));
                 Assert.Contains("--author=Target", direct);
                 Assert.Contains("--author=target@example.test", direct);
                 Assert.DoesNotContain(direct, argument => argument.StartsWith("--grep=", StringComparison.Ordinal));
@@ -49,15 +58,83 @@ public sealed class GitAuthorPeriodCandidateTests
     }
 
     [Fact]
-    public void CandidateLedgerRetainsTheTenThousandRecordSafetyBoundary()
+    public async Task OutOfWindowLifetimeMatchesDoNotConsumeTheCandidateLimit()
     {
-        GitPortfolioPlanner.EnsureCandidateLimit(10_000, 10_000);
+        RecordingRunner runner = new(string.Concat(
+            Metadata(new string('a', 40), "Target", "target@example.test", string.Empty, "2020-01-01T00:00:00+00:00"),
+            Metadata(new string('b', 40), "Target", "target@example.test", string.Empty),
+            Metadata(new string('c', 40), "Target", "target@example.test", string.Empty)));
+        GitClient client = new(runner, (_, _, _) => throw new NotSupportedException());
 
-        InvalidOperationException exception = Assert.Throws<InvalidOperationException>(() =>
-            GitPortfolioPlanner.EnsureCandidateLimit(10_001, 10_000));
+        GitAuthorPeriodCandidateResult result = await client.ListAuthorPeriodCandidatesAsync(
+            "virtual-repository",
+            Query(
+                [new string('d', 40)],
+                [new GitAuthorPeriodIdentityGroup("contributor-a", ["Target"])],
+                maximumCandidates: 2));
 
-        Assert.Contains("identity-prefiltered commit candidates", exception.Message, StringComparison.Ordinal);
-        Assert.Contains("unbounded identity ledger", exception.Message, StringComparison.Ordinal);
+        Assert.Equal(2, result.Candidates.Count);
+        Assert.DoesNotContain(result.Candidates, candidate => candidate.ObjectId == new string('a', 40));
+        Assert.Equal(2, Assert.Single(result.GroupCounts).TotalCount);
+    }
+
+    [Fact]
+    public async Task OverLimitDiagnosticReportsObservedCountAndPublicContributorBreakdown()
+    {
+        RecordingRunner runner = new(string.Concat(
+            Metadata(new string('a', 40), "Target", "target@example.test", string.Empty),
+            Metadata(new string('b', 40), "Target", "target@example.test", string.Empty),
+            Metadata(new string('c', 40), "Target", "target@example.test", string.Empty)));
+        GitClient client = new(runner, (_, _, _) => throw new NotSupportedException());
+
+        GitAuthorPeriodCandidateLimitException exception = await Assert.ThrowsAsync<
+            GitAuthorPeriodCandidateLimitException>(() => client.ListAuthorPeriodCandidatesAsync(
+                "virtual-repository",
+                Query(
+                    [new string('d', 40)],
+                    [new GitAuthorPeriodIdentityGroup(
+                        "contributor-a",
+                        ["Target", "target@example.test"])],
+                    maximumCandidates: 2)));
+
+        Assert.Equal(3, exception.ObservedCount);
+        Assert.False(exception.CountIsLowerBound);
+        Assert.Equal(2, exception.MaximumCount);
+        GitAuthorPeriodCandidateGroupCount count = Assert.Single(exception.GroupCounts);
+        Assert.Equal("contributor-a", count.Id);
+        Assert.Equal(3, count.DirectAuthorCount);
+        Assert.Equal(3, count.TotalCount);
+        Assert.Contains("found 3 exact identity candidates", exception.Message, StringComparison.Ordinal);
+        Assert.Contains("limit is 2", exception.Message, StringComparison.Ordinal);
+        Assert.Contains("contributor-a=3", exception.Message, StringComparison.Ordinal);
+        Assert.DoesNotContain("target@example.test", exception.Message, StringComparison.OrdinalIgnoreCase);
+    }
+
+    [Fact]
+    public async Task CandidateBreakdownUsesDirectAuthorPrecedenceForTheSameContributor()
+    {
+        string objectId = new('a', 40);
+        string metadata = Metadata(
+            objectId,
+            "Target",
+            "target@example.test",
+            "Target <target@example.test>");
+        RecordingRunner runner = new(metadata, metadata);
+        GitClient client = new(runner, (_, _, _) => throw new NotSupportedException());
+
+        GitAuthorPeriodCandidateResult result = await client.ListAuthorPeriodCandidatesAsync(
+            "virtual-repository",
+            Query(
+                [new string('d', 40)],
+                [new GitAuthorPeriodIdentityGroup("contributor-a", ["Target"])],
+                maximumCandidates: 2,
+                includeCoauthors: true));
+
+        _ = Assert.Single(result.Candidates);
+        GitAuthorPeriodCandidateGroupCount count = Assert.Single(result.GroupCounts);
+        Assert.Equal(1, count.DirectAuthorCount);
+        Assert.Equal(0, count.CoauthorCount);
+        Assert.Equal(1, count.TotalCount);
     }
 
     [Fact]
@@ -71,14 +148,14 @@ public sealed class GitAuthorPeriodCandidateTests
             runner,
             (_, _, _) => throw new NotSupportedException());
 
-        IReadOnlyList<GitCommitMetadata> candidates = await client.ListAuthorPeriodCandidatesAsync(
+        GitAuthorPeriodCandidateResult result = await client.ListAuthorPeriodCandidatesAsync(
             "virtual-repository",
-            [firstHead, secondHead],
-            ["Target"],
-            includeCoauthors: false,
-            maximumCount: 100);
+            Query(
+                [firstHead, secondHead],
+                [new GitAuthorPeriodIdentityGroup("contributor-a", ["Target"])],
+                maximumCandidates: 100));
 
-        _ = Assert.Single(candidates);
+        _ = Assert.Single(result.Candidates);
         IReadOnlyList<string> call = Assert.Single(runner.Calls);
         Assert.Equal(secondHead, call[^2]);
         Assert.Equal(firstHead, call[^1]);
@@ -90,17 +167,33 @@ public sealed class GitAuthorPeriodCandidateTests
         string objectId,
         string authorName,
         string authorEmail,
-        string coauthors) => string.Join(
+        string coauthors,
+        string timestamp = "2026-08-14T09:00:00+00:00") => string.Join(
             '\0',
             objectId,
             string.Empty,
             authorName,
             authorEmail,
-            "2026-08-14T09:00:00+00:00",
+            timestamp,
             authorName,
             authorEmail,
-            "2026-08-14T09:00:00+00:00",
+            timestamp,
             coauthors) + '\0';
+
+    private static GitAuthorPeriodCandidateQuery Query(
+        IReadOnlyList<string> heads,
+        IReadOnlyList<GitAuthorPeriodIdentityGroup> groups,
+        int maximumCandidates,
+        bool includeCoauthors = false) => new()
+        {
+            HeadObjectIds = heads,
+            IdentityGroups = groups,
+            SinceInclusive = new DateTimeOffset(2026, 8, 1, 0, 0, 0, TimeSpan.Zero),
+            UntilExclusive = new DateTimeOffset(2026, 9, 1, 0, 0, 0, TimeSpan.Zero),
+            DateField = ChangePortfolioDateField.Author,
+            IncludeCoauthors = includeCoauthors,
+            MaximumCandidates = maximumCandidates,
+        };
 
     private sealed class RecordingRunner(params string[] outputs) : IExternalCommandRunner
     {

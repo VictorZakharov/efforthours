@@ -258,6 +258,7 @@ public sealed class ChangePortfolioSelectionTests
             "--author-period-manifest", "portfolio.json",
             "--bucket", "calendar-month",
             "--capacity-manifest", "capacity.json",
+            "--normalization", "isolated",
             "--report-view", "findings",
             "--format", "markdown",
             "--generated-at", "2026-08-20T12:00:00.0000000+00:00",
@@ -297,12 +298,54 @@ public sealed class ChangePortfolioSelectionTests
         Assert.Null(parsed.Error);
         Assert.True(options.IsComparison);
         Assert.Equal(ChangePortfolioComparisonView.Findings, options.ComparisonView);
+        Assert.Equal(
+            ChangePortfolioContributorNormalization.Isolated,
+            options.ContributorNormalization);
         Assert.Equal("comparison-cache", options.CheckpointPath);
         Assert.Equal("findings.md", options.OutputPath);
         Assert.Contains("explicit --output", missingOutput.Error, StringComparison.Ordinal);
         Assert.Contains("not both", mixedBuckets.Error, StringComparison.Ordinal);
         Assert.Contains("require --author-period-manifest", wrongSelector.Error, StringComparison.Ordinal);
         Assert.Contains("cannot be combined", conflictingCheckpoint.Error, StringComparison.Ordinal);
+        Assert.Contains("yyyy-MM", ChangePortfolioHelp.Text, StringComparison.Ordinal);
+        Assert.Contains("output filenames change", ChangePortfolioHelp.Text, StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public void CapacityMatrixErrorNamesMissingAndUnexpectedPublicCells()
+    {
+        ChangePortfolioComparisonBucket[] buckets =
+        [
+            new ChangePortfolioComparisonBucket
+            {
+                Id = "2026-07",
+                Label = "July 2026",
+                SinceInclusive = new DateTimeOffset(2026, 7, 1, 0, 0, 0, TimeSpan.Zero),
+                UntilExclusive = new DateTimeOffset(2026, 8, 1, 0, 0, 0, TimeSpan.Zero),
+            },
+        ];
+        ChangePortfolioCapacityManifest capacity = new()
+        {
+            CalendarPolicy = "test",
+            Entries =
+            [
+                new ChangePortfolioCapacityEntry
+                {
+                    BucketId = "july",
+                    ContributorId = "contributor-a",
+                    Hours = 160m,
+                },
+            ],
+        };
+
+        System.Text.Json.JsonException exception = Assert.Throws<System.Text.Json.JsonException>(() =>
+            ChangePortfolioComparisonInputLoader.ValidateCapacityMatrix(
+                capacity,
+                buckets,
+                ["contributor-a"]));
+
+        Assert.Contains("Missing cells: 2026-07/contributor-a", exception.Message, StringComparison.Ordinal);
+        Assert.Contains("Unexpected cells: july/contributor-a", exception.Message, StringComparison.Ordinal);
     }
 
     [Fact]

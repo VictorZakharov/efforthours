@@ -6,6 +6,36 @@ may still change public contracts with explicit documentation.
 
 ## Unreleased
 
+### Added
+
+- Added `--normalization isolated` for time-bucketed author-period comparisons.
+  It emits membership-stable, non-additive contributor series from canonical
+  matched items while retaining the jointly reconciled portfolio as the only
+  authoritative total. Trend Markdown now charts each contributor as well as the
+  portfolio and labels the exact series order and numeric fallback.
+
+### Fixed
+
+- Applied the 10,000-record author-period safety limit to exact identity matches
+  inside the requested interval instead of lifetime identity-prefiltered history.
+  Commit metadata is streamed so out-of-window matches do not consume the ledger;
+  an over-limit diagnostic reports the observed in-window count and privacy-safe
+  direct/co-author counts by public contributor ID, and successful selection
+  records the same breakdown.
+- Made generated calendar capacity IDs explicit (`yyyy-MM` for months and
+  `week-yyyy-MM-dd` for Monday-start weeks) and report the exact missing and
+  unexpected public capacity cells. `eh schema show` now accepts either a bare
+  schema stem or its full `.schema.json` filename.
+- Made trend interpretation explicitly limit coverage to manifest repositories
+  and objects reachable from pinned local heads, and documented that output-name
+  changes also change the default `<output>.eh-checkpoint` reuse directory.
+
+### Documentation
+
+- Recorded the alpha.12 annual field ceiling of 1,515 selected changes / 3,030
+  snapshot requests at about 190.85 seconds and a roughly 2.1 GiB working-set
+  plateau as a non-gating observation for issue #182, not a performance claim.
+
 ## 0.10.0-alpha.12 - 2026-08-20
 
 ### Added

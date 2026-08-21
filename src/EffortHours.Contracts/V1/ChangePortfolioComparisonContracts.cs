@@ -25,6 +25,9 @@ public static class ChangePortfolioComparisonPolicies
     public const string ExclusiveContributorSeriesV1 =
         "exclusive-contributor-match-sets-with-shared-groups/1.0.0";
 
+    public const string IsolatedContributorSeriesV1 =
+        "membership-stable-isolated-contributor-series/1.0.0";
+
     public const int RollingWindowBucketCount = 3;
 }
 
@@ -108,6 +111,9 @@ public sealed record ChangePortfolioComparisonBucketPolicy
     public required string Policy { get; init; }
 
     public required string InputDigest { get; init; }
+
+    public ChangePortfolioContributorNormalization ContributorNormalization { get; init; } =
+        ChangePortfolioContributorNormalization.Joint;
 
     public string? CapacityCalendarPolicy { get; init; }
 
