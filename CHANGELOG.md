@@ -6,6 +6,8 @@ may still change public contracts with explicit documentation.
 
 ## Unreleased
 
+## 0.10.0-alpha.14 - 2026-08-21
+
 ### Added
 
 - Added a one-command GitHub-assisted today-to-date author portfolio. Explicit
