@@ -6,6 +6,18 @@ may still change public contracts with explicit documentation.
 
 ## Unreleased
 
+### Added
+
+- Added one-command calendar-month, calendar-week, and custom time-bucketed
+  author-period comparisons across multiple contributors and up to 64
+  repositories. Versioned JSON, self-contained trend Markdown, and generic
+  anonymized engineering-findings Markdown now share one jointly reconciled
+  portfolio, with optional caller-supplied reference capacity, exact weighted
+  totals, Mermaid plus numeric fallback charts, trend statistics, reuse/resource
+  observations, privacy-safe immutable lineage, digest-bound repository
+  checkpoints, selective invalidation, and resumable incomplete failure reports
+  that never publish partial aggregate EHE or trends.
+
 ### Fixed
 
 - Prevented closed-month author-period portfolios from waiting indefinitely when
@@ -25,9 +37,9 @@ may still change public contracts with explicit documentation.
 
 ### Documentation
 
-- Documented the 32-repository author-period manifest limit and the safe additive
-  sharding procedure for disjoint repository sets in CLI help and the portfolio
-  contract.
+- Documented the 64-repository author-period manifest envelope and the rule that
+  comparison repository evidence shards remain one portfolio rather than
+  caller-joined reports.
 
 ## 0.10.0-alpha.11 - 2026-08-20
 

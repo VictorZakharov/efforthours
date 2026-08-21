@@ -1,3 +1,5 @@
+using EffortHours.Contracts.V1;
+
 namespace EffortHours.Cli;
 
 internal static partial class ChangePortfolioCommandOptionsParser
@@ -70,6 +72,47 @@ internal static partial class ChangePortfolioCommandOptionsParser
         if (options.Compact && options.Format != "json")
         {
             return Error("Option --compact can only be used with JSON output.");
+        }
+
+        if (options.Bucket is not null && options.BucketManifestPath is not null)
+        {
+            return Error("Use either --bucket or --bucket-manifest, not both.");
+        }
+
+        bool comparisonOption = options.IsComparison ||
+            options.CapacityManifestPath is not null ||
+            options.ComparisonView != ChangePortfolioComparisonView.Trend ||
+            options.GeneratedAt is not null ||
+            options.ReportTitle is not null ||
+            options.CheckpointPath is not null ||
+            options.NoCheckpoint;
+        if (comparisonOption && !options.IsAuthorPeriodManifest)
+        {
+            return Error(
+                "Time-bucketed comparison options require --author-period-manifest.");
+        }
+
+        if (!options.IsComparison && comparisonOption)
+        {
+            return Error("Select --bucket or --bucket-manifest for comparison output.");
+        }
+
+        if (options.IsComparison && options.OutputPath is null)
+        {
+            return Error("Time-bucketed comparison output requires an explicit --output path.");
+        }
+
+        if (options.NoCheckpoint && options.CheckpointPath is not null)
+        {
+            return Error("Option --no-checkpoint cannot be combined with --checkpoint.");
+        }
+
+        if (options.ReportTitle is { Length: > ChangePortfolioComparisonLimits.MaximumTitleLength } ||
+            string.IsNullOrWhiteSpace(options.ReportTitle) && options.ReportTitle is not null)
+        {
+            return Error(
+                $"Report title must contain 1 to " +
+                $"{ChangePortfolioComparisonLimits.MaximumTitleLength} characters.");
         }
 
         if (options.NoRate && (options.HourlyRate is not null || currencyProvided))

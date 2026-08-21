@@ -17,6 +17,23 @@ internal sealed record ChangePortfolioCommandOptions
 
     public string? AuthorPeriodManifestPath { get; init; }
 
+    public string? Bucket { get; init; }
+
+    public string? BucketManifestPath { get; init; }
+
+    public string? CapacityManifestPath { get; init; }
+
+    public ChangePortfolioComparisonView ComparisonView { get; init; } =
+        ChangePortfolioComparisonView.Trend;
+
+    public DateTimeOffset? GeneratedAt { get; init; }
+
+    public string? ReportTitle { get; init; }
+
+    public string? CheckpointPath { get; init; }
+
+    public bool NoCheckpoint { get; init; }
+
     public IReadOnlyList<string> AuthorAliases { get; init; } = [];
 
     public DateTimeOffset? SinceInclusive { get; init; }
@@ -53,6 +70,8 @@ internal sealed record ChangePortfolioCommandOptions
     public bool IsAuthorPeriodManifest => AuthorPeriodManifestPath is not null;
 
     public bool IsAuthorPeriod => AuthorAliases.Count > 0;
+
+    public bool IsComparison => Bucket is not null || BucketManifestPath is not null;
 }
 
 internal readonly record struct ChangePortfolioCommandParseResult(
@@ -74,6 +93,14 @@ internal static partial class ChangePortfolioCommandOptionsParser
         string? githubRepository = null;
         string? manifest = null;
         string? authorPeriodManifest = null;
+        string? bucket = null;
+        string? bucketManifest = null;
+        string? capacityManifest = null;
+        ChangePortfolioComparisonView comparisonView = ChangePortfolioComparisonView.Trend;
+        DateTimeOffset? generatedAt = null;
+        string? reportTitle = null;
+        string? checkpointPath = null;
+        bool noCheckpoint = false;
         string? since = null;
         string? until = null;
         string timeZone = "UTC";
@@ -117,6 +144,12 @@ internal static partial class ChangePortfolioCommandOptionsParser
                 continue;
             }
 
+            if (option == "--no-checkpoint")
+            {
+                noCheckpoint = true;
+                continue;
+            }
+
             if (index + 1 >= arguments.Length)
             {
                 return Error($"Option '{option}' requires a value.");
@@ -136,6 +169,50 @@ internal static partial class ChangePortfolioCommandOptionsParser
                     break;
                 case "--author-period-manifest":
                     authorPeriodManifest = value;
+                    break;
+                case "--bucket":
+                    bucket = value.ToLowerInvariant();
+                    if (bucket is not ("calendar-month" or "calendar-week"))
+                    {
+                        return Error("Bucket must be 'calendar-month' or 'calendar-week'.");
+                    }
+
+                    break;
+                case "--bucket-manifest":
+                    bucketManifest = value;
+                    break;
+                case "--capacity-manifest":
+                    capacityManifest = value;
+                    break;
+                case "--report-view":
+                    string view = value.ToLowerInvariant();
+                    if (view is not ("trend" or "findings"))
+                    {
+                        return Error("Report view must be 'trend' or 'findings'.");
+                    }
+
+                    comparisonView = view == "trend"
+                        ? ChangePortfolioComparisonView.Trend
+                        : ChangePortfolioComparisonView.Findings;
+                    break;
+                case "--generated-at":
+                    if (!DateTimeOffset.TryParseExact(
+                        value,
+                        "O",
+                        CultureInfo.InvariantCulture,
+                        DateTimeStyles.None,
+                        out DateTimeOffset parsedGeneratedAt))
+                    {
+                        return Error("Generated timestamp must be an ISO-8601 round-trip instant.");
+                    }
+
+                    generatedAt = parsedGeneratedAt.ToUniversalTime();
+                    break;
+                case "--title":
+                    reportTitle = value;
+                    break;
+                case "--checkpoint":
+                    checkpointPath = value;
                     break;
                 case "--author":
                     authors.Add(value);
@@ -239,6 +316,14 @@ internal static partial class ChangePortfolioCommandOptionsParser
             FetchMissing = fetchMissing,
             ManifestPath = manifest,
             AuthorPeriodManifestPath = authorPeriodManifest,
+            Bucket = bucket,
+            BucketManifestPath = bucketManifest,
+            CapacityManifestPath = capacityManifest,
+            ComparisonView = comparisonView,
+            GeneratedAt = generatedAt,
+            ReportTitle = reportTitle,
+            CheckpointPath = checkpointPath,
+            NoCheckpoint = noCheckpoint,
             AuthorAliases = authors,
             TimeZone = timeZone,
             DateField = dateField,

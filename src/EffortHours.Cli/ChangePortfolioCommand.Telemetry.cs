@@ -6,15 +6,19 @@ namespace EffortHours.Cli;
 internal sealed partial class ChangePortfolioCommand
 {
     private static ChangePortfolioExecutionTelemetry CreateExecutionTelemetry(
-        TextWriter standardError)
+        TextWriter standardError,
+        string? repositoryId = null)
     {
         Lock writerGate = new();
+        string prefix = repositoryId is null
+            ? "eh: portfolio"
+            : $"eh: portfolio repository={repositoryId}";
         return new ChangePortfolioExecutionTelemetry(
             phase =>
             {
                 lock (writerGate)
                 {
-                    standardError.WriteLine($"eh: portfolio phase {phase} started");
+                    standardError.WriteLine($"{prefix} phase {phase} started");
                     standardError.Flush();
                 }
             },
@@ -23,7 +27,7 @@ internal sealed partial class ChangePortfolioCommand
                 lock (writerGate)
                 {
                     standardError.WriteLine(
-                        $"eh: portfolio phase {progress.Phase} progress " +
+                        $"{prefix} phase {progress.Phase} progress " +
                         $"{progress.ProcessedUnits}/{progress.TotalUnits} selected changes; " +
                         $"analysis-cache={progress.AnalysisCacheHits}/{progress.AnalysisCacheRequests}; " +
                         $"elapsed={progress.Elapsed.TotalMilliseconds.ToString("F3", CultureInfo.InvariantCulture)} ms; " +

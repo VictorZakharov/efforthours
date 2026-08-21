@@ -37,6 +37,8 @@ public sealed record ChangePortfolioPhaseTiming
 
 public sealed record ChangePortfolioProgress
 {
+    public required DateTimeOffset ObservedAt { get; init; }
+
     public required string Phase { get; init; }
 
     public int ProcessedUnits { get; init; }
@@ -56,7 +58,8 @@ public sealed record ChangePortfolioProgress
 
 /// <summary>
 /// Collects non-semantic wall-clock phase measurements for stderr diagnostics.
-/// Timings never enter report contracts, estimator rules, or deterministic JSON.
+/// Comparison reports may project them as operational observations, but they never
+/// enter estimator rules or semantic digests.
 /// </summary>
 public sealed class ChangePortfolioExecutionTelemetry
 {
@@ -69,6 +72,7 @@ public sealed class ChangePortfolioExecutionTelemetry
     private readonly Action<ChangePortfolioProgress>? _progressReported;
     private string? _lastPhase;
     private long _lastPhaseStarted;
+    private DateTimeOffset _lastPhaseObservedAt;
     private long _peakWorkingSetBytes;
     private ChangePortfolioProgress? _lastProgress;
     private string? _lastNotifiedProgressPhase;
@@ -94,6 +98,7 @@ public sealed class ChangePortfolioExecutionTelemetry
         ArgumentException.ThrowIfNullOrWhiteSpace(phase);
         bool notify;
         long now = Stopwatch.GetTimestamp();
+        DateTimeOffset observedAt = DateTimeOffset.UtcNow;
         long workingSet = Environment.WorkingSet;
         lock (_gate)
         {
@@ -105,6 +110,7 @@ public sealed class ChangePortfolioExecutionTelemetry
 
             _lastPhase = phase;
             _lastPhaseStarted = now;
+            _lastPhaseObservedAt = observedAt;
             _peakWorkingSetBytes = Math.Max(_peakWorkingSetBytes, workingSet);
         }
 
@@ -130,6 +136,7 @@ public sealed class ChangePortfolioExecutionTelemetry
         }
 
         long workingSet = Environment.WorkingSet;
+        DateTimeOffset observedAt = DateTimeOffset.UtcNow;
         ChangePortfolioProgress progress;
         lock (_gate)
         {
@@ -144,6 +151,7 @@ public sealed class ChangePortfolioExecutionTelemetry
             long started = _firstStartedAt.GetValueOrDefault(phase, Stopwatch.GetTimestamp());
             progress = new ChangePortfolioProgress
             {
+                ObservedAt = observedAt,
                 Phase = phase,
                 ProcessedUnits = processedUnits,
                 TotalUnits = totalUnits,
@@ -156,6 +164,7 @@ public sealed class ChangePortfolioExecutionTelemetry
             _lastProgress = progress;
             _lastPhase = phase;
             _lastPhaseStarted = started;
+            _lastPhaseObservedAt = observedAt;
         }
 
         lock (_progressNotificationGate)
@@ -192,6 +201,7 @@ public sealed class ChangePortfolioExecutionTelemetry
                 _lastPhaseStarted);
             return new ChangePortfolioProgress
             {
+                ObservedAt = progress?.ObservedAt ?? _lastPhaseObservedAt,
                 Phase = _lastPhase,
                 ProcessedUnits = progress?.ProcessedUnits ?? 0,
                 TotalUnits = progress?.TotalUnits ?? 0,

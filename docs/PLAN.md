@@ -260,6 +260,18 @@ count, and intermediate churn do not value effort. `CHANGE_ESTIMATION.md` and
   exact contributor/repository/head aggregation and zero rows, non-multiplying
   shared groups, privacy-safe report boundary, and rule that identity and time
   never become value.
+- The same author-period calculation now supports up to 64 repositories and one
+  gap-free calendar-month, calendar-week, or custom bucket partition. Versioned
+  bucket/capacity inputs feed a single exact contributor-match-set allocation;
+  JSON, self-contained trend Markdown, and generic engineering-findings Markdown
+  are projections of the same jointly reconciled portfolio. Preserve partial-
+  period/DST boundaries, exact weighted totals, zero contributor cells, separate
+  shared-credit groups, privacy-safe input digests, injected generation times,
+  operational-versus-semantic digest separation, and the rule that optional
+  capacity never changes EHE or implies labor/productivity. Repository evidence
+  checkpoints are digest-bound and selectively invalidated; failed shards retain
+  resumable successes and emit nonzero incomplete artifacts without aggregate
+  EHE or trends.
 - Direct and manifest author-period commands now announce live phase starts and
   summarize non-semantic timings on stderr. The `change/1.4.0` checkpoint adds a
   controlled 1/2/3-process shared-object-database matrix plus a pinned MIT public

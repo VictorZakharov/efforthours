@@ -41,10 +41,30 @@ declared retention counts for snapshot, immutable file-analysis, inventory, and
 Git-blob reuse, plus lazy Git object-metadata request/hit/unique/eviction counts,
 including how many incremental inventories used repository-level batch diffs. It
 contains no local paths, raw aliases, source excerpts, or wall-clock values. The
-CLI writes
-nine measured execution-phase durations to stderr after a successful manifest run;
-those non-semantic timings are deliberately excluded from JSON/Markdown contracts,
-digests, saved-report rendering, and EHE calculations.
+CLI writes nine measured execution-phase durations to stderr after a successful
+manifest run. Those non-semantic timings remain excluded from the canonical
+portfolio report and EHE calculations.
+
+Time-bucketed comparison mode adds a separate
+`change-portfolio-comparison-report` v1 wrapper around that canonical report. It
+contains the bucket/contributor matrix, exact totals, optional caller-supplied
+capacity ratios, trend inputs/statistics, privacy-safe repository-shard lineage,
+reuse counters, and operational phase/progress/resource observations. Operational
+fields are intentionally excluded from `verification.semanticDigest`; they may
+vary across identical runs and never affect EHE. `--format markdown --report-view
+trend` renders a complete generic trend report. `--report-view findings` renders a
+generic anonymized engineering-findings report from the same structured data,
+without agent-authored arithmetic or unsupported causal guesses. Both require the
+caller to choose the exact output path.
+
+Repository evidence is checkpointed by immutable repository/head/selection/model
+digest unless `--no-checkpoint` is explicit. The default directory is
+`<output>.eh-checkpoint`; an exact rerun reuses successful repository evidence and
+a one-head change invalidates only its repository. If any repository fails, the
+requested JSON or Markdown file is still written with `status: incomplete`, the
+root failure and last-progress context, and checkpoint lineage. It deliberately
+omits the canonical source portfolio, bucket series, aggregate EHE, and trend and
+returns a nonzero exit code.
 
 ## Repository views
 

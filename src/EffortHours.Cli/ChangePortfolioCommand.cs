@@ -43,6 +43,16 @@ internal sealed partial class ChangePortfolioCommand
         ChangePortfolioExecutionTelemetry? executionTelemetry = null;
         try
         {
+            if (options.IsComparison)
+            {
+                return await ExecuteComparisonAsync(
+                    options,
+                    rateCard,
+                    standardOutput,
+                    standardError,
+                    cancellationToken).ConfigureAwait(false);
+            }
+
             executionTelemetry =
                 options.IsAuthorPeriod || options.IsAuthorPeriodManifest
                     ? CreateExecutionTelemetry(standardError)
@@ -282,6 +292,8 @@ internal sealed partial class ChangePortfolioCommand
         ChangePortfolioSelection Selection,
         IReadOnlyList<ChangePortfolioCandidate> Candidates,
         IReadOnlyList<Diagnostic> Diagnostics,
-        ChangePortfolioExecutionTelemetry? ExecutionTelemetry = null);
+        ChangePortfolioExecutionTelemetry? ExecutionTelemetry = null,
+        ChangePortfolioExecutionStatistics? ExecutionStatistics = null,
+        ChangeAuthorPeriodManifest? AuthorPeriodManifest = null);
 
 }

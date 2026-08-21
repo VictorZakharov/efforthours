@@ -517,7 +517,9 @@ unchanged path.
 
 The v1 public schemas are `change-evidence`, `change-estimate-report`,
 `change-estimate-explanation`, `change-portfolio-manifest`,
-`change-author-period-manifest`, and `change-portfolio-report`. The Change report
+`change-author-period-manifest`, `change-portfolio-bucket-manifest`,
+`change-portfolio-capacity-manifest`, `change-portfolio-report`, and
+`change-portfolio-comparison-report`. The Change report
 schema adds an optional normalization summary, so frozen v1 reports remain valid;
 explanation queries accept its stable calculation ID and return exact adjustment
 lineage. Portfolio contracts separately record selection policy, source estimator
@@ -626,12 +628,17 @@ the exact earlier estimator identity they were created from.
 - Author-period mode materializes at most 10,000 Git-prefiltered identity
   candidates per repository from pinned reachable graphs. It applies no separate
   calendar-month or presentation-row ceiling to the exact matches; the report
-  remains bounded by the complete 32-repository input envelope. It records the
+  remains bounded by the complete 64-repository input envelope. It records the
   inclusive/exclusive interval, timezone, date field, co-author policy, and merge
   policy.
 - Portfolio JSON and Markdown show isolated and repository-normalized totals,
   base contexts, every selected row, exact expected allocations, signed
   adjustments, and unresolved attribution without source excerpts.
+- Manifest portfolios can produce one exact calendar/custom bucket decomposition
+  across all requested contributors. Optional reference capacity supplies only a
+  denominator. Versioned comparison JSON, final trend Markdown, and generic
+  engineering-findings Markdown all derive from the same reconciled portfolio;
+  shared contributor groups remain separate and count once.
 - JSON and Markdown output include optional pricing only after hours are estimated;
   saved JSON supports work-item and normalization-lineage explanation queries.
 - Existing-capability modifications require changed normalized capability evidence,

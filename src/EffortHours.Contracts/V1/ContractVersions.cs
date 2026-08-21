@@ -183,6 +183,12 @@ public static class SchemaNames
     public const string ChangeEstimateReport = "change-estimate-report.schema.json";
     public const string ChangeEvidence = "change-evidence.schema.json";
     public const string ChangeAuthorPeriodManifest = "change-author-period-manifest.schema.json";
+    public const string ChangePortfolioBucketManifest =
+        "change-portfolio-bucket-manifest.schema.json";
+    public const string ChangePortfolioCapacityManifest =
+        "change-portfolio-capacity-manifest.schema.json";
+    public const string ChangePortfolioComparisonReport =
+        "change-portfolio-comparison-report.schema.json";
     public const string ChangePortfolioManifest = "change-portfolio-manifest.schema.json";
     public const string ChangePortfolioReport = "change-portfolio-report.schema.json";
     public const string Diagnostic = "diagnostic.schema.json";
@@ -247,6 +253,12 @@ public static class SchemaIds
     public const string ChangeEstimateReport = "urn:eh:schema:v1:change-estimate-report";
     public const string ChangeEvidence = "urn:eh:schema:v1:change-evidence";
     public const string ChangeAuthorPeriodManifest = "urn:eh:schema:v1:change-author-period-manifest";
+    public const string ChangePortfolioBucketManifest =
+        "urn:eh:schema:v1:change-portfolio-bucket-manifest";
+    public const string ChangePortfolioCapacityManifest =
+        "urn:eh:schema:v1:change-portfolio-capacity-manifest";
+    public const string ChangePortfolioComparisonReport =
+        "urn:eh:schema:v1:change-portfolio-comparison-report";
     public const string ChangePortfolioManifest = "urn:eh:schema:v1:change-portfolio-manifest";
     public const string ChangePortfolioReport = "urn:eh:schema:v1:change-portfolio-report";
     public const string Diagnostic = "urn:eh:schema:v1:diagnostic";
