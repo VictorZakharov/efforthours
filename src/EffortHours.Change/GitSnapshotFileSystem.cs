@@ -5,6 +5,7 @@ namespace EffortHours.Change;
 internal sealed partial class GitSnapshotFileSystem :
     IRepositoryFileSystem,
     IRepositoryAnalysisArtifactCacheProvider,
+    IRepositoryImmutableIdentityProvider,
     IRepositoryVersionedAnalysisProvider,
     IChangeSnapshot
 {
@@ -56,6 +57,20 @@ internal sealed partial class GitSnapshotFileSystem :
 
     public RepositoryVersionedAnalysisCache? VersionedAnalysisCache =>
         _versionedAnalysisCache;
+
+    public string RepositoryPathSetIdentity => _inventory.PathSetIdentity;
+
+    public bool TryGetFileContentId(string path, out string contentId)
+    {
+        if (TryGetFile(path, out ChangeSnapshotFile file))
+        {
+            contentId = file.ObjectId;
+            return true;
+        }
+
+        contentId = string.Empty;
+        return false;
+    }
 
     public IReadOnlyList<ChangeSnapshotFile> Files => _resolvedFiles.Value;
 

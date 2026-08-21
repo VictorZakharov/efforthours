@@ -45,6 +45,8 @@ public sealed class GitSnapshotInventoryTests
 
         Assert.Equal(reconstructed.SourceDigest, direct.SourceDigest);
         Assert.Equal(reconstructed.SourceDigest, secondStep.SourceDigest);
+        Assert.Equal(reconstructed.PathSetIdentity, direct.PathSetIdentity);
+        Assert.Equal(reconstructed.PathSetIdentity, secondStep.PathSetIdentity);
         Assert.Equal(
             ["src/beta.cs", "src/context.csproj", "src/gamma.cs"],
             [.. direct.Files.Select(file => file.Path)]);
@@ -156,6 +158,50 @@ public sealed class GitSnapshotInventoryTests
         Assert.DoesNotContain("shared", noneRemaining.ContentObjectCounts.Keys);
         Assert.NotEqual(parent.SourceDigest, oneRemaining.SourceDigest);
         Assert.NotEqual(oneRemaining.SourceDigest, noneRemaining.SourceDigest);
+    }
+
+    [Fact]
+    public void PathSetIdentityChangesOnlyWhenPathsChange()
+    {
+        GitSnapshotInventory parent = new(
+            "parent",
+            [
+                File("src/App.csproj", "project", 10),
+                File("src/Program.cs", "before", 20),
+            ]);
+        GitSnapshotInventory contentEdit = GitSnapshotInventory.CreateIncremental(
+            "content-edit",
+            "parent",
+            parent,
+            ["src/Program.cs"],
+            [File("src/Program.cs", "after", 30)]);
+        GitSnapshotInventory reconstructed = new(
+            "reconstructed",
+            [
+                File("src/App.csproj", "different-project-content", 40),
+                File("src/Program.cs", "different-source-content", 50),
+            ]);
+        GitSnapshotInventory added = GitSnapshotInventory.CreateIncremental(
+            "added",
+            "content-edit",
+            contentEdit,
+            ["src/Extra.cs"],
+            [File("src/Extra.cs", "extra", 60)]);
+        GitSnapshotInventory embeddedNewline = new(
+            "embedded-newline",
+            [File("src/alpha\nbeta.cs", "joined", 70)]);
+        GitSnapshotInventory separatePaths = new(
+            "separate-paths",
+            [
+                File("src/alpha", "alpha", 80),
+                File("beta.cs", "beta", 90),
+            ]);
+
+        Assert.Equal(parent.PathSetIdentity, contentEdit.PathSetIdentity);
+        Assert.Equal(parent.PathSetIdentity, reconstructed.PathSetIdentity);
+        Assert.NotEqual(parent.PathSetIdentity, added.PathSetIdentity);
+        Assert.NotEqual(embeddedNewline.PathSetIdentity, separatePaths.PathSetIdentity);
+        Assert.NotEqual(parent.SourceDigest, contentEdit.SourceDigest);
     }
 
     private static ChangeSnapshotFile File(string path, string objectId, long length) => new()

@@ -340,10 +340,15 @@ count, and intermediate churn do not value effort. `CHANGE_ESTIMATION.md` and
   eight-worker fixture, its fresh-process median is 6.279 seconds (`1.82x` faster
   than 1.10.0), allocation is 49.8% lower, sampled peak working set is 19.5%
   lower, and estimate semantics are unchanged. The fixture deliberately exercises
-  the narrow lineage proof; other edits retain full analysis. Issue #182 therefore
-  remains open for a different decomposition
-  of allocation-heavy semantic and repository work; do not claim general
-  logarithmic core scaling. The private A/B/A+B regression owned by #176 was
+  the narrow lineage proof; other edits retain full analysis. A subsequent
+  structural-identifier checkpoint reuses exact immutable .NET project context
+  while retaining full C# analysis. Its three-process medians lower wall time
+  8.9%, managed CPU 11.2%, allocation 25.4%, sampled peak working set 14.3%, and
+  Git blob requests 92.9%; four bounded context entries receive 516 hits and the
+  semantic digest is unchanged. This completes the measured project-context
+  reconstruction target, but issue #182 remains open for the remaining unique
+  structural-analysis and scheduling work; do not claim general logarithmic core
+  scaling. The private A/B/A+B regression owned by #176 was
   completed before that issue closed; it is no longer pending.
 - Treat the anonymized alpha.12 annual workload as a current field ceiling, not a
   CI gate: 1,515 selected changes / 3,030 snapshot requests took about 190.85

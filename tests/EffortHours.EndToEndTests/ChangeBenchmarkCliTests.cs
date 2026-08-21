@@ -193,6 +193,8 @@ public sealed class ChangeBenchmarkCliTests
             "0",
             "--lines-per-file",
             "8",
+            "--edit-shape",
+            "structural-identifier",
             "--commits",
             "3",
             "--prepare-only");
@@ -201,6 +203,7 @@ public sealed class ChangeBenchmarkCliTests
         Assert.Equal(string.Empty, preparation.StandardError);
         Dictionary<string, string> prepared = Parse(preparation.StandardOutput);
         Assert.Equal("change-fixture/1.0.0", prepared["benchmark"]);
+        Assert.Equal("structural-identifier", prepared["edit-shape"]);
         Assert.Equal(
             "author-period-manifest-fixture-preparation",
             prepared["mode"]);
@@ -222,6 +225,7 @@ public sealed class ChangeBenchmarkCliTests
             Assert.Equal(string.Empty, measurement.StandardError);
             Dictionary<string, string> values = Parse(measurement.StandardOutput);
             Assert.Equal("prepared", values["fixture-source"]);
+            Assert.Equal("structural-identifier", values["edit-shape"]);
             Assert.Equal("6", values["selected-changes"]);
             AssertPositive(values, "fixture-preparation-seconds");
             AssertPositive(values, "combined-managed-average-processor-equivalents");

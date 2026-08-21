@@ -94,6 +94,7 @@ internal sealed partial class GitPortfolioBenchmarkFixture
             descriptor.FilesPerRepository,
             descriptor.ContextProjectsPerRepository,
             descriptor.LinesPerFile,
+            descriptor.EditShape,
             descriptor.QualifyingCommitsPerRepository,
             keep: true,
             descriptorPath: fullDescriptorPath)
@@ -118,6 +119,7 @@ internal sealed partial class GitPortfolioBenchmarkFixture
             FilesPerRepository = FilesPerRepository,
             ContextProjectsPerRepository = ContextProjectsPerRepository,
             LinesPerFile = LinesPerFile,
+            EditShape = EditShape,
             QualifyingCommitsPerRepository = QualifyingCommitsPerRepository,
             HeadFileCount = HeadFileCount,
             HeadDirectoryCount = HeadDirectoryCount,
@@ -242,6 +244,8 @@ internal sealed partial class GitPortfolioBenchmarkFixture
         public required int ContextProjectsPerRepository { get; init; }
 
         public required int LinesPerFile { get; init; }
+
+        public ChangeBenchmarkEditShape EditShape { get; init; }
 
         public required int QualifyingCommitsPerRepository { get; init; }
 

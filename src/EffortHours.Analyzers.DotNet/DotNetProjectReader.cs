@@ -29,14 +29,15 @@ internal sealed partial class DotNetProjectReader(
         CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(evidence);
+        return await ReadThroughCacheAsync(evidence, cancellationToken).ConfigureAwait(false);
+    }
 
-        string[] projectPaths = GetFilePaths(evidence, IsProjectFile);
-        string[] solutionPaths = GetFilePaths(evidence, IsSolutionFile);
-        string[] centralPackagePaths = GetFilePaths(
-            evidence,
-            path => Path.GetFileName(path).Equals(
-                "Directory.Packages.props",
-                StringComparison.OrdinalIgnoreCase));
+    private async Task<DotNetProjectReadResult> ReadUncachedAsync(
+        IReadOnlyList<string> projectPaths,
+        IReadOnlyList<string> solutionPaths,
+        IReadOnlyList<string> centralPackagePaths,
+        CancellationToken cancellationToken)
+    {
         List<DotNetProjectModel> projects = [];
         List<DotNetSolutionModel> solutions = [];
         List<Diagnostic> diagnostics = [];
@@ -466,4 +467,7 @@ internal sealed partial class DotNetProjectReader(
 internal sealed record DotNetProjectReadResult(
     IReadOnlyList<DotNetProjectModel> Projects,
     IReadOnlyList<DotNetSolutionModel> Solutions,
-    IReadOnlyList<Diagnostic> Diagnostics);
+    IReadOnlyList<Diagnostic> Diagnostics)
+{
+    public string? ImmutableCacheKey { get; init; }
+}

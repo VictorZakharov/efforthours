@@ -341,6 +341,29 @@ internal sealed class GitBenchmarkRepository : IDisposable
         return content.ToString();
     }
 
+    internal static string StructuralIdentifierSourceFile(int index, int lines, int revision)
+    {
+        StringBuilder content = new();
+        content.AppendLine("namespace EffortHours.Benchmark;");
+        content.AppendLine(string.Create(
+            CultureInfo.InvariantCulture,
+            $"public static class Type{index:D6}"));
+        content.AppendLine("{");
+        int memberCount = Math.Max(1, lines - 4);
+        content.AppendLine(string.Create(
+            CultureInfo.InvariantCulture,
+            $"    public static int Revision{revision:D6} => 0;"));
+        for (int line = 1; line < memberCount; line++)
+        {
+            content.AppendLine(string.Create(
+                CultureInfo.InvariantCulture,
+                $"    public static int Value{line:D4} => {line};"));
+        }
+
+        content.AppendLine("}");
+        return content.ToString();
+    }
+
     internal static string SourcePath(int index, bool nested) => nested
         ? $"src/area-{index % 100:D2}/component-{index:D6}/Type{index:D6}.cs"
         : $"src/Type{index:D6}.cs";

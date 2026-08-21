@@ -96,6 +96,8 @@ internal sealed class GitSnapshotInventory
 
     public int FileCount => _filesByPath.Count;
 
+    public string PathSetIdentity => _sourceDigest.PathSetValue;
+
     public string SourceDigest => _sourceDigest.Value;
 
     public string RootObjectId { get; }

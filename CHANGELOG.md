@@ -6,6 +6,17 @@ may still change public contracts with explicit documentation.
 
 ## Unreleased
 
+### Changed
+
+- Reuse immutable .NET project, solution, and central-package evidence across
+  portfolio snapshots only when analyzer-versioned descriptor object IDs and the
+  complete repository path-set identity match; path additions/removals invalidate
+  project-reference resolution, and providers without immutable identity retain
+  exact cold analysis. On the prepared structural-edit checkpoint this removes
+  92.9% of Git blob requests, lowers median allocation 25.4%, peak working set
+  14.3%, managed CPU 11.2%, and wall time 8.9% with unchanged estimate semantics.
+  This is bounded work elimination, not a general core-scaling claim.
+
 ## 0.10.0-alpha.13 - 2026-08-21
 
 ### Added

@@ -5,6 +5,7 @@ namespace EffortHours.Change;
 internal sealed class ScopedRepositoryFileSystem :
     IRepositoryFileSystem,
     IRepositoryAnalysisArtifactCacheProvider,
+    IRepositoryImmutableIdentityProvider,
     IRepositoryVersionedAnalysisProvider
 {
     private readonly IRepositoryFileSystem _inner;
@@ -73,6 +74,20 @@ internal sealed class ScopedRepositoryFileSystem :
 
     public RepositoryVersionedAnalysisCache? VersionedAnalysisCache =>
         (_inner as IRepositoryVersionedAnalysisProvider)?.VersionedAnalysisCache;
+
+    public string? RepositoryPathSetIdentity =>
+        (_inner as IRepositoryImmutableIdentityProvider)?.RepositoryPathSetIdentity;
+
+    public bool TryGetFileContentId(string path, out string contentId)
+    {
+        if (_inner is IRepositoryImmutableIdentityProvider provider)
+        {
+            return provider.TryGetFileContentId(path, out contentId);
+        }
+
+        contentId = string.Empty;
+        return false;
+    }
 
     public bool TryGetPreviousFileVersion(
         string path,

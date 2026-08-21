@@ -14,7 +14,10 @@ internal sealed class GitSnapshotInventoryDigest
 {
     private static readonly byte[] EmptyDigest = SHA256.HashData(
         "efforthours:git-snapshot-merkle:2:empty\0"u8);
+    private static readonly byte[] EmptyPathSetDigest = SHA256.HashData(
+        "efforthours:git-path-set-merkle:1:empty\0"u8);
 
+    private readonly Lazy<string> _pathSetValue;
     private readonly Lazy<string> _value;
     private readonly Node? _root;
 
@@ -22,7 +25,11 @@ internal sealed class GitSnapshotInventoryDigest
     {
         _root = root;
         _value = new(() => $"sha256:{Convert.ToHexString(root?.Digest ?? EmptyDigest).ToLowerInvariant()}");
+        _pathSetValue = new(() =>
+            $"sha256:{Convert.ToHexString(root?.PathSetDigest ?? EmptyPathSetDigest).ToLowerInvariant()}");
     }
+
+    public string PathSetValue => _pathSetValue.Value;
 
     public string Value => _value.Value;
 
@@ -277,19 +284,55 @@ internal sealed class GitSnapshotInventoryDigest
         return hash.GetHashAndReset();
     }
 
+    private static byte[] ComputeLeafPathSetDigest(
+        byte[] key,
+        ImmutableSortedDictionary<string, ChangeSnapshotFile> entries)
+    {
+        using IncrementalHash hash = IncrementalHash.CreateHash(HashAlgorithmName.SHA256);
+        hash.AppendData("efforthours:git-path-set-merkle:1:leaf\0"u8);
+        hash.AppendData(key);
+        foreach (string path in entries.Keys)
+        {
+            hash.AppendData(Encoding.UTF8.GetBytes(path));
+            hash.AppendData([0]);
+        }
+
+        return hash.GetHashAndReset();
+    }
+
+    private static byte[] ComputeBranchPathSetDigest(int bitIndex, Node left, Node right)
+    {
+        Span<byte> encodedBit = stackalloc byte[sizeof(int)];
+        BinaryPrimitives.WriteInt32BigEndian(encodedBit, bitIndex);
+        using IncrementalHash hash = IncrementalHash.CreateHash(HashAlgorithmName.SHA256);
+        hash.AppendData("efforthours:git-path-set-merkle:1:branch\0"u8);
+        hash.AppendData(encodedBit);
+        hash.AppendData(left.PathSetDigest);
+        hash.AppendData(right.PathSetDigest);
+        return hash.GetHashAndReset();
+    }
+
     private sealed record KeyedFile(ChangeSnapshotFile File, byte[] Key);
 
-    private abstract class Node(byte[] key, byte[] digest)
+    private abstract class Node(
+        byte[] key,
+        byte[] digest,
+        byte[] pathSetDigest)
     {
         public byte[] Key { get; } = key;
 
         public byte[] Digest { get; } = digest;
+
+        public byte[] PathSetDigest { get; } = pathSetDigest;
     }
 
     private sealed class Leaf(
         byte[] key,
         ImmutableSortedDictionary<string, ChangeSnapshotFile> entries)
-        : Node(key, ComputeLeafDigest(key, entries))
+        : Node(
+            key,
+            ComputeLeafDigest(key, entries),
+            ComputeLeafPathSetDigest(key, entries))
     {
         public ImmutableSortedDictionary<string, ChangeSnapshotFile> Entries { get; } = entries;
 
@@ -300,7 +343,10 @@ internal sealed class GitSnapshotInventoryDigest
     }
 
     private sealed class Branch(int bitIndex, Node left, Node right)
-        : Node(left.Key, ComputeBranchDigest(bitIndex, left, right))
+        : Node(
+            left.Key,
+            ComputeBranchDigest(bitIndex, left, right),
+            ComputeBranchPathSetDigest(bitIndex, left, right))
     {
         public int BitIndex { get; } = bitIndex;
 

@@ -39,18 +39,11 @@ public sealed class DotNetRepositoryAnalyzer : IRepositoryEvidenceAnalyzer
         DotNetProjectReadResult projectResult = await new DotNetProjectReader(
             _fileSystem,
             rootPath).ReadAsync(evidence, cancellationToken).ConfigureAwait(false);
-        List<EvidenceFact> facts = [];
-        List<Diagnostic> diagnostics = [.. projectResult.Diagnostics];
-        facts.Add(CreateRepositoryFact(projectResult));
-        facts.AddRange(projectResult.Solutions.Select(CreateSolutionFact));
-        foreach (DotNetProjectModel project in projectResult.Projects)
-        {
-            facts.Add(CreateProjectFact(project));
-            facts.AddRange(project.Packages.Select(package => CreatePackageFact(project, package)));
-            facts.AddRange(project.ProjectReferences.Select(reference =>
-                CreateProjectReferenceFact(project, reference)));
-            AddProjectDiagnostics(project, diagnostics);
-        }
+        DotNetProjectEvidenceContext projectContext = await GetProjectEvidenceContextAsync(
+            projectResult,
+            cancellationToken).ConfigureAwait(false);
+        List<EvidenceFact> facts = [.. projectContext.Facts];
+        List<Diagnostic> diagnostics = [.. projectContext.Diagnostics];
 
         Dictionary<string, List<CSharpStructureMetrics>> structureByScope =
             new(StringComparer.Ordinal);
@@ -96,6 +89,46 @@ public sealed class DotNetRepositoryAnalyzer : IRepositoryEvidenceAnalyzer
             Facts = facts,
             Diagnostics = diagnostics,
         };
+    }
+
+    private async Task<DotNetProjectEvidenceContext> GetProjectEvidenceContextAsync(
+        DotNetProjectReadResult projectResult,
+        CancellationToken cancellationToken)
+    {
+        RepositoryAnalysisArtifactCache? cache =
+            (_fileSystem as IRepositoryAnalysisArtifactCacheProvider)?.AnalysisArtifactCache;
+        if (projectResult.ImmutableCacheKey is not { } projectCacheKey || cache is null)
+        {
+            return CreateProjectEvidenceContext(projectResult);
+        }
+
+        string cacheKey = $"dotnet-project-evidence/{DotNetEvidence.AnalyzerVersion}/" +
+            projectCacheKey;
+        return await cache.GetOrCreateAsync(
+            cacheKey,
+            _ => Task.FromResult(CreateProjectEvidenceContext(projectResult)),
+            cancellationToken).ConfigureAwait(false);
+    }
+
+    private static DotNetProjectEvidenceContext CreateProjectEvidenceContext(
+        DotNetProjectReadResult projectResult)
+    {
+        List<EvidenceFact> facts =
+        [
+            CreateRepositoryFact(projectResult),
+            .. projectResult.Solutions.Select(CreateSolutionFact),
+        ];
+        List<Diagnostic> diagnostics = [.. projectResult.Diagnostics];
+        foreach (DotNetProjectModel project in projectResult.Projects)
+        {
+            facts.Add(CreateProjectFact(project));
+            facts.AddRange(project.Packages.Select(package => CreatePackageFact(project, package)));
+            facts.AddRange(project.ProjectReferences.Select(reference =>
+                CreateProjectReferenceFact(project, reference)));
+            AddProjectDiagnostics(project, diagnostics);
+        }
+
+        return new DotNetProjectEvidenceContext(facts, diagnostics);
     }
 
     private static EvidenceFact CreateRepositoryFact(DotNetProjectReadResult result) =>
@@ -397,4 +430,8 @@ public sealed class DotNetRepositoryAnalyzer : IRepositoryEvidenceAnalyzer
         string rightPath = right.Locations.Count == 0 ? string.Empty : right.Locations[0].Path;
         return StringComparer.Ordinal.Compare(leftPath, rightPath);
     }
+
+    private sealed record DotNetProjectEvidenceContext(
+        IReadOnlyList<EvidenceFact> Facts,
+        IReadOnlyList<Diagnostic> Diagnostics);
 }

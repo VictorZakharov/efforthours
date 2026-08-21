@@ -28,6 +28,7 @@ internal sealed partial class GitPortfolioBenchmarkFixture : IDisposable
         int filesPerRepository,
         int contextProjectsPerRepository,
         int linesPerFile,
+        ChangeBenchmarkEditShape editShape,
         int qualifyingCommitsPerRepository,
         bool keep,
         string? descriptorPath = null)
@@ -41,6 +42,7 @@ internal sealed partial class GitPortfolioBenchmarkFixture : IDisposable
         FilesPerRepository = filesPerRepository;
         ContextProjectsPerRepository = contextProjectsPerRepository;
         LinesPerFile = linesPerFile;
+        EditShape = editShape;
         QualifyingCommitsPerRepository = qualifyingCommitsPerRepository;
         _keep = keep;
         DescriptorPath = descriptorPath;
@@ -68,6 +70,8 @@ internal sealed partial class GitPortfolioBenchmarkFixture : IDisposable
     public int ContextProjectsPerRepository { get; }
 
     public int LinesPerFile { get; }
+
+    public ChangeBenchmarkEditShape EditShape { get; }
 
     public int QualifyingCommitsPerRepository { get; }
 
@@ -218,6 +222,7 @@ internal sealed partial class GitPortfolioBenchmarkFixture : IDisposable
                 options.Files,
                 options.ContextProjects,
                 options.LinesPerFile,
+                options.EditShape,
                 options.Commits,
                 keep);
             if (keep)
