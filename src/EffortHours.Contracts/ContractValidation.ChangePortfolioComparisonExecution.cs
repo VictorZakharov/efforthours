@@ -45,6 +45,7 @@ public static partial class ContractValidation
         }
 
         ValidateCheckpoint(report.Execution, errors);
+        ValidateResourceUsage(report, errors);
         ValidatePhaseTimings(report.Execution.PhaseTimings, "execution", errors);
         ValidateProgress(report.Execution.LastProgress, "execution.lastProgress", errors);
         ValidateFailures(report, errors);
@@ -55,7 +56,11 @@ public static partial class ContractValidation
         List<string> errors)
     {
         ValidateDigest(repository.InputDigest, $"execution.repository[{repository.RepositoryId}]", errors);
-        if (repository.SelectedChangeCount < 0 || !Enum.IsDefined(repository.Status) ||
+        if (repository.SelectedChangeCount < 0 || repository.CandidateCount < 0 ||
+            repository.ChargedCandidateLedgerBytes < 0 || repository.SelectionChunkCount < 0 ||
+            repository.AnalysisChunkCount < 0 || repository.ProjectedSnapshotRequests < 0 ||
+            repository.CheckpointReadBytes < 0 || repository.CheckpointWrittenBytes < 0 ||
+            !Enum.IsDefined(repository.Status) ||
             !Enum.IsDefined(repository.CheckpointDisposition) || repository.ElapsedMilliseconds < 0m)
         {
             errors.Add($"Execution repository '{repository.RepositoryId}' has invalid status or counts.");
@@ -84,9 +89,12 @@ public static partial class ContractValidation
         List<string> errors)
     {
         ChangePortfolioComparisonCheckpoint checkpoint = execution.Checkpoint;
-        if (checkpoint.Protocol != "repository-evidence-checkpoint/1.0.0" ||
+        if (checkpoint.Protocol is not (
+                "repository-evidence-checkpoint/1.0.0" or
+                ChangePortfolioComparisonPolicies.RepositoryEvidenceCheckpointV2) ||
             checkpoint.HitCount < 0 || checkpoint.MissCount < 0 ||
-            checkpoint.WriteCount < 0 || checkpoint.FailureCount < 0)
+            checkpoint.WriteCount < 0 || checkpoint.FailureCount < 0 ||
+            checkpoint.ReadBytes < 0 || checkpoint.WrittenBytes < 0)
         {
             errors.Add("Execution checkpoint counters or protocol are invalid.");
         }
@@ -105,17 +113,90 @@ public static partial class ContractValidation
             if (execution.Repositories.Any(repository =>
                     repository.CheckpointDisposition == ChangePortfolioCheckpointDisposition.Disabled) ||
                 checkpoint.HitCount != expectedHits || checkpoint.MissCount != expectedMisses ||
-                checkpoint.WriteCount != expectedWrites || checkpoint.FailureCount != expectedFailures)
+                checkpoint.WriteCount != expectedWrites || checkpoint.FailureCount != expectedFailures ||
+                checkpoint.ReadBytes != execution.Repositories.Sum(repository =>
+                    repository.CheckpointReadBytes) ||
+                checkpoint.WrittenBytes != execution.Repositories.Sum(repository =>
+                    repository.CheckpointWrittenBytes))
             {
                 errors.Add("Enabled checkpoint counters must match repository dispositions.");
             }
         }
         else if (checkpoint.HitCount != 0 || checkpoint.MissCount != 0 ||
                  checkpoint.WriteCount != 0 || checkpoint.FailureCount != 0 ||
+                 checkpoint.ReadBytes != 0 || checkpoint.WrittenBytes != 0 ||
                  execution.Repositories.Any(repository =>
                      repository.CheckpointDisposition != ChangePortfolioCheckpointDisposition.Disabled))
         {
             errors.Add("Disabled checkpoints require zero counters and disabled repository dispositions.");
+        }
+
+        if (checkpoint.Protocol == ChangePortfolioComparisonPolicies.RepositoryEvidenceCheckpointV2 &&
+            checkpoint.MaximumBytesPerRepository !=
+                ChangePortfolioLimits.MaximumCheckpointBytesPerRepository)
+        {
+            errors.Add("The checkpoint byte bound is inconsistent with the current protocol.");
+        }
+    }
+
+    private static void ValidateResourceUsage(
+        ChangePortfolioComparisonReport report,
+        List<string> errors)
+    {
+        ChangePortfolioComparisonResourceUsage? resources = report.Execution.Resources;
+        if (resources is null)
+        {
+            return;
+        }
+
+        if (resources.CandidateCount < 0 || resources.ChargedCandidateLedgerBytes < 0 ||
+            resources.CandidateLedgerChargePolicy !=
+                ChangePortfolioPreflightPolicies.CandidateLedgerChargeV1 ||
+            resources.SelectionChunkCount < 0 || resources.SelectedChangeCount < 0 ||
+            resources.ProjectedSnapshotRequests < 0 || resources.AnalysisChunkCount < 0 ||
+            resources.SnapshotAnalysisRequests < 0 || resources.PeakWorkingSetBytes < 0 ||
+            resources.MaximumCandidateLedgerBytesPerRepository !=
+                ChangeAuthorPeriodManifestLimits.MaximumCandidateLedgerBytesPerRepository ||
+            resources.MaximumCheckpointBytesPerRepository !=
+                ChangePortfolioLimits.MaximumCheckpointBytesPerRepository ||
+            resources.MaximumConcurrentRepositories != 2 ||
+            resources.MaximumBufferedChangesPerRepository != 4 ||
+            resources.MaximumConcurrentCpuWorkItems is < 1 or > 24 ||
+            resources.MaximumConcurrentGitTreeReads is < 1 or > 8 ||
+            resources.MaximumPendingFileInspections is < 2 or > 8 ||
+            resources.MaximumBufferedFileBytes != 1024 * 1024 ||
+            resources.RenderedOutputBytes < 0 ||
+            resources.SelectionChunkSize != ChangeAuthorPeriodManifestLimits.SelectionChunkSize ||
+            resources.AnalysisChunkSize != ChangeAuthorPeriodManifestLimits.AnalysisChunkSize ||
+            resources.MaximumRenderedOutputBytes != ChangePortfolioLimits.MaximumRenderedOutputBytes ||
+            resources.RenderedOutputBytes > resources.MaximumRenderedOutputBytes)
+        {
+            errors.Add("Execution resource usage contains invalid counts or declared bounds.");
+        }
+
+        if (resources.SelectedChangeCount != report.Execution.Repositories.Sum(repository =>
+                (long)repository.SelectedChangeCount) ||
+            resources.CandidateCount != report.Execution.Repositories.Sum(repository =>
+                (long)repository.CandidateCount) ||
+            resources.ChargedCandidateLedgerBytes != report.Execution.Repositories.Sum(repository =>
+                repository.ChargedCandidateLedgerBytes) ||
+            resources.SelectionChunkCount != report.Execution.Repositories.Sum(repository =>
+                repository.SelectionChunkCount) ||
+            resources.AnalysisChunkCount != report.Execution.Repositories.Sum(repository =>
+                repository.AnalysisChunkCount) ||
+            resources.ProjectedSnapshotRequests != report.Execution.Repositories.Sum(repository =>
+                repository.ProjectedSnapshotRequests) ||
+            resources.SnapshotAnalysisRequests != report.Execution.Reuse.SnapshotAnalysisRequests ||
+            resources.PeakWorkingSetBytes != report.Execution.Reuse.PeakWorkingSetBytes)
+        {
+            errors.Add("Execution resource totals do not match repository resource rows.");
+        }
+
+        if (resources.SelectionScopeComplete &&
+            (resources.SelectedChangeCount > long.MaxValue / 2 ||
+             resources.ProjectedSnapshotRequests != resources.SelectedChangeCount * 2))
+        {
+            errors.Add("Complete selection scope must project two snapshot requests per change.");
         }
     }
 

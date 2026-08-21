@@ -86,6 +86,10 @@ when semantics, schemas, assumptions, or unresolved decisions change.
   explicitly requested.
 - Use the validation sequence in `CONTRIBUTING.md`, scaled to risk. Agents may
   commit, push, and open/update PRs, but must never merge or enable auto-merge.
+- Before handing off a PR as ready, inspect the required GitHub checks for its
+  current head commit and wait until every required check passes. Local validation
+  is not a substitute for CI. Diagnose and fix failures, and do not describe a PR
+  with pending, skipped-required, cancelled, stale-head, or failing checks as ready.
 
 ## Release preflight
 
@@ -172,14 +176,26 @@ interval research remains separate.
 Change EHE has only the limited Stage A logical admission described in
 `docs/CHANGE_MODEL_ADMISSION.md`; later ecosystem extensions remain experimental.
 Current source reports use `change-seed/0.18.2+seed-rules/0.4.0`, and current
-portfolio reports use `change-portfolio/0.2.3`. Author-period manifests keep a
-10,000-candidate exact in-window identity ledger per repository, accept up to 64
-repositories, stream lifetime identity-prefiltered metadata so out-of-window
-matches do not consume the ledger, impose no presentation-row cap, and run at most
-two repository sessions concurrently under fixed per-repository cache bounds,
-including 8,192 immutable analyzer-versioned file artifacts with deterministic
-key-ranked retention, 10,000 structurally shared inventories across 16 full-tree
-roots, and lazy object-length metadata. Eligible non-merge first-parent deltas and
+portfolio reports use `change-portfolio/0.2.4`. Author-period manifests charge a
+deterministic 128-MiB exact in-window identity ledger per repository and account
+its scope in logical 1,024-row selection chunks, accept up to 64 repositories,
+stream lifetime identity-
+prefiltered metadata so out-of-window matches do not consume the ledger, and
+impose no ordinary calendar or presentation-row cap. Counts of 100,000 candidates
+per repository and 640,000 selected changes overall are last-resort circuit
+breakers after byte, cache, queue, checkpoint, and output bounds. Read-only
+`--preflight` validates pinned heads, measures scope without snapshot/static
+analysis, and recommends one normal or checkpointed-summary calculation without
+splitting reconciliation. Comparison checkpoint protocol
+`repository-evidence-checkpoint/1.1.0` records measured scope and read/write bytes;
+comparison reports also record exact rendered bytes. Structured execution
+resources include the four-row prepared-change queue, processor-bounded CPU/Git/
+file-inspection concurrency, actual snapshot requests, and observed peak working
+set. Runs use at most two repository sessions concurrently under fixed per-
+repository cache bounds, including 8,192 immutable analyzer-versioned file
+artifacts with deterministic key-ranked retention, 10,000 structurally shared
+inventories across 16 full-tree roots, and lazy object-length metadata. Eligible
+non-merge first-parent deltas and
 changed-blob sizes are batched once per repository before row analysis with a
 64-MiB output cap and exact per-row fallback. Delta chunks, immutable snapshot
 pairs, and common file inspections now use bounded producer/consumer pipelines;

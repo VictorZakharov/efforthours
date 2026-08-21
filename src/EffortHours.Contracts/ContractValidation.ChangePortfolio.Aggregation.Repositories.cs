@@ -114,9 +114,14 @@ public static partial class ContractValidation
             .ToHashSet(StringComparer.Ordinal);
         HashSet<string> availableAdjustments = (repositoryGroup?.AdjustmentIds ?? [])
             .ToHashSet(StringComparer.Ordinal);
+        Dictionary<string, ChangePortfolioItemEstimate> itemsById =
+            PortfolioItemIndex(report.Items);
+        Dictionary<string, ChangePortfolioAdjustment> adjustmentsById =
+            PortfolioAdjustmentIndex(report.Adjustments);
         List<string> keys = [];
         foreach (ChangePortfolioHeadGroup group in summary.HeadGroups)
         {
+            HashSet<string> groupItemIds = group.ItemIds.ToHashSet(StringComparer.Ordinal);
             RequireText(group.Id, "aggregation.headGroup.id", errors);
             if (!groupIds.Add(group.Id))
             {
@@ -141,9 +146,9 @@ public static partial class ContractValidation
 
             keys.Add(PortfolioSetKey(group.HeadIds));
             ValidateHeadGroupItems(
-                report,
                 summary.RepositoryId,
                 group,
+                itemsById,
                 reportItemIds,
                 coveredItems,
                 errors);
@@ -161,9 +166,8 @@ public static partial class ContractValidation
                 $"headGroup[{group.Id}].adjustmentIds",
                 errors);
             string[] expectedAdjustmentIds = [.. (repositoryGroup?.AdjustmentIds ?? [])
-                .Where(id => report.Adjustments.FirstOrDefault(adjustment => adjustment.Id == id) is
-                    { } adjustment && adjustment.ItemIds.Any(itemId =>
-                        group.ItemIds.Contains(itemId, StringComparer.Ordinal)))
+                .Where(id => adjustmentsById.TryGetValue(id, out ChangePortfolioAdjustment? adjustment) &&
+                    adjustment.ItemIds.Any(groupItemIds.Contains))
                 .Order(StringComparer.Ordinal)];
             if (!group.AdjustmentIds.SequenceEqual(expectedAdjustmentIds, StringComparer.Ordinal))
             {
@@ -206,9 +210,9 @@ public static partial class ContractValidation
     }
 
     private static void ValidateHeadGroupItems(
-        ChangePortfolioReport report,
         string repositoryId,
         ChangePortfolioHeadGroup group,
+        Dictionary<string, ChangePortfolioItemEstimate> itemsById,
         HashSet<string> reportItemIds,
         HashSet<string> coveredItems,
         List<string> errors)
@@ -219,19 +223,23 @@ public static partial class ContractValidation
             errors.Add($"Head group '{group.Id}' item references are not canonical.");
         }
 
+        List<ChangePortfolioItemEstimate> items = [];
         foreach (string itemId in group.ItemIds)
         {
-            ChangePortfolioItemEstimate? item = report.Items.FirstOrDefault(candidate => candidate.Id == itemId);
+            itemsById.TryGetValue(itemId, out ChangePortfolioItemEstimate? item);
             if (!reportItemIds.Contains(itemId) || !coveredItems.Add(itemId) || item is null ||
                 item.RepositoryId != repositoryId ||
                 PortfolioSetKey(PortfolioHeadIds(item)) != PortfolioSetKey(group.HeadIds))
             {
                 errors.Add($"Head group '{group.Id}' has an invalid or repeated item reference.");
             }
+
+            if (item is not null)
+            {
+                items.Add(item);
+            }
         }
 
-        ChangePortfolioItemEstimate[] items = [.. report.Items.Where(item =>
-            group.ItemIds.Contains(item.Id, StringComparer.Ordinal))];
         ValidatePortfolioCounts(
             [group.SelectedCommitCount],
             $"Head group '{group.Id}'",

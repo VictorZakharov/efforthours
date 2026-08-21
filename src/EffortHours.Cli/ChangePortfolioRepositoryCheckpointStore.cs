@@ -8,11 +8,14 @@ namespace EffortHours.Cli;
 
 internal sealed record ChangePortfolioRepositoryCheckpointLoad(
     IReadOnlyList<ChangePortfolioCandidate> Candidates,
-    IReadOnlyList<Diagnostic> Diagnostics);
+    IReadOnlyList<Diagnostic> Diagnostics,
+    GitAuthorPeriodManifestRepositoryScope Scope,
+    long ReadBytes);
 
 internal sealed record ChangePortfolioRepositoryCheckpoint
 {
-    public string FormatVersion { get; init; } = "repository-evidence-checkpoint/1.0.0";
+    public string FormatVersion { get; init; } =
+        ChangePortfolioComparisonPolicies.RepositoryEvidenceCheckpointV2;
 
     public required string InputDigest { get; init; }
 
@@ -25,6 +28,8 @@ internal sealed record ChangePortfolioRepositoryCheckpoint
     public IReadOnlyList<ChangePortfolioRepositoryCheckpointItem> Items { get; init; } = [];
 
     public IReadOnlyList<Diagnostic> Diagnostics { get; init; } = [];
+
+    public GitAuthorPeriodManifestRepositoryScope? Scope { get; init; }
 }
 
 internal sealed record ChangePortfolioRepositoryCheckpointItem
@@ -38,8 +43,6 @@ internal sealed record ChangePortfolioRepositoryCheckpointItem
 
 internal sealed class ChangePortfolioRepositoryCheckpointStore(string directory)
 {
-    private const long MaximumCheckpointBytes = 512L * 1024 * 1024;
-
     private readonly string _directory = ResolveDirectory(directory);
 
     public async Task<ChangePortfolioRepositoryCheckpointLoad?> TryLoadAsync(
@@ -50,7 +53,8 @@ internal sealed class ChangePortfolioRepositoryCheckpointStore(string directory)
     {
         string path = FilePath(repositoryId, inputDigest);
         FileInfo file = new(path);
-        if (!file.Exists || file.Length <= 0 || file.Length > MaximumCheckpointBytes)
+        if (!file.Exists || file.Length <= 0 ||
+            file.Length > ChangePortfolioLimits.MaximumCheckpointBytesPerRepository)
         {
             return null;
         }
@@ -61,11 +65,16 @@ internal sealed class ChangePortfolioRepositoryCheckpointStore(string directory)
                 .ConfigureAwait(false);
             ChangePortfolioRepositoryCheckpoint checkpoint =
                 ContractJson.Deserialize<ChangePortfolioRepositoryCheckpoint>(json);
-            if (checkpoint.FormatVersion != "repository-evidence-checkpoint/1.0.0" ||
+            if (checkpoint.FormatVersion !=
+                    ChangePortfolioComparisonPolicies.RepositoryEvidenceCheckpointV2 ||
                 checkpoint.InputDigest != inputDigest ||
                 checkpoint.RepositoryId != repositoryId ||
                 checkpoint.EstimatorVersion != ChangeEstimator.Version ||
-                checkpoint.Profile != profile)
+                checkpoint.Profile != profile ||
+                checkpoint.Scope is null ||
+                checkpoint.Scope.RepositoryId != repositoryId ||
+                checkpoint.Scope.SelectedChangeCount != checkpoint.Items.Count ||
+                !ValidScope(checkpoint.Scope))
             {
                 return null;
             }
@@ -87,7 +96,9 @@ internal sealed class ChangePortfolioRepositoryCheckpointStore(string directory)
                     Report = item.Report,
                     Attribution = item.Attribution,
                 })],
-                checkpoint.Diagnostics);
+                checkpoint.Diagnostics,
+                checkpoint.Scope,
+                file.Length);
         }
         catch (Exception exception) when (
             exception is IOException or UnauthorizedAccessException or JsonException or
@@ -97,12 +108,13 @@ internal sealed class ChangePortfolioRepositoryCheckpointStore(string directory)
         }
     }
 
-    public async Task WriteAsync(
+    public async Task<long> WriteAsync(
         string repositoryId,
         string inputDigest,
         EstimationProfile profile,
         IReadOnlyList<ChangePortfolioCandidate> candidates,
         IReadOnlyList<Diagnostic> diagnostics,
+        GitAuthorPeriodManifestRepositoryScope scope,
         CancellationToken cancellationToken)
     {
         Directory.CreateDirectory(_directory);
@@ -121,8 +133,17 @@ internal sealed class ChangePortfolioRepositoryCheckpointStore(string directory)
                 Attribution = candidate.Attribution,
             })],
             Diagnostics = diagnostics,
+            Scope = scope,
         };
         string json = ContractJson.SerializeDocument(checkpoint);
+        long bytes = Encoding.UTF8.GetByteCount(json);
+        if (bytes > ChangePortfolioLimits.MaximumCheckpointBytesPerRepository)
+        {
+            throw new InvalidOperationException(
+                $"Repository '{repositoryId}' checkpoint requires {bytes} bytes; the declared " +
+                $"per-repository limit is {ChangePortfolioLimits.MaximumCheckpointBytesPerRepository} bytes.");
+        }
+
         try
         {
             await File.WriteAllTextAsync(
@@ -131,6 +152,7 @@ internal sealed class ChangePortfolioRepositoryCheckpointStore(string directory)
                 new UTF8Encoding(false),
                 cancellationToken).ConfigureAwait(false);
             File.Move(temporary, path, overwrite: true);
+            return bytes;
         }
         finally
         {
@@ -146,6 +168,48 @@ internal sealed class ChangePortfolioRepositoryCheckpointStore(string directory)
         string digest = inputDigest["sha256:".Length..];
         return Path.Combine(_directory, repositoryId + "-" + digest + ".json");
     }
+
+    private static bool ValidScope(GitAuthorPeriodManifestRepositoryScope scope)
+    {
+        int selected = scope.SelectedChangeCount ?? -1;
+        return scope.HeadCount is > 0 and <=
+                ChangeAuthorPeriodManifestLimits.MaximumHeadsPerRepository &&
+            scope.CandidateCount >= selected &&
+            scope.CandidateCount <=
+                ChangeAuthorPeriodManifestLimits.EmergencyMaximumIdentityCandidatesPerRepository &&
+            !scope.CandidateCountIsLowerBound &&
+            selected is >= 0 and <= ChangeAuthorPeriodManifestLimits.MaximumSelectedCommits &&
+            scope.SharedContributorChangeCount is >= 0 &&
+            scope.SharedContributorChangeCount.Value <= selected &&
+            scope.ProjectedSnapshotRequests == selected * 2L &&
+            scope.SelectionChunkCount == ChunkCount(
+                scope.CandidateCount,
+                ChangeAuthorPeriodManifestLimits.SelectionChunkSize) &&
+            scope.AnalysisChunkCount == ChunkCount(
+                selected,
+                ChangeAuthorPeriodManifestLimits.AnalysisChunkSize) &&
+            scope.ChargedCandidateLedgerBytes is >= 0 and <=
+                ChangeAuthorPeriodManifestLimits.MaximumCandidateLedgerBytesPerRepository &&
+            scope.MaximumCandidateLedgerBytes ==
+                ChangeAuthorPeriodManifestLimits.MaximumCandidateLedgerBytesPerRepository &&
+            scope.BlockingResource is null &&
+            scope.Contributors.Count is > 0 and <=
+                ChangeAuthorPeriodManifestLimits.MaximumContributors &&
+            scope.Contributors.Select(contributor => contributor.ContributorId)
+                .Distinct(StringComparer.Ordinal).Count() == scope.Contributors.Count &&
+            scope.Contributors.All(contributor =>
+                contributor.CandidateCount >= 0 &&
+                contributor.DirectAuthorCandidateCount >= 0 &&
+                contributor.CoauthorCandidateCount >= 0 &&
+                contributor.CandidateCount == contributor.DirectAuthorCandidateCount +
+                    contributor.CoauthorCandidateCount &&
+                contributor.SelectedChangeCount is >= 0 &&
+                contributor.SelectedChangeCount.Value <= selected);
+    }
+
+    private static int ChunkCount(int count, int chunkSize) => count == 0
+        ? 0
+        : ((count - 1) / chunkSize) + 1;
 
     private static string ResolveDirectory(string directory)
     {

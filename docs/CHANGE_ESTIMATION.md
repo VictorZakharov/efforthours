@@ -101,17 +101,19 @@ totals are then added without cross-repository deduplication.
 Author-period selection asks Git to prefilter the reachable graph with fixed,
 case-insensitive identity aliases, streams that metadata without a lifetime-sized
 output buffer, and applies the exact timestamp and structured identity checks to
-each record before retaining it. At most 10,000 exact in-window identity
-candidates are retained per repository; lifetime matches outside the requested
-interval do not consume that ledger. The selector emits every match inside that
-bounded input and has no separate calendar or presentation-row cap. This
-preserves non-monotonic author-date correctness without loading an unbounded
-identity ledger; Git's committer-date traversal cutoffs are not applied to
-author-date selection. An over-limit failure reports the observed in-window count,
-the limit, and privacy-safe direct/co-author counts by requested contributor. A
-separate count-only diagnostic ceiling reports a lower bound if even that bounded
-count is exhausted. Successful selection records the same total and per-contributor
-breakdown without raw aliases. Exact case-insensitive aliases
+each record before retaining it. Exact candidates are accounted in logical 1,024-
+row selection chunks and charged against a deterministic 128-MiB retained-ledger
+budget per repository; lifetime matches outside the requested interval consume no
+ledger bytes. The selector emits every retained match and has no ordinary calendar
+or presentation-row cap. This preserves non-monotonic author-date correctness
+without loading an unbounded identity ledger; Git's committer-date traversal
+cutoffs are not applied to author-date selection. Counts of 100,000 candidates per
+repository and 640,000 selected changes per manifest are final circuit breakers
+after byte, cache, queue, checkpoint, and output bounds. A resource failure reports
+a lower-bound in-window count, observed charge, exhausted resource, and privacy-
+safe direct/co-author counts by requested contributor; it never returns a
+truncated result. Successful selection records the same total, byte/chunk usage,
+and per-contributor breakdown without raw aliases. Exact case-insensitive aliases
 match author name, email, or `Name <email>`. The interval is start-inclusive and
 end-exclusive;
 offset-free timestamps use the declared timezone, and skipped or ambiguous local
@@ -119,6 +121,13 @@ times fail unless the caller supplies an offset. Author versus committer time,
 co-author trailer inclusion, and merge exclusion versus first-parent valuation are
 explicit report policies. Git returns only valid `Co-authored-by` trailer values;
 commit bodies are not returned to EffortHours or retained.
+
+The versioned `author-period-candidate-ledger-charge/1.0.0` policy charges 512
+bytes per candidate entry, 32 bytes per retained string plus two bytes per
+character, 32 bytes per retained identity/collection, and eight bytes per
+collection reference. The charge covers commit/parent IDs and structured author,
+committer, and co-author identities. It is deterministic conservative accounting,
+not a claim about sampled CLR heap size.
 
 The author-period manifest applies that exact selector across stable contributor
 IDs, repository IDs, and pinned repository-local heads. Relative paths resolve
@@ -166,8 +175,8 @@ Directory/evidence selectors retain full-snapshot analysis.
 
 Within one Git repository session, at most 10,000 structurally shared immutable
 inventories across 16 full-tree root lineages and 16 exact snapshot/scope analyses
-are retained. First-parent links are remembered through the public 10,000-
-candidate identity-ledger boundary. A known first-parent child with at most 1,024
+are retained. First-parent links are remembered through the 100,000-candidate
+emergency selection envelope. A known first-parent child with at most 1,024
 changed paths and 16,000 path characters is derived from its cached parent plus
 literal Git path deltas. Eligible non-merge deltas and changed-blob sizes are
 loaded in two 64-MiB-output-bounded repository-level Git batches before row
@@ -523,8 +532,8 @@ unchanged path.
 The v1 public schemas are `change-evidence`, `change-estimate-report`,
 `change-estimate-explanation`, `change-portfolio-manifest`,
 `change-author-period-manifest`, `change-portfolio-bucket-manifest`,
-`change-portfolio-capacity-manifest`, `change-portfolio-report`, and
-`change-portfolio-comparison-report`. The Change report
+`change-portfolio-capacity-manifest`, `change-portfolio-preflight-report`,
+`change-portfolio-report`, and `change-portfolio-comparison-report`. The Change report
 schema adds an optional normalization summary, so frozen v1 reports remain valid;
 explanation queries accept its stable calculation ID and return exact adjustment
 lineage. Portfolio contracts separately record selection policy, source estimator
@@ -536,11 +545,11 @@ source excerpts.
 
 The current source Change estimator identity is
 `change-seed/0.18.2+seed-rules/0.4.0`; the portfolio reconciler identity is
-`change-portfolio/0.2.3+change-seed/0.18.2+seed-rules/0.4.0`. The earlier 0.6.0
+`change-portfolio/0.2.4+change-seed/0.18.2+seed-rules/0.4.0`. The earlier 0.6.0
 Change identity alone passed the experimental Stage A logical gate, and that
 record contains no SQL, Python, Go, Java, Kotlin, Shell, PowerShell, Terraform,
 HCL, PHP, Composer, Rust, Cargo, Docker, Compose, Jupyter, C, or C++. Portfolio
-aggregation does not broaden that admission. Neither 0.18.2 nor portfolio 0.2.3
+aggregation does not broaden that admission. Neither 0.18.2 nor portfolio 0.2.4
 may be described as empirically calibrated, generally admitted, or production-
 ready. Frozen calibration source reports retain
 the exact earlier estimator identity they were created from.
@@ -579,7 +588,7 @@ the exact earlier estimator identity they were created from.
   bounded C# lineage proof above may derive additional adjacent snapshots without
   another repository estimate. Differing scopes and all unproven edits remain
   independent canonical estimates.
-- Portfolio 0.2.3 retains up to 16 exact snapshot/scope analyses and 8,192
+- Portfolio 0.2.4 retains up to 16 exact snapshot/scope analyses and 8,192
   immutable file-analysis artifacts with deterministic key-ranked retention per
   active repository and permits at most two repository sessions to overlap.
   Within each repository, eligible deltas are primed in deterministic chunks of
@@ -601,7 +610,7 @@ the exact earlier estimator identity they were created from.
   one lazy Git object reader, one lazy Git metadata reader, a bounded 64-MiB/
   1-MiB-per-blob content cache, 10,000 structurally shared immutable indexed
   inventories across at most 16 full-tree roots, 16,384 retained object lengths,
-  and 10,000 remembered first-parent links. Cached
+  and 100,000 remembered first-parent links. Cached
   .NET/JavaScript file results and common inspections are keyed by immutable
   content, analyzer identity, and required path/context inputs; they do not broaden
   a row's canonical analysis scope. Repository evidence lineage is scheduled in
@@ -630,12 +639,15 @@ the exact earlier estimator identity they were created from.
   manifest directory and may name readable siblings or descendants; there is no
   worktree-containment rule. Reports retain caller IDs, immutable identities, and
   stable digests without host paths.
-- Author-period mode materializes at most 10,000 exact in-window identity
-  candidates per repository from streamed Git-prefiltered metadata over pinned
-  reachable graphs. Lifetime matches outside the requested interval consume no
-  candidate slots. It applies no separate calendar-month or presentation-row
-  ceiling to the exact matches; the report remains bounded by the complete
-  64-repository input envelope. It records the
+- Author-period mode materializes exact in-window identity candidates from
+  streamed Git-prefiltered metadata over pinned reachable graphs under a
+  deterministic 128-MiB charged ledger per repository and logical 1,024-candidate
+  selection accounting. Lifetime matches outside the requested interval consume no
+  retained bytes. It applies no ordinary calendar-month or presentation-row
+  ceiling; 100,000 repository candidates and 640,000 selected changes are final
+  circuit breakers inside the complete 64-repository input envelope. `--preflight`
+  measures this scope without constructing snapshots or estimating EHE and emits
+  a versioned JSON/Markdown execution recommendation. It records the
   inclusive/exclusive interval, timezone, date field, co-author policy, and merge
   policy.
 - Portfolio JSON and Markdown show isolated and repository-normalized totals,

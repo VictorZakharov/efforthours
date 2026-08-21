@@ -95,6 +95,65 @@ public sealed partial class ChangePortfolioComparisonTests
     }
 
     [Fact]
+    public void FailedAnalysisRetainsTheCompletedSelectionScope()
+    {
+        ChangePortfolioExecutionTelemetry telemetry = new();
+        telemetry.Start(ChangePortfolioExecutionPhases.StaticAnalysis);
+        ChangePortfolioRepositoryOutcome outcome = new()
+        {
+            RepositoryId = "repository-a",
+            InputDigest = "sha256:" + new string('a', 64),
+            Status = ChangePortfolioRepositoryExecutionStatus.Failed,
+            CheckpointDisposition = ChangePortfolioCheckpointDisposition.Disabled,
+            Scope = new GitAuthorPeriodManifestRepositoryScope
+            {
+                RepositoryId = "repository-a",
+                HeadCount = 1,
+                CandidateCount = 3,
+                SelectedChangeCount = 2,
+                SharedContributorChangeCount = 0,
+                ProjectedSnapshotRequests = 4,
+                SelectionChunkCount = 1,
+                AnalysisChunkCount = 1,
+                ChargedCandidateLedgerBytes = 3_000,
+                MaximumCandidateLedgerBytes =
+                    ChangeAuthorPeriodManifestLimits.MaximumCandidateLedgerBytesPerRepository,
+                Contributors =
+                [
+                    new GitAuthorPeriodManifestScopeContributor
+                    {
+                        ContributorId = "contributor-a",
+                        CandidateCount = 3,
+                        DirectAuthorCandidateCount = 3,
+                        SelectedChangeCount = 2,
+                    },
+                ],
+            },
+            Telemetry = telemetry,
+            Failure = new ChangePortfolioComparisonFailure
+            {
+                RepositoryId = "repository-a",
+                Phase = ChangePortfolioExecutionPhases.StaticAnalysis,
+                Category = nameof(InvalidOperationException),
+                Message = "Synthetic failure.",
+                MessageDigest = "sha256:" + new string('b', 64),
+            },
+        };
+
+        ChangePortfolioComparisonExecution execution =
+            ChangePortfolioComparisonExecutionFactory.Create([outcome], checkpointEnabled: false);
+
+        ChangePortfolioComparisonRepositoryExecution repository =
+            Assert.Single(execution.Repositories);
+        Assert.Equal(2, repository.SelectedChangeCount);
+        Assert.Equal(3, repository.CandidateCount);
+        Assert.True(execution.Resources!.SelectionScopeComplete);
+        Assert.Equal(2, execution.Resources.SelectedChangeCount);
+        Assert.Equal(4, execution.Resources.ProjectedSnapshotRequests);
+        Assert.Equal(0, execution.Resources.SnapshotAnalysisRequests);
+    }
+
+    [Fact]
     public void IncompleteReportPreservesRootFailureAndAStartedPhaseWithNoProgress()
     {
         ChangeAuthorPeriodManifest manifest = Manifest();
@@ -154,6 +213,13 @@ public sealed partial class ChangePortfolioComparisonTests
             ],
             LastProgress = progress,
             Reuse = execution.Reuse with { PeakWorkingSetBytes = progress.PeakWorkingSetBytes },
+            Resources = execution.Resources! with
+            {
+                PeakWorkingSetBytes = progress.PeakWorkingSetBytes,
+                MaximumConcurrentCpuWorkItems = 8,
+                MaximumConcurrentGitTreeReads = 8,
+                MaximumPendingFileInspections = 8,
+            },
         };
         ChangePortfolioComparisonBuildOptions options = BuildOptions(manifest) with
         {
@@ -189,7 +255,7 @@ public sealed partial class ChangePortfolioComparisonTests
             report.Verification.SemanticDigest,
             trendView.Verification.SemanticDigest);
         Assert.Equal(
-            "sha256:c174e35661d60948ac06a89233c8a96aa3e7701c07261d38cf26ce31a11c8d82",
+            "sha256:8a313c661b68fe0dabd692beedc668cebf8db14b0f2d2177622afd858f39b0d3",
             ChangePortfolioComparisonIdentity.ComputeTextDigest(findings));
     }
 }

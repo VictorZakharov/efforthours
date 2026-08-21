@@ -73,6 +73,8 @@ public static partial class ContractValidation
 
         HashSet<string> itemIds = new(StringComparer.Ordinal);
         HashSet<string> selectorIds = new(StringComparer.Ordinal);
+        Dictionary<string, ChangePortfolioItemEstimate> itemsById =
+            PortfolioItemIndex(report.Items);
         foreach (ChangePortfolioItemEstimate item in report.Items)
         {
             RequireText(item.Id, "portfolioItem.id", errors);
@@ -107,7 +109,6 @@ public static partial class ContractValidation
             {
                 errors.Add($"Portfolio item ID '{item.Id}' is duplicated.");
             }
-
             if (!selectorIds.Add(item.SelectorId))
             {
                 errors.Add($"Portfolio selector ID '{item.SelectorId}' is duplicated.");
@@ -128,9 +129,9 @@ public static partial class ContractValidation
                     errors.Add($"Exact duplicate portfolio item '{item.Id}' must have zero allocation.");
                 }
 
-                ChangePortfolioItemEstimate? original = report.Items.FirstOrDefault(candidate =>
-                    candidate.Id == item.DuplicateOfItemId);
-                if (original is not null &&
+                if (itemsById.TryGetValue(
+                        item.DuplicateOfItemId,
+                        out ChangePortfolioItemEstimate? original) &&
                     (original.RepositoryId != item.RepositoryId || original.PatchDigest != item.PatchDigest))
                 {
                     errors.Add($"Exact duplicate portfolio item '{item.Id}' must share repository and patch identity with its original.");

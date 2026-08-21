@@ -1,3 +1,5 @@
+using System.Globalization;
+using System.Text;
 using EffortHours.Change;
 using EffortHours.Contracts.V1;
 
@@ -79,7 +81,7 @@ public sealed class GitAuthorPeriodCandidateTests
     }
 
     [Fact]
-    public async Task OverLimitDiagnosticReportsObservedCountAndPublicContributorBreakdown()
+    public async Task EmergencyCircuitBreakerReportsObservedCountAndPublicContributorBreakdown()
     {
         RecordingRunner runner = new(string.Concat(
             Metadata(new string('a', 40), "Target", "target@example.test", string.Empty),
@@ -87,8 +89,8 @@ public sealed class GitAuthorPeriodCandidateTests
             Metadata(new string('c', 40), "Target", "target@example.test", string.Empty)));
         GitClient client = new(runner, (_, _, _) => throw new NotSupportedException());
 
-        GitAuthorPeriodCandidateLimitException exception = await Assert.ThrowsAsync<
-            GitAuthorPeriodCandidateLimitException>(() => client.ListAuthorPeriodCandidatesAsync(
+        GitAuthorPeriodCandidateBudgetException exception = await Assert.ThrowsAsync<
+            GitAuthorPeriodCandidateBudgetException>(() => client.ListAuthorPeriodCandidatesAsync(
                 "virtual-repository",
                 Query(
                     [new string('d', 40)],
@@ -98,16 +100,78 @@ public sealed class GitAuthorPeriodCandidateTests
                     maximumCandidates: 2)));
 
         Assert.Equal(3, exception.ObservedCount);
-        Assert.False(exception.CountIsLowerBound);
-        Assert.Equal(2, exception.MaximumCount);
+        Assert.Equal(GitAuthorPeriodCandidateBudgetKind.EmergencyCandidateCount, exception.Budget);
+        Assert.Equal(2, exception.EmergencyMaximumCandidates);
         GitAuthorPeriodCandidateGroupCount count = Assert.Single(exception.GroupCounts);
         Assert.Equal("contributor-a", count.Id);
         Assert.Equal(3, count.DirectAuthorCount);
         Assert.Equal(3, count.TotalCount);
-        Assert.Contains("found 3 exact identity candidates", exception.Message, StringComparison.Ordinal);
-        Assert.Contains("limit is 2", exception.Message, StringComparison.Ordinal);
+        Assert.Contains("2-candidate emergency circuit breaker", exception.Message, StringComparison.Ordinal);
+        Assert.Contains("observing at least 3 exact in-window candidate", exception.Message, StringComparison.Ordinal);
         Assert.Contains("contributor-a=3", exception.Message, StringComparison.Ordinal);
         Assert.DoesNotContain("target@example.test", exception.Message, StringComparison.OrdinalIgnoreCase);
+    }
+
+    [Fact]
+    public async Task CandidateLedgerStopsAtTheDeclaredByteBudgetWithoutTruncation()
+    {
+        RecordingRunner runner = new(string.Concat(
+            Metadata(new string('a', 40), "Target", "target@example.test", string.Empty),
+            Metadata(new string('b', 40), "Target", "target@example.test", string.Empty)));
+        GitClient client = new(runner, (_, _, _) => throw new NotSupportedException());
+        long oneCandidateBytes = GitAuthorPeriodCandidateResourceMeter.Charge(
+            GitCommitMetadataParser.Parse(
+                Metadata(new string('a', 40), "Target", "target@example.test", string.Empty))[0]);
+
+        GitAuthorPeriodCandidateBudgetException exception = await Assert.ThrowsAsync<
+            GitAuthorPeriodCandidateBudgetException>(() => client.ListAuthorPeriodCandidatesAsync(
+                "virtual-repository",
+                Query(
+                    [new string('d', 40)],
+                    [new GitAuthorPeriodIdentityGroup("contributor-a", ["Target"])],
+                    maximumCandidates: 100,
+                    maximumLedgerBytes: oneCandidateBytes)));
+
+        Assert.Equal(GitAuthorPeriodCandidateBudgetKind.LedgerBytes, exception.Budget);
+        Assert.Equal(2, exception.ObservedCount);
+        Assert.Equal(oneCandidateBytes, exception.MaximumLedgerBytes);
+        Assert.True(exception.ObservedLedgerBytes > exception.MaximumLedgerBytes);
+        Assert.Contains("No partial candidate set", exception.Message, StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public async Task DefaultBudgetRetainsMoreThanTenThousandExactCandidatesInChunks()
+    {
+        const int candidateCount = 10_001;
+        StringBuilder metadata = new();
+        for (int index = 0; index < candidateCount; index++)
+        {
+            metadata.Append(Metadata(
+                index.ToString("x40", CultureInfo.InvariantCulture),
+                "Target",
+                "target@example.test",
+                string.Empty));
+        }
+
+        RecordingRunner runner = new(metadata.ToString());
+        GitClient client = new(runner, (_, _, _) => throw new NotSupportedException());
+
+        GitAuthorPeriodCandidateResult result = await client.ListAuthorPeriodCandidatesAsync(
+            "virtual-repository",
+            Query(
+                [new string('d', 40)],
+                [new GitAuthorPeriodIdentityGroup("contributor-a", ["Target"])],
+                maximumCandidates:
+                    ChangeAuthorPeriodManifestLimits.EmergencyMaximumIdentityCandidatesPerRepository));
+
+        Assert.Equal(candidateCount, result.Candidates.Count);
+        Assert.Equal(candidateCount, result.Resources.CandidateCount);
+        Assert.Equal(10, result.Resources.SelectionChunkCount);
+        Assert.Equal(ChangeAuthorPeriodManifestLimits.SelectionChunkSize, result.Resources.SelectionChunkSize);
+        Assert.InRange(
+            result.Resources.ChargedLedgerBytes,
+            1,
+            result.Resources.MaximumLedgerBytes);
     }
 
     [Fact]
@@ -184,6 +248,7 @@ public sealed class GitAuthorPeriodCandidateTests
         IReadOnlyList<string> heads,
         IReadOnlyList<GitAuthorPeriodIdentityGroup> groups,
         int maximumCandidates,
+        long maximumLedgerBytes = ChangeAuthorPeriodManifestLimits.MaximumCandidateLedgerBytesPerRepository,
         bool includeCoauthors = false) => new()
         {
             HeadObjectIds = heads,
@@ -192,7 +257,8 @@ public sealed class GitAuthorPeriodCandidateTests
             UntilExclusive = new DateTimeOffset(2026, 9, 1, 0, 0, 0, TimeSpan.Zero),
             DateField = ChangePortfolioDateField.Author,
             IncludeCoauthors = includeCoauthors,
-            MaximumCandidates = maximumCandidates,
+            MaximumLedgerBytes = maximumLedgerBytes,
+            EmergencyMaximumCandidates = maximumCandidates,
         };
 
     private sealed class RecordingRunner(params string[] outputs) : IExternalCommandRunner

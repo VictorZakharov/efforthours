@@ -42,6 +42,7 @@ public static class ContractSchemaCatalog
         SchemaNames.ChangePortfolioCapacityManifest,
         SchemaNames.ChangePortfolioComparisonReport,
         SchemaNames.ChangePortfolioManifest,
+        SchemaNames.ChangePortfolioPreflightReport,
         SchemaNames.ChangePortfolioReport,
         SchemaNames.Diagnostic,
         SchemaNames.EstimateExplanation,

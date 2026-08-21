@@ -25,11 +25,16 @@ public sealed record GitAuthorPeriodPortfolioOptions
 public sealed record GitPortfolioPlannerOptions
 {
     public const int DefaultMaximumHistoryCommits =
-        ChangeAuthorPeriodManifestLimits.MaximumIdentityCandidatesPerRepository;
-    public const int MaximumSupportedHistoryCommits = 100_000;
+        ChangeAuthorPeriodManifestLimits.EmergencyMaximumIdentityCandidatesPerRepository;
+    public const int MaximumSupportedHistoryCommits =
+        ChangeAuthorPeriodManifestLimits.EmergencyMaximumIdentityCandidatesPerRepository;
+    public const long DefaultMaximumCandidateLedgerBytes =
+        ChangeAuthorPeriodManifestLimits.MaximumCandidateLedgerBytesPerRepository;
     public const int DefaultMaximumSelectedItems = ChangeAuthorPeriodManifestLimits.MaximumSelectedCommits;
 
     public int MaximumHistoryCommits { get; init; } = DefaultMaximumHistoryCommits;
+
+    public long MaximumCandidateLedgerBytes { get; init; } = DefaultMaximumCandidateLedgerBytes;
 
     public int MaximumSelectedItems { get; init; } = DefaultMaximumSelectedItems;
 }
@@ -96,6 +101,8 @@ public sealed partial class GitPortfolioPlanner
         _headReachability = headReachability ?? throw new ArgumentNullException(nameof(headReachability));
         if (_options.MaximumHistoryCommits is < 1 or >
                 GitPortfolioPlannerOptions.MaximumSupportedHistoryCommits ||
+            _options.MaximumCandidateLedgerBytes is < 1 or >
+                ChangeAuthorPeriodManifestLimits.MaximumCandidateLedgerBytesPerRepository ||
             _options.MaximumSelectedItems is < 1 or >
                 ChangeAuthorPeriodManifestLimits.MaximumSelectedCommits)
         {
@@ -176,7 +183,8 @@ public sealed partial class GitPortfolioPlanner
                     UntilExclusive = options.UntilExclusive,
                     DateField = options.DateField,
                     IncludeCoauthors = options.CoauthorPolicy == ChangePortfolioCoauthorPolicy.Include,
-                    MaximumCandidates = _options.MaximumHistoryCommits,
+                    MaximumLedgerBytes = _options.MaximumCandidateLedgerBytes,
+                    EmergencyMaximumCandidates = _options.MaximumHistoryCommits,
                 },
                 cancellationToken).ConfigureAwait(false);
         }
@@ -195,8 +203,10 @@ public sealed partial class GitPortfolioPlanner
             if (selected.Commits.Count > _options.MaximumSelectedItems)
             {
                 throw new InvalidOperationException(
-                    $"Author-period selection matched more than {_options.MaximumSelectedItems} changes. " +
-                    "This bounded safety limit protects memory while normal closed-month intervals remain one calculation.");
+                    $"Author-period selection exceeded the {_options.MaximumSelectedItems}-change " +
+                    "emergency circuit breaker after all byte, cache, queue, and output bounds. " +
+                    "No change was truncated; keep the interval as one calculation and run --preflight " +
+                    "on an author-period manifest for a safe execution recommendation.");
             }
         }
 
@@ -249,7 +259,11 @@ public sealed partial class GitPortfolioPlanner
                     Code = "FB5312",
                     Severity = DiagnosticSeverity.Information,
                     Message = $"The exact in-window identity ledger retained {history.Count} candidate commit(s) " +
-                        $"within the {_options.MaximumHistoryCommits}-candidate repository bound. " +
+                        $"in {candidateResult.Resources.SelectionChunkCount} logical selection chunk(s), charging " +
+                        $"{candidateResult.Resources.ChargedLedgerBytes} of " +
+                        $"{candidateResult.Resources.MaximumLedgerBytes} bounded ledger bytes. The " +
+                        $"{candidateResult.Resources.EmergencyMaximumCandidates}-candidate ceiling is a " +
+                        "last-resort circuit breaker, not a calendar or presentation limit. " +
                         "Counts for the requested selection: " +
                         FormatCandidateCounts(candidateResult.GroupCounts) + ".",
                 },

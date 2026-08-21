@@ -24,6 +24,8 @@ public sealed record GitAuthorPeriodManifestPortfolioPlan
 
     public IReadOnlyList<Diagnostic> Diagnostics { get; init; } = [];
 
+    public IReadOnlyList<GitAuthorPeriodManifestRepositoryScope> RepositoryScopes { get; init; } = [];
+
     public required ChangePortfolioExecutionTelemetry ExecutionTelemetry { get; init; }
 }
 
@@ -56,14 +58,7 @@ public sealed partial class GitPortfolioPlanner
             ValidateManifestInputs(manifest, manifestDigest, repositoryPaths);
         }
 
-        GitAuthorPeriodIdentityGroup[] identityGroups =
-        [
-            .. manifest.Contributors
-                .OrderBy(contributor => contributor.Id, StringComparer.Ordinal)
-                .Select(contributor => new GitAuthorPeriodIdentityGroup(
-                    contributor.Id,
-                    CanonicalAliases(contributor.Aliases))),
-        ];
+        GitAuthorPeriodIdentityGroup[] identityGroups = CreateIdentityGroups(manifest);
         PreparedManifestRepository[] repositories;
         using (executionTelemetry.Measure(ChangePortfolioExecutionPhases.HeadValidation))
         {
@@ -73,6 +68,7 @@ public sealed partial class GitPortfolioPlanner
                 cancellationToken).ConfigureAwait(false);
         }
         List<GitAuthorPeriodManifestPortfolioItem> items = [];
+        List<GitAuthorPeriodManifestRepositoryScope> repositoryScopes = [];
         List<Diagnostic> diagnostics =
         [
             new Diagnostic
@@ -91,49 +87,27 @@ public sealed partial class GitPortfolioPlanner
         foreach (PreparedManifestRepository repository in repositories)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            GitAuthorPeriodCandidateResult candidateResult;
-            try
-            {
-                using (executionTelemetry.Measure(ChangePortfolioExecutionPhases.HistoryUnion))
-                {
-                    candidateResult = await _git.ListAuthorPeriodCandidatesAsync(
-                        repository.RootPath,
-                        new GitAuthorPeriodCandidateQuery
-                        {
-                            HeadObjectIds = [.. repository.Manifest.Heads.Select(head => head.ObjectId)],
-                            IdentityGroups = identityGroups,
-                            SinceInclusive = manifest.Selection.SinceInclusive,
-                            UntilExclusive = manifest.Selection.UntilExclusive,
-                            DateField = manifest.Selection.DateField,
-                            IncludeCoauthors = manifest.Selection.CoauthorPolicy ==
-                                ChangePortfolioCoauthorPolicy.Include,
-                            MaximumCandidates = _options.MaximumHistoryCommits,
-                        },
-                        cancellationToken).ConfigureAwait(false);
-                }
-            }
-            catch (ExternalCommandException exception)
-            {
-                throw new InvalidOperationException(
-                    $"Git could not traverse author-period candidates for repository '{repository.Manifest.Id}'.",
-                    exception);
-            }
+            PreparedManifestSelection prepared = await SelectManifestRepositoryAsync(
+                repository,
+                manifest,
+                identityGroups,
+                executionTelemetry,
+                cancellationToken).ConfigureAwait(false);
+            GitAuthorPeriodCandidateResult candidateResult = prepared.CandidateResult;
             IReadOnlyList<GitCommitMetadata> history = candidateResult.Candidates;
-            AuthorPeriodManifestSelectionResult selected;
-            using (executionTelemetry.Measure(ChangePortfolioExecutionPhases.Selection))
-            {
-                selected = AuthorPeriodManifestCommitSelector.Select(
-                    history,
-                    manifest.Selection,
-                    manifest.Contributors);
-            }
+            AuthorPeriodManifestSelectionResult selected = prepared.Selected;
+            repositoryScopes.Add(CreateCompleteScope(repository, manifest, prepared));
             diagnostics.AddRange(selected.Diagnostics);
             diagnostics.Add(new Diagnostic
             {
                 Code = "FB5326",
                 Severity = DiagnosticSeverity.Information,
                 Message = $"Repository '{repository.Manifest.Id}' retained {history.Count} exact in-window " +
-                    $"identity candidate(s) within the {_options.MaximumHistoryCommits}-candidate bound. " +
+                    $"identity candidate(s) in {candidateResult.Resources.SelectionChunkCount} logical selection " +
+                    $"chunk(s), charging {candidateResult.Resources.ChargedLedgerBytes} of " +
+                    $"{candidateResult.Resources.MaximumLedgerBytes} bounded ledger bytes. The " +
+                    $"{candidateResult.Resources.EmergencyMaximumCandidates}-candidate ceiling is a " +
+                    "last-resort circuit breaker, not a calendar or presentation limit. " +
                     "Counts by requested contributor: " + FormatCandidateCounts(candidateResult.GroupCounts) + ".",
             });
             if (selected.Commits.Count == 0)
@@ -144,8 +118,10 @@ public sealed partial class GitPortfolioPlanner
             if (items.Count + selected.Commits.Count > _options.MaximumSelectedItems)
             {
                 throw new InvalidOperationException(
-                    $"Manifest author-period selection matched more than {_options.MaximumSelectedItems} changes. " +
-                    "This bounded safety limit protects memory while normal closed-month intervals remain one calculation.");
+                    $"Manifest author-period selection exceeded the {_options.MaximumSelectedItems}-change " +
+                    "emergency circuit breaker after all byte, cache, queue, and output bounds. " +
+                    "No change was truncated; keep the interval as one calculation and use --preflight " +
+                    "for a safe execution recommendation.");
             }
 
             IReadOnlyDictionary<string, IReadOnlyList<string>> reachableHeads;
@@ -208,6 +184,7 @@ public sealed partial class GitPortfolioPlanner
                 manifestDigest),
             Items = items,
             Diagnostics = diagnostics,
+            RepositoryScopes = repositoryScopes,
             ExecutionTelemetry = executionTelemetry,
         };
     }

@@ -285,10 +285,17 @@ count, and intermediate churn do not value effort. `CHANGE_ESTIMATION.md` and
   stays effectively flat in the recorded run. CI gates equivalence, read-only
   safety, and bounded coordination rather than machine-dependent performance.
 - Closed-month author-period portfolios stream lifetime identity-prefiltered
-  metadata and retain every exact in-window match inside the 10,000-record
-  per-repository ledger instead of charging out-of-window history against the
-  bound or imposing a presentation-row cap. Over-limit diagnostics expose the
-  observed in-window count and privacy-safe contributor/direct/co-author counts.
+  metadata and retain every exact in-window match under a deterministic 128-MiB
+  charged ledger per repository with logical 1,024-candidate selection accounting instead of
+  charging out-of-window history against the bound or imposing a presentation-row
+  cap. The 100,000-candidate repository and 640,000-change manifest counts are
+  final circuit breakers, not planning intervals. Resource diagnostics expose a
+  lower-bound in-window count, observed charge, and privacy-safe contributor/
+  direct/co-author counts without truncation. Selection-only `--preflight`
+  validates pinned heads, projects snapshots/chunks, names any blocking resource,
+  and recommends one normal or checkpointed-summary calculation without splitting
+  reconciliation. Comparison checkpoints bind the measured scope and expose
+  exact read/write/output bytes.
   Large-tree analysis loads only changed-neighborhood
   context, batches eligible first-parent deltas and changed-blob sizes once per
   repository, retains structurally shared inventories across 16 root lineages,
@@ -296,7 +303,7 @@ count, and intermediate churn do not value effort. `CHANGE_ESTIMATION.md` and
   analysis through a canonical Merkle inventory identity. Reconciliation uses
   linear component construction, and at most two repository sessions overlap as
   a bounded memory-for-latency tradeoff. Preserve
-  the 1,700-change regression, progress/cancellation diagnostics, sibling-path
+  the 10,001-change regression, progress/cancellation diagnostics, sibling-path
   behavior, and the non-gating `change/1.6.0` checkpoint. The current checkpoint
   compares one combined manifest with the same contributors in isolated manifests;
   the earlier repository/head explosion is retained only as historical evidence

@@ -4,7 +4,6 @@ using EffortHours.Change;
 using EffortHours.Contracts;
 using EffortHours.Contracts.V1;
 using EffortHours.Pricing;
-using EffortHours.Reporting;
 
 namespace EffortHours.Cli;
 
@@ -132,9 +131,7 @@ internal sealed partial class ChangePortfolioCommand
         string output;
         using (portfolioTelemetry.Measure(ChangePortfolioExecutionPhases.Rendering))
         {
-            output = options.Format == "markdown"
-                ? ChangePortfolioComparisonMarkdownRenderer.Render(comparison)
-                : new ChangePortfolioComparisonJsonRenderer(options.Compact).Render(comparison);
+            (comparison, output) = RenderComparisonWithOutputUsage(comparison, options);
         }
 
         int write = await WriteOutputAsync(
@@ -186,11 +183,14 @@ internal sealed partial class ChangePortfolioCommand
                     CheckpointDisposition = ChangePortfolioCheckpointDisposition.Hit,
                     Candidates = cached.Candidates,
                     Diagnostics = cached.Diagnostics,
+                    Scope = cached.Scope,
+                    CheckpointReadBytes = cached.ReadBytes,
                     Telemetry = telemetry,
                 };
             }
         }
 
+        GitAuthorPeriodManifestRepositoryScope? measuredScope = null;
         try
         {
             ChangeAuthorPeriodManifest submanifest = resolved.Manifest with
@@ -209,6 +209,7 @@ internal sealed partial class ChangePortfolioCommand
                     telemetry,
                     allowEmptySelection: true,
                     cancellationToken: cancellationToken).ConfigureAwait(false);
+            measuredScope = plan.RepositoryScopes.Single();
             ChangePortfolioEstimateBatch estimate = plan.Items.Count == 0
                 ? new ChangePortfolioEstimateBatch
                 {
@@ -236,6 +237,7 @@ internal sealed partial class ChangePortfolioCommand
             ChangePortfolioCheckpointDisposition disposition = checkpoints is null
                 ? ChangePortfolioCheckpointDisposition.Disabled
                 : ChangePortfolioCheckpointDisposition.MissWritten;
+            long checkpointWrittenBytes = 0;
             List<Diagnostic> diagnostics = [.. plan.Diagnostics];
             if (plan.Items.Count > 0)
             {
@@ -246,12 +248,13 @@ internal sealed partial class ChangePortfolioCommand
             {
                 try
                 {
-                    await checkpoints.WriteAsync(
+                    checkpointWrittenBytes = await checkpoints.WriteAsync(
                         repository.Id,
                         digest,
                         options.Profile,
                         candidates,
                         plan.Diagnostics,
+                        measuredScope,
                         cancellationToken).ConfigureAwait(false);
                 }
                 catch (Exception exception) when (
@@ -278,6 +281,8 @@ internal sealed partial class ChangePortfolioCommand
                 Diagnostics = diagnostics,
                 Telemetry = telemetry,
                 Statistics = estimate.Statistics,
+                Scope = measuredScope,
+                CheckpointWrittenBytes = checkpointWrittenBytes,
             };
         }
         catch (OperationCanceledException)
@@ -312,6 +317,7 @@ internal sealed partial class ChangePortfolioCommand
                 CheckpointDisposition = checkpoints is null
                     ? ChangePortfolioCheckpointDisposition.Disabled
                     : ChangePortfolioCheckpointDisposition.MissFailed,
+                Scope = measuredScope,
                 Telemetry = telemetry,
                 Failure = failure,
             };

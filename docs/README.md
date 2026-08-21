@@ -26,8 +26,8 @@ agent instructions.
   selectors, final-delta normalization, range reconciliation, work items, and
   limitations.
 - [Change portfolios](CHANGE_PORTFOLIOS.md) governs repeated PRs, cross-repository
-  manifests, author-period selection, exact allocation, attribution uncertainty,
-  and no-ranking safeguards.
+  manifests, author-period selection and scope preflight, exact allocation,
+  attribution uncertainty, and no-ranking safeguards.
 - [Host-assisted author-period scaffolding](AUTHOR_PERIOD_SCAFFOLDING.md) records
   the accepted boundary for an optional provider adapter, reviewable discovery
   provenance, failure handling, privacy, and implementation tests.

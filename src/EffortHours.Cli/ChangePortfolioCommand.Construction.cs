@@ -19,7 +19,8 @@ internal sealed partial class ChangePortfolioCommand
             gitPlanner.PlanPullRequestAsync,
             portfolioPlanner.PlanAuthorPeriodAsync,
             ChangePortfolioManifestLoader.LoadAsync,
-            new ChangeAuthorPeriodManifestCommandPlanner(portfolioPlanner).PlanAsync)
+            new ChangeAuthorPeriodManifestCommandPlanner(portfolioPlanner).PlanAsync,
+            new ChangeAuthorPeriodManifestCommandPlanner(portfolioPlanner).MeasureAsync)
     {
     }
 
@@ -81,7 +82,9 @@ internal sealed partial class ChangePortfolioCommand
             Task<IReadOnlyList<ResolvedChangePortfolioManifestItem>>> loadManifest,
         Func<string, ChangePortfolioExecutionTelemetry, CancellationToken,
             Task<GitAuthorPeriodManifestPortfolioPlan>>
-            planAuthorPeriodManifest)
+            planAuthorPeriodManifest,
+        Func<string, ChangePortfolioExecutionTelemetry, CancellationToken,
+            Task<GitAuthorPeriodManifestScopePlan>>? measureAuthorPeriodManifest = null)
     {
         _changeEstimator = changeEstimator ?? throw new ArgumentNullException(nameof(changeEstimator));
         _planPullRequest = planPullRequest ?? throw new ArgumentNullException(nameof(planPullRequest));
@@ -89,5 +92,8 @@ internal sealed partial class ChangePortfolioCommand
         _loadManifest = loadManifest ?? throw new ArgumentNullException(nameof(loadManifest));
         _planAuthorPeriodManifest = planAuthorPeriodManifest ??
             throw new ArgumentNullException(nameof(planAuthorPeriodManifest));
+        _measureAuthorPeriodManifest = measureAuthorPeriodManifest ??
+            ((_, _, _) => throw new InvalidOperationException(
+                "Author-period manifest preflight was not configured for this command instance."));
     }
 }

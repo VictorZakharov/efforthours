@@ -2,90 +2,8 @@ using EffortHours.Contracts.V1;
 
 namespace EffortHours.Change;
 
-internal sealed record GitAuthorPeriodIdentityGroup(
-    string Id,
-    IReadOnlyList<string> Aliases);
-
-internal sealed record GitAuthorPeriodCandidateQuery
-{
-    public IReadOnlyList<string> HeadObjectIds { get; init; } = [];
-
-    public IReadOnlyList<GitAuthorPeriodIdentityGroup> IdentityGroups { get; init; } = [];
-
-    public required DateTimeOffset SinceInclusive { get; init; }
-
-    public required DateTimeOffset UntilExclusive { get; init; }
-
-    public required ChangePortfolioDateField DateField { get; init; }
-
-    public bool IncludeCoauthors { get; init; }
-
-    public int MaximumCandidates { get; init; } =
-        ChangeAuthorPeriodManifestLimits.MaximumIdentityCandidatesPerRepository;
-}
-
-internal sealed record GitAuthorPeriodCandidateGroupCount(
-    string Id,
-    int DirectAuthorCount,
-    int CoauthorCount,
-    int TotalCount);
-
-internal sealed record GitAuthorPeriodCandidateResult(
-    IReadOnlyList<GitCommitMetadata> Candidates,
-    IReadOnlyList<GitAuthorPeriodCandidateGroupCount> GroupCounts);
-
-internal sealed class GitAuthorPeriodCandidateLimitException : InvalidOperationException
-{
-    public GitAuthorPeriodCandidateLimitException(
-        int observedCount,
-        bool countIsLowerBound,
-        int maximumCount,
-        IReadOnlyList<GitAuthorPeriodCandidateGroupCount> groupCounts)
-        : base(FormatMessage(observedCount, countIsLowerBound, maximumCount, groupCounts))
-    {
-        ObservedCount = observedCount;
-        CountIsLowerBound = countIsLowerBound;
-        MaximumCount = maximumCount;
-        GroupCounts = groupCounts;
-    }
-
-    public int ObservedCount { get; }
-
-    public bool CountIsLowerBound { get; }
-
-    public int MaximumCount { get; }
-
-    public IReadOnlyList<GitAuthorPeriodCandidateGroupCount> GroupCounts { get; }
-
-    private static string FormatMessage(
-        int observedCount,
-        bool countIsLowerBound,
-        int maximumCount,
-        IReadOnlyList<GitAuthorPeriodCandidateGroupCount> groupCounts)
-    {
-        string count = countIsLowerBound
-            ? $"at least {observedCount}"
-            : observedCount.ToString(System.Globalization.CultureInfo.InvariantCulture);
-        string breakdown = string.Join(
-            ", ",
-            groupCounts.Select(group =>
-                $"{group.Id}={group.TotalCount} " +
-                $"(direct={group.DirectAuthorCount}, coauthor={group.CoauthorCount})"));
-        string bounded = countIsLowerBound
-            ? " The diagnostic count stopped at its separate bounded ceiling."
-            : string.Empty;
-        return $"Author-period selection found {count} exact identity candidates inside the requested " +
-            $"inclusive/exclusive interval; the per-repository limit is {maximumCount}. " +
-            "Counts by requested contributor (one commit can match several contributors): " +
-            $"{breakdown}. Reduce the interval or identity scope; EffortHours will not retain an " +
-            $"unbounded in-window identity ledger.{bounded}";
-    }
-}
-
 public sealed partial class GitClient
 {
-    private const int MaximumCandidateDiagnosticCount = 100_000;
-
     internal async Task<GitAuthorPeriodCandidateResult> ListAuthorPeriodCandidatesAsync(
         string repositoryPath,
         GitAuthorPeriodCandidateQuery query,
@@ -97,7 +15,7 @@ public sealed partial class GitClient
             .Distinct(StringComparer.OrdinalIgnoreCase)
             .Order(StringComparer.OrdinalIgnoreCase)
             .ThenBy(alias => alias, StringComparer.Ordinal)];
-        CandidateLedger ledger = new(query, MaximumCandidateDiagnosticCount);
+        CandidateLedger ledger = new(query);
         await ReadFilteredCommitMetadataAsync(
             repositoryPath,
             query.HeadObjectIds,
@@ -178,7 +96,10 @@ public sealed partial class GitClient
                 nameof(query));
         }
 
-        if (query.MaximumCandidates is < 1 or > MaximumCandidateDiagnosticCount)
+        if (query.MaximumLedgerBytes is < 1 or >
+                ChangeAuthorPeriodManifestLimits.MaximumCandidateLedgerBytesPerRepository ||
+            query.EmergencyMaximumCandidates is < 1 or >
+                ChangeAuthorPeriodManifestLimits.EmergencyMaximumIdentityCandidatesPerRepository)
         {
             throw new ArgumentOutOfRangeException(nameof(query));
         }
@@ -187,17 +108,17 @@ public sealed partial class GitClient
     private sealed class CandidateLedger
     {
         private readonly GitAuthorPeriodCandidateQuery _query;
-        private readonly int _diagnosticLimit;
         private readonly Dictionary<string, CandidateLedgerEntry> _entries =
             new(StringComparer.Ordinal);
         private readonly int[] _directCounts;
         private readonly int[] _coauthorCounts;
         private readonly int[] _totalCounts;
 
-        public CandidateLedger(GitAuthorPeriodCandidateQuery query, int diagnosticLimit)
+        private long _chargedLedgerBytes;
+
+        public CandidateLedger(GitAuthorPeriodCandidateQuery query)
         {
             _query = query;
-            _diagnosticLimit = diagnosticLimit;
             _directCounts = new int[query.IdentityGroups.Count];
             _coauthorCounts = new int[query.IdentityGroups.Count];
             _totalCounts = new int[query.IdentityGroups.Count];
@@ -221,14 +142,29 @@ public sealed partial class GitClient
 
             if (!_entries.TryGetValue(commit.ObjectId, out CandidateLedgerEntry? entry))
             {
-                if (_entries.Count >= _diagnosticLimit)
+                long charge = GitAuthorPeriodCandidateResourceMeter.Charge(commit);
+                long observedBytes = _chargedLedgerBytes + charge;
+                if (_entries.Count >= _query.EmergencyMaximumCandidates)
                 {
-                    throw Limit(_diagnosticLimit + 1, countIsLowerBound: true);
+                    throw Budget(
+                        GitAuthorPeriodCandidateBudgetKind.EmergencyCandidateCount,
+                        _entries.Count + 1,
+                        observedBytes,
+                        GroupCountsIncluding(matches, coauthorPass));
                 }
 
-                entry = new CandidateLedgerEntry(
-                    _entries.Count < _query.MaximumCandidates ? commit : null);
+                if (observedBytes > _query.MaximumLedgerBytes)
+                {
+                    throw Budget(
+                        GitAuthorPeriodCandidateBudgetKind.LedgerBytes,
+                        _entries.Count + 1,
+                        observedBytes,
+                        GroupCountsIncluding(matches, coauthorPass));
+                }
+
+                entry = new CandidateLedgerEntry(commit);
                 _entries.Add(commit.ObjectId, entry);
+                _chargedLedgerBytes = observedBytes;
             }
 
             ulong priorAny = entry.DirectMatches | entry.CoauthorMatches;
@@ -269,16 +205,18 @@ public sealed partial class GitClient
 
         public GitAuthorPeriodCandidateResult Complete()
         {
-            if (_entries.Count > _query.MaximumCandidates)
-            {
-                throw Limit(_entries.Count, countIsLowerBound: false);
-            }
-
             return new GitAuthorPeriodCandidateResult(
                 [.. _entries.Values
-                    .Select(entry => entry.Metadata!)
+                    .Select(entry => entry.Metadata)
                     .OrderBy(commit => commit.ObjectId, StringComparer.Ordinal)],
-                GroupCounts());
+                GroupCounts(),
+                new GitAuthorPeriodCandidateResources(
+                    _entries.Count,
+                    _chargedLedgerBytes,
+                    _query.MaximumLedgerBytes,
+                    GitAuthorPeriodCandidateResourceMeter.ChunkCount(_entries.Count),
+                    ChangeAuthorPeriodManifestLimits.SelectionChunkSize,
+                    _query.EmergencyMaximumCandidates));
         }
 
         private ulong MatchGroups(GitCommitMetadata commit, bool coauthorPass)
@@ -299,13 +237,29 @@ public sealed partial class GitClient
             return result;
         }
 
-        private GitAuthorPeriodCandidateLimitException Limit(
+        private GitAuthorPeriodCandidateBudgetException Budget(
+            GitAuthorPeriodCandidateBudgetKind budget,
             int observedCount,
-            bool countIsLowerBound) => new(
+            long observedLedgerBytes,
+            IReadOnlyList<GitAuthorPeriodCandidateGroupCount> groupCounts) => new(
+                budget,
                 observedCount,
-                countIsLowerBound,
-                _query.MaximumCandidates,
-                GroupCounts());
+                observedLedgerBytes,
+                _query,
+                groupCounts);
+
+        private IReadOnlyList<GitAuthorPeriodCandidateGroupCount> GroupCountsIncluding(
+            ulong matches,
+            bool coauthorPass) =>
+            [.. _query.IdentityGroups.Select((group, index) =>
+            {
+                bool matched = (matches & (1UL << index)) != 0;
+                return new GitAuthorPeriodCandidateGroupCount(
+                    group.Id,
+                    _directCounts[index] + (matched && !coauthorPass ? 1 : 0),
+                    _coauthorCounts[index] + (matched && coauthorPass ? 1 : 0),
+                    _totalCounts[index] + (matched ? 1 : 0));
+            })];
 
         private IReadOnlyList<GitAuthorPeriodCandidateGroupCount> GroupCounts() =>
             [.. _query.IdentityGroups.Select((group, index) =>
@@ -315,9 +269,9 @@ public sealed partial class GitClient
                         _coauthorCounts[index],
                         _totalCounts[index]))];
 
-        private sealed class CandidateLedgerEntry(GitCommitMetadata? metadata)
+        private sealed class CandidateLedgerEntry(GitCommitMetadata metadata)
         {
-            public GitCommitMetadata? Metadata { get; } = metadata;
+            public GitCommitMetadata Metadata { get; } = metadata;
 
             public ulong DirectMatches { get; set; }
 

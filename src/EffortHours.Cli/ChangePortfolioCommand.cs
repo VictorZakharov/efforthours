@@ -19,6 +19,9 @@ internal sealed partial class ChangePortfolioCommand
     private readonly Func<string, ChangePortfolioExecutionTelemetry, CancellationToken,
         Task<GitAuthorPeriodManifestPortfolioPlan>>
         _planAuthorPeriodManifest;
+    private readonly Func<string, ChangePortfolioExecutionTelemetry, CancellationToken,
+        Task<GitAuthorPeriodManifestScopePlan>>
+        _measureAuthorPeriodManifest;
 
     public async Task<int> ExecuteAsync(
         string[] arguments,
@@ -43,6 +46,17 @@ internal sealed partial class ChangePortfolioCommand
         ChangePortfolioExecutionTelemetry? executionTelemetry = null;
         try
         {
+            if (options.Preflight)
+            {
+                executionTelemetry = CreateExecutionTelemetry(standardError);
+                return await ExecutePreflightAsync(
+                    options,
+                    executionTelemetry,
+                    standardOutput,
+                    standardError,
+                    cancellationToken).ConfigureAwait(false);
+            }
+
             if (options.IsComparison)
             {
                 return await ExecuteComparisonAsync(
@@ -250,6 +264,17 @@ internal sealed partial class ChangePortfolioCommand
         TextWriter standardError,
         CancellationToken cancellationToken)
     {
+        long renderedBytes = RenderedOutputByteCount(content);
+        if (renderedBytes > ChangePortfolioLimits.MaximumRenderedOutputBytes)
+        {
+            await standardError.WriteLineAsync(
+                $"eh: change portfolio output requires {renderedBytes} bytes; the declared limit is " +
+                $"{ChangePortfolioLimits.MaximumRenderedOutputBytes} bytes. Use a time-bucketed " +
+                "Markdown summary from the same globally reconciled calculation; do not add " +
+                "independent interval reports.").ConfigureAwait(false);
+            return CliExitCodes.InvalidInput;
+        }
+
         if (outputPath is null)
         {
             await standardOutput.WriteLineAsync(content.TrimEnd().AsMemory(), cancellationToken)
@@ -280,6 +305,9 @@ internal sealed partial class ChangePortfolioCommand
             return CliExitCodes.InvalidInput;
         }
     }
+
+    private static long RenderedOutputByteCount(string content) =>
+        Encoding.UTF8.GetByteCount(content.TrimEnd() + Environment.NewLine);
 
     private static async Task<int> UsageErrorAsync(TextWriter standardError, string message)
     {

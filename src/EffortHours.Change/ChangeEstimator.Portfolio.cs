@@ -8,7 +8,8 @@ public sealed partial class ChangeEstimator
     public const int PortfolioSnapshotAnalysisRetentionLimit = 16;
     public const int MaximumConcurrentPortfolioRepositories = 2;
     public const int MaximumConcurrentPortfolioChangesPerRepository = 4;
-    public const int PortfolioDeltaPrimeChunkSize = 16;
+    public const int PortfolioDeltaPrimeChunkSize =
+        ChangeAuthorPeriodManifestLimits.AnalysisChunkSize;
 
     public async Task<IReadOnlyList<ChangeEstimateReport>> EstimatePortfolioCandidatesAsync(
         IReadOnlyList<GitChangePlan> plans,

@@ -22,6 +22,9 @@ public static class ChangePortfolioComparisonPolicies
 
     public const string RepositoryEvidenceShardsV1 = "repository-evidence-shards/1.0.0";
 
+    public const string RepositoryEvidenceCheckpointV2 =
+        "repository-evidence-checkpoint/1.1.0";
+
     public const string ExclusiveContributorSeriesV1 =
         "exclusive-contributor-match-sets-with-shared-groups/1.0.0";
 
@@ -235,6 +238,8 @@ public sealed record ChangePortfolioComparisonExecution
 
     public required ChangePortfolioComparisonReuse Reuse { get; init; }
 
+    public ChangePortfolioComparisonResourceUsage? Resources { get; init; }
+
     public IReadOnlyList<ChangePortfolioComparisonFailure> Failures { get; init; } = [];
 }
 
@@ -248,6 +253,20 @@ public sealed record ChangePortfolioComparisonRepositoryExecution
 
     public int SelectedChangeCount { get; init; }
 
+    public int CandidateCount { get; init; }
+
+    public long ChargedCandidateLedgerBytes { get; init; }
+
+    public int SelectionChunkCount { get; init; }
+
+    public int AnalysisChunkCount { get; init; }
+
+    public long ProjectedSnapshotRequests { get; init; }
+
+    public long CheckpointReadBytes { get; init; }
+
+    public long CheckpointWrittenBytes { get; init; }
+
     public required decimal ElapsedMilliseconds { get; init; }
 
     public required string InputDigest { get; init; }
@@ -259,7 +278,8 @@ public sealed record ChangePortfolioComparisonRepositoryExecution
 
 public sealed record ChangePortfolioComparisonCheckpoint
 {
-    public string Protocol { get; init; } = "repository-evidence-checkpoint/1.0.0";
+    public string Protocol { get; init; } =
+        ChangePortfolioComparisonPolicies.RepositoryEvidenceCheckpointV2;
 
     public bool Enabled { get; init; }
 
@@ -270,6 +290,60 @@ public sealed record ChangePortfolioComparisonCheckpoint
     public int WriteCount { get; init; }
 
     public int FailureCount { get; init; }
+
+    public long ReadBytes { get; init; }
+
+    public long WrittenBytes { get; init; }
+
+    public long MaximumBytesPerRepository { get; init; } =
+        ChangePortfolioLimits.MaximumCheckpointBytesPerRepository;
+}
+
+public sealed record ChangePortfolioComparisonResourceUsage
+{
+    public required string CandidateLedgerChargePolicy { get; init; }
+
+    public bool SelectionScopeComplete { get; init; }
+
+    public long CandidateCount { get; init; }
+
+    public long ChargedCandidateLedgerBytes { get; init; }
+
+    public int SelectionChunkCount { get; init; }
+
+    public int SelectionChunkSize { get; init; }
+
+    public long SelectedChangeCount { get; init; }
+
+    public long ProjectedSnapshotRequests { get; init; }
+
+    public int AnalysisChunkCount { get; init; }
+
+    public int AnalysisChunkSize { get; init; }
+
+    public int SnapshotAnalysisRequests { get; init; }
+
+    public long PeakWorkingSetBytes { get; init; }
+
+    public long MaximumCandidateLedgerBytesPerRepository { get; init; }
+
+    public long MaximumCheckpointBytesPerRepository { get; init; }
+
+    public int MaximumConcurrentRepositories { get; init; }
+
+    public int MaximumBufferedChangesPerRepository { get; init; }
+
+    public int MaximumConcurrentCpuWorkItems { get; init; }
+
+    public int MaximumConcurrentGitTreeReads { get; init; }
+
+    public int MaximumPendingFileInspections { get; init; }
+
+    public int MaximumBufferedFileBytes { get; init; }
+
+    public long RenderedOutputBytes { get; init; }
+
+    public long MaximumRenderedOutputBytes { get; init; }
 }
 
 public sealed record ChangePortfolioComparisonPhaseTiming

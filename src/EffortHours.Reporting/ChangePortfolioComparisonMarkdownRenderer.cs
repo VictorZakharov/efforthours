@@ -29,6 +29,8 @@ public static partial class ChangePortfolioComparisonMarkdownRenderer
             AppendTrendReport(markdown, report);
         }
 
+        AppendResourceUsage(markdown, report.Execution.Resources);
+
         return markdown.ToString().ReplaceLineEndings("\n").TrimEnd() + "\n";
     }
 
@@ -59,6 +61,44 @@ public static partial class ChangePortfolioComparisonMarkdownRenderer
     {
         markdown.AppendLine("| Bucket | Covered dates | Capacity | EHE low | EHE expected | EHE high | Ratio low | Ratio expected | Ratio high | Changes |");
         markdown.AppendLine("| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |");
+    }
+
+    private static void AppendResourceUsage(
+        StringBuilder markdown,
+        ChangePortfolioComparisonResourceUsage? resources)
+    {
+        if (resources is null)
+        {
+            return;
+        }
+
+        markdown.AppendLine();
+        markdown.AppendLine("## Bounded execution scope");
+        markdown.AppendLine();
+        markdown.AppendLine("| Candidates | Selected changes | Projected / analyzed snapshots | Logical selection chunks | Analysis chunks | Ledger charge | Peak working set | Output bytes / bound |");
+        markdown.AppendLine("|---:|---:|---:|---:|---:|---:|---:|---:|");
+        markdown.Append("| ").Append(resources.CandidateCount)
+            .Append(" | ").Append(resources.SelectedChangeCount)
+            .Append(" | ").Append(resources.ProjectedSnapshotRequests)
+            .Append(" / ").Append(resources.SnapshotAnalysisRequests)
+            .Append(" | ").Append(resources.SelectionChunkCount)
+            .Append(" | ").Append(resources.AnalysisChunkCount)
+            .Append(" | ").Append(resources.ChargedCandidateLedgerBytes)
+            .Append(" | ").Append(Mebibytes(resources.PeakWorkingSetBytes))
+            .Append(" | ").Append(resources.RenderedOutputBytes)
+            .Append(" / ").Append(resources.MaximumRenderedOutputBytes)
+            .AppendLine(" |");
+        markdown.AppendLine();
+        markdown.Append("Declared pipeline bounds: ")
+            .Append(resources.MaximumConcurrentRepositories).Append(" repositories, ")
+            .Append(resources.MaximumBufferedChangesPerRepository)
+            .Append(" buffered changes per repository, ")
+            .Append(resources.MaximumConcurrentCpuWorkItems).Append(" CPU work items, ")
+            .Append(resources.MaximumConcurrentGitTreeReads).Append(" Git tree reads, and ")
+            .Append(resources.MaximumPendingFileInspections)
+            .AppendLine(" pending file inspections.");
+        markdown.AppendLine();
+        markdown.AppendLine("This Markdown is summary-only and omits per-change detail rows. Every selected change still participates in the globally reconciled calculation. The candidate ledger charge is deterministic retained-state accounting, while peak working set is an observed process sample.");
     }
 
     private static void AppendPointRow(

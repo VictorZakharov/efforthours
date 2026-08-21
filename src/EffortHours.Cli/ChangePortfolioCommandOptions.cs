@@ -17,6 +17,8 @@ internal sealed record ChangePortfolioCommandOptions
 
     public string? AuthorPeriodManifestPath { get; init; }
 
+    public bool Preflight { get; init; }
+
     public string? Bucket { get; init; }
 
     public string? BucketManifestPath { get; init; }
@@ -106,6 +108,7 @@ internal static partial class ChangePortfolioCommandOptionsParser
         string? reportTitle = null;
         string? checkpointPath = null;
         bool noCheckpoint = false;
+        bool preflight = false;
         string? since = null;
         string? until = null;
         string timeZone = "UTC";
@@ -153,6 +156,12 @@ internal static partial class ChangePortfolioCommandOptionsParser
             if (option == "--no-checkpoint")
             {
                 noCheckpoint = true;
+                continue;
+            }
+
+            if (option == "--preflight")
+            {
+                preflight = true;
                 continue;
             }
 
@@ -333,6 +342,7 @@ internal static partial class ChangePortfolioCommandOptionsParser
             FetchMissing = fetchMissing,
             ManifestPath = manifest,
             AuthorPeriodManifestPath = authorPeriodManifest,
+            Preflight = preflight,
             Bucket = bucket,
             BucketManifestPath = bucketManifest,
             CapacityManifestPath = capacityManifest,

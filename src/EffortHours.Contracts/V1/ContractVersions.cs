@@ -190,6 +190,8 @@ public static class SchemaNames
     public const string ChangePortfolioComparisonReport =
         "change-portfolio-comparison-report.schema.json";
     public const string ChangePortfolioManifest = "change-portfolio-manifest.schema.json";
+    public const string ChangePortfolioPreflightReport =
+        "change-portfolio-preflight-report.schema.json";
     public const string ChangePortfolioReport = "change-portfolio-report.schema.json";
     public const string Diagnostic = "diagnostic.schema.json";
     public const string EstimateExplanation = "estimate-explanation.schema.json";

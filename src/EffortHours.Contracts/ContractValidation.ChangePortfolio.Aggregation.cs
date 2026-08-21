@@ -155,24 +155,30 @@ public static partial class ContractValidation
         HashSet<string> coveredItems,
         List<string> errors)
     {
+        Dictionary<string, ChangePortfolioItemEstimate> itemsById =
+            PortfolioItemIndex(report.Items);
         RequireUniqueText(group.ItemIds, $"contributorGroup[{group.Id}].itemIds", errors);
         if (!PortfolioCanonical(group.ItemIds))
         {
             errors.Add($"Contributor group '{group.Id}' item references are not canonical.");
         }
 
+        List<ChangePortfolioItemEstimate> items = [];
         foreach (string itemId in group.ItemIds)
         {
-            ChangePortfolioItemEstimate? item = report.Items.FirstOrDefault(candidate => candidate.Id == itemId);
+            itemsById.TryGetValue(itemId, out ChangePortfolioItemEstimate? item);
             if (!reportItemIds.Contains(itemId) || !coveredItems.Add(itemId) || item is null ||
                 PortfolioSetKey(PortfolioContributorIds(item)) != PortfolioSetKey(group.ContributorIds))
             {
                 errors.Add($"Contributor group '{group.Id}' has an invalid or repeated item reference.");
             }
+
+            if (item is not null)
+            {
+                items.Add(item);
+            }
         }
 
-        ChangePortfolioItemEstimate[] items = [.. report.Items.Where(item =>
-            group.ItemIds.Contains(item.Id, StringComparer.Ordinal))];
         ValidatePortfolioCounts(
             [group.SelectedCommitCount, group.DirectAuthorMatchCount, group.CoauthorMatchCount],
             $"Contributor group '{group.Id}'",
@@ -203,6 +209,11 @@ public static partial class ContractValidation
         HashSet<string> allocationIds = new(StringComparer.Ordinal);
         HashSet<string> repositoryIds = new(StringComparer.Ordinal);
         HashSet<string> allocatedItems = new(StringComparer.Ordinal);
+        HashSet<string> groupItemIds = group.ItemIds.ToHashSet(StringComparer.Ordinal);
+        Dictionary<string, ChangePortfolioItemEstimate> itemsById =
+            PortfolioItemIndex(report.Items);
+        Dictionary<string, ChangePortfolioAdjustment> adjustmentsById =
+            PortfolioAdjustmentIndex(report.Adjustments);
         foreach (ChangePortfolioContributorRepositoryAllocation allocation in group.RepositoryAllocations)
         {
             RequireText(allocation.Id, "contributorRepositoryAllocation.id", errors);
@@ -223,15 +234,17 @@ public static partial class ContractValidation
                 candidate => candidate.RepositoryId == allocation.RepositoryId);
             HashSet<string> repositoryAdjustmentIds = (repositoryGroup?.AdjustmentIds ?? [])
                 .ToHashSet(StringComparer.Ordinal);
-            ChangePortfolioItemEstimate[] items = [.. report.Items.Where(item =>
-                allocation.ItemIds.Contains(item.Id, StringComparer.Ordinal))];
+            HashSet<string> allocationItemIds = allocation.ItemIds.ToHashSet(StringComparer.Ordinal);
+            ChangePortfolioItemEstimate[] items = [.. allocation.ItemIds
+                .Where(itemsById.ContainsKey)
+                .Select(itemId => itemsById[itemId])];
             RequireUniqueText(
                 allocation.ItemIds,
                 $"contributorRepositoryAllocation[{allocation.Id}].itemIds",
                 errors);
             if (allocation.ItemIds.Count == 0 || !PortfolioCanonical(allocation.ItemIds) ||
                 allocation.ItemIds.Any(itemId =>
-                    !group.ItemIds.Contains(itemId, StringComparer.Ordinal) || !allocatedItems.Add(itemId)) ||
+                    !groupItemIds.Contains(itemId) || !allocatedItems.Add(itemId)) ||
                 items.Any(item => item.RepositoryId != allocation.RepositoryId) ||
                 repositoryGroup?.Id != allocation.RepositoryGroupId)
             {
@@ -264,9 +277,8 @@ public static partial class ContractValidation
                 $"contributorRepositoryAllocation[{allocation.Id}].adjustmentIds",
                 errors);
             string[] expectedAdjustmentIds = [.. (repositoryGroup?.AdjustmentIds ?? [])
-                .Where(id => report.Adjustments.FirstOrDefault(adjustment => adjustment.Id == id) is
-                    { } adjustment && adjustment.ItemIds.Any(itemId =>
-                        allocation.ItemIds.Contains(itemId, StringComparer.Ordinal)))
+                .Where(id => adjustmentsById.TryGetValue(id, out ChangePortfolioAdjustment? adjustment) &&
+                    adjustment.ItemIds.Any(allocationItemIds.Contains))
                 .Order(StringComparer.Ordinal)];
             if (!allocation.AdjustmentIds.SequenceEqual(expectedAdjustmentIds, StringComparer.Ordinal))
             {

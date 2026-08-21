@@ -17,6 +17,30 @@ public static partial class ContractValidation
     private static IReadOnlyList<string> PortfolioHeadIds(ChangePortfolioItemEstimate item) =>
         item.Attribution.HeadIds ?? [];
 
+    private static Dictionary<string, ChangePortfolioItemEstimate> PortfolioItemIndex(
+        IEnumerable<ChangePortfolioItemEstimate> items)
+    {
+        Dictionary<string, ChangePortfolioItemEstimate> result = new(StringComparer.Ordinal);
+        foreach (ChangePortfolioItemEstimate item in items)
+        {
+            result.TryAdd(item.Id, item);
+        }
+
+        return result;
+    }
+
+    private static Dictionary<string, ChangePortfolioAdjustment> PortfolioAdjustmentIndex(
+        IEnumerable<ChangePortfolioAdjustment> adjustments)
+    {
+        Dictionary<string, ChangePortfolioAdjustment> result = new(StringComparer.Ordinal);
+        foreach (ChangePortfolioAdjustment adjustment in adjustments)
+        {
+            result.TryAdd(adjustment.Id, adjustment);
+        }
+
+        return result;
+    }
+
     private static int PortfolioMatchCount(
         IEnumerable<ChangePortfolioItemEstimate> items,
         ChangePortfolioContributorMatchKind kind) => items.Sum(item =>

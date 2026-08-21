@@ -7,6 +7,7 @@ internal static class ChangePortfolioHelp
           eh change portfolio <repository> --pr <number-or-url> --pr <number-or-url> [options]
           eh change portfolio --manifest <portfolio.json> [options]
           eh change portfolio --author-period-manifest <manifest.json> [options]
+          eh change portfolio --author-period-manifest <manifest.json> --preflight [options]
           eh change portfolio <repository> --author <alias> [--author <alias> ...]
             --since <instant> --until <instant> [options]
 
@@ -17,6 +18,8 @@ internal static class ChangePortfolioHelp
           --manifest <path>          Versioned multi-repository PR manifest
           --author-period-manifest <path>
                                     Versioned multi-repository/multi-head author manifest
+          --preflight               Measure exact selection scope and resource budgets without
+                                    constructing snapshots or estimating EHE
           --author <identity>        Exact author name/email/display alias; repeat for aliases
           --since <instant>          Inclusive interval start
           --until <instant>          Exclusive interval end
@@ -63,7 +66,10 @@ internal static class ChangePortfolioHelp
         contributor-match and head-reachability groups, retain zero rows, and count shared groups
         once without personal-share splits. Manifest runs emit privacy-safe reuse diagnostics in
         the report and non-semantic phase timings on stderr. Author manifests accept at most 64
-        repositories. Time-bucketed reports treat repository evidence sessions as internal shards
+        repositories. Preflight validates pinned heads, measures the exact identity selection when
+        it fits declared budgets, and emits agent-readable execution guidance without estimating
+        EHE. It never recommends adding separately reconciled interval fragments. Time-bucketed
+        reports treat repository evidence sessions as internal shards
         of one jointly reconciled portfolio; callers never join reports or add rounded totals.
         Calendar-month capacity bucket IDs use yyyy-MM (for example 2026-07); calendar-week
         IDs use week-yyyy-MM-dd with the Monday start date. Custom capacity IDs must exactly

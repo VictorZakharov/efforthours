@@ -99,10 +99,10 @@ public sealed partial class ChangePortfolioComparisonTests
         // Whole-document golden digests freeze every generated heading, table, chart,
         // fallback series, calculation, caveat, and findings section without a bulky fixture.
         Assert.Equal(
-            "sha256:787c1f2aadacbb0a06585d5310594c960608819a581919ca2912e2c97bbff622",
+            "sha256:7d2d1e24a38846a996fede842f127fe9a7b3139fcfad4af820c2c2063f122af8",
             ChangePortfolioComparisonIdentity.ComputeTextDigest(markdown));
         Assert.Equal(
-            "sha256:bdac9b27ddfa56abd32e47e1bd8048bcb5b073c37b31445d4e2c739f362f125b",
+            "sha256:e3f592a25a7877c00326810405b7d53ad26ae3799912985f89c1abf93054bd29",
             ChangePortfolioComparisonIdentity.ComputeTextDigest(findingsMarkdown));
     }
 
