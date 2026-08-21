@@ -133,12 +133,15 @@ public static partial class ChangePortfolioComparisonMarkdownRenderer
     {
         bool ratios = portfolio.Points.All(point => point.CapacityRatio is not null);
         ChangePortfolioComparisonSeries[] chartSeries = [portfolio, .. contributors];
-        decimal[][] values =
-        [
-            .. chartSeries.Select(series => ratios
-                ? series.Points.Select(point => point.CapacityRatio!.Expected).ToArray()
-                : series.Points.Select(point => point.Effort.Expected).ToArray()),
-        ];
+        decimal[][] values = new decimal[chartSeries.Length][];
+        for (int index = 0; index < chartSeries.Length; index++)
+        {
+            ChangePortfolioComparisonSeries series = chartSeries[index];
+            values[index] = ratios
+                ? [.. series.Points.Select(point => point.CapacityRatio!.Expected)]
+                : [.. series.Points.Select(point => point.Effort.Expected)];
+        }
+
         decimal maximum = values.Length == 0
             ? 1m
             : Math.Max(1m, values.SelectMany(value => value).DefaultIfEmpty().Max() * 1.1m);
