@@ -613,7 +613,14 @@ the exact earlier estimator identity they were created from.
   and 100,000 remembered first-parent links. Cached
   .NET/JavaScript file results and common inspections are keyed by immutable
   content, analyzer identity, and required path/context inputs; they do not broaden
-  a row's canonical analysis scope. Repository evidence lineage is scheduled in
+  a row's canonical analysis scope. .NET project, solution, central-package, and
+  derived project-fact context can additionally reuse one exact immutable artifact
+  when every admitted descriptor object ID and the complete repository path-set
+  identity match. Any path addition/removal or descriptor-content change selects a
+  different key, preserving project-reference and solution-resolution semantics;
+  a snapshot provider without both identities uses ordinary cold analysis. These
+  entries share the existing 8,192-entry deterministic artifact bound rather than
+  adding another unbounded cache. Repository evidence lineage is scheduled in
   deterministic first-parent order over already-opened structural inventories.
   Each row analyzes its base before its head, and optional parent-derived snapshot
   or C# evidence is consumed only when already complete; optional reuse never waits

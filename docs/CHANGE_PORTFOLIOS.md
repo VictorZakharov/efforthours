@@ -529,8 +529,12 @@ inventories across at most 16 full-tree root lineages, 10,000 remembered first
 parents, a 16-entry snapshot-analysis LRU, and an 8,192-entry immutable file-
 analysis artifact cache with deterministic key-ranked retention. The artifact
 cache retains only analyzer-versioned, content-addressed common scanned-file
-facts and .NET/JavaScript per-file results; source text, keys, and local paths
-never enter a report. Its entry bound permits an intentional
+facts, .NET/JavaScript per-file results, and exact .NET project-context models and
+facts. Project-context reuse additionally requires matching immutable descriptor
+object IDs and a matching full repository path-set identity; a path-set or
+descriptor change invalidates the entry, and providers without that proof retain
+cold analysis. Source text, keys, and local paths never enter a report. Its entry
+bound permits an intentional
 memory-for-latency tradeoff without making memory unbounded. A separate C#
 first-parent lineage cache retains at most eight states and 16 MiB of decoded
 source text per repository. It can reuse exact evidence when a scope is unchanged
@@ -612,6 +616,18 @@ estimate-semantic digest is unchanged across protocols. The fixture deliberately
 changes one same-size numeric literal per commit; these numbers establish that
 specific lineage optimization, not general repository shapes, field latency, or
 core scaling. Issue #182 therefore remains open.
+
+A separate prepared structural-identifier checkpoint forces full Roslyn analysis
+while repeating 80 immutable .NET project-context files per repository across 260
+unique snapshot analyses. Across three fresh processes per revision at eight
+workers, exact project-context reuse lowers median wall time from 12.261 to 11.278
+seconds (8.0%), managed CPU from 47.188 to 42.438 seconds (10.1%), allocation from
+8,889.73 to 6,629.12 MiB (25.4%), sampled peak working set from 881.44 to 761.32
+MiB (13.6%), and Git blob requests from 22,504 to 1,606 (92.9%). Four bounded
+project-context artifacts receive 516 exact hits. The estimate-semantic digest is
+unchanged and repeated optimized report bytes are identical. This removes one
+measured allocation-heavy redundancy; unique structural C# bodies still require
+full analysis, so issue #182 remains open for general latency and scaling.
 
 Snapshot analysis is keyed by repository, canonical immutable-inventory digest,
 and exact analysis-scope path-set digest. Reused evidence is rebound to the

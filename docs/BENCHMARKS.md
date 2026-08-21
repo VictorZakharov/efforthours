@@ -1701,48 +1701,56 @@ and output-byte equality only. It does not gate elapsed time, CPU utilization,
 allocation, or sampled working set. The existing alpha.12 field observation and
 issue #182 remain the separate evidence and work boundary for throughput/scaling.
 
-## Draft structural-fallback profiler baseline
+## Structural project-context reuse checkpoint
 
-Measured on August 20, 2026 on the same .NET 10.0.7, Windows, Ryzen 9 5900X,
-server-GC host as v1.11.0. This is a baseline for unfinished #182 work, not a
-completed optimization checkpoint or release claim.
+Measured on August 21, 2026 on .NET 10.0.7, Windows, Ryzen 9 5900X, with server
+GC and eight file-analysis workers. The sampled-thread-time baseline first
+identified repeated .NET project XML parsing and project-fact construction in
+the general structural path; full-inventory and Git-tree reading were immaterial.
 
-The benchmark harness now supports a prepared `structural-identifier` edit shape
-in addition to the existing `numeric-literal` shape. The fixture is fully
-constructed before measurement and changes one fixed-width public identifier per
-revision, forcing the general C# analysis path rather than v1.11.0's
-numeric-literal evidence shortcut. The measured fixture contains two
+The prepared `structural-identifier` fixture is constructed once before either
+revision is measured. It changes one fixed-width public identifier per revision,
+so it cannot use the numeric-literal lineage shortcut. The fixture contains two
 repositories, eight heads, three requested contributor rows, 256 selected
-changes, 10,000-line C# bodies, 3,084 aggregate head files, and 105,495,486
-unique Git blob bytes.
+changes, 260 unique snapshot analyses, 80 active project-context files per
+repository, 10,000-line C# bodies, 3,084 aggregate head files, and 105,495,486
+unique Git blob bytes. Three fresh processes measured the pre-optimization
+revision and three measured the final revision against that exact immutable
+fixture; the table reports medians.
 
-Two fresh eight-worker processes, one uninstrumented and one under
-sampled-thread-time profiling, produced byte-identical reports and estimate
-semantics:
+| Measure | Before | After | Change |
+| --- | ---: | ---: | ---: |
+| Combined estimate wall time | 12.261 s | 11.278 s | 8.0% lower |
+| Managed CPU time | 47.188 s | 42.438 s | 10.1% lower |
+| Cumulative managed allocation | 8,889.73 MiB | 6,629.12 MiB | 25.4% lower |
+| Sampled peak working set | 881.44 MiB | 761.32 MiB | 13.6% lower |
+| Git blob requests | 22,504 | 1,606 | 92.9% lower |
+| Git object-metadata requests | 21,230 | 21,230 | unchanged |
+| Analysis-artifact requests / hits | 21,580 / 20,902 | 22,100 / 21,418 | +520 / +516 |
+| Unique analysis-artifact keys | 678 | 682 | +4 exact context entries |
 
-| Measure | Uninstrumented | Profiled |
-| --- | ---: | ---: |
-| Combined estimate wall time | 11.695 s | 11.783 s |
-| Managed CPU time | 51.141 s | 50.125 s |
-| Average managed processors | 4.373 | 4.254 |
-| Cumulative managed allocation | 8,917.16 MiB | 8,909.07 MiB |
-| Sampled peak working set | 890.90 MiB | 870.33 MiB |
-| Gen 0 / 1 / 2 collections | 117 / 66 / 52 | 117 / 64 / 52 |
+The four new entries are one immutable project model and one derived project-
+evidence bundle per repository. Their 520 requests yield four cold constructions
+and 516 exact hits. Avoiding the repeated project reads removes 20,898 small Git
+blob requests and their XML/model/fact allocations. The key binds the .NET
+analyzer version, every admitted project/solution/central-package blob identity,
+and the complete immutable repository path-set identity. Adding or removing any
+path therefore invalidates project-reference and solution resolution. Providers
+that cannot prove both identities use the unchanged cold path. The entries remain
+inside the existing deterministic 8,192-entry per-repository artifact bound.
 
-Both runs produced report SHA-256
-`fae465b30ab86da37600646b924052b1823043ee0f174973f1d546f946d90d96`
-and estimate-semantic SHA-256
-`914ac8fba9486bc2208521d5d9c2e3eaac514bab2457114f9626996fa0ee1eb2`.
-Worktrees and Git object stores remained unchanged; target execution, dependency
-installation, and network access were not performed.
+Every before/after run produced expected EHE `4.00` and estimate-semantic SHA-256
+`fa460b85f7aa48f1c73941a5a4acf0ee9eee3d3a3e688e34b9ec339ffaa6c64f`.
+All three optimized runs also produced identical report SHA-256
+`483c40897f8384bad64c8870f6b1671e651d565eaf5c81b0671ae52352fcb84d`;
+the full report differs from the baseline because its operational cache counters
+correctly changed. Worktrees and Git object stores remained unchanged; target
+execution, dependency installation, and network access were not performed.
 
-The profiles identify repeated general-path reconstruction rather than tree
-discovery as the next target. Allocation samples are concentrated under
-`DotNetRepositoryAnalyzer`, project-fact construction, exact-scope path checks,
-and C# file analysis; sampled CPU stacks include Roslyn parse and syntax-inventory
-traversal. Full-inventory reading is about 0.43 seconds and Git tree reading about
-0.23 seconds, so adding more tree readers is not the measured answer. No
-production optimization is implemented yet. The intended follow-up is to remove
-provably redundant immutable repository/project evidence reconstruction while
-retaining exact cold-analysis fallback, deterministic report bytes, and existing
-memory bounds.
+The wall improvement is real but modest because each unique 10,000-line
+structural C# body still requires full Roslyn analysis. This checkpoint removes
+one measured allocation-heavy redundancy; it does not establish general field
+latency, near-linear core scaling, or completion of issue #182. Ordinary CI gates
+the exact cache invalidation, cold fallback, semantic equivalence, deterministic
+operation counts, and declared bounds, never these wall-time or sampled-memory
+measurements.
