@@ -153,6 +153,31 @@ public sealed class KotlinAnalyzerTests
     }
 
     [Fact]
+    public async Task SourceOutsideDeclaredSubprojectUsesRepositoryFallbackJvmScope()
+    {
+        InMemoryRepository repository = new();
+        repository.WriteText("module/build.gradle.kts", GradleBuild);
+        repository.WriteText(
+            "unowned/Loose.kt",
+            "package unowned\ndata class Loose(val ready: Boolean = true)");
+
+        RepositoryEvidence evidence = await ScanAsync(repository);
+        EvidenceFact[] projects = [.. evidence.Facts.Where(fact =>
+            fact.Id.StartsWith("kotlin:project:", StringComparison.Ordinal))];
+
+        Assert.Contains(projects, project =>
+            project.Scope == "." &&
+            project.Tags.Contains("kotlin-project:implicit-fallback", StringComparer.Ordinal));
+        Assert.Contains(projects, project =>
+            project.Scope == "module" &&
+            project.Tags.Contains("kotlin-project:declared", StringComparer.Ordinal));
+        Assert.Contains(evidence.Facts, fact =>
+            fact.Kind == EvidenceKinds.SourceStructure &&
+            fact.Provenance.Analyzer == KotlinEvidenceAnalyzer);
+        Assert.Empty(ContractValidation.Validate(evidence));
+    }
+
+    [Fact]
     public async Task MixedJavaAndKotlinReuseOneJvmProjectAndBuildScope()
     {
         InMemoryRepository repository = new();

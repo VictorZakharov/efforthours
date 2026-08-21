@@ -151,6 +151,33 @@ public sealed partial class JavaAnalyzerTests
     }
 
     [Fact]
+    public async Task SourceOutsideDeclaredSubprojectUsesRepositoryFallbackOwnership()
+    {
+        InMemoryRepository repository = new();
+        repository.WriteText("module/pom.xml", MavenProject);
+        repository.WriteText(
+            "unowned/Loose.java",
+            "package unowned; public final class Loose { public boolean ready() { return true; } }");
+
+        RepositoryEvidence evidence = await ScanAsync(repository);
+        EvidenceFact[] projects = [.. evidence.Facts.Where(fact =>
+            fact.Kind == EvidenceKinds.EcosystemPackage &&
+            fact.Tags.Contains("ecosystem:java", StringComparer.Ordinal) &&
+            fact.Provenance.Analyzer == "efforthours.java-analyzer")];
+
+        Assert.Contains(projects, project =>
+            project.Scope == "." &&
+            project.Tags.Contains("java-project:implicit-fallback", StringComparer.Ordinal));
+        Assert.Contains(projects, project =>
+            project.Scope == "module" &&
+            project.Tags.Contains("java-project:declared", StringComparer.Ordinal));
+        Assert.Contains(evidence.Facts, fact =>
+            fact.Kind == EvidenceKinds.SourceStructure &&
+            fact.Provenance.Analyzer == "efforthours.java-analyzer");
+        Assert.Empty(ContractValidation.Validate(evidence));
+    }
+
+    [Fact]
     public async Task FullyQualifiedCanonicalCallsProduceSemanticEvidence()
     {
         InMemoryRepository repository = new();

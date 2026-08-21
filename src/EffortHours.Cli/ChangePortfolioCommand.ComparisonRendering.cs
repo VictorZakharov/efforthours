@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using EffortHours.Contracts.V1;
 using EffortHours.Reporting;
 
@@ -8,7 +9,8 @@ internal sealed partial class ChangePortfolioCommand
     private static (ChangePortfolioComparisonReport Report, string Output)
         RenderComparisonWithOutputUsage(
             ChangePortfolioComparisonReport source,
-            ChangePortfolioCommandOptions options)
+            ChangePortfolioCommandOptions options,
+            long workflowStarted)
     {
         ChangePortfolioComparisonReport report = source;
         long priorBytes = -1;
@@ -28,9 +30,27 @@ internal sealed partial class ChangePortfolioCommand
                 },
             };
             string output = options.Format == "markdown"
-                ? ChangePortfolioComparisonMarkdownRenderer.Render(report)
+                ? options.Today
+                    ? ChangePortfolioTodayMarkdownRenderer.Render(report)
+                    : ChangePortfolioComparisonMarkdownRenderer.Render(report)
                 : new ChangePortfolioComparisonJsonRenderer(options.Compact).Render(report);
             long measured = RenderedOutputByteCount(output);
+            if (options.Today && report.Execution.EndToEndElapsedMilliseconds is null)
+            {
+                report = report with
+                {
+                    Execution = report.Execution with
+                    {
+                        EndToEndElapsedMilliseconds = decimal.Round(
+                            (decimal)Stopwatch.GetElapsedTime(workflowStarted).TotalMilliseconds,
+                            3,
+                            MidpointRounding.AwayFromZero),
+                    },
+                };
+                priorBytes = measured;
+                continue;
+            }
+
             if (measured == priorBytes)
             {
                 return (report, output);

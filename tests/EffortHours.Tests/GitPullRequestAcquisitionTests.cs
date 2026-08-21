@@ -38,6 +38,36 @@ public sealed class GitPullRequestAcquisitionTests
     }
 
     [Fact]
+    public async Task AuthorPeriodFetchUsesDistinctNarrowProviderRefsWithoutWritingFetchHeadOrLocalRefs()
+    {
+        RecordingRunner runner = new(new ExternalCommandResult(0, string.Empty, string.Empty));
+        GitClient client = new(
+            runner,
+            (_, _, _) => throw new InvalidOperationException("Snapshot factory was not expected."));
+
+        await client.FetchAuthorPeriodHeadObjectsAsync(
+            "virtual-repository",
+            "https://github.com/acme/demo.git",
+            ["refs/pull/42/head", "refs/heads/main", "refs/pull/42/head"]);
+
+        Assert.Equal(
+            [
+                "-c",
+                "credential.helper=",
+                "-c",
+                "credential.helper=!gh auth git-credential",
+                "fetch",
+                "--no-tags",
+                "--no-write-fetch-head",
+                "--no-recurse-submodules",
+                "https://github.com/acme/demo.git",
+                "refs/heads/main",
+                "refs/pull/42/head",
+            ],
+            runner.Arguments);
+    }
+
+    [Fact]
     public async Task FetchFailureExplainsNoninteractiveCredentialAndRefBoundary()
     {
         GitClient client = new(

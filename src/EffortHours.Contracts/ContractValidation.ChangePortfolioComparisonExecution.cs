@@ -11,6 +11,11 @@ public static partial class ContractValidation
         RequireText(report.Execution.RuntimeFramework, "execution.runtimeFramework", errors);
         RequireText(report.Execution.OperatingSystemFamily, "execution.operatingSystemFamily", errors);
         RequireText(report.Execution.ProcessArchitecture, "execution.processArchitecture", errors);
+        if (report.Execution.EndToEndElapsedMilliseconds < 0m)
+        {
+            errors.Add("execution.endToEndElapsedMilliseconds must be nonnegative when present.");
+        }
+
         if (report.Execution.LogicalProcessorCount <= 0)
         {
             errors.Add("execution.logicalProcessorCount must be positive.");

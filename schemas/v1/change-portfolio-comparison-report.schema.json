@@ -27,6 +27,8 @@
     "view": { "enum": ["trend", "findings"] },
     "title": { "type": "string", "minLength": 1, "maxLength": 256 },
     "generatedAt": { "type": "string", "format": "date-time" },
+    "asOf": { "type": "string", "format": "date-time" },
+    "discovery": { "$ref": "#/$defs/discovery" },
     "cliVersion": { "type": "string", "minLength": 1 },
     "estimatorVersion": { "type": "string", "minLength": 1 },
     "sourceChangeEstimatorVersion": { "type": "string", "minLength": 1 },
@@ -52,6 +54,10 @@
     "verification": { "$ref": "#/$defs/verification" }
   },
   "additionalProperties": false,
+  "dependentRequired": {
+    "asOf": ["discovery"],
+    "discovery": ["asOf"]
+  },
   "allOf": [
     {
       "if": { "properties": { "status": { "const": "complete" } } },
@@ -91,6 +97,48 @@
       "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
     },
     "digest": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+    "discovery": {
+      "type": "object",
+      "required": [
+        "protocol",
+        "provider",
+        "scope",
+        "scopeDigest",
+        "identitySources",
+        "complete",
+        "providerRepositoryCount",
+        "workspaceRepositoryCount",
+        "consideredRepositoryCount",
+        "activeRepositoryCount",
+        "defaultHeadCount",
+        "openPullRequestHeadCount",
+        "providerQueryCount",
+        "providerPageCount",
+        "localObjectCount",
+        "acquiredObjectCount",
+        "elapsedMilliseconds"
+      ],
+      "properties": {
+        "protocol": { "const": "github-workspace-author-period-discovery/1.0.0" },
+        "provider": { "const": "github" },
+        "scope": { "const": "owner-workspace-intersection" },
+        "scopeDigest": { "$ref": "#/$defs/digest" },
+        "identitySources": { "type": "string", "minLength": 1 },
+        "complete": { "type": "boolean" },
+        "providerRepositoryCount": { "type": "integer", "minimum": 0 },
+        "workspaceRepositoryCount": { "type": "integer", "minimum": 0 },
+        "consideredRepositoryCount": { "type": "integer", "minimum": 0 },
+        "activeRepositoryCount": { "type": "integer", "minimum": 0 },
+        "defaultHeadCount": { "type": "integer", "minimum": 0 },
+        "openPullRequestHeadCount": { "type": "integer", "minimum": 0 },
+        "providerQueryCount": { "type": "integer", "minimum": 0 },
+        "providerPageCount": { "type": "integer", "minimum": 0 },
+        "localObjectCount": { "type": "integer", "minimum": 0 },
+        "acquiredObjectCount": { "type": "integer", "minimum": 0 },
+        "elapsedMilliseconds": { "type": "number", "minimum": 0 }
+      },
+      "additionalProperties": false
+    },
     "bucketPolicy": {
       "type": "object",
       "required": ["kind", "policy", "inputDigest", "rollingWindowBucketCount"],
@@ -222,6 +270,7 @@
       "type": "object",
       "required": ["runtimeFramework", "operatingSystemFamily", "processArchitecture", "logicalProcessorCount", "shardPolicy", "checkpoint", "repositoryShardCount", "repositories", "phaseTimings", "reuse", "failures"],
       "properties": {
+        "endToEndElapsedMilliseconds": { "type": "number", "minimum": 0 },
         "runtimeFramework": { "type": "string", "minLength": 1 },
         "operatingSystemFamily": { "enum": ["windows", "linux", "macos", "other"] },
         "processArchitecture": { "type": "string", "minLength": 1 },

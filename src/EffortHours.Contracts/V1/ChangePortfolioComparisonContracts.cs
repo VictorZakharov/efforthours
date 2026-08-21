@@ -20,6 +20,11 @@ public static class ChangePortfolioComparisonPolicies
 
     public const string CustomClosedBucketsV1 = "custom-closed-buckets/1.0.0";
 
+    public const string TodayToDateV1 = "today-to-date/1.0.0";
+
+    public const string GitHubWorkspaceDiscoveryV1 =
+        "github-workspace-author-period-discovery/1.0.0";
+
     public const string RepositoryEvidenceShardsV1 = "repository-evidence-shards/1.0.0";
 
     public const string RepositoryEvidenceCheckpointV2 =
@@ -82,6 +87,10 @@ public sealed record ChangePortfolioComparisonReport
 
     public required DateTimeOffset GeneratedAt { get; init; }
 
+    public DateTimeOffset? AsOf { get; init; }
+
+    public ChangePortfolioHostDiscovery? Discovery { get; init; }
+
     public required string CliVersion { get; init; }
 
     public required string EstimatorVersion { get; init; }
@@ -105,6 +114,44 @@ public sealed record ChangePortfolioComparisonReport
     public IReadOnlyList<Diagnostic> Diagnostics { get; init; } = [];
 
     public required ChangePortfolioComparisonVerification Verification { get; init; }
+}
+
+public sealed record ChangePortfolioHostDiscovery
+{
+    public string Protocol { get; init; } =
+        ChangePortfolioComparisonPolicies.GitHubWorkspaceDiscoveryV1;
+
+    public string Provider { get; init; } = "github";
+
+    public string Scope { get; init; } = "owner-workspace-intersection";
+
+    public required string ScopeDigest { get; init; }
+
+    public required string IdentitySources { get; init; }
+
+    public bool Complete { get; init; }
+
+    public int ProviderRepositoryCount { get; init; }
+
+    public int WorkspaceRepositoryCount { get; init; }
+
+    public int ConsideredRepositoryCount { get; init; }
+
+    public int ActiveRepositoryCount { get; init; }
+
+    public int DefaultHeadCount { get; init; }
+
+    public int OpenPullRequestHeadCount { get; init; }
+
+    public int ProviderQueryCount { get; init; }
+
+    public int ProviderPageCount { get; init; }
+
+    public int LocalObjectCount { get; init; }
+
+    public int AcquiredObjectCount { get; init; }
+
+    public decimal ElapsedMilliseconds { get; init; }
 }
 
 public sealed record ChangePortfolioComparisonBucketPolicy
@@ -216,6 +263,8 @@ public sealed record ChangePortfolioRollingPoint
 
 public sealed record ChangePortfolioComparisonExecution
 {
+    public decimal? EndToEndElapsedMilliseconds { get; init; }
+
     public required string RuntimeFramework { get; init; }
 
     public required string OperatingSystemFamily { get; init; }

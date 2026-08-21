@@ -12,6 +12,10 @@ public sealed record ChangePortfolioComparisonBuildOptions
 
     public required DateTimeOffset GeneratedAt { get; init; }
 
+    public DateTimeOffset? AsOf { get; init; }
+
+    public ChangePortfolioHostDiscovery? Discovery { get; init; }
+
     public required string CliVersion { get; init; }
 
     public required EstimationProfile Profile { get; init; }
@@ -99,6 +103,8 @@ public static partial class ChangePortfolioComparisonBuilder
             View = options.View,
             Title = options.Title,
             GeneratedAt = options.GeneratedAt.ToUniversalTime(),
+            AsOf = options.AsOf?.ToUniversalTime(),
+            Discovery = options.Discovery,
             CliVersion = options.CliVersion,
             EstimatorVersion = source.EstimatorVersion,
             SourceChangeEstimatorVersion = source.SourceChangeEstimatorVersion,

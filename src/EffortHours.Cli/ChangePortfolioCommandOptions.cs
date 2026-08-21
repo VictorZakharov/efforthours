@@ -3,87 +3,6 @@ using EffortHours.Contracts.V1;
 
 namespace EffortHours.Cli;
 
-internal sealed record ChangePortfolioCommandOptions
-{
-    public string? RepositoryPath { get; init; }
-
-    public IReadOnlyList<string> PullRequests { get; init; } = [];
-
-    public string? GitHubRepository { get; init; }
-
-    public bool FetchMissing { get; init; }
-
-    public string? ManifestPath { get; init; }
-
-    public string? AuthorPeriodManifestPath { get; init; }
-
-    public bool Preflight { get; init; }
-
-    public string? Bucket { get; init; }
-
-    public string? BucketManifestPath { get; init; }
-
-    public string? CapacityManifestPath { get; init; }
-
-    public ChangePortfolioComparisonView ComparisonView { get; init; } =
-        ChangePortfolioComparisonView.Trend;
-
-    public ChangePortfolioContributorNormalization ContributorNormalization { get; init; } =
-        ChangePortfolioContributorNormalization.Joint;
-
-    public DateTimeOffset? GeneratedAt { get; init; }
-
-    public string? ReportTitle { get; init; }
-
-    public string? CheckpointPath { get; init; }
-
-    public bool NoCheckpoint { get; init; }
-
-    public IReadOnlyList<string> AuthorAliases { get; init; } = [];
-
-    public DateTimeOffset? SinceInclusive { get; init; }
-
-    public DateTimeOffset? UntilExclusive { get; init; }
-
-    public string TimeZone { get; init; } = "UTC";
-
-    public ChangePortfolioDateField DateField { get; init; } = ChangePortfolioDateField.Author;
-
-    public ChangePortfolioMergePolicy MergePolicy { get; init; } = ChangePortfolioMergePolicy.Exclude;
-
-    public ChangePortfolioCoauthorPolicy CoauthorPolicy { get; init; } =
-        ChangePortfolioCoauthorPolicy.Include;
-
-    public string HeadRevision { get; init; } = "HEAD";
-
-    public EstimationProfile Profile { get; init; } = EstimationProfile.Implementation;
-
-    public string Format { get; init; } = "json";
-
-    public bool Compact { get; init; }
-
-    public bool NoRate { get; init; }
-
-    public decimal? HourlyRate { get; init; }
-
-    public string Currency { get; init; } = "USD";
-
-    public string? OutputPath { get; init; }
-
-    public bool IsManifest => ManifestPath is not null;
-
-    public bool IsAuthorPeriodManifest => AuthorPeriodManifestPath is not null;
-
-    public bool IsAuthorPeriod => AuthorAliases.Count > 0;
-
-    public bool IsComparison => Bucket is not null || BucketManifestPath is not null;
-}
-
-internal readonly record struct ChangePortfolioCommandParseResult(
-    ChangePortfolioCommandOptions? Options,
-    string? Error,
-    bool ShowHelp = false);
-
 internal static partial class ChangePortfolioCommandOptionsParser
 {
     public static ChangePortfolioCommandParseResult Parse(string[] arguments)
@@ -98,6 +17,11 @@ internal static partial class ChangePortfolioCommandOptionsParser
         string? githubRepository = null;
         string? manifest = null;
         string? authorPeriodManifest = null;
+        string? owner = null;
+        string? workspace = null;
+        bool today = false;
+        bool includeOpenPullRequests = false;
+        decimal? capacityHours = null;
         string? bucket = null;
         string? bucketManifest = null;
         string? capacityManifest = null;
@@ -125,6 +49,7 @@ internal static partial class ChangePortfolioCommandOptionsParser
         string currency = "USD";
         bool currencyProvided = false;
         bool authorPolicyProvided = false;
+        bool timeZoneProvided = false;
         bool normalizationProvided = false;
         string? output = null;
         for (int index = firstOption; index < arguments.Length; index++)
@@ -165,6 +90,18 @@ internal static partial class ChangePortfolioCommandOptionsParser
                 continue;
             }
 
+            if (option == "--today")
+            {
+                today = true;
+                continue;
+            }
+
+            if (option == "--include-open-prs")
+            {
+                includeOpenPullRequests = true;
+                continue;
+            }
+
             if (index + 1 >= arguments.Length)
             {
                 return Error($"Option '{option}' requires a value.");
@@ -184,6 +121,26 @@ internal static partial class ChangePortfolioCommandOptionsParser
                     break;
                 case "--author-period-manifest":
                     authorPeriodManifest = value;
+                    break;
+                case "--owner":
+                    owner = value;
+                    break;
+                case "--workspace":
+                    workspace = value;
+                    break;
+                case "--capacity-hours":
+                    if (!decimal.TryParse(
+                            value,
+                            NumberStyles.Number,
+                            CultureInfo.InvariantCulture,
+                            out decimal parsedCapacity) ||
+                        parsedCapacity <= 0m)
+                    {
+                        return Error(
+                            "Capacity hours must be a positive decimal using '.' as the decimal separator.");
+                    }
+
+                    capacityHours = parsedCapacity;
                     break;
                 case "--bucket":
                     bucket = value.ToLowerInvariant();
@@ -252,6 +209,7 @@ internal static partial class ChangePortfolioCommandOptionsParser
                 case "--timezone":
                     timeZone = value;
                     authorPolicyProvided = true;
+                    timeZoneProvided = true;
                     break;
                 case "--date-field":
                     if (!EnumValue(value, "author", "committer", out string dateValue))
@@ -342,6 +300,11 @@ internal static partial class ChangePortfolioCommandOptionsParser
             FetchMissing = fetchMissing,
             ManifestPath = manifest,
             AuthorPeriodManifestPath = authorPeriodManifest,
+            Owner = owner,
+            WorkspacePath = workspace,
+            Today = today,
+            IncludeOpenPullRequests = includeOpenPullRequests,
+            CapacityHours = capacityHours,
             Preflight = preflight,
             Bucket = bucket,
             BucketManifestPath = bucketManifest,
@@ -371,6 +334,7 @@ internal static partial class ChangePortfolioCommandOptionsParser
             since,
             until,
             authorPolicyProvided,
+            timeZoneProvided,
             normalizationProvided,
             currencyProvided);
     }

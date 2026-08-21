@@ -28,9 +28,9 @@ agent instructions.
 - [Change portfolios](CHANGE_PORTFOLIOS.md) governs repeated PRs, cross-repository
   manifests, author-period selection and scope preflight, exact allocation,
   attribution uncertainty, and no-ranking safeguards.
-- [Host-assisted author-period scaffolding](AUTHOR_PERIOD_SCAFFOLDING.md) records
-  the accepted boundary for an optional provider adapter, reviewable discovery
-  provenance, failure handling, privacy, and implementation tests.
+- [GitHub-assisted today-to-date portfolios](AUTHOR_PERIOD_SCAFFOLDING.md) defines
+  the explicit one-command provider boundary, in-memory v1 handoff, identity and
+  workspace scope, narrow acquisition, failure handling, privacy, and tests.
 - [Change model admission](CHANGE_MODEL_ADMISSION.md) freezes the progressive size,
   metric, performance, and evidence gates for Change estimators.
 

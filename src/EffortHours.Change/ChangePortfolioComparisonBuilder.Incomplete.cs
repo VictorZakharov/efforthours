@@ -54,6 +54,8 @@ public static partial class ChangePortfolioComparisonBuilder
             View = options.View,
             Title = options.Title,
             GeneratedAt = options.GeneratedAt.ToUniversalTime(),
+            AsOf = options.AsOf?.ToUniversalTime(),
+            Discovery = options.Discovery,
             CliVersion = options.CliVersion,
             EstimatorVersion = ChangePortfolioReconciler.Version,
             SourceChangeEstimatorVersion = ChangeEstimator.Version,

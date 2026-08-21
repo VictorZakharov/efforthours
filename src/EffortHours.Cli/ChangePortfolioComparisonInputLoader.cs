@@ -46,6 +46,82 @@ internal static class ChangePortfolioComparisonInputLoader
         return buckets with { CapacityManifest = capacity };
     }
 
+    public static ChangePortfolioComparisonInputs CreateTodayToDate(
+        ChangePortfolioAuthorPeriodManifestSelection selection,
+        DateTimeOffset asOf,
+        decimal capacityHours)
+    {
+        ArgumentNullException.ThrowIfNull(selection);
+        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(capacityHours);
+        TimeZoneInfo zone;
+        try
+        {
+            zone = TimeZoneInfo.FindSystemTimeZoneById(selection.TimeZone);
+        }
+        catch (Exception exception) when (
+            exception is TimeZoneNotFoundException or InvalidTimeZoneException)
+        {
+            throw new ArgumentException(
+                $"Timezone '{selection.TimeZone}' was not found on this host.",
+                exception);
+        }
+
+        DateTimeOffset utcAsOf = asOf.ToUniversalTime();
+        if (utcAsOf < selection.SinceInclusive || utcAsOf >= selection.UntilExclusive)
+        {
+            throw new ArgumentOutOfRangeException(
+                nameof(asOf),
+                "The today-to-date as-of instant must be inside the selected local day.");
+        }
+
+        string date = TimeZoneInfo.ConvertTime(utcAsOf, zone)
+            .ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
+        string bucketId = "today-" + date;
+        ChangePortfolioComparisonBucket bucket = new()
+        {
+            Id = bucketId,
+            Label = "Today " + date,
+            SinceInclusive = selection.SinceInclusive,
+            UntilExclusive = selection.UntilExclusive,
+            PartialStart = false,
+            PartialEnd = true,
+        };
+        ChangePortfolioBucketManifest buckets = new()
+        {
+            Buckets =
+            [
+                new ChangePortfolioBucketDefinition
+                {
+                    Id = bucket.Id,
+                    Label = bucket.Label,
+                    SinceInclusive = bucket.SinceInclusive,
+                    UntilExclusive = bucket.UntilExclusive,
+                },
+            ],
+        };
+        ChangePortfolioCapacityManifest capacity = new()
+        {
+            CalendarPolicy =
+                "Caller-supplied full-day reference capacity for the partial today-to-date bucket.",
+            Entries =
+            [
+                new ChangePortfolioCapacityEntry
+                {
+                    BucketId = bucketId,
+                    ContributorId = selection.ContributorIds.Single(),
+                    Hours = capacityHours,
+                },
+            ],
+        };
+        ValidateCapacityMatrix(capacity, [bucket], selection.ContributorIds);
+        return new ChangePortfolioComparisonInputs(
+            ChangePortfolioBucketPolicyKind.Custom,
+            ChangePortfolioComparisonPolicies.TodayToDateV1,
+            buckets,
+            [bucket],
+            capacity);
+    }
+
     private static async Task<ChangePortfolioComparisonInputs> LoadCustomBucketsAsync(
         string path,
         ChangePortfolioAuthorPeriodManifestSelection selection,

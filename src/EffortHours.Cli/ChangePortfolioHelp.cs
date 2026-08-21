@@ -8,16 +8,23 @@ internal static class ChangePortfolioHelp
           eh change portfolio --manifest <portfolio.json> [options]
           eh change portfolio --author-period-manifest <manifest.json> [options]
           eh change portfolio --author-period-manifest <manifest.json> --preflight [options]
+          eh change portfolio --owner <owner> --workspace <root> --author "@me" --today
+            --timezone <zone> --capacity-hours <hours> [options]
           eh change portfolio <repository> --author <alias> [--author <alias> ...]
             --since <instant> --until <instant> [options]
 
         Selectors:
           --pr <number-or-url>       Repeat for each PR in one local repository
           --repo <owner/name>        Explicit GitHub repository for repeated --pr selectors
-          --fetch-missing            Explicitly acquire missing selected PR objects without updating refs
+          --fetch-missing            Acquire missing selected PR/today head objects without updating refs
           --manifest <path>          Versioned multi-repository PR manifest
           --author-period-manifest <path>
                                     Versioned multi-repository/multi-head author manifest
+          --owner <owner>           GitHub owner for explicit today-to-date discovery
+          --workspace <root>        Local checkout root mapped by normalized GitHub remotes
+          --today                   Use the current local calendar day and one partial daily bucket
+          --include-open-prs        Discover matching commits on current open PR heads
+          --capacity-hours <hours>  Positive full-day reference denominator for --today
           --preflight               Measure exact selection scope and resource budgets without
                                     constructing snapshots or estimating EHE
           --author <identity>        Exact author name/email/display alias; repeat for aliases
@@ -76,13 +83,19 @@ internal static class ChangePortfolioHelp
         match the caller-supplied bucket manifest. Joint contributor series are additive but can
         change with manifest membership. Isolated contributor series are stable canonical sums,
         can overlap on shared commits, and never replace or add up to the joint portfolio total.
-        Comparison output requires --output and can emit either the versioned JSON contract or a
+        Manifest comparison output requires --output and can emit either the versioned JSON contract or a
         self-contained trend/findings Markdown report from the same calculation. Successful
         repository evidence is checkpointed atomically by immutable input/model digest. The
         default checkpoint directory is derived from the exact output path, so use an explicit
         --checkpoint path to preserve reuse when output filenames change. A failed
         shard leaves resumable evidence, writes an explicitly incomplete report, exits nonzero,
         and never substitutes zero or publishes aggregate EHE/trends.
+        Today-to-date mode explicitly opts into GitHub discovery through authenticated gh, maps
+        owner repositories to local checkouts by remote identity, inspects only relevant open PR
+        heads, and optionally acquires missing immutable heads without updating refs, FETCH_HEAD,
+        the index, or the worktree. It builds the same v1 manifest in memory, accepts a complete
+        zero-work day, writes JSON or concise Markdown to stdout unless --output is supplied, and
+        records privacy-safe discovery scope rather than raw aliases or paths.
         Results are repository-attributed Change EHE, not
         actual labor, productivity, employee rankings, performance grades, or compensation advice.
         """;

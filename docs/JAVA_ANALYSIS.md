@@ -34,8 +34,11 @@ analyzer inventories both rather than guessing which build is authoritative.
 
 Each source file belongs to the deepest containing discovered project. A
 repository with maintained Java source and no build descriptor receives one
-explicit repository-level fallback project. Local project-reference edges require
-a literal reactor/include/project/dependency declaration or a package import that
+explicit repository-level fallback project. If a mixed repository has declared
+subprojects plus maintained Java source outside every declared project, the same
+repository-level fallback owns only that otherwise-unowned source while deeper
+declared projects retain precedence. Local project-reference edges require a
+literal reactor/include/project/dependency declaration or a package import that
 matches another discovered project. Ambiguous project names do not create a
 name-only edge. Paths resolving outside the repository are rejected and never
 followed.
