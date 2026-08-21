@@ -28,7 +28,7 @@
     "repositories": {
       "type": "array",
       "minItems": 1,
-      "maxItems": 64,
+      "maxItems": 256,
       "items": { "$ref": "#/$defs/repository" }
     },
     "resources": { "$ref": "#/$defs/resources" },
@@ -55,8 +55,8 @@
         "candidateCountIsLowerBound"
       ],
       "properties": {
-        "repositoryCount": { "type": "integer", "minimum": 1, "maximum": 64 },
-        "headCount": { "type": "integer", "minimum": 1, "maximum": 128 },
+        "repositoryCount": { "type": "integer", "minimum": 1, "maximum": 256 },
+        "headCount": { "type": "integer", "minimum": 1, "maximum": 512 },
         "contributorCount": { "type": "integer", "minimum": 1, "maximum": 64 },
         "candidateCount": { "type": "integer", "minimum": 0 },
         "candidateCountIsLowerBound": { "type": "boolean" },

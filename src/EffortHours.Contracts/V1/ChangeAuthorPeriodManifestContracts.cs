@@ -2,11 +2,11 @@ namespace EffortHours.Contracts.V1;
 
 public static class ChangeAuthorPeriodManifestLimits
 {
-    public const int MaximumRepositories = 64;
+    public const int MaximumRepositories = 256;
 
     public const int MaximumHeadsPerRepository = 32;
 
-    public const int MaximumHeads = 128;
+    public const int MaximumHeads = 512;
 
     public const int MaximumContributors = 64;
 

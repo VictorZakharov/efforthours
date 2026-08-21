@@ -1,10 +1,49 @@
 using System.Diagnostics;
 using System.Globalization;
+using EffortHours.Change;
 
 namespace EffortHours.EndToEndTests;
 
 public sealed partial class ChangeCliTests
 {
+    [Fact]
+    public async Task WorkspaceCatalogContinuesPastAMalformedGitMarker()
+    {
+        string workspaceRoot = Path.Combine(
+            Path.GetTempPath(),
+            "efforthours-workspace-catalog-e2e",
+            Guid.NewGuid().ToString("N"));
+        Directory.CreateDirectory(workspaceRoot);
+        try
+        {
+            string malformed = Path.Combine(workspaceRoot, "malformed-marker");
+            using GitFixture repository = await GitFixture.CreateAsync(
+                Path.Combine(malformed, "repository"));
+            await repository.GitAsync(
+                "remote",
+                "add",
+                "origin",
+                "https://github.com/example-owner/example-repository.git");
+            string canonicalRoot = Path.GetFullPath(
+                await repository.GitAsync("rev-parse", "--show-toplevel"));
+            File.WriteAllText(Path.Combine(malformed, ".git"), "gitdir: missing\n");
+
+            IReadOnlyList<WorkspaceGitHubRepository> repositories =
+                await WorkspaceGitHubRepositoryCatalog.DiscoverAsync(
+                    workspaceRoot,
+                    new ExternalCommandRunner(),
+                    CancellationToken.None);
+
+            WorkspaceGitHubRepository discovered = Assert.Single(repositories);
+            Assert.Equal(canonicalRoot, discovered.RootPath);
+            Assert.Equal("example-owner/example-repository", Assert.Single(discovered.RepositoryIdentities));
+        }
+        finally
+        {
+            DeleteDirectory(workspaceRoot);
+        }
+    }
+
     [Fact]
     public async Task TodayWorkflowDiscoversAndReportsOneLocalDefaultHeadFromOneCommand()
     {
@@ -16,36 +55,42 @@ public sealed partial class ChangeCliTests
             return;
         }
 
-        using GitFixture repository = await GitFixture.CreateAsync();
-        await repository.GitAsync("config", "user.name", "Selected Contributor");
-        await repository.GitAsync("config", "user.email", "selected@example.invalid");
-        await repository.GitAsync(
-            "remote",
-            "add",
-            "origin",
-            "https://github.com/example-owner/example-repository.git");
-        repository.WriteText("Demo.csproj", ProjectFile);
-        repository.WriteText(
-            "Feature.cs",
-            "namespace Demo; public sealed class Feature { public bool Enabled => true; }\n");
-        string head = await repository.CommitAsync("selected today");
-        DateTimeOffset selectedAt = DateTimeOffset.Parse(
-            await repository.GitAsync("show", "-s", "--format=%aI", head),
-            CultureInfo.InvariantCulture,
-            DateTimeStyles.RoundtripKind).ToUniversalTime();
-        string fakeRoot = Path.Combine(
+        string workspaceRoot = Path.Combine(
             Path.GetTempPath(),
-            "efforthours-gh-e2e",
+            "efforthours-today-workspace-e2e",
             Guid.NewGuid().ToString("N"));
-        Directory.CreateDirectory(fakeRoot);
+        Directory.CreateDirectory(workspaceRoot);
         try
         {
+            string malformed = Path.Combine(workspaceRoot, "malformed-marker");
+            using GitFixture repository = await GitFixture.CreateAsync(
+                Path.Combine(malformed, "repository"));
+            await repository.GitAsync("config", "user.name", "Selected Contributor");
+            await repository.GitAsync("config", "user.email", "selected@example.invalid");
+            await repository.GitAsync(
+                "remote",
+                "add",
+                "origin",
+                "https://github.com/example-owner/example-repository.git");
+            repository.WriteText("Demo.csproj", ProjectFile);
+            repository.WriteText(
+                "Feature.cs",
+                "namespace Demo; public sealed class Feature { public bool Enabled => true; }\n");
+            string head = await repository.CommitAsync("selected today");
+            DateTimeOffset selectedAt = DateTimeOffset.Parse(
+                await repository.GitAsync("show", "-s", "--format=%aI", head),
+                CultureInfo.InvariantCulture,
+                DateTimeStyles.RoundtripKind).ToUniversalTime();
+            File.WriteAllText(Path.Combine(malformed, ".git"), "gitdir: missing\n");
+            string fakeRoot = Path.Combine(workspaceRoot, "fake-gh");
+            Directory.CreateDirectory(fakeRoot);
             WriteFakeGitHubCli(fakeRoot, head);
+
             ProcessResult result = await RunCliWithPathAsync(
                 fakeRoot,
                 "change", "portfolio",
                 "--owner", "example-owner",
-                "--workspace", repository.RootPath,
+                "--workspace", workspaceRoot,
                 "--author", "@me",
                 "--today",
                 "--timezone", "UTC",
@@ -67,7 +112,7 @@ public sealed partial class ChangeCliTests
         }
         finally
         {
-            DeleteDirectory(fakeRoot);
+            DeleteDirectory(workspaceRoot);
         }
     }
 

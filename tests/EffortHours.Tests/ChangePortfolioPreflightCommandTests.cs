@@ -72,6 +72,43 @@ public sealed partial class ChangePortfolioCommandTests
     }
 
     [Fact]
+    public async Task PreflightContractSupportsMaximumRepositoryEnvelope()
+    {
+        ChangeAuthorPeriodManifest source = Manifest();
+        ChangeAuthorPeriodManifest manifest = source with
+        {
+            Repositories = [.. Enumerable
+                .Range(0, ChangeAuthorPeriodManifestLimits.MaximumRepositories)
+                .Select(MaximumEnvelopePreflightRepository)],
+        };
+        ChangePortfolioCommand command = PreflightCommand(manifest, selectedChanges: 1);
+        StringWriter stdout = new();
+
+        int exitCode = await command.ExecuteAsync(
+            [
+                "--author-period-manifest", "private-manifest.json",
+                "--preflight",
+                "--format", "json",
+                "--compact",
+                "--no-rate",
+            ],
+            stdout,
+            new StringWriter(),
+            CancellationToken.None);
+
+        Assert.Equal(CliExitCodes.Success, exitCode);
+        ChangePortfolioPreflightReport report =
+            ContractJson.Deserialize<ChangePortfolioPreflightReport>(stdout.ToString());
+        Assert.Equal(ChangeAuthorPeriodManifestLimits.MaximumRepositories, report.Totals.RepositoryCount);
+        Assert.Equal(ChangeAuthorPeriodManifestLimits.MaximumRepositories, report.Totals.HeadCount);
+        Assert.Equal(ChangeAuthorPeriodManifestLimits.MaximumRepositories, report.Repositories.Count);
+        SchemaValidationResult schema = ContractSchemaValidator.Validate(
+            SchemaNames.ChangePortfolioPreflightReport,
+            stdout.ToString());
+        Assert.True(schema.IsValid, string.Join(Environment.NewLine, schema.Errors));
+    }
+
+    [Fact]
     public async Task BlockedPreflightEmitsALowerBoundAndReturnsNonzero()
     {
         ChangeAuthorPeriodManifest manifest = Manifest();
@@ -141,12 +178,11 @@ public sealed partial class ChangePortfolioCommandTests
                     Selection = ChangeAuthorPeriodManifestIdentity.CreateReportSelection(manifest),
                     CompleteScope = blockingResource is null,
                     ExecutionTelemetry = telemetry,
-                    Repositories =
-                    [
+                    Repositories = [.. manifest.Repositories.Select(repository =>
                         new GitAuthorPeriodManifestRepositoryScope
                         {
-                            RepositoryId = "repository-a",
-                            HeadCount = 2,
+                            RepositoryId = repository.Id,
+                            HeadCount = repository.Heads.Count,
                             CandidateCount = candidates,
                             CandidateCountIsLowerBound = blockingResource is not null,
                             SelectedChangeCount = selectedChanges,
@@ -172,10 +208,24 @@ public sealed partial class ChangePortfolioCommandTests
                                     SelectedChangeCount = selectedChanges,
                                 },
                             ],
-                        },
-                    ],
+                        })],
                 });
             });
+
+    private static ChangeAuthorPeriodManifestRepository MaximumEnvelopePreflightRepository(
+        int index) => new()
+        {
+            Id = $"repository-{index:000}",
+            RepositoryPath = $"secret-repository-{index:000}",
+            Heads =
+            [
+                new ChangeAuthorPeriodManifestHead
+                {
+                    Id = "default",
+                    ObjectId = index.ToString("x40", CultureInfo.InvariantCulture),
+                },
+            ],
+        };
 
     private static ChangeAuthorPeriodManifest Manifest() => new()
     {

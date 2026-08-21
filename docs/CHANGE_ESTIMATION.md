@@ -658,7 +658,7 @@ the exact earlier estimator identity they were created from.
   selection accounting. Lifetime matches outside the requested interval consume no
   retained bytes. It applies no ordinary calendar-month or presentation-row
   ceiling; 100,000 repository candidates and 640,000 selected changes are final
-  circuit breakers inside the complete 64-repository input envelope. `--preflight`
+  circuit breakers inside the complete 256-repository input envelope. `--preflight`
   measures this scope without constructing snapshots or estimating EHE and emits
   a versioned JSON/Markdown execution recommendation. It records the
   inclusive/exclusive interval, timezone, date field, co-author policy, and merge

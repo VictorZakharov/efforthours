@@ -6,6 +6,20 @@ may still change public contracts with explicit documentation.
 
 ## Unreleased
 
+### Changed
+
+- Raised the v1 author-period envelope from 64 repositories and 128 pinned heads
+  to 256 repositories and 512 pinned heads. The per-repository ledger, at-most-two
+  repository execution, cache, queue, checkpoint, rendered-output, and emergency
+  selected-change bounds remain unchanged.
+
+### Fixed
+
+- Made bounded `--workspace` discovery ignore malformed `.git` markers and keep
+  looking for valid descendant checkouts. Dubious-ownership and other failures
+  opening repositories remain fail-closed and actionable so an incomplete
+  catalog cannot be reported as complete.
+
 ## 0.10.0-alpha.14 - 2026-08-21
 
 ### Added
