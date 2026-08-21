@@ -86,6 +86,10 @@ when semantics, schemas, assumptions, or unresolved decisions change.
   explicitly requested.
 - Use the validation sequence in `CONTRIBUTING.md`, scaled to risk. Agents may
   commit, push, and open/update PRs, but must never merge or enable auto-merge.
+- Before handing off a PR as ready, inspect the required GitHub checks for its
+  current head commit and wait until every required check passes. Local validation
+  is not a substitute for CI. Diagnose and fix failures, and do not describe a PR
+  with pending, skipped-required, cancelled, stale-head, or failing checks as ready.
 
 ## Release preflight
 
