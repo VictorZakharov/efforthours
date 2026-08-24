@@ -49,18 +49,24 @@ public sealed partial class GitHubAuthorPeriodDiscovery
 {
     private readonly IExternalCommandRunner _commands;
     private readonly GitHubRepositoryCache _cache;
+    private readonly GitHubProviderMetadataCache _metadataCache;
 
     public GitHubAuthorPeriodDiscovery()
-        : this(new ExternalCommandRunner(), new GitHubRepositoryCache())
+        : this(
+            new ExternalCommandRunner(),
+            new GitHubRepositoryCache(),
+            new GitHubProviderMetadataCache())
     {
     }
 
     internal GitHubAuthorPeriodDiscovery(
         IExternalCommandRunner commands,
-        GitHubRepositoryCache cache)
+        GitHubRepositoryCache cache,
+        GitHubProviderMetadataCache? metadataCache = null)
     {
         _commands = commands ?? throw new ArgumentNullException(nameof(commands));
         _cache = cache ?? throw new ArgumentNullException(nameof(cache));
+        _metadataCache = metadataCache ?? new GitHubProviderMetadataCache();
     }
 
     public async Task<GitHubAuthorPeriodDiscoveryResult> DiscoverTodayAsync(
@@ -73,43 +79,80 @@ public sealed partial class GitHubAuthorPeriodDiscovery
         DateTimeOffset asOf = request.AsOf.ToUniversalTime();
         DateTimeOffset since = LocalDayStart(asOf, zone);
         EngineeringScopeProfile scope = request.EngineeringScope ?? EngineeringScopeProfile.Load();
-        ProviderQueryCounters counters = new();
+        ProviderQueryCounters counters = new(request.ExecutionTelemetry);
         string workingDirectory = Environment.CurrentDirectory;
         string ownerType;
         string authenticatedLogin;
         IReadOnlyList<GitHubDiscoveryRepository> providerRepositories;
         string[] aliases;
+        ResolvedAliases resolvedAliases;
         DiscoveredRepository[] discovered;
+        GitHubProviderMetadata? cachedMetadata = null;
+        DateTimeOffset cacheObservedAt = DateTimeOffset.UtcNow;
         using (request.ExecutionTelemetry?.Measure(ChangePortfolioExecutionPhases.ProviderDiscovery))
         {
-            ownerType = await GitHubAuthorPeriodDiscoveryJson.ResolveOwnerTypeAsync(
-                _commands,
-                workingDirectory,
-                request.Owner,
-                counters,
-                cancellationToken).ConfigureAwait(false);
-            authenticatedLogin = await GitHubAuthorPeriodDiscoveryJson.ResolveViewerAsync(
-                _commands,
-                workingDirectory,
-                counters,
-                cancellationToken).ConfigureAwait(false);
-            providerRepositories = await GitHubAuthorPeriodDiscoveryJson.ListRepositoriesAsync(
-                _commands,
-                workingDirectory,
-                request.Owner,
-                ownerType,
-                authenticatedLogin,
-                counters,
-                cancellationToken).ConfigureAwait(false);
-            aliases = await ResolveAliasesAsync(
-                request,
-                workingDirectory,
-                authenticatedLogin,
-                counters,
-                cancellationToken).ConfigureAwait(false);
-            GitHubDiscoveryRepository[] considered = [.. providerRepositories.Where(repository =>
-                repository.DefaultBranch is not null &&
-                !scope.ExcludesRepository(repository.Identity, repository.Archived, repository.Mirror))];
+            using (request.ExecutionTelemetry?.Measure(
+                ChangePortfolioExecutionPhases.ProviderAuthentication))
+            {
+                authenticatedLogin = await GitHubAuthorPeriodDiscoveryJson.ResolveViewerAsync(
+                    _commands,
+                    workingDirectory,
+                    counters,
+                    cancellationToken).ConfigureAwait(false);
+                cachedMetadata = await _metadataCache.ReadAsync(
+                    request.Owner,
+                    authenticatedLogin,
+                    cacheObservedAt,
+                    cancellationToken).ConfigureAwait(false);
+                resolvedAliases = await ResolveAliasesAsync(
+                    request,
+                    workingDirectory,
+                    authenticatedLogin,
+                    cachedMetadata?.VerifiedEmails,
+                    counters,
+                    cancellationToken).ConfigureAwait(false);
+                aliases = resolvedAliases.Values;
+            }
+
+            using (request.ExecutionTelemetry?.Measure(ChangePortfolioExecutionPhases.OwnerInventory))
+            {
+                ownerType = cachedMetadata?.OwnerType ??
+                    await GitHubAuthorPeriodDiscoveryJson.ResolveOwnerTypeAsync(
+                        _commands,
+                        workingDirectory,
+                        request.Owner,
+                        counters,
+                        cancellationToken).ConfigureAwait(false);
+                providerRepositories = await GitHubAuthorPeriodDiscoveryJson.ListRepositoriesAsync(
+                    _commands,
+                    workingDirectory,
+                    request.Owner,
+                    ownerType,
+                    authenticatedLogin,
+                    counters,
+                    cancellationToken).ConfigureAwait(false);
+                if (request.AuthorAliases.Any(alias =>
+                    alias.Equals("@me", StringComparison.OrdinalIgnoreCase)))
+                {
+                    await _metadataCache.WriteAsync(
+                        request.Owner,
+                        authenticatedLogin,
+                        ownerType,
+                        resolvedAliases.VerifiedEmails,
+                        providerRepositories,
+                        cacheObservedAt,
+                        cancellationToken).ConfigureAwait(false);
+                }
+            }
+
+            GitHubDiscoveryRepository[] considered;
+            using (request.ExecutionTelemetry?.Measure(ChangePortfolioExecutionPhases.CandidateDiscovery))
+            {
+                considered = [.. providerRepositories.Where(repository =>
+                    repository.DefaultBranch is not null &&
+                    !scope.ExcludesRepository(repository.Identity, repository.Archived, repository.Mirror))];
+            }
+
             discovered = await DiscoverHeadsAsync(
                 considered,
                 aliases,
@@ -183,6 +226,12 @@ public sealed partial class GitHubAuthorPeriodDiscovery
             OpenPullRequestCount = counters.OpenPullRequestCount,
             ProviderQueryCount = counters.QueryCount,
             ProviderPageCount = counters.PageCount,
+            ProviderProcessCount = counters.ProcessCount,
+            ProviderProcessStartupMilliseconds = decimal.Round(
+                (decimal)counters.ProcessStartupElapsed.TotalMilliseconds,
+                3,
+                MidpointRounding.AwayFromZero),
+            ProviderMetadataCacheHit = cachedMetadata is not null,
             LocalObjectCount = localHeads,
             AcquiredObjectCount = acquiredObjects,
             AcquiredBytes = acquiredBytes,
@@ -213,6 +262,96 @@ public sealed partial class GitHubAuthorPeriodDiscovery
         ProviderQueryCounters counters,
         CancellationToken cancellationToken)
     {
+        DiscoveredRepository[] defaults;
+        using (request.ExecutionTelemetry?.Measure(ChangePortfolioExecutionPhases.DefaultHeadDiscovery))
+        {
+            IReadOnlyList<DiscoveredRepository>? batched =
+                await GitHubAuthorPeriodDiscoveryJson.DiscoverDefaultHeadsBatchedAsync(
+                    _commands,
+                    workingDirectory,
+                    repositories,
+                    aliases,
+                    since,
+                    until,
+                    request.DateField,
+                    request.MergePolicy,
+                    request.CoauthorPolicy,
+                    counters,
+                    cancellationToken).ConfigureAwait(false);
+            defaults = batched is not null
+                ? [.. batched]
+                : await DiscoverHeadPhaseAsync(
+                    repositories,
+                    aliases,
+                    authenticatedLogin,
+                    since,
+                    until,
+                    request,
+                    workingDirectory,
+                    counters,
+                    includeDefaultHead: true,
+                    includeOpenPullRequests: false,
+                    cancellationToken).ConfigureAwait(false);
+        }
+
+        if (!request.IncludeOpenPullRequests)
+        {
+            return defaults;
+        }
+
+        DiscoveredRepository[] openPullRequests;
+        using (request.ExecutionTelemetry?.Measure(ChangePortfolioExecutionPhases.OpenPullRequestDiscovery))
+        {
+            bool viewerOnly = request.AuthorAliases.Count == 1 &&
+                request.AuthorAliases[0].Equals("@me", StringComparison.OrdinalIgnoreCase);
+            IReadOnlyList<DiscoveredRepository>? accountWide = viewerOnly
+                ? await GitHubAuthorPeriodDiscoveryJson
+                    .DiscoverViewerOpenPullHeadsAccountWideAsync(
+                        _commands,
+                        workingDirectory,
+                        repositories,
+                        authenticatedLogin,
+                        aliases,
+                        since,
+                        until,
+                        request.DateField,
+                        request.MergePolicy,
+                        request.CoauthorPolicy,
+                        counters,
+                        cancellationToken).ConfigureAwait(false)
+                : null;
+            openPullRequests = accountWide is not null
+                ? [.. accountWide]
+                : await DiscoverHeadPhaseAsync(
+                    repositories,
+                    aliases,
+                    authenticatedLogin,
+                    since,
+                    until,
+                    request,
+                    workingDirectory,
+                    counters,
+                    includeDefaultHead: false,
+                    includeOpenPullRequests: true,
+                    cancellationToken).ConfigureAwait(false);
+        }
+
+        return MergeDiscoveredHeads(repositories, defaults, openPullRequests);
+    }
+
+    private async Task<DiscoveredRepository[]> DiscoverHeadPhaseAsync(
+        IReadOnlyList<GitHubDiscoveryRepository> repositories,
+        IReadOnlyList<string> aliases,
+        string authenticatedLogin,
+        DateTimeOffset since,
+        DateTimeOffset until,
+        GitHubAuthorPeriodDiscoveryRequest request,
+        string workingDirectory,
+        ProviderQueryCounters counters,
+        bool includeDefaultHead,
+        bool includeOpenPullRequests,
+        CancellationToken cancellationToken)
+    {
         using SemaphoreSlim gate = new(4, 4);
         Task<DiscoveredRepository?>[] tasks = [.. repositories.Select(async repository =>
         {
@@ -230,9 +369,10 @@ public sealed partial class GitHubAuthorPeriodDiscovery
                     request.DateField,
                     request.MergePolicy,
                     request.CoauthorPolicy,
-                    request.IncludeOpenPullRequests,
+                    includeOpenPullRequests,
                     counters,
-                    cancellationToken).ConfigureAwait(false);
+                    cancellationToken,
+                    includeDefaultHead).ConfigureAwait(false);
             }
             finally
             {
@@ -243,6 +383,40 @@ public sealed partial class GitHubAuthorPeriodDiscovery
             .Where(value => value is not null)
             .Select(value => value!)
             .OrderBy(value => value.RepositoryId, StringComparer.Ordinal)];
+    }
+
+    private static DiscoveredRepository[] MergeDiscoveredHeads(
+        IReadOnlyList<GitHubDiscoveryRepository> repositories,
+        IReadOnlyList<DiscoveredRepository> defaults,
+        IReadOnlyList<DiscoveredRepository> openPullRequests)
+    {
+        Dictionary<string, DiscoveredRepository> defaultByIdentity =
+            defaults.ToDictionary(value => value.RepositoryIdentity, StringComparer.OrdinalIgnoreCase);
+        Dictionary<string, DiscoveredRepository> pullsByIdentity =
+            openPullRequests.ToDictionary(value => value.RepositoryIdentity, StringComparer.OrdinalIgnoreCase);
+        List<DiscoveredRepository> merged = [];
+        foreach (GitHubDiscoveryRepository repository in repositories)
+        {
+            defaultByIdentity.TryGetValue(repository.Identity, out DiscoveredRepository? defaultHead);
+            pullsByIdentity.TryGetValue(repository.Identity, out DiscoveredRepository? pullHeads);
+            DiscoveredHead[] heads =
+            [
+                .. defaultHead?.Heads ?? [],
+                .. pullHeads?.Heads ?? [],
+            ];
+            if (heads.Length == 0)
+            {
+                continue;
+            }
+
+            merged.Add(new DiscoveredRepository(
+                defaultHead?.RepositoryId ?? pullHeads!.RepositoryId,
+                repository.Identity,
+                heads,
+                pullHeads?.OpenPullRequestCount ?? 0));
+        }
+
+        return [.. merged.OrderBy(value => value.RepositoryId, StringComparer.Ordinal)];
     }
 
     private static ChangeAuthorPeriodManifest CreateManifest(
@@ -283,31 +457,4 @@ public sealed partial class GitHubAuthorPeriodDiscovery
                     })],
                 })],
         };
-}
-
-internal sealed record DiscoveredRepository(
-    string RepositoryId,
-    string RepositoryIdentity,
-    IReadOnlyList<DiscoveredHead> Heads,
-    int OpenPullRequestCount);
-
-internal sealed record DiscoveredHead(string Id, string ObjectId, string FetchRef);
-
-internal sealed class ProviderQueryCounters
-{
-    private int _queries;
-    private int _pages;
-    private int _openPullRequests;
-
-    public int QueryCount => Volatile.Read(ref _queries);
-
-    public int PageCount => Volatile.Read(ref _pages);
-
-    public int OpenPullRequestCount => Volatile.Read(ref _openPullRequests);
-
-    public void AddQuery() => Interlocked.Increment(ref _queries);
-
-    public void AddPages(int count) => Interlocked.Add(ref _pages, count);
-
-    public void AddOpenPullRequests(int count) => Interlocked.Add(ref _openPullRequests, count);
 }

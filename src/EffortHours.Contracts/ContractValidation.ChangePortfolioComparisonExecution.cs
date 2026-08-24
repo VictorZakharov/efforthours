@@ -4,6 +4,8 @@ namespace EffortHours.Contracts;
 
 public static partial class ContractValidation
 {
+    private static readonly string[] TodayAgentApprovalPrefix = ["eh", "change", "today"];
+
     private static void ValidateComparisonExecution(
         ChangePortfolioComparisonReport report,
         List<string> errors)
@@ -238,6 +240,7 @@ public static partial class ContractValidation
             ValidateDigest(failure.MessageDigest, "execution.failure.messageDigest", errors);
             bool workflowFailure = report.Status == ChangePortfolioComparisonStatus.Incomplete &&
                 report.Execution.Repositories.Count == 0 && failure.RepositoryId == "provider";
+            ValidateAgentAction(failure, workflowFailure && report.Discovery is not null, errors);
             if (!workflowFailure && !failedRepositories.Contains(failure.RepositoryId) ||
                 !failureRepositories.Add(failure.RepositoryId))
             {
@@ -262,6 +265,76 @@ public static partial class ContractValidation
             errors.Add("Every failed repository must have exactly one preserved root failure.");
         }
     }
+
+    private static void ValidateAgentAction(
+        ChangePortfolioComparisonFailure failure,
+        bool required,
+        List<string> errors)
+    {
+        EffortHoursAgentAction? action = failure.AgentAction;
+        if (action is null)
+        {
+            if (required)
+            {
+                errors.Add("An incomplete today workflow failure requires an agent action.");
+            }
+
+            return;
+        }
+
+        RequireText(action.FailureCode, "execution.failure.agentAction.failureCode", errors);
+        RequireText(action.Phase, "execution.failure.agentAction.phase", errors);
+        RequireText(action.SuggestedAction, "execution.failure.agentAction.suggestedAction", errors);
+        if (action.Schema != "efforthours-agent-action/1.0" ||
+            !IsSupportedAgentAction(action) ||
+            action.Phase != failure.Phase ||
+            action.RetryLimit is < 0 or > 1 ||
+            action.SuggestedApprovalPrefix.Count > 3 ||
+            action.SuggestedApprovalPrefix.Any(string.IsNullOrWhiteSpace))
+        {
+            errors.Add("The execution failure agent action is invalid.");
+        }
+
+        bool permissionRetry =
+            action.FailureCode == "github-cli-config-access-denied";
+        if (permissionRetry !=
+                (action.SuggestedAction == "retry-exact-command-with-permission" &&
+                 action.RetryLimit == 1 &&
+                 action.SuggestedApprovalPrefix.SequenceEqual(
+                     TodayAgentApprovalPrefix,
+                     StringComparer.Ordinal)) ||
+            !permissionRetry &&
+                (action.RetryLimit != 0 || action.SuggestedApprovalPrefix.Count != 0))
+        {
+            errors.Add("Only GitHub CLI configuration access denial permits one exact-command retry.");
+        }
+    }
+
+    private static bool IsSupportedAgentAction(EffortHoursAgentAction action) =>
+        action.FailureCode switch
+        {
+            "github-cli-executable-missing" =>
+                action.SuggestedAction == "install-github-cli",
+            "github-cli-config-access-denied" =>
+                action.SuggestedAction == "retry-exact-command-with-permission",
+            "github-cli-unauthenticated" =>
+                action.SuggestedAction == "authenticate-github-cli",
+            "github-owner-forbidden-or-not-found" =>
+                action.SuggestedAction == "verify-owner-and-access",
+            "github-provider-rate-limited" =>
+                action.SuggestedAction == "wait-for-provider-rate-limit",
+            "github-network-unavailable" =>
+                action.SuggestedAction == "restore-network-and-retry",
+            "github-provider-response-malformed" =>
+                action.SuggestedAction == "retry-after-valid-provider-response",
+            "managed-cache-access-denied" =>
+                action.SuggestedAction == "grant-managed-cache-access",
+            "engineering-scope-load-failed" =>
+                action.SuggestedAction == "repair-engineering-scope-profile",
+            "github-provider-request-failed" =>
+                action.SuggestedAction == "inspect-github-cli-health",
+            _ => false,
+        };
 
     private static void ValidatePhaseTimings(
         IReadOnlyList<ChangePortfolioComparisonPhaseTiming> timings,

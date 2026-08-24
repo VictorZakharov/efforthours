@@ -21,16 +21,10 @@ internal sealed partial class ChangePortfolioCommand
     {
         string phase = telemetry.GetLastProgress()?.Phase ??
             ChangePortfolioExecutionPhases.ScopeLoading;
-        string message = phase switch
-        {
-            ChangePortfolioExecutionPhases.ScopeLoading =>
-                "The requested engineering scope profile could not be loaded safely.",
-            ChangePortfolioExecutionPhases.Acquisition =>
-                "Managed repository acquisition did not complete. Confirm GitHub access and cache permissions.",
-            _ =>
-                "GitHub provider discovery did not complete. Confirm gh authentication and owner access.",
-        };
-        string category = exception.GetType().Name;
+        EffortHoursAgentAction action = CreateAgentAction(exception, phase);
+        phase = action.Phase;
+        string message = SafeFailureMessage(action.FailureCode);
+        string category = action.FailureCode;
         ChangePortfolioComparisonFailure failure = new()
         {
             RepositoryId = "provider",
@@ -39,6 +33,7 @@ internal sealed partial class ChangePortfolioCommand
             Message = message,
             MessageDigest = ChangePortfolioComparisonIdentity.ComputeTextDigest(
                 category + "\n" + message),
+            AgentAction = action,
         };
         ChangePortfolioScopeProfile profile = engineeringScope?.Contract ?? UnavailableScopeProfile();
         ChangeAuthorPeriodManifest manifest = EmptyTodayManifest(options, generatedAt);
@@ -124,11 +119,70 @@ internal sealed partial class ChangePortfolioCommand
             standardOutput,
             standardError,
             cancellationToken).ConfigureAwait(false);
-        await standardError.WriteLineAsync(
-            $"eh: today failed phase={phase}; diagnostic={failure.MessageDigest}")
+        await standardError.WriteLineAsync(ContractJson.SerializeCompact(action))
             .ConfigureAwait(false);
         return write == CliExitCodes.Success ? CliExitCodes.InvalidInput : write;
     }
+
+    private static EffortHoursAgentAction CreateAgentAction(Exception exception, string phase)
+    {
+        if (exception is GitHubProviderException provider)
+        {
+            return provider.Action;
+        }
+
+        if (phase == ChangePortfolioExecutionPhases.Acquisition &&
+            (exception is UnauthorizedAccessException ||
+             exception.Message.Contains("access is denied", StringComparison.OrdinalIgnoreCase) ||
+             exception.Message.Contains("permission denied", StringComparison.OrdinalIgnoreCase)))
+        {
+            return Action(
+                "managed-cache-access-denied",
+                "managed-cache-acquisition",
+                "grant-managed-cache-access");
+        }
+
+        if (exception.Message.Contains("GitHub returned", StringComparison.OrdinalIgnoreCase))
+        {
+            return Action(
+                "github-provider-response-malformed",
+                phase,
+                "retry-after-valid-provider-response");
+        }
+
+        return phase == ChangePortfolioExecutionPhases.ScopeLoading
+            ? Action("engineering-scope-load-failed", phase, "repair-engineering-scope-profile")
+            : Action("github-provider-request-failed", phase, "inspect-github-cli-health");
+    }
+
+    private static EffortHoursAgentAction Action(
+        string code,
+        string phase,
+        string suggestedAction) => new()
+        {
+            FailureCode = code,
+            Phase = phase,
+            SuggestedAction = suggestedAction,
+        };
+
+    private static string SafeFailureMessage(string code) => code switch
+    {
+        "github-cli-executable-missing" => "The GitHub CLI executable could not be started.",
+        "github-cli-config-access-denied" =>
+            "The GitHub CLI could not access its authenticated user configuration.",
+        "github-cli-unauthenticated" => "The GitHub CLI is not authenticated.",
+        "github-owner-forbidden-or-not-found" =>
+            "The requested GitHub owner was not found or is not accessible.",
+        "github-provider-rate-limited" => "GitHub rate limiting prevented complete discovery.",
+        "github-network-unavailable" => "GitHub could not be reached.",
+        "github-provider-response-malformed" =>
+            "GitHub returned a malformed or incomplete response.",
+        "managed-cache-access-denied" =>
+            "EffortHours could not access its managed repository cache.",
+        "engineering-scope-load-failed" =>
+            "The requested engineering scope profile could not be loaded safely.",
+        _ => "GitHub provider discovery did not complete.",
+    };
 
     private static ChangePortfolioScopeProfile UnavailableScopeProfile()
     {

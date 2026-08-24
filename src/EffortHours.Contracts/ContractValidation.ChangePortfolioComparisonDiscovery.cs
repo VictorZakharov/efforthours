@@ -56,11 +56,15 @@ public static partial class ContractValidation
             discovery.OpenPullRequestCount,
             discovery.ProviderQueryCount,
             discovery.ProviderPageCount,
+            discovery.ProviderProcessCount,
             discovery.LocalObjectCount,
             discovery.AcquiredObjectCount,
         ];
         if (counts.Any(count => count < 0) ||
             discovery.AcquiredBytes < 0 ||
+            discovery.ProviderProcessStartupMilliseconds < 0m ||
+            discovery.ProviderProcessCount > discovery.ProviderQueryCount ||
+            discovery.Complete && discovery.ProviderProcessCount != discovery.ProviderQueryCount ||
             discovery.ConsideredRepositoryCount > discovery.ProviderRepositoryCount ||
             discovery.ActiveRepositoryCount > discovery.ConsideredRepositoryCount ||
             discovery.ActiveRepositoryCount != selectedRepositoryCount ||

@@ -139,8 +139,9 @@ public sealed partial class ChangeCliTests
                 "--output", reportPath,
                 "--no-rate");
             Assert.Equal(0, rerun.ExitCode);
-            Assert.Contains("hits 1, misses 0", await File.ReadAllTextAsync(reportPath),
-                StringComparison.Ordinal);
+            string rerunReport = await File.ReadAllTextAsync(reportPath);
+            Assert.Contains("hits 1, misses 0", rerunReport, StringComparison.Ordinal);
+            Assert.Contains("metadata cache hit", rerunReport, StringComparison.Ordinal);
         }
         finally
         {

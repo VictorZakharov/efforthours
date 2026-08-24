@@ -6,6 +6,12 @@ public static class ChangePortfolioExecutionPhases
 {
     public const string ScopeLoading = "scope-loading";
     public const string ProviderDiscovery = "provider-discovery";
+    public const string ProviderAuthentication = "provider-authentication";
+    public const string OwnerInventory = "owner-inventory";
+    public const string CandidateDiscovery = "candidate-discovery";
+    public const string DefaultHeadDiscovery = "default-head-discovery";
+    public const string OpenPullRequestDiscovery = "open-pr-discovery";
+    public const string ProviderProcessStartup = "provider-process-startup";
     public const string Acquisition = "acquisition";
     public const string ManifestValidation = "manifest-validation";
     public const string HeadValidation = "head-validation";
@@ -22,6 +28,12 @@ public static class ChangePortfolioExecutionPhases
     [
         ScopeLoading,
         ProviderDiscovery,
+        ProviderAuthentication,
+        OwnerInventory,
+        CandidateDiscovery,
+        DefaultHeadDiscovery,
+        OpenPullRequestDiscovery,
+        ProviderProcessStartup,
         Acquisition,
         ManifestValidation,
         HeadValidation,

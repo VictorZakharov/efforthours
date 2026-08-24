@@ -6,6 +6,37 @@ may still change public contracts with explicit documentation.
 
 ## Unreleased
 
+### Added
+
+- Added the versioned `efforthours-codex/1.0.0` companion skill and
+  `eh agent codex [--install|--check]`. Printing and checking are read-only;
+  only explicit install atomically creates or updates the user skill, and check
+  distinguishes current, missing, and stale content independently from estimator
+  releases.
+- Added `efforthours-agent-action/1.0` to incomplete today failures. Safe
+  provider/cache codes and suggested actions now appear in JSON, Markdown, and
+  one compact stderr record; only GitHub CLI configuration denial permits one
+  exact-command permission retry.
+
+### Changed
+
+- Batched up to 12 default-branch interval queries per provider process and moved
+  canonical `@me` open-PR inventory to one complete account-level connection.
+  Pagination, count, response, branch, or 100-commit uncertainty falls back to
+  the prior complete per-repository paths, preserving exact selected objects.
+- Added a private freshness-bounded owner/repository/verified-identity metadata
+  cache while retaining a live fully paginated repository inventory as candidate
+  authority. Today telemetry now separates authentication, owner inventory,
+  candidate, default-head, open-PR, and provider-startup work and records provider
+  processes/startup plus metadata-cache hits outside semantic digests.
+
+### Fixed
+
+- Preserve actionable distinctions for missing/unauthenticated/permission-denied
+  GitHub CLI, inaccessible owners, rate limits, network failure, malformed
+  provider responses, and managed-cache denial without serializing raw provider
+  stderr or sensitive paths.
+
 ## 0.10.0-alpha.16 - 2026-08-24
 
 ### Added

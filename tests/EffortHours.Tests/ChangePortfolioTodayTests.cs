@@ -1,3 +1,4 @@
+using System.Text.Json;
 using EffortHours.Change;
 using EffortHours.Cli;
 using EffortHours.Contracts;
@@ -247,6 +248,7 @@ public sealed partial class ChangePortfolioComparisonTests
                 OpenPullRequestCount = 1,
                 ProviderQueryCount = 4,
                 ProviderPageCount = 4,
+                ProviderProcessCount = 4,
                 LocalObjectCount = 1,
                 ElapsedMilliseconds = 12.5m,
             },
@@ -363,9 +365,20 @@ public sealed class ChangePortfolioTodayCommandTests
         Assert.True(stdout.ToString().Length > 0, stderr.ToString());
         Assert.Contains("Status: **incomplete**", stdout.ToString(), StringComparison.Ordinal);
         Assert.Contains("provider-discovery", stdout.ToString(), StringComparison.Ordinal);
+        Assert.Contains("Agent action:", stdout.ToString(), StringComparison.Ordinal);
+        Assert.Contains("github-provider-request-failed", stdout.ToString(), StringComparison.Ordinal);
         Assert.DoesNotContain("X low / expected / high", stdout.ToString(), StringComparison.Ordinal);
         Assert.DoesNotContain("synthetic provider detail", stdout.ToString(), StringComparison.Ordinal);
-        Assert.Contains("diagnostic=sha256:", stderr.ToString(), StringComparison.Ordinal);
+        string actionLine = stderr.ToString().ReplaceLineEndings("\n")
+            .Split('\n', StringSplitOptions.RemoveEmptyEntries)
+            .Last();
+        using JsonDocument action = JsonDocument.Parse(actionLine);
+        Assert.Equal(
+            "efforthours-agent-action/1.0",
+            action.RootElement.GetProperty("schema").GetString());
+        Assert.Equal(
+            "github-provider-request-failed",
+            action.RootElement.GetProperty("failureCode").GetString());
     }
 
     [Fact]

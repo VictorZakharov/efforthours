@@ -118,6 +118,9 @@
         "openPullRequestCount",
         "providerQueryCount",
         "providerPageCount",
+        "providerProcessCount",
+        "providerProcessStartupMilliseconds",
+        "providerMetadataCacheHit",
         "localObjectCount",
         "acquiredObjectCount",
         "acquiredBytes",
@@ -138,6 +141,9 @@
         "openPullRequestCount": { "type": "integer", "minimum": 0 },
         "providerQueryCount": { "type": "integer", "minimum": 0 },
         "providerPageCount": { "type": "integer", "minimum": 0 },
+        "providerProcessCount": { "type": "integer", "minimum": 0 },
+        "providerProcessStartupMilliseconds": { "type": "number", "minimum": 0 },
+        "providerMetadataCacheHit": { "type": "boolean" },
         "localObjectCount": { "type": "integer", "minimum": 0 },
         "acquiredObjectCount": { "type": "integer", "minimum": 0 },
         "acquiredBytes": { "type": "integer", "minimum": 0 },
@@ -505,7 +511,70 @@
         "phase": { "type": "string", "minLength": 1 },
         "category": { "type": "string", "minLength": 1 },
         "message": { "type": "string", "minLength": 1 },
-        "messageDigest": { "$ref": "#/$defs/digest" }
+        "messageDigest": { "$ref": "#/$defs/digest" },
+        "agentAction": { "$ref": "#/$defs/agentAction" }
+      },
+      "additionalProperties": false
+    },
+    "agentAction": {
+      "type": "object",
+      "required": [
+        "schema",
+        "failureCode",
+        "phase",
+        "suggestedAction",
+        "suggestedApprovalPrefix",
+        "retryLimit"
+      ],
+      "properties": {
+        "schema": { "const": "efforthours-agent-action/1.0" },
+        "failureCode": {
+          "enum": [
+            "github-cli-executable-missing",
+            "github-cli-config-access-denied",
+            "github-cli-unauthenticated",
+            "github-owner-forbidden-or-not-found",
+            "github-provider-rate-limited",
+            "github-network-unavailable",
+            "github-provider-response-malformed",
+            "managed-cache-access-denied",
+            "engineering-scope-load-failed",
+            "github-provider-request-failed"
+          ]
+        },
+        "phase": {
+          "enum": [
+            "scope-loading",
+            "provider-discovery",
+            "provider-authentication",
+            "owner-inventory",
+            "candidate-discovery",
+            "default-head-discovery",
+            "open-pr-discovery",
+            "acquisition",
+            "managed-cache-acquisition"
+          ]
+        },
+        "suggestedAction": {
+          "enum": [
+            "install-github-cli",
+            "retry-exact-command-with-permission",
+            "authenticate-github-cli",
+            "verify-owner-and-access",
+            "wait-for-provider-rate-limit",
+            "restore-network-and-retry",
+            "retry-after-valid-provider-response",
+            "grant-managed-cache-access",
+            "repair-engineering-scope-profile",
+            "inspect-github-cli-health"
+          ]
+        },
+        "suggestedApprovalPrefix": {
+          "type": "array",
+          "maxItems": 3,
+          "items": { "type": "string", "minLength": 1, "maxLength": 32 }
+        },
+        "retryLimit": { "type": "integer", "minimum": 0, "maximum": 1 }
       },
       "additionalProperties": false
     },
