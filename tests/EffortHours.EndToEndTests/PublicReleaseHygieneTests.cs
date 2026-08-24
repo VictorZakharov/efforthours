@@ -56,6 +56,9 @@ public sealed partial class PublicReleaseHygieneTests
     {
         string root = FindRepositoryRoot();
         string readme = File.ReadAllText(Path.Combine(root, "PACKAGE_README.md"));
+        Assert.Contains("#performance-and-scale", readme, StringComparison.Ordinal);
+        Assert.DoesNotContain("#one-million-line-performance-checkpoints", readme, StringComparison.Ordinal);
+        Assert.Contains("change-seed/0.18.2", readme, StringComparison.Ordinal);
 
         Assert.Contains("## Supported analyzers", readme, StringComparison.Ordinal);
         Assert.Contains("### Shared static-analysis boundary", readme, StringComparison.Ordinal);

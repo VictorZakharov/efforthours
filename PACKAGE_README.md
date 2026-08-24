@@ -13,7 +13,7 @@ specification.
 ## Install
 
 ```text
-dotnet tool install --global EffortHours.Tool --version 0.10.0-alpha.16
+dotnet tool install --global EffortHours.Tool --version 0.10.0-alpha.17
 eh version
 eh --help
 ```
@@ -52,8 +52,8 @@ A dated contractor rate can be applied afterward without changing the effort
 estimate.
 
 See the
-[per-language million-line performance checkpoints](https://github.com/VictorZakharov/efforthours#one-million-line-performance-checkpoints)
-and their
+[performance and scale summary](https://github.com/VictorZakharov/efforthours#performance-and-scale)
+and the
 [full benchmark protocol](https://github.com/VictorZakharov/efforthours/blob/main/docs/BENCHMARKS.md).
 
 ### Shared static-analysis boundary
@@ -185,7 +185,7 @@ treated as untrusted input, and reports avoid source excerpts by default.
 
 ## Current limitations
 
-- `seed-rules/0.4.0` and `change-seed/0.18.1` remain experimental and uncalibrated.
+- `seed-rules/0.4.0` and `change-seed/0.18.2` remain experimental and uncalibrated.
 - Public calibration labels have not completed genuinely independent correction.
 - Host-review token use, cost, and estimate improvement have not yet been measured
   across representative repositories; no automatic review budget is selected.
