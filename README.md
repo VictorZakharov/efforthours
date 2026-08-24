@@ -18,16 +18,16 @@ documentation, configuration, and delivery artifacts into traceable
 | EffortHours is | EffortHours is not |
 | --- | --- |
 | A replacement-effort estimate of the software that exists now | A reconstruction of hours historically worked |
-| A low/expected/high range built from evidence-backed work items | A timesheet, productivity score, or authorship detector |
+| A low/expected/high range built from evidence-backed work items, with optional normalized X against reference capacity | A timesheet, actual-hours record, or proof of sole authorship |
 | An offline static analysis with transparent rules | A build, runtime, security, accessibility, or quality audit |
 | An effort model with optional pricing applied afterward | An invoice or compensation recommendation |
 
 > [!WARNING]
 > **Experimental public alpha.** The CLI and reporting pipeline work, but the
-> repository estimator remains uncalibrated. Change EHE has passed only its
-> documented model-authored logical gate for 4-to-32-hour changes on the previously
-> admitted language set. It is not empirically production-validated. Review the
-> evidence and ranges before using an estimate for a consequential decision.
+> repository estimator remains uncalibrated and Change EHE has only limited
+> validation for smaller changes in established language analyzers. Neither is
+> empirically production-validated. Review the evidence and ranges before using
+> an estimate for a consequential decision.
 
 [Product page](https://wellscoped.dev/products/efforthours) |
 [NuGet](https://www.nuget.org/packages/EffortHours.Tool/) |
@@ -72,9 +72,22 @@ Update an existing preview installation with:
 dotnet tool update --global EffortHours.Tool --version 0.10.0-alpha.16
 ```
 
-See the
-[`0.10.0-alpha.16` GitHub prerelease](https://github.com/VictorZakharov/efforthours/releases/tag/v0.10.0-alpha.16)
-for release notes and artifacts.
+See the [`0.10.0-alpha.16` GitHub prerelease](https://github.com/VictorZakharov/efforthours/releases/tag/v0.10.0-alpha.16) for release notes and artifacts.
+
+## Recent highlights
+
+- **One command for today's work.** `eh change today` finds matching default-branch
+  and user-authored open-PR work, prepares the needed repositories, and produces
+  one daily EHE/capacity report without a caller-authored manifest.
+- **A Codex companion.** `eh agent codex --install` installs versioned guidance so
+  Codex uses the native EffortHours workflow immediately instead of scanning a
+  workspace or rebuilding the calculation itself.
+- **Clearer, faster GitHub-assisted runs.** Safe actionable failures identify
+  authentication, permission, network, owner, response, and cache problems.
+  Batched discovery and private metadata reuse reduce provider-process overhead
+  while complete fallbacks preserve selection coverage.
+- **Larger author portfolios.** Author-period workflows now accept up to 256
+  repositories and 512 pinned heads under the same bounded execution model.
 
 ## Main workflows
 
@@ -118,13 +131,29 @@ eh change today --owner my-organization --author "@me" \
   --capacity-hours 8 --format markdown --output today.md --no-rate
 ```
 
-This convenience mode can run outside every checkout. It opts into authenticated
-provider discovery, acquires only active immutable heads into a private
-EffortHours-managed bare cache, applies the versioned native `engineering` scope,
-runs exact bounded preflight internally, and then runs the ordinary manifest
-estimator. JSON or concise Markdown is contract-validated before an atomic output
-write. Capacity is only a reference denominator; the ratio is not a productivity
-or labor measure. Inspect the effective scope with `eh change scope show engineering`.
+This command can run from any folder. It uses authenticated GitHub access to find
+relevant work, downloads only the required immutable objects into a private
+EffortHours cache, applies the native `engineering` scope, and writes one validated
+JSON or concise Markdown report. A complete no-work day reports zero; a failed run
+reports no partial EHE or X. Normalized X divides represented replacement effort by
+supplied capacity. It does not infer actual hours or sole authorship; interpret it
+within selection and shared-credit assumptions. Inspect the scope with
+`eh change scope show engineering`.
+
+### Use EffortHours from Codex
+
+Install the packaged companion skill once, then verify it after updating EffortHours:
+
+```text
+eh agent codex --install
+eh agent codex --check
+```
+
+When you ask Codex for an EffortHours or EHE estimate, the skill directs it to run
+the highest-level native `eh` command, request needed GitHub/cache permission up
+front, and treat the validated report as the calculation of record. Ordinary
+estimates never modify Codex configuration. `eh agent codex` prints the packaged
+skill without installing it.
 
 Portfolio mode normalizes each repository independently, removes exact repeated
 PR patches, unions pinned author-period heads without repeating shared commits,
@@ -134,7 +163,8 @@ ledgers whose low/expected/high totals reconcile to the same portfolio total.
 Shared groups are counted once, and requested contributors, repositories, and
 heads with no unique match remain visible as zero rows. Manifest author aliases
 and local paths remain execution-only. The result is repository-attributed change
-effort, not individual productivity, personal labor shares, or sole authorship.
+effort; it does not reconstruct actual hours, personal labor shares, or sole
+authorship.
 Manifest execution overlaps at most two repository sessions and shares bounded
 immutable inventories, parsed snapshot analyses, Git blob reads, and exact first-
 parent evidence lineage across selected commits. The lineage fast path is limited
@@ -206,40 +236,14 @@ Unsupported languages still receive common inventory evidence, but not the same
 semantic depth. Exact ecosystem boundaries are linked from the
 [documentation index](docs/README.md).
 
-### One-million-line performance checkpoints
+### Performance and scale
 
-Every recorded dedicated analyzer shape completed in under 15 seconds on the
-checkpoint workstation.
-
-Measurements use fresh processes and generated many-small-file repositories on
-Windows x64, an AMD Ryzen 9 5900X, 24 logical processors, and .NET 10. Fixture
-generation and evidence serialization are excluded. These are reproducible
-engineering checkpoints, not universal latency guarantees or representative
-framework workloads.
-
-| Language/analyzer shape | Analyzed text lines | Static analysis | Lines/s | Sampled peak |
-| --- | ---: | ---: | ---: | ---: |
-| .NET / C# | 1,000,001 | 7.083 s | 141,179 | 272.52 MiB |
-| JavaScript / TypeScript | 1,000,001 | 12.088 s | 82,728 | 185.69 MiB |
-| HTML/CSS/SCSS frontend assets | 1,000,001 | 8.187 s | 122,151 | 270.67 MiB |
-| SQL | 1,000,000 | 8.421 s | 118,754 | 156.46 MiB |
-| Python | 1,000,003 | 13.354 s | 74,883 | 109.63 MiB |
-| Jupyter | 1,120,003 | 7.561 s | 148,131 | 159.33 MiB |
-| Go | 1,000,003 | 6.577 s | 152,057 | 119.95 MiB |
-| Java | 1,010,001 | 13.954 s | 72,379 | 167.31 MiB |
-| Kotlin/JVM | 1,000,001 | 9.393 s | 106,459 | 166.83 MiB |
-| Shell | 990,000 | 14.525 s | 68,161 | 119.66 MiB |
-| PowerShell | 990,000 | 13.689 s | 72,321 | 130.76 MiB |
-| Terraform/HCL | 1,000,000 | 8.239 s | 121,371 | 303.72 MiB |
-| PHP/Composer | 1,000,001 | 7.920 s | 126,270 | 441.57 MiB |
-| Rust/Cargo | 1,000,004 | 7.540 s | 132,627 | 139.88 MiB |
-| Docker/Compose | 1,000,000 | 8.097 s | 123,502 | 203.00 MiB |
-| C | 990,002 | 8.197 s | 120,781 | 127.65 MiB |
-| C++ | 990,002 | 9.716 s | 101,891 | 128.84 MiB |
-| Mixed .NET/JS/TS/C/C++ | 996,004 | 13.214 s | 75,375 | 205.70 MiB |
-
-Read the [benchmark protocol and full results](docs/BENCHMARKS.md) for fixture
-definitions, analyzer versions, allocation data, safety checks, and limitations.
+EffortHours uses bounded parallel static analysis and remains responsive on large
+repositories. Every recorded dedicated million-line analyzer checkpoint completed
+in under 15 seconds on the project workstation. These are reproducible engineering
+checkpoints, not universal latency guarantees. See the
+[benchmark protocol and full results](docs/BENCHMARKS.md) for measurements,
+machine details, safety checks, and limitations.
 
 ## How Change EHE works
 
@@ -291,23 +295,15 @@ deterministic. Structured data stays on stdout, diagnostics stay on stderr, and
 ordinary reports avoid source excerpts. An optional external cache can speed
 unchanged scans, but it is never an effort signal.
 
-## Model status
+## Maturity and important limits
 
-| Area | Current status |
-| --- | --- |
-| Repository EHE | Experimental and uncalibrated; `logical-capability/0.3.0` improves blind-validation expected WAPE from `0.2279` to `0.0940` but fails six frozen error, coverage, width, and material-category gates; it is retired without test disclosure, and `seed-rules/0.4.0` remains shipped |
-| Repository uncertainty | Scalar, support/OOD, structural, and graph width drivers are rejected on development; all remain diagnostic-only and estimates are unchanged |
-| Manual QA research | `manual-qa-coding-ratio/0.1.0` is development-only; its first real-case midpoint removes 72.1% of absolute error, and six additional candidate-blind repository ranges are now frozen before total-first comparison |
-| Change EHE, documented Stage A band | Model-authored logical gate passed for eligible 4-to-32-hour changes on the previously admitted language set |
-| Newer analyzer ecosystems | Experimental and outside the existing Change admission boundary |
-| Production validation | No empirical production-accuracy claim |
-| Host-AI review | Optional, provider-neutral, and non-applying; no automatic review budget selected |
+EffortHours is a working public alpha, not a production-calibrated estimator.
+Repository EHE remains experimental. Change EHE has limited validation for
+smaller completed changes; larger changes and newer analyzer ecosystems should be
+treated as exploratory. Optional host-AI review can help inspect evidence, but it
+does not silently alter estimates.
 
-The logical gate uses evidence-backed task decomposition as weak supervision.
-Independent replication can corroborate it, while later production observations
-remain a separate evidence track.
-
-Important limits:
+Keep these limits in mind:
 
 - ranges are planning bounds, not formal confidence intervals;
 - the fastest repository path assumes discovered tests pass and does not prove a
@@ -318,8 +314,8 @@ Important limits:
 - an estimate is not a security, accessibility, architecture, or code-quality
   audit.
 
-The [product charter](docs/PRODUCT.md) and
-[estimation model](docs/ESTIMATION_MODEL.md) define the precise semantics.
+Detailed boundaries and research status are in the [product charter](docs/PRODUCT.md),
+[estimation model](docs/ESTIMATION_MODEL.md), and [calibration record](docs/CALIBRATION.md).
 
 ## Optional host-AI review
 
@@ -349,7 +345,10 @@ eh change --base-path <before> --head-path <after>
 eh change portfolio <repository> --pr <pr> --pr <pr>
 eh change portfolio --manifest <portfolio.json>
 eh change portfolio --author-period-manifest <manifest.json>
+eh change today --owner <owner> --author "@me" --timezone <zone> --capacity-hours <hours>
+eh change scope show engineering
 eh change explain <change-estimate.json> --item <id>
+eh agent codex [--install|--check]
 eh review packet <repository> --compact
 eh calibration uncertainty-features <estimate.json> <evidence.json> --compact
 eh calibration uncertainty-structure <estimate.json> <evidence.json> --compact
@@ -376,6 +375,7 @@ Run `eh --help` or a subcommand's help for the complete option surface.
 | Estimation semantics | [Estimation model](docs/ESTIMATION_MODEL.md) |
 | Calibration and repository-model admission | [Calibration](docs/CALIBRATION.md) and [historical frozen v1 policy](docs/MODEL_ADMISSION.md) |
 | Change and portfolio semantics | [Change EHE contract](docs/CHANGE_ESTIMATION.md) |
+| GitHub today mode and Codex integration | [Author-period workflows](docs/AUTHOR_PERIOD_SCAFFOLDING.md) and [Codex companion](docs/CODEX_INTEGRATION.md) |
 | Analyzer-specific boundaries | [Documentation index](docs/README.md) |
 | Performance | [Benchmark protocol and results](docs/BENCHMARKS.md) |
 | Versioned schemas | [Schemas](schemas/) |
