@@ -6,6 +6,8 @@ may still change public contracts with explicit documentation.
 
 ## Unreleased
 
+## 0.10.0-alpha.17 - 2026-08-24
+
 ### Added
 
 - Added the versioned `efforthours-codex/1.0.0` companion skill and
@@ -36,6 +38,7 @@ may still change public contracts with explicit documentation.
   GitHub CLI, inaccessible owners, rate limits, network failure, malformed
   provider responses, and managed-cache denial without serializing raw provider
   stderr or sensitive paths.
+- Refreshed the NuGet README performance link and current Change estimator identity.
 
 ## 0.10.0-alpha.16 - 2026-08-24
 
