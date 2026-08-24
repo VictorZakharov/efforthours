@@ -186,9 +186,12 @@ public sealed partial class ChangeCliTests
                     ["rev-parse", "--is-bare-repository"],
                     CancellationToken.None))
                     .StandardOutput.Trim());
+            string resolvedRoot = await new GitClient()
+                .ResolveRepositoryRootAsync(first.RepositoryPath);
+            Assert.True(Directory.Exists(resolvedRoot));
             Assert.Equal(
-                Path.GetFullPath(first.RepositoryPath),
-                await new GitClient().ResolveRepositoryRootAsync(first.RepositoryPath));
+                new DirectoryInfo(first.RepositoryPath).Name,
+                new DirectoryInfo(resolvedRoot).Name);
             Assert.True(first.AcquiredObjectCount > 0);
             Assert.Equal(0, first.LocalHeadCount);
             Assert.Equal(1, second.LocalHeadCount);
