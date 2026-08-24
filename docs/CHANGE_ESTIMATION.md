@@ -73,8 +73,9 @@ eh change <repository> --pr <number-or-url> [--repo <owner/name>]
 eh change portfolio <repository> --pr <pr> --pr <pr>
 eh change portfolio --manifest <portfolio.json>
 eh change portfolio --author-period-manifest <manifest.json>
-eh change portfolio --owner <owner> --workspace <root> --author "@me" --today \
-  --timezone <zone> --capacity-hours <hours> [--include-open-prs] [--fetch-missing]
+eh change today --owner <owner> --author "@me" --timezone <zone> \
+  --scope engineering --capacity-hours <hours> [--include-open-prs]
+eh change scope show engineering
 eh change portfolio <repository> --author <identity> --since <instant> --until <instant>
   [--date-field <author|committer>] [--timezone <iana-or-host-zone>]
   [--merge-policy <exclude|first-parent>] [--coauthors <include|exclude>]
@@ -85,8 +86,10 @@ compact, and explicit-output options. Directory pairs and evidence pairs are
 deliberately separate selector families; incomplete or mixed pairs fail before
 analysis. Portfolio commands likewise require exactly one repeated-PR, manifest,
 direct-author-period, author-period-manifest, or today-to-date family. Local
-snapshot and Git-ref inputs do not depend on GitHub. `--today` is a deliberate
-orchestration exception that queries GitHub through `gh`, pins an in-memory v1
+snapshot and Git-ref inputs do not depend on GitHub. `change today` is a deliberate
+orchestration exception that queries GitHub through `gh`, creates/reuses active
+repositories in a private bare cache, applies the versioned engineering path
+profile before immutable analysis, runs exact preflight, pins an in-memory v1
 manifest, and then returns to the existing local estimator boundary.
 Pull-request resolution uses `gh pr view` only when the caller explicitly selects
 `--pr`; `gh` must be installed and authenticated. The adapter retains only the

@@ -293,11 +293,36 @@ internal sealed partial class ChangePortfolioCommand
                 Directory.CreateDirectory(directory);
             }
 
-            await File.WriteAllTextAsync(
-                fullPath,
-                content.TrimEnd() + Environment.NewLine,
-                new UTF8Encoding(false),
-                cancellationToken).ConfigureAwait(false);
+            string temporaryPath = Path.Combine(
+                directory ?? Environment.CurrentDirectory,
+                $".{Path.GetFileName(fullPath)}.{Guid.NewGuid():N}.tmp");
+            try
+            {
+                await using (FileStream stream = new(
+                    temporaryPath,
+                    FileMode.CreateNew,
+                    FileAccess.Write,
+                    FileShare.None,
+                    4096,
+                    FileOptions.Asynchronous | FileOptions.WriteThrough))
+                await using (StreamWriter writer = new(stream, new UTF8Encoding(false)))
+                {
+                    await writer.WriteAsync(
+                        (content.TrimEnd() + Environment.NewLine).AsMemory(),
+                        cancellationToken).ConfigureAwait(false);
+                    await writer.FlushAsync(cancellationToken).ConfigureAwait(false);
+                    stream.Flush(flushToDisk: true);
+                }
+
+                File.Move(temporaryPath, fullPath, overwrite: true);
+            }
+            finally
+            {
+                if (File.Exists(temporaryPath))
+                {
+                    File.Delete(temporaryPath);
+                }
+            }
             return CliExitCodes.Success;
         }
         catch (Exception exception) when (exception is IOException or UnauthorizedAccessException)

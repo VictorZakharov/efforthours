@@ -25,8 +25,8 @@ eh change portfolio <repository> --pr <number-or-url> --pr <number-or-url>
 eh change portfolio --manifest <portfolio.json>
 eh change portfolio --author-period-manifest <manifest.json>
 eh change portfolio --author-period-manifest <manifest.json> --preflight
-eh change portfolio --owner <owner> --workspace <root> --author "@me" --today \
-  --timezone <zone> --capacity-hours <hours> [--include-open-prs] [--fetch-missing]
+eh change today --owner <owner> --author "@me" --timezone <zone> \
+  --scope engineering --capacity-hours <hours> [--include-open-prs]
 eh change portfolio <repository> --author <alias> [--author <alias> ...]
   --since <instant> --until <instant>
 ```
@@ -94,15 +94,16 @@ generic, anonymized engineering run report. Both views come from the same
 structured calculation. `--generated-at` permits a frozen generation instant for
 reproducible artifacts.
 
-The explicit `--today` selector is a bounded one-command composition of GitHub
-discovery, local immutable selection, one partial daily bucket, and one inline
-capacity cell. It requires `--owner`, `--workspace`, at least one `--author`
-(normally `@me`), a timezone, and positive `--capacity-hours`. It writes JSON or
-concise Markdown to stdout unless `--output` is supplied. The exact interval is
-local midnight inclusive to the next local midnight exclusive; `asOf` records the
-partial-day observation instant. A complete no-match day remains a zero row and
-zero ratio. Discovery or repository failure exits nonzero and never publishes a
-partial aggregate.
+The explicit `change today` selector is a bounded one-command composition of
+GitHub discovery, EffortHours-managed bare-cache acquisition, native engineering
+path admission, exact internal preflight, immutable selection, one partial daily
+bucket, and one inline capacity cell. It requires `--owner`, at least one
+`--author` (normally `@me`), a named timezone, `--scope engineering`, and positive
+`--capacity-hours`; `--workspace` is rejected. The exact interval is local midnight
+inclusive to one frozen `asOf` exclusive. A complete no-match day may contain zero
+active repositories and remains zero EHE/X. Scope, provider, acquisition,
+preflight, or repository failure exits nonzero with an incomplete artifact and
+never publishes a partial aggregate.
 
 `--normalization joint|isolated` chooses the contributor comparison view without
 changing the source portfolio. `joint` is the default: its mutually exclusive
@@ -306,19 +307,18 @@ retained in contracts or reports.
 
 Broad provider behavior remains outside estimation rules, but the concrete
 today-to-date workflow now justifies one explicit orchestration adapter. As
-defined in [`AUTHOR_PERIOD_SCAFFOLDING.md`](AUTHOR_PERIOD_SCAFFOLDING.md), it maps
-the requested GitHub owner to repositories already inside the caller-supplied
-workspace, resolves current immutable default heads, filters current open PRs by
-fully paginated commit metadata, optionally acquires only missing discovered
-objects without updating refs or `FETCH_HEAD`, and builds the unchanged v1
-manifest in memory.
+defined in [`AUTHOR_PERIOD_SCAFFOLDING.md`](AUTHOR_PERIOD_SCAFFOLDING.md), it
+resolves current owner default heads and current user-authored open PRs through
+fully paginated commit metadata, materializes active repositories only in the
+private EffortHours bare cache, applies the effective versioned engineering scope
+inside the snapshot/diff pipeline, and builds the unchanged v1 manifest in memory.
 
-`@me` can combine the active provider login, authorized verified emails, mapped
-local Git identities, and explicit supplemental aliases. Local exact Git author/
+`@me` combines the active provider login, authorized verified emails, and explicit
+supplemental aliases; it does not read local repositories. Exact Git author/
 coauthor/date/merge selection remains authoritative. Reports retain only a
-privacy-safe source classification, discovery counts, digests, immutable objects,
-and completeness; provider activity never becomes an effort signal. Ordinary
-manifest estimation remains host-independent and offline.
+privacy-safe source classification, discovery/scope counts, digests, immutable
+objects, and completeness; provider activity never becomes an effort signal.
+Ordinary manifest estimation remains host-independent and offline.
 
 ## Reconciliation policy
 

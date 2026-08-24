@@ -31,6 +31,10 @@ internal sealed record ChangePortfolioRepositoryOutcome
 
     public TimeSpan Elapsed { get; init; }
 
+    public int AdmittedChangeCount { get; init; }
+
+    public int ScopeEmptyChangeCount { get; init; }
+
     public ChangePortfolioComparisonFailure? Failure { get; init; }
 }
 
@@ -39,7 +43,8 @@ internal static class ChangePortfolioComparisonExecutionFactory
     public static ChangePortfolioComparisonExecution Create(
         IReadOnlyList<ChangePortfolioRepositoryOutcome> outcomes,
         bool checkpointEnabled,
-        ChangePortfolioExecutionTelemetry? portfolioTelemetry = null)
+        ChangePortfolioExecutionTelemetry? portfolioTelemetry = null,
+        ChangePortfolioComparisonFailure? workflowFailure = null)
     {
         ChangePortfolioProgress? last = outcomes
             .Select(outcome => outcome.Telemetry.GetLastProgress())
@@ -68,6 +73,14 @@ internal static class ChangePortfolioComparisonExecutionFactory
                     Elapsed = TimeSpan.FromTicks(group.Sum(value => value.Elapsed.Ticks)),
                 }),
         ];
+        List<ChangePortfolioComparisonFailure> failures = [.. outcomes
+            .Where(outcome => outcome.Failure is not null)
+            .Select(outcome => outcome.Failure!)];
+        if (workflowFailure is not null)
+        {
+            failures.Add(workflowFailure);
+        }
+
         return new ChangePortfolioComparisonExecution
         {
             RuntimeFramework = RuntimeInformation.FrameworkDescription,
@@ -158,8 +171,7 @@ internal static class ChangePortfolioComparisonExecutionFactory
                     RepositoryAnalysisConcurrency.MaximumBufferedFileBytes,
                 MaximumRenderedOutputBytes = ChangePortfolioLimits.MaximumRenderedOutputBytes,
             },
-            Failures = [.. outcomes.Where(outcome => outcome.Failure is not null)
-                .Select(outcome => outcome.Failure!)],
+            Failures = failures,
         };
     }
 
@@ -170,6 +182,8 @@ internal static class ChangePortfolioComparisonExecutionFactory
             Status = outcome.Status,
             CheckpointDisposition = outcome.CheckpointDisposition,
             SelectedChangeCount = outcome.Scope?.SelectedChangeCount ?? outcome.Candidates.Count,
+            AdmittedChangeCount = outcome.AdmittedChangeCount,
+            ScopeEmptyChangeCount = outcome.ScopeEmptyChangeCount,
             CandidateCount = outcome.Scope?.CandidateCount ?? 0,
             ChargedCandidateLedgerBytes = outcome.Scope?.ChargedCandidateLedgerBytes ?? 0,
             SelectionChunkCount = outcome.Scope?.SelectionChunkCount ?? 0,
@@ -204,15 +218,19 @@ internal static class ChangePortfolioComparisonExecutionFactory
 
     private static int PhaseOrder(string phase) => phase switch
     {
-        ChangePortfolioExecutionPhases.ManifestValidation => 0,
-        ChangePortfolioExecutionPhases.HeadValidation => 1,
-        ChangePortfolioExecutionPhases.HistoryUnion => 2,
-        ChangePortfolioExecutionPhases.Selection => 3,
-        ChangePortfolioExecutionPhases.SnapshotAndDiffConstruction => 4,
-        ChangePortfolioExecutionPhases.StaticAnalysis => 5,
-        ChangePortfolioExecutionPhases.Reconciliation => 6,
-        ChangePortfolioExecutionPhases.Allocation => 7,
-        ChangePortfolioExecutionPhases.Rendering => 8,
+        ChangePortfolioExecutionPhases.ScopeLoading => 0,
+        ChangePortfolioExecutionPhases.ProviderDiscovery => 1,
+        ChangePortfolioExecutionPhases.Acquisition => 2,
+        ChangePortfolioExecutionPhases.ManifestValidation => 3,
+        ChangePortfolioExecutionPhases.HeadValidation => 4,
+        ChangePortfolioExecutionPhases.HistoryUnion => 5,
+        ChangePortfolioExecutionPhases.Selection => 6,
+        ChangePortfolioExecutionPhases.Preflight => 7,
+        ChangePortfolioExecutionPhases.SnapshotAndDiffConstruction => 8,
+        ChangePortfolioExecutionPhases.StaticAnalysis => 9,
+        ChangePortfolioExecutionPhases.Reconciliation => 10,
+        ChangePortfolioExecutionPhases.Allocation => 11,
+        ChangePortfolioExecutionPhases.Rendering => 12,
         _ => int.MaxValue,
     };
 

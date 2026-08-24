@@ -8,9 +8,16 @@ public static partial class ContractValidation
         ChangePortfolioComparisonReport report,
         List<string> errors)
     {
-        if ((report.AsOf is null) != (report.Discovery is null))
+        bool hasTodayMetadata = report.AsOf is not null;
+        if (new[]
+            {
+                report.Discovery is not null,
+                report.ScopeProfile is not null,
+                report.ScopeSummary is not null,
+            }.Any(value => value != hasTodayMetadata))
         {
-            errors.Add("Comparison asOf and host discovery metadata must be present together.");
+            errors.Add(
+                "Comparison asOf, host discovery, scope profile, and scope summary metadata must be present together.");
             return;
         }
 
@@ -21,15 +28,18 @@ public static partial class ContractValidation
 
         if (report.AsOf.Value.Offset != TimeSpan.Zero ||
             report.AsOf < report.Selection.AuthorPeriodManifest?.SinceInclusive ||
-            report.AsOf >= report.Selection.AuthorPeriodManifest?.UntilExclusive)
+            report.AsOf != report.Selection.AuthorPeriodManifest?.UntilExclusive)
         {
-            errors.Add("Comparison asOf must be a UTC instant inside the selected interval.");
+            errors.Add("Comparison asOf must be the UTC exclusive end of the selected interval.");
         }
 
         ChangePortfolioHostDiscovery discovery = report.Discovery!;
-        if (discovery.Protocol != ChangePortfolioComparisonPolicies.GitHubWorkspaceDiscoveryV1 ||
+        int selectedRepositoryCount = report.Selection.AuthorPeriodManifest!.Repositories.Count;
+        int selectedHeadCount = report.Selection.AuthorPeriodManifest.Repositories.Sum(
+            repository => repository.Heads.Count);
+        if (discovery.Protocol != ChangePortfolioComparisonPolicies.GitHubManagedCacheDiscoveryV1 ||
             discovery.Provider != "github" ||
-            discovery.Scope != "owner-workspace-intersection")
+            discovery.Scope != "owner-provider-discovery")
         {
             errors.Add("Host discovery uses an unsupported provider, scope, or protocol.");
         }
@@ -39,26 +49,53 @@ public static partial class ContractValidation
         int[] counts =
         [
             discovery.ProviderRepositoryCount,
-            discovery.WorkspaceRepositoryCount,
             discovery.ConsideredRepositoryCount,
             discovery.ActiveRepositoryCount,
             discovery.DefaultHeadCount,
             discovery.OpenPullRequestHeadCount,
+            discovery.OpenPullRequestCount,
             discovery.ProviderQueryCount,
             discovery.ProviderPageCount,
             discovery.LocalObjectCount,
             discovery.AcquiredObjectCount,
         ];
         if (counts.Any(count => count < 0) ||
+            discovery.AcquiredBytes < 0 ||
             discovery.ConsideredRepositoryCount > discovery.ProviderRepositoryCount ||
-            discovery.ConsideredRepositoryCount > discovery.WorkspaceRepositoryCount ||
             discovery.ActiveRepositoryCount > discovery.ConsideredRepositoryCount ||
-            discovery.DefaultHeadCount != discovery.ActiveRepositoryCount ||
+            discovery.ActiveRepositoryCount != selectedRepositoryCount ||
+            discovery.DefaultHeadCount > discovery.ActiveRepositoryCount ||
+            discovery.DefaultHeadCount + discovery.OpenPullRequestHeadCount != selectedHeadCount ||
+            discovery.OpenPullRequestHeadCount > discovery.OpenPullRequestCount ||
             discovery.DefaultHeadCount + discovery.OpenPullRequestHeadCount >
                 discovery.LocalObjectCount + discovery.AcquiredObjectCount ||
             discovery.ElapsedMilliseconds < 0m)
         {
             errors.Add("Host discovery counts are inconsistent.");
+        }
+
+        ChangePortfolioScopeProfile profile = report.ScopeProfile!;
+        if (profile.Id != "engineering" ||
+            string.IsNullOrWhiteSpace(profile.Version) ||
+            profile.Version.Length > 128 ||
+            profile.Source is not ("bundled" or "bundled+user-extend" or
+                "bundled+user-replace" or "unavailable") ||
+            profile.Source == "unavailable" && report.Status != ChangePortfolioComparisonStatus.Incomplete ||
+            profile.ImportantExclusions.Count == 0 ||
+            profile.ImportantExclusions.Any(string.IsNullOrWhiteSpace))
+        {
+            errors.Add("The today-to-date engineering scope profile is invalid.");
+        }
+
+        ValidateDigest(profile.Digest, "scopeProfile.digest", errors);
+        ChangePortfolioScopeSummary summary = report.ScopeSummary!;
+        if (summary.IdentitySelectedCommitCount < 0 ||
+            summary.AdmittedCommitCount < 0 ||
+            summary.ScopeEmptyCommitCount < 0 ||
+            summary.AdmittedCommitCount + summary.ScopeEmptyCommitCount !=
+                summary.IdentitySelectedCommitCount)
+        {
+            errors.Add("The today-to-date scope summary counts are inconsistent.");
         }
 
         if (report.Status == ChangePortfolioComparisonStatus.Complete && !discovery.Complete)

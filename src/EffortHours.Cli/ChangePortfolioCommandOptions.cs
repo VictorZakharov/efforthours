@@ -19,6 +19,7 @@ internal static partial class ChangePortfolioCommandOptionsParser
         string? authorPeriodManifest = null;
         string? owner = null;
         string? workspace = null;
+        string? scope = null;
         bool today = false;
         bool includeOpenPullRequests = false;
         decimal? capacityHours = null;
@@ -102,6 +103,13 @@ internal static partial class ChangePortfolioCommandOptionsParser
                 continue;
             }
 
+            if (option == "--author" && today &&
+                (index + 1 >= arguments.Length || arguments[index + 1].StartsWith('-')))
+            {
+                authors.Add("@me");
+                continue;
+            }
+
             if (index + 1 >= arguments.Length)
             {
                 return Error($"Option '{option}' requires a value.");
@@ -127,6 +135,9 @@ internal static partial class ChangePortfolioCommandOptionsParser
                     break;
                 case "--workspace":
                     workspace = value;
+                    break;
+                case "--scope":
+                    scope = value.ToLowerInvariant();
                     break;
                 case "--capacity-hours":
                     if (!decimal.TryParse(
@@ -179,14 +190,13 @@ internal static partial class ChangePortfolioCommandOptionsParser
                     normalizationProvided = true;
                     break;
                 case "--generated-at":
-                    if (!DateTimeOffset.TryParseExact(
+                    if (!DateTimeOffset.TryParse(
                         value,
-                        "O",
                         CultureInfo.InvariantCulture,
-                        DateTimeStyles.None,
+                        DateTimeStyles.RoundtripKind,
                         out DateTimeOffset parsedGeneratedAt))
                     {
-                        return Error("Generated timestamp must be an ISO-8601 round-trip instant.");
+                        return Error("Generated timestamp must be a valid ISO-8601 instant.");
                     }
 
                     generatedAt = parsedGeneratedAt.ToUniversalTime();
@@ -302,6 +312,7 @@ internal static partial class ChangePortfolioCommandOptionsParser
             AuthorPeriodManifestPath = authorPeriodManifest,
             Owner = owner,
             WorkspacePath = workspace,
+            Scope = scope,
             Today = today,
             IncludeOpenPullRequests = includeOpenPullRequests,
             CapacityHours = capacityHours,

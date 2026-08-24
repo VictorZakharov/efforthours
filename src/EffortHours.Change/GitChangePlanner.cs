@@ -16,6 +16,10 @@ public sealed record GitChangePlan
 
     public IReadOnlyList<Diagnostic> Diagnostics { get; init; } = [];
 
+    public string? RepositoryName { get; init; }
+
+    public ChangePathAdmission? PathAdmission { get; init; }
+
     internal GitSnapshotSession? SnapshotSession { get; init; }
 }
 

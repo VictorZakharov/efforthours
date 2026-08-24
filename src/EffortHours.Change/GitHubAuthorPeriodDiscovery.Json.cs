@@ -1,5 +1,4 @@
-using System.Security.Cryptography;
-using System.Text;
+using System.Globalization;
 using System.Text.Json;
 using EffortHours.Contracts.V1;
 
@@ -8,7 +7,9 @@ namespace EffortHours.Change;
 internal sealed record GitHubDiscoveryRepository(
     string StableId,
     string Identity,
-    string? DefaultBranch);
+    string? DefaultBranch,
+    bool Archived = false,
+    bool Mirror = false);
 
 internal static partial class GitHubAuthorPeriodDiscoveryJson
 {
@@ -79,10 +80,17 @@ internal static partial class GitHubAuthorPeriodDiscoveryJson
                 string? defaultBranch = item.TryGetProperty("default_branch", out JsonElement branch)
                     ? branch.GetString()
                     : null;
+                bool archived = item.TryGetProperty("archived", out JsonElement archivedValue) &&
+                    archivedValue.ValueKind == JsonValueKind.True;
+                bool mirror = item.TryGetProperty("mirror_url", out JsonElement mirrorValue) &&
+                    mirrorValue.ValueKind == JsonValueKind.String &&
+                    !string.IsNullOrWhiteSpace(mirrorValue.GetString());
                 repositories.Add(new GitHubDiscoveryRepository(
                     stableId,
                     identity,
-                    string.IsNullOrWhiteSpace(defaultBranch) ? null : defaultBranch));
+                    string.IsNullOrWhiteSpace(defaultBranch) ? null : defaultBranch,
+                    archived,
+                    mirror));
             }
 
             GitHubDiscoveryRepository[] canonical = [.. repositories
@@ -178,11 +186,12 @@ internal static partial class GitHubAuthorPeriodDiscoveryJson
         }
     }
 
-    public static async Task<DiscoveredRepository> DiscoverHeadsAsync(
+    public static async Task<DiscoveredRepository?> DiscoverHeadsAsync(
         IExternalCommandRunner commands,
         string workingDirectory,
-        MappedRepository repository,
+        GitHubDiscoveryRepository repository,
         IReadOnlyList<string> aliases,
+        string authenticatedLogin,
         DateTimeOffset since,
         DateTimeOffset until,
         ChangePortfolioDateField dateField,
@@ -192,20 +201,28 @@ internal static partial class GitHubAuthorPeriodDiscoveryJson
         ProviderQueryCounters counters,
         CancellationToken cancellationToken)
     {
-        string identity = repository.Provider.Identity;
-        string branch = repository.Provider.DefaultBranch!;
-        string defaultJson = await RunRequiredApiAsync(
+        string identity = repository.Identity;
+        string branch = repository.DefaultBranch!;
+        List<DiscoveredHead> heads = [];
+        string? defaultObject = await ResolveMatchingDefaultHeadAsync(
             commands,
             workingDirectory,
-            ["api", $"repos/{identity}/commits/{Uri.EscapeDataString(branch)}"],
+            identity,
+            branch,
+            aliases,
+            since,
+            until,
+            dateField,
+            mergePolicy,
+            coauthorPolicy,
             counters,
-            paginated: false,
             cancellationToken).ConfigureAwait(false);
-        string defaultObject = ParseObject(defaultJson, "sha", "default-branch head");
-        List<DiscoveredHead> heads =
-        [
-            new DiscoveredHead("default", defaultObject, $"refs/heads/{branch}"),
-        ];
+        if (defaultObject is not null)
+        {
+            heads.Add(new DiscoveredHead("default", defaultObject, $"refs/heads/{branch}"));
+        }
+
+        int authoredOpenPullRequests = 0;
         if (includeOpenPullRequests)
         {
             string pullsJson = await RunRequiredApiAsync(
@@ -221,6 +238,12 @@ internal static partial class GitHubAuthorPeriodDiscoveryJson
                 foreach (JsonElement pull in Pages(document.RootElement)
                     .OrderBy(item => item.GetProperty("number").GetInt32()))
                 {
+                    if (!PullAuthorMatches(pull, authenticatedLogin, aliases))
+                    {
+                        continue;
+                    }
+
+                    authoredOpenPullRequests++;
                     int number = pull.GetProperty("number").GetInt32();
                     if (number <= 0)
                     {
@@ -261,7 +284,7 @@ internal static partial class GitHubAuthorPeriodDiscoveryJson
                     }
 
                     heads.Add(new DiscoveredHead(
-                        OpaqueId("open", repository.Provider.StableId + ":" + number),
+                        OpaqueId("open", repository.StableId + ":" + number),
                         objectId,
                         $"refs/pull/{number}/head"));
                 }
@@ -278,165 +301,89 @@ internal static partial class GitHubAuthorPeriodDiscoveryJson
         if (heads.Count > ChangeAuthorPeriodManifestLimits.MaximumHeadsPerRepository)
         {
             throw new InvalidOperationException(
-                $"Repository '{OpaqueId("repository", repository.Provider.StableId)}' has {heads.Count} " +
+                $"Repository '{OpaqueId("repository", repository.StableId)}' has {heads.Count} " +
                 $"discovered heads; v1 supports at most " +
                 $"{ChangeAuthorPeriodManifestLimits.MaximumHeadsPerRepository} per repository.");
         }
 
-        return new DiscoveredRepository(
-            OpaqueId("repository", repository.Provider.StableId),
-            repository.LocalPath,
-            "https://github.com/" + identity + ".git",
-            heads);
+        counters.AddOpenPullRequests(authoredOpenPullRequests);
+
+        return heads.Count == 0
+            ? null
+            : new DiscoveredRepository(
+                OpaqueId("repository", repository.StableId),
+                repository.Identity,
+                heads,
+                authoredOpenPullRequests);
     }
 
-    private static async Task<string?> RunApiAsync(
+    private static async Task<string?> ResolveMatchingDefaultHeadAsync(
         IExternalCommandRunner commands,
         string workingDirectory,
-        IReadOnlyList<string> arguments,
+        string repositoryIdentity,
+        string branch,
+        IReadOnlyList<string> aliases,
+        DateTimeOffset since,
+        DateTimeOffset until,
+        ChangePortfolioDateField dateField,
+        ChangePortfolioMergePolicy mergePolicy,
+        ChangePortfolioCoauthorPolicy coauthorPolicy,
         ProviderQueryCounters counters,
-        bool paginated,
-        bool optional,
         CancellationToken cancellationToken)
     {
-        counters.AddQuery();
-        ExternalCommandResult result;
-        try
-        {
-            result = await commands.RunAsync(
-                "gh",
-                workingDirectory,
-                arguments,
-                cancellationToken,
-                requireSuccess: !optional).ConfigureAwait(false);
-        }
-        catch (ExternalCommandException exception)
-        {
-            throw new InvalidOperationException(
-                "GitHub discovery failed. Confirm that gh is installed, authenticated, and authorized " +
-                "for the requested owner scope.",
-                exception);
-        }
-
-        if (optional && result.ExitCode != 0)
-        {
-            return null;
-        }
-
-        if (result.StandardOutput.Length > MaximumResponseCharacters)
-        {
-            throw new InvalidOperationException(
-                "GitHub discovery response exceeded the bounded adapter input size.");
-        }
-
-        if (paginated)
-        {
-            try
-            {
-                using JsonDocument document = JsonDocument.Parse(result.StandardOutput);
-                if (document.RootElement.ValueKind != JsonValueKind.Array)
-                {
-                    throw new JsonException();
-                }
-
-                counters.AddPages(document.RootElement.GetArrayLength());
-            }
-            catch (JsonException exception)
-            {
-                throw new InvalidOperationException(
-                    "GitHub returned malformed paginated JSON.",
-                    exception);
-            }
-        }
-        else
-        {
-            counters.AddPages(1);
-        }
-
-        return result.StandardOutput;
-    }
-
-    private static async Task<string> RunRequiredApiAsync(
-        IExternalCommandRunner commands,
-        string workingDirectory,
-        IReadOnlyList<string> arguments,
-        ProviderQueryCounters counters,
-        bool paginated,
-        CancellationToken cancellationToken) =>
-        await RunApiAsync(
+        string endpoint = $"repos/{repositoryIdentity}/commits?sha={Uri.EscapeDataString(branch)}" +
+            $"&since={Uri.EscapeDataString(since.ToString("O", CultureInfo.InvariantCulture))}" +
+            $"&until={Uri.EscapeDataString(until.ToString("O", CultureInfo.InvariantCulture))}&per_page=100";
+        string json = await RunRequiredApiAsync(
             commands,
             workingDirectory,
-            arguments,
+            ["api", "--paginate", "--slurp", endpoint],
             counters,
-            paginated,
-            optional: false,
-            cancellationToken).ConfigureAwait(false) ??
-        throw new InvalidOperationException("GitHub discovery returned no response.");
-
-    private static IEnumerable<JsonElement> Pages(JsonElement root)
-    {
-        if (root.ValueKind != JsonValueKind.Array)
-        {
-            throw new JsonException("Paginated GitHub output must be an array of pages.");
-        }
-
-        foreach (JsonElement page in root.EnumerateArray())
-        {
-            if (page.ValueKind != JsonValueKind.Array)
-            {
-                throw new JsonException("Each paginated GitHub page must be an array.");
-            }
-
-            foreach (JsonElement item in page.EnumerateArray())
-            {
-                yield return item;
-            }
-        }
-    }
-
-    private static string ParseObject(string json, string property, string subject)
-    {
+            paginated: true,
+            cancellationToken,
+            emptyRepositoryIsEmpty: true).ConfigureAwait(false);
         try
         {
             using JsonDocument document = JsonDocument.Parse(json);
-            return RequireObjectId(document.RootElement.GetProperty(property).GetString(), subject);
+            JsonElement[] commits = [.. Pages(document.RootElement)];
+            if (commits.Length == 0)
+            {
+                return null;
+            }
+
+            GitAuthorPeriodPortfolioOptions options = new()
+            {
+                Aliases = aliases,
+                SinceInclusive = since,
+                UntilExclusive = until,
+                DateField = dateField,
+                MergePolicy = mergePolicy,
+                CoauthorPolicy = coauthorPolicy,
+            };
+            bool selected = commits.Any(commit =>
+                AuthorPeriodCommitSelector.Select([ParseCommit(commit)], options, aliases)
+                    .Commits.Count > 0);
+            return selected
+                ? RequireObjectId(commits[0].GetProperty("sha").GetString(), "default-branch head")
+                : null;
         }
         catch (Exception exception) when (
-            exception is JsonException or KeyNotFoundException or InvalidOperationException)
+            exception is JsonException or KeyNotFoundException or InvalidOperationException or FormatException)
         {
-            throw new InvalidOperationException($"GitHub returned an incomplete {subject}.", exception);
+            throw new InvalidOperationException(
+                "GitHub returned incomplete default-branch commit metadata.",
+                exception);
         }
     }
 
-    private static string RequireObjectId(string? value, string subject)
-    {
-        string objectId = value?.ToLowerInvariant() ?? string.Empty;
-        if (objectId.Length is not (40 or 64) || objectId.Any(character => !Uri.IsHexDigit(character)))
-        {
-            throw new InvalidOperationException($"GitHub returned an invalid {subject} object ID.");
-        }
+    private static bool PullAuthorMatches(
+        JsonElement pull,
+        string authenticatedLogin,
+        IReadOnlyList<string> aliases) =>
+        pull.TryGetProperty("user", out JsonElement user) &&
+        user.ValueKind == JsonValueKind.Object &&
+        user.TryGetProperty("login", out JsonElement login) &&
+        (string.Equals(login.GetString(), authenticatedLogin, StringComparison.OrdinalIgnoreCase) ||
+            aliases.Contains(login.GetString(), StringComparer.OrdinalIgnoreCase));
 
-        return objectId;
-    }
-
-    private static string RequireRepositoryIdentity(string? value)
-    {
-        string identity = value?.Trim() ?? string.Empty;
-        string[] parts = identity.Split('/');
-        if (parts.Length != 2 || parts.Any(part => string.IsNullOrWhiteSpace(part)) ||
-            parts.Any(part => part.Any(character =>
-                !char.IsAsciiLetterOrDigit(character) && character is not '-' and not '_' and not '.')))
-        {
-            throw new InvalidOperationException("GitHub returned an invalid repository identity.");
-        }
-
-        return identity;
-    }
-
-    private static string OpaqueId(string prefix, string value)
-    {
-        string digest = Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(value)))
-            .ToLowerInvariant();
-        return prefix + "-" + digest[..20];
-    }
 }

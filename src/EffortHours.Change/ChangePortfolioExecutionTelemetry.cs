@@ -4,10 +4,14 @@ namespace EffortHours.Change;
 
 public static class ChangePortfolioExecutionPhases
 {
+    public const string ScopeLoading = "scope-loading";
+    public const string ProviderDiscovery = "provider-discovery";
+    public const string Acquisition = "acquisition";
     public const string ManifestValidation = "manifest-validation";
     public const string HeadValidation = "head-validation";
     public const string HistoryUnion = "history-union";
     public const string Selection = "selection";
+    public const string Preflight = "preflight";
     public const string SnapshotAndDiffConstruction = "snapshot-diff-construction";
     public const string StaticAnalysis = "static-analysis";
     public const string Reconciliation = "reconciliation";
@@ -16,10 +20,14 @@ public static class ChangePortfolioExecutionPhases
 
     internal static IReadOnlyList<string> Ordered { get; } =
     [
+        ScopeLoading,
+        ProviderDiscovery,
+        Acquisition,
         ManifestValidation,
         HeadValidation,
         HistoryUnion,
         Selection,
+        Preflight,
         SnapshotAndDiffConstruction,
         StaticAnalysis,
         Reconciliation,

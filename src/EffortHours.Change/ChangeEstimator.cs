@@ -18,6 +18,8 @@ public sealed record ChangeEstimateInput
     public IReadOnlyList<ChangeComponentInput> Components { get; init; } = [];
 
     public IReadOnlyList<Diagnostic> Diagnostics { get; init; } = [];
+
+    public ChangePathAdmission? PathAdmission { get; init; }
 }
 
 public sealed partial class ChangeEstimator
@@ -104,6 +106,7 @@ public sealed partial class ChangeEstimator
                 baseSnapshot,
                 headSnapshot,
                 input.Diagnostics,
+                input.PathAdmission,
                 profile,
                 snapshotAnalyses,
                 cacheNamespace,
@@ -176,6 +179,7 @@ public sealed partial class ChangeEstimator
                         componentBase,
                         componentHead,
                         [],
+                        input.PathAdmission,
                         profile,
                         snapshotAnalyses,
                         cacheNamespace,
@@ -311,7 +315,8 @@ public sealed partial class ChangeEstimator
 
     private static ChangeEstimateInput CreateInput(GitChangePlan plan)
     {
-        string repositoryName = Path.GetFileName(Path.TrimEndingDirectorySeparator(plan.RepositoryPath));
+        string repositoryName = plan.RepositoryName ??
+            Path.GetFileName(Path.TrimEndingDirectorySeparator(plan.RepositoryPath));
         return new ChangeEstimateInput
         {
             RepositoryName = string.IsNullOrWhiteSpace(repositoryName)
@@ -322,6 +327,7 @@ public sealed partial class ChangeEstimator
             OpenHeadAsync = plan.OpenHeadAsync,
             Components = plan.Components,
             Diagnostics = plan.Diagnostics,
+            PathAdmission = plan.PathAdmission,
         };
     }
 

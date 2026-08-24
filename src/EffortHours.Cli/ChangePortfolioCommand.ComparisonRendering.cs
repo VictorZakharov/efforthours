@@ -13,6 +13,16 @@ internal sealed partial class ChangePortfolioCommand
             long workflowStarted)
     {
         ChangePortfolioComparisonReport report = source;
+        report = report with
+        {
+            Execution = report.Execution with
+            {
+                EndToEndElapsedMilliseconds = decimal.Round(
+                    (decimal)Stopwatch.GetElapsedTime(workflowStarted).TotalMilliseconds,
+                    3,
+                    MidpointRounding.AwayFromZero),
+            },
+        };
         long priorBytes = -1;
         for (int attempt = 0; attempt < 8; attempt++)
         {
@@ -35,24 +45,9 @@ internal sealed partial class ChangePortfolioCommand
                     : ChangePortfolioComparisonMarkdownRenderer.Render(report)
                 : new ChangePortfolioComparisonJsonRenderer(options.Compact).Render(report);
             long measured = RenderedOutputByteCount(output);
-            if (options.Today && report.Execution.EndToEndElapsedMilliseconds is null)
-            {
-                report = report with
-                {
-                    Execution = report.Execution with
-                    {
-                        EndToEndElapsedMilliseconds = decimal.Round(
-                            (decimal)Stopwatch.GetElapsedTime(workflowStarted).TotalMilliseconds,
-                            3,
-                            MidpointRounding.AwayFromZero),
-                    },
-                };
-                priorBytes = measured;
-                continue;
-            }
-
             if (measured == priorBytes)
             {
+                _ = new ChangePortfolioComparisonJsonRenderer(compact: true).Render(report);
                 return (report, output);
             }
 

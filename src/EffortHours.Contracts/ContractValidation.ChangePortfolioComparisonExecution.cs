@@ -13,7 +13,7 @@ public static partial class ContractValidation
         RequireText(report.Execution.ProcessArchitecture, "execution.processArchitecture", errors);
         if (report.Execution.EndToEndElapsedMilliseconds < 0m)
         {
-            errors.Add("execution.endToEndElapsedMilliseconds must be nonnegative when present.");
+            errors.Add("execution.endToEndElapsedMilliseconds must be present and nonnegative.");
         }
 
         if (report.Execution.LogicalProcessorCount <= 0)
@@ -39,7 +39,18 @@ public static partial class ContractValidation
 
         foreach (ChangePortfolioComparisonRepositoryExecution repository in report.Execution.Repositories)
         {
-            ValidateRepositoryExecution(repository, errors);
+            ValidateRepositoryExecution(repository, report.ScopeProfile is not null, errors);
+        }
+
+        if (report.ScopeSummary is ChangePortfolioScopeSummary scopeSummary &&
+            (scopeSummary.IdentitySelectedCommitCount != report.Execution.Repositories.Sum(
+                repository => repository.SelectedChangeCount) ||
+             scopeSummary.AdmittedCommitCount != report.Execution.Repositories.Sum(
+                repository => repository.AdmittedChangeCount) ||
+             scopeSummary.ScopeEmptyCommitCount != report.Execution.Repositories.Sum(
+                repository => repository.ScopeEmptyChangeCount)))
+        {
+            errors.Add("The scope summary must equal the repository execution scope counts.");
         }
 
         if (report.SourcePortfolio is not null &&
@@ -58,10 +69,14 @@ public static partial class ContractValidation
 
     private static void ValidateRepositoryExecution(
         ChangePortfolioComparisonRepositoryExecution repository,
+        bool hasScopeProfile,
         List<string> errors)
     {
         ValidateDigest(repository.InputDigest, $"execution.repository[{repository.RepositoryId}]", errors);
-        if (repository.SelectedChangeCount < 0 || repository.CandidateCount < 0 ||
+        if (repository.SelectedChangeCount < 0 || repository.AdmittedChangeCount < 0 ||
+            repository.ScopeEmptyChangeCount < 0 ||
+            hasScopeProfile && repository.AdmittedChangeCount + repository.ScopeEmptyChangeCount !=
+                repository.SelectedChangeCount || repository.CandidateCount < 0 ||
             repository.ChargedCandidateLedgerBytes < 0 || repository.SelectionChunkCount < 0 ||
             repository.AnalysisChunkCount < 0 || repository.ProjectedSnapshotRequests < 0 ||
             repository.CheckpointReadBytes < 0 || repository.CheckpointWrittenBytes < 0 ||
@@ -221,7 +236,9 @@ public static partial class ContractValidation
             RequireText(failure.Category, "execution.failure.category", errors);
             RequireText(failure.Message, "execution.failure.message", errors);
             ValidateDigest(failure.MessageDigest, "execution.failure.messageDigest", errors);
-            if (!failedRepositories.Contains(failure.RepositoryId) ||
+            bool workflowFailure = report.Status == ChangePortfolioComparisonStatus.Incomplete &&
+                report.Execution.Repositories.Count == 0 && failure.RepositoryId == "provider";
+            if (!workflowFailure && !failedRepositories.Contains(failure.RepositoryId) ||
                 !failureRepositories.Add(failure.RepositoryId))
             {
                 errors.Add("Each execution failure must identify one distinct failed repository.");
@@ -239,6 +256,7 @@ public static partial class ContractValidation
             }
         }
 
+        failureRepositories.Remove("provider");
         if (!failedRepositories.SetEquals(failureRepositories))
         {
             errors.Add("Every failed repository must have exactly one preserved root failure.");

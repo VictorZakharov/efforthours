@@ -167,6 +167,7 @@ public sealed partial class ChangePortfolioComparisonTests
         ];
         return new ChangePortfolioComparisonExecution
         {
+            EndToEndElapsedMilliseconds = 100m,
             RuntimeFramework = "test-runtime/1.0",
             OperatingSystemFamily = "other",
             ProcessArchitecture = "test-architecture",
@@ -186,6 +187,7 @@ public sealed partial class ChangePortfolioComparisonTests
                     Status = ChangePortfolioRepositoryExecutionStatus.Reused,
                     CheckpointDisposition = ChangePortfolioCheckpointDisposition.Hit,
                     SelectedChangeCount = repository.Id == "repository-a" ? 3 : 0,
+                    AdmittedChangeCount = repository.Id == "repository-a" ? 3 : 0,
                     ElapsedMilliseconds = 57.75m,
                     InputDigest = ChangePortfolioComparisonIdentity.ComputeRepositoryInputDigest(
                         manifest,

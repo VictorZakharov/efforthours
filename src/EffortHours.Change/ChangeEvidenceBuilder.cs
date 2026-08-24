@@ -13,10 +13,15 @@ internal static class ChangeEvidenceBuilder
         RepositoryEvidence baseEvidence,
         RepositoryEvidence headEvidence,
         IReadOnlyList<Diagnostic> diagnostics,
+        ChangePathAdmission? pathAdmission,
         CancellationToken cancellationToken)
     {
-        IReadOnlyDictionary<string, ChangeSnapshotFile> baseFiles = FilesByPath(baseSnapshot);
-        IReadOnlyDictionary<string, ChangeSnapshotFile> headFiles = FilesByPath(headSnapshot);
+        IReadOnlyDictionary<string, ChangeSnapshotFile> baseFiles = FilesByPath(
+            baseSnapshot,
+            pathAdmission);
+        IReadOnlyDictionary<string, ChangeSnapshotFile> headFiles = FilesByPath(
+            headSnapshot,
+            pathAdmission);
         Dictionary<string, EvidenceFact> baseFileFacts = FileFacts(baseEvidence);
         Dictionary<string, EvidenceFact> headFileFacts = FileFacts(headEvidence);
         Dictionary<string, IReadOnlyList<string>> baseSemanticTags = SemanticTagsByPath(baseEvidence);
@@ -25,7 +30,8 @@ internal static class ChangeEvidenceBuilder
             baseSnapshot,
             headSnapshot,
             baseFiles,
-            headFiles);
+            headFiles,
+            pathAdmission);
         List<PathCandidate> modified = [];
         List<PathCandidate> removed = [];
         List<PathCandidate> added = [];
@@ -229,22 +235,34 @@ internal static class ChangeEvidenceBuilder
         snapshot is not IRepositoryEvidenceChangeSnapshot analyzedSnapshot ||
         analyzedSnapshot.SupportsSourceReads;
 
-    private static IReadOnlyDictionary<string, ChangeSnapshotFile> FilesByPath(
-        IChangeSnapshot snapshot) => snapshot is GitSnapshotFileSystem gitSnapshot
-            ? gitSnapshot.FilesByPath
-            : snapshot.Files.ToDictionary(file => file.Path, StringComparer.Ordinal);
+    private static Dictionary<string, ChangeSnapshotFile> FilesByPath(
+        IChangeSnapshot snapshot,
+        ChangePathAdmission? pathAdmission)
+    {
+        IEnumerable<ChangeSnapshotFile> files = snapshot is GitSnapshotFileSystem gitSnapshot
+            ? gitSnapshot.FilesByPath.Values
+            : snapshot.Files;
+        if (pathAdmission is not null)
+        {
+            files = files.Where(file => pathAdmission.Admits(file.Path));
+        }
+
+        return files.ToDictionary(file => file.Path, StringComparer.Ordinal);
+    }
 
     private static HashSet<string> ChangedPaths(
         IChangeSnapshot baseSnapshot,
         IChangeSnapshot headSnapshot,
         IReadOnlyDictionary<string, ChangeSnapshotFile> baseFiles,
-        IReadOnlyDictionary<string, ChangeSnapshotFile> headFiles) =>
+        IReadOnlyDictionary<string, ChangeSnapshotFile> headFiles,
+        ChangePathAdmission? pathAdmission) =>
         baseSnapshot is GitSnapshotFileSystem baseGitSnapshot &&
             headSnapshot is GitSnapshotFileSystem headGitSnapshot &&
             headGitSnapshot.TryGetChangedPathsFrom(
                 baseGitSnapshot.ObjectId,
                 out IReadOnlyList<string> knownChangedPaths)
-            ? new HashSet<string>(knownChangedPaths, StringComparer.Ordinal)
+            ? new HashSet<string>(knownChangedPaths.Where(path =>
+                pathAdmission?.Admits(path) ?? true), StringComparer.Ordinal)
             : ChangeAnalysisScope.FindChangedPaths(baseFiles, headFiles);
 
     private static IReadOnlyDictionary<string, int> ContentObjectCounts(

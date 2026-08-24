@@ -1,0 +1,54 @@
+{
+  "schemaVersion": "1.0.0",
+  "semanticVersion": "engineering-scope/1.0.0",
+  "mode": "replace",
+  "includeExtensions": [
+    ".bash", ".bats", ".c", ".cc", ".cmake", ".cpp", ".cs", ".cshtml",
+    ".csproj", ".css", ".cxx", ".dockerignore", ".fs", ".fsproj", ".go",
+    ".gradle", ".graphql", ".h", ".hcl", ".hh", ".hpp", ".html", ".hxx",
+    ".ixx", ".java", ".js", ".json", ".jsx", ".kt", ".kts", ".less",
+    ".php", ".props", ".ps1", ".psd1", ".psm1", ".py", ".pyi", ".razor",
+    ".rs", ".sass", ".scss", ".sh", ".sln", ".slnx", ".sql", ".targets",
+    ".tf", ".tfbackend", ".tfvars", ".ts", ".tsx", ".vb", ".vbproj", ".vcxproj",
+    ".svelte", ".vue", ".xml", ".yaml", ".yml"
+  ],
+  "includeFileNames": [
+    ".dockerignore", ".editorconfig", ".gitattributes", ".gitignore",
+    "Dockerfile", "Gemfile", "Makefile", "Procfile", "Rakefile"
+  ],
+  "includePrefixes": [".github/workflows/", ".gitlab/", "scripts/", "tools/"],
+  "excludeExtensions": [
+    ".7z", ".avi", ".bin", ".bmp", ".csv", ".dat", ".db", ".eot", ".gif",
+    ".gz", ".ico", ".jpeg", ".jpg", ".lock", ".md", ".mov", ".mp3", ".mp4",
+    ".otf", ".parquet", ".pdf", ".png", ".tar", ".tiff", ".tsv", ".ttf",
+    ".wav", ".webm", ".webp", ".woff", ".woff2", ".zip"
+  ],
+  "excludeFileNames": [
+    "AGENTS.md", "bun.lock", "bun.lockb", "Cargo.lock", "composer.lock", "Gemfile.lock",
+    "go.sum", "npm-shrinkwrap.json", "package-lock.json", "packages.lock.json",
+    "paket.lock", "pnpm-lock.yaml", "poetry.lock", "yarn.lock"
+  ],
+  "excludeDirectories": [
+    ".next", ".nuxt", ".svelte-kit", "artifacts", "benchmark-results", "bin",
+    "bower_components", "dist", "docs", "external", "gen", "generated",
+    "node_modules", "obj", "out", "target", "third-party", "third_party", "vendor"
+  ],
+  "importantExclusions": [
+    "documentation and repository prose",
+    "AGENTS.md and dependency lockfiles",
+    "media, binary, generated, vendored, and build-output artifacts",
+    "benchmark result artifacts and configured content/data banks",
+    "archived, mirrored, and explicitly excluded duplicate repositories"
+  ],
+  "repositoryOverrides": {
+    "victorzakharov/efforthours": {
+      "excludePrefixes": ["calibration/", "benchmarks/results/", "artifacts/"]
+    },
+    "victorzakharov/pte-core-exam": {
+      "excludePrefixes": ["public/questions/"]
+    },
+    "victorzakharov/dotnet-image-viewer-archive": {
+      "excludeRepository": true
+    }
+  }
+}

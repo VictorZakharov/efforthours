@@ -10,7 +10,8 @@ internal sealed record ChangeAnalysisScope(
     int ContextPathCount,
     int RepresentativePathCount,
     int AvailableContextPathCount,
-    int FullPathCount)
+    int FullPathCount,
+    ChangePathAdmission? PathAdmission = null)
 {
     private static readonly HashSet<string> ContextExtensions = new(
         [
@@ -44,12 +45,30 @@ internal sealed record ChangeAnalysisScope(
 
     public static ChangeAnalysisScope? Create(
         IChangeSnapshot baseSnapshot,
-        IChangeSnapshot headSnapshot)
+        IChangeSnapshot headSnapshot,
+        ChangePathAdmission? pathAdmission = null)
     {
         if (baseSnapshot is not GitSnapshotFileSystem baseGitSnapshot ||
             headSnapshot is not GitSnapshotFileSystem headGitSnapshot)
         {
             return null;
+        }
+
+        if (pathAdmission is not null)
+        {
+            ChangeSnapshotFile[] admittedBase =
+                [.. baseGitSnapshot.Files.Where(file => pathAdmission.Admits(file.Path))];
+            ChangeSnapshotFile[] admittedHead =
+                [.. headGitSnapshot.Files.Where(file => pathAdmission.Admits(file.Path))];
+            return CreateFromIndexes(
+                FindChangedPaths(
+                    admittedBase.ToDictionary(file => file.Path, StringComparer.Ordinal),
+                    admittedHead.ToDictionary(file => file.Path, StringComparer.Ordinal)),
+                CreateInventoryIndex(admittedBase),
+                CreateInventoryIndex(admittedHead),
+                admittedBase.Length,
+                admittedHead.Length,
+                pathAdmission);
         }
 
         IReadOnlySet<string> changedPaths = headGitSnapshot.TryGetChangedPathsFrom(
@@ -62,7 +81,8 @@ internal sealed record ChangeAnalysisScope(
             baseGitSnapshot.AnalysisIndex,
             headGitSnapshot.AnalysisIndex,
             baseGitSnapshot.FileCount,
-            headGitSnapshot.FileCount);
+            headGitSnapshot.FileCount,
+            pathAdmission: null);
     }
 
     internal static ChangeAnalysisScope CreateForFiles(
@@ -84,7 +104,8 @@ internal sealed record ChangeAnalysisScope(
             CreateInventoryIndex(baseSnapshotFiles),
             CreateInventoryIndex(headSnapshotFiles),
             baseSnapshotFiles.Count,
-            headSnapshotFiles.Count);
+            headSnapshotFiles.Count,
+            pathAdmission: null);
     }
 
     internal static ChangeAnalysisInventoryIndex CreateInventoryIndex(
@@ -121,7 +142,8 @@ internal sealed record ChangeAnalysisScope(
         ChangeAnalysisInventoryIndex baseIndex,
         ChangeAnalysisInventoryIndex headIndex,
         int baseFileCount,
-        int headFileCount)
+        int headFileCount,
+        ChangePathAdmission? pathAdmission)
     {
         HashSet<string> paths = new(changedPaths, StringComparer.Ordinal);
         string[] contextPaths = [.. baseIndex.ContextPaths
@@ -138,7 +160,7 @@ internal sealed record ChangeAnalysisScope(
         paths.UnionWith(headIndex.RepresentativePaths);
         int representativePathCount = paths.Count - beforeRepresentatives;
 
-        string id = ComputeScopeId(paths);
+        string id = ComputeScopeId(paths, pathAdmission?.ProfileDigest);
         return new ChangeAnalysisScope(
             id,
             paths,
@@ -146,7 +168,8 @@ internal sealed record ChangeAnalysisScope(
             contextPathCount,
             representativePathCount,
             contextPaths.Length,
-            Math.Max(baseFileCount, headFileCount));
+            Math.Max(baseFileCount, headFileCount),
+            pathAdmission);
     }
 
     public static string ComputeInventoryDigest(IEnumerable<ChangeSnapshotFile> files)
@@ -200,9 +223,24 @@ internal sealed record ChangeAnalysisScope(
         return changedPaths.Any(path => path.StartsWith(directoryPrefix, StringComparison.Ordinal));
     }
 
-    private static string ComputeScopeId(IEnumerable<string> paths)
+    internal static string ComputeScopedInventoryDigest(
+        IEnumerable<ChangeSnapshotFile> files,
+        string profileDigest)
+    {
+        string inventory = ComputeInventoryDigest(files);
+        return "sha256:" + Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(
+            "efforthours:scoped-git-snapshot:1\n" + profileDigest + "\n" + inventory)))
+            .ToLowerInvariant();
+    }
+
+    private static string ComputeScopeId(IEnumerable<string> paths, string? profileDigest)
     {
         using IncrementalHash hash = IncrementalHash.CreateHash(HashAlgorithmName.SHA256);
+        if (profileDigest is not null)
+        {
+            hash.AppendData(Encoding.UTF8.GetBytes(profileDigest));
+            hash.AppendData([(byte)'\n']);
+        }
         foreach (string path in paths.Order(StringComparer.Ordinal))
         {
             hash.AppendData(Encoding.UTF8.GetBytes(path));

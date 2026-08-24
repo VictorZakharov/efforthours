@@ -47,7 +47,8 @@ public static partial class ChangePortfolioComparisonBuilder
                 bucketPolicy.InputDigest,
                 bucketPolicy.CapacityInputDigest ?? "no-capacity",
                 bucketPolicy.ContributorNormalization.ToString(),
-                options.SourceManifest.Selection.TimeZone));
+                options.SourceManifest.Selection.TimeZone,
+                options.ScopeProfile?.Digest ?? "no-scope-profile"));
         ChangePortfolioComparisonReport report = new()
         {
             Status = ChangePortfolioComparisonStatus.Incomplete,
@@ -56,6 +57,8 @@ public static partial class ChangePortfolioComparisonBuilder
             GeneratedAt = options.GeneratedAt.ToUniversalTime(),
             AsOf = options.AsOf?.ToUniversalTime(),
             Discovery = options.Discovery,
+            ScopeProfile = options.ScopeProfile,
+            ScopeSummary = options.ScopeSummary,
             CliVersion = options.CliVersion,
             EstimatorVersion = ChangePortfolioReconciler.Version,
             SourceChangeEstimatorVersion = ChangeEstimator.Version,
