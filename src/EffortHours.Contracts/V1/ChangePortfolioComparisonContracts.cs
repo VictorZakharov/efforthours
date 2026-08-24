@@ -22,8 +22,8 @@ public static class ChangePortfolioComparisonPolicies
 
     public const string TodayToDateV1 = "today-to-date/1.0.0";
 
-    public const string GitHubWorkspaceDiscoveryV1 =
-        "github-workspace-author-period-discovery/1.0.0";
+    public const string GitHubManagedCacheDiscoveryV1 =
+        "github-managed-cache-author-period-discovery/1.0.0";
 
     public const string RepositoryEvidenceShardsV1 = "repository-evidence-shards/1.0.0";
 
@@ -91,6 +91,10 @@ public sealed record ChangePortfolioComparisonReport
 
     public ChangePortfolioHostDiscovery? Discovery { get; init; }
 
+    public ChangePortfolioScopeProfile? ScopeProfile { get; init; }
+
+    public ChangePortfolioScopeSummary? ScopeSummary { get; init; }
+
     public required string CliVersion { get; init; }
 
     public required string EstimatorVersion { get; init; }
@@ -119,11 +123,11 @@ public sealed record ChangePortfolioComparisonReport
 public sealed record ChangePortfolioHostDiscovery
 {
     public string Protocol { get; init; } =
-        ChangePortfolioComparisonPolicies.GitHubWorkspaceDiscoveryV1;
+        ChangePortfolioComparisonPolicies.GitHubManagedCacheDiscoveryV1;
 
     public string Provider { get; init; } = "github";
 
-    public string Scope { get; init; } = "owner-workspace-intersection";
+    public string Scope { get; init; } = "owner-provider-discovery";
 
     public required string ScopeDigest { get; init; }
 
@@ -133,8 +137,6 @@ public sealed record ChangePortfolioHostDiscovery
 
     public int ProviderRepositoryCount { get; init; }
 
-    public int WorkspaceRepositoryCount { get; init; }
-
     public int ConsideredRepositoryCount { get; init; }
 
     public int ActiveRepositoryCount { get; init; }
@@ -143,6 +145,8 @@ public sealed record ChangePortfolioHostDiscovery
 
     public int OpenPullRequestHeadCount { get; init; }
 
+    public int OpenPullRequestCount { get; init; }
+
     public int ProviderQueryCount { get; init; }
 
     public int ProviderPageCount { get; init; }
@@ -150,6 +154,8 @@ public sealed record ChangePortfolioHostDiscovery
     public int LocalObjectCount { get; init; }
 
     public int AcquiredObjectCount { get; init; }
+
+    public long AcquiredBytes { get; init; }
 
     public decimal ElapsedMilliseconds { get; init; }
 }
@@ -263,7 +269,7 @@ public sealed record ChangePortfolioRollingPoint
 
 public sealed record ChangePortfolioComparisonExecution
 {
-    public decimal? EndToEndElapsedMilliseconds { get; init; }
+    public decimal EndToEndElapsedMilliseconds { get; init; }
 
     public required string RuntimeFramework { get; init; }
 
@@ -301,6 +307,10 @@ public sealed record ChangePortfolioComparisonRepositoryExecution
     public required ChangePortfolioCheckpointDisposition CheckpointDisposition { get; init; }
 
     public int SelectedChangeCount { get; init; }
+
+    public int AdmittedChangeCount { get; init; }
+
+    public int ScopeEmptyChangeCount { get; init; }
 
     public int CandidateCount { get; init; }
 

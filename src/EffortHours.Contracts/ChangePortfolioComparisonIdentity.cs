@@ -61,7 +61,8 @@ public static class ChangePortfolioComparisonIdentity
         ChangeAuthorPeriodManifest manifest,
         string repositoryId,
         EstimationProfile profile,
-        string estimatorVersion)
+        string estimatorVersion,
+        string? scopeProfileDigest = null)
     {
         ArgumentNullException.ThrowIfNull(manifest);
         ArgumentException.ThrowIfNullOrWhiteSpace(repositoryId);
@@ -100,6 +101,7 @@ public static class ChangePortfolioComparisonIdentity
             },
             Profile = profile,
             EstimatorVersion = estimatorVersion,
+            ScopeProfileDigest = scopeProfileDigest,
         };
         return ComputeJsonDigest(canonical);
     }
@@ -114,7 +116,8 @@ public static class ChangePortfolioComparisonIdentity
         ChangePortfolioReport source,
         ChangePortfolioComparisonBucketPolicy bucketPolicy,
         IReadOnlyList<ChangePortfolioComparisonBucket> buckets,
-        IReadOnlyList<ChangePortfolioComparisonSeries> series)
+        IReadOnlyList<ChangePortfolioComparisonSeries> series,
+        ChangePortfolioScopeProfile? scopeProfile = null)
     {
         ArgumentNullException.ThrowIfNull(source);
         ArgumentNullException.ThrowIfNull(bucketPolicy);
@@ -136,6 +139,7 @@ public static class ChangePortfolioComparisonIdentity
             },
             Buckets = buckets,
             Series = series,
+            ScopeProfile = scopeProfile,
         };
         return ComputeJsonDigest(canonical);
     }

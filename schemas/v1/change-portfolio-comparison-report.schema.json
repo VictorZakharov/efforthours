@@ -29,6 +29,8 @@
     "generatedAt": { "type": "string", "format": "date-time" },
     "asOf": { "type": "string", "format": "date-time" },
     "discovery": { "$ref": "#/$defs/discovery" },
+    "scopeProfile": { "$ref": "#/$defs/scopeProfile" },
+    "scopeSummary": { "$ref": "#/$defs/scopeSummary" },
     "cliVersion": { "type": "string", "minLength": 1 },
     "estimatorVersion": { "type": "string", "minLength": 1 },
     "sourceChangeEstimatorVersion": { "type": "string", "minLength": 1 },
@@ -55,8 +57,10 @@
   },
   "additionalProperties": false,
   "dependentRequired": {
-    "asOf": ["discovery"],
-    "discovery": ["asOf"]
+    "asOf": ["discovery", "scopeProfile", "scopeSummary"],
+    "discovery": ["asOf", "scopeProfile", "scopeSummary"],
+    "scopeProfile": ["asOf", "discovery", "scopeSummary"],
+    "scopeSummary": ["asOf", "discovery", "scopeProfile"]
   },
   "allOf": [
     {
@@ -107,35 +111,63 @@
         "identitySources",
         "complete",
         "providerRepositoryCount",
-        "workspaceRepositoryCount",
         "consideredRepositoryCount",
         "activeRepositoryCount",
         "defaultHeadCount",
         "openPullRequestHeadCount",
+        "openPullRequestCount",
         "providerQueryCount",
         "providerPageCount",
         "localObjectCount",
         "acquiredObjectCount",
+        "acquiredBytes",
         "elapsedMilliseconds"
       ],
       "properties": {
-        "protocol": { "const": "github-workspace-author-period-discovery/1.0.0" },
+        "protocol": { "const": "github-managed-cache-author-period-discovery/1.0.0" },
         "provider": { "const": "github" },
-        "scope": { "const": "owner-workspace-intersection" },
+        "scope": { "const": "owner-provider-discovery" },
         "scopeDigest": { "$ref": "#/$defs/digest" },
         "identitySources": { "type": "string", "minLength": 1 },
         "complete": { "type": "boolean" },
         "providerRepositoryCount": { "type": "integer", "minimum": 0 },
-        "workspaceRepositoryCount": { "type": "integer", "minimum": 0 },
         "consideredRepositoryCount": { "type": "integer", "minimum": 0 },
         "activeRepositoryCount": { "type": "integer", "minimum": 0 },
         "defaultHeadCount": { "type": "integer", "minimum": 0 },
         "openPullRequestHeadCount": { "type": "integer", "minimum": 0 },
+        "openPullRequestCount": { "type": "integer", "minimum": 0 },
         "providerQueryCount": { "type": "integer", "minimum": 0 },
         "providerPageCount": { "type": "integer", "minimum": 0 },
         "localObjectCount": { "type": "integer", "minimum": 0 },
         "acquiredObjectCount": { "type": "integer", "minimum": 0 },
+        "acquiredBytes": { "type": "integer", "minimum": 0 },
         "elapsedMilliseconds": { "type": "number", "minimum": 0 }
+      },
+      "additionalProperties": false
+    },
+    "scopeProfile": {
+      "type": "object",
+      "required": ["id", "version", "digest", "source", "importantExclusions"],
+      "properties": {
+        "id": { "const": "engineering" },
+        "version": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "digest": { "$ref": "#/$defs/digest" },
+        "source": { "enum": ["bundled", "bundled+user-extend", "bundled+user-replace", "unavailable"] },
+        "importantExclusions": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1 }
+        }
+      },
+      "additionalProperties": false
+    },
+    "scopeSummary": {
+      "type": "object",
+      "required": ["identitySelectedCommitCount", "admittedCommitCount", "scopeEmptyCommitCount"],
+      "properties": {
+        "identitySelectedCommitCount": { "type": "integer", "minimum": 0 },
+        "admittedCommitCount": { "type": "integer", "minimum": 0 },
+        "scopeEmptyCommitCount": { "type": "integer", "minimum": 0 }
       },
       "additionalProperties": false
     },
@@ -268,7 +300,7 @@
     },
     "execution": {
       "type": "object",
-      "required": ["runtimeFramework", "operatingSystemFamily", "processArchitecture", "logicalProcessorCount", "shardPolicy", "checkpoint", "repositoryShardCount", "repositories", "phaseTimings", "reuse", "failures"],
+      "required": ["endToEndElapsedMilliseconds", "runtimeFramework", "operatingSystemFamily", "processArchitecture", "logicalProcessorCount", "shardPolicy", "checkpoint", "repositoryShardCount", "repositories", "phaseTimings", "reuse", "failures"],
       "properties": {
         "endToEndElapsedMilliseconds": { "type": "number", "minimum": 0 },
         "runtimeFramework": { "type": "string", "minLength": 1 },
@@ -277,10 +309,10 @@
         "logicalProcessorCount": { "type": "integer", "minimum": 1 },
         "shardPolicy": { "const": "repository-evidence-shards/1.0.0" },
         "checkpoint": { "$ref": "#/$defs/checkpoint" },
-        "repositoryShardCount": { "type": "integer", "minimum": 1, "maximum": 256 },
+        "repositoryShardCount": { "type": "integer", "minimum": 0, "maximum": 256 },
         "repositories": {
           "type": "array",
-          "minItems": 1,
+          "minItems": 0,
           "maxItems": 256,
           "items": { "$ref": "#/$defs/repositoryExecution" }
         },
@@ -300,12 +332,14 @@
     },
     "repositoryExecution": {
       "type": "object",
-      "required": ["repositoryId", "status", "checkpointDisposition", "selectedChangeCount", "elapsedMilliseconds", "inputDigest", "phaseTimings"],
+      "required": ["repositoryId", "status", "checkpointDisposition", "selectedChangeCount", "admittedChangeCount", "scopeEmptyChangeCount", "elapsedMilliseconds", "inputDigest", "phaseTimings"],
       "properties": {
         "repositoryId": { "$ref": "#/$defs/publicId" },
         "status": { "enum": ["complete", "reused", "failed"] },
         "checkpointDisposition": { "enum": ["disabled", "hit", "miss-written", "miss-failed"] },
         "selectedChangeCount": { "type": "integer", "minimum": 0 },
+        "admittedChangeCount": { "type": "integer", "minimum": 0 },
+        "scopeEmptyChangeCount": { "type": "integer", "minimum": 0 },
         "candidateCount": { "type": "integer", "minimum": 0 },
         "chargedCandidateLedgerBytes": { "type": "integer", "minimum": 0 },
         "selectionChunkCount": { "type": "integer", "minimum": 0 },

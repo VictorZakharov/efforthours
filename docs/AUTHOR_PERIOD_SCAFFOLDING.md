@@ -4,161 +4,157 @@ Status: implemented explicit orchestration boundary
 
 ## Purpose
 
-The common “what is my EHE-to-capacity ratio today?” workflow is available as one
-CLI invocation:
+The current-day engineering EHE-to-capacity workflow is one invocation:
 
 ```text
-eh change portfolio \
-  --owner <github-owner> \
-  --workspace <local-checkout-root> \
-  --author "@me" \
-  --today \
-  --timezone America/Toronto \
-  --include-open-prs \
-  --fetch-missing \
-  --capacity-hours 8 \
-  --format markdown \
-  --no-rate
+eh change today --owner <github-owner> --author "@me" \
+  --timezone America/Toronto --include-open-prs --scope engineering \
+  --capacity-hours 8 --format markdown --output <today.md> --no-rate
 ```
 
-This command composes provider discovery, immutable object acquisition, the
-existing v1 author-period manifest, portfolio estimation, one partial daily
-bucket, and a caller-supplied reference denominator. It does not introduce a
-second estimator or change an EHE prior.
+The command can run outside every source checkout. It does not accept or discover a
+workspace and does not enumerate sibling repositories. It composes authenticated
+provider discovery, a private EffortHours-managed bare cache, the v1 author-period
+manifest selector, native engineering path admission, exact bounded preflight,
+portfolio reconciliation, one partial daily bucket, and a caller-supplied reference
+denominator. It does not introduce another estimator or alter an EHE prior.
 
-## Trust boundary
+## Frozen snapshot
 
-`--today` is an explicit opt-in to GitHub access through the authenticated `gh`
-CLI. The adapter may query provider metadata and, only with `--fetch-missing`,
-perform narrow Git acquisition. Once every selected head is an immutable local
-object, the adapter hands an in-memory `change-author-period-manifest/1.0.0` to
-the ordinary local planner and estimator.
+The process captures one UTC `asOf` instant. The selected interval is local midnight
+in `--timezone` inclusive through that exact `asOf` instant exclusive. Provider commit
+queries, immutable heads, the in-memory manifest, bucket, report timestamp,
+checkpoint identities, and verification lineage all refer to this snapshot. A normal
+ISO-8601 `--generated-at` may supply the instant for reproducible runs.
 
-The handoff has these invariants:
+The command fixes author-date selection, merge exclusion, and coauthor inclusion
+unless the caller explicitly selects another supported policy. Identity and time
+select immutable changes only and never multiply effort.
 
-- repository paths and aliases remain execution-only;
-- the report retains privacy-safe IDs, immutable object IDs, policies, digests,
-  discovery counts, and completeness state;
-- provider activity, commit count, time, identity, and PR reachability only
-  discover or select rows and never change effort; and
-- target code is never built or executed.
+## Provider discovery
 
-The low-level manifest command remains provider-independent and offline. A caller
-who needs a reviewed long-lived input can continue to materialize and inspect a
-manifest outside this convenience workflow.
+`change today` explicitly opts into GitHub access through authenticated `gh`. It:
 
-## Caller-approved scope
+- lists repositories for the requested owner, including archived/mirror metadata;
+- ignores repositories without a default branch and repositories excluded by scope;
+- queries default-branch commits inside the frozen interval;
+- fully paginates current open PRs when `--include-open-prs` is present;
+- considers only PRs authored by the authenticated/requested identity;
+- retains only default or PR heads with an exact author/coauthor/date/merge match; and
+- pins provider object IDs before acquisition.
 
-`--owner` and `--workspace` define an owner/workspace intersection. The adapter
-lists repositories visible for the requested GitHub owner, scans the bounded
-workspace for Git worktrees, normalizes GitHub remote identities, and considers
-only unambiguous matches. Directory names are not repository identity.
+Inactive repositories and open PRs with no selected work remain privacy-safe counts;
+they cause no cache entry or analysis. Collaborator/bot PRs are not admitted merely
+because the owner controls the repository.
 
-The workspace scan is bounded, ignores reparse-point traversal, and admits at
-most the v1 repository count. A malformed `.git` marker is not a repository
-boundary: the scan ignores the marker, continues through other descendants, and
-does not traverse the marker's own metadata directory. Git dubious-ownership and
-other unreadable-repository failures remain fail-closed because silently omitting
-one could publish an incomplete result as complete. A checkout outside the
-supplied workspace is outside the approved scope. Multiple checkouts claiming the
-same provider identity fail rather than silently choosing one.
+`@me` resolves the active GitHub login and authorized verified commit emails, plus
+explicit supplemental aliases. It never reads local Git configuration. Raw aliases,
+owner names, repository display names, PR numbers, provider bodies, and credentials
+are absent from reports.
 
-Within each mapped repository the adapter pins the current default head. With
-`--include-open-prs`, it fully paginates current open PRs and each PR commit
-inventory, retains only PR heads containing an interval/identity match, and then
-lets local Git repeat the exact author/coauthor/date/merge selection. PR author,
-PR age, comments, reviews, and activity counts are not selection proxies.
+## Managed repository cache
 
-## `@me` identity resolution
-
-`--author "@me"` forms candidate exact aliases from:
-
-- the active GitHub login;
-- verified GitHub-associated commit emails when that endpoint is authorized;
-- `user.name` and `user.email` from mapped local checkouts; and
-- any additional repeated explicit `--author` values.
-
-The local selector remains authoritative: aliases match Git author name, email,
-or `Name <email>`, plus valid `Co-authored-by` identities under the chosen policy.
-The report records only an identity-source classification and digests, never the
-raw aliases. Provider account association can conservatively admit an open head
-for local verification; it cannot by itself create an EHE row.
-
-## Today and capacity semantics
-
-`--today` means local midnight through the next local midnight in `--timezone`.
-The start is inclusive and the end is exclusive. Named-zone conversion handles
-offset changes; a non-unique or invalid boundary fails closed. The report carries
-an explicit UTC `asOf` instant and marks the single daily bucket `partialEnd=true`.
-
-`--capacity-hours` is a positive full-day reference denominator. It creates the
-single contributor/bucket capacity cell internally. The reported ratio is:
+The default cache is:
 
 ```text
-expectedRatio = expected EHE / reference capacity hours
+%LOCALAPPDATA%/EffortHours/repositories/github/<owner>/<repository>.git
 ```
 
-Capacity does not change EHE and is not attendance, actual labor, productivity,
-performance, compensation, or schedule duration. JSON preserves the six-decimal
-ratio contract; Markdown rounds ratios to two decimals for display.
+`EFFORTHOURS_REPOSITORY_CACHE` may select another root. Each active entry is a bare
+repository. Missing entries are created automatically. Acquisition fetches only the
+selected default/PR source refs, with no tags, submodules, checkout, index,
+`FETCH_HEAD`, local-ref update, or user worktree mutation. Each pinned commit is
+verified after fetching, so a moved provider ref fails closed. Existing immutable
+objects are reused. Acquired object and byte deltas are operational telemetry.
 
-A fully completed discovery and local selection with no matching commits is a
-valid zero report. Any discovery, acquisition, or repository-analysis failure
-exits nonzero and never publishes a partial aggregate or a misleading zero.
+## Engineering scope
 
-## Object acquisition
+`--scope engineering` loads the bundled `engineering-scope/1.0.0` profile or a
+persistent override from:
 
-Every provider head is first checked in its mapped local object database. Missing
-objects fail unless `--fetch-missing` is present. The acquisition command requests
-only the discovered default/open-PR source refs and uses:
+```text
+%APPDATA%/EffortHours/scope-profiles/engineering.json
+```
 
-- no checkout;
-- no tag fetch;
-- no submodule recursion;
-- no local-ref update; and
-- no `FETCH_HEAD` update.
+`EFFORTHOURS_ENGINEERING_SCOPE_PROFILE` selects an explicit override path. Missing,
+malformed, noncanonical, or unsupported explicit profiles fail closed. Overrides
+must state `mode: extend` or `mode: replace`. Effective rules are canonicalized and
+digest-bound. Inspect the effective contract without estimation with:
 
-The acquired object ID is verified after fetch. A moved or deleted provider ref
-fails instead of substituting a different head.
+```text
+eh change scope show engineering
+```
 
-## Output and diagnostics
+The standard profile admits maintained source, tests/fixtures, developer tooling,
+build/project configuration, CI/CD, migrations/schemas, runtime/deployment
+configuration, and code-bearing UI templates/styles. Exclusion wins over inclusion.
+Documentation/prose, `AGENTS.md`, dependency locks, media/binaries, generated/vendor/
+build trees, benchmark results, and configured content banks are excluded.
 
-JSON and concise Markdown write to stdout unless `--output` is supplied. The
-Markdown result leads with expected ratio, EHE, capacity, range, `asOf`, selected
-change count, active repository count, open-head count, and shared-credit count.
+Required repository overrides exclude EffortHours calibration and result/artifact
+directories, `pte-core-exam/public/questions`, and the duplicate
+`dotnet-image-viewer-archive` repository. Archived and mirrored repositories are also
+excluded. Admission occurs before snapshot inventory, diff/evidence construction,
+overlap/revert/context normalization, reuse identity, and reconciliation. Reports
+separate identity-selected, admitted-engineering, and scope-empty commit counts.
 
-The versioned report additionally records:
+## Internal preflight, estimation, and reuse
 
-- discovery protocol and privacy-safe scope digest;
-- provider/workspace/considered/active repository counts;
-- provider query and page counts;
-- default/open head counts;
-- local versus acquired object counts;
-- discovery, repository-shard, and one-command elapsed observations; and
-- the existing deterministic selection, execution, cache, resource, and
-  reconciliation lineage.
+After acquisition, the ordinary manifest planner validates pinned heads and performs
+the exact bounded identity selection. A distinct `preflight` phase checks its measured
+selected-change accounting before snapshots and estimation. Declared planner resource
+bounds remain authoritative; exceeding one produces a nonzero incomplete report and
+never substitutes omitted work with zero.
 
-Operational timings and discovery observations are excluded from the semantic
-digest. Reordering provider pages, repositories, aliases, or heads cannot change
-semantic output for the same immutable handoff.
+Each active repository is analyzed once. Successful repository evidence is written
+atomically and keyed by immutable heads, selection policy, estimation profile,
+estimator identity, and effective scope digest. A later exact hit skips replanning and
+analysis; advancing one head invalidates only that repository shard. Checkpoint hits/
+misses/writes are distinct from within-run snapshot, artifact, inventory, and blob
+reuse counters.
 
-## Failure and privacy policy
+## Capacity and zero-work semantics
 
-Provider authentication, authorization, malformed or incomplete pagination,
-ambiguous remote mapping, missing objects, moved refs, invalid time boundaries,
-and cancellation fail closed. Ordinary errors redact repository paths and raw
-identity aliases. Credentials, provider response bodies, source excerpts, local
-paths, raw aliases, repository display names, and PR numbers are not copied into
-reports.
+`--capacity-hours` is a positive caller-supplied reference denominator. The command
+constructs the one contributor/bucket capacity entry in memory. Exact ratios are:
 
-Network discovery necessarily reveals the authenticated account and requested
-owner/repository scope to GitHub. The caller opts into that disclosure by using
-`--today`; ordinary repository, change, and manifest estimation retains the
-offline boundary.
+```text
+X low      = EHE low / reference capacity hours
+X expected = EHE expected / reference capacity hours
+X high     = EHE high / reference capacity hours
+```
 
-## Verification boundary
+For actual hours supplied outside EffortHours, `actual X = expected EHE / actual
+hours`. Capacity and actual hours do not alter EHE and are not attendance,
+productivity, performance, compensation, or authorship evidence. A complete day with
+no active repositories is valid zero EHE and zero X for positive capacity.
 
-Ordinary CI uses fake-provider JSON, local synthetic Git repositories, contract
-validation, privacy assertions, complete-zero coverage, relevant-open-head
-filtering, and a process-level one-command smoke test. Live-provider access and
-wall-clock targets remain manual diagnostics rather than CI gates.
+## Output and failures
+
+JSON and today Markdown render from the same contract-validated semantic result.
+`--output` writes UTF-8 through a same-directory temporary file and atomically replaces
+the exact destination only after validation and flush. Today Markdown contains status,
+snapshot coverage, EHE/X low-expected-high, capacity policy, repository/head/change
+counts, compact repository-attributed expected EHE, scope identity/exclusions,
+estimator identities, checkpoint versus in-run reuse, end-to-end/per-phase timings,
+and interpretation limits. It contains no trend chart, one-point OLS/R-squared,
+first/latest change, synthetic `0%`, or duplicate contributor series.
+
+Scope, provider, acquisition, preflight, or repository failures exit nonzero. A
+validated incomplete report preserves the privacy-safe root phase/category/digest and
+publishes no aggregate EHE or X factor. Atomic writing preserves any prior destination
+if rendering or writing fails. Structured telemetry includes provider calls/pages,
+acquired objects/bytes, phase timings, last progress, checkpoint counters, reuse, and
+working-set peak; operational observations never enter the semantic digest.
+
+## Trust and verification boundary
+
+Provider access and Git acquisition are explicit orchestration exceptions only.
+Ordinary scan, Change, and manifest estimation remain deterministic, offline, and
+provider-independent. Target code and tools are never executed.
+
+CI uses fake paginated provider responses, synthetic Git repositories, cache creation
+and reuse, native-scope evidence tests, schema validation, privacy assertions,
+complete-zero coverage, relevant-open-head filtering, failure artifacts, and a
+process-level one-command fixture on hosts that can provide an executable `gh` shim.
+Live-provider access and wall-clock targets remain manual measurements, not CI gates.

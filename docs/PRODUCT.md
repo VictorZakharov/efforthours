@@ -120,13 +120,15 @@ total. Every report is limited to repositories supplied in the manifest and
 objects reachable from the pinned local heads; omitted or unavailable work is not
 inferred.
 
-An explicit `--today` convenience workflow may discover the current GitHub
-default and relevant open-PR heads for owner repositories mapped inside a caller-
-supplied workspace. It creates the same manifest, one partial local-day bucket,
-and one inline reference-capacity cell in memory. Provider access and optional
-narrow object acquisition are orchestration only; exact local Git selection and
-the existing estimator remain authoritative, and discovery metadata never enters
-an effort rule.
+An explicit `change today` convenience workflow may discover current GitHub
+default and relevant user-authored open-PR heads without enumerating local
+workspaces. It automatically creates or updates private bare entries in the
+EffortHours-managed repository cache, applies a versioned digest-bound engineering
+path profile before snapshot/diff analysis, performs exact bounded preflight, and
+creates the same manifest, one partial local-day bucket, and one inline reference-
+capacity cell in memory. Provider access and narrow object acquisition are
+orchestration only; exact immutable Git selection and the existing estimator remain
+authoritative, and discovery metadata never enters an effort rule.
 
 ### Reporting and pricing
 

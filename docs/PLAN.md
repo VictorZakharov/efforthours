@@ -280,13 +280,15 @@ count, and intermediate churn do not value effort. `CHANGE_ESTIMATION.md` and
   resumable successes and emit nonzero incomplete artifacts without aggregate
   EHE or trends.
 - The GitHub-assisted `--today` workflow composes those existing pieces behind
-  one explicit command. It maps owner repositories to local workspace remotes,
-  resolves `@me`, filters current open heads by matching commit metadata, pins or
-  narrowly acquires immutable objects, builds the v1 manifest and one partial
-  daily capacity bucket in memory, and emits JSON or concise Markdown without
-  caller-authored manifests or arithmetic. Exact local selection remains
-  authoritative; privacy-safe discovery and timing observations stay outside the
-  semantic digest and effort model.
+  one explicit command. It resolves `@me` through GitHub, filters owner default
+  and current user-authored open heads by matching commit metadata, creates or
+  reuses private bare-cache entries for active repositories only, applies the
+  digest-bound engineering path profile inside immutable snapshot analysis, and
+  performs exact bounded preflight. It then builds the v1 manifest and one partial
+  daily capacity bucket in memory and atomically emits validated JSON or concise
+  Markdown without caller-authored manifests, workspace scans, or arithmetic.
+  Exact immutable selection remains authoritative; privacy-safe discovery and
+  timing observations stay outside the semantic digest and effort model.
 - Direct and manifest author-period commands now announce live phase starts and
   summarize non-semantic timings on stderr. The `change/1.4.0` checkpoint adds a
   controlled 1/2/3-process shared-object-database matrix plus a pinned MIT public

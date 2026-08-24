@@ -113,16 +113,18 @@ For an explicit GitHub-assisted today-to-date capacity comparison with no caller
 authored manifests or arithmetic:
 
 ```text
-eh change portfolio --owner my-organization --workspace <checkout-root> --author "@me" \
-  --today --timezone America/Toronto --include-open-prs --fetch-missing \
-  --capacity-hours 8 --format markdown --no-rate
+eh change today --owner my-organization --author "@me" \
+  --timezone America/Toronto --include-open-prs --scope engineering \
+  --capacity-hours 8 --format markdown --output today.md --no-rate
 ```
 
-This convenience mode opts into authenticated provider discovery, maps only
-GitHub checkouts inside the supplied workspace, pins current default and relevant
-open-PR heads, and then runs the ordinary local manifest estimator. JSON or
-concise Markdown goes to stdout unless `--output` is supplied. Capacity is only a
-reference denominator; the ratio is not a productivity or labor measure.
+This convenience mode can run outside every checkout. It opts into authenticated
+provider discovery, acquires only active immutable heads into a private
+EffortHours-managed bare cache, applies the versioned native `engineering` scope,
+runs exact bounded preflight internally, and then runs the ordinary manifest
+estimator. JSON or concise Markdown is contract-validated before an atomic output
+write. Capacity is only a reference denominator; the ratio is not a productivity
+or labor measure. Inspect the effective scope with `eh change scope show engineering`.
 
 Portfolio mode normalizes each repository independently, removes exact repeated
 PR patches, unions pinned author-period heads without repeating shared commits,

@@ -27,8 +27,8 @@ public sealed class GitHubAuthorPeriodDiscoveryTests
     }
 
     [Theory]
-    [InlineData("2026-03-08T12:00:00Z", "2026-03-08T05:00:00+00:00", "2026-03-09T04:00:00+00:00")]
-    [InlineData("2026-11-01T12:00:00Z", "2026-11-01T04:00:00+00:00", "2026-11-02T05:00:00+00:00")]
+    [InlineData("2026-03-08T12:00:00Z", "2026-03-08T05:00:00+00:00", "2026-03-08T12:00:00+00:00")]
+    [InlineData("2026-11-01T12:00:00Z", "2026-11-01T04:00:00+00:00", "2026-11-01T12:00:00+00:00")]
     public void LocalDayUsesNamedZoneBoundariesAcrossDaylightSavingTransitions(
         string asOfText,
         string expectedSinceText,
@@ -61,28 +61,27 @@ public sealed class GitHubAuthorPeriodDiscoveryTests
         string unrelatedHead = new('c', 40);
         string parent = new('d', 40);
         QueueRunner runner = new(
-            JsonSerializer.Serialize(new { sha = defaultHead }),
+            CommitPage(defaultHead, parent, "Target", "target@example.test", "2026-08-21T12:00:00Z"),
             JsonSerializer.Serialize(new[] { new[]
             {
-                new { number = 1, head = new { sha = matchingHead } },
-                new { number = 2, head = new { sha = unrelatedHead } },
+                new { number = 1, user = new { login = "target" }, head = new { sha = matchingHead } },
+                new { number = 2, user = new { login = "target" }, head = new { sha = unrelatedHead } },
+                new { number = 3, user = new { login = "collaborator" }, head = new { sha = new string('e', 40) } },
             } }),
             JsonSerializer.Serialize(new { commits = 1 }),
             CommitPage(matchingHead, parent, "Target", "target@example.test", "2026-08-21T12:00:00Z"),
             JsonSerializer.Serialize(new { commits = 1 }),
             CommitPage(unrelatedHead, parent, "Other", "other@example.test", "2026-08-21T12:00:00Z"));
         GitHubDiscoveryRepository provider = new("42", "owner/repository", "main");
-        MappedRepository mapped = new(
-            provider,
-            "virtual-repository",
-            new WorkspaceGitHubRepository("virtual-repository", [provider.Identity], []));
         ProviderQueryCounters counters = new();
 
-        DiscoveredRepository discovered = await GitHubAuthorPeriodDiscoveryJson.DiscoverHeadsAsync(
+        DiscoveredRepository discovered = Assert.IsType<DiscoveredRepository>(
+            await GitHubAuthorPeriodDiscoveryJson.DiscoverHeadsAsync(
             runner,
             "virtual-workspace",
-            mapped,
+            provider,
             ["target@example.test"],
+            "target",
             new DateTimeOffset(2026, 8, 21, 0, 0, 0, TimeSpan.Zero),
             new DateTimeOffset(2026, 8, 22, 0, 0, 0, TimeSpan.Zero),
             ChangePortfolioDateField.Author,
@@ -90,13 +89,14 @@ public sealed class GitHubAuthorPeriodDiscoveryTests
             ChangePortfolioCoauthorPolicy.Include,
             includeOpenPullRequests: true,
             counters,
-            CancellationToken.None);
+            CancellationToken.None));
 
         Assert.Equal(2, discovered.Heads.Count);
         Assert.Equal(defaultHead, discovered.Heads[0].ObjectId);
         Assert.Equal(matchingHead, discovered.Heads[1].ObjectId);
         Assert.Equal(6, counters.QueryCount);
         Assert.Equal(6, counters.PageCount);
+        Assert.Equal(2, counters.OpenPullRequestCount);
     }
 
     [Fact]
@@ -106,25 +106,22 @@ public sealed class GitHubAuthorPeriodDiscoveryTests
         string pullHead = new('b', 40);
         string parent = new('d', 40);
         QueueRunner runner = new(
-            JsonSerializer.Serialize(new { sha = defaultHead }),
+            CommitPage(defaultHead, parent, "Target", "target@example.test", "2026-08-21T12:00:00Z"),
             JsonSerializer.Serialize(new[] { new[]
             {
-                new { number = 1, head = new { sha = pullHead } },
+                new { number = 1, user = new { login = "target" }, head = new { sha = pullHead } },
             } }),
             JsonSerializer.Serialize(new { commits = 2 }),
             CommitPage(pullHead, parent, "Target", "target@example.test", "2026-08-21T12:00:00Z"));
         GitHubDiscoveryRepository provider = new("42", "owner/repository", "main");
-        MappedRepository mapped = new(
-            provider,
-            "virtual-repository",
-            new WorkspaceGitHubRepository("virtual-repository", [provider.Identity], []));
 
         InvalidOperationException exception = await Assert.ThrowsAsync<InvalidOperationException>(() =>
             GitHubAuthorPeriodDiscoveryJson.DiscoverHeadsAsync(
                 runner,
                 "virtual-workspace",
-                mapped,
+                provider,
                 ["target@example.test"],
+                "target",
                 new DateTimeOffset(2026, 8, 21, 0, 0, 0, TimeSpan.Zero),
                 new DateTimeOffset(2026, 8, 22, 0, 0, 0, TimeSpan.Zero),
                 ChangePortfolioDateField.Author,
@@ -135,6 +132,34 @@ public sealed class GitHubAuthorPeriodDiscoveryTests
                 CancellationToken.None));
 
         Assert.Contains("incomplete", exception.Message, StringComparison.OrdinalIgnoreCase);
+    }
+
+    [Fact]
+    public async Task EmptyRepositoryIsInactiveInsteadOfFailingOwnerDiscovery()
+    {
+        EmptyRepositoryRunner runner = new();
+        ProviderQueryCounters counters = new();
+
+        DiscoveredRepository? discovered =
+            await GitHubAuthorPeriodDiscoveryJson.DiscoverHeadsAsync(
+                runner,
+                "virtual-workspace",
+                new GitHubDiscoveryRepository("42", "owner/empty", "main"),
+                ["target@example.test"],
+                "target",
+                new DateTimeOffset(2026, 8, 21, 0, 0, 0, TimeSpan.Zero),
+                new DateTimeOffset(2026, 8, 22, 0, 0, 0, TimeSpan.Zero),
+                ChangePortfolioDateField.Author,
+                ChangePortfolioMergePolicy.Exclude,
+                ChangePortfolioCoauthorPolicy.Include,
+                includeOpenPullRequests: false,
+                counters,
+                CancellationToken.None);
+
+        Assert.Null(discovered);
+        Assert.Equal(1, counters.QueryCount);
+        Assert.Equal(1, counters.PageCount);
+        Assert.False(runner.RequireSuccess);
     }
 
     private static string CommitPage(
@@ -173,9 +198,29 @@ public sealed class GitHubAuthorPeriodDiscoveryTests
         {
             cancellationToken.ThrowIfCancellationRequested();
             Assert.Equal("gh", executable);
-            Assert.True(requireSuccess);
             Calls.Add([.. arguments]);
             return Task.FromResult(new ExternalCommandResult(0, _outputs.Dequeue(), string.Empty));
+        }
+    }
+
+    private sealed class EmptyRepositoryRunner : IExternalCommandRunner
+    {
+        public bool RequireSuccess { get; private set; } = true;
+
+        public Task<ExternalCommandResult> RunAsync(
+            string executable,
+            string workingDirectory,
+            IReadOnlyList<string> arguments,
+            CancellationToken cancellationToken,
+            bool requireSuccess = true)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            Assert.Equal("gh", executable);
+            RequireSuccess = requireSuccess;
+            return Task.FromResult(new ExternalCommandResult(
+                1,
+                "{\"message\":\"Git Repository is empty.\",\"status\":\"409\"}",
+                "gh: Git Repository is empty. (HTTP 409)"));
         }
     }
 }

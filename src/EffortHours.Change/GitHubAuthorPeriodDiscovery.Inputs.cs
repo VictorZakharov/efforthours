@@ -13,10 +13,11 @@ public sealed partial class GitHubAuthorPeriodDiscovery
             throw new ArgumentException("The GitHub owner is invalid.", nameof(request));
         }
 
-        if (!Directory.Exists(request.WorkspacePath))
+        if (request.Scope != EngineeringScopeProfile.ProfileName)
         {
-            throw new DirectoryNotFoundException(
-                "The requested workspace root was not found or is inaccessible.");
+            throw new ArgumentException(
+                "Today-to-date discovery currently requires --scope engineering.",
+                nameof(request));
         }
 
         if (request.AuthorAliases.Count is < 1 or > 128 ||
@@ -43,13 +44,17 @@ public sealed partial class GitHubAuthorPeriodDiscovery
         }
     }
 
-    internal static (DateTimeOffset Since, DateTimeOffset Until) LocalDay(
+    internal static DateTimeOffset LocalDayStart(
         DateTimeOffset asOf,
         TimeZoneInfo zone)
     {
         DateTime localDate = TimeZoneInfo.ConvertTime(asOf, zone).Date;
-        return (ResolveLocal(localDate, zone), ResolveLocal(localDate.AddDays(1), zone));
+        return ResolveLocal(localDate, zone);
     }
+
+    internal static (DateTimeOffset Since, DateTimeOffset Until) LocalDay(
+        DateTimeOffset asOf,
+        TimeZoneInfo zone) => (LocalDayStart(asOf, zone), asOf.ToUniversalTime());
 
     private static DateTimeOffset ResolveLocal(DateTime value, TimeZoneInfo zone)
     {
@@ -65,8 +70,7 @@ public sealed partial class GitHubAuthorPeriodDiscovery
 
     private async Task<string[]> ResolveAliasesAsync(
         GitHubAuthorPeriodDiscoveryRequest request,
-        string workspace,
-        IReadOnlyList<MappedRepository> mapped,
+        string workingDirectory,
         string authenticatedLogin,
         ProviderQueryCounters counters,
         CancellationToken cancellationToken)
@@ -80,10 +84,9 @@ public sealed partial class GitHubAuthorPeriodDiscovery
             aliases.Add(authenticatedLogin);
             aliases.AddRange(await GitHubAuthorPeriodDiscoveryJson.ResolveVerifiedEmailsAsync(
                 _commands,
-                workspace,
+                workingDirectory,
                 counters,
                 cancellationToken).ConfigureAwait(false));
-            aliases.AddRange(mapped.SelectMany(value => value.Local.IdentityAliases));
         }
 
         string[] canonical = [.. aliases
@@ -104,7 +107,7 @@ public sealed partial class GitHubAuthorPeriodDiscovery
     private static string IdentitySources(IReadOnlyList<string> aliases) => aliases.Any(alias =>
         alias.Equals("@me", StringComparison.OrdinalIgnoreCase))
             ? aliases.Count == 1
-                ? "provider-viewer-and-local-git"
-                : "provider-viewer-local-git-and-explicit-aliases"
+                ? "provider-viewer"
+                : "provider-viewer-and-explicit-aliases"
             : "explicit-aliases";
 }

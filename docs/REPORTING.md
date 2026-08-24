@@ -63,20 +63,26 @@ generic anonymized engineering-findings report from the same structured data,
 without agent-authored arithmetic or unsupported causal guesses. Both require the
 caller to choose the exact output path for low-level manifest comparisons.
 
-The explicit GitHub-assisted `--today` view is the bounded exception: it may write
-JSON or concise Markdown directly to stdout. It wraps the same canonical source
-portfolio and adds paired `asOf` and `discovery` fields. Discovery records only a
-versioned protocol, scope digest, identity-source category, completeness, bounded
-repository/head/query/page/object counts, and elapsed time. It contains no owner,
-repository display name, PR number, alias, or local path. Execution may also
-record the one-command elapsed observation. These operational fields are excluded
-from the semantic digest.
+The explicit GitHub-assisted `change today` view is the bounded exception: it may
+write JSON or concise Markdown directly to stdout or atomically replace an
+explicit output path. It wraps the same canonical source portfolio and adds
+paired `asOf`, managed-cache discovery, engineering scope-profile, and scope-
+summary fields. Discovery records only a versioned protocol, scope digest,
+identity-source category, completeness, bounded repository/head/PR/query/page/
+object counts, acquired bytes, and elapsed time. It contains no owner, repository
+display name, PR number, alias, source excerpt, credential, or execution-only path.
+Scope identity participates in semantic/checkpoint digests; operational discovery
+and timing fields do not.
 
-Today Markdown leads with the expected EHE-to-reference-capacity ratio, EHE,
-capacity, low/high range, as-of instant, selected changes, active repositories,
-open heads, and shared-credit groups. A complete no-match selection is an
-explicit zero result. An incomplete run omits every aggregate and ratio rather
-than substituting zero.
+Today Markdown reports status, snapshot coverage, EHE and X low/expected/high,
+the explicit capacity policy and actual-hours formula, selected/admitted/scope-
+empty changes, compact repository-attributed expected EHE, scope identity and
+important exclusions, estimator identities, checkpoint reuse separately from
+within-run analysis reuse, end-to-end/per-phase timings, and interpretation limits.
+It emits no chart, one-point OLS/R-squared, first/latest change, duplicate series,
+or synthetic `0%`. A complete no-match selection is an explicit zero result. An
+incomplete run preserves a privacy-safe root phase/category/digest and omits every
+aggregate and ratio rather than substituting zero.
 
 Comparison reports record `contributorNormalization`. The default `joint` view
 keeps exclusive and shared contributor-match sets additive to the jointly

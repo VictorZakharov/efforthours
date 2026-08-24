@@ -67,11 +67,11 @@ internal static class ChangePortfolioComparisonInputLoader
         }
 
         DateTimeOffset utcAsOf = asOf.ToUniversalTime();
-        if (utcAsOf < selection.SinceInclusive || utcAsOf >= selection.UntilExclusive)
+        if (utcAsOf < selection.SinceInclusive || utcAsOf != selection.UntilExclusive)
         {
             throw new ArgumentOutOfRangeException(
                 nameof(asOf),
-                "The today-to-date as-of instant must be inside the selected local day.");
+                "The today-to-date as-of instant must equal the interval's exclusive snapshot end.");
         }
 
         string date = TimeZoneInfo.ConvertTime(utcAsOf, zone)

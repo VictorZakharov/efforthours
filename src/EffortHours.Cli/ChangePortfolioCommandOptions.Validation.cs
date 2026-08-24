@@ -42,10 +42,26 @@ internal static partial class ChangePortfolioCommandOptionsParser
                 "Today-to-date discovery requires at least one --author value, such as --author \"@me\".");
         }
 
-        if (options.Today &&
-            (string.IsNullOrWhiteSpace(options.Owner) || string.IsNullOrWhiteSpace(options.WorkspacePath)))
+        if (options.Today && string.IsNullOrWhiteSpace(options.Owner))
         {
-            return Error("Today-to-date discovery requires --owner and --workspace.");
+            return Error("Today-to-date discovery requires --owner.");
+        }
+
+        if (options.Today && options.Scope != "engineering")
+        {
+            return Error("Today-to-date discovery requires --scope engineering.");
+        }
+
+        if (options.Today && options.WorkspacePath is not null)
+        {
+            return Error(
+                "Today-to-date discovery uses the EffortHours-managed repository cache; omit --workspace.");
+        }
+
+        if (options.Today && options.FetchMissing)
+        {
+            return Error(
+                "Today-to-date discovery acquires required immutable objects automatically; omit --fetch-missing.");
         }
 
         if (options.Today && options.CapacityHours is null)
@@ -56,6 +72,19 @@ internal static partial class ChangePortfolioCommandOptionsParser
         if (options.Today && !timeZoneProvided)
         {
             return Error("Today-to-date discovery requires an explicit named --timezone.");
+        }
+
+        if (options.Today)
+        {
+            if (!ChangePortfolioTimeParser.TryResolveTimeZone(
+                    options.TimeZone,
+                    out TimeZoneInfo zone,
+                    out string? zoneError))
+            {
+                return Error(zoneError!);
+            }
+
+            options = options with { TimeZone = zone.Id };
         }
 
         if (options.Today &&
@@ -72,11 +101,11 @@ internal static partial class ChangePortfolioCommandOptionsParser
         }
 
         if (!options.Today &&
-            (options.Owner is not null || options.WorkspacePath is not null ||
+            (options.Owner is not null || options.WorkspacePath is not null || options.Scope is not null ||
              options.IncludeOpenPullRequests || options.CapacityHours is not null))
         {
             return Error(
-                "Options --owner, --workspace, --include-open-prs, and --capacity-hours require --today.");
+                "Options --owner, --workspace, --scope, --include-open-prs, and --capacity-hours require --today.");
         }
         if (options.Preflight && !options.IsAuthorPeriodManifest)
         {
@@ -101,11 +130,10 @@ internal static partial class ChangePortfolioCommandOptionsParser
         }
 
         if (options.FetchMissing && options.PullRequests.Count == 0 &&
-            options.ManifestPath is null && !options.Today)
+            options.ManifestPath is null)
         {
             return Error(
-                "Option --fetch-missing is valid only with repeated --pr or --manifest selectors, " +
-                "or with --today discovery.");
+                "Option --fetch-missing is valid only with repeated --pr or --manifest selectors.");
         }
 
         bool authorOnlyOptions = since is not null || until is not null || authorPolicyProvided;

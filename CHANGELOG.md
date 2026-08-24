@@ -6,6 +6,31 @@ may still change public contracts with explicit documentation.
 
 ## Unreleased
 
+### Added
+
+- Added canonical `eh change today` orchestration that runs outside source
+  checkouts, discovers matching owner/default and user-authored open-PR work via
+  authenticated GitHub, creates or reuses active repositories in a private bare
+  cache, applies the versioned native `engineering` scope, performs exact bounded
+  preflight internally, and atomically writes one validated daily JSON or Markdown
+  report. `eh change scope show engineering` exposes the effective scope contract.
+
+### Changed
+
+- Today reports now bind the effective scope into semantic and repository
+  checkpoint identities, distinguish identity-selected/admitted/scope-empty
+  commits, report acquired bytes/objects and checkpoint versus in-run reuse, and
+  always include end-to-end and phase timings. One-bucket Markdown omits trend
+  charts/statistics and reports EHE/X low, expected, and high directly.
+- Today discovery no longer accepts or scans `--workspace`; inactive repositories
+  and open PRs with no matching work are counts only and cause no acquisition.
+
+### Fixed
+
+- Scope/provider/acquisition failures now preserve a privacy-safe root diagnostic
+  in a nonzero incomplete report without publishing EHE or X. Complete zero-work
+  days may contain no active repository shards and serialize as zero EHE/X.
+
 ## 0.10.0-alpha.15 - 2026-08-21
 
 ### Changed

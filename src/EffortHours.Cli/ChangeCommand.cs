@@ -59,6 +59,23 @@ internal sealed class ChangeCommand
                 cancellationToken).ConfigureAwait(false);
         }
 
+        if (arguments[0].Equals("today", StringComparison.OrdinalIgnoreCase))
+        {
+            return await new ChangePortfolioCommand().ExecuteAsync(
+                ["--today", .. arguments.Skip(1)],
+                standardOutput,
+                standardError,
+                cancellationToken).ConfigureAwait(false);
+        }
+
+        if (arguments[0].Equals("scope", StringComparison.OrdinalIgnoreCase))
+        {
+            return await ChangeScopeCommand.ExecuteAsync(
+                [.. arguments.Skip(1)],
+                standardOutput,
+                standardError).ConfigureAwait(false);
+        }
+
         ChangeCommandParseResult parsed = ChangeCommandOptionsParser.Parse(arguments);
         if (parsed.ShowHelp)
         {
@@ -247,6 +264,9 @@ internal sealed class ChangeCommand
           eh change portfolio <repository> --pr <pr> --pr <pr> [options]
           eh change portfolio --manifest <portfolio.json> [options]
           eh change portfolio <repository> --author <alias> --since <instant> --until <instant> [options]
+          eh change today --owner <owner> --author @me --timezone <zone>
+            --include-open-prs --scope engineering --capacity-hours <hours> [options]
+          eh change scope show engineering
 
         Selectors:
           --commit <revision>  Compare one commit with its first parent; root uses the empty tree

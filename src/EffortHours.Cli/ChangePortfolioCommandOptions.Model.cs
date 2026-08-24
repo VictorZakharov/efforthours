@@ -20,6 +20,8 @@ internal sealed record ChangePortfolioCommandOptions
 
     public string? WorkspacePath { get; init; }
 
+    public string? Scope { get; init; }
+
     public bool Today { get; init; }
 
     public bool IncludeOpenPullRequests { get; init; }

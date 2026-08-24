@@ -107,10 +107,10 @@ public static partial class ContractValidation
         IReadOnlyList<ChangeAuthorPeriodManifestRepository> repositories,
         List<string> errors)
     {
-        if (repositories.Count is < 1 or > ChangeAuthorPeriodManifestLimits.MaximumRepositories)
+        if (repositories.Count > ChangeAuthorPeriodManifestLimits.MaximumRepositories)
         {
             errors.Add(
-                $"An author-period manifest must contain between 1 and " +
+                $"An author-period manifest cannot contain more than " +
                 $"{ChangeAuthorPeriodManifestLimits.MaximumRepositories} repositories.");
         }
 

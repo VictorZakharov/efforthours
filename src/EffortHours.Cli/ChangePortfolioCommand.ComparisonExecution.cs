@@ -16,6 +16,8 @@ internal sealed partial class ChangePortfolioCommand
         CancellationToken cancellationToken)
     {
         long workflowStarted = Stopwatch.GetTimestamp();
+        ChangePortfolioExecutionTelemetry portfolioTelemetry =
+            CreateExecutionTelemetry(standardError, "portfolio");
         DateTimeOffset generatedAt = (options.GeneratedAt ?? DateTimeOffset.UtcNow)
             .ToUniversalTime();
         string title = options.ReportTitle ??
@@ -24,23 +26,21 @@ internal sealed partial class ChangePortfolioCommand
                 : options.ComparisonView == ChangePortfolioComparisonView.Findings
                 ? "EffortHours engineering findings"
                 : "EffortHours portfolio trend");
-        GitHubAuthorPeriodDiscoveryResult? today = options.Today
-            ? await _discoverToday(
-                new GitHubAuthorPeriodDiscoveryRequest
-                {
-                    Owner = options.Owner!,
-                    WorkspacePath = options.WorkspacePath!,
-                    AuthorAliases = options.AuthorAliases,
-                    AsOf = generatedAt,
-                    TimeZone = options.TimeZone,
-                    IncludeOpenPullRequests = options.IncludeOpenPullRequests,
-                    FetchMissing = options.FetchMissing,
-                    DateField = options.DateField,
-                    MergePolicy = options.MergePolicy,
-                    CoauthorPolicy = options.CoauthorPolicy,
-                },
-                cancellationToken).ConfigureAwait(false)
-            : null;
+        TodayDiscoveryOutcome discovery = await DiscoverTodayAsync(
+            options,
+            title,
+            generatedAt,
+            workflowStarted,
+            portfolioTelemetry,
+            standardOutput,
+            standardError,
+            cancellationToken).ConfigureAwait(false);
+        if (discovery.ExitCode is int exitCode)
+        {
+            return exitCode;
+        }
+
+        GitHubAuthorPeriodDiscoveryResult? today = discovery.Today;
         ResolvedChangeAuthorPeriodManifest resolved = today is null
             ? await ChangeAuthorPeriodManifestLoader.LoadAsync(
                 options.AuthorPeriodManifestPath!,
@@ -80,6 +80,8 @@ internal sealed partial class ChangePortfolioCommand
                 repository,
                 planner,
                 checkpoints,
+                today?.PathAdmissions.GetValueOrDefault(repository.Id),
+                today?.ScopeProfile.Digest,
                 standardError,
                 cancellationToken).ConfigureAwait(false);
             outcomes.Add(outcome with { Elapsed = Stopwatch.GetElapsedTime(started) });
@@ -105,8 +107,6 @@ internal sealed partial class ChangePortfolioCommand
             };
         }
 
-        ChangePortfolioExecutionTelemetry portfolioTelemetry =
-            CreateExecutionTelemetry(standardError, "portfolio");
         ChangePortfolioComparisonExecution execution =
             ChangePortfolioComparisonExecutionFactory.Create(
                 outcomes,
@@ -130,6 +130,8 @@ internal sealed partial class ChangePortfolioCommand
             ExecutionOverride = execution,
             AsOf = today?.AsOf,
             Discovery = today?.Discovery,
+            ScopeProfile = today?.ScopeProfile,
+            ScopeSummary = today is null ? null : ScopeSummary(outcomes),
         };
         ChangePortfolioComparisonReport comparison;
         if (execution.Failures.Count > 0)
@@ -167,6 +169,16 @@ internal sealed partial class ChangePortfolioCommand
                 workflowStarted);
         }
 
+        execution = ChangePortfolioComparisonExecutionFactory.Create(
+            outcomes,
+            checkpoints is not null,
+            portfolioTelemetry);
+        comparison = comparison with { Execution = execution };
+        (comparison, output) = RenderComparisonWithOutputUsage(
+            comparison,
+            options,
+            workflowStarted);
+
         int write = await WriteOutputAsync(
             output,
             options.OutputPath,
@@ -189,6 +201,8 @@ internal sealed partial class ChangePortfolioCommand
         ChangeAuthorPeriodManifestRepository repository,
         GitPortfolioPlanner planner,
         ChangePortfolioRepositoryCheckpointStore? checkpoints,
+        ChangePathAdmission? pathAdmission,
+        string? scopeProfileDigest,
         TextWriter standardError,
         CancellationToken cancellationToken)
     {
@@ -196,7 +210,8 @@ internal sealed partial class ChangePortfolioCommand
             resolved.Manifest,
             repository.Id,
             options.Profile,
-            ChangeEstimator.Version);
+            ChangeEstimator.Version,
+            scopeProfileDigest);
         ChangePortfolioExecutionTelemetry telemetry =
             CreateExecutionTelemetry(standardError, repository.Id);
         if (checkpoints is not null)
@@ -218,6 +233,9 @@ internal sealed partial class ChangePortfolioCommand
                     Diagnostics = cached.Diagnostics,
                     Scope = cached.Scope,
                     CheckpointReadBytes = cached.ReadBytes,
+                    AdmittedChangeCount = AdmittedChangeCount(cached.Candidates),
+                    ScopeEmptyChangeCount =
+                        cached.Candidates.Count - AdmittedChangeCount(cached.Candidates),
                     Telemetry = telemetry,
                 };
             }
@@ -243,6 +261,20 @@ internal sealed partial class ChangePortfolioCommand
                     allowEmptySelection: true,
                     cancellationToken: cancellationToken).ConfigureAwait(false);
             measuredScope = plan.RepositoryScopes.Single();
+            using (telemetry.Measure(ChangePortfolioExecutionPhases.Preflight))
+            {
+                if (measuredScope.SelectedChangeCount != plan.Items.Count)
+                {
+                    throw new InvalidOperationException(
+                        "Internal preflight selected-change accounting is inconsistent.");
+                }
+            }
+
+            GitChangePlan[] scopedPlans = [.. plan.Items.Select(item => item.Plan with
+            {
+                RepositoryName = repository.Id,
+                PathAdmission = pathAdmission,
+            })];
             ChangePortfolioEstimateBatch estimate = plan.Items.Count == 0
                 ? new ChangePortfolioEstimateBatch
                 {
@@ -250,7 +282,7 @@ internal sealed partial class ChangePortfolioCommand
                     Statistics = new ChangePortfolioExecutionStatistics(),
                 }
                 : await _changeEstimator.EstimatePortfolioCandidatesWithStatisticsAsync(
-                    [.. plan.Items.Select(item => item.Plan)],
+                    scopedPlans,
                     options.Profile,
                     telemetry,
                     cancellationToken).ConfigureAwait(false);
@@ -316,6 +348,8 @@ internal sealed partial class ChangePortfolioCommand
                 Statistics = estimate.Statistics,
                 Scope = measuredScope,
                 CheckpointWrittenBytes = checkpointWrittenBytes,
+                AdmittedChangeCount = AdmittedChangeCount(candidates),
+                ScopeEmptyChangeCount = candidates.Count - AdmittedChangeCount(candidates),
             };
         }
         catch (OperationCanceledException)
@@ -352,6 +386,7 @@ internal sealed partial class ChangePortfolioCommand
                     : ChangePortfolioCheckpointDisposition.MissFailed,
                 Scope = measuredScope,
                 Telemetry = telemetry,
+                ScopeEmptyChangeCount = measuredScope?.SelectedChangeCount ?? 0,
                 Failure = failure,
             };
         }

@@ -67,7 +67,7 @@ public static partial class ContractValidation
         IReadOnlyList<ChangePortfolioAuthorPeriodManifestRepository> repositories,
         List<string> errors)
     {
-        if (repositories.Count is < 1 or > ChangeAuthorPeriodManifestLimits.MaximumRepositories)
+        if (repositories.Count > ChangeAuthorPeriodManifestLimits.MaximumRepositories)
         {
             errors.Add("Manifest author-period selection has an invalid repository count.");
         }

@@ -14,6 +14,7 @@ public sealed partial class ChangeEstimator
         IChangeSnapshot baseSnapshot,
         IChangeSnapshot headSnapshot,
         IReadOnlyList<Diagnostic> selectorDiagnostics,
+        ChangePathAdmission? pathAdmission,
         EstimationProfile profile,
         SnapshotAnalysisCache snapshotAnalyses,
         string cacheNamespace,
@@ -25,7 +26,7 @@ public sealed partial class ChangeEstimator
         ChangeAnalysisScope? analysisScope;
         using (executionTelemetry?.Measure(ChangePortfolioExecutionPhases.SnapshotAndDiffConstruction))
         {
-            analysisScope = ChangeAnalysisScope.Create(baseSnapshot, headSnapshot);
+            analysisScope = ChangeAnalysisScope.Create(baseSnapshot, headSnapshot, pathAdmission);
         }
         SnapshotAnalysis baseAnalysis = await AnalyzeSnapshotAsync(
             repositoryName,
@@ -62,6 +63,7 @@ public sealed partial class ChangeEstimator
                 baseEvidence,
                 headEvidence,
                 evidenceDiagnostics,
+                pathAdmission,
                 cancellationToken).ConfigureAwait(false);
         }
         (ChangeSelection verifiedSelection, Diagnostic? pathCountDiagnostic) = VerifyPullRequestPathCounts(
@@ -317,9 +319,13 @@ public sealed partial class ChangeEstimator
         {
             Repository = evidence.Repository with
             {
-                SourceDigest = snapshot is GitSnapshotFileSystem gitSnapshot
-                    ? gitSnapshot.InventoryDigest
-                    : ChangeAnalysisScope.ComputeInventoryDigest(snapshot.Files),
+                SourceDigest = analysisScope.PathAdmission is { } admission
+                    ? ChangeAnalysisScope.ComputeScopedInventoryDigest(
+                        snapshot.Files.Where(file => admission.Admits(file.Path)),
+                        admission.ProfileDigest)
+                    : snapshot is GitSnapshotFileSystem gitSnapshot
+                        ? gitSnapshot.InventoryDigest
+                        : ChangeAnalysisScope.ComputeInventoryDigest(snapshot.Files),
             },
             Diagnostics = [.. evidence.Diagnostics
                 .Where(diagnostic => diagnostic.Code != "FB5205")

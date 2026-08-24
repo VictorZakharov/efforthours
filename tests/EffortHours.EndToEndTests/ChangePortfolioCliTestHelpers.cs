@@ -24,6 +24,21 @@ public sealed partial class ChangeCliTests
         Assert.True(result.ExitCode == 0, $"git clone failed: {result.StandardError}");
     }
 
+    private static async Task CloneBareAsync(string sourcePath, string targetPath)
+    {
+        string workingDirectory = Path.GetDirectoryName(targetPath)!;
+        Directory.CreateDirectory(workingDirectory);
+        ProcessStartInfo startInfo = StartInfo("git", workingDirectory);
+        startInfo.ArgumentList.Add("clone");
+        startInfo.ArgumentList.Add("--quiet");
+        startInfo.ArgumentList.Add("--bare");
+        startInfo.ArgumentList.Add("--no-hardlinks");
+        startInfo.ArgumentList.Add(sourcePath);
+        startInfo.ArgumentList.Add(targetPath);
+        ProcessResult result = await RunAsync(startInfo);
+        Assert.True(result.ExitCode == 0, $"git clone --bare failed: {result.StandardError}");
+    }
+
     private static void WriteManifest(string path, params object[] repositories)
     {
         File.WriteAllText(

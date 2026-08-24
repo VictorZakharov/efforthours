@@ -29,8 +29,9 @@ agent instructions.
   manifests, author-period selection and scope preflight, exact allocation,
   attribution uncertainty, and no-ranking safeguards.
 - [GitHub-assisted today-to-date portfolios](AUTHOR_PERIOD_SCAFFOLDING.md) defines
-  the explicit one-command provider boundary, in-memory v1 handoff, identity and
-  workspace scope, narrow acquisition, failure handling, privacy, and tests.
+  the explicit provider boundary for one-command GitHub discovery, managed bare-
+  cache acquisition, native engineering scope, internal preflight, atomic failure-
+  safe output, privacy, and tests.
 - [Change model admission](CHANGE_MODEL_ADMISSION.md) freezes the progressive size,
   metric, performance, and evidence gates for Change estimators.
 

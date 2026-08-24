@@ -37,14 +37,48 @@ public sealed partial class GitClient
             "git",
             fullPath,
             ["rev-parse", "--show-toplevel"],
-            cancellationToken).ConfigureAwait(false);
-        string root = result.StandardOutput.Trim();
+            cancellationToken,
+            requireSuccess: false).ConfigureAwait(false);
+        string root = result.ExitCode == 0
+            ? result.StandardOutput.Trim()
+            : await ResolveBareRepositoryRootAsync(
+                fullPath,
+                result,
+                cancellationToken).ConfigureAwait(false);
         if (root.Length == 0)
         {
             throw new ExternalCommandException("git", result.ExitCode, "Git did not return a repository root.");
         }
 
         return Path.GetFullPath(root);
+    }
+
+    private async Task<string> ResolveBareRepositoryRootAsync(
+        string fullPath,
+        ExternalCommandResult worktreeResult,
+        CancellationToken cancellationToken)
+    {
+        ExternalCommandResult bare = await _commands.RunAsync(
+            "git",
+            fullPath,
+            ["rev-parse", "--is-bare-repository"],
+            cancellationToken,
+            requireSuccess: false).ConfigureAwait(false);
+        if (bare.ExitCode != 0 ||
+            !bare.StandardOutput.Trim().Equals("true", StringComparison.OrdinalIgnoreCase))
+        {
+            string message = string.IsNullOrWhiteSpace(worktreeResult.StandardError)
+                ? "Git did not return a repository root."
+                : $"'git' failed: {worktreeResult.StandardError.Trim()}";
+            throw new ExternalCommandException("git", worktreeResult.ExitCode, message);
+        }
+
+        ExternalCommandResult gitDirectory = await _commands.RunAsync(
+            "git",
+            fullPath,
+            ["rev-parse", "--absolute-git-dir"],
+            cancellationToken).ConfigureAwait(false);
+        return gitDirectory.StandardOutput.Trim();
     }
 
     public async Task<string> ResolveCommitAsync(
