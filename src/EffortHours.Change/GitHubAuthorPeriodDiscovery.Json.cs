@@ -199,27 +199,31 @@ internal static partial class GitHubAuthorPeriodDiscoveryJson
         ChangePortfolioCoauthorPolicy coauthorPolicy,
         bool includeOpenPullRequests,
         ProviderQueryCounters counters,
-        CancellationToken cancellationToken)
+        CancellationToken cancellationToken,
+        bool includeDefaultHead = true)
     {
         string identity = repository.Identity;
         string branch = repository.DefaultBranch!;
         List<DiscoveredHead> heads = [];
-        string? defaultObject = await ResolveMatchingDefaultHeadAsync(
-            commands,
-            workingDirectory,
-            identity,
-            branch,
-            aliases,
-            since,
-            until,
-            dateField,
-            mergePolicy,
-            coauthorPolicy,
-            counters,
-            cancellationToken).ConfigureAwait(false);
-        if (defaultObject is not null)
+        if (includeDefaultHead)
         {
-            heads.Add(new DiscoveredHead("default", defaultObject, $"refs/heads/{branch}"));
+            string? defaultObject = await ResolveMatchingDefaultHeadAsync(
+                commands,
+                workingDirectory,
+                identity,
+                branch,
+                aliases,
+                since,
+                until,
+                dateField,
+                mergePolicy,
+                coauthorPolicy,
+                counters,
+                cancellationToken).ConfigureAwait(false);
+            if (defaultObject is not null)
+            {
+                heads.Add(new DiscoveredHead("default", defaultObject, $"refs/heads/{branch}"));
+            }
         }
 
         int authoredOpenPullRequests = 0;

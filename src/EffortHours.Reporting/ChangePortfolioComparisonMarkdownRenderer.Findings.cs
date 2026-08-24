@@ -1,5 +1,6 @@
 using System.Globalization;
 using System.Text;
+using EffortHours.Contracts;
 using EffortHours.Contracts.V1;
 
 namespace EffortHours.Reporting;
@@ -149,6 +150,12 @@ public static partial class ChangePortfolioComparisonMarkdownRenderer
             markdown.Append("- Category: `").Append(Escape(failure.Category)).AppendLine("`");
             markdown.Append("- Root message: ").AppendLine(Escape(failure.Message));
             markdown.Append("- Message digest: `").Append(Escape(failure.MessageDigest)).AppendLine("`");
+            if (failure.AgentAction is not null)
+            {
+                markdown.Append("- Agent action: `")
+                    .Append(Escape(ContractJson.SerializeCompact(failure.AgentAction)))
+                    .AppendLine("`");
+            }
             ChangePortfolioComparisonProgress? progress = report.Execution.Repositories
                 .Single(repository => repository.RepositoryId == failure.RepositoryId)
                 .LastProgress;

@@ -84,6 +84,21 @@ or synthetic `0%`. A complete no-match selection is an explicit zero result. An
 incomplete run preserves a privacy-safe root phase/category/digest and omits every
 aggregate and ratio rather than substituting zero.
 
+An incomplete today setup failure additionally carries
+`efforthours-agent-action/1.0`. Its safe failure code, phase, suggested action,
+bounded approval prefix, and retry limit are identical in JSON, today Markdown,
+and the final compact stderr record. Only
+`github-cli-config-access-denied` permits one exact `eh change today`
+permission retry. Provider stderr, credentials, raw aliases, owner/repository
+names, PR numbers, provider configuration paths, managed-cache paths, and local
+repository paths remain excluded.
+
+Today discovery also records provider process count, cumulative provider-process
+startup milliseconds, and metadata-cache hit status. Phase timings separately
+identify authentication, owner inventory, candidate discovery, default heads,
+open PRs, and process startup. These remain operational and excluded from
+`verification.semanticDigest`, EHE, and capacity ratios.
+
 Comparison reports record `contributorNormalization`. The default `joint` view
 keeps exclusive and shared contributor-match sets additive to the jointly
 reconciled portfolio, so allocations can change with manifest membership. The

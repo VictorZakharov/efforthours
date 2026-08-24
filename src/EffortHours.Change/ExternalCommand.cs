@@ -18,7 +18,13 @@ public sealed class ExternalCommandException : InvalidOperationException
     public int? ExitCode { get; }
 }
 
-internal readonly record struct ExternalCommandResult(int ExitCode, string StandardOutput, string StandardError);
+internal readonly record struct ExternalCommandResult(
+    int ExitCode,
+    string StandardOutput,
+    string StandardError)
+{
+    public TimeSpan ProcessStartupElapsed { get; init; }
+}
 
 internal readonly record struct ExternalBinaryCommandResult(
     byte[] StandardOutput,
@@ -98,6 +104,7 @@ internal static class ExternalCommand
     {
         ProcessStartInfo startInfo = CreateStartInfo(executable, workingDirectory, arguments);
         using Process process = new() { StartInfo = startInfo };
+        long startupStarted = Stopwatch.GetTimestamp();
         try
         {
             if (!process.Start())
@@ -117,6 +124,7 @@ internal static class ExternalCommand
                 exception);
         }
 
+        TimeSpan startupElapsed = Stopwatch.GetElapsedTime(startupStarted);
         Task<string> stdout = process.StandardOutput.ReadToEndAsync(cancellationToken);
         Task<string> stderr = process.StandardError.ReadToEndAsync(cancellationToken);
         try
@@ -132,7 +140,10 @@ internal static class ExternalCommand
         ExternalCommandResult result = new(
             process.ExitCode,
             await stdout.ConfigureAwait(false),
-            await stderr.ConfigureAwait(false));
+            await stderr.ConfigureAwait(false))
+        {
+            ProcessStartupElapsed = startupElapsed,
+        };
         if (requireSuccess && result.ExitCode != 0)
         {
             string detail = result.StandardError.Trim();

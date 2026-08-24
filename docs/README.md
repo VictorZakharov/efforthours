@@ -32,6 +32,10 @@ agent instructions.
   the explicit provider boundary for one-command GitHub discovery, managed bare-
   cache acquisition, native engineering scope, internal preflight, atomic failure-
   safe output, privacy, and tests.
+- [Codex companion integration](CODEX_INTEGRATION.md) defines the versioned
+  packaged skill, explicit install/check lifecycle, structured agent actions,
+  exact retry boundary, provider batching/fallback, metadata-cache freshness, and
+  operational telemetry.
 - [Change model admission](CHANGE_MODEL_ADMISSION.md) freezes the progressive size,
   metric, performance, and evidence gates for Change estimators.
 

@@ -102,6 +102,11 @@ public sealed partial class EffortHoursApplication
                     [.. arguments.Skip(1)],
                     standardOutput,
                     standardError).ConfigureAwait(false),
+                "agent" => await AgentAsync(
+                    [.. arguments.Skip(1)],
+                    standardOutput,
+                    standardError,
+                    cancellationToken).ConfigureAwait(false),
                 "version" or "--version" or "-v" => await VersionAsync(standardOutput).ConfigureAwait(false),
                 _ => await UsageErrorAsync(
                     standardError,

@@ -68,25 +68,29 @@ public sealed partial class GitHubAuthorPeriodDiscovery
         return new DateTimeOffset(local, zone.GetUtcOffset(local)).ToUniversalTime();
     }
 
-    private async Task<string[]> ResolveAliasesAsync(
+    private async Task<ResolvedAliases> ResolveAliasesAsync(
         GitHubAuthorPeriodDiscoveryRequest request,
         string workingDirectory,
         string authenticatedLogin,
+        IReadOnlyList<string>? cachedVerifiedEmails,
         ProviderQueryCounters counters,
         CancellationToken cancellationToken)
     {
         bool useMe = request.AuthorAliases.Any(alias =>
             alias.Equals("@me", StringComparison.OrdinalIgnoreCase));
+        IReadOnlyList<string> verifiedEmails = [];
         List<string> aliases = [.. request.AuthorAliases.Where(alias =>
             !alias.Equals("@me", StringComparison.OrdinalIgnoreCase)).Select(alias => alias.Trim())];
         if (useMe)
         {
             aliases.Add(authenticatedLogin);
-            aliases.AddRange(await GitHubAuthorPeriodDiscoveryJson.ResolveVerifiedEmailsAsync(
-                _commands,
-                workingDirectory,
-                counters,
-                cancellationToken).ConfigureAwait(false));
+            verifiedEmails = cachedVerifiedEmails ??
+                await GitHubAuthorPeriodDiscoveryJson.ResolveVerifiedEmailsAsync(
+                    _commands,
+                    workingDirectory,
+                    counters,
+                    cancellationToken).ConfigureAwait(false);
+            aliases.AddRange(verifiedEmails);
         }
 
         string[] canonical = [.. aliases
@@ -101,7 +105,7 @@ public sealed partial class GitHubAuthorPeriodDiscovery
                 $"{ChangeAuthorPeriodManifestLimits.MaximumAliasesPerContributor}. Use explicit --author values.");
         }
 
-        return canonical;
+        return new ResolvedAliases(canonical, verifiedEmails);
     }
 
     private static string IdentitySources(IReadOnlyList<string> aliases) => aliases.Any(alias =>
@@ -110,4 +114,8 @@ public sealed partial class GitHubAuthorPeriodDiscovery
                 ? "provider-viewer"
                 : "provider-viewer-and-explicit-aliases"
             : "explicit-aliases";
+
+    private sealed record ResolvedAliases(
+        string[] Values,
+        IReadOnlyList<string> VerifiedEmails);
 }

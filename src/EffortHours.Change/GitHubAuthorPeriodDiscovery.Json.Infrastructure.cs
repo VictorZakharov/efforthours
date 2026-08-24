@@ -14,10 +14,13 @@ internal static partial class GitHubAuthorPeriodDiscoveryJson
         bool paginated,
         bool optional,
         CancellationToken cancellationToken,
-        bool emptyRepositoryIsEmpty = false)
+        bool emptyRepositoryIsEmpty = false,
+        bool capabilityFallback = false,
+        string? failurePhase = null)
     {
         counters.AddQuery();
         ExternalCommandResult result;
+        string phase = failurePhase ?? FailurePhase(arguments);
         try
         {
             result = await commands.RunAsync(
@@ -25,32 +28,37 @@ internal static partial class GitHubAuthorPeriodDiscoveryJson
                 workingDirectory,
                 arguments,
                 cancellationToken,
-                requireSuccess: !optional && !emptyRepositoryIsEmpty).ConfigureAwait(false);
+                requireSuccess: false).ConfigureAwait(false);
         }
         catch (ExternalCommandException exception)
         {
-            throw new InvalidOperationException(
-                "GitHub discovery failed. Confirm that gh is installed, authenticated, and authorized " +
-                "for the requested owner scope.",
-                exception);
+            throw GitHubProviderFailure.FromStart(exception, phase);
         }
 
+        counters.AddProcess(result.ProcessStartupElapsed);
         if (result.ExitCode != 0 && emptyRepositoryIsEmpty && IsEmptyRepository(result))
         {
             counters.AddPages(1);
             return paginated ? "[[]]" : "{}";
         }
 
-        if (optional && result.ExitCode != 0)
+        if (optional && result.ExitCode != 0 &&
+            IsOptionalIdentityPermissionFailure(result))
         {
             return null;
         }
 
         if (result.ExitCode != 0)
         {
-            throw new InvalidOperationException(
-                "GitHub discovery failed. Confirm that gh is installed, authenticated, and authorized " +
-                "for the requested owner scope.");
+            GitHubProviderException failure = GitHubProviderFailure.FromResult(result, phase);
+            if (capabilityFallback &&
+                failure.Action.FailureCode is
+                    "github-provider-request-failed" or "github-owner-forbidden-or-not-found")
+            {
+                return null;
+            }
+
+            throw failure;
         }
 
         if (result.StandardOutput.Length > MaximumResponseCharacters)
@@ -73,9 +81,7 @@ internal static partial class GitHubAuthorPeriodDiscoveryJson
             }
             catch (JsonException exception)
             {
-                throw new InvalidOperationException(
-                    "GitHub returned malformed paginated JSON.",
-                    exception);
+                throw GitHubProviderFailure.Malformed(phase, exception);
             }
         }
         else
@@ -112,6 +118,41 @@ internal static partial class GitHubAuthorPeriodDiscoveryJson
             (response.Contains("HTTP 409", StringComparison.OrdinalIgnoreCase) ||
              response.Contains("\"status\":\"409\"", StringComparison.OrdinalIgnoreCase) ||
              response.Contains("\"status\":409", StringComparison.OrdinalIgnoreCase));
+    }
+
+    private static bool IsOptionalIdentityPermissionFailure(ExternalCommandResult result)
+    {
+        string response = result.StandardOutput + "\n" + result.StandardError;
+        return response.Contains("HTTP 403", StringComparison.OrdinalIgnoreCase) ||
+            response.Contains("HTTP 404", StringComparison.OrdinalIgnoreCase);
+    }
+
+    private static string FailurePhase(IReadOnlyList<string> arguments)
+    {
+        string endpoint = arguments.Count == 0 ? string.Empty : arguments[^1];
+        if (endpoint is "user" || endpoint.StartsWith("user/emails", StringComparison.Ordinal))
+        {
+            return GitHubProviderFailure.AuthenticationPhase;
+        }
+
+        if (endpoint.StartsWith("users/", StringComparison.Ordinal) ||
+            endpoint.StartsWith("orgs/", StringComparison.Ordinal) ||
+            endpoint.StartsWith("user/repos", StringComparison.Ordinal))
+        {
+            return GitHubProviderFailure.OwnerInventoryPhase;
+        }
+
+        if (endpoint.Contains("/pulls", StringComparison.Ordinal))
+        {
+            return GitHubProviderFailure.OpenPullRequestPhase;
+        }
+
+        if (endpoint.Contains("/commits", StringComparison.Ordinal))
+        {
+            return GitHubProviderFailure.DefaultHeadPhase;
+        }
+
+        return GitHubProviderFailure.CandidateDiscoveryPhase;
     }
 
     private static IEnumerable<JsonElement> Pages(JsonElement root)

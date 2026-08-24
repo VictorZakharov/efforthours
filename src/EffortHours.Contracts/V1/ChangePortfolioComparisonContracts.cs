@@ -151,6 +151,12 @@ public sealed record ChangePortfolioHostDiscovery
 
     public int ProviderPageCount { get; init; }
 
+    public int ProviderProcessCount { get; init; }
+
+    public decimal ProviderProcessStartupMilliseconds { get; init; }
+
+    public bool ProviderMetadataCacheHit { get; init; }
+
     public int LocalObjectCount { get; init; }
 
     public int AcquiredObjectCount { get; init; }
@@ -462,21 +468,6 @@ public sealed record ChangePortfolioComparisonReuse
     public long BlobReadBytes { get; init; }
 
     public long PeakWorkingSetBytes { get; init; }
-}
-
-public sealed record ChangePortfolioComparisonFailure
-{
-    public required string RepositoryId { get; init; }
-
-    public string? BucketId { get; init; }
-
-    public required string Phase { get; init; }
-
-    public required string Category { get; init; }
-
-    public required string Message { get; init; }
-
-    public required string MessageDigest { get; init; }
 }
 
 public sealed record ChangePortfolioComparisonVerification

@@ -43,6 +43,17 @@ select immutable changes only and never multiply effort.
 - retains only default or PR heads with an exact author/coauthor/date/merge match; and
 - pins provider object IDs before acquisition.
 
+Default-branch interval reads use bounded GraphQL groups of at most 12
+repositories and at most 100 interval commits per repository. A missing field,
+branch mismatch, provider error, malformed result, or paginated history discards
+the batch and runs the complete per-repository REST path. Canonical `@me`
+open-PR discovery uses the fully paginated direct user pull-request connection
+only when returned nodes exactly equal the connection's complete count and remain
+within 1,000 rows;
+otherwise it runs the complete per-repository inventory. Remaining PR
+detail/commit reads retain at most four-way concurrency. Both paths apply the same
+exact commit selector and local Git remains authoritative.
+
 Inactive repositories and open PRs with no selected work remain privacy-safe counts;
 they cause no cache entry or analysis. Collaborator/bot PRs are not admitted merely
 because the owner controls the repository.
@@ -51,6 +62,15 @@ because the owner controls the repository.
 explicit supplemental aliases. It never reads local Git configuration. Raw aliases,
 owner names, repository display names, PR numbers, provider bodies, and credentials
 are absent from reports.
+
+Stable owner type, verified identity, and repository metadata are written to the
+private `github-provider-metadata-cache/1.0.0` cache. Identity freshness is 24
+hours and repository metadata freshness is five minutes; owner/viewer mismatch,
+expiry, invalid future bounds, malformed/oversized content, or protocol mismatch
+invalidates the entry. The live repository inventory is always refreshed and is
+the only candidate-membership authority, so cached repository metadata cannot
+hide new or changed repositories. `EFFORTHOURS_PROVIDER_CACHE` selects an
+explicit cache root.
 
 ## Managed repository cache
 
@@ -146,6 +166,19 @@ publishes no aggregate EHE or X factor. Atomic writing preserves any prior desti
 if rendering or writing fails. Structured telemetry includes provider calls/pages,
 acquired objects/bytes, phase timings, last progress, checkpoint counters, reuse, and
 working-set peak; operational observations never enter the semantic digest.
+
+Today setup failures also preserve `efforthours-agent-action/1.0` in JSON and
+Markdown and emit the same compact action on stderr. Stable safe codes distinguish
+provider executable, configuration permission, authentication, owner access, rate
+limit, network, response, and managed-cache failures. Only provider-configuration
+access denial permits a single exact-command retry with prefix
+`eh change today`; all other retry limits are zero. Raw provider stderr and
+sensitive paths are never serialized.
+
+Provider telemetry further records process count, cumulative startup time,
+metadata-cache hit status, and separate authentication, owner-inventory,
+candidate, default-head, open-PR, and provider-startup phases. It accounts for
+optimized and fallback calls but never affects selection or EHE.
 
 ## Trust and verification boundary
 

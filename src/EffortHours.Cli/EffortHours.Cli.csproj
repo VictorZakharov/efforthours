@@ -26,6 +26,11 @@
     <ProjectReference Include="../EffortHours.Review/EffortHours.Review.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="../../integrations/codex/efforthours/SKILL.md"
+                      LogicalName="EffortHours.Cli.Integrations.Codex.EffortHours.SKILL.md" />
+    <None Include="../../integrations/codex/efforthours/SKILL.md"
+          Pack="true"
+          PackagePath="integrations/codex/efforthours/" />
     <None Include="../../LICENSE" Pack="true" PackagePath="/" />
     <None Include="../../models/seed-rules/0.4.0.json" Pack="true" PackagePath="models/seed-rules/" />
     <None Include="../../rates/us-senior-contractor/2026.1.json" Pack="true" PackagePath="rates/us-senior-contractor/" />

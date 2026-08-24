@@ -41,6 +41,8 @@ The repository already provides:
   guardrails, and offline evaluation;
 - optional provider-neutral host-review packets, bounded queries, adjustment
   validation, and sanitized measurement; and
+- a versioned packaged Codex companion skill with explicit atomic install/check,
+  native-command-only guidance, and structured permission/failure actions; and
 - memory-only unit fixtures, process-level CLI and Git tests, file-budget gates,
   public calibration artifacts, and reproducible fresh-process benchmarks.
 

@@ -141,7 +141,12 @@ public static class ChangePortfolioTodayMarkdownRenderer
             .Append(discovery.ActiveRepositoryCount).Append(" active, ")
             .Append(discovery.OpenPullRequestCount).Append(" user-authored open PRs, ")
             .Append(discovery.ProviderPageCount).Append(" pages, and ")
-            .Append(discovery.ProviderQueryCount).AppendLine(" queries.");
+            .Append(discovery.ProviderQueryCount).Append(" queries across ")
+            .Append(discovery.ProviderProcessCount).Append(" provider processes (")
+            .Append(Milliseconds(discovery.ProviderProcessStartupMilliseconds))
+            .Append(" startup); metadata cache ")
+            .Append(discovery.ProviderMetadataCacheHit ? "hit" : "miss")
+            .AppendLine(".");
         markdown.Append("- Managed cache used ").Append(discovery.LocalObjectCount)
             .Append(" existing selected objects and acquired ")
             .Append(discovery.AcquiredObjectCount).Append(" objects / ")
@@ -206,6 +211,12 @@ public static class ChangePortfolioTodayMarkdownRenderer
                 .Append(Escape(failure.Category)).Append("`: ")
                 .Append(Escape(failure.Message)).Append(" (`")
                 .Append(Escape(failure.MessageDigest)).AppendLine("`)");
+            if (failure.AgentAction is not null)
+            {
+                markdown.Append("  - Agent action: `")
+                    .Append(Escape(ContractJson.SerializeCompact(failure.AgentAction)))
+                    .AppendLine("`");
+            }
         }
     }
 

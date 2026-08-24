@@ -255,6 +255,7 @@ public sealed partial class EffortHoursApplication
           eh model show
           eh rate info
           eh rate show
+          eh agent codex [--install|--check]
           eh version
 
         Static analysis is deterministic, local, and read-only by default. The .NET
