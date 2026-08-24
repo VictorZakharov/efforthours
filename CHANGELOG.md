@@ -6,6 +6,8 @@ may still change public contracts with explicit documentation.
 
 ## Unreleased
 
+## 0.10.0-alpha.16 - 2026-08-24
+
 ### Added
 
 - Added canonical `eh change today` orchestration that runs outside source
