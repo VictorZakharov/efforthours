@@ -118,22 +118,37 @@ internal static partial class ChangePortfolioCommandOptionsParser
                 "A manifest supplies its repository paths; omit positional repository and --repo values.");
         }
 
-        if ((options.PullRequests.Count > 0 || authorSelection && !options.Today) &&
-            options.RepositoryPath is null)
+        if (authorSelection && !options.Today && options.RepositoryPath is null &&
+            options.GitHubRepository is null)
         {
-            return Error("A repository path is required for repeated PR and author-period selectors.");
+            return Error(
+                "Checkout-free direct author-period selection requires --repo <owner/name>; " +
+                "otherwise supply a positional repository path.");
         }
 
-        if (options.GitHubRepository is not null && options.PullRequests.Count == 0)
+        if (options.PullRequests.Count > 0 && options.RepositoryPath is null &&
+            options.GitHubRepository is null &&
+            options.PullRequests.Any(input => !IsAbsolutePullRequestUrl(input)))
         {
-            return Error("Option --repo is valid only with repeated --pr selectors.");
+            return Error(
+                "Checkout-free repeated PR numbers require --repo <owner/name>; " +
+                "otherwise every --pr must be a full GitHub pull-request URL.");
+        }
+
+        if (options.GitHubRepository is not null && options.PullRequests.Count == 0 &&
+            !authorSelection)
+        {
+            return Error("Option --repo is valid only with repeated --pr or direct --author selectors.");
         }
 
         if (options.FetchMissing && options.PullRequests.Count == 0 &&
-            options.ManifestPath is null)
+            options.ManifestPath is null &&
+            !(options.IsAuthorPeriodManifest && !options.Preflight) &&
+            !(authorSelection && options.RepositoryPath is null && options.GitHubRepository is not null))
         {
             return Error(
-                "Option --fetch-missing is valid only with repeated --pr or --manifest selectors.");
+                "Option --fetch-missing is valid only with checkout-free provider selectors, " +
+                "repeated --pr, --manifest, or a non-preflight author-period manifest.");
         }
 
         bool authorOnlyOptions = since is not null || until is not null || authorPolicyProvided;
@@ -225,6 +240,11 @@ internal static partial class ChangePortfolioCommandOptionsParser
 
         return new ChangePortfolioCommandParseResult(options, null);
     }
+
+    private static bool IsAbsolutePullRequestUrl(string value) =>
+        Uri.TryCreate(value, UriKind.Absolute, out Uri? uri) &&
+        uri.Scheme == Uri.UriSchemeHttps &&
+        uri.Host.Equals("github.com", StringComparison.OrdinalIgnoreCase);
 
     private static ChangePortfolioCommandParseResult? ParseAuthorPeriod(
         ChangePortfolioCommandOptions source,

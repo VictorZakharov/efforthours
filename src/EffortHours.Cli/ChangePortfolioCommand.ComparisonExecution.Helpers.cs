@@ -6,6 +6,17 @@ namespace EffortHours.Cli;
 
 internal sealed partial class ChangePortfolioCommand
 {
+    private async Task<ResolvedChangeAuthorPeriodManifest> MaterializeComparisonManifestAsync(
+        ResolvedChangeAuthorPeriodManifest resolved,
+        ChangePortfolioCommandOptions options,
+        CancellationToken cancellationToken) =>
+        await ChangeAuthorPeriodManifestRepositoryLocator.MaterializeAsync(
+            resolved,
+            _managedGitQueries,
+            options.FetchMissing,
+            readOnly: false,
+            cancellationToken).ConfigureAwait(false);
+
     private static IReadOnlyList<Diagnostic> CanonicalDiagnostics(
         IReadOnlyList<ChangePortfolioRepositoryOutcome> outcomes,
         ChangePortfolioComparisonCheckpoint checkpoint)
@@ -33,7 +44,13 @@ internal sealed partial class ChangePortfolioCommand
         ResolvedChangeAuthorPeriodManifest resolved)
     {
         string safe = message.Replace('\r', ' ').Replace('\n', ' ');
-        safe = safe.Replace(repository.RepositoryPath, "<repository-path>", StringComparison.OrdinalIgnoreCase);
+        if (repository.RepositoryPath is not null)
+        {
+            safe = safe.Replace(
+                repository.RepositoryPath,
+                "<repository-path>",
+                StringComparison.OrdinalIgnoreCase);
+        }
         safe = safe.Replace(
             resolved.RepositoryPaths[repository.Id],
             "<repository-path>",

@@ -12,6 +12,8 @@ internal sealed partial class ChangePortfolioCommand
     private readonly ChangeEstimator _changeEstimator;
     private readonly Func<string, string, string?, bool, CancellationToken, Task<GitChangePlan>>
         _planPullRequest;
+    private readonly ManagedPullRequestPlanner _managedPullRequests = new();
+    private readonly ManagedGitQueryPlanner _managedGitQueries = new();
     private readonly Func<string, GitAuthorPeriodPortfolioOptions, ChangePortfolioExecutionTelemetry?, CancellationToken,
         Task<GitAuthorPeriodPortfolioPlan>> _planAuthorPeriod;
     private readonly Func<string, CancellationToken,
@@ -19,6 +21,8 @@ internal sealed partial class ChangePortfolioCommand
     private readonly Func<string, ChangePortfolioExecutionTelemetry, CancellationToken,
         Task<GitAuthorPeriodManifestPortfolioPlan>>
         _planAuthorPeriodManifest;
+    private readonly Func<string, bool, ChangePortfolioExecutionTelemetry, CancellationToken,
+        Task<GitAuthorPeriodManifestPortfolioPlan>>? _planAuthorPeriodManifestWithAcquisition;
     private readonly Func<string, ChangePortfolioExecutionTelemetry, CancellationToken,
         Task<GitAuthorPeriodManifestScopePlan>>
         _measureAuthorPeriodManifest;
@@ -143,12 +147,18 @@ internal sealed partial class ChangePortfolioCommand
         List<GitChangePlan> plans = [];
         foreach (string input in options.PullRequests)
         {
-            plans.Add(await _planPullRequest(
-                options.RepositoryPath!,
-                input,
-                options.GitHubRepository,
-                options.FetchMissing,
-                cancellationToken).ConfigureAwait(false));
+            plans.Add(options.RepositoryPath is null
+                ? await _managedPullRequests.PlanAsync(
+                    input,
+                    options.GitHubRepository,
+                    options.FetchMissing,
+                    cancellationToken).ConfigureAwait(false)
+                : await _planPullRequest(
+                    options.RepositoryPath,
+                    input,
+                    options.GitHubRepository,
+                    options.FetchMissing,
+                    cancellationToken).ConfigureAwait(false));
         }
 
         ChangePortfolioEstimateBatch estimate =
@@ -166,7 +176,7 @@ internal sealed partial class ChangePortfolioCommand
             occurrences[number] = occurrence;
             candidates.Add(new ChangePortfolioCandidate
             {
-                RepositoryId = report.Repository.Name,
+                RepositoryId = report.Selection.PullRequest.Repository ?? report.Repository.Name,
                 SelectorId = occurrence == 1 ? $"pr:{number}" : $"pr:{number}:duplicate-{occurrence}",
                 Report = report,
                 Attribution = PullRequestAttribution(),
@@ -192,12 +202,18 @@ internal sealed partial class ChangePortfolioCommand
         {
             cancellationToken.ThrowIfCancellationRequested();
             ChangePortfolioManifestItem item = resolved.Item;
-            GitChangePlan plan = await _planPullRequest(
-                resolved.RepositoryPath,
-                item.PullRequest,
-                item.GitHubRepository,
-                options.FetchMissing,
-                cancellationToken).ConfigureAwait(false);
+            GitChangePlan plan = resolved.RepositoryPath is null
+                ? await _managedPullRequests.PlanAsync(
+                    item.PullRequest,
+                    item.GitHubRepository,
+                    options.FetchMissing,
+                    cancellationToken).ConfigureAwait(false)
+                : await _planPullRequest(
+                    resolved.RepositoryPath,
+                    item.PullRequest,
+                    item.GitHubRepository,
+                    options.FetchMissing,
+                    cancellationToken).ConfigureAwait(false);
             repositories.Add(item.RepositoryId, plan.RepositoryPath);
             planned.Add((item, plan));
         }
@@ -234,7 +250,7 @@ internal sealed partial class ChangePortfolioCommand
                 {
                     Code = "FB5320",
                     Severity = DiagnosticSeverity.Information,
-                    Message = "The manifest supplied execution-only local repository paths. Reports retain caller repository IDs and immutable PR identities, not host paths.",
+                    Message = "The manifest supplied execution-only local paths or provider repository identities. Reports retain caller repository IDs and immutable PR identities, not host paths or managed-cache locations.",
                 },
             ]);
     }

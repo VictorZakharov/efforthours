@@ -10,10 +10,17 @@ internal sealed partial class ChangePortfolioCommand
         ChangePortfolioExecutionTelemetry executionTelemetry,
         CancellationToken cancellationToken)
     {
-        GitAuthorPeriodManifestPortfolioPlan plan = await _planAuthorPeriodManifest(
-            options.AuthorPeriodManifestPath!,
-            executionTelemetry,
-            cancellationToken).ConfigureAwait(false);
+        GitAuthorPeriodManifestPortfolioPlan plan =
+            _planAuthorPeriodManifestWithAcquisition is null
+                ? await _planAuthorPeriodManifest(
+                    options.AuthorPeriodManifestPath!,
+                    executionTelemetry,
+                    cancellationToken).ConfigureAwait(false)
+                : await _planAuthorPeriodManifestWithAcquisition(
+                    options.AuthorPeriodManifestPath!,
+                    options.FetchMissing,
+                    executionTelemetry,
+                    cancellationToken).ConfigureAwait(false);
         ChangePortfolioEstimateBatch estimate =
             await _changeEstimator.EstimatePortfolioCandidatesWithStatisticsAsync(
                 [.. plan.Items.Select(item => item.Plan)],

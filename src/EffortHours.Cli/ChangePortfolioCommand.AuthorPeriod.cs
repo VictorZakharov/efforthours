@@ -10,8 +10,15 @@ internal sealed partial class ChangePortfolioCommand
         ChangePortfolioExecutionTelemetry executionTelemetry,
         CancellationToken cancellationToken)
     {
+        ManagedRepositoryHead? managedHead = options.RepositoryPath is null
+            ? await _managedGitQueries.PrepareHeadAsync(
+                options.GitHubRepository!,
+                options.HeadRevision,
+                options.FetchMissing,
+                cancellationToken).ConfigureAwait(false)
+            : null;
         GitAuthorPeriodPortfolioPlan plan = await _planAuthorPeriod(
-            options.RepositoryPath!,
+            managedHead?.RepositoryPath ?? options.RepositoryPath!,
             new GitAuthorPeriodPortfolioOptions
             {
                 Aliases = options.AuthorAliases,
@@ -21,10 +28,37 @@ internal sealed partial class ChangePortfolioCommand
                 DateField = options.DateField,
                 MergePolicy = options.MergePolicy,
                 CoauthorPolicy = options.CoauthorPolicy,
-                HeadRevision = options.HeadRevision,
+                HeadRevision = managedHead?.ObjectId ?? options.HeadRevision,
             },
             executionTelemetry,
             cancellationToken).ConfigureAwait(false);
+        if (managedHead is not null)
+        {
+            plan = plan with
+            {
+                Selection = plan.Selection with
+                {
+                    AuthorPeriod = plan.Selection.AuthorPeriod! with
+                    {
+                        HeadSelector = options.HeadRevision,
+                    },
+                },
+                Diagnostics =
+                [
+                    .. plan.Diagnostics,
+                    new Diagnostic
+                    {
+                        Code = "FB5108",
+                        Severity = DiagnosticSeverity.Information,
+                        Message = managedHead.Fetched
+                            ? "Checkout-free author-period selection populated the private EffortHours bare cache with the exact provider-resolved reachable head; no checkout or user repository was changed."
+                            : managedHead.ProviderResolved
+                                ? "Checkout-free author-period selection refreshed the immutable provider head and reused its objects from the private EffortHours bare cache; no checkout or user repository was changed."
+                            : "Checkout-free author-period selection reused an immutable reachable head from the private EffortHours bare cache without provider or network access.",
+                    },
+                ],
+            };
+        }
         ChangePortfolioEstimateBatch estimate =
             await _changeEstimator.EstimatePortfolioCandidatesWithStatisticsAsync(
                 [.. plan.Items.Select(item => item.Plan)],

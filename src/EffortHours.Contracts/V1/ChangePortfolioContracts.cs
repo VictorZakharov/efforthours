@@ -24,7 +24,7 @@ public sealed record ChangePortfolioManifestItem
 
     public required string RepositoryId { get; init; }
 
-    public required string RepositoryPath { get; init; }
+    public string? RepositoryPath { get; init; }
 
     public required string PullRequest { get; init; }
 

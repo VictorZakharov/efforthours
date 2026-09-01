@@ -75,7 +75,7 @@ public sealed partial class GitPortfolioPlanner
             {
                 Code = "FB5321",
                 Severity = DiagnosticSeverity.Information,
-                Message = "The author-period manifest supplied execution-only aliases and local repository paths. Reports retain its digest, public IDs, policy, and immutable objects only.",
+                Message = "The author-period manifest supplied execution-only aliases and repository locators. Reports retain its digest, public IDs, policy, and immutable objects only.",
             },
             new Diagnostic
             {

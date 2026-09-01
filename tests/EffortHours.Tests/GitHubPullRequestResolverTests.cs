@@ -43,11 +43,12 @@ public sealed class GitHubPullRequestResolverTests
             string.Empty));
         GitHubPullRequestResolver resolver = new(runner);
 
-        InvalidOperationException exception = await Assert.ThrowsAsync<InvalidOperationException>(() =>
+        GitHubProviderException exception = await Assert.ThrowsAsync<GitHubProviderException>(() =>
             resolver.ResolveAsync("virtual-repository", "42", null));
 
-        Assert.Contains("incomplete pull-request identity", exception.Message, StringComparison.Ordinal);
+        Assert.Contains("malformed or incomplete", exception.Message, StringComparison.Ordinal);
         Assert.DoesNotContain("not-an-object", exception.Message, StringComparison.Ordinal);
+        Assert.Equal("github-provider-response-malformed", exception.Action.FailureCode);
     }
 
     [Fact]
@@ -59,11 +60,48 @@ public sealed class GitHubPullRequestResolverTests
             "Could not start required executable 'gh'."));
         GitHubPullRequestResolver resolver = new(runner);
 
-        InvalidOperationException exception = await Assert.ThrowsAsync<InvalidOperationException>(() =>
+        GitHubProviderException exception = await Assert.ThrowsAsync<GitHubProviderException>(() =>
             resolver.ResolveAsync("virtual-repository", "42", null));
 
-        Assert.Contains("optional gh CLI support", exception.Message, StringComparison.Ordinal);
-        Assert.Contains("installed, authenticated", exception.Message, StringComparison.Ordinal);
+        Assert.Contains("could not be started", exception.Message, StringComparison.Ordinal);
+        Assert.Equal("github-cli-executable-missing", exception.Action.FailureCode);
+    }
+
+    [Fact]
+    public async Task ResolverDerivesCanonicalRepositoryFromReturnedUrl()
+    {
+        RecordingRunner runner = new(new ExternalCommandResult(
+            0,
+            "{\"number\":42,\"url\":\"https://github.com/Acme/Demo/pull/42\",\"baseRefName\":\"main\",\"baseRefOid\":\"1111111111111111111111111111111111111111\",\"headRefOid\":\"2222222222222222222222222222222222222222\",\"changedFiles\":1}",
+            string.Empty));
+
+        ResolvedPullRequest result = await new GitHubPullRequestResolver(runner).ResolveAsync(
+            "ordinary-folder",
+            "https://github.com/Acme/Demo/pull/42",
+            repository: null);
+
+        Assert.Equal("acme/demo", result.Reference.Repository);
+        Assert.Equal("https://github.com/acme/demo.git", result.FetchSource);
+        Assert.DoesNotContain("--repo", runner.Arguments);
+    }
+
+    [Fact]
+    public async Task ResolverClassifiesMissingPullRequestWithoutLeakingProviderOutput()
+    {
+        RecordingRunner runner = new(new ExternalCommandResult(
+            1,
+            string.Empty,
+            "HTTP 404 private/provider/detail"));
+
+        GitHubProviderException exception = await Assert.ThrowsAsync<GitHubProviderException>(() =>
+            new GitHubPullRequestResolver(runner).ResolveAsync(
+                "ordinary-folder",
+                "42",
+                "acme/demo"));
+
+        Assert.Equal("github-pull-request-forbidden-or-not-found", exception.Action.FailureCode);
+        Assert.Equal("pull-request-resolution", exception.Action.Phase);
+        Assert.DoesNotContain("private/provider/detail", exception.Message, StringComparison.Ordinal);
     }
 
     private sealed class RecordingRunner : IExternalCommandRunner

@@ -239,9 +239,19 @@ internal static class ChangeCommandOptionsParser
                 "Do not supply a positional repository path with directory or evidence snapshot selectors.");
         }
 
-        if (!nonGitSelection && repositoryPath is null)
+        if (!nonGitSelection && repositoryPath is null && pullRequest is null && githubRepository is null)
         {
-            return Error("A repository path is required for Git revision and pull-request selectors.");
+            return Error(
+                "Checkout-free Git revision selectors require --repo <owner/name>; " +
+                "otherwise supply a positional repository path.");
+        }
+
+        if (repositoryPath is null && pullRequest is not null && githubRepository is null &&
+            !IsAbsolutePullRequestUrl(pullRequest))
+        {
+            return Error(
+                "Checkout-free pull-request numbers require --repo <owner/name>; " +
+                "otherwise pass a full GitHub pull-request URL.");
         }
 
         if (parent is not null && commit is null)
@@ -249,14 +259,17 @@ internal static class ChangeCommandOptionsParser
             return Error("Option --parent is valid only with --commit.");
         }
 
-        if (githubRepository is not null && pullRequest is null)
+        if (githubRepository is not null && nonGitSelection)
         {
-            return Error("Option --repo is valid only with --pr.");
+            return Error("Option --repo is valid only with Git revision and pull-request selectors.");
         }
 
-        if (fetchMissing && pullRequest is null)
+        bool checkoutFreeProviderSelection = repositoryPath is null &&
+            !nonGitSelection && githubRepository is not null;
+        if (fetchMissing && pullRequest is null && !checkoutFreeProviderSelection)
         {
-            return Error("Option --fetch-missing is valid only with --pr.");
+            return Error(
+                "Option --fetch-missing is valid with --pr or a checkout-free Git selector using --repo.");
         }
 
         if (compact && format != "json")
@@ -302,6 +315,11 @@ internal static class ChangeCommandOptionsParser
     private static ChangeCommandParseResult Error(string message) => new(null, message);
 
     private static bool IsHelp(string value) => value is "help" or "--help" or "-h";
+
+    private static bool IsAbsolutePullRequestUrl(string value) =>
+        Uri.TryCreate(value, UriKind.Absolute, out Uri? uri) &&
+        uri.Scheme == Uri.UriSchemeHttps &&
+        uri.Host.Equals("github.com", StringComparison.OrdinalIgnoreCase);
 
     private static bool TryParseProfile(string value, out EstimationProfile profile)
     {

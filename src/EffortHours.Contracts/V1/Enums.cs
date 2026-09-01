@@ -38,6 +38,8 @@ public enum PullRequestObjectAcquisition
 {
     LocalReuse,
     ExplicitFetch,
+    ManagedCacheReuse,
+    ManagedCacheFetch,
 }
 
 public enum PullRequestPathCountStatus

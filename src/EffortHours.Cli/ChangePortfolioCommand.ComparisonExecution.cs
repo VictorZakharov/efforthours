@@ -49,6 +49,11 @@ internal sealed partial class ChangePortfolioCommand
                 today.Manifest,
                 ChangeAuthorPeriodManifestIdentity.ComputeDigest(today.Manifest),
                 today.RepositoryPaths);
+        if (today is null)
+        {
+            resolved = await MaterializeComparisonManifestAsync(
+                resolved, options, cancellationToken).ConfigureAwait(false);
+        }
         ChangePortfolioSelection selection =
             ChangeAuthorPeriodManifestIdentity.CreateReportSelection(
                 resolved.Manifest,

@@ -22,6 +22,8 @@ One command accepts exactly one selector family:
 
 ```text
 eh change portfolio <repository> --pr <number-or-url> --pr <number-or-url>
+eh change portfolio --repo <owner/name> --pr <number> --pr <number> [--fetch-missing]
+eh change portfolio --pr <github-pr-url> --pr <github-pr-url> [--fetch-missing]
 eh change portfolio --manifest <portfolio.json>
 eh change portfolio --author-period-manifest <manifest.json>
 eh change portfolio --author-period-manifest <manifest.json> --preflight
@@ -29,6 +31,8 @@ eh change today --owner <owner> --author "@me" --timezone <zone> \
   --scope engineering --capacity-hours <hours> [--include-open-prs]
 eh change portfolio <repository> --author <alias> [--author <alias> ...]
   --since <instant> --until <instant>
+eh change portfolio --repo <owner/name> --author <alias> [--author <alias> ...]
+  --since <instant> --until <instant> [--fetch-missing]
 ```
 
 The manifest form can also produce one time-bucketed, multi-contributor comparison
@@ -43,7 +47,7 @@ eh change portfolio --author-period-manifest <manifest.json> \
 ```
 
 `--preflight` is a read-only selection-only mode. It validates the manifest and
-pinned local objects, performs the exact repository-scoped identity/time
+pinned local or already-cached objects, performs the exact repository-scoped identity/time
 selection, and stops before diff construction, snapshot loading, static analysis,
 reconciliation, or EHE estimation. Its versioned JSON or Markdown report exposes
 public repository/contributor IDs, exact counts (or an explicit lower bound when
@@ -146,19 +150,21 @@ repositories continue. Any failure produces a nonzero exit plus an explicitly
 contain no source portfolio, additive series, aggregate EHE, or trend, so a failed
 cell can never masquerade as zero or a complete comparison.
 
-Repeated PR selectors use the optional `gh pr view` boundary only to resolve a
-number/URL, immutable provider base-tip/head object IDs, provider changed-file
-count, and execution-only acquisition coordinates. Objects must already exist in
-the local Git database by default, where Git resolves the unique merge base as the
-reviewed PR comparison base. Invocation-wide `--fetch-missing` explicitly permits
-missing objects for repeated PRs or the PR manifest to be acquired with the same
-source-only, no-ref-update boundary as single-PR mode. It is invalid for either
-author-period selector.
+Repeated PR selectors use the optional `gh pr view` boundary only under explicit
+`--fetch-missing` to resolve a number/URL, immutable provider base-tip/head object
+IDs, provider changed-file count, and execution-only acquisition coordinates.
+Objects and immutable resolution metadata must already exist in the selected local
+database or private managed bare cache by default, where Git resolves the unique
+merge base as the reviewed PR comparison base. Invocation-wide `--fetch-missing`
+permits repeated PR, PR-manifest, direct-author, and author-manifest provider
+selectors to acquire only their required immutable objects. A warm no-flag run is
+offline.
 
-A versioned manifest can select PRs from multiple local repositories and assigns
-explicit caller repository and row IDs. Relative repository paths resolve from
-the manifest directory and remain execution-only; they are never copied into the
-report. Repository IDs and resolved Git roots map one-to-one so caller labels
+A versioned manifest can select PRs from multiple local or provider-identified
+repositories and assigns explicit caller repository and row IDs. Each row supplies
+`repositoryPath` or `gitHubRepository`. Both are execution-only; relative paths
+resolve from the manifest directory and neither locator is copied into the report.
+Repository IDs and resolved Git roots map one-to-one so caller labels
 cannot combine unrelated repositories or bypass same-repository overlap.
 
 The separate `change-author-period-manifest` v1 contract supplies the input and
@@ -174,8 +180,8 @@ invocation-wide.
 
 The manifest contains one shared interval, timezone, date field, merge policy,
 and co-author policy; stable contributor IDs with execution-only aliases; and
-stable repository/head IDs with execution-only local paths and pinned immutable
-objects. Profile and optional pricing remain invocation-wide CLI options, so they
+stable repository/head IDs with exactly one execution-only local path or GitHub
+repository identity and pinned immutable objects. Profile and optional pricing remain invocation-wide CLI options, so they
 cannot vary by contributor, repository, or head. A representative public-safe
 shape is:
 
@@ -200,7 +206,7 @@ shape is:
   "repositories": [
     {
       "id": "repository-a",
-      "repositoryPath": "repositories/repository-a",
+      "gitHubRepository": "example/repository-a",
       "heads": [
         {
           "id": "default",
@@ -244,10 +250,11 @@ envelope rather than silently changing semantic boundaries.
 Semantic validation rejects duplicate IDs, aliases assigned to several
 contributors, empty alias/head sets, repeated repository-local head objects,
 non-canonical text, invalid object IDs, unsupported versions, reversed intervals,
-and over-budget input. The execution adapter must additionally resolve paths
-relative to the manifest, enforce a one-to-one repository-ID/root mapping, verify
-every pinned commit locally, and reject missing or unsafe inputs before analysis.
-It must not fetch, execute target code, or write into a target repository.
+over-budget input, and repositories with zero or two execution locators. The
+execution adapter resolves relative paths or the private managed-cache entry,
+enforces a one-to-one repository-ID/root mapping, verifies every pinned commit,
+and rejects missing or unsafe inputs before analysis. Network acquisition requires
+`--fetch-missing`; it must not execute target code or write into a target repository.
 
 Canonical non-comparison manifest execution preflights every repository and pinned
 commit before Change analysis. Comparison mode instead validates one internal
@@ -267,8 +274,8 @@ report construction.
 The canonical semantic manifest digest sorts repositories, heads, contributors,
 and aliases before hashing, so equivalent array reorderings retain one identity.
 It binds identity aliases, stable IDs, immutable objects, and shared policy while
-deliberately excluding local repository paths, so relocating the same object
-databases does not change report identity. Only the digest crosses into the
+deliberately excluding local paths and provider repository identities, so
+relocating the same object databases does not change report identity. Only the digest crosses into the
 report. A manifest-based report selection keeps the digest, shared policy,
 contributor IDs, repository IDs, head IDs, and immutable object IDs. Per-item
 attribution can retain contributor match kind and reachable head IDs; raw aliases

@@ -4,7 +4,7 @@ using EffortHours.Contracts.V1;
 
 namespace EffortHours.EndToEndTests;
 
-public sealed class PullRequestSelectionGitTests
+public sealed partial class PullRequestSelectionGitTests
 {
     private const string ProjectFile =
         "<Project Sdk=\"Microsoft.NET.Sdk\"><PropertyGroup>" +
@@ -175,6 +175,9 @@ public sealed class PullRequestSelectionGitTests
                     Input = input,
                     Number = int.Parse(input, System.Globalization.CultureInfo.InvariantCulture),
                     Repository = repository,
+                    Url = repository is null
+                        ? null
+                        : $"https://github.com/{repository}/pull/{input}",
                 },
             });
         }
@@ -240,7 +243,7 @@ public sealed class PullRequestSelectionGitTests
             return File.Exists(path) ? await File.ReadAllBytesAsync(path) : null;
         }
 
-        private static async Task<string> RunGitAsync(
+        public static async Task<string> RunGitAsync(
             string workingDirectory,
             params string[] arguments)
         {

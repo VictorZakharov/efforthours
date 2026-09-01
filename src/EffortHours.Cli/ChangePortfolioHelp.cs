@@ -5,6 +5,8 @@ internal static class ChangePortfolioHelp
     public const string Text = """
         Usage:
           eh change portfolio <repository> --pr <number-or-url> --pr <number-or-url> [options]
+          eh change portfolio --repo <owner/name> --pr <number> --pr <number> [options]
+          eh change portfolio --pr <github-pr-url> --pr <github-pr-url> [options]
           eh change portfolio --manifest <portfolio.json> [options]
           eh change portfolio --author-period-manifest <manifest.json> [options]
           eh change portfolio --author-period-manifest <manifest.json> --preflight [options]
@@ -12,14 +14,18 @@ internal static class ChangePortfolioHelp
             --include-open-prs --scope engineering --capacity-hours <hours> [options]
           eh change portfolio <repository> --author <alias> [--author <alias> ...]
             --since <instant> --until <instant> [options]
+          eh change portfolio --repo <owner/name> --author <alias> [--author <alias> ...]
+            --since <instant> --until <instant> [--fetch-missing] [options]
 
         Selectors:
-          --pr <number-or-url>       Repeat for each PR in one local repository
-          --repo <owner/name>        Explicit GitHub repository for repeated --pr selectors
-          --fetch-missing            Acquire missing selected PR objects without updating refs
-          --manifest <path>          Versioned multi-repository PR manifest
+          --pr <number-or-url>       Repeat for each local or checkout-free PR
+          --repo <owner/name>        Provider repository for checkout-free PR or author selectors
+          --fetch-missing            Resolve/acquire selected provider Git objects without updating refs
+          --manifest <path>          Versioned multi-repository PR manifest; each row may use
+                                    repositoryPath or gitHubRepository
           --author-period-manifest <path>
-                                    Versioned multi-repository/multi-head author manifest
+                                    Versioned multi-repository/multi-head author manifest;
+                                    each repository uses repositoryPath or gitHubRepository
           --owner <owner>           GitHub owner for explicit today-to-date discovery
           --today                   Use the current local calendar day and one partial daily bucket
           --include-open-prs        Discover matching commits on current open PR heads
@@ -66,9 +72,13 @@ internal static class ChangePortfolioHelp
 
         PR selectors resolve immutable provider base-tip/head identities through optional gh
         support and compare their unique local merge base to the head. Provider objects must
-        already exist locally unless --fetch-missing acquires objects through only the selected
-        base and PR head refs without updating local refs, FETCH_HEAD, the index, or the worktree. Manifest repository paths and author aliases are
-        execution-only and are not copied into reports. Author/time/co-author data selects
+        already exist locally or in the managed bare cache unless --fetch-missing acquires objects
+        through only the selected base and PR head refs without updating local refs, FETCH_HEAD,
+        the index, or the worktree. Repeated URL/--repo selectors and manifest rows with
+        gitHubRepository work without a checkout. Direct author-period selection can likewise
+        resolve/acquire its reachable head through --repo. Author manifests may use the same
+        managed cache for pinned heads. Manifest repository locators and author aliases are
+        execution-only and are not copied into reports or semantic digests. Author/time/co-author data selects
         immutable commits and never multiplies effort. Manifest author reports use exclusive
         contributor-match and head-reachability groups, retain zero rows, and count shared groups
         once without personal-share splits. Manifest runs emit privacy-safe reuse diagnostics in

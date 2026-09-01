@@ -124,7 +124,34 @@ public static partial class ContractValidation
                 errors.Add($"Author-period repository ID '{repository.Id}' is duplicated.");
             }
 
-            RequireCanonicalText(repository.RepositoryPath, $"repository[{repository.Id}].repositoryPath", 4096, errors);
+            bool hasRepositoryPath = !string.IsNullOrWhiteSpace(repository.RepositoryPath);
+            bool hasGitHubRepository = !string.IsNullOrWhiteSpace(repository.GitHubRepository);
+            if (hasRepositoryPath == hasGitHubRepository)
+            {
+                errors.Add(
+                    $"Repository '{repository.Id}' requires exactly one of repositoryPath or " +
+                    "gitHubRepository.");
+            }
+            else if (hasRepositoryPath)
+            {
+                RequireCanonicalText(
+                    repository.RepositoryPath,
+                    $"repository[{repository.Id}].repositoryPath",
+                    4096,
+                    errors);
+            }
+            else
+            {
+                RequireCanonicalText(
+                    repository.GitHubRepository,
+                    $"repository[{repository.Id}].gitHubRepository",
+                    512,
+                    errors);
+                ValidateGitHubRepositoryIdentity(
+                    repository.GitHubRepository!,
+                    $"repository[{repository.Id}].gitHubRepository",
+                    errors);
+            }
             if (repository.Heads.Count is < 1 or > ChangeAuthorPeriodManifestLimits.MaximumHeadsPerRepository)
             {
                 errors.Add(

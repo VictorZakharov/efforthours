@@ -72,7 +72,7 @@ the only candidate-membership authority, so cached repository metadata cannot
 hide new or changed repositories. `EFFORTHOURS_PROVIDER_CACHE` selects an
 explicit cache root.
 
-## Managed repository cache
+## Shared managed repository cache
 
 The default cache is:
 
@@ -80,12 +80,17 @@ The default cache is:
 %LOCALAPPDATA%/EffortHours/repositories/github/<owner>/<repository>.git
 ```
 
-`EFFORTHOURS_REPOSITORY_CACHE` may select another root. Each active entry is a bare
-repository. Missing entries are created automatically. Acquisition fetches only the
-selected default/PR source refs, with no tags, submodules, checkout, index,
+`EFFORTHOURS_REPOSITORY_CACHE` may select another root. The same cache backs every
+checkout-free commit, range, base/head, PR, repeated-PR, direct-author, manifest,
+and today query. Each active entry is a bare repository. Missing entries are
+created only under an explicitly network-authorized workflow: `--fetch-missing`
+for ordinary selectors or the inherently provider-backed `change today` command.
+Acquisition fetches only selected object IDs or default/PR source refs, with no tags, submodules, checkout, index,
 `FETCH_HEAD`, local-ref update, or user worktree mutation. Each pinned commit is
 verified after fetching, so a moved provider ref fails closed. Existing immutable
-objects are reused. Acquired object and byte deltas are operational telemetry.
+objects are reused. Per-repository locking serializes concurrent creation/fetches;
+atomic sidecars retain bounded immutable selector resolutions for offline warm
+reuse. Acquired object and byte deltas are operational telemetry.
 
 ## Engineering scope
 

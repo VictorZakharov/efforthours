@@ -79,6 +79,7 @@ See the [`0.10.0-alpha.17` GitHub prerelease](https://github.com/VictorZakharov/
 - **One command for today's work.** `eh change today` finds matching default-branch
   and user-authored open-PR work, prepares the needed repositories, and produces
   one daily EHE/capacity report without a caller-authored manifest.
+- **Checkout-free Git queries.** All Git-backed selectors accept `--repo`; explicit fetch fills a private cache and warm reruns are offline.
 - **A Codex companion.** `eh agent codex --install` installs versioned guidance so
   Codex uses the native EffortHours workflow immediately instead of scanning a
   workspace or rebuilding the calculation itself.

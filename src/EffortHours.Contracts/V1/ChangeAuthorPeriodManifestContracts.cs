@@ -74,7 +74,9 @@ public sealed record ChangeAuthorPeriodManifestRepository
 {
     public required string Id { get; init; }
 
-    public required string RepositoryPath { get; init; }
+    public string? RepositoryPath { get; init; }
+
+    public string? GitHubRepository { get; init; }
 
     public IReadOnlyList<ChangeAuthorPeriodManifestHead> Heads { get; init; } = [];
 }

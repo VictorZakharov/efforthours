@@ -169,10 +169,15 @@ public sealed partial class ChangeCliTests
                 _ => source.RootPath);
             DiscoveredHead[] heads = [new("default", head, "refs/heads/main")];
 
-            RepositoryAcquisitionResult first = await cache.EnsureAsync(
-                "example-owner/new-repository",
-                heads,
-                CancellationToken.None);
+            RepositoryAcquisitionResult[] concurrent = await Task.WhenAll(Enumerable
+                .Range(0, 4)
+                .Select(_ => cache.EnsureAsync(
+                    "example-owner/new-repository",
+                    heads,
+                    CancellationToken.None)));
+            RepositoryAcquisitionResult first = Assert.Single(
+                concurrent,
+                result => result.AcquiredHeadCount == 1);
             RepositoryAcquisitionResult second = await cache.EnsureAsync(
                 "example-owner/new-repository",
                 heads,
@@ -195,6 +200,7 @@ public sealed partial class ChangeCliTests
                 new DirectoryInfo(resolvedRoot).Name);
             Assert.True(first.AcquiredObjectCount > 0);
             Assert.Equal(0, first.LocalHeadCount);
+            Assert.Equal(3, concurrent.Count(result => result.LocalHeadCount == 1));
             Assert.Equal(1, second.LocalHeadCount);
             Assert.Equal(0, second.AcquiredObjectCount);
         }

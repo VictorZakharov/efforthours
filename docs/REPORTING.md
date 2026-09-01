@@ -22,8 +22,16 @@ Change and portfolio commands have their own canonical v1 reports under the same
 general rules: observed selection evidence, inferred normalization, estimated
 work, reconciliation, diagnostics, and pricing stay distinct.
 
+Pull-request selection records object acquisition as `local-reuse`,
+`explicit-fetch`, `managed-cache-reuse`, or `managed-cache-fetch`. The two managed
+values are an additive v1 enum extension: reuse means the run made no provider or
+network request, while fetch means explicit provider resolution/acquisition was
+authorized even when some objects were already present. Managed cache paths and
+resolution sidecars are operational state and never appear in report lineage.
+
 The multi-repository author-period manifest contract has a deliberately asymmetric
-execution/report boundary. Local repository paths and raw identity aliases are
+execution/report boundary. Local repository paths, GitHub repository identities,
+and raw identity aliases are
 accepted only as execution selectors. The portfolio report retains their
 order-independent manifest digest plus stable contributor, repository, and head
 IDs, immutable head objects, contributor match kinds, and head reachability. The

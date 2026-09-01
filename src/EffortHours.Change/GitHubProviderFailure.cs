@@ -20,6 +20,8 @@ internal static class GitHubProviderFailure
     public const string CandidateDiscoveryPhase = "candidate-discovery";
     public const string DefaultHeadPhase = "default-head-discovery";
     public const string OpenPullRequestPhase = "open-pr-discovery";
+    public const string PullRequestResolutionPhase = "pull-request-resolution";
+    public const string RevisionResolutionPhase = "git-revision-resolution";
     public const string ManagedCachePhase = "managed-cache-acquisition";
 
     public static GitHubProviderException FromStart(
@@ -67,6 +69,24 @@ internal static class GitHubProviderFailure
 
         if (Contains(detail, "http 403", "http 404", "forbidden", "not found"))
         {
+            if (phase == PullRequestResolutionPhase)
+            {
+                return Create(
+                    "github-pull-request-forbidden-or-not-found",
+                    phase,
+                    "verify-pull-request-and-access",
+                    "The requested GitHub pull request was not found or is not accessible.");
+            }
+
+            if (phase == RevisionResolutionPhase)
+            {
+                return Create(
+                    "github-revision-forbidden-or-not-found",
+                    phase,
+                    "verify-revision-and-access",
+                    "The requested GitHub revision was not found or is not accessible.");
+            }
+
             return Create(
                 "github-owner-forbidden-or-not-found",
                 OwnerInventoryPhase,
