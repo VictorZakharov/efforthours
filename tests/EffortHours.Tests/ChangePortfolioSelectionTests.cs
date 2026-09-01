@@ -428,7 +428,6 @@ public sealed class ChangePortfolioSelectionTests
                 {
                     Id = "api-pr",
                     RepositoryId = "api",
-                    RepositoryPath = "repositories/api",
                     PullRequest = "42",
                     GitHubRepository = "example/api",
                 },
@@ -441,11 +440,20 @@ public sealed class ChangePortfolioSelectionTests
         {
             Items = [manifest.Items[0], manifest.Items[0]],
         };
+        ChangePortfolioManifest bothLocators = manifest with
+        {
+            Items = [manifest.Items[0] with { RepositoryPath = "repositories/api" }],
+        };
 
         Assert.True(schema.IsValid, string.Join(Environment.NewLine, schema.Errors));
         Assert.Empty(ContractValidation.Validate(manifest));
         Assert.Contains(ContractValidation.Validate(duplicate), error =>
             error.Contains("duplicated", StringComparison.Ordinal));
+        Assert.Contains(ContractValidation.Validate(bothLocators), error =>
+            error.Contains("exactly one", StringComparison.Ordinal));
+        Assert.False(ContractSchemaValidator.Validate(
+            SchemaNames.ChangePortfolioManifest,
+            ContractJson.Serialize(bothLocators)).IsValid);
     }
 
     private static GitAuthorPeriodPortfolioOptions Options() => new()

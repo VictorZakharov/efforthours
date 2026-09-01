@@ -1,5 +1,6 @@
 using System.Text;
 using System.Text.Json;
+using EffortHours.Change;
 using EffortHours.Contracts;
 using EffortHours.Contracts.V1;
 
@@ -9,6 +10,45 @@ internal sealed record ResolvedChangeAuthorPeriodManifest(
     ChangeAuthorPeriodManifest Manifest,
     string ManifestDigest,
     IReadOnlyDictionary<string, string> RepositoryPaths);
+
+internal static class ChangeAuthorPeriodManifestRepositoryLocator
+{
+    public static async Task<ResolvedChangeAuthorPeriodManifest> MaterializeAsync(
+        ResolvedChangeAuthorPeriodManifest resolved,
+        ManagedGitQueryPlanner managedGitQueries,
+        bool fetchMissing,
+        bool readOnly,
+        CancellationToken cancellationToken)
+    {
+        Dictionary<string, string> paths = new(resolved.RepositoryPaths, StringComparer.Ordinal);
+        foreach (ChangeAuthorPeriodManifestRepository repository in resolved.Manifest.Repositories)
+        {
+            if (paths.ContainsKey(repository.Id))
+            {
+                continue;
+            }
+
+            string identity = repository.GitHubRepository ??
+                throw new InvalidOperationException(
+                    $"Repository '{repository.Id}' has no executable Git locator.");
+            string[] objectIds = [.. repository.Heads.Select(head => head.ObjectId)];
+            paths.Add(
+                repository.Id,
+                readOnly
+                    ? await managedGitQueries.LocatePinnedObjectsAsync(
+                        identity,
+                        objectIds,
+                        cancellationToken).ConfigureAwait(false)
+                    : await managedGitQueries.PreparePinnedObjectsAsync(
+                        identity,
+                        objectIds,
+                        fetchMissing,
+                        cancellationToken).ConfigureAwait(false));
+        }
+
+        return resolved with { RepositoryPaths = paths };
+    }
+}
 
 internal static class ChangeAuthorPeriodManifestLoader
 {
@@ -53,7 +93,10 @@ internal static class ChangeAuthorPeriodManifestLoader
         Dictionary<string, string> repositoryPaths = new(StringComparer.Ordinal);
         foreach (ChangeAuthorPeriodManifestRepository repository in manifest.Repositories)
         {
-            repositoryPaths.Add(repository.Id, ResolveRepositoryPath(repository, directory));
+            if (repository.RepositoryPath is not null)
+            {
+                repositoryPaths.Add(repository.Id, ResolveRepositoryPath(repository, directory));
+            }
         }
 
         return new ResolvedChangeAuthorPeriodManifest(
@@ -153,7 +196,7 @@ internal static class ChangeAuthorPeriodManifestLoader
         string fullPath;
         try
         {
-            fullPath = Path.GetFullPath(repository.RepositoryPath, manifestDirectory);
+            fullPath = Path.GetFullPath(repository.RepositoryPath!, manifestDirectory);
         }
         catch (Exception exception) when (
             exception is ArgumentException or NotSupportedException or PathTooLongException)

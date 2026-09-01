@@ -17,14 +17,23 @@
   "$defs": {
     "item": {
       "type": "object",
-      "required": ["id", "repositoryId", "repositoryPath", "pullRequest"],
+      "required": ["id", "repositoryId", "pullRequest"],
       "properties": {
         "id": { "type": "string", "minLength": 1 },
         "repositoryId": { "type": "string", "minLength": 1 },
         "repositoryPath": { "type": "string", "minLength": 1 },
         "pullRequest": { "type": "string", "minLength": 1 },
-        "gitHubRepository": { "type": "string", "minLength": 1 }
+        "gitHubRepository": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 512,
+          "pattern": "^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$"
+        }
       },
+      "oneOf": [
+        { "required": ["repositoryPath"] },
+        { "required": ["gitHubRepository"] }
+      ],
       "additionalProperties": false
     }
   }

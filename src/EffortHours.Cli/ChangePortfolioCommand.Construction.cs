@@ -23,6 +23,8 @@ internal sealed partial class ChangePortfolioCommand
             new ChangeAuthorPeriodManifestCommandPlanner(portfolioPlanner).MeasureAsync,
             new GitHubAuthorPeriodDiscovery().DiscoverTodayAsync)
     {
+        _planAuthorPeriodManifestWithAcquisition =
+            new ChangeAuthorPeriodManifestCommandPlanner(portfolioPlanner).PlanAsync;
     }
 
     internal ChangePortfolioCommand(

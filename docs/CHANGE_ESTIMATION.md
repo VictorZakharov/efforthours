@@ -2,8 +2,9 @@
 
 ## Status
 
-EffortHours implements provider-neutral final-delta analysis for immutable local
-Git revisions, commits, ranges, and one pull request; two statically scanned
+EffortHours implements provider-neutral final-delta analysis for immutable
+Git revisions, commits, ranges, and one pull request selected from either an
+explicit local repository or the private managed bare cache; two statically scanned
 directories; and two saved repository-evidence bundles. Portfolio reconciliation
 supports repeated PRs, multi-repository manifests, and bounded author-period
 selection under the separate `CHANGE_PORTFOLIOS.md` contract.
@@ -44,15 +45,17 @@ The implemented provider-neutral engine and Git adapter support:
   content-derived repository source digest;
 - two v1 serialized repository-evidence bundles with digest-checked file
   inventories;
-- immutable base and head snapshots selected by local Git revisions;
+- immutable base and head snapshots selected from a local repository or a
+  provider repository identity;
 - one commit compared with a selected parent;
 - a revision range compared by its final base and head;
 - one pull request, with GitHub available through an optional `gh` CLI adapter;
-- repeated pull requests from one local repository;
-- a v1 manifest selecting pull requests from multiple local repositories; and
+- repeated pull requests from one local or provider-identified repository;
+- a v1 manifest selecting pull requests from multiple local or provider-identified
+  repositories; and
 - commits selected by exact author/co-author alias and an explicit time interval; or
-- a v1 author-period manifest spanning multiple local repositories and pinned
-  heads; or
+- a v1 author-period manifest spanning multiple local or provider-identified
+  repositories and pinned heads; or
 - an explicit GitHub-assisted today-to-date request that resolves to that same v1
   manifest before local estimation.
 
@@ -70,6 +73,10 @@ eh change --base-path <directory> --head-path <directory>
 eh change --base-evidence <repository-evidence.json>
   --head-evidence <repository-evidence.json>
 eh change <repository> --pr <number-or-url> [--repo <owner/name>]
+eh change --repo <owner/name> --commit <revision> [--parent <revision>] [--fetch-missing]
+eh change --repo <owner/name> --range <base>..<head> [--fetch-missing]
+eh change --repo <owner/name> --base <revision> --head <revision> [--fetch-missing]
+eh change --pr <github-pr-url> [--fetch-missing]
 eh change portfolio <repository> --pr <pr> --pr <pr>
 eh change portfolio --manifest <portfolio.json>
 eh change portfolio --author-period-manifest <manifest.json>
@@ -86,11 +93,12 @@ compact, and explicit-output options. Directory pairs and evidence pairs are
 deliberately separate selector families; incomplete or mixed pairs fail before
 analysis. Portfolio commands likewise require exactly one repeated-PR, manifest,
 direct-author-period, author-period-manifest, or today-to-date family. Local
-snapshot and Git-ref inputs do not depend on GitHub. `change today` is a deliberate
-orchestration exception that queries GitHub through `gh`, creates/reuses active
-repositories in a private bare cache, applies the versioned engineering path
-profile before immutable analysis, runs exact preflight, pins an in-memory v1
-manifest, and then returns to the existing local estimator boundary.
+snapshot and Git-ref inputs do not depend on GitHub. Every Git-backed family also
+accepts an explicit GitHub repository identity without a checkout. Those forms
+read only complete resolution/object caches by default; `--fetch-missing` is the
+sole authorization to resolve provider revisions and narrowly acquire immutable
+objects. `change today` additionally performs bounded discovery before returning
+to the same managed-cache and local-estimator boundary.
 Pull-request resolution uses `gh pr view` only when the caller explicitly selects
 `--pr`; `gh` must be installed and authenticated. The adapter retains only the
 requested PR number or URL, immutable provider base-tip/head object identities,
@@ -100,9 +108,9 @@ base to head becomes the reviewed PR delta. It does not retain the PR body,
 discussion, author, reviews, timestamps, or private diff.
 
 Repeated PR selection accepts at most 128 rows. A manifest gives each row a stable
-caller ID, repository ID, execution-only local repository path, PR selector, and
-optional GitHub repository. Relative paths resolve from the manifest directory and
-never enter report output. Caller repository IDs and resolved local Git roots must
+caller ID, repository ID, PR selector, and exactly one execution locator: a local
+`repositoryPath` or `gitHubRepository`. Relative paths resolve from the manifest
+directory; locators never enter report output. Caller repository IDs and resolved Git roots must
 map one-to-one, so labels cannot combine separate repositories or split one
 repository around normalization. Each repository is normalized independently;
 totals are then added without cross-repository deduplication.
@@ -139,11 +147,14 @@ committer, and co-author identities. It is deterministic conservative accounting
 not a claim about sampled CLR heap size.
 
 The author-period manifest applies that exact selector across stable contributor
-IDs, repository IDs, and pinned repository-local heads. Relative paths resolve
-from the manifest directory. Before Change analysis starts, every path must resolve
-to one readable local Git root, repository IDs and roots must map one-to-one, and
-every pinned commit must exist locally. Author-period mode never fetches a missing
-object and rejects the PR-only `--fetch-missing` option.
+IDs, repository IDs, and pinned repository-local heads. Each repository supplies
+exactly one execution-only `repositoryPath` or `gitHubRepository`; relative paths
+resolve from the manifest directory. Before Change analysis starts, every locator
+must resolve to one readable Git object database, repository IDs and roots must map
+one-to-one, and every pinned commit must exist. A normal run may use
+`--fetch-missing` to acquire only missing pinned objects for provider locators.
+Preflight remains read-only: it accepts warm managed-cache entries but never
+resolves or acquires provider data.
 For each repository, all pinned heads enter one union query per required identity
 filter, so shared ancestry and fully overlapping heads cannot duplicate a commit.
 A bounded-memory topological pass then propagates head reachability until every
@@ -154,19 +165,23 @@ Repositories and heads with no unique selected commit remain visible in selectio
 metadata. Matching several contributors or heads never multiplies the commit or
 its EHE.
 
-The PR adapter analyzes objects already available in the selected local Git object
-database without fetching by default. When a PR head or provider base-tip object
-is absent, the default command fails and names `--fetch-missing` as the explicit
-opt-in. That option fetches only the provider base ref and selected PR head ref
+Git adapters analyze objects already available in the selected local or managed
+Git object database without fetching by default. Checkout-free forms also require
+a cached immutable provider resolution on a warm no-flag run. When identity or an
+object is absent, the command fails and names `--fetch-missing` as the explicit
+opt-in. That option resolves only the requested provider identities and fetches
+only their selected object IDs, or the provider base ref and PR head ref,
 from the provider repository as source-only refspecs with tags, recursive
 submodules, and `FETCH_HEAD` writes disabled. HTTPS authentication uses the
 already-authenticated `gh auth git-credential` helper through command-local Git
 configuration; no global config is changed and no token enters arguments or
-reports. It adds immutable objects to the local object database but does not update
-any local or remote-tracking ref, index, or worktree; it does not check out or
-execute target code. Existing local objects still short-circuit without network
-access. Cancellation is propagated to Git and no report is emitted from a partial
-acquisition. Once both exact resolved objects exist, local Git must resolve exactly
+reports. Checkout-free acquisition uses a per-repository locked private bare cache;
+local-mode PR acquisition may add immutable objects to the explicitly selected
+local object database. Neither path updates local or remote-tracking refs,
+`FETCH_HEAD`, an index, or a worktree, and neither checks out or executes target
+code. A no-flag managed-cache run performs no provider or network access.
+Cancellation is propagated to Git and no report is emitted from a partial
+acquisition. Once both exact resolved objects exist, Git must resolve exactly
 one merge base; no common ancestor or several criss-cross merge bases fail rather
 than selecting an arbitrary boundary.
 
@@ -645,10 +660,10 @@ the exact earlier estimator identity they were created from.
   estimate while omitting the oversized component ledger.
 - Component attribution uses nonnegative largest-remainder cents and sums exactly
   even for large component sets.
-- PR mode invokes `gh` only to resolve bounded identity, base-ref, and changed-file
-  metadata. It reuses local objects by default, optionally acquires only missing
-  selected objects under `--fetch-missing`, and uses the provider base/head unique
-  local merge base as the comparison base.
+- Provider-backed Git mode invokes `gh` only under `--fetch-missing` to resolve
+  bounded commit or PR identity. It optionally acquires only selected immutable
+  objects into a locked private bare cache, supports offline warm reuse, and uses
+  the same local Git planning/estimation path as an explicit checkout.
 - Portfolio mode accepts at most 128 repeated PRs or 128 schema-valid manifest
   rows; every source item is estimated without a rate before reconciliation.
 - Manifest repository paths are execution-only. Relative paths resolve from the

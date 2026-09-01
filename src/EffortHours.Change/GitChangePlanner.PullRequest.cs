@@ -33,7 +33,7 @@ public sealed partial class GitChangePlanner
             .ConfigureAwait(false);
         bool hasHead = await _git.CommitExistsAsync(root, resolved.HeadObjectId, cancellationToken)
             .ConfigureAwait(false);
-        bool acquired = false;
+        PullRequestObjectAcquisition acquisition = PullRequestObjectAcquisition.LocalReuse;
         if (!hasBase || !hasHead)
         {
             if (!fetchMissing)
@@ -46,7 +46,7 @@ public sealed partial class GitChangePlanner
             }
 
             await AcquireMissingObjectsAsync(root, resolved, cancellationToken).ConfigureAwait(false);
-            acquired = true;
+            acquisition = PullRequestObjectAcquisition.ExplicitFetch;
             hasBase = await _git.CommitExistsAsync(root, resolved.BaseObjectId, cancellationToken)
                 .ConfigureAwait(false);
             hasHead = await _git.CommitExistsAsync(root, resolved.HeadObjectId, cancellationToken)
@@ -60,12 +60,39 @@ public sealed partial class GitChangePlanner
             }
         }
 
-        string comparisonBaseObjectId = await _git.ResolveMergeBaseAsync(
+        return await PlanResolvedPullRequestAsync(
             root,
+            resolved,
+            acquisition,
+            cancellationToken).ConfigureAwait(false);
+    }
+
+    internal async Task<GitChangePlan> PlanResolvedPullRequestAsync(
+        string repositoryPath,
+        ResolvedPullRequest resolved,
+        PullRequestObjectAcquisition acquisition,
+        CancellationToken cancellationToken)
+    {
+        bool hasBase = await _git.CommitExistsAsync(
+            repositoryPath,
+            resolved.BaseObjectId,
+            cancellationToken).ConfigureAwait(false);
+        bool hasHead = await _git.CommitExistsAsync(
+            repositoryPath,
+            resolved.HeadObjectId,
+            cancellationToken).ConfigureAwait(false);
+        if (!hasBase || !hasHead)
+        {
+            throw new InvalidOperationException(
+                "The selected immutable pull-request objects are unavailable in the chosen Git object store.");
+        }
+
+        string comparisonBaseObjectId = await _git.ResolveMergeBaseAsync(
+            repositoryPath,
             resolved.BaseObjectId,
             resolved.HeadObjectId,
             cancellationToken).ConfigureAwait(false);
-        ChangeSelection selection = Selection(resolved, comparisonBaseObjectId, acquired);
+        ChangeSelection selection = Selection(resolved, comparisonBaseObjectId, acquisition);
         List<Diagnostic> diagnostics =
         [
             new()
@@ -75,7 +102,7 @@ public sealed partial class GitChangePlanner
                 Message = "The optional gh adapter supplied immutable PR base-tip/head identities; local Git resolved their unique merge base as the comparison base. PR activity and metadata are not effort signals.",
             },
         ];
-        if (acquired)
+        if (acquisition == PullRequestObjectAcquisition.ExplicitFetch)
         {
             diagnostics.Add(new Diagnostic
             {
@@ -84,8 +111,20 @@ public sealed partial class GitChangePlanner
                 Message = "Explicit --fetch-missing acquisition added objects through only the selected provider base and PR head refs; it did not update local refs, FETCH_HEAD, the index, or the worktree.",
             });
         }
+        else if (acquisition is PullRequestObjectAcquisition.ManagedCacheFetch or
+            PullRequestObjectAcquisition.ManagedCacheReuse)
+        {
+            diagnostics.Add(new Diagnostic
+            {
+                Code = "FB5108",
+                Severity = DiagnosticSeverity.Information,
+                Message = acquisition == PullRequestObjectAcquisition.ManagedCacheFetch
+                    ? "Checkout-free --fetch-missing refreshed the PR identity and ensured its provider base/head objects in the private EffortHours bare cache through only the selected refs; no checkout, user ref, FETCH_HEAD, index, or worktree was created or changed."
+                    : "Checkout-free pull-request analysis reused immutable objects from the private EffortHours bare cache without provider or network access.",
+            });
+        }
 
-        return FinalDeltaPlan(root, selection, diagnostics);
+        return FinalDeltaPlan(repositoryPath, selection, diagnostics);
     }
 
     private async Task AcquireMissingObjectsAsync(
@@ -112,7 +151,7 @@ public sealed partial class GitChangePlanner
     private static ChangeSelection Selection(
         ResolvedPullRequest resolved,
         string comparisonBaseObjectId,
-        bool acquired) => new()
+        PullRequestObjectAcquisition acquisition) => new()
         {
             Kind = ChangeSelectionKind.PullRequest,
             Base = GitClient.Reference(comparisonBaseObjectId, comparisonBaseObjectId),
@@ -121,9 +160,7 @@ public sealed partial class GitChangePlanner
             {
                 ProviderBaseObjectId = resolved.BaseObjectId,
                 ComparisonBasePolicy = PullRequestComparisonBasePolicy.ProviderBaseHeadMergeBase,
-                ObjectAcquisition = acquired
-                    ? PullRequestObjectAcquisition.ExplicitFetch
-                    : PullRequestObjectAcquisition.LocalReuse,
+                ObjectAcquisition = acquisition,
                 ProviderChangedFileCount = resolved.ChangedFileCount,
             },
         };

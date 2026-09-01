@@ -56,13 +56,13 @@ internal sealed partial class GitPortfolioBenchmarkFixture
         {
             Repositories = [.. descriptor.Manifest.Repositories.Select(repository => repository with
             {
-                RepositoryPath = ResolveRepositoryPath(rootPath, repository.RepositoryPath),
+                RepositoryPath = ResolveRepositoryPath(rootPath, repository.RepositoryPath!),
             })],
         };
         PortfolioBenchmarkRepository[] repositories = [.. manifest.Repositories.Select(repository =>
             new PortfolioBenchmarkRepository(
                 repository.Id,
-                repository.RepositoryPath,
+                repository.RepositoryPath!,
                 repository.Heads))];
         foreach (PortfolioBenchmarkRepository repository in repositories)
         {
@@ -109,7 +109,7 @@ internal sealed partial class GitPortfolioBenchmarkFixture
         {
             Repositories = [.. Manifest.Repositories.Select(repository => repository with
             {
-                RepositoryPath = Path.GetRelativePath(RootPath, repository.RepositoryPath)
+                RepositoryPath = Path.GetRelativePath(RootPath, repository.RepositoryPath!)
                     .Replace(Path.DirectorySeparatorChar, '/'),
             })],
         };

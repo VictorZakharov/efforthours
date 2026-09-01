@@ -6,7 +6,7 @@ namespace EffortHours.Cli;
 
 internal sealed record ResolvedChangePortfolioManifestItem(
     ChangePortfolioManifestItem Item,
-    string RepositoryPath);
+    string? RepositoryPath);
 
 internal static class ChangePortfolioManifestLoader
 {
@@ -38,6 +38,6 @@ internal static class ChangePortfolioManifestLoader
         string directory = Path.GetDirectoryName(fullPath) ?? Directory.GetCurrentDirectory();
         return [.. manifest.Items.Select(item => new ResolvedChangePortfolioManifestItem(
             item,
-            Path.GetFullPath(item.RepositoryPath, directory)))];
+            item.RepositoryPath is null ? null : Path.GetFullPath(item.RepositoryPath, directory)))];
     }
 }

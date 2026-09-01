@@ -262,6 +262,14 @@ count, and intermediate churn do not value effort. `CHANGE_ESTIMATION.md` and
   exact contributor/repository/head aggregation and zero rows, non-multiplying
   shared groups, privacy-safe report boundary, and rule that identity and time
   never become value.
+- All Git-backed Change selector families share one checkout-free boundary.
+  Explicit `repositoryPath` inputs remain offline/local; `gitHubRepository` or
+  `--repo` inputs use per-repository locked private bare caches. Only
+  `--fetch-missing` may resolve ordinary provider identities or acquire narrowly
+  selected immutable objects. Bounded atomic resolution sidecars support warm
+  offline commit, range, base/head, PR, repeated-PR, direct-author, and manifest
+  reuse without refs, `FETCH_HEAD`, indexes, worktrees, or target-code execution.
+  Execution locators remain outside semantic digests and reports.
 - The same author-period calculation now supports up to 256 repositories and 512
   pinned heads overall, plus one gap-free calendar-month, calendar-week, or custom
   bucket partition. Versioned

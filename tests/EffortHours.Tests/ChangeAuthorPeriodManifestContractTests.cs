@@ -153,6 +153,60 @@ public sealed class ChangeAuthorPeriodManifestContractTests
     }
 
     [Fact]
+    public void ManifestAcceptsProviderLocatorsAndExcludesThemFromTheDigest()
+    {
+        ChangeAuthorPeriodManifest local = ValidManifest();
+        ChangeAuthorPeriodManifest managed = local with
+        {
+            Repositories = [.. local.Repositories.Select(repository => repository with
+            {
+                RepositoryPath = null,
+                GitHubRepository = "acme/" + repository.Id,
+            })],
+        };
+
+        string json = ContractJson.Serialize(managed);
+        SchemaValidationResult schema = ContractSchemaValidator.Validate(
+            SchemaNames.ChangeAuthorPeriodManifest,
+            json);
+
+        Assert.True(schema.IsValid, string.Join(Environment.NewLine, schema.Errors));
+        Assert.Empty(ContractValidation.Validate(managed));
+        Assert.Equal(
+            ChangeAuthorPeriodManifestIdentity.ComputeDigest(local),
+            ChangeAuthorPeriodManifestIdentity.ComputeDigest(managed));
+        Assert.DoesNotContain(
+            "acme/repository-a",
+            ContractJson.Serialize(ChangeAuthorPeriodManifestIdentity.CreateReportSelection(managed)),
+            StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public void ManifestRequiresExactlyOneRepositoryLocator()
+    {
+        ChangeAuthorPeriodManifest source = ValidManifest();
+        ChangeAuthorPeriodManifest neither = source with
+        {
+            Repositories = [source.Repositories[0] with { RepositoryPath = null }],
+        };
+        ChangeAuthorPeriodManifest both = source with
+        {
+            Repositories = [source.Repositories[0] with { GitHubRepository = "acme/demo" }],
+        };
+
+        Assert.Contains(ContractValidation.Validate(neither), error =>
+            error.Contains("exactly one", StringComparison.Ordinal));
+        Assert.Contains(ContractValidation.Validate(both), error =>
+            error.Contains("exactly one", StringComparison.Ordinal));
+        Assert.False(ContractSchemaValidator.Validate(
+            SchemaNames.ChangeAuthorPeriodManifest,
+            ContractJson.Serialize(neither)).IsValid);
+        Assert.False(ContractSchemaValidator.Validate(
+            SchemaNames.ChangeAuthorPeriodManifest,
+            ContractJson.Serialize(both)).IsValid);
+    }
+
+    [Fact]
     public void ValidationRejectsCrossContributorAliasesAndRepeatedRepositoryHeadObjects()
     {
         ChangeAuthorPeriodManifest manifest = ValidManifest();

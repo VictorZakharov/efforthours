@@ -29,11 +29,26 @@ public static partial class ContractValidation
         {
             RequireText(item.Id, "manifestItem.id", errors);
             RequireText(item.RepositoryId, $"manifestItem[{item.Id}].repositoryId", errors);
-            RequireText(item.RepositoryPath, $"manifestItem[{item.Id}].repositoryPath", errors);
+            bool hasRepositoryPath = !string.IsNullOrWhiteSpace(item.RepositoryPath);
+            bool hasGitHubRepository = !string.IsNullOrWhiteSpace(item.GitHubRepository);
+            if (hasRepositoryPath == hasGitHubRepository)
+            {
+                errors.Add(
+                    $"Manifest item '{item.Id}' requires exactly one of repositoryPath or " +
+                    "gitHubRepository.");
+            }
+            else if (hasRepositoryPath)
+            {
+                RequireText(item.RepositoryPath, $"manifestItem[{item.Id}].repositoryPath", errors);
+            }
             RequireText(item.PullRequest, $"manifestItem[{item.Id}].pullRequest", errors);
-            if (item.GitHubRepository is not null)
+            if (hasGitHubRepository)
             {
                 RequireText(item.GitHubRepository, $"manifestItem[{item.Id}].gitHubRepository", errors);
+                ValidateGitHubRepositoryIdentity(
+                    item.GitHubRepository!,
+                    $"manifestItem[{item.Id}].gitHubRepository",
+                    errors);
             }
 
             if (!ids.Add(item.Id))
@@ -43,6 +58,20 @@ public static partial class ContractValidation
         }
 
         return errors;
+    }
+
+    private static void ValidateGitHubRepositoryIdentity(
+        string value,
+        string path,
+        List<string> errors)
+    {
+        string[] parts = value.Split('/');
+        if (value.Length > 512 || parts.Length != 2 || parts.Any(string.IsNullOrWhiteSpace) ||
+            parts.Any(part => part is "." or ".." || part.Any(character =>
+                !char.IsAsciiLetterOrDigit(character) && character is not '-' and not '_' and not '.')))
+        {
+            errors.Add($"{path} must be a canonical owner/repository GitHub identity.");
+        }
     }
 
     public static IReadOnlyList<string> Validate(ChangePortfolioReport report)

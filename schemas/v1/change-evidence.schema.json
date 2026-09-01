@@ -73,7 +73,12 @@
           "enum": ["provider-base-head-merge-base"]
         },
         "objectAcquisition": {
-          "enum": ["local-reuse", "explicit-fetch"]
+          "enum": [
+            "local-reuse",
+            "explicit-fetch",
+            "managed-cache-reuse",
+            "managed-cache-fetch"
+          ]
         },
         "providerChangedFileCount": { "type": "integer", "minimum": 0 },
         "analyzedChangedPathCount": { "type": "integer", "minimum": 0 },

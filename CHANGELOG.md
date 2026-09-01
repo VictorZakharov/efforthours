@@ -6,6 +6,28 @@ may still change public contracts with explicit documentation.
 
 ## Unreleased
 
+### Added
+
+- Added checkout-free `--repo <owner/name>` execution for commit, range,
+  base/head, PR, repeated-PR, direct author-period, and both PR and author-period
+  manifests. Full GitHub PR URLs infer their repository. Explicit
+  `--fetch-missing` resolves only selected immutable identities and populates a
+  private per-repository locked bare cache; complete warm reruns use no provider
+  or network access.
+
+### Changed
+
+- Author-period manifest repositories now require exactly one execution locator:
+  `repositoryPath` or `gitHubRepository`. Both locators remain outside the
+  semantic manifest digest and report output. Read-only preflight can use a warm
+  managed cache but never resolves or acquires provider data.
+
+### Fixed
+
+- Checkout-free managed acquisition creates no checkout, user ref, `FETCH_HEAD`,
+  index, or worktree and reports managed-cache fetch versus offline reuse
+  provenance. Concurrent first use is serialized and initialized atomically.
+
 ## 0.10.0-alpha.17 - 2026-08-24
 
 ### Added
