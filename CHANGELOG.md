@@ -6,6 +6,8 @@ may still change public contracts with explicit documentation.
 
 ## Unreleased
 
+## 0.10.0-alpha.18 - 2026-09-01
+
 ### Added
 
 - Added checkout-free `--repo <owner/name>` execution for commit, range,
@@ -17,6 +19,9 @@ may still change public contracts with explicit documentation.
 
 ### Changed
 
+- Closed the remaining estimation-quality and exploratory improvement backlog as
+  not planned and moved the engineering roadmap to maintenance mode. This scope
+  decision does not calibrate the estimator or change its experimental status.
 - Updated the Acornima JavaScript/JSX parser to 1.8.0, retaining its
   BSD-3-Clause redistribution boundary and adding regression coverage for strict
   rejection of invalid `super` property access outside class methods.

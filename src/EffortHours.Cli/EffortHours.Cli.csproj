@@ -8,11 +8,11 @@
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>eh</ToolCommandName>
     <PackageId>EffortHours.Tool</PackageId>
-    <Version>0.10.0-alpha.17</Version>
+    <Version>0.10.0-alpha.18</Version>
     <Title>EffortHours CLI</Title>
     <PackageReadmeFile>PACKAGE_README.md</PackageReadmeFile>
     <PackageTags>estimation;effort-estimation;developer-tools;cli;repository-analysis;static-analysis;dotnet-tool</PackageTags>
-    <PackageReleaseNotes>0.10.0-alpha.17: Add the versioned EffortHours Codex companion skill with explicit print, install, and stale-check commands; emit privacy-safe actionable today-workflow failures; and reduce GitHub-assisted discovery overhead through bounded batching, complete fallbacks, metadata caching, and provider-process telemetry. Refresh the public README with current today, portfolio, and Codex workflows. Repository EHE remains experimental and uncalibrated, and seed-rules/0.4.0 remains the shipped estimator. Full notes: https://github.com/VictorZakharov/efforthours/blob/v0.10.0-alpha.17/CHANGELOG.md</PackageReleaseNotes>
+    <PackageReleaseNotes>0.10.0-alpha.18: Run every Git-backed Change selector without a local checkout through an explicit GitHub repository locator and private managed bare cache, while keeping network access gated by --fetch-missing and preserving warm offline reuse. Update Acornima and Acornima.Extras to 1.8.0 with complete locked-graph and license provenance. Repository EHE remains experimental and uncalibrated, and seed-rules/0.4.0 remains the shipped estimator. Full notes: https://github.com/VictorZakharov/efforthours/blob/v0.10.0-alpha.18/CHANGELOG.md</PackageReleaseNotes>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="../EffortHours.Analysis/EffortHours.Analysis.csproj" />

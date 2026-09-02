@@ -639,7 +639,8 @@ peak working set falls 19.5%. All new runs have identical report bytes, and the
 estimate-semantic digest is unchanged across protocols. The fixture deliberately
 changes one same-size numeric literal per commit; these numbers establish that
 specific lineage optimization, not general repository shapes, field latency, or
-core scaling. Issue #182 therefore remains open.
+core scaling. Issue #182 was later closed as not planned without establishing a
+broader performance claim.
 
 A separate prepared structural-identifier checkpoint forces full Roslyn analysis
 while repeating 80 immutable .NET project-context files per repository across 260
@@ -651,7 +652,8 @@ MiB (14.3%), and Git blob requests from 22,504 to 1,606 (92.9%). Four bounded
 project-context artifacts receive 516 exact hits. The estimate-semantic digest is
 unchanged and repeated optimized report bytes are identical. This removes one
 measured allocation-heavy redundancy; unique structural C# bodies still require
-full analysis, so issue #182 remains open for general latency and scaling.
+full analysis. The remaining general-latency and scaling work in issue #182 was
+later closed as not planned.
 
 Snapshot analysis is keyed by repository, canonical immutable-inventory digest,
 and exact analysis-scope path-set digest. Reused evidence is rebound to the
