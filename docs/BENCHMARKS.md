@@ -1523,8 +1523,9 @@ All 18 runs produced semantic digest
 Tree scaling meets the logarithmic floor at eight active readers (`3.28x` versus
 `log2(9) = 3.17`) but not at 12 requested workers (`3.25x` versus
 `log2(13) = 3.70`), and whole-command one-to-twelve speedup is only `1.10x`.
-Issue #182 remains open; these results must not be presented as general
-logarithmic or near-linear core scaling.
+Issue #182 remained open at this checkpoint; it was later closed as not planned.
+These results must not be presented as general logarithmic or near-linear core
+scaling.
 
 The preceding approximately three-second fixture is sufficient to isolate tree
 scheduling, but not to assess whole-command scaling on a 12-core host. A second
@@ -1582,8 +1583,9 @@ fixed per-repository row consumers from four to six raised one 12-worker sample
 from 12.131 to 12.898 seconds and peak working set from 769.48 to 829.92 MiB, so
 that experiment was rejected. The remaining limit is allocation-heavy semantic
 and repository work after tree discovery, not starvation at the global admission
-gate. Issue #182 remains open for a different decomposition rather than a larger
-copy of the same row fan-out.
+gate. Issue #182 remained open at this checkpoint for a different decomposition
+rather than a larger copy of the same row fan-out; it was later closed as not
+planned.
 
 The same 31,034-file fixture was then normally packed with `git gc` before a
 separate measurement. Storage-aware selection used two direct readers rather than
@@ -1634,8 +1636,9 @@ not establish similar gains for structural edits, mixed languages, sparse
 lineages, different scopes, private workloads, or physical-core scaling. CI
 instead verifies exact cold-analysis equivalence, refreshed scope diagnostics,
 deterministic report bytes, bounded single-flight retention, rejection/fallback
-cases, cancellation, privacy, and read-only behavior. Issue #182 remains open for
-the unresolved large-tree and general-workload scaling objective.
+cases, cancellation, privacy, and read-only behavior. Issue #182 remained open at
+this checkpoint for the unresolved large-tree and general-workload scaling
+objective; it was later closed as not planned.
 
 ## Alpha.12 annual author-period field observation
 

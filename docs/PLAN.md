@@ -143,7 +143,15 @@ The base-to-head final delta is authoritative. Selection metadata, component
 count, and intermediate churn do not value effort. `CHANGE_ESTIMATION.md` and
 `CHANGE_PORTFOLIOS.md` govern this pipeline.
 
-## Current priorities
+## Closed improvement backlog
+
+The sections below preserve the former improvement roadmap as historical design
+context. On 2026-09-01 the remaining estimation-quality, calibration, host-review,
+analyzer-expansion, scale, reporting, and local-model issues were closed as not
+planned because the current estimator is considered sufficient for its intended
+experimental use. None of the numbered sections below is an active commitment.
+Closing them does not complete their validation gates, admit a rejected model,
+calibrate the shipped estimator, or support a production-readiness claim.
 
 ### 1. Correct manual QA and preserve the sealed-test boundary
 
@@ -192,7 +200,8 @@ count, and intermediate churn do not value effort. `CHANGE_ESTIMATION.md` and
   failures before proposing a successor. Its stable category/component residuals,
   80% largest-first material set, compact leaf expansion, symmetry checks, and
   raw/normalized width correlations must reconcile without changing the rejected
-  candidate or opening test. Issue #137 owns the uncertainty-model follow-through.
+  candidate or opening test. Issue #137 historically owned the uncertainty-model
+  follow-through.
 - Keep `repository-uncertainty-features/1.0.0` and
   `symmetric-planning-interval/1.0.0` frozen as the pre-label successor boundary.
   The offline projector exposes current confidence, provenance, parser, explicit-
@@ -367,16 +376,16 @@ count, and intermediate churn do not value effort. `CHANGE_ESTIMATION.md` and
   8.9%, managed CPU 11.2%, allocation 25.4%, sampled peak working set 14.3%, and
   Git blob requests 92.9%; four bounded context entries receive 516 hits and the
   semantic digest is unchanged. This completes the measured project-context
-  reconstruction target, but issue #182 remains open for the remaining unique
-  structural-analysis and scheduling work; do not claim general logarithmic core
-  scaling. The private A/B/A+B regression owned by #176 was
+  reconstruction target, but issue #182 remained open at that checkpoint for the
+  remaining unique structural-analysis and scheduling work; do not claim general
+  logarithmic core scaling. The private A/B/A+B regression owned by #176 was
   completed before that issue closed; it is no longer pending.
 - Treat the anonymized alpha.12 annual workload as a current field ceiling, not a
   CI gate: 1,515 selected changes / 3,030 snapshot requests took about 190.85
   seconds and plateaued near 2.1 GiB working set. The selector correctness and
   report-interpretation defects are fixed independently of that observation.
-  Re-run the immutable field input before making a performance claim; continue
-  #182 with phase, operation, allocation, and retained-cache evidence rather than
+  Re-running the immutable field input before making a performance claim would
+  require phase, operation, allocation, and retained-cache evidence rather than
   machine-specific time or memory thresholds.
 - The optional host-assisted scaffolding boundary is now frozen in
   `AUTHOR_PERIOD_SCAFFOLDING.md`: a separate companion adapter may eventually emit
@@ -435,6 +444,16 @@ runtime model. A local model must improve repository-held-out agreement, preserv
 guardrails and lineage, remain deterministic and offline, expose
 out-of-distribution uncertainty, and justify its runtime, package size, licensing,
 and maintenance cost.
+
+## Current maintenance priorities
+
+- Preserve deterministic offline/read-only behavior, public contracts, safety,
+  privacy, exact lineage, and the experimental/uncalibrated boundary.
+- Accept correctness, security, dependency, packaging, and compatibility fixes
+  with proportionate tests and provenance review.
+- Keep releases reproducible and supported across Windows, Linux, and macOS.
+- Add estimation-quality research, model work, analyzer expansion, or new product
+  scope only after a separate explicit maintainer decision reopens that direction.
 
 ## Test strategy
 
