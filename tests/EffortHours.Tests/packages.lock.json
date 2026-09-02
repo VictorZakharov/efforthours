@@ -164,8 +164,8 @@
       "efforthours.analyzers.javascript": {
         "type": "Project",
         "dependencies": {
-          "Acornima": "[1.7.0, )",
-          "Acornima.Extras": "[1.7.0, )",
+          "Acornima": "[1.8.0, )",
+          "Acornima.Extras": "[1.8.0, )",
           "EffortHours.Analysis": "[1.0.0, )",
           "EffortHours.Contracts": "[1.0.0, )"
         }
@@ -294,17 +294,17 @@
       },
       "Acornima": {
         "type": "CentralTransitive",
-        "requested": "[1.7.0, )",
-        "resolved": "1.7.0",
-        "contentHash": "a2I4O4qkuAdB0oSaGz6/k0n/bXxMbGcLBra5dNTTVSLmTwM7uORA8ebpOrNMmDfFWOMwvuaRL6gPprRV4HTV0w=="
+        "requested": "[1.8.0, )",
+        "resolved": "1.8.0",
+        "contentHash": "ZtcK7lu5LZZH5qDWfeUdBn/WXChWQjGdpB9sSFOJPyqnODGSMS1wqBoONP7GXzQRPHKoV8byWZT4EeBPI69ODQ=="
       },
       "Acornima.Extras": {
         "type": "CentralTransitive",
-        "requested": "[1.7.0, )",
-        "resolved": "1.7.0",
-        "contentHash": "lEp6OUPKmiSp+iCHcxFTLTJUTk6O+YxUdP3WB3nxuS1jRJ4PJLOTDlBSRkG3h2tjTB5dE30Hlra6dwvcoq2NNg==",
+        "requested": "[1.8.0, )",
+        "resolved": "1.8.0",
+        "contentHash": "drn8p3EgvnuUzCO3DhfIUQ60BdxaBpOgs1Vi0tHKjNQgo8tkaCzCHPFqclYZ1a4O4zvEBafcYpMl42MFM9AK3g==",
         "dependencies": {
-          "Acornima": "1.7.0"
+          "Acornima": "1.8.0"
         }
       },
       "JsonSchema.Net": {

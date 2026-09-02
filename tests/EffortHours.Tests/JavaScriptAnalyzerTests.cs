@@ -130,6 +130,23 @@ public sealed class JavaScriptAnalyzerTests
     }
 
     [Fact]
+    public async Task InvalidSuperPropertyAccessFallsBackToTokens()
+    {
+        InMemoryRepository repository = new();
+        repository.WriteText("package.json", "{ \"name\": \"super-fixture\" }\n");
+        repository.WriteText(
+            "src/invalid-super.js",
+            "export function invalid() { return super.value; }\n");
+
+        RepositoryEvidence evidence = await new RepositoryAnalysisPipeline(repository)
+            .ScanAsync(repository.RootPath);
+
+        Assert.Contains(evidence.Diagnostics, diagnostic => diagnostic.Code == "FB4102");
+        EvidenceFact structure = Fact(evidence, "javascript:source-structure:.");
+        Assert.Equal(1m, Measurement(structure, "token-backed-files"));
+    }
+
+    [Fact]
     public async Task OutsideConfigurationReferencesAreRedacted()
     {
         InMemoryRepository repository = new();

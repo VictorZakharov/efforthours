@@ -17,6 +17,9 @@ may still change public contracts with explicit documentation.
 
 ### Changed
 
+- Updated the Acornima JavaScript/JSX parser to 1.8.0, retaining its
+  BSD-3-Clause redistribution boundary and adding regression coverage for strict
+  rejection of invalid `super` property access outside class methods.
 - Author-period manifest repositories now require exactly one execution locator:
   `repositoryPath` or `gitHubRepository`. Both locators remain outside the
   semantic manifest digest and report output. Read-only preflight can use a warm
