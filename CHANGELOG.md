@@ -6,6 +6,8 @@ may still change public contracts with explicit documentation.
 
 ## Unreleased
 
+## 0.10.0-alpha.19 - 2026-09-02
+
 ### Added
 
 - Added one shared checkout-free repository input to `scan`, `estimate`,
