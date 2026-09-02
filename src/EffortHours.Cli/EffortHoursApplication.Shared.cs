@@ -221,7 +221,9 @@ public sealed partial class EffortHoursApplication
 
         Usage:
           eh scan <repository> [options]
+          eh scan --repo <owner/name> [--revision <revision>] [--fetch-missing] [options]
           eh estimate <repository-or-evidence.json> [options]
+          eh estimate --repo <owner/name> [--revision <revision>] [--fetch-missing] [options]
           eh change <repository> <--commit|--range|--base/--head|--pr> [options]
           eh change <--base-path/--head-path|--base-evidence/--head-evidence> [options]
           eh change portfolio <repository> <--pr|--author> [options]
@@ -229,8 +231,11 @@ public sealed partial class EffortHoursApplication
           eh change explain <change-estimate.json> --item <id> [options]
           eh report <estimate.json> [options]
           eh explain <repository-or-evidence.json> --item <id> [options]
+          eh explain --repo <owner/name> [--revision <revision>] --item <id> [options]
           eh review packet <repository-or-evidence.json> [options]
+          eh review packet --repo <owner/name> [--revision <revision>] [options]
           eh review query <repository-or-evidence.json> --input-digest <digest> [selector] [options]
+          eh review query --repo <owner/name> [--revision <revision>] --input-digest <digest> [selector] [options]
           eh review validate <packet.json> <adjustment.json> [options]
           eh review measure <packet.json> <adjustment.json> --subject <id> --session <id> --context <mode> [options]
           eh review benchmark <measurement.json>... [options]
@@ -262,11 +267,12 @@ public sealed partial class EffortHoursApplication
         analyzer parses projects and C# syntax without evaluating MSBuild. The
         JavaScript/TypeScript analyzer parses manifests, configuration, JS/JSX ASTs,
         and TS/TSX token streams without running package managers or executable
-        configuration. EffortHours does not execute target code, access Git history,
+        configuration. EffortHours does not execute target code, value Git history,
         install dependencies, or emit source excerpts unless one admitted file is
         explicitly requested through a digest-bound review query. The current seed
-        estimator is explicitly uncalibrated and must not be treated as a production
-        estimate.
+        estimator is explicitly uncalibrated. Checkout-free --repo input resolves
+        and acquires one immutable Git snapshot only with explicit --fetch-missing;
+        warm reruns are offline. Output must not be treated as a production estimate.
         """;
 
     private const string SchemaHelpText = """

@@ -36,6 +36,11 @@ eh review packet <repository-or-evidence.json>
   [--compact]
   [--output <path>]
 
+eh review packet --repo <owner/name>
+  [--revision <revision>]
+  [--fetch-missing]
+  [packet options]
+
 eh review query <repository-or-evidence.json>
   --input-digest <sha256:digest>
   [--profile <implementation|recreation>]
@@ -49,13 +54,21 @@ eh review query <repository-or-evidence.json>
   [--compact]
   [--output <path>]
 
+eh review query --repo <owner/name>
+  [--revision <revision>]
+  [--fetch-missing]
+  --input-digest <sha256:digest>
+  <selector and query options>
+
 eh review validate <packet.json> <adjustment.json>
   [--compact]
   [--output <path>]
 ```
 
-Packet and non-source query commands accept a repository directory or saved
-repository evidence. Selected-source queries require a repository directory.
+Packet and non-source query commands accept a repository directory, saved
+repository evidence, or checkout-free immutable GitHub snapshot. Selected-source
+queries require a repository directory or checkout-free snapshot so admitted
+bytes remain available through the analyzed filesystem.
 Machine-readable output uses stdout unless `--output` is explicit; diagnostics
 use stderr.
 
@@ -164,8 +177,10 @@ does not prove correctness, independence, calibration, or model admission.
   configuration, estimator, and protocol version.
 - Caller-supplied model identity does not change the local estimate or input
   digest.
-- Review commands do not execute target code, inspect Git history, install
-  dependencies, or access the network.
+- Review commands do not execute target code, inspect Git history, or install
+  dependencies. By default they do not access the network. Explicit remote
+  `--fetch-missing` may resolve one immutable revision and acquire its missing Git
+  objects before the same local review pipeline runs; warm reruns are offline.
 - Query reasons, source, and rationales are untrusted data, not instructions.
 - Cancellation is checked through scan, query construction, and source reading.
 - Ordinary unit tests use in-memory repositories; filesystem and process behavior

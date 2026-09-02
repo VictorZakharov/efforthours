@@ -37,6 +37,9 @@ The repository already provides:
   replaceable rate card;
 - immutable Git and non-Git Change selectors, range reconciliation, portfolio
   normalization, and process-level cancellation;
+- one checkout-free immutable Git snapshot input shared by repository scan,
+  estimate, explanation, host-review packet/query, and all Git-backed Change
+  selectors, with explicit acquisition and warm offline reuse;
 - calibration authoring, blind review, exact-digest compilation, mutation
   guardrails, and offline evaluation;
 - optional provider-neutral host-review packets, bounded queries, adjustment
@@ -98,7 +101,7 @@ boundary exists, and follow the enforced ceilings in `eng/file-budgets.json`.
 ## Repository pipeline
 
 ```text
-repository + optional specification
+local repository or immutable managed Git snapshot + optional specification
               |
               v
       safe scope and inventory
@@ -126,6 +129,8 @@ repository + optional specification
 
 The target repository is read-only. Caches and reports use explicit locations or
 external storage. Structured output stays on stdout and diagnostics on stderr.
+Checkout-free repository input reuses this exact pipeline over Git objects rather
+than maintaining a second analyzer path or materializing a worktree.
 
 ## Change pipeline
 
@@ -454,6 +459,10 @@ and maintenance cost.
 - Keep releases reproducible and supported across Windows, Linux, and macOS.
 - Add estimation-quality research, model work, analyzer expansion, or new product
   scope only after a separate explicit maintainer decision reopens that direction.
+- Treat input-mode parity as a compatibility requirement: every command that
+  consumes repository content must accept the shared local or checkout-free
+  immutable snapshot boundary unless its governing contract explicitly explains
+  why it consumes artifacts only.
 
 ## Test strategy
 

@@ -17,7 +17,7 @@ public sealed partial class EffortHoursApplication
             return arguments.Length == 0 ? CliExitCodes.UsageError : CliExitCodes.Success;
         }
 
-        string inputPath = arguments[0];
+        RepositoryInputOptionsBuilder inputOptions = new(arguments);
         EstimationProfile profile = EstimationProfile.Implementation;
         string? model = null;
         string? provider = null;
@@ -25,13 +25,23 @@ public sealed partial class EffortHoursApplication
         string? outputPath = null;
         bool compact = false;
 
-        for (int index = 1; index < arguments.Length; index++)
+        for (int index = inputOptions.FirstOptionIndex; index < arguments.Length; index++)
         {
             string option = arguments[index];
             if (IsHelp(option))
             {
                 await standardOutput.WriteLineAsync(ReviewPacketHelpText).ConfigureAwait(false);
                 return CliExitCodes.Success;
+            }
+
+            if (inputOptions.TryConsume(arguments, ref index, out string? inputError))
+            {
+                if (inputError is not null)
+                {
+                    return await UsageErrorAsync(standardError, inputError).ConfigureAwait(false);
+                }
+
+                continue;
             }
 
             if (option == "--compact")
@@ -103,14 +113,26 @@ public sealed partial class EffortHoursApplication
                 .ConfigureAwait(false);
         }
 
-        RepositoryEvidence? evidence = await LoadEvidenceAsync(
-            inputPath,
+        RepositoryInputSelection? selection = await BuildRepositoryInputAsync(
+            inputOptions,
+            standardError).ConfigureAwait(false);
+        if (selection is null)
+        {
+            return CliExitCodes.UsageError;
+        }
+
+        await using RepositoryInputContext? input = await LoadRepositoryInputAsync(
+            selection,
+            allowEvidenceFile: true,
+            scanOptions: null,
             standardError,
             cancellationToken).ConfigureAwait(false);
-        if (evidence is null)
+        if (input is null)
         {
             return CliExitCodes.InvalidInput;
         }
+
+        RepositoryEvidence evidence = input.Evidence;
 
         EstimateReport report = _estimator.Estimate(evidence, profile, rateCard: null);
         HostReviewPacket packet = HostReviewPacketBuilder.Build(
@@ -137,8 +159,13 @@ public sealed partial class EffortHoursApplication
     private const string ReviewPacketHelpText = """
         Usage:
           eh review packet <repository-or-evidence.json> [options]
+          eh review packet --repo <owner/name> [--revision <revision>]
+            [--fetch-missing] [options]
 
         Options:
+          --repo <owner/name>                     Analyze an immutable GitHub snapshot without checkout
+          --revision <value>                      Git revision for --repo (default: HEAD)
+          --fetch-missing                         Resolve/fetch missing objects into the private cache
           --profile <implementation|recreation>  Estimation profile (default: implementation)
           --model <id>                           Record an available host model identity
           --provider <id>                        Optional provider for the recorded model

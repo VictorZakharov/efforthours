@@ -86,6 +86,15 @@ commands do not inspect Git history, contributors, churn, timestamps, or abandon
 versions. Evidence is repository-first and every material hour traces through a
 small work item to observed facts and a versioned rule or model.
 
+All repository-content surfaces (`scan`, `estimate`, `explain`, host-review packet,
+and host-review query) accept either a local repository/evidence input as
+applicable or one checkout-free GitHub repository plus an optional revision. The
+remote form resolves exactly one immutable commit and analyzes its Git tree through
+the same repository pipeline without creating a checkout. Provider resolution and
+object acquisition are explicit orchestration only and never become effort evidence.
+`--fetch-missing` is the sole authorization to use the provider/network and populate
+the private bare cache; a complete warm rerun is offline.
+
 ### Change EHE
 
 Explicit Change estimation values the normalized final functional and quality
@@ -229,6 +238,9 @@ estimate.
 
 The baseline CLI does not require a network, embedded provider, target build, or
 dependency installation. Source trees are untrusted input and remain read-only.
+Checkout-free GitHub input is an explicit exception only when the caller supplies
+`--fetch-missing`; without it, repository and Change queries use local inputs or
+already cached immutable identities and objects without provider/network access.
 
 ### Honest uncertainty
 

@@ -50,7 +50,9 @@ public sealed partial class EffortHoursApplication
     private const string ReviewHelpText = """
         Usage:
           eh review packet <repository-or-evidence.json> [options]
+          eh review packet --repo <owner/name> [--revision <revision>] [options]
           eh review query <repository-or-evidence.json> --input-digest <digest> [selector] [options]
+          eh review query --repo <owner/name> [--revision <revision>] --input-digest <digest> [selector] [options]
           eh review validate <packet.json> <adjustment.json> [options]
           eh review measure <packet.json> <adjustment.json> --subject <id> --session <id> --context <mode> [options]
           eh review benchmark <measurement.json>... [options]

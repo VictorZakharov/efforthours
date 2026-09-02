@@ -16,7 +16,7 @@ namespace EffortHours.Cli;
 public sealed partial class EffortHoursApplication
 {
     private readonly IEstimator _estimator;
-    private readonly IRepositoryScanner _scanner;
+    private readonly RepositoryInputLoader _repositoryInputs;
 
     public EffortHoursApplication()
         : this(new SeedEstimator(), new RepositoryAnalysisPipeline())
@@ -29,9 +29,18 @@ public sealed partial class EffortHoursApplication
     }
 
     public EffortHoursApplication(IEstimator estimator, IRepositoryScanner scanner)
+        : this(estimator, scanner, new RepositoryInputLoader(scanner))
+    {
+    }
+
+    internal EffortHoursApplication(
+        IEstimator estimator,
+        IRepositoryScanner scanner,
+        RepositoryInputLoader repositoryInputs)
     {
         _estimator = estimator ?? throw new ArgumentNullException(nameof(estimator));
-        _scanner = scanner ?? throw new ArgumentNullException(nameof(scanner));
+        ArgumentNullException.ThrowIfNull(scanner);
+        _repositoryInputs = repositoryInputs ?? throw new ArgumentNullException(nameof(repositoryInputs));
     }
 
     public async Task<int> RunAsync(

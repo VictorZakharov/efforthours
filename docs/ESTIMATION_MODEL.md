@@ -44,6 +44,15 @@ Ordinary repository `scan` and `estimate` operations do not inspect Git commits,
 churn, author count, timestamps, branches, or abandoned versions. An analyzer may
 honor ignore files, but it must not derive repository EHE from development history.
 
+A checkout-free repository query may use a caller-selected revision (default
+`HEAD`) to resolve exactly one immutable Git commit, then run the ordinary scanner
+and estimator against that commit's tree through a virtual read-only filesystem.
+Revision and provider metadata select the current artifact but never add effort.
+For byte-equivalent trees, the remote and checked-out forms must preserve the same
+content evidence and estimate semantics apart from explicit acquisition
+provenance. Provider/network access and managed-cache writes occur only when
+`--fetch-missing` is explicit; warm queries without it are offline.
+
 Explicit Change EHE may resolve requested revisions, read immutable base/head
 trees, and estimate selected commits independently for reconciliation. That access
 selects final artifacts; commit count, identity, timing, messages, branch activity,

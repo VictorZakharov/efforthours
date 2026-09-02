@@ -26,7 +26,7 @@ public sealed partial class EffortHoursApplication
             return arguments.Length == 0 ? CliExitCodes.UsageError : CliExitCodes.Success;
         }
 
-        string inputPath = arguments[0];
+        RepositoryInputOptionsBuilder inputOptions = new(arguments);
         EstimationProfile profile = EstimationProfile.Implementation;
         string format = "json";
         EstimateViewKind? view = null;
@@ -37,13 +37,23 @@ public sealed partial class EffortHoursApplication
         bool currencyProvided = false;
         string? outputPath = null;
 
-        for (int index = 1; index < arguments.Length; index++)
+        for (int index = inputOptions.FirstOptionIndex; index < arguments.Length; index++)
         {
             string option = arguments[index];
             if (IsHelp(option))
             {
                 await standardOutput.WriteLineAsync(EstimateHelpText).ConfigureAwait(false);
                 return CliExitCodes.Success;
+            }
+
+            if (inputOptions.TryConsume(arguments, ref index, out string? inputError))
+            {
+                if (inputError is not null)
+                {
+                    return await UsageErrorAsync(standardError, inputError).ConfigureAwait(false);
+                }
+
+                continue;
             }
 
             if (option == "--compact")
@@ -166,14 +176,26 @@ public sealed partial class EffortHoursApplication
                 .ConfigureAwait(false);
         }
 
-        RepositoryEvidence? evidence = await LoadEvidenceAsync(
-            inputPath,
+        RepositoryInputSelection? selection = await BuildRepositoryInputAsync(
+            inputOptions,
+            standardError).ConfigureAwait(false);
+        if (selection is null)
+        {
+            return CliExitCodes.UsageError;
+        }
+
+        await using RepositoryInputContext? input = await LoadRepositoryInputAsync(
+            selection,
+            allowEvidenceFile: true,
+            scanOptions: null,
             standardError,
             cancellationToken).ConfigureAwait(false);
-        if (evidence is null)
+        if (input is null)
         {
             return CliExitCodes.InvalidInput;
         }
+
+        RepositoryEvidence evidence = input.Evidence;
 
         RateCard? rateCard = noRate
             ? null
@@ -201,86 +223,15 @@ public sealed partial class EffortHoursApplication
             canonicalJson: format == "json").ConfigureAwait(false);
     }
 
-    private async Task<RepositoryEvidence?> LoadEvidenceAsync(
-        string inputPath,
-        TextWriter standardError,
-        CancellationToken cancellationToken)
-    {
-        RepositoryEvidence evidence;
-        if (Directory.Exists(inputPath))
-        {
-            evidence = await _scanner.ScanAsync(
-                inputPath,
-                cancellationToken: cancellationToken).ConfigureAwait(false);
-        }
-        else if (File.Exists(inputPath))
-        {
-            string json;
-            try
-            {
-                json = await File.ReadAllTextAsync(inputPath, cancellationToken).ConfigureAwait(false);
-            }
-            catch (Exception exception) when (exception is IOException or UnauthorizedAccessException)
-            {
-                await standardError.WriteLineAsync($"Could not read evidence: {exception.Message}")
-                    .ConfigureAwait(false);
-                return null;
-            }
-
-            SchemaValidationResult schemaResult = ContractSchemaValidator.Validate(
-                SchemaNames.RepositoryEvidence,
-                json);
-            if (!schemaResult.IsValid)
-            {
-                await standardError.WriteLineAsync(
-                    "Evidence does not satisfy the repository evidence schema:")
-                    .ConfigureAwait(false);
-                foreach (string error in schemaResult.Errors)
-                {
-                    await standardError.WriteLineAsync($"- {error}").ConfigureAwait(false);
-                }
-
-                return null;
-            }
-
-            try
-            {
-                evidence = ContractJson.Deserialize<RepositoryEvidence>(json);
-            }
-            catch (System.Text.Json.JsonException exception)
-            {
-                await standardError.WriteLineAsync($"Could not deserialize evidence: {exception.Message}")
-                    .ConfigureAwait(false);
-                return null;
-            }
-        }
-        else
-        {
-            await standardError.WriteLineAsync(
-                $"Repository or evidence path was not found: {inputPath}").ConfigureAwait(false);
-            return null;
-        }
-
-        IReadOnlyList<string> semanticErrors = ContractValidation.Validate(evidence);
-        if (semanticErrors.Count == 0)
-        {
-            return evidence;
-        }
-
-        await standardError.WriteLineAsync("Evidence is semantically invalid:").ConfigureAwait(false);
-        foreach (string error in semanticErrors)
-        {
-            await standardError.WriteLineAsync($"- {error}").ConfigureAwait(false);
-        }
-
-        return null;
-    }
-
     private const string EstimateHelpText = """
         Usage:
           eh estimate <repository-or-evidence.json> [options]
+          eh estimate --repo <owner/name> [--revision <revision>] [--fetch-missing] [options]
 
         Options:
+          --repo <owner/name>                     Analyze an immutable GitHub snapshot without checkout
+          --revision <value>                      Git revision for --repo (default: HEAD)
+          --fetch-missing                         Resolve/fetch missing objects into the private cache
           --profile <implementation|recreation>  Estimation profile (default: implementation)
           --format <json|markdown>                Output format (default: json)
           --view <name>                           full (default), repository, category, scope,

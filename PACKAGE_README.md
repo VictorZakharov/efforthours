@@ -22,7 +22,14 @@ eh --help
 
 ```text
 eh estimate ./my-repository --profile implementation --format markdown
+eh estimate --repo owner/repository --fetch-missing --format markdown
 ```
+
+`--repo` selects an immutable GitHub snapshot without creating a checkout.
+`--fetch-missing` is the only authorization to resolve or acquire missing objects;
+afterward the same query can run from the private bare cache without provider or
+network access. The same input form is available to `scan`, `explain`, and review
+packet/query commands.
 
 ## Supported analyzers
 
@@ -137,13 +144,16 @@ and the
 eh change ./my-repository --commit <revision> --format markdown
 eh change ./my-repository --range <base>..<head> --format markdown
 eh change ./my-repository --pr <number> --format markdown
+eh change --repo owner/repository --commit <revision> --fetch-missing --format markdown
+eh change --repo owner/repository --pr <number> --fetch-missing --format markdown
 eh change portfolio --author-period-manifest <manifest.json> --format markdown --no-rate
 ```
 
 Change EHE estimates the normalized final functional and quality delta. Commit
 activity, author identity, timestamps, and intermediate churn do not multiply
-effort. Pull-request identity resolution optionally uses an installed `gh` CLI;
-the selected Git objects must already exist locally. The current change rules
+effort. Checkout-free identity resolution uses an authenticated `gh` CLI only
+when `--fetch-missing` is explicit; warm reruns reuse the selected immutable
+objects offline. The current change rules
 require changed capability evidence for existing-capability modifications and
 consolidate repository work-item partitions for one capability into a bounded
 logical budget while preserving distinct capabilities.
@@ -159,6 +169,7 @@ non-semantic phase timings are written to stderr.
 
 ```text
 eh review packet ./my-repository --compact
+eh review packet --repo owner/repository --fetch-missing --compact
 eh review query ./my-repository --input-digest <packet-digest> --capability <id> --reason <reason>
 eh review validate review-packet.json proposed-adjustments.json
 eh review measure review-packet.json proposed-adjustments.json --subject <opaque-id> --session <opaque-id> --context compact
