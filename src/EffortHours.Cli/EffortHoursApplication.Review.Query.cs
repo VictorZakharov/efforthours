@@ -19,7 +19,7 @@ public sealed partial class EffortHoursApplication
             return arguments.Length == 0 ? CliExitCodes.UsageError : CliExitCodes.Success;
         }
 
-        string inputPath = arguments[0];
+        RepositoryInputOptionsBuilder inputOptions = new(arguments);
         EstimationProfile profile = EstimationProfile.Implementation;
         string? inputDigest = null;
         string? reason = null;
@@ -32,13 +32,23 @@ public sealed partial class EffortHoursApplication
         int? lineCount = null;
         bool compact = false;
 
-        for (int index = 1; index < arguments.Length; index++)
+        for (int index = inputOptions.FirstOptionIndex; index < arguments.Length; index++)
         {
             string option = arguments[index];
             if (IsHelp(option))
             {
                 await standardOutput.WriteLineAsync(ReviewQueryHelpText).ConfigureAwait(false);
                 return CliExitCodes.Success;
+            }
+
+            if (inputOptions.TryConsume(arguments, ref index, out string? inputError))
+            {
+                if (inputError is not null)
+                {
+                    return await UsageErrorAsync(standardError, inputError).ConfigureAwait(false);
+                }
+
+                continue;
             }
 
             if (option == "--compact")
@@ -196,22 +206,31 @@ public sealed partial class EffortHoursApplication
             LineCount = queryKind == HostReviewQueryKind.SelectedSource ? lineCount ?? 80 : lineCount,
         };
 
-        RepositoryEvidence? evidence = await LoadEvidenceAsync(
-            inputPath,
+        RepositoryInputSelection? selection = await BuildRepositoryInputAsync(
+            inputOptions,
+            standardError).ConfigureAwait(false);
+        if (selection is null)
+        {
+            return CliExitCodes.UsageError;
+        }
+
+        await using RepositoryInputContext? input = await LoadRepositoryInputAsync(
+            selection,
+            allowEvidenceFile: true,
+            scanOptions: null,
             standardError,
             cancellationToken).ConfigureAwait(false);
-        if (evidence is null)
+        if (input is null)
         {
             return CliExitCodes.InvalidInput;
         }
 
+        RepositoryEvidence evidence = input.Evidence;
+
         EstimateReport report = _estimator.Estimate(evidence, profile, rateCard: null);
-        HostReviewSourceContext? sourceContext = query.Kind == HostReviewQueryKind.SelectedSource &&
-            Directory.Exists(inputPath)
-                ? new HostReviewSourceContext(
-                    Path.GetFullPath(inputPath),
-                    PhysicalRepositoryFileSystem.Instance)
-                : null;
+        HostReviewSourceContext? sourceContext = query.Kind == HostReviewQueryKind.SelectedSource
+            ? input.SourceContext
+            : null;
 
         HostReviewQueryResult result;
         try
@@ -279,8 +298,13 @@ public sealed partial class EffortHoursApplication
           eh review query <repository-or-evidence.json> --input-digest <digest>
             (--capability <id> | --evidence <id> | --scope <scope> | --source <path>)
             --reason <text> [options]
+          eh review query --repo <owner/name> [--revision <revision>]
+            [--fetch-missing] --input-digest <digest> [selector] --reason <text> [options]
 
         Options:
+          --repo <owner/name>                     Analyze an immutable GitHub snapshot without checkout
+          --revision <value>                      Git revision for --repo (default: HEAD)
+          --fetch-missing                         Resolve/fetch missing objects into the private cache
           --profile <implementation|recreation>  Estimation profile (default: implementation)
           --input-digest <sha256:digest>          Exact digest from the review packet
           --capability <id>                       Expand one capability and its evidence
@@ -296,6 +320,6 @@ public sealed partial class EffortHoursApplication
           --output <path>                         Write to an explicit path instead of stdout
           -h, --help                             Show this help
 
-        Selected source is returned only for an admitted file in a repository directory.
+        Selected source is returned only for an admitted file in the selected repository snapshot.
         """;
 }

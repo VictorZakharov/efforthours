@@ -26,18 +26,28 @@ public sealed partial class EffortHoursApplication
             return arguments.Length == 0 ? CliExitCodes.UsageError : CliExitCodes.Success;
         }
 
-        string inputPath = arguments[0];
+        RepositoryInputOptionsBuilder inputOptions = new(arguments);
         EstimationProfile profile = EstimationProfile.Implementation;
         string format = "json";
         string? itemId = null;
         bool compact = false;
-        for (int index = 1; index < arguments.Length; index++)
+        for (int index = inputOptions.FirstOptionIndex; index < arguments.Length; index++)
         {
             string option = arguments[index];
             if (IsHelp(option))
             {
                 await standardOutput.WriteLineAsync(ExplainHelpText).ConfigureAwait(false);
                 return CliExitCodes.Success;
+            }
+
+            if (inputOptions.TryConsume(arguments, ref index, out string? inputError))
+            {
+                if (inputError is not null)
+                {
+                    return await UsageErrorAsync(standardError, inputError).ConfigureAwait(false);
+                }
+
+                continue;
             }
 
             if (option == "--compact")
@@ -102,14 +112,26 @@ public sealed partial class EffortHoursApplication
                 "Option '--compact' can only be used with JSON output.").ConfigureAwait(false);
         }
 
-        RepositoryEvidence? evidence = await LoadEvidenceAsync(
-            inputPath,
+        RepositoryInputSelection? selection = await BuildRepositoryInputAsync(
+            inputOptions,
+            standardError).ConfigureAwait(false);
+        if (selection is null)
+        {
+            return CliExitCodes.UsageError;
+        }
+
+        await using RepositoryInputContext? input = await LoadRepositoryInputAsync(
+            selection,
+            allowEvidenceFile: true,
+            scanOptions: null,
             standardError,
             cancellationToken).ConfigureAwait(false);
-        if (evidence is null)
+        if (input is null)
         {
             return CliExitCodes.InvalidInput;
         }
+
+        RepositoryEvidence evidence = input.Evidence;
 
         EstimateReport report = _estimator.Estimate(evidence, profile);
         EstimateExplanation explanation;
@@ -144,8 +166,13 @@ public sealed partial class EffortHoursApplication
     private const string ExplainHelpText = """
         Usage:
           eh explain <repository-or-evidence.json> --item <id> [options]
+          eh explain --repo <owner/name> [--revision <revision>] --item <id>
+            [--fetch-missing] [options]
 
         Options:
+          --repo <owner/name>                     Analyze an immutable GitHub snapshot without checkout
+          --revision <value>                      Git revision for --repo (default: HEAD)
+          --fetch-missing                         Resolve/fetch missing objects into the private cache
           --item <id>                             Work-item or capability ID (required)
           --profile <implementation|recreation>  Estimation profile (default: implementation)
           --format <json|markdown>                Output format (default: json)

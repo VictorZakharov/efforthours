@@ -20,10 +20,11 @@
                       ReferenceOutputAssembly="false" />
     <ProjectReference Include="../../benchmarks/EffortHours.ScannerBenchmarks/EffortHours.ScannerBenchmarks.csproj"
                       ReferenceOutputAssembly="false" />
-    <ProjectReference Include="../../src/EffortHours.Cli/EffortHours.Cli.csproj" ReferenceOutputAssembly="false" />
+    <ProjectReference Include="../../src/EffortHours.Cli/EffortHours.Cli.csproj" />
     <ProjectReference Include="../../src/EffortHours.Calibration/EffortHours.Calibration.csproj" />
     <ProjectReference Include="../../src/EffortHours.Change/EffortHours.Change.csproj" />
     <ProjectReference Include="../../src/EffortHours.Contracts/EffortHours.Contracts.csproj" />
+    <ProjectReference Include="../../src/EffortHours.Review/EffortHours.Review.csproj" />
     <ProjectReference Include="../../tools/EffortHours.ChangeCalibration/EffortHours.ChangeCalibration.csproj"
                       ReferenceOutputAssembly="false" />
     <ProjectReference Include="../../tools/EffortHours.RepositoryCalibration/EffortHours.RepositoryCalibration.csproj" />

@@ -26,12 +26,22 @@ public sealed partial class EffortHoursApplication
             return arguments.Length == 0 ? CliExitCodes.UsageError : CliExitCodes.Success;
         }
 
-        string repositoryPath = arguments[0];
+        RepositoryInputOptionsBuilder inputOptions = new(arguments);
         string? outputPath = null;
         RepositoryScanOptions options = new();
-        for (int index = 1; index < arguments.Length; index++)
+        for (int index = inputOptions.FirstOptionIndex; index < arguments.Length; index++)
         {
             string option = arguments[index];
+            if (inputOptions.TryConsume(arguments, ref index, out string? inputError))
+            {
+                if (inputError is not null)
+                {
+                    return await UsageErrorAsync(standardError, inputError).ConfigureAwait(false);
+                }
+
+                continue;
+            }
+
             switch (option)
             {
                 case "--output":
@@ -75,27 +85,26 @@ public sealed partial class EffortHoursApplication
             }
         }
 
-        if (!Directory.Exists(repositoryPath))
+        RepositoryInputSelection? selection = await BuildRepositoryInputAsync(
+            inputOptions,
+            standardError).ConfigureAwait(false);
+        if (selection is null)
         {
-            await standardError.WriteLineAsync($"Repository directory was not found: {repositoryPath}")
-                .ConfigureAwait(false);
+            return CliExitCodes.UsageError;
+        }
+
+        await using RepositoryInputContext? input = await LoadRepositoryInputAsync(
+            selection,
+            allowEvidenceFile: false,
+            options,
+            standardError,
+            cancellationToken).ConfigureAwait(false);
+        if (input is null)
+        {
             return CliExitCodes.InvalidInput;
         }
 
-        RepositoryEvidence evidence;
-        try
-        {
-            evidence = await _scanner.ScanAsync(
-                repositoryPath,
-                options,
-                cancellationToken).ConfigureAwait(false);
-        }
-        catch (ArgumentException exception)
-        {
-            await standardError.WriteLineAsync($"Could not scan repository: {exception.Message}")
-                .ConfigureAwait(false);
-            return CliExitCodes.InvalidInput;
-        }
+        RepositoryEvidence evidence = input.Evidence;
         IReadOnlyList<string> semanticErrors = ContractValidation.Validate(evidence);
         string json = ContractJson.Serialize(evidence);
         SchemaValidationResult schemaResult = ContractSchemaValidator.Validate(
@@ -132,8 +141,12 @@ public sealed partial class EffortHoursApplication
     private const string ScanHelpText = """
         Usage:
           eh scan <repository> [options]
+          eh scan --repo <owner/name> [--revision <revision>] [--fetch-missing] [options]
 
         Options:
+          --repo <owner/name>   Analyze an immutable GitHub repository snapshot without checkout
+          --revision <value>    Git revision for --repo (default: HEAD)
+          --fetch-missing       Resolve/fetch missing immutable objects into the private cache
           --output <path>       Write evidence JSON to an explicit path
           --cache <path>        Use an explicit cache outside the repository
           --no-gitignore        Do not apply nested .gitignore files

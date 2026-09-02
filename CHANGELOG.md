@@ -6,6 +6,23 @@ may still change public contracts with explicit documentation.
 
 ## Unreleased
 
+### Added
+
+- Added one shared checkout-free repository input to `scan`, `estimate`,
+  `explain`, `review packet`, and `review query`, including selected-source
+  queries over immutable Git objects. `--revision` defaults to `HEAD`, explicit
+  `--fetch-missing` authorizes narrow provider resolution/acquisition, and warm
+  reruns use the existing private bare cache offline.
+
+### Fixed
+
+- Closed the command-surface gap where Change selectors supported `--repo` but
+  whole-repository and host-review queries still required a local checkout.
+  For byte-equivalent trees, remote repository analysis now preserves checked-out
+  content-evidence and estimate parity apart from explicit acquisition provenance,
+  including the virtual version-control-metadata exclusion, without creating a
+  checkout, ref, `FETCH_HEAD`, index, or worktree.
+
 ## 0.10.0-alpha.18 - 2026-09-01
 
 ### Added
