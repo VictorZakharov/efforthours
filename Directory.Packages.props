@@ -4,9 +4,9 @@
     <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
   </PropertyGroup>
   <ItemGroup>
-    <!-- Acornima and Acornima.Extras 1.7.0 are BSD-3-Clause licensed. -->
-    <PackageVersion Include="Acornima" Version="1.7.0" />
-    <PackageVersion Include="Acornima.Extras" Version="1.7.0" />
+    <!-- Acornima and Acornima.Extras 1.8.0 are BSD-3-Clause licensed. -->
+    <PackageVersion Include="Acornima" Version="1.8.0" />
+    <PackageVersion Include="Acornima.Extras" Version="1.8.0" />
     <!-- 8.0.5 is the final MIT-declared binary release; 9.x uses OSMFEULA terms. -->
     <PackageVersion Include="JsonSchema.Net" Version="8.0.5" />
     <PackageVersion Include="Microsoft.CodeAnalysis.CSharp" Version="5.9.0" />

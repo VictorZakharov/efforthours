@@ -1,7 +1,7 @@
 # Third-party notices
 
 This file records the third-party packages resolved by the checked-in NuGet lock
-files and the actions pinned by release workflows as of 2026-08-17. Package
+files and the actions pinned by release workflows as of 2026-09-01. Package
 versions are centrally pinned in `Directory.Packages.props`.
 
 EffortHours is licensed under the MIT License. Third-party components remain under
@@ -66,8 +66,8 @@ duplicated here.
 
 | Package | Version | License | Project |
 | --- | --- | --- | --- |
-| Acornima | 1.7.0 | BSD-3-Clause | <https://github.com/adams85/acornima> |
-| Acornima.Extras | 1.7.0 | BSD-3-Clause | <https://github.com/adams85/acornima> |
+| Acornima | 1.8.0 | BSD-3-Clause | <https://github.com/adams85/acornima> |
+| Acornima.Extras | 1.8.0 | BSD-3-Clause | <https://github.com/adams85/acornima> |
 | JsonSchema.Net | 8.0.5 | MIT | <https://github.com/gregsdennis/json-everything> |
 | JsonPointer.Net | 6.0.1 | MIT | <https://github.com/gregsdennis/json-everything> |
 | Json.More.Net | 2.2.0 | MIT | <https://github.com/gregsdennis/json-everything> |
@@ -82,8 +82,8 @@ binary package terms as well as API compatibility.
 
 ### Acornima and Acornima.Extras license
 
-The following license applies to Acornima and Acornima.Extras 1.7.0. Both NuGet
-packages identify source commit `401bd62d8aeb9f7cbe7b6147937a87e0c71747a8`.
+The following license applies to Acornima and Acornima.Extras 1.8.0. Both NuGet
+packages identify source commit `b4508e06c520493d798064dc172ad472e44968ce`.
 
 Copyright (c) Adam Simon. All rights reserved.
 
