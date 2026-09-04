@@ -16,13 +16,15 @@ internal static partial class ChangePortfolioCommandOptionsParser
         int selectors = (options.PullRequests.Count > 0 ? 1 : 0) +
             (options.ManifestPath is null ? 0 : 1) +
             (options.AuthorPeriodManifestPath is null ? 0 : 1) +
-            (options.AuthorAliases.Count > 0 && !options.Today ? 1 : 0) +
-            (options.Today ? 1 : 0);
+            (options.AuthorAliases.Count > 0 && !options.Today && !options.IsNativePeriod ? 1 : 0) +
+            (options.Today ? 1 : 0) +
+            (options.IsNativePeriod ? 1 : 0);
         if (selectors != 1)
         {
             return Error(
                 "Select exactly one repeated --pr set, one --manifest, one " +
-                "--author-period-manifest, one direct author-period selector, or one --today selector.");
+                "--author-period-manifest, one direct author-period selector, one --today selector, " +
+                "or one native named-period selector.");
         }
 
         if (options.PullRequests.Count > 128)
@@ -36,32 +38,64 @@ internal static partial class ChangePortfolioCommandOptionsParser
         }
 
         bool authorSelection = options.AuthorAliases.Count > 0;
+        bool providerPeriod = options.Today || options.IsNativePeriod;
+        if (options.NativePeriod && options.TeamComparison)
+        {
+            return Error("Select either a single-contributor period report or a team comparison.");
+        }
+
+        if (options.Today &&
+            (options.NativeOptionsProvided || options.Period is not null ||
+             options.CapacityHoursPerDay is not null ||
+             options.ContributorsFrom is not null || options.SampleSize is not null ||
+             options.SampleSeed is not null || options.IncludedAuthors.Count > 0))
+        {
+            return Error("Today-to-date does not accept named-period or team-sampling options.");
+        }
+
+        if (options.IsNativePeriod && options.CapacityHours is not null)
+        {
+            return Error("Named-period reports use --capacity-hours-per-day; omit --capacity-hours.");
+        }
+
         if (options.Today && options.AuthorAliases.Count == 0)
         {
             return Error(
                 "Today-to-date discovery requires at least one --author value, such as --author \"@me\".");
         }
 
-        if (options.Today && string.IsNullOrWhiteSpace(options.Owner))
-        {
-            return Error("Today-to-date discovery requires --owner.");
-        }
-
-        if (options.Today && options.Scope != "engineering")
-        {
-            return Error("Today-to-date discovery requires --scope engineering.");
-        }
-
-        if (options.Today && options.WorkspacePath is not null)
+        if (options.NativePeriod && options.AuthorAliases.Count == 0)
         {
             return Error(
-                "Today-to-date discovery uses the EffortHours-managed repository cache; omit --workspace.");
+                "A single-contributor period report requires at least one --author value.");
         }
 
-        if (options.Today && options.FetchMissing)
+        if (options.TeamComparison && options.AuthorAliases.Count > 0)
         {
             return Error(
-                "Today-to-date discovery acquires required immutable objects automatically; omit --fetch-missing.");
+                "Team comparison uses --include-author for explicit contributors; omit --author.");
+        }
+
+        if (providerPeriod && string.IsNullOrWhiteSpace(options.Owner))
+        {
+            return Error("Provider-assisted period discovery requires --owner.");
+        }
+
+        if (providerPeriod && options.Scope != "engineering")
+        {
+            return Error("Provider-assisted period discovery requires --scope engineering.");
+        }
+
+        if (providerPeriod && options.WorkspacePath is not null)
+        {
+            return Error(
+                "Provider-assisted period discovery uses the EffortHours-managed repository cache; omit --workspace.");
+        }
+
+        if (providerPeriod && options.FetchMissing)
+        {
+            return Error(
+                "Provider-assisted period discovery acquires required immutable objects automatically; omit --fetch-missing.");
         }
 
         if (options.Today && options.CapacityHours is null)
@@ -69,12 +103,53 @@ internal static partial class ChangePortfolioCommandOptionsParser
             return Error("Today-to-date capacity comparison requires --capacity-hours.");
         }
 
-        if (options.Today && !timeZoneProvided)
+        if (options.IsNativePeriod && options.CapacityHoursPerDay is null)
         {
-            return Error("Today-to-date discovery requires an explicit named --timezone.");
+            return Error("Named-period reports require --capacity-hours-per-day.");
         }
 
-        if (options.Today)
+        if (options.IsNativePeriod && options.Period is null)
+        {
+            return Error("Named-period reports require --period.");
+        }
+
+        if (options.TeamComparison &&
+            (string.IsNullOrWhiteSpace(options.ContributorsFrom) ||
+             options.SampleSize is null ||
+             string.IsNullOrWhiteSpace(options.SampleSeed)))
+        {
+            return Error(
+                "Team comparison requires --contributors-from, --sample, and --sample-seed.");
+        }
+
+        if (options.SampleSeed is { Length: > 256 })
+        {
+            return Error("Sample seed cannot exceed 256 characters.");
+        }
+
+        if (options.IncludedAuthors.Distinct(StringComparer.OrdinalIgnoreCase).Count() +
+            (options.SampleSize ?? 0) >
+            ChangeAuthorPeriodManifestLimits.MaximumContributors)
+        {
+            return Error(
+                $"Team comparison cannot select more than " +
+                $"{ChangeAuthorPeriodManifestLimits.MaximumContributors} contributors.");
+        }
+
+        if (options.NativePeriod &&
+            (options.ContributorsFrom is not null || options.SampleSize is not null ||
+             options.SampleSeed is not null || options.IncludedAuthors.Count > 0))
+        {
+            return Error(
+                "Single-contributor period reports do not accept team sampling options.");
+        }
+
+        if (providerPeriod && !timeZoneProvided)
+        {
+            return Error("Provider-assisted period discovery requires an explicit named --timezone.");
+        }
+
+        if (providerPeriod)
         {
             if (!ChangePortfolioTimeParser.TryResolveTimeZone(
                     options.TimeZone,
@@ -87,38 +162,44 @@ internal static partial class ChangePortfolioCommandOptionsParser
             options = options with { TimeZone = zone.Id };
         }
 
-        if (options.Today &&
+        if (providerPeriod &&
             (options.Bucket is not null || options.BucketManifestPath is not null ||
              options.CapacityManifestPath is not null))
         {
             return Error(
-                "Option --today creates its daily bucket and inline capacity; omit bucket and capacity manifests.");
+                "Provider-assisted period commands create their buckets and inline capacity; " +
+                "omit bucket and capacity manifests.");
         }
 
-        if (options.Today && options.HeadRevision != "HEAD")
+        if (providerPeriod && options.HeadRevision != "HEAD")
         {
-            return Error("Today-to-date discovery resolves provider heads; omit --head.");
+            return Error("Provider-assisted period discovery resolves provider heads; omit --head.");
         }
 
-        if (!options.Today &&
+        if (!providerPeriod &&
             (options.Owner is not null || options.WorkspacePath is not null || options.Scope is not null ||
-             options.IncludeOpenPullRequests || options.CapacityHours is not null))
+             options.IncludeOpenPullRequests || options.CapacityHours is not null ||
+             options.NativeOptionsProvided ||
+             options.CapacityHoursPerDay is not null || options.Period is not null ||
+             options.ContributorsFrom is not null || options.SampleSize is not null ||
+             options.SampleSeed is not null || options.IncludedAuthors.Count > 0))
         {
             return Error(
-                "Options --owner, --workspace, --scope, --include-open-prs, and --capacity-hours require --today.");
+                "Provider discovery, named-period, inline-capacity, and team-sampling options " +
+                "require change today, change period, or change compare-team.");
         }
         if (options.Preflight && !options.IsAuthorPeriodManifest)
         {
             return Error("Option --preflight requires --author-period-manifest.");
         }
-        if ((options.ManifestPath is not null || options.AuthorPeriodManifestPath is not null || options.Today) &&
+        if ((options.ManifestPath is not null || options.AuthorPeriodManifestPath is not null || providerPeriod) &&
             (options.RepositoryPath is not null || options.GitHubRepository is not null))
         {
             return Error(
                 "A manifest supplies its repository paths; omit positional repository and --repo values.");
         }
 
-        if (authorSelection && !options.Today && options.RepositoryPath is null &&
+        if (authorSelection && !providerPeriod && options.RepositoryPath is null &&
             options.GitHubRepository is null)
         {
             return Error(
@@ -152,17 +233,18 @@ internal static partial class ChangePortfolioCommandOptionsParser
         }
 
         bool authorOnlyOptions = since is not null || until is not null || authorPolicyProvided;
-        if (!authorSelection && authorOnlyOptions)
+        if (!authorSelection && !providerPeriod && authorOnlyOptions)
         {
             return Error("Time, identity-policy, and --head options are valid only with --author.");
         }
 
-        if (options.Today && (since is not null || until is not null))
+        if (providerPeriod && (since is not null || until is not null))
         {
-            return Error("Option --today determines its own local-day interval; omit --since and --until.");
+            return Error(
+                "Provider-assisted period commands determine their own interval; omit --since and --until.");
         }
 
-        ChangePortfolioCommandParseResult? authorError = authorSelection && !options.Today
+        ChangePortfolioCommandParseResult? authorError = authorSelection && !providerPeriod
             ? ParseAuthorPeriod(options, since, until, out options)
             : null;
         if (authorError is not null)
@@ -199,7 +281,7 @@ internal static partial class ChangePortfolioCommandOptionsParser
             return Error(
                 "Author-period preflight does not estimate EHE or pricing; omit hourly-rate and currency options.");
         }
-        if (comparisonOption && !options.IsAuthorPeriodManifest && !options.Today)
+        if (comparisonOption && !options.IsAuthorPeriodManifest && !providerPeriod)
         {
             return Error(
                 "Time-bucketed comparison options require --author-period-manifest.");
@@ -210,7 +292,7 @@ internal static partial class ChangePortfolioCommandOptionsParser
             return Error("Select --bucket or --bucket-manifest for comparison output.");
         }
 
-        if (options.IsComparison && !options.Today && options.OutputPath is null)
+        if (options.IsComparison && !providerPeriod && options.OutputPath is null)
         {
             return Error("Time-bucketed comparison output requires an explicit --output path.");
         }
@@ -218,6 +300,13 @@ internal static partial class ChangePortfolioCommandOptionsParser
         if (options.NoCheckpoint && options.CheckpointPath is not null)
         {
             return Error("Option --no-checkpoint cannot be combined with --checkpoint.");
+        }
+
+        if (options.IsNativePeriod &&
+            normalizationProvided &&
+            options.ContributorNormalization != ChangePortfolioContributorNormalization.Isolated)
+        {
+            return Error("Native named-period reports require --normalization isolated.");
         }
 
         if (options.ReportTitle is { Length: > ChangePortfolioComparisonLimits.MaximumTitleLength } ||
@@ -236,6 +325,14 @@ internal static partial class ChangePortfolioCommandOptionsParser
         if (currencyProvided && options.HourlyRate is null)
         {
             return Error("Option --currency requires a caller-supplied --hourly-rate.");
+        }
+
+        if (options.IsNativePeriod)
+        {
+            options = options with
+            {
+                ContributorNormalization = ChangePortfolioContributorNormalization.Isolated,
+            };
         }
 
         return new ChangePortfolioCommandParseResult(options, null);

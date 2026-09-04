@@ -102,6 +102,7 @@ public static partial class ContractValidation
         RequireText(report.EstimatorVersion, "estimatorVersion", errors);
         RequireText(report.SourceChangeEstimatorVersion, "sourceChangeEstimatorVersion", errors);
         ValidateHostDiscovery(report, errors);
+        ValidateNativePeriod(report, errors);
         if (!Enum.IsDefined(report.Status) || !Enum.IsDefined(report.View))
         {
             errors.Add("Comparison status and view must use recognized values.");

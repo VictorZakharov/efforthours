@@ -14,6 +14,7 @@ internal static partial class ChangePortfolioCommandOptionsParser
         int firstOption = repositoryPath is null ? 0 : 1;
         List<string> pullRequests = [];
         List<string> authors = [];
+        ChangePortfolioNativeOptionValues native = new();
         string? githubRepository = null;
         string? manifest = null;
         string? authorPeriodManifest = null;
@@ -97,13 +98,25 @@ internal static partial class ChangePortfolioCommandOptionsParser
                 continue;
             }
 
+            if (option == "--native-period")
+            {
+                native.Enabled = true;
+                continue;
+            }
+
+            if (option == "--compare-team")
+            {
+                native.Team = true;
+                continue;
+            }
+
             if (option == "--include-open-prs")
             {
                 includeOpenPullRequests = true;
                 continue;
             }
 
-            if (option == "--author" && today &&
+            if (option == "--author" && (today || native.Enabled) &&
                 (index + 1 >= arguments.Length || arguments[index + 1].StartsWith('-')))
             {
                 authors.Add("@me");
@@ -116,6 +129,16 @@ internal static partial class ChangePortfolioCommandOptionsParser
             }
 
             string value = arguments[++index];
+            if (native.TryParse(option, value, out string? nativeError))
+            {
+                if (nativeError is not null)
+                {
+                    return Error(nativeError);
+                }
+
+                continue;
+            }
+
             switch (option)
             {
                 case "--pr":
@@ -155,9 +178,10 @@ internal static partial class ChangePortfolioCommandOptionsParser
                     break;
                 case "--bucket":
                     bucket = value.ToLowerInvariant();
-                    if (bucket is not ("calendar-month" or "calendar-week"))
+                    if (bucket is not ("calendar-month" or "calendar-week" or "calendar-day"))
                     {
-                        return Error("Bucket must be 'calendar-month' or 'calendar-week'.");
+                        return Error(
+                            "Bucket must be 'calendar-month', 'calendar-week', or 'calendar-day'.");
                     }
 
                     break;
@@ -314,6 +338,16 @@ internal static partial class ChangePortfolioCommandOptionsParser
             WorkspacePath = workspace,
             Scope = scope,
             Today = today,
+            NativePeriod = native.Enabled,
+            TeamComparison = native.Team,
+            Period = native.Period,
+            Breakdown = native.Breakdown,
+            CapacityHoursPerDay = native.CapacityHoursPerDay,
+            ContributorsFrom = native.ContributorsFrom,
+            SampleSize = native.SampleSize,
+            SampleSeed = native.SampleSeed,
+            IncludedAuthors = native.IncludedAuthors,
+            NativeOptionsProvided = native.Provided,
             IncludeOpenPullRequests = includeOpenPullRequests,
             CapacityHours = capacityHours,
             Preflight = preflight,

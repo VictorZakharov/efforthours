@@ -13,7 +13,7 @@ internal sealed record ChangePortfolioComparisonInputs(
     IReadOnlyList<ChangePortfolioComparisonBucket> Buckets,
     ChangePortfolioCapacityManifest? CapacityManifest);
 
-internal static class ChangePortfolioComparisonInputLoader
+internal static partial class ChangePortfolioComparisonInputLoader
 {
     private const int MaximumInputBytes = 1024 * 1024;
 
@@ -172,35 +172,61 @@ internal static class ChangePortfolioComparisonInputLoader
                 exception);
         }
 
-        bool monthly = string.Equals(policy, "calendar-month", StringComparison.Ordinal);
-        ChangePortfolioBucketPolicyKind kind = monthly
-            ? ChangePortfolioBucketPolicyKind.CalendarMonth
-            : ChangePortfolioBucketPolicyKind.CalendarWeek;
-        string versionedPolicy = monthly
-            ? ChangePortfolioComparisonPolicies.CalendarMonthV1
-            : ChangePortfolioComparisonPolicies.CalendarWeekV1;
+        ChangePortfolioBucketPolicyKind kind = policy switch
+        {
+            "calendar-month" => ChangePortfolioBucketPolicyKind.CalendarMonth,
+            "calendar-week" => ChangePortfolioBucketPolicyKind.CalendarWeek,
+            "calendar-day" => ChangePortfolioBucketPolicyKind.CalendarDay,
+            _ => throw new ArgumentOutOfRangeException(nameof(policy)),
+        };
+        string versionedPolicy = kind switch
+        {
+            ChangePortfolioBucketPolicyKind.CalendarMonth =>
+                ChangePortfolioComparisonPolicies.CalendarMonthV1,
+            ChangePortfolioBucketPolicyKind.CalendarWeek =>
+                ChangePortfolioComparisonPolicies.CalendarWeekV1,
+            ChangePortfolioBucketPolicyKind.CalendarDay =>
+                ChangePortfolioComparisonPolicies.CalendarDayV1,
+            _ => throw new ArgumentOutOfRangeException(nameof(policy)),
+        };
         List<ChangePortfolioComparisonBucket> buckets = [];
         DateTimeOffset cursor = selection.SinceInclusive.ToUniversalTime();
         while (cursor < selection.UntilExclusive)
         {
             DateTimeOffset localCursor = TimeZoneInfo.ConvertTime(cursor, zone);
-            DateTime naturalStart = monthly
-                ? new DateTime(localCursor.Year, localCursor.Month, 1)
-                : localCursor.Date.AddDays(-WeekdayOffset(localCursor.DayOfWeek));
-            DateTime naturalEnd = monthly
+            DateTime naturalStart = kind switch
+            {
+                ChangePortfolioBucketPolicyKind.CalendarMonth =>
+                    new DateTime(localCursor.Year, localCursor.Month, 1),
+                ChangePortfolioBucketPolicyKind.CalendarWeek =>
+                    localCursor.Date.AddDays(-WeekdayOffset(localCursor.DayOfWeek)),
+                _ => localCursor.Date,
+            };
+            DateTime naturalEnd = kind == ChangePortfolioBucketPolicyKind.CalendarMonth
                 ? naturalStart.AddMonths(1)
-                : naturalStart.AddDays(7);
+                : naturalStart.AddDays(
+                    kind == ChangePortfolioBucketPolicyKind.CalendarWeek ? 7 : 1);
             DateTimeOffset naturalStartInstant = ResolveLocal(naturalStart, zone);
             DateTimeOffset naturalEndInstant = ResolveLocal(naturalEnd, zone);
             DateTimeOffset end = naturalEndInstant < selection.UntilExclusive
                 ? naturalEndInstant
                 : selection.UntilExclusive.ToUniversalTime();
-            string id = monthly
-                ? naturalStart.ToString("yyyy-MM", CultureInfo.InvariantCulture)
-                : "week-" + naturalStart.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
-            string label = monthly
-                ? naturalStart.ToString("MMMM yyyy", CultureInfo.InvariantCulture)
-                : "Week of " + naturalStart.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
+            string id = kind switch
+            {
+                ChangePortfolioBucketPolicyKind.CalendarMonth =>
+                    naturalStart.ToString("yyyy-MM", CultureInfo.InvariantCulture),
+                ChangePortfolioBucketPolicyKind.CalendarWeek =>
+                    "week-" + naturalStart.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture),
+                _ => "day-" + naturalStart.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture),
+            };
+            string label = kind switch
+            {
+                ChangePortfolioBucketPolicyKind.CalendarMonth =>
+                    naturalStart.ToString("MMMM yyyy", CultureInfo.InvariantCulture),
+                ChangePortfolioBucketPolicyKind.CalendarWeek =>
+                    "Week of " + naturalStart.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture),
+                _ => naturalStart.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture),
+            };
             buckets.Add(new ChangePortfolioComparisonBucket
             {
                 Id = id,

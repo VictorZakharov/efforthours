@@ -42,6 +42,8 @@ internal sealed partial class ChangePortfolioCommand
             string output = options.Format == "markdown"
                 ? options.Today
                     ? ChangePortfolioTodayMarkdownRenderer.Render(report)
+                    : options.IsNativePeriod
+                        ? ChangePortfolioPeriodMarkdownRenderer.Render(report)
                     : ChangePortfolioComparisonMarkdownRenderer.Render(report)
                 : new ChangePortfolioComparisonJsonRenderer(options.Compact).Render(report);
             long measured = RenderedOutputByteCount(output);

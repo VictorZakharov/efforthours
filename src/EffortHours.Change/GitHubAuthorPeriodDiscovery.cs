@@ -10,7 +10,15 @@ public sealed record GitHubAuthorPeriodDiscoveryRequest
 
     public IReadOnlyList<string> AuthorAliases { get; init; } = [];
 
+    public string ContributorId { get; init; } = "me";
+
+    public GitHubContributorSampleRequest? ContributorSample { get; init; }
+
     public required DateTimeOffset AsOf { get; init; }
+
+    public DateTimeOffset? SinceInclusive { get; init; }
+
+    public DateTimeOffset? UntilExclusive { get; init; }
 
     public required string TimeZone { get; init; }
 
@@ -30,6 +38,17 @@ public sealed record GitHubAuthorPeriodDiscoveryRequest
     public EngineeringScopeProfile? EngineeringScope { get; init; }
 }
 
+public sealed record GitHubContributorSampleRequest
+{
+    public required string ContributorsFrom { get; init; }
+
+    public int SampleSize { get; init; }
+
+    public required string SampleSeed { get; init; }
+
+    public IReadOnlyList<string> IncludedAuthors { get; init; } = [];
+}
+
 public sealed record GitHubAuthorPeriodDiscoveryResult
 {
     public required ChangeAuthorPeriodManifest Manifest { get; init; }
@@ -43,6 +62,8 @@ public sealed record GitHubAuthorPeriodDiscoveryResult
     public required ChangePortfolioScopeProfile ScopeProfile { get; init; }
 
     public required DateTimeOffset AsOf { get; init; }
+
+    public required ChangePortfolioContributorSelection ContributorSelection { get; init; }
 }
 
 public sealed partial class GitHubAuthorPeriodDiscovery
@@ -77,15 +98,17 @@ public sealed partial class GitHubAuthorPeriodDiscovery
         long started = Stopwatch.GetTimestamp();
         TimeZoneInfo zone = ResolveTimeZone(request.TimeZone);
         DateTimeOffset asOf = request.AsOf.ToUniversalTime();
-        DateTimeOffset since = LocalDayStart(asOf, zone);
+        DateTimeOffset since = request.SinceInclusive?.ToUniversalTime() ??
+            LocalDayStart(asOf, zone);
+        DateTimeOffset until = request.UntilExclusive?.ToUniversalTime() ?? asOf;
         EngineeringScopeProfile scope = request.EngineeringScope ?? EngineeringScopeProfile.Load();
         ProviderQueryCounters counters = new(request.ExecutionTelemetry);
         string workingDirectory = Environment.CurrentDirectory;
         string ownerType;
         string authenticatedLogin;
         IReadOnlyList<GitHubDiscoveryRepository> providerRepositories;
-        string[] aliases;
-        ResolvedAliases resolvedAliases;
+        IReadOnlyList<string> aliases;
+        ResolvedDiscoveryContributors? resolvedContributors = null;
         DiscoveredRepository[] discovered;
         GitHubProviderMetadata? cachedMetadata = null;
         DateTimeOffset cacheObservedAt = DateTimeOffset.UtcNow;
@@ -104,14 +127,16 @@ public sealed partial class GitHubAuthorPeriodDiscovery
                     authenticatedLogin,
                     cacheObservedAt,
                     cancellationToken).ConfigureAwait(false);
-                resolvedAliases = await ResolveAliasesAsync(
-                    request,
-                    workingDirectory,
-                    authenticatedLogin,
-                    cachedMetadata?.VerifiedEmails,
-                    counters,
-                    cancellationToken).ConfigureAwait(false);
-                aliases = resolvedAliases.Values;
+                if (request.ContributorSample is null)
+                {
+                    resolvedContributors = await ResolveSingleContributorAsync(
+                        request,
+                        workingDirectory,
+                        authenticatedLogin,
+                        cachedMetadata?.VerifiedEmails,
+                        counters,
+                        cancellationToken).ConfigureAwait(false);
+                }
             }
 
             using (request.ExecutionTelemetry?.Measure(ChangePortfolioExecutionPhases.OwnerInventory))
@@ -131,26 +156,45 @@ public sealed partial class GitHubAuthorPeriodDiscovery
                     authenticatedLogin,
                     counters,
                     cancellationToken).ConfigureAwait(false);
-                if (request.AuthorAliases.Any(alias =>
-                    alias.Equals("@me", StringComparison.OrdinalIgnoreCase)))
-                {
-                    await _metadataCache.WriteAsync(
-                        request.Owner,
-                        authenticatedLogin,
-                        ownerType,
-                        resolvedAliases.VerifiedEmails,
-                        providerRepositories,
-                        cacheObservedAt,
-                        cancellationToken).ConfigureAwait(false);
-                }
             }
 
             GitHubDiscoveryRepository[] considered;
             using (request.ExecutionTelemetry?.Measure(ChangePortfolioExecutionPhases.CandidateDiscovery))
             {
+                resolvedContributors ??= await ResolveTeamContributorsAsync(
+                    request,
+                    providerRepositories,
+                    workingDirectory,
+                    authenticatedLogin,
+                    cachedMetadata?.VerifiedEmails,
+                    since,
+                    until,
+                    counters,
+                    cancellationToken).ConfigureAwait(false);
+                aliases = [.. resolvedContributors.Contributors
+                    .SelectMany(contributor => contributor.Aliases)
+                    .Distinct(StringComparer.OrdinalIgnoreCase)
+                    .Order(StringComparer.OrdinalIgnoreCase)
+                    .ThenBy(value => value, StringComparer.Ordinal)];
                 considered = [.. providerRepositories.Where(repository =>
                     repository.DefaultBranch is not null &&
                     !scope.ExcludesRepository(repository.Identity, repository.Archived, repository.Mirror))];
+            }
+
+            bool usesViewer = request.AuthorAliases.Any(alias =>
+                alias.Equals("@me", StringComparison.OrdinalIgnoreCase)) ||
+                request.ContributorSample?.IncludedAuthors.Any(alias =>
+                    alias.Equals("@me", StringComparison.OrdinalIgnoreCase)) == true;
+            if (usesViewer)
+            {
+                await _metadataCache.WriteAsync(
+                    request.Owner,
+                    authenticatedLogin,
+                    ownerType,
+                    resolvedContributors.VerifiedEmails,
+                    providerRepositories,
+                    cacheObservedAt,
+                    cancellationToken).ConfigureAwait(false);
             }
 
             discovered = await DiscoverHeadsAsync(
@@ -158,7 +202,7 @@ public sealed partial class GitHubAuthorPeriodDiscovery
                 aliases,
                 authenticatedLogin,
                 since,
-                asOf,
+                until,
                 request,
                 workingDirectory,
                 counters,
@@ -201,9 +245,9 @@ public sealed partial class GitHubAuthorPeriodDiscovery
         ChangeAuthorPeriodManifest manifest = CreateManifest(
             discovered,
             paths,
-            aliases,
+            resolvedContributors!.Contributors,
             since,
-            asOf,
+            until,
             zone,
             request);
         int openHeads = discovered.Sum(repository =>
@@ -214,7 +258,9 @@ public sealed partial class GitHubAuthorPeriodDiscovery
         {
             ScopeDigest = ChangePortfolioComparisonIdentity.ComputeTextDigest(
                 ChangeAuthorPeriodManifestIdentity.ComputeDigest(manifest) + "\n" + scope.Contract.Digest),
-            IdentitySources = IdentitySources(request.AuthorAliases),
+            IdentitySources = request.ContributorSample is null
+                ? IdentitySources(request.AuthorAliases)
+                : "provider-active-human-sample-and-explicit-inclusions",
             Complete = true,
             ProviderRepositoryCount = providerRepositories.Count,
             ConsideredRepositoryCount = providerRepositories.Count(repository =>
@@ -248,6 +294,7 @@ public sealed partial class GitHubAuthorPeriodDiscovery
             Discovery = summary,
             ScopeProfile = scope.Contract,
             AsOf = asOf,
+            ContributorSelection = resolvedContributors.Selection,
         };
     }
 
@@ -372,7 +419,9 @@ public sealed partial class GitHubAuthorPeriodDiscovery
                     includeOpenPullRequests,
                     counters,
                     cancellationToken,
-                    includeDefaultHead).ConfigureAwait(false);
+                    includeDefaultHead,
+                    includeAuthenticatedPullAuthor: request.ContributorSample is null)
+                    .ConfigureAwait(false);
             }
             finally
             {
@@ -419,42 +468,4 @@ public sealed partial class GitHubAuthorPeriodDiscovery
         return [.. merged.OrderBy(value => value.RepositoryId, StringComparer.Ordinal)];
     }
 
-    private static ChangeAuthorPeriodManifest CreateManifest(
-        IReadOnlyList<DiscoveredRepository> repositories,
-        Dictionary<string, string> paths,
-        IReadOnlyList<string> aliases,
-        DateTimeOffset since,
-        DateTimeOffset until,
-        TimeZoneInfo zone,
-        GitHubAuthorPeriodDiscoveryRequest request) => new()
-        {
-            Selection = new ChangeAuthorPeriodManifestSelection
-            {
-                SinceInclusive = since,
-                UntilExclusive = until,
-                TimeZone = zone.Id,
-                DateField = request.DateField,
-                MergePolicy = request.MergePolicy,
-                CoauthorPolicy = request.CoauthorPolicy,
-            },
-            Contributors =
-            [
-                new ChangeAuthorPeriodManifestContributor
-                {
-                    Id = "me",
-                    Aliases = aliases,
-                },
-            ],
-            Repositories = [.. repositories.Select(repository =>
-                new ChangeAuthorPeriodManifestRepository
-                {
-                    Id = repository.RepositoryId,
-                    RepositoryPath = paths[repository.RepositoryId],
-                    Heads = [.. repository.Heads.Select(head => new ChangeAuthorPeriodManifestHead
-                    {
-                        Id = head.Id,
-                        ObjectId = head.ObjectId,
-                    })],
-                })],
-        };
 }

@@ -18,9 +18,17 @@ public static class ChangePortfolioComparisonPolicies
 
     public const string CalendarWeekV1 = "calendar-week-monday/1.0.0";
 
+    public const string CalendarDayV1 = "calendar-day/1.0.0";
+
     public const string CustomClosedBucketsV1 = "custom-closed-buckets/1.0.0";
 
     public const string TodayToDateV1 = "today-to-date/1.0.0";
+
+    public const string NamedPeriodTotalV1 = "named-period-total/1.0.0";
+
+    public const string NativePeriodReportV1 = "github-native-period-report/1.0.0";
+
+    public const string ContributorSampleV1 = "github-active-contributor-sample/1.0.0";
 
     public const string GitHubManagedCacheDiscoveryV1 =
         "github-managed-cache-author-period-discovery/1.0.0";
@@ -94,6 +102,8 @@ public sealed record ChangePortfolioComparisonReport
     public ChangePortfolioScopeProfile? ScopeProfile { get; init; }
 
     public ChangePortfolioScopeSummary? ScopeSummary { get; init; }
+
+    public ChangePortfolioNativePeriod? NativePeriod { get; init; }
 
     public required string CliVersion { get; init; }
 

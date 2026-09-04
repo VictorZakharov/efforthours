@@ -69,6 +69,7 @@ public static partial class ChangePortfolioComparisonBuilder
             Discovery = options.Discovery,
             ScopeProfile = options.ScopeProfile,
             ScopeSummary = options.ScopeSummary,
+            NativePeriod = options.NativePeriod,
             CliVersion = options.CliVersion,
             EstimatorVersion = source.EstimatorVersion,
             SourceChangeEstimatorVersion = source.SourceChangeEstimatorVersion,
@@ -82,12 +83,20 @@ public static partial class ChangePortfolioComparisonBuilder
             Diagnostics = ComparisonDiagnostics(options),
             Verification = new ChangePortfolioComparisonVerification
             {
-                SemanticDigest = ChangePortfolioComparisonIdentity.ComputeSemanticDigest(
-                    source,
-                    bucketPolicy,
-                    options.Buckets,
-                    series,
-                    options.ScopeProfile),
+                SemanticDigest = options.NativePeriod is null
+                    ? ChangePortfolioComparisonIdentity.ComputeSemanticDigest(
+                        source,
+                        bucketPolicy,
+                        options.Buckets,
+                        series,
+                        options.ScopeProfile)
+                    : ChangePortfolioComparisonIdentity.ComputeSemanticDigest(
+                        source,
+                        bucketPolicy,
+                        options.Buckets,
+                        series,
+                        options.ScopeProfile,
+                        options.NativePeriod),
                 SourcePortfolioDigest = sourceDigest,
                 BucketAllocationPolicy = ChangePortfolioComparisonIdentity.ContributorSeriesPolicy(
                     options.ContributorNormalization),

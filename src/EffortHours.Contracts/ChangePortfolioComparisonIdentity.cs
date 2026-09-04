@@ -144,6 +144,37 @@ public static class ChangePortfolioComparisonIdentity
         return ComputeJsonDigest(canonical);
     }
 
+    public static string ComputeSemanticDigest(
+        ChangePortfolioReport source,
+        ChangePortfolioComparisonBucketPolicy bucketPolicy,
+        IReadOnlyList<ChangePortfolioComparisonBucket> buckets,
+        IReadOnlyList<ChangePortfolioComparisonSeries> series,
+        ChangePortfolioScopeProfile? scopeProfile,
+        ChangePortfolioNativePeriod nativePeriod)
+    {
+        ArgumentNullException.ThrowIfNull(nativePeriod);
+        object canonical = new
+        {
+            Protocol = ContributorSeriesPolicy(bucketPolicy.ContributorNormalization),
+            SourcePortfolioDigest = ComputePortfolioDigest(source),
+            BucketPolicy = new
+            {
+                bucketPolicy.Kind,
+                bucketPolicy.Policy,
+                bucketPolicy.InputDigest,
+                bucketPolicy.ContributorNormalization,
+                bucketPolicy.CapacityCalendarPolicy,
+                bucketPolicy.CapacityInputDigest,
+                bucketPolicy.RollingWindowBucketCount,
+            },
+            Buckets = buckets,
+            Series = series,
+            ScopeProfile = scopeProfile,
+            NativePeriod = nativePeriod,
+        };
+        return ComputeJsonDigest(canonical);
+    }
+
     public static string ContributorSeriesPolicy(
         ChangePortfolioContributorNormalization normalization) => normalization switch
         {

@@ -8,13 +8,13 @@ public static partial class ContractValidation
         ChangePortfolioComparisonReport report,
         List<string> errors)
     {
-        bool hasTodayMetadata = report.AsOf is not null;
+        bool hasProviderMetadata = report.AsOf is not null;
         if (new[]
             {
                 report.Discovery is not null,
                 report.ScopeProfile is not null,
                 report.ScopeSummary is not null,
-            }.Any(value => value != hasTodayMetadata))
+            }.Any(value => value != hasProviderMetadata))
         {
             errors.Add(
                 "Comparison asOf, host discovery, scope profile, and scope summary metadata must be present together.");
@@ -26,11 +26,14 @@ public static partial class ContractValidation
             return;
         }
 
+        DateTimeOffset? until = report.Selection.AuthorPeriodManifest?.UntilExclusive;
         if (report.AsOf.Value.Offset != TimeSpan.Zero ||
-            report.AsOf < report.Selection.AuthorPeriodManifest?.SinceInclusive ||
-            report.AsOf != report.Selection.AuthorPeriodManifest?.UntilExclusive)
+            until is null ||
+            report.AsOf < until ||
+            report.NativePeriod is null && report.AsOf != until)
         {
-            errors.Add("Comparison asOf must be the UTC exclusive end of the selected interval.");
+            errors.Add(
+                "Comparison asOf must be UTC and equal or follow the selected interval end.");
         }
 
         ChangePortfolioHostDiscovery discovery = report.Discovery!;
@@ -88,7 +91,7 @@ public static partial class ContractValidation
             profile.ImportantExclusions.Count == 0 ||
             profile.ImportantExclusions.Any(string.IsNullOrWhiteSpace))
         {
-            errors.Add("The today-to-date engineering scope profile is invalid.");
+            errors.Add("The provider-assisted engineering scope profile is invalid.");
         }
 
         ValidateDigest(profile.Digest, "scopeProfile.digest", errors);
@@ -99,7 +102,7 @@ public static partial class ContractValidation
             summary.AdmittedCommitCount + summary.ScopeEmptyCommitCount !=
                 summary.IdentitySelectedCommitCount)
         {
-            errors.Add("The today-to-date scope summary counts are inconsistent.");
+            errors.Add("The provider-assisted scope summary counts are inconsistent.");
         }
 
         if (report.Status == ChangePortfolioComparisonStatus.Complete && !discovery.Complete)

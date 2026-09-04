@@ -5,7 +5,7 @@ using EffortHours.Contracts.V1;
 
 namespace EffortHours.Tests;
 
-public sealed class GitHubAuthorPeriodDiscoveryTests
+public sealed partial class GitHubAuthorPeriodDiscoveryTests
 {
     [Fact]
     public async Task AuthenticatedPersonalOwnerUsesThePrivateRepositoryInventoryEndpoint()

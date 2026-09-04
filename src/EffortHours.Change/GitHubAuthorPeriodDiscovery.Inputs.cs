@@ -16,18 +16,52 @@ public sealed partial class GitHubAuthorPeriodDiscovery
         if (request.Scope != EngineeringScopeProfile.ProfileName)
         {
             throw new ArgumentException(
-                "Today-to-date discovery currently requires --scope engineering.",
+                "Provider-assisted author-period discovery requires --scope engineering.",
                 nameof(request));
         }
 
-        if (request.AuthorAliases.Count is < 1 or > 128 ||
+        bool sampled = request.ContributorSample is not null;
+        if (!sampled && request.AuthorAliases.Count is < 1 or > 128 ||
+            sampled && request.AuthorAliases.Count != 0 ||
             request.AuthorAliases.Any(string.IsNullOrWhiteSpace) ||
             !Enum.IsDefined(request.DateField) || !Enum.IsDefined(request.MergePolicy) ||
             !Enum.IsDefined(request.CoauthorPolicy))
         {
             throw new ArgumentException(
-                "The today-to-date identity or selection policy is invalid.",
+                "The provider-assisted identity or selection policy is invalid.",
                 nameof(request));
+        }
+
+        if ((request.SinceInclusive is null) != (request.UntilExclusive is null) ||
+            request.SinceInclusive >= request.UntilExclusive ||
+            request.UntilExclusive > request.AsOf.ToUniversalTime())
+        {
+            throw new ArgumentException(
+                "The provider-assisted interval must be complete, ordered, and no later than asOf.",
+                nameof(request));
+        }
+
+        if (string.IsNullOrWhiteSpace(request.ContributorId) ||
+            request.ContributorId.Length > 128)
+        {
+            throw new ArgumentException("The public contributor ID is invalid.", nameof(request));
+        }
+
+        if (request.ContributorSample is GitHubContributorSampleRequest sample)
+        {
+            if (sample.SampleSize is < 1 or > 63 ||
+                string.IsNullOrWhiteSpace(sample.SampleSeed) ||
+                sample.SampleSeed.Length > 256 ||
+                sample.IncludedAuthors.Count + sample.SampleSize >
+                    ChangeAuthorPeriodManifestLimits.MaximumContributors ||
+                sample.IncludedAuthors.Any(string.IsNullOrWhiteSpace))
+            {
+                throw new ArgumentException(
+                    "The contributor sample request is outside the supported bounds.",
+                    nameof(request));
+            }
+
+            _ = GitHubRepositoryIdentity.Normalize(sample.ContributorsFrom);
         }
     }
 

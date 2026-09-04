@@ -200,7 +200,8 @@ internal static partial class GitHubAuthorPeriodDiscoveryJson
         bool includeOpenPullRequests,
         ProviderQueryCounters counters,
         CancellationToken cancellationToken,
-        bool includeDefaultHead = true)
+        bool includeDefaultHead = true,
+        bool includeAuthenticatedPullAuthor = true)
     {
         string identity = repository.Identity;
         string branch = repository.DefaultBranch!;
@@ -242,7 +243,11 @@ internal static partial class GitHubAuthorPeriodDiscoveryJson
                 foreach (JsonElement pull in Pages(document.RootElement)
                     .OrderBy(item => item.GetProperty("number").GetInt32()))
                 {
-                    if (!PullAuthorMatches(pull, authenticatedLogin, aliases))
+                    if (!PullAuthorMatches(
+                            pull,
+                            aliases,
+                            authenticatedLogin,
+                            includeAuthenticatedPullAuthor))
                     {
                         continue;
                     }
@@ -382,12 +387,16 @@ internal static partial class GitHubAuthorPeriodDiscoveryJson
 
     private static bool PullAuthorMatches(
         JsonElement pull,
+        IReadOnlyList<string> aliases,
         string authenticatedLogin,
-        IReadOnlyList<string> aliases) =>
+        bool includeAuthenticatedLogin) =>
         pull.TryGetProperty("user", out JsonElement user) &&
         user.ValueKind == JsonValueKind.Object &&
         user.TryGetProperty("login", out JsonElement login) &&
-        (string.Equals(login.GetString(), authenticatedLogin, StringComparison.OrdinalIgnoreCase) ||
-            aliases.Contains(login.GetString(), StringComparer.OrdinalIgnoreCase));
+        (includeAuthenticatedLogin && string.Equals(
+             login.GetString(),
+             authenticatedLogin,
+             StringComparison.OrdinalIgnoreCase) ||
+         aliases.Contains(login.GetString(), StringComparer.OrdinalIgnoreCase));
 
 }

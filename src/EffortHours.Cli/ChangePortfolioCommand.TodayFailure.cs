@@ -21,7 +21,7 @@ internal sealed partial class ChangePortfolioCommand
     {
         string phase = telemetry.GetLastProgress()?.Phase ??
             ChangePortfolioExecutionPhases.ScopeLoading;
-        EffortHoursAgentAction action = CreateAgentAction(exception, phase);
+        EffortHoursAgentAction action = CreateAgentAction(exception, phase, options);
         phase = action.Phase;
         string message = SafeFailureMessage(action.FailureCode);
         string category = action.FailureCode;
@@ -36,14 +36,19 @@ internal sealed partial class ChangePortfolioCommand
             AgentAction = action,
         };
         ChangePortfolioScopeProfile profile = engineeringScope?.Contract ?? UnavailableScopeProfile();
-        ChangeAuthorPeriodManifest manifest = EmptyTodayManifest(options, generatedAt);
+        ChangeAuthorPeriodManifest manifest = EmptyProviderManifest(options, generatedAt);
         ChangePortfolioSelection selection =
             ChangeAuthorPeriodManifestIdentity.CreateReportSelection(manifest);
-        ChangePortfolioComparisonInputs inputs =
-            ChangePortfolioComparisonInputLoader.CreateTodayToDate(
+        ChangePortfolioComparisonInputs inputs = options.Today
+            ? ChangePortfolioComparisonInputLoader.CreateTodayToDate(
                 selection.AuthorPeriodManifest!,
                 generatedAt,
-                options.CapacityHours!.Value);
+                options.CapacityHours!.Value)
+            : ChangePortfolioComparisonInputLoader.CreateNamedPeriod(
+                selection.AuthorPeriodManifest!,
+                options.Period!.Value,
+                options.Breakdown,
+                options.CapacityHoursPerDay!.Value);
         ChangePortfolioHostDiscovery discovery = new()
         {
             ScopeDigest = ChangePortfolioComparisonIdentity.ComputeTextDigest(
@@ -87,6 +92,15 @@ internal sealed partial class ChangePortfolioCommand
             SourceManifest = manifest,
             ExecutionTelemetry = telemetry,
             ExecutionOverride = execution,
+            NativePeriod = options.IsNativePeriod
+                ? new ChangePortfolioNativePeriod
+                {
+                    Kind = options.Period!.Value,
+                    Breakdown = options.Breakdown,
+                    CapacityHoursPerDay = options.CapacityHoursPerDay!.Value,
+                    ContributorSelection = IncompleteContributorSelection(options),
+                }
+                : null,
         };
         ChangePortfolioComparisonReport report =
             ChangePortfolioComparisonBuilder.BuildIncomplete(buildOptions);
@@ -124,11 +138,22 @@ internal sealed partial class ChangePortfolioCommand
         return write == CliExitCodes.Success ? CliExitCodes.InvalidInput : write;
     }
 
-    private static EffortHoursAgentAction CreateAgentAction(Exception exception, string phase)
+    private static EffortHoursAgentAction CreateAgentAction(
+        Exception exception,
+        string phase,
+        ChangePortfolioCommandOptions options)
     {
         if (exception is GitHubProviderException provider)
         {
-            return provider.Action;
+            return provider.Action.FailureCode == "github-cli-config-access-denied" &&
+                options.IsNativePeriod
+                ? provider.Action with
+                {
+                    SuggestedApprovalPrefix = options.TeamComparison
+                        ? ["eh", "change", "compare-team"]
+                        : ["eh", "change", "period"],
+                }
+                : provider.Action;
         }
 
         if (phase == ChangePortfolioExecutionPhases.Acquisition &&
@@ -195,20 +220,43 @@ internal sealed partial class ChangePortfolioCommand
         };
     }
 
-    private static ChangeAuthorPeriodManifest EmptyTodayManifest(
+    private static ChangeAuthorPeriodManifest EmptyProviderManifest(
         ChangePortfolioCommandOptions options,
         DateTimeOffset asOf)
     {
         TimeZoneInfo zone = TimeZoneInfo.FindSystemTimeZoneById(options.TimeZone);
-        DateTime localDate = TimeZoneInfo.ConvertTime(asOf, zone).Date;
-        DateTime localMidnight = DateTime.SpecifyKind(localDate, DateTimeKind.Unspecified);
-        DateTimeOffset since = new(localMidnight, zone.GetUtcOffset(localMidnight));
+        ChangePortfolioNamedPeriodRange? period = options.IsNativePeriod
+            ? ChangePortfolioNamedPeriodResolver.Resolve(options.Period!.Value, asOf, zone)
+            : null;
+        DateTimeOffset since;
+        DateTimeOffset until;
+        if (period is not null)
+        {
+            since = period.SinceInclusive;
+            until = period.UntilExclusive;
+        }
+        else
+        {
+            DateTime localDate = TimeZoneInfo.ConvertTime(asOf, zone).Date;
+            DateTime localMidnight = DateTime.SpecifyKind(localDate, DateTimeKind.Unspecified);
+            since = new DateTimeOffset(localMidnight, zone.GetUtcOffset(localMidnight))
+                .ToUniversalTime();
+            until = asOf.ToUniversalTime();
+        }
+
+        string contributorId = options.TeamComparison ? "selection-pending" :
+            options.NativePeriod ? "contributor" : "me";
+        string[] aliases = options.TeamComparison
+            ? ["selection-pending"]
+            : [.. options.AuthorAliases
+                .Distinct(StringComparer.OrdinalIgnoreCase)
+                .Order(StringComparer.OrdinalIgnoreCase)];
         return new ChangeAuthorPeriodManifest
         {
             Selection = new ChangeAuthorPeriodManifestSelection
             {
-                SinceInclusive = since.ToUniversalTime(),
-                UntilExclusive = asOf.ToUniversalTime(),
+                SinceInclusive = since,
+                UntilExclusive = until,
                 TimeZone = zone.Id,
                 DateField = options.DateField,
                 MergePolicy = options.MergePolicy,
@@ -218,13 +266,28 @@ internal sealed partial class ChangePortfolioCommand
             [
                 new ChangeAuthorPeriodManifestContributor
                 {
-                    Id = "me",
-                    Aliases = [.. options.AuthorAliases
-                        .Distinct(StringComparer.OrdinalIgnoreCase)
-                        .Order(StringComparer.OrdinalIgnoreCase)],
+                    Id = contributorId,
+                    Aliases = aliases,
                 },
             ],
             Repositories = [],
         };
     }
+
+    private static ChangePortfolioContributorSelection IncompleteContributorSelection(
+        ChangePortfolioCommandOptions options) => new()
+        {
+            Mode = options.TeamComparison
+                ? ChangePortfolioContributorSelectionMode.Team
+                : ChangePortfolioContributorSelectionMode.SingleContributor,
+            Complete = false,
+            SampleSeed = options.TeamComparison ? options.SampleSeed : null,
+            RequestedSampleSize = options.TeamComparison ? options.SampleSize!.Value : 0,
+            InputDigest = ChangePortfolioComparisonIdentity.ComputeTextDigest(string.Join(
+                "\n",
+                options.TeamComparison ? "team" : "single-contributor",
+                options.ContributorsFrom ?? string.Empty,
+                options.SampleSeed ?? string.Empty,
+                options.SampleSize?.ToString(System.Globalization.CultureInfo.InvariantCulture) ?? "0")),
+        };
 }

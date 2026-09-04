@@ -31,6 +31,7 @@
     "discovery": { "$ref": "#/$defs/discovery" },
     "scopeProfile": { "$ref": "#/$defs/scopeProfile" },
     "scopeSummary": { "$ref": "#/$defs/scopeSummary" },
+    "nativePeriod": { "$ref": "#/$defs/nativePeriod" },
     "cliVersion": { "type": "string", "minLength": 1 },
     "estimatorVersion": { "type": "string", "minLength": 1 },
     "sourceChangeEstimatorVersion": { "type": "string", "minLength": 1 },
@@ -177,11 +178,57 @@
       },
       "additionalProperties": false
     },
+    "nativePeriod": {
+      "type": "object",
+      "required": ["protocol", "kind", "breakdown", "capacityHoursPerDay", "contributorSelection"],
+      "properties": {
+        "protocol": { "const": "github-native-period-report/1.0.0" },
+        "kind": { "enum": ["this-week", "last-week", "this-month", "last-month"] },
+        "breakdown": { "enum": ["total", "calendar-day"] },
+        "capacityHoursPerDay": { "type": "number", "exclusiveMinimum": 0 },
+        "contributorSelection": { "$ref": "#/$defs/contributorSelection" }
+      },
+      "additionalProperties": false
+    },
+    "contributorSelection": {
+      "type": "object",
+      "required": [
+        "protocol",
+        "mode",
+        "complete",
+        "requestedSampleSize",
+        "sampledContributorIds",
+        "includedContributorIds",
+        "inputDigest"
+      ],
+      "properties": {
+        "protocol": { "const": "github-active-contributor-sample/1.0.0" },
+        "mode": { "enum": ["single-contributor", "team"] },
+        "complete": { "type": "boolean" },
+        "sampleSeed": { "type": "string", "minLength": 1, "maxLength": 256 },
+        "requestedSampleSize": { "type": "integer", "minimum": 0, "maximum": 63 },
+        "eligiblePopulationCount": { "type": "integer", "minimum": 0, "maximum": 100000 },
+        "sampledContributorIds": {
+          "type": "array",
+          "maxItems": 63,
+          "items": { "$ref": "#/$defs/publicId" },
+          "uniqueItems": true
+        },
+        "includedContributorIds": {
+          "type": "array",
+          "maxItems": 64,
+          "items": { "$ref": "#/$defs/publicId" },
+          "uniqueItems": true
+        },
+        "inputDigest": { "$ref": "#/$defs/digest" }
+      },
+      "additionalProperties": false
+    },
     "bucketPolicy": {
       "type": "object",
       "required": ["kind", "policy", "inputDigest", "rollingWindowBucketCount"],
       "properties": {
-        "kind": { "enum": ["calendar-month", "calendar-week", "custom"] },
+        "kind": { "enum": ["calendar-month", "calendar-week", "calendar-day", "custom"] },
         "policy": { "type": "string", "minLength": 1 },
         "inputDigest": { "$ref": "#/$defs/digest" },
         "contributorNormalization": {
@@ -590,7 +637,12 @@
       "properties": {
         "semanticDigest": { "$ref": "#/$defs/digest" },
         "sourcePortfolioDigest": { "$ref": "#/$defs/digest" },
-        "bucketAllocationPolicy": { "const": "exclusive-contributor-match-sets-with-shared-groups/1.0.0" },
+        "bucketAllocationPolicy": {
+          "enum": [
+            "exclusive-contributor-match-sets-with-shared-groups/1.0.0",
+            "membership-stable-isolated-contributor-series/1.0.0"
+          ]
+        },
         "completeAggregates": { "type": "boolean" },
         "executionOnlyPathsExcluded": { "type": "boolean" },
         "rawAliasesExcluded": { "type": "boolean" },

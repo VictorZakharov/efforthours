@@ -123,6 +123,62 @@ public sealed partial class ChangeCliTests
             Assert.DoesNotContain(repository.RootPath, report, StringComparison.OrdinalIgnoreCase);
             Assert.DoesNotContain("selected@example.invalid", report, StringComparison.OrdinalIgnoreCase);
 
+            string periodPath = Path.Combine(workspaceRoot, "period.md");
+            ProcessResult period = await RunCliWithPathAsync(
+                fakeRoot,
+                cacheRoot,
+                runFrom,
+                "change", "period",
+                "--owner", "example-owner",
+                "--author", "@me",
+                "--period", "this-week",
+                "--breakdown", "day",
+                "--timezone", "UTC",
+                "--include-open-prs",
+                "--scope", "engineering",
+                "--capacity-hours-per-day", "8",
+                "--generated-at", asOf.ToString("O", CultureInfo.InvariantCulture),
+                "--format", "markdown",
+                "--output", periodPath,
+                "--no-rate");
+            Assert.True(
+                period.ExitCode == 0,
+                $"period command failed ({period.ExitCode}): {period.StandardError}\n{period.StandardOutput}");
+            string periodReport = await File.ReadAllTextAsync(periodPath);
+            Assert.Contains("Status: **complete**", periodReport, StringComparison.Ordinal);
+            Assert.Contains("## Daily breakdown", periodReport, StringComparison.Ordinal);
+            Assert.Contains("total expected EHE / total reference capacity", periodReport, StringComparison.Ordinal);
+            Assert.DoesNotContain("selected@example.invalid", periodReport, StringComparison.OrdinalIgnoreCase);
+
+            string teamPath = Path.Combine(workspaceRoot, "team.md");
+            ProcessResult team = await RunCliWithPathAsync(
+                fakeRoot,
+                cacheRoot,
+                runFrom,
+                "change", "compare-team",
+                "--owner", "example-owner",
+                "--contributors-from", "example-owner/example-repository",
+                "--sample", "1",
+                "--sample-seed", "stable-seed",
+                "--period", "this-week",
+                "--timezone", "UTC",
+                "--include-open-prs",
+                "--scope", "engineering",
+                "--capacity-hours-per-day", "8",
+                "--generated-at", asOf.ToString("O", CultureInfo.InvariantCulture),
+                "--format", "markdown",
+                "--output", teamPath,
+                "--no-rate");
+            Assert.True(
+                team.ExitCode == 0,
+                $"team command failed ({team.ExitCode}): {team.StandardError}\n{team.StandardOutput}");
+            string teamReport = await File.ReadAllTextAsync(teamPath);
+            Assert.Contains("Contributor selection: **team sample**", teamReport, StringComparison.Ordinal);
+            Assert.Contains("seed `stable-seed`", teamReport, StringComparison.Ordinal);
+            Assert.Contains("`sample-1`", teamReport, StringComparison.Ordinal);
+            Assert.DoesNotContain("selected-contributor", teamReport, StringComparison.OrdinalIgnoreCase);
+            Assert.DoesNotContain("selected@example.invalid", teamReport, StringComparison.OrdinalIgnoreCase);
+
             ProcessResult rerun = await RunCliWithPathAsync(
                 fakeRoot,
                 cacheRoot,
@@ -203,6 +259,40 @@ public sealed partial class ChangeCliTests
             Assert.Equal(3, concurrent.Count(result => result.LocalHeadCount == 1));
             Assert.Equal(1, second.LocalHeadCount);
             Assert.Equal(0, second.AcquiredObjectCount);
+        }
+        finally
+        {
+            DeleteDirectory(root);
+        }
+    }
+
+    [Fact]
+    public async Task ManagedCacheLockWaitIsCancellableInsteadOfTimingOut()
+    {
+        string root = Path.Combine(
+            Path.GetTempPath(),
+            "efforthours-cache-lock-e2e",
+            Guid.NewGuid().ToString("N"));
+        string owner = Path.Combine(root, "example-owner");
+        Directory.CreateDirectory(owner);
+        try
+        {
+            string lockPath = Path.Combine(owner, "repository.git.lock");
+            await using FileStream held = new(
+                lockPath,
+                FileMode.OpenOrCreate,
+                FileAccess.ReadWrite,
+                FileShare.None);
+            GitHubRepositoryCache cache = new(
+                new ExternalCommandRunner(),
+                new GitClient(),
+                root);
+            using CancellationTokenSource cancellation = new(TimeSpan.FromMilliseconds(150));
+
+            await Assert.ThrowsAnyAsync<OperationCanceledException>(() => cache.EnsureAsync(
+                "example-owner/repository",
+                [new DiscoveredHead("default", new string('a', 40), "refs/heads/main")],
+                cancellation.Token));
         }
         finally
         {

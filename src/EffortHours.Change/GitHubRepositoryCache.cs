@@ -281,8 +281,7 @@ internal sealed class GitHubRepositoryCache
         Directory.CreateDirectory(parent);
         SetPrivateDirectoryMode(parent);
         string lockPath = repositoryPath + ".lock";
-        long started = System.Diagnostics.Stopwatch.GetTimestamp();
-        while (System.Diagnostics.Stopwatch.GetElapsedTime(started) < TimeSpan.FromSeconds(30))
+        while (true)
         {
             cancellationToken.ThrowIfCancellationRequested();
             try
@@ -308,8 +307,6 @@ internal sealed class GitHubRepositoryCache
             }
         }
 
-        throw new InvalidOperationException(
-            "Timed out waiting for another EffortHours process to finish managed repository cache acquisition.");
     }
 
     private static void TryDeleteDirectory(string path)

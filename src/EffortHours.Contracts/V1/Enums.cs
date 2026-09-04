@@ -175,6 +175,7 @@ public enum ChangePortfolioBucketPolicyKind
 {
     CalendarMonth,
     CalendarWeek,
+    CalendarDay,
     Custom,
 }
 
@@ -188,6 +189,26 @@ public enum ChangePortfolioContributorNormalization
 {
     Joint,
     Isolated,
+}
+
+public enum ChangePortfolioNativePeriodKind
+{
+    ThisWeek,
+    LastWeek,
+    ThisMonth,
+    LastMonth,
+}
+
+public enum ChangePortfolioNativeBreakdown
+{
+    Total,
+    CalendarDay,
+}
+
+public enum ChangePortfolioContributorSelectionMode
+{
+    SingleContributor,
+    Team,
 }
 
 public enum ChangePortfolioSeriesKind

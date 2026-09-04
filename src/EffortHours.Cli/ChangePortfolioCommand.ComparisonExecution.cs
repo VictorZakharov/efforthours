@@ -20,12 +20,7 @@ internal sealed partial class ChangePortfolioCommand
             CreateExecutionTelemetry(standardError, "portfolio");
         DateTimeOffset generatedAt = (options.GeneratedAt ?? DateTimeOffset.UtcNow)
             .ToUniversalTime();
-        string title = options.ReportTitle ??
-            (options.Today
-                ? "EffortHours today-to-date capacity"
-                : options.ComparisonView == ChangePortfolioComparisonView.Findings
-                ? "EffortHours engineering findings"
-                : "EffortHours portfolio trend");
+        string title = options.ReportTitle ?? DefaultComparisonTitle(options);
         TodayDiscoveryOutcome discovery = await DiscoverTodayAsync(
             options,
             title,
@@ -63,10 +58,16 @@ internal sealed partial class ChangePortfolioCommand
                 options,
                 selection.AuthorPeriodManifest!,
                 cancellationToken).ConfigureAwait(false)
-            : ChangePortfolioComparisonInputLoader.CreateTodayToDate(
-                selection.AuthorPeriodManifest!,
-                today.AsOf,
-                options.CapacityHours!.Value);
+            : options.Today
+                ? ChangePortfolioComparisonInputLoader.CreateTodayToDate(
+                    selection.AuthorPeriodManifest!,
+                    today.AsOf,
+                    options.CapacityHours!.Value)
+                : ChangePortfolioComparisonInputLoader.CreateNamedPeriod(
+                    selection.AuthorPeriodManifest!,
+                    options.Period!.Value,
+                    options.Breakdown,
+                    options.CapacityHoursPerDay!.Value);
         ChangePortfolioRepositoryCheckpointStore? checkpoints = options.NoCheckpoint ||
             options.OutputPath is null && options.CheckpointPath is null
             ? null
@@ -92,7 +93,7 @@ internal sealed partial class ChangePortfolioCommand
             outcomes.Add(outcome with { Elapsed = Stopwatch.GetElapsedTime(started) });
         }
 
-        if (!options.Today && outcomes.All(outcome => outcome.Failure is null) &&
+        if (today is null && outcomes.All(outcome => outcome.Failure is null) &&
             outcomes.Sum(outcome => outcome.Candidates.Count) == 0)
         {
             ChangePortfolioRepositoryOutcome first = outcomes[0];
@@ -111,7 +112,6 @@ internal sealed partial class ChangePortfolioCommand
                 },
             };
         }
-
         ChangePortfolioComparisonExecution execution =
             ChangePortfolioComparisonExecutionFactory.Create(
                 outcomes,
@@ -137,6 +137,7 @@ internal sealed partial class ChangePortfolioCommand
             Discovery = today?.Discovery,
             ScopeProfile = today?.ScopeProfile,
             ScopeSummary = today is null ? null : ScopeSummary(outcomes),
+            NativePeriod = CreateNativePeriodMetadata(options, today),
         };
         ChangePortfolioComparisonReport comparison;
         if (execution.Failures.Count > 0)
@@ -164,7 +165,6 @@ internal sealed partial class ChangePortfolioCommand
                 source,
                 buildOptions with { ExecutionOverride = execution });
         }
-
         string output;
         using (portfolioTelemetry.Measure(ChangePortfolioExecutionPhases.Rendering))
         {

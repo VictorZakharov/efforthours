@@ -11,6 +11,7 @@ public sealed record ChangePortfolioComparisonBuildOptions
     public ChangePortfolioHostDiscovery? Discovery { get; init; }
     public ChangePortfolioScopeProfile? ScopeProfile { get; init; }
     public ChangePortfolioScopeSummary? ScopeSummary { get; init; }
+    public ChangePortfolioNativePeriod? NativePeriod { get; init; }
     public required string CliVersion { get; init; }
     public required EstimationProfile Profile { get; init; }
     public required ChangePortfolioBucketPolicyKind BucketKind { get; init; }

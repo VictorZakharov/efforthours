@@ -107,6 +107,37 @@ identify authentication, owner inventory, candidate discovery, default heads,
 open PRs, and process startup. These remain operational and excluded from
 `verification.semanticDigest`, EHE, and capacity ratios.
 
+Native `change period` and `change compare-team` reports extend the same wrapper
+with `github-native-period-report/1.0.0` metadata. Named intervals are
+`this-week`, `last-week`, `this-month`, and `last-month` in the explicit timezone;
+weeks begin Monday. The default `total` breakdown emits one bucket, while `day`
+uses `calendar-day/1.0.0` buckets with `day-yyyy-MM-dd` IDs. Capacity is a positive
+caller-supplied value per local calendar day and contributor. A partial current
+day uses the full-day denominator. The overall expected multiplier is exact total
+expected EHE divided by exact total capacity, not an unweighted mean of daily
+ratios. JSON and native Markdown publish both the overall result and, when asked,
+the per-day cells.
+A completely discovered named period with no selected work publishes zero EHE and
+zero multipliers; incomplete discovery or execution publishes neither.
+
+Team reports add `github-active-contributor-sample/1.0.0` provenance: selection
+mode, completeness, seed, requested sample size, eligible population count,
+generated sampled/included contributor IDs, and an input digest. Active means a
+mapped human GitHub author with an eligible reference-default-branch commit in the
+frozen interval. Provider bots, service-pattern logins, unmapped authors, and
+excluded merges do not enter the population. Explicit inclusions are
+de-duplicated before seeded sampling. Provider logins, emails, aliases, and the
+reference repository remain execution-only. Native contributor rows always use
+the isolated, membership-stable and explicitly non-additive view.
+
+Each native run performs one shared owner/provider discovery pass, acquires each
+selected repository once, and feeds one jointly reconciled portfolio calculation.
+Concurrent processes serialize each managed-cache entry and wait cancellably for
+the completed entry instead of imposing a fixed lock timeout. Incomplete native
+runs follow the today rule: nonzero exit, privacy-safe failure/action context, and
+no aggregate or multiplier. The only permitted configuration-access retry prefix
+matches the invoked command: `eh change period` or `eh change compare-team`.
+
 Comparison reports record `contributorNormalization`. The default `joint` view
 keeps exclusive and shared contributor-match sets additive to the jointly
 reconciled portfolio, so allocations can change with manifest membership. The
