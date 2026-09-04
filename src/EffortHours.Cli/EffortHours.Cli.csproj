@@ -8,11 +8,11 @@
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>eh</ToolCommandName>
     <PackageId>EffortHours.Tool</PackageId>
-    <Version>0.10.0-alpha.19</Version>
+    <Version>0.10.0-alpha.20</Version>
     <Title>EffortHours CLI</Title>
     <PackageReadmeFile>PACKAGE_README.md</PackageReadmeFile>
     <PackageTags>estimation;effort-estimation;developer-tools;cli;repository-analysis;static-analysis;dotnet-tool</PackageTags>
-    <PackageReleaseNotes>0.10.0-alpha.19: Run whole-repository and host-review queries without a local checkout through one shared --repo input across scan, estimate, explain, review packet, and review query, including immutable selected-source queries. Keep network access gated by --fetch-missing and preserve warm offline reuse with content-evidence and estimate parity for byte-equivalent trees. Repository EHE remains experimental and uncalibrated, and seed-rules/0.4.0 remains the shipped estimator. Full notes: https://github.com/VictorZakharov/efforthours/blob/v0.10.0-alpha.19/CHANGELOG.md</PackageReleaseNotes>
+    <PackageReleaseNotes>0.10.0-alpha.20: Add native this/last week and this/last month reports, optional local-calendar daily breakdowns, capacity-weighted overall multipliers, and reproducible active-contributor team reports in one jointly reconciled portfolio calculation. Fix isolated-series schema validation and cancellable concurrent managed-cache acquisition. Repository EHE remains experimental and uncalibrated, and seed-rules/0.4.0 remains the shipped estimator. Full notes: https://github.com/VictorZakharov/efforthours/blob/v0.10.0-alpha.20/CHANGELOG.md</PackageReleaseNotes>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="../EffortHours.Analysis/EffortHours.Analysis.csproj" />

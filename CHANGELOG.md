@@ -6,6 +6,8 @@ may still change public contracts with explicit documentation.
 
 ## Unreleased
 
+## 0.10.0-alpha.20 - 2026-09-04
+
 ### Added
 
 - Added native `eh change period` reports for this/last week and this/last month,
