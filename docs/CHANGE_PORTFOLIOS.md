@@ -29,6 +29,11 @@ eh change portfolio --author-period-manifest <manifest.json>
 eh change portfolio --author-period-manifest <manifest.json> --preflight
 eh change today --owner <owner> --author "@me" --timezone <zone> \
   --scope engineering --capacity-hours <hours> [--include-open-prs]
+eh change period --owner <owner> --author <identity> --period <named-period> \
+  --timezone <zone> --scope engineering --capacity-hours-per-day <hours>
+eh change compare-team --owner <owner> --contributors-from <owner/repository> \
+  --sample <count> --sample-seed <seed> --period <named-period> \
+  --timezone <zone> --scope engineering --capacity-hours-per-day <hours>
 eh change portfolio <repository> --author <alias> [--author <alias> ...]
   --since <instant> --until <instant>
 eh change portfolio --repo <owner/name> --author <alias> [--author <alias> ...]
@@ -67,7 +72,8 @@ Preflight does not predict wall time: repository tree, diff, and analyzer shape
 can still dominate after selection. Its recommendation is a deterministic scope,
 reviewability, and declared-resource decision rather than a machine-specific ETA.
 
-`--bucket calendar-month` and `--bucket calendar-week` derive a gap-free partition
+`--bucket calendar-month`, `--bucket calendar-week`, and `--bucket calendar-day`
+derive a gap-free partition
 in the manifest timezone. `--bucket-manifest` instead accepts a versioned caller-
 supplied partition whose first and last instants must equal the overall manifest
 interval and whose buckets may neither overlap nor leave gaps. Every selected
@@ -78,7 +84,8 @@ never multiply EHE.
 
 Derived calendar-month bucket IDs are `yyyy-MM`, for example `2026-07`. Derived
 calendar-week IDs are `week-yyyy-MM-dd`, using the Monday start date in the
-manifest timezone. Custom bucket IDs are copied exactly from the bucket manifest.
+manifest timezone. Calendar-day IDs are `day-yyyy-MM-dd`. Custom bucket IDs are
+copied exactly from the bucket manifest.
 Capacity input must use those exact IDs. A mismatch identifies the missing and
 unexpected public contributor/bucket cells rather than reporting only a generic
 matrix error.
@@ -108,6 +115,29 @@ inclusive to one frozen `asOf` exclusive. A complete no-match day may contain ze
 active repositories and remains zero EHE/X. Scope, provider, acquisition,
 preflight, or repository failure exits nonzero with an incomplete artifact and
 never publishes a partial aggregate.
+
+The native `change period` selector applies the same provider, scope, acquisition,
+preflight, estimation, reconciliation, privacy, and failure boundaries to
+`this-week`, `last-week`, `this-month`, or `last-month`. Weeks start on Monday and
+months start on day one in the named timezone. Current periods end at the frozen
+`asOf`; prior periods end at their exact local-calendar boundary. `--breakdown
+total` emits one period bucket. `--breakdown day` emits one bucket for every local
+calendar day, including a full caller-supplied `--capacity-hours-per-day`
+denominator for a partial current day. The full-period multiplier always divides
+total expected EHE by total capacity and never averages daily ratios. A complete
+no-match named period is a valid zero; incomplete discovery or execution never is.
+
+`change compare-team` selects mapped active human contributors from the requested
+owner/reference repository's default-branch commits in the same frozen interval.
+Provider-typed bots, service-account login patterns, unmapped commit authors, and
+excluded merges are ineligible. A required seed ranks the canonical population
+deterministically; repeatable `--include-author` values are resolved and
+de-duplicated before the requested random sample is taken. The report records only
+public generated contributor IDs, selection mode, seed, requested sample size,
+eligible population count, and an input digest—not provider logins, emails, the
+reference repository, or aliases. Team and single native reports use isolated,
+membership-stable contributor series; those rows may overlap and remain
+non-additive to the jointly reconciled portfolio total.
 
 `--normalization joint|isolated` chooses the contributor comparison view without
 changing the source portfolio. `joint` is the default: its mutually exclusive

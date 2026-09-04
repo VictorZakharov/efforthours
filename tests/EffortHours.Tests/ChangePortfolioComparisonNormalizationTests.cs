@@ -94,5 +94,10 @@ public sealed partial class ChangePortfolioComparisonTests
             combined.Series
                 .Where(series => series.Kind == ChangePortfolioSeriesKind.ContributorIsolated)
                 .Sum(series => series.Points.Sum(point => point.SelectedChangeCount)));
+        string json = new ChangePortfolioComparisonJsonRenderer().Render(combined);
+        SchemaValidationResult schema = ContractSchemaValidator.Validate(
+            SchemaNames.ChangePortfolioComparisonReport,
+            json);
+        Assert.True(schema.IsValid, string.Join(Environment.NewLine, schema.Errors));
     }
 }

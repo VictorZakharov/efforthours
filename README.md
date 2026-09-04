@@ -332,7 +332,6 @@ choice, and cost. See the [host-review protocol](docs/HOST_REVIEW.md).
 
 <details>
 <summary>Show common commands</summary>
-
 ```text
 eh scan <repository> [--output evidence.json]
 eh estimate <repository-or-evidence.json> [--profile implementation|recreation]
@@ -347,6 +346,8 @@ eh change portfolio <repository> --pr <pr> --pr <pr>
 eh change portfolio --manifest <portfolio.json>
 eh change portfolio --author-period-manifest <manifest.json>
 eh change today --owner <owner> --author "@me" --timezone <zone> --capacity-hours <hours>
+eh change period --owner <owner> --author <identity> --period <named-period>
+eh change compare-team --owner <owner> --contributors-from <owner/repository> --sample <count>
 eh change scope show engineering
 eh change explain <change-estimate.json> --item <id>
 eh agent codex [--install|--check]
@@ -365,7 +366,6 @@ eh schema list
 ```
 
 </details>
-
 Run `eh --help` or a subcommand's help for the complete option surface.
 
 ## Documentation
@@ -376,7 +376,7 @@ Run `eh --help` or a subcommand's help for the complete option surface.
 | Estimation semantics | [Estimation model](docs/ESTIMATION_MODEL.md) |
 | Calibration and repository-model admission | [Calibration](docs/CALIBRATION.md) and [historical frozen v1 policy](docs/MODEL_ADMISSION.md) |
 | Change and portfolio semantics | [Change EHE contract](docs/CHANGE_ESTIMATION.md) |
-| GitHub today mode and Codex integration | [Author-period workflows](docs/AUTHOR_PERIOD_SCAFFOLDING.md) and [Codex companion](docs/CODEX_INTEGRATION.md) |
+| GitHub native author-period modes and Codex integration | [Author-period workflows](docs/AUTHOR_PERIOD_SCAFFOLDING.md) and [Codex companion](docs/CODEX_INTEGRATION.md) |
 | Analyzer-specific boundaries | [Documentation index](docs/README.md) |
 | Performance | [Benchmark protocol and results](docs/BENCHMARKS.md) |
 | Versioned schemas | [Schemas](schemas/) |

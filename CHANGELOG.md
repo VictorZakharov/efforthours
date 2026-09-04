@@ -6,6 +6,19 @@ may still change public contracts with explicit documentation.
 
 ## Unreleased
 
+### Added
+
+- Added native `eh change period` reports for this/last week and this/last month,
+  with optional local-calendar daily rows and capacity-weighted overall
+  multipliers, plus reproducible `eh change compare-team` active-human samples
+  and explicit contributor inclusions in one shared portfolio calculation.
+
+### Fixed
+
+- Allowed isolated contributor normalization in comparison-report JSON schema
+  validation and made concurrent managed-cache acquisition wait cancellably for
+  the completed entry instead of failing after a fixed lock timeout.
+
 ## 0.10.0-alpha.19 - 2026-09-02
 
 ### Added

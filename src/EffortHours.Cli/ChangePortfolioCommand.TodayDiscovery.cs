@@ -15,7 +15,7 @@ internal sealed partial class ChangePortfolioCommand
         TextWriter standardError,
         CancellationToken cancellationToken)
     {
-        if (!options.Today)
+        if (!options.Today && !options.IsNativePeriod)
         {
             return new TodayDiscoveryOutcome(null, null);
         }
@@ -28,12 +28,35 @@ internal sealed partial class ChangePortfolioCommand
                 engineeringScope = EngineeringScopeProfile.Load();
             }
 
+            ChangePortfolioNamedPeriodRange? period = null;
+            if (options.IsNativePeriod)
+            {
+                TimeZoneInfo zone = TimeZoneInfo.FindSystemTimeZoneById(options.TimeZone);
+                period = ChangePortfolioNamedPeriodResolver.Resolve(
+                    options.Period!.Value,
+                    generatedAt,
+                    zone);
+            }
+
+            GitHubContributorSampleRequest? sample = options.TeamComparison
+                ? new GitHubContributorSampleRequest
+                {
+                    ContributorsFrom = options.ContributorsFrom!,
+                    SampleSize = options.SampleSize!.Value,
+                    SampleSeed = options.SampleSeed!,
+                    IncludedAuthors = options.IncludedAuthors,
+                }
+                : null;
             GitHubAuthorPeriodDiscoveryResult today = await _discoverToday(
                 new GitHubAuthorPeriodDiscoveryRequest
                 {
                     Owner = options.Owner!,
-                    AuthorAliases = options.AuthorAliases,
+                    AuthorAliases = options.TeamComparison ? [] : options.AuthorAliases,
+                    ContributorId = options.NativePeriod ? "contributor" : "me",
+                    ContributorSample = sample,
                     AsOf = generatedAt,
+                    SinceInclusive = period?.SinceInclusive,
+                    UntilExclusive = period?.UntilExclusive,
                     TimeZone = options.TimeZone,
                     Scope = options.Scope!,
                     IncludeOpenPullRequests = options.IncludeOpenPullRequests,

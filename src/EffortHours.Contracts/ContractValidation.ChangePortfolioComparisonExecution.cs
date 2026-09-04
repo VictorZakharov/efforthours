@@ -240,7 +240,11 @@ public static partial class ContractValidation
             ValidateDigest(failure.MessageDigest, "execution.failure.messageDigest", errors);
             bool workflowFailure = report.Status == ChangePortfolioComparisonStatus.Incomplete &&
                 report.Execution.Repositories.Count == 0 && failure.RepositoryId == "provider";
-            ValidateAgentAction(failure, workflowFailure && report.Discovery is not null, errors);
+            ValidateAgentAction(
+                report,
+                failure,
+                workflowFailure && report.Discovery is not null,
+                errors);
             if (!workflowFailure && !failedRepositories.Contains(failure.RepositoryId) ||
                 !failureRepositories.Add(failure.RepositoryId))
             {
@@ -267,6 +271,7 @@ public static partial class ContractValidation
     }
 
     private static void ValidateAgentAction(
+        ChangePortfolioComparisonReport report,
         ChangePortfolioComparisonFailure failure,
         bool required,
         List<string> errors)
@@ -276,7 +281,7 @@ public static partial class ContractValidation
         {
             if (required)
             {
-                errors.Add("An incomplete today workflow failure requires an agent action.");
+                errors.Add("An incomplete provider workflow failure requires an agent action.");
             }
 
             return;
@@ -297,11 +302,17 @@ public static partial class ContractValidation
 
         bool permissionRetry =
             action.FailureCode == "github-cli-config-access-denied";
+        IReadOnlyList<string> expectedPrefix = report.NativePeriod is null
+            ? TodayAgentApprovalPrefix
+            : report.NativePeriod.ContributorSelection.Mode ==
+                ChangePortfolioContributorSelectionMode.Team
+                ? ["eh", "change", "compare-team"]
+                : ["eh", "change", "period"];
         if (permissionRetry !=
                 (action.SuggestedAction == "retry-exact-command-with-permission" &&
                  action.RetryLimit == 1 &&
                  action.SuggestedApprovalPrefix.SequenceEqual(
-                     TodayAgentApprovalPrefix,
+                     expectedPrefix,
                      StringComparer.Ordinal)) ||
             !permissionRetry &&
                 (action.RetryLimit != 0 || action.SuggestedApprovalPrefix.Count != 0))

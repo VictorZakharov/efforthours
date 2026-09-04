@@ -76,19 +76,20 @@ internal sealed class ChangeCommand
                 cancellationToken).ConfigureAwait(false);
         }
 
-        if (arguments[0].Equals("portfolio", StringComparison.OrdinalIgnoreCase))
+        string? portfolioMode = arguments[0].ToLowerInvariant() switch
+        {
+            "portfolio" => null,
+            "today" => "--today",
+            "period" => "--native-period",
+            "compare-team" => "--compare-team",
+            _ => string.Empty,
+        };
+        if (portfolioMode != string.Empty)
         {
             return await new ChangePortfolioCommand().ExecuteAsync(
-                [.. arguments.Skip(1)],
-                standardOutput,
-                standardError,
-                cancellationToken).ConfigureAwait(false);
-        }
-
-        if (arguments[0].Equals("today", StringComparison.OrdinalIgnoreCase))
-        {
-            return await new ChangePortfolioCommand().ExecuteAsync(
-                ["--today", .. arguments.Skip(1)],
+                portfolioMode is null
+                    ? [.. arguments.Skip(1)]
+                    : [portfolioMode, .. arguments.Skip(1)],
                 standardOutput,
                 standardError,
                 cancellationToken).ConfigureAwait(false);
@@ -348,6 +349,8 @@ internal sealed class ChangeCommand
           eh change portfolio <repository> --author <alias> --since <instant> --until <instant> [options]
           eh change today --owner <owner> --author @me --timezone <zone>
             --include-open-prs --scope engineering --capacity-hours <hours> [options]
+          eh change period --owner <owner> --author <identity> --period <named-period> [options]
+          eh change compare-team --owner <owner> --contributors-from <owner/repository> [options]
           eh change scope show engineering
 
         Selectors:

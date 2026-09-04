@@ -48,7 +48,10 @@ public static partial class ChangePortfolioComparisonBuilder
                 bucketPolicy.CapacityInputDigest ?? "no-capacity",
                 bucketPolicy.ContributorNormalization.ToString(),
                 options.SourceManifest.Selection.TimeZone,
-                options.ScopeProfile?.Digest ?? "no-scope-profile"));
+                options.ScopeProfile?.Digest ?? "no-scope-profile",
+                options.NativePeriod is null
+                    ? "no-native-period"
+                    : ContractJson.SerializeCompact(options.NativePeriod)));
         ChangePortfolioComparisonReport report = new()
         {
             Status = ChangePortfolioComparisonStatus.Incomplete,
@@ -59,6 +62,7 @@ public static partial class ChangePortfolioComparisonBuilder
             Discovery = options.Discovery,
             ScopeProfile = options.ScopeProfile,
             ScopeSummary = options.ScopeSummary,
+            NativePeriod = options.NativePeriod,
             CliVersion = options.CliVersion,
             EstimatorVersion = ChangePortfolioReconciler.Version,
             SourceChangeEstimatorVersion = ChangeEstimator.Version,

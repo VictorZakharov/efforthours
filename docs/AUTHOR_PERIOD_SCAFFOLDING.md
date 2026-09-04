@@ -1,4 +1,4 @@
-# GitHub-assisted today-to-date author portfolios
+# GitHub-assisted native author-period portfolios
 
 Status: implemented explicit orchestration boundary
 
@@ -10,6 +10,20 @@ The current-day engineering EHE-to-capacity workflow is one invocation:
 eh change today --owner <github-owner> --author "@me" \
   --timezone America/Toronto --include-open-prs --scope engineering \
   --capacity-hours 8 --format markdown --output <today.md> --no-rate
+```
+
+Named single-contributor and team reports use the same boundary:
+
+```text
+eh change period --owner <github-owner> --author "@me" --period last-week \
+  --breakdown day --timezone America/Toronto --include-open-prs \
+  --scope engineering --capacity-hours-per-day 8 --format markdown
+
+eh change compare-team --owner <github-owner> \
+  --contributors-from <github-owner/reference-repository> \
+  --sample 3 --sample-seed <seed> --include-author "@me" \
+  --period last-month --timezone America/Toronto --include-open-prs \
+  --scope engineering --capacity-hours-per-day 8 --format json
 ```
 
 The command can run outside every source checkout. It does not accept or discover a
@@ -31,6 +45,14 @@ The command fixes author-date selection, merge exclusion, and coauthor inclusion
 unless the caller explicitly selects another supported policy. Identity and time
 select immutable changes only and never multiply effort.
 
+Named current periods begin at the local Monday or first of the month and end at
+the frozen `asOf`. Named prior periods use two exact local-calendar boundaries.
+`--breakdown day` creates one local-calendar bucket per day; `total` creates one
+bucket over the same interval. Reference capacity is charged per calendar day,
+including a partial current day, and full-period X is total expected EHE divided
+by total capacity rather than an average of daily X values. A complete no-match
+named period is zero; incomplete provider or execution scope never substitutes zero.
+
 ## Provider discovery
 
 `change today` explicitly opts into GitHub access through authenticated `gh`. It:
@@ -42,6 +64,15 @@ select immutable changes only and never multiply effort.
 - considers only PRs authored by the authenticated/requested identity;
 - retains only default or PR heads with an exact author/coauthor/date/merge match; and
 - pins provider object IDs before acquisition.
+
+`change period` uses the requested single contributor. `change compare-team`
+first enumerates mapped human authors active on the reference repository's
+default branch during the frozen interval. It excludes provider bots,
+service-pattern logins, unmapped authors, and merge commits excluded by policy;
+de-duplicates explicit inclusions; and ranks the remainder by the required seed.
+The resulting public IDs are `included-N` and `sample-N`. The report retains seed,
+requested sample size, eligible population count, public IDs, and an input digest,
+while raw provider identities and the reference repository remain execution-only.
 
 Default-branch interval reads use bounded GraphQL groups of at most 12
 repositories and at most 100 interval commits per repository. A missing field,
@@ -89,7 +120,8 @@ Acquisition fetches only selected object IDs or default/PR source refs, with no 
 `FETCH_HEAD`, local-ref update, or user worktree mutation. Each pinned commit is
 verified after fetching, so a moved provider ref fails closed. Existing immutable
 objects are reused. Per-repository locking serializes concurrent creation/fetches;
-atomic sidecars retain bounded immutable selector resolutions for offline warm
+waiters remain cancellable and reuse the completed entry without a fixed timeout.
+Atomic sidecars retain bounded immutable selector resolutions for offline warm
 reuse. Acquired object and byte deltas are operational telemetry.
 
 ## Engineering scope
@@ -177,7 +209,8 @@ Markdown and emit the same compact action on stderr. Stable safe codes distingui
 provider executable, configuration permission, authentication, owner access, rate
 limit, network, response, and managed-cache failures. Only provider-configuration
 access denial permits a single exact-command retry with prefix
-`eh change today`; all other retry limits are zero. Raw provider stderr and
+`eh change today`, `eh change period`, or `eh change compare-team`, matching the
+invoked workflow; all other retry limits are zero. Raw provider stderr and
 sensitive paths are never serialized.
 
 Provider telemetry further records process count, cumulative startup time,

@@ -24,6 +24,27 @@ internal sealed record ChangePortfolioCommandOptions
 
     public bool Today { get; init; }
 
+    public bool NativePeriod { get; init; }
+
+    public bool TeamComparison { get; init; }
+
+    public ChangePortfolioNativePeriodKind? Period { get; init; }
+
+    public ChangePortfolioNativeBreakdown Breakdown { get; init; } =
+        ChangePortfolioNativeBreakdown.Total;
+
+    public decimal? CapacityHoursPerDay { get; init; }
+
+    public string? ContributorsFrom { get; init; }
+
+    public int? SampleSize { get; init; }
+
+    public string? SampleSeed { get; init; }
+
+    public IReadOnlyList<string> IncludedAuthors { get; init; } = [];
+
+    public bool NativeOptionsProvided { get; init; }
+
     public bool IncludeOpenPullRequests { get; init; }
 
     public decimal? CapacityHours { get; init; }
@@ -87,7 +108,10 @@ internal sealed record ChangePortfolioCommandOptions
 
     public bool IsAuthorPeriod => AuthorAliases.Count > 0;
 
-    public bool IsComparison => Today || Bucket is not null || BucketManifestPath is not null;
+    public bool IsNativePeriod => NativePeriod || TeamComparison;
+
+    public bool IsComparison =>
+        Today || IsNativePeriod || Bucket is not null || BucketManifestPath is not null;
 }
 
 internal readonly record struct ChangePortfolioCommandParseResult(

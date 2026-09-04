@@ -12,6 +12,11 @@ internal static class ChangePortfolioHelp
           eh change portfolio --author-period-manifest <manifest.json> --preflight [options]
           eh change today --owner <owner> --author "@me" --timezone <zone>
             --include-open-prs --scope engineering --capacity-hours <hours> [options]
+          eh change period --owner <owner> --author <identity> --period <named-period>
+            --timezone <zone> --scope engineering --capacity-hours-per-day <hours> [options]
+          eh change compare-team --owner <owner> --contributors-from <owner/repository>
+            --sample <count> --sample-seed <seed> --period <named-period>
+            --timezone <zone> --scope engineering --capacity-hours-per-day <hours> [options]
           eh change portfolio <repository> --author <alias> [--author <alias> ...]
             --since <instant> --until <instant> [options]
           eh change portfolio --repo <owner/name> --author <alias> [--author <alias> ...]
@@ -26,8 +31,19 @@ internal static class ChangePortfolioHelp
           --author-period-manifest <path>
                                     Versioned multi-repository/multi-head author manifest;
                                     each repository uses repositoryPath or gitHubRepository
-          --owner <owner>           GitHub owner for explicit today-to-date discovery
+          --owner <owner>           GitHub owner for provider-assisted period discovery
           --today                   Use the current local calendar day and one partial daily bucket
+          --period <this-week|last-week|this-month|last-month>
+                                    Select a native local-calendar reporting interval
+          --breakdown <total|day>   Emit one total bucket or local calendar-day buckets
+          --capacity-hours-per-day <hours>
+                                    Positive reference denominator per local calendar day/contributor
+          --contributors-from <owner/repository>
+                                    Reference repository for active team contributor selection
+          --sample <count>          Deterministic active-human sample size (1 through 63)
+          --sample-seed <text>      Required reproducible team sample seed
+          --include-author <identity>
+                                    Add a contributor outside the random sample; repeat as needed
           --include-open-prs        Discover matching commits on current open PR heads
           --scope <engineering>     Apply the versioned native engineering path profile
           --capacity-hours <hours>  Positive full-day reference denominator for --today
@@ -46,7 +62,7 @@ internal static class ChangePortfolioHelp
           --head <revision>          Pinned reachable-history boundary (default: HEAD)
 
         Time-bucketed comparison (author-period manifest only):
-          --bucket <calendar-month|calendar-week>
+          --bucket <calendar-month|calendar-week|calendar-day>
                                     Split the selected interval into calendar buckets
           --bucket-manifest <path>  Use caller-supplied gap-free closed buckets
           --capacity-manifest <path>
@@ -107,6 +123,14 @@ internal static class ChangePortfolioHelp
         runs exact bounded preflight internally, builds the same v1 manifest in memory, accepts a complete
         zero-work day, writes JSON or concise Markdown to stdout unless --output is supplied, and
         records privacy-safe discovery scope rather than raw aliases or paths.
+        Native period mode supports this/last week and this/last month. Weeks start Monday in
+        the named timezone. Daily breakdown retains per-day ratios and computes the overall
+        multiplier as total expected EHE divided by total reference capacity, never as an
+        unweighted mean of daily ratios. Team mode samples mapped, active human contributors
+        from the reference repository, excludes bots/service identities, records the seed and
+        population size, and uses membership-stable isolated contributor series. Explicit
+        inclusions are de-duplicated from the sample. Provider, acquisition, reconciliation,
+        failure, privacy, and interpretation boundaries are otherwise the same as today mode.
         Results are repository-attributed Change EHE, not
         actual labor, productivity, employee rankings, performance grades, or compensation advice.
         """;
