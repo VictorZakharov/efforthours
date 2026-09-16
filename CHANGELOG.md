@@ -6,6 +6,12 @@ may still change public contracts with explicit documentation.
 
 ## Unreleased
 
+### Changed
+
+- Updated the .NET test SDK, coverage, and test-platform packages to 18.10.0.
+  Reviewed new Angular/Vitest alerts for non-executed frozen calibration fixtures,
+  retained their exact historical bytes, and extended the lineage guardrail.
+
 ### Added
 
 - Added an explicit, versioned `--vendor-manifest` for repository scan, estimate,

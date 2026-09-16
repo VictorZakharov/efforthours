@@ -1,7 +1,7 @@
 # Third-party notices
 
 This file records the third-party packages resolved by the checked-in NuGet lock
-files and the actions pinned by release workflows as of 2026-09-01. Package
+files and the actions pinned by release workflows as of 2026-09-16. Package
 versions are centrally pinned in `Directory.Packages.props`.
 
 EffortHours is licensed under the MIT License. Third-party components remain under
@@ -116,11 +116,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 | Package | Version | License |
 | --- | --- | --- |
-| Microsoft.NET.Test.Sdk | 18.9.0 | MIT |
-| Microsoft.CodeCoverage | 18.9.0 | MIT |
+| Microsoft.NET.Test.Sdk | 18.10.0 | MIT |
+| Microsoft.CodeCoverage | 18.10.0 | MIT |
 | Microsoft.CodeAnalysis.Analyzers | 5.9.0 | MIT |
-| Microsoft.TestPlatform.ObjectModel | 18.9.0 | MIT |
-| Microsoft.TestPlatform.TestHost | 18.9.0 | MIT |
+| Microsoft.TestPlatform.ObjectModel | 18.10.0 | MIT |
+| Microsoft.TestPlatform.TestHost | 18.10.0 | MIT |
 | xunit | 2.9.3 | Apache-2.0 |
 | xunit.abstractions | 2.0.3 | Apache-2.0, with MIT-licensed imported portions noted by the project |
 | xunit.analyzers | 1.18.0 | Apache-2.0 |

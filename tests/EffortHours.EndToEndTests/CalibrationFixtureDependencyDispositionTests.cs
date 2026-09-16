@@ -4,7 +4,7 @@ using System.Text.Json;
 
 namespace EffortHours.EndToEndTests;
 
-public sealed class CalibrationFixtureDependencyDispositionTests
+public sealed partial class CalibrationFixtureDependencyDispositionTests
 {
     private const string SyntheticRoot = "calibration/mutations/public-synthetic";
     private const string DispositionDocument = $"{SyntheticRoot}/DEPENDENCY_ALERTS.md";
@@ -186,7 +186,7 @@ public sealed class CalibrationFixtureDependencyDispositionTests
         string manifest = Path.Combine(root, disposition.ManifestPath);
         Assert.True(File.Exists(manifest), $"Missing disposition manifest: {disposition.ManifestPath}");
 
-        if (disposition.Package == "vitest")
+        if (disposition.ManifestPath.EndsWith("/package.json", StringComparison.Ordinal))
         {
             using JsonDocument document = JsonDocument.Parse(File.ReadAllText(manifest));
             Assert.True(document.RootElement.GetProperty("private").GetBoolean());
