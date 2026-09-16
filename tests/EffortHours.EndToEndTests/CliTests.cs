@@ -4,7 +4,7 @@ using System.Text.Json.Nodes;
 
 namespace EffortHours.EndToEndTests;
 
-public sealed class CliTests
+public sealed partial class CliTests
 {
     [Fact]
     public async Task HelpPrintsUsageToStandardOutput()

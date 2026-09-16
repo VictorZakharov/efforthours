@@ -8,27 +8,6 @@ internal static class JavaScriptTestCallAnalyzer
         int line,
         JavaScriptSourceMetrics metrics)
     {
-        if (IsAny(tokenization, nameIndex, "test", "it"))
-        {
-            metrics.TestCases++;
-            metrics.TestLine ??= line;
-        }
-        else if (IsAny(tokenization, nameIndex, "describe", "suite"))
-        {
-            metrics.TestSuites++;
-            metrics.TestLine ??= line;
-        }
-        else if (IsAny(tokenization, nameIndex, "expect", "assert", "assertThat"))
-        {
-            metrics.Assertions++;
-            metrics.TestLine ??= line;
-        }
-        else if (IsAny(tokenization, nameIndex, "mock", "spyOn", "stub", "vi", "jest"))
-        {
-            metrics.MockUsages++;
-            metrics.TestLine ??= line;
-        }
-
         if (IsAny(tokenization, nameIndex, "render", "renderHook", "mount", "shallow") &&
             metrics.TechnologyFamilies.Contains("test-component"))
         {

@@ -373,7 +373,7 @@ Run `eh --help` or a subcommand's help for the complete option surface.
 | Topic | Reference |
 | --- | --- |
 | Product boundary | [Product charter](docs/PRODUCT.md) |
-| Estimation semantics | [Estimation model](docs/ESTIMATION_MODEL.md) |
+| Estimation semantics | [Estimation model](docs/ESTIMATION_MODEL.md) and [reviewed vendor ownership](docs/VENDOR_OWNERSHIP.md) |
 | Calibration and repository-model admission | [Calibration](docs/CALIBRATION.md) and [historical frozen v1 policy](docs/MODEL_ADMISSION.md) |
 | Change and portfolio semantics | [Change EHE contract](docs/CHANGE_ESTIMATION.md) |
 | GitHub native author-period modes and Codex integration | [Author-period workflows](docs/AUTHOR_PERIOD_SCAFFOLDING.md) and [Codex companion](docs/CODEX_INTEGRATION.md) |

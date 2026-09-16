@@ -163,6 +163,7 @@ public sealed partial class EffortHoursApplication
             [--fetch-missing] [options]
 
         Options:
+          --vendor-manifest <path>                Apply reviewed, hash-bound third-party ownership decisions
           --repo <owner/name>                     Analyze an immutable GitHub snapshot without checkout
           --revision <value>                      Git revision for --repo (default: HEAD)
           --fetch-missing                         Resolve/fetch missing objects into the private cache

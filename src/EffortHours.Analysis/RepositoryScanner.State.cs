@@ -11,6 +11,9 @@ public sealed partial class RepositoryScanner
         IRepositoryFileSystem fileSystem,
         RepositoryAnalysisArtifactCache? analysisArtifactCache)
     {
+        private readonly HashSet<string> _reviewedPaths = options.VendorManifest?.Files
+            .Select(entry => entry.Path).ToHashSet(StringComparer.Ordinal) ?? [];
+
         private readonly Dictionary<string, RepositoryScanCacheEntry> _cachedFiles =
             cache?.Files.ToDictionary(entry => entry.Path, StringComparer.Ordinal) ??
             new Dictionary<string, RepositoryScanCacheEntry>(StringComparer.Ordinal);
@@ -36,7 +39,7 @@ public sealed partial class RepositoryScanner
             long lastWriteTimeUtcTicks,
             out ScannedFile file)
         {
-            if (!_cachedFiles.TryGetValue(relativePath, out RepositoryScanCacheEntry? entry) ||
+            if (_reviewedPaths.Contains(relativePath) || !_cachedFiles.TryGetValue(relativePath, out RepositoryScanCacheEntry? entry) ||
                 entry.Length != length ||
                 entry.LastWriteTimeUtcTicks != lastWriteTimeUtcTicks)
             {

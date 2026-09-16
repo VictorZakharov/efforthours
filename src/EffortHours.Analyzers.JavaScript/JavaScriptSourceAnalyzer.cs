@@ -77,7 +77,7 @@ internal sealed class JavaScriptSourceAnalyzer(RepositoryTextReader textReader)
             path,
             tokens,
             isTypeScript || extension is ".vue" or ".svelte",
-            hasJsx);
+            hasJsx, fileFact.Tags.Contains("classification:test", StringComparer.Ordinal));
         AddPackageTechnologies(package, syntax.Metrics);
         AddFrameworkFileSignals(extension, package, syntax.Metrics);
         bool isTestFile = fileFact.Tags.Contains("classification:test", StringComparer.Ordinal);

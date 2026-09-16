@@ -6,7 +6,20 @@ may still change public contracts with explicit documentation.
 
 ## Unreleased
 
+### Added
+
+- Added an explicit, versioned `--vendor-manifest` for repository scan, estimate,
+  explain, and review inputs. Exact path/hash decisions exclude reviewed copied
+  bodies outside conventional vendor directories while retaining owned adapters
+  and integration, with bounded validation, cache isolation, and evidence lineage.
+
 ### Fixed
+
+- JavaScript test recognition now requires known framework bindings or conventional
+  test-file globals and respects shadowing. Production regex `.test` and ordinary
+  object methods no longer invent test cases, test effort, or represented coverage.
+  Supported aliases, namespace calls, modifiers, and parameterized declarations
+  retain static recognition; TypeScript fallback limitations remain explicit.
 
 - Restored account-wide open-PR discovery for native `@me` reports by supplying
   the GraphQL endpoint, avoiding the unintended per-repository REST fallback.

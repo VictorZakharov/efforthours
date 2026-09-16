@@ -81,6 +81,10 @@ known generator, template, or conventional output and value only meaningful
 customization. When that comparison is not reliable, excluding the generated body
 with an explicit note is preferable to valuing it as hand-written production code.
 
+Explicit reviewed ownership can be supplied through `--vendor-manifest`. Its
+bounded, hash-verified decisions preserve copied-body and owned-integration
+lineage without automatic license-header exclusions; see [VENDOR_OWNERSHIP.md](VENDOR_OWNERSHIP.md).
+
 ### 4.4 Tests
 
 Automated-test effort reflects the tests currently represented by the repository.
@@ -106,6 +110,19 @@ limitation remains explicit even when its artifact digest is verified.
 
 A repository with 80% measured coverage is valued at that observed level. A
 repository with more extensive, meaningful coverage represents more testing effort.
+JavaScript analyzer `0.5.3` qualifies test declarations through parser-backed
+JavaScript/JSX bindings, lexical shadowing, recognized framework imports or static
+CommonJS bindings, and conventional test-file globals. Regex `.test` and ordinary
+production member calls are not test declarations. Imported aliases, namespace
+calls, supported modifiers, and `.each` builders retain one statically represented
+case per declaration; rows are not executed or expanded. TypeScript/TSX and parse
+fallbacks use a bounded token pass for static ES imports and test-file globals.
+Names shadowed anywhere in those files are conservatively uncounted. Dynamic
+aliases, computed APIs, custom runners, and arbitrary re-exports are not resolved.
+Test-file classification can still supply the existing coarse fallback when
+individual cases cannot be proven. Corrected facts recompute test effort and gaps;
+no test prior or model admission changes.
+
 Raw test counts must be moderated for generated tests, repetition, triviality, data
 driven cases, and complexity.
 
@@ -172,6 +189,18 @@ artifact. It does not add historical rework or open-ended stakeholder discovery.
 
 Profile-specific work must appear as explicit ledger items rather than an opaque
 multiplier whenever practical.
+
+### 5.3 Using recreation EHE in migration planning
+
+A repository recreation estimate and a proportional feature allocation are not
+remaining migration budgets. A migration review must separately identify target
+behavior, already implemented parity, reusable implementation, remaining work,
+shared integration/validation, and any retirement or remediation work. Label raw
+EH output, allocated planning shares, and independently reviewed budgets distinctly;
+replacing a budget must reconcile the prior allocation and previously booked credits.
+Use source-backed low/expected/high totals and inspect material workflow differences.
+More task rows or a small classification correction do not validate overall accuracy.
+This guidance adds no migration estimator or model coefficient.
 
 ## 6. Effort categories
 

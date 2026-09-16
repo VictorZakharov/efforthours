@@ -56,6 +56,7 @@ public static class ContractSchemaCatalog
         SchemaNames.HostReviewValidation,
         SchemaNames.RateCard,
         SchemaNames.RateCardModel,
+        SchemaNames.ReviewedVendorManifest,
         SchemaNames.RepositoryEvidence,
         SchemaNames.RepositoryScanCache,
         SchemaNames.SeedRuleModel,

@@ -8,7 +8,7 @@ namespace EffortHours.Analysis;
 public sealed partial class RepositoryScanner : IRepositoryScanner
 {
     public const string AnalyzerName = "efforthours.common-scanner";
-    public const string AnalyzerVersion = "0.2.14";
+    public const string AnalyzerVersion = "0.2.15";
 
     private const int AggregateLocationLimit = 50;
 
@@ -100,6 +100,11 @@ public sealed partial class RepositoryScanner : IRepositoryScanner
                 "The repository root cannot be a symbolic link or filesystem reparse point.");
         }
 
+        if (options.VendorManifest is not null)
+        {
+            _ = EffortHours.Contracts.ReviewedVendorManifestValidation.ComputeDigest(options.VendorManifest);
+        }
+
         string repositoryKey = ComputeRepositoryKey(rootPath);
         string? cachePath = ResolveCachePath(rootPath, options.CachePath);
         RepositoryScanCache? cache = cachePath is null
@@ -123,7 +128,9 @@ public sealed partial class RepositoryScanner : IRepositoryScanner
                 cancellationToken).ConfigureAwait(false);
         }
 
-        return BuildEvidence(rootPath, state);
+        IReadOnlyList<EvidenceFact> ownership = ApplyReviewedVendorManifest(state, cancellationToken);
+        RepositoryEvidence evidence = BuildEvidence(rootPath, state);
+        return evidence with { Facts = [.. evidence.Facts.Concat(ownership).OrderBy(fact => fact.Id, StringComparer.Ordinal)] };
     }
 
     private static async Task TraverseAsync(ScanState state, CancellationToken cancellationToken)
@@ -448,7 +455,7 @@ public sealed partial class RepositoryScanner : IRepositoryScanner
                 Name = repositoryName,
                 Scope = ".",
                 Ecosystems = ecosystems,
-                SourceDigest = ComputeSourceDigest(files),
+                SourceDigest = ComputeSourceDigest(files, state.Options.VendorManifest is null ? null : EffortHours.Contracts.ReviewedVendorManifestValidation.ComputeDigest(state.Options.VendorManifest)),
             },
             Facts = facts,
             Diagnostics = diagnostics,
@@ -808,7 +815,7 @@ public sealed partial class RepositoryScanner : IRepositoryScanner
     private static string[] NormalizeTags(IEnumerable<string> tags) =>
         [.. tags.Distinct(StringComparer.Ordinal).OrderBy(tag => tag, StringComparer.Ordinal)];
 
-    private static string ComputeSourceDigest(IReadOnlyList<ScannedFile> files)
+    private static string ComputeSourceDigest(IReadOnlyList<ScannedFile> files, string? ownershipDigest = null)
     {
         using IncrementalHash hash = IncrementalHash.CreateHash(HashAlgorithmName.SHA256);
         foreach (ScannedFile file in files)
@@ -819,6 +826,8 @@ public sealed partial class RepositoryScanner : IRepositoryScanner
             hash.AppendData([(byte)'\n']);
         }
 
+        if (ownershipDigest is not null)
+            hash.AppendData(Encoding.UTF8.GetBytes("reviewed-vendor-policy\0" + ownershipDigest));
         return $"sha256:{Convert.ToHexString(hash.GetHashAndReset()).ToLowerInvariant()}";
     }
 
