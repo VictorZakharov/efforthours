@@ -53,7 +53,7 @@ Some manifests, the CI fixture, and the Dockerfile contain inert public package,
 action, or image identifiers solely to exercise static classification. EffortHours
 does not install or redistribute that software and analyzed every fixture without
 building, running, restoring, pulling images, or accessing the network.
-The five advisory-affected declarations retained by immutable fixture identities
+The six advisory-affected declarations retained by immutable fixture identities
 have a narrow, auditable `not_used` disposition in
 [`DEPENDENCY_ALERTS.md`](DEPENDENCY_ALERTS.md); the advisories remain valid for
 any consumer that installs or executes those declared versions.
