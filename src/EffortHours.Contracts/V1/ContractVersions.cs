@@ -141,6 +141,7 @@ public static class CalibrationUncertaintyVersions
 
 public static class SchemaNames
 {
+    public const string ReviewedVendorManifest = "reviewed-vendor-manifest.schema.json";
     public const string CalibrationAuthoringPacket = "calibration-authoring-packet.schema.json";
     public const string CalibrationCorpus = "calibration-corpus.schema.json";
     public const string CalibrationCorpusReviewPacket = "calibration-corpus-review-packet.schema.json";

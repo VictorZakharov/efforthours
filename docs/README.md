@@ -15,6 +15,8 @@ agent instructions.
   work items, planning ranges, uncertainty, gaps, and replacement cost.
 - [Engineering plan](PLAN.md) records the implemented architecture, current
   baseline, delivery guardrails, and active priorities.
+- [Reviewed third-party ownership](VENDOR_OWNERSHIP.md) defines explicit hash-bound
+  vendor manifests, source preservation, cache behavior, and input parity.
 - [Reporting](REPORTING.md) defines canonical reports, compact projections,
   capability grouping, explanation, and output compatibility.
 - [Pricing](PRICING.md) keeps the dated default rate and its public-data derivation

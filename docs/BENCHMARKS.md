@@ -1861,3 +1861,52 @@ The separate end-to-end regression above verifies persisted hint reuse through
 EHE. No wall-time threshold runs in ordinary CI. The original live 210.3-second
 report has not been rerun, and the under-30-second full-report target remains
 unverified.
+
+## JavaScript test and reviewed-ownership correctness checkpoint — September 16, 2026
+
+Synthetic CLI scans compare main `f30c33d` (JavaScript `0.5.2`, common scanner
+`0.2.14`) with JavaScript `0.5.3` and common scanner `0.2.15`. Both use
+`seed-rules/0.4.0`, Release, .NET SDK `10.0.203`/runtime `10.0.7`, and Windows.
+This measures classification and resulting ledger behavior, not wall-time speed
+or private-application accuracy. Fixture source bytes are unchanged.
+
+| Synthetic case | Before | After |
+| --- | ---: | ---: |
+| Production regex `.test(value)`: alleged cases | 1 | 0 |
+| Production `checker.test(value)`: alleged cases | 1 | 0 |
+| Regex `.exec(value) !== null` control: cases | 0 | 0 |
+| Global Jest-style declaration in a test file: cases | 1 | 1 |
+| Vitest imported `test as check`: explicit cases | 0 | 1 |
+| Regex fixture: represented unit-test EHE, low/expected/high | 0.75 / 1.25 / 2.00 | 0 / 0 / 0 |
+| Regex fixture: missing-tests gap, low/expected/high | absent | 0.75 / 2.00 / 4.25 |
+| Copied widget under `common`: maintained source files | 1 | 0 with reviewed manifest |
+| Identical widget under `Plugin`: maintained source files | 1 | 0 with reviewed manifest |
+| Identical widget under default-excluded `vendor`: maintained source files | 0 | 0 |
+
+The regex fixture is one production file:
+
+```javascript
+export function isInteger(value) { return /^[-]?\d+$/.test(value); }
+```
+
+Scan with `eh scan <fixture>` and estimate with
+`eh estimate <fixture> --no-rate`. The production source-structure fact remains
+present after the false test fact is removed. The missing-tests amount is
+professionalization work, separate from represented EHE.
+
+For the widget fixtures, the after run explicitly supplies an exact path/hash
+manifest conforming to [VENDOR_OWNERSHIP.md](VENDOR_OWNERSHIP.md); without it,
+`common` and `Plugin` remain included. Each after result retains one vendored
+file and an ownership decision, with no JavaScript source-structure fact for the
+copied body. No license header automatically removes source.
+
+The committed `JavaScriptTestRecognitionTests` and `ReviewedVendorManifestTests`
+reproduce the behavior with repository-authored MIT synthetic fixtures. A paired
+ownership control contains a copied function, an owned adapter, and owned
+MIT-licensed source: explicit review reduces admitted source functions from three
+to two and preserves both owned files. CLI regressions verify saved-evidence
+parity, immutable offline Git parity, no aggregate for stale/invalid decisions,
+and rehashing even when changed bytes retain the original length and timestamp.
+
+No application-level correction, migration savings, estimator-rate change,
+calibration claim, or runtime-performance conclusion follows from these fixtures.

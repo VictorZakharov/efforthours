@@ -95,6 +95,10 @@ object acquisition are explicit orchestration only and never become effort evide
 `--fetch-missing` is the sole authorization to use the provider/network and populate
 the private bare cache; a complete warm rerun is offline.
 
+Reviewed whole third-party bodies can be identified with an explicit, versioned
+[ownership manifest](VENDOR_OWNERSHIP.md). Exact content hashes and decision
+lineage keep owned adaptations and integration separate from copied bodies.
+
 ### Change EHE
 
 Explicit Change estimation values the normalized final functional and quality

@@ -1,3 +1,5 @@
+using EffortHours.Contracts.V1;
+
 namespace EffortHours.Analysis;
 
 public sealed record RepositoryScanOptions
@@ -7,6 +9,8 @@ public sealed record RepositoryScanOptions
     public bool RespectEffortHoursIgnore { get; init; } = true;
 
     public string? CachePath { get; init; }
+
+    public ReviewedVendorManifest? VendorManifest { get; init; }
 
     public int FileReadBufferSize { get; init; } = 64 * 1024;
 

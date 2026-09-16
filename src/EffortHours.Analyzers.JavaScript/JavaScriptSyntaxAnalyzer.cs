@@ -11,11 +11,12 @@ internal static partial class JavaScriptSyntaxAnalyzer
         string path,
         JavaScriptTokenization tokens,
         bool useTypeScriptLexer,
-        bool hasJsx)
+        bool hasJsx, bool testFile = false)
     {
         JavaScriptSourceMetrics metrics = AnalyzeTokens(path, tokens, hasJsx);
         if (useTypeScriptLexer)
         {
+            JavaScriptTestTokenDeclarations.Analyze(tokens, testFile, metrics);
             metrics.LexerBackedFiles = 1;
             metrics.StructuralDetectedCallables = metrics.Functions + metrics.Methods;
             return new JavaScriptSyntaxResult(metrics, "typescript-token-stream", null);
@@ -25,10 +26,12 @@ internal static partial class JavaScriptSyntaxAnalyzer
             (!hasJsx && TryParse(source, path, true, out root, out errorLine, out parserKind)))
         {
             ApplyAstMetrics(root!, metrics, tokens);
+            JavaScriptTestDeclarations.Analyze(root!, testFile, metrics);
             metrics.ParserBackedFiles = 1;
             return new JavaScriptSyntaxResult(metrics, parserKind, null);
         }
 
+        JavaScriptTestTokenDeclarations.Analyze(tokens, testFile, metrics);
         metrics.LexerBackedFiles = 1;
         metrics.StructuralDetectedCallables = metrics.Functions + metrics.Methods;
         return new JavaScriptSyntaxResult(metrics, "token-stream-fallback", errorLine);
