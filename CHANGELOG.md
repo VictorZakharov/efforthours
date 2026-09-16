@@ -6,6 +6,15 @@ may still change public contracts with explicit documentation.
 
 ## Unreleased
 
+### Fixed
+
+- Restored account-wide open-PR discovery for native `@me` reports by supplying
+  the GraphQL endpoint, avoiding the unintended per-repository REST fallback.
+- Managed Git caches now remember bounded verified commit hints for fetch
+  negotiation, reusing common history when selected heads advance without
+  creating refs, checkouts, or `FETCH_HEAD`. Invalid hints retain complete normal
+  acquisition, and report selection and EHE rules remain unchanged.
+
 ## 0.10.0-alpha.20 - 2026-09-04
 
 ### Added

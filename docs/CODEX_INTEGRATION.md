@@ -173,7 +173,9 @@ Acceptance coverage includes embedded/public package identity, print without
 mutation, missing/current/stale checks, explicit atomic install/update, provider
 failure classification and privacy, schema-validated JSON/Markdown incomplete
 reports, exact one-retry policy, batched-versus-REST commit identity, forced
-default/open-PR completeness fallback, bounded open-PR detail concurrency,
+default/open-PR completeness fallback, exact GraphQL endpoint invocation,
+constant account-wide PR request counts for 1 and 247 repository inventories,
+bounded open-PR detail concurrency,
 metadata cache reuse, process/query/startup accounting, and the existing
 unrelated-folder native today workflow.
 

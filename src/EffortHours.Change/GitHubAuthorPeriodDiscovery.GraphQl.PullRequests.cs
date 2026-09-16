@@ -25,6 +25,7 @@ internal static partial class GitHubAuthorPeriodDiscoveryJson
             workingDirectory,
             [
                 "api",
+                "graphql",
                 "--paginate",
                 "--slurp",
                 "-f",

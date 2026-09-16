@@ -1757,3 +1757,107 @@ latency, near-linear core scaling, or completion of issue #182. Ordinary CI gate
 the exact cache invalidation, cold fallback, semantic equivalence, deterministic
 operation counts, and declared bounds, never these wall-time or sampled-memory
 measurements.
+
+## Managed fetch and today discovery regression checkpoint
+
+The September 16, 2026 checkpoint checks two orchestration corrections without
+changing selection, analysis scope, or EHE. It uses synthetic local repositories,
+Git `2.52.0.windows.1`, .NET SDK `10.0.203`, and .NET runtime `10.0.7`.
+No live-provider latency claim follows from these measurements.
+
+`AdvancingManagedHeadsReuseHistoryAcrossInstancesWithoutRefs` creates one root
+commit with eight distinct text blobs (10 reachable objects), acquires it into two
+ref-free bare caches, and then adds one C# blob in a new commit (three new
+objects). One control removes the optional negotiation hints; the other recreates
+the cache service and reuses its persisted verified commit hint. Both fetch over
+local `file://` transport. The test reads the sender's progress total; net cache
+growth is deliberately not used because Git can retain a previously cached base
+when fixing a thin pack.
+
+| Observation | Without hints | With persisted hints |
+| --- | ---: | ---: |
+| Objects sent after the new commit | 13 | 3 |
+| Refs created in the managed cache | 0 | 0 |
+| `FETCH_HEAD`, index, or worktree created | No | No |
+| Required immutable graph available | Yes | Yes |
+
+Four concurrent callers of the advancing-head cache perform one fetch; the other
+three reuse its completed acquisition. The fetched Change estimate has the same
+effort and base/head evidence digests as the source checkout. Separate cases
+cover missing, malformed, oversized, incompatible, missing-object, non-commit,
+and unwritable hints, failed post-fetch verification, and cancellation. These
+gate deterministic acquisition and safety behavior, not wall-clock time.
+
+`AccountWideOpenPullInventoryAvoidsPerRepositoryListQueries` checks one relevant
+open PR against both 1- and 247-repository inventories. Both use three calls
+(account inventory, PR detail, and PR commits), with no per-repository PR-list
+queries and an explicitly verified `gh api graphql` endpoint. Owner/default-head
+discovery is outside that component measurement. The Unix process-level today
+fixture also rejects regression to per-repository PR lists; Windows exercises
+the strict in-process invocation test and physical Git tests.
+
+Reproduce these focused checks after the Release build:
+
+```text
+dotnet test tests/EffortHours.Tests/EffortHours.Tests.csproj --no-build --no-restore --configuration Release --filter FullyQualifiedName~GitHubProviderBatchingTests
+dotnet test tests/EffortHours.EndToEndTests/EffortHours.EndToEndTests.csproj --no-build --no-restore --configuration Release --filter FullyQualifiedName~AdvancingManagedHeadsReuseHistoryAcrossInstancesWithoutRefs
+```
+
+The fixture is intentionally small and demonstrates avoided object transfer,
+cross-invocation reuse, and bounded concurrency. It does not establish a
+30-second today report, cold-organization performance, or a production speedup.
+
+### Advancing-head fetch timing (16 MiB synthetic history)
+
+The same date's explicit command-level benchmark uses 64 deterministic 256-KiB
+binary blobs, a base tree/commit (66 objects total), and one new C# blob/tree/
+commit. Every measurement starts a fresh Git process against its own ref-free
+bare cache already holding the base. The before command matches `cd40de6`'s
+managed fetch flags; the after command adds the verified base commit as
+`--negotiation-tip`. Both use local `file://` transport, identical credentials/
+fetch options, isolated Git configuration, disabled automatic maintenance, and
+sender progress output. The fixture is synthetic and covered by this repository's
+MIT license.
+
+Environment: Windows `10.0.26200`, 24 logical processors, PowerShell `7.6.5`,
+Git `2.52.0.windows.1`. All fixture generation and cache priming precede timing.
+One discarded pair warms process/OS caches; five measured pairs alternate order.
+The timer covers Git process startup through completion, including reading its
+output. It excludes cache setup, application locking/hint validation/persistence,
+provider discovery, estimation, and post-fetch verification. This isolates fetch
+negotiation; it is not an application or network benchmark.
+
+| Measure | Before: no negotiation tip | After: immutable negotiation tip |
+| --- | ---: | ---: |
+| Median fetch wall time | 1.539689 s | 0.158357 s |
+| Minimum / maximum | 1.502136 / 1.583507 s | 0.154768 / 0.162203 s |
+| Objects sent per advancing-head fetch | 69 | 3 |
+| Exact acquired graph matches source | 5/5 | 5/5 |
+| Local refs / `FETCH_HEAD` / index created | 0 / no / no | 0 / no / no |
+| Failures | 0 | 0 |
+
+Median command time is 89.7% lower (9.72x); sent object count is 95.7% lower.
+Neither number estimates production speedup. The 16 MiB describes source payload,
+not measured wire bytes. Raw wall-time samples in seconds:
+
+| Pair | Order | Before | After |
+| --- | --- | ---: | ---: |
+| Discarded warm-up | Before, after | 1.501156 | 0.162566 |
+| 1 | After, before | 1.552946 | 0.155456 |
+| 2 | Before, after | 1.539689 | 0.161728 |
+| 3 | After, before | 1.506010 | 0.158357 |
+| 4 | Before, after | 1.502136 | 0.162203 |
+| 5 | After, before | 1.583507 | 0.154768 |
+
+Reproduce with PowerShell 7 and Git; the script writes all samples and environment
+metadata to an ignored, uniquely named directory under `artifacts`:
+
+```text
+pwsh -NoProfile -File benchmarks/Measure-ManagedFetchNegotiation.ps1
+```
+
+The separate end-to-end regression above verifies persisted hint reuse through
+`GitHubRepositoryCache`, concurrent acquisition, fallback behavior, and unchanged
+EHE. No wall-time threshold runs in ordinary CI. The original live 210.3-second
+report has not been rerun, and the under-30-second full-report target remains
+unverified.

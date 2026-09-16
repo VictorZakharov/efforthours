@@ -82,8 +82,10 @@ public sealed class GitHubProviderBatchingTests
         Assert.Null(result);
     }
 
-    [Fact]
-    public async Task AccountWideOpenPullInventoryAvoidsPerRepositoryListQueries()
+    [Theory]
+    [InlineData(1)]
+    [InlineData(247)]
+    public async Task AccountWideOpenPullInventoryAvoidsPerRepositoryListQueries(int repositoryCount)
     {
         string head = new('c', 40);
         string parent = new('d', 40);
@@ -118,13 +120,19 @@ public sealed class GitHubProviderBatchingTests
             JsonSerializer.Serialize(new { commits = 1, head = new { sha = head } }),
             RestCommitPage(head, parent));
         ProviderQueryCounters counters = new();
+        GitHubDiscoveryRepository[] repositories =
+        [
+            new("42", "owner/repository", "main"),
+            .. Enumerable.Range(1, repositoryCount - 1).Select(index =>
+                new GitHubDiscoveryRepository($"inactive-{index}", $"owner/inactive-{index}", "main")),
+        ];
 
         IReadOnlyList<DiscoveredRepository>? result =
             await GitHubAuthorPeriodDiscoveryJson
                 .DiscoverViewerOpenPullHeadsAccountWideAsync(
                     runner,
                     "unrelated-folder",
-                    [new GitHubDiscoveryRepository("42", "owner/repository", "main")],
+                    repositories,
                     "selected",
                     ["selected", "selected@example.test"],
                     Since,
@@ -280,6 +288,11 @@ public sealed class GitHubProviderBatchingTests
             bool requireSuccess = true)
         {
             cancellationToken.ThrowIfCancellationRequested();
+            if (arguments.Any(argument => argument.StartsWith("query=", StringComparison.Ordinal)))
+            {
+                Assert.Equal("graphql", arguments[1]);
+            }
+
             Calls.Add([.. arguments]);
             return Task.FromResult(new ExternalCommandResult(0, _outputs.Dequeue(), string.Empty)
             {
