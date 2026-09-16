@@ -16,16 +16,37 @@ public sealed partial class GitClient
         string repositoryPath,
         string fetchSource,
         IReadOnlyList<string> sourceRefs,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default) => await FetchManagedObjectsAsync(
+            repositoryPath,
+            fetchSource,
+            sourceRefs,
+            [],
+            cancellationToken).ConfigureAwait(false);
+
+    internal async Task FetchManagedObjectsAsync(
+        string repositoryPath,
+        string fetchSource,
+        IReadOnlyList<string> sourceRefs,
+        IReadOnlyList<string> negotiationTips,
+        CancellationToken cancellationToken)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(repositoryPath);
         ArgumentException.ThrowIfNullOrWhiteSpace(fetchSource);
         ArgumentNullException.ThrowIfNull(sourceRefs);
+        ArgumentNullException.ThrowIfNull(negotiationTips);
         if (sourceRefs.Count is < 1 or > 32 || sourceRefs.Any(string.IsNullOrWhiteSpace))
         {
             throw new ArgumentException(
                 "Managed acquisition requires between 1 and 32 provider source refs or commits.",
                 nameof(sourceRefs));
+        }
+
+        if (negotiationTips.Count > GitHubFetchNegotiationCache.MaximumTips ||
+            negotiationTips.Any(tip => !GitHubFetchNegotiationCache.IsObjectId(tip)))
+        {
+            throw new ArgumentException(
+                "Managed fetch negotiation requires at most 32 full immutable commit IDs.",
+                nameof(negotiationTips));
         }
 
         List<string> arguments =
@@ -38,6 +59,8 @@ public sealed partial class GitClient
             "--no-tags",
             "--no-write-fetch-head",
             "--no-recurse-submodules",
+            .. negotiationTips.Distinct(StringComparer.Ordinal).Order(StringComparer.Ordinal)
+                .Select(tip => "--negotiation-tip=" + tip),
             fetchSource,
             .. sourceRefs.Distinct(StringComparer.Ordinal).Order(StringComparer.Ordinal),
         ];

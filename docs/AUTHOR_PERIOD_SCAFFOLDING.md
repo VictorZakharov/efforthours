@@ -122,7 +122,18 @@ verified after fetching, so a moved provider ref fails closed. Existing immutabl
 objects are reused. Per-repository locking serializes concurrent creation/fetches;
 waiters remain cancellable and reuse the completed entry without a fixed timeout.
 Atomic sidecars retain bounded immutable selector resolutions for offline warm
-reuse. Acquired object and byte deltas are operational telemetry.
+reuse. The optional `github-fetch-negotiation/1.0.0` sidecar stores at most 32
+commit IDs from the last successful authorized acquisition/reuse in at most 8 KiB.
+On an advancing-head fetch, existing selected commits and still-local sidecar
+commits are advertised as explicit Git negotiation tips, so a ref-free cache can
+reuse common history without updating refs. Tips are checked as commits before
+use and never select work or prove acquisition complete. Missing, incompatible,
+oversized, malformed, or unavailable hints fall back to ordinary acquisition;
+failed head verification does not replace hints. Updates are atomic under the
+existing repository lock, optional write failures do not invalidate acquired
+objects, and no-fetch reads do not update this sidecar. Acquired object and byte
+deltas measure object-store growth, not wire transfer, and remain operational
+telemetry.
 
 ## Engineering scope
 

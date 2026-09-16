@@ -180,6 +180,13 @@ local-mode PR acquisition may add immutable objects to the explicitly selected
 local object database. Neither path updates local or remote-tracking refs,
 `FETCH_HEAD`, an index, or a worktree, and neither checks out or executes target
 code. A no-flag managed-cache run performs no provider or network access.
+Authorized managed acquisition remembers at most 32 verified selected commit IDs
+in an optional atomic, 8-KiB-bounded `github-fetch-negotiation/1.0.0` sidecar. An
+advancing-head fetch verifies still-local hints and supplies explicit negotiation
+tips so Git can reuse the ref-free cache's common history. Invalid or missing
+hints use the complete ordinary fetch; hints never select work, create refs, or
+replace post-fetch verification of every required immutable head. No-fetch runs
+do not update the hints.
 Cancellation is propagated to Git and no report is emitted from a partial
 acquisition. Once both exact resolved objects exist, Git must resolve exactly
 one merge base; no common ancestor or several criss-cross merge bases fail rather

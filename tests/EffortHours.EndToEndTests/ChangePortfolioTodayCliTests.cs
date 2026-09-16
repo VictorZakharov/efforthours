@@ -114,6 +114,9 @@ public sealed partial class ChangeCliTests
                 result.ExitCode == 0,
                 $"today command failed ({result.ExitCode}): {result.StandardError}\n{result.StandardOutput}");
             Assert.Empty(result.StandardOutput);
+            string providerCalls = await File.ReadAllTextAsync(Path.Combine(fakeRoot, "gh.calls"));
+            Assert.Contains("api graphql --paginate --slurp", providerCalls, StringComparison.Ordinal);
+            Assert.DoesNotContain("/pulls?state=open", providerCalls, StringComparison.Ordinal);
             string report = await File.ReadAllTextAsync(reportPath);
             Assert.Contains("Status: **complete**", report, StringComparison.Ordinal);
             Assert.Contains("1 identity-selected commits", report, StringComparison.Ordinal);
@@ -339,6 +342,8 @@ public sealed partial class ChangeCliTests
         string viewer = "{\"login\":\"selected-contributor\"}";
         string emails = "[[{\"email\":\"selected@example.invalid\",\"verified\":true}]]";
         string pulls = "[[]]";
+        string accountPulls =
+            """[{"data":{"user":{"pullRequests":{"totalCount":0,"nodes":[],"pageInfo":{"hasNextPage":false,"endCursor":null}}}}}]""";
         string timestamp = selectedAt.ToString("O", CultureInfo.InvariantCulture);
         string defaultCommits = $$$"""
             [[{"sha":"{{{head}}}","parents":[],"author":{"login":"selected-contributor"},"commit":{"author":{"name":"Selected Contributor","email":"selected@example.invalid","date":"{{{timestamp}}}"},"committer":{"name":"Selected Contributor","email":"selected@example.invalid","date":"{{{timestamp}}}"},"message":"selected today"}}]]
@@ -360,8 +365,10 @@ public sealed partial class ChangeCliTests
 
         string script =
             "#!/bin/sh\n" +
+            "printf '%s\\n' \"$*\" >> \"$0.calls\"\n" +
             "case \"$*\" in\n" +
             "  'api users/example-owner') printf '%s\\n' '" + owner + "' ;;\n" +
+            "  'api graphql --paginate --slurp '*) printf '%s\\n' '" + accountPulls + "' ;;\n" +
             "  'api user') printf '%s\\n' '" + viewer + "' ;;\n" +
             "  'api --paginate --slurp user/emails?per_page=100') printf '%s\\n' '" + emails + "' ;;\n" +
             "  'api --paginate --slurp orgs/example-owner/repos?per_page=100&type=all') printf '%s\\n' '" + repositories + "' ;;\n" +

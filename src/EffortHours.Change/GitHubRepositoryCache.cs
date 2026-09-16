@@ -66,6 +66,7 @@ internal sealed class GitHubRepositoryCache
         await EnsureBareRepositoryAsync(path, fetchMissing, cancellationToken).ConfigureAwait(false);
         GitObjectStorage before = await MeasureAsync(path, cancellationToken).ConfigureAwait(false);
         List<DiscoveredHead> missing = [];
+        List<string> localObjectIds = [];
         int local = 0;
         foreach (DiscoveredHead head in heads)
         {
@@ -73,6 +74,7 @@ internal sealed class GitHubRepositoryCache
                 .ConfigureAwait(false))
             {
                 local++;
+                localObjectIds.Add(head.ObjectId);
             }
             else
             {
@@ -87,10 +89,28 @@ internal sealed class GitHubRepositoryCache
                 throw MissingCacheException();
             }
 
+            IReadOnlyList<string> cachedTips = await GitHubFetchNegotiationCache.ReadAsync(
+                path,
+                cancellationToken).ConfigureAwait(false);
+            List<string> negotiationTips = [.. localObjectIds.Distinct(StringComparer.Ordinal)];
+            foreach (string tip in cachedTips.Except(localObjectIds, StringComparer.Ordinal))
+            {
+                if (negotiationTips.Count == GitHubFetchNegotiationCache.MaximumTips)
+                {
+                    break;
+                }
+
+                if (await _git.CommitExistsAsync(path, tip, cancellationToken).ConfigureAwait(false))
+                {
+                    negotiationTips.Add(tip);
+                }
+            }
+
             await _git.FetchManagedObjectsAsync(
                 path,
                 _fetchSource(repositoryIdentity),
                 [.. missing.Select(head => head.FetchRef)],
+                negotiationTips,
                 cancellationToken).ConfigureAwait(false);
             foreach (DiscoveredHead head in missing)
             {
@@ -102,6 +122,14 @@ internal sealed class GitHubRepositoryCache
                         "the provider ref may have moved during discovery.");
                 }
             }
+        }
+
+        if (fetchMissing)
+        {
+            await GitHubFetchNegotiationCache.WriteAsync(
+                path,
+                heads.Select(head => head.ObjectId),
+                cancellationToken).ConfigureAwait(false);
         }
 
         GitObjectStorage after = await MeasureAsync(path, cancellationToken).ConfigureAwait(false);
