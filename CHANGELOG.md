@@ -6,6 +6,8 @@ may still change public contracts with explicit documentation.
 
 ## Unreleased
 
+## 0.10.0-alpha.22 - 2026-09-17
+
 ### Fixed
 
 - Native GitHub discovery preserves successful default-head batches when another
