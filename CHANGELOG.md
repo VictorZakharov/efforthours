@@ -6,6 +6,8 @@ may still change public contracts with explicit documentation.
 
 ## Unreleased
 
+## 0.10.0-alpha.21 - 2026-09-16
+
 ### Changed
 
 - Updated the .NET test SDK, coverage, and test-platform packages to 18.10.0.
@@ -26,7 +28,6 @@ may still change public contracts with explicit documentation.
   object methods no longer invent test cases, test effort, or represented coverage.
   Supported aliases, namespace calls, modifiers, and parameterized declarations
   retain static recognition; TypeScript fallback limitations remain explicit.
-
 - Restored account-wide open-PR discovery for native `@me` reports by supplying
   the GraphQL endpoint, avoiding the unintended per-repository REST fallback.
 - Managed Git caches now remember bounded verified commit hints for fetch
