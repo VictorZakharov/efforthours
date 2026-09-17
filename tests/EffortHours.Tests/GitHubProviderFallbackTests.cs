@@ -67,14 +67,18 @@ public sealed partial class GitHubProviderBatchingTests
     public async Task ProviderLinkedEmailWorksWithBothGraphQlAndRestForAnotherUser()
     {
         GitHubDiscoveryRepository repository = new("42", "owner/repository", "main");
+        string graphCommit = GraphDefaultHead(new('a', 40), new('b', 40))
+            .Replace("Selected", "Different Git display name", StringComparison.Ordinal);
+        string restCommit = RestCommitPage(new('a', 40), new('b', 40))
+            .Replace("Selected", "Different Git display name", StringComparison.Ordinal);
         ProviderQueryCounters graphCounters = new() { ContributorIdentity = new("selected") };
         DefaultHeadBatchResult graph = await GitHubAuthorPeriodDiscoveryJson.DiscoverDefaultHeadsBatchedAsync(
-            new QueueRunner(GraphDefaultHead(new('a', 40), new('b', 40))),
+            new QueueRunner(graphCommit),
             "unused", [repository], ["selected"], Since, Until, ChangePortfolioDateField.Author,
             ChangePortfolioMergePolicy.Exclude, ChangePortfolioCoauthorPolicy.Include, graphCounters, default);
         ProviderQueryCounters restCounters = new() { ContributorIdentity = new("selected") };
         DiscoveredRepository? rest = await GitHubAuthorPeriodDiscoveryJson.DiscoverHeadsAsync(
-            new QueueRunner(RestCommitPage(new('a', 40), new('b', 40))),
+            new QueueRunner(restCommit),
             "unused", repository, ["selected"], "different-viewer", Since, Until,
             ChangePortfolioDateField.Author, ChangePortfolioMergePolicy.Exclude,
             ChangePortfolioCoauthorPolicy.Include, false, restCounters, default);
