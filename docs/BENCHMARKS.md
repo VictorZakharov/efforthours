@@ -1910,3 +1910,64 @@ and rehashing even when changed bytes retain the original length and timestamp.
 
 No application-level correction, migration savings, estimator-rate change,
 calibration claim, or runtime-performance conclusion follows from these fixtures.
+
+## Bounded today-discovery checkpoint
+
+The September 17, 2026 native CLI checkpoint compares released alpha.21
+(`c5b7cf6`) with the bounded-discovery implementation. The synthetic MIT fixture
+contains 178 repositories, one active repository, three selected changes, and an
+unrelated 101-commit history in the last default-head batch. That last history
+requires complete REST pagination. The owner inventory has two pages; the direct
+user open-PR connection is empty and complete.
+
+[Measure-TodayDiscovery.py](../benchmarks/Measure-TodayDiscovery.py) builds a local
+fake `gh` executable and starts a real process for every provider request. Each
+fake request adds 100 ms of latency. Git, acquisition verification, manifest
+selection, static analysis, report generation, and CLI startup run normally.
+No GitHub access or target-code execution occurs. This isolates a known fallback
+shape; it does not identify the cause of an arbitrary field cache miss.
+
+The run uses Windows, .NET SDK `10.0.203` / runtime `10.0.7`, and Git
+`2.52.0.windows.1`. Each version/selector pair starts with prepopulated immutable
+Git objects and empty metadata/evidence caches. The first call is therefore
+**metadata-cold, object-warm**, not a network-cold acquisition. The subsequent
+three calls use the same pinned interval and warm caches. Each timing below is
+the median of those three warm calls.
+
+| Selector / observation | Alpha.21 | Candidate |
+| --- | ---: | ---: |
+| `@me` end-to-end wall | 12.895 s | 3.323 s |
+| `@me` provider discovery | 11.070 s | 1.533 s |
+| `@me` provider queries/processes | 196 | 19 |
+| Explicit viewer login end-to-end wall | 20.669 s | 3.310 s |
+| Explicit viewer login provider discovery | 18.873 s | 1.546 s |
+| Explicit viewer login provider queries/processes | 374 | 19 |
+
+Warm wall time improves **3.88x** for `@me` and **6.24x** for the explicit login.
+The first metadata-cold call changes from 13.359 to 3.762 seconds for `@me`
+(198 queries / 200 pages to 21 / 23), and from 20.802 to 3.669 seconds for the
+explicit login (374 to 21 queries). Candidate warm calls all report metadata
+hits and exactly one `default-head / incomplete-history` fallback repository;
+successful repositories are retained across 15 batches under four-way concurrency.
+
+Every run selects the same three changes and reports 4.00 / 8.00 / 15.75 EHE
+and 0.50 / 1.00 / 1.96875 capacity ratios. The `@me` semantic digest is unchanged.
+The candidate explicit viewer login now has that same digest because it resolves
+the same verified aliases; alpha.21's explicit-login digest differs because it
+omitted that alias expansion. Other-user selection and isolation from the
+authenticated viewer are covered by the physical discovery regression test.
+
+[Raw samples and binary fingerprints](../benchmarks/today-discovery/2026-09-17.checkpoint.json)
+retain all first-call/warm observations and phase timings. Reproduce after a
+Release build, pointing `--before` to a separate alpha.21 public-feed install:
+
+```text
+python benchmarks/Measure-TodayDiscovery.py --before <alpha21-tool-directory>/efforthours.dll --after src/EffortHours.Cli/bin/Release/net10.0/efforthours.dll --output artifacts/today-discovery.json --runs 3 --delay-ms 100
+```
+
+This replay establishes bounded work elimination and unchanged fixture EHE. It
+does not establish a 30-second field guarantee, GitHub latency, fresh-object
+transfer performance, or unchanged latency as the day's selected work grows.
+Live inventory remains mandatory. CI gates selection parity, operation counts,
+cache freshness, privacy, schema compatibility, and concurrency bounds; it never
+gates these wall-clock measurements.

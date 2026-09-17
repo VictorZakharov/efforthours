@@ -111,7 +111,8 @@ public sealed partial class GitHubAuthorPeriodDiscovery
         CancellationToken cancellationToken)
     {
         bool useMe = request.AuthorAliases.Any(alias =>
-            alias.Equals("@me", StringComparison.OrdinalIgnoreCase));
+            alias.Equals("@me", StringComparison.OrdinalIgnoreCase) ||
+            alias.Trim().Equals(authenticatedLogin, StringComparison.OrdinalIgnoreCase));
         IReadOnlyList<string> verifiedEmails = [];
         List<string> aliases = [.. request.AuthorAliases.Where(alias =>
             !alias.Equals("@me", StringComparison.OrdinalIgnoreCase)).Select(alias => alias.Trim())];
@@ -140,6 +141,26 @@ public sealed partial class GitHubAuthorPeriodDiscovery
         }
 
         return new ResolvedAliases(canonical, verifiedEmails);
+    }
+
+    internal static string? SingleContributorLogin(
+        GitHubAuthorPeriodDiscoveryRequest request,
+        string authenticatedLogin)
+    {
+        if (request.ContributorSample is not null || request.AuthorAliases.Count != 1)
+        {
+            return null;
+        }
+
+        string alias = request.AuthorAliases[0].Trim();
+        if (alias.Equals("@me", StringComparison.OrdinalIgnoreCase))
+        {
+            return authenticatedLogin;
+        }
+
+        return alias.Length is > 0 and <= 39 &&
+            alias.All(character => char.IsAsciiLetterOrDigit(character) || character == '-')
+                ? alias : null;
     }
 
     private static string IdentitySources(IReadOnlyList<string> aliases) => aliases.Any(alias =>

@@ -18,9 +18,9 @@ internal static partial class GitHubAuthorPeriodDiscoveryJson
         bool capabilityFallback = false,
         string? failurePhase = null)
     {
-        counters.AddQuery();
         ExternalCommandResult result;
         string phase = failurePhase ?? FailurePhase(arguments);
+        counters.AddQuery(phase);
         try
         {
             result = await commands.RunAsync(

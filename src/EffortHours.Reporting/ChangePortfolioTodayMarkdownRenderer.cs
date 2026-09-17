@@ -5,7 +5,7 @@ using EffortHours.Contracts.V1;
 
 namespace EffortHours.Reporting;
 
-public static class ChangePortfolioTodayMarkdownRenderer
+public static partial class ChangePortfolioTodayMarkdownRenderer
 {
     public static string Render(ChangePortfolioComparisonReport report)
     {
@@ -147,6 +147,7 @@ public static class ChangePortfolioTodayMarkdownRenderer
             .Append(" startup); metadata cache ")
             .Append(discovery.ProviderMetadataCacheHit ? "hit" : "miss")
             .AppendLine(".");
+        AppendProviderDiagnostics(markdown, discovery.ProviderDiagnostics);
         markdown.Append("- Managed cache used ").Append(discovery.LocalObjectCount)
             .Append(" existing selected objects and acquired ")
             .Append(discovery.AcquiredObjectCount).Append(" objects / ")

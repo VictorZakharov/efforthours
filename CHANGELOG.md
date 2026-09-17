@@ -6,6 +6,16 @@ may still change public contracts with explicit documentation.
 
 ## Unreleased
 
+### Fixed
+
+- Native GitHub discovery preserves successful default-head batches when another
+  repository requires REST pagination, with at most four concurrent batch calls.
+- Single explicit usernames use account-wide open-PR discovery just like `@me`,
+  independently of the authenticated viewer. Provider-linked author emails let
+  other usernames match local Git identities without borrowing viewer emails.
+- Provider metadata reuse now covers all contributor forms and preserves original
+  freshness deadlines. Reports include privacy-safe cache and fallback reasons.
+
 ## 0.10.0-alpha.21 - 2026-09-16
 
 ### Changed

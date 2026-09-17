@@ -81,6 +81,8 @@ public static partial class ContractValidation
             errors.Add("Host discovery counts are inconsistent.");
         }
 
+        ValidateProviderDiagnostics(discovery, errors);
+
         ChangePortfolioScopeProfile profile = report.ScopeProfile!;
         if (profile.Id != "engineering" ||
             string.IsNullOrWhiteSpace(profile.Version) ||

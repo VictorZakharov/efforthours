@@ -85,9 +85,11 @@ internal static partial class GitHubAuthorPeriodDiscoveryJson
                 MergePolicy = mergePolicy,
                 CoauthorPolicy = coauthorPolicy,
             };
+            bool selected = false;
             foreach (JsonElement commit in commits)
             {
                 GitCommitMetadata metadata = ParseCommit(commit);
+                counters.ObserveIdentity(ProviderAuthorLogin(commit), metadata);
                 if (AuthorPeriodCommitSelector.Select([metadata], options, aliases).Commits.Count > 0 ||
                     ProviderLoginMatches(commit, aliases) &&
                     SelectedTimestamp(metadata, dateField) >= since &&
@@ -95,11 +97,11 @@ internal static partial class GitHubAuthorPeriodDiscoveryJson
                     (metadata.ParentObjectIds.Count <= 1 ||
                         mergePolicy == ChangePortfolioMergePolicy.FirstParent))
                 {
-                    return true;
+                    selected = true;
                 }
             }
 
-            return false;
+            return selected;
         }
         catch (Exception exception) when (
             exception is JsonException or KeyNotFoundException or InvalidOperationException or FormatException)
@@ -150,8 +152,10 @@ internal static partial class GitHubAuthorPeriodDiscoveryJson
     private static bool ProviderLoginMatches(
         JsonElement commit,
         IReadOnlyList<string> aliases) =>
+        aliases.Contains(ProviderAuthorLogin(commit), StringComparer.OrdinalIgnoreCase);
+
+    private static string? ProviderAuthorLogin(JsonElement commit) =>
         commit.TryGetProperty("author", out JsonElement author) &&
         author.ValueKind == JsonValueKind.Object &&
-        author.TryGetProperty("login", out JsonElement login) &&
-        aliases.Contains(login.GetString(), StringComparer.OrdinalIgnoreCase);
+        author.TryGetProperty("login", out JsonElement login) ? login.GetString() : null;
 }

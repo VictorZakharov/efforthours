@@ -6,11 +6,11 @@ namespace EffortHours.Change;
 internal static partial class GitHubAuthorPeriodDiscoveryJson
 {
     public static async Task<IReadOnlyList<DiscoveredRepository>?>
-        DiscoverViewerOpenPullHeadsAccountWideAsync(
+        DiscoverUserOpenPullHeadsAccountWideAsync(
             IExternalCommandRunner commands,
             string workingDirectory,
             IReadOnlyList<GitHubDiscoveryRepository> repositories,
-            string authenticatedLogin,
+            string contributorLogin,
             IReadOnlyList<string> aliases,
             DateTimeOffset since,
             DateTimeOffset until,
@@ -20,6 +20,7 @@ internal static partial class GitHubAuthorPeriodDiscoveryJson
             ProviderQueryCounters counters,
             CancellationToken cancellationToken)
     {
+        counters.AddAccountQuery();
         string? json = await RunApiAsync(
             commands,
             workingDirectory,
@@ -31,7 +32,7 @@ internal static partial class GitHubAuthorPeriodDiscoveryJson
                 "-f",
                 "query=" + ViewerPullRequestsQuery,
                 "-F",
-                "login=" + authenticatedLogin,
+                "login=" + contributorLogin,
             ],
             counters,
             paginated: true,
@@ -44,7 +45,7 @@ internal static partial class GitHubAuthorPeriodDiscoveryJson
             return null;
         }
 
-        AccountPullRequest[]? pulls = ParseCompleteAccountPulls(json, authenticatedLogin);
+        AccountPullRequest[]? pulls = ParseCompleteAccountPulls(json, contributorLogin);
         if (pulls is null)
         {
             return null;
@@ -131,7 +132,7 @@ internal static partial class GitHubAuthorPeriodDiscoveryJson
 
     private static AccountPullRequest[]? ParseCompleteAccountPulls(
         string json,
-        string authenticatedLogin)
+        string contributorLogin)
     {
         try
         {
@@ -163,7 +164,7 @@ internal static partial class GitHubAuthorPeriodDiscoveryJson
                     if (author.ValueKind == JsonValueKind.Null ||
                         !string.Equals(
                             author.GetProperty("login").GetString(),
-                            authenticatedLogin,
+                            contributorLogin,
                             StringComparison.OrdinalIgnoreCase))
                     {
                         continue;
