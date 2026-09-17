@@ -6,15 +6,19 @@ namespace EffortHours.Change;
 
 internal sealed record GitHubProviderMetadata(
     string OwnerType,
-    IReadOnlyList<string> VerifiedEmails,
-    DateTimeOffset IdentityFreshUntil);
+    IReadOnlyList<string>? VerifiedEmails,
+    DateTimeOffset OwnerFreshUntil,
+    DateTimeOffset? IdentityFreshUntil);
+
+internal sealed record GitHubProviderMetadataRead(
+    GitHubProviderMetadata? Metadata,
+    string Status);
 
 internal sealed class GitHubProviderMetadataCache
 {
-    private const string Protocol = "github-provider-metadata-cache/1.0.0";
+    private const string Protocol = "github-provider-metadata-cache/1.1.0";
     private const int MaximumBytes = 2 * 1024 * 1024;
     private static readonly TimeSpan IdentityFreshness = TimeSpan.FromHours(24);
-    private static readonly TimeSpan RepositoryFreshness = TimeSpan.FromMinutes(5);
     private readonly string _root;
 
     public GitHubProviderMetadataCache()
@@ -31,12 +35,20 @@ internal sealed class GitHubProviderMetadataCache
         string owner,
         string authenticatedLogin,
         DateTimeOffset now,
+        CancellationToken cancellationToken) =>
+        (await ReadWithStatusAsync(owner, authenticatedLogin, now, cancellationToken)
+            .ConfigureAwait(false)).Metadata;
+
+    public async Task<GitHubProviderMetadataRead> ReadWithStatusAsync(
+        string owner,
+        string authenticatedLogin,
+        DateTimeOffset now,
         CancellationToken cancellationToken)
     {
         string path = CachePath(owner, authenticatedLogin);
         if (!File.Exists(path))
         {
-            return null;
+            return new(null, "missing");
         }
 
         try
@@ -44,39 +56,53 @@ internal sealed class GitHubProviderMetadataCache
             FileInfo info = new(path);
             if (info.Length is <= 0 or > MaximumBytes)
             {
-                return null;
+                return new(null, "invalid-size");
             }
 
             await using FileStream stream = new(
-                path,
-                FileMode.Open,
-                FileAccess.Read,
-                FileShare.Read,
+                path, FileMode.Open, FileAccess.Read, FileShare.Read,
                 bufferSize: 16 * 1024,
                 FileOptions.Asynchronous | FileOptions.SequentialScan);
             CacheDocument? document = await JsonSerializer.DeserializeAsync<CacheDocument>(
-                stream,
-                cancellationToken: cancellationToken).ConfigureAwait(false);
-            if (document is null ||
-                document.Protocol != Protocol ||
-                !document.Owner.Equals(owner, StringComparison.OrdinalIgnoreCase) ||
-                !document.AuthenticatedLogin.Equals(
-                    authenticatedLogin,
-                    StringComparison.OrdinalIgnoreCase) ||
-                document.IdentityFreshUntil <= now ||
-                document.IdentityFreshUntil > now + IdentityFreshness ||
-                document.RepositoryFreshUntil > now + RepositoryFreshness ||
-                document.OwnerType is not ("organization" or "user") ||
-                document.VerifiedEmails.Count > 128 ||
-                document.VerifiedEmails.Any(string.IsNullOrWhiteSpace))
+                stream, cancellationToken: cancellationToken).ConfigureAwait(false);
+            if (document is null)
             {
-                return null;
+                return new(null, "invalid-content");
             }
 
-            return new GitHubProviderMetadata(
+            if (document.Protocol != Protocol)
+            {
+                return new(null, "unsupported-protocol");
+            }
+
+            if (!string.Equals(document.Owner, owner, StringComparison.OrdinalIgnoreCase) ||
+                !string.Equals(document.AuthenticatedLogin, authenticatedLogin, StringComparison.OrdinalIgnoreCase))
+            {
+                return new(null, "identity-mismatch");
+            }
+
+            if (document.OwnerFreshUntil > now + IdentityFreshness ||
+                document.IdentityFreshUntil > now + IdentityFreshness ||
+                document.OwnerType is not ("organization" or "user") ||
+                document.VerifiedEmails is { Count: > 128 } ||
+                document.VerifiedEmails?.Any(string.IsNullOrWhiteSpace) == true ||
+                (document.VerifiedEmails is null) != (document.IdentityFreshUntil is null))
+            {
+                return new(null, "invalid-content");
+            }
+
+            if (document.OwnerFreshUntil <= now)
+            {
+                return new(null, "expired");
+            }
+
+            bool freshIdentity = document.IdentityFreshUntil > now;
+            return new(new GitHubProviderMetadata(
                 document.OwnerType,
-                document.VerifiedEmails,
-                document.IdentityFreshUntil);
+                freshIdentity ? document.VerifiedEmails : null,
+                document.OwnerFreshUntil,
+                freshIdentity ? document.IdentityFreshUntil : null),
+                freshIdentity ? "hit" : "hit-owner-only");
         }
         catch (Exception exception) when (
             exception is UnauthorizedAccessException or IOException)
@@ -85,7 +111,7 @@ internal sealed class GitHubProviderMetadataCache
         }
         catch (JsonException)
         {
-            return null;
+            return new(null, "invalid-content");
         }
     }
 
@@ -93,10 +119,10 @@ internal sealed class GitHubProviderMetadataCache
         string owner,
         string authenticatedLogin,
         string ownerType,
-        IReadOnlyList<string> verifiedEmails,
-        IReadOnlyList<GitHubDiscoveryRepository> repositories,
+        IReadOnlyList<string>? verifiedEmails,
         DateTimeOffset now,
-        CancellationToken cancellationToken)
+        CancellationToken cancellationToken,
+        GitHubProviderMetadata? previous = null)
     {
         CacheDocument document = new()
         {
@@ -104,17 +130,10 @@ internal sealed class GitHubProviderMetadataCache
             Owner = owner,
             AuthenticatedLogin = authenticatedLogin,
             OwnerType = ownerType,
-            VerifiedEmails = [.. verifiedEmails],
-            IdentityFreshUntil = now + IdentityFreshness,
-            RepositoryFreshUntil = now + RepositoryFreshness,
-            Repositories = [.. repositories.Select(repository => new CachedRepository
-            {
-                StableId = repository.StableId,
-                Identity = repository.Identity,
-                DefaultBranch = repository.DefaultBranch,
-                Archived = repository.Archived,
-                Mirror = repository.Mirror,
-            })],
+            VerifiedEmails = verifiedEmails ?? previous?.VerifiedEmails,
+            OwnerFreshUntil = previous?.OwnerFreshUntil ?? now + IdentityFreshness,
+            IdentityFreshUntil = previous?.IdentityFreshUntil ??
+                (verifiedEmails is null ? null : now + IdentityFreshness),
         };
         string path = CachePath(owner, authenticatedLogin);
         string directory = Path.GetDirectoryName(path)!;
@@ -209,18 +228,8 @@ internal sealed class GitHubProviderMetadataCache
         public required string Owner { get; init; }
         public required string AuthenticatedLogin { get; init; }
         public required string OwnerType { get; init; }
-        public IReadOnlyList<string> VerifiedEmails { get; init; } = [];
-        public DateTimeOffset IdentityFreshUntil { get; init; }
-        public DateTimeOffset RepositoryFreshUntil { get; init; }
-        public IReadOnlyList<CachedRepository> Repositories { get; init; } = [];
-    }
-
-    private sealed record CachedRepository
-    {
-        public required string StableId { get; init; }
-        public required string Identity { get; init; }
-        public string? DefaultBranch { get; init; }
-        public bool Archived { get; init; }
-        public bool Mirror { get; init; }
+        public IReadOnlyList<string>? VerifiedEmails { get; init; }
+        public DateTimeOffset OwnerFreshUntil { get; init; }
+        public DateTimeOffset? IdentityFreshUntil { get; init; }
     }
 }

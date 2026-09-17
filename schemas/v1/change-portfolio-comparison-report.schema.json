@@ -145,10 +145,40 @@
         "providerProcessCount": { "type": "integer", "minimum": 0 },
         "providerProcessStartupMilliseconds": { "type": "number", "minimum": 0 },
         "providerMetadataCacheHit": { "type": "boolean" },
+        "providerDiagnostics": { "$ref": "#/$defs/providerDiagnostics" },
         "localObjectCount": { "type": "integer", "minimum": 0 },
         "acquiredObjectCount": { "type": "integer", "minimum": 0 },
         "acquiredBytes": { "type": "integer", "minimum": 0 },
         "elapsedMilliseconds": { "type": "number", "minimum": 0 }
+      },
+      "additionalProperties": false
+    },
+    "providerDiagnostics": {
+      "type": "object",
+      "required": ["metadataCacheStatus", "defaultHeadBatchCount", "defaultHeadQueryCount",
+        "openPullRequestAccountQueryCount", "openPullRequestQueryCount", "fallbacks"],
+      "properties": {
+        "metadataCacheStatus": { "enum": ["not-observed", "missing", "invalid-size", "invalid-content",
+          "unsupported-protocol", "identity-mismatch", "expired", "hit", "hit-owner-only"] },
+        "defaultHeadBatchCount": { "type": "integer", "minimum": 0 },
+        "defaultHeadQueryCount": { "type": "integer", "minimum": 0 },
+        "openPullRequestAccountQueryCount": { "type": "integer", "minimum": 0, "maximum": 1 },
+        "openPullRequestQueryCount": { "type": "integer", "minimum": 0 },
+        "fallbacks": {
+          "type": "array", "maxItems": 8,
+          "items": {
+            "type": "object",
+            "required": ["phase", "reason", "repositoryCount"],
+            "properties": {
+              "phase": { "enum": ["default-head", "open-pr"] },
+              "reason": { "enum": ["provider-unavailable", "provider-errors", "malformed-response",
+                "repository-unavailable", "branch-changed", "incomplete-history",
+                "identity-not-single-login", "account-connection-unavailable"] },
+              "repositoryCount": { "type": "integer", "minimum": 0, "maximum": 1000 }
+            },
+            "additionalProperties": false
+          }
+        }
       },
       "additionalProperties": false
     },

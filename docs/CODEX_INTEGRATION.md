@@ -115,44 +115,52 @@ Optimization never turns a likely-candidate surface into selection authority:
 - the authenticated viewer is resolved live on every invocation;
 - the requested owner's repository inventory is fully paginated live on every
   invocation and remains the authoritative candidate membership;
-- eligible default branches are grouped into at most 12-repository GraphQL calls;
-- each batch reads at most 100 interval commits per repository; a provider error,
-  missing field, branch mismatch, malformed response, or `hasNextPage` result
-  discards the optimization and runs the complete prior per-repository REST path;
-- canonical `--author @me --include-open-prs` mode queries the direct user
+- eligible default branches use at most four concurrent GraphQL calls, each with
+  at most 12 repositories and 100 interval commits per repository;
+- incomplete/malformed repository histories fall back only for the affected
+  repository; batch-level failures fall back for that batch and preserve all
+  successful other batches;
+- a single `--author @me` or explicit GitHub login uses the selected user's direct
   pull-request connection, accepts it only when fully paginated nodes equal its
-  `totalCount` and do not exceed 1,000, then resolves
-  matching PR commits with at most four concurrent requests; and
-- explicit/supplemental identity forms or an incomplete/unavailable account
-  connection use the complete fully paginated per-repository open-PR path.
+  `totalCount` within 1,000, then resolves matching PR commits with at most four
+  concurrent requests; and
+- email/name aliases, supplemental aliases, team selection, or an incomplete
+  account connection use the fully paginated per-repository open-PR path.
 
-Both paths pass the same commit metadata through the same exact
-author/coauthor/date/merge selector. Both pin the same immutable object IDs and
-return to local Git for authoritative manifest selection and analysis. Tests
-compare batched and REST selected object sets and force every completeness
-fallback.
+The selected contributor is independent of authentication. The explicit viewer
+login resolves the same verified emails as `@me`; another login can use
+provider-linked commit author emails observed in the current responses, bounded
+by the existing alias limit. Unlinked/coauthor-only identities still require
+explicit aliases. The viewer is never implicitly included in another user's
+PR inventory. Both discovery paths pin immutable object IDs and return to local
+Git for authoritative manifest selection and analysis.
 
 ## Provider metadata cache
 
-The private cache uses `github-provider-metadata-cache/1.0.0`. It is keyed by a
-digest of owner plus live authenticated viewer. Owner type and verified identity
-metadata are fresh for 24 hours; the recorded repository metadata snapshot is
-fresh for five minutes. Owner/viewer mismatch, expiry, future/invalid freshness,
-malformed content, unsupported protocol, oversized content, or invalid bounds
-invalidate the entry.
+The private cache uses `github-provider-metadata-cache/1.1.0`, keyed by a digest
+of owner plus the live authenticated viewer. Owner type and optional verified
+viewer emails expire independently within 24 hours of observation. Hits preserve
+their original expiry; selecting another user can cache owner type without
+inventing a fresh empty viewer-email set. All identity forms write usable
+metadata. Legacy protocol entries trigger one cold refresh. Owner/viewer
+mismatch, expiry, invalid freshness, malformed or oversized content, and
+unsupported protocols prevent reuse.
 
-The repository snapshot is diagnostic/reuse metadata only. EffortHours always
-refreshes the complete live repository inventory, so the cache cannot hide a new,
-renamed, archived, mirrored, or default-branch-changed repository. The cache is
-written atomically under the EffortHours provider cache. By default it lives in
-local application data; `EFFORTHOURS_PROVIDER_CACHE` selects an explicit root,
-and a configured `EFFORTHOURS_REPOSITORY_CACHE` keeps provider metadata beneath
-that managed test/deployment root.
+EffortHours always refreshes the complete live repository inventory, so the cache
+cannot hide a new, renamed, archived, mirrored, or default-branch-changed repository.
+Writes are atomic. By default the cache lives in local application data;
+`EFFORTHOURS_PROVIDER_CACHE` selects an explicit root, and a configured
+`EFFORTHOURS_REPOSITORY_CACHE` keeps metadata beneath that managed root.
 
 ## Operational telemetry
 
 Today discovery reports provider query/page count, child-process count, cumulative
-child startup time, and provider metadata-cache hit status. Execution phase timing
+child startup time, and provider metadata-cache hit status. The optional v1
+`providerDiagnostics` object adds a fixed cache hit/miss reason, default-head
+batch/query counts, account-wide PR/query counts, and aggregated fallback
+phase/reason/repository counts. It contains no identities, paths, or provider
+response text and remains compatible with older reports that omit it.
+Execution phase timing
 separates:
 
 - `provider-authentication`;

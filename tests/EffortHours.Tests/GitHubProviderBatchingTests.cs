@@ -4,7 +4,7 @@ using EffortHours.Contracts.V1;
 
 namespace EffortHours.Tests;
 
-public sealed class GitHubProviderBatchingTests
+public sealed partial class GitHubProviderBatchingTests
 {
     private static readonly DateTimeOffset Since =
         new(2026, 8, 24, 4, 0, 0, TimeSpan.Zero);
@@ -19,7 +19,7 @@ public sealed class GitHubProviderBatchingTests
         QueueRunner batchRunner = new(GraphDefaultHead(head, parent));
         ProviderQueryCounters batchCounters = new();
 
-        IReadOnlyList<DiscoveredRepository>? batched =
+        DefaultHeadBatchResult batched =
             await GitHubAuthorPeriodDiscoveryJson.DiscoverDefaultHeadsBatchedAsync(
                 batchRunner,
                 "unrelated-folder",
@@ -50,7 +50,7 @@ public sealed class GitHubProviderBatchingTests
                 new ProviderQueryCounters(),
                 CancellationToken.None));
 
-        DiscoveredRepository batch = Assert.Single(batched!);
+        DiscoveredRepository batch = Assert.Single(batched.Repositories);
         Assert.Equal(rest.Heads.Select(value => value.ObjectId), batch.Heads.Select(value => value.ObjectId));
         Assert.Equal(1, batchCounters.QueryCount);
         Assert.Equal(1, batchCounters.ProcessCount);
@@ -65,7 +65,7 @@ public sealed class GitHubProviderBatchingTests
         string response = GraphDefaultHead(head, parent)
             .Replace("false", "true", StringComparison.Ordinal);
 
-        IReadOnlyList<DiscoveredRepository>? result =
+        DefaultHeadBatchResult result =
             await GitHubAuthorPeriodDiscoveryJson.DiscoverDefaultHeadsBatchedAsync(
                 new QueueRunner(response),
                 "unrelated-folder",
@@ -79,7 +79,8 @@ public sealed class GitHubProviderBatchingTests
                 new ProviderQueryCounters(),
                 CancellationToken.None);
 
-        Assert.Null(result);
+        Assert.Empty(result.Repositories);
+        Assert.Single(result.FallbackRepositories);
     }
 
     [Theory]
@@ -129,7 +130,7 @@ public sealed class GitHubProviderBatchingTests
 
         IReadOnlyList<DiscoveredRepository>? result =
             await GitHubAuthorPeriodDiscoveryJson
-                .DiscoverViewerOpenPullHeadsAccountWideAsync(
+                .DiscoverUserOpenPullHeadsAccountWideAsync(
                     runner,
                     "unrelated-folder",
                     repositories,
@@ -185,7 +186,7 @@ public sealed class GitHubProviderBatchingTests
 
         IReadOnlyList<DiscoveredRepository>? result =
             await GitHubAuthorPeriodDiscoveryJson
-                .DiscoverViewerOpenPullHeadsAccountWideAsync(
+                .DiscoverUserOpenPullHeadsAccountWideAsync(
                     new QueueRunner(connection),
                     "unrelated-folder",
                     [new GitHubDiscoveryRepository("42", "owner/repository", "main")],

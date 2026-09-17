@@ -1,4 +1,3 @@
-using System.Globalization;
 using System.Text.Json;
 using EffortHours.Contracts.V1;
 
@@ -324,65 +323,6 @@ internal static partial class GitHubAuthorPeriodDiscoveryJson
                 repository.Identity,
                 heads,
                 authoredOpenPullRequests);
-    }
-
-    private static async Task<string?> ResolveMatchingDefaultHeadAsync(
-        IExternalCommandRunner commands,
-        string workingDirectory,
-        string repositoryIdentity,
-        string branch,
-        IReadOnlyList<string> aliases,
-        DateTimeOffset since,
-        DateTimeOffset until,
-        ChangePortfolioDateField dateField,
-        ChangePortfolioMergePolicy mergePolicy,
-        ChangePortfolioCoauthorPolicy coauthorPolicy,
-        ProviderQueryCounters counters,
-        CancellationToken cancellationToken)
-    {
-        string endpoint = $"repos/{repositoryIdentity}/commits?sha={Uri.EscapeDataString(branch)}" +
-            $"&since={Uri.EscapeDataString(since.ToString("O", CultureInfo.InvariantCulture))}" +
-            $"&until={Uri.EscapeDataString(until.ToString("O", CultureInfo.InvariantCulture))}&per_page=100";
-        string json = await RunRequiredApiAsync(
-            commands,
-            workingDirectory,
-            ["api", "--paginate", "--slurp", endpoint],
-            counters,
-            paginated: true,
-            cancellationToken,
-            emptyRepositoryIsEmpty: true).ConfigureAwait(false);
-        try
-        {
-            using JsonDocument document = JsonDocument.Parse(json);
-            JsonElement[] commits = [.. Pages(document.RootElement)];
-            if (commits.Length == 0)
-            {
-                return null;
-            }
-
-            GitAuthorPeriodPortfolioOptions options = new()
-            {
-                Aliases = aliases,
-                SinceInclusive = since,
-                UntilExclusive = until,
-                DateField = dateField,
-                MergePolicy = mergePolicy,
-                CoauthorPolicy = coauthorPolicy,
-            };
-            bool selected = commits.Any(commit =>
-                AuthorPeriodCommitSelector.Select([ParseCommit(commit)], options, aliases)
-                    .Commits.Count > 0);
-            return selected
-                ? RequireObjectId(commits[0].GetProperty("sha").GetString(), "default-branch head")
-                : null;
-        }
-        catch (Exception exception) when (
-            exception is JsonException or KeyNotFoundException or InvalidOperationException or FormatException)
-        {
-            throw new InvalidOperationException(
-                "GitHub returned incomplete default-branch commit metadata.",
-                exception);
-        }
     }
 
     private static bool PullAuthorMatches(

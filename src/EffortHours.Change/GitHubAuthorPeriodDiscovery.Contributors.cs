@@ -33,7 +33,7 @@ public sealed partial class GitHubAuthorPeriodDiscovery
         return new ResolvedDiscoveryContributors(
             [new ResolvedDiscoveryContributor(
                 request.ContributorId,
-                authenticatedLogin,
+                SingleContributorLogin(request, authenticatedLogin) ?? string.Empty,
                 resolved.Values)],
             selection,
             resolved.VerifiedEmails);

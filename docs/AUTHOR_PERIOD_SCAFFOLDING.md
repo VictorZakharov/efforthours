@@ -74,34 +74,53 @@ The resulting public IDs are `included-N` and `sample-N`. The report retains see
 requested sample size, eligible population count, public IDs, and an input digest,
 while raw provider identities and the reference repository remain execution-only.
 
-Default-branch interval reads use bounded GraphQL groups of at most 12
-repositories and at most 100 interval commits per repository. A missing field,
-branch mismatch, provider error, malformed result, or paginated history discards
-the batch and runs the complete per-repository REST path. Canonical `@me`
-open-PR discovery uses the fully paginated direct user pull-request connection
-only when returned nodes exactly equal the connection's complete count and remain
-within 1,000 rows;
-otherwise it runs the complete per-repository inventory. Remaining PR
-detail/commit reads retain at most four-way concurrency. Both paths apply the same
-exact commit selector and local Git remains authoritative.
+Default-branch interval reads use groups of at most 12 repositories, at most
+100 interval commits per repository, and at most four concurrent provider calls.
+Missing/malformed repository data, branch mismatch, or paginated history sends
+only that repository through complete REST pagination. A batch-level provider
+error sends that batch through REST; successful repositories in all other
+batches remain usable. Authentication, rate-limit, network, and incomplete REST
+failures still stop the report without an aggregate.
+
+A single GitHub login, including either `@me` or an explicit username, uses the
+fully paginated direct user pull-request connection for that selected user.
+Returned nodes must exactly equal the connection's complete count within 1,000
+rows; otherwise discovery uses the complete per-repository inventory.
+Email/name aliases, supplemental aliases, and team selection retain that complete
+inventory path. Remaining PR detail/commit reads use at most four-way concurrency.
+Local Git remains authoritative for exact commit selection.
 
 Inactive repositories and open PRs with no selected work remain privacy-safe counts;
 they cause no cache entry or analysis. Collaborator/bot PRs are not admitted merely
 because the owner controls the repository.
 
-`@me` resolves the active GitHub login and authorized verified commit emails, plus
-explicit supplemental aliases. It never reads local Git configuration. Raw aliases,
-owner names, repository display names, PR numbers, provider bodies, and credentials
-are absent from reports.
+`@me` and an explicit login equal to the active viewer resolve the same login and
+authorized verified commit emails. A different single login uses provider-linked
+commit author emails observed in the current default/PR responses as local Git
+aliases, under the existing 128-alias bound. It never borrows the viewer's
+emails or PR authorship. Unlinked Git identities and coauthor-only identities
+cannot be inferred from a login; callers can supply those explicit supplemental
+aliases, which retain the complete fallback. No local Git configuration is read.
+Raw aliases, owner names, repository display names, PR numbers, provider bodies,
+and credentials are absent from reports.
 
-Stable owner type, verified identity, and repository metadata are written to the
-private `github-provider-metadata-cache/1.0.0` cache. Identity freshness is 24
-hours and repository metadata freshness is five minutes; owner/viewer mismatch,
-expiry, invalid future bounds, malformed/oversized content, or protocol mismatch
-invalidates the entry. The live repository inventory is always refreshed and is
-the only candidate-membership authority, so cached repository metadata cannot
-hide new or changed repositories. `EFFORTHOURS_PROVIDER_CACHE` selects an
-explicit cache root.
+Stable owner type and optional verified viewer identity are written for every
+contributor form to private `github-provider-metadata-cache/1.1.0` entries keyed
+by owner plus the live authenticated viewer. Owner and identity freshness are
+bounded to 24 hours from their respective observations; cache hits never renew
+those deadlines. An owner-only entry does not claim to contain verified emails.
+Older cache protocols fall back cold once and are replaced. Mismatch, expiry,
+invalid future bounds, and malformed/oversized content invalidate reuse.
+Repository inventory is always refreshed live and is never cached as a membership
+authority. `EFFORTHOURS_PROVIDER_CACHE` selects an explicit cache root.
+
+Optional `discovery.providerDiagnostics` records fixed cache status codes,
+default-head batch/query counts, account-wide PR/query counts, and aggregated
+fallback phase/reason/repository counts. It is rendered in today Markdown, carries
+no raw provider identities or paths, and stays outside semantic digests and EHE.
+Cache statuses distinguish missing, expired, unsupported-protocol,
+identity-mismatch, invalid-size, invalid-content, hit, and hit-owner-only entries.
+Operational counters do not establish a latency guarantee.
 
 ## Shared managed repository cache
 

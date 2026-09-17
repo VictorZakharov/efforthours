@@ -167,6 +167,8 @@ public sealed record ChangePortfolioHostDiscovery
 
     public bool ProviderMetadataCacheHit { get; init; }
 
+    public ChangePortfolioProviderDiagnostics? ProviderDiagnostics { get; init; }
+
     public int LocalObjectCount { get; init; }
 
     public int AcquiredObjectCount { get; init; }
