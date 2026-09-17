@@ -8,11 +8,11 @@
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>eh</ToolCommandName>
     <PackageId>EffortHours.Tool</PackageId>
-    <Version>0.10.0-alpha.21</Version>
+    <Version>0.10.0-alpha.22</Version>
     <Title>EffortHours CLI</Title>
     <PackageReadmeFile>PACKAGE_README.md</PackageReadmeFile>
     <PackageTags>estimation;effort-estimation;developer-tools;cli;repository-analysis;static-analysis;dotnet-tool</PackageTags>
-    <PackageReleaseNotes>0.10.0-alpha.21: Restore account-wide open-PR discovery for native @me reports and reuse managed Git fetch history. Correct JavaScript test classification and add explicit hash-verified reviewed vendor manifests for repository scan, estimate, explain, and review inputs. Update .NET test tooling and preserve audited frozen calibration fixtures. Repository EHE remains experimental and uncalibrated, and seed-rules/0.4.0 remains the shipped estimator. Full notes: https://github.com/VictorZakharov/efforthours/blob/v0.10.0-alpha.21/CHANGELOG.md</PackageReleaseNotes>
+    <PackageReleaseNotes>0.10.0-alpha.22: Bound native GitHub default-head discovery to four concurrent batches and retain successful work during repository-scoped REST fallback. Optimize account-wide open-PR discovery for explicit usernames, independently of the authenticated viewer. Reuse provider metadata for every contributor form with fixed freshness deadlines and privacy-safe cache and fallback diagnostics. Repository EHE remains experimental and uncalibrated, and seed-rules/0.4.0 remains the shipped estimator. Full notes: https://github.com/VictorZakharov/efforthours/blob/v0.10.0-alpha.22/CHANGELOG.md</PackageReleaseNotes>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="../EffortHours.Analysis/EffortHours.Analysis.csproj" />
