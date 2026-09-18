@@ -16,8 +16,13 @@ internal sealed partial class ProviderQueryCounters
 
     public GitHubContributorIdentity? ContributorIdentity { get; set; }
 
-    public void ObserveIdentity(string? login, GitCommitMetadata commit) =>
+    public GitHubPullAuthorIdentity? PullAuthorIdentity { get; set; }
+
+    public void ObserveIdentity(string? login, GitCommitMetadata commit)
+    {
         ContributorIdentity?.Observe(login, commit);
+        PullAuthorIdentity?.Observe(login, commit);
+    }
 
     public int QueryCount => Volatile.Read(ref _queries);
 

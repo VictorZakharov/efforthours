@@ -200,6 +200,9 @@ internal sealed partial class ChangePortfolioCommand
             "The requested GitHub owner was not found or is not accessible.",
         "github-provider-rate-limited" => "GitHub rate limiting prevented complete discovery.",
         "github-network-unavailable" => "GitHub could not be reached.",
+        "github-contributor-identity-unresolved" =>
+            "Open-PR account identity is unresolved or conflicting. Supply --provider-login " +
+            "with the intended GitHub login or @me; keep --author aliases for Git selection.",
         "github-provider-response-malformed" =>
             "GitHub returned a malformed or incomplete response.",
         "managed-cache-access-denied" =>

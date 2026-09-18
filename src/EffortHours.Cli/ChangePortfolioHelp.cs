@@ -45,6 +45,7 @@ internal static class ChangePortfolioHelp
           --include-author <identity>
                                     Add a contributor outside the random sample; repeat as needed
           --include-open-prs        Discover matching commits on current open PR heads
+          --provider-login <login>  PR account (@me allowed); preserves --author Git aliases
           --scope <engineering>     Apply the versioned native engineering path profile
           --capacity-hours <hours>  Positive full-day reference denominator for --today
           --preflight               Measure exact selection scope and resource budgets without

@@ -342,6 +342,8 @@ public static partial class ContractValidation
                 action.SuggestedAction == "grant-managed-cache-access",
             "engineering-scope-load-failed" =>
                 action.SuggestedAction == "repair-engineering-scope-profile",
+            "github-contributor-identity-unresolved" =>
+                action.SuggestedAction == "specify-provider-login",
             "github-provider-request-failed" =>
                 action.SuggestedAction == "inspect-github-cli-health",
             _ => false,

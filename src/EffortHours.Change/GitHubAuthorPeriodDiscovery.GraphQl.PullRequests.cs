@@ -59,6 +59,8 @@ internal static partial class GitHubAuthorPeriodDiscoveryJson
             .OrderBy(pull => pull.RepositoryIdentity, StringComparer.OrdinalIgnoreCase)
             .ThenBy(pull => pull.Number)];
         counters.AddOpenPullRequests(considered.Length);
+        counters.AddPullCandidateRepositories(considered.Select(pull => pull.RepositoryIdentity)
+            .Distinct(StringComparer.OrdinalIgnoreCase).Count());
         using SemaphoreSlim gate = new(4, 4);
         Task<ResolvedPullHead?>[] tasks = [.. considered.Select(async pull =>
         {

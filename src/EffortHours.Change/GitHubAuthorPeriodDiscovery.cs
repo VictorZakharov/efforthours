@@ -12,6 +12,8 @@ public sealed record GitHubAuthorPeriodDiscoveryRequest
 
     public string ContributorId { get; init; } = "me";
 
+    public string? ProviderLogin { get; init; }
+
     public GitHubContributorSampleRequest? ContributorSample { get; init; }
 
     public required DateTimeOffset AsOf { get; init; }
@@ -204,6 +206,13 @@ public sealed partial class GitHubAuthorPeriodDiscovery
                 cacheObservedAt,
                 cancellationToken,
                 cachedMetadata).ConfigureAwait(false);
+
+            if (request.IncludeOpenPullRequests && request.ContributorSample is null &&
+                request.ProviderLogin is null && SingleContributorLogin(request, authenticatedLogin) is null)
+            {
+                counters.PullAuthorIdentity = new GitHubPullAuthorIdentity(
+                    aliases, authenticatedLogin, resolvedContributors.VerifiedEmails);
+            }
 
             discovered = await DiscoverHeadsAsync(
                 considered,

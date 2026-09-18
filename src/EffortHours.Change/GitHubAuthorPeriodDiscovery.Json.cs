@@ -200,7 +200,8 @@ internal static partial class GitHubAuthorPeriodDiscoveryJson
         ProviderQueryCounters counters,
         CancellationToken cancellationToken,
         bool includeDefaultHead = true,
-        bool includeAuthenticatedPullAuthor = true)
+        bool includeAuthenticatedPullAuthor = true,
+        IReadOnlyList<string>? pullAuthorLogins = null)
     {
         string identity = repository.Identity;
         string branch = repository.DefaultBranch!;
@@ -244,7 +245,7 @@ internal static partial class GitHubAuthorPeriodDiscoveryJson
                 {
                     if (!PullAuthorMatches(
                             pull,
-                            aliases,
+                            pullAuthorLogins ?? aliases,
                             authenticatedLogin,
                             includeAuthenticatedPullAuthor))
                     {
@@ -315,6 +316,10 @@ internal static partial class GitHubAuthorPeriodDiscoveryJson
         }
 
         counters.AddOpenPullRequests(authoredOpenPullRequests);
+        if (authoredOpenPullRequests > 0)
+        {
+            counters.AddPullCandidateRepositories(1);
+        }
 
         return heads.Count == 0
             ? null

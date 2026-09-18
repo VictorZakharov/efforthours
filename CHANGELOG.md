@@ -6,6 +6,21 @@ may still change public contracts with explicit documentation.
 
 ## Unreleased
 
+### Fixed
+
+- Email-only native contributor reports resolve PR accounts from provider-linked
+  commit identities and validated ID-based noreply addresses, preserving exact Git
+  aliases while avoiding repository-by-repository PR discovery when possible.
+  Complete fallback filters PR authors by resolved logins. Unresolved/conflicting
+  identity now emits an actionable incomplete report instead of silently omitting
+  open-PR work. Provider diagnostics include identity disposition and candidate
+  repository count.
+
+### Added
+
+- `--provider-login <login|@me>` explicitly selects the PR account for single-user
+  today/period reports with `--include-open-prs`, separately from Git email aliases.
+
 ## 0.10.0-alpha.22 - 2026-09-17
 
 ### Fixed

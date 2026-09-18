@@ -11,6 +11,13 @@ internal sealed partial class ProviderQueryCounters
     private int _accountQueries;
     private int _pullQueries;
 
+    private int _pullCandidateRepositories;
+
+    public string IdentityResolution { get; set; } = "not-observed";
+
+    public void AddPullCandidateRepositories(int count) =>
+        Interlocked.Add(ref _pullCandidateRepositories, count);
+
     public void AddDefaultBatch() => Interlocked.Increment(ref _defaultBatches);
 
     public void AddAccountQuery() => Interlocked.Increment(ref _accountQueries);
@@ -21,6 +28,8 @@ internal sealed partial class ProviderQueryCounters
     public ChangePortfolioProviderDiagnostics Diagnostics(string cacheStatus) => new()
     {
         MetadataCacheStatus = cacheStatus,
+        IdentityResolution = IdentityResolution,
+        OpenPullRequestCandidateRepositoryCount = Volatile.Read(ref _pullCandidateRepositories),
         DefaultHeadBatchCount = Volatile.Read(ref _defaultBatches),
         DefaultHeadQueryCount = Volatile.Read(ref _defaultQueries),
         OpenPullRequestAccountQueryCount = Volatile.Read(ref _accountQueries),

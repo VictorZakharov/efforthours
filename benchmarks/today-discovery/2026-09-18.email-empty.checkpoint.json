@@ -1,0 +1,1467 @@
+{
+  "protocol": "today-discovery-benchmark/1.1.0",
+  "synthetic": true,
+  "platform": "Windows",
+  "sdk": "10.0.203",
+  "git": "git version 2.52.0.windows.1",
+  "repositories": 178,
+  "selectedChanges": 3,
+  "activeRepositories": 1,
+  "openPullRequestFixture": false,
+  "incompleteHistoryRepositoryCount": 1,
+  "delayMillisecondsPerProviderProcess": 100,
+  "warmSamples": 3,
+  "measurements": [
+    {
+      "label": "before",
+      "authorForm": "two-emails",
+      "cliVersion": "0.10.0-alpha.22+9c70eda94f099b020ae3a4467fb70798635f5b2c",
+      "changeAssemblySha256": "c562130597c429a816cd7f0cee09800ec49bff08e29266afbaf3affbd7230d5b",
+      "warmMedianSeconds": 11.1697,
+      "samples": [
+        {
+          "selectedChanges": 3,
+          "openPullRequestHeads": 0,
+          "cacheState": "metadata-cold-object-warm",
+          "wallSeconds": 11.5488,
+          "providerQueries": 197,
+          "providerPages": 199,
+          "providerProcesses": 197,
+          "metadataCacheHit": false,
+          "providerDiagnostics": {
+            "metadataCacheStatus": "missing",
+            "defaultHeadBatchCount": 15,
+            "defaultHeadQueryCount": 16,
+            "openPullRequestAccountQueryCount": 0,
+            "openPullRequestQueryCount": 178,
+            "fallbacks": [
+              {
+                "phase": "default-head",
+                "reason": "incomplete-history",
+                "repositoryCount": 1
+              },
+              {
+                "phase": "open-pr",
+                "reason": "identity-not-single-login",
+                "repositoryCount": 178
+              }
+            ]
+          },
+          "acquiredBytes": 0,
+          "semanticDigest": "sha256:5e0e3d44f9cd940c6b1faea766015e52a1413f09908954840c78eb657f16d6cf",
+          "effort": {
+            "low": 4,
+            "expected": 8.0,
+            "high": 15.75
+          },
+          "ratio": {
+            "low": 0.5,
+            "expected": 1.0,
+            "high": 1.96875
+          },
+          "phases": [
+            {
+              "phase": "scope-loading",
+              "elapsedMilliseconds": 61.774
+            },
+            {
+              "phase": "provider-discovery",
+              "elapsedMilliseconds": 9560.917
+            },
+            {
+              "phase": "acquisition",
+              "elapsedMilliseconds": 173.039
+            },
+            {
+              "phase": "manifest-validation",
+              "elapsedMilliseconds": 0.447
+            },
+            {
+              "phase": "head-validation",
+              "elapsedMilliseconds": 163.606
+            },
+            {
+              "phase": "history-union",
+              "elapsedMilliseconds": 142.573
+            },
+            {
+              "phase": "selection",
+              "elapsedMilliseconds": 3.596
+            },
+            {
+              "phase": "preflight",
+              "elapsedMilliseconds": 0.069
+            },
+            {
+              "phase": "snapshot-diff-construction",
+              "elapsedMilliseconds": 269.777
+            },
+            {
+              "phase": "static-analysis",
+              "elapsedMilliseconds": 433.167
+            },
+            {
+              "phase": "reconciliation",
+              "elapsedMilliseconds": 146.531
+            },
+            {
+              "phase": "allocation",
+              "elapsedMilliseconds": 19.621
+            },
+            {
+              "phase": "rendering",
+              "elapsedMilliseconds": 144.862
+            },
+            {
+              "phase": "candidate-discovery",
+              "elapsedMilliseconds": 0.901
+            },
+            {
+              "phase": "default-head-discovery",
+              "elapsedMilliseconds": 961.041
+            },
+            {
+              "phase": "open-pr-discovery",
+              "elapsedMilliseconds": 7956.771
+            },
+            {
+              "phase": "owner-inventory",
+              "elapsedMilliseconds": 387.283
+            },
+            {
+              "phase": "provider-authentication",
+              "elapsedMilliseconds": 234.989
+            },
+            {
+              "phase": "provider-process-startup",
+              "elapsedMilliseconds": 1045.79
+            }
+          ]
+        },
+        {
+          "selectedChanges": 3,
+          "openPullRequestHeads": 0,
+          "cacheState": "warm",
+          "wallSeconds": 11.4322,
+          "providerQueries": 196,
+          "providerPages": 198,
+          "providerProcesses": 196,
+          "metadataCacheHit": true,
+          "providerDiagnostics": {
+            "metadataCacheStatus": "hit-owner-only",
+            "defaultHeadBatchCount": 15,
+            "defaultHeadQueryCount": 16,
+            "openPullRequestAccountQueryCount": 0,
+            "openPullRequestQueryCount": 178,
+            "fallbacks": [
+              {
+                "phase": "default-head",
+                "reason": "incomplete-history",
+                "repositoryCount": 1
+              },
+              {
+                "phase": "open-pr",
+                "reason": "identity-not-single-login",
+                "repositoryCount": 178
+              }
+            ]
+          },
+          "acquiredBytes": 0,
+          "semanticDigest": "sha256:5e0e3d44f9cd940c6b1faea766015e52a1413f09908954840c78eb657f16d6cf",
+          "effort": {
+            "low": 4,
+            "expected": 8.0,
+            "high": 15.75
+          },
+          "ratio": {
+            "low": 0.5,
+            "expected": 1.0,
+            "high": 1.96875
+          },
+          "phases": [
+            {
+              "phase": "scope-loading",
+              "elapsedMilliseconds": 58.094
+            },
+            {
+              "phase": "provider-discovery",
+              "elapsedMilliseconds": 9610.284
+            },
+            {
+              "phase": "acquisition",
+              "elapsedMilliseconds": 166.61
+            },
+            {
+              "phase": "manifest-validation",
+              "elapsedMilliseconds": 0.433
+            },
+            {
+              "phase": "head-validation",
+              "elapsedMilliseconds": 151.063
+            },
+            {
+              "phase": "history-union",
+              "elapsedMilliseconds": 124.103
+            },
+            {
+              "phase": "selection",
+              "elapsedMilliseconds": 3.388
+            },
+            {
+              "phase": "preflight",
+              "elapsedMilliseconds": 0.07
+            },
+            {
+              "phase": "snapshot-diff-construction",
+              "elapsedMilliseconds": 254.146
+            },
+            {
+              "phase": "static-analysis",
+              "elapsedMilliseconds": 417.712
+            },
+            {
+              "phase": "reconciliation",
+              "elapsedMilliseconds": 121.489
+            },
+            {
+              "phase": "allocation",
+              "elapsedMilliseconds": 14.662
+            },
+            {
+              "phase": "rendering",
+              "elapsedMilliseconds": 110.974
+            },
+            {
+              "phase": "candidate-discovery",
+              "elapsedMilliseconds": 0.809
+            },
+            {
+              "phase": "default-head-discovery",
+              "elapsedMilliseconds": 969.159
+            },
+            {
+              "phase": "open-pr-discovery",
+              "elapsedMilliseconds": 8226.975
+            },
+            {
+              "phase": "owner-inventory",
+              "elapsedMilliseconds": 189.025
+            },
+            {
+              "phase": "provider-authentication",
+              "elapsedMilliseconds": 212.954
+            },
+            {
+              "phase": "provider-process-startup",
+              "elapsedMilliseconds": 1088.203
+            }
+          ]
+        },
+        {
+          "selectedChanges": 3,
+          "openPullRequestHeads": 0,
+          "cacheState": "warm",
+          "wallSeconds": 10.9572,
+          "providerQueries": 196,
+          "providerPages": 198,
+          "providerProcesses": 196,
+          "metadataCacheHit": true,
+          "providerDiagnostics": {
+            "metadataCacheStatus": "hit-owner-only",
+            "defaultHeadBatchCount": 15,
+            "defaultHeadQueryCount": 16,
+            "openPullRequestAccountQueryCount": 0,
+            "openPullRequestQueryCount": 178,
+            "fallbacks": [
+              {
+                "phase": "default-head",
+                "reason": "incomplete-history",
+                "repositoryCount": 1
+              },
+              {
+                "phase": "open-pr",
+                "reason": "identity-not-single-login",
+                "repositoryCount": 178
+              }
+            ]
+          },
+          "acquiredBytes": 0,
+          "semanticDigest": "sha256:5e0e3d44f9cd940c6b1faea766015e52a1413f09908954840c78eb657f16d6cf",
+          "effort": {
+            "low": 4,
+            "expected": 8.0,
+            "high": 15.75
+          },
+          "ratio": {
+            "low": 0.5,
+            "expected": 1.0,
+            "high": 1.96875
+          },
+          "phases": [
+            {
+              "phase": "scope-loading",
+              "elapsedMilliseconds": 53.412
+            },
+            {
+              "phase": "provider-discovery",
+              "elapsedMilliseconds": 9178.547
+            },
+            {
+              "phase": "acquisition",
+              "elapsedMilliseconds": 167.472
+            },
+            {
+              "phase": "manifest-validation",
+              "elapsedMilliseconds": 0.445
+            },
+            {
+              "phase": "head-validation",
+              "elapsedMilliseconds": 154.196
+            },
+            {
+              "phase": "history-union",
+              "elapsedMilliseconds": 123.288
+            },
+            {
+              "phase": "selection",
+              "elapsedMilliseconds": 3.931
+            },
+            {
+              "phase": "preflight",
+              "elapsedMilliseconds": 0.071
+            },
+            {
+              "phase": "snapshot-diff-construction",
+              "elapsedMilliseconds": 246.511
+            },
+            {
+              "phase": "static-analysis",
+              "elapsedMilliseconds": 405.458
+            },
+            {
+              "phase": "reconciliation",
+              "elapsedMilliseconds": 117.78
+            },
+            {
+              "phase": "allocation",
+              "elapsedMilliseconds": 14.177
+            },
+            {
+              "phase": "rendering",
+              "elapsedMilliseconds": 110.507
+            },
+            {
+              "phase": "candidate-discovery",
+              "elapsedMilliseconds": 0.746
+            },
+            {
+              "phase": "default-head-discovery",
+              "elapsedMilliseconds": 956.755
+            },
+            {
+              "phase": "open-pr-discovery",
+              "elapsedMilliseconds": 7805.246
+            },
+            {
+              "phase": "owner-inventory",
+              "elapsedMilliseconds": 190.627
+            },
+            {
+              "phase": "provider-authentication",
+              "elapsedMilliseconds": 214.497
+            },
+            {
+              "phase": "provider-process-startup",
+              "elapsedMilliseconds": 869.229
+            }
+          ]
+        },
+        {
+          "selectedChanges": 3,
+          "openPullRequestHeads": 0,
+          "cacheState": "warm",
+          "wallSeconds": 11.1697,
+          "providerQueries": 196,
+          "providerPages": 198,
+          "providerProcesses": 196,
+          "metadataCacheHit": true,
+          "providerDiagnostics": {
+            "metadataCacheStatus": "hit-owner-only",
+            "defaultHeadBatchCount": 15,
+            "defaultHeadQueryCount": 16,
+            "openPullRequestAccountQueryCount": 0,
+            "openPullRequestQueryCount": 178,
+            "fallbacks": [
+              {
+                "phase": "default-head",
+                "reason": "incomplete-history",
+                "repositoryCount": 1
+              },
+              {
+                "phase": "open-pr",
+                "reason": "identity-not-single-login",
+                "repositoryCount": 178
+              }
+            ]
+          },
+          "acquiredBytes": 0,
+          "semanticDigest": "sha256:5e0e3d44f9cd940c6b1faea766015e52a1413f09908954840c78eb657f16d6cf",
+          "effort": {
+            "low": 4,
+            "expected": 8.0,
+            "high": 15.75
+          },
+          "ratio": {
+            "low": 0.5,
+            "expected": 1.0,
+            "high": 1.96875
+          },
+          "phases": [
+            {
+              "phase": "scope-loading",
+              "elapsedMilliseconds": 51.932
+            },
+            {
+              "phase": "provider-discovery",
+              "elapsedMilliseconds": 9255.567
+            },
+            {
+              "phase": "acquisition",
+              "elapsedMilliseconds": 178.092
+            },
+            {
+              "phase": "manifest-validation",
+              "elapsedMilliseconds": 0.452
+            },
+            {
+              "phase": "head-validation",
+              "elapsedMilliseconds": 161.805
+            },
+            {
+              "phase": "history-union",
+              "elapsedMilliseconds": 130.843
+            },
+            {
+              "phase": "selection",
+              "elapsedMilliseconds": 3.407
+            },
+            {
+              "phase": "preflight",
+              "elapsedMilliseconds": 0.088
+            },
+            {
+              "phase": "snapshot-diff-construction",
+              "elapsedMilliseconds": 288.515
+            },
+            {
+              "phase": "static-analysis",
+              "elapsedMilliseconds": 429.661
+            },
+            {
+              "phase": "reconciliation",
+              "elapsedMilliseconds": 124.917
+            },
+            {
+              "phase": "allocation",
+              "elapsedMilliseconds": 15.306
+            },
+            {
+              "phase": "rendering",
+              "elapsedMilliseconds": 116.584
+            },
+            {
+              "phase": "candidate-discovery",
+              "elapsedMilliseconds": 0.742
+            },
+            {
+              "phase": "default-head-discovery",
+              "elapsedMilliseconds": 959.094
+            },
+            {
+              "phase": "open-pr-discovery",
+              "elapsedMilliseconds": 7895.865
+            },
+            {
+              "phase": "owner-inventory",
+              "elapsedMilliseconds": 175.532
+            },
+            {
+              "phase": "provider-authentication",
+              "elapsedMilliseconds": 213.447
+            },
+            {
+              "phase": "provider-process-startup",
+              "elapsedMilliseconds": 879.527
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "label": "after",
+      "authorForm": "two-emails",
+      "cliVersion": "0.10.0-alpha.22+9c70eda94f099b020ae3a4467fb70798635f5b2c",
+      "changeAssemblySha256": "bd80a4e230fc1a6e3f88ebb72db1022d6cdf807ecad32fd3c66dc475ce5f152a",
+      "warmMedianSeconds": 3.5452,
+      "samples": [
+        {
+          "selectedChanges": 3,
+          "openPullRequestHeads": 0,
+          "cacheState": "metadata-cold-object-warm",
+          "wallSeconds": 4.0269,
+          "providerQueries": 21,
+          "providerPages": 23,
+          "providerProcesses": 21,
+          "metadataCacheHit": false,
+          "providerDiagnostics": {
+            "metadataCacheStatus": "missing",
+            "identityResolution": "provider-linked-aliases",
+            "openPullRequestCandidateRepositoryCount": 0,
+            "defaultHeadBatchCount": 15,
+            "defaultHeadQueryCount": 16,
+            "openPullRequestAccountQueryCount": 1,
+            "openPullRequestQueryCount": 2,
+            "fallbacks": [
+              {
+                "phase": "default-head",
+                "reason": "incomplete-history",
+                "repositoryCount": 1
+              }
+            ]
+          },
+          "acquiredBytes": 0,
+          "semanticDigest": "sha256:5e0e3d44f9cd940c6b1faea766015e52a1413f09908954840c78eb657f16d6cf",
+          "effort": {
+            "low": 4,
+            "expected": 8.0,
+            "high": 15.75
+          },
+          "ratio": {
+            "low": 0.5,
+            "expected": 1.0,
+            "high": 1.96875
+          },
+          "phases": [
+            {
+              "phase": "scope-loading",
+              "elapsedMilliseconds": 56.142
+            },
+            {
+              "phase": "provider-discovery",
+              "elapsedMilliseconds": 1983.582
+            },
+            {
+              "phase": "acquisition",
+              "elapsedMilliseconds": 183.117
+            },
+            {
+              "phase": "manifest-validation",
+              "elapsedMilliseconds": 0.425
+            },
+            {
+              "phase": "head-validation",
+              "elapsedMilliseconds": 160.978
+            },
+            {
+              "phase": "history-union",
+              "elapsedMilliseconds": 149.246
+            },
+            {
+              "phase": "selection",
+              "elapsedMilliseconds": 3.744
+            },
+            {
+              "phase": "preflight",
+              "elapsedMilliseconds": 0.068
+            },
+            {
+              "phase": "snapshot-diff-construction",
+              "elapsedMilliseconds": 277.132
+            },
+            {
+              "phase": "static-analysis",
+              "elapsedMilliseconds": 516.673
+            },
+            {
+              "phase": "reconciliation",
+              "elapsedMilliseconds": 129.161
+            },
+            {
+              "phase": "allocation",
+              "elapsedMilliseconds": 14.365
+            },
+            {
+              "phase": "rendering",
+              "elapsedMilliseconds": 117.695
+            },
+            {
+              "phase": "candidate-discovery",
+              "elapsedMilliseconds": 1.051
+            },
+            {
+              "phase": "default-head-discovery",
+              "elapsedMilliseconds": 998.618
+            },
+            {
+              "phase": "open-pr-discovery",
+              "elapsedMilliseconds": 384.921
+            },
+            {
+              "phase": "owner-inventory",
+              "elapsedMilliseconds": 373.742
+            },
+            {
+              "phase": "provider-authentication",
+              "elapsedMilliseconds": 205.583
+            },
+            {
+              "phase": "provider-process-startup",
+              "elapsedMilliseconds": 105.818
+            }
+          ]
+        },
+        {
+          "selectedChanges": 3,
+          "openPullRequestHeads": 0,
+          "cacheState": "warm",
+          "wallSeconds": 3.6837,
+          "providerQueries": 20,
+          "providerPages": 22,
+          "providerProcesses": 20,
+          "metadataCacheHit": true,
+          "providerDiagnostics": {
+            "metadataCacheStatus": "hit-owner-only",
+            "identityResolution": "provider-linked-aliases",
+            "openPullRequestCandidateRepositoryCount": 0,
+            "defaultHeadBatchCount": 15,
+            "defaultHeadQueryCount": 16,
+            "openPullRequestAccountQueryCount": 1,
+            "openPullRequestQueryCount": 2,
+            "fallbacks": [
+              {
+                "phase": "default-head",
+                "reason": "incomplete-history",
+                "repositoryCount": 1
+              }
+            ]
+          },
+          "acquiredBytes": 0,
+          "semanticDigest": "sha256:5e0e3d44f9cd940c6b1faea766015e52a1413f09908954840c78eb657f16d6cf",
+          "effort": {
+            "low": 4,
+            "expected": 8.0,
+            "high": 15.75
+          },
+          "ratio": {
+            "low": 0.5,
+            "expected": 1.0,
+            "high": 1.96875
+          },
+          "phases": [
+            {
+              "phase": "scope-loading",
+              "elapsedMilliseconds": 58.586
+            },
+            {
+              "phase": "provider-discovery",
+              "elapsedMilliseconds": 1772.537
+            },
+            {
+              "phase": "acquisition",
+              "elapsedMilliseconds": 181.364
+            },
+            {
+              "phase": "manifest-validation",
+              "elapsedMilliseconds": 0.457
+            },
+            {
+              "phase": "head-validation",
+              "elapsedMilliseconds": 168.592
+            },
+            {
+              "phase": "history-union",
+              "elapsedMilliseconds": 138.795
+            },
+            {
+              "phase": "selection",
+              "elapsedMilliseconds": 3.61
+            },
+            {
+              "phase": "preflight",
+              "elapsedMilliseconds": 0.06
+            },
+            {
+              "phase": "snapshot-diff-construction",
+              "elapsedMilliseconds": 268.298
+            },
+            {
+              "phase": "static-analysis",
+              "elapsedMilliseconds": 441.551
+            },
+            {
+              "phase": "reconciliation",
+              "elapsedMilliseconds": 123.939
+            },
+            {
+              "phase": "allocation",
+              "elapsedMilliseconds": 13.692
+            },
+            {
+              "phase": "rendering",
+              "elapsedMilliseconds": 120.906
+            },
+            {
+              "phase": "candidate-discovery",
+              "elapsedMilliseconds": 0.798
+            },
+            {
+              "phase": "default-head-discovery",
+              "elapsedMilliseconds": 985.295
+            },
+            {
+              "phase": "open-pr-discovery",
+              "elapsedMilliseconds": 369.681
+            },
+            {
+              "phase": "owner-inventory",
+              "elapsedMilliseconds": 188.764
+            },
+            {
+              "phase": "provider-authentication",
+              "elapsedMilliseconds": 215.921
+            },
+            {
+              "phase": "provider-process-startup",
+              "elapsedMilliseconds": 111.6
+            }
+          ]
+        },
+        {
+          "selectedChanges": 3,
+          "openPullRequestHeads": 0,
+          "cacheState": "warm",
+          "wallSeconds": 3.5334,
+          "providerQueries": 20,
+          "providerPages": 22,
+          "providerProcesses": 20,
+          "metadataCacheHit": true,
+          "providerDiagnostics": {
+            "metadataCacheStatus": "hit-owner-only",
+            "identityResolution": "provider-linked-aliases",
+            "openPullRequestCandidateRepositoryCount": 0,
+            "defaultHeadBatchCount": 15,
+            "defaultHeadQueryCount": 16,
+            "openPullRequestAccountQueryCount": 1,
+            "openPullRequestQueryCount": 2,
+            "fallbacks": [
+              {
+                "phase": "default-head",
+                "reason": "incomplete-history",
+                "repositoryCount": 1
+              }
+            ]
+          },
+          "acquiredBytes": 0,
+          "semanticDigest": "sha256:5e0e3d44f9cd940c6b1faea766015e52a1413f09908954840c78eb657f16d6cf",
+          "effort": {
+            "low": 4,
+            "expected": 8.0,
+            "high": 15.75
+          },
+          "ratio": {
+            "low": 0.5,
+            "expected": 1.0,
+            "high": 1.96875
+          },
+          "phases": [
+            {
+              "phase": "scope-loading",
+              "elapsedMilliseconds": 54.352
+            },
+            {
+              "phase": "provider-discovery",
+              "elapsedMilliseconds": 1732.411
+            },
+            {
+              "phase": "acquisition",
+              "elapsedMilliseconds": 164.915
+            },
+            {
+              "phase": "manifest-validation",
+              "elapsedMilliseconds": 0.404
+            },
+            {
+              "phase": "head-validation",
+              "elapsedMilliseconds": 150.388
+            },
+            {
+              "phase": "history-union",
+              "elapsedMilliseconds": 124.928
+            },
+            {
+              "phase": "selection",
+              "elapsedMilliseconds": 3.394
+            },
+            {
+              "phase": "preflight",
+              "elapsedMilliseconds": 0.055
+            },
+            {
+              "phase": "snapshot-diff-construction",
+              "elapsedMilliseconds": 247.501
+            },
+            {
+              "phase": "static-analysis",
+              "elapsedMilliseconds": 405.564
+            },
+            {
+              "phase": "reconciliation",
+              "elapsedMilliseconds": 125.073
+            },
+            {
+              "phase": "allocation",
+              "elapsedMilliseconds": 13.685
+            },
+            {
+              "phase": "rendering",
+              "elapsedMilliseconds": 116.525
+            },
+            {
+              "phase": "candidate-discovery",
+              "elapsedMilliseconds": 0.777
+            },
+            {
+              "phase": "default-head-discovery",
+              "elapsedMilliseconds": 950.324
+            },
+            {
+              "phase": "open-pr-discovery",
+              "elapsedMilliseconds": 367.879
+            },
+            {
+              "phase": "owner-inventory",
+              "elapsedMilliseconds": 191.148
+            },
+            {
+              "phase": "provider-authentication",
+              "elapsedMilliseconds": 211.158
+            },
+            {
+              "phase": "provider-process-startup",
+              "elapsedMilliseconds": 105.613
+            }
+          ]
+        },
+        {
+          "selectedChanges": 3,
+          "openPullRequestHeads": 0,
+          "cacheState": "warm",
+          "wallSeconds": 3.5452,
+          "providerQueries": 20,
+          "providerPages": 22,
+          "providerProcesses": 20,
+          "metadataCacheHit": true,
+          "providerDiagnostics": {
+            "metadataCacheStatus": "hit-owner-only",
+            "identityResolution": "provider-linked-aliases",
+            "openPullRequestCandidateRepositoryCount": 0,
+            "defaultHeadBatchCount": 15,
+            "defaultHeadQueryCount": 16,
+            "openPullRequestAccountQueryCount": 1,
+            "openPullRequestQueryCount": 2,
+            "fallbacks": [
+              {
+                "phase": "default-head",
+                "reason": "incomplete-history",
+                "repositoryCount": 1
+              }
+            ]
+          },
+          "acquiredBytes": 0,
+          "semanticDigest": "sha256:5e0e3d44f9cd940c6b1faea766015e52a1413f09908954840c78eb657f16d6cf",
+          "effort": {
+            "low": 4,
+            "expected": 8.0,
+            "high": 15.75
+          },
+          "ratio": {
+            "low": 0.5,
+            "expected": 1.0,
+            "high": 1.96875
+          },
+          "phases": [
+            {
+              "phase": "scope-loading",
+              "elapsedMilliseconds": 52.29
+            },
+            {
+              "phase": "provider-discovery",
+              "elapsedMilliseconds": 1713.375
+            },
+            {
+              "phase": "acquisition",
+              "elapsedMilliseconds": 174.606
+            },
+            {
+              "phase": "manifest-validation",
+              "elapsedMilliseconds": 0.415
+            },
+            {
+              "phase": "head-validation",
+              "elapsedMilliseconds": 158.874
+            },
+            {
+              "phase": "history-union",
+              "elapsedMilliseconds": 131.268
+            },
+            {
+              "phase": "selection",
+              "elapsedMilliseconds": 3.305
+            },
+            {
+              "phase": "preflight",
+              "elapsedMilliseconds": 0.057
+            },
+            {
+              "phase": "snapshot-diff-construction",
+              "elapsedMilliseconds": 253.507
+            },
+            {
+              "phase": "static-analysis",
+              "elapsedMilliseconds": 404.894
+            },
+            {
+              "phase": "reconciliation",
+              "elapsedMilliseconds": 123.929
+            },
+            {
+              "phase": "allocation",
+              "elapsedMilliseconds": 13.79
+            },
+            {
+              "phase": "rendering",
+              "elapsedMilliseconds": 120.939
+            },
+            {
+              "phase": "candidate-discovery",
+              "elapsedMilliseconds": 0.77
+            },
+            {
+              "phase": "default-head-discovery",
+              "elapsedMilliseconds": 945.784
+            },
+            {
+              "phase": "open-pr-discovery",
+              "elapsedMilliseconds": 362.393
+            },
+            {
+              "phase": "owner-inventory",
+              "elapsedMilliseconds": 188.587
+            },
+            {
+              "phase": "provider-authentication",
+              "elapsedMilliseconds": 203.708
+            },
+            {
+              "phase": "provider-process-startup",
+              "elapsedMilliseconds": 105.841
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "label": "after-fallback",
+      "authorForm": "two-emails",
+      "cliVersion": "0.10.0-alpha.22+9c70eda94f099b020ae3a4467fb70798635f5b2c",
+      "changeAssemblySha256": "bd80a4e230fc1a6e3f88ebb72db1022d6cdf807ecad32fd3c66dc475ce5f152a",
+      "warmMedianSeconds": 11.9752,
+      "samples": [
+        {
+          "selectedChanges": 3,
+          "openPullRequestHeads": 0,
+          "cacheState": "metadata-cold-object-warm",
+          "wallSeconds": 11.771,
+          "providerQueries": 199,
+          "providerPages": 201,
+          "providerProcesses": 199,
+          "metadataCacheHit": false,
+          "providerDiagnostics": {
+            "metadataCacheStatus": "missing",
+            "identityResolution": "provider-linked-aliases",
+            "openPullRequestCandidateRepositoryCount": 0,
+            "defaultHeadBatchCount": 15,
+            "defaultHeadQueryCount": 16,
+            "openPullRequestAccountQueryCount": 1,
+            "openPullRequestQueryCount": 180,
+            "fallbacks": [
+              {
+                "phase": "default-head",
+                "reason": "incomplete-history",
+                "repositoryCount": 1
+              },
+              {
+                "phase": "open-pr",
+                "reason": "account-connection-unavailable",
+                "repositoryCount": 178
+              }
+            ]
+          },
+          "acquiredBytes": 0,
+          "semanticDigest": "sha256:5e0e3d44f9cd940c6b1faea766015e52a1413f09908954840c78eb657f16d6cf",
+          "effort": {
+            "low": 4,
+            "expected": 8.0,
+            "high": 15.75
+          },
+          "ratio": {
+            "low": 0.5,
+            "expected": 1.0,
+            "high": 1.96875
+          },
+          "phases": [
+            {
+              "phase": "scope-loading",
+              "elapsedMilliseconds": 52.399
+            },
+            {
+              "phase": "provider-discovery",
+              "elapsedMilliseconds": 9784.134
+            },
+            {
+              "phase": "acquisition",
+              "elapsedMilliseconds": 180.381
+            },
+            {
+              "phase": "manifest-validation",
+              "elapsedMilliseconds": 0.787
+            },
+            {
+              "phase": "head-validation",
+              "elapsedMilliseconds": 166.85
+            },
+            {
+              "phase": "history-union",
+              "elapsedMilliseconds": 137.97
+            },
+            {
+              "phase": "selection",
+              "elapsedMilliseconds": 3.781
+            },
+            {
+              "phase": "preflight",
+              "elapsedMilliseconds": 0.082
+            },
+            {
+              "phase": "snapshot-diff-construction",
+              "elapsedMilliseconds": 269.671
+            },
+            {
+              "phase": "static-analysis",
+              "elapsedMilliseconds": 474.089
+            },
+            {
+              "phase": "reconciliation",
+              "elapsedMilliseconds": 130.577
+            },
+            {
+              "phase": "allocation",
+              "elapsedMilliseconds": 15.647
+            },
+            {
+              "phase": "rendering",
+              "elapsedMilliseconds": 143.578
+            },
+            {
+              "phase": "candidate-discovery",
+              "elapsedMilliseconds": 0.787
+            },
+            {
+              "phase": "default-head-discovery",
+              "elapsedMilliseconds": 962.984
+            },
+            {
+              "phase": "open-pr-discovery",
+              "elapsedMilliseconds": 8239.424
+            },
+            {
+              "phase": "owner-inventory",
+              "elapsedMilliseconds": 358.882
+            },
+            {
+              "phase": "provider-authentication",
+              "elapsedMilliseconds": 202.618
+            },
+            {
+              "phase": "provider-process-startup",
+              "elapsedMilliseconds": 863.752
+            }
+          ]
+        },
+        {
+          "selectedChanges": 3,
+          "openPullRequestHeads": 0,
+          "cacheState": "warm",
+          "wallSeconds": 11.9752,
+          "providerQueries": 198,
+          "providerPages": 200,
+          "providerProcesses": 198,
+          "metadataCacheHit": true,
+          "providerDiagnostics": {
+            "metadataCacheStatus": "hit-owner-only",
+            "identityResolution": "provider-linked-aliases",
+            "openPullRequestCandidateRepositoryCount": 0,
+            "defaultHeadBatchCount": 15,
+            "defaultHeadQueryCount": 16,
+            "openPullRequestAccountQueryCount": 1,
+            "openPullRequestQueryCount": 180,
+            "fallbacks": [
+              {
+                "phase": "default-head",
+                "reason": "incomplete-history",
+                "repositoryCount": 1
+              },
+              {
+                "phase": "open-pr",
+                "reason": "account-connection-unavailable",
+                "repositoryCount": 178
+              }
+            ]
+          },
+          "acquiredBytes": 0,
+          "semanticDigest": "sha256:5e0e3d44f9cd940c6b1faea766015e52a1413f09908954840c78eb657f16d6cf",
+          "effort": {
+            "low": 4,
+            "expected": 8.0,
+            "high": 15.75
+          },
+          "ratio": {
+            "low": 0.5,
+            "expected": 1.0,
+            "high": 1.96875
+          },
+          "phases": [
+            {
+              "phase": "scope-loading",
+              "elapsedMilliseconds": 56.187
+            },
+            {
+              "phase": "provider-discovery",
+              "elapsedMilliseconds": 9999.557
+            },
+            {
+              "phase": "acquisition",
+              "elapsedMilliseconds": 179.218
+            },
+            {
+              "phase": "manifest-validation",
+              "elapsedMilliseconds": 0.46
+            },
+            {
+              "phase": "head-validation",
+              "elapsedMilliseconds": 166.705
+            },
+            {
+              "phase": "history-union",
+              "elapsedMilliseconds": 134.584
+            },
+            {
+              "phase": "selection",
+              "elapsedMilliseconds": 3.821
+            },
+            {
+              "phase": "preflight",
+              "elapsedMilliseconds": 0.072
+            },
+            {
+              "phase": "snapshot-diff-construction",
+              "elapsedMilliseconds": 270.139
+            },
+            {
+              "phase": "static-analysis",
+              "elapsedMilliseconds": 461.351
+            },
+            {
+              "phase": "reconciliation",
+              "elapsedMilliseconds": 134.406
+            },
+            {
+              "phase": "allocation",
+              "elapsedMilliseconds": 18.44
+            },
+            {
+              "phase": "rendering",
+              "elapsedMilliseconds": 143.232
+            },
+            {
+              "phase": "candidate-discovery",
+              "elapsedMilliseconds": 0.806
+            },
+            {
+              "phase": "default-head-discovery",
+              "elapsedMilliseconds": 956.042
+            },
+            {
+              "phase": "open-pr-discovery",
+              "elapsedMilliseconds": 8624.002
+            },
+            {
+              "phase": "owner-inventory",
+              "elapsedMilliseconds": 188.845
+            },
+            {
+              "phase": "provider-authentication",
+              "elapsedMilliseconds": 217.326
+            },
+            {
+              "phase": "provider-process-startup",
+              "elapsedMilliseconds": 1408.214
+            }
+          ]
+        },
+        {
+          "selectedChanges": 3,
+          "openPullRequestHeads": 0,
+          "cacheState": "warm",
+          "wallSeconds": 11.5503,
+          "providerQueries": 198,
+          "providerPages": 200,
+          "providerProcesses": 198,
+          "metadataCacheHit": true,
+          "providerDiagnostics": {
+            "metadataCacheStatus": "hit-owner-only",
+            "identityResolution": "provider-linked-aliases",
+            "openPullRequestCandidateRepositoryCount": 0,
+            "defaultHeadBatchCount": 15,
+            "defaultHeadQueryCount": 16,
+            "openPullRequestAccountQueryCount": 1,
+            "openPullRequestQueryCount": 180,
+            "fallbacks": [
+              {
+                "phase": "default-head",
+                "reason": "incomplete-history",
+                "repositoryCount": 1
+              },
+              {
+                "phase": "open-pr",
+                "reason": "account-connection-unavailable",
+                "repositoryCount": 178
+              }
+            ]
+          },
+          "acquiredBytes": 0,
+          "semanticDigest": "sha256:5e0e3d44f9cd940c6b1faea766015e52a1413f09908954840c78eb657f16d6cf",
+          "effort": {
+            "low": 4,
+            "expected": 8.0,
+            "high": 15.75
+          },
+          "ratio": {
+            "low": 0.5,
+            "expected": 1.0,
+            "high": 1.96875
+          },
+          "phases": [
+            {
+              "phase": "scope-loading",
+              "elapsedMilliseconds": 55.9
+            },
+            {
+              "phase": "provider-discovery",
+              "elapsedMilliseconds": 9773.106
+            },
+            {
+              "phase": "acquisition",
+              "elapsedMilliseconds": 166.035
+            },
+            {
+              "phase": "manifest-validation",
+              "elapsedMilliseconds": 0.457
+            },
+            {
+              "phase": "head-validation",
+              "elapsedMilliseconds": 150.739
+            },
+            {
+              "phase": "history-union",
+              "elapsedMilliseconds": 125.947
+            },
+            {
+              "phase": "selection",
+              "elapsedMilliseconds": 3.282
+            },
+            {
+              "phase": "preflight",
+              "elapsedMilliseconds": 0.065
+            },
+            {
+              "phase": "snapshot-diff-construction",
+              "elapsedMilliseconds": 247.55
+            },
+            {
+              "phase": "static-analysis",
+              "elapsedMilliseconds": 397.124
+            },
+            {
+              "phase": "reconciliation",
+              "elapsedMilliseconds": 119.707
+            },
+            {
+              "phase": "allocation",
+              "elapsedMilliseconds": 14.204
+            },
+            {
+              "phase": "rendering",
+              "elapsedMilliseconds": 108.662
+            },
+            {
+              "phase": "candidate-discovery",
+              "elapsedMilliseconds": 0.798
+            },
+            {
+              "phase": "default-head-discovery",
+              "elapsedMilliseconds": 956.283
+            },
+            {
+              "phase": "open-pr-discovery",
+              "elapsedMilliseconds": 8404.621
+            },
+            {
+              "phase": "owner-inventory",
+              "elapsedMilliseconds": 189.912
+            },
+            {
+              "phase": "provider-authentication",
+              "elapsedMilliseconds": 209.275
+            },
+            {
+              "phase": "provider-process-startup",
+              "elapsedMilliseconds": 1163.748
+            }
+          ]
+        },
+        {
+          "selectedChanges": 3,
+          "openPullRequestHeads": 0,
+          "cacheState": "warm",
+          "wallSeconds": 12.1632,
+          "providerQueries": 198,
+          "providerPages": 200,
+          "providerProcesses": 198,
+          "metadataCacheHit": true,
+          "providerDiagnostics": {
+            "metadataCacheStatus": "hit-owner-only",
+            "identityResolution": "provider-linked-aliases",
+            "openPullRequestCandidateRepositoryCount": 0,
+            "defaultHeadBatchCount": 15,
+            "defaultHeadQueryCount": 16,
+            "openPullRequestAccountQueryCount": 1,
+            "openPullRequestQueryCount": 180,
+            "fallbacks": [
+              {
+                "phase": "default-head",
+                "reason": "incomplete-history",
+                "repositoryCount": 1
+              },
+              {
+                "phase": "open-pr",
+                "reason": "account-connection-unavailable",
+                "repositoryCount": 178
+              }
+            ]
+          },
+          "acquiredBytes": 0,
+          "semanticDigest": "sha256:5e0e3d44f9cd940c6b1faea766015e52a1413f09908954840c78eb657f16d6cf",
+          "effort": {
+            "low": 4,
+            "expected": 8.0,
+            "high": 15.75
+          },
+          "ratio": {
+            "low": 0.5,
+            "expected": 1.0,
+            "high": 1.96875
+          },
+          "phases": [
+            {
+              "phase": "scope-loading",
+              "elapsedMilliseconds": 52.396
+            },
+            {
+              "phase": "provider-discovery",
+              "elapsedMilliseconds": 10128.329
+            },
+            {
+              "phase": "acquisition",
+              "elapsedMilliseconds": 183.111
+            },
+            {
+              "phase": "manifest-validation",
+              "elapsedMilliseconds": 0.448
+            },
+            {
+              "phase": "head-validation",
+              "elapsedMilliseconds": 170.215
+            },
+            {
+              "phase": "history-union",
+              "elapsedMilliseconds": 144.194
+            },
+            {
+              "phase": "selection",
+              "elapsedMilliseconds": 4.163
+            },
+            {
+              "phase": "preflight",
+              "elapsedMilliseconds": 0.077
+            },
+            {
+              "phase": "snapshot-diff-construction",
+              "elapsedMilliseconds": 273.24
+            },
+            {
+              "phase": "static-analysis",
+              "elapsedMilliseconds": 478.131
+            },
+            {
+              "phase": "reconciliation",
+              "elapsedMilliseconds": 150.154
+            },
+            {
+              "phase": "allocation",
+              "elapsedMilliseconds": 20.347
+            },
+            {
+              "phase": "rendering",
+              "elapsedMilliseconds": 148.819
+            },
+            {
+              "phase": "candidate-discovery",
+              "elapsedMilliseconds": 0.765
+            },
+            {
+              "phase": "default-head-discovery",
+              "elapsedMilliseconds": 953.15
+            },
+            {
+              "phase": "open-pr-discovery",
+              "elapsedMilliseconds": 8761.9
+            },
+            {
+              "phase": "owner-inventory",
+              "elapsedMilliseconds": 190.46
+            },
+            {
+              "phase": "provider-authentication",
+              "elapsedMilliseconds": 210.069
+            },
+            {
+              "phase": "provider-process-startup",
+              "elapsedMilliseconds": 1394.798
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

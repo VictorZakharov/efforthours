@@ -19,6 +19,9 @@ public static partial class ChangePortfolioTodayMarkdownRenderer
             .Append(" (").Append(diagnostics.DefaultHeadBatchCount).Append(" batches); open-PR queries: ")
             .Append(diagnostics.OpenPullRequestQueryCount).Append(" (")
             .Append(diagnostics.OpenPullRequestAccountQueryCount).AppendLine(" account inventory).");
+        markdown.Append("- PR identity: ").Append(diagnostics.IdentityResolution)
+            .Append("; candidate repositories: ")
+            .Append(diagnostics.OpenPullRequestCandidateRepositoryCount).AppendLine(".");
         foreach (ChangePortfolioProviderFallback fallback in diagnostics.Fallbacks)
         {
             markdown.Append("- Discovery fallback: ").Append(fallback.Phase)
