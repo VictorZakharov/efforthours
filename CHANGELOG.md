@@ -6,6 +6,8 @@ may still change public contracts with explicit documentation.
 
 ## Unreleased
 
+## 0.10.0-alpha.23 - 2026-09-18
+
 ### Fixed
 
 - Email-only native contributor reports resolve PR accounts from provider-linked
