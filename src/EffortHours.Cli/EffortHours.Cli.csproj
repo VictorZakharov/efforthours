@@ -8,11 +8,11 @@
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>eh</ToolCommandName>
     <PackageId>EffortHours.Tool</PackageId>
-    <Version>0.10.0-alpha.22</Version>
+    <Version>0.10.0-alpha.23</Version>
     <Title>EffortHours CLI</Title>
     <PackageReadmeFile>PACKAGE_README.md</PackageReadmeFile>
     <PackageTags>estimation;effort-estimation;developer-tools;cli;repository-analysis;static-analysis;dotnet-tool</PackageTags>
-    <PackageReleaseNotes>0.10.0-alpha.22: Bound native GitHub default-head discovery to four concurrent batches and retain successful work during repository-scoped REST fallback. Optimize account-wide open-PR discovery for explicit usernames, independently of the authenticated viewer. Reuse provider metadata for every contributor form with fixed freshness deadlines and privacy-safe cache and fallback diagnostics. Repository EHE remains experimental and uncalibrated, and seed-rules/0.4.0 remains the shipped estimator. Full notes: https://github.com/VictorZakharov/efforthours/blob/v0.10.0-alpha.22/CHANGELOG.md</PackageReleaseNotes>
+    <PackageReleaseNotes>0.10.0-alpha.23: Resolve email-only contributor aliases to provider accounts for efficient, complete open-PR discovery while preserving exact Git selection. Fix omitted unmerged work in per-repository fallback. Add --provider-login for explicit account selection and actionable incomplete reports when identity is unresolved. Include privacy-safe identity and candidate-repository diagnostics. Repository EHE remains experimental and uncalibrated, and seed-rules/0.4.0 remains the shipped estimator. Full notes: https://github.com/VictorZakharov/efforthours/blob/v0.10.0-alpha.23/CHANGELOG.md</PackageReleaseNotes>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="../EffortHours.Analysis/EffortHours.Analysis.csproj" />
