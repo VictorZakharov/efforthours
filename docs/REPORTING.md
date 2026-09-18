@@ -107,6 +107,15 @@ identify authentication, owner inventory, candidate discovery, default heads,
 open PRs, and process startup. These remain operational and excluded from
 `verification.semanticDigest`, EHE, and capacity ratios.
 
+Optional provider diagnostics additionally record the fixed `identityResolution`
+disposition and `openPullRequestCandidateRepositoryCount`. These additive v1
+properties may be omitted by older reports and are operational only: raw account
+identities and aliases remain excluded, and semantic digests remain unchanged.
+An unresolved/conflicting PR account emits `github-contributor-identity-unresolved`
+with action `specify-provider-login`, zero retries, and no aggregate. This corrects
+email-only discovery that previously could report complete coverage after rejecting
+every PR author; corrected reports can therefore include previously omitted work.
+
 Native `change period` and `change compare-team` reports extend the same wrapper
 with `github-native-period-report/1.0.0` metadata. Named intervals are
 `this-week`, `last-week`, `this-month`, and `last-month` in the explicit timezone;

@@ -124,15 +124,27 @@ Optimization never turns a likely-candidate surface into selection authority:
   pull-request connection, accepts it only when fully paginated nodes equal its
   `totalCount` within 1,000, then resolves matching PR commits with at most four
   concurrent requests; and
-- email/name aliases, supplemental aliases, team selection, or an incomplete
-  account connection use the fully paginated per-repository open-PR path.
+- email/name and supplemental aliases use current provider-linked author evidence
+  and validated ID-based noreply account hints to resolve PR account scope without
+  altering Git selection aliases; and
+- fully resolved multiple accounts, team selection, or an incomplete account
+  connection use the fully paginated per-repository open-PR path with resolved
+  logins as its author filter. Unresolved or conflicting alias identity emits an
+  incomplete result rather than silently filtering every PR out.
 
 The selected contributor is independent of authentication. The explicit viewer
 login resolves the same verified emails as `@me`; another login can use
 provider-linked commit author emails observed in the current responses, bounded
 by the existing alias limit. Unlinked/coauthor-only identities still require
 explicit aliases. The viewer is never implicitly included in another user's
-PR inventory. Both discovery paths pin immutable object IDs and return to local
+PR inventory. An explicit `--provider-login <login|@me>` selects one PR account for
+single-contributor today/period requests with `--include-open-prs`, leaving their
+Git `--author` aliases unchanged. `github-contributor-identity-unresolved` reports
+`specify-provider-login` with zero retries. The caller must supply that account;
+agents must not guess it, drop aliases, or remove open-PR scope. Automatic identity
+proof, bounds, provisional account reads, and complete-fallback rules are defined
+in `AUTHOR_PERIOD_SCAFFOLDING.md`.
+Both discovery paths pin immutable object IDs and return to local
 Git for authoritative manifest selection and analysis.
 
 ## Provider metadata cache
@@ -158,7 +170,10 @@ Today discovery reports provider query/page count, child-process count, cumulati
 child startup time, and provider metadata-cache hit status. The optional v1
 `providerDiagnostics` object adds a fixed cache hit/miss reason, default-head
 batch/query counts, account-wide PR/query counts, and aggregated fallback
-phase/reason/repository counts. It contains no identities, paths, or provider
+phase/reason/repository counts. Optional identity-resolution disposition and
+open-PR candidate-repository count distinguish how account scope was established.
+`unsupported-protocol` describes a stale entry that a successful run refreshes,
+including email-only requests. It contains no identities, paths, or provider
 response text and remains compatible with older reports that omit it.
 Execution phase timing
 separates:

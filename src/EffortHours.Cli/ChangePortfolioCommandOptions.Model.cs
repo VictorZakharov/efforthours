@@ -18,6 +18,8 @@ internal sealed record ChangePortfolioCommandOptions
 
     public string? Owner { get; init; }
 
+    public string? ProviderLogin { get; init; }
+
     public string? WorkspacePath { get; init; }
 
     public string? Scope { get; init; }

@@ -124,6 +124,13 @@ internal static class GitHubProviderFailure
         "GitHub returned a malformed or incomplete response.",
         inner);
 
+    public static GitHubProviderException UnresolvedContributor() => Create(
+        "github-contributor-identity-unresolved",
+        OpenPullRequestPhase,
+        "specify-provider-login",
+        "Open-PR account identity is unresolved or conflicting. Supply --provider-login " +
+        "with the intended GitHub login or @me; keep --author aliases for Git selection.");
+
     public static GitHubProviderException ManagedCacheAccessDenied(Exception inner) => Create(
         "managed-cache-access-denied",
         ManagedCachePhase,

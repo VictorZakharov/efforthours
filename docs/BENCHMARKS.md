@@ -1929,9 +1929,10 @@ shape; it does not identify the cause of an arbitrary field cache miss.
 
 The run uses Windows, .NET SDK `10.0.203` / runtime `10.0.7`, and Git
 `2.52.0.windows.1`. Each version/selector pair starts with prepopulated immutable
-Git objects and empty metadata/evidence caches. The first call is therefore
-**metadata-cold, object-warm**, not a network-cold acquisition. The subsequent
-three calls use the same pinned interval and warm caches. Each timing below is
+Git objects and an empty metadata cache, without an evidence checkpoint. The first
+call is therefore **metadata-cold, object-warm**, not a network-cold acquisition.
+The subsequent three calls use the same pinned interval and reuse metadata/Git
+objects; analysis runs again. Each timing below is
 the median of those three warm calls.
 
 | Selector / observation | Alpha.21 | Candidate |
@@ -1971,3 +1972,71 @@ transfer performance, or unchanged latency as the day's selected work grows.
 Live inventory remains mandatory. CI gates selection parity, operation counts,
 cache freshness, privacy, schema compatibility, and concurrency bounds; it never
 gates these wall-clock measurements.
+
+## Two-email contributor discovery checkpoint - September 18, 2026
+
+The native CLI replay compares the public-feed alpha.22 (`9c70eda`) with the
+email-to-account discovery fix. Both commands pass exactly two author values:
+`selected@example.test` and `42+selected@users.noreply.github.com`. Authentication
+belongs to a different synthetic account, `reviewer`. Neither command supplies
+`@me`, a username author, or `--provider-login`.
+
+The repository-authored MIT fixture retains 178 repositories, three default-head
+changes, one unrelated incomplete history requiring REST pagination, 15 default
+batches, and 100 ms per fake provider process. The second case adds one unmerged
+noreply-authored change with a different Git display name. Both cases compare the
+released CLI, automatic account discovery, and the candidate with its account
+connection deliberately unavailable to exercise complete per-repository fallback.
+All Git objects are prepopulated. Each lane starts with cold provider metadata,
+then takes three warm samples with the same frozen September 17 UTC interval.
+There is no evidence checkpoint; selection and analysis execute on every call.
+The host is Windows with .NET SDK `10.0.203` / runtime `10.0.7` and Git
+`2.52.0.windows.1`. The provider is synthetic; no GitHub request occurs.
+
+| Fixture / observation | Alpha.22 | Candidate account path | Candidate forced fallback |
+| --- | ---: | ---: | ---: |
+| Empty PR inventory: warm median wall | 11.170 s | 3.545 s | 11.975 s |
+| Empty PR inventory: first metadata-cold wall | 11.549 s | 4.027 s | 11.771 s |
+| Empty PR inventory: warm provider calls | 196 | 20 | 198 |
+| Empty PR inventory: selected changes / PR heads | 3 / 0 | 3 / 0 | 3 / 0 |
+| One qualifying PR: warm median wall | 10.950 s | 4.015 s | 11.650 s |
+| One qualifying PR: first metadata-cold wall | 11.169 s | 4.175 s | 11.622 s |
+| One qualifying PR: warm provider calls | 196 | 22 | 200 |
+| One qualifying PR: selected changes / PR heads | 3 / 0 (incomplete selection) | 4 / 1 | 4 / 1 |
+
+For the empty inventory, the candidate is **3.15x faster** and eliminates
+176 provider processes per warm run. All lanes have the same semantic digest,
+4.00 / 8.00 / 15.75 EHE, and 0.50 / 1.00 / 1.96875 capacity ratios.
+
+The nonempty case exposes a correctness defect in alpha.22: its email aliases do
+not match the PR author's login, so it emits a complete report while omitting the
+unmerged change. Candidate account discovery and forced REST fallback both select
+all four changes with identical semantic digests, 5.25 / 10.50 / 20.75 EHE, and
+0.65625 / 1.3125 / 2.59375 capacity ratios. These corrected totals intentionally
+differ from alpha.22's three-change result. The account path is
+2.73x faster than the incomplete alpha.22 run and
+2.90x faster than its complete fallback.
+
+Every warm run reports `hit-owner-only`; email-only inputs are supported by the
+existing metadata protocol. Separate physical regressions replace a current
+entry with the legacy protocol and verify `unsupported-protocol` on that read,
+followed by `hit-owner-only` after refresh. They also cover PR-only work, either
+the selected or a different authenticated viewer, exact aliases, explicit account
+selection, and unresolved/conflicting identity with no complete aggregate.
+
+[Empty-inventory raw samples](../benchmarks/today-discovery/2026-09-18.email-empty.checkpoint.json)
+and [qualifying-PR raw samples](../benchmarks/today-discovery/2026-09-18.email-open-pr.checkpoint.json)
+retain first-call/warm observations, phase timings, selection counts, and binary
+fingerprints. Reproduce with a clean alpha.22 public-feed install and Release
+candidate build:
+
+```text
+python benchmarks/Measure-TodayDiscovery.py --before <alpha22-tool-directory>/efforthours.dll --after src/EffortHours.Cli/bin/Release/net10.0/efforthours.dll --output artifacts/email-empty.json --runs 3 --delay-ms 100 --email-aliases
+python benchmarks/Measure-TodayDiscovery.py --before <alpha22-tool-directory>/efforthours.dll --after src/EffortHours.Cli/bin/Release/net10.0/efforthours.dll --output artifacts/email-open-pr.json --runs 3 --delay-ms 100 --email-aliases --open-pr
+```
+
+These are explicit synthetic checkpoints, not a field latency guarantee. They
+exclude fresh Git-object transfer and do not promise a sub-30-second live report.
+Estimator rules are unchanged; complete input selection is required before
+claiming EHE parity. CI gates deterministic selection, bounded discovery, failure
+behavior, privacy, and schema compatibility, never these wall times.

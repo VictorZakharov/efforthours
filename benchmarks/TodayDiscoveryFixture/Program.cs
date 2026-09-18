@@ -9,11 +9,15 @@ string endpoint = args[^1];
 JsonNode response;
 if (endpoint == "user")
 {
-    response = new JsonObject { ["login"] = "selected" };
+    response = new JsonObject { ["login"] = fixture["emailAliases"]?.GetValue<bool>() == true ? "reviewer" : "selected" };
 }
 else if (endpoint.StartsWith("user/emails", StringComparison.Ordinal))
 {
     response = JsonNode.Parse("""[[{"email":"selected@example.test","verified":true}]]""")!;
+}
+else if (endpoint == "users/selected")
+{
+    response = new JsonObject { ["login"] = "selected", ["id"] = 42 };
 }
 else if (endpoint == "users/benchmark-owner")
 {
@@ -38,6 +42,20 @@ else if (args.Contains("graphql") && args.Contains("--paginate"))
 {
     response = JsonNode.Parse(
         """[{"data":{"user":{"pullRequests":{"totalCount":0,"nodes":[],"pageInfo":{"hasNextPage":false,"endCursor":null}}}}}]""")!;
+    if (Environment.GetEnvironmentVariable("EH_BENCHMARK_FORCE_PR_FALLBACK") == "1")
+    {
+        response = JsonNode.Parse("""[{"data":{"user":null}}]""")!;
+    }
+    else if (fixture["openCommit"] is not null)
+    {
+        JsonNode pulls = response[0]!["data"]!["user"]!["pullRequests"]!;
+        pulls["totalCount"] = 1;
+        pulls["nodes"]!.AsArray().Add(new JsonObject
+        {
+            ["number"] = 7, ["author"] = new JsonObject { ["login"] = "selected" },
+            ["repository"] = new JsonObject { ["nameWithOwner"] = "benchmark-owner/repository-0" },
+        });
+    }
 }
 else if (args.Contains("graphql"))
 {
@@ -77,7 +95,8 @@ else if (args.Contains("graphql"))
     response = new JsonObject { ["data"] = data };
 }
 else if (endpoint.StartsWith("repos/benchmark-owner/repository-", StringComparison.Ordinal) &&
-    endpoint.Contains("/commits?", StringComparison.Ordinal))
+    endpoint.Contains("/commits?", StringComparison.Ordinal) &&
+    !endpoint.Contains("/pulls/", StringComparison.Ordinal))
 {
     int repository = int.Parse(endpoint.Split("repository-")[1].Split('/')[0], CultureInfo.InvariantCulture);
     JsonArray commits = RestCommits(repository);
@@ -90,6 +109,23 @@ else if (endpoint.StartsWith("repos/benchmark-owner/repository-", StringComparis
 else if (endpoint.Contains("/pulls?state=open", StringComparison.Ordinal))
 {
     response = new JsonArray(new JsonArray());
+    if (fixture["openCommit"] is not null && endpoint.StartsWith("repos/benchmark-owner/repository-0/", StringComparison.Ordinal))
+    {
+        response[0]!.AsArray().Add(new JsonObject
+        {
+            ["number"] = 7, ["user"] = new JsonObject { ["login"] = "selected" },
+            ["head"] = new JsonObject { ["sha"] = fixture["openCommit"]!["sha"]!.DeepClone() },
+        });
+    }
+}
+else if (endpoint.EndsWith("/pulls/7", StringComparison.Ordinal))
+{
+    response = new JsonObject { ["commits"] = 1,
+        ["head"] = new JsonObject { ["sha"] = fixture["openCommit"]!["sha"]!.DeepClone() } };
+}
+else if (endpoint.Contains("/pulls/7/commits", StringComparison.Ordinal))
+{
+    response = new JsonArray(new JsonArray(fixture["openCommit"]!.DeepClone()));
 }
 else
 {

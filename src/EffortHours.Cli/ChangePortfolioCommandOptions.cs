@@ -335,6 +335,7 @@ internal static partial class ChangePortfolioCommandOptionsParser
             ManifestPath = manifest,
             AuthorPeriodManifestPath = authorPeriodManifest,
             Owner = owner,
+            ProviderLogin = native.ProviderLogin,
             WorkspacePath = workspace,
             Scope = scope,
             Today = today,

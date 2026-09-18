@@ -16,6 +16,7 @@ For a today-to-date GitHub estimate:
 - Do not enumerate a workspace, scan repository folders, construct manifests, call `gh` separately, clone repositories, write helper scripts, inspect EH source, or manually aggregate repositories for native today mode.
 - Allow the native command to finish while surfacing its progress. Do not treat a quiet network or acquisition phase as a hang before EH's declared timeout or failure signal.
 - On success, read the EH-produced report and summarize EHE, normalized X, coverage, and EH's internal timing. Keep EH end-to-end time distinct from total conversation latency.
+- Preserve every requested `--author` Git alias. For a single contributor with open PRs, pass `--provider-login <login|@me>` only when the caller supplies that account. If EH returns `github-contributor-identity-unresolved`, ask for the provider account; do not guess it, drop email aliases, or disable open PRs to obtain a complete report.
 - On failure, use EH's structured failure code and suggested action. Retry the exact command at most once when EH identifies missing sandbox permission and the user or environment permits it. Otherwise report the incomplete result; do not silently replace it with a manual calculation.
 
 EHE is replacement effort, not actual labor. Capacity is only the requested denominator; do not infer actual hours worked.

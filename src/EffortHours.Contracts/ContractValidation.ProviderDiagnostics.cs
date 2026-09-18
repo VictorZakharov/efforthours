@@ -16,6 +16,10 @@ public static partial class ContractValidation
         bool invalid = value.MetadataCacheStatus is not ("not-observed" or "missing" or
             "invalid-size" or "invalid-content" or "unsupported-protocol" or
             "identity-mismatch" or "expired" or "hit" or "hit-owner-only") ||
+            value.IdentityResolution is not ("not-observed" or "direct-login" or "explicit-login" or
+                "provider-linked-aliases" or "multiple-logins" or "team") ||
+            value.OpenPullRequestCandidateRepositoryCount < 0 ||
+            value.OpenPullRequestCandidateRepositoryCount > discovery.ConsideredRepositoryCount ||
             value.DefaultHeadBatchCount < 0 ||
             value.DefaultHeadQueryCount < value.DefaultHeadBatchCount ||
             value.OpenPullRequestAccountQueryCount is < 0 or > 1 ||

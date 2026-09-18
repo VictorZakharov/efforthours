@@ -9,6 +9,8 @@ internal sealed class ChangePortfolioNativeOptionValues
 
     public bool Team { get; set; }
 
+    public string? ProviderLogin { get; private set; }
+
     public ChangePortfolioNativePeriodKind? Period { get; private set; }
 
     public ChangePortfolioNativeBreakdown Breakdown { get; private set; } =
@@ -31,6 +33,14 @@ internal sealed class ChangePortfolioNativeOptionValues
         error = null;
         switch (option)
         {
+            case "--provider-login":
+                if (ProviderLogin is not null)
+                {
+                    error = "Specify --provider-login only once.";
+                }
+
+                ProviderLogin = value.Trim();
+                return true;
             case "--capacity-hours-per-day":
                 Provided = true;
                 if (!decimal.TryParse(

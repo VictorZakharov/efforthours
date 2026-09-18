@@ -160,6 +160,9 @@
       "properties": {
         "metadataCacheStatus": { "enum": ["not-observed", "missing", "invalid-size", "invalid-content",
           "unsupported-protocol", "identity-mismatch", "expired", "hit", "hit-owner-only"] },
+        "identityResolution": { "enum": ["not-observed", "direct-login", "explicit-login",
+          "provider-linked-aliases", "multiple-logins", "team"] },
+        "openPullRequestCandidateRepositoryCount": { "type": "integer", "minimum": 0, "maximum": 1000 },
         "defaultHeadBatchCount": { "type": "integer", "minimum": 0 },
         "defaultHeadQueryCount": { "type": "integer", "minimum": 0 },
         "openPullRequestAccountQueryCount": { "type": "integer", "minimum": 0, "maximum": 1 },
@@ -616,7 +619,8 @@
             "github-provider-response-malformed",
             "managed-cache-access-denied",
             "engineering-scope-load-failed",
-            "github-provider-request-failed"
+            "github-provider-request-failed",
+            "github-contributor-identity-unresolved"
           ]
         },
         "phase": {
@@ -643,7 +647,8 @@
             "retry-after-valid-provider-response",
             "grant-managed-cache-access",
             "repair-engineering-scope-profile",
-            "inspect-github-cli-health"
+            "inspect-github-cli-health",
+            "specify-provider-login"
           ]
         },
         "suggestedApprovalPrefix": {

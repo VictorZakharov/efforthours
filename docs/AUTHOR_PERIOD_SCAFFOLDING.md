@@ -86,9 +86,45 @@ A single GitHub login, including either `@me` or an explicit username, uses the
 fully paginated direct user pull-request connection for that selected user.
 Returned nodes must exactly equal the connection's complete count within 1,000
 rows; otherwise discovery uses the complete per-repository inventory.
-Email/name aliases, supplemental aliases, and team selection retain that complete
-inventory path. Remaining PR detail/commit reads use at most four-way concurrency.
-Local Git remains authoritative for exact commit selection.
+Email/name and supplemental aliases resolve separately into PR account scope.
+Current provider-linked commit authors can bind an exact requested name, email,
+or `Name <email>` alias to a login. Authorized verified viewer emails may bind only
+to that viewer. ID-based `ID+login@users.noreply.github.com` addresses may additionally
+bind through a live account response whose numeric ID and login both match; a
+username-only noreply address, renamed/reassigned login, missing association, or
+coauthor trailer is not independent account proof. At most 128 requested aliases
+and two distinct bindings per alias are retained; conflicting bindings fail closed.
+The resolver does not add discovered logins or other emails to the supplied Git
+aliases. Associations are collected live, not persisted as identity authority.
+
+When all aliases resolve to one account, that account uses the direct connection.
+A single known account can be queried provisionally so its PR commit responses
+can resolve previously unseen aliases, including a PR-only day. The result becomes
+complete only after every requested alias has one consistent account association.
+Fully resolved multiple accounts and team selection use the complete per-repository
+inventory with resolved logins as the PR-author filter. An unavailable/incomplete
+account connection retains that same fallback when identity is complete. Both
+paths continue to use the original Git aliases for commit selection. Remaining
+PR detail/commit reads use at most four-way concurrency. Local Git remains
+authoritative for exact commit selection.
+
+`--provider-login <login|@me>` explicitly selects one PR account for a single
+`today` or `period` report with `--include-open-prs`, independently of its Git
+`--author` aliases and the authenticated viewer. It resolves ambiguity without
+expanding or replacing the Git alias set. For example:
+
+```text
+eh change today --owner <owner> --provider-login <login> \
+  --author <work-email> --author <noreply-email> --include-open-prs \
+  --timezone America/Toronto --scope engineering --capacity-hours 8 --no-rate
+```
+
+Unresolved or conflicting automatic PR identity emits a nonzero incomplete report
+with `github-contributor-identity-unresolved` and `specify-provider-login`. It never
+silently skips PRs by comparing their logins with email strings. Supplying the
+explicit option is a caller decision; an agent must not guess a login, drop aliases,
+omit open PRs, or substitute the authenticated viewer to obtain a complete result.
+An empty complete owner scope needs no PR identity resolution.
 
 Inactive repositories and open PRs with no selected work remain privacy-safe counts;
 they cause no cache entry or analysis. Collaborator/bot PRs are not admitted merely
@@ -100,7 +136,8 @@ commit author emails observed in the current default/PR responses as local Git
 aliases, under the existing 128-alias bound. It never borrows the viewer's
 emails or PR authorship. Unlinked Git identities and coauthor-only identities
 cannot be inferred from a login; callers can supply those explicit supplemental
-aliases, which retain the complete fallback. No local Git configuration is read.
+aliases. Their PR account is resolved by the policy above or supplied explicitly.
+No local Git configuration is read.
 Raw aliases, owner names, repository display names, PR numbers, provider bodies,
 and credentials are absent from reports.
 
@@ -116,11 +153,19 @@ authority. `EFFORTHOURS_PROVIDER_CACHE` selects an explicit cache root.
 
 Optional `discovery.providerDiagnostics` records fixed cache status codes,
 default-head batch/query counts, account-wide PR/query counts, and aggregated
-fallback phase/reason/repository counts. It is rendered in today Markdown, carries
+fallback phase/reason/repository counts. Additive optional `identityResolution`
+and `openPullRequestCandidateRepositoryCount` distinguish the account-resolution
+path and repositories with matching authored PR candidates, before commit filtering.
+The fixed identity statuses are `not-observed`, `direct-login`, `explicit-login`,
+`provider-linked-aliases`, `multiple-logins`, and `team`.
+It is rendered in today Markdown, carries
 no raw provider identities or paths, and stays outside semantic digests and EHE.
 Cache statuses distinguish missing, expired, unsupported-protocol,
 identity-mismatch, invalid-size, invalid-content, hit, and hit-owner-only entries.
-Operational counters do not establish a latency guarantee.
+An `unsupported-protocol` status describes the entry read at startup, not an
+unsupported caller identity: a successful run replaces that entry, and a repeat
+can report `hit-owner-only` even for email-only inputs. Operational counters do not
+establish a latency guarantee.
 
 ## Shared managed repository cache
 

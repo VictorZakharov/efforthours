@@ -52,6 +52,7 @@ internal sealed partial class ChangePortfolioCommand
                 {
                     Owner = options.Owner!,
                     AuthorAliases = options.TeamComparison ? [] : options.AuthorAliases,
+                    ProviderLogin = options.ProviderLogin,
                     ContributorId = options.NativePeriod ? "contributor" : "me",
                     ContributorSample = sample,
                     AsOf = generatedAt,

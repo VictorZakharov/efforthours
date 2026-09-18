@@ -21,6 +21,14 @@ public sealed partial class GitHubAuthorPeriodDiscovery
         }
 
         bool sampled = request.ContributorSample is not null;
+        if (request.ProviderLogin is { } providerLogin &&
+            (sampled || !request.IncludeOpenPullRequests ||
+             !providerLogin.Equals("@me", StringComparison.OrdinalIgnoreCase) && !GitHubPullAuthorIdentity.IsLogin(providerLogin)))
+        {
+            throw new ArgumentException("--provider-login requires a single contributor, " +
+                "--include-open-prs, and a GitHub login or @me.", nameof(request));
+        }
+
         if (!sampled && request.AuthorAliases.Count is < 1 or > 128 ||
             sampled && request.AuthorAliases.Count != 0 ||
             request.AuthorAliases.Any(string.IsNullOrWhiteSpace) ||

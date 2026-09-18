@@ -78,6 +78,18 @@ when semantics, schemas, assumptions, or unresolved decisions change.
   and the root `LICENSE`.
 - Keep living contracts current. Put releases in `CHANGELOG.md`, measurements in
   their designated records, and completed work in Git history, not this file.
+- Preserve UTF-8 when reading or writing repository files, generated text, and PR
+  descriptions. In Python, specify `encoding="utf-8"` for text file and subprocess
+  I/O; never round-trip UTF-8 through the Windows default code page. Preserve
+  existing Unicode and the repository's LF line endings.
+- Do not pipe non-ASCII Python source through PowerShell. Use a UTF-8 script/input
+  file or ASCII source with Unicode escapes. For PR text, write a UTF-8 body file
+  and use `gh --body-file`; prefer plain ASCII separators in newly authored shell
+  text when typography is unnecessary.
+- Before pushing text edits, inspect the full diff for garbled characters and
+  unintended changes to existing Unicode. After updating a PR description, read
+  it back as UTF-8 and compare it with the intended text; a successful command
+  alone does not verify encoding.
 - Use ripgrep (`rg`) for searches; it is installed. If the restricted shell strips
   it from `PATH`, run plain `rg` in the approved shell. Do not paste a
   machine-specific executable path, add a repository wrapper, or treat the

@@ -4,6 +4,10 @@ public sealed record ChangePortfolioProviderDiagnostics
 {
     public string MetadataCacheStatus { get; init; } = "not-observed";
 
+    public string IdentityResolution { get; init; } = "not-observed";
+
+    public int OpenPullRequestCandidateRepositoryCount { get; init; }
+
     public int DefaultHeadBatchCount { get; init; }
 
     public int DefaultHeadQueryCount { get; init; }
