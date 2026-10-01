@@ -8,16 +8,23 @@ public sealed record SnapshotAreaInput(string Id, GitArchiveSnapshot Snapshot, i
 public static class SnapshotAreaPartition
 {
     public static IReadOnlyList<SnapshotAreaInput> Partition(GitArchiveSnapshot snapshot,
-        IReadOnlyList<SnapshotAreaDefinition> definitions)
+        IReadOnlyList<SnapshotAreaDefinition> definitions, Action? selectorCompiled = null, SnapshotAreaSelectors? selectors = null, CancellationToken cancellationToken = default)
     {
         ValidateDefinitions(definitions);
+        if (selectors is not null && selectors.DefinitionDigest != SnapshotMeasurementIdentity.Digest(definitions))
+            throw new SnapshotPlanningException("invalid-area-definition", "Compiled selectors belong to a different reviewed definition.");
         List<List<string>> owned = [.. definitions.Select(_ => new List<string>())];
-        Regex[][] patterns = [.. definitions.Select(a => a.Include.Select(Compile).ToArray())];
-        foreach (string selector in definitions.SelectMany(a => a.Include))
-            if (!snapshot.Files.Keys.Any(p => Compile(selector).IsMatch(p)))
-                throw new InvalidDataException("A reviewed area selector no longer matches archived files; review the boundary.");
+        Regex[][] patterns = (selectors ?? new SnapshotAreaSelectors(definitions, selectorCompiled)).Patterns;
+        for (int i = 0; i < patterns.Length; i++)
+            foreach (Regex pattern in patterns[i])
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                if (!snapshot.Files.Keys.Any(path => { cancellationToken.ThrowIfCancellationRequested(); return pattern.IsMatch(path); }))
+                    throw new SnapshotPlanningException("unmatched-selector", "A reviewed area selector no longer matches archived files; review the boundary.", definitions[i].Id);
+            }
         foreach (string path in snapshot.Files.Keys.Order(StringComparer.Ordinal))
         {
+            cancellationToken.ThrowIfCancellationRequested();
             int owner = Array.FindIndex(patterns, patternsForArea => patternsForArea.Any(p => p.IsMatch(path)));
             if (owner < 0) throw new InvalidDataException("An archived file has no reviewed area owner.");
             owned[owner].Add(path);
@@ -25,7 +32,7 @@ public static class SnapshotAreaPartition
         List<SnapshotAreaInput> result = [];
         for (int i = 0; i < owned.Count; i++)
         {
-            if (owned[i].Count == 0) throw new InvalidDataException("A reviewed area owns no archived files; review the boundary.");
+            if (owned[i].Count == 0) throw new SnapshotPlanningException("empty-owned-area", "A reviewed area owns no archived files; review the boundary.", definitions[i].Id);
             HashSet<string> included = new(owned[i], StringComparer.Ordinal);
             foreach (string path in owned[i])
             {
@@ -65,7 +72,7 @@ public static class SnapshotAreaPartition
         }
     }
 
-    private static Regex Compile(string selector)
+    internal static Regex Compile(string selector)
     {
         string expression = Regex.Escape(selector)
             .Replace(@"\*\*/", "(?:.*/)?", StringComparison.Ordinal)

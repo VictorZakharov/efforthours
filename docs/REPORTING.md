@@ -180,7 +180,11 @@ returns a nonzero exit code.
 Snapshot portfolios have the separate `snapshot-portfolio-report/1.0.0` contract.
 Complete reports allowlist public IDs, immutable provenance, receipt hashes,
 effort/category ranges, coverage/ownership counts, and operational telemetry.
-Standalone area measurements and allocated shares remain distinct. Failed runs
+Standalone area measurements and allocated shares remain distinct. Additive v1
+area-request modes retain historical whole ranges with explicitly unrequested areas
+and support exact revision-bound historical definitions. Structured planning
+failures keep safe period/area IDs. Dashboard asset 1.1.0 supports mixed visibility
+and omits private folder links; old public-only 1.0.0 assets remain valid. Failed runs
 preserve prior complete outputs and emit a separate failure artifact. Their
 optional dashboard adapter owns a versioned category grouping, numerical assets,
 pinned links, and derived tables; authored studies remain inputs. See

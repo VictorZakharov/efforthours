@@ -28,7 +28,22 @@ public static partial class SnapshotPortfolioValidation
             RequireId(project.Id);
             if (string.IsNullOrWhiteSpace(project.Ref) || project.Ref.StartsWith('-') || project.Ref.Any(char.IsControl))
                 throw new InvalidDataException("Each project requires an explicit safe Git ref.");
-            SnapshotAreaPartition.ValidateDefinitions(project.Areas);
+            if (project.AreaMeasurementMode is not (null or "every-snapshot" or "latest-only" or "revision-bound"))
+                throw new SnapshotPlanningException("invalid-area-definition", "Unsupported area measurement mode.");
+            try { SnapshotAreaPartition.ValidateDefinitions(project.Areas); }
+            catch (InvalidDataException e) { throw new SnapshotPlanningException("invalid-area-definition", e.Message, inner: e); }
+            if (project.AreaMeasurementMode == "revision-bound")
+            {
+                if (project.AreaRevisions is not { Count: > 0 and <= 13 } ||
+                    project.AreaRevisions.Select(r => r.CommitObjectId).Distinct(StringComparer.Ordinal).Count() != project.AreaRevisions.Count)
+                    throw new SnapshotPlanningException("invalid-area-definition", "Revision-bound areas require 1 to 13 unique immutable commit definitions.");
+                foreach (SnapshotAreaRevision revision in project.AreaRevisions)
+                {
+                    RequireObject(revision.CommitObjectId);
+                    SnapshotAreaPartition.ValidateDefinitions(revision.Areas);
+                }
+            }
+            else if (project.AreaRevisions is not null) throw new SnapshotPlanningException("invalid-area-definition", "Area revisions require revision-bound mode.");
             if (project.VendorManifest is not null) _ = ReviewedVendorManifestValidation.ComputeDigest(project.VendorManifest);
         }
     }
@@ -101,10 +116,13 @@ public static partial class SnapshotPortfolioValidation
                 throw new InvalidDataException("Complete projects require full immutable first-parent provenance.");
             RequireObject(project.HeadObjectId);
             RequireDigest(project.AreasDigest);
-            if (project.Periods.Count != 13 || project.Periods.Select(p => p.Id).Distinct(StringComparer.Ordinal).Count() != 13)
+            if (project.Periods.Count != 13 || !project.Periods.Select(p => p.Id).SequenceEqual(calendar.Select(p => p.Id)))
                 throw new InvalidDataException("Annual portfolio requires one baseline and twelve distinct months.");
+            if (project.AreaMeasurementMode is not (null or "every-snapshot" or "latest-only" or "revision-bound")) throw new InvalidDataException("Unsupported area measurement mode.");
+            string? latestId = project.Periods.LastOrDefault(p => p.WholeReceiptId is not null)?.Id;
             foreach (SnapshotPeriodResult period in project.Periods)
             {
+                if (period.PlanningIssue is not null || period.PlanningAreaId is not null) throw new InvalidDataException("Complete periods cannot carry planning failures.");
                 SnapshotPeriodResult? expectedPeriod = calendar.FirstOrDefault(p => p.Id == period.Id);
                 if (expectedPeriod is null || expectedPeriod.Cutoff != period.Cutoff ||
                     expectedPeriod.Status == "future" && period.Status != "future" ||
@@ -134,6 +152,24 @@ public static partial class SnapshotPortfolioValidation
                      period.TotalCost.High != decimal.Round(whole.Hours.High * report.RateCard.HourlyRate, 2) ||
                      period.TotalCost.Currency != report.RateCard.Currency))
                     throw new InvalidDataException("Pricing must be an independent exact projection of EHE.");
+                if (project.AreaMeasurementMode == "revision-bound")
+                {
+                    if (period.AreaDefinitionDigest is null) throw new InvalidDataException("Revision-bound periods require their reviewed definition digest.");
+                    RequireDigest(period.AreaDefinitionDigest);
+                    if (period.Id == latestId && period.AreaDefinitionDigest != project.AreasDigest)
+                        throw new InvalidDataException("Latest revision must use the current reviewed project definition.");
+                }
+                else if (period.AreaDefinitionDigest is not null) throw new InvalidDataException("Unexpected revision-bound area definition.");
+                bool requested = project.AreaMeasurementMode != "latest-only" || period.Id == latestId;
+                if (project.AreaMeasurementMode == "latest-only" && period.AreaDisposition != (requested ? "measured" : "not-requested"))
+                    throw new InvalidDataException("Latest-only area request disposition is invalid.");
+                if (project.AreaMeasurementMode != "latest-only" && period.AreaDisposition is not null)
+                    throw new InvalidDataException("Unexpected latest-only area disposition.");
+                if (!requested)
+                {
+                    if (period.Areas.Count != 0 || period.AreaPlans.Count != 0) throw new InvalidDataException("Historical areas were not requested.");
+                    continue;
+                }
                 if (period.Areas.Count == 0 || period.Areas.Select(a => a.Id).Distinct(StringComparer.Ordinal).Count() != period.Areas.Count ||
                     period.Areas.Sum(a => a.AllocatedExpectedHours) != whole.Hours.Expected ||
                     period.Areas.Sum(a => a.OwnedFileCount) != whole.SelectedFileCount)

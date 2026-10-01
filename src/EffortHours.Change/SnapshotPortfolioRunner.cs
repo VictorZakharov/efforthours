@@ -1,9 +1,7 @@
 using System.Collections.Concurrent;
 using System.Diagnostics;
-using EffortHours.Analysis;
 using EffortHours.Contracts;
 using EffortHours.Contracts.V1;
-using EffortHours.Core;
 using EffortHours.Estimation;
 
 namespace EffortHours.Change;
@@ -14,6 +12,7 @@ public sealed record SnapshotPortfolioRunOptions
     public required string ProducerVersion { get; init; }
     public bool Preflight { get; init; }
     public bool FetchMissing { get; init; }
+    public Action<string, string>? Progress { get; init; }
     public int Concurrency { get; init; } = 1;
     public int MaximumArchiveBytes { get; init; } = 256 * 1024 * 1024;
     public RateCard? RateCard { get; init; }
@@ -22,7 +21,7 @@ public sealed record SnapshotPortfolioRunOptions
     public string? PreviousEpochDigest { get; init; }
 }
 
-public sealed class SnapshotPortfolioRunner(SnapshotPortfolioStore store, IEstimator? estimator = null)
+public sealed partial class SnapshotPortfolioRunner(SnapshotPortfolioStore store, IEstimator? estimator = null)
 {
     private readonly IEstimator _estimator = estimator ?? new SeedEstimator();
     private readonly ConcurrentDictionary<string, SnapshotMeasurementReceipt> _receipts = new(StringComparer.Ordinal);
@@ -34,6 +33,10 @@ public sealed class SnapshotPortfolioRunner(SnapshotPortfolioStore store, IEstim
     private int _artifactInvalidations;
     private int _artifactEvictions;
     private long _gitReadBytes;
+    private int _inventoryReads;
+    private int _areaPlanningCalls;
+    private int _selectorCompilations;
+    private int _planningReuseHits;
 
     public async Task<SnapshotPortfolioReport> RunAsync(SnapshotPortfolioManifest manifest,
         SnapshotPortfolioLocalMap local, SnapshotPortfolioRunOptions options, CancellationToken cancellationToken)
@@ -54,9 +57,10 @@ public sealed class SnapshotPortfolioRunner(SnapshotPortfolioStore store, IEstim
         }, async (project, token) =>
         {
             try { results[project.Id] = await MeasureProjectAsync(manifest, project, locators[project.Id], options, token).ConfigureAwait(false); }
-            catch (Exception e) when (options.Preflight && e is ExternalCommandException or InvalidDataException)
+            catch (Exception e) when (options.Preflight && e is ExternalCommandException or InvalidDataException or SnapshotPlanningException)
             {
-                results[project.Id] = SnapshotPortfolioDiagnostics.Unavailable(manifest, project, options.AsOf, "missing-history-or-head");
+                results[project.Id] = SnapshotPortfolioDiagnostics.Unavailable(manifest, project, options.AsOf, e is SnapshotPlanningException failure ? failure.Category :
+                    e is ExternalCommandException ? "missing-object-or-ref" : "invalid-area-definition");
             }
         }).ConfigureAwait(false);
         using Process process = Process.GetCurrentProcess();
@@ -74,6 +78,10 @@ public sealed class SnapshotPortfolioRunner(SnapshotPortfolioStore store, IEstim
             Receipts = [.. _receipts.Values.OrderBy(r => r.Id, StringComparer.Ordinal)],
             Telemetry = new()
             {
+                InventoryReads = _inventoryReads,
+                AreaPlanningCalls = _areaPlanningCalls,
+                SelectorCompilations = _selectorCompilations,
+                PlanningReuseHits = _planningReuseHits,
                 EstimatorCalls = _estimatorCalls,
                 ReceiptHits = _receiptHits,
                 ReceiptInvalidations = store.Invalidations,
@@ -98,6 +106,7 @@ public sealed class SnapshotPortfolioRunner(SnapshotPortfolioStore store, IEstim
         SnapshotProjectDefinition project, SnapshotProjectLocator locator,
         SnapshotPortfolioRunOptions options, CancellationToken token)
     {
+        options.Progress?.Invoke("history", project.Id);
         GitClient git = new();
         string root;
         string head;
@@ -106,8 +115,13 @@ public sealed class SnapshotPortfolioRunner(SnapshotPortfolioStore store, IEstim
             throw new InvalidDataException("Each project requires exactly one local or provider locator.");
         if (locator.GitHubRepository is not null)
         {
-            ManagedRepositoryHead managed = await new ManagedGitQueryPlanner().PrepareHeadAsync(locator.GitHubRepository,
+            ManagedRepositoryHead managed;
+            try
+            {
+                managed = await new ManagedGitQueryPlanner().PrepareSnapshotHeadAsync(locator.GitHubRepository,
                 selectedRef, options.FetchMissing, token).ConfigureAwait(false);
+            }
+            catch (InvalidOperationException e) { throw new SnapshotPlanningException("missing-object-or-ref", e.Message, inner: e); }
             root = managed.RepositoryPath;
             head = managed.ObjectId;
         }
@@ -119,83 +133,143 @@ public sealed class SnapshotPortfolioRunner(SnapshotPortfolioStore store, IEstim
                 throw new InvalidDataException("Checkpoints must be outside measured source repositories.");
         }
         (IReadOnlyList<SnapshotHistoryCommit> history, bool shallow) = await git.ReadSnapshotHistoryAsync(root, head, token).ConfigureAwait(false);
-        await git.ValidateArchivePolicyAsync(root, token).ConfigureAwait(false);
+        try { await git.ValidateArchivePolicyAsync(root, token).ConfigureAwait(false); }
+        catch (InvalidDataException e) { throw new SnapshotPlanningException("invalid-archive", e.Message, inner: e); }
         if (shallow)
         {
-            if (options.Preflight) return SnapshotPortfolioDiagnostics.Unavailable(manifest, project, options.AsOf,
-                "shallow-history", head, history[^1].CommittedAt, shallow: true);
-            throw new InvalidDataException("Shallow first-parent history cannot prove monthly selection; supply complete local history.");
+            if (options.Preflight)
+            {
+                options.Progress?.Invoke("shallow-history: map gitHubRepository and run --fetch-missing, or explicitly git fetch --unshallow origin", project.Id);
+                return SnapshotPortfolioDiagnostics.Unavailable(manifest, project, options.AsOf, "shallow-history", head, history[^1].CommittedAt, shallow: true);
+            }
+            throw new SnapshotPlanningException("shallow-history", "Shallow first-parent history cannot prove monthly selection. " +
+                "Map this project to gitHubRepository and run with --fetch-missing to acquire history in the private managed cache, " +
+                "or explicitly run git fetch --unshallow origin in your own clone. Preflight and ordinary runs never deepen source repositories.");
         }
         string areasDigest = SnapshotMeasurementIdentity.Digest(project.Areas);
         string? ownership = project.VendorManifest is null ? null : ReviewedVendorManifestValidation.ComputeDigest(project.VendorManifest);
         MeasurementIdentity identity = SnapshotMeasurementIdentity.Create(manifest.Profile, ownership);
         List<SnapshotPeriodResult> periods = [];
-        foreach (SnapshotPeriodResult selected in SnapshotPortfolioSelection.Select(manifest.Year,
-            TimeZoneInfo.FindSystemTimeZoneById(manifest.Timezone), options.AsOf, history))
+        IReadOnlyList<SnapshotPeriodResult> selections = SnapshotPortfolioSelection.Select(manifest.Year,
+            TimeZoneInfo.FindSystemTimeZoneById(manifest.Timezone), options.AsOf, history);
+        string? latestId = selections.LastOrDefault(p => p.CommitObjectId is not null)?.Id;
+        Dictionary<string, (IReadOnlyList<ChangeSnapshotFile> Files, bool Attributes)> inventories = new(StringComparer.Ordinal);
+        Dictionary<string, IReadOnlyList<SnapshotAreaPlan>> plans = new(StringComparer.Ordinal);
+        Dictionary<string, SnapshotAreaSelectors> selectorSets = new(StringComparer.Ordinal);
+        foreach (SnapshotPeriodResult selected in selections)
         {
             token.ThrowIfCancellationRequested();
             if (selected.CommitObjectId is null) { periods.Add(selected); continue; }
-            string bindingKey = BindingKey(selected.CommitObjectId, identity, areasDigest);
-            SnapshotStoredBinding? binding = await store.LoadAsync<SnapshotStoredBinding>("bindings", bindingKey, token).ConfigureAwait(false);
-            bool cached = binding is not null && binding.Key == bindingKey && await LoadBindingReceiptsAsync(binding, identity, token).ConfigureAwait(false);
-            IReadOnlyList<SnapshotAreaPlan> areaPlan = [];
-            if (!cached)
+            bool requestAreas = project.AreaMeasurementMode != "latest-only" || selected.Id == latestId;
+            SnapshotProjectDefinition selectedProject = project;
+            string selectedAreasDigest = requestAreas ? areasDigest : "";
+            options.Progress?.Invoke(options.Preflight ? "planning" : "measurement", project.Id);
+            try
             {
-                // Trees without attribute controls can share archive work under distinct commit provenance.
-                await using IChangeSnapshot raw = await git.OpenSnapshotAsync(root, selected.CommitObjectId, token).ConfigureAwait(false);
-                bool attributes = raw.Files.Any(f => Path.GetFileName(f.Path) == ".gitattributes");
-                string treeKey = BindingKey(selected.TreeObjectId! + (attributes ? selected.CommitObjectId : ""), identity, areasDigest);
-                binding = await store.LoadAsync<SnapshotStoredBinding>("trees", treeKey, token).ConfigureAwait(false);
-                cached = binding is not null && binding.Key == treeKey && await LoadBindingReceiptsAsync(binding, identity, token).ConfigureAwait(false);
-                if (!cached && !options.Preflight)
+                if (project.AreaMeasurementMode == "revision-bound")
                 {
-                    binding = await MeasureArchiveAsync(git, root, selected.CommitObjectId, raw.Files, project, identity, treeKey, options, token).ConfigureAwait(false);
-                    await store.SaveAsync("trees", treeKey, binding, token).ConfigureAwait(false);
+                    SnapshotAreaRevision? revision = project.AreaRevisions!.FirstOrDefault(r => r.CommitObjectId == selected.CommitObjectId) ?? throw new SnapshotPlanningException("invalid-area-definition", "Selected snapshot needs an exact reviewed area revision.");
+                    selectedProject = project with { Areas = revision.Areas };
+                    selectedAreasDigest = SnapshotMeasurementIdentity.Digest(revision.Areas);
+                    if (selected.Id == latestId && selectedAreasDigest != areasDigest)
+                        throw new SnapshotPlanningException("invalid-area-definition", "Latest revision must match current reviewed areas.");
+                }
+                if (!selectorSets.TryGetValue(selectedAreasDigest, out SnapshotAreaSelectors? selectors) && requestAreas)
+                {
+                    selectors = new(selectedProject.Areas, () => Interlocked.Increment(ref _selectorCompilations));
+                    selectorSets.Add(selectedAreasDigest, selectors);
+                }
+                string bindingKey = BindingKey(selected.CommitObjectId, identity, selectedAreasDigest);
+                SnapshotStoredBinding? binding = await store.LoadAsync<SnapshotStoredBinding>("bindings", bindingKey, token).ConfigureAwait(false);
+                bool cached = binding is not null && binding.Key == bindingKey && await LoadBindingReceiptsAsync(binding, identity, token).ConfigureAwait(false);
+                IReadOnlyList<SnapshotAreaPlan> areaPlan = [];
+                if (!cached)
+                {
+                    // Trees without attribute controls can share archive work under distinct commit provenance.
+                    if (!inventories.TryGetValue(selected.TreeObjectId!, out var cachedInventory))
+                    {
+                        await using IChangeSnapshot raw = await git.OpenSnapshotAsync(root, selected.CommitObjectId, token).ConfigureAwait(false);
+                        cachedInventory = (raw.Files.ToArray(), raw.Files.Any(f => Path.GetFileName(f.Path) == ".gitattributes"));
+                        inventories.Add(selected.TreeObjectId!, cachedInventory);
+                        Interlocked.Increment(ref _inventoryReads);
+                    }
+                    else Interlocked.Increment(ref _planningReuseHits);
+                    IReadOnlyList<ChangeSnapshotFile> inventory = cachedInventory.Files;
+                    if (inventory.Count > 100_000 || inventory.Select(f => f.Path).Distinct(StringComparer.OrdinalIgnoreCase).Count() != inventory.Count)
+                        throw new SnapshotPlanningException("invalid-archive", "Snapshot file-count limit or portable path uniqueness was violated.");
+                    if (inventory.Any(f => f.IsLink || f.IsSubmodule))
+                        throw new SnapshotPlanningException("unsupported-source-entry", "Snapshot contains a link or submodule; archive policy rejects these entries.");
+                    bool attributes = cachedInventory.Attributes;
+                    string treeKey = BindingKey(selected.TreeObjectId! + (attributes ? selected.CommitObjectId : ""), identity, selectedAreasDigest);
+                    binding = await store.LoadAsync<SnapshotStoredBinding>("trees", treeKey, token).ConfigureAwait(false);
+                    cached = binding is not null && binding.Key == treeKey && await LoadBindingReceiptsAsync(binding, identity, token).ConfigureAwait(false);
+                    if (!cached && !options.Preflight)
+                    {
+                        binding = await MeasureArchiveAsync(git, root, selected.CommitObjectId, inventory, selectedProject, identity, treeKey, selected.TreeObjectId!, requestAreas, selectors, options, token).ConfigureAwait(false);
+                        await store.SaveAsync("trees", treeKey, binding, token).ConfigureAwait(false);
+                    }
+                    if (options.Preflight && !cached && requestAreas)
+                    {
+                        SnapshotProjectResult? prior = options.Previous?.Projects.FirstOrDefault(p => p.Id == project.Id);
+                        string? priorWhole = prior?.Periods.LastOrDefault(p => p.WholeReceiptId is not null)?.WholeReceiptId;
+                        if (prior?.AreasDigest != selectedAreasDigest || options.Previous?.Receipts.FirstOrDefault(r => r.Id == priorWhole)?.Measurement != identity)
+                            prior = null;
+                        string planKey = BindingKey(selected.TreeObjectId!, identity, selectedAreasDigest);
+                        if (!plans.TryGetValue(planKey, out areaPlan!))
+                        {
+                            Interlocked.Increment(ref _areaPlanningCalls);
+                            areaPlan = SnapshotPortfolioAreaPlanning.Plan(inventory, selectedProject, prior, attributes, selectors!, token);
+                            plans.Add(planKey, areaPlan);
+                        }
+                        else Interlocked.Increment(ref _planningReuseHits);
+                    }
+                    if (!options.Preflight)
+                    {
+                        binding = binding! with { Key = bindingKey, Digest = "" };
+                        binding = binding with { Digest = SnapshotPortfolioStore.BindingDigest(binding) };
+                        await store.SaveAsync("bindings", bindingKey, binding, token).ConfigureAwait(false);
+                    }
                 }
                 if (options.Preflight && !cached)
                 {
-                    SnapshotProjectResult? prior = options.Previous?.Projects.FirstOrDefault(p => p.Id == project.Id);
-                    string? priorWhole = prior?.Periods.LastOrDefault(p => p.WholeReceiptId is not null)?.WholeReceiptId;
-                    if (prior?.AreasDigest != areasDigest || options.Previous?.Receipts.FirstOrDefault(r => r.Id == priorWhole)?.Measurement != identity)
-                        prior = null;
-                    areaPlan = SnapshotPortfolioAreaPlanning.Plan(raw.Files, project, prior, attributes);
+                    periods.Add(selected with { CacheDisposition = "measurement-required", AreaPlans = areaPlan, AreaDefinitionDigest = project.AreaMeasurementMode == "revision-bound" ? selectedAreasDigest : null, AreaDisposition = project.AreaMeasurementMode == "latest-only" ? requestAreas ? "requested" : "not-requested" : null });
+                    continue;
                 }
-                if (!options.Preflight)
+                SnapshotMeasurementReceipt whole = _receipts[binding!.WholeReceiptId];
+                SnapshotPeriodResult? previous = options.Previous?.Projects.FirstOrDefault(p => p.Id == project.Id)?.Periods.FirstOrDefault(p => p.Id == selected.Id);
+                periods.Add(selected with
                 {
-                    binding = binding! with { Key = bindingKey, Digest = "" };
-                    binding = binding with { Digest = SnapshotPortfolioStore.BindingDigest(binding) };
-                    await store.SaveAsync("bindings", bindingKey, binding, token).ConfigureAwait(false);
-                }
-            }
-            if (options.Preflight && !cached)
-            {
-                periods.Add(selected with { CacheDisposition = "measurement-required", AreaPlans = areaPlan });
-                continue;
-            }
-            SnapshotMeasurementReceipt whole = _receipts[binding!.WholeReceiptId];
-            SnapshotPeriodResult? previous = options.Previous?.Projects.FirstOrDefault(p => p.Id == project.Id)?.Periods.FirstOrDefault(p => p.Id == selected.Id);
-            periods.Add(selected with
-            {
-                Hours = whole.Hours,
-                WholeReceiptId = whole.Id,
-                Areas = [.. binding.Areas.Select(a => a with
+                    AreaDefinitionDigest = project.AreaMeasurementMode == "revision-bound" ? selectedAreasDigest : null,
+                    AreaDisposition = project.AreaMeasurementMode == "latest-only" ? requestAreas ? options.Preflight ? "requested" : "measured" : "not-requested" : null,
+                    Hours = whole.Hours,
+                    WholeReceiptId = whole.Id,
+                    Areas = [.. binding.Areas.Select(a => a with
                 {
                     PreviousExpectedHours = previous?.Areas.FirstOrDefault(old => old.Id == a.Id)?.StandaloneExpectedHours,
                     ReviewStatus = previous?.Areas.FirstOrDefault(old => old.Id == a.Id)?.ReviewStatus == "review-required" ||
                         previous is not null && previous.Areas.FirstOrDefault(old => old.Id == a.Id)?.InputDigest != a.InputDigest
                         ? "review-required" : "reviewed-boundary",
                 })],
-                CacheDisposition = cached ? "receipt-hit" : "measured",
-                PreviousExpectedHours = previous?.Hours?.Expected,
-                AreaPlans = options.Preflight ? binding.Areas.Select(a => new SnapshotAreaPlan(a.Id, "receipt-hit")).ToArray() : [],
-                TotalCost = options.RateCard is null ? null : new()
-                {
-                    Low = decimal.Round(whole.Hours.Low * options.RateCard.HourlyRate, 2),
-                    Expected = decimal.Round(whole.Hours.Expected * options.RateCard.HourlyRate, 2),
-                    High = decimal.Round(whole.Hours.High * options.RateCard.HourlyRate, 2),
-                    Currency = options.RateCard.Currency,
-                },
-            });
+                    CacheDisposition = cached ? "receipt-hit" : "measured",
+                    PreviousExpectedHours = previous?.Hours?.Expected,
+                    AreaPlans = options.Preflight ? binding.Areas.Select(a => new SnapshotAreaPlan(a.Id, "receipt-hit")).ToArray() : [],
+                    TotalCost = options.RateCard is null ? null : new()
+                    {
+                        Low = decimal.Round(whole.Hours.Low * options.RateCard.HourlyRate, 2),
+                        Expected = decimal.Round(whole.Hours.Expected * options.RateCard.HourlyRate, 2),
+                        High = decimal.Round(whole.Hours.High * options.RateCard.HourlyRate, 2),
+                        Currency = options.RateCard.Currency,
+                    },
+                });
+            }
+            catch (SnapshotPlanningException e) when (options.Preflight)
+            {
+                periods.Add(selected with { Status = "unavailable", Hours = null, PlanningIssue = e.Category, PlanningAreaId = e.AreaId });
+            }
+            catch (ExternalCommandException) when (options.Preflight)
+            {
+                periods.Add(selected with { Status = "unavailable", Hours = null, PlanningIssue = "missing-object-or-ref" });
+            }
         }
         return new()
         {
@@ -204,6 +278,7 @@ public sealed class SnapshotPortfolioRunner(SnapshotPortfolioStore store, IEstim
             FirstAvailableCommitAt = history[^1].CommittedAt,
             ShallowHistory = shallow,
             AreasDigest = areasDigest,
+            AreaMeasurementMode = project.AreaMeasurementMode,
             Periods = periods,
         };
     }
@@ -220,103 +295,6 @@ public sealed class SnapshotPortfolioRunner(SnapshotPortfolioStore store, IEstim
         return true;
     }
 
-    private async Task<SnapshotStoredBinding> MeasureArchiveAsync(GitClient git, string root, string commit, IReadOnlyList<ChangeSnapshotFile> inventory,
-        SnapshotProjectDefinition project, MeasurementIdentity identity, string bindingKey,
-        SnapshotPortfolioRunOptions options, CancellationToken token)
-    {
-        GitArchiveSnapshot archive = await git.OpenArchiveAsync(root, commit, maximumBytes: options.MaximumArchiveBytes,
-            cancellationToken: token).ConfigureAwait(false);
-        Interlocked.Increment(ref _exports);
-        Interlocked.Add(ref _gitReadBytes, archive.Files.Sum(f => f.Value.LongLength));
-        // Persist data-only artifacts under all configuration bytes and the complete path set.
-        string context = SnapshotMeasurementIdentity.Digest(new
-        {
-            identity,
-            Paths = archive.Files.Keys.Order(StringComparer.Ordinal),
-            Controls = archive.Files.Where(p => IsContextControl(p.Key)).OrderBy(p => p.Key, StringComparer.Ordinal)
-                .Select(p => new { p.Key, Digest = SnapshotMeasurementIdentity.Hash(p.Value) }),
-        });
-        PhysicalRepositoryAnalysisArtifactStore persistent = new(Path.Combine(store.DirectoryPath, "artifacts", project.Id), context);
-        RepositoryAnalysisArtifactCache artifacts = new(store: persistent);
-        archive = new GitArchiveSnapshot(archive.Files, artifacts);
-        SnapshotMeasurementReceipt whole = await MeasureAsync(archive, archive.Files.Count, 0, identity,
-            project.VendorManifest, options, token).ConfigureAwait(false);
-        IReadOnlyList<SnapshotAreaInput> inputs = SnapshotAreaPartition.Partition(archive, project.Areas);
-        List<SnapshotMeasurementReceipt> measurements = [];
-        foreach (SnapshotAreaInput area in inputs)
-        {
-            ReviewedVendorManifest? vendor = project.VendorManifest is null ? null : project.VendorManifest with
-            {
-                Files = [.. project.VendorManifest.Files.Where(f => area.Snapshot.Files.ContainsKey(f.Path))],
-            };
-            // Empty ownership subsets are omitted from scanner input but remain in measurement identity.
-            if (vendor?.Files.Count == 0) vendor = null;
-            measurements.Add(await MeasureAsync(area.Snapshot, area.OwnedFiles, area.ContextFiles, identity, vendor, options, token).ConfigureAwait(false));
-        }
-        IReadOnlyList<decimal> allocated = SnapshotAreaPartition.Allocate(whole.Hours.Expected, [.. measurements.Select(m => m.Hours.Expected)]);
-        List<SnapshotAreaResult> results = [];
-        for (int i = 0; i < inputs.Count; i++) results.Add(new()
-        {
-            Id = inputs[i].Id,
-            ReceiptId = measurements[i].Id,
-            StandaloneExpectedHours = measurements[i].Hours.Expected,
-            AllocatedExpectedHours = allocated[i],
-            OwnedFileCount = inputs[i].OwnedFiles,
-            ContextFileCount = inputs[i].ContextFiles,
-            InputDigest = measurements[i].InputDigest,
-            InventoryDigest = SnapshotPortfolioAreaPlanning.Digest(inventory, inputs[i].Snapshot.Files.Keys),
-        });
-        RepositoryAnalysisArtifactCacheStatistics stats = artifacts.GetStatistics();
-        Interlocked.Add(ref _artifactRequests, stats.Requests);
-        Interlocked.Add(ref _artifactHits, stats.Hits);
-        Interlocked.Add(ref _artifactInvalidations, persistent.Invalidations);
-        Interlocked.Add(ref _artifactEvictions, persistent.Evictions);
-        SnapshotStoredBinding binding = new(bindingKey, "", whole.Id, results);
-        return binding with { Digest = SnapshotPortfolioStore.BindingDigest(binding) };
-    }
-
-    private async Task<SnapshotMeasurementReceipt> MeasureAsync(GitArchiveSnapshot snapshot, int selected, int context,
-        MeasurementIdentity identity, ReviewedVendorManifest? vendor, SnapshotPortfolioRunOptions options, CancellationToken token)
-    {
-        string key = SnapshotPortfolioStore.MeasurementKey(snapshot.InputDigest, identity, selected, context);
-        SnapshotReceiptReference? reference = await store.LoadAsync<SnapshotReceiptReference>("measurements", key, token).ConfigureAwait(false);
-        SnapshotMeasurementReceipt? cached = reference is null ? null : await store.ReceiptAsync(reference.ReceiptId, token).ConfigureAwait(false);
-        if (cached is not null && cached.InputDigest == snapshot.InputDigest && cached.Measurement == identity &&
-            cached.SelectedFileCount == selected && cached.ContextFileCount == context)
-        {
-            _receipts[cached.Id] = cached;
-            Interlocked.Increment(ref _receiptHits);
-            return cached;
-        }
-        RepositoryEvidence evidence = await new RepositoryAnalysisPipeline(snapshot, analysisArtifactCache: snapshot.AnalysisArtifactCache).ScanAsync(snapshot.RootPath,
-            new RepositoryScanOptions { VendorManifest = vendor }, token).ConfigureAwait(false);
-        EstimateReport estimate = _estimator.Estimate(evidence, identity.Profile, rateCard: null);
-        Interlocked.Increment(ref _estimatorCalls);
-        SnapshotMeasurementReceipt receipt = new()
-        {
-            Id = "",
-            InputDigest = snapshot.InputDigest,
-            Measurement = identity,
-            ProducerVersion = options.ProducerVersion,
-            Hours = estimate.TotalEffort,
-            Categories = estimate.Categories,
-            SelectedFileCount = selected,
-            ContextFileCount = context,
-            EvidenceDigest = evidence.Repository.SourceDigest!,
-            DirectoryIds = SnapshotPortfolioDiagnostics.DirectoryIds(snapshot.Files.Keys),
-            MaintainedBodies = SnapshotPortfolioDiagnostics.Bodies(snapshot, evidence),
-        };
-        receipt = receipt with { Id = SnapshotPortfolioValidation.ReceiptId(receipt) };
-        SnapshotPortfolioValidation.Validate(receipt);
-        await store.SaveAsync("receipts", receipt.Id, receipt, token).ConfigureAwait(false);
-        await store.SaveAsync("measurements", key, new SnapshotReceiptReference(receipt.Id), token).ConfigureAwait(false);
-        _receipts[receipt.Id] = receipt;
-        return receipt;
-    }
-
     public static string BindingKey(string objectId, MeasurementIdentity identity, string areasDigest) =>
         SnapshotMeasurementIdentity.Digest(new { objectId, identity, areasDigest });
-    private static bool IsContextControl(string path) => Path.GetExtension(path).ToLowerInvariant() is
-        ".json" or ".csproj" or ".props" or ".targets" or ".sln" or ".slnx" or ".config" ||
-        Path.GetFileName(path) is ".gitignore" or ".efforthoursignore" or ".gitattributes";
 }

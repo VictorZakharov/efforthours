@@ -3,6 +3,17 @@
 EffortHours records reproducible engineering checkpoints rather than presenting a
 single synthetic run as a universal performance guarantee.
 
+## Snapshot preflight integration checkpoint
+
+The [October 1, 2026 public synthetic checkpoint](../benchmarks/snapshot-preflight/README.md)
+compares alpha.25 with the integration fixes on twelve projects, ninety areas,
+14,412 files, and nine repeated monthly selections per project. Median wall time
+falls from 166.416 to 12.357 seconds with identical planning projections, zero
+exports/estimates/checkpoint writes, twelve inventory/planning calls, and ninety
+selector compilations. This is an exploratory desktop work-elimination result;
+the record discloses concurrent development activity and timing dispersion. It is
+not a private consumer latency claim or a CI time/memory threshold.
+
 ## Snapshot portfolio 12-project / 90-area checkpoint
 
 Measured October 1, 2026 on Windows x64, .NET SDK 10.0.203, with 24 exposed

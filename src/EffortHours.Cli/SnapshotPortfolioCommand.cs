@@ -65,7 +65,7 @@ internal static class SnapshotPortfolioCommand
             string epoch = SnapshotMeasurementIdentity.Digest(SnapshotMeasurementIdentity.Create(manifest.Profile));
             bool incompatible = previous is not null && previous.MeasurementEpoch != epoch;
             if (incompatible && options.Upgrade is null && !options.Preflight)
-                throw new InvalidDataException("Measurement semantics changed. Choose --upgrade rebuild or --upgrade new-epoch explicitly.");
+                throw new SnapshotPlanningException("incompatible-measurement-identity", "Measurement semantics changed. Choose --upgrade rebuild or --upgrade new-epoch explicitly.");
             if (options.Preflight && options.FetchMissing)
                 throw new InvalidDataException("Preflight is offline/read-only; acquire provider objects explicitly before planning.");
             phase = "lock";
@@ -96,6 +96,7 @@ internal static class SnapshotPortfolioCommand
                 ProducerVersion = producer,
                 Preflight = options.Preflight,
                 FetchMissing = options.FetchMissing,
+                Progress = (phaseName, projectId) => { lock (stderr) stderr.WriteLine($"Snapshot portfolio {phaseName}: {projectId}"); },
                 Concurrency = options.Concurrency,
                 MaximumArchiveBytes = options.ArchiveMiB * 1024 * 1024,
                 RateCard = options.HourlyRate is null ? null : new RateCard
@@ -145,7 +146,7 @@ internal static class SnapshotPortfolioCommand
                 $"{result.Telemetry.ReceiptHits} receipt hits, {result.Telemetry.Exports} exports.").ConfigureAwait(false);
             return CliExitCodes.Success;
         }
-        catch (Exception e) when (e is IOException or InvalidDataException or InvalidOperationException or JsonException or ArgumentException or OperationCanceledException)
+        catch (Exception e) when (e is IOException or InvalidDataException or InvalidOperationException or JsonException or ArgumentException or OperationCanceledException or ExternalCommandException)
         {
             bool cancelled = e is OperationCanceledException;
             string failure = ContractJson.SerializeDocument(new
@@ -154,7 +155,7 @@ internal static class SnapshotPortfolioCommand
                 protocolVersion = "snapshot-portfolio-failure/1.0.0",
                 status = "incomplete",
                 phase,
-                code = budget.Exceeded ? "memory-budget" : cancelled ? "cancelled-or-time-budget" : "snapshot-portfolio-failed",
+                code = budget.Exceeded ? "memory-budget" : cancelled ? "cancelled-or-time-budget" : e is SnapshotPlanningException planning ? planning.Category : e is ExternalCommandException ? "missing-object-or-ref" : "snapshot-portfolio-failed",
             });
             if (options.Output is null) await stdout.WriteAsync(failure).ConfigureAwait(false);
             else if (safeOutput && phase != "lock")
@@ -196,14 +197,18 @@ internal static class SnapshotPortfolioCommand
         foreach (SnapshotProjectResult project in imported.Projects)
         {
             SnapshotProjectDefinition? definition = manifest.Projects.FirstOrDefault(p => p.Id == project.Id);
-            if (definition is null || project.AreasDigest != SnapshotMeasurementIdentity.Digest(definition.Areas)) continue;
+            if (definition is null) continue;
             foreach (SnapshotPeriodResult period in project.Periods.Where(p => p.WholeReceiptId is not null))
             {
                 SnapshotMeasurementReceipt whole = imported.Receipts.Single(r => r.Id == period.WholeReceiptId);
-                string key = SnapshotPortfolioRunner.BindingKey(period.CommitObjectId!, whole.Measurement, project.AreasDigest);
+                string key = SnapshotPortfolioRunner.BindingKey(period.CommitObjectId!, whole.Measurement, period.AreaDefinitionDigest ?? project.AreasDigest);
                 SnapshotStoredBinding binding = new(key, "", whole.Id, period.Areas);
                 binding = binding with { Digest = SnapshotPortfolioStore.BindingDigest(binding) };
-                await store.SaveAsync("bindings", key, binding, token).ConfigureAwait(false);
+                if (period.Areas.Count != 0) await store.SaveAsync("bindings", key, binding, token).ConfigureAwait(false);
+                string wholeKey = SnapshotPortfolioRunner.BindingKey(period.CommitObjectId!, whole.Measurement, "");
+                SnapshotStoredBinding wholeBinding = new(wholeKey, "", whole.Id, []);
+                wholeBinding = wholeBinding with { Digest = SnapshotPortfolioStore.BindingDigest(wholeBinding) };
+                await store.SaveAsync("bindings", wholeKey, wholeBinding, token).ConfigureAwait(false);
             }
         }
     }

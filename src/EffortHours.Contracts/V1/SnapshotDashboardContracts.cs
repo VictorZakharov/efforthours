@@ -9,7 +9,8 @@ public sealed record SnapshotDashboardStudies
 public sealed record SnapshotDashboardStudy
 {
     public required string Id { get; init; }
-    public required string PublicRepositoryUrl { get; init; }
+    public string? SourceVisibility { get; init; }
+    public string? PublicRepositoryUrl { get; init; }
     public required string AreasDigest { get; init; }
     public required IReadOnlyList<SnapshotDashboardAreaStudy> Areas { get; init; }
 }
@@ -17,14 +18,14 @@ public sealed record SnapshotDashboardStudy
 public sealed record SnapshotDashboardAreaStudy
 {
     public required string Id { get; init; }
-    public required string Folder { get; init; }
+    public string? Folder { get; init; }
     public required string ReviewedCommit { get; init; }
 }
 
 public sealed record SnapshotDashboardAsset
 {
     public string SchemaVersion { get; init; } = ContractVersions.V1;
-    public string ProtocolVersion { get; init; } = "snapshot-dashboard-asset/1.0.0";
+    public string ProtocolVersion { get; init; } = "snapshot-dashboard-asset/1.1.0";
     public required string SourceSemanticDigest { get; init; }
     public required string MeasurementEpoch { get; init; }
     public required string DocumentationMarkdown { get; init; }
@@ -33,6 +34,7 @@ public sealed record SnapshotDashboardAsset
 
 public sealed record SnapshotDashboardProjectAsset
 {
+    public string SourceVisibility { get; init; } = "public";
     public required string Id { get; init; }
     public required IReadOnlyList<SnapshotDashboardPeriodAsset> Periods { get; init; }
 }
@@ -49,4 +51,4 @@ public sealed record SnapshotDashboardPeriodAsset
 
 public sealed record SnapshotCategoryGroup(string Id, EffortRange Hours);
 public sealed record SnapshotDashboardAreaAsset(string Id, decimal StandaloneExpectedHours,
-    decimal AllocatedExpectedHours, string FolderLink, string ReceiptId);
+    decimal AllocatedExpectedHours, string? FolderLink, string ReceiptId);

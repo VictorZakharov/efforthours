@@ -338,6 +338,34 @@
                   },
                   "minItems": 0,
                   "maxItems": 256
+                },
+                "planningIssue": {
+                  "enum": [
+                    "missing-history-or-head",
+                    "missing-object-or-ref",
+                    "shallow-history",
+                    "invalid-area-definition",
+                    "unmatched-selector",
+                    "empty-owned-area",
+                    "invalid-archive",
+                    "unsupported-source-entry",
+                    "incompatible-measurement-identity"
+                  ]
+                },
+                "planningAreaId": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9][a-z0-9.-]{0,79}$"
+                },
+                "areaDisposition": {
+                  "enum": [
+                    "not-requested",
+                    "measured",
+                    "requested"
+                  ]
+                },
+                "areaDefinitionDigest": {
+                  "type": "string",
+                  "pattern": "^sha256:[0-9a-f]{64}$"
                 }
               }
             },
@@ -347,7 +375,21 @@
           "planningIssue": {
             "enum": [
               "missing-history-or-head",
-              "shallow-history"
+              "missing-object-or-ref",
+              "shallow-history",
+              "invalid-area-definition",
+              "unmatched-selector",
+              "empty-owned-area",
+              "invalid-archive",
+              "unsupported-source-entry",
+              "incompatible-measurement-identity"
+            ]
+          },
+          "areaMeasurementMode": {
+            "enum": [
+              "every-snapshot",
+              "latest-only",
+              "revision-bound"
             ]
           }
         }
@@ -451,6 +493,22 @@
           "minimum": 0
         },
         "receiptInvalidations": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "inventoryReads": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "areaPlanningCalls": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "selectorCompilations": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "planningReuseHits": {
           "type": "integer",
           "minimum": 0
         }

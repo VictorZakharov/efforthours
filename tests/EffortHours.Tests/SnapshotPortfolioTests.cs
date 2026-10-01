@@ -69,9 +69,9 @@ public sealed class SnapshotPortfolioTests
     public void RejectsMissingSelectorsAndEmptyOwnedAreas()
     {
         GitArchiveSnapshot snapshot = Snapshot(("README.md", "# Readme"));
-        Assert.Throws<InvalidDataException>(() => SnapshotAreaPartition.Partition(snapshot,
+        Assert.Throws<SnapshotPlanningException>(() => SnapshotAreaPartition.Partition(snapshot,
             [new() { Id = "missing", Include = ["missing/**"] }, new() { Id = "rest", Include = ["**"] }]));
-        Assert.Throws<InvalidDataException>(() => SnapshotAreaPartition.Partition(snapshot,
+        Assert.Throws<SnapshotPlanningException>(() => SnapshotAreaPartition.Partition(snapshot,
             [new() { Id = "all", Include = ["**"] }, new() { Id = "rest", Include = ["**"] }]));
     }
 

@@ -1,0 +1,167 @@
+{
+  "protocol": "snapshot-preflight-checkpoint/1.0.0",
+  "projects": 12,
+  "areas": 90,
+  "filesPerProject": 1201,
+  "selectedMonthsPerProject": 9,
+  "equivalentPlanning": true,
+  "checkpointWrites": 0,
+  "samples": {
+    "baseline": {
+      "version": "0.10.0-alpha.25+ff29e72b89efca7f70e0571d5d07ae1f9ef1050e",
+      "runs": [
+        {
+          "wallSeconds": 161.17762999999832,
+          "telemetry": {
+            "estimatorCalls": 0,
+            "receiptHits": 0,
+            "receiptInvalidations": 0,
+            "exports": 0,
+            "artifactRequests": 0,
+            "artifactHits": 0,
+            "artifactInvalidations": 0,
+            "artifactEvictions": 0,
+            "gitReadBytes": 0,
+            "peakWorkingSetBytes": 276549632,
+            "elapsedMilliseconds": 160016.9162,
+            "concurrencyLimit": 1,
+            "archiveMiBLimit": 256,
+            "checkpointMiBLimit": 512,
+            "memoryMiBLimit": 2048,
+            "outputMiBLimit": 32,
+            "timeoutSecondsLimit": 3600
+          }
+        },
+        {
+          "wallSeconds": 166.41603879999457,
+          "telemetry": {
+            "estimatorCalls": 0,
+            "receiptHits": 0,
+            "receiptInvalidations": 0,
+            "exports": 0,
+            "artifactRequests": 0,
+            "artifactHits": 0,
+            "artifactInvalidations": 0,
+            "artifactEvictions": 0,
+            "gitReadBytes": 0,
+            "peakWorkingSetBytes": 298364928,
+            "elapsedMilliseconds": 165305.1264,
+            "concurrencyLimit": 1,
+            "archiveMiBLimit": 256,
+            "checkpointMiBLimit": 512,
+            "memoryMiBLimit": 2048,
+            "outputMiBLimit": 32,
+            "timeoutSecondsLimit": 3600
+          }
+        },
+        {
+          "wallSeconds": 178.40250419999938,
+          "telemetry": {
+            "estimatorCalls": 0,
+            "receiptHits": 0,
+            "receiptInvalidations": 0,
+            "exports": 0,
+            "artifactRequests": 0,
+            "artifactHits": 0,
+            "artifactInvalidations": 0,
+            "artifactEvictions": 0,
+            "gitReadBytes": 0,
+            "peakWorkingSetBytes": 341630976,
+            "elapsedMilliseconds": 177312.37,
+            "concurrencyLimit": 1,
+            "archiveMiBLimit": 256,
+            "checkpointMiBLimit": 512,
+            "memoryMiBLimit": 2048,
+            "outputMiBLimit": 32,
+            "timeoutSecondsLimit": 3600
+          }
+        }
+      ],
+      "medianWallSeconds": 166.41603879999457
+    },
+    "candidate": {
+      "version": "0.10.0-alpha.25+ff29e72b89efca7f70e0571d5d07ae1f9ef1050e",
+      "runs": [
+        {
+          "wallSeconds": 12.35656019999442,
+          "telemetry": {
+            "inventoryReads": 12,
+            "areaPlanningCalls": 12,
+            "selectorCompilations": 90,
+            "planningReuseHits": 192,
+            "estimatorCalls": 0,
+            "receiptHits": 0,
+            "receiptInvalidations": 0,
+            "exports": 0,
+            "artifactRequests": 0,
+            "artifactHits": 0,
+            "artifactInvalidations": 0,
+            "artifactEvictions": 0,
+            "gitReadBytes": 0,
+            "peakWorkingSetBytes": 148656128,
+            "elapsedMilliseconds": 11313.2147,
+            "concurrencyLimit": 1,
+            "archiveMiBLimit": 256,
+            "checkpointMiBLimit": 512,
+            "memoryMiBLimit": 2048,
+            "outputMiBLimit": 32,
+            "timeoutSecondsLimit": 3600
+          }
+        },
+        {
+          "wallSeconds": 10.129220200004056,
+          "telemetry": {
+            "inventoryReads": 12,
+            "areaPlanningCalls": 12,
+            "selectorCompilations": 90,
+            "planningReuseHits": 192,
+            "estimatorCalls": 0,
+            "receiptHits": 0,
+            "receiptInvalidations": 0,
+            "exports": 0,
+            "artifactRequests": 0,
+            "artifactHits": 0,
+            "artifactInvalidations": 0,
+            "artifactEvictions": 0,
+            "gitReadBytes": 0,
+            "peakWorkingSetBytes": 143163392,
+            "elapsedMilliseconds": 9134.5102,
+            "concurrencyLimit": 1,
+            "archiveMiBLimit": 256,
+            "checkpointMiBLimit": 512,
+            "memoryMiBLimit": 2048,
+            "outputMiBLimit": 32,
+            "timeoutSecondsLimit": 3600
+          }
+        },
+        {
+          "wallSeconds": 12.99729379999917,
+          "telemetry": {
+            "inventoryReads": 12,
+            "areaPlanningCalls": 12,
+            "selectorCompilations": 90,
+            "planningReuseHits": 192,
+            "estimatorCalls": 0,
+            "receiptHits": 0,
+            "receiptInvalidations": 0,
+            "exports": 0,
+            "artifactRequests": 0,
+            "artifactHits": 0,
+            "artifactInvalidations": 0,
+            "artifactEvictions": 0,
+            "gitReadBytes": 0,
+            "peakWorkingSetBytes": 144728064,
+            "elapsedMilliseconds": 11951.8267,
+            "concurrencyLimit": 1,
+            "archiveMiBLimit": 256,
+            "checkpointMiBLimit": 512,
+            "memoryMiBLimit": 2048,
+            "outputMiBLimit": 32,
+            "timeoutSecondsLimit": 3600
+          }
+        }
+      ],
+      "medianWallSeconds": 12.35656019999442
+    }
+  }
+}

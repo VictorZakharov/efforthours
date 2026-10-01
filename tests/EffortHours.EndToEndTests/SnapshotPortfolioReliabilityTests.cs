@@ -130,7 +130,7 @@ public sealed partial class ChangeCliTests
         ProcessResult plan = await SnapshotRunAsync(manifest, local, checkpoint, "--preflight");
         Assert.True(plan.ExitCode == 0, plan.StandardError);
         SnapshotPortfolioReport result = ContractJson.Deserialize<SnapshotPortfolioReport>(plan.StandardOutput);
-        Assert.Equal("missing-history-or-head", result.Projects[0].PlanningIssue);
+        Assert.Equal("missing-object-or-ref", result.Projects[0].PlanningIssue);
         Assert.Equal("unavailable", result.Projects[0].Periods[1].Status);
         Assert.Null(result.Projects[0].Periods[1].Hours);
         Assert.False(Directory.Exists(checkpoint));

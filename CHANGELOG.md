@@ -6,6 +6,18 @@ may still change public contracts with explicit documentation.
 
 ## Unreleased
 
+### Fixed
+
+- Support mixed public/closed-source snapshot studies without emitting private
+  locators, and classify expected adapter validation failures as invalid input.
+- Add explicit latest-only and exact revision-bound area requests for evolving
+  repositories, preserving historical whole receipts and exact latest allocations.
+- Separate whole snapshot reuse from area definitions, complete explicitly
+  acquired managed-cache history, and expose distinct privacy-safe planning failures.
+- Compile area selectors once and reuse immutable path-only preflight plans with
+  bounded stderr progress and operational counters. Document deliberate legacy
+  consumer rebuild/migration without relabeling historical provenance.
+
 ## 0.10.0-alpha.25 - 2026-10-01
 
 ### Added
