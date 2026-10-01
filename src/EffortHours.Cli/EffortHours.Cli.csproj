@@ -8,11 +8,11 @@
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>eh</ToolCommandName>
     <PackageId>EffortHours.Tool</PackageId>
-    <Version>0.10.0-alpha.24</Version>
+    <Version>0.10.0-alpha.25</Version>
     <Title>EffortHours CLI</Title>
     <PackageReadmeFile>PACKAGE_README.md</PackageReadmeFile>
     <PackageTags>estimation;effort-estimation;developer-tools;cli;repository-analysis;static-analysis;dotnet-tool</PackageTags>
-    <PackageReleaseNotes>0.10.0-alpha.24: Add bounded static GDScript source and conventional test analysis to repository estimates and Change EHE, with Godot project ownership and standalone-script support. Normalize safe formatting-only changes and exclude Godot generated caches. Godot scenes, resources, shaders, and runtime behavior have no dedicated valuation. Repository and GDScript Change EHE remain experimental and uncalibrated, and seed-rules/0.4.0 remains the shipped estimator with unchanged numerical priors. Full notes: https://github.com/VictorZakharov/efforthours/blob/v0.10.0-alpha.24/CHANGELOG.md</PackageReleaseNotes>
+    <PackageReleaseNotes>0.10.0-alpha.25: Add native monthly whole-codebase snapshot portfolios with reviewed standalone areas, exact allocations, offline preflight, durable portable receipts, explicit measurement epochs, and atomic resumable publication. Add local immutable Git archive inputs, bounded persistent analysis artifacts, reviewed vendor ownership and shared-source review proposals, and a validated numerical dashboard adapter with pinned links and documentation tables. Repository EHE remains experimental and uncalibrated; seed-rules/0.4.0 and its numerical priors remain unchanged. Full notes: https://github.com/VictorZakharov/efforthours/blob/v0.10.0-alpha.25/CHANGELOG.md</PackageReleaseNotes>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="../EffortHours.Analysis/EffortHours.Analysis.csproj" />
