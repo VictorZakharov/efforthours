@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:eh:schema:v1:snapshot-portfolio-failure",
+  "title": "snapshot-portfolio-failure",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "protocolVersion",
+    "status",
+    "phase",
+    "code"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "1.0.0"
+    },
+    "protocolVersion": {
+      "const": "snapshot-portfolio-failure/1.0.0"
+    },
+    "status": {
+      "const": "incomplete"
+    },
+    "phase": {
+      "enum": [
+        "inputs",
+        "lock",
+        "measurement",
+        "validation",
+        "publication"
+      ]
+    },
+    "code": {
+      "enum": [
+        "memory-budget",
+        "cancelled-or-time-budget",
+        "snapshot-portfolio-failed"
+      ]
+    }
+  }
+}

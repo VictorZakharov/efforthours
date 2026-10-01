@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:eh:schema:v1:snapshot-portfolio-local-map",
+  "title": "snapshot-portfolio-local-map",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "projects"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "1.0.0"
+    },
+    "projects": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9.-]{0,79}$"
+          },
+          "repositoryPath": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1024
+          },
+          "gitHubRepository": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1024
+          }
+        },
+        "oneOf": [
+          {
+            "required": [
+              "repositoryPath"
+            ],
+            "not": {
+              "required": [
+                "gitHubRepository"
+              ]
+            }
+          },
+          {
+            "required": [
+              "gitHubRepository"
+            ],
+            "not": {
+              "required": [
+                "repositoryPath"
+              ]
+            }
+          }
+        ]
+      },
+      "minItems": 1,
+      "maxItems": 256
+    }
+  }
+}

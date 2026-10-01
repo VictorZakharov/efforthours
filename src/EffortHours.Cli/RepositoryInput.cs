@@ -16,6 +16,8 @@ internal sealed record RepositoryInputSelection
     public bool FetchMissing { get; init; }
     public string? VendorManifestPath { get; init; }
     public bool IsRemote => GitHubRepository is not null;
+    public bool LocalSnapshot { get; init; }
+    public bool ArchiveSnapshot { get; init; }
 }
 
 internal sealed class RepositoryInputOptionsBuilder
@@ -24,6 +26,7 @@ internal sealed class RepositoryInputOptionsBuilder
     private string? _revision;
     private bool _fetchMissing;
     private string? _vendorManifest;
+    private string? _snapshotPolicy;
 
     public RepositoryInputOptionsBuilder(string[] arguments)
     {
@@ -56,6 +59,8 @@ internal sealed class RepositoryInputOptionsBuilder
                 return TryConsumeValue(arguments, ref index, "--repo", ref _githubRepository, out error);
             case "--revision":
                 return TryConsumeValue(arguments, ref index, "--revision", ref _revision, out error);
+            case "--snapshot-policy":
+                return TryConsumeValue(arguments, ref index, "--snapshot-policy", ref _snapshotPolicy, out error);
             default:
                 return false;
         }
@@ -77,9 +82,16 @@ internal sealed class RepositoryInputOptionsBuilder
             return false;
         }
 
-        if (_githubRepository is null && (_revision is not null || _fetchMissing))
+        if (_githubRepository is null && _fetchMissing)
         {
-            error = "Options '--revision' and '--fetch-missing' are valid only with --repo.";
+            error = "Option '--fetch-missing' is valid only with --repo.";
+            return false;
+        }
+
+        if (_snapshotPolicy is not (null or SnapshotPortfolioVersions.Snapshot) ||
+            _snapshotPolicy is not null && _githubRepository is null && _revision is null)
+        {
+            error = "--snapshot-policy supports git-archive/1.0.0 only with an immutable --revision or --repo input.";
             return false;
         }
 
@@ -89,6 +101,8 @@ internal sealed class RepositoryInputOptionsBuilder
             VendorManifestPath = _vendorManifest,
             GitHubRepository = _githubRepository,
             Revision = _revision ?? "HEAD",
+            LocalSnapshot = _githubRepository is null && _revision is not null,
+            ArchiveSnapshot = _snapshotPolicy is not null || _githubRepository is null && _revision is not null,
             FetchMissing = _fetchMissing,
         };
         return true;

@@ -99,6 +99,15 @@ Reviewed whole third-party bodies can be identified with an explicit, versioned
 [ownership manifest](VENDOR_OWNERSHIP.md). Exact content hashes and decision
 lineage keep owned adaptations and integration separate from copied bodies.
 
+### Snapshot portfolios
+
+Explicit curated snapshot portfolios select whole codebases at immutable month
+cutoffs, measure reviewed standalone areas, and reconcile planning allocations.
+They reuse durable compatibility-bound receipts without summing Change EHE.
+An optional numerical adapter produces authored-study bindings, pinned folder
+links, and documentation tables. [SNAPSHOT_PORTFOLIOS.md](SNAPSHOT_PORTFOLIOS.md)
+governs history selection, archive policy, privacy, compatibility, and publication.
+
 ### Change EHE
 
 Explicit Change estimation values the normalized final functional and quality

@@ -1,0 +1,104 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:eh:schema:v1:snapshot-portfolio-manifest",
+  "title": "snapshot-portfolio-manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "protocolVersion",
+    "year",
+    "timezone",
+    "profile",
+    "snapshotPolicy",
+    "baselineConvention",
+    "projects"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "1.0.0"
+    },
+    "protocolVersion": {
+      "const": "snapshot-portfolio-manifest/1.0.0"
+    },
+    "year": {
+      "type": "integer",
+      "minimum": 1970,
+      "maximum": 9998
+    },
+    "timezone": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 1024
+    },
+    "profile": {
+      "enum": [
+        "implementation",
+        "recreation"
+      ]
+    },
+    "snapshotPolicy": {
+      "const": "git-archive/1.0.0"
+    },
+    "baselineConvention": {
+      "const": "january-1-zero"
+    },
+    "projects": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "ref",
+          "areas"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9.-]{0,79}$"
+          },
+          "ref": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1024
+          },
+          "areas": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "id",
+                "include"
+              ],
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9][a-z0-9.-]{0,79}$"
+                },
+                "include": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 1024
+                  },
+                  "minItems": 1,
+                  "maxItems": 64
+                }
+              }
+            },
+            "minItems": 1,
+            "maxItems": 256
+          },
+          "vendorManifest": {
+            "$ref": "urn:eh:schema:v1:reviewed-vendor-manifest"
+          }
+        }
+      },
+      "minItems": 1,
+      "maxItems": 256
+    }
+  }
+}

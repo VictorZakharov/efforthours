@@ -20,6 +20,9 @@ public sealed partial class EffortHoursApplication
         TextWriter standardError,
         CancellationToken cancellationToken)
     {
+        if (arguments.Length > 0 && arguments[0] == "portfolio")
+            return await SnapshotPortfolioCommand.ExecuteAsync(arguments[1..], standardOutput,
+                standardError, cancellationToken).ConfigureAwait(false);
         if (arguments.Length == 0 || IsHelp(arguments[0]))
         {
             await standardOutput.WriteLineAsync(EstimateHelpText).ConfigureAwait(false);

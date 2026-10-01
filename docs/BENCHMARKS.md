@@ -3,6 +3,39 @@
 EffortHours records reproducible engineering checkpoints rather than presenting a
 single synthetic run as a universal performance guarantee.
 
+## Snapshot portfolio 12-project / 90-area checkpoint
+
+Measured October 1, 2026 on Windows x64, .NET SDK 10.0.203, with 24 exposed
+logical processors. The installed baseline was `0.10.0-alpha.24` at `c9af4b4`.
+The trusted harness creates 12 repositories, 90 ordered standalone areas, and
+312 C# files with 20 small methods per file. Each repository has one immutable
+January state and a February partial period that reuses that state. All source
+is synthetic; the private representative portfolio was unavailable.
+
+```text
+python benchmarks/snapshot-portfolio/run.py --directory artifacts/snapshot-benchmark-12x90 --cli src/EffortHours.Cli/bin/Release/net10.0/efforthours.dll
+```
+
+| Measure | Separate installed commands | Native cold | Native warm |
+| --- | ---: | ---: | ---: |
+| End-to-end seconds | 69.44 | 17.68 | 4.18 |
+| Estimator calls | 102 | 102 | 0 |
+| Git exports | 12 | 12 | 0 |
+| Source-tree materializations | 102 | 0 | 0 |
+| Native derived content bytes read | uninstrumented | 374,422 | 0 |
+| Analyzer artifact requests / hits | uninstrumented | 1,554 / 816 | 0 / 0 |
+| Native process peak working set | uninstrumented | 207.9 MiB | 104.0 MiB |
+
+The baseline exports each repository once, materializes its whole and each area
+under the same root name, and runs the installed CLI separately. Every one of
+the 102 ranges and complete category totals matches the native receipts exactly.
+Cold/warm semantic digests match. Observed ratios are 3.93x cold and 16.62x warm
+against this baseline; a single small-source checkpoint does not establish field
+latency, hardware-independent scaling, or the performance of private projects.
+The Git byte counter measures exported file content, not pack reads or tar framing;
+the baseline tar total was 921,600 bytes. Fixture generation is outside the timers.
+Timing and sampled memory are explicit observations, never ordinary CI gates.
+
 ## Common scanner v0.2 checkpoint
 
 Measured on August 5, 2026 with:

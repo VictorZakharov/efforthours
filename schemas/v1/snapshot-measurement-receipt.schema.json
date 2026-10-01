@@ -1,0 +1,230 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:eh:schema:v1:snapshot-measurement-receipt",
+  "title": "snapshot-measurement-receipt",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "protocolVersion",
+    "id",
+    "inputDigest",
+    "measurement",
+    "producerVersion",
+    "hours",
+    "categories",
+    "selectedFileCount",
+    "contextFileCount",
+    "evidenceDigest",
+    "maturity",
+    "directoryIds",
+    "maintainedBodies"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "1.0.0"
+    },
+    "protocolVersion": {
+      "const": "snapshot-measurement-receipt/1.0.0"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "inputDigest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "measurement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "contract",
+        "normalization",
+        "profile",
+        "modelDigest",
+        "implementationDigest",
+        "inventoryPolicy",
+        "ignorePolicy",
+        "snapshotPolicy",
+        "areaPolicy",
+        "analysisOptions"
+      ],
+      "properties": {
+        "contract": {
+          "const": "snapshot-measurement-receipt/1.0.0"
+        },
+        "normalization": {
+          "const": "repository-evidence/1.0.0"
+        },
+        "profile": {
+          "enum": [
+            "implementation",
+            "recreation"
+          ]
+        },
+        "modelDigest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "implementationDigest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "inventoryPolicy": {
+          "const": "archive-relative-inventory/1.0.0"
+        },
+        "ignorePolicy": {
+          "const": "git-and-efforthours-ignore/1.0.0"
+        },
+        "snapshotPolicy": {
+          "const": "git-archive/1.0.0"
+        },
+        "areaPolicy": {
+          "const": "ordered-standalone-areas/1.0.0"
+        },
+        "analysisOptions": {
+          "const": "default-static/1.0.0"
+        },
+        "ownershipDigest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        }
+      }
+    },
+    "producerVersion": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 1024
+    },
+    "hours": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "low",
+        "expected",
+        "high"
+      ],
+      "properties": {
+        "low": {
+          "type": "number",
+          "minimum": 0
+        },
+        "expected": {
+          "type": "number",
+          "minimum": 0
+        },
+        "high": {
+          "type": "number",
+          "minimum": 0
+        }
+      }
+    },
+    "categories": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "category",
+          "hours"
+        ],
+        "properties": {
+          "category": {
+            "enum": [
+              "specification-comprehension-and-domain-learning",
+              "repository-and-solution-setup",
+              "architecture-and-technical-design",
+              "production-implementation",
+              "ui-implementation-and-represented-ux-decisions",
+              "data-modeling-persistence-and-migrations",
+              "external-integrations-and-protocols",
+              "unit-testing",
+              "integration-contract-and-component-testing",
+              "end-to-end-and-ui-testing",
+              "manual-validation-debugging-and-hardening",
+              "documentation",
+              "build-configuration-and-developer-tooling",
+              "ci-cd-and-infrastructure-as-code",
+              "security-and-accessibility",
+              "packaging-deployment-and-release-artifacts",
+              "self-review-and-system-integration"
+            ]
+          },
+          "hours": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "low",
+              "expected",
+              "high"
+            ],
+            "properties": {
+              "low": {
+                "type": "number",
+                "minimum": 0
+              },
+              "expected": {
+                "type": "number",
+                "minimum": 0
+              },
+              "high": {
+                "type": "number",
+                "minimum": 0
+              }
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "minItems": 0,
+      "maxItems": 17
+    },
+    "selectedFileCount": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "contextFileCount": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "evidenceDigest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "maturity": {
+      "const": "experimental-uncalibrated"
+    },
+    "directoryIds": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^sha256:[0-9a-f]{64}$"
+      },
+      "minItems": 0,
+      "maxItems": 100000
+    },
+    "maintainedBodies": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "digest",
+          "bytes"
+        ],
+        "properties": {
+          "digest": {
+            "type": "string",
+            "pattern": "^sha256:[0-9a-f]{64}$"
+          },
+          "bytes": {
+            "type": "integer",
+            "minimum": 0
+          }
+        }
+      },
+      "minItems": 0,
+      "maxItems": 100000
+    }
+  }
+}

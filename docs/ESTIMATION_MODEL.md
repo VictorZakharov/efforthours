@@ -59,6 +59,16 @@ selects final artifacts; commit count, identity, timing, messages, branch activi
 and intermediate churn never multiply effort. The normalized final base-to-head
 delta remains authoritative. See `CHANGE_ESTIMATION.md`.
 
+### 4.1.1 Explicit snapshot portfolios
+
+Explicit snapshot portfolios may read one pinned first-parent history solely to
+select whole-codebase states at calendar cutoffs. Each selected archive and its
+reviewed standalone areas use the unchanged repository estimator. Area weights
+produce separately labeled exact project allocations, rather than slices of
+whole-project evidence or accumulated Change EHE. Archive, compatibility,
+ownership, and zero/future semantics are versioned in
+[SNAPSHOT_PORTFOLIOS.md](SNAPSHOT_PORTFOLIOS.md).
+
 ### 4.2 Clean competent recreation
 
 Estimate the work needed to achieve equivalent results with a reasonable
