@@ -6,6 +6,8 @@ may still change public contracts with explicit documentation.
 
 ## Unreleased
 
+## 0.10.0-alpha.26 - 2026-10-01
+
 ### Fixed
 
 - Support mixed public/closed-source snapshot studies without emitting private

@@ -8,11 +8,11 @@
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>eh</ToolCommandName>
     <PackageId>EffortHours.Tool</PackageId>
-    <Version>0.10.0-alpha.25</Version>
+    <Version>0.10.0-alpha.26</Version>
     <Title>EffortHours CLI</Title>
     <PackageReadmeFile>PACKAGE_README.md</PackageReadmeFile>
     <PackageTags>estimation;effort-estimation;developer-tools;cli;repository-analysis;static-analysis;dotnet-tool</PackageTags>
-    <PackageReleaseNotes>0.10.0-alpha.25: Add native monthly whole-codebase snapshot portfolios with reviewed standalone areas, exact allocations, offline preflight, durable portable receipts, explicit measurement epochs, and atomic resumable publication. Add local immutable Git archive inputs, bounded persistent analysis artifacts, reviewed vendor ownership and shared-source review proposals, and a validated numerical dashboard adapter with pinned links and documentation tables. Repository EHE remains experimental and uncalibrated; seed-rules/0.4.0 and its numerical priors remain unchanged. Full notes: https://github.com/VictorZakharov/efforthours/blob/v0.10.0-alpha.25/CHANGELOG.md</PackageReleaseNotes>
+    <PackageReleaseNotes>0.10.0-alpha.26: Fix snapshot portfolio integration with mixed public and closed-source studies, latest-only and revision-bound area definitions, independent whole-snapshot receipt reuse, explicit managed-cache history completion, and actionable privacy-safe planning diagnostics. Reuse immutable preflight plans and compiled selectors, add bounded progress, and document legacy migration. Repository EHE remains experimental and uncalibrated; seed-rules/0.4.0 and its numerical priors remain unchanged. Full notes: https://github.com/VictorZakharov/efforthours/blob/v0.10.0-alpha.26/CHANGELOG.md</PackageReleaseNotes>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="../EffortHours.Analysis/EffortHours.Analysis.csproj" />
