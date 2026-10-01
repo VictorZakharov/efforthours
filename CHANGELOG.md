@@ -6,6 +6,8 @@ may still change public contracts with explicit documentation.
 
 ## Unreleased
 
+## 0.10.0-alpha.25 - 2026-10-01
+
 ### Added
 
 - Native monthly whole-codebase snapshot portfolios with reviewed standalone
