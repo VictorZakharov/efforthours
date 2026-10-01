@@ -30,8 +30,11 @@ public sealed partial class ChangeCliTests
         using GitFixture execution = await GitFixture.CreateAsync();
         (string manifest, string local, string checkpoint) = WriteSnapshotInputs(execution.RootPath, repository.RootPath);
         string alias = Path.Combine(execution.RootPath, "source-alias");
-        Directory.CreateSymbolicLink(alias, repository.RootPath);
+        string parentAlias = Path.Combine(execution.RootPath, "parent-alias");
+        Directory.CreateSymbolicLink(parentAlias, Path.GetDirectoryName(repository.RootPath)!);
+        Directory.CreateSymbolicLink(alias, Path.Combine(parentAlias, Path.GetFileName(repository.RootPath)));
         string output = Path.Combine(alias, "result.json");
+        Assert.True(SnapshotPortfolioPaths.IsWithin(repository.RootPath, output));
         ProcessResult rejected = await SnapshotRunAsync(manifest, local, checkpoint, "--output", output);
         Assert.NotEqual(0, rejected.ExitCode);
         Assert.False(File.Exists(Path.Combine(repository.RootPath, "result.json")));
