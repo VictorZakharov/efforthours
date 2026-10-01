@@ -58,14 +58,14 @@ public sealed partial class PublicReleaseHygieneTests
         string readme = File.ReadAllText(Path.Combine(root, "PACKAGE_README.md"));
         Assert.Contains("#performance-and-scale", readme, StringComparison.Ordinal);
         Assert.DoesNotContain("#one-million-line-performance-checkpoints", readme, StringComparison.Ordinal);
-        Assert.Contains("change-seed/0.18.2", readme, StringComparison.Ordinal);
+        Assert.Contains("change-seed/0.19.0", readme, StringComparison.Ordinal);
 
         Assert.Contains("## Supported analyzers", readme, StringComparison.Ordinal);
         Assert.Contains("### Shared static-analysis boundary", readme, StringComparison.Ordinal);
         Assert.Contains("### Ecosystem-specific boundaries", readme, StringComparison.Ordinal);
 
         string[] familyRows = [.. readme.Split('\n').Where(line => line.StartsWith("| **", StringComparison.Ordinal))];
-        Assert.Equal(13, familyRows.Length);
+        Assert.Equal(14, familyRows.Length);
 
         foreach (string family in new[]
                  {
@@ -73,6 +73,7 @@ public sealed partial class PublicReleaseHygieneTests
                      "JavaScript/TypeScript + frontend",
                      "SQL",
                      "Python + Jupyter",
+                     "GDScript/Godot",
                      "Go",
                      "Java",
                      "Kotlin/JVM",

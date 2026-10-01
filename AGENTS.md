@@ -187,7 +187,7 @@ interval research remains separate.
 
 Change EHE has only the limited Stage A logical admission described in
 `docs/CHANGE_MODEL_ADMISSION.md`; later ecosystem extensions remain experimental.
-Current source reports use `change-seed/0.18.2+seed-rules/0.4.0`, and current
+Current source reports use `change-seed/0.19.0+seed-rules/0.4.0`, and current
 portfolio reports use `change-portfolio/0.2.5`. Author-period manifests charge a
 deterministic 128-MiB exact in-window identity ledger per repository and account
 its scope in logical 1,024-row selection chunks, accept up to 256 repositories

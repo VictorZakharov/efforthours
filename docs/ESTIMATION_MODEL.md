@@ -690,13 +690,13 @@ allocation keeps every component nonnegative while reconciling to the normalized
 total.
 
 The current composite source identity is
-`change-seed/0.18.2+seed-rules/0.4.0`; every frozen Change report retains its
+`change-seed/0.19.0+seed-rules/0.4.0`; every frozen Change report retains its
 original identity and numbers. `change-model-admission/0.2.0` admitted version
 0.6.0 only for experimental 4-to-32-hour Stage A changes after model-authored
-logical agreement and performance gates. Versions 0.7.0 through 0.18.2 preserve
+logical agreement and performance gates. Versions 0.7.0 through 0.19.0 preserve
 those admitted rules but are not separately admitted, and SQL, Python, Go, Java,
 Kotlin, Shell, PowerShell, Terraform, HCL, PHP, Composer, Rust, Cargo, Docker,
-Compose, Jupyter, C, or C++ have no
+Compose, Jupyter, C, C++, or GDScript have no
 reviewed Change labels.
 Version 0.18.1 retains the 0.18.0 priors while adding the bounded changed-scope
 projection and immutable Git-inventory reuse for large snapshots.
@@ -863,6 +863,15 @@ marginal rates transparently reuse analogous `0.3.0` JavaScript construction rat
 with wider uncertainty; they are not fitted calibration. Every existing .NET,
 JavaScript/TypeScript, frontend, SQL, and specialized rule remains numerically
 unchanged.
+
+GDScript analyzer `0.1.0` reuses the unchanged generic source rule with bounded
+indentation/token evidence and static `project.godot` ownership. Exact production
+bodies are collapsed and tests excluded before structure aggregation. Signals,
+lifecycle methods, and annotations provide descriptive counts without inferred
+runtime/UI/integration/security work. Conventional tests reuse existing test
+priors. `GDSCRIPT_ANALYSIS.md` defines the incomplete Godot scene/resource and
+runtime boundary. Change `0.19.0` adds the conservative `.gd` signature without
+changing earlier ecosystem semantics or extending Stage A admission.
 
 Python analyzer `0.1.0` supplies the first evidence to this generic rule. Its
 bounded managed tokenizer and indentation pass are explicitly token-backed.

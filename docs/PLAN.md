@@ -31,7 +31,7 @@ The repository already provides:
   normalization, optional external caching, and mixed-repository analysis;
 - static analyzer families for .NET, JavaScript/TypeScript and frontend assets,
   SQL, Python/Jupyter, Go, Java/Kotlin, Shell/PowerShell, Terraform/HCL,
-  PHP/Composer, Rust/Cargo, Docker/Compose, and C/C++;
+  PHP/Composer, Rust/Cargo, Docker/Compose, C/C++, and GDScript/Godot;
 - deterministic repository-first work-item construction under two profiles;
 - JSON schemas, compact projections, Markdown, explanation queries, and a dated
   replaceable rate card;
@@ -51,7 +51,7 @@ The repository already provides:
 
 This is an experimental public alpha. Repository `seed-rules/0.4.0` remains
 uncalibrated. Current Change reports use
-`change-seed/0.18.2+seed-rules/0.4.0`, while only the documented 0.6.0 Stage A
+`change-seed/0.19.0+seed-rules/0.4.0`, while only the documented 0.6.0 Stage A
 subset has limited logical admission. No local ML model and no automatic host-
 review budget is admitted.
 
@@ -69,6 +69,7 @@ src/
   EffortHours.Analyzers.JavaScript/ JS/TS, package, and frontend evidence
   EffortHours.Analyzers.Sql/        bounded SQL evidence
   EffortHours.Analyzers.Python/     Python package/source and Jupyter evidence
+  EffortHours.Analyzers.GDScript/   GDScript tokens and Godot project ownership
   EffortHours.Analyzers.Go/         Go module/workspace/source evidence
   EffortHours.Analyzers.Java/       Java, Kotlin, Maven, and Gradle evidence
   EffortHours.Analyzers.Scripting/  Shell and PowerShell evidence
@@ -449,6 +450,14 @@ runtime model. A local model must improve repository-held-out agreement, preserv
 guardrails and lineage, remain deterministic and offline, expose
 out-of-distribution uncertainty, and justify its runtime, package size, licensing,
 and maintenance cost.
+
+## Explicit analyzer expansion
+
+Issue #227 reopens GDScript support as a bounded ecosystem extension. Its
+managed tokenizer and static Godot project-directory ownership feed existing
+language-neutral source/test contracts and unchanged seed priors. The precise
+input, exclusion, safety, comparison, and uncalibrated boundary is in
+`GDSCRIPT_ANALYSIS.md`; this does not reopen the remaining historical backlog.
 
 ## Current maintenance priorities
 

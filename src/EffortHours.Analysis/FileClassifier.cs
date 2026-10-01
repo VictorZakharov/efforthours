@@ -150,7 +150,7 @@ internal static class FileClassifier
             return "binary";
         }
 
-        if (lowerName == "package.json")
+        if (lowerName is "package.json" or "project.godot")
         {
             return "package-manifest";
         }
@@ -228,6 +228,10 @@ internal static class FileClassifier
         {
             return true;
         }
+
+        if (language == "gdscript" &&
+            (lowerName.StartsWith("test_", StringComparison.Ordinal) ||
+             lowerName.EndsWith("_test.gd", StringComparison.Ordinal))) return true;
 
         if (language == "python" &&
             (lowerName.StartsWith("test_", StringComparison.Ordinal) ||
@@ -325,7 +329,7 @@ internal static class FileClassifier
             "cargo.lock" or "go.sum" or "gradle.lockfile" or ".terraform.lock.hcl";
 
     private static bool IsComponentManifest(string lowerName, string extension) =>
-        lowerName == "package.json" || PythonFileClassification.IsProjectManifest(lowerName) ||
+        lowerName is "package.json" or "project.godot" || PythonFileClassification.IsProjectManifest(lowerName) ||
         GoFileClassification.IsProjectManifest(lowerName) ||
         JavaFileClassification.IsProjectManifest(lowerName) ||
         PhpFileClassification.IsProjectManifest(lowerName) ||

@@ -68,6 +68,7 @@ privacy/safety limits, model maturity, and non-goals for its ecosystem.
 - [SQL](SQL_ANALYSIS.md)
 - [Python](PYTHON_ANALYSIS.md)
 - [Jupyter notebooks](JUPYTER_ANALYSIS.md)
+- [GDScript/Godot](GDSCRIPT_ANALYSIS.md)
 - [Go](GO_ANALYSIS.md)
 - [Java](JAVA_ANALYSIS.md)
 - [Kotlin/JVM](KOTLIN_ANALYSIS.md)

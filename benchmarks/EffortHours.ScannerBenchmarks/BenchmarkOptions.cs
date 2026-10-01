@@ -10,6 +10,7 @@ internal enum BenchmarkShape
     Frontend,
     Sql,
     Python,
+    GDScript,
     Jupyter,
     Go,
     Java,
@@ -38,7 +39,7 @@ internal sealed record BenchmarkOptions(
     public const string Usage =
         "Usage: scanner-benchmark [--files <count>] [--lines-per-file <count>] " +
         "[--file-analysis-workers <count>] " +
-        "[--dotnet|--javascript|--frontend|--sql|--python|--jupyter|--go|--java|--kotlin|--shell|--powershell|--php|--rust|--c|--cpp|--terraform|--docker|--mixed] [--warm-cache] [--keep] " +
+        "[--dotnet|--javascript|--frontend|--sql|--python|--gdscript|--jupyter|--go|--java|--kotlin|--shell|--powershell|--php|--rust|--c|--cpp|--terraform|--docker|--mixed] [--warm-cache] [--keep] " +
         "or scanner-benchmark --repository <path> [--warm-cache]";
 
     public string Mode => Shape switch
@@ -49,6 +50,7 @@ internal sealed record BenchmarkOptions(
         BenchmarkShape.Frontend => "frontend-assets-static",
         BenchmarkShape.Sql => "sql-static",
         BenchmarkShape.Python => "python-static",
+        BenchmarkShape.GDScript => "gdscript-static",
         BenchmarkShape.Jupyter => "jupyter-notebook-static",
         BenchmarkShape.Go => "go-static",
         BenchmarkShape.Java => "java-static",
@@ -113,6 +115,9 @@ internal sealed record BenchmarkOptions(
                     break;
                 case "--sql":
                     shape = SelectShape(shape, BenchmarkShape.Sql);
+                    break;
+                case "--gdscript":
+                    shape = SelectShape(shape, BenchmarkShape.GDScript);
                     break;
                 case "--python":
                     shape = SelectShape(shape, BenchmarkShape.Python);

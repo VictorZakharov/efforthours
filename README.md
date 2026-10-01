@@ -214,8 +214,7 @@ determination.
 
 ## Supported analyzers
 
-EffortHours combines 13 bounded static-analyzer families in one report, including
-mixed repositories.
+EffortHours combines 14 bounded static analyzers in mixed-repository reports.
 
 | Analyzer family | Maintained artifacts | Evidence represented |
 | --- | --- | --- |
@@ -223,6 +222,7 @@ mixed repositories.
 | **JavaScript/TypeScript + frontend** | JavaScript, JSX, TypeScript, TSX, HTML/templates, CSS-family styles, Vue/Svelte components, and static Angular metadata | Packages and workspaces, APIs, behavior, UI/template/style semantics, data, integrations, security, background work, tests, and parser-backed JS/JSX callable diagnostics with explicit TS/TSX coverage gaps |
 | **SQL** | PostgreSQL, SQL Server, MySQL/MariaDB, and SQLite-oriented SQL | Schema, migrations, stored programs, queries, tests, deployment, and cross-database evidence |
 | **Python + Jupyter** | `.py`, `.pyi`, package metadata, and bounded `.ipynb` notebooks | Package ownership, structure, APIs, qualified frameworks, tests, Markdown, data analysis, visualization, and integrations |
+| **GDScript/Godot** | Maintained `.gd` scripts and static `project.godot` ownership | Token-backed declarations, signals, annotations, async/branch structure, conventional tests, and indentation-aware Change normalization; scenes/resources/runtime behavior remain unresolved |
 | **Go** | Modules, workspaces, `.go` source, and `_test.go` tests | Packages, local replacements, declarations, APIs, qualified semantics, concurrency, build directives, and tests |
 | **Java** | `.java`, Maven reactors/POMs, and Gradle multi-project metadata | Packages/modules, types, methods, APIs, concurrency, Spring/Jakarta and integration semantics, and JUnit/TestNG tests |
 | **Kotlin/JVM** | `.kt`, non-Gradle `.kts`, and shared Maven/Gradle JVM metadata | Declarations, APIs, coroutines/Flow, server, Android/Compose, data, integrations, security, background work, and tests |

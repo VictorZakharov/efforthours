@@ -12,7 +12,7 @@ The implementation identities are:
 - common scanner `0.2.13`;
 - C/C++ analyzer `0.1.0`;
 - unchanged repository estimator `seed-rules/0.4.0`; and
-- Change estimator `change-seed/0.18.2+seed-rules/0.4.0`.
+- Change estimator `change-seed/0.19.0+seed-rules/0.4.0`.
 
 Frozen reports retain their original identities.
 

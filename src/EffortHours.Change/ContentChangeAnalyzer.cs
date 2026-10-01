@@ -1,4 +1,5 @@
 using System.Text;
+using EffortHours.Analyzers.GDScript;
 
 namespace EffortHours.Change;
 
@@ -126,6 +127,13 @@ internal static class ContentChangeAnalyzer
         {
             return SqlFormattingNormalizer.TryCreateSignature(left, out string leftSignature) &&
                 SqlFormattingNormalizer.TryCreateSignature(right, out string rightSignature) &&
+                leftSignature == rightSignature;
+        }
+
+        if (extension == ".gd")
+        {
+            return GDScriptFormattingSignature.TryCreate(left, out string leftSignature) &&
+                GDScriptFormattingSignature.TryCreate(right, out string rightSignature) &&
                 leftSignature == rightSignature;
         }
 
@@ -286,7 +294,7 @@ internal static class ContentChangeAnalyzer
     private static bool SupportsFormattingComparison(string path) =>
         Path.GetExtension(path).ToLowerInvariant() is
             ".cs" or ".js" or ".jsx" or ".mjs" or ".cjs" or
-            ".ts" or ".tsx" or ".mts" or ".cts" or ".py" or ".pyi" or
+            ".ts" or ".tsx" or ".mts" or ".cts" or ".py" or ".pyi" or ".gd" or
             ".ipynb" or
             ".go" or ".java" or ".kt" or ".kts" or ".php" or ".rs" or ".sql" or
             ".c" or ".cc" or ".cpp" or ".cxx" or ".cppm" or ".ixx" or

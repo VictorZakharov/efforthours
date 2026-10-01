@@ -33,7 +33,7 @@ packet/query commands.
 
 ## Supported analyzers
 
-EffortHours combines 13 analyzer families in one report, including mixed
+EffortHours combines 14 analyzer families in one report, including mixed
 repositories. Each family uses bounded static evidence; the table shows the
 maintained artifacts and the kind of work it can represent.
 
@@ -43,6 +43,7 @@ maintained artifacts and the kind of work it can represent.
 | **JavaScript/TypeScript + frontend** | JavaScript, JSX, TypeScript, TSX, HTML/templates, CSS-family styles, Vue/Svelte components, and static Angular metadata | Packages and workspaces, APIs, behavior, UI/template/style semantics, data, integrations, security, background work, and tests |
 | **SQL** | PostgreSQL, SQL Server, MySQL/MariaDB, and SQLite-oriented SQL | Schema, migrations, stored programs, queries, tests, deployment, and cross-database evidence |
 | **Python + Jupyter** | `.py`, `.pyi`, package metadata, and bounded `.ipynb` notebooks | Package ownership, structure, APIs, qualified frameworks, tests, Markdown, data analysis, visualization, and integrations |
+| **GDScript/Godot** | Maintained `.gd` scripts and `project.godot` | Static project ownership, token-backed declarations, signals, annotations, async/branch structure, conventional tests, and indentation-aware Change normalization |
 | **Go** | Modules, workspaces, `.go` source, and `_test.go` tests | Packages, local replacements, declarations, APIs, qualified semantics, concurrency, build directives, and tests |
 | **Java** | `.java`, Maven reactors/POMs, and Gradle multi-project metadata | Packages/modules, types, methods, APIs, concurrency, Spring/Jakarta and integration semantics, and JUnit/TestNG tests |
 | **Kotlin/JVM** | `.kt`, non-Gradle `.kts`, and shared Maven/Gradle JVM metadata | Declarations, APIs, coroutines/Flow, server, Android/Compose, data, integrations, security, background work, and tests |
@@ -131,6 +132,11 @@ and the
   includes or environment files; resolve interpolation or secrets; validate a
   Compose schema; or prove deployment behavior. Arbitrary YAML is not treated as
   Compose.
+- **GDScript/Godot:** Evidence is bounded token and indentation structure. Godot,
+  `@tool` scripts, addons, and tests are not executed. Scenes/resources, shaders,
+  autoloads, preload/load references, cross-script binding, visual/art production,
+  RPC semantics, and runtime behavior are unresolved. This is partial Godot
+  coverage, not a complete game estimate.
 - **C/C++:** Evidence is token-backed rather than compiler-, preprocessor-, or
   native-parser-backed. EffortHours does not invoke a compiler, preprocessor,
   linker, build system, generator, package manager, or tests; expand headers or
@@ -196,7 +202,7 @@ treated as untrusted input, and reports avoid source excerpts by default.
 
 ## Current limitations
 
-- `seed-rules/0.4.0` and `change-seed/0.18.2` remain experimental and uncalibrated.
+- `seed-rules/0.4.0` and `change-seed/0.19.0` remain experimental and uncalibrated.
 - Public calibration labels have not completed genuinely independent correction.
 - Host-review token use, cost, and estimate improvement have not yet been measured
   across representative repositories; no automatic review budget is selected.
