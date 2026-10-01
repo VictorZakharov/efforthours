@@ -124,6 +124,13 @@ public sealed partial class EffortHoursApplication
             return CliExitCodes.Success;
         }
 
+        if (arguments is ["measurement-identity"])
+        {
+            await standardOutput.WriteAsync(ContractJson.SerializeDocument(
+                EffortHours.Change.SnapshotMeasurementIdentity.Create(EstimationProfile.Implementation))).ConfigureAwait(false);
+            return CliExitCodes.Success;
+        }
+
         return await UsageErrorAsync(standardError, "Expected 'model info' or 'model show'.")
             .ConfigureAwait(false);
     }
@@ -224,6 +231,10 @@ public sealed partial class EffortHoursApplication
           eh scan --repo <owner/name> [--revision <revision>] [--fetch-missing] [options]
           eh estimate <repository-or-evidence.json> [options]
           eh estimate --repo <owner/name> [--revision <revision>] [--fetch-missing] [options]
+          eh estimate <local-repository> --revision <revision> [--snapshot-policy git-archive/1.0.0] [options]
+          eh model measurement-identity
+          eh estimate portfolio --manifest <portfolio.json> --local <local.json> --checkpoint <directory> [options]
+          eh portfolio-adapter --input <result.json> --studies <studies.json> --output <asset.json>
           eh change <repository> <--commit|--range|--base/--head|--pr> [options]
           eh change <--base-path/--head-path|--base-evidence/--head-evidence> [options]
           eh change portfolio <repository> <--pr|--author> [options]

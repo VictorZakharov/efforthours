@@ -278,7 +278,11 @@ a warning; it is never silently excluded.
 
 ## History boundary
 
-Ordinary `scan` and repository `estimate` commands continue to ignore Git history.
+Ordinary directory `scan` and repository `estimate` commands continue to ignore Git
+history. Explicit local `--revision` inputs select one immutable archive without
+reading history; the separately versioned snapshot-portfolio command may read
+first-parent history solely for whole-codebase calendar selection under
+[SNAPSHOT_PORTFOLIOS.md](SNAPSHOT_PORTFOLIOS.md).
 Change mode is an explicit opt-in exception whose history access is limited to:
 
 - resolving requested base, head, parent, PR, author, and time selectors;
@@ -905,8 +909,9 @@ compensation recommendations from this signal alone.
 
 ## Privacy and safety
 
-The default offline engine invokes local Git only for an explicitly requested
-change operation. The optional `gh` adapter may access network data and credentials;
+The default directory engine does not invoke Git. Explicit immutable inputs,
+snapshot portfolios, and Change operations may invoke local Git under their
+documented selection policies. The optional `gh` adapter may access network data and credentials;
 the CLI announces that boundary and does not retain PR bodies, discussions,
 reviews, activity, or private diff bodies. Author-period reports intentionally
 retain selection policy for auditability. The direct single-repository command

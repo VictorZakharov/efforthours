@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:eh:schema:v1:snapshot-measurement-identity",
+  "title": "snapshot-measurement-identity",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract",
+    "normalization",
+    "profile",
+    "modelDigest",
+    "implementationDigest",
+    "inventoryPolicy",
+    "ignorePolicy",
+    "snapshotPolicy",
+    "areaPolicy",
+    "analysisOptions"
+  ],
+  "properties": {
+    "contract": {
+      "const": "snapshot-measurement-receipt/1.0.0"
+    },
+    "normalization": {
+      "const": "repository-evidence/1.0.0"
+    },
+    "profile": {
+      "enum": [
+        "implementation",
+        "recreation"
+      ]
+    },
+    "modelDigest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "implementationDigest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "inventoryPolicy": {
+      "const": "archive-relative-inventory/1.0.0"
+    },
+    "ignorePolicy": {
+      "const": "git-and-efforthours-ignore/1.0.0"
+    },
+    "snapshotPolicy": {
+      "const": "git-archive/1.0.0"
+    },
+    "areaPolicy": {
+      "const": "ordered-standalone-areas/1.0.0"
+    },
+    "analysisOptions": {
+      "const": "default-static/1.0.0"
+    },
+    "ownershipDigest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  }
+}

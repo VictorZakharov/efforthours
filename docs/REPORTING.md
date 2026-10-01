@@ -175,6 +175,17 @@ root failure and last-progress context, and checkpoint lineage. It deliberately
 omits the canonical source portfolio, bucket series, aggregate EHE, and trend and
 returns a nonzero exit code.
 
+## Snapshot portfolio reports
+
+Snapshot portfolios have the separate `snapshot-portfolio-report/1.0.0` contract.
+Complete reports allowlist public IDs, immutable provenance, receipt hashes,
+effort/category ranges, coverage/ownership counts, and operational telemetry.
+Standalone area measurements and allocated shares remain distinct. Failed runs
+preserve prior complete outputs and emit a separate failure artifact. Their
+optional dashboard adapter owns a versioned category grouping, numerical assets,
+pinned links, and derived tables; authored studies remain inputs. See
+[SNAPSHOT_PORTFOLIOS.md](SNAPSHOT_PORTFOLIOS.md).
+
 ## Repository views
 
 Repository estimates support these presentations:

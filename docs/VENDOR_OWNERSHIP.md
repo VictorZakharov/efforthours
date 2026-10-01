@@ -28,6 +28,12 @@ file without the option. Combining saved evidence with a new manifest is rejecte
 rescan the source instead. This input is not a Change/portfolio command option;
 those selectors retain their existing scope and classification controls.
 
+Curated whole-codebase snapshot portfolios may embed the same reviewed manifest
+per project. They hash-bind ownership into measurement compatibility, verify the
+whole snapshot, and apply relevant entries to independently measured areas.
+Shared-body proposals remain review-only and never silently exclude cross-product
+source. See [SNAPSHOT_PORTFOLIOS.md](SNAPSHOT_PORTFOLIOS.md).
+
 ## Manifest contract
 
 JSON uses `schemaVersion: "1.0.0"`,

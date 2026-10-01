@@ -33,6 +33,9 @@ The repository already provides:
   SQL, Python/Jupyter, Go, Java/Kotlin, Shell/PowerShell, Terraform/HCL,
   PHP/Composer, Rust/Cargo, Docker/Compose, C/C++, and GDScript/Godot;
 - deterministic repository-first work-item construction under two profiles;
+- explicit whole-codebase snapshot portfolios with ordered standalone areas,
+  immutable archive input, compatibility-bound receipts, resumable publication,
+  persistent parser artifacts, and a validated numerical dashboard adapter;
 - JSON schemas, compact projections, Markdown, explanation queries, and a dated
   replaceable rate card;
 - immutable Git and non-Git Change selectors, range reconciliation, portfolio

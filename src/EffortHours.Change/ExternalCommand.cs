@@ -466,6 +466,7 @@ internal static class ExternalCommand
         };
         startInfo.Environment["GIT_OPTIONAL_LOCKS"] = "0";
         startInfo.Environment["GIT_TERMINAL_PROMPT"] = "0";
+        startInfo.Environment["GIT_ATTR_NOSYSTEM"] = "1";
         foreach (string argument in arguments)
         {
             startInfo.ArgumentList.Add(argument);

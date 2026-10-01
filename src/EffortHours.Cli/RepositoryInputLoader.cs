@@ -58,6 +58,15 @@ internal sealed class RepositoryInputLoader
                 .ConfigureAwait(false);
         }
 
+        if (selection.LocalSnapshot)
+        {
+            string root = await _git.ResolveRepositoryRootAsync(selection.InputPath!, cancellationToken).ConfigureAwait(false);
+            string commit = await _git.ResolveCommitAsync(root, selection.Revision, cancellationToken).ConfigureAwait(false);
+            GitArchiveSnapshot archive = await _git.OpenArchiveAsync(root, commit, cancellationToken: cancellationToken).ConfigureAwait(false);
+            RepositoryEvidence evidence = await _scannerFactory(archive).ScanAsync(archive.RootPath, scanOptions, cancellationToken).ConfigureAwait(false);
+            return new RepositoryInputContext(evidence, new HostReviewSourceContext(archive.RootPath, archive));
+        }
+
         string inputPath = selection.InputPath!;
         if (Directory.Exists(inputPath))
         {
@@ -92,6 +101,13 @@ internal sealed class RepositoryInputLoader
             selection.Revision,
             selection.FetchMissing,
             cancellationToken).ConfigureAwait(false);
+        if (selection.ArchiveSnapshot)
+        {
+            GitArchiveSnapshot archive = await _git.OpenArchiveAsync(head.RepositoryPath, head.ObjectId,
+                cancellationToken: cancellationToken).ConfigureAwait(false);
+            RepositoryEvidence evidence = await _scannerFactory(archive).ScanAsync(archive.RootPath, scanOptions, cancellationToken).ConfigureAwait(false);
+            return new RepositoryInputContext(evidence, new HostReviewSourceContext(archive.RootPath, archive));
+        }
         IChangeSnapshot snapshot = await _git.OpenSnapshotAsync(
             head.RepositoryPath,
             head.ObjectId,

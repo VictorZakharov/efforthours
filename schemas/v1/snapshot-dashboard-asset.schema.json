@@ -1,0 +1,198 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:eh:schema:v1:snapshot-dashboard-asset",
+  "title": "snapshot-dashboard-asset",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "protocolVersion",
+    "sourceSemanticDigest",
+    "measurementEpoch",
+    "documentationMarkdown",
+    "projects"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "1.0.0"
+    },
+    "protocolVersion": {
+      "const": "snapshot-dashboard-asset/1.0.0"
+    },
+    "sourceSemanticDigest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "measurementEpoch": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "documentationMarkdown": {
+      "type": "string",
+      "maxLength": 1048576
+    },
+    "projects": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "periods"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9.-]{0,79}$"
+          },
+          "periods": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "id",
+                "status",
+                "categories",
+                "areas"
+              ],
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 1024
+                },
+                "status": {
+                  "enum": [
+                    "baseline-zero",
+                    "assumed-zero",
+                    "future",
+                    "complete",
+                    "partial"
+                  ]
+                },
+                "commitObjectId": {
+                  "type": "string",
+                  "pattern": "^([0-9a-f]{40}|[0-9a-f]{64})$"
+                },
+                "hours": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "low",
+                    "expected",
+                    "high"
+                  ],
+                  "properties": {
+                    "low": {
+                      "type": "number",
+                      "minimum": 0
+                    },
+                    "expected": {
+                      "type": "number",
+                      "minimum": 0
+                    },
+                    "high": {
+                      "type": "number",
+                      "minimum": 0
+                    }
+                  }
+                },
+                "categories": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "id",
+                      "hours"
+                    ],
+                    "properties": {
+                      "id": {
+                        "enum": [
+                          "design",
+                          "delivery",
+                          "implementation",
+                          "validation",
+                          "documentation"
+                        ]
+                      },
+                      "hours": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "required": [
+                          "low",
+                          "expected",
+                          "high"
+                        ],
+                        "properties": {
+                          "low": {
+                            "type": "number",
+                            "minimum": 0
+                          },
+                          "expected": {
+                            "type": "number",
+                            "minimum": 0
+                          },
+                          "high": {
+                            "type": "number",
+                            "minimum": 0
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "minItems": 0,
+                  "maxItems": 5
+                },
+                "areas": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "id",
+                      "standaloneExpectedHours",
+                      "allocatedExpectedHours",
+                      "folderLink",
+                      "receiptId"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "pattern": "^[a-z0-9][a-z0-9.-]{0,79}$"
+                      },
+                      "standaloneExpectedHours": {
+                        "type": "number",
+                        "minimum": 0
+                      },
+                      "allocatedExpectedHours": {
+                        "type": "number",
+                        "minimum": 0
+                      },
+                      "folderLink": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 1024
+                      },
+                      "receiptId": {
+                        "type": "string",
+                        "pattern": "^sha256:[0-9a-f]{64}$"
+                      }
+                    }
+                  },
+                  "minItems": 0,
+                  "maxItems": 256
+                }
+              }
+            },
+            "minItems": 13,
+            "maxItems": 13
+          }
+        }
+      },
+      "minItems": 1,
+      "maxItems": 256
+    }
+  }
+}

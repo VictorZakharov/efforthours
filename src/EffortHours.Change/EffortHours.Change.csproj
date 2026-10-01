@@ -14,5 +14,20 @@
     <EmbeddedResource Include="../../scope-profiles/engineering.json">
       <LogicalName>EffortHours.Change.ScopeProfiles.engineering.json</LogicalName>
     </EmbeddedResource>
+    <EmbeddedResource Include="$(IntermediateOutputPath)measurement-implementation.txt"
+                      LogicalName="EffortHours.Change.MeasurementImplementation.txt" />
   </ItemGroup>
+  <Target Name="FingerprintMeasurementImplementation" BeforeTargets="PrepareResources">
+    <ItemGroup>
+      <MeasurementSource Include="../EffortHours.Analysis/**/*.cs;../EffortHours.Analyzers.*/**/*.cs;../EffortHours.Contracts/**/*.cs;../EffortHours.Core/**/*.cs;../EffortHours.Estimation/**/*.cs;./**/*.cs"
+                         Exclude="../**/obj/**;../**/bin/**;./obj/**;./bin/**" />
+      <MeasurementSource Include="../EffortHours.Analysis/packages.lock.json;../EffortHours.Analyzers.*/packages.lock.json;../EffortHours.Contracts/packages.lock.json;../EffortHours.Core/packages.lock.json;../EffortHours.Estimation/packages.lock.json;./packages.lock.json;../../Directory.Packages.props;../../Directory.Build.props;../../global.json;../EffortHours.Analysis/*.csproj;../EffortHours.Analyzers.*/*.csproj;../EffortHours.Contracts/*.csproj;../EffortHours.Core/*.csproj;../EffortHours.Estimation/*.csproj;./*.csproj" />
+    </ItemGroup>
+    <GetFileHash Files="@(MeasurementSource)" Algorithm="SHA256">
+      <Output TaskParameter="Items" ItemName="MeasurementHash" />
+    </GetFileHash>
+    <WriteLinesToFile File="$(IntermediateOutputPath)measurement-implementation.txt"
+                      Lines="@(MeasurementHash->'%(FileHash)')" Overwrite="true"
+                      WriteOnlyWhenDifferent="true" Encoding="UTF-8" />
+  </Target>
 </Project>

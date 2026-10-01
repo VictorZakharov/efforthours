@@ -22,6 +22,12 @@ agent instructions.
 - [Pricing](PRICING.md) keeps the dated default rate and its public-data derivation
   separate from effort.
 
+## Snapshot portfolios
+
+- [Snapshot portfolios](SNAPSHOT_PORTFOLIOS.md) defines curated month-end whole-
+  codebase selection, archive/standalone-area semantics, durable compatible
+  receipts, incremental reuse, ownership review, and the numerical dashboard adapter.
+
 ## Change EHE
 
 - [Change estimation](CHANGE_ESTIMATION.md) governs immutable Git and non-Git

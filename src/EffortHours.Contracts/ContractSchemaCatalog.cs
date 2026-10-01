@@ -10,6 +10,14 @@ public static class ContractSchemaCatalog
 
     public static IReadOnlyList<string> Names { get; } =
     [
+        "snapshot-portfolio-manifest.schema.json",
+        "snapshot-portfolio-local-map.schema.json",
+        "snapshot-measurement-receipt.schema.json",
+        "snapshot-portfolio-report.schema.json",
+        "snapshot-portfolio-failure.schema.json",
+        "snapshot-measurement-identity.schema.json",
+        "snapshot-dashboard-studies.schema.json",
+        "snapshot-dashboard-asset.schema.json",
         SchemaNames.CalibrationAuthoringPacket,
         SchemaNames.CalibrationCorpus,
         SchemaNames.CalibrationCorpusReviewPacket,

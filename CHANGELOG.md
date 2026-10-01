@@ -6,6 +6,18 @@ may still change public contracts with explicit documentation.
 
 ## Unreleased
 
+### Added
+
+- Native monthly whole-codebase snapshot portfolios with reviewed standalone
+  areas, exact allocations, read-only preflight, durable portable receipts,
+  explicit semantic upgrades, pinned reproduction, and atomic resumable output.
+- Local immutable Git archive inputs, bounded persistent .NET/JavaScript analysis
+  artifacts, reviewed vendor ownership per project, and shared-source review
+  proposals that preserve source until ownership is reviewed.
+- Versioned category grouping and a numerical dashboard adapter that validates
+  authored studies and folders before publishing links and documentation tables.
+  Repository EHE remains experimental and uncalibrated.
+
 ## 0.10.0-alpha.24 - 2026-10-01
 
 ### Added

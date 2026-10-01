@@ -34,15 +34,18 @@ public sealed class RepositoryAnalysisArtifactCache
     private readonly Dictionary<string, InflightEntry> _inflight = new(StringComparer.Ordinal);
     private readonly Lock _gate = new();
     private readonly int _maximumEntries;
+    private readonly IRepositoryAnalysisArtifactStore? _store;
     private int _requests;
     private int _hits;
     private int _revisitMisses;
     private int _peakEntries;
 
-    public RepositoryAnalysisArtifactCache(int maximumEntries = DefaultMaximumEntries)
+    public RepositoryAnalysisArtifactCache(int maximumEntries = DefaultMaximumEntries,
+        IRepositoryAnalysisArtifactStore? store = null)
     {
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(maximumEntries);
         _maximumEntries = maximumEntries;
+        _store = store;
     }
 
     public bool TryGet<T>(string key, out T value)
@@ -54,6 +57,13 @@ public sealed class RepositoryAnalysisArtifactCache
             _requests++;
             if (!_entries.TryGetValue(key, out CacheEntry? entry))
             {
+                if (_store is not null && _store.TryLoad(key, out T persisted))
+                {
+                    Add(key, persisted);
+                    _hits++;
+                    value = persisted;
+                    return true;
+                }
                 if (!_seenKeys.Add(key))
                 {
                     _revisitMisses++;
@@ -133,6 +143,13 @@ public sealed class RepositoryAnalysisArtifactCache
                 return new RepositoryAnalysisArtifactRequest<T>(this, key, pending, isOwner: false);
             }
 
+            if (_store is not null && _store.TryLoad(key, out T persisted))
+            {
+                Add(key, persisted);
+                _hits++;
+                return RepositoryAnalysisArtifactRequest<T>.Cached(persisted);
+            }
+
             if (!_seenKeys.Add(key))
             {
                 _revisitMisses++;
@@ -152,6 +169,7 @@ public sealed class RepositoryAnalysisArtifactCache
         ArgumentException.ThrowIfNullOrWhiteSpace(key);
         ArgumentNullException.ThrowIfNull(value);
         string rank = Rank(key);
+        _store?.Save(key, value);
         lock (_gate)
         {
             _seenKeys.Add(key);
