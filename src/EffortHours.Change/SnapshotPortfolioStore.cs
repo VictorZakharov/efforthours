@@ -5,16 +5,19 @@ using EffortHours.Contracts.V1;
 
 namespace EffortHours.Change;
 
-public sealed class SnapshotPortfolioStore(string directory, long maximumBytes = 512L * 1024 * 1024)
+public sealed class SnapshotPortfolioStore(string directory, long maximumBytes = 512L * 1024 * 1024) : IDisposable
 {
     private static readonly System.Buffers.SearchValues<char> s_myChars = System.Buffers.SearchValues.Create("0123456789abcdef");
 
     public string DirectoryPath { get; } = Path.GetFullPath(directory);
     private readonly Dictionary<string, SnapshotMeasurementReceipt> _imported = new(StringComparer.Ordinal);
     private readonly Lock _writeGate = new();
+    private readonly SemaphoreSlim _ioGate = new(1, 1);
     private long _reservedBytes;
     private int _invalidations;
     public int Invalidations => Volatile.Read(ref _invalidations);
+
+    public void Dispose() => _ioGate.Dispose();
 
     public async Task<FileStream> AcquireLockAsync(CancellationToken cancellationToken)
     {
@@ -32,6 +35,7 @@ public sealed class SnapshotPortfolioStore(string directory, long maximumBytes =
     {
         string path = EntryPath(kind, key);
         if (!File.Exists(path)) return null;
+        await _ioGate.WaitAsync(cancellationToken).ConfigureAwait(false);
         try
         {
             if (new FileInfo(path).Length > 32 * 1024 * 1024) throw new InvalidDataException("Checkpoint entry exceeds its byte budget.");
@@ -54,9 +58,17 @@ public sealed class SnapshotPortfolioStore(string directory, long maximumBytes =
             Interlocked.Increment(ref _invalidations);
             return null;
         }
+        finally { _ioGate.Release(); }
     }
 
     public async Task SaveAsync<T>(string kind, string key, T value, CancellationToken cancellationToken)
+    {
+        await _ioGate.WaitAsync(cancellationToken).ConfigureAwait(false);
+        try { await SaveCoreAsync(kind, key, value, cancellationToken).ConfigureAwait(false); }
+        finally { _ioGate.Release(); }
+    }
+
+    private async Task SaveCoreAsync<T>(string kind, string key, T value, CancellationToken cancellationToken)
     {
         string json = ContractJson.SerializeDocument(value);
         long bytes = Encoding.UTF8.GetByteCount(json);

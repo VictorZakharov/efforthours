@@ -8,6 +8,37 @@ namespace EffortHours.EndToEndTests;
 public sealed partial class ChangeCliTests
 {
     [Fact]
+    public async Task SnapshotCheckpointSerializesIdenticalConcurrentEntries()
+    {
+        using GitFixture execution = await GitFixture.CreateAsync();
+        using SnapshotPortfolioStore store = new(Path.Combine(execution.RootPath, "checkpoint"));
+        string receiptId = "sha256:" + new string('a', 64);
+        await Task.WhenAll(Enumerable.Range(0, 64).Select(async _ =>
+        {
+            await store.SaveAsync("measurements", "same-input", new SnapshotReceiptReference(receiptId), CancellationToken.None);
+            SnapshotReceiptReference? loaded = await store.LoadAsync<SnapshotReceiptReference>("measurements", "same-input", CancellationToken.None);
+            Assert.Equal(receiptId, loaded?.ReceiptId);
+        }));
+        Assert.Equal(0, store.Invalidations);
+    }
+
+    [Fact]
+    public async Task SnapshotPortfolioRejectsPublicationThroughDirectoryAlias()
+    {
+        if (OperatingSystem.IsWindows()) return; // Directory symlink creation requires host privileges on Windows.
+        using GitFixture repository = await SnapshotFixtureAsync();
+        using GitFixture execution = await GitFixture.CreateAsync();
+        (string manifest, string local, string checkpoint) = WriteSnapshotInputs(execution.RootPath, repository.RootPath);
+        string alias = Path.Combine(execution.RootPath, "source-alias");
+        Directory.CreateSymbolicLink(alias, repository.RootPath);
+        string output = Path.Combine(alias, "result.json");
+        ProcessResult rejected = await SnapshotRunAsync(manifest, local, checkpoint, "--output", output);
+        Assert.NotEqual(0, rejected.ExitCode);
+        Assert.False(File.Exists(Path.Combine(repository.RootPath, "result.json")));
+        Assert.False(File.Exists(Path.Combine(repository.RootPath, "result.json.failure.json")));
+    }
+
+    [Fact]
     public async Task SnapshotPortfolioConcurrentProjectsMatchSerialAndCancelledWritesPreservePublication()
     {
         using GitFixture repository = await SnapshotFixtureAsync();

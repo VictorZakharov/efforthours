@@ -137,7 +137,7 @@ public sealed partial class ChangeCliTests
         Assert.Equal("planned", report.Status);
         Assert.Equal(0, report.Telemetry.EstimatorCalls);
         Assert.Equal(0, report.Telemetry.Exports);
-        SnapshotPortfolioStore store = new(checkpoint);
+        using SnapshotPortfolioStore store = new(checkpoint);
         await using FileStream held = await store.AcquireLockAsync(CancellationToken.None);
         ProcessResult blocked = await SnapshotRunAsync(manifest, local, checkpoint);
         Assert.NotEqual(0, blocked.ExitCode);

@@ -194,7 +194,7 @@ area definitions and actual measured inputs remain digest-bound.
 Limits include 256 projects, 256 areas/project, 64 selectors/area, 100,000 archived
 files, 128-MiB history accounting, at most two simultaneous project sessions,
 configurable archive/checkpoint/output/memory budgets, and a cancellable deadline.
-Defaults are one project, 256-MiB export, 512-MiB checkpoint, 32-MiB output,
+Defaults are one concurrent project session, 256-MiB export, 512-MiB checkpoint, 32-MiB output,
 2-GiB observed process working set, and 3,600 seconds. A sampled memory budget
 cancels a run; it is not an exact allocator quota. Git children are hidden on
 Windows. Timing/memory thresholds never gate ordinary CI.

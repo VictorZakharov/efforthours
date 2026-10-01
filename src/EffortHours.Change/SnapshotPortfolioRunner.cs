@@ -115,8 +115,7 @@ public sealed class SnapshotPortfolioRunner(SnapshotPortfolioStore store, IEstim
         {
             root = await git.ResolveRepositoryRootAsync(locator.RepositoryPath!, token).ConfigureAwait(false);
             head = await git.ResolveCommitAsync(root, selectedRef, token).ConfigureAwait(false);
-            string relativeCache = Path.GetRelativePath(root, store.DirectoryPath);
-            if (relativeCache != ".." && !relativeCache.StartsWith(".." + Path.DirectorySeparatorChar, StringComparison.Ordinal) && !Path.IsPathRooted(relativeCache))
+            if (SnapshotPortfolioPaths.IsWithin(root, store.DirectoryPath))
                 throw new InvalidDataException("Checkpoints must be outside measured source repositories.");
         }
         (IReadOnlyList<SnapshotHistoryCommit> history, bool shallow) = await git.ReadSnapshotHistoryAsync(root, head, token).ConfigureAwait(false);

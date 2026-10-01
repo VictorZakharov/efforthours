@@ -44,8 +44,7 @@ internal static class SnapshotPortfolioCommand
                 string root = await new GitClient().ResolveRepositoryRootAsync(locator.RepositoryPath!, deadline.Token).ConfigureAwait(false);
                 foreach (string path in new[] { options.Checkpoint, options.Output }.Where(p => p is not null).Cast<string>())
                 {
-                    string relative = Path.GetRelativePath(root, Path.GetFullPath(path));
-                    if (relative != ".." && !relative.StartsWith(".." + Path.DirectorySeparatorChar, StringComparison.Ordinal) && !Path.IsPathRooted(relative))
+                    if (SnapshotPortfolioPaths.IsWithin(root, path))
                         throw new InvalidDataException("Output and checkpoint paths must be outside measured source repositories.");
                 }
             }
@@ -70,7 +69,7 @@ internal static class SnapshotPortfolioCommand
             if (options.Preflight && options.FetchMissing)
                 throw new InvalidDataException("Preflight is offline/read-only; acquire provider objects explicitly before planning.");
             phase = "lock";
-            SnapshotPortfolioStore store = new(options.Checkpoint, options.CheckpointMiB * 1024L * 1024L);
+            using SnapshotPortfolioStore store = new(options.Checkpoint, options.CheckpointMiB * 1024L * 1024L);
             await using FileStream? runLock = options.Preflight ? null : await store.AcquireLockAsync(deadline.Token).ConfigureAwait(false);
             await using FileStream? outputLock = options.Preflight || options.Output is null ? null : AcquireOutputLock(options.Output);
             if (!options.Preflight)
