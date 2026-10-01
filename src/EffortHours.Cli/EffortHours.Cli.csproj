@@ -8,11 +8,11 @@
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>eh</ToolCommandName>
     <PackageId>EffortHours.Tool</PackageId>
-    <Version>0.10.0-alpha.23</Version>
+    <Version>0.10.0-alpha.24</Version>
     <Title>EffortHours CLI</Title>
     <PackageReadmeFile>PACKAGE_README.md</PackageReadmeFile>
     <PackageTags>estimation;effort-estimation;developer-tools;cli;repository-analysis;static-analysis;dotnet-tool</PackageTags>
-    <PackageReleaseNotes>0.10.0-alpha.23: Resolve email-only contributor aliases to provider accounts for efficient, complete open-PR discovery while preserving exact Git selection. Fix omitted unmerged work in per-repository fallback. Add --provider-login for explicit account selection and actionable incomplete reports when identity is unresolved. Include privacy-safe identity and candidate-repository diagnostics. Repository EHE remains experimental and uncalibrated, and seed-rules/0.4.0 remains the shipped estimator. Full notes: https://github.com/VictorZakharov/efforthours/blob/v0.10.0-alpha.23/CHANGELOG.md</PackageReleaseNotes>
+    <PackageReleaseNotes>0.10.0-alpha.24: Add bounded static GDScript source and conventional test analysis to repository estimates and Change EHE, with Godot project ownership and standalone-script support. Normalize safe formatting-only changes and exclude Godot generated caches. Godot scenes, resources, shaders, and runtime behavior have no dedicated valuation. Repository and GDScript Change EHE remain experimental and uncalibrated, and seed-rules/0.4.0 remains the shipped estimator with unchanged numerical priors. Full notes: https://github.com/VictorZakharov/efforthours/blob/v0.10.0-alpha.24/CHANGELOG.md</PackageReleaseNotes>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="../EffortHours.Analysis/EffortHours.Analysis.csproj" />
