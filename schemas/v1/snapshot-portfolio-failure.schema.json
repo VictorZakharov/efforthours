@@ -34,7 +34,15 @@
       "enum": [
         "memory-budget",
         "cancelled-or-time-budget",
-        "snapshot-portfolio-failed"
+        "snapshot-portfolio-failed",
+        "missing-object-or-ref",
+        "shallow-history",
+        "invalid-area-definition",
+        "unmatched-selector",
+        "empty-owned-area",
+        "invalid-archive",
+        "unsupported-source-entry",
+        "incompatible-measurement-identity"
       ]
     }
   }

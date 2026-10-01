@@ -7,7 +7,7 @@ internal sealed record RepositoryAcquisitionResult(
     long AcquiredBytes,
     int AcquiredHeadCount);
 
-internal sealed class GitHubRepositoryCache
+internal sealed partial class GitHubRepositoryCache
 {
     private const string CacheEnvironmentVariable = "EFFORTHOURS_REPOSITORY_CACHE";
     private readonly IExternalCommandRunner _commands;

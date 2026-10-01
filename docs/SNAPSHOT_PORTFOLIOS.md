@@ -45,7 +45,10 @@ match the manifest IDs exactly; each entry supplies either `repositoryPath` or
 planner. Only `--fetch-missing` authorizes network/object acquisition. A provider
 head alone does not prove complete history: insufficient/shallow local history
 must be completed through an explicitly authorized acquisition workflow before
-measurement. Ordinary runs never silently deepen source repositories.
+measurement. `--fetch-missing` on a `gitHubRepository` mapping completes selected
+ancestry in the locked private bare cache, including explicit unshallowing of that
+cache when necessary. A failed acquisition remains an error. Ordinary runs never
+silently deepen source repositories. See the acquisition recipe below.
 
 Each ref is resolved once to an immutable head. One bounded first-parent history
 read supplies committer timestamps and tree IDs. Traversal order, rather than
@@ -69,7 +72,22 @@ history, and configured limits. Attribute-sensitive area predictions explicitly
 require archive verification. Plans are `status: planned` and cannot be imported
 as measurements or consumed by the adapter. An existing publication cannot be
 overwritten by a plan. Missing local repositories fail input validation; unresolved
-heads/history appear as unavailable planning rows.
+heads/history appear as unavailable planning rows. Per-period failures retain their
+known immutable pin and safe period/area IDs. Structured issues distinguish
+`missing-object-or-ref`, `shallow-history`, `invalid-area-definition`,
+`unmatched-selector`, `empty-owned-area`, `invalid-archive`,
+`unsupported-source-entry`, and `incompatible-measurement-identity`; old saved
+plans may retain the former `missing-history-or-head` value. Selector text, source
+paths, and provider locators stay out of public plans. Expected adapter input errors
+exit with invalid-input code 3 and an actionable stderr message.
+
+Each project compiles its selectors once per distinct definition. Within one run,
+identical trees reuse bounded inventories and attribute sensitivity, and identical
+tree/definition plans reuse their exact path-only result. At most twelve selected
+trees per active project are retained under the 100,000-file inventory bound.
+Preflight remains read-only; progress identifies safe project IDs and phases on
+stderr. Inventory/planning/compilation/reuse counts are optional operational fields
+for saved-report compatibility and remain outside semantic digests.
 
 ## Archive and standalone-area policy
 
@@ -109,6 +127,78 @@ Local immutable repository-content commands accept a positional repository with
 `--repo <owner/name> --revision <pin> --snapshot-policy git-archive/1.0.0`.
 Existing provider inputs retain raw-tree behavior when the policy is omitted.
 Local trees/evidence without a revision keep their existing semantics.
+
+## Area request modes and evolving repositories
+
+The additive v1 project field `areaMeasurementMode` defaults to `every-snapshot`,
+which preserves the original strict behavior: the current definition must apply
+to every selected archive. Explicit `latest-only` measures historical whole
+snapshots across the year, then measures areas only for the last selected period
+with a commit. This can be the current partial period. Historical measured periods
+carry `areaDisposition: not-requested`, full whole receipts/ranges, and empty
+`areas`; this means no area request, never zero area effort. The latest completed
+allocation carries `areaDisposition: measured`. Plans use `requested` instead of
+claiming a new measurement. Baseline, assumed-zero, and future periods retain their
+original conventions. Every requested partition still enforces matching selectors,
+nonempty ownership, exhaustive coverage, and exact allocation conservation.
+
+For reviewed historical area trends, choose `revision-bound` and supply
+`areaRevisions`, an array of at most thirteen `{commitObjectId, areas}` definitions.
+Every selected commit must have an exact definition; missing applicability fails
+as `invalid-area-definition`, and inapplicable selectors still fail explicitly.
+The latest revision must equal the project's current `areas`. Each measured period
+records its `areaDefinitionDigest`. This does not infer renames or invent historical
+boundaries. Latest-only studies are preferable when historical reviews do not exist.
+
+```json
+{
+  "id": "example",
+  "ref": "main",
+  "areaMeasurementMode": "latest-only",
+  "areas": [
+    {"id": "application", "include": ["src/**"]},
+    {"id": "support", "include": ["**"]}
+  ]
+}
+```
+
+Whole commit/tree bindings exclude the area-definition digest. Requested-area
+bindings include their exact definition. Changing a boundary can export the latest
+archive to measure new areas, but reuses its unchanged whole content receipt and
+all unchanged historical whole bindings. An exact warm rerun performs no exports
+or estimator calls. Portable imports retain whole bindings independently of areas.
+Measurement implementation changes still conservatively invalidate old epochs.
+
+## Completing shallow history explicitly
+
+An offline shallow plan exposes the pinned head, first available timestamp, and
+`shallow-history`; all unproven periods remain unavailable. To leave the user's
+clone untouched, replace only that project's execution-map locator with
+`gitHubRepository: "owner/repository"` (omit `repositoryPath`), retain the curated
+manifest/ref, and explicitly authorize acquisition:
+
+```text
+eh estimate portfolio --manifest portfolio.json --local managed-local.json --checkpoint private-cache --fetch-missing --as-of <original-observation> --output staged-result.json --no-rate
+eh estimate portfolio --manifest portfolio.json --local managed-local.json --checkpoint private-cache --as-of <original-observation> --preflight
+```
+
+The first command resolves and verifies a pinned head and acquires complete
+selected history in the managed cache. Use an immutable original head in the
+manifest if exact original selection is required. The second command reuses it
+offline; no provider request, source ref/index/worktree mutation, or implicit zero
+is permitted. The caller needs provider access to private repositories. Provider
+errors and incomplete upstream history fail closed.
+
+Alternatively, the caller can deliberately complete their own clone before EH:
+
+```text
+git -C <clone> fetch --unshallow --no-tags origin
+git -C <clone> rev-parse --is-shallow-repository
+```
+
+The latter must report `false`; EH then validates complete selected ancestry.
+These are explicitly caller-run Git commands, never commands launched by ordinary
+snapshot measurement. No limited-history equivalent policy is introduced.
 
 ## Receipts, compatibility, and migration
 
@@ -204,8 +294,15 @@ create a caller-supplied rate card after effort estimation; no currency conversi
 occurs and changing rates requires no export/analysis.
 
 The adapter reads one complete validated report and `snapshot-dashboard-studies`.
-Every project/area requires an authored study, an area-definition digest, a public
-repository URL, an authored folder, and a reviewed commit binding. Folder presence
+Every project/area requires an authored study, an area-definition digest, and a
+reviewed commit binding. Explicit `sourceVisibility` is `public` or `closed-source`
+(the absent field retains legacy public-only behavior). Public studies require a
+validated HTTPS GitHub repository URL and an authored folder. Closed-source studies
+must omit the repository URL or set it to null. Their optional folders are private
+verification inputs: supplied folders are hash-checked but never copied to assets.
+Closed-source entries omit folder links entirely, without substitute labels,
+private URLs, local paths, or access notices. Both visibility types enforce current
+area-boundary and immutable review bindings. Folder presence
 is checked through hashed directory coverage before constructing commit-pinned
 links; presence does not prove runtime/tested behavior. Changed inputs flag review,
 and that flag persists across repeat refreshes. A binding must match the current
@@ -215,8 +312,11 @@ folders before replacing its asset. It does not invent product descriptions.
 
 `snapshot-category-groups/1.0.0` maps the complete category taxonomy into design,
 implementation, validation, delivery, and documentation. The adapter's one atomic
-`snapshot-dashboard-asset/1.0.0` contains numerical periods, standalone/allocated
+`snapshot-dashboard-asset/1.1.0` contains explicit source visibility, numerical periods, standalone/allocated
 areas, receipt/epoch bindings, category groups, links, and derived Markdown tables.
+The asset schema also accepts saved public-only 1.0.0 assets. Manifest/report
+fields are additive v1 extensions; absent mode means the original every-snapshot
+behavior. Existing receipt contracts and producer identities are retained.
 Website layouts, authored prose, site commits/tests, and deployment remain consumer
 responsibilities. No actual website or private representative portfolio is changed.
 
@@ -225,3 +325,54 @@ standalone parity, warm reuse, corruption, imports, dependency context, archive
 safety, failure/resume, and adapter checks. Explicit benchmark records compare
 cold/warm native runs with separate installed-CLI whole/area runs on one machine;
 they report operation counts and measured times, not universal latency promises.
+
+## Initial consumer migration recipe
+
+The anonymized consumer's custom receipt contract was not supplied. Do not invent
+an importer or label its receipts as native-compatible. Unknown input shapes fail
+the bounded schema check. Preserve an immutable private copy of every original
+receipt/publication, its checksum, producer identity, snapshot/ownership policy,
+and low/expected/high ranges before migration. `--import-historical` accepts only
+known canonical v1 estimate reports, retains their full old provenance privately,
+and never creates current reusable receipts.
+
+1. Freeze one observation instant and each project's immutable original head.
+   Prepare one curated annual manifest with `latest-only` and an execution-only
+   local/provider map. Resolve shallow history explicitly as above.
+2. Validate authored current areas and studies, with explicit public/closed-source
+   visibility and reviewed commit bindings. Run read-only preflight. Correct
+   unavailable rows; do not split projects into independently published series or
+   turn missing history into zero.
+3. Rebuild once into a new staging output with one stable private checkpoint:
+
+   ```text
+   eh estimate portfolio --manifest migration.json --local local.json --checkpoint migration-cache --as-of <frozen-observation> --output staged-native.json --no-rate
+   ```
+
+   A successful output is one homogeneous native series after every project
+   succeeds. Interrupted runs preserve the prior complete output and successful
+   measurements; resume with the same inputs/checkpoint. For an old native epoch,
+   use its result as `--previous-result` and explicitly `--upgrade rebuild`; retain
+   the archived original epoch. That comparison records expected-hour differences.
+4. Compare the original and rebuilt low/expected/high whole ranges and latest
+   standalone area ranges privately for every project before consumer publication.
+   Review policy/ownership differences explicitly. Never overwrite old ranges or
+   producer identities to force equality. If old area boundaries cannot be proven,
+   record the mismatch and deliberately review the new boundary; do not invent
+   historical areas. Canonical original area estimates retain category totals too.
+5. Produce the validated native asset in staging:
+
+   ```text
+   eh portfolio-adapter --input staged-native.json --studies reviewed-studies.json --output staged-asset.json
+   ```
+
+   A consumer-owned translation maps period IDs, native statuses, category groups,
+   whole ranges, and latest numerical cards to its frontend contract. Preserve
+   `not-requested` as absent area data, future as absent effort, and explicit zero
+   conventions as zero. Verify all projects and comparison results, then atomically
+   replace that consumer's complete publication under its own authorization.
+
+EH does not modify authored studies, ownership decisions, source repositories, or
+website numbers automatically. This recipe establishes a deliberate rebuild route;
+it does not claim unverified custom legacy receipts are semantically compatible or
+that the adapter is a drop-in frontend contract replacement.

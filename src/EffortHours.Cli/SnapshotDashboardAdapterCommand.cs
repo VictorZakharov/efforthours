@@ -7,9 +7,19 @@ using EffortHours.Reporting;
 
 namespace EffortHours.Cli;
 
-internal static class SnapshotDashboardAdapterCommand
+internal static partial class SnapshotDashboardAdapterCommand
 {
     public static async Task<int> ExecuteAsync(string[] args, TextWriter stdout, TextWriter stderr, CancellationToken token)
+    {
+        try { return await ExecuteCoreAsync(args, stdout, stderr, token).ConfigureAwait(false); }
+        catch (Exception e) when (e is IOException or InvalidDataException or System.Text.Json.JsonException or ArgumentException or UnauthorizedAccessException)
+        {
+            await stderr.WriteLineAsync("Invalid dashboard input: " + e.Message).ConfigureAwait(false);
+            return CliExitCodes.InvalidInput;
+        }
+    }
+
+    private static async Task<int> ExecuteCoreAsync(string[] args, TextWriter stdout, TextWriter stderr, CancellationToken token)
     {
         if (args.Any(a => a is "--help" or "-h"))
         {
@@ -38,9 +48,14 @@ internal static class SnapshotDashboardAdapterCommand
             SnapshotDashboardStudy study = studies.Projects.Single(p => p.Id == project.Id);
             if (study.AreasDigest != project.AreasDigest || study.Areas.Select(a => a.Id).Distinct(StringComparer.Ordinal).Count() != study.Areas.Count)
                 throw new InvalidDataException("Stale reviewed area boundaries: " + project.Id);
-            if (!Uri.TryCreate(study.PublicRepositoryUrl, UriKind.Absolute, out Uri? uri) || uri.Scheme != "https" ||
+            bool isPublic = study.SourceVisibility is null or "public";
+            if (!isPublic && study.SourceVisibility != "closed-source") throw new InvalidDataException("Unsupported source visibility.");
+            if (!isPublic && study.PublicRepositoryUrl is not null) throw new InvalidDataException("Closed-source studies must omit repository URLs.");
+            if (isPublic && (!Uri.TryCreate(study.PublicRepositoryUrl, UriKind.Absolute, out Uri? uri) || uri.Scheme != "https" ||
                 uri.Host != "github.com" || uri.UserInfo.Length != 0 || uri.Query.Length != 0 || uri.Fragment.Length != 0 ||
-                uri.AbsolutePath.Split('/', StringSplitOptions.RemoveEmptyEntries).Length != 2)
+                uri.AbsolutePath.Split('/', StringSplitOptions.RemoveEmptyEntries).Length != 2 ||
+                !MyRegex().IsMatch(uri.AbsolutePath) || study.PublicRepositoryUrl != uri.AbsoluteUri ||
+                uri.AbsolutePath.Split('/', StringSplitOptions.RemoveEmptyEntries).Any(p => p is "." or "..")))
                 throw new InvalidDataException("Authored public repository links require an explicit HTTPS GitHub repository URL.");
             List<SnapshotDashboardPeriodAsset> periods = [];
             foreach (SnapshotPeriodResult period in project.Periods)
@@ -56,13 +71,14 @@ internal static class SnapshotDashboardAdapterCommand
                     bool latest = ReferenceEquals(period, project.Periods.LastOrDefault(p => p.WholeReceiptId is not null));
                     if ((area.ReviewStatus == "review-required" || latest) && areaStudy.ReviewedCommit != period.CommitObjectId && !unchangedReviewedInput)
                         throw new InvalidDataException("Changed scope requires a reviewed immutable binding: " + project.Id + "/" + area.Id);
-                    if (areaStudy.Folder != ".") GitArchiveSnapshot.RequireSafePath(areaStudy.Folder);
+                    if (isPublic && areaStudy.Folder is null) throw new InvalidDataException("Public area studies require a folder.");
+                    if (areaStudy.Folder is not null && areaStudy.Folder != ".") GitArchiveSnapshot.RequireSafePath(areaStudy.Folder);
                     SnapshotMeasurementReceipt areaReceipt = report.Receipts.Single(r => r.Id == area.ReceiptId);
-                    if (!areaReceipt.DirectoryIds.Contains(SnapshotMeasurementIdentity.Digest(areaStudy.Folder), StringComparer.Ordinal))
+                    if (areaStudy.Folder is not null && !areaReceipt.DirectoryIds.Contains(SnapshotMeasurementIdentity.Digest(areaStudy.Folder), StringComparer.Ordinal))
                         throw new InvalidDataException("Authored folder link is absent from the selected area snapshot: " + project.Id + "/" + area.Id);
-                    string folder = areaStudy.Folder == "." ? "" : "/" + string.Join('/', areaStudy.Folder.Split('/').Select(Uri.EscapeDataString));
+                    string folder = areaStudy.Folder is null or "." ? "" : "/" + string.Join('/', areaStudy.Folder.Split('/').Select(Uri.EscapeDataString));
                     areas.Add(new(area.Id, area.StandaloneExpectedHours, area.AllocatedExpectedHours,
-                        study.PublicRepositoryUrl.TrimEnd('/') + "/tree/" + period.CommitObjectId + folder, area.ReceiptId));
+                        isPublic ? study.PublicRepositoryUrl!.TrimEnd('/') + "/tree/" + period.CommitObjectId + folder : null, area.ReceiptId));
                 }
                 SnapshotMeasurementReceipt? receipt = report.Receipts.FirstOrDefault(r => r.Id == period.WholeReceiptId);
                 periods.Add(new()
@@ -76,7 +92,7 @@ internal static class SnapshotDashboardAdapterCommand
                 });
                 markdown.Append(CultureInfo.InvariantCulture, $"| {project.Id} | {period.Id} | {period.Status} | {period.Hours?.Expected.ToString("0.00", CultureInfo.InvariantCulture) ?? "-"} |\n");
             }
-            projects.Add(new() { Id = project.Id, Periods = periods });
+            projects.Add(new() { Id = project.Id, SourceVisibility = isPublic ? "public" : "closed-source", Periods = periods });
         }
         markdown.Append("\nReplacement effort; experimental and uncalibrated. Standalone area measurements differ from allocated planning shares.\n");
         SnapshotDashboardAsset asset = new()
@@ -93,4 +109,7 @@ internal static class SnapshotDashboardAdapterCommand
         await stderr.WriteLineAsync("Validated portfolio numerical asset and pinned links published.").ConfigureAwait(false);
         return CliExitCodes.Success;
     }
+
+    [System.Text.RegularExpressions.GeneratedRegex(@"^/[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+/?$")]
+    private static partial System.Text.RegularExpressions.Regex MyRegex();
 }

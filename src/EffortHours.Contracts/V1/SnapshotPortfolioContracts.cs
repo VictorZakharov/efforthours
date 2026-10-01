@@ -26,9 +26,13 @@ public sealed record SnapshotProjectDefinition
 {
     public required string Id { get; init; }
     public required string Ref { get; init; }
+    public string? AreaMeasurementMode { get; init; }
     public required IReadOnlyList<SnapshotAreaDefinition> Areas { get; init; }
+    public IReadOnlyList<SnapshotAreaRevision>? AreaRevisions { get; init; }
     public ReviewedVendorManifest? VendorManifest { get; init; }
 }
+
+public sealed record SnapshotAreaRevision(string CommitObjectId, IReadOnlyList<SnapshotAreaDefinition> Areas);
 
 public sealed record SnapshotAreaDefinition
 {
@@ -111,6 +115,7 @@ public sealed record SnapshotProjectResult
     public required string AreasDigest { get; init; }
     public required IReadOnlyList<SnapshotPeriodResult> Periods { get; init; }
     public string? PlanningIssue { get; init; }
+    public string? AreaMeasurementMode { get; init; }
 }
 
 public sealed record SnapshotPeriodResult
@@ -126,6 +131,10 @@ public sealed record SnapshotPeriodResult
     public CostRange? TotalCost { get; init; }
     public IReadOnlyList<SnapshotAreaResult> Areas { get; init; } = [];
     public IReadOnlyList<SnapshotAreaPlan> AreaPlans { get; init; } = [];
+    public string? AreaDefinitionDigest { get; init; }
+    public string? AreaDisposition { get; init; }
+    public string? PlanningIssue { get; init; }
+    public string? PlanningAreaId { get; init; }
     public string CacheDisposition { get; init; } = "not-requested";
     public decimal? PreviousExpectedHours { get; init; }
 }
@@ -151,6 +160,10 @@ public sealed record SnapshotAreaResult
 
 public sealed record SnapshotPortfolioTelemetry
 {
+    public int? InventoryReads { get; init; }
+    public int? AreaPlanningCalls { get; init; }
+    public int? SelectorCompilations { get; init; }
+    public int? PlanningReuseHits { get; init; }
     public int EstimatorCalls { get; init; }
     public int ReceiptHits { get; init; }
     public int ReceiptInvalidations { get; init; }

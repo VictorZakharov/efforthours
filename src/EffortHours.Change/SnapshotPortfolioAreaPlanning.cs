@@ -12,11 +12,16 @@ internal static class SnapshotPortfolioAreaPlanning
     }
 
     public static IReadOnlyList<SnapshotAreaPlan> Plan(IReadOnlyList<ChangeSnapshotFile> inventory,
-        SnapshotProjectDefinition project, SnapshotProjectResult? previous, bool attributeSensitive)
+        SnapshotProjectDefinition project, SnapshotProjectResult? previous, bool attributeSensitive, SnapshotAreaSelectors selectors, CancellationToken token)
     {
-        GitArchiveSnapshot pathsOnly = new(inventory.Where(f => !f.IsLink && !f.IsSubmodule)
-            .ToDictionary(f => f.Path, _ => Array.Empty<byte>(), StringComparer.Ordinal));
-        IReadOnlyList<SnapshotAreaInput> inputs = SnapshotAreaPartition.Partition(pathsOnly, project.Areas);
+        GitArchiveSnapshot pathsOnly;
+        try
+        {
+            pathsOnly = new(inventory.Where(f => !f.IsLink && !f.IsSubmodule)
+                .ToDictionary(f => f.Path, _ => Array.Empty<byte>(), StringComparer.Ordinal));
+        }
+        catch (InvalidDataException e) { throw new SnapshotPlanningException("invalid-archive", e.Message, inner: e); }
+        IReadOnlyList<SnapshotAreaInput> inputs = SnapshotAreaPartition.Partition(pathsOnly, project.Areas, cancellationToken: token, selectors: selectors);
         SnapshotPeriodResult? prior = previous?.Periods.LastOrDefault(p => p.WholeReceiptId is not null);
         return [.. inputs.Select(area => new SnapshotAreaPlan(area.Id,
             !attributeSensitive && prior?.Areas.FirstOrDefault(a => a.Id == area.Id)?.InventoryDigest == Digest(inventory, area.Snapshot.Files.Keys)

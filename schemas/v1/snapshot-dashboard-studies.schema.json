@@ -19,7 +19,6 @@
         "additionalProperties": false,
         "required": [
           "id",
-          "publicRepositoryUrl",
           "areasDigest",
           "areas"
         ],
@@ -29,7 +28,10 @@
             "pattern": "^[a-z0-9][a-z0-9.-]{0,79}$"
           },
           "publicRepositoryUrl": {
-            "type": "string",
+            "type": [
+              "string",
+              "null"
+            ],
             "minLength": 1,
             "maxLength": 1024
           },
@@ -44,7 +46,6 @@
               "additionalProperties": false,
               "required": [
                 "id",
-                "folder",
                 "reviewedCommit"
               ],
               "properties": {
@@ -53,7 +54,10 @@
                   "pattern": "^[a-z0-9][a-z0-9.-]{0,79}$"
                 },
                 "folder": {
-                  "type": "string",
+                  "type": [
+                    "string",
+                    "null"
+                  ],
                   "minLength": 1,
                   "maxLength": 1024
                 },
@@ -65,8 +69,57 @@
             },
             "minItems": 1,
             "maxItems": 256
+          },
+          "sourceVisibility": {
+            "enum": [
+              "public",
+              "closed-source"
+            ]
           }
-        }
+        },
+        "allOf": [
+          {
+            "if": {
+              "required": [
+                "sourceVisibility"
+              ],
+              "properties": {
+                "sourceVisibility": {
+                  "const": "closed-source"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "publicRepositoryUrl": {
+                  "type": "null"
+                }
+              }
+            },
+            "else": {
+              "required": [
+                "publicRepositoryUrl"
+              ],
+              "properties": {
+                "publicRepositoryUrl": {
+                  "type": "string"
+                },
+                "areas": {
+                  "items": {
+                    "required": [
+                      "folder"
+                    ],
+                    "properties": {
+                      "folder": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ]
       },
       "minItems": 1,
       "maxItems": 256

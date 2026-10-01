@@ -152,6 +152,29 @@ public sealed class ManagedGitQueryPlanner
             fetchMissing);
     }
 
+    public async Task<ManagedRepositoryHead> PrepareSnapshotHeadAsync(
+        string repositoryIdentity, string headRevision, bool fetchMissing, CancellationToken cancellationToken = default)
+    {
+        if (!fetchMissing)
+        {
+            string repository = GitHubRepositoryIdentity.Normalize(repositoryIdentity);
+            string objectId;
+            if (GitHubFetchNegotiationCache.IsObjectId(headRevision)) objectId = headRevision;
+            else
+            {
+                ManagedGitResolution? resolution = await _resolutionCache.LoadAsync("reachable-head", repository,
+                    [headRevision], cancellationToken).ConfigureAwait(false);
+                objectId = resolution?.Revisions.Single().ObjectId ?? throw new InvalidOperationException(
+                    "Selected head is not cached. Map the project to gitHubRepository and explicitly run --fetch-missing before offline planning.");
+            }
+            string path = await _repositoryCache.UseExistingAsync(repository, CreatePinnedHeads([objectId]), cancellationToken).ConfigureAwait(false);
+            return new(path, objectId, Fetched: false, ProviderResolved: false);
+        }
+        ManagedRepositoryHead head = await PrepareHeadAsync(repositoryIdentity, headRevision, fetchMissing, cancellationToken).ConfigureAwait(false);
+        await _repositoryCache.CompleteHistoryAsync(repositoryIdentity, head.ObjectId, fetchMissing, cancellationToken).ConfigureAwait(false);
+        return head;
+    }
+
     public async Task<string> PreparePinnedObjectsAsync(
         string repositoryIdentity,
         IReadOnlyList<string> objectIds,
