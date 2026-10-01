@@ -6,6 +6,27 @@ may still change public contracts with explicit documentation.
 
 ## Unreleased
 
+## 0.10.0-alpha.24 - 2026-10-01
+
+### Added
+
+- Bounded static GDScript source and conventional test analysis for repository
+  estimates and Change EHE, with deepest `project.godot` ownership, standalone
+  scripts, and mixed-language repositories. The shared tokenizer recognizes
+  declarations, signals, annotations, lifecycle methods, and decisions without
+  running Godot or target code. Safe formatting and ordinary-comment changes can
+  contribute zero; indentation depth, documentation, literals, and unproven edits
+  remain represented.
+
+### Changed
+
+- Exclude Godot's generated `.godot` and legacy `.import` caches and normalize
+  exact production copies within their owning scope. Current source reports use
+  `change-seed/0.19.0+seed-rules/0.4.0`; numerical priors and schemas are unchanged.
+- Repository and GDScript Change EHE remain experimental and uncalibrated. Godot
+  scenes, resources, shaders, and runtime behavior have no dedicated valuation;
+  GDScript remains outside the limited Stage A Change admission.
+
 ## 0.10.0-alpha.23 - 2026-09-18
 
 ### Fixed
