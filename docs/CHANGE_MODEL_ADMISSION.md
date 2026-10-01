@@ -6,9 +6,9 @@ Metric identity, decision order, and the first small-change logical gate are fro
 as `change-model-admission/0.2.0`. The admitted source baseline is
 `change-seed/0.6.0+seed-rules/0.3.0`; it is the transparent Stage A logical
 baseline for experimental one-to-several-day Change estimates. The current source
-has advanced to `change-seed/0.18.2+seed-rules/0.4.0` for static SQL, Python,
+has advanced to `change-seed/0.19.0+seed-rules/0.4.0` for static SQL, Python,
 Jupyter, Go, Java, Kotlin, Shell, PowerShell, Terraform/HCL, PHP/Composer,
-Rust/Cargo, Docker/Compose, and C/C++ support. Those
+Rust/Cargo, Docker/Compose, C/C++, and GDScript support. Those
 extensions preserve admitted rules but are not separately admitted, and no Stage A
 record contains any of those ecosystems. Version 0.18.2 changes only the bounded
 large-Git evidence projection and portfolio execution path; it adds no prior or
@@ -633,3 +633,17 @@ revision, not an admitted successor; `0.6.0` remains the last admitted source
 baseline. C/C++ admission requires licensed public final changes in the declared
 size band, exact small-task logical decomposition, repository-isolated partitions,
 and the normal development/validation/test decision order.
+
+## `change-seed/0.19.0` static GDScript extension
+
+Version 0.19.0 adds maintained `.gd` final-delta support and static Godot project
+context. Its bounded token signature ignores ordinary layout/comments while
+preserving indentation depth, documentation comments, literals, identifiers,
+operators, annotations, node shorthand, and statement structure. Unsafe lexical
+structure fails closed. Source and conventional test facts reuse existing rules
+without fitted priors. Synthetic memory-only mutation tests and process-level
+checks establish qualitative safety and routing, not numerical calibration.
+The Stage A records contain no GDScript. This extension remains experimental and
+unadmitted; `0.6.0` is still the last admitted source baseline. A future admission
+needs licensed final changes, small-task decomposition, repository-isolated
+partitions, and the existing frozen decision order.

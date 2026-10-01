@@ -23,7 +23,7 @@ internal sealed record ChangeAnalysisScope(
     private static readonly HashSet<string> RepresentativeExtensions = new(
         [
             ".c", ".cc", ".cpp", ".cxx", ".h", ".hh", ".hpp", ".hxx", ".ixx",
-            ".cs", ".cshtml", ".dockerignore", ".go", ".hcl", ".html", ".ipynb",
+            ".cs", ".cshtml", ".dockerignore", ".gd", ".go", ".hcl", ".html", ".ipynb",
             ".java", ".js", ".jsx", ".kt", ".kts", ".php", ".ps1", ".psd1",
             ".psm1", ".py", ".pyi", ".razor", ".rs", ".sh", ".sql", ".tf",
             ".tfvars", ".ts", ".tsx", ".vue",
@@ -38,7 +38,7 @@ internal sealed record ChangeAnalysisScope(
             "directory.build.targets", "directory.packages.props", "docker-compose.yml",
             "docker-compose.yaml", "go.mod", "go.work", "global.json", "gradle.properties",
             "jsconfig.json", "makefile", "meson.build", "nuget.config", "package.json",
-            "packages.config", "pipfile", "pom.xml", "pyproject.toml", "setup.cfg",
+            "packages.config", "pipfile", "pom.xml", "project.godot", "pyproject.toml", "setup.cfg",
             "setup.py", "settings.gradle", "settings.gradle.kts", "tox.ini",
         ],
         StringComparer.OrdinalIgnoreCase);

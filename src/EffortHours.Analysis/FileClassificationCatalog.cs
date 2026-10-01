@@ -57,6 +57,7 @@ internal static class FileClassificationCatalog
             [".kt"] = "kotlin",
             [".kts"] = "kotlin",
             [".go"] = "go",
+            [".gd"] = "gdscript",
             [".rs"] = "rust",
             [".rb"] = "ruby",
             [".php"] = "php",

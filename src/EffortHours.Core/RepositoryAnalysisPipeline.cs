@@ -2,6 +2,7 @@ using EffortHours.Analysis;
 using EffortHours.Analyzers.Cpp;
 using EffortHours.Analyzers.Docker;
 using EffortHours.Analyzers.DotNet;
+using EffortHours.Analyzers.GDScript;
 using EffortHours.Analyzers.Go;
 using EffortHours.Analyzers.Java;
 using EffortHours.Analyzers.JavaScript;
@@ -27,6 +28,7 @@ public sealed class RepositoryAnalysisPipeline : IRepositoryScanner
                 new DotNetRepositoryAnalyzer(),
                 new CppRepositoryAnalyzer(),
                 new DockerRepositoryAnalyzer(),
+                new GDScriptRepositoryAnalyzer(),
                 new GoRepositoryAnalyzer(),
                 new JavaRepositoryAnalyzer(),
                 new KotlinRepositoryAnalyzer(),
@@ -52,6 +54,7 @@ public sealed class RepositoryAnalysisPipeline : IRepositoryScanner
                 new DotNetRepositoryAnalyzer(fileSystem),
                 new CppRepositoryAnalyzer(fileSystem),
                 new DockerRepositoryAnalyzer(fileSystem),
+                new GDScriptRepositoryAnalyzer(fileSystem),
                 new GoRepositoryAnalyzer(fileSystem),
                 new JavaRepositoryAnalyzer(fileSystem),
                 new KotlinRepositoryAnalyzer(fileSystem),

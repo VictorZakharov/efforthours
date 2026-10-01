@@ -32,6 +32,11 @@ internal static class BenchmarkFixtureGenerator
                 "[project]\nname = \"efforthours-benchmark\"\nversion = \"1.0.0\"\n");
         }
 
+        if (options.Shape == BenchmarkShape.GDScript)
+        {
+            File.WriteAllText(Path.Combine(rootPath, "project.godot"), "config_version=5\n");
+        }
+
         if (options.Shape == BenchmarkShape.Go)
         {
             File.WriteAllText(
@@ -113,6 +118,9 @@ internal static class BenchmarkFixtureGenerator
             Enumerable.Range(1, Math.Max(0, options.LinesPerFile - 5))
                 .Select(line =>
                     $"    private int $value{line:D4} = {line.ToString(CultureInfo.InvariantCulture)};\n"));
+        string gdscriptLines = string.Concat(
+            Enumerable.Range(1, Math.Max(0, options.LinesPerFile - 4))
+                .Select(line => $"    var value_{line:D4} = {line.ToString(CultureInfo.InvariantCulture)}\n"));
         string rustLines = string.Concat(
             Enumerable.Range(1, Math.Max(0, options.LinesPerFile - 4))
                 .Select(line =>
@@ -138,6 +146,7 @@ internal static class BenchmarkFixtureGenerator
                     BenchmarkSourceKind.CSharp => "src",
                     BenchmarkSourceKind.Python => "python",
                     BenchmarkSourceKind.Jupyter => "notebooks",
+                    BenchmarkSourceKind.GDScript => "scripts",
                     BenchmarkSourceKind.Go => "go",
                     BenchmarkSourceKind.Java => Path.Combine("src", "main", "java", "benchmark"),
                     BenchmarkSourceKind.Kotlin => Path.Combine("src", "main", "kotlin", "benchmark"),
@@ -208,6 +217,10 @@ internal static class BenchmarkFixtureGenerator
                     "<?php\nnamespace Benchmark;\n" +
                     $"final class File{index:D7} {{\n" + phpLines +
                     "    public function value(int $input): int { return $input; }\n}\n"),
+                BenchmarkSourceKind.GDScript => (
+                    $"file_{index:D7}.gd",
+                    "extends Node\n" + $"func value_{index:D7}():\n" + gdscriptLines +
+                    "    if true:\n        return 1\n"),
                 BenchmarkSourceKind.Rust => (
                     $"file_{index:D7}.rs",
                     $"pub struct File{index:D7}<'a, T> {{\n" + rustLines +
@@ -263,6 +276,7 @@ internal static class BenchmarkFixtureGenerator
         BenchmarkShape.PowerShell => BenchmarkSourceKind.PowerShell,
         BenchmarkShape.Php => BenchmarkSourceKind.Php,
         BenchmarkShape.Rust => BenchmarkSourceKind.Rust,
+        BenchmarkShape.GDScript => BenchmarkSourceKind.GDScript,
         BenchmarkShape.C => BenchmarkSourceKind.C,
         BenchmarkShape.Cpp => BenchmarkSourceKind.Cpp,
         BenchmarkShape.Terraform => BenchmarkSourceKind.Terraform,
@@ -352,6 +366,7 @@ internal static class BenchmarkFixtureGenerator
         PowerShell,
         Php,
         Rust,
+        GDScript,
         C,
         Cpp,
         Terraform,

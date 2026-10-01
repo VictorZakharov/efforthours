@@ -8,7 +8,7 @@ namespace EffortHours.Analysis;
 public sealed partial class RepositoryScanner : IRepositoryScanner
 {
     public const string AnalyzerName = "efforthours.common-scanner";
-    public const string AnalyzerVersion = "0.2.15";
+    public const string AnalyzerVersion = "0.2.16";
 
     private const int AggregateLocationLimit = 50;
 
@@ -34,6 +34,8 @@ public sealed partial class RepositoryScanner : IRepositoryScanner
             [".pytest_cache"] = "tool-cache",
             [".mypy_cache"] = "tool-cache",
             [".ruff_cache"] = "tool-cache",
+            [".godot"] = "generated-cache",
+            [".import"] = "generated-cache",
             [".ipynb_checkpoints"] = "generated-cache",
             ["obj"] = "build-output",
             ["dist"] = "build-output",

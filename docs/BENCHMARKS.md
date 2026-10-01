@@ -2040,3 +2040,30 @@ exclude fresh Git-object transfer and do not promise a sub-30-second live report
 Estimator rules are unchanged; complete input selection is required before
 claiming EHE parity. CI gates deterministic selection, bounded discovery, failure
 behavior, privacy, and schema compatibility, never these wall times.
+
+## GDScript static million-line checkpoint - October 1, 2026
+
+Common scanner `0.2.16` and GDScript analyzer `0.1.0` scanned a synthetic
+10,000-script Godot tree in one fresh Release process on .NET `10.0.7`, Windows
+`10.0.26200` x64, with 24 visible logical processors and 24 common file workers.
+No target runtime, dependency installation, or network access occurred.
+
+```text
+dotnet benchmarks/EffortHours.ScannerBenchmarks/bin/Release/net10.0/EffortHours.ScannerBenchmarks.dll --gdscript --files 10000 --lines-per-file 100
+```
+
+The fixture has 10,001 files, 23,600,017 bytes, and 1,000,001 analyzed text lines,
+including `project.godot`. Scripts contain unique named methods, local variable
+declarations, indentation, and one decision. Generation took 1.502 seconds and
+is excluded from scan time.
+
+| Scan seconds | CPU seconds | Serialization seconds | Managed allocation MiB | Sampled peak working set MiB | JSON MiB |
+| ---: | ---: | ---: | ---: | ---: | ---: |
+| 5.511 | 12.344 | 0.128 | 695.55 | 132.84 | 9.83 |
+
+The scan emitted 10,007 facts. Target metadata fingerprints were identical before
+and after analysis. This is one many-small-files synthetic checkpoint, not a
+cross-platform regression threshold, broad Godot performance claim, or numerical
+calibration. CI gates deterministic evidence, schemas, exclusions, bounded token
+configuration, read-only behavior, and Change semantics rather than wall time or
+sampled memory.

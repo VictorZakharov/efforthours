@@ -5,6 +5,7 @@
   <Project Path="src/EffortHours.Analyzers.Cpp/EffortHours.Analyzers.Cpp.csproj" />
   <Project Path="src/EffortHours.Analyzers.DotNet/EffortHours.Analyzers.DotNet.csproj" />
   <Project Path="src/EffortHours.Analyzers.Docker/EffortHours.Analyzers.Docker.csproj" />
+  <Project Path="src/EffortHours.Analyzers.GDScript/EffortHours.Analyzers.GDScript.csproj" />
   <Project Path="src/EffortHours.Analyzers.Go/EffortHours.Analyzers.Go.csproj" />
   <Project Path="src/EffortHours.Analyzers.Java/EffortHours.Analyzers.Java.csproj" />
   <Project Path="src/EffortHours.Analyzers.JavaScript/EffortHours.Analyzers.JavaScript.csproj" />

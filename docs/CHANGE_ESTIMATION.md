@@ -9,7 +9,7 @@ directories; and two saved repository-evidence bundles. Portfolio reconciliation
 supports repeated PRs, multi-repository manifests, and bounded author-period
 selection under the separate `CHANGE_PORTFOLIOS.md` contract.
 
-Current source reports use `change-seed/0.18.2+seed-rules/0.4.0`. The model remains
+Current source reports use `change-seed/0.19.0+seed-rules/0.4.0`. The model remains
 experimental and is not empirically production-validated. Only the documented
 0.6.0 Stage A subset has passed a model-authored logical gate for eligible
 4-to-32-hour changes; later ecosystem extensions preserve those admitted rules but
@@ -26,6 +26,13 @@ range audits, final-delta reconciliation, and stable explanation lineage. Exact
 versions and historical diagnostics remain in `CHANGELOG.md`,
 `CHANGE_MODEL_ADMISSION.md`, and the immutable artifacts under
 `calibration/changes/`.
+
+Version 0.19.0 adds bounded GDScript `.gd` formatting comparison and Godot
+project context under `GDSCRIPT_ANALYSIS.md`. Ordinary layout/comments can normalize
+to zero; indentation depth, documentation, literals, operators, annotations, and
+node shorthand remain meaningful. Unsafe lexical structure fails closed. Existing
+source/test rules and all earlier ecosystem priors remain unchanged; GDScript has
+no reviewed Change admission.
 
 ## Purpose
 
@@ -575,12 +582,12 @@ verification, and post-EHE pricing. They emit neither local repository paths nor
 source excerpts.
 
 The current source Change estimator identity is
-`change-seed/0.18.2+seed-rules/0.4.0`; the portfolio reconciler identity is
-`change-portfolio/0.2.5+change-seed/0.18.2+seed-rules/0.4.0`. The earlier 0.6.0
+`change-seed/0.19.0+seed-rules/0.4.0`; the portfolio reconciler identity is
+`change-portfolio/0.2.5+change-seed/0.19.0+seed-rules/0.4.0`. The earlier 0.6.0
 Change identity alone passed the experimental Stage A logical gate, and that
 record contains no SQL, Python, Go, Java, Kotlin, Shell, PowerShell, Terraform,
-HCL, PHP, Composer, Rust, Cargo, Docker, Compose, Jupyter, C, or C++. Portfolio
-aggregation does not broaden that admission. Neither 0.18.2 nor portfolio 0.2.5
+HCL, PHP, Composer, Rust, Cargo, Docker, Compose, Jupyter, C, C++, or GDScript. Portfolio
+aggregation does not broaden that admission. Neither 0.19.0 nor portfolio 0.2.5
 may be described as empirically calibrated, generally admitted, or production-
 ready. Frozen calibration source reports retain
 the exact earlier estimator identity they were created from.
