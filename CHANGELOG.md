@@ -6,6 +6,13 @@ may still change public contracts with explicit documentation.
 
 ## Unreleased
 
+### Added
+
+- Whole-only daily replacement snapshot batches with signed centihour stock
+  changes, exact monthly endpoint reconciliation, native receipt/checkpoint
+  reuse, frozen monthly-to-daily reproduction, and separate active-date benchmark
+  operands. Monthly output and saved measurements remain unchanged.
+
 ## 0.10.0-alpha.26 - 2026-10-01
 
 ### Fixed

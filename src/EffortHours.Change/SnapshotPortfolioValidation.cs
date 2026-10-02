@@ -16,7 +16,8 @@ public static partial class SnapshotPortfolioValidation
     {
         if (manifest.SchemaVersion != ContractVersions.V1 || manifest.ProtocolVersion != SnapshotPortfolioVersions.Manifest ||
             manifest.SnapshotPolicy != SnapshotPortfolioVersions.Snapshot || manifest.BaselineConvention != "january-1-zero" ||
-            manifest.Year is < 1970 or > 9998 || !Enum.IsDefined(manifest.Profile))
+            manifest.Year is < 1970 or > 9998 || !Enum.IsDefined(manifest.Profile) ||
+            manifest.CalendarPolicy is not (null or SnapshotPortfolioVersions.Daily))
             throw new InvalidDataException("Unsupported snapshot portfolio version, year, profile, or policy.");
         if (manifest.Timezone != "UTC" && !TimeZoneInfo.TryConvertIanaIdToWindowsId(manifest.Timezone, out _))
             throw new InvalidDataException("Timezone must be an IANA ID or UTC.");
@@ -92,13 +93,16 @@ public static partial class SnapshotPortfolioValidation
     {
         if (report.SchemaVersion != ContractVersions.V1 || report.ProtocolVersion != SnapshotPortfolioVersions.Report ||
             report.Status != "complete" || report.CategoryMapping != SnapshotPortfolioVersions.Categories ||
-            report.SemanticDigest != ReportDigest(report) || report.Projects.Count is < 1 or > 256)
+            report.SemanticDigest != ReportDigest(report) || report.Projects.Count is < 1 or > 256 ||
+            report.CalendarPolicy is not (null or SnapshotPortfolioVersions.Daily))
             throw new InvalidDataException("Portfolio result is incomplete, corrupt, or unsupported.");
         RequireDigest(report.MeasurementEpoch);
         RequireDigest(report.ManifestDigest);
         if (report.Year is < 1970 or > 9998) throw new InvalidDataException("Invalid portfolio year.");
         TimeZoneInfo timezone = TimeZoneInfo.FindSystemTimeZoneById(report.Timezone);
-        IReadOnlyList<SnapshotPeriodResult> calendar = SnapshotPortfolioSelection.Select(report.Year, timezone, report.AsOf, []);
+        bool daily = report.CalendarPolicy == SnapshotPortfolioVersions.Daily;
+        IReadOnlyList<SnapshotPeriodResult> calendar = SnapshotPortfolioSelection.Select(report.Year, timezone, report.AsOf,
+            daily ? [new("", "", DateTimeOffset.MinValue)] : [], report.CalendarPolicy);
         Dictionary<string, SnapshotMeasurementReceipt> receipts = new(StringComparer.Ordinal);
         foreach (SnapshotMeasurementReceipt receipt in report.Receipts)
         {
@@ -116,8 +120,11 @@ public static partial class SnapshotPortfolioValidation
                 throw new InvalidDataException("Complete projects require full immutable first-parent provenance.");
             RequireObject(project.HeadObjectId);
             RequireDigest(project.AreasDigest);
-            if (project.Periods.Count != 13 || !project.Periods.Select(p => p.Id).SequenceEqual(calendar.Select(p => p.Id)))
-                throw new InvalidDataException("Annual portfolio requires one baseline and twelve distinct months.");
+            if (project.Periods.Count != calendar.Count || !project.Periods.Select(p => p.Id).SequenceEqual(calendar.Select(p => p.Id)))
+                throw new InvalidDataException("Portfolio requires its complete versioned calendar and opening baseline.");
+            if (!daily && (project.MonthlyEndpoints is not null || project.Periods.Any(p => p.ExpectedChangeCentihours is not null ||
+                p.ActiveCommitDateCount is not null || p.BenchmarkHours is not null)))
+                throw new InvalidDataException("Daily fields require the daily calendar policy.");
             if (project.AreaMeasurementMode is not (null or "every-snapshot" or "latest-only" or "revision-bound")) throw new InvalidDataException("Unsupported area measurement mode.");
             string? latestId = project.Periods.LastOrDefault(p => p.WholeReceiptId is not null)?.Id;
             foreach (SnapshotPeriodResult period in project.Periods)
@@ -144,6 +151,8 @@ public static partial class SnapshotPortfolioValidation
                     period.CommitAt is null || period.CommitAt >= period.Cutoff || period.WholeReceiptId is null ||
                     !receipts.TryGetValue(period.WholeReceiptId, out SnapshotMeasurementReceipt? whole) || period.Hours != whole.Hours)
                     throw new InvalidDataException("Snapshot provenance or whole-project receipt is invalid.");
+                if (daily && period.Status != expectedPeriod.Status)
+                    throw new InvalidDataException("Daily measurement status must match its closed or provisional cutoff.");
                 RequireObject(period.CommitObjectId);
                 RequireObject(period.TreeObjectId);
                 if (report.RateCard is null && period.TotalCost is not null || report.RateCard is not null &&
@@ -152,7 +161,7 @@ public static partial class SnapshotPortfolioValidation
                      period.TotalCost.High != decimal.Round(whole.Hours.High * report.RateCard.HourlyRate, 2) ||
                      period.TotalCost.Currency != report.RateCard.Currency))
                     throw new InvalidDataException("Pricing must be an independent exact projection of EHE.");
-                if (project.AreaMeasurementMode == "revision-bound")
+                if (!daily && project.AreaMeasurementMode == "revision-bound")
                 {
                     if (period.AreaDefinitionDigest is null) throw new InvalidDataException("Revision-bound periods require their reviewed definition digest.");
                     RequireDigest(period.AreaDefinitionDigest);
@@ -160,10 +169,10 @@ public static partial class SnapshotPortfolioValidation
                         throw new InvalidDataException("Latest revision must use the current reviewed project definition.");
                 }
                 else if (period.AreaDefinitionDigest is not null) throw new InvalidDataException("Unexpected revision-bound area definition.");
-                bool requested = project.AreaMeasurementMode != "latest-only" || period.Id == latestId;
-                if (project.AreaMeasurementMode == "latest-only" && period.AreaDisposition != (requested ? "measured" : "not-requested"))
+                bool requested = !daily && (project.AreaMeasurementMode != "latest-only" || period.Id == latestId);
+                if ((daily || project.AreaMeasurementMode == "latest-only") && period.AreaDisposition != (requested ? "measured" : "not-requested"))
                     throw new InvalidDataException("Latest-only area request disposition is invalid.");
-                if (project.AreaMeasurementMode != "latest-only" && period.AreaDisposition is not null)
+                if (!daily && project.AreaMeasurementMode != "latest-only" && period.AreaDisposition is not null)
                     throw new InvalidDataException("Unexpected latest-only area disposition.");
                 if (!requested)
                 {
@@ -188,6 +197,7 @@ public static partial class SnapshotPortfolioValidation
                 if (!expected.SequenceEqual(period.Areas.Select(a => a.AllocatedExpectedHours)))
                     throw new InvalidDataException("Area allocations differ from deterministic largest remainders.");
             }
+            if (daily) SnapshotDailyCalendar.Validate(report, project);
         }
     }
 
@@ -198,14 +208,17 @@ public static partial class SnapshotPortfolioValidation
         Telemetry = new(),
         Projects = [.. report.Projects.Select(p => p with
         {
-            Periods = [.. p.Periods.Select(period => period with
-            {
-                CacheDisposition = "not-requested",
-                PreviousExpectedHours = null,
-                Areas = [.. period.Areas.Select(a => a with { PreviousExpectedHours = null, ReviewStatus = "reviewed-boundary" })],
-            })],
+            MonthlyEndpoints = p.MonthlyEndpoints is null ? null : [.. p.MonthlyEndpoints.Select(NormalizePeriod)],
+            Periods = [.. p.Periods.Select(NormalizePeriod)],
         })],
     });
+
+    private static SnapshotPeriodResult NormalizePeriod(SnapshotPeriodResult period) => period with
+    {
+        CacheDisposition = "not-requested",
+        PreviousExpectedHours = null,
+        Areas = [.. period.Areas.Select(a => a with { PreviousExpectedHours = null, ReviewStatus = "reviewed-boundary" })],
+    };
 
     private static void RequireRange(EffortRange range)
     {

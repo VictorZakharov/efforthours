@@ -89,6 +89,85 @@ Preflight remains read-only; progress identifies safe project IDs and phases on
 stderr. Inventory/planning/compilation/reuse counts are optional operational fields
 for saved-report compatibility and remain outside semantic digests.
 
+## Daily replacement calendar
+
+`--calendar daily` sets the additive manifest/report `calendarPolicy` to
+`daily-replacement-calendar/1.0.0`. Omission preserves the monthly contract and
+its saved JSON/digest verification. A daily batch uses the same curated projects, pinned
+heads, observation, timezone, profile, archive/ownership policy, and checkpoint.
+It measures whole repositories only: areas remain empty with `not-requested`
+for selected snapshots. Area definitions are still validated input, but no
+historical selector applicability, area scanning, or allocation is requested.
+The absence of areas does not narrow whole-repository analysis context.
+
+```text
+eh estimate portfolio --manifest portfolio.json --local local.json --checkpoint daily-cache --calendar daily --reproduce monthly.json --import-receipts monthly.json --output daily.json --no-rate
+eh estimate portfolio --manifest portfolio.json --local local.json --checkpoint daily-cache --calendar daily --reproduce daily.json --preflight
+```
+
+There is one January 1 zero opening baseline and 365 or 366 daily periods,
+including weekends and idle dates. Each date selects the first eligible commit
+in complete first-parent traversal order strictly before exclusive local next-day
+midnight, capped at the frozen observation for the provisional date. Future dates
+have no effort or delta. The first day's opening follows the existing explicit
+January 1 zero convention even if a repository existed earlier. Every other
+day uses the preceding day's stock. No earlier commit in proven complete history
+is `assumed-zero`; missing objects, shallow history, and analysis failures are
+errors. Selection never uses timestamp sorting or Git date-filter pruning.
+
+`--reproduce monthly.json` with daily mode permits just this calendar expansion
+of the original effective manifest and freezes its original heads and observation.
+All other manifest fields/overrides must match. A daily reproduction file requires
+the exact daily manifest. Imported compatible monthly whole bindings serve daily
+dates and endpoints without exporting or re-estimating. Exact idle/unchanged
+snapshots share native bindings, tree/content receipts, and durable artifacts.
+Whole receipt values, hashes, producer provenance, model, and measurement identity
+are preserved. A daily import from another measurement epoch fails explicitly;
+the conservative build fingerprint changes with this implementation, so receipts
+from an older binary may require a separately staged monthly rebuild under the
+current producer. Keep the original monthly publication unchanged and review
+that rebuild; never relabel old receipts as compatible to force reconciliation.
+
+Each period retains selected commit/tree, cutoff, status, receipt reference, and
+whole low/expected/high stock. `expectedChangeCentihours` is the signed integer
+difference between successive expected stocks, including decreases. It is not
+Change EHE, a new uncertainty range, or a labor measurement. `monthlyEndpoints`
+contains the January baseline and twelve exact closing/provisional month snapshots
+drawn from the same measurements. Validation requires exact per-project monthly
+telescoping, which also conserves portfolio and any filtered-subset sums. When a
+supplied monthly reference has the same head, timezone, year, and endpoint cutoff,
+its selected commit/tree, receipt, and whole range must agree or publication fails.
+There is no scaling, interpolation, commit-count allocation, or midpoint rewrite.
+
+Daily periods also carry `activeCommitDateCount` and `benchmarkHours` (eight times
+that count) from all reachable ancestry of the frozen head strictly before each
+cutoff. This is a presentation benchmark, separate from first-parent artifact
+selection and EHE. Duplicate dates count once, idle dates add nothing, and
+weekends/merged-branch commits count. The consumer can calculate each project's
+stock expected hours divided by benchmark hours, then sum project ratios. A zero
+denominator is unavailable. Daily multiplier changes, if displayed, are differences
+of successive values of that same benchmark, summed without rounding each date;
+they are never Change EHE divided by eight. Future benchmark operands are absent.
+Rates convert presentation values only and require no new source analysis.
+
+Preflight reports daily selections, distinct selected commits, per-date receipt
+hits/measurement requirements, and missing/shallow history without source export,
+analysis, estimation, acquisition, or checkpoint writes. Daily mode retains the
+same project/session, archive, artifact, output, memory, and deadline bounds.
+At most twelve inventories per active project are retained across the year;
+complete first-parent and reachable benchmark histories each have a 128-MiB
+accounting bound. Successful receipts survive failures/cancellation and resume
+through the shared atomic publication/lock mechanism. Dates are not extra projects.
+
+The authored-study dashboard adapter remains monthly-only and rejects daily
+reports explicitly. Consumers own safe calendar shards, index hashes, frontend
+unit/filter behavior, signed-decrease presentation, and publication locks. Raw
+native daily reports contain safe IDs, dates, immutable objects, benchmark operands,
+receipt/provenance, and telemetry; they omit source paths/URLs, aliases, commit
+messages, and source excerpts. Consumer public shards should allowlist the fields
+they need and verify every project's monthly stock/delta reconciliation before
+publishing. This feature does not update a consumer site or its saved measurements.
+
 ## Archive and standalone-area policy
 
 `git-archive/1.0.0` is an explicit new input policy, separate from the existing raw

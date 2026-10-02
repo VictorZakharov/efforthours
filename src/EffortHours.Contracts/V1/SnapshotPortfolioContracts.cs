@@ -8,6 +8,7 @@ public static class SnapshotPortfolioVersions
     public const string Snapshot = "git-archive/1.0.0";
     public const string Areas = "ordered-standalone-areas/1.0.0";
     public const string Categories = "snapshot-category-groups/1.0.0";
+    public const string Daily = "daily-replacement-calendar/1.0.0";
 }
 
 public sealed record SnapshotPortfolioManifest
@@ -19,6 +20,7 @@ public sealed record SnapshotPortfolioManifest
     public required EstimationProfile Profile { get; init; }
     public string SnapshotPolicy { get; init; } = SnapshotPortfolioVersions.Snapshot;
     public string BaselineConvention { get; init; } = "january-1-zero";
+    public string? CalendarPolicy { get; init; }
     public required IReadOnlyList<SnapshotProjectDefinition> Projects { get; init; }
 }
 
@@ -99,6 +101,7 @@ public sealed record SnapshotPortfolioReport
     public string? PreviousEpochDigest { get; init; }
     public required string SemanticDigest { get; init; }
     public string CategoryMapping { get; init; } = SnapshotPortfolioVersions.Categories;
+    public string? CalendarPolicy { get; init; }
     public RateCard? RateCard { get; init; }
     public IReadOnlyList<SnapshotSharedSourceReview> SharedSourceReviews { get; init; } = [];
     public required IReadOnlyList<SnapshotProjectResult> Projects { get; init; }
@@ -116,6 +119,9 @@ public sealed record SnapshotProjectResult
     public required IReadOnlyList<SnapshotPeriodResult> Periods { get; init; }
     public string? PlanningIssue { get; init; }
     public string? AreaMeasurementMode { get; init; }
+    public IReadOnlyList<SnapshotPeriodResult>? MonthlyEndpoints { get; init; }
+    public int? SelectedSnapshotCount { get; init; }
+    public int? DistinctSnapshotCount { get; init; }
 }
 
 public sealed record SnapshotPeriodResult
@@ -137,6 +143,9 @@ public sealed record SnapshotPeriodResult
     public string? PlanningAreaId { get; init; }
     public string CacheDisposition { get; init; } = "not-requested";
     public decimal? PreviousExpectedHours { get; init; }
+    public long? ExpectedChangeCentihours { get; init; }
+    public int? ActiveCommitDateCount { get; init; }
+    public long? BenchmarkHours { get; init; }
 }
 
 public sealed record SnapshotBodyFingerprint(string Digest, long Bytes);

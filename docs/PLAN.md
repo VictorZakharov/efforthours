@@ -36,6 +36,8 @@ The repository already provides:
 - explicit whole-codebase snapshot portfolios with ordered standalone areas,
   immutable archive input, compatibility-bound receipts, resumable publication,
   persistent parser artifacts, and a validated numerical dashboard adapter;
+  explicit whole-only daily replacement calendars share that batch/checkpoint
+  pipeline and reconcile signed stock differences to its monthly endpoints;
 - JSON schemas, compact projections, Markdown, explanation queries, and a dated
   replaceable rate card;
 - immutable Git and non-Git Change selectors, range reconciliation, portfolio

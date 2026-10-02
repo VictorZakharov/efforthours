@@ -154,6 +154,9 @@
       },
       "minItems": 1,
       "maxItems": 256
+    },
+    "calendarPolicy": {
+      "const": "daily-replacement-calendar/1.0.0"
     }
   }
 }

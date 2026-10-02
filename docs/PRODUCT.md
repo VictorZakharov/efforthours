@@ -103,6 +103,8 @@ lineage keep owned adaptations and integration separate from copied bodies.
 
 Explicit curated snapshot portfolios select whole codebases at immutable month
 cutoffs, measure reviewed standalone areas, and reconcile planning allocations.
+An explicit daily replacement calendar measures whole-repository stock and signed
+daily stock changes, with exact monthly reconciliation and receipt reuse.
 They reuse durable compatibility-bound receipts without summing Change EHE.
 An optional numerical adapter produces authored-study bindings, pinned folder
 links, and documentation tables. [SNAPSHOT_PORTFOLIOS.md](SNAPSHOT_PORTFOLIOS.md)

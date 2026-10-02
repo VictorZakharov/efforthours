@@ -178,6 +178,11 @@ returns a nonzero exit code.
 ## Snapshot portfolio reports
 
 Snapshot portfolios have the separate `snapshot-portfolio-report/1.0.0` contract.
+The optional `daily-replacement-calendar/1.0.0` policy extends it with a complete
+daily whole-stock series, signed integer centihour changes, exact monthly endpoints,
+and separate active-date benchmark operands. Missing policy preserves monthly
+transport/digests. The authored-study adapter remains monthly-only. Daily receipt
+values and provenance remain native; consumers own presentation and safe shards.
 Complete reports allowlist public IDs, immutable provenance, receipt hashes,
 effort/category ranges, coverage/ownership counts, and operational telemetry.
 Standalone area measurements and allocated shares remain distinct. Additive v1

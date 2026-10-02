@@ -68,6 +68,10 @@ produce separately labeled exact project allocations, rather than slices of
 whole-project evidence or accumulated Change EHE. Archive, compatibility,
 ownership, and zero/future semantics are versioned in
 [SNAPSHOT_PORTFOLIOS.md](SNAPSHOT_PORTFOLIOS.md).
+The explicit daily mode measures whole replacement stock and signed differences
+between successive stocks, never normalized Change EHE. Reachable commit-active
+dates supply a separately labeled presentation denominator only; they never feed
+an analyzer, work item, effort rule, or receipt identity.
 
 ### 4.2 Clean competent recreation
 
