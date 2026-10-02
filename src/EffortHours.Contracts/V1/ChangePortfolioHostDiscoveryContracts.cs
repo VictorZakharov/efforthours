@@ -51,4 +51,3 @@ public sealed record ChangePortfolioHostDiscovery
 
     public decimal ElapsedMilliseconds { get; init; }
 }
-
