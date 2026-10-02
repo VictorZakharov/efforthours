@@ -8,11 +8,11 @@
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>eh</ToolCommandName>
     <PackageId>EffortHours.Tool</PackageId>
-    <Version>0.10.0-alpha.27</Version>
+    <Version>0.10.0-alpha.28</Version>
     <Title>EffortHours CLI</Title>
     <PackageReadmeFile>PACKAGE_README.md</PackageReadmeFile>
     <PackageTags>estimation;effort-estimation;developer-tools;cli;repository-analysis;static-analysis;dotnet-tool</PackageTags>
-    <PackageReleaseNotes>0.10.0-alpha.27: Add native whole-repository daily replacement snapshot batches with signed centihour stock changes, exact monthly endpoint reconciliation, durable receipt/checkpoint reuse, frozen monthly-to-daily reproduction, and separate complete-ancestry active-date benchmark operands. Preserve monthly contracts and saved measurements; reject incompatible receipt epochs explicitly. Repository EHE remains experimental and uncalibrated; seed-rules/0.4.0 and its numerical priors remain unchanged. Full notes: https://github.com/VictorZakharov/efforthours/blob/v0.10.0-alpha.27/CHANGELOG.md</PackageReleaseNotes>
+    <PackageReleaseNotes>0.10.0-alpha.28: Add one-command offline daily Change EHE calendars with interactive last-month defaults, project and unit controls, HTML/text/JSON output, progress, and evidence reuse. Fix daily replacement-snapshot benchmark denominators to use each selected commit's reachable dates within the configured local year, excluding prior-year and not-yet-merged work. Preserve stock, signed deltas, and exact monthly reconciliation. Older snapshot receipts require an explicit epoch rebuild; preserve their original provenance. Repository EHE remains experimental and uncalibrated; seed-rules/0.4.0 and its numerical priors remain unchanged. Full notes: https://github.com/VictorZakharov/efforthours/blob/v0.10.0-alpha.28/CHANGELOG.md</PackageReleaseNotes>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="../EffortHours.Analysis/EffortHours.Analysis.csproj" />
