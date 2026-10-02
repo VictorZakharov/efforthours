@@ -6,6 +6,14 @@ may still change public contracts with explicit documentation.
 
 ## Unreleased
 
+### Added
+
+- `eh calendar` creates a teammate's offline daily Change EHE graph in one command,
+  with interactive defaults (last complete month), unattended flags, local workspace
+  or explicit project/provider selection, acquisition/analysis progress, durable
+  evidence reuse, HTML project/unit toggles and day details, text/JSON output, and
+  explicit eight-hour reference denominators. Estimator priors remain unchanged.
+
 ## 0.10.0-alpha.27 - 2026-10-02
 
 ### Added

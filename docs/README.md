@@ -36,6 +36,9 @@ agent instructions.
 - [Change portfolios](CHANGE_PORTFOLIOS.md) governs repeated PRs, cross-repository
   manifests, author-period selection and scope preflight, exact allocation,
   attribution uncertainty, and no-ranking safeguards.
+- [One-command calendars](CALENDAR_REPORTS.md) defines interactive defaults, local
+  workspace/provider inputs, bounded date selection, offline HTML/text graphs,
+  exact project filters, reference ratios, progress, and checkpoint reuse.
 - [GitHub-assisted today-to-date portfolios](AUTHOR_PERIOD_SCAFFOLDING.md) defines
   the explicit provider boundary for one-command GitHub discovery, managed bare-
   cache acquisition, native engineering scope, internal preflight, atomic failure-

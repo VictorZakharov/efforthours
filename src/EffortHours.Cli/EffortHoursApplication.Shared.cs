@@ -235,6 +235,7 @@ public sealed partial class EffortHoursApplication
           eh model measurement-identity
           eh estimate portfolio --manifest <portfolio.json> --local <local.json> --checkpoint <directory> [options]
           eh portfolio-adapter --input <result.json> --studies <studies.json> --output <asset.json>
+          eh calendar [repository] [--interactive] [--from yyyy-MM-dd --to yyyy-MM-dd] [options]
           eh change <repository> <--commit|--range|--base/--head|--pr> [options]
           eh change <--base-path/--head-path|--base-evidence/--head-evidence> [options]
           eh change portfolio <repository> <--pr|--author> [options]

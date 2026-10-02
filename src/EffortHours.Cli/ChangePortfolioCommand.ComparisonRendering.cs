@@ -39,7 +39,12 @@ internal sealed partial class ChangePortfolioCommand
                     },
                 },
             };
-            string output = options.Format == "markdown"
+            string output = options.CalendarReport && options.Format != "json"
+                ? ChangeCalendarRenderer.Render(report,
+                    report.Status == ChangePortfolioComparisonStatus.Complete
+                        ? EffortHours.Change.ChangePortfolioComparisonBuilder.BuildRepositorySeries(report) : [],
+                    options.Format == "html")
+                : options.Format == "markdown"
                 ? options.Today
                     ? ChangePortfolioTodayMarkdownRenderer.Render(report)
                     : options.IsNativePeriod

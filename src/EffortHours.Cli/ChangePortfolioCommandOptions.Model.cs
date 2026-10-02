@@ -53,6 +53,8 @@ internal sealed record ChangePortfolioCommandOptions
 
     public bool Preflight { get; init; }
 
+    public bool CalendarReport { get; init; }
+
     public string? Bucket { get; init; }
 
     public string? BucketManifestPath { get; init; }

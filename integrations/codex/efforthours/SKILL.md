@@ -20,3 +20,10 @@ For a today-to-date GitHub estimate:
 - On failure, use EH's structured failure code and suggested action. Retry the exact command at most once when EH identifies missing sandbox permission and the user or environment permits it. Otherwise report the incomplete result; do not silently replace it with a manual calculation.
 
 EHE is replacement effort, not actual labor. Capacity is only the requested denominator; do not infer actual hours worked.
+
+For a teammate's offline daily graph:
+
+- Run one `eh calendar` with explicit flags for unattended use; do not use interactive mode from an agent. Bare `eh calendar` is the human terminal setup flow.
+- Supply the requested date range, project/workspace scope, identity, format, and external output/checkpoint paths. Unspecified dates default to the last complete local month; reference hours default to eight per calendar day.
+- Use repeated `--project id=path` for exact local inputs, `--all-repos --workspace <folder>` for scoped native discovery, or `--repo id=owner/name --author <identity>` for checkout-free inputs. Only explicit `--fetch-missing` authorizes provider acquisition.
+- Let EH build/reconcile the portfolio and render its HTML/text/JSON. Surface native progress and preserve incomplete status; do not author a website, construct manifests, sum daily estimates, infer actual hours, or label the X reference ratio as an AI skill score.

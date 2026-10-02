@@ -76,6 +76,8 @@ public sealed partial class EffortHoursApplication
                     cancellationToken).ConfigureAwait(false),
                 "portfolio-adapter" => await SnapshotDashboardAdapterCommand.ExecuteAsync(
                     arguments[1..], standardOutput, standardError, cancellationToken).ConfigureAwait(false),
+                "calendar" => await CalendarCommand.ExecuteAsync(
+                    arguments[1..], standardOutput, standardError, cancellationToken).ConfigureAwait(false),
                 "change" => await new ChangeCommand().ExecuteAsync(
                     [.. arguments.Skip(1)],
                     standardOutput,
