@@ -3,25 +3,75 @@ using EffortHours.Contracts.V1;
 
 namespace EffortHours.Change;
 
-/// <summary>Presentation denominator only; never feeds repository analysis or effort.</summary>
+/// <summary>Selected-snapshot presentation denominator; never feeds analysis or effort.</summary>
 public static class SnapshotCalendarBenchmark
 {
-    public static IReadOnlyList<SnapshotPeriodResult> Apply(IReadOnlyList<SnapshotPeriodResult> periods,
-        TimeZoneInfo timezone, IEnumerable<DateTimeOffset> reachableCommitTimes)
+    public static async Task<IReadOnlyList<SnapshotPeriodResult>> ApplyAsync(
+        IReadOnlyList<SnapshotPeriodResult> periods, int year, TimeZoneInfo timezone,
+        Func<string, CancellationToken, Task<IReadOnlyList<DateTimeOffset>>> readHistory,
+        CancellationToken token)
     {
-        // A date becomes active at its earliest commit, even with duplicate or nonmonotonic dates.
-        DateTimeOffset[] starts = [.. reachableCommitTimes.GroupBy(t => TimeZoneInfo.ConvertTime(t, timezone).Date)
-            .Select(g => g.Min()).Order()];
-        return [.. periods.Select(p => p.Status == "future" ? p : p with
+        RequireCalendar(periods, year);
+        // Retain at most 366 compact inventories, each with at most 366 date starts.
+        Dictionary<string, IReadOnlyList<DateTimeOffset>> inventories = new(StringComparer.Ordinal);
+        foreach (SnapshotPeriodResult period in periods)
         {
-            ActiveCommitDateCount = CountBefore(starts, p.Cutoff),
-            BenchmarkHours = 8L * CountBefore(starts, p.Cutoff),
+            token.ThrowIfCancellationRequested();
+            if (period.Status is "future" or "unavailable" or "baseline-zero" or "assumed-zero" ||
+                period.CommitObjectId is null || inventories.ContainsKey(period.CommitObjectId)) continue;
+            SnapshotBenchmarkInventory inventory = new(year, timezone);
+            foreach (DateTimeOffset time in await readHistory(period.CommitObjectId, token).ConfigureAwait(false))
+            {
+                token.ThrowIfCancellationRequested();
+                inventory.Add(time);
+            }
+            inventories.Add(period.CommitObjectId, inventory.Starts());
+        }
+        return ApplyInventories(periods, inventories);
+    }
+
+    public static IReadOnlyList<SnapshotPeriodResult> Apply(IReadOnlyList<SnapshotPeriodResult> periods,
+        int year, TimeZoneInfo timezone, IReadOnlyDictionary<string, IReadOnlyList<DateTimeOffset>> reachableCommitTimes)
+    {
+        RequireCalendar(periods, year);
+        Dictionary<string, IReadOnlyList<DateTimeOffset>> inventories = new(StringComparer.Ordinal);
+        foreach (SnapshotPeriodResult period in periods)
+        {
+            if (period.Status is "future" or "unavailable" or "baseline-zero" or "assumed-zero" ||
+                period.CommitObjectId is null || inventories.ContainsKey(period.CommitObjectId)) continue;
+            if (!reachableCommitTimes.TryGetValue(period.CommitObjectId, out IReadOnlyList<DateTimeOffset>? times))
+                throw new InvalidDataException("Selected snapshot benchmark history is unavailable.");
+            SnapshotBenchmarkInventory dates = new(year, timezone);
+            foreach (DateTimeOffset time in times) dates.Add(time);
+            inventories.Add(period.CommitObjectId, dates.Starts());
+        }
+        return ApplyInventories(periods, inventories);
+    }
+
+    private static IReadOnlyList<SnapshotPeriodResult> ApplyInventories(IReadOnlyList<SnapshotPeriodResult> periods,
+        Dictionary<string, IReadOnlyList<DateTimeOffset>> inventories)
+    {
+        return [.. periods.Select(period =>
+        {
+            if (period.Status is "future" or "unavailable")
+                return period with { ActiveCommitDateCount = null, BenchmarkHours = null };
+            if (period.Status is "baseline-zero" or "assumed-zero")
+                return period with { ActiveCommitDateCount = 0, BenchmarkHours = 0 };
+            if (period.CommitObjectId is null) throw new InvalidDataException("A benchmark requires a selected immutable snapshot.");
+            int count = CountBefore(inventories[period.CommitObjectId], period.Cutoff);
+            return period with { ActiveCommitDateCount = count, BenchmarkHours = 8L * count };
         })];
     }
 
-    private static int CountBefore(DateTimeOffset[] times, DateTimeOffset cutoff)
+    private static void RequireCalendar(IReadOnlyList<SnapshotPeriodResult> periods, int year)
     {
-        int low = 0, high = times.Length;
+        if (year is < 1970 or > 9998 || periods.Count > (DateTime.IsLeapYear(year) ? 367 : 366))
+            throw new InvalidDataException("Benchmark inventories require one bounded calendar year.");
+    }
+
+    private static int CountBefore(IReadOnlyList<DateTimeOffset> times, DateTimeOffset cutoff)
+    {
+        int low = 0, high = times.Count;
         while (low < high)
         {
             int mid = low + (high - low) / 2;
@@ -32,24 +82,41 @@ public static class SnapshotCalendarBenchmark
     }
 }
 
+internal sealed class SnapshotBenchmarkInventory(int year, TimeZoneInfo timezone)
+{
+    private readonly DateTimeOffset?[] _dates = new DateTimeOffset?[366];
+
+    public void Add(DateTimeOffset time)
+    {
+        DateTime local = TimeZoneInfo.ConvertTime(time, timezone).Date;
+        if (local.Year != year) return;
+        int index = local.DayOfYear - 1;
+        if (_dates[index] is null || time < _dates[index]) _dates[index] = time;
+    }
+
+    public DateTimeOffset[] Starts() => [.. _dates.OfType<DateTimeOffset>().Order()];
+}
+
 public sealed partial class GitClient
 {
     public async Task<IReadOnlyList<DateTimeOffset>> ReadSnapshotBenchmarkHistoryAsync(string repositoryPath,
-        string headObjectId, CancellationToken cancellationToken)
+        string selectedObjectId, int year, TimeZoneInfo timezone, CancellationToken cancellationToken)
     {
-        List<DateTimeOffset> times = [];
-        await _commands.RunStreamingAsync("git", repositoryPath, ["log", "--format=%ct", headObjectId, "--"],
+        SnapshotBenchmarkInventory inventory = new(year, timezone);
+        long charged = 0;
+        await _commands.RunStreamingAsync("git", repositoryPath, ["log", "--format=%ct", selectedObjectId, "--"],
             async (reader, token) =>
             {
                 while (await reader.ReadLineAsync(token).ConfigureAwait(false) is { } line)
                 {
-                    if (times.Count >= 128 * 1024 * 1024 / 128)
+                    charged += line.Length * 2L + 128;
+                    if (charged > 128L * 1024 * 1024)
                         throw new InvalidOperationException("Reachable benchmark history exceeds the 128-MiB accounting budget.");
                     if (!long.TryParse(line, NumberStyles.Integer, CultureInfo.InvariantCulture, out long timestamp))
                         throw new InvalidDataException("Git returned malformed benchmark history.");
-                    times.Add(DateTimeOffset.FromUnixTimeSeconds(timestamp));
+                    inventory.Add(DateTimeOffset.FromUnixTimeSeconds(timestamp));
                 }
             }, cancellationToken).ConfigureAwait(false);
-        return times;
+        return inventory.Starts();
     }
 }

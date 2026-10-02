@@ -140,24 +140,37 @@ its selected commit/tree, receipt, and whole range must agree or publication fai
 There is no scaling, interpolation, commit-count allocation, or midpoint rewrite.
 
 Daily periods also carry `activeCommitDateCount` and `benchmarkHours` (eight times
-that count) from all reachable ancestry of the frozen head strictly before each
-cutoff. This is a presentation benchmark, separate from first-parent artifact
-selection and EHE. Duplicate dates count once, idle dates add nothing, and
-weekends/merged-branch commits count. The consumer can calculate each project's
-stock expected hours divided by benchmark hours, then sum project ratios. A zero
+that count) from complete reachable ancestry of **that period's selected immutable
+commit**, strictly before its exclusive cutoff. Count distinct local dates only
+within the configured year, applying the configured timezone before admitting a
+date. Final-head ancestry cannot supply capacity to an earlier snapshot: a branch
+date becomes eligible only when its merge is reachable from the selected commit.
+Nonmonotonic timestamps still require both reachability and the exclusive cutoff;
+Git date pruning is not used. Baseline-zero and assumed-zero operands are explicitly
+zero; future and unavailable operands remain absent. This is a presentation benchmark,
+separate from first-parent artifact selection and EHE. Duplicate dates count once,
+idle dates add nothing, and weekends/merged-branch commits count. The consumer can
+calculate each project's stock expected hours divided by benchmark hours, then sum
+project ratios. A zero
 denominator is unavailable. Daily multiplier changes, if displayed, are differences
 of successive values of that same benchmark, summed without rounding each date;
 they are never Change EHE divided by eight. Future benchmark operands are absent.
 Rates convert presentation values only and require no new source analysis.
+Benchmark operands do not enter content receipt inputs or effort arithmetic;
+implementation changes still follow the conservative epoch migration below.
 
 Preflight reports daily selections, distinct selected commits, per-date receipt
 hits/measurement requirements, and missing/shallow history without source export,
 analysis, estimation, acquisition, or checkpoint writes. Daily mode retains the
 same project/session, archive, artifact, output, memory, and deadline bounds.
 At most twelve inventories per active project are retained across the year;
-complete first-parent and reachable benchmark histories each have a 128-MiB
-accounting bound. Successful receipts survive failures/cancellation and resume
-through the shared atomic publication/lock mechanism. Dates are not extra projects.
+complete first-parent history and each reachable benchmark history read have a
+128-MiB accounting bound. Benchmark reads stream directly into at most 366 local-date
+starts. One query per distinct selected commit is reused across idle days in the
+run; at most 366 compact commit inventories are retained per project. No full
+timestamp histories are retained, and operands are recomputed read-only on warm
+runs without exports or estimates. Successful receipts survive failures/cancellation
+and resume through the shared atomic publication/lock mechanism. Dates are not extra projects.
 
 The authored-study dashboard adapter remains monthly-only and rejects daily
 reports explicitly. Consumers own safe calendar shards, index hashes, frontend

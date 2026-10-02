@@ -43,6 +43,9 @@ public static class SnapshotDailyCalendar
             }
             else if (period.ActiveCommitDateCount is null or < 0 || period.BenchmarkHours != 8L * period.ActiveCommitDateCount)
                 throw new InvalidDataException("Daily benchmark requires distinct active dates and eight hours per date.");
+            else if (period.ActiveCommitDateCount > (DateTime.IsLeapYear(report.Year) ? 366 : 365) ||
+                period.Status is "baseline-zero" or "assumed-zero" && period.ActiveCommitDateCount != 0)
+                throw new InvalidDataException("Daily benchmark must stay within the selected year and explicit zero conventions.");
         }
         if (project.MonthlyEndpoints is null || SnapshotMeasurementIdentity.Digest(endpoints) != SnapshotMeasurementIdentity.Digest(project.MonthlyEndpoints))
             throw new InvalidDataException("Daily month endpoints must retain exact selection, receipts, and stock.");

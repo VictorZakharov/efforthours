@@ -165,7 +165,7 @@ public sealed partial class ChangeCliTests
         SnapshotPeriodResult weekend = report.Projects[0].Periods.Single(p => p.Id == "2026-02-07");
         Assert.Equal(initial, weekend.CommitObjectId);
         Assert.Equal(0, weekend.ExpectedChangeCentihours);
-        Assert.Equal(2, weekend.ActiveCommitDateCount);
+        Assert.Equal(1, weekend.ActiveCommitDateCount);
         SnapshotPeriodResult merged = report.Projects[0].Periods.Single(p => p.Id == "2026-02-15");
         Assert.Equal(merge, merged.CommitObjectId);
         Assert.Equal(4, merged.ActiveCommitDateCount);
