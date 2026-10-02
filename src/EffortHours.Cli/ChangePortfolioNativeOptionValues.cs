@@ -9,6 +9,10 @@ internal sealed class ChangePortfolioNativeOptionValues
 
     public bool Team { get; set; }
 
+    public bool IncludeOpenPullRequests { get; private set; }
+
+    public bool IncludeHistoricalPullRequests { get; private set; }
+
     public string? ProviderLogin { get; private set; }
 
     public ChangePortfolioNativePeriodKind? Period { get; private set; }
@@ -27,6 +31,28 @@ internal sealed class ChangePortfolioNativeOptionValues
     public List<string> IncludedAuthors { get; } = [];
 
     public bool Provided { get; private set; }
+
+    public bool TryParseFlag(string option)
+    {
+        switch (option)
+        {
+            case "--native-period":
+                Enabled = true;
+                return true;
+            case "--compare-team":
+                Team = true;
+                return true;
+            case "--include-open-prs":
+                IncludeOpenPullRequests = true;
+                return true;
+            case "--include-history-prs":
+                IncludeOpenPullRequests = true;
+                IncludeHistoricalPullRequests = true;
+                return true;
+            default:
+                return false;
+        }
+    }
 
     public bool TryParse(string option, string value, out string? error)
     {

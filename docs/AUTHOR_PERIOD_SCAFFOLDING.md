@@ -55,6 +55,11 @@ named period is zero; incomplete provider or execution scope never substitutes z
 
 ## Provider discovery
 
+Explicit native historical ranges and named periods with `--include-history-prs`
+use the retained-history exception in [HISTORICAL_CHANGE_REPORTS.md](HISTORICAL_CHANGE_REPORTS.md):
+unpruned default history, authored PRs in all states, separate closed/merged counts,
+and joint allocation. The current-day/named-period path below remains unchanged.
+
 `change today` explicitly opts into GitHub access through authenticated `gh`. It:
 
 - lists repositories for the requested owner, including archived/mirror metadata;

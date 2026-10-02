@@ -18,7 +18,8 @@ internal static partial class GitHubAuthorPeriodDiscoveryJson
             ChangePortfolioMergePolicy mergePolicy,
             ChangePortfolioCoauthorPolicy coauthorPolicy,
             ProviderQueryCounters counters,
-            CancellationToken cancellationToken)
+            CancellationToken cancellationToken,
+            bool includeHistoricalPullRequests = false)
     {
         counters.AddAccountQuery();
         string? json = await RunApiAsync(
@@ -30,7 +31,10 @@ internal static partial class GitHubAuthorPeriodDiscoveryJson
                 "--paginate",
                 "--slurp",
                 "-f",
-                "query=" + ViewerPullRequestsQuery,
+                "query=" + (includeHistoricalPullRequests
+                    ? ViewerPullRequestsQuery.Replace("states:OPEN", "states:[OPEN,CLOSED,MERGED]", StringComparison.Ordinal)
+                        .Replace("nodes{number", "nodes{state number", StringComparison.Ordinal)
+                    : ViewerPullRequestsQuery),
                 "-F",
                 "login=" + contributorLogin,
             ],
@@ -45,7 +49,7 @@ internal static partial class GitHubAuthorPeriodDiscoveryJson
             return null;
         }
 
-        AccountPullRequest[]? pulls = ParseCompleteAccountPulls(json, contributorLogin);
+        AccountPullRequest[]? pulls = ParseCompleteAccountPulls(json, contributorLogin, includeHistoricalPullRequests);
         if (pulls is null)
         {
             return null;
@@ -58,7 +62,8 @@ internal static partial class GitHubAuthorPeriodDiscoveryJson
             .Where(pull => byIdentity.ContainsKey(pull.RepositoryIdentity))
             .OrderBy(pull => pull.RepositoryIdentity, StringComparer.OrdinalIgnoreCase)
             .ThenBy(pull => pull.Number)];
-        counters.AddOpenPullRequests(considered.Length);
+        counters.AddOpenPullRequests(considered.Count(pull => pull.Open));
+        counters.AddHistoricalPullRequests(considered.Count(pull => !pull.Open));
         counters.AddPullCandidateRepositories(considered.Select(pull => pull.RepositoryIdentity)
             .Distinct(StringComparer.OrdinalIgnoreCase).Count());
         using SemaphoreSlim gate = new(4, 4);
@@ -87,12 +92,14 @@ internal static partial class GitHubAuthorPeriodDiscoveryJson
                     mergePolicy,
                     coauthorPolicy,
                     counters,
-                    cancellationToken).ConfigureAwait(false);
+                    cancellationToken,
+                    includeHistoricalPullRequests ? detail.ObjectId : null).ConfigureAwait(false);
                 return selected
                     ? new ResolvedPullHead(
                         pull.RepositoryIdentity,
                         pull.Number,
-                        detail.ObjectId)
+                        detail.ObjectId,
+                        pull.Open)
                     : null;
             }
             finally
@@ -113,7 +120,8 @@ internal static partial class GitHubAuthorPeriodDiscoveryJson
                 .Select(value => new DiscoveredHead(
                     OpaqueId("open", repository.StableId + ":" + value.Number),
                     value.ObjectId,
-                    $"refs/pull/{value.Number}/head"))
+                    $"refs/pull/{value.Number}/head",
+                    value.Open))
                 .DistinctBy(value => value.ObjectId, StringComparer.Ordinal)];
             if (heads.Length > ChangeAuthorPeriodManifestLimits.MaximumHeadsPerRepository)
             {
@@ -134,7 +142,8 @@ internal static partial class GitHubAuthorPeriodDiscoveryJson
 
     private static AccountPullRequest[]? ParseCompleteAccountPulls(
         string json,
-        string contributorLogin)
+        string contributorLogin,
+        bool historical = false)
     {
         try
         {
@@ -180,7 +189,13 @@ internal static partial class GitHubAuthorPeriodDiscoveryJson
                         return null;
                     }
 
-                    pulls.Add(new AccountPullRequest(identity, number));
+                    string state = historical ? item.GetProperty("state").GetString() ?? string.Empty : "OPEN";
+                    if (state is not ("OPEN" or "CLOSED" or "MERGED"))
+                    {
+                        return null;
+                    }
+
+                    pulls.Add(new AccountPullRequest(identity, number, state == "OPEN"));
                 }
             }
 
@@ -236,12 +251,13 @@ internal static partial class GitHubAuthorPeriodDiscoveryJson
         "{totalCount nodes{number author{login} repository{nameWithOwner}}" +
         "pageInfo{hasNextPage endCursor}}}}";
 
-    private sealed record AccountPullRequest(string RepositoryIdentity, int Number);
+    private sealed record AccountPullRequest(string RepositoryIdentity, int Number, bool Open);
 
     private sealed record ResolvedPullHead(
         string RepositoryIdentity,
         int Number,
-        string ObjectId);
+        string ObjectId,
+        bool Open);
 
     private sealed record PullDetail(int CommitCount, string ObjectId);
 }

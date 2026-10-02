@@ -39,6 +39,10 @@ public static class ChangePortfolioPeriodMarkdownRenderer
             : "full period").Append("**; reference capacity: **")
             .Append(Hours(native.CapacityHoursPerDay)).AppendLine(" hours per local calendar day per contributor**.");
         AppendContributorSelection(markdown, contributors);
+        if (native.RetainedHistory == true)
+        {
+            markdown.AppendLine("Retained-history scope: default branches and authored open, closed, and merged PR heads. Deleted or rewritten intermediate history is not recoverable; a blank date is no retained change, not proof that no work occurred.");
+        }
 
         if (report.Status == ChangePortfolioComparisonStatus.Complete)
         {
@@ -102,7 +106,9 @@ public static class ChangePortfolioPeriodMarkdownRenderer
         markdown.AppendLine();
         markdown.AppendLine("Overall formula: `total expected EHE / total reference capacity`.");
         markdown.AppendLine(
-            "Contributor rows are membership-stable isolated series. Shared commits can appear in more than one row, so contributor rows are non-additive and must not be summed into the portfolio total.");
+            report.NativePeriod?.RetainedHistory == true
+                ? "Historical contributor rows use jointly reconciled allocations; equivalent retained representations do not multiply EHE."
+                : "Contributor rows are membership-stable isolated series. Shared commits can appear in more than one row, so contributor rows are non-additive and must not be summed into the portfolio total.");
     }
 
     private static void AppendSummaryRow(
@@ -144,11 +150,23 @@ public static class ChangePortfolioPeriodMarkdownRenderer
                     .Append(Ratio(point.CapacityRatio?.Expected)).AppendLine(" |");
             }
         }
+
+        if (report.NativePeriod?.DailyEvidence is { } evidence)
+        {
+            markdown.AppendLine();
+            markdown.AppendLine("| Day | Retained evidence state |\n|---|---|");
+            foreach (ChangePortfolioDailyEvidence day in evidence)
+            {
+                markdown.Append("| ").Append(Escape(buckets[day.BucketId].Label)).Append(" | ")
+                    .Append(Escape(day.State)).AppendLine(" |");
+            }
+        }
     }
 
     private static IEnumerable<ChangePortfolioComparisonSeries> ContributorSeries(
         ChangePortfolioComparisonReport report) => report.Series
-            .Where(series => series.Kind == ChangePortfolioSeriesKind.ContributorIsolated)
+            .Where(series => series.Kind is ChangePortfolioSeriesKind.ContributorIsolated or
+                ChangePortfolioSeriesKind.ContributorExclusive)
             .OrderBy(series => series.ContributorIds.Single(), StringComparer.Ordinal);
 
     private static void AppendCoverage(
@@ -161,9 +179,16 @@ public static class ChangePortfolioPeriodMarkdownRenderer
         markdown.AppendLine();
         markdown.Append("- GitHub discovery was ").Append(discovery.Complete ? "complete" : "incomplete")
             .Append(": ").Append(discovery.ActiveRepositoryCount).Append(" active repositories, ")
-            .Append(discovery.DefaultHeadCount + discovery.OpenPullRequestHeadCount).Append(" heads, ")
+            .Append(discovery.DefaultHeadCount + discovery.OpenPullRequestHeadCount +
+                (discovery.HistoricalPullRequestHeadCount ?? 0)).Append(" heads, ")
             .Append(discovery.ProviderQueryCount).Append(" queries in ")
             .Append(discovery.ProviderProcessCount).AppendLine(" provider process.");
+        if (discovery.HistoricalPullRequestCount is { } historical)
+        {
+            markdown.Append("- Authored PR inventory: ").Append(discovery.OpenPullRequestCount)
+                .Append(" open and ").Append(historical).Append(" closed/merged; ")
+                .Append(discovery.HistoricalPullRequestHeadCount).AppendLine(" selected closed/merged heads.");
+        }
         if (report.ScopeSummary is { } scope)
         {
             markdown.Append("- Selected commits: ").Append(scope.IdentitySelectedCommitCount)
@@ -204,6 +229,7 @@ public static class ChangePortfolioPeriodMarkdownRenderer
         ChangePortfolioNativePeriodKind.LastWeek => "last week",
         ChangePortfolioNativePeriodKind.ThisMonth => "this month",
         ChangePortfolioNativePeriodKind.LastMonth => "last month",
+        ChangePortfolioNativePeriodKind.CustomRange => "historical range",
         _ => value.ToString(),
     };
 

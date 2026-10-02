@@ -72,9 +72,13 @@ public static partial class ContractValidation
             discovery.ActiveRepositoryCount > discovery.ConsideredRepositoryCount ||
             discovery.ActiveRepositoryCount != selectedRepositoryCount ||
             discovery.DefaultHeadCount > discovery.ActiveRepositoryCount ||
-            discovery.DefaultHeadCount + discovery.OpenPullRequestHeadCount != selectedHeadCount ||
+            discovery.DefaultHeadCount + discovery.OpenPullRequestHeadCount +
+                (discovery.HistoricalPullRequestHeadCount ?? 0) != selectedHeadCount ||
             discovery.OpenPullRequestHeadCount > discovery.OpenPullRequestCount ||
-            discovery.DefaultHeadCount + discovery.OpenPullRequestHeadCount >
+            discovery.HistoricalPullRequestHeadCount is < 0 || discovery.HistoricalPullRequestCount is < 0 ||
+            discovery.HistoricalPullRequestHeadCount > discovery.HistoricalPullRequestCount ||
+            discovery.DefaultHeadCount + discovery.OpenPullRequestHeadCount +
+                (discovery.HistoricalPullRequestHeadCount ?? 0) >
                 discovery.LocalObjectCount + discovery.AcquiredObjectCount ||
             discovery.ElapsedMilliseconds < 0m)
         {

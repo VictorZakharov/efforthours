@@ -23,7 +23,8 @@ internal static class ChangePortfolioGroupNormalizer
         {
             ChangePortfolioTopology.MarkExactDuplicates(drafts);
         }
-        ChangePortfolioItemDraft[] active = [.. drafts.Where(draft => draft.DuplicateOfItemId is null)];
+        ChangePortfolioExactCompositionNormalizer.Mark(drafts);
+        ChangePortfolioItemDraft[] active = [.. drafts.Where(draft => !draft.Suppressed)];
         Dictionary<string, ChangePortfolioItemDraft[]> touches = active
             .SelectMany(draft => draft.Effects.Keys.Select(path => (Path: path, Draft: draft)))
             .GroupBy(value => value.Path, StringComparer.Ordinal)
@@ -211,14 +212,17 @@ internal static class ChangePortfolioGroupNormalizer
         IReadOnlyList<CategoryEstimate> normalizedCategories)
     {
         List<ChangePortfolioAdjustmentCause> causes = [];
-        ChangePortfolioItemDraft[] duplicates = [.. drafts.Where(draft => draft.DuplicateOfItemId is not null)];
+        ChangePortfolioItemDraft[] duplicates = [.. drafts.Where(draft => draft.Suppressed)];
         if (duplicates.Length > 0)
         {
             causes.Add(new ChangePortfolioAdjustmentCause(
                 ChangePortfolioAdjustmentKind.ExactDuplicate,
                 Math.Max(0.01m, duplicates.Sum(draft => draft.Candidate.Report.TotalEffort.Expected)),
-                "Exact represented patch identities, including cherry-picked equivalents, are counted once.",
-                [.. duplicates.SelectMany(draft => new[] { draft.Id, draft.DuplicateOfItemId! }).Distinct().Order(StringComparer.Ordinal)],
+                "Exact represented patches and proven retained commit compositions are counted once.",
+                [.. duplicates.SelectMany(draft => new[] { draft.Id }
+                    .Concat(draft.ExactComposition?.ItemIds ??
+                        (draft.DuplicateOfItemId is null ? [] : new[] { draft.DuplicateOfItemId })))
+                    .Distinct().Order(StringComparer.Ordinal)],
                 duplicates.SelectMany(draft => draft.Effects.Keys).Distinct(StringComparer.Ordinal).Count()));
         }
 

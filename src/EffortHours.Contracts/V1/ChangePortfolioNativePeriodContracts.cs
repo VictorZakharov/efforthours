@@ -12,6 +12,19 @@ public sealed record ChangePortfolioNativePeriod
     public decimal CapacityHoursPerDay { get; init; }
 
     public required ChangePortfolioContributorSelection ContributorSelection { get; init; }
+
+    public bool? RetainedHistory { get; init; }
+
+    public IReadOnlyList<ChangePortfolioDailyEvidence>? DailyEvidence { get; init; }
+}
+
+public sealed record ChangePortfolioDailyEvidence
+{
+    public required string BucketId { get; init; }
+
+    public required string State { get; init; }
+
+    public int SelectedChangeCount { get; init; }
 }
 
 public sealed record ChangePortfolioContributorSelection

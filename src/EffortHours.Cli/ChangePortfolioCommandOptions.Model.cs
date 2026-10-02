@@ -49,6 +49,8 @@ internal sealed record ChangePortfolioCommandOptions
 
     public bool IncludeOpenPullRequests { get; init; }
 
+    public bool IncludeHistoricalPullRequests { get; init; }
+
     public decimal? CapacityHours { get; init; }
 
     public bool Preflight { get; init; }

@@ -177,6 +177,14 @@ returns a nonzero exit code.
 
 ## Daily Change EHE calendars
 
+Explicit native historical ranges add optional retained-history and daily-evidence
+metadata to the existing comparison schema. Historical contributor series use
+joint allocations to avoid repeating rewritten representations. Empty retained
+dates are labeled `no-retained-change`, without certifying original daily work.
+Optional portfolio exact-composition lineage keeps ordered retained member IDs,
+the exact patch digest, and zero allocation for the equivalent standalone squash.
+See [HISTORICAL_CHANGE_REPORTS.md](HISTORICAL_CHANGE_REPORTS.md).
+
 `eh calendar` provides a separate daily **Change EHE** convenience view in offline
 HTML or Markdown text, backed by the existing schema-validated comparison JSON.
 It builds one in-memory author-period manifest and jointly reconciles all selected

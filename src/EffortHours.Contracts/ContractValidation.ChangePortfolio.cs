@@ -134,9 +134,9 @@ public static partial class ContractValidation
                 errors.Add($"Portfolio item '{item.Id}' has a negative allocation.");
             }
 
-            if (item.RepresentedPathCount < 0)
+            if (item.RepresentedPathCount < 0 || item.AnalyzedPathCount is < 0)
             {
-                errors.Add($"Portfolio item '{item.Id}' has a negative represented-path count.");
+                errors.Add($"Portfolio item '{item.Id}' has a negative path count.");
             }
 
             if (!itemIds.Add(item.Id))
@@ -151,6 +151,7 @@ public static partial class ContractValidation
 
         foreach (ChangePortfolioItemEstimate item in report.Items)
         {
+            ValidateExactComposition(item, itemsById, errors);
             if (item.DuplicateOfItemId is not null)
             {
                 if (!itemIds.Contains(item.DuplicateOfItemId) || item.DuplicateOfItemId == item.Id)

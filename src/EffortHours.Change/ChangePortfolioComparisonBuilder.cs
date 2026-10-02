@@ -58,6 +58,7 @@ public static partial class ChangePortfolioComparisonBuilder
                 : ChangePortfolioComparisonIdentity.ComputeCapacityDigest(options.CapacityManifest),
         };
         string sourceDigest = ChangePortfolioComparisonIdentity.ComputePortfolioDigest(source);
+        ChangePortfolioNativePeriod? nativePeriod = HistoricalDailyEvidence(source, options);
         ChangePortfolioComparisonReport report = new()
         {
             Status = ChangePortfolioComparisonStatus.Complete,
@@ -68,7 +69,7 @@ public static partial class ChangePortfolioComparisonBuilder
             Discovery = options.Discovery,
             ScopeProfile = options.ScopeProfile,
             ScopeSummary = options.ScopeSummary,
-            NativePeriod = options.NativePeriod,
+            NativePeriod = nativePeriod,
             CliVersion = options.CliVersion,
             EstimatorVersion = source.EstimatorVersion,
             SourceChangeEstimatorVersion = source.SourceChangeEstimatorVersion,
@@ -95,7 +96,7 @@ public static partial class ChangePortfolioComparisonBuilder
                         options.Buckets,
                         series,
                         options.ScopeProfile,
-                        options.NativePeriod),
+                        nativePeriod!),
                 SourcePortfolioDigest = sourceDigest,
                 BucketAllocationPolicy = source.DailyNormalization?.Protocol ??
                     ChangePortfolioComparisonIdentity.ContributorSeriesPolicy(options.ContributorNormalization),

@@ -14,6 +14,8 @@ internal static class ChangePortfolioHelp
             --include-open-prs --scope engineering --capacity-hours <hours> [options]
           eh change period --owner <owner> --author <identity> --period <named-period>
             --timezone <zone> --scope engineering --capacity-hours-per-day <hours> [options]
+          eh change period --owner <owner> --author <identity> --since <instant> --until <instant>
+            --timezone <zone> --scope engineering --capacity-hours-per-day <hours> [options]
           eh change compare-team --owner <owner> --contributors-from <owner/repository>
             --sample <count> --sample-seed <seed> --period <named-period>
             --timezone <zone> --scope engineering --capacity-hours-per-day <hours> [options]
@@ -45,6 +47,8 @@ internal static class ChangePortfolioHelp
           --include-author <identity>
                                     Add a contributor outside the random sample; repeat as needed
           --include-open-prs        Discover matching commits on current open PR heads
+          --include-history-prs     Include retained open, closed, and merged authored PR heads;
+                                    automatic for explicit native period ranges; joint normalization
           --provider-login <login>  PR account (@me allowed); preserves --author Git aliases
           --scope <engineering>     Apply the versioned native engineering path profile
           --capacity-hours <hours>  Positive full-day reference denominator for --today

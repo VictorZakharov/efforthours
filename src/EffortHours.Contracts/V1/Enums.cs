@@ -197,6 +197,7 @@ public enum ChangePortfolioNativePeriodKind
     LastWeek,
     ThisMonth,
     LastMonth,
+    CustomRange,
 }
 
 public enum ChangePortfolioNativeBreakdown

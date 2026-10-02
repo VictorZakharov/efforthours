@@ -21,6 +21,10 @@ public sealed partial class GitHubAuthorPeriodDiscovery
         }
 
         bool sampled = request.ContributorSample is not null;
+        if (request.IncludeHistoricalPullRequests && (!request.IncludeOpenPullRequests || sampled))
+        {
+            throw new ArgumentException("Historical discovery requires one contributor and all retained PR states.", nameof(request));
+        }
         if (request.ProviderLogin is { } providerLogin &&
             (sampled || !request.IncludeOpenPullRequests ||
              !providerLogin.Equals("@me", StringComparison.OrdinalIgnoreCase) && !GitHubPullAuthorIdentity.IsLogin(providerLogin)))

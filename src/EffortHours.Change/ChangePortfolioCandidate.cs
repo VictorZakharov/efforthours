@@ -35,6 +35,10 @@ internal sealed class ChangePortfolioItemDraft
 
     public string? DuplicateOfItemId { get; set; }
 
+    public ChangePortfolioExactComposition? ExactComposition { get; set; }
+
+    public bool Suppressed => DuplicateOfItemId is not null || ExactComposition is not null;
+
     public decimal AllocationWeight { get; set; }
 
     public decimal AllocatedExpectedHours { get; set; }

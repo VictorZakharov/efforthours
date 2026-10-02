@@ -91,7 +91,7 @@
       "if": {
         "required": ["estimatorVersion", "selection"],
         "properties": {
-          "estimatorVersion": { "pattern": "^change-portfolio/0\\.[234]\\.[0-9]+\\+" },
+          "estimatorVersion": { "pattern": "^change-portfolio/0\\.[2345]\\.[0-9]+\\+" },
           "selection": {
             "required": ["kind", "manifestBased"],
             "properties": {
@@ -297,6 +297,7 @@
         "selection": { "$ref": "urn:eh:schema:v1:change-evidence#/$defs/selection" },
         "evidenceDigest": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
         "patchDigest": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+        "analyzedPathCount": { "type": "integer", "minimum": 0 },
         "representedPathCount": { "type": "integer", "minimum": 0 },
         "isolatedEffort": { "$ref": "urn:eh:schema:v1:change-estimate-report#/$defs/effortRange" },
         "allocatedExpectedHours": { "type": "number", "minimum": 0 },
@@ -307,6 +308,19 @@
         },
         "attribution": { "$ref": "#/$defs/attribution" },
         "duplicateOfItemId": { "type": "string", "minLength": 1 },
+        "exactComposition": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["protocol", "itemIds", "patchDigest"],
+          "properties": {
+            "protocol": { "const": "exact-retained-composition/1.0.0" },
+            "itemIds": {
+              "type": "array", "minItems": 2, "maxItems": 256, "uniqueItems": true,
+              "items": { "type": "string", "minLength": 1 }
+            },
+            "patchDigest": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" }
+          }
+        },
         "uncertaintyReasons": {
           "type": "array",
           "items": { "type": "string", "minLength": 1 },

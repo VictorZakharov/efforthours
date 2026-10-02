@@ -165,8 +165,11 @@ internal sealed partial class ChangePortfolioCommand
                 [.. outcomes.SelectMany(outcome => outcome.Candidates)];
             IReadOnlyList<Diagnostic> diagnostics =
                 CanonicalDiagnostics(outcomes, execution.Checkpoint);
-            if (options.CalendarReport || options.Bucket == "independent-day")
+            if (options.CalendarReport || options.Bucket == "independent-day" ||
+                options.IncludeHistoricalPullRequests)
+            {
                 diagnostics = [.. diagnostics.Where(d => d.Code is not ("FB5325" or "FB5333" or "FB5334"))];
+            }
             ChangePortfolioReport source = ChangePortfolioReconciler.Reconcile(
                 selection,
                 candidates,

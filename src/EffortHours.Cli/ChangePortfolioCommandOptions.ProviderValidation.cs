@@ -87,9 +87,14 @@ internal static partial class ChangePortfolioCommandOptionsParser
             return Error("Named-period reports require --capacity-hours-per-day.");
         }
 
-        if (options.IsNativePeriod && options.Period is null)
+        if (options.IsNativePeriod && options.Period is null && options.SinceInclusive is null)
         {
-            return Error("Named-period reports require --period.");
+            return Error("Period reports require --period or an explicit --since and --until range.");
+        }
+
+        if (options.IncludeHistoricalPullRequests && (!options.NativePeriod || options.TeamComparison))
+        {
+            return Error("--include-history-prs requires a single-contributor change period report.");
         }
 
         if (options.TeamComparison &&

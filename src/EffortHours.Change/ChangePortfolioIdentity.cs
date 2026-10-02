@@ -90,7 +90,7 @@ internal static class ChangePortfolioIdentity
         "sha256:" + Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(value)))
             .ToLowerInvariant();
 
-    private static string PatchDigest(IEnumerable<ChangePortfolioPathEffect> effects)
+    internal static string PatchDigest(IEnumerable<ChangePortfolioPathEffect> effects)
     {
         string material = string.Join(
             '\n',

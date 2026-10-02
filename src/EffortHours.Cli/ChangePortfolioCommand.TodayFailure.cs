@@ -99,6 +99,7 @@ internal sealed partial class ChangePortfolioCommand
                     Breakdown = options.Breakdown,
                     CapacityHoursPerDay = options.CapacityHoursPerDay!.Value,
                     ContributorSelection = IncompleteContributorSelection(options),
+                    RetainedHistory = options.IncludeHistoricalPullRequests ? true : null,
                 }
                 : null,
         };
@@ -229,7 +230,7 @@ internal sealed partial class ChangePortfolioCommand
     {
         TimeZoneInfo zone = TimeZoneInfo.FindSystemTimeZoneById(options.TimeZone);
         ChangePortfolioNamedPeriodRange? period = options.IsNativePeriod
-            ? ChangePortfolioNamedPeriodResolver.Resolve(options.Period!.Value, asOf, zone)
+            ? ResolveProviderPeriod(options, asOf, zone)
             : null;
         DateTimeOffset since;
         DateTimeOffset until;

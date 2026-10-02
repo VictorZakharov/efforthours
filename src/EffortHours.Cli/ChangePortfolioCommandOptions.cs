@@ -22,7 +22,6 @@ internal static partial class ChangePortfolioCommandOptionsParser
         string? workspace = null;
         string? scope = null;
         bool today = false;
-        bool includeOpenPullRequests = false;
         decimal? capacityHours = null;
         string? bucket = null;
         string? bucketManifest = null;
@@ -98,21 +97,8 @@ internal static partial class ChangePortfolioCommandOptionsParser
                 continue;
             }
 
-            if (option == "--native-period")
+            if (native.TryParseFlag(option))
             {
-                native.Enabled = true;
-                continue;
-            }
-
-            if (option == "--compare-team")
-            {
-                native.Team = true;
-                continue;
-            }
-
-            if (option == "--include-open-prs")
-            {
-                includeOpenPullRequests = true;
                 continue;
             }
 
@@ -349,7 +335,8 @@ internal static partial class ChangePortfolioCommandOptionsParser
             SampleSeed = native.SampleSeed,
             IncludedAuthors = native.IncludedAuthors,
             NativeOptionsProvided = native.Provided,
-            IncludeOpenPullRequests = includeOpenPullRequests,
+            IncludeOpenPullRequests = native.IncludeOpenPullRequests,
+            IncludeHistoricalPullRequests = native.IncludeHistoricalPullRequests,
             CapacityHours = capacityHours,
             Preflight = preflight,
             Bucket = bucket,
