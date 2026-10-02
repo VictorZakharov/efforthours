@@ -6,6 +6,14 @@ may still change public contracts with explicit documentation.
 
 ## Unreleased
 
+### Fixed
+
+- Daily replacement-calendar benchmark hours now count distinct local dates in
+  the configured year reachable from each day's selected snapshot, excluding
+  prior-year dates and branch work not yet merged into that snapshot. Baseline
+  and assumed-zero capacity stay zero; idle days reuse compact commit inventories.
+  Repository stock, signed deltas, and exact monthly reconciliation are unchanged.
+
 ### Added
 
 - `eh calendar` creates a teammate's offline daily Change EHE graph in one command,

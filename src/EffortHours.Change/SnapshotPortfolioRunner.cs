@@ -154,11 +154,14 @@ public sealed partial class SnapshotPortfolioRunner(SnapshotPortfolioStore store
         string? ownership = project.VendorManifest is null ? null : ReviewedVendorManifestValidation.ComputeDigest(project.VendorManifest);
         MeasurementIdentity identity = SnapshotMeasurementIdentity.Create(manifest.Profile, ownership);
         List<SnapshotPeriodResult> periods = [];
+        TimeZoneInfo timezone = TimeZoneInfo.FindSystemTimeZoneById(manifest.Timezone);
         IReadOnlyList<SnapshotPeriodResult> selections = SnapshotPortfolioSelection.Select(manifest.Year,
-            TimeZoneInfo.FindSystemTimeZoneById(manifest.Timezone), options.AsOf, history, manifest.CalendarPolicy);
+            timezone, options.AsOf, history, manifest.CalendarPolicy);
         bool daily = manifest.CalendarPolicy == SnapshotPortfolioVersions.Daily;
-        if (daily) selections = SnapshotCalendarBenchmark.Apply(selections, TimeZoneInfo.FindSystemTimeZoneById(manifest.Timezone),
-            await git.ReadSnapshotBenchmarkHistoryAsync(root, head, token).ConfigureAwait(false));
+        if (daily) selections = await SnapshotCalendarBenchmark.ApplyAsync(selections, manifest.Year,
+            timezone,
+            (selected, cancellation) => git.ReadSnapshotBenchmarkHistoryAsync(root, selected, manifest.Year,
+                timezone, cancellation), token).ConfigureAwait(false);
         string? latestId = selections.LastOrDefault(p => p.CommitObjectId is not null)?.Id;
         Dictionary<string, (IReadOnlyList<ChangeSnapshotFile> Files, bool Attributes)> inventories = new(StringComparer.Ordinal);
         Dictionary<string, IReadOnlyList<SnapshotAreaPlan>> plans = new(StringComparer.Ordinal);
@@ -272,11 +275,26 @@ public sealed partial class SnapshotPortfolioRunner(SnapshotPortfolioStore store
             }
             catch (SnapshotPlanningException e) when (options.Preflight)
             {
-                periods.Add(selected with { Status = "unavailable", Hours = null, PlanningIssue = e.Category, PlanningAreaId = e.AreaId });
+                periods.Add(selected with
+                {
+                    Status = "unavailable",
+                    Hours = null,
+                    PlanningIssue = e.Category,
+                    PlanningAreaId = e.AreaId,
+                    ActiveCommitDateCount = null,
+                    BenchmarkHours = null
+                });
             }
             catch (ExternalCommandException) when (options.Preflight)
             {
-                periods.Add(selected with { Status = "unavailable", Hours = null, PlanningIssue = "missing-object-or-ref" });
+                periods.Add(selected with
+                {
+                    Status = "unavailable",
+                    Hours = null,
+                    PlanningIssue = "missing-object-or-ref",
+                    ActiveCommitDateCount = null,
+                    BenchmarkHours = null
+                });
             }
         }
         if (daily) periods = [.. SnapshotDailyCalendar.Differences(periods)];

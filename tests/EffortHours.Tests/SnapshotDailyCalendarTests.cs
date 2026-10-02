@@ -79,8 +79,9 @@ public sealed class SnapshotDailyCalendarTests
     public void BenchmarkCountsDistinctReachableDatesIncludingWeekendsAndNeverRoundsMultipliers()
     {
         IReadOnlyList<SnapshotPeriodResult> periods = SnapshotCalendarBenchmark.Apply(
-            Select(2026, "UTC", "2026-01-05T12:00:00Z", []), TimeZoneInfo.Utc,
-            [Instant("2026-01-03T18:00:00Z"), Instant("2026-01-03T12:00:00Z"), Instant("2026-01-04T12:00:00Z")]);
+            Select(2026, "UTC", "2026-01-05T12:00:00Z", [new("snapshot", "tree", Instant("2026-01-03T12:00:00Z"))]),
+            2026, TimeZoneInfo.Utc, new Dictionary<string, IReadOnlyList<DateTimeOffset>>
+            { ["snapshot"] = [Instant("2026-01-03T18:00:00Z"), Instant("2026-01-03T12:00:00Z"), Instant("2026-01-04T12:00:00Z")] });
         Assert.Equal(0, Day(periods, "2026-01-02").ActiveCommitDateCount);
         Assert.Equal(1, Day(periods, "2026-01-03").ActiveCommitDateCount);
         Assert.Equal(2, Day(periods, "2026-01-04").ActiveCommitDateCount);
@@ -113,7 +114,8 @@ public sealed class SnapshotDailyCalendarTests
     private static SnapshotPortfolioReport Report(int count)
     {
         IReadOnlyList<SnapshotPeriodResult> selected = SnapshotCalendarBenchmark.Apply(
-            Select(2026, "UTC", "2026-10-01T12:00:00Z", []), TimeZoneInfo.Utc, []);
+            Select(2026, "UTC", "2026-10-01T12:00:00Z", []), 2026, TimeZoneInfo.Utc,
+            new Dictionary<string, IReadOnlyList<DateTimeOffset>>());
         return new()
         {
             Status = "complete",
