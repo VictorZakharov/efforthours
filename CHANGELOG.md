@@ -6,6 +6,8 @@ may still change public contracts with explicit documentation.
 
 ## Unreleased
 
+## 0.10.0-alpha.27 - 2026-10-02
+
 ### Added
 
 - Whole-only daily replacement snapshot batches with signed centihour stock
