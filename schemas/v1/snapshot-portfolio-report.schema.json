@@ -140,237 +140,10 @@
           "periods": {
             "type": "array",
             "items": {
-              "type": "object",
-              "additionalProperties": false,
-              "required": [
-                "id",
-                "status",
-                "cutoff",
-                "areas",
-                "cacheDisposition",
-                "areaPlans"
-              ],
-              "properties": {
-                "id": {
-                  "type": "string",
-                  "minLength": 1,
-                  "maxLength": 1024
-                },
-                "status": {
-                  "enum": [
-                    "baseline-zero",
-                    "assumed-zero",
-                    "future",
-                    "complete",
-                    "partial",
-                    "unavailable"
-                  ]
-                },
-                "cutoff": {
-                  "type": "string",
-                  "format": "date-time"
-                },
-                "commitObjectId": {
-                  "type": "string",
-                  "pattern": "^([0-9a-f]{40}|[0-9a-f]{64})$"
-                },
-                "treeObjectId": {
-                  "type": "string",
-                  "pattern": "^([0-9a-f]{40}|[0-9a-f]{64})$"
-                },
-                "commitAt": {
-                  "type": "string",
-                  "format": "date-time"
-                },
-                "wholeReceiptId": {
-                  "type": "string",
-                  "pattern": "^sha256:[0-9a-f]{64}$"
-                },
-                "hours": {
-                  "type": "object",
-                  "additionalProperties": false,
-                  "required": [
-                    "low",
-                    "expected",
-                    "high"
-                  ],
-                  "properties": {
-                    "low": {
-                      "type": "number",
-                      "minimum": 0
-                    },
-                    "expected": {
-                      "type": "number",
-                      "minimum": 0
-                    },
-                    "high": {
-                      "type": "number",
-                      "minimum": 0
-                    }
-                  }
-                },
-                "totalCost": {
-                  "type": "object",
-                  "additionalProperties": false,
-                  "required": [
-                    "low",
-                    "expected",
-                    "high",
-                    "currency"
-                  ],
-                  "properties": {
-                    "low": {
-                      "type": "number",
-                      "minimum": 0
-                    },
-                    "expected": {
-                      "type": "number",
-                      "minimum": 0
-                    },
-                    "high": {
-                      "type": "number",
-                      "minimum": 0
-                    },
-                    "currency": {
-                      "type": "string",
-                      "pattern": "^[A-Z]{3}$"
-                    }
-                  }
-                },
-                "areas": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "additionalProperties": false,
-                    "required": [
-                      "id",
-                      "receiptId",
-                      "standaloneExpectedHours",
-                      "allocatedExpectedHours",
-                      "ownedFileCount",
-                      "contextFileCount",
-                      "inputDigest",
-                      "reviewStatus"
-                    ],
-                    "properties": {
-                      "id": {
-                        "type": "string",
-                        "pattern": "^[a-z0-9][a-z0-9.-]{0,79}$"
-                      },
-                      "receiptId": {
-                        "type": "string",
-                        "pattern": "^sha256:[0-9a-f]{64}$"
-                      },
-                      "standaloneExpectedHours": {
-                        "type": "number",
-                        "minimum": 0
-                      },
-                      "allocatedExpectedHours": {
-                        "type": "number",
-                        "minimum": 0
-                      },
-                      "ownedFileCount": {
-                        "type": "integer",
-                        "minimum": 1
-                      },
-                      "contextFileCount": {
-                        "type": "integer",
-                        "minimum": 0
-                      },
-                      "inputDigest": {
-                        "type": "string",
-                        "pattern": "^sha256:[0-9a-f]{64}$"
-                      },
-                      "previousExpectedHours": {
-                        "type": "number",
-                        "minimum": 0
-                      },
-                      "reviewStatus": {
-                        "enum": [
-                          "reviewed-boundary",
-                          "review-required"
-                        ]
-                      },
-                      "inventoryDigest": {
-                        "type": "string",
-                        "pattern": "^sha256:[0-9a-f]{64}$"
-                      }
-                    }
-                  },
-                  "minItems": 0,
-                  "maxItems": 256
-                },
-                "cacheDisposition": {
-                  "enum": [
-                    "not-requested",
-                    "receipt-hit",
-                    "measured",
-                    "measurement-required"
-                  ]
-                },
-                "previousExpectedHours": {
-                  "type": "number",
-                  "minimum": 0
-                },
-                "areaPlans": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "additionalProperties": false,
-                    "required": [
-                      "id",
-                      "disposition"
-                    ],
-                    "properties": {
-                      "id": {
-                        "type": "string",
-                        "pattern": "^[a-z0-9][a-z0-9.-]{0,79}$"
-                      },
-                      "disposition": {
-                        "enum": [
-                          "receipt-hit",
-                          "unchanged-input-receipt-expected",
-                          "archive-attributes-require-verification",
-                          "changed-or-unmeasured-input"
-                        ]
-                      }
-                    }
-                  },
-                  "minItems": 0,
-                  "maxItems": 256
-                },
-                "planningIssue": {
-                  "enum": [
-                    "missing-history-or-head",
-                    "missing-object-or-ref",
-                    "shallow-history",
-                    "invalid-area-definition",
-                    "unmatched-selector",
-                    "empty-owned-area",
-                    "invalid-archive",
-                    "unsupported-source-entry",
-                    "incompatible-measurement-identity"
-                  ]
-                },
-                "planningAreaId": {
-                  "type": "string",
-                  "pattern": "^[a-z0-9][a-z0-9.-]{0,79}$"
-                },
-                "areaDisposition": {
-                  "enum": [
-                    "not-requested",
-                    "measured",
-                    "requested"
-                  ]
-                },
-                "areaDefinitionDigest": {
-                  "type": "string",
-                  "pattern": "^sha256:[0-9a-f]{64}$"
-                }
-              }
+              "$ref": "#/$defs/period"
             },
             "minItems": 13,
-            "maxItems": 13
+            "maxItems": 367
           },
           "planningIssue": {
             "enum": [
@@ -391,6 +164,24 @@
               "latest-only",
               "revision-bound"
             ]
+          },
+          "monthlyEndpoints": {
+            "type": "array",
+            "minItems": 13,
+            "maxItems": 13,
+            "items": {
+              "$ref": "#/$defs/period"
+            }
+          },
+          "selectedSnapshotCount": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 366
+          },
+          "distinctSnapshotCount": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 366
           }
         }
       },
@@ -513,6 +304,289 @@
           "minimum": 0
         }
       }
+    },
+    "calendarPolicy": {
+      "const": "daily-replacement-calendar/1.0.0"
     }
-  }
+  },
+  "$defs": {
+    "period": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "status",
+        "cutoff",
+        "areas",
+        "cacheDisposition",
+        "areaPlans"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1024
+        },
+        "status": {
+          "enum": [
+            "baseline-zero",
+            "assumed-zero",
+            "future",
+            "complete",
+            "partial",
+            "unavailable"
+          ]
+        },
+        "cutoff": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "commitObjectId": {
+          "type": "string",
+          "pattern": "^([0-9a-f]{40}|[0-9a-f]{64})$"
+        },
+        "treeObjectId": {
+          "type": "string",
+          "pattern": "^([0-9a-f]{40}|[0-9a-f]{64})$"
+        },
+        "commitAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "wholeReceiptId": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "hours": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "low",
+            "expected",
+            "high"
+          ],
+          "properties": {
+            "low": {
+              "type": "number",
+              "minimum": 0
+            },
+            "expected": {
+              "type": "number",
+              "minimum": 0
+            },
+            "high": {
+              "type": "number",
+              "minimum": 0
+            }
+          }
+        },
+        "totalCost": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "low",
+            "expected",
+            "high",
+            "currency"
+          ],
+          "properties": {
+            "low": {
+              "type": "number",
+              "minimum": 0
+            },
+            "expected": {
+              "type": "number",
+              "minimum": 0
+            },
+            "high": {
+              "type": "number",
+              "minimum": 0
+            },
+            "currency": {
+              "type": "string",
+              "pattern": "^[A-Z]{3}$"
+            }
+          }
+        },
+        "areas": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "id",
+              "receiptId",
+              "standaloneExpectedHours",
+              "allocatedExpectedHours",
+              "ownedFileCount",
+              "contextFileCount",
+              "inputDigest",
+              "reviewStatus"
+            ],
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^[a-z0-9][a-z0-9.-]{0,79}$"
+              },
+              "receiptId": {
+                "type": "string",
+                "pattern": "^sha256:[0-9a-f]{64}$"
+              },
+              "standaloneExpectedHours": {
+                "type": "number",
+                "minimum": 0
+              },
+              "allocatedExpectedHours": {
+                "type": "number",
+                "minimum": 0
+              },
+              "ownedFileCount": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "contextFileCount": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "inputDigest": {
+                "type": "string",
+                "pattern": "^sha256:[0-9a-f]{64}$"
+              },
+              "previousExpectedHours": {
+                "type": "number",
+                "minimum": 0
+              },
+              "reviewStatus": {
+                "enum": [
+                  "reviewed-boundary",
+                  "review-required"
+                ]
+              },
+              "inventoryDigest": {
+                "type": "string",
+                "pattern": "^sha256:[0-9a-f]{64}$"
+              }
+            }
+          },
+          "minItems": 0,
+          "maxItems": 256
+        },
+        "cacheDisposition": {
+          "enum": [
+            "not-requested",
+            "receipt-hit",
+            "measured",
+            "measurement-required"
+          ]
+        },
+        "previousExpectedHours": {
+          "type": "number",
+          "minimum": 0
+        },
+        "areaPlans": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "id",
+              "disposition"
+            ],
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^[a-z0-9][a-z0-9.-]{0,79}$"
+              },
+              "disposition": {
+                "enum": [
+                  "receipt-hit",
+                  "unchanged-input-receipt-expected",
+                  "archive-attributes-require-verification",
+                  "changed-or-unmeasured-input"
+                ]
+              }
+            }
+          },
+          "minItems": 0,
+          "maxItems": 256
+        },
+        "planningIssue": {
+          "enum": [
+            "missing-history-or-head",
+            "missing-object-or-ref",
+            "shallow-history",
+            "invalid-area-definition",
+            "unmatched-selector",
+            "empty-owned-area",
+            "invalid-archive",
+            "unsupported-source-entry",
+            "incompatible-measurement-identity"
+          ]
+        },
+        "planningAreaId": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9.-]{0,79}$"
+        },
+        "areaDisposition": {
+          "enum": [
+            "not-requested",
+            "measured",
+            "requested"
+          ]
+        },
+        "areaDefinitionDigest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "expectedChangeCentihours": {
+          "type": "integer"
+        },
+        "activeCommitDateCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "benchmarkHours": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "required": [
+          "calendarPolicy"
+        ]
+      },
+      "then": {
+        "properties": {
+          "projects": {
+            "items": {
+              "properties": {
+                "periods": {
+                  "minItems": 366,
+                  "maxItems": 367
+                }
+              }
+            }
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "projects": {
+            "items": {
+              "properties": {
+                "periods": {
+                  "minItems": 13,
+                  "maxItems": 13
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
 }

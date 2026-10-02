@@ -8,7 +8,8 @@ public sealed record SnapshotHistoryCommit(string ObjectId, string TreeObjectId,
 public static class SnapshotPortfolioSelection
 {
     public static IReadOnlyList<SnapshotPeriodResult> Select(
-        int year, TimeZoneInfo timezone, DateTimeOffset asOf, IReadOnlyList<SnapshotHistoryCommit> history)
+        int year, TimeZoneInfo timezone, DateTimeOffset asOf, IReadOnlyList<SnapshotHistoryCommit> history,
+        string? calendarPolicy = null)
     {
         List<SnapshotPeriodResult> result = [];
         DateTimeOffset start = Boundary(new DateTime(year, 1, 1), timezone);
@@ -19,10 +20,11 @@ public static class SnapshotPortfolioSelection
             Cutoff = start,
             Hours = start > asOf ? null : Zero,
         });
-        for (int month = 1; month <= 12; month++)
+        bool daily = calendarPolicy == SnapshotPortfolioVersions.Daily;
+        for (DateTime date = new(year, 1, 1); date.Year == year; date = daily ? date.AddDays(1) : date.AddMonths(1))
         {
-            DateTimeOffset monthStart = Boundary(new DateTime(year, month, 1), timezone);
-            DateTimeOffset monthEnd = Boundary(new DateTime(year, month, 1).AddMonths(1), timezone);
+            DateTimeOffset monthStart = Boundary(date, timezone);
+            DateTimeOffset monthEnd = Boundary(daily ? date.AddDays(1) : date.AddMonths(1), timezone);
             bool future = monthStart > asOf;
             bool partial = !future && asOf < monthEnd;
             DateTimeOffset cutoff = partial ? asOf : monthEnd;
@@ -30,7 +32,7 @@ public static class SnapshotPortfolioSelection
             SnapshotHistoryCommit? selected = future ? null : history.FirstOrDefault(c => c.CommittedAt < cutoff);
             result.Add(new SnapshotPeriodResult
             {
-                Id = $"{year}-{month:00}",
+                Id = date.ToString(daily ? "yyyy-MM-dd" : "yyyy-MM", CultureInfo.InvariantCulture),
                 Status = future ? "future" : selected is null
                     ? "assumed-zero" : partial ? "partial" : "complete",
                 Cutoff = cutoff,

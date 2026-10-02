@@ -18,6 +18,7 @@ public sealed record SnapshotPortfolioRunOptions
     public RateCard? RateCard { get; init; }
     public SnapshotPortfolioReport? Previous { get; init; }
     public SnapshotPortfolioReport? Reproduce { get; init; }
+    public SnapshotPortfolioReport? EndpointReference { get; init; }
     public string? PreviousEpochDigest { get; init; }
 }
 
@@ -70,6 +71,7 @@ public sealed partial class SnapshotPortfolioRunner(SnapshotPortfolioStore store
             AsOf = options.AsOf,
             Year = manifest.Year,
             Timezone = manifest.Timezone,
+            CalendarPolicy = manifest.CalendarPolicy,
             ManifestDigest = SnapshotMeasurementIdentity.Digest(manifest),
             MeasurementEpoch = SnapshotMeasurementIdentity.Digest(SnapshotMeasurementIdentity.Create(manifest.Profile)),
             PreviousEpochDigest = options.PreviousEpochDigest,
@@ -99,6 +101,8 @@ public sealed partial class SnapshotPortfolioRunner(SnapshotPortfolioStore store
         report = report with { RateCard = options.RateCard, SharedSourceReviews = SnapshotPortfolioDiagnostics.SharedBodies(report.Projects, report.Receipts) };
         report = report with { SemanticDigest = SnapshotPortfolioValidation.ReportDigest(report) };
         if (!options.Preflight) SnapshotPortfolioValidation.Validate(report);
+        if (!options.Preflight && options.EndpointReference is not null && manifest.CalendarPolicy == SnapshotPortfolioVersions.Daily)
+            SnapshotDailyCalendar.ValidateReference(report, options.EndpointReference);
         return report;
     }
 
@@ -151,7 +155,10 @@ public sealed partial class SnapshotPortfolioRunner(SnapshotPortfolioStore store
         MeasurementIdentity identity = SnapshotMeasurementIdentity.Create(manifest.Profile, ownership);
         List<SnapshotPeriodResult> periods = [];
         IReadOnlyList<SnapshotPeriodResult> selections = SnapshotPortfolioSelection.Select(manifest.Year,
-            TimeZoneInfo.FindSystemTimeZoneById(manifest.Timezone), options.AsOf, history);
+            TimeZoneInfo.FindSystemTimeZoneById(manifest.Timezone), options.AsOf, history, manifest.CalendarPolicy);
+        bool daily = manifest.CalendarPolicy == SnapshotPortfolioVersions.Daily;
+        if (daily) selections = SnapshotCalendarBenchmark.Apply(selections, TimeZoneInfo.FindSystemTimeZoneById(manifest.Timezone),
+            await git.ReadSnapshotBenchmarkHistoryAsync(root, head, token).ConfigureAwait(false));
         string? latestId = selections.LastOrDefault(p => p.CommitObjectId is not null)?.Id;
         Dictionary<string, (IReadOnlyList<ChangeSnapshotFile> Files, bool Attributes)> inventories = new(StringComparer.Ordinal);
         Dictionary<string, IReadOnlyList<SnapshotAreaPlan>> plans = new(StringComparer.Ordinal);
@@ -160,13 +167,13 @@ public sealed partial class SnapshotPortfolioRunner(SnapshotPortfolioStore store
         {
             token.ThrowIfCancellationRequested();
             if (selected.CommitObjectId is null) { periods.Add(selected); continue; }
-            bool requestAreas = project.AreaMeasurementMode != "latest-only" || selected.Id == latestId;
+            bool requestAreas = !daily && (project.AreaMeasurementMode != "latest-only" || selected.Id == latestId);
             SnapshotProjectDefinition selectedProject = project;
             string selectedAreasDigest = requestAreas ? areasDigest : "";
             options.Progress?.Invoke(options.Preflight ? "planning" : "measurement", project.Id);
             try
             {
-                if (project.AreaMeasurementMode == "revision-bound")
+                if (!daily && project.AreaMeasurementMode == "revision-bound")
                 {
                     SnapshotAreaRevision? revision = project.AreaRevisions!.FirstOrDefault(r => r.CommitObjectId == selected.CommitObjectId) ?? throw new SnapshotPlanningException("invalid-area-definition", "Selected snapshot needs an exact reviewed area revision.");
                     selectedProject = project with { Areas = revision.Areas };
@@ -190,6 +197,7 @@ public sealed partial class SnapshotPortfolioRunner(SnapshotPortfolioStore store
                     {
                         await using IChangeSnapshot raw = await git.OpenSnapshotAsync(root, selected.CommitObjectId, token).ConfigureAwait(false);
                         cachedInventory = (raw.Files.ToArray(), raw.Files.Any(f => Path.GetFileName(f.Path) == ".gitattributes"));
+                        if (inventories.Count == 12) inventories.Remove(inventories.Keys.First());
                         inventories.Add(selected.TreeObjectId!, cachedInventory);
                         Interlocked.Increment(ref _inventoryReads);
                     }
@@ -232,15 +240,15 @@ public sealed partial class SnapshotPortfolioRunner(SnapshotPortfolioStore store
                 }
                 if (options.Preflight && !cached)
                 {
-                    periods.Add(selected with { CacheDisposition = "measurement-required", AreaPlans = areaPlan, AreaDefinitionDigest = project.AreaMeasurementMode == "revision-bound" ? selectedAreasDigest : null, AreaDisposition = project.AreaMeasurementMode == "latest-only" ? requestAreas ? "requested" : "not-requested" : null });
+                    periods.Add(selected with { CacheDisposition = "measurement-required", AreaPlans = areaPlan, AreaDefinitionDigest = !daily && project.AreaMeasurementMode == "revision-bound" ? selectedAreasDigest : null, AreaDisposition = daily ? "not-requested" : project.AreaMeasurementMode == "latest-only" ? requestAreas ? "requested" : "not-requested" : null });
                     continue;
                 }
                 SnapshotMeasurementReceipt whole = _receipts[binding!.WholeReceiptId];
                 SnapshotPeriodResult? previous = options.Previous?.Projects.FirstOrDefault(p => p.Id == project.Id)?.Periods.FirstOrDefault(p => p.Id == selected.Id);
                 periods.Add(selected with
                 {
-                    AreaDefinitionDigest = project.AreaMeasurementMode == "revision-bound" ? selectedAreasDigest : null,
-                    AreaDisposition = project.AreaMeasurementMode == "latest-only" ? requestAreas ? options.Preflight ? "requested" : "measured" : "not-requested" : null,
+                    AreaDefinitionDigest = !daily && project.AreaMeasurementMode == "revision-bound" ? selectedAreasDigest : null,
+                    AreaDisposition = daily ? "not-requested" : project.AreaMeasurementMode == "latest-only" ? requestAreas ? options.Preflight ? "requested" : "measured" : "not-requested" : null,
                     Hours = whole.Hours,
                     WholeReceiptId = whole.Id,
                     Areas = [.. binding.Areas.Select(a => a with
@@ -271,6 +279,7 @@ public sealed partial class SnapshotPortfolioRunner(SnapshotPortfolioStore store
                 periods.Add(selected with { Status = "unavailable", Hours = null, PlanningIssue = "missing-object-or-ref" });
             }
         }
+        if (daily) periods = [.. SnapshotDailyCalendar.Differences(periods)];
         return new()
         {
             Id = project.Id,
@@ -280,6 +289,9 @@ public sealed partial class SnapshotPortfolioRunner(SnapshotPortfolioStore store
             AreasDigest = areasDigest,
             AreaMeasurementMode = project.AreaMeasurementMode,
             Periods = periods,
+            MonthlyEndpoints = daily ? SnapshotDailyCalendar.Endpoints(manifest.Year, manifest.Timezone, options.AsOf, periods) : null,
+            SelectedSnapshotCount = daily ? selections.Count(p => p.CommitObjectId is not null) : null,
+            DistinctSnapshotCount = daily ? selections.Where(p => p.CommitObjectId is not null).Select(p => p.CommitObjectId).Distinct().Count() : null,
         };
     }
 

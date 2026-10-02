@@ -37,7 +37,12 @@ internal static class SnapshotPortfolioCommand
                 "snapshot-portfolio-manifest.schema.json", deadline.Token).ConfigureAwait(false);
             SnapshotPortfolioLocalMap local = await ReadAsync<SnapshotPortfolioLocalMap>(options.Local,
                 "snapshot-portfolio-local-map.schema.json", deadline.Token).ConfigureAwait(false);
-            manifest = manifest with { Year = options.Year ?? manifest.Year, Timezone = options.Timezone ?? manifest.Timezone };
+            manifest = manifest with
+            {
+                Year = options.Year ?? manifest.Year,
+                Timezone = options.Timezone ?? manifest.Timezone,
+                CalendarPolicy = options.Calendar == "daily" ? SnapshotPortfolioVersions.Daily : manifest.CalendarPolicy
+            };
             SnapshotPortfolioValidation.Validate(manifest);
             foreach (SnapshotProjectLocator locator in local.Projects.Where(p => p.RepositoryPath is not null))
             {
@@ -58,7 +63,9 @@ internal static class SnapshotPortfolioCommand
             SnapshotPortfolioReport? reproduce = options.Reproduce is null ? null : await ReadReportAsync(options.Reproduce, deadline.Token).ConfigureAwait(false);
             if (reproduce is not null)
             {
-                if (reproduce.ManifestDigest != SnapshotMeasurementIdentity.Digest(manifest))
+                if (reproduce.ManifestDigest != SnapshotMeasurementIdentity.Digest(manifest) &&
+                    !(manifest.CalendarPolicy == SnapshotPortfolioVersions.Daily && reproduce.CalendarPolicy is null &&
+                      reproduce.ManifestDigest == SnapshotMeasurementIdentity.Digest(manifest with { CalendarPolicy = null })))
                     throw new InvalidDataException("Reproduction requires the original manifest and policy digest.");
                 options = options with { AsOf = reproduce.AsOf };
             }
@@ -72,11 +79,22 @@ internal static class SnapshotPortfolioCommand
             using SnapshotPortfolioStore store = new(options.Checkpoint, options.CheckpointMiB * 1024L * 1024L);
             await using FileStream? runLock = options.Preflight ? null : await store.AcquireLockAsync(deadline.Token).ConfigureAwait(false);
             await using FileStream? outputLock = options.Preflight || options.Output is null ? null : AcquireOutputLock(options.Output);
+            SnapshotPortfolioReport? endpointReference = reproduce ?? previous;
+            if (options.Preflight && options.ImportReceipts is not null && manifest.CalendarPolicy == SnapshotPortfolioVersions.Daily)
+            {
+                SnapshotPortfolioReport imported = await ReadReportAsync(options.ImportReceipts, deadline.Token).ConfigureAwait(false);
+                if (imported.MeasurementEpoch != epoch)
+                    throw new SnapshotPlanningException("incompatible-measurement-identity", "Daily receipt imports require the current measurement epoch.");
+                store.PreviewImport(imported);
+            }
             if (!options.Preflight)
             {
                 if (options.ImportReceipts is not null)
                 {
                     SnapshotPortfolioReport imported = await ReadReportAsync(options.ImportReceipts, deadline.Token).ConfigureAwait(false);
+                    if (manifest.CalendarPolicy == SnapshotPortfolioVersions.Daily && imported.MeasurementEpoch != epoch)
+                        throw new SnapshotPlanningException("incompatible-measurement-identity", "Daily receipt imports require the current measurement epoch; rebuild monthly receipts under the same producer first.");
+                    endpointReference ??= imported;
                     await store.ImportAsync(imported, deadline.Token).ConfigureAwait(false);
                     await ImportBindingsAsync(store, imported, manifest, deadline.Token).ConfigureAwait(false);
                 }
@@ -109,6 +127,7 @@ internal static class SnapshotPortfolioCommand
                 },
                 Previous = options.Upgrade == "new-epoch" ? null : previous,
                 Reproduce = reproduce,
+                EndpointReference = endpointReference,
                 PreviousEpochDigest = incompatible ? previous!.SemanticDigest : null,
             }, deadline.Token).ConfigureAwait(false);
             result = result with
@@ -224,6 +243,7 @@ internal static class SnapshotPortfolioCommand
           --fetch-missing                  Explicit provider acquisition opt-in
           --output <path>                  Atomically publish complete JSON (default: stdout)
           --import-receipts <result.json>  Validate/import portable public receipts
+          --calendar daily                Whole-only daily replacement stocks and signed changes
           --import-historical <estimate>   Retain known v1 legacy provenance without reuse
           --reproduce <result.json>        Reselect original immutable pins and observation
           --upgrade <rebuild|new-epoch>     Explicit incompatible-series migration

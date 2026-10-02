@@ -36,6 +36,8 @@ internal static partial class SnapshotDashboardAdapterCommand
         }
         if (values.Count != 3) throw new InvalidDataException("Adapter requires --input, --studies, and --output.");
         SnapshotPortfolioReport report = await SnapshotPortfolioCommand.ReadReportAsync(values["--input"], token).ConfigureAwait(false);
+        if (report.CalendarPolicy is not null)
+            throw new InvalidDataException("The authored-study dashboard adapter requires a monthly portfolio; consume daily replacement reports directly.");
         SnapshotDashboardStudies studies = await SnapshotPortfolioCommand.ReadAsync<SnapshotDashboardStudies>(values["--studies"],
             "snapshot-dashboard-studies.schema.json", token).ConfigureAwait(false);
         if (studies.Projects.Select(p => p.Id).Distinct(StringComparer.Ordinal).Count() != studies.Projects.Count ||

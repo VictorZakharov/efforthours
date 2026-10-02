@@ -15,6 +15,7 @@ internal sealed record SnapshotPortfolioOptions
     public string? PreviousResult { get; init; }
     public int? Year { get; init; }
     public string? Timezone { get; init; }
+    public string? Calendar { get; init; }
     public required DateTimeOffset AsOf { get; init; }
     public bool Preflight { get; init; }
     public bool FetchMissing { get; init; }
@@ -35,7 +36,7 @@ internal sealed record SnapshotPortfolioOptions
         {
             "--manifest", "--local", "--checkpoint", "--output", "--import-receipts", "--import-historical", "--reproduce",
             "--upgrade", "--year", "--timezone", "--as-of", "--concurrency", "--timeout-seconds", "--archive-mib",
-            "--previous-result",
+            "--previous-result", "--calendar",
             "--checkpoint-mib", "--memory-mib", "--output-mib", "--hourly-rate", "--currency",
         };
         for (int i = 0; i < args.Length; i++)
@@ -72,6 +73,7 @@ internal sealed record SnapshotPortfolioOptions
         if (currency.Length != 3 || currency.Any(c => c is < 'A' or > 'Z') || values.ContainsKey("--currency") && rate is null)
             throw new InvalidDataException("--currency requires --hourly-rate and an uppercase three-letter currency code.");
         if (upgrade is not (null or "rebuild" or "new-epoch")) throw new InvalidDataException("--upgrade must be rebuild or new-epoch.");
+        if (values.GetValueOrDefault("--calendar") is not (null or "daily")) throw new InvalidDataException("--calendar must be daily.");
         return new()
         {
             Manifest = Required("--manifest"),
@@ -85,6 +87,7 @@ internal sealed record SnapshotPortfolioOptions
             PreviousResult = values.GetValueOrDefault("--previous-result"),
             Year = values.ContainsKey("--year") ? Integer("--year", 2026, 1970, 9998) : null,
             Timezone = values.GetValueOrDefault("--timezone"),
+            Calendar = values.GetValueOrDefault("--calendar"),
             AsOf = asOf.ToUniversalTime(),
             HourlyRate = rate,
             Currency = currency,

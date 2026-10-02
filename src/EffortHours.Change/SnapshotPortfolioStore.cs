@@ -11,6 +11,7 @@ public sealed class SnapshotPortfolioStore(string directory, long maximumBytes =
 
     public string DirectoryPath { get; } = Path.GetFullPath(directory);
     private readonly Dictionary<string, SnapshotMeasurementReceipt> _imported = new(StringComparer.Ordinal);
+    private readonly Dictionary<string, SnapshotStoredBinding> _previewBindings = new(StringComparer.Ordinal);
     private readonly Lock _writeGate = new();
     private readonly SemaphoreSlim _ioGate = new(1, 1);
     private long _reservedBytes;
@@ -33,6 +34,9 @@ public sealed class SnapshotPortfolioStore(string directory, long maximumBytes =
 
     public async Task<T?> LoadAsync<T>(string kind, string key, CancellationToken cancellationToken) where T : class
     {
+        cancellationToken.ThrowIfCancellationRequested();
+        if (kind == "bindings" && typeof(T) == typeof(SnapshotStoredBinding) && _previewBindings.TryGetValue(key, out SnapshotStoredBinding? preview))
+            return (T)(object)preview;
         string path = EntryPath(kind, key);
         if (!File.Exists(path)) return null;
         await _ioGate.WaitAsync(cancellationToken).ConfigureAwait(false);
@@ -102,6 +106,20 @@ public sealed class SnapshotPortfolioStore(string directory, long maximumBytes =
             string key = MeasurementKey(receipt.InputDigest, receipt.Measurement, receipt.SelectedFileCount, receipt.ContextFileCount);
             await SaveAsync("measurements", key, new SnapshotReceiptReference(receipt.Id), cancellationToken).ConfigureAwait(false);
         }
+    }
+
+    public void PreviewImport(SnapshotPortfolioReport report)
+    {
+        SnapshotPortfolioValidation.Validate(report);
+        foreach (SnapshotMeasurementReceipt receipt in report.Receipts) _imported[receipt.Id] = receipt;
+        foreach (SnapshotProjectResult project in report.Projects)
+            foreach (SnapshotPeriodResult period in project.Periods.Where(p => p.WholeReceiptId is not null))
+            {
+                SnapshotMeasurementReceipt whole = _imported[period.WholeReceiptId!];
+                string key = SnapshotPortfolioRunner.BindingKey(period.CommitObjectId!, whole.Measurement, "");
+                SnapshotStoredBinding binding = new(key, "", whole.Id, []);
+                _previewBindings[key] = binding with { Digest = BindingDigest(binding) };
+            }
     }
 
     public static string MeasurementKey(string inputDigest, MeasurementIdentity identity, int selected, int context) =>

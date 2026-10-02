@@ -61,6 +61,6 @@ internal static class SnapshotPortfolioDiagnostics
             AreasDigest = SnapshotMeasurementIdentity.Digest(project.Areas),
             PlanningIssue = issue,
             AreaMeasurementMode = project.AreaMeasurementMode,
-            Periods = [.. SnapshotPortfolioSelection.Select(manifest.Year, TimeZoneInfo.FindSystemTimeZoneById(manifest.Timezone), asOf, []).Select(p => p.Status is "future" or "baseline-zero" ? p : p with { Status = "unavailable", Hours = null })],
+            Periods = [.. SnapshotPortfolioSelection.Select(manifest.Year, TimeZoneInfo.FindSystemTimeZoneById(manifest.Timezone), asOf, [], manifest.CalendarPolicy).Select(p => p.Status is "future" or "baseline-zero" ? p : p with { Status = "unavailable", Hours = null })],
         };
 }
