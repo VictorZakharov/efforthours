@@ -6,6 +6,8 @@ may still change public contracts with explicit documentation.
 
 ## Unreleased
 
+## 0.10.0-alpha.28 - 2026-10-02
+
 ### Fixed
 
 - Daily replacement-calendar benchmark hours now count distinct local dates in
@@ -21,6 +23,12 @@ may still change public contracts with explicit documentation.
   or explicit project/provider selection, acquisition/analysis progress, durable
   evidence reuse, HTML project/unit toggles and day details, text/JSON output, and
   explicit eight-hour reference denominators. Estimator priors remain unchanged.
+
+### Compatibility
+
+- The conservative snapshot implementation fingerprint changes. Rebuild older
+  receipts explicitly under the corrected producer using the documented epoch
+  migration; preserve original receipts and never relabel their identities.
 
 ## 0.10.0-alpha.27 - 2026-10-02
 
