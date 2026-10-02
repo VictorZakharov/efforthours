@@ -175,6 +175,20 @@ root failure and last-progress context, and checkpoint lineage. It deliberately
 omits the canonical source portfolio, bucket series, aggregate EHE, and trend and
 returns a nonzero exit code.
 
+## Daily Change EHE calendars
+
+`eh calendar` provides a separate daily **Change EHE** convenience view in offline
+HTML or Markdown text, backed by the existing schema-validated comparison JSON.
+It builds one in-memory author-period manifest and jointly reconciles all selected
+projects before projecting exact repository/day cells. Project checkboxes and
+Hours/× EHE toggles do not re-estimate. Ratios use an explicit reference denominator
+(default eight hours per calendar day) once per date, including idle days.
+The overall ratio is total expected EHE divided by total reference hours.
+Completely selected no-match intervals are zero; failures have no aggregate graph.
+HTML embeds no source, aliases, paths, provider locators, or external resources.
+See [CALENDAR_REPORTS.md](CALENDAR_REPORTS.md) for defaults, interactive/agent use,
+date/runtime bounds, progress, privacy, and checkpoints.
+
 ## Snapshot portfolio reports
 
 Snapshot portfolios have the separate `snapshot-portfolio-report/1.0.0` contract.

@@ -141,6 +141,14 @@ supplied capacity. It does not infer actual hours or sole authorship; interpret 
 within selection and shared-credit assumptions. Inspect the scope with
 `eh change scope show engineering`.
 
+### Create your daily EHE calendar
+
+Run `eh calendar` for prompts with last-month defaults, or use explicit flags:
+`eh calendar . --from 2026-09-01 --to 2026-09-30 --output ../calendar.html`.
+The offline HTML graph includes project filters, Hours/X EHE toggles, and day
+details; text/JSON and multi-repository inputs are also supported. No AI or website
+build is needed. See [calendar workflows](docs/CALENDAR_REPORTS.md).
+
 ### Use EffortHours from Codex
 
 Install the packaged companion skill once, then verify it after updating EffortHours:
@@ -352,14 +360,6 @@ eh change scope show engineering
 eh change explain <change-estimate.json> --item <id>
 eh agent codex [--install|--check]
 eh review packet <repository> --compact
-eh calibration uncertainty-features <estimate.json> <evidence.json> --compact
-eh calibration uncertainty-structure <estimate.json> <evidence.json> --compact
-eh calibration uncertainty-graph <estimate.json> <evidence.json> --compact
-eh calibration uncertainty-evaluate <development-corpus.json> <features.json>... --compact
-eh calibration uncertainty-structure-evaluate <development-corpus.json> <structural-features.json>... --compact
-eh calibration uncertainty-graph-evaluate <development-corpus.json> <graph-features.json>... --compact
-eh calibration uncertainty-support <population.json> <features.json>... --compact
-eh calibration uncertainty-support-evaluate <development-corpus.json> <support-profile.json> <features.json>... --compact
 eh model info
 eh rate info
 eh schema list

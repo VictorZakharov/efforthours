@@ -40,6 +40,9 @@ The repository already provides:
   pipeline and reconcile signed stock differences to its monthly endpoints;
 - JSON schemas, compact projections, Markdown, explanation queries, and a dated
   replaceable rate card;
+- one-command daily Change EHE calendars with interactive defaults, bounded local
+  workspace or explicit checkout-free inputs, progress, and offline HTML/text views
+  of exact repository/day allocations from the existing comparison engine;
 - immutable Git and non-Git Change selectors, range reconciliation, portfolio
   normalization, and process-level cancellation;
 - one checkout-free immutable Git snapshot input shared by repository scan,

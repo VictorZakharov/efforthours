@@ -156,6 +156,13 @@ authoritative, and discovery metadata never enters an effort rule.
 
 ### Reporting and pricing
 
+The explicit `eh calendar` convenience command lets teammates create a daily
+Change EHE graph without AI or a website build. Interactive setup and unattended
+flags share one author-period portfolio calculation, with offline HTML/text,
+project filters, a bounded complete-date range, and visible reference-hours ratios.
+This view does not measure AI skill or individual productivity; its scope and
+experimental boundaries are in [CALENDAR_REPORTS.md](CALENDAR_REPORTS.md).
+
 Canonical reports keep evidence, inferred capabilities, estimated work,
 uncertainty, review adjustments, and pricing distinct. Compact views remain
 projections of the same estimate and retain stable explanation paths.

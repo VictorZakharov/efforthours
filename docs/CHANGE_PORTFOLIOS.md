@@ -18,6 +18,17 @@ ecosystem boundary of its canonical Change estimate.
 
 ## Selectors
 
+The teammate convenience command `eh calendar` composes the same author-period
+manifest and comparison engine in memory, with interactive defaults or unattended
+flags and offline HTML/text output. It defaults to the last complete local month,
+local Git email selection, and eight reference hours per calendar day. Its explicit
+complete-day reporting envelope does not truncate the underlying selection.
+Only this convenience path (like the native provider period path) accepts a
+completely selected no-match interval as zero; existing low-level manifest no-match
+behavior is unchanged. Exact project cells use the existing repository-group/day
+allocation and conserve every low/expected/high portfolio cell. The contract is in
+[CALENDAR_REPORTS.md](CALENDAR_REPORTS.md).
+
 One command accepts exactly one selector family:
 
 ```text
