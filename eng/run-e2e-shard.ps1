@@ -7,7 +7,8 @@ param(
 . "$PSScriptRoot/e2e-shard-common.ps1"
 if ($Index -ge $Count) { throw "Shard index must be below shard count." }
 $project = "tests/EffortHours.EndToEndTests/EffortHours.EndToEndTests.csproj"
-$arguments = @("test", $project, "--no-build", "--no-restore", "--configuration", "Release")
+$arguments = @("test", $project, "--no-build", "--no-restore", "--configuration", "Release",
+    "--settings", "$PSScriptRoot/e2e-shard.runsettings")
 $listing = @(& dotnet @arguments --list-tests)
 if ($LASTEXITCODE -ne 0) { throw "E2E discovery failed." }
 $inventory = @($listing | ForEach-Object { $_.Trim() } |

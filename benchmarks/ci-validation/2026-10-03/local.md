@@ -148,3 +148,12 @@ but queued coverage gates and final packaging added 55 seconds. The next revisio
 runs coverage coordination within the first shard of each platform, eliminating
 three separate verifier-runner requests. Dependency caches are separated by graph
 to prevent partial-restore cache races. This checkpoint still misses the target.
+
+The coordinator revision at `3d954dc0dae09d46f899242ff2b3cb4ea49bca97`
+passed all checks in 210 seconds:
+[run 37128814526](https://github.com/VictorZakharov/efforthours/actions/runs/37128814526).
+Every OS verified all 302 cases. The slowest macOS shard's test step took 96
+seconds; its 106 cases summed to 235.4 test-body seconds and its largest serial
+collection summed to 54.6 seconds. The next explicit-shard configuration permits
+at most six conservative parallel collections, allowing bounded subprocess-wait
+overlap without changing discovery, case assignment or ordinary runner defaults.

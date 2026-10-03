@@ -202,6 +202,9 @@ public sealed partial class PublicReleaseHygieneTests
                 StringSplitOptions.None).Length - 1);
         Assert.Contains("name: Pack preview artifact", ci, StringComparison.Ordinal);
         Assert.Contains("eng/run-e2e-shard.ps1", ci, StringComparison.Ordinal);
+        XElement runner = Assert.IsType<XElement>(XDocument.Load(Path.Combine(root, "eng", "e2e-shard.runsettings")).Root?.Element("xUnit"));
+        Assert.Equal("6", runner.Element("MaxParallelThreads")?.Value);
+        Assert.Equal("conservative", runner.Element("ParallelAlgorithm")?.Value);
         Assert.Contains("-p:RunAnalyzers=false", ci, StringComparison.Ordinal);
         Assert.DoesNotContain("RunAnalyzers=false", ci.Split("  end-to-end:", StringSplitOptions.None)[0], StringComparison.Ordinal);
         Assert.Contains("eng/wait-e2e-shards.ps1", ci, StringComparison.Ordinal);

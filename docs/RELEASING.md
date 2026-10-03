@@ -204,3 +204,8 @@ the critical path. Aggregate packaging still depends on the entire E2E matrix.
 Package candidates also include the workflow attempt in their names. A complete
 successful rerun can replace the final same-commit preview artifact only after
 all current-attempt gates pass; failed attempts cannot promote a candidate.
+
+The explicit shard runner uses `eng/e2e-shard.runsettings`: at most six concurrent
+xUnit collections with conservative scheduling. This bounded overlap keeps
+independent CLI/Git process waits from serializing behind the hosted CPU count.
+Ordinary local and unit-test commands retain their default runner configuration.
