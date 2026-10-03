@@ -99,3 +99,11 @@ runner limits and required platform gates are unchanged.
 | `EffortHours.EndToEndTests.ChangeCliTests` | 12 | 59.655 |
 | `EffortHours.EndToEndTests.SnapshotDailyCliTests` | 9 | 72.223 |
 | `EffortHours.EndToEndTests.CalendarCliTests` | 8 | 64.772 |
+
+A second full split-suite run passes the same 286 cases in 121.807 TRX seconds,
+57.0% below the unchanged baseline. Split C# sources are pinned
+at `68f548200efb402c6e4a3e3f43dde5ec4cd5f019`; this follow-up changes only the measurement record.
+Both after runs use fresh test processes with the same Release outputs and runner
+configuration. There are no timing/memory CI thresholds or cross-platform speedup
+claims from these local Windows observations. Hosted phase results are recorded
+separately after required checks.
