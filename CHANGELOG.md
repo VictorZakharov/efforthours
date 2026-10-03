@@ -6,8 +6,12 @@ may still change public contracts with explicit documentation.
 
 ## Unreleased
 
+## 0.10.0-alpha.29 - 2026-10-02
+
 ### Fixed
 
+- Parallel report validation now serializes access to shared JSON-schema
+  reference caches, preventing collection corruption during simultaneous checks.
 - Daily Change calendars now normalize each local day independently, preserving
   daily values when the selected range expands. Low-level joint allocation remains
   available; HTML/text/JSON identify the calculation and retain daily lineage.
@@ -20,6 +24,14 @@ may still change public contracts with explicit documentation.
 
 - Calendar `--date-field committer|author`, defaulting to committer and available
   interactively, and low-level `--bucket independent-day` batch mode.
+
+### Compatibility
+
+- Daily reports identify `independent-local-day-change/1.0.0`; source Change uses
+  `change-seed/0.20.0` and portfolios use `change-portfolio/0.4.0`. Existing joint
+  modes remain available. Replacement stock and signed snapshot deltas remain
+  separate measurements. Conservative snapshot implementation fingerprints may
+  require an explicit epoch rebuild; preserve older receipt provenance.
 
 ## 0.10.0-alpha.28 - 2026-10-02
 
