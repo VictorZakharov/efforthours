@@ -2,7 +2,7 @@ using System.Text.Json;
 
 namespace EffortHours.EndToEndTests;
 
-public sealed partial class ChangeCliTests
+public sealed partial class ChangeCliTests : ChangeCliTestSupport
 {
     [Theory]
     [InlineData(false)]

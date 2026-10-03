@@ -5,7 +5,7 @@ using EffortHours.Contracts.V1;
 
 namespace EffortHours.EndToEndTests;
 
-public sealed partial class ChangeCliTests
+public sealed partial class SnapshotDailyCliTests : ChangeCliTestSupport
 {
     [Fact]
     public async Task DailyImportsMonthlyReceiptsReconcilesAndReproducesAfterHeadMoves()

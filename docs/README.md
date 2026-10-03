@@ -102,8 +102,6 @@ release history.
 
 ## Engineering records and procedures
 
-- [CI validation benchmarks](CI_VALIDATION_BENCHMARKS.md) records PR critical paths,
-  per-test diagnosis and measured priorities without timing gates.
 - [Scanner benchmarks](BENCHMARKS.md) records reproducible performance, memory,
   allocation, and read-only safety measurements.
 - [Reporting benchmarks](REPORT_BENCHMARKS.md) records compact-output size and

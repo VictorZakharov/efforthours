@@ -4,7 +4,7 @@ using EffortHours.Contracts.V1;
 
 namespace EffortHours.EndToEndTests;
 
-public sealed partial class ChangeCliTests
+public sealed partial class ChangePortfolioCliTests : ChangeCliTestSupport
 {
     private static readonly string[] ComparisonContributorAliases = ["selected@example.invalid"];
 

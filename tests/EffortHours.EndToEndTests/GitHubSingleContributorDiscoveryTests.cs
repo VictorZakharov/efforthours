@@ -4,7 +4,7 @@ using EffortHours.Change;
 
 namespace EffortHours.EndToEndTests;
 
-public sealed partial class ChangeCliTests
+public sealed partial class ChangePortfolioCliTests : ChangeCliTestSupport
 {
     [Fact]
     public async Task SingleContributorDiscoveryIsIndependentOfViewerAndReusesOwnerMetadata()

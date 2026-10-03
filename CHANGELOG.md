@@ -19,6 +19,13 @@ may still change public contracts with explicit documentation.
 - Advance source identities to Change 0.21.1 and portfolio 0.6.1. Estimates remain
   experimental and uncalibrated; private consumer totals require an immutable rerun.
 
+### Fixed
+
+- Split the serial Change CLI end-to-end test collection into independent
+  selector, portfolio, calendar, snapshot portfolio, and daily snapshot groups.
+  Existing test cases, platform coverage, runner concurrency limits, and release
+  validation gates remain intact.
+
 ## 0.10.0-alpha.30 - 2026-10-03
 
 ### Added

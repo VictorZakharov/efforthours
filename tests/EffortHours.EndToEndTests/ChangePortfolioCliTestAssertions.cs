@@ -1,8 +1,8 @@
 namespace EffortHours.EndToEndTests;
 
-public sealed partial class ChangeCliTests
+public abstract partial class ChangeCliTestSupport
 {
-    private static void AssertPortfolioTelemetry(
+    protected static void AssertPortfolioTelemetry(
         string standardError,
         bool includesManifestPhases)
     {

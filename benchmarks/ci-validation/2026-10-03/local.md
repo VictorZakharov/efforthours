@@ -83,3 +83,19 @@ Source tree: `3896f800c4766c08196f184d493383c666d4fd21`. Windows, 24 logical pro
 | `EffortHours.EndToEndTests.CalibrationUncertaintyGraphCliTests.EvaluatesGraphReportsThroughTheCli` | 8.423 |
 
 A fresh class-only repeat passed all 77 cases: 278.999 summed test-body seconds and 279.989 TRX wall seconds. No other E2E collection ran in that repeat.
+
+## Scheduling correction
+
+The same Release suite after the five-way collection split passes all 286 cases.
+TRX start-to-finish falls from 283.359 to 123.873 seconds (56.3% less, 2.29x).
+Case display identities including theory arguments match exactly after ignoring
+only the deliberate class-name moves. Assertions, fixtures, CLI/Git commands,
+runner limits and required platform gates are unchanged.
+
+| Split collection | Cases | Test-body seconds |
+| --- | ---: | ---: |
+| `EffortHours.EndToEndTests.ChangePortfolioCliTests` | 24 | 88.139 |
+| `EffortHours.EndToEndTests.SnapshotPortfolioCliTests` | 24 | 116.526 |
+| `EffortHours.EndToEndTests.ChangeCliTests` | 12 | 59.655 |
+| `EffortHours.EndToEndTests.SnapshotDailyCliTests` | 9 | 72.223 |
+| `EffortHours.EndToEndTests.CalendarCliTests` | 8 | 64.772 |
