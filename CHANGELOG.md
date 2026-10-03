@@ -6,6 +6,10 @@ may still change public contracts with explicit documentation.
 
 ## Unreleased
 
+## 0.10.0-alpha.31 - 2026-10-03
+
+### Fixed
+
 - Continue the alpha.30 daily discrepancy correction with bounded exact raw-effect
   graph proof for retained forks/first-parent merges and non-monotonic dates,
   alternate selected boundary anchors, and raw-safe rewrite suppression.
