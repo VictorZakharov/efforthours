@@ -25,7 +25,8 @@ may still change public contracts with explicit documentation.
   check names and exact current-head once-only coverage before packaging.
   Verify coverage within the first platform shard to avoid additional runner
   queues, bound concurrent shard collections at six, and cache locked NuGet
-  dependencies separately by validation graph.
+  dependencies separately by validation graph. Reuse an installed SDK accepted
+  by `global.json`, retaining setup as the fallback when no compatible SDK exists.
 - Split the serial Change CLI end-to-end test collection into independent
   selector, portfolio, calendar, snapshot portfolio, and daily snapshot groups.
   Existing test cases, platform coverage, runner concurrency limits, and release

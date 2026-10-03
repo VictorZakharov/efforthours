@@ -194,7 +194,7 @@ public sealed partial class PublicReleaseHygieneTests
             StringComparison.Ordinal);
         Assert.Contains(":(exclude,icase,glob)**/*.md", ci, StringComparison.Ordinal);
         Assert.DoesNotContain("paths-ignore:", ci, StringComparison.Ordinal);
-        Assert.Equal(14, ci.Split(fullCiCondition, StringSplitOptions.None).Length - 1);
+        Assert.Equal(18, ci.Split(fullCiCondition, StringSplitOptions.None).Length - 1);
         Assert.Equal(
             2,
             ci.Split(
@@ -202,6 +202,8 @@ public sealed partial class PublicReleaseHygieneTests
                 StringSplitOptions.None).Length - 1);
         Assert.Contains("name: Pack preview artifact", ci, StringComparison.Ordinal);
         Assert.Contains("eng/run-e2e-shard.ps1", ci, StringComparison.Ordinal);
+        Assert.Contains("eng/select-ci-sdk.ps1", ci, StringComparison.Ordinal);
+        Assert.Contains("steps.sdk.outputs.available != 'true'", ci, StringComparison.Ordinal);
         XElement runner = Assert.IsType<XElement>(XDocument.Load(Path.Combine(root, "eng", "e2e-shard.runsettings")).Root?.Element("xUnit"));
         Assert.Equal("6", runner.Element("MaxParallelThreads")?.Value);
         Assert.Equal("conservative", runner.Element("ParallelAlgorithm")?.Value);

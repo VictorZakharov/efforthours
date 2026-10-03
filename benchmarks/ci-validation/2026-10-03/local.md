@@ -167,3 +167,14 @@ uses eight Windows, four macOS and three Linux shards, within the existing
 one-to-eight shard bound and six-collection per-runner bound. Its 20 steady jobs
 trade runner cost and queue headroom for smaller test partitions; other workflows
 and hosted provisioning can still introduce queues. No timing threshold is added.
+
+The 20-job revision at `24d0708501e22f10cd79bc0f08a5119a9f177c54` passes
+all checks in 186 seconds:
+[run 37130326775](https://github.com/VictorZakharov/efforthours/actions/runs/37130326775).
+All five macOS jobs start within nine seconds of one another. The last macOS
+shard's setup logs show a 33-MB runtime download and a 231-MB SDK download,
+followed by a dependency-cache hit, taking roughly 16 seconds altogether.
+The reported image already contains compatible SDK 10.0.400, while setup installs
+10.0.401. The next revision honors the existing `global.json` latestFeature
+selection on installed SDKs, retains setup as a fallback, and caches dependencies
+independently. This checkpoint remains six seconds above the target.

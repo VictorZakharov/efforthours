@@ -188,7 +188,7 @@ The required Quality matrix still builds the complete solution with analyzers
 and compiler warnings enabled on every OS, including the E2E project. Its success
 remains necessary for package promotion; shard builds do not replace that gate.
 
-.NET setup caches only the NuGet global package folder, keyed by the OS, all
+The separate cache action caches only the NuGet global package folder, keyed by the OS, all
 checked-in dependency lock files and the validation graph entry point. Separate
 solution, E2E and CLI graph keys prevent a faster partial restore from populating
 the full-solution cache. Locked restore still runs in every job; no
@@ -209,3 +209,9 @@ The explicit shard runner uses `eng/e2e-shard.runsettings`: at most six concurre
 xUnit collections with conservative scheduling. This bounded overlap keeps
 independent CLI/Git process waits from serializing behind the hosted CPU count.
 Ordinary local and unit-test commands retain their default runner configuration.
+
+CI first asks `dotnet --version` to resolve the installed SDK under the repository's
+`global.json`. An accepted SDK skips redundant setup downloads; if resolution
+fails, pinned setup-dotnet installs a compatible SDK. Dependency caching remains
+independent of that decision and locked restore always runs. Selected SDK versions
+are recorded in the logs; `global.json` continues to govern roll-forward policy.

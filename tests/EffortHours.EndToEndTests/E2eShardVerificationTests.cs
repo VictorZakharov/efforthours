@@ -123,4 +123,35 @@ public sealed class E2eShardVerificationTests : ChangeCliTestSupport
             DeleteDirectory(directory);
         }
     }
+
+    [Theory]
+    [InlineData(true)]
+    [InlineData(false)]
+    public async Task SdkSelectionHonorsGlobalJsonAndReportsSetupFallback(bool compatible)
+    {
+        string directory = Path.Combine(Path.GetTempPath(), "efforthours-sdk-tests", Guid.NewGuid().ToString("N"));
+        try
+        {
+            Directory.CreateDirectory(directory);
+            string root = FindRepositoryRoot();
+            string global = compatible ? await File.ReadAllTextAsync(Path.Combine(root, "global.json"), Encoding.UTF8)
+                : "{\"sdk\":{\"version\":\"10.999.999\",\"rollForward\":\"disable\"}}";
+            await File.WriteAllTextAsync(Path.Combine(directory, "global.json"), global, Encoding.UTF8);
+            string output = Path.Combine(directory, "outputs.txt");
+            var start = StartInfo("pwsh", directory);
+            start.Environment["GITHUB_OUTPUT"] = output;
+            foreach (string argument in new[] { "-NoLogo", "-NoProfile", "-NonInteractive", "-File", Path.Combine(root, "eng", "select-ci-sdk.ps1") })
+                start.ArgumentList.Add(argument);
+            ProcessResult result = await RunAsync(start);
+            Assert.True(result.ExitCode == 0, result.StandardError);
+            string outputs = await File.ReadAllTextAsync(output, Encoding.UTF8);
+            Assert.Contains($"available={compatible.ToString().ToLowerInvariant()}", outputs, StringComparison.Ordinal);
+            Assert.Contains("nuget_cache_path=", outputs, StringComparison.Ordinal);
+        }
+        finally
+        {
+            DeleteDirectory(directory);
+        }
+    }
+
 }
