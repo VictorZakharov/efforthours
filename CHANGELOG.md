@@ -6,6 +6,8 @@ may still change public contracts with explicit documentation.
 
 ## Unreleased
 
+## 0.10.0-alpha.32 - 2026-10-03
+
 ### Fixed
 
 - Require explicit qualified Rust synchronization evidence instead of treating
