@@ -139,3 +139,12 @@ completed. Windows Quality took 178 seconds, including a 55-second cold restore
 and 82-second analyzer-enabled build. The next configuration removes the fourth
 macOS shard and enables lock-file-keyed dependency caching while retaining locked
 restore, every analyzer-enabled Quality build and all platform tests.
+
+The six-Windows/three-macOS/three-Linux cold-cache run at
+`7a59714` passed all checks:
+[run 37128078683](https://github.com/VictorZakharov/efforthours/actions/runs/37128078683).
+Total time was 234 seconds. The last shard completed 179 seconds after creation,
+but queued coverage gates and final packaging added 55 seconds. The next revision
+runs coverage coordination within the first shard of each platform, eliminating
+three separate verifier-runner requests. Dependency caches are separated by graph
+to prevent partial-restore cache races. This checkpoint still misses the target.

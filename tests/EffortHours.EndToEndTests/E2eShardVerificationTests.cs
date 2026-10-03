@@ -69,4 +69,58 @@ public sealed class E2eShardVerificationTests : ChangeCliTestSupport
             DeleteDirectory(directory);
         }
     }
+
+    [Theory]
+    [InlineData("valid")]
+    [InlineData("pending")]
+    [InlineData("missing")]
+    [InlineData("failed")]
+    [InlineData("duplicate")]
+    [InlineData("cancelled")]
+    public async Task CoordinatorRequiresSuccessfulUniqueCurrentAttemptPeers(string mutation)
+    {
+        string directory = Path.Combine(Path.GetTempPath(), "efforthours-peer-tests", Guid.NewGuid().ToString("N"));
+        try
+        {
+            Directory.CreateDirectory(directory);
+            var jobs = new List<object>();
+            for (int index = 1; index < 3; index++)
+            {
+                if (index == 1 && mutation == "missing") continue;
+                var job = new
+                {
+                    name = $"E2E shard (ubuntu-latest, {index})",
+                    status = index == 1 && mutation == "pending" ? "in_progress" : "completed",
+                    conclusion = index == 1 && mutation is "failed" or "cancelled"
+                        ? mutation == "failed" ? "failure" : "cancelled" : "success",
+                };
+                jobs.Add(job);
+                if (index == 1 && mutation == "duplicate") jobs.Add(job);
+            }
+            string data = Path.Combine(directory, "jobs.json");
+            await File.WriteAllTextAsync(data, JsonSerializer.Serialize(jobs), Encoding.UTF8);
+            string script = Path.Combine(directory, "check.ps1");
+            await File.WriteAllTextAsync(script, """
+                param([string] $Root, [string] $Data)
+                . (Join-Path $Root "eng/e2e-shard-common.ps1")
+                $jobs = @(Get-Content -LiteralPath $Data -Raw -Encoding utf8 | ConvertFrom-Json)
+                Test-E2ePeersCompleted -Jobs $jobs -OperatingSystem "ubuntu-latest" -Count 3
+                """, Encoding.UTF8);
+            string root = FindRepositoryRoot();
+            var start = StartInfo("pwsh", root);
+            foreach (string argument in new[] { "-NoLogo", "-NoProfile", "-NonInteractive", "-File", script, root, data })
+                start.ArgumentList.Add(argument);
+            ProcessResult result = await RunAsync(start);
+            if (mutation is "failed" or "duplicate" or "cancelled") Assert.NotEqual(0, result.ExitCode);
+            else
+            {
+                Assert.True(result.ExitCode == 0, result.StandardError);
+                Assert.Equal(mutation == "valid" ? "True" : "False", result.StandardOutput.Trim());
+            }
+        }
+        finally
+        {
+            DeleteDirectory(directory);
+        }
+    }
 }

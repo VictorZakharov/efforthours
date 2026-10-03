@@ -26,3 +26,19 @@ function Assert-E2eCases {
         throw "E2E coverage mismatch: expected $($Expected.Count), executed $($Actual.Count)."
     }
 }
+
+function Test-E2ePeersCompleted {
+    param([object[]] $Jobs, [string] $OperatingSystem, [int] $Count)
+    $complete = $true
+    for ($index = 1; $index -lt $Count; $index++) {
+        $name = "E2E shard ($OperatingSystem, $index)"
+        $matches = @($Jobs | Where-Object { $_.name -ceq $name })
+        if ($matches.Count -gt 1) { throw "Duplicate E2E peer job: $name" }
+        if ($matches.Count -eq 0 -or $matches[0].status -cne "completed") {
+            $complete = $false
+            continue
+        }
+        if ($matches[0].conclusion -cne "success") { throw "E2E peer did not pass: $name" }
+    }
+    return $complete
+}

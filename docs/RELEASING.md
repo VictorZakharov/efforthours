@@ -175,9 +175,10 @@ the release path, increment the prerelease version, and tag the corrected merge.
 Full PR validation executes all discovered process tests on every platform using
 six method-stable shards on Windows and three on macOS/Linux. Each shard
 performs its own locked restore and OS-specific build. The existing required
-`End-to-end (<os>)` checks verify current-run/current-attempt/head receipts with
-exact once-only coverage, identical discovery inventories, all expected shard
-indices, and only passed outcomes. Missing, duplicate, skipped, failed or cancelled
+`End-to-end (<os>)` checks are the first shard on each OS, which waits for its
+current-attempt peers to finish successfully and verifies run/attempt/head
+receipts with exact once-only coverage, identical discovery inventories, all
+expected shard indices, and only passed outcomes. Missing, duplicate, skipped, failed or cancelled
 work blocks aggregate packaging. Only sanitized test identities/outcomes/durations
 are uploaded; binaries never cross operating systems. The shard count bounds the
 extra runner cost; timings remain measurements, not CI thresholds.
@@ -187,7 +188,19 @@ The required Quality matrix still builds the complete solution with analyzers
 and compiler warnings enabled on every OS, including the E2E project. Its success
 remains necessary for package promotion; shard builds do not replace that gate.
 
-.NET setup caches only the NuGet global package folder, keyed by the OS and all
-checked-in dependency lock files. Locked restore still runs in every job; no
+.NET setup caches only the NuGet global package folder, keyed by the OS, all
+checked-in dependency lock files and the validation graph entry point. Separate
+solution, E2E and CLI graph keys prevent a faster partial restore from populating
+the full-solution cache. Locked restore still runs in every job; no
 project build outputs or previous validation results are cached. Cold caches and
 hosted runner queues can increase total latency.
+
+The first shard polls only its current-attempt platform peer jobs, with a bounded
+transport wait, then verifies every receipt. It fails on API/download errors,
+failed/cancelled peers or incomplete coverage. Verification runs inside that
+existing runner; separate verification jobs cannot add another runner queue to
+the critical path. Aggregate packaging still depends on the entire E2E matrix.
+
+Package candidates also include the workflow attempt in their names. A complete
+successful rerun can replace the final same-commit preview artifact only after
+all current-attempt gates pass; failed attempts cannot promote a candidate.

@@ -194,9 +194,9 @@ public sealed partial class PublicReleaseHygieneTests
             StringComparison.Ordinal);
         Assert.Contains(":(exclude,icase,glob)**/*.md", ci, StringComparison.Ordinal);
         Assert.DoesNotContain("paths-ignore:", ci, StringComparison.Ordinal);
-        Assert.Equal(16, ci.Split(fullCiCondition, StringSplitOptions.None).Length - 1);
+        Assert.Equal(14, ci.Split(fullCiCondition, StringSplitOptions.None).Length - 1);
         Assert.Equal(
-            3,
+            2,
             ci.Split(
                 "if: needs.pull-request-history.outputs.full_ci != 'true'",
                 StringSplitOptions.None).Length - 1);
@@ -204,8 +204,8 @@ public sealed partial class PublicReleaseHygieneTests
         Assert.Contains("eng/run-e2e-shard.ps1", ci, StringComparison.Ordinal);
         Assert.Contains("-p:RunAnalyzers=false", ci, StringComparison.Ordinal);
         Assert.DoesNotContain("RunAnalyzers=false", ci.Split("  end-to-end:", StringSplitOptions.None)[0], StringComparison.Ordinal);
-        Assert.Contains("eng/verify-e2e-shards.ps1", ci, StringComparison.Ordinal);
-        Assert.Contains("      - end-to-end-validation", ci, StringComparison.Ordinal);
+        Assert.Contains("eng/wait-e2e-shards.ps1", ci, StringComparison.Ordinal);
+        Assert.Contains("      - end-to-end", ci, StringComparison.Ordinal);
         Assert.Contains("${{ github.run_attempt }}", ci, StringComparison.Ordinal);
         Assert.Contains("eng/verify-tested-merge.ps1", ci, StringComparison.Ordinal);
         Assert.Contains("provenance_status", ci, StringComparison.Ordinal);

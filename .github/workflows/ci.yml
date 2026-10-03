@@ -10,6 +10,7 @@ on:
 permissions:
   contents: read
   pull-requests: read
+  actions: read
 
 concurrency:
   group: ci-${{ github.workflow }}-${{ github.ref }}
@@ -168,7 +169,9 @@ jobs:
         with:
           global-json-file: global.json
           cache: true
-          cache-dependency-path: "**/packages.lock.json"
+          cache-dependency-path: |
+            **/packages.lock.json
+            EffortHours.slnx
 
       - name: Restore
         run: dotnet restore EffortHours.slnx --configfile NuGet.Config --locked-mode
@@ -205,7 +208,9 @@ jobs:
         with:
           global-json-file: global.json
           cache: true
-          cache-dependency-path: "**/packages.lock.json"
+          cache-dependency-path: |
+            **/packages.lock.json
+            EffortHours.slnx
 
       - name: Restore
         if: needs.pull-request-history.outputs.full_ci == 'true'
@@ -220,7 +225,7 @@ jobs:
         run: dotnet test tests/EffortHours.Tests/EffortHours.Tests.csproj --no-build --no-restore --configuration Release
 
   end-to-end:
-    name: E2E shard (${{ matrix.os }}, ${{ matrix.shard }})
+    name: ${{ matrix.shard == 0 && format('End-to-end ({0})', matrix.os) || format('E2E shard ({0}, {1})', matrix.os, matrix.shard) }}
     needs: pull-request-history
     runs-on: ${{ matrix.os }}
     strategy:
@@ -244,7 +249,9 @@ jobs:
         with:
           global-json-file: global.json
           cache: true
-          cache-dependency-path: "**/packages.lock.json"
+          cache-dependency-path: |
+            **/packages.lock.json
+            tests/EffortHours.EndToEndTests/EffortHours.EndToEndTests.csproj
 
       - name: Restore end-to-end project graph
         if: needs.pull-request-history.outputs.full_ci == 'true'
@@ -268,41 +275,12 @@ jobs:
           if-no-files-found: error
           retention-days: 7
 
-  end-to-end-validation:
-    name: End-to-end (${{ matrix.os }})
-    needs: [pull-request-history, end-to-end]
-    if: always() && needs.pull-request-history.result == 'success'
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
-    steps:
-      - name: Reuse completed validation
-        if: needs.pull-request-history.outputs.full_ci != 'true'
-        run: echo "Reusing the proven documentation-only or unchanged merge validation."
-
-      - name: Check out coverage verifier
-        if: needs.pull-request-history.outputs.full_ci == 'true'
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-
-      - name: Download exact-run platform receipts
-        if: needs.pull-request-history.outputs.full_ci == 'true'
-        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
-        with:
-          pattern: e2e-${{ github.run_id }}-${{ github.run_attempt }}-${{ matrix.os }}-*
-          path: artifacts/e2e-receipts
-
-      - name: Require every shard and exact once-only case coverage
-        if: needs.pull-request-history.outputs.full_ci == 'true'
+      - name: Coordinate exact current-attempt platform coverage
+        if: needs.pull-request-history.outputs.full_ci == 'true' && matrix.shard == 0
         shell: pwsh
         env:
-          SHARD_RESULT: ${{ needs.end-to-end.result }}
-          MATRIX_OS: ${{ matrix.os }}
-        run: |
-          if ($env:SHARD_RESULT -ne "success") { throw "An E2E shard failed or was cancelled." }
-          $count = if ($env:MATRIX_OS -eq "windows-latest") { 6 } else { 3 }
-          ./eng/verify-e2e-shards.ps1 -Directory artifacts/e2e-receipts -Count $count -Head $env:GITHUB_SHA
+          GH_TOKEN: ${{ github.token }}
+        run: ./eng/wait-e2e-shards.ps1 -OperatingSystem ${{ matrix.os }} -Count ${{ matrix.count }} -Directory artifacts/e2e-receipts -Head $env:GITHUB_SHA
 
   package-candidate:
     name: Build preview package candidate
@@ -319,7 +297,9 @@ jobs:
         with:
           global-json-file: global.json
           cache: true
-          cache-dependency-path: "**/packages.lock.json"
+          cache-dependency-path: |
+            **/packages.lock.json
+            src/EffortHours.Cli/EffortHours.Cli.csproj
 
       - name: Restore
         run: dotnet restore src/EffortHours.Cli/EffortHours.Cli.csproj --configfile NuGet.Config --locked-mode
@@ -330,7 +310,7 @@ jobs:
       - name: Upload run-scoped package candidate
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
-          name: efforthours-tool-candidate-${{ github.run_id }}-${{ github.sha }}
+          name: efforthours-tool-candidate-${{ github.run_id }}-${{ github.run_attempt }}-${{ github.sha }}
           path: artifacts/package-candidate/EffortHours.Tool.*.nupkg
           if-no-files-found: error
           retention-days: 1
@@ -342,7 +322,7 @@ jobs:
       - pull-request-history
       - formatting
       - quality
-      - end-to-end-validation
+      - end-to-end
       - package-candidate
     if: needs.pull-request-history.outputs.full_ci == 'true'
     runs-on: ubuntu-latest
@@ -351,7 +331,7 @@ jobs:
       - name: Download exact-run package candidate
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
-          name: efforthours-tool-candidate-${{ github.run_id }}-${{ github.sha }}
+          name: efforthours-tool-candidate-${{ github.run_id }}-${{ github.run_attempt }}-${{ github.sha }}
           path: artifacts/packages
 
       - name: Upload package artifact
@@ -362,3 +342,4 @@ jobs:
           if-no-files-found: error
           retention-days: 14
           compression-level: 0
+          overwrite: true
