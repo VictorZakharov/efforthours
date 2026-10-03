@@ -87,6 +87,7 @@ public static partial class ContractValidation
         }
 
         ValidatePortfolioSelection(report.Selection, errors);
+        ValidateDailyNormalization(report, errors);
         ValidateRange(report.IsolatedEffort, "isolatedEffort", errors);
         ValidateRange(report.TotalEffort, "totalEffort", errors);
         ValidateRateAndCost(report.RateCard, report.TotalCost, report.TotalEffort, "totalCost", errors);

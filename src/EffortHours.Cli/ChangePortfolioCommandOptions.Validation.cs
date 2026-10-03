@@ -159,6 +159,12 @@ internal static partial class ChangePortfolioCommandOptionsParser
             return Error("Option --no-checkpoint cannot be combined with --checkpoint.");
         }
 
+        if (options.Bucket == "independent-day" &&
+            options.ContributorNormalization != ChangePortfolioContributorNormalization.Joint)
+        {
+            return Error("Independent-day batching requires --normalization joint within each day.");
+        }
+
         if (options.IsNativePeriod &&
             normalizationProvided &&
             options.ContributorNormalization != ChangePortfolioContributorNormalization.Isolated)

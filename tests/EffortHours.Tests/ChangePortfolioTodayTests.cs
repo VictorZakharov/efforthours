@@ -136,7 +136,7 @@ public sealed partial class ChangePortfolioComparisonTests
                 High = 83.49375m,
             });
 
-        Assert.Equal("change-seed/0.19.0+seed-rules/0.4.0", ChangeEstimator.Version);
+        Assert.Equal("change-seed/0.20.0+seed-rules/0.4.0", ChangeEstimator.Version);
         Assert.Equal("engineering-scope/1.0.0", scope.Contract.Version);
         Assert.Equal(
             "sha256:98b530f76f6cbd75e18ead6a52f7394f8ac00ddf23252ebb652971d9f2cb1893",

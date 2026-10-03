@@ -19,9 +19,23 @@ public static partial class ChangePortfolioComparisonBuilder
         {
             Dictionary<string, EffortRange> effort = report.Buckets.ToDictionary(b => b.Id, _ => Zero(), StringComparer.Ordinal);
             Dictionary<string, int> counts = report.Buckets.ToDictionary(b => b.Id, _ => 0, StringComparer.Ordinal);
-            foreach (ChangePortfolioContributorRepositoryAllocation allocation in source.Aggregation.ContributorGroups
+            if (source.DailyNormalization is null)
+                foreach (ChangePortfolioContributorRepositoryAllocation allocation in source.Aggregation.ContributorGroups
                 .SelectMany(g => g.RepositoryAllocations).Where(a => a.RepositoryId == repository.RepositoryId))
-                AllocateRepositoryGroup(report.Buckets, allocation, items, effort, counts);
+                    AllocateRepositoryGroup(report.Buckets, allocation, items, effort, counts);
+            if (source.DailyNormalization is { } daily)
+            {
+                TimeZoneInfo zone = TimeZoneInfo.FindSystemTimeZoneById(daily.TimeZone);
+                Dictionary<string, ChangePortfolioDayEstimate> days = daily.Days.ToDictionary(day => day.Date, StringComparer.Ordinal);
+                foreach (ChangePortfolioComparisonBucket bucket in report.Buckets)
+                {
+                    string date = TimeZoneInfo.ConvertTime(bucket.SinceInclusive, zone).ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture);
+                    ChangePortfolioRepositoryGroup? group = days.GetValueOrDefault(date)?.RepositoryGroups
+                        .SingleOrDefault(group => group.RepositoryId == repository.RepositoryId);
+                    effort[bucket.Id] = group?.NormalizedEffort ?? Zero();
+                    counts[bucket.Id] = group?.ItemIds.Count ?? 0;
+                }
+            }
             result.Add(new ChangePortfolioComparisonSeries
             {
                 Id = repository.RepositoryId,

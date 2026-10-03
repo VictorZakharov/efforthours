@@ -9,7 +9,7 @@ directories; and two saved repository-evidence bundles. Portfolio reconciliation
 supports repeated PRs, multi-repository manifests, and bounded author-period
 selection under the separate `CHANGE_PORTFOLIOS.md` contract.
 
-Current source reports use `change-seed/0.19.0+seed-rules/0.4.0`. The model remains
+Current source reports use `change-seed/0.20.0+seed-rules/0.4.0`. The model remains
 experimental and is not empirically production-validated. Only the documented
 0.6.0 Stage A subset has passed a model-authored logical gate for eligible
 4-to-32-hour changes; later ecosystem extensions preserve those admitted rules but
@@ -586,8 +586,8 @@ verification, and post-EHE pricing. They emit neither local repository paths nor
 source excerpts.
 
 The current source Change estimator identity is
-`change-seed/0.19.0+seed-rules/0.4.0`; the portfolio reconciler identity is
-`change-portfolio/0.2.5+change-seed/0.19.0+seed-rules/0.4.0`. The earlier 0.6.0
+`change-seed/0.20.0+seed-rules/0.4.0`; the portfolio reconciler identity is
+`change-portfolio/0.4.0+change-seed/0.20.0+seed-rules/0.4.0`. The earlier 0.6.0
 Change identity alone passed the experimental Stage A logical gate, and that
 record contains no SQL, Python, Go, Java, Kotlin, Shell, PowerShell, Terraform,
 HCL, PHP, Composer, Rust, Cargo, Docker, Compose, Jupyter, C, C++, or GDScript. Portfolio
@@ -937,3 +937,25 @@ Performance rankings, grades, and compensation decisions are deliberately
 unsupported, not future portfolio features. Portfolio aggregation remains
 experimental and does not broaden the source Change model's admitted size or
 ecosystem boundary.
+
+## Supported growth in existing broad capabilities (0.20.0)
+
+For production and test capabilities with evidence-bound growth in normalized
+semantic units (methods/functions/types or test methods/cases/assertions), retain
+the componentwise larger of the existing modification range and the positive
+normalized repository-capability marginal. Do not add these two budgets.
+Aggregate C# structure facts bind through their owning capability scope and
+represented paths; located test/source facts bind directly through changed paths.
+Compare the same capability's complete measurements at both endpoints.
+
+This corrects the eight-hour modification ceiling masking substantial supported
+expansion. Repository duplicate/generated exclusions and diminishing-return rules
+remain authoritative. Splitting display tasks alone provides no semantic-growth
+evidence and retains the existing bounded modification rule. No priors are fitted
+to a private audit or stock total, and no calibration/admission claim changes.
+
+Byte-identical bodies added more than once in one final delta now retain one
+deterministic represented path; other additions retain exact-duplicate lineage
+and zero body effort. This also prevents fallback and validation charges from
+rewarding copies of newly added source. Existing copies already present in the
+base retain their prior exclusion.

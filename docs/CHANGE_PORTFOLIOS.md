@@ -2,7 +2,7 @@
 
 ## Current boundary
 
-`change-portfolio/0.2.5` composes canonical Change estimates selected as repeated
+`change-portfolio/0.4.0` composes canonical Change estimates selected as repeated
 pull requests, a versioned multi-repository PR manifest, a bounded direct
 author-period, or a versioned multi-repository/multi-head author-period manifest.
 It remains experimental and has no empirical production validation.
@@ -775,3 +775,23 @@ Future evidence may justify reviewed public portfolio examples, broader semantic
 equivalence, cross-platform concurrency repetition, larger public monorepository
 shapes, and universal regression thresholds. Any extension must preserve the
 selector-only identity boundary and explicit uncertainty.
+
+## Independent local-day normalization
+
+`--bucket independent-day` and `eh calendar` normalize selected changes separately
+for each local date and repository, then sum the independent groups. This uses
+`independent-local-day-change/1.0.0`, joint contributor allocation within each day,
+and at most 512 daily buckets. Selection, immutable analysis, bounded sessions,
+and checkpoint reuse still run as one batch. Adding another date cannot alter
+an existing day's low/expected/high effort, project cells, or category ledger.
+The optional `dailyNormalization` source field records timezone, day groups,
+base contexts, categories, and adjustment lineage. Semantic digests bind this
+policy and ledger; JSON schema and contract validation reject inconsistent sums.
+
+Existing calendar-day/week/month/custom modes retain joint interval allocation.
+Independent-day reports require calendar-day geometry and reject isolated
+contributor normalization. Complete no-match dates remain zero. Author/committer,
+merge, coauthor, and immutable-head policies remain explicit selection inputs.
+Daily Change represents normalized selected deltas, not replacement-stock growth.
+Stock remains the separate native snapshot daily series with signed differences.
+No equality with stock or arbitrary commit-partition invariance is asserted.

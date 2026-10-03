@@ -111,6 +111,7 @@ public static partial class ContractValidation
         errors.AddRange(Validate(report.Selection).Select(error => $"selection: {error}"));
         if (report.SourcePortfolio is not null)
         {
+            ValidateDailyComparison(report, errors);
             errors.AddRange(Validate(report.SourcePortfolio).Select(error => $"sourcePortfolio: {error}"));
             if (!string.Equals(
                     ContractJson.SerializeCompact(report.SourcePortfolio.Selection),
@@ -136,8 +137,8 @@ public static partial class ContractValidation
                 errors);
         }
         if (report.Verification.BucketAllocationPolicy !=
-            ChangePortfolioComparisonIdentity.ContributorSeriesPolicy(
-                report.BucketPolicy.ContributorNormalization))
+            (report.SourcePortfolio?.DailyNormalization?.Protocol ??
+                ChangePortfolioComparisonIdentity.ContributorSeriesPolicy(report.BucketPolicy.ContributorNormalization)))
         {
             errors.Add("The comparison report uses an unsupported bucket-allocation policy.");
         }

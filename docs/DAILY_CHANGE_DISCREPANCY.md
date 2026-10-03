@@ -1,98 +1,69 @@
-# Daily Change EHE discrepancy investigation
+# Independent daily Change and supported capability growth
 
-Status: diagnostic baseline and correction scope. This document does not change
-the shipped estimator, calendar command, measurement identities, or admission.
-The synthetic regressions capture current defects; they are not desired behavior
-or numerical effort labels. The private consumer audit is not a public fixture.
+The producer fixes use `independent-local-day-change/1.0.0`,
+`change-portfolio/0.4.0`, and `change-seed/0.20.0+seed-rules/0.4.0`.
+They correct two mechanisms diagnosed by the consumer audit without fitting
+estimator priors to private numerical totals. Change EHE remains experimental
+and uncalibrated. The private source audit is not a committed fixture.
 
-## Confirmed mechanisms
+## Daily normalization
 
-`ChangePortfolioGroupNormalizer` normalizes overlapping changes across the whole
-selected repository interval. `ChangePortfolioAllocation` distributes that
-normalized result to rows, and `ChangePortfolioComparisonBuilder` distributes
-the allocated rows to time buckets. Adding an earlier overlapping change can
-therefore change a later bucket despite preserving every selected later change.
-That bucket is an allocation from a joint interval, not an independent daily
-estimate. Existing calendar documentation already describes joint allocation;
-consumers expecting independent days need a different calculation identity.
+Previously all selected changes were reconciled across the entire interval and
+then allocated to days. Adding an earlier overlapping change could lower a later
+day even though its selected inputs were unchanged. Existing low-level joint
+modes retain that behavior and identity for compatibility.
 
-`ChangeWorkItemBuilder.Build` groups repository work items into capabilities. For
-positive growth in an existing capability, it replaces `PositiveDifference` with
-`ModificationRange`. `ChangeWorkItemRules` caps that logical budget at eight
-expected hours. A scope containing many distinct additions can still be one
-existing capability. `ChangeWorkItemDecomposition` splits display tasks after
-this decision and cannot restore growth already removed from the budget.
+`eh calendar` and low-level `--bucket independent-day` now group selected inputs
+by local date and repository before reconciliation. Within-day exact/overlap
+normalization is unchanged. Immutable snapshot/static analysis, bounded sessions,
+and durable checkpoints still run as one batch. Daily category and adjustment
+ledgers are retained in JSON, validated against repository and batch totals, and
+bound into semantic identity. Day/project low/expected/high values are additive
+across dates. Complete no-match dates are zero; failure never exposes an aggregate.
+HTML and text disclose the measurement alongside estimator and selection policy.
 
-The memory-only tests in `ChangeDailyWindowDiscrepancyTests` hold the target day's
-canonical input report and count constant while demonstrating window sensitivity.
-`ChangeExpansionDiscrepancyTests` supplies an existing production or integration-
-test capability, 65 distinct added artifacts, changed normalized evidence, and
-a substantial positive repository marginal; the category still receives eight
-expected hours. These tests diagnose rule mechanics. They do not establish the
-right replacement effort for any real project, test case, or source artifact.
+Calendar defaults to committer dates and prompts for `committer|author` in
+interactive mode. `--date-field author` selects author timestamps explicitly.
+Merges remain excluded, valid coauthors included, and reachable pinned heads
+remain authoritative. Timestamps select evidence; they do not measure work time.
+Contributor attribution remains joint within each day. Independent days require
+calendar-day buckets and reject isolated contributor normalization.
 
-## Three separate measurements
+## Growth in broad capabilities
 
-1. **Joint interval allocation:** one normalized interval allocated to dates.
-   Membership and interval dependent; retained for existing consumers.
-2. **Independent selected-day Change:** independently normalized selected changes
-   within each local calendar day and repository, batched through shared immutable
-   analysis. Adding other dates must not change that day's low/expected/high
-   values, project cells, selected identities, or category totals.
-3. **Replacement stock:** full artifact estimates at frozen endpoints. Its signed
-   difference is separate from either Change calculation and may be negative.
-   A chart requiring exact stock/calendar reconciliation must use these signed
-   differences and disclose the stock identity.
+Previously positive growth in an existing capability always used a bounded
+modification range, capped at eight expected hours. Many distinct functions or
+test cases could therefore collapse into a small modification budget.
 
-A coherent opening-to-closing endpoint Change is also a useful diagnostic. It
-must not silently replace an author-selected portfolio: unselected changes and
-interleaved contexts can enter an endpoint. Commit-partition sensitivity inside
-one day remains a separate model problem even after cross-day allocation is fixed.
+Represented production/test semantic-unit growth now preserves the componentwise
+larger of that modification range and the positive normalized repository
+capability marginal. These budgets are alternatives. Located semantic facts and
+owning-scope aggregate structure facts bind growth to represented changed paths.
+File/display partition count alone cannot enable growth. Existing repository
+normalization, duplicate/generated exclusions, diminishing returns, and small-task
+decomposition remain in force. No private category offset or stock total is a
+rule parameter. Other capability categories retain their existing rules.
 
-## Correction acceptance boundary
+## Distinct measurements and limits
 
-- Add an explicitly identified independent-day batch mode with shared bounded
-  repository sessions, immutable heads/cutoffs, reusable evidence/checkpoints,
-  cancellation, complete-selection failure behavior, and exact day/project sums.
-  Preserve the joint mode's identity and compatibility. HTML, text, and JSON must
-  disclose which calculation generated the numbers.
-- Reconcile overlap and duplicate merge representations within the selected day.
-  Adding earlier or later dates cannot change an existing complete day's values.
-  Freeze author versus committer selection, merge/coauthor policy, timezone/DST,
-  and partial-day handling. A commit authored earlier but committed on the date
-  enters a committer-selected day; an author-selected day follows its author date.
-  Neither date proves when a person worked.
-- Keep replacement stock in its existing native daily snapshot series. Add an
-  explicit diagnostic bridge comparing independently selected Change, coherent
-  endpoint Change where supported, and signed stock differences at repository
-  and category level. Bind all reports to compatible immutable inputs/model
-  identities and disclose unmatched selection or scope rather than forcing equality.
-- Preserve supported substantial added functionality/test growth within an
-  existing broad capability. Use attributable normalized evidence, with existing
-  duplicate/generated/mechanical exclusions and diminishing returns. Merely
-  splitting display items, files, or commits must not multiply a logical budget.
-  A blanket restoration of summed repository work-item differences would revive
-  the partition multiplication defect corrected in `change-seed/0.3.0`.
-- Freeze source-backed tests with many distinct integration-test files/cases,
-  production expansion, duplicate additions, and modified existing artifacts.
-  Compare coherent endpoints and alternate commit partitions. Grouping or task
-  decomposition alone cannot change represented effort. Include category offsets,
-  not only an aggregate that can conceal cancellation.
-- Change transparent rules only with a new estimator identity and the correctness
-  exception in `CHANGE_MODEL_ADMISSION.md`. Keep frozen reports and priors intact,
-  avoid private-case scaling or sealed-test tuning, and retain the experimental,
-  uncalibrated boundary. Qualitative safeguards are not empirical admission.
-- Consumer migration follows verified producer contracts and invariance checks.
-  Do not describe the current joint calendar as independent daily work. No
-  clamping, absolute-value conversion, stock scaling, rate adjustment, or isolated
-  per-commit summation fixes either diagnosed mechanism.
+Independent selected-day Change represents selected normalized deltas. Replacement
+stock remains the existing native snapshot daily series with signed differences;
+stock growth can be negative. Coherent opening-to-closing Change is a third
+calculation and can include unselected interleaved changes. None must be forced
+to equal another through scaling, clamping, absolute values, pricing, or per-commit
+summation. Daily lineage enables category/project diagnosis without concealing
+these different selection and model operands.
 
-## Remaining investigation
+Arbitrary alternative commit partitions within a day are not guaranteed to yield
+identical selected-delta portfolios. Cross-day invariance and display-partition
+invariance are the guarantees of this correction. A new cross-report stock/endpoint
+diagnostic command is outside this producer fix; existing stock reports and daily
+category lineage remain available separately. The private archives and native
+receipts were not supplied, so their exact audit totals are not independently
+reproduced or certified here. No frozen admission report or seed prior changes.
 
-The private source archives and native receipts were not supplied to this PR.
-Its anonymous arithmetic and exact category values have not been independently
-reproduced here. The synthetic examples confirm the two producer mechanisms but
-do not validate the audit's whole-stock totals or a preferred corrected total.
-Implementation, source-backed expansion regressions, representation-sensitivity
-checks, the native independent-day contract, stock diagnostics, and consumer
-migration remain pending. Keep this PR a draft until that work is complete.
+Byte-identical bodies added more than once in one final delta now retain one
+deterministic represented path; other additions retain exact-duplicate lineage
+and zero body effort. This also prevents fallback and validation charges from
+rewarding copies of newly added source. Existing copies already present in the
+base retain their prior exclusion.

@@ -16,7 +16,7 @@ internal sealed class CalendarOptions
     {
         CalendarOptions result = new();
         HashSet<string> allowed = ["--from", "--to", "--timezone", "--format", "--output", "--checkpoint",
-            "--head", "--workspace", "--capacity-hours-per-day", "--timeout-seconds"];
+            "--head", "--workspace", "--capacity-hours-per-day", "--timeout-seconds", "--date-field"];
         HashSet<string> flags = [];
         for (int i = 0; i < args.Length; i++)
         {

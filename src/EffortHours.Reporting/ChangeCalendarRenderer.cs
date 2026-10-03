@@ -56,7 +56,7 @@ public static partial class ChangeCalendarRenderer
         text.AppendLine().AppendLine("## Projects").AppendLine();
         foreach (ChangePortfolioComparisonSeries project in projects)
             text.AppendLine(CultureInfo.InvariantCulture, $"- {project.Id}: {N(project.TotalEffort.Expected)} expected EHE hours.");
-        text.AppendLine().AppendLine(Limits).AppendLine();
+        text.AppendLine().AppendLine(Measurement(report)).AppendLine(Limits).AppendLine();
         text.AppendLine("Source semantic digest: " + report.Verification.SemanticDigest);
         text.AppendLine("Estimator: " + report.EstimatorVersion);
         return text.ToString().ReplaceLineEndings("\n");
@@ -107,13 +107,20 @@ public static partial class ChangeCalendarRenderer
         page.Append("</tbody></table></details><noscript><p>Enable JavaScript for project filters and the interactive calendar. The complete daily table above remains available.</p></noscript><footer><p>")
             .Append(WebUtility.HtmlEncode(Limits)).Append("</p><p>Source semantic digest: ")
             .Append(WebUtility.HtmlEncode(report.Verification.SemanticDigest)).Append("<br>Estimator: ")
-            .Append(WebUtility.HtmlEncode(report.EstimatorVersion)).Append("</p></footer></main><script>").Append(script).Append("</script></body></html>\n");
+            .Append(WebUtility.HtmlEncode(report.EstimatorVersion)).Append("</p><p>").Append(WebUtility.HtmlEncode(Measurement(report)))
+            .Append("</p></footer></main><script>").Append(script).Append("</script></body></html>\n");
         return page.ToString();
     }
 
     private static string N(decimal value) => value.ToString("0.00", CultureInfo.InvariantCulture);
+    private static string Measurement(ChangePortfolioComparisonReport report) =>
+        "Measurement: " + report.Verification.BucketAllocationPolicy + "; date field: " +
+        report.Selection.AuthorPeriodManifest!.DateField.ToString().ToLowerInvariant() + ". " +
+        (report.SourcePortfolio?.DailyNormalization is null
+            ? "Dates are allocations from one joint range."
+            : "Each local day is normalized independently; other requested dates do not change its estimate. Values differ from signed replacement-stock growth.");
     private const string Limits = "Experimental and uncalibrated. Change EHE represents counterfactual replacement effort, not actual labor, productivity, an AI skill score, or compensation. " +
         "Coverage includes only selected repositories and changes reachable from pinned heads. Identity and dates select work; they never value it. " +
-        "Project values are allocations from one jointly reconciled portfolio. Cross-project copied code may remain represented separately; selecting fewer projects is a presentation filter. " +
+        "Project values share the declared measurement policy. Cross-project copied code may remain represented separately; selecting fewer projects is a presentation filter. " +
         "Merges are excluded and valid coauthors included. Planning bounds are not probability intervals. No source, raw aliases, or local paths are embedded.";
 }

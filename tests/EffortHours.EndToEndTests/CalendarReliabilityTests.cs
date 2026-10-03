@@ -63,7 +63,7 @@ public sealed partial class ChangeCliTests
     {
         using GitFixture repo = await CalendarFixtureAsync();
         ProcessResult result = await CalendarProcessAsync(repo.RootPath,
-            "UTC\n2026-02-01\n2026-02-28\n\ntext\n-\n\n\n\n", ["calendar"]);
+            "UTC\n\n2026-02-01\n2026-02-28\n\ntext\n-\n\n\n\n", ["calendar"]);
         Assert.True(result.ExitCode == 0, result.StandardError);
         DateTime now = DateTime.UtcNow;
         DateTime end = new(now.Year, now.Month, 1);

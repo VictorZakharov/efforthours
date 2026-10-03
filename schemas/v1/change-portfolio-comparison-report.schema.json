@@ -675,7 +675,8 @@
         "bucketAllocationPolicy": {
           "enum": [
             "exclusive-contributor-match-sets-with-shared-groups/1.0.0",
-            "membership-stable-isolated-contributor-series/1.0.0"
+            "membership-stable-isolated-contributor-series/1.0.0",
+            "independent-local-day-change/1.0.0"
           ]
         },
         "completeAggregates": { "type": "boolean" },

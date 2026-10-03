@@ -647,3 +647,22 @@ The Stage A records contain no GDScript. This extension remains experimental and
 unadmitted; `0.6.0` is still the last admitted source baseline. A future admission
 needs licensed final changes, small-task decomposition, repository-isolated
 partitions, and the existing frozen decision order.
+
+## `change-seed/0.20.0` broad-capability growth correctness revision
+
+This general rule correction preserves a larger positive normalized repository
+marginal only when represented production/test semantic units grow within an
+existing capability. The modification budget and growth budget are alternatives,
+not additive. Display partitioning alone cannot enable growth. Public synthetic
+source and rule regressions exercise expansion, duplicate exclusion, diminishing
+returns, and the earlier partition safeguard. No private numerical target, frozen
+label, seed prior, or sealed partition changes. This uses the correctness exception
+and remains experimental and uncalibrated; Stage A 0.6.0 is the last admitted
+source baseline. Independent-day portfolio normalization is a separately versioned
+composition policy, not evidence of numerical model admission.
+
+Byte-identical bodies added more than once in one final delta now retain one
+deterministic represented path; other additions retain exact-duplicate lineage
+and zero body effort. This also prevents fallback and validation charges from
+rewarding copies of newly added source. Existing copies already present in the
+base retain their prior exclusion.

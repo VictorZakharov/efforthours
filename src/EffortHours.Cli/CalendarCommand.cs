@@ -21,6 +21,14 @@ internal static class CalendarCommand
             TextWriter progress = TextWriter.Synchronized(stderr);
             TimeZoneInfo zone = TimeZoneInfo.FindSystemTimeZoneById(await SettingAsync(options, "--timezone",
                 "Timezone", TimeZoneInfo.Local.Id, progress, token).ConfigureAwait(false));
+            string dateChoice = await SettingAsync(options, "--date-field", "Date field (committer or author)",
+                "committer", progress, token).ConfigureAwait(false);
+            ChangePortfolioDateField dateField = dateChoice switch
+            {
+                "committer" => ChangePortfolioDateField.Committer,
+                "author" => ChangePortfolioDateField.Author,
+                _ => throw new ArgumentException("Date field must be committer or author."),
+            };
             DateTime localNow = TimeZoneInfo.ConvertTime(DateTimeOffset.UtcNow, zone).Date;
             DateOnly monthEnd = DateOnly.FromDateTime(new DateTime(localNow.Year, localNow.Month, 1)).AddDays(-1);
             DateOnly monthStart = new(monthEnd.Year, monthEnd.Month, 1);
@@ -107,7 +115,7 @@ internal static class CalendarCommand
                     SinceInclusive = Boundary(from, zone),
                     UntilExclusive = Boundary(to.AddDays(1), zone),
                     TimeZone = zone.Id,
-                    DateField = ChangePortfolioDateField.Author,
+                    DateField = dateField,
                     MergePolicy = ChangePortfolioMergePolicy.Exclude,
                     CoauthorPolicy = ChangePortfolioCoauthorPolicy.Include,
                 },
@@ -121,7 +129,7 @@ internal static class CalendarCommand
             ChangePortfolioCommandOptions calculation = new()
             {
                 CalendarReport = true,
-                Bucket = "calendar-day",
+                Bucket = "independent-day",
                 Format = format,
                 CapacityHoursPerDay = capacity,
                 OutputPath = output,
@@ -224,6 +232,7 @@ internal static class CalendarCommand
           --interactive                Prompt for unspecified settings
           --from yyyy-MM-dd --to yyyy-MM-dd  Inclusive complete dates (default: last complete month)
           --timezone <zone>            Default: local timezone
+          --date-field <committer|author>  Default: committer; explicit timestamp selection
           --author <email-or-name>     Repeat aliases; default: selected local Git user.email values
           --project <id=path>          Repeat exact local projects
           --repo <id=owner/name>       Repeat checkout-free GitHub projects; requires --author
@@ -236,8 +245,9 @@ internal static class CalendarCommand
           --capacity-hours-per-day <n> Reference denominator, default 8, including idle days
           --timeout-seconds <n>        Cancellable run deadline, default 3600
         Inside a checkout defaults to that repository. Outside defaults to repositories under cwd.
-        Author dates select changes; merges excluded, valid coauthors included. Only pinned reachable
-        work is represented. Project toggles filter one jointly reconciled result without reanalysis.
+        Committer dates select changes by default; merges excluded, valid coauthors included.
+        Only pinned reachable work is represented. Each local day is independently normalized;
+        project toggles filter that result without reanalysis.
         Experimental Change EHE and reference ratios are not actual labor, productivity, or AI skill scores.
         """;
 }

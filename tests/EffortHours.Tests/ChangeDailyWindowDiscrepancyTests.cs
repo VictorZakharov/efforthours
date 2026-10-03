@@ -6,9 +6,10 @@ namespace EffortHours.Tests;
 
 public sealed partial class ChangePortfolioComparisonTests
 {
-    // Diagnostic baseline. An independent-day mode must invert this relation.
-    [Fact]
-    public async Task JointRangeAllocationChangesADayDespiteIdenticalSelectedDayInputs()
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public async Task IndependentDaysAreWindowInvariantWhileLegacyJointAllocationsRemainDistinct(bool independent)
     {
         DateTimeOffset first = new(2026, 1, 19, 0, 0, 0, TimeSpan.Zero);
         DateTimeOffset second = first.AddDays(1);
@@ -26,6 +27,8 @@ public sealed partial class ChangePortfolioComparisonTests
                 SourceManifest = selected,
                 CapacityManifest = null,
                 Buckets = buckets,
+                BucketKind = ChangePortfolioBucketPolicyKind.CalendarDay,
+                BucketPolicy = ChangePortfolioComparisonPolicies.CalendarDayV1,
                 ExecutionOverride = FixedExecution(selected) with
                 {
                     Repositories = [.. FixedExecution(selected).Repositories.Select(repository => repository with
@@ -43,14 +46,14 @@ public sealed partial class ChangePortfolioComparisonTests
                 },
             };
         ChangePortfolioComparisonReport combined = ChangePortfolioComparisonBuilder.Build(
-            ChangePortfolioReconciler.Reconcile(Selection(manifest), [earlier, target], EstimationProfile.Implementation),
+            ChangePortfolioReconciler.Reconcile(Selection(manifest), [earlier, target], EstimationProfile.Implementation, independentDays: independent),
             Options(manifest, firstBucket, targetBucket));
         ChangeAuthorPeriodManifest oneDay = manifest with
         {
             Selection = manifest.Selection with { SinceInclusive = second },
         };
         ChangePortfolioComparisonReport isolated = ChangePortfolioComparisonBuilder.Build(
-            ChangePortfolioReconciler.Reconcile(Selection(oneDay), [target], EstimationProfile.Implementation),
+            ChangePortfolioReconciler.Reconcile(Selection(oneDay), [target], EstimationProfile.Implementation, independentDays: independent),
             Options(oneDay, targetBucket));
 
         ChangePortfolioComparisonPoint fromCombined = combined.Series.Single(series =>
@@ -62,8 +65,38 @@ public sealed partial class ChangePortfolioComparisonTests
         Assert.Equal(ContractJson.SerializeCompact(combined.SourcePortfolio!.Items.Single(item =>
             item.SelectorId == target.SelectorId).Selection),
             ContractJson.SerializeCompact(isolated.SourcePortfolio!.Items.Single().Selection));
-        Assert.NotEqual(fromOneDay.Effort.Expected, fromCombined.Effort.Expected);
-        Assert.True(fromCombined.Effort.Expected < fromOneDay.Effort.Expected);
+        if (independent)
+        {
+            Assert.Equal(fromOneDay.Effort, fromCombined.Effort);
+            Assert.Equal(ChangePortfolioDailyNormalization.Policy, combined.Verification.BucketAllocationPolicy);
+            Assert.Equal(ChangePortfolioComparisonBuilder.BuildRepositorySeries(isolated).Single().Points[0].Effort,
+                ChangePortfolioComparisonBuilder.BuildRepositorySeries(combined).Single().Points[1].Effort);
+            ChangePortfolioReport source = combined.SourcePortfolio!;
+            ChangePortfolioDailyNormalization daily = source.DailyNormalization!;
+            Assert.Empty(ContractValidation.Validate(ContractJson.Deserialize<ChangePortfolioReport>(ContractJson.Serialize(source))));
+            Assert.NotEmpty(ContractValidation.Validate(source with
+            {
+                DailyNormalization = daily with { Days = [.. daily.Days.Reverse()] },
+            }));
+            Assert.NotEmpty(ContractValidation.Validate(source with
+            {
+                DailyNormalization = daily with { Days = [daily.Days[0] with { Date = "2026-01-18" }, daily.Days[1]] },
+            }));
+            Assert.NotEmpty(ContractValidation.Validate(source with
+            {
+                DailyNormalization = daily with { Days = [daily.Days[0]] },
+            }));
+            ChangePortfolioCandidate sameDay = await OverlappingCandidateAsync("same-day", second.AddHours(13), 3);
+            ChangePortfolioReport overlap = ChangePortfolioReconciler.Reconcile(Selection(oneDay), [target, sameDay],
+                EstimationProfile.Implementation, independentDays: true);
+            Assert.NotEmpty(overlap.Adjustments);
+            Assert.Empty(ContractValidation.Validate(ContractJson.Deserialize<ChangePortfolioReport>(ContractJson.Serialize(overlap))));
+        }
+        else
+        {
+            Assert.NotEqual(fromOneDay.Effort.Expected, fromCombined.Effort.Expected);
+            Assert.True(fromCombined.Effort.Expected < fromOneDay.Effort.Expected);
+        }
         Assert.Empty(ContractValidation.Validate(combined));
         Assert.Empty(ContractValidation.Validate(isolated));
         AssertSchema(SchemaNames.ChangePortfolioComparisonReport, ContractJson.Serialize(combined));

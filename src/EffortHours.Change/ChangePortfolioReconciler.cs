@@ -5,9 +5,9 @@ using EffortHours.Estimation;
 
 namespace EffortHours.Change;
 
-public sealed class ChangePortfolioReconciler
+public sealed partial class ChangePortfolioReconciler
 {
-    public const string Version = "change-portfolio/0.2.5+change-seed/0.19.0+seed-rules/0.4.0";
+    public const string Version = "change-portfolio/0.4.0+change-seed/0.20.0+seed-rules/0.4.0";
 
     public static ChangePortfolioReport Reconcile(
         ChangePortfolioSelection selection,
@@ -15,7 +15,8 @@ public sealed class ChangePortfolioReconciler
         EstimationProfile profile,
         RateCard? rateCard = null,
         IReadOnlyList<Diagnostic>? planningDiagnostics = null,
-        ChangePortfolioExecutionTelemetry? executionTelemetry = null)
+        ChangePortfolioExecutionTelemetry? executionTelemetry = null,
+        bool independentDays = false)
     {
         executionTelemetry?.Start(ChangePortfolioExecutionPhases.Reconciliation);
         long reconciliationStarted = Stopwatch.GetTimestamp();
@@ -25,7 +26,10 @@ public sealed class ChangePortfolioReconciler
         ValidateInputs(selection, candidates, profile);
         ChangePortfolioItemDraft[] drafts = [.. candidates
             .Select(ChangePortfolioIdentity.CreateDraft)];
-        ChangePortfolioGroupResult[] results = [.. drafts
+        ChangePortfolioDailyNormalization? daily = independentDays
+            ? NormalizeDays(selection, drafts) : null;
+        ChangePortfolioGroupResult[] results = daily is not null
+            ? MergeDays(daily) : [.. drafts
             .GroupBy(draft => draft.Candidate.RepositoryId, StringComparer.Ordinal)
             .OrderBy(group => group.Key, StringComparer.Ordinal)
             .Select(group => ChangePortfolioGroupNormalizer.Normalize(
@@ -132,6 +136,8 @@ public sealed class ChangePortfolioReconciler
         }
 
         List<string> assumptions = Assumptions(aggregation is not null);
+        if (daily is not null)
+            assumptions.Add("Independent local-day normalization reconciles overlap within each day and sums days; extending the date interval does not change an existing day's effort. Replacement-stock differences are a separate measurement.");
 
         ChangePortfolioReport report = new()
         {
@@ -140,6 +146,7 @@ public sealed class ChangePortfolioReconciler
                 ? ChangeEstimator.Version
                 : candidates[0].Report.EstimatorVersion,
             Selection = selection,
+            DailyNormalization = daily,
             Profile = profile,
             Baseline = candidates.Count == 0
                 ? SeedEstimator.CreateDefaultBaseline()

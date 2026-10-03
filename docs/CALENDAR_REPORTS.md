@@ -2,10 +2,14 @@
 
 `eh calendar` creates a teammate's graph without AI, authored manifests, a website
 build, or remote model access. It composes the existing immutable author-period
-portfolio, one joint reconciliation, and calendar-day bucket allocation in memory.
+portfolio with independent reconciliation within each local day and repository.
+Its calculation identity is `independent-local-day-change/1.0.0`; JSON retains
+each day's category and overlap-adjustment ledger. Extending the selected date
+range cannot change an existing day's numeric result.
 The graph shows **repository-attributed Change EHE**, not snapshot stock changes,
 actual labor, productivity, or an AI skill measurement. Existing estimator priors,
-admission boundaries, saved reports, and schemas are unchanged.
+admission boundaries and saved reports remain intact. New reports add optional
+daily lineage and advance the source and portfolio identities.
 
 ```text
 eh calendar
@@ -25,8 +29,11 @@ rather than waiting indefinitely or accepting incomplete input. Prompts go to
 stderr, leaving stdout available for the selected artifact.
 
 Defaults are the last complete calendar month in the local timezone, eight
-reference hours per calendar day, HTML, and `HEAD`. Interactive setup suggests a
-file under the host temporary directory; unattended output defaults to stdout.
+reference hours per calendar day, HTML, `HEAD`, and committer-date selection.
+`--date-field author` explicitly selects author dates instead. Interactive setup
+prompts for this choice. Merge commits are excluded; valid coauthor matches enter
+the same selected change once. Neither timestamp establishes when work occurred.
+Interactive setup suggests a file under the host temporary directory; unattended output defaults to stdout.
 `--output -` means stdout. Identity defaults to the distinct configured Git
 `user.email` values from selected local repositories. This is a visible execution
 selector, never inferred from activity. Missing identity requires `--author`;
@@ -84,9 +91,8 @@ A script-hash content security policy, escaped JSON, encoded HTML, and DOM
 remains usable without JavaScript.
 
 The default interactive display is × EHE; Hours is a toggle. Project checkboxes,
-All/None, day details, and the daily table derive from the same exact repository
-allocations. Low/expected/high project cells conserve every canonical portfolio
-bucket and total. Idle dates are zero after complete selection. Changing checkboxes
+All/None, day details, and the daily table derive from the same independent daily repository groups.
+Low/expected/high project cells conserve every canonical portfolio bucket and total. Idle dates are zero after complete selection. Changing checkboxes
 does not re-estimate, independently reconcile fragments, or multiply shared work.
 Cross-repository copies retain the existing separate-repository boundary.
 
@@ -121,3 +127,11 @@ The added Change helper source participates in the existing conservative snapsho
 implementation fingerprint. Saved snapshot receipts from earlier builds may need
 their already-documented explicit epoch upgrade; they are never relabeled as
 compatible. This does not change numerical priors or legacy report schemas.
+
+Low-level `eh change portfolio --author-period-manifest ... --bucket independent-day`
+uses the same batch policy. Existing `--bucket calendar-day` retains joint interval
+allocation for compatibility. Within a day the existing overlap reconciliation
+and joint contributor policy apply; isolated contributor normalization is rejected
+for independent-day mode. Replacement stock remains the separate snapshot daily
+series, whose signed differences can be negative. Change and stock are different
+measurements and must not be substituted or forced to match.
