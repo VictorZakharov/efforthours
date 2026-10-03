@@ -45,7 +45,7 @@ public sealed class DotNetRepositoryAnalyzer : IRepositoryEvidenceAnalyzer
         List<EvidenceFact> facts = [.. projectContext.Facts];
         List<Diagnostic> diagnostics = [.. projectContext.Diagnostics];
 
-        Dictionary<string, List<CSharpStructureMetrics>> structureByScope =
+        Dictionary<string, List<DotNetFileAnalysisEntry>> structureByScope =
             new(StringComparer.Ordinal);
         IReadOnlyList<DotNetFileAnalysisEntry> fileAnalyses =
             await DotNetFileAnalysisBatch.AnalyzeAsync(
@@ -58,21 +58,21 @@ public sealed class DotNetRepositoryAnalyzer : IRepositoryEvidenceAnalyzer
         {
             facts.AddRange(analysis.Facts);
             diagnostics.AddRange(analysis.Diagnostics);
-            if (analysis.Structure is { } structure)
+            if (analysis.Structure is not null)
             {
                 if (!structureByScope.TryGetValue(
                     analysis.ProjectScope,
-                    out List<CSharpStructureMetrics>? structures))
+                    out List<DotNetFileAnalysisEntry>? structures))
                 {
                     structures = [];
                     structureByScope.Add(analysis.ProjectScope, structures);
                 }
 
-                structures.Add(structure);
+                structures.Add(analysis);
             }
         }
 
-        foreach ((string scope, List<CSharpStructureMetrics> structures) in structureByScope
+        foreach ((string scope, List<DotNetFileAnalysisEntry> structures) in structureByScope
             .OrderBy(pair => pair.Key, StringComparer.Ordinal))
         {
             facts.Add(CreateStructureFact(scope, structures));
@@ -264,9 +264,9 @@ public sealed class DotNetRepositoryAnalyzer : IRepositoryEvidenceAnalyzer
 
     private static EvidenceFact CreateStructureFact(
         string scope,
-        IEnumerable<CSharpStructureMetrics> structures)
+        IReadOnlyList<DotNetFileAnalysisEntry> structures)
     {
-        CSharpStructureMetrics[] values = [.. structures];
+        CSharpStructureMetrics[] values = [.. structures.Select(entry => entry.Structure!)];
         int files = values.Sum(value => value.Files);
         IReadOnlyList<EvidenceMeasurement> structuralMeasurements =
             CallableStructuralMeasurements.Build(
@@ -281,6 +281,7 @@ public sealed class DotNetRepositoryAnalyzer : IRepositoryEvidenceAnalyzer
             $"Roslyn C# syntax inventory for '{scope}'.",
             EvidenceSourceKind.Measured,
             "Roslyn syntax-tree declaration, control-flow-node, and callable-distribution counts",
+            locations: structures.Select(entry => DotNetEvidence.Location(entry.SourcePath)),
             measurements:
             [
                 DotNetEvidence.Measurement("files", files, "files"),

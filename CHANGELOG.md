@@ -6,6 +6,18 @@ may still change public contracts with explicit documentation.
 
 ## Unreleased
 
+### Fixed
+
+- Bind .NET Change source budgets to exact analyzer-owned files rather than all
+  changed paths. Unbound positive stock capabilities warn instead of borrowing
+  unrelated evidence; unexplained maintained artifacts retain ordinary fallback.
+- Exclude analyzer-recognized tests from broad production source Change binding,
+  including conflicts with path-based source classification. Preserve seed hours,
+  complete context, final-effect proof, independent-day invariance, and allocation.
+- Advance Change/portfolio identities to 0.21.2/0.6.2 and .NET analyzer to 0.3.6.
+  Record an anonymized frozen-input budget review with remaining specialized
+  overlaps and unvalidated supporting-work priors explicitly unresolved.
+
 ## 0.10.0-alpha.31 - 2026-10-03
 
 ### Fixed

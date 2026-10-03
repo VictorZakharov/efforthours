@@ -364,3 +364,9 @@ defined in `CHANGE_PORTFOLIOS.md`. `FB5210` exposes the exact expected-hour stoc
 and Change budget bridge in `CHANGE_ESTIMATION.md`; proven portfolio endpoints
 carry repository and endpoint-input digests on those category rows. These use
 existing v1 diagnostics, so schemas and old saved reports remain compatible.
+
+`FB5211` reports only the count of positive stock capabilities lacking represented
+path lineage. It warns that unrelated paths were not substituted and ordinary
+maintained-artifact fallback remains available. No source path, capability ID,
+alias, or private source excerpt enters its message. This uses existing v1
+diagnostics without changing schemas or old saved-report compatibility.

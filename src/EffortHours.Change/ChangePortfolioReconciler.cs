@@ -7,7 +7,7 @@ namespace EffortHours.Change;
 
 public sealed partial class ChangePortfolioReconciler
 {
-    public const string Version = "change-portfolio/0.6.1+change-seed/0.21.1+seed-rules/0.4.0";
+    public const string Version = "change-portfolio/0.6.2+change-seed/0.21.2+seed-rules/0.4.0";
 
     public static ChangePortfolioReport Reconcile(
         ChangePortfolioSelection selection,

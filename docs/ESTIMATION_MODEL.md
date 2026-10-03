@@ -1034,3 +1034,13 @@ The remaining questions require implementation evidence or external research:
    target.
 4. Whether self-contained executables should supplement the primary .NET global
    tool package.
+
+## .NET aggregate source lineage follow-up
+
+.NET analyzer `0.3.6` adds the exact owned, statically parsed C# file locations to
+aggregate `source-structure` evidence. Generated, vendored, binary, and unparsed
+files do not acquire locations. Measurements, fact IDs, and `seed-rules/0.4.0`
+numerical results are unchanged; the analyzer version invalidates content caches.
+Change `0.21.2` uses this lineage and analyzer-recognized test locations to avoid
+borrowing unrelated paths or valuing test-only growth as residual production.
+This does not correct all repository role ambiguity or calibrate any prior.

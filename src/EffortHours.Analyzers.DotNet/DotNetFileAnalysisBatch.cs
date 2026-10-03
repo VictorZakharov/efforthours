@@ -57,6 +57,7 @@ internal static class DotNetFileAnalysisBatch
         {
             return new DotNetFileAnalysisEntry(
                 ProjectScope: ".",
+                SourcePath: fileFact.Scope,
                 Structure: null,
                 Facts: [],
                 Diagnostics:
@@ -85,6 +86,7 @@ internal static class DotNetFileAnalysisBatch
                     cancellationToken).ConfigureAwait(false);
             return new DotNetFileAnalysisEntry(
                 projectScope,
+                fileFact.Scope,
                 analysis.Structure.Files > 0 ? analysis.Structure : null,
                 analysis.Facts,
                 analysis.Diagnostics);
@@ -98,6 +100,7 @@ internal static class DotNetFileAnalysisBatch
                 cancellationToken).ConfigureAwait(false);
         return new DotNetFileAnalysisEntry(
             projectScope,
+            fileFact.Scope,
             Structure: null,
             razor.Facts,
             razor.Diagnostics);
@@ -109,6 +112,7 @@ internal static class DotNetFileAnalysisBatch
 
 internal sealed record DotNetFileAnalysisEntry(
     string ProjectScope,
+    string SourcePath,
     CSharpStructureMetrics? Structure,
     IReadOnlyList<EvidenceFact> Facts,
     IReadOnlyList<Diagnostic> Diagnostics);

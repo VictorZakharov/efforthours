@@ -45,6 +45,8 @@ agent instructions.
 - [Daily Change discrepancy investigation](DAILY_CHANGE_DISCREPANCY.md) records
   synthetic reproductions of interval-sensitive allocations and broad-capability
   growth caps, with the separate pending correction acceptance boundary.
+- [Remaining capability-budget review](REMAINING_BUDGET_REVIEW.md) records the
+  anonymized frozen comparison, scope-binding corrections, and unresolved budgets.
 - [GitHub-assisted today-to-date portfolios](AUTHOR_PERIOD_SCAFFOLDING.md) defines
   the explicit provider boundary for one-command GitHub discovery, managed bare-
   cache acquisition, native engineering scope, internal preflight, atomic failure-

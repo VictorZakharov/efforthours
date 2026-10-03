@@ -1,7 +1,9 @@
 # Independent daily Change and supported capability growth
 
 The current correction uses `independent-local-day-change/1.1.0`,
-`change-portfolio/0.6.1`, and `change-seed/0.21.1+seed-rules/0.4.0`.
+`change-portfolio/0.6.2`, and `change-seed/0.21.2+seed-rules/0.4.0`.
+The subsequent [remaining-budget review](REMAINING_BUDGET_REVIEW.md) records
+verified scope-binding corrections and unresolved overlap/numerical questions.
 They correct two mechanisms diagnosed by the consumer audit without fitting
 estimator priors to private numerical totals. Change EHE remains experimental
 and uncalibrated. The private source audit is not a committed fixture.
