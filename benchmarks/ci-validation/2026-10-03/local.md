@@ -157,3 +157,13 @@ seconds; its 106 cases summed to 235.4 test-body seconds and its largest serial
 collection summed to 54.6 seconds. The next explicit-shard configuration permits
 at most six conservative parallel collections, allowing bounded subprocess-wait
 overlap without changing discovery, case assignment or ordinary runner defaults.
+
+After rebasing onto merged #246, `f07b80b817985814b5c0b1416af7204106efe422`
+passes all current-head checks and verifies all 303 cases on every OS:
+[run 37129547040](https://github.com/VictorZakharov/efforthours/actions/runs/37129547040).
+Total time is 207 seconds. Platform coverage gates finish in Windows 157,
+macOS 176 and Linux 117 seconds, including coordination. The next configuration
+uses eight Windows, four macOS and three Linux shards, within the existing
+one-to-eight shard bound and six-collection per-runner bound. Its 20 steady jobs
+trade runner cost and queue headroom for smaller test partitions; other workflows
+and hosted provisioning can still introduce queues. No timing threshold is added.

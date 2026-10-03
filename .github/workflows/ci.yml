@@ -146,7 +146,7 @@ jobs:
         run: |
           $rows = @()
           foreach ($os in @("ubuntu-latest", "windows-latest", "macos-latest")) {
-            $count = if ($env:FULL_CI -ne "true") { 1 } elseif ($os -eq "windows-latest") { 6 } else { 3 }
+            $count = if ($env:FULL_CI -ne "true") { 1 } elseif ($os -eq "windows-latest") { 8 } elseif ($os -eq "macos-latest") { 4 } else { 3 }
             for ($index = 0; $index -lt $count; $index++) {
               $rows += @{ os = $os; shard = $index; count = $count }
             }
