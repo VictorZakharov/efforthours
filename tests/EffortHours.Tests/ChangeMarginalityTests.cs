@@ -3,7 +3,7 @@ using EffortHours.Contracts.V1;
 
 namespace EffortHours.Tests;
 
-public sealed class ChangeMarginalityTests
+public sealed partial class ChangeMarginalityTests
 {
     [Fact]
     public async Task SmallCompatibilityUpgradeUsesOneMarginalBudgetPerChangedConcern()

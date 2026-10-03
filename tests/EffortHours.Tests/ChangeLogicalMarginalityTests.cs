@@ -4,7 +4,7 @@ using EffortHours.Contracts.V1;
 
 namespace EffortHours.Tests;
 
-public sealed class ChangeLogicalMarginalityTests
+public sealed partial class ChangeLogicalMarginalityTests
 {
     private const string ModifiedPath = "src/engine/operation.cs";
 

@@ -39,6 +39,9 @@ agent instructions.
 - [One-command calendars](CALENDAR_REPORTS.md) defines interactive defaults, local
   workspace/provider inputs, bounded date selection, offline HTML/text graphs,
   exact project filters, reference ratios, progress, and checkpoint reuse.
+- [Daily Change discrepancy investigation](DAILY_CHANGE_DISCREPANCY.md) records
+  synthetic reproductions of interval-sensitive allocations and broad-capability
+  growth caps, with the separate pending correction acceptance boundary.
 - [GitHub-assisted today-to-date portfolios](AUTHOR_PERIOD_SCAFFOLDING.md) defines
   the explicit provider boundary for one-command GitHub discovery, managed bare-
   cache acquisition, native engineering scope, internal preflight, atomic failure-

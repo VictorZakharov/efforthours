@@ -176,7 +176,7 @@ internal static partial class ChangePortfolioComparisonInputLoader
         {
             "calendar-month" => ChangePortfolioBucketPolicyKind.CalendarMonth,
             "calendar-week" => ChangePortfolioBucketPolicyKind.CalendarWeek,
-            "calendar-day" => ChangePortfolioBucketPolicyKind.CalendarDay,
+            "calendar-day" or "independent-day" => ChangePortfolioBucketPolicyKind.CalendarDay,
             _ => throw new ArgumentOutOfRangeException(nameof(policy)),
         };
         string versionedPolicy = kind switch

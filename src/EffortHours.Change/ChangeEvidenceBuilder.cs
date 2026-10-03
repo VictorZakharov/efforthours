@@ -4,7 +4,7 @@ using EffortHours.Contracts.V1;
 
 namespace EffortHours.Change;
 
-internal static class ChangeEvidenceBuilder
+internal static partial class ChangeEvidenceBuilder
 {
     public static async Task<ChangeEvidence> BuildAsync(
         ChangeSelection selection,
@@ -212,6 +212,7 @@ internal static class ChangeEvidenceBuilder
             });
         }
 
+        CollapseAddedCopies(paths);
         paths.Sort(static (left, right) =>
         {
             int status = left.Status.CompareTo(right.Status);

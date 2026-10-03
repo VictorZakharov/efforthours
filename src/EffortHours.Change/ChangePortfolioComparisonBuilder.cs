@@ -30,10 +30,9 @@ public static partial class ChangePortfolioComparisonBuilder
         Dictionary<string, ChangePortfolioItemEstimate> items = source.Items.ToDictionary(
             item => item.Id,
             StringComparer.Ordinal);
-        IReadOnlyList<ChangePortfolioComparisonSeries> additive = BuildAdditiveSeries(
-            source,
-            options,
-            items);
+        IReadOnlyList<ChangePortfolioComparisonSeries> additive = source.DailyNormalization is null
+            ? BuildAdditiveSeries(source, options, items)
+            : BuildDailyAdditiveSeries(source, options, items);
         ChangePortfolioComparisonSeries portfolio = BuildPortfolioSeries(
             source,
             options,
@@ -98,8 +97,8 @@ public static partial class ChangePortfolioComparisonBuilder
                         options.ScopeProfile,
                         options.NativePeriod),
                 SourcePortfolioDigest = sourceDigest,
-                BucketAllocationPolicy = ChangePortfolioComparisonIdentity.ContributorSeriesPolicy(
-                    options.ContributorNormalization),
+                BucketAllocationPolicy = source.DailyNormalization?.Protocol ??
+                    ChangePortfolioComparisonIdentity.ContributorSeriesPolicy(options.ContributorNormalization),
                 CompleteAggregates = true,
                 ExecutionOnlyPathsExcluded = true,
                 RawAliasesExcluded = true,

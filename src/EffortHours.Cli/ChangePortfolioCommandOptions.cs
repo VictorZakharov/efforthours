@@ -178,10 +178,10 @@ internal static partial class ChangePortfolioCommandOptionsParser
                     break;
                 case "--bucket":
                     bucket = value.ToLowerInvariant();
-                    if (bucket is not ("calendar-month" or "calendar-week" or "calendar-day"))
+                    if (bucket is not ("calendar-month" or "calendar-week" or "calendar-day" or "independent-day"))
                     {
                         return Error(
-                            "Bucket must be 'calendar-month', 'calendar-week', or 'calendar-day'.");
+                            "Bucket must be 'calendar-month', 'calendar-week', 'calendar-day', or 'independent-day'.");
                     }
 
                     break;

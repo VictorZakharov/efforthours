@@ -165,7 +165,7 @@ internal sealed partial class ChangePortfolioCommand
                 [.. outcomes.SelectMany(outcome => outcome.Candidates)];
             IReadOnlyList<Diagnostic> diagnostics =
                 CanonicalDiagnostics(outcomes, execution.Checkpoint);
-            if (options.CalendarReport)
+            if (options.CalendarReport || options.Bucket == "independent-day")
                 diagnostics = [.. diagnostics.Where(d => d.Code is not ("FB5325" or "FB5333" or "FB5334"))];
             ChangePortfolioReport source = ChangePortfolioReconciler.Reconcile(
                 selection,
@@ -173,7 +173,8 @@ internal sealed partial class ChangePortfolioCommand
                 options.Profile,
                 rateCard,
                 diagnostics,
-                portfolioTelemetry);
+                portfolioTelemetry,
+                independentDays: options.CalendarReport || options.Bucket == "independent-day");
             execution = ChangePortfolioComparisonExecutionFactory.Create(
                 outcomes,
                 checkpoints is not null,

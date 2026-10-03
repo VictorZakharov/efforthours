@@ -6,6 +6,21 @@ may still change public contracts with explicit documentation.
 
 ## Unreleased
 
+### Fixed
+
+- Daily Change calendars now normalize each local day independently, preserving
+  daily values when the selected range expands. Low-level joint allocation remains
+  available; HTML/text/JSON identify the calculation and retain daily lineage.
+- Existing broad production/test capabilities retain supported positive normalized
+  growth beyond the eight-hour modification cap, without adding both budgets or
+  rewarding display partitions and duplicate copies. Source model is experimental
+  `change-seed/0.20.0`; repository priors and admission boundaries remain unchanged.
+
+### Added
+
+- Calendar `--date-field committer|author`, defaulting to committer and available
+  interactively, and low-level `--bucket independent-day` batch mode.
+
 ## 0.10.0-alpha.28 - 2026-10-02
 
 ### Fixed

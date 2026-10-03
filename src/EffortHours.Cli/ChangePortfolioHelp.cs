@@ -63,7 +63,7 @@ internal static class ChangePortfolioHelp
           --head <revision>          Pinned reachable-history boundary (default: HEAD)
 
         Time-bucketed comparison (author-period manifest only):
-          --bucket <calendar-month|calendar-week|calendar-day>
+          --bucket <calendar-month|calendar-week|calendar-day|independent-day>
                                     Split the selected interval into calendar buckets
           --bucket-manifest <path>  Use caller-supplied gap-free closed buckets
           --capacity-manifest <path>

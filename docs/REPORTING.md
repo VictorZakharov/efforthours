@@ -335,3 +335,10 @@ Compact output improves reviewability but does not calibrate the estimator or ma
 an estimate production-ready. The recorded size and usefulness measurements are
 in `REPORT_BENCHMARKS.md`. Optional host-AI packets add a stricter digest-bound
 protocol around the review projection; see `HOST_REVIEW.md`.
+
+Independent local-day reports (`eh calendar` or `--bucket independent-day`) use
+`independent-local-day-change/1.0.0`, with overlap and joint contributor allocation
+within each date. Their optional source `dailyNormalization` ledger includes
+repository categories and adjustments. HTML/text/JSON disclose this measurement,
+which remains separate from replacement stock and its signed daily differences.
+Existing calendar-day and other bucket modes retain joint interval allocation.

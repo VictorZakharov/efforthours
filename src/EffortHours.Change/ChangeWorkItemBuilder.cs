@@ -12,7 +12,7 @@ internal sealed record ChangeWorkItemResult(
 
 internal static partial class ChangeWorkItemBuilder
 {
-    public const string EstimatorVersion = "change-seed/0.18.0";
+    public const string EstimatorVersion = "change-seed/0.20.0";
 
     public static ChangeWorkItemResult Build(
         ChangeSelection selection,
@@ -76,6 +76,16 @@ internal static partial class ChangeWorkItemBuilder
 
                     touched = logicalEvidence;
                     hours = ModificationRange(source.Category, logicalEvidence);
+                    if (baseCapability is not null && headCapability is not null &&
+                        HasSupportedCapabilityGrowth(baseCapability, headCapability, baseFacts, headFacts, logicalEvidence))
+                    {
+                        hours = new EffortRange
+                        {
+                            Low = Math.Max(hours.Low, marginal.Low),
+                            Expected = Math.Max(hours.Expected, marginal.Expected),
+                            High = Math.Max(hours.High, marginal.High),
+                        };
+                    }
                 }
                 else
                 {
@@ -87,7 +97,9 @@ internal static partial class ChangeWorkItemBuilder
                 reason = baseCapability is null && !modifiesExistingArtifact
                     ? "Positive base-to-head marginal effort for a distinct capability added by the final change."
                     : "The final change expands an existing artifact-backed capability. Repository work-item " +
-                        "partitions provide context but share one evidence-derived logical marginal budget.";
+                        "partitions provide context but share one evidence-derived logical marginal budget. Supported " +
+                        "normalized production/test unit growth retains its positive repository marginal when larger " +
+                        "than the modification budget; display partitions alone do not establish growth.";
             }
             else if (expectedDifference < 0m && touched.Length > 0)
             {

@@ -212,6 +212,8 @@ public sealed record ChangePortfolioAdjustment
 
 public sealed record ChangePortfolioReport
 {
+    public ChangePortfolioDailyNormalization? DailyNormalization { get; init; }
+
     public string SchemaVersion { get; init; } = ContractVersions.V1;
 
     public required string EstimatorVersion { get; init; }

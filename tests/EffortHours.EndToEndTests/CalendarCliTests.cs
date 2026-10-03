@@ -86,7 +86,7 @@ public sealed partial class ChangeCliTests
     {
         using GitFixture repo = await CalendarFixtureAsync();
         string[] options = ["--from", "2026-02-01", "--to", "2026-02-28", "--timezone", "UTC", "--format", "json", "--output", "-"];
-        ProcessResult prompted = await CalendarProcessAsync(repo.RootPath, "\n\n\n\n",
+        ProcessResult prompted = await CalendarProcessAsync(repo.RootPath, "\n\n\n\n\n",
             ["calendar", "--interactive", .. options]);
         Assert.True(prompted.ExitCode == 0, prompted.StandardError);
         Assert.Contains("Reference hours per calendar day [8]", prompted.StandardError, StringComparison.Ordinal);
