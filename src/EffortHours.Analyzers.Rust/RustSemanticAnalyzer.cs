@@ -66,7 +66,7 @@ internal static class RustSemanticAnalyzer
             metrics.BackgroundUsages++;
             metrics.ConcurrencyUsages++;
         }
-        if (HasSequence(tokens, "std", "::", "sync") || HasAny(tokens, "AtomicUsize", "AtomicBool"))
+        if (RustSynchronizationAnalysis.HasStandardSynchronization(tokens, imports))
             metrics.ConcurrencyUsages++;
         if (HasAny(tokens, "assert", "assert_eq", "assert_ne", "debug_assert", "matches") && IsTestPath(path))
             metrics.Assertions = Math.Max(1, metrics.Assertions);

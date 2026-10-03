@@ -7,7 +7,7 @@ namespace EffortHours.Analyzers.Rust;
 internal static class RustEvidence
 {
     public const string AnalyzerName = "efforthours.rust-analyzer";
-    public const string AnalyzerVersion = "0.1.0";
+    public const string AnalyzerVersion = "0.1.1";
 
     public static EvidenceFact Fact(
         string id,

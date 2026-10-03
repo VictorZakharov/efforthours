@@ -8,6 +8,13 @@ may still change public contracts with explicit documentation.
 
 ### Fixed
 
+- Require explicit qualified Rust synchronization evidence instead of treating
+  `std::sync`, shared ownership alone, or unqualified atomic-looking names as a
+  background-work surface. Preserve ordinary source/fallback work and existing
+  qualified locks, atomics, channels, and thread spawning.
+- Advance Rust analyzer to 0.1.1 and Change/portfolio identities to 0.21.3/0.6.3.
+  Record the frozen-input overlap follow-up and remaining calibration boundary;
+  seed rates and schemas remain unchanged.
 - Bind .NET Change source budgets to exact analyzer-owned files rather than all
   changed paths. Unbound positive stock capabilities warn instead of borrowing
   unrelated evidence; unexplained maintained artifacts retain ordinary fallback.
