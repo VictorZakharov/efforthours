@@ -25,10 +25,11 @@ public static partial class ContractValidation
         if (report.AsOf is null || report.Discovery is null ||
             report.ScopeProfile is null || report.ScopeSummary is null ||
             report.BucketPolicy.ContributorNormalization !=
-                ChangePortfolioContributorNormalization.Isolated)
+                (native.RetainedHistory == true ? ChangePortfolioContributorNormalization.Joint :
+                    ChangePortfolioContributorNormalization.Isolated))
         {
             errors.Add(
-                "A native named-period report requires provider discovery, scope metadata, and isolated contributor series.");
+                "A native period report requires provider discovery, scope metadata, and its declared contributor normalization.");
         }
 
         bool daily = native.Breakdown == ChangePortfolioNativeBreakdown.CalendarDay;
@@ -53,6 +54,38 @@ public static partial class ContractValidation
 
         ChangePortfolioContributorSelection selection = native.ContributorSelection;
         ValidateContributorSelection(report, selection, errors);
+        if (native.RetainedHistory == false || native.Kind == ChangePortfolioNativePeriodKind.CustomRange &&
+            native.RetainedHistory != true)
+        {
+            errors.Add("Historical ranges require explicit retained-history provenance.");
+        }
+
+        if (native.RetainedHistory == true && report.Status == ChangePortfolioComparisonStatus.Complete &&
+            (report.Discovery?.HistoricalPullRequestCount is null ||
+                report.Discovery.HistoricalPullRequestHeadCount is null || daily && native.DailyEvidence is null))
+        {
+            errors.Add("Complete historical reports require retained PR counts and requested daily evidence.");
+        }
+
+        if (native.DailyEvidence is { } days)
+        {
+            if (native.RetainedHistory != true || !daily ||
+                report.Status != ChangePortfolioComparisonStatus.Complete ||
+                !days.Select(day => day.BucketId).SequenceEqual(report.Buckets.Select(bucket => bucket.Id)))
+            {
+                errors.Add("Daily retained evidence requires one ordered cell per complete historical bucket.");
+            }
+
+            foreach (ChangePortfolioDailyEvidence day in days)
+            {
+                if (day.SelectedChangeCount < 0 || day.State is not ("measured-retained-change" or
+                    "no-retained-change" or "scope-excluded" or "normalized-zero" or "reconciled-zero") ||
+                    (day.SelectedChangeCount == 0) != (day.State == "no-retained-change"))
+                {
+                    errors.Add("Daily retained evidence has an invalid count or state.");
+                }
+            }
+        }
     }
 
     private static void ValidateContributorSelection(

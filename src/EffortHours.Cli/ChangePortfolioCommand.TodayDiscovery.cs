@@ -32,10 +32,7 @@ internal sealed partial class ChangePortfolioCommand
             if (options.IsNativePeriod)
             {
                 TimeZoneInfo zone = TimeZoneInfo.FindSystemTimeZoneById(options.TimeZone);
-                period = ChangePortfolioNamedPeriodResolver.Resolve(
-                    options.Period!.Value,
-                    generatedAt,
-                    zone);
+                period = ResolveProviderPeriod(options, generatedAt, zone);
             }
 
             GitHubContributorSampleRequest? sample = options.TeamComparison
@@ -61,6 +58,7 @@ internal sealed partial class ChangePortfolioCommand
                     TimeZone = options.TimeZone,
                     Scope = options.Scope!,
                     IncludeOpenPullRequests = options.IncludeOpenPullRequests,
+                    IncludeHistoricalPullRequests = options.IncludeHistoricalPullRequests,
                     DateField = options.DateField,
                     MergePolicy = options.MergePolicy,
                     CoauthorPolicy = options.CoauthorPolicy,

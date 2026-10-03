@@ -146,6 +146,8 @@ public sealed record ChangePortfolioItemEstimate
 
     public int RepresentedPathCount { get; init; }
 
+    public int? AnalyzedPathCount { get; init; }
+
     public required EffortRange IsolatedEffort { get; init; }
 
     public required decimal AllocatedExpectedHours { get; init; }
@@ -158,7 +160,18 @@ public sealed record ChangePortfolioItemEstimate
 
     public string? DuplicateOfItemId { get; init; }
 
+    public ChangePortfolioExactComposition? ExactComposition { get; init; }
+
     public IReadOnlyList<string> UncertaintyReasons { get; init; } = [];
+}
+
+public sealed record ChangePortfolioExactComposition
+{
+    public string Protocol { get; init; } = "exact-retained-composition/1.0.0";
+
+    public required IReadOnlyList<string> ItemIds { get; init; }
+
+    public required string PatchDigest { get; init; }
 }
 
 public sealed record ChangePortfolioBaseContext

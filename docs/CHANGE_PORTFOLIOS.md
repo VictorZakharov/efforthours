@@ -2,7 +2,7 @@
 
 ## Current boundary
 
-`change-portfolio/0.4.0` composes canonical Change estimates selected as repeated
+`change-portfolio/0.5.0` composes canonical Change estimates selected as repeated
 pull requests, a versioned multi-repository PR manifest, a bounded direct
 author-period, or a versioned multi-repository/multi-head author-period manifest.
 It remains experimental and has no empirical production validation.
@@ -369,6 +369,15 @@ objects, and completeness; provider activity never becomes an effort signal.
 Ordinary manifest estimation remains host-independent and offline.
 
 ## Reconciliation policy
+
+Exact retained rewrites on disjoint pinned heads and bounded, connected retained
+commit compositions equivalent to a standalone squash now have the additional
+proofs in [HISTORICAL_CHANGE_REPORTS.md](HISTORICAL_CHANGE_REPORTS.md). Proven
+standalone representations retain isolated estimates and immutable lineage but
+receive zero normalized allocation. Shared-head reintroductions, genuinely new
+follow-up work, and unproven similarity retain ordinary normalization. Explicit
+native historical ranges include authored merged/closed/open PR history and use
+joint contributor allocations; original erased workdays remain unknown.
 
 Every row is first estimated independently through the canonical Change engine
 with pricing disabled. The portfolio reconciler then:
@@ -756,8 +765,8 @@ shortcut remains deferred until measurements justify the extra policy path.
 - Ordinary `scan` and repository `estimate` remain history-free. Only an explicit
   author-period selector reads bounded identity, timestamp, parent, and co-author
   metadata.
-- Exact patch and object-chain normalization do not provide general semantic-
-  clone, rebase, squash, or conflict-resolution equivalence.
+- Exact patch and bounded retained-composition proofs do not provide general
+  semantic-clone, altered rebase/squash, or conflict-resolution equivalence.
 - Mechanically split work on distinct paths with no structural overlap stays
   additive. Filenames, timestamps, and contributor identity do not invent shared
   feature identity.

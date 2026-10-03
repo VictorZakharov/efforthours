@@ -36,6 +36,9 @@ agent instructions.
 - [Change portfolios](CHANGE_PORTFOLIOS.md) governs repeated PRs, cross-repository
   manifests, author-period selection and scope preflight, exact allocation,
   attribution uncertainty, and no-ranking safeguards.
+- [Retained historical Change EHE](HISTORICAL_CHANGE_REPORTS.md) governs explicit
+  native ranges, merged/closed PR discovery, exact squash/rewrite equivalence,
+  retained-date evidence states, and unrecoverable-history boundaries.
 - [One-command calendars](CALENDAR_REPORTS.md) defines interactive defaults, local
   workspace/provider inputs, bounded date selection, offline HTML/text graphs,
   exact project filters, reference ratios, progress, and checkpoint reuse.

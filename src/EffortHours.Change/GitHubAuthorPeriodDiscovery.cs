@@ -28,6 +28,8 @@ public sealed record GitHubAuthorPeriodDiscoveryRequest
 
     public bool IncludeOpenPullRequests { get; init; }
 
+    public bool IncludeHistoricalPullRequests { get; init; }
+
     public ChangePortfolioDateField DateField { get; init; } = ChangePortfolioDateField.Author;
 
     public ChangePortfolioMergePolicy MergePolicy { get; init; } = ChangePortfolioMergePolicy.Exclude;
@@ -270,7 +272,9 @@ public sealed partial class GitHubAuthorPeriodDiscovery
             zone,
             request);
         int openHeads = discovered.Sum(repository =>
-            repository.Heads.Count(head => head.Id != "default"));
+            repository.Heads.Count(head => head.Id != "default" && head.OpenPullRequest));
+        int historicalHeads = discovered.Sum(repository =>
+            repository.Heads.Count(head => head.Id != "default" && !head.OpenPullRequest));
         int defaultHeads = discovered.Sum(repository =>
             repository.Heads.Count(head => head.Id == "default"));
         ChangePortfolioHostDiscovery summary = new()
@@ -289,6 +293,8 @@ public sealed partial class GitHubAuthorPeriodDiscovery
             DefaultHeadCount = defaultHeads,
             OpenPullRequestHeadCount = openHeads,
             OpenPullRequestCount = counters.OpenPullRequestCount,
+            HistoricalPullRequestHeadCount = request.IncludeHistoricalPullRequests ? historicalHeads : null,
+            HistoricalPullRequestCount = request.IncludeHistoricalPullRequests ? counters.HistoricalPullRequestCount : null,
             ProviderQueryCount = counters.QueryCount,
             ProviderPageCount = counters.PageCount,
             ProviderProcessCount = counters.ProcessCount,

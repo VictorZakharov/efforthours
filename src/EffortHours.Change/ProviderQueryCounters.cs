@@ -6,6 +6,7 @@ internal sealed partial class ProviderQueryCounters
     private int _queries;
     private int _pages;
     private int _openPullRequests;
+    private int _historicalPullRequests;
     private int _processes;
     private long _processStartupTicks;
 
@@ -29,6 +30,10 @@ internal sealed partial class ProviderQueryCounters
     public int PageCount => Volatile.Read(ref _pages);
 
     public int OpenPullRequestCount => Volatile.Read(ref _openPullRequests);
+
+    public int HistoricalPullRequestCount => Volatile.Read(ref _historicalPullRequests);
+
+    public void AddHistoricalPullRequests(int count) => Interlocked.Add(ref _historicalPullRequests, count);
 
     public int ProcessCount => Volatile.Read(ref _processes);
 

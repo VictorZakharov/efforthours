@@ -6,6 +6,17 @@ may still change public contracts with explicit documentation.
 
 ## Unreleased
 
+### Added
+
+- Native historical `change period --since ... --until ...` discovers retained
+  authored open, closed, and merged PR heads with unpruned default history,
+  engineering scope, joint normalization, explicit daily evidence states, and
+  checkpoint reuse. Blank retained dates are not certified as no-labor days.
+- Portfolio `change-portfolio/0.5.0` counts exact retained rewrites on disjoint
+  heads and proven squash/commit compositions once, preserving isolated rows,
+  ordered immutable composition lineage, and genuine follow-up work. Source
+  estimator priors and admission remain unchanged; work-log allocation is deferred.
+
 ## 0.10.0-alpha.29 - 2026-10-02
 
 ### Fixed

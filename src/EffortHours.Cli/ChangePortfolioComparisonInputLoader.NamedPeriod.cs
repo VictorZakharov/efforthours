@@ -83,6 +83,7 @@ internal static partial class ChangePortfolioComparisonInputLoader
         ChangePortfolioNativePeriodKind.LastWeek => "last-week",
         ChangePortfolioNativePeriodKind.ThisMonth => "this-month",
         ChangePortfolioNativePeriodKind.LastMonth => "last-month",
+        ChangePortfolioNativePeriodKind.CustomRange => "custom-range",
         _ => throw new ArgumentOutOfRangeException(nameof(period)),
     };
 
@@ -92,6 +93,7 @@ internal static partial class ChangePortfolioComparisonInputLoader
         ChangePortfolioNativePeriodKind.LastWeek => "Last week",
         ChangePortfolioNativePeriodKind.ThisMonth => "This month",
         ChangePortfolioNativePeriodKind.LastMonth => "Last month",
+        ChangePortfolioNativePeriodKind.CustomRange => "Historical range",
         _ => throw new ArgumentOutOfRangeException(nameof(period)),
     };
 }

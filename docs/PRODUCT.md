@@ -156,6 +156,13 @@ authoritative, and discovery metadata never enters an effort rule.
 
 ### Reporting and pricing
 
+An explicit native historical range can include retained authored open, merged,
+and closed PR heads in one joint calculation. Exact represented rewrites and
+proven retained squash compositions do not multiply effort. Daily attribution
+uses retained timestamps; missing original workdays are not reconstructed or
+certified as no labor. [HISTORICAL_CHANGE_REPORTS.md](HISTORICAL_CHANGE_REPORTS.md)
+defines coverage and the separate deferred work-log allocation boundary.
+
 The explicit `eh calendar` convenience command lets teammates create a daily
 Change EHE graph without AI or a website build. Interactive setup and unattended
 flags share one author-period portfolio calculation, with offline HTML/text,

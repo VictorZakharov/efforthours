@@ -27,5 +27,25 @@ internal sealed partial class ChangePortfolioCommand
                 Breakdown = options.Breakdown,
                 CapacityHoursPerDay = options.CapacityHoursPerDay!.Value,
                 ContributorSelection = discovery.ContributorSelection,
+                RetainedHistory = options.IncludeHistoricalPullRequests ? true : null,
             };
+
+    private static ChangePortfolioNamedPeriodRange ResolveProviderPeriod(
+        ChangePortfolioCommandOptions options,
+        DateTimeOffset asOf,
+        TimeZoneInfo zone)
+    {
+        if (options.Period != ChangePortfolioNativePeriodKind.CustomRange)
+        {
+            return ChangePortfolioNamedPeriodResolver.Resolve(options.Period!.Value, asOf, zone);
+        }
+
+        if (options.UntilExclusive > asOf)
+        {
+            throw new ArgumentException("Historical --until must be no later than the frozen report instant.");
+        }
+
+        return new ChangePortfolioNamedPeriodRange(ChangePortfolioNativePeriodKind.CustomRange,
+            options.SinceInclusive!.Value, options.UntilExclusive!.Value);
+    }
 }

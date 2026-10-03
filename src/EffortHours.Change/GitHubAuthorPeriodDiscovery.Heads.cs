@@ -18,8 +18,9 @@ public sealed partial class GitHubAuthorPeriodDiscovery
         DiscoveredRepository[] defaults;
         using (request.ExecutionTelemetry?.Measure(ChangePortfolioExecutionPhases.DefaultHeadDiscovery))
         {
-            DefaultHeadBatchResult batched =
-                await GitHubAuthorPeriodDiscoveryJson.DiscoverDefaultHeadsBatchedAsync(
+            DefaultHeadBatchResult batched = request.IncludeHistoricalPullRequests
+                ? new DefaultHeadBatchResult([], repositories)
+                : await GitHubAuthorPeriodDiscoveryJson.DiscoverDefaultHeadsBatchedAsync(
                     _commands,
                     workingDirectory,
                     repositories,
@@ -92,7 +93,8 @@ public sealed partial class GitHubAuthorPeriodDiscovery
                         request.MergePolicy,
                         request.CoauthorPolicy,
                         counters,
-                        cancellationToken).ConfigureAwait(false)
+                        cancellationToken,
+                        request.IncludeHistoricalPullRequests).ConfigureAwait(false)
                 : null;
             // A speculative account read may supply previously unseen email associations.
             // It cannot establish complete coverage until every requested alias is resolved.
@@ -160,7 +162,8 @@ public sealed partial class GitHubAuthorPeriodDiscovery
                     cancellationToken,
                     includeDefaultHead,
                     includeAuthenticatedPullAuthor: false,
-                    pullAuthorLogins)
+                    pullAuthorLogins,
+                    request.IncludeHistoricalPullRequests)
                     .ConfigureAwait(false);
             }
             finally

@@ -201,7 +201,8 @@ internal static partial class GitHubAuthorPeriodDiscoveryJson
         CancellationToken cancellationToken,
         bool includeDefaultHead = true,
         bool includeAuthenticatedPullAuthor = true,
-        IReadOnlyList<string>? pullAuthorLogins = null)
+        IReadOnlyList<string>? pullAuthorLogins = null,
+        bool includeHistoricalPullRequests = false)
     {
         string identity = repository.Identity;
         string branch = repository.DefaultBranch!;
@@ -220,7 +221,8 @@ internal static partial class GitHubAuthorPeriodDiscoveryJson
                 mergePolicy,
                 coauthorPolicy,
                 counters,
-                cancellationToken).ConfigureAwait(false);
+                cancellationToken,
+                includeHistoricalPullRequests).ConfigureAwait(false);
             if (defaultObject is not null)
             {
                 heads.Add(new DiscoveredHead("default", defaultObject, $"refs/heads/{branch}"));
@@ -228,12 +230,13 @@ internal static partial class GitHubAuthorPeriodDiscoveryJson
         }
 
         int authoredOpenPullRequests = 0;
+        int authoredHistoricalPullRequests = 0;
         if (includeOpenPullRequests)
         {
             string pullsJson = await RunRequiredApiAsync(
                 commands,
                 workingDirectory,
-                ["api", "--paginate", "--slurp", $"repos/{identity}/pulls?state=open&per_page=100"],
+                ["api", "--paginate", "--slurp", $"repos/{identity}/pulls?state={(includeHistoricalPullRequests ? "all" : "open")}&per_page=100"],
                 counters,
                 paginated: true,
                 cancellationToken).ConfigureAwait(false);
@@ -252,14 +255,31 @@ internal static partial class GitHubAuthorPeriodDiscoveryJson
                         continue;
                     }
 
-                    authoredOpenPullRequests++;
+                    string state = includeHistoricalPullRequests ? pull.GetProperty("state").GetString() ?? string.Empty : "open";
+                    if (state is not ("open" or "closed"))
+                    {
+                        throw new InvalidOperationException("GitHub returned an invalid retained pull-request state.");
+                    }
+
+                    bool open = state == "open";
+                    if (open)
+                    {
+                        authoredOpenPullRequests++;
+                    }
+                    else
+                    {
+                        authoredHistoricalPullRequests++;
+                    }
                     int number = pull.GetProperty("number").GetInt32();
                     if (number <= 0)
                     {
                         throw new InvalidOperationException("GitHub returned an invalid pull-request number.");
                     }
 
-                    int expectedCommitCount = await ResolvePullCommitCountAsync(
+                    PullDetail? retainedDetail = includeHistoricalPullRequests
+                        ? await ResolvePullDetailAsync(commands, workingDirectory, identity, number,
+                            counters, cancellationToken).ConfigureAwait(false) : null;
+                    int expectedCommitCount = retainedDetail?.CommitCount ?? await ResolvePullCommitCountAsync(
                         commands,
                         workingDirectory,
                         identity,
@@ -279,12 +299,13 @@ internal static partial class GitHubAuthorPeriodDiscoveryJson
                         mergePolicy,
                         coauthorPolicy,
                         counters,
-                        cancellationToken).ConfigureAwait(false))
+                        cancellationToken,
+                        retainedDetail?.ObjectId).ConfigureAwait(false))
                     {
                         continue;
                     }
 
-                    string objectId = RequireObjectId(
+                    string objectId = retainedDetail?.ObjectId ?? RequireObjectId(
                         pull.GetProperty("head").GetProperty("sha").GetString(),
                         "open pull-request head");
                     if (heads.Any(head => head.ObjectId == objectId))
@@ -295,7 +316,8 @@ internal static partial class GitHubAuthorPeriodDiscoveryJson
                     heads.Add(new DiscoveredHead(
                         OpaqueId("open", repository.StableId + ":" + number),
                         objectId,
-                        $"refs/pull/{number}/head"));
+                        $"refs/pull/{number}/head",
+                        open));
                 }
             }
             catch (Exception exception) when (
@@ -316,7 +338,8 @@ internal static partial class GitHubAuthorPeriodDiscoveryJson
         }
 
         counters.AddOpenPullRequests(authoredOpenPullRequests);
-        if (authoredOpenPullRequests > 0)
+        counters.AddHistoricalPullRequests(authoredHistoricalPullRequests);
+        if (authoredOpenPullRequests + authoredHistoricalPullRequests > 0)
         {
             counters.AddPullCandidateRepositories(1);
         }

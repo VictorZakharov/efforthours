@@ -39,6 +39,31 @@ internal static partial class ChangePortfolioCommandOptionsParser
 
         bool authorSelection = options.AuthorAliases.Count > 0;
         bool providerPeriod = options.Today || options.IsNativePeriod;
+        if (options.NativePeriod && (since is not null || until is not null))
+        {
+            if (options.Period is not null)
+            {
+                return Error("Select --period or --since/--until, not both.");
+            }
+
+            ChangePortfolioCommandParseResult? rangeError = ParseAuthorPeriod(options, since, until, out options);
+            if (rangeError is not null)
+            {
+                return rangeError.Value;
+            }
+
+            if (options.UntilExclusive > (options.GeneratedAt ?? DateTimeOffset.UtcNow))
+            {
+                return Error("Historical --until must be no later than the frozen report instant.");
+            }
+
+            options = options with
+            {
+                Period = ChangePortfolioNativePeriodKind.CustomRange,
+                IncludeHistoricalPullRequests = true,
+                IncludeOpenPullRequests = true,
+            };
+        }
         ChangePortfolioCommandParseResult? providerError = ValidateProviderOptions(ref options, timeZoneProvided);
         if (providerError is not null)
         {
@@ -95,7 +120,7 @@ internal static partial class ChangePortfolioCommandOptionsParser
             return Error("Time, identity-policy, and --head options are valid only with --author.");
         }
 
-        if (providerPeriod && (since is not null || until is not null))
+        if (providerPeriod && !options.NativePeriod && (since is not null || until is not null))
         {
             return Error(
                 "Provider-assisted period commands determine their own interval; omit --since and --until.");
@@ -165,11 +190,17 @@ internal static partial class ChangePortfolioCommandOptionsParser
             return Error("Independent-day batching requires --normalization joint within each day.");
         }
 
-        if (options.IsNativePeriod &&
+        if (options.IsNativePeriod && !options.IncludeHistoricalPullRequests &&
             normalizationProvided &&
             options.ContributorNormalization != ChangePortfolioContributorNormalization.Isolated)
         {
             return Error("Native named-period reports require --normalization isolated.");
+        }
+
+        if (options.IncludeHistoricalPullRequests && normalizationProvided &&
+            options.ContributorNormalization != ChangePortfolioContributorNormalization.Joint)
+        {
+            return Error("Historical retained representations require --normalization joint to avoid duplicate series.");
         }
 
         if (options.ReportTitle is { Length: > ChangePortfolioComparisonLimits.MaximumTitleLength } ||
@@ -194,7 +225,9 @@ internal static partial class ChangePortfolioCommandOptionsParser
         {
             options = options with
             {
-                ContributorNormalization = ChangePortfolioContributorNormalization.Isolated,
+                ContributorNormalization = options.IncludeHistoricalPullRequests
+                    ? ChangePortfolioContributorNormalization.Joint
+                    : ChangePortfolioContributorNormalization.Isolated,
             };
         }
 

@@ -376,7 +376,7 @@ Run `eh --help` or a subcommand's help for the complete option surface.
 | Estimation semantics | [Estimation model](docs/ESTIMATION_MODEL.md) and [reviewed vendor ownership](docs/VENDOR_OWNERSHIP.md) |
 | Calibration and repository-model admission | [Calibration](docs/CALIBRATION.md) and [historical frozen v1 policy](docs/MODEL_ADMISSION.md) |
 | Change and snapshot portfolio semantics | [Change EHE](docs/CHANGE_ESTIMATION.md) and [snapshot portfolios](docs/SNAPSHOT_PORTFOLIOS.md) |
-| GitHub native author-period modes and Codex integration | [Author-period workflows](docs/AUTHOR_PERIOD_SCAFFOLDING.md) and [Codex companion](docs/CODEX_INTEGRATION.md) |
+| GitHub native author-period modes and Codex integration | [Author-period workflows](docs/AUTHOR_PERIOD_SCAFFOLDING.md), [retained history](docs/HISTORICAL_CHANGE_REPORTS.md), and [Codex companion](docs/CODEX_INTEGRATION.md) |
 | Analyzer-specific boundaries | [Documentation index](docs/README.md) |
 | Performance | [Benchmark protocol and results](docs/BENCHMARKS.md) |
 | Versioned schemas | [Schemas](schemas/) |

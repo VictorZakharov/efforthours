@@ -7,7 +7,7 @@ namespace EffortHours.Change;
 
 public sealed partial class ChangePortfolioReconciler
 {
-    public const string Version = "change-portfolio/0.4.0+change-seed/0.20.0+seed-rules/0.4.0";
+    public const string Version = "change-portfolio/0.5.0+change-seed/0.20.0+seed-rules/0.4.0";
 
     public static ChangePortfolioReport Reconcile(
         ChangePortfolioSelection selection,
@@ -290,6 +290,7 @@ public sealed partial class ChangePortfolioReconciler
             EvidenceDigest = draft.EvidenceDigest,
             PatchDigest = draft.PatchDigest,
             RepresentedPathCount = draft.Effects.Count,
+            AnalyzedPathCount = draft.Candidate.Report.Evidence.Paths.Count,
             IsolatedEffort = draft.Candidate.Report.TotalEffort,
             AllocatedExpectedHours = draft.AllocatedExpectedHours,
             AllocatedExpectedCost = rateCard is null
@@ -298,6 +299,7 @@ public sealed partial class ChangePortfolioReconciler
             Categories = draft.Candidate.Report.Categories,
             Attribution = draft.Candidate.Attribution,
             DuplicateOfItemId = draft.DuplicateOfItemId,
+            ExactComposition = draft.ExactComposition,
             UncertaintyReasons = [.. draft.UncertaintyReasons.Order(StringComparer.Ordinal)],
         };
 

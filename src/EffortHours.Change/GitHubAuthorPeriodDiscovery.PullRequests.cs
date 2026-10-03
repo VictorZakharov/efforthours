@@ -52,7 +52,8 @@ internal static partial class GitHubAuthorPeriodDiscoveryJson
         ChangePortfolioMergePolicy mergePolicy,
         ChangePortfolioCoauthorPolicy coauthorPolicy,
         ProviderQueryCounters counters,
-        CancellationToken cancellationToken)
+        CancellationToken cancellationToken,
+        string? expectedHead = null)
     {
         string json = await RunRequiredApiAsync(
             commands,
@@ -74,6 +75,12 @@ internal static partial class GitHubAuthorPeriodDiscoveryJson
             {
                 throw new InvalidOperationException(
                     "GitHub did not return the complete open-pull-request commit inventory.");
+            }
+
+            if (expectedHead is not null && (commits.Length == 0 ||
+                commits[^1].GetProperty("sha").GetString() != expectedHead))
+            {
+                throw new InvalidOperationException("Retained pull-request inventory does not match its pinned head.");
             }
 
             GitAuthorPeriodPortfolioOptions options = new()

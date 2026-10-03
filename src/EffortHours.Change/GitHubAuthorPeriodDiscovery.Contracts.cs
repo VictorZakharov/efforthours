@@ -8,7 +8,7 @@ internal sealed record DiscoveredRepository(
     IReadOnlyList<DiscoveredHead> Heads,
     int OpenPullRequestCount);
 
-internal sealed record DiscoveredHead(string Id, string ObjectId, string FetchRef);
+internal sealed record DiscoveredHead(string Id, string ObjectId, string FetchRef, bool OpenPullRequest = true);
 
 internal sealed record ResolvedDiscoveryContributor(
     string Id,

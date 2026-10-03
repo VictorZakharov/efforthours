@@ -18,11 +18,13 @@ internal static partial class GitHubAuthorPeriodDiscoveryJson
         ChangePortfolioMergePolicy mergePolicy,
         ChangePortfolioCoauthorPolicy coauthorPolicy,
         ProviderQueryCounters counters,
-        CancellationToken cancellationToken)
+        CancellationToken cancellationToken,
+        bool fullHistory = false)
     {
         string endpoint = $"repos/{repositoryIdentity}/commits?sha={Uri.EscapeDataString(branch)}" +
-            $"&since={Uri.EscapeDataString(since.ToString("O", CultureInfo.InvariantCulture))}" +
-            $"&until={Uri.EscapeDataString(until.ToString("O", CultureInfo.InvariantCulture))}&per_page=100";
+            (fullHistory ? string.Empty :
+                $"&since={Uri.EscapeDataString(since.ToString("O", CultureInfo.InvariantCulture))}" +
+                $"&until={Uri.EscapeDataString(until.ToString("O", CultureInfo.InvariantCulture))}") + "&per_page=100";
         string json = await RunRequiredApiAsync(
             commands,
             workingDirectory,

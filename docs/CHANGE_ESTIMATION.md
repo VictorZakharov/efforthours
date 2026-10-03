@@ -587,11 +587,11 @@ source excerpts.
 
 The current source Change estimator identity is
 `change-seed/0.20.0+seed-rules/0.4.0`; the portfolio reconciler identity is
-`change-portfolio/0.4.0+change-seed/0.20.0+seed-rules/0.4.0`. The earlier 0.6.0
+`change-portfolio/0.5.0+change-seed/0.20.0+seed-rules/0.4.0`. The earlier 0.6.0
 Change identity alone passed the experimental Stage A logical gate, and that
 record contains no SQL, Python, Go, Java, Kotlin, Shell, PowerShell, Terraform,
 HCL, PHP, Composer, Rust, Cargo, Docker, Compose, Jupyter, C, C++, or GDScript. Portfolio
-aggregation does not broaden that admission. Neither 0.19.0 nor portfolio 0.2.5
+aggregation does not broaden that admission. Neither 0.20.0 nor portfolio 0.5.0
 may be described as empirically calibrated, generally admitted, or production-
 ready. Frozen calibration source reports retain
 the exact earlier estimator identity they were created from.
@@ -884,12 +884,17 @@ other contributors' commits may be interleaved. EffortHours estimates each selec
 commit against its immutable parent, orders selected rows by the chosen timestamp,
 and follows only exact object-state chains. Exact net-zero chains are removed;
 overlap that is not one exact chain is retained once with attribution uncertainty.
-Repeated author patches are not pre-deduplicated because a later identical patch
-can be a meaningful reintroduction after a revert.
+Repeated author patches on shared reachable heads are not pre-deduplicated because
+a later identical patch can be a meaningful reintroduction after a revert.
+Exact represented rewrites on disjoint pinned heads and proven retained commit
+compositions equivalent to a standalone squash have the conservative exceptions
+in [HISTORICAL_CHANGE_REPORTS.md](HISTORICAL_CHANGE_REPORTS.md). They retain every
+isolated row and exact proof lineage while allocating the repeated representation
+zero. This does not provide general semantic equivalence or recovered workdays.
 
 Per-change rows and their isolated estimates remain visible, but raw commit
 estimates are not the portfolio total. Exact normalized expected allocations sum
-to the repository-attributed total. Merge/rebase equivalence, pair-programming
+to the repository-attributed total. Unproven merge/rebase equivalence, pair-programming
 shares, tests or documentation committed by another person, and work moved across
 the interval boundary remain unresolved and are never inferred as personal credit.
 

@@ -139,6 +139,8 @@
         "activeRepositoryCount": { "type": "integer", "minimum": 0 },
         "defaultHeadCount": { "type": "integer", "minimum": 0 },
         "openPullRequestHeadCount": { "type": "integer", "minimum": 0 },
+        "historicalPullRequestHeadCount": { "type": "integer", "minimum": 0 },
+        "historicalPullRequestCount": { "type": "integer", "minimum": 0 },
         "openPullRequestCount": { "type": "integer", "minimum": 0 },
         "providerQueryCount": { "type": "integer", "minimum": 0 },
         "providerPageCount": { "type": "integer", "minimum": 0 },
@@ -216,10 +218,23 @@
       "required": ["protocol", "kind", "breakdown", "capacityHoursPerDay", "contributorSelection"],
       "properties": {
         "protocol": { "const": "github-native-period-report/1.0.0" },
-        "kind": { "enum": ["this-week", "last-week", "this-month", "last-month"] },
+        "kind": { "enum": ["this-week", "last-week", "this-month", "last-month", "custom-range"] },
         "breakdown": { "enum": ["total", "calendar-day"] },
         "capacityHoursPerDay": { "type": "number", "exclusiveMinimum": 0 },
-        "contributorSelection": { "$ref": "#/$defs/contributorSelection" }
+        "contributorSelection": { "$ref": "#/$defs/contributorSelection" },
+        "retainedHistory": { "const": true },
+        "dailyEvidence": {
+          "type": "array",
+          "items": {
+            "type": "object", "additionalProperties": false,
+            "required": ["bucketId", "state", "selectedChangeCount"],
+            "properties": {
+              "bucketId": { "type": "string", "minLength": 1 },
+              "state": { "enum": ["measured-retained-change", "no-retained-change", "scope-excluded", "normalized-zero", "reconciled-zero"] },
+              "selectedChangeCount": { "type": "integer", "minimum": 0 }
+            }
+          }
+        }
       },
       "additionalProperties": false
     },
