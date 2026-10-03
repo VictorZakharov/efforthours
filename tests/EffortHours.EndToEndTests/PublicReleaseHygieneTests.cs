@@ -58,7 +58,7 @@ public sealed partial class PublicReleaseHygieneTests
         string readme = File.ReadAllText(Path.Combine(root, "PACKAGE_README.md"));
         Assert.Contains("#performance-and-scale", readme, StringComparison.Ordinal);
         Assert.DoesNotContain("#one-million-line-performance-checkpoints", readme, StringComparison.Ordinal);
-        Assert.Contains("change-seed/0.21.2", readme, StringComparison.Ordinal);
+        Assert.Contains("change-seed/0.21.3", readme, StringComparison.Ordinal);
 
         Assert.Contains("## Supported analyzers", readme, StringComparison.Ordinal);
         Assert.Contains("### Shared static-analysis boundary", readme, StringComparison.Ordinal);

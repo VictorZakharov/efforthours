@@ -78,7 +78,21 @@ public sealed class RustChangeTests
             item.Category == EffortCategory.SecurityAndAccessibility && item.Hours.Expected > 0m);
         Assert.Contains(report.Categories, item =>
             item.Category == EffortCategory.IntegrationContractAndComponentTesting && item.Hours.Expected > 0m);
-        Assert.Equal("change-seed/0.21.2+seed-rules/0.4.0", report.EstimatorVersion);
+        Assert.Equal("change-seed/0.21.3+seed-rules/0.4.0", report.EstimatorVersion);
+    }
+
+    [Fact]
+    public async Task SharedOwnershipChangesRemainRepresentedWithoutConcurrencyBudget()
+    {
+        ChangeEstimateReport report = await EstimateAsync(
+            State(("src/value.rs", "use std::sync::Arc; pub fn value() { let _ = Arc::new(1); }\n")),
+            State(("src/value.rs", "use std::sync::Arc; pub fn value() { let _ = Arc::new(2); }\n")));
+
+        Assert.True(Assert.Single(report.Evidence.Paths).Represented);
+        Assert.True(report.TotalEffort.Expected > 0m);
+        Assert.DoesNotContain(report.WorkItems, item =>
+            item.Title.Contains("background", StringComparison.OrdinalIgnoreCase));
+        Assert.Empty(EffortHours.Contracts.ContractValidation.Validate(report));
     }
 
     private static Task<ChangeEstimateReport> EstimateAsync(ChangeState before, ChangeState after) =>
