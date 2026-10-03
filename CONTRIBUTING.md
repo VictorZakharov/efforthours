@@ -88,7 +88,7 @@ MIT License.
 ## Bounded E2E shards
 
 Full PR validation executes all discovered process tests on every platform using
-four method-stable shards on Windows/macOS and two on Linux. Each shard performs
+six method-stable shards on Windows, four on macOS and three on Linux. Each shard performs
 its own locked restore and OS-specific build. The existing required
 `End-to-end (<os>)` checks verify current-run/current-attempt/head receipts with
 exact once-only coverage, identical discovery inventories, all expected shard

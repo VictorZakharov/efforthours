@@ -145,7 +145,7 @@ jobs:
         run: |
           $rows = @()
           foreach ($os in @("ubuntu-latest", "windows-latest", "macos-latest")) {
-            $count = if ($env:FULL_CI -ne "true") { 1 } elseif ($os -eq "ubuntu-latest") { 2 } else { 4 }
+            $count = if ($env:FULL_CI -ne "true") { 1 } elseif ($os -eq "ubuntu-latest") { 3 } elseif ($os -eq "windows-latest") { 6 } else { 4 }
             for ($index = 0; $index -lt $count; $index++) {
               $rows += @{ os = $os; shard = $index; count = $count }
             }
@@ -295,7 +295,7 @@ jobs:
           MATRIX_OS: ${{ matrix.os }}
         run: |
           if ($env:SHARD_RESULT -ne "success") { throw "An E2E shard failed or was cancelled." }
-          $count = if ($env:MATRIX_OS -eq "ubuntu-latest") { 2 } else { 4 }
+          $count = if ($env:MATRIX_OS -eq "ubuntu-latest") { 3 } elseif ($env:MATRIX_OS -eq "windows-latest") { 6 } else { 4 }
           ./eng/verify-e2e-shards.ps1 -Directory artifacts/e2e-receipts -Count $count -Head $env:GITHUB_SHA
 
   package-candidate:
