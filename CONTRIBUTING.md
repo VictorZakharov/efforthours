@@ -96,3 +96,8 @@ indices, and only passed outcomes. Missing, duplicate, skipped, failed or cancel
 work blocks aggregate packaging. Only sanitized test identities/outcomes/durations
 are uploaded; binaries never cross operating systems. The shard count bounds the
 extra runner cost; timings remain measurements, not CI thresholds.
+
+Shard builds skip duplicate Roslyn analyzer execution (`RunAnalyzers=false`).
+The required Quality matrix still builds the complete solution with analyzers
+and compiler warnings enabled on every OS, including the E2E project. Its success
+remains necessary for package promotion; shard builds do not replace that gate.

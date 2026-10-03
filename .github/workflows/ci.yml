@@ -246,7 +246,7 @@ jobs:
 
       - name: Build end-to-end project graph
         if: needs.pull-request-history.outputs.full_ci == 'true'
-        run: dotnet build tests/EffortHours.EndToEndTests/EffortHours.EndToEndTests.csproj --no-restore --configuration Release
+        run: dotnet build tests/EffortHours.EndToEndTests/EffortHours.EndToEndTests.csproj --no-restore --configuration Release -p:RunAnalyzers=false
 
       - name: Run process-level end-to-end tests
         if: needs.pull-request-history.outputs.full_ci == 'true'

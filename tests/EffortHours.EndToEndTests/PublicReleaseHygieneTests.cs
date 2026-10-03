@@ -202,6 +202,8 @@ public sealed partial class PublicReleaseHygieneTests
                 StringSplitOptions.None).Length - 1);
         Assert.Contains("name: Pack preview artifact", ci, StringComparison.Ordinal);
         Assert.Contains("eng/run-e2e-shard.ps1", ci, StringComparison.Ordinal);
+        Assert.Contains("-p:RunAnalyzers=false", ci, StringComparison.Ordinal);
+        Assert.DoesNotContain("RunAnalyzers=false", ci.Split("  end-to-end:", StringSplitOptions.None)[0], StringComparison.Ordinal);
         Assert.Contains("eng/verify-e2e-shards.ps1", ci, StringComparison.Ordinal);
         Assert.Contains("      - end-to-end-validation", ci, StringComparison.Ordinal);
         Assert.Contains("${{ github.run_attempt }}", ci, StringComparison.Ordinal);
