@@ -8,11 +8,11 @@
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>eh</ToolCommandName>
     <PackageId>EffortHours.Tool</PackageId>
-    <Version>0.10.0-alpha.30</Version>
+    <Version>0.10.0-alpha.31</Version>
     <Title>EffortHours CLI</Title>
     <PackageReadmeFile>PACKAGE_README.md</PackageReadmeFile>
     <PackageTags>estimation;effort-estimation;developer-tools;cli;repository-analysis;static-analysis;dotnet-tool</PackageTags>
-    <PackageReleaseNotes>0.10.0-alpha.30: Fix alpha.29 Change EHE overcount by preserving complete repository normalization context and re-estimating proven selected final endpoints, excluding discarded intermediate expansion. Keep explicit conservative uncertainty for unproven selections and preserve daily checkpoint lineage. Add native historical author-period discovery and exact retained rewrite/squash reconciliation. Change EHE remains experimental and uncalibrated under change-seed/0.21.0 and change-portfolio/0.6.0; repository seed-rules/0.4.0 priors and admission boundaries remain unchanged. Replacement stock and signed snapshot deltas remain separate measurements. Full notes: https://github.com/VictorZakharov/efforthours/blob/v0.10.0-alpha.30/CHANGELOG.md</PackageReleaseNotes>
+    <PackageReleaseNotes>0.10.0-alpha.31: Continue the alpha.30 Change EHE correction with exact selected fork/first-parent merge endpoint proofs, bounded boundary-anchor search, and raw-safe rewrite/squash suppression. Add privacy-safe endpoint rejection diagnostics and exact category stock-to-Change budget bridges with checkpoint reuse. Change EHE remains experimental and uncalibrated under change-seed/0.21.1 and change-portfolio/0.6.1; repository seed-rules/0.4.0 priors and admission boundaries remain unchanged. Private consumer totals still require an immutable rerun. Full notes: https://github.com/VictorZakharov/efforthours/blob/v0.10.0-alpha.31/CHANGELOG.md</PackageReleaseNotes>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="../EffortHours.Analysis/EffortHours.Analysis.csproj" />
