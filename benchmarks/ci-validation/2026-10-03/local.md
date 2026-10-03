@@ -178,3 +178,20 @@ The reported image already contains compatible SDK 10.0.400, while setup install
 10.0.401. The next revision honors the existing `global.json` latestFeature
 selection on installed SDKs, retains setup as a fallback, and caches dependencies
 independently. This checkpoint remains six seconds above the target.
+
+## Complete PR target reached
+
+At `6df7a1fc52aedd17f8955ff81faa31bed1b582b0`,
+[run 37131407694](https://github.com/VictorZakharov/efforthours/actions/runs/37131407694)
+starts at 14:55:58 UTC and completes its final package gate at 14:58:53 UTC:
+**175 seconds (2m55s), including all runner queues and package promotion**.
+Every required check passes; coverage coordinators verify all 305 cases exactly
+once on each OS. Windows, macOS and Linux coverage jobs take 140, 144 and 127
+seconds respectively. The observed macOS SDK is the installed 10.0.400 accepted
+by `global.json`; its dependency cache misses, so this observation includes a
+cold locked restore rather than relying on a warm dependency-cache result.
+
+This establishes the requested sub-three-minute checkpoint, not a guarantee
+under different hosted load or additional workflows. The following rebase includes
+only the alpha.31 release metadata from #247 and this measurement record; its
+current-head required checks must pass before handoff.
