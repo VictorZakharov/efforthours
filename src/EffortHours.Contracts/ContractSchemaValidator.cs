@@ -8,6 +8,10 @@ public sealed record SchemaValidationResult(bool IsValid, IReadOnlyList<string> 
 
 public static class ContractSchemaValidator
 {
+    // Referenced schemas share lazy resolution caches; evaluation must serialize
+    // access across roots, not just across calls for the same schema name.
+    private static readonly Lock EvaluationGate = new();
+
     private static readonly Lazy<Dictionary<string, JsonSchema>> Schemas =
         new(CreateSchemas, LazyThreadSafetyMode.ExecutionAndPublication);
 
@@ -24,23 +28,26 @@ public static class ContractSchemaValidator
         try
         {
             using JsonDocument document = JsonDocument.Parse(json);
-            EvaluationOptions options = CreateEvaluationOptions();
-            EvaluationResults results = schema.Evaluate(
-                document.RootElement,
-                options);
-
-            if (results.IsValid)
+            lock (EvaluationGate)
             {
-                return new SchemaValidationResult(true, []);
-            }
+                EvaluationOptions options = CreateEvaluationOptions();
+                EvaluationResults results = schema.Evaluate(
+                    document.RootElement,
+                    options);
 
-            string[] errors = [.. FlattenErrors(results)
+                if (results.IsValid)
+                {
+                    return new SchemaValidationResult(true, []);
+                }
+
+                string[] errors = [.. FlattenErrors(results)
                 .Distinct(StringComparer.Ordinal)
                 .Order(StringComparer.Ordinal)];
 
-            return new SchemaValidationResult(
-                false,
-                errors.Length == 0 ? ["The document does not satisfy the selected schema."] : errors);
+                return new SchemaValidationResult(
+                    false,
+                    errors.Length == 0 ? ["The document does not satisfy the selected schema."] : errors);
+            }
         }
         catch (JsonException exception)
         {
