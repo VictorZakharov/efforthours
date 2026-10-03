@@ -146,6 +146,7 @@ are not redistributed inside `EffortHours.Tool`.
 | Action | Release | Commit | License |
 | --- | --- | --- | --- |
 | [`actions/checkout`](https://github.com/actions/checkout) | `7.0.1` | `3d3c42e5aac5ba805825da76410c181273ba90b1` | MIT |
+| [`actions/cache`](https://github.com/actions/cache) | `5.1.0` | `caa296126883cff596d87d8935842f9db880ef25` | MIT |
 | [`actions/setup-dotnet`](https://github.com/actions/setup-dotnet) | `6.0.0` | `a98b56852c35b8e3190ac28c8c2271da59106c68` | MIT |
 | [`actions/upload-artifact`](https://github.com/actions/upload-artifact) | `7.0.1` | `043fb46d1a93c77aae656e7c1c64a875d1fc6a0a` | MIT |
 | [`actions/download-artifact`](https://github.com/actions/download-artifact) | `8.0.1` | `3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c` | MIT |

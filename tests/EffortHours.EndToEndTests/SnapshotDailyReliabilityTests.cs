@@ -6,7 +6,7 @@ using EffortHours.Estimation;
 
 namespace EffortHours.EndToEndTests;
 
-public sealed partial class ChangeCliTests
+public sealed partial class SnapshotDailyCliTests : ChangeCliTestSupport
 {
     [Fact]
     public async Task DailyCancellationRetainsCompletedMeasurementsAndResumeFinishesRemainingWork()

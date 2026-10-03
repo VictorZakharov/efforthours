@@ -6,7 +6,7 @@ using EffortHours.Contracts.V1;
 
 namespace EffortHours.EndToEndTests;
 
-public sealed partial class ChangeCliTests
+public sealed partial class SnapshotPortfolioCliTests : ChangeCliTestSupport
 {
     private static readonly string[] MeasurementBuildInputs = ["Directory.Packages.props", "Directory.Build.props", "global.json"];
     [Fact]

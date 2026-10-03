@@ -7,7 +7,7 @@ using EffortHours.Contracts.V1;
 
 namespace EffortHours.EndToEndTests;
 
-public sealed partial class ChangeCliTests
+public sealed partial class ChangePortfolioCliTests : ChangeCliTestSupport
 {
     [Fact]
     public async Task HistoricalPeriodRecoversJanuaryAuthorDateFromMergedPrAndReusesEvidence()
@@ -71,23 +71,6 @@ public sealed partial class ChangeCliTests
         {
             DeleteDirectory(workspace);
         }
-    }
-
-    private static async Task<string> HistoricalCommitAsync(GitFixture repository, string message, string authorDate, string committerDate)
-    {
-        await repository.GitAsync("add", "--all");
-        System.Diagnostics.ProcessStartInfo start = StartInfo("git", repository.RootPath);
-        start.Environment["GIT_AUTHOR_DATE"] = authorDate;
-        start.Environment["GIT_COMMITTER_DATE"] = committerDate;
-        start.Environment["GIT_AUTHOR_NAME"] = "Selected Contributor";
-        start.Environment["GIT_AUTHOR_EMAIL"] = "selected@example.invalid";
-        foreach (string argument in new[] { "commit", "--quiet", "-m", message })
-        {
-            start.ArgumentList.Add(argument);
-        }
-
-        Assert.Equal(0, (await RunAsync(start)).ExitCode);
-        return await repository.GitAsync("rev-parse", "HEAD");
     }
 
     private sealed class HistoricalProviderRunner(string baseline, string implementation, string head) : IExternalCommandRunner

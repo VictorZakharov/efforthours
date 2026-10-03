@@ -8,7 +8,7 @@ using EffortHours.Estimation;
 
 namespace EffortHours.EndToEndTests;
 
-public sealed partial class ChangeCliTests
+public sealed partial class SnapshotPortfolioCliTests : ChangeCliTestSupport
 {
     [Fact]
     public async Task SnapshotPortfolioWarmRunAndPortableReceiptsNeedNoExportOrEstimator()
@@ -162,51 +162,4 @@ public sealed partial class ChangeCliTests
             ContractJson.Deserialize<EstimateReport>(local.StandardOutput).TotalEffort);
     }
 
-    private static async Task<GitFixture> SnapshotFixtureAsync()
-    {
-        GitFixture repository = await GitFixture.CreateAsync();
-        repository.WriteText("App.csproj", ProjectFile);
-        repository.WriteText("src/Main.cs", "public class Main { public int Add(int a, int b) => a + b; }\n");
-        repository.WriteText("Other.cs", "public class Other { public string Message => \"source-secret\"; }\n");
-        repository.WriteText("README.md", "# Synthetic snapshot portfolio fixture\n");
-        repository.WriteText(".gitignore", "ignored.cs\n");
-        repository.WriteText(".hidden", "hidden file\n");
-        _ = await SnapshotCommitAtAsync(repository, "initial snapshot", "2026-01-15T12:00:00Z");
-        return repository;
-    }
-
-    private static (string Manifest, string Local, string Checkpoint) WriteSnapshotInputs(string execution, string repository)
-    {
-        SnapshotPortfolioManifest manifest = new()
-        {
-            Year = 2026,
-            Timezone = "UTC",
-            Profile = EstimationProfile.Implementation,
-            Projects = [new() { Id = "demo", Ref = "main", Areas =
-                [new() { Id = "source", Include = ["src/**"] }, new() { Id = "support", Include = ["**"] }] }],
-        };
-        SnapshotPortfolioLocalMap local = new() { Projects = [new() { Id = "demo", RepositoryPath = repository }] };
-        string manifestPath = Path.Combine(execution, "portfolio.json");
-        string localPath = Path.Combine(execution, "local.json");
-        File.WriteAllText(manifestPath, ContractJson.SerializeDocument(manifest), Encoding.UTF8);
-        File.WriteAllText(localPath, ContractJson.SerializeDocument(local), Encoding.UTF8);
-        return (manifestPath, localPath, Path.Combine(execution, "checkpoint"));
-    }
-
-    private static Task<ProcessResult> SnapshotRunAsync(string manifest, string local, string checkpoint, params string[] options) =>
-        RunCliAsync(["estimate", "portfolio", "--manifest", manifest, "--local", local, "--checkpoint", checkpoint,
-            "--as-of", "2026-04-15T12:00:00Z", "--no-rate", .. options]);
-
-    private static async Task<string> SnapshotCommitAtAsync(GitFixture repository, string message, string timestamp, bool allowEmpty = false)
-    {
-        await repository.GitAsync("add", "--all");
-        System.Diagnostics.ProcessStartInfo start = StartInfo("git", repository.RootPath);
-        start.Environment["GIT_AUTHOR_DATE"] = timestamp;
-        start.Environment["GIT_COMMITTER_DATE"] = timestamp;
-        foreach (string arg in new[] { "commit", "--quiet", "-m", message }) start.ArgumentList.Add(arg);
-        if (allowEmpty) start.ArgumentList.Add("--allow-empty");
-        ProcessResult commit = await RunAsync(start);
-        Assert.True(commit.ExitCode == 0, commit.StandardError);
-        return await repository.GitAsync("rev-parse", "HEAD");
-    }
 }

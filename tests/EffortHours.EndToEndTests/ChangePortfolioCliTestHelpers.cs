@@ -3,15 +3,15 @@ using System.Text.Json;
 
 namespace EffortHours.EndToEndTests;
 
-public sealed partial class ChangeCliTests
+public abstract partial class ChangeCliTestSupport
 {
-    private static readonly string[] ContributorAAliases =
+    protected static readonly string[] ContributorAAliases =
         ["Contributor A", "selected-a@example.invalid"];
 
-    private static readonly string[] ContributorBAliases =
+    protected static readonly string[] ContributorBAliases =
         ["selected-b@example.invalid", "Contributor B"];
 
-    private static async Task CloneAsync(string sourcePath, string targetPath)
+    protected static async Task CloneAsync(string sourcePath, string targetPath)
     {
         string workingDirectory = Path.GetDirectoryName(targetPath)!;
         ProcessStartInfo startInfo = StartInfo("git", workingDirectory);
@@ -24,7 +24,7 @@ public sealed partial class ChangeCliTests
         Assert.True(result.ExitCode == 0, $"git clone failed: {result.StandardError}");
     }
 
-    private static async Task CloneBareAsync(string sourcePath, string targetPath)
+    protected static async Task CloneBareAsync(string sourcePath, string targetPath)
     {
         string workingDirectory = Path.GetDirectoryName(targetPath)!;
         Directory.CreateDirectory(workingDirectory);
@@ -39,7 +39,7 @@ public sealed partial class ChangeCliTests
         Assert.True(result.ExitCode == 0, $"git clone --bare failed: {result.StandardError}");
     }
 
-    private static void WriteManifest(string path, params object[] repositories)
+    protected static void WriteManifest(string path, params object[] repositories)
     {
         File.WriteAllText(
             path,
@@ -64,7 +64,7 @@ public sealed partial class ChangeCliTests
             }));
     }
 
-    private static void DeleteDirectory(string path)
+    protected static void DeleteDirectory(string path)
     {
         if (!Directory.Exists(path))
         {

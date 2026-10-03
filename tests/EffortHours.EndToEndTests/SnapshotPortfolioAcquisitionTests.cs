@@ -2,7 +2,7 @@ using EffortHours.Change;
 
 namespace EffortHours.EndToEndTests;
 
-public sealed partial class ChangeCliTests
+public sealed partial class SnapshotPortfolioCliTests : ChangeCliTestSupport
 {
     private static async Task<string> SnapshotGitAsync(string root, params string[] arguments)
     {
