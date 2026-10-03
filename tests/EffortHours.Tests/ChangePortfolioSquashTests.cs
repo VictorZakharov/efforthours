@@ -92,6 +92,40 @@ public sealed partial class ChangePortfolioReconcilerTests
         Assert.True(report.Items.Single(item => item.SelectorId == "squash-extra").AllocatedExpectedHours > 0m);
     }
 
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public async Task CompositionRequiresDisjointReachabilityEvenWhenRevertIsNotSelected(bool sharedHead)
+    {
+        ChangeState initial = State(("Demo.csproj", ProjectFile));
+        ChangeState first = State(("Demo.csproj", ProjectFile), ("A.cs", "public class A { }"));
+        ChangeState final = State(("Demo.csproj", ProjectFile), ("A.cs", "public class A { }"),
+            ("B.cs", "public class B { }"));
+        DateTimeOffset day = new(2026, 1, 19, 12, 0, 0, TimeSpan.Zero);
+        ChangePortfolioCandidate[] candidates =
+        [
+            Candidate("repo", "first", await ReportAsync(ChangeSelectionKind.Commit, 0, initial, first), day),
+            Candidate("repo", "second", await ReportAsync(ChangeSelectionKind.Commit, 0, first, final), day.AddDays(1)),
+            Candidate("repo", "reintroduced", await ReportAsync(ChangeSelectionKind.Commit, 0, initial, final), day.AddDays(3)),
+        ];
+        ChangePortfolioItemDraft[] drafts = [.. candidates.Select((candidate, index) =>
+            ChangePortfolioIdentity.CreateDraft(candidate with
+            {
+                Attribution = candidate.Attribution with
+                {
+                    HeadIds = [index == 2 && !sharedHead ? "rewritten" : "default"],
+                },
+            }))];
+
+        ChangePortfolioExactCompositionNormalizer.Mark(drafts);
+
+        Assert.Equal(sharedHead ? 0 : 1, drafts.Count(draft => draft.ExactComposition is not null));
+        if (sharedHead)
+        {
+            Assert.All(drafts, draft => Assert.False(draft.Suppressed));
+        }
+    }
+
     [Fact]
     public async Task DisconnectedLookalikeDeltasAreNotACompositionProof()
     {

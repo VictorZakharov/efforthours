@@ -88,6 +88,7 @@ public sealed partial class ChangeCliTests
                 Assert.False(item.TryGetProperty("exactComposition", out _));
                 Assert.False(item.TryGetProperty("duplicateOfItemId", out _));
                 Assert.True(item.GetProperty("isolatedEffort").GetProperty("expected").GetDecimal() > 0m);
+                Assert.True(item.GetProperty("allocatedExpectedHours").GetDecimal() > 0m);
             }
             repository.WriteText("FollowUp.cs", "namespace Demo; public class FollowUp { public string Name => \"follow-up\"; }\n");
             string followUp = await HistoricalCommitAsync(repository, "follow-up", "2026-01-21T12:00:00Z", "2026-03-20T12:00:00Z");

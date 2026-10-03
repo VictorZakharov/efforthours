@@ -125,6 +125,22 @@ internal static class ChangePortfolioExactCompositionNormalizer
         Dictionary<string, ChangePortfolioItemDraft> byHead)
     {
         // A later reintroduction after a revert is not a rewritten representation.
+        // Selected ancestry can omit a revert (another author or outside the interval).
+        // Shared reachable heads therefore cannot certify composition equivalence.
+        if (candidate.Candidate.Attribution.HeadIds is { Count: > 0 } heads)
+        {
+            if (chain.Any(member => member.Candidate.Attribution.HeadIds is not { Count: > 0 } memberHeads ||
+                heads.Intersect(memberHeads, StringComparer.Ordinal).Any()))
+            {
+                return true;
+            }
+        }
+        else if (chain.Any(member => member.Candidate.Attribution.HeadIds is { Count: > 0 }) ||
+            candidate.Candidate.Report.Selection.Base.ObjectId != chain[^1].Candidate.Report.Selection.Base.ObjectId)
+        {
+            return true;
+        }
+
         return Reaches(candidate, chain.Select(member => member.Id).ToHashSet(StringComparer.Ordinal)) ||
             Reaches(chain[^1], new HashSet<string>([candidate.Id], StringComparer.Ordinal));
 

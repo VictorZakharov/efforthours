@@ -591,7 +591,7 @@ The current source Change estimator identity is
 Change identity alone passed the experimental Stage A logical gate, and that
 record contains no SQL, Python, Go, Java, Kotlin, Shell, PowerShell, Terraform,
 HCL, PHP, Composer, Rust, Cargo, Docker, Compose, Jupyter, C, C++, or GDScript. Portfolio
-aggregation does not broaden that admission. Neither 0.19.0 nor portfolio 0.3.0
+aggregation does not broaden that admission. Neither 0.20.0 nor portfolio 0.5.0
 may be described as empirically calibrated, generally admitted, or production-
 ready. Frozen calibration source reports retain
 the exact earlier estimator identity they were created from.

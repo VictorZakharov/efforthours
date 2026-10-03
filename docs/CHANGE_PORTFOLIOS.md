@@ -581,7 +581,7 @@ inventory reuse rules in `CHANGE_ESTIMATION.md`. Identity and time still select
 rows only; neither the candidate count nor the size of the reachable graph enters
 an effort rule.
 
-`change-portfolio/0.3.0` keeps one invocation-scoped execution context per local
+`change-portfolio/0.2.5` keeps one invocation-scoped execution context per local
 repository. Candidate plans are grouped by canonical repository root and
 scheduled with at most two repository sessions active at once. Within each
 repository, a deterministic 16-row delta-prime chunk feeds one ordered snapshot

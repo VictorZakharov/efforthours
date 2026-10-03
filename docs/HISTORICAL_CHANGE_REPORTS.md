@@ -51,7 +51,7 @@ Low-level manifest `--scope` admission remains a separate follow-up.
 
 ## Exact retained equivalence
 
-Portfolio `change-portfolio/0.3.0` adds two conservative proofs without changing
+Portfolio `change-portfolio/0.5.0` adds two conservative proofs without changing
 the source Change estimator or priors:
 
 - An exact represented patch repeated on disjoint pinned head sets is counted
@@ -61,7 +61,10 @@ the source Change estimator or priors:
   represented endpoint delta as a standalone squash representation. Every touched
   path must connect through matching immutable states, and the canonical net
   path/base/head digest must equal the standalone patch digest. Selected ancestor
-  relationships prevent treating a later reintroduction as a rewritten squash.
+  relationships and disjoint head reachability prevent treating a later
+  reintroduction as a rewritten squash, even when a revert is not selected.
+  Without head-reachability metadata, the standalone and earliest component must
+  share the exact base commit in addition to the endpoint proof.
 
 The component chain remains represented; the standalone equivalent receives zero
 normalized allocation and retains its isolated estimate plus
