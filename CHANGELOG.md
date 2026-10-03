@@ -6,6 +6,8 @@ may still change public contracts with explicit documentation.
 
 ## Unreleased
 
+## 0.10.0-alpha.30 - 2026-10-03
+
 ### Added
 
 - Native historical `change period --since ... --until ...` discovers retained
