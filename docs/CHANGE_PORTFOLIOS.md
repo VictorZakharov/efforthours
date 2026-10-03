@@ -870,3 +870,12 @@ Changing presentation geometry within one grouping policy still reuses evidence.
 Changing grouping policy requires a different checkpoint. Old daily v1.0.0 reports
 remain schema-valid; newly generated reports use v1.1.0. Frozen artifacts are not
 rewritten, and no model-admission or numerical-calibration claim changes.
+
+## Capability lineage revision (0.6.2)
+
+Portfolio 0.6.2 composes Change 0.21.2's exact capability path binding and test-only
+source exclusion. Exact selected endpoint proof 1.1.0, independent-local-day 1.1.0,
+full admitted context, contributor allocation, and resource limits remain in force.
+Estimator-bound checkpoints invalidate earlier receipts rather than reusing their
+old numerical/categorical budgets. Geometry changes within the same independent
+policy retain exact semantics. See [REMAINING_BUDGET_REVIEW.md](REMAINING_BUDGET_REVIEW.md).

@@ -15,7 +15,7 @@ internal sealed record ChangeWorkItemResult(
 
 internal static partial class ChangeWorkItemBuilder
 {
-    public const string EstimatorVersion = "change-seed/0.21.1";
+    public const string EstimatorVersion = "change-seed/0.21.2";
 
     public static ChangeWorkItemResult Build(
         ChangeSelection selection,
@@ -37,6 +37,7 @@ internal static partial class ChangeWorkItemBuilder
         HashSet<EffortCategory> comprehensionCategories = [];
         List<WorkItem> items = [];
         BudgetBridge bridge = new(baseCapabilities, headCapabilities);
+        int unboundGrowthCapabilities = 0;
 
         foreach (string capabilityId in baseCapabilities.Keys
             .Union(headCapabilities.Keys, StringComparer.Ordinal)
@@ -64,10 +65,14 @@ internal static partial class ChangeWorkItemBuilder
 
             if (expectedDifference > 0m)
             {
+                if (touched.Length == 0)
+                {
+                    unboundGrowthCapabilities++;
+                    continue;
+                }
+
                 EffortRange marginal = PositiveDifference(baseHours, headHours);
-                ChangePathEvidence[] logicalCandidates = touched.Length > 0
-                    ? touched
-                    : represented;
+                ChangePathEvidence[] logicalCandidates = touched;
                 bool modifiesExistingArtifact = logicalCandidates.Any(path =>
                     path.Status == ChangePathStatus.Modified);
                 if (logicalCandidates.Length > 0 &&
@@ -144,9 +149,8 @@ internal static partial class ChangeWorkItemBuilder
                 continue;
             }
 
-            string[] evidenceIds = touched.Length > 0
-                ? [.. touched.Select(path => path.Id).Distinct(StringComparer.Ordinal).Order(StringComparer.Ordinal)]
-                : [.. represented.Select(path => path.Id).Order(StringComparer.Ordinal)];
+            string[] evidenceIds = [.. touched.Select(path => path.Id)
+                .Distinct(StringComparer.Ordinal).Order(StringComparer.Ordinal)];
             if (evidenceIds.Length == 0)
             {
                 continue;
@@ -327,7 +331,7 @@ internal static partial class ChangeWorkItemBuilder
             categories,
             ContractValidation.Sum(ordered.Select(item => item.Hours)))
         {
-            Diagnostics = bridge.Diagnostics(ordered),
+            Diagnostics = [.. bridge.Diagnostics(ordered), .. UnboundGrowthDiagnostics(unboundGrowthCapabilities)],
         };
     }
 }

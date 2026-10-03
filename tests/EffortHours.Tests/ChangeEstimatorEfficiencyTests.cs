@@ -12,7 +12,7 @@ public sealed class ChangeEstimatorEfficiencyTests
         "</PropertyGroup></Project>";
 
     [Fact]
-    public async Task MixedCapabilityRolesHaveDisjointCategoriesWithoutMultiplyingBudget()
+    public async Task OwnedSourceAndTestsHaveDisjointCapabilityBudgets()
     {
         ChangeState before = State(
             ("src/Demo/Demo.csproj", ProjectFile),
@@ -36,7 +36,7 @@ public sealed class ChangeEstimatorEfficiencyTests
             item.Title.Contains("maintained internal logic", StringComparison.OrdinalIgnoreCase))];
         WorkItem[] production = [.. capability.Where(item =>
             item.Category == EffortCategory.ProductionImplementation)];
-        WorkItem[] tests = [.. capability.Where(item => item.Category == EffortCategory.UnitTesting)];
+        WorkItem[] tests = [.. report.WorkItems.Where(item => item.Category == EffortCategory.UnitTesting)];
 
         Assert.NotEmpty(production);
         Assert.NotEmpty(tests);
@@ -49,7 +49,7 @@ public sealed class ChangeEstimatorEfficiencyTests
         Assert.All(
             Evidence(report, tests),
             path => Assert.Contains("role:test", path.Tags));
-        Assert.Equal(2.5m, capability.Sum(item => item.Hours.Expected));
+        Assert.Equal(2m, capability.Sum(item => item.Hours.Expected));
         Assert.All(report.WorkItems, item => Assert.InRange(item.Hours.Expected, 0.01m, 1.5m));
         Assert.Equal(
             report.WorkItems.Count,

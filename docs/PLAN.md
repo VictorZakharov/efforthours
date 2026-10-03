@@ -59,7 +59,7 @@ The repository already provides:
 
 This is an experimental public alpha. Repository `seed-rules/0.4.0` remains
 uncalibrated. Current Change reports use
-`change-seed/0.21.1+seed-rules/0.4.0`, while only the documented 0.6.0 Stage A
+`change-seed/0.21.2+seed-rules/0.4.0`, while only the documented 0.6.0 Stage A
 subset has limited logical admission. No local ML model and no automatic host-
 review budget is admitted.
 

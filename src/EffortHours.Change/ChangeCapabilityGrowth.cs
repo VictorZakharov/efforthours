@@ -14,18 +14,9 @@ internal static partial class ChangeWorkItemBuilder
         string[] measures = tests ? ["test-methods", "test-cases", "parameterized-cases", "assertions"] : ["methods", "functions", "types"];
         bool bound = after.EvidenceIds.Where(headFacts.ContainsKey).Select(id => headFacts[id]).Any(fact =>
             fact.Measurements.Any(measurement => measures.Contains(measurement.Name, StringComparer.Ordinal)) &&
-            (FactTouches(fact, paths) || fact.Kind == EvidenceKinds.SourceStructure && fact.Scope == after.Scope &&
-                paths.Any(path => InScope(path.Path, after.Scope))));
+            FactTouches(fact, paths));
         if (!bound) return false;
         return measures.Any(name => Units(after, headFacts, name) > Units(before, baseFacts, name));
-
-        static bool InScope(string path, string scope)
-        {
-            string normalized = NormalizePath(scope);
-            int separator = normalized.LastIndexOf('/');
-            string root = separator < 0 ? "" : normalized[..(separator + 1)];
-            return path.StartsWith(root, StringComparison.Ordinal);
-        }
 
         decimal Units(Capability capability, Dictionary<string, EvidenceFact> facts, string name) => capability.EvidenceIds
             .Where(facts.ContainsKey).Select(id => facts[id])

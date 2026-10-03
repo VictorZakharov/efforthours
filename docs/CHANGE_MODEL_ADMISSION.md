@@ -689,3 +689,21 @@ ranges/categories, exact allocations, cross-day invariance, warm receipt reuse,
 and read-only inputs. No private target, frozen label/report, sealed partition,
 rate, or admission gate changes. These are structural correctness and arithmetic
 diagnostics; all prior experimental/uncalibrated limitations remain.
+
+## `change-seed/0.21.2` capability lineage correctness revision
+
+Exact .NET parser file lineage replaces global changed-path binding. Unbound
+positive capabilities cannot borrow unrelated paths. Analyzer-recognized tests
+cannot enable broad production source budgets, including disagreement with the
+common scanner's path classification. Existing priors and seed numerical reports
+remain unchanged. Public in-memory regressions cover nested ownership, unrelated
+changes, distinct additions, conflicting test classification, unchanged stock,
+schema validity, and preserved located mixed-role conservation. Cache identities
+advance with .NET analyzer 0.3.6 and portfolio 0.6.2.
+
+The [anonymized private-input diagnostic](REMAINING_BUDGET_REVIEW.md) uses frozen
+selection and reports mixed movement: A decreases, B increases, C is unchanged.
+It changes no public frozen report, label, test partition, numerical prior, gate,
+or admission claim. Additional numerical and semantic-overlap questions remain
+explicitly unresolved. This uses the general correctness exception; Stage A 0.6.0
+remains the last admitted baseline and estimates remain experimental/uncalibrated.

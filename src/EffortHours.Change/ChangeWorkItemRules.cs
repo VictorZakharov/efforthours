@@ -9,7 +9,10 @@ internal static partial class ChangeWorkItemBuilder
 {
     private static Dictionary<string, Capability> Capabilities(
         EstimateReport report,
-        Dictionary<string, EvidenceFact> facts) => report.WorkItems
+        Dictionary<string, EvidenceFact> facts)
+    {
+        HashSet<string> testPaths = SourceBackboneTestPaths(facts.Values);
+        return report.WorkItems
         .GroupBy(item => CapabilityId(item.Id), StringComparer.Ordinal)
         .ToDictionary(
             group => group.Key,
@@ -24,6 +27,12 @@ internal static partial class ChangeWorkItemBuilder
                     .SelectMany(id => facts.TryGetValue(id, out EvidenceFact? fact) ? FactPaths(fact) : [])
                     .Distinct(StringComparer.Ordinal)
                     .ToHashSet(StringComparer.Ordinal);
+                if (first.Category == EffortCategory.ProductionImplementation &&
+                    IsSourceBackbone(first.Estimator.Id))
+                {
+                    paths.ExceptWith(testPaths);
+                }
+
                 return new Capability(
                     group.Key,
                     first.Category,
@@ -39,6 +48,7 @@ internal static partial class ChangeWorkItemBuilder
                         .Order(StringComparer.Ordinal)]);
             },
             StringComparer.Ordinal);
+    }
 
     private static IEnumerable<string> FactPaths(EvidenceFact fact)
     {

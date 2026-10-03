@@ -9,7 +9,7 @@ directories; and two saved repository-evidence bundles. Portfolio reconciliation
 supports repeated PRs, multi-repository manifests, and bounded author-period
 selection under the separate `CHANGE_PORTFOLIOS.md` contract.
 
-Current source reports use `change-seed/0.21.1+seed-rules/0.4.0`. The model remains
+Current source reports use `change-seed/0.21.2+seed-rules/0.4.0`. The model remains
 experimental and is not empirically production-validated. Only the documented
 0.6.0 Stage A subset has passed a model-authored logical gate for eligible
 4-to-32-hour changes; later ecosystem extensions preserve those admitted rules but
@@ -592,8 +592,8 @@ verification, and post-EHE pricing. They emit neither local repository paths nor
 source excerpts.
 
 The current source Change estimator identity is
-`change-seed/0.21.1+seed-rules/0.4.0`; the portfolio reconciler identity is
-`change-portfolio/0.6.1+change-seed/0.21.1+seed-rules/0.4.0`. The earlier 0.6.0
+`change-seed/0.21.2+seed-rules/0.4.0`; the portfolio reconciler identity is
+`change-portfolio/0.6.2+change-seed/0.21.2+seed-rules/0.4.0`. The earlier 0.6.0
 Change identity alone passed the experimental Stage A logical gate, and that
 record contains no SQL, Python, Go, Java, Kotlin, Shell, PowerShell, Terraform,
 HCL, PHP, Composer, Rust, Cargo, Docker, Compose, Jupyter, C, C++, or GDScript. Portfolio
@@ -955,8 +955,8 @@ For production and test capabilities with evidence-bound growth in normalized
 semantic units (methods/functions/types or test methods/cases/assertions), retain
 the componentwise larger of the existing modification range and the positive
 normalized repository-capability marginal. Do not add these two budgets.
-Aggregate C# structure facts bind through their owning capability scope and
-represented paths; located test/source facts bind directly through changed paths.
+Aggregate C# structure facts bind through the analyzer's exact owned source-file
+locations; located test/source facts bind directly through changed paths.
 Compare the same capability's complete measurements at both endpoints.
 
 This corrects the eight-hour modification ceiling masking substantial supported
@@ -1011,3 +1011,25 @@ This adds diagnostic arithmetic, not an equality target, new prior, model fit,
 interval interpretation, calibration, or admission. The supplied anonymized totals
 cannot establish which budget explains a private project; an exact immutable
 consumer rerun is needed. Frozen reports and labels retain their producer versions.
+
+## Capability path-binding correctness revision (0.21.2)
+
+Positive stock growth requires a represented path bound by its native capability
+facts. Missing lineage cannot substitute the complete changed-path population.
+Unbound positive capabilities emit privacy-safe `FB5211`; unexplained maintained
+paths still use the ordinary category/status fallback. Broad production source
+backbones exclude paths with common test classification or located .NET,
+JavaScript, or ecosystem test facts, even when path-based classification says
+source. Tests cannot enable a second residual production-code budget.
+
+.NET analyzer 0.3.6 adds exact statically parsed source-file locations to aggregate
+structure facts without changing measurements, stable fact IDs, or seed hours.
+Project ownership comes from the existing analyzer; directory-prefix guesses no
+longer enable supported growth. Located mixed-role specialized capabilities
+retain the existing conserved role partition. No numerical prior, final-effect
+proof, independent-day policy, or full normalization context changes. Source and
+portfolio versions advance to 0.21.2 and 0.6.2 to invalidate old receipts.
+
+The anonymized [remaining-budget review](REMAINING_BUDGET_REVIEW.md) records both
+corrections, the frozen comparison, and unresolved numerical/overlap questions.
+These correctness revisions do not calibrate hours or require stock equality.
