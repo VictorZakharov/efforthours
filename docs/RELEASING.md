@@ -169,3 +169,15 @@ publish a new package. Never rebuild different bytes under an existing version.
 A pushed public tag is likewise immutable even when its workflow stops before
 packing or publication. Do not delete or move it: record the skipped release, fix
 the release path, increment the prerelease version, and tag the corrected merge.
+
+## Bounded E2E shards
+
+Full PR validation executes all discovered process tests on every platform using
+four method-stable shards on Windows/macOS and two on Linux. Each shard performs
+its own locked restore and OS-specific build. The existing required
+`End-to-end (<os>)` checks verify current-run/current-attempt/head receipts with
+exact once-only coverage, identical discovery inventories, all expected shard
+indices, and only passed outcomes. Missing, duplicate, skipped, failed or cancelled
+work blocks aggregate packaging. Only sanitized test identities/outcomes/durations
+are uploaded; binaries never cross operating systems. The shard count bounds the
+extra runner cost; timings remain measurements, not CI thresholds.

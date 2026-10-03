@@ -21,6 +21,8 @@ may still change public contracts with explicit documentation.
 
 ### Fixed
 
+- Shard process tests across bounded platform workers, retaining all required
+  check names and exact current-head once-only coverage before packaging.
 - Split the serial Change CLI end-to-end test collection into independent
   selector, portfolio, calendar, snapshot portfolio, and daily snapshot groups.
   Existing test cases, platform coverage, runner concurrency limits, and release
