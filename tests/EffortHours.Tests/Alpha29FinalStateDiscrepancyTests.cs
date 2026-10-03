@@ -155,7 +155,7 @@ public sealed class Alpha29FinalStateDiscrepancyTests(ITestOutputHelper output)
         };
         IReadOnlyList<ChangePortfolioCandidate> failedInventory = await new ChangeEstimator().PreparePortfolioFinalDeltasAsync(
             Selection(closing.ObjectId), [first, incomplete], EstimationProfile.Implementation,
-            (_, id, _) => Task.FromResult<IChangeSnapshot>(id == opening.ObjectId ? opening : closing));
+            (_, id, _) => Task.FromResult<IChangeSnapshot>(id == opening.ObjectId ? opening : id == middle.ObjectId ? middle : closing));
         Assert.All(failedInventory, candidate => Assert.Null(candidate.FinalDelta));
         IReadOnlyList<ChangePortfolioCandidate> broken = await new ChangeEstimator().PreparePortfolioFinalDeltasAsync(
             Selection(closing.ObjectId), [first, Candidate("branch", await ChangeAsync(opening, closing), 10)],
@@ -239,7 +239,7 @@ public sealed class Alpha29FinalStateDiscrepancyTests(ITestOutputHelper output)
         IReadOnlyList<ChangePortfolioCandidate> prepared = await new ChangeEstimator().PreparePortfolioFinalDeltasAsync(
             Selection(extra.ObjectId), [Candidate("expansion", await ChangeAsync(opening, expansion), 9), second],
             EstimationProfile.Implementation,
-            (_, id, _) => Task.FromResult<IChangeSnapshot>(id == opening.ObjectId ? opening : extra));
+            (_, id, _) => Task.FromResult<IChangeSnapshot>(id == opening.ObjectId ? opening : id == expansion.ObjectId ? expansion : extra));
         Assert.All(prepared, candidate => Assert.Null(candidate.FinalDelta));
     }
 

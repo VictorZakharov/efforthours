@@ -13,6 +13,8 @@ public sealed record ChangePortfolioCandidate
     public required ChangePortfolioAttribution Attribution { get; init; }
 
     public ChangePortfolioFinalDelta? FinalDelta { get; init; }
+
+    public ChangePortfolioFinalDeltaRejection? FinalDeltaRejection { get; init; }
 }
 
 internal sealed class ChangePortfolioItemDraft

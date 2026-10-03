@@ -7,7 +7,7 @@ namespace EffortHours.Change;
 
 public sealed partial class ChangePortfolioReconciler
 {
-    public const string Version = "change-portfolio/0.6.0+change-seed/0.21.0+seed-rules/0.4.0";
+    public const string Version = "change-portfolio/0.6.1+change-seed/0.21.1+seed-rules/0.4.0";
 
     public static ChangePortfolioReport Reconcile(
         ChangePortfolioSelection selection,
@@ -24,6 +24,8 @@ public sealed partial class ChangePortfolioReconciler
         ArgumentNullException.ThrowIfNull(selection);
         ArgumentNullException.ThrowIfNull(candidates);
         ValidateInputs(selection, candidates, profile);
+        if (candidates.Any(candidate => candidate.FinalDeltaRejection is { } rejection && !rejection.IsValid()))
+            throw new ArgumentException("Final-delta rejection metadata is invalid.", nameof(candidates));
         ChangePortfolioItemDraft[] drafts = [.. candidates
             .Select(ChangePortfolioIdentity.CreateDraft)];
         ChangePortfolioDailyNormalization? daily = independentDays
@@ -72,6 +74,18 @@ public sealed partial class ChangePortfolioReconciler
         List<Diagnostic> diagnostics =
         [
             .. (planningDiagnostics ?? []),
+            .. candidates.Where(candidate => candidate.FinalDelta is not null).SelectMany(candidate =>
+                candidate.FinalDelta!.Report.Diagnostics.Where(diagnostic => diagnostic.Code == "FB5210").Select(diagnostic => diagnostic with
+                {
+                    Message = $"repository={candidate.RepositoryId}; endpointInput={candidate.FinalDelta.InputDigest}; " + diagnostic.Message,
+                })),
+            .. candidates.Where(candidate => candidate.FinalDeltaRejection is not null).Select(candidate => new Diagnostic
+            {
+                Code = "FB5337", Severity = DiagnosticSeverity.Information,
+                Message = $"{ChangePortfolioFinalDelta.Policy}: repository={candidate.RepositoryId}; " +
+                    $"rejection={candidate.FinalDeltaRejection!.Code}; input={candidate.FinalDeltaRejection.InputDigest}; " +
+                    $"path={candidate.FinalDeltaRejection.PathDigest ?? "none"}.",
+            }),
             .. candidates.Where(candidate => candidate.FinalDelta is not null).Select(candidate => new Diagnostic
             {
                 Code = "FB5336", Severity = DiagnosticSeverity.Information,

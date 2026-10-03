@@ -677,3 +677,15 @@ checkpoint tests establish semantic safeguards. No private target, prior, frozen
 label/report, sealed partition, or size/admission gate changes. The correctness
 exception applies; estimates remain experimental and uncalibrated, with Stage A
 0.6.0 still the last admitted source baseline.
+
+## `change-seed/0.21.1` diagnostic and portfolio proof follow-up
+
+Version 0.21.1 adds an exact expected-hour capability budget bridge without changing
+Change numerical priors. Portfolio 0.6.1 uses `selected-final-delta/1.1.0` to prove
+bounded acyclic raw effects on selected forks and first-parent merges, checks raw
+rewrite suppression, and emits privacy-safe rejection reasons. Public native
+fork/merge/retained-squash and non-monotonic-date fixtures require direct-endpoint
+ranges/categories, exact allocations, cross-day invariance, warm receipt reuse,
+and read-only inputs. No private target, frozen label/report, sealed partition,
+rate, or admission gate changes. These are structural correctness and arithmetic
+diagnostics; all prior experimental/uncalibrated limitations remain.

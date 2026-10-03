@@ -84,6 +84,18 @@ public sealed partial class ChangeLogicalMarginalityTests
         Assert.Equal((decimal)testHours, CategoryHours(result, EffortCategory.UnitTesting).Expected);
         Assert.Equal(17m, result.Categories.Where(category => category.Category is
             EffortCategory.ProductionImplementation or EffortCategory.UnitTesting).Sum(category => category.Hours.Expected));
+        Diagnostic productionBridge = Assert.Single(result.Diagnostics, item => item.Code == "FB5210" &&
+            item.Message.Contains("category=ProductionImplementation;", StringComparison.Ordinal));
+        Diagnostic testBridge = Assert.Single(result.Diagnostics, item => item.Code == "FB5210" &&
+            item.Message.Contains("category=UnitTesting;", StringComparison.Ordinal));
+        Assert.Contains("signedStock=16;", productionBridge.Message, StringComparison.Ordinal);
+        Assert.Contains("retainedGrowth=16;", productionBridge.Message, StringComparison.Ordinal);
+        Assert.Contains("modificationExcess=0;", productionBridge.Message, StringComparison.Ordinal);
+        Assert.Contains("signedStock=-4; negativeStockCredit=4;", testBridge.Message, StringComparison.Ordinal);
+        Assert.Contains("removalWork=1;", testBridge.Message, StringComparison.Ordinal);
+        Assert.Contains(mixedRoles ? "roleRedistribution=-6.86;" : "roleRedistribution=0;", productionBridge.Message, StringComparison.Ordinal);
+        Assert.Contains(mixedRoles ? "roleRedistribution=6.86;" : "roleRedistribution=0;", testBridge.Message, StringComparison.Ordinal);
+        Assert.All(result.Diagnostics, diagnostic => Assert.DoesNotContain("scope/", diagnostic.Message, StringComparison.Ordinal));
         Assert.DoesNotContain(result.WorkItems, item =>
             item.Estimator.Id == "change-rule:maintained-artifact-fallback");
         Assert.All(result.WorkItems, item =>

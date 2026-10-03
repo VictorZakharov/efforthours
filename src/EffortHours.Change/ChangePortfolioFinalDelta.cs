@@ -7,7 +7,7 @@ namespace EffortHours.Change;
 /// <summary>An execution-owned, digest-bound canonical endpoint estimate.</summary>
 public sealed record ChangePortfolioFinalDelta
 {
-    public const string Policy = "selected-final-delta/1.0.0";
+    public const string Policy = "selected-final-delta/1.1.0";
 
     public required IReadOnlyList<string> SelectorIds { get; init; }
 
@@ -62,7 +62,7 @@ public sealed partial class ChangeEstimator
         TimeZoneInfo? zone = independentDays
             ? TimeZoneInfo.FindSystemTimeZoneById(selection.AuthorPeriodManifest!.TimeZone)
             : null;
-        ChangePortfolioCandidate[] prepared = [.. candidates.Select(candidate => candidate with { FinalDelta = null })];
+        ChangePortfolioCandidate[] prepared = [.. candidates.Select(candidate => candidate with { FinalDelta = null, FinalDeltaRejection = null })];
         var groups = prepared.Select((candidate, index) => (Candidate: candidate, Index: index))
             .GroupBy(item => (item.Candidate.RepositoryId, Date: zone is null ? "" :
                 TimeZoneInfo.ConvertTime(item.Candidate.Attribution.SelectedTimestamp!.Value, zone)
@@ -78,25 +78,46 @@ public sealed partial class ChangeEstimator
             ChangePortfolioCandidate[] active = [.. drafts.Where(draft => !draft.Suppressed)
                 .OrderBy(draft => draft.Candidate.Attribution.SelectedTimestamp)
                 .ThenBy(draft => draft.Id, StringComparer.Ordinal).Select(draft => draft.Candidate)];
-            if (active.Length < 2 || !ChangePortfolioFinalDeltaProof.TryCompose(active, out var effects))
+            int owner = group.OrderBy(item => item.Candidate.SelectorId, StringComparer.Ordinal).First().Index;
+            void Reject(string code, string? path = null) => prepared[owner] = prepared[owner] with
             {
+                FinalDeltaRejection = new ChangePortfolioFinalDeltaRejection
+                {
+                    Code = code,
+                    InputDigest = ChangePortfolioFinalDeltaProof.InputDigest(group.Select(item => item.Candidate)),
+                    PathDigest = path is null ? null : ChangePortfolioIdentity.Digest(path),
+                },
+            };
+            if (active.Length < 2) continue;
+            ChangePathEvidence? unsupported = drafts.SelectMany(draft => draft.Candidate.Report.Evidence.Paths)
+                .Where(path => path.Classification == ChangePathClassification.Unsupported)
+                .OrderBy(path => path.Path, StringComparer.Ordinal).FirstOrDefault();
+            if (unsupported is not null)
+            {
+                Reject("unsupported-mode", unsupported.Path);
                 continue;
             }
-            ChangeSnapshotReference before = active[0].Report.Selection.Base;
-            ChangeSnapshotReference after = active[^1].Report.Selection.Head;
+            if (!ChangePortfolioFinalDeltaProof.SuppressionPreservesRawEffects(drafts))
+            {
+                Reject("suppressed-raw-mismatch");
+                continue;
+            }
+            if (!ChangePortfolioFinalDeltaProof.TryCompose(active, out var effects, out string? path))
+            {
+                Reject("composition-unproven", path);
+                continue;
+            }
             using IDisposable? phase = telemetry?.Measure(ChangePortfolioExecutionPhases.Reconciliation);
-            await using IChangeSnapshot baseSnapshot = await openSnapshot(group.Key.RepositoryId,
-                before.ObjectId, cancellationToken).ConfigureAwait(false);
-            await using IChangeSnapshot headSnapshot = await openSnapshot(group.Key.RepositoryId,
-                after.ObjectId, cancellationToken).ConfigureAwait(false);
-            if (baseSnapshot.ObjectId != before.ObjectId || headSnapshot.ObjectId != after.ObjectId)
+            var endpoint = await ChangePortfolioEndpointSearch.FindAsync(group.Key.RepositoryId, active, effects,
+                openSnapshot, pathAdmission, cancellationToken).ConfigureAwait(false);
+            if (endpoint.Pair is null)
             {
-                throw new InvalidOperationException("Final-delta snapshot identity does not match its immutable selector.");
-            }
-            if (!ChangePortfolioFinalDeltaProof.MatchesInventories(effects, baseSnapshot, headSnapshot, pathAdmission))
-            {
+                Reject(endpoint.Code, endpoint.Path);
                 continue;
             }
+            var (before, after, baseSnapshot, headSnapshot) = endpoint.Pair;
+            await using IChangeSnapshot ownedBase = baseSnapshot;
+            await using IChangeSnapshot ownedHead = headSnapshot;
             ChangeEstimateReport report = await EstimateCoreAsync(new ChangeEstimateInput
             {
                 RepositoryName = group.Key.RepositoryId,
@@ -110,7 +131,6 @@ public sealed partial class ChangeEstimator
                 OpenHeadAsync = _ => Task.FromResult(headSnapshot),
                 PathAdmission = pathAdmission,
             }, profile, null, analyses, "final-delta:" + group.Key.RepositoryId, telemetry, ownsSnapshots: false, cancellationToken).ConfigureAwait(false);
-            int owner = group.OrderBy(item => item.Candidate.SelectorId, StringComparer.Ordinal).First().Index;
             prepared[owner] = prepared[owner] with
             {
                 FinalDelta = new ChangePortfolioFinalDelta
