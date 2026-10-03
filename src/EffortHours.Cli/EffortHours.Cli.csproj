@@ -8,11 +8,11 @@
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>eh</ToolCommandName>
     <PackageId>EffortHours.Tool</PackageId>
-    <Version>0.10.0-alpha.31</Version>
+    <Version>0.10.0-alpha.32</Version>
     <Title>EffortHours CLI</Title>
     <PackageReadmeFile>PACKAGE_README.md</PackageReadmeFile>
     <PackageTags>estimation;effort-estimation;developer-tools;cli;repository-analysis;static-analysis;dotnet-tool</PackageTags>
-    <PackageReleaseNotes>0.10.0-alpha.31: Continue the alpha.30 Change EHE correction with exact selected fork/first-parent merge endpoint proofs, bounded boundary-anchor search, and raw-safe rewrite/squash suppression. Add privacy-safe endpoint rejection diagnostics and exact category stock-to-Change budget bridges with checkpoint reuse. Change EHE remains experimental and uncalibrated under change-seed/0.21.1 and change-portfolio/0.6.1; repository seed-rules/0.4.0 priors and admission boundaries remain unchanged. Private consumer totals still require an immutable rerun. Full notes: https://github.com/VictorZakharov/efforthours/blob/v0.10.0-alpha.31/CHANGELOG.md</PackageReleaseNotes>
+    <PackageReleaseNotes>0.10.0-alpha.32: Correct Change capability attribution with exact .NET analyzer-owned paths, test-aware production source binding, and qualified Rust synchronization evidence. Preserve unexplained maintained edits through ordinary fallback and invalidate earlier receipts under change-seed/0.21.3 and change-portfolio/0.6.3. Add anonymized frozen-input overlap reviews. Estimates remain experimental and uncalibrated; seed-rules/0.4.0 rates and admission boundaries remain unchanged, and remaining numerical overlaps need material assessment. Full notes: https://github.com/VictorZakharov/efforthours/blob/v0.10.0-alpha.32/CHANGELOG.md</PackageReleaseNotes>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="../EffortHours.Analysis/EffortHours.Analysis.csproj" />
