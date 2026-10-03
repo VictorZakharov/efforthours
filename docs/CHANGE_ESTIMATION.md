@@ -9,7 +9,7 @@ directories; and two saved repository-evidence bundles. Portfolio reconciliation
 supports repeated PRs, multi-repository manifests, and bounded author-period
 selection under the separate `CHANGE_PORTFOLIOS.md` contract.
 
-Current source reports use `change-seed/0.21.2+seed-rules/0.4.0`. The model remains
+Current source reports use `change-seed/0.21.3+seed-rules/0.4.0`. The model remains
 experimental and is not empirically production-validated. Only the documented
 0.6.0 Stage A subset has passed a model-authored logical gate for eligible
 4-to-32-hour changes; later ecosystem extensions preserve those admitted rules but
@@ -592,8 +592,8 @@ verification, and post-EHE pricing. They emit neither local repository paths nor
 source excerpts.
 
 The current source Change estimator identity is
-`change-seed/0.21.2+seed-rules/0.4.0`; the portfolio reconciler identity is
-`change-portfolio/0.6.2+change-seed/0.21.2+seed-rules/0.4.0`. The earlier 0.6.0
+`change-seed/0.21.3+seed-rules/0.4.0`; the portfolio reconciler identity is
+`change-portfolio/0.6.3+change-seed/0.21.3+seed-rules/0.4.0`. The earlier 0.6.0
 Change identity alone passed the experimental Stage A logical gate, and that
 record contains no SQL, Python, Go, Java, Kotlin, Shell, PowerShell, Terraform,
 HCL, PHP, Composer, Rust, Cargo, Docker, Compose, Jupyter, C, C++, or GDScript. Portfolio
@@ -1033,3 +1033,13 @@ portfolio versions advance to 0.21.2 and 0.6.2 to invalidate old receipts.
 The anonymized [remaining-budget review](REMAINING_BUDGET_REVIEW.md) records both
 corrections, the frozen comparison, and unresolved numerical/overlap questions.
 These correctness revisions do not calibrate hours or require stock equality.
+
+## Rust synchronization qualification revision (0.21.3)
+
+Rust analyzer 0.1.1 stops treating `std::sync` namespace presence and unqualified
+atomic-looking names as concurrency evidence. Standard-library shared ownership
+alone does not establish separately valued coordination. Exact source context,
+represented edits, endpoint proof, and existing fallback remain intact. Source and
+portfolio identities advance to 0.21.3 and 0.6.3 to invalidate old receipts. Seed
+rates and schemas are unchanged; see [RUST_CARGO_ANALYSIS.md](RUST_CARGO_ANALYSIS.md)
+and the anonymized [overlap review](REMAINING_OVERLAP_REVIEW.md).

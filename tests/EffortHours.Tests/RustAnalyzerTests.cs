@@ -20,7 +20,7 @@ public sealed class RustAnalyzerTests
 
         Assert.Contains("analysis-status:analyzed", Language(evidence).Tags);
         Assert.Contains("analysis-depth:token-backed", Language(evidence).Tags);
-        Assert.Equal("0.1.0", source.Provenance.AnalyzerVersion);
+        Assert.Equal("0.1.1", source.Provenance.AnalyzerVersion);
         Assert.True(Measurement(source, "types") >= 3m);
         Assert.True(Measurement(source, "traits") >= 1m);
         Assert.True(Measurement(source, "impls") >= 1m);

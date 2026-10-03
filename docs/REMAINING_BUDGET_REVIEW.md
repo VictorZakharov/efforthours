@@ -21,6 +21,11 @@ Correction: `change-seed/0.21.2+seed-rules/0.4.0`, portfolio 0.6.2, .NET analyze
 0.3.6. Independent-day and selected-final-delta policies remain 1.1.0. This is a
 source correction; no new package has been published by this review.
 
+The subsequent [overlap review](REMAINING_OVERLAP_REVIEW.md) corrects Rust
+synchronization eligibility under Change 0.21.3 / portfolio 0.6.3. The tables
+below retain this review's 0.21.2 checkpoint; the follow-up discloses both changed
+stock operands and remaining material-assessment needs.
+
 ## Same-input results
 
 All six base/head repository seed reports remain byte-identical. The saved stock

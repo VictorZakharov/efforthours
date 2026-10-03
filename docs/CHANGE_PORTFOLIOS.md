@@ -2,7 +2,7 @@
 
 ## Current boundary
 
-`change-portfolio/0.6.1` composes canonical Change estimates selected as repeated
+`change-portfolio/0.6.3` composes canonical Change estimates selected as repeated
 pull requests, a versioned multi-repository PR manifest, a bounded direct
 author-period, or a versioned multi-repository/multi-head author-period manifest.
 It remains experimental and has no empirical production validation.
@@ -879,3 +879,11 @@ full admitted context, contributor allocation, and resource limits remain in for
 Estimator-bound checkpoints invalidate earlier receipts rather than reusing their
 old numerical/categorical budgets. Geometry changes within the same independent
 policy retain exact semantics. See [REMAINING_BUDGET_REVIEW.md](REMAINING_BUDGET_REVIEW.md).
+
+## Rust evidence revision (0.6.3)
+
+Portfolio 0.6.3 composes Change 0.21.3 and Rust analyzer 0.1.1 synchronization
+qualification. Receipt identities invalidate prior evidence; selected endpoints,
+independent-day policy 1.1.0, allocation, and complete context are unchanged.
+The [overlap review](REMAINING_OVERLAP_REVIEW.md) records both changed stock operands
+and Change totals without treating equality as a calibration target.

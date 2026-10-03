@@ -2,10 +2,10 @@
 
 ## Status
 
-Rust analyzer `0.1.0` and common scanner `0.2.10` provide an experimental,
+Rust analyzer `0.1.1` and common scanner `0.2.10` provide an experimental,
 offline-only Rust/Cargo evidence path. Repository estimates reuse the unchanged
 `seed-rules/0.4.0` language-neutral source backbone and existing specialized
-priors. Current Change estimates use `change-seed/0.19.0+seed-rules/0.4.0`.
+priors. Current Change estimates use `change-seed/0.21.3+seed-rules/0.4.0`.
 
 No Rust-specific rate was fitted. The repository and Change paths are
 uncalibrated, the Rust Change extension is outside the admitted
@@ -60,6 +60,24 @@ not qualify when the local declaration or path crate is statically visible in th
 bounded file/package model. Evidence is static and bounded; it does not prove name
 or type resolution, trait selection, borrow checking, control flow, runtime
 registration, reflection, or reachability.
+
+### Standard synchronization qualification
+
+Analyzer 0.1.1 requires a bounded `std::sync` qualified path or grouped import
+naming a lock, coordination primitive, channel, or atomic type within at most 256
+qualifier tokens per namespace prefix. Namespace presence,
+`Arc`/`Weak` shared ownership, `Ordering` alone, ordinary async syntax, and a bare
+local atomic-looking name do not create a background/concurrency fact. Aliasing
+`Arc` to a lock-looking name does not turn ownership into coordination. A visible
+local `std` module fails closed. Explicit thread spawning and qualified external
+runtime signals retain their existing behavior.
+
+This is static surface evidence, not proof of runtime concurrency or a count of
+independent lifecycle tasks. Unqualified cross-file types, wildcard imports,
+namespace aliases, and complex import trees remain uncertain rather than guessed.
+The correction changes evidence eligibility, not a Rust rate or seed prior. Its
+frozen-input effect and remaining overlap decisions are in
+[Remaining overlap review](REMAINING_OVERLAP_REVIEW.md).
 
 ## Tests, examples, and generated boundaries
 

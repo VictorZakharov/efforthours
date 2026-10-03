@@ -47,6 +47,8 @@ agent instructions.
   growth caps, with the separate pending correction acceptance boundary.
 - [Remaining capability-budget review](REMAINING_BUDGET_REVIEW.md) records the
   anonymized frozen comparison, scope-binding corrections, and unresolved budgets.
+- [Remaining overlap review](REMAINING_OVERLAP_REVIEW.md) records the Rust
+  synchronization correction, frozen operand movement, and material review needs.
 - [GitHub-assisted today-to-date portfolios](AUTHOR_PERIOD_SCAFFOLDING.md) defines
   the explicit provider boundary for one-command GitHub discovery, managed bare-
   cache acquisition, native engineering scope, internal preflight, atomic failure-
