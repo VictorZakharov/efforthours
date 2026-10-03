@@ -1,0 +1,85 @@
+# Local per-test checkpoint - 2026-10-03
+
+Source tree: `3896f800c4766c08196f184d493383c666d4fd21`. Windows, 24 logical processors; prebuilt .NET 10 Release outputs. All 286 cases passed. TRX start-to-finish: 283.359 seconds. These are test-body sums, so parallel collections can exceed wall time.
+
+| Class | Cases | Test-body seconds |
+| --- | ---: | ---: |
+| `EffortHours.EndToEndTests.ChangeCliTests` | 77 | 280.730 |
+| `EffortHours.EndToEndTests.ChangeBenchmarkCliTests` | 9 | 63.636 |
+| `EffortHours.EndToEndTests.PullRequestSelectionGitTests` | 15 | 51.105 |
+| `EffortHours.EndToEndTests.CliTests` | 24 | 25.124 |
+| `EffortHours.EndToEndTests.LogicalCandidateProjectionCliTests` | 6 | 16.235 |
+| `EffortHours.EndToEndTests.CandidatePreflightTests` | 26 | 15.927 |
+| `EffortHours.EndToEndTests.ReleaseMergeProvenanceTests` | 4 | 13.722 |
+| `EffortHours.EndToEndTests.CalibrationDiagnosticCliTests` | 3 | 13.574 |
+| `EffortHours.EndToEndTests.CanonicalJsonOutputTests` | 2 | 13.023 |
+| `EffortHours.EndToEndTests.CalibrationUncertaintyStructureCliTests` | 2 | 11.801 |
+| `EffortHours.EndToEndTests.CalibrationUncertaintyGraphCliTests` | 2 | 11.492 |
+| `EffortHours.EndToEndTests.BenchmarkCliTests` | 17 | 11.250 |
+| `EffortHours.EndToEndTests.HostReviewCliTests` | 2 | 11.126 |
+| `EffortHours.EndToEndTests.HostReviewMeasurementCliTests` | 2 | 7.697 |
+| `EffortHours.EndToEndTests.NonGitChangeCliTests` | 3 | 6.990 |
+| `EffortHours.EndToEndTests.GitBatchObjectReaderConcurrencyTests` | 3 | 6.757 |
+| `EffortHours.EndToEndTests.ChangeCalibrationCliTests` | 2 | 6.749 |
+| `EffortHours.EndToEndTests.ChangeCalibrationFixtureGeneratorTests` | 2 | 5.409 |
+| `EffortHours.EndToEndTests.CalibrationReproductionArtifactTests` | 3 | 5.311 |
+| `EffortHours.EndToEndTests.GoCliTests` | 2 | 5.248 |
+| `EffortHours.EndToEndTests.CppCliTests` | 2 | 4.405 |
+| `EffortHours.EndToEndTests.RustCliTests` | 2 | 3.810 |
+| `EffortHours.EndToEndTests.GDScriptCliTests` | 1 | 3.765 |
+| `EffortHours.EndToEndTests.ScriptingCliTests` | 2 | 3.745 |
+| `EffortHours.EndToEndTests.PhpCliTests` | 2 | 3.510 |
+| `EffortHours.EndToEndTests.KotlinCliTests` | 2 | 3.051 |
+| `EffortHours.EndToEndTests.JupyterNotebookCliTests` | 2 | 3.021 |
+| `EffortHours.EndToEndTests.DockerCliTests` | 2 | 2.891 |
+| `EffortHours.EndToEndTests.JavaCliTests` | 2 | 2.770 |
+| `EffortHours.EndToEndTests.TerraformCliTests` | 2 | 2.754 |
+| `EffortHours.EndToEndTests.ValidationBoundaryVerifierTests` | 4 | 2.390 |
+| `EffortHours.EndToEndTests.CoverageCliTests` | 1 | 2.375 |
+| `EffortHours.EndToEndTests.PythonCliTests` | 1 | 1.905 |
+| `EffortHours.EndToEndTests.CalibrationUncertaintySupportArtifactTests` | 1 | 1.822 |
+| `EffortHours.EndToEndTests.AgentCliTests` | 1 | 1.731 |
+| `EffortHours.EndToEndTests.SqlCliTests` | 1 | 1.649 |
+| `EffortHours.EndToEndTests.ChangeCandidateDiagnosticArtifactTests` | 1 | 1.486 |
+| `EffortHours.EndToEndTests.ChangeCalibrationArtifactTests` | 3 | 1.191 |
+| `EffortHours.EndToEndTests.CandidateMeasurementArtifactTests` | 5 | 0.600 |
+| `EffortHours.EndToEndTests.ValidationSelectionArtifactTests` | 1 | 0.597 |
+| `EffortHours.EndToEndTests.PublicReleaseHygieneTests` | 8 | 0.557 |
+| `EffortHours.EndToEndTests.CalibrationFixtureDependencyDispositionTests` | 3 | 0.548 |
+| `EffortHours.EndToEndTests.FileBudgetTests` | 1 | 0.525 |
+| `EffortHours.EndToEndTests.GitHubProviderMetadataCacheTests` | 2 | 0.521 |
+| `EffortHours.EndToEndTests.ValidationReviewArtifactTests` | 3 | 0.298 |
+| `EffortHours.EndToEndTests.ChangeLogicalDecompositionArtifactTests` | 1 | 0.250 |
+| `EffortHours.EndToEndTests.SnapshotArchiveVerifierTests` | 3 | 0.172 |
+| `EffortHours.EndToEndTests.LogicalCandidateV3MeasuredArtifactTests` | 1 | 0.154 |
+| `EffortHours.EndToEndTests.CandidatePreflightArtifactTests` | 1 | 0.085 |
+| `EffortHours.EndToEndTests.CandidateResourceMeasurementTests` | 4 | 0.084 |
+| `EffortHours.EndToEndTests.CalibrationSamplingPlanArtifactTests` | 1 | 0.054 |
+| `EffortHours.EndToEndTests.LogicalCandidateV2ArtifactTests` | 3 | 0.051 |
+| `EffortHours.EndToEndTests.CandidateMeasuredOperationalArtifactTests` | 1 | 0.050 |
+| `EffortHours.EndToEndTests.ValidationSelectionVerifierTests` | 2 | 0.033 |
+| `EffortHours.EndToEndTests.CandidateOperationalGateTests` | 1 | 0.023 |
+| `EffortHours.EndToEndTests.LogicalCandidateV3ArtifactTests` | 2 | 0.022 |
+| `EffortHours.EndToEndTests.LogicalCandidateArtifactTests` | 2 | 0.020 |
+| `EffortHours.EndToEndTests.LogicalCandidateOperationalArtifactTests` | 1 | 0.005 |
+| `EffortHours.EndToEndTests.RuntimeConfigurationTests` | 2 | 0.004 |
+
+| Slow case | Seconds |
+| --- | ---: |
+| `EffortHours.EndToEndTests.CandidatePreflightTests.ManualQaReviewFreezeIsDeterministicAndRefusesChangedArtifacts` | 14.348 |
+| `EffortHours.EndToEndTests.ChangeBenchmarkCliTests.AuthorPeriodManifestBenchmarkReusesPreparedFixture` | 12.832 |
+| `EffortHours.EndToEndTests.ChangeBenchmarkCliTests.AuthorPeriodBenchmarkPreservesReuseAndEquivalenceInCiFixture` | 12.646 |
+| `EffortHours.EndToEndTests.ChangeCliTests.DailyBenchmarkBindsSelectedAncestryAndYearAcrossPreflightColdWarmResumeAndReproduction` | 11.920 |
+| `EffortHours.EndToEndTests.CalibrationDiagnosticCliTests.UncertaintyEvaluateWritesDevelopmentOnlyRepositoryHeldOutReport` | 11.757 |
+| `EffortHours.EndToEndTests.ChangeBenchmarkCliTests.AuthorPeriodManifestBenchmarkFreezesRegressionAndReuseMatrix` | 11.583 |
+| `EffortHours.EndToEndTests.ChangeCliTests.CalendarDaysStayInvariantAcrossWindowsAndDateFieldsAreExplicit` | 11.318 |
+| `EffortHours.EndToEndTests.ChangeCliTests.SnapshotPortfolioDependencyContextAndJavaScriptPersistenceMatchColdAnalysis` | 10.632 |
+| `EffortHours.EndToEndTests.ChangeBenchmarkCliTests.AuthorPeriodProcessMatrixSharesObjectDatabaseWithoutTimingGates` | 10.626 |
+| `EffortHours.EndToEndTests.CanonicalJsonOutputTests.CandidateBenchmarkProjectionHasPinnedCanonicalBytesForEveryMeasuredShape` | 10.012 |
+| `EffortHours.EndToEndTests.HostReviewCliTests.PacketAndAllQueryKindsAreDeterministicDigestBoundAndExplicit` | 9.401 |
+| `EffortHours.EndToEndTests.CalibrationUncertaintyStructureCliTests.EvaluatesStructuralReportsThroughTheCli` | 8.964 |
+| `EffortHours.EndToEndTests.ChangeCliTests.ConflictResolvedRebaseRetainsNewBehaviorWithoutDuplicatingSharedWork(substantial: False)` | 8.782 |
+| `EffortHours.EndToEndTests.ChangeCliTests.ConflictResolvedRebaseRetainsNewBehaviorWithoutDuplicatingSharedWork(substantial: True)` | 8.679 |
+| `EffortHours.EndToEndTests.CalibrationUncertaintyGraphCliTests.EvaluatesGraphReportsThroughTheCli` | 8.423 |
+
+A fresh class-only repeat passed all 77 cases: 278.999 summed test-body seconds and 279.989 TRX wall seconds. No other E2E collection ran in that repeat.
