@@ -39,6 +39,8 @@ internal sealed record ChangePortfolioRepositoryCheckpointItem
     public required ChangeEstimateReport Report { get; init; }
 
     public required ChangePortfolioAttribution Attribution { get; init; }
+
+    public ChangePortfolioFinalDelta? FinalDelta { get; init; }
 }
 
 internal sealed class ChangePortfolioRepositoryCheckpointStore(string directory)
@@ -82,20 +84,26 @@ internal sealed class ChangePortfolioRepositoryCheckpointStore(string directory)
             foreach (ChangePortfolioRepositoryCheckpointItem item in checkpoint.Items)
             {
                 if (ContractValidation.Validate(item.Report).Count > 0 ||
+                    (item.FinalDelta is not null && ContractValidation.Validate(item.FinalDelta.Report).Count > 0) ||
                     string.IsNullOrWhiteSpace(item.SelectorId))
                 {
                     return null;
                 }
             }
 
+            ChangePortfolioCandidate[] candidates = [.. checkpoint.Items.Select(item => new ChangePortfolioCandidate
+            {
+                RepositoryId = repositoryId,
+                SelectorId = item.SelectorId,
+                Report = item.Report,
+                Attribution = item.Attribution,
+                FinalDelta = item.FinalDelta,
+            })];
+            Dictionary<string, ChangePortfolioCandidate> bySelector = candidates.ToDictionary(candidate => candidate.SelectorId, StringComparer.Ordinal);
+            if (candidates.Any(candidate => candidate.FinalDelta is { } receipt && !receipt.Matches(bySelector)))
+                return null;
             return new ChangePortfolioRepositoryCheckpointLoad(
-                [.. checkpoint.Items.Select(item => new ChangePortfolioCandidate
-                {
-                    RepositoryId = repositoryId,
-                    SelectorId = item.SelectorId,
-                    Report = item.Report,
-                    Attribution = item.Attribution,
-                })],
+                candidates,
                 checkpoint.Diagnostics,
                 checkpoint.Scope,
                 file.Length);
@@ -131,6 +139,7 @@ internal sealed class ChangePortfolioRepositoryCheckpointStore(string directory)
                 SelectorId = candidate.SelectorId,
                 Report = candidate.Report,
                 Attribution = candidate.Attribution,
+                FinalDelta = candidate.FinalDelta,
             })],
             Diagnostics = diagnostics,
             Scope = scope,

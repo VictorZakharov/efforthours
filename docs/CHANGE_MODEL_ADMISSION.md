@@ -666,3 +666,14 @@ deterministic represented path; other additions retain exact-duplicate lineage
 and zero body effort. This also prevents fallback and validation charges from
 rewarding copies of newly added source. Existing copies already present in the
 base retain their prior exclusion.
+
+## `change-seed/0.21.0` complete-context correctness revision
+
+Complete admitted normalization context replaces narrow Git projection for seed
+capability marginals. Portfolio 0.6.0 separately re-estimates exact selected final
+effects under `selected-final-delta/1.0.0`. Public synthetic partial reversal,
+monotone partition, excluded-effect, object-chain, receipt binding, and process
+checkpoint tests establish semantic safeguards. No private target, prior, frozen
+label/report, sealed partition, or size/admission gate changes. The correctness
+exception applies; estimates remain experimental and uncalibrated, with Stage A
+0.6.0 still the last admitted source baseline.

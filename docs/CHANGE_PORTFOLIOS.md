@@ -2,7 +2,7 @@
 
 ## Current boundary
 
-`change-portfolio/0.5.0` composes canonical Change estimates selected as repeated
+`change-portfolio/0.6.0` composes canonical Change estimates selected as repeated
 pull requests, a versioned multi-repository PR manifest, a bounded direct
 author-period, or a versioned multi-repository/multi-head author-period manifest.
 It remains experimental and has no empirical production validation.
@@ -384,14 +384,17 @@ with pricing disabled. The portfolio reconciler then:
 
 1. groups rows by caller-visible repository identity;
 2. exposes every immutable base context used by those rows;
-3. keeps disjoint connected components additive;
+3. proves and re-estimates selected author-period final effects when an exact
+   immutable endpoint contains all and only those effects; otherwise keeps
+   disjoint connected components additive;
 4. suppresses exact represented PR patch identities inside one repository,
    including cherry-picked equivalents, but never across repositories;
 5. maps non-shared category hours through each work item's cited path evidence and
-   normalizes the same path/category with an order-independent maximum while
+   in the unproven fallback normalizes each path/category with a maximum while
    preserving independent code, test, and documentation paths;
 6. follows selected author commits chronologically, excludes an exact object chain
-   that returns a path to its initial state, and preserves later reintroduction;
+   that returns a path to its initial state in the fallback, and preserves later
+   reintroduction; proven endpoints also exclude discarded partial expansion;
 7. represents shared specification, setup, design, validation, and review context
    once inside an overlapping connected component, not globally; and
 8. applies an optional rate only after normalized EHE is complete.
@@ -576,7 +579,7 @@ not pass or fail on them; it gates the semantic, privacy, reuse, boundedness, an
 unchanged-target assertions above. The exact measurement protocol and controlled
 before/after table live in `BENCHMARKS.md`.
 
-Git portfolios additionally use the bounded changed-scope and immutable-
+Git portfolios additionally use complete admitted normalization context and immutable-
 inventory reuse rules in `CHANGE_ESTIMATION.md`. Identity and time still select
 rows only; neither the candidate count nor the size of the reachable graph enters
 an effort rule.
@@ -706,17 +709,16 @@ full analysis. The remaining general-latency and scaling work in issue #182 was
 later closed as not planned.
 
 Snapshot analysis is keyed by repository, canonical immutable-inventory digest,
-and exact analysis-scope path-set digest. Reused evidence is rebound to the
-requesting row's changed/context/representative and full-inventory counts before
-the Change report is built, so metadata-distinct rows can reuse the same scan
-without reusing one another's diagnostics. Inventory identity is a versioned
-SHA-256 Merkle tree over path, mode, and blob object identity, independent of delta
-application order. A broader portfolio scope is never substituted merely to
-increase cache hits, so a row remains byte-equivalent to its independent canonical
-Change estimate. Equal trees with the same scope can be analyzed once even when
-reached through different commits or intervening workstreams; different scopes
-remain separate where correctness requires. Shared blob reads and structurally
-shared inventories still benefit those rows.
+and complete admitted normalization-policy identity. Reused evidence is rebound
+to the requesting pair's changed/unchanged-context and inventory counts before
+report construction. The complete context is the canonical independent Change
+input as well as the portfolio row input; portfolio execution cannot substitute
+an arbitrary broader or narrower context to increase cache hits. Equal immutable
+trees under the same admission policy reuse their scan across different commits.
+The earlier exact changed-mask measurements remain historical checkpoints.
+Endpoint normalization uses a separate bounded stage namespace; reuse counters
+sum observed requests and cache-local unique keys across the row and endpoint
+stages, rather than claiming global distinct object counts across both caches.
 
 Report diagnostic `FB5325` records deterministic, privacy-safe request/hit,
 unique-key, revisit-miss, byte, eviction, retention, and batched-inventory counts
@@ -768,8 +770,9 @@ shortcut remains deferred until measurements justify the extra policy path.
 - Exact patch and bounded retained-composition proofs do not provide general
   semantic-clone, altered rebase/squash, or conflict-resolution equivalence.
 - Mechanically split work on distinct paths with no structural overlap stays
-  additive. Filenames, timestamps, and contributor identity do not invent shared
-  feature identity.
+  additive in the unproven fallback. An exact joint endpoint can share canonical
+  repository context across those paths. Filenames, timestamps, and contributor
+  identity do not invent shared feature identity.
 - Pair work, reviews, requirements, design, mentoring, incidents, debugging,
   coordination, and work committed under another identity cannot be recovered as
   individual credit from repository history.
@@ -789,7 +792,7 @@ selector-only identity boundary and explicit uncertainty.
 
 `--bucket independent-day` and `eh calendar` normalize selected changes separately
 for each local date and repository, then sum the independent groups. This uses
-`independent-local-day-change/1.0.0`, joint contributor allocation within each day,
+`independent-local-day-change/1.1.0`, joint contributor allocation within each day,
 and at most 512 daily buckets. Selection, immutable analysis, bounded sessions,
 and checkpoint reuse still run as one batch. Adding another date cannot alter
 an existing day's low/expected/high effort, project cells, or category ledger.
@@ -803,4 +806,46 @@ contributor normalization. Complete no-match dates remain zero. Author/committer
 merge, coauthor, and immutable-head policies remain explicit selection inputs.
 Daily Change represents normalized selected deltas, not replacement-stock growth.
 Stock remains the separate native snapshot daily series with signed differences.
-No equality with stock or arbitrary commit-partition invariance is asserted.
+No equality with stock is asserted. Commit-partition invariance requires the exact
+selected endpoint proof described below.
+
+## Exact selected final effects
+
+`selected-final-delta/1.0.0` first applies retained rewrite/composition suppression,
+then composes every active raw path effect, including excluded and mechanical
+paths. Moved paths become a removal and an addition. Repeated touches must form
+an exact chronological blob-state chain. The earliest selected base and latest
+selected head are eligible anchors only if their complete admitted inventories
+match every composed initial/final blob state, contain no extra changed path,
+and preserve supported modes. Links, submodules, mode changes, broken chains,
+branch ambiguity, omitted work, or the 16,384-path proof bound retain conservative
+structural normalization with explicit uncertainty. This is not causal replay.
+
+A successful proof invokes the canonical Change engine once on that immutable
+pair. Its low/expected/high category ledger replaces the intermediate maxima for
+that repository group. Isolated rows and suppression lineage remain intact;
+expected allocations reconcile exactly using existing deterministic weights.
+A named interaction adjustment explains the canonical endpoint replacement.
+Diagnostic `FB5336` records the policy, repository ID, selected count, immutable
+anchors, canonical-input digest, raw-final-delta digest, and source-report digest.
+It contains no paths, aliases, or source. Digests bind the execution receipt to
+the selected reports, profile, attribution, and immutable endpoints.
+
+Independent local-day execution applies this proof separately inside each local
+date/repository group. Work across a date boundary is deliberately valued in each
+date's own endpoint context; a longer interval cannot change an earlier date.
+Joint interval execution may instead prove one larger endpoint. Exact partition
+invariance applies within a proven group, not across independent dates or an
+unproven selection. Signed replacement stock remains a separate measurement.
+
+Endpoint construction and scans run sequentially by repository under the existing
+bounded readers, 16-entry analysis cache, 8,192 file-artifact bound, and fixed
+CPU/read-buffer limits. Measured operation counters include the additional stage;
+preflight's projected requests continue to describe canonical selected rows.
+Failures propagate through the repository shard and never publish a partial
+aggregate. Checkpoints persist digest-bound endpoint receipts and bind joint
+versus independent-day grouping in addition to selection/admission/model identity.
+Changing presentation geometry within one grouping policy still reuses evidence.
+Changing grouping policy requires a different checkpoint. Old daily v1.0.0 reports
+remain schema-valid; newly generated reports use v1.1.0. Frozen artifacts are not
+rewritten, and no model-admission or numerical-calibration claim changes.

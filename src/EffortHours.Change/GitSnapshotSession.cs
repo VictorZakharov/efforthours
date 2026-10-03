@@ -58,6 +58,8 @@ internal sealed partial class GitSnapshotSession : IAsyncDisposable
         _snapshotFactory = snapshotFactory;
     }
 
+    internal GitSnapshotSession CreateSibling() => new(RepositoryPath, _snapshotFactory);
+
     public string RepositoryPath { get; }
 
     public bool IsDisposed

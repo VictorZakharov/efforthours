@@ -6,7 +6,7 @@ namespace EffortHours.Tests;
 public sealed class ChangeAnalysisScopeTests
 {
     [Fact]
-    public void SmallGitSnapshotsUseChangedScopeWithoutAFileCountThreshold()
+    public void GitSnapshotsRetainCompleteAdmittedNormalizationContext()
     {
         ChangeSnapshotFile[] before =
         [
@@ -36,7 +36,7 @@ public sealed class ChangeAnalysisScopeTests
         Assert.Equal(1, scope.ChangedPathCount);
         Assert.Equal(3, scope.FullPathCount);
         Assert.Equal(
-            ["Demo.csproj", "src/Feature.cs"],
+            ["Demo.csproj", "notes/unrelated.md", "src/Feature.cs"],
             [.. scope.Paths.Order(StringComparer.Ordinal)]);
     }
 

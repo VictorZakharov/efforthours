@@ -2,7 +2,7 @@ namespace EffortHours.Contracts.V1;
 
 public sealed record ChangePortfolioDailyNormalization
 {
-    public const string Policy = "independent-local-day-change/1.0.0";
+    public const string Policy = "independent-local-day-change/1.1.0";
 
     public string Protocol { get; init; } = Policy;
 

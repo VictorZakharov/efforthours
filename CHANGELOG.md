@@ -17,6 +17,17 @@ may still change public contracts with explicit documentation.
   ordered immutable composition lineage, and genuine follow-up work. Source
   estimator priors and admission remain unchanged; work-log allocation is deferred.
 
+### Fixed
+
+- Change `change-seed/0.21.0` retains complete admitted repository normalization
+  context so narrow Git projections cannot restart capability marginal tiers.
+- Portfolio `change-portfolio/0.6.0` re-estimates exact selected final endpoints,
+  excluding discarded intermediate expansion while retaining conservative
+  uncertainty for unproven selections. Independent-day policy advances to 1.1.0;
+  checkpoints bind grouping policy and preserve endpoint receipts. Joint cold/warm
+  semantic identity excludes operational cache diagnostics. Priors and frozen
+  admission records remain unchanged; estimates remain experimental/uncalibrated.
+
 ## 0.10.0-alpha.29 - 2026-10-02
 
 ### Fixed

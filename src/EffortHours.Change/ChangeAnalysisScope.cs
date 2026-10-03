@@ -48,41 +48,26 @@ internal sealed record ChangeAnalysisScope(
         IChangeSnapshot headSnapshot,
         ChangePathAdmission? pathAdmission = null)
     {
-        if (baseSnapshot is not GitSnapshotFileSystem baseGitSnapshot ||
-            headSnapshot is not GitSnapshotFileSystem headGitSnapshot)
+        if (baseSnapshot is not GitSnapshotFileSystem && pathAdmission is null)
         {
             return null;
         }
 
-        if (pathAdmission is not null)
-        {
-            ChangeSnapshotFile[] admittedBase =
-                [.. baseGitSnapshot.Files.Where(file => pathAdmission.Admits(file.Path))];
-            ChangeSnapshotFile[] admittedHead =
-                [.. headGitSnapshot.Files.Where(file => pathAdmission.Admits(file.Path))];
-            return CreateFromIndexes(
-                FindChangedPaths(
-                    admittedBase.ToDictionary(file => file.Path, StringComparer.Ordinal),
-                    admittedHead.ToDictionary(file => file.Path, StringComparer.Ordinal)),
-                CreateInventoryIndex(admittedBase),
-                CreateInventoryIndex(admittedHead),
-                admittedBase.Length,
-                admittedHead.Length,
-                pathAdmission);
-        }
-
-        IReadOnlySet<string> changedPaths = headGitSnapshot.TryGetChangedPathsFrom(
-            baseGitSnapshot.ObjectId,
-            out IReadOnlyList<string> knownChangedPaths)
-            ? new HashSet<string>(knownChangedPaths, StringComparer.Ordinal)
-            : FindChangedPaths(baseGitSnapshot.FilesByPath, headGitSnapshot.FilesByPath);
-        return CreateFromIndexes(
-            changedPaths,
-            baseGitSnapshot.AnalysisIndex,
-            headGitSnapshot.AnalysisIndex,
-            baseGitSnapshot.FileCount,
-            headGitSnapshot.FileCount,
-            pathAdmission: null);
+        ChangeSnapshotFile[] before = [.. baseSnapshot.Files.Where(file =>
+            pathAdmission is null || pathAdmission.Admits(file.Path))];
+        ChangeSnapshotFile[] after = [.. headSnapshot.Files.Where(file =>
+            pathAdmission is null || pathAdmission.Admits(file.Path))];
+        HashSet<string> changed = FindChangedPaths(
+            before.ToDictionary(file => file.Path, StringComparer.Ordinal),
+            after.ToDictionary(file => file.Path, StringComparer.Ordinal));
+        HashSet<string> paths = before.Concat(after).Select(file => file.Path)
+            .ToHashSet(StringComparer.Ordinal);
+        // The normalization population is the complete admitted repository,
+        // independent of which paths happened to change in this pair.
+        return new ChangeAnalysisScope(
+            "complete-normalization/1.0.0:" + (pathAdmission?.ProfileDigest ?? "all"),
+            paths, changed.Count, paths.Count - changed.Count, 0,
+            paths.Count - changed.Count, Math.Max(before.Length, after.Length), pathAdmission);
     }
 
     internal static ChangeAnalysisScope CreateForFiles(

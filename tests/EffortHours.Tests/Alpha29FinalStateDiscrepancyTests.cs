@@ -8,14 +8,14 @@ using Xunit.Abstractions;
 
 namespace EffortHours.Tests;
 
-// Diagnostic reproductions of alpha.29 behavior, not acceptance tests for a fix.
+// Public semantic regressions; no private numerical targets.
 public sealed class Alpha29FinalStateDiscrepancyTests(ITestOutputHelper output)
 {
     [Theory]
     [InlineData(101, false)]
     [InlineData(101, true)]
     [InlineData(401, true)]
-    public async Task PartialReversalRetainsDiscardedExpansionDespiteIdenticalEndpoints(
+    public async Task PartialReversalUsesSelectedFinalEndpointDespiteIntermediateExpansion(
         int intermediateMethods, bool independentDays)
     {
         InMemoryChangeSnapshot opening = Snapshot(1);
@@ -27,21 +27,26 @@ public sealed class Alpha29FinalStateDiscrepancyTests(ITestOutputHelper output)
         ChangePortfolioSelection selection = Selection(closing.ObjectId);
         ChangePortfolioCandidate first = Candidate("expansion", expansion, 9);
         ChangePortfolioCandidate second = Candidate("reduction", reduction, 10);
+        IReadOnlyList<ChangePortfolioCandidate> prepared = await new ChangeEstimator().PreparePortfolioFinalDeltasAsync(
+            selection, [first, second], EstimationProfile.Implementation,
+            (_, id, _) => Task.FromResult<IChangeSnapshot>(id == opening.ObjectId ? opening : closing),
+            independentDays);
         ChangePortfolioReport split = ChangePortfolioReconciler.Reconcile(selection,
-            [first, second], EstimationProfile.Implementation, independentDays: independentDays);
+            prepared, EstimationProfile.Implementation, independentDays: independentDays);
         ChangePortfolioReport unsplit = ChangePortfolioReconciler.Reconcile(selection,
             [Candidate("endpoint", endpoint, 10)], EstimationProfile.Implementation,
             independentDays: independentDays);
         ChangePortfolioReport reordered = ChangePortfolioReconciler.Reconcile(selection,
-            [second, first], EstimationProfile.Implementation, independentDays: independentDays);
+            [.. prepared.Reverse()], EstimationProfile.Implementation, independentDays: independentDays);
 
         Assert.Equal(expansion.Selection.Head.ObjectId, reduction.Selection.Base.ObjectId);
         Assert.Equal(endpoint.Selection.Base, expansion.Selection.Base);
         Assert.Equal(endpoint.Selection.Head, reduction.Selection.Head);
         Assert.Equal(split.TotalEffort, reordered.TotalEffort);
         Assert.Equal(endpoint.TotalEffort, unsplit.TotalEffort);
-        Assert.True(Hours(split.Categories, EffortCategory.ProductionImplementation) >
-            Hours(unsplit.Categories, EffortCategory.ProductionImplementation));
+        Assert.Equal(unsplit.TotalEffort, split.TotalEffort);
+        Assert.Equal(ContractJson.Serialize(unsplit.Categories), ContractJson.Serialize(split.Categories));
+        Assert.Contains(split.Diagnostics, diagnostic => diagnostic.Code == "FB5336");
         Assert.DoesNotContain(split.Adjustments, item => item.Kind == ChangePortfolioAdjustmentKind.Revert);
         Assert.Equal(split.TotalEffort.Expected, split.Items.Sum(item => item.AllocatedExpectedHours));
         Assert.Empty(ContractValidation.Validate(split));
@@ -54,13 +59,6 @@ public sealed class Alpha29FinalStateDiscrepancyTests(ITestOutputHelper output)
         Assert.Equal(split.TotalEffort, ContractJson.Deserialize<ChangePortfolioReport>(
             ContractJson.Serialize(split)).TotalEffort);
 
-        // This fixture has one represented source path. No category can hide a
-        // redistribution between paths: its retained contribution is the maximum.
-        foreach (CategoryEstimate category in split.Categories)
-        {
-            Assert.Equal(Math.Max(Hours(expansion.Categories, category.Category),
-                Hours(reduction.Categories, category.Category)), category.Hours.Expected);
-        }
         output.WriteLine($"Intermediate methods: {intermediateMethods}; independent days: {independentDays}");
         output.WriteLine($"Expansion: {expansion.TotalEffort.Expected}; reduction: {reduction.TotalEffort.Expected}; " +
             $"endpoint: {endpoint.TotalEffort.Expected}; selected: {split.TotalEffort.Expected}");
@@ -121,6 +119,130 @@ public sealed class Alpha29FinalStateDiscrepancyTests(ITestOutputHelper output)
         output.WriteLine($"Full production marginal: {fullGrowth}; changed-scope production marginal: {scopedGrowth}");
     }
 
+    [Fact]
+    public async Task MonotoneSplitAndDirectFinalDeltaHaveIdenticalRangesAndCategories()
+    {
+        InMemoryChangeSnapshot opening = Snapshot(1);
+        InMemoryChangeSnapshot middle = Snapshot(101);
+        InMemoryChangeSnapshot closing = Snapshot(201);
+        ChangeEstimateReport endpoint = await ChangeAsync(opening, closing);
+        IReadOnlyList<ChangePortfolioCandidate> prepared = await new ChangeEstimator().PreparePortfolioFinalDeltasAsync(
+            Selection(closing.ObjectId), [Candidate("first", await ChangeAsync(opening, middle), 9),
+                Candidate("second", await ChangeAsync(middle, closing), 10)], EstimationProfile.Implementation,
+            (_, id, _) => Task.FromResult<IChangeSnapshot>(id == opening.ObjectId ? opening : closing));
+        ChangePortfolioReport report = ChangePortfolioReconciler.Reconcile(Selection(closing.ObjectId), prepared,
+            EstimationProfile.Implementation);
+        Assert.Equal(endpoint.TotalEffort, report.TotalEffort);
+        Assert.Equal(ContractJson.Serialize(endpoint.Categories), ContractJson.Serialize(report.Categories));
+        Assert.Empty(ContractValidation.Validate(report));
+    }
+
+    [Fact]
+    public async Task EndpointProofRejectsUnselectedRawChangesAndBrokenObjectChains()
+    {
+        InMemoryChangeSnapshot opening = Snapshot(1);
+        InMemoryChangeSnapshot middle = Snapshot(101);
+        InMemoryChangeSnapshot closing = Snapshot(2);
+        ChangePortfolioCandidate first = Candidate("first", await ChangeAsync(opening, middle), 9);
+        ChangePortfolioCandidate second = Candidate("second", await ChangeAsync(middle, closing), 10);
+        // Removing a raw path from a report cannot make an endpoint's extra effect selected.
+        ChangePortfolioCandidate incomplete = second with
+        {
+            Report = second.Report with
+            {
+                Evidence = second.Report.Evidence with { Paths = [] },
+            }
+        };
+        IReadOnlyList<ChangePortfolioCandidate> failedInventory = await new ChangeEstimator().PreparePortfolioFinalDeltasAsync(
+            Selection(closing.ObjectId), [first, incomplete], EstimationProfile.Implementation,
+            (_, id, _) => Task.FromResult<IChangeSnapshot>(id == opening.ObjectId ? opening : closing));
+        Assert.All(failedInventory, candidate => Assert.Null(candidate.FinalDelta));
+        IReadOnlyList<ChangePortfolioCandidate> broken = await new ChangeEstimator().PreparePortfolioFinalDeltasAsync(
+            Selection(closing.ObjectId), [first, Candidate("branch", await ChangeAsync(opening, closing), 10)],
+            EstimationProfile.Implementation, (_, _, _) => throw new InvalidOperationException("No snapshots should open."));
+        Assert.All(broken, candidate => Assert.Null(candidate.FinalDelta));
+        await Assert.ThrowsAsync<OperationCanceledException>(async () => await new ChangeEstimator().PreparePortfolioFinalDeltasAsync(
+            Selection(closing.ObjectId), [first, second], EstimationProfile.Implementation,
+            (_, _, _) => throw new OperationCanceledException(), cancellationToken: new CancellationToken(true)));
+    }
+
+    [Fact]
+    public async Task FinalDeltaReceiptCannotBeReusedForChangedCanonicalEvidence()
+    {
+        InMemoryChangeSnapshot opening = Snapshot(1);
+        InMemoryChangeSnapshot middle = Snapshot(101);
+        InMemoryChangeSnapshot closing = Snapshot(2);
+        IReadOnlyList<ChangePortfolioCandidate> prepared = await new ChangeEstimator().PreparePortfolioFinalDeltasAsync(
+            Selection(closing.ObjectId), [Candidate("first", await ChangeAsync(opening, middle), 9),
+                Candidate("second", await ChangeAsync(middle, closing), 10)], EstimationProfile.Implementation,
+            (_, id, _) => Task.FromResult<IChangeSnapshot>(id == opening.ObjectId ? opening : closing));
+        ChangePortfolioCandidate[] altered = [.. prepared.Select(candidate => candidate with
+        {
+            Attribution = candidate.Attribution with { AmbiguityReasons = ["Altered canonical attribution."] },
+        })];
+        Assert.Throws<InvalidOperationException>(() => ChangePortfolioReconciler.Reconcile(
+            Selection(closing.ObjectId), altered, EstimationProfile.Implementation));
+    }
+
+    [Fact]
+    public async Task IndependentDayReceiptsPreserveEarlierDayWhenWindowExtends()
+    {
+        InMemoryChangeSnapshot opening = Snapshot(1);
+        InMemoryChangeSnapshot expansion = Snapshot(101);
+        InMemoryChangeSnapshot closing = Snapshot(2);
+        InMemoryChangeSnapshot later = Snapshot(51);
+        ChangePortfolioCandidate first = Candidate("expansion", await ChangeAsync(opening, expansion), 9);
+        ChangePortfolioCandidate second = Candidate("reduction", await ChangeAsync(expansion, closing), 10);
+        ChangePortfolioCandidate third = Candidate("later", await ChangeAsync(closing, later), 10);
+        third = third with
+        {
+            Attribution = third.Attribution with
+            {
+                SelectedTimestamp = third.Attribution.SelectedTimestamp!.Value.AddDays(1),
+            }
+        };
+        Task<IChangeSnapshot> OpenAsync(string _, string id, CancellationToken token) =>
+            Task.FromResult<IChangeSnapshot>(id == opening.ObjectId ? opening : id == closing.ObjectId ? closing : later);
+        IReadOnlyList<ChangePortfolioCandidate> narrow = await new ChangeEstimator().PreparePortfolioFinalDeltasAsync(
+            Selection(closing.ObjectId), [first, second], EstimationProfile.Implementation, OpenAsync, true);
+        IReadOnlyList<ChangePortfolioCandidate> wide = await new ChangeEstimator().PreparePortfolioFinalDeltasAsync(
+            Selection(later.ObjectId, 2), [first, second, third], EstimationProfile.Implementation, OpenAsync, true);
+        ChangePortfolioReport before = ChangePortfolioReconciler.Reconcile(Selection(closing.ObjectId), narrow,
+            EstimationProfile.Implementation, independentDays: true);
+        ChangePortfolioReport after = ChangePortfolioReconciler.Reconcile(Selection(later.ObjectId, 2), wide,
+            EstimationProfile.Implementation, independentDays: true);
+        Assert.Equal(ContractJson.Serialize(before.DailyNormalization!.Days[0]),
+            ContractJson.Serialize(after.DailyNormalization!.Days[0]));
+        Assert.Equal(after.TotalEffort.Expected, after.Items.Sum(item => item.AllocatedExpectedHours));
+        Assert.Empty(ContractValidation.Validate(after));
+    }
+
+    [Fact]
+    public async Task OmittedExcludedEffectCannotPassEndpointInventoryProof()
+    {
+        InMemoryChangeSnapshot opening = Snapshot(1);
+        InMemoryChangeSnapshot expansion = Snapshot(101);
+        InMemoryChangeSnapshot closing = Snapshot(2);
+        InMemoryChangeSnapshot extra = new(
+            ("Demo.csproj", System.Text.Encoding.UTF8.GetString(await closing.ReadAllBytesAsync("Demo.csproj"))),
+            ("Feature.cs", System.Text.Encoding.UTF8.GetString(await closing.ReadAllBytesAsync("Feature.cs"))),
+            ("Generated.g.cs", "// <auto-generated/>\nnamespace Demo; public class Generated { public int Value => 42; }\n"));
+        ChangePortfolioCandidate second = Candidate("reduction", await ChangeAsync(expansion, extra), 10);
+        Assert.Contains(second.Report.Evidence.Paths, path => !path.Represented && path.Path == "Generated.g.cs");
+        second = second with
+        {
+            Report = second.Report with
+            {
+                Evidence = second.Report.Evidence with { Paths = [.. second.Report.Evidence.Paths.Where(path => path.Represented)] },
+            }
+        };
+        IReadOnlyList<ChangePortfolioCandidate> prepared = await new ChangeEstimator().PreparePortfolioFinalDeltasAsync(
+            Selection(extra.ObjectId), [Candidate("expansion", await ChangeAsync(opening, expansion), 9), second],
+            EstimationProfile.Implementation,
+            (_, id, _) => Task.FromResult<IChangeSnapshot>(id == opening.ObjectId ? opening : extra));
+        Assert.All(prepared, candidate => Assert.Null(candidate.FinalDelta));
+    }
+
     private static InMemoryChangeSnapshot Snapshot(int methods) => new(
         ("Demo.csproj", "<Project Sdk=\"Microsoft.NET.Sdk\"><PropertyGroup>" +
             "<TargetFramework>net10.0</TargetFramework></PropertyGroup></Project>\n"),
@@ -177,13 +299,13 @@ public sealed class Alpha29FinalStateDiscrepancyTests(ITestOutputHelper output)
         Kind = ChangeSnapshotKind.GitTree,
     };
 
-    private static ChangePortfolioSelection Selection(string head) =>
+    private static ChangePortfolioSelection Selection(string head, int days = 1) =>
         ChangeAuthorPeriodManifestIdentity.CreateReportSelection(new ChangeAuthorPeriodManifest
         {
             Selection = new ChangeAuthorPeriodManifestSelection
             {
                 SinceInclusive = new DateTimeOffset(2026, 1, 1, 0, 0, 0, TimeSpan.Zero),
-                UntilExclusive = new DateTimeOffset(2026, 1, 2, 0, 0, 0, TimeSpan.Zero),
+                UntilExclusive = new DateTimeOffset(2026, 1, 1, 0, 0, 0, TimeSpan.Zero).AddDays(days),
                 TimeZone = "UTC",
                 DateField = ChangePortfolioDateField.Committer,
                 MergePolicy = ChangePortfolioMergePolicy.Exclude,

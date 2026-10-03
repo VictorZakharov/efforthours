@@ -84,6 +84,7 @@ public sealed partial class ChangeEstimator
                             snapshotAnalyses,
                             entry.Entry.CacheNamespace,
                             executionTelemetry,
+                            ownsSnapshots: true,
                             pipelineCancellation.Token).ConfigureAwait(false);
                         reportCompleted();
                         entry.Complete();

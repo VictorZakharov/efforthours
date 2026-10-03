@@ -24,7 +24,7 @@ public sealed record ChangeEstimateInput
 
 public sealed partial class ChangeEstimator
 {
-    public const string Version = "change-seed/0.20.0+seed-rules/0.4.0";
+    public const string Version = "change-seed/0.21.0+seed-rules/0.4.0";
     public const int FullSnapshotAnalysisFileLimit = 0;
 
     private readonly IEstimator _repositoryEstimator;
@@ -69,6 +69,7 @@ public sealed partial class ChangeEstimator
             new SnapshotAnalysisCache(),
             "single-estimate",
             executionTelemetry: null,
+            ownsSnapshots: true,
             cancellationToken);
 
     private async Task<ChangeEstimateReport> EstimateCoreAsync(
@@ -78,6 +79,7 @@ public sealed partial class ChangeEstimator
         SnapshotAnalysisCache snapshotAnalyses,
         string cacheNamespace,
         ChangePortfolioExecutionTelemetry? executionTelemetry,
+        bool ownsSnapshots,
         CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(input);
@@ -97,8 +99,8 @@ public sealed partial class ChangeEstimator
             input.OpenHeadAsync,
             executionTelemetry,
             cancellationToken).ConfigureAwait(false);
-        await using (baseSnapshot)
-        await using (headSnapshot)
+        await using (ownsSnapshots ? baseSnapshot : null)
+        await using (ownsSnapshots ? headSnapshot : null)
         {
             normalized = await AnalyzePairAsync(
                 input.RepositoryName,

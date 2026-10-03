@@ -52,7 +52,7 @@ public sealed class GDScriptChangeTests
         (string Path, string Content)[] after = [.. before, ("tests/test_app.gd", "func test_value():\n    assert(true)\n")];
         ChangeEstimateReport report = await EstimateFilesAsync(before, after);
         Assert.Contains(report.WorkItems, item => item.Category == EffortCategory.UnitTesting);
-        Assert.Equal("change-seed/0.20.0+seed-rules/0.4.0", report.EstimatorVersion);
+        Assert.Equal("change-seed/0.21.0+seed-rules/0.4.0", report.EstimatorVersion);
     }
 
     private static Task<ChangeEstimateReport> EstimateAsync(string before, string after) =>

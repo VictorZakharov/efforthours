@@ -3,7 +3,7 @@
 `eh calendar` creates a teammate's graph without AI, authored manifests, a website
 build, or remote model access. It composes the existing immutable author-period
 portfolio with independent reconciliation within each local day and repository.
-Its calculation identity is `independent-local-day-change/1.0.0`; JSON retains
+Its calculation identity is `independent-local-day-change/1.1.0`; JSON retains
 each day's category and overlap-adjustment ledger. Extending the selected date
 range cannot change an existing day's numeric result.
 The graph shows **repository-attributed Change EHE**, not snapshot stock changes,

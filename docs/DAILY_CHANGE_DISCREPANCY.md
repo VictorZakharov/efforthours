@@ -1,7 +1,7 @@
 # Independent daily Change and supported capability growth
 
-The producer fixes use `independent-local-day-change/1.0.0`,
-`change-portfolio/0.4.0`, and `change-seed/0.20.0+seed-rules/0.4.0`.
+The current correction uses `independent-local-day-change/1.1.0`,
+`change-portfolio/0.6.0`, and `change-seed/0.21.0+seed-rules/0.4.0`.
 They correct two mechanisms diagnosed by the consumer audit without fitting
 estimator priors to private numerical totals. Change EHE remains experimental
 and uncalibrated. The private source audit is not a committed fixture.
@@ -11,11 +11,13 @@ and uncalibrated. The private source audit is not a committed fixture.
 Previously all selected changes were reconciled across the entire interval and
 then allocated to days. Adding an earlier overlapping change could lower a later
 day even though its selected inputs were unchanged. Existing low-level joint
-modes retain that behavior and identity for compatibility.
+modes retain joint interval allocation; exact endpoint valuation now follows the
+separately versioned correction below.
 
 `eh calendar` and low-level `--bucket independent-day` now group selected inputs
-by local date and repository before reconciliation. Within-day exact/overlap
-normalization is unchanged. Immutable snapshot/static analysis, bounded sessions,
+by local date and repository before reconciliation. Within-day normalization now
+re-estimates exact selected final effects when immutable endpoint inventories prove
+their complete selection. Immutable snapshot/static analysis, bounded sessions,
 and durable checkpoints still run as one batch. Daily category and adjustment
 ledgers are retained in JSON, validated against repository and batch totals, and
 bound into semantic identity. Day/project low/expected/high values are additive
@@ -54,13 +56,12 @@ to equal another through scaling, clamping, absolute values, pricing, or per-com
 summation. Daily lineage enables category/project diagnosis without concealing
 these different selection and model operands.
 
-Arbitrary alternative commit partitions within a day are not guaranteed to yield
-identical selected-delta portfolios. Cross-day invariance and display-partition
-invariance are the guarantees of this correction. A new cross-report stock/endpoint
-diagnostic command is outside this producer fix; existing stock reports and daily
-category lineage remain available separately. The private archives and native
-receipts were not supplied, so their exact audit totals are not independently
-reproduced or certified here. No frozen admission report or seed prior changes.
+Alternative commit partitions with an exact selected endpoint inside one day
+must now agree at every range point and category. Across dates, independent-day
+normalization deliberately preserves each date's own endpoint context. Unproven
+interleaved or branching selections retain conservative normalization and explicit
+uncertainty. A new stock/endpoint diagnostic command remains outside this fix;
+stock output is neither a clamp nor an estimator target.
 
 Byte-identical bodies added more than once in one final delta now retain one
 deterministic represented path; other additions retain exact-duplicate lineage
@@ -82,7 +83,8 @@ either partial-reversal retention or projected marginal normalization.
 
 ### Retained intermediate growth
 
-`Alpha29FinalStateDiscrepancyTests` uses the real scanner, Roslyn analyzer, seed
+The pre-correction reproduction in `Alpha29FinalStateDiscrepancyTests` used the
+real scanner, Roslyn analyzer, seed
 estimator, Change estimator, and portfolio reconciler with in-memory C# snapshots.
 One maintained file opens with one method and closes with two. The split variant
 first expands that file, then removes every extra method except the one retained
@@ -184,42 +186,44 @@ capability marginals before attributing the rest to modification budgets or role
 redistribution. Naming that projected difference a repository marginal does not
 prove it retained the full repository's normalization context.
 
-### Correction acceptance boundary
+### Implemented correction and acceptance boundary
 
-These tests characterize the defect and budget distinctions; passing them is not
-acceptance of retained intermediate work. No estimator, prior, public schema,
-policy identity, admission record, or shipped estimate changes in this investigation.
-A correction should freeze and implement at least these relations:
+The retained-growth diagnostics are now endpoint-invariance acceptance tests.
+`PartialReversalUsesSelectedFinalEndpointDespiteIntermediateExpansion` requires
+identical low/expected/high totals and category ledgers for split and unsplit
+changes, including a discarded 401-method expansion. A monotone split also agrees
+with its direct endpoint. Exact complete reversal remains zero. Separate tests
+reject omitted raw effects, broken chains, altered receipt inputs, and cancellation.
+The full-context scope test requires unchanged normalization paths to remain
+admitted; the narrow projection is retained only as a diagnostic utility.
 
-- A fully selected exact object chain with no interleaving must value its coherent
-  opening-to-closing represented delta. Partial reversals and monotone same-path
-  growth must be compared with an unsplit equivalent at every range point.
-- Discarded intermediate expansion must not raise that final value. Complete
-  reversals, reintroductions, generated/duplicate exclusions, and distinct final
-  capabilities still need their existing safety and additivity coverage.
-- Independent local-day window invariance and exact category/project/contributor
-  accounting must remain intact. Work crossing a day boundary requires an explicit
-  policy; it must not silently change an earlier day's estimate.
-- Interleaved, branching, or incompletely selected chains need explicit uncertainty
-  and a defined conservative fallback. A global first-to-last range could include
-  unselected work and is not a safe blanket replacement for portfolio normalization.
-- Changed-scope growth must retain or explicitly account for unchanged owning-scope
-  normalization context rather than restarting its marginal tiers. A correction
-  must preserve bounded read-only analysis and distinguish full and projected
-  operands in lineage; it cannot silently substitute a full scan for every row.
-- Capability growth remains evidence-bound and uses the existing seed priors.
-  Stock remains signed replacement effort; it is not a clamp, target, or scaling
-  factor for Change. Category role partitions must conserve their original budgets.
-- A behavior correction needs new versioned identities, governing contract updates,
-  schema-valid reports, lineage, and bounded offline execution. The diagnostic
-  assertions for retained overcount must then become final-state acceptance tests.
+Canonical Git Change inputs now retain complete admitted owning-scope context.
+This explicitly costs more parsing; fixed cache, queue, concurrency, and read-buffer
+bounds remain unchanged. No modification/removal prior, growth threshold, role
+budget, or stock-total scaling changes.
 
-Private Project A/B/C causal attribution and numerical agreement remain unverified.
-Cross-day invariance, exact accounting, and this synthetic mechanism diagnosis do
-not establish calibration, accuracy, or production readiness.
+Author-period execution prepares `selected-final-delta/1.0.0` receipts only after
+exact active raw effects match the complete admitted endpoint inventories. The
+canonical endpoint category ledger replaces intermediate maxima. Independent days
+prove and re-estimate each local date separately; joint intervals can prove one
+larger pair. Unselected effects, unsupported modes, links/submodules, broken
+chains, or the bounded proof envelope fail closed to conservative normalization.
 
-Reproduce the diagnostic cases from the repository root:
+Source reports retain canonical isolated rows, exact expected allocations, signed
+interaction adjustments, and digest/object lineage in `FB5336`. Checkpoints bind
+joint versus independent-day policy and preserve the endpoint receipt. The process
+regression compares direct and portfolio output with unchanged 400-method context,
+then verifies exact warm checkpoint reuse and independent-day policy invalidation.
+Old daily v1.0.0 artifacts remain accepted without rewriting frozen records.
+
+The earlier tables describe the pre-correction synthetic behavior, not current
+output or calibrated labels. Private Project A/B/C causal attribution and accuracy
+remain unverified. The correction follows source-independent final-state invariants;
+no private total, frozen teacher label, or sealed partition is a parameter.
+
+Run the public semantic regressions from the repository root:
 
 ```text
-dotnet test tests/EffortHours.Tests/EffortHours.Tests.csproj --configuration Release --filter "FullyQualifiedName~Alpha29FinalStateDiscrepancyTests|FullyQualifiedName~PositiveNegativeAndRoleBudgetsExplainEndpointVersusSignedStock" --logger "console;verbosity=detailed"
+dotnet test tests/EffortHours.Tests/EffortHours.Tests.csproj --configuration Release --filter "FullyQualifiedName~Alpha29FinalStateDiscrepancyTests|FullyQualifiedName~PositiveNegativeAndRoleBudgetsExplainEndpointVersusSignedStock"
+dotnet test tests/EffortHours.EndToEndTests/EffortHours.EndToEndTests.csproj --configuration Release --filter "FullyQualifiedName~AuthorPeriodPartialReversalMatchesEndpointWithCompleteContextAndCheckpointReuse"
 ```

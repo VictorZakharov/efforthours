@@ -7,7 +7,7 @@ namespace EffortHours.Change;
 
 public sealed partial class ChangePortfolioReconciler
 {
-    public const string Version = "change-portfolio/0.5.0+change-seed/0.20.0+seed-rules/0.4.0";
+    public const string Version = "change-portfolio/0.6.0+change-seed/0.21.0+seed-rules/0.4.0";
 
     public static ChangePortfolioReport Reconcile(
         ChangePortfolioSelection selection,
@@ -72,6 +72,15 @@ public sealed partial class ChangePortfolioReconciler
         List<Diagnostic> diagnostics =
         [
             .. (planningDiagnostics ?? []),
+            .. candidates.Where(candidate => candidate.FinalDelta is not null).Select(candidate => new Diagnostic
+            {
+                Code = "FB5336", Severity = DiagnosticSeverity.Information,
+                Message = $"{ChangePortfolioFinalDelta.Policy}: repository={candidate.RepositoryId}; " +
+                    $"selectorCount={candidate.FinalDelta!.SelectorIds.Count}; " +
+                    $"base={candidate.FinalDelta.Report.Selection.Base.ObjectId}; head={candidate.FinalDelta.Report.Selection.Head.ObjectId}; " +
+                    $"input={candidate.FinalDelta.InputDigest}; rawDelta={candidate.FinalDelta.RawDeltaDigest}; " +
+                    $"sourceReport={ChangePortfolioIdentity.Digest(ContractJson.SerializeCompact(candidate.FinalDelta.Report))}.",
+            }),
             .. candidates
                 .SelectMany(candidate => candidate.Report.Diagnostics)
                 .Where(diagnostic => diagnostic.Code is "FB5106" or "FB5107"),
