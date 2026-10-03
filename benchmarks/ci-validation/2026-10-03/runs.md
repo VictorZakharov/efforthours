@@ -90,9 +90,9 @@ All recorded jobs concluded success except expected skipped Formatting and packa
 | 37083938212 | Quality (macos-latest) (success) | 20 | 7 | 27 |
 | 37083938212 | Quality (windows-latest) (success) | 11 | 4 | 15 |
 | 37083938212 | Quality (ubuntu-latest) (success) | 10 | 2 | 12 |
-| 37083938212 | Build preview package candidate (skipped) | 9 | -1 | 8 |
-| 37083938212 | Formatting (skipped) | 9 | -1 | 8 |
-| 37083938212 | Pack preview artifact (skipped) | 27 | 0 | 27 |
+| 37083938212 | Build preview package candidate (skipped) | - | - | - |
+| 37083938212 | Formatting (skipped) | - | - | - |
+| 37083938212 | Pack preview artifact (skipped) | - | - | - |
 | 37118742097 | Pull request commits are linear (success) | 2 | 4 | 6 |
 | 37118742097 | Formatting (success) | 8 | 104 | 112 |
 | 37118742097 | End-to-end (macos-latest) (success) | 11 | 251 | 262 |
@@ -110,9 +110,9 @@ All recorded jobs concluded success except expected skipped Formatting and packa
 | 37119576713 | Quality (macos-latest) (success) | 22 | 5 | 27 |
 | 37119576713 | End-to-end (ubuntu-latest) (success) | 16 | 4 | 20 |
 | 37119576713 | End-to-end (windows-latest) (success) | 16 | 4 | 20 |
-| 37119576713 | Formatting (skipped) | 14 | -1 | 13 |
-| 37119576713 | Build preview package candidate (skipped) | 14 | -1 | 13 |
-| 37119576713 | Pack preview artifact (skipped) | 28 | 0 | 28 |
+| 37119576713 | Formatting (skipped) | - | - | - |
+| 37119576713 | Build preview package candidate (skipped) | - | - | - |
+| 37119576713 | Pack preview artifact (skipped) | - | - | - |
 | 37119893698 | Pull request commits are linear (success) | 4 | 6 | 10 |
 | 37119893698 | Formatting (success) | 12 | 64 | 76 |
 | 37119893698 | Build preview package candidate (success) | 12 | 59 | 71 |
@@ -140,9 +140,9 @@ All recorded jobs concluded success except expected skipped Formatting and packa
 | 37123489676 | Quality (macos-latest) (success) | 23 | 6 | 29 |
 | 37123489676 | End-to-end (macos-latest) (success) | 20 | 4 | 24 |
 | 37123489676 | End-to-end (windows-latest) (success) | 15 | 4 | 19 |
-| 37123489676 | Formatting (skipped) | 13 | -1 | 12 |
-| 37123489676 | Build preview package candidate (skipped) | 13 | -1 | 12 |
-| 37123489676 | Pack preview artifact (skipped) | 29 | 0 | 29 |
+| 37123489676 | Formatting (skipped) | - | - | - |
+| 37123489676 | Build preview package candidate (skipped) | - | - | - |
+| 37123489676 | Pack preview artifact (skipped) | - | - | - |
 | 37123657295 | Pull request commits are linear (success) | 2 | 6 | 8 |
 | 37123657295 | Build preview package candidate (success) | 10 | 64 | 74 |
 | 37123657295 | Formatting (success) | 10 | 88 | 98 |
@@ -160,9 +160,13 @@ All recorded jobs concluded success except expected skipped Formatting and packa
 | 37124032373 | Quality (windows-latest) (success) | 11 | 3 | 14 |
 | 37124032373 | End-to-end (windows-latest) (success) | 12 | 6 | 18 |
 | 37124032373 | Quality (ubuntu-latest) (success) | 10 | 3 | 13 |
-| 37124032373 | Formatting (skipped) | 9 | -1 | 8 |
-| 37124032373 | Build preview package candidate (skipped) | 9 | -1 | 8 |
-| 37124032373 | Pack preview artifact (skipped) | 22 | -1 | 21 |
+| 37124032373 | Formatting (skipped) | - | - | - |
+| 37124032373 | Build preview package candidate (skipped) | - | - | - |
+| 37124032373 | Pack preview artifact (skipped) | - | - | - |
+
+Skipped job timing fields are omitted: GitHub may report their completion before
+the synthetic start timestamp. Aggregate completion uses its reported completion
+identity only, not an executed skipped-job duration.
 
 Successful E2E steps only; skipped steps are excluded.
 
