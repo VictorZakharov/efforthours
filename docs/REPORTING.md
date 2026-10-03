@@ -345,8 +345,16 @@ in `REPORT_BENCHMARKS.md`. Optional host-AI packets add a stricter digest-bound
 protocol around the review projection; see `HOST_REVIEW.md`.
 
 Independent local-day reports (`eh calendar` or `--bucket independent-day`) use
-`independent-local-day-change/1.0.0`, with overlap and joint contributor allocation
+`independent-local-day-change/1.1.0`, with overlap and joint contributor allocation
 within each date. Their optional source `dailyNormalization` ledger includes
 repository categories and adjustments. HTML/text/JSON disclose this measurement,
 which remains separate from replacement stock and its signed daily differences.
 Existing calendar-day and other bucket modes retain joint interval allocation.
+
+Exact selected endpoint normalization uses the existing diagnostic and signed
+interaction-adjustment contracts. `FB5336` provides immutable anchors and input,
+raw-delta, and source-report digests without source paths or identity aliases.
+Old daily v1.0.0 documents remain accepted. Checkpoint identity additionally binds
+joint versus independent-day normalization; geometry changes within one policy
+remain reusable. Source estimator and portfolio identities advance independently
+of the unchanged experimental/uncalibrated maturity boundary.

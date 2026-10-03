@@ -29,7 +29,7 @@ public static partial class ContractValidation
     private static void ValidateDailyNormalization(ChangePortfolioReport report, List<string> errors)
     {
         if (report.DailyNormalization is not { } daily) return;
-        if (daily.Protocol != ChangePortfolioDailyNormalization.Policy ||
+        if (daily.Protocol is not (ChangePortfolioDailyNormalization.Policy or "independent-local-day-change/1.0.0") ||
             report.Selection.AuthorPeriodManifest?.TimeZone != daily.TimeZone || daily.Days.Count > 512)
         {
             errors.Add("Independent daily normalization has invalid selection, identity, or bounds.");

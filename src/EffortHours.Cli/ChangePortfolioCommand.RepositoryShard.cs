@@ -22,7 +22,9 @@ internal sealed partial class ChangePortfolioCommand
             repository.Id,
             options.Profile,
             ChangeEstimator.Version,
-            scopeProfileDigest);
+            ChangePortfolioComparisonIdentity.ComputeTextDigest(
+                (scopeProfileDigest ?? "") + "\n" + ChangePortfolioFinalDelta.Policy + "\n" +
+                (options.CalendarReport || options.Bucket == "independent-day" ? "independent-day" : "joint")));
         ChangePortfolioExecutionTelemetry telemetry =
             CreateExecutionTelemetry(standardError, repository.Id);
         if (checkpoints is not null)
@@ -109,6 +111,13 @@ internal sealed partial class ChangePortfolioCommand
                     Attribution = item.Attribution,
                 });
             }
+
+            ChangePortfolioPreparedCandidates prepared = await _changeEstimator.PreparePortfolioFinalDeltasAsync(
+                plan.Selection, candidates, scopedPlans, options.Profile, estimate.Statistics,
+                options.CalendarReport || options.Bucket == "independent-day", pathAdmission, telemetry,
+                cancellationToken).ConfigureAwait(false);
+            candidates = [.. prepared.Candidates];
+            estimate = estimate with { Statistics = prepared.Statistics };
 
             ChangePortfolioCheckpointDisposition disposition = checkpoints is null
                 ? ChangePortfolioCheckpointDisposition.Disabled

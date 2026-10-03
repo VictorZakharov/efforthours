@@ -9,7 +9,7 @@ directories; and two saved repository-evidence bundles. Portfolio reconciliation
 supports repeated PRs, multi-repository manifests, and bounded author-period
 selection under the separate `CHANGE_PORTFOLIOS.md` contract.
 
-Current source reports use `change-seed/0.20.0+seed-rules/0.4.0`. The model remains
+Current source reports use `change-seed/0.21.0+seed-rules/0.4.0`. The model remains
 experimental and is not empirically production-validated. Only the documented
 0.6.0 Stage A subset has passed a model-authored logical gate for eligible
 4-to-32-hour changes; later ecosystem extensions preserve those admitted rules but
@@ -199,17 +199,23 @@ acquisition. Once both exact resolved objects exist, Git must resolve exactly
 one merge base; no common ancestor or several criss-cross merge bases fail rather
 than selecting an arbitrary boundary.
 
-All immutable Git changes use a bounded changed-scope evidence projection. The
-analyzer enumerates immutable changed
-paths, root context artifacts, recognized static project/package/build context in
-the changed path's directory or ancestors, and one deterministic representative
-per supported source extension. It does not parse every unrelated nested project
-or package descriptor merely because it exists in the same snapshot. Full base/head
-inventories remain available for additions, removals, moves, exact duplicates,
-unchanged-context counts, and a content-addressed source identity; unchanged
-source bodies are not routinely parsed. Diagnostic `FB5205` records changed,
-relevant-context, representative, available-context, and full-inventory counts.
-Directory/evidence selectors retain full-snapshot analysis.
+Immutable Git Change valuation uses complete admitted repository normalization
+context under `complete-normalization/1.0.0`. Unchanged source and static owning
+project/package context participate in duplicate exclusion, capability identity,
+and diminishing-return tiers. A narrow changed-path projection can restart those
+tiers and overstate growth, so it is no longer an estimator input. Explicit
+engineering admission still limits both snapshots to its admitted path population.
+The complete union is a traversal mask, never a broader selection of changed work.
+Diagnostic `FB5205` records changed paths, all retained unchanged normalization
+context, zero synthetic representatives, and admitted inventory counts. Directory
+and evidence selectors continue to use their complete admitted snapshots.
+
+This correctness change can increase analysis work; the earlier changed-scope
+benchmarks are historical measurements, not latency promises for this version.
+Content-addressed file artifacts, full-context snapshot reuse, bounded queues,
+read buffers, caches, and CPU/Git concurrency limits remain fixed. Cache identity
+binds immutable inventory plus the complete admission policy rather than the
+particular changed-path mask, allowing adjacent rows to reuse identical context.
 
 Within one Git repository session, at most 10,000 structurally shared immutable
 inventories across 16 full-tree root lineages and 16 exact snapshot/scope analyses
@@ -586,12 +592,12 @@ verification, and post-EHE pricing. They emit neither local repository paths nor
 source excerpts.
 
 The current source Change estimator identity is
-`change-seed/0.20.0+seed-rules/0.4.0`; the portfolio reconciler identity is
-`change-portfolio/0.5.0+change-seed/0.20.0+seed-rules/0.4.0`. The earlier 0.6.0
+`change-seed/0.21.0+seed-rules/0.4.0`; the portfolio reconciler identity is
+`change-portfolio/0.6.0+change-seed/0.21.0+seed-rules/0.4.0`. The earlier 0.6.0
 Change identity alone passed the experimental Stage A logical gate, and that
 record contains no SQL, Python, Go, Java, Kotlin, Shell, PowerShell, Terraform,
 HCL, PHP, Composer, Rust, Cargo, Docker, Compose, Jupyter, C, C++, or GDScript. Portfolio
-aggregation does not broaden that admission. Neither 0.20.0 nor portfolio 0.5.0
+aggregation does not broaden that admission. Neither 0.21.0 nor portfolio 0.6.0
 may be described as empirically calibrated, generally admitted, or production-
 ready. Frozen calibration source reports retain
 the exact earlier estimator identity they were created from.
@@ -964,3 +970,14 @@ deterministic represented path; other additions retain exact-duplicate lineage
 and zero body effort. This also prevents fallback and validation charges from
 rewarding copies of newly added source. Existing copies already present in the
 base retain their prior exclusion.
+
+## Complete normalization context correctness revision (0.21.0)
+
+Supported production/test growth retains the original owning capability's seed
+normalization population at both endpoints. No seed rate, growth threshold,
+modification/removal budget, or role partition changes. Complete context avoids
+valuing an isolated projection as though it were the full repository marginal.
+Positive growth, bounded modification, bounded removal, role redistribution,
+fallback, comprehension, validation, and review still differ from signed stock.
+This is a subject-neutral correctness revision, not numerical fitting or new
+Change admission. Frozen reports and labels keep their original identities.

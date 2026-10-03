@@ -11,6 +11,8 @@ public sealed record ChangePortfolioCandidate
     public required ChangeEstimateReport Report { get; init; }
 
     public required ChangePortfolioAttribution Attribution { get; init; }
+
+    public ChangePortfolioFinalDelta? FinalDelta { get; init; }
 }
 
 internal sealed class ChangePortfolioItemDraft

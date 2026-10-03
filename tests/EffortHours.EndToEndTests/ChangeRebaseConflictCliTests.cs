@@ -73,7 +73,20 @@ public sealed partial class ChangeCliTests
             using JsonDocument rebasedOnly = await Estimate(rebased);
             using JsonDocument combined = await Estimate(original, rebased);
             decimal Total(JsonDocument report) => report.RootElement.GetProperty("totalEffort").GetProperty("expected").GetDecimal();
-            Assert.Equal(Total(rebasedOnly), Total(combined));
+            if (!substantial)
+                Assert.Equal(Total(rebasedOnly), Total(combined));
+            else
+            {
+                // A single retained branch proves an endpoint; the conflicting
+                // multi-head selection cannot. Its conservative fallback must
+                // remain explicit rather than importing one branch's endpoint.
+                Assert.InRange(Total(combined), Total(rebasedOnly), Total(rebasedOnly) + Total(originalOnly));
+                Assert.Contains(combined.RootElement.GetProperty("repositoryGroups").EnumerateArray()
+                    .SelectMany(group => group.GetProperty("uncertaintyReasons").EnumerateArray()),
+                    reason => reason.GetString()!.Contains("final endpoint was not established", StringComparison.Ordinal));
+                Assert.DoesNotContain(combined.RootElement.GetProperty("diagnostics").EnumerateArray(),
+                    diagnostic => diagnostic.GetProperty("code").GetString() == "FB5336");
+            }
             Assert.True(Total(combined) > 0);
             if (substantial)
             {

@@ -25,7 +25,7 @@
       "type": "object", "additionalProperties": false,
       "required": ["protocol", "timeZone", "days"],
       "properties": {
-        "protocol": { "const": "independent-local-day-change/1.0.0" },
+        "protocol": { "enum": ["independent-local-day-change/1.0.0", "independent-local-day-change/1.1.0"] },
         "timeZone": { "type": "string", "minLength": 1 },
         "days": {
           "type": "array", "maxItems": 512,
@@ -91,7 +91,7 @@
       "if": {
         "required": ["estimatorVersion", "selection"],
         "properties": {
-          "estimatorVersion": { "pattern": "^change-portfolio/0\\.[2345]\\.[0-9]+\\+" },
+          "estimatorVersion": { "pattern": "^change-portfolio/0\\.[23456]\\.[0-9]+\\+" },
           "selection": {
             "required": ["kind", "manifestBased"],
             "properties": {

@@ -79,6 +79,13 @@ internal sealed partial class ChangePortfolioCommand
             });
         }
 
+        ChangePortfolioPreparedCandidates prepared = await _changeEstimator.PreparePortfolioFinalDeltasAsync(
+            plan.Selection, candidates, [.. plan.Items.Select(item => item.Plan)], options.Profile,
+            estimate.Statistics, telemetry: executionTelemetry, cancellationToken: cancellationToken)
+            .ConfigureAwait(false);
+        candidates = [.. prepared.Candidates];
+        estimate = estimate with { Statistics = prepared.Statistics };
+
         return new PortfolioCandidates(
             plan.Selection,
             candidates,

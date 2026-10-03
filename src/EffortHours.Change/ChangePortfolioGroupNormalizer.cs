@@ -25,6 +25,7 @@ internal static class ChangePortfolioGroupNormalizer
         }
         ChangePortfolioExactCompositionNormalizer.Mark(drafts);
         ChangePortfolioItemDraft[] active = [.. drafts.Where(draft => !draft.Suppressed)];
+        ChangePortfolioFinalDelta? finalDelta = ChangePortfolioFinalDeltaProof.Find(drafts, active);
         Dictionary<string, ChangePortfolioItemDraft[]> touches = active
             .SelectMany(draft => draft.Effects.Keys.Select(path => (Path: path, Draft: draft)))
             .GroupBy(value => value.Path, StringComparer.Ordinal)
@@ -47,6 +48,8 @@ internal static class ChangePortfolioGroupNormalizer
                 "The selected changes use multiple immutable base contexts; cross-context path attribution is structural rather than a replayed merge.");
         }
 
+        if (selection.Kind == ChangePortfolioSelectionKind.AuthorPeriod && active.Length > 1 && finalDelta is null)
+            groupUncertainty.Add("An exact selected final endpoint was not established; conservative path/category normalization may retain intermediate work.");
         AddAttributionUncertainty(active, groupUncertainty);
         ChangePortfolioTopology.AddOverlapUncertainty(
             selection,
@@ -54,13 +57,14 @@ internal static class ChangePortfolioGroupNormalizer
             revertedPaths,
             groupUncertainty);
         IReadOnlyList<IReadOnlyList<ChangePortfolioItemDraft>> components =
-            ChangePortfolioTopology.ConnectedComponents(active, touches);
+            finalDelta is null ? ChangePortfolioTopology.ConnectedComponents(active, touches) : [active];
         Dictionary<EffortCategory, EffortRange> normalizedByCategory = [];
         List<EffortRange> componentTotals = [];
         foreach (IReadOnlyList<ChangePortfolioItemDraft> component in components)
         {
             Dictionary<EffortCategory, EffortRange> componentCategories =
-                NormalizeComponent(component, revertedPaths);
+                finalDelta is null ? NormalizeComponent(component, revertedPaths) :
+                    finalDelta.Report.Categories.ToDictionary(category => category.Category, category => category.Hours);
             foreach ((EffortCategory category, EffortRange hours) in componentCategories)
             {
                 Add(normalizedByCategory, category, hours);
@@ -89,6 +93,12 @@ internal static class ChangePortfolioGroupNormalizer
             overlapPaths,
             revertedPaths,
             categories);
+        if (finalDelta is not null)
+        {
+            causes = [new ChangePortfolioAdjustmentCause(ChangePortfolioAdjustmentKind.Interaction, 1m,
+                "Exact selected final effects are re-estimated through the canonical endpoint Change engine; discarded intermediate expansion is excluded.",
+                [.. drafts.Select(draft => draft.Id).Order(StringComparer.Ordinal)], finalDelta.Report.Evidence.Paths.Count)];
+        }
         IReadOnlyList<ChangePortfolioAdjustment> adjustments = ChangePortfolioAdjustmentBuilder.Build(
             repositoryId,
             isolated,

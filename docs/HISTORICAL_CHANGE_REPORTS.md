@@ -120,3 +120,10 @@ mutation are not implemented here. They require a separate explicit allocation
 contract that conserves the deduplicated aggregate and labels allocated values.
 EHE remains experimental replacement effort, not historical labor, productivity,
 individual credit, compensation, or a recovered timesheet.
+
+Portfolio 0.6.0 additionally re-estimates a proven complete selected endpoint as
+specified in `CHANGE_PORTFOLIOS.md`. A single retained branch can pass that proof
+while a combined conflicting-head selection fails it. Such an ambiguous combined
+selection retains conservative structural maxima and explicit uncertainty; equality
+with the single-branch endpoint is not promised. Exact rewrite/composition
+suppression remains intact, and no unproven conflict resolution is discarded.
