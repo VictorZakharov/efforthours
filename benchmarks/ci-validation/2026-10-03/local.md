@@ -107,3 +107,35 @@ Both after runs use fresh test processes with the same Release outputs and runne
 configuration. There are no timing/memory CI thresholds or cross-platform speedup
 claims from these local Windows observations. Hosted phase results are recorded
 separately after required checks.
+
+## Hosted shard checkpoint
+
+At `4c4b6565d22bb7c8f3db211e31a49e24fb6676a8`,
+[run 37127105344](https://github.com/VictorZakharov/efforthours/actions/runs/37127105344)
+passed every check and verified all 296 cases exactly once on each OS. Four
+Windows/macOS and two Linux shards built their OS-specific graph without
+repeating the analyzer work retained in the required Quality jobs.
+
+| Measurement | Seconds |
+| --- | ---: |
+| Complete run, creation to final package job completion | 313 |
+| Creation to history job start | 68 |
+| Slowest Windows E2E job | 184 |
+| That job's restore/build/test steps | 20 / 47 / 99 |
+| Slowest macOS E2E job | 139 |
+| Slowest Linux E2E job | 131 |
+
+This improves the Windows job from the preceding split-only hosted run's 391
+seconds, but does not meet the under-three-minute complete PR target. Later
+configuration changes are measured separately; these queue-inclusive observations
+are checkpoints, not guarantees or CI thresholds.
+
+The six-Windows/four-macOS/three-Linux follow-up at
+`99a6ccd160922722d9f4e9abf6a459580b8085a5` also passed all checks:
+[run 37127725632](https://github.com/VictorZakharov/efforthours/actions/runs/37127725632).
+Total queue-inclusive time was 236 seconds. The slowest Windows E2E job fell to
+135 seconds, but the fourth macOS shard queued for 79 seconds after history
+completed. Windows Quality took 178 seconds, including a 55-second cold restore
+and 82-second analyzer-enabled build. The next configuration removes the fourth
+macOS shard and enables lock-file-keyed dependency caching while retaining locked
+restore, every analyzer-enabled Quality build and all platform tests.

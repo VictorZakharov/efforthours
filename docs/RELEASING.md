@@ -173,8 +173,8 @@ the release path, increment the prerelease version, and tag the corrected merge.
 ## Bounded E2E shards
 
 Full PR validation executes all discovered process tests on every platform using
-six method-stable shards on Windows, four on macOS and three on Linux. Each shard performs
-its own locked restore and OS-specific build. The existing required
+six method-stable shards on Windows and three on macOS/Linux. Each shard
+performs its own locked restore and OS-specific build. The existing required
 `End-to-end (<os>)` checks verify current-run/current-attempt/head receipts with
 exact once-only coverage, identical discovery inventories, all expected shard
 indices, and only passed outcomes. Missing, duplicate, skipped, failed or cancelled
@@ -186,3 +186,8 @@ Shard builds skip duplicate Roslyn analyzer execution (`RunAnalyzers=false`).
 The required Quality matrix still builds the complete solution with analyzers
 and compiler warnings enabled on every OS, including the E2E project. Its success
 remains necessary for package promotion; shard builds do not replace that gate.
+
+.NET setup caches only the NuGet global package folder, keyed by the OS and all
+checked-in dependency lock files. Locked restore still runs in every job; no
+project build outputs or previous validation results are cached. Cold caches and
+hosted runner queues can increase total latency.

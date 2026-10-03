@@ -145,7 +145,7 @@ jobs:
         run: |
           $rows = @()
           foreach ($os in @("ubuntu-latest", "windows-latest", "macos-latest")) {
-            $count = if ($env:FULL_CI -ne "true") { 1 } elseif ($os -eq "ubuntu-latest") { 3 } elseif ($os -eq "windows-latest") { 6 } else { 4 }
+            $count = if ($env:FULL_CI -ne "true") { 1 } elseif ($os -eq "windows-latest") { 6 } else { 3 }
             for ($index = 0; $index -lt $count; $index++) {
               $rows += @{ os = $os; shard = $index; count = $count }
             }
@@ -167,6 +167,8 @@ jobs:
         uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
         with:
           global-json-file: global.json
+          cache: true
+          cache-dependency-path: "**/packages.lock.json"
 
       - name: Restore
         run: dotnet restore EffortHours.slnx --configfile NuGet.Config --locked-mode
@@ -202,6 +204,8 @@ jobs:
         uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
         with:
           global-json-file: global.json
+          cache: true
+          cache-dependency-path: "**/packages.lock.json"
 
       - name: Restore
         if: needs.pull-request-history.outputs.full_ci == 'true'
@@ -239,6 +243,8 @@ jobs:
         uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
         with:
           global-json-file: global.json
+          cache: true
+          cache-dependency-path: "**/packages.lock.json"
 
       - name: Restore end-to-end project graph
         if: needs.pull-request-history.outputs.full_ci == 'true'
@@ -295,7 +301,7 @@ jobs:
           MATRIX_OS: ${{ matrix.os }}
         run: |
           if ($env:SHARD_RESULT -ne "success") { throw "An E2E shard failed or was cancelled." }
-          $count = if ($env:MATRIX_OS -eq "ubuntu-latest") { 3 } elseif ($env:MATRIX_OS -eq "windows-latest") { 6 } else { 4 }
+          $count = if ($env:MATRIX_OS -eq "windows-latest") { 6 } else { 3 }
           ./eng/verify-e2e-shards.ps1 -Directory artifacts/e2e-receipts -Count $count -Head $env:GITHUB_SHA
 
   package-candidate:
@@ -312,6 +318,8 @@ jobs:
         uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
         with:
           global-json-file: global.json
+          cache: true
+          cache-dependency-path: "**/packages.lock.json"
 
       - name: Restore
         run: dotnet restore src/EffortHours.Cli/EffortHours.Cli.csproj --configfile NuGet.Config --locked-mode
