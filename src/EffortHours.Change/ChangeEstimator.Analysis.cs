@@ -177,6 +177,7 @@ public sealed partial class ChangeEstimator
                 headEstimate,
                 profile);
         }
+        evidence = evidence with { Diagnostics = [.. evidence.Diagnostics, .. workItems.Diagnostics] };
         return new PairEstimate(
             evidence,
             workItems,

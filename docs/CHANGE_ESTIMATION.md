@@ -9,7 +9,7 @@ directories; and two saved repository-evidence bundles. Portfolio reconciliation
 supports repeated PRs, multi-repository manifests, and bounded author-period
 selection under the separate `CHANGE_PORTFOLIOS.md` contract.
 
-Current source reports use `change-seed/0.21.0+seed-rules/0.4.0`. The model remains
+Current source reports use `change-seed/0.21.1+seed-rules/0.4.0`. The model remains
 experimental and is not empirically production-validated. Only the documented
 0.6.0 Stage A subset has passed a model-authored logical gate for eligible
 4-to-32-hour changes; later ecosystem extensions preserve those admitted rules but
@@ -592,12 +592,12 @@ verification, and post-EHE pricing. They emit neither local repository paths nor
 source excerpts.
 
 The current source Change estimator identity is
-`change-seed/0.21.0+seed-rules/0.4.0`; the portfolio reconciler identity is
-`change-portfolio/0.6.0+change-seed/0.21.0+seed-rules/0.4.0`. The earlier 0.6.0
+`change-seed/0.21.1+seed-rules/0.4.0`; the portfolio reconciler identity is
+`change-portfolio/0.6.1+change-seed/0.21.1+seed-rules/0.4.0`. The earlier 0.6.0
 Change identity alone passed the experimental Stage A logical gate, and that
 record contains no SQL, Python, Go, Java, Kotlin, Shell, PowerShell, Terraform,
 HCL, PHP, Composer, Rust, Cargo, Docker, Compose, Jupyter, C, C++, or GDScript. Portfolio
-aggregation does not broaden that admission. Neither 0.21.0 nor portfolio 0.6.0
+aggregation does not broaden that admission. Neither 0.21.1 nor portfolio 0.6.1
 may be described as empirically calibrated, generally admitted, or production-
 ready. Frozen calibration source reports retain
 the exact earlier estimator identity they were created from.
@@ -981,3 +981,33 @@ Positive growth, bounded modification, bounded removal, role redistribution,
 fallback, comprehension, validation, and review still differ from signed stock.
 This is a subject-neutral correctness revision, not numerical fitting or new
 Change admission. Frozen reports and labels keep their original identities.
+
+## Capability budget bridge (0.21.1)
+
+`FB5210` exposes `change-capability-budget-bridge/1.0.0` for each repository/Change
+category, including stock-only categories with zero Change work. Values are exact
+expected hours, independent of pricing. It groups original capability signed
+marginals before role partition, then records retained positive growth, positive
+growth not retained, modification budget above retained growth, bounded removal,
+net role redistribution, maintained-artifact fallback, and change-level work.
+The bridge is constructed alongside the selected budgets and checked against the
+final decomposed category ledger:
+
+```text
+changeExpected = signedStock + negativeStockCredit - growthNotRetained
+                 + modificationExcess + removalWork + roleRedistribution
+                 + fallback + changeLevel
+```
+
+`negativeStockCredit` is the magnitude of declining stock capabilities, not a
+negative Change item. `modificationExcess` includes modifications with no retained
+growth. Role redistribution sums to zero across categories. Fallback and bounded
+comprehension/validation/review/design remain separate. Evidence IDs preserve
+work-item lineage without source paths in diagnostic messages. Proven portfolio
+endpoints also project these diagnostics with repository and endpoint-input
+digests. Unproven groups do not synthesize a coherent stock bridge.
+
+This adds diagnostic arithmetic, not an equality target, new prior, model fit,
+interval interpretation, calibration, or admission. The supplied anonymized totals
+cannot establish which budget explains a private project; an exact immutable
+consumer rerun is needed. Frozen reports and labels retain their producer versions.

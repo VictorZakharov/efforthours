@@ -2,7 +2,7 @@
 
 ## Current boundary
 
-`change-portfolio/0.6.0` composes canonical Change estimates selected as repeated
+`change-portfolio/0.6.1` composes canonical Change estimates selected as repeated
 pull requests, a versioned multi-repository PR manifest, a bounded direct
 author-period, or a versioned multi-repository/multi-head author-period manifest.
 It remains experimental and has no empirical production validation.
@@ -811,15 +811,36 @@ selected endpoint proof described below.
 
 ## Exact selected final effects
 
-`selected-final-delta/1.0.0` first applies retained rewrite/composition suppression,
-then composes every active raw path effect, including excluded and mechanical
-paths. Moved paths become a removal and an addition. Repeated touches must form
-an exact chronological blob-state chain. The earliest selected base and latest
-selected head are eligible anchors only if their complete admitted inventories
-match every composed initial/final blob state, contain no extra changed path,
-and preserve supported modes. Links, submodules, mode changes, broken chains,
-branch ambiguity, omitted work, or the 16,384-path proof bound retain conservative
-structural normalization with explicit uncertainty. This is not causal replay.
+`selected-final-delta/1.1.0` first applies retained rewrite/composition suppression,
+then verifies that each suppression preserves the complete raw patch, including
+excluded and mechanical paths. A represented-only match with different excluded
+changes cannot establish an endpoint. Moved paths become removal and addition.
+
+The initial proof retains exact chronological blob-state composition. When that
+fails, a bounded per-path graph accepts only one acyclic blob-state chain with
+unique incoming/outgoing transitions and no disconnected states. A first-parent
+merge transition can repeat an exact retained non-merge path chain; it is removed
+only after matching both blob boundaries. Repeated non-merge edges, competing
+branches, disconnected states, and cycles fail this graph proof. Ordinary exact
+chronological reversal remains supported. Dates, authors, and graph sizes remain
+selection/proof metadata and do not enter work budgets. No causal replay or general semantic merge equivalence is claimed.
+
+The chronological anchor pair is tried first. Alternate anchors must be selected
+comparison graph boundaries: bases not present as selected heads, and heads not
+present as selected bases. At most eight distinct bases and eight heads are
+searched (64 inventory comparisons); larger sets try the original pair only.
+Every accepted pair must match all composed initial/final states in its complete
+admitted inventories, contain no extra changed path, and preserve supported modes.
+Links, submodules, mode changes, omitted work, more than 16,384 composed paths,
+or the one-million-transition graph bound retain conservative normalization.
+
+`FB5337` records rejection codes `composition-unproven`, `inventory-mismatch`,
+`unsupported-mode`, `suppressed-raw-mismatch`, or `anchor-bound`, the selected-input
+digest, and a SHA-256 path digest when a rejecting path is established. It emits
+no source paths, aliases, or bodies. The path digest lets an authorized consumer
+correlate a rejecting path with local evidence. Rejections persist in checkpoints.
+The versioned proof and current Change identity invalidate prior receipts,
+including prior runs without a proven endpoint.
 
 A successful proof invokes the canonical Change engine once on that immutable
 pair. Its low/expected/high category ledger replaces the intermediate maxima for

@@ -8,11 +8,14 @@ namespace EffortHours.Change;
 internal sealed record ChangeWorkItemResult(
     IReadOnlyList<WorkItem> WorkItems,
     IReadOnlyList<CategoryEstimate> Categories,
-    EffortRange TotalEffort);
+    EffortRange TotalEffort)
+{
+    public IReadOnlyList<Diagnostic> Diagnostics { get; init; } = [];
+}
 
 internal static partial class ChangeWorkItemBuilder
 {
-    public const string EstimatorVersion = "change-seed/0.21.0";
+    public const string EstimatorVersion = "change-seed/0.21.1";
 
     public static ChangeWorkItemResult Build(
         ChangeSelection selection,
@@ -33,6 +36,7 @@ internal static partial class ChangeWorkItemBuilder
         HashSet<string> usedEvidenceIds = new(StringComparer.Ordinal);
         HashSet<EffortCategory> comprehensionCategories = [];
         List<WorkItem> items = [];
+        BudgetBridge bridge = new(baseCapabilities, headCapabilities);
 
         foreach (string capabilityId in baseCapabilities.Keys
             .Union(headCapabilities.Keys, StringComparer.Ordinal)
@@ -51,6 +55,7 @@ internal static partial class ChangeWorkItemBuilder
             string? rule = null;
             string? verb = null;
             string? reason = null;
+            decimal retainedGrowth = 0m;
 
             if (!SupportsCapabilityDelta(source.Category, baseCapability, headCapability))
             {
@@ -79,6 +84,7 @@ internal static partial class ChangeWorkItemBuilder
                     if (baseCapability is not null && headCapability is not null &&
                         HasSupportedCapabilityGrowth(baseCapability, headCapability, baseFacts, headFacts, logicalEvidence))
                     {
+                        retainedGrowth = marginal.Expected;
                         hours = new EffortRange
                         {
                             Low = Math.Max(hours.Low, marginal.Low),
@@ -90,6 +96,7 @@ internal static partial class ChangeWorkItemBuilder
                 else
                 {
                     hours = marginal;
+                    retainedGrowth = marginal.Expected;
                 }
 
                 rule = "capability-marginal";
@@ -151,6 +158,7 @@ internal static partial class ChangeWorkItemBuilder
                 touched,
                 evidenceIds,
                 hours);
+            bridge.Record(source.Category, rule, hours.Expected, retainedGrowth, partitions);
             foreach (CapabilityRolePartition partition in partitions)
             {
                 bool primary = partition.Category == source.Category;
@@ -317,6 +325,9 @@ internal static partial class ChangeWorkItemBuilder
         return new ChangeWorkItemResult(
             ordered,
             categories,
-            ContractValidation.Sum(ordered.Select(item => item.Hours)));
+            ContractValidation.Sum(ordered.Select(item => item.Hours)))
+        {
+            Diagnostics = bridge.Diagnostics(ordered),
+        };
     }
 }

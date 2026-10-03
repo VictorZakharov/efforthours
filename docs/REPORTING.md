@@ -358,3 +358,9 @@ Old daily v1.0.0 documents remain accepted. Checkpoint identity additionally bin
 joint versus independent-day normalization; geometry changes within one policy
 remain reusable. Source estimator and portfolio identities advance independently
 of the unchanged experimental/uncalibrated maturity boundary.
+
+Endpoint proof rejections use privacy-safe `FB5337` codes and input/path digests as
+defined in `CHANGE_PORTFOLIOS.md`. `FB5210` exposes the exact expected-hour stock
+and Change budget bridge in `CHANGE_ESTIMATION.md`; proven portfolio endpoints
+carry repository and endpoint-input digests on those category rows. These use
+existing v1 diagnostics, so schemas and old saved reports remain compatible.

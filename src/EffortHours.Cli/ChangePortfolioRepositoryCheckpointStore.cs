@@ -41,6 +41,8 @@ internal sealed record ChangePortfolioRepositoryCheckpointItem
     public required ChangePortfolioAttribution Attribution { get; init; }
 
     public ChangePortfolioFinalDelta? FinalDelta { get; init; }
+
+    public ChangePortfolioFinalDeltaRejection? FinalDeltaRejection { get; init; }
 }
 
 internal sealed class ChangePortfolioRepositoryCheckpointStore(string directory)
@@ -85,6 +87,7 @@ internal sealed class ChangePortfolioRepositoryCheckpointStore(string directory)
             {
                 if (ContractValidation.Validate(item.Report).Count > 0 ||
                     (item.FinalDelta is not null && ContractValidation.Validate(item.FinalDelta.Report).Count > 0) ||
+                    (item.FinalDeltaRejection is { } rejection && !rejection.IsValid()) ||
                     string.IsNullOrWhiteSpace(item.SelectorId))
                 {
                     return null;
@@ -98,6 +101,7 @@ internal sealed class ChangePortfolioRepositoryCheckpointStore(string directory)
                 Report = item.Report,
                 Attribution = item.Attribution,
                 FinalDelta = item.FinalDelta,
+                FinalDeltaRejection = item.FinalDeltaRejection,
             })];
             Dictionary<string, ChangePortfolioCandidate> bySelector = candidates.ToDictionary(candidate => candidate.SelectorId, StringComparer.Ordinal);
             if (candidates.Any(candidate => candidate.FinalDelta is { } receipt && !receipt.Matches(bySelector)))
@@ -140,6 +144,7 @@ internal sealed class ChangePortfolioRepositoryCheckpointStore(string directory)
                 Report = candidate.Report,
                 Attribution = candidate.Attribution,
                 FinalDelta = candidate.FinalDelta,
+                FinalDeltaRejection = candidate.FinalDeltaRejection,
             })],
             Diagnostics = diagnostics,
             Scope = scope,

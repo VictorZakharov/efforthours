@@ -1,7 +1,7 @@
 # Independent daily Change and supported capability growth
 
 The current correction uses `independent-local-day-change/1.1.0`,
-`change-portfolio/0.6.0`, and `change-seed/0.21.0+seed-rules/0.4.0`.
+`change-portfolio/0.6.1`, and `change-seed/0.21.1+seed-rules/0.4.0`.
 They correct two mechanisms diagnosed by the consumer audit without fitting
 estimator priors to private numerical totals. Change EHE remains experimental
 and uncalibrated. The private source audit is not a committed fixture.
@@ -227,3 +227,46 @@ Run the public semantic regressions from the repository root:
 dotnet test tests/EffortHours.Tests/EffortHours.Tests.csproj --configuration Release --filter "FullyQualifiedName~Alpha29FinalStateDiscrepancyTests|FullyQualifiedName~PositiveNegativeAndRoleBudgetsExplainEndpointVersusSignedStock"
 dotnet test tests/EffortHours.EndToEndTests/EffortHours.EndToEndTests.csproj --configuration Release --filter "FullyQualifiedName~AuthorPeriodPartialReversalMatchesEndpointWithCompleteContextAndCheckpointReuse"
 ```
+
+## Alpha.30 endpoint proof follow-up
+
+The anonymized consumer audit reports that alpha.30 reduced the discrepancy but
+proved no selected endpoint. Aggregate values and general ambiguity warnings do
+not reveal which raw path or anchor failed. No private source or exact selected
+objects are available in this repository, so this follow-up does not certify the
+private projects' endpoint proof or category offsets.
+
+Source inspection establishes two narrower proof limitations: timestamps order
+raw effects even though dates need not be causal, and only the earliest base and
+latest head are considered despite retained forks. A separate raw-effect check
+also prevents represented-only rewrite suppression from erasing excluded changes
+while claiming exact complete inventory equality.
+
+`Alpha30EndpointGraphTests` and the native
+`ForkMergeRetainedSquashAndReversedDatesMatchEndpointAndPreserveDailyCheckpoint`
+fixture exercise a selected expansion/partial reversal alongside a separate
+branch, a first-parent merge repeating the branch composition, and a retained
+squash on another head. Dates deliberately reverse selected ancestry. The final
+proof must reproduce direct endpoint low/expected/high categories, exact allocation,
+and order invariance. The CLI fixture retains exact selection/merge policy, verifies
+warm checkpoint reuse and unchanged source refs/worktree, and extends the date
+window without changing the existing day's ledger.
+
+`selected-final-delta/1.1.0` adds the bounded acyclic raw-state proof and selected
+boundary search in `CHANGE_PORTFOLIOS.md`. Explicit rejection diagnostics identify
+composition, inventory, unsupported-mode, suppression, and anchor-bound failure
+without revealing paths. Competing state chains and unselected endpoint effects
+remain unproven; no broad pair is substituted solely to reduce a total.
+
+The separate `FB5210` bridge now exposes signed stock, omitted negative credits,
+retained/omitted growth, modification excess, removal, role redistribution,
+fallback, and change-level work by category. The existing synthetic 16-hour
+production growth / 4-hour test-stock decline fixture checks the exact 17-hour
+body budget and the equal/opposite 6.86-hour mixed-role redistribution. The bridge
+is diagnostic and does not modify any numerical rule.
+
+Consumer verification should rerun the original immutable selection with these
+producer identities and inspect `FB5337` on any unproven group and `FB5210` on each
+proven endpoint or explicit coherent Change run. This can explain the private
+ledger; it does not by itself validate numerical accuracy or require equality
+with signed replacement stock. No private total is fitted, clamped, or scaled.

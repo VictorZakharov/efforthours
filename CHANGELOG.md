@@ -6,6 +6,15 @@ may still change public contracts with explicit documentation.
 
 ## Unreleased
 
+- Continue the alpha.30 daily discrepancy correction with bounded exact raw-effect
+  graph proof for retained forks/first-parent merges and non-monotonic dates,
+  alternate selected boundary anchors, and raw-safe rewrite suppression.
+- Report privacy-safe endpoint rejection codes/input/path digests and exact
+  category stock-to-Change expected-hour budget bridges. Preserve independent-day
+  invariance, immutable receipt reuse, selection policies, and numerical priors.
+- Advance source identities to Change 0.21.1 and portfolio 0.6.1. Estimates remain
+  experimental and uncalibrated; private consumer totals require an immutable rerun.
+
 ## 0.10.0-alpha.30 - 2026-10-03
 
 ### Added
