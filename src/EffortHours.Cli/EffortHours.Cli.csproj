@@ -8,11 +8,11 @@
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>eh</ToolCommandName>
     <PackageId>EffortHours.Tool</PackageId>
-    <Version>0.10.0-alpha.33</Version>
+    <Version>0.10.0-alpha.34</Version>
     <Title>EffortHours CLI</Title>
     <PackageReadmeFile>PACKAGE_README.md</PackageReadmeFile>
     <PackageTags>estimation;effort-estimation;developer-tools;cli;repository-analysis;static-analysis;dotnet-tool</PackageTags>
-    <PackageReleaseNotes>0.10.0-alpha.33: Reduce repeated full-context Change portfolio work on large repositories with bounded current-file reuse, exact local-analysis and seed-stock reuse, and overlapping reconciliation. Preserve complete normalization, estimator rates, attribution, evidence and report schemas. Synthetic runs improve materially but remain slower than alpha.29; a same-input field retest is required. Estimates remain experimental and uncalibrated. Full notes: https://github.com/VictorZakharov/efforthours/blob/v0.10.0-alpha.33/CHANGELOG.md</PackageReleaseNotes>
+    <PackageReleaseNotes>0.10.0-alpha.34: Add declared immutable rewrite-event attribution that preserves original contribution and dates only retained resolution effort, with explicit unresolved-date and missing-evidence boundaries. Fix complete empty author-period reports and offline engineering scope, including final endpoints and checkpoints. Bound and cache native historical discovery without unsafe date pruning, and preserve observed failure diagnostics. Source estimator priors and rates remain unchanged. EHE remains experimental and uncalibrated; event dates are caller declarations, not verified workdays. Full notes: https://github.com/VictorZakharov/efforthours/blob/v0.10.0-alpha.34/CHANGELOG.md</PackageReleaseNotes>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="../EffortHours.Analysis/EffortHours.Analysis.csproj" />
