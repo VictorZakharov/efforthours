@@ -243,17 +243,23 @@ cache memory unbounded.
 
 Adjacent first-parent snapshots may also reuse a prior exact-scope repository
 analysis without rescanning it. Reuse is exact when no path changed inside the
-scope. When exactly one in-scope path changed, reuse is limited to a maintained,
-unique C# body whose byte length is unchanged and whose cached, syntax-clean
-Roslyn lineage proves that the only textual change stays inside one numeric
-literal token. Numeric values are not analyzer evidence, and the fixed-size,
-single-token proof preserves every source location and common/semantic metric;
-only the file SHA-256, repository/scope identity, and matching diagnostic are
-refreshed. Any structural edit, syntax error, length change, duplicate body,
+scope. The single-file C# proof requires a maintained, unique C# body whose
+byte length is unchanged. The existing syntax-clean Roslyn
+numeric-token proof remains available. A second proof accepts bodies up to 64 KiB
+only when every common file fact except SHA-256 and the complete local Roslyn
+result (structure, facts, diagnostics and locations) are exactly unchanged. It
+binds the prior local result to the same immutable project-context identity:
+admitted descriptor object IDs and complete repository path membership. Both old
+and new bodies must be unique in the complete admitted population. Raw strings
+and ordered collections are compared without lossy serialization. Only file
+SHA-256, repository/scope identity and matching diagnostic are refreshed; actual
+changed-body evidence is still analyzed for the Change estimate. Any unproven
+context, changed evidence, syntax error, length change, duplicate body,
 generated/vendored/minified/binary classification, missing lineage, cache miss,
-or unsupported filesystem uses the ordinary full analyzer. The invocation-local
-lineage cache retains at most eight states and 16 MiB of decoded source text per
-repository; syntax trees are additionally bounded by the same eight-entry limit.
+link or unsupported filesystem uses the ordinary full analyzer. The invocation-
+local lineage cache retains at most eight states and 16 MiB of decoded source
+text per repository; syntax trees, local results and context identities share
+that eight-entry bound.
 
 Git inventory identity uses canonical SHA-256 Merkle nodes over path, mode, and
 blob object identity. The digest is independent of delta application order and can
@@ -668,14 +674,17 @@ the exact earlier estimator identity they were created from.
   different key, preserving project-reference and solution-resolution semantics;
   a snapshot provider without both identities uses ordinary cold analysis. These
   entries share the existing 8,192-entry deterministic artifact bound rather than
-  adding another unbounded cache. Repository evidence lineage is scheduled in
-  deterministic first-parent order over already-opened structural inventories.
-  Each row analyzes its base before its head, and optional parent-derived snapshot
-  or C# evidence is consumed only when already complete; optional reuse never waits
-  on an in-flight ancestor. When a selected row's base is an earlier queued row's
-  immutable head, it waits for that row's completion so chronological reuse remains
-  available without recursive in-flight waits. It does not traverse or admit
-  unrelated history. The two-session
+  adding another unbounded cache. Already-opened structural inventories feed
+  the bounded four-row worker pipeline, including consecutive first-parent rows.
+  Each row analyzes its base before its head. Exact snapshot requests join existing
+  single-flight analysis; optional parent-derived snapshot or C# evidence is used
+  only when already complete and never recursively waits on an in-flight ancestor.
+  A row normally does not wait for an earlier row's entire report to finish.
+  A bounded 64-KiB, same-size, single-file C# equivalent-local-analysis hint
+  retains chronological ordering where exact derivation can avoid full analysis;
+  it does not authorize derivation or change any evidence proof. Results retain
+  input order, and unavailable optional lineage uses ordinary full analysis.
+  The pipeline does not traverse or admit unrelated history. The two-session
   ceiling is a deliberate bounded memory-for-latency tradeoff; cancellation
   disposes every repository context, and cache keys never merge equal-looking
   objects across repositories.
@@ -1043,3 +1052,73 @@ represented edits, endpoint proof, and existing fallback remain intact. Source a
 portfolio identities advance to 0.21.3 and 0.6.3 to invalidate old receipts. Seed
 rates and schemas are unchanged; see [RUST_CARGO_ANALYSIS.md](RUST_CARGO_ANALYSIS.md)
 and the anonymized [overlap review](REMAINING_OVERLAP_REVIEW.md).
+
+## Complete-context artifact reuse
+
+Complete normalization remains authoritative for every Change selector and
+portfolio endpoint. An unfiltered immutable Git snapshot is scanned directly;
+only an explicit admission mask builds a scoped filesystem. Scope construction
+uses path/mode/object identity and a proven first-parent delta when available,
+without resolving lengths for the unchanged inventory. Common cache hits likewise
+use immutable object identity before requesting length metadata. Cold misses keep
+the existing size, content-digest, exclusion, and cancellation checks.
+
+Each Git repository session additionally retains at most 65,536 current file/stage
+slots under a 512-MiB charged-byte budget. A slot replaces its previous version,
+but reuse requires the complete immutable content/analyzer/path/context key and
+value type. The charge is 1,024 bytes plus four times serialized UTF-8 payload
+size and UTF-16 key/slot size; it is a retention proxy, not measured heap usage.
+Serialization counts bytes without buffering or persisting payloads. Oversized or
+unsupported values are analyzed normally without retention. SHA-256 slot ranking
+bounds admission; the existing 8,192 historical entries, 16 snapshot analyses,
+two-session concurrency, and CPU/Git/read-buffer limits remain separate.
+
+Common inspections discard classification sample text after classification.
+C#, JavaScript/TypeScript, SQL, and external HTML/CSS-family assets reuse verified
+local artifacts. SQL ownership and exact-copy selection, frontend component
+references/ownership, full population normalization, and seed estimation are
+recomputed for the current snapshot. Source text is not persisted by this new
+cache. Display partitions sharing one evidence-list instance are unioned once
+during capability reconstruction; distinct lists still contribute every ID.
+Hours, evidence lineage, priors, schemas, and estimator identities are unchanged.
+
+A common traversal plan shares that same bounded artifact pool. Its immutable
+proof binds complete path membership, regular-file traversal attributes and all
+ignore-file object IDs plus the effective ignore options. Links, submodules,
+admission projections, missing proofs and incomplete cold traversals use the
+ordinary traversal. A reused plan retains admitted paths and deterministic
+exclusions; every admitted file still requires its current exact content key,
+and changed bodies receive normal bounded inspection. Ignore changes, additions,
+removals or unsupported modes cannot reuse a stale plan. No physical filesystem
+provider opts into this immutable proof by default.
+
+SQL and frontend reuse preserve declared byte guards and root checks. Their local
+read-failure results are delivered to joined requests without retention, allowing
+a later retry against the same immutable key.
+
+### Bounded exact local-analysis reuse
+
+In addition to the single-C# proof, a first-parent delta of one to eight maintained
+C#/TypeScript/TSX/SQL files may reuse exact repository evidence when each body is
+at most 64 KiB, its byte length and every common fact except SHA-256 are unchanged,
+and its complete local analyzer result equals the preceding result. Raw strings
+and ordered collections are compared directly; unknown shapes fail closed.
+Diagnostics, syntax ambiguity, changed roles/metrics, duplicates, missing state,
+links and changed context retain full analysis. The context binds full repository
+path membership and every admitted non-source object identity, including ignore,
+project and package descriptors. C# additionally binds its exact project context.
+Both old and new body hashes must be globally unique. SQL ownership and duplicate
+canonicalization still resolve against the current population before file-fact reuse.
+
+Changed local states share the existing eight-entry/16-MiB lineage cache. Optional
+SQL/JavaScript states are charged at 1,024 bytes plus four times serialized UTF-8
+size; they retain analyzer results, not source text. Unchanged source versions do
+not occupy this small advancing lineage window. Current file slots separately
+retain SQL local and ownership-bound fact results and frontend local metrics.
+
+An exact full-evidence comparison may also reuse built-in seed stock after a full
+scan, allowing only repository digest, scope diagnostic and up to 64 globally
+unique file SHA-256 changes. Custom estimators keep their ordinary behavior.
+An exactly derived snapshot shares its immutable capability catalog with its
+parent; ownership is bounded by retained snapshot analyses, with no process-global
+catalog cache. Current facts still drive marginal growth and normalization.

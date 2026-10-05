@@ -16,8 +16,18 @@ internal static class JavaScriptSourceAnalysisBatch
             .OrderBy(fact => fact.Scope, StringComparer.Ordinal)];
         JavaScriptSourceAnalysisEntry?[] results =
             new JavaScriptSourceAnalysisEntry?[files.Length];
+        List<(EvidenceFact fact, int index)> misses = [];
+        for (int index = 0; index < files.Length; index++)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            EvidenceFact file = files[index];
+            JavaScriptPackageModel? package = JavaScriptRepositoryAnalyzer.FindOwningPackage(file.Scope, packages);
+            if (analyzer.TryGetCompleted(file, package, out JavaScriptFileAnalysis cached))
+                results[index] = new(file.Scope, package?.Scope ?? ".", cached);
+            else misses.Add((file, index));
+        }
         await Parallel.ForEachAsync(
-            files.Select((fact, index) => (fact, index)),
+            misses,
             new ParallelOptions
             {
                 CancellationToken = cancellationToken,

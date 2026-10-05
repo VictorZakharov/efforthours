@@ -18,6 +18,8 @@ public sealed record ChangePortfolioExecutionStatistics
 
     public int SnapshotAnalysisHits { get; init; }
 
+    public int SeedStockReuses { get; init; }
+
     public int UniqueSnapshotAnalysisKeys { get; init; }
 
     public int SnapshotAnalysisRevisitMisses { get; init; }
@@ -33,6 +35,10 @@ public sealed record ChangePortfolioExecutionStatistics
     public int AnalysisArtifactEvictions { get; init; }
 
     public int PeakRetainedAnalysisArtifacts { get; init; }
+
+    public int PeakCurrentArtifactSlots { get; init; }
+
+    public long PeakCurrentArtifactChargedBytes { get; init; }
 
     public int SnapshotAnalysisEvictions { get; init; }
 
@@ -128,6 +134,7 @@ public sealed record ChangePortfolioExecutionStatistics
             MaximumConcurrentGitTreeReads = Math.Max(left.MaximumConcurrentGitTreeReads, right.MaximumConcurrentGitTreeReads),
             SnapshotAnalysisRequests = left.SnapshotAnalysisRequests + right.SnapshotAnalysisRequests,
             SnapshotAnalysisHits = left.SnapshotAnalysisHits + right.SnapshotAnalysisHits,
+            SeedStockReuses = left.SeedStockReuses + right.SeedStockReuses,
             UniqueSnapshotAnalysisKeys = left.UniqueSnapshotAnalysisKeys + right.UniqueSnapshotAnalysisKeys,
             SnapshotAnalysisRevisitMisses = left.SnapshotAnalysisRevisitMisses + right.SnapshotAnalysisRevisitMisses,
             AnalysisArtifactRequests = left.AnalysisArtifactRequests + right.AnalysisArtifactRequests,
@@ -136,6 +143,8 @@ public sealed record ChangePortfolioExecutionStatistics
             AnalysisArtifactRevisitMisses = left.AnalysisArtifactRevisitMisses + right.AnalysisArtifactRevisitMisses,
             AnalysisArtifactEvictions = left.AnalysisArtifactEvictions + right.AnalysisArtifactEvictions,
             PeakRetainedAnalysisArtifacts = Math.Max(left.PeakRetainedAnalysisArtifacts, right.PeakRetainedAnalysisArtifacts),
+            PeakCurrentArtifactSlots = Math.Max(left.PeakCurrentArtifactSlots, right.PeakCurrentArtifactSlots),
+            PeakCurrentArtifactChargedBytes = Math.Max(left.PeakCurrentArtifactChargedBytes, right.PeakCurrentArtifactChargedBytes),
             SnapshotAnalysisEvictions = left.SnapshotAnalysisEvictions + right.SnapshotAnalysisEvictions,
             PeakRetainedSnapshotAnalyses = Math.Max(left.PeakRetainedSnapshotAnalyses, right.PeakRetainedSnapshotAnalyses),
             SnapshotInventoryRequests = left.SnapshotInventoryRequests + right.SnapshotInventoryRequests,
@@ -205,6 +214,9 @@ public sealed record ChangePortfolioExecutionStatistics
             $"{ObjectMetadataReaders} Git metadata reader(s) served {ObjectMetadataRequests} " +
             $"length request(s) over {UniqueObjectMetadataObjects} unique object(s), with " +
             $"{ObjectMetadataCacheHits} cache hit(s) and {ObjectMetadataCacheEvictions} eviction(s). " +
+            $"Exact fully analyzed seed stock was reused {SeedStockReuses} time(s). " +
+            $"Current file slots peaked at {PeakCurrentArtifactSlots} entries and " +
+            $"{PeakCurrentArtifactChargedBytes} charged bytes per repository (a serialized-size proxy, not heap usage). " +
             "At most " +
             $"{MaximumActiveRepositories} repository session(s) were active concurrently, " +
             $"with separate process-wide budgets of {MaximumConcurrentGitTreeReads} Git tree " +
@@ -212,7 +224,10 @@ public sealed record ChangePortfolioExecutionStatistics
             "file-analysis and thread-safe estimation work item(s), and " +
             "retention limits of " +
             $"{SnapshotAnalysisRetentionLimit} analyses, " +
-            $"{AnalysisArtifactRetentionLimit} file-analysis artifacts, " +
+            $"{AnalysisArtifactRetentionLimit} historical file-analysis artifacts plus " +
+            $"{EffortHours.Analysis.RepositoryArtifactWorkingSet.DefaultMaximumEntries} current file slots " +
+            $"under a {EffortHours.Analysis.RepositoryArtifactWorkingSet.DefaultMaximumChargedBytes / 1024 / 1024}-MiB " +
+            "serialized-size charge per repository, " +
             $"{SnapshotInventoryRetentionLimit} structurally shared inventories across " +
             $"{SnapshotInventoryRootRetentionLimit} full-tree root lineages, and " +
             $"{BlobCacheByteLimitPerRepository / 1024 / 1024} MiB of blobs plus " +

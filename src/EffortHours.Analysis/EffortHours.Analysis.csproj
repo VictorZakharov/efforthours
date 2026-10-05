@@ -6,6 +6,10 @@
     <InternalsVisibleTo Include="EffortHours.ChangeBenchmarks" />
     <InternalsVisibleTo Include="EffortHours.ScannerBenchmarks" />
     <InternalsVisibleTo Include="EffortHours.Tests" />
+    <InternalsVisibleTo Include="EffortHours.Core" />
+    <InternalsVisibleTo Include="EffortHours.Analyzers.JavaScript" />
+    <InternalsVisibleTo Include="EffortHours.Analyzers.Sql" />
+    <InternalsVisibleTo Include="EffortHours.Analyzers.DotNet" />
     <ProjectReference Include="../EffortHours.Contracts/EffortHours.Contracts.csproj" />
   </ItemGroup>
 </Project>

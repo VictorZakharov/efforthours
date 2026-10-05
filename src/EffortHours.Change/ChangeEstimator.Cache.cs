@@ -13,6 +13,7 @@ public sealed partial class ChangeEstimator
         private readonly Lock _gate = new();
         private int _requests;
         private int _hits;
+        private int _seedStockReuses;
         private int _revisitMisses;
         private int _evictions;
         private int _peakEntries;
@@ -177,6 +178,8 @@ public sealed partial class ChangeEstimator
             }
         }
 
+        public void RecordSeedStockReuse() => Interlocked.Increment(ref _seedStockReuses);
+
         public SnapshotAnalysisCacheStatistics GetStatistics()
         {
             lock (_gate)
@@ -187,7 +190,7 @@ public sealed partial class ChangeEstimator
                     _seenKeys.Count,
                     _revisitMisses,
                     _evictions,
-                    _peakEntries);
+                    _peakEntries, Volatile.Read(ref _seedStockReuses));
             }
         }
 
@@ -228,6 +231,7 @@ public sealed partial class ChangeEstimator
             int UniqueKeys,
             int RevisitMisses,
             int Evictions,
-            int PeakEntries);
+            int PeakEntries,
+            int SeedStockReuses);
     }
 }

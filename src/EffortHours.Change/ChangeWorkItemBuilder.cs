@@ -24,14 +24,16 @@ internal static partial class ChangeWorkItemBuilder
         RepositoryEvidence headEvidence,
         EstimateReport baseEstimate,
         EstimateReport headEstimate,
-        EstimationProfile profile)
+        EstimationProfile profile,
+        CapabilityCatalog? baseCatalog = null,
+        CapabilityCatalog? headCatalog = null)
     {
         Dictionary<string, EvidenceFact> baseFacts = baseEvidence.Facts
             .ToDictionary(fact => fact.Id, StringComparer.Ordinal);
         Dictionary<string, EvidenceFact> headFacts = headEvidence.Facts
             .ToDictionary(fact => fact.Id, StringComparer.Ordinal);
-        Dictionary<string, Capability> baseCapabilities = Capabilities(baseEstimate, baseFacts);
-        Dictionary<string, Capability> headCapabilities = Capabilities(headEstimate, headFacts);
+        Dictionary<string, Capability> baseCapabilities = baseCatalog?.Value ?? Capabilities(baseEstimate, baseFacts);
+        Dictionary<string, Capability> headCapabilities = headCatalog?.Value ?? Capabilities(headEstimate, headFacts);
         ChangePathEvidence[] represented = [.. changeEvidence.Paths.Where(path => path.Represented)];
         HashSet<string> usedEvidenceIds = new(StringComparer.Ordinal);
         HashSet<EffortCategory> comprehensionCategories = [];

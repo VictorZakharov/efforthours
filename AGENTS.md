@@ -205,7 +205,8 @@ resources include the four-row prepared-change queue, processor-bounded CPU/Git/
 file-inspection concurrency, actual snapshot requests, and observed peak working
 set. Runs use at most two repository sessions concurrently under fixed per-
 repository cache bounds, including 8,192 immutable analyzer-versioned file
-artifacts with deterministic key-ranked retention, 10,000 structurally shared
+artifacts with deterministic key-ranked retention plus 65,536 current file/stage
+slots under a 512-MiB serialized-size charge, 10,000 structurally shared
 inventories across 16 full-tree roots, and lazy object-length metadata. Eligible
 non-merge first-parent deltas and
 changed-blob sizes are batched once per repository before row analysis with a

@@ -4,6 +4,7 @@
     <Description>Bounded static SQL evidence analyzer for EffortHours.</Description>
   </PropertyGroup>
   <ItemGroup>
+    <InternalsVisibleTo Include="EffortHours.Core" />
     <ProjectReference Include="../EffortHours.Analysis/EffortHours.Analysis.csproj" />
     <ProjectReference Include="../EffortHours.Contracts/EffortHours.Contracts.csproj" />
   </ItemGroup>

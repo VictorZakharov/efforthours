@@ -4,8 +4,6 @@ namespace EffortHours.Analyzers.JavaScript;
 
 internal sealed class FrontendEvidenceAnalyzer(RepositoryTextReader textReader)
 {
-    private const long MaximumAssetBytes = 4 * 1024 * 1024;
-
     private readonly RepositoryTextReader _textReader = textReader;
 
     public async Task<FrontendAnalysisResult> AnalyzeAsync(
@@ -52,14 +50,12 @@ internal sealed class FrontendEvidenceAnalyzer(RepositoryTextReader textReader)
             }
         }
 
+        FrontendAssetAnalysisReader assetReader = new(_textReader);
         foreach (EvidenceFact asset in assets)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            RepositoryTextReadResult read = await _textReader.ReadAsync(
-                asset,
-                MaximumAssetBytes,
-                "FB4201",
-                cancellationToken).ConfigureAwait(false);
+            FrontendAssetAnalysis read = await assetReader.ReadAsync(
+                asset, cancellationToken).ConfigureAwait(false);
             if (read.Diagnostic is not null)
             {
                 diagnostics.Add(read.Diagnostic);
@@ -67,7 +63,7 @@ internal sealed class FrontendEvidenceAnalyzer(RepositoryTextReader textReader)
             }
 
             ownersByAsset.TryGetValue(asset.Scope, out List<ComponentOwner>? assetOwners);
-            facts.AddRange(CreateAssetFacts(asset, read.Text!, packages, assetOwners ?? []));
+            facts.AddRange(CreateAssetFacts(asset, read, packages, assetOwners ?? []));
         }
 
         return new FrontendAnalysisResult(facts, diagnostics);
@@ -167,18 +163,14 @@ internal sealed class FrontendEvidenceAnalyzer(RepositoryTextReader textReader)
 
     private static IReadOnlyList<EvidenceFact> CreateAssetFacts(
         EvidenceFact asset,
-        string source,
+        FrontendAssetAnalysis analysis,
         IReadOnlyList<JavaScriptPackageModel> packages,
         IReadOnlyList<ComponentOwner> owners)
     {
         string language = JavaScriptEvidence.FindTagValue(asset.Tags, "language:")!;
         bool isMarkup = language == "html";
-        FrontendMarkupMetrics markup = isMarkup
-            ? FrontendMarkupAnalyzer.Analyze(source)
-            : new FrontendMarkupMetrics();
-        StylesheetMetrics styles = isMarkup
-            ? new StylesheetMetrics()
-            : StylesheetAnalyzer.Analyze(source, language);
+        FrontendMarkupMetrics markup = analysis.Markup;
+        StylesheetMetrics styles = analysis.Styles;
         ComponentOwner? soleOwner = owners.Count == 1 ? owners[0] : null;
         string scope = soleOwner?.Component.PackageScope ?? FindOwningPackage(asset.Scope, packages)?.Scope ?? ".";
         List<string> tags =

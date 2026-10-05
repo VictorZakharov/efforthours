@@ -10,14 +10,34 @@ internal static class DotNetFileAnalysisBatch
         string rootPath,
         RepositoryEvidence evidence,
         IReadOnlyList<DotNetProjectModel> projects,
-        CancellationToken cancellationToken)
+        CancellationToken cancellationToken,
+        string? immutableContextIdentity = null)
     {
         EvidenceFact[] files = [.. evidence.Facts
-            .Where(fact => fact.Kind == EvidenceKinds.File)
+            .Where(fact => fact.Kind == EvidenceKinds.File &&
+                FindTagValue(fact.Tags, "language:") is "csharp" or "razor" &&
+                !fact.Tags.Any(tag => tag is "classification:generated" or "classification:minified" or
+                    "classification:vendored" or "content:binary"))
             .OrderBy(fact => fact.Scope, StringComparer.Ordinal)];
         DotNetFileAnalysisEntry?[] results = new DotNetFileAnalysisEntry?[files.Length];
+        CSharpFileAnalyzer csharp = new(fileSystem, rootPath, immutableContextIdentity);
+        List<(EvidenceFact fact, int index)> misses = [];
+        for (int index = 0; index < files.Length; index++)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            EvidenceFact file = files[index];
+            DotNetProjectModel? project = DotNetRepositoryAnalyzer.FindOwningProject(file.Scope, projects);
+            string scope = project?.Path ?? ".";
+            string? digest = FindTagValue(file.Tags, "sha256:");
+            bool isTest = project?.Role == "test" || file.Tags.Contains("classification:test", StringComparer.Ordinal);
+            if (digest is not null && FindTagValue(file.Tags, "language:") == "csharp" &&
+                csharp.TryGetCompleted(file.Scope, digest, scope, isTest, out CSharpFileAnalysis cached))
+                results[index] = new(scope, file.Scope, cached.Structure.Files > 0 ? cached.Structure : null,
+                    cached.Facts, cached.Diagnostics);
+            else misses.Add((file, index));
+        }
         await Parallel.ForEachAsync(
-            files.Select((fact, index) => (fact, index)),
+            misses,
             new ParallelOptions
             {
                 CancellationToken = cancellationToken,
@@ -30,7 +50,7 @@ internal static class DotNetFileAnalysisBatch
                     rootPath,
                     entry.fact,
                     projects,
-                    itemCancellationToken).ConfigureAwait(false);
+                    itemCancellationToken, immutableContextIdentity).ConfigureAwait(false);
             }).ConfigureAwait(false);
         return [.. results.OfType<DotNetFileAnalysisEntry>()];
     }
@@ -40,7 +60,8 @@ internal static class DotNetFileAnalysisBatch
         string rootPath,
         EvidenceFact fileFact,
         IReadOnlyList<DotNetProjectModel> projects,
-        CancellationToken cancellationToken)
+        CancellationToken cancellationToken,
+        string? immutableContextIdentity = null)
     {
         string? language = FindTagValue(fileFact.Tags, "language:");
         if (language is not ("csharp" or "razor") ||
@@ -76,7 +97,7 @@ internal static class DotNetFileAnalysisBatch
         string projectScope = project?.Path ?? ".";
         if (language == "csharp")
         {
-            CSharpFileAnalysis analysis = await new CSharpFileAnalyzer(fileSystem, rootPath)
+            CSharpFileAnalysis analysis = await new CSharpFileAnalyzer(fileSystem, rootPath, immutableContextIdentity)
                 .AnalyzeAsync(
                     fileFact.Scope,
                     expectedSha256,

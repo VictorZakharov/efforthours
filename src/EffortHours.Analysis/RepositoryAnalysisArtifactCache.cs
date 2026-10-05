@@ -15,7 +15,10 @@ public sealed record RepositoryAnalysisArtifactCacheStatistics(
     int RevisitMisses,
     int Evictions,
     int PeakEntries,
-    int EntryLimit);
+    int EntryLimit)
+{
+    public RepositoryArtifactWorkingSetStatistics? WorkingSet { get; init; }
+}
 
 /// <summary>
 /// Retains immutable, analyzer-versioned artifacts for one repository invocation.
@@ -35,17 +38,20 @@ public sealed class RepositoryAnalysisArtifactCache
     private readonly Lock _gate = new();
     private readonly int _maximumEntries;
     private readonly IRepositoryAnalysisArtifactStore? _store;
+    private readonly RepositoryArtifactWorkingSet? _workingSet;
     private int _requests;
     private int _hits;
     private int _revisitMisses;
     private int _peakEntries;
 
     public RepositoryAnalysisArtifactCache(int maximumEntries = DefaultMaximumEntries,
-        IRepositoryAnalysisArtifactStore? store = null)
+        IRepositoryAnalysisArtifactStore? store = null,
+        RepositoryArtifactWorkingSet? workingSet = null)
     {
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(maximumEntries);
         _maximumEntries = maximumEntries;
         _store = store;
+        _workingSet = workingSet;
     }
 
     public bool TryGet<T>(string key, out T value)
@@ -85,23 +91,61 @@ public sealed class RepositoryAnalysisArtifactCache
         }
     }
 
-    public async Task<T> GetOrCreateAsync<T>(
+    // A failed probe has no telemetry/admission side effects. Cold requests still
+    // use the ordinary single-flight path; completed hits need no request/task wrapper.
+    public bool TryGetCompleted<T>(string key, string? workingSetSlot, out T value) where T : class
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(key);
+        lock (_gate)
+        {
+            if (workingSetSlot is not null && _workingSet is not null &&
+                _workingSet.TryGet(workingSetSlot, key, out T current))
+            {
+                _requests++;
+                _hits++;
+                value = current;
+                return true;
+            }
+            if (_entries.TryGetValue(key, out CacheEntry? entry))
+            {
+                if (entry.Value is not T typed) throw new InvalidOperationException("Artifact type mismatch.");
+                _requests++;
+                _hits++;
+                value = typed;
+                return true;
+            }
+            value = null!;
+            return false;
+        }
+    }
+
+    public Task<T> GetOrCreateAsync<T>(
         string key,
         Func<CancellationToken, Task<T>> factory,
-        CancellationToken cancellationToken)
+        CancellationToken cancellationToken,
+        string? workingSetSlot = null,
+        Func<T, bool>? shouldRetain = null)
         where T : class
     {
         ArgumentNullException.ThrowIfNull(factory);
-        RepositoryAnalysisArtifactRequest<T> request = Request<T>(key);
+        if (TryGetCompleted(key, workingSetSlot, out T cached)) return Task.FromResult(cached);
+        RepositoryAnalysisArtifactRequest<T> request = Request<T>(key, workingSetSlot);
         if (!request.IsOwner)
         {
-            return await request.Result.WaitAsync(cancellationToken).ConfigureAwait(false);
+            return request.Result.WaitAsync(cancellationToken);
         }
 
+        return CreateOwnedAsync(key, factory, shouldRetain, request, cancellationToken);
+    }
+
+    private async Task<T> CreateOwnedAsync<T>(string key, Func<CancellationToken, Task<T>> factory,
+        Func<T, bool>? shouldRetain,
+        RepositoryAnalysisArtifactRequest<T> request, CancellationToken cancellationToken) where T : class
+    {
         try
         {
             T value = await factory(cancellationToken).ConfigureAwait(false);
-            Add(key, value);
+            if (shouldRetain is null || shouldRetain(value)) Add(key, value);
             request.Complete(value);
             return value;
         }
@@ -112,13 +156,19 @@ public sealed class RepositoryAnalysisArtifactCache
         }
     }
 
-    public RepositoryAnalysisArtifactRequest<T> Request<T>(string key)
+    public RepositoryAnalysisArtifactRequest<T> Request<T>(string key, string? workingSetSlot = null)
         where T : class
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(key);
         lock (_gate)
         {
             _requests++;
+            if (workingSetSlot is not null && _workingSet is not null &&
+                _workingSet.TryGet(workingSetSlot, key, out T current))
+            {
+                _hits++;
+                return RepositoryAnalysisArtifactRequest<T>.Cached(current);
+            }
             if (_entries.TryGetValue(key, out CacheEntry? cached))
             {
                 if (cached.Value is not T typed)
@@ -157,7 +207,8 @@ public sealed class RepositoryAnalysisArtifactCache
 
             InflightEntry created = new(
                 typeof(T),
-                new TaskCompletionSource<object>(TaskCreationOptions.RunContinuationsAsynchronously));
+                new TaskCompletionSource<object>(TaskCreationOptions.RunContinuationsAsynchronously),
+                workingSetSlot);
             _inflight.Add(key, created);
             return new RepositoryAnalysisArtifactRequest<T>(this, key, created, isOwner: true);
         }
@@ -172,6 +223,9 @@ public sealed class RepositoryAnalysisArtifactCache
         _store?.Save(key, value);
         lock (_gate)
         {
+            if (_inflight.TryGetValue(key, out InflightEntry? pending) &&
+                pending.WorkingSetSlot is not null)
+                _workingSet?.Add(pending.WorkingSetSlot, key, value);
             _seenKeys.Add(key);
             _admittedKeys.Add(key);
             if (_entries.TryGetValue(key, out CacheEntry? existing))
@@ -209,7 +263,8 @@ public sealed class RepositoryAnalysisArtifactCache
                 _revisitMisses,
                 Math.Max(0, _admittedKeys.Count - _entries.Count),
                 _peakEntries,
-                _maximumEntries);
+                _maximumEntries)
+            { WorkingSet = _workingSet?.GetStatistics() };
         }
     }
 
@@ -262,7 +317,8 @@ public sealed class RepositoryAnalysisArtifactCache
 
     internal sealed record InflightEntry(
         Type ValueType,
-        TaskCompletionSource<object> Completion);
+        TaskCompletionSource<object> Completion,
+        string? WorkingSetSlot);
 
     public sealed class RepositoryAnalysisArtifactRequest<T>
         where T : class

@@ -53,7 +53,7 @@ public sealed class DotNetRepositoryAnalyzer : IRepositoryEvidenceAnalyzer
                 rootPath,
                 evidence,
                 projectResult.Projects,
-                cancellationToken).ConfigureAwait(false);
+                cancellationToken, projectResult.ImmutableCacheKey).ConfigureAwait(false);
         foreach (DotNetFileAnalysisEntry analysis in fileAnalyses)
         {
             facts.AddRange(analysis.Facts);

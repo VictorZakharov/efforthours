@@ -12,7 +12,7 @@ namespace EffortHours.Analyzers.DotNet;
 
 internal sealed partial class CSharpFileAnalyzer
 {
-    private static CSharpFileAnalysis AnalyzeParsed(
+    internal static CSharpFileAnalysis AnalyzeParsed(
         SyntaxTree tree,
         int syntaxErrors,
         string relativePath,

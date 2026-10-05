@@ -80,7 +80,7 @@ public sealed partial class RepositoryScanner
     {
         ScannedFile file = new(
             relativePath,
-            inspection,
+            inspection with { SampleText = string.Empty },
             FileClassifier.Classify(relativePath, inspection),
             inspection.Bytes,
             refreshedMetadata.Exists

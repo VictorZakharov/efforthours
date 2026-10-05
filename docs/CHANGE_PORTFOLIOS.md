@@ -603,8 +603,11 @@ requests are single-flight. The repository context owns one lazy
 metadata reader, a 64-MiB blob cache that admits no single blob above 1 MiB,
 16,384 retained object lengths, 10,000 structurally shared immutable snapshot
 inventories across at most 16 full-tree root lineages, 10,000 remembered first
-parents, a 16-entry snapshot-analysis LRU, and an 8,192-entry immutable file-
-analysis artifact cache with deterministic key-ranked retention. The artifact
+parents, a 16-entry snapshot-analysis LRU, and an 8,192-entry historical immutable file-
+analysis artifact cache with deterministic key-ranked retention. Current file/stage
+slots additionally have a 65,536-entry/512-MiB serialized-size charge bound, as
+defined in `CHANGE_ESTIMATION.md`; obsolete slot versions are replaced and exact
+immutable keys remain mandatory. The artifact
 cache retains only analyzer-versioned, content-addressed common scanned-file
 facts, .NET/JavaScript per-file results, and exact .NET project-context models and
 facts. Project-context reuse additionally requires matching immutable descriptor
@@ -612,11 +615,14 @@ object IDs and a matching full repository path-set identity; a path-set or
 descriptor change invalidates the entry, and providers without that proof retain
 cold analysis. Source text, keys, and local paths never enter a report. Its entry
 bound permits an intentional
-memory-for-latency tradeoff without making memory unbounded. A separate C#
-first-parent lineage cache retains at most eight states and 16 MiB of decoded
-source text per repository. It can reuse exact evidence when a scope is unchanged
+memory-for-latency tradeoff without making memory unbounded. A separate first-parent lineage cache retains at most eight states and 16 MiB
+of charged decoded-text/local-result storage per repository. It can reuse exact evidence when a scope is unchanged
 or when one unique maintained C# body has a syntax-clean, same-size numeric-token
-edit; every structural or ambiguous case uses full analysis. Inventory derivation
+edit. A second bounded proof accepts at most 64-KiB bodies with exactly unchanged
+common and local Roslyn evidence under the same immutable project context; both
+body digests remain globally unique. The complete proof and fallback boundaries
+are specified in [CHANGE_ESTIMATION.md](CHANGE_ESTIMATION.md). Every unproven
+case uses full analysis. Inventory derivation
 retains the existing 1,024-changed-path and 16,000-path-character fallback
 boundaries. Before row analysis, eligible non-merge first-parent deltas and changed
 blob sizes are read with one `diff-tree --stdin` and one `cat-file --batch-check`
@@ -642,9 +648,11 @@ Optional parent-derived snapshot and C# evidence is reused only after that paren
 analysis has completed; optional reuse never waits on another in-flight lineage.
 Within each row the base analysis precedes the head analysis, retaining direct
 base-to-head reuse while preventing overlapping row lineages from forming a
-circular wait. A selected row whose base is an earlier queued row's immutable head
-waits for that earlier row to complete, preserving chronological lineage reuse
-without waiting on recursively discovered in-flight ancestors. A producer or
+circular wait. Consecutive rows normally overlap through the same bounded workers
+and exact snapshot single-flight cache. Only a bounded same-size C# equivalent-
+local-analysis scheduling hint waits for the earlier queued row to finish so its
+optional evidence derivation can be used. The hint cannot authorize reuse; every
+ordinary proof still applies, without recursive ancestor waits. A producer or
 consumer failure cancels further preparation, drains unclaimed snapshot pairs,
 and reports the first substantive failure rather than a secondary cancellation or
 channel-closure exception.
@@ -887,3 +895,24 @@ qualification. Receipt identities invalidate prior evidence; selected endpoints,
 independent-day policy 1.1.0, allocation, and complete context are unchanged.
 The [overlap review](REMAINING_OVERLAP_REVIEW.md) records both changed stock operands
 and Change totals without treating equality as a calibration target.
+
+## Complete-context performance boundary
+
+The bounded current-artifact working set and identity-before-length paths in
+`CHANGE_ESTIMATION.md` apply to ordinary Change, ranges, author-period portfolios,
+and their canonical endpoint stages. They do not narrow normalization, split a
+joint portfolio, or turn historical activity into effort. `FB5325` additionally
+records maximum observed current slots and charged bytes per repository and the
+fixed retention bounds. Charged bytes are a size proxy; sampled working set
+remains the separate observed process-memory measurement. Cold scans, global
+normalization/ownership, and seed estimation remain necessary for unique trees.
+Persistent Change artifacts and provider-discovery filtering are separate work.
+
+Small, regular first-parent deltas of at most eight C#/TypeScript/TSX/SQL bodies
+may wait for their immediate parent's completed immutable evidence. Numeric-shape
+hints affect scheduling only; the complete evidence proof remains mandatory.
+Dependents are released after base/head evidence is ready, allowing the parent's
+remaining normalization and reconciliation to overlap under the same four-worker
+bound. Larger or unproven edits keep ordinary overlap. Failure cancellation and
+canonical result order remain unchanged. Exact local, stock and capability reuse
+boundaries are defined in `CHANGE_ESTIMATION.md`.

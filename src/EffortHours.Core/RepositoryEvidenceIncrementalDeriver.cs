@@ -5,9 +5,9 @@ using EffortHours.Contracts.V1;
 
 namespace EffortHours.Core;
 
-internal static class RepositoryEvidenceIncrementalDeriver
+internal static partial class RepositoryEvidenceIncrementalDeriver
 {
-    public static async Task<RepositoryEvidence?> TryDeriveAsync(
+    private static async Task<RepositoryEvidence?> TryDeriveSingleCSharpAsync(
         RepositoryEvidence previous,
         IRepositoryFileSystem currentFileSystem,
         string currentRootPath,
@@ -45,7 +45,8 @@ internal static class RepositoryEvidenceIncrementalDeriver
         string fullPath = currentFileSystem.GetFullPath(Path.Combine(
             currentRootPath,
             relativePath.Replace('/', Path.DirectorySeparatorChar)));
-        if (!currentFileSystem.FileExists(fullPath))
+        if (!currentFileSystem.FileExists(fullPath) ||
+            (currentFileSystem.GetAttributes(fullPath) & FileAttributes.ReparsePoint) != 0)
         {
             return null;
         }
@@ -73,11 +74,9 @@ internal static class RepositoryEvidenceIncrementalDeriver
         }
 
         if (!await CSharpEvidenceLineage.TryAdvanceEvidenceAsync(
-            currentFileSystem,
-            fullPath,
-            relativePath,
-            bytes,
-            cancellationToken).ConfigureAwait(false))
+            currentFileSystem, fullPath, relativePath, bytes, cancellationToken).ConfigureAwait(false) &&
+            !await TryAdvanceExactCSharpAsync(previous, previousFileFact, currentFileSystem, currentRootPath,
+                fullPath, relativePath, bytes, cancellationToken).ConfigureAwait(false))
         {
             return null;
         }
@@ -103,6 +102,10 @@ internal static class RepositoryEvidenceIncrementalDeriver
             ],
         };
     }
+
+    internal static bool IsSmallEquivalentCSharpEdit(byte[] before, byte[] after,
+        string path, CancellationToken cancellationToken) =>
+        CSharpEvidenceLineage.IsSmallEquivalentLocalEdit(before, after, path, cancellationToken);
 
     private static RepositoryEvidence WithoutScopeDiagnostic(RepositoryEvidence evidence) =>
         evidence with

@@ -14,6 +14,10 @@ internal sealed record GitSnapshotSessionStatistics
 
     public int PeakRetainedAnalysisArtifacts { get; init; }
 
+    public int PeakCurrentArtifactSlots { get; init; }
+
+    public long PeakCurrentArtifactChargedBytes { get; init; }
+
     public int InventoryRequests { get; init; }
 
     public int InventoryHits { get; init; }

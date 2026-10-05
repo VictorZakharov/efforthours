@@ -6,6 +6,7 @@ internal sealed partial class GitSnapshotFileSystem :
     IRepositoryFileSystem,
     IRepositoryAnalysisArtifactCacheProvider,
     IRepositoryImmutableIdentityProvider,
+    IRepositoryTraversalIdentityProvider,
     IRepositoryVersionedAnalysisProvider,
     IChangeSnapshot
 {

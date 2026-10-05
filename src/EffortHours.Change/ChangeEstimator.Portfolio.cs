@@ -168,6 +168,7 @@ public sealed partial class ChangeEstimator
         private readonly Lock _gate = new();
         private int _analysisRequests;
         private int _analysisHits;
+        private int _seedStockReuses;
         private int _analysisUniqueKeys;
         private int _analysisRevisitMisses;
         private int _analysisEvictions;
@@ -178,6 +179,8 @@ public sealed partial class ChangeEstimator
         private int _artifactRevisitMisses;
         private int _artifactEvictions;
         private int _peakArtifacts;
+        private int _peakCurrentArtifactSlots;
+        private long _peakCurrentArtifactChargedBytes;
         private int _inventoryRequests;
         private int _inventoryHits;
         private int _inventoryUniqueObjects;
@@ -218,6 +221,7 @@ public sealed partial class ChangeEstimator
             {
                 _analysisRequests += value.Requests;
                 _analysisHits += value.Hits;
+                _seedStockReuses += value.SeedStockReuses;
                 _analysisUniqueKeys += value.UniqueKeys;
                 _analysisRevisitMisses += value.RevisitMisses;
                 _analysisEvictions += value.Evictions;
@@ -237,6 +241,8 @@ public sealed partial class ChangeEstimator
                 _peakArtifacts = Math.Max(
                     _peakArtifacts,
                     value.PeakRetainedAnalysisArtifacts);
+                _peakCurrentArtifactSlots = Math.Max(_peakCurrentArtifactSlots, value.PeakCurrentArtifactSlots);
+                _peakCurrentArtifactChargedBytes = Math.Max(_peakCurrentArtifactChargedBytes, value.PeakCurrentArtifactChargedBytes);
                 _inventoryRequests += value.InventoryRequests;
                 _inventoryHits += value.InventoryHits;
                 _inventoryUniqueObjects += value.UniqueInventoryObjects;
@@ -292,6 +298,7 @@ public sealed partial class ChangeEstimator
                 RepositoryAnalysisConcurrency.MaximumGitTreeReads,
             SnapshotAnalysisRequests = _analysisRequests,
             SnapshotAnalysisHits = _analysisHits,
+            SeedStockReuses = _seedStockReuses,
             UniqueSnapshotAnalysisKeys = _analysisUniqueKeys,
             SnapshotAnalysisRevisitMisses = _analysisRevisitMisses,
             SnapshotAnalysisEvictions = _analysisEvictions,
@@ -302,6 +309,8 @@ public sealed partial class ChangeEstimator
             AnalysisArtifactRevisitMisses = _artifactRevisitMisses,
             AnalysisArtifactEvictions = _artifactEvictions,
             PeakRetainedAnalysisArtifacts = _peakArtifacts,
+            PeakCurrentArtifactSlots = _peakCurrentArtifactSlots,
+            PeakCurrentArtifactChargedBytes = _peakCurrentArtifactChargedBytes,
             SnapshotInventoryRequests = _inventoryRequests,
             SnapshotInventoryHits = _inventoryHits,
             UniqueSnapshotInventoryObjects = _inventoryUniqueObjects,

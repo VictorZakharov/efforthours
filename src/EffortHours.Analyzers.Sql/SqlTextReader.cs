@@ -15,6 +15,23 @@ internal sealed class SqlTextReader(
     private readonly string _rootPath = Path.TrimEndingDirectorySeparator(
         fileSystem.GetFullPath(rootPath));
 
+    public string? ImmutableContentId(EvidenceFact file)
+    {
+        string fullPath = Path.GetFullPath(Path.Combine(_rootPath,
+            file.Scope.Replace('/', Path.DirectorySeparatorChar)));
+        if (!IsWithinRoot(fullPath)) return null;
+        try
+        {
+            return _fileSystem is IRepositoryImmutableIdentityProvider immutable &&
+                immutable.TryGetFileContentId(fullPath, out string immutableId)
+                ? immutableId : _fileSystem.GetFileMetadata(fullPath).ContentId;
+        }
+        catch (Exception exception) when (exception is IOException or UnauthorizedAccessException)
+        {
+            return null;
+        }
+    }
+
     public async Task<SqlTextReadResult> ReadAsync(
         EvidenceFact fileFact,
         CancellationToken cancellationToken)

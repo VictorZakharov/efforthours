@@ -131,3 +131,23 @@ passing low/expected/high relations; its 11 SQL states add formatting, duplicate
 dump, unknown-syntax, semantic directionality, test, delivery, cross-database, and
 seed-volume guardrails. These are qualitative relations, not reviewed hour labels
 or an accuracy claim.
+
+## Immutable local-analysis reuse
+
+Invocation-scoped immutable artifacts may reuse digest-verified SQL syntax and
+local role assessments under keys binding analyzer version, current content
+identity, scanner SHA-256, path, and test classification. Providers without that
+proof use cold reads. The cache stores metrics/diagnostics rather than SQL text;
+current ownership, maintained exclusions, role-family duplicate canonical paths,
+and repository facts are rebuilt for every snapshot. The bounded Git-session
+working set is specified in `CHANGE_ESTIMATION.md`. Cold/cached evidence and seed
+stock are checked through body, ownership, duplicate, test-role and ignore changes.
+
+Declared byte limits and root checks precede cache admission. Local read failures
+complete the current request but are not retained, so later reads can recover.
+
+Immutable SQL file-fact reuse binds local result identity, current owning scope,
+ecosystem/standalone/ambiguity state and exact duplicate canonical path. Global
+ownership and duplicate relationships are resolved before probing that cache.
+Small exact local-state reuse follows `CHANGE_ESTIMATION.md`; uncertain or changed
+local results always fall back to ordinary repository analysis.

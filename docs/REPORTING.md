@@ -51,10 +51,12 @@ count, or a stated lower bound only after the separate diagnostic ceiling.
 
 Manifest author-period report diagnostic `FB5325` contains deterministic,
 privacy-safe cache request/hit, unique-key, revisit-miss, byte, eviction, and
-declared retention counts for snapshot, immutable file-analysis, inventory, and
-Git-blob reuse, plus lazy Git object-metadata request/hit/unique/eviction counts,
+declared retention counts for snapshot, historical/current immutable file-analysis,
+inventory, and Git-blob reuse, plus lazy Git object-metadata request/hit/unique/eviction counts,
 including how many incremental inventories used repository-level batch diffs. It
-contains no local paths, raw aliases, source excerpts, or wall-clock values. The
+contains no local paths, raw aliases, source excerpts, or wall-clock values. Current
+file-slot peaks and charged bytes disclose the separate fixed entry/byte bounds;
+the serialization-based byte charge is not measured heap usage. The
 CLI writes nine measured execution-phase durations to stderr after a successful
 manifest run. Those non-semantic timings remain excluded from the canonical
 portfolio report and EHE calculations.
@@ -370,3 +372,6 @@ path lineage. It warns that unrelated paths were not substituted and ordinary
 maintained-artifact fallback remains available. No source path, capability ID,
 alias, or private source excerpt enters its message. This uses existing v1
 diagnostics without changing schemas or old saved-report compatibility.
+
+Operational `FB5325` also reports exact fully analyzed seed-stock reuse counts.
+This remains outside the semantic digest and does not change report schemas.

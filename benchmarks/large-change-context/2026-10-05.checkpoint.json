@@ -1,0 +1,3526 @@
+{
+  "checkpointVersion": "1.0.0",
+  "date": "2026-10-05",
+  "provenance": "Repository-authored MIT synthetic fixtures; no consumer source or private manifests.",
+  "host": {
+    "os": "Windows",
+    "logicalProcessors": 24,
+    "cpu": "AMD Ryzen 9 5900X",
+    "dotnetSdk": "10.0.203",
+    "buildConfiguration": "Release"
+  },
+  "method": {
+    "samplesPerLane": 1,
+    "freshProcess": true,
+    "warmOsCaches": true,
+    "sameFrozenInputPerShape": true,
+    "independentToolPaths": true,
+    "memory": "CLI progress samples; not continuous peak sampling",
+    "phases": "Overlapping intervals, not exclusive CPU or wall time",
+    "semanticExclusion": [
+      "FB5325"
+    ],
+    "targetFingerprint": "All bare repository file bytes, lengths and modification times, outside wall timer",
+    "privateFieldLatencyGuarantee": false
+  },
+  "cases": [
+    {
+      "fixture": {
+        "shape": "csharp",
+        "commits": 2221,
+        "heads": [
+          {
+            "id": "head-00",
+            "objectId": "45cb51fbf665197dd027ae4f6d035aa593cf8bab"
+          },
+          {
+            "id": "head-01",
+            "objectId": "44870e44bb766604a87441ef89d5a81d2a4fd15c"
+          },
+          {
+            "id": "head-02",
+            "objectId": "2e45a5b362fe4386745707924e56b7df16ba9f3b"
+          },
+          {
+            "id": "head-03",
+            "objectId": "ca2f389032b4241fe9cc1af34f749333df0b660f"
+          },
+          {
+            "id": "head-04",
+            "objectId": "c433974f4f362c26abd6861c4a93ef17fb123303"
+          },
+          {
+            "id": "head-05",
+            "objectId": "9cb29c608d6b30e02ecaebd0bcf7d9c1fb5d4f20"
+          },
+          {
+            "id": "head-06",
+            "objectId": "4485616c03dbc306afa7ce19dfee7548496ec230"
+          },
+          {
+            "id": "head-07",
+            "objectId": "7649895b483b70e2ad9dd2cc42ee94b3038be7d5"
+          },
+          {
+            "id": "head-08",
+            "objectId": "84086a3f6c3deffe8eb37427f395fcd7eb6b0564"
+          },
+          {
+            "id": "head-09",
+            "objectId": "1ad1590ffe8eb4f08f09142a9d2584d64f6966b0"
+          },
+          {
+            "id": "head-10",
+            "objectId": "d9ffc05773f93fe3fe83fe31649f4f523cb2e054"
+          },
+          {
+            "id": "head-11",
+            "objectId": "7effb29ad1866a0c97e6835d7e939c6c0241f316"
+          },
+          {
+            "id": "head-12",
+            "objectId": "5cdd1be06da153d8bb93cc1a720fe781e2789f6d"
+          },
+          {
+            "id": "head-13",
+            "objectId": "4a62b03ff3adfc4dd2e0dfee9a37b78b31950026"
+          },
+          {
+            "id": "head-14",
+            "objectId": "16a63e06e21a32264559b210d261ba56a27d1a24"
+          },
+          {
+            "id": "head-15",
+            "objectId": "7eb665e75f9a72515a32259d319b38f62033b75c"
+          },
+          {
+            "id": "head-16",
+            "objectId": "c144d7c8b49691a0d843380e4723c7d77c9d4f8a"
+          },
+          {
+            "id": "head-17",
+            "objectId": "03ef77f0e4bb887c31f21bf0f89b337df7ef24b5"
+          },
+          {
+            "id": "head-18",
+            "objectId": "d0f3d274cca1f2e98875c22cdf408282d669ef5a"
+          },
+          {
+            "id": "head-19",
+            "objectId": "a44eb7a19b15300beff93393392d14dd04a50ae9"
+          },
+          {
+            "id": "head-20",
+            "objectId": "89dc3b73e0e0b24af2c2eeb8b8937011cfe93df5"
+          },
+          {
+            "id": "head-21",
+            "objectId": "93ff3044738f3a8f90877bc05eab10d22ef8fc51"
+          },
+          {
+            "id": "head-22",
+            "objectId": "d5f8936f9829f7005d1f27c360cee36c8a8cac9d"
+          },
+          {
+            "id": "head-23",
+            "objectId": "b91eff5b83dfce2413bca40f4c8debf158f42c3d"
+          },
+          {
+            "id": "head-24",
+            "objectId": "729002f3d967c942c69399ac1843ab066f4249ef"
+          },
+          {
+            "id": "head-25",
+            "objectId": "ddf0b7895707c81511524463cce34acf46465a8f"
+          },
+          {
+            "id": "head-26",
+            "objectId": "dafc37c8b4d6554bd0616c6b8579c78ce092d6ce"
+          },
+          {
+            "id": "head-27",
+            "objectId": "ced66678e2ea7d931f49ad4d1d47b2283678bda3"
+          },
+          {
+            "id": "head-28",
+            "objectId": "e9b4f1cc6dfd7ea45029c74f2030a2c86764afc5"
+          },
+          {
+            "id": "head-29",
+            "objectId": "5aa82c6bb589c608026dfd4646fcc507269b9d97"
+          },
+          {
+            "id": "head-30",
+            "objectId": "bdf1ac184fc3cc9c48cca2c575e9868f72599252"
+          },
+          {
+            "id": "head-31",
+            "objectId": "89e032f6ab1d577e5c884dedbbf4ceb68e7c67fa"
+          }
+        ],
+        "files": 10001
+      },
+      "runs": [
+        {
+          "shape": "csharp",
+          "files": 10001,
+          "changes": 2221,
+          "heads": 32,
+          "seconds": 22.997,
+          "exitCode": 0,
+          "timedOut": false,
+          "targetUnchanged": true,
+          "progressPeakWorkingSetMib": 273.4,
+          "progress": [
+            {
+              "completed": 1,
+              "elapsedMs": 458.177,
+              "workingSetMib": 126.43
+            },
+            {
+              "completed": 16,
+              "elapsedMs": 555.352,
+              "workingSetMib": 140.49
+            },
+            {
+              "completed": 32,
+              "elapsedMs": 691.938,
+              "workingSetMib": 138.71
+            },
+            {
+              "completed": 48,
+              "elapsedMs": 854.264,
+              "workingSetMib": 135.27
+            },
+            {
+              "completed": 64,
+              "elapsedMs": 991.01,
+              "workingSetMib": 142.04
+            },
+            {
+              "completed": 80,
+              "elapsedMs": 1138.302,
+              "workingSetMib": 141.67
+            },
+            {
+              "completed": 96,
+              "elapsedMs": 1285.311,
+              "workingSetMib": 142.63
+            },
+            {
+              "completed": 112,
+              "elapsedMs": 1420.222,
+              "workingSetMib": 139.38
+            },
+            {
+              "completed": 128,
+              "elapsedMs": 1593.521,
+              "workingSetMib": 141.7
+            },
+            {
+              "completed": 144,
+              "elapsedMs": 1777.23,
+              "workingSetMib": 149.45
+            },
+            {
+              "completed": 160,
+              "elapsedMs": 1938.301,
+              "workingSetMib": 149.86
+            },
+            {
+              "completed": 176,
+              "elapsedMs": 2086.173,
+              "workingSetMib": 150.38
+            },
+            {
+              "completed": 192,
+              "elapsedMs": 2238.72,
+              "workingSetMib": 149.21
+            },
+            {
+              "completed": 208,
+              "elapsedMs": 2396.139,
+              "workingSetMib": 148.46
+            },
+            {
+              "completed": 224,
+              "elapsedMs": 2562.139,
+              "workingSetMib": 148.13
+            },
+            {
+              "completed": 240,
+              "elapsedMs": 2720.508,
+              "workingSetMib": 152.37
+            },
+            {
+              "completed": 256,
+              "elapsedMs": 2849.175,
+              "workingSetMib": 150.38
+            },
+            {
+              "completed": 272,
+              "elapsedMs": 2993.815,
+              "workingSetMib": 148.13
+            },
+            {
+              "completed": 288,
+              "elapsedMs": 3140.38,
+              "workingSetMib": 153.6
+            },
+            {
+              "completed": 304,
+              "elapsedMs": 3322.86,
+              "workingSetMib": 151.4
+            },
+            {
+              "completed": 320,
+              "elapsedMs": 3494.339,
+              "workingSetMib": 153.37
+            },
+            {
+              "completed": 336,
+              "elapsedMs": 3655.688,
+              "workingSetMib": 156.1
+            },
+            {
+              "completed": 352,
+              "elapsedMs": 3795.753,
+              "workingSetMib": 158.34
+            },
+            {
+              "completed": 368,
+              "elapsedMs": 3945.024,
+              "workingSetMib": 163.85
+            },
+            {
+              "completed": 384,
+              "elapsedMs": 4101.377,
+              "workingSetMib": 161.82
+            },
+            {
+              "completed": 400,
+              "elapsedMs": 4257.645,
+              "workingSetMib": 165.36
+            },
+            {
+              "completed": 416,
+              "elapsedMs": 4417.204,
+              "workingSetMib": 171.62
+            },
+            {
+              "completed": 432,
+              "elapsedMs": 4562.556,
+              "workingSetMib": 173.98
+            },
+            {
+              "completed": 448,
+              "elapsedMs": 4727.096,
+              "workingSetMib": 179.65
+            },
+            {
+              "completed": 464,
+              "elapsedMs": 4873.135,
+              "workingSetMib": 171.7
+            },
+            {
+              "completed": 480,
+              "elapsedMs": 4995.589,
+              "workingSetMib": 173.85
+            },
+            {
+              "completed": 496,
+              "elapsedMs": 5150.694,
+              "workingSetMib": 179.47
+            },
+            {
+              "completed": 512,
+              "elapsedMs": 5304.487,
+              "workingSetMib": 180.23
+            },
+            {
+              "completed": 528,
+              "elapsedMs": 5464.572,
+              "workingSetMib": 201.03
+            },
+            {
+              "completed": 544,
+              "elapsedMs": 5611.415,
+              "workingSetMib": 183.25
+            },
+            {
+              "completed": 560,
+              "elapsedMs": 5735.358,
+              "workingSetMib": 189.24
+            },
+            {
+              "completed": 576,
+              "elapsedMs": 5861.566,
+              "workingSetMib": 208.84
+            },
+            {
+              "completed": 592,
+              "elapsedMs": 5997.889,
+              "workingSetMib": 204.24
+            },
+            {
+              "completed": 608,
+              "elapsedMs": 6129.627,
+              "workingSetMib": 201.83
+            },
+            {
+              "completed": 624,
+              "elapsedMs": 6246.496,
+              "workingSetMib": 200.48
+            },
+            {
+              "completed": 640,
+              "elapsedMs": 6352.351,
+              "workingSetMib": 214.23
+            },
+            {
+              "completed": 656,
+              "elapsedMs": 6486.558,
+              "workingSetMib": 211.29
+            },
+            {
+              "completed": 672,
+              "elapsedMs": 6623.924,
+              "workingSetMib": 208.92
+            },
+            {
+              "completed": 688,
+              "elapsedMs": 6740.19,
+              "workingSetMib": 207.29
+            },
+            {
+              "completed": 704,
+              "elapsedMs": 6843.093,
+              "workingSetMib": 222.8
+            },
+            {
+              "completed": 720,
+              "elapsedMs": 6971.63,
+              "workingSetMib": 219.58
+            },
+            {
+              "completed": 736,
+              "elapsedMs": 7102.574,
+              "workingSetMib": 215.89
+            },
+            {
+              "completed": 752,
+              "elapsedMs": 7221.724,
+              "workingSetMib": 213.4
+            },
+            {
+              "completed": 768,
+              "elapsedMs": 7338.699,
+              "workingSetMib": 234.41
+            },
+            {
+              "completed": 784,
+              "elapsedMs": 7453.436,
+              "workingSetMib": 225.47
+            },
+            {
+              "completed": 800,
+              "elapsedMs": 7581.855,
+              "workingSetMib": 221.45
+            },
+            {
+              "completed": 816,
+              "elapsedMs": 7715.945,
+              "workingSetMib": 215.9
+            },
+            {
+              "completed": 832,
+              "elapsedMs": 7820.776,
+              "workingSetMib": 231.98
+            },
+            {
+              "completed": 848,
+              "elapsedMs": 7935.555,
+              "workingSetMib": 227.66
+            },
+            {
+              "completed": 864,
+              "elapsedMs": 8065.199,
+              "workingSetMib": 222.66
+            },
+            {
+              "completed": 880,
+              "elapsedMs": 8196.881,
+              "workingSetMib": 222.16
+            },
+            {
+              "completed": 896,
+              "elapsedMs": 8313.319,
+              "workingSetMib": 220.1
+            },
+            {
+              "completed": 912,
+              "elapsedMs": 8429.068,
+              "workingSetMib": 232.74
+            },
+            {
+              "completed": 928,
+              "elapsedMs": 8561.317,
+              "workingSetMib": 229.13
+            },
+            {
+              "completed": 944,
+              "elapsedMs": 8694.592,
+              "workingSetMib": 229.16
+            },
+            {
+              "completed": 960,
+              "elapsedMs": 8811.355,
+              "workingSetMib": 228.05
+            },
+            {
+              "completed": 976,
+              "elapsedMs": 8906.118,
+              "workingSetMib": 240.06
+            },
+            {
+              "completed": 992,
+              "elapsedMs": 9031.931,
+              "workingSetMib": 232.44
+            },
+            {
+              "completed": 1008,
+              "elapsedMs": 9152.104,
+              "workingSetMib": 227.23
+            },
+            {
+              "completed": 1024,
+              "elapsedMs": 9270.706,
+              "workingSetMib": 223.92
+            },
+            {
+              "completed": 1040,
+              "elapsedMs": 9366.64,
+              "workingSetMib": 238.13
+            },
+            {
+              "completed": 1056,
+              "elapsedMs": 9492.988,
+              "workingSetMib": 232.22
+            },
+            {
+              "completed": 1072,
+              "elapsedMs": 9626.486,
+              "workingSetMib": 233.84
+            },
+            {
+              "completed": 1088,
+              "elapsedMs": 9746.866,
+              "workingSetMib": 231.3
+            },
+            {
+              "completed": 1104,
+              "elapsedMs": 9835.491,
+              "workingSetMib": 242.02
+            },
+            {
+              "completed": 1120,
+              "elapsedMs": 9972.948,
+              "workingSetMib": 234.31
+            },
+            {
+              "completed": 1136,
+              "elapsedMs": 10102.85,
+              "workingSetMib": 231.27
+            },
+            {
+              "completed": 1152,
+              "elapsedMs": 10220.608,
+              "workingSetMib": 228.78
+            },
+            {
+              "completed": 1168,
+              "elapsedMs": 10315.713,
+              "workingSetMib": 241.89
+            },
+            {
+              "completed": 1184,
+              "elapsedMs": 10447.731,
+              "workingSetMib": 238.54
+            },
+            {
+              "completed": 1200,
+              "elapsedMs": 10577.994,
+              "workingSetMib": 234.87
+            },
+            {
+              "completed": 1216,
+              "elapsedMs": 10666.631,
+              "workingSetMib": 248.84
+            },
+            {
+              "completed": 1232,
+              "elapsedMs": 10778.733,
+              "workingSetMib": 241.27
+            },
+            {
+              "completed": 1248,
+              "elapsedMs": 10909.825,
+              "workingSetMib": 241.0
+            },
+            {
+              "completed": 1264,
+              "elapsedMs": 11037.935,
+              "workingSetMib": 231.08
+            },
+            {
+              "completed": 1280,
+              "elapsedMs": 11140.698,
+              "workingSetMib": 246.79
+            },
+            {
+              "completed": 1296,
+              "elapsedMs": 11256.145,
+              "workingSetMib": 243.2
+            },
+            {
+              "completed": 1312,
+              "elapsedMs": 11382.435,
+              "workingSetMib": 241.1
+            },
+            {
+              "completed": 1328,
+              "elapsedMs": 11512.525,
+              "workingSetMib": 237.99
+            },
+            {
+              "completed": 1344,
+              "elapsedMs": 11608.509,
+              "workingSetMib": 250.51
+            },
+            {
+              "completed": 1360,
+              "elapsedMs": 11719.324,
+              "workingSetMib": 242.16
+            },
+            {
+              "completed": 1376,
+              "elapsedMs": 11838.059,
+              "workingSetMib": 240.81
+            },
+            {
+              "completed": 1392,
+              "elapsedMs": 11968.793,
+              "workingSetMib": 227.79
+            },
+            {
+              "completed": 1408,
+              "elapsedMs": 12079.707,
+              "workingSetMib": 240.79
+            },
+            {
+              "completed": 1424,
+              "elapsedMs": 12208.097,
+              "workingSetMib": 235.23
+            },
+            {
+              "completed": 1440,
+              "elapsedMs": 12335.879,
+              "workingSetMib": 233.32
+            },
+            {
+              "completed": 1456,
+              "elapsedMs": 12439.227,
+              "workingSetMib": 243.88
+            },
+            {
+              "completed": 1472,
+              "elapsedMs": 12548.214,
+              "workingSetMib": 236.82
+            },
+            {
+              "completed": 1488,
+              "elapsedMs": 12680.947,
+              "workingSetMib": 232.82
+            },
+            {
+              "completed": 1504,
+              "elapsedMs": 12811.241,
+              "workingSetMib": 230.62
+            },
+            {
+              "completed": 1520,
+              "elapsedMs": 12904.358,
+              "workingSetMib": 245.54
+            },
+            {
+              "completed": 1536,
+              "elapsedMs": 13020.797,
+              "workingSetMib": 243.09
+            },
+            {
+              "completed": 1552,
+              "elapsedMs": 13133.602,
+              "workingSetMib": 239.73
+            },
+            {
+              "completed": 1568,
+              "elapsedMs": 13259.039,
+              "workingSetMib": 234.72
+            },
+            {
+              "completed": 1584,
+              "elapsedMs": 13381.515,
+              "workingSetMib": 235.14
+            },
+            {
+              "completed": 1600,
+              "elapsedMs": 13489.328,
+              "workingSetMib": 232.12
+            },
+            {
+              "completed": 1616,
+              "elapsedMs": 13616.049,
+              "workingSetMib": 232.64
+            },
+            {
+              "completed": 1632,
+              "elapsedMs": 13727.355,
+              "workingSetMib": 227.45
+            },
+            {
+              "completed": 1648,
+              "elapsedMs": 13825.441,
+              "workingSetMib": 241.26
+            },
+            {
+              "completed": 1664,
+              "elapsedMs": 13937.243,
+              "workingSetMib": 237.52
+            },
+            {
+              "completed": 1680,
+              "elapsedMs": 14051.071,
+              "workingSetMib": 238.07
+            },
+            {
+              "completed": 1696,
+              "elapsedMs": 14165.477,
+              "workingSetMib": 238.47
+            },
+            {
+              "completed": 1712,
+              "elapsedMs": 14283.196,
+              "workingSetMib": 238.58
+            },
+            {
+              "completed": 1728,
+              "elapsedMs": 14404.857,
+              "workingSetMib": 229.41
+            },
+            {
+              "completed": 1744,
+              "elapsedMs": 14513.637,
+              "workingSetMib": 245.02
+            },
+            {
+              "completed": 1760,
+              "elapsedMs": 14622.705,
+              "workingSetMib": 241.55
+            },
+            {
+              "completed": 1776,
+              "elapsedMs": 14756.695,
+              "workingSetMib": 238.2
+            },
+            {
+              "completed": 1792,
+              "elapsedMs": 14885.848,
+              "workingSetMib": 232.53
+            },
+            {
+              "completed": 1808,
+              "elapsedMs": 14995.25,
+              "workingSetMib": 246.21
+            },
+            {
+              "completed": 1824,
+              "elapsedMs": 15112.101,
+              "workingSetMib": 244.16
+            },
+            {
+              "completed": 1840,
+              "elapsedMs": 15252.364,
+              "workingSetMib": 238.93
+            },
+            {
+              "completed": 1856,
+              "elapsedMs": 15394.306,
+              "workingSetMib": 234.93
+            },
+            {
+              "completed": 1872,
+              "elapsedMs": 15487.471,
+              "workingSetMib": 248.0
+            },
+            {
+              "completed": 1888,
+              "elapsedMs": 15616.042,
+              "workingSetMib": 239.95
+            },
+            {
+              "completed": 1904,
+              "elapsedMs": 15748.781,
+              "workingSetMib": 239.43
+            },
+            {
+              "completed": 1920,
+              "elapsedMs": 15849.143,
+              "workingSetMib": 251.52
+            },
+            {
+              "completed": 1936,
+              "elapsedMs": 15970.529,
+              "workingSetMib": 242.97
+            },
+            {
+              "completed": 1952,
+              "elapsedMs": 16108.609,
+              "workingSetMib": 230.54
+            },
+            {
+              "completed": 1968,
+              "elapsedMs": 16221.114,
+              "workingSetMib": 246.05
+            },
+            {
+              "completed": 1984,
+              "elapsedMs": 16360.373,
+              "workingSetMib": 236.44
+            },
+            {
+              "completed": 2000,
+              "elapsedMs": 16463.69,
+              "workingSetMib": 249.93
+            },
+            {
+              "completed": 2016,
+              "elapsedMs": 16579.386,
+              "workingSetMib": 268.46
+            },
+            {
+              "completed": 2032,
+              "elapsedMs": 16691.771,
+              "workingSetMib": 247.27
+            },
+            {
+              "completed": 2048,
+              "elapsedMs": 16836.474,
+              "workingSetMib": 244.07
+            },
+            {
+              "completed": 2064,
+              "elapsedMs": 16923.559,
+              "workingSetMib": 255.28
+            },
+            {
+              "completed": 2080,
+              "elapsedMs": 17063.292,
+              "workingSetMib": 244.6
+            },
+            {
+              "completed": 2096,
+              "elapsedMs": 17159.839,
+              "workingSetMib": 257.01
+            },
+            {
+              "completed": 2112,
+              "elapsedMs": 17295.881,
+              "workingSetMib": 243.33
+            },
+            {
+              "completed": 2128,
+              "elapsedMs": 17396.837,
+              "workingSetMib": 255.85
+            },
+            {
+              "completed": 2144,
+              "elapsedMs": 17535.073,
+              "workingSetMib": 243.56
+            },
+            {
+              "completed": 2160,
+              "elapsedMs": 17626.699,
+              "workingSetMib": 259.53
+            },
+            {
+              "completed": 2176,
+              "elapsedMs": 17758.356,
+              "workingSetMib": 246.75
+            },
+            {
+              "completed": 2192,
+              "elapsedMs": 17853.496,
+              "workingSetMib": 259.23
+            },
+            {
+              "completed": 2208,
+              "elapsedMs": 17978.223,
+              "workingSetMib": 252.49
+            },
+            {
+              "completed": 2221,
+              "elapsedMs": 18072.744,
+              "workingSetMib": 260.47
+            }
+          ],
+          "overlappingPhaseMilliseconds": {
+            "manifest-validation": 272.669,
+            "head-validation": 1852.213,
+            "history-union": 324.282,
+            "selection": 10.678,
+            "snapshot-diff-construction": 19511.033,
+            "static-analysis": 2615.863,
+            "reconciliation": 495.282,
+            "allocation": 52.575,
+            "rendering": 1350.597
+          },
+          "items": 2221,
+          "semanticSha256": "164972bf6fb231f8e99a3f3ac5bd382beb824345cf08a9d5281822a6466aafc4",
+          "reuse": [
+            "Repository-scoped portfolio reuse served 2220 of 4442 snapshot-analysis request(s) across 2222 unique key(s), with 0 revisit miss(es); served 6663 of 11110 immutable file-analysis artifact request(s) across 4447 unique key(s), with 0 revisit miss(es); served 2220 of 4442 immutable-inventory request(s) across 2222 unique object(s), with 0 revisit miss(es); built 1 full and 2221 incremental inventories, including 2221 from repository-level batch diffs, while retaining at most 1 full-tree root lineage(s); evicted 2206 analysis entries and 0 inventory entries; 1 Git object reader(s) served 11106 blob request(s) over 2223 unique object(s) with 8883 cache hit(s), 0 eviction(s), and 2033248 byte(s) read from Git. At most 1 Git metadata reader(s) served 2227 length request(s) over 2 unique object(s), with 2225 cache hit(s) and 0 eviction(s). At most 1 repository session(s) were active concurrently, with separate process-wide budgets of 8 Git tree read(s) and 24 independent common/semantic file-analysis and thread-safe estimation work item(s), and retention limits of 16 analyses, 8192 file-analysis artifacts, 10000 structurally shared inventories across 16 full-tree root lineages, and 64 MiB of blobs plus 16384 object-length entries per repository; repository batch output is capped at 64 MiB."
+          ],
+          "lane": "alpha.29"
+        },
+        {
+          "shape": "csharp",
+          "files": 10001,
+          "changes": 2221,
+          "heads": 32,
+          "seconds": 54.375,
+          "exitCode": 0,
+          "timedOut": false,
+          "targetUnchanged": true,
+          "progressPeakWorkingSetMib": 513.6,
+          "progress": [
+            {
+              "completed": 1,
+              "elapsedMs": 2600.433,
+              "workingSetMib": 328.08
+            },
+            {
+              "completed": 16,
+              "elapsedMs": 3433.316,
+              "workingSetMib": 364.61
+            },
+            {
+              "completed": 32,
+              "elapsedMs": 4043.334,
+              "workingSetMib": 367.14
+            },
+            {
+              "completed": 48,
+              "elapsedMs": 4698.107,
+              "workingSetMib": 394.92
+            },
+            {
+              "completed": 64,
+              "elapsedMs": 5295.901,
+              "workingSetMib": 383.13
+            },
+            {
+              "completed": 80,
+              "elapsedMs": 5817.127,
+              "workingSetMib": 409.14
+            },
+            {
+              "completed": 96,
+              "elapsedMs": 6182.093,
+              "workingSetMib": 417.47
+            },
+            {
+              "completed": 112,
+              "elapsedMs": 6840.767,
+              "workingSetMib": 486.78
+            },
+            {
+              "completed": 128,
+              "elapsedMs": 7215.882,
+              "workingSetMib": 494.54
+            },
+            {
+              "completed": 144,
+              "elapsedMs": 7640.104,
+              "workingSetMib": 499.05
+            },
+            {
+              "completed": 160,
+              "elapsedMs": 8036.176,
+              "workingSetMib": 500.41
+            },
+            {
+              "completed": 176,
+              "elapsedMs": 8396.93,
+              "workingSetMib": 489.4
+            },
+            {
+              "completed": 192,
+              "elapsedMs": 8700.364,
+              "workingSetMib": 477.57
+            },
+            {
+              "completed": 208,
+              "elapsedMs": 8975.577,
+              "workingSetMib": 469.68
+            },
+            {
+              "completed": 224,
+              "elapsedMs": 9235.543,
+              "workingSetMib": 477.52
+            },
+            {
+              "completed": 240,
+              "elapsedMs": 9518.341,
+              "workingSetMib": 474.61
+            },
+            {
+              "completed": 256,
+              "elapsedMs": 9821.789,
+              "workingSetMib": 488.0
+            },
+            {
+              "completed": 272,
+              "elapsedMs": 10111.213,
+              "workingSetMib": 478.32
+            },
+            {
+              "completed": 288,
+              "elapsedMs": 10398.872,
+              "workingSetMib": 479.64
+            },
+            {
+              "completed": 304,
+              "elapsedMs": 10701.102,
+              "workingSetMib": 487.48
+            },
+            {
+              "completed": 320,
+              "elapsedMs": 10983.133,
+              "workingSetMib": 500.52
+            },
+            {
+              "completed": 336,
+              "elapsedMs": 11281.482,
+              "workingSetMib": 502.43
+            },
+            {
+              "completed": 352,
+              "elapsedMs": 11554.027,
+              "workingSetMib": 500.15
+            },
+            {
+              "completed": 368,
+              "elapsedMs": 11839.788,
+              "workingSetMib": 496.45
+            },
+            {
+              "completed": 384,
+              "elapsedMs": 12185.351,
+              "workingSetMib": 492.88
+            },
+            {
+              "completed": 400,
+              "elapsedMs": 12556.199,
+              "workingSetMib": 487.58
+            },
+            {
+              "completed": 416,
+              "elapsedMs": 12895.184,
+              "workingSetMib": 488.35
+            },
+            {
+              "completed": 432,
+              "elapsedMs": 13236.925,
+              "workingSetMib": 494.55
+            },
+            {
+              "completed": 448,
+              "elapsedMs": 13520.136,
+              "workingSetMib": 490.32
+            },
+            {
+              "completed": 464,
+              "elapsedMs": 13798.489,
+              "workingSetMib": 481.3
+            },
+            {
+              "completed": 480,
+              "elapsedMs": 14061.947,
+              "workingSetMib": 478.69
+            },
+            {
+              "completed": 496,
+              "elapsedMs": 14356.611,
+              "workingSetMib": 461.27
+            },
+            {
+              "completed": 512,
+              "elapsedMs": 14646.798,
+              "workingSetMib": 455.81
+            },
+            {
+              "completed": 528,
+              "elapsedMs": 14962.27,
+              "workingSetMib": 452.33
+            },
+            {
+              "completed": 544,
+              "elapsedMs": 15225.811,
+              "workingSetMib": 458.91
+            },
+            {
+              "completed": 560,
+              "elapsedMs": 15517.638,
+              "workingSetMib": 447.73
+            },
+            {
+              "completed": 576,
+              "elapsedMs": 15813.533,
+              "workingSetMib": 440.77
+            },
+            {
+              "completed": 592,
+              "elapsedMs": 16124.199,
+              "workingSetMib": 428.66
+            },
+            {
+              "completed": 608,
+              "elapsedMs": 16411.18,
+              "workingSetMib": 433.51
+            },
+            {
+              "completed": 624,
+              "elapsedMs": 16694.199,
+              "workingSetMib": 434.09
+            },
+            {
+              "completed": 640,
+              "elapsedMs": 17005.447,
+              "workingSetMib": 436.89
+            },
+            {
+              "completed": 656,
+              "elapsedMs": 17287.606,
+              "workingSetMib": 444.37
+            },
+            {
+              "completed": 672,
+              "elapsedMs": 17577.721,
+              "workingSetMib": 447.65
+            },
+            {
+              "completed": 688,
+              "elapsedMs": 17842.472,
+              "workingSetMib": 457.87
+            },
+            {
+              "completed": 704,
+              "elapsedMs": 18128.261,
+              "workingSetMib": 456.86
+            },
+            {
+              "completed": 720,
+              "elapsedMs": 18420.927,
+              "workingSetMib": 443.09
+            },
+            {
+              "completed": 736,
+              "elapsedMs": 18717.406,
+              "workingSetMib": 446.32
+            },
+            {
+              "completed": 752,
+              "elapsedMs": 18993.856,
+              "workingSetMib": 442.09
+            },
+            {
+              "completed": 768,
+              "elapsedMs": 19266.414,
+              "workingSetMib": 445.73
+            },
+            {
+              "completed": 784,
+              "elapsedMs": 19540.534,
+              "workingSetMib": 452.08
+            },
+            {
+              "completed": 800,
+              "elapsedMs": 19836.094,
+              "workingSetMib": 455.01
+            },
+            {
+              "completed": 816,
+              "elapsedMs": 20118.199,
+              "workingSetMib": 451.93
+            },
+            {
+              "completed": 832,
+              "elapsedMs": 20379.691,
+              "workingSetMib": 447.64
+            },
+            {
+              "completed": 848,
+              "elapsedMs": 20689.784,
+              "workingSetMib": 446.71
+            },
+            {
+              "completed": 864,
+              "elapsedMs": 20969.78,
+              "workingSetMib": 450.36
+            },
+            {
+              "completed": 880,
+              "elapsedMs": 21242.77,
+              "workingSetMib": 456.71
+            },
+            {
+              "completed": 896,
+              "elapsedMs": 21515.273,
+              "workingSetMib": 442.37
+            },
+            {
+              "completed": 912,
+              "elapsedMs": 21814.336,
+              "workingSetMib": 448.96
+            },
+            {
+              "completed": 928,
+              "elapsedMs": 22098.617,
+              "workingSetMib": 456.05
+            },
+            {
+              "completed": 944,
+              "elapsedMs": 22406.606,
+              "workingSetMib": 445.04
+            },
+            {
+              "completed": 960,
+              "elapsedMs": 22701.802,
+              "workingSetMib": 447.98
+            },
+            {
+              "completed": 976,
+              "elapsedMs": 23013.919,
+              "workingSetMib": 438.73
+            },
+            {
+              "completed": 992,
+              "elapsedMs": 23295.882,
+              "workingSetMib": 427.3
+            },
+            {
+              "completed": 1008,
+              "elapsedMs": 23844.104,
+              "workingSetMib": 463.54
+            },
+            {
+              "completed": 1024,
+              "elapsedMs": 24207.311,
+              "workingSetMib": 453.87
+            },
+            {
+              "completed": 1040,
+              "elapsedMs": 24530.529,
+              "workingSetMib": 456.22
+            },
+            {
+              "completed": 1056,
+              "elapsedMs": 24817.332,
+              "workingSetMib": 467.61
+            },
+            {
+              "completed": 1072,
+              "elapsedMs": 25137.135,
+              "workingSetMib": 465.09
+            },
+            {
+              "completed": 1088,
+              "elapsedMs": 25422.859,
+              "workingSetMib": 452.54
+            },
+            {
+              "completed": 1104,
+              "elapsedMs": 25719.123,
+              "workingSetMib": 463.54
+            },
+            {
+              "completed": 1120,
+              "elapsedMs": 26038.562,
+              "workingSetMib": 478.37
+            },
+            {
+              "completed": 1136,
+              "elapsedMs": 26361.935,
+              "workingSetMib": 474.5
+            },
+            {
+              "completed": 1152,
+              "elapsedMs": 26684.778,
+              "workingSetMib": 478.54
+            },
+            {
+              "completed": 1168,
+              "elapsedMs": 27022.128,
+              "workingSetMib": 485.87
+            },
+            {
+              "completed": 1184,
+              "elapsedMs": 27330.578,
+              "workingSetMib": 477.73
+            },
+            {
+              "completed": 1200,
+              "elapsedMs": 27624.892,
+              "workingSetMib": 486.06
+            },
+            {
+              "completed": 1216,
+              "elapsedMs": 27914.404,
+              "workingSetMib": 470.14
+            },
+            {
+              "completed": 1232,
+              "elapsedMs": 28226.233,
+              "workingSetMib": 471.4
+            },
+            {
+              "completed": 1248,
+              "elapsedMs": 28526.226,
+              "workingSetMib": 462.54
+            },
+            {
+              "completed": 1264,
+              "elapsedMs": 28835.637,
+              "workingSetMib": 466.07
+            },
+            {
+              "completed": 1280,
+              "elapsedMs": 29153.136,
+              "workingSetMib": 458.89
+            },
+            {
+              "completed": 1296,
+              "elapsedMs": 29482.289,
+              "workingSetMib": 457.84
+            },
+            {
+              "completed": 1312,
+              "elapsedMs": 29753.708,
+              "workingSetMib": 447.54
+            },
+            {
+              "completed": 1328,
+              "elapsedMs": 30028.509,
+              "workingSetMib": 453.3
+            },
+            {
+              "completed": 1344,
+              "elapsedMs": 30348.573,
+              "workingSetMib": 445.93
+            },
+            {
+              "completed": 1360,
+              "elapsedMs": 30745.97,
+              "workingSetMib": 458.03
+            },
+            {
+              "completed": 1376,
+              "elapsedMs": 31265.384,
+              "workingSetMib": 461.36
+            },
+            {
+              "completed": 1392,
+              "elapsedMs": 31581.248,
+              "workingSetMib": 457.39
+            },
+            {
+              "completed": 1408,
+              "elapsedMs": 31916.719,
+              "workingSetMib": 472.56
+            },
+            {
+              "completed": 1424,
+              "elapsedMs": 32203.371,
+              "workingSetMib": 464.07
+            },
+            {
+              "completed": 1440,
+              "elapsedMs": 32495.422,
+              "workingSetMib": 462.47
+            },
+            {
+              "completed": 1456,
+              "elapsedMs": 32797.555,
+              "workingSetMib": 458.16
+            },
+            {
+              "completed": 1472,
+              "elapsedMs": 33100.82,
+              "workingSetMib": 458.02
+            },
+            {
+              "completed": 1488,
+              "elapsedMs": 33408.204,
+              "workingSetMib": 460.8
+            },
+            {
+              "completed": 1504,
+              "elapsedMs": 33716.129,
+              "workingSetMib": 461.64
+            },
+            {
+              "completed": 1520,
+              "elapsedMs": 34027.374,
+              "workingSetMib": 456.2
+            },
+            {
+              "completed": 1536,
+              "elapsedMs": 34336.303,
+              "workingSetMib": 467.99
+            },
+            {
+              "completed": 1552,
+              "elapsedMs": 34622.293,
+              "workingSetMib": 471.8
+            },
+            {
+              "completed": 1568,
+              "elapsedMs": 34925.306,
+              "workingSetMib": 479.33
+            },
+            {
+              "completed": 1584,
+              "elapsedMs": 35200.786,
+              "workingSetMib": 477.2
+            },
+            {
+              "completed": 1600,
+              "elapsedMs": 35486.53,
+              "workingSetMib": 461.45
+            },
+            {
+              "completed": 1616,
+              "elapsedMs": 35779.453,
+              "workingSetMib": 451.84
+            },
+            {
+              "completed": 1632,
+              "elapsedMs": 36058.646,
+              "workingSetMib": 463.55
+            },
+            {
+              "completed": 1648,
+              "elapsedMs": 36317.623,
+              "workingSetMib": 473.63
+            },
+            {
+              "completed": 1664,
+              "elapsedMs": 36631.5,
+              "workingSetMib": 470.5
+            },
+            {
+              "completed": 1680,
+              "elapsedMs": 36937.568,
+              "workingSetMib": 462.53
+            },
+            {
+              "completed": 1696,
+              "elapsedMs": 37270.483,
+              "workingSetMib": 461.05
+            },
+            {
+              "completed": 1712,
+              "elapsedMs": 37550.057,
+              "workingSetMib": 456.08
+            },
+            {
+              "completed": 1728,
+              "elapsedMs": 37838.371,
+              "workingSetMib": 454.41
+            },
+            {
+              "completed": 1744,
+              "elapsedMs": 38129.961,
+              "workingSetMib": 454.52
+            },
+            {
+              "completed": 1760,
+              "elapsedMs": 38429.279,
+              "workingSetMib": 443.03
+            },
+            {
+              "completed": 1776,
+              "elapsedMs": 38690.375,
+              "workingSetMib": 461.77
+            },
+            {
+              "completed": 1792,
+              "elapsedMs": 38985.646,
+              "workingSetMib": 453.63
+            },
+            {
+              "completed": 1808,
+              "elapsedMs": 39315.248,
+              "workingSetMib": 460.97
+            },
+            {
+              "completed": 1824,
+              "elapsedMs": 39666.773,
+              "workingSetMib": 451.32
+            },
+            {
+              "completed": 1840,
+              "elapsedMs": 39959.043,
+              "workingSetMib": 454.47
+            },
+            {
+              "completed": 1856,
+              "elapsedMs": 40239.749,
+              "workingSetMib": 459.26
+            },
+            {
+              "completed": 1872,
+              "elapsedMs": 40544.443,
+              "workingSetMib": 470.89
+            },
+            {
+              "completed": 1888,
+              "elapsedMs": 40834.032,
+              "workingSetMib": 471.1
+            },
+            {
+              "completed": 1904,
+              "elapsedMs": 41111.157,
+              "workingSetMib": 468.32
+            },
+            {
+              "completed": 1920,
+              "elapsedMs": 41429.631,
+              "workingSetMib": 464.14
+            },
+            {
+              "completed": 1936,
+              "elapsedMs": 41719.718,
+              "workingSetMib": 474.4
+            },
+            {
+              "completed": 1952,
+              "elapsedMs": 42006.809,
+              "workingSetMib": 460.57
+            },
+            {
+              "completed": 1968,
+              "elapsedMs": 42278.199,
+              "workingSetMib": 463.05
+            },
+            {
+              "completed": 1984,
+              "elapsedMs": 42561.048,
+              "workingSetMib": 471.11
+            },
+            {
+              "completed": 2000,
+              "elapsedMs": 42846.075,
+              "workingSetMib": 469.53
+            },
+            {
+              "completed": 2016,
+              "elapsedMs": 43125.122,
+              "workingSetMib": 464.17
+            },
+            {
+              "completed": 2032,
+              "elapsedMs": 43406.748,
+              "workingSetMib": 470.53
+            },
+            {
+              "completed": 2048,
+              "elapsedMs": 43692.469,
+              "workingSetMib": 467.84
+            },
+            {
+              "completed": 2064,
+              "elapsedMs": 43981.823,
+              "workingSetMib": 472.95
+            },
+            {
+              "completed": 2080,
+              "elapsedMs": 44292.876,
+              "workingSetMib": 467.04
+            },
+            {
+              "completed": 2096,
+              "elapsedMs": 44586.228,
+              "workingSetMib": 469.09
+            },
+            {
+              "completed": 2112,
+              "elapsedMs": 44888.005,
+              "workingSetMib": 466.76
+            },
+            {
+              "completed": 2128,
+              "elapsedMs": 45175.374,
+              "workingSetMib": 479.18
+            },
+            {
+              "completed": 2144,
+              "elapsedMs": 45483.174,
+              "workingSetMib": 480.78
+            },
+            {
+              "completed": 2160,
+              "elapsedMs": 45790.479,
+              "workingSetMib": 458.63
+            },
+            {
+              "completed": 2176,
+              "elapsedMs": 46079.896,
+              "workingSetMib": 475.2
+            },
+            {
+              "completed": 2192,
+              "elapsedMs": 46375.562,
+              "workingSetMib": 477.26
+            },
+            {
+              "completed": 2208,
+              "elapsedMs": 46671.674,
+              "workingSetMib": 475.96
+            },
+            {
+              "completed": 2221,
+              "elapsedMs": 46903.549,
+              "workingSetMib": 468.05
+            }
+          ],
+          "overlappingPhaseMilliseconds": {
+            "manifest-validation": 224.973,
+            "head-validation": 1562.668,
+            "history-union": 291.012,
+            "selection": 10.143,
+            "snapshot-diff-construction": 28459.433,
+            "static-analysis": 14260.067,
+            "reconciliation": 23107.212,
+            "allocation": 42.019,
+            "rendering": 984.645
+          },
+          "items": 2221,
+          "semanticSha256": "71c090f890e2aae6a2c6496fba319cbeb8f16a32b9a44a9aeab3f34fa30545eb",
+          "reuse": [
+            "Repository-scoped portfolio reuse served 2220 of 4444 snapshot-analysis request(s) across 2224 unique key(s), with 0 revisit miss(es); served 160000 of 200040 immutable file-analysis artifact request(s) across 40024 unique key(s), with 16 revisit miss(es); served 2220 of 4444 immutable-inventory request(s) across 2224 unique object(s), with 0 revisit miss(es); built 3 full and 2221 incremental inventories, including 2221 from repository-level batch diffs, while retaining at most 2 full-tree root lineage(s); evicted 2206 analysis entries and 0 inventory entries; 2 Git object reader(s) served 51121 blob request(s) over 22224 unique object(s) with 28897 cache hit(s), 0 eviction(s), and 20291150 byte(s) read from Git. At most 2 Git metadata reader(s) served 60011 length request(s) over 20003 unique object(s), with 40008 cache hit(s) and 0 eviction(s). Current file slots peaked at 20002 entries and 125795096 charged bytes per repository (a serialized-size proxy, not heap usage). At most 1 repository session(s) were active concurrently, with separate process-wide budgets of 8 Git tree read(s) and 24 independent common/semantic file-analysis and thread-safe estimation work item(s), and retention limits of 16 analyses, 8192 historical file-analysis artifacts plus 65536 current file slots under a 512-MiB serialized-size charge per repository, 10000 structurally shared inventories across 16 full-tree root lineages, and 64 MiB of blobs plus 16384 object-length entries per repository; repository batch output is capped at 64 MiB."
+          ],
+          "lane": "candidate"
+        },
+        {
+          "shape": "csharp",
+          "files": 10001,
+          "changes": 2221,
+          "heads": 32,
+          "seconds": 837.313,
+          "exitCode": 0,
+          "timedOut": false,
+          "targetUnchanged": true,
+          "progressPeakWorkingSetMib": 2030.0,
+          "progress": [
+            {
+              "completed": 1,
+              "elapsedMs": 3220.415,
+              "workingSetMib": 412.26
+            },
+            {
+              "completed": 16,
+              "elapsedMs": 10815.174,
+              "workingSetMib": 976.95
+            },
+            {
+              "completed": 32,
+              "elapsedMs": 16915.273,
+              "workingSetMib": 1333.38
+            },
+            {
+              "completed": 48,
+              "elapsedMs": 22686.81,
+              "workingSetMib": 1311.59
+            },
+            {
+              "completed": 64,
+              "elapsedMs": 28683.919,
+              "workingSetMib": 1405.53
+            },
+            {
+              "completed": 80,
+              "elapsedMs": 34649.241,
+              "workingSetMib": 1395.86
+            },
+            {
+              "completed": 96,
+              "elapsedMs": 40393.162,
+              "workingSetMib": 1374.37
+            },
+            {
+              "completed": 112,
+              "elapsedMs": 46231.838,
+              "workingSetMib": 1395.73
+            },
+            {
+              "completed": 128,
+              "elapsedMs": 52027.822,
+              "workingSetMib": 1389.4
+            },
+            {
+              "completed": 144,
+              "elapsedMs": 57835.039,
+              "workingSetMib": 1426.21
+            },
+            {
+              "completed": 160,
+              "elapsedMs": 63697.574,
+              "workingSetMib": 1401.41
+            },
+            {
+              "completed": 176,
+              "elapsedMs": 69416.952,
+              "workingSetMib": 1397.95
+            },
+            {
+              "completed": 192,
+              "elapsedMs": 75166.925,
+              "workingSetMib": 1434.3
+            },
+            {
+              "completed": 208,
+              "elapsedMs": 80884.321,
+              "workingSetMib": 1443.33
+            },
+            {
+              "completed": 224,
+              "elapsedMs": 86641.05,
+              "workingSetMib": 1464.01
+            },
+            {
+              "completed": 240,
+              "elapsedMs": 92674.933,
+              "workingSetMib": 1571.86
+            },
+            {
+              "completed": 256,
+              "elapsedMs": 98523.796,
+              "workingSetMib": 1512.04
+            },
+            {
+              "completed": 272,
+              "elapsedMs": 104396.363,
+              "workingSetMib": 1521.89
+            },
+            {
+              "completed": 288,
+              "elapsedMs": 110203.25,
+              "workingSetMib": 1501.0
+            },
+            {
+              "completed": 304,
+              "elapsedMs": 116086.466,
+              "workingSetMib": 1522.2
+            },
+            {
+              "completed": 320,
+              "elapsedMs": 121929.344,
+              "workingSetMib": 1521.58
+            },
+            {
+              "completed": 336,
+              "elapsedMs": 127812.613,
+              "workingSetMib": 1531.36
+            },
+            {
+              "completed": 352,
+              "elapsedMs": 133763.451,
+              "workingSetMib": 1548.08
+            },
+            {
+              "completed": 368,
+              "elapsedMs": 139749.079,
+              "workingSetMib": 1563.17
+            },
+            {
+              "completed": 384,
+              "elapsedMs": 145866.687,
+              "workingSetMib": 1563.7
+            },
+            {
+              "completed": 400,
+              "elapsedMs": 151776.24,
+              "workingSetMib": 1562.18
+            },
+            {
+              "completed": 416,
+              "elapsedMs": 157628.742,
+              "workingSetMib": 1543.38
+            },
+            {
+              "completed": 432,
+              "elapsedMs": 163612.427,
+              "workingSetMib": 1546.75
+            },
+            {
+              "completed": 448,
+              "elapsedMs": 169537.532,
+              "workingSetMib": 1556.7
+            },
+            {
+              "completed": 464,
+              "elapsedMs": 175395.994,
+              "workingSetMib": 1602.03
+            },
+            {
+              "completed": 480,
+              "elapsedMs": 181274.826,
+              "workingSetMib": 1583.82
+            },
+            {
+              "completed": 496,
+              "elapsedMs": 187066.695,
+              "workingSetMib": 1583.01
+            },
+            {
+              "completed": 512,
+              "elapsedMs": 192993.045,
+              "workingSetMib": 1578.36
+            },
+            {
+              "completed": 528,
+              "elapsedMs": 198823.54,
+              "workingSetMib": 1597.16
+            },
+            {
+              "completed": 544,
+              "elapsedMs": 204647.77,
+              "workingSetMib": 1627.05
+            },
+            {
+              "completed": 560,
+              "elapsedMs": 210483.339,
+              "workingSetMib": 1616.31
+            },
+            {
+              "completed": 576,
+              "elapsedMs": 216352.807,
+              "workingSetMib": 1617.45
+            },
+            {
+              "completed": 592,
+              "elapsedMs": 222307.727,
+              "workingSetMib": 1610.55
+            },
+            {
+              "completed": 608,
+              "elapsedMs": 228208.336,
+              "workingSetMib": 1647.47
+            },
+            {
+              "completed": 624,
+              "elapsedMs": 234241.973,
+              "workingSetMib": 1654.21
+            },
+            {
+              "completed": 640,
+              "elapsedMs": 240084.086,
+              "workingSetMib": 1644.96
+            },
+            {
+              "completed": 656,
+              "elapsedMs": 246122.103,
+              "workingSetMib": 1629.93
+            },
+            {
+              "completed": 672,
+              "elapsedMs": 251937.536,
+              "workingSetMib": 1647.54
+            },
+            {
+              "completed": 688,
+              "elapsedMs": 257840.82,
+              "workingSetMib": 1636.2
+            },
+            {
+              "completed": 704,
+              "elapsedMs": 263790.059,
+              "workingSetMib": 1662.4
+            },
+            {
+              "completed": 720,
+              "elapsedMs": 269647.193,
+              "workingSetMib": 1635.09
+            },
+            {
+              "completed": 736,
+              "elapsedMs": 275521.655,
+              "workingSetMib": 1654.54
+            },
+            {
+              "completed": 752,
+              "elapsedMs": 281415.081,
+              "workingSetMib": 1656.11
+            },
+            {
+              "completed": 768,
+              "elapsedMs": 287250.497,
+              "workingSetMib": 1663.43
+            },
+            {
+              "completed": 784,
+              "elapsedMs": 293106.754,
+              "workingSetMib": 1641.4
+            },
+            {
+              "completed": 800,
+              "elapsedMs": 299039.828,
+              "workingSetMib": 1661.75
+            },
+            {
+              "completed": 816,
+              "elapsedMs": 304941.639,
+              "workingSetMib": 1660.82
+            },
+            {
+              "completed": 832,
+              "elapsedMs": 311027.684,
+              "workingSetMib": 1680.88
+            },
+            {
+              "completed": 848,
+              "elapsedMs": 316913.745,
+              "workingSetMib": 1656.14
+            },
+            {
+              "completed": 864,
+              "elapsedMs": 322845.668,
+              "workingSetMib": 1687.88
+            },
+            {
+              "completed": 880,
+              "elapsedMs": 328847.047,
+              "workingSetMib": 1695.85
+            },
+            {
+              "completed": 896,
+              "elapsedMs": 334888.997,
+              "workingSetMib": 1698.85
+            },
+            {
+              "completed": 912,
+              "elapsedMs": 340859.373,
+              "workingSetMib": 1719.75
+            },
+            {
+              "completed": 928,
+              "elapsedMs": 346950.694,
+              "workingSetMib": 1675.39
+            },
+            {
+              "completed": 944,
+              "elapsedMs": 352893.295,
+              "workingSetMib": 1678.9
+            },
+            {
+              "completed": 960,
+              "elapsedMs": 358766.937,
+              "workingSetMib": 1691.36
+            },
+            {
+              "completed": 976,
+              "elapsedMs": 364789.259,
+              "workingSetMib": 1727.17
+            },
+            {
+              "completed": 992,
+              "elapsedMs": 370632.301,
+              "workingSetMib": 1698.0
+            },
+            {
+              "completed": 1008,
+              "elapsedMs": 376492.985,
+              "workingSetMib": 1712.14
+            },
+            {
+              "completed": 1024,
+              "elapsedMs": 382390.499,
+              "workingSetMib": 1700.82
+            },
+            {
+              "completed": 1040,
+              "elapsedMs": 388303.965,
+              "workingSetMib": 1729.68
+            },
+            {
+              "completed": 1056,
+              "elapsedMs": 394226.397,
+              "workingSetMib": 1765.31
+            },
+            {
+              "completed": 1072,
+              "elapsedMs": 400210.472,
+              "workingSetMib": 1741.29
+            },
+            {
+              "completed": 1088,
+              "elapsedMs": 406334.407,
+              "workingSetMib": 1752.27
+            },
+            {
+              "completed": 1104,
+              "elapsedMs": 412223.897,
+              "workingSetMib": 1728.4
+            },
+            {
+              "completed": 1120,
+              "elapsedMs": 418116.452,
+              "workingSetMib": 1766.39
+            },
+            {
+              "completed": 1136,
+              "elapsedMs": 424002.063,
+              "workingSetMib": 1747.47
+            },
+            {
+              "completed": 1152,
+              "elapsedMs": 429914.814,
+              "workingSetMib": 1761.99
+            },
+            {
+              "completed": 1168,
+              "elapsedMs": 435845.54,
+              "workingSetMib": 1754.82
+            },
+            {
+              "completed": 1184,
+              "elapsedMs": 441836.621,
+              "workingSetMib": 1795.62
+            },
+            {
+              "completed": 1200,
+              "elapsedMs": 447785.791,
+              "workingSetMib": 1806.06
+            },
+            {
+              "completed": 1216,
+              "elapsedMs": 453707.142,
+              "workingSetMib": 1790.34
+            },
+            {
+              "completed": 1232,
+              "elapsedMs": 459702.134,
+              "workingSetMib": 1779.69
+            },
+            {
+              "completed": 1248,
+              "elapsedMs": 465576.928,
+              "workingSetMib": 1819.52
+            },
+            {
+              "completed": 1264,
+              "elapsedMs": 471430.864,
+              "workingSetMib": 1806.59
+            },
+            {
+              "completed": 1280,
+              "elapsedMs": 477256.7,
+              "workingSetMib": 1784.23
+            },
+            {
+              "completed": 1296,
+              "elapsedMs": 483188.006,
+              "workingSetMib": 1808.26
+            },
+            {
+              "completed": 1312,
+              "elapsedMs": 489058.596,
+              "workingSetMib": 1804.57
+            },
+            {
+              "completed": 1328,
+              "elapsedMs": 494978.486,
+              "workingSetMib": 1769.72
+            },
+            {
+              "completed": 1344,
+              "elapsedMs": 500874.73,
+              "workingSetMib": 1790.53
+            },
+            {
+              "completed": 1360,
+              "elapsedMs": 506802.668,
+              "workingSetMib": 1798.52
+            },
+            {
+              "completed": 1376,
+              "elapsedMs": 512665.698,
+              "workingSetMib": 1793.36
+            },
+            {
+              "completed": 1392,
+              "elapsedMs": 518610.089,
+              "workingSetMib": 1792.36
+            },
+            {
+              "completed": 1408,
+              "elapsedMs": 524526.195,
+              "workingSetMib": 1805.77
+            },
+            {
+              "completed": 1424,
+              "elapsedMs": 530361.196,
+              "workingSetMib": 1796.29
+            },
+            {
+              "completed": 1440,
+              "elapsedMs": 536243.9,
+              "workingSetMib": 1810.55
+            },
+            {
+              "completed": 1456,
+              "elapsedMs": 542184.769,
+              "workingSetMib": 1804.35
+            },
+            {
+              "completed": 1472,
+              "elapsedMs": 548211.075,
+              "workingSetMib": 1807.54
+            },
+            {
+              "completed": 1488,
+              "elapsedMs": 554166.862,
+              "workingSetMib": 1811.66
+            },
+            {
+              "completed": 1504,
+              "elapsedMs": 560164.859,
+              "workingSetMib": 1820.46
+            },
+            {
+              "completed": 1520,
+              "elapsedMs": 566146.215,
+              "workingSetMib": 1808.07
+            },
+            {
+              "completed": 1536,
+              "elapsedMs": 572111.683,
+              "workingSetMib": 1841.2
+            },
+            {
+              "completed": 1552,
+              "elapsedMs": 578208.439,
+              "workingSetMib": 1820.71
+            },
+            {
+              "completed": 1568,
+              "elapsedMs": 584163.91,
+              "workingSetMib": 1835.25
+            },
+            {
+              "completed": 1584,
+              "elapsedMs": 590124.057,
+              "workingSetMib": 1828.16
+            },
+            {
+              "completed": 1600,
+              "elapsedMs": 596047.677,
+              "workingSetMib": 1826.11
+            },
+            {
+              "completed": 1616,
+              "elapsedMs": 602050.145,
+              "workingSetMib": 1848.41
+            },
+            {
+              "completed": 1632,
+              "elapsedMs": 607996.965,
+              "workingSetMib": 1859.88
+            },
+            {
+              "completed": 1648,
+              "elapsedMs": 614061.419,
+              "workingSetMib": 1866.56
+            },
+            {
+              "completed": 1664,
+              "elapsedMs": 620018.58,
+              "workingSetMib": 1885.0
+            },
+            {
+              "completed": 1680,
+              "elapsedMs": 626018.317,
+              "workingSetMib": 1884.6
+            },
+            {
+              "completed": 1696,
+              "elapsedMs": 631972.785,
+              "workingSetMib": 1873.52
+            },
+            {
+              "completed": 1712,
+              "elapsedMs": 637905.117,
+              "workingSetMib": 1896.98
+            },
+            {
+              "completed": 1728,
+              "elapsedMs": 643978.853,
+              "workingSetMib": 1885.46
+            },
+            {
+              "completed": 1744,
+              "elapsedMs": 650059.136,
+              "workingSetMib": 1905.5
+            },
+            {
+              "completed": 1760,
+              "elapsedMs": 656057.08,
+              "workingSetMib": 1866.48
+            },
+            {
+              "completed": 1776,
+              "elapsedMs": 662009.972,
+              "workingSetMib": 1917.18
+            },
+            {
+              "completed": 1792,
+              "elapsedMs": 668082.928,
+              "workingSetMib": 1935.69
+            },
+            {
+              "completed": 1808,
+              "elapsedMs": 674190.569,
+              "workingSetMib": 1899.86
+            },
+            {
+              "completed": 1824,
+              "elapsedMs": 680105.97,
+              "workingSetMib": 1891.77
+            },
+            {
+              "completed": 1840,
+              "elapsedMs": 686142.265,
+              "workingSetMib": 1932.02
+            },
+            {
+              "completed": 1856,
+              "elapsedMs": 692044.872,
+              "workingSetMib": 1928.89
+            },
+            {
+              "completed": 1872,
+              "elapsedMs": 698044.919,
+              "workingSetMib": 1924.86
+            },
+            {
+              "completed": 1888,
+              "elapsedMs": 703942.114,
+              "workingSetMib": 1925.7
+            },
+            {
+              "completed": 1904,
+              "elapsedMs": 709959.548,
+              "workingSetMib": 1950.39
+            },
+            {
+              "completed": 1920,
+              "elapsedMs": 715964.492,
+              "workingSetMib": 1952.91
+            },
+            {
+              "completed": 1936,
+              "elapsedMs": 721892.058,
+              "workingSetMib": 1934.93
+            },
+            {
+              "completed": 1952,
+              "elapsedMs": 727907.571,
+              "workingSetMib": 1937.38
+            },
+            {
+              "completed": 1968,
+              "elapsedMs": 733832.594,
+              "workingSetMib": 1939.66
+            },
+            {
+              "completed": 1984,
+              "elapsedMs": 739841.262,
+              "workingSetMib": 1962.31
+            },
+            {
+              "completed": 2000,
+              "elapsedMs": 745779.184,
+              "workingSetMib": 1977.0
+            },
+            {
+              "completed": 2016,
+              "elapsedMs": 751749.082,
+              "workingSetMib": 1938.42
+            },
+            {
+              "completed": 2032,
+              "elapsedMs": 757856.614,
+              "workingSetMib": 1972.08
+            },
+            {
+              "completed": 2048,
+              "elapsedMs": 763816.672,
+              "workingSetMib": 1964.46
+            },
+            {
+              "completed": 2064,
+              "elapsedMs": 769769.986,
+              "workingSetMib": 1941.68
+            },
+            {
+              "completed": 2080,
+              "elapsedMs": 775787.216,
+              "workingSetMib": 1933.79
+            },
+            {
+              "completed": 2096,
+              "elapsedMs": 783864.551,
+              "workingSetMib": 1936.07
+            },
+            {
+              "completed": 2112,
+              "elapsedMs": 790856.816,
+              "workingSetMib": 1992.71
+            },
+            {
+              "completed": 2128,
+              "elapsedMs": 796376.267,
+              "workingSetMib": 1970.2
+            },
+            {
+              "completed": 2144,
+              "elapsedMs": 801426.0,
+              "workingSetMib": 1982.46
+            },
+            {
+              "completed": 2160,
+              "elapsedMs": 806710.089,
+              "workingSetMib": 1969.66
+            },
+            {
+              "completed": 2176,
+              "elapsedMs": 811849.285,
+              "workingSetMib": 1992.9
+            },
+            {
+              "completed": 2192,
+              "elapsedMs": 817579.178,
+              "workingSetMib": 1969.03
+            },
+            {
+              "completed": 2208,
+              "elapsedMs": 823604.29,
+              "workingSetMib": 2017.04
+            },
+            {
+              "completed": 2221,
+              "elapsedMs": 828448.972,
+              "workingSetMib": 1993.41
+            }
+          ],
+          "overlappingPhaseMilliseconds": {
+            "manifest-validation": 248.776,
+            "head-validation": 2419.919,
+            "history-union": 382.015,
+            "selection": 11.373,
+            "snapshot-diff-construction": 37494.876,
+            "static-analysis": 780951.808,
+            "reconciliation": 29283.564,
+            "allocation": 45.813,
+            "rendering": 1011.561
+          },
+          "items": 2221,
+          "semanticSha256": "71c090f890e2aae6a2c6496fba319cbeb8f16a32b9a44a9aeab3f34fa30545eb",
+          "reuse": [
+            "Repository-scoped portfolio reuse served 2220 of 4444 snapshot-analysis request(s) across 2224 unique key(s), with 0 revisit miss(es); served 16402308 of 44486672 immutable file-analysis artifact request(s) across 44450 unique key(s), with 28039914 revisit miss(es); served 2220 of 4444 immutable-inventory request(s) across 2224 unique object(s), with 0 revisit miss(es); built 3 full and 2221 incremental inventories, including 2221 from repository-level batch diffs, while retaining at most 2 full-tree root lineage(s); evicted 2206 analysis entries and 0 inventory entries; 2 Git object reader(s) served 28088802 blob request(s) over 22224 unique object(s) with 28066578 cache hit(s), 0 eviction(s), and 20291150 byte(s) read from Git. At most 2 Git metadata reader(s) served 102909844 length request(s) over 20003 unique object(s), with 102889841 cache hit(s) and 0 eviction(s). At most 1 repository session(s) were active concurrently, with separate process-wide budgets of 8 Git tree read(s) and 24 independent common/semantic file-analysis and thread-safe estimation work item(s), and retention limits of 16 analyses, 8192 file-analysis artifacts, 10000 structurally shared inventories across 16 full-tree root lineages, and 64 MiB of blobs plus 16384 object-length entries per repository; repository batch output is capped at 64 MiB."
+          ],
+          "lane": "alpha32-completed-reference"
+        }
+      ],
+      "finalCandidate": {
+        "shape": "csharp",
+        "files": 10001,
+        "changes": 2221,
+        "heads": 32,
+        "seconds": 43.02,
+        "exitCode": 0,
+        "timedOut": false,
+        "targetUnchanged": true,
+        "progressPeakWorkingSetMib": 525.97,
+        "progress": [
+          {
+            "completed": 1,
+            "elapsedMs": 3034.128,
+            "workingSetMib": 335.01
+          },
+          {
+            "completed": 16,
+            "elapsedMs": 3759.22,
+            "workingSetMib": 352.67
+          },
+          {
+            "completed": 32,
+            "elapsedMs": 4029.929,
+            "workingSetMib": 354.83
+          },
+          {
+            "completed": 48,
+            "elapsedMs": 4278.551,
+            "workingSetMib": 358.95
+          },
+          {
+            "completed": 64,
+            "elapsedMs": 4521.595,
+            "workingSetMib": 359.97
+          },
+          {
+            "completed": 80,
+            "elapsedMs": 4762.307,
+            "workingSetMib": 368.88
+          },
+          {
+            "completed": 96,
+            "elapsedMs": 5012.259,
+            "workingSetMib": 380.26
+          },
+          {
+            "completed": 112,
+            "elapsedMs": 5685.717,
+            "workingSetMib": 402.23
+          },
+          {
+            "completed": 128,
+            "elapsedMs": 5934.033,
+            "workingSetMib": 439.89
+          },
+          {
+            "completed": 144,
+            "elapsedMs": 6119.591,
+            "workingSetMib": 450.16
+          },
+          {
+            "completed": 160,
+            "elapsedMs": 6360.926,
+            "workingSetMib": 433.59
+          },
+          {
+            "completed": 176,
+            "elapsedMs": 6538.164,
+            "workingSetMib": 447.86
+          },
+          {
+            "completed": 192,
+            "elapsedMs": 6752.945,
+            "workingSetMib": 449.48
+          },
+          {
+            "completed": 208,
+            "elapsedMs": 6959.114,
+            "workingSetMib": 462.74
+          },
+          {
+            "completed": 224,
+            "elapsedMs": 7181.482,
+            "workingSetMib": 453.05
+          },
+          {
+            "completed": 240,
+            "elapsedMs": 7358.295,
+            "workingSetMib": 465.82
+          },
+          {
+            "completed": 256,
+            "elapsedMs": 7540.999,
+            "workingSetMib": 476.96
+          },
+          {
+            "completed": 272,
+            "elapsedMs": 7763.383,
+            "workingSetMib": 478.62
+          },
+          {
+            "completed": 288,
+            "elapsedMs": 7955.595,
+            "workingSetMib": 496.52
+          },
+          {
+            "completed": 304,
+            "elapsedMs": 8154.035,
+            "workingSetMib": 477.17
+          },
+          {
+            "completed": 320,
+            "elapsedMs": 8326.819,
+            "workingSetMib": 493.49
+          },
+          {
+            "completed": 336,
+            "elapsedMs": 8517.727,
+            "workingSetMib": 492.99
+          },
+          {
+            "completed": 352,
+            "elapsedMs": 8722.964,
+            "workingSetMib": 478.3
+          },
+          {
+            "completed": 368,
+            "elapsedMs": 8894.644,
+            "workingSetMib": 487.73
+          },
+          {
+            "completed": 384,
+            "elapsedMs": 9074.932,
+            "workingSetMib": 495.93
+          },
+          {
+            "completed": 400,
+            "elapsedMs": 9225.912,
+            "workingSetMib": 500.06
+          },
+          {
+            "completed": 416,
+            "elapsedMs": 9408.793,
+            "workingSetMib": 484.11
+          },
+          {
+            "completed": 432,
+            "elapsedMs": 9576.483,
+            "workingSetMib": 479.84
+          },
+          {
+            "completed": 448,
+            "elapsedMs": 9762.647,
+            "workingSetMib": 493.96
+          },
+          {
+            "completed": 464,
+            "elapsedMs": 9976.496,
+            "workingSetMib": 483.45
+          },
+          {
+            "completed": 480,
+            "elapsedMs": 10156.169,
+            "workingSetMib": 484.85
+          },
+          {
+            "completed": 496,
+            "elapsedMs": 10342.938,
+            "workingSetMib": 490.74
+          },
+          {
+            "completed": 512,
+            "elapsedMs": 10546.635,
+            "workingSetMib": 506.05
+          },
+          {
+            "completed": 528,
+            "elapsedMs": 10737.425,
+            "workingSetMib": 488.09
+          },
+          {
+            "completed": 544,
+            "elapsedMs": 10901.652,
+            "workingSetMib": 493.37
+          },
+          {
+            "completed": 560,
+            "elapsedMs": 11101.062,
+            "workingSetMib": 497.61
+          },
+          {
+            "completed": 576,
+            "elapsedMs": 11285.997,
+            "workingSetMib": 484.16
+          },
+          {
+            "completed": 592,
+            "elapsedMs": 11489.617,
+            "workingSetMib": 470.46
+          },
+          {
+            "completed": 608,
+            "elapsedMs": 11674.995,
+            "workingSetMib": 453.62
+          },
+          {
+            "completed": 624,
+            "elapsedMs": 11861.761,
+            "workingSetMib": 451.83
+          },
+          {
+            "completed": 640,
+            "elapsedMs": 12054.842,
+            "workingSetMib": 432.13
+          },
+          {
+            "completed": 656,
+            "elapsedMs": 12265.439,
+            "workingSetMib": 430.81
+          },
+          {
+            "completed": 672,
+            "elapsedMs": 12442.999,
+            "workingSetMib": 422.05
+          },
+          {
+            "completed": 688,
+            "elapsedMs": 12634.605,
+            "workingSetMib": 425.4
+          },
+          {
+            "completed": 704,
+            "elapsedMs": 12809.379,
+            "workingSetMib": 435.41
+          },
+          {
+            "completed": 720,
+            "elapsedMs": 12994.534,
+            "workingSetMib": 426.68
+          },
+          {
+            "completed": 736,
+            "elapsedMs": 13218.119,
+            "workingSetMib": 438.36
+          },
+          {
+            "completed": 752,
+            "elapsedMs": 13404.91,
+            "workingSetMib": 450.04
+          },
+          {
+            "completed": 768,
+            "elapsedMs": 13619.412,
+            "workingSetMib": 435.49
+          },
+          {
+            "completed": 784,
+            "elapsedMs": 13808.291,
+            "workingSetMib": 436.34
+          },
+          {
+            "completed": 800,
+            "elapsedMs": 13965.5,
+            "workingSetMib": 445.47
+          },
+          {
+            "completed": 816,
+            "elapsedMs": 14161.669,
+            "workingSetMib": 451.8
+          },
+          {
+            "completed": 832,
+            "elapsedMs": 14332.525,
+            "workingSetMib": 452.57
+          },
+          {
+            "completed": 848,
+            "elapsedMs": 14511.322,
+            "workingSetMib": 425.55
+          },
+          {
+            "completed": 864,
+            "elapsedMs": 14711.842,
+            "workingSetMib": 431.5
+          },
+          {
+            "completed": 880,
+            "elapsedMs": 14874.027,
+            "workingSetMib": 436.91
+          },
+          {
+            "completed": 896,
+            "elapsedMs": 15088.112,
+            "workingSetMib": 443.64
+          },
+          {
+            "completed": 912,
+            "elapsedMs": 15270.549,
+            "workingSetMib": 422.96
+          },
+          {
+            "completed": 928,
+            "elapsedMs": 15451.318,
+            "workingSetMib": 435.64
+          },
+          {
+            "completed": 944,
+            "elapsedMs": 15635.989,
+            "workingSetMib": 429.85
+          },
+          {
+            "completed": 960,
+            "elapsedMs": 15861.248,
+            "workingSetMib": 444.06
+          },
+          {
+            "completed": 976,
+            "elapsedMs": 16084.734,
+            "workingSetMib": 441.42
+          },
+          {
+            "completed": 992,
+            "elapsedMs": 16268.977,
+            "workingSetMib": 442.38
+          },
+          {
+            "completed": 1008,
+            "elapsedMs": 16697.437,
+            "workingSetMib": 468.81
+          },
+          {
+            "completed": 1024,
+            "elapsedMs": 16918.267,
+            "workingSetMib": 461.05
+          },
+          {
+            "completed": 1040,
+            "elapsedMs": 17072.769,
+            "workingSetMib": 467.94
+          },
+          {
+            "completed": 1056,
+            "elapsedMs": 17273.652,
+            "workingSetMib": 467.95
+          },
+          {
+            "completed": 1072,
+            "elapsedMs": 17470.834,
+            "workingSetMib": 485.53
+          },
+          {
+            "completed": 1088,
+            "elapsedMs": 17664.529,
+            "workingSetMib": 495.25
+          },
+          {
+            "completed": 1104,
+            "elapsedMs": 17858.792,
+            "workingSetMib": 478.38
+          },
+          {
+            "completed": 1120,
+            "elapsedMs": 18023.144,
+            "workingSetMib": 480.91
+          },
+          {
+            "completed": 1136,
+            "elapsedMs": 18217.584,
+            "workingSetMib": 486.77
+          },
+          {
+            "completed": 1152,
+            "elapsedMs": 18422.64,
+            "workingSetMib": 496.56
+          },
+          {
+            "completed": 1168,
+            "elapsedMs": 18591.796,
+            "workingSetMib": 480.79
+          },
+          {
+            "completed": 1184,
+            "elapsedMs": 18815.011,
+            "workingSetMib": 495.38
+          },
+          {
+            "completed": 1200,
+            "elapsedMs": 18980.014,
+            "workingSetMib": 499.75
+          },
+          {
+            "completed": 1216,
+            "elapsedMs": 19216.591,
+            "workingSetMib": 506.25
+          },
+          {
+            "completed": 1232,
+            "elapsedMs": 19408.811,
+            "workingSetMib": 487.35
+          },
+          {
+            "completed": 1248,
+            "elapsedMs": 19591.194,
+            "workingSetMib": 474.84
+          },
+          {
+            "completed": 1264,
+            "elapsedMs": 19755.198,
+            "workingSetMib": 483.62
+          },
+          {
+            "completed": 1280,
+            "elapsedMs": 19938.588,
+            "workingSetMib": 492.77
+          },
+          {
+            "completed": 1296,
+            "elapsedMs": 20124.797,
+            "workingSetMib": 475.96
+          },
+          {
+            "completed": 1312,
+            "elapsedMs": 20301.176,
+            "workingSetMib": 473.69
+          },
+          {
+            "completed": 1328,
+            "elapsedMs": 20472.331,
+            "workingSetMib": 479.73
+          },
+          {
+            "completed": 1344,
+            "elapsedMs": 20631.217,
+            "workingSetMib": 488.76
+          },
+          {
+            "completed": 1360,
+            "elapsedMs": 20831.394,
+            "workingSetMib": 487.63
+          },
+          {
+            "completed": 1376,
+            "elapsedMs": 21014.776,
+            "workingSetMib": 476.04
+          },
+          {
+            "completed": 1392,
+            "elapsedMs": 21201.518,
+            "workingSetMib": 477.0
+          },
+          {
+            "completed": 1408,
+            "elapsedMs": 21365.695,
+            "workingSetMib": 483.29
+          },
+          {
+            "completed": 1424,
+            "elapsedMs": 21549.024,
+            "workingSetMib": 480.5
+          },
+          {
+            "completed": 1440,
+            "elapsedMs": 21722.561,
+            "workingSetMib": 490.43
+          },
+          {
+            "completed": 1456,
+            "elapsedMs": 21919.978,
+            "workingSetMib": 471.08
+          },
+          {
+            "completed": 1472,
+            "elapsedMs": 22105.743,
+            "workingSetMib": 483.19
+          },
+          {
+            "completed": 1488,
+            "elapsedMs": 22261.094,
+            "workingSetMib": 489.11
+          },
+          {
+            "completed": 1504,
+            "elapsedMs": 22457.616,
+            "workingSetMib": 485.8
+          },
+          {
+            "completed": 1520,
+            "elapsedMs": 22611.36,
+            "workingSetMib": 493.68
+          },
+          {
+            "completed": 1536,
+            "elapsedMs": 22789.755,
+            "workingSetMib": 500.3
+          },
+          {
+            "completed": 1552,
+            "elapsedMs": 22991.195,
+            "workingSetMib": 508.64
+          },
+          {
+            "completed": 1568,
+            "elapsedMs": 23182.005,
+            "workingSetMib": 488.5
+          },
+          {
+            "completed": 1584,
+            "elapsedMs": 23337.019,
+            "workingSetMib": 498.84
+          },
+          {
+            "completed": 1600,
+            "elapsedMs": 23504.197,
+            "workingSetMib": 505.22
+          },
+          {
+            "completed": 1616,
+            "elapsedMs": 23670.613,
+            "workingSetMib": 499.84
+          },
+          {
+            "completed": 1632,
+            "elapsedMs": 23872.179,
+            "workingSetMib": 482.88
+          },
+          {
+            "completed": 1648,
+            "elapsedMs": 24039.272,
+            "workingSetMib": 482.38
+          },
+          {
+            "completed": 1664,
+            "elapsedMs": 24204.943,
+            "workingSetMib": 484.12
+          },
+          {
+            "completed": 1680,
+            "elapsedMs": 24363.998,
+            "workingSetMib": 498.34
+          },
+          {
+            "completed": 1696,
+            "elapsedMs": 24548.032,
+            "workingSetMib": 504.69
+          },
+          {
+            "completed": 1712,
+            "elapsedMs": 24721.028,
+            "workingSetMib": 487.7
+          },
+          {
+            "completed": 1728,
+            "elapsedMs": 24902.665,
+            "workingSetMib": 492.44
+          },
+          {
+            "completed": 1744,
+            "elapsedMs": 25072.753,
+            "workingSetMib": 492.28
+          },
+          {
+            "completed": 1760,
+            "elapsedMs": 25237.455,
+            "workingSetMib": 493.38
+          },
+          {
+            "completed": 1776,
+            "elapsedMs": 25400.707,
+            "workingSetMib": 505.46
+          },
+          {
+            "completed": 1792,
+            "elapsedMs": 25582.036,
+            "workingSetMib": 477.33
+          },
+          {
+            "completed": 1808,
+            "elapsedMs": 25754.509,
+            "workingSetMib": 477.21
+          },
+          {
+            "completed": 1824,
+            "elapsedMs": 25913.89,
+            "workingSetMib": 482.82
+          },
+          {
+            "completed": 1840,
+            "elapsedMs": 26089.949,
+            "workingSetMib": 489.58
+          },
+          {
+            "completed": 1856,
+            "elapsedMs": 26265.397,
+            "workingSetMib": 505.89
+          },
+          {
+            "completed": 1872,
+            "elapsedMs": 26437.06,
+            "workingSetMib": 490.68
+          },
+          {
+            "completed": 1888,
+            "elapsedMs": 26631.864,
+            "workingSetMib": 489.88
+          },
+          {
+            "completed": 1904,
+            "elapsedMs": 26782.93,
+            "workingSetMib": 496.34
+          },
+          {
+            "completed": 1920,
+            "elapsedMs": 26954.188,
+            "workingSetMib": 499.79
+          },
+          {
+            "completed": 1936,
+            "elapsedMs": 27129.413,
+            "workingSetMib": 506.56
+          },
+          {
+            "completed": 1952,
+            "elapsedMs": 27321.923,
+            "workingSetMib": 493.96
+          },
+          {
+            "completed": 1968,
+            "elapsedMs": 27480.561,
+            "workingSetMib": 498.1
+          },
+          {
+            "completed": 1984,
+            "elapsedMs": 27663.573,
+            "workingSetMib": 497.18
+          },
+          {
+            "completed": 2000,
+            "elapsedMs": 27826.882,
+            "workingSetMib": 500.04
+          },
+          {
+            "completed": 2016,
+            "elapsedMs": 27985.563,
+            "workingSetMib": 511.72
+          },
+          {
+            "completed": 2032,
+            "elapsedMs": 28162.421,
+            "workingSetMib": 514.3
+          },
+          {
+            "completed": 2048,
+            "elapsedMs": 28360.825,
+            "workingSetMib": 512.44
+          },
+          {
+            "completed": 2064,
+            "elapsedMs": 28540.245,
+            "workingSetMib": 498.96
+          },
+          {
+            "completed": 2080,
+            "elapsedMs": 28711.196,
+            "workingSetMib": 500.55
+          },
+          {
+            "completed": 2096,
+            "elapsedMs": 28889.762,
+            "workingSetMib": 501.12
+          },
+          {
+            "completed": 2112,
+            "elapsedMs": 29065.819,
+            "workingSetMib": 498.77
+          },
+          {
+            "completed": 2128,
+            "elapsedMs": 29273.081,
+            "workingSetMib": 503.74
+          },
+          {
+            "completed": 2144,
+            "elapsedMs": 29466.963,
+            "workingSetMib": 514.61
+          },
+          {
+            "completed": 2160,
+            "elapsedMs": 29651.839,
+            "workingSetMib": 500.7
+          },
+          {
+            "completed": 2176,
+            "elapsedMs": 29803.395,
+            "workingSetMib": 510.17
+          },
+          {
+            "completed": 2192,
+            "elapsedMs": 29967.77,
+            "workingSetMib": 505.16
+          },
+          {
+            "completed": 2208,
+            "elapsedMs": 30146.088,
+            "workingSetMib": 521.55
+          },
+          {
+            "completed": 2221,
+            "elapsedMs": 30277.639,
+            "workingSetMib": 513.21
+          }
+        ],
+        "overlappingPhaseMilliseconds": {
+          "manifest-validation": 234.614,
+          "head-validation": 6481.167,
+          "history-union": 382.545,
+          "selection": 14.065,
+          "snapshot-diff-construction": 32986.619,
+          "static-analysis": 19994.56,
+          "reconciliation": 7975.394,
+          "allocation": 44.819,
+          "rendering": 1022.041
+        },
+        "items": 2221,
+        "semanticSha256": "71c090f890e2aae6a2c6496fba319cbeb8f16a32b9a44a9aeab3f34fa30545eb",
+        "reuse": [
+          "Repository-scoped portfolio reuse served 2220 of 4444 snapshot-analysis request(s) across 2224 unique key(s), with 0 revisit miss(es); served 160000 of 200040 immutable file-analysis artifact request(s) across 40024 unique key(s), with 16 revisit miss(es); served 2220 of 4444 immutable-inventory request(s) across 2224 unique object(s), with 0 revisit miss(es); built 3 full and 2221 incremental inventories, including 2221 from repository-level batch diffs, while retaining at most 2 full-tree root lineage(s); evicted 2206 analysis entries and 0 inventory entries; 2 Git object reader(s) served 50849 blob request(s) over 22224 unique object(s) with 28625 cache hit(s), 0 eviction(s), and 20291150 byte(s) read from Git. At most 2 Git metadata reader(s) served 60011 length request(s) over 20003 unique object(s), with 40008 cache hit(s) and 0 eviction(s). Exact fully analyzed seed stock was reused 4 time(s). Current file slots peaked at 20002 entries and 125795096 charged bytes per repository (a serialized-size proxy, not heap usage). At most 1 repository session(s) were active concurrently, with separate process-wide budgets of 8 Git tree read(s) and 24 independent common/semantic file-analysis and thread-safe estimation work item(s), and retention limits of 16 analyses, 8192 historical file-analysis artifacts plus 65536 current file slots under a 512-MiB serialized-size charge per repository, 10000 structurally shared inventories across 16 full-tree root lineages, and 64 MiB of blobs plus 16384 object-length entries per repository; repository batch output is capped at 64 MiB."
+        ],
+        "label": "final-candidate"
+      }
+    },
+    {
+      "fixture": {
+        "shape": "mixed",
+        "commits": 128,
+        "heads": [
+          {
+            "id": "head-00",
+            "objectId": "580bc5a85d2f07bab6a2d97c3d3f53c03e2795f9"
+          },
+          {
+            "id": "head-01",
+            "objectId": "e558088a0291c7ec8b5ad4ac22660e7f2083c690"
+          },
+          {
+            "id": "head-02",
+            "objectId": "c85cd1e3b38bfc0144896a1bc156ff6f9da99aee"
+          },
+          {
+            "id": "head-03",
+            "objectId": "64356590cf425d29a463e829f5d68c381ad43747"
+          },
+          {
+            "id": "head-04",
+            "objectId": "64d3ab49a5bae739f24f40c40b34ca9a7ec17c1a"
+          },
+          {
+            "id": "head-05",
+            "objectId": "ffe6e47b953a29abbcd8d51bfbe7c5d8769b06a6"
+          },
+          {
+            "id": "head-06",
+            "objectId": "c81afaf01300057dd710407ea57504f561a78c7a"
+          },
+          {
+            "id": "head-07",
+            "objectId": "a036c84e8d8c5508183e8195124e7fe827b1425a"
+          },
+          {
+            "id": "head-08",
+            "objectId": "8a316995cf0036a10402d7804051ee2ec953437e"
+          },
+          {
+            "id": "head-09",
+            "objectId": "366a9e2396028de2557ee0091d20ae8eca063cae"
+          },
+          {
+            "id": "head-10",
+            "objectId": "0568e66adb004ec7d585f465c6402384f0237aae"
+          },
+          {
+            "id": "head-11",
+            "objectId": "8dc70acf2b3f83dc0ecb286854a565bfb77fbcb5"
+          },
+          {
+            "id": "head-12",
+            "objectId": "503486b784e3af22fbb16d7aeefb1c650fc52f83"
+          },
+          {
+            "id": "head-13",
+            "objectId": "5054fb4fd6511e3be885d4d419ce04888693d007"
+          },
+          {
+            "id": "head-14",
+            "objectId": "0dfd8669768468e2c25de18edf5d861f6cd42a7e"
+          },
+          {
+            "id": "head-15",
+            "objectId": "641757e6e823f06fd72962766ea6c80e80e84cd9"
+          },
+          {
+            "id": "head-16",
+            "objectId": "6515801442c939a7af431a784e6c82ed0261c87b"
+          },
+          {
+            "id": "head-17",
+            "objectId": "ddbd92577bd8cb2461917e90bf63761c796d1c63"
+          },
+          {
+            "id": "head-18",
+            "objectId": "3ae96ed43146d9a6e35c90dde15184a836180b76"
+          },
+          {
+            "id": "head-19",
+            "objectId": "ce667f3af0d1ca6346f7e3127d0a032358e83efa"
+          },
+          {
+            "id": "head-20",
+            "objectId": "dcc7ad5bb70f03e03bd599f4e8aaa9ac64a2e32f"
+          },
+          {
+            "id": "head-21",
+            "objectId": "fc24b6290847a87ac5c8a18cda740de63e944d71"
+          },
+          {
+            "id": "head-22",
+            "objectId": "a6d3f658f717735b162b73b39f82e5d5e9b05cd4"
+          },
+          {
+            "id": "head-23",
+            "objectId": "01bb60633b224ca454f637b1d102aae68588a584"
+          },
+          {
+            "id": "head-24",
+            "objectId": "21ab835d978281c827efa853d85199ace9912013"
+          },
+          {
+            "id": "head-25",
+            "objectId": "d0749b6878aefe93d83f0550604330a4df17ec86"
+          },
+          {
+            "id": "head-26",
+            "objectId": "de2a2555161b9d4d8cf71ca6a9ea312eeca07dae"
+          },
+          {
+            "id": "head-27",
+            "objectId": "391aa7e81f0a64c649ee2c9647b9ef06ef4fca82"
+          },
+          {
+            "id": "head-28",
+            "objectId": "ee65c10df86ef8f1639510397c1ee4e071517627"
+          },
+          {
+            "id": "head-29",
+            "objectId": "4946d714ee3a81e03b37e2b749108c997da2fb46"
+          },
+          {
+            "id": "head-30",
+            "objectId": "ba12a6a87f0c0a77da45e38e26ee19e6242538e8"
+          },
+          {
+            "id": "head-31",
+            "objectId": "a45c5c95290047d81ec6ce6b1d7b6a61dbe36518"
+          }
+        ],
+        "files": 30000
+      },
+      "runs": [
+        {
+          "shape": "mixed",
+          "files": 30000,
+          "changes": 128,
+          "heads": 32,
+          "seconds": 6.237,
+          "exitCode": 0,
+          "timedOut": false,
+          "targetUnchanged": true,
+          "progressPeakWorkingSetMib": 244.94,
+          "progress": [
+            {
+              "completed": 1,
+              "elapsedMs": 575.638,
+              "workingSetMib": 156.21
+            },
+            {
+              "completed": 16,
+              "elapsedMs": 851.705,
+              "workingSetMib": 176.51
+            },
+            {
+              "completed": 32,
+              "elapsedMs": 1100.3,
+              "workingSetMib": 180.95
+            },
+            {
+              "completed": 48,
+              "elapsedMs": 1354.018,
+              "workingSetMib": 189.99
+            },
+            {
+              "completed": 64,
+              "elapsedMs": 1587.748,
+              "workingSetMib": 189.08
+            },
+            {
+              "completed": 80,
+              "elapsedMs": 1816.817,
+              "workingSetMib": 203.84
+            },
+            {
+              "completed": 96,
+              "elapsedMs": 2076.748,
+              "workingSetMib": 224.68
+            },
+            {
+              "completed": 112,
+              "elapsedMs": 2365.223,
+              "workingSetMib": 210.17
+            },
+            {
+              "completed": 128,
+              "elapsedMs": 2623.045,
+              "workingSetMib": 213.43
+            }
+          ],
+          "overlappingPhaseMilliseconds": {
+            "manifest-validation": 241.028,
+            "head-validation": 1528.959,
+            "history-union": 250.831,
+            "selection": 6.908,
+            "snapshot-diff-construction": 3082.432,
+            "static-analysis": 904.635,
+            "reconciliation": 223.333,
+            "allocation": 21.051,
+            "rendering": 233.54
+          },
+          "items": 128,
+          "semanticSha256": "d8647c74f284592741e6f118c77145b153f888e3e7800ad43f31c4cf19e552e7",
+          "reuse": [
+            "Repository-scoped portfolio reuse served 127 of 256 snapshot-analysis request(s) across 129 unique key(s), with 0 revisit miss(es); served 512 of 1161 immutable file-analysis artifact request(s) across 649 unique key(s), with 0 revisit miss(es); served 127 of 256 immutable-inventory request(s) across 129 unique object(s), with 0 revisit miss(es); built 1 full and 128 incremental inventories, including 128 from repository-level batch diffs, while retaining at most 1 full-tree root lineage(s); evicted 113 analysis entries and 0 inventory entries; 1 Git object reader(s) served 1674 blob request(s) over 389 unique object(s) with 1285 cache hit(s), 0 eviction(s), and 132800 byte(s) read from Git. At most 1 Git metadata reader(s) served 270 length request(s) over 5 unique object(s), with 265 cache hit(s) and 0 eviction(s). At most 1 repository session(s) were active concurrently, with separate process-wide budgets of 8 Git tree read(s) and 24 independent common/semantic file-analysis and thread-safe estimation work item(s), and retention limits of 16 analyses, 8192 file-analysis artifacts, 10000 structurally shared inventories across 16 full-tree root lineages, and 64 MiB of blobs plus 16384 object-length entries per repository; repository batch output is capped at 64 MiB."
+          ],
+          "lane": "alpha.29"
+        },
+        {
+          "shape": "mixed",
+          "files": 30000,
+          "changes": 128,
+          "heads": 32,
+          "seconds": 661.048,
+          "exitCode": 0,
+          "timedOut": false,
+          "targetUnchanged": true,
+          "progressPeakWorkingSetMib": 3440.73,
+          "progress": [
+            {
+              "completed": 1,
+              "elapsedMs": 10527.343,
+              "workingSetMib": 655.21
+            },
+            {
+              "completed": 16,
+              "elapsedMs": 88282.827,
+              "workingSetMib": 2580.41
+            },
+            {
+              "completed": 32,
+              "elapsedMs": 167969.354,
+              "workingSetMib": 3096.13
+            },
+            {
+              "completed": 48,
+              "elapsedMs": 248113.966,
+              "workingSetMib": 3225.86
+            },
+            {
+              "completed": 64,
+              "elapsedMs": 328459.451,
+              "workingSetMib": 3283.99
+            },
+            {
+              "completed": 80,
+              "elapsedMs": 408564.03,
+              "workingSetMib": 3272.19
+            },
+            {
+              "completed": 96,
+              "elapsedMs": 488150.021,
+              "workingSetMib": 3330.65
+            },
+            {
+              "completed": 112,
+              "elapsedMs": 567633.11,
+              "workingSetMib": 3334.5
+            },
+            {
+              "completed": 128,
+              "elapsedMs": 648115.626,
+              "workingSetMib": 3338.83
+            }
+          ],
+          "overlappingPhaseMilliseconds": {
+            "manifest-validation": 228.806,
+            "head-validation": 1545.493,
+            "history-union": 263.555,
+            "selection": 7.011,
+            "snapshot-diff-construction": 176282.73,
+            "static-analysis": 338801.574,
+            "reconciliation": 149930.511,
+            "allocation": 16.236,
+            "rendering": 146.525
+          },
+          "items": 128,
+          "semanticSha256": "14375414f944865367c138e957267a5193830482c5be86ac021c2c785e355402",
+          "reuse": [
+            "Repository-scoped portfolio reuse served 127 of 258 snapshot-analysis request(s) across 131 unique key(s), with 0 revisit miss(es); served 1050781 of 6026262 immutable file-analysis artifact request(s) across 92649 unique key(s), with 4882832 revisit miss(es); served 127 of 258 immutable-inventory request(s) across 131 unique object(s), with 0 revisit miss(es); built 3 full and 128 incremental inventories, including 128 from repository-level batch diffs, while retaining at most 2 full-tree root lineage(s); evicted 113 analysis entries and 0 inventory entries; 2 Git object reader(s) served 5893384 blob request(s) over 60387 unique object(s) with 5832997 cache hit(s), 0 eviction(s), and 19117786 byte(s) read from Git. At most 2 Git metadata reader(s) served 16090651 length request(s) over 60003 unique object(s), with 4421793 cache hit(s) and 11636090 eviction(s). At most 1 repository session(s) were active concurrently, with separate process-wide budgets of 8 Git tree read(s) and 24 independent common/semantic file-analysis and thread-safe estimation work item(s), and retention limits of 16 analyses, 8192 file-analysis artifacts, 10000 structurally shared inventories across 16 full-tree root lineages, and 64 MiB of blobs plus 16384 object-length entries per repository; repository batch output is capped at 64 MiB."
+          ],
+          "lane": "alpha.32"
+        },
+        {
+          "shape": "mixed",
+          "files": 30000,
+          "changes": 128,
+          "heads": 32,
+          "seconds": 64.261,
+          "exitCode": 0,
+          "timedOut": false,
+          "targetUnchanged": true,
+          "progressPeakWorkingSetMib": 2695.63,
+          "progress": [
+            {
+              "completed": 1,
+              "elapsedMs": 6413.904,
+              "workingSetMib": 903.99
+            },
+            {
+              "completed": 16,
+              "elapsedMs": 13015.086,
+              "workingSetMib": 1949.04
+            },
+            {
+              "completed": 32,
+              "elapsedMs": 18909.864,
+              "workingSetMib": 2332.65
+            },
+            {
+              "completed": 48,
+              "elapsedMs": 24719.364,
+              "workingSetMib": 2470.71
+            },
+            {
+              "completed": 64,
+              "elapsedMs": 31181.875,
+              "workingSetMib": 2546.61
+            },
+            {
+              "completed": 80,
+              "elapsedMs": 37397.465,
+              "workingSetMib": 2654.44
+            },
+            {
+              "completed": 96,
+              "elapsedMs": 43307.041,
+              "workingSetMib": 2617.48
+            },
+            {
+              "completed": 112,
+              "elapsedMs": 49403.418,
+              "workingSetMib": 2662.96
+            },
+            {
+              "completed": 128,
+              "elapsedMs": 55304.446,
+              "workingSetMib": 2615.02
+            }
+          ],
+          "overlappingPhaseMilliseconds": {
+            "manifest-validation": 218.927,
+            "head-validation": 1502.955,
+            "history-union": 246.081,
+            "selection": 6.533,
+            "snapshot-diff-construction": 10665.46,
+            "static-analysis": 154702.514,
+            "reconciliation": 16099.623,
+            "allocation": 15.714,
+            "rendering": 143.301
+          },
+          "items": 128,
+          "semanticSha256": "14375414f944865367c138e957267a5193830482c5be86ac021c2c785e355402",
+          "reuse": [
+            "Repository-scoped portfolio reuse served 127 of 258 snapshot-analysis request(s) across 131 unique key(s), with 0 revisit miss(es); served 6836485 of 6943393 immutable file-analysis artifact request(s) across 106780 unique key(s), with 128 revisit miss(es); served 127 of 258 immutable-inventory request(s) across 131 unique object(s), with 0 revisit miss(es); built 3 full and 128 incremental inventories, including 128 from repository-level batch diffs, while retaining at most 2 full-tree root lineage(s); evicted 113 analysis entries and 0 inventory entries; 2 Git object reader(s) served 107809 blob request(s) over 60387 unique object(s) with 47422 cache hit(s), 0 eviction(s), and 19117786 byte(s) read from Git. At most 2 Git metadata reader(s) served 180015 length request(s) over 60003 unique object(s), with 60011 cache hit(s) and 87236 eviction(s). Current file slots peaked at 53001 entries and 332079180 charged bytes per repository (a serialized-size proxy, not heap usage). At most 1 repository session(s) were active concurrently, with separate process-wide budgets of 8 Git tree read(s) and 24 independent common/semantic file-analysis and thread-safe estimation work item(s), and retention limits of 16 analyses, 8192 historical file-analysis artifacts plus 65536 current file slots under a 512-MiB serialized-size charge per repository, 10000 structurally shared inventories across 16 full-tree root lineages, and 64 MiB of blobs plus 16384 object-length entries per repository; repository batch output is capped at 64 MiB."
+          ],
+          "lane": "candidate"
+        }
+      ],
+      "finalCandidate": {
+        "shape": "mixed",
+        "files": 30000,
+        "changes": 128,
+        "heads": 32,
+        "seconds": 30.508,
+        "exitCode": 0,
+        "timedOut": false,
+        "targetUnchanged": true,
+        "progressPeakWorkingSetMib": 783.57,
+        "progress": [
+          {
+            "completed": 1,
+            "elapsedMs": 8269.9,
+            "workingSetMib": 593.3
+          },
+          {
+            "completed": 16,
+            "elapsedMs": 11047.336,
+            "workingSetMib": 759.48
+          },
+          {
+            "completed": 32,
+            "elapsedMs": 12336.887,
+            "workingSetMib": 750.25
+          },
+          {
+            "completed": 48,
+            "elapsedMs": 13608.089,
+            "workingSetMib": 768.2
+          },
+          {
+            "completed": 64,
+            "elapsedMs": 14792.768,
+            "workingSetMib": 764.85
+          },
+          {
+            "completed": 80,
+            "elapsedMs": 16063.738,
+            "workingSetMib": 757.48
+          },
+          {
+            "completed": 96,
+            "elapsedMs": 17249.75,
+            "workingSetMib": 746.22
+          },
+          {
+            "completed": 112,
+            "elapsedMs": 19569.813,
+            "workingSetMib": 780.16
+          },
+          {
+            "completed": 128,
+            "elapsedMs": 20736.66,
+            "workingSetMib": 771.94
+          }
+        ],
+        "overlappingPhaseMilliseconds": {
+          "manifest-validation": 221.739,
+          "head-validation": 1570.642,
+          "history-union": 253.735,
+          "selection": 6.665,
+          "snapshot-diff-construction": 10461.454,
+          "static-analysis": 24700.624,
+          "reconciliation": 9220.623,
+          "allocation": 17.088,
+          "rendering": 154.689
+        },
+        "items": 128,
+        "semanticSha256": "14375414f944865367c138e957267a5193830482c5be86ac021c2c785e355402",
+        "reuse": [
+          "Repository-scoped portfolio reuse served 127 of 258 snapshot-analysis request(s) across 131 unique key(s), with 0 revisit miss(es); served 359970 of 480270 immutable file-analysis artifact request(s) across 120294 unique key(s), with 6 revisit miss(es); served 127 of 258 immutable-inventory request(s) across 131 unique object(s), with 0 revisit miss(es); built 3 full and 128 incremental inventories, including 128 from repository-level batch diffs, while retaining at most 2 full-tree root lineage(s); evicted 113 analysis entries and 0 inventory entries; 2 Git object reader(s) served 108314 blob request(s) over 60387 unique object(s) with 47927 cache hit(s), 0 eviction(s), and 19117786 byte(s) read from Git. At most 2 Git metadata reader(s) served 180015 length request(s) over 60003 unique object(s), with 60010 cache hit(s) and 87237 eviction(s). Exact fully analyzed seed stock was reused 2 time(s). Current file slots peaked at 60001 entries and 455239220 charged bytes per repository (a serialized-size proxy, not heap usage). At most 1 repository session(s) were active concurrently, with separate process-wide budgets of 8 Git tree read(s) and 24 independent common/semantic file-analysis and thread-safe estimation work item(s), and retention limits of 16 analyses, 8192 historical file-analysis artifacts plus 65536 current file slots under a 512-MiB serialized-size charge per repository, 10000 structurally shared inventories across 16 full-tree root lineages, and 64 MiB of blobs plus 16384 object-length entries per repository; repository batch output is capped at 64 MiB."
+        ],
+        "label": "final-candidate"
+      }
+    }
+  ]
+}

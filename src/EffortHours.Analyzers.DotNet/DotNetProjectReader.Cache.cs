@@ -47,6 +47,11 @@ internal sealed partial class DotNetProjectReader
             cancellationToken).ConfigureAwait(false);
     }
 
+    internal string? GetImmutableContextIdentity(RepositoryEvidence evidence, CancellationToken cancellationToken) =>
+        TryCreateCacheKey(GetFilePaths(evidence, IsProjectFile), GetFilePaths(evidence, IsSolutionFile),
+            GetFilePaths(evidence, path => Path.GetFileName(path).Equals(
+                "Directory.Packages.props", StringComparison.OrdinalIgnoreCase)), cancellationToken);
+
     private string? TryCreateCacheKey(
         IReadOnlyList<string> projectPaths,
         IReadOnlyList<string> solutionPaths,
