@@ -78,7 +78,11 @@ public sealed record ChangeAuthorPeriodManifestRepository
 
     public string? GitHubRepository { get; init; }
 
+    public string? ScopeRepository { get; init; }
+
     public IReadOnlyList<ChangeAuthorPeriodManifestHead> Heads { get; init; } = [];
+
+    public IReadOnlyList<ChangeRewriteEvent>? RewriteEvents { get; init; }
 }
 
 public sealed record ChangeAuthorPeriodManifestHead

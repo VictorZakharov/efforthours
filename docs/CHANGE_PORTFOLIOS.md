@@ -2,7 +2,7 @@
 
 ## Current boundary
 
-`change-portfolio/0.6.3` composes canonical Change estimates selected as repeated
+`change-portfolio/0.6.4` composes canonical Change estimates selected as repeated
 pull requests, a versioned multi-repository PR manifest, a bounded direct
 author-period, or a versioned multi-repository/multi-head author-period manifest.
 It remains experimental and has no empirical production validation.
@@ -455,9 +455,11 @@ reconciliation remains the only portfolio total in both modes.
 
 Non-additive summary rows expose direct-author/co-author counts, shared-match
 counts, head reachability, uniquely reachable counts, and heads with no unique
-selected commit. Zero rows are available when the overall manifest still selects
-at least one commit; an entirely empty selection continues to return the existing
-clear no-match error rather than inventing estimator metadata.
+selected commit. An entirely empty, complete manifest selection returns a valid zero portfolio
+and zero daily cells with the current estimator identity and baseline, without
+snapshot analysis. Missing objects and failed discovery remain incomplete and
+never become zero estimates. Declared rewrite support rows are charged and
+counted as selected evidence rows even when their period allocation is zero.
 
 ## Contracts and output
 
@@ -916,3 +918,25 @@ remaining normalization and reconciliation to overlap under the same four-worker
 bound. Larger or unproven edits keep ordinary overlap. Failure cancellation and
 canonical result order remain unchanged. Exact local, stock and capability reuse
 boundaries are defined in `CHANGE_ESTIMATION.md`.
+
+
+## Declared rewrite event attribution
+
+Portfolio 0.6.4 adds the optional, versioned `rewriteEvents` pairing described in
+[Rewrite event attribution](REWRITE_EVENT_ATTRIBUTION.md). It binds immutable
+before/after commits and their first-parent upstream bases. Joint reconciliation
+still determines the total. The pair budget preserves the original baseline first
+and dates only its retained remainder at the caller-declared event instant.
+Out-of-window pair members are bounded, identity-matched support evidence with
+zero allocation; this prevents charging the original feature again in an event-only
+period. Full-interval category and effort totals do not change. This does not
+establish actual labor or recover unobserved intermediate commits.
+
+Offline `--author-period-manifest --scope engineering` now uses the same effective
+engineering path admission as native reports, including repository overrides. A local locator may supply execution-only
+`scopeRepository: "owner/repository"` to select those overrides; provider locators
+already identify the repository. This identity binds the manifest/checkpoint
+digest but is absent from public report text. Comparison JSON exposes its digest and selected/admitted/scope-empty counts
+without implying provider discovery. Scope digest binds checkpoints and endpoint
+analysis as well as the source rows. Ordinary manifest execution remains offline;
+missing provider-located objects require the existing explicit acquisition opt-in.

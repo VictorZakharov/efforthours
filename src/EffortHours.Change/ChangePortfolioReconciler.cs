@@ -7,7 +7,7 @@ namespace EffortHours.Change;
 
 public sealed partial class ChangePortfolioReconciler
 {
-    public const string Version = "change-portfolio/0.6.3+change-seed/0.21.3+seed-rules/0.4.0";
+    public const string Version = "change-portfolio/0.6.4+change-seed/0.21.3+seed-rules/0.4.0";
 
     public static ChangePortfolioReport Reconcile(
         ChangePortfolioSelection selection,
@@ -26,6 +26,8 @@ public sealed partial class ChangePortfolioReconciler
         ValidateInputs(selection, candidates, profile);
         if (candidates.Any(candidate => candidate.FinalDeltaRejection is { } rejection && !rejection.IsValid()))
             throw new ArgumentException("Final-delta rejection metadata is invalid.", nameof(candidates));
+        if (independentDays && candidates.Any(candidate => candidate.Attribution.Rewrite is not null))
+            throw new ArgumentException("Declared rewrite events require joint reconciliation; use calendar-day buckets instead of independent-day.", nameof(independentDays));
         ChangePortfolioItemDraft[] drafts = [.. candidates
             .Select(ChangePortfolioIdentity.CreateDraft)];
         ChangePortfolioDailyNormalization? daily = independentDays
@@ -320,7 +322,15 @@ public sealed partial class ChangePortfolioReconciler
                 ? null
                 : RoundMoney(draft.AllocatedExpectedHours * rateCard.HourlyRate),
             Categories = draft.Candidate.Report.Categories,
-            Attribution = draft.Candidate.Attribution,
+            Attribution = draft.Candidate.Attribution with
+            {
+                Rewrite = draft.Candidate.Attribution.Rewrite is not { } rewrite ? null : rewrite with
+                {
+                    Treatment = rewrite.SupportOnly ? "evidence-support" :
+                        draft.Suppressed || draft.AllocatedExpectedHours == 0m ? "no-retained-increment" :
+                        rewrite.Role == "original" ? "original-contribution" : "retained-resolution-contribution",
+                },
+            },
             DuplicateOfItemId = draft.DuplicateOfItemId,
             ExactComposition = draft.ExactComposition,
             UncertaintyReasons = [.. draft.UncertaintyReasons.Order(StringComparer.Ordinal)],

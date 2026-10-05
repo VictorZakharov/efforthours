@@ -21,6 +21,7 @@ internal static partial class GitHubAuthorPeriodDiscoveryJson
         ExternalCommandResult result;
         string phase = failurePhase ?? FailurePhase(arguments);
         counters.AddQuery(phase);
+        using ProviderQueryCounters.RequestObservation observation = counters.ObserveRequest(arguments, phase);
         try
         {
             result = await commands.RunAsync(
@@ -39,6 +40,7 @@ internal static partial class GitHubAuthorPeriodDiscoveryJson
         if (result.ExitCode != 0 && emptyRepositoryIsEmpty && IsEmptyRepository(result))
         {
             counters.AddPages(1);
+            observation.Complete(1);
             return paginated ? "[[]]" : "{}";
         }
 
@@ -78,6 +80,7 @@ internal static partial class GitHubAuthorPeriodDiscoveryJson
                 }
 
                 counters.AddPages(document.RootElement.GetArrayLength());
+                observation.Complete(document.RootElement.GetArrayLength());
             }
             catch (JsonException exception)
             {
@@ -87,6 +90,7 @@ internal static partial class GitHubAuthorPeriodDiscoveryJson
         else
         {
             counters.AddPages(1);
+            observation.Complete(1);
         }
 
         return result.StandardOutput;
@@ -201,7 +205,7 @@ internal static partial class GitHubAuthorPeriodDiscoveryJson
         return identity;
     }
 
-    private static string OpaqueId(string prefix, string value)
+    internal static string OpaqueId(string prefix, string value)
     {
         string digest = Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(value)))
             .ToLowerInvariant();

@@ -5,7 +5,7 @@ using EffortHours.Contracts.V1;
 
 namespace EffortHours.Tests;
 
-public sealed class ChangeAuthorPeriodManifestContractTests
+public sealed partial class ChangeAuthorPeriodManifestContractTests
 {
     private static readonly DateTimeOffset Since =
         new(2026, 8, 3, 0, 0, 0, TimeSpan.Zero);

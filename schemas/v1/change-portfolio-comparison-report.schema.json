@@ -60,8 +60,8 @@
   "dependentRequired": {
     "asOf": ["discovery", "scopeProfile", "scopeSummary"],
     "discovery": ["asOf", "scopeProfile", "scopeSummary"],
-    "scopeProfile": ["asOf", "discovery", "scopeSummary"],
-    "scopeSummary": ["asOf", "discovery", "scopeProfile"]
+    "scopeProfile": ["scopeSummary"],
+    "scopeSummary": ["scopeProfile"]
   },
   "allOf": [
     {
@@ -160,6 +160,22 @@
       "required": ["metadataCacheStatus", "defaultHeadBatchCount", "defaultHeadQueryCount",
         "openPullRequestAccountQueryCount", "openPullRequestQueryCount", "fallbacks"],
       "properties": {
+        "repositoryObservations": {
+          "type": "array", "maxItems": 768,
+          "items": {
+            "type": "object",
+            "required": ["repositoryDigest", "phase", "state", "queryCount", "pageCount", "elapsedMilliseconds"],
+            "properties": {
+              "repositoryDigest": { "$ref": "#/$defs/digest" },
+              "phase": { "type": "string", "minLength": 1 },
+              "state": { "enum": ["complete", "incomplete"] },
+              "queryCount": { "type": "integer", "minimum": 1 },
+              "pageCount": { "type": "integer", "minimum": 0 },
+              "elapsedMilliseconds": { "type": "number", "minimum": 0 }
+            },
+            "additionalProperties": false
+          }
+        },
         "metadataCacheStatus": { "enum": ["not-observed", "missing", "invalid-size", "invalid-content",
           "unsupported-protocol", "identity-mismatch", "expired", "hit", "hit-owner-only"] },
         "identityResolution": { "enum": ["not-observed", "direct-login", "explicit-login",
@@ -635,7 +651,8 @@
             "managed-cache-access-denied",
             "engineering-scope-load-failed",
             "github-provider-request-failed",
-            "github-contributor-identity-unresolved"
+            "github-contributor-identity-unresolved",
+            "github-discovery-budget-exceeded"
           ]
         },
         "phase": {
@@ -663,7 +680,8 @@
             "grant-managed-cache-access",
             "repair-engineering-scope-profile",
             "inspect-github-cli-health",
-            "specify-provider-login"
+            "specify-provider-login",
+            "narrow-scope-or-use-pinned-manifest"
           ]
         },
         "suggestedApprovalPrefix": {

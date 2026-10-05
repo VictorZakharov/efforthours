@@ -102,8 +102,8 @@ public sealed partial class GitPortfolioPlanner
             {
                 Code = "FB5326",
                 Severity = DiagnosticSeverity.Information,
-                Message = $"Repository '{repository.Manifest.Id}' retained {history.Count} exact in-window " +
-                    $"identity candidate(s) in {candidateResult.Resources.SelectionChunkCount} logical selection " +
+                Message = $"Repository '{repository.Manifest.Id}' retained {history.Count} exact identity " +
+                    $"candidate(s), including declared rewrite support, in {candidateResult.Resources.SelectionChunkCount} logical selection " +
                     $"chunk(s), charging {candidateResult.Resources.ChargedLedgerBytes} of " +
                     $"{candidateResult.Resources.MaximumLedgerBytes} bounded ledger bytes. The " +
                     $"{candidateResult.Resources.EmergencyMaximumCandidates}-candidate ceiling is a " +
@@ -159,6 +159,7 @@ public sealed partial class GitPortfolioPlanner
                     Attribution = new ChangePortfolioAttribution
                     {
                         Kind = kind,
+                        Rewrite = commit.Rewrite,
                         SelectedTimestamp = commit.SelectedTimestamp.ToUniversalTime(),
                         MergeCommit = commit.Metadata.ParentObjectIds.Count > 1,
                         ParentCount = commit.Metadata.ParentObjectIds.Count,

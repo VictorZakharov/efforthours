@@ -70,6 +70,7 @@
       "required": ["id", "heads"],
       "properties": {
         "id": { "$ref": "#/$defs/publicId" },
+        "scopeRepository": { "type": "string", "minLength": 3, "maxLength": 512, "pattern": "^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$" },
         "repositoryPath": { "type": "string", "minLength": 1, "maxLength": 4096 },
         "gitHubRepository": {
           "type": "string",
@@ -77,6 +78,7 @@
           "maxLength": 512,
           "pattern": "^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$"
         },
+        "rewriteEvents": { "type": "array", "minItems": 1, "maxItems": 32, "items": { "$ref": "#/$defs/rewriteEvent" } },
         "heads": {
           "type": "array",
           "minItems": 1,
@@ -88,6 +90,19 @@
         { "required": ["repositoryPath"] },
         { "required": ["gitHubRepository"] }
       ],
+      "additionalProperties": false
+    },
+    "rewriteEvent": {
+      "type": "object",
+      "required": ["attributionPolicy", "originalObjectId", "rewrittenObjectId", "oldBaseObjectId", "newBaseObjectId"],
+      "properties": {
+        "attributionPolicy": { "const": "declared-rewrite-event/1.0.0" },
+        "originalObjectId": { "type": "string", "pattern": "^[0-9a-f]{40}([0-9a-f]{24})?$" },
+        "rewrittenObjectId": { "type": "string", "pattern": "^[0-9a-f]{40}([0-9a-f]{24})?$" },
+        "oldBaseObjectId": { "type": "string", "pattern": "^[0-9a-f]{40}([0-9a-f]{24})?$" },
+        "newBaseObjectId": { "type": "string", "pattern": "^[0-9a-f]{40}([0-9a-f]{24})?$" },
+        "eventTimestamp": { "type": "string", "format": "date-time" }
+      },
       "additionalProperties": false
     },
     "head": {

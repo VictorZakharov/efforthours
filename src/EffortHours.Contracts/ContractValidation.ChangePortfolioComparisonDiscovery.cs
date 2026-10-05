@@ -9,6 +9,13 @@ public static partial class ContractValidation
         List<string> errors)
     {
         bool hasProviderMetadata = report.AsOf is not null;
+        bool offlineScope = !hasProviderMetadata && report.Discovery is null &&
+            report.ScopeProfile is not null && report.ScopeSummary is not null;
+        if (offlineScope)
+        {
+            ValidateEngineeringScope(report, errors);
+            return;
+        }
         if (new[]
             {
                 report.Discovery is not null,
@@ -87,6 +94,18 @@ public static partial class ContractValidation
 
         ValidateProviderDiagnostics(discovery, errors);
 
+        ValidateEngineeringScope(report, errors);
+
+        if (report.Status == ChangePortfolioComparisonStatus.Complete && !discovery.Complete)
+        {
+            errors.Add("A complete comparison requires complete host discovery.");
+        }
+    }
+
+    private static void ValidateEngineeringScope(
+        ChangePortfolioComparisonReport report,
+        List<string> errors)
+    {
         ChangePortfolioScopeProfile profile = report.ScopeProfile!;
         if (profile.Id != "engineering" ||
             string.IsNullOrWhiteSpace(profile.Version) ||
@@ -111,9 +130,6 @@ public static partial class ContractValidation
             errors.Add("The provider-assisted scope summary counts are inconsistent.");
         }
 
-        if (report.Status == ChangePortfolioComparisonStatus.Complete && !discovery.Complete)
-        {
-            errors.Add("A complete comparison requires complete host discovery.");
-        }
     }
+
 }

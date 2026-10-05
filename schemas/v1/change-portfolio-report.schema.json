@@ -234,10 +234,26 @@
       },
       "additionalProperties": false
     },
+    "rewriteAttribution": {
+      "type": "object",
+      "required": ["evidence", "originalAuthorTimestamp", "rewrittenCommitterTimestamp", "role", "supportOnly", "basis", "confidence", "treatment"],
+      "properties": {
+        "evidence": { "$ref": "urn:eh:schema:v1:change-author-period-manifest#/$defs/rewriteEvent" },
+        "originalAuthorTimestamp": { "type": "string", "format": "date-time" },
+        "rewrittenCommitterTimestamp": { "type": "string", "format": "date-time" },
+        "role": { "enum": ["original", "rewritten"] },
+        "supportOnly": { "type": "boolean" },
+        "basis": { "const": "caller-declared-immutable-pair" },
+        "confidence": { "const": "declared-not-verified-workday" },
+        "treatment": { "enum": ["evidence-support", "no-retained-increment", "original-contribution", "retained-resolution-contribution"] }
+      },
+      "additionalProperties": false
+    },
     "attribution": {
       "type": "object",
       "required": ["kind", "mergeCommit", "parentCount", "ambiguityReasons"],
       "properties": {
+        "rewrite": { "$ref": "#/$defs/rewriteAttribution" },
         "kind": { "enum": ["pull-request", "direct-author", "coauthor"] },
         "selectedTimestamp": { "type": "string", "format": "date-time" },
         "mergeCommit": { "type": "boolean" },

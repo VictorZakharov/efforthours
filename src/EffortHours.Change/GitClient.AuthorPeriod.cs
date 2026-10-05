@@ -129,7 +129,8 @@ public sealed partial class GitClient
             DateTimeOffset timestamp = _query.DateField == ChangePortfolioDateField.Author
                 ? commit.AuthorTimestamp
                 : commit.CommitterTimestamp;
-            if (timestamp < _query.SinceInclusive || timestamp >= _query.UntilExclusive)
+            if ((timestamp < _query.SinceInclusive || timestamp >= _query.UntilExclusive) &&
+                !_query.RewriteObjectIds.Contains(commit.ObjectId))
             {
                 return;
             }

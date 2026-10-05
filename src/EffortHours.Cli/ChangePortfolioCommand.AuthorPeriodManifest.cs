@@ -21,9 +21,19 @@ internal sealed partial class ChangePortfolioCommand
                     options.FetchMissing,
                     executionTelemetry,
                     cancellationToken).ConfigureAwait(false);
+        EngineeringScopeProfile? scope = options.Scope == "engineering"
+            ? EngineeringScopeProfile.Load() : null;
+        Dictionary<string, ChangePathAdmission>? admissions = scope is null ? null : plan.Manifest.Repositories.ToDictionary(
+            repository => repository.Id,
+            repository => scope.CreateAdmission(repository.ScopeRepository ?? repository.GitHubRepository ?? repository.Id),
+            StringComparer.Ordinal);
+        GitChangePlan[] plans = [.. plan.Items.Select(item => item.Plan with
+        {
+            PathAdmission = admissions?.GetValueOrDefault(item.RepositoryId),
+        })];
         ChangePortfolioEstimateBatch estimate =
             await _changeEstimator.EstimatePortfolioCandidatesWithStatisticsAsync(
-                [.. plan.Items.Select(item => item.Plan)],
+                plans,
                 options.Profile,
                 plan.ExecutionTelemetry,
                 cancellationToken).ConfigureAwait(false);
@@ -41,12 +51,36 @@ internal sealed partial class ChangePortfolioCommand
             });
         }
 
-        ChangePortfolioPreparedCandidates prepared = await _changeEstimator.PreparePortfolioFinalDeltasAsync(
-            plan.Selection, candidates, [.. plan.Items.Select(item => item.Plan)], options.Profile,
-            estimate.Statistics, telemetry: executionTelemetry, cancellationToken: cancellationToken)
-            .ConfigureAwait(false);
-        candidates = [.. prepared.Candidates];
-        estimate = estimate with { Statistics = prepared.Statistics };
+        if (scope is null)
+        {
+            ChangePortfolioPreparedCandidates prepared = await _changeEstimator.PreparePortfolioFinalDeltasAsync(
+                plan.Selection, candidates, plans, options.Profile, estimate.Statistics,
+                telemetry: executionTelemetry, cancellationToken: cancellationToken).ConfigureAwait(false);
+            candidates = [.. prepared.Candidates];
+            estimate = estimate with { Statistics = prepared.Statistics };
+        }
+        else
+        {
+            List<ChangePortfolioCandidate> preparedCandidates = [];
+            Dictionary<string, int[]> indicesByRepository = candidates.Select((candidate, index) =>
+                (candidate.RepositoryId, Index: index)).GroupBy(value => value.RepositoryId, StringComparer.Ordinal)
+                .ToDictionary(group => group.Key, group => group.Select(value => value.Index).ToArray(), StringComparer.Ordinal);
+            ChangePortfolioExecutionStatistics statistics = estimate.Statistics;
+            foreach (ChangeAuthorPeriodManifestRepository repository in plan.Manifest.Repositories)
+            {
+                if (!indicesByRepository.TryGetValue(repository.Id, out int[]? indices)) continue;
+                ChangePortfolioPreparedCandidates prepared = await _changeEstimator.PreparePortfolioFinalDeltasAsync(
+                    plan.Selection, [.. indices.Select(index => candidates[index])], [.. indices.Select(index => plans[index])],
+                    options.Profile, statistics,
+                    pathAdmission: admissions!.GetValueOrDefault(repository.Id),
+                    telemetry: executionTelemetry, cancellationToken: cancellationToken).ConfigureAwait(false);
+                preparedCandidates.AddRange(prepared.Candidates);
+                statistics = prepared.Statistics;
+            }
+            candidates = preparedCandidates;
+            estimate = estimate with { Statistics = statistics };
+
+        }
 
         return new PortfolioCandidates(
             plan.Selection,

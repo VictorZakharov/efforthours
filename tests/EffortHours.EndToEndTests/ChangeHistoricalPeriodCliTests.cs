@@ -9,8 +9,10 @@ namespace EffortHours.EndToEndTests;
 
 public sealed partial class ChangePortfolioCliTests : ChangeCliTestSupport
 {
-    [Fact]
-    public async Task HistoricalPeriodRecoversJanuaryAuthorDateFromMergedPrAndReusesEvidence()
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public async Task HistoricalPeriodRecoversJanuaryAuthorDateFromMergedPrAndReusesEvidence(bool defaultHistory)
     {
         string workspace = Path.Combine(Path.GetTempPath(), "efforthours-historical-e2e", Guid.NewGuid().ToString("N"));
         Directory.CreateDirectory(workspace);
@@ -26,8 +28,9 @@ public sealed partial class ChangePortfolioCliTests : ChangeCliTestSupport
             string retainedHead = await HistoricalCommitAsync(repository, "review", "2026-03-16T12:00:00Z", "2026-03-16T12:00:00Z");
             await repository.GitAsync("update-ref", "refs/pull/7/head", retainedHead);
             await repository.GitAsync("switch", "main");
+            if (defaultHistory) await repository.GitAsync("merge", "--ff-only", implementation.Trim());
             string statusBefore = await repository.GitAsync("status", "--porcelain=v1");
-            HistoricalProviderRunner runner = new(baseline, implementation, retainedHead);
+            HistoricalProviderRunner runner = new(baseline, implementation, retainedHead, defaultHistory ? implementation : null);
             GitHubAuthorPeriodDiscovery discovery = new(runner,
                 new GitHubRepositoryCache(new ExternalCommandRunner(), new GitClient(), Path.Combine(workspace, "cache"),
                     _ => repository.RootPath), new GitHubProviderMetadataCache(Path.Combine(workspace, "metadata")));
@@ -51,6 +54,7 @@ public sealed partial class ChangePortfolioCliTests : ChangeCliTestSupport
             Assert.Equal(implementation, Assert.Single(report.SourcePortfolio!.Items).Selection.Head.ObjectId);
             Assert.Equal(1, report.Discovery!.HistoricalPullRequestHeadCount);
             Assert.Equal(0, report.Discovery.OpenPullRequestHeadCount);
+            Assert.Equal(defaultHistory ? 1 : 0, report.Discovery.DefaultHeadCount);
             Assert.Equal("measured-retained-change", report.NativePeriod!.DailyEvidence![0].State);
             Assert.All(report.NativePeriod.DailyEvidence.Skip(1), day => Assert.Equal("no-retained-change", day.State));
             Assert.Equal(40m, report.Series.Single(series => series.Kind == ChangePortfolioSeriesKind.Portfolio).TotalCapacityHours);
@@ -58,14 +62,30 @@ public sealed partial class ChangePortfolioCliTests : ChangeCliTestSupport
             Assert.DoesNotContain(repository.RootPath, json, StringComparison.OrdinalIgnoreCase);
             Assert.Equal(statusBefore, await repository.GitAsync("status", "--porcelain=v1"));
             Assert.Contains(runner.Calls, call => call.Contains("states:[OPEN,CLOSED,MERGED]", StringComparison.Ordinal));
-            Assert.All(runner.Calls.Where(call => call.Contains("commits?sha=", StringComparison.Ordinal)),
-                call => Assert.DoesNotContain("since=", call, StringComparison.Ordinal));
+            Assert.All(runner.Calls.Where(call => call.Contains("commits?sha=main", StringComparison.Ordinal)),
+                call =>
+                {
+                    Assert.DoesNotContain("since=", call, StringComparison.Ordinal);
+                    Assert.DoesNotContain("until=", call, StringComparison.Ordinal);
+                    Assert.DoesNotContain("--paginate", call, StringComparison.Ordinal);
+                    Assert.Contains("per_page=1", call, StringComparison.Ordinal);
+                });
 
             Assert.Equal(0, await command.ExecuteAsync(arguments, stdout, stderr, CancellationToken.None));
             ChangePortfolioComparisonReport warm = ContractJson.Deserialize<ChangePortfolioComparisonReport>(
                 await File.ReadAllTextAsync(reportPath))!;
             Assert.Equal(report.Verification.SemanticDigest, warm.Verification.SemanticDigest);
             Assert.Equal(1, warm.Execution.Checkpoint.HitCount);
+            Assert.Single(runner.Calls, call => call.Contains("&author=selected", StringComparison.Ordinal));
+            repository.WriteText("Later.cs", "public class Later { public bool Added => true; }");
+            string later = (await HistoricalCommitAsync(repository, "later", "2026-03-30T12:00:00Z", "2026-03-30T12:00:00Z")).Trim();
+            runner.CurrentDefaultHead = later;
+            Assert.Equal(0, await command.ExecuteAsync(arguments, stdout, stderr, CancellationToken.None));
+            ChangePortfolioComparisonReport changedHead = ContractJson.Deserialize<ChangePortfolioComparisonReport>(
+                await File.ReadAllTextAsync(reportPath))!;
+            Assert.Equal(report.SourcePortfolio.TotalEffort, changedHead.SourcePortfolio!.TotalEffort);
+            Assert.Equal(2, runner.Calls.Count(call => call.Contains("&author=selected", StringComparison.Ordinal)));
+            Assert.DoesNotContain("selected@example.invalid", ContractJson.Serialize(changedHead), StringComparison.Ordinal);
         }
         finally
         {
@@ -73,15 +93,16 @@ public sealed partial class ChangePortfolioCliTests : ChangeCliTestSupport
         }
     }
 
-    private sealed class HistoricalProviderRunner(string baseline, string implementation, string head) : IExternalCommandRunner
+    private sealed class HistoricalProviderRunner(string baseline, string implementation, string head, string? defaultHead = null, int repositoryCount = 1, bool crossRepositoryAliases = false) : IExternalCommandRunner
     {
-        public List<string> Calls { get; } = [];
+        public System.Collections.Concurrent.ConcurrentQueue<string> Calls { get; } = new();
+        public string CurrentDefaultHead { get; set; } = defaultHead ?? baseline;
 
         public Task<ExternalCommandResult> RunAsync(string executable, string workingDirectory,
             IReadOnlyList<string> arguments, CancellationToken cancellationToken, bool requireSuccess = true)
         {
             string call = string.Join(' ', arguments);
-            Calls.Add(call);
+            Calls.Enqueue(call);
             object response;
             if (call == "api user")
             {
@@ -93,17 +114,26 @@ public sealed partial class ChangePortfolioCliTests : ChangeCliTestSupport
             }
             else if (call.Contains("orgs/example/repos", StringComparison.Ordinal))
             {
-                response = new[] { new[] { new { id = 42, full_name = "example/repository", default_branch = "main" } } };
+                response = new[] { Enumerable.Range(0, repositoryCount).Select(index => new
+                {
+                    id = 42 + index, full_name = index == 0 ? "example/repository" : "example/repository-" + index.ToString(CultureInfo.InvariantCulture),
+                    default_branch = "main",
+                }).ToArray() };
+            }
+            else if (call.Contains("&author=selected", StringComparison.Ordinal))
+            {
+                response = new[] { new[] { Commit(implementation, [baseline], "2026-01-19T17:35:17Z", "2026-03-13T11:47:19Z",
+                    email: crossRepositoryAliases && !call.Contains("repository-1/", StringComparison.Ordinal) ? "alternate@example.invalid" : "selected@example.invalid") } };
             }
             else if (call.Contains("commits?sha=main", StringComparison.Ordinal))
             {
-                response = new[] { new[] { Commit(baseline, [], "2025-01-01T12:00:00Z", "2025-01-01T12:00:00Z") } };
+                response = new[] { new[] { Commit(CurrentDefaultHead, [], "2025-01-01T12:00:00Z", "2025-01-01T12:00:00Z", login: crossRepositoryAliases ? "unrelated" : "selected", email: crossRepositoryAliases ? "unrelated@example.invalid" : "selected@example.invalid") } };
             }
             else if (call.Contains("graphql", StringComparison.Ordinal))
             {
-                response = new[] { new { data = new { user = new { pullRequests = new { totalCount = 1,
-                    nodes = new[] { new { number = 7, state = "MERGED", author = new { login = "selected" },
-                        repository = new { nameWithOwner = "example/repository" } } },
+                response = new[] { new { data = new { user = new { pullRequests = new { totalCount = crossRepositoryAliases ? 0 : 1,
+                    nodes = Enumerable.Repeat(new { number = 7, state = "MERGED", author = new { login = "selected" },
+                        repository = new { nameWithOwner = "example/repository" } }, crossRepositoryAliases ? 0 : 1).ToArray(),
                     pageInfo = new { hasNextPage = false, endCursor = (string?)null } } } } } };
             }
             else if (call.Contains("pulls/7/commits", StringComparison.Ordinal))
@@ -123,14 +153,14 @@ public sealed partial class ChangePortfolioCliTests : ChangeCliTestSupport
             return Task.FromResult(new ExternalCommandResult(0, JsonSerializer.Serialize(response), string.Empty));
         }
 
-        private static object Commit(string sha, string[] parents, string authorDate, string committerDate) => new
+        private static object Commit(string sha, string[] parents, string authorDate, string committerDate, string login = "selected", string email = "selected@example.invalid") => new
         {
             sha,
             parents = parents.Select(parent => new { sha = parent }),
-            author = new { login = "selected" },
+            author = new { login },
             commit = new
             {
-                author = new { name = "Selected Contributor", email = "selected@example.invalid", date = authorDate },
+                author = new { name = "Selected Contributor", email, date = authorDate },
                 committer = new { name = "Integrator", email = "integrator@example.invalid", date = committerDate },
                 message = "synthetic"
             },

@@ -3,7 +3,7 @@ using EffortHours.Contracts.V1;
 
 namespace EffortHours.Change;
 
-internal static class ChangePortfolioGroupNormalizer
+internal static partial class ChangePortfolioGroupNormalizer
 {
     private static readonly HashSet<EffortCategory> SharedCategories =
     [
@@ -87,6 +87,14 @@ internal static class ChangePortfolioGroupNormalizer
             SharedCategories,
             normalized.Expected);
 
+        AllocateRewritePairs(drafts);
+        if (drafts.Any(draft => draft.Candidate.Attribution.Rewrite?.SupportOnly == true))
+        {
+            categories = RemoveRewriteSupport(drafts, categories, normalized.Expected);
+            normalized = ContractValidation.Sum(categories.Select(category => category.Hours));
+            groupUncertainty.Add("Out-of-window immutable rewrite support is reconciled jointly but contributes no period effort; interval bounds use the same proportional allocation as the comparison ledger.");
+        }
+
         List<ChangePortfolioAdjustmentCause> causes = BuildCauses(
             drafts,
             active,
@@ -99,6 +107,10 @@ internal static class ChangePortfolioGroupNormalizer
                 "Exact selected final effects are re-estimated through the canonical endpoint Change engine; discarded intermediate expansion is excluded.",
                 [.. drafts.Select(draft => draft.Id).Order(StringComparer.Ordinal)], finalDelta.Report.Evidence.Paths.Count)];
         }
+        if (drafts.Any(draft => draft.Candidate.Attribution.Rewrite?.SupportOnly == true))
+            causes = [new ChangePortfolioAdjustmentCause(ChangePortfolioAdjustmentKind.Interaction, 1m,
+                "Declared rewrite pairs are reconciled together; out-of-window baseline or resolution contributions are retained as evidence only and excluded from this period.",
+                [.. drafts.Select(draft => draft.Id).Order(StringComparer.Ordinal)], 0)];
         IReadOnlyList<ChangePortfolioAdjustment> adjustments = ChangePortfolioAdjustmentBuilder.Build(
             repositoryId,
             isolated,

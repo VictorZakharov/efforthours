@@ -23,7 +23,8 @@ internal sealed partial class ChangePortfolioCommand
             ChangePortfolioExecutionPhases.ScopeLoading;
         EffortHoursAgentAction action = CreateAgentAction(exception, phase, options);
         phase = action.Phase;
-        string message = SafeFailureMessage(action.FailureCode);
+        string message = exception is GitHubProviderException { Action.FailureCode: "github-discovery-budget-exceeded" }
+            ? exception.Message : SafeFailureMessage(action.FailureCode);
         string category = action.FailureCode;
         ChangePortfolioComparisonFailure failure = new()
         {
@@ -49,7 +50,8 @@ internal sealed partial class ChangePortfolioCommand
                 options.Period!.Value,
                 options.Breakdown,
                 options.CapacityHoursPerDay!.Value);
-        ChangePortfolioHostDiscovery discovery = new()
+        ChangePortfolioHostDiscovery discovery = (GitHubAuthorPeriodDiscovery.FailureDiscovery(exception) ??
+            new ChangePortfolioHostDiscovery { ScopeDigest = "", IdentitySources = "requested-provider-identity" }) with
         {
             ScopeDigest = ChangePortfolioComparisonIdentity.ComputeTextDigest(
                 selection.AuthorPeriodManifest!.ManifestDigest + "\n" + profile.Digest + "\n" + phase),
