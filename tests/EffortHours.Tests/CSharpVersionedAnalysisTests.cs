@@ -7,6 +7,26 @@ namespace EffortHours.Tests;
 
 public sealed class CSharpVersionedAnalysisTests
 {
+    [Theory]
+    [InlineData("public class C { public int M() => 100; }", "public class C { public int M() => 101; }", true)]
+    [InlineData("public class C { public int M100() => 0; }", "public class C { public int M101() => 0; }", true)]
+    [InlineData("public class C { public int M() => 100; }", "public class C { public int M() => 1000; }", false)]
+    [InlineData("public class C { public int M() => 100; ", "public class C { public int M() => 101; ", false)]
+    [InlineData("public class C { public string M() => \"100\"; }", "public class C { public string M() => \"101\"; }", true)]
+    [InlineData("public class C { [Fact] public int M() => 100; }", "public class C { [Fake] public int M() => 100; }", false)]
+    public void EquivalentLocalSchedulingHintRequiresUnchangedMetricsCleanSyntaxAndSize(
+        string before, string after, bool expected) =>
+        Assert.Equal(expected, CSharpEvidenceLineage.IsSmallEquivalentLocalEdit(
+            Encoding.UTF8.GetBytes(before), Encoding.UTF8.GetBytes(after), "C.cs", CancellationToken.None));
+
+    [Fact]
+    public void EquivalentLocalSchedulingHintRejectsOversizedInput()
+    {
+        byte[] before = Encoding.UTF8.GetBytes(new string(' ', 64 * 1024) + "class C { int x = 1; }");
+        byte[] after = Encoding.UTF8.GetBytes(new string(' ', 64 * 1024) + "class C { int x = 2; }");
+        Assert.False(CSharpEvidenceLineage.IsSmallEquivalentLocalEdit(before, after, "C.cs", CancellationToken.None));
+    }
+
     [Fact]
     public async Task NumericLiteralEditAdvancesEvidenceWithoutAnotherFullAnalysis()
     {

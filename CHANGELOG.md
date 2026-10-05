@@ -6,6 +6,34 @@ may still change public contracts with explicit documentation.
 
 ## Unreleased
 
+## 0.10.0-alpha.33 - 2026-10-05
+
+### Fixed
+
+- Reduce repeated complete-context analysis on large Git histories with bounded
+  current-file reuse for common inspection, C#, JavaScript/TypeScript, SQL, and
+  external frontend assets. Replace obsolete file versions, discard completed
+  classification samples, and keep exact content/context invalidation.
+- Avoid unchanged-file length lookups and redundant full path masks. Reconstruct
+  capability evidence once per shared partition list instead of repeatedly
+  enumerating the same population. Preserve complete normalization, seed hours,
+  ownership/duplicate rules, final-effect proofs, and existing schemas.
+- Allow consecutive changes to share the existing bounded worker pipeline while
+  retaining ordered reuse for proven small C#/TypeScript/SQL edits with unchanged
+  common and local analyzer facts under the same immutable context. Reuse exact
+  seed stock and snapshot-owned capability catalogs; overlap reconciliation after
+  evidence is ready. Preserve full
+  analysis for every unproven edit.
+
+### Performance boundary
+
+- Frozen synthetic comparisons against alpha.29: 2,221 C# changes take 43.0
+  seconds versus 23.0 seconds; 128 mixed-language changes take 30.5 seconds versus
+  6.2 seconds. Both retain identical semantic output to the completed full-analysis
+  reference. These are narrow checkpoints, not private-repository latency guarantees.
+- Estimates remain experimental and uncalibrated. No seed rates, admission policy
+  or precision claims change; a same-input developer retest remains necessary.
+
 ## 0.10.0-alpha.32 - 2026-10-03
 
 ### Fixed

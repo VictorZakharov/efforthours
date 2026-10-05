@@ -30,7 +30,8 @@ internal sealed partial class GitSnapshotSession : IAsyncDisposable
         new(StringComparer.Ordinal);
     private readonly HashSet<string> _seenInventoryObjects = new(StringComparer.Ordinal);
     private readonly Func<string, string, CancellationToken, Task<IChangeSnapshot>>? _snapshotFactory;
-    private readonly RepositoryAnalysisArtifactCache _analysisArtifactCache = new();
+    private readonly RepositoryAnalysisArtifactCache _analysisArtifactCache =
+        new(workingSet: new RepositoryArtifactWorkingSet());
     private readonly RepositoryVersionedAnalysisCache _versionedAnalysisCache = new();
     private readonly Lock _gate = new();
     private GitBatchObjectReader? _objectReader;
@@ -245,6 +246,8 @@ internal sealed partial class GitSnapshotSession : IAsyncDisposable
                 AnalysisArtifactRevisitMisses = artifacts.RevisitMisses,
                 AnalysisArtifactEvictions = artifacts.Evictions,
                 PeakRetainedAnalysisArtifacts = artifacts.PeakEntries,
+                PeakCurrentArtifactSlots = artifacts.WorkingSet?.PeakEntries ?? 0,
+                PeakCurrentArtifactChargedBytes = artifacts.WorkingSet?.PeakChargedBytes ?? 0,
                 InventoryRequests = _inventoryRequests,
                 InventoryHits = _inventoryHits,
                 UniqueInventoryObjects = _seenInventoryObjects.Count,

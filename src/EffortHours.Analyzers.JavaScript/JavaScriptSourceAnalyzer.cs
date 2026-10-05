@@ -6,7 +6,7 @@ using EffortHours.Contracts.V1;
 
 namespace EffortHours.Analyzers.JavaScript;
 
-internal sealed class JavaScriptSourceAnalyzer(RepositoryTextReader textReader)
+internal sealed class JavaScriptSourceAnalyzer(RepositoryTextReader textReader, string? immutableContext = null)
 {
     private const long MaximumSourceBytes = 8 * 1024 * 1024;
 
@@ -20,11 +20,7 @@ internal sealed class JavaScriptSourceAnalyzer(RepositoryTextReader textReader)
         CancellationToken cancellationToken)
     {
         string path = fileFact.Scope;
-        string? expectedSha256 = JavaScriptEvidence.FindTagValue(fileFact.Tags, "sha256:");
-        string? artifactKey = expectedSha256 is null
-            ? null
-            : $"javascript-source/{JavaScriptEvidence.AnalyzerVersion}/{expectedSha256}/" +
-                $"{path}/{PackageIdentity(package)}";
+        string? artifactKey = ArtifactKey(fileFact, package);
         RepositoryAnalysisArtifactCache? artifactCache = _textReader.AnalysisArtifactCache;
         if (artifactKey is not null && artifactCache is not null)
         {
@@ -34,13 +30,32 @@ internal sealed class JavaScriptSourceAnalyzer(RepositoryTextReader textReader)
                     fileFact,
                     package,
                     itemCancellationToken),
-                cancellationToken).ConfigureAwait(false);
+                cancellationToken, "javascript-source:" + path).ConfigureAwait(false);
         }
 
         return await AnalyzeUncachedAsync(
             fileFact,
             package,
             cancellationToken).ConfigureAwait(false);
+    }
+
+    internal bool TryGetCompleted(EvidenceFact file, JavaScriptPackageModel? package,
+        out JavaScriptFileAnalysis analysis)
+    {
+        string? key = ArtifactKey(file, package);
+        analysis = null!;
+        return key is not null && _textReader.AnalysisArtifactCache is { } cache &&
+            cache.TryGetCompleted(key, "javascript-source:" + file.Scope, out analysis);
+    }
+
+    private string? ArtifactKey(EvidenceFact fileFact, JavaScriptPackageModel? package)
+    {
+        string path = fileFact.Scope;
+        string? expectedSha256 = JavaScriptEvidence.FindTagValue(fileFact.Tags, "sha256:");
+        return expectedSha256 is null
+            ? null
+            : $"javascript-source/{JavaScriptEvidence.AnalyzerVersion}/{expectedSha256}/" +
+                $"{path}/{PackageIdentity(package)}/test:{fileFact.Tags.Contains("classification:test", StringComparer.Ordinal)}";
     }
 
     private async Task<JavaScriptFileAnalysis> AnalyzeUncachedAsync(
@@ -106,11 +121,9 @@ internal sealed class JavaScriptSourceAnalyzer(RepositoryTextReader textReader)
                 syntax.ParseErrorLine));
         }
 
-        return new JavaScriptFileAnalysis(
-            syntax.Metrics,
-            facts,
-            diagnostics,
-            angularComponents);
+        JavaScriptFileAnalysis result = new(syntax.Metrics, facts, diagnostics, angularComponents);
+        await _textReader.StoreLocalLineageAsync(fileFact, immutableContext, result, cancellationToken).ConfigureAwait(false);
+        return result;
     }
 
     private string PackageIdentity(JavaScriptPackageModel? package)

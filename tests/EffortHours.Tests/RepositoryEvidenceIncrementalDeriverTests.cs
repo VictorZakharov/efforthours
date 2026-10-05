@@ -9,7 +9,7 @@ using EffortHours.Estimation;
 
 namespace EffortHours.Tests;
 
-public sealed class RepositoryEvidenceIncrementalDeriverTests
+public sealed partial class RepositoryEvidenceIncrementalDeriverTests
 {
     private const string PathName = "src/Example.cs";
 
@@ -96,12 +96,15 @@ public sealed class RepositoryEvidenceIncrementalDeriverTests
     [InlineData("syntax")]
     public async Task UnsafeOrEvidenceChangingEditUsesFullAnalysisFallback(string scenario)
     {
-        string before = scenario == "syntax"
-            ? "public sealed class Example { public int First() => 100; "
-            : "public sealed class Example { public int First() => 100; }";
+        string before = scenario switch
+        {
+            "syntax" => "public sealed class Example { public int First() => 100; ",
+            "structural" => "public sealed class Example { public int First(int x) => x > 0 ? 1 : 2; }",
+            _ => "public sealed class Example { public int First() => 100; }",
+        };
         string after = scenario switch
         {
-            "structural" => "public sealed class Example { public int Other() => 100; }",
+            "structural" => "public sealed class Example { public int First(int x) => x > 0 & 1 | 2; }",
             "length" => "public sealed class Example { public int First() => 1000; }",
             "syntax" => "public sealed class Example { public int First() => 101; ",
             _ => "public sealed class Example { public int First() => 101; }",

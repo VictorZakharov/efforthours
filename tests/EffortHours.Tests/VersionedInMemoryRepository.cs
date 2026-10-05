@@ -5,12 +5,29 @@ namespace EffortHours.Tests;
 internal sealed class VersionedInMemoryRepository :
     IRepositoryFileSystem,
     IRepositoryAnalysisArtifactCacheProvider,
-    IRepositoryVersionedAnalysisProvider
+    IRepositoryVersionedAnalysisProvider,
+    IRepositoryImmutableIdentityProvider
 {
     private readonly InMemoryRepository _inner = new();
     private readonly string _path;
     private readonly string _contentId;
     private readonly string? _previousContentId;
+    private readonly Dictionary<string, string>? _identities;
+    private readonly Dictionary<string, string>? _previousIdentities;
+
+    public VersionedInMemoryRepository(IReadOnlyDictionary<string, string> files,
+        IReadOnlyDictionary<string, string> previousFiles, RepositoryAnalysisArtifactCache analysisCache,
+        RepositoryVersionedAnalysisCache versionCache)
+        : this(files.First().Key, files.First().Value, "unused", null, analysisCache, versionCache)
+    {
+        static Dictionary<string, string> Ids(IReadOnlyDictionary<string, string> values) => values.ToDictionary(
+            item => item.Key, item => Convert.ToHexString(System.Security.Cryptography.SHA256.HashData(
+                System.Text.Encoding.UTF8.GetBytes(item.Value))), StringComparer.Ordinal);
+        _identities = Ids(files);
+        _previousIdentities = Ids(previousFiles);
+        foreach (var file in files) _inner.WriteText(file.Key, file.Value);
+        RepositoryPathSetIdentity = string.Join("|", files.Keys.Order(StringComparer.Ordinal));
+    }
 
     public VersionedInMemoryRepository(
         string path,
@@ -28,6 +45,15 @@ internal sealed class VersionedInMemoryRepository :
         _inner.WriteText(path, content);
     }
 
+    public string RepositoryPathSetIdentity { get; set; } = "one-file-path-set";
+
+    public bool TryGetFileContentId(string path, out string contentId)
+    {
+        if (_identities is not null) return _identities.TryGetValue(Normalize(path), out contentId!);
+        contentId = _contentId;
+        return FileExists(path);
+    }
+
     public string RootPath => _inner.RootPath;
 
     public RepositoryAnalysisArtifactCache? AnalysisArtifactCache { get; }
@@ -38,6 +64,13 @@ internal sealed class VersionedInMemoryRepository :
         string path,
         out RepositoryFileVersion previousVersion)
     {
+        if (_previousIdentities is not null)
+        {
+            if (_previousIdentities.TryGetValue(Normalize(path), out string? id))
+            { previousVersion = new RepositoryFileVersion(id); return true; }
+            previousVersion = default;
+            return false;
+        }
         if (_previousContentId is not null &&
             string.Equals(Normalize(path), Normalize(_path), StringComparison.OrdinalIgnoreCase))
         {
@@ -63,7 +96,7 @@ internal sealed class VersionedInMemoryRepository :
     public RepositoryFileMetadata GetFileMetadata(string path)
     {
         RepositoryFileMetadata metadata = _inner.GetFileMetadata(path);
-        return metadata with { ContentId = _contentId };
+        return metadata with { ContentId = TryGetFileContentId(path, out string id) ? id : null };
     }
 
     public Stream OpenRead(string path, int bufferSize) => _inner.OpenRead(path, bufferSize);

@@ -19,6 +19,7 @@ public sealed partial class ChangeEstimator
         SnapshotAnalysisCache snapshotAnalyses,
         string cacheNamespace,
         ChangePortfolioExecutionTelemetry? executionTelemetry,
+        Action? evidenceReady,
         CancellationToken cancellationToken)
     {
         ValidateSnapshotReference("base", selection.Base, baseSnapshot);
@@ -46,6 +47,8 @@ public sealed partial class ChangeEstimator
             analysisScope,
             executionTelemetry,
             cancellationToken).ConfigureAwait(false);
+        // Dependents need completed immutable evidence, not the remaining row reconciliation.
+        evidenceReady?.Invoke();
         RepositoryEvidence baseEvidence = baseAnalysis.Evidence;
         RepositoryEvidence headEvidence = headAnalysis.Evidence;
         EstimateReport baseEstimate = baseAnalysis.Estimate;
@@ -175,7 +178,9 @@ public sealed partial class ChangeEstimator
                 headEvidence,
                 baseEstimate,
                 headEstimate,
-                profile);
+                profile,
+                baseAnalysis.Catalog,
+                headAnalysis.Catalog);
         }
         evidence = evidence with { Diagnostics = [.. evidence.Diagnostics, .. workItems.Diagnostics] };
         return new PairEstimate(
@@ -209,13 +214,15 @@ public sealed partial class ChangeEstimator
             {
                 using (executionTelemetry?.Measure(ChangePortfolioExecutionPhases.StaticAnalysis))
                 {
-                    SnapshotAnalysis? derived = await TryDeriveSnapshotAnalysisAsync(
+                    SnapshotAnalysis? derived = _repositoryEstimator is SeedEstimator
+                        ? await TryDeriveSnapshotAnalysisAsync(
                         repositoryName,
                         snapshot,
                         snapshotAnalyses,
                         cacheNamespace,
                         analysisScope,
-                        itemCancellationToken).ConfigureAwait(false);
+                        itemCancellationToken).ConfigureAwait(false)
+                        : null;
                     if (derived is not null)
                     {
                         return derived;
@@ -226,10 +233,9 @@ public sealed partial class ChangeEstimator
                         analysisScope,
                         itemCancellationToken).ConfigureAwait(false);
                     evidence = RenameRepository(evidence, repositoryName);
-                    EstimateReport estimate = await EstimateRepositoryAsync(
-                        evidence,
-                        profile,
-                        itemCancellationToken).ConfigureAwait(false);
+                    EstimateReport estimate = TryReuseFullyAnalyzedStock(evidence, snapshot,
+                        snapshotAnalyses, cacheNamespace, analysisScope, itemCancellationToken) ??
+                        await EstimateRepositoryAsync(evidence, profile, itemCancellationToken).ConfigureAwait(false);
 
                     return new SnapshotAnalysis(evidence, estimate);
                 }
@@ -244,9 +250,7 @@ public sealed partial class ChangeEstimator
             cached.Evidence,
             snapshot,
             analysisScope);
-        return new SnapshotAnalysis(
-            evidence,
-            RefreshDerivedEstimate(cached.Estimate, evidence));
+        return cached with { Evidence = evidence, Estimate = RefreshDerivedEstimate(cached.Estimate, evidence) };
     }
 
     private async Task<EstimateReport> EstimateRepositoryAsync(
@@ -281,7 +285,10 @@ public sealed partial class ChangeEstimator
             return analyzedSnapshot.Evidence;
         }
 
-        IRepositoryFileSystem fileSystem = analysisScope is null
+        // The complete unfiltered Git population already is the native snapshot.
+        // Only admission masks need a second directory/file index.
+        IRepositoryFileSystem fileSystem = analysisScope is null ||
+            snapshot is GitSnapshotFileSystem && analysisScope.PathAdmission is null
             ? snapshot.FileSystem
             : new ScopedRepositoryFileSystem(
                 snapshot.FileSystem,
@@ -322,7 +329,7 @@ public sealed partial class ChangeEstimator
             {
                 SourceDigest = analysisScope.PathAdmission is { } admission
                     ? ChangeAnalysisScope.ComputeScopedInventoryDigest(
-                        snapshot.Files.Where(file => admission.Admits(file.Path)),
+                        ChangeAnalysisScope.IdentityFiles(snapshot).Where(file => admission.Admits(file.Path)),
                         admission.ProfileDigest)
                     : snapshot is GitSnapshotFileSystem gitSnapshot
                         ? gitSnapshot.InventoryDigest
@@ -445,5 +452,8 @@ public sealed partial class ChangeEstimator
 
     private sealed record SnapshotAnalysis(
         RepositoryEvidence Evidence,
-        EstimateReport Estimate);
+        EstimateReport Estimate)
+    {
+        public ChangeWorkItemBuilder.CapabilityCatalog Catalog { get; init; } = new(Evidence, Estimate);
+    }
 }

@@ -211,3 +211,10 @@ budget, and no override was added or increased.
 Line count is deliberately simple, deterministic, cross-platform, and difficult
 to game accidentally. The useful outcome is earlier decomposition into cohesive
 contracts, commands, analyzers, and renderers—not compressed formatting.
+
+The October 5, 2026 large-context Change fix separates current artifact retention,
+immutable traversal plans, SQL/frontend local-result reuse, scheduling hints and
+exact local-analysis evidence proofs and snapshot-owned capability catalogs into focused files. Existing scanner, repository analyzer
+and Change orchestration files keep their original responsibilities and receive
+only integration calls. New files stay below the ordinary ceiling; no override
+was added or increased.

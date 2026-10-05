@@ -8,7 +8,7 @@ using Microsoft.CodeAnalysis.Text;
 
 namespace EffortHours.Analyzers.DotNet;
 
-internal static class CSharpEvidenceLineage
+internal static partial class CSharpEvidenceLineage
 {
     private const int MaximumNeutralChangeCharacters = 64 * 1024;
 
@@ -53,7 +53,11 @@ internal static class CSharpEvidenceLineage
         SourceText sourceText,
         CSharpSyntaxTree tree,
         int syntaxErrors,
-        CancellationToken cancellationToken)
+        CancellationToken cancellationToken,
+        CSharpFileAnalysis? analysis = null,
+        string? projectScope = null,
+        bool isTestFile = false,
+        string? immutableContextIdentity = null)
     {
         if (!TryGetChangedLineage(
             fileSystem,
@@ -69,7 +73,7 @@ internal static class CSharpEvidenceLineage
             ArtifactKey(contentId!, relativePath),
             _ => Task.FromResult(
                 new RepositoryVersionedAnalysisArtifact<CSharpEvidenceState>(
-                    new CSharpEvidenceState(sourceText, tree, syntaxErrors),
+                    new CSharpEvidenceState(sourceText, tree, syntaxErrors, analysis, projectScope, isTestFile, immutableContextIdentity),
                     RetainedTextBytes(sourceText))),
             cancellationToken).ConfigureAwait(false);
     }
@@ -222,4 +226,8 @@ internal static class CSharpEvidenceLineage
 internal sealed record CSharpEvidenceState(
     SourceText Text,
     CSharpSyntaxTree TemplateTree,
-    int SyntaxErrors);
+    int SyntaxErrors,
+    CSharpFileAnalysis? Analysis = null,
+    string? ProjectScope = null,
+    bool IsTestFile = false,
+    string? ImmutableContextIdentity = null);

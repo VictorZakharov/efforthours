@@ -8,11 +8,11 @@
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>eh</ToolCommandName>
     <PackageId>EffortHours.Tool</PackageId>
-    <Version>0.10.0-alpha.32</Version>
+    <Version>0.10.0-alpha.33</Version>
     <Title>EffortHours CLI</Title>
     <PackageReadmeFile>PACKAGE_README.md</PackageReadmeFile>
     <PackageTags>estimation;effort-estimation;developer-tools;cli;repository-analysis;static-analysis;dotnet-tool</PackageTags>
-    <PackageReleaseNotes>0.10.0-alpha.32: Correct Change capability attribution with exact .NET analyzer-owned paths, test-aware production source binding, and qualified Rust synchronization evidence. Preserve unexplained maintained edits through ordinary fallback and invalidate earlier receipts under change-seed/0.21.3 and change-portfolio/0.6.3. Add anonymized frozen-input overlap reviews. Estimates remain experimental and uncalibrated; seed-rules/0.4.0 rates and admission boundaries remain unchanged, and remaining numerical overlaps need material assessment. Full notes: https://github.com/VictorZakharov/efforthours/blob/v0.10.0-alpha.32/CHANGELOG.md</PackageReleaseNotes>
+    <PackageReleaseNotes>0.10.0-alpha.33: Reduce repeated full-context Change portfolio work on large repositories with bounded current-file reuse, exact local-analysis and seed-stock reuse, and overlapping reconciliation. Preserve complete normalization, estimator rates, attribution, evidence and report schemas. Synthetic runs improve materially but remain slower than alpha.29; a same-input field retest is required. Estimates remain experimental and uncalibrated. Full notes: https://github.com/VictorZakharov/efforthours/blob/v0.10.0-alpha.33/CHANGELOG.md</PackageReleaseNotes>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="../EffortHours.Analysis/EffortHours.Analysis.csproj" />

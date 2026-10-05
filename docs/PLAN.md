@@ -513,3 +513,9 @@ A change is complete only when:
   source excerpts, or unsupported accuracy claims; and
 - release, tag, visibility, and package-publication actions remain separately
   authorized under `RELEASING.md`.
+
+Complete-context Git performance now uses the bounded current file/stage and
+traversal-proof contracts in `CHANGE_ESTIMATION.md`. Measurements belong in
+`BENCHMARKS.md`; complete normalization, cold fallback, global ownership and
+numerical rules remain authoritative. Broader field latency requires a same-input
+consumer retest and is not inferred from a synthetic checkpoint.

@@ -78,7 +78,7 @@ public sealed partial class ChangeEstimator
                         await entry.Dependency.WaitAsync(pipelineCancellation.Token)
                             .ConfigureAwait(false);
                         reports[entry.Entry.Index] = await EstimateCoreAsync(
-                            entry.Input,
+                            entry.Input with { EvidenceReady = entry.Complete },
                             profile,
                             rateCard: null,
                             snapshotAnalyses,
@@ -194,8 +194,12 @@ public sealed partial class ChangeEstimator
                     throw;
                 }
 
-                Task dependency = priorHeadCompletions.GetValueOrDefault(
-                    entry.Plan.Selection.Base.ObjectId) ?? Task.CompletedTask;
+                Task dependency = Task.CompletedTask;
+                if (priorHeadCompletions.TryGetValue(entry.Plan.Selection.Base.ObjectId,
+                    out Task? prior) && !prior.IsCompleted &&
+                    await PreferOrderedEvidenceLineageAsync(baseSnapshot, headSnapshot,
+                        cancellationToken).ConfigureAwait(false))
+                    dependency = prior;
                 PreparedPortfolioPlan prepared = new(
                     entry,
                     CreateInput(entry.Plan),

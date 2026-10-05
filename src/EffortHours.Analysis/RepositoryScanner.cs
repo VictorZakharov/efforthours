@@ -121,7 +121,7 @@ public sealed partial class RepositoryScanner : IRepositoryScanner
             cache,
             _fileSystem,
             _analysisArtifactCache);
-        await TraverseAsync(state, cancellationToken).ConfigureAwait(false);
+        await TraverseWithImmutablePlanAsync(state, cancellationToken).ConfigureAwait(false);
         if (cachePath is not null)
         {
             await _cacheStore.SaveAsync(
@@ -239,6 +239,8 @@ public sealed partial class RepositoryScanner : IRepositoryScanner
 
                 try
                 {
+                    if (TryReuseImmutableFile(state, entry, relativePath, inspectionPipeline,
+                        out string? artifactKey, out artifactRequest)) continue;
                     RepositoryFileMetadata metadata = state.FileSystem.GetFileMetadata(entry);
                     long metadataLength = metadata.Length;
                     long lastWriteTimeUtcTicks = metadata.LastWriteTimeUtcTicks;
@@ -249,17 +251,22 @@ public sealed partial class RepositoryScanner : IRepositoryScanner
                         out ScannedFile cachedFile))
                     {
                         state.Files.Add(cachedFile);
+                        if (artifactRequest is { IsOwner: true })
+                        {
+                            state.AnalysisArtifactCache!.Add(artifactKey!, cachedFile);
+                            artifactRequest.Complete(cachedFile);
+                        }
                         continue;
                     }
 
-                    string? artifactKey = metadata.ContentId is null
+                    artifactKey ??= metadata.ContentId is null
                         ? null
                         : $"common-scanned-file/{AnalyzerVersion}/sample-{state.Options.TextSampleSize}/" +
                             $"{metadata.ContentId}/{relativePath}";
-                    if (artifactKey is not null && state.AnalysisArtifactCache is not null)
+                    if (artifactRequest is null && artifactKey is not null && state.AnalysisArtifactCache is not null)
                     {
                         artifactRequest = state.AnalysisArtifactCache.Request<ScannedFile>(
-                            artifactKey);
+                            artifactKey, "common:" + relativePath);
                     }
 
                     FileInspectionWork work = new(

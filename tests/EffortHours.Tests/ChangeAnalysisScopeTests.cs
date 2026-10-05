@@ -6,6 +6,46 @@ namespace EffortHours.Tests;
 public sealed class ChangeAnalysisScopeTests
 {
     [Fact]
+    public void TraversalIdentityBindsPathsIgnoreContentsAndUnsafeModes()
+    {
+        ChangeSnapshotFile[] files = [File("src/A.cs", "a"), File(".gitignore", "rules")];
+        static GitSnapshotFileSystem Snapshot(ChangeSnapshotFile[] input) =>
+            GitSnapshotFileSystem.Create(Environment.CurrentDirectory, "tree", input);
+        string original = Assert.IsType<string>(Snapshot(files).RepositoryTraversalIdentity);
+        Assert.Equal(original, Snapshot([files[0] with { ObjectId = "new-body" }, files[1]]).RepositoryTraversalIdentity);
+        Assert.NotEqual(original, Snapshot([files[0], files[1] with { ObjectId = "new-rules" }]).RepositoryTraversalIdentity);
+        Assert.NotEqual(original, Snapshot([.. files, File("added.cs", "added")]).RepositoryTraversalIdentity);
+        Assert.Null(Snapshot([files[0] with { Mode = "120000" }, files[1]]).RepositoryTraversalIdentity);
+        Assert.Null(Snapshot([files[0] with { Mode = "160000" }, files[1]]).RepositoryTraversalIdentity);
+    }
+
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void CompleteScopeNeedsOnlyIdentityAndFiltersProvenFirstParentPaths(bool filter)
+    {
+        ChangeSnapshotFile[] before =
+        [
+            File("src/A.cs", "a") with { Length = -1 },
+            File("notes/a.md", "b") with { Length = -1 },
+        ];
+        GitSnapshotInventory parent = new("parent", before);
+        ChangeSnapshotFile[] changed = [.. before.Select(file => file with { ObjectId = "changed-" + file.ObjectId })];
+        GitSnapshotInventory child = GitSnapshotInventory.CreateIncremental("child", "parent", parent,
+            ["src/A.cs", "notes/a.md"], changed);
+        GitSnapshotFileSystem left = GitSnapshotFileSystem.Create(Environment.CurrentDirectory, "parent", parent,
+            sharedMetadataReader: () => throw new InvalidOperationException("Scope must not request lengths."));
+        GitSnapshotFileSystem right = GitSnapshotFileSystem.Create(Environment.CurrentDirectory, "child", child,
+            sharedMetadataReader: () => throw new InvalidOperationException("Scope must not request lengths."));
+        ChangePathAdmission? admission = filter ? new("test", path => path.StartsWith("src/", StringComparison.Ordinal)) : null;
+        ChangeAnalysisScope scope = Assert.IsType<ChangeAnalysisScope>(ChangeAnalysisScope.Create(left, right, admission));
+        Assert.Equal(filter ? 1 : 2, scope.ChangedPathCount);
+        Assert.Equal(filter ? 1 : 2, scope.FullPathCount);
+        string[] expected = filter ? ["src/A.cs"] : ["notes/a.md", "src/A.cs"];
+        Assert.Equal(expected, scope.Paths.Order(StringComparer.Ordinal));
+    }
+
+    [Fact]
     public void GitSnapshotsRetainCompleteAdmittedNormalizationContext()
     {
         ChangeSnapshotFile[] before =

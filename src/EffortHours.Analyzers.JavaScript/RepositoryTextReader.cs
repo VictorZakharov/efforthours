@@ -16,6 +16,27 @@ internal sealed class RepositoryTextReader(
     public RepositoryAnalysisArtifactCache? AnalysisArtifactCache =>
         (_fileSystem as IRepositoryAnalysisArtifactCacheProvider)?.AnalysisArtifactCache;
 
+    public string? ImmutableContentId(EvidenceFact file)
+    {
+        string fullPath = Path.GetFullPath(Path.Combine(_rootPath,
+            file.Scope.Replace('/', Path.DirectorySeparatorChar)));
+        if (!IsWithinRoot(fullPath)) return null;
+        try
+        {
+            return _fileSystem is IRepositoryImmutableIdentityProvider immutable &&
+                immutable.TryGetFileContentId(fullPath, out string immutableId)
+                ? immutableId : _fileSystem.GetFileMetadata(fullPath).ContentId;
+        }
+        catch (Exception exception) when (exception is IOException or UnauthorizedAccessException)
+        {
+            return null;
+        }
+    }
+
+    internal Task StoreLocalLineageAsync(EvidenceFact file, string? context,
+        JavaScriptFileAnalysis analysis, CancellationToken token) =>
+        RepositoryLocalAnalysisLineage.StoreAsync(_fileSystem, _rootPath, file, context, analysis, token);
+
     public async Task<RepositoryTextReadResult> ReadAsync(
         EvidenceFact fileFact,
         long maximumBytes,

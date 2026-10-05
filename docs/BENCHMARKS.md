@@ -2111,3 +2111,56 @@ cross-platform regression threshold, broad Godot performance claim, or numerical
 calibration. CI gates deterministic evidence, schemas, exclusions, bounded token
 configuration, read-only behavior, and Change semantics rather than wall time or
 sampled memory.
+
+## Large complete-context Change checkpoint - October 5, 2026
+
+The [MIT synthetic harness](../benchmarks/large-change-context/README.md) uses the
+same frozen heads, contributor, cutoff and selected changes for each lane on
+Windows, a 24-logical-processor Ryzen 9 5900X and .NET SDK 10.0.203. Each recorded
+lane is one fresh-process sample with warm OS caches and no competing builds,
+tests or benchmarks. Preparation, installation and full target fingerprints are
+outside the CLI timer. Previously completed alpha.32 reports are the correctness
+reference; follow-up measurements use only the candidate and the existing
+alpha.29 latency baseline.
+
+| Frozen workload | Alpha.29 seconds | Initial candidate seconds | Final candidate seconds | Final / alpha.29 |
+| --- | ---: | ---: | ---: | ---: |
+| 10,001 files, C#, 2,221 changes, 32 heads | 22.997 | 54.375 | 43.020 | 1.87x |
+| 30,000 files, mixed, 128 changes, 32 heads | 6.237 | 64.261 | 30.508 | 4.89x |
+
+The 54-second observation belongs to the C# workload; the 6-second observation
+belongs to the mixed workload. Comparing them directly would mix different inputs.
+The C# workload has 4,442 row snapshot requests. Revisions rename a method and
+change a numeric return, with full fallback at digit-width boundaries. The mixed
+workload has 9,000 C#, 7,000 TypeScript, 7,000 SQL, 6,998 text assets and two
+descriptors. Each revision changes three source files. Small edits with exactly
+unchanged common and complete local analyzer results can reuse repository evidence;
+context changes, differing metrics and unproven cases still use full analysis.
+Neither fixture executes target code.
+
+Final candidate semantic report hashes match the already completed alpha.32
+reports on both workloads, excluding only operational diagnostic `FB5325`.
+Alpha.29 has an older normalization population and is a latency baseline rather
+than a numerical-equivalence oracle. All completed runs leave target bytes and
+metadata unchanged. These measurements are not CI wall-time or memory gates.
+
+On the mixed workload, the final candidate serves 108,314 Git blob requests
+versus 5,893,384 in the completed alpha.32 reference. Artifact revisit misses are
+6 versus 4,882,832. Current retention peaks at 60,001 slots and 455,239,220 charged
+bytes within the fixed 65,536-slot/512-MiB bound. Charges are serialized-size
+proxies, not heap measurements. Progress-sampled working set is 783.57 MiB for
+the mixed candidate and 525.97 MiB for C#; samples can miss endpoint peaks.
+Phase intervals overlap and must not be summed as exclusive wall or CPU time.
+
+[Completed-run checkpoint](../benchmarks/large-change-context/2026-10-05.checkpoint.json)
+records the frozen inputs, operation counts, progress, phases and hashes. The
+candidate still takes longer than alpha.29, especially on the mixed workload.
+These narrow synthetic observations establish work elimination, not a consumer
+latency guarantee. A same-input consumer retest remains necessary. Multi-hour
+field projections are not completed measurements or an accepted latency target.
+
+The older Change benchmark's counting wrapper is a custom estimator. It now
+estimates each distinct snapshot instead of inheriting seed-specific stock reuse
+(three consecutive changes require four invocations, with two shared snapshot
+hits). Its independent-report equality remains required. The large-context
+checkpoint above invokes the real CLI/built-in seed estimator directly.

@@ -53,13 +53,17 @@ internal sealed record ChangeAnalysisScope(
             return null;
         }
 
-        ChangeSnapshotFile[] before = [.. baseSnapshot.Files.Where(file =>
+        ChangeSnapshotFile[] before = [.. IdentityFiles(baseSnapshot).Where(file =>
             pathAdmission is null || pathAdmission.Admits(file.Path))];
-        ChangeSnapshotFile[] after = [.. headSnapshot.Files.Where(file =>
+        ChangeSnapshotFile[] after = [.. IdentityFiles(headSnapshot).Where(file =>
             pathAdmission is null || pathAdmission.Admits(file.Path))];
-        HashSet<string> changed = FindChangedPaths(
-            before.ToDictionary(file => file.Path, StringComparer.Ordinal),
-            after.ToDictionary(file => file.Path, StringComparer.Ordinal));
+        HashSet<string> changed = headSnapshot is GitSnapshotFileSystem gitHead &&
+            gitHead.TryGetChangedPathsFrom(baseSnapshot.ObjectId, out IReadOnlyList<string> knownPaths)
+            ? knownPaths.Where(path => pathAdmission is null || pathAdmission.Admits(path))
+                .ToHashSet(StringComparer.Ordinal)
+            : FindChangedPaths(
+                before.ToDictionary(file => file.Path, StringComparer.Ordinal),
+                after.ToDictionary(file => file.Path, StringComparer.Ordinal));
         HashSet<string> paths = before.Concat(after).Select(file => file.Path)
             .ToHashSet(StringComparer.Ordinal);
         // The normalization population is the complete admitted repository,
@@ -69,6 +73,9 @@ internal sealed record ChangeAnalysisScope(
             paths, changed.Count, paths.Count - changed.Count, 0,
             paths.Count - changed.Count, Math.Max(before.Length, after.Length), pathAdmission);
     }
+
+    internal static IEnumerable<ChangeSnapshotFile> IdentityFiles(IChangeSnapshot snapshot) =>
+        snapshot is GitSnapshotFileSystem git ? git.FilesByPath.Values : snapshot.Files;
 
     internal static ChangeAnalysisScope CreateForFiles(
         IReadOnlyList<ChangeSnapshotFile> baseSnapshotFiles,

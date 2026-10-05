@@ -4,7 +4,7 @@ using static EffortHours.Analyzers.Sql.SqlFactFactory;
 
 namespace EffortHours.Analyzers.Sql;
 
-public sealed class SqlRepositoryAnalyzer : IRepositoryEvidenceAnalyzer
+public sealed partial class SqlRepositoryAnalyzer : IRepositoryEvidenceAnalyzer
 {
     private readonly IRepositoryFileSystem _fileSystem;
 
@@ -31,7 +31,8 @@ public sealed class SqlRepositoryAnalyzer : IRepositoryEvidenceAnalyzer
         ArgumentException.ThrowIfNullOrWhiteSpace(repositoryPath);
         ArgumentNullException.ThrowIfNull(evidence);
         string rootPath = _fileSystem.GetFullPath(repositoryPath);
-        SqlTextReader reader = new(_fileSystem, rootPath);
+        SqlFileAnalysisReader reader = new(_fileSystem, rootPath);
+        string? localContext = RepositoryLocalAnalysisLineage.ContextIdentity(_fileSystem, rootPath, evidence, cancellationToken);
         SqlScopeResolver scopeResolver = new(evidence);
         EvidenceFact[] sqlFiles =
         [
@@ -56,19 +57,17 @@ public sealed class SqlRepositoryAnalyzer : IRepositoryEvidenceAnalyzer
                 continue;
             }
 
-            SqlTextReadResult read = await reader.ReadAsync(fileFact, cancellationToken)
+            SqlFileAnalysis read = await reader.ReadAsync(fileFact, cancellationToken)
                 .ConfigureAwait(false);
             if (read.Diagnostic is not null)
             {
                 diagnostics.Add(read.Diagnostic);
                 continue;
             }
-
-            SqlSemanticAnalysis analysis = SqlSemanticAnalyzer.Analyze(read.Text!);
-            SqlArtifactRoleAssessment role = SqlArtifactClassifier.Classify(
-                fileFact,
-                read.Text!,
-                analysis.Metrics);
+            await RepositoryLocalAnalysisLineage.StoreAsync(_fileSystem, rootPath, fileFact,
+                localContext, read, cancellationToken).ConfigureAwait(false);
+            SqlSemanticAnalysis analysis = read.Analysis!;
+            SqlArtifactRoleAssessment role = read.Role!;
             SqlScopeOwnership ownership = scopeResolver.Resolve(fileFact.Scope);
             string? duplicateKey = DuplicateKey(fileFact);
             string? canonicalPath = duplicateKey is null
@@ -78,61 +77,11 @@ public sealed class SqlRepositoryAnalyzer : IRepositoryEvidenceAnalyzer
                 !StringComparer.Ordinal.Equals(canonicalPath, fileFact.Scope);
             standalone += ownership.Standalone ? 1 : 0;
             analyzed++;
-            EvidenceFact artifact = CreateArtifactFact(
-                fileFact,
-                ownership,
-                analysis,
-                role,
-                exactDuplicate);
-            facts.Add(artifact);
-
-            if (ownership.Ambiguous)
-            {
-                diagnostics.Add(SqlEvidence.Diagnostic(
-                    "FB6005",
-                    DiagnosticSeverity.Information,
-                    $"SQL file '{fileFact.Scope}' has ambiguous project/package ownership and remains in the standalone SQL scope.",
-                    fileFact.Scope));
-            }
-
-            if (role.Excluded)
-            {
-                excluded++;
-                facts.Add(CreateDumpExclusion(fileFact, ownership, artifact));
-                continue;
-            }
-
-            if (exactDuplicate)
-            {
-                excluded++;
-                facts.Add(CreateDuplicateExclusion(
-                    fileFact,
-                    ownership,
-                    artifact,
-                    canonicalPath!));
-                continue;
-            }
-
-            if (role.Role == "test-fixture")
-            {
-                facts.Add(CreateTestFact(fileFact, ownership, analysis, artifact));
-            }
-            else if (role.Role == "delivery")
-            {
-                facts.Add(CreateDeliveryFact(fileFact, ownership, analysis, artifact));
-            }
-            else if (analysis.Metrics.HasDataSemantics ||
-                role.Role is "migration" or "seed-data")
-            {
-                facts.Add(CreateDataFact(fileFact, ownership, analysis, role, artifact));
-            }
-
-            if (analysis.Metrics.IntegrationSignals.Count > 0)
-            {
-                facts.Add(CreateIntegrationFact(fileFact, ownership, analysis, artifact));
-            }
-
-            AddAnalysisDiagnostics(fileFact, analysis, role, diagnostics);
+            SqlAnalyzedFileFacts fileFacts = await ReadAnalyzedFileFactsAsync(fileFact, ownership,
+                read, exactDuplicate, canonicalPath, cancellationToken).ConfigureAwait(false);
+            facts.AddRange(fileFacts.Facts);
+            diagnostics.AddRange(fileFacts.Diagnostics);
+            excluded += fileFacts.Excluded ? 1 : 0;
         }
 
         facts.Add(CreateRepositoryFact(sqlFiles, facts, analyzed, excluded, standalone));

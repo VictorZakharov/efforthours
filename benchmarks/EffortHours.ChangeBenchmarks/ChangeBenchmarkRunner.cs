@@ -142,7 +142,9 @@ internal static class ChangeBenchmarkRunner
         return new ChangeBenchmarkExecution(
             PlannedComponents: plan.Items.Sum(item => item.Plan.Components.Count),
             SelectedChanges: plan.Items.Count,
-            ExpectedSnapshotAnalyses: Math.Min(options.Commits + 1, 2),
+            // The counting wrapper is a custom estimator. Only built-in seed stock
+            // can use the exact derived-stock proof; each distinct snapshot is estimated.
+            ExpectedSnapshotAnalyses: options.Commits + 1,
             AuditBounded: false,
             ChangedScopeAnalysis: reports.Any(report =>
                 report.Diagnostics.Any(diagnostic => diagnostic.Code == "FB5205")),

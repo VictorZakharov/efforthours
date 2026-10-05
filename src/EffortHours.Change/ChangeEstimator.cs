@@ -7,6 +7,8 @@ namespace EffortHours.Change;
 
 public sealed record ChangeEstimateInput
 {
+    internal Action? EvidenceReady { get; init; }
+
     public required string RepositoryName { get; init; }
 
     public required ChangeSelection Selection { get; init; }
@@ -113,6 +115,7 @@ public sealed partial class ChangeEstimator
                 snapshotAnalyses,
                 cacheNamespace,
                 executionTelemetry,
+                input.EvidenceReady,
                 cancellationToken).ConfigureAwait(false);
         }
 
@@ -186,6 +189,7 @@ public sealed partial class ChangeEstimator
                         snapshotAnalyses,
                         cacheNamespace,
                         executionTelemetry,
+                        evidenceReady: null,
                         cancellationToken).ConfigureAwait(false);
                 }
             }

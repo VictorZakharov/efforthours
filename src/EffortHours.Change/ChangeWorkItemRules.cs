@@ -20,7 +20,9 @@ internal static partial class ChangeWorkItemBuilder
             {
                 WorkItem first = group.OrderBy(item => item.Id, StringComparer.Ordinal).First();
                 string[] evidenceIds = [.. group
-                    .SelectMany(item => item.EvidenceIds)
+                    .Select(item => item.EvidenceIds)
+                    .Distinct<IReadOnlyList<string>>(ReferenceEqualityComparer.Instance)
+                    .SelectMany(ids => ids)
                     .Distinct(StringComparer.Ordinal)
                     .Order(StringComparer.Ordinal)];
                 HashSet<string> paths = evidenceIds
@@ -466,7 +468,7 @@ internal static partial class ChangeWorkItemBuilder
 
     private static EffortRange Zero() => new() { Low = 0m, Expected = 0m, High = 0m };
 
-    private sealed record Capability(
+    internal sealed record Capability(
         string Id,
         EffortCategory Category,
         string Title,

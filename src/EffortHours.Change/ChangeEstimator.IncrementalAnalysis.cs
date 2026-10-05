@@ -53,7 +53,7 @@ public sealed partial class ChangeEstimator
         evidence = ApplyAnalysisScope(evidence, snapshot, analysisScope);
         evidence = RenameRepository(evidence, repositoryName);
         EstimateReport estimate = RefreshDerivedEstimate(previous.Estimate, evidence);
-        return new SnapshotAnalysis(evidence, estimate);
+        return new SnapshotAnalysis(evidence, estimate) { Catalog = previous.Catalog };
     }
 
     internal static EstimateReport RefreshDerivedEstimate(

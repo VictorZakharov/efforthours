@@ -73,7 +73,8 @@ public sealed class JavaScriptRepositoryAnalyzer : IRepositoryEvidenceAnalyzer
         Dictionary<string, JavaScriptSourceMetrics> structureByScope = new(StringComparer.Ordinal);
         Dictionary<string, List<EvidenceLocation>> structureLocations = new(StringComparer.Ordinal);
         List<AngularComponentMetadata> angularComponents = [];
-        JavaScriptSourceAnalyzer sourceAnalyzer = new(textReader);
+        JavaScriptSourceAnalyzer sourceAnalyzer = new(textReader,
+            RepositoryLocalAnalysisLineage.ContextIdentity(_fileSystem, rootPath, evidence, cancellationToken));
         IReadOnlyList<JavaScriptSourceAnalysisEntry> sourceAnalyses =
             await JavaScriptSourceAnalysisBatch.AnalyzeAsync(
                 sourceAnalyzer,

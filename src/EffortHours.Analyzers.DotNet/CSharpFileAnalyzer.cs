@@ -12,7 +12,8 @@ namespace EffortHours.Analyzers.DotNet;
 
 internal sealed partial class CSharpFileAnalyzer(
     IRepositoryFileSystem fileSystem,
-    string rootPath)
+    string rootPath,
+    string? immutableContextIdentity = null)
 {
     private static readonly FrozenSet<string> TestAttributes = new[]
     {
@@ -61,7 +62,9 @@ internal sealed partial class CSharpFileAnalyzer(
         string? contentId = null;
         try
         {
-            contentId = _fileSystem.GetFileMetadata(fullPath).ContentId;
+            contentId = _fileSystem is IRepositoryImmutableIdentityProvider immutable &&
+                immutable.TryGetFileContentId(fullPath, out string immutableId)
+                ? immutableId : _fileSystem.GetFileMetadata(fullPath).ContentId;
         }
         catch (Exception exception) when (exception is IOException or UnauthorizedAccessException)
         {
@@ -87,7 +90,7 @@ internal sealed partial class CSharpFileAnalyzer(
                     projectScope,
                     isTestFile,
                     itemCancellationToken),
-                cancellationToken).ConfigureAwait(false);
+                cancellationToken, "dotnet-csharp:" + relativePath).ConfigureAwait(false);
         }
 
         return await AnalyzeUncachedAsync(
@@ -166,7 +169,10 @@ internal sealed partial class CSharpFileAnalyzer(
             sourceText,
             tree,
             syntaxErrors,
-            cancellationToken).ConfigureAwait(false);
+            cancellationToken,
+            analysis,
+            projectScope,
+            isTestFile, immutableContextIdentity).ConfigureAwait(false);
         return analysis;
     }
 

@@ -68,7 +68,7 @@ public sealed class ChangeBenchmarkCliTests
         Dictionary<string, string> values = Parse(result.StandardOutput);
         Assert.Equal("author-period", values["mode"]);
         Assert.Equal("3", values["selected-changes"]);
-        Assert.Equal("2", values["repository-estimator-invocations"]);
+        Assert.Equal("4", values["repository-estimator-invocations"]);
         Assert.Equal("1", values["portfolio-repositories"]);
         Assert.Equal("1", values["maximum-active-repositories"]);
         Assert.Equal("6", values["snapshot-analysis-requests"]);
