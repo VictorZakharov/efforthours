@@ -6,6 +6,8 @@ may still change public contracts with explicit documentation.
 
 ## Unreleased
 
+## 0.10.0-alpha.34 - 2026-10-05
+
 ### Added
 
 - Accept explicit immutable single-commit rewrite pairs and old/new upstream bases
