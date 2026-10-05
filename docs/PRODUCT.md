@@ -79,6 +79,15 @@ and reports the resulting uncertainty.
 
 ## Product surfaces
 
+### CLI learning guide
+
+Top-level help includes the installed informational version. `eh examples`
+(and `eh --examples`) prints common explained recipes; `all` prints the entire
+curated guide, and a topic filters it. The guide marks caller-supplied inputs,
+provider/network opt-ins, and writes. Displaying help or examples is offline and
+read-only and never executes a recipe. This teaching surface supplements command
+help, rather than claiming to enumerate every option or establish model accuracy.
+
 ### Repository EHE
 
 Repository estimation values the current artifact. Ordinary `scan` and `estimate`
