@@ -43,6 +43,21 @@ dotnet tool install --global EffortHours.Tool --version 0.10.0-alpha.34
 eh version
 ```
 
+Discover common workflows without running analysis:
+
+```text
+eh --help
+eh examples
+eh examples all
+eh examples calendar
+```
+
+Help includes the installed version. `eh --examples` is an alias for `eh examples`.
+The guide explains commands, required inputs, provider access and output writes;
+replace its `<placeholders>` before running a recipe. Topic filters include
+`repository`, `change`, `portfolio`, `calendar`, `report`, `review`, `inspect` and
+`agent`. Use `eh <command> --help` for the complete option reference.
+
 Run an effort-only repository estimate:
 
 ```text
@@ -341,28 +356,10 @@ choice, and cost. See the [host-review protocol](docs/HOST_REVIEW.md).
 <details>
 <summary>Show common commands</summary>
 ```text
-eh scan <repository> [--output evidence.json]
-eh estimate <repository-or-evidence.json> [--profile implementation|recreation]
-eh report <estimate.json> [--view review|category|scope|work-item]
-eh explain <repository-or-evidence.json> --item <id>
-eh change <repository> --base <revision> --head <revision>
-eh change <repository> --commit <revision> [--parent <revision>]
-eh change <repository> --range <base>..<head>
-eh change <repository> --pr <number-or-url> [--repo <owner/name>]
-eh change --base-path <before> --head-path <after>
-eh change portfolio <repository> --pr <pr> --pr <pr>
-eh change portfolio --manifest <portfolio.json>
-eh change portfolio --author-period-manifest <manifest.json>
-eh change today --owner <owner> --author "@me" --timezone <zone> --capacity-hours <hours>
-eh change period --owner <owner> --author <identity> --period <named-period>
-eh change compare-team --owner <owner> --contributors-from <owner/repository> --sample <count>
-eh change scope show engineering
-eh change explain <change-estimate.json> --item <id>
+eh examples
+eh examples all
+eh examples calendar
 eh agent codex [--install|--check]
-eh review packet <repository> --compact
-eh model info
-eh rate info
-eh schema list
 ```
 
 </details>

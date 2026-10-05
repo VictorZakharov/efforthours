@@ -6,6 +6,12 @@ may still change public contracts with explicit documentation.
 
 ## Unreleased
 
+### Added
+
+- Discover explained common CLI workflows with `eh examples` or `eh --examples`,
+  plus `all` and topic filters; guidance includes input and side-effect boundaries.
+- Show the installed informational version in top-level help.
+
 ## 0.10.0-alpha.34 - 2026-10-05
 
 ### Added

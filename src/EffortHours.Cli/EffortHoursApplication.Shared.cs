@@ -166,12 +166,13 @@ public sealed partial class EffortHoursApplication
 
     private static async Task<int> VersionAsync(TextWriter standardOutput)
     {
-        string version = Assembly.GetExecutingAssembly()
-            .GetCustomAttribute<AssemblyInformationalVersionAttribute>()?
-            .InformationalVersion ?? "unknown";
-        await standardOutput.WriteLineAsync(version).ConfigureAwait(false);
+        await standardOutput.WriteLineAsync(GetVersion()).ConfigureAwait(false);
         return CliExitCodes.Success;
     }
+
+    private static string GetVersion() => Assembly.GetExecutingAssembly()
+        .GetCustomAttribute<AssemblyInformationalVersionAttribute>()?
+        .InformationalVersion ?? "unknown";
 
     private static async Task<int> UsageErrorAsync(TextWriter standardError, string message)
     {
@@ -274,6 +275,11 @@ public sealed partial class EffortHoursApplication
           eh rate show
           eh agent codex [--install|--check]
           eh version
+          eh examples [popular|all|<topic>]
+          eh --examples [popular|all|<topic>]
+
+        Run 'eh examples' for common workflows and 'eh examples all' for every recipe.
+        Run 'eh <command> --help' for full command options.
 
         Static analysis is deterministic, local, and read-only by default. The .NET
         analyzer parses projects and C# syntax without evaluating MSBuild. The

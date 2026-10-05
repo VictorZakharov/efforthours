@@ -55,6 +55,7 @@ public sealed partial class EffortHoursApplication
 
         if (arguments.Length == 0 || IsHelp(arguments[0]))
         {
+            await standardOutput.WriteLineAsync($"EffortHours {GetVersion()}").ConfigureAwait(false);
             await standardOutput.WriteLineAsync(HelpText).ConfigureAwait(false);
             return CliExitCodes.Success;
         }
@@ -64,6 +65,8 @@ public sealed partial class EffortHoursApplication
             cancellationToken.ThrowIfCancellationRequested();
             return arguments[0].ToLowerInvariant() switch
             {
+                "examples" or "--examples" => await UsageExamplesCommand.ExecuteAsync(
+                    arguments[1..], standardOutput, standardError).ConfigureAwait(false),
                 "scan" => await ScanAsync(
                     [.. arguments.Skip(1)],
                     standardOutput,
