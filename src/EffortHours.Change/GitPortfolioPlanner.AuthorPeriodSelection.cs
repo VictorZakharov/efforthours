@@ -32,6 +32,9 @@ public sealed partial class GitPortfolioPlanner
                     {
                         HeadObjectIds = [.. repository.Manifest.Heads.Select(head => head.ObjectId)],
                         IdentityGroups = identityGroups,
+                        RewriteObjectIds = (repository.Manifest.RewriteEvents ?? [])
+                            .SelectMany(value => new[] { value.OriginalObjectId, value.RewrittenObjectId })
+                            .ToHashSet(StringComparer.Ordinal),
                         SinceInclusive = manifest.Selection.SinceInclusive,
                         UntilExclusive = manifest.Selection.UntilExclusive,
                         DateField = manifest.Selection.DateField,
@@ -53,10 +56,7 @@ public sealed partial class GitPortfolioPlanner
         AuthorPeriodManifestSelectionResult selected;
         using (executionTelemetry.Measure(ChangePortfolioExecutionPhases.Selection))
         {
-            selected = AuthorPeriodManifestCommitSelector.Select(
-                candidateResult.Candidates,
-                manifest.Selection,
-                manifest.Contributors);
+            selected = SelectRewriteEvents(candidateResult.Candidates, manifest, repository.Manifest);
         }
 
         return new PreparedManifestSelection(candidateResult, selected);

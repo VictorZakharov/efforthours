@@ -50,6 +50,8 @@ internal sealed partial class ChangePortfolioCommand
             resolved = await MaterializeComparisonManifestAsync(
                 resolved, options, cancellationToken).ConfigureAwait(false);
         }
+        EngineeringScopeProfile? explicitScope = today is null && options.Scope == "engineering"
+            ? EngineeringScopeProfile.Load() : null;
         ChangePortfolioSelection selection =
             ChangeAuthorPeriodManifestIdentity.CreateReportSelection(
                 resolved.Manifest,
@@ -101,32 +103,14 @@ internal sealed partial class ChangePortfolioCommand
                 repository,
                 planner,
                 checkpoints,
-                today?.PathAdmissions.GetValueOrDefault(repository.Id),
-                today?.ScopeProfile.Digest,
+                today?.PathAdmissions.GetValueOrDefault(repository.Id) ??
+                    explicitScope?.CreateAdmission(repository.ScopeRepository ?? repository.GitHubRepository ?? repository.Id),
+                today?.ScopeProfile.Digest ?? explicitScope?.Contract.Digest,
                 standardError,
                 cancellationToken).ConfigureAwait(false);
             outcomes.Add(outcome with { Elapsed = Stopwatch.GetElapsedTime(started) });
         }
 
-        if (today is null && !options.CalendarReport && outcomes.All(outcome => outcome.Failure is null) &&
-            outcomes.Sum(outcome => outcome.Candidates.Count) == 0)
-        {
-            ChangePortfolioRepositoryOutcome first = outcomes[0];
-            const string message =
-                "No commits matched the manifest contributors, selected timestamp field, and inclusive/exclusive interval.";
-            outcomes[0] = first with
-            {
-                Status = ChangePortfolioRepositoryExecutionStatus.Failed,
-                Failure = new ChangePortfolioComparisonFailure
-                {
-                    RepositoryId = first.RepositoryId,
-                    Phase = ChangePortfolioExecutionPhases.Selection,
-                    Category = nameof(InvalidOperationException),
-                    Message = message,
-                    MessageDigest = ChangePortfolioComparisonIdentity.ComputeTextDigest(message),
-                },
-            };
-        }
         ChangePortfolioComparisonExecution execution =
             ChangePortfolioComparisonExecutionFactory.Create(
                 outcomes,
@@ -150,8 +134,8 @@ internal sealed partial class ChangePortfolioCommand
             ExecutionOverride = execution,
             AsOf = today?.AsOf,
             Discovery = today?.Discovery,
-            ScopeProfile = today?.ScopeProfile,
-            ScopeSummary = today is null ? null : ScopeSummary(outcomes),
+            ScopeProfile = today?.ScopeProfile ?? explicitScope?.Contract,
+            ScopeSummary = today is null && explicitScope is null ? null : ScopeSummary(outcomes),
             NativePeriod = CreateNativePeriodMetadata(options, today),
         };
         ChangePortfolioComparisonReport comparison;

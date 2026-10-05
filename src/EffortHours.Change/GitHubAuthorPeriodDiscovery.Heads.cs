@@ -18,33 +18,39 @@ public sealed partial class GitHubAuthorPeriodDiscovery
         DiscoveredRepository[] defaults;
         using (request.ExecutionTelemetry?.Measure(ChangePortfolioExecutionPhases.DefaultHeadDiscovery))
         {
-            DefaultHeadBatchResult batched = request.IncludeHistoricalPullRequests
-                ? new DefaultHeadBatchResult([], repositories)
-                : await GitHubAuthorPeriodDiscoveryJson.DiscoverDefaultHeadsBatchedAsync(
-                    _commands,
-                    workingDirectory,
-                    repositories,
+            if (request.IncludeHistoricalPullRequests)
+            {
+                defaults = await DiscoverHistoricalDefaultHeadsAsync(repositories, aliases, authenticatedLogin, since, until,
+                    request, workingDirectory, counters, cancellationToken).ConfigureAwait(false);
+            }
+            else
+            {
+                DefaultHeadBatchResult batched = await GitHubAuthorPeriodDiscoveryJson.DiscoverDefaultHeadsBatchedAsync(
+                        _commands,
+                        workingDirectory,
+                        repositories,
+                        aliases,
+                        since,
+                        until,
+                        request.DateField,
+                        request.MergePolicy,
+                        request.CoauthorPolicy,
+                        counters,
+                        cancellationToken).ConfigureAwait(false);
+                DiscoveredRepository[] fallback = await DiscoverHeadPhaseAsync(
+                    batched.FallbackRepositories,
                     aliases,
+                    authenticatedLogin,
                     since,
                     until,
-                    request.DateField,
-                    request.MergePolicy,
-                    request.CoauthorPolicy,
+                    request,
+                    workingDirectory,
                     counters,
+                    includeDefaultHead: true,
+                    includeOpenPullRequests: false,
                     cancellationToken).ConfigureAwait(false);
-            DiscoveredRepository[] fallback = await DiscoverHeadPhaseAsync(
-                batched.FallbackRepositories,
-                aliases,
-                authenticatedLogin,
-                since,
-                until,
-                request,
-                workingDirectory,
-                counters,
-                includeDefaultHead: true,
-                includeOpenPullRequests: false,
-                cancellationToken).ConfigureAwait(false);
-            defaults = [.. batched.Repositories, .. fallback];
+                defaults = [.. batched.Repositories, .. fallback];
+            }
         }
 
         if (!request.IncludeOpenPullRequests || repositories.Length == 0)

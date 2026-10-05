@@ -50,7 +50,7 @@ internal static class ChangePortfolioHelp
           --include-history-prs     Include retained open, closed, and merged authored PR heads;
                                     automatic for explicit native period ranges; joint normalization
           --provider-login <login>  PR account (@me allowed); preserves --author Git aliases
-          --scope <engineering>     Apply the versioned native engineering path profile
+          --scope <engineering>     Apply the versioned engineering profile (native or manifest)
           --capacity-hours <hours>  Positive full-day reference denominator for --today
           --preflight               Measure exact selection scope and resource budgets without
                                     constructing snapshots or estimating EHE

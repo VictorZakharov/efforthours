@@ -55,7 +55,7 @@ internal sealed class ChangeAuthorPeriodManifestCommandPlanner
             resolved.ManifestDigest,
             resolved.RepositoryPaths,
             executionTelemetry,
-            allowEmptySelection: false,
+            allowEmptySelection: true,
             cancellationToken: cancellationToken).ConfigureAwait(false);
     }
 

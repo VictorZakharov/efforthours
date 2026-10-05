@@ -118,12 +118,20 @@ public static partial class ContractValidation
         int headCount = 0;
         foreach (ChangeAuthorPeriodManifestRepository repository in repositories)
         {
+            ValidateRewriteEvents(repository.RewriteEvents, errors);
             ValidatePublicId(repository.Id, "repository.id", errors);
             if (!repositoryIds.Add(repository.Id))
             {
                 errors.Add($"Author-period repository ID '{repository.Id}' is duplicated.");
             }
 
+            if (repository.ScopeRepository is { } scopeRepository)
+            {
+                ValidateGitHubRepositoryIdentity(scopeRepository, "repository.scopeRepository", errors);
+                if (repository.GitHubRepository is { } providerRepository &&
+                    !scopeRepository.Equals(providerRepository, StringComparison.OrdinalIgnoreCase))
+                    errors.Add("Scope repository identity must agree with the provider locator when supplied.");
+            }
             bool hasRepositoryPath = !string.IsNullOrWhiteSpace(repository.RepositoryPath);
             bool hasGitHubRepository = !string.IsNullOrWhiteSpace(repository.GitHubRepository);
             if (hasRepositoryPath == hasGitHubRepository)

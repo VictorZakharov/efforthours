@@ -344,6 +344,8 @@ public static partial class ContractValidation
                 action.SuggestedAction == "repair-engineering-scope-profile",
             "github-contributor-identity-unresolved" =>
                 action.SuggestedAction == "specify-provider-login",
+            "github-discovery-budget-exceeded" =>
+                action.SuggestedAction == "narrow-scope-or-use-pinned-manifest",
             "github-provider-request-failed" =>
                 action.SuggestedAction == "inspect-github-cli-health",
             _ => false,

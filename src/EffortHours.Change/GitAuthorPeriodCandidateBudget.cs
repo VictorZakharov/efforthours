@@ -20,6 +20,8 @@ internal sealed record GitAuthorPeriodCandidateQuery
 
     public bool IncludeCoauthors { get; init; }
 
+    public IReadOnlySet<string> RewriteObjectIds { get; init; } = new HashSet<string>();
+
     public long MaximumLedgerBytes { get; init; } =
         ChangeAuthorPeriodManifestLimits.MaximumCandidateLedgerBytesPerRepository;
 

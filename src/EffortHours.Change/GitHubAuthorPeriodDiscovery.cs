@@ -117,210 +117,241 @@ public sealed partial class GitHubAuthorPeriodDiscovery
         GitHubProviderMetadata? cachedMetadata = null;
         string cacheStatus = "not-observed";
         DateTimeOffset cacheObservedAt = DateTimeOffset.UtcNow;
-        using (request.ExecutionTelemetry?.Measure(ChangePortfolioExecutionPhases.ProviderDiscovery))
+        int observedRepositories = 0;
+        int observedConsideredRepositories = 0;
+        try
         {
-            using (request.ExecutionTelemetry?.Measure(
-                ChangePortfolioExecutionPhases.ProviderAuthentication))
+            using (request.ExecutionTelemetry?.Measure(ChangePortfolioExecutionPhases.ProviderDiscovery))
             {
-                authenticatedLogin = await GitHubAuthorPeriodDiscoveryJson.ResolveViewerAsync(
-                    _commands,
-                    workingDirectory,
-                    counters,
-                    cancellationToken).ConfigureAwait(false);
-                GitHubProviderMetadataRead cacheRead = await _metadataCache.ReadWithStatusAsync(
-                    request.Owner,
-                    authenticatedLogin,
-                    cacheObservedAt,
-                    cancellationToken).ConfigureAwait(false);
-                cachedMetadata = cacheRead.Metadata;
-                cacheStatus = cacheRead.Status;
-                string? selectedLogin = SingleContributorLogin(request, authenticatedLogin);
-                if (selectedLogin is not null &&
-                    !selectedLogin.Equals(authenticatedLogin, StringComparison.OrdinalIgnoreCase))
+                using (request.ExecutionTelemetry?.Measure(
+                    ChangePortfolioExecutionPhases.ProviderAuthentication))
                 {
-                    counters.ContributorIdentity = new GitHubContributorIdentity(selectedLogin);
-                }
-
-                if (request.ContributorSample is null)
-                {
-                    resolvedContributors = await ResolveSingleContributorAsync(
-                        request,
+                    authenticatedLogin = await GitHubAuthorPeriodDiscoveryJson.ResolveViewerAsync(
+                        _commands,
                         workingDirectory,
-                        authenticatedLogin,
-                        cachedMetadata?.VerifiedEmails,
                         counters,
                         cancellationToken).ConfigureAwait(false);
-                }
-            }
+                    GitHubProviderMetadataRead cacheRead = await _metadataCache.ReadWithStatusAsync(
+                        request.Owner,
+                        authenticatedLogin,
+                        cacheObservedAt,
+                        cancellationToken).ConfigureAwait(false);
+                    cachedMetadata = cacheRead.Metadata;
+                    cacheStatus = cacheRead.Status;
+                    string? selectedLogin = SingleContributorLogin(request, authenticatedLogin);
+                    if (selectedLogin is not null &&
+                        !selectedLogin.Equals(authenticatedLogin, StringComparison.OrdinalIgnoreCase))
+                    {
+                        counters.ContributorIdentity = new GitHubContributorIdentity(selectedLogin);
+                    }
 
-            using (request.ExecutionTelemetry?.Measure(ChangePortfolioExecutionPhases.OwnerInventory))
-            {
-                ownerType = cachedMetadata?.OwnerType ??
-                    await GitHubAuthorPeriodDiscoveryJson.ResolveOwnerTypeAsync(
+                    if (request.ContributorSample is null)
+                    {
+                        resolvedContributors = await ResolveSingleContributorAsync(
+                            request,
+                            workingDirectory,
+                            authenticatedLogin,
+                            cachedMetadata?.VerifiedEmails,
+                            counters,
+                            cancellationToken).ConfigureAwait(false);
+                    }
+                }
+
+                using (request.ExecutionTelemetry?.Measure(ChangePortfolioExecutionPhases.OwnerInventory))
+                {
+                    ownerType = cachedMetadata?.OwnerType ??
+                        await GitHubAuthorPeriodDiscoveryJson.ResolveOwnerTypeAsync(
+                            _commands,
+                            workingDirectory,
+                            request.Owner,
+                            counters,
+                            cancellationToken).ConfigureAwait(false);
+                    providerRepositories = await GitHubAuthorPeriodDiscoveryJson.ListRepositoriesAsync(
                         _commands,
                         workingDirectory,
                         request.Owner,
+                        ownerType,
+                        authenticatedLogin,
                         counters,
                         cancellationToken).ConfigureAwait(false);
-                providerRepositories = await GitHubAuthorPeriodDiscoveryJson.ListRepositoriesAsync(
-                    _commands,
-                    workingDirectory,
-                    request.Owner,
-                    ownerType,
-                    authenticatedLogin,
-                    counters,
-                    cancellationToken).ConfigureAwait(false);
-            }
+                }
 
-            GitHubDiscoveryRepository[] considered;
-            using (request.ExecutionTelemetry?.Measure(ChangePortfolioExecutionPhases.CandidateDiscovery))
-            {
-                resolvedContributors ??= await ResolveTeamContributorsAsync(
-                    request,
-                    providerRepositories,
-                    workingDirectory,
+                observedRepositories = providerRepositories.Count;
+                observedConsideredRepositories = providerRepositories.Count(repository => repository.DefaultBranch is not null &&
+                    !scope.ExcludesRepository(repository.Identity, repository.Archived, repository.Mirror));
+                GitHubDiscoveryRepository[] considered;
+                using (request.ExecutionTelemetry?.Measure(ChangePortfolioExecutionPhases.CandidateDiscovery))
+                {
+                    resolvedContributors ??= await ResolveTeamContributorsAsync(
+                        request,
+                        providerRepositories,
+                        workingDirectory,
+                        authenticatedLogin,
+                        cachedMetadata?.VerifiedEmails,
+                        since,
+                        until,
+                        counters,
+                        cancellationToken).ConfigureAwait(false);
+                    aliases = [.. resolvedContributors.Contributors
+                        .SelectMany(contributor => contributor.Aliases)
+                        .Distinct(StringComparer.OrdinalIgnoreCase)
+                        .Order(StringComparer.OrdinalIgnoreCase)
+                        .ThenBy(value => value, StringComparer.Ordinal)];
+                    considered = [.. providerRepositories.Where(repository =>
+                        repository.DefaultBranch is not null &&
+                        !scope.ExcludesRepository(repository.Identity, repository.Archived, repository.Mirror))];
+                }
+
+                bool usesViewer = request.AuthorAliases.Any(alias =>
+                    alias.Equals("@me", StringComparison.OrdinalIgnoreCase) ||
+                    alias.Trim().Equals(authenticatedLogin, StringComparison.OrdinalIgnoreCase)) ||
+                    request.ContributorSample?.IncludedAuthors.Any(alias =>
+                        alias.Equals("@me", StringComparison.OrdinalIgnoreCase)) == true;
+                await _metadataCache.WriteAsync(
+                    request.Owner,
                     authenticatedLogin,
-                    cachedMetadata?.VerifiedEmails,
+                    ownerType,
+                    usesViewer ? resolvedContributors.VerifiedEmails : null,
+                    cacheObservedAt,
+                    cancellationToken,
+                    cachedMetadata).ConfigureAwait(false);
+
+                if (request.IncludeOpenPullRequests && request.ContributorSample is null &&
+                    request.ProviderLogin is null && SingleContributorLogin(request, authenticatedLogin) is null)
+                {
+                    counters.PullAuthorIdentity = new GitHubPullAuthorIdentity(
+                        aliases, authenticatedLogin, resolvedContributors.VerifiedEmails);
+                }
+
+                discovered = await DiscoverHeadsAsync(
+                    considered,
+                    aliases,
+                    authenticatedLogin,
                     since,
                     until,
+                    request,
+                    workingDirectory,
                     counters,
                     cancellationToken).ConfigureAwait(false);
-                aliases = [.. resolvedContributors.Contributors
-                    .SelectMany(contributor => contributor.Aliases)
-                    .Distinct(StringComparer.OrdinalIgnoreCase)
-                    .Order(StringComparer.OrdinalIgnoreCase)
-                    .ThenBy(value => value, StringComparer.Ordinal)];
-                considered = [.. providerRepositories.Where(repository =>
-                    repository.DefaultBranch is not null &&
-                    !scope.ExcludesRepository(repository.Identity, repository.Archived, repository.Mirror))];
+                resolvedContributors = counters.ContributorIdentity?.Apply(resolvedContributors)
+                    ?? resolvedContributors;
+                int headCount = discovered.Sum(repository => repository.Heads.Count);
+                if (discovered.Length > ChangeAuthorPeriodManifestLimits.MaximumRepositories ||
+                    headCount > ChangeAuthorPeriodManifestLimits.MaximumHeads)
+                {
+                    throw new InvalidOperationException(
+                        $"GitHub discovery selected {discovered.Length} active repositories and " +
+                        $"{headCount} heads; v1 supports at most " +
+                        $"{ChangeAuthorPeriodManifestLimits.MaximumRepositories} repositories and " +
+                        $"{ChangeAuthorPeriodManifestLimits.MaximumHeads} heads.");
+                }
             }
 
-            bool usesViewer = request.AuthorAliases.Any(alias =>
-                alias.Equals("@me", StringComparison.OrdinalIgnoreCase) ||
-                alias.Trim().Equals(authenticatedLogin, StringComparison.OrdinalIgnoreCase)) ||
-                request.ContributorSample?.IncludedAuthors.Any(alias =>
-                    alias.Equals("@me", StringComparison.OrdinalIgnoreCase)) == true;
-            await _metadataCache.WriteAsync(
-                request.Owner,
-                authenticatedLogin,
-                ownerType,
-                usesViewer ? resolvedContributors.VerifiedEmails : null,
-                cacheObservedAt,
-                cancellationToken,
-                cachedMetadata).ConfigureAwait(false);
-
-            if (request.IncludeOpenPullRequests && request.ContributorSample is null &&
-                request.ProviderLogin is null && SingleContributorLogin(request, authenticatedLogin) is null)
+            Dictionary<string, string> paths = new(StringComparer.Ordinal);
+            Dictionary<string, ChangePathAdmission> admissions = new(StringComparer.Ordinal);
+            int localHeads = 0;
+            int acquiredObjects = 0;
+            long acquiredBytes = 0;
+            using (request.ExecutionTelemetry?.Measure(ChangePortfolioExecutionPhases.Acquisition))
             {
-                counters.PullAuthorIdentity = new GitHubPullAuthorIdentity(
-                    aliases, authenticatedLogin, resolvedContributors.VerifiedEmails);
+                foreach (DiscoveredRepository repository in discovered)
+                {
+                    RepositoryAcquisitionResult acquisition = await _cache.EnsureAsync(
+                        repository.RepositoryIdentity,
+                        repository.Heads,
+                        cancellationToken).ConfigureAwait(false);
+                    paths.Add(repository.RepositoryId, acquisition.RepositoryPath);
+                    admissions.Add(
+                        repository.RepositoryId,
+                        scope.CreateAdmission(repository.RepositoryIdentity));
+                    localHeads += acquisition.LocalHeadCount - repository.Heads.Count(head =>
+                        counters.WasHistoricalHeadAcquired(repository.RepositoryIdentity, head.ObjectId));
+                    acquiredObjects += acquisition.AcquiredObjectCount;
+                    acquiredBytes += acquisition.AcquiredBytes;
+                }
             }
 
-            discovered = await DiscoverHeadsAsync(
-                considered,
-                aliases,
-                authenticatedLogin,
+            ChangeAuthorPeriodManifest manifest = CreateManifest(
+                discovered,
+                paths,
+                resolvedContributors!.Contributors,
                 since,
                 until,
-                request,
-                workingDirectory,
-                counters,
-                cancellationToken).ConfigureAwait(false);
-            resolvedContributors = counters.ContributorIdentity?.Apply(resolvedContributors)
-                ?? resolvedContributors;
-            int headCount = discovered.Sum(repository => repository.Heads.Count);
-            if (discovered.Length > ChangeAuthorPeriodManifestLimits.MaximumRepositories ||
-                headCount > ChangeAuthorPeriodManifestLimits.MaximumHeads)
+                zone,
+                request);
+            int openHeads = discovered.Sum(repository =>
+                repository.Heads.Count(head => head.Id != "default" && head.OpenPullRequest));
+            int historicalHeads = discovered.Sum(repository =>
+                repository.Heads.Count(head => head.Id != "default" && !head.OpenPullRequest));
+            int defaultHeads = discovered.Sum(repository =>
+                repository.Heads.Count(head => head.Id == "default"));
+            ChangePortfolioHostDiscovery summary = new()
             {
-                throw new InvalidOperationException(
-                    $"GitHub discovery selected {discovered.Length} active repositories and " +
-                    $"{headCount} heads; v1 supports at most " +
-                    $"{ChangeAuthorPeriodManifestLimits.MaximumRepositories} repositories and " +
-                    $"{ChangeAuthorPeriodManifestLimits.MaximumHeads} heads.");
-            }
+                ScopeDigest = ChangePortfolioComparisonIdentity.ComputeTextDigest(
+                    ChangeAuthorPeriodManifestIdentity.ComputeDigest(manifest) + "\n" + scope.Contract.Digest),
+                IdentitySources = request.ContributorSample is null
+                    ? IdentitySources(request.AuthorAliases)
+                    : "provider-active-human-sample-and-explicit-inclusions",
+                Complete = true,
+                ProviderRepositoryCount = providerRepositories.Count,
+                ConsideredRepositoryCount = providerRepositories.Count(repository =>
+                    repository.DefaultBranch is not null &&
+                    !scope.ExcludesRepository(repository.Identity, repository.Archived, repository.Mirror)),
+                ActiveRepositoryCount = discovered.Length,
+                DefaultHeadCount = defaultHeads,
+                OpenPullRequestHeadCount = openHeads,
+                OpenPullRequestCount = counters.OpenPullRequestCount,
+                HistoricalPullRequestHeadCount = request.IncludeHistoricalPullRequests ? historicalHeads : null,
+                HistoricalPullRequestCount = request.IncludeHistoricalPullRequests ? counters.HistoricalPullRequestCount : null,
+                ProviderQueryCount = counters.QueryCount,
+                ProviderPageCount = counters.PageCount,
+                ProviderProcessCount = counters.ProcessCount,
+                ProviderProcessStartupMilliseconds = decimal.Round(
+                    (decimal)counters.ProcessStartupElapsed.TotalMilliseconds,
+                    3,
+                    MidpointRounding.AwayFromZero),
+                ProviderMetadataCacheHit = cachedMetadata is not null,
+                ProviderDiagnostics = counters.Diagnostics(cacheStatus),
+                LocalObjectCount = localHeads,
+                AcquiredObjectCount = acquiredObjects + counters.HistoricalAcquiredObjects,
+                AcquiredBytes = acquiredBytes + counters.HistoricalAcquiredBytes,
+                ElapsedMilliseconds = decimal.Round(
+                    (decimal)Stopwatch.GetElapsedTime(started).TotalMilliseconds,
+                    3,
+                    MidpointRounding.AwayFromZero),
+            };
+            return new GitHubAuthorPeriodDiscoveryResult
+            {
+                Manifest = manifest,
+                RepositoryPaths = paths,
+                PathAdmissions = admissions,
+                Discovery = summary,
+                ScopeProfile = scope.Contract,
+                AsOf = asOf,
+                ContributorSelection = resolvedContributors.Selection,
+            };
+        }
+        catch (Exception exception) when (exception is not OperationCanceledException)
+        {
+            exception.Data[FailureDiscoveryKey] = new ChangePortfolioHostDiscovery
+            {
+                ScopeDigest = ChangePortfolioComparisonIdentity.ComputeTextDigest(scope.Contract.Digest),
+                IdentitySources = "requested-provider-identity",
+                Complete = false,
+                ProviderRepositoryCount = observedRepositories,
+                ConsideredRepositoryCount = observedConsideredRepositories,
+                ProviderMetadataCacheHit = cachedMetadata is not null,
+                ProviderQueryCount = counters.QueryCount,
+                ProviderPageCount = counters.PageCount,
+                ProviderProcessCount = counters.ProcessCount,
+                ProviderProcessStartupMilliseconds = decimal.Round((decimal)counters.ProcessStartupElapsed.TotalMilliseconds, 3),
+                ProviderDiagnostics = counters.Diagnostics(cacheStatus),
+                AcquiredObjectCount = counters.HistoricalAcquiredObjects,
+                AcquiredBytes = counters.HistoricalAcquiredBytes,
+                ElapsedMilliseconds = decimal.Round((decimal)Stopwatch.GetElapsedTime(started).TotalMilliseconds, 3),
+            };
+            throw;
         }
 
-        Dictionary<string, string> paths = new(StringComparer.Ordinal);
-        Dictionary<string, ChangePathAdmission> admissions = new(StringComparer.Ordinal);
-        int localHeads = 0;
-        int acquiredObjects = 0;
-        long acquiredBytes = 0;
-        using (request.ExecutionTelemetry?.Measure(ChangePortfolioExecutionPhases.Acquisition))
-        {
-            foreach (DiscoveredRepository repository in discovered)
-            {
-                RepositoryAcquisitionResult acquisition = await _cache.EnsureAsync(
-                    repository.RepositoryIdentity,
-                    repository.Heads,
-                    cancellationToken).ConfigureAwait(false);
-                paths.Add(repository.RepositoryId, acquisition.RepositoryPath);
-                admissions.Add(
-                    repository.RepositoryId,
-                    scope.CreateAdmission(repository.RepositoryIdentity));
-                localHeads += acquisition.LocalHeadCount;
-                acquiredObjects += acquisition.AcquiredObjectCount;
-                acquiredBytes += acquisition.AcquiredBytes;
-            }
-        }
-
-        ChangeAuthorPeriodManifest manifest = CreateManifest(
-            discovered,
-            paths,
-            resolvedContributors!.Contributors,
-            since,
-            until,
-            zone,
-            request);
-        int openHeads = discovered.Sum(repository =>
-            repository.Heads.Count(head => head.Id != "default" && head.OpenPullRequest));
-        int historicalHeads = discovered.Sum(repository =>
-            repository.Heads.Count(head => head.Id != "default" && !head.OpenPullRequest));
-        int defaultHeads = discovered.Sum(repository =>
-            repository.Heads.Count(head => head.Id == "default"));
-        ChangePortfolioHostDiscovery summary = new()
-        {
-            ScopeDigest = ChangePortfolioComparisonIdentity.ComputeTextDigest(
-                ChangeAuthorPeriodManifestIdentity.ComputeDigest(manifest) + "\n" + scope.Contract.Digest),
-            IdentitySources = request.ContributorSample is null
-                ? IdentitySources(request.AuthorAliases)
-                : "provider-active-human-sample-and-explicit-inclusions",
-            Complete = true,
-            ProviderRepositoryCount = providerRepositories.Count,
-            ConsideredRepositoryCount = providerRepositories.Count(repository =>
-                repository.DefaultBranch is not null &&
-                !scope.ExcludesRepository(repository.Identity, repository.Archived, repository.Mirror)),
-            ActiveRepositoryCount = discovered.Length,
-            DefaultHeadCount = defaultHeads,
-            OpenPullRequestHeadCount = openHeads,
-            OpenPullRequestCount = counters.OpenPullRequestCount,
-            HistoricalPullRequestHeadCount = request.IncludeHistoricalPullRequests ? historicalHeads : null,
-            HistoricalPullRequestCount = request.IncludeHistoricalPullRequests ? counters.HistoricalPullRequestCount : null,
-            ProviderQueryCount = counters.QueryCount,
-            ProviderPageCount = counters.PageCount,
-            ProviderProcessCount = counters.ProcessCount,
-            ProviderProcessStartupMilliseconds = decimal.Round(
-                (decimal)counters.ProcessStartupElapsed.TotalMilliseconds,
-                3,
-                MidpointRounding.AwayFromZero),
-            ProviderMetadataCacheHit = cachedMetadata is not null,
-            ProviderDiagnostics = counters.Diagnostics(cacheStatus),
-            LocalObjectCount = localHeads,
-            AcquiredObjectCount = acquiredObjects,
-            AcquiredBytes = acquiredBytes,
-            ElapsedMilliseconds = decimal.Round(
-                (decimal)Stopwatch.GetElapsedTime(started).TotalMilliseconds,
-                3,
-                MidpointRounding.AwayFromZero),
-        };
-        return new GitHubAuthorPeriodDiscoveryResult
-        {
-            Manifest = manifest,
-            RepositoryPaths = paths,
-            PathAdmissions = admissions,
-            Discovery = summary,
-            ScopeProfile = scope.Contract,
-            AsOf = asOf,
-            ContributorSelection = resolvedContributors.Selection,
-        };
     }
 }

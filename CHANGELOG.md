@@ -6,6 +6,28 @@ may still change public contracts with explicit documentation.
 
 ## Unreleased
 
+### Added
+
+- Accept explicit immutable single-commit rewrite pairs and old/new upstream bases
+  in author-period manifests. Preserve the original contribution and attribute only
+  the retained joint remainder to a declared event, with timestamp lineage,
+  unresolved-date warnings and zero-cost out-of-window support evidence.
+- Apply the versioned engineering scope profile to offline author-period manifests,
+  including endpoint analysis and digest-bound comparison checkpoints.
+
+### Fixed
+
+- Return valid complete zero reports for empty explicit manifest selections,
+  including calendar-day and independent-day comparisons. Missing evidence still
+  produces a valid incomplete report with its preserved root failure.
+- Select native historical default-branch history from the managed immutable Git
+  cache after one head probe instead of repeatedly paging complete provider history.
+  Preserve author-date selection without unsafe committer-date pruning, bound
+  acquisition scope, and retain observed counters and safe repository context on
+  provider failure. Initial source acquisition can include inactive repositories.
+- EHE remains experimental and uncalibrated. These allocation/discovery changes
+  establish neither actual labor nor general field performance or accuracy.
+
 ## 0.10.0-alpha.33 - 2026-10-05
 
 ### Fixed

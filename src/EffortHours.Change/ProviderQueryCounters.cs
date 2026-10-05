@@ -2,6 +2,7 @@ namespace EffortHours.Change;
 
 internal sealed partial class ProviderQueryCounters
 {
+    internal const int MaximumQueries = 2048;
     private readonly ChangePortfolioExecutionTelemetry? _telemetry;
     private int _queries;
     private int _pages;
@@ -42,7 +43,14 @@ internal sealed partial class ProviderQueryCounters
 
     public void AddQuery(string phase)
     {
-        Interlocked.Increment(ref _queries);
+        int count;
+        do
+        {
+            count = Volatile.Read(ref _queries);
+            if (count >= MaximumQueries)
+                throw GitHubProviderFailure.DiscoveryBudget(phase,
+                    "Provider discovery reached its 2,048-request safety bound; narrow engineering scope or use a pinned offline manifest. No partial selection is a zero result.");
+        } while (Interlocked.CompareExchange(ref _queries, count + 1, count) != count);
         if (phase == GitHubProviderFailure.DefaultHeadPhase)
         {
             Interlocked.Increment(ref _defaultQueries);

@@ -6,6 +6,31 @@ namespace EffortHours.Change;
 
 internal static partial class GitHubAuthorPeriodDiscoveryJson
 {
+    internal static async Task<string?> ResolveHistoricalDefaultHeadAsync(
+        IExternalCommandRunner commands, string workingDirectory, GitHubDiscoveryRepository repository,
+        ProviderQueryCounters counters, CancellationToken token)
+    {
+        string json = await RunRequiredApiAsync(commands, workingDirectory,
+            ["api", $"repos/{repository.Identity}/commits?sha={Uri.EscapeDataString(repository.DefaultBranch!)}&per_page=1"],
+            counters, paginated: false, token, emptyRepositoryIsEmpty: true).ConfigureAwait(false);
+        try
+        {
+            using JsonDocument document = JsonDocument.Parse(json);
+            JsonElement root = document.RootElement;
+            if (root.ValueKind == JsonValueKind.Object && !root.EnumerateObject().Any()) return null;
+            // The production request is one page. Nested pages are accepted for adapter compatibility.
+            JsonElement[] values = root.ValueKind == JsonValueKind.Array && root.GetArrayLength() > 0 &&
+                root[0].ValueKind == JsonValueKind.Array ? [.. Pages(root)] : [.. root.EnumerateArray()];
+            if (values.Length == 0) return null;
+            counters.ObserveIdentity(ProviderAuthorLogin(values[0]), ParseCommit(values[0]));
+            return RequireObjectId(values[0].GetProperty("sha").GetString(), "default-branch head");
+        }
+        catch (Exception exception) when (exception is JsonException or KeyNotFoundException or InvalidOperationException)
+        {
+            throw GitHubProviderFailure.Malformed(GitHubProviderFailure.DefaultHeadPhase, exception);
+        }
+    }
+
     private static async Task<string?> ResolveMatchingDefaultHeadAsync(
         IExternalCommandRunner commands,
         string workingDirectory,

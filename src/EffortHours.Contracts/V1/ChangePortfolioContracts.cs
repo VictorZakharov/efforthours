@@ -110,6 +110,8 @@ public sealed record ChangePortfolioAttribution
 
     public DateTimeOffset? SelectedTimestamp { get; init; }
 
+    public ChangeRewriteAttribution? Rewrite { get; init; }
+
     public bool MergeCommit { get; init; }
 
     public int ParentCount { get; init; }

@@ -6,7 +6,8 @@ internal sealed record SelectedManifestAuthorCommit(
     GitCommitMetadata Metadata,
     DateTimeOffset SelectedTimestamp,
     IReadOnlyList<ChangePortfolioContributorMatch> ContributorMatches,
-    IReadOnlyList<string> AmbiguityReasons);
+    IReadOnlyList<string> AmbiguityReasons,
+    ChangeRewriteAttribution? Rewrite = null);
 
 internal sealed record AuthorPeriodManifestSelectionResult(
     IReadOnlyList<SelectedManifestAuthorCommit> Commits,

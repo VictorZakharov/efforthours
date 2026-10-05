@@ -96,7 +96,9 @@ internal static class ChangePortfolioExactCompositionNormalizer
         {
             List<ChangePortfolioItemDraft> kept = [];
             HashSet<string> headSets = new(StringComparer.Ordinal);
-            foreach (ChangePortfolioItemDraft item in group.OrderBy(draft => draft.Candidate.Attribution.SelectedTimestamp)
+            foreach (ChangePortfolioItemDraft item in group.OrderBy(draft => draft.Candidate.Attribution.Rewrite?.OriginalAuthorTimestamp ??
+                draft.Candidate.Attribution.SelectedTimestamp)
+                .ThenBy(draft => draft.Candidate.Attribution.Rewrite?.Role == "original" ? 0 : 1)
                 .ThenBy(draft => draft.Id, StringComparer.Ordinal))
             {
                 ChangePortfolioItemDraft? original = kept.FirstOrDefault(earlier =>

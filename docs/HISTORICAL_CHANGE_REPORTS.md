@@ -19,9 +19,17 @@ manifest and ordinary Change commands remain offline under their existing rules.
 
 ## Coverage
 
-Historical discovery fully paginates the owner's visible, scope-admitted default
-branch history without a provider date cutoff, then applies the requested author
-or committer timestamp locally. This avoids rejecting January author dates because
+Historical discovery probes each visible, scope-admitted default branch once for
+its immutable head, acquires missing history into the locked managed bare Git
+cache, and applies exact identity and author/committer selection locally. It no
+longer downloads the complete default history through paginated provider JSON.
+The probe has no date or author cutoff, and the cached Git traversal has no
+committer-date pruning. Inactive repositories can acquire source objects during
+this selection phase; no static/snapshot analysis runs for them. The initial fetch
+can be expensive; subsequent queries reuse the immutable local object store.
+This phase accepts at most 256 scope-admitted repositories before acquisition;
+larger inventories fail with a scope/explicit-manifest remedy rather than truncate.
+A discovery attempt also bounds provider adapter requests at 2,048. This avoids rejecting January author dates because
 the commit was rebased or committed in March. Historical discovery also paginates
 authored open, closed, and merged PR inventories through the selected account
 connection, with the existing complete per-repository fallback. PR creation,
@@ -47,7 +55,8 @@ Git union and one jointly reconciled calculation. Other non-default branches,
 PRs authored by another account, deleted PRs, force-pushed-away intermediate
 commits, and work crossing the selected interval remain outside this boundary.
 Engineering path admission is identical to the native today/named-period path.
-Low-level manifest `--scope` admission remains a separate follow-up.
+Explicit `--author-period-manifest --scope engineering` now applies the same
+versioned profile and repository overrides without requiring provider discovery.
 
 ## Exact retained equivalence
 
@@ -127,3 +136,41 @@ while a combined conflicting-head selection fails it. Such an ambiguous combined
 selection retains conservative structural maxima and explicit uncertainty; equality
 with the single-branch endpoint is not promised. Exact rewrite/composition
 suppression remains intact, and no unproven conflict resolution is discarded.
+
+
+Failed provider setup now preserves observed query/page/process counts, startup
+and elapsed time, metadata-cache state, and repository request observations keyed
+only by opaque digests. A repository observation identifies phase, request/page
+counts and complete/incomplete response state; it exposes no owner, repository
+name, aliases, path or source. Partial observations do not make discovery complete,
+and no failure publishes aggregate EHE or daily zero cells. Operational observations
+remain outside the semantic digest.
+
+Explicit immutable rewrite-event pairing and resolution-only period attribution
+are governed by [Rewrite event attribution](REWRITE_EVENT_ATTRIBUTION.md).
+Native retained-history reports emit `FB5341`: a complete current inventory cannot
+recover discarded pre-rewrite objects or actual resolution dates. A caller can
+provide frozen older objects and an explicit event through the offline manifest;
+missing objects produce incomplete evidence, not invented historical commits.
+
+
+Selected non-viewer GitHub logins can require provider-linked email aliases before
+exact local Git selection. Identity bootstrap uses the selected account's
+`author`-filtered immutable-head metadata without date pruning; that filter learns
+aliases only and never prunes the local author/coauthor change selection. A private
+`historical-identity-cache/1.0.0` entry in each managed repository is bound to viewer,
+selected login and immutable head, expires after 24 hours, charges at most 16 KiB,
+and retains at most 16 aliases under the existing alias bound. It caches identity
+associations, not EHE or source excerpts. A changed head/account forces a fresh
+bounded association lookup. Warm exact-head queries retain the one default-head
+probe and reuse local history without repeating this association inventory. All
+repository associations finish before local selection; every repository uses the
+same completed alias set regardless of task scheduling.
+
+
+The alias lookup uses GitHub's documented
+[immutable SHA and author parameters](https://docs.github.com/en/rest/commits/commits#list-commits).
+It reads explicit 100-row pages, charges their cumulative response characters to
+16 MiB, and admits each page through the process-wide request ceiling. A full
+100-row final page requires an additional empty page to prove completion. An
+interrupted or budget-exhausted association inventory is not cached as complete.

@@ -163,6 +163,7 @@ public static partial class ContractValidation
             return;
         }
 
+        ValidateRewriteAttribution(item, errors);
         ValidateManifestContributorMatches(item.Id, attribution, manifest, errors);
         ValidateManifestHeadReachability(item.Id, attribution.HeadIds, repository, errors);
     }

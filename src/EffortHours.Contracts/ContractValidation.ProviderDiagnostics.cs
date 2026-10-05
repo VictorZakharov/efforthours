@@ -39,6 +39,19 @@ public static partial class ContractValidation
                     ("open-pr", "identity-not-single-login" or "account-connection-unavailable");
         }
 
+        if (value.RepositoryObservations is { } observations)
+        {
+            invalid |= observations.Count > 768 || observations.Sum(item => (long)item.QueryCount) > discovery.ProviderQueryCount ||
+                observations.Sum(item => (long)item.PageCount) > discovery.ProviderPageCount ||
+                observations.Select(item => (item.RepositoryDigest, item.Phase)).Distinct().Count() != observations.Count;
+            foreach (ChangePortfolioProviderRepositoryObservation observation in observations)
+            {
+                ValidateDigest(observation.RepositoryDigest, "provider.repositoryDigest", errors);
+                invalid |= string.IsNullOrWhiteSpace(observation.Phase) || observation.State is not ("complete" or "incomplete") ||
+                    observation.QueryCount < 1 || observation.PageCount < 0 || observation.ElapsedMilliseconds < 0m;
+            }
+        }
+
         if (invalid)
         {
             errors.Add("Host provider diagnostics are invalid or inconsistent.");

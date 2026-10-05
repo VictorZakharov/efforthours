@@ -309,3 +309,43 @@ and reuse, native-scope evidence tests, schema validation, privacy assertions,
 complete-zero coverage, relevant-open-head filtering, failure artifacts, and a
 process-level one-command fixture on hosts that can provide an executable `gh` shim.
 Live-provider access and wall-clock targets remain manual measurements, not CI gates.
+
+
+## Offline parity and historical discovery resources
+
+The explicit author-period manifest now accepts `--scope engineering` with the
+same effective profile, override behavior, path rules and checkpoint binding.
+Offline comparison scope metadata does not require `asOf` or host discovery.
+Complete empty selections produce zero reports without snapshot analysis.
+
+Historical default-head discovery uses one head probe and cached local Git
+identity/time selection, with no author/committer provider date pruning. Its initial
+source acquisition can include inactive repositories. It is bounded to 256 admitted
+repositories and four concurrent probe/acquisition tasks. The provider adapter has
+a 2,048-request attempt ceiling; resource failures retain incomplete reports, not
+partial aggregates. Failure artifacts now preserve observed operational counters
+and safe per-repository phase/request/page/elapsed context. See
+[retained historical reports](HISTORICAL_CHANGE_REPORTS.md) for remaining PR
+inventory limits and unrecoverable history.
+
+
+Selected non-viewer GitHub logins can require provider-linked email aliases before
+exact local Git selection. Identity bootstrap uses the selected account's
+`author`-filtered immutable-head metadata without date pruning; that filter learns
+aliases only and never prunes the local author/coauthor change selection. A private
+`historical-identity-cache/1.0.0` entry in each managed repository is bound to viewer,
+selected login and immutable head, expires after 24 hours, charges at most 16 KiB,
+and retains at most 16 aliases under the existing alias bound. It caches identity
+associations, not EHE or source excerpts. A changed head/account forces a fresh
+bounded association lookup. Warm exact-head queries retain the one default-head
+probe and reuse local history without repeating this association inventory. All
+repository associations finish before local selection; every repository uses the
+same completed alias set regardless of task scheduling.
+
+
+The alias lookup uses GitHub's documented
+[immutable SHA and author parameters](https://docs.github.com/en/rest/commits/commits#list-commits).
+It reads explicit 100-row pages, charges their cumulative response characters to
+16 MiB, and admits each page through the process-wide request ceiling. A full
+100-row final page requires an additional empty page to prove completion. An
+interrupted or budget-exhausted association inventory is not cached as complete.

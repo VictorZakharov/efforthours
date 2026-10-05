@@ -160,8 +160,14 @@ internal static partial class ChangePortfolioCommandOptionsParser
             return Error("Provider-assisted period discovery resolves provider heads; omit --head.");
         }
 
+        if (!providerPeriod && options.Scope is not null &&
+            (options.Scope != "engineering" || options.AuthorPeriodManifestPath is null))
+        {
+            return Error("Offline --scope engineering requires --author-period-manifest.");
+        }
+
         if (!providerPeriod &&
-            (options.Owner is not null || options.WorkspacePath is not null || options.Scope is not null ||
+            (options.Owner is not null || options.WorkspacePath is not null ||
              options.IncludeOpenPullRequests || options.CapacityHours is not null ||
              options.NativeOptionsProvided ||
              options.CapacityHoursPerDay is not null || options.Period is not null ||

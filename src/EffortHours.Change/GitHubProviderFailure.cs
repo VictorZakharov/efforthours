@@ -138,6 +138,9 @@ internal static class GitHubProviderFailure
         "EffortHours could not access its managed repository cache.",
         inner);
 
+    public static GitHubProviderException DiscoveryBudget(string phase, string message) => Create(
+        "github-discovery-budget-exceeded", phase, "narrow-scope-or-use-pinned-manifest", message);
+
     private static GitHubProviderException Create(
         string code,
         string phase,
