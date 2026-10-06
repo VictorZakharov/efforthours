@@ -35,17 +35,29 @@ internal sealed partial class ProviderQueryCounters
             endpoint?.Contains("/pulls/", StringComparison.Ordinal) == true ? endpoint.Contains("/commits", StringComparison.Ordinal) ? "pull-commits" : "pull-detail" :
             phase == GitHubProviderFailure.AuthenticationPhase ? "authentication" : phase == GitHubProviderFailure.OwnerInventoryPhase ? "owner-inventory" :
             phase == GitHubProviderFailure.DefaultHeadPhase ? "default-head" : "candidate-discovery";
-        return new RequestObservation(this, identity is null ? null : ChangePortfolioComparisonIdentity.ComputeTextDigest(identity), phase, operation);
+        return new RequestObservation(this, identity is null ? null : ChangePortfolioComparisonIdentity.ComputeTextDigest(identity), phase, operation,
+            arguments.Contains("graphql", StringComparer.Ordinal) ? "graphql" : "rest");
     }
 
     private ChangePortfolioProviderRequestObservation? LastRequest() { lock (_observationGate) return _lastRequest; }
 
-    internal sealed class RequestObservation(ProviderQueryCounters counters, string? digest, string phase, string operation) : IDisposable
+    internal sealed class RequestObservation(ProviderQueryCounters counters, string? digest, string phase, string operation, string api) : IDisposable
     {
         private readonly long _started = Stopwatch.GetTimestamp();
         private int _pages;
         private bool _complete;
-        public void Complete(int pages) { _pages = pages; _complete = true; }
+        private string? _outcome;
+        private int? _exitCode;
+        private int? _httpStatus;
+        private string? _timeoutOwner;
+        public void Result(ExternalCommandResult result)
+        {
+            _exitCode = result.ExitCode;
+            (_outcome, _httpStatus, _timeoutOwner) = GitHubProviderRequestFailure.Classify(result);
+        }
+        public void Fail(string outcome, string? timeoutOwner = null) { _outcome = outcome; _timeoutOwner = timeoutOwner; }
+        public void Fallback() { _complete = true; _outcome = "fallback"; }
+        public void Complete(int pages) { _pages = pages; _complete = true; _outcome = "success"; }
         public void Dispose()
         {
             long ended = Stopwatch.GetTimestamp();
@@ -53,9 +65,15 @@ internal sealed partial class ProviderQueryCounters
             lock (counters._observationGate)
             {
                 // Preserve an interrupted request over completed siblings drained during cancellation.
-                if (counters._lastRequest?.State != "incomplete" || !_complete)
+                if (counters._lastRequest?.State != "incomplete" ||
+                    !_complete && (_outcome != "cancelled" || counters._lastRequest.Outcome == "cancelled"))
                     counters._lastRequest = new()
                     {
+                        Api = api,
+                        Outcome = _outcome,
+                        ExitCode = _exitCode,
+                        HttpStatus = _httpStatus,
+                        TimeoutOwner = _timeoutOwner,
                         Phase = phase,
                         Operation = operation,
                         RepositoryDigest = digest,

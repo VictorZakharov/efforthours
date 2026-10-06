@@ -72,18 +72,15 @@
     },
     "eventTimestamp": {
       "type": "string",
-      "format": "date-time",
-      "pattern": "(Z|\\+00:00)$"
+      "format": "date-time"
     },
     "sinceInclusive": {
       "type": "string",
-      "format": "date-time",
-      "pattern": "(Z|\\+00:00)$"
+      "format": "date-time"
     },
     "untilExclusive": {
       "type": "string",
-      "format": "date-time",
-      "pattern": "(Z|\\+00:00)$"
+      "format": "date-time"
     }
   },
   "additionalProperties": false,

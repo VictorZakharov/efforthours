@@ -14,15 +14,15 @@ internal static class ChangePortfolioReplayMarkdownRenderer
         markdown.AppendLine();
         markdown.AppendLine("Standalone comparisons are non-additive. Event allocation conserves the jointly deduplicated budget; replay/date declarations do not establish actual labor or historical causation. Missing evidence remains unresolved.");
         markdown.AppendLine();
-        markdown.AppendLine("| Repository / event | Event UTC | Confidence | Status | Joint budget | Standalone novel | Event allocation | Capped |");
-        markdown.AppendLine("| --- | --- | --- | --- | ---: | ---: | ---: | --- |");
+        markdown.AppendLine("| Repository / event | Event UTC | Confidence | Status | Joint budget | Original reservation | Standalone novel | Event allocation | Capped |");
+        markdown.AppendLine("| --- | --- | --- | --- | ---: | ---: | ---: | ---: | --- |");
         foreach (ChangePortfolioReplayAllocation allocation in allocations)
         {
             ChangePortfolioReplayEvidence evidence = allocation.Evidence;
             markdown.Append("| ").Append(evidence.Review.RepositoryId).Append(" / ").Append(evidence.Event.Id)
                 .Append(" | ").Append(evidence.Event.EventTimestamp?.ToString("O", CultureInfo.InvariantCulture) ?? "unresolved")
                 .Append(" | ").Append(evidence.Review.ReplayConfidence).Append(" | ").Append(allocation.Status)
-                .Append(" | ").Append(Hours(allocation.AvailableJointExpectedHours)).Append(" | ").Append(Hours(allocation.StandaloneNovelExpectedHours))
+                .Append(" | ").Append(Hours(allocation.AvailableJointExpectedHours)).Append(" | ").Append(Hours(allocation.ReservedOriginalExpectedHours)).Append(" | ").Append(Hours(allocation.StandaloneNovelExpectedHours))
                 .Append(" | ").Append(Hours(allocation.AllocatedEventExpectedHours)).Append(" | ").Append(allocation.AllocationCapped ? "yes" : "no").AppendLine(" |");
         }
     }

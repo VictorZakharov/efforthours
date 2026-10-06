@@ -25,6 +25,12 @@ internal sealed partial class ChangePortfolioCommand
         phase = action.Phase;
         string message = exception is GitHubProviderException { Action.FailureCode: "github-discovery-budget-exceeded" }
             ? exception.Message : SafeFailureMessage(action.FailureCode);
+        var failedRequest = GitHubAuthorPeriodDiscovery.FailureDiscovery(exception)?.ProviderDiagnostics?.LastRequest;
+        if (failedRequest is { State: "incomplete", Outcome: not null })
+            message += $" Request operation={failedRequest.Operation}; api={failedRequest.Api}; outcome={failedRequest.Outcome}; " +
+                $"exit={failedRequest.ExitCode?.ToString(System.Globalization.CultureInfo.InvariantCulture) ?? "unavailable"}; " +
+                $"http={failedRequest.HttpStatus?.ToString(System.Globalization.CultureInfo.InvariantCulture) ?? "unavailable"}; " +
+                $"timeout-owner={failedRequest.TimeoutOwner ?? "none-observed"}.";
         string category = action.FailureCode;
         ChangePortfolioComparisonFailure failure = new()
         {
@@ -201,6 +207,7 @@ internal sealed partial class ChangePortfolioCommand
         "github-cli-unauthenticated" => "The GitHub CLI is not authenticated.",
         "github-owner-forbidden-or-not-found" =>
             "The requested GitHub owner was not found or is not accessible.",
+        "github-provider-service-unavailable" => "GitHub returned a server error; retry after provider recovery.",
         "github-provider-rate-limited" => "GitHub rate limiting prevented complete discovery.",
         "github-network-unavailable" => "GitHub could not be reached.",
         "github-contributor-identity-unresolved" =>

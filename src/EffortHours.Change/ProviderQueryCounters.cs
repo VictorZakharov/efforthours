@@ -16,6 +16,8 @@ internal sealed partial class ProviderQueryCounters
         _telemetry = telemetry;
     }
 
+    public Func<string>? CancellationOwner { get; set; }
+
     public GitHubContributorIdentity? ContributorIdentity { get; set; }
 
     public GitHubPullAuthorIdentity? PullAuthorIdentity { get; set; }

@@ -287,6 +287,11 @@
             "elapsedMilliseconds"
           ],
           "properties": {
+            "api": {"enum": ["rest", "graphql"]},
+            "outcome": {"enum": ["success", "fallback", "process-exit", "api-failure", "http-failure", "transport-failure", "transport-timeout", "response-malformed", "output-bound", "start-failure", "cancelled"]},
+            "exitCode": {"type": "integer"},
+            "httpStatus": {"type": "integer", "minimum": 400, "maximum": 599},
+            "timeoutOwner": {"enum": ["provider-transport", "discovery-deadline", "caller", "sibling-failure", "unknown"]},
             "phase": {
               "type": "string",
               "minLength": 1
@@ -816,6 +821,7 @@
             "github-provider-response-malformed",
             "managed-cache-access-denied",
             "engineering-scope-load-failed",
+            "github-provider-service-unavailable",
             "github-provider-request-failed",
             "github-contributor-identity-unresolved",
             "github-discovery-budget-exceeded"
@@ -845,6 +851,7 @@
             "retry-after-valid-provider-response",
             "grant-managed-cache-access",
             "repair-engineering-scope-profile",
+            "retry-after-provider-recovery",
             "inspect-github-cli-health",
             "specify-provider-login",
             "narrow-scope-or-use-pinned-manifest",

@@ -31,22 +31,31 @@ internal static partial class GitHubAuthorPeriodDiscoveryJson
                 cancellationToken,
                 requireSuccess: false).ConfigureAwait(false);
         }
+        catch (OperationCanceledException)
+        {
+            observation.Fail("cancelled", counters.CancellationOwner?.Invoke() ?? "unknown");
+            throw;
+        }
         catch (ExternalCommandException exception)
         {
+            observation.Fail("start-failure");
             throw GitHubProviderFailure.FromStart(exception, phase);
         }
 
         counters.AddProcess(result.ProcessStartupElapsed);
+        observation.Result(result);
         if (result.ExitCode != 0 && emptyRepositoryIsEmpty && IsEmptyRepository(result))
         {
             counters.AddPages(1);
             observation.Complete(1);
+            observation.Fallback();
             return paginated ? "[[]]" : "{}";
         }
 
         if (optional && result.ExitCode != 0 &&
             IsOptionalIdentityPermissionFailure(result))
         {
+            observation.Fallback();
             return null;
         }
 
@@ -55,8 +64,9 @@ internal static partial class GitHubAuthorPeriodDiscoveryJson
             GitHubProviderException failure = GitHubProviderFailure.FromResult(result, phase);
             if (capabilityFallback &&
                 failure.Action.FailureCode is
-                    "github-provider-request-failed" or "github-owner-forbidden-or-not-found")
+                    "github-provider-request-failed" or "github-provider-service-unavailable" or "github-owner-forbidden-or-not-found")
             {
+                observation.Fallback();
                 return null;
             }
 
@@ -65,32 +75,24 @@ internal static partial class GitHubAuthorPeriodDiscoveryJson
 
         if (result.StandardOutput.Length > MaximumResponseCharacters)
         {
-            throw new InvalidOperationException(
-                "GitHub discovery response exceeded the bounded adapter input size.");
+            observation.Fail("output-bound");
+            throw GitHubProviderFailure.DiscoveryBudget(phase,
+                "GitHub discovery response exceeded the bounded adapter input size; no partial aggregate was published.");
         }
 
-        if (paginated)
+        try
         {
-            try
-            {
-                using JsonDocument document = JsonDocument.Parse(result.StandardOutput);
-                if (document.RootElement.ValueKind != JsonValueKind.Array)
-                {
-                    throw new JsonException();
-                }
-
-                counters.AddPages(document.RootElement.GetArrayLength());
-                observation.Complete(document.RootElement.GetArrayLength());
-            }
-            catch (JsonException exception)
-            {
-                throw GitHubProviderFailure.Malformed(phase, exception);
-            }
+            using JsonDocument document = JsonDocument.Parse(result.StandardOutput);
+            if (paginated && document.RootElement.ValueKind != JsonValueKind.Array) throw new JsonException();
+            int pages = paginated ? document.RootElement.GetArrayLength() : 1;
+            counters.AddPages(pages);
+            observation.Complete(pages);
         }
-        else
+        catch (JsonException exception)
         {
-            counters.AddPages(1);
-            observation.Complete(1);
+            if (capabilityFallback) { observation.Fallback(); return null; }
+            observation.Fail("response-malformed");
+            throw GitHubProviderFailure.Malformed(phase, exception);
         }
 
         return result.StandardOutput;

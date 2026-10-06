@@ -19,11 +19,12 @@ internal static partial class ChangePortfolioGroupNormalizer
             decimal? novel = evidence.Review.Comparisons.SingleOrDefault(value => value.Role == "novel-retained-delta")?.Effort.Expected;
             bool resolved = evidence.Event.ReplayObjectId is not null && evidence.Event.EventTimestamp is not null;
             decimal? allocated = null;
+            decimal? reserved = resolved ? Math.Min(budget, evidence.Review.Comparisons.Single(value => value.Role == "original-implementation").Effort.Expected) : null;
             string status = evidence.Review.EventAttributionStatus;
             if (resolved)
             {
                 PreserveOriginalDuplicateDates();
-                decimal eventBudget = Math.Min(novel!.Value, budget);
+                decimal eventBudget = Math.Min(novel!.Value, budget - reserved!.Value);
                 Distribute("original", budget - eventBudget);
                 Distribute("retained", eventBudget);
                 bool inside = evidence.Event.EventTimestamp >= evidence.Review.SinceInclusive && evidence.Event.EventTimestamp < evidence.Review.UntilExclusive;
@@ -35,9 +36,10 @@ internal static partial class ChangePortfolioGroupNormalizer
                 Evidence = evidence,
                 Status = status,
                 AvailableJointExpectedHours = budget,
+                ReservedOriginalExpectedHours = reserved,
                 StandaloneNovelExpectedHours = novel,
                 AllocatedEventExpectedHours = allocated,
-                AllocationCapped = resolved && novel > budget,
+                AllocationCapped = resolved && novel > budget - reserved!.Value,
             });
 
             void PreserveOriginalDuplicateDates()

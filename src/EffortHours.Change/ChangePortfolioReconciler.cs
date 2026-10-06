@@ -77,6 +77,7 @@ public sealed partial class ChangePortfolioReconciler
         List<Diagnostic> diagnostics =
         [
             .. (planningDiagnostics ?? []),
+            .. candidates.Select(candidate => candidate.ReplayEvidence?.Event).OfType<ChangePortfolioReplayEvent>().SelectMany(ChangePortfolioReplayDiagnostics.Create),
             .. candidates.Where(candidate => candidate.FinalDelta is not null).SelectMany(candidate =>
                 candidate.FinalDelta!.Report.Diagnostics.Where(diagnostic => diagnostic.Code == "FB5210").Select(diagnostic => diagnostic with
                 {
@@ -168,7 +169,7 @@ public sealed partial class ChangePortfolioReconciler
         ChangePortfolioReport report = new()
         {
             EstimatorVersion = candidates.Any(candidate => candidate.ReplayEvidence is not null)
-                ? "change-portfolio/0.6.6+change-seed/0.21.3+seed-rules/0.4.0" : Version,
+                ? "change-portfolio/0.6.7+change-seed/0.21.3+seed-rules/0.4.0" : Version,
             ReplayAllocations = results.Any(result => result.ReplayAllocations is not null)
                 ? [.. results.SelectMany(result => result.ReplayAllocations ?? [])] : null,
             SourceChangeEstimatorVersion = candidates.Count == 0

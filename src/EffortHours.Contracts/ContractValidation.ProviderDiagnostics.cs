@@ -52,6 +52,15 @@ public static partial class ContractValidation
             invalid |= string.IsNullOrWhiteSpace(request.Phase) || request.Operation is not ("pull-metadata-batch" or "pull-inventory" or
                 "pull-commits" or "pull-detail" or "authentication" or "owner-inventory" or "default-head" or "candidate-discovery") ||
                 request.State is not ("complete" or "incomplete") || request.PageCount < 0 || request.ElapsedMilliseconds < 0;
+            invalid |= request.Api is not (null or "rest" or "graphql") ||
+                request.Outcome is not (null or "success" or "fallback" or "process-exit" or "api-failure" or "http-failure" or "transport-failure" or
+                    "transport-timeout" or "response-malformed" or "output-bound" or "start-failure" or "cancelled") ||
+                request.HttpStatus is < 400 or > 599 || request.TimeoutOwner is not
+                    (null or "provider-transport" or "discovery-deadline" or "caller" or "sibling-failure" or "unknown") ||
+                request.Outcome == "success" && (request.State != "complete" || request.ExitCode != 0 || request.TimeoutOwner is not null || request.HttpStatus is not null) ||
+                request.Outcome == "http-failure" && (request.HttpStatus is null || request.State != "incomplete") ||
+                request.Outcome == "transport-timeout" && request.TimeoutOwner != "provider-transport" ||
+                request.Outcome == "cancelled" && request.TimeoutOwner is null;
             if (request.RepositoryDigest is not null) ValidateDigest(request.RepositoryDigest, "provider.request.repositoryDigest", errors);
         }
         if (value.RepositoryObservations is { } observations)
