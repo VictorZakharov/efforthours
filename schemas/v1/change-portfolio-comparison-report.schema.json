@@ -234,6 +234,95 @@
       "required": ["metadataCacheStatus", "defaultHeadBatchCount", "defaultHeadQueryCount",
         "openPullRequestAccountQueryCount", "openPullRequestQueryCount", "fallbacks"],
       "properties": {
+        "historicalPullRequests": {
+          "type": "object",
+          "required": [
+            "candidateCount",
+            "cacheHitCount",
+            "batchCount",
+            "fallbackCount",
+            "completedCount",
+            "selectedCount",
+            "pendingCount"
+          ],
+          "properties": {
+            "candidateCount": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "cacheHitCount": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "batchCount": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "fallbackCount": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "completedCount": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "selectedCount": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "pendingCount": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          "additionalProperties": false
+        },
+        "lastRequest": {
+          "type": "object",
+          "required": [
+            "phase",
+            "operation",
+            "state",
+            "pageCount",
+            "elapsedMilliseconds"
+          ],
+          "properties": {
+            "phase": {
+              "type": "string",
+              "minLength": 1
+            },
+            "operation": {
+              "enum": [
+                "pull-metadata-batch",
+                "pull-inventory",
+                "pull-commits",
+                "pull-detail",
+                "authentication",
+                "owner-inventory",
+                "default-head",
+                "candidate-discovery"
+              ]
+            },
+            "repositoryDigest": {
+              "$ref": "#/$defs/digest"
+            },
+            "state": {
+              "enum": [
+                "complete",
+                "incomplete"
+              ]
+            },
+            "pageCount": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "elapsedMilliseconds": {
+              "type": "number",
+              "minimum": 0
+            }
+          },
+          "additionalProperties": false
+        },
         "repositoryObservations": {
           "type": "array", "maxItems": 768,
           "items": {
@@ -245,7 +334,9 @@
               "state": { "enum": ["complete", "incomplete"] },
               "queryCount": { "type": "integer", "minimum": 1 },
               "pageCount": { "type": "integer", "minimum": 0 },
-              "elapsedMilliseconds": { "type": "number", "minimum": 0 }
+              "elapsedMilliseconds": { "type": "number", "minimum": 0 },
+              "elapsedKind": { "const": "cumulative-request" },
+              "wallElapsedMilliseconds": { "type": "number", "minimum": 0 }
             },
             "additionalProperties": false
           }
@@ -755,7 +846,8 @@
             "repair-engineering-scope-profile",
             "inspect-github-cli-health",
             "specify-provider-login",
-            "narrow-scope-or-use-pinned-manifest"
+            "narrow-scope-or-use-pinned-manifest",
+            "inspect-pr-discovery-or-use-pinned-manifest"
           ]
         },
         "suggestedApprovalPrefix": {

@@ -10,6 +10,9 @@ public static partial class Program
 {
     public static async Task<int> Main(string[] arguments)
     {
+        if (arguments.Length > 0 && arguments[0] == "--historical-pr-discovery")
+            return await HistoricalPullDiscoveryBenchmark.RunAsync(arguments).ConfigureAwait(false);
+
         if (AuthorPeriodBenchmarkWorker.IsWorker(arguments))
         {
             return await RunAuthorPeriodWorkerAsync(arguments).ConfigureAwait(false);

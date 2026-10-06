@@ -28,6 +28,8 @@ internal sealed partial class ProviderQueryCounters
     public ChangePortfolioProviderDiagnostics Diagnostics(string cacheStatus) => new()
     {
         MetadataCacheStatus = cacheStatus,
+        HistoricalPullRequests = HistoricalPullPlan(),
+        LastRequest = LastRequest(),
         RepositoryObservations = RepositoryObservations(),
         IdentityResolution = IdentityResolution,
         OpenPullRequestCandidateRepositoryCount = Volatile.Read(ref _pullCandidateRepositories),

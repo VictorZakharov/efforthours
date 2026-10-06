@@ -349,3 +349,14 @@ It reads explicit 100-row pages, charges their cumulative response characters to
 16 MiB, and admits each page through the process-wide request ceiling. A full
 100-row final page requires an additional empty page to prove completion. An
 interrupted or budget-exhausted association inventory is not cached as complete.
+
+## Historical PR batching diagnostics
+
+Retained-history discovery uses the bounded batch/cache/fallback plan in
+[HISTORICAL_CHANGE_REPORTS.md](HISTORICAL_CHANGE_REPORTS.md#historical-pr-request-plan-and-metadata-reuse).
+The optional v1 historical PR request-plan and last-request context remain outside
+semantic digests. Repository request elapsed values are explicitly cumulative;
+separate wall spans are not sums of parallel calls. Single-repository PR deadline
+failures identify provider PR discovery and suggest inspecting it or using a pinned
+manifest, with no automatic retry. Ordinary today selection and EHE arithmetic
+remain unchanged; lost daily history still requires explicit declarations.

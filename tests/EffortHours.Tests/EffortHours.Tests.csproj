@@ -32,4 +32,7 @@
     <ProjectReference Include="../../src/EffortHours.Reporting/EffortHours.Reporting.csproj" />
     <ProjectReference Include="../../src/EffortHours.Review/EffortHours.Review.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Include="../../benchmarks/EffortHours.ChangeBenchmarks/HistoricalPullProviderFixture.cs" Link="HistoricalPullProviderFixture.cs" />
+  </ItemGroup>
 </Project>

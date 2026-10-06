@@ -34,6 +34,8 @@ internal sealed class GitHubDiscoveryAcquisitionBudget(
         };
     }
 
+    public ProviderQueryCounters? Counters { get; set; }
+    private string? _acquisitionFailurePhase;
     private Exception? _rootFailure;
 
     public Exception Failure(Exception exception)
@@ -56,9 +58,9 @@ internal sealed class GitHubDiscoveryAcquisitionBudget(
     }
 
     private GitHubProviderException BudgetFailure() => GitHubProviderFailure.DiscoveryBudget(
-        GitHubProviderFailure.ManagedCachePhase, _bytesExceeded
+        _acquisitionFailurePhase ?? Counters?.LastPhase ?? GitHubProviderFailure.CandidateDiscoveryPhase, _bytesExceeded
             ? "Native acquisition exceeded its observed object-store growth budget. Narrow --repository or explicitly increase --max-acquired-mib; no aggregate was published."
-            : "Native discovery/acquisition exceeded its deadline. Narrow --repository or explicitly increase --discovery-timeout-seconds; completed immutable cache objects remain reusable, and no aggregate was published.");
+            : "Native discovery/acquisition exceeded its deadline; inspect the recorded request plan and active subphase. Completed immutable cache objects remain reusable, and no aggregate was published.", !_bytesExceeded && _acquisitionFailurePhase is null && request.Repositories.Count == 1 && Counters?.LastPhase == GitHubProviderFailure.OpenPullRequestPhase ? "inspect-pr-discovery-or-use-pinned-manifest" : "narrow-scope-or-use-pinned-manifest");
 
     public async Task<RepositoryAcquisitionResult> EnsureAsync(GitHubRepositoryCache cache, string identity,
         IReadOnlyList<DiscoveredHead> heads, string repositoryId, string reason, CancellationToken token)
@@ -81,6 +83,7 @@ internal sealed class GitHubDiscoveryAcquisitionBudget(
         }
         catch (Exception exception)
         {
+            _acquisitionFailurePhase = GitHubProviderFailure.ManagedCachePhase;
             Stop(exception);
             throw;
         }
@@ -97,6 +100,7 @@ internal sealed class GitHubDiscoveryAcquisitionBudget(
             if (exceeded)
             {
                 callerToken.ThrowIfCancellationRequested();
+                _acquisitionFailurePhase = GitHubProviderFailure.ManagedCachePhase;
                 throw BudgetFailure();
             }
         }

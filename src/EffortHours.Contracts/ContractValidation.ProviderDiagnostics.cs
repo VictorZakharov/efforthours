@@ -39,6 +39,21 @@ public static partial class ContractValidation
                     ("open-pr", "identity-not-single-login" or "account-connection-unavailable");
         }
 
+        if (value.HistoricalPullRequests is { } plan)
+        {
+            invalid |= plan.CandidateCount < 0 || plan.CacheHitCount < 0 || plan.BatchCount < 0 || plan.FallbackCount < 0 ||
+                plan.CompletedCount < 0 || plan.SelectedCount < 0 || plan.PendingCount < 0 ||
+                plan.CompletedCount + (long)plan.PendingCount != plan.CandidateCount || plan.CacheHitCount > plan.CompletedCount ||
+                plan.SelectedCount > plan.CompletedCount || plan.FallbackCount > plan.CandidateCount - plan.CacheHitCount ||
+                plan.BatchCount > value.OpenPullRequestQueryCount || discovery.Complete && plan.PendingCount != 0;
+        }
+        if (value.LastRequest is { } request)
+        {
+            invalid |= string.IsNullOrWhiteSpace(request.Phase) || request.Operation is not ("pull-metadata-batch" or "pull-inventory" or
+                "pull-commits" or "pull-detail" or "authentication" or "owner-inventory" or "default-head" or "candidate-discovery") ||
+                request.State is not ("complete" or "incomplete") || request.PageCount < 0 || request.ElapsedMilliseconds < 0;
+            if (request.RepositoryDigest is not null) ValidateDigest(request.RepositoryDigest, "provider.request.repositoryDigest", errors);
+        }
         if (value.RepositoryObservations is { } observations)
         {
             invalid |= observations.Count > 768 || observations.Sum(item => (long)item.QueryCount) > discovery.ProviderQueryCount ||
@@ -48,7 +63,9 @@ public static partial class ContractValidation
             {
                 ValidateDigest(observation.RepositoryDigest, "provider.repositoryDigest", errors);
                 invalid |= string.IsNullOrWhiteSpace(observation.Phase) || observation.State is not ("complete" or "incomplete") ||
-                    observation.QueryCount < 1 || observation.PageCount < 0 || observation.ElapsedMilliseconds < 0m;
+                    observation.QueryCount < 1 || observation.PageCount < 0 || observation.ElapsedMilliseconds < 0m ||
+                    observation.ElapsedKind is not (null or "cumulative-request") || observation.WallElapsedMilliseconds < 0m ||
+                    observation.WallElapsedMilliseconds > discovery.ElapsedMilliseconds;
             }
         }
 

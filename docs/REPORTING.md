@@ -387,3 +387,14 @@ saved artifacts only and never changes estimator priors, logged time entries,
 shared-credit policy, or the experimental/uncalibrated boundary. Native provider
 coverage restrictions and acquisition limits are governed by
 [HISTORICAL_CHANGE_REPORTS.md](HISTORICAL_CHANGE_REPORTS.md).
+
+## Historical PR batching diagnostics
+
+Retained-history discovery uses the bounded batch/cache/fallback plan in
+[HISTORICAL_CHANGE_REPORTS.md](HISTORICAL_CHANGE_REPORTS.md#historical-pr-request-plan-and-metadata-reuse).
+The optional v1 historical PR request-plan and last-request context remain outside
+semantic digests. Repository request elapsed values are explicitly cumulative;
+separate wall spans are not sums of parallel calls. Single-repository PR deadline
+failures identify provider PR discovery and suggest inspecting it or using a pinned
+manifest, with no automatic retry. Ordinary today selection and EHE arithmetic
+remain unchanged; lost daily history still requires explicit declarations.

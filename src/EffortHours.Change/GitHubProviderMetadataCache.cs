@@ -31,6 +31,8 @@ internal sealed class GitHubProviderMetadataCache
         _root = Path.GetFullPath(root);
     }
 
+    internal IGitHubPullMetadataCache PullMetadata(string viewer) => new GitHubPullMetadataCache(Path.Combine(_root, "pulls"), viewer);
+
     public async Task<GitHubProviderMetadata?> ReadAsync(
         string owner,
         string authenticatedLogin,

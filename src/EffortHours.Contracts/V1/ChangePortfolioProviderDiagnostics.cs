@@ -18,6 +18,10 @@ public sealed record ChangePortfolioProviderDiagnostics
 
     public IReadOnlyList<ChangePortfolioProviderRepositoryObservation>? RepositoryObservations { get; init; }
 
+    public ChangePortfolioHistoricalPullRequestPlan? HistoricalPullRequests { get; init; }
+
+    public ChangePortfolioProviderRequestObservation? LastRequest { get; init; }
+
     public IReadOnlyList<ChangePortfolioProviderFallback> Fallbacks { get; init; } = [];
 }
 
@@ -36,6 +40,29 @@ public sealed record ChangePortfolioProviderRepositoryObservation
     public required string Phase { get; init; }
     public required string State { get; init; }
     public int QueryCount { get; init; }
+    public int PageCount { get; init; }
+    public decimal ElapsedMilliseconds { get; init; }
+    public string? ElapsedKind { get; init; }
+    public decimal? WallElapsedMilliseconds { get; init; }
+}
+
+public sealed record ChangePortfolioHistoricalPullRequestPlan
+{
+    public int CandidateCount { get; init; }
+    public int CacheHitCount { get; init; }
+    public int BatchCount { get; init; }
+    public int FallbackCount { get; init; }
+    public int CompletedCount { get; init; }
+    public int SelectedCount { get; init; }
+    public int PendingCount { get; init; }
+}
+
+public sealed record ChangePortfolioProviderRequestObservation
+{
+    public required string Phase { get; init; }
+    public required string Operation { get; init; }
+    public string? RepositoryDigest { get; init; }
+    public required string State { get; init; }
     public int PageCount { get; init; }
     public decimal ElapsedMilliseconds { get; init; }
 }
