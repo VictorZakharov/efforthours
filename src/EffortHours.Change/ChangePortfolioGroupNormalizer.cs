@@ -88,7 +88,9 @@ internal static partial class ChangePortfolioGroupNormalizer
             normalized.Expected);
 
         AllocateRewritePairs(drafts);
-        if (drafts.Any(draft => draft.Candidate.Attribution.Rewrite?.SupportOnly == true))
+        List<ChangePortfolioReplayAllocation> replayAllocations = AllocateReplayRanges(drafts);
+        if (replayAllocations.Count > 0) active = [.. drafts.Where(draft => !draft.Suppressed)];
+        if (drafts.Any(IsRewriteSupport))
         {
             categories = RemoveRewriteSupport(drafts, categories, normalized.Expected);
             normalized = ContractValidation.Sum(categories.Select(category => category.Hours));
@@ -107,9 +109,11 @@ internal static partial class ChangePortfolioGroupNormalizer
                 "Exact selected final effects are re-estimated through the canonical endpoint Change engine; discarded intermediate expansion is excluded.",
                 [.. drafts.Select(draft => draft.Id).Order(StringComparer.Ordinal)], finalDelta.Report.Evidence.Paths.Count)];
         }
-        if (drafts.Any(draft => draft.Candidate.Attribution.Rewrite?.SupportOnly == true))
+        if (drafts.Any(IsRewriteSupport))
             causes = [new ChangePortfolioAdjustmentCause(ChangePortfolioAdjustmentKind.Interaction, 1m,
-                "Declared rewrite pairs are reconciled together; out-of-window baseline or resolution contributions are retained as evidence only and excluded from this period.",
+                replayAllocations.Count > 0
+                    ? "Declared replay ranges are reconciled together before their conserved allocations; out-of-window original or novel contributions are retained as evidence only and excluded from this period."
+                    : "Declared rewrite pairs are reconciled together; out-of-window baseline or resolution contributions are retained as evidence only and excluded from this period.",
                 [.. drafts.Select(draft => draft.Id).Order(StringComparer.Ordinal)], 0)];
         IReadOnlyList<ChangePortfolioAdjustment> adjustments = ChangePortfolioAdjustmentBuilder.Build(
             repositoryId,
@@ -151,7 +155,7 @@ internal static partial class ChangePortfolioGroupNormalizer
             AdjustmentIds = [.. adjustments.Select(adjustment => adjustment.Id)],
             UncertaintyReasons = [.. groupUncertainty.Order(StringComparer.Ordinal)],
         };
-        return new ChangePortfolioGroupResult(group, adjustments);
+        return new ChangePortfolioGroupResult(group, adjustments, replayAllocations.Count == 0 ? null : replayAllocations);
     }
 
     private static void AddAttributionUncertainty(

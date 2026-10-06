@@ -6,6 +6,10 @@ EffortHours reports must make large estimates reviewable without changing their
 hours or hiding calculation lineage. The canonical estimate remains lossless;
 compact views are deterministic projections with stable drill-down IDs.
 
+Optional [replay range allocation](REPLAY_RANGE_ATTRIBUTION.md) records canonical
+non-additive comparisons, conserved event allocations and explicit caps in JSON
+and both portfolio Markdown views. Missing replay/date effort remains unavailable.
+
 ## Canonical report
 
 `EstimateReport` v1 is the canonical repository estimate contract:

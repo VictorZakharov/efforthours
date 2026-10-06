@@ -24,8 +24,7 @@ internal static partial class ChangePortfolioGroupNormalizer
         CategoryEstimate[] categories,
         decimal total)
     {
-        foreach (ChangePortfolioItemDraft draft in drafts.Where(value =>
-            value.Candidate.Attribution.Rewrite?.SupportOnly == true))
+        foreach (ChangePortfolioItemDraft draft in drafts.Where(IsRewriteSupport))
             draft.AllocatedExpectedHours = 0m;
         decimal retained = drafts.Sum(draft => draft.AllocatedExpectedHours);
         if (total == 0m || retained == 0m) return [];

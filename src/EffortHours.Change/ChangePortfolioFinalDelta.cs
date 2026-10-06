@@ -76,7 +76,7 @@ public sealed partial class ChangeEstimator
                 ChangePortfolioIdentity.CreateDraft(item.Candidate)).OrderBy(draft => draft.Id, StringComparer.Ordinal)];
             ChangePortfolioExactCompositionNormalizer.Mark(drafts);
             ChangePortfolioCandidate[] active = [.. drafts.Where(draft => !draft.Suppressed)
-                .OrderBy(draft => draft.Candidate.Attribution.SelectedTimestamp)
+                .OrderBy(draft => ChangePortfolioIdentity.EvidenceTimestamp(draft.Candidate))
                 .ThenBy(draft => draft.Id, StringComparer.Ordinal).Select(draft => draft.Candidate)];
             int owner = group.OrderBy(item => item.Candidate.SelectorId, StringComparer.Ordinal).First().Index;
             void Reject(string code, string? path = null) => prepared[owner] = prepared[owner] with

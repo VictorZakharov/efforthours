@@ -260,11 +260,11 @@ public sealed partial class GitHubAuthorPeriodDiscovery
                 if (discovered.Length > ChangeAuthorPeriodManifestLimits.MaximumRepositories ||
                     headCount > ChangeAuthorPeriodManifestLimits.MaximumHeads)
                 {
-                    throw new InvalidOperationException(
-                        $"GitHub discovery selected {discovered.Length} active repositories and " +
-                        $"{headCount} heads; v1 supports at most " +
-                        $"{ChangeAuthorPeriodManifestLimits.MaximumRepositories} repositories and " +
-                        $"{ChangeAuthorPeriodManifestLimits.MaximumHeads} heads.");
+                    throw GitHubProviderFailure.DiscoveryBudget(GitHubProviderFailure.OpenPullRequestPhase,
+                        $"GitHub discovery selected {discovered.Length} active repositories and {headCount} heads; " +
+                        $"v1 supports at most {ChangeAuthorPeriodManifestLimits.MaximumRepositories} repositories and " +
+                        $"{ChangeAuthorPeriodManifestLimits.MaximumHeads} heads overall; no scope was truncated.",
+                        "inspect-head-scope-or-use-pinned-manifest");
                 }
             }
 

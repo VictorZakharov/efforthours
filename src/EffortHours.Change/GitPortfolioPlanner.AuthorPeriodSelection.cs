@@ -21,6 +21,7 @@ public sealed partial class GitPortfolioPlanner
         ChangePortfolioExecutionTelemetry executionTelemetry,
         CancellationToken cancellationToken)
     {
+        IReadOnlyList<GitPortfolioReplayRangePlan> replayRanges = await PrepareReplayRangesAsync(repository, cancellationToken).ConfigureAwait(false);
         GitAuthorPeriodCandidateResult candidateResult;
         try
         {
@@ -34,6 +35,7 @@ public sealed partial class GitPortfolioPlanner
                         IdentityGroups = identityGroups,
                         RewriteObjectIds = (repository.Manifest.RewriteEvents ?? [])
                             .SelectMany(value => new[] { value.OriginalObjectId, value.RewrittenObjectId })
+                            .Concat(replayRanges.SelectMany(range => range.OriginalObjectIds.Concat(range.RetainedObjectIds)))
                             .ToHashSet(StringComparer.Ordinal),
                         SinceInclusive = manifest.Selection.SinceInclusive,
                         UntilExclusive = manifest.Selection.UntilExclusive,
@@ -56,13 +58,14 @@ public sealed partial class GitPortfolioPlanner
         AuthorPeriodManifestSelectionResult selected;
         using (executionTelemetry.Measure(ChangePortfolioExecutionPhases.Selection))
         {
-            selected = SelectRewriteEvents(candidateResult.Candidates, manifest, repository.Manifest);
+            selected = SelectReplayRanges(candidateResult.Candidates, manifest, repository.Manifest, replayRanges);
         }
 
-        return new PreparedManifestSelection(candidateResult, selected);
+        return new PreparedManifestSelection(candidateResult, selected, replayRanges);
     }
 
     private sealed record PreparedManifestSelection(
         GitAuthorPeriodCandidateResult CandidateResult,
-        AuthorPeriodManifestSelectionResult Selected);
+        AuthorPeriodManifestSelectionResult Selected,
+        IReadOnlyList<GitPortfolioReplayRangePlan> ReplayRanges);
 }

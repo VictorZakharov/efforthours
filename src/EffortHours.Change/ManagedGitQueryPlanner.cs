@@ -308,10 +308,10 @@ public sealed class ManagedGitQueryPlanner
     private static DiscoveredHead[] CreatePinnedHeads(IReadOnlyList<string> objectIds)
     {
         ArgumentNullException.ThrowIfNull(objectIds);
-        if (objectIds.Count is < 1 or > 32)
+        if (objectIds.Count is < 1 or > EffortHours.Contracts.V1.ChangeAuthorPeriodManifestLimits.MaximumHeadsPerRepository)
         {
             throw new ArgumentException(
-                "Managed repository acquisition requires between 1 and 32 immutable objects.",
+                $"Managed repository acquisition requires between 1 and {EffortHours.Contracts.V1.ChangeAuthorPeriodManifestLimits.MaximumHeadsPerRepository} immutable objects.",
                 nameof(objectIds));
         }
 

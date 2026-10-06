@@ -45,8 +45,10 @@ limits its inventory to 250 commits; count mismatch
 fails rather than certifying a truncated result. Provider responses retain the
 existing 16-MiB character bound and four-call concurrency ceiling. Acquisition
 uses the existing locked managed bare cache and immutable source-only fetches.
-The 32-head per-repository, 512-head, ledger, queue, checkpoint, and output bounds
-remain enforced. A complete report describes only currently available provider
+The global 512-head envelope now also applies within one repository. Acquisition
+retains 32-ref/32-tip fetch batches, and reachability retains a 128-MiB membership
+ledger plus the existing traversal/frontier bounds. Candidate ledger, queue,
+checkpoint and output bounds remain enforced. A complete report describes only currently available provider
 objects, not complete original development history.
 
 Closed/merged candidate and selected-head counts are separate optional discovery

@@ -42,7 +42,10 @@ agent instructions.
 - [Historical PR discovery checkpoint](HISTORICAL_PR_DISCOVERY_BENCHMARK.md) records
   synthetic cold/warm request counts and the explicit provider-latency simulation.
 - [Public historical network checkpoint](HISTORICAL_NETWORK_BENCHMARK.md) records
-  cold/warm public-repository discovery, acquisition, analysis and bounded annual failures.
+  complete recent/annual cold/warm public discovery, acquisition and analysis,
+  with the superseded annual head-limit failure retained for comparison.
+- [Declared replay range allocation](REPLAY_RANGE_ATTRIBUTION.md) composes canonical
+  replay reviews with conserved joint daily allocation, support rows and explicit caps.
 - [Immutable replay range review](REWRITE_REPLAY_REVIEW.md) defines separate
   original/upstream/replay/retained comparisons with explicit event provenance.
 - [Retained workday evidence review](WORKDAY_REVIEW.md) compares explicit external

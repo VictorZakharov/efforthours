@@ -183,7 +183,11 @@ Priors and ordinary unpaired equivalence rules are unchanged. Real conflicting r
 include actual cherry-picks of both pair members, full/event-only conservation,
 zero duplicate allocation and separated author/committer/event instants.
 
-This still supports single-commit pairs only. General multi-commit causal replay,
+The legacy pair policy still supports single-commit pairs only. The separate
+[replay range allocation policy](REPLAY_RANGE_ATTRIBUTION.md) now composes canonical
+range reviews with conserved daily allocation and explicit caps.
+
+This pair policy supports single-commit pairs only. General multi-commit causal replay,
 altered squash equivalence and automatic event recovery remain outside the proof.
 Use [work-record review](WORKDAY_REVIEW.md) to expose unresolved workday evidence
 before opting into the separate declared-date projection.

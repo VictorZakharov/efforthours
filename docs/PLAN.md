@@ -63,6 +63,11 @@ uncalibrated. Current Change reports use
 subset has limited logical admission. No local ML model and no automatic host-
 review budget is admitted.
 
+Optional [replay range attribution](REPLAY_RANGE_ATTRIBUTION.md) composes canonical
+immutable review with conserved daily allocation. Historical selection now admits
+the existing 512-head total envelope within one repository using bounded mask
+propagation and 32-ref acquisition batches; measurement records remain separate.
+
 ## Architecture
 
 The implemented solution boundaries are:

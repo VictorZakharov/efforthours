@@ -40,6 +40,8 @@ internal sealed record ChangePortfolioRepositoryCheckpointItem
 
     public required ChangePortfolioAttribution Attribution { get; init; }
 
+    public ChangePortfolioReplayEvidence? ReplayEvidence { get; init; }
+
     public ChangePortfolioFinalDelta? FinalDelta { get; init; }
 
     public ChangePortfolioFinalDeltaRejection? FinalDeltaRejection { get; init; }
@@ -88,6 +90,7 @@ internal sealed class ChangePortfolioRepositoryCheckpointStore(string directory)
                 if (ContractValidation.Validate(item.Report).Count > 0 ||
                     (item.FinalDelta is not null && ContractValidation.Validate(item.FinalDelta.Report).Count > 0) ||
                     (item.FinalDeltaRejection is { } rejection && !rejection.IsValid()) ||
+                    (item.ReplayEvidence is { } replay && ContractValidation.Validate(replay).Count > 0) ||
                     string.IsNullOrWhiteSpace(item.SelectorId))
                 {
                     return null;
@@ -100,9 +103,11 @@ internal sealed class ChangePortfolioRepositoryCheckpointStore(string directory)
                 SelectorId = item.SelectorId,
                 Report = item.Report,
                 Attribution = item.Attribution,
+                ReplayEvidence = item.ReplayEvidence,
                 FinalDelta = item.FinalDelta,
                 FinalDeltaRejection = item.FinalDeltaRejection,
             })];
+            ChangePortfolioReplayBindings.Validate(candidates, profile);
             Dictionary<string, ChangePortfolioCandidate> bySelector = candidates.ToDictionary(candidate => candidate.SelectorId, StringComparer.Ordinal);
             if (candidates.Any(candidate => candidate.FinalDelta is { } receipt && !receipt.Matches(bySelector)))
                 return null;
@@ -143,6 +148,7 @@ internal sealed class ChangePortfolioRepositoryCheckpointStore(string directory)
                 SelectorId = candidate.SelectorId,
                 Report = candidate.Report,
                 Attribution = candidate.Attribution,
+                ReplayEvidence = candidate.ReplayEvidence,
                 FinalDelta = candidate.FinalDelta,
                 FinalDeltaRejection = candidate.FinalDeltaRejection,
             })],

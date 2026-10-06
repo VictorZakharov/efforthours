@@ -116,6 +116,13 @@ remain the explicit workflows for lost workday discrepancies and conserved
 fixed-eight-hour projections. Integration labor without a novel retained artifact
 is an external assessment, outside counterfactual Change EHE.
 
+## Portfolio integration
+
+[Declared replay range attribution](REPLAY_RANGE_ATTRIBUTION.md) now optionally
+composes this canonical review with a manifest portfolio. It preserves the joint
+budget, exposes an independent novel estimate and any allocation cap, and keeps
+missing date/replay evidence unresolved. The standalone review remains non-additive.
+
 ## Verification
 
 Memory-only tests verify exact, upstream, conflict and deletion paths, reject

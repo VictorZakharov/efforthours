@@ -51,6 +51,12 @@ internal sealed partial class ChangePortfolioCommand
             });
         }
 
+        if (plan.ReplayRanges.Count > 0)
+        {
+            using IDisposable reviewPhase = executionTelemetry.Measure(ChangePortfolioExecutionPhases.StaticAnalysis);
+            candidates = [.. await ChangePortfolioReplayReviewer.AttachAsync(plan, candidates, options.Profile, scope is not null, cancellationToken).ConfigureAwait(false)];
+        }
+
         if (scope is null)
         {
             ChangePortfolioPreparedCandidates prepared = await _changeEstimator.PreparePortfolioFinalDeltasAsync(

@@ -28,7 +28,7 @@ public static partial class ChangePortfolioComparisonBuilder
         }
 
         if (options.ContributorNormalization != ChangePortfolioContributorNormalization.Joint &&
-            source.Items.Any(item => item.Attribution.Rewrite is not null))
+            source.Items.Any(item => item.Attribution.Rewrite is not null || item.Attribution.Replay is not null))
             throw new ArgumentException("Declared rewrite event attribution requires joint contributor normalization.", nameof(options));
         Dictionary<string, ChangePortfolioItemEstimate> items = source.Items.ToDictionary(
             item => item.Id,

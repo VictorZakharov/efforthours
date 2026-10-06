@@ -112,6 +112,12 @@ internal sealed partial class ChangePortfolioCommand
                 });
             }
 
+            if (plan.ReplayRanges.Count > 0)
+            {
+                using IDisposable reviewPhase = telemetry.Measure(ChangePortfolioExecutionPhases.StaticAnalysis);
+                candidates = [.. await ChangePortfolioReplayReviewer.AttachAsync(plan, candidates, options.Profile, options.Scope == "engineering", cancellationToken).ConfigureAwait(false)];
+            }
+
             ChangePortfolioPreparedCandidates prepared = await _changeEstimator.PreparePortfolioFinalDeltasAsync(
                 plan.Selection, candidates, scopedPlans, options.Profile, estimate.Statistics,
                 options.CalendarReport || options.Bucket == "independent-day", pathAdmission, telemetry,

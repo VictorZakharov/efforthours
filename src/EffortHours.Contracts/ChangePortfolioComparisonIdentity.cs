@@ -97,6 +97,7 @@ public static class ChangePortfolioComparisonIdentity
                 repository.Id,
                 repository.ScopeRepository,
                 RewriteEvents = repository.RewriteEvents?.OrderBy(value => value.OriginalObjectId, StringComparer.Ordinal),
+                ReplayEvents = repository.ReplayEvents?.OrderBy(value => value.Id, StringComparer.Ordinal),
                 Heads = repository.Heads
                     .OrderBy(head => head.Id, StringComparer.Ordinal)
                     .Select(head => new { head.Id, head.ObjectId }),

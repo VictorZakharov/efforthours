@@ -24,9 +24,10 @@ public sealed partial class ChangePortfolioReconciler
         ArgumentNullException.ThrowIfNull(selection);
         ArgumentNullException.ThrowIfNull(candidates);
         ValidateInputs(selection, candidates, profile);
+        ChangePortfolioReplayBindings.Validate(candidates, profile);
         if (candidates.Any(candidate => candidate.FinalDeltaRejection is { } rejection && !rejection.IsValid()))
             throw new ArgumentException("Final-delta rejection metadata is invalid.", nameof(candidates));
-        if (independentDays && candidates.Any(candidate => candidate.Attribution.Rewrite is not null))
+        if (independentDays && candidates.Any(candidate => candidate.Attribution.Rewrite is not null || candidate.Attribution.Replay is not null))
             throw new ArgumentException("Declared rewrite events require joint reconciliation; use calendar-day buckets instead of independent-day.", nameof(independentDays));
         ChangePortfolioItemDraft[] drafts = [.. candidates
             .Select(ChangePortfolioIdentity.CreateDraft)];
@@ -166,7 +167,10 @@ public sealed partial class ChangePortfolioReconciler
 
         ChangePortfolioReport report = new()
         {
-            EstimatorVersion = Version,
+            EstimatorVersion = candidates.Any(candidate => candidate.ReplayEvidence is not null)
+                ? "change-portfolio/0.6.6+change-seed/0.21.3+seed-rules/0.4.0" : Version,
+            ReplayAllocations = results.Any(result => result.ReplayAllocations is not null)
+                ? [.. results.SelectMany(result => result.ReplayAllocations ?? [])] : null,
             SourceChangeEstimatorVersion = candidates.Count == 0
                 ? ChangeEstimator.Version
                 : candidates[0].Report.EstimatorVersion,

@@ -82,7 +82,8 @@ public static class ChangeAuthorPeriodManifestIdentity
                         .Select(head => new CanonicalHead(head.Id, head.ObjectId))],
                     repository.ScopeRepository,
                     repository.RewriteEvents is null ? null : [.. repository.RewriteEvents
-                        .OrderBy(value => value.OriginalObjectId, StringComparer.Ordinal)]))]);
+                        .OrderBy(value => value.OriginalObjectId, StringComparer.Ordinal)],
+                    repository.ReplayEvents is null ? null : [.. repository.ReplayEvents.OrderBy(value => value.Id, StringComparer.Ordinal)]))]);
         byte[] bytes = Encoding.UTF8.GetBytes(ContractJson.SerializeCompact(canonical));
         return "sha256:" + Convert.ToHexString(SHA256.HashData(bytes)).ToLowerInvariant();
     }
@@ -108,7 +109,8 @@ public static class ChangeAuthorPeriodManifestIdentity
         string Id,
         IReadOnlyList<CanonicalHead> Heads,
         string? ScopeRepository,
-        IReadOnlyList<ChangeRewriteEvent>? RewriteEvents);
+        IReadOnlyList<ChangeRewriteEvent>? RewriteEvents,
+        IReadOnlyList<ChangePortfolioReplayEvent>? ReplayEvents);
 
     private sealed record CanonicalHead(string Id, string ObjectId);
 }

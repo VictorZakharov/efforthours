@@ -52,6 +52,8 @@ public static partial class ChangePortfolioMarkdownRenderer
                 .Append(ReportFormatting.Money(report.TotalCost.High)).AppendLine(" |");
         }
 
+        ChangePortfolioReplayMarkdownRenderer.Append(markdown, report);
+
         if (report.Aggregation is not null)
         {
             AppendAggregation(markdown, report.Aggregation);
