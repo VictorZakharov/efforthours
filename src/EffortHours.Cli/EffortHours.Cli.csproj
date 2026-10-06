@@ -8,11 +8,11 @@
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>eh</ToolCommandName>
     <PackageId>EffortHours.Tool</PackageId>
-    <Version>0.10.0-alpha.35</Version>
+    <Version>0.10.0-alpha.36</Version>
     <Title>EffortHours CLI</Title>
     <PackageReadmeFile>PACKAGE_README.md</PackageReadmeFile>
     <PackageTags>estimation;effort-estimation;developer-tools;cli;repository-analysis;static-analysis;dotnet-tool</PackageTags>
-    <PackageReleaseNotes>0.10.0-alpha.35: Add explained CLI examples and installed version in help. Bound native historical acquisition with repository restrictions, deadlines, observed cache-growth budgets and progress; coalesce identical heads. Add opt-in digest-bound equal declared-workday allocation that conserves source EHE and capacity, preserves unresolved original workdays, and never weights estimates by logged hours. Handle unavailable source timezones as input errors and display timezone in allocated Markdown. Estimator priors and rates remain unchanged. EHE remains experimental and uncalibrated; declarations do not recover actual labor or lost history. Full notes: https://github.com/VictorZakharov/efforthours/blob/v0.10.0-alpha.35/CHANGELOG.md</PackageReleaseNotes>
+    <PackageReleaseNotes>0.10.0-alpha.36: Reduce historical PR discovery requests with bounded GraphQL batches and private reuse of complete unchanged head/base/count metadata. Preserve earlier author-date work across later merges/rebases, repository restrictions, and complete-evidence fallbacks. Add request-plan/cache/pending counts, sanitized request context, separate cumulative and wall timings, correct deadline phases, and scope-aware guidance. Verify native retained-chain/squash reconciliation and offline engineering parity. Estimator priors and rates remain unchanged. EHE remains experimental and uncalibrated; declared rewrite events and workday allocation do not recover missing history or actual labor. Full notes: https://github.com/VictorZakharov/efforthours/blob/v0.10.0-alpha.36/CHANGELOG.md</PackageReleaseNotes>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="../EffortHours.Analysis/EffortHours.Analysis.csproj" />
