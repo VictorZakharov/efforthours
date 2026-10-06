@@ -14,7 +14,10 @@ eh change portfolio --author-period-manifest period.json --bucket calendar-day -
 This is experimental, uncalibrated replacement-effort allocation. It does not
 measure integration labor or recover historical workdays. The caller retains
 and reviews the counterfactual replay outside EH and supplies separate public
-provenance IDs for that snapshot and the externally declared UTC event instant.
+provenance IDs for that snapshot and the externally declared event instant.
+Explicit offsets are accepted for selection and event instants and normalized to
+UTC before review, output and digest binding. The named timezone still determines
+local calendar buckets, including DST; the end instant remains exclusive.
 No target code, rebase, cherry-pick, work record or Git ref is executed or changed.
 The ordinary manifest command is offline; restore missing immutable objects
 separately. Paths and raw identity aliases remain execution-only.
@@ -55,8 +58,13 @@ Normalization uses every member's original selected timestamp and ordinary keepe
 evidence, before event dates are applied. A directly equivalent duplicate can
 transfer its keeper reference to the original date only after the budget is fixed,
 and only when this preserves the disjoint-head guard.
-The event receives `min(standalone novel expected EHE, available joint member
-budget)`. The remainder stays on original members' original selected dates.
+Portfolio 0.6.7 reserves `min(canonical original-implementation expected EHE,
+available joint member budget)` first. The event receives
+`min(standalone novel expected EHE, joint budget - original reservation)`.
+The remainder stays on original members' original selected dates. The reservation
+uses the one canonical original range, never the sum of commit estimates.
+This corrects 0.6.6's event-first allocation, which could relocate all original
+implementation when the standalone novel estimate included a context floor.
 Distribution uses source expected weights and deterministic cent conservation;
 suppressed duplicate/composition rows always stay zero. If a positive role budget
 has no active supporting row, the calculation fails for review instead of
@@ -69,11 +77,15 @@ EHE. The full jointly selected total and category ranges are conserved. This
 policy is a structural projection of that budget, not causal category-by-category
 conflict effort. Interval allocation uses the existing proportional ledger.
 
-For example, a joint member budget of 100 hours and a standalone novel comparison
-of 20 hours allocate 20 to the event and 80 to original dates. A standalone novel
-comparison of 120 allocates at most 100: JSON and Markdown show both 120 and 100,
-`allocationCapped: true`, and the available joint budget. No extra 20 hours are
-created. Original and retained periods partition the same jointly selected range;
+For example, a joint member budget of 2.75 hours, canonical original estimate
+of 2.00 and standalone novel comparison of 2.75 reserve 2.00 on the original
+date and allocate 0.75 to the event. JSON and Markdown expose the joint budget,
+`reservedOriginalExpectedHours`, standalone novel estimate, event allocation and
+`allocationCapped: true`. The cap concerns the budget remaining after reservation.
+The 0.75 is a declared conserved structural allocation, not a separately calibrated
+measurement of causal resolution labor. A pure replay with zero novel artifact
+delta receives zero event allocation. No additional budget is created.
+Original and retained periods partition the same jointly selected range;
 other selected changes can still affect membership-dependent joint normalization.
 
 Out-of-window original/retained members remain `supportOnly` evidence and are
@@ -89,7 +101,12 @@ delta is not a statement of zero human integration labor.
 `replayObjectId` and `replayProvenanceId` are optional together; `eventTimestamp`
 and `eventProvenanceId` are optional together. Missing replay or date keeps
 ordinary retained-date selection/allocation and an explicit unresolved event
-allocation (`null`, never certified zero). No Git committer timestamp supplies an
+allocation (`null`, never certified zero). Top-level warning `FB5344` identifies
+an unavailable event date; `FB5345` identifies an unavailable replay baseline.
+These warnings remain visible alongside a supported aggregate and ordinary
+retained-date buckets, including when no event row falls inside the interval.
+Blank buckets never establish zero integration labor.
+No Git committer timestamp supplies an
 event date. Missing required objects or invalid replay evidence fail the portfolio
 without complete aggregates. Exact nonconflicting path proof remains distinct
 from `caller-declared-conflict-replay`; neither verifies historical causation.
@@ -97,11 +114,14 @@ from `caller-declared-conflict-replay`; neither verifies historical causation.
 `attribution.replay` binds each row's event ID, original/retained role, original
 selected UTC timestamp and support flag. `replayAllocations` binds complete ordered
 member IDs, declared endpoints, provenance, canonical review/source digests,
-profile, budget, cap and event allocation. JSON, trend and findings Markdown use
+profile, budget, original reservation, cap and event allocation.
+JSON, trend and findings Markdown use
 one canonical result. Manifests and repository checkpoint identities bind events
 but exclude local paths; warm checkpoints reuse the canonical review. Ordinary
 reports without replay declarations retain portfolio 0.6.5 identity and serialized
-fields. Reports using this policy carry portfolio 0.6.6. Source rules and priors
+fields. New reports using this policy carry portfolio 0.6.7. Saved 0.6.6 reports
+without the optional reservation remain valid under their historical event-first
+validation rule; they are not rewritten. Source rules and priors
 are unchanged. Independent-day normalization and isolated contributor series
 cannot compose this joint range policy; use ordinary joint calendar-day buckets.
 
@@ -117,3 +137,16 @@ ordering, schema/semantic tampering, real conflicting/nonconflicting rebases,
 squashed/copied endpoints, date partitions, missing date/objects, competing
 mappings, zero duplicate charges and cold/warm checkpoint parity. These are
 correctness checks, not field calibration or complete recovery of lost history.
+
+## Relation to legacy rewrite pairs
+
+Legacy `rewriteEvents` reserve the isolated single original commit baseline and
+assign the complete retained joint remainder to the event, without requiring a
+counterfactual replay. `replayEvents` reserve one canonical whole original range
+and additionally cap the event at the standalone replay-to-retained novel delta.
+They agree on the two-hour original / 0.75-hour additional fixture; they can differ
+when a range's canonical baseline or the novel cap differs. Both are explicit
+structural allocation policies, preserve the deduplicated aggregate and leave
+actual labor and lost workdays unresolved. Use `review-days` for external record
+discrepancies and opt-in `allocate-days` for a visibly allocated conserved ledger;
+neither workflow infers missing dates or mutates time entries.

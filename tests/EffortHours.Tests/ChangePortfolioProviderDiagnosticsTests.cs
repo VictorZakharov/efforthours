@@ -43,6 +43,9 @@ public sealed partial class ChangePortfolioComparisonTests
             {
                 Phase = "open-pr-discovery",
                 Operation = "pull-inventory",
+                Api = "graphql",
+                Outcome = "success",
+                ExitCode = 0,
                 State = "complete",
                 PageCount = 1,
                 ElapsedMilliseconds = 2m,
@@ -98,6 +101,10 @@ public sealed partial class ChangePortfolioComparisonTests
         {
             diagnostics with { HistoricalPullRequests = diagnostics.HistoricalPullRequests! with { PendingCount = 1 } },
             diagnostics with { LastRequest = diagnostics.LastRequest! with { Operation = "private-operation" } },
+            diagnostics with { LastRequest = diagnostics.LastRequest! with { Api = "private-url" } },
+            diagnostics with { LastRequest = diagnostics.LastRequest! with { Outcome = "private-error" } },
+            diagnostics with { LastRequest = diagnostics.LastRequest! with { TimeoutOwner = "private-process" } },
+            diagnostics with { LastRequest = diagnostics.LastRequest! with { HttpStatus = 503 } },
             diagnostics with { RepositoryObservations = [diagnostics.RepositoryObservations![0] with { WallElapsedMilliseconds = 15m }] },
             diagnostics with { IdentityResolution = "private-login" },
             diagnostics with { OpenPullRequestCandidateRepositoryCount = -1 },

@@ -37,6 +37,7 @@ public sealed record ChangePortfolioReplayAllocation
     public required ChangePortfolioReplayEvidence Evidence { get; init; }
     public required string Status { get; init; }
     public required decimal AvailableJointExpectedHours { get; init; }
+    public decimal? ReservedOriginalExpectedHours { get; init; }
     public decimal? StandaloneNovelExpectedHours { get; init; }
     public decimal? AllocatedEventExpectedHours { get; init; }
     public bool AllocationCapped { get; init; }

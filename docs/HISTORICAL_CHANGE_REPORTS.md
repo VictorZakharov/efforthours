@@ -353,3 +353,38 @@ A separate [immutable replay review](REWRITE_REPLAY_REVIEW.md) now compares
 multi-commit/squashed original, upstream, declared replay and retained endpoints.
 Its event result remains conditional on external replay/date provenance and is
 non-additive; plain native discovery still cannot recover discarded workdays.
+
+## Safe provider failure detail
+
+New optional `providerDiagnostics.lastRequest` fields identify `api` (REST or
+GraphQL), `outcome`, returned `exitCode`, observed `httpStatus` and `timeoutOwner`.
+Outcomes distinguish process exits, explicit GraphQL API errors, HTTP failures,
+transport failure/timeouts,
+malformed JSON, adapter output bounds, executable startup failure and cancellation.
+A transport timeout reported by `gh` belongs to `provider-transport`; EH discovery
+expiry belongs to `discovery-deadline`. Caller cancellation and sibling failure
+are separate owners. No per-process timeout is inferred from duration alone.
+Observed HTTP 5xx failures use `github-provider-service-unavailable` and the
+zero-automatic-retry action `retry-after-provider-recovery`, rather than blaming
+CLI health. Unknown exit details remain `process-exit`, not an invented API or
+timeout cause. Successful process receipts include exit zero; accepted empty
+repository/fallback receipts retain the actual nonzero exit and HTTP status; interrupted processes have no
+fabricated exit receipt. The failure message includes these fixed safe fields.
+No raw stderr, URL, query, owner, PR number, identity or source is copied.
+
+Accepted capability fallbacks complete their adapter observation as `fallback`,
+so the final successful REST request can become the latest observation. A root
+failed request cannot be replaced by cancelled or successfully drained siblings.
+Malformed JSON is classified before it could be admitted as a successful page;
+known unsupported capability responses retain complete REST fallback. Existing
+response, request, deadline and acquisition limits remain fixed. Optional fields
+preserve older v1 reports and stay outside the semantic digest. Incomplete reports
+still return nonzero without aggregate EHE or daily-zero cells.
+
+The reported alpha.37 incident lasted about 58.83 seconds under a 90-second EH
+deadline, with a roughly 45.27-second final adapter request. Available consumer
+artifacts do not retain its raw provider exit/status receipt, so these durations
+alone do not identify an EH deadline, GitHub transport timeout or API failure.
+Later successful health probes cannot resolve that historical cause. Fresh public
+revalidation is recorded separately from the incomplete incident in
+[HISTORICAL_NETWORK_BENCHMARK.md](HISTORICAL_NETWORK_BENCHMARK.md).

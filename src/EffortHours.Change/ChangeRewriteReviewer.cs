@@ -14,6 +14,12 @@ public sealed class ChangeRewriteReviewer
     {
         IReadOnlyList<string> errors = ContractValidation.Validate(manifest);
         if (errors.Count > 0) throw new ArgumentException(string.Join(" ", errors));
+        manifest = manifest with
+        {
+            SinceInclusive = manifest.SinceInclusive.ToUniversalTime(),
+            UntilExclusive = manifest.UntilExclusive.ToUniversalTime(),
+            EventTimestamp = manifest.EventTimestamp?.ToUniversalTime(),
+        };
         string root = await _git.ResolveRepositoryRootAsync(manifest.RepositoryPath, token).ConfigureAwait(false);
         EngineeringScopeProfile? scope = engineeringScope ? EngineeringScopeProfile.Load() : null;
         string inputDigest = InputDigest(manifest, profile, scope);

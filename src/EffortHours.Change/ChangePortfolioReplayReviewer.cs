@@ -15,7 +15,7 @@ public static class ChangePortfolioReplayReviewer
             int holder = Array.FindIndex(result, candidate => candidate.RepositoryId == range.RepositoryId &&
                 candidate.Attribution.Replay?.EventId == range.Event.Id);
             if (holder < 0) continue;
-            ChangePortfolioReplayEvent value = range.Event;
+            ChangePortfolioReplayEvent value = range.Event with { EventTimestamp = range.Event.EventTimestamp?.ToUniversalTime() };
             ChangeAuthorPeriodManifestRepository repository = plan.Manifest.Repositories.Single(repository => repository.Id == range.RepositoryId);
             ChangeRewriteReviewReport review = await new ChangeRewriteReviewer().ReviewAsync(new ChangeRewriteReviewManifest
             {

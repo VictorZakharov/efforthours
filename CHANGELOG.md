@@ -6,6 +6,15 @@ may still change public contracts with explicit documentation.
 
 ## Unreleased
 
+- Protect canonical original implementation effort before allocating replay events.
+  Preserve the joint aggregate, expose the original reservation and remaining-budget
+  novel cap, and warn explicitly when event dates or replay baselines are unavailable.
+- Normalize replay period and event offsets to UTC while preserving local timezone
+  buckets, DST boundaries and exclusive ends. Equivalent inputs share semantic identity.
+- Record privacy-safe provider API, outcome, exit/HTTP status and timeout ownership.
+  Preserve root request context while cancelling siblings and distinguish accepted
+  capability fallback from incomplete discovery; failures still emit no aggregate.
+
 ## 0.10.0-alpha.37 - 2026-10-06
 
 - Compose immutable replay range reviews with joint calendar-day portfolios. Keep

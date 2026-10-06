@@ -33,6 +33,9 @@ public static partial class ContractValidation
         ValidatePublicId(report.RepositoryId, "repositoryId", errors);
         ValidateDigest(report.InputDigest, "inputDigest", errors);
         ValidateReplayPeriod(report.SinceInclusive, report.UntilExclusive, errors);
+        if (report.SinceInclusive.Offset != TimeSpan.Zero || report.UntilExclusive.Offset != TimeSpan.Zero ||
+            report.EventTimestamp is { Offset: var offset } && offset != TimeSpan.Zero)
+            errors.Add("Replay reports require canonical UTC period and event instants.");
         if (report.Status == "unresolved-object-evidence")
         {
             if (report.MissingObjectIds is not { Count: >= 1 and <= 5 } ids || ids.Distinct(StringComparer.Ordinal).Count() != ids.Count || ids.Any(id => !IsObjectId(id)) ||
@@ -94,8 +97,8 @@ public static partial class ContractValidation
 
     private static void ValidateReplayPeriod(DateTimeOffset since, DateTimeOffset until, List<string> errors)
     {
-        if (since.Offset != TimeSpan.Zero || until.Offset != TimeSpan.Zero || since >= until)
-            errors.Add("Replay attribution requires an explicit non-empty UTC inclusive/exclusive period.");
+        if (since >= until)
+            errors.Add("Replay attribution requires an explicit non-empty inclusive/exclusive period.");
     }
 
     private static void ValidateReplayProvenance(bool hasReplay, string? replayProvenance, DateTimeOffset? date,
@@ -105,6 +108,5 @@ public static partial class ContractValidation
             errors.Add("Every supplied replay snapshot and event date requires a separate explicit public provenance ID.");
         if (replayProvenance is not null) ValidatePublicId(replayProvenance, "replayProvenanceId", errors);
         if (eventProvenance is not null) ValidatePublicId(eventProvenance, "eventProvenanceId", errors);
-        if (date?.Offset != null && date.Value.Offset != TimeSpan.Zero) errors.Add("Rewrite event dates must be UTC instants.");
     }
 }

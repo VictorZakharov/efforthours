@@ -46,6 +46,13 @@ public sealed partial class ChangeCliTests : ChangeCliTestSupport
         string status = await repository.GitAsync("status", "--porcelain=v1");
         string refs = await repository.GitAsync("show-ref");
         ChangeRewriteReviewReport full = await Review(manifest);
+        ChangeRewriteReviewReport offset = await Review(manifest with
+        {
+            SinceInclusive = manifest.SinceInclusive.ToOffset(TimeSpan.FromHours(-5)),
+            UntilExclusive = manifest.UntilExclusive.ToOffset(TimeSpan.FromHours(-5)),
+            EventTimestamp = manifest.EventTimestamp!.Value.ToOffset(TimeSpan.FromHours(-5)),
+        });
+        Assert.Equal(ContractJson.SerializeCompact(full), ContractJson.SerializeCompact(offset));
         Assert.Equal(2, full.OriginalCommitCount);
         Assert.Equal(conflict ? 2 : 3, full.RewrittenCommitCount);
         Assert.Equal(conflict ? "caller-declared-conflict-replay" : "exact-path-replay-verified", full.ReplayConfidence);

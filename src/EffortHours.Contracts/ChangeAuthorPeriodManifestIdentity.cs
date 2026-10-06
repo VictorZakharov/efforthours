@@ -83,7 +83,8 @@ public static class ChangeAuthorPeriodManifestIdentity
                     repository.ScopeRepository,
                     repository.RewriteEvents is null ? null : [.. repository.RewriteEvents
                         .OrderBy(value => value.OriginalObjectId, StringComparer.Ordinal)],
-                    repository.ReplayEvents is null ? null : [.. repository.ReplayEvents.OrderBy(value => value.Id, StringComparer.Ordinal)]))]);
+                    repository.ReplayEvents is null ? null : [.. repository.ReplayEvents.OrderBy(value => value.Id, StringComparer.Ordinal)
+                        .Select(value => value with { EventTimestamp = value.EventTimestamp?.ToUniversalTime() })]))]);
         byte[] bytes = Encoding.UTF8.GetBytes(ContractJson.SerializeCompact(canonical));
         return "sha256:" + Convert.ToHexString(SHA256.HashData(bytes)).ToLowerInvariant();
     }

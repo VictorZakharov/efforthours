@@ -34,6 +34,13 @@ internal sealed class GitHubDiscoveryAcquisitionBudget(
         };
     }
 
+    public string CancellationOwner()
+    {
+        lock (_gate) return callerToken.IsCancellationRequested ? "caller"
+            : _rootFailure is not null ? "sibling-failure"
+            : deadline.IsCancellationRequested ? "discovery-deadline" : "sibling-failure";
+    }
+
     public ProviderQueryCounters? Counters { get; set; }
     private string? _acquisitionFailurePhase;
     private Exception? _rootFailure;

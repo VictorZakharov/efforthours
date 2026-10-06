@@ -59,6 +59,11 @@ public sealed record ChangePortfolioHistoricalPullRequestPlan
 
 public sealed record ChangePortfolioProviderRequestObservation
 {
+    public string? Api { get; init; }
+    public string? Outcome { get; init; }
+    public int? ExitCode { get; init; }
+    public int? HttpStatus { get; init; }
+    public string? TimeoutOwner { get; init; }
     public required string Phase { get; init; }
     public required string Operation { get; init; }
     public string? RepositoryDigest { get; init; }

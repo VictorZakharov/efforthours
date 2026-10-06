@@ -44,7 +44,7 @@ public sealed class ChangeReplayProofTests
     }
 
     [Fact]
-    public void ManifestRequiresFullImmutableEndpointsUtcPeriodAndIndependentProvenance()
+    public void ManifestRequiresFullImmutableEndpointsNonemptyPeriodAndIndependentProvenance()
     {
         ChangeRewriteReviewManifest manifest = new()
         {
@@ -63,6 +63,8 @@ public sealed class ChangeReplayProofTests
         Assert.NotEmpty(ContractValidation.Validate(manifest with { ReplayObjectId = new('e', 40) }));
         Assert.NotEmpty(ContractValidation.Validate(manifest with { EventTimestamp = manifest.SinceInclusive }));
         Assert.NotEmpty(ContractValidation.Validate(manifest with { UntilExclusive = manifest.SinceInclusive }));
-        Assert.NotEmpty(ContractValidation.Validate(manifest with { SinceInclusive = manifest.SinceInclusive.ToOffset(TimeSpan.FromHours(1)) }));
+        Assert.Empty(ContractValidation.Validate(manifest with { SinceInclusive = manifest.SinceInclusive.ToOffset(TimeSpan.FromHours(1)) }));
+        Assert.True(ContractSchemaValidator.Validate(SchemaNames.ChangeRewriteReviewManifest, ContractJson.Serialize(manifest with
+        { SinceInclusive = manifest.SinceInclusive.ToOffset(TimeSpan.FromHours(1)) })).IsValid);
     }
 }

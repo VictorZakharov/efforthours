@@ -281,6 +281,7 @@
             "unresolved-event-date"
           ]
         },
+        "reservedOriginalExpectedHours": { "type": "number", "minimum": 0 },
         "availableJointExpectedHours": {
           "type": "number",
           "minimum": 0

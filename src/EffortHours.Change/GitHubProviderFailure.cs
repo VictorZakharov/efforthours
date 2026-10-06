@@ -67,6 +67,10 @@ internal static class GitHubProviderFailure
                 "GitHub rate limiting prevented complete discovery.");
         }
 
+        if (GitHubProviderRequestFailure.Classify(result).HttpStatus is >= 500)
+            return Create("github-provider-service-unavailable", phase, "retry-after-provider-recovery",
+                "GitHub returned a server error; inspect the recorded HTTP status and retry after provider recovery.");
+
         if (Contains(detail, "http 403", "http 404", "forbidden", "not found"))
         {
             if (phase == PullRequestResolutionPhase)
@@ -89,7 +93,7 @@ internal static class GitHubProviderFailure
 
             return Create(
                 "github-owner-forbidden-or-not-found",
-                OwnerInventoryPhase,
+                phase,
                 "verify-owner-and-access",
                 "The requested GitHub owner was not found or is not accessible.");
         }
@@ -101,7 +105,7 @@ internal static class GitHubProviderFailure
             "connection refused",
             "network is unreachable",
             "tls handshake",
-            "timed out"))
+            "timed out", "timeout", "deadline exceeded", "connection reset", "unexpected eof"))
         {
             return Create(
                 "github-network-unavailable",

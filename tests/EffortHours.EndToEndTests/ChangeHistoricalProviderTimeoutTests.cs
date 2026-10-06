@@ -46,6 +46,9 @@ public sealed partial class ChangePortfolioCliTests
             Assert.Equal(1, diagnostics.HistoricalPullRequests!.PendingCount);
             Assert.Equal("pull-metadata-batch", diagnostics.LastRequest!.Operation);
             Assert.Equal("incomplete", diagnostics.LastRequest.State);
+            Assert.Equal("graphql", diagnostics.LastRequest.Api);
+            Assert.Equal("cancelled", diagnostics.LastRequest.Outcome);
+            Assert.Equal("discovery-deadline", diagnostics.LastRequest.TimeoutOwner);
             Assert.True(runner.Drained);
             Assert.All(diagnostics.RepositoryObservations!, observation => Assert.True(observation.WallElapsedMilliseconds <= report.Discovery.ElapsedMilliseconds));
             Assert.DoesNotContain(workspace, json, StringComparison.OrdinalIgnoreCase);

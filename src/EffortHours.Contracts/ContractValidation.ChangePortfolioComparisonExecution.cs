@@ -346,6 +346,8 @@ public static partial class ContractValidation
                 action.SuggestedAction == "specify-provider-login",
             "github-discovery-budget-exceeded" =>
                 action.SuggestedAction is "narrow-scope-or-use-pinned-manifest" or "inspect-pr-discovery-or-use-pinned-manifest" or "inspect-acquisition-or-use-pinned-manifest" or "inspect-head-scope-or-use-pinned-manifest",
+            "github-provider-service-unavailable" =>
+                action.SuggestedAction == "retry-after-provider-recovery",
             "github-provider-request-failed" =>
                 action.SuggestedAction == "inspect-github-cli-health",
             _ => false,

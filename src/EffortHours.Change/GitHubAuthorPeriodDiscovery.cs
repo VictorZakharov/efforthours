@@ -124,6 +124,7 @@ public sealed partial class GitHubAuthorPeriodDiscovery
         EngineeringScopeProfile scope = request.EngineeringScope ?? EngineeringScopeProfile.Load();
         ProviderQueryCounters counters = new(request.ExecutionTelemetry);
         acquisitionBudget.Counters = counters;
+        counters.CancellationOwner = acquisitionBudget.CancellationOwner;
         string workingDirectory = Environment.CurrentDirectory;
         string ownerType;
         string authenticatedLogin;

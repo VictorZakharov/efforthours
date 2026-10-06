@@ -72,13 +72,27 @@ public sealed partial class ChangePortfolioReconcilerTests
         Assert.Equal(ordinary.TotalEffort, full.TotalEffort);
         ChangePortfolioReplayAllocation allocation = Assert.Single(full.ReplayAllocations!);
         Assert.Equal(novelHours, allocation.StandaloneNovelExpectedHours);
-        Assert.Equal(Math.Min(novelHours, full.TotalEffort.Expected), allocation.AllocatedEventExpectedHours);
-        Assert.Equal(novelHours > full.TotalEffort.Expected, allocation.AllocationCapped);
+        Assert.Equal(Math.Min(full.TotalEffort.Expected, comparisons[0].Effort.Expected), allocation.ReservedOriginalExpectedHours);
+        Assert.NotEmpty(ContractValidation.Validate(full with { ReplayAllocations = [allocation with { ReservedOriginalExpectedHours = 9999m }] }));
+        Assert.Equal(Math.Min(novelHours, full.TotalEffort.Expected - allocation.ReservedOriginalExpectedHours!.Value), allocation.AllocatedEventExpectedHours);
+        Assert.Equal(novelHours > full.TotalEffort.Expected - allocation.ReservedOriginalExpectedHours!.Value, allocation.AllocationCapped);
         Assert.Equal(full.TotalEffort.Expected, full.Items.Sum(item => item.AllocatedExpectedHours));
         Assert.Equal(ContractJson.SerializeCompact(full), ContractJson.SerializeCompact(Reconcile(selection, [.. candidates.Reverse()])));
         SchemaValidationResult schema = ContractSchemaValidator.Validate(SchemaNames.ChangePortfolioReport, ContractJson.Serialize(full));
         Assert.True(schema.IsValid, string.Join(" ", schema.Errors));
         Assert.Contains("Standalone novel", ChangePortfolioMarkdownRenderer.Render(full), StringComparison.Ordinal);
+        decimal legacyEvent = Math.Min(novelHours, allocation.AvailableJointExpectedHours);
+        ChangePortfolioReport legacy = full with
+        {
+            EstimatorVersion = full.EstimatorVersion.Replace("0.6.7+", "0.6.6+", StringComparison.Ordinal),
+            ReplayAllocations = [allocation with { ReservedOriginalExpectedHours = null, AllocatedEventExpectedHours = legacyEvent,
+                AllocationCapped = novelHours > allocation.AvailableJointExpectedHours }],
+            Items = [.. full.Items.Select(item => item with
+            { AllocatedExpectedHours = item.Attribution.Replay!.Role == "retained" ? legacyEvent : allocation.AvailableJointExpectedHours - legacyEvent })],
+        };
+        Assert.Empty(ContractValidation.Validate(legacy));
+        Assert.True(ContractSchemaValidator.Validate(SchemaNames.ChangePortfolioReport, ContractJson.Serialize(legacy)).IsValid);
+
         DateTimeOffset split = new(eventDate.Year, eventDate.Month, eventDate.Day, 0, 0, 0, TimeSpan.Zero);
         ChangePortfolioReport earlier = Partition(selection.AuthorPeriodManifest.SinceInclusive, split);
         ChangePortfolioReport later = Partition(split, selection.AuthorPeriodManifest.UntilExclusive);

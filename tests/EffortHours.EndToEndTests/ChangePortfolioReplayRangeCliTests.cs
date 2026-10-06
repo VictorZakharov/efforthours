@@ -47,8 +47,9 @@ public sealed partial class ChangeCliTests
         ChangePortfolioReport full = cold.SourcePortfolio!;
         ChangePortfolioReplayAllocation allocation = Assert.Single(full.ReplayAllocations!);
         decimal standalone = allocation.Evidence.Review.Comparisons.Single(value => value.Role == "novel-retained-delta").Effort.Expected;
-        Assert.Equal(Math.Min(standalone, allocation.AvailableJointExpectedHours), allocation.AllocatedEventExpectedHours);
-        Assert.Equal(standalone > allocation.AvailableJointExpectedHours, allocation.AllocationCapped);
+        Assert.Equal(Math.Min(standalone, allocation.AvailableJointExpectedHours - allocation.ReservedOriginalExpectedHours!.Value), allocation.AllocatedEventExpectedHours);
+        Assert.Equal(standalone > allocation.AvailableJointExpectedHours - allocation.ReservedOriginalExpectedHours!.Value, allocation.AllocationCapped);
+        Assert.True(full.Items.Where(item => item.Attribution.Replay?.Role == "original").Sum(item => item.AllocatedExpectedHours) >= allocation.ReservedOriginalExpectedHours);
         Assert.All(full.Items.Where(item => item.Attribution.Replay?.Role == "retained"), item => Assert.Equal(review.EventTimestamp, item.Attribution.SelectedTimestamp));
         Assert.All(full.Items.Where(item => item.DuplicateOfItemId is not null || item.ExactComposition is not null), item => Assert.Equal(0m, item.AllocatedExpectedHours));
         ChangePortfolioComparisonReport ordinary = await Run(manifest with { Repositories = [manifest.Repositories[0] with { ReplayEvents = null }] });
@@ -66,6 +67,14 @@ public sealed partial class ChangeCliTests
         });
         Assert.Equal("unresolved-event-date", Assert.Single(unknown.SourcePortfolio!.ReplayAllocations!).Status);
         Assert.Null(unknown.SourcePortfolio.ReplayAllocations![0].AllocatedEventExpectedHours);
+        Assert.Contains(unknown.SourcePortfolio.Diagnostics, value => value.Code == "FB5344");
+        ChangePortfolioComparisonReport missing = await Run(manifest with
+        {
+            Repositories = [manifest.Repositories[0] with
+            { ReplayEvents = [declaration with { ReplayObjectId = null, ReplayProvenanceId = null }] }]
+        });
+        Assert.Equal("unresolved-replay-evidence", Assert.Single(missing.SourcePortfolio!.ReplayAllocations!).Status);
+        Assert.Contains(missing.SourcePortfolio.Diagnostics, value => value.Code == "FB5345");
         await Run(manifest with { Repositories = [manifest.Repositories[0] with { ReplayEvents = [declaration with { ReplayObjectId = new string('a', 40) }] }] }, incomplete: true);
         await Run(manifest with { Repositories = [manifest.Repositories[0] with { ReplayEvents = [declaration, declaration with { Id = "competing" }] }] }, incomplete: true);
 

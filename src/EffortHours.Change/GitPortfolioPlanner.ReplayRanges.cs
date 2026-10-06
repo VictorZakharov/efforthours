@@ -55,6 +55,7 @@ public sealed partial class GitPortfolioPlanner
             GitCommitMetadata[] original = Require(range.OriginalObjectIds, range.Event.OldBaseObjectId);
             GitCommitMetadata[] retained = Require(range.RetainedObjectIds, range.Event.NewBaseObjectId);
             bool resolved = range.Event.ReplayObjectId is not null && range.Event.EventTimestamp is not null;
+            diagnostics.AddRange(ChangePortfolioReplayDiagnostics.Create(range.Event));
             DateTimeOffset? anchor = original.Select(Date).Where(InWindow).Cast<DateTimeOffset?>().FirstOrDefault()
                 ?? (range.Event.EventTimestamp is { } instant && InWindow(instant) ? instant : null);
             if (resolved && anchor is null) continue;

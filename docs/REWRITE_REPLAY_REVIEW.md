@@ -120,7 +120,9 @@ is an external assessment, outside counterfactual Change EHE.
 
 [Declared replay range attribution](REPLAY_RANGE_ATTRIBUTION.md) now optionally
 composes this canonical review with a manifest portfolio. It preserves the joint
-budget, exposes an independent novel estimate and any allocation cap, and keeps
+budget, protects the canonical original range baseline before allocating the event,
+normalizes explicit offset instants to UTC, exposes an independent novel estimate
+and any allocation cap, and keeps
 missing date/replay evidence unresolved. The standalone review remains non-additive.
 
 ## Verification
@@ -134,3 +136,7 @@ novel resolution, missing objects/dates, period boundaries and identical squashe
 endpoint effort. Existing portfolio conflicting-rebase/cherry-pick fixtures retain
 joint aggregate conservation. These are engineering correctness checks, not
 empirical calibration of conflict effort or recovery of discarded history.
+
+Input period and event timestamps accept explicit offsets and normalize to UTC
+before review and digest construction. Equivalent UTC/offset inputs produce the
+same saved review; output timestamps remain canonical UTC.

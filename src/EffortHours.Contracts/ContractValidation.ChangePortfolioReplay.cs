@@ -29,6 +29,8 @@ public static partial class ContractValidation
         List<string> errors = [.. Validate(evidence.Review)];
         ValidatePortfolioReplayEvent(evidence.Event, errors);
         ChangePortfolioReplayEvent value = evidence.Event;
+        if (value.EventTimestamp is { Offset: var offset } && offset != TimeSpan.Zero)
+            errors.Add("Portfolio replay evidence must retain canonical UTC event instants.");
         foreach (IReadOnlyList<string> ids in new[] { evidence.OriginalObjectIds, evidence.RetainedObjectIds })
             if (ids.Count is < 1 or > 1024 || ids.Any(id => !IsObjectId(id)) || ids.Distinct(StringComparer.Ordinal).Count() != ids.Count)
                 errors.Add("Replay membership requires complete bounded immutable ranges.");
@@ -95,8 +97,14 @@ public static partial class ContractValidation
                 members.Sum(item => item.AllocatedExpectedHours) != allocation.AvailableJointExpectedHours)
                 errors.Add("Full-period replay allocations must exactly conserve the available joint member budget.");
             bool inside = evidence.Event.EventTimestamp >= report.Selection.AuthorPeriodManifest?.SinceInclusive && evidence.Event.EventTimestamp < report.Selection.AuthorPeriodManifest?.UntilExclusive;
-            decimal? expected = resolved ? inside ? Math.Min(novel!.Value, allocation.AvailableJointExpectedHours) : 0m : null;
-            if (allocation.AllocatedEventExpectedHours != expected || allocation.AllocationCapped != (resolved && novel > allocation.AvailableJointExpectedHours) ||
+            decimal? reserved = resolved ? Math.Min(allocation.AvailableJointExpectedHours, evidence.Review.Comparisons.Single(value => value.Role == "original-implementation").Effort.Expected) : null;
+            bool protectsOriginal = report.EstimatorVersion.StartsWith("change-portfolio/0.6.7+", StringComparison.Ordinal);
+            if (protectsOriginal && allocation.ReservedOriginalExpectedHours != reserved ||
+                !protectsOriginal && allocation.ReservedOriginalExpectedHours is not null)
+                errors.Add("Replay allocation must bind the canonical original reservation for its estimator version.");
+            decimal capacity = allocation.AvailableJointExpectedHours - (protectsOriginal ? reserved ?? 0m : 0m);
+            decimal? expected = resolved ? inside ? Math.Min(novel!.Value, capacity) : 0m : null;
+            if (allocation.AllocatedEventExpectedHours != expected || allocation.AllocationCapped != (resolved && novel > capacity) ||
                 allocation.Status != (!resolved ? evidence.Review.EventAttributionStatus : inside ? "allocated-under-declared-replay" : "event-outside-period") ||
                 resolved && members.Where(item => item.Attribution.Replay!.Role == "retained").Sum(item => item.AllocatedExpectedHours) != expected)
                 errors.Add("Replay event allocation must conserve the joint budget and expose any cap; missing evidence is unresolved.");
