@@ -960,3 +960,14 @@ review-days` diagnostic. Blank retained dates, missing implementation records,
 mixed entries and mismatched repository relationships stay unresolved. Optional
 explicit entry allocations conserve the rounded daily expected EHE/8 multiplier;
 logged durations never set weights, and no external entries are overwritten.
+
+## Separate immutable replay range review
+
+[REWRITE_REPLAY_REVIEW.md](REWRITE_REPLAY_REVIEW.md) governs the opt-in offline
+`eh change review-rewrite` command and `immutable-replay-review/1.0.0`. Original,
+upstream, retained feature, declared replay and novel retained delta are separate
+canonical non-additive comparisons, with exact path proof and caller-declared
+conflict/date provenance. Multi-commit, squashed and copied endpoints need no
+single-commit mapping. Missing evidence stays unresolved. This review does not
+alter source priors, joint portfolio totals or the existing single-commit daily
+allocation policy; the novel delta must never be added again to a portfolio.

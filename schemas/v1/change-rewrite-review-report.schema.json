@@ -1,0 +1,206 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:eh:schema:v1:change-rewrite-review-report",
+  "title": "Immutable replay review output v1",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "policy",
+    "status",
+    "repositoryId",
+    "inputDigest",
+    "replayConfidence",
+    "eventAttributionStatus",
+    "comparisons",
+    "boundary",
+    "sinceInclusive",
+    "untilExclusive",
+    "originalCommitCount",
+    "rewrittenCommitCount"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "1.0.0"
+    },
+    "policy": {
+      "const": "immutable-replay-review/1.0.0"
+    },
+    "status": {
+      "enum": [
+        "unresolved-replay-evidence",
+        "complete-evidence-review",
+        "unresolved-object-evidence"
+      ]
+    },
+    "repositoryId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
+    },
+    "inputDigest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "replayConfidence": {
+      "enum": [
+        "unavailable",
+        "caller-declared-conflict-replay",
+        "exact-path-replay-verified"
+      ]
+    },
+    "eventAttributionStatus": {
+      "enum": [
+        "unresolved-replay-evidence",
+        "unresolved-event-date",
+        "event-outside-period",
+        "attributed-under-declared-replay",
+        "unresolved-object-evidence"
+      ]
+    },
+    "eventAttributedNovelEffort": {
+      "$ref": "urn:eh:schema:v1:change-estimate-report#/$defs/effortRange"
+    },
+    "replayProof": {
+      "type": "object",
+      "properties": {
+        "exactReplayPathCount": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65536
+        },
+        "inheritedUpstreamPathCount": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65536
+        },
+        "declaredConflictPathCount": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65536
+        }
+      },
+      "required": [
+        "exactReplayPathCount",
+        "inheritedUpstreamPathCount",
+        "declaredConflictPathCount"
+      ],
+      "additionalProperties": false
+    },
+    "comparisons": {
+      "type": "array",
+      "minItems": 0,
+      "maxItems": 5,
+      "items": {
+        "type": "object",
+        "required": [
+          "role",
+          "selection",
+          "profile",
+          "estimatorVersion",
+          "effort",
+          "sourceReportDigest",
+          "representedPathCount"
+        ],
+        "properties": {
+          "role": {
+            "enum": [
+              "original-implementation",
+              "inherited-upstream",
+              "retained-feature",
+              "replayed-implementation",
+              "novel-retained-delta"
+            ]
+          },
+          "selection": {
+            "$ref": "urn:eh:schema:v1:change-evidence#/$defs/selection"
+          },
+          "profile": {
+            "enum": [
+              "implementation",
+              "recreation"
+            ]
+          },
+          "estimatorVersion": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          },
+          "effort": {
+            "$ref": "urn:eh:schema:v1:change-estimate-report#/$defs/effortRange"
+          },
+          "sourceReportDigest": {
+            "type": "string",
+            "pattern": "^sha256:[0-9a-f]{64}$"
+          },
+          "representedPathCount": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "boundary": {
+      "const": "Experimental, uncalibrated counterfactual artifact review. Replay and event provenance are caller declarations, not verified historical causation or labor. Comparisons are non-additive; only the retained feature comparison values the final feature. Missing replay or event evidence never means zero work."
+    },
+    "sinceInclusive": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "(Z|\\+00:00)$"
+    },
+    "untilExclusive": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "(Z|\\+00:00)$"
+    },
+    "originalAuthorTimestamp": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "(Z|\\+00:00)$"
+    },
+    "rewrittenCommitterTimestamp": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "(Z|\\+00:00)$"
+    },
+    "eventTimestamp": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "(Z|\\+00:00)$"
+    },
+    "replayProvenanceId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
+    },
+    "eventProvenanceId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
+    },
+    "originalCommitCount": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 1024
+    },
+    "rewrittenCommitCount": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 1024
+    },
+    "missingObjectIds": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 5,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^([0-9a-f]{40}|[0-9a-f]{64})$"
+      }
+    }
+  },
+  "additionalProperties": false
+}

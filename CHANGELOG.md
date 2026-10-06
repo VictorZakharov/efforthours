@@ -6,6 +6,18 @@ may still change public contracts with explicit documentation.
 
 ## Unreleased
 
+- Add offline immutable replay range review for multi-commit and squashed rewrites.
+  Separate original, inherited upstream, replay, retained feature and novel delta
+  with canonical lineage, explicit replay/date provenance and unresolved missing
+  objects. Comparisons are non-additive; portfolio totals and priors are unchanged.
+- Restrict explicit historical PR inventories to requested repositories and reuse
+  complete live head/base/count metadata. Bound pagination, cancel and drain failed
+  sibling reads, and report selected-head limits as scope failures.
+- Deduplicate identical Change warnings by content so cold and cached runs retain
+  the same evidence digest; distinct references and locations remain. Effort is unchanged.
+- Label cumulative parallel phase work in JSON, Markdown and stderr. Record actual
+  public cold/warm and annual/multi-repository checkpoints with explicit limits.
+
 - Add offline `eh change review-days` with digest-bound external implementation,
   meeting, PTO and mixed records. Preserve blank-date, missing-record and
   repository-scope discrepancies as unresolved; never save unavailable values as

@@ -86,7 +86,12 @@ public sealed partial class GitHubAuthorPeriodDiscovery
                 pullLogins.Length == 1 ? "provider-linked-aliases" : "multiple-logins";
             string? contributorLogin = request.ContributorSample is null && pullLogins.Length == 1
                 ? pullLogins[0] : null;
-            IReadOnlyList<DiscoveredRepository>? accountWide = contributorLogin is not null
+            bool restrictedHistory = request.IncludeHistoricalPullRequests && request.Repositories.Count > 0 && contributorLogin is not null;
+            IReadOnlyList<DiscoveredRepository>? accountWide = restrictedHistory
+                ? await GitHubAuthorPeriodDiscoveryJson.DiscoverHistoricalPullHeadsInScopeAsync(
+                    _commands, workingDirectory, repositories, contributorLogin!, aliases, since, until,
+                    request.DateField, request.MergePolicy, request.CoauthorPolicy, counters, cancellationToken).ConfigureAwait(false)
+                : contributorLogin is not null
                 ? await GitHubAuthorPeriodDiscoveryJson
                     .DiscoverUserOpenPullHeadsAccountWideAsync(
                         _commands,
@@ -109,7 +114,7 @@ public sealed partial class GitHubAuthorPeriodDiscovery
             if (accountWide is null)
             {
                 counters.AddFallback("open-pr", contributorLogin is null
-                    ? "identity-not-single-login" : "account-connection-unavailable", repositories.Length);
+                    ? "identity-not-single-login" : restrictedHistory ? "scoped-connection-unavailable" : "account-connection-unavailable", repositories.Length);
             }
 
             openPullRequests = accountWide is not null

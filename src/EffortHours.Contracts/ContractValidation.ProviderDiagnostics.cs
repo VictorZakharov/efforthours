@@ -36,7 +36,7 @@ public static partial class ContractValidation
                 (item.Phase, item.Reason) is not
                     ("default-head", "provider-unavailable" or "provider-errors" or "malformed-response" or
                         "repository-unavailable" or "branch-changed" or "incomplete-history") and not
-                    ("open-pr", "identity-not-single-login" or "account-connection-unavailable");
+                    ("open-pr", "identity-not-single-login" or "account-connection-unavailable" or "scoped-connection-unavailable");
         }
 
         if (value.HistoricalPullRequests is { } plan)

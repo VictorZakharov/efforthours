@@ -148,7 +148,8 @@ internal static partial class GitHubAuthorPeriodDiscoveryJson
     private static AccountPullRequest[]? ParseCompleteAccountPulls(
         string json,
         string contributorLogin,
-        bool historical = false)
+        bool historical = false,
+        bool repositoryConnection = false)
     {
         try
         {
@@ -165,7 +166,7 @@ internal static partial class GitHubAuthorPeriodDiscoveryJson
             List<AccountPullRequest> pulls = [];
             foreach (JsonElement page in root.EnumerateArray())
             {
-                JsonElement connection = page.GetProperty("data").GetProperty("user")
+                JsonElement connection = page.GetProperty("data").GetProperty(repositoryConnection ? "repository" : "user")
                     .GetProperty("pullRequests");
                 int pageTotal = connection.GetProperty("totalCount").GetInt32();
                 total ??= pageTotal;

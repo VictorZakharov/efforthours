@@ -14,6 +14,9 @@ internal sealed class HistoricalPullProviderFixture(int population = 258, int la
     public int RepositoryCount { get; init; } = 1;
     public static string Repository(int index) => index == 0 ? "owner/project" : "owner/project-" + index.ToString(CultureInfo.InvariantCulture);
     public string BaseHead { get; set; } = Id(10000);
+    public int ScopedPaddingCharacters { get; init; }
+    public bool InvalidScopedTotal { get; set; }
+    public bool RepeatedScopedCursor { get; set; }
     public bool ChangedDuringBatch { get; set; }
     public bool IncompleteBatch { get; set; }
     public bool IncompleteParents { get; set; }
@@ -42,21 +45,51 @@ internal sealed class HistoricalPullProviderFixture(int population = 258, int la
                     headRefOid = Id(number), baseRefOid = BaseHead, commits = new { totalCount = 1 },
                 }), new { number = 9999, state = "CLOSED", author = new { login = "selected" },
                     repository = new { nameWithOwner = "other/private" }, headRefOid = Id(9999), baseRefOid = BaseHead, commits = new { totalCount = 1 } }];
-                response = nodes.Chunk(100).Select((page, index) => new
+                if (query.Contains("repository(owner:$owner,name:$name)", StringComparison.Ordinal))
                 {
-                    data = new
+                    string owner = arguments.Single(value => value.StartsWith("owner=", StringComparison.Ordinal))[6..];
+                    string name = arguments.Single(value => value.StartsWith("name=", StringComparison.Ordinal))[5..];
+                    int repositoryIndex = Enumerable.Range(0, RepositoryCount).Single(index => Repository(index) == owner + "/" + name);
+                    object[] scoped = [.. nodes.Take(population).Where((_, index) => index % RepositoryCount == repositoryIndex)];
+                    string? cursor = arguments.FirstOrDefault(value => value.StartsWith("endCursor=", StringComparison.Ordinal));
+                    int pageIndex = cursor is null ? 0 : int.Parse(cursor["endCursor=synthetic-".Length..], CultureInfo.InvariantCulture) + 1;
+                    response = new
                     {
-                        user = new
+                        data = new
                         {
-                            pullRequests = new
+                            repository = new
                             {
-                                totalCount = nodes.Length,
-                                nodes = page,
-                                pageInfo = new { hasNextPage = (index + 1) * 100 < nodes.Length, endCursor = "synthetic-" + index },
+                                pullRequests = new
+                                {
+                                    totalCount = InvalidScopedTotal ? 1001 : scoped.Length,
+                                    nodes = scoped.Skip(pageIndex * 100).Take(100).ToArray(),
+                                    pageInfo = new
+                                    {
+                                        hasNextPage = (pageIndex + 1) * 100 < scoped.Length,
+                                        endCursor = RepeatedScopedCursor ? "synthetic-0" : "synthetic-" + pageIndex
+                                    }
+                                }
+                            }
+                        },
+                        padding = new string('x', ScopedPaddingCharacters)
+                    };
+                }
+                else
+                    response = nodes.Chunk(100).Select((page, index) => new
+                    {
+                        data = new
+                        {
+                            user = new
+                            {
+                                pullRequests = new
+                                {
+                                    totalCount = nodes.Length,
+                                    nodes = page,
+                                    pageInfo = new { hasNextPage = (index + 1) * 100 < nodes.Length, endCursor = "synthetic-" + index },
+                                }
                             }
                         }
-                    }
-                }).ToArray();
+                    }).ToArray();
             }
             else if (query.Contains("pullRequest(number:", StringComparison.Ordinal))
             {
@@ -130,6 +163,14 @@ internal sealed class HistoricalPullProviderFixture(int population = 258, int la
             "selected", ["selected@example.invalid"], annual ? new DateTimeOffset(2025, 1, 1, 0, 0, 0, TimeSpan.Zero) : Since,
             annual ? new DateTimeOffset(2026, 1, 1, 0, 0, 0, TimeSpan.Zero) : Since.AddDays(5),
             ChangePortfolioDateField.Author, ChangePortfolioMergePolicy.Exclude, ChangePortfolioCoauthorPolicy.Include, counters, token, true);
+
+    public static Task<IReadOnlyList<DiscoveredRepository>?> DiscoverRestrictedAsync(HistoricalPullProviderFixture runner,
+        ProviderQueryCounters counters, int includedRepositories = 1, CancellationToken token = default) =>
+        GitHubAuthorPeriodDiscoveryJson.DiscoverHistoricalPullHeadsInScopeAsync(runner, "in-memory-fixture",
+            [.. Enumerable.Range(0, includedRepositories).Select(index => new GitHubDiscoveryRepository(
+                (42 + index).ToString(CultureInfo.InvariantCulture), Repository(index), "main"))],
+            "selected", ["selected@example.invalid"], Since, Since.AddDays(5), ChangePortfolioDateField.Author,
+            ChangePortfolioMergePolicy.Exclude, ChangePortfolioCoauthorPolicy.Include, counters, token);
 
     private static class InterlockedExtensions
     {

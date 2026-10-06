@@ -46,7 +46,7 @@ internal sealed partial class ChangePortfolioCommand
         {
             await standardError.WriteLineAsync(
                 $"eh: portfolio phase {timing.Phase} " +
-                $"{timing.Elapsed.TotalMilliseconds.ToString("F3", CultureInfo.InvariantCulture)} ms")
+                $"{timing.Elapsed.TotalMilliseconds.ToString("F3", CultureInfo.InvariantCulture)} ms (cumulative work)")
                 .ConfigureAwait(false);
         }
     }

@@ -157,7 +157,7 @@ public sealed partial class ChangeEstimator
         evidence = evidence with
         {
             Diagnostics = [.. normalizedDiagnostics
-                .Distinct()
+                .Distinct(ChangeDiagnosticComparer.Instance)
                 .OrderBy(diagnostic => diagnostic.Code, StringComparer.Ordinal)
                 .ThenBy(diagnostic => diagnostic.Message, StringComparer.Ordinal)],
         };
@@ -182,7 +182,7 @@ public sealed partial class ChangeEstimator
                 baseAnalysis.Catalog,
                 headAnalysis.Catalog);
         }
-        evidence = evidence with { Diagnostics = [.. evidence.Diagnostics, .. workItems.Diagnostics] };
+        evidence = evidence with { Diagnostics = [.. evidence.Diagnostics.Concat(workItems.Diagnostics).Distinct(ChangeDiagnosticComparer.Instance)] };
         return new PairEstimate(
             evidence,
             workItems,

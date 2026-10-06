@@ -392,6 +392,7 @@ public static partial class ChangePortfolioComparisonBuilder
                     {
                         Phase = timing.Phase,
                         ElapsedMilliseconds = Round((decimal)timing.Elapsed.TotalMilliseconds, 3),
+                        ElapsedKind = "cumulative-work",
                     })],
             LastProgress = progress is null ? null : new ChangePortfolioComparisonProgress
             {

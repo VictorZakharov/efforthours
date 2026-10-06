@@ -1124,3 +1124,20 @@ unique file SHA-256 changes. Custom estimators keep their ordinary behavior.
 An exactly derived snapshot shares its immutable capability catalog with its
 parent; ownership is bounded by retained snapshot analyses, with no process-global
 catalog cache. Current facts still drive marginal growth and normalization.
+
+## Separate immutable replay range review
+
+[REWRITE_REPLAY_REVIEW.md](REWRITE_REPLAY_REVIEW.md) governs the opt-in offline
+`eh change review-rewrite` command and `immutable-replay-review/1.0.0`. Original,
+upstream, retained feature, declared replay and novel retained delta are separate
+canonical non-additive comparisons, with exact path proof and caller-declared
+conflict/date provenance. Multi-commit, squashed and copied endpoints need no
+single-commit mapping. Missing evidence stays unresolved. This review does not
+alter source priors, joint portfolio totals or the existing single-commit daily
+allocation policy; the novel delta must never be added again to a portfolio.
+
+Canonical Change diagnostics use structural value equality for code, severity,
+message, evidence IDs and locations. Cold and reused instances of the same
+warning therefore produce identical evidence lineage; distinct references and
+locations remain distinct. This fixes collection-reference-dependent duplication,
+without changing source evidence facts, priors or estimated work.

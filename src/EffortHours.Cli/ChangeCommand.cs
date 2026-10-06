@@ -88,6 +88,10 @@ internal sealed partial class ChangeCommand
                 standardError, cancellationToken).ConfigureAwait(false);
         }
 
+        if (arguments[0].Equals("review-rewrite", StringComparison.OrdinalIgnoreCase))
+            return await ChangeRewriteReviewCommand.ExecuteAsync([.. arguments.Skip(1)], standardOutput,
+                standardError, cancellationToken).ConfigureAwait(false);
+
         string? portfolioMode = arguments[0].ToLowerInvariant() switch
         {
             "portfolio" => null,

@@ -91,3 +91,8 @@ portfolio or aggregate EHE. A request already restricted to one repository gets
 `inspect-acquisition-or-use-pinned-manifest`, rather than advice to narrow to that
 same repository. This checkpoint does not extend discovery evidence into an
 end-to-end annual runtime or a new estimation-performance claim.
+
+The opt-in [public network checkpoint](HISTORICAL_NETWORK_BENCHMARK.md) now
+records actual narrow/two-repository cold/warm discovery, acquisition, analysis,
+digest parity and an explicit annual head-limit failure. The synthetic request
+plan above remains a separate deterministic checkpoint, not a field result.

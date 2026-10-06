@@ -173,6 +173,33 @@ public sealed partial class ChangePortfolioCliTests : ChangeCliTestSupport
                     }
                 };
             }
+            else if (call.Contains("repository(owner:$owner,name:$name)", StringComparison.Ordinal))
+            {
+                response = new
+                {
+                    data = new
+                    {
+                        repository = new
+                        {
+                            pullRequests = new
+                            {
+                                totalCount = crossRepositoryAliases ? 0 : 1,
+                                nodes = Enumerable.Repeat(new
+                                {
+                                    number = 7,
+                                    state = "MERGED",
+                                    headRefOid = head,
+                                    baseRefOid = baseline,
+                                    commits = new { totalCount = 2 },
+                                    author = new { login = "selected" },
+                                    repository = new { nameWithOwner = "example/repository" }
+                                }, crossRepositoryAliases ? 0 : 1).ToArray(),
+                                pageInfo = new { hasNextPage = false, endCursor = (string?)null }
+                            }
+                        }
+                    }
+                };
+            }
             else if (call.Contains("graphql", StringComparison.Ordinal))
             {
                 response = new[] { new { data = new { user = new { pullRequests = new { totalCount = crossRepositoryAliases ? 0 : 1,
