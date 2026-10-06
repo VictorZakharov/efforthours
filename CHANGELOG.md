@@ -6,6 +6,8 @@ may still change public contracts with explicit documentation.
 
 ## Unreleased
 
+## 0.10.0-alpha.35 - 2026-10-05
+
 - Bound native historical discovery with explicit repository restrictions, a
   discovery/acquisition deadline, an observed cache-growth budget, two concurrent
   historical fetches, and privacy-safe acquisition progress. Incomplete coverage
@@ -25,6 +27,22 @@ may still change public contracts with explicit documentation.
 - Discover explained common CLI workflows with `eh examples` or `eh --examples`,
   plus `all` and topic filters; guidance includes input and side-effect boundaries.
 - Show the installed informational version in top-level help.
+
+### Fixed
+
+- Reject an unavailable source timezone as an input error during declared workday
+  allocation and show the local-date timezone in allocated Markdown reports.
+
+### Maintenance
+
+- Update the pinned CI dependency-cache action to `actions/cache` 6.1.0 and
+  retain its MIT notice. Estimates and release publishing dependencies are unchanged.
+
+### Boundary
+
+- Source estimator priors and rates remain unchanged. EHE remains experimental
+  and uncalibrated; declared workdays do not recover lost history or actual labor,
+  and bounded acquisition is not a general performance guarantee.
 
 ## 0.10.0-alpha.34 - 2026-10-05
 

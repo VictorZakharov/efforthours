@@ -62,6 +62,29 @@ public sealed partial class ChangePortfolioComparisonTests
         Assert.All(result.Days, day => Assert.Equal(ChangeWorkdayPolicies.Unresolved, day.OriginalWorkdayStatus));
     }
 
+    [Fact]
+    public async Task UnavailableSourceTimezoneFailsAsInputWithoutAnAllocation()
+    {
+        ChangePortfolioComparisonReport source = await WorkdaySourceAsync();
+        ChangePortfolioSelection selection = source.Selection with
+        { AuthorPeriodManifest = source.Selection.AuthorPeriodManifest! with { TimeZone = "Unavailable/DeclaredZone" } };
+        ChangePortfolioReport portfolio = source.SourcePortfolio! with { Selection = selection };
+        source = source with
+        {
+            Selection = selection,
+            SourcePortfolio = portfolio,
+            Verification = source.Verification with
+            {
+                SourcePortfolioDigest = ChangePortfolioComparisonIdentity.ComputePortfolioDigest(portfolio),
+                SemanticDigest = ChangePortfolioComparisonIdentity.ComputeSemanticDigest(portfolio, source.BucketPolicy,
+                    source.Buckets, source.Series, source.ScopeProfile),
+            },
+        };
+        ArgumentException failure = Assert.Throws<ArgumentException>(() => ChangeWorkdayAllocator.Allocate(source,
+            Workdays(source, 3), ChangeWorkdayPolicies.EqualDeclaredDaysV1));
+        Assert.Contains("timezone is unavailable", failure.Message, StringComparison.Ordinal);
+    }
+
     private static ChangeWorkdayManifest Workdays(ChangePortfolioComparisonReport source, int count) => new()
     {
         SourceSemanticDigest = source.Verification.SemanticDigest,

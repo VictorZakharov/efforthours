@@ -30,7 +30,12 @@ public static class ChangeWorkdayAllocator
         if (digest != source.Verification.SemanticDigest || digest != manifest.SourceSemanticDigest ||
             ChangePortfolioComparisonIdentity.ComputePortfolioDigest(portfolio) != source.Verification.SourcePortfolioDigest)
             throw new ArgumentException("Workday allocation source digest mismatch; bind the declarations to this exact complete report.");
-        TimeZoneInfo zone = TimeZoneInfo.FindSystemTimeZoneById(selection.TimeZone);
+        TimeZoneInfo zone;
+        try { zone = TimeZoneInfo.FindSystemTimeZoneById(selection.TimeZone); }
+        catch (Exception exception) when (exception is TimeZoneNotFoundException or InvalidTimeZoneException)
+        {
+            throw new ArgumentException("The source timezone is unavailable on this host.", nameof(source), exception);
+        }
         ChangePortfolioComparisonSeries series = source.Series.Single(value => value.Kind == ChangePortfolioSeriesKind.Portfolio);
         Dictionary<string, ChangeDeclaredWorkday> declared = manifest.Workdays.ToDictionary(day => day.Date, StringComparer.Ordinal);
         ChangePortfolioComparisonBucket[] buckets = [.. source.Buckets.OrderBy(bucket => bucket.SinceInclusive)];
