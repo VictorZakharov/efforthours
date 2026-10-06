@@ -8,11 +8,11 @@
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>eh</ToolCommandName>
     <PackageId>EffortHours.Tool</PackageId>
-    <Version>0.10.0-alpha.36</Version>
+    <Version>0.10.0-alpha.37</Version>
     <Title>EffortHours CLI</Title>
     <PackageReadmeFile>PACKAGE_README.md</PackageReadmeFile>
     <PackageTags>estimation;effort-estimation;developer-tools;cli;repository-analysis;static-analysis;dotnet-tool</PackageTags>
-    <PackageReleaseNotes>0.10.0-alpha.36: Reduce historical PR discovery requests with bounded GraphQL batches and private reuse of complete unchanged head/base/count metadata. Preserve earlier author-date work across later merges/rebases, repository restrictions, and complete-evidence fallbacks. Add request-plan/cache/pending counts, sanitized request context, separate cumulative and wall timings, correct deadline phases, and scope-aware guidance. Verify native retained-chain/squash reconciliation and offline engineering parity. Estimator priors and rates remain unchanged. EHE remains experimental and uncalibrated; declared rewrite events and workday allocation do not recover missing history or actual labor. Full notes: https://github.com/VictorZakharov/efforthours/blob/v0.10.0-alpha.36/CHANGELOG.md</PackageReleaseNotes>
+    <PackageReleaseNotes>0.10.0-alpha.37: Add immutable multi-commit/squash replay review and opt-in daily replay attribution with canonical lineage, explicit event provenance, conserved portfolio totals and visible allocation caps. Add external work-record discrepancy review and optional fixed-eight, two-decimal entry allocations; missing, mixed and scope evidence remains unresolved. Scope historical PR discovery to requested repositories, reuse complete metadata, stabilize cold/warm diagnostics, and distinguish cumulative work from wall time. Support up to 512 pinned heads within the existing overall envelope with bounded 32-ref/32-tip acquisition and reusable completed batches. Estimator priors and rates remain unchanged. EHE remains experimental and uncalibrated; these policies do not recover missing history, actual workdays or integration labor. Full notes: https://github.com/VictorZakharov/efforthours/blob/v0.10.0-alpha.37/CHANGELOG.md</PackageReleaseNotes>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="../EffortHours.Analysis/EffortHours.Analysis.csproj" />

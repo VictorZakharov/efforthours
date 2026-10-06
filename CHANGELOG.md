@@ -6,6 +6,8 @@ may still change public contracts with explicit documentation.
 
 ## Unreleased
 
+## 0.10.0-alpha.37 - 2026-10-06
+
 - Compose immutable replay range reviews with joint calendar-day portfolios. Keep
   original member dates, allocate only the supported novel delta within the
   deduplicated member budget, and expose the standalone estimate plus any cap.
