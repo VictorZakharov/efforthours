@@ -6,6 +6,18 @@ may still change public contracts with explicit documentation.
 
 ## Unreleased
 
+- Batch historical PR commit metadata and reuse complete unchanged head/base/count
+  evidence under bounded private sidecars. Refresh live inventories and preserve
+  earlier author dates despite later merge/rewrite dates; incomplete or changed
+  evidence still fails closed.
+- Expose historical PR request-plan/cache counts and sanitized last-request context.
+  Label cumulative overlapping request time separately from wall-clock spans;
+  deadline failures identify the provider subphase and give scope-aware guidance.
+- Verify native retained-chain/squash reconciliation and offline engineering parity.
+  Existing explicit rewrite-event and external workday policies remain the only
+  supported declarations of lost event/workday attribution. Estimator priors and
+  rates remain unchanged; EHE remains experimental and uncalibrated.
+
 ## 0.10.0-alpha.35 - 2026-10-05
 
 - Bound native historical discovery with explicit repository restrictions, a

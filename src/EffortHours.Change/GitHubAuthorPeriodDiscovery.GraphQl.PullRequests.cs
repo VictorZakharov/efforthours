@@ -33,7 +33,7 @@ internal static partial class GitHubAuthorPeriodDiscoveryJson
                 "-f",
                 "query=" + (includeHistoricalPullRequests
                     ? ViewerPullRequestsQuery.Replace("states:OPEN", "states:[OPEN,CLOSED,MERGED]", StringComparison.Ordinal)
-                        .Replace("nodes{number", "nodes{state number", StringComparison.Ordinal)
+                        .Replace("nodes{number", "nodes{state headRefOid baseRefOid commits{totalCount} number", StringComparison.Ordinal)
                     : ViewerPullRequestsQuery),
                 "-F",
                 "login=" + contributorLogin,
@@ -66,6 +66,11 @@ internal static partial class GitHubAuthorPeriodDiscoveryJson
         counters.AddHistoricalPullRequests(considered.Count(pull => !pull.Open));
         counters.AddPullCandidateRepositories(considered.Select(pull => pull.RepositoryIdentity)
             .Distinct(StringComparer.OrdinalIgnoreCase).Count());
+        if (includeHistoricalPullRequests)
+        {
+            return await DiscoverHistoricalPullsBatchedAsync(commands, workingDirectory, repositories, considered,
+                aliases, since, until, dateField, mergePolicy, coauthorPolicy, counters, cancellationToken).ConfigureAwait(false);
+        }
         using SemaphoreSlim gate = new(4, 4);
         Task<ResolvedPullHead?>[] tasks = [.. considered.Select(async pull =>
         {
@@ -156,6 +161,7 @@ internal static partial class GitHubAuthorPeriodDiscoveryJson
 
             int? total = null;
             int observed = 0;
+            HashSet<(string Repository, int Number)> seen = [];
             List<AccountPullRequest> pulls = [];
             foreach (JsonElement page in root.EnumerateArray())
             {
@@ -195,7 +201,13 @@ internal static partial class GitHubAuthorPeriodDiscoveryJson
                         return null;
                     }
 
-                    pulls.Add(new AccountPullRequest(identity, number, state == "OPEN"));
+                    if (!seen.Add((identity.ToLowerInvariant(), number))) return null;
+                    pulls.Add(new AccountPullRequest(identity, number, state == "OPEN",
+                        item.TryGetProperty("headRefOid", out JsonElement head) && head.ValueKind == JsonValueKind.String
+                            ? RequireObjectId(head.GetString(), "retained PR head") : null,
+                        item.TryGetProperty("commits", out JsonElement commits) ? commits.GetProperty("totalCount").GetInt32() : null,
+                        item.TryGetProperty("baseRefOid", out JsonElement baseHead) && baseHead.ValueKind == JsonValueKind.String
+                            ? RequireObjectId(baseHead.GetString(), "retained PR base") : null));
                 }
             }
 
@@ -251,7 +263,7 @@ internal static partial class GitHubAuthorPeriodDiscoveryJson
         "{totalCount nodes{number author{login} repository{nameWithOwner}}" +
         "pageInfo{hasNextPage endCursor}}}}";
 
-    private sealed record AccountPullRequest(string RepositoryIdentity, int Number, bool Open);
+    private sealed record AccountPullRequest(string RepositoryIdentity, int Number, bool Open, string? ObjectId = null, int? CommitCount = null, string? BaseObjectId = null);
 
     private sealed record ResolvedPullHead(
         string RepositoryIdentity,

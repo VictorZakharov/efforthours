@@ -123,6 +123,7 @@ public sealed partial class GitHubAuthorPeriodDiscovery
         DateTimeOffset until = request.UntilExclusive?.ToUniversalTime() ?? asOf;
         EngineeringScopeProfile scope = request.EngineeringScope ?? EngineeringScopeProfile.Load();
         ProviderQueryCounters counters = new(request.ExecutionTelemetry);
+        acquisitionBudget.Counters = counters;
         string workingDirectory = Environment.CurrentDirectory;
         string ownerType;
         string authenticatedLogin;
@@ -152,6 +153,7 @@ public sealed partial class GitHubAuthorPeriodDiscovery
                         authenticatedLogin,
                         cacheObservedAt,
                         cancellationToken).ConfigureAwait(false);
+                    counters.PullMetadataCache = _metadataCache.PullMetadata(authenticatedLogin);
                     cachedMetadata = cacheRead.Metadata;
                     cacheStatus = cacheRead.Status;
                     string? selectedLogin = SingleContributorLogin(request, authenticatedLogin);

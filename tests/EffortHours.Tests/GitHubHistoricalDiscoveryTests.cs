@@ -25,7 +25,8 @@ public sealed partial class GitHubAuthorPeriodDiscoveryTests
             {
                 new { number = 7, state, user = new { login = "target" }, head = new { sha = pullHead } },
             } }),
-            JsonSerializer.Serialize(new { commits = 1, head = new { sha = pullHead } }),
+            "{\"data\":null}",
+            JsonSerializer.Serialize(new { commits = 1, head = new { sha = pullHead }, @base = new { sha = parent } }),
             page.ToJsonString());
         ProviderQueryCounters counters = new();
         DiscoveredRepository result = Assert.IsType<DiscoveredRepository>(

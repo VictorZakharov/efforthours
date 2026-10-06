@@ -32,6 +32,27 @@ public sealed partial class ChangePortfolioComparisonTests
             DefaultHeadQueryCount = 2,
             OpenPullRequestAccountQueryCount = 1,
             OpenPullRequestQueryCount = 1,
+            HistoricalPullRequests = new()
+            {
+                CandidateCount = 2,
+                CacheHitCount = 2,
+                CompletedCount = 2,
+                SelectedCount = 1,
+            },
+            LastRequest = new()
+            {
+                Phase = "open-pr-discovery",
+                Operation = "pull-inventory",
+                State = "complete",
+                PageCount = 1,
+                ElapsedMilliseconds = 2m,
+            },
+            RepositoryObservations = [new()
+            {
+                RepositoryDigest = ChangePortfolioComparisonIdentity.ComputeTextDigest("repository"),
+                Phase = "open-pr-discovery", State = "complete", QueryCount = 1, PageCount = 1,
+                ElapsedMilliseconds = 20m, ElapsedKind = "cumulative-request", WallElapsedMilliseconds = 10m,
+            }],
             Fallbacks = [new()
             {
                 Phase = "default-head", Reason = "incomplete-history", RepositoryCount = 1,
@@ -56,6 +77,11 @@ public sealed partial class ChangePortfolioComparisonTests
         JsonObject legacyDiagnostics = legacy["discovery"]!["providerDiagnostics"]!.AsObject();
         Assert.True(legacyDiagnostics.Remove("identityResolution"));
         Assert.True(legacyDiagnostics.Remove("openPullRequestCandidateRepositoryCount"));
+        Assert.True(legacyDiagnostics.Remove("historicalPullRequests"));
+        Assert.True(legacyDiagnostics.Remove("lastRequest"));
+        JsonObject legacyObservation = legacyDiagnostics["repositoryObservations"]![0]!.AsObject();
+        Assert.True(legacyObservation.Remove("elapsedKind"));
+        Assert.True(legacyObservation.Remove("wallElapsedMilliseconds"));
         string legacyJson = legacy.ToJsonString();
         Assert.True(ContractSchemaValidator.Validate(
             SchemaNames.ChangePortfolioComparisonReport, legacyJson).IsValid);
@@ -63,9 +89,16 @@ public sealed partial class ChangePortfolioComparisonTests
         Assert.Empty(ContractValidation.Validate(restored));
         Assert.Equal("not-observed", restored.Discovery!.ProviderDiagnostics!.IdentityResolution);
         Assert.Equal(0, restored.Discovery.ProviderDiagnostics.OpenPullRequestCandidateRepositoryCount);
+        Assert.Null(restored.Discovery.ProviderDiagnostics.HistoricalPullRequests);
+        Assert.Null(restored.Discovery.ProviderDiagnostics.LastRequest);
+        Assert.Null(restored.Discovery.ProviderDiagnostics.RepositoryObservations![0].ElapsedKind);
+        Assert.Null(restored.Discovery.ProviderDiagnostics.RepositoryObservations[0].WallElapsedMilliseconds);
         Assert.Equal(original.Verification.SemanticDigest, restored.Verification.SemanticDigest);
         foreach (ChangePortfolioProviderDiagnostics invalid in new[]
         {
+            diagnostics with { HistoricalPullRequests = diagnostics.HistoricalPullRequests! with { PendingCount = 1 } },
+            diagnostics with { LastRequest = diagnostics.LastRequest! with { Operation = "private-operation" } },
+            diagnostics with { RepositoryObservations = [diagnostics.RepositoryObservations![0] with { WallElapsedMilliseconds = 15m }] },
             diagnostics with { IdentityResolution = "private-login" },
             diagnostics with { OpenPullRequestCandidateRepositoryCount = -1 },
             diagnostics with { OpenPullRequestCandidateRepositoryCount = observed.Discovery!.ConsideredRepositoryCount + 1 },

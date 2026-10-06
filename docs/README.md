@@ -39,6 +39,8 @@ agent instructions.
 - [Retained historical Change EHE](HISTORICAL_CHANGE_REPORTS.md) governs explicit
   native ranges, merged/closed PR discovery, exact squash/rewrite equivalence,
   retained-date evidence states, and unrecoverable-history boundaries.
+- [Historical PR discovery checkpoint](HISTORICAL_PR_DISCOVERY_BENCHMARK.md) records
+  synthetic cold/warm request counts and the explicit provider-latency simulation.
 - [Explicit workday allocation](WORKDAY_ALLOCATION.md) defines optional external
   date declarations, conserved EHE projection, fixed reference capacity, and
   unresolved original workdays.

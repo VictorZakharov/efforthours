@@ -43,6 +43,7 @@ internal sealed partial class ProviderQueryCounters
 
     public void AddQuery(string phase)
     {
+        LastPhase = phase;
         int count;
         do
         {

@@ -80,6 +80,9 @@ public sealed partial class ChangePortfolioCliTests : ChangeCliTestSupport
                 await File.ReadAllTextAsync(reportPath))!;
             Assert.Equal(report.Verification.SemanticDigest, warm.Verification.SemanticDigest);
             Assert.Equal(1, warm.Execution.Checkpoint.HitCount);
+            Assert.Equal(1, warm.Discovery!.ProviderDiagnostics!.HistoricalPullRequests!.CacheHitCount);
+            Assert.Equal(0, warm.Discovery.ProviderDiagnostics.HistoricalPullRequests.BatchCount);
+            Assert.Single(runner.Calls, call => call.Contains("pullRequest(number:", StringComparison.Ordinal));
             Assert.Equal(0, warm.Discovery!.Acquisition!.AcquiredBytes);
             Assert.Equal(1, warm.Discovery.Acquisition.RepositoryCount);
             Assert.Equal(restricted ? 257 : 1, warm.Discovery.ProviderRepositoryCount);
@@ -145,10 +148,34 @@ public sealed partial class ChangePortfolioCliTests : ChangeCliTestSupport
             {
                 response = new[] { new[] { Commit(CurrentDefaultHead, [], "2025-01-01T12:00:00Z", "2025-01-01T12:00:00Z", login: crossRepositoryAliases ? "unrelated" : "selected", email: crossRepositoryAliases ? "unrelated@example.invalid" : "selected@example.invalid") } };
             }
+            else if (call.Contains("pullRequest(number:", StringComparison.Ordinal))
+            {
+                response = new
+                {
+                    data = new
+                    {
+                        r0 = new
+                        {
+                            pullRequest = new
+                            {
+                                headRefOid = head,
+                                baseRefOid = baseline,
+                                commits = new
+                                {
+                                    totalCount = 2,
+                                    pageInfo = new { hasNextPage = false },
+                                    nodes = new[] { new { commit = GraphCommit(implementation, baseline, "2026-01-19T17:35:17Z", "2026-03-13T11:47:19Z") },
+                            new { commit = GraphCommit(head, implementation, "2026-03-16T12:00:00Z", "2026-03-16T12:00:00Z") } }
+                                }
+                            }
+                        }
+                    }
+                };
+            }
             else if (call.Contains("graphql", StringComparison.Ordinal))
             {
                 response = new[] { new { data = new { user = new { pullRequests = new { totalCount = crossRepositoryAliases ? 0 : 1,
-                    nodes = Enumerable.Repeat(new { number = 7, state = "MERGED", author = new { login = "selected" },
+                    nodes = Enumerable.Repeat(new { number = 7, state = "MERGED", headRefOid = head, baseRefOid = baseline, commits = new { totalCount = 2 }, author = new { login = "selected" },
                         repository = new { nameWithOwner = "example/repository" } }, crossRepositoryAliases ? 0 : 1).ToArray(),
                     pageInfo = new { hasNextPage = false, endCursor = (string?)null } } } } } };
             }
@@ -168,6 +195,17 @@ public sealed partial class ChangePortfolioCliTests : ChangeCliTestSupport
 
             return Task.FromResult(new ExternalCommandResult(0, JsonSerializer.Serialize(response), string.Empty));
         }
+
+        private static object GraphCommit(string oid, string parent, string authoredDate, string committedDate) => new
+        {
+            oid,
+            parents = new { totalCount = 1, nodes = new[] { new { oid = parent } } },
+            author = new { name = "Selected Contributor", email = "selected@example.invalid", user = new { login = "selected" } },
+            authoredDate,
+            committer = new { name = "Integrator", email = "integrator@example.invalid" },
+            committedDate,
+            message = "synthetic"
+        };
 
         private static object Commit(string sha, string[] parents, string authorDate, string committerDate, string login = "selected", string email = "selected@example.invalid") => new
         {

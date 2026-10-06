@@ -233,3 +233,79 @@ verify these rules; a field latency claim still needs the same-input consumer ru
 For lost workdays, [explicit external workday allocation](WORKDAY_ALLOCATION.md)
 provides a separate, labeled, conserved opt-in projection. It does not recover
 missing Git history or turn retained timestamps into proof of actual work dates.
+
+## Historical PR request plan and metadata reuse
+
+The native retained-history path refreshes a complete live authored account PR
+inventory with head object, upstream-base object and commit count. It discards
+repositories outside the already restricted, admitted owner scope before expensive
+PR reads. Uncached PR evidence is requested in repository-local GraphQL batches
+of at most 12 PRs, 100 commits per PR and two parents per commit, with at most four
+concurrent batch/fallback readers process-wide, including per-repository inventory
+fallbacks. Each batch response is parsed once. No PR creation, update, closure,
+merge, author or committer cutoff
+prunes this inventory. Exact identity/date matching is reapplied to every complete
+metadata result; local immutable Git remains authoritative for estimation.
+
+Only independently complete aliases are accepted from a batch. GraphQL errors,
+missing fields, incomplete commit/parent connections or unavailable batch support
+send the affected PR through complete REST detail/commit pagination. A changed
+head, upstream base or count fails closed rather than silently changing the frozen
+selection. The existing 250-commit complete REST inventory limit remains explicit.
+An incomplete account connection uses the complete per-repository inventory and
+the same batched evidence reader. Individual REST calls remain necessary only
+for incomplete or unsupported batch evidence.
+The per-repository fallback admits at most 1,000 authored candidates, not a
+truncated sample. Head, response, request, deadline and acquisition bounds remain.
+
+Private `github-pull-commit-metadata/1.0.0` sidecars retain only parsed identities,
+author/committer dates, parents and coauthors, without full commit messages or
+source excerpts. Reuse requires the same live viewer, repository, PR, head, base
+and count, supported protocol, content digest and freshness within 24 hours.
+Live PR inventory is always refreshed; advancing the base invalidates reuse even
+when the PR head and commit count stay unchanged. Entries use atomic replacement,
+charge at most 64 KiB each, and retain at most 1,000 entries (64 MiB total) across
+the configured provider-cache root. Oversized evidence is valid but is not cached;
+invalid, expired or unavailable cache entries refresh from the provider. Completed
+evidence survives a sibling failure. Cache reuse never stores or changes EHE.
+
+Optional `providerDiagnostics.historicalPullRequests` exposes candidate, cache-hit,
+batch, complete-REST fallback, completed, selected and pending PR counts. Selected
+is the count of matching PR representations before identical-head coalescing,
+not a selected-change count. The native manifest/planner retains the actual distinct
+heads and selected-change counts. `lastRequest` identifies a fixed operation,
+subphase, opaque repository digest when available, completed/incomplete state,
+returned page count and one adapter-request duration. It retains the latest
+incomplete request when present, otherwise the latest completed request; completed
+siblings cannot obscure failure context while cancellation drains them. No aliases, PR numbers or source
+paths are serialized. All these optional v1 fields are operational only.
+
+Repository observation `elapsedMilliseconds` retains its prior meaning: a sum of
+adapter-request elapsed times, including overlapping calls. New observations label
+it `elapsedKind: cumulative-request` and add `wallElapsedMilliseconds`, measured
+from that repository/subphase's first request start to last request completion.
+Execution phase timings are wall-clock spans; cumulative startup is separate.
+Adapter requests include child startup, provider transport and response handling;
+GitHub transport time is not independently measured. Query count counts adapter
+invocations, page count counts returned pages, and process/startup counts record
+completed child invocations with a returned process receipt, so interrupted-run
+process/startup totals can be lower than actual launches. An interrupted
+paginated child has no trustworthy partial-page count. Cumulative durations may
+exceed wall time and must not be displayed as total runtime.
+
+Deadline failures now use the interrupted provider subphase, while an acquisition
+failure still uses managed-cache acquisition. A single-repository PR timeout emits
+`inspect-pr-discovery-or-use-pinned-manifest`, with zero retries, instead of asking
+the caller to narrow an already single-repository scope. No timeout emits an EHE
+aggregate, and provider/fetch children are canceled and drained before returning.
+
+The synthetic 258-PR request checkpoint and explicit latency simulation are
+recorded in [HISTORICAL_PR_DISCOVERY_BENCHMARK.md](HISTORICAL_PR_DISCOVERY_BENCHMARK.md).
+A native retained-chain/squash Git fixture verifies discovery without manual head
+input, one-time exact reconciliation and offline engineering parity. Existing
+actual conflicting-rebase and declared event-only/original-only tests remain the
+causal attribution boundary. Native discovery cannot reconstruct missing pre-rewrite
+objects, mapping intent, event dates or discarded workdays. Use the existing
+explicit rewrite-event and workday-allocation policies for those declarations;
+plain author-date reports do not infer a later workday from a changed commit ID.
+The NDA field reproduction still requires a same-input consumer retest.
