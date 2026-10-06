@@ -29,6 +29,7 @@ public static partial class ChangePortfolioComparisonMarkdownRenderer
             AppendTrendReport(markdown, report);
         }
 
+        ChangePortfolioReplayMarkdownRenderer.Append(markdown, report.SourcePortfolio);
         AppendResourceUsage(markdown, report.Execution.Resources);
         if (report.SourcePortfolio?.DailyNormalization is { } daily)
         {

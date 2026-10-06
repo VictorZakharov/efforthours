@@ -12,6 +12,8 @@ public sealed record ChangePortfolioCandidate
 
     public required ChangePortfolioAttribution Attribution { get; init; }
 
+    public ChangePortfolioReplayEvidence? ReplayEvidence { get; init; }
+
     public ChangePortfolioFinalDelta? FinalDelta { get; init; }
 
     public ChangePortfolioFinalDeltaRejection? FinalDeltaRejection { get; init; }
@@ -64,4 +66,5 @@ internal sealed record ChangePortfolioAdjustmentCause(
 
 internal sealed record ChangePortfolioGroupResult(
     ChangePortfolioRepositoryGroup Group,
-    IReadOnlyList<ChangePortfolioAdjustment> Adjustments);
+    IReadOnlyList<ChangePortfolioAdjustment> Adjustments,
+    IReadOnlyList<ChangePortfolioReplayAllocation>? ReplayAllocations = null);

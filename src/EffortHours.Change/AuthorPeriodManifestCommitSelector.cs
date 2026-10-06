@@ -7,7 +7,8 @@ internal sealed record SelectedManifestAuthorCommit(
     DateTimeOffset SelectedTimestamp,
     IReadOnlyList<ChangePortfolioContributorMatch> ContributorMatches,
     IReadOnlyList<string> AmbiguityReasons,
-    ChangeRewriteAttribution? Rewrite = null);
+    ChangeRewriteAttribution? Rewrite = null,
+    ChangePortfolioReplayAttribution? Replay = null);
 
 internal sealed record AuthorPeriodManifestSelectionResult(
     IReadOnlyList<SelectedManifestAuthorCommit> Commits,

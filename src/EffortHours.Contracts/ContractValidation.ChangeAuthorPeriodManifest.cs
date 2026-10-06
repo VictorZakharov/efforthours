@@ -119,6 +119,7 @@ public static partial class ContractValidation
         foreach (ChangeAuthorPeriodManifestRepository repository in repositories)
         {
             ValidateRewriteEvents(repository.RewriteEvents, errors);
+            ValidatePortfolioReplayEvents(repository.ReplayEvents, errors);
             ValidatePublicId(repository.Id, "repository.id", errors);
             if (!repositoryIds.Add(repository.Id))
             {

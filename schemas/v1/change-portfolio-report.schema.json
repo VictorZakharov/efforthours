@@ -21,10 +21,12 @@
     "verification"
   ],
   "properties": {
+    "replayAllocations": { "type": "array", "minItems": 1, "maxItems": 8192, "items": { "$ref": "#/$defs/replayAllocation" } },
     "dailyNormalization": {
       "type": "object", "additionalProperties": false,
       "required": ["protocol", "timeZone", "days"],
       "properties": {
+    "replayAllocations": { "type": "array", "minItems": 1, "maxItems": 8192, "items": { "$ref": "#/$defs/replayAllocation" } },
         "protocol": { "enum": ["independent-local-day-change/1.0.0", "independent-local-day-change/1.1.0"] },
         "timeZone": { "type": "string", "minLength": 1 },
         "days": {
@@ -33,6 +35,7 @@
             "type": "object", "additionalProperties": false,
             "required": ["date", "repositoryGroups", "adjustments"],
             "properties": {
+    "replayAllocations": { "type": "array", "minItems": 1, "maxItems": 8192, "items": { "$ref": "#/$defs/replayAllocation" } },
               "date": { "type": "string", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$" },
               "repositoryGroups": { "type": "array", "items": { "$ref": "#/$defs/repositoryGroup" } },
               "adjustments": { "type": "array", "items": { "$ref": "#/$defs/adjustment" } }
@@ -91,10 +94,12 @@
       "if": {
         "required": ["estimatorVersion", "selection"],
         "properties": {
+    "replayAllocations": { "type": "array", "minItems": 1, "maxItems": 8192, "items": { "$ref": "#/$defs/replayAllocation" } },
           "estimatorVersion": { "pattern": "^change-portfolio/0\\.[23456]\\.[0-9]+\\+" },
           "selection": {
             "required": ["kind", "manifestBased"],
             "properties": {
+    "replayAllocations": { "type": "array", "minItems": 1, "maxItems": 8192, "items": { "$ref": "#/$defs/replayAllocation" } },
               "kind": { "const": "author-period" },
               "manifestBased": { "const": true }
             }
@@ -107,9 +112,11 @@
       "if": { "required": ["aggregation"] },
       "then": {
         "properties": {
+    "replayAllocations": { "type": "array", "minItems": 1, "maxItems": 8192, "items": { "$ref": "#/$defs/replayAllocation" } },
           "selection": {
             "required": ["kind", "manifestBased", "authorPeriodManifest"],
             "properties": {
+    "replayAllocations": { "type": "array", "minItems": 1, "maxItems": 8192, "items": { "$ref": "#/$defs/replayAllocation" } },
               "kind": { "const": "author-period" },
               "manifestBased": { "const": true }
             }
@@ -120,10 +127,183 @@
   ],
   "additionalProperties": false,
   "$defs": {
+    "replayEvent": {
+      "type": "object",
+      "required": [
+        "attributionPolicy",
+        "id",
+        "oldBaseObjectId",
+        "originalObjectId",
+        "newBaseObjectId",
+        "rewrittenObjectId"
+      ],
+      "properties": {
+    "replayAllocations": { "type": "array", "minItems": 1, "maxItems": 8192, "items": { "$ref": "#/$defs/replayAllocation" } },
+        "attributionPolicy": {
+          "const": "declared-replay-range/1.0.0"
+        },
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
+        },
+        "oldBaseObjectId": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}([0-9a-f]{24})?$"
+        },
+        "originalObjectId": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}([0-9a-f]{24})?$"
+        },
+        "newBaseObjectId": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}([0-9a-f]{24})?$"
+        },
+        "rewrittenObjectId": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}([0-9a-f]{24})?$"
+        },
+        "replayObjectId": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}([0-9a-f]{24})?$"
+        },
+        "replayProvenanceId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
+        },
+        "eventTimestamp": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "eventProvenanceId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
+        }
+      },
+      "dependentRequired": { "replayObjectId": ["replayProvenanceId"], "replayProvenanceId": ["replayObjectId"], "eventTimestamp": ["eventProvenanceId"], "eventProvenanceId": ["eventTimestamp"] },
+      "additionalProperties": false
+    },
+    "replayAttribution": {
+      "type": "object",
+      "required": [
+        "eventId",
+        "role",
+        "originalSelectedTimestamp",
+        "supportOnly"
+      ],
+      "properties": {
+    "replayAllocations": { "type": "array", "minItems": 1, "maxItems": 8192, "items": { "$ref": "#/$defs/replayAllocation" } },
+        "eventId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
+        },
+        "role": {
+          "enum": [
+            "original",
+            "retained"
+          ]
+        },
+        "originalSelectedTimestamp": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "supportOnly": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false
+    },
+    "replayAllocation": {
+      "type": "object",
+      "required": [
+        "policy",
+        "evidence",
+        "status",
+        "availableJointExpectedHours",
+        "allocationCapped"
+      ],
+      "properties": {
+    "replayAllocations": { "type": "array", "minItems": 1, "maxItems": 8192, "items": { "$ref": "#/$defs/replayAllocation" } },
+        "policy": {
+          "const": "declared-replay-range/1.0.0"
+        },
+        "evidence": {
+          "type": "object",
+          "required": [
+            "event",
+            "review",
+            "originalObjectIds",
+            "retainedObjectIds"
+          ],
+          "properties": {
+    "replayAllocations": { "type": "array", "minItems": 1, "maxItems": 8192, "items": { "$ref": "#/$defs/replayAllocation" } },
+            "event": {
+              "$ref": "#/$defs/replayEvent"
+            },
+            "review": {
+              "$ref": "urn:eh:schema:v1:change-rewrite-review-report"
+            },
+            "originalObjectIds": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 1024,
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{40}([0-9a-f]{24})?$"
+              }
+            },
+            "retainedObjectIds": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 1024,
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{40}([0-9a-f]{24})?$"
+              }
+            }
+          },
+          "additionalProperties": false
+        },
+        "status": {
+          "enum": [
+            "allocated-under-declared-replay",
+            "event-outside-period",
+            "unresolved-replay-evidence",
+            "unresolved-event-date"
+          ]
+        },
+        "availableJointExpectedHours": {
+          "type": "number",
+          "minimum": 0
+        },
+        "standaloneNovelExpectedHours": {
+          "type": "number",
+          "minimum": 0
+        },
+        "allocatedEventExpectedHours": {
+          "type": "number",
+          "minimum": 0
+        },
+        "allocationCapped": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false
+    },
     "portfolioSelection": {
       "type": "object",
       "required": ["schemaVersion", "kind", "manifestBased"],
       "properties": {
+    "replayAllocations": { "type": "array", "minItems": 1, "maxItems": 8192, "items": { "$ref": "#/$defs/replayAllocation" } },
         "schemaVersion": { "const": "1.0.0" },
         "kind": { "enum": ["pull-requests", "author-period"] },
         "manifestBased": { "type": "boolean" },
@@ -147,6 +327,7 @@
         "intervalSemantics"
       ],
       "properties": {
+    "replayAllocations": { "type": "array", "minItems": 1, "maxItems": 8192, "items": { "$ref": "#/$defs/replayAllocation" } },
         "manifestDigest": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
         "sinceInclusive": { "type": "string", "format": "date-time" },
         "untilExclusive": { "type": "string", "format": "date-time" },
@@ -175,11 +356,12 @@
       "type": "object",
       "required": ["id", "heads"],
       "properties": {
+    "replayAllocations": { "type": "array", "minItems": 1, "maxItems": 8192, "items": { "$ref": "#/$defs/replayAllocation" } },
         "id": { "$ref": "#/$defs/publicId" },
         "heads": {
           "type": "array",
           "minItems": 1,
-          "maxItems": 32,
+          "maxItems": 512,
           "items": { "$ref": "#/$defs/authorPeriodManifestHead" }
         }
       },
@@ -189,6 +371,7 @@
       "type": "object",
       "required": ["id", "objectId"],
       "properties": {
+    "replayAllocations": { "type": "array", "minItems": 1, "maxItems": 8192, "items": { "$ref": "#/$defs/replayAllocation" } },
         "id": { "$ref": "#/$defs/publicId" },
         "objectId": { "type": "string", "pattern": "^[0-9a-f]{40}([0-9a-f]{24})?$" }
       },
@@ -215,6 +398,7 @@
         "intervalSemantics"
       ],
       "properties": {
+    "replayAllocations": { "type": "array", "minItems": 1, "maxItems": 8192, "items": { "$ref": "#/$defs/replayAllocation" } },
         "aliases": {
           "type": "array",
           "minItems": 1,
@@ -238,6 +422,7 @@
       "type": "object",
       "required": ["evidence", "originalAuthorTimestamp", "rewrittenCommitterTimestamp", "role", "supportOnly", "basis", "confidence", "treatment"],
       "properties": {
+    "replayAllocations": { "type": "array", "minItems": 1, "maxItems": 8192, "items": { "$ref": "#/$defs/replayAllocation" } },
         "evidence": { "$ref": "urn:eh:schema:v1:change-author-period-manifest#/$defs/rewriteEvent" },
         "originalAuthorTimestamp": { "type": "string", "format": "date-time" },
         "rewrittenCommitterTimestamp": { "type": "string", "format": "date-time" },
@@ -254,6 +439,8 @@
       "type": "object",
       "required": ["kind", "mergeCommit", "parentCount", "ambiguityReasons"],
       "properties": {
+        "replay": { "$ref": "#/$defs/replayAttribution" },
+    "replayAllocations": { "type": "array", "minItems": 1, "maxItems": 8192, "items": { "$ref": "#/$defs/replayAllocation" } },
         "rewrite": { "$ref": "#/$defs/rewriteAttribution" },
         "kind": { "enum": ["pull-request", "direct-author", "coauthor"] },
         "selectedTimestamp": { "type": "string", "format": "date-time" },
@@ -268,7 +455,7 @@
         "headIds": {
           "type": "array",
           "minItems": 1,
-          "maxItems": 32,
+          "maxItems": 512,
           "items": { "$ref": "#/$defs/publicId" },
           "uniqueItems": true
         },
@@ -284,6 +471,7 @@
       "type": "object",
       "required": ["contributorId", "kind"],
       "properties": {
+    "replayAllocations": { "type": "array", "minItems": 1, "maxItems": 8192, "items": { "$ref": "#/$defs/replayAllocation" } },
         "contributorId": { "$ref": "#/$defs/publicId" },
         "kind": { "enum": ["direct-author", "coauthor"] }
       },
@@ -307,6 +495,7 @@
         "uncertaintyReasons"
       ],
       "properties": {
+    "replayAllocations": { "type": "array", "minItems": 1, "maxItems": 8192, "items": { "$ref": "#/$defs/replayAllocation" } },
         "id": { "type": "string", "minLength": 1 },
         "selectorId": { "type": "string", "minLength": 1 },
         "repositoryId": { "type": "string", "minLength": 1 },
@@ -330,6 +519,7 @@
           "additionalProperties": false,
           "required": ["protocol", "itemIds", "patchDigest"],
           "properties": {
+    "replayAllocations": { "type": "array", "minItems": 1, "maxItems": 8192, "items": { "$ref": "#/$defs/replayAllocation" } },
             "protocol": { "const": "exact-retained-composition/1.0.0" },
             "itemIds": {
               "type": "array", "minItems": 2, "maxItems": 256, "uniqueItems": true,
@@ -350,6 +540,7 @@
       "type": "object",
       "required": ["id", "baseObjectId", "itemIds"],
       "properties": {
+    "replayAllocations": { "type": "array", "minItems": 1, "maxItems": 8192, "items": { "$ref": "#/$defs/replayAllocation" } },
         "id": { "type": "string", "minLength": 1 },
         "baseObjectId": { "type": "string", "minLength": 1 },
         "itemIds": {
@@ -377,6 +568,7 @@
         "uncertaintyReasons"
       ],
       "properties": {
+    "replayAllocations": { "type": "array", "minItems": 1, "maxItems": 8192, "items": { "$ref": "#/$defs/replayAllocation" } },
         "id": { "type": "string", "minLength": 1 },
         "repositoryId": { "type": "string", "minLength": 1 },
         "orderPolicy": { "enum": ["order-independent", "chronological-selected-commits"] },
@@ -415,6 +607,7 @@
       "type": "object",
       "required": ["policy", "contributors", "contributorGroups", "repositories"],
       "properties": {
+    "replayAllocations": { "type": "array", "minItems": 1, "maxItems": 8192, "items": { "$ref": "#/$defs/replayAllocation" } },
         "policy": { "const": "exclusive-contributor-and-head-match-sets/1.0.0" },
         "contributors": {
           "type": "array",
@@ -452,6 +645,7 @@
         "uncertaintyReasons"
       ],
       "properties": {
+    "replayAllocations": { "type": "array", "minItems": 1, "maxItems": 8192, "items": { "$ref": "#/$defs/replayAllocation" } },
         "contributorId": { "$ref": "#/$defs/publicId" },
         "selectedCommitCount": { "type": "integer", "minimum": 0 },
         "directAuthorMatchCount": { "type": "integer", "minimum": 0 },
@@ -490,6 +684,7 @@
         "uncertaintyReasons"
       ],
       "properties": {
+    "replayAllocations": { "type": "array", "minItems": 1, "maxItems": 8192, "items": { "$ref": "#/$defs/replayAllocation" } },
         "id": { "type": "string", "minLength": 1 },
         "kind": { "enum": ["single-contributor", "shared-contributors"] },
         "contributorIds": {
@@ -536,6 +731,7 @@
         "uncertaintyReasons"
       ],
       "properties": {
+    "replayAllocations": { "type": "array", "minItems": 1, "maxItems": 8192, "items": { "$ref": "#/$defs/replayAllocation" } },
         "id": { "type": "string", "minLength": 1 },
         "repositoryId": { "$ref": "#/$defs/publicId" },
         "repositoryGroupId": { "type": "string", "minLength": 1 },
@@ -579,6 +775,7 @@
         "uncertaintyReasons"
       ],
       "properties": {
+    "replayAllocations": { "type": "array", "minItems": 1, "maxItems": 8192, "items": { "$ref": "#/$defs/replayAllocation" } },
         "repositoryId": { "$ref": "#/$defs/publicId" },
         "selectedCommitCount": { "type": "integer", "minimum": 0 },
         "directAuthorMatchCount": { "type": "integer", "minimum": 0 },
@@ -596,7 +793,7 @@
         "heads": {
           "type": "array",
           "minItems": 1,
-          "maxItems": 32,
+          "maxItems": 512,
           "items": { "$ref": "#/$defs/headSummary" }
         },
         "headGroups": {
@@ -624,6 +821,7 @@
         "sharedHeadGroupIds"
       ],
       "properties": {
+    "replayAllocations": { "type": "array", "minItems": 1, "maxItems": 8192, "items": { "$ref": "#/$defs/replayAllocation" } },
         "headId": { "$ref": "#/$defs/publicId" },
         "reachableSelectedCommitCount": { "type": "integer", "minimum": 0 },
         "uniqueSelectedCommitCount": { "type": "integer", "minimum": 0 },
@@ -653,12 +851,13 @@
         "uncertaintyReasons"
       ],
       "properties": {
+    "replayAllocations": { "type": "array", "minItems": 1, "maxItems": 8192, "items": { "$ref": "#/$defs/replayAllocation" } },
         "id": { "type": "string", "minLength": 1 },
         "kind": { "enum": ["single-head", "shared-heads"] },
         "headIds": {
           "type": "array",
           "minItems": 1,
-          "maxItems": 32,
+          "maxItems": 512,
           "items": { "$ref": "#/$defs/publicId" },
           "uniqueItems": true
         },
@@ -688,6 +887,7 @@
       "type": "object",
       "required": ["id", "kind", "effortDelta", "reason", "itemIds", "affectedPathCount"],
       "properties": {
+    "replayAllocations": { "type": "array", "minItems": 1, "maxItems": 8192, "items": { "$ref": "#/$defs/replayAllocation" } },
         "id": { "type": "string", "minLength": 1 },
         "kind": { "enum": ["exact-duplicate", "shared-context", "overlap", "revert", "interaction"] },
         "effortDelta": { "$ref": "urn:eh:schema:v1:change-estimate-report#/$defs/signedEffortRange" },

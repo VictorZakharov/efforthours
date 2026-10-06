@@ -50,6 +50,9 @@ internal static class ChangePortfolioIdentity
         };
     }
 
+    public static DateTimeOffset? EvidenceTimestamp(ChangePortfolioCandidate candidate) =>
+        candidate.Attribution.Replay?.OriginalSelectedTimestamp ?? candidate.Attribution.SelectedTimestamp;
+
     public static string BaseContextId(string repositoryId, string baseObjectId) =>
         StableId("change-portfolio-base", repositoryId, baseObjectId);
 

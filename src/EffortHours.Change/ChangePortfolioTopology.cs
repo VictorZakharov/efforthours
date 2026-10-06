@@ -172,8 +172,8 @@ internal static class ChangePortfolioTopology
         public int Compare(ChangePortfolioItemDraft? left, ChangePortfolioItemDraft? right)
         {
             int timestamp = Nullable.Compare(
-                left?.Candidate.Attribution.SelectedTimestamp,
-                right?.Candidate.Attribution.SelectedTimestamp);
+                left is null ? null : ChangePortfolioIdentity.EvidenceTimestamp(left.Candidate),
+                right is null ? null : ChangePortfolioIdentity.EvidenceTimestamp(right.Candidate));
             return timestamp != 0
                 ? timestamp
                 : StringComparer.Ordinal.Compare(left?.Id, right?.Id);

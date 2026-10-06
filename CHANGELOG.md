@@ -6,6 +6,14 @@ may still change public contracts with explicit documentation.
 
 ## Unreleased
 
+- Compose immutable replay range reviews with joint calendar-day portfolios. Keep
+  original member dates, allocate only the supported novel delta within the
+  deduplicated member budget, and expose the standalone estimate plus any cap.
+  Missing replay/date remains unresolved; conflict replay provenance stays declared.
+- Admit up to the existing 512-head overall envelope within one repository, with
+  bounded reachability membership storage and 32-ref/32-tip acquisition batches.
+  Completed fetch batches remain reusable after failure; no heads are truncated.
+
 - Add offline immutable replay range review for multi-commit and squashed rewrites.
   Separate original, inherited upstream, replay, retained feature and novel delta
   with canonical lineage, explicit replay/date provenance and unresolved missing

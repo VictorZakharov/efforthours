@@ -1,5 +1,9 @@
 # Change portfolio reconciliation
 
+Optional [declared replay ranges](REPLAY_RANGE_ATTRIBUTION.md) compose canonical
+immutable replay review with conserved joint daily allocation and explicit caps.
+Source priors and the legacy single-commit policy remain unchanged.
+
 ## Current boundary
 
 `change-portfolio/0.6.5` composes canonical Change estimates selected as repeated
@@ -261,8 +265,15 @@ shape is:
 
 Public IDs use only letters, digits, `.`, `_`, and `-`, start with a letter or
 digit, and are limited to 128 characters. The v1 execution budgets are 256
-repositories, 32 heads per repository and 512 heads overall, 64 contributors, 16
-aliases per contributor, and 128 aliases overall. Each repository has a
+repositories and 512 distinct heads overall (up to 512 in one repository), 64 contributors, 16
+aliases per contributor, and 128 aliases overall. Head reachability uses one
+bounded 512-bit propagation walk with a separate deterministic 128-MiB retained
+membership ledger (128 bytes plus two bytes per object-ID character and eight
+bytes per shared head-ID reference per selected result). Its one-million-commit
+walk and 100,000-node frontier bounds remain enforced. Managed acquisition batches
+at most 32 refs and 32 negotiation tips per fetch; verified completed heads seed
+later negotiation batches without writing refs, and completed batches remain
+reusable after failure. No heads are truncated. Each repository has a
 deterministic 128-MiB charged exact-candidate ledger and reports its scope in
 logical 1,024-candidate chunks. Git may stream more lifetime identity-prefiltered metadata,
 but out-of-window matches do not consume the ledger. A 100,000-candidate

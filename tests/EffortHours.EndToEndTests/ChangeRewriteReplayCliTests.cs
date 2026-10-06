@@ -74,8 +74,11 @@ public sealed partial class ChangeCliTests : ChangeCliTestSupport
         Assert.Equal(3, missing.Comparisons.Count);
         ChangeRewriteReviewReport pure = await Review(manifest with { RewrittenObjectId = replay });
         Assert.Equal(0m, pure.EventAttributedNovelEffort!.Expected);
+        await VerifyDailyReplayPortfolioAsync(repository, manifest, partitions: true);
+        await VerifyDailyReplayPortfolioAsync(repository, manifest with { RewrittenObjectId = replay }, partitions: false);
         string squashed = await Squash(rewritten);
         ChangeRewriteReviewReport squash = await Review(manifest with { RewrittenObjectId = squashed });
+        await VerifyDailyReplayPortfolioAsync(repository, manifest with { RewrittenObjectId = squashed }, partitions: false);
         Assert.Equal(1, squash.RewrittenCommitCount);
         Assert.Equal(retained.Effort, squash.Comparisons.Single(value => value.Role == "retained-feature").Effort);
         Assert.Equal(full.EventAttributedNovelEffort, squash.EventAttributedNovelEffort);
@@ -90,6 +93,7 @@ public sealed partial class ChangeCliTests : ChangeCliTestSupport
         string copiedHead = (await repository.GitAsync("rev-parse", "HEAD")).Trim();
         Assert.NotEqual(rewritten, copiedHead);
         ChangeRewriteReviewReport copy = await Review(manifest with { RewrittenObjectId = copiedHead });
+        await VerifyDailyReplayPortfolioAsync(repository, manifest with { RewrittenObjectId = copiedHead }, partitions: false);
         Assert.Equal(retained.Effort, copy.Comparisons.Single(value => value.Role == "retained-feature").Effort);
         Assert.Equal(full.EventAttributedNovelEffort, copy.EventAttributedNovelEffort);
         await Review(manifest with { ReplayObjectId = rewritten }, valid: false); // Hidden novel file is not a replay.
@@ -101,8 +105,19 @@ public sealed partial class ChangeCliTests : ChangeCliTestSupport
         // Only the explicit fixture squash/copy creates new refs; review leaves refs intact.
         Assert.Equal(refs, string.Join('\n', (await repository.GitAsync("show-ref")).Split('\n').Where(line => !line.EndsWith("refs/heads/squashed", StringComparison.Ordinal) && !line.EndsWith("refs/heads/copied", StringComparison.Ordinal))));
 
-        async Task<string> Dated(string message, string date) =>
-            (await HistoricalCommitAsync(repository, message, date, date)).Trim();
+        async Task<string> Dated(string message, string date)
+        {
+            if (message != "upstream") return (await HistoricalCommitAsync(repository, message, date, date)).Trim();
+            await repository.GitAsync("add", "--all");
+            var start = StartInfo("git", repository.RootPath);
+            start.Environment["GIT_AUTHOR_DATE"] = date;
+            start.Environment["GIT_COMMITTER_DATE"] = date;
+            start.Environment["GIT_AUTHOR_NAME"] = "Upstream Contributor";
+            start.Environment["GIT_AUTHOR_EMAIL"] = "upstream@example.invalid";
+            foreach (string argument in new[] { "commit", "--quiet", "-m", message }) start.ArgumentList.Add(argument);
+            Assert.Equal(0, (await RunAsync(start)).ExitCode);
+            return (await repository.GitAsync("rev-parse", "HEAD")).Trim();
+        }
         async Task<string> Rebase(string branch, bool novel)
         {
             await repository.GitAsync("switch", "-c", branch, original);

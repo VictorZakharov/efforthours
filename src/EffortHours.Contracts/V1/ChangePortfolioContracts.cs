@@ -112,6 +112,8 @@ public sealed record ChangePortfolioAttribution
 
     public ChangeRewriteAttribution? Rewrite { get; init; }
 
+    public ChangePortfolioReplayAttribution? Replay { get; init; }
+
     public bool MergeCommit { get; init; }
 
     public int ParentCount { get; init; }
@@ -228,6 +230,8 @@ public sealed record ChangePortfolioAdjustment
 public sealed record ChangePortfolioReport
 {
     public ChangePortfolioDailyNormalization? DailyNormalization { get; init; }
+
+    public IReadOnlyList<ChangePortfolioReplayAllocation>? ReplayAllocations { get; init; }
 
     public string SchemaVersion { get; init; } = ContractVersions.V1;
 

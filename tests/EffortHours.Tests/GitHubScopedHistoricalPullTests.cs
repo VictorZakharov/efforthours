@@ -72,7 +72,7 @@ public sealed class GitHubScopedHistoricalPullTests
     [Fact]
     public async Task HeadBudgetFailureReportsActualPrPhaseAndCompleteProgressWithoutSilentTruncation()
     {
-        HistoricalPullProviderFixture runner = new(70);
+        HistoricalPullProviderFixture runner = new(514);
         ProviderQueryCounters counters = new();
         GitHubProviderException failure = await Assert.ThrowsAsync<GitHubProviderException>(() =>
             HistoricalPullProviderFixture.DiscoverScopeAsync(runner, counters, true, 1));
@@ -80,9 +80,9 @@ public sealed class GitHubScopedHistoricalPullTests
         Assert.Equal("open-pr-discovery", failure.Action.Phase);
         Assert.Equal("inspect-head-scope-or-use-pinned-manifest", failure.Action.SuggestedAction);
         Assert.Equal(0, failure.Action.RetryLimit);
-        Assert.Equal(70, counters.Diagnostics("missing").HistoricalPullRequests!.CompletedCount);
-        Assert.Equal(69, counters.Diagnostics("missing").HistoricalPullRequests!.SelectedCount);
-        Assert.Contains("32-head bound", failure.Message, StringComparison.Ordinal);
+        Assert.Equal(514, counters.Diagnostics("missing").HistoricalPullRequests!.CompletedCount);
+        Assert.Equal(513, counters.Diagnostics("missing").HistoricalPullRequests!.SelectedCount);
+        Assert.Contains("512-head bound", failure.Message, StringComparison.Ordinal);
     }
 
     [Fact]

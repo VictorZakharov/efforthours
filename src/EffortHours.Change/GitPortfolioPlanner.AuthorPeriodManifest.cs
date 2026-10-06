@@ -24,6 +24,8 @@ public sealed record GitAuthorPeriodManifestPortfolioPlan
 
     public IReadOnlyList<Diagnostic> Diagnostics { get; init; } = [];
 
+    public IReadOnlyList<GitPortfolioReplayRangePlan> ReplayRanges { get; init; } = [];
+
     public IReadOnlyList<GitAuthorPeriodManifestRepositoryScope> RepositoryScopes { get; init; } = [];
 
     public required ChangePortfolioExecutionTelemetry ExecutionTelemetry { get; init; }
@@ -68,6 +70,7 @@ public sealed partial class GitPortfolioPlanner
                 cancellationToken).ConfigureAwait(false);
         }
         List<GitAuthorPeriodManifestPortfolioItem> items = [];
+        List<GitPortfolioReplayRangePlan> replayRanges = [];
         List<GitAuthorPeriodManifestRepositoryScope> repositoryScopes = [];
         List<Diagnostic> diagnostics =
         [
@@ -93,6 +96,7 @@ public sealed partial class GitPortfolioPlanner
                 identityGroups,
                 executionTelemetry,
                 cancellationToken).ConfigureAwait(false);
+            replayRanges.AddRange(prepared.ReplayRanges);
             GitAuthorPeriodCandidateResult candidateResult = prepared.CandidateResult;
             IReadOnlyList<GitCommitMetadata> history = candidateResult.Candidates;
             AuthorPeriodManifestSelectionResult selected = prepared.Selected;
@@ -160,6 +164,7 @@ public sealed partial class GitPortfolioPlanner
                     {
                         Kind = kind,
                         Rewrite = commit.Rewrite,
+                        Replay = commit.Replay,
                         SelectedTimestamp = commit.SelectedTimestamp.ToUniversalTime(),
                         MergeCommit = commit.Metadata.ParentObjectIds.Count > 1,
                         ParentCount = commit.Metadata.ParentObjectIds.Count,
@@ -184,6 +189,7 @@ public sealed partial class GitPortfolioPlanner
                 manifest,
                 manifestDigest),
             Items = items,
+            ReplayRanges = replayRanges,
             Diagnostics = diagnostics,
             RepositoryScopes = repositoryScopes,
             ExecutionTelemetry = executionTelemetry,

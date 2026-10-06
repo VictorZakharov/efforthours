@@ -1,3 +1,5 @@
+using EffortHours.Contracts.V1;
+
 namespace EffortHours.Change;
 
 internal sealed record RepositoryAcquisitionResult(
@@ -49,10 +51,10 @@ internal sealed partial class GitHubRepositoryCache
         Action<long>? observeGrowth = null)
     {
         ArgumentNullException.ThrowIfNull(heads);
-        if (heads.Count is < 1 or > 32)
+        if (heads.Count is < 1 or > ChangeAuthorPeriodManifestLimits.MaximumHeadsPerRepository)
         {
             throw new ArgumentException(
-                "Managed repository acquisition requires between 1 and 32 immutable heads.",
+                $"Managed repository acquisition requires between 1 and {ChangeAuthorPeriodManifestLimits.MaximumHeadsPerRepository} immutable heads.",
                 nameof(heads));
         }
 
@@ -93,7 +95,7 @@ internal sealed partial class GitHubRepositoryCache
             IReadOnlyList<string> cachedTips = await GitHubFetchNegotiationCache.ReadAsync(
                 path,
                 cancellationToken).ConfigureAwait(false);
-            List<string> negotiationTips = [.. localObjectIds.Distinct(StringComparer.Ordinal)];
+            List<string> negotiationTips = [.. localObjectIds.Distinct(StringComparer.Ordinal).Order(StringComparer.Ordinal).Take(GitHubFetchNegotiationCache.MaximumTips)];
             foreach (string tip in cachedTips.Except(localObjectIds, StringComparer.Ordinal))
             {
                 if (negotiationTips.Count == GitHubFetchNegotiationCache.MaximumTips)
@@ -107,17 +109,27 @@ internal sealed partial class GitHubRepositoryCache
                 }
             }
 
-            await FetchObservedAsync(path, repositoryIdentity, missing, negotiationTips, before.Bytes,
-                observeGrowth, cancellationToken).ConfigureAwait(false);
-            foreach (DiscoveredHead head in missing)
+            foreach (DiscoveredHead[] batch in missing.Chunk(32))
             {
-                if (!await _git.CommitExistsAsync(path, head.ObjectId, cancellationToken)
-                    .ConfigureAwait(false))
+                cancellationToken.ThrowIfCancellationRequested();
+                await FetchObservedAsync(path, repositoryIdentity, batch, negotiationTips, before.Bytes,
+                    observeGrowth, cancellationToken).ConfigureAwait(false);
+                // Keep the existing per-fetch ref and negotiation bounds. Charge growth
+                // after every batch against the same original object-store baseline.
+                GitObjectStorage partial = await MeasureAsync(path, cancellationToken).ConfigureAwait(false);
+                observeGrowth?.Invoke(Math.Max(0, partial.Bytes - before.Bytes));
+                foreach (DiscoveredHead head in batch)
                 {
-                    throw new InvalidOperationException(
-                        "A discovered immutable head is unavailable after narrow managed-cache acquisition; " +
-                        "the provider ref may have moved during discovery.");
+                    if (!await _git.CommitExistsAsync(path, head.ObjectId, cancellationToken)
+                        .ConfigureAwait(false))
+                    {
+                        throw new InvalidOperationException(
+                            "A discovered immutable head is unavailable after narrow managed-cache acquisition; " +
+                            "the provider ref may have moved during discovery.");
+                    }
                 }
+                negotiationTips = [.. negotiationTips.Concat(batch.Select(head => head.ObjectId))
+                    .Distinct(StringComparer.Ordinal).Order(StringComparer.Ordinal).Take(GitHubFetchNegotiationCache.MaximumTips)];
             }
         }
 

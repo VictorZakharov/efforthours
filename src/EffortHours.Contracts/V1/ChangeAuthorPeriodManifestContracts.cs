@@ -4,7 +4,7 @@ public static class ChangeAuthorPeriodManifestLimits
 {
     public const int MaximumRepositories = 256;
 
-    public const int MaximumHeadsPerRepository = 32;
+    public const int MaximumHeadsPerRepository = MaximumHeads;
 
     public const int MaximumHeads = 512;
 
@@ -83,6 +83,8 @@ public sealed record ChangeAuthorPeriodManifestRepository
     public IReadOnlyList<ChangeAuthorPeriodManifestHead> Heads { get; init; } = [];
 
     public IReadOnlyList<ChangeRewriteEvent>? RewriteEvents { get; init; }
+
+    public IReadOnlyList<ChangePortfolioReplayEvent>? ReplayEvents { get; init; }
 }
 
 public sealed record ChangeAuthorPeriodManifestHead

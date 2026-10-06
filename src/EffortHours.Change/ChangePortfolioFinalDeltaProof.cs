@@ -27,7 +27,7 @@ internal static class ChangePortfolioFinalDeltaProof
     public static bool TryCompose(IEnumerable<ChangePortfolioCandidate> candidates,
         out Dictionary<string, ChangePortfolioPathEffect> effects, out string? rejectedPath)
     {
-        ChangePortfolioCandidate[] ordered = [.. candidates.OrderBy(candidate => candidate.Attribution.SelectedTimestamp)
+        ChangePortfolioCandidate[] ordered = [.. candidates.OrderBy(ChangePortfolioIdentity.EvidenceTimestamp)
             .ThenBy(candidate => ChangePortfolioIdentity.CreateDraft(candidate).Id, StringComparer.Ordinal)];
         effects = new(StringComparer.Ordinal);
         bool complete = true;
@@ -112,7 +112,7 @@ internal static class ChangePortfolioFinalDeltaProof
             .OfType<ChangePortfolioFinalDelta>()];
         foreach (ChangePortfolioFinalDelta receipt in receipts)
         {
-            ChangePortfolioCandidate[] ordered = [.. active.OrderBy(draft => draft.Candidate.Attribution.SelectedTimestamp)
+            ChangePortfolioCandidate[] ordered = [.. active.OrderBy(draft => ChangePortfolioIdentity.EvidenceTimestamp(draft.Candidate))
                 .ThenBy(draft => draft.Id, StringComparer.Ordinal).Select(draft => draft.Candidate)];
             if (ordered.Length < 2 || !SuppressionPreservesRawEffects(drafts) || !TryCompose(ordered, out var effects) ||
                 !TryCompose([new ChangePortfolioCandidate

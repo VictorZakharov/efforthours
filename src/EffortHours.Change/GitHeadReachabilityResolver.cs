@@ -1,5 +1,6 @@
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Numerics;
 using EffortHours.Contracts.V1;
 
 namespace EffortHours.Change;
@@ -82,6 +83,8 @@ internal sealed class GitHeadReachabilityResolver : IGitHeadReachabilityResolver
         catch
         {
             TryKill(process);
+            try { await process.WaitForExitAsync(CancellationToken.None).ConfigureAwait(false); }
+            catch (InvalidOperationException) { /* Git may have failed to start. Preserve the root failure. */ }
             throw;
         }
     }
@@ -122,28 +125,36 @@ internal sealed class GitHeadReachabilityResolver : IGitHeadReachabilityResolver
 
 internal sealed class GitHeadReachabilityAccumulator
 {
+    internal const long MaximumMembershipLedgerBytes = 128L * 1024 * 1024;
+    private readonly long _maximumMembershipBytes;
+    private long _membershipBytes;
     private readonly string[] _headIds;
+    private readonly BigInteger[] _headBits;
     private readonly HashSet<string> _selected;
-    private readonly Dictionary<string, uint> _pending = new(StringComparer.Ordinal);
+    private readonly Dictionary<string, BigInteger> _pending = new(StringComparer.Ordinal);
     private readonly Dictionary<string, IReadOnlyList<string>> _result = new(StringComparer.Ordinal);
 
     public GitHeadReachabilityAccumulator(
         IReadOnlyList<ChangeAuthorPeriodManifestHead> heads,
-        IReadOnlyList<string> selectedObjectIds)
+        IReadOnlyList<string> selectedObjectIds,
+        long maximumMembershipBytes = MaximumMembershipLedgerBytes)
     {
         ArgumentNullException.ThrowIfNull(heads);
         ArgumentNullException.ThrowIfNull(selectedObjectIds);
-        if (heads.Count is < 1 or > 32)
+        if (heads.Count is < 1 or > ChangeAuthorPeriodManifestLimits.MaximumHeadsPerRepository)
         {
             throw new ArgumentOutOfRangeException(nameof(heads));
         }
 
+        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(maximumMembershipBytes);
+        _maximumMembershipBytes = maximumMembershipBytes;
         ChangeAuthorPeriodManifestHead[] ordered = [.. heads.OrderBy(head => head.Id, StringComparer.Ordinal)];
         _headIds = [.. ordered.Select(head => head.Id)];
+        _headBits = [.. Enumerable.Range(0, ordered.Length).Select(index => BigInteger.One << index)];
         for (int index = 0; index < ordered.Length; index++)
         {
             _pending[ordered[index].ObjectId] =
-                _pending.GetValueOrDefault(ordered[index].ObjectId) | (1U << index);
+                _pending.GetValueOrDefault(ordered[index].ObjectId) | _headBits[index];
         }
 
         _selected = [.. selectedObjectIds.Distinct(StringComparer.Ordinal)];
@@ -164,16 +175,21 @@ internal sealed class GitHeadReachabilityAccumulator
         }
 
         string objectId = values[0].ToLowerInvariant();
-        if (!_pending.Remove(objectId, out uint reachableHeads) || reachableHeads == 0)
+        if (!_pending.Remove(objectId, out BigInteger reachableHeads) || reachableHeads == 0)
         {
             throw new InvalidOperationException("Git returned inconsistent manifest reachability order.");
         }
 
         if (_selected.Contains(objectId))
         {
-            _result.Add(
-                objectId,
-                [.. _headIds.Where((_, index) => (reachableHeads & (1U << index)) != 0)]);
+            string[] membership = [.. _headIds.Where((_, index) => (reachableHeads & _headBits[index]) != 0)];
+            // IDs are shared. Charge one entry, the immutable object text and exact
+            // member references; this is a deterministic ledger, not sampled heap.
+            long charge = checked(128L + 2L * objectId.Length + 8L * membership.Length);
+            if (charge > _maximumMembershipBytes - _membershipBytes)
+                throw new InvalidOperationException("Manifest head membership exceeded its bounded ledger; no heads or selected commits were truncated.");
+            _membershipBytes += charge;
+            _result.Add(objectId, membership);
         }
 
         foreach (string parent in values.Skip(1).Select(value => value.ToLowerInvariant()))
