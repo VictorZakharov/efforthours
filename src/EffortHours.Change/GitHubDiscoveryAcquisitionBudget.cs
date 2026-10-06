@@ -57,10 +57,20 @@ internal sealed class GitHubDiscoveryAcquisitionBudget(
         deadline.Cancel();
     }
 
-    private GitHubProviderException BudgetFailure() => GitHubProviderFailure.DiscoveryBudget(
-        _acquisitionFailurePhase ?? Counters?.LastPhase ?? GitHubProviderFailure.CandidateDiscoveryPhase, _bytesExceeded
-            ? "Native acquisition exceeded its observed object-store growth budget. Narrow --repository or explicitly increase --max-acquired-mib; no aggregate was published."
-            : "Native discovery/acquisition exceeded its deadline; inspect the recorded request plan and active subphase. Completed immutable cache objects remain reusable, and no aggregate was published.", !_bytesExceeded && _acquisitionFailurePhase is null && request.Repositories.Count == 1 && Counters?.LastPhase == GitHubProviderFailure.OpenPullRequestPhase ? "inspect-pr-discovery-or-use-pinned-manifest" : "narrow-scope-or-use-pinned-manifest");
+    private GitHubProviderException BudgetFailure()
+    {
+        string phase = _acquisitionFailurePhase ?? Counters?.LastPhase ?? GitHubProviderFailure.CandidateDiscoveryPhase;
+        bool singleAcquisition = request.Repositories.Count == 1 && phase == GitHubProviderFailure.ManagedCachePhase;
+        string message = _bytesExceeded
+            ? singleAcquisition
+                ? "Native acquisition exceeded its observed object-store growth budget for the restricted repository. Inspect acquisition, explicitly increase --max-acquired-mib, or use a complete pinned manifest; no aggregate was published."
+                : "Native acquisition exceeded its observed object-store growth budget. Narrow --repository or explicitly increase --max-acquired-mib; no aggregate was published."
+            : "Native discovery/acquisition exceeded its deadline; inspect the recorded request plan and active subphase. Completed immutable cache objects remain reusable, and no aggregate was published.";
+        string suggestion = singleAcquisition ? "inspect-acquisition-or-use-pinned-manifest"
+            : !_bytesExceeded && request.Repositories.Count == 1 && phase == GitHubProviderFailure.OpenPullRequestPhase
+                ? "inspect-pr-discovery-or-use-pinned-manifest" : "narrow-scope-or-use-pinned-manifest";
+        return GitHubProviderFailure.DiscoveryBudget(phase, message, suggestion);
+    }
 
     public async Task<RepositoryAcquisitionResult> EnsureAsync(GitHubRepositoryCache cache, string identity,
         IReadOnlyList<DiscoveredHead> heads, string repositoryId, string reason, CancellationToken token)

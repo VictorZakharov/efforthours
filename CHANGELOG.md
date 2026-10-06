@@ -6,6 +6,21 @@ may still change public contracts with explicit documentation.
 
 ## Unreleased
 
+- Add offline `eh change review-days` with digest-bound external implementation,
+  meeting, PTO and mixed records. Preserve blank-date, missing-record and
+  repository-scope discrepancies as unresolved; never save unavailable values as
+  zero. Optional `equal-matched-entries/1.0.0` uses fixed-eight reference hours and
+  two-decimal contributions conserving the rounded matched daily multiplier.
+- Keep declared rewrite pair attribution when exact disjoint-head cherry-picks
+  repeat either member. Expose the joint retained-budget allocation basis and
+  warn that its remainder is not causal conflict-resolution labor. Advance the
+  portfolio identity to 0.6.5; numerical priors and rates are unchanged.
+- Extend cold/warm PR discovery verification to a synthetic 16-repository annual
+  population. Make acquisition deadline/byte remedies aware of single-repository
+  restrictions and preserve phase/counter/evidence diagnostics on failure.
+- EHE remains experimental and uncalibrated. These policies do not recover lost
+  history, actual workdays or labor; downstream time-entry writes remain external.
+
 ## 0.10.0-alpha.36 - 2026-10-06
 
 - Batch historical PR commit metadata and reuse complete unchanged head/base/count

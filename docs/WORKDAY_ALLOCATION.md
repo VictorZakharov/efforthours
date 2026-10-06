@@ -101,3 +101,11 @@ zero complete portfolios, and DST. Physical CLI cases check native historical
 sources, four/twelve-hour context with fixed-eight reference capacity, schema
 validation, stdout separation, unchanged input files, and protected output paths.
 This is deterministic allocation verification, not empirical workday calibration.
+
+## External work-record discrepancy review
+
+[WORKDAY_REVIEW.md](WORKDAY_REVIEW.md) defines the separate offline `eh change
+review-days` diagnostic. Blank retained dates, missing implementation records,
+mixed entries and mismatched repository relationships stay unresolved. Optional
+explicit entry allocations conserve the rounded daily expected EHE/8 multiplier;
+logged durations never set weights, and no external entries are overwritten.

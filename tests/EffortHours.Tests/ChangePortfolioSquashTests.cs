@@ -27,6 +27,46 @@ public sealed partial class ChangePortfolioReconcilerTests
         Assert.Equal(sharedHead ? 0 : 1, drafts.Count(draft => draft.DuplicateOfItemId is not null));
     }
 
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public async Task DeclaredPairKeepsItsDatePolicyWhenAnEarlierUnpairedRepresentationRepeatsIt(bool sharedHead)
+    {
+        ChangeState initial = State(("Demo.csproj", ProjectFile));
+        ChangeState final = State(("Demo.csproj", ProjectFile), ("A.cs", "public class A { }"));
+        ChangeEstimateReport source = await ReportAsync(ChangeSelectionKind.Commit, 0, initial, final);
+        DateTimeOffset date = new(2026, 1, 19, 12, 0, 0, TimeSpan.Zero);
+        ChangePortfolioCandidate declared = Candidate("repo", "declared", source, date.AddDays(3));
+        declared = declared with
+        {
+            Attribution = declared.Attribution with
+            {
+                HeadIds = ["paired"],
+                Rewrite = new()
+                {
+                    Role = "rewritten",
+                    SupportOnly = false,
+                    OriginalAuthorTimestamp = date,
+                    RewrittenCommitterTimestamp = date.AddDays(3),
+                    Evidence = new()
+                    {
+                        OriginalObjectId = new string('a', 40),
+                        RewrittenObjectId = new string('b', 40),
+                        OldBaseObjectId = new string('c', 40),
+                        NewBaseObjectId = new string('d', 40),
+                        EventTimestamp = date.AddDays(3)
+                    }
+                },
+            }
+        };
+        ChangePortfolioCandidate copy = Candidate("repo", "earlier-copy", source, date.AddDays(-1));
+        copy = copy with { Attribution = copy.Attribution with { HeadIds = [sharedHead ? "paired" : "copy"] } };
+        ChangePortfolioItemDraft declaredDraft = ChangePortfolioIdentity.CreateDraft(declared), copyDraft = ChangePortfolioIdentity.CreateDraft(copy);
+        ChangePortfolioExactCompositionNormalizer.Mark([copyDraft, declaredDraft]);
+        Assert.False(declaredDraft.Suppressed);
+        Assert.Equal(sharedHead ? null : declaredDraft.Id, copyDraft.DuplicateOfItemId);
+    }
+
     [Fact]
     public async Task SquashCompositionKeepsRetainedDatesAndDoesNotMultiplyEffort()
     {

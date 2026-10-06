@@ -7,7 +7,7 @@ namespace EffortHours.Change;
 
 public sealed partial class ChangePortfolioReconciler
 {
-    public const string Version = "change-portfolio/0.6.4+change-seed/0.21.3+seed-rules/0.4.0";
+    public const string Version = "change-portfolio/0.6.5+change-seed/0.21.3+seed-rules/0.4.0";
 
     public static ChangePortfolioReport Reconcile(
         ChangePortfolioSelection selection,
@@ -326,6 +326,7 @@ public sealed partial class ChangePortfolioReconciler
             {
                 Rewrite = draft.Candidate.Attribution.Rewrite is not { } rewrite ? null : rewrite with
                 {
+                    AllocationBasis = ChangeRewriteAttribution.JointBudgetBasis,
                     Treatment = rewrite.SupportOnly ? "evidence-support" :
                         draft.Suppressed || draft.AllocatedExpectedHours == 0m ? "no-retained-increment" :
                         rewrite.Role == "original" ? "original-contribution" : "retained-resolution-contribution",

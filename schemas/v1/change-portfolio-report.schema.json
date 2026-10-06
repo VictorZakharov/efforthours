@@ -245,6 +245,7 @@
         "supportOnly": { "type": "boolean" },
         "basis": { "const": "caller-declared-immutable-pair" },
         "confidence": { "const": "declared-not-verified-workday" },
+        "allocationBasis": { "const": "joint-retained-budget-remainder" },
         "treatment": { "enum": ["evidence-support", "no-retained-increment", "original-contribution", "retained-resolution-contribution"] }
       },
       "additionalProperties": false

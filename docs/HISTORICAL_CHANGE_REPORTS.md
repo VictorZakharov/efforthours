@@ -130,8 +130,9 @@ identity, so exact cold/warm runs preserve the same result digest.
 [WORKDAY_ALLOCATION.md](WORKDAY_ALLOCATION.md) now defines a separate explicit
 aggregate projection across externally declared workdays. It conserves the
 complete deduplicated EHE and reference capacity and labels every result allocated.
-Discrepancy matching, per-entry multiplier rounding, and downstream time-entry
-mutation remain outside this tool's contract.
+[WORKDAY_REVIEW.md](WORKDAY_REVIEW.md) now adds explicit record discrepancies and
+optional conserved two-decimal entry contributions with a fixed eight-hour
+reference. Downstream time-entry mutation remains outside this tool's contract.
 EHE remains experimental replacement effort, not historical labor, productivity,
 individual credit, compensation, or a recovered timesheet.
 
@@ -309,3 +310,14 @@ objects, mapping intent, event dates or discarded workdays. Use the existing
 explicit rewrite-event and workday-allocation policies for those declarations;
 plain author-date reports do not infer a later workday from a changed commit ID.
 The NDA field reproduction still requires a same-input consumer retest.
+
+Single-repository acquisition deadline/byte failures now use
+`inspect-acquisition-or-use-pinned-manifest` with zero automatic retries. The
+byte-budget message identifies the already restricted scope and permits only
+inspection, an explicit larger bound or a complete pinned manifest; it does not
+ask the caller to narrow that one repository again. Failure tests retain exact
+provider receipt counts, active acquisition phase, no aggregates and completed
+immutable objects for a subsequent reuse. The request checkpoint additionally
+covers cold/warm annual PR discovery across 16 admitted repositories, separately
+from the original restricted five-day case. Its omitted acquisition/estimation
+phases and simulated latency remain explicit.

@@ -599,7 +599,7 @@ source excerpts.
 
 The current source Change estimator identity is
 `change-seed/0.21.3+seed-rules/0.4.0`; the portfolio reconciler identity is
-`change-portfolio/0.6.4+change-seed/0.21.3+seed-rules/0.4.0`. Declared rewrite
+`change-portfolio/0.6.5+change-seed/0.21.3+seed-rules/0.4.0`. Declared rewrite
 event allocation is an explicit portfolio policy, not a new source estimator or
 broader model admission. The earlier 0.6.0
 Change identity alone passed the experimental Stage A logical gate, and that

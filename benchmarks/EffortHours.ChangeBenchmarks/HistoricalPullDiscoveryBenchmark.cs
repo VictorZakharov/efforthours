@@ -14,32 +14,50 @@ internal static class HistoricalPullDiscoveryBenchmark
     {
         int latency = arguments.Length > 1 ? int.Parse(arguments[1], CultureInfo.InvariantCulture) : 50;
         if (latency is < 0 or > 1000) throw new ArgumentException("Simulated provider latency must be 0-1000 milliseconds.");
-        HistoricalPullProviderFixture runner = new(258, latency);
-        MemoryPullMetadataCache cache = new();
         List<object> results = [];
-        foreach (string state in new[] { "cold", "warm" })
+        foreach ((string scope, int count, bool annual) in new[] { ("narrow-five-day", 1, false), ("broad-annual", 16, true) })
         {
-            ProviderQueryCounters counters = new() { PullMetadataCache = cache };
-            Stopwatch watch = Stopwatch.StartNew();
-            IReadOnlyList<DiscoveredRepository>? repositories = await HistoricalPullProviderFixture.DiscoverAsync(runner, counters).ConfigureAwait(false);
-            watch.Stop();
-            results.Add(new
+            MemoryPullMetadataCache cache = new();
+            foreach (string state in new[] { "cold", "warm" })
             {
-                state,
-                elapsedMilliseconds = watch.Elapsed.TotalMilliseconds,
-                queries = counters.QueryCount,
-                pages = counters.PageCount,
-                adapterProcesses = counters.ProcessCount,
-                selectedHeads = repositories!.Sum(repository => repository.Heads.Count),
-                plan = counters.Diagnostics("not-observed").HistoricalPullRequests
-            });
+                HistoricalPullProviderFixture runner = new(258, latency) { RepositoryCount = count };
+                ProviderQueryCounters counters = new() { PullMetadataCache = cache };
+                Stopwatch watch = Stopwatch.StartNew();
+                IReadOnlyList<DiscoveredRepository>? repositories = await HistoricalPullProviderFixture.DiscoverScopeAsync(runner, counters, annual, count).ConfigureAwait(false);
+                watch.Stop();
+                results.Add(new
+                {
+                    scope,
+                    includedRepositories = count,
+                    state,
+                    sinceInclusive = annual ? "2025-01-01T00:00:00Z" : HistoricalPullProviderFixture.Since.ToString("O", CultureInfo.InvariantCulture),
+                    untilExclusive = annual ? "2026-01-01T00:00:00Z" : HistoricalPullProviderFixture.Since.AddDays(5).ToString("O", CultureInfo.InvariantCulture),
+                    elapsedMilliseconds = watch.Elapsed.TotalMilliseconds,
+                    queries = counters.QueryCount,
+                    pages = counters.PageCount,
+                    adapterProcesses = counters.ProcessCount,
+                    selectedHeads = repositories!.Sum(repository => repository.Heads.Count),
+                    matchingPrRepresentations = counters.Diagnostics("not-observed").HistoricalPullRequests!.SelectedCount,
+                    acquisitionExecuted = false,
+                    acquiredObjects = 0,
+                    acquiredBytes = 0,
+                    peakAdapterConcurrency = runner.Peak,
+                    plan = counters.Diagnostics("not-observed").HistoricalPullRequests,
+                });
+            }
         }
         Console.WriteLine(JsonSerializer.Serialize(new
         {
             population = 258,
-            includedRepositories = 1,
             excludedPrRepositories = 1,
             simulatedLatencyMilliseconds = latency,
+            batchPrLimit = 12,
+            concurrentAdapterLimit = 4,
+            responseCharacterLimit = 16777216,
+            adapterRequestLimit = 2048,
+            headLimitPerRepository = 32,
+            metadataEntryByteLimit = 65536,
+            metadataRetentionLimit = 1000,
             runtime = RuntimeInformation.FrameworkDescription,
             os = RuntimeInformation.OSDescription,
             processors = Environment.ProcessorCount,

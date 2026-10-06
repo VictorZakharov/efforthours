@@ -36,6 +36,33 @@ public sealed class GitHubHistoricalPullBatchTests
         Assert.Equal(23, advanced.QueryCount);
     }
 
+    [Fact]
+    public async Task BroadAnnualHistoryKeepsEarlierAuthorDatesAcrossSixteenRepositoriesWithBoundedReuse()
+    {
+        HistoricalPullProviderFixture runner = new(258, 1) { RepositoryCount = 16 };
+        MemoryPullMetadataCache cache = new();
+        ProviderQueryCounters cold = new() { PullMetadataCache = cache };
+        IReadOnlyList<DiscoveredRepository>? first = await HistoricalPullProviderFixture.DiscoverScopeAsync(runner, cold, true, 16);
+        Assert.Equal(16, first!.Count);
+        Assert.Equal(257, first.Sum(repository => repository.Heads.Count));
+        Assert.Equal(33, cold.QueryCount);
+        Assert.Equal(35, cold.PageCount);
+        Assert.Equal(258, cold.Diagnostics("missing").HistoricalPullRequests!.CompletedCount);
+        Assert.Equal(257, cold.Diagnostics("missing").HistoricalPullRequests!.SelectedCount);
+        Assert.InRange(runner.Peak, 1, 4);
+        ProviderQueryCounters warm = new() { PullMetadataCache = cache };
+        IReadOnlyList<DiscoveredRepository>? second = await HistoricalPullProviderFixture.DiscoverScopeAsync(runner, warm, true, 16);
+        Assert.Equal(1, warm.QueryCount);
+        Assert.Equal(258, warm.Diagnostics("hit").HistoricalPullRequests!.CacheHitCount);
+        Assert.Equal(first.SelectMany(repository => repository.Heads).Select(head => head.ObjectId).Order(),
+            second!.SelectMany(repository => repository.Heads).Select(head => head.ObjectId).Order());
+        ProviderQueryCounters restricted = new() { PullMetadataCache = cache };
+        IReadOnlyList<DiscoveredRepository>? one = await HistoricalPullProviderFixture.DiscoverScopeAsync(runner, restricted, true, 1);
+        Assert.Equal(17, Assert.Single(one!).Heads.Count);
+        Assert.Equal(17, restricted.Diagnostics("hit").HistoricalPullRequests!.CandidateCount);
+        Assert.Equal(17, restricted.Diagnostics("hit").HistoricalPullRequests!.CacheHitCount);
+    }
+
     [Theory]
     [InlineData(false)]
     [InlineData(true)]

@@ -78,7 +78,7 @@ internal static class ChangeWorkdayCommand
         }
     }
 
-    private static async Task<T> LoadAsync<T>(string path, string schemaName, long maximumBytes, CancellationToken token)
+    internal static async Task<T> LoadAsync<T>(string path, string schemaName, long maximumBytes, CancellationToken token)
     {
         await using FileStream stream = new(path, FileMode.Open, FileAccess.Read, FileShare.Read);
         if (stream.Length > maximumBytes) throw new ArgumentException("Allocation input exceeds its byte bound.");
@@ -90,7 +90,7 @@ internal static class ChangeWorkdayCommand
         return ContractJson.Deserialize<T>(json);
     }
 
-    private static async Task WriteNewAsync(string path, string text, CancellationToken token)
+    internal static async Task WriteNewAsync(string path, string text, CancellationToken token)
     {
         string full = Path.GetFullPath(path);
         string temporary = full + ".tmp-" + Guid.NewGuid().ToString("N");

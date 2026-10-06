@@ -847,7 +847,8 @@
             "inspect-github-cli-health",
             "specify-provider-login",
             "narrow-scope-or-use-pinned-manifest",
-            "inspect-pr-discovery-or-use-pinned-manifest"
+            "inspect-pr-discovery-or-use-pinned-manifest",
+            "inspect-acquisition-or-use-pinned-manifest"
           ]
         },
         "suggestedApprovalPrefix": {

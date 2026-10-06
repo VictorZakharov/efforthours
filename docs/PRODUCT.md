@@ -313,3 +313,11 @@ saved artifacts only and never changes estimator priors, logged time entries,
 shared-credit policy, or the experimental/uncalibrated boundary. Native provider
 coverage restrictions and acquisition limits are governed by
 [HISTORICAL_CHANGE_REPORTS.md](HISTORICAL_CHANGE_REPORTS.md).
+
+## External work-record discrepancy review
+
+[WORKDAY_REVIEW.md](WORKDAY_REVIEW.md) defines the separate offline `eh change
+review-days` diagnostic. Blank retained dates, missing implementation records,
+mixed entries and mismatched repository relationships stay unresolved. Optional
+explicit entry allocations conserve the rounded daily expected EHE/8 multiplier;
+logged durations never set weights, and no external entries are overwritten.

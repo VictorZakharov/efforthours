@@ -11,6 +11,8 @@ internal sealed class HistoricalPullProviderFixture(int population = 258, int la
     private int _active;
     private int _peak;
     public int Peak => _peak;
+    public int RepositoryCount { get; init; } = 1;
+    public static string Repository(int index) => index == 0 ? "owner/project" : "owner/project-" + index.ToString(CultureInfo.InvariantCulture);
     public string BaseHead { get; set; } = Id(10000);
     public bool ChangedDuringBatch { get; set; }
     public bool IncompleteBatch { get; set; }
@@ -36,7 +38,7 @@ internal sealed class HistoricalPullProviderFixture(int population = 258, int la
             {
                 object[] nodes = [.. Enumerable.Range(1, population).Select(number => (object)new
                 {
-                    number, state = "MERGED", author = new { login = "selected" }, repository = new { nameWithOwner = "owner/project" },
+                    number, state = "MERGED", author = new { login = "selected" }, repository = new { nameWithOwner = Repository((number - 1) % RepositoryCount) },
                     headRefOid = Id(number), baseRefOid = BaseHead, commits = new { totalCount = 1 },
                 }), new { number = 9999, state = "CLOSED", author = new { login = "selected" },
                     repository = new { nameWithOwner = "other/private" }, headRefOid = Id(9999), baseRefOid = BaseHead, commits = new { totalCount = 1 } }];
@@ -118,6 +120,15 @@ internal sealed class HistoricalPullProviderFixture(int population = 258, int la
     public static Task<IReadOnlyList<DiscoveredRepository>?> DiscoverAsync(IExternalCommandRunner runner, ProviderQueryCounters counters, CancellationToken token = default) =>
         GitHubAuthorPeriodDiscoveryJson.DiscoverUserOpenPullHeadsAccountWideAsync(runner, "in-memory-fixture",
             [new GitHubDiscoveryRepository("42", "owner/project", "main")], "selected", ["selected@example.invalid"], Since, Since.AddDays(5),
+            ChangePortfolioDateField.Author, ChangePortfolioMergePolicy.Exclude, ChangePortfolioCoauthorPolicy.Include, counters, token, true);
+
+    public static Task<IReadOnlyList<DiscoveredRepository>?> DiscoverScopeAsync(HistoricalPullProviderFixture runner,
+        ProviderQueryCounters counters, bool annual, int includedRepositories, CancellationToken token = default) =>
+        GitHubAuthorPeriodDiscoveryJson.DiscoverUserOpenPullHeadsAccountWideAsync(runner, "in-memory-fixture",
+            [.. Enumerable.Range(0, includedRepositories).Select(index => new GitHubDiscoveryRepository(
+                (42 + index).ToString(CultureInfo.InvariantCulture), Repository(index), "main"))],
+            "selected", ["selected@example.invalid"], annual ? new DateTimeOffset(2025, 1, 1, 0, 0, 0, TimeSpan.Zero) : Since,
+            annual ? new DateTimeOffset(2026, 1, 1, 0, 0, 0, TimeSpan.Zero) : Since.AddDays(5),
             ChangePortfolioDateField.Author, ChangePortfolioMergePolicy.Exclude, ChangePortfolioCoauthorPolicy.Include, counters, token, true);
 
     private static class InterlockedExtensions

@@ -41,6 +41,9 @@ agent instructions.
   retained-date evidence states, and unrecoverable-history boundaries.
 - [Historical PR discovery checkpoint](HISTORICAL_PR_DISCOVERY_BENCHMARK.md) records
   synthetic cold/warm request counts and the explicit provider-latency simulation.
+- [Retained workday evidence review](WORKDAY_REVIEW.md) compares explicit external
+  records with retained dates, preserves discrepancies, and optionally allocates
+  matched daily multipliers with a fixed eight-hour reference.
 - [Explicit workday allocation](WORKDAY_ALLOCATION.md) defines optional external
   date declarations, conserved EHE projection, fixed reference capacity, and
   unresolved original workdays.

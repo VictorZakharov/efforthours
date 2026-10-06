@@ -96,8 +96,9 @@ internal static class ChangePortfolioExactCompositionNormalizer
         {
             List<ChangePortfolioItemDraft> kept = [];
             HashSet<string> headSets = new(StringComparer.Ordinal);
-            foreach (ChangePortfolioItemDraft item in group.OrderBy(draft => draft.Candidate.Attribution.Rewrite?.OriginalAuthorTimestamp ??
-                draft.Candidate.Attribution.SelectedTimestamp)
+            // An explicit pair owns its date policy even when an ordinary cherry-pick repeats it.
+            foreach (ChangePortfolioItemDraft item in group.OrderBy(draft => draft.Candidate.Attribution.Rewrite is null ? 1 : 0)
+                .ThenBy(draft => draft.Candidate.Attribution.Rewrite?.OriginalAuthorTimestamp ?? draft.Candidate.Attribution.SelectedTimestamp)
                 .ThenBy(draft => draft.Candidate.Attribution.Rewrite?.Role == "original" ? 0 : 1)
                 .ThenBy(draft => draft.Id, StringComparer.Ordinal))
             {
