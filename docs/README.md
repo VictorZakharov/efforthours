@@ -39,6 +39,9 @@ agent instructions.
 - [Retained historical Change EHE](HISTORICAL_CHANGE_REPORTS.md) governs explicit
   native ranges, merged/closed PR discovery, exact squash/rewrite equivalence,
   retained-date evidence states, and unrecoverable-history boundaries.
+- [Explicit workday allocation](WORKDAY_ALLOCATION.md) defines optional external
+  date declarations, conserved EHE projection, fixed reference capacity, and
+  unresolved original workdays.
 - [Declared rewrite event attribution](REWRITE_EVENT_ATTRIBUTION.md) defines immutable
   before/after/base pairings, novel event allocation, support rows and unresolved dates.
 - [One-command calendars](CALENDAR_REPORTS.md) defines interactive defaults, local

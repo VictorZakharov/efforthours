@@ -58,6 +58,7 @@ public static class ChangePortfolioPeriodMarkdownRenderer
             markdown.AppendLine("No EHE aggregate or multiplier is published because required work is incomplete.");
         }
 
+        ChangePortfolioAcquisitionMarkdown.Append(markdown, discovery);
         AppendCoverage(markdown, report, discovery);
         AppendFailures(markdown, report);
         markdown.AppendLine();

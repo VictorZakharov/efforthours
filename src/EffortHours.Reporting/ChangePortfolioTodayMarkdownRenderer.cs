@@ -50,6 +50,7 @@ public static partial class ChangePortfolioTodayMarkdownRenderer
                 "No EHE aggregate or X factor is published because required work is incomplete.");
         }
 
+        ChangePortfolioAcquisitionMarkdown.Append(markdown, discovery);
         AppendScope(markdown, report, discovery, profile, asOf);
         AppendExecution(markdown, report);
         AppendFailures(markdown, report);

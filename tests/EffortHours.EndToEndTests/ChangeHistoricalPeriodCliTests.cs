@@ -4,15 +4,18 @@ using EffortHours.Change;
 using EffortHours.Cli;
 using EffortHours.Contracts;
 using EffortHours.Contracts.V1;
+using EffortHours.Reporting;
 
 namespace EffortHours.EndToEndTests;
 
 public sealed partial class ChangePortfolioCliTests : ChangeCliTestSupport
 {
     [Theory]
-    [InlineData(false)]
-    [InlineData(true)]
-    public async Task HistoricalPeriodRecoversJanuaryAuthorDateFromMergedPrAndReusesEvidence(bool defaultHistory)
+    [InlineData(false, false)]
+    [InlineData(true, false)]
+    [InlineData(false, true)]
+    [InlineData(true, true)]
+    public async Task HistoricalPeriodRecoversJanuaryAuthorDateFromMergedPrAndReusesEvidence(bool defaultHistory, bool restricted)
     {
         string workspace = Path.Combine(Path.GetTempPath(), "efforthours-historical-e2e", Guid.NewGuid().ToString("N"));
         Directory.CreateDirectory(workspace);
@@ -30,10 +33,10 @@ public sealed partial class ChangePortfolioCliTests : ChangeCliTestSupport
             await repository.GitAsync("switch", "main");
             if (defaultHistory) await repository.GitAsync("merge", "--ff-only", implementation.Trim());
             string statusBefore = await repository.GitAsync("status", "--porcelain=v1");
-            HistoricalProviderRunner runner = new(baseline, implementation, retainedHead, defaultHistory ? implementation : null);
+            HistoricalProviderRunner runner = new(baseline, implementation, retainedHead, defaultHistory ? implementation : null, repositoryCount: restricted ? 257 : 1);
             GitHubAuthorPeriodDiscovery discovery = new(runner,
                 new GitHubRepositoryCache(new ExternalCommandRunner(), new GitClient(), Path.Combine(workspace, "cache"),
-                    _ => repository.RootPath), new GitHubProviderMetadataCache(Path.Combine(workspace, "metadata")));
+                    identity => { Assert.Equal("example/repository", identity); return repository.RootPath; }), new GitHubProviderMetadataCache(Path.Combine(workspace, "metadata")));
             ChangePortfolioCommand command = new(new ChangeEstimator(),
                 (_, _, _, _, _) => throw new NotSupportedException(),
                 (_, _, _, _) => throw new NotSupportedException(),
@@ -44,6 +47,7 @@ public sealed partial class ChangePortfolioCliTests : ChangeCliTestSupport
                 "--since", "2026-01-19", "--until", "2026-01-24", "--breakdown", "day",
                 "--timezone", "America/Toronto", "--scope", "engineering", "--capacity-hours-per-day", "8",
                 "--generated-at", "2026-04-01T12:00:00Z", "--output", reportPath, "--no-rate"];
+            if (restricted) arguments = [.. arguments, "--repository", "example/repository"];
             using StringWriter stdout = new(CultureInfo.InvariantCulture);
             using StringWriter stderr = new(CultureInfo.InvariantCulture);
             int result = await command.ExecuteAsync(arguments, stdout, stderr, CancellationToken.None);
@@ -76,6 +80,18 @@ public sealed partial class ChangePortfolioCliTests : ChangeCliTestSupport
                 await File.ReadAllTextAsync(reportPath))!;
             Assert.Equal(report.Verification.SemanticDigest, warm.Verification.SemanticDigest);
             Assert.Equal(1, warm.Execution.Checkpoint.HitCount);
+            Assert.Equal(0, warm.Discovery!.Acquisition!.AcquiredBytes);
+            Assert.Equal(1, warm.Discovery.Acquisition.RepositoryCount);
+            Assert.Equal(restricted ? 257 : 1, warm.Discovery.ProviderRepositoryCount);
+            Assert.Equal(1, warm.Discovery.ConsideredRepositoryCount);
+            if (restricted)
+            {
+                Assert.Equal(256, warm.Discovery.RepositoryRestriction!.ExcludedRepositoryCount);
+                Assert.DoesNotContain(runner.Calls, call => call.Contains("repos/example/repository-", StringComparison.Ordinal));
+                Assert.Contains("explicitly restricted", ChangePortfolioPeriodMarkdownRenderer.Render(warm), StringComparison.Ordinal);
+            }
+            Assert.Contains("reason=unpruned-default-author-date-evidence", stderr.ToString(), StringComparison.Ordinal);
+            await AssertWorkdayAllocationAsync(workspace, report);
             Assert.Single(runner.Calls, call => call.Contains("&author=selected", StringComparison.Ordinal));
             repository.WriteText("Later.cs", "public class Later { public bool Added => true; }");
             string later = (await HistoricalCommitAsync(repository, "later", "2026-03-30T12:00:00Z", "2026-03-30T12:00:00Z")).Trim();

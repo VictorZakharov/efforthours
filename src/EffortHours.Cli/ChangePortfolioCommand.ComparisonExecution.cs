@@ -16,6 +16,7 @@ internal sealed partial class ChangePortfolioCommand
         CancellationToken cancellationToken,
         ResolvedChangeAuthorPeriodManifest? calendarManifest = null)
     {
+        standardError = TextWriter.Synchronized(standardError);
         long workflowStarted = Stopwatch.GetTimestamp();
         ChangePortfolioExecutionTelemetry portfolioTelemetry =
             CreateExecutionTelemetry(standardError, "portfolio");

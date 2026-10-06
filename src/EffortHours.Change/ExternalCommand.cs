@@ -4,66 +4,6 @@ using System.Text;
 
 namespace EffortHours.Change;
 
-public sealed class ExternalCommandException : InvalidOperationException
-{
-    public ExternalCommandException(string command, int? exitCode, string message, Exception? inner = null)
-        : base(message, inner)
-    {
-        Command = command;
-        ExitCode = exitCode;
-    }
-
-    public string Command { get; }
-
-    public int? ExitCode { get; }
-}
-
-internal readonly record struct ExternalCommandResult(
-    int ExitCode,
-    string StandardOutput,
-    string StandardError)
-{
-    public TimeSpan ProcessStartupElapsed { get; init; }
-}
-
-internal readonly record struct ExternalBinaryCommandResult(
-    byte[] StandardOutput,
-    TimeSpan ProcessCpuTime);
-
-internal sealed class ExternalCommandOutputLimitException(string command, int maximumBytes)
-    : InvalidOperationException(
-        $"'{command}' produced more than the bounded {maximumBytes} output bytes.");
-
-internal interface IExternalCommandRunner
-{
-    public Task<ExternalCommandResult> RunAsync(
-        string executable,
-        string workingDirectory,
-        IReadOnlyList<string> arguments,
-        CancellationToken cancellationToken,
-        bool requireSuccess = true);
-
-    public async Task<ExternalCommandResult> RunStreamingAsync(
-        string executable,
-        string workingDirectory,
-        IReadOnlyList<string> arguments,
-        Func<TextReader, CancellationToken, Task> consumeStandardOutput,
-        CancellationToken cancellationToken,
-        bool requireSuccess = true)
-    {
-        ArgumentNullException.ThrowIfNull(consumeStandardOutput);
-        ExternalCommandResult result = await RunAsync(
-            executable,
-            workingDirectory,
-            arguments,
-            cancellationToken,
-            requireSuccess).ConfigureAwait(false);
-        using StringReader reader = new(result.StandardOutput);
-        await consumeStandardOutput(reader, cancellationToken).ConfigureAwait(false);
-        return result with { StandardOutput = string.Empty };
-    }
-}
-
 internal sealed class ExternalCommandRunner : IExternalCommandRunner
 {
     public Task<ExternalCommandResult> RunAsync(
@@ -93,7 +33,7 @@ internal sealed class ExternalCommandRunner : IExternalCommandRunner
             requireSuccess);
 }
 
-internal static class ExternalCommand
+internal static partial class ExternalCommand
 {
     public static async Task<ExternalCommandResult> RunAsync(
         string executable,
@@ -134,6 +74,10 @@ internal static class ExternalCommand
         catch (OperationCanceledException)
         {
             TryKill(process);
+            await process.WaitForExitAsync(CancellationToken.None).ConfigureAwait(false);
+            // Observe canceled output readers before disposing the process streams.
+            try { await Task.WhenAll(stdout, stderr).ConfigureAwait(false); }
+            catch (Exception) { /* Preserve the caller cancellation while observing reader completion. */ }
             throw;
         }
 
@@ -447,45 +391,4 @@ internal static class ExternalCommand
         }
     }
 
-    public static ProcessStartInfo CreateStartInfo(
-        string executable,
-        string workingDirectory,
-        IReadOnlyList<string> arguments)
-    {
-        ProcessStartInfo startInfo = new(executable)
-        {
-            WorkingDirectory = workingDirectory,
-            RedirectStandardInput = true,
-            RedirectStandardOutput = true,
-            RedirectStandardError = true,
-            UseShellExecute = false,
-            CreateNoWindow = true,
-            StandardInputEncoding = new UTF8Encoding(false),
-            StandardOutputEncoding = new UTF8Encoding(false),
-            StandardErrorEncoding = new UTF8Encoding(false),
-        };
-        startInfo.Environment["GIT_OPTIONAL_LOCKS"] = "0";
-        startInfo.Environment["GIT_TERMINAL_PROMPT"] = "0";
-        startInfo.Environment["GIT_ATTR_NOSYSTEM"] = "1";
-        foreach (string argument in arguments)
-        {
-            startInfo.ArgumentList.Add(argument);
-        }
-
-        return startInfo;
-    }
-
-    private static void TryKill(Process process)
-    {
-        try
-        {
-            if (!process.HasExited)
-            {
-                process.Kill(entireProcessTree: true);
-            }
-        }
-        catch (InvalidOperationException)
-        {
-        }
-    }
 }

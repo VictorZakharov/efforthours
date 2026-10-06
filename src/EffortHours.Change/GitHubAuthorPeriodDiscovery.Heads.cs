@@ -13,6 +13,7 @@ public sealed partial class GitHubAuthorPeriodDiscovery
         GitHubAuthorPeriodDiscoveryRequest request,
         string workingDirectory,
         ProviderQueryCounters counters,
+        GitHubDiscoveryAcquisitionBudget acquisitionBudget,
         CancellationToken cancellationToken)
     {
         DiscoveredRepository[] defaults;
@@ -21,7 +22,7 @@ public sealed partial class GitHubAuthorPeriodDiscovery
             if (request.IncludeHistoricalPullRequests)
             {
                 defaults = await DiscoverHistoricalDefaultHeadsAsync(repositories, aliases, authenticatedLogin, since, until,
-                    request, workingDirectory, counters, cancellationToken).ConfigureAwait(false);
+                    request, workingDirectory, counters, acquisitionBudget, cancellationToken).ConfigureAwait(false);
             }
             else
             {
@@ -202,6 +203,11 @@ public sealed partial class GitHubAuthorPeriodDiscovery
                 .. defaultHead?.Heads ?? [],
                 .. pullHeads?.Heads ?? [],
             ];
+            // Manifest heads must be unique by immutable object. A retained PR
+            // may equal the default tip or another PR; its graph is already covered.
+            heads = [.. heads.OrderBy(head => head.Id == "default" ? 0 : 1)
+                .ThenBy(head => head.Id, StringComparer.Ordinal)
+                .DistinctBy(head => head.ObjectId, StringComparer.Ordinal)];
             if (heads.Length == 0)
             {
                 continue;

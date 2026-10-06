@@ -14,11 +14,12 @@ public sealed partial class GitHubAuthorPeriodDiscovery
         GitHubAuthorPeriodDiscoveryRequest request,
         string workingDirectory,
         ProviderQueryCounters counters,
+        GitHubDiscoveryAcquisitionBudget acquisitionBudget,
         CancellationToken token)
     {
         if (repositories.Length > ChangeAuthorPeriodManifestLimits.MaximumRepositories)
             throw GitHubProviderFailure.DiscoveryBudget(GitHubProviderFailure.DefaultHeadPhase, "Historical discovery exceeds the 256-repository acquisition bound; narrow the engineering scope profile or supply a pinned offline manifest. No repository was silently omitted.");
-        using SemaphoreSlim gate = new(4, 4);
+        using SemaphoreSlim gate = new(2, 2);
         Task<(GitHubDiscoveryRepository Repository, DiscoveredHead Head, string Path)?>[] tasks = [.. repositories.Select(async repository =>
         {
             await gate.WaitAsync(token).ConfigureAwait(false);
@@ -30,7 +31,7 @@ public sealed partial class GitHubAuthorPeriodDiscovery
                 DiscoveredHead head = new("default", objectId, "refs/heads/" + repository.DefaultBranch);
                 RepositoryAcquisitionResult acquisition;
                 using (request.ExecutionTelemetry?.Measure(ChangePortfolioExecutionPhases.Acquisition))
-                    acquisition = await _cache.EnsureAsync(repository.Identity, [head], token).ConfigureAwait(false);
+                    acquisition = await acquisitionBudget.EnsureAsync(_cache, repository.Identity, [head], GitHubAuthorPeriodDiscoveryJson.OpaqueId("repository", repository.StableId), "unpruned-default-author-date-evidence", token).ConfigureAwait(false);
                 counters.AddHistoricalAcquisition(repository.Identity, head.ObjectId, acquisition);
                 if (counters.ContributorIdentity is { } identity)
                 {
@@ -46,6 +47,7 @@ public sealed partial class GitHubAuthorPeriodDiscovery
                 }
                 return ((GitHubDiscoveryRepository Repository, DiscoveredHead Head, string Path)?)(repository, head, acquisition.RepositoryPath);
             }
+            catch (Exception exception) { acquisitionBudget.Stop(exception); throw; }
             finally
             {
                 gate.Release();
@@ -78,6 +80,7 @@ public sealed partial class GitHubAuthorPeriodDiscovery
                     return null;
                 return new DiscoveredRepository(GitHubAuthorPeriodDiscoveryJson.OpaqueId("repository", repository.StableId), repository.Identity, [head], 0);
             }
+            catch (Exception exception) { acquisitionBudget.Stop(exception); throw; }
             finally { gate.Release(); }
         })];
         return [.. (await Task.WhenAll(selections).ConfigureAwait(false)).OfType<DiscoveredRepository>()

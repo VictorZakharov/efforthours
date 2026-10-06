@@ -19,6 +19,10 @@ public sealed record ChangePortfolioHostDiscovery
 
     public int ConsideredRepositoryCount { get; init; }
 
+    public ChangePortfolioRepositoryRestriction? RepositoryRestriction { get; init; }
+
+    public ChangePortfolioAcquisitionSummary? Acquisition { get; init; }
+
     public int ActiveRepositoryCount { get; init; }
 
     public int DefaultHeadCount { get; init; }
@@ -50,4 +54,23 @@ public sealed record ChangePortfolioHostDiscovery
     public long AcquiredBytes { get; init; }
 
     public decimal ElapsedMilliseconds { get; init; }
+}
+
+public sealed record ChangePortfolioRepositoryRestriction
+{
+    public string Policy { get; init; } = "explicit-repositories/1.0.0";
+    public required string InputDigest { get; init; }
+    public int RequestedRepositoryCount { get; init; }
+    public int ExcludedRepositoryCount { get; init; }
+}
+
+public sealed record ChangePortfolioAcquisitionSummary
+{
+    public string Policy { get; init; } = "native-acquisition-budget/1.0.0";
+    public long MaximumBytes { get; init; }
+    public int TimeoutSeconds { get; init; }
+    public int RepositoryCount { get; init; }
+    public int CacheHitHeadCount { get; init; }
+    public int AcquiredObjectCount { get; init; }
+    public long AcquiredBytes { get; init; }
 }

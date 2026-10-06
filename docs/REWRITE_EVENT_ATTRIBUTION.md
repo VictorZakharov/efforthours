@@ -103,3 +103,58 @@ invalid-base incomplete artifacts, schema validation and privacy. Empty explicit
 manifests are tested through calendar-day, independent-day and plain portfolio
 output. Real repository calibration and automatic event capture remain outside
 this policy's evidence boundary.
+
+## Using the existing pair policy
+
+A plain two-head manifest does not declare a rewrite event. Supply
+`repositories[].rewriteEvents[]` with original/rewritten object IDs, their actual
+old/new first parents, and an optional externally declared event instant. Run the
+manifest with joint `--bucket calendar-day` reporting; `eh examples rebase` prints
+the workflow. Keep both support objects available even for an event-only period.
+The pairing shape appears above; a complete synthetic manifest follows. A changed SHA or later committer
+date cannot replace these inputs. Real conflicting-rebase and disjoint-period
+fixtures remain the verification baseline.
+
+For broader lost-workday declarations, use the separate
+[workday allocation contract](WORKDAY_ALLOCATION.md). It deliberately preserves
+original event/date evidence in its source artifact rather than declaring novel
+resolution from ordinary row allocations.
+
+```json
+{
+  "schemaVersion": "1.0.0",
+  "selection": {
+    "sinceInclusive": "2026-01-19T00:00:00Z",
+    "untilExclusive": "2026-01-24T00:00:00Z",
+    "timeZone": "UTC",
+    "dateField": "author",
+    "mergePolicy": "exclude",
+    "coauthorPolicy": "include",
+    "intervalSemantics": "since-inclusive-until-exclusive"
+  },
+  "contributors": [{ "id": "developer", "aliases": ["developer@example.invalid"] }],
+  "repositories": [{
+    "id": "project",
+    "repositoryPath": ".",
+    "heads": [
+      { "id": "original", "objectId": "1111111111111111111111111111111111111111" },
+      { "id": "rewritten", "objectId": "2222222222222222222222222222222222222222" }
+    ],
+    "rewriteEvents": [{
+      "attributionPolicy": "declared-rewrite-event/1.0.0",
+      "originalObjectId": "1111111111111111111111111111111111111111",
+      "rewrittenObjectId": "2222222222222222222222222222222222222222",
+      "oldBaseObjectId": "3333333333333333333333333333333333333333",
+      "newBaseObjectId": "4444444444444444444444444444444444444444",
+      "eventTimestamp": "2026-01-22T12:00:00Z"
+    }]
+  }]
+}
+```
+
+Replace every synthetic ID with the actual immutable object and choose the local
+repository path relative to the manifest. Those older objects must still exist.
+The ordinary manifest command is offline; provider locators and missing objects
+require its explicit `--fetch-missing` authorization. Use a full-period run first,
+then an event-only period with the same pair and original support heads. No-event
+inputs keep `FB5340` unresolved rather than inferring a workday from commit dates.

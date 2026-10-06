@@ -20,6 +20,10 @@ public sealed partial class GitHubAuthorPeriodDiscovery
                 nameof(request));
         }
 
+        _ = GitHubDiscoveryRepositorySelection.Normalize(request.Owner, request.Repositories);
+        if (request.DiscoveryTimeoutSeconds is < 1 or > 86400 || request.MaximumAcquiredBytes is < 1048576 or > 17179869184)
+            throw new ArgumentException("Native discovery budgets are outside supported bounds.", nameof(request));
+
         bool sampled = request.ContributorSample is not null;
         if (request.IncludeHistoricalPullRequests && (!request.IncludeOpenPullRequests || sampled))
         {

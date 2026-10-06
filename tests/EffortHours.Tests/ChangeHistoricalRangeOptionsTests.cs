@@ -34,4 +34,32 @@ public sealed class ChangeHistoricalRangeOptionsTests
             [.. Common, "--since", "2026-01-01", "--until", "2026-02-01", option, value]);
         Assert.NotNull(result.Error);
     }
+    [Theory]
+    [InlineData("--discovery-timeout-seconds", "0")]
+    [InlineData("--discovery-timeout-seconds", "86401")]
+    [InlineData("--max-acquired-mib", "0")]
+    [InlineData("--max-acquired-mib", "16385")]
+    [InlineData("--repository", "elsewhere/project")]
+    [InlineData("--repository", "invalid")]
+    public void InvalidAcquisitionConfigurationFailsBeforeProviderAccess(string option, string value)
+    {
+        Assert.NotNull(ChangePortfolioCommandOptionsParser.Parse(
+            [.. Common, "--since", "2026-01-01", "--until", "2026-02-01", option, value]).Error);
+    }
+
+    [Fact]
+    public void RepositoryRestrictionIsCanonicalAndOperationalBudgetsAreExplicit()
+    {
+        ChangePortfolioCommandParseResult result = ChangePortfolioCommandOptionsParser.Parse(
+            [.. Common, "--since", "2026-01-01", "--until", "2026-02-01", "--repository", "EXAMPLE/Project",
+                "--max-acquired-mib", "16", "--discovery-timeout-seconds", "30"]);
+        Assert.Null(result.Error);
+        Assert.Equal(["example/project"], result.Options!.Repositories);
+        Assert.Equal(16, result.Options.MaximumAcquiredMebibytes);
+        Assert.Equal(30, result.Options.DiscoveryTimeoutSeconds);
+        Assert.NotNull(ChangePortfolioCommandOptionsParser.Parse(["--author-period-manifest", "frozen.json", "--repository", "example/project"]).Error);
+        Assert.NotNull(ChangePortfolioCommandOptionsParser.Parse([.. Common, "--period", "last-month", "--repository", "example/project", "--repository", "EXAMPLE/PROJECT"]).Error);
+        Assert.NotNull(ChangePortfolioCommandOptionsParser.Parse([.. Common, "--period", "last-month", "--max-acquired-mib", "16", "--max-acquired-mib", "16"]).Error);
+    }
+
 }

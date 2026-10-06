@@ -2,7 +2,7 @@ namespace EffortHours.Cli;
 
 internal static class UsageExamplesCommand
 {
-    private const string Topics = "repository, change, portfolio, calendar, report, review, inspect, agent";
+    private const string Topics = "repository, change, portfolio, calendar, report, review, inspect, agent, rebase";
 
     public static async Task<int> ExecuteAsync(string[] arguments, TextWriter stdout, TextWriter stderr)
     {
@@ -48,7 +48,7 @@ internal static class UsageExamplesCommand
         No argument prints common workflows. 'all' prints every curated recipe;
         a topic prints only that workflow family. This is a guide, not an exhaustive
         flag reference. Use 'eh <command> --help' for complete command options.
-        Topics: repository, change, portfolio, calendar, report, review, inspect, agent.
+        Topics: repository, change, portfolio, calendar, report, review, inspect, agent, rebase.
         Printing examples is offline, read-only, and does not execute the recipes.
         """;
 
@@ -125,6 +125,15 @@ internal static class UsageExamplesCommand
         new("inspect", "Check the installed version",
             "eh version",
             "Print the installed informational version and source commit. Top-level eh --help also includes this version."),
+        new("rebase", "Bound retained historical discovery to an explicit repository",
+            "eh change period --owner <owner> --repository <owner/repository> --author <git-alias> --provider-login <login> --since <start> --until <end> --breakdown day --timezone <zone> --scope engineering --capacity-hours-per-day 8 --discovery-timeout-seconds 900 --max-acquired-mib 4096 --no-rate --output <period.json>",
+            "Explicit GitHub access and missing-object acquisition; coverage is restricted to the named repository. Older author dates survive later committer dates. Acquisition is bounded and visible on stderr; lost intermediate history stays unresolved."),
+        new("rebase", "Attribute a declared rewrite event from immutable evidence",
+            "eh change portfolio --author-period-manifest <rewrite-pair.json> --bucket calendar-day --scope engineering --no-rate --output <rewrite-days.json>",
+            "Local offline manifest: pin original/rewritten heads and actual old/new first parents in repositories[].rewriteEvents with declared-rewrite-event/1.0.0 and eventTimestamp. Joint reconciliation preserves replay once and assigns only retained novel remainder to the declared event; see docs/REWRITE_EVENT_ATTRIBUTION.md. Missing proof fails."),
+        new("rebase", "Allocate a deduplicated period across external workday declarations",
+            "eh change allocate-days <period.json> --workdays <workdays.json> --policy equal-declared-days/1.0.0 --output <new-allocated.json>",
+            "Offline saved-artifact projection for one contributor and whole calendar days. Bind declarations to verification.semanticDigest; output is explicitly allocated with unresolved original workdays. Conserves every EHE category/range and existing capacity; logged hours never weight effort. See docs/WORKDAY_ALLOCATION.md. Does not edit inputs or timesheets."),
         new("agent", "Install guidance for Codex",
             "eh agent codex --install",
             "Explicitly write the packaged companion skill into Codex's skill directory. Use eh agent codex --check after updating EffortHours.")

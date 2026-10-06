@@ -45,7 +45,8 @@ internal sealed partial class GitHubRepositoryCache
         string repositoryIdentity,
         IReadOnlyList<DiscoveredHead> heads,
         bool fetchMissing,
-        CancellationToken cancellationToken)
+        CancellationToken cancellationToken,
+        Action<long>? observeGrowth = null)
     {
         ArgumentNullException.ThrowIfNull(heads);
         if (heads.Count is < 1 or > 32)
@@ -106,12 +107,8 @@ internal sealed partial class GitHubRepositoryCache
                 }
             }
 
-            await _git.FetchManagedObjectsAsync(
-                path,
-                _fetchSource(repositoryIdentity),
-                [.. missing.Select(head => head.FetchRef)],
-                negotiationTips,
-                cancellationToken).ConfigureAwait(false);
+            await FetchObservedAsync(path, repositoryIdentity, missing, negotiationTips, before.Bytes,
+                observeGrowth, cancellationToken).ConfigureAwait(false);
             foreach (DiscoveredHead head in missing)
             {
                 if (!await _git.CommitExistsAsync(path, head.ObjectId, cancellationToken)
