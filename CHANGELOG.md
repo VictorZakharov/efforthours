@@ -6,6 +6,8 @@ may still change public contracts with explicit documentation.
 
 ## Unreleased
 
+## 0.10.0-alpha.36 - 2026-10-06
+
 - Batch historical PR commit metadata and reuse complete unchanged head/base/count
   evidence under bounded private sidecars. Refresh live inventories and preserve
   earlier author dates despite later merge/rewrite dates; incomplete or changed
