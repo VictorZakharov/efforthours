@@ -8,11 +8,11 @@
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>eh</ToolCommandName>
     <PackageId>EffortHours.Tool</PackageId>
-    <Version>0.10.0-alpha.38</Version>
+    <Version>0.10.0-alpha.39</Version>
     <Title>EffortHours CLI</Title>
     <PackageReadmeFile>PACKAGE_README.md</PackageReadmeFile>
     <PackageTags>estimation;effort-estimation;developer-tools;cli;repository-analysis;static-analysis;dotnet-tool</PackageTags>
-    <PackageReleaseNotes>0.10.0-alpha.38: Preserve canonical original implementation effort and dates before allocating novel replay contributions within the remaining joint budget. Normalize period and event offsets to UTC while preserving local timezone, DST and exclusive-end behavior. Warn when replay dates or baselines are unavailable. Record privacy-safe provider API, operation, exit/HTTP status and timeout ownership; preserve root request failures and incomplete output without aggregates. Full-range joint totals and category ranges remain conserved; estimator priors and rates are unchanged. EHE remains experimental and uncalibrated; declared allocations do not establish actual workdays or integration labor. Full notes: https://github.com/VictorZakharov/efforthours/blob/v0.10.0-alpha.38/CHANGELOG.md</PackageReleaseNotes>
+    <PackageReleaseNotes>0.10.0-alpha.39: Bound large historical PR discovery with minimal metadata, paged responses, live-header cache validation and same-scope resume guidance. Expose attribution-completeness warnings and add offline historical-note/EHE refresh plans with independent permissions and locks. Connect explicitly declared implementation dates to review and refresh allocations; conserve one rounded period EHE/8 multiplier while preserving retained attribution. Source EHE totals, estimator priors and rates are unchanged. EHE remains experimental and uncalibrated; external date allocations do not recover discarded Git workdays or prove actual labor, and refresh plans do not edit entries. Full notes: https://github.com/VictorZakharov/efforthours/blob/v0.10.0-alpha.39/CHANGELOG.md</PackageReleaseNotes>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="../EffortHours.Analysis/EffortHours.Analysis.csproj" />

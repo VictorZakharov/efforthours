@@ -6,6 +6,8 @@ may still change public contracts with explicit documentation.
 
 ## Unreleased
 
+## 0.10.0-alpha.39 - 2026-10-06
+
 - Connect externally declared workdays to offline review and refresh plans. Require
   exact dated implementation anchors, preserve retained attribution and unresolved
   replay/history evidence, and label external date allocations explicitly.
