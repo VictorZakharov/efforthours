@@ -6,6 +6,8 @@ may still change public contracts with explicit documentation.
 
 ## Unreleased
 
+## 0.10.0-alpha.38 - 2026-10-06
+
 - Protect canonical original implementation effort before allocating replay events.
   Preserve the joint aggregate, expose the original reservation and remaining-budget
   novel cap, and warn explicitly when event dates or replay baselines are unavailable.
@@ -14,6 +16,9 @@ may still change public contracts with explicit documentation.
 - Record privacy-safe provider API, outcome, exit/HTTP status and timeout ownership.
   Preserve root request context while cancelling siblings and distinguish accepted
   capability fallback from incomplete discovery; failures still emit no aggregate.
+- Full-range joint totals and category ranges remain conserved; estimator priors
+  and rates are unchanged. EHE remains experimental and uncalibrated. Declared
+  allocations do not establish actual workdays or integration labor.
 
 ## 0.10.0-alpha.37 - 2026-10-06
 
