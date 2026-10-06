@@ -191,3 +191,58 @@ sampled and is not a memory quota; phase timings remain overlapping cumulative
 work. Within-run request/hit counts can vary with scheduling while exact
 selection and semantic results remain equal. The private consumer still needs
 its own same-input retest.
+
+## Alpha.37 replay/provider follow-up revalidation
+
+Recorded October 6, 2026 using implementation commit
+`adfcf7086d0bba991c0e0bebda6d6a998784612f` and frozen CLI digest
+`9d4c01ac78bec8190ef12ffbb76075a60a17d3954dc3b0b2c9e2d9983e88e5bf`. Platform, public contributor, engineering scope,
+implementation profile and UTC author-date policy are the same as above.
+This fresh four-row checkpoint covers October 1 inclusive to October 6 exclusive,
+2026, with five complete daily buckets. Narrow selects better-web-browser;
+broad explicitly adds EffortHours. Each uses its own initially empty managed
+provider/object caches, followed by a fresh-process warm repeat over those caches.
+No evidence checkpoints are used. No EH build, test or other EH benchmark ran
+during these timed rows; ordinary machine load and network latency are uncontrolled.
+
+The EH discovery/acquisition deadline is 90 seconds, matching the reported
+five-day incident configuration; observed object-store growth is bounded at
+1,024 MiB and the driver deadline is 1,800 seconds per row. Use the recent
+driver command above with `--discovery-seconds 90 --acquired-mib 1024
+--run-seconds 1800` and a new private output directory.
+
+All four rows exit zero with complete selection, no pending metadata, no failures
+and no driver timeout. Narrow reviews all 153 candidate PR representations and
+retains 12 historical PR heads plus one default head. Broad reviews all 310
+candidate PR representations and retains 38 historical PR heads plus two default
+heads. The respective selected populations are 106 and 152 changes, with no head,
+change or daily-bucket truncation. This is explicit two-repository coverage, not
+complete account coverage. Live candidate inventories differ from older checkpoints.
+
+| Scope/cache | Outer wall s | CLI wall s | Discovery/acquisition s | Queries/pages/process receipts | PR metadata hits | Selected changes | Snapshot requests/hits | Acquired objects | Observed acquired bytes | Sampled peak MiB |
+| --- | ---: | ---: | ---: | --- | ---: | ---: | --- | ---: | ---: | ---: |
+| Narrow cold | 48.922 | 48.488 | 11.656 | 20/20/20 | 0/153 | 106 | 214/105 | 19,704 | 11,497,472 | 874.934 |
+| Narrow warm | 41.188 | 40.748 | 4.537 | 5/5/5 | 153/153 | 106 | 214/105 | 0 | 0 | 855.746 |
+| Two-repository cold | 65.094 | 64.325 | 13.945 | 37/37/37 | 0/310 | 152 | 308/149 | 29,503 | 20,247,552 | 1040.520 |
+| Two-repository warm | 57.812 | 57.169 | 6.743 | 8/8/8 | 310/310 | 152 | 308/149 | 0 | 0 | 1018.930 |
+
+Warm rows reuse every PR metadata record and acquire zero objects/bytes while
+refreshing live inventory and recalculating static analysis. Both exact pinned
+selection and complete semantic digests match within each scope:
+
+- Narrow selection: `5e4ffc04570721098bd7b9bfaff6a8297d4cf9ff61d91d1ea47c12a2c2108bbf`; semantic: `sha256:3bde5ad153e94304378a534260fa9002e3061b8c3385dfdc4307b0156ed8a461`.
+- Two repositories selection: `233f6edab31bf23ecbf1436ae7142b1dc69ad8941facb4ce22c15552678a5f79`; semantic: `sha256:67fad68bc9eab77dce56f6606ca23d6aea66a6d9aaae5f50d01b30f74e7a574c`.
+
+Completed adapter observations record the actual REST/GraphQL API, success
+outcome and exit zero. Synthetic failure tests separately verify HTTP 5xx,
+GraphQL errors, transport timeout/failure, malformed JSON, accepted empty
+repository/fallback receipts and root-failure preservation. The full physical
+CLI suite verifies deadline expiry, caller/provider-child cancellation and
+acquisition-byte exhaustion without aggregate EHE or manufactured daily zeros.
+
+These single observations establish successful current public native discovery,
+acquisition, selection and reporting under the 90-second bound. They do not
+diagnose the original 58.83-second incident: the available sibling consumer
+artifacts contain no original exit/HTTP receipt. They also do not establish NDA
+field latency, alpha.29 equivalence, causal replay labor or numerical calibration.
+Full reports, identity metadata, immutable caches and stderr remain ignored/private.
