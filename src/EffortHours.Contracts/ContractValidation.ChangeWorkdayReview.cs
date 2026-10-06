@@ -31,11 +31,13 @@ public static partial class ContractValidation
     {
         ArgumentNullException.ThrowIfNull(report);
         List<string> errors = [];
+        if (report.WorkdayResolution is not null || report.Policy == ChangeDeclaredWorkdayReviewPolicies.Review)
+            return ValidateDeclaredWorkdayReview(report);
         RequireVersion(report.SchemaVersion, "workday review", errors);
         if (report.AttributionCompleteness is { } completeness &&
             (completeness.Policy != "retained-attribution-completeness/1.0.0" || completeness.MissingEventDateCount < 0 || completeness.MissingReplayBaselineCount < 0 ||
                 completeness.OriginalWorkdayStatus != ChangeWorkdayPolicies.Unresolved || completeness.IntermediateHistoryStatus != "unknown" ||
-                (completeness.MissingEventDateCount + completeness.MissingReplayBaselineCount > 0
+                (completeness.MissingEventDateCount > 0 || completeness.MissingReplayBaselineCount > 0
                     ? completeness.DeclaredEventStatus != "unresolved" : completeness.DeclaredEventStatus is not ("available" or "not-declared"))))
             errors.Add("Workday attribution state must preserve unresolved event and intermediate-history evidence.");
         ValidateDigest(report.SourceSemanticDigest, "sourceSemanticDigest", errors);
@@ -56,6 +58,8 @@ public static partial class ContractValidation
         {
             ValidateWorkRecordDate(day.Date, errors);
             ValidatePublicId(day.BucketId, "bucketId", errors);
+            if (day.WorkdayEvidenceBasis is not null || day.AllocatedExpectedHours is not null)
+                errors.Add("Retained reviews cannot silently apply declared-date projections.");
             if (day.SourceAttributedExpectedHours < 0 || day.OriginalWorkdayStatus != ChangeWorkdayPolicies.Unresolved ||
                 day.RetainedEvidenceStatus is not ("measured-retained-change" or "no-retained-change" or "scope-excluded" or "normalized-zero" or "reconciled-zero"))
                 errors.Add("Review must distinguish retained evidence from unresolved original workdays.");

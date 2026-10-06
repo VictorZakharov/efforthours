@@ -47,6 +47,9 @@ public static partial class ContractValidation
             foreach (ChangeWorkdayReviewDay day in plan.Review.Days.Where(day => day.Records.Any(record => entries.ContainsKey(record.RecordId) && record.AllocatedMultiplierContribution is not null)))
                 if (day.Records.Any(record => record.AllocatedMultiplierContribution is not null && !entries.ContainsKey(record.RecordId)))
                     errors.Add("EHE refresh must select all matched entries on an affected day.");
+        if (plan.RequestedFields != "notes" && plan.Review.WorkdayResolution is not null &&
+            plan.Review.Days.SelectMany(day => day.Records).Any(record => record.AllocatedMultiplierContribution is not null && !entries.ContainsKey(record.RecordId)))
+            errors.Add("Declared-date EHE refresh must select every contributing entry in the complete period.");
         foreach (ChangeHistoricalRefreshProposal proposal in plan.Proposals)
         {
             ChangeHistoricalRefreshEntry? entry = entries.GetValueOrDefault(proposal.RecordId);

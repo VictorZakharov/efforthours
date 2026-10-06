@@ -131,6 +131,59 @@ These are deterministic policy checks, not empirical workday calibration.
 The offline [historical note refresh plan](HISTORICAL_NOTE_REFRESH.md) preserves
 original entry snapshots, creates one idempotent managed annotation, and keeps
 note/EHE permissions and locked/invoiced states separate. It never edits entries.
-New reviews expose `attributionCompleteness`; missing declared dates/baselines
-block entry allocation with `unresolved-event-attribution`. Execution completion
+Retained reviews expose `attributionCompleteness`; missing declared dates/baselines
+block retained-date entry allocation with `unresolved-event-attribution`. Execution completion
 and retained zero values do not certify original workdays or zero labor.
+
+## Explicit declared-workday review
+
+`declared-workday-review/1.0.0` connects the existing saved-source date allocation
+to work-record review. Opt in with `--workdays <workdays.json> --workday-policy
+equal-declared-days/1.0.0`. The command recomputes both retained review and
+allocation from the original complete source; saved allocation/review values are
+never trusted as inputs. A declaration's record ID must identify an implementation
+record on that exact local date with the source's entire repository scope. Every
+implementation date must be declared. Mixed records, missing anchors, incorrect
+dates/scopes, partial declarations and incomplete sources fail before a projection.
+Meeting/PTO records stay excluded. Existing retained review remains the default.
+
+The review embeds a canonical `workdayResolution` declaration/allocation receipt
+with exact source, portfolio, record and declaration digests. Each day preserves
+its original source expected EHE and retained evidence, separately exposing
+`allocatedExpectedHours` and `workdayEvidenceBasis: external-work-record` or
+`not-declared`. Original Git workdays and intermediate history remain unresolved;
+source event-date/baseline warnings are retained. A declared date is externally
+supplied evidence, never a recovered timestamp or causal event proof.
+
+Optional `--entry-policy equal-declared-day-entries/1.0.0` rounds the complete
+period's expected EHE/8 once to two decimals, midpoint away from zero, then divides
+integer hundredths equally across sorted declared dates and each date's sorted
+implementation IDs. Thus all matched entry values sum to that single rounded
+period multiplier. Logged hours and capacity never weight these values. This is
+a separate policy from rounding retained daily values independently. For 98.75
+expected EHE over five declared dates, the period multiplier is 12.34; the daily
+shares are 2.47/2.47/2.47/2.47/2.46, not five independently rounded 2.47 values.
+The existing category/range allocation still conserves every source hour exactly.
+
+Declared positive-period rows use `declared-workday-allocation`; an empty retained
+period uses `declared-workday-no-retained-effort` and supplies no entry values.
+Undeclared rows use `no-declared-workday`. No zero cell establishes zero labor.
+Without the explicit new entry policy all multiplier fields remain unavailable.
+The retained entry policy cannot be combined with a declared-date projection.
+
+`plan-refresh` accepts the same declaration/policy options and recomputes this
+review. Note proposals label external dates and declaration lineage. Numeric
+refresh must select every contributing entry across the declared period so a
+partial range cannot present itself as a conserved refresh. Notes-only subsets
+remain allowed. Independent permissions, locks/invoices, untouched snapshots,
+idempotent annotations and separate confirmation before any real write still apply.
+
+For example, use the same complete source and declaration for both commands:
+
+```text
+eh change review-days period.json --work-records records.json --workdays workdays.json --workday-policy equal-declared-days/1.0.0 --entry-policy equal-declared-day-entries/1.0.0 --output declared-review.json
+eh change plan-refresh period.json --work-records records.json --workdays workdays.json --workday-policy equal-declared-days/1.0.0 --entry-policy equal-declared-day-entries/1.0.0 --entries refresh-manifest.json --fields both --output refresh-plan.json
+```
+
+Use `--fields notes` for a notes-only subset. These commands read saved artifacts
+and create new review/plan files; applying a plan to real records is separate.

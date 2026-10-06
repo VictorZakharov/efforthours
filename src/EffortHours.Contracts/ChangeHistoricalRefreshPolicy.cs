@@ -15,8 +15,19 @@ public static class ChangeHistoricalRefreshPolicy
         string? description = null;
         if (noteStatus == "proposed")
         {
+            string dateEvidence = "";
+            if (review.WorkdayResolution is { } resolution)
+            {
+                string basis = day.WorkdayEvidenceBasis == "external-work-record" ? $"externally declared record date {day.Date}" : "not declared for allocation";
+                dateEvidence = $"Workday date: {basis}; allocation policy: {resolution.Allocation.Policy}.\nDeclaration: {resolution.Allocation.WorkdayInputDigest}.\n";
+                dateEvidence += review.AttributionCompleteness is { } completeness
+                    ? $"Source declared events: {completeness.DeclaredEventStatus}; missing dates: {completeness.MissingEventDateCount}; missing replay baselines: {completeness.MissingReplayBaselineCount}.\n"
+                    : "Source declared events: unknown.\n";
+            }
+            string uncertainty = review.WorkdayResolution is null ? "Original workdays and intermediate history remain unresolved."
+                : "Original Git workdays and intermediate history remain unresolved.";
             string annotation = $"{Begin}\nRetained evidence: {day.RetainedEvidenceStatus}; review: {record.Status}.\n" +
-                "Original workdays and intermediate history remain unresolved. EHE is experimental replacement effort; zero retained EHE is not zero labor.\n" +
+                dateEvidence + uncertainty + " EHE is experimental replacement effort; zero retained EHE is not zero labor.\n" +
                 $"Source: {review.SourceSemanticDigest}; records: {review.WorkRecordInputDigest}.\n{End}";
             description = Annotate(original, annotation);
             if (description is null) noteStatus = "blocked-managed-annotation";

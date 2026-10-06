@@ -74,6 +74,7 @@ public sealed partial class ChangePortfolioCliTests
         Assert.NotEqual(0, await new EffortHoursApplication().RunAsync([.. refreshArgs, "--output", entries], stdout, stderr));
         Assert.Equal(entriesText, await File.ReadAllTextAsync(entries, Encoding.UTF8));
         Assert.Empty(stdout.ToString());
+        await AssertDeclaredWorkdayReviewAsync(workspace, input, records, manifest, refresh);
         manifest = manifest with { SourceSemanticDigest = "sha256:" + new string('0', 64) };
         await File.WriteAllTextAsync(records, ContractJson.Serialize(manifest), new UTF8Encoding(false));
         stdout.GetStringBuilder().Clear();

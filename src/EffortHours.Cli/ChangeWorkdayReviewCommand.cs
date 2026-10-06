@@ -10,13 +10,16 @@ internal static class ChangeWorkdayReviewCommand
 {
     private const string Help = """
         Usage: eh change review-days <comparison.json> --work-records <records.json>
-                 [--entry-policy equal-matched-entries/1.0.0] [--format json|markdown]
+                 [--workdays <workdays.json> --workday-policy equal-declared-days/1.0.0]
+                 [--entry-policy <entry-policy>] [--format json|markdown]
                  [--compact] [--output <new-path>]
         Reviews digest-bound implementation, meeting, PTO and mixed records against a
         complete joint single-contributor calendar-day comparison. Blank retained dates,
         missing records and unresolved repository relationships remain explicit discrepancies.
-        Optional entry allocations use equal weights, a fixed eight-hour denominator and
+        Retained entry allocations use equal weights, a fixed eight-hour denominator and
         two-decimal contributions that conserve the rounded matched daily multiplier.
+        Declared dates can use equal-declared-day-entries/1.0.0 to conserve one period
+        multiplier; default retained review uses equal-matched-entries/1.0.0.
         Original workdays remain unresolved; unavailable values are omitted, never zero-filled.
         Offline; no Git/provider access, estimator rerun, input overwrite or timesheet mutation.
         EHE remains experimental and uncalibrated. See docs/WORKDAY_REVIEW.md.
@@ -29,7 +32,7 @@ internal static class ChangeWorkdayReviewCommand
             await stdout.WriteLineAsync(Help).ConfigureAwait(false);
             return arguments.Length == 0 ? CliExitCodes.UsageError : CliExitCodes.Success;
         }
-        string? records = null, entryPolicy = null, output = null;
+        string? records = null, entryPolicy = null, output = null, workdays = null, workdayPolicy = null;
         string format = "json";
         bool compact = false;
         HashSet<string> seen = new(StringComparer.Ordinal);
@@ -43,14 +46,17 @@ internal static class ChangeWorkdayReviewCommand
             {
                 case "--work-records": records = arguments[index]; break;
                 case "--entry-policy": entryPolicy = arguments[index]; break;
+                case "--workdays": workdays = arguments[index]; break;
+                case "--workday-policy": workdayPolicy = arguments[index]; break;
                 case "--output": output = arguments[index]; break;
                 case "--format": format = arguments[index]; break;
                 default: return await Error("Unknown workday review option.", CliExitCodes.UsageError);
             }
         }
-        if (records is null || entryPolicy is not null && entryPolicy != ChangeWorkdayReviewPolicies.EqualEntries ||
+        if (records is null || (workdays is null) != (workdayPolicy is null) || workdayPolicy is not null && workdayPolicy != ChangeWorkdayPolicies.EqualDeclaredDaysV1 ||
+            entryPolicy is not null && entryPolicy != (workdays is null ? ChangeWorkdayReviewPolicies.EqualEntries : ChangeDeclaredWorkdayReviewPolicies.EqualEntries) ||
             format is not ("json" or "markdown") || compact && format != "json")
-            return await Error("Supply --work-records; optional --entry-policy must be equal-matched-entries/1.0.0; format must be json or markdown.", CliExitCodes.UsageError);
+            return await Error("Supply work records, paired supported workday options and a matching entry policy; format must be json or markdown.", CliExitCodes.UsageError);
         try
         {
             if (output is not null && File.Exists(output))
@@ -59,7 +65,9 @@ internal static class ChangeWorkdayReviewCommand
                 SchemaNames.ChangePortfolioComparisonReport, ChangePortfolioLimits.MaximumRenderedOutputBytes, token);
             ChangeWorkRecordManifest manifest = await ChangeWorkdayCommand.LoadAsync<ChangeWorkRecordManifest>(records,
                 SchemaNames.ChangeWorkRecordManifest, 1048576, token);
-            ChangeWorkdayReviewReport report = ChangeWorkdayReviewer.Review(source, manifest, entryPolicy);
+            ChangeWorkdayReviewReport report = workdays is null ? ChangeWorkdayReviewer.Review(source, manifest, entryPolicy)
+                : ChangeDeclaredWorkdayReviewer.Review(source, manifest,
+                    await ChangeWorkdayCommand.LoadAsync<ChangeWorkdayManifest>(workdays, SchemaNames.ChangeWorkdayManifest, 1048576, token), workdayPolicy!, entryPolicy);
             string json = compact ? ContractJson.SerializeCompact(report) : ContractJson.Serialize(report);
             if (!ContractSchemaValidator.Validate(SchemaNames.ChangeWorkdayReviewReport, json).IsValid)
                 throw new InvalidOperationException("Workday review output failed its public schema.");

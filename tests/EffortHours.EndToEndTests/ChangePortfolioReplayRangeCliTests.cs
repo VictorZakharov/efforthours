@@ -1,4 +1,5 @@
 using System.Text;
+using System.Text.Json;
 using EffortHours.Change;
 using EffortHours.Contracts;
 using EffortHours.Contracts.V1;
@@ -93,6 +94,7 @@ public sealed partial class ChangeCliTests
         Assert.Equal("unresolved-event-attribution", unresolvedReview.Days[0].Status);
         Assert.Null(unresolvedReview.Days[0].MatchedDailyMultiplier);
         Assert.True(ContractSchemaValidator.Validate(SchemaNames.ChangeWorkdayReviewReport, ContractJson.Serialize(unresolvedReview)).IsValid);
+        AssertDeclaredProjectionKeepsReplayUncertainty(unknown, records);
         ChangePortfolioComparisonReport missing = await Run(manifest with
         {
             Repositories = [manifest.Repositories[0] with
@@ -102,8 +104,41 @@ public sealed partial class ChangeCliTests
         Assert.Contains(missing.SourcePortfolio.Diagnostics, value => value.Code == "FB5345");
         Assert.Contains(missing.Diagnostics, value => value.Code == "FB5345");
         Assert.Equal(1, missing.AttributionCompleteness!.MissingReplayBaselineCount);
+        AssertDeclaredProjectionKeepsReplayUncertainty(missing, records with { SourceSemanticDigest = missing.Verification.SemanticDigest });
         await Run(manifest with { Repositories = [manifest.Repositories[0] with { ReplayEvents = [declaration with { ReplayObjectId = new string('a', 40) }] }] }, incomplete: true);
         await Run(manifest with { Repositories = [manifest.Repositories[0] with { ReplayEvents = [declaration, declaration with { Id = "competing" }] }] }, incomplete: true);
+
+        static void AssertDeclaredProjectionKeepsReplayUncertainty(ChangePortfolioComparisonReport source, ChangeWorkRecordManifest records)
+        {
+            string before = ContractJson.SerializeCompact(source);
+            ChangeWorkdayManifest dates = new()
+            {
+                SourceSemanticDigest = records.SourceSemanticDigest,
+                Workdays = [new() { RecordId = records.Records[0].RecordId, Date = records.Records[0].Date }]
+            };
+            ChangeWorkdayReviewReport declared = ChangeDeclaredWorkdayReviewer.Review(source, records, dates,
+                ChangeWorkdayPolicies.EqualDeclaredDaysV1, ChangeDeclaredWorkdayReviewPolicies.EqualEntries);
+            Assert.Equal("unresolved", declared.AttributionCompleteness!.DeclaredEventStatus);
+            Assert.Equal(source.AttributionCompleteness, declared.AttributionCompleteness);
+            Assert.Equal("external-work-record", declared.Days[0].WorkdayEvidenceBasis);
+            Assert.True(declared.Days[0].MatchedDailyMultiplier > 0);
+            Assert.Equal(source.SourcePortfolio!.TotalEffort, declared.WorkdayResolution!.Allocation.TotalEffort);
+            ChangeHistoricalRefreshManifest refresh = new()
+            {
+                SourceSemanticDigest = declared.SourceSemanticDigest,
+                WorkRecordInputDigest = declared.WorkRecordInputDigest,
+                SinceInclusiveDate = declared.Days[0].Date,
+                UntilExclusiveDate = "2026-01-24",
+                Entries = [new() { RecordId = records.Records[0].RecordId, NotePermission = "allowed",
+                    EhePermission = "allowed", Restriction = "none", Original = JsonSerializer.SerializeToElement(new { description = "Original task", hours = 4 }) }]
+            };
+            var plan = ChangeHistoricalRefreshPlanner.Plan(declared, refresh, "both");
+            Assert.Contains("Source declared events: unresolved", plan.Proposals[0].ProposedDescription, StringComparison.Ordinal);
+            Assert.Equal(before, ContractJson.SerializeCompact(source));
+            Assert.Empty(ContractValidation.Validate(declared));
+            Assert.True(ContractSchemaValidator.Validate(SchemaNames.ChangeWorkdayReviewReport, ContractJson.Serialize(declared)).IsValid);
+            Assert.Contains("Source declared events: unresolved", ChangeWorkdayReviewMarkdownRenderer.Render(declared), StringComparison.Ordinal);
+        }
 
         async Task<ChangePortfolioComparisonReport> Run(ChangeAuthorPeriodManifest input, bool incomplete = false)
         {

@@ -327,6 +327,11 @@ logged durations never set weights, and no external entries are overwritten.
 The offline [historical note refresh plan](HISTORICAL_NOTE_REFRESH.md) preserves
 original entry snapshots, creates one idempotent managed annotation, and keeps
 note/EHE permissions and locked/invoiced states separate. It never edits entries.
-New reviews expose `attributionCompleteness`; missing declared dates/baselines
-block entry allocation with `unresolved-event-attribution`. Execution completion
+Retained reviews expose `attributionCompleteness`; missing declared dates/baselines
+block retained-date entry allocation with `unresolved-event-attribution`. Execution completion
 and retained zero values do not certify original workdays or zero labor.
+
+Explicit declared-workday reviews may project complete retained EHE onto approved
+external implementation dates, including blank retained dates. They preserve
+source-date evidence, original-workday uncertainty and source totals, use separate
+opt-in allocation/entry policies, and never certify recovered history or labor.
