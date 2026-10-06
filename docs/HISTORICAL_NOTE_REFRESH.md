@@ -79,7 +79,7 @@ keeps original workdays/intermediate history unresolved, and explicitly says zer
 retained EHE is not zero labor. Unresolved dates/baselines produce discrepancy
 annotations, never a true-zero-work explanation.
 
-Numeric proposals require independent EHE permission and explicit
+Retained-date numeric proposals require independent EHE permission and explicit
 `equal-matched-entries/1.0.0`. The existing fixed expected-EHE/8 denominator,
 midpoint-away-from-zero two-decimal rounding and equal integer-cent remainders
 remain authoritative. Logged durations never supply weights. All matched entries
@@ -103,3 +103,22 @@ explicit dates/IDs, multiple matched contributions, digest/tamper rejection and
 unresolved/DST evidence. Physical CLI tests verify schemas, private unchanged
 inputs and protected output paths. These checks establish planning safety, not
 historical completeness or empirical calibration.
+
+## Explicit external dates for lost retained workdays
+
+Add `--workdays <workdays.json> --workday-policy equal-declared-days/1.0.0` to
+recompute the [declared-workday review](WORKDAY_REVIEW.md) from approved dated
+implementation records. This can propose contributions on dates without retained
+commits while preserving the original retained attribution and missing-history
+warnings. Each date declaration must anchor an exact in-scope implementation
+record; all implementation dates must be declared. It does not recover discarded
+Git dates, certify external records, create missing effort or perform entry writes.
+
+For numeric proposals explicitly use `--entry-policy
+equal-declared-day-entries/1.0.0`; its fixed-eight, single period rounding and
+canonical date/entry cent remainders conserve the complete matched multiplier.
+Select every contributing entry in the entire declaration for EHE refresh. A
+notes-only plan may select a subset. The annotation names external date evidence
+and the exact declaration digest plus source event-date/baseline availability;
+underlying event/workday uncertainty remains visible. Undeclared rows are labeled
+as not declared for allocation. Empty retained effort supplies no fabricated zero contribution.

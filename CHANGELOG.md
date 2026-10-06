@@ -6,6 +6,12 @@ may still change public contracts with explicit documentation.
 
 ## Unreleased
 
+- Connect externally declared workdays to offline review and refresh plans. Require
+  exact dated implementation anchors, preserve retained attribution and unresolved
+  replay/history evidence, and label external date allocations explicitly.
+- Add optional `equal-declared-day-entries/1.0.0`: round the period EHE/8 once,
+  conserve its two-decimal contributions across declared dates and entries, and
+  require complete contributing-entry selection for numeric refresh proposals.
 - Page large historical PR inventories with minimal metadata and bounded pipe reads.
   Filter authors without PR-date pruning; retain complete immutable heads and live
   metadata-cache validation instead of buffering full REST populations.

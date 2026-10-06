@@ -19,6 +19,8 @@ public static class ChangeHistoricalRefreshPlanner
         if (fields != "notes")
         {
             HashSet<string> selected = input.Entries.Select(value => value.RecordId).ToHashSet(StringComparer.Ordinal);
+            if (review.WorkdayResolution is not null && review.Days.SelectMany(day => day.Records).Any(record => record.AllocatedMultiplierContribution is not null && !selected.Contains(record.RecordId)))
+                throw new ArgumentException("Declared-date EHE refresh must select every contributing entry in the complete declared period.");
             foreach (ChangeWorkdayReviewDay day in review.Days.Where(day => day.Records.Any(record => selected.Contains(record.RecordId) && record.AllocatedMultiplierContribution is not null)))
                 if (day.Records.Any(record => record.AllocatedMultiplierContribution is not null && !selected.Contains(record.RecordId)))
                     throw new ArgumentException("EHE refresh must select every matched entry for each affected day to conserve contributions.");

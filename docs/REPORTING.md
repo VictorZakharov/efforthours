@@ -449,7 +449,7 @@ legacy/replay dates and baselines. Trend, findings and native Markdown display
 those consequential warnings. The optional derived state is semantically checked
 against the source; it introduces no independent values or semantic-digest inputs.
 Old v1 reports omitting it remain valid. New workday reviews carry that state and
-block implementation matching/entry values with `unresolved-event-attribution`
+block retained-date implementation matching/entry values with `unresolved-event-attribution`
 when declared event dates/baselines are missing. Original numerical EHE remains
 unchanged; only unsafe downstream presentation values become unavailable.
 
@@ -457,3 +457,10 @@ unchanged; only unsafe downstream presentation values become unavailable.
 manifest/plan schemas and a read-only `plan-refresh` command. It preserves
 original snapshots, independently gates notes/EHE and exposes restrictions before
 any separately authorized downstream write.
+
+Declared-workday reviews optionally embed `workdayResolution`, binding the exact
+external date declaration and recomputed category/range allocation. Source-date
+EHE stays separate from allocated-date EHE, and source attribution completeness
+remains unchanged. The opt-in `equal-declared-day-entries/1.0.0` conserves a single
+rounded expected-EHE/8 period multiplier across dates/entries. Existing saved v1
+retained reviews and their daily-rounding policy retain their behavior.

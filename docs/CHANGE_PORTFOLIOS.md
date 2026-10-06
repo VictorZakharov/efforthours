@@ -988,6 +988,12 @@ allocation policy; the novel delta must never be added again to a portfolio.
 The offline [historical note refresh plan](HISTORICAL_NOTE_REFRESH.md) preserves
 original entry snapshots, creates one idempotent managed annotation, and keeps
 note/EHE permissions and locked/invoiced states separate. It never edits entries.
-New reviews expose `attributionCompleteness`; missing declared dates/baselines
-block entry allocation with `unresolved-event-attribution`. Execution completion
+Retained reviews expose `attributionCompleteness`; missing declared dates/baselines
+block retained-date entry allocation with `unresolved-event-attribution`. Execution completion
 and retained zero values do not certify original workdays or zero labor.
+
+An explicit declared-workday review can bridge approved external record dates into
+review/refresh projections without altering canonical retained selection or EHE.
+It preserves original source-date values and unresolved history/event warnings,
+requires exact complete source/declaration/record bindings, and conserves its
+separate period-rounded entry multiplier. See [WORKDAY_REVIEW.md](WORKDAY_REVIEW.md).

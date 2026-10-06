@@ -109,3 +109,9 @@ review-days` diagnostic. Blank retained dates, missing implementation records,
 mixed entries and mismatched repository relationships stay unresolved. Optional
 explicit entry allocations conserve the rounded daily expected EHE/8 multiplier;
 logged durations never set weights, and no external entries are overwritten.
+
+The opt-in [declared-workday review](WORKDAY_REVIEW.md) now connects this projection
+to explicit implementation records and offline refresh plans. Every declared date
+anchors an exact in-scope implementation record. Dates remain externally supplied;
+no Git recovery or extra effort is inferred. Its separate entry policy conserves
+one rounded period multiplier rather than independently rounding daily values.

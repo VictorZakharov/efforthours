@@ -35,6 +35,7 @@ public sealed record ChangeWorkdayReviewReport
     public required string ContributorId { get; init; }
     public string? EntryPolicy { get; init; }
     public ChangePortfolioAttributionCompleteness? AttributionCompleteness { get; init; }
+    public ChangeDeclaredWorkdayResolution? WorkdayResolution { get; init; }
     public decimal ReferenceHoursPerDay { get; init; } = 8m;
     public IReadOnlyList<string> RepositoryIds { get; init; } = [];
     public IReadOnlyList<ChangeWorkdayReviewDay> Days { get; init; } = [];
@@ -49,6 +50,8 @@ public sealed record ChangeWorkdayReviewDay
     public required string RetainedEvidenceStatus { get; init; }
     public string OriginalWorkdayStatus { get; init; } = ChangeWorkdayPolicies.Unresolved;
     public required decimal SourceAttributedExpectedHours { get; init; }
+    public string? WorkdayEvidenceBasis { get; init; }
+    public decimal? AllocatedExpectedHours { get; init; }
     public decimal? MatchedDailyMultiplier { get; init; }
     public IReadOnlyList<ChangeWorkRecordReview> Records { get; init; } = [];
 }

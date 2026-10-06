@@ -22,12 +22,17 @@
       "const": "1.0.0"
     },
     "policy": {
-      "const": "retained-workday-review/1.0.0"
+      "enum": [
+        "retained-workday-review/1.0.0",
+        "declared-workday-review/1.0.0"
+      ]
     },
     "status": {
       "enum": [
         "unresolved",
-        "reviewed-retained-attribution"
+        "reviewed-retained-attribution",
+        "reviewed-declared-workdays",
+        "declared-workdays-no-retained-effort"
       ]
     },
     "sourceSemanticDigest": {
@@ -94,10 +99,13 @@
     "entryPolicy": {
       "anyOf": [
         {
-          "const": "equal-matched-entries/1.0.0"
+          "type": "null"
         },
         {
-          "type": "null"
+          "enum": [
+            "equal-matched-entries/1.0.0",
+            "equal-declared-day-entries/1.0.0"
+          ]
         }
       ]
     },
@@ -150,7 +158,10 @@
               "missing-work-record",
               "repository-scope-unresolved",
               "mixed-work-records-unresolved",
-              "no-implementation-record"
+              "no-implementation-record",
+              "declared-workday-allocation",
+              "declared-workday-no-retained-effort",
+              "no-declared-workday"
             ]
           },
           "retainedEvidenceStatus": {
@@ -217,7 +228,10 @@
                     "repository-scope-unresolved",
                     "mixed-work-records-unresolved",
                     "no-implementation-record",
-                    "excluded-non-implementation"
+                    "excluded-non-implementation",
+                    "declared-workday-allocation",
+                    "declared-workday-no-retained-effort",
+                    "no-declared-workday"
                   ]
                 },
                 "repositoryIds": {
@@ -246,14 +260,135 @@
               },
               "additionalProperties": false
             }
+          },
+          "workdayEvidenceBasis": {
+            "enum": [
+              "external-work-record",
+              "not-declared"
+            ]
+          },
+          "allocatedExpectedHours": {
+            "type": "number",
+            "minimum": 0
           }
         },
         "additionalProperties": false
       }
     },
     "boundary": {
-      "const": "Experimental, uncalibrated retained-date EHE review; original workdays remain unresolved. Entry contributions are optional allocations, not actual labor, causal credit, or timesheet values. Logged hours never weight EHE; the reference denominator is eight hours."
+      "enum": [
+        "Experimental, uncalibrated retained-date EHE review; original workdays remain unresolved. Entry contributions are optional allocations, not actual labor, causal credit, or timesheet values. Logged hours never weight EHE; the reference denominator is eight hours.",
+        "Experimental, uncalibrated EHE projection over externally declared work-record dates. Dates are not recovered Git workdays or verified labor; source event and intermediate-history uncertainty remain. Logged hours never weight EHE; the reference denominator is eight hours and entry values conserve one rounded period multiplier."
+      ]
+    },
+    "workdayResolution": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "policy",
+        "manifest",
+        "allocation"
+      ],
+      "properties": {
+        "policy": {
+          "const": "declared-workday-resolution/1.0.0"
+        },
+        "manifest": {
+          "$ref": "urn:eh:schema:v1:change-workday-manifest"
+        },
+        "allocation": {
+          "$ref": "urn:eh:schema:v1:change-workday-allocation-report"
+        },
+        "expectedMultiplierTotal": {
+          "type": "number",
+          "minimum": 0,
+          "multipleOf": 0.01
+        }
+      }
     }
   },
-  "additionalProperties": false
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "policy": {
+            "const": "declared-workday-review/1.0.0"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "workdayResolution"
+        ],
+        "properties": {
+          "boundary": {
+            "const": "Experimental, uncalibrated EHE projection over externally declared work-record dates. Dates are not recovered Git workdays or verified labor; source event and intermediate-history uncertainty remain. Logged hours never weight EHE; the reference denominator is eight hours and entry values conserve one rounded period multiplier."
+          },
+          "status": {
+            "enum": [
+              "reviewed-declared-workdays",
+              "declared-workdays-no-retained-effort"
+            ]
+          },
+          "entryPolicy": {
+            "enum": [
+              null,
+              "equal-declared-day-entries/1.0.0"
+            ]
+          },
+          "days": {
+            "items": {
+              "required": [
+                "workdayEvidenceBasis",
+                "allocatedExpectedHours"
+              ]
+            }
+          }
+        }
+      },
+      "else": {
+        "not": {
+          "required": [
+            "workdayResolution"
+          ]
+        },
+        "properties": {
+          "boundary": {
+            "const": "Experimental, uncalibrated retained-date EHE review; original workdays remain unresolved. Entry contributions are optional allocations, not actual labor, causal credit, or timesheet values. Logged hours never weight EHE; the reference denominator is eight hours."
+          },
+          "status": {
+            "enum": [
+              "unresolved",
+              "reviewed-retained-attribution"
+            ]
+          },
+          "entryPolicy": {
+            "enum": [
+              null,
+              "equal-matched-entries/1.0.0"
+            ]
+          },
+          "days": {
+            "items": {
+              "not": {
+                "anyOf": [
+                  {
+                    "required": [
+                      "workdayEvidenceBasis"
+                    ]
+                  },
+                  {
+                    "required": [
+                      "allocatedExpectedHours"
+                    ]
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
 }
