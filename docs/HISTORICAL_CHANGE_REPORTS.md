@@ -50,7 +50,11 @@ remain enforced. A complete report describes only currently available provider
 objects, not complete original development history.
 
 Closed/merged candidate and selected-head counts are separate optional discovery
-fields. Default branches and authored retained PR heads enter one repository-local
+fields. Coincident default/PR heads with the exact same immutable object are coalesced
+once, preferring the default ID and otherwise stable head-ID order. This preserves
+the complete reachable graph and avoids invalid duplicate-object manifests; PR
+inventory counts remain separate from selected distinct-head counts.
+Default branches and authored retained PR heads enter one repository-local
 Git union and one jointly reconciled calculation. Other non-default branches,
 PRs authored by another account, deleted PRs, force-pushed-away intermediate
 commits, and work crossing the selected interval remain outside this boundary.
@@ -123,10 +127,11 @@ Failed calculations have no daily evidence cells or zero-value aggregate.
 Checkpoint/cache observations stay in execution metadata rather than semantic
 identity, so exact cold/warm runs preserve the same result digest.
 
-External work logs, discrepancy matching, optional aggregate allocation across
-reported workdays, per-entry multiplier rounding, and downstream time-entry
-mutation are not implemented here. They require a separate explicit allocation
-contract that conserves the deduplicated aggregate and labels allocated values.
+[WORKDAY_ALLOCATION.md](WORKDAY_ALLOCATION.md) now defines a separate explicit
+aggregate projection across externally declared workdays. It conserves the
+complete deduplicated EHE and reference capacity and labels every result allocated.
+Discrepancy matching, per-entry multiplier rounding, and downstream time-entry
+mutation remain outside this tool's contract.
 EHE remains experimental replacement effort, not historical labor, productivity,
 individual credit, compensation, or a recovered timesheet.
 
@@ -174,3 +179,57 @@ It reads explicit 100-row pages, charges their cumulative response characters to
 16 MiB, and admits each page through the process-wide request ceiling. A full
 100-row final page requires an additional empty page to prove completion. An
 interrupted or budget-exhausted association inventory is not cached as complete.
+
+## Bounded acquisition and explicit coverage restriction
+
+Native provider reports accept repeated `--repository <owner/name>` restrictions.
+Every repository must be unique, belong to `--owner`, and appear in the complete
+accessible inventory. An absent requested repository fails rather than producing
+a zero. Restrictions are applied before per-repository head queries, identity
+bootstrap, Git acquisition, and estimation. Reports record policy
+`explicit-repositories/1.0.0`, the canonical restriction digest, requested count,
+and excluded accessible-repository count. They certify only this restricted
+coverage, not the whole owner. Raw owner/repository names remain execution-only.
+
+```text
+eh change period --owner example --repository example/project --author selected --provider-login selected --since 2026-01-19 --until 2026-01-24 --breakdown day --timezone America/Toronto --scope engineering --capacity-hours-per-day 8 --discovery-timeout-seconds 900 --max-acquired-mib 4096 --no-rate --output period.json
+```
+
+This is the explicit bounded fallback when broad historical coverage is too
+expensive. PR creation/merge dates and committer-date cutoffs are still unsafe
+pruning rules for older author dates. Without an explicit restriction all
+scope-admitted default histories remain required; no relevance guess silently
+omits them. There is no promise of shallow or blob-filtered acquisition: exact
+local selection and later canonical analysis may require ancestor/source objects.
+
+Historical default acquisition now overlaps at most two repositories. Native
+discovery plus acquisition has a default 900-second deadline (configurable 1 to
+86,400 seconds) and a default 4,096-MiB observed object-store growth budget
+(configurable 1 to 16,384 MiB). `--discovery-timeout-seconds` and
+`--max-acquired-mib` are operational controls, never effort modifiers. The
+`native-acquisition-budget/1.0.0` summary records effective limits, visited caches,
+cache-hit head requests, acquired objects, and observed growth, including histories
+that ultimately select no in-window work. Existing selected-head discovery counts
+remain separate. Immutable warm cache reuse does not charge pre-existing objects.
+
+Cache growth is measured under the per-repository lock, including incoming Git
+pack files, at five-second progress ticks and completion. It is an observed-store
+guard, not a hard wire-byte cap; in-flight writes can overshoot between ticks.
+No cache deletion or destructive rollback is attempted. Stderr shows an opaque
+repository ID, acquisition reason, head count, running/completed/cache-reuse state,
+and observed growth while fetching. Native Markdown also states limits and
+restricted coverage. Provider request/page/process counts, phase timings, and
+failure summaries remain in JSON; operational metadata does not affect the
+semantic EHE digest.
+
+Deadline, growth-budget, authentication, object, and pagination failures produce
+nonzero incomplete reports without aggregate EHE. The original fetch failure is
+preserved when sibling cancellation follows it. User cancellation remains exit
+130. Child fetches are canceled and drained before cache locks are released;
+completed immutable objects remain reusable. Existing provider/selection/cache/
+checkpoint/output bounds still apply. Synthetic cold/warm and cancellation tests
+verify these rules; a field latency claim still needs the same-input consumer run.
+
+For lost workdays, [explicit external workday allocation](WORKDAY_ALLOCATION.md)
+provides a separate, labeled, conserved opt-in projection. It does not recover
+missing Git history or turn retained timestamps into proof of actual work dates.

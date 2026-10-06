@@ -9,6 +9,14 @@ internal static partial class ChangePortfolioCommandOptionsParser
         bool timeZoneProvided)
     {
         bool providerPeriod = options.Today || options.IsNativePeriod;
+        if ((options.Repositories.Count > 0 || options.DiscoveryTimeoutSeconds is not null || options.MaximumAcquiredMebibytes is not null) && !providerPeriod)
+            return Error("Repository restrictions and discovery budgets require a native provider report.");
+        try
+        {
+            options = options with { Repositories = EffortHours.Change.GitHubDiscoveryRepositorySelection.Normalize(options.Owner ?? "", options.Repositories) };
+        }
+        catch (ArgumentException) { return Error("--repository must name a unique owner/repository under --owner; at most 256 are accepted."); }
+
         if (options.ProviderLogin is { } providerLogin &&
             (!providerPeriod || options.TeamComparison || !options.IncludeOpenPullRequests ||
              !providerLogin.Equals("@me", StringComparison.OrdinalIgnoreCase) && (providerLogin.Length is < 1 or > 39 ||

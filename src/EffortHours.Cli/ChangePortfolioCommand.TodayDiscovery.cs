@@ -20,6 +20,7 @@ internal sealed partial class ChangePortfolioCommand
             return new TodayDiscoveryOutcome(null, null);
         }
 
+        TextWriter acquisitionWriter = TextWriter.Synchronized(standardError);
         EngineeringScopeProfile? engineeringScope = null;
         try
         {
@@ -48,6 +49,10 @@ internal sealed partial class ChangePortfolioCommand
                 new GitHubAuthorPeriodDiscoveryRequest
                 {
                     Owner = options.Owner!,
+                    Repositories = options.Repositories,
+                    DiscoveryTimeoutSeconds = options.DiscoveryTimeoutSeconds ?? 900,
+                    MaximumAcquiredBytes = (options.MaximumAcquiredMebibytes ?? 4096) * 1024L * 1024,
+                    AcquisitionProgress = progress => acquisitionWriter.WriteLine(progress.SafeMessage()),
                     AuthorAliases = options.TeamComparison ? [] : options.AuthorAliases,
                     ProviderLogin = options.ProviderLogin,
                     ContributorId = options.NativePeriod ? "contributor" : "me",

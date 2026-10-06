@@ -16,6 +16,12 @@ internal sealed record ChangePortfolioCommandOptions
 
     public string? AuthorPeriodManifestPath { get; init; }
 
+    public IReadOnlyList<string> Repositories { get; init; } = [];
+
+    public int? DiscoveryTimeoutSeconds { get; init; }
+
+    public int? MaximumAcquiredMebibytes { get; init; }
+
     public string? Owner { get; init; }
 
     public string? ProviderLogin { get; init; }

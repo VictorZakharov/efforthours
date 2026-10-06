@@ -3,7 +3,7 @@ using EffortHours.Contracts.V1;
 
 namespace EffortHours.Cli;
 
-internal sealed class ChangePortfolioNativeOptionValues
+internal sealed partial class ChangePortfolioNativeOptionValues
 {
     public bool Enabled { get; set; }
 
@@ -56,7 +56,7 @@ internal sealed class ChangePortfolioNativeOptionValues
 
     public bool TryParse(string option, string value, out string? error)
     {
-        error = null;
+        if (TryParseAcquisition(option, value, out error)) return true;
         switch (option)
         {
             case "--provider-login":

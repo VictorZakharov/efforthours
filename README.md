@@ -55,8 +55,8 @@ eh examples calendar
 Help includes the installed version. `eh --examples` is an alias for `eh examples`.
 The guide explains commands, required inputs, provider access and output writes;
 replace its `<placeholders>` before running a recipe. Topic filters include
-`repository`, `change`, `portfolio`, `calendar`, `report`, `review`, `inspect` and
-`agent`. Use `eh <command> --help` for the complete option reference.
+`repository`, `change`, `portfolio`, `calendar`, `report`, `review`, `inspect`,
+`agent` and `rebase`. Use `eh <command> --help` for the complete option reference.
 
 Run an effort-only repository estimate:
 

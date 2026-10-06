@@ -170,7 +170,8 @@ and closed PR heads in one joint calculation. Exact represented rewrites and
 proven retained squash compositions do not multiply effort. Daily attribution
 uses retained timestamps; missing original workdays are not reconstructed or
 certified as no labor. [HISTORICAL_CHANGE_REPORTS.md](HISTORICAL_CHANGE_REPORTS.md)
-defines coverage and the separate deferred work-log allocation boundary.
+defines coverage; [WORKDAY_ALLOCATION.md](WORKDAY_ALLOCATION.md) defines the
+separate explicit external workday projection.
 
 The explicit `eh calendar` convenience command lets teammates create a daily
 Change EHE graph without AI or a website build. Interactive setup and unattended
@@ -300,3 +301,15 @@ the frozen `MODEL_ADMISSION.md` gate. Change EHE has only the limited logical
 admission described in `CHANGE_MODEL_ADMISSION.md`; it has no empirical
 production-accuracy claim. No local ML model is currently admitted. These
 limitations must remain visible anywhere estimates are presented.
+
+## Explicit external workday projection
+
+A maintainer-authorized opt-in `eh change allocate-days` surface consumes a
+complete joint single-contributor calendar-day comparison and digest-bound
+external declarations. [WORKDAY_ALLOCATION.md](WORKDAY_ALLOCATION.md) defines
+`equal-declared-days/1.0.0`: exact category/range conservation, preserved reference
+capacity, visibly allocated output and unresolved original workdays. It reads
+saved artifacts only and never changes estimator priors, logged time entries,
+shared-credit policy, or the experimental/uncalibrated boundary. Native provider
+coverage restrictions and acquisition limits are governed by
+[HISTORICAL_CHANGE_REPORTS.md](HISTORICAL_CHANGE_REPORTS.md).

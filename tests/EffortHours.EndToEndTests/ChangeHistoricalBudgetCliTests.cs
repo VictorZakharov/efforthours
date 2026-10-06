@@ -8,8 +8,10 @@ namespace EffortHours.EndToEndTests;
 
 public sealed partial class ChangePortfolioCliTests : ChangeCliTestSupport
 {
-    [Fact]
-    public async Task HistoricalInventoryBudgetFailsBeforeAcquisitionWithObservedValidFailure()
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public async Task HistoricalInventoryBudgetFailsBeforeAcquisitionWithObservedValidFailure(bool missingRestriction)
     {
         string workspace = Path.Combine(Path.GetTempPath(), "efforthours-historical-budget", Guid.NewGuid().ToString("N"));
         Directory.CreateDirectory(workspace);
@@ -29,10 +31,12 @@ public sealed partial class ChangePortfolioCliTests : ChangeCliTestSupport
             string output = Path.Combine(workspace, "incomplete.json");
             using StringWriter stdout = new(CultureInfo.InvariantCulture);
             using StringWriter stderr = new(CultureInfo.InvariantCulture);
-            int exitCode = await command.ExecuteAsync(["--native-period", "--owner", "example", "--author", "selected",
+            string[] arguments = ["--native-period", "--owner", "example", "--author", "selected",
                 "--since", "2026-01-19", "--until", "2026-01-24", "--breakdown", "day", "--timezone", "UTC",
                 "--scope", "engineering", "--capacity-hours-per-day", "8", "--generated-at", "2026-04-01T12:00:00Z",
-                "--output", output, "--no-rate"], stdout, stderr, CancellationToken.None);
+                "--output", output, "--no-rate"];
+            if (missingRestriction) arguments = [.. arguments, "--repository", "example/missing"];
+            int exitCode = await command.ExecuteAsync(arguments, stdout, stderr, CancellationToken.None);
             Assert.NotEqual(0, exitCode);
             string json = await File.ReadAllTextAsync(output);
             SchemaValidationResult schema = ContractSchemaValidator.Validate(SchemaNames.ChangePortfolioComparisonReport, json);
@@ -43,14 +47,14 @@ public sealed partial class ChangePortfolioCliTests : ChangeCliTestSupport
             Assert.Null(report.SourcePortfolio);
             Assert.Empty(report.Series);
             Assert.False(report.Discovery!.Complete);
-            Assert.Equal(257, report.Discovery.ConsideredRepositoryCount);
+            Assert.Equal(missingRestriction ? 0 : 257, report.Discovery.ConsideredRepositoryCount);
             Assert.Equal(runner.Calls.Count, report.Discovery.ProviderQueryCount);
             Assert.Equal(runner.Calls.Count, report.Discovery.ProviderProcessCount);
             Assert.True(report.Discovery.ProviderPageCount > 0);
             ChangePortfolioComparisonFailure failure = Assert.Single(report.Execution.Failures);
             Assert.Equal("github-discovery-budget-exceeded", failure.Category);
             Assert.Equal("narrow-scope-or-use-pinned-manifest", failure.AgentAction!.SuggestedAction);
-            Assert.Contains("256-repository", failure.Message, StringComparison.Ordinal);
+            Assert.Contains(missingRestriction ? "absent" : "256-repository", failure.Message, StringComparison.Ordinal);
             Assert.False(Directory.Exists(repositories));
             Assert.DoesNotContain(workspace, json, StringComparison.OrdinalIgnoreCase);
         }

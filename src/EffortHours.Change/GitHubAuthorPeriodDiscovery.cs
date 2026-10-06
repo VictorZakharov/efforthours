@@ -8,6 +8,14 @@ public sealed record GitHubAuthorPeriodDiscoveryRequest
 {
     public required string Owner { get; init; }
 
+    public IReadOnlyList<string> Repositories { get; init; } = [];
+
+    public int DiscoveryTimeoutSeconds { get; init; } = 900;
+
+    public long MaximumAcquiredBytes { get; init; } = 4L * 1024 * 1024 * 1024;
+
+    public Action<GitHubAcquisitionProgress>? AcquisitionProgress { get; init; }
+
     public IReadOnlyList<string> AuthorAliases { get; init; } = [];
 
     public string ContributorId { get; init; } = "me";
@@ -99,6 +107,14 @@ public sealed partial class GitHubAuthorPeriodDiscovery
         CancellationToken cancellationToken = default)
     {
         ValidateRequest(request);
+        using CancellationTokenSource deadline = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+        deadline.CancelAfter(TimeSpan.FromSeconds(request.DiscoveryTimeoutSeconds));
+        CancellationToken callerToken = cancellationToken;
+        cancellationToken = deadline.Token;
+        GitHubDiscoveryAcquisitionBudget acquisitionBudget = new(request, deadline, callerToken);
+        string[] requestedRepositories = GitHubDiscoveryRepositorySelection.Normalize(request.Owner, request.Repositories);
+        ChangePortfolioRepositoryRestriction? restriction = null;
+
         long started = Stopwatch.GetTimestamp();
         TimeZoneInfo zone = ResolveTimeZone(request.TimeZone);
         DateTimeOffset asOf = request.AsOf.ToUniversalTime();
@@ -177,6 +193,8 @@ public sealed partial class GitHubAuthorPeriodDiscovery
                 }
 
                 observedRepositories = providerRepositories.Count;
+                restriction = GitHubDiscoveryRepositorySelection.Restriction(providerRepositories, requestedRepositories);
+                providerRepositories = GitHubDiscoveryRepositorySelection.Filter(providerRepositories, requestedRepositories);
                 observedConsideredRepositories = providerRepositories.Count(repository => repository.DefaultBranch is not null &&
                     !scope.ExcludesRepository(repository.Identity, repository.Archived, repository.Mirror));
                 GitHubDiscoveryRepository[] considered;
@@ -232,6 +250,7 @@ public sealed partial class GitHubAuthorPeriodDiscovery
                     request,
                     workingDirectory,
                     counters,
+                    acquisitionBudget,
                     cancellationToken).ConfigureAwait(false);
                 resolvedContributors = counters.ContributorIdentity?.Apply(resolvedContributors)
                     ?? resolvedContributors;
@@ -256,10 +275,8 @@ public sealed partial class GitHubAuthorPeriodDiscovery
             {
                 foreach (DiscoveredRepository repository in discovered)
                 {
-                    RepositoryAcquisitionResult acquisition = await _cache.EnsureAsync(
-                        repository.RepositoryIdentity,
-                        repository.Heads,
-                        cancellationToken).ConfigureAwait(false);
+                    RepositoryAcquisitionResult acquisition = await acquisitionBudget.EnsureAsync(_cache,
+                        repository.RepositoryIdentity, repository.Heads, repository.RepositoryId, "selected-retained-heads", cancellationToken).ConfigureAwait(false);
                     paths.Add(repository.RepositoryId, acquisition.RepositoryPath);
                     admissions.Add(
                         repository.RepositoryId,
@@ -293,7 +310,9 @@ public sealed partial class GitHubAuthorPeriodDiscovery
                     ? IdentitySources(request.AuthorAliases)
                     : "provider-active-human-sample-and-explicit-inclusions",
                 Complete = true,
-                ProviderRepositoryCount = providerRepositories.Count,
+                ProviderRepositoryCount = observedRepositories,
+                RepositoryRestriction = restriction,
+                Acquisition = acquisitionBudget.Summary(),
                 ConsideredRepositoryCount = providerRepositories.Count(repository =>
                     repository.DefaultBranch is not null &&
                     !scope.ExcludesRepository(repository.Identity, repository.Archived, repository.Mirror)),
@@ -331,25 +350,29 @@ public sealed partial class GitHubAuthorPeriodDiscovery
                 ContributorSelection = resolvedContributors.Selection,
             };
         }
-        catch (Exception exception) when (exception is not OperationCanceledException)
+        catch (Exception exception)
         {
-            exception.Data[FailureDiscoveryKey] = new ChangePortfolioHostDiscovery
+            Exception failure = acquisitionBudget.Failure(exception);
+            failure.Data[FailureDiscoveryKey] = new ChangePortfolioHostDiscovery
             {
                 ScopeDigest = ChangePortfolioComparisonIdentity.ComputeTextDigest(scope.Contract.Digest),
                 IdentitySources = "requested-provider-identity",
                 Complete = false,
                 ProviderRepositoryCount = observedRepositories,
                 ConsideredRepositoryCount = observedConsideredRepositories,
+                RepositoryRestriction = restriction,
+                Acquisition = acquisitionBudget.Summary(),
                 ProviderMetadataCacheHit = cachedMetadata is not null,
                 ProviderQueryCount = counters.QueryCount,
                 ProviderPageCount = counters.PageCount,
                 ProviderProcessCount = counters.ProcessCount,
                 ProviderProcessStartupMilliseconds = decimal.Round((decimal)counters.ProcessStartupElapsed.TotalMilliseconds, 3),
                 ProviderDiagnostics = counters.Diagnostics(cacheStatus),
-                AcquiredObjectCount = counters.HistoricalAcquiredObjects,
-                AcquiredBytes = counters.HistoricalAcquiredBytes,
+                AcquiredObjectCount = acquisitionBudget.Summary().AcquiredObjectCount,
+                AcquiredBytes = acquisitionBudget.Summary().AcquiredBytes,
                 ElapsedMilliseconds = decimal.Round((decimal)Stopwatch.GetElapsedTime(started).TotalMilliseconds, 3),
             };
+            if (!ReferenceEquals(failure, exception)) throw failure;
             throw;
         }
 

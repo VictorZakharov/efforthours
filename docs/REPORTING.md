@@ -375,3 +375,15 @@ diagnostics without changing schemas or old saved-report compatibility.
 
 Operational `FB5325` also reports exact fully analyzed seed-stock reuse counts.
 This remains outside the semantic digest and does not change report schemas.
+
+## Explicit external workday projection
+
+A maintainer-authorized opt-in `eh change allocate-days` surface consumes a
+complete joint single-contributor calendar-day comparison and digest-bound
+external declarations. [WORKDAY_ALLOCATION.md](WORKDAY_ALLOCATION.md) defines
+`equal-declared-days/1.0.0`: exact category/range conservation, preserved reference
+capacity, visibly allocated output and unresolved original workdays. It reads
+saved artifacts only and never changes estimator priors, logged time entries,
+shared-credit policy, or the experimental/uncalibrated boundary. Native provider
+coverage restrictions and acquisition limits are governed by
+[HISTORICAL_CHANGE_REPORTS.md](HISTORICAL_CHANGE_REPORTS.md).

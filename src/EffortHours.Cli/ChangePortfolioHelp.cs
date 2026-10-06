@@ -34,6 +34,10 @@ internal static class ChangePortfolioHelp
                                     Versioned multi-repository/multi-head author manifest;
                                     each repository uses repositoryPath or gitHubRepository
           --owner <owner>           GitHub owner for provider-assisted period discovery
+          --repository <owner/name> Restrict native discovery; repeat for each repository (coverage is limited)
+          --discovery-timeout-seconds <seconds>
+                                    Native discovery/acquisition deadline (default 900; maximum 86400)
+          --max-acquired-mib <MiB>  Observed managed object-store growth budget (default 4096; maximum 16384)
           --today                   Use the current local calendar day and one partial daily bucket
           --period <this-week|last-week|this-month|last-month>
                                     Select a native local-calendar reporting interval

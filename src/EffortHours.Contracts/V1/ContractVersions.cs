@@ -141,6 +141,10 @@ public static class CalibrationUncertaintyVersions
 
 public static class SchemaNames
 {
+    public const string ChangeWorkdayManifest = "change-workday-manifest.schema.json";
+
+    public const string ChangeWorkdayAllocationReport = "change-workday-allocation-report.schema.json";
+
     public const string ReviewedVendorManifest = "reviewed-vendor-manifest.schema.json";
     public const string CalibrationAuthoringPacket = "calibration-authoring-packet.schema.json";
     public const string CalibrationCorpus = "calibration-corpus.schema.json";

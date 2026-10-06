@@ -6,6 +6,20 @@ may still change public contracts with explicit documentation.
 
 ## Unreleased
 
+- Bound native historical discovery with explicit repository restrictions, a
+  discovery/acquisition deadline, an observed cache-growth budget, two concurrent
+  historical fetches, and privacy-safe acquisition progress. Incomplete coverage
+  never publishes an aggregate; older author dates are not pruned by later commit
+  or PR dates, and completed immutable objects survive interrupted acquisition.
+  Coincident default/PR tips are coalesced by exact object identity.
+- Add explicit `eh change allocate-days` with digest-bound external workday
+  declarations and policy `equal-declared-days/1.0.0`. The separate allocated view
+  conserves every source EHE category/range and reference capacity while original
+  workdays remain unresolved. Logged hours do not weight EHE; inputs/time entries
+  are never mutated. EHE remains experimental and uncalibrated.
+- Add `eh examples rebase` covering bounded retained-history queries, existing
+  declared immutable rewrite pairs, and external workday allocation.
+
 ### Added
 
 - Discover explained common CLI workflows with `eh examples` or `eh --examples`,

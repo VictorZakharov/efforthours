@@ -92,6 +92,21 @@ public static partial class ContractValidation
             errors.Add("Host discovery counts are inconsistent.");
         }
 
+        if (discovery.RepositoryRestriction is { } restriction)
+        {
+            ValidateDigest(restriction.InputDigest, "repositoryRestriction.inputDigest", errors);
+            if (restriction.Policy != "explicit-repositories/1.0.0" || restriction.RequestedRepositoryCount is < 1 or > 256 ||
+                restriction.ExcludedRepositoryCount < 0 || restriction.ExcludedRepositoryCount > discovery.ProviderRepositoryCount ||
+                discovery.ConsideredRepositoryCount > restriction.RequestedRepositoryCount)
+                errors.Add("Repository restriction metadata is invalid.");
+        }
+        if (discovery.Acquisition is { } acquisition &&
+            (acquisition.Policy != "native-acquisition-budget/1.0.0" || acquisition.MaximumBytes is < 1048576 or > 17179869184 ||
+             acquisition.TimeoutSeconds is < 1 or > 86400 || acquisition.RepositoryCount is < 0 or > 256 ||
+             acquisition.RepositoryCount > discovery.ConsideredRepositoryCount || acquisition.CacheHitHeadCount < 0 ||
+             acquisition.AcquiredObjectCount < 0 || acquisition.AcquiredBytes < 0))
+            errors.Add("Acquisition budget metadata is invalid.");
+
         ValidateProviderDiagnostics(discovery, errors);
 
         ValidateEngineeringScope(report, errors);

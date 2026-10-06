@@ -148,10 +148,84 @@
         "providerProcessStartupMilliseconds": { "type": "number", "minimum": 0 },
         "providerMetadataCacheHit": { "type": "boolean" },
         "providerDiagnostics": { "$ref": "#/$defs/providerDiagnostics" },
+        "repositoryRestriction": { "$ref": "#/$defs/repositoryRestriction" },
+        "acquisition": { "$ref": "#/$defs/acquisition" },
         "localObjectCount": { "type": "integer", "minimum": 0 },
         "acquiredObjectCount": { "type": "integer", "minimum": 0 },
         "acquiredBytes": { "type": "integer", "minimum": 0 },
         "elapsedMilliseconds": { "type": "number", "minimum": 0 }
+      },
+      "additionalProperties": false
+    },
+    "repositoryRestriction": {
+      "type": "object",
+      "required": [
+        "policy",
+        "inputDigest",
+        "requestedRepositoryCount",
+        "excludedRepositoryCount"
+      ],
+      "properties": {
+        "policy": {
+          "const": "explicit-repositories/1.0.0"
+        },
+        "inputDigest": {
+          "$ref": "#/$defs/digest"
+        },
+        "requestedRepositoryCount": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 256
+        },
+        "excludedRepositoryCount": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "additionalProperties": false
+    },
+    "acquisition": {
+      "type": "object",
+      "required": [
+        "policy",
+        "maximumBytes",
+        "timeoutSeconds",
+        "repositoryCount",
+        "cacheHitHeadCount",
+        "acquiredObjectCount",
+        "acquiredBytes"
+      ],
+      "properties": {
+        "policy": {
+          "const": "native-acquisition-budget/1.0.0"
+        },
+        "maximumBytes": {
+          "type": "integer",
+          "minimum": 1048576,
+          "maximum": 17179869184
+        },
+        "timeoutSeconds": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 86400
+        },
+        "repositoryCount": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 256
+        },
+        "cacheHitHeadCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "acquiredObjectCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "acquiredBytes": {
+          "type": "integer",
+          "minimum": 0
+        }
       },
       "additionalProperties": false
     },

@@ -31,6 +31,7 @@ public sealed class CliUsageExamplesTests
     [InlineData("review")]
     [InlineData("inspect")]
     [InlineData("agent")]
+    [InlineData("rebase")]
     public async Task TopicSelectsOnlyItsRecipes(string topic)
     {
         var (Code, Output, Error) = await RunAsync("examples", topic);
