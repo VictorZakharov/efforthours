@@ -8,7 +8,7 @@ acquisitions on the public `VictorZakharov/better-web-browser` repository and
 `VictorZakharov/efforthours` control. The selected contributor is the public
 `VictorZakharov` login. No NDA repository or private source was used.
 
-The complete measurement interval is October 1 inclusive to October 6 exclusive,
+The earlier recent checkpoint covers October 1 inclusive to October 6 exclusive,
 2026, UTC, author-date selection, engineering scope, fixed eight-hour daily
 reference, implementation profile, no pricing and no evidence checkpoint reuse.
 The narrow scope includes only better-web-browser; the broad recent scope
@@ -19,8 +19,8 @@ validated before applying restrictions; unrelated account PR history is omitted.
 Each scope starts with separate empty repository/provider caches, then repeats
 with those exact caches in a new CLI process. A copied, frozen CLI directory
 prevents builds from changing binaries during the experiment. No other build,
-test or benchmark ran during the final four rows. Ordinary operating-system
-background load and network latency remain uncontrolled. These are single
+test or benchmark ran during either checkpoint's four timed rows. Ordinary
+operating-system background load and network latency remain uncontrolled. These are single
 observations, not distributions or a general latency guarantee.
 
 Use the explicit opt-in driver after a Release build, with a frozen CLI copy:
@@ -36,13 +36,13 @@ provider receipts, reuse, selected changes and incomplete failure context. It
 checks binaries after every row. A changed live input is non-comparable; a
 semantic mismatch on the same complete selection returns nonzero. Neither
 benchmark times nor sampled memory gate ordinary CI. The frozen CLI binary digest
-for the final checkpoint is
+for the earlier recent checkpoint is
 `37fcbb4943243ff4664be08c3796916b5110309fce5bc53c7adeecd3e7d0b751`.
 
-## Complete cold and warm results
+## Earlier complete recent cold and warm results
 
 The explicit discovery/acquisition deadline is 900 seconds, observed growth budget
-1,024 MiB, and driver deadline 1,800 seconds per row. Existing bounds remain:
+1,024 MiB, and driver deadline 1,800 seconds per row. That earlier build enforced:
 256 repositories, 512 heads overall and 32 per repository; 2,048 provider adapter
 requests; four historical readers; 12 PRs per metadata batch; at most ten 100-row
 scoped inventory pages under one cumulative 16-Mi-character response bound;
@@ -92,7 +92,7 @@ Provider requests include child startup and transport; wire time is not isolated
 Observed Git growth is object-store growth, not a hard network-byte cap. Sampled
 working set is an observation, not a heap quota or CI threshold.
 
-## Annual scope and failure boundary
+## Earlier annual scope failure boundary
 
 A separate cold/warm request included both repositories over October 6, 2025 to
 October 6, 2026 UTC, under the same limits. Discovery completed all 306 candidate
@@ -123,3 +123,71 @@ partial observations, reusable immutable evidence and nonzero incomplete output
 without aggregate EHE. The synthetic 16-repository annual checkpoint remains in
 [HISTORICAL_PR_DISCOVERY_BENCHMARK.md](HISTORICAL_PR_DISCOVERY_BENCHMARK.md).
 The private large-repository case still needs a same-input consumer retest.
+
+## Complete annual cold and warm results
+
+The follow-up implementation at `59cbfffa58f011362b7e528dcc5cf399a775b127`
+removes the earlier per-repository 32-head barrier without dropping retained
+heads. One repository can now use the existing 512-head overall envelope through
+one bounded reachability walk and a separately charged 128-MiB head-membership
+ledger. Acquisition uses sequential batches of at most 32 refs and 32 negotiation
+tips; verified completed heads seed later batches so shared history need not be
+retransferred. The 256-repository limit and existing analysis caches, queues,
+checkpoint/output limits and processor/read concurrency bounds remain fixed.
+The metadata reader/page/response bounds above also remain fixed.
+
+This checkpoint uses October 6, 2025 inclusive to October 6, 2026 exclusive, UTC,
+with the same author-date, engineering, implementation, no-pricing settings and
+365 daily buckets. Both scopes cover the full year: narrow is better-web-browser,
+broad adds EffortHours. Each starts from its own empty provider/object caches;
+its warm repeat is a fresh CLI process over those same caches, with no evidence
+checkpoint reuse. The frozen CLI digest is
+`551411b9340d6f16e0926567a4ac012a57c8caf459283b64b21c3160c37f54ec`.
+Use the same driver with the annual interval explicitly selected:
+
+```text
+python eng/benchmark-historical-network.py --allow-network --cli-dll <frozen-cli>/efforthours.dll --output artifacts/historical-network-annual-new --owner VictorZakharov --author VictorZakharov --repository VictorZakharov/better-web-browser --repository VictorZakharov/efforthours --narrow-since 2025-10-06 --broad-since 2025-10-06 --until 2026-10-06 --discovery-seconds 900 --acquired-mib 1024 --run-seconds 1800
+```
+
+All four rows exit zero with complete scope, no pending metadata, no failures and
+no driver deadline. These complete annual measurements supersede the earlier
+annual failure boundary above; those earlier failure times are not runtime
+baselines. Live inventory now includes 307 candidate PR representations across
+the two repositories, rather than the earlier 306, so only the new cold/warm
+pairs are compared on exact pinned inputs.
+
+| Annual scope/cache | Outer wall s | CLI wall s | Discovery/acquisition s | Queries/pages/process receipts | PR metadata hits | Selected changes | Snapshot requests/hits | Acquired objects | Observed acquired MiB | Sampled peak MiB |
+| --- | ---: | ---: | ---: | --- | ---: | ---: | --- | ---: | ---: | ---: |
+| Narrow cold | 142.812 | 140.059 | 19.735 | 20/20/20 | 0/152 | 610 | 1220/607 | 19,348 | 10.562 | 1179.332 |
+| Narrow warm | 137.312 | 134.372 | 16.219 | 5/5/5 | 152/152 | 610 | 1220/607 | 0 | 0.000 | 1177.395 |
+| Two-repository cold | 169.578 | 165.886 | 29.554 | 36/36/36 | 0/307 | 849 | 1698/843 | 29,065 | 18.814 | 1533.082 |
+| Two-repository warm | 149.157 | 144.464 | 19.981 | 8/8/8 | 307/307 | 849 | 1698/843 | 0 | 0.000 | 1619.785 |
+
+Narrow retains 152 historical PR heads plus one default head, all 153 distinct.
+Broad retains the same 153 better-web-browser heads and 150 EffortHours heads,
+303 distinct heads overall. Exact author selection includes 610 changes in
+narrow (550 admitted, 60 scope-empty) and 849 in broad (758 admitted, 91
+scope-empty). No row truncates the head, commit or daily-bucket selection.
+
+| Annual scope/cache | Candidate ledger charge bytes | Rendered output bytes | File artifact requests/hits | Unique blob objects | Blob read bytes |
+| --- | ---: | ---: | --- | ---: | ---: |
+| Narrow cold | 873,992 | 4,117,360 | 863,081/850,965 | 10,070 | 85,796,961 |
+| Narrow warm | 873,992 | 4,117,315 | 863,685/851,564 | 10,070 | 85,796,961 |
+| Two-repository cold | 1,330,728 | 6,525,903 | 1,201,744/1,182,532 | 13,639 | 117,325,712 |
+| Two-repository warm | 1,330,728 | 6,525,861 | 1,201,464/1,182,247 | 13,639 | 117,327,306 |
+
+Warm rows reuse all PR metadata and acquire zero objects/bytes. They refresh live
+inventory and recalculate static analysis. Both pinned-selection and complete
+semantic digests match exactly within each scope:
+
+- Narrow selection: `e2150bf12a6c9828326aff7b736f1e9451619815991e0e008fb59a8e4653c50a`; semantic: `sha256:b96e74f44b94534b2d3e1291bc95367a709e65fb5d75764e919680623a501daf`.
+- Two repositories selection: `81ed0197d66ff57d5ed159f6c579372c8bdaa173f411481e2ac192c5606cb824`; semantic: `sha256:a9fa386aa4cb66255d7d7e7bbfa567e57f6d802c7561c9a23e7e372cacc2735a`.
+
+The observations establish successful bounded annual discovery, acquisition,
+selection, reconciliation and daily reporting on these public inputs. They do
+not measure replay-event calibration, lost workdays, complete owner coverage,
+alpha.29 equivalence, or the NDA repository's field latency. Peak working set is
+sampled and is not a memory quota; phase timings remain overlapping cumulative
+work. Within-run request/hit counts can vary with scheduling while exact
+selection and semantic results remain equal. The private consumer still needs
+its own same-input retest.
