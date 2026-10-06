@@ -16,6 +16,13 @@ public sealed partial class GitPortfolioPlanner
             [.. history.Where(value => !paired.Contains(value.ObjectId))], manifest.Selection, manifest.Contributors);
         List<SelectedManifestAuthorCommit> selected = [.. ordinary.Commits];
         List<Diagnostic> diagnostics = [.. ordinary.Diagnostics];
+        if (events.Count > 0)
+            diagnostics.Add(new Diagnostic
+            {
+                Code = "FB5342",
+                Severity = DiagnosticSeverity.Warning,
+                Message = "Declared rewrite event values allocate a jointly reconciled retained budget after preserving the original baseline. This remainder is not a causal conflict-resolution breakdown or actual integration labor; zero retained increment does not certify zero work.",
+            });
         foreach (ChangeRewriteEvent evidence in events)
         {
             GitCommitMetadata original = Require(evidence.OriginalObjectId, evidence.OldBaseObjectId);

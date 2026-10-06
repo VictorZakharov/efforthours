@@ -60,6 +60,13 @@ public sealed partial class ChangePortfolioCliTests
                 Assert.Equal(ChangePortfolioComparisonStatus.Incomplete, report.Status);
                 Assert.Null(report.SourcePortfolio);
                 Assert.Empty(report.Series);
+                ChangePortfolioComparisonFailure failure = Assert.Single(report.Execution.Failures);
+                Assert.Equal("managed-cache-acquisition", failure.Phase);
+                Assert.Equal("inspect-acquisition-or-use-pinned-manifest", failure.AgentAction!.SuggestedAction);
+                Assert.Equal(0, failure.AgentAction.RetryLimit);
+                Assert.Equal(provider.Calls.Count, report.Discovery!.ProviderQueryCount);
+                Assert.Equal(provider.Calls.Count, report.Discovery.ProviderProcessCount);
+                Assert.True(report.Discovery.ProviderPageCount > 0);
                 Assert.Equal("github-discovery-budget-exceeded", Assert.Single(report.Execution.Failures).Category);
                 Assert.Contains(failureMode == "timeout" ? "deadline" : "growth budget", report.Execution.Failures[0].Message, StringComparison.Ordinal);
                 Assert.DoesNotContain(workspace, json, StringComparison.OrdinalIgnoreCase);

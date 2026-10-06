@@ -92,7 +92,7 @@ public sealed partial class ChangePortfolioComparisonTests
         { RecordId = "record-" + index, Date = bucket.Label, LoggedHours = index % 2 == 0 ? 4 : 12 })],
     };
 
-    private static async Task<ChangePortfolioComparisonReport> WorkdaySourceAsync(bool dst = false, bool empty = false)
+    private static async Task<ChangePortfolioComparisonReport> WorkdaySourceAsync(bool dst = false, bool empty = false, decimal referenceHours = 8m)
     {
         TimeZoneInfo zone = TimeZoneInfo.FindSystemTimeZoneById(dst ? "America/Toronto" : "UTC");
         DateTime start = new(2026, dst ? 3 : 1, dst ? 7 : 19, 0, 0, 0, DateTimeKind.Unspecified);
@@ -124,7 +124,7 @@ public sealed partial class ChangePortfolioComparisonTests
             {
                 CalendarPolicy = "fixed-eight",
                 Entries = [.. buckets.Buckets.Select(bucket => new ChangePortfolioCapacityEntry
-            { BucketId = bucket.Id, ContributorId = "contributor-a", Hours = 8 })]
+            { BucketId = bucket.Id, ContributorId = "contributor-a", Hours = referenceHours })]
             },
         });
     }

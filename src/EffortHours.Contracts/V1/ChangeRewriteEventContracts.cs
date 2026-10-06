@@ -20,5 +20,7 @@ public sealed record ChangeRewriteAttribution
     public required bool SupportOnly { get; init; }
     public string Basis { get; init; } = "caller-declared-immutable-pair";
     public string Confidence { get; init; } = "declared-not-verified-workday";
+    public const string JointBudgetBasis = "joint-retained-budget-remainder";
+    public string? AllocationBasis { get; init; }
     public string? Treatment { get; init; }
 }

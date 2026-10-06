@@ -49,6 +49,8 @@ public static class ContractSchemaCatalog
         SchemaNames.ChangePortfolioBucketManifest,
         SchemaNames.ChangePortfolioCapacityManifest,
         SchemaNames.ChangePortfolioComparisonReport,
+        SchemaNames.ChangeWorkRecordManifest,
+        SchemaNames.ChangeWorkdayReviewReport,
         SchemaNames.ChangeWorkdayManifest,
         SchemaNames.ChangeWorkdayAllocationReport,
         SchemaNames.ChangePortfolioManifest,

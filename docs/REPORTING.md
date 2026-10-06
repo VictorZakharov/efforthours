@@ -398,3 +398,11 @@ separate wall spans are not sums of parallel calls. Single-repository PR deadlin
 failures identify provider PR discovery and suggest inspecting it or using a pinned
 manifest, with no automatic retry. Ordinary today selection and EHE arithmetic
 remain unchanged; lost daily history still requires explicit declarations.
+
+## External work-record discrepancy review
+
+[WORKDAY_REVIEW.md](WORKDAY_REVIEW.md) defines the separate offline `eh change
+review-days` diagnostic. Blank retained dates, missing implementation records,
+mixed entries and mismatched repository relationships stay unresolved. Optional
+explicit entry allocations conserve the rounded daily expected EHE/8 multiplier;
+logged durations never set weights, and no external entries are overwritten.

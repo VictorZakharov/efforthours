@@ -49,9 +49,23 @@ public sealed partial class ChangeCliTests : ChangeCliTestSupport
             rewritten = (await repository.GitAsync("rev-parse", "HEAD")).Trim();
         }
         else rewritten = (await HistoricalCommitAsync(repository, "rewrite", "2026-01-19T12:00:00Z", "2026-01-22T12:00:00Z")).Trim();
+        async Task<string> Copy(string commit, string parent, string name)
+        {
+            await repository.GitAsync("switch", "-c", name, parent);
+            var cherryPick = StartInfo("git", repository.RootPath);
+            cherryPick.Environment["GIT_COMMITTER_DATE"] = "2026-01-23T12:00:00Z";
+            cherryPick.ArgumentList.Add("cherry-pick"); cherryPick.ArgumentList.Add(commit);
+            ProcessResult picked = await RunAsync(cherryPick);
+            Assert.True(picked.ExitCode == 0, picked.StandardError);
+            return (await repository.GitAsync("rev-parse", "HEAD")).Trim();
+        }
+        string originalCopy = await Copy(original, oldBase, "copy-original");
+        string rewrittenCopy = await Copy(rewritten, newBase, "copy-rewritten");
+        Assert.NotEqual(original, originalCopy);
+        Assert.NotEqual(rewritten, rewrittenCopy);
         string status = await repository.GitAsync("status", "--porcelain=v1");
         string input = Path.Combine(repository.RootPath, ".git", "rewrite-manifest.json");
-        async Task<ChangePortfolioComparisonReport> Estimate(string since, string until, bool eventKnown = true, bool includePair = true, bool invalidBase = false)
+        async Task<ChangePortfolioComparisonReport> Estimate(string since, string until, bool eventKnown = true, bool includePair = true, bool invalidBase = false, bool copies = false)
         {
             ChangeAuthorPeriodManifest manifest = new()
             {
@@ -66,7 +80,10 @@ public sealed partial class ChangeCliTests : ChangeCliTestSupport
                 },
                 Contributors = [new() { Id = "selected", Aliases = ["selected@example.invalid"] }],
                 Repositories = [new() { Id = "repository", RepositoryPath = repository.RootPath,
-                    Heads = [new() { Id = "original", ObjectId = original }, new() { Id = "rewritten", ObjectId = rewritten }],
+                    Heads = copies
+                        ? [new() { Id = "original", ObjectId = original }, new() { Id = "rewritten", ObjectId = rewritten },
+                            new() { Id = "copy-original", ObjectId = originalCopy }, new() { Id = "copy-rewritten", ObjectId = rewrittenCopy }]
+                        : [new() { Id = "original", ObjectId = original }, new() { Id = "rewritten", ObjectId = rewritten }],
                     RewriteEvents = includePair ? [new() { OriginalObjectId = original, RewrittenObjectId = rewritten, OldBaseObjectId = invalidBase ? newBase : oldBase,
                         NewBaseObjectId = newBase, EventTimestamp = eventKnown ? DateTimeOffset.Parse("2026-01-22T12:00:00Z", CultureInfo.InvariantCulture) : null }] : null }],
             };
@@ -111,7 +128,22 @@ public sealed partial class ChangeCliTests : ChangeCliTestSupport
         Assert.True(originalHours > 0m);
         if (resolution) Assert.True(novelHours > 0m); else Assert.Equal(0m, novelHours);
         Assert.Equal(full.SourcePortfolio!.TotalEffort.Expected, originalHours + novelHours);
-        Assert.All(full.SourcePortfolio.Items, item => Assert.NotNull(item.Attribution.Rewrite));
+        Assert.All(full.SourcePortfolio.Items, item => Assert.Equal(ChangeRewriteAttribution.JointBudgetBasis, item.Attribution.Rewrite!.AllocationBasis));
+        Assert.Contains(full.SourcePortfolio.Diagnostics, diagnostic => diagnostic.Code == "FB5342");
+        ChangePortfolioReport legacy = full.SourcePortfolio with
+        {
+            Items = [.. full.SourcePortfolio.Items.Select(item => item with
+            { Attribution = item.Attribution with { Rewrite = item.Attribution.Rewrite! with { AllocationBasis = null } } })],
+        };
+        Assert.Empty(ContractValidation.Validate(legacy));
+        Assert.True(ContractSchemaValidator.Validate(SchemaNames.ChangePortfolioReport, ContractJson.Serialize(legacy)).IsValid);
+        ChangePortfolioComparisonReport copied = await Estimate("2026-01-19T00:00:00Z", "2026-01-24T00:00:00Z", copies: true);
+        Assert.Equal(full.SourcePortfolio.TotalEffort, copied.SourcePortfolio!.TotalEffort);
+        Assert.Equal(originalHours, copied.Series.Single(value => value.Kind == ChangePortfolioSeriesKind.Portfolio).Points[0].Effort.Expected);
+        Assert.Equal(novelHours, copied.Series.Single(value => value.Kind == ChangePortfolioSeriesKind.Portfolio).Points[3].Effort.Expected);
+        Assert.All(copied.SourcePortfolio.Items.Where(item => item.Attribution.Rewrite is null), item => Assert.Equal(0m, item.AllocatedExpectedHours));
+        ChangePortfolioComparisonReport copiedEvent = await Estimate("2026-01-22T00:00:00Z", "2026-01-23T00:00:00Z", copies: true);
+        Assert.Equal(novelHours, copiedEvent.SourcePortfolio!.TotalEffort.Expected);
         Assert.DoesNotContain(full.SourcePortfolio.Items, item => item.Selection.Head.ObjectId == newBase);
         ChangePortfolioComparisonReport eventOnly = await Estimate("2026-01-22T00:00:00Z", "2026-01-23T00:00:00Z");
         Assert.Equal(novelHours, eventOnly.SourcePortfolio!.TotalEffort.Expected);

@@ -1,4 +1,3 @@
-using System.Globalization;
 using EffortHours.Contracts;
 using EffortHours.Contracts.V1;
 
@@ -13,41 +12,14 @@ public static class ChangeWorkdayAllocator
         ArgumentNullException.ThrowIfNull(manifest);
         if (policy != ChangeWorkdayPolicies.EqualDeclaredDaysV1)
             throw new ArgumentException("Explicit --policy equal-declared-days/1.0.0 is required.");
-        RequireValid(ContractValidation.Validate(source));
         RequireValid(ContractValidation.Validate(manifest));
-        ChangePortfolioReport portfolio = source.SourcePortfolio ??
-            throw new ArgumentException("Allocation requires a complete source portfolio; incomplete discovery cannot produce an aggregate.");
-        ChangePortfolioAuthorPeriodManifestSelection selection = source.Selection.AuthorPeriodManifest ??
-            throw new ArgumentException("Allocation requires an author-period manifest comparison.");
-        if (source.Status != ChangePortfolioComparisonStatus.Complete || !source.Verification.CompleteAggregates ||
-            portfolio.DailyNormalization is not null || selection.ContributorIds.Count != 1 ||
-            source.BucketPolicy.ContributorNormalization != ChangePortfolioContributorNormalization.Joint ||
-            source.BucketPolicy.Kind != ChangePortfolioBucketPolicyKind.CalendarDay)
-            throw new ArgumentException("Allocation requires a complete, joint, single-contributor calendar-day report; independent-day and shared-credit reports are unsupported.");
-        string digest = source.NativePeriod is null
-            ? ChangePortfolioComparisonIdentity.ComputeSemanticDigest(portfolio, source.BucketPolicy, source.Buckets, source.Series, source.ScopeProfile)
-            : ChangePortfolioComparisonIdentity.ComputeSemanticDigest(portfolio, source.BucketPolicy, source.Buckets, source.Series, source.ScopeProfile, source.NativePeriod);
-        if (digest != source.Verification.SemanticDigest || digest != manifest.SourceSemanticDigest ||
-            ChangePortfolioComparisonIdentity.ComputePortfolioDigest(portfolio) != source.Verification.SourcePortfolioDigest)
-            throw new ArgumentException("Workday allocation source digest mismatch; bind the declarations to this exact complete report.");
-        TimeZoneInfo zone;
-        try { zone = TimeZoneInfo.FindSystemTimeZoneById(selection.TimeZone); }
-        catch (Exception exception) when (exception is TimeZoneNotFoundException or InvalidTimeZoneException)
-        {
-            throw new ArgumentException("The source timezone is unavailable on this host.", nameof(source), exception);
-        }
-        ChangePortfolioComparisonSeries series = source.Series.Single(value => value.Kind == ChangePortfolioSeriesKind.Portfolio);
+        ChangeWorkdaySource input = ChangeWorkdaySource.Read(source, manifest.SourceSemanticDigest);
+        ChangePortfolioReport portfolio = input.Portfolio;
+        ChangePortfolioAuthorPeriodManifestSelection selection = input.Selection;
+        ChangePortfolioComparisonSeries series = input.Series;
+        string digest = input.Digest;
+        IReadOnlyList<(ChangePortfolioComparisonBucket Bucket, string Date)> geometry = input.Geometry;
         Dictionary<string, ChangeDeclaredWorkday> declared = manifest.Workdays.ToDictionary(day => day.Date, StringComparer.Ordinal);
-        ChangePortfolioComparisonBucket[] buckets = [.. source.Buckets.OrderBy(bucket => bucket.SinceInclusive)];
-        List<(ChangePortfolioComparisonBucket Bucket, string Date)> geometry = [];
-        foreach (ChangePortfolioComparisonBucket bucket in buckets)
-        {
-            DateTime localStart = TimeZoneInfo.ConvertTime(bucket.SinceInclusive, zone).DateTime;
-            DateTime localEnd = TimeZoneInfo.ConvertTime(bucket.UntilExclusive, zone).DateTime;
-            if (bucket.PartialStart || bucket.PartialEnd || localStart.TimeOfDay != TimeSpan.Zero ||
-                localEnd != localStart.AddDays(1)) throw new ArgumentException("Allocation requires whole local calendar days, including DST-aware boundaries.");
-            geometry.Add((bucket, localStart.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture)));
-        }
         if (declared.Keys.Except(geometry.Select(value => value.Date), StringComparer.Ordinal).Any())
             throw new ArgumentException("Every declared workday must belong to the source period; declarations outside it require a new complete source report.");
         string[] allocatedDates = [.. declared.Keys.Order(StringComparer.Ordinal)];

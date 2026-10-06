@@ -1,0 +1,219 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:eh:schema:v1:change-workday-review-report",
+  "title": "Retained workday evidence review v1",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "policy",
+    "status",
+    "sourceSemanticDigest",
+    "sourcePortfolioDigest",
+    "workRecordInputDigest",
+    "timeZone",
+    "contributorId",
+    "referenceHoursPerDay",
+    "repositoryIds",
+    "days",
+    "boundary"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "1.0.0"
+    },
+    "policy": {
+      "const": "retained-workday-review/1.0.0"
+    },
+    "status": {
+      "enum": [
+        "unresolved",
+        "reviewed-retained-attribution"
+      ]
+    },
+    "sourceSemanticDigest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "sourcePortfolioDigest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "workRecordInputDigest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "timeZone": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "contributorId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
+    },
+    "entryPolicy": {
+      "anyOf": [
+        {
+          "const": "equal-matched-entries/1.0.0"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "referenceHoursPerDay": {
+      "const": 8
+    },
+    "repositoryIds": {
+      "type": "array",
+      "minItems": 0,
+      "maxItems": 256,
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 128,
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
+      }
+    },
+    "days": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 512,
+      "items": {
+        "type": "object",
+        "required": [
+          "date",
+          "bucketId",
+          "status",
+          "retainedEvidenceStatus",
+          "originalWorkdayStatus",
+          "sourceAttributedExpectedHours",
+          "records"
+        ],
+        "properties": {
+          "date": {
+            "type": "string",
+            "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$",
+            "format": "date"
+          },
+          "bucketId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
+          },
+          "status": {
+            "enum": [
+              "retained-attribution-available",
+              "unresolved-workday",
+              "missing-work-record",
+              "repository-scope-unresolved",
+              "mixed-work-records-unresolved",
+              "no-implementation-record"
+            ]
+          },
+          "retainedEvidenceStatus": {
+            "enum": [
+              "measured-retained-change",
+              "no-retained-change",
+              "scope-excluded",
+              "normalized-zero",
+              "reconciled-zero"
+            ]
+          },
+          "originalWorkdayStatus": {
+            "const": "unresolved-original-workday"
+          },
+          "sourceAttributedExpectedHours": {
+            "type": "number",
+            "minimum": 0
+          },
+          "matchedDailyMultiplier": {
+            "anyOf": [
+              {
+                "type": "number",
+                "minimum": 0,
+                "multipleOf": 0.01
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "records": {
+            "type": "array",
+            "minItems": 0,
+            "maxItems": 4096,
+            "items": {
+              "type": "object",
+              "required": [
+                "recordId",
+                "kind",
+                "status",
+                "repositoryIds"
+              ],
+              "properties": {
+                "recordId": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128,
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
+                },
+                "kind": {
+                  "enum": [
+                    "implementation",
+                    "meeting",
+                    "pto",
+                    "mixed"
+                  ]
+                },
+                "status": {
+                  "enum": [
+                    "retained-attribution-available",
+                    "unresolved-workday",
+                    "missing-work-record",
+                    "repository-scope-unresolved",
+                    "mixed-work-records-unresolved",
+                    "no-implementation-record",
+                    "excluded-non-implementation"
+                  ]
+                },
+                "repositoryIds": {
+                  "type": "array",
+                  "minItems": 0,
+                  "maxItems": 256,
+                  "items": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 128,
+                    "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
+                  }
+                },
+                "allocatedMultiplierContribution": {
+                  "anyOf": [
+                    {
+                      "type": "number",
+                      "minimum": 0,
+                      "multipleOf": 0.01
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              },
+              "additionalProperties": false
+            }
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "boundary": {
+      "const": "Experimental, uncalibrated retained-date EHE review; original workdays remain unresolved. Entry contributions are optional allocations, not actual labor, causal credit, or timesheet values. Logged hours never weight EHE; the reference denominator is eight hours."
+    }
+  },
+  "additionalProperties": false
+}

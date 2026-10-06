@@ -39,6 +39,7 @@ public static partial class ContractValidation
             item.Selection.Head.ObjectId != expectedHead || item.Selection.Base.ObjectId != expectedBase ||
             rewrite.OriginalAuthorTimestamp.Offset != TimeSpan.Zero || rewrite.RewrittenCommitterTimestamp.Offset != TimeSpan.Zero ||
             rewrite.SupportOnly && item.AllocatedExpectedHours != 0m ||
+            rewrite.AllocationBasis is not null && rewrite.AllocationBasis != ChangeRewriteAttribution.JointBudgetBasis ||
             rewrite.Treatment is not ("evidence-support" or "no-retained-increment" or "original-contribution" or "retained-resolution-contribution"))
             errors.Add("Rewrite attribution must bind the exact pair, timestamps, declared confidence, role and zero-cost support treatment.");
     }

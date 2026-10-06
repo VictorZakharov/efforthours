@@ -95,6 +95,7 @@ public sealed partial class ChangePortfolioCliTests : ChangeCliTestSupport
             }
             Assert.Contains("reason=unpruned-default-author-date-evidence", stderr.ToString(), StringComparison.Ordinal);
             await AssertWorkdayAllocationAsync(workspace, report);
+            await AssertWorkdayReviewAsync(workspace, report);
             Assert.Single(runner.Calls, call => call.Contains("&author=selected", StringComparison.Ordinal));
             repository.WriteText("Later.cs", "public class Later { public bool Added => true; }");
             string later = (await HistoricalCommitAsync(repository, "later", "2026-03-30T12:00:00Z", "2026-03-30T12:00:00Z")).Trim();

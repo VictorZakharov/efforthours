@@ -158,3 +158,32 @@ The ordinary manifest command is offline; provider locators and missing objects
 require its explicit `--fetch-missing` authorization. Use a full-period run first,
 then an event-only period with the same pair and original support heads. No-event
 inputs keep `FB5340` unresolved rather than inferring a workday from commit dates.
+
+## Allocation basis and repeated representations
+
+New portfolio 0.6.5 reports add optional `allocationBasis` with value
+`joint-retained-budget-remainder` and diagnostic `FB5342`. The retained remainder
+is a structural allocation from the joint budget after preserving the original
+baseline, not a causal conflict-resolution breakdown. The legacy
+`retained-resolution-contribution` treatment name retains its declared-policy
+meaning; it must not be read as independently measured resolution work. Existing
+v1 reports without the new basis remain valid. Integration labor with no novel
+retained delta needs a separate external definition and never creates Change EHE
+merely because a conflict occurred.
+
+A proven exact repeat on disjoint reachable heads now prefers a declared pair
+member over an unpaired representation before the ordinary retained timestamp
+and stable-ID ordering. This preserves the explicitly declared date policy when
+a cherry-pick repeats the rewritten feature. Original pair roles still take
+precedence over pure replay. Shared-head reintroductions remain represented;
+matching content alone never overrides that reachability guard. The portfolio
+identity advances so generated allocation/digest lineage records this policy.
+Source-only repository evidence can remain reusable; reconciliation runs again.
+Priors and ordinary unpaired equivalence rules are unchanged. Real conflicting rebase fixtures now
+include actual cherry-picks of both pair members, full/event-only conservation,
+zero duplicate allocation and separated author/committer/event instants.
+
+This still supports single-commit pairs only. General multi-commit causal replay,
+altered squash equivalence and automatic event recovery remain outside the proof.
+Use [work-record review](WORKDAY_REVIEW.md) to expose unresolved workday evidence
+before opting into the separate declared-date projection.
