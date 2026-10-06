@@ -11,11 +11,12 @@ namespace EffortHours.EndToEndTests;
 public sealed partial class ChangePortfolioCliTests : ChangeCliTestSupport
 {
     [Theory]
-    [InlineData(false, false)]
-    [InlineData(true, false)]
-    [InlineData(false, true)]
-    [InlineData(true, true)]
-    public async Task HistoricalPeriodRecoversJanuaryAuthorDateFromMergedPrAndReusesEvidence(bool defaultHistory, bool restricted)
+    [InlineData(true, true, true)]
+    [InlineData(false, false, false)]
+    [InlineData(true, false, false)]
+    [InlineData(false, true, false)]
+    [InlineData(true, true, false)]
+    public async Task HistoricalPeriodRecoversJanuaryAuthorDateFromMergedPrAndReusesEvidence(bool defaultHistory, bool restricted, bool largeInventory = false)
     {
         string workspace = Path.Combine(Path.GetTempPath(), "efforthours-historical-e2e", Guid.NewGuid().ToString("N"));
         Directory.CreateDirectory(workspace);
@@ -33,7 +34,7 @@ public sealed partial class ChangePortfolioCliTests : ChangeCliTestSupport
             await repository.GitAsync("switch", "main");
             if (defaultHistory) await repository.GitAsync("merge", "--ff-only", implementation.Trim());
             string statusBefore = await repository.GitAsync("status", "--porcelain=v1");
-            HistoricalProviderRunner runner = new(baseline, implementation, retainedHead, defaultHistory ? implementation : null, repositoryCount: restricted ? 257 : 1);
+            HistoricalProviderRunner runner = new(baseline, implementation, retainedHead, defaultHistory ? implementation : null, repositoryCount: restricted ? 257 : 1, largeInventory: largeInventory);
             GitHubAuthorPeriodDiscovery discovery = new(runner,
                 new GitHubRepositoryCache(new ExternalCommandRunner(), new GitClient(), Path.Combine(workspace, "cache"),
                     identity => { Assert.Equal("example/repository", identity); return repository.RootPath; }), new GitHubProviderMetadataCache(Path.Combine(workspace, "metadata")));
@@ -82,7 +83,7 @@ public sealed partial class ChangePortfolioCliTests : ChangeCliTestSupport
             Assert.Equal(1, warm.Execution.Checkpoint.HitCount);
             Assert.Equal(1, warm.Discovery!.ProviderDiagnostics!.HistoricalPullRequests!.CacheHitCount);
             Assert.Equal(0, warm.Discovery.ProviderDiagnostics.HistoricalPullRequests.BatchCount);
-            Assert.Single(runner.Calls, call => call.Contains("pullRequest(number:", StringComparison.Ordinal));
+            Assert.Equal(largeInventory ? 3 : 1, runner.Calls.Count(call => call.Contains("pullRequest(number:", StringComparison.Ordinal)));
             Assert.Equal(0, warm.Discovery!.Acquisition!.AcquiredBytes);
             Assert.Equal(1, warm.Discovery.Acquisition.RepositoryCount);
             Assert.Equal(restricted ? 257 : 1, warm.Discovery.ProviderRepositoryCount);
@@ -113,7 +114,7 @@ public sealed partial class ChangePortfolioCliTests : ChangeCliTestSupport
         }
     }
 
-    private sealed class HistoricalProviderRunner(string baseline, string implementation, string head, string? defaultHead = null, int repositoryCount = 1, bool crossRepositoryAliases = false) : IExternalCommandRunner
+    private sealed class HistoricalProviderRunner(string baseline, string implementation, string head, string? defaultHead = null, int repositoryCount = 1, bool crossRepositoryAliases = false, bool largeInventory = false) : IExternalCommandRunner
     {
         public System.Collections.Concurrent.ConcurrentQueue<string> Calls { get; } = new();
         public string CurrentDefaultHead { get; set; } = defaultHead ?? baseline;
@@ -148,6 +149,24 @@ public sealed partial class ChangePortfolioCliTests : ChangeCliTestSupport
             else if (call.Contains("commits?sha=main", StringComparison.Ordinal))
             {
                 response = new[] { new[] { Commit(CurrentDefaultHead, [], "2025-01-01T12:00:00Z", "2025-01-01T12:00:00Z", login: crossRepositoryAliases ? "unrelated" : "selected", email: crossRepositoryAliases ? "unrelated@example.invalid" : "selected@example.invalid") } };
+            }
+            else if (call.Contains("pulls?", StringComparison.Ordinal))
+            {
+                string endpoint = arguments.Single(value => value.StartsWith("repos/", StringComparison.Ordinal));
+                int page = int.Parse(endpoint.Split("page=")[^1], CultureInfo.InvariantCulture);
+                response = Enumerable.Range(0, 10001).Skip((page - 1) * 100).Take(100).Select(index => new
+                {
+                    number = index == 0 ? 7 : 100 + index,
+                    state = "closed",
+                    user = new { login = index == 0 ? "selected" : "other" },
+                    head = new { sha = head },
+                    created_at = "2020-01-01T00:00:00Z",
+                    updated_at = "2020-01-02T00:00:00Z"
+                }).ToArray();
+            }
+            else if (largeInventory && call.Contains("repository(owner:$owner,name:$name)", StringComparison.Ordinal))
+            {
+                response = new { data = (object?)null };
             }
             else if (call.Contains("pullRequest(number:", StringComparison.Ordinal))
             {

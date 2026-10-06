@@ -1,5 +1,6 @@
 using System.Globalization;
 using System.Text;
+using System.Text.Json;
 using EffortHours.Cli;
 using EffortHours.Contracts;
 using EffortHours.Contracts.V1;
@@ -46,6 +47,33 @@ public sealed partial class ChangePortfolioCliTests
         Assert.Equal(0, await new EffortHoursApplication().RunAsync([.. args[..^3], "--format", "markdown"], stdout, stderr));
         Assert.Contains("unresolved-workday", stdout.ToString(), StringComparison.Ordinal);
         Assert.Contains("unavailable", stdout.ToString(), StringComparison.Ordinal);
+        ChangeHistoricalRefreshManifest refresh = new()
+        {
+            SourceSemanticDigest = review.SourceSemanticDigest,
+            WorkRecordInputDigest = review.WorkRecordInputDigest,
+            SinceInclusiveDate = "2026-01-19",
+            UntilExclusiveDate = "2026-01-24",
+            Entries = [new() { RecordId = "missing-history", NotePermission = "allowed", EhePermission = "denied", Restriction = "none",
+                Original = JsonSerializer.SerializeToElement(new { description = "Original implementation task", hours = 12, task = "original-task", project = "original-project", ticket = "T-1", billing = "preserved" }) }],
+        };
+        string entries = Path.Combine(workspace, "refresh-input.json");
+        await File.WriteAllTextAsync(entries, ContractJson.Serialize(refresh), new UTF8Encoding(false));
+        string entriesText = await File.ReadAllTextAsync(entries, Encoding.UTF8);
+        stdout.GetStringBuilder().Clear();
+        string[] refreshArgs = ["change", "plan-refresh", input, "--work-records", records, "--entries", entries, "--compact"];
+        Assert.Equal(0, await new EffortHoursApplication().RunAsync(refreshArgs, stdout, stderr));
+        Assert.True(ContractSchemaValidator.Validate(SchemaNames.ChangeHistoricalRefreshPlan, stdout.ToString()).IsValid);
+        ChangeHistoricalRefreshPlan plan = ContractJson.Deserialize<ChangeHistoricalRefreshPlan>(stdout.ToString());
+        Assert.Empty(ContractValidation.Validate(plan));
+        Assert.StartsWith("Original implementation task", plan.Proposals[0].ProposedDescription, StringComparison.Ordinal);
+        Assert.Equal("not-requested", plan.Proposals[0].EheStatus);
+        Assert.Equal(entriesText, await File.ReadAllTextAsync(entries, Encoding.UTF8));
+        Assert.Equal(original, await File.ReadAllTextAsync(input, Encoding.UTF8));
+        Assert.Equal(recordText, await File.ReadAllTextAsync(records, Encoding.UTF8));
+        stdout.GetStringBuilder().Clear();
+        Assert.NotEqual(0, await new EffortHoursApplication().RunAsync([.. refreshArgs, "--output", entries], stdout, stderr));
+        Assert.Equal(entriesText, await File.ReadAllTextAsync(entries, Encoding.UTF8));
+        Assert.Empty(stdout.ToString());
         manifest = manifest with { SourceSemanticDigest = "sha256:" + new string('0', 64) };
         await File.WriteAllTextAsync(records, ContractJson.Serialize(manifest), new UTF8Encoding(false));
         stdout.GetStringBuilder().Clear();

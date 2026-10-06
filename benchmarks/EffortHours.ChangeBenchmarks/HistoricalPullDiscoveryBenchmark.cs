@@ -55,7 +55,7 @@ internal static class HistoricalPullDiscoveryBenchmark
             concurrentAdapterLimit = 4,
             responseCharacterLimit = 16777216,
             adapterRequestLimit = 2048,
-            headLimitPerRepository = 32,
+            headLimitPerRepository = 512,
             metadataEntryByteLimit = 65536,
             metadataRetentionLimit = 1000,
             runtime = RuntimeInformation.FrameworkDescription,

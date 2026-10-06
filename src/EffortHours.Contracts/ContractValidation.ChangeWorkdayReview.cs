@@ -32,6 +32,12 @@ public static partial class ContractValidation
         ArgumentNullException.ThrowIfNull(report);
         List<string> errors = [];
         RequireVersion(report.SchemaVersion, "workday review", errors);
+        if (report.AttributionCompleteness is { } completeness &&
+            (completeness.Policy != "retained-attribution-completeness/1.0.0" || completeness.MissingEventDateCount < 0 || completeness.MissingReplayBaselineCount < 0 ||
+                completeness.OriginalWorkdayStatus != ChangeWorkdayPolicies.Unresolved || completeness.IntermediateHistoryStatus != "unknown" ||
+                (completeness.MissingEventDateCount + completeness.MissingReplayBaselineCount > 0
+                    ? completeness.DeclaredEventStatus != "unresolved" : completeness.DeclaredEventStatus is not ("available" or "not-declared"))))
+            errors.Add("Workday attribution state must preserve unresolved event and intermediate-history evidence.");
         ValidateDigest(report.SourceSemanticDigest, "sourceSemanticDigest", errors);
         ValidateDigest(report.SourcePortfolioDigest, "sourcePortfolioDigest", errors);
         ValidateDigest(report.WorkRecordInputDigest, "workRecordInputDigest", errors);
@@ -53,7 +59,8 @@ public static partial class ContractValidation
             if (day.SourceAttributedExpectedHours < 0 || day.OriginalWorkdayStatus != ChangeWorkdayPolicies.Unresolved ||
                 day.RetainedEvidenceStatus is not ("measured-retained-change" or "no-retained-change" or "scope-excluded" or "normalized-zero" or "reconciled-zero"))
                 errors.Add("Review must distinguish retained evidence from unresolved original workdays.");
-            string expectedStatus = day.Records.Any(record => record.Kind == "mixed") ? "mixed-work-records-unresolved"
+            string expectedStatus = report.AttributionCompleteness?.DeclaredEventStatus == "unresolved" && day.Records.Any(record => record.Kind is "implementation" or "mixed")
+                ? "unresolved-event-attribution" : day.Records.Any(record => record.Kind == "mixed") ? "mixed-work-records-unresolved"
                 : day.Records.Any(record => record.Kind == "implementation" &&
                     (record.RepositoryIds.Count != report.RepositoryIds.Count || record.RepositoryIds.Except(report.RepositoryIds, StringComparer.Ordinal).Any())) ? "repository-scope-unresolved"
                 : day.Records.Any(record => record.Kind == "implementation") ? day.SourceAttributedExpectedHours > 0 ? "retained-attribution-available" : "unresolved-workday"

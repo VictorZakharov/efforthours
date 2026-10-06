@@ -55,6 +55,7 @@ public static partial class ChangePortfolioTodayMarkdownRenderer
         AppendExecution(markdown, report);
         AppendFailures(markdown, report);
         AppendLimits(markdown);
+        ChangePortfolioAttributionMarkdown.Append(markdown, report);
         return markdown.ToString().ReplaceLineEndings("\n").TrimEnd() + "\n";
     }
 

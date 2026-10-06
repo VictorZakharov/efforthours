@@ -24,6 +24,7 @@ internal sealed partial class ChangeCommand
           eh change period --owner <owner> --author <identity> --period <named-period> [options]
           eh change compare-team --owner <owner> --contributors-from <owner/repository> [options]
           eh change review-rewrite <manifest.json> [--scope engineering|all]
+          eh change plan-refresh <comparison.json> --work-records <records.json> --entries <refresh-manifest.json>
           eh change review-days <comparison.json> --work-records <records.json> [--entry-policy equal-matched-entries/1.0.0]
           eh change allocate-days <comparison.json> --workdays <workdays.json> --policy equal-declared-days/1.0.0
           eh change scope show engineering

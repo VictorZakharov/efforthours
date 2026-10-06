@@ -80,10 +80,12 @@ public static partial class ChangePortfolioComparisonBuilder
             Selection = source.Selection,
             BucketPolicy = bucketPolicy,
             SourcePortfolio = source,
+            AttributionCompleteness = ChangePortfolioAttributionCompleteness.From(source),
             Buckets = options.Buckets,
             Series = series,
             Execution = options.ExecutionOverride ?? BuildExecution(source, options),
-            Diagnostics = ComparisonDiagnostics(options),
+            Diagnostics = [.. ComparisonDiagnostics(options),
+                .. source.Diagnostics.Where(value => value.Severity is DiagnosticSeverity.Warning or DiagnosticSeverity.Error)],
             Verification = new ChangePortfolioComparisonVerification
             {
                 SemanticDigest = options.NativePeriod is null

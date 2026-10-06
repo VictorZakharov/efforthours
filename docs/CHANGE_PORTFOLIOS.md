@@ -982,3 +982,12 @@ conflict/date provenance. Multi-commit, squashed and copied endpoints need no
 single-commit mapping. Missing evidence stays unresolved. This review does not
 alter source priors, joint portfolio totals or the existing single-commit daily
 allocation policy; the novel delta must never be added again to a portfolio.
+
+## Safe historical refresh planning
+
+The offline [historical note refresh plan](HISTORICAL_NOTE_REFRESH.md) preserves
+original entry snapshots, creates one idempotent managed annotation, and keeps
+note/EHE permissions and locked/invoiced states separate. It never edits entries.
+New reviews expose `attributionCompleteness`; missing declared dates/baselines
+block entry allocation with `unresolved-event-attribution`. Execution completion
+and retained zero values do not certify original workdays or zero labor.

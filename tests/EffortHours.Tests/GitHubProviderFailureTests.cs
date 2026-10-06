@@ -98,7 +98,7 @@ public sealed class GitHubProviderFailureTests
             counters.AddQuery(GitHubProviderFailure.DefaultHeadPhase);
         GitHubProviderException failure = Assert.Throws<GitHubProviderException>(() => counters.AddQuery(GitHubProviderFailure.DefaultHeadPhase));
         Assert.Equal("github-discovery-budget-exceeded", failure.Action.FailureCode);
-        Assert.Equal("narrow-scope-or-use-pinned-manifest", failure.Action.SuggestedAction);
+        Assert.Equal("inspect-provider-discovery-or-use-pinned-manifest", failure.Action.SuggestedAction);
         Assert.Equal(ProviderQueryCounters.MaximumQueries, counters.QueryCount);
         Assert.Equal(ProviderQueryCounters.MaximumQueries, counters.Diagnostics("missing").DefaultHeadQueryCount);
         Assert.Equal(0, counters.ProcessCount);

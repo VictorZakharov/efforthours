@@ -66,6 +66,7 @@ public static class ChangePortfolioPeriodMarkdownRenderer
         markdown.AppendLine();
         markdown.AppendLine(
             "> EHE is experimental, uncalibrated replacement effort—not actual labor, a timesheet, productivity, authorship, compensation, or an invoice. Capacity is only a caller-supplied denominator. The overall multiplier is total expected EHE divided by total reference capacity; it is not an unweighted average of daily multipliers.");
+        ChangePortfolioAttributionMarkdown.Append(markdown, report);
         return markdown.ToString().ReplaceLineEndings("\n").TrimEnd() + "\n";
     }
 

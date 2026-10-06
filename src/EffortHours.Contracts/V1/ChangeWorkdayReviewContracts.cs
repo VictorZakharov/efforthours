@@ -34,6 +34,7 @@ public sealed record ChangeWorkdayReviewReport
     public required string TimeZone { get; init; }
     public required string ContributorId { get; init; }
     public string? EntryPolicy { get; init; }
+    public ChangePortfolioAttributionCompleteness? AttributionCompleteness { get; init; }
     public decimal ReferenceHoursPerDay { get; init; } = 8m;
     public IReadOnlyList<string> RepositoryIds { get; init; } = [];
     public IReadOnlyList<ChangeWorkdayReviewDay> Days { get; init; } = [];

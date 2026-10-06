@@ -432,3 +432,28 @@ warnings survive while shared cached warnings collapsed, changing evidence and
 semantic digests without changing effort. The correction retains distinct
 locations/references and preserves priors and numerical fields. Older saved
 reports remain valid; newly generated redundant diagnostic rows may collapse.
+
+## Attribution completeness independent from execution
+
+New comparison JSON adds optional `attributionCompleteness` under
+`retained-attribution-completeness/1.0.0`. `declaredEventStatus` is `not-declared`,
+`available` or `unresolved`; missing event-date and replay-baseline counts derive
+from the canonical source. `originalWorkdayStatus` stays
+`unresolved-original-workday`, and `intermediateHistoryStatus` is `unknown`.
+Execution `status: complete` asserts a completed retained calculation only.
+Retained-code dates, evidence-backed declared events and externally allocated days
+remain separate contracts; no zero cell proves zero labor.
+
+Comparison diagnostics promote source warning/error rows, including unavailable
+legacy/replay dates and baselines. Trend, findings and native Markdown display
+those consequential warnings. The optional derived state is semantically checked
+against the source; it introduces no independent values or semantic-digest inputs.
+Old v1 reports omitting it remain valid. New workday reviews carry that state and
+block implementation matching/entry values with `unresolved-event-attribution`
+when declared event dates/baselines are missing. Original numerical EHE remains
+unchanged; only unsafe downstream presentation values become unavailable.
+
+[Historical note refresh](HISTORICAL_NOTE_REFRESH.md) adds separate v1 private
+manifest/plan schemas and a read-only `plan-refresh` command. It preserves
+original snapshots, independently gates notes/EHE and exposes restrictions before
+any separately authorized downstream write.

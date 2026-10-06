@@ -37,6 +37,7 @@ public static partial class ChangePortfolioComparisonMarkdownRenderer
             markdown.Append("Daily measurement: `").Append(daily.Protocol).AppendLine("`. Each local day is independently normalized; contributor reconciliation applies within that day. Adding other dates does not change existing daily values. This is selected Change EHE, separate from signed replacement-stock growth.");
         }
 
+        ChangePortfolioAttributionMarkdown.Append(markdown, report);
         return markdown.ToString().ReplaceLineEndings("\n").TrimEnd() + "\n";
     }
 

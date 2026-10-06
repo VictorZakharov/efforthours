@@ -113,6 +113,7 @@ internal static partial class ExternalCommand
         ArgumentNullException.ThrowIfNull(consumeStandardOutput);
         ProcessStartInfo startInfo = CreateStartInfo(executable, workingDirectory, arguments);
         using Process process = new() { StartInfo = startInfo };
+        long startupStarted = Stopwatch.GetTimestamp();
         try
         {
             if (!process.Start())
@@ -132,8 +133,9 @@ internal static partial class ExternalCommand
                 exception);
         }
 
+        TimeSpan startupElapsed = Stopwatch.GetElapsedTime(startupStarted);
         Task consume = consumeStandardOutput(process.StandardOutput, cancellationToken);
-        Task<string> stderr = process.StandardError.ReadToEndAsync(cancellationToken);
+        Task<string> stderr = ReadBoundedErrorAsync(process.StandardError, cancellationToken);
         Task wait = process.WaitForExitAsync(cancellationToken);
         try
         {
@@ -150,7 +152,7 @@ internal static partial class ExternalCommand
             TryKill(process);
             try
             {
-                await wait.ConfigureAwait(false);
+                await process.WaitForExitAsync(CancellationToken.None).ConfigureAwait(false);
             }
             catch
             {
@@ -158,7 +160,7 @@ internal static partial class ExternalCommand
 
             try
             {
-                _ = await stderr.ConfigureAwait(false);
+                await Task.WhenAll(consume, wait, stderr).ConfigureAwait(false);
             }
             catch
             {
@@ -170,7 +172,8 @@ internal static partial class ExternalCommand
         ExternalCommandResult result = new(
             process.ExitCode,
             string.Empty,
-            await stderr.ConfigureAwait(false));
+            await stderr.ConfigureAwait(false))
+        { ProcessStartupElapsed = startupElapsed };
         if (requireSuccess && result.ExitCode != 0)
         {
             string detail = result.StandardError.Trim();

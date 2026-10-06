@@ -21,10 +21,12 @@ public sealed partial class GitHubAuthorPeriodDiscoveryTests
         page[0]![0]!["commit"]!["committer"]!["date"] = "2026-03-13T11:47:19Z";
         QueueRunner runner = new(
             CommitPage(defaultHead, parent, "Other", "other@example.test", "2026-03-17T12:00:00Z"),
-            JsonSerializer.Serialize(new[] { new[]
+            JsonSerializer.Serialize(new[]
             {
                 new { number = 7, state, user = new { login = "target" }, head = new { sha = pullHead } },
-            } }),
+            }),
+            "{\"data\":null}",
+            JsonSerializer.Serialize(new { commits = 1, head = new { sha = pullHead }, @base = new { sha = parent } }),
             "{\"data\":null}",
             JsonSerializer.Serialize(new { commits = 1, head = new { sha = pullHead }, @base = new { sha = parent } }),
             page.ToJsonString());

@@ -232,38 +232,28 @@ internal static partial class GitHubAuthorPeriodDiscoveryJson
         int authoredOpenPullRequests = 0;
         if (includeOpenPullRequests)
         {
-            string pullsJson = await RunRequiredApiAsync(
-                commands,
-                workingDirectory,
-                ["api", "--paginate", "--slurp", $"repos/{identity}/pulls?state={(includeHistoricalPullRequests ? "all" : "open")}&per_page=100"],
-                counters,
-                paginated: true,
-                cancellationToken).ConfigureAwait(false);
+            if (includeHistoricalPullRequests)
+            {
+                AccountPullRequest[] pulls = await ReadHistoricalRestInventoryAsync(commands, workingDirectory, identity,
+                    pullAuthorLogins ?? aliases, authenticatedLogin, includeAuthenticatedPullAuthor, counters, cancellationToken).ConfigureAwait(false);
+                counters.AddOpenPullRequests(pulls.Count(pull => pull.Open));
+                counters.AddHistoricalPullRequests(pulls.Count(pull => !pull.Open));
+                if (pulls.Length > 0) counters.AddPullCandidateRepositories(1);
+                IReadOnlyList<DiscoveredRepository> retained = await DiscoverHistoricalPullsBatchedAsync(commands,
+                    workingDirectory, [repository], pulls, aliases, since, until, dateField, mergePolicy, coauthorPolicy,
+                    counters, cancellationToken).ConfigureAwait(false);
+                heads.AddRange(retained.SelectMany(value => value.Heads));
+                heads = [.. heads.DistinctBy(head => head.ObjectId, StringComparer.Ordinal)];
+                if (heads.Count > ChangeAuthorPeriodManifestLimits.MaximumHeadsPerRepository)
+                    throw new InvalidOperationException("Historical repository selected too many heads.");
+                return heads.Count == 0 ? null : new DiscoveredRepository(OpaqueId("repository", repository.StableId), identity, heads, pulls.Count(pull => pull.Open));
+            }
+            string pullsJson = await RunRequiredApiAsync(commands, workingDirectory,
+                ["api", "--paginate", "--slurp", $"repos/{identity}/pulls?state=open&per_page=100"],
+                counters, paginated: true, cancellationToken).ConfigureAwait(false);
             try
             {
                 using JsonDocument document = JsonDocument.Parse(pullsJson);
-                if (includeHistoricalPullRequests)
-                {
-                    AccountPullRequest[] pulls = [.. Pages(document.RootElement)
-                        .Where(pull => PullAuthorMatches(pull, pullAuthorLogins ?? aliases, authenticatedLogin, includeAuthenticatedPullAuthor))
-                        .Select(pull => new AccountPullRequest(identity, pull.GetProperty("number").GetInt32(),
-                            pull.GetProperty("state").GetString() switch
-                            { "open" => true, "closed" => false, _ => throw new InvalidOperationException("Invalid retained PR state.") },
-                            RequireObjectId(pull.GetProperty("head").GetProperty("sha").GetString(), "retained PR head")))];
-                    if (pulls.Length > 1000 || pulls.Any(pull => pull.Number <= 0) || pulls.Select(pull => pull.Number).Distinct().Count() != pulls.Length)
-                        throw new InvalidOperationException("Historical repository PR inventory exceeded its complete bounded scope.");
-                    counters.AddOpenPullRequests(pulls.Count(pull => pull.Open));
-                    counters.AddHistoricalPullRequests(pulls.Count(pull => !pull.Open));
-                    if (pulls.Length > 0) counters.AddPullCandidateRepositories(1);
-                    IReadOnlyList<DiscoveredRepository> retained = await DiscoverHistoricalPullsBatchedAsync(commands,
-                        workingDirectory, [repository], pulls, aliases, since, until, dateField, mergePolicy, coauthorPolicy,
-                        counters, cancellationToken).ConfigureAwait(false);
-                    heads.AddRange(retained.SelectMany(value => value.Heads));
-                    heads = [.. heads.DistinctBy(head => head.ObjectId, StringComparer.Ordinal)];
-                    if (heads.Count > ChangeAuthorPeriodManifestLimits.MaximumHeadsPerRepository)
-                        throw new InvalidOperationException("Historical repository selected too many heads.");
-                    return heads.Count == 0 ? null : new DiscoveredRepository(OpaqueId("repository", repository.StableId), identity, heads, pulls.Count(pull => pull.Open));
-                }
                 foreach (JsonElement pull in Pages(document.RootElement)
                     .OrderBy(item => item.GetProperty("number").GetInt32()))
                 {

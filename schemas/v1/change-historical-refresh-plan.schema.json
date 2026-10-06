@@ -1,0 +1,115 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:eh:schema:v1:change-historical-refresh-plan",
+  "title": "EffortHours historical refresh dry-run plan v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "policy",
+    "dryRun",
+    "requiresEntryConfirmation",
+    "requestedFields",
+    "input",
+    "review",
+    "proposals"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "1.0.0"
+    },
+    "policy": {
+      "const": "historical-note-refresh-plan/1.0.0"
+    },
+    "dryRun": {
+      "const": true
+    },
+    "requiresEntryConfirmation": {
+      "const": true
+    },
+    "requestedFields": {
+      "enum": [
+        "notes",
+        "ehe",
+        "both"
+      ]
+    },
+    "input": {
+      "$ref": "urn:eh:schema:v1:change-historical-refresh-manifest"
+    },
+    "review": {
+      "$ref": "urn:eh:schema:v1:change-workday-review-report"
+    },
+    "proposals": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 4096,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "recordId",
+          "date",
+          "evidenceStatus",
+          "originalRecordDigest",
+          "noteStatus",
+          "eheStatus"
+        ],
+        "properties": {
+          "recordId": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+          },
+          "date": {
+            "type": "string",
+            "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+          },
+          "evidenceStatus": {
+            "type": "string"
+          },
+          "originalRecordDigest": {
+            "type": "string",
+            "pattern": "^sha256:[a-f0-9]{64}$"
+          },
+          "noteStatus": {
+            "enum": [
+              "not-requested",
+              "proposed",
+              "unchanged",
+              "blocked-locked",
+              "blocked-invoiced",
+              "blocked-unknown",
+              "blocked-permission-denied",
+              "blocked-permission-unknown",
+              "blocked-managed-annotation",
+              "blocked-unresolved-attribution",
+              "blocked-description-bound"
+            ]
+          },
+          "proposedDescription": {
+            "type": "string"
+          },
+          "eheStatus": {
+            "enum": [
+              "not-requested",
+              "proposed",
+              "unchanged",
+              "blocked-locked",
+              "blocked-invoiced",
+              "blocked-unknown",
+              "blocked-permission-denied",
+              "blocked-permission-unknown",
+              "blocked-managed-annotation",
+              "blocked-unresolved-attribution"
+            ]
+          },
+          "proposedMultiplierContribution": {
+            "type": "number",
+            "minimum": 0,
+            "multipleOf": 0.01
+          }
+        }
+      }
+    }
+  }
+}

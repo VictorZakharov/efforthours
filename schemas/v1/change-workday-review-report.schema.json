@@ -53,6 +53,44 @@
       "maxLength": 128,
       "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
     },
+    "attributionCompleteness": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "policy",
+        "declaredEventStatus",
+        "missingEventDateCount",
+        "missingReplayBaselineCount",
+        "originalWorkdayStatus",
+        "intermediateHistoryStatus"
+      ],
+      "properties": {
+        "policy": {
+          "const": "retained-attribution-completeness/1.0.0"
+        },
+        "declaredEventStatus": {
+          "enum": [
+            "not-declared",
+            "available",
+            "unresolved"
+          ]
+        },
+        "missingEventDateCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "missingReplayBaselineCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "originalWorkdayStatus": {
+          "const": "unresolved-original-workday"
+        },
+        "intermediateHistoryStatus": {
+          "const": "unknown"
+        }
+      }
+    },
     "entryPolicy": {
       "anyOf": [
         {
@@ -106,6 +144,7 @@
           },
           "status": {
             "enum": [
+              "unresolved-event-attribution",
               "retained-attribution-available",
               "unresolved-workday",
               "missing-work-record",
@@ -171,6 +210,7 @@
                 },
                 "status": {
                   "enum": [
+                    "unresolved-event-attribution",
                     "retained-attribution-available",
                     "unresolved-workday",
                     "missing-work-record",

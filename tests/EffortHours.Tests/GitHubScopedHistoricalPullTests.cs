@@ -41,13 +41,13 @@ public sealed class GitHubScopedHistoricalPullTests
     [Theory]
     [InlineData(true)]
     [InlineData(false)]
-    public async Task OverBoundOrRepeatedCursorRequestsCompleteFallbackWithoutAdmittingPartialEvidence(bool overBound)
+    public async Task InconsistentTotalOrRepeatedCursorRequestsCompleteFallbackWithoutAdmittingPartialEvidence(bool overBound)
     {
         HistoricalPullProviderFixture runner = new(258)
         { InvalidScopedTotal = overBound, RepeatedScopedCursor = !overBound };
         ProviderQueryCounters counters = new();
         Assert.Null(await HistoricalPullProviderFixture.DiscoverRestrictedAsync(runner, counters));
-        Assert.Equal(overBound ? 1 : 2, counters.QueryCount);
+        Assert.Equal(overBound ? 3 : 2, counters.QueryCount);
         Assert.Equal(0, counters.Diagnostics("missing").HistoricalPullRequests?.CandidateCount ?? 0);
         Assert.DoesNotContain(runner.Calls, call => call.Any(value => value.Contains("pullRequest(number:", StringComparison.Ordinal)));
     }
@@ -86,7 +86,7 @@ public sealed class GitHubScopedHistoricalPullTests
     }
 
     [Fact]
-    public async Task ScopedPaginationChargesOneBoundAcrossPagesBeforeAdmittingMetadata()
+    public async Task ScopedPageStopsAtStreamingBoundBeforeAdmittingMetadata()
     {
         HistoricalPullProviderFixture runner = new(258) { ScopedPaddingCharacters = 8 * 1024 * 1024 };
         ProviderQueryCounters counters = new();
@@ -94,8 +94,10 @@ public sealed class GitHubScopedHistoricalPullTests
             HistoricalPullProviderFixture.DiscoverRestrictedAsync(runner, counters));
         Assert.Equal("github-discovery-budget-exceeded", failure.Action.FailureCode);
         Assert.Equal("open-pr-discovery", failure.Action.Phase);
-        Assert.Equal(2, counters.QueryCount);
-        Assert.Equal(2, counters.PageCount);
+        Assert.Equal(1, counters.QueryCount);
+        Assert.Equal(0, counters.PageCount);
+        Assert.Equal("output-bound", counters.Diagnostics("missing").LastRequest!.Outcome);
+        Assert.Contains("1048576", failure.Message, StringComparison.Ordinal);
         Assert.Equal(0, counters.Diagnostics("missing").HistoricalPullRequests?.CandidateCount ?? 0);
     }
 
