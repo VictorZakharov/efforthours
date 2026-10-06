@@ -2,6 +2,7 @@ using System.Text;
 using EffortHours.Change;
 using EffortHours.Contracts;
 using EffortHours.Contracts.V1;
+using EffortHours.Reporting;
 
 namespace EffortHours.EndToEndTests;
 
@@ -68,6 +69,30 @@ public sealed partial class ChangeCliTests
         Assert.Equal("unresolved-event-date", Assert.Single(unknown.SourcePortfolio!.ReplayAllocations!).Status);
         Assert.Null(unknown.SourcePortfolio.ReplayAllocations![0].AllocatedEventExpectedHours);
         Assert.Contains(unknown.SourcePortfolio.Diagnostics, value => value.Code == "FB5344");
+        Assert.Contains(unknown.Diagnostics, value => value.Code == "FB5344");
+        Assert.Equal("unresolved", unknown.AttributionCompleteness!.DeclaredEventStatus);
+        Assert.Equal(1, unknown.AttributionCompleteness.MissingEventDateCount);
+        Assert.Contains("FB5344", ChangePortfolioComparisonMarkdownRenderer.Render(unknown), StringComparison.Ordinal);
+        Assert.Contains("FB5344", ChangePortfolioComparisonMarkdownRenderer.Render(unknown with { View = ChangePortfolioComparisonView.Findings }), StringComparison.Ordinal);
+        Assert.NotEmpty(ContractValidation.Validate(unknown with { AttributionCompleteness = unknown.AttributionCompleteness with { MissingEventDateCount = 0 } }));
+        Assert.Empty(ContractValidation.Validate(unknown with { AttributionCompleteness = null })); // Saved v1 compatibility.
+        ChangePortfolioComparisonReport emptyUnknown = await Run(manifest with
+        {
+            Selection = manifest.Selection with { SinceInclusive = Instant("2026-01-23T00:00:00Z") },
+            Repositories = [manifest.Repositories[0] with { ReplayEvents = [declaration with { EventTimestamp = null, EventProvenanceId = null }] }]
+        });
+        Assert.All(emptyUnknown.Series[0].Points, point => Assert.Equal(0m, point.Effort.Expected));
+        Assert.Equal("unresolved", emptyUnknown.AttributionCompleteness!.DeclaredEventStatus);
+        Assert.Contains(emptyUnknown.Diagnostics, value => value.Code == "FB5344");
+        ChangeWorkRecordManifest records = new()
+        {
+            SourceSemanticDigest = unknown.Verification.SemanticDigest,
+            Records = [new() { RecordId = "implementation", Date = "2026-01-19", Kind = "implementation", RepositoryIds = ["repository"] }]
+        };
+        ChangeWorkdayReviewReport unresolvedReview = ChangeWorkdayReviewer.Review(unknown, records, ChangeWorkdayReviewPolicies.EqualEntries);
+        Assert.Equal("unresolved-event-attribution", unresolvedReview.Days[0].Status);
+        Assert.Null(unresolvedReview.Days[0].MatchedDailyMultiplier);
+        Assert.True(ContractSchemaValidator.Validate(SchemaNames.ChangeWorkdayReviewReport, ContractJson.Serialize(unresolvedReview)).IsValid);
         ChangePortfolioComparisonReport missing = await Run(manifest with
         {
             Repositories = [manifest.Repositories[0] with
@@ -75,6 +100,8 @@ public sealed partial class ChangeCliTests
         });
         Assert.Equal("unresolved-replay-evidence", Assert.Single(missing.SourcePortfolio!.ReplayAllocations!).Status);
         Assert.Contains(missing.SourcePortfolio.Diagnostics, value => value.Code == "FB5345");
+        Assert.Contains(missing.Diagnostics, value => value.Code == "FB5345");
+        Assert.Equal(1, missing.AttributionCompleteness!.MissingReplayBaselineCount);
         await Run(manifest with { Repositories = [manifest.Repositories[0] with { ReplayEvents = [declaration with { ReplayObjectId = new string('a', 40) }] }] }, incomplete: true);
         await Run(manifest with { Repositories = [manifest.Repositories[0] with { ReplayEvents = [declaration, declaration with { Id = "competing" }] }] }, incomplete: true);
 

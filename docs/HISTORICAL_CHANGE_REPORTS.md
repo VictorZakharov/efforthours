@@ -332,12 +332,49 @@ phases and simulated latency remain explicit.
 
 For a single resolved contributor and explicit repository restrictions, the
 historical path reads only each admitted repository's live GraphQL PR connection.
-It manually pages at most ten 100-row pages under one cumulative 16-Mi-character
-response bound, retaining head/base/count evidence
-for exact metadata reuse. An over-1,000 connection, repeated/missing cursor,
-changing total or malformed connection requires complete REST fallback; no partial
-inventory is admitted. No account-wide PR inventory is attempted in this path.
-Unrestricted historical and ordinary today policies remain unchanged.
+It reads 100-row pages and immediately discards unrelated-author metadata. The
+1,000-candidate limit applies to matching authored PRs, not the repository's whole
+population. Complete `totalCount`, unchanged totals, unique PR numbers and cursors,
+and terminal-page checks remain mandatory. No creation/update/merge timestamp
+prunes authored commits retained on an immutable head.
+
+An unavailable or inconsistent connection uses explicit REST pages of 100 rows,
+sorted by creation ascending, with `gh --jq` projecting only number, state, author
+login and immutable head. It never uses `--paginate --slurp` for this inventory.
+An exactly full last page requires an additional empty response; repeated numbers,
+malformed pages and changed frozen heads fail without partial selection. No
+account-wide inventory is attempted for this restricted single-account path.
+Unrestricted account discovery and ordinary today selection policies are unchanged.
+
+Each historical inventory page is limited to 1,048,576 response characters at the
+pipe reader, before JSON buffering. Other provider responses retain the existing
+16-Mi-character ceiling, now also enforced while reading. Four readers remain the
+process-wide maximum. Streaming stderr retains at most 65,536 characters while
+continuing to drain. Consumer failure or cancellation kills and drains the process
+tree and observes all readers before returning; no child is intentionally orphaned.
+Each repository has a 16-MiB deterministic inventory ledger: 64 bytes per observed
+PR number plus 512 bytes and twice the repository-identity length per retained
+authored candidate. This charge is a retention proxy, not measured heap usage.
+Pages are discarded after minimal parsing; whole JSON page collections are not
+retained or reserialized. The shared 2,048-request attempt ceiling bounds page and
+metadata work. Existing head, deadline, cache, object-store and output bounds stay
+in force; no bound permits truncating a complete selection.
+
+Scoped pages retain live head/base/count for exact metadata reuse. REST candidates
+refresh those same fields in at-most-12-PR header batches before cache lookup;
+unsupported headers use minimal REST detail. This keeps the existing viewer,
+repository, PR, head, base, count, freshness and digest cache identity. Completed
+commit evidence remains reusable after a later failure; live inventory is always
+refreshed and incomplete inventories are never stored as completeness authority.
+
+Adapter response-character, inventory-ledger-byte, authored-candidate and request
+failures name the violated limit and safely observed amount. `lastRequest` retains
+the responsible operation and output-bound outcome where observed. Acquired-store
+bytes and EH deadlines remain separate resource failures. Guidance is to inspect
+and resume the same frozen scope/checkpoint after correction, explicitly change a
+resource bound where supported, or use a **complete** pinned manifest. A smaller
+date interval does not preserve historical coverage. A manual manifest certifies
+only its supplied repository/head scope, never organization or annual completeness.
 
 Scoped inventory shares the four-reader process-wide historical gate. A root
 request failure cancels and drains siblings before returning its original error.
@@ -388,3 +425,13 @@ alone do not identify an EH deadline, GitHub transport timeout or API failure.
 Later successful health probes cannot resolve that historical cause. Fresh public
 revalidation is recorded separately from the incomplete incident in
 [HISTORICAL_NETWORK_BENCHMARK.md](HISTORICAL_NETWORK_BENCHMARK.md).
+
+## Attribution and historical note planning
+
+Comparison reports now carry optional derived `attributionCompleteness` separately
+from execution `status`. Consequential source warnings are promoted to report-level
+`diagnostics`; FB5340/FB5341/FB5344/FB5345 also appear in Markdown. A complete retained
+calculation can have unresolved declared events and unknown intermediate history.
+Blank buckets never verify zero integration labor or original workdays. See
+[REPORTING.md](REPORTING.md) and the offline, permission-aware dry-run contract in
+[HISTORICAL_NOTE_REFRESH.md](HISTORICAL_NOTE_REFRESH.md).

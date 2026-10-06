@@ -16,7 +16,8 @@ internal static partial class GitHubAuthorPeriodDiscoveryJson
         CancellationToken cancellationToken,
         bool emptyRepositoryIsEmpty = false,
         bool capabilityFallback = false,
-        string? failurePhase = null)
+        string? failurePhase = null,
+        int maximumResponseCharacters = MaximumResponseCharacters)
     {
         ExternalCommandResult result;
         string phase = failurePhase ?? FailurePhase(arguments);
@@ -24,12 +25,17 @@ internal static partial class GitHubAuthorPeriodDiscoveryJson
         using ProviderQueryCounters.RequestObservation observation = counters.ObserveRequest(arguments, phase);
         try
         {
-            result = await commands.RunAsync(
-                "gh",
-                workingDirectory,
-                arguments,
-                cancellationToken,
-                requireSuccess: false).ConfigureAwait(false);
+            result = await BoundedProviderResponse.RunAsync(commands, workingDirectory, arguments,
+                maximumResponseCharacters, cancellationToken).ConfigureAwait(false);
+        }
+        catch (ProviderResponseBoundException exception)
+        {
+            observation.Fail("output-bound", "none-observed");
+            throw GitHubProviderFailure.DiscoveryBudget(phase,
+                $"Provider adapter response-character bound exceeded: limit {exception.Limit}, observed at least {exception.Observed}. " +
+                "Inspect lastRequest.operation; resume with the same scope/checkpoint after correction or use a complete pinned manifest. " +
+                "Reducing the date interval does not preserve coverage. No partial aggregate was published.",
+                phase == GitHubProviderFailure.OpenPullRequestPhase ? "inspect-pr-discovery-or-use-pinned-manifest" : "inspect-provider-discovery-or-use-pinned-manifest");
         }
         catch (OperationCanceledException)
         {
@@ -71,13 +77,6 @@ internal static partial class GitHubAuthorPeriodDiscoveryJson
             }
 
             throw failure;
-        }
-
-        if (result.StandardOutput.Length > MaximumResponseCharacters)
-        {
-            observation.Fail("output-bound");
-            throw GitHubProviderFailure.DiscoveryBudget(phase,
-                "GitHub discovery response exceeded the bounded adapter input size; no partial aggregate was published.");
         }
 
         try

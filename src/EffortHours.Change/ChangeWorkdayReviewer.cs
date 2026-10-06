@@ -21,12 +21,14 @@ public static class ChangeWorkdayReviewer
         Dictionary<string, ChangePortfolioComparisonPoint> points = input.Series.Points.ToDictionary(point => point.BucketId, StringComparer.Ordinal);
         Dictionary<string, string> nativeEvidence = (source.NativePeriod?.DailyEvidence ?? []).ToDictionary(day => day.BucketId, day => day.State, StringComparer.Ordinal);
         HashSet<string> selectedBuckets = nativeEvidence.Count > 0 ? [] : SelectedBuckets(input);
+        ChangePortfolioAttributionCompleteness completeness = ChangePortfolioAttributionCompleteness.From(input.Portfolio);
         List<ChangeWorkdayReviewDay> days = [];
         foreach ((ChangePortfolioComparisonBucket bucket, string date) in input.Geometry)
         {
             ChangePortfolioComparisonPoint point = points[bucket.Id];
             ChangeWorkRecord[] records = recordsByDate.GetValueOrDefault(date) ?? [];
-            string status = records.Any(record => record.Kind == "mixed") ? "mixed-work-records-unresolved"
+            string status = completeness.DeclaredEventStatus == "unresolved" && records.Any(record => record.Kind is "implementation" or "mixed")
+                ? "unresolved-event-attribution" : records.Any(record => record.Kind == "mixed") ? "mixed-work-records-unresolved"
                 : records.Any(record => record.Kind == "implementation" && !SameScope(record.RepositoryIds)) ? "repository-scope-unresolved"
                 : records.Any(record => record.Kind == "implementation") ? point.Effort.Expected > 0 ? "retained-attribution-available" : "unresolved-workday"
                 : point.Effort.Expected > 0 ? "missing-work-record" : "no-implementation-record";
@@ -69,6 +71,7 @@ public static class ChangeWorkdayReviewer
             TimeZone = input.Selection.TimeZone,
             ContributorId = input.Selection.ContributorIds[0],
             EntryPolicy = entryPolicy,
+            AttributionCompleteness = completeness,
             RepositoryIds = repositories,
             Days = days,
         };

@@ -19,6 +19,7 @@ internal static partial class GitHubAuthorPeriodDiscoveryJson
         ConcurrentBag<ResolvedPullHead> selected = [];
         List<AccountPullRequest> misses = [];
         counters.PlanHistoricalPulls(pulls.Length);
+        pulls = await ResolveHistoricalPullHeadersAsync(commands, directory, pulls, counters, token).ConfigureAwait(false);
         foreach (AccountPullRequest pull in pulls)
         {
             token.ThrowIfCancellationRequested();

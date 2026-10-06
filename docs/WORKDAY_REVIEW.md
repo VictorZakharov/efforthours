@@ -125,3 +125,12 @@ canonical two-decimal remainders, order, DST, complete empty selections, digest
 rejection and incomplete/tampered inputs. Native physical CLI tests verify schemas,
 Markdown, stdout separation, privacy and unchanged/protected input/output files.
 These are deterministic policy checks, not empirical workday calibration.
+
+## Safe historical refresh planning
+
+The offline [historical note refresh plan](HISTORICAL_NOTE_REFRESH.md) preserves
+original entry snapshots, creates one idempotent managed annotation, and keeps
+note/EHE permissions and locked/invoiced states separate. It never edits entries.
+New reviews expose `attributionCompleteness`; missing declared dates/baselines
+block entry allocation with `unresolved-event-attribution`. Execution completion
+and retained zero values do not certify original workdays or zero labor.

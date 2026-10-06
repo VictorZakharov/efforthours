@@ -14,6 +14,7 @@ internal sealed class HistoricalPullProviderFixture(int population = 258, int la
     public int RepositoryCount { get; init; } = 1;
     public static string Repository(int index) => index == 0 ? "owner/project" : "owner/project-" + index.ToString(CultureInfo.InvariantCulture);
     public string BaseHead { get; set; } = Id(10000);
+    public int UnrelatedPullCount { get; init; }
     public int ScopedPaddingCharacters { get; init; }
     public bool InvalidScopedTotal { get; set; }
     public bool RepeatedScopedCursor { get; set; }
@@ -39,18 +40,22 @@ internal sealed class HistoricalPullProviderFixture(int population = 258, int la
             object response;
             if (query.Contains("pullRequests(first:", StringComparison.Ordinal))
             {
-                object[] nodes = [.. Enumerable.Range(1, population).Select(number => (object)new
+                object Pull(int number) => new
                 {
-                    number, state = "MERGED", author = new { login = "selected" }, repository = new { nameWithOwner = Repository((number - 1) % RepositoryCount) },
-                    headRefOid = Id(number), baseRefOid = BaseHead, commits = new { totalCount = 1 },
-                }), new { number = 9999, state = "CLOSED", author = new { login = "selected" },
-                    repository = new { nameWithOwner = "other/private" }, headRefOid = Id(9999), baseRefOid = BaseHead, commits = new { totalCount = 1 } }];
+                    number,
+                    state = "MERGED",
+                    author = new { login = number <= population ? "selected" : "other" },
+                    repository = new { nameWithOwner = Repository((number - 1) % RepositoryCount) },
+                    headRefOid = Id(number),
+                    baseRefOid = BaseHead,
+                    commits = new { totalCount = 1 },
+                };
                 if (query.Contains("repository(owner:$owner,name:$name)", StringComparison.Ordinal))
                 {
                     string owner = arguments.Single(value => value.StartsWith("owner=", StringComparison.Ordinal))[6..];
                     string name = arguments.Single(value => value.StartsWith("name=", StringComparison.Ordinal))[5..];
                     int repositoryIndex = Enumerable.Range(0, RepositoryCount).Single(index => Repository(index) == owner + "/" + name);
-                    object[] scoped = [.. nodes.Take(population).Where((_, index) => index % RepositoryCount == repositoryIndex)];
+                    int[] scoped = [.. Enumerable.Range(1, population + UnrelatedPullCount).Where(number => (number - 1) % RepositoryCount == repositoryIndex)];
                     string? cursor = arguments.FirstOrDefault(value => value.StartsWith("endCursor=", StringComparison.Ordinal));
                     int pageIndex = cursor is null ? 0 : int.Parse(cursor["endCursor=synthetic-".Length..], CultureInfo.InvariantCulture) + 1;
                     response = new
@@ -62,7 +67,7 @@ internal sealed class HistoricalPullProviderFixture(int population = 258, int la
                                 pullRequests = new
                                 {
                                     totalCount = InvalidScopedTotal ? 1001 : scoped.Length,
-                                    nodes = scoped.Skip(pageIndex * 100).Take(100).ToArray(),
+                                    nodes = scoped.Skip(pageIndex * 100).Take(100).Select(Pull).ToArray(),
                                     pageInfo = new
                                     {
                                         hasNextPage = (pageIndex + 1) * 100 < scoped.Length,
@@ -75,6 +80,10 @@ internal sealed class HistoricalPullProviderFixture(int population = 258, int la
                     };
                 }
                 else
+                {
+                    object[] nodes = [.. Enumerable.Range(1, population + UnrelatedPullCount).Select(Pull),
+                        new { number = 9999, state = "CLOSED", author = new { login = "selected" },
+                            repository = new { nameWithOwner = "other/private" }, headRefOid = Id(9999), baseRefOid = BaseHead, commits = new { totalCount = 1 } }];
                     response = nodes.Chunk(100).Select((page, index) => new
                     {
                         data = new
@@ -90,6 +99,7 @@ internal sealed class HistoricalPullProviderFixture(int population = 258, int la
                             }
                         }
                     }).ToArray();
+                }
             }
             else if (query.Contains("pullRequest(number:", StringComparison.Ordinal))
             {
@@ -117,6 +127,21 @@ internal sealed class HistoricalPullProviderFixture(int population = 258, int la
             else
             {
                 string endpoint = arguments.Single(value => value.StartsWith("repos/", StringComparison.Ordinal));
+                if (endpoint.Contains("pulls?", StringComparison.Ordinal))
+                {
+                    int page = int.Parse(endpoint.Split("page=")[^1], CultureInfo.InvariantCulture);
+                    response = Enumerable.Range(1, population + UnrelatedPullCount).Skip((page - 1) * 100).Take(100)
+                        .Select(number => new
+                        {
+                            number,
+                            state = "closed",
+                            user = new { login = number <= population ? "selected" : "other" },
+                            head = new { sha = Id(number) },
+                            created_at = "2020-01-01T00:00:00Z",
+                            updated_at = "2020-01-02T00:00:00Z"
+                        }).ToArray();
+                    return new(0, JsonSerializer.Serialize(response), "") { ProcessStartupElapsed = TimeSpan.FromMilliseconds(1) };
+                }
                 int number = int.Parse(endpoint.Split('/')[4].Split('?')[0], CultureInfo.InvariantCulture);
                 response = endpoint.Contains("/commits", StringComparison.Ordinal)
                     ? new[] { new[] { RestCommit(number) } }
@@ -165,11 +190,12 @@ internal sealed class HistoricalPullProviderFixture(int population = 258, int la
             ChangePortfolioDateField.Author, ChangePortfolioMergePolicy.Exclude, ChangePortfolioCoauthorPolicy.Include, counters, token, true);
 
     public static Task<IReadOnlyList<DiscoveredRepository>?> DiscoverRestrictedAsync(HistoricalPullProviderFixture runner,
-        ProviderQueryCounters counters, int includedRepositories = 1, CancellationToken token = default) =>
+        ProviderQueryCounters counters, int includedRepositories = 1, bool annual = false, CancellationToken token = default) =>
         GitHubAuthorPeriodDiscoveryJson.DiscoverHistoricalPullHeadsInScopeAsync(runner, "in-memory-fixture",
             [.. Enumerable.Range(0, includedRepositories).Select(index => new GitHubDiscoveryRepository(
                 (42 + index).ToString(CultureInfo.InvariantCulture), Repository(index), "main"))],
-            "selected", ["selected@example.invalid"], Since, Since.AddDays(5), ChangePortfolioDateField.Author,
+            "selected", ["selected@example.invalid"], annual ? new DateTimeOffset(2025, 1, 1, 0, 0, 0, TimeSpan.Zero) : Since,
+            annual ? new DateTimeOffset(2026, 1, 1, 0, 0, 0, TimeSpan.Zero) : Since.AddDays(5), ChangePortfolioDateField.Author,
             ChangePortfolioMergePolicy.Exclude, ChangePortfolioCoauthorPolicy.Include, counters, token);
 
     private static class InterlockedExtensions

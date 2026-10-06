@@ -119,6 +119,8 @@ public sealed record ChangePortfolioComparisonReport
 
     public ChangePortfolioReport? SourcePortfolio { get; init; }
 
+    public ChangePortfolioAttributionCompleteness? AttributionCompleteness { get; init; }
+
     public IReadOnlyList<ChangePortfolioComparisonBucket> Buckets { get; init; } = [];
 
     public IReadOnlyList<ChangePortfolioComparisonSeries> Series { get; init; } = [];

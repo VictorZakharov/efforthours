@@ -6,6 +6,20 @@ may still change public contracts with explicit documentation.
 
 ## Unreleased
 
+- Page large historical PR inventories with minimal metadata and bounded pipe reads.
+  Filter authors without PR-date pruning; retain complete immutable heads and live
+  metadata-cache validation instead of buffering full REST populations.
+- Distinguish adapter size/request/ledger failures from acquisition/deadline failures
+  and give same-scope resume guidance without implying shorter dates preserve coverage.
+- Expose report-level attribution completeness and consequential replay warnings.
+  Missing event dates/baselines block unsafe work-record allocations; zero retained
+  cells never establish zero integration labor.
+- Add offline `eh change plan-refresh` for private, reviewable historical-note/EHE
+  proposals. Preserve original records, make annotations idempotent, and independently
+  enforce note/EHE permissions and locked/invoiced states. No actual entry writes.
+- Source EHE priors, joint totals and rates are unchanged. EHE remains experimental
+  and uncalibrated; discarded history and original workdays stay unresolved.
+
 ## 0.10.0-alpha.38 - 2026-10-06
 
 - Protect canonical original implementation effort before allocating replay events.

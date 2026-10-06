@@ -52,7 +52,8 @@ internal sealed partial class ProviderQueryCounters
             count = Volatile.Read(ref _queries);
             if (count >= MaximumQueries)
                 throw GitHubProviderFailure.DiscoveryBudget(phase,
-                    "Provider discovery reached its 2,048-request safety bound; narrow engineering scope or use a pinned offline manifest. No partial selection is a zero result.");
+                    "Provider adapter-request bound exceeded: limit 2,048, observed 2,048 completed or attempted requests. Resume the same scope/checkpoint after correction or use a complete pinned offline manifest; narrower dates do not preserve coverage. No partial aggregate was published.",
+                    phase == GitHubProviderFailure.OpenPullRequestPhase ? "inspect-pr-discovery-or-use-pinned-manifest" : "inspect-provider-discovery-or-use-pinned-manifest");
         } while (Interlocked.CompareExchange(ref _queries, count + 1, count) != count);
         if (phase == GitHubProviderFailure.DefaultHeadPhase)
         {

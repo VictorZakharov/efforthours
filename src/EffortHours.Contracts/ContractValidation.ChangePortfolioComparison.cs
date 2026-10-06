@@ -124,6 +124,9 @@ public static partial class ContractValidation
                 errors.Add("The comparison identity must match its canonical source portfolio.");
             }
         }
+        if (report.AttributionCompleteness is { } completeness &&
+            (report.SourcePortfolio is null || completeness != ChangePortfolioAttributionCompleteness.From(report.SourcePortfolio)))
+            errors.Add("Attribution completeness must reflect canonical source evidence independently from execution completeness.");
         ValidateComparisonBucketPolicy(report.BucketPolicy, errors);
         ValidateComparisonBuckets(report, errors);
         ValidateComparisonSeries(report, errors);

@@ -321,3 +321,12 @@ review-days` diagnostic. Blank retained dates, missing implementation records,
 mixed entries and mismatched repository relationships stay unresolved. Optional
 explicit entry allocations conserve the rounded daily expected EHE/8 multiplier;
 logged durations never set weights, and no external entries are overwritten.
+
+## Safe historical refresh planning
+
+The offline [historical note refresh plan](HISTORICAL_NOTE_REFRESH.md) preserves
+original entry snapshots, creates one idempotent managed annotation, and keeps
+note/EHE permissions and locked/invoiced states separate. It never edits entries.
+New reviews expose `attributionCompleteness`; missing declared dates/baselines
+block entry allocation with `unresolved-event-attribution`. Execution completion
+and retained zero values do not certify original workdays or zero labor.

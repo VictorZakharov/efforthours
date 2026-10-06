@@ -41,44 +41,54 @@ internal static partial class GitHubAuthorPeriodDiscoveryJson
         async Task<AccountPullRequest[]?> Read(string identity)
         {
             string[] parts = identity.Split('/');
-            List<JsonElement> pages = [];
+            HistoricalPullInventory inventory = new(identity);
             HashSet<string> cursors = new(StringComparer.Ordinal);
             string? cursor = null;
-            int responseCharacters = 0;
-            for (int pageIndex = 0; pageIndex < 10; pageIndex++)
+            int? total = null;
+            int observed = 0;
+            while (true)
             {
                 token.ThrowIfCancellationRequested();
                 List<string> args = ["api", "graphql", "-f", "query=" + ScopedHistoricalPullQuery,
                     "-F", "owner=" + parts[0], "-F", "name=" + parts[1]];
                 if (cursor is not null) args.AddRange(["-F", "endCursor=" + cursor]);
                 string? json = await RunApiAsync(commands, directory, args, counters, false, false, token,
-                    capabilityFallback: true, failurePhase: GitHubProviderFailure.OpenPullRequestPhase).ConfigureAwait(false);
+                    capabilityFallback: true, failurePhase: GitHubProviderFailure.OpenPullRequestPhase,
+                    maximumResponseCharacters: HistoricalPullInventory.MaximumPageCharacters).ConfigureAwait(false);
                 if (json is null) return null;
-                if (json.Length > MaximumResponseCharacters - responseCharacters)
-                    throw GitHubProviderFailure.DiscoveryBudget(GitHubProviderFailure.OpenPullRequestPhase,
-                        "Scoped historical inventory exceeded its 16-Mi-character response bound; no evidence was truncated.",
-                        "inspect-pr-discovery-or-use-pinned-manifest");
-                responseCharacters += json.Length;
                 try
                 {
                     using JsonDocument document = JsonDocument.Parse(json);
                     if (document.RootElement.TryGetProperty("errors", out _)) return null;
                     JsonElement connection = document.RootElement.GetProperty("data").GetProperty("repository").GetProperty("pullRequests");
-                    if (connection.GetProperty("totalCount").GetInt32() > 1000) return null;
-                    JsonElement info = connection.GetProperty("pageInfo");
-                    pages.Add(document.RootElement.Clone());
-                    if (!info.GetProperty("hasNextPage").GetBoolean())
+                    int count = connection.GetProperty("totalCount").GetInt32();
+                    if (count < 0 || total is not null && total != count) return null;
+                    total = count;
+                    JsonElement nodes = connection.GetProperty("nodes");
+                    if (nodes.ValueKind != JsonValueKind.Array || nodes.GetArrayLength() > 100) return null;
+                    foreach (JsonElement node in nodes.EnumerateArray())
                     {
-                        AccountPullRequest[]? parsed = ParseCompleteAccountPulls(JsonSerializer.Serialize(pages), login, historical: true, repositoryConnection: true);
-                        return parsed is not null && parsed.All(pull => pull.RepositoryIdentity.Equals(identity, StringComparison.OrdinalIgnoreCase)) ? parsed : null;
+                        if (!inventory.Observe(node.GetProperty("number").GetInt32())) return null;
+                        observed++;
+                        if (!string.Equals(node.GetProperty("author").GetProperty("login").GetString(), login, StringComparison.OrdinalIgnoreCase)) continue;
+                        string repository = RequireRepositoryIdentity(node.GetProperty("repository").GetProperty("nameWithOwner").GetString());
+                        if (!repository.Equals(identity, StringComparison.OrdinalIgnoreCase)) return null;
+                        string state = node.GetProperty("state").GetString() ?? "";
+                        if (state is not ("OPEN" or "CLOSED" or "MERGED")) return null;
+                        inventory.Add(new(repository, node.GetProperty("number").GetInt32(), state == "OPEN",
+                            RequireObjectId(node.GetProperty("headRefOid").GetString(), "historical head"),
+                            node.GetProperty("commits").GetProperty("totalCount").GetInt32(),
+                            RequireObjectId(node.GetProperty("baseRefOid").GetString(), "historical base")));
                     }
+                    JsonElement info = connection.GetProperty("pageInfo");
+                    if (!info.GetProperty("hasNextPage").GetBoolean()) return total == observed ? inventory.Complete() : null;
+                    if (nodes.GetArrayLength() == 0 || observed >= total) return null;
                     cursor = info.GetProperty("endCursor").GetString();
-                    if (string.IsNullOrWhiteSpace(cursor) || !cursors.Add(cursor)) return null;
+                    if (string.IsNullOrWhiteSpace(cursor) || cursor.Length > 1024 || !cursors.Add(cursor)) return null;
                 }
-                catch (Exception exception) when (exception is JsonException or KeyNotFoundException or InvalidOperationException)
+                catch (Exception exception) when (exception is JsonException or KeyNotFoundException or InvalidOperationException && exception is not GitHubProviderException)
                 { return null; }
             }
-            return null;
         }
     }
 

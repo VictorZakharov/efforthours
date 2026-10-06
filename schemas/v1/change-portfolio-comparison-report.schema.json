@@ -38,6 +38,18 @@
     "profile": { "enum": ["implementation", "recreation"] },
     "selection": { "$ref": "urn:eh:schema:v1:change-portfolio-report#/$defs/portfolioSelection" },
     "bucketPolicy": { "$ref": "#/$defs/bucketPolicy" },
+    "attributionCompleteness": {
+      "type": "object", "additionalProperties": false,
+      "required": ["policy", "declaredEventStatus", "missingEventDateCount", "missingReplayBaselineCount", "originalWorkdayStatus", "intermediateHistoryStatus"],
+      "properties": {
+        "policy": { "const": "retained-attribution-completeness/1.0.0" },
+        "declaredEventStatus": { "enum": ["not-declared", "available", "unresolved"] },
+        "missingEventDateCount": { "type": "integer", "minimum": 0 },
+        "missingReplayBaselineCount": { "type": "integer", "minimum": 0 },
+        "originalWorkdayStatus": { "const": "unresolved-original-workday" },
+        "intermediateHistoryStatus": { "const": "unknown" }
+      }
+    },
     "sourcePortfolio": { "$ref": "urn:eh:schema:v1:change-portfolio-report" },
     "buckets": {
       "type": "array",
@@ -856,6 +868,7 @@
             "specify-provider-login",
             "narrow-scope-or-use-pinned-manifest",
             "inspect-pr-discovery-or-use-pinned-manifest",
+            "inspect-provider-discovery-or-use-pinned-manifest",
             "inspect-head-scope-or-use-pinned-manifest",
             "inspect-acquisition-or-use-pinned-manifest"
           ]
