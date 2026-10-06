@@ -72,6 +72,8 @@ Each allocated ratio is allocated EHE divided by the preserved reference
 capacity, rounded to six decimal places, midpoint away from zero. Absent capacity
 remains absent. DST days use the source timezone and whole local boundaries,
 including 23- and 25-hour days; elapsed clock duration does not change weights.
+An unavailable source timezone fails as an input error without allocation.
+Allocated Markdown reports name the source timezone used for local dates.
 
 Every output day carries `status: allocated` and
 `originalWorkdayStatus: unresolved-original-workday`. Its optional `recordId`

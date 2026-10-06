@@ -8,11 +8,11 @@
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>eh</ToolCommandName>
     <PackageId>EffortHours.Tool</PackageId>
-    <Version>0.10.0-alpha.34</Version>
+    <Version>0.10.0-alpha.35</Version>
     <Title>EffortHours CLI</Title>
     <PackageReadmeFile>PACKAGE_README.md</PackageReadmeFile>
     <PackageTags>estimation;effort-estimation;developer-tools;cli;repository-analysis;static-analysis;dotnet-tool</PackageTags>
-    <PackageReleaseNotes>0.10.0-alpha.34: Add declared immutable rewrite-event attribution that preserves original contribution and dates only retained resolution effort, with explicit unresolved-date and missing-evidence boundaries. Fix complete empty author-period reports and offline engineering scope, including final endpoints and checkpoints. Bound and cache native historical discovery without unsafe date pruning, and preserve observed failure diagnostics. Source estimator priors and rates remain unchanged. EHE remains experimental and uncalibrated; event dates are caller declarations, not verified workdays. Full notes: https://github.com/VictorZakharov/efforthours/blob/v0.10.0-alpha.34/CHANGELOG.md</PackageReleaseNotes>
+    <PackageReleaseNotes>0.10.0-alpha.35: Add explained CLI examples and installed version in help. Bound native historical acquisition with repository restrictions, deadlines, observed cache-growth budgets and progress; coalesce identical heads. Add opt-in digest-bound equal declared-workday allocation that conserves source EHE and capacity, preserves unresolved original workdays, and never weights estimates by logged hours. Handle unavailable source timezones as input errors and display timezone in allocated Markdown. Estimator priors and rates remain unchanged. EHE remains experimental and uncalibrated; declarations do not recover actual labor or lost history. Full notes: https://github.com/VictorZakharov/efforthours/blob/v0.10.0-alpha.35/CHANGELOG.md</PackageReleaseNotes>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="../EffortHours.Analysis/EffortHours.Analysis.csproj" />

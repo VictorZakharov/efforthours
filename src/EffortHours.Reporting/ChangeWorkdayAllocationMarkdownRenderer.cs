@@ -15,6 +15,7 @@ public static class ChangeWorkdayAllocationMarkdownRenderer
         text.AppendLine("# Declared workday EHE allocation").AppendLine();
         text.Append("Status: **allocated**; policy: `").Append(report.Policy).AppendLine("`.").AppendLine();
         text.AppendLine(report.Boundary).AppendLine();
+        text.Append("Local date timezone: `").Append(report.TimeZone.Replace("`", "\\`", StringComparison.Ordinal)).AppendLine("`.");
         text.Append("Source semantic digest: `").Append(report.SourceSemanticDigest).AppendLine("`.");
         text.Append("Expected EHE conserved: **").Append(Number(report.TotalEffort.Expected)).Append(" hours**; reference capacity: **")
             .Append(report.TotalCapacityHours is { } hours ? Number(hours) : "unavailable").AppendLine(" hours**.").AppendLine();
