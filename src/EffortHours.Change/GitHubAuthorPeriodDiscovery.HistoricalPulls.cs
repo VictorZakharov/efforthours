@@ -78,7 +78,9 @@ internal static partial class GitHubAuthorPeriodDiscoveryJson
                 OpaqueId("open", repository.StableId + ":" + pull.Number), pull.ObjectId, $"refs/pull/{pull.Number}/head", pull.Open))
                 .DistinctBy(head => head.ObjectId, StringComparer.Ordinal)];
             if (heads.Length > ChangeAuthorPeriodManifestLimits.MaximumHeadsPerRepository)
-                throw new InvalidOperationException("Historical PR discovery exceeded the per-repository head bound.");
+                throw GitHubProviderFailure.DiscoveryBudget(GitHubProviderFailure.OpenPullRequestPhase,
+                    $"Historical PR discovery selected {heads.Length} distinct heads in one repository, exceeding the {ChangeAuthorPeriodManifestLimits.MaximumHeadsPerRepository}-head bound; no heads were dropped.",
+                    "inspect-head-scope-or-use-pinned-manifest");
             return new DiscoveredRepository(OpaqueId("repository", repository.StableId), group.Key, heads,
                 pulls.Count(pull => pull.RepositoryIdentity.Equals(group.Key, StringComparison.OrdinalIgnoreCase)));
         }).OrderBy(repository => repository.RepositoryId, StringComparer.Ordinal)];

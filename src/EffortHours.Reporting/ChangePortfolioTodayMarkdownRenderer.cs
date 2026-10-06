@@ -186,7 +186,7 @@ public static partial class ChangePortfolioTodayMarkdownRenderer
             .Append(Milliseconds(execution.EndToEndElapsedMilliseconds)).AppendLine(".");
         if (execution.PhaseTimings.Count > 0)
         {
-            markdown.Append("- Phase timings: ")
+            markdown.Append("- Cumulative phase work (overlapping durations, not end-to-end latency): ")
                 .AppendLine(string.Join(", ", execution.PhaseTimings.Select(timing =>
                     $"`{Escape(timing.Phase)}` {Milliseconds(timing.ElapsedMilliseconds)}")) + ".");
         }

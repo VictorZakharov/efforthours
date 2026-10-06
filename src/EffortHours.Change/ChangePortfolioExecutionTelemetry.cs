@@ -77,7 +77,8 @@ public sealed record ChangePortfolioProgress
 }
 
 /// <summary>
-/// Collects non-semantic wall-clock phase measurements for stderr diagnostics.
+/// Collects non-semantic cumulative phase work durations. Overlapping measurements
+/// and repository shards are summed, so phase totals are not wall-clock latency.
 /// Comparison reports may project them as operational observations, but they never
 /// enter estimator rules or semantic digests.
 /// </summary>

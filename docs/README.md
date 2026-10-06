@@ -41,6 +41,10 @@ agent instructions.
   retained-date evidence states, and unrecoverable-history boundaries.
 - [Historical PR discovery checkpoint](HISTORICAL_PR_DISCOVERY_BENCHMARK.md) records
   synthetic cold/warm request counts and the explicit provider-latency simulation.
+- [Public historical network checkpoint](HISTORICAL_NETWORK_BENCHMARK.md) records
+  cold/warm public-repository discovery, acquisition, analysis and bounded annual failures.
+- [Immutable replay range review](REWRITE_REPLAY_REVIEW.md) defines separate
+  original/upstream/replay/retained comparisons with explicit event provenance.
 - [Retained workday evidence review](WORKDAY_REVIEW.md) compares explicit external
   records with retained dates, preserves discrepancies, and optionally allocates
   matched daily multipliers with a fixed eight-hour reference.

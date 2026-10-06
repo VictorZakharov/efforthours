@@ -102,12 +102,12 @@ public sealed partial class ChangePortfolioComparisonTests
             "sha256:f8ad94069532fd3530cb0d2ed047baafbefda741602c4afe950cd532197216de",
             ChangePortfolioComparisonIdentity.ComputeTextDigest(markdown));
         Assert.Equal(
-            "sha256:1c6eecb743f6d7abc0cbc713a880a906881e9c5fa1774a387bd9ca9b3a3af92b",
+            "sha256:57403c6bed02748cfaaf6588fe98983d7f95c4f164bea94decf3b01be7df629e",
             ChangePortfolioComparisonIdentity.ComputeTextDigest(findingsMarkdown));
     }
 
     [Fact]
-    public async Task UnpairedComparisonPreservesThePriorProtocolGoldenOutput()
+    public async Task UnpairedComparisonPreservesPriorSemanticsWithCorrectedTimingLabels()
     {
         ChangeAuthorPeriodManifest manifest = Manifest();
         ChangePortfolioReport source = await SourceReportAsync(manifest);
@@ -117,7 +117,7 @@ public sealed partial class ChangePortfolioComparisonTests
         }, BuildOptions(manifest));
         Assert.Equal("sha256:6dcff6bc1dc3f4f735fc5b6149c9ee96bac0d276d58ce6dafe4ca96738a5ae86",
             ChangePortfolioComparisonIdentity.ComputeTextDigest(ChangePortfolioComparisonMarkdownRenderer.Render(report)));
-        Assert.Equal("sha256:8a2087f4e62b5b1dc46480fffc4df0608e50bce414d6c99cd2525adc21b251e4",
+        Assert.Equal("sha256:2e5784ea52a0ed63f15964c6da0f56fc44b0ef702a2cbe08eafa209b1b0f6f88",
             ChangePortfolioComparisonIdentity.ComputeTextDigest(ChangePortfolioComparisonMarkdownRenderer.Render(report with
             {
                 View = ChangePortfolioComparisonView.Findings,

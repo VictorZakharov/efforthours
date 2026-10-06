@@ -49,7 +49,11 @@ public abstract partial class ChangeCliTestSupport
                 StringComparison.Ordinal));
             string completed = Assert.Single(phaseLines, line =>
                 line.StartsWith($"eh: portfolio phase {phase} ", StringComparison.Ordinal) &&
-                line.EndsWith(" ms", StringComparison.Ordinal));
+                line.EndsWith(" ms (cumulative work)", StringComparison.Ordinal));
+            string elapsed = completed[$"eh: portfolio phase {phase} ".Length..^" ms (cumulative work)".Length];
+            Assert.True(decimal.TryParse(elapsed, System.Globalization.NumberStyles.AllowDecimalPoint,
+                System.Globalization.CultureInfo.InvariantCulture, out decimal milliseconds));
+            Assert.True(milliseconds >= 0);
             Assert.True(Array.IndexOf(lines, started) < Array.IndexOf(lines, completed));
         }
     }

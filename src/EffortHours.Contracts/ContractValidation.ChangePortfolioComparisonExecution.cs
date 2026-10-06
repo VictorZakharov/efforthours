@@ -345,7 +345,7 @@ public static partial class ContractValidation
             "github-contributor-identity-unresolved" =>
                 action.SuggestedAction == "specify-provider-login",
             "github-discovery-budget-exceeded" =>
-                action.SuggestedAction is "narrow-scope-or-use-pinned-manifest" or "inspect-pr-discovery-or-use-pinned-manifest" or "inspect-acquisition-or-use-pinned-manifest",
+                action.SuggestedAction is "narrow-scope-or-use-pinned-manifest" or "inspect-pr-discovery-or-use-pinned-manifest" or "inspect-acquisition-or-use-pinned-manifest" or "inspect-head-scope-or-use-pinned-manifest",
             "github-provider-request-failed" =>
                 action.SuggestedAction == "inspect-github-cli-health",
             _ => false,
@@ -360,7 +360,7 @@ public static partial class ContractValidation
         foreach (ChangePortfolioComparisonPhaseTiming timing in timings)
         {
             RequireText(timing.Phase, $"{path}.phaseTiming.phase", errors);
-            if (timing.ElapsedMilliseconds < 0m || !phases.Add(timing.Phase))
+            if (timing.ElapsedMilliseconds < 0m || timing.ElapsedKind is not (null or "cumulative-work") || !phases.Add(timing.Phase))
             {
                 errors.Add($"{path} phase timings must be nonnegative and unique by phase.");
             }

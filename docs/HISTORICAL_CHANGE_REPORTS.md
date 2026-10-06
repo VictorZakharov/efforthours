@@ -285,7 +285,11 @@ Repository observation `elapsedMilliseconds` retains its prior meaning: a sum of
 adapter-request elapsed times, including overlapping calls. New observations label
 it `elapsedKind: cumulative-request` and add `wallElapsedMilliseconds`, measured
 from that repository/subphase's first request start to last request completion.
-Execution phase timings are wall-clock spans; cumulative startup is separate.
+Execution phase timings sum measured work, including overlapping calls and
+repository shards. New rows label `elapsedKind: cumulative-work`; older rows
+retain the same numeric meaning without that optional label. End-to-end and
+per-repository elapsed fields are wall-clock observations. Cumulative startup is
+separate.
 Adapter requests include child startup, provider transport and response handling;
 GitHub transport time is not independently measured. Query count counts adapter
 invocations, page count counts returned pages, and process/startup counts record
@@ -321,3 +325,29 @@ immutable objects for a subsequent reuse. The request checkpoint additionally
 covers cold/warm annual PR discovery across 16 admitted repositories, separately
 from the original restricted five-day case. Its omitted acquisition/estimation
 phases and simulated latency remain explicit.
+
+## Explicit scoped historical inventory
+
+For a single resolved contributor and explicit repository restrictions, the
+historical path reads only each admitted repository's live GraphQL PR connection.
+It manually pages at most ten 100-row pages under one cumulative 16-Mi-character
+response bound, retaining head/base/count evidence
+for exact metadata reuse. An over-1,000 connection, repeated/missing cursor,
+changing total or malformed connection requires complete REST fallback; no partial
+inventory is admitted. No account-wide PR inventory is attempted in this path.
+Unrestricted historical and ordinary today policies remain unchanged.
+
+Scoped inventory shares the four-reader process-wide historical gate. A root
+request failure cancels and drains siblings before returning its original error.
+Repository request observations use opaque scope digests. The fallback reason
+`scoped-connection-unavailable` is an optional v1 enum extension. A selected-head
+budget failure reports the active `open-pr-discovery` phase, observed distinct
+head count and `inspect-head-scope-or-use-pinned-manifest`, with zero retries;
+it does not misdiagnose a GitHub service failure or silently omit heads.
+
+Actual cold/warm and annual-bound observations on the explicitly selected public
+repositories are recorded in [HISTORICAL_NETWORK_BENCHMARK.md](HISTORICAL_NETWORK_BENCHMARK.md).
+A separate [immutable replay review](REWRITE_REPLAY_REVIEW.md) now compares
+multi-commit/squashed original, upstream, declared replay and retained endpoints.
+Its event result remains conditional on external replay/date provenance and is
+non-additive; plain native discovery still cannot recover discarded workdays.

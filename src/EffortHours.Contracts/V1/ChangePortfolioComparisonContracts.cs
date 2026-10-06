@@ -380,6 +380,8 @@ public sealed record ChangePortfolioComparisonPhaseTiming
     public required string Phase { get; init; }
 
     public decimal ElapsedMilliseconds { get; init; }
+
+    public string? ElapsedKind { get; init; }
 }
 
 public sealed record ChangePortfolioComparisonProgress

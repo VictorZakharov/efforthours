@@ -1,0 +1,104 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:eh:schema:v1:change-rewrite-review-manifest",
+  "title": "Immutable replay review input v1",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "policy",
+    "repositoryId",
+    "repositoryPath",
+    "originalObjectId",
+    "oldBaseObjectId",
+    "rewrittenObjectId",
+    "newBaseObjectId",
+    "sinceInclusive",
+    "untilExclusive"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "1.0.0"
+    },
+    "policy": {
+      "const": "immutable-replay-review/1.0.0"
+    },
+    "repositoryId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
+    },
+    "repositoryPath": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 4096
+    },
+    "scopeRepository": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "originalObjectId": {
+      "type": "string",
+      "pattern": "^([0-9a-f]{40}|[0-9a-f]{64})$"
+    },
+    "oldBaseObjectId": {
+      "type": "string",
+      "pattern": "^([0-9a-f]{40}|[0-9a-f]{64})$"
+    },
+    "rewrittenObjectId": {
+      "type": "string",
+      "pattern": "^([0-9a-f]{40}|[0-9a-f]{64})$"
+    },
+    "newBaseObjectId": {
+      "type": "string",
+      "pattern": "^([0-9a-f]{40}|[0-9a-f]{64})$"
+    },
+    "replayObjectId": {
+      "type": "string",
+      "pattern": "^([0-9a-f]{40}|[0-9a-f]{64})$"
+    },
+    "replayProvenanceId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
+    },
+    "eventProvenanceId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
+    },
+    "eventTimestamp": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "(Z|\\+00:00)$"
+    },
+    "sinceInclusive": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "(Z|\\+00:00)$"
+    },
+    "untilExclusive": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "(Z|\\+00:00)$"
+    }
+  },
+  "additionalProperties": false,
+  "dependentRequired": {
+    "replayObjectId": [
+      "replayProvenanceId"
+    ],
+    "replayProvenanceId": [
+      "replayObjectId"
+    ],
+    "eventTimestamp": [
+      "eventProvenanceId"
+    ],
+    "eventProvenanceId": [
+      "eventTimestamp"
+    ]
+  }
+}

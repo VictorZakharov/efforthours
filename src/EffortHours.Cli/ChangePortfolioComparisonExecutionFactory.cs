@@ -115,6 +115,7 @@ internal static class ChangePortfolioComparisonExecutionFactory
             {
                 Phase = timing.Phase,
                 ElapsedMilliseconds = Round((decimal)timing.Elapsed.TotalMilliseconds),
+                ElapsedKind = "cumulative-work",
             })],
             LastProgress = Progress(last),
             Reuse = new ChangePortfolioComparisonReuse
@@ -198,6 +199,7 @@ internal static class ChangePortfolioComparisonExecutionFactory
                 {
                     Phase = timing.Phase,
                     ElapsedMilliseconds = Round((decimal)timing.Elapsed.TotalMilliseconds),
+                    ElapsedKind = "cumulative-work",
                 })],
             LastProgress = Progress(outcome.Telemetry.GetLastProgress()),
         };

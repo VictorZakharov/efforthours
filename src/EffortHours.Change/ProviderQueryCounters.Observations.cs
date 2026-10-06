@@ -24,6 +24,12 @@ internal sealed partial class ProviderQueryCounters
             string? name = arguments.FirstOrDefault(argument => argument.StartsWith("name0=", StringComparison.Ordinal));
             if (owner is not null && name is not null) identity = owner[7..] + "/" + name[6..];
         }
+        if (query?.Contains("repository(owner:$owner,name:$name)", StringComparison.Ordinal) == true)
+        {
+            string? owner = arguments.FirstOrDefault(argument => argument.StartsWith("owner=", StringComparison.Ordinal));
+            string? name = arguments.FirstOrDefault(argument => argument.StartsWith("name=", StringComparison.Ordinal));
+            if (owner is not null && name is not null) identity = owner[6..] + "/" + name[5..];
+        }
         string operation = query?.Contains("pullRequest(number:", StringComparison.Ordinal) == true ? "pull-metadata-batch" :
             query?.Contains("pullRequests(", StringComparison.Ordinal) == true || endpoint?.Contains("pulls?", StringComparison.Ordinal) == true ? "pull-inventory" :
             endpoint?.Contains("/pulls/", StringComparison.Ordinal) == true ? endpoint.Contains("/commits", StringComparison.Ordinal) ? "pull-commits" : "pull-detail" :

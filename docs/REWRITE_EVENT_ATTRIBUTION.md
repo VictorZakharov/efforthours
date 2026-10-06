@@ -187,3 +187,14 @@ This still supports single-commit pairs only. General multi-commit causal replay
 altered squash equivalence and automatic event recovery remain outside the proof.
 Use [work-record review](WORKDAY_REVIEW.md) to expose unresolved workday evidence
 before opting into the separate declared-date projection.
+
+## Separate immutable replay range review
+
+[REWRITE_REPLAY_REVIEW.md](REWRITE_REPLAY_REVIEW.md) governs the opt-in offline
+`eh change review-rewrite` command and `immutable-replay-review/1.0.0`. Original,
+upstream, retained feature, declared replay and novel retained delta are separate
+canonical non-additive comparisons, with exact path proof and caller-declared
+conflict/date provenance. Multi-commit, squashed and copied endpoints need no
+single-commit mapping. Missing evidence stays unresolved. This review does not
+alter source priors, joint portfolio totals or the existing single-commit daily
+allocation policy; the novel delta must never be added again to a portfolio.

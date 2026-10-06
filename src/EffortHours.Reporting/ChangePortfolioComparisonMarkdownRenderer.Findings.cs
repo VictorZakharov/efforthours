@@ -192,7 +192,9 @@ public static partial class ChangePortfolioComparisonMarkdownRenderer
         }
         else
         {
-            markdown.AppendLine("| Phase | Wall time |");
+            markdown.AppendLine("Phase work sums overlapping measurements and is not end-to-end latency.");
+            markdown.AppendLine();
+            markdown.AppendLine("| Phase | Cumulative work |");
             markdown.AppendLine("| --- | ---: |");
             foreach (ChangePortfolioComparisonPhaseTiming timing in report.Execution.PhaseTimings)
             {
@@ -238,7 +240,7 @@ public static partial class ChangePortfolioComparisonMarkdownRenderer
         markdown.AppendLine();
         markdown.AppendLine("### Per-repository phase timings");
         markdown.AppendLine();
-        markdown.AppendLine("| Repository ID | Phase | Wall time |");
+        markdown.AppendLine("| Repository ID | Phase | Cumulative work |");
         markdown.AppendLine("| --- | --- | ---: |");
         foreach (ChangePortfolioComparisonRepositoryExecution repository in measured)
         {

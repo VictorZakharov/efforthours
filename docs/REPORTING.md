@@ -406,3 +406,25 @@ review-days` diagnostic. Blank retained dates, missing implementation records,
 mixed entries and mismatched repository relationships stay unresolved. Optional
 explicit entry allocations conserve the rounded daily expected EHE/8 multiplier;
 logged durations never set weights, and no external entries are overwritten.
+
+## Replay review and phase timing compatibility
+
+The separate [immutable replay review](REWRITE_REPLAY_REVIEW.md) emits versioned
+manifest/report contracts with canonical comparison digests, immutable range
+endpoints, explicit replay/event provenance, confidence and unavailable values.
+The comparisons are non-additive and cannot replace joint portfolio totals.
+Missing declared objects produce nonzero unresolved output with no effort values.
+
+New comparison execution phase rows add optional `elapsedKind: cumulative-work`.
+Their existing elapsed values sum work across overlapping requests and repository
+shards; findings/native Markdown and stderr disclose that interpretation. They
+are not end-to-end wall time. Existing reports without the label remain valid;
+end-to-end and per-repository elapsed fields remain separate wall observations.
+The label, like all execution metadata, is excluded from semantic digests.
+
+Change diagnostics now deduplicate by full value, including ordered evidence IDs
+and source locations. Collection-instance identity previously let identical cold
+warnings survive while shared cached warnings collapsed, changing evidence and
+semantic digests without changing effort. The correction retains distinct
+locations/references and preserves priors and numerical fields. Older saved
+reports remain valid; newly generated redundant diagnostic rows may collapse.

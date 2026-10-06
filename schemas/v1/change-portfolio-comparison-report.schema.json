@@ -359,7 +359,7 @@
               "phase": { "enum": ["default-head", "open-pr"] },
               "reason": { "enum": ["provider-unavailable", "provider-errors", "malformed-response",
                 "repository-unavailable", "branch-changed", "incomplete-history",
-                "identity-not-single-login", "account-connection-unavailable"] },
+                "identity-not-single-login", "account-connection-unavailable", "scoped-connection-unavailable"] },
               "repositoryCount": { "type": "integer", "minimum": 0, "maximum": 1000 }
             },
             "additionalProperties": false
@@ -660,7 +660,8 @@
       "required": ["phase", "elapsedMilliseconds"],
       "properties": {
         "phase": { "type": "string", "minLength": 1 },
-        "elapsedMilliseconds": { "type": "number", "minimum": 0 }
+        "elapsedMilliseconds": { "type": "number", "minimum": 0 },
+        "elapsedKind": { "const": "cumulative-work" }
       },
       "additionalProperties": false
     },
@@ -848,6 +849,7 @@
             "specify-provider-login",
             "narrow-scope-or-use-pinned-manifest",
             "inspect-pr-discovery-or-use-pinned-manifest",
+            "inspect-head-scope-or-use-pinned-manifest",
             "inspect-acquisition-or-use-pinned-manifest"
           ]
         },
