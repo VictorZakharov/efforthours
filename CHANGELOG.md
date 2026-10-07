@@ -24,6 +24,10 @@ may still change public contracts with explicit documentation.
   composed review/plan/preflight regressions. Record explicit public five-day and
   annual two-repository cold/warm coverage, attribution completeness and reuse;
   warm live inventory freshness remains unchanged, with no speedup claim.
+- Retry transient Windows snapshot checkpoint/publication replacement failures
+  within a fixed cancellable bound. Preserve the previous complete file and
+  staged bytes during atomic rename retries; permanent denial still fails and
+  temporary files are cleaned up without changing permissions.
 - Estimator priors, retained/allocated EHE values, fixed-eight midpoint contributions,
   conserved two-decimal rounding and rates are unchanged. EHE remains experimental
   and uncalibrated; original workdays and intermediate history stay unresolved

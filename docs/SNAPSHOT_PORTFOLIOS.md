@@ -366,7 +366,16 @@ performance improvements. No cross-project integration allowance is invented.
 
 Only a fully validated `snapshot-portfolio-report/1.0.0` replaces the requested
 result, through a same-directory temporary file and atomic rename. Run/checkpoint
-and output locks prevent overlapping publication. Failure/cancellation retains the
+and output locks prevent overlapping publication. A store also serializes its
+own entry reads/writes. Windows atomic replacement uses at most eight rename
+attempts for native access-denied, sharing-violation and lock-violation errors
+(5, 32 and 33), with seven cancellable requested delays totaling 1,100 milliseconds
+(50/100/150/200/200/200/200). Other errors and non-Windows failures propagate
+immediately; permanent Windows denial propagates after the bound. Retries keep
+the staged bytes and use only atomic rename, never destination deletion/copy or
+permission changes.
+Regressions exercise held readers, read-only files, cancellation and deterministic
+retry counts without wall-clock CI thresholds. Failure/cancellation retains the
 previous complete file and successful receipts, exits nonzero, and writes a
 separate privacy-safe `.failure.json`; detailed errors are private stderr.
 Operational cache/timing/memory observations, previous-value comparisons, and
