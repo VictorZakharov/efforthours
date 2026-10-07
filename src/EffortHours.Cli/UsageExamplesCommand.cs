@@ -35,7 +35,7 @@ internal static class UsageExamplesCommand
         }
 
         await stdout.WriteLineAsync().ConfigureAwait(false);
-        await stdout.WriteLineAsync("More: eh examples all | eh examples <topic> | eh <command> --help").ConfigureAwait(false);
+        await stdout.WriteLineAsync("More: eh examples all | eh examples <topic> | eh <command> --help | eh docs").ConfigureAwait(false);
         await stdout.WriteLineAsync($"Topics: {Topics}.").ConfigureAwait(false);
         return CliExitCodes.Success;
     }
@@ -116,6 +116,12 @@ internal static class UsageExamplesCommand
         new("review", "Prepare an optional AI review packet",
             "eh review packet . --compact --output ../review-packet.json",
             "Prepare a digest-bound, rate-free packet without source excerpts or calling any AI provider. The local estimate is complete without AI."),
+        new("inspect", "Read bundled documentation offline",
+            "eh docs show getting-started",
+            "Read the complete installed-version guide without a source checkout or network. Use eh docs list for all topics, including historical-refresh-integration."),
+        new("inspect", "Save bundled docs and historical-refresh examples",
+            "eh docs export <new-directory>",
+            "Explicitly write installed-version Markdown and synthetic runnable fixtures to a new directory whose parent exists. Existing destinations are never overwritten; no examples or entry writes are executed."),
         new("inspect", "Inspect a public output schema",
             "eh schema show change-author-period-manifest",
             "Print the embedded JSON schema to author or validate a manifest. Use eh schema list to discover every available schema."),
@@ -130,28 +136,28 @@ internal static class UsageExamplesCommand
             "Explicit GitHub access and missing-object acquisition; coverage is restricted to the named repository. Older author dates survive later committer dates. Acquisition is bounded and visible on stderr; lost intermediate history stays unresolved."),
         new("rebase", "Attribute a declared rewrite event from immutable evidence",
             "eh change portfolio --author-period-manifest <rewrite-pair.json> --bucket calendar-day --scope engineering --no-rate --output <rewrite-days.json>",
-            "Local offline manifest: pin original/rewritten heads and actual old/new first parents in repositories[].rewriteEvents with declared-rewrite-event/1.0.0 and eventTimestamp. Joint reconciliation preserves replay once and allocates only the joint retained-budget remainder to the declared event; this is not causal resolution labor; see docs/REWRITE_EVENT_ATTRIBUTION.md. Missing proof fails."),
+            "Local offline manifest: pin original/rewritten heads and actual old/new first parents in repositories[].rewriteEvents with declared-rewrite-event/1.0.0 and eventTimestamp. Joint reconciliation preserves replay once and allocates only the joint retained-budget remainder to the declared event; this is not causal resolution labor; see 'eh docs show rewrite-event-attribution'. Missing proof fails."),
         new("rebase", "Review immutable replay evidence across multi-commit or squashed ranges",
             "eh change review-rewrite <replay-manifest.json> --scope engineering --format markdown",
-            "Offline canonical original/upstream/replay/retained comparisons. Pin a replay snapshot with provenance to isolate the novel retained delta; declare the event date separately. Nonconflicting paths are verified, conflicting replay remains caller-declared and missing evidence stays unresolved. Comparisons are non-additive; see docs/REWRITE_REPLAY_REVIEW.md."),
+            "Offline canonical original/upstream/replay/retained comparisons. Pin a replay snapshot with provenance to isolate the novel retained delta; declare the event date separately. Nonconflicting paths are verified, conflicting replay remains caller-declared and missing evidence stays unresolved. Comparisons are non-additive; see 'eh docs show rewrite-replay-review'."),
         new("rebase", "Plan a historical note refresh without editing entries",
             "eh change plan-refresh <period.json> --work-records <records.json> --entries <refresh-manifest.json> --output <new-plan.json>",
-            "Offline dry run over explicit dates and record IDs. Preserves original snapshots; independently checks note/EHE permissions and locked/invoiced restrictions. One managed annotation is idempotent; unresolved evidence never means zero labor. No entry writes; see docs/HISTORICAL_NOTE_REFRESH.md."),
+            "Offline dry run over explicit dates and record IDs. Preserves original snapshots; independently checks note/EHE permissions and locked/invoiced restrictions. One managed annotation is idempotent; unresolved evidence never means zero labor. No entry writes; see 'eh docs show historical-note-refresh'."),
         new("rebase", "Check a historical note plan against fresh entry snapshots",
             "eh change check-refresh <plan.json> --entries <current-refresh-manifest.json> --output <new-check.json>",
-            "Offline dry-run preflight for exact selected IDs and dates: compares full snapshots, rechecks independent permissions and locks/invoices, detects concurrent edits and already-current notes. Exit 3 means blocked. A successful receipt still requires user confirmation and an external atomic compare-and-set; never edits time entries. See docs/HISTORICAL_NOTE_REFRESH.md."),
+            "Offline dry-run preflight for exact selected IDs and dates: compares full snapshots, rechecks independent permissions and locks/invoices, detects concurrent edits and already-current notes. Exit 3 means blocked. A successful receipt still requires user confirmation and an external atomic compare-and-set; never edits time entries. See 'eh docs show historical-refresh-integration'."),
         new("rebase", "Review external work records against retained dates",
             "eh change review-days <period.json> --work-records <records.json> --format markdown",
-            "Offline digest-bound review: blank retained dates, missing records, mixed entries and repository-scope gaps stay unresolved. Optional --entry-policy equal-matched-entries/1.0.0 allocates only matched retained values with a fixed eight-hour denominator and conserved two-decimal contributions. See docs/WORKDAY_REVIEW.md; never edits inputs or timesheets."),
+            "Offline digest-bound review: blank retained dates, missing records, mixed entries and repository-scope gaps stay unresolved. Optional --entry-policy equal-matched-entries/1.0.0 allocates only matched retained values with a fixed eight-hour denominator and conserved two-decimal contributions. See 'eh docs show workday-review'; never edits inputs or timesheets."),
         new("rebase", "Allocate novel replay-range evidence within a joint daily budget",
             "eh change portfolio --author-period-manifest <replay-ranges.json> --bucket calendar-day --no-rate --output <replay-days.json>",
-            "Local offline manifest: repositories[].replayEvents under declared-replay-range/1.0.0 binds old/original/new/replay/retained endpoints and separate replay/date provenance. Canonical comparisons remain non-additive; original effort is reserved first and event allocation is capped at the remaining joint member budget and any cap is explicit. Missing replay/date stays unresolved. See docs/REPLAY_RANGE_ATTRIBUTION.md."),
+            "Local offline manifest: repositories[].replayEvents under declared-replay-range/1.0.0 binds old/original/new/replay/retained endpoints and separate replay/date provenance. Canonical comparisons remain non-additive; original effort is reserved first and event allocation is capped at the remaining joint member budget and any cap is explicit. Missing replay/date stays unresolved. See 'eh docs show replay-range-attribution'."),
         new("rebase", "Use external workday records after a squash or rebase",
             "eh change review-days <period.json> --work-records <records.json> --workdays <workdays.json> --workday-policy equal-declared-days/1.0.0 --entry-policy equal-declared-day-entries/1.0.0",
-            "Offline declared-date projection with exact dated implementation anchors and unchanged source totals. Conserves one fixed-eight period multiplier; logged time never supplies weights. The same options work with plan-refresh. External dates do not recover missing Git history; see docs/WORKDAY_REVIEW.md."),
+            "Offline declared-date projection with exact dated implementation anchors and unchanged source totals. Conserves one fixed-eight period multiplier; logged time never supplies weights. The same options work with plan-refresh. External dates do not recover missing Git history; see 'eh docs show workday-review'."),
         new("rebase", "Allocate a deduplicated period across external workday declarations",
             "eh change allocate-days <period.json> --workdays <workdays.json> --policy equal-declared-days/1.0.0 --output <new-allocated.json>",
-            "Offline saved-artifact projection for one contributor and whole calendar days. Bind declarations to verification.semanticDigest; output is explicitly allocated with unresolved original workdays. Conserves every EHE category/range and existing capacity; logged hours never weight effort. See docs/WORKDAY_ALLOCATION.md. Does not edit inputs or timesheets."),
+            "Offline saved-artifact projection for one contributor and whole calendar days. Bind declarations to verification.semanticDigest; output is explicitly allocated with unresolved original workdays. Conserves every EHE category/range and existing capacity; logged hours never weight effort. See 'eh docs show workday-allocation'. Does not edit inputs or timesheets."),
         new("agent", "Install guidance for Codex",
             "eh agent codex --install",
             "Explicitly write the packaged companion skill into Codex's skill directory. Use eh agent codex --check after updating EffortHours.")

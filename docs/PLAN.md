@@ -25,6 +25,9 @@ evaluation boundary without weakening explanation, safety, or offline behavior.
 The repository already provides:
 
 - one .NET 10 global tool, `EffortHours.Tool`, installed as `eh`;
+- installed-version Markdown documentation and synthetic historical-refresh
+  assets embedded in the CLI, with offline topic discovery/reading and explicit
+  bounded export to a new directory under `CLI_DOCUMENTATION.md`;
 - reusable versioned contracts and libraries for scanning, evidence, estimates,
   diagnostics, pricing, calibration, review, Change EHE, and reporting;
 - safe common traversal, ignore handling, hashing, classification, exact-content

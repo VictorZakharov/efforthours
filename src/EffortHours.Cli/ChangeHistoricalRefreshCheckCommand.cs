@@ -16,7 +16,7 @@ internal static class ChangeHistoricalRefreshCheckCommand
         errors exit 2 and cancellation exits 130. Preserve the native exit in wrappers.
         Never writes time entries. A successful check still requires separate user
         confirmation and an external atomic compare-and-set using the checked snapshot.
-        See docs/HISTORICAL_REFRESH_INTEGRATION.md.
+        See 'eh docs show historical-refresh-integration'.
         """;
 
     public static async Task<int> ExecuteAsync(string[] arguments, TextWriter stdout, TextWriter stderr, CancellationToken token)

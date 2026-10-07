@@ -20,7 +20,7 @@ internal static class ChangeHistoricalRefreshCommand
         retained dates use equal-matched-entries/1.0.0.
         Offline, no Git/provider access or entry writes. Applying any plan needs separate
         confirmation of the exact range/entries and fresh permission/revision checks.
-        See docs/HISTORICAL_NOTE_REFRESH.md. EHE remains experimental and uncalibrated.
+        See 'eh docs show historical-note-refresh'. EHE remains experimental and uncalibrated.
         """;
 
     public static async Task<int> ExecuteAsync(string[] arguments, TextWriter stdout, TextWriter stderr, CancellationToken token)

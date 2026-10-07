@@ -88,6 +88,13 @@ provider/network opt-ins, and writes. Displaying help or examples is offline and
 read-only and never executes a recipe. This teaching surface supplements command
 help, rather than claiming to enumerate every option or establish model accuracy.
 
+`eh docs` lists complete installed-version documentation, and `eh docs show
+<topic>` reads it offline without a checkout. Explicit `eh docs export
+<new-directory>` writes the bundled docs and synthetic historical-refresh assets
+to a new directory without overwriting existing content. Required CLI guidance
+uses offline topic commands; [CLI_DOCUMENTATION.md](CLI_DOCUMENTATION.md) governs
+bundle contents, resource bounds and export behavior.
+
 ### Repository EHE
 
 Repository estimation values the current artifact. Ordinary `scan` and `estimate`

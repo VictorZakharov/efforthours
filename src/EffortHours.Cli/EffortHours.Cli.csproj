@@ -8,11 +8,11 @@
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>eh</ToolCommandName>
     <PackageId>EffortHours.Tool</PackageId>
-    <Version>0.10.0-alpha.41</Version>
+    <Version>0.10.0-alpha.42</Version>
     <Title>EffortHours CLI</Title>
     <PackageReadmeFile>PACKAGE_README.md</PackageReadmeFile>
     <PackageTags>estimation;effort-estimation;developer-tools;cli;repository-analysis;static-analysis;dotnet-tool</PackageTags>
-    <PackageReleaseNotes>0.10.0-alpha.41: Add offline eh change check-refresh against fresh entry snapshots and independent permission observations. Detect concurrent edits, missing/extra selections, already-current notes and locked/invoiced restrictions. Improve unresolved-workday annotations, identify explicit managed zero-labor claims, preserve original records and validate alpha.39/alpha.40 saved plans. Expand actual conflicting-rebase regression coverage and public annual cold/warm validation. Retry transient Windows snapshot checkpoint/publication replacement failures within a bounded cancellable wait while preserving existing files and permissions. Estimator priors, EHE values, fixed-eight allocations, rounding and rates are unchanged. EHE remains experimental and uncalibrated; missing original workdays and intermediate history require external evidence. No time-entry writes. Full notes: https://github.com/VictorZakharov/efforthours/blob/v0.10.0-alpha.41/CHANGELOG.md</PackageReleaseNotes>
+    <PackageReleaseNotes>0.10.0-alpha.42: Bundle complete installed-version documentation and synthetic historical-refresh examples with offline eh docs list/show/export commands. Replace CLI documentation pointers with offline topic commands. Give check-refresh native exits 0 for ready, 3 for blocked and 1 for invalid input or expected operational failure; preserve usage 2 and cancellation 130 and document PowerShell exit propagation. Include the complete historical-refresh integration contract and tested conditional note adapter. EHE values, fixed-eight allocation, rounding and rates are unchanged. EHE remains experimental and uncalibrated; original workdays remain unresolved without external evidence. No time-entry writes. Full notes: https://github.com/VictorZakharov/efforthours/blob/v0.10.0-alpha.42/CHANGELOG.md</PackageReleaseNotes>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="../EffortHours.Analysis/EffortHours.Analysis.csproj" />
@@ -36,6 +36,14 @@
     <None Include="../../rates/us-senior-contractor/2026.1.json" Pack="true" PackagePath="rates/us-senior-contractor/" />
     <None Include="../../PACKAGE_README.md" Pack="true" PackagePath="/" />
     <None Include="../../THIRD-PARTY-NOTICES.md" Pack="true" PackagePath="/" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="../../docs/*.md"
+                      LogicalName="EffortHours.Cli.Documentation.docs/%(Filename)%(Extension)" />
+    <EmbeddedResource Include="../../README.md;../../CHANGELOG.md;../../LICENSE;../../THIRD-PARTY-NOTICES.md"
+                      LogicalName="EffortHours.Cli.Documentation.%(Filename)%(Extension)" />
+    <EmbeddedResource Include="../../examples/historical-refresh/*.md;../../examples/historical-refresh/*.json;../../examples/historical-refresh/*.cs"
+                      LogicalName="EffortHours.Cli.Documentation.examples/historical-refresh/%(Filename)%(Extension)" />
   </ItemGroup>
   <ItemGroup Condition="'$(RepositoryCandidateMeasurement)' == 'true'">
     <None Include="../../calibration/corpora/public-readiness/1.0.0.logical-capability-model.json"

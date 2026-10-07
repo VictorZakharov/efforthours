@@ -7,6 +7,12 @@ This directory contains living contracts and reproducible engineering records.
 Release history belongs in the [changelog](../CHANGELOG.md), not in the roadmap or
 agent instructions.
 
+Installed users can run `eh docs` to list every bundled topic, `eh docs show
+<topic>` to read it, or `eh docs export <new-directory>` to save this documentation
+and runnable synthetic historical-refresh examples without a checkout or network.
+The [offline CLI documentation contract](CLI_DOCUMENTATION.md) defines bundle
+contents, topic names, export safety and references requiring additional assets.
+
 ## Product and estimation
 
 - [Product charter](PRODUCT.md) defines EHE, the modeled worker, profiles, goals,

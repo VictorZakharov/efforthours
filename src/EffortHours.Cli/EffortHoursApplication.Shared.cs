@@ -275,9 +275,11 @@ public sealed partial class EffortHoursApplication
           eh rate show
           eh agent codex [--install|--check]
           eh version
+          eh docs [list|show <topic>|export <new-directory>]
           eh examples [popular|all|<topic>]
           eh --examples [popular|all|<topic>]
 
+        Run 'eh docs' for bundled offline documentation and exportable examples.
         Run 'eh examples' for common workflows and 'eh examples all' for every recipe.
         Run 'eh <command> --help' for full command options.
 

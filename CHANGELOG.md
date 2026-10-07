@@ -6,6 +6,13 @@ may still change public contracts with explicit documentation.
 
 ## Unreleased
 
+## 0.10.0-alpha.42 - 2026-10-07
+
+- Bundle complete installed-version documentation and runnable synthetic
+  historical-refresh inputs, expected receipts and example adapter. Add offline
+  `eh docs` / `eh --docs`, topic listing and Markdown reading, plus explicit
+  export into a new directory without overwriting existing files. Required CLI
+  guidance points to offline topics instead of checkout or GitHub documents.
 - Give `check-refresh` distinct native exits: 0 for ready receipts, 3 for blocked
   receipts, and 1 for invalid input or expected operational failures. Document
   PowerShell exit propagation, preserved usage/cancellation exits and exact
@@ -14,6 +21,9 @@ may still change public contracts with explicit documentation.
   end-to-end fixtures and a tested in-memory conditional note adapter. Document
   separate analytics proposals, permissions, locks, uncertainty and interruption
   recovery without adding a live entry writer or changing EHE values.
+- EHE values, fixed-eight allocation, conserved rounding and rates are unchanged.
+  EHE remains experimental and uncalibrated; original workdays require external
+  evidence and actual time-entry writes remain external to EH.
 
 ## 0.10.0-alpha.41 - 2026-10-07
 

@@ -13,10 +13,25 @@ specification.
 ## Install
 
 ```text
-dotnet tool install --global EffortHours.Tool --version 0.10.0-alpha.41
+dotnet tool install --global EffortHours.Tool --version 0.10.0-alpha.42
 eh version
 eh --help
 ```
+
+## Learn offline
+
+```text
+eh examples
+eh docs list
+eh docs show getting-started
+eh docs show historical-refresh-integration
+eh docs export ./eh-docs
+```
+
+Complete installed-version documentation is bundled with the tool. Reading it
+requires no checkout or network. Explicit export saves the docs and runnable
+synthetic historical-refresh assets in a new directory whose parent exists;
+existing destinations are never overwritten and examples are never executed.
 
 ## Estimate a repository
 
@@ -59,10 +74,8 @@ integrations, security, testing, documentation, delivery, validation, and review
 A dated contractor rate can be applied afterward without changing the effort
 estimate.
 
-See the
-[performance and scale summary](https://github.com/VictorZakharov/efforthours#performance-and-scale)
-and the
-[full benchmark protocol](https://github.com/VictorZakharov/efforthours/blob/main/docs/BENCHMARKS.md).
+Read `eh docs show getting-started` for the performance and scale summary, and
+`eh docs show benchmarks` for the full benchmark protocol.
 
 ### Shared static-analysis boundary
 

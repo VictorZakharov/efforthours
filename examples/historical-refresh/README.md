@@ -9,8 +9,10 @@ measurements. Its optional capacity is deliberately 12 hours while entry multipl
 Two implementation entries share a day with different logged durations, another
 uses a blank retained date, and meeting/PTO records are excluded from allocation.
 
-Run from this directory with a CLI built from this PR or later. Use new output
-paths. These commands do not contact providers or change entries:
+Installed users can obtain this complete example offline with `eh docs export
+<new-directory>`. Then run from `examples/historical-refresh` inside that export,
+using the same installed CLI version and new output paths. These commands do not
+contact providers or change entries:
 
 ```text
 eh change review-days comparison.json --work-records work-records.json --workdays declared-days.json --workday-policy equal-declared-days/1.0.0 --entry-policy equal-declared-day-entries/1.0.0 --output new-review.json
@@ -35,7 +37,8 @@ idempotence and target digest checking. It cannot access timeinv, does not write
 files, does not map numeric fields and does not implement a batch transaction.
 The E2E project links this file and executes the example against these fixtures.
 
-Read the [integration contract](../../docs/HISTORICAL_REFRESH_INTEGRATION.md)
+Run `eh docs show historical-refresh-integration` or read the exported
+[integration contract](../../docs/HISTORICAL_REFRESH_INTEGRATION.md)
 for native process exits, required receipt fields, atomic API requirements and
 recovery boundaries. Schema validation alone, an exit zero or a ready proposal
 alone never substitutes for confirmation and a conditional external update.
