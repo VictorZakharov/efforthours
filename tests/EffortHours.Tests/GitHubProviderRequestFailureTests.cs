@@ -40,6 +40,27 @@ public sealed class GitHubProviderRequestFailureTests
     }
 
     [Fact]
+    public async Task AlreadyCancelledRequestPreservesPhaseWithoutChargingOrCallingProvider()
+    {
+        using CancellationTokenSource cancellation = new();
+        cancellation.Cancel();
+        ProviderQueryCounters counters = new();
+        var failure = await Assert.ThrowsAnyAsync<OperationCanceledException>(() =>
+            GitHubAuthorPeriodDiscoveryJson.ResolveHistoricalDefaultHeadAsync(new UnexpectedRequestRunner(),
+                "virtual-directory", new("id", "owner/project", "main"), counters, cancellation.Token));
+        Assert.Equal(GitHubProviderFailure.DefaultHeadPhase, failure.Data[GitHubProviderFailure.InterruptedPhaseKey]);
+        Assert.Equal(0, counters.QueryCount);
+        Assert.Equal(0, counters.PageCount);
+        Assert.Null(counters.Diagnostics("missing").LastRequest);
+    }
+
+    private sealed class UnexpectedRequestRunner : IExternalCommandRunner
+    {
+        public Task<ExternalCommandResult> RunAsync(string executable, string directory, IReadOnlyList<string> arguments,
+            CancellationToken token, bool requireSuccess = true) => throw new InvalidOperationException("Cancelled request reached the provider.");
+    }
+
+    [Fact]
     public async Task MalformedJsonIsParsingFailureRatherThanSuccessfulZero()
     {
         ProviderQueryCounters counters = new();

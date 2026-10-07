@@ -307,7 +307,8 @@ retained/squashed Git fixtures retain pinned/offline numerical parity. These pub
 runs do not reproduce the NDA incident or certify original workdays, labor or
 calibration. Full reports, source caches, learned identities and stderr stay private.
 
-These recorded successful runs precede the final request-cap counter correction.
-That correction changes only counts for unsent requests rejected by the fixed cap;
-those exhaustion paths are tested separately. Successful request plans, source
-selection and estimation rules remain identical.
+These recorded runs precede the final request-cap/cancellation counter correction.
+Requests rejected by the fixed cap or canceled before admission no longer charge
+unsent work. Exhaustion and cancellation paths are tested separately; interrupted
+attempt counts may decrease. Successful request plans, source selection, the
+204/236 resume conservation and estimation rules remain identical.

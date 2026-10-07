@@ -232,7 +232,8 @@ historical-note tests preserve snapshots, permissions, unresolved dates and
 idempotence. CI gates semantics, counts and fixed bounds, never benchmark timing.
 The report's private repository still requires its own same-input retest.
 
-The measured successful plans precede a final boundary-only accounting correction:
-requests rejected by the 2,048-attempt ceiling no longer increment header/batch
-counters. Deterministic exhaustion tests cover metadata, header batches and header
-REST fallback; successful request counts and selection are unchanged.
+The measured plans precede a final request-boundary correction: requests rejected
+by the 2,048-attempt ceiling or canceled before admission no longer charge unsent
+work. Deterministic exhaustion and queued-cancellation tests cover these paths;
+interrupted request counts may decrease. Successful request counts, selection and
+the exact 204 saved / 236 missed conservation are unchanged.

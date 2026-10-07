@@ -30,6 +30,7 @@ internal static partial class GitHubAuthorPeriodDiscoveryJson
             string phase = GitHubProviderFailure.HistoricalHeaderPhase;
             try
             {
+                token.ThrowIfCancellationRequested();
                 batch = await ResolveHistoricalPullHeadersBatchAsync(commands, directory, batch, counters, token).ConfigureAwait(false);
                 List<AccountPullRequest> misses = [];
                 phase = GitHubProviderFailure.HistoricalSelectionPhase;

@@ -21,6 +21,12 @@ internal static partial class GitHubAuthorPeriodDiscoveryJson
     {
         ExternalCommandResult result;
         string phase = failurePhase ?? FailurePhase(arguments);
+        if (cancellationToken.IsCancellationRequested)
+        {
+            OperationCanceledException cancelled = new(cancellationToken);
+            cancelled.Data[GitHubProviderFailure.InterruptedPhaseKey] = phase;
+            throw cancelled;
+        }
         counters.AddQuery(phase);
         // Count only requests admitted by the shared attempt bound, including failures/cancellation.
         bool graphql = arguments.Contains("graphql", StringComparer.Ordinal);

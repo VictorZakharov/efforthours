@@ -285,7 +285,8 @@ for older v1 reports. Complete discovery requires complete inventory and metadat
 an interrupted inventory does not claim that its observed prefix is the candidate
 universe. `completedCount` means complete metadata plus exact selection, rather than
 merely a successful adapter response. Header requests cannot inflate commit batch
-counts, and requests rejected by the attempt ceiling increment neither query nor
+counts. Queued work checks cancellation before sending or accounting a request;
+requests rejected by the attempt ceiling increment neither query nor
 batch/fallback-request counters. `cacheWriteCount` acknowledges atomic writes, not indefinite retention:
 24-hour freshness, eviction, oversized entries and unavailable storage still apply.
 Selected
