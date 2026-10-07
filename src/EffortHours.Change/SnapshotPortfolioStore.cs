@@ -137,7 +137,7 @@ public sealed class SnapshotPortfolioStore(string directory, long maximumBytes =
         {
             await File.WriteAllTextAsync(temporary, text, new UTF8Encoding(false), cancellationToken).ConfigureAwait(false);
             cancellationToken.ThrowIfCancellationRequested();
-            File.Move(temporary, full, overwrite: true);
+            await SnapshotAtomicReplacement.ReplaceAsync(temporary, full, cancellationToken).ConfigureAwait(false);
         }
         finally { File.Delete(temporary); }
     }

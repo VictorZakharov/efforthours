@@ -6,6 +6,33 @@ may still change public contracts with explicit documentation.
 
 ## Unreleased
 
+## 0.10.0-alpha.41 - 2026-10-07
+
+- Add offline `eh change check-refresh` for exact planned dates/IDs, fresh complete
+  snapshots and independent note/EHE permission observations. Detect concurrent
+  field edits, missing/extra selections, already-current notes and locked/invoiced
+  restrictions. Blocked checks emit a receipt and exit nonzero; successful checks
+  still require separate confirmation and an external atomic conditional write.
+- Advance historical-note plan policy to 1.1.0. Explain blank retained dates as
+  unresolved daily attribution, distinguish explicit managed zero-labor verdicts
+  from retained-history zeros, block ambiguous matching, and preserve factual notes
+  and complete original records with before/planned-note snapshot hashes.
+- Preserve exact alpha.39 and alpha.40 saved-plan annotation formats under policy
+  1.0.0. Document the private external-record association/provenance workflow;
+  missing workdays are not inferred from Git timestamps, logged hours or merge dates.
+- Expand actual conflicting multi-commit rebase endpoint/provenance checks and
+  composed review/plan/preflight regressions. Record explicit public five-day and
+  annual two-repository cold/warm coverage, attribution completeness and reuse;
+  warm live inventory freshness remains unchanged, with no speedup claim.
+- Retry transient Windows snapshot checkpoint/publication replacement failures
+  within a fixed cancellable bound. Preserve the previous complete file and
+  staged bytes during atomic rename retries; permanent denial still fails and
+  temporary files are cleaned up without changing permissions.
+- Estimator priors, retained/allocated EHE values, fixed-eight midpoint contributions,
+  conserved two-decimal rounding and rates are unchanged. EHE remains experimental
+  and uncalibrated; original workdays and intermediate history stay unresolved
+  without external evidence. Actual time-entry writes remain external to EH.
+
 ## 0.10.0-alpha.40 - 2026-10-07
 
 - Choose the smaller complete historical authored-account or restricted repository
