@@ -13,9 +13,9 @@ public sealed class GitHubHistoricalPullBatchTests
         ProviderQueryCounters cold = new() { PullMetadataCache = cache };
         IReadOnlyList<DiscoveredRepository>? first = await HistoricalPullProviderFixture.DiscoverAsync(runner, cold);
         Assert.Equal(HistoricalPullProviderFixture.Id(7), Assert.Single(Assert.Single(first!).Heads).ObjectId);
-        Assert.Equal(23, cold.QueryCount);
+        Assert.Equal(25, cold.QueryCount);
         Assert.Equal(25, cold.PageCount);
-        Assert.Equal(23, cold.ProcessCount);
+        Assert.Equal(25, cold.ProcessCount);
         Assert.Equal(258, cold.Diagnostics("missing").HistoricalPullRequests!.CandidateCount);
         Assert.Equal(22, cold.Diagnostics("missing").HistoricalPullRequests!.BatchCount);
         Assert.Equal(258, cold.Diagnostics("missing").HistoricalPullRequests!.CompletedCount);
@@ -24,7 +24,7 @@ public sealed class GitHubHistoricalPullBatchTests
         ProviderQueryCounters warm = new() { PullMetadataCache = cache };
         IReadOnlyList<DiscoveredRepository>? second = await HistoricalPullProviderFixture.DiscoverAsync(runner, warm);
         Assert.Equal(first!.Single().Heads, second!.Single().Heads);
-        Assert.Equal(1, warm.QueryCount);
+        Assert.Equal(3, warm.QueryCount);
         Assert.Equal(3, warm.PageCount);
         Assert.Equal(258, warm.Diagnostics("hit").HistoricalPullRequests!.CacheHitCount);
         Assert.Equal(0, warm.Diagnostics("hit").HistoricalPullRequests!.BatchCount);
@@ -33,7 +33,7 @@ public sealed class GitHubHistoricalPullBatchTests
         ProviderQueryCounters advanced = new() { PullMetadataCache = cache };
         await HistoricalPullProviderFixture.DiscoverAsync(runner, advanced);
         Assert.Equal(0, advanced.Diagnostics("hit").HistoricalPullRequests!.CacheHitCount);
-        Assert.Equal(23, advanced.QueryCount);
+        Assert.Equal(25, advanced.QueryCount);
     }
 
     [Fact]
@@ -45,14 +45,14 @@ public sealed class GitHubHistoricalPullBatchTests
         IReadOnlyList<DiscoveredRepository>? first = await HistoricalPullProviderFixture.DiscoverScopeAsync(runner, cold, true, 16);
         Assert.Equal(16, first!.Count);
         Assert.Equal(257, first.Sum(repository => repository.Heads.Count));
-        Assert.Equal(33, cold.QueryCount);
+        Assert.Equal(35, cold.QueryCount);
         Assert.Equal(35, cold.PageCount);
         Assert.Equal(258, cold.Diagnostics("missing").HistoricalPullRequests!.CompletedCount);
         Assert.Equal(257, cold.Diagnostics("missing").HistoricalPullRequests!.SelectedCount);
         Assert.InRange(runner.Peak, 1, 4);
         ProviderQueryCounters warm = new() { PullMetadataCache = cache };
         IReadOnlyList<DiscoveredRepository>? second = await HistoricalPullProviderFixture.DiscoverScopeAsync(runner, warm, true, 16);
-        Assert.Equal(1, warm.QueryCount);
+        Assert.Equal(3, warm.QueryCount);
         Assert.Equal(258, warm.Diagnostics("hit").HistoricalPullRequests!.CacheHitCount);
         Assert.Equal(first.SelectMany(repository => repository.Heads).Select(head => head.ObjectId).Order(),
             second!.SelectMany(repository => repository.Heads).Select(head => head.ObjectId).Order());

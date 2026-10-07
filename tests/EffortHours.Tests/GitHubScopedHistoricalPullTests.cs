@@ -46,10 +46,11 @@ public sealed class GitHubScopedHistoricalPullTests
         HistoricalPullProviderFixture runner = new(258)
         { InvalidScopedTotal = overBound, RepeatedScopedCursor = !overBound };
         ProviderQueryCounters counters = new();
-        Assert.Null(await HistoricalPullProviderFixture.DiscoverRestrictedAsync(runner, counters));
-        Assert.Equal(overBound ? 3 : 2, counters.QueryCount);
-        Assert.Equal(0, counters.Diagnostics("missing").HistoricalPullRequests?.CandidateCount ?? 0);
-        Assert.DoesNotContain(runner.Calls, call => call.Any(value => value.Contains("pullRequest(number:", StringComparison.Ordinal)));
+        var result = await HistoricalPullProviderFixture.DiscoverRestrictedAsync(runner, counters);
+        Assert.Equal(HistoricalPullProviderFixture.Id(7), Assert.Single(Assert.Single(result!).Heads).ObjectId);
+        Assert.Equal(overBound ? 50 : 49, counters.QueryCount);
+        Assert.Equal(258, counters.Diagnostics("missing").HistoricalPullRequests!.CompletedCount);
+        Assert.Equal(22, counters.Diagnostics("missing").HistoricalPullRequests!.HeaderBatchCount);
     }
     [Fact]
     public async Task InventoryFailureCancelsAndDrainsSiblingWithoutAdmittingPartialEvidence()
@@ -77,7 +78,7 @@ public sealed class GitHubScopedHistoricalPullTests
         GitHubProviderException failure = await Assert.ThrowsAsync<GitHubProviderException>(() =>
             HistoricalPullProviderFixture.DiscoverScopeAsync(runner, counters, true, 1));
         Assert.Equal("github-discovery-budget-exceeded", failure.Action.FailureCode);
-        Assert.Equal("open-pr-discovery", failure.Action.Phase);
+        Assert.Equal("historical-pr-selection", failure.Action.Phase);
         Assert.Equal("inspect-head-scope-or-use-pinned-manifest", failure.Action.SuggestedAction);
         Assert.Equal(0, failure.Action.RetryLimit);
         Assert.Equal(514, counters.Diagnostics("missing").HistoricalPullRequests!.CompletedCount);
@@ -93,7 +94,7 @@ public sealed class GitHubScopedHistoricalPullTests
         GitHubProviderException failure = await Assert.ThrowsAsync<GitHubProviderException>(() =>
             HistoricalPullProviderFixture.DiscoverRestrictedAsync(runner, counters));
         Assert.Equal("github-discovery-budget-exceeded", failure.Action.FailureCode);
-        Assert.Equal("open-pr-discovery", failure.Action.Phase);
+        Assert.Equal("historical-pr-inventory", failure.Action.Phase);
         Assert.Equal(1, counters.QueryCount);
         Assert.Equal(0, counters.PageCount);
         Assert.Equal("output-bound", counters.Diagnostics("missing").LastRequest!.Outcome);

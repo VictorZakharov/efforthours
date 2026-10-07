@@ -37,7 +37,7 @@ internal static partial class GitHubAuthorPeriodDiscoveryJson
         public AccountPullRequest[] Complete() => [.. _authored.OrderBy(pull => pull.Number)];
 
         private static GitHubProviderException Budget(string resource, int limit, int observed) =>
-            GitHubProviderFailure.DiscoveryBudget(GitHubProviderFailure.OpenPullRequestPhase,
+            GitHubProviderFailure.DiscoveryBudget(GitHubProviderFailure.HistoricalInventoryPhase,
                 $"Historical pull-inventory {resource} bound exceeded: limit {limit}, observed {observed}. " +
                 "Resume with the same scope/checkpoint after correction or supply a complete pinned manifest; narrower dates do not preserve coverage. No selection was truncated.",
                 "inspect-pr-discovery-or-use-pinned-manifest");
@@ -45,14 +45,14 @@ internal static partial class GitHubAuthorPeriodDiscoveryJson
 
     private static async Task<AccountPullRequest[]> ReadHistoricalRestInventoryAsync(IExternalCommandRunner commands,
         string directory, string identity, IReadOnlyList<string> logins, string viewer, bool includeViewer,
-        ProviderQueryCounters counters, CancellationToken token)
+        ProviderQueryCounters counters, CancellationToken token, bool gateHeld = false)
     {
-        await HistoricalPullGate.WaitAsync(token).ConfigureAwait(false);
+        if (!gateHeld) await HistoricalPullGate.WaitAsync(token).ConfigureAwait(false);
         try
         {
             return await ReadPages().ConfigureAwait(false);
         }
-        finally { HistoricalPullGate.Release(); }
+        finally { if (!gateHeld) HistoricalPullGate.Release(); }
 
         async Task<AccountPullRequest[]> ReadPages()
         {
@@ -63,7 +63,7 @@ internal static partial class GitHubAuthorPeriodDiscoveryJson
                 // gh evaluates this per response page; no PR body, dates or repeated repository descriptors cross the pipe.
                 string json = await RunApiAsync(commands, directory, ["api", endpoint, "--jq",
                 "[.[] | {number,state,user:{login:.user.login},head:{sha:.head.sha}}]"], counters, false, false, token,
-                    failurePhase: GitHubProviderFailure.OpenPullRequestPhase,
+                    failurePhase: GitHubProviderFailure.HistoricalInventoryPhase,
                     maximumResponseCharacters: HistoricalPullInventory.MaximumPageCharacters).ConfigureAwait(false)
                     ?? throw new InvalidOperationException("Missing historical inventory page.");
                 try
@@ -84,7 +84,7 @@ internal static partial class GitHubAuthorPeriodDiscoveryJson
                     if (rows.GetArrayLength() < 100) return inventory.Complete();
                 }
                 catch (Exception exception) when (exception is JsonException or KeyNotFoundException or InvalidOperationException && exception is not GitHubProviderException)
-                { throw GitHubProviderFailure.Malformed(GitHubProviderFailure.OpenPullRequestPhase, exception); }
+                { throw GitHubProviderFailure.Malformed(GitHubProviderFailure.HistoricalInventoryPhase, exception); }
             }
         }
     }

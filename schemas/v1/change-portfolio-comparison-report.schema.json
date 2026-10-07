@@ -285,7 +285,17 @@
             "pendingCount": {
               "type": "integer",
               "minimum": 0
-            }
+            },
+            "inventoryStrategy": {"type": "string", "enum": ["not-observed", "account-connection", "scoped-connections", "rest-pages"]},
+            "inventoryComplete": {"type": "boolean"},
+            "metadataComplete": {"type": "boolean"},
+            "inventoryQueryCount": {"type": "integer", "minimum": 0},
+            "headerQueryCount": {"type": "integer", "minimum": 0},
+            "metadataQueryCount": {"type": "integer", "minimum": 0},
+            "headerBatchCount": {"type": "integer", "minimum": 0},
+            "headerFallbackCount": {"type": "integer", "minimum": 0},
+            "cacheWriteCount": {"type": "integer", "minimum": 0},
+            "resumeState": {"type": "string", "enum": ["completed-metadata-reusable", "no-completed-metadata"]}
           },
           "additionalProperties": false
         },
@@ -310,7 +320,7 @@
             },
             "operation": {
               "enum": [
-                "pull-metadata-batch",
+                "pull-metadata-batch", "pull-header-batch", "pull-inventory-probe",
                 "pull-inventory",
                 "pull-commits",
                 "pull-detail",
@@ -341,7 +351,7 @@
           "additionalProperties": false
         },
         "repositoryObservations": {
-          "type": "array", "maxItems": 768,
+          "type": "array", "maxItems": 1024,
           "items": {
             "type": "object",
             "required": ["repositoryDigest", "phase", "state", "queryCount", "pageCount", "elapsedMilliseconds"],
@@ -847,7 +857,7 @@
             "owner-inventory",
             "candidate-discovery",
             "default-head-discovery",
-            "open-pr-discovery",
+            "open-pr-discovery", "historical-pr-discovery", "historical-pr-inventory", "historical-pr-headers", "historical-pr-metadata", "historical-pr-selection",
             "acquisition",
             "managed-cache-acquisition"
           ]

@@ -60,7 +60,8 @@ public sealed partial class GitHubAuthorPeriodDiscovery
         }
 
         DiscoveredRepository[] openPullRequests;
-        using (request.ExecutionTelemetry?.Measure(ChangePortfolioExecutionPhases.OpenPullRequestDiscovery))
+        using (request.ExecutionTelemetry?.Measure(request.IncludeHistoricalPullRequests
+            ? ChangePortfolioExecutionPhases.HistoricalPullRequestDiscovery : ChangePortfolioExecutionPhases.OpenPullRequestDiscovery))
         {
             GitHubPullAuthorIdentity? identity = counters.PullAuthorIdentity;
             if (identity is not null)
@@ -88,7 +89,7 @@ public sealed partial class GitHubAuthorPeriodDiscovery
                 ? pullLogins[0] : null;
             bool restrictedHistory = request.IncludeHistoricalPullRequests && request.Repositories.Count > 0 && contributorLogin is not null;
             IReadOnlyList<DiscoveredRepository>? accountWide = restrictedHistory
-                ? await GitHubAuthorPeriodDiscoveryJson.DiscoverHistoricalPullHeadsInScopeAsync(
+                ? await GitHubAuthorPeriodDiscoveryJson.DiscoverHistoricalPullHeadsOptimizedAsync(
                     _commands, workingDirectory, repositories, contributorLogin!, aliases, since, until,
                     request.DateField, request.MergePolicy, request.CoauthorPolicy, counters, cancellationToken).ConfigureAwait(false)
                 : contributorLogin is not null
@@ -117,6 +118,7 @@ public sealed partial class GitHubAuthorPeriodDiscovery
                     ? "identity-not-single-login" : restrictedHistory ? "scoped-connection-unavailable" : "account-connection-unavailable", repositories.Length);
             }
 
+            if (request.IncludeHistoricalPullRequests && accountWide is null) counters.ExpectHistoricalInventories(repositories.Length);
             openPullRequests = accountWide is not null
                 ? [.. accountWide]
                 : await DiscoverHeadPhaseAsync(

@@ -60,7 +60,7 @@ public sealed class GitHubProviderRequestFailureTests
         using (var success = counters.ObserveRequest(["api", "repos/private/repository/pulls/1"], "open-pr-discovery"))
         { success.Result(new(0, "{}", "")); success.Complete(1); }
         Assert.Equal("pull-detail", counters.Diagnostics("missing").LastRequest!.Operation);
-        using (var root = counters.ObserveRequest(["api", "graphql", "query=pullRequest(number:"], "open-pr-discovery"))
+        using (var root = counters.ObserveRequest(["api", "graphql", "query=pullRequest(number: nodes{commit"], "open-pr-discovery"))
             root.Result(new(1, "", "HTTP 503: unavailable"));
         using (var sibling = counters.ObserveRequest(["api", "repos/private/repository/pulls/1/commits"], "open-pr-discovery"))
             sibling.Fail("cancelled", "sibling-failure");

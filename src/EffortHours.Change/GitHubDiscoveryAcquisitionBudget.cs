@@ -51,7 +51,7 @@ internal sealed class GitHubDiscoveryAcquisitionBudget(
         {
             if (callerToken.IsCancellationRequested) return exception;
             if (_rootFailure is not null) return _rootFailure;
-            return exception is OperationCanceledException ? BudgetFailure() : exception;
+            return exception is OperationCanceledException ? BudgetFailure(exception) : exception;
         }
     }
 
@@ -64,18 +64,21 @@ internal sealed class GitHubDiscoveryAcquisitionBudget(
         deadline.Cancel();
     }
 
-    private GitHubProviderException BudgetFailure()
+    private GitHubProviderException BudgetFailure(Exception? interrupted = null)
     {
-        string phase = _acquisitionFailurePhase ?? Counters?.LastPhase ?? GitHubProviderFailure.CandidateDiscoveryPhase;
+        string phase = _acquisitionFailurePhase ?? interrupted?.Data[GitHubProviderFailure.InterruptedPhaseKey] as string
+            ?? Counters?.LastPhase ?? GitHubProviderFailure.CandidateDiscoveryPhase;
         bool singleAcquisition = request.Repositories.Count == 1 && phase == GitHubProviderFailure.ManagedCachePhase;
         string message = _bytesExceeded
             ? singleAcquisition
                 ? "Native acquisition exceeded its observed object-store growth budget for the restricted repository. Inspect acquisition, explicitly increase --max-acquired-mib, or use a complete pinned manifest; no aggregate was published."
                 : "Native acquisition exceeded its observed object-store growth budget. Narrow --repository or explicitly increase --max-acquired-mib; no aggregate was published."
-            : "Native discovery/acquisition exceeded its deadline; inspect the recorded request plan and active subphase. Completed immutable cache objects remain reusable, and no aggregate was published.";
+            : "Native discovery/acquisition exceeded its deadline; inspect the recorded request plan and active subphase. Completed immutable objects and historical PR metadata remain reusable. Resume the exact repository, author, interval and cache/checkpoint scope; only unfinished or stale metadata is fetched. No aggregate was published.";
         string suggestion = singleAcquisition ? "inspect-acquisition-or-use-pinned-manifest"
-            : !_bytesExceeded && request.Repositories.Count == 1 && phase == GitHubProviderFailure.OpenPullRequestPhase
-                ? "inspect-pr-discovery-or-use-pinned-manifest" : "narrow-scope-or-use-pinned-manifest";
+            : !_bytesExceeded && GitHubProviderFailure.IsHistoricalPullPhase(phase) && Counters?.HasReusableHistoricalMetadata == true
+                ? "resume-same-scope-or-use-pinned-manifest"
+                : !_bytesExceeded && request.Repositories.Count == 1 && GitHubProviderFailure.IsPullDiscoveryPhase(phase)
+                    ? "inspect-pr-discovery-or-use-pinned-manifest" : "narrow-scope-or-use-pinned-manifest";
         return GitHubProviderFailure.DiscoveryBudget(phase, message, suggestion);
     }
 

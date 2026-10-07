@@ -11,6 +11,11 @@ public static class ChangePortfolioExecutionPhases
     public const string CandidateDiscovery = "candidate-discovery";
     public const string DefaultHeadDiscovery = "default-head-discovery";
     public const string OpenPullRequestDiscovery = "open-pr-discovery";
+    public const string HistoricalPullRequestDiscovery = "historical-pr-discovery";
+    public const string HistoricalPullInventory = "historical-pr-inventory";
+    public const string HistoricalPullHeaders = "historical-pr-headers";
+    public const string HistoricalPullMetadata = "historical-pr-metadata";
+    public const string HistoricalPullSelection = "historical-pr-selection";
     public const string ProviderProcessStartup = "provider-process-startup";
     public const string Acquisition = "acquisition";
     public const string ManifestValidation = "manifest-validation";
@@ -33,6 +38,11 @@ public static class ChangePortfolioExecutionPhases
         CandidateDiscovery,
         DefaultHeadDiscovery,
         OpenPullRequestDiscovery,
+        HistoricalPullRequestDiscovery,
+        HistoricalPullInventory,
+        HistoricalPullHeaders,
+        HistoricalPullMetadata,
+        HistoricalPullSelection,
         ProviderProcessStartup,
         Acquisition,
         ManifestValidation,

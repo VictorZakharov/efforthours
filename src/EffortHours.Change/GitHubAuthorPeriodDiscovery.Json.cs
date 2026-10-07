@@ -234,6 +234,7 @@ internal static partial class GitHubAuthorPeriodDiscoveryJson
         {
             if (includeHistoricalPullRequests)
             {
+                counters.HistoricalInventoryStrategy = "rest-pages";
                 AccountPullRequest[] pulls = await ReadHistoricalRestInventoryAsync(commands, workingDirectory, identity,
                     pullAuthorLogins ?? aliases, authenticatedLogin, includeAuthenticatedPullAuthor, counters, cancellationToken).ConfigureAwait(false);
                 counters.AddOpenPullRequests(pulls.Count(pull => pull.Open));

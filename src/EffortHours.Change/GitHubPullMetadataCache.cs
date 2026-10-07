@@ -10,7 +10,7 @@ internal sealed record GitHubPullMetadata(string Head, string Base, IReadOnlyLis
 internal interface IGitHubPullMetadataCache
 {
     public Task<GitHubPullMetadata?> ReadAsync(string repository, int number, string head, string baseHead, int count, CancellationToken token);
-    public Task WriteAsync(string repository, int number, GitHubPullMetadata metadata, CancellationToken token);
+    public Task<bool> WriteAsync(string repository, int number, GitHubPullMetadata metadata, CancellationToken token);
 }
 
 internal sealed class GitHubPullMetadataCache(string root, string viewer) : IGitHubPullMetadataCache
@@ -53,19 +53,21 @@ internal sealed class GitHubPullMetadataCache(string root, string viewer) : IGit
         }
     }
 
-    public async Task WriteAsync(string repository, int number, GitHubPullMetadata metadata, CancellationToken token)
+    public async Task<bool> WriteAsync(string repository, int number, GitHubPullMetadata metadata, CancellationToken token)
     {
         string path = CachePath(repository, number, metadata.Head, metadata.Base, metadata.Commits.Count);
         string temporary = path + ".tmp-" + Guid.NewGuid().ToString("N");
         byte[] bytes = JsonSerializer.SerializeToUtf8Bytes(new Entry(Protocol, Path.GetFileNameWithoutExtension(path),
             DateTimeOffset.UtcNow + Freshness, Digest(metadata), metadata));
-        if (bytes.Length > MaximumBytes) return;
+        if (bytes.Length > MaximumBytes) return false;
+        bool persisted = false;
         try
         {
             Directory.CreateDirectory(root);
             if (!OperatingSystem.IsWindows()) File.SetUnixFileMode(root, UnixFileMode.UserRead | UnixFileMode.UserWrite | UnixFileMode.UserExecute);
             await File.WriteAllBytesAsync(temporary, bytes, token).ConfigureAwait(false);
             File.Move(temporary, path, overwrite: true);
+            persisted = true;
             foreach (FileInfo stale in new DirectoryInfo(root).EnumerateFiles("*.json")
                 .OrderByDescending(file => file.LastWriteTimeUtc).ThenBy(file => file.Name, StringComparer.Ordinal).Skip(MaximumEntries))
                 stale.Delete();
@@ -76,6 +78,7 @@ internal sealed class GitHubPullMetadataCache(string root, string viewer) : IGit
             try { File.Delete(temporary); }
             catch (Exception exception) when (exception is IOException or UnauthorizedAccessException) { }
         }
+        return persisted;
     }
 
     private string CachePath(string repository, int number, string head, string baseHead, int count)

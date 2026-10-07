@@ -6,73 +6,70 @@ namespace EffortHours.Change;
 
 internal static partial class GitHubAuthorPeriodDiscoveryJson
 {
-    private static async Task<AccountPullRequest[]> ResolveHistoricalPullHeadersAsync(IExternalCommandRunner commands,
+    // The caller owns a bounded pipeline slot; headers, cache reads and misses progress together.
+    private static async Task<AccountPullRequest[]> ResolveHistoricalPullHeadersBatchAsync(IExternalCommandRunner commands,
         string directory, AccountPullRequest[] pulls, ProviderQueryCounters counters, CancellationToken token)
     {
         AccountPullRequest[] result = (AccountPullRequest[])pulls.Clone();
-        var batches = pulls.Select((pull, index) => (pull, index)).Where(value => value.pull.CommitCount is null || value.pull.BaseObjectId is null)
-            .GroupBy(value => value.pull.RepositoryIdentity, StringComparer.OrdinalIgnoreCase).SelectMany(group => group.Chunk(12));
-        using CancellationTokenSource children = CancellationTokenSource.CreateLinkedTokenSource(token);
-        Exception? root = null;
-        Task[] tasks = [.. batches.Select(async batch =>
+        var unknown = pulls.Select((pull, index) => (pull, index))
+            .Where(value => value.pull.CommitCount is null || value.pull.BaseObjectId is null).ToArray();
+        if (unknown.Length == 0) return result;
+        StringBuilder query = new("query(");
+        for (int index = 0; index < unknown.Length; index++)
         {
-            await HistoricalPullGate.WaitAsync(children.Token).ConfigureAwait(false);
-            try
+            if (index > 0) query.Append(',');
+            query.Append(CultureInfo.InvariantCulture, $"$owner{index}:String!,$name{index}:String!,$number{index}:Int!");
+        }
+        query.Append("){ ");
+        for (int index = 0; index < unknown.Length; index++) query.Append(CultureInfo.InvariantCulture, $"r{index}:repository(owner:$owner{index},name:$name{index}){{pullRequest(number:$number{index}){{headRefOid baseRefOid commits{{totalCount}}}}}} ");
+        query.Append('}');
+        List<string> args = ["api", "graphql", "-f", "query=" + query];
+        for (int index = 0; index < unknown.Length; index++)
+        {
+            string[] parts = unknown[index].pull.RepositoryIdentity.Split('/');
+            args.AddRange(["-F", $"owner{index}={parts[0]}", "-F", $"name{index}={parts[1]}", "-F", $"number{index}={unknown[index].pull.Number}"]);
+        }
+        string? json = await RunApiAsync(commands, directory, args, counters, false, false, token,
+            capabilityFallback: true, failurePhase: GitHubProviderFailure.HistoricalHeaderPhase,
+            maximumResponseCharacters: HistoricalPullInventory.MaximumPageCharacters).ConfigureAwait(false);
+        using JsonDocument? document = ParseHistoricalPullBatchDocument(json);
+        for (int index = 0; index < unknown.Length; index++)
+        {
+            AccountPullRequest pull = unknown[index].pull;
+            string head, baseHead;
+            int count;
+            if (document is not null && TryHistoricalHeader(document.RootElement, "r" + index, out JsonElement header))
             {
-                StringBuilder query = new("query(");
-                for (int index = 0; index < batch.Length; index++) query.Append(CultureInfo.InvariantCulture, $"$owner{index}:String!,$name{index}:String!,$number{index}:Int!,");
-                query.Append("){ ");
-                for (int index = 0; index < batch.Length; index++) query.Append(CultureInfo.InvariantCulture, $"r{index}:repository(owner:$owner{index},name:$name{index}){{pullRequest(number:$number{index}){{headRefOid baseRefOid commits{{totalCount}}}}}} ");
-                query.Append('}');
-                List<string> args = ["api", "graphql", "-f", "query=" + query];
-                for (int index = 0; index < batch.Length; index++)
-                {
-                    string[] parts = batch[index].pull.RepositoryIdentity.Split('/');
-                    args.AddRange(["-F", $"owner{index}={parts[0]}", "-F", $"name{index}={parts[1]}", "-F", $"number{index}={batch[index].pull.Number}"]);
-                }
-                string? json = await RunApiAsync(commands, directory, args, counters, false, false, children.Token,
-                    capabilityFallback: true, failurePhase: GitHubProviderFailure.OpenPullRequestPhase,
-                    maximumResponseCharacters: HistoricalPullInventory.MaximumPageCharacters).ConfigureAwait(false);
-                using JsonDocument? document = ParseHistoricalPullBatchDocument(json);
-                for (int index = 0; index < batch.Length; index++)
-                {
-                    AccountPullRequest pull = batch[index].pull;
-                    JsonElement header = default;
-                    bool complete = document is not null && TryHistoricalHeader(document.RootElement, "r" + index, out header);
-                    if (!complete)
-                    {
-                        string detail = await RunApiAsync(commands, directory,
-                            ["api", $"repos/{pull.RepositoryIdentity}/pulls/{pull.Number}", "--jq", "{commits,head:{sha:.head.sha},base:{sha:.base.sha}}"],
-                            counters, false, false, children.Token, failurePhase: GitHubProviderFailure.OpenPullRequestPhase).ConfigureAwait(false)
-                            ?? throw new InvalidOperationException("Missing historical PR identity.");
-                        using JsonDocument rest = JsonDocument.Parse(detail);
-                        string head = RequireObjectId(rest.RootElement.GetProperty("head").GetProperty("sha").GetString(), "historical head");
-                        if (head != pull.ObjectId) throw GitHubProviderFailure.Malformed(GitHubProviderFailure.OpenPullRequestPhase, new JsonException());
-                        result[batch[index].index] = pull with { BaseObjectId = RequireObjectId(rest.RootElement.GetProperty("base").GetProperty("sha").GetString(), "historical base"), CommitCount = rest.RootElement.GetProperty("commits").GetInt32() };
-                        continue;
-                    }
-                    string frozenHead = RequireObjectId(header.GetProperty("headRefOid").GetString(), "historical head");
-                    if (frozenHead != pull.ObjectId) throw GitHubProviderFailure.Malformed(GitHubProviderFailure.OpenPullRequestPhase, new JsonException());
-                    result[batch[index].index] = pull with { BaseObjectId = RequireObjectId(header.GetProperty("baseRefOid").GetString(), "historical base"), CommitCount = header.GetProperty("commits").GetProperty("totalCount").GetInt32() };
-                }
+                head = RequireObjectId(header.GetProperty("headRefOid").GetString(), "historical head");
+                baseHead = RequireObjectId(header.GetProperty("baseRefOid").GetString(), "historical base");
+                count = header.GetProperty("commits").GetProperty("totalCount").GetInt32();
             }
-            catch (Exception exception)
+            else
             {
-                if (exception is not OperationCanceledException) Interlocked.CompareExchange(ref root, exception, null);
-                await children.CancelAsync().ConfigureAwait(false);
-                throw;
+                string detail = await RunRequiredApiAsync(commands, directory,
+                    ["api", $"repos/{pull.RepositoryIdentity}/pulls/{pull.Number}", "--jq", "{commits,head:{sha:.head.sha},base:{sha:.base.sha}}"],
+                    counters, false, token, failurePhase: GitHubProviderFailure.HistoricalHeaderPhase).ConfigureAwait(false);
+                using JsonDocument rest = JsonDocument.Parse(detail);
+                head = RequireObjectId(rest.RootElement.GetProperty("head").GetProperty("sha").GetString(), "historical head");
+                baseHead = RequireObjectId(rest.RootElement.GetProperty("base").GetProperty("sha").GetString(), "historical base");
+                count = rest.RootElement.GetProperty("commits").GetInt32();
             }
-            finally { HistoricalPullGate.Release(); }
-        })];
-        try { await Task.WhenAll(tasks).ConfigureAwait(false); }
-        catch when (root is not null) { System.Runtime.ExceptionServices.ExceptionDispatchInfo.Capture(root).Throw(); throw; }
+            if (head != pull.ObjectId || pull.BaseObjectId is not null && baseHead != pull.BaseObjectId ||
+                pull.CommitCount is not null && count != pull.CommitCount || count is <= 0 or > 250)
+                throw GitHubProviderFailure.Malformed(GitHubProviderFailure.HistoricalHeaderPhase,
+                    new InvalidOperationException("Incomplete or changed historical PR header."));
+            result[unknown[index].index] = pull with { BaseObjectId = baseHead, CommitCount = count };
+        }
         return result;
     }
 
     private static bool TryHistoricalHeader(JsonElement root, string alias, out JsonElement header)
     {
         header = default;
-        return !root.TryGetProperty("errors", out _) && root.TryGetProperty("data", out JsonElement data) && data.ValueKind == JsonValueKind.Object &&
+        if (root.TryGetProperty("errors", out JsonElement errors) && errors.EnumerateArray().Any(error =>
+            !error.TryGetProperty("path", out JsonElement path) || path.ValueKind != JsonValueKind.Array || path.GetArrayLength() == 0 ||
+            path[0].GetString() == alias)) return false;
+        return root.TryGetProperty("data", out JsonElement data) && data.ValueKind == JsonValueKind.Object &&
             data.TryGetProperty(alias, out JsonElement repository) && repository.ValueKind == JsonValueKind.Object &&
             repository.TryGetProperty("pullRequest", out header) && header.ValueKind == JsonValueKind.Object &&
             header.TryGetProperty("headRefOid", out _) && header.TryGetProperty("baseRefOid", out _) &&

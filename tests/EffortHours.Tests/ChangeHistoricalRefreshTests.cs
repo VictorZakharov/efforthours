@@ -23,6 +23,8 @@ public sealed partial class ChangePortfolioComparisonTests
         {
             Assert.StartsWith("Original task \u03a9\nTicket T-1\n", value.ProposedDescription, StringComparison.Ordinal);
             Assert.True(value.ProposedMultiplierContribution > 0);
+            Assert.Contains("Source declared events: " + review.AttributionCompleteness!.DeclaredEventStatus, value.ProposedDescription, StringComparison.Ordinal);
+            Assert.Contains("Source original workdays: unresolved-original-workday; intermediate history: unknown.", value.ProposedDescription, StringComparison.Ordinal);
         });
         var repeated = input with
         {

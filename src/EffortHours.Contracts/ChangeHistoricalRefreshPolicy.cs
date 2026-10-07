@@ -20,10 +20,11 @@ public static class ChangeHistoricalRefreshPolicy
             {
                 string basis = day.WorkdayEvidenceBasis == "external-work-record" ? $"externally declared record date {day.Date}" : "not declared for allocation";
                 dateEvidence = $"Workday date: {basis}; allocation policy: {resolution.Allocation.Policy}.\nDeclaration: {resolution.Allocation.WorkdayInputDigest}.\n";
-                dateEvidence += review.AttributionCompleteness is { } completeness
-                    ? $"Source declared events: {completeness.DeclaredEventStatus}; missing dates: {completeness.MissingEventDateCount}; missing replay baselines: {completeness.MissingReplayBaselineCount}.\n"
-                    : "Source declared events: unknown.\n";
             }
+            dateEvidence += review.AttributionCompleteness is { } completeness
+                ? $"Source declared events: {completeness.DeclaredEventStatus}; missing dates: {completeness.MissingEventDateCount}; missing replay baselines: {completeness.MissingReplayBaselineCount}.\n" +
+                  $"Source original workdays: {completeness.OriginalWorkdayStatus}; intermediate history: {completeness.IntermediateHistoryStatus}.\n"
+                : "Source attribution completeness: unknown.\n";
             string uncertainty = review.WorkdayResolution is null ? "Original workdays and intermediate history remain unresolved."
                 : "Original Git workdays and intermediate history remain unresolved.";
             string annotation = $"{Begin}\nRetained evidence: {day.RetainedEvidenceStatus}; review: {record.Status}.\n" +

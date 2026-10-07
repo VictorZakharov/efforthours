@@ -20,6 +20,13 @@ internal static class GitHubProviderFailure
     public const string CandidateDiscoveryPhase = "candidate-discovery";
     public const string DefaultHeadPhase = "default-head-discovery";
     public const string OpenPullRequestPhase = "open-pr-discovery";
+    public const string HistoricalInventoryPhase = "historical-pr-inventory";
+    public const string HistoricalHeaderPhase = "historical-pr-headers";
+    public const string HistoricalMetadataPhase = "historical-pr-metadata";
+    public const string HistoricalSelectionPhase = "historical-pr-selection";
+    internal const string InterruptedPhaseKey = "EffortHours.GitHubDiscovery.InterruptedPhase";
+    public static bool IsHistoricalPullPhase(string phase) => phase is HistoricalInventoryPhase or HistoricalHeaderPhase or HistoricalMetadataPhase or HistoricalSelectionPhase;
+    public static bool IsPullDiscoveryPhase(string phase) => phase == OpenPullRequestPhase || IsHistoricalPullPhase(phase);
     public const string PullRequestResolutionPhase = "pull-request-resolution";
     public const string RevisionResolutionPhase = "git-revision-resolution";
     public const string ManagedCachePhase = "managed-cache-acquisition";

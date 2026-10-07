@@ -47,9 +47,26 @@ public static partial class ContractValidation
                 plan.SelectedCount > plan.CompletedCount || plan.FallbackCount > plan.CandidateCount - plan.CacheHitCount ||
                 plan.BatchCount > value.OpenPullRequestQueryCount || discovery.Complete && plan.PendingCount != 0;
         }
+        if (value.HistoricalPullRequests is { } detailed &&
+            (detailed.InventoryStrategy is not null || detailed.InventoryComplete is not null || detailed.MetadataComplete is not null ||
+             detailed.InventoryQueryCount is not null || detailed.HeaderQueryCount is not null || detailed.MetadataQueryCount is not null ||
+             detailed.HeaderBatchCount is not null || detailed.HeaderFallbackCount is not null || detailed.CacheWriteCount is not null || detailed.ResumeState is not null))
+        {
+            invalid |= detailed.InventoryComplete is null || detailed.MetadataComplete is null || detailed.InventoryQueryCount is null or < 0 ||
+                detailed.HeaderQueryCount is null or < 0 || detailed.MetadataQueryCount is null or < 0 ||
+                detailed.HeaderBatchCount is null or < 0 || detailed.HeaderFallbackCount is null or < 0 || detailed.CacheWriteCount is null or < 0 ||
+                detailed.InventoryQueryCount + (long?)detailed.HeaderQueryCount + detailed.MetadataQueryCount > value.OpenPullRequestQueryCount ||
+                detailed.BatchCount > detailed.MetadataQueryCount || detailed.HeaderBatchCount > detailed.HeaderQueryCount || detailed.HeaderFallbackCount > detailed.HeaderQueryCount ||
+                detailed.CacheWriteCount > detailed.CompletedCount - detailed.CacheHitCount ||
+                detailed.InventoryStrategy is not ("not-observed" or "account-connection" or "scoped-connections" or "rest-pages") ||
+                detailed.ResumeState is not ("completed-metadata-reusable" or "no-completed-metadata") ||
+                detailed.MetadataComplete == true && (detailed.InventoryComplete != true || detailed.PendingCount != 0) ||
+                discovery.Complete && (detailed.InventoryComplete != true || detailed.MetadataComplete != true) ||
+                detailed.ResumeState == "completed-metadata-reusable" != (detailed.CacheHitCount + detailed.CacheWriteCount > 0);
+        }
         if (value.LastRequest is { } request)
         {
-            invalid |= string.IsNullOrWhiteSpace(request.Phase) || request.Operation is not ("pull-metadata-batch" or "pull-inventory" or
+            invalid |= string.IsNullOrWhiteSpace(request.Phase) || request.Operation is not ("pull-metadata-batch" or "pull-header-batch" or "pull-inventory-probe" or "pull-inventory" or
                 "pull-commits" or "pull-detail" or "authentication" or "owner-inventory" or "default-head" or "candidate-discovery") ||
                 request.State is not ("complete" or "incomplete") || request.PageCount < 0 || request.ElapsedMilliseconds < 0;
             invalid |= request.Api is not (null or "rest" or "graphql") ||
@@ -65,7 +82,7 @@ public static partial class ContractValidation
         }
         if (value.RepositoryObservations is { } observations)
         {
-            invalid |= observations.Count > 768 || observations.Sum(item => (long)item.QueryCount) > discovery.ProviderQueryCount ||
+            invalid |= observations.Count > 1024 || observations.Sum(item => (long)item.QueryCount) > discovery.ProviderQueryCount ||
                 observations.Sum(item => (long)item.PageCount) > discovery.ProviderPageCount ||
                 observations.Select(item => (item.RepositoryDigest, item.Phase)).Distinct().Count() != observations.Count;
             foreach (ChangePortfolioProviderRepositoryObservation observation in observations)
