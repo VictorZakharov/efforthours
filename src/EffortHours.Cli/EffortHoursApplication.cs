@@ -67,6 +67,8 @@ public sealed partial class EffortHoursApplication
             {
                 "examples" or "--examples" => await UsageExamplesCommand.ExecuteAsync(
                     arguments[1..], standardOutput, standardError).ConfigureAwait(false),
+                "docs" or "--docs" => await DocumentationCommand.ExecuteAsync(
+                    arguments[1..], standardOutput, standardError, cancellationToken).ConfigureAwait(false),
                 "scan" => await ScanAsync(
                     [.. arguments.Skip(1)],
                     standardOutput,

@@ -17,7 +17,7 @@ internal static class ChangeWorkdayCommand
         preserving exact EHE and existing reference capacity. Dates remain allocated and
         unresolved as original workdays. Logged hours are context, never allocation weights.
         Offline; no Git/provider calls, estimator rerun, input overwrite, or timesheet mutation.
-        EHE remains experimental and uncalibrated. See docs/WORKDAY_ALLOCATION.md.
+        EHE remains experimental and uncalibrated. See 'eh docs show workday-allocation'.
         """;
 
     public static async Task<int> ExecuteAsync(string[] arguments, TextWriter stdout, TextWriter stderr, CancellationToken token)

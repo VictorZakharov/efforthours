@@ -16,7 +16,7 @@ internal static class ChangeRewriteReviewCommand
         event dates retain explicit caller provenance. Missing replay/date evidence is unresolved.
         Comparisons are non-additive and do not replace a jointly reconciled portfolio.
         Never fetches objects, executes target code, recovers actual labor or writes timesheets.
-        EHE remains experimental and uncalibrated. See docs/REWRITE_REPLAY_REVIEW.md.
+        EHE remains experimental and uncalibrated. See 'eh docs show rewrite-replay-review'.
         """;
 
     public static async Task<int> ExecuteAsync(string[] args, TextWriter stdout, TextWriter stderr, CancellationToken token)

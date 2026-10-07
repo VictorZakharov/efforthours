@@ -39,7 +39,7 @@ documentation, configuration, and delivery artifacts into traceable
 Install the explicit preview version:
 
 ```text
-dotnet tool install --global EffortHours.Tool --version 0.10.0-alpha.41
+dotnet tool install --global EffortHours.Tool --version 0.10.0-alpha.42
 eh version
 ```
 
@@ -50,13 +50,16 @@ eh --help
 eh examples
 eh examples all
 eh examples calendar
+eh docs
+eh docs show historical-refresh-integration
+eh docs export ./eh-docs
 ```
 
-Help includes the installed version. `eh --examples` is an alias for `eh examples`.
-The guide explains commands, required inputs, provider access and output writes;
-replace its `<placeholders>` before running a recipe. Topic filters include
-`repository`, `change`, `portfolio`, `calendar`, `report`, `review`, `inspect`,
-`agent` and `rebase`. Use `eh <command> --help` for the complete option reference.
+Help includes the installed version; `eh --examples` aliases `eh examples`.
+Replace recipe `<placeholders>`; use `eh <command> --help` for options.
+`eh docs show <topic>` reads bundled guidance offline without a checkout.
+Explicit export saves docs and runnable examples to a new directory whose parent
+exists. It never overwrites files, runs examples or changes entries.
 
 Run an effort-only repository estimate:
 
@@ -84,10 +87,10 @@ eh explain . --item <capability-or-work-item-id> --format markdown
 Update an existing preview installation with:
 
 ```text
-dotnet tool update --global EffortHours.Tool --version 0.10.0-alpha.41
+dotnet tool update --global EffortHours.Tool --version 0.10.0-alpha.42
 ```
 
-See the [`0.10.0-alpha.41` GitHub prerelease](https://github.com/VictorZakharov/efforthours/releases/tag/v0.10.0-alpha.41) for release notes and artifacts.
+See the [`0.10.0-alpha.42` GitHub prerelease](https://github.com/VictorZakharov/efforthours/releases/tag/v0.10.0-alpha.42) for release notes and artifacts.
 
 ## Recent highlights
 

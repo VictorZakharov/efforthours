@@ -22,7 +22,7 @@ internal static class ChangeWorkdayReviewCommand
         multiplier; default retained review uses equal-matched-entries/1.0.0.
         Original workdays remain unresolved; unavailable values are omitted, never zero-filled.
         Offline; no Git/provider access, estimator rerun, input overwrite or timesheet mutation.
-        EHE remains experimental and uncalibrated. See docs/WORKDAY_REVIEW.md.
+        EHE remains experimental and uncalibrated. See 'eh docs show workday-review'.
         """;
 
     public static async Task<int> ExecuteAsync(string[] arguments, TextWriter stdout, TextWriter stderr, CancellationToken token)
