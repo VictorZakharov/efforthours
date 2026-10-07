@@ -22,7 +22,7 @@ internal static class LargeHistoricalInventoryBenchmark
                 await using WorkingSetSampler memory = WorkingSetSampler.Start();
                 long before = GC.GetTotalAllocatedBytes(true);
                 Stopwatch watch = Stopwatch.StartNew();
-                var repositories = await HistoricalPullProviderFixture.DiscoverRestrictedAsync(runner, counters, count, annual: annual).ConfigureAwait(false);
+                var repositories = await HistoricalPullProviderFixture.DiscoverOptimizedAsync(runner, counters, count, annual: annual).ConfigureAwait(false);
                 watch.Stop();
                 results.Add(new
                 {

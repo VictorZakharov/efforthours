@@ -21,6 +21,9 @@ internal static partial class GitHubAuthorPeriodDiscoveryJson
             CancellationToken cancellationToken,
             bool includeHistoricalPullRequests = false)
     {
+        if (includeHistoricalPullRequests)
+            return await DiscoverHistoricalAccountPullHeadsAsync(commands, workingDirectory, repositories, contributorLogin,
+                aliases, since, until, dateField, mergePolicy, coauthorPolicy, counters, cancellationToken).ConfigureAwait(false);
         counters.AddAccountQuery();
         string? json = await RunApiAsync(
             commands,
@@ -31,10 +34,7 @@ internal static partial class GitHubAuthorPeriodDiscoveryJson
                 "--paginate",
                 "--slurp",
                 "-f",
-                "query=" + (includeHistoricalPullRequests
-                    ? ViewerPullRequestsQuery.Replace("states:OPEN", "states:[OPEN,CLOSED,MERGED]", StringComparison.Ordinal)
-                        .Replace("nodes{number", "nodes{state headRefOid baseRefOid commits{totalCount} number", StringComparison.Ordinal)
-                    : ViewerPullRequestsQuery),
+                "query=" + ViewerPullRequestsQuery,
                 "-F",
                 "login=" + contributorLogin,
             ],
@@ -49,7 +49,7 @@ internal static partial class GitHubAuthorPeriodDiscoveryJson
             return null;
         }
 
-        AccountPullRequest[]? pulls = ParseCompleteAccountPulls(json, contributorLogin, includeHistoricalPullRequests);
+        AccountPullRequest[]? pulls = ParseCompleteAccountPulls(json, contributorLogin);
         if (pulls is null)
         {
             return null;
@@ -66,11 +66,6 @@ internal static partial class GitHubAuthorPeriodDiscoveryJson
         counters.AddHistoricalPullRequests(considered.Count(pull => !pull.Open));
         counters.AddPullCandidateRepositories(considered.Select(pull => pull.RepositoryIdentity)
             .Distinct(StringComparer.OrdinalIgnoreCase).Count());
-        if (includeHistoricalPullRequests)
-        {
-            return await DiscoverHistoricalPullsBatchedAsync(commands, workingDirectory, repositories, considered,
-                aliases, since, until, dateField, mergePolicy, coauthorPolicy, counters, cancellationToken).ConfigureAwait(false);
-        }
         using SemaphoreSlim gate = new(4, 4);
         Task<ResolvedPullHead?>[] tasks = [.. considered.Select(async pull =>
         {
@@ -98,7 +93,7 @@ internal static partial class GitHubAuthorPeriodDiscoveryJson
                     coauthorPolicy,
                     counters,
                     cancellationToken,
-                    includeHistoricalPullRequests ? detail.ObjectId : null).ConfigureAwait(false);
+                    null).ConfigureAwait(false);
                 return selected
                     ? new ResolvedPullHead(
                         pull.RepositoryIdentity,
@@ -147,9 +142,7 @@ internal static partial class GitHubAuthorPeriodDiscoveryJson
 
     private static AccountPullRequest[]? ParseCompleteAccountPulls(
         string json,
-        string contributorLogin,
-        bool historical = false,
-        bool repositoryConnection = false)
+        string contributorLogin)
     {
         try
         {
@@ -166,7 +159,7 @@ internal static partial class GitHubAuthorPeriodDiscoveryJson
             List<AccountPullRequest> pulls = [];
             foreach (JsonElement page in root.EnumerateArray())
             {
-                JsonElement connection = page.GetProperty("data").GetProperty(repositoryConnection ? "repository" : "user")
+                JsonElement connection = page.GetProperty("data").GetProperty("user")
                     .GetProperty("pullRequests");
                 int pageTotal = connection.GetProperty("totalCount").GetInt32();
                 total ??= pageTotal;
@@ -196,12 +189,7 @@ internal static partial class GitHubAuthorPeriodDiscoveryJson
                         return null;
                     }
 
-                    string state = historical ? item.GetProperty("state").GetString() ?? string.Empty : "OPEN";
-                    if (state is not ("OPEN" or "CLOSED" or "MERGED"))
-                    {
-                        return null;
-                    }
-
+                    const string state = "OPEN";
                     if (!seen.Add((identity.ToLowerInvariant(), number))) return null;
                     pulls.Add(new AccountPullRequest(identity, number, state == "OPEN",
                         item.TryGetProperty("headRefOid", out JsonElement head) && head.ValueKind == JsonValueKind.String

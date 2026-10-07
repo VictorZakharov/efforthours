@@ -56,6 +56,7 @@ public sealed partial class ChangePortfolioCliTests : ChangeCliTestSupport
             string json = await File.ReadAllTextAsync(reportPath);
             Assert.True(ContractSchemaValidator.Validate(SchemaNames.ChangePortfolioComparisonReport, json).IsValid);
             ChangePortfolioComparisonReport report = ContractJson.Deserialize<ChangePortfolioComparisonReport>(json)!;
+            AssertHistoricalPlanCompatibility(report, json);
             Assert.Equal(implementation, Assert.Single(report.SourcePortfolio!.Items).Selection.Head.ObjectId);
             Assert.Equal(1, report.Discovery!.HistoricalPullRequestHeadCount);
             Assert.Equal(0, report.Discovery.OpenPullRequestHeadCount);
@@ -164,6 +165,16 @@ public sealed partial class ChangePortfolioCliTests : ChangeCliTestSupport
                     updated_at = "2020-01-02T00:00:00Z"
                 }).ToArray();
             }
+            else if (call.Contains("pullRequests(first:1,", StringComparison.Ordinal))
+            {
+                Dictionary<string, object> data = new()
+                {
+                    ["user"] = new { pullRequests = new { totalCount = largeInventory ? 20000 : crossRepositoryAliases ? 0 : 1 } }
+                };
+                for (int index = 0; arguments.Any(value => value.StartsWith($"name{index}=", StringComparison.Ordinal)); index++)
+                    data.Add("r" + index, new { pullRequests = new { totalCount = largeInventory ? 10001 : crossRepositoryAliases ? 0 : 1 } });
+                response = new { data };
+            }
             else if (largeInventory && call.Contains("repository(owner:$owner,name:$name)", StringComparison.Ordinal))
             {
                 response = new { data = (object?)null };
@@ -221,10 +232,31 @@ public sealed partial class ChangePortfolioCliTests : ChangeCliTestSupport
             }
             else if (call.Contains("graphql", StringComparison.Ordinal))
             {
-                response = new[] { new { data = new { user = new { pullRequests = new { totalCount = crossRepositoryAliases ? 0 : 1,
-                    nodes = Enumerable.Repeat(new { number = 7, state = "MERGED", headRefOid = head, baseRefOid = baseline, commits = new { totalCount = 2 }, author = new { login = "selected" },
-                        repository = new { nameWithOwner = "example/repository" } }, crossRepositoryAliases ? 0 : 1).ToArray(),
-                    pageInfo = new { hasNextPage = false, endCursor = (string?)null } } } } } };
+                object page = new
+                {
+                    data = new
+                    {
+                        user = new
+                        {
+                            pullRequests = new
+                            {
+                                totalCount = crossRepositoryAliases ? 0 : 1,
+                                nodes = Enumerable.Repeat(new
+                                {
+                                    number = 7,
+                                    state = "MERGED",
+                                    headRefOid = head,
+                                    baseRefOid = baseline,
+                                    commits = new { totalCount = 2 },
+                                    author = new { login = "selected" },
+                                    repository = new { nameWithOwner = "example/repository" }
+                                }, crossRepositoryAliases ? 0 : 1).ToArray(),
+                                pageInfo = new { hasNextPage = false, endCursor = (string?)null }
+                            }
+                        }
+                    }
+                };
+                response = arguments.Contains("--slurp") ? new[] { page } : page;
             }
             else if (call.Contains("pulls/7/commits", StringComparison.Ordinal))
             {

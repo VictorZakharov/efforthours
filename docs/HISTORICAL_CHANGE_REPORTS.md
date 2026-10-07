@@ -239,8 +239,12 @@ missing Git history or turn retained timestamps into proof of actual work dates.
 
 ## Historical PR request plan and metadata reuse
 
-The native retained-history path refreshes a complete live authored account PR
-inventory with head object, upstream-base object and commit count. It discards
+The native retained-history path refreshes a complete live PR inventory with head
+object, upstream-base object and commit count. For one resolved contributor with
+explicit repositories, a bounded count probe chooses the smaller complete authored
+account or included-repository traversal. Counts choose a request plan, never
+selection membership; the selected traversal must prove complete live coverage.
+It discards
 repositories outside the already restricted, admitted owner scope before expensive
 PR reads. Uncached PR evidence is requested in repository-local GraphQL batches
 of at most 12 PRs, 100 commits per PR and two parents per commit, with at most four
@@ -273,7 +277,19 @@ invalid, expired or unavailable cache entries refresh from the provider. Complet
 evidence survives a sibling failure. Cache reuse never stores or changes EHE.
 
 Optional `providerDiagnostics.historicalPullRequests` exposes candidate, cache-hit,
-batch, complete-REST fallback, completed, selected and pending PR counts. Selected
+batch, complete-REST fallback, completed, selected and pending PR counts. New v1
+observations additionally carry `inventoryStrategy`, `inventoryComplete`,
+`metadataComplete`, inventory/header/metadata query counts, header batch/fallback
+counts, successful `cacheWriteCount` and `resumeState`. All new fields are optional
+for older v1 reports. Complete discovery requires complete inventory and metadata;
+an interrupted inventory does not claim that its observed prefix is the candidate
+universe. `completedCount` means complete metadata plus exact selection, rather than
+merely a successful adapter response. Header requests cannot inflate commit batch
+counts. Queued work checks cancellation before sending or accounting a request;
+requests rejected by the attempt ceiling increment neither query nor
+batch/fallback-request counters. `cacheWriteCount` acknowledges atomic writes, not indefinite retention:
+24-hour freshness, eviction, oversized entries and unavailable storage still apply.
+Selected
 is the count of matching PR representations before identical-head coalescing,
 not a selected-change count. The native manifest/planner retains the actual distinct
 heads and selected-change counts. `lastRequest` identifies a fixed operation,
@@ -301,9 +317,25 @@ paginated child has no trustworthy partial-page count. Cumulative durations may
 exceed wall time and must not be displayed as total runtime.
 
 Deadline failures now use the interrupted provider subphase, while an acquisition
-failure still uses managed-cache acquisition. A single-repository PR timeout emits
-`inspect-pr-discovery-or-use-pinned-manifest`, with zero retries, instead of asking
-the caller to narrow an already single-repository scope. No timeout emits an EHE
+failure still uses managed-cache acquisition. Historical phases now distinguish
+`historical-pr-discovery` (the parent workflow), `historical-pr-inventory`,
+`historical-pr-headers`, `historical-pr-metadata` and `historical-pr-selection`
+(including cache reads/writes). `lastRequest` distinguishes `pull-inventory-probe`,
+`pull-inventory`, `pull-header-batch` and `pull-metadata-batch`; a complete last
+request can coexist with interrupted cache/selection work. Request observations
+retain up to four phase rows per admitted repository (1,024 overall), replacing the
+older three-row 768 limit solely to represent these additional fixed diagnostics.
+No adapter, head, cache or acquisition limit increases.
+
+A historical PR timeout emits `resume-same-scope-or-use-pinned-manifest` when
+completed metadata was reused or saved, including across multiple repositories.
+Without reusable metadata, a single-repository PR timeout emits
+`inspect-pr-discovery-or-use-pinned-manifest`, always with zero automatic retries.
+Resume the exact repository, author, interval and cache/checkpoint scope: completed
+immutable objects and still-valid sidecars are reusable, unfinished/stale metadata
+is fetched, and complete live inventory is refreshed. There is no cached inventory
+cursor/membership authority, automatic retry or date-based pruning. A complete
+pinned manifest is a separate explicit coverage declaration. No timeout emits an EHE
 aggregate, and provider/fetch children are canceled and drained before returning.
 
 The synthetic 258-PR request checkpoint and explicit latency simulation are
@@ -330,21 +362,32 @@ phases and simulated latency remain explicit.
 
 ## Explicit scoped historical inventory
 
-For a single resolved contributor and explicit repository restrictions, the
-historical path reads only each admitted repository's live GraphQL PR connection.
-It reads 100-row pages and immediately discards unrelated-author metadata. The
+For a single resolved contributor and explicit repository restrictions, a cheap
+GraphQL census compares the authored account's page count with the sum of admitted
+repository page counts. Census groups contain at most 12 repositories and share
+the four-reader gate. If all totals are available and consistent and the account
+has strictly fewer pages, traverse its authored connection; otherwise traverse the
+admitted repository connections. Both use explicit 100-row pages, unchanged totals,
+unique identities/cursors and terminal-page proofs. Count probes, live inventories,
+header and metadata requests share the unchanged 2,048-attempt request ceiling.
+Out-of-scope account PRs are discarded before expensive reads; scoped pages discard
+unrelated and null/deleted authors before retained candidate admission. The
 1,000-candidate limit applies to matching authored PRs, not the repository's whole
 population. Complete `totalCount`, unchanged totals, unique PR numbers and cursors,
 and terminal-page checks remain mandatory. No creation/update/merge timestamp
 prunes authored commits retained on an immutable head.
 
-An unavailable or inconsistent connection uses explicit REST pages of 100 rows,
-sorted by creation ascending, with `gh --jq` projecting only number, state, author
+An unavailable/inconsistent account connection falls back to included repository
+connections. Only an unavailable/inconsistent repository connection falls back to
+that repository's explicit REST pages of 100 rows, sorted by creation ascending, with `gh --jq` projecting only number, state, author
 login and immutable head. It never uses `--paginate --slurp` for this inventory.
 An exactly full last page requires an additional empty response; repeated numbers,
 malformed pages and changed frozen heads fail without partial selection. No
-account-wide inventory is attempted for this restricted single-account path.
-Unrestricted account discovery and ordinary today selection policies are unchanged.
+partial inventory is admitted or cached as complete. An unavailable repository
+does not discard completed sibling inventories. Ordinary today selection remains
+unchanged; historical account traversal now streams explicit pages and applies the
+1,000-authored-candidate bound per included repository, rather than rejecting an
+otherwise bounded account merely because it has more than 1,000 out-of-scope PRs.
 
 Each historical inventory page is limited to 1,048,576 response characters at the
 pipe reader, before JSON buffering. Other provider responses retain the existing
@@ -355,14 +398,22 @@ tree and observes all readers before returning; no child is intentionally orphan
 Each repository has a 16-MiB deterministic inventory ledger: 64 bytes per observed
 PR number plus 512 bytes and twice the repository-identity length per retained
 authored candidate. This charge is a retention proxy, not measured heap usage.
-Pages are discarded after minimal parsing; whole JSON page collections are not
-retained or reserialized. The shared 2,048-request attempt ceiling bounds page and
+Account traversal separately charges a 16-MiB global observed-identity ledger
+(64 bytes plus twice the identity length per row), in addition to each included
+repository's authored ledger. Pages are discarded after minimal parsing; whole
+JSON page collections are not retained or reserialized. The shared 2,048-request attempt ceiling bounds page and
 metadata work. Existing head, deadline, cache, object-store and output bounds stay
 in force; no bound permits truncating a complete selection.
 
 Scoped pages retain live head/base/count for exact metadata reuse. REST candidates
-refresh those same fields in at-most-12-PR header batches before cache lookup;
-unsupported headers use minimal REST detail. This keeps the existing viewer,
+refresh those same fields in at-most-12-PR header batches; independently complete
+aliases remain usable when another header alias fails, and only unsupported aliases
+use minimal REST detail. Each repository-local pipeline slot resolves its headers,
+reads its cache, fetches only its misses, and atomically saves/selects each complete
+PR before moving on. There is no all-header or all-cache barrier. The same four
+slots cover this complete pipeline and REST fallbacks, so cancellation can retain
+useful progress even while later headers are unavailable. This keeps the existing
+viewer,
 repository, PR, head, base, count, freshness and digest cache identity. Completed
 commit evidence remains reusable after a later failure; live inventory is always
 refreshed and incomplete inventories are never stored as completeness authority.
@@ -380,7 +431,7 @@ Scoped inventory shares the four-reader process-wide historical gate. A root
 request failure cancels and drains siblings before returning its original error.
 Repository request observations use opaque scope digests. The fallback reason
 `scoped-connection-unavailable` is an optional v1 enum extension. A selected-head
-budget failure reports the active `open-pr-discovery` phase, observed distinct
+budget failure reports the active `historical-pr-selection` phase, observed distinct
 head count and `inspect-head-scope-or-use-pinned-manifest`, with zero retries;
 it does not misdiagnose a GitHub service failure or silently omit heads.
 

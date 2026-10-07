@@ -74,7 +74,11 @@ Notes preserve all existing description text outside a single exact managed bloc
 appends it once. Repeating the same plan yields `unchanged`, not a duplicate.
 Multiple/unbalanced markers or an annotation that would exceed the 8,192-character
 description bound block the note proposal for external review. The
-annotation states retained evidence, discrepancies and source lineage, always
+annotation states retained evidence, discrepancies and source lineage. Every new
+annotation consumes the review's source `attributionCompleteness`, including event
+availability, missing dates/baselines, original-workday status and intermediate-history
+status, even without an external workday allocation. Older reviews without that
+optional contract explicitly show unknown source completeness. The annotation always
 keeps original workdays/intermediate history unresolved, and explicitly says zero
 retained EHE is not zero labor. Unresolved dates/baselines produce discrepancy
 annotations, never a true-zero-work explanation.

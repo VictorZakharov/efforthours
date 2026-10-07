@@ -3,7 +3,7 @@ using System.Globalization;
 
 namespace EffortHours.EndToEndTests;
 
-public sealed class ChangeBenchmarkCliTests
+public sealed partial class ChangeBenchmarkCliTests
 {
     [Fact]
     public async Task LargeTreeBenchmarkMeasuresUniqueSnapshotsAndReadOnlyState()

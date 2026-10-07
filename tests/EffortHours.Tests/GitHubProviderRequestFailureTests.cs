@@ -40,6 +40,27 @@ public sealed class GitHubProviderRequestFailureTests
     }
 
     [Fact]
+    public async Task AlreadyCancelledRequestPreservesPhaseWithoutChargingOrCallingProvider()
+    {
+        using CancellationTokenSource cancellation = new();
+        cancellation.Cancel();
+        ProviderQueryCounters counters = new();
+        var failure = await Assert.ThrowsAnyAsync<OperationCanceledException>(() =>
+            GitHubAuthorPeriodDiscoveryJson.ResolveHistoricalDefaultHeadAsync(new UnexpectedRequestRunner(),
+                "virtual-directory", new("id", "owner/project", "main"), counters, cancellation.Token));
+        Assert.Equal(GitHubProviderFailure.DefaultHeadPhase, failure.Data[GitHubProviderFailure.InterruptedPhaseKey]);
+        Assert.Equal(0, counters.QueryCount);
+        Assert.Equal(0, counters.PageCount);
+        Assert.Null(counters.Diagnostics("missing").LastRequest);
+    }
+
+    private sealed class UnexpectedRequestRunner : IExternalCommandRunner
+    {
+        public Task<ExternalCommandResult> RunAsync(string executable, string directory, IReadOnlyList<string> arguments,
+            CancellationToken token, bool requireSuccess = true) => throw new InvalidOperationException("Cancelled request reached the provider.");
+    }
+
+    [Fact]
     public async Task MalformedJsonIsParsingFailureRatherThanSuccessfulZero()
     {
         ProviderQueryCounters counters = new();
@@ -60,7 +81,7 @@ public sealed class GitHubProviderRequestFailureTests
         using (var success = counters.ObserveRequest(["api", "repos/private/repository/pulls/1"], "open-pr-discovery"))
         { success.Result(new(0, "{}", "")); success.Complete(1); }
         Assert.Equal("pull-detail", counters.Diagnostics("missing").LastRequest!.Operation);
-        using (var root = counters.ObserveRequest(["api", "graphql", "query=pullRequest(number:"], "open-pr-discovery"))
+        using (var root = counters.ObserveRequest(["api", "graphql", "query=pullRequest(number: nodes{commit"], "open-pr-discovery"))
             root.Result(new(1, "", "HTTP 503: unavailable"));
         using (var sibling = counters.ObserveRequest(["api", "repos/private/repository/pulls/1/commits"], "open-pr-discovery"))
             sibling.Fail("cancelled", "sibling-failure");

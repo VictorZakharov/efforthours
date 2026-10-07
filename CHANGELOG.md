@@ -6,6 +6,19 @@ may still change public contracts with explicit documentation.
 
 ## Unreleased
 
+- Choose the smaller complete historical authored-account or restricted repository
+  PR inventory without PR-date pruning. Stream account pages within existing bounds;
+  fall back only for unavailable repository connections and skip deleted authors.
+- Process historical headers, metadata-cache reuse, misses and atomic saves together
+  in four bounded pipelines. Completed metadata survives interruption; same-scope
+  resume fetches unfinished or stale evidence while revalidating live coverage.
+- Separate historical inventory, headers, metadata and selection timing/request counts,
+  disclose completion and reusable-cache progress, and preserve the interrupted phase
+  with manual resume guidance and no partial EHE aggregate or automatic retry.
+- Include source attribution completeness in every offline historical-note proposal,
+  preserving unresolved original dates/history, independent permissions and snapshots.
+  Estimation priors, reconciliation totals and pricing rules are unchanged.
+
 ## 0.10.0-alpha.39 - 2026-10-06
 
 - Connect externally declared workdays to offline review and refresh plans. Require

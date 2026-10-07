@@ -14,10 +14,17 @@ internal static partial class GitHubAuthorPeriodDiscoveryJson
         using CancellationTokenSource children = CancellationTokenSource.CreateLinkedTokenSource(token);
         token = children.Token;
         Exception? rootFailure = null;
-        Task<AccountPullRequest[]?>[] tasks = [.. repositories.Select(async repository =>
+        Task<AccountPullRequest[]>[] tasks = [.. repositories.Select(async repository =>
         {
             await HistoricalPullGate.WaitAsync(token).ConfigureAwait(false);
-            try { return await Read(repository.Identity).ConfigureAwait(false); }
+            try
+            {
+                AccountPullRequest[]? scoped = await Read(repository.Identity).ConfigureAwait(false);
+                if (scoped is not null) return scoped;
+                counters.AddFallback("open-pr", "scoped-connection-unavailable", 1);
+                return await ReadHistoricalRestInventoryAsync(commands, directory, repository.Identity, [login], login, false,
+                    counters, token, gateHeld: true).ConfigureAwait(false);
+            }
             catch (Exception exception)
             {
                 if (exception is not OperationCanceledException) Interlocked.CompareExchange(ref rootFailure, exception, null);
@@ -26,11 +33,10 @@ internal static partial class GitHubAuthorPeriodDiscoveryJson
             }
             finally { HistoricalPullGate.Release(); }
         })];
-        AccountPullRequest[]?[] inventories;
+        AccountPullRequest[][] inventories;
         try { inventories = await Task.WhenAll(tasks).ConfigureAwait(false); }
         catch when (rootFailure is not null) { System.Runtime.ExceptionServices.ExceptionDispatchInfo.Capture(rootFailure).Throw(); throw; }
-        if (inventories.Any(inventory => inventory is null)) return null;
-        AccountPullRequest[] pulls = [.. inventories.SelectMany(inventory => inventory!).OrderBy(pull => pull.RepositoryIdentity, StringComparer.Ordinal)
+        AccountPullRequest[] pulls = [.. inventories.SelectMany(inventory => inventory).OrderBy(pull => pull.RepositoryIdentity, StringComparer.Ordinal)
             .ThenBy(pull => pull.Number)];
         counters.AddOpenPullRequests(pulls.Count(pull => pull.Open));
         counters.AddHistoricalPullRequests(pulls.Count(pull => !pull.Open));
@@ -53,7 +59,7 @@ internal static partial class GitHubAuthorPeriodDiscoveryJson
                     "-F", "owner=" + parts[0], "-F", "name=" + parts[1]];
                 if (cursor is not null) args.AddRange(["-F", "endCursor=" + cursor]);
                 string? json = await RunApiAsync(commands, directory, args, counters, false, false, token,
-                    capabilityFallback: true, failurePhase: GitHubProviderFailure.OpenPullRequestPhase,
+                    capabilityFallback: true, failurePhase: GitHubProviderFailure.HistoricalInventoryPhase,
                     maximumResponseCharacters: HistoricalPullInventory.MaximumPageCharacters).ConfigureAwait(false);
                 if (json is null) return null;
                 try
@@ -70,7 +76,9 @@ internal static partial class GitHubAuthorPeriodDiscoveryJson
                     {
                         if (!inventory.Observe(node.GetProperty("number").GetInt32())) return null;
                         observed++;
-                        if (!string.Equals(node.GetProperty("author").GetProperty("login").GetString(), login, StringComparison.OrdinalIgnoreCase)) continue;
+                        JsonElement author = node.GetProperty("author");
+                        if (author.ValueKind == JsonValueKind.Null ||
+                            !string.Equals(author.GetProperty("login").GetString(), login, StringComparison.OrdinalIgnoreCase)) continue;
                         string repository = RequireRepositoryIdentity(node.GetProperty("repository").GetProperty("nameWithOwner").GetString());
                         if (!repository.Equals(identity, StringComparison.OrdinalIgnoreCase)) return null;
                         string state = node.GetProperty("state").GetString() ?? "";

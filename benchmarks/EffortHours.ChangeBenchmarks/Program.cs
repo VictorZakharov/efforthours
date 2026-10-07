@@ -10,6 +10,9 @@ public static partial class Program
 {
     public static async Task<int> Main(string[] arguments)
     {
+        if (arguments.Length > 0 && arguments[0] == "--historical-resume")
+            return await HistoricalResumeBenchmark.RunAsync(arguments).ConfigureAwait(false);
+
         if (arguments.Length > 0 && arguments[0] == "--large-historical-inventory")
             return await LargeHistoricalInventoryBenchmark.RunAsync().ConfigureAwait(false);
 

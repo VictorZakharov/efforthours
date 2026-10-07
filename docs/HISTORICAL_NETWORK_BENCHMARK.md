@@ -246,3 +246,69 @@ diagnose the original 58.83-second incident: the available sibling consumer
 artifacts contain no original exit/HTTP receipt. They also do not establish NDA
 field latency, alpha.29 equivalence, causal replay labor or numerical calibration.
 Full reports, identity metadata, immutable caches and stderr remain ignored/private.
+
+## Alpha.39 timeout/resume fix public revalidation
+
+Recorded October 7, 2026 with the correction in this PR, frozen CLI digest
+`27b4cc0c3e8f005235f4d72553c86a5f89375e2011d3c3b9821eff69d54604e7`.
+Platform, contributor, author-date policy, engineering/implementation scope and
+fixed eight-hour denominator match the earlier checkpoints. Narrow covers
+October 1-6, 2026 (five days, better-web-browser); broad separately covers
+October 6, 2025 to October 6, 2026 (365 days, better-web-browser plus EffortHours).
+Each has its own cold object/provider caches followed by a fresh-process warm
+repeat. Evidence checkpoints are disabled to measure full recalculation. No EH
+build, test or other benchmark ran during these four rows; ordinary background
+load and real network latency remain uncontrolled. These are single observations.
+
+The discovery/acquisition deadline is **90 seconds** and observed object-store
+growth budget **256 MiB**, matching the reported incident limits. The driver has
+its separate 1,800-second bound. Run the existing opt-in driver with a fresh
+private output directory:
+
+```text
+python eng/benchmark-historical-network.py --allow-network --cli-dll <frozen-cli>/efforthours.dll --output artifacts/historical-network-resume-new --owner VictorZakharov --author VictorZakharov --repository VictorZakharov/better-web-browser --repository VictorZakharov/efforthours --narrow-since 2026-10-01 --broad-since 2025-10-06 --until 2026-10-06 --discovery-seconds 90 --acquired-mib 256 --run-seconds 1800
+```
+
+| Scope/cache | Outer wall s | CLI wall s | Discovery/acquisition s | Queries/pages/receipts | Metadata hits | Selected changes | Acquired objects | Observed acquired bytes |
+| --- | ---: | ---: | ---: | --- | ---: | ---: | ---: | ---: |
+| Five-day single cold | 54.656 | 54.109 | 16.830 | 21/21/21 | 0/154 | 106 | 19,969 | 11,841,536 |
+| Five-day single warm | 44.484 | 43.934 | 8.439 | 6/6/6 | 154/154 | 106 | 0 | 0 |
+| Annual two repositories cold | 167.375 | 163.567 | 26.974 | 38/38/38 | 0/316 | 849 | 29,970 | 20,703,232 |
+| Annual two repositories warm | 171.797 | 167.502 | 21.866 | 9/9/9 | 316/316 | 849 | 0 | 0 |
+
+All rows exit zero with complete inventory/metadata/selection, zero pending PRs,
+no fallback, no failure and no driver timeout. The adaptive plan chooses scoped
+connections here because this contributor's complete account is larger. Census
+adds one request; narrow inventory has three requests including census, broad
+five. Cold metadata has 13 batches for 154 candidates or 27 for 316; warm has none.
+The narrow manifest retains 12 PR heads plus one default head; broad retains 301
+PR heads plus two defaults. Live candidate populations have advanced since earlier
+measurements, so old wall times/digests are not a same-input performance baseline.
+
+Exact cold/warm pinned-selection and complete semantic digests match:
+
+- Five-day selection: `e7c444ad79168d37f58e2cbf11304836ed00941eed3116f71cd1ebc4a487c85f`; semantic: `sha256:4a1564c2f189e37e33f65aa941a6b51bcfde5ef3ae6c3e205af0fe29d8a97223`.
+- Annual selection: `7601b9a664601bfd9b1e96de509309bf9a416d295110f80cc68603c602c779cc`; semantic: `sha256:bbdd864d1bceb84d286a86f001ceb284722fb537f0e07dd93c9b8b2436d70622`.
+
+The five-day full report finishes below 90 seconds on this public input. Annual
+**discovery/acquisition** also finishes below 90, but annual analysis/reporting is
+separately measured at about 164-168 seconds; the discovery deadline never governs
+that work. Warm annual wall time was slightly longer despite complete metadata and
+object reuse, demonstrating why request elimination is not a general end-to-end
+speed guarantee. Cumulative overlapping phase durations are not wall latency.
+The new inventory/metadata/selection phases and completed-row progress are visible;
+headers are absent here because the live scoped connection already supplies them.
+Sampled peaks were 880.707/883.836 MiB narrow and 1614.699/1568.820 MiB annual;
+these are observations, not quotas or CI gates.
+
+The separate 440/204/236 [resume checkpoint](HISTORICAL_PR_DISCOVERY_BENCHMARK.md#alpha39-timeout-and-resume-correction-checkpoint)
+verifies physical interruption/reopening and exact miss-only acquisition. Native
+retained/squashed Git fixtures retain pinned/offline numerical parity. These public
+runs do not reproduce the NDA incident or certify original workdays, labor or
+calibration. Full reports, source caches, learned identities and stderr stay private.
+
+These recorded runs precede the final request-cap/cancellation counter correction.
+Requests rejected by the fixed cap or canceled before admission no longer charge
+unsent work. Exhaustion and cancellation paths are tested separately; interrupted
+attempt counts may decrease. Successful request plans, source selection, the
+204/236 resume conservation and estimation rules remain identical.

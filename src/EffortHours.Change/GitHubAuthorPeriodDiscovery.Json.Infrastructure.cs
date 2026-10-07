@@ -21,7 +21,22 @@ internal static partial class GitHubAuthorPeriodDiscoveryJson
     {
         ExternalCommandResult result;
         string phase = failurePhase ?? FailurePhase(arguments);
+        if (cancellationToken.IsCancellationRequested)
+        {
+            OperationCanceledException cancelled = new(cancellationToken);
+            cancelled.Data[GitHubProviderFailure.InterruptedPhaseKey] = phase;
+            throw cancelled;
+        }
         counters.AddQuery(phase);
+        // Count only requests admitted by the shared attempt bound, including failures/cancellation.
+        bool graphql = arguments.Contains("graphql", StringComparer.Ordinal);
+        if (phase == GitHubProviderFailure.HistoricalMetadataPhase && graphql) counters.HistoricalPullBatch();
+        if (phase == GitHubProviderFailure.HistoricalHeaderPhase)
+        {
+            if (graphql) counters.HistoricalHeaderBatch();
+            else counters.HistoricalHeaderFallback();
+        }
+        using IDisposable? historicalTiming = GitHubProviderFailure.IsHistoricalPullPhase(phase) ? counters.MeasureHistoricalPhase(phase) : null;
         using ProviderQueryCounters.RequestObservation observation = counters.ObserveRequest(arguments, phase);
         try
         {
@@ -35,10 +50,11 @@ internal static partial class GitHubAuthorPeriodDiscoveryJson
                 $"Provider adapter response-character bound exceeded: limit {exception.Limit}, observed at least {exception.Observed}. " +
                 "Inspect lastRequest.operation; resume with the same scope/checkpoint after correction or use a complete pinned manifest. " +
                 "Reducing the date interval does not preserve coverage. No partial aggregate was published.",
-                phase == GitHubProviderFailure.OpenPullRequestPhase ? "inspect-pr-discovery-or-use-pinned-manifest" : "inspect-provider-discovery-or-use-pinned-manifest");
+                GitHubProviderFailure.IsPullDiscoveryPhase(phase) ? "inspect-pr-discovery-or-use-pinned-manifest" : "inspect-provider-discovery-or-use-pinned-manifest");
         }
-        catch (OperationCanceledException)
+        catch (OperationCanceledException exception)
         {
+            exception.Data[GitHubProviderFailure.InterruptedPhaseKey] = phase;
             observation.Fail("cancelled", counters.CancellationOwner?.Invoke() ?? "unknown");
             throw;
         }
@@ -104,7 +120,7 @@ internal static partial class GitHubAuthorPeriodDiscoveryJson
         ProviderQueryCounters counters,
         bool paginated,
         CancellationToken cancellationToken,
-        bool emptyRepositoryIsEmpty = false) =>
+        bool emptyRepositoryIsEmpty = false, string? failurePhase = null) =>
         await RunApiAsync(
             commands,
             workingDirectory,
@@ -113,7 +129,7 @@ internal static partial class GitHubAuthorPeriodDiscoveryJson
             paginated,
             optional: false,
             cancellationToken,
-            emptyRepositoryIsEmpty).ConfigureAwait(false) ??
+            emptyRepositoryIsEmpty, failurePhase: failurePhase).ConfigureAwait(false) ??
         throw new InvalidOperationException("GitHub discovery returned no response.");
 
     private static bool IsEmptyRepository(ExternalCommandResult result)

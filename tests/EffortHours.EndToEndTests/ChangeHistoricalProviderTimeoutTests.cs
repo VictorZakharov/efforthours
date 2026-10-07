@@ -1,4 +1,5 @@
 using System.Globalization;
+using System.Text.Json;
 using EffortHours.Change;
 using EffortHours.Cli;
 using EffortHours.Contracts;
@@ -8,8 +9,11 @@ namespace EffortHours.EndToEndTests;
 
 public sealed partial class ChangePortfolioCliTests
 {
-    [Fact]
-    public async Task PrDiscoveryDeadlineRetainsRequestPlanAndProviderContextWithoutAggregates()
+    [Theory]
+    [InlineData("inventory")]
+    [InlineData("headers")]
+    [InlineData("metadata")]
+    public async Task PrDiscoveryDeadlineRetainsRequestPlanAndProviderContextWithoutAggregates(string stage)
     {
         string workspace = Path.Combine(Path.GetTempPath(), "efforthours-pr-deadline", Guid.NewGuid().ToString("N"));
         Directory.CreateDirectory(workspace);
@@ -18,7 +22,7 @@ public sealed partial class ChangePortfolioCliTests
             using GitFixture repository = await GitFixture.CreateAsync(Path.Combine(workspace, "source"));
             repository.WriteText("Demo.csproj", ProjectFile);
             string baseline = await HistoricalCommitAsync(repository, "base", "2025-01-01T12:00:00Z", "2025-01-01T12:00:00Z");
-            PrTimeoutRunner runner = new(new HistoricalProviderRunner(baseline, baseline, baseline));
+            PrTimeoutRunner runner = new(new HistoricalProviderRunner(baseline, baseline, baseline), stage, baseline);
             GitHubAuthorPeriodDiscovery discovery = new(runner,
                 new GitHubRepositoryCache(new ExternalCommandRunner(), new GitClient(), Path.Combine(workspace, "cache"), _ => repository.RootPath),
                 new GitHubProviderMetadataCache(Path.Combine(workspace, "metadata")));
@@ -40,11 +44,15 @@ public sealed partial class ChangePortfolioCliTests
             Assert.Null(report.SourcePortfolio);
             Assert.Empty(report.Series);
             ChangePortfolioComparisonFailure failure = Assert.Single(report.Execution.Failures);
-            Assert.Equal("open-pr-discovery", failure.Phase);
+            Assert.Equal("historical-pr-" + stage, failure.Phase);
             Assert.Equal("inspect-pr-discovery-or-use-pinned-manifest", failure.AgentAction!.SuggestedAction);
             var diagnostics = report.Discovery!.ProviderDiagnostics!;
-            Assert.Equal(1, diagnostics.HistoricalPullRequests!.PendingCount);
-            Assert.Equal("pull-metadata-batch", diagnostics.LastRequest!.Operation);
+            Assert.Equal(stage == "inventory" ? 0 : 1, diagnostics.HistoricalPullRequests!.PendingCount);
+            Assert.Equal(stage != "inventory", diagnostics.HistoricalPullRequests.InventoryComplete);
+            Assert.False(diagnostics.HistoricalPullRequests.MetadataComplete);
+            Assert.Equal(stage == "headers" ? 1 : 0, diagnostics.HistoricalPullRequests.HeaderQueryCount);
+            Assert.Equal(stage == "metadata" ? 1 : 0, diagnostics.HistoricalPullRequests.MetadataQueryCount);
+            Assert.Equal(stage == "inventory" ? "pull-inventory" : stage == "headers" ? "pull-header-batch" : "pull-metadata-batch", diagnostics.LastRequest!.Operation);
             Assert.Equal("incomplete", diagnostics.LastRequest.State);
             Assert.Equal("graphql", diagnostics.LastRequest.Api);
             Assert.Equal("cancelled", diagnostics.LastRequest.Outcome);
@@ -56,13 +64,18 @@ public sealed partial class ChangePortfolioCliTests
         finally { DeleteDirectory(workspace); }
     }
 
-    private sealed class PrTimeoutRunner(IExternalCommandRunner inner) : IExternalCommandRunner
+    private sealed class PrTimeoutRunner(IExternalCommandRunner inner, string stage, string head) : IExternalCommandRunner
     {
         public bool Drained { get; private set; }
         public async Task<ExternalCommandResult> RunAsync(string executable, string directory, IReadOnlyList<string> arguments,
             CancellationToken token, bool requireSuccess = true)
         {
-            if (!arguments.Any(value => value.Contains("pullRequest(number:", StringComparison.Ordinal)))
+            bool inventory = arguments.Any(value => value.Contains("pullRequests(first:100", StringComparison.Ordinal));
+            bool pull = arguments.Any(value => value.Contains("pullRequest(number:", StringComparison.Ordinal));
+            if (stage == "headers" && inventory) return new(0, "{\"data\":null}", "");
+            if (stage == "headers" && arguments.Any(value => value.Contains("pulls?", StringComparison.Ordinal)))
+                return new(0, JsonSerializer.Serialize(new[] { new { number = 7, state = "closed", user = new { login = "selected" }, head = new { sha = head } } }), "");
+            if (!(stage == "inventory" ? inventory : pull))
                 return await inner.RunAsync(executable, directory, arguments, token, requireSuccess);
             try { await Task.Delay(Timeout.Infinite, token); throw new InvalidOperationException(); }
             finally { Drained = true; }

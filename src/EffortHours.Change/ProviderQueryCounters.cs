@@ -45,7 +45,7 @@ internal sealed partial class ProviderQueryCounters
 
     public void AddQuery(string phase)
     {
-        LastPhase = phase;
+        Volatile.Write(ref _lastPhase, phase);
         int count;
         do
         {
@@ -53,13 +53,16 @@ internal sealed partial class ProviderQueryCounters
             if (count >= MaximumQueries)
                 throw GitHubProviderFailure.DiscoveryBudget(phase,
                     "Provider adapter-request bound exceeded: limit 2,048, observed 2,048 completed or attempted requests. Resume the same scope/checkpoint after correction or use a complete pinned offline manifest; narrower dates do not preserve coverage. No partial aggregate was published.",
-                    phase == GitHubProviderFailure.OpenPullRequestPhase ? "inspect-pr-discovery-or-use-pinned-manifest" : "inspect-provider-discovery-or-use-pinned-manifest");
+                    GitHubProviderFailure.IsPullDiscoveryPhase(phase) ? "inspect-pr-discovery-or-use-pinned-manifest" : "inspect-provider-discovery-or-use-pinned-manifest");
         } while (Interlocked.CompareExchange(ref _queries, count + 1, count) != count);
+        if (phase == GitHubProviderFailure.HistoricalInventoryPhase) Interlocked.Increment(ref _inventoryQueries);
+        if (phase == GitHubProviderFailure.HistoricalHeaderPhase) Interlocked.Increment(ref _headerQueries);
+        if (phase == GitHubProviderFailure.HistoricalMetadataPhase) Interlocked.Increment(ref _metadataQueries);
         if (phase == GitHubProviderFailure.DefaultHeadPhase)
         {
             Interlocked.Increment(ref _defaultQueries);
         }
-        else if (phase == GitHubProviderFailure.OpenPullRequestPhase)
+        else if (GitHubProviderFailure.IsPullDiscoveryPhase(phase))
         {
             Interlocked.Increment(ref _pullQueries);
         }

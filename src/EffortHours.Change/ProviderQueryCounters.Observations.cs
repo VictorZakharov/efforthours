@@ -30,7 +30,8 @@ internal sealed partial class ProviderQueryCounters
             string? name = arguments.FirstOrDefault(argument => argument.StartsWith("name=", StringComparison.Ordinal));
             if (owner is not null && name is not null) identity = owner[6..] + "/" + name[5..];
         }
-        string operation = query?.Contains("pullRequest(number:", StringComparison.Ordinal) == true ? "pull-metadata-batch" :
+        string operation = query?.Contains("pullRequest(number:", StringComparison.Ordinal) == true ? query.Contains("nodes{commit", StringComparison.Ordinal) ? "pull-metadata-batch" : "pull-header-batch" :
+            query?.Contains("pullRequests(first:1,", StringComparison.Ordinal) == true ? "pull-inventory-probe" :
             query?.Contains("pullRequests(", StringComparison.Ordinal) == true || endpoint?.Contains("pulls?", StringComparison.Ordinal) == true ? "pull-inventory" :
             endpoint?.Contains("/pulls/", StringComparison.Ordinal) == true ? endpoint.Contains("/commits", StringComparison.Ordinal) ? "pull-commits" : "pull-detail" :
             phase == GitHubProviderFailure.AuthenticationPhase ? "authentication" : phase == GitHubProviderFailure.OwnerInventoryPhase ? "owner-inventory" :
@@ -109,5 +110,5 @@ internal sealed partial class ProviderQueryCounters
 
     private IReadOnlyList<ChangePortfolioProviderRepositoryObservation>? RepositoryObservations() =>
         _observations.IsEmpty ? null : [.. _observations.Values.OrderBy(value => value.RepositoryDigest, StringComparer.Ordinal)
-            .ThenBy(value => value.Phase, StringComparer.Ordinal).Take(768)];
+            .ThenBy(value => value.Phase, StringComparer.Ordinal).Take(1024)];
 }

@@ -72,7 +72,7 @@ def run_row(args, root, label, repositories, since, until, warm):
         report = json.loads(report_path.read_text(encoding='utf-8'))
         execution = report.get('execution', {})
         discovery = report.get('discovery', {})
-        selection = report.get('sourcePortfolio', {}).get('selection')
+        selection = (report.get('sourcePortfolio') or {}).get('selection')
         selection_digest = hashlib.sha256(json.dumps(selection, sort_keys=True, separators=(',', ':')).encode('utf-8')).hexdigest() if selection is not None else None
         row.update({'selectionDigest': selection_digest, 'status': report.get('status'), 'semanticDigest': report.get('verification', {}).get('semanticDigest'),
                     'endToEndMilliseconds': execution.get('endToEndElapsedMilliseconds'),

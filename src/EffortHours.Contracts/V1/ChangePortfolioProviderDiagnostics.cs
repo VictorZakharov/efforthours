@@ -48,6 +48,17 @@ public sealed record ChangePortfolioProviderRepositoryObservation
 
 public sealed record ChangePortfolioHistoricalPullRequestPlan
 {
+    public string? InventoryStrategy { get; init; }
+    public bool? InventoryComplete { get; init; }
+    public bool? MetadataComplete { get; init; }
+    public int? InventoryQueryCount { get; init; }
+    public int? HeaderQueryCount { get; init; }
+    public int? MetadataQueryCount { get; init; }
+    public int? HeaderBatchCount { get; init; }
+    public int? HeaderFallbackCount { get; init; }
+    public int? CacheWriteCount { get; init; }
+    public string? ResumeState { get; init; }
+
     public int CandidateCount { get; init; }
     public int CacheHitCount { get; init; }
     public int BatchCount { get; init; }

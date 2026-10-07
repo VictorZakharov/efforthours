@@ -150,3 +150,90 @@ The earlier public network checkpoint remains separate; these measurements do
 not establish NDA field latency, organization completeness or annual EHE accuracy.
 CI gates exact selection, reuse/request counts, malformed/bound failures and
 concurrency, never wall time or sampled memory. The private case needs a retest.
+
+## Alpha.39 timeout and resume correction checkpoint
+
+Recorded October 7, 2026, .NET 10.0.7, Windows 10.0.26200, 24 logical
+processors. The pre-change control was built from the exact alpha.39 main commit
+`3595544cc6605add930a5726bdd7e11dfc8a7bc7` before edits. Its 258-authored /
+16,384-repository-PR fixture reproduced the expensive inventory prefix: 186
+requests cold and 164 warm for one repository, 208 cold and 176 warm for 16.
+The corrected `--large-historical-inventory` command now uses the adaptive product
+plan on the same included PRs, heads, intervals and unrelated-author population.
+The modeled authored account contains those 258 PRs plus one excluded authored PR;
+unrelated authors never belong to an authored-account connection. No source,
+identity, selected head or date coverage is removed to obtain the difference.
+
+| Scope/cache | Alpha.39 requests/pages | Corrected requests/pages | Metadata hits | Selected heads |
+| --- | --- | --- | ---: | ---: |
+| Five-day single cold | 186/186 | 26/26 | 0 | 1 |
+| Five-day single warm | 164/164 | 4/4 | 258 | 1 |
+| Annual single cold | 186/186 | 26/26 | 0 | 257 |
+| Annual single warm | 164/164 | 4/4 | 258 | 257 |
+| Annual 16 repositories cold | 208/208 | 37/37 | 0 | 257 |
+| Annual 16 repositories warm | 176/176 | 5/5 | 258 | 257 |
+
+The current account reader uses three explicit adapter pages rather than the
+older single slurped child. Census adds one request for one repository or two
+for 16; those calls are included above. For large accounts with small selected
+repositories it chooses complete scoped connections instead. CI separately checks
+that case, deleted authors, more than 1,000 excluded account PRs, malformed
+account/scoped totals/cursors, affected-repository fallback and independently
+complete header aliases. The unchanged byte/request/response bounds fail closed.
+
+A second checkpoint matches the reported **440 candidate / 204 completed /
+236 pending** shape. It has 16,384 total repository PRs, 440 authored candidates,
+one excluded authored account PR, the same five-day Toronto interval (equivalent
+UTC instants), and a separately measured 2025 annual / 16-repository scope. Each
+PR contains one commit; this models discovery, not an NDA PR-size distribution.
+Run it explicitly with a new private sidecar directory:
+
+```text
+dotnet benchmarks/EffortHours.ChangeBenchmarks/bin/Release/net10.0/EffortHours.ChangeBenchmarks.dll --historical-resume 750 <new-private-cache-directory>
+```
+
+The measured per-adapter delay is 750 ms. These single observations had no
+concurrent EH build, test or other EH benchmark. Real network and machine load
+remain uncontrolled in the separate public checkpoint; this fixture performs no
+network, provider subprocess, Git acquisition, estimation or report rendering.
+Only the interruption/resume rows use physical atomic sidecars. Earlier rows
+use independent memory caches per scope. The explicit discovery phase therefore
+finishes below 90 seconds here; no claim of universal field latency follows.
+
+| Scope/cache | Wall s | Requests/pages/receipts | Metadata hits | Commit metadata candidates requested | Selected heads | Batch count |
+| --- | ---: | --- | ---: | ---: | ---: | ---: |
+| Five-day single cold | 12.273 | 43/43/43 | 0 | 440 | 1 | 37 |
+| Five-day single warm | 4.533 | 6/6/6 | 440 | 0 | 1 | 0 |
+| Annual single cold | 12.161 | 43/43/43 | 0 | 440 | 439 | 37 |
+| Annual single warm | 4.549 | 6/6/6 | 440 | 0 | 439 | 0 |
+| Annual 16 repositories cold | 13.642 | 55/55/55 | 0 | 440 | 439 | 48 |
+| Annual 16 repositories warm | 4.563 | 7/7/7 | 440 | 0 | 439 | 0 |
+| Interrupted after 204 saves | 8.743 | 26/26/26 | 0 | 240 | none published | 20 |
+| Fresh invocation resumes 204/440 | 9.494 | 27/27/27 | 204 | 236 | 1 | 21 |
+
+Interruption occurs deterministically at the 204th successful atomic save. It
+leaves metadata incomplete with 236 pending candidates and no returned selection.
+Requests can already be in flight (240 rows were requested); unsaved responses
+are not claimed as reusable. The next invocation reopens real sidecars, refreshes
+complete live coverage and requests exactly the 236 misses. Concurrent completion
+can fragment up to four active chunks; resumed batches are bounded at 20-23, rather
+than promising exactly 20 calls for every interrupted scheduling order. The full
+cold/warm/resumed selection digest agrees:
+`5b750447c679944d2e36840c13d7244ed47dd2aecdaece113980342c809d315d`.
+Annual single and 16-repository digests likewise agree between cold and warm.
+
+Memory-only tests also interrupt REST-header and cache/selection pipelines,
+assert candidate completion/pending conservation and compare exact selected heads.
+Physical process tests verify fresh-cache reopening, temporary-file cleanup,
+request/header/metadata diagnostics, schemas and older v1 compatibility, deadline
+ownership, no incomplete aggregate and child cancellation/draining. Existing
+native squash/default-overlap fixtures retain pinned/offline numerical parity and
+historical-note tests preserve snapshots, permissions, unresolved dates and
+idempotence. CI gates semantics, counts and fixed bounds, never benchmark timing.
+The report's private repository still requires its own same-input retest.
+
+The measured plans precede a final request-boundary correction: requests rejected
+by the 2,048-attempt ceiling or canceled before admission no longer charge unsent
+work. Deterministic exhaustion and queued-cancellation tests cover these paths;
+interrupted request counts may decrease. Successful request counts, selection and
+the exact 204 saved / 236 missed conservation are unchanged.
