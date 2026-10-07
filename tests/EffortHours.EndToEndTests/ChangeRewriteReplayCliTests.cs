@@ -53,6 +53,13 @@ public sealed partial class ChangeCliTests : ChangeCliTestSupport
             EventTimestamp = manifest.EventTimestamp!.Value.ToOffset(TimeSpan.FromHours(-5)),
         });
         Assert.Equal(ContractJson.SerializeCompact(full), ContractJson.SerializeCompact(offset));
+        Assert.Equal(manifest.ReplayProvenanceId, full.ReplayProvenanceId);
+        Assert.Equal(manifest.EventProvenanceId, full.EventProvenanceId);
+        Assert.Equal(oldBase, full.Comparisons.Single(value => value.Role == "original-implementation").Selection.Base.ObjectId);
+        Assert.Equal(original, full.Comparisons.Single(value => value.Role == "original-implementation").Selection.Head.ObjectId);
+        Assert.Equal(newBase, full.Comparisons.Single(value => value.Role == "retained-feature").Selection.Base.ObjectId);
+        Assert.Equal(replay, full.Comparisons.Single(value => value.Role == "novel-retained-delta").Selection.Base.ObjectId);
+        Assert.Equal(rewritten, full.Comparisons.Single(value => value.Role == "novel-retained-delta").Selection.Head.ObjectId);
         Assert.Equal(2, full.OriginalCommitCount);
         Assert.Equal(conflict ? 2 : 3, full.RewrittenCommitCount);
         Assert.Equal(conflict ? "caller-declared-conflict-replay" : "exact-path-replay-verified", full.ReplayConfidence);

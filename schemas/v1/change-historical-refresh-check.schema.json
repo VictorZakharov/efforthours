@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "urn:eh:schema:v1:change-historical-refresh-plan",
-  "title": "EffortHours historical refresh dry-run plan v1",
+  "$id": "urn:eh:schema:v1:change-historical-refresh-check",
+  "title": "EffortHours historical refresh read-only preflight v1",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -9,20 +9,19 @@
     "policy",
     "dryRun",
     "requiresEntryConfirmation",
-    "requestedFields",
-    "input",
-    "review",
-    "proposals"
+    "status",
+    "planDigest",
+    "plan",
+    "current",
+    "unexpectedRecordIds",
+    "entries"
   ],
   "properties": {
     "schemaVersion": {
       "const": "1.0.0"
     },
     "policy": {
-      "enum": [
-        "historical-note-refresh-plan/1.0.0",
-        "historical-note-refresh-plan/1.1.0"
-      ]
+      "const": "historical-refresh-preflight/1.0.0"
     },
     "dryRun": {
       "const": true
@@ -30,20 +29,32 @@
     "requiresEntryConfirmation": {
       "const": true
     },
-    "requestedFields": {
+    "status": {
       "enum": [
-        "notes",
-        "ehe",
-        "both"
+        "blocked",
+        "ready-for-confirmation"
       ]
     },
-    "input": {
-      "$ref": "urn:eh:schema:v1:change-historical-refresh-manifest"
+    "planDigest": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
     },
-    "review": {
-      "$ref": "urn:eh:schema:v1:change-workday-review-report"
+    "plan": {
+      "$ref": "urn:eh:schema:v1:change-historical-refresh-plan"
     },
-    "proposals": {
+    "current": {
+      "$ref": "urn:eh:schema:v1:change-historical-refresh-current"
+    },
+    "unexpectedRecordIds": {
+      "type": "array",
+      "maxItems": 4096,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+      }
+    },
+    "entries": {
       "type": "array",
       "minItems": 1,
       "maxItems": 4096,
@@ -52,9 +63,8 @@
         "additionalProperties": false,
         "required": [
           "recordId",
-          "date",
-          "evidenceStatus",
           "originalRecordDigest",
+          "snapshotStatus",
           "noteStatus",
           "eheStatus"
         ],
@@ -63,22 +73,33 @@
             "type": "string",
             "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
           },
-          "date": {
-            "type": "string",
-            "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
-          },
-          "evidenceStatus": {
-            "type": "string"
-          },
           "originalRecordDigest": {
             "type": "string",
             "pattern": "^sha256:[a-f0-9]{64}$"
           },
+          "currentRecordDigest": {
+            "type": "string",
+            "pattern": "^sha256:[a-f0-9]{64}$"
+          },
+          "proposedNoteRecordDigest": {
+            "type": "string",
+            "pattern": "^sha256:[a-f0-9]{64}$"
+          },
+          "snapshotStatus": {
+            "enum": [
+              "missing-record",
+              "original-match",
+              "planned-note-match",
+              "concurrent-edit"
+            ]
+          },
           "noteStatus": {
             "enum": [
               "not-requested",
-              "proposed",
-              "unchanged",
+              "ready-to-set",
+              "already-current",
+              "blocked-missing-record",
+              "blocked-concurrent-edit",
               "blocked-locked",
               "blocked-invoiced",
               "blocked-unknown",
@@ -90,40 +111,23 @@
               "blocked-unresolved-matching"
             ]
           },
-          "proposedDescription": {
-            "type": "string"
-          },
           "eheStatus": {
             "enum": [
               "not-requested",
-              "proposed",
-              "unchanged",
+              "ready-to-set",
+              "already-current",
+              "blocked-missing-record",
+              "blocked-concurrent-edit",
               "blocked-locked",
               "blocked-invoiced",
               "blocked-unknown",
               "blocked-permission-denied",
               "blocked-permission-unknown",
               "blocked-managed-annotation",
-              "blocked-unresolved-attribution"
+              "blocked-unresolved-attribution",
+              "blocked-description-bound",
+              "blocked-unresolved-matching"
             ]
-          },
-          "proposedMultiplierContribution": {
-            "type": "number",
-            "minimum": 0,
-            "multipleOf": 0.01
-          },
-          "priorAnnotationStatus": {
-            "enum": [
-              "none",
-              "ambiguous-managed-annotation",
-              "zero-labor-claim",
-              "retained-no-change-annotation",
-              "other-managed-annotation"
-            ]
-          },
-          "proposedNoteRecordDigest": {
-            "type": "string",
-            "pattern": "^sha256:[a-f0-9]{64}$"
           }
         }
       }

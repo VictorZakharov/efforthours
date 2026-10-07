@@ -4,14 +4,27 @@ namespace EffortHours.Contracts;
 
 public static class ChangeHistoricalRefreshPolicy
 {
+    public const string LegacyPlan = "historical-note-refresh-plan/1.0.0";
+    public const string CurrentPlan = "historical-note-refresh-plan/1.1.0";
     private const string Begin = "[EffortHours historical annotation]";
     private const string End = "[/EffortHours historical annotation]";
     public static ChangeHistoricalRefreshProposal Propose(ChangeWorkdayReviewReport review,
-        ChangeHistoricalRefreshEntry entry, ChangeWorkdayReviewDay day, ChangeWorkRecordReview record, string fields)
+        ChangeHistoricalRefreshEntry entry, ChangeWorkdayReviewDay day, ChangeWorkRecordReview record, string fields, string policy = CurrentPlan) =>
+        ProposeCore(review, entry, day, record, fields, policy, alpha39Annotation: false);
+
+    internal static ChangeHistoricalRefreshProposal ProposeAlpha39Legacy(ChangeWorkdayReviewReport review,
+        ChangeHistoricalRefreshEntry entry, ChangeWorkdayReviewDay day, ChangeWorkRecordReview record, string fields) =>
+        ProposeCore(review, entry, day, record, fields, LegacyPlan, alpha39Annotation: true);
+
+    private static ChangeHistoricalRefreshProposal ProposeCore(ChangeWorkdayReviewReport review,
+        ChangeHistoricalRefreshEntry entry, ChangeWorkdayReviewDay day, ChangeWorkRecordReview record, string fields, string policy, bool alpha39Annotation)
     {
         string original = entry.Original.GetProperty("description").GetString()!;
         string noteStatus = Permission(fields != "ehe", entry.NotePermission, entry.Restriction);
         string eheStatus = Permission(fields != "notes", entry.EhePermission, entry.Restriction);
+        bool current = policy == CurrentPlan;
+        if (current && noteStatus == "proposed" && (record.Kind == "mixed" || record.Status is "repository-scope-unresolved" or "mixed-work-records-unresolved"))
+            noteStatus = "blocked-unresolved-matching";
         string? description = null;
         if (noteStatus == "proposed")
         {
@@ -21,14 +34,23 @@ public static class ChangeHistoricalRefreshPolicy
                 string basis = day.WorkdayEvidenceBasis == "external-work-record" ? $"externally declared record date {day.Date}" : "not declared for allocation";
                 dateEvidence = $"Workday date: {basis}; allocation policy: {resolution.Allocation.Policy}.\nDeclaration: {resolution.Allocation.WorkdayInputDigest}.\n";
             }
-            dateEvidence += review.AttributionCompleteness is { } completeness
-                ? $"Source declared events: {completeness.DeclaredEventStatus}; missing dates: {completeness.MissingEventDateCount}; missing replay baselines: {completeness.MissingReplayBaselineCount}.\n" +
-                  $"Source original workdays: {completeness.OriginalWorkdayStatus}; intermediate history: {completeness.IntermediateHistoryStatus}.\n"
-                : "Source attribution completeness: unknown.\n";
+            if (!alpha39Annotation || review.WorkdayResolution is not null)
+            {
+                dateEvidence += review.AttributionCompleteness is { } completeness
+                    ? $"Source declared events: {completeness.DeclaredEventStatus}; missing dates: {completeness.MissingEventDateCount}; missing replay baselines: {completeness.MissingReplayBaselineCount}.\n" +
+                      (alpha39Annotation ? "" : $"Source original workdays: {completeness.OriginalWorkdayStatus}; intermediate history: {completeness.IntermediateHistoryStatus}.\n")
+                    : alpha39Annotation ? "Source declared events: unknown.\n" : "Source attribution completeness: unknown.\n";
+            }
             string uncertainty = review.WorkdayResolution is null ? "Original workdays and intermediate history remain unresolved."
                 : "Original Git workdays and intermediate history remain unresolved.";
+            string explanation = current
+                ? (record.Status == "unresolved-workday"
+                    ? "External implementation record exists on this date without positive retained artifact-date attribution. Original daily attribution is unresolved.\n"
+                    : "Retained-date attribution and externally logged activity are separate evidence.\n") +
+                  "Review, coordination, testing execution, debugging and integration labor without a retained artifact delta are not measured by Change EHE.\n"
+                : "";
             string annotation = $"{Begin}\nRetained evidence: {day.RetainedEvidenceStatus}; review: {record.Status}.\n" +
-                dateEvidence + uncertainty + " EHE is experimental replacement effort; zero retained EHE is not zero labor.\n" +
+                explanation + dateEvidence + uncertainty + " EHE is experimental replacement effort; zero retained EHE is not zero labor.\n" +
                 $"Source: {review.SourceSemanticDigest}; records: {review.WorkRecordInputDigest}.\n{End}";
             description = Annotate(original, annotation);
             if (description is null) noteStatus = "blocked-managed-annotation";
@@ -47,6 +69,8 @@ public static class ChangeHistoricalRefreshPolicy
             Date = day.Date,
             EvidenceStatus = record.Status,
             OriginalRecordDigest = ChangePortfolioComparisonIdentity.ComputeTextDigest(ContractJson.SerializeCompact(entry.Original)),
+            PriorAnnotationStatus = current ? ChangeHistoricalAnnotation.Classify(original) : null,
+            ProposedNoteRecordDigest = current && description is not null ? ChangeHistoricalSnapshot.NoteDigest(entry.Original, description) : null,
             NoteStatus = noteStatus,
             ProposedDescription = description,
             EheStatus = eheStatus,

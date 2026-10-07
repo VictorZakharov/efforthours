@@ -54,6 +54,8 @@ public static class ContractSchemaCatalog
         SchemaNames.ChangeWorkRecordManifest,
         SchemaNames.ChangeHistoricalRefreshManifest,
         SchemaNames.ChangeHistoricalRefreshPlan,
+        SchemaNames.ChangeHistoricalRefreshCheck,
+        SchemaNames.ChangeHistoricalRefreshCurrent,
         SchemaNames.ChangeWorkdayReviewReport,
         SchemaNames.ChangeWorkdayManifest,
         SchemaNames.ChangeWorkdayAllocationReport,

@@ -65,6 +65,7 @@ public sealed partial class ChangePortfolioCliTests
         Assert.True(ContractSchemaValidator.Validate(SchemaNames.ChangeHistoricalRefreshPlan, stdout.ToString()).IsValid);
         ChangeHistoricalRefreshPlan plan = ContractJson.Deserialize<ChangeHistoricalRefreshPlan>(stdout.ToString());
         Assert.Empty(ContractValidation.Validate(plan));
+        await AssertRefreshPreflightAsync(workspace, plan, refresh);
         Assert.StartsWith("Original implementation task", plan.Proposals[0].ProposedDescription, StringComparison.Ordinal);
         Assert.Equal("not-requested", plan.Proposals[0].EheStatus);
         Assert.Equal(entriesText, await File.ReadAllTextAsync(entries, Encoding.UTF8));

@@ -5,7 +5,9 @@ namespace EffortHours.Contracts;
 
 public static partial class ContractValidation
 {
-    public static IReadOnlyList<string> Validate(ChangeHistoricalRefreshManifest input)
+    public static IReadOnlyList<string> Validate(ChangeHistoricalRefreshManifest input) => ValidateHistoricalRefreshManifest(input, allowEmpty: false);
+
+    internal static IReadOnlyList<string> ValidateHistoricalRefreshManifest(ChangeHistoricalRefreshManifest input, bool allowEmpty)
     {
         List<string> errors = [];
         RequireVersion(input.SchemaVersion, "historical refresh manifest", errors);
@@ -14,7 +16,7 @@ public static partial class ContractValidation
         ValidateWorkRecordDate(input.SinceInclusiveDate, errors);
         ValidateWorkRecordDate(input.UntilExclusiveDate, errors);
         if (string.CompareOrdinal(input.SinceInclusiveDate, input.UntilExclusiveDate) >= 0) errors.Add("Refresh range must be nonempty.");
-        if (input.Entries.Count is < 1 or > 4096) errors.Add("Supply 1-4096 explicitly selected entries.");
+        if (input.Entries.Count > 4096 || !allowEmpty && input.Entries.Count == 0) errors.Add("Supply bounded explicitly selected entries.");
         HashSet<string> ids = new(StringComparer.Ordinal);
         foreach (ChangeHistoricalRefreshEntry entry in input.Entries)
         {
@@ -34,7 +36,7 @@ public static partial class ContractValidation
     {
         List<string> errors = [.. Validate(plan.Input), .. Validate(plan.Review)];
         RequireVersion(plan.SchemaVersion, "historical refresh plan", errors);
-        if (plan.Policy != "historical-note-refresh-plan/1.0.0" || !plan.DryRun || !plan.RequiresEntryConfirmation ||
+        if (plan.Policy is not (ChangeHistoricalRefreshPolicy.LegacyPlan or ChangeHistoricalRefreshPolicy.CurrentPlan) || !plan.DryRun || !plan.RequiresEntryConfirmation ||
             plan.RequestedFields is not ("notes" or "ehe" or "both")) errors.Add("Refresh plans must be read-only and require separate entry confirmation.");
         if (plan.Input.SourceSemanticDigest != plan.Review.SourceSemanticDigest || plan.Input.WorkRecordInputDigest != plan.Review.WorkRecordInputDigest)
             errors.Add("Refresh must bind exact source/review provenance.");
@@ -61,7 +63,8 @@ public static partial class ContractValidation
             if (entry.Original.ValueKind != JsonValueKind.Object) continue;
             if (proposal.OriginalRecordDigest != ChangePortfolioComparisonIdentity.ComputeTextDigest(ContractJson.SerializeCompact(entry.Original)))
                 errors.Add("Proposal must bind the complete untouched original snapshot.");
-            if (errors.Count == 0 && proposal != ChangeHistoricalRefreshPolicy.Propose(plan.Review, entry, day, record, plan.RequestedFields))
+            if (errors.Count == 0 && proposal != ChangeHistoricalRefreshPolicy.Propose(plan.Review, entry, day, record, plan.RequestedFields, plan.Policy) &&
+                (plan.Policy != ChangeHistoricalRefreshPolicy.LegacyPlan || proposal != ChangeHistoricalRefreshPolicy.ProposeAlpha39Legacy(plan.Review, entry, day, record, plan.RequestedFields)))
                 errors.Add("Proposal must preserve the exact annotation, permission/restriction state and conserved reviewed contribution.");
         }
         return errors;
