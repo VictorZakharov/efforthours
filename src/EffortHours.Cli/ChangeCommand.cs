@@ -82,6 +82,9 @@ internal sealed partial class ChangeCommand
                 standardError, cancellationToken).ConfigureAwait(false);
         }
 
+        if (arguments[0].Equals("check-refresh", StringComparison.OrdinalIgnoreCase))
+            return await ChangeHistoricalRefreshCheckCommand.ExecuteAsync([.. arguments.Skip(1)], standardOutput,
+                standardError, cancellationToken).ConfigureAwait(false);
         if (arguments[0].Equals("plan-refresh", StringComparison.OrdinalIgnoreCase))
             return await ChangeHistoricalRefreshCommand.ExecuteAsync([.. arguments.Skip(1)], standardOutput,
                 standardError, cancellationToken).ConfigureAwait(false);

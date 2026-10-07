@@ -312,3 +312,30 @@ Requests rejected by the fixed cap or canceled before admission no longer charge
 unsent work. Exhaustion and cancellation paths are tested separately; interrupted
 attempt counts may decrease. Successful request plans, source selection, the
 204/236 resume conservation and estimation rules remain identical.
+
+## Warm inventory freshness assessment
+
+The existing 24-hour cache applies only to immutable PR metadata. Current inventory
+membership has **zero intentional staleness**: every run refreshes complete visible
+repository/default/PR inventories. New/removed PRs, moved heads, advanced upstream
+bases and changed counts cannot reuse cached membership. The alpha.40 checkpoint's
+warm request counts are six for one restricted repository and nine for two; those
+include live coverage and adaptive census, not missed metadata reuse. Warm runs
+already target zero metadata batches and zero newly acquired objects for identical
+live immutable inputs; CI gates those deterministic counts, not wall time.
+
+Dropping the census can reduce a warm request but may force a much larger scoped
+inventory for an account with few authored PRs. Caching whole membership or trusting
+an unchanged count would weaken coverage (a replacement can preserve the count).
+No such optimization is admitted here. A future optimization must first freeze
+zero-stale membership parity, changed-head/base/count invalidation, the same bounded
+requests/readers, and a measured complete-inventory request target on both account-
+and repository-dominated populations. It must demonstrate the target without date
+pruning or partial inventories before claiming a latency improvement.
+
+The additive `historical-network-checkpoint/1.1.0` driver receipt now records
+`attributionCompleteness`, exact repository restriction and native daily evidence
+state counts alongside existing request/page/process receipts, population, selected
+changes, bytes, peaks, wall timings and digests. Complete execution remains
+separate from unresolved original workdays/unknown intermediate history. Earlier
+measurement records retain their original protocols and values.

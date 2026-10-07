@@ -56,6 +56,10 @@ public sealed partial class ChangeCliTests
         Assert.All(full.Items.Where(item => item.DuplicateOfItemId is not null || item.ExactComposition is not null), item => Assert.Equal(0m, item.AllocatedExpectedHours));
         ChangePortfolioComparisonReport ordinary = await Run(manifest with { Repositories = [manifest.Repositories[0] with { ReplayEvents = null }] });
         Assert.Equal(ordinary.SourcePortfolio!.TotalEffort, full.TotalEffort);
+        Assert.Equal("available", cold.AttributionCompleteness!.DeclaredEventStatus);
+        Assert.Equal("unresolved-original-workday", cold.AttributionCompleteness.OriginalWorkdayStatus);
+        Assert.Equal("unknown", cold.AttributionCompleteness.IntermediateHistoryStatus);
+        AssertResolvedEventStillHasUnresolvedWorkdays(cold);
         if (!partitions) return;
         DateTimeOffset split = Instant("2026-01-22T00:00:00Z");
         ChangePortfolioComparisonReport earlier = await Run(manifest with { Selection = manifest.Selection with { UntilExclusive = split } });
@@ -107,6 +111,33 @@ public sealed partial class ChangeCliTests
         AssertDeclaredProjectionKeepsReplayUncertainty(missing, records with { SourceSemanticDigest = missing.Verification.SemanticDigest });
         await Run(manifest with { Repositories = [manifest.Repositories[0] with { ReplayEvents = [declaration with { ReplayObjectId = new string('a', 40) }] }] }, incomplete: true);
         await Run(manifest with { Repositories = [manifest.Repositories[0] with { ReplayEvents = [declaration, declaration with { Id = "competing" }] }] }, incomplete: true);
+
+        static void AssertResolvedEventStillHasUnresolvedWorkdays(ChangePortfolioComparisonReport source)
+        {
+            ChangeWorkRecordManifest activity = new()
+            {
+                SourceSemanticDigest = source.Verification.SemanticDigest,
+                Records = [new() { RecordId = "later-work", Date = "2026-01-23", Kind = "implementation", RepositoryIds = ["repository"] }],
+            };
+            var reviewed = ChangeWorkdayReviewer.Review(source, activity);
+            var day = reviewed.Days.Single(value => value.Date == "2026-01-23");
+            Assert.Equal("unresolved-workday", day.Status);
+            ChangeHistoricalRefreshManifest entries = new()
+            {
+                SourceSemanticDigest = reviewed.SourceSemanticDigest,
+                WorkRecordInputDigest = reviewed.WorkRecordInputDigest,
+                SinceInclusiveDate = "2026-01-23",
+                UntilExclusiveDate = "2026-01-24",
+                Entries = [new() { RecordId = "later-work", NotePermission = "allowed", EhePermission = "allowed", Restriction = "none",
+                    Original = JsonSerializer.SerializeToElement(new { description = "Testing and review follow-up", ticket = "private-ticket", hours = 4 }) }],
+            };
+            var plan = ChangeHistoricalRefreshPlanner.Plan(reviewed, entries, "both");
+            Assert.Contains("Source declared events: available", plan.Proposals[0].ProposedDescription, StringComparison.Ordinal);
+            Assert.Contains("Original daily attribution is unresolved", plan.Proposals[0].ProposedDescription, StringComparison.Ordinal);
+            Assert.Null(plan.Proposals[0].ProposedMultiplierContribution);
+            Assert.Equal("blocked", ChangeHistoricalRefreshPreflight.Check(plan, entries).Status);
+            Assert.Equal("ready-for-confirmation", ChangeHistoricalRefreshPreflight.Check(ChangeHistoricalRefreshPlanner.Plan(reviewed, entries), entries).Status);
+        }
 
         static void AssertDeclaredProjectionKeepsReplayUncertainty(ChangePortfolioComparisonReport source, ChangeWorkRecordManifest records)
         {

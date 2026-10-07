@@ -464,3 +464,10 @@ EHE stays separate from allocated-date EHE, and source attribution completeness
 remains unchanged. The opt-in `equal-declared-day-entries/1.0.0` conserves a single
 rounded expected-EHE/8 period multiplier across dates/entries. Existing saved v1
 retained reviews and their daily-rounding policy retain their behavior.
+
+Historical note plan policy 1.1.0 adds managed zero-verdict classification and a
+planned note snapshot digest while preserving 1.0.0 validation. The separate
+`change-historical-refresh-check` v1 contract is an offline full-snapshot and
+permission preflight; a ready receipt still requires confirmation and an external
+atomic conditional write. It creates no estimates or historical dates. See
+[HISTORICAL_NOTE_REFRESH.md](HISTORICAL_NOTE_REFRESH.md).

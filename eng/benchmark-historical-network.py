@@ -71,6 +71,7 @@ def run_row(args, root, label, repositories, since, until, warm):
     if report_path.exists():
         report = json.loads(report_path.read_text(encoding='utf-8'))
         execution = report.get('execution', {})
+        daily_evidence = (report.get('nativePeriod') or {}).get('dailyEvidence') or []
         discovery = report.get('discovery', {})
         selection = (report.get('sourcePortfolio') or {}).get('selection')
         selection_digest = hashlib.sha256(json.dumps(selection, sort_keys=True, separators=(',', ':')).encode('utf-8')).hexdigest() if selection is not None else None
@@ -85,6 +86,10 @@ def run_row(args, root, label, repositories, since, until, warm):
                     'historicalPrHeads': discovery.get('historicalPullRequestHeadCount'),
                     'resources': execution.get('resources'), 'reuse': execution.get('reuse'),
                     'phaseTimings': execution.get('phaseTimings'), 'failures': execution.get('failures'),
+                    'attributionCompleteness': report.get('attributionCompleteness'),
+                    'coverageRestriction': discovery.get('repositoryRestriction'),
+                    'dailyEvidenceCounts': {state: sum(cell.get('state') == state for cell in daily_evidence)
+                                            for state in sorted({cell.get('state') for cell in daily_evidence})},
                     'agentAction': report.get('agentAction')})
     else:
         row['status'] = 'no-report'
@@ -130,7 +135,7 @@ def main():
             second['sameCompleteSemanticDigest'] = comparable
             second['comparison'] = 'same-result' if comparable else 'incomplete' if first['status'] != 'complete' or second['status'] != 'complete' else 'input-changed' if first.get('selectionDigest') != second.get('selectionDigest') else 'semantic-mismatch'
     finally:
-        summary = {'protocol': 'historical-network-checkpoint/1.0.0', 'binaryDigest': frozen_binary, 'platform': platform.platform(),
+        summary = {'protocol': 'historical-network-checkpoint/1.1.0', 'binaryDigest': frozen_binary, 'platform': platform.platform(),
                    'logicalProcessors': os.cpu_count(), 'discoverySeconds': args.discovery_seconds,
                    'maximumAcquiredMiB': args.acquired_mib, 'runSeconds': args.run_seconds,
                    'checkpointEnabled': False, 'rows': rows}

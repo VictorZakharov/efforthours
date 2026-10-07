@@ -24,7 +24,7 @@ public sealed record ChangeHistoricalRefreshEntry
 public sealed record ChangeHistoricalRefreshPlan
 {
     public string SchemaVersion { get; init; } = ContractVersions.V1;
-    public string Policy { get; init; } = "historical-note-refresh-plan/1.0.0";
+    public string Policy { get; init; } = ChangeHistoricalRefreshPolicy.CurrentPlan;
     public bool DryRun { get; init; } = true;
     public bool RequiresEntryConfirmation { get; init; } = true;
     public required string RequestedFields { get; init; }
@@ -39,6 +39,8 @@ public sealed record ChangeHistoricalRefreshProposal
     public required string Date { get; init; }
     public required string EvidenceStatus { get; init; }
     public required string OriginalRecordDigest { get; init; }
+    public string? PriorAnnotationStatus { get; init; }
+    public string? ProposedNoteRecordDigest { get; init; }
     public required string NoteStatus { get; init; }
     public string? ProposedDescription { get; init; }
     public required string EheStatus { get; init; }

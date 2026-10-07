@@ -146,6 +146,8 @@ public static class SchemaNames
     public const string ChangeRewriteReviewReport = "change-rewrite-review-report.schema.json";
 
     public const string ChangeHistoricalRefreshManifest = "change-historical-refresh-manifest.schema.json";
+    public const string ChangeHistoricalRefreshCurrent = "change-historical-refresh-current.schema.json";
+    public const string ChangeHistoricalRefreshCheck = "change-historical-refresh-check.schema.json";
     public const string ChangeHistoricalRefreshPlan = "change-historical-refresh-plan.schema.json";
     public const string ChangeWorkRecordManifest = "change-work-record-manifest.schema.json";
 

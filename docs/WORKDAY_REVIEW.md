@@ -187,3 +187,36 @@ eh change plan-refresh period.json --work-records records.json --workdays workda
 
 Use `--fields notes` for a notes-only subset. These commands read saved artifacts
 and create new review/plan files; applying a plan to real records is separate.
+
+## Private consumer mapping from external work records
+
+A time-entry consumer exports a complete source report first and keeps a private
+mapping from approved public `recordId` to the original external entry ID. For each
+entry, retain its actual local date, original description, logged hours, project,
+task, ticket(s), repository/PR associations, billing state and external provenance
+in the complete `plan-refresh` original snapshot. Provenance should identify the
+export/source and immutable record revision or content hash; never include access
+tokens. Public IDs in `records.json` are opaque join keys, not the private ticket,
+PR URL, project name or external login. The consumer reviews those private
+associations before declaring the exact source repository set in `repositoryIds`.
+EH validates that declaration; it does not discover PR/ticket matches or certify
+that a description proves implementation. Missing dates require external correction;
+no committer timestamp or logged duration supplies them.
+
+The explicit entry-selection policy is **exact reviewed record IDs within the
+start-inclusive/end-exclusive date range**. Mixed tickets or several repositories
+that cannot be bound to one complete source scope remain unresolved; use `mixed`
+or an explicit mismatching repository relationship instead of guessing weights.
+Meetings/PTO stay visible and excluded. A project-specific aggregate requires its
+own jointly selected source; separate source totals cannot be joined as causal
+project allocations. Preserve excluded and unresolved rows in the review, and do
+not silently drop a later implementation record because the retained bucket is zero.
+
+For the five-day 98.75-hour example, records on days B-E yield `unresolved-workday`
+with no default contribution even when execution is complete. This can coexist
+with a correct retained aggregate. Explicit declared dates can produce a separate
+`allocated` view of that same 98.75 hours; retained and allocated views are
+alternatives and must never be added. Existing fixed-eight, midpoint-only,
+two-decimal entry policies are unchanged, including multiple positive entries per
+day and period-cent conservation. See [historical refresh preflight](HISTORICAL_NOTE_REFRESH.md)
+for the fresh-snapshot check before separately confirmed external application.
