@@ -6,6 +6,8 @@ may still change public contracts with explicit documentation.
 
 ## Unreleased
 
+## 0.10.0-alpha.40 - 2026-10-07
+
 - Choose the smaller complete historical authored-account or restricted repository
   PR inventory without PR-date pruning. Stream account pages within existing bounds;
   fall back only for unavailable repository connections and skip deleted authors.
@@ -18,6 +20,8 @@ may still change public contracts with explicit documentation.
 - Include source attribution completeness in every offline historical-note proposal,
   preserving unresolved original dates/history, independent permissions and snapshots.
   Estimation priors, reconciliation totals and pricing rules are unchanged.
+  EHE remains experimental and uncalibrated; discarded original workdays and
+  intermediate history remain unresolved.
 
 ## 0.10.0-alpha.39 - 2026-10-06
 
