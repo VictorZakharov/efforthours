@@ -339,3 +339,68 @@ state counts alongside existing request/page/process receipts, population, selec
 changes, bytes, peaks, wall timings and digests. Complete execution remains
 separate from unresolved original workdays/unknown intermediate history. Earlier
 measurement records retain their original protocols and values.
+
+## Alpha.40 workday/note-preflight public revalidation
+
+Recorded October 7, 2026 at implementation commit
+`b7102518dcd76493aadda8b061484f267e105eab`, frozen CLI digest
+`7a08fdaf7a3471319346118496359406e49391b0e0766562a3ce13af669dd9b8`.
+The existing Windows/24-logical-processor host, contributor, UTC author-date
+policy, engineering/implementation scope and fixed eight-hour capacity match the
+prior checkpoint. Five-day scope is better-web-browser, October 1-6, 2026;
+annual scope is better-web-browser plus EffortHours, October 6, 2025 to October 6,
+2026. Each scope has a new cold object/provider cache and a fresh-process warm
+repeat, with evidence checkpoints disabled. No EH build/test or other checkpoint
+was launched during the timed rows; ordinary background load and network latency
+remain uncontrolled. These are single observations, not latency gates.
+
+Reproduction uses the driver command above with a new private output directory and
+a frozen build of that commit. The driver receipt is now
+`historical-network-checkpoint/1.1.0`. Discovery/acquisition is bounded at 90
+seconds, object growth at 256 MiB and the driver at 1,800 seconds. All four rows
+exit zero, have complete inventory/metadata/selection, zero pending PRs, no
+fallback/failure and no driver timeout. Full reports and provider/source caches
+remain ignored/private.
+
+| Scope/cache | Outer wall s | CLI wall s | Discovery/acquisition s | Queries/pages/receipts | Metadata hits | Selected changes | Snapshot requests | Acquired objects | Observed acquired bytes | Sampled peak MiB |
+| --- | ---: | ---: | ---: | --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| Five-day single cold | 55.515 | 55.038 | 10.866 | 21/21/21 | 0/154 | 106 | 214 | 19,969 | 11,841,536 | 831.090 |
+| Five-day single warm | 42.797 | 42.349 | 5.968 | 6/6/6 | 154/154 | 106 | 214 | 0 | 0 | 878.094 |
+| Annual two repositories cold | 183.719 | 178.884 | 29.921 | 38/38/38 | 0/318 | 849 | 1698 | 30,051 | 20,738,048 | 1500.605 |
+| Annual two repositories warm | 196.953 | 189.596 | 32.862 | 9/9/9 | 318/318 | 849 | 1698 | 0 | 0 | 1538.414 |
+
+The complete visible inventory is explicitly restricted to one or two repositories:
+79/78 other repositories are excluded, so this is not account or organization
+coverage. Narrow inventory has 154 candidate PR representations and 13 retained
+heads (12 historical PRs plus one default); annual has 318 candidates and 303
+heads (301 historical PRs plus two defaults). Cold metadata uses 13/27 batches;
+warm uses zero batches and acquires zero objects/bytes. Live inventory still uses
+3/5 requests including census, preserving zero intentional membership staleness.
+Annual candidate/pinned populations have advanced since earlier checkpoints;
+older wall times and semantic digests are not a same-input performance baseline.
+
+Exact cold/warm selections and complete semantic digests match within each scope:
+
+- Five-day selection: `e7c444ad79168d37f58e2cbf11304836ed00941eed3116f71cd1ebc4a487c85f`; semantic: `sha256:4a1564c2f189e37e33f65aa941a6b51bcfde5ef3ae6c3e205af0fe29d8a97223`.
+- Annual selection: `372129b6812e8c82f2eeac046a0dda68045a66fb8056d5116b97e6e7f072f6b4`; semantic: `sha256:3ef99200cef2ee7183820a4a062d56a8608ecefef8de8b55f79a22478deadca1`.
+
+All rows retain `originalWorkdayStatus: unresolved-original-workday`,
+`intermediateHistoryStatus: unknown` and `declaredEventStatus: not-declared`,
+with zero missing declared-event dates/baselines because no events are declared.
+Those zeros do not establish event coverage or original workdays. Narrow native
+daily evidence has five measured-retained-change dates. Annual has 54
+measured-retained-change, 310 no-retained-change and one reconciled-zero date;
+the three states sum to all 365 days without claiming zero labor or filling
+missing history.
+
+After timed measurements, all four saved reports passed the CLI source schema,
+semantic and digest checks through `review-days`, followed by `plan-refresh` and
+`check-refresh` using explicitly synthetic validation entries in ignored files.
+The repeated check recognized already-current notes, and source bytes remained
+unchanged. This verifies the composed read-only workflow on actual native public
+reports; synthetic entries are not real work records or workday evidence.
+
+Annual warm CLI wall time is longer here despite zero metadata batches and zero
+acquisition. These measurements establish bounded successful coverage and reuse,
+not a speed improvement, NDA field latency, recovered workdays, empirical effort
+accuracy or actual timeinv application.
