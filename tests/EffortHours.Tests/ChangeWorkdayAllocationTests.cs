@@ -92,7 +92,7 @@ public sealed partial class ChangePortfolioComparisonTests
         { RecordId = "record-" + index, Date = bucket.Label, LoggedHours = index % 2 == 0 ? 4 : 12 })],
     };
 
-    private static async Task<ChangePortfolioComparisonReport> WorkdaySourceAsync(bool dst = false, bool empty = false, decimal referenceHours = 8m)
+    private static async Task<ChangePortfolioComparisonReport> WorkdaySourceAsync(bool dst = false, bool empty = false, decimal referenceHours = 8m, bool multipleRepositories = false)
     {
         TimeZoneInfo zone = TimeZoneInfo.FindSystemTimeZoneById(dst ? "America/Toronto" : "UTC");
         DateTime start = new(2026, dst ? 3 : 1, dst ? 7 : 19, 0, 0, 0, DateTimeKind.Unspecified);
@@ -103,6 +103,8 @@ public sealed partial class ChangePortfolioComparisonTests
             Selection = manifest.Selection with { SinceInclusive = Instant(start), UntilExclusive = Instant(start.AddDays(5)), TimeZone = zone.Id },
             Contributors = [manifest.Contributors[0]],
         };
+        if (multipleRepositories) manifest = manifest with
+        { Repositories = [.. manifest.Repositories, manifest.Repositories[0] with { Id = "repository-b" }] };
         ChangePortfolioCandidate[] candidates = empty ? [] : [await CandidateAsync("retained", Instant(start.AddHours(12)),
             [Match("contributor-a", ChangePortfolioContributorMatchKind.DirectAuthor)])];
         ChangePortfolioReport portfolio = ChangePortfolioReconciler.Reconcile(Selection(manifest), candidates, EstimationProfile.Implementation);

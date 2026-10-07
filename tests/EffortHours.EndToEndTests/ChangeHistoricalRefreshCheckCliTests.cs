@@ -56,7 +56,7 @@ public sealed partial class ChangePortfolioCliTests
         Assert.Equal("blocked-missing-record", ContractJson.Deserialize<ChangeHistoricalRefreshCheck>(deleted.StandardOutput).Entries[0].NoteStatus);
         await File.WriteAllTextAsync(currentPath, "{}", new UTF8Encoding(false));
         var invalid = await RunCliAsync(args);
-        Assert.Equal(3, invalid.ExitCode);
+        Assert.Equal(1, invalid.ExitCode);
         Assert.Empty(invalid.StandardOutput);
         Assert.DoesNotContain(workspace, invalid.StandardError, StringComparison.OrdinalIgnoreCase);
     }

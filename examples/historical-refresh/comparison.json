@@ -1,0 +1,868 @@
+{
+  "schemaVersion": "1.0.0",
+  "status": "complete",
+  "view": "trend",
+  "title": "Synthetic portfolio trend",
+  "generatedAt": "2026-08-20T12:00:00+00:00",
+  "cliVersion": "0.10.0-test",
+  "estimatorVersion": "change-portfolio/0.6.5\u002Bchange-seed/0.21.3\u002Bseed-rules/0.4.0",
+  "sourceChangeEstimatorVersion": "change-seed/0.21.3\u002Bseed-rules/0.4.0",
+  "profile": "implementation",
+  "selection": {
+    "schemaVersion": "1.0.0",
+    "kind": "author-period",
+    "manifestBased": true,
+    "authorPeriodManifest": {
+      "manifestDigest": "sha256:387b615cadac3b479e0bf5ca3e22c4e352a67960135daa8dfe067a3d7d9f8079",
+      "sinceInclusive": "2026-01-19T00:00:00+00:00",
+      "untilExclusive": "2026-01-24T00:00:00+00:00",
+      "timeZone": "UTC",
+      "dateField": "author",
+      "mergePolicy": "exclude",
+      "coauthorPolicy": "include",
+      "contributorIds": [
+        "contributor-a"
+      ],
+      "repositories": [
+        {
+          "id": "repository-a",
+          "heads": [
+            {
+              "id": "default",
+              "objectId": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+            }
+          ]
+        }
+      ],
+      "intervalSemantics": "since-inclusive-until-exclusive"
+    }
+  },
+  "bucketPolicy": {
+    "kind": "calendar-day",
+    "policy": "calendar-day/1.0.0",
+    "inputDigest": "sha256:0f8ef081f10f0b8b36d01f0ccdfba3dd3cf09e1b0afc18f15c5f12e2da6090d0",
+    "contributorNormalization": "joint",
+    "capacityCalendarPolicy": "fixed-eight",
+    "capacityInputDigest": "sha256:51a5355eb07dd4c2f208c4d2cbfa990cf001f6ce71b8d9b18b2b4893a0dd632b",
+    "rollingWindowBucketCount": 3
+  },
+  "sourcePortfolio": {
+    "schemaVersion": "1.0.0",
+    "estimatorVersion": "change-portfolio/0.6.5\u002Bchange-seed/0.21.3\u002Bseed-rules/0.4.0",
+    "sourceChangeEstimatorVersion": "change-seed/0.21.3\u002Bseed-rules/0.4.0",
+    "selection": {
+      "schemaVersion": "1.0.0",
+      "kind": "author-period",
+      "manifestBased": true,
+      "authorPeriodManifest": {
+        "manifestDigest": "sha256:387b615cadac3b479e0bf5ca3e22c4e352a67960135daa8dfe067a3d7d9f8079",
+        "sinceInclusive": "2026-01-19T00:00:00+00:00",
+        "untilExclusive": "2026-01-24T00:00:00+00:00",
+        "timeZone": "UTC",
+        "dateField": "author",
+        "mergePolicy": "exclude",
+        "coauthorPolicy": "include",
+        "contributorIds": [
+          "contributor-a"
+        ],
+        "repositories": [
+          {
+            "id": "repository-a",
+            "heads": [
+              {
+                "id": "default",
+                "objectId": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+              }
+            ]
+          }
+        ],
+        "intervalSemantics": "since-inclusive-until-exclusive"
+      }
+    },
+    "profile": "implementation",
+    "baseline": {
+      "id": "senior-contractor-2026-no-ai",
+      "workerProfile": "Competent senior contractor familiar with the technical ecosystem",
+      "technologyBaselineYear": 2026,
+      "businessDomainFamiliar": false,
+      "usesAi": false,
+      "description": "One senior contractor recreating the described working system with modern 2026 tools and no AI."
+    },
+    "isolatedEffort": {
+      "low": 1.25,
+      "expected": 2.25,
+      "high": 4.25
+    },
+    "totalEffort": {
+      "low": 1.25,
+      "expected": 2.25,
+      "high": 4.25
+    },
+    "categories": [
+      {
+        "category": "specification-comprehension-and-domain-learning",
+        "hours": {
+          "low": 0.25,
+          "expected": 0.50,
+          "high": 1
+        }
+      },
+      {
+        "category": "production-implementation",
+        "hours": {
+          "low": 0.50,
+          "expected": 0.75,
+          "high": 1.25
+        }
+      },
+      {
+        "category": "manual-validation-debugging-and-hardening",
+        "hours": {
+          "low": 0.25,
+          "expected": 0.5,
+          "high": 1
+        }
+      },
+      {
+        "category": "self-review-and-system-integration",
+        "hours": {
+          "low": 0.25,
+          "expected": 0.50,
+          "high": 1
+        }
+      }
+    ],
+    "repositoryGroups": [
+      {
+        "id": "change-portfolio-repository:5aa12187a427aac51022",
+        "repositoryId": "repository-a",
+        "orderPolicy": "chronological-selected-commits",
+        "baseContexts": [
+          {
+            "id": "change-portfolio-base:1c9932ed140e1a71d0f6",
+            "baseObjectId": "c5e1f62e53db506dcc224303900f26a6db76e09b3dbf10b5e97905300dd8063e",
+            "itemIds": [
+              "change-portfolio-item:46c73c081d3eb042fa5d"
+            ]
+          }
+        ],
+        "itemIds": [
+          "change-portfolio-item:46c73c081d3eb042fa5d"
+        ],
+        "isolatedEffort": {
+          "low": 1.25,
+          "expected": 2.25,
+          "high": 4.25
+        },
+        "normalizedEffort": {
+          "low": 1.25,
+          "expected": 2.25,
+          "high": 4.25
+        },
+        "categories": [
+          {
+            "category": "specification-comprehension-and-domain-learning",
+            "hours": {
+              "low": 0.25,
+              "expected": 0.50,
+              "high": 1
+            }
+          },
+          {
+            "category": "production-implementation",
+            "hours": {
+              "low": 0.50,
+              "expected": 0.75,
+              "high": 1.25
+            }
+          },
+          {
+            "category": "manual-validation-debugging-and-hardening",
+            "hours": {
+              "low": 0.25,
+              "expected": 0.5,
+              "high": 1
+            }
+          },
+          {
+            "category": "self-review-and-system-integration",
+            "hours": {
+              "low": 0.25,
+              "expected": 0.50,
+              "high": 1
+            }
+          }
+        ],
+        "assessment": "within-structural-tolerance",
+        "adjustmentIds": [],
+        "uncertaintyReasons": []
+      }
+    ],
+    "aggregation": {
+      "policy": "exclusive-contributor-and-head-match-sets/1.0.0",
+      "contributors": [
+        {
+          "contributorId": "contributor-a",
+          "selectedCommitCount": 1,
+          "directAuthorMatchCount": 1,
+          "coauthorMatchCount": 0,
+          "singleContributorSelectedCommitCount": 1,
+          "sharedContributorSelectedCommitCount": 0,
+          "noSelectedCommits": false,
+          "singleContributorGroupId": "change-portfolio-contributor-group:c3e7f30b0c718db21632",
+          "sharedContributorGroupIds": [],
+          "uncertaintyReasons": []
+        }
+      ],
+      "contributorGroups": [
+        {
+          "id": "change-portfolio-contributor-group:c3e7f30b0c718db21632",
+          "kind": "single-contributor",
+          "contributorIds": [
+            "contributor-a"
+          ],
+          "itemIds": [
+            "change-portfolio-item:46c73c081d3eb042fa5d"
+          ],
+          "selectedCommitCount": 1,
+          "directAuthorMatchCount": 1,
+          "coauthorMatchCount": 0,
+          "isolatedEffort": {
+            "low": 1.25,
+            "expected": 2.25,
+            "high": 4.25
+          },
+          "normalizedEffort": {
+            "low": 1.25,
+            "expected": 2.25,
+            "high": 4.25
+          },
+          "reconciliationDelta": {
+            "low": 0.00,
+            "expected": 0.00,
+            "high": 0.00
+          },
+          "repositoryAllocations": [
+            {
+              "id": "change-portfolio-contributor-repository:7240a0df1de0121d2db2",
+              "repositoryId": "repository-a",
+              "repositoryGroupId": "change-portfolio-repository:5aa12187a427aac51022",
+              "itemIds": [
+                "change-portfolio-item:46c73c081d3eb042fa5d"
+              ],
+              "isolatedEffort": {
+                "low": 1.25,
+                "expected": 2.25,
+                "high": 4.25
+              },
+              "normalizedEffort": {
+                "low": 1.25,
+                "expected": 2.25,
+                "high": 4.25
+              },
+              "reconciliationDelta": {
+                "low": 0.00,
+                "expected": 0.00,
+                "high": 0.00
+              },
+              "adjustmentIds": [],
+              "uncertaintyReasons": []
+            }
+          ],
+          "uncertaintyReasons": []
+        }
+      ],
+      "repositories": [
+        {
+          "repositoryId": "repository-a",
+          "selectedCommitCount": 1,
+          "directAuthorMatchCount": 1,
+          "coauthorMatchCount": 0,
+          "sharedContributorSelectedCommitCount": 0,
+          "sharedHeadSelectedCommitCount": 0,
+          "noSelectedCommits": false,
+          "isolatedEffort": {
+            "low": 1.25,
+            "expected": 2.25,
+            "high": 4.25
+          },
+          "normalizedEffort": {
+            "low": 1.25,
+            "expected": 2.25,
+            "high": 4.25
+          },
+          "adjustmentIds": [],
+          "heads": [
+            {
+              "headId": "default",
+              "reachableSelectedCommitCount": 1,
+              "uniqueSelectedCommitCount": 1,
+              "sharedSelectedCommitCount": 0,
+              "noUniqueSelectedCommits": false,
+              "singleHeadGroupId": "change-portfolio-head-group:f5fd13fa2e413ff56412",
+              "sharedHeadGroupIds": []
+            }
+          ],
+          "headGroups": [
+            {
+              "id": "change-portfolio-head-group:f5fd13fa2e413ff56412",
+              "kind": "single-head",
+              "headIds": [
+                "default"
+              ],
+              "itemIds": [
+                "change-portfolio-item:46c73c081d3eb042fa5d"
+              ],
+              "selectedCommitCount": 1,
+              "isolatedEffort": {
+                "low": 1.25,
+                "expected": 2.25,
+                "high": 4.25
+              },
+              "normalizedEffort": {
+                "low": 1.25,
+                "expected": 2.25,
+                "high": 4.25
+              },
+              "reconciliationDelta": {
+                "low": 0.00,
+                "expected": 0.00,
+                "high": 0.00
+              },
+              "adjustmentIds": [],
+              "uncertaintyReasons": []
+            }
+          ],
+          "uncertaintyReasons": []
+        }
+      ]
+    },
+    "items": [
+      {
+        "id": "change-portfolio-item:46c73c081d3eb042fa5d",
+        "selectorId": "repository-a:commit:retained",
+        "repositoryId": "repository-a",
+        "baseContextId": "change-portfolio-base:1c9932ed140e1a71d0f6",
+        "selection": {
+          "schemaVersion": "1.0.0",
+          "kind": "commit",
+          "base": {
+            "selector": "base",
+            "objectId": "c5e1f62e53db506dcc224303900f26a6db76e09b3dbf10b5e97905300dd8063e",
+            "kind": "git-tree"
+          },
+          "head": {
+            "selector": "head",
+            "objectId": "c20902cfb94360ac6e542933b191fb5028965160931890b67bc92b61e00870bf",
+            "kind": "git-tree"
+          },
+          "commit": "c20902cfb94360ac6e542933b191fb5028965160931890b67bc92b61e00870bf"
+        },
+        "evidenceDigest": "sha256:7dcdaa20dfea5540539cd08c9657ff55899ca36da9e040bde5d12ecbb57577a4",
+        "patchDigest": "sha256:18fe6209697ca7ddf1ce693ae089671a558a14fcb10cd290f49c198a8e6147ce",
+        "representedPathCount": 1,
+        "analyzedPathCount": 1,
+        "isolatedEffort": {
+          "low": 1.25,
+          "expected": 2.25,
+          "high": 4.25
+        },
+        "allocatedExpectedHours": 2.25,
+        "categories": [
+          {
+            "category": "specification-comprehension-and-domain-learning",
+            "hours": {
+              "low": 0.25,
+              "expected": 0.50,
+              "high": 1
+            }
+          },
+          {
+            "category": "production-implementation",
+            "hours": {
+              "low": 0.50,
+              "expected": 0.75,
+              "high": 1.25
+            }
+          },
+          {
+            "category": "manual-validation-debugging-and-hardening",
+            "hours": {
+              "low": 0.25,
+              "expected": 0.5,
+              "high": 1
+            }
+          },
+          {
+            "category": "self-review-and-system-integration",
+            "hours": {
+              "low": 0.25,
+              "expected": 0.50,
+              "high": 1
+            }
+          }
+        ],
+        "attribution": {
+          "kind": "direct-author",
+          "selectedTimestamp": "2026-01-19T12:00:00+00:00",
+          "mergeCommit": false,
+          "parentCount": 1,
+          "contributorMatches": [
+            {
+              "contributorId": "contributor-a",
+              "kind": "direct-author"
+            }
+          ],
+          "headIds": [
+            "default"
+          ],
+          "ambiguityReasons": []
+        },
+        "uncertaintyReasons": []
+      }
+    ],
+    "adjustments": [],
+    "diagnostics": [
+      {
+        "code": "FB5300",
+        "severity": "warning",
+        "message": "Change portfolio reconciliation is experimental. It composes reviewed Change-report contracts but is not empirically calibrated or suitable for employee ranking.",
+        "evidenceIds": [],
+        "locations": []
+      },
+      {
+        "code": "FB5301",
+        "severity": "information",
+        "message": "Identity, timestamps, commit count, PR activity, and selector order choose rows only; they never multiply or rank Equivalent Human Effort.",
+        "evidenceIds": [],
+        "locations": []
+      },
+      {
+        "code": "FB5323",
+        "severity": "information",
+        "message": "Exclusive contributor match-set groups count each selected commit once; 0 shared contributor group(s) retain unsplit repository-attributed EHE. This shared-group count describes identity matching only. Normalized contributor values are allocations from joint repository reconciliation and can change when other exclusive contributors are included; isolatedEffort remains the sum of the group\u0027s canonical row estimates.",
+        "evidenceIds": [],
+        "locations": []
+      },
+      {
+        "code": "FB5324",
+        "severity": "information",
+        "message": "Exclusive head-reachability groups count each selected commit once; 0 pinned head(s) contain no uniquely reachable selected commit.",
+        "evidenceIds": [],
+        "locations": []
+      }
+    ],
+    "assumptions": [
+      "Portfolio Change EHE is repository-attributed counterfactual replacement effort, not actual labor, productivity, personal value, or proof of sole authorship.",
+      "Each isolated row is a canonical immutable Change estimate; portfolio normalization never uses churn, duration, contributor count, message size, or activity as effort signals.",
+      "Exact represented patch duplicates are counted once within one repository and never deduplicated across different repositories.",
+      "Independent disjoint changes remain additive. Overlapping path/category contributions use a deterministic order-independent maximum unless an author-period selection supplies an exact chronological object chain.",
+      "Author periods use inclusive start and exclusive end instants. Identity aliases and author/committer timestamps select commits only.",
+      "Co-authorship and first-parent merge inclusion are explicit policies; pair work, requirements, design, reviews, mentoring, incidents, debugging, coordination, and uncommitted work are not recoverable from repository history.",
+      "Allocations sum exactly to normalized expected EHE but are structural attribution, not timesheet entries, performance grades, compensation advice, or causal credit.",
+      "Low and high values remain dependent planning bounds rather than calibrated probabilities.",
+      "Contributor and head views are separate exclusive match-set decompositions of the same authoritative portfolio total. Shared groups are not split, and the two views must not be added together."
+    ],
+    "verification": {
+      "mode": "static-assumed",
+      "workingState": "assumed-working",
+      "testsAssumedPassing": true,
+      "note": "Selected immutable snapshots were statically analyzed; target code was not built or executed."
+    }
+  },
+  "attributionCompleteness": {
+    "policy": "retained-attribution-completeness/1.0.0",
+    "declaredEventStatus": "not-declared",
+    "missingEventDateCount": 0,
+    "missingReplayBaselineCount": 0,
+    "originalWorkdayStatus": "unresolved-original-workday",
+    "intermediateHistoryStatus": "unknown"
+  },
+  "buckets": [
+    {
+      "id": "day-0",
+      "label": "2026-01-19",
+      "sinceInclusive": "2026-01-19T00:00:00+00:00",
+      "untilExclusive": "2026-01-20T00:00:00+00:00",
+      "partialStart": false,
+      "partialEnd": false
+    },
+    {
+      "id": "day-1",
+      "label": "2026-01-20",
+      "sinceInclusive": "2026-01-20T00:00:00+00:00",
+      "untilExclusive": "2026-01-21T00:00:00+00:00",
+      "partialStart": false,
+      "partialEnd": false
+    },
+    {
+      "id": "day-2",
+      "label": "2026-01-21",
+      "sinceInclusive": "2026-01-21T00:00:00+00:00",
+      "untilExclusive": "2026-01-22T00:00:00+00:00",
+      "partialStart": false,
+      "partialEnd": false
+    },
+    {
+      "id": "day-3",
+      "label": "2026-01-22",
+      "sinceInclusive": "2026-01-22T00:00:00+00:00",
+      "untilExclusive": "2026-01-23T00:00:00+00:00",
+      "partialStart": false,
+      "partialEnd": false
+    },
+    {
+      "id": "day-4",
+      "label": "2026-01-23",
+      "sinceInclusive": "2026-01-23T00:00:00+00:00",
+      "untilExclusive": "2026-01-24T00:00:00+00:00",
+      "partialStart": false,
+      "partialEnd": false
+    }
+  ],
+  "series": [
+    {
+      "id": "portfolio",
+      "kind": "portfolio",
+      "contributorIds": [
+        "contributor-a"
+      ],
+      "additiveToPortfolio": false,
+      "points": [
+        {
+          "bucketId": "day-0",
+          "selectedChangeCount": 1,
+          "effort": {
+            "low": 1.25,
+            "expected": 2.25,
+            "high": 4.25
+          },
+          "capacityHours": 12,
+          "capacityRatio": {
+            "low": 0.104167,
+            "expected": 0.1875,
+            "high": 0.354167
+          }
+        },
+        {
+          "bucketId": "day-1",
+          "selectedChangeCount": 0,
+          "effort": {
+            "low": 0,
+            "expected": 0,
+            "high": 0
+          },
+          "capacityHours": 12,
+          "capacityRatio": {
+            "low": 0,
+            "expected": 0,
+            "high": 0
+          }
+        },
+        {
+          "bucketId": "day-2",
+          "selectedChangeCount": 0,
+          "effort": {
+            "low": 0,
+            "expected": 0,
+            "high": 0
+          },
+          "capacityHours": 12,
+          "capacityRatio": {
+            "low": 0,
+            "expected": 0,
+            "high": 0
+          }
+        },
+        {
+          "bucketId": "day-3",
+          "selectedChangeCount": 0,
+          "effort": {
+            "low": 0,
+            "expected": 0,
+            "high": 0
+          },
+          "capacityHours": 12,
+          "capacityRatio": {
+            "low": 0,
+            "expected": 0,
+            "high": 0
+          }
+        },
+        {
+          "bucketId": "day-4",
+          "selectedChangeCount": 0,
+          "effort": {
+            "low": 0,
+            "expected": 0,
+            "high": 0
+          },
+          "capacityHours": 12,
+          "capacityRatio": {
+            "low": 0,
+            "expected": 0,
+            "high": 0
+          }
+        }
+      ],
+      "totalEffort": {
+        "low": 1.25,
+        "expected": 2.25,
+        "high": 4.25
+      },
+      "totalCapacityHours": 60,
+      "totalCapacityRatio": {
+        "low": 0.020833,
+        "expected": 0.0375,
+        "high": 0.070833
+      },
+      "trend": {
+        "observationCount": 5,
+        "firstBucketId": "day-0",
+        "latestBucketId": "day-4",
+        "firstExpectedRatio": 0.1875,
+        "latestExpectedRatio": 0,
+        "percentageChange": -100,
+        "ordinaryLeastSquaresSlope": -0.0375,
+        "rSquared": 0.5,
+        "capacityWeightedRollingWindow": [
+          {
+            "bucketId": "day-2",
+            "windowBucketCount": 3,
+            "expectedRatio": 0.0625
+          },
+          {
+            "bucketId": "day-3",
+            "windowBucketCount": 3,
+            "expectedRatio": 0
+          },
+          {
+            "bucketId": "day-4",
+            "windowBucketCount": 3,
+            "expectedRatio": 0
+          }
+        ]
+      }
+    },
+    {
+      "id": "contributor-contributor-a",
+      "kind": "contributor-exclusive",
+      "contributorIds": [
+        "contributor-a"
+      ],
+      "additiveToPortfolio": true,
+      "points": [
+        {
+          "bucketId": "day-0",
+          "selectedChangeCount": 1,
+          "effort": {
+            "low": 1.25,
+            "expected": 2.25,
+            "high": 4.25
+          },
+          "capacityHours": 12,
+          "capacityRatio": {
+            "low": 0.104167,
+            "expected": 0.1875,
+            "high": 0.354167
+          }
+        },
+        {
+          "bucketId": "day-1",
+          "selectedChangeCount": 0,
+          "effort": {
+            "low": 0,
+            "expected": 0,
+            "high": 0
+          },
+          "capacityHours": 12,
+          "capacityRatio": {
+            "low": 0,
+            "expected": 0,
+            "high": 0
+          }
+        },
+        {
+          "bucketId": "day-2",
+          "selectedChangeCount": 0,
+          "effort": {
+            "low": 0,
+            "expected": 0,
+            "high": 0
+          },
+          "capacityHours": 12,
+          "capacityRatio": {
+            "low": 0,
+            "expected": 0,
+            "high": 0
+          }
+        },
+        {
+          "bucketId": "day-3",
+          "selectedChangeCount": 0,
+          "effort": {
+            "low": 0,
+            "expected": 0,
+            "high": 0
+          },
+          "capacityHours": 12,
+          "capacityRatio": {
+            "low": 0,
+            "expected": 0,
+            "high": 0
+          }
+        },
+        {
+          "bucketId": "day-4",
+          "selectedChangeCount": 0,
+          "effort": {
+            "low": 0,
+            "expected": 0,
+            "high": 0
+          },
+          "capacityHours": 12,
+          "capacityRatio": {
+            "low": 0,
+            "expected": 0,
+            "high": 0
+          }
+        }
+      ],
+      "totalEffort": {
+        "low": 1.25,
+        "expected": 2.25,
+        "high": 4.25
+      },
+      "totalCapacityHours": 60,
+      "totalCapacityRatio": {
+        "low": 0.020833,
+        "expected": 0.0375,
+        "high": 0.070833
+      },
+      "trend": {
+        "observationCount": 5,
+        "firstBucketId": "day-0",
+        "latestBucketId": "day-4",
+        "firstExpectedRatio": 0.1875,
+        "latestExpectedRatio": 0,
+        "percentageChange": -100,
+        "ordinaryLeastSquaresSlope": -0.0375,
+        "rSquared": 0.5,
+        "capacityWeightedRollingWindow": [
+          {
+            "bucketId": "day-2",
+            "windowBucketCount": 3,
+            "expectedRatio": 0.0625
+          },
+          {
+            "bucketId": "day-3",
+            "windowBucketCount": 3,
+            "expectedRatio": 0
+          },
+          {
+            "bucketId": "day-4",
+            "windowBucketCount": 3,
+            "expectedRatio": 0
+          }
+        ]
+      }
+    }
+  ],
+  "execution": {
+    "endToEndElapsedMilliseconds": 0,
+    "runtimeFramework": ".NET 10.0.0",
+    "operatingSystemFamily": "linux",
+    "processArchitecture": "x64",
+    "logicalProcessorCount": 2,
+    "shardPolicy": "repository-evidence-shards/1.0.0",
+    "checkpoint": {
+      "protocol": "repository-evidence-checkpoint/1.1.0",
+      "enabled": false,
+      "hitCount": 0,
+      "missCount": 0,
+      "writeCount": 0,
+      "failureCount": 0,
+      "readBytes": 0,
+      "writtenBytes": 0,
+      "maximumBytesPerRepository": 536870912
+    },
+    "repositoryShardCount": 1,
+    "repositories": [
+      {
+        "repositoryId": "repository-a",
+        "status": "complete",
+        "checkpointDisposition": "disabled",
+        "selectedChangeCount": 1,
+        "admittedChangeCount": 0,
+        "scopeEmptyChangeCount": 0,
+        "candidateCount": 0,
+        "chargedCandidateLedgerBytes": 0,
+        "selectionChunkCount": 0,
+        "analysisChunkCount": 0,
+        "projectedSnapshotRequests": 0,
+        "checkpointReadBytes": 0,
+        "checkpointWrittenBytes": 0,
+        "elapsedMilliseconds": 0,
+        "inputDigest": "sha256:a9be9fec5ccb4dd9b7322f33d8bd8055d31596ce476e46182ed8ee8a7131166a",
+        "phaseTimings": []
+      }
+    ],
+    "phaseTimings": [],
+    "reuse": {
+      "snapshotAnalysisRequests": 0,
+      "snapshotAnalysisHits": 0,
+      "uniqueSnapshotAnalysisKeys": 0,
+      "analysisArtifactRequests": 0,
+      "analysisArtifactHits": 0,
+      "uniqueAnalysisArtifactKeys": 0,
+      "snapshotInventoryRequests": 0,
+      "snapshotInventoryHits": 0,
+      "uniqueSnapshotInventoryObjects": 0,
+      "blobRequests": 0,
+      "blobCacheHits": 0,
+      "uniqueBlobObjects": 0,
+      "blobReadBytes": 0,
+      "peakWorkingSetBytes": 0
+    },
+    "failures": []
+  },
+  "diagnostics": [
+    {
+      "code": "FB5330",
+      "severity": "information",
+      "message": "Time buckets are one alternative decomposition of the jointly reconciled portfolio. Bucket and contributor counts do not multiply EHE.",
+      "evidenceIds": [],
+      "locations": []
+    },
+    {
+      "code": "FB5331",
+      "severity": "warning",
+      "message": "Reference capacity is a caller-supplied comparison denominator, not recorded labor, productivity, compensation, or authorship evidence.",
+      "evidenceIds": [],
+      "locations": []
+    },
+    {
+      "code": "FB5335",
+      "severity": "information",
+      "message": "Contributor series use jointly normalized exact-match-set allocations and can change when report membership changes.",
+      "evidenceIds": [],
+      "locations": []
+    },
+    {
+      "code": "FB5300",
+      "severity": "warning",
+      "message": "Change portfolio reconciliation is experimental. It composes reviewed Change-report contracts but is not empirically calibrated or suitable for employee ranking.",
+      "evidenceIds": [],
+      "locations": []
+    }
+  ],
+  "verification": {
+    "semanticDigest": "sha256:4e9c09e2348b10220068f21c5cb1b4f5f3c3654a8252ebf0ddad1a81b42b8717",
+    "sourcePortfolioDigest": "sha256:5e169c3de626ccfa419d0343fbe578bc74689bd43f9d75ca1fcf2d81f959ddb4",
+    "bucketAllocationPolicy": "exclusive-contributor-match-sets-with-shared-groups/1.0.0",
+    "completeAggregates": true,
+    "executionOnlyPathsExcluded": true,
+    "rawAliasesExcluded": true,
+    "note": "Execution timings and resource samples are operational observations and are excluded from the semantic digest."
+  }
+}

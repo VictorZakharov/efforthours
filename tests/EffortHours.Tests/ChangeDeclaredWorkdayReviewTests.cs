@@ -51,16 +51,20 @@ public sealed partial class ChangePortfolioComparisonTests
         Assert.Null(retained.Days[1].MatchedDailyMultiplier);
     }
 
-    [Fact]
-    public async Task DeclaredEntryRoundingConservesOnePeriodMultiplierRatherThanFiveRoundedDays()
+    [Theory]
+    [InlineData(9875)]
+    [InlineData(9876)]
+    public async Task DeclaredEntryRoundingConservesOnePeriodMultiplierRatherThanFiveRoundedDays(int totalCents)
     {
         var source = await WorkdaySourceAsync();
-        var records = WorkRecords(source, [.. Enumerable.Range(0, 5).Select(index => Record(source, "record-" + index, index))]);
+        var records = WorkRecords(source, [.. Enumerable.Range(0, 5).Select(index => Record(source, "record-" + index, index)),
+            Record(source, "extra", 0) with { LoggedHours = 12 }, Record(source, "meeting", 0) with { Kind = "meeting", RepositoryIds = [] },
+            Record(source, "pto", 0) with { Kind = "pto", RepositoryIds = [] }]);
         var manifest = Declare(records);
         var retained = ChangeWorkdayReviewer.Review(source, records);
         var allocation = ChangeWorkdayAllocator.Allocate(source, manifest, ChangeWorkdayPolicies.EqualDeclaredDaysV1);
         // A synthetic saved-report pair fixes the rounding input independently of estimator priors.
-        EffortRange total = new() { Low = 98.75m, Expected = 98.75m, High = 98.75m };
+        EffortRange total = new() { Low = totalCents / 100m, Expected = totalCents / 100m, High = totalCents / 100m };
         EffortRange share = new() { Low = 19.75m, Expected = 19.75m, High = 19.75m };
         EffortRange zero = new() { Low = 0, Expected = 0, High = 0 };
         CategoryEstimate category = allocation.Categories[0] with { Hours = total };
@@ -71,14 +75,20 @@ public sealed partial class ChangePortfolioComparisonTests
             TotalCapacityHours = null,
             Categories = [category],
             Days = [.. allocation.Days.Select((day, index) => day with { SourceAttributedEffort = index == 0 ? total : zero,
-                AllocatedEffort = share, CapacityHours = null, CapacityRatio = null, Categories = [category with { Hours = share }] })],
+                AllocatedEffort = index == 0 && totalCents == 9876 ? share with { Low = 19.76m, Expected = 19.76m, High = 19.76m } : share,
+                CapacityHours = null, CapacityRatio = null, Categories = [category with { Hours = index == 0 && totalCents == 9876
+                    ? share with { Low = 19.76m, Expected = 19.76m, High = 19.76m } : share }] })],
         };
         Assert.Empty(ContractValidation.Validate(retained));
         Assert.Empty(ContractValidation.Validate(allocation));
         var result = ChangeDeclaredWorkdayReviewPolicy.Apply(retained, manifest, allocation, ChangeDeclaredWorkdayReviewPolicies.EqualEntries);
-        Assert.Equal(12.34m, result.WorkdayResolution!.ExpectedMultiplierTotal);
-        Assert.Equal([2.47m, 2.47m, 2.47m, 2.47m, 2.46m], result.Days.Select(day => day.MatchedDailyMultiplier));
-        Assert.Equal(12.34m, result.Days.SelectMany(day => day.Records).Sum(record => record.AllocatedMultiplierContribution));
+        decimal expected = totalCents == 9875 ? 12.34m : 12.35m;
+        Assert.Equal(expected, result.WorkdayResolution!.ExpectedMultiplierTotal);
+        Assert.Equal([2.47m, 2.47m, 2.47m, 2.47m, totalCents == 9875 ? 2.46m : 2.47m], result.Days.Select(day => day.MatchedDailyMultiplier));
+        Assert.Equal(expected, result.Days.SelectMany(day => day.Records).Sum(record => record.AllocatedMultiplierContribution));
+        Assert.Equal(1.24m, result.Days[0].Records.Single(record => record.RecordId == "extra").AllocatedMultiplierContribution);
+        Assert.Equal(1.23m, result.Days[0].Records.Single(record => record.RecordId == "record-0").AllocatedMultiplierContribution);
+        Assert.All(result.Days[0].Records.Where(record => record.Kind is "meeting" or "pto"), record => Assert.Null(record.AllocatedMultiplierContribution));
         Assert.Equal(12.35m, result.Days.Sum(day => decimal.Round(day.AllocatedExpectedHours!.Value / 8m, 2, MidpointRounding.AwayFromZero)));
         Assert.Empty(ContractValidation.Validate(result));
         AssertSchema(SchemaNames.ChangeWorkdayReviewReport, ContractJson.Serialize(result));

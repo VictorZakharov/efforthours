@@ -1,0 +1,590 @@
+{
+  "schemaVersion": "1.0.0",
+  "policy": "historical-note-refresh-plan/1.1.0",
+  "dryRun": true,
+  "requiresEntryConfirmation": true,
+  "requestedFields": "both",
+  "input": {
+    "schemaVersion": "1.0.0",
+    "sourceSemanticDigest": "sha256:4e9c09e2348b10220068f21c5cb1b4f5f3c3654a8252ebf0ddad1a81b42b8717",
+    "workRecordInputDigest": "sha256:9757f3a800a7a6e3c7178baa0a1e99af578393bab40d6abc10539c600eae7108",
+    "sinceInclusiveDate": "2026-01-19",
+    "untilExclusiveDate": "2026-01-24",
+    "entries": [
+      {
+        "recordId": "entry-a",
+        "original": {
+          "description": "Synthetic implementation entry-a \u03A9",
+          "loggedHours": 4,
+          "project": "example-project",
+          "task": "example-task",
+          "ticket": "EXAMPLE-1",
+          "billing": "preserve",
+          "revision": "synthetic-revision-1",
+          "analyticsEhe": null,
+          "provenance": {
+            "externalId": "entry-a"
+          }
+        },
+        "notePermission": "allowed",
+        "ehePermission": "allowed",
+        "restriction": "none"
+      },
+      {
+        "recordId": "entry-b",
+        "original": {
+          "description": "Synthetic implementation entry-b \u03A9",
+          "loggedHours": 12,
+          "project": "example-project",
+          "task": "example-task",
+          "ticket": "EXAMPLE-1",
+          "billing": "preserve",
+          "revision": "synthetic-revision-1",
+          "analyticsEhe": null,
+          "provenance": {
+            "externalId": "entry-b"
+          }
+        },
+        "notePermission": "allowed",
+        "ehePermission": "allowed",
+        "restriction": "none"
+      },
+      {
+        "recordId": "entry-c",
+        "original": {
+          "description": "Synthetic implementation entry-c \u03A9",
+          "loggedHours": 6,
+          "project": "example-project",
+          "task": "example-task",
+          "ticket": "EXAMPLE-1",
+          "billing": "preserve",
+          "revision": "synthetic-revision-1",
+          "analyticsEhe": null,
+          "provenance": {
+            "externalId": "entry-c"
+          }
+        },
+        "notePermission": "allowed",
+        "ehePermission": "allowed",
+        "restriction": "none"
+      }
+    ]
+  },
+  "review": {
+    "schemaVersion": "1.0.0",
+    "policy": "declared-workday-review/1.0.0",
+    "status": "reviewed-declared-workdays",
+    "sourceSemanticDigest": "sha256:4e9c09e2348b10220068f21c5cb1b4f5f3c3654a8252ebf0ddad1a81b42b8717",
+    "sourcePortfolioDigest": "sha256:5e169c3de626ccfa419d0343fbe578bc74689bd43f9d75ca1fcf2d81f959ddb4",
+    "workRecordInputDigest": "sha256:9757f3a800a7a6e3c7178baa0a1e99af578393bab40d6abc10539c600eae7108",
+    "timeZone": "UTC",
+    "contributorId": "contributor-a",
+    "entryPolicy": "equal-declared-day-entries/1.0.0",
+    "attributionCompleteness": {
+      "policy": "retained-attribution-completeness/1.0.0",
+      "declaredEventStatus": "not-declared",
+      "missingEventDateCount": 0,
+      "missingReplayBaselineCount": 0,
+      "originalWorkdayStatus": "unresolved-original-workday",
+      "intermediateHistoryStatus": "unknown"
+    },
+    "workdayResolution": {
+      "policy": "declared-workday-resolution/1.0.0",
+      "manifest": {
+        "schemaVersion": "1.0.0",
+        "sourceSemanticDigest": "sha256:4e9c09e2348b10220068f21c5cb1b4f5f3c3654a8252ebf0ddad1a81b42b8717",
+        "workdays": [
+          {
+            "recordId": "entry-a",
+            "date": "2026-01-19"
+          },
+          {
+            "recordId": "entry-c",
+            "date": "2026-01-20"
+          }
+        ]
+      },
+      "allocation": {
+        "schemaVersion": "1.0.0",
+        "policy": "equal-declared-days/1.0.0",
+        "status": "allocated",
+        "sourceSemanticDigest": "sha256:4e9c09e2348b10220068f21c5cb1b4f5f3c3654a8252ebf0ddad1a81b42b8717",
+        "sourcePortfolioDigest": "sha256:5e169c3de626ccfa419d0343fbe578bc74689bd43f9d75ca1fcf2d81f959ddb4",
+        "workdayInputDigest": "sha256:bc7f484c28e1ba296bc1ed8c0a02c626bf9239c2bcdcdabcc3224f6fbbc7500d",
+        "timeZone": "UTC",
+        "contributorId": "contributor-a",
+        "sourceEstimatorVersion": "change-portfolio/0.6.5\u002Bchange-seed/0.21.3\u002Bseed-rules/0.4.0",
+        "totalEffort": {
+          "low": 1.25,
+          "expected": 2.25,
+          "high": 4.25
+        },
+        "totalCapacityHours": 60,
+        "categories": [
+          {
+            "category": "specification-comprehension-and-domain-learning",
+            "hours": {
+              "low": 0.25,
+              "expected": 0.50,
+              "high": 1
+            }
+          },
+          {
+            "category": "production-implementation",
+            "hours": {
+              "low": 0.50,
+              "expected": 0.75,
+              "high": 1.25
+            }
+          },
+          {
+            "category": "manual-validation-debugging-and-hardening",
+            "hours": {
+              "low": 0.25,
+              "expected": 0.5,
+              "high": 1
+            }
+          },
+          {
+            "category": "self-review-and-system-integration",
+            "hours": {
+              "low": 0.25,
+              "expected": 0.50,
+              "high": 1
+            }
+          }
+        ],
+        "days": [
+          {
+            "date": "2026-01-19",
+            "bucketId": "day-0",
+            "recordId": "entry-a",
+            "status": "allocated",
+            "originalWorkdayStatus": "unresolved-original-workday",
+            "sourceAttributedEffort": {
+              "low": 1.25,
+              "expected": 2.25,
+              "high": 4.25
+            },
+            "allocatedEffort": {
+              "low": 0.64,
+              "expected": 1.13,
+              "high": 2.13
+            },
+            "capacityHours": 12,
+            "capacityRatio": {
+              "low": 0.053333,
+              "expected": 0.094167,
+              "high": 0.1775
+            },
+            "categories": [
+              {
+                "category": "specification-comprehension-and-domain-learning",
+                "hours": {
+                  "low": 0.13,
+                  "expected": 0.25,
+                  "high": 0.5
+                }
+              },
+              {
+                "category": "production-implementation",
+                "hours": {
+                  "low": 0.25,
+                  "expected": 0.38,
+                  "high": 0.63
+                }
+              },
+              {
+                "category": "manual-validation-debugging-and-hardening",
+                "hours": {
+                  "low": 0.13,
+                  "expected": 0.25,
+                  "high": 0.5
+                }
+              },
+              {
+                "category": "self-review-and-system-integration",
+                "hours": {
+                  "low": 0.13,
+                  "expected": 0.25,
+                  "high": 0.5
+                }
+              }
+            ]
+          },
+          {
+            "date": "2026-01-20",
+            "bucketId": "day-1",
+            "recordId": "entry-c",
+            "status": "allocated",
+            "originalWorkdayStatus": "unresolved-original-workday",
+            "sourceAttributedEffort": {
+              "low": 0,
+              "expected": 0,
+              "high": 0
+            },
+            "allocatedEffort": {
+              "low": 0.61,
+              "expected": 1.12,
+              "high": 2.12
+            },
+            "capacityHours": 12,
+            "capacityRatio": {
+              "low": 0.050833,
+              "expected": 0.093333,
+              "high": 0.176667
+            },
+            "categories": [
+              {
+                "category": "specification-comprehension-and-domain-learning",
+                "hours": {
+                  "low": 0.12,
+                  "expected": 0.25,
+                  "high": 0.5
+                }
+              },
+              {
+                "category": "production-implementation",
+                "hours": {
+                  "low": 0.25,
+                  "expected": 0.37,
+                  "high": 0.62
+                }
+              },
+              {
+                "category": "manual-validation-debugging-and-hardening",
+                "hours": {
+                  "low": 0.12,
+                  "expected": 0.25,
+                  "high": 0.5
+                }
+              },
+              {
+                "category": "self-review-and-system-integration",
+                "hours": {
+                  "low": 0.12,
+                  "expected": 0.25,
+                  "high": 0.5
+                }
+              }
+            ]
+          },
+          {
+            "date": "2026-01-21",
+            "bucketId": "day-2",
+            "status": "allocated",
+            "originalWorkdayStatus": "unresolved-original-workday",
+            "sourceAttributedEffort": {
+              "low": 0,
+              "expected": 0,
+              "high": 0
+            },
+            "allocatedEffort": {
+              "low": 0,
+              "expected": 0,
+              "high": 0
+            },
+            "capacityHours": 12,
+            "capacityRatio": {
+              "low": 0,
+              "expected": 0,
+              "high": 0
+            },
+            "categories": [
+              {
+                "category": "specification-comprehension-and-domain-learning",
+                "hours": {
+                  "low": 0,
+                  "expected": 0,
+                  "high": 0
+                }
+              },
+              {
+                "category": "production-implementation",
+                "hours": {
+                  "low": 0,
+                  "expected": 0,
+                  "high": 0
+                }
+              },
+              {
+                "category": "manual-validation-debugging-and-hardening",
+                "hours": {
+                  "low": 0,
+                  "expected": 0,
+                  "high": 0
+                }
+              },
+              {
+                "category": "self-review-and-system-integration",
+                "hours": {
+                  "low": 0,
+                  "expected": 0,
+                  "high": 0
+                }
+              }
+            ]
+          },
+          {
+            "date": "2026-01-22",
+            "bucketId": "day-3",
+            "status": "allocated",
+            "originalWorkdayStatus": "unresolved-original-workday",
+            "sourceAttributedEffort": {
+              "low": 0,
+              "expected": 0,
+              "high": 0
+            },
+            "allocatedEffort": {
+              "low": 0,
+              "expected": 0,
+              "high": 0
+            },
+            "capacityHours": 12,
+            "capacityRatio": {
+              "low": 0,
+              "expected": 0,
+              "high": 0
+            },
+            "categories": [
+              {
+                "category": "specification-comprehension-and-domain-learning",
+                "hours": {
+                  "low": 0,
+                  "expected": 0,
+                  "high": 0
+                }
+              },
+              {
+                "category": "production-implementation",
+                "hours": {
+                  "low": 0,
+                  "expected": 0,
+                  "high": 0
+                }
+              },
+              {
+                "category": "manual-validation-debugging-and-hardening",
+                "hours": {
+                  "low": 0,
+                  "expected": 0,
+                  "high": 0
+                }
+              },
+              {
+                "category": "self-review-and-system-integration",
+                "hours": {
+                  "low": 0,
+                  "expected": 0,
+                  "high": 0
+                }
+              }
+            ]
+          },
+          {
+            "date": "2026-01-23",
+            "bucketId": "day-4",
+            "status": "allocated",
+            "originalWorkdayStatus": "unresolved-original-workday",
+            "sourceAttributedEffort": {
+              "low": 0,
+              "expected": 0,
+              "high": 0
+            },
+            "allocatedEffort": {
+              "low": 0,
+              "expected": 0,
+              "high": 0
+            },
+            "capacityHours": 12,
+            "capacityRatio": {
+              "low": 0,
+              "expected": 0,
+              "high": 0
+            },
+            "categories": [
+              {
+                "category": "specification-comprehension-and-domain-learning",
+                "hours": {
+                  "low": 0,
+                  "expected": 0,
+                  "high": 0
+                }
+              },
+              {
+                "category": "production-implementation",
+                "hours": {
+                  "low": 0,
+                  "expected": 0,
+                  "high": 0
+                }
+              },
+              {
+                "category": "manual-validation-debugging-and-hardening",
+                "hours": {
+                  "low": 0,
+                  "expected": 0,
+                  "high": 0
+                }
+              },
+              {
+                "category": "self-review-and-system-integration",
+                "hours": {
+                  "low": 0,
+                  "expected": 0,
+                  "high": 0
+                }
+              }
+            ]
+          }
+        ],
+        "boundary": "Experimental, uncalibrated EHE allocation; declared dates are not recovered Git workdays, actual labor, productivity, or timesheet entries. Logged hours do not set EHE weights or reference capacity."
+      },
+      "expectedMultiplierTotal": 0.28
+    },
+    "referenceHoursPerDay": 8,
+    "repositoryIds": [
+      "repository-a"
+    ],
+    "days": [
+      {
+        "date": "2026-01-19",
+        "bucketId": "day-0",
+        "status": "declared-workday-allocation",
+        "retainedEvidenceStatus": "measured-retained-change",
+        "originalWorkdayStatus": "unresolved-original-workday",
+        "sourceAttributedExpectedHours": 2.25,
+        "workdayEvidenceBasis": "external-work-record",
+        "allocatedExpectedHours": 1.13,
+        "matchedDailyMultiplier": 0.14,
+        "records": [
+          {
+            "recordId": "entry-a",
+            "kind": "implementation",
+            "status": "declared-workday-allocation",
+            "repositoryIds": [
+              "repository-a"
+            ],
+            "allocatedMultiplierContribution": 0.07
+          },
+          {
+            "recordId": "entry-b",
+            "kind": "implementation",
+            "status": "declared-workday-allocation",
+            "repositoryIds": [
+              "repository-a"
+            ],
+            "allocatedMultiplierContribution": 0.07
+          },
+          {
+            "recordId": "meeting",
+            "kind": "meeting",
+            "status": "excluded-non-implementation",
+            "repositoryIds": []
+          }
+        ]
+      },
+      {
+        "date": "2026-01-20",
+        "bucketId": "day-1",
+        "status": "declared-workday-allocation",
+        "retainedEvidenceStatus": "no-retained-change",
+        "originalWorkdayStatus": "unresolved-original-workday",
+        "sourceAttributedExpectedHours": 0,
+        "workdayEvidenceBasis": "external-work-record",
+        "allocatedExpectedHours": 1.12,
+        "matchedDailyMultiplier": 0.14,
+        "records": [
+          {
+            "recordId": "entry-c",
+            "kind": "implementation",
+            "status": "declared-workday-allocation",
+            "repositoryIds": [
+              "repository-a"
+            ],
+            "allocatedMultiplierContribution": 0.14
+          }
+        ]
+      },
+      {
+        "date": "2026-01-21",
+        "bucketId": "day-2",
+        "status": "no-declared-workday",
+        "retainedEvidenceStatus": "no-retained-change",
+        "originalWorkdayStatus": "unresolved-original-workday",
+        "sourceAttributedExpectedHours": 0,
+        "workdayEvidenceBasis": "not-declared",
+        "allocatedExpectedHours": 0,
+        "records": [
+          {
+            "recordId": "pto",
+            "kind": "pto",
+            "status": "excluded-non-implementation",
+            "repositoryIds": []
+          }
+        ]
+      },
+      {
+        "date": "2026-01-22",
+        "bucketId": "day-3",
+        "status": "no-declared-workday",
+        "retainedEvidenceStatus": "no-retained-change",
+        "originalWorkdayStatus": "unresolved-original-workday",
+        "sourceAttributedExpectedHours": 0,
+        "workdayEvidenceBasis": "not-declared",
+        "allocatedExpectedHours": 0,
+        "records": []
+      },
+      {
+        "date": "2026-01-23",
+        "bucketId": "day-4",
+        "status": "no-declared-workday",
+        "retainedEvidenceStatus": "no-retained-change",
+        "originalWorkdayStatus": "unresolved-original-workday",
+        "sourceAttributedExpectedHours": 0,
+        "workdayEvidenceBasis": "not-declared",
+        "allocatedExpectedHours": 0,
+        "records": []
+      }
+    ],
+    "boundary": "Experimental, uncalibrated EHE projection over externally declared work-record dates. Dates are not recovered Git workdays or verified labor; source event and intermediate-history uncertainty remain. Logged hours never weight EHE; the reference denominator is eight hours and entry values conserve one rounded period multiplier."
+  },
+  "proposals": [
+    {
+      "recordId": "entry-a",
+      "date": "2026-01-19",
+      "evidenceStatus": "declared-workday-allocation",
+      "originalRecordDigest": "sha256:a558e7d605ebaa5dd74004091c4488f57164d6153f169bf0737e5b5bb23938fb",
+      "priorAnnotationStatus": "none",
+      "proposedNoteRecordDigest": "sha256:05fbc4002d2472af4086a16c3040729750c6c3db00cc66bead2fdc04966ba946",
+      "noteStatus": "proposed",
+      "proposedDescription": "Synthetic implementation entry-a \u03A9\n[EffortHours historical annotation]\nRetained evidence: measured-retained-change; review: declared-workday-allocation.\nRetained-date attribution and externally logged activity are separate evidence.\nReview, coordination, testing execution, debugging and integration labor without a retained artifact delta are not measured by Change EHE.\nWorkday date: externally declared record date 2026-01-19; allocation policy: equal-declared-days/1.0.0.\nDeclaration: sha256:bc7f484c28e1ba296bc1ed8c0a02c626bf9239c2bcdcdabcc3224f6fbbc7500d.\nSource declared events: not-declared; missing dates: 0; missing replay baselines: 0.\nSource original workdays: unresolved-original-workday; intermediate history: unknown.\nOriginal Git workdays and intermediate history remain unresolved. EHE is experimental replacement effort; zero retained EHE is not zero labor.\nSource: sha256:4e9c09e2348b10220068f21c5cb1b4f5f3c3654a8252ebf0ddad1a81b42b8717; records: sha256:9757f3a800a7a6e3c7178baa0a1e99af578393bab40d6abc10539c600eae7108.\n[/EffortHours historical annotation]",
+      "eheStatus": "proposed",
+      "proposedMultiplierContribution": 0.07
+    },
+    {
+      "recordId": "entry-b",
+      "date": "2026-01-19",
+      "evidenceStatus": "declared-workday-allocation",
+      "originalRecordDigest": "sha256:89efa35062e31cb2dfc73a1aa86beebe4fe7c44b2b4f6c5db69e704970831d38",
+      "priorAnnotationStatus": "none",
+      "proposedNoteRecordDigest": "sha256:deb17ce05b83682b90530638bb51d4752f8a2621d1b8a9bc3fc33ad6976bd26f",
+      "noteStatus": "proposed",
+      "proposedDescription": "Synthetic implementation entry-b \u03A9\n[EffortHours historical annotation]\nRetained evidence: measured-retained-change; review: declared-workday-allocation.\nRetained-date attribution and externally logged activity are separate evidence.\nReview, coordination, testing execution, debugging and integration labor without a retained artifact delta are not measured by Change EHE.\nWorkday date: externally declared record date 2026-01-19; allocation policy: equal-declared-days/1.0.0.\nDeclaration: sha256:bc7f484c28e1ba296bc1ed8c0a02c626bf9239c2bcdcdabcc3224f6fbbc7500d.\nSource declared events: not-declared; missing dates: 0; missing replay baselines: 0.\nSource original workdays: unresolved-original-workday; intermediate history: unknown.\nOriginal Git workdays and intermediate history remain unresolved. EHE is experimental replacement effort; zero retained EHE is not zero labor.\nSource: sha256:4e9c09e2348b10220068f21c5cb1b4f5f3c3654a8252ebf0ddad1a81b42b8717; records: sha256:9757f3a800a7a6e3c7178baa0a1e99af578393bab40d6abc10539c600eae7108.\n[/EffortHours historical annotation]",
+      "eheStatus": "proposed",
+      "proposedMultiplierContribution": 0.07
+    },
+    {
+      "recordId": "entry-c",
+      "date": "2026-01-20",
+      "evidenceStatus": "declared-workday-allocation",
+      "originalRecordDigest": "sha256:784793d09f0490cdebdd6ec268bae67c4147166b1c2a7f45d37993a15c54c165",
+      "priorAnnotationStatus": "none",
+      "proposedNoteRecordDigest": "sha256:8b60767ee116d8f034e89d74f646c4b72bc159be1b5e5c4fb7630ba6a9aa0837",
+      "noteStatus": "proposed",
+      "proposedDescription": "Synthetic implementation entry-c \u03A9\n[EffortHours historical annotation]\nRetained evidence: no-retained-change; review: declared-workday-allocation.\nRetained-date attribution and externally logged activity are separate evidence.\nReview, coordination, testing execution, debugging and integration labor without a retained artifact delta are not measured by Change EHE.\nWorkday date: externally declared record date 2026-01-20; allocation policy: equal-declared-days/1.0.0.\nDeclaration: sha256:bc7f484c28e1ba296bc1ed8c0a02c626bf9239c2bcdcdabcc3224f6fbbc7500d.\nSource declared events: not-declared; missing dates: 0; missing replay baselines: 0.\nSource original workdays: unresolved-original-workday; intermediate history: unknown.\nOriginal Git workdays and intermediate history remain unresolved. EHE is experimental replacement effort; zero retained EHE is not zero labor.\nSource: sha256:4e9c09e2348b10220068f21c5cb1b4f5f3c3654a8252ebf0ddad1a81b42b8717; records: sha256:9757f3a800a7a6e3c7178baa0a1e99af578393bab40d6abc10539c600eae7108.\n[/EffortHours historical annotation]",
+      "eheStatus": "proposed",
+      "proposedMultiplierContribution": 0.14
+    }
+  ]
+}

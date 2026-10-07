@@ -6,6 +6,15 @@ may still change public contracts with explicit documentation.
 
 ## Unreleased
 
+- Give `check-refresh` distinct native exits: 0 for ready receipts, 3 for blocked
+  receipts, and 1 for invalid input or expected operational failures. Document
+  PowerShell exit propagation, preserved usage/cancellation exits and exact
+  receipt verification; file existence never authorizes a refresh.
+- Add the complete offline historical-refresh integration contract, synthetic
+  end-to-end fixtures and a tested in-memory conditional note adapter. Document
+  separate analytics proposals, permissions, locks, uncertainty and interruption
+  recovery without adding a live entry writer or changing EHE values.
+
 ## 0.10.0-alpha.41 - 2026-10-07
 
 - Add offline `eh change check-refresh` for exact planned dates/IDs, fresh complete
