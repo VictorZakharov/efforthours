@@ -51,6 +51,9 @@ agent instructions.
 - [Historical note refresh planning](HISTORICAL_NOTE_REFRESH.md) defines private,
   idempotent dry-run proposals, managed zero annotations, snapshot conflict preflight,
   independent note/EHE permissions and preserved records.
+- [Historical refresh integration](HISTORICAL_REFRESH_INTEGRATION.md) defines the
+  offline consumer sequence, machine states/exits, conditional handoff, retry and
+  synthetic adapter fixtures.
 - [Retained workday evidence review](WORKDAY_REVIEW.md) compares explicit external
   records with retained dates, preserves discrepancies, and optionally allocates
   matched daily multipliers with a fixed eight-hour reference.

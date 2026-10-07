@@ -186,7 +186,11 @@ Changed range/lineage or tampered plans are invalid and produce no receipt.
 A denied/unknown permission or locked/invoiced/unknown restriction blocks its
 requested field. Previously blocked proposals remain blocked even when a fresh
 observation says allowed: create and review a new plan. A blocked receipt exits 3;
-no unblocked subset may be applied as a complete conserved refresh. Successful
+invalid input or expected operational failure exits 1 without a valid new receipt.
+Usage errors remain 2 and cancellation 130. Preserve native exits in shell wrappers;
+see the [complete integration contract](HISTORICAL_REFRESH_INTEGRATION.md) and
+[synthetic offline adapter](../examples/historical-refresh/README.md).
+No unblocked subset may be applied as a complete conserved refresh. Successful
 checks exit zero with `ready-for-confirmation`, `dryRun: true` and
 `requiresEntryConfirmation: true`. Already-current notes require no note mutation.
 Numeric `ready-to-set` only permits reviewing the separate contribution proposal;

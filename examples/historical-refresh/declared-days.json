@@ -1,0 +1,14 @@
+{
+  "schemaVersion": "1.0.0",
+  "sourceSemanticDigest": "sha256:4e9c09e2348b10220068f21c5cb1b4f5f3c3654a8252ebf0ddad1a81b42b8717",
+  "workdays": [
+    {
+      "recordId": "entry-a",
+      "date": "2026-01-19"
+    },
+    {
+      "recordId": "entry-c",
+      "date": "2026-01-20"
+    }
+  ]
+}

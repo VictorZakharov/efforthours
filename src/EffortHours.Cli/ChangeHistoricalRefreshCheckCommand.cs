@@ -12,9 +12,11 @@ internal static class ChangeHistoricalRefreshCheckCommand
         Offline dry-run preflight: re-read the same exact selected entry snapshots and
         independent permissions. Detect concurrent edits, missing IDs, extra selections,
         already-current notes and locks/invoices. Exit 3 with a blocked receipt when needed.
+        Exit 1 for invalid inputs or expected operational failure (no valid receipt); usage
+        errors exit 2 and cancellation exits 130. Preserve the native exit in wrappers.
         Never writes time entries. A successful check still requires separate user
         confirmation and an external atomic compare-and-set using the checked snapshot.
-        See docs/HISTORICAL_NOTE_REFRESH.md.
+        See docs/HISTORICAL_REFRESH_INTEGRATION.md.
         """;
 
     public static async Task<int> ExecuteAsync(string[] arguments, TextWriter stdout, TextWriter stderr, CancellationToken token)
@@ -56,12 +58,12 @@ internal static class ChangeHistoricalRefreshCheckCommand
             if (output is null) await stdout.WriteAsync(json).ConfigureAwait(false);
             else await ChangeWorkdayCommand.WriteNewAsync(output, json, token).ConfigureAwait(false);
             if (check.Status == "blocked")
-                return await Error("Historical refresh preflight is blocked; inspect the receipt and replan changed entries before confirmation.", CliExitCodes.InvalidInput);
+                return await Error("Historical refresh preflight is blocked; inspect the receipt and replan changed entries before confirmation.", CliExitCodes.RefreshCheckBlocked);
             return CliExitCodes.Success;
         }
         catch (Exception exception) when (exception is ArgumentException or InvalidOperationException or IOException or UnauthorizedAccessException or JsonException)
         {
-            return await Error("Historical refresh preflight failed; verify bounded plan/current inputs and output permissions.", CliExitCodes.InvalidInput);
+            return await Error("Historical refresh preflight failed; verify bounded plan/current inputs and output permissions.", CliExitCodes.RefreshCheckFailure);
         }
         async Task<int> Error(string message, int exit)
         { await stderr.WriteLineAsync("eh: " + message).ConfigureAwait(false); return exit; }

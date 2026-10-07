@@ -30,6 +30,7 @@
     <ProjectReference Include="../../tools/EffortHours.RepositoryCalibration/EffortHours.RepositoryCalibration.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="../../examples/historical-refresh/OfflineRefreshAdapter.cs" Link="OfflineRefreshAdapter.cs" />
     <None Include="../fixtures/**/*.json" Link="fixtures/%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 </Project>

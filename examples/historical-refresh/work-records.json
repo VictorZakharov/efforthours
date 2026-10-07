@@ -1,0 +1,47 @@
+{
+  "schemaVersion": "1.0.0",
+  "sourceSemanticDigest": "sha256:4e9c09e2348b10220068f21c5cb1b4f5f3c3654a8252ebf0ddad1a81b42b8717",
+  "records": [
+    {
+      "recordId": "entry-a",
+      "date": "2026-01-19",
+      "kind": "implementation",
+      "repositoryIds": [
+        "repository-a"
+      ],
+      "loggedHours": 4
+    },
+    {
+      "recordId": "entry-b",
+      "date": "2026-01-19",
+      "kind": "implementation",
+      "repositoryIds": [
+        "repository-a"
+      ],
+      "loggedHours": 12
+    },
+    {
+      "recordId": "entry-c",
+      "date": "2026-01-20",
+      "kind": "implementation",
+      "repositoryIds": [
+        "repository-a"
+      ],
+      "loggedHours": 6
+    },
+    {
+      "recordId": "meeting",
+      "date": "2026-01-19",
+      "kind": "meeting",
+      "repositoryIds": [],
+      "loggedHours": 2
+    },
+    {
+      "recordId": "pto",
+      "date": "2026-01-21",
+      "kind": "pto",
+      "repositoryIds": [],
+      "loggedHours": 8
+    }
+  ]
+}

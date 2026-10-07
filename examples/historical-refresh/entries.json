@@ -1,0 +1,66 @@
+{
+  "schemaVersion": "1.0.0",
+  "sourceSemanticDigest": "sha256:4e9c09e2348b10220068f21c5cb1b4f5f3c3654a8252ebf0ddad1a81b42b8717",
+  "workRecordInputDigest": "sha256:9757f3a800a7a6e3c7178baa0a1e99af578393bab40d6abc10539c600eae7108",
+  "sinceInclusiveDate": "2026-01-19",
+  "untilExclusiveDate": "2026-01-24",
+  "entries": [
+    {
+      "recordId": "entry-a",
+      "original": {
+        "description": "Synthetic implementation entry-a \u03A9",
+        "loggedHours": 4,
+        "project": "example-project",
+        "task": "example-task",
+        "ticket": "EXAMPLE-1",
+        "billing": "preserve",
+        "revision": "synthetic-revision-1",
+        "analyticsEhe": null,
+        "provenance": {
+          "externalId": "entry-a"
+        }
+      },
+      "notePermission": "allowed",
+      "ehePermission": "allowed",
+      "restriction": "none"
+    },
+    {
+      "recordId": "entry-b",
+      "original": {
+        "description": "Synthetic implementation entry-b \u03A9",
+        "loggedHours": 12,
+        "project": "example-project",
+        "task": "example-task",
+        "ticket": "EXAMPLE-1",
+        "billing": "preserve",
+        "revision": "synthetic-revision-1",
+        "analyticsEhe": null,
+        "provenance": {
+          "externalId": "entry-b"
+        }
+      },
+      "notePermission": "allowed",
+      "ehePermission": "allowed",
+      "restriction": "none"
+    },
+    {
+      "recordId": "entry-c",
+      "original": {
+        "description": "Synthetic implementation entry-c \u03A9",
+        "loggedHours": 6,
+        "project": "example-project",
+        "task": "example-task",
+        "ticket": "EXAMPLE-1",
+        "billing": "preserve",
+        "revision": "synthetic-revision-1",
+        "analyticsEhe": null,
+        "provenance": {
+          "externalId": "entry-c"
+        }
+      },
+      "notePermission": "allowed",
+      "ehePermission": "allowed",
+      "restriction": "none"
+    }
+  ]
+}

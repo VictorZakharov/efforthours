@@ -49,6 +49,7 @@ public sealed partial class ChangePortfolioComparisonTests
     [InlineData("ticket")]
     [InlineData("billing")]
     [InlineData("provenance")]
+    [InlineData("revision")]
     public async Task RefreshPreflightBindsEveryOpaqueRecordField(string field)
     {
         var source = await WorkdaySourceAsync();
