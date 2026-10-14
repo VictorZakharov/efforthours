@@ -294,7 +294,7 @@ jobs:
 
       - name: Upload exact test coverage receipt
         if: always() && needs.pull-request-history.outputs.full_ci == 'true'
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: e2e-${{ github.run_id }}-${{ github.run_attempt }}-${{ matrix.os }}-${{ matrix.shard }}
           path: artifacts/e2e-shard/receipt.json
@@ -342,7 +342,7 @@ jobs:
         run: dotnet pack src/EffortHours.Cli/EffortHours.Cli.csproj --configuration Release --no-restore --output artifacts/package-candidate
 
       - name: Upload run-scoped package candidate
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: efforthours-tool-candidate-${{ github.run_id }}-${{ github.run_attempt }}-${{ github.sha }}
           path: artifacts/package-candidate/EffortHours.Tool.*.nupkg
@@ -369,7 +369,7 @@ jobs:
           path: artifacts/packages
 
       - name: Upload package artifact
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: efforthours-tool-${{ github.sha }}
           path: artifacts/packages/EffortHours.Tool.*.nupkg
