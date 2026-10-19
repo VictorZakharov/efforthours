@@ -4,9 +4,9 @@
     "net10.0": {
       "Acornima": {
         "type": "Direct",
-        "requested": "[1.8.0, )",
-        "resolved": "1.8.0",
-        "contentHash": "ZtcK7lu5LZZH5qDWfeUdBn/WXChWQjGdpB9sSFOJPyqnODGSMS1wqBoONP7GXzQRPHKoV8byWZT4EeBPI69ODQ=="
+        "requested": "[1.9.0, )",
+        "resolved": "1.9.0",
+        "contentHash": "Suyd9mLxmuveJTnV+/xHRlGE1IkcpGTryprpmghMOrVUgbH4/NgFBOByGVRBbZ9E8QGR94ccEO9RktOr6MvfXQ=="
       },
       "Acornima.Extras": {
         "type": "Direct",
