@@ -284,6 +284,12 @@ internal sealed partial class SeedCapabilityBuilder(
                 "Backbone priors value residual internal code construction at lower rates than complete feature delivery.",
             ];
             List<string> uncertainty = [];
+            bool sizeInferred = fact.Tags.Contains("syntax:size-inferred", StringComparer.Ordinal);
+            if (sizeInferred)
+            {
+                uncertainty.Add("Graph structure was inferred from serialized asset size rather than parsed; the conversion is uncalibrated and complexity is neutral.");
+            }
+
             if (normalization.HasTests)
             {
                 assumptions.Add("Test-file structure is excluded from the production implementation backbone.");
@@ -306,17 +312,20 @@ internal sealed partial class SeedCapabilityBuilder(
                 Scope = scope.Scope,
                 Quantity = quantity,
                 Drivers = drivers,
-                Complexity = SourceComplexity(drivers),
+                Complexity = sizeInferred ? ComplexityLevel.Moderate : SourceComplexity(drivers),
                 Reason = "Parser or token structure represents maintained internal logic that routine semantic classifiers cannot name.",
                 Evidence = Evidence(evidence),
                 Profiles = BothProfiles,
                 CorrelationGroup = $"scope:{scope.Id}:implementation",
                 Assumptions = assumptions,
-                Exclusions = _index.FactsOfKind(EvidenceKinds.ExcludedContent).Count > 0
+                Exclusions = sizeInferred
+                    ? ["Asset bodies are not parsed; imported media, animation, and level actor placement are not valued."]
+                    : _index.FactsOfKind(EvidenceKinds.ExcludedContent).Count > 0
                     ? ["Generated, vendored, minified, binary, and other excluded bodies are not valued as hand-written implementation."]
                     : [],
                 UncertaintyReasons = uncertainty,
-                ConfidencePenalty = normalization.HasDuplicates || normalization.HasTests ? 0.04m : 0m,
+                ConfidencePenalty = (sizeInferred ? 0.08m : 0m) +
+                    (normalization.HasDuplicates || normalization.HasTests ? 0.04m : 0m),
             };
             capabilities.Add(capability);
             _sourceExpectedByScope[scope.Id] =

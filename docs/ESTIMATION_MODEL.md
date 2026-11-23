@@ -887,6 +887,17 @@ priors. `GDSCRIPT_ANALYSIS.md` defines the incomplete Godot scene/resource and
 runtime boundary. Change `0.19.0` adds the conservative `.gd` signature without
 changing earlier ecosystem semantics or extending Stage A admission.
 
+Unreal analyzer `0.1.0` also reuses the unchanged generic source rule, but its
+structure is inferred rather than parsed: unique Blueprint, material, effect,
+sound, and AI graph packages are converted from serialized size (binary length or
+Git LFS pointer size) to graph nodes, callable units, and branch points by the
+versioned ratios in `UNREAL_ANALYSIS.md`. A `syntax:size-inferred` structure
+fact always uses neutral `Moderate` complexity, receives a 0.08 confidence
+penalty, and carries an explicit uncalibrated-inference uncertainty reason; other
+ecosystems are unaffected. Widget/HUD classes and levels reuse the UI rule, and
+each project descriptor reuses the entry-point rule. Imported media and level
+actor placement are not valued.
+
 Python analyzer `0.1.0` supplies the first evidence to this generic rule. Its
 bounded managed tokenizer and indentation pass are explicitly token-backed.
 Package ownership comes from static metadata, and framework semantics require

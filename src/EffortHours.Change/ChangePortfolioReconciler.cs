@@ -7,7 +7,7 @@ namespace EffortHours.Change;
 
 public sealed partial class ChangePortfolioReconciler
 {
-    public const string Version = "change-portfolio/0.6.5+change-seed/0.21.3+seed-rules/0.4.0";
+    public const string Version = "change-portfolio/0.6.5+change-seed/0.22.0+seed-rules/0.4.0";
 
     public static ChangePortfolioReport Reconcile(
         ChangePortfolioSelection selection,
@@ -169,7 +169,7 @@ public sealed partial class ChangePortfolioReconciler
         ChangePortfolioReport report = new()
         {
             EstimatorVersion = candidates.Any(candidate => candidate.ReplayEvidence is not null)
-                ? "change-portfolio/0.6.7+change-seed/0.21.3+seed-rules/0.4.0" : Version,
+                ? "change-portfolio/0.6.7+change-seed/0.22.0+seed-rules/0.4.0" : Version,
             ReplayAllocations = results.Any(result => result.ReplayAllocations is not null)
                 ? [.. results.SelectMany(result => result.ReplayAllocations ?? [])] : null,
             SourceChangeEstimatorVersion = candidates.Count == 0

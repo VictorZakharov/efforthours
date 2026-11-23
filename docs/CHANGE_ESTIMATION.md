@@ -9,7 +9,7 @@ directories; and two saved repository-evidence bundles. Portfolio reconciliation
 supports repeated PRs, multi-repository manifests, and bounded author-period
 selection under the separate `CHANGE_PORTFOLIOS.md` contract.
 
-Current source reports use `change-seed/0.21.3+seed-rules/0.4.0`. The model remains
+Current source reports use `change-seed/0.22.0+seed-rules/0.4.0`. The model remains
 experimental and is not empirically production-validated. Only the documented
 0.6.0 Stage A subset has passed a model-authored logical gate for eligible
 4-to-32-hour changes; later ecosystem extensions preserve those admitted rules but
@@ -26,6 +26,13 @@ range audits, final-delta reconciliation, and stable explanation lineage. Exact
 versions and historical diagnostics remain in `CHANGELOG.md`,
 `CHANGE_MODEL_ADMISSION.md`, and the immutable artifacts under
 `calibration/changes/`.
+
+Version 0.22.0 admits Unreal Engine project scopes under `UNREAL_ANALYSIS.md`.
+Before/after snapshots include size-inferred Unreal graph structure, so growth in
+Blueprint and other graph packages is valued through the existing bounded
+source-expansion budget. Changed packages keep their generic path treatment; there
+is no binary formatting normalizer, and deletion is never negative. Non-Unreal
+semantics are unchanged; the identity advances because Unreal results can differ.
 
 Version 0.19.0 adds bounded GDScript `.gd` formatting comparison and Godot
 project context under `GDSCRIPT_ANALYSIS.md`. Ordinary layout/comments can normalize
@@ -598,13 +605,14 @@ verification, and post-EHE pricing. They emit neither local repository paths nor
 source excerpts.
 
 The current source Change estimator identity is
-`change-seed/0.21.3+seed-rules/0.4.0`; the portfolio reconciler identity is
-`change-portfolio/0.6.5+change-seed/0.21.3+seed-rules/0.4.0`. Declared rewrite
+`change-seed/0.22.0+seed-rules/0.4.0`; the portfolio reconciler identity is
+`change-portfolio/0.6.5+change-seed/0.22.0+seed-rules/0.4.0`. Declared rewrite
 event allocation is an explicit portfolio policy, not a new source estimator or
 broader model admission. The earlier 0.6.0
 Change identity alone passed the experimental Stage A logical gate, and that
 record contains no SQL, Python, Go, Java, Kotlin, Shell, PowerShell, Terraform,
-HCL, PHP, Composer, Rust, Cargo, Docker, Compose, Jupyter, C, C++, or GDScript. Portfolio
+HCL, PHP, Composer, Rust, Cargo, Docker, Compose, Jupyter, C, C++, GDScript, or
+Unreal. Portfolio
 aggregation does not broaden that admission. Neither 0.21.1 nor portfolio 0.6.1
 may be described as empirically calibrated, generally admitted, or production-
 ready. Frozen calibration source reports retain

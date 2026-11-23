@@ -15,6 +15,7 @@
   <Project Path="src/EffortHours.Analyzers.Scripting/EffortHours.Analyzers.Scripting.csproj" />
   <Project Path="src/EffortHours.Analyzers.Sql/EffortHours.Analyzers.Sql.csproj" />
   <Project Path="src/EffortHours.Analyzers.Terraform/EffortHours.Analyzers.Terraform.csproj" />
+  <Project Path="src/EffortHours.Analyzers.Unreal/EffortHours.Analyzers.Unreal.csproj" />
   <Project Path="src/EffortHours.Cli/EffortHours.Cli.csproj" />
   <Project Path="src/EffortHours.Calibration/EffortHours.Calibration.csproj" />
   <Project Path="src/EffortHours.Change/EffortHours.Change.csproj" />

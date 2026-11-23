@@ -59,14 +59,14 @@ public sealed partial class PublicReleaseHygieneTests
         Assert.Contains("eh docs show getting-started", readme, StringComparison.Ordinal);
         Assert.Contains("eh docs show benchmarks", readme, StringComparison.Ordinal);
         Assert.DoesNotContain("#one-million-line-performance-checkpoints", readme, StringComparison.Ordinal);
-        Assert.Contains("change-seed/0.21.3", readme, StringComparison.Ordinal);
+        Assert.Contains("change-seed/0.22.0", readme, StringComparison.Ordinal);
 
         Assert.Contains("## Supported analyzers", readme, StringComparison.Ordinal);
         Assert.Contains("### Shared static-analysis boundary", readme, StringComparison.Ordinal);
         Assert.Contains("### Ecosystem-specific boundaries", readme, StringComparison.Ordinal);
 
         string[] familyRows = [.. readme.Split('\n').Where(line => line.StartsWith("| **", StringComparison.Ordinal))];
-        Assert.Equal(14, familyRows.Length);
+        Assert.Equal(15, familyRows.Length);
 
         foreach (string family in new[]
                  {
@@ -84,6 +84,7 @@ public sealed partial class PublicReleaseHygieneTests
                      "Rust/Cargo",
                      "Docker/Compose",
                      "C/C++",
+                     "Unreal Engine",
                  })
         {
             Assert.Contains($"| **{family}** |", readme, StringComparison.Ordinal);

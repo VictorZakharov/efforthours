@@ -34,7 +34,8 @@ The repository already provides:
   normalization, optional external caching, and mixed-repository analysis;
 - static analyzer families for .NET, JavaScript/TypeScript and frontend assets,
   SQL, Python/Jupyter, Go, Java/Kotlin, Shell/PowerShell, Terraform/HCL,
-  PHP/Composer, Rust/Cargo, Docker/Compose, C/C++, and GDScript/Godot;
+  PHP/Composer, Rust/Cargo, Docker/Compose, C/C++, GDScript/Godot, and Unreal
+  Engine projects with size-inferred Blueprint/asset evidence;
 - deterministic repository-first work-item construction under two profiles;
 - explicit whole-codebase snapshot portfolios with ordered standalone areas,
   immutable archive input, compatibility-bound receipts, resumable publication,
@@ -86,6 +87,7 @@ src/
   EffortHours.Analyzers.Sql/        bounded SQL evidence
   EffortHours.Analyzers.Python/     Python package/source and Jupyter evidence
   EffortHours.Analyzers.GDScript/   GDScript tokens and Godot project ownership
+  EffortHours.Analyzers.Unreal/     Unreal descriptors, asset kinds, and LFS-aware sizes
   EffortHours.Analyzers.Go/         Go module/workspace/source evidence
   EffortHours.Analyzers.Java/       Java, Kotlin, Maven, and Gradle evidence
   EffortHours.Analyzers.Scripting/  Shell and PowerShell evidence

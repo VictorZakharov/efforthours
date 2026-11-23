@@ -240,7 +240,7 @@ determination.
 
 ## Supported analyzers
 
-EffortHours combines 14 bounded static analyzers in mixed-repository reports.
+EffortHours combines 15 bounded static analyzers in mixed-repository reports.
 
 | Analyzer family | Maintained artifacts | Evidence represented |
 | --- | --- | --- |
@@ -258,10 +258,10 @@ EffortHours combines 14 bounded static analyzers in mixed-repository reports.
 | **Rust/Cargo** | Rust source, Cargo packages/workspaces, targets, tests, benchmarks, and examples | Declarations, APIs, generics/lifetimes, async/concurrency, unsafe/error paths, qualified semantics, FFI, and tests |
 | **Docker/Compose** | Dockerfile variants, filename-qualified Compose files, and `.dockerignore` | Build stages and instructions, services, orchestration, literal local Dockerfile references, and ignore rules |
 | **C/C++** | C99 through C23, C++11 through C++23, headers, modules, and static build metadata | Declarations, APIs, templates/concepts, concurrency, FFI, tests, qualified semantics, and CMake/Make/Meson/MSBuild ownership |
+| **Unreal Engine** | `.uproject`/`.uplugin` descriptors and `.uasset`/`.umap` packages, including Git LFS pointers | Project/plugin ownership plus size-inferred Blueprint, widget, material, effect, sound, and AI graph structure, UI classes, and levels; imported media and level placement are not valued |
 
 Unsupported languages still receive common inventory evidence, but not the same
-semantic depth. Exact ecosystem boundaries are linked from the
-[documentation index](docs/README.md).
+semantic depth. Exact boundaries are in the [documentation index](docs/README.md).
 
 ### Performance and scale
 

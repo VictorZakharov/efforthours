@@ -6,6 +6,25 @@ may still change public contracts with explicit documentation.
 
 ## Unreleased
 
+- Add a bounded static Unreal Engine analyzer (`0.1.0`). `.uproject`/`.uplugin`
+  descriptors own `.uasset`/`.umap` packages; asset kinds come from paths and
+  conventional name prefixes. Blueprint, widget, animation, Control Rig, AI,
+  material, Niagara/effect, and sound graphs are valued through the unchanged
+  generic source rule from size-inferred structure, using the binary length or the
+  Git LFS pointer's declared size, so checkout-free archives and LFS-smudged
+  directories give identical estimates. Widget/HUD classes and levels reuse the UI
+  rule and each project adds one entry point. Package bodies are never parsed,
+  loaded, or executed; imported media and level actor placement are not valued.
+- Size-inferred structure uses neutral complexity, a confidence penalty, and an
+  explicit uncalibrated-inference uncertainty reason. `seed-rules/0.4.0` priors are
+  unchanged.
+- Advance the common scanner to `0.2.17` (`unreal` ecosystem and descriptor
+  manifests) and Change to `change-seed/0.22.0`, because Unreal graph growth now
+  feeds the existing source-expansion budget. Non-Unreal results are unchanged.
+  Estimates remain experimental and uncalibrated.
+- Workspace repository discovery skips a `.git` file whose `gitdir:` target is
+  missing regardless of Git's error wording, which changed in newer Git releases.
+
 ## 0.10.0-alpha.42 - 2026-10-07
 
 - Bundle complete installed-version documentation and runnable synthetic

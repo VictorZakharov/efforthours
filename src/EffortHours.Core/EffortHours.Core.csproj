@@ -18,6 +18,7 @@
     <ProjectReference Include="../EffortHours.Analyzers.Scripting/EffortHours.Analyzers.Scripting.csproj" />
     <ProjectReference Include="../EffortHours.Analyzers.Sql/EffortHours.Analyzers.Sql.csproj" />
     <ProjectReference Include="../EffortHours.Analyzers.Terraform/EffortHours.Analyzers.Terraform.csproj" />
+    <ProjectReference Include="../EffortHours.Analyzers.Unreal/EffortHours.Analyzers.Unreal.csproj" />
     <ProjectReference Include="../EffortHours.Contracts/EffortHours.Contracts.csproj" />
   </ItemGroup>
   <ItemGroup>

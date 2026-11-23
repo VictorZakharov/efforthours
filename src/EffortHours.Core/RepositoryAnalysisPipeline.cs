@@ -12,6 +12,7 @@ using EffortHours.Analyzers.Rust;
 using EffortHours.Analyzers.Scripting;
 using EffortHours.Analyzers.Sql;
 using EffortHours.Analyzers.Terraform;
+using EffortHours.Analyzers.Unreal;
 using EffortHours.Contracts.V1;
 
 namespace EffortHours.Core;
@@ -39,6 +40,7 @@ public sealed class RepositoryAnalysisPipeline : IRepositoryScanner
                 new ScriptingRepositoryAnalyzer(),
                 new SqlRepositoryAnalyzer(),
                 new TerraformRepositoryAnalyzer(),
+                new UnrealRepositoryAnalyzer(),
                 new CoverageReportAnalyzer(),
             ])
     {
@@ -65,6 +67,7 @@ public sealed class RepositoryAnalysisPipeline : IRepositoryScanner
                 new ScriptingRepositoryAnalyzer(fileSystem),
                 new SqlRepositoryAnalyzer(fileSystem),
                 new TerraformRepositoryAnalyzer(fileSystem),
+                new UnrealRepositoryAnalyzer(fileSystem),
                 new CoverageReportAnalyzer(fileSystem),
             ])
     {

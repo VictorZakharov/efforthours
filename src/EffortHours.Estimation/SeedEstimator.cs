@@ -70,6 +70,7 @@ public sealed class SeedEstimator : IThreadSafeEstimator
             "sql",
             "typescript",
             "terraform",
+            "unreal",
         };
 
     private static readonly EstimationBaseline Baseline = new()

@@ -46,6 +46,8 @@ internal static class EcosystemClassification
         if (language is "c" or "cpp" ||
             CppFileClassification.IsStrongProjectArtifact(lowerName, extension))
             ecosystems.Add("cpp");
+        if (extension is ".uproject" or ".uplugin")
+            ecosystems.Add("unreal");
         if (DockerFileClassification.IsProjectArtifact(lowerName))
             ecosystems.Add("docker");
         return ecosystems;
