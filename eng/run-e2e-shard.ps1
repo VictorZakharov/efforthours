@@ -15,7 +15,7 @@ $inventory = @($listing | ForEach-Object { $_.Trim() } |
     Where-Object { $_.StartsWith("EffortHours.EndToEndTests.", [StringComparison]::Ordinal) })
 if ($inventory.Count -eq 0) { throw "No E2E tests were discovered." }
 Assert-E2eCases -Expected $inventory -Actual $inventory
-$expected = Get-E2eShardCases -Cases $inventory -Count $Count -Index $Index
+$expected = @(Get-E2eShardCases -Cases $inventory -Count $Count -Index $Index)
 if ($expected.Count -eq 0) { throw "Empty E2E shard." }
 $methods = @($expected | ForEach-Object { ($_ -split "\(", 2)[0] } | Sort-Object -Unique)
 $filter = ($methods | ForEach-Object { "FullyQualifiedName=$_" }) -join "|"

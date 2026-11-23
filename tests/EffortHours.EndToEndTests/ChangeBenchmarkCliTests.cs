@@ -199,7 +199,7 @@ public sealed partial class ChangeBenchmarkCliTests
             "3",
             "--prepare-only");
 
-        Assert.Equal(0, preparation.ExitCode);
+        Assert.True(preparation.ExitCode == 0, preparation.StandardError);
         Assert.Equal(string.Empty, preparation.StandardError);
         Dictionary<string, string> prepared = Parse(preparation.StandardOutput);
         Assert.Equal("change-fixture/1.0.0", prepared["benchmark"]);
@@ -221,7 +221,7 @@ public sealed partial class ChangeBenchmarkCliTests
                 descriptor,
                 "--compare-independent");
 
-            Assert.Equal(0, measurement.ExitCode);
+            Assert.True(measurement.ExitCode == 0, measurement.StandardError);
             Assert.Equal(string.Empty, measurement.StandardError);
             Dictionary<string, string> values = Parse(measurement.StandardOutput);
             Assert.Equal("prepared", values["fixture-source"]);
