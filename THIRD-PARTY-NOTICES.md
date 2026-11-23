@@ -66,14 +66,14 @@ duplicated here.
 
 | Package | Version | License | Project |
 | --- | --- | --- | --- |
-| Acornima | 1.8.0 | BSD-3-Clause | <https://github.com/adams85/acornima> |
-| Acornima.Extras | 1.8.0 | BSD-3-Clause | <https://github.com/adams85/acornima> |
+| Acornima | 1.9.2 | BSD-3-Clause | <https://github.com/adams85/acornima> |
+| Acornima.Extras | 1.9.2 | BSD-3-Clause | <https://github.com/adams85/acornima> |
 | JsonSchema.Net | 8.0.5 | MIT | <https://github.com/gregsdennis/json-everything> |
 | JsonPointer.Net | 6.0.1 | MIT | <https://github.com/gregsdennis/json-everything> |
 | Json.More.Net | 2.2.0 | MIT | <https://github.com/gregsdennis/json-everything> |
 | Humanizer.Core | 3.0.1 | MIT | <https://github.com/Humanizr/Humanizer> |
-| Microsoft.CodeAnalysis.CSharp | 5.9.0 | MIT | <https://github.com/dotnet/roslyn> |
-| Microsoft.CodeAnalysis.Common | 5.9.0 | MIT | <https://github.com/dotnet/roslyn> |
+| Microsoft.CodeAnalysis.CSharp | 5.12.0 | MIT | <https://github.com/dotnet/roslyn> |
+| Microsoft.CodeAnalysis.Common | 5.12.0 | MIT | <https://github.com/dotnet/roslyn> |
 
 JsonSchema.Net is intentionally pinned to `8.0.5`, the final binary release whose
 NuGet package declares the standard MIT license. Version 9.x uses different
@@ -82,7 +82,7 @@ binary package terms as well as API compatibility.
 
 ### Acornima and Acornima.Extras license
 
-The following license applies to Acornima and Acornima.Extras 1.8.0. Both NuGet
+The following license applies to Acornima and Acornima.Extras 1.9.2. Both NuGet
 packages identify source commit `b4508e06c520493d798064dc172ad472e44968ce`.
 
 Copyright (c) Adam Simon. All rights reserved.
@@ -116,11 +116,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 | Package | Version | License |
 | --- | --- | --- |
-| Microsoft.NET.Test.Sdk | 18.10.0 | MIT |
-| Microsoft.CodeCoverage | 18.10.0 | MIT |
+| Microsoft.NET.Test.Sdk | 18.12.0 | MIT |
+| Microsoft.CodeCoverage | 18.12.0 | MIT |
 | Microsoft.CodeAnalysis.Analyzers | 5.9.0 | MIT |
-| Microsoft.TestPlatform.ObjectModel | 18.10.0 | MIT |
-| Microsoft.TestPlatform.TestHost | 18.10.0 | MIT |
+| Microsoft.TestPlatform.ObjectModel | 18.12.0 | MIT |
+| Microsoft.TestPlatform.TestHost | 18.12.0 | MIT |
 | xunit | 2.9.3 | Apache-2.0 |
 | xunit.abstractions | 2.0.3 | Apache-2.0, with MIT-licensed imported portions noted by the project |
 | xunit.analyzers | 1.18.0 | Apache-2.0 |
@@ -128,7 +128,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 | xunit.core | 2.9.3 | Apache-2.0 |
 | xunit.extensibility.core | 2.9.3 | Apache-2.0 |
 | xunit.extensibility.execution | 2.9.3 | Apache-2.0 |
-| xunit.runner.visualstudio | 4.0.0 | Apache-2.0 |
+| xunit.runner.visualstudio | 4.0.1 | Apache-2.0 |
 
 These packages are used to build or test EffortHours and are not shipped as runtime
 dependencies of the EffortHours global-tool package unless a future package layout
@@ -147,7 +147,7 @@ are not redistributed inside `EffortHours.Tool`.
 | --- | --- | --- | --- |
 | [`actions/checkout`](https://github.com/actions/checkout) | `7.0.1` | `3d3c42e5aac5ba805825da76410c181273ba90b1` | MIT |
 | [`actions/cache`](https://github.com/actions/cache) | `6.1.0` | `55cc8345863c7cc4c66a329aec7e433d2d1c52a9` | MIT |
-| [`actions/setup-dotnet`](https://github.com/actions/setup-dotnet) | `6.0.0` | `a98b56852c35b8e3190ac28c8c2271da59106c68` | MIT |
-| [`actions/upload-artifact`](https://github.com/actions/upload-artifact) | `7.0.1` | `043fb46d1a93c77aae656e7c1c64a875d1fc6a0a` | MIT |
-| [`actions/download-artifact`](https://github.com/actions/download-artifact) | `8.0.1` | `3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c` | MIT |
+| [`actions/setup-dotnet`](https://github.com/actions/setup-dotnet) | `6.1.0` | `0f4a354dd5547a28c70b7853dbd95d5b67886e73` | MIT |
+| [`actions/upload-artifact`](https://github.com/actions/upload-artifact) | `7.0.2` | `cf430e030ddbb5b0abf93d22962f4752f3646cd9` | MIT |
+| [`actions/download-artifact`](https://github.com/actions/download-artifact) | `8.0.2` | `9000827ccba6bdab643e8b6fd33ac0654aef8333` | MIT |
 | [`NuGet/login`](https://github.com/NuGet/login) | `1.2.0` | `8d196754b4036150537f80ac539e15c2f1028841` | Apache-2.0 |
