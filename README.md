@@ -39,7 +39,7 @@ documentation, configuration, and delivery artifacts into traceable
 Install the explicit preview version:
 
 ```text
-dotnet tool install --global EffortHours.Tool --version 0.10.0-alpha.42
+dotnet tool install --global EffortHours.Tool --version 0.10.0-alpha.43
 eh version
 ```
 
@@ -87,10 +87,10 @@ eh explain . --item <capability-or-work-item-id> --format markdown
 Update an existing preview installation with:
 
 ```text
-dotnet tool update --global EffortHours.Tool --version 0.10.0-alpha.42
+dotnet tool update --global EffortHours.Tool --version 0.10.0-alpha.43
 ```
 
-See the [`0.10.0-alpha.42` GitHub prerelease](https://github.com/VictorZakharov/efforthours/releases/tag/v0.10.0-alpha.42) for release notes and artifacts.
+See the [`0.10.0-alpha.43` GitHub prerelease](https://github.com/VictorZakharov/efforthours/releases/tag/v0.10.0-alpha.43) for release notes and artifacts.
 
 ## Recent highlights
 
