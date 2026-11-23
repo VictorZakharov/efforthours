@@ -48,7 +48,7 @@ packet/query commands.
 
 ## Supported analyzers
 
-EffortHours combines 14 analyzer families in one report, including mixed
+EffortHours combines 15 analyzer families in one report, including mixed
 repositories. Each family uses bounded static evidence; the table shows the
 maintained artifacts and the kind of work it can represent.
 
@@ -68,6 +68,7 @@ maintained artifacts and the kind of work it can represent.
 | **Rust/Cargo** | Rust source, Cargo packages/workspaces, targets, tests, benchmarks, and examples | Declarations, APIs, generics/lifetimes, async/concurrency, unsafe/error paths, qualified semantics, FFI, and tests |
 | **Docker/Compose** | Dockerfile variants, filename-qualified Compose files, and `.dockerignore` | Build stages and instructions, services, orchestration, literal local Dockerfile references, and ignore rules |
 | **C/C++** | C99 through C23, C++11 through C++23, headers, modules, and static build metadata | Declarations, APIs, templates/concepts, concurrency, FFI, tests, qualified semantics, and CMake/Make/Meson/MSBuild ownership |
+| **Unreal Engine** | `.uproject`/`.uplugin` descriptors and `.uasset`/`.umap` packages, including Git LFS pointers | Project/plugin ownership plus size-inferred Blueprint, widget, material, effect, sound, and AI graph structure, UI classes, and levels; imported media and level placement are not valued |
 
 Evidence becomes traceable work items across implementation, UI, data,
 integrations, security, testing, documentation, delivery, validation, and review.
@@ -150,6 +151,11 @@ Read `eh docs show getting-started` for the performance and scale summary, and
   autoloads, preload/load references, cross-script binding, visual/art production,
   RPC semantics, and runtime behavior are unresolved. This is partial Godot
   coverage, not a complete game estimate.
+- **Unreal Engine:** Package bodies are never parsed, loaded, or executed, and Git
+  LFS objects are never fetched. Blueprint and other graph structure is inferred
+  from serialized size (binary length or LFS pointer size) by uncalibrated,
+  versioned ratios and relies on conventional asset-name prefixes. Imported meshes,
+  textures, audio, animation, and level actor placement are not valued.
 - **C/C++:** Evidence is token-backed rather than compiler-, preprocessor-, or
   native-parser-backed. EffortHours does not invoke a compiler, preprocessor,
   linker, build system, generator, package manager, or tests; expand headers or
@@ -215,7 +221,7 @@ treated as untrusted input, and reports avoid source excerpts by default.
 
 ## Current limitations
 
-- `seed-rules/0.4.0` and `change-seed/0.21.3` remain experimental and uncalibrated.
+- `seed-rules/0.4.0` and `change-seed/0.22.0` remain experimental and uncalibrated.
 - Public calibration labels have not completed genuinely independent correction.
 - Host-review token use, cost, and estimate improvement have not yet been measured
   across representative repositories; no automatic review budget is selected.

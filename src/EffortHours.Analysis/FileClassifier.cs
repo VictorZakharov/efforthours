@@ -150,7 +150,7 @@ internal static class FileClassifier
             return "binary";
         }
 
-        if (lowerName is "package.json" or "project.godot")
+        if (lowerName is "package.json" or "project.godot" || extension is ".uproject" or ".uplugin")
         {
             return "package-manifest";
         }
@@ -329,7 +329,8 @@ internal static class FileClassifier
             "cargo.lock" or "go.sum" or "gradle.lockfile" or ".terraform.lock.hcl";
 
     private static bool IsComponentManifest(string lowerName, string extension) =>
-        lowerName is "package.json" or "project.godot" || PythonFileClassification.IsProjectManifest(lowerName) ||
+        lowerName is "package.json" or "project.godot" || extension is ".uproject" or ".uplugin" ||
+        PythonFileClassification.IsProjectManifest(lowerName) ||
         GoFileClassification.IsProjectManifest(lowerName) ||
         JavaFileClassification.IsProjectManifest(lowerName) ||
         PhpFileClassification.IsProjectManifest(lowerName) ||

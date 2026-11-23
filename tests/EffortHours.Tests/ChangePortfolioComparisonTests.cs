@@ -99,10 +99,10 @@ public sealed partial class ChangePortfolioComparisonTests
         // Whole-document golden digests freeze every generated heading, table, chart,
         // fallback series, calculation, caveat, and findings section without a bulky fixture.
         Assert.Equal(
-            "sha256:f8ad94069532fd3530cb0d2ed047baafbefda741602c4afe950cd532197216de",
+            "sha256:b8a267f080fb2d1a49397aad21277f17f0db4bab50566c498efcd742f79292b6",
             ChangePortfolioComparisonIdentity.ComputeTextDigest(markdown));
         Assert.Equal(
-            "sha256:57403c6bed02748cfaaf6588fe98983d7f95c4f164bea94decf3b01be7df629e",
+            "sha256:2f1aac031634eafdcf179760b096ec4efba408b6359c6083f7756507001b329a",
             ChangePortfolioComparisonIdentity.ComputeTextDigest(findingsMarkdown));
     }
 
@@ -115,9 +115,9 @@ public sealed partial class ChangePortfolioComparisonTests
         {
             EstimatorVersion = "change-portfolio/0.6.3+change-seed/0.21.3+seed-rules/0.4.0",
         }, BuildOptions(manifest));
-        Assert.Equal("sha256:6dcff6bc1dc3f4f735fc5b6149c9ee96bac0d276d58ce6dafe4ca96738a5ae86",
+        Assert.Equal("sha256:49737ca1a3d1ba8fd19127916e041857a33913fb6792c35212e15368e84a1892",
             ChangePortfolioComparisonIdentity.ComputeTextDigest(ChangePortfolioComparisonMarkdownRenderer.Render(report)));
-        Assert.Equal("sha256:2e5784ea52a0ed63f15964c6da0f56fc44b0ef702a2cbe08eafa209b1b0f6f88",
+        Assert.Equal("sha256:2b65585c5459496395f08dafc6eb70a9510c9e91f165ac2330212312f15bdaa6",
             ChangePortfolioComparisonIdentity.ComputeTextDigest(ChangePortfolioComparisonMarkdownRenderer.Render(report with
             {
                 View = ChangePortfolioComparisonView.Findings,

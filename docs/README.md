@@ -117,6 +117,7 @@ privacy/safety limits, model maturity, and non-goals for its ecosystem.
 - [Python](PYTHON_ANALYSIS.md)
 - [Jupyter notebooks](JUPYTER_ANALYSIS.md)
 - [GDScript/Godot](GDSCRIPT_ANALYSIS.md)
+- [Unreal Engine projects and Blueprint assets](UNREAL_ANALYSIS.md)
 - [Go](GO_ANALYSIS.md)
 - [Java](JAVA_ANALYSIS.md)
 - [Kotlin/JVM](KOTLIN_ANALYSIS.md)

@@ -634,6 +634,16 @@ baseline. C/C++ admission requires licensed public final changes in the declared
 size band, exact small-task logical decomposition, repository-isolated partitions,
 and the normal development/validation/test decision order.
 
+## `change-seed/0.22.0` static Unreal extension
+
+Version 0.22.0 adds Unreal Engine project scopes whose graph structure is inferred
+from serialized package size, including Git LFS pointer sizes. No prior, rule, or
+admitted decision changes; growth in size-inferred structure reuses the existing
+source-expansion budget. Synthetic memory-only tests establish routing, parity
+between binary bodies and LFS pointers, bounds, and safety, not numerical
+calibration. The Stage A records contain no Unreal content. This extension remains
+experimental and unadmitted.
+
 ## `change-seed/0.19.0` static GDScript extension
 
 Version 0.19.0 adds maintained `.gd` final-delta support and static Godot project
