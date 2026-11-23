@@ -174,6 +174,17 @@ the release path, increment the prerelease version, and tag the corrected merge.
 
 Full PR validation executes all discovered process tests on every platform using
 eight method-stable shards on Windows, four on macOS and three on Linux.
+`eng/e2e-shard-common.ps1` assigns whole test methods deterministically from the
+checked-in `eng/e2e-shard-weights.json` measurements (methods not listed weigh one
+second): heaviest first, each to the shard with the smallest estimate, where a shard's
+estimate is its longest same-class chain (xUnit runs a class's tests serially) or its
+total divided by the runner's six parallel collections. Every shard and the aggregate
+verifier compute the same assignment from the same commit. Weights only balance work;
+stale or missing weights cannot drop or duplicate a case. Refresh them after test
+durations shift by downloading the receipts of one or more complete runs
+(`gh run download <run> --pattern "e2e-*" --dir <directory>`) and running
+`eng/update-e2e-shard-weights.ps1 -Directory <directory>`. Split a parameterized
+test into separate methods when one method dominates a shard.
 Each shard performs its own locked restore and OS-specific build. The existing required
 `End-to-end (<os>)` checks are the first shard on each OS, which waits for its
 current-attempt peers to finish successfully and verifies run/attempt/head

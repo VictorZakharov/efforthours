@@ -8,10 +8,16 @@ namespace EffortHours.EndToEndTests;
 
 public sealed partial class ChangeCliTests : ChangeCliTestSupport
 {
-    [Theory]
-    [InlineData(false)]
-    [InlineData(true)]
-    public async Task ReplayRangeReviewSeparatesActualRebaseNovelDeltaAndPreservesSquashedResults(bool conflict)
+    // The two replay variants are separate methods so E2E sharding can run them in parallel.
+    [Fact]
+    public Task ReplayRangeReviewSeparatesActualRebaseNovelDeltaAndPreservesSquashedResults() =>
+        AssertReplayRangeReviewAsync(conflict: false);
+
+    [Fact]
+    public Task ConflictedReplayRangeReviewSeparatesActualRebaseNovelDeltaAndPreservesSquashedResults() =>
+        AssertReplayRangeReviewAsync(conflict: true);
+
+    private static async Task AssertReplayRangeReviewAsync(bool conflict)
     {
         using GitFixture repository = await GitFixture.CreateAsync();
         repository.WriteText("Demo.csproj", ProjectFile);

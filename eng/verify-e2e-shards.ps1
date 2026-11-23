@@ -12,6 +12,7 @@ $indices = [Collections.Generic.HashSet[int]]::new()
 $inventory = @($receipts[0].inventory)
 if ($inventory.Count -eq 0) { throw "Empty E2E inventory." }
 $all = [Collections.Generic.List[string]]::new()
+$assignment = Get-E2eShardAssignment -Cases $inventory -Count $Count
 foreach ($receipt in $receipts) {
     if ($receipt.schemaVersion -ne "e2e-shard/1.0.0" -or $receipt.head -cne $Head -or $receipt.count -ne $Count) {
         throw "E2E receipt has incompatible schema, head or shard count."
@@ -20,7 +21,7 @@ foreach ($receipt in $receipts) {
         throw "Invalid or duplicate E2E shard index."
     }
     Assert-E2eCases -Expected $inventory -Actual @($receipt.inventory)
-    $expected = @($inventory | Where-Object { (Get-E2eShard -Case $_ -Count $Count) -eq $receipt.index })
+    $expected = @($inventory | Where-Object { $assignment[(Get-E2eMethod -Case $_)] -eq $receipt.index })
     if ($expected.Count -eq 0) { throw "Empty E2E shard." }
     $actual = @($receipt.results | ForEach-Object {
         if ($_.outcome -cne "Passed") { throw "E2E receipt contains failed or skipped cases." }
