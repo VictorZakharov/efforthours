@@ -22,6 +22,8 @@ may still change public contracts with explicit documentation.
   manifests) and Change to `change-seed/0.22.0`, because Unreal graph growth now
   feeds the existing source-expansion budget. Non-Unreal results are unchanged.
   Estimates remain experimental and uncalibrated.
+- Workspace repository discovery skips a `.git` file whose `gitdir:` target is
+  missing regardless of Git's error wording, which changed in newer Git releases.
 
 ## 0.10.0-alpha.42 - 2026-10-07
 

@@ -97,7 +97,8 @@ internal static class WorkspaceGitHubRepositoryCatalog
             }
 
             if (root.StandardError.Contains("not a git repository", StringComparison.OrdinalIgnoreCase) ||
-                root.StandardError.Contains("invalid gitfile format", StringComparison.OrdinalIgnoreCase))
+                root.StandardError.Contains("invalid gitfile format", StringComparison.OrdinalIgnoreCase) ||
+                HasMissingGitFileTarget(path))
             {
                 return (false, null);
             }
@@ -199,6 +200,36 @@ internal static class WorkspaceGitHubRepositoryCatalog
 
     private static bool IsGitWorktree(string path) =>
         Directory.Exists(Path.Combine(path, ".git")) || File.Exists(Path.Combine(path, ".git"));
+
+    // Git's wording for a gitfile whose target is missing varies by version, so a failed
+    // rev-parse on such a marker is classified from the bounded marker itself.
+    private static bool HasMissingGitFileTarget(string path)
+    {
+        string marker = Path.Combine(path, ".git");
+        try
+        {
+            FileInfo file = new(marker);
+            if (!file.Exists || file.Length > 4_096)
+            {
+                return false;
+            }
+
+            string text = File.ReadAllText(marker).Trim();
+            const string prefix = "gitdir:";
+            if (!text.StartsWith(prefix, StringComparison.Ordinal) || text.Contains('\n'))
+            {
+                return false;
+            }
+
+            string target = text[prefix.Length..].Trim();
+            return target.Length > 0 && !Directory.Exists(Path.GetFullPath(target, path));
+        }
+        catch (Exception exception) when (
+            exception is IOException or UnauthorizedAccessException or ArgumentException or NotSupportedException)
+        {
+            return false;
+        }
+    }
 
     private static IReadOnlyList<string> EnumerateDirectories(string path)
     {
