@@ -239,10 +239,10 @@ public sealed partial class PublicReleaseHygieneTests
 
         Assert.Equal("8.0.5", PackageVersion(packages, "JsonSchema.Net"));
         Assert.Contains("| JsonSchema.Net | 8.0.5 | MIT |", notices, StringComparison.Ordinal);
-        Assert.Equal("1.8.0", PackageVersion(packages, "Acornima"));
-        Assert.Contains("| Acornima | 1.8.0 | BSD-3-Clause |", notices, StringComparison.Ordinal);
-        Assert.Equal("1.8.0", PackageVersion(packages, "Acornima.Extras"));
-        Assert.Contains("| Acornima.Extras | 1.8.0 | BSD-3-Clause |", notices, StringComparison.Ordinal);
+        Assert.Equal("1.9.2", PackageVersion(packages, "Acornima"));
+        Assert.Contains("| Acornima | 1.9.2 | BSD-3-Clause |", notices, StringComparison.Ordinal);
+        Assert.Equal("1.9.2", PackageVersion(packages, "Acornima.Extras"));
+        Assert.Contains("| Acornima.Extras | 1.9.2 | BSD-3-Clause |", notices, StringComparison.Ordinal);
     }
 
     [Fact]
