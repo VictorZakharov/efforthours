@@ -50,8 +50,8 @@
       },
       "Microsoft.CodeAnalysis.Analyzers": {
         "type": "Transitive",
-        "resolved": "5.9.0",
-        "contentHash": "jMNOo+uoBGiWbZ6Wx0dqU93r5WD4P5WnIRZdoz67RP5N09OUetHgAbo4L7hihOH1NHdD2TgW5/l+SP4gQukwww=="
+        "resolved": "5.9.0-1.26328.17",
+        "contentHash": "HP9NNk8ZjOSI2hgOyXnQg+kv7/X837Vr2nAlXiGAtqtYnYKjRRa1UmQFr8KFs5ynGYKqfbb8zB9APoWjiAGdMg=="
       },
       "Microsoft.CodeAnalysis.Common": {
         "type": "Transitive",
@@ -171,8 +171,8 @@
       "efforthours.analyzers.javascript": {
         "type": "Project",
         "dependencies": {
-          "Acornima": "[1.8.0, )",
-          "Acornima.Extras": "[1.8.0, )",
+          "Acornima": "[1.9.2, )",
+          "Acornima.Extras": "[1.9.2, )",
           "EffortHours.Analysis": "[1.0.0, )",
           "EffortHours.Contracts": "[1.0.0, )"
         }
@@ -310,17 +310,17 @@
       },
       "Acornima": {
         "type": "CentralTransitive",
-        "requested": "[1.8.0, )",
-        "resolved": "1.8.0",
-        "contentHash": "ZtcK7lu5LZZH5qDWfeUdBn/WXChWQjGdpB9sSFOJPyqnODGSMS1wqBoONP7GXzQRPHKoV8byWZT4EeBPI69ODQ=="
+        "requested": "[1.9.2, )",
+        "resolved": "1.9.2",
+        "contentHash": "Nze/Lev8jf+ZB42rVb77pMyiwupDItiZyG7kWdP5O254nXt+EmJSgA8uGya72FjoxAyJ7/1TUqafvPrBlQiWsw=="
       },
       "Acornima.Extras": {
         "type": "CentralTransitive",
-        "requested": "[1.8.0, )",
-        "resolved": "1.8.0",
-        "contentHash": "drn8p3EgvnuUzCO3DhfIUQ60BdxaBpOgs1Vi0tHKjNQgo8tkaCzCHPFqclYZ1a4O4zvEBafcYpMl42MFM9AK3g==",
+        "requested": "[1.9.2, )",
+        "resolved": "1.9.2",
+        "contentHash": "Y5YczpAVsQAL8VzmUhV91FdXlaAngvdW73jSl6jg2Rn/x5X6YGT/Ed24ovaVv35ihV3dRftfvTIBV2H65QCUGQ==",
         "dependencies": {
-          "Acornima": "1.8.0"
+          "Acornima": "1.9.2"
         }
       },
       "JsonSchema.Net": {
