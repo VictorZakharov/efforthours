@@ -8,11 +8,11 @@
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>eh</ToolCommandName>
     <PackageId>EffortHours.Tool</PackageId>
-    <Version>0.10.0-alpha.42</Version>
+    <Version>0.10.0-alpha.43</Version>
     <Title>EffortHours CLI</Title>
     <PackageReadmeFile>PACKAGE_README.md</PackageReadmeFile>
     <PackageTags>estimation;effort-estimation;developer-tools;cli;repository-analysis;static-analysis;dotnet-tool</PackageTags>
-    <PackageReleaseNotes>0.10.0-alpha.42: Bundle complete installed-version documentation and synthetic historical-refresh examples with offline eh docs list/show/export commands. Replace CLI documentation pointers with offline topic commands. Give check-refresh native exits 0 for ready, 3 for blocked and 1 for invalid input or expected operational failure; preserve usage 2 and cancellation 130 and document PowerShell exit propagation. Include the complete historical-refresh integration contract and tested conditional note adapter. EHE values, fixed-eight allocation, rounding and rates are unchanged. EHE remains experimental and uncalibrated; original workdays remain unresolved without external evidence. No time-entry writes. Full notes: https://github.com/VictorZakharov/efforthours/blob/v0.10.0-alpha.42/CHANGELOG.md</PackageReleaseNotes>
+    <PackageReleaseNotes>0.10.0-alpha.43: Add a bounded static Unreal Engine analyzer. .uproject/.uplugin descriptors own .uasset/.umap packages; Blueprint, widget, animation, Control Rig, AI, material, Niagara and sound graphs are valued through the unchanged generic source rule from size-inferred structure (binary length or Git LFS pointer size), so checkout-free archives and LFS-smudged directories give identical estimates. Package bodies are never parsed, loaded or executed; imported media and level placement are not valued. Common scanner 0.2.17 and change-seed/0.22.0; non-Unreal results are unchanged. Workspace discovery now skips a .git file with a missing gitdir target on newer Git. seed-rules/0.4.0 priors are unchanged; estimates remain experimental and uncalibrated. Full notes: https://github.com/VictorZakharov/efforthours/blob/v0.10.0-alpha.43/CHANGELOG.md</PackageReleaseNotes>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="../EffortHours.Analysis/EffortHours.Analysis.csproj" />

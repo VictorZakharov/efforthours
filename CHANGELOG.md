@@ -6,6 +6,8 @@ may still change public contracts with explicit documentation.
 
 ## Unreleased
 
+## 0.10.0-alpha.43 - 2026-11-23
+
 - Add a bounded static Unreal Engine analyzer (`0.1.0`). `.uproject`/`.uplugin`
   descriptors own `.uasset`/`.umap` packages; asset kinds come from paths and
   conventional name prefixes. Blueprint, widget, animation, Control Rig, AI,
