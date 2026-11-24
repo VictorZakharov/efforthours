@@ -50,7 +50,7 @@ Timing and sampled memory are explicit observations, never ordinary CI gates.
 ## Snapshot portfolio save and artifact reuse checkpoint - November 23, 2026
 
 Measured on Windows x64, .NET SDK 10.0.203, 24 logical processors, on a desktop
-shared with other benchmark processes (40-60% CPU busy at the start), so wall
+shared with other benchmark processes (between idle and 60% CPU busy), so wall
 times are indicative only. Input is a private 19-project portfolio
 (`latest-only` areas): 47 whole snapshots and 136 standalone areas, 183
 estimates, 57 exports, 857 MB of archived content. Every run reproduces one saved
@@ -59,21 +59,24 @@ Project identities and sources stay private; only aggregate counts are recorded.
 
 | Run | Wall s | CPU s | Artifact requests / hits | Store evictions | Peak working set |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| `main` before, fresh checkpoint | 2,624.8 | 2,736.1 | 101,427 / 26,889 | 15,151 | 1.20 GiB |
-| After, fresh checkpoint | 94.7 | 156.2 | 101,427 / 58,636 | 0 | 1.41 GiB |
-| After, receipts removed, artifacts kept | 62.9 | 57.8 | 101,427 / 99,662 | 0 | 1.23 GiB |
-| After, same-producer import into a 77,038-file older checkpoint | 17.7 | 19.4 | 0 / 0 | 0 | 0.40 GiB |
+| `main` before, fresh checkpoint | 2,469.5 | 2,598.8 | 101,427 / 26,898 | 15,142 | 1.29 GiB |
+| After, fresh checkpoint | 89.5 | 162.6 | 101,427 / 58,636 | 0 | 1.13 GiB |
+| After, receipts removed, artifacts kept | 55.2 | 52.1 | 101,427 / 99,662 | 0 | 1.24 GiB |
+| After, same-producer import into a 77,902-file older checkpoint | 13.8 | 15.9 | 0 / 0 | 0 | 0.40 GiB |
 
-Instrumented `main` spent 194 s scanning, 23 s exporting and 1 s estimating; nearly
-all remaining time was checkpoint saves, each of which enumerated and measured
-every `*.json` under the checkpoint (up to 55,850 files). The old binary's
-import into the 77,038-file checkpoint was stopped after more than 6.5 minutes,
-still in the import phase. With the change, every run reports 183 receipts whose
-ranges, categories, input/evidence digests, area allocations and bodies are
-identical to `main` and to the released `0.10.0-alpha.43` publication; only
-producer version, implementation fingerprint and the IDs/digests derived from them
-differ. Running the areas of one snapshot concurrently was measured and rejected:
-after these changes all 136 area estimates together cost about 9 s.
+A second `main` run took 2,624.8 s; other fresh runs of the change took 77.8 to
+94.7 s. Instrumented `main` spent 194 s scanning, 23 s exporting and 1 s
+estimating; nearly all remaining time was checkpoint saves, each of which
+enumerated and measured every `*.json` under the checkpoint (up to 55,850
+files). The old binary's import into the older checkpoint was stopped after more
+than 6.5 minutes, still in the import phase. With the change, every run reports
+183 receipts whose ranges, categories, input/evidence digests, area allocations
+and bodies are identical to `main` and to the released `0.10.0-alpha.43`
+publication; only producer version, implementation fingerprint and the
+IDs/digests derived from them differ. Two alternatives were measured and
+rejected: running a snapshot's areas concurrently (all 136 area estimates
+together now cost about 9 s) and refreshing artifact file times on every
+persisted hit for cross-run recency (55.1 s without versus 62.8 s with).
 
 ## Common scanner v0.2 checkpoint
 

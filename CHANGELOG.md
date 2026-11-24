@@ -27,12 +27,13 @@ may still change public contracts with explicit documentation.
   artifact store evicts least-recently-used entries, persisted artifact reads and
   parsing no longer hold the cache or store lock, persisted hits are no longer
   rewritten, and area projections reuse the parent archive's content hashes. On a
-  private 19-project portfolio (183 estimates) a fresh rebuild fell from 2,625 s to
-  93 s on a shared desktop, and a same-producer `--import-receipts` run over a
-  77,000-file checkpoint finished in 18 s with zero estimates instead of spending
-  minutes in the import phase. All 183 receipts are identical apart from producer
-  identity. The build fingerprint changes, so existing native series need the usual
-  `--upgrade rebuild` under the new producer.
+  private 19-project portfolio (183 estimates) a fresh rebuild fell from 2,470 s to
+  90 s on a shared desktop (55 s when artifacts are already on disk), and a
+  same-producer `--import-receipts` run over a 77,902-file checkpoint finished in
+  14 s with zero estimates instead of spending minutes in the import phase. All
+  183 receipts are identical apart from producer identity. The build fingerprint
+  changes, so existing native series need the usual `--upgrade rebuild` under the
+  new producer.
 
 ## 0.10.0-alpha.43 - 2026-11-23
 

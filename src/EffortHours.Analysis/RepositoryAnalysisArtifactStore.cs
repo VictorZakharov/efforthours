@@ -21,8 +21,6 @@ public sealed class PhysicalRepositoryAnalysisArtifactStore : IRepositoryAnalysi
     // Least recently used first. Loads and saves move an entry to the end; trimming evicts from the front.
     private readonly Dictionary<string, (long Bytes, LinkedListNode<string> Node)> _retained = new(StringComparer.Ordinal);
     private readonly LinkedList<string> _recency = new();
-    // Entries whose file write time already reflects this process's use.
-    private readonly HashSet<string> _current = new(StringComparer.Ordinal);
     private readonly Action<long>? _bytesChanged;
     private long _bytes;
     private int _invalidations;
@@ -41,7 +39,7 @@ public sealed class PhysicalRepositoryAnalysisArtifactStore : IRepositoryAnalysi
         _context = semanticContext;
         _bytesChanged = bytesChanged;
         Directory.CreateDirectory(_directory);
-        // File write times carry recency across runs; names break ties deterministically.
+        // Across runs, the oldest write is evicted first (hits do not rewrite files); names break ties.
         foreach (FileInfo file in new DirectoryInfo(_directory).EnumerateFiles("*.json")
             .OrderBy(f => f.LastWriteTimeUtc).ThenBy(f => f.Name, StringComparer.Ordinal))
         {
@@ -91,14 +89,7 @@ public sealed class PhysicalRepositoryAnalysisArtifactStore : IRepositoryAnalysi
             Interlocked.Increment(ref _invalidations);
             return false;
         }
-        bool refresh;
-        lock (_gate) refresh = Touch(filename) && _current.Add(filename);
-        if (refresh)
-        {
-            // Best-effort recency for later runs; a failure only affects eviction order.
-            try { File.SetLastWriteTimeUtc(path, DateTime.UtcNow); }
-            catch (Exception e) when (e is IOException or UnauthorizedAccessException) { }
-        }
+        lock (_gate) Touch(filename);
         return true;
     }
 
@@ -125,7 +116,6 @@ public sealed class PhysicalRepositoryAnalysisArtifactStore : IRepositoryAnalysi
                     _recency.Remove(existing.Node);
                 }
                 _retained[filename] = (bytes, _recency.AddLast(filename));
-                _current.Add(filename);
                 _bytes += bytes - prior;
                 _bytesChanged?.Invoke(bytes - prior);
                 Trim();
@@ -143,19 +133,17 @@ public sealed class PhysicalRepositoryAnalysisArtifactStore : IRepositoryAnalysi
             File.Delete(Path.Combine(_directory, oldest));
             _recency.RemoveFirst();
             _retained.Remove(oldest);
-            _current.Remove(oldest);
             _bytes -= bytes;
             _bytesChanged?.Invoke(-bytes);
             _evictions++;
         }
     }
 
-    private bool Touch(string filename)
+    private void Touch(string filename)
     {
-        if (!_retained.TryGetValue(filename, out (long Bytes, LinkedListNode<string> Node) entry)) return false;
+        if (!_retained.TryGetValue(filename, out (long Bytes, LinkedListNode<string> Node) entry)) return;
         _recency.Remove(entry.Node);
         _recency.AddLast(entry.Node);
-        return true;
     }
 
     private string EntryPath<T>(string key) => Path.Combine(_directory,

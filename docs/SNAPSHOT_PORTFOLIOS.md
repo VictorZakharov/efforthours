@@ -358,10 +358,11 @@ remain reusable. Aggregation and allocation always rerun over the complete
 selected snapshot.
 
 Each project retains at most 8,192 private artifacts / 128 MiB, with 1-MiB entry
-limits and least-recently-used eviction (file write time carries recency across
-runs; hits refresh it). Malformed entries are misses; request/hit/invalidation/
-eviction counters remain telemetry. The in-memory cache keeps its deterministic
-key-ranked retention. This is conservative
+limits. Within a run the store evicts the least recently used entry; across runs
+the oldest write goes first, because hits never rewrite files. Persisted reads and
+parsing run outside the cache and store locks. Malformed entries are misses;
+request/hit/invalidation/eviction counters remain telemetry. The in-memory cache
+keeps its deterministic key-ranked retention. This is conservative
 incremental reuse, not an approximation based on changed-file effort.
 
 Projects may embed the existing reviewed vendor manifest. Exact hashes are
