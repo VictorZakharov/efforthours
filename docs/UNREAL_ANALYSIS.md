@@ -2,7 +2,7 @@
 
 ## Status
 
-Unreal analyzer `0.1.0`, common scanner `0.2.17`, and Change estimator
+Unreal analyzer `0.1.1`, common scanner `0.2.17`, and Change estimator
 `change-seed/0.22.0+seed-rules/0.4.0` admit Unreal Engine projects and plugins.
 This is a bounded inventory and size-inference analyzer, not an Unreal package
 parser. Repository and Unreal Change estimates remain experimental and
@@ -40,6 +40,15 @@ digest, size (1 MiB), repository-containment, and JSON-depth bounds; only enable
 plugin and code-module counts are retained. Names, descriptions, engine
 associations, and paths inside descriptors are not emitted. An unreadable
 descriptor keeps ownership and reports `FB8302`.
+
+Snapshot-portfolio area scans add every ancestor `.uproject`/`.uplugin` of an
+owned package that the area does not itself own as a context-only file (scanner
+tag `scope:context-only`; see `SNAPSHOT_PORTFOLIOS.md`). Packages therefore
+resolve the same owner as in the whole scan. A context-only descriptor adds no
+entry point, and no facts at all when the area owns none of its packages, so the
+project's entry point is counted only by the area that owns its descriptor.
+Analyzer `0.1.0` treated such area packages as unowned and gave Blueprint-only
+areas no implementation value.
 
 Project-relative `Binaries`, `DerivedDataCache`, `Intermediate`, and `Saved`
 directories are excluded as generated. Scanner generated, vendored, and minified

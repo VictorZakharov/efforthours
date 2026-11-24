@@ -40,7 +40,7 @@ public sealed class UnrealRepositoryAnalyzer : IRepositoryEvidenceAnalyzer
             .Where(fact => fact.Kind == EvidenceKinds.File && IsOwnedContent(fact))
             .OrderBy(fact => fact.Scope, StringComparer.Ordinal)];
         List<Diagnostic> diagnostics = [];
-        SortedDictionary<string, (string Path, bool IsPlugin, UnrealProjectManifest? Manifest)> projects =
+        SortedDictionary<string, (string Path, bool IsPlugin, bool IsContextOnly, UnrealProjectManifest? Manifest)> projects =
             new(StringComparer.Ordinal);
         foreach (EvidenceFact descriptor in files.Where(file => HasExtension(file.Scope, ".uproject", ".uplugin")))
         {
@@ -58,7 +58,7 @@ public sealed class UnrealRepositoryAnalyzer : IRepositoryEvidenceAnalyzer
             bool isPlugin = HasExtension(descriptor.Scope, ".uplugin");
             if (!projects.TryGetValue(directory, out var existing) || existing.IsPlugin && !isPlugin)
             {
-                projects[directory] = (descriptor.Scope, isPlugin, manifest);
+                projects[directory] = (descriptor.Scope, isPlugin, descriptor.Tags.Contains(RepositoryScanner.ContextOnlyTag), manifest);
             }
         }
 
@@ -99,8 +99,15 @@ public sealed class UnrealRepositoryAnalyzer : IRepositoryEvidenceAnalyzer
         int unclassified = 0;
         foreach ((string directory, var descriptor) in projects)
         {
+            // A context-only descriptor (an area scan's ancestor) only resolves package ownership: it adds no
+            // entry point, and nothing at all when this scope owns none of its packages.
+            if (descriptor.IsContextOnly && owned[directory].Count == 0)
+            {
+                continue;
+            }
+
             UnrealProjectAnalysis project = new(directory, descriptor.Path, descriptor.IsPlugin, descriptor.Manifest, owned[directory]);
-            facts.AddRange(ProjectFacts(project));
+            facts.AddRange(ProjectFacts(project, descriptor.IsContextOnly));
             unclassified += project.Assets.Count(asset => asset.Kind == UnrealAssetKind.Unclassified);
         }
 
@@ -124,7 +131,7 @@ public sealed class UnrealRepositoryAnalyzer : IRepositoryEvidenceAnalyzer
         };
     }
 
-    private static IEnumerable<EvidenceFact> ProjectFacts(UnrealProjectAnalysis project)
+    private static IEnumerable<EvidenceFact> ProjectFacts(UnrealProjectAnalysis project, bool contextOnly)
     {
         yield return UnrealFactFactory.Package(project);
         UnrealAssetAnalysis[] unique = [.. project.Assets.DistinctBy(asset => asset.ContentKey, StringComparer.Ordinal)];
@@ -142,7 +149,7 @@ public sealed class UnrealRepositoryAnalyzer : IRepositoryEvidenceAnalyzer
             yield return UnrealFactFactory.UserInterface(project, interfaces, levels);
         }
 
-        if (!project.IsPlugin)
+        if (!project.IsPlugin && !contextOnly)
         {
             yield return UnrealFactFactory.EntryPoint(project);
         }

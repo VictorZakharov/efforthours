@@ -887,7 +887,7 @@ priors. `GDSCRIPT_ANALYSIS.md` defines the incomplete Godot scene/resource and
 runtime boundary. Change `0.19.0` adds the conservative `.gd` signature without
 changing earlier ecosystem semantics or extending Stage A admission.
 
-Unreal analyzer `0.1.0` also reuses the unchanged generic source rule, but its
+Unreal analyzer `0.1.1` also reuses the unchanged generic source rule, but its
 structure is inferred rather than parsed: unique Blueprint, material, effect,
 sound, and AI graph packages are converted from serialized size (binary length or
 Git LFS pointer size) to graph nodes, callable units, and branch points by the

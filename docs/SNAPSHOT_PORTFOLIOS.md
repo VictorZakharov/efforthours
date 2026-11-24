@@ -201,12 +201,19 @@ ordered first-match area owner. Selectors support relative paths/directories,
 `*`, `**`, and `?`; they reject traversal and unsupported syntax. Each selector
 must match, every area must own files, and the final area must use exactly `**`.
 Applicable ancestor `.gitignore` and `.efforthoursignore` files are added as
-context without changing ownership. Original relative paths are retained.
+context without changing ownership. For owned Unreal `.uasset`/`.umap` packages,
+ancestor `.uproject`/`.uplugin` descriptors the area does not own are added as
+context-only files: the scanner tags them `scope:context-only`, the Unreal
+analyzer uses them only to resolve package ownership and never values them, and
+the area's input digest additionally binds the sorted context-only paths. Areas
+without context-only files keep their previous input digests. Context-only files
+count toward `contextFileCount`. Original relative paths are retained.
 
 The full archive and each area are separately scanned and estimated in one
 process. Immutable data-only file artifacts can be shared; whole-project evidence
 is never sliced into area estimates. Standalone area semantics match independent
-area runs with the same selected/context files and ownership decisions.
+area runs with the same selected/context files, context-only designations, and
+ownership decisions.
 
 Allocated expected EHE equals project expected EHE times each standalone expected
 weight divided by their sum. Deterministic largest remainders round to 0.01 hours,

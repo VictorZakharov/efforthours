@@ -6,6 +6,19 @@ may still change public contracts with explicit documentation.
 
 ## Unreleased
 
+- Fix Unreal area measurements in `eh estimate portfolio`. Areas that own
+  `.uasset`/`.umap` packages but not the project's `.uproject`/`.uplugin` had
+  their packages treated as unowned, so Blueprint-only areas received only fixed
+  overhead (no implementation value) and allocated shares were skewed toward
+  non-Unreal areas. Area partitions now carry ancestor descriptors as context-only
+  files (new `RepositoryScanOptions.ContextOnlyPaths`, scanner tag
+  `scope:context-only`); Unreal analyzer `0.1.1` resolves ownership through them
+  without adding a second entry point. Whole-snapshot estimates are unchanged.
+  Unreal area receipts change, and the measurement implementation fingerprint
+  changes as usual, so existing portfolios need `--upgrade rebuild`. Non-Unreal
+  area input digests, evidence, and estimates are unchanged. Estimates remain
+  experimental and uncalibrated.
+
 - Checkpointed `eh change portfolio` comparison and `eh calendar` runs now keep a
   durable per-commit result cache (`portfolio-result-cache/1.0.0`) beside the
   repository-evidence checkpoints. When a repository's checkpoint misses because

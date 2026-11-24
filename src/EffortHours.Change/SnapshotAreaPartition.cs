@@ -29,14 +29,20 @@ public static class SnapshotAreaPartition
             if (owner < 0) throw new InvalidDataException("An archived file has no reviewed area owner.");
             owned[owner].Add(path);
         }
+        ILookup<string, string> descriptors = snapshot.Files.Keys.Where(IsUnrealDescriptor).ToLookup(Parent, StringComparer.Ordinal);
         List<SnapshotAreaInput> result = [];
         for (int i = 0; i < owned.Count; i++)
         {
             if (owned[i].Count == 0) throw new SnapshotPlanningException("empty-owned-area", "A reviewed area owns no archived files; review the boundary.", definitions[i].Id);
+            HashSet<string> ownedPaths = new(owned[i], StringComparer.Ordinal);
             HashSet<string> included = new(owned[i], StringComparer.Ordinal);
+            SortedSet<string> contextOnly = new(StringComparer.Ordinal);
             foreach (string path in owned[i])
             {
-                string parent = path.Contains('/') ? path[..path.LastIndexOf('/')] : "";
+                // Unreal packages are valued only beneath a descriptor; carry every ancestor descriptor so the
+                // analyzer resolves the same owner as the whole scan. Context-only descriptors are never valued.
+                bool package = IsUnrealPackage(path);
+                string parent = Parent(path);
                 while (true)
                 {
                     foreach (string control in new[] { ".gitignore", ".efforthoursignore" })
@@ -44,14 +50,28 @@ public static class SnapshotAreaPartition
                         string candidate = parent.Length == 0 ? control : parent + "/" + control;
                         if (snapshot.Files.ContainsKey(candidate)) included.Add(candidate);
                     }
+                    if (package)
+                        foreach (string descriptor in descriptors[parent].Where(d => !ownedPaths.Contains(d)))
+                        {
+                            included.Add(descriptor);
+                            contextOnly.Add(descriptor);
+                        }
                     if (parent.Length == 0) break;
-                    parent = parent.Contains('/') ? parent[..parent.LastIndexOf('/')] : "";
+                    parent = Parent(parent);
                 }
             }
-            result.Add(new(definitions[i].Id, snapshot.Select(included), owned[i].Count, included.Count - owned[i].Count));
+            result.Add(new(definitions[i].Id, snapshot.Select(included, contextOnly), owned[i].Count, included.Count - owned[i].Count));
         }
         return result;
     }
+
+    private static string Parent(string path) => path.Contains('/') ? path[..path.LastIndexOf('/')] : "";
+
+    private static bool IsUnrealDescriptor(string path) =>
+        path.EndsWith(".uproject", StringComparison.OrdinalIgnoreCase) || path.EndsWith(".uplugin", StringComparison.OrdinalIgnoreCase);
+
+    private static bool IsUnrealPackage(string path) =>
+        path.EndsWith(".uasset", StringComparison.OrdinalIgnoreCase) || path.EndsWith(".umap", StringComparison.OrdinalIgnoreCase);
 
     public static void ValidateDefinitions(IReadOnlyList<SnapshotAreaDefinition> definitions)
     {

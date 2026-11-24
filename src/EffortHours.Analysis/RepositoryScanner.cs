@@ -131,6 +131,7 @@ public sealed partial class RepositoryScanner : IRepositoryScanner
         }
 
         IReadOnlyList<EvidenceFact> ownership = ApplyReviewedVendorManifest(state, cancellationToken);
+        ApplyContextOnlyPaths(state, cancellationToken);
         RepositoryEvidence evidence = BuildEvidence(rootPath, state);
         return evidence with { Facts = [.. evidence.Facts.Concat(ownership).OrderBy(fact => fact.Id, StringComparer.Ordinal)] };
     }
@@ -464,7 +465,7 @@ public sealed partial class RepositoryScanner : IRepositoryScanner
                 Name = repositoryName,
                 Scope = ".",
                 Ecosystems = ecosystems,
-                SourceDigest = ComputeSourceDigest(files, state.Options.VendorManifest is null ? null : EffortHours.Contracts.ReviewedVendorManifestValidation.ComputeDigest(state.Options.VendorManifest)),
+                SourceDigest = ComputeSourceDigest(files, state.Options.VendorManifest is null ? null : EffortHours.Contracts.ReviewedVendorManifestValidation.ComputeDigest(state.Options.VendorManifest), ContextOnlyDigest(state.Options)),
             },
             Facts = facts,
             Diagnostics = diagnostics,
@@ -824,7 +825,7 @@ public sealed partial class RepositoryScanner : IRepositoryScanner
     private static string[] NormalizeTags(IEnumerable<string> tags) =>
         [.. tags.Distinct(StringComparer.Ordinal).OrderBy(tag => tag, StringComparer.Ordinal)];
 
-    private static string ComputeSourceDigest(IReadOnlyList<ScannedFile> files, string? ownershipDigest = null)
+    private static string ComputeSourceDigest(IReadOnlyList<ScannedFile> files, string? ownershipDigest = null, string? contextOnly = null)
     {
         using IncrementalHash hash = IncrementalHash.CreateHash(HashAlgorithmName.SHA256);
         foreach (ScannedFile file in files)
@@ -837,6 +838,7 @@ public sealed partial class RepositoryScanner : IRepositoryScanner
 
         if (ownershipDigest is not null)
             hash.AppendData(Encoding.UTF8.GetBytes("reviewed-vendor-policy\0" + ownershipDigest));
+        AppendContextOnly(hash, contextOnly);
         return $"sha256:{Convert.ToHexString(hash.GetHashAndReset()).ToLowerInvariant()}";
     }
 

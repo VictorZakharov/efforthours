@@ -77,7 +77,7 @@ public sealed partial class SnapshotPortfolioRunner
             return cached;
         }
         RepositoryEvidence evidence = await new RepositoryAnalysisPipeline(snapshot, analysisArtifactCache: snapshot.AnalysisArtifactCache).ScanAsync(snapshot.RootPath,
-            new RepositoryScanOptions { VendorManifest = vendor }, token).ConfigureAwait(false);
+            new RepositoryScanOptions { VendorManifest = vendor, ContextOnlyPaths = snapshot.ContextOnlyPaths }, token).ConfigureAwait(false);
         EstimateReport estimate = _estimator.Estimate(evidence, identity.Profile, rateCard: null);
         Interlocked.Increment(ref _estimatorCalls);
         SnapshotMeasurementReceipt receipt = new()
