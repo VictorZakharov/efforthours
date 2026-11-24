@@ -111,6 +111,45 @@ public sealed class SnapshotPortfolioTests
     }
 
     [Fact]
+    public async Task ProjectArtifactCacheSharedAcrossSnapshotsMatchesColdRuns()
+    {
+        (string, string)[] january = [("App.csproj", "<Project Sdk=\"Microsoft.NET.Sdk\"/>"),
+            ("src/Main.cs", "public class Main { public int Add(int a, int b) => a + b; }"),
+            ("src/Tests/MainTests.cs", "public class MainTests { public void Adds() { } }"),
+            ("package.json", "{\"name\":\"demo\",\"dependencies\":{\"express\":\"5.0.0\"}}"),
+            ("web/main.js", "import express from 'express'; const app = express(); app.get('/hello', (req, res) => res.send('hello'));"),
+            (".gitignore", "ignored.js\n")];
+        // February adds files, changes dependency context and a csproj, and keeps unchanged sources.
+        (string, string)[] february = [("App.csproj", "<Project Sdk=\"Microsoft.NET.Sdk\"><ItemGroup><PackageReference Include=\"xunit\" Version=\"2.9.0\"/></ItemGroup></Project>"),
+            ("src/Main.cs", "public class Main { public int Add(int a, int b) => a + b; }"),
+            ("src/Tests/MainTests.cs", "public class MainTests { public void Adds() { } }"),
+            ("src/Other.cs", "public class Other { public int Twice(int a) => a * 2; }"),
+            ("package.json", "{\"name\":\"demo\",\"dependencies\":{\"react\":\"19.0.0\"}}"),
+            ("web/main.js", "import express from 'express'; const app = express(); app.get('/hello', (req, res) => res.send('hello'));"),
+            (".gitignore", "ignored.js\n"), ("README.md", "# Synthetic app\n")];
+        RepositoryAnalysisArtifactCache shared = new();
+        foreach ((string, string)[] month in new[] { january, february, january })
+        {
+            GitArchiveSnapshot cold = Snapshot(month);
+            GitArchiveSnapshot warm = cold.WithArtifactCache(shared);
+            RepositoryEvidence reused = await new RepositoryAnalysisPipeline(warm, analysisArtifactCache: shared).ScanAsync(warm.RootPath);
+            RepositoryEvidence separate = await new RepositoryAnalysisPipeline(cold).ScanAsync(cold.RootPath);
+            Assert.Equal(ContractJson.Serialize(separate), ContractJson.Serialize(reused));
+            Assert.Equal(cold.InputDigest, warm.InputDigest);
+            foreach (SnapshotAreaInput area in SnapshotAreaPartition.Partition(warm,
+                [new() { Id = "web", Include = ["web/**"] }, new() { Id = "rest", Include = ["**"] }]))
+            {
+                GitArchiveSnapshot standalone = new(area.Snapshot.Files);
+                Assert.Equal(standalone.InputDigest, area.Snapshot.InputDigest);
+                Assert.Same(shared, area.Snapshot.AnalysisArtifactCache);
+                Assert.Equal(ContractJson.Serialize(await new RepositoryAnalysisPipeline(standalone).ScanAsync(standalone.RootPath)),
+                    ContractJson.Serialize(await new RepositoryAnalysisPipeline(area.Snapshot, analysisArtifactCache: shared).ScanAsync(area.Snapshot.RootPath)));
+            }
+        }
+        Assert.True(shared.GetStatistics().Hits > 0);
+    }
+
+    [Fact]
     public void MeasurementIdentityIsContentBoundAndDoesNotContainProducerOrRate()
     {
         MeasurementIdentity identity = SnapshotMeasurementIdentity.Create(EstimationProfile.Implementation);

@@ -15,6 +15,7 @@ public sealed class SnapshotPortfolioStore(string directory, long maximumBytes =
     private readonly Lock _writeGate = new();
     private readonly SemaphoreSlim _ioGate = new(1, 1);
     private long _reservedBytes;
+    private long? _retainedBytes;
     private int _invalidations;
     public int Invalidations => Volatile.Read(ref _invalidations);
 
@@ -77,17 +78,44 @@ public sealed class SnapshotPortfolioStore(string directory, long maximumBytes =
         string json = ContractJson.SerializeDocument(value);
         long bytes = Encoding.UTF8.GetByteCount(json);
         string path = EntryPath(kind, key);
+        long prior;
         lock (_writeGate)
         {
-            long retained = Directory.Exists(DirectoryPath) ? Directory.EnumerateFiles(DirectoryPath, "*.json", SearchOption.AllDirectories)
+            // One enumeration per store; later entry and artifact writes adjust the total incrementally.
+            _retainedBytes ??= Directory.Exists(DirectoryPath) ? Directory.EnumerateFiles(DirectoryPath, "*.json", SearchOption.AllDirectories)
                 .Sum(p => new FileInfo(p).Length) : 0;
-            long prior = File.Exists(path) ? new FileInfo(path).Length : 0;
-            if (bytes > 32 * 1024 * 1024 || retained + _reservedBytes + bytes - prior > maximumBytes)
+            prior = File.Exists(path) ? new FileInfo(path).Length : 0;
+            if (bytes > 32 * 1024 * 1024 || _retainedBytes.Value + _reservedBytes + bytes - prior > maximumBytes)
                 throw new InvalidOperationException("Checkpoint byte budget exhausted; preserve receipts and choose a larger explicit budget.");
             _reservedBytes += bytes;
         }
-        try { await AtomicWriteAsync(path, json, cancellationToken).ConfigureAwait(false); }
-        finally { lock (_writeGate) _reservedBytes -= bytes; }
+        bool written = false;
+        try
+        {
+            await AtomicWriteAsync(path, json, cancellationToken).ConfigureAwait(false);
+            written = true;
+        }
+        finally
+        {
+            lock (_writeGate)
+            {
+                _reservedBytes -= bytes;
+                if (written) _retainedBytes += bytes - prior;
+            }
+        }
+    }
+
+    /// <summary>Accounts bytes written or evicted under this checkpoint by another writer (the artifact store).</summary>
+    public void AccountRetainedBytes(long delta)
+    {
+        lock (_writeGate)
+            if (_retainedBytes is not null) _retainedBytes += delta;
+    }
+
+    /// <summary>Retained checkpoint bytes as currently accounted (null until the first save measures the directory).</summary>
+    public long? RetainedBytes
+    {
+        get { lock (_writeGate) return _retainedBytes; }
     }
 
     public async Task<SnapshotMeasurementReceipt?> ReceiptAsync(string id, CancellationToken cancellationToken)

@@ -10,14 +10,24 @@ public sealed class GitArchiveSnapshot : IRepositoryFileSystem, IRepositoryAnaly
     private readonly IReadOnlyDictionary<string, byte[]> _files;
     private readonly Dictionary<string, string> _contentIds;
     private readonly Dictionary<string, string[]> _entries;
+    private readonly Lazy<string> _inputDigest;
 
     public GitArchiveSnapshot(IReadOnlyDictionary<string, byte[]> files,
         RepositoryAnalysisArtifactCache? artifactCache = null)
+        : this(files, artifactCache, files.ToDictionary(p => p.Key, p => SnapshotMeasurementIdentity.Hash(p.Value), StringComparer.Ordinal))
+    {
+    }
+
+    // Content IDs are pure functions of the immutable bytes, so projections reuse the parent's hashes.
+    private GitArchiveSnapshot(IReadOnlyDictionary<string, byte[]> files,
+        RepositoryAnalysisArtifactCache? artifactCache, Dictionary<string, string> contentIds)
     {
         _files = files;
         RootPath = Path.GetFullPath(Path.Combine(Path.GetTempPath(), "efforthours-archive", "snapshot"));
         AnalysisArtifactCache = artifactCache;
-        _contentIds = files.ToDictionary(p => p.Key, p => SnapshotMeasurementIdentity.Hash(p.Value), StringComparer.Ordinal);
+        _contentIds = contentIds;
+        _inputDigest = new(() => SnapshotMeasurementIdentity.Digest(_contentIds.OrderBy(p => p.Key, StringComparer.Ordinal)
+            .Select(p => new { Path = p.Key, Digest = p.Value })));
         Dictionary<string, SortedSet<string>> directories = new(StringComparer.Ordinal) { [""] = new(StringComparer.Ordinal) };
         foreach (string path in files.Keys)
         {
@@ -38,11 +48,20 @@ public sealed class GitArchiveSnapshot : IRepositoryFileSystem, IRepositoryAnaly
     public string RootPath { get; }
     public IReadOnlyDictionary<string, byte[]> Files => _files;
     public RepositoryAnalysisArtifactCache? AnalysisArtifactCache { get; }
-    public string InputDigest => SnapshotMeasurementIdentity.Digest(_contentIds.OrderBy(p => p.Key, StringComparer.Ordinal)
-        .Select(p => new { Path = p.Key, Digest = p.Value }));
+    public string InputDigest => _inputDigest.Value;
 
-    public GitArchiveSnapshot Select(IEnumerable<string> paths) => new(
-        paths.Distinct(StringComparer.Ordinal).ToDictionary(p => p, p => _files[p], StringComparer.Ordinal), AnalysisArtifactCache);
+    public GitArchiveSnapshot Select(IEnumerable<string> paths) => WithArtifactCache(paths, AnalysisArtifactCache);
+
+    /// <summary>Projects the selected paths with another artifact cache, reusing this snapshot's content IDs.</summary>
+    public GitArchiveSnapshot WithArtifactCache(IEnumerable<string> paths, RepositoryAnalysisArtifactCache? artifactCache)
+    {
+        string[] selected = [.. paths.Distinct(StringComparer.Ordinal)];
+        return new(selected.ToDictionary(p => p, p => _files[p], StringComparer.Ordinal), artifactCache,
+            selected.ToDictionary(p => p, p => _contentIds[p], StringComparer.Ordinal));
+    }
+
+    public GitArchiveSnapshot WithArtifactCache(RepositoryAnalysisArtifactCache? artifactCache) =>
+        new(_files, artifactCache, _contentIds);
 
     public string GetFullPath(string path) => Path.GetFullPath(path);
     public bool DirectoryExists(string path) => _entries.ContainsKey(Relative(path));

@@ -166,6 +166,7 @@ public sealed partial class SnapshotPortfolioRunner(SnapshotPortfolioStore store
         Dictionary<string, (IReadOnlyList<ChangeSnapshotFile> Files, bool Attributes)> inventories = new(StringComparer.Ordinal);
         Dictionary<string, IReadOnlyList<SnapshotAreaPlan>> plans = new(StringComparer.Ordinal);
         Dictionary<string, SnapshotAreaSelectors> selectorSets = new(StringComparer.Ordinal);
+        ProjectArtifacts artifacts = new(Path.Combine(store.DirectoryPath, "artifacts", project.Id), identity, store);
         foreach (SnapshotPeriodResult selected in selections)
         {
             token.ThrowIfCancellationRequested();
@@ -216,7 +217,7 @@ public sealed partial class SnapshotPortfolioRunner(SnapshotPortfolioStore store
                     cached = binding is not null && binding.Key == treeKey && await LoadBindingReceiptsAsync(binding, identity, token).ConfigureAwait(false);
                     if (!cached && !options.Preflight)
                     {
-                        binding = await MeasureArchiveAsync(git, root, selected.CommitObjectId, inventory, selectedProject, identity, treeKey, selected.TreeObjectId!, requestAreas, selectors, options, token).ConfigureAwait(false);
+                        binding = await MeasureArchiveAsync(git, root, selected.CommitObjectId, inventory, selectedProject, identity, treeKey, selected.TreeObjectId!, requestAreas, selectors, artifacts, options, token).ConfigureAwait(false);
                         await store.SaveAsync("trees", treeKey, binding, token).ConfigureAwait(false);
                     }
                     if (options.Preflight && !cached && requestAreas)
@@ -297,6 +298,7 @@ public sealed partial class SnapshotPortfolioRunner(SnapshotPortfolioStore store
                 });
             }
         }
+        artifacts.AddTelemetry(this);
         if (daily) periods = [.. SnapshotDailyCalendar.Differences(periods)];
         return new()
         {

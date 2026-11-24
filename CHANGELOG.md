@@ -18,6 +18,23 @@ may still change public contracts with explicit documentation.
   recently used beyond 131,072 entries or 2 GiB. Output, reconciliation, and
   semantic digests are identical to a cold run; estimates are unchanged.
 
+- `eh estimate portfolio` is much faster with unchanged estimates. Checkpoint saves
+  no longer re-enumerate every checkpoint file: the directory is measured once and
+  later entry/artifact writes and evictions adjust the retained-byte total. Each
+  project now shares one analysis-artifact cache across all of its selected
+  snapshots and areas, persisted artifacts are bound to the measurement identity
+  instead of the whole snapshot path set and configuration bytes, the per-project
+  artifact store evicts least-recently-used entries, persisted artifact reads and
+  parsing no longer hold the cache or store lock, persisted hits are no longer
+  rewritten, and area projections reuse the parent archive's content hashes. On a
+  private 19-project portfolio (183 estimates) a fresh rebuild fell from 2,470 s to
+  90 s on a shared desktop (55 s when artifacts are already on disk), and a
+  same-producer `--import-receipts` run over a 77,902-file checkpoint finished in
+  14 s with zero estimates instead of spending minutes in the import phase. All
+  183 receipts are identical apart from producer identity. The build fingerprint
+  changes, so existing native series need the usual `--upgrade rebuild` under the
+  new producer.
+
 ## 0.10.0-alpha.43 - 2026-11-23
 
 - Add a bounded static Unreal Engine analyzer (`0.1.0`). `.uproject`/`.uplugin`

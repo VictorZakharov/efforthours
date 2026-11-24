@@ -26,7 +26,7 @@ public sealed record RepositoryAnalysisArtifactCacheStatistics(
 /// completion order. Keys and values remain process-local and are never included
 /// in reports.
 /// </summary>
-public sealed class RepositoryAnalysisArtifactCache
+public sealed partial class RepositoryAnalysisArtifactCache
 {
     public const int DefaultMaximumEntries = 8_192;
 
@@ -61,33 +61,28 @@ public sealed class RepositoryAnalysisArtifactCache
         lock (_gate)
         {
             _requests++;
-            if (!_entries.TryGetValue(key, out CacheEntry? entry))
-            {
-                if (_store is not null && _store.TryLoad(key, out T persisted))
-                {
-                    Add(key, persisted);
-                    _hits++;
-                    value = persisted;
-                    return true;
-                }
-                if (!_seenKeys.Add(key))
-                {
-                    _revisitMisses++;
-                }
+            if (TryGetEntryLocked(key, out value)) return true;
+        }
 
-                value = null!;
-                return false;
+        // Persisted entries are read and parsed outside the gate; see Request.
+        bool loaded = TryLoadPersisted(key, out T persisted);
+        lock (_gate)
+        {
+            if (TryGetEntryLocked(key, out value)) return true;
+            if (loaded)
+            {
+                AdmitLocked(key, persisted);
+                _hits++;
+                value = persisted;
+                return true;
+            }
+            if (!_seenKeys.Add(key))
+            {
+                _revisitMisses++;
             }
 
-            if (entry.Value is not T typed)
-            {
-                throw new InvalidOperationException(
-                    "An immutable analysis-artifact cache key was reused for a different value type.");
-            }
-
-            _hits++;
-            value = typed;
-            return true;
+            value = null!;
+            return false;
         }
     }
 
@@ -163,55 +158,105 @@ public sealed class RepositoryAnalysisArtifactCache
         lock (_gate)
         {
             _requests++;
-            if (workingSetSlot is not null && _workingSet is not null &&
-                _workingSet.TryGet(workingSetSlot, key, out T current))
-            {
-                _hits++;
-                return RepositoryAnalysisArtifactRequest<T>.Cached(current);
-            }
-            if (_entries.TryGetValue(key, out CacheEntry? cached))
-            {
-                if (cached.Value is not T typed)
-                {
-                    throw new InvalidOperationException(
-                        "An immutable analysis-artifact cache key was reused for a different value type.");
-                }
+            if (TryRequestRetainedLocked(key, workingSetSlot, out RepositoryAnalysisArtifactRequest<T>? retained))
+                return retained;
+            if (_store is null) return ClaimLocked<T>(key, workingSetSlot);
+        }
 
-                _hits++;
-                return RepositoryAnalysisArtifactRequest<T>.Cached(typed);
-            }
-
-            if (_inflight.TryGetValue(key, out InflightEntry? pending))
+        // Disk reads and parsing happen outside the gate so concurrent misses do not serialize on
+        // persistence I/O. A value retained or claimed meanwhile wins; the loaded copy is then discarded.
+        bool loaded = TryLoadPersisted(key, out T persisted);
+        lock (_gate)
+        {
+            if (TryRequestRetainedLocked(key, workingSetSlot, out RepositoryAnalysisArtifactRequest<T>? retained))
+                return retained;
+            if (loaded)
             {
-                if (pending.ValueType != typeof(T))
-                {
-                    throw new InvalidOperationException(
-                        "An in-flight analysis-artifact cache key was reused for a different value type.");
-                }
-
-                _hits++;
-                return new RepositoryAnalysisArtifactRequest<T>(this, key, pending, isOwner: false);
-            }
-
-            if (_store is not null && _store.TryLoad(key, out T persisted))
-            {
-                Add(key, persisted);
+                AdmitLocked(key, persisted);
                 _hits++;
                 return RepositoryAnalysisArtifactRequest<T>.Cached(persisted);
             }
 
-            if (!_seenKeys.Add(key))
+            return ClaimLocked<T>(key, workingSetSlot);
+        }
+    }
+
+    private RepositoryAnalysisArtifactRequest<T> ClaimLocked<T>(string key, string? workingSetSlot)
+        where T : class
+    {
+        if (!_seenKeys.Add(key))
+        {
+            _revisitMisses++;
+        }
+
+        InflightEntry created = new(
+            typeof(T),
+            new TaskCompletionSource<object>(TaskCreationOptions.RunContinuationsAsynchronously),
+            workingSetSlot);
+        _inflight.Add(key, created);
+        return new RepositoryAnalysisArtifactRequest<T>(this, key, created, isOwner: true);
+    }
+
+    private bool TryRequestRetainedLocked<T>(string key, string? workingSetSlot,
+        [System.Diagnostics.CodeAnalysis.NotNullWhen(true)] out RepositoryAnalysisArtifactRequest<T>? request)
+        where T : class
+    {
+        if (workingSetSlot is not null && _workingSet is not null &&
+            _workingSet.TryGet(workingSetSlot, key, out T current))
+        {
+            _hits++;
+            request = RepositoryAnalysisArtifactRequest<T>.Cached(current);
+            return true;
+        }
+        if (TryGetEntryLocked(key, out T typed))
+        {
+            request = RepositoryAnalysisArtifactRequest<T>.Cached(typed);
+            return true;
+        }
+
+        if (_inflight.TryGetValue(key, out InflightEntry? pending))
+        {
+            if (pending.ValueType != typeof(T))
             {
-                _revisitMisses++;
+                throw new InvalidOperationException(
+                    "An in-flight analysis-artifact cache key was reused for a different value type.");
             }
 
-            InflightEntry created = new(
-                typeof(T),
-                new TaskCompletionSource<object>(TaskCreationOptions.RunContinuationsAsynchronously),
-                workingSetSlot);
-            _inflight.Add(key, created);
-            return new RepositoryAnalysisArtifactRequest<T>(this, key, created, isOwner: true);
+            _hits++;
+            request = new RepositoryAnalysisArtifactRequest<T>(this, key, pending, isOwner: false);
+            return true;
         }
+
+        request = null;
+        return false;
+    }
+
+    private bool TryGetEntryLocked<T>(string key, out T value)
+        where T : class
+    {
+        if (!_entries.TryGetValue(key, out CacheEntry? entry))
+        {
+            value = null!;
+            return false;
+        }
+
+        if (entry.Value is not T typed)
+        {
+            throw new InvalidOperationException(
+                "An immutable analysis-artifact cache key was reused for a different value type.");
+        }
+
+        _hits++;
+        value = typed;
+        return true;
+    }
+
+    private bool TryLoadPersisted<T>(string key, out T value)
+        where T : class
+    {
+        if (_store is not null) return _store.TryLoad(key, out value);
+        value = null!;
+        return false;
     }
 
     public void Add<T>(string key, T value)
@@ -219,37 +264,44 @@ public sealed class RepositoryAnalysisArtifactCache
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(key);
         ArgumentNullException.ThrowIfNull(value);
-        string rank = Rank(key);
         _store?.Save(key, value);
         lock (_gate)
         {
-            if (_inflight.TryGetValue(key, out InflightEntry? pending) &&
-                pending.WorkingSetSlot is not null)
-                _workingSet?.Add(pending.WorkingSetSlot, key, value);
-            _seenKeys.Add(key);
-            _admittedKeys.Add(key);
-            if (_entries.TryGetValue(key, out CacheEntry? existing))
+            AdmitLocked(key, value);
+        }
+    }
+
+    // Admission without persistence: values loaded from the store are already saved.
+    private void AdmitLocked<T>(string key, T value)
+        where T : class
+    {
+        string rank = Rank(key);
+        if (_inflight.TryGetValue(key, out InflightEntry? pending) &&
+            pending.WorkingSetSlot is not null)
+            _workingSet?.Add(pending.WorkingSetSlot, key, value);
+        _seenKeys.Add(key);
+        _admittedKeys.Add(key);
+        if (_entries.TryGetValue(key, out CacheEntry? existing))
+        {
+            _entries[key] = existing with { Value = value };
+            return;
+        }
+
+        if (_entries.Count >= _maximumEntries)
+        {
+            string largestRetainedRank = _retainedRanks.Max!;
+            if (StringComparer.Ordinal.Compare(rank, largestRetainedRank) >= 0)
             {
-                _entries[key] = existing with { Value = value };
                 return;
             }
 
-            if (_entries.Count >= _maximumEntries)
-            {
-                string largestRetainedRank = _retainedRanks.Max!;
-                if (StringComparer.Ordinal.Compare(rank, largestRetainedRank) >= 0)
-                {
-                    return;
-                }
-
-                _entries.Remove(KeyFromRank(largestRetainedRank));
-                _retainedRanks.Remove(largestRetainedRank);
-            }
-
-            _entries.Add(key, new CacheEntry(value, rank));
-            _retainedRanks.Add(rank);
-            _peakEntries = Math.Max(_peakEntries, _entries.Count);
+            _entries.Remove(KeyFromRank(largestRetainedRank));
+            _retainedRanks.Remove(largestRetainedRank);
         }
+
+        _entries.Add(key, new CacheEntry(value, rank));
+        _retainedRanks.Add(rank);
+        _peakEntries = Math.Max(_peakEntries, _entries.Count);
     }
 
     public RepositoryAnalysisArtifactCacheStatistics GetStatistics()
@@ -277,92 +329,5 @@ public sealed class RepositoryAnalysisArtifactCache
 
     private static string KeyFromRank(string rank) => rank[65..];
 
-    private void CompleteInflight<T>(
-        string key,
-        InflightEntry operation,
-        T value)
-        where T : class
-    {
-        lock (_gate)
-        {
-            if (_inflight.TryGetValue(key, out InflightEntry? current) &&
-                ReferenceEquals(current, operation))
-            {
-                _inflight.Remove(key);
-            }
-        }
-
-        operation.Completion.TrySetResult(value);
-    }
-
-    private void FailInflight(
-        string key,
-        InflightEntry operation,
-        Exception exception)
-    {
-        lock (_gate)
-        {
-            if (_inflight.TryGetValue(key, out InflightEntry? current) &&
-                ReferenceEquals(current, operation))
-            {
-                _inflight.Remove(key);
-            }
-        }
-
-        operation.Completion.TrySetException(exception);
-        _ = operation.Completion.Task.Exception;
-    }
-
     private sealed record CacheEntry(object Value, string Rank);
-
-    internal sealed record InflightEntry(
-        Type ValueType,
-        TaskCompletionSource<object> Completion,
-        string? WorkingSetSlot);
-
-    public sealed class RepositoryAnalysisArtifactRequest<T>
-        where T : class
-    {
-        private readonly RepositoryAnalysisArtifactCache? _cache;
-        private readonly string? _key;
-        private readonly InflightEntry? _operation;
-        private readonly Task<T> _result;
-
-        internal RepositoryAnalysisArtifactRequest(
-            RepositoryAnalysisArtifactCache cache,
-            string key,
-            InflightEntry operation,
-            bool isOwner)
-        {
-            _cache = cache;
-            _key = key;
-            _operation = operation;
-            IsOwner = isOwner;
-            _result = AwaitAsync(operation.Completion.Task);
-        }
-
-        private RepositoryAnalysisArtifactRequest(T value)
-        {
-            _result = Task.FromResult(value);
-        }
-
-        public bool IsOwner { get; }
-
-        public Task<T> Result => _result;
-
-        internal static RepositoryAnalysisArtifactRequest<T> Cached(T value) => new(value);
-
-        internal void Complete(T value) => _cache!.CompleteInflight(
-            _key!,
-            _operation!,
-            value);
-
-        internal void Fail(Exception exception) => _cache!.FailInflight(
-            _key!,
-            _operation!,
-            exception);
-
-        private static async Task<T> AwaitAsync(Task<object> result) =>
-            (T)await result.ConfigureAwait(false);
-    }
 }

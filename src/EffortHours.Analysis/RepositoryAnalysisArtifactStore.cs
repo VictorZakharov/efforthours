@@ -18,7 +18,10 @@ public sealed class PhysicalRepositoryAnalysisArtifactStore : IRepositoryAnalysi
     private readonly string _directory;
     private readonly string _context;
     private readonly Lock _gate = new();
-    private readonly SortedDictionary<string, long> _retained = new(StringComparer.Ordinal);
+    // Least recently used first. Loads and saves move an entry to the end; trimming evicts from the front.
+    private readonly Dictionary<string, (long Bytes, LinkedListNode<string> Node)> _retained = new(StringComparer.Ordinal);
+    private readonly LinkedList<string> _recency = new();
+    private readonly Action<long>? _bytesChanged;
     private long _bytes;
     private int _invalidations;
     private int _evictions;
@@ -28,48 +31,66 @@ public sealed class PhysicalRepositoryAnalysisArtifactStore : IRepositoryAnalysi
         PreferredObjectCreationHandling = JsonObjectCreationHandling.Populate,
     };
 
-    public PhysicalRepositoryAnalysisArtifactStore(string directory, string semanticContext)
+    /// <param name="bytesChanged">Receives retained-byte deltas for writes, replacements, and evictions.</param>
+    public PhysicalRepositoryAnalysisArtifactStore(string directory, string semanticContext,
+        Action<long>? bytesChanged = null)
     {
         _directory = Path.GetFullPath(directory);
         _context = semanticContext;
+        _bytesChanged = bytesChanged;
         Directory.CreateDirectory(_directory);
-        foreach (string path in Directory.EnumerateFiles(_directory, "*.json"))
+        // Across runs, the oldest write is evicted first (hits do not rewrite files); names break ties.
+        foreach (FileInfo file in new DirectoryInfo(_directory).EnumerateFiles("*.json")
+            .OrderBy(f => f.LastWriteTimeUtc).ThenBy(f => f.Name, StringComparer.Ordinal))
         {
-            FileInfo file = new(path);
-            _retained[Path.GetFileName(path)] = file.Length;
+            _retained[file.Name] = (file.Length, _recency.AddLast(file.Name));
             _bytes += file.Length;
         }
         Trim();
     }
 
-    public int Invalidations => _invalidations;
+    public int Invalidations => Volatile.Read(ref _invalidations);
     public int Evictions => _evictions;
 
+    // Reads, parsing, and temporary writes run outside the gate so concurrent analysis workers do not
+    // serialize on disk I/O; the gate covers retention bookkeeping and the atomic replacement only.
     public bool TryLoad<T>(string key, out T value) where T : class
     {
         value = null!;
         if (!Supported(typeof(T), key)) return false;
         string path = EntryPath<T>(key);
+        string filename = Path.GetFileName(path);
         lock (_gate)
         {
-            if (!File.Exists(path)) return false;
-            try
-            {
-                if (new FileInfo(path).Length > MaximumEntryBytes) throw new InvalidDataException("Artifact exceeds entry budget.");
-                Envelope envelope = JsonSerializer.Deserialize<Envelope>(File.ReadAllText(path, Encoding.UTF8))
-                    ?? throw new InvalidDataException("Empty artifact.");
-                if (envelope.Key != _context + "\0" + key || envelope.Digest != Hash(envelope.Payload))
-                    throw new InvalidDataException("Artifact integrity/context mismatch.");
-                value = JsonSerializer.Deserialize<T>(envelope.Payload, JsonOptions)
-                    ?? throw new InvalidDataException("Empty artifact payload.");
-                return true;
-            }
-            catch (Exception e) when (e is JsonException or IOException or InvalidDataException or NotSupportedException)
-            {
-                _invalidations++;
-                return false;
-            }
+            if (!_retained.ContainsKey(filename)) return false;
         }
+        try
+        {
+            string text;
+            using (FileStream stream = new(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete))
+            {
+                if (stream.Length > MaximumEntryBytes) throw new InvalidDataException("Artifact exceeds entry budget.");
+                using StreamReader reader = new(stream, Encoding.UTF8);
+                text = reader.ReadToEnd();
+            }
+            Envelope envelope = JsonSerializer.Deserialize<Envelope>(text)
+                ?? throw new InvalidDataException("Empty artifact.");
+            if (envelope.Key != _context + "\0" + key || envelope.Digest != Hash(envelope.Payload))
+                throw new InvalidDataException("Artifact integrity/context mismatch.");
+            value = JsonSerializer.Deserialize<T>(envelope.Payload, JsonOptions)
+                ?? throw new InvalidDataException("Empty artifact payload.");
+        }
+        catch (FileNotFoundException)
+        {
+            return false;
+        }
+        catch (Exception e) when (e is JsonException or IOException or InvalidDataException or NotSupportedException)
+        {
+            Interlocked.Increment(ref _invalidations);
+            return false;
+        }
+        lock (_gate) Touch(filename);
+        return true;
     }
 
     public void Save<T>(string key, T value) where T : class
@@ -80,33 +101,49 @@ public sealed class PhysicalRepositoryAnalysisArtifactStore : IRepositoryAnalysi
         int bytes = Encoding.UTF8.GetByteCount(json);
         if (bytes > MaximumEntryBytes) return;
         string path = EntryPath<T>(key);
-        lock (_gate)
+        string filename = Path.GetFileName(path);
+        string temporary = path + "." + Guid.NewGuid().ToString("N") + ".tmp";
+        try
         {
-            string temporary = path + "." + Guid.NewGuid().ToString("N") + ".tmp";
-            try
+            File.WriteAllText(temporary, json, new UTF8Encoding(false));
+            lock (_gate)
             {
-                File.WriteAllText(temporary, json, new UTF8Encoding(false));
                 File.Move(temporary, path, overwrite: true);
-                string filename = Path.GetFileName(path);
-                if (_retained.TryGetValue(filename, out long prior)) _bytes -= prior;
-                _retained[filename] = bytes;
-                _bytes += bytes;
+                long prior = 0;
+                if (_retained.TryGetValue(filename, out (long Bytes, LinkedListNode<string> Node) existing))
+                {
+                    prior = existing.Bytes;
+                    _recency.Remove(existing.Node);
+                }
+                _retained[filename] = (bytes, _recency.AddLast(filename));
+                _bytes += bytes - prior;
+                _bytesChanged?.Invoke(bytes - prior);
                 Trim();
             }
-            finally { File.Delete(temporary); }
         }
+        finally { File.Delete(temporary); }
     }
 
     private void Trim()
     {
         while (_retained.Count > RepositoryAnalysisArtifactCache.DefaultMaximumEntries || _bytes > 128L * 1024 * 1024)
         {
-            KeyValuePair<string, long> last = _retained.Last();
-            File.Delete(Path.Combine(_directory, last.Key));
-            _retained.Remove(last.Key);
-            _bytes -= last.Value;
+            string oldest = _recency.First!.Value;
+            long bytes = _retained[oldest].Bytes;
+            File.Delete(Path.Combine(_directory, oldest));
+            _recency.RemoveFirst();
+            _retained.Remove(oldest);
+            _bytes -= bytes;
+            _bytesChanged?.Invoke(-bytes);
             _evictions++;
         }
+    }
+
+    private void Touch(string filename)
+    {
+        if (!_retained.TryGetValue(filename, out (long Bytes, LinkedListNode<string> Node) entry)) return;
+        _recency.Remove(entry.Node);
+        _recency.AddLast(entry.Node);
     }
 
     private string EntryPath<T>(string key) => Path.Combine(_directory,

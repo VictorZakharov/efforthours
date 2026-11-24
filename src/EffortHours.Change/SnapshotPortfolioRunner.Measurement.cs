@@ -9,7 +9,8 @@ public sealed partial class SnapshotPortfolioRunner
 {
     private async Task<SnapshotStoredBinding> MeasureArchiveAsync(GitClient git, string root, string commit, IReadOnlyList<ChangeSnapshotFile> inventory,
         SnapshotProjectDefinition project, MeasurementIdentity identity, string bindingKey,
-        string treeObjectId, bool requestAreas, SnapshotAreaSelectors? selectors, SnapshotPortfolioRunOptions options, CancellationToken token)
+        string treeObjectId, bool requestAreas, SnapshotAreaSelectors? selectors, ProjectArtifacts projectArtifacts,
+        SnapshotPortfolioRunOptions options, CancellationToken token)
     {
         GitArchiveSnapshot archive;
         try
@@ -21,17 +22,7 @@ public sealed partial class SnapshotPortfolioRunner
         { throw new SnapshotPlanningException("invalid-archive", e.Message, inner: e); }
         Interlocked.Increment(ref _exports);
         Interlocked.Add(ref _gitReadBytes, archive.Files.Sum(f => f.Value.LongLength));
-        // Persist data-only artifacts under all configuration bytes and the complete path set.
-        string context = SnapshotMeasurementIdentity.Digest(new
-        {
-            identity,
-            Paths = archive.Files.Keys.Order(StringComparer.Ordinal),
-            Controls = archive.Files.Where(p => IsContextControl(p.Key)).OrderBy(p => p.Key, StringComparer.Ordinal)
-                .Select(p => new { p.Key, Digest = SnapshotMeasurementIdentity.Hash(p.Value) }),
-        });
-        PhysicalRepositoryAnalysisArtifactStore persistent = new(Path.Combine(store.DirectoryPath, "artifacts", project.Id), context);
-        RepositoryAnalysisArtifactCache artifacts = new(store: persistent);
-        archive = new GitArchiveSnapshot(archive.Files, artifacts);
+        archive = archive.WithArtifactCache(projectArtifacts.Cache);
         SnapshotMeasurementReceipt whole = await MeasureAsync(archive, archive.Files.Count, 0, identity,
             project.VendorManifest, options, token).ConfigureAwait(false);
         string wholeKey = BindingKey(commit, identity, "");
@@ -68,11 +59,6 @@ public sealed partial class SnapshotPortfolioRunner
             InputDigest = measurements[i].InputDigest,
             InventoryDigest = SnapshotPortfolioAreaPlanning.Digest(inventory, inputs[i].Snapshot.Files.Keys),
         });
-        RepositoryAnalysisArtifactCacheStatistics stats = artifacts.GetStatistics();
-        Interlocked.Add(ref _artifactRequests, stats.Requests);
-        Interlocked.Add(ref _artifactHits, stats.Hits);
-        Interlocked.Add(ref _artifactInvalidations, persistent.Invalidations);
-        Interlocked.Add(ref _artifactEvictions, persistent.Evictions);
         SnapshotStoredBinding binding = new(bindingKey, "", whole.Id, results);
         return binding with { Digest = SnapshotPortfolioStore.BindingDigest(binding) };
     }
@@ -116,7 +102,28 @@ public sealed partial class SnapshotPortfolioRunner
         return receipt;
     }
 
-    private static bool IsContextControl(string path) => Path.GetExtension(path).ToLowerInvariant() is
-        ".json" or ".csproj" or ".props" or ".targets" or ".sln" or ".slnx" or ".config" ||
-        Path.GetFileName(path) is ".gitignore" or ".efforthoursignore" or ".gitattributes";
+    // One artifact cache per project spans every selected snapshot and its areas. Artifact keys already carry
+    // content, analyzer version, path, project/package scope, and test role, as in Change repository sessions;
+    // persisted entries additionally bind the complete measurement identity (implementation, model, ownership).
+    internal sealed class ProjectArtifacts(string directory, MeasurementIdentity identity, SnapshotPortfolioStore store)
+    {
+        private readonly Lazy<(RepositoryAnalysisArtifactCache Cache, PhysicalRepositoryAnalysisArtifactStore Store)> _value = new(() =>
+        {
+            PhysicalRepositoryAnalysisArtifactStore persistent = new(directory,
+                SnapshotMeasurementIdentity.Digest(new { identity, ArtifactContext = "snapshot-file-artifacts/2" }), store.AccountRetainedBytes);
+            return (new RepositoryAnalysisArtifactCache(store: persistent), persistent);
+        });
+
+        public RepositoryAnalysisArtifactCache Cache => _value.Value.Cache;
+
+        public void AddTelemetry(SnapshotPortfolioRunner runner)
+        {
+            if (!_value.IsValueCreated) return;
+            RepositoryAnalysisArtifactCacheStatistics stats = _value.Value.Cache.GetStatistics();
+            Interlocked.Add(ref runner._artifactRequests, stats.Requests);
+            Interlocked.Add(ref runner._artifactHits, stats.Hits);
+            Interlocked.Add(ref runner._artifactInvalidations, _value.Value.Store.Invalidations);
+            Interlocked.Add(ref runner._artifactEvictions, _value.Value.Store.Evictions);
+        }
+    }
 }
