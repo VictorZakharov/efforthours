@@ -8,11 +8,11 @@
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>eh</ToolCommandName>
     <PackageId>EffortHours.Tool</PackageId>
-    <Version>0.10.0-alpha.43</Version>
+    <Version>0.10.0-alpha.44</Version>
     <Title>EffortHours CLI</Title>
     <PackageReadmeFile>PACKAGE_README.md</PackageReadmeFile>
     <PackageTags>estimation;effort-estimation;developer-tools;cli;repository-analysis;static-analysis;dotnet-tool</PackageTags>
-    <PackageReleaseNotes>0.10.0-alpha.43: Add a bounded static Unreal Engine analyzer. .uproject/.uplugin descriptors own .uasset/.umap packages; Blueprint, widget, animation, Control Rig, AI, material, Niagara and sound graphs are valued through the unchanged generic source rule from size-inferred structure (binary length or Git LFS pointer size), so checkout-free archives and LFS-smudged directories give identical estimates. Package bodies are never parsed, loaded or executed; imported media and level placement are not valued. Common scanner 0.2.17 and change-seed/0.22.0; non-Unreal results are unchanged. Workspace discovery now skips a .git file with a missing gitdir target on newer Git. seed-rules/0.4.0 priors are unchanged; estimates remain experimental and uncalibrated. Full notes: https://github.com/VictorZakharov/efforthours/blob/v0.10.0-alpha.43/CHANGELOG.md</PackageReleaseNotes>
+    <PackageReleaseNotes>0.10.0-alpha.44: eh estimate portfolio is much faster with unchanged estimates: checkpoint saves no longer re-enumerate the checkpoint, each project shares one bounded analysis-artifact cache across snapshots and areas, persisted artifact reads no longer hold locks, and area projections reuse content hashes. Checkpointed eh change portfolio and eh calendar runs keep a durable per-commit result cache (portfolio-result-cache/1.0.0), so moved windows and new commits analyze only new work with identical output and digests. Fix Unreal portfolio areas: areas owning .uasset/.umap packages but not the .uproject/.uplugin now carry ancestor descriptors as context-only files, and Unreal analyzer 0.1.1 values their packages without a second entry point; whole-snapshot and non-Unreal estimates are unchanged. The measurement fingerprint changes, so existing portfolios need --upgrade rebuild. seed-rules/0.4.0 priors are unchanged; estimates remain experimental and uncalibrated. Full notes: https://github.com/VictorZakharov/efforthours/blob/v0.10.0-alpha.44/CHANGELOG.md</PackageReleaseNotes>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="../EffortHours.Analysis/EffortHours.Analysis.csproj" />
