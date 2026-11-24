@@ -748,6 +748,18 @@ measured allocation-heavy redundancy; unique structural C# bodies still require
 full analysis. The remaining general-latency and scaling work in issue #182 was
 later closed as not planned.
 
+The per-commit result cache was measured on a private 20-repository,
+6,943-commit independent-day calendar manifest (one contributor, about eight
+months), one Windows workstation, single runs. An uncached run took 562 seconds.
+After a cold checkpointed run over the same heads with the window ending about 11
+hours earlier (667 seconds including cache writes), the full-window rerun found
+140 new commits, among them a newly added repository, served 6,803 commit and 245
+of 249 final-delta results from 122 MB of compressed entries, and finished in 92
+seconds (6.1x faster than uncached). Its report was identical to the uncached
+report apart from the operational `execution` section, including the semantic
+digest. The remaining time is planning, repository-checkpoint I/O, cache reads,
+and the new commits.
+
 Snapshot analysis is keyed by repository, canonical immutable-inventory digest,
 and complete admitted normalization-policy identity. Reused evidence is rebound
 to the requesting pair's changed/unchanged-context and inventory counts before
