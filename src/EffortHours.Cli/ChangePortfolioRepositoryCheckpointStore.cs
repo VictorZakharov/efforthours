@@ -51,6 +51,8 @@ internal sealed class ChangePortfolioRepositoryCheckpointStore(string directory)
 {
     private readonly string _directory = ResolveDirectory(directory);
 
+    public string Root => _directory;
+
     public async Task<ChangePortfolioRepositoryCheckpointLoad?> TryLoadAsync(
         string repositoryId,
         string inputDigest,

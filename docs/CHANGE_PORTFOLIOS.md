@@ -173,6 +173,25 @@ one pinned head invalidates only that repository's evidence; bucket/capacity/vie
 changes reuse immutable repository evidence and deterministically recalculate the
 cheap presentation cells.
 
+A repository-evidence miss no longer discards earlier analysis. Protocol
+`portfolio-result-cache/1.0.0` stores, under the checkpoint directory's `results/`
+folder, one gzip-compressed content-addressed entry per immutable commit estimate
+and per repository-day final-delta outcome. A commit key binds the exact CLI build,
+estimator version, profile, repository identity and scope/admission digests, the
+full selection (base/head object IDs, commit, parent), and plan components and
+diagnostics; it deliberately excludes the selection window, contributors, and
+pinned heads, so moving a window or adding commits analyzes only commits not seen
+before. A final-delta key additionally binds every group member's selector,
+complete report bytes, attribution, and replay evidence, so any membership or
+attribution change recomputes that day. Only the endpoint search and its estimate
+are cached; cheaper proof checks always rerun. Hits are revalidated against their
+key and contract rules; corrupt, foreign, or invalid entries are misses, and write
+failures never fail a run. After each comparison, least recently used entries
+beyond 131,072 entries or 2 GiB of compressed bytes are evicted. Reconciliation,
+normalization, and every semantic digest are unchanged, so warm and cold runs give
+identical semantic output; stderr reports per-repository commit and final-delta
+hits plus store totals. `--no-checkpoint` disables this cache too.
+
 Checkpoint protocol `repository-evidence-checkpoint/1.1.0` additionally binds the
 privacy-safe measured repository scope. Each file is limited to 512 MiB, and
 comparison execution records exact checkpoint bytes read and written. Versioned
