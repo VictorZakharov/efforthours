@@ -108,4 +108,50 @@ public sealed class RepositoryAnalysisArtifactCacheTests
         Assert.Equal(2, statistics.PeakEntries);
         Assert.Equal(2, statistics.EntryLimit);
     }
+    [Fact]
+    public async Task PersistedLoadsRunOutsideTheGateAndAreNotSavedAgain()
+    {
+        BlockingStore store = new();
+        store.Values["slow"] = "slow-value";
+        store.Values["fast"] = "fast-value";
+        RepositoryAnalysisArtifactCache cache = new(store: store);
+        Task<string> slow = Task.Run(() => cache.Request<string>("slow").Result);
+        Assert.True(store.SlowLoadStarted.Wait(TimeSpan.FromSeconds(30)));
+        // A blocked disk load must not stop other keys from resolving.
+        Assert.Equal("fast-value", await cache.Request<string>("fast").Result);
+        Assert.False(slow.IsCompleted);
+        store.ReleaseSlow.Set();
+        Assert.Equal("slow-value", await slow);
+        Assert.Equal("slow-value", await cache.Request<string>("slow").Result);
+        Assert.True(cache.TryGet("fast", out string fast));
+        Assert.Equal("fast-value", fast);
+        RepositoryAnalysisArtifactCache.RepositoryAnalysisArtifactRequest<string> missing = cache.Request<string>("missing");
+        Assert.True(missing.IsOwner);
+        Assert.Equal(0, store.Saves);
+        RepositoryAnalysisArtifactCacheStatistics statistics = cache.GetStatistics();
+        Assert.Equal(5, statistics.Requests);
+        Assert.Equal(4, statistics.Hits);
+    }
+
+    private sealed class BlockingStore : IRepositoryAnalysisArtifactStore
+    {
+        public System.Collections.Concurrent.ConcurrentDictionary<string, string> Values { get; } = new(StringComparer.Ordinal);
+        public ManualResetEventSlim SlowLoadStarted { get; } = new();
+        public ManualResetEventSlim ReleaseSlow { get; } = new();
+        public int Saves;
+
+        public bool TryLoad<T>(string key, out T value) where T : class
+        {
+            if (key == "slow" && !ReleaseSlow.IsSet)
+            {
+                SlowLoadStarted.Set();
+                ReleaseSlow.Wait(TimeSpan.FromSeconds(30));
+            }
+            bool found = Values.TryGetValue(key, out string? text);
+            value = (found ? text as T : null)!;
+            return found;
+        }
+
+        public void Save<T>(string key, T value) where T : class => Interlocked.Increment(ref Saves);
+    }
 }
