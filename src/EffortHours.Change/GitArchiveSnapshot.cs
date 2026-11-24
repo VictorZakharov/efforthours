@@ -13,21 +13,24 @@ public sealed class GitArchiveSnapshot : IRepositoryFileSystem, IRepositoryAnaly
     private readonly Lazy<string> _inputDigest;
 
     public GitArchiveSnapshot(IReadOnlyDictionary<string, byte[]> files,
-        RepositoryAnalysisArtifactCache? artifactCache = null)
-        : this(files, artifactCache, files.ToDictionary(p => p.Key, p => SnapshotMeasurementIdentity.Hash(p.Value), StringComparer.Ordinal))
+        RepositoryAnalysisArtifactCache? artifactCache = null, IEnumerable<string>? contextOnlyPaths = null)
+        : this(files, artifactCache, files.ToDictionary(p => p.Key, p => SnapshotMeasurementIdentity.Hash(p.Value), StringComparer.Ordinal),
+            contextOnlyPaths)
     {
     }
 
     // Content IDs are pure functions of the immutable bytes, so projections reuse the parent's hashes.
     private GitArchiveSnapshot(IReadOnlyDictionary<string, byte[]> files,
-        RepositoryAnalysisArtifactCache? artifactCache, Dictionary<string, string> contentIds)
+        RepositoryAnalysisArtifactCache? artifactCache, Dictionary<string, string> contentIds, IEnumerable<string>? contextOnlyPaths)
     {
         _files = files;
+        ContextOnlyPaths = (contextOnlyPaths ?? []).ToHashSet(StringComparer.Ordinal);
+        if (ContextOnlyPaths.Any(path => !files.ContainsKey(path)))
+            throw new InvalidDataException("Context-only paths must be files of the selected snapshot.");
         RootPath = Path.GetFullPath(Path.Combine(Path.GetTempPath(), "efforthours-archive", "snapshot"));
         AnalysisArtifactCache = artifactCache;
         _contentIds = contentIds;
-        _inputDigest = new(() => SnapshotMeasurementIdentity.Digest(_contentIds.OrderBy(p => p.Key, StringComparer.Ordinal)
-            .Select(p => new { Path = p.Key, Digest = p.Value })));
+        _inputDigest = new(ComputeInputDigest);
         Dictionary<string, SortedSet<string>> directories = new(StringComparer.Ordinal) { [""] = new(StringComparer.Ordinal) };
         foreach (string path in files.Keys)
         {
@@ -48,20 +51,40 @@ public sealed class GitArchiveSnapshot : IRepositoryFileSystem, IRepositoryAnaly
     public string RootPath { get; }
     public IReadOnlyDictionary<string, byte[]> Files => _files;
     public RepositoryAnalysisArtifactCache? AnalysisArtifactCache { get; }
+    /// <summary>Selected files admitted only as analyzer context (for example an ancestor Unreal descriptor); never valued.</summary>
+    public IReadOnlySet<string> ContextOnlyPaths { get; }
+
+    // Without context-only paths the digest is unchanged from earlier producers.
     public string InputDigest => _inputDigest.Value;
 
-    public GitArchiveSnapshot Select(IEnumerable<string> paths) => WithArtifactCache(paths, AnalysisArtifactCache);
+    public GitArchiveSnapshot Select(IEnumerable<string> paths, IEnumerable<string>? contextOnlyPaths = null) =>
+        Project(paths, AnalysisArtifactCache, contextOnlyPaths);
 
     /// <summary>Projects the selected paths with another artifact cache, reusing this snapshot's content IDs.</summary>
-    public GitArchiveSnapshot WithArtifactCache(IEnumerable<string> paths, RepositoryAnalysisArtifactCache? artifactCache)
+    public GitArchiveSnapshot WithArtifactCache(IEnumerable<string> paths, RepositoryAnalysisArtifactCache? artifactCache) =>
+        Project(paths, artifactCache, null);
+
+    public GitArchiveSnapshot WithArtifactCache(RepositoryAnalysisArtifactCache? artifactCache) =>
+        new(_files, artifactCache, _contentIds, ContextOnlyPaths);
+
+    private GitArchiveSnapshot Project(IEnumerable<string> paths, RepositoryAnalysisArtifactCache? artifactCache,
+        IEnumerable<string>? contextOnlyPaths)
     {
         string[] selected = [.. paths.Distinct(StringComparer.Ordinal)];
         return new(selected.ToDictionary(p => p, p => _files[p], StringComparer.Ordinal), artifactCache,
-            selected.ToDictionary(p => p, p => _contentIds[p], StringComparer.Ordinal));
+            selected.ToDictionary(p => p, p => _contentIds[p], StringComparer.Ordinal), contextOnlyPaths);
     }
 
-    public GitArchiveSnapshot WithArtifactCache(RepositoryAnalysisArtifactCache? artifactCache) =>
-        new(_files, artifactCache, _contentIds);
+    private string ComputeInputDigest()
+    {
+        string files = SnapshotMeasurementIdentity.Digest(_contentIds.OrderBy(p => p.Key, StringComparer.Ordinal)
+            .Select(p => new { Path = p.Key, Digest = p.Value }));
+        return ContextOnlyPaths.Count == 0 ? files : SnapshotMeasurementIdentity.Digest(new
+        {
+            Files = files,
+            ContextOnly = ContextOnlyPaths.Order(StringComparer.Ordinal),
+        });
+    }
 
     public string GetFullPath(string path) => Path.GetFullPath(path);
     public bool DirectoryExists(string path) => _entries.ContainsKey(Relative(path));
