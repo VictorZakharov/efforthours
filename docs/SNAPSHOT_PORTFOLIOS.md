@@ -317,7 +317,10 @@ distinct Git provenance. Attribute-bearing trees conservatively bind the commit
 because `export-subst` can change bytes. Changed snapshots reuse exact content
 receipts for unchanged areas; changed whole snapshots are always reaggregated.
 
-Successful receipts are durable before the final report is published. A stable
+Successful receipts are durable before the final report is published. The
+`--checkpoint-mib` budget covers every retained checkpoint entry, artifacts
+included; the directory is measured once per run and later writes and evictions
+adjust that total, so a save no longer re-enumerates the checkpoint. A stable
 explicit `--checkpoint` supports reuse across output names/processes. Corrupt,
 incomplete, and incompatible receipts/bindings are misses and are recalculated.
 `--import-receipts` validates a complete known public result and preserves original
@@ -341,16 +344,24 @@ The adapter retains that homogeneous-series requirement.
 Persistence extends `RepositoryAnalysisArtifactCache`; it does not introduce a
 second analyzer. Only data-only common inspections, C# and JavaScript file results,
 and supported Razor results are admitted. Syntax trees/project-reader state are
-not serialized. Keys retain the existing content/analyzer/path/scope/package
-context and add measurement semantics, the complete path set, and all relevant
-configuration/control bytes. Changed configuration, ownership, imports inside
-content, and path ownership invalidate rather than guessing. Other ecosystem
-analyzers run cold while exact area/whole receipts remain reusable. Aggregation
-and allocation always rerun over the complete selected snapshot.
+not serialized. Each project uses one artifact cache for every selected snapshot
+and area in a run, as a Change repository session does across commits. Keys retain
+the existing content/analyzer/path/scope/package/test-role context, which is
+exactly what in-process Change sessions already trust across snapshots; persisted
+entries additionally bind the complete measurement identity (implementation
+fingerprint, model, profile, and reviewed ownership). They no longer bind the
+snapshot path set or unrelated configuration bytes, so an added file or an edited
+`package.json` no longer invalidates every unchanged file's artifact. Changed
+content, package or project scope, analyzer version, ownership, or implementation
+still miss. Other ecosystem analyzers run cold while exact area/whole receipts
+remain reusable. Aggregation and allocation always rerun over the complete
+selected snapshot.
 
 Each project retains at most 8,192 private artifacts / 128 MiB, with 1-MiB entry
-limits and deterministic hash-ranked eviction. Malformed entries are misses;
-request/hit/invalidation/eviction counters remain telemetry. This is conservative
+limits and least-recently-used eviction (file write time carries recency across
+runs; hits refresh it). Malformed entries are misses; request/hit/invalidation/
+eviction counters remain telemetry. The in-memory cache keeps its deterministic
+key-ranked retention. This is conservative
 incremental reuse, not an approximation based on changed-file effort.
 
 Projects may embed the existing reviewed vendor manifest. Exact hashes are
