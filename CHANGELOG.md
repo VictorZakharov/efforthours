@@ -6,6 +6,8 @@ may still change public contracts with explicit documentation.
 
 ## Unreleased
 
+## 0.10.0-alpha.44 - 2026-11-24
+
 - Fix Unreal area measurements in `eh estimate portfolio`. Areas that own
   `.uasset`/`.umap` packages but not the project's `.uproject`/`.uplugin` had
   their packages treated as unowned, so Blueprint-only areas received only fixed
