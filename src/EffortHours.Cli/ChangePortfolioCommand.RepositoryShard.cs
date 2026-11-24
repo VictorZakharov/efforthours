@@ -12,6 +12,7 @@ internal sealed partial class ChangePortfolioCommand
         ChangeAuthorPeriodManifestRepository repository,
         GitPortfolioPlanner planner,
         ChangePortfolioRepositoryCheckpointStore? checkpoints,
+        ChangePortfolioResultCacheStore? results,
         ChangePathAdmission? pathAdmission,
         string? scopeProfileDigest,
         TextWriter standardError,
@@ -55,6 +56,9 @@ internal sealed partial class ChangePortfolioCommand
         }
 
         GitAuthorPeriodManifestRepositoryScope? measuredScope = null;
+        IChangePortfolioResultCache? resultCache = results?.ForContext(ResultCacheContext(
+            repository, pathAdmission, scopeProfileDigest, options));
+        ChangePortfolioResultCacheCounters cacheCounters = new();
         try
         {
             ChangeAuthorPeriodManifest submanifest = resolved.Manifest with
@@ -98,6 +102,8 @@ internal sealed partial class ChangePortfolioCommand
                     scopedPlans,
                     options.Profile,
                     telemetry,
+                    resultCache,
+                    cacheCounters,
                     cancellationToken).ConfigureAwait(false);
             List<ChangePortfolioCandidate> candidates = [];
             for (int index = 0; index < plan.Items.Count; index++)
@@ -121,8 +127,16 @@ internal sealed partial class ChangePortfolioCommand
             ChangePortfolioPreparedCandidates prepared = await _changeEstimator.PreparePortfolioFinalDeltasAsync(
                 plan.Selection, candidates, scopedPlans, options.Profile, estimate.Statistics,
                 options.CalendarReport || options.Bucket == "independent-day", pathAdmission, telemetry,
-                cancellationToken).ConfigureAwait(false);
+                resultCache, cacheCounters, cancellationToken).ConfigureAwait(false);
             candidates = [.. prepared.Candidates];
+            if (resultCache is not null)
+            {
+                await standardError.WriteLineAsync(
+                    $"eh: portfolio repository={repository.Id} result-cache " +
+                    $"commits={cacheCounters.CommitHits}/{cacheCounters.CommitRequests}, " +
+                    $"final-deltas={cacheCounters.FinalDeltaHits}/{cacheCounters.FinalDeltaRequests}")
+                    .ConfigureAwait(false);
+            }
             estimate = estimate with { Statistics = prepared.Statistics };
 
             ChangePortfolioCheckpointDisposition disposition = checkpoints is null

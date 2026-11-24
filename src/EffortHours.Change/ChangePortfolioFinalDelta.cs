@@ -49,6 +49,8 @@ public sealed partial class ChangeEstimator
         ChangePathAdmission? pathAdmission = null,
         ChangePortfolioExecutionTelemetry? telemetry = null,
         Action<ChangePortfolioExecutionStatistics>? observeStatistics = null,
+        IChangePortfolioResultCache? resultCache = null,
+        ChangePortfolioResultCacheCounters? cacheCounters = null,
         CancellationToken cancellationToken = default)
     {
         if (selection.Kind != ChangePortfolioSelectionKind.AuthorPeriod)
@@ -108,11 +110,27 @@ public sealed partial class ChangeEstimator
                 continue;
             }
             using IDisposable? phase = telemetry?.Measure(ChangePortfolioExecutionPhases.Reconciliation);
+            string? cacheKey = resultCache is null ? null : ChangePortfolioResultCacheKeys.ForFinalDelta(
+                resultCache, group.Key.RepositoryId, group.Select(item => item.Candidate), pathAdmission, profile);
+            ChangePortfolioCachedResult? cached = cacheKey is null ? null
+                : await resultCache!.TryLoadAsync(cacheKey, cancellationToken).ConfigureAwait(false);
+            if (cacheKey is not null)
+                cacheCounters?.FinalDelta(cached is { Report: null });
+            if (cached is { Report: null })
+            {
+                prepared[owner] = prepared[owner] with
+                {
+                    FinalDelta = cached.FinalDelta,
+                    FinalDeltaRejection = cached.FinalDeltaRejection,
+                };
+                continue;
+            }
             var endpoint = await ChangePortfolioEndpointSearch.FindAsync(group.Key.RepositoryId, active, effects,
                 openSnapshot, pathAdmission, cancellationToken).ConfigureAwait(false);
             if (endpoint.Pair is null)
             {
                 Reject(endpoint.Code, endpoint.Path);
+                await StoreFinalDeltaAsync(resultCache, cacheKey, prepared[owner], cancellationToken).ConfigureAwait(false);
                 continue;
             }
             var (before, after, baseSnapshot, headSnapshot) = endpoint.Pair;
@@ -142,10 +160,23 @@ public sealed partial class ChangeEstimator
                     Report = report,
                 },
             };
+            await StoreFinalDeltaAsync(resultCache, cacheKey, prepared[owner], cancellationToken).ConfigureAwait(false);
         }
         ExecutionStatisticsAccumulator statistics = new(0);
         statistics.Add(analyses.GetStatistics());
         observeStatistics?.Invoke(statistics.Build());
         return prepared;
     }
+
+    private static Task StoreFinalDeltaAsync(
+        IChangePortfolioResultCache? cache,
+        string? key,
+        ChangePortfolioCandidate owner,
+        CancellationToken cancellationToken) => cache is null || key is null
+        ? Task.CompletedTask
+        : cache.StoreAsync(key, new ChangePortfolioCachedResult
+        {
+            FinalDelta = owner.FinalDelta,
+            FinalDeltaRejection = owner.FinalDeltaRejection,
+        }, cancellationToken);
 }

@@ -246,7 +246,9 @@ canonical sums that can overlap and are explicitly non-additive. JSON, final tre
 Markdown, and generic engineering-findings Markdown share the same semantic
 result, keep shared-credit groups separate, exclude paths/aliases, and exclude
 operational timings/resources from the semantic digest. Repository evidence
-checkpoints are digest-bound and selectively invalidated. Failed shards retain
+checkpoints are digest-bound and selectively invalidated; on a miss, a bounded
+content-addressed per-commit and per-day final-delta result cache under the same
+directory reanalyzes only unseen work with cold-identical semantic output. Failed shards retain
 resumable completed evidence and emit nonzero incomplete artifacts with root
 failure/last-progress context but no aggregate EHE or trend.
 

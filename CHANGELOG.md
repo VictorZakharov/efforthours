@@ -6,6 +6,18 @@ may still change public contracts with explicit documentation.
 
 ## Unreleased
 
+- Checkpointed `eh change portfolio` comparison and `eh calendar` runs now keep a
+  durable per-commit result cache (`portfolio-result-cache/1.0.0`) beside the
+  repository-evidence checkpoints. When a repository's checkpoint misses because
+  the window moved or new commits arrived, previously analyzed commits and
+  unchanged repository-day final deltas are served from exact, content-addressed
+  entries and only new work is analyzed. Keys bind the CLI build, estimator
+  version, profile, repository scope/admission, and each commit's full selection;
+  final-delta keys also bind every group member's report, attribution, and replay
+  evidence. Entries are gzip-compressed, revalidated on read, and evicted least
+  recently used beyond 131,072 entries or 2 GiB. Output, reconciliation, and
+  semantic digests are identical to a cold run; estimates are unchanged.
+
 ## 0.10.0-alpha.43 - 2026-11-23
 
 - Add a bounded static Unreal Engine analyzer (`0.1.0`). `.uproject`/`.uplugin`

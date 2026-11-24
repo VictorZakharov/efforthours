@@ -20,6 +20,8 @@ public sealed partial class ChangeEstimator
         bool independentDays = false,
         ChangePathAdmission? pathAdmission = null,
         ChangePortfolioExecutionTelemetry? telemetry = null,
+        IChangePortfolioResultCache? resultCache = null,
+        ChangePortfolioResultCacheCounters? cacheCounters = null,
         CancellationToken cancellationToken = default)
     {
         if (plans.Count != candidates.Count)
@@ -57,7 +59,7 @@ public sealed partial class ChangeEstimator
             ChangePortfolioExecutionStatistics analysisStatistics = new();
             IReadOnlyList<ChangePortfolioCandidate> prepared = await PreparePortfolioFinalDeltasAsync(
                 selection, candidates, profile, OpenAsync, independentDays, pathAdmission, telemetry,
-                value => analysisStatistics = value, cancellationToken).ConfigureAwait(false);
+                value => analysisStatistics = value, resultCache, cacheCounters, cancellationToken).ConfigureAwait(false);
             if (current is not null)
                 additional.Add(current.GetStatistics());
             return new ChangePortfolioPreparedCandidates

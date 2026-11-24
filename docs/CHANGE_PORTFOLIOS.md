@@ -173,6 +173,25 @@ one pinned head invalidates only that repository's evidence; bucket/capacity/vie
 changes reuse immutable repository evidence and deterministically recalculate the
 cheap presentation cells.
 
+A repository-evidence miss no longer discards earlier analysis. Protocol
+`portfolio-result-cache/1.0.0` stores, under the checkpoint directory's `results/`
+folder, one gzip-compressed content-addressed entry per immutable commit estimate
+and per repository-day final-delta outcome. A commit key binds the exact CLI build,
+estimator version, profile, repository identity and scope/admission digests, the
+full selection (base/head object IDs, commit, parent), and plan components and
+diagnostics; it deliberately excludes the selection window, contributors, and
+pinned heads, so moving a window or adding commits analyzes only commits not seen
+before. A final-delta key additionally binds every group member's selector,
+complete report bytes, attribution, and replay evidence, so any membership or
+attribution change recomputes that day. Only the endpoint search and its estimate
+are cached; cheaper proof checks always rerun. Hits are revalidated against their
+key and contract rules; corrupt, foreign, or invalid entries are misses, and write
+failures never fail a run. After each comparison, least recently used entries
+beyond 131,072 entries or 2 GiB of compressed bytes are evicted. Reconciliation,
+normalization, and every semantic digest are unchanged, so warm and cold runs give
+identical semantic output; stderr reports per-repository commit and final-delta
+hits plus store totals. `--no-checkpoint` disables this cache too.
+
 Checkpoint protocol `repository-evidence-checkpoint/1.1.0` additionally binds the
 privacy-safe measured repository scope. Each file is limited to 512 MiB, and
 comparison execution records exact checkpoint bytes read and written. Versioned
@@ -728,6 +747,18 @@ unchanged and repeated optimized report bytes are identical. This removes one
 measured allocation-heavy redundancy; unique structural C# bodies still require
 full analysis. The remaining general-latency and scaling work in issue #182 was
 later closed as not planned.
+
+The per-commit result cache was measured on a private 20-repository,
+6,943-commit independent-day calendar manifest (one contributor, about eight
+months), one Windows workstation, single runs. An uncached run took 562 seconds.
+After a cold checkpointed run over the same heads with the window ending about 11
+hours earlier (667 seconds including cache writes), the full-window rerun found
+140 new commits, among them a newly added repository, served 6,803 commit and 245
+of 249 final-delta results from 122 MB of compressed entries, and finished in 92
+seconds (6.1x faster than uncached). Its report was identical to the uncached
+report apart from the operational `execution` section, including the semantic
+digest. The remaining time is planning, repository-checkpoint I/O, cache reads,
+and the new commits.
 
 Snapshot analysis is keyed by repository, canonical immutable-inventory digest,
 and complete admitted normalization-policy identity. Reused evidence is rebound

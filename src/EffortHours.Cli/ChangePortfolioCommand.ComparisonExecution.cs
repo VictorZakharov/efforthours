@@ -91,6 +91,9 @@ internal sealed partial class ChangePortfolioCommand
             ? null
             : new ChangePortfolioRepositoryCheckpointStore(
                 options.CheckpointPath ?? Path.GetFullPath(options.OutputPath!) + ".eh-checkpoint");
+        ChangePortfolioResultCacheStore? results = checkpoints is null
+            ? null
+            : new ChangePortfolioResultCacheStore(checkpoints.Root);
         GitPortfolioPlanner planner = new();
         List<ChangePortfolioRepositoryOutcome> outcomes = [];
         foreach (ChangeAuthorPeriodManifestRepository repository in
@@ -104,6 +107,7 @@ internal sealed partial class ChangePortfolioCommand
                 repository,
                 planner,
                 checkpoints,
+                results,
                 today?.PathAdmissions.GetValueOrDefault(repository.Id) ??
                     explicitScope?.CreateAdmission(repository.ScopeRepository ?? repository.GitHubRepository ?? repository.Id),
                 today?.ScopeProfile.Digest ?? explicitScope?.Contract.Digest,
@@ -111,6 +115,8 @@ internal sealed partial class ChangePortfolioCommand
                 cancellationToken).ConfigureAwait(false);
             outcomes.Add(outcome with { Elapsed = Stopwatch.GetElapsedTime(started) });
         }
+
+        await TrimResultCacheAsync(results, standardError, cancellationToken).ConfigureAwait(false);
 
         ChangePortfolioComparisonExecution execution =
             ChangePortfolioComparisonExecutionFactory.Create(
