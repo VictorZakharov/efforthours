@@ -108,8 +108,9 @@ internal sealed partial class ChangePortfolioCommand
                 planner,
                 checkpoints,
                 results,
-                today?.PathAdmissions.GetValueOrDefault(repository.Id) ??
+                ChangePathAdmission.WithExclusion(today?.PathAdmissions.GetValueOrDefault(repository.Id) ??
                     explicitScope?.CreateAdmission(repository.ScopeRepository ?? repository.GitHubRepository ?? repository.Id),
+                    repository.Exclude),
                 today?.ScopeProfile.Digest ?? explicitScope?.Contract.Digest,
                 standardError,
                 cancellationToken).ConfigureAwait(false);

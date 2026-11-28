@@ -55,6 +55,10 @@
     "ownershipDigest": {
       "type": "string",
       "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "exclusionDigest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
     }
   }
 }

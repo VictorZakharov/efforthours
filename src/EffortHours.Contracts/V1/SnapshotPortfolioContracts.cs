@@ -32,6 +32,8 @@ public sealed record SnapshotProjectDefinition
     public required IReadOnlyList<SnapshotAreaDefinition> Areas { get; init; }
     public IReadOnlyList<SnapshotAreaRevision>? AreaRevisions { get; init; }
     public ReviewedVendorManifest? VendorManifest { get; init; }
+    /// <summary>Reviewed repository-relative globs never admitted, scanned, or estimated at any snapshot or area.</summary>
+    public IReadOnlyList<string>? Exclude { get; init; }
 }
 
 public sealed record SnapshotAreaRevision(string CommitObjectId, IReadOnlyList<SnapshotAreaDefinition> Areas);
@@ -68,6 +70,7 @@ public sealed record MeasurementIdentity
     public string AreaPolicy { get; init; } = SnapshotPortfolioVersions.Areas;
     public string AnalysisOptions { get; init; } = "default-static/1.0.0";
     public string? OwnershipDigest { get; init; }
+    public string? ExclusionDigest { get; init; }
 }
 
 public sealed record SnapshotMeasurementReceipt
@@ -86,6 +89,17 @@ public sealed record SnapshotMeasurementReceipt
     public IReadOnlyList<string> DirectoryIds { get; init; } = [];
     public IReadOnlyList<SnapshotBodyFingerprint> MaintainedBodies { get; init; } = [];
     public string Maturity { get; init; } = "experimental-uncalibrated";
+    public SnapshotExclusionSummary? Exclusion { get; init; }
+}
+
+/// <summary>What a whole-snapshot receipt left out: the reviewed globs and the archived files/bytes they matched.</summary>
+public sealed record SnapshotExclusionSummary
+{
+    public string Policy { get; init; } = Contracts.RepositoryPathExclusion.Policy;
+    public required string Digest { get; init; }
+    public required IReadOnlyList<string> Exclude { get; init; }
+    public required int ExcludedFileCount { get; init; }
+    public required long ExcludedBytes { get; init; }
 }
 
 public sealed record SnapshotPortfolioReport

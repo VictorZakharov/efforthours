@@ -46,6 +46,8 @@ public static partial class SnapshotPortfolioValidation
             }
             else if (project.AreaRevisions is not null) throw new SnapshotPlanningException("invalid-area-definition", "Area revisions require revision-bound mode.");
             if (project.VendorManifest is not null) _ = ReviewedVendorManifestValidation.ComputeDigest(project.VendorManifest);
+            IReadOnlyList<string> exclusionErrors = RepositoryPathExclusion.Validate(project.Exclude);
+            if (exclusionErrors.Count > 0) throw new InvalidDataException($"Project '{project.Id}': {exclusionErrors[0]}");
         }
     }
 
@@ -67,6 +69,16 @@ public static partial class SnapshotPortfolioValidation
             if (body.Bytes < 0) throw new InvalidDataException("Negative body bytes.");
         }
         Validate(receipt.Measurement);
+        if (receipt.Exclusion is { } exclusion)
+        {
+            RepositoryPathExclusion? declared;
+            try { declared = RepositoryPathExclusion.Create(exclusion.Exclude); }
+            catch (InvalidDataException e) { throw new InvalidDataException("Receipt exclusion globs are invalid.", e); }
+            if (exclusion.Policy != RepositoryPathExclusion.Policy || declared?.Digest != exclusion.Digest ||
+                !declared.Globs.SequenceEqual(exclusion.Exclude, StringComparer.Ordinal) ||
+                exclusion.Digest != receipt.Measurement.ExclusionDigest || exclusion.ExcludedFileCount < 0 || exclusion.ExcludedBytes < 0)
+                throw new InvalidDataException("Receipt exclusion summary does not match its measurement identity.");
+        }
         RequireRange(receipt.Hours);
         if (receipt.Categories.Select(c => c.Category).Distinct().Count() != receipt.Categories.Count)
             throw new InvalidDataException("Receipt category totals are duplicated.");
@@ -87,6 +99,7 @@ public static partial class SnapshotPortfolioValidation
         RequireDigest(measurement.ModelDigest);
         RequireDigest(measurement.ImplementationDigest);
         if (measurement.OwnershipDigest is not null) RequireDigest(measurement.OwnershipDigest);
+        if (measurement.ExclusionDigest is not null) RequireDigest(measurement.ExclusionDigest);
     }
 
     public static void Validate(SnapshotPortfolioReport report)
@@ -107,7 +120,8 @@ public static partial class SnapshotPortfolioValidation
         foreach (SnapshotMeasurementReceipt receipt in report.Receipts)
         {
             Validate(receipt);
-            if (SnapshotMeasurementIdentity.Digest(receipt.Measurement with { OwnershipDigest = null }) != report.MeasurementEpoch)
+            // Ownership and exclusion are per-project admission inputs, not measurement epochs.
+            if (SnapshotMeasurementIdentity.Digest(receipt.Measurement with { OwnershipDigest = null, ExclusionDigest = null }) != report.MeasurementEpoch)
                 throw new InvalidDataException("Mixed measurement epochs require a separately versioned consumer contract.");
             if (!receipts.TryAdd(receipt.Id, receipt)) throw new InvalidDataException("Duplicate receipt IDs.");
         }
@@ -149,7 +163,8 @@ public static partial class SnapshotPortfolioValidation
                 }
                 if (period.Status is not ("complete" or "partial") || period.CommitObjectId is null || period.TreeObjectId is null ||
                     period.CommitAt is null || period.CommitAt >= period.Cutoff || period.WholeReceiptId is null ||
-                    !receipts.TryGetValue(period.WholeReceiptId, out SnapshotMeasurementReceipt? whole) || period.Hours != whole.Hours)
+                    !receipts.TryGetValue(period.WholeReceiptId, out SnapshotMeasurementReceipt? whole) || period.Hours != whole.Hours ||
+                    (whole.Exclusion is null) != (whole.Measurement.ExclusionDigest is null))
                     throw new InvalidDataException("Snapshot provenance or whole-project receipt is invalid.");
                 if (daily && period.Status != expectedPeriod.Status)
                     throw new InvalidDataException("Daily measurement status must match its closed or provisional cutoff.");

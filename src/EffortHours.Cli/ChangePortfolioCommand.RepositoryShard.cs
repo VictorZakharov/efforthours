@@ -78,6 +78,8 @@ internal sealed partial class ChangePortfolioCommand
                     allowEmptySelection: true,
                     cancellationToken: cancellationToken).ConfigureAwait(false);
             measuredScope = plan.RepositoryScopes.Single();
+            await ChangePathAdmission.RequireAdmittedHeadsAsync(new GitClient(), resolved.RepositoryPaths[repository.Id],
+                repository.Heads.Select(head => head.ObjectId), pathAdmission, cancellationToken).ConfigureAwait(false);
             using (telemetry.Measure(ChangePortfolioExecutionPhases.Preflight))
             {
                 if (measuredScope.SelectedChangeCount != plan.Items.Count)

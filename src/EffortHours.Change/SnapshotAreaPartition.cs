@@ -1,4 +1,5 @@
 using System.Text.RegularExpressions;
+using EffortHours.Contracts;
 using EffortHours.Contracts.V1;
 
 namespace EffortHours.Change;
@@ -92,16 +93,9 @@ public static class SnapshotAreaPartition
         }
     }
 
-    internal static Regex Compile(string selector)
-    {
-        string expression = Regex.Escape(selector)
-            .Replace(@"\*\*/", "(?:.*/)?", StringComparison.Ordinal)
-            .Replace(@"\*\*", ".*", StringComparison.Ordinal)
-            .Replace(@"\*", "[^/]*", StringComparison.Ordinal)
-            .Replace(@"\?", "[^/]", StringComparison.Ordinal);
-        if (!selector.Contains('*') && !selector.Contains('?')) expression += "(?:/.*)?";
-        return new("^" + expression + "$", RegexOptions.CultureInvariant | RegexOptions.NonBacktracking);
-    }
+    // Exclusion globs share this exact selector expression.
+    internal static Regex Compile(string selector) =>
+        new("^" + RepositoryPathExclusion.Expression(selector) + "$", RegexOptions.CultureInvariant | RegexOptions.NonBacktracking);
 
     public static IReadOnlyList<decimal> Allocate(decimal total, IReadOnlyList<decimal> weights)
     {

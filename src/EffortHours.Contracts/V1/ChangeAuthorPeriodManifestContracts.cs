@@ -85,6 +85,9 @@ public sealed record ChangeAuthorPeriodManifestRepository
     public IReadOnlyList<ChangeRewriteEvent>? RewriteEvents { get; init; }
 
     public IReadOnlyList<ChangePortfolioReplayEvent>? ReplayEvents { get; init; }
+
+    /// <summary>Reviewed repository-relative globs never admitted into any change, endpoint, or day estimate.</summary>
+    public IReadOnlyList<string>? Exclude { get; init; }
 }
 
 public sealed record ChangeAuthorPeriodManifestHead

@@ -42,6 +42,7 @@
         "empty-owned-area",
         "invalid-archive",
         "unsupported-source-entry",
+        "excluded-all-files",
         "incompatible-measurement-identity"
       ]
     }

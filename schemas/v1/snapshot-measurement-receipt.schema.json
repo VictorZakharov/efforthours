@@ -89,6 +89,10 @@
         "ownershipDigest": {
           "type": "string",
           "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "exclusionDigest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
         }
       }
     },
@@ -225,6 +229,45 @@
       },
       "minItems": 0,
       "maxItems": 100000
+    },
+    "exclusion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "policy",
+        "digest",
+        "exclude",
+        "excludedFileCount",
+        "excludedBytes"
+      ],
+      "properties": {
+        "policy": {
+          "const": "repository-path-exclusion/1.0.0"
+        },
+        "digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "exclude": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1024
+          },
+          "minItems": 1,
+          "maxItems": 256,
+          "uniqueItems": true
+        },
+        "excludedFileCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "excludedBytes": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
     }
   }
 }
