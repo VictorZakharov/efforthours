@@ -23,10 +23,26 @@ internal sealed partial class ChangePortfolioCommand
                     cancellationToken).ConfigureAwait(false);
         EngineeringScopeProfile? scope = options.Scope == "engineering"
             ? EngineeringScopeProfile.Load() : null;
-        Dictionary<string, ChangePathAdmission>? admissions = scope is null ? null : plan.Manifest.Repositories.ToDictionary(
-            repository => repository.Id,
-            repository => scope.CreateAdmission(repository.ScopeRepository ?? repository.GitHubRepository ?? repository.Id),
-            StringComparer.Ordinal);
+        // Reviewed exclusion composes with the optional engineering scope; repositories without either keep no admission.
+        Dictionary<string, ChangePathAdmission?>? admissions = scope is null && plan.Manifest.Repositories.All(r => r.Exclude is null)
+            ? null
+            : plan.Manifest.Repositories.ToDictionary(
+                repository => repository.Id,
+                repository => ChangePathAdmission.WithExclusion(
+                    scope?.CreateAdmission(repository.ScopeRepository ?? repository.GitHubRepository ?? repository.Id),
+                    repository.Exclude),
+                StringComparer.Ordinal);
+        if (admissions is not null)
+        {
+            GitClient heads = new();
+            foreach (ChangeAuthorPeriodManifestRepository repository in plan.Manifest.Repositories)
+            {
+                string? root = plan.Items.FirstOrDefault(item => item.RepositoryId == repository.Id)?.Plan.RepositoryPath;
+                if (root is not null)
+                    await ChangePathAdmission.RequireAdmittedHeadsAsync(heads, root, repository.Heads.Select(head => head.ObjectId),
+                        admissions[repository.Id], cancellationToken).ConfigureAwait(false);
+            }
+        }
         GitChangePlan[] plans = [.. plan.Items.Select(item => item.Plan with
         {
             PathAdmission = admissions?.GetValueOrDefault(item.RepositoryId),
@@ -57,7 +73,7 @@ internal sealed partial class ChangePortfolioCommand
             candidates = [.. await ChangePortfolioReplayReviewer.AttachAsync(plan, candidates, options.Profile, scope is not null, cancellationToken).ConfigureAwait(false)];
         }
 
-        if (scope is null)
+        if (admissions is null)
         {
             ChangePortfolioPreparedCandidates prepared = await _changeEstimator.PreparePortfolioFinalDeltasAsync(
                 plan.Selection, candidates, plans, options.Profile, estimate.Statistics,

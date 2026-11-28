@@ -101,6 +101,7 @@ public static class ChangePortfolioComparisonIdentity
                 Heads = repository.Heads
                     .OrderBy(head => head.Id, StringComparer.Ordinal)
                     .Select(head => new { head.Id, head.ObjectId }),
+                Exclude = repository.Exclude?.Order(StringComparer.Ordinal),
             },
             Profile = profile,
             EstimatorVersion = estimatorVersion,

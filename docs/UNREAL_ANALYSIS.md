@@ -2,7 +2,7 @@
 
 ## Status
 
-Unreal analyzer `0.1.1`, common scanner `0.2.17`, and Change estimator
+Unreal analyzer `0.1.2`, common scanner `0.2.17`, and Change estimator
 `change-seed/0.22.0+seed-rules/0.4.0` admit Unreal Engine projects and plugins.
 This is a bounded inventory and size-inference analyzer, not an Unreal package
 parser. Repository and Unreal Change estimates remain experimental and
@@ -39,7 +39,9 @@ are counted in diagnostic `FB8303` but not valued. Descriptors are read with
 digest, size (1 MiB), repository-containment, and JSON-depth bounds; only enabled
 plugin and code-module counts are retained. Names, descriptions, engine
 associations, and paths inside descriptors are not emitted. An unreadable
-descriptor keeps ownership and reports `FB8302`.
+descriptor keeps ownership and reports `FB8302`. Analyzer `0.1.2` accepts the
+UTF-8 byte-order mark the Unreal editor writes; earlier versions reported such
+descriptors as `FB8302` and counted no plugins or modules for them.
 
 Snapshot-portfolio area scans add every ancestor `.uproject`/`.uplugin` of an
 owned package that the area does not itself own as a context-only file (scanner

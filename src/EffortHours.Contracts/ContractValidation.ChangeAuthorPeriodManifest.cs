@@ -121,6 +121,13 @@ public static partial class ContractValidation
             ValidateRewriteEvents(repository.RewriteEvents, errors);
             ValidatePortfolioReplayEvents(repository.ReplayEvents, errors);
             ValidatePublicId(repository.Id, "repository.id", errors);
+            if (repository.Exclude is not null)
+            {
+                errors.AddRange(RepositoryPathExclusion.Validate(repository.Exclude)
+                    .Select(error => $"Repository '{repository.Id}' exclude: {error}"));
+                if (repository.RewriteEvents is not null || repository.ReplayEvents is not null)
+                    errors.Add($"Repository '{repository.Id}' cannot combine exclude with rewrite or replay events.");
+            }
             if (!repositoryIds.Add(repository.Id))
             {
                 errors.Add($"Author-period repository ID '{repository.Id}' is duplicated.");

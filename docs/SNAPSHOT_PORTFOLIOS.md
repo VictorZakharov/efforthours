@@ -209,6 +209,43 @@ the area's input digest additionally binds the sorted context-only paths. Areas
 without context-only files keep their previous input digests. Context-only files
 count toward `contextFileCount`. Original relative paths are retained.
 
+## Reviewed path exclusion
+
+A project may declare `exclude`, 1 to 256 unique repository-relative globs under
+`repository-path-exclusion/1.0.0`, for tracked content that is not the owner's
+work (third-party packs, template content):
+
+```json
+{ "id": "villa", "ref": "main",
+  "exclude": ["Content/Alpine_Mountains_Villa/**", "Content/__ExternalActors__/LocomotionAnimPack/**"],
+  "areas": [{ "id": "game", "include": ["Content/**"] }, { "id": "support", "include": ["**"] }] }
+```
+
+Globs use exactly the area selector semantics. Absolute paths, `..`, `.`, empty
+segments, backslashes, `[`, `]`, `!`, duplicates, an empty list, and globs that
+match every path (`**`, `**/*`) are rejected as invalid input. A glob need not
+match: historical snapshots may predate a pack. Exclusion is applied once at
+admission, after the archive's link/submodule/size/attribute checks and before
+inventory planning, scanning, areas, or estimation, so whole, area, daily, and
+preflight path-only planning all see the same admitted set. Excluded files are
+never context either: they cannot become owned, `.gitignore` context, or
+context-only descriptors. Area ownership remains ordered, first-match, and
+exhaustive over the admitted set; a selector that matches only excluded files is
+`unmatched-selector`. Excluding package folders keeps an unexcluded `.uproject`
+and its context-only role for owned Unreal packages. A selected snapshot whose
+admitted set is empty fails as `excluded-all-files` rather than estimating zero.
+
+A configured exclusion adds `exclusionDigest` (the policy plus sorted globs) to
+the project's measurement identity, so it binds every commit/tree binding,
+measurement key, receipt, and persisted artifact key; the report epoch ignores
+it as it ignores ownership. Each whole-snapshot receipt records `exclusion`:
+policy, digest, sorted globs, and the count and archived bytes of the excluded
+files (for Git LFS packages, pointer bytes). The excluded remainder is part of
+the receipt's measurement key, so identical admitted inputs with a different
+excluded remainder do not share a receipt. Area receipts bind the digest but omit
+the summary. Projects without `exclude` produce no new fields and keep their
+previous identities, keys, receipts, and digests.
+
 The full archive and each area are separately scanned and estimated in one
 process. Immutable data-only file artifacts can be shared; whole-project evidence
 is never sliced into area estimates. Standalone area semantics match independent
@@ -308,7 +345,8 @@ maintained production bodies. It emits no raw source, paths, aliases, URLs, or
 private cache location. Its content-bound ID includes the original provenance.
 
 Measurement compatibility includes profile, rules digest, normalization, inventory,
-ignore, archive, area, deterministic options, and reviewed ownership digest. The
+ignore, archive, area, deterministic options, reviewed ownership digest, and the
+optional reviewed exclusion digest. The
 implementation digest is generated at build time from analysis/analyzer/core/
 estimation/contract/selection source, relevant project files, dependency locks,
 SDK selection, and shared build properties. Release/E2E tests recompute that

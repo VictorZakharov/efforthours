@@ -983,6 +983,32 @@ without implying provider discovery. Scope digest binds checkpoints and endpoint
 analysis as well as the source rows. Ordinary manifest execution remains offline;
 missing provider-located objects require the existing explicit acquisition opt-in.
 
+## Reviewed path exclusion
+
+An author-period manifest repository may declare
+`exclude: ["Content/Pack/**", ...]`: 1 to 256 unique repository-relative globs
+under `repository-path-exclusion/1.0.0`, with the snapshot-area selector
+semantics (relative paths/directories, `*`, `**`, `?`). Absolute paths, `..`,
+`.`, empty segments, backslashes, character classes, `!`, and globs that match
+every path (`**`, `**/*`) are rejected before execution. Exclusion is admission:
+excluded paths never enter a change's changed/context/representative scope, the
+complete-normalization population, final deltas, endpoint proofs, or a day. It
+composes with `--scope engineering` (a path must pass both); without scope it is
+the only admission. Repositories without `exclude` keep no admission and every
+previous digest, checkpoint, and cache key. A configured list binds the
+manifest digest (sorted, so authored order is irrelevant), the repository
+checkpoint input digest, the admission digest, and therefore the per-commit
+result cache; changing it invalidates exactly that repository. If a pinned head
+admits no file the run fails rather than estimating zero. Globs are execution
+inputs like paths: they never appear in comparison reports. `exclude` cannot yet
+be combined with `rewriteEvents` or `replayEvents`, whose reviews use their own
+scope admission.
+
+```json
+{ "id": "villa", "repositoryPath": "...", "heads": [...],
+  "exclude": ["Content/Fab/MetaHuman/**", "Content/__ExternalActors__/FirstPerson/**"] }
+```
+
 ## Explicit external workday projection
 
 A maintainer-authorized opt-in `eh change allocate-days` surface consumes a

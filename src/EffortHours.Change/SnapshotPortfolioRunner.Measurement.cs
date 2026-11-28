@@ -8,7 +8,7 @@ namespace EffortHours.Change;
 public sealed partial class SnapshotPortfolioRunner
 {
     private async Task<SnapshotStoredBinding> MeasureArchiveAsync(GitClient git, string root, string commit, IReadOnlyList<ChangeSnapshotFile> inventory,
-        SnapshotProjectDefinition project, MeasurementIdentity identity, string bindingKey,
+        SnapshotProjectDefinition project, MeasurementIdentity identity, RepositoryPathExclusion? exclusion, string bindingKey,
         string treeObjectId, bool requestAreas, SnapshotAreaSelectors? selectors, ProjectArtifacts projectArtifacts,
         SnapshotPortfolioRunOptions options, CancellationToken token)
     {
@@ -22,9 +22,10 @@ public sealed partial class SnapshotPortfolioRunner
         { throw new SnapshotPlanningException("invalid-archive", e.Message, inner: e); }
         Interlocked.Increment(ref _exports);
         Interlocked.Add(ref _gitReadBytes, archive.Files.Sum(f => f.Value.LongLength));
+        (archive, SnapshotExclusionSummary? excluded) = SnapshotPortfolioExclusion.Admit(archive, exclusion);
         archive = archive.WithArtifactCache(projectArtifacts.Cache);
         SnapshotMeasurementReceipt whole = await MeasureAsync(archive, archive.Files.Count, 0, identity,
-            project.VendorManifest, options, token).ConfigureAwait(false);
+            project.VendorManifest, options, token, excluded).ConfigureAwait(false);
         string wholeKey = BindingKey(commit, identity, "");
         SnapshotStoredBinding wholeBinding = new(wholeKey, "", whole.Id, []);
         wholeBinding = wholeBinding with { Digest = SnapshotPortfolioStore.BindingDigest(wholeBinding) };
@@ -64,13 +65,15 @@ public sealed partial class SnapshotPortfolioRunner
     }
 
     private async Task<SnapshotMeasurementReceipt> MeasureAsync(GitArchiveSnapshot snapshot, int selected, int context,
-        MeasurementIdentity identity, ReviewedVendorManifest? vendor, SnapshotPortfolioRunOptions options, CancellationToken token)
+        MeasurementIdentity identity, ReviewedVendorManifest? vendor, SnapshotPortfolioRunOptions options, CancellationToken token,
+        SnapshotExclusionSummary? exclusion = null)
     {
-        string key = SnapshotPortfolioStore.MeasurementKey(snapshot.InputDigest, identity, selected, context);
+        string key = SnapshotPortfolioStore.MeasurementKey(snapshot.InputDigest, identity, selected, context, exclusion);
         SnapshotReceiptReference? reference = await store.LoadAsync<SnapshotReceiptReference>("measurements", key, token).ConfigureAwait(false);
         SnapshotMeasurementReceipt? cached = reference is null ? null : await store.ReceiptAsync(reference.ReceiptId, token).ConfigureAwait(false);
         if (cached is not null && cached.InputDigest == snapshot.InputDigest && cached.Measurement == identity &&
-            cached.SelectedFileCount == selected && cached.ContextFileCount == context)
+            cached.SelectedFileCount == selected && cached.ContextFileCount == context &&
+            SnapshotPortfolioExclusion.Same(cached.Exclusion, exclusion))
         {
             _receipts[cached.Id] = cached;
             Interlocked.Increment(ref _receiptHits);
@@ -93,6 +96,7 @@ public sealed partial class SnapshotPortfolioRunner
             EvidenceDigest = evidence.Repository.SourceDigest!,
             DirectoryIds = SnapshotPortfolioDiagnostics.DirectoryIds(snapshot.Files.Keys),
             MaintainedBodies = SnapshotPortfolioDiagnostics.Bodies(snapshot, evidence),
+            Exclusion = exclusion,
         };
         receipt = receipt with { Id = SnapshotPortfolioValidation.ReceiptId(receipt) };
         SnapshotPortfolioValidation.Validate(receipt);

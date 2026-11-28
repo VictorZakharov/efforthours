@@ -6,6 +6,28 @@ may still change public contracts with explicit documentation.
 
 ## Unreleased
 
+- Add reviewed per-project path exclusion. Snapshot portfolio manifests
+  (`eh estimate portfolio`) and author-period manifests (`eh change portfolio`,
+  including `--bucket independent-day`) accept `exclude: [globs]` with the
+  area-selector glob semantics (`repository-path-exclusion/1.0.0`). Excluded
+  files are dropped at admission, so whole-snapshot, area, daily, change, and
+  day estimates agree and never value them; area ownership stays exhaustive over
+  the admitted set and Unreal `.uproject` context keeps working when package
+  folders are excluded. Exclusion binds measurement identity
+  (`exclusionDigest`), manifest/checkpoint/admission digests, and caches; whole
+  snapshot receipts record the globs plus excluded file count and bytes. Unsafe
+  globs (absolute, `..`, empty, match-everything) are rejected, and a snapshot
+  or pinned head that would admit nothing fails (`excluded-all-files`) instead
+  of estimating zero. Projects without `exclude` keep their previous receipts,
+  keys, and digests apart from the usual implementation-fingerprint change, so
+  existing portfolios still need `--upgrade rebuild` under a new producer.
+  Estimates remain experimental and uncalibrated.
+
+- Unreal analyzer `0.1.2` reads `.uproject`/`.uplugin` descriptors that start
+  with a UTF-8 byte-order mark, as the Unreal editor writes them. They were
+  previously reported as `FB8302` and contributed no plugin or module counts.
+  Descriptors without a BOM are unaffected.
+
 ## 0.10.0-alpha.44 - 2026-11-24
 
 - Fix Unreal area measurements in `eh estimate portfolio`. Areas that own

@@ -9,13 +9,16 @@ namespace EffortHours.Analyzers.Unreal;
 internal sealed record UnrealProjectManifest(int EnabledPlugins, int Modules)
 {
     public const long MaximumBytes = 1024 * 1024;
+    private static readonly byte[] Utf8Bom = [0xEF, 0xBB, 0xBF];
 
     public static UnrealProjectManifest? TryParse(byte[] content)
     {
         ArgumentNullException.ThrowIfNull(content);
+        // The Unreal editor writes descriptors with a UTF-8 byte-order mark, which JsonDocument rejects.
+        ReadOnlyMemory<byte> json = content.AsSpan().StartsWith(Utf8Bom) ? content.AsMemory(Utf8Bom.Length) : content;
         try
         {
-            using JsonDocument document = JsonDocument.Parse(content, new JsonDocumentOptions
+            using JsonDocument document = JsonDocument.Parse(json, new JsonDocumentOptions
             {
                 AllowTrailingCommas = true,
                 CommentHandling = JsonCommentHandling.Skip,

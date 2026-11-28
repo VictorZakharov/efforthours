@@ -95,6 +95,17 @@
           "vendorManifest": {
             "$ref": "urn:eh:schema:v1:reviewed-vendor-manifest"
           },
+          "exclude": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 1024
+            },
+            "minItems": 1,
+            "maxItems": 256,
+            "uniqueItems": true
+          },
           "areaMeasurementMode": {
             "enum": [
               "every-snapshot",

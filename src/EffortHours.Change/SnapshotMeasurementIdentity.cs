@@ -11,12 +11,14 @@ public static class SnapshotMeasurementIdentity
 {
     public static string ImplementationDigest { get; } = ReadImplementationDigest();
 
-    public static MeasurementIdentity Create(EstimationProfile profile, string? ownershipDigest = null) => new()
+    public static MeasurementIdentity Create(EstimationProfile profile, string? ownershipDigest = null,
+        string? exclusionDigest = null) => new()
     {
         Profile = profile,
         ModelDigest = Digest(SeedRuleCatalog.ReadJson()),
         ImplementationDigest = ImplementationDigest,
         OwnershipDigest = ownershipDigest,
+        ExclusionDigest = exclusionDigest,
     };
 
     public static string Digest<T>(T value) => Hash(Encoding.UTF8.GetBytes(ContractJson.SerializeCompact(value)));

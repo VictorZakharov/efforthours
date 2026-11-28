@@ -152,7 +152,10 @@ public sealed partial class SnapshotPortfolioRunner(SnapshotPortfolioStore store
         }
         string areasDigest = SnapshotMeasurementIdentity.Digest(project.Areas);
         string? ownership = project.VendorManifest is null ? null : ReviewedVendorManifestValidation.ComputeDigest(project.VendorManifest);
-        MeasurementIdentity identity = SnapshotMeasurementIdentity.Create(manifest.Profile, ownership);
+        // Exclusion is admission policy: it binds measurement identity (and so every binding, receipt, and
+        // artifact key) only when configured, leaving projects without 'exclude' on their previous identity.
+        RepositoryPathExclusion? exclusion = RepositoryPathExclusion.Create(project.Exclude);
+        MeasurementIdentity identity = SnapshotMeasurementIdentity.Create(manifest.Profile, ownership, exclusion?.Digest);
         List<SnapshotPeriodResult> periods = [];
         TimeZoneInfo timezone = TimeZoneInfo.FindSystemTimeZoneById(manifest.Timezone);
         IReadOnlyList<SnapshotPeriodResult> selections = SnapshotPortfolioSelection.Select(manifest.Year,
@@ -211,13 +214,14 @@ public sealed partial class SnapshotPortfolioRunner(SnapshotPortfolioStore store
                         throw new SnapshotPlanningException("invalid-archive", "Snapshot file-count limit or portable path uniqueness was violated.");
                     if (inventory.Any(f => f.IsLink || f.IsSubmodule))
                         throw new SnapshotPlanningException("unsupported-source-entry", "Snapshot contains a link or submodule; archive policy rejects these entries.");
+                    IReadOnlyList<ChangeSnapshotFile> admitted = SnapshotPortfolioExclusion.Admit(inventory, exclusion);
                     bool attributes = cachedInventory.Attributes;
                     string treeKey = BindingKey(selected.TreeObjectId! + (attributes ? selected.CommitObjectId : ""), identity, selectedAreasDigest);
                     binding = await store.LoadAsync<SnapshotStoredBinding>("trees", treeKey, token).ConfigureAwait(false);
                     cached = binding is not null && binding.Key == treeKey && await LoadBindingReceiptsAsync(binding, identity, token).ConfigureAwait(false);
                     if (!cached && !options.Preflight)
                     {
-                        binding = await MeasureArchiveAsync(git, root, selected.CommitObjectId, inventory, selectedProject, identity, treeKey, selected.TreeObjectId!, requestAreas, selectors, artifacts, options, token).ConfigureAwait(false);
+                        binding = await MeasureArchiveAsync(git, root, selected.CommitObjectId, inventory, selectedProject, identity, exclusion, treeKey, selected.TreeObjectId!, requestAreas, selectors, artifacts, options, token).ConfigureAwait(false);
                         await store.SaveAsync("trees", treeKey, binding, token).ConfigureAwait(false);
                     }
                     if (options.Preflight && !cached && requestAreas)
@@ -230,7 +234,7 @@ public sealed partial class SnapshotPortfolioRunner(SnapshotPortfolioStore store
                         if (!plans.TryGetValue(planKey, out areaPlan!))
                         {
                             Interlocked.Increment(ref _areaPlanningCalls);
-                            areaPlan = SnapshotPortfolioAreaPlanning.Plan(inventory, selectedProject, prior, attributes, selectors!, token);
+                            areaPlan = SnapshotPortfolioAreaPlanning.Plan(admitted, selectedProject, prior, attributes, selectors!, token);
                             plans.Add(planKey, areaPlan);
                         }
                         else Interlocked.Increment(ref _planningReuseHits);

@@ -7,7 +7,7 @@ namespace EffortHours.Analyzers.Unreal;
 internal static class UnrealEvidence
 {
     public const string AnalyzerName = "efforthours.unreal-analyzer";
-    public const string AnalyzerVersion = "0.1.1";
+    public const string AnalyzerVersion = "0.1.2";
 
     public static EvidenceFact Fact(
         string id,

@@ -131,7 +131,7 @@ public sealed class SnapshotPortfolioStore(string directory, long maximumBytes =
         {
             _imported[receipt.Id] = receipt;
             await SaveAsync("receipts", receipt.Id, receipt, cancellationToken).ConfigureAwait(false);
-            string key = MeasurementKey(receipt.InputDigest, receipt.Measurement, receipt.SelectedFileCount, receipt.ContextFileCount);
+            string key = MeasurementKey(receipt.InputDigest, receipt.Measurement, receipt.SelectedFileCount, receipt.ContextFileCount, receipt.Exclusion);
             await SaveAsync("measurements", key, new SnapshotReceiptReference(receipt.Id), cancellationToken).ConfigureAwait(false);
         }
     }
@@ -150,8 +150,12 @@ public sealed class SnapshotPortfolioStore(string directory, long maximumBytes =
             }
     }
 
-    public static string MeasurementKey(string inputDigest, MeasurementIdentity identity, int selected, int context) =>
-        SnapshotMeasurementIdentity.Digest(new { inputDigest, identity, selected, context });
+    // Excluded counts/bytes are receipt content, so the same admitted input with a different excluded remainder
+    // gets its own receipt. Without exclusion the key is unchanged from earlier producers.
+    public static string MeasurementKey(string inputDigest, MeasurementIdentity identity, int selected, int context,
+        SnapshotExclusionSummary? exclusion = null) => exclusion is null
+        ? SnapshotMeasurementIdentity.Digest(new { inputDigest, identity, selected, context })
+        : SnapshotMeasurementIdentity.Digest(new { inputDigest, identity, selected, context, exclusion });
     public static string BindingDigest(SnapshotStoredBinding binding) => SnapshotMeasurementIdentity.Digest(binding with { Digest = "" });
 
     public static async Task AtomicWriteAsync(string path, string text, CancellationToken cancellationToken,
